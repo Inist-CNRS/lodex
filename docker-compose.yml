@@ -10,7 +10,7 @@ npm:
     entrypoint: ['npm']
 
 server:
-    build: ./
+    build: ./dockerfile/dev
     volumes:
         - .:/app
     working_dir: /app
@@ -27,3 +27,5 @@ server:
 
 mongo:
     image: mongo:3.0.14
+    ports:
+        - 27017:27017

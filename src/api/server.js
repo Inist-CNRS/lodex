@@ -5,6 +5,8 @@ import mount from 'koa-mount';
 import serve from 'koa-static';
 
 import { httpLogger } from './services/logger';
+import monk from 'monk';
+
 const app = new Koa();
 
 // server logs
@@ -24,6 +26,15 @@ app.use(async (ctx, next) => {
 });
 
 app.use(serve(path.join(__dirname, '../app/build')));
+
+app.use(async (ctx, next) => {
+    ctx.db = monk(`${config.mongo.host}/${config.mongo.dbName}`);
+    try {
+        await next();
+    } finally {
+        await ctx.db.close();
+    }
+});
 
 // Error catching - override koa's undocumented error handler
 app.context.onerror = function onError(err) {
