@@ -36,5 +36,10 @@ run-app:
 build-app:
 	NODE_ENV=${NODE_ENV} ./node_modules/.bin/webpack --config=./src/app/webpack.config.babel.js
 
-test:
-	echo "Run tests"
+test-app-unit:
+	NODE_ENV=test BABEL_ENV=test ./node_modules/.bin/mocha \
+		--require='./src/app/js/test.spec.js' \
+		--compilers="css:./src/common/tests/webpack-null-compiler,js:babel-core/register" \
+		"./src/app/js/**/*.spec.js"
+
+test: test-app-unit
