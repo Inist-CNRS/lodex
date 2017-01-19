@@ -4,7 +4,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import AppBar from 'material-ui/AppBar';
 import CircularProgress from 'material-ui/CircularProgress';
 
-const App = ({ isLoading, children }) => {
+export const App = ({ isLoading, children }) => {
     const RightElement = isLoading
         ? <CircularProgress color="#fff" size={30} thickness={2} style={{ margin: 8 }} />
         : null;
