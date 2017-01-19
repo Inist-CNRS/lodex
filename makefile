@@ -6,6 +6,16 @@ NODE_ENV ?= development
 help:
 	grep -P '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
+# If the first argument is one of the supported commands...
+SUPPORTED_COMMANDS := npm restore-db-dev _restore_db_dev restore-db-prod _restore_db_prod build import_units import_users import_sections import_unit_sections
+SUPPORTS_MAKE_ARGS := $(findstring $(firstword $(MAKECMDGOALS)), $(SUPPORTED_COMMANDS))
+ifneq "$(SUPPORTS_MAKE_ARGS)" ""
+    # use the rest as arguments for the command
+    COMMAND_ARGS := $(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS))
+    # ...and turn them into do-nothing targets
+    $(eval $(COMMAND_ARGS):;@:)
+endif
+
 # Initialization ===============================================================
 copy-conf: ## Initialize the configuration files by copying the *''-dist" versions (does not override existing config)
 	-cp -n ./config/${NODE_ENV}-dist.js ./config/${NODE_ENV}.js
@@ -43,3 +53,8 @@ test-app-unit:
 		"./src/app/js/**/*.spec.js"
 
 test: test-app-unit
+test:
+	echo "Run tests"
+
+npm: ## allow to run dockerized npm command eg make npm 'install koa --save'
+	docker-compose run --rm npm $(COMMAND_ARGS)
