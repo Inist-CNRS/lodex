@@ -12,7 +12,7 @@ export const App = ({ isLoading, children }) => {
     return (
         <MuiThemeProvider>
             <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-                <AppBar title="Lodex" iconElementRight={RightElement} />
+                <AppBar className="appbar" title="Lodex" iconElementRight={RightElement} />
                 <div className="body" style={{ display: 'flex', flex: '1', backgroundColor: '#edecec' }}>
                     <div style={{ flex: 1 }}>{children}</div>
                 </div>

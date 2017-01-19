@@ -10,12 +10,13 @@ export default {
     },
     devtool: 'cheap-eval-source-map',
     entry : {
-        index: [
+        index: [].concat(process.env.NODE_ENV === 'development' ? [
             'react-hot-loader/patch',
             'webpack-dev-server/client?http://localhost:8080',
             'webpack/hot/only-dev-server',
+        ] : []).concat([
             resolve(__dirname, './js/index.js'),
-        ]
+        ]),
     },
     module : {
         rules: [
@@ -93,7 +94,6 @@ export default {
         path: resolve(__dirname, '../build')
     },
     plugins : [
-        new HotModuleReplacementPlugin(),
         // prints more readable module names in the browser console on HMR updates
         new NamedModulesPlugin(),
 
@@ -116,7 +116,10 @@ export default {
             template: resolve(__dirname, './index.html'),
         }),
     ].concat(process.env.NODE_ENV === 'development'
-        ? [new SourceMapDevToolPlugin({filename: '[file].map'})]
+        ? [
+            new HotModuleReplacementPlugin(),
+            new SourceMapDevToolPlugin({filename: '[file].map'}),
+        ]
         : []),
     resolve: {
         extensions: ['.js', '.jsx'],
