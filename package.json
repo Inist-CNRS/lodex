@@ -78,6 +78,6 @@
     "selenium-webdriver": "3.0.1",
     "url-loader": "0.5.7",
     "webpack": "2.2.0",
-    "webpack-dev-server": "2.2.0",
+    "webpack-dev-server": "2.2.0"
   }
 }
