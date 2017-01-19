@@ -1,0 +1,8 @@
+apps:
+  - script   : 'src/api/launcher.js'
+    name     : 'lodex-dev'
+    instances: 1
+    autorestart: true
+    watch:
+        - ./src/api
+        - config

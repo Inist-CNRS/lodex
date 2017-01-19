@@ -8,3 +8,15 @@ npm:
         https_proxy: ${https_proxy}
         no_proxy: "localhost,127.0.0.1,"
     entrypoint: ['npm']
+
+server:
+    build: ./
+    volumes:
+        - .:/app
+    working_dir: /app
+    environment:
+        NODE_APP_INSTANCE: development
+        NODE_ENV: development
+        http_proxy: ${http_proxy}
+        https_proxy: ${https_proxy}
+        no_proxy: "localhost,127.0.0.1,"

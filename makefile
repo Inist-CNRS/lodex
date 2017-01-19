@@ -58,3 +58,6 @@ test:
 
 npm: ## allow to run dockerized npm command eg make npm 'install koa --save'
 	docker-compose run --rm npm $(COMMAND_ARGS)
+
+docker-run-dev: ## run node server with pm2 for development
+	docker-compose up --force-recreate server
