@@ -3,10 +3,13 @@ import Koa from 'koa';
 import config from 'config';
 import mount from 'koa-mount';
 import serve from 'koa-static';
-
-import { httpLogger } from './services/logger';
+import koaBodyParser from 'koa-bodyparser';
 import monk from 'monk';
 
+import { httpLogger } from './services/logger';
+import controller from './controller';
+
+const env = process.env.NODE_ENV;
 const app = new Koa();
 
 // server logs
@@ -27,6 +30,10 @@ app.use(async (ctx, next) => {
 
 app.use(serve(path.join(__dirname, '../build')));
 
+app.use(koaBodyParser());
+
+app.use(mount('/api', controller));
+
 app.use(async (ctx, next) => {
     ctx.db = monk(`${config.mongo.host}/${config.mongo.dbName}`);
     try {
@@ -37,7 +44,7 @@ app.use(async (ctx, next) => {
 });
 
 // Error catching - override koa's undocumented error handler
-app.context.onerror = function onError(err) {
+app.context.onerror = function onError(err, ctx) {
     if (!err) return;
 
     this.status = err.status || 500;
