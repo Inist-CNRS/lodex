@@ -29,12 +29,12 @@ install: copy-conf install-npm-dependencies install-selenium ## Install npm depe
 # Development ==================================================================
 
 run-app:
-	./node_modules/.bin/webpack-dev-server --config=./src/app/webpack.config.babel.js --port=8080
+	NODE_ENV=${NODE_ENV} ./node_modules/.bin/webpack-dev-server --config=./src/app/webpack.config.babel.js --port=8080
 
 # Build ==================================================================
 
 build-app:
-	./node_modules/.bin/webpack --config=./src/app/webpack.config.babel.js
+	NODE_ENV=${NODE_ENV} ./node_modules/.bin/webpack --config=./src/app/webpack.config.babel.js
 
 test:
 	echo "Run tests"

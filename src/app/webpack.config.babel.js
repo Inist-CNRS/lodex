@@ -3,7 +3,6 @@ import { DefinePlugin, LoaderOptionsPlugin, SourceMapDevToolPlugin, HotModuleRep
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import { resolve } from 'path';
 
-console.log({NODE_ENV: process.env.NODE_ENV});
 export default {
     devServer : {
         historyApiFallback: true,
