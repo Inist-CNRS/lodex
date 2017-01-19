@@ -1,4 +1,7 @@
 {
+  "engines": {
+    "node": ">= 7.4.0"
+  },
   "name": "lodex-v2",
   "version": "0.0.1",
   "description": "",
@@ -15,5 +18,58 @@
   "bugs": {
     "url": "https://github.com/Inist-CNRS/lodex-v2/issues"
   },
-  "homepage": "https://github.com/Inist-CNRS/lodex-v2#readme"
+  "homepage": "https://github.com/Inist-CNRS/lodex-v2#readme",
+  "dependencies": {
+    "config": "1.24.0",
+    "material-ui": "0.16.7",
+    "react": "15.4.2",
+    "react-dom": "15.4.2",
+    "react-fa": "4.1.2",
+    "react-redux": "5.0.2",
+    "react-router": "3.0.2",
+    "react-router-redux": "4.0.7",
+    "react-tap-event-plugin": "2.0.1",
+    "recompose": "0.21.2",
+    "redux": "3.6.0",
+    "redux-actions": "1.2.0",
+    "redux-saga": "0.14.3"
+  },
+  "devDependencies": {
+    "babel-cli": "6.18.0",
+    "babel-core": "6.21.0",
+    "babel-eslint": "7.1.1",
+    "babel-loader": "6.2.10",
+    "babel-plugin-add-module-exports": "0.2.1",
+    "babel-plugin-transform-object-rest-spread": "6.20.2",
+    "babel-plugin-transform-react-display-name": "6.8.0",
+    "babel-plugin-transform-react-jsx": "6.8.0",
+    "babel-plugin-transform-runtime": "6.15.0",
+    "babel-polyfill": "6.20.0",
+    "babel-preset-env": "1.1.8",
+    "babel-preset-react": "6.16.0",
+    "babel-preset-stage-2": "6.18.0",
+    "babel-register": "6.18.0",
+    "babel-runtime": "6.20.0",
+    "enzyme": "2.7.0",
+    "eslint": "3.13.1",
+    "eslint-config-airbnb": "14.0.0",
+    "eslint-config-airbnb-base": "11.0.1",
+    "eslint-plugin-jsx-a11y": "3.0.2",
+    "eslint-plugin-mocha": "4.8.0",
+    "eslint-plugin-react": "6.9.0",
+    "expect": "1.20.2",
+    "fakerest": "1.2.1",
+    "file-loader": "0.9.0",
+    "html-webpack-plugin": "2.26.0",
+    "http-server": "0.9.0",
+    "json-loader": "0.5.4",
+    "mocha": "3.2.0",
+    "react-addons-test-utils": "15.4.2",
+    "react-hot-loader": "3.0.0-beta.6",
+    "selenium-standalone": "5.11.0",
+    "selenium-webdriver": "3.0.1",
+    "url-loader": "0.5.7",
+    "webpack": "2.2.0",
+    "webpack-dev-server": "2.2.0"
+  }
 }
