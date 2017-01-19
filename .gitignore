@@ -39,3 +39,4 @@ jspm_packages
 config/development.js
 config/production.js
 config/staging.js
+build
