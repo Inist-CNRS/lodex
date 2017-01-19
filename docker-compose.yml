@@ -20,3 +20,10 @@ server:
         http_proxy: ${http_proxy}
         https_proxy: ${https_proxy}
         no_proxy: "localhost,127.0.0.1,"
+    links:
+        - mongo
+    ports:
+        - 3000:3000
+
+mongo:
+    image: mongo:3.0.14

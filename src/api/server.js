@@ -1,9 +1,10 @@
+import path from 'path';
 import Koa from 'koa';
 import config from 'config';
 import mount from 'koa-mount';
+import serve from 'koa-static';
 
 import { httpLogger } from './services/logger';
-
 const app = new Koa();
 
 // server logs
@@ -17,39 +18,39 @@ app.use(async (ctx, next) => {
     if (authorization) {
         ctx.httpLog.authorization = authorization;
     }
-    await next;
+    await next();
     ctx.httpLog.status = ctx.status;
     httpLogger.info(ctx.request.url, ctx.httpLog);
 });
 
-// error catching - override koa's undocumented error handler
-app.use(async (next) => {
-    try {
-        await next;
-    } catch (error) {
-        httpLogger.error(JSON.stringify(error));
-        this.app.emit('error', error, this);
+app.use(serve(path.join(__dirname, '../app/build')));
 
-        if (this.headerSent || !this.writable) {
-            error.headerSent = true;
-            return;
-        }
-        this.status = error.status || 500;
-        if (env === 'development') {
-            // respond with the error details
-            var message = {
-                error: error.message,
-                stack: error.stack,
-                code: error.code
-            };
-            this.body = JSON.stringify(message);
-            this.type = 'json';
-        } else {
-            // just send the error message
-            this.body = error.message;
-        }
-        this.res.end(this.body);
+// Error catching - override koa's undocumented error handler
+app.context.onerror = function onError(err) {
+    if (!err) return;
+
+    this.status = err.status || 500;
+    this.app.emit('error', err, this);
+
+    if (this.headerSent || !this.writable) {
+        err.headerSent = true; // eslint-disable-line no-param-reassign
+        return;
     }
-});
+
+    if (env === 'development') {
+        // respond with the error details
+        this.body = JSON.stringify({
+            error: err.message,
+            stack: err.stack,
+            code: err.code,
+        });
+        this.type = 'json';
+    } else {
+        // just send the error message
+        this.body = err.message;
+    }
+
+    this.res.end(this.body);
+};
 
 export default app;
