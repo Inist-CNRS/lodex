@@ -1,8 +1,12 @@
 {
     "presets": [
-        "stage-2"
+        ["env", {
+            "targets": {
+                "node": "current"
+            },
+            "include": ["transform-es2015-spread"],
+            "useBuiltIns": true
+        }]
     ],
-    "plugins": [
-        ["babel-plugin-transform-es2015-modules-commonjs"]
-    ]
+    "plugins": ["transform-object-rest-spread"]
 }

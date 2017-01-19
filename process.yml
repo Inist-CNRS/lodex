@@ -1,8 +1,9 @@
 apps:
-  - script   : 'src/api/launcher.js'
+  - script   : 'src/api/server.js'
     name     : 'lodex-dev'
     instances: 1
     autorestart: true
     watch:
         - ./src/api
         - config
+    node_args: --harmony-async-await --require babel-register
