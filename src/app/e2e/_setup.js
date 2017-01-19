@@ -1,7 +1,7 @@
 import http from 'http';
 import path from 'path';
 
-import api from '../../api';
+import api from '../../api/server';
 import driver from '../../common/tests/chromeDriver';
 import staticServer from '../../common/tests/staticServer';
 
