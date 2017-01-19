@@ -25,7 +25,7 @@ app.use(async (ctx, next) => {
     httpLogger.info(ctx.request.url, ctx.httpLog);
 });
 
-app.use(serve(path.join(__dirname, '../app/build')));
+app.use(serve(path.join(__dirname, '../build')));
 
 app.use(async (ctx, next) => {
     ctx.db = monk(`${config.mongo.host}/${config.mongo.dbName}`);
