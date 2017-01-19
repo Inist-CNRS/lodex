@@ -49,17 +49,22 @@ build-app: ## Build the frontend application
         $(if $(filter production staging,$(NODE_ENV)),-p,-d) \
         --progress
 
+test-app-unit:
+	NODE_ENV=test BABEL_ENV=test ./node_modules/.bin/mocha \
+		--require='./src/app/js/test.spec.js' \
+		--compilers="css:./src/common/tests/webpack-null-compiler,js:babel-core/register" \
+		"./src/app/js/**/*.spec.js"
+
+test-api-unit:
+	NODE_ENV=test BABEL_ENV=test ./node_modules/.bin/mocha \
+		--compilers="js:babel-core/register" \
+		"./src/api/**/*.spec.js"
+
 npm: ## allow to run dockerized npm command eg make npm 'install koa --save'
 	docker-compose run --rm npm $(COMMAND_ARGS)
 
 docker-run-dev: ## run node server with pm2 for development
 	docker-compose up --force-recreate server
-
-test-app-unit: ## Run the frontend application unit tests
-	NODE_ENV=test BABEL_ENV=browser ./node_modules/.bin/mocha \
-		--require='./src/app/js/test.spec.js' \
-		--compilers="css:./src/common/tests/webpack-null-compiler,js:babel-core/register" \
-		"./src/app/js/**/*.spec.js"
 
 test-frontend-functional: ## Run the frontend application functional tests
 	NODE_ENV=test ${MAKE} build-app
@@ -70,4 +75,4 @@ test-frontend-functional: ## Run the frontend application functional tests
 		--recursive \
 		./src/app/e2e
 
-test: test-app-unit test-frontend-functional
+test: test-app-unit test-api-unit test-frontend-functional
