@@ -27,4 +27,4 @@ install-selenium:
 install: copy-conf install-npm-dependencies install-selenium ## Install npm dependencies for the api, admin, and frontend apps
 
 test:
-    echo "Run tests"
+	echo "Run tests"
