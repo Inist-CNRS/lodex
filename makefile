@@ -41,6 +41,9 @@ install: copy-conf install-npm-dependencies install-selenium ## Install npm depe
 run-app: ## Run the frontend application
 	NODE_ENV=${NODE_ENV} BABEL_ENV=browser ./node_modules/.bin/webpack-dev-server --config=./src/app/webpack.config.babel.js --port=8080
 
+docker-run-app:
+	docker-compose up devserver
+
 # Build ==================================================================
 
 build-app: ## Build the frontend application

@@ -12,7 +12,6 @@
         "react/jsx-filename-extension": ["warn", { "extensions": [".js", ".jsx"] }],
         "react/jsx-indent": ["error", 4],
         "react/jsx-indent-props": ["error", 4],
-        "import/no-extraneous-dependencies": "off",
-        "no-param-reassign": ["error", { "props": false }],
+        "import/no-extraneous-dependencies": "off"
     },
 }

@@ -1,3 +1,9 @@
 import React from 'react';
 
-export default () => <h1>Hello world !</h1>;
+import Upload from './Upload';
+
+export default () => (
+    <div>
+        <Upload />
+    </div>
+);
