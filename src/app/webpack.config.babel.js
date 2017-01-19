@@ -27,21 +27,6 @@ export default {
                     resolve(__dirname, '../common')
                 ],
                 loader: 'babel-loader',
-                // Options to configure babel with
-                options: {
-                    babelrc: false,
-                    cacheDirectory: true,
-                    presets: [
-                        ["env", {
-                            targets: {
-                                browsers: ['last 2 versions']
-                            },
-                            modules: false,
-                            useBuiltIns: true,
-                        }],
-                        'react' // Transpile React components to JavaScript
-                    ],
-                }
             }, {
                 test: /\.json$/,
                 loader: 'json-loader'

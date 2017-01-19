@@ -39,12 +39,12 @@ install: copy-conf install-npm-dependencies install-selenium ## Install npm depe
 # Development ==================================================================
 
 run-app: ## Run the frontend application
-	NODE_ENV=${NODE_ENV} ./node_modules/.bin/webpack-dev-server --config=./src/app/webpack.config.babel.js --port=8080
+	NODE_ENV=${NODE_ENV} BABEL_ENV=browser ./node_modules/.bin/webpack-dev-server --config=./src/app/webpack.config.babel.js --port=8080
 
 # Build ==================================================================
 
 build-app: ## Build the frontend application
-	NODE_ENV=${NODE_ENV} ./node_modules/.bin/webpack \
+	NODE_ENV=${NODE_ENV} BABEL_ENV=browser ./node_modules/.bin/webpack \
         --config=./src/app/webpack.config.babel.js \
         $(if $(filter production staging,$(NODE_ENV)),-p,-d) \
         --progress
@@ -56,7 +56,7 @@ docker-run-dev: ## run node server with pm2 for development
 	docker-compose up --force-recreate server
 
 test-app-unit: ## Run the frontend application unit tests
-	NODE_ENV=test ./node_modules/.bin/mocha \
+	NODE_ENV=test BABEL_ENV=browser ./node_modules/.bin/mocha \
 		--require='./src/app/js/test.spec.js' \
 		--compilers="css:./src/common/tests/webpack-null-compiler,js:babel-core/register" \
 		"./src/app/js/**/*.spec.js"
