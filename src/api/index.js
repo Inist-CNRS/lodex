@@ -28,11 +28,9 @@ app.use(async (ctx, next) => {
     httpLogger.info(ctx.request.url, ctx.httpLog);
 });
 
-app.use(serve(path.join(__dirname, '../build')));
-
 app.use(koaBodyParser());
 
-app.use(mount('/api', controller));
+app.use(mount('/', controller));
 
 app.use(async (ctx, next) => {
     ctx.db = monk(`${config.mongo.host}/${config.mongo.dbName}`);

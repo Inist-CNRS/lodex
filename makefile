@@ -52,8 +52,8 @@ build-app: ## Build the frontend application
 npm: ## allow to run dockerized npm command eg make npm 'install koa --save'
 	docker-compose run --rm npm $(COMMAND_ARGS)
 
-docker-run-dev: ## run node server with pm2 for development
-	docker-compose up --force-recreate server
+docker-run-dev: ## run node server with pm2 for development and webpack-dev-server 
+	docker-compose up --force-recreate
 
 test-app-unit: ## Run the frontend application unit tests
 	NODE_ENV=test BABEL_ENV=browser ./node_modules/.bin/mocha \

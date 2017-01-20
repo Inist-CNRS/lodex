@@ -22,6 +22,7 @@ server:
         no_proxy: "localhost,127.0.0.1,"
     links:
         - mongo
+        - devserver
     ports:
         - 3000:3000
 
@@ -29,3 +30,14 @@ mongo:
     image: mongo:3.0.14
     ports:
         - 27017:27017
+
+devserver:
+    image: node:7.4.0
+    environment:
+        BABEL_ENV: browser
+    volumes:
+        - .:/app
+    working_dir: /app
+    ports:
+        - 8000:8000
+    command: node ./node_modules/.bin/webpack-dev-server --hot --inline --config src/app/webpack.config.babel.js --port 8000 --host 0.0.0.0

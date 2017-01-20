@@ -12,7 +12,7 @@ export default {
     entry : {
         index: [].concat(process.env.NODE_ENV === 'development' ? [
             'react-hot-loader/patch',
-            'webpack-dev-server/client?http://localhost:8080',
+            'webpack-dev-server/client?http://localhost:8000',
             'webpack/hot/only-dev-server',
         ] : []).concat([
             resolve(__dirname, './js/index.js'),
