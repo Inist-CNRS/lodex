@@ -61,10 +61,10 @@ test-app-unit: ## Run the frontend application unit tests
 		--compilers="css:./src/common/tests/webpack-null-compiler,js:babel-core/register" \
 		"./src/app/js/**/*.spec.js"
 
-test-api-unit:
-NODE_ENV=test BABEL_ENV=test ./node_modules/.bin/mocha \
-	--compilers="js:babel-core/register" \
-	"./src/api/**/*.spec.js"
+test-api-unit: ## Run the api unit tests
+	NODE_ENV=test BABEL_ENV=test ./node_modules/.bin/mocha \
+		--compilers="js:babel-core/register" \
+		"./src/api/**/*.spec.js"
 
 test-frontend-functional: ## Run the frontend application functional tests
 	NODE_ENV=test ${MAKE} build-app
