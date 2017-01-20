@@ -5,7 +5,9 @@ import { LOGIN, LOGIN_FORM_NAME, loginSuccess } from './';
 
 export const fetchLogin = credentials => fetch('/api/login', {
     body: JSON.stringify(credentials),
+    credentials: 'include',
     headers: {
+        Accept: 'application/json',
         'Content-Type': 'application/json',
     },
     method: 'POST',
