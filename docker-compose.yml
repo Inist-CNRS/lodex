@@ -33,9 +33,11 @@ mongo:
 
 devserver:
     image: node:7.4.0
+    environment:
+        BABEL_ENV: browser
     volumes:
         - .:/app
     working_dir: /app
     ports:
         - 8000:8000
-    command: node ./node_modules/.bin/webpack-dev-server --config src/app/webpack.config.babel.js --port 8000 --host 0.0.0.0
+    command: node ./node_modules/.bin/webpack-dev-server --hot --inline --config src/app/webpack.config.babel.js --port 8000 --host 0.0.0.0
