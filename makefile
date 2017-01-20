@@ -55,6 +55,12 @@ npm: ## allow to run dockerized npm command eg make npm 'install koa --save'
 docker-run-dev: ## run node server with pm2 for development and webpack-dev-server
 	docker-compose up --force-recreate
 
+test-api-unit: ## Run the API unit tests
+	NODE_ENV=test BABEL_ENV=browser ./node_modules/.bin/mocha \
+		--require babel-polyfill \
+    	--compilers="js:babel-core/register" \
+    	"./src/api/**/*.spec.js"
+
 test-app-unit: ## Run the frontend application unit tests
 	NODE_ENV=test BABEL_ENV=browser ./node_modules/.bin/mocha \
 		--require babel-polyfill \
@@ -62,13 +68,7 @@ test-app-unit: ## Run the frontend application unit tests
 		--compilers="css:./src/common/tests/webpack-null-compiler,js:babel-core/register" \
 		"./src/app/js/**/*.spec.js"
 
-test-api-unit: ## Run the API unit tests
-	NODE_ENV=test BABEL_ENV=browser ./node_modules/.bin/mocha \
-		--require babel-polyfill \
-    	--compilers="js:babel-core/register" \
-    	"./src/api/**/*.spec.js"
-
-test-frontend-functional: ## Run the frontend application functional tests
+test-app-functional: ## Run the frontend application functional tests
 	NODE_ENV=test ${MAKE} build-app
 	NODE_ENV=test SELENIUM_BROWSER_BINARY_PATH="./node_modules/selenium-standalone/.selenium/chromedriver/2.24-x64-chromedriver" \
 		./node_modules/.bin/mocha \
@@ -77,4 +77,4 @@ test-frontend-functional: ## Run the frontend application functional tests
 		--recursive \
 		./src/app/e2e
 
-test: test-app-unit test-api-unit test-frontend-functional
+test: test-app-unit test-api-unit test-app-functional
