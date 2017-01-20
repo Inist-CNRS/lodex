@@ -3,23 +3,23 @@ import winston from 'winston';
 import { logs } from 'config';
 
 export default function logger(filename) {
-    var transports = [
+    const transports = [
         new (winston.transports.File)({
-            filename: path.join(__dirname, `/../../../logs/${filename}`)
-        })
+            filename: path.join(__dirname, `/../../../logs/${filename}`),
+        }),
     ];
 
-    if(logs) {
+    if (logs) {
         transports.push(new (winston.transports.Console)({
             name: 'info',
             level: 'info',
-            timestamp: true
+            timestamp: true,
         }));
     }
 
 
     return new (winston.Logger)({
-        transports
+        transports,
     });
 }
 

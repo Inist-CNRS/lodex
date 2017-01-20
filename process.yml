@@ -1,5 +1,5 @@
 apps:
-  - script   : 'src/api/server.js'
+  - script   : 'src/api'
     name     : 'lodex-dev'
     instances: 1
     autorestart: true

@@ -61,6 +61,11 @@ test-app-unit: ## Run the frontend application unit tests
 		--compilers="css:./src/common/tests/webpack-null-compiler,js:babel-core/register" \
 		"./src/app/js/**/*.spec.js"
 
+test-api-unit:
+NODE_ENV=test BABEL_ENV=test ./node_modules/.bin/mocha \
+	--compilers="js:babel-core/register" \
+	"./src/api/**/*.spec.js"
+
 test-frontend-functional: ## Run the frontend application functional tests
 	NODE_ENV=test ${MAKE} build-app
 	NODE_ENV=test SELENIUM_BROWSER_BINARY_PATH="./node_modules/selenium-standalone/.selenium/chromedriver/2.24-x64-chromedriver" \
@@ -70,4 +75,4 @@ test-frontend-functional: ## Run the frontend application functional tests
 		--recursive \
 		./src/app/e2e
 
-test: test-app-unit test-frontend-functional
+test: test-app-unit test-api-unit test-frontend-functional

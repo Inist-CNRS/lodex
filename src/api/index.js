@@ -19,7 +19,7 @@ app.use(async (ctx, next) => {
         remoteIP: ctx.request.ip,
         userAgent: ctx.request.headers['user-agent'],
     };
-    var authorization = ctx.get('authorization');
+    const authorization = ctx.get('authorization');
     if (authorization) {
         ctx.httpLog.authorization = authorization;
     }
@@ -44,7 +44,7 @@ app.use(async (ctx, next) => {
 });
 
 // Error catching - override koa's undocumented error handler
-app.context.onerror = function onError(err, ctx) {
+app.context.onerror = function onError(err) {
     if (!err) return;
 
     this.status = err.status || 500;
