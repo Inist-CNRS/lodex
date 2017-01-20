@@ -2,7 +2,7 @@ import App from './App';
 import adminRoutes from './admin/routes';
 import homeRoutes from './home/routes';
 
-export default store => ({
+export default () => ({
     childRoutes: [{
         path: '/',
         component: App,

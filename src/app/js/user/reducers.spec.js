@@ -1,5 +1,10 @@
 import expect from 'expect';
-import reducer, { TOGGLE_LOGIN, LOGIN, LOGIN_SUCCESS, defaultState, toggleLogin, login, loginSuccess, isLoggedIn } from './reducers';
+import reducer, {
+    defaultState,
+    toggleLogin,
+    loginSuccess,
+    isLoggedIn,
+} from './reducers';
 
 describe('user reducer', () => {
     it('should initialize with correct state', () => {
@@ -12,7 +17,7 @@ describe('user reducer', () => {
         expect(state).toEqual({
             ...state,
             showModal: true,
-        })
+        });
     });
 
     it('should handle the LOGIN_SUCCESS action', () => {
@@ -20,7 +25,7 @@ describe('user reducer', () => {
         expect(state).toEqual({
             showModal: false,
             token: 'foo',
-        })
+        });
     });
 
     describe('isLoggedIn selector', () => {

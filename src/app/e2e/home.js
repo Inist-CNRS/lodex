@@ -2,7 +2,7 @@ import { until, By } from 'selenium-webdriver';
 import expect from 'expect';
 import driver from '../../common/tests/chromeDriver';
 
-describe('Home page', function () {
+describe('Home page', function homeTests() {
     this.timeout(15000);
 
     it('should display the Appbar with correct title', async () => {

@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import { red400 } from 'material-ui/styles/colors';
+import { red400 } from 'material-ui/styles/colors';
 
 const styles = {
     alert: {

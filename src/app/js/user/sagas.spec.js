@@ -1,10 +1,9 @@
 import expect from 'expect';
-import { takeLatest } from 'redux-saga';
-import { call, fork, put, select } from 'redux-saga/effects';
+import { call, put } from 'redux-saga/effects';
 import { startSubmit, stopSubmit } from 'redux-form';
-import { LOGIN, LOGIN_FORM_NAME, loginSuccess } from './reducers';
+import { LOGIN_FORM_NAME, loginSuccess } from './reducers';
 
-import userSaga, { fetchLogin, handleLoginRequest, watchLoginRequest } from './sagas';
+import { fetchLogin, handleLoginRequest } from './sagas';
 
 describe('user saga', () => {
     describe('handleLoginRequest', () => {
@@ -30,7 +29,8 @@ describe('user saga', () => {
             const failedSaga = handleLoginRequest({ payload: { username: 'foo', password: 'pwd' } });
             failedSaga.next();
             failedSaga.next();
-            expect(failedSaga.throw({ message: 'foo' }).value).toEqual(put(stopSubmit(LOGIN_FORM_NAME, { _error: 'foo' })));
+            expect(failedSaga.throw({ message: 'foo' }).value)
+                .toEqual(put(stopSubmit(LOGIN_FORM_NAME, { _error: 'foo' })));
         });
     });
 });

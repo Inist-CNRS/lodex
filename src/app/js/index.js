@@ -15,13 +15,13 @@ injectTapEventPlugin();
 
 render(
     <Root {...{ store }} />,
-    document.getElementById('root')
+    document.getElementById('root'),
 );
 
 // Hot Module Replacement API
 if (module.hot) {
-  module.hot.accept('./Root', () => {
-    const NewRoot = require('./Root').default;
-    render(<NewRoot {...{ store }} />, document.getElementById('root'))
-  });
+    module.hot.accept('./Root', () => {
+        const NewRoot = require('./Root').default; // eslint-disable-line
+        render(<NewRoot {...{ store }} />, document.getElementById('root'));
+    });
 }

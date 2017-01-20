@@ -1,17 +1,14 @@
 import React, { Component, PropTypes } from 'react';
-import { compose } from 'recompose';
-import { Field, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
-import TextField from 'material-ui/TextField';
-
-import { login, toggleLogin, LOGIN_FORM_NAME } from './reducers';
-import LoginForm from './LoginForm';
 import { submit, isSubmitting } from 'redux-form';
 
+import { login as loginAction, toggleLogin as toggleLoginAction, LOGIN_FORM_NAME } from './reducers';
+import LoginForm from './LoginForm';
+
 class LoginDialog extends Component {
-    handleSubmit = values => {
+    handleSubmit = (values) => {
         this.props.login(values);
     }
 
@@ -20,7 +17,7 @@ class LoginDialog extends Component {
     }
 
     render() {
-        const { handleSubmit, showModal, login, submitting, toggleLogin } = this.props;
+        const { showModal, submitting, toggleLogin } = this.props;
 
         return (
             <Dialog
@@ -62,9 +59,9 @@ export const mapStateToProps = state => ({
 });
 
 export const mapDispatchToProps = ({
-    login,
+    login: loginAction,
     submit,
-    toggleLogin,
+    toggleLogin: toggleLoginAction,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginDialog);
