@@ -6,7 +6,7 @@ import AppBar from 'material-ui/AppBar';
 import CircularProgress from 'material-ui/CircularProgress';
 import FlatButton from 'material-ui/FlatButton';
 
-import { isLoggedIn as isLoggedInAction, toggleLogin as toggleLoginAction } from './user/reducers';
+import { isLoggedIn as isLoggedInAction, toggleLogin as toggleLoginAction } from './user';
 import LoginDialog from './user/LoginDialog';
 
 export const AppComponent = ({ children, isLoading, isLoggedIn, toggleLogin }) => {

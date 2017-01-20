@@ -1,7 +1,7 @@
 import expect from 'expect';
 import { call, put } from 'redux-saga/effects';
 import { startSubmit, stopSubmit } from 'redux-form';
-import { LOGIN_FORM_NAME, loginSuccess } from './reducers';
+import { LOGIN_FORM_NAME, loginSuccess } from './';
 
 import { fetchLogin, handleLoginRequest } from './sagas';
 

@@ -4,7 +4,7 @@ import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import { submit, isSubmitting } from 'redux-form';
 
-import { login as loginAction, toggleLogin as toggleLoginAction, LOGIN_FORM_NAME } from './reducers';
+import { login as loginAction, toggleLogin as toggleLoginAction, LOGIN_FORM_NAME } from './';
 import LoginForm from './LoginForm';
 
 class LoginDialog extends Component {

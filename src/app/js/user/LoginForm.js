@@ -2,7 +2,7 @@ import React from 'react';
 import { Field, reduxForm, propTypes as reduxFormPropTypes } from 'redux-form';
 import TextField from 'material-ui/TextField';
 
-import { LOGIN_FORM_NAME } from './reducers';
+import { LOGIN_FORM_NAME } from './';
 import Alert from '../lib/Alert';
 
 const validate = (values) => {

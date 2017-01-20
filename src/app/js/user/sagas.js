@@ -1,7 +1,7 @@
 import { takeLatest } from 'redux-saga';
 import { call, fork, put } from 'redux-saga/effects';
 import { startSubmit, stopSubmit } from 'redux-form';
-import { LOGIN, LOGIN_FORM_NAME, loginSuccess } from './reducers';
+import { LOGIN, LOGIN_FORM_NAME, loginSuccess } from './';
 
 export const fetchLogin = credentials => fetch('/api/login', {
     body: JSON.stringify(credentials),

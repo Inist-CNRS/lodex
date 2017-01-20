@@ -4,7 +4,7 @@ import reducer, {
     toggleLogin,
     loginSuccess,
     isLoggedIn,
-} from './reducers';
+} from './';
 
 describe('user reducer', () => {
     it('should initialize with correct state', () => {
