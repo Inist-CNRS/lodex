@@ -40,15 +40,13 @@ describe('Home page', function () {
     it('submitting the form with valid credentials should close it', async () => {
         const username = await driver.findElement(By.css('input[name=username]'));
         const password = await driver.findElement(By.css('input[name=password]'));
-        const dialog = await driver.findElement(By.css('.dialog-login'));
         const form = await driver.findElement(By.css('.dialog-login form'));
         await username.clear();
         await username.sendKeys('user');
         await password.clear();
         await password.sendKeys('secret');
         await form.submit();
-
-        await driver.wait(until.elementLocated(By.css('.dialog-login h3')));
+        await driver.sleep(500);
         const elements = await driver.findElements(By.css('.dialog-login h3'));
         expect(elements.length).toEqual(0);
     });
