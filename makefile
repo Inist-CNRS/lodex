@@ -57,14 +57,16 @@ docker-run-dev: ## run node server with pm2 for development and webpack-dev-serv
 
 test-app-unit: ## Run the frontend application unit tests
 	NODE_ENV=test BABEL_ENV=browser ./node_modules/.bin/mocha \
+		--require babel-polyfill \
 		--require='./src/app/js/test.spec.js' \
 		--compilers="css:./src/common/tests/webpack-null-compiler,js:babel-core/register" \
 		"./src/app/js/**/*.spec.js"
 
-test-api-unit: ## Run the api unit tests
-	NODE_ENV=test BABEL_ENV=test ./node_modules/.bin/mocha \
-		--compilers="js:babel-core/register" \
-		"./src/api/**/*.spec.js"
+test-api-unit: ## Run the API unit tests
+	NODE_ENV=test BABEL_ENV=browser ./node_modules/.bin/mocha \
+		--require babel-polyfill \
+    	--compilers="js:babel-core/register" \
+    	"./src/api/**/*.spec.js"
 
 test-frontend-functional: ## Run the frontend application functional tests
 	NODE_ENV=test ${MAKE} build-app

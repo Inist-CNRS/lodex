@@ -5,7 +5,7 @@ export const TOGGLE_LOGIN = 'TOGGLE_LOGIN';
 export const LOGIN = 'LOGIN';
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 
-export const defaultState = { showModal: false, token: null };
+export const defaultState = { showModal: false, token: undefined };
 
 export default handleActions({
     TOGGLE_LOGIN: state => ({

@@ -14,11 +14,11 @@ export const fetchLogin = credentials => fetch('/api/login', {
     throw new Error(response.statusText);
 }).then(response => response.json());
 
-export const handleLoginRequest = function* (action) {
+export const handleLoginRequest = function* ({ payload: credentials }) {
     yield put(startSubmit(LOGIN_FORM_NAME));
 
     try {
-        const { token } = yield call(fetchLogin, action.payload);
+        const { token } = yield call(fetchLogin, credentials);
         yield put(loginSuccess(token));
         yield put(stopSubmit(LOGIN_FORM_NAME));
     } catch (error) {

@@ -29,7 +29,7 @@ const renderTextField = ({ input, label, meta: { touched, error }, ...custom }) 
     />
 );
 
-const LoginForm = ({ error, handleSubmit }) => (
+export const LoginForm = ({ error, handleSubmit }) => (
     <form onSubmit={handleSubmit}>
         {error && <Alert><p>{error}</p></Alert>}
         <Field name="username" component={renderTextField} label="Username" fullWidth />
