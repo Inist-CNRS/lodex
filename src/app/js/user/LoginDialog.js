@@ -24,6 +24,7 @@ class LoginDialog extends Component {
 
         return (
             <Dialog
+                className="dialog-login"
                 title="Sign in"
                 actions={[
                     <FlatButton

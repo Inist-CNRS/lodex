@@ -9,7 +9,7 @@ const styles = {
 };
 
 const Alert = ({ children }) => (
-    <div style={styles.alert}>
+    <div className="alert" style={styles.alert}>
         {children}
     </div>
 );
