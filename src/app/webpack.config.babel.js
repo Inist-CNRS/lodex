@@ -8,7 +8,6 @@ export default {
         historyApiFallback: true,
         hot: true,
     },
-    devtool: 'cheap-eval-source-map',
     entry : {
         index: [].concat(process.env.NODE_ENV === 'development' ? [
             'react-hot-loader/patch',

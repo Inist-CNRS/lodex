@@ -1,21 +1,22 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import AppBar from 'material-ui/AppBar';
 import CircularProgress from 'material-ui/CircularProgress';
 import FlatButton from 'material-ui/FlatButton';
 
-import { isSignedIn, toggleSignIn } from './signIn/reducers';
-import SignInDialog from './signIn/SignInDialog';
+import { isLoggedIn, toggleLogin } from './user/reducers';
+import LoginDialog from './user/LoginDialog';
 
-export const App = ({ children, isLoading, isSignedIn, toggleSignIn }) => {
+export const App = ({ children, isLoading, isLoggedIn, toggleLogin }) => {
     const LeftElement = isLoading
         ? <CircularProgress color="#fff" size={30} thickness={2} style={{ margin: 8 }} />
         : <span />;
 
-    const RightElement = isSignedIn
-        ? null
-        : <FlatButton label="Sign in" onClick={toggleSignIn} />;
+    const RightElement = isLoggedIn
+        ? <FlatButton containerElement={<Link to="/admin" />} linkButton={true} label="Admin" />
+        : <FlatButton label="Sign in" onClick={toggleLogin} />;
 
     return (
         <MuiThemeProvider>
@@ -24,7 +25,7 @@ export const App = ({ children, isLoading, isSignedIn, toggleSignIn }) => {
                 <div className="body" style={{ display: 'flex', flex: '1', backgroundColor: '#edecec' }}>
                     <div style={{ flex: 1 }}>{children}</div>
                 </div>
-                <SignInDialog />
+                <LoginDialog />
             </div>
         </MuiThemeProvider>
     );
@@ -33,17 +34,17 @@ export const App = ({ children, isLoading, isSignedIn, toggleSignIn }) => {
 App.propTypes = {
     children: PropTypes.node,
     isLoading: PropTypes.bool,
-    isSignedIn: PropTypes.bool.isRequired,
-    toggleSignIn: PropTypes.func.isRequired,
+    isLoggedIn: PropTypes.bool.isRequired,
+    toggleLogin: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
     isLoading: state.loading,
-    isSignedIn: isSignedIn(state),
+    isLoggedIn: isLoggedIn(state),
 });
 
 const mapDispatchToProps = ({
-    toggleSignIn,
+    toggleLogin,
 });
 
 export default connect(

@@ -1,4 +1,5 @@
 import App from './App';
+import adminRoutes from './admin/routes';
 import homeRoutes from './home/routes';
 
 export default store => ({
@@ -8,6 +9,7 @@ export default store => ({
         indexRoute: { onEnter: (nextState, replace) => replace('/home') },
         childRoutes: [
             ...homeRoutes,
+            ...adminRoutes,
         ],
     }],
 });

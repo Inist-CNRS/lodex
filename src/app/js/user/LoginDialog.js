@@ -6,21 +6,21 @@ import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
 
-import { signIn, toggleSignIn, SIGN_IN_FORM_NAME } from './reducers';
-import SignInForm from './SignInForm';
+import { login, toggleLogin, LOGIN_FORM_NAME } from './reducers';
+import LoginForm from './LoginForm';
 import { submit, isSubmitting } from 'redux-form';
 
-class SignInDialog extends Component {
+class LoginDialog extends Component {
     handleSubmit = values => {
-        this.props.signIn(values);
+        this.props.login(values);
     }
 
     handleSubmitButtonClick = () => {
-        this.props.submit(SIGN_IN_FORM_NAME);
+        this.props.submit(LOGIN_FORM_NAME);
     }
 
     render() {
-        const { handleSubmit, showModal, signIn, submitting, toggleSignIn } = this.props;
+        const { handleSubmit, showModal, login, submitting, toggleLogin } = this.props;
 
         return (
             <Dialog
@@ -28,7 +28,7 @@ class SignInDialog extends Component {
                 actions={[
                     <FlatButton
                         label="Cancel"
-                        onTouchTap={toggleSignIn}
+                        onTouchTap={toggleLogin}
                     />,
                     <FlatButton
                         label="Sign in"
@@ -39,31 +39,31 @@ class SignInDialog extends Component {
                 ]}
                 modal
                 open={showModal}
-                onRequestClose={toggleSignIn}
+                onRequestClose={toggleLogin}
             >
-                <SignInForm onSubmit={this.handleSubmit} />
+                <LoginForm onSubmit={this.handleSubmit} />
             </Dialog>
         );
     }
 }
 
-SignInDialog.propTypes = {
+LoginDialog.propTypes = {
     showModal: PropTypes.bool.isRequired,
-    signIn: PropTypes.func.isRequired,
+    login: PropTypes.func.isRequired,
     submit: PropTypes.func.isRequired,
     submitting: PropTypes.bool.isRequired,
-    toggleSignIn: PropTypes.func.isRequired,
+    toggleLogin: PropTypes.func.isRequired,
 };
 
 export const mapStateToProps = state => ({
     showModal: state.user.showModal,
-    submitting: isSubmitting(SIGN_IN_FORM_NAME)(state),
+    submitting: isSubmitting(LOGIN_FORM_NAME)(state),
 });
 
 export const mapDispatchToProps = ({
-    signIn,
+    login,
     submit,
-    toggleSignIn,
+    toggleLogin,
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(SignInDialog);
+export default connect(mapStateToProps, mapDispatchToProps)(LoginDialog);

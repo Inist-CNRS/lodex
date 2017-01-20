@@ -46,7 +46,8 @@
     "redux-actions": "1.2.0",
     "redux-form": "6.4.3",
     "redux-saga": "0.14.3",
-    "request": "^2.79.0",
+    "request": "2.79.0",
+    "whatwg-fetch": "2.0.2",
     "winston": "2.3.0"
   },
   "devDependencies": {
