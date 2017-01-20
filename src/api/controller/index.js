@@ -1,18 +1,11 @@
 import Koa from 'koa';
-import route from 'koa-route';
-import jwt from 'koa-jwt';
-import { auth } from 'config';
+import mount from 'koa-mount';
 
-import login from './login';
+import api from './api';
+import front from './front';
 
 const app = new Koa();
-
-app.use(route.post('/login', login));
-
-app.use(jwt({ secret: auth.cookieSecret, cookie: 'lodex_token', key: 'cookie' }));
-app.use(jwt({ secret: auth.headerSecret, key: 'header' }));
-app.use(route.get('/protected', (ctx) => {
-    ctx.body = 'I am protected';
-}));
+app.use(mount('/api', api));
+app.use(mount('/', front));
 
 export default app;
