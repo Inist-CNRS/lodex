@@ -38,26 +38,36 @@ install: copy-conf install-npm-dependencies install-selenium ## Install npm depe
 
 # Development ==================================================================
 
-run-app:
-	NODE_ENV=${NODE_ENV} ./node_modules/.bin/webpack-dev-server --config=./src/app/webpack.config.babel.js --port=8080
+run-app: ## Run the frontend application
+	NODE_ENV=${NODE_ENV} BABEL_ENV=browser ./node_modules/.bin/webpack-dev-server --config=./src/app/webpack.config.babel.js --port=8080
 
 # Build ==================================================================
 
-build-app:
-	NODE_ENV=${NODE_ENV} ./node_modules/.bin/webpack --config=./src/app/webpack.config.babel.js
-
-test-app-unit:
-	NODE_ENV=test BABEL_ENV=test ./node_modules/.bin/mocha \
-		--require='./src/app/js/test.spec.js' \
-		--compilers="css:./src/common/tests/webpack-null-compiler,js:babel-core/register" \
-		"./src/app/js/**/*.spec.js"
-
-test: test-app-unit
-test:
-	echo "Run tests"
+build-app: ## Build the frontend application
+	NODE_ENV=${NODE_ENV} BABEL_ENV=browser ./node_modules/.bin/webpack \
+        --config=./src/app/webpack.config.babel.js \
+        $(if $(filter production staging,$(NODE_ENV)),-p,-d) \
+        --progress
 
 npm: ## allow to run dockerized npm command eg make npm 'install koa --save'
 	docker-compose run --rm npm $(COMMAND_ARGS)
 
 docker-run-dev: ## run node server with pm2 for development
 	docker-compose up --force-recreate server
+
+test-app-unit: ## Run the frontend application unit tests
+	NODE_ENV=test BABEL_ENV=browser ./node_modules/.bin/mocha \
+		--require='./src/app/js/test.spec.js' \
+		--compilers="css:./src/common/tests/webpack-null-compiler,js:babel-core/register" \
+		"./src/app/js/**/*.spec.js"
+
+test-frontend-functional: ## Run the frontend application functional tests
+	NODE_ENV=test ${MAKE} build-app
+	NODE_ENV=test SELENIUM_BROWSER_BINARY_PATH="./node_modules/selenium-standalone/.selenium/chromedriver/2.24-x64-chromedriver" \
+		./node_modules/.bin/mocha \
+        --require babel-polyfill \
+		--compilers="js:babel-core/register" \
+		--recursive \
+		./src/app/e2e
+
+test: test-app-unit test-frontend-functional

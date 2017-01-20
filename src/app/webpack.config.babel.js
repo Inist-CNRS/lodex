@@ -10,12 +10,13 @@ export default {
     },
     devtool: 'cheap-eval-source-map',
     entry : {
-        index: [
+        index: [].concat(process.env.NODE_ENV === 'development' ? [
             'react-hot-loader/patch',
             'webpack-dev-server/client?http://localhost:8080',
             'webpack/hot/only-dev-server',
+        ] : []).concat([
             resolve(__dirname, './js/index.js'),
-        ]
+        ]),
     },
     module : {
         rules: [
@@ -26,21 +27,6 @@ export default {
                     resolve(__dirname, '../common')
                 ],
                 loader: 'babel-loader',
-                // Options to configure babel with
-                options: {
-                    babelrc: false,
-                    cacheDirectory: true,
-                    presets: [
-                        ["env", {
-                            targets: {
-                                browsers: ['last 2 versions']
-                            },
-                            modules: false,
-                            useBuiltIns: true,
-                        }],
-                        'react' // Transpile React components to JavaScript
-                    ],
-                }
             }, {
                 test: /\.json$/,
                 loader: 'json-loader'
@@ -93,7 +79,6 @@ export default {
         path: resolve(__dirname, '../build')
     },
     plugins : [
-        new HotModuleReplacementPlugin(),
         // prints more readable module names in the browser console on HMR updates
         new NamedModulesPlugin(),
 
@@ -116,7 +101,10 @@ export default {
             template: resolve(__dirname, './index.html'),
         }),
     ].concat(process.env.NODE_ENV === 'development'
-        ? [new SourceMapDevToolPlugin({filename: '[file].map'})]
+        ? [
+            new HotModuleReplacementPlugin(),
+            new SourceMapDevToolPlugin({filename: '[file].map'}),
+        ]
         : []),
     resolve: {
         extensions: ['.js', '.jsx'],
