@@ -1,14 +1,15 @@
 import expect from 'expect';
 import reducer, {
     defaultState,
-    toggleLogin,
-    loginSuccess,
+    getToken,
     isLoggedIn,
+    loginSuccess,
+    toggleLogin,
 } from './';
 
 describe('user reducer', () => {
     it('should initialize with correct state', () => {
-        const state = reducer(undefined, {});
+        const state = reducer(undefined, { type: '@@INIT' });
         expect(state).toEqual(defaultState);
     });
 
@@ -37,6 +38,13 @@ describe('user reducer', () => {
         it('should return true if state has a token', () => {
             const result = isLoggedIn({ user: { token: 'foo' } });
             expect(result).toEqual(true);
+        });
+    });
+
+    describe('getToken selector', () => {
+        it('should return the token from state', () => {
+            const result = getToken({ user: { token: 'foo' } });
+            expect(result).toEqual('foo');
         });
     });
 });
