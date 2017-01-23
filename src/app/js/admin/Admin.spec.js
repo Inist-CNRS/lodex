@@ -21,18 +21,7 @@ describe('<Admin />', () => {
     it('should render the ParsingResult', () => {
         const wrapper = shallow(<AdminComponent
             loadParsingResult={() => {}}
-            excerptColumns={['col']}
-            excerptLines={['lines']}
-            failedLines={['errors']}
-            totalLoadedLines={100}
-            totalParsedLines={50}
         />);
-        expect(wrapper.contains(<ParsingResult
-            excerptColumns={['col']}
-            excerptLines={['lines']}
-            failedLines={['errors']}
-            totalLoadedLines={100}
-            totalParsedLines={50}
-        />)).toEqual(true);
+        expect(wrapper.contains(<ParsingResult />)).toEqual(true);
     });
 });

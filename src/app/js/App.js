@@ -1,5 +1,7 @@
 import React, { PropTypes } from 'react';
+import { compose } from 'recompose';
 import { connect } from 'react-redux';
+import translate from 'redux-polyglot/translate';
 import { Link } from 'react-router';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import AppBar from 'material-ui/AppBar';
@@ -9,26 +11,46 @@ import FlatButton from 'material-ui/FlatButton';
 import { isLoggedIn as isLoggedInAction, toggleLogin as toggleLoginAction } from './user';
 import LoginDialog from './user/LoginDialog';
 
-export const AppComponent = ({ children, isLoading, isLoggedIn, toggleLogin }) => {
+const styles = {
+    appContainer: {
+        display: 'flex',
+        flexDirection: 'column',
+        minHeight: '100vh',
+    },
+    bodyContainer: {
+        display: 'flex',
+        flex: '1',
+        backgroundColor: '#edecec',
+    },
+    body: {
+        flex: 1,
+    },
+    linkToHome: {
+        color: 'white',
+        textDecoration: 'none',
+    },
+};
+
+export const AppComponent = ({ children, isLoading, isLoggedIn, p: polyglot, toggleLogin }) => {
     const LeftElement = isLoading
         ? <CircularProgress color="#fff" size={30} thickness={2} style={{ margin: 8 }} />
         : <span />;
 
     const RightElement = isLoggedIn
-        ? <FlatButton containerElement={<Link to="/admin" />} linkButton label="Admin" />
-        : <FlatButton label="Sign in" onClick={toggleLogin} />;
+        ? <FlatButton containerElement={<Link to="/admin" />} linkButton label={polyglot.t('Admin')} />
+        : <FlatButton label={polyglot.t('Sign in')} onClick={toggleLogin} />;
 
     return (
         <MuiThemeProvider>
-            <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+            <div style={styles.appContainer}>
                 <AppBar
                     className="appbar"
-                    title="Lodex"
+                    title={<Link style={styles.linkToHome} to="/home">Lodex</Link>}
                     iconElementLeft={LeftElement}
                     iconElementRight={RightElement}
                 />
-                <div className="body" style={{ display: 'flex', flex: '1', backgroundColor: '#edecec' }}>
-                    <div style={{ flex: 1 }}>{children}</div>
+                <div className="body" style={styles.bodyContainer}>
+                    <div style={styles.body}>{children}</div>
                 </div>
                 <LoginDialog />
             </div>
@@ -40,6 +62,12 @@ AppComponent.propTypes = {
     children: PropTypes.node.isRequired,
     isLoading: PropTypes.bool,
     isLoggedIn: PropTypes.bool.isRequired,
+    p: PropTypes.shape({
+        t: PropTypes.func.isRequired,
+        tc: PropTypes.func.isRequired,
+        tu: PropTypes.func.isRequired,
+        tm: PropTypes.func.isRequired,
+    }).isRequired,
     toggleLogin: PropTypes.func.isRequired,
 };
 
@@ -56,7 +84,7 @@ const mapDispatchToProps = ({
     toggleLogin: toggleLoginAction,
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
+export default compose(
+    connect(mapStateToProps, mapDispatchToProps),
+    translate,
 )(AppComponent);

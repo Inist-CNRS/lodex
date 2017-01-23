@@ -4,12 +4,13 @@ import { shallow } from 'enzyme';
 import { ListItem } from 'material-ui/List';
 import { red400 } from 'material-ui/styles/colors';
 
-import ParsingSummary from './ParsingSummary';
+import { ParsingSummaryComponent as ParsingSummary } from './ParsingSummary';
 import ParsingSummaryItem from './ParsingSummaryItem';
 
 describe('<ParsingSummary />', () => {
     it('should render the ListItem for totalLoadedLines', () => {
         const wrapper = shallow(<ParsingSummary
+            p={{ t: key => key }}
             totalFailedLines={42}
             totalLoadedLines={24}
             totalParsedLines={100}
@@ -20,6 +21,7 @@ describe('<ParsingSummary />', () => {
 
     it('should render the ListItem for totalParsedLines', () => {
         const wrapper = shallow(<ParsingSummary
+            p={{ t: key => key }}
             totalFailedLines={42}
             totalLoadedLines={24}
             totalParsedLines={100}
@@ -30,6 +32,7 @@ describe('<ParsingSummary />', () => {
 
     it('should render the ListItem for totalFailedLines', () => {
         const wrapper = shallow(<ParsingSummary
+            p={{ t: key => key }}
             totalFailedLines={42}
             totalLoadedLines={24}
             totalParsedLines={100}
@@ -44,6 +47,7 @@ describe('<ParsingSummary />', () => {
 
         const wrapper = shallow(<ParsingSummary
             onShowErrors={onShowErrors}
+            p={{ t: key => key }}
             totalFailedLines={42}
             totalLoadedLines={24}
             totalParsedLines={100}
@@ -58,6 +62,7 @@ describe('<ParsingSummary />', () => {
 
         const wrapper = shallow(<ParsingSummary
             onShowExcerpt={onShowExcerpt}
+            p={{ t: key => key }}
             totalFailedLines={42}
             totalLoadedLines={24}
             totalParsedLines={100}

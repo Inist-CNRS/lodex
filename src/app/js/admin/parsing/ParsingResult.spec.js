@@ -5,12 +5,13 @@ import ParsingErrors from './ParsingErrors';
 import ParsingExcerpt from './ParsingExcerpt';
 import ParsingSummary from './ParsingSummary';
 
-import ParsingResult from './ParsingResult';
+import { ParsingResultComponent as ParsingResult } from './ParsingResult';
 
 describe('<ParsingResult />', () => {
     it('should render the ParsingSummary', () => {
         const wrapper = shallow(<ParsingResult
             failedLines={[{}, {}]}
+            p={{ t: () => {} }}
             totalLoadedLines={24}
             totalParsedLines={100}
         />);
@@ -28,6 +29,7 @@ describe('<ParsingResult />', () => {
             excerptColumns={['foo']}
             excerptLines={['bar']}
             failedLines={[]}
+            p={{ t: () => {} }}
             totalLoadedLines={24}
             totalParsedLines={100}
         />);
@@ -43,6 +45,7 @@ describe('<ParsingResult />', () => {
             excerptColumns={['foo']}
             excerptLines={['bar']}
             failedLines={['error']}
+            p={{ t: () => {} }}
             totalLoadedLines={24}
             totalParsedLines={100}
         />);

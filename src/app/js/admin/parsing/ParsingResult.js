@@ -1,7 +1,13 @@
 import React, { Component, PropTypes } from 'react';
+import { compose } from 'recompose';
+import { connect } from 'react-redux';
+import translate from 'redux-polyglot/translate';
+
 import { Card, CardActions, CardHeader, CardText } from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
 import { grey400 } from 'material-ui/styles/colors';
+
+import { getParsedExcerptColumns } from './';
 import ParsingErrors from './ParsingErrors';
 import ParsingExcerpt from './ParsingExcerpt';
 import ParsingSummary from './ParsingSummary';
@@ -26,7 +32,7 @@ const styles = {
     },
 };
 
-class ParsingResultComponent extends Component {
+export class ParsingResultComponent extends Component {
     constructor() {
         super();
         this.state = {
@@ -43,7 +49,14 @@ class ParsingResultComponent extends Component {
     }
 
     render() {
-        const { excerptColumns, excerptLines, failedLines, totalLoadedLines, totalParsedLines } = this.props;
+        const {
+            excerptColumns,
+            excerptLines,
+            failedLines,
+            totalLoadedLines,
+            totalParsedLines,
+            p: polyglot,
+        } = this.props;
         const { showErrors } = this.state;
 
         return (
@@ -51,7 +64,7 @@ class ParsingResultComponent extends Component {
                 <CardHeader
                     actAsExpander
                     showExpandableButton
-                    title="Parsing summary"
+                    title={polyglot.t('Parsing summary')}
                 />
                 <CardText style={styles.parsingContainer} expandable initiallyExpanded>
                     <ParsingSummary
@@ -77,7 +90,7 @@ class ParsingResultComponent extends Component {
                     </div>
                 </CardText>
                 <CardActions>
-                    <FlatButton label="Upload another file" />
+                    <FlatButton label={polyglot.t('Upload another file')} />
                 </CardActions>
             </Card>
         );
@@ -88,8 +101,26 @@ ParsingResultComponent.propTypes = {
     excerptColumns: PropTypes.arrayOf(PropTypes.string).isRequired,
     excerptLines: PropTypes.arrayOf(PropTypes.object).isRequired,
     failedLines: PropTypes.arrayOf(PropTypes.string).isRequired,
+    p: PropTypes.shape({
+        t: PropTypes.func.isRequired,
+        tc: PropTypes.func.isRequired,
+        tu: PropTypes.func.isRequired,
+        tm: PropTypes.func.isRequired,
+    }).isRequired,
     totalLoadedLines: PropTypes.number.isRequired,
     totalParsedLines: PropTypes.number.isRequired,
 };
 
-export default ParsingResultComponent;
+const mapStateToProps = state => ({
+    excerptColumns: getParsedExcerptColumns(state),
+    excerptLines: state.parsing.excerptLines,
+    failedLines: state.parsing.failedLines,
+    loadingParsingResult: state.parsing.loading,
+    totalLoadedLines: state.parsing.totalLoadedLines,
+    totalParsedLines: state.parsing.totalParsedLines,
+});
+
+export default compose(
+    connect(mapStateToProps),
+    translate,
+)(ParsingResultComponent);
