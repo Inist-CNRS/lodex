@@ -5,7 +5,7 @@ import {
     loadParsingResultError,
     loadParsingResultSuccess,
 } from './';
-import { getToken } from '../../user/reducers';
+import { getToken } from '../../user';
 
 import { fetchParsingResult, handleLoadParsingResult } from './sagas';
 

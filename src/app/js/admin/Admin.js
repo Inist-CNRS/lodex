@@ -2,14 +2,16 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import CircularProgress from 'material-ui/CircularProgress';
 
-import { loadParsingResult as loadParsingResultAction } from './parsing';
+import { loadParsingResult as loadParsingResultAction, getParsedExcerptColumns } from './parsing';
 import ParsingResult from './parsing/ParsingResult';
 
-class AdminComponent extends Component {
+export class AdminComponent extends Component {
     static propTypes = {
+        excerptColumns: PropTypes.arrayOf(PropTypes.string).isRequired,
+        excerptLines: PropTypes.arrayOf(PropTypes.object).isRequired,
+        failedLines: PropTypes.arrayOf(PropTypes.string).isRequired,
         loadParsingResult: PropTypes.func.isRequired,
         loadingParsingResult: PropTypes.bool.isRequired,
-        failedLines: PropTypes.array.isRequired,
         totalLoadedLines: PropTypes.number.isRequired,
         totalParsedLines: PropTypes.number.isRequired,
     }
@@ -20,8 +22,10 @@ class AdminComponent extends Component {
 
     render() {
         const {
-            loadingParsingResult,
+            excerptColumns,
+            excerptLines,
             failedLines,
+            loadingParsingResult,
             totalLoadedLines,
             totalParsedLines,
         } = this.props;
@@ -33,16 +37,22 @@ class AdminComponent extends Component {
         }
 
         return (
-            <ParsingResult
-                failedLines={failedLines}
-                totalLoadedLines={totalLoadedLines}
-                totalParsedLines={totalParsedLines}
-            />
+            <div>
+                <ParsingResult
+                    excerptColumns={excerptColumns}
+                    excerptLines={excerptLines}
+                    failedLines={failedLines}
+                    totalLoadedLines={totalLoadedLines}
+                    totalParsedLines={totalParsedLines}
+                />
+            </div>
         );
     }
 }
 
 const mapStateToProps = state => ({
+    excerptColumns: getParsedExcerptColumns(state),
+    excerptLines: state.parsing.excerptLines,
     failedLines: state.parsing.failedLines,
     loadingParsingResult: state.parsing.loading,
     totalLoadedLines: state.parsing.totalLoadedLines,

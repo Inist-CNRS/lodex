@@ -4,7 +4,7 @@ import reducer, {
     loadParsingResult,
     loadParsingResultError,
     loadParsingResultSuccess,
-} from './reducers';
+} from './';
 
 describe('parsing reducer', () => {
     it('should initialize with correct state', () => {

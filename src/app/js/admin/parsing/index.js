@@ -6,10 +6,10 @@ export const LOAD_PARSING_RESULT_SUCCESS = 'LOAD_PARSING_RESULT_SUCCESS';
 
 export const defaultState = {
     error: false,
+    excerptLines: [],
     failedLines: [],
     loading: false,
     parsing: false,
-    sampleLines: [],
     totalLoadedLines: 0,
     totalParsedLines: 0,
 };
@@ -34,3 +34,9 @@ export default handleActions({
 export const loadParsingResult = createAction(LOAD_PARSING_RESULT);
 export const loadParsingResultError = createAction(LOAD_PARSING_RESULT_ERROR);
 export const loadParsingResultSuccess = createAction(LOAD_PARSING_RESULT_SUCCESS);
+
+export const getParsedExcerptColumns = (state) => {
+    if (!state || !state.parsing || !state.parsing.excerptLines || !state.parsing.excerptLines.length) return [];
+
+    return Object.keys(state.parsing.excerptLines[0]);
+};
