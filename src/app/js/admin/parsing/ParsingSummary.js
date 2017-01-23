@@ -5,6 +5,7 @@ import { List, ListItem } from 'material-ui/List';
 import { red400 } from 'material-ui/styles/colors';
 import ActionPlayArrow from 'material-ui/svg-icons/image/navigate-next';
 
+import { polyglot as polyglotPropTypes } from '../../lib/propTypes';
 import ParsingSummaryItem from './ParsingSummaryItem';
 
 const styles = {
@@ -49,12 +50,7 @@ export const ParsingSummaryComponent = ({
 ParsingSummaryComponent.propTypes = {
     onShowErrors: PropTypes.func.isRequired,
     onShowExcerpt: PropTypes.func.isRequired,
-    p: PropTypes.shape({
-        t: PropTypes.func.isRequired,
-        tc: PropTypes.func.isRequired,
-        tu: PropTypes.func.isRequired,
-        tm: PropTypes.func.isRequired,
-    }).isRequired,
+    p: polyglotPropTypes.isRequired,
     showErrors: PropTypes.bool.isRequired,
     totalFailedLines: PropTypes.number.isRequired,
     totalLoadedLines: PropTypes.number.isRequired,

@@ -8,6 +8,7 @@ import AppBar from 'material-ui/AppBar';
 import CircularProgress from 'material-ui/CircularProgress';
 import FlatButton from 'material-ui/FlatButton';
 
+import { polyglot as polyglotPropTypes } from './lib/propTypes';
 import { isLoggedIn as isLoggedInAction, toggleLogin as toggleLoginAction } from './user';
 import LoginDialog from './user/LoginDialog';
 
@@ -62,12 +63,7 @@ AppComponent.propTypes = {
     children: PropTypes.node.isRequired,
     isLoading: PropTypes.bool,
     isLoggedIn: PropTypes.bool.isRequired,
-    p: PropTypes.shape({
-        t: PropTypes.func.isRequired,
-        tc: PropTypes.func.isRequired,
-        tu: PropTypes.func.isRequired,
-        tm: PropTypes.func.isRequired,
-    }).isRequired,
+    p: polyglotPropTypes.isRequired,
     toggleLogin: PropTypes.func.isRequired,
 };
 

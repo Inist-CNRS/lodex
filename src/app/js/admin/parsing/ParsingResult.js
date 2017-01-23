@@ -7,6 +7,7 @@ import { Card, CardActions, CardHeader, CardText } from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
 import { grey400 } from 'material-ui/styles/colors';
 
+import { polyglot as polyglotPropTypes } from '../../lib/propTypes';
 import { getParsedExcerptColumns } from './';
 import ParsingErrors from './ParsingErrors';
 import ParsingExcerpt from './ParsingExcerpt';
@@ -101,12 +102,7 @@ ParsingResultComponent.propTypes = {
     excerptColumns: PropTypes.arrayOf(PropTypes.string).isRequired,
     excerptLines: PropTypes.arrayOf(PropTypes.object).isRequired,
     failedLines: PropTypes.arrayOf(PropTypes.string).isRequired,
-    p: PropTypes.shape({
-        t: PropTypes.func.isRequired,
-        tc: PropTypes.func.isRequired,
-        tu: PropTypes.func.isRequired,
-        tm: PropTypes.func.isRequired,
-    }).isRequired,
+    p: polyglotPropTypes.isRequired,
     totalLoadedLines: PropTypes.number.isRequired,
     totalParsedLines: PropTypes.number.isRequired,
 };
