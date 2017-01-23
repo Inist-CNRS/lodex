@@ -6,4 +6,7 @@ export default {
     'successfully parsed': 'successfully parsed',
     'with errors': 'with errors',
     'Upload another file': 'Upload another file',
+    Cancel: 'Cancel',
+    Username: 'Username',
+    Password: 'Password',
 };
