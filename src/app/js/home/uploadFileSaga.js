@@ -4,9 +4,12 @@ import { LOCATION_CHANGE } from 'react-router-redux';
 
 import loadFile from '../lib/loadFile';
 import { UPLOAD_FILE, uploadFilePending, uploadFileError, uploadFileSuccess } from './homeActions';
-import fetchSaga from '../lib/fetchSaga';
 
 export function* uploadFile(action) {
+    if (!action.payload) {
+        return;
+    }
+    yield put(uploadFilePending());
     const { file, cancel } = yield race({
         file: call(loadFile, action.payload),
         cancel: take([LOCATION_CHANGE]),
@@ -15,26 +18,7 @@ export function* uploadFile(action) {
         return;
     }
 
-    yield put(uploadFilePending());
-    const { result, error } = yield call(fetchSaga, {
-        url: 'http://localhost:3000/upload',
-        config: {
-            credentials: 'include',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: {
-                file,
-            },
-        },
-    });
-    if (error) {
-        yield put(uploadFileError(error));
-        return;
-    }
-
-    yield put(uploadFileSuccess());
+    yield put(uploadFileSuccess(file));
 }
 
 export default function* uploadFileSaga() {

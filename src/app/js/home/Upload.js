@@ -1,27 +1,30 @@
-import React, { Component } from 'react';
+import React, { PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { uploadFile } from './homeActions';
-
 import FlatButton from 'material-ui/FlatButton';
 
-export const Upload = ({ onFileLoad }) => (
+import { uploadFile } from './homeActions';
+
+export const UploadComponent = ({ onFileLoad }) => (
     <FlatButton
-        containerElement='label'
+        containerElement="label"
     >
         <input
             type="file"
-            onChange={(e) => onFileLoad(e.target.files[0])}
-            ref="file-input"
+            onChange={e => onFileLoad(e.target.files[0])}
         />
     </FlatButton>
 );
 
-const mapsStateToProps = (state) => ({});
+UploadComponent.propTypes = {
+    onFileLoad: PropTypes.func.isRequired,
+};
 
-const mapDispatchToProps = (dispatch) =>
+const mapsStateToProps = () => ({});
+
+const mapDispatchToProps = dispatch =>
 bindActionCreators({
     onFileLoad: uploadFile,
 }, dispatch);
 
-export default connect(mapsStateToProps, mapDispatchToProps)(Upload);
+export default connect(mapsStateToProps, mapDispatchToProps)(UploadComponent);

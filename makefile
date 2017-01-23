@@ -41,8 +41,8 @@ install: copy-conf install-npm-dependencies install-selenium ## Install npm depe
 run-app: ## Run the frontend application
 	NODE_ENV=${NODE_ENV} BABEL_ENV=browser ./node_modules/.bin/webpack-dev-server --config=./src/app/webpack.config.babel.js --port=8080
 
-docker-run-app:
-	docker-compose up devserver
+docker-run-dev: ## run node server with pm2 for development and webpack-dev-server
+	docker-compose up --force-recreate
 
 # Build ==================================================================
 
@@ -71,7 +71,7 @@ test-app-unit: ## Run the frontend application unit tests
 		--compilers="css:./src/common/tests/webpack-null-compiler,js:babel-core/register" \
 		"./src/app/js/**/*.spec.js"
 
-test-app-functional: ## Run the frontend application functional tests
+test-frontend-functional: ## Run the frontend application functional tests
 	NODE_ENV=test ${MAKE} build-app
 	NODE_ENV=test SELENIUM_BROWSER_BINARY_PATH="./node_modules/selenium-standalone/.selenium/chromedriver/2.24-x64-chromedriver" \
 		./node_modules/.bin/mocha \

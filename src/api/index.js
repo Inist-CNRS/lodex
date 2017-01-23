@@ -1,10 +1,7 @@
-import path from 'path';
 import Koa from 'koa';
 import config from 'config';
 import mount from 'koa-mount';
-import serve from 'koa-static';
 import koaBodyParser from 'koa-bodyparser';
-import monk from 'monk';
 
 import { httpLogger } from './services/logger';
 import controller from './controller';
@@ -31,15 +28,6 @@ app.use(async (ctx, next) => {
 app.use(koaBodyParser());
 
 app.use(mount('/', controller));
-
-app.use(async (ctx, next) => {
-    ctx.db = monk(`${config.mongo.host}/${config.mongo.dbName}`);
-    try {
-        await next();
-    } finally {
-        await ctx.db.close();
-    }
-});
 
 // Error catching - override koa's undocumented error handler
 app.context.onerror = function onError(err) {

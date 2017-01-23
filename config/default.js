@@ -11,4 +11,8 @@ module.exports = {
         headerSecret: 'header',
         expiresIn: 10 * 3600 // 10 hours
     },
+    csv: {
+        quote: '"',
+        delimiter: ';',
+    }
 };
