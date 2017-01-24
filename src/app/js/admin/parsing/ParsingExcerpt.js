@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn } from 'material-ui/Table';
 
 const ParsingExcerpt = ({ columns, lines }) => (
-    <Table selectable={false}>
+    <Table selectable={false} fixedHeader={false} style={{ width: 'auto' }}>
         <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
             <TableRow>
                 {columns.map(c => <TableHeaderColumn>{c}</TableHeaderColumn>)}

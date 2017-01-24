@@ -55,6 +55,7 @@ export class ParsingResultComponent extends Component {
             excerptLines,
             failedLines,
             totalLoadedLines,
+            totalFailedLines,
             totalParsedLines,
             p: polyglot,
         } = this.props;
@@ -72,7 +73,7 @@ export class ParsingResultComponent extends Component {
                         onShowErrors={this.handleShowErrors}
                         onShowExcerpt={this.handleShowExcerpt}
                         showErrors={showErrors}
-                        totalFailedLines={failedLines.length}
+                        totalFailedLines={totalFailedLines}
                         totalLoadedLines={totalLoadedLines}
                         totalParsedLines={totalParsedLines}
                     />
@@ -101,18 +102,20 @@ export class ParsingResultComponent extends Component {
 ParsingResultComponent.propTypes = {
     excerptColumns: PropTypes.arrayOf(PropTypes.string).isRequired,
     excerptLines: PropTypes.arrayOf(PropTypes.object).isRequired,
-    failedLines: PropTypes.arrayOf(PropTypes.string).isRequired,
+    failedLines: PropTypes.arrayOf(PropTypes.object).isRequired,
     p: polyglotPropTypes.isRequired,
     totalLoadedLines: PropTypes.number.isRequired,
+    totalFailedLines: PropTypes.number.isRequired,
     totalParsedLines: PropTypes.number.isRequired,
 };
 
 const mapStateToProps = state => ({
     excerptColumns: getParsedExcerptColumns(state),
     excerptLines: state.parsing.excerptLines,
-    failedLines: state.parsing.failedLines,
+    failedLines: state.parsing.errors,
     loadingParsingResult: state.parsing.loading,
     totalLoadedLines: state.parsing.totalLoadedLines,
+    totalFailedLines: state.parsing.totalFailedLines,
     totalParsedLines: state.parsing.totalParsedLines,
 });
 

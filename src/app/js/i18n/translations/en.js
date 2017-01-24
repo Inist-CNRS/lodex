@@ -9,4 +9,7 @@ export default {
     Cancel: 'Cancel',
     Username: 'Username',
     Password: 'Password',
+    line: 'line',
+    error: 'error',
+    raw: 'raw',
 };

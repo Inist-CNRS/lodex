@@ -1,10 +1,16 @@
 import React, { PropTypes } from 'react';
+import translate from 'redux-polyglot/translate';
 
-const ParsingErrors = ({ lines }) => (
+
+import { polyglot as polyglotPropTypes } from '../../lib/propTypes';
+
+const ParsingErrors = ({ lines, p: polyglot }) => (
     <div>
         {lines.map(l => (
             <div>
-                <code>{l}</code>
+                <p><strong>{polyglot.t('line')}: </strong>{l.line}</p>
+                <p><strong>{polyglot.t('error')}: </strong>{l.error}</p>
+                <p><strong>{polyglot.t('raw')}: </strong>{l.data}</p>
                 <hr />
             </div>
         ))}
@@ -13,6 +19,7 @@ const ParsingErrors = ({ lines }) => (
 
 ParsingErrors.propTypes = {
     lines: PropTypes.arrayOf(PropTypes.string).isRequired,
+    p: polyglotPropTypes.isRequired,
 };
 
-export default ParsingErrors;
+export default translate(ParsingErrors);
