@@ -2,8 +2,6 @@ import rawBody from 'raw-body';
 import streamBuffers from 'stream-buffers';
 
 import * as parsers from '../../parsers';
-import dataset from '../../models/dataset';
-import parsingResult from '../../models/parsingResult';
 
 const getParser = (type) => {
     switch (type) {
@@ -18,8 +16,7 @@ const getParser = (type) => {
 export default async function upload(ctx) {
     const type = ctx.request.header['content-type'];
 
-    await parsingResult(ctx.db).remove({});
-    await dataset(ctx.db).remove({});
+    await ctx.dataset.remove({});
     const parseStream = getParser(type);
 
     const buffer = await rawBody(ctx.req);
@@ -29,9 +26,15 @@ export default async function upload(ctx) {
     });
     stream.put(buffer);
     stream.stop();
-    const { documents, parsingData } = await parseStream(stream);
-    await dataset(ctx.db).insertBatch(documents);
-    await parsingResult(ctx.db).insert(parsingData);
-    ctx.status = 200;
-    ctx.body = parsingData;
+    try {
+        const documents = await parseStream(stream);
+        await ctx.dataset.insertBatch(documents);
+        ctx.status = 200;
+        ctx.body = {
+            totalLines: documents.length,
+        };
+    } catch (error) {
+        ctx.status = 500;
+        ctx.body = error.message;
+    }
 }

@@ -7,7 +7,6 @@ import mongoClient from '../../services/mongoClient';
 import login from './login';
 import upload from './upload';
 import dataset from '../../models/dataset';
-import parsingResult from '../../models/parsingResult';
 import parsing from './parsing';
 
 const app = new Koa();
@@ -15,7 +14,6 @@ const app = new Koa();
 app.use(async (ctx, next) => {
     ctx.db = await mongoClient();
     ctx.dataset = dataset(ctx.db);
-    ctx.parsingResult = parsingResult(ctx.db);
     try {
         await next();
     } finally {

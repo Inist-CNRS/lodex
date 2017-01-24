@@ -18,7 +18,12 @@ describe('parseCsv', () => {
 4;"hello\nworld";6`
         );
         expect(await parseCsv(stream)).toEqual({
-            errors: [],
+            parsingData: {
+                errors: [],
+                totalFailedLines: 0,
+                totalLoadedLines: 2,
+                totalParsedLines: 2,
+            },
             documents: [{
                 a: '1',
                 b: '2',
