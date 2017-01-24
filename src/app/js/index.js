@@ -2,14 +2,22 @@ import 'babel-polyfill';
 import 'whatwg-fetch';
 
 import injectTapEventPlugin from 'react-tap-event-plugin';
-
 import React from 'react';
 import { render } from 'react-dom';
+
 import Root from './Root';
 import rootReducer from './reducers';
 import configureStore from './configureStore';
+import phrasesForEn from './i18n/translations/en';
 
-const store = configureStore(rootReducer);
+const initialState = {
+    polyglot: {
+        locale: 'en',
+        phrases: phrasesForEn,
+    },
+};
+
+const store = configureStore(rootReducer, initialState);
 
 injectTapEventPlugin();
 

@@ -1,9 +1,13 @@
 import React, { Component, PropTypes } from 'react';
+import { compose } from 'recompose';
 import { connect } from 'react-redux';
+import translate from 'redux-polyglot/translate';
+
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import { submit, isSubmitting } from 'redux-form';
 
+import { polyglot as polyglotPropTypes } from '../lib/propTypes';
 import { login as loginAction, toggleLogin as toggleLoginAction, LOGIN_FORM_NAME } from './';
 import LoginForm from './LoginForm';
 
@@ -17,7 +21,7 @@ class LoginDialog extends Component {
     }
 
     render() {
-        const { showModal, submitting, toggleLogin } = this.props;
+        const { showModal, submitting, toggleLogin, p: polyglot } = this.props;
 
         return (
             <Dialog
@@ -25,11 +29,11 @@ class LoginDialog extends Component {
                 title="Sign in"
                 actions={[
                     <FlatButton
-                        label="Cancel"
+                        label={polyglot.t('Cancel')}
                         onTouchTap={toggleLogin}
                     />,
                     <FlatButton
-                        label="Sign in"
+                        label={polyglot.t('Sign in')}
                         disabled={submitting}
                         primary
                         onTouchTap={this.handleSubmitButtonClick}
@@ -48,6 +52,7 @@ class LoginDialog extends Component {
 LoginDialog.propTypes = {
     showModal: PropTypes.bool.isRequired,
     login: PropTypes.func.isRequired,
+    p: polyglotPropTypes.isRequired,
     submit: PropTypes.func.isRequired,
     submitting: PropTypes.bool.isRequired,
     toggleLogin: PropTypes.func.isRequired,
@@ -64,4 +69,7 @@ export const mapDispatchToProps = ({
     toggleLogin: toggleLoginAction,
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(LoginDialog);
+export default compose(
+    connect(mapStateToProps, mapDispatchToProps),
+    translate,
+)(LoginDialog);

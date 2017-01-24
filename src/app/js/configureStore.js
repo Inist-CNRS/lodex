@@ -17,7 +17,12 @@ export default function configureStore(rootReducer, initialState) {
     const devtools = window.devToolsExtension ? window.devToolsExtension() : f => f;
     const persistStateEnhancer = persistState('user');
 
-    const store = createStore(rootReducer, initialState, compose(middlewares, persistStateEnhancer, devtools));
+    const store = createStore(
+        rootReducer,
+        initialState,
+        compose(middlewares, persistStateEnhancer, devtools),
+    );
+
     sagaMiddleware.run(sagas);
     return store;
 }

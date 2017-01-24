@@ -7,7 +7,7 @@ describe('Home page', function homeTests() {
 
     it('should display the Appbar with correct title', async () => {
         await driver.get('http://localhost:3010/');
-        const title = await driver.findElement(By.css('.appbar h1'));
+        const title = await driver.findElement(By.css('.appbar a'));
         const text = await title.getText();
         expect(text).toEqual('Lodex');
     });
