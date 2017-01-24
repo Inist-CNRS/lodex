@@ -21,6 +21,7 @@
   "homepage": "https://github.com/Inist-CNRS/lodex-v2#readme",
   "dependencies": {
     "babel-plugin-transform-es2015-modules-commonjs": "6.18.0",
+    "babel-plugin-transform-object-rest-spread": "6.20.2",
     "babel-preset-stage-2": "6.18.0",
     "babel-register": "6.18.0",
     "config": "1.24.0",
@@ -60,7 +61,6 @@
     "babel-plugin-add-module-exports": "0.2.1",
     "babel-plugin-transform-class-properties": "6.19.0",
     "babel-plugin-transform-es2015-modules-commonjs": "6.18.0",
-    "babel-plugin-transform-object-rest-spread": "6.20.2",
     "babel-plugin-transform-runtime": "6.15.0",
     "babel-polyfill": "6.20.0",
     "babel-preset-env": "1.1.8",
