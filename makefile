@@ -38,7 +38,7 @@ install: copy-conf install-npm-dependencies install-selenium ## Install npm depe
 
 # Development ==================================================================
 
-run-app: ## Run the frontend application
+run-frontend: ## Run the frontend application
 	NODE_ENV=${NODE_ENV} BABEL_ENV=browser ./node_modules/.bin/webpack-dev-server --config=./src/app/webpack.config.babel.js --port=8080
 
 docker-run-dev: ## run node server with pm2 for development and webpack-dev-server
@@ -46,7 +46,7 @@ docker-run-dev: ## run node server with pm2 for development and webpack-dev-serv
 
 # Build ==================================================================
 
-build-app: ## Build the frontend application
+build-frontend: ## Build the frontend application
 	NODE_ENV=${NODE_ENV} BABEL_ENV=browser ./node_modules/.bin/webpack \
 	    --config=./src/app/webpack.config.babel.js \
 	    $(if $(filter production staging,$(NODE_ENV)),-p,-d) \
@@ -64,7 +64,7 @@ test-api-unit: ## Run the API unit tests
     	--compilers="js:babel-core/register" \
     	"./src/api/**/*.spec.js"
 
-test-app-unit: ## Run the frontend application unit tests
+test-frontend-unit: ## Run the frontend application unit tests
 	NODE_ENV=test BABEL_ENV=browser ./node_modules/.bin/mocha \
 		--require babel-polyfill \
 		--require='./src/app/js/test.spec.js' \
@@ -72,7 +72,7 @@ test-app-unit: ## Run the frontend application unit tests
 		"./src/app/js/**/*.spec.js"
 
 test-frontend-functional: ## Run the frontend application functional tests
-	NODE_ENV=test ${MAKE} build-app
+	NODE_ENV=test ${MAKE} build-frontend
 	NODE_ENV=test SELENIUM_BROWSER_BINARY_PATH="./node_modules/selenium-standalone/.selenium/chromedriver/2.24-x64-chromedriver" \
 		./node_modules/.bin/mocha \
         --require babel-polyfill \
@@ -80,4 +80,4 @@ test-frontend-functional: ## Run the frontend application functional tests
 		--recursive \
 		./src/app/e2e
 
-test: test-app-unit test-api-unit test-app-functional
+test: test-frontend-unit test-api-unit test-frontend-functional

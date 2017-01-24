@@ -6,20 +6,11 @@ import { auth } from 'config';
 import mongoClient from '../../services/mongoClient';
 import login from './login';
 import upload from './upload';
-import dataset from '../../models/dataset';
 import parsing from './parsing';
 
 const app = new Koa();
 
-app.use(async (ctx, next) => {
-    ctx.db = await mongoClient();
-    ctx.dataset = dataset(ctx.db);
-    try {
-        await next();
-    } finally {
-        await ctx.db.close();
-    }
-});
+app.use(mongoClient);
 
 app.use(route.post('/login', login));
 

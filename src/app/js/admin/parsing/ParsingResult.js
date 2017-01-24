@@ -1,7 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import translate from 'redux-polyglot/translate';
 
 import { Card, CardActions, CardHeader, CardText } from 'material-ui/Card';
@@ -109,10 +108,9 @@ const mapStateToProps = state => ({
     totalParsedLines: state.parsing.totalParsedLines,
 });
 
-const mapDispatchToProps = dispatch =>
-bindActionCreators({
+const mapDispatchToProps = {
     onClearParsing: clearParsing,
-}, dispatch);
+};
 
 export default compose(
     connect(mapStateToProps, mapDispatchToProps),

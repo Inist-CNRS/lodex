@@ -4,13 +4,12 @@ import { LOCATION_CHANGE } from 'react-router-redux';
 
 import { getToken } from '../../user';
 import loadFile from '../../lib/loadFile';
-import { UPLOAD_FILE, uploadFilePending, uploadFileError, uploadFileSuccess } from './';
+import { UPLOAD_FILE, uploadFileError, uploadFileSuccess } from './';
 
 export function* uploadFile(action) {
     if (!action.payload) {
         return;
     }
-    yield put(uploadFilePending());
     const token = yield select(getToken);
     try {
         const { file, cancel } = yield race({
