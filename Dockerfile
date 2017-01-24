@@ -2,7 +2,7 @@ FROM node:7.4
 
 WORKDIR /app
 # Install the node modules only
-COPY ./package.json /app
+COPY package.json /app
 RUN rm -rf ./node_modules && \
     npm install --production && \
     npm cache clean
