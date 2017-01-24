@@ -2,13 +2,15 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import CircularProgress from 'material-ui/CircularProgress';
 
-import { loadParsingResult as loadParsingResultAction } from './parsing';
+import { loadParsingResult as loadParsingResultAction, hasUploadedFile as selectHasUploadedFile } from './parsing';
 import ParsingResult from './parsing/ParsingResult';
+import Upload from './upload/Upload';
 
 export class AdminComponent extends Component {
     static propTypes = {
         loadParsingResult: PropTypes.func.isRequired,
         loadingParsingResult: PropTypes.bool.isRequired,
+        hasUploadedFile: PropTypes.bool.isRequired,
     }
 
     componentWillMount() {
@@ -18,6 +20,7 @@ export class AdminComponent extends Component {
     render() {
         const {
             loadingParsingResult,
+            hasUploadedFile,
         } = this.props;
 
         if (loadingParsingResult) {
@@ -26,9 +29,17 @@ export class AdminComponent extends Component {
             );
         }
 
+        if (hasUploadedFile) {
+            return (
+                <div>
+                    <ParsingResult />
+                </div>
+            );
+        }
+
         return (
             <div>
-                <ParsingResult />
+                <Upload />
             </div>
         );
     }
@@ -36,6 +47,7 @@ export class AdminComponent extends Component {
 
 const mapStateToProps = state => ({
     loadingParsingResult: state.parsing.loading,
+    hasUploadedFile: selectHasUploadedFile(state),
 });
 
 const mapDispatchToProps = ({

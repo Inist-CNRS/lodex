@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import RaisedButton from 'material-ui/RaisedButton';
 import ArchiveIcon from 'material-ui/svg-icons/content/archive';
 
-import { uploadFile } from './homeActions';
+import { uploadFile } from './';
 
 export const UploadComponent = ({ onFileLoad }) => (
     <div
