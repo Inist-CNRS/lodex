@@ -4,10 +4,19 @@ WORKDIR /app
 # Install the node modules only
 COPY package.json /app
 RUN rm -rf ./node_modules && \
-    npm install --production && \
+    npm install && \
     npm cache clean
+
+ENV NODE_ENV production 
+
 # Copy the local code source
 COPY . /app
+
+RUN cp -n ./config/production-dist.js ./config/production.js && \
+    BABEL_ENV=browser ./node_modules/.bin/webpack \
+        --config=src/app/webpack.config.babel.js \
+        -p && \
+    npm prune --production
 
 # ezmasterizing of lodex
 # See https://github.com/Inist-CNRS/ezmaster#ezmasterizing-an-application
