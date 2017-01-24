@@ -10,7 +10,6 @@ import { grey400 } from 'material-ui/styles/colors';
 
 import { polyglot as polyglotPropTypes } from '../../lib/propTypes';
 import { getParsedExcerptColumns, clearParsing } from './';
-import ParsingErrors from './ParsingErrors';
 import ParsingExcerpt from './ParsingExcerpt';
 import ParsingSummary from './ParsingSummary';
 
@@ -42,10 +41,6 @@ export class ParsingResultComponent extends Component {
         };
     }
 
-    handleShowErrors = () => {
-        this.setState({ showErrors: true });
-    }
-
     handleShowExcerpt = () => {
         this.setState({ showErrors: false });
     }
@@ -54,7 +49,6 @@ export class ParsingResultComponent extends Component {
         const {
             excerptColumns,
             excerptLines,
-            failedLines,
             totalLoadedLines,
             totalFailedLines,
             totalParsedLines,
@@ -72,7 +66,6 @@ export class ParsingResultComponent extends Component {
                 />
                 <CardText style={styles.parsingContainer} expandable initiallyExpanded>
                     <ParsingSummary
-                        onShowErrors={this.handleShowErrors}
                         onShowExcerpt={this.handleShowExcerpt}
                         showErrors={showErrors}
                         totalFailedLines={totalFailedLines}
@@ -84,11 +77,6 @@ export class ParsingResultComponent extends Component {
                             <ParsingExcerpt
                                 columns={excerptColumns}
                                 lines={excerptLines}
-                            />
-                        }
-                        {showErrors &&
-                            <ParsingErrors
-                                lines={failedLines}
                             />
                         }
                     </div>
@@ -104,7 +92,6 @@ export class ParsingResultComponent extends Component {
 ParsingResultComponent.propTypes = {
     excerptColumns: PropTypes.arrayOf(PropTypes.string).isRequired,
     excerptLines: PropTypes.arrayOf(PropTypes.object).isRequired,
-    failedLines: PropTypes.arrayOf(PropTypes.object).isRequired,
     p: polyglotPropTypes.isRequired,
     totalLoadedLines: PropTypes.number.isRequired,
     totalFailedLines: PropTypes.number.isRequired,

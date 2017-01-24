@@ -46,7 +46,7 @@ export class AdminComponent extends Component {
 }
 
 const mapStateToProps = state => ({
-    loadingParsingResult: state.parsing.loading,
+    loadingParsingResult: state.parsing.loading || state.upload.status === 'PENDING',
     hasUploadedFile: selectHasUploadedFile(state),
 });
 

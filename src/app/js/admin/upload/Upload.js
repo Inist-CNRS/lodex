@@ -3,16 +3,21 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import RaisedButton from 'material-ui/RaisedButton';
 import ArchiveIcon from 'material-ui/svg-icons/content/archive';
+import Alert from '../../lib/Alert';
 
 import { uploadFile } from './';
 
-export const UploadComponent = ({ onFileLoad }) => (
+export const UploadComponent = ({ onFileLoad, error }) => (
     <div
         style={{
             position: 'relative',
             margin: 100,
         }}
     >
+        { error ? <Alert>
+            <p>Error uploading given file: </p>
+            <p>{error}</p>
+        </Alert> : <span />}
         <RaisedButton
             containerElement="label"
             secondary
@@ -43,10 +48,13 @@ export const UploadComponent = ({ onFileLoad }) => (
 );
 
 UploadComponent.propTypes = {
+    error: PropTypes.string.isRequired,
     onFileLoad: PropTypes.func.isRequired,
 };
 
-const mapsStateToProps = () => ({});
+const mapsStateToProps = state => ({
+    ...state.upload,
+});
 
 const mapDispatchToProps = dispatch =>
 bindActionCreators({
