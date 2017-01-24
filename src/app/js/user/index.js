@@ -5,7 +5,10 @@ export const TOGGLE_LOGIN = 'TOGGLE_LOGIN';
 export const LOGIN = 'LOGIN';
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 
-export const defaultState = { showModal: false, token: undefined };
+export const defaultState = {
+    showModal: false,
+    token: null,
+};
 
 export default handleActions({
     TOGGLE_LOGIN: state => ({
@@ -24,3 +27,4 @@ export const login = createAction(LOGIN);
 export const loginSuccess = createAction(LOGIN_SUCCESS);
 
 export const isLoggedIn = state => !!state.user.token;
+export const getToken = state => state.user.token;
