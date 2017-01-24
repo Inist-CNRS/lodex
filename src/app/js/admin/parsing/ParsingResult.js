@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import translate from 'redux-polyglot/translate';
 
 import { Card, CardActions, CardHeader, CardText } from 'material-ui/Card';
@@ -8,7 +9,7 @@ import FlatButton from 'material-ui/FlatButton';
 import { grey400 } from 'material-ui/styles/colors';
 
 import { polyglot as polyglotPropTypes } from '../../lib/propTypes';
-import { getParsedExcerptColumns } from './';
+import { getParsedExcerptColumns, clearParsing } from './';
 import ParsingErrors from './ParsingErrors';
 import ParsingExcerpt from './ParsingExcerpt';
 import ParsingSummary from './ParsingSummary';
@@ -57,6 +58,7 @@ export class ParsingResultComponent extends Component {
             totalLoadedLines,
             totalFailedLines,
             totalParsedLines,
+            onClearParsing,
             p: polyglot,
         } = this.props;
         const { showErrors } = this.state;
@@ -92,7 +94,7 @@ export class ParsingResultComponent extends Component {
                     </div>
                 </CardText>
                 <CardActions>
-                    <FlatButton label={polyglot.t('Upload another file')} />
+                    <FlatButton onClick={onClearParsing} label={polyglot.t('Upload another file')} />
                 </CardActions>
             </Card>
         );
@@ -107,6 +109,7 @@ ParsingResultComponent.propTypes = {
     totalLoadedLines: PropTypes.number.isRequired,
     totalFailedLines: PropTypes.number.isRequired,
     totalParsedLines: PropTypes.number.isRequired,
+    onClearParsing: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
@@ -119,7 +122,12 @@ const mapStateToProps = state => ({
     totalParsedLines: state.parsing.totalParsedLines,
 });
 
+const mapDispatchToProps = dispatch =>
+bindActionCreators({
+    onClearParsing: clearParsing,
+}, dispatch);
+
 export default compose(
-    connect(mapStateToProps),
+    connect(mapStateToProps, mapDispatchToProps),
     translate,
 )(ParsingResultComponent);
