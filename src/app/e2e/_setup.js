@@ -1,20 +1,14 @@
 import http from 'http';
-import path from 'path';
 
 import api from '../../api';
 import driver from '../../common/tests/chromeDriver';
-import staticServer from '../../common/tests/staticServer';
 
-before(async function () {
+before(async function before() {
     this.apiServer = http.createServer(api.callback());
     this.apiServer.listen(3010);
-    staticServer(
-        path.join(__dirname, '../../build'),
-        9080
-    );
 });
 
-after(async function () {
+after(async function after() {
     this.apiServer.close();
     await driver.quit();
 });

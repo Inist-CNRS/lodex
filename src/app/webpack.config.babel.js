@@ -1,15 +1,20 @@
 import config from 'config';
-import { DefinePlugin, LoaderOptionsPlugin, SourceMapDevToolPlugin, HotModuleReplacementPlugin, NamedModulesPlugin, NoErrorsPlugin } from 'webpack';
+import {
+    DefinePlugin,
+    LoaderOptionsPlugin,
+    SourceMapDevToolPlugin,
+    HotModuleReplacementPlugin,
+    NamedModulesPlugin,
+} from 'webpack';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import { resolve } from 'path';
 
 export default {
-    devServer : {
+    devServer: {
         historyApiFallback: true,
         hot: true,
     },
-    devtool: 'cheap-eval-source-map',
-    entry : {
+    entry: {
         index: [].concat(process.env.NODE_ENV === 'development' ? [
             'react-hot-loader/patch',
             'webpack-dev-server/client?http://localhost:8000',
@@ -18,67 +23,67 @@ export default {
             resolve(__dirname, './js/index.js'),
         ]),
     },
-    module : {
+    module: {
         rules: [
             {
                 test: /\.js$/,
                 include: [
                     resolve(__dirname, './js'),
-                    resolve(__dirname, '../common')
+                    resolve(__dirname, '../common'),
                 ],
                 loader: 'babel-loader',
             }, {
                 test: /\.json$/,
-                loader: 'json-loader'
+                loader: 'json-loader',
             }, {
                 test: /\.jpe?g$|\.gif$|\.png$/,
                 loader: 'url-loader',
                 options: {
                     limit: 10000,
-                    name: '[hash].[ext]'
-                }
+                    name: '[hash].[ext]',
+                },
             }, {
                 test: /\.(otf|svg)(\?.+)?$/,
                 loader: 'url-loader',
                 options: {
-                    limit: 8192
-                }
+                    limit: 8192,
+                },
             }, {
                 test: /\.eot(\?\S*)?$/,
                 loader: 'url-loader',
                 options: {
                     limit: 10000,
-                    mimetype: 'application/vnd.ms-fontobject'
-                }
+                    mimetype: 'application/vnd.ms-fontobject',
+                },
             }, {
                 test: /\.woff2(\?\S*)?$/,
                 loader: 'url-loader',
                 options: {
                     limit: 10000,
-                    mimetype: 'application/font-woff2'
-                }
+                    mimetype: 'application/font-woff2',
+                },
             }, {
                 test: /\.woff(\?\S*)?$/,
                 loader: 'url-loader',
                 options: {
                     limit: 10000,
-                    mimetype: 'application/font-woff'
-                }
+                    mimetype: 'application/font-woff',
+                },
             }, {
                 test: /\.ttf(\?\S*)?$/,
                 loader: 'url-loader',
                 options: {
                     limit: 10000,
-                    mimetype: 'application/font-ttf'
-                }
-            }
-        ]
+                    mimetype: 'application/font-ttf',
+                },
+            },
+        ],
     },
-    output : {
+    output: {
         filename: '[name].js',
-        path: resolve(__dirname, '../build')
+        path: resolve(__dirname, '../build'),
     },
-    plugins : [
+    plugins: [
         // prints more readable module names in the browser console on HMR updates
         new NamedModulesPlugin(),
 
@@ -88,13 +93,13 @@ export default {
                 NODE_ENV: process.env.NODE_ENV === 'development'
                     ? JSON.stringify(process.env.NODE_ENV)
                     : JSON.stringify('production'), // eslint-disable-line max-len
-            }
+            },
         }),
         new LoaderOptionsPlugin({
             options: {
                 context: __dirname,
-                minimize: process.env.NODE_ENV !== 'development'
-            }
+                minimize: process.env.NODE_ENV !== 'development',
+            },
         }),
         new HtmlWebpackPlugin({
             filename: 'index.html',
@@ -103,10 +108,10 @@ export default {
     ].concat(process.env.NODE_ENV === 'development'
         ? [
             new HotModuleReplacementPlugin(),
-            new SourceMapDevToolPlugin({filename: '[file].map'}),
+            new SourceMapDevToolPlugin({ filename: '[file].map' }),
         ]
         : []),
     resolve: {
         extensions: ['.js', '.jsx'],
-    }
-}
+    },
+};
