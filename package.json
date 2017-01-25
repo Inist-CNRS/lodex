@@ -26,6 +26,7 @@
     "babel-preset-stage-2": "6.18.0",
     "babel-register": "6.18.0",
     "config": "1.24.0",
+    "csv-parse": "1.1.10",
     "isomorphic-fetch": "2.2.1",
     "jsonwebtoken": "7.2.1",
     "koa": "2.0.0-alpha.7",
@@ -53,8 +54,6 @@
     "redux-polyglot": "0.3.2",
     "redux-saga": "0.14.3",
     "request": "2.79.0",
-    "rx-node": "1.0.2",
-    "split": "1.0.0",
     "stream-buffers": "3.0.1",
     "whatwg-fetch": "2.0.2",
     "winston": "2.3.0"

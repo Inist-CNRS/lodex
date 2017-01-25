@@ -7,7 +7,7 @@ import loadFile from '../../lib/loadFile';
 import { UPLOAD_FILE, uploadFileError, uploadFileSuccess } from './';
 
 export function* uploadFile(action) {
-    if (!action.payload) {
+    if (!action || !action.payload) {
         return;
     }
     const token = yield select(getToken);
