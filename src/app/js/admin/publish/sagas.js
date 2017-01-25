@@ -6,18 +6,13 @@ import fetchSaga from '../../lib/fetchSaga';
 
 export function* handlePublishRequest() {
     const request = yield select(getPublishRequest);
+    const { error } = yield call(fetchSaga, request);
 
-    try {
-        const { error } = yield call(fetchSaga, request);
-
-        if (error) {
-            return yield put(publishError(error));
-        }
-
-        return yield put(publishSuccess());
-    } catch (error) {
+    if (error) {
         return yield put(publishError(error));
     }
+
+    return yield put(publishSuccess());
 }
 
 export function* watchPublishRequest() {

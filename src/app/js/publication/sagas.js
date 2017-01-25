@@ -13,17 +13,13 @@ import fetchSaga from '../lib/fetchSaga';
 export function* handleLoadPublicationRequest() {
     const request = yield select(getLoadPublicationRequest);
 
-    try {
-        const { error, response: publication } = yield call(fetchSaga, request);
+    const { error, response: publication } = yield call(fetchSaga, request);
 
-        if (error) {
-            return yield put(loadPublicationError(error));
-        }
-
-        return yield put(loadPublicationSuccess(publication));
-    } catch (error) {
+    if (error) {
         return yield put(loadPublicationError(error));
     }
+
+    return yield put(loadPublicationSuccess(publication));
 }
 
 export function* watchLoadPublicationRequest() {
