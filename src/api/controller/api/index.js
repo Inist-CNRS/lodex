@@ -16,14 +16,14 @@ const app = new Koa();
 app.use(mongoClient);
 
 app.use(route.post('/login', login));
+app.use(route.get('/publication', publication));
+app.use(route.get('/publishedDataset', publishedDataset));
 
 app.use(jwt({ secret: auth.cookieSecret, cookie: 'lodex_token', key: 'cookie' }));
 app.use(jwt({ secret: auth.headerSecret, key: 'header' }));
 app.use(route.post('/upload', upload));
 app.use(route.get('/parsing', parsing));
-app.use(route.get('/publication', publication));
 app.use(route.get('/publish', publish));
-app.use(route.get('/publishedDataset', publishedDataset));
 
 app.use(async (ctx) => {
     ctx.status = 404;
