@@ -8,8 +8,7 @@ import FlatButton from 'material-ui/FlatButton';
 import { grey400 } from 'material-ui/styles/colors';
 
 import { polyglot as polyglotPropTypes } from '../../lib/propTypes';
-import { getParsedExcerptColumns } from './';
-import ParsingErrors from './ParsingErrors';
+import { getParsedExcerptColumns, clearParsing } from './';
 import ParsingExcerpt from './ParsingExcerpt';
 import ParsingSummary from './ParsingSummary';
 
@@ -41,10 +40,6 @@ export class ParsingResultComponent extends Component {
         };
     }
 
-    handleShowErrors = () => {
-        this.setState({ showErrors: true });
-    }
-
     handleShowExcerpt = () => {
         this.setState({ showErrors: false });
     }
@@ -53,9 +48,10 @@ export class ParsingResultComponent extends Component {
         const {
             excerptColumns,
             excerptLines,
-            failedLines,
             totalLoadedLines,
+            totalFailedLines,
             totalParsedLines,
+            onClearParsing,
             p: polyglot,
         } = this.props;
         const { showErrors } = this.state;
@@ -69,10 +65,9 @@ export class ParsingResultComponent extends Component {
                 />
                 <CardText style={styles.parsingContainer} expandable initiallyExpanded>
                     <ParsingSummary
-                        onShowErrors={this.handleShowErrors}
                         onShowExcerpt={this.handleShowExcerpt}
                         showErrors={showErrors}
-                        totalFailedLines={failedLines.length}
+                        totalFailedLines={totalFailedLines}
                         totalLoadedLines={totalLoadedLines}
                         totalParsedLines={totalParsedLines}
                     />
@@ -83,15 +78,10 @@ export class ParsingResultComponent extends Component {
                                 lines={excerptLines}
                             />
                         }
-                        {showErrors &&
-                            <ParsingErrors
-                                lines={failedLines}
-                            />
-                        }
                     </div>
                 </CardText>
                 <CardActions>
-                    <FlatButton label={polyglot.t('Upload another file')} />
+                    <FlatButton onClick={onClearParsing} label={polyglot.t('Upload another file')} />
                 </CardActions>
             </Card>
         );
@@ -101,22 +91,28 @@ export class ParsingResultComponent extends Component {
 ParsingResultComponent.propTypes = {
     excerptColumns: PropTypes.arrayOf(PropTypes.string).isRequired,
     excerptLines: PropTypes.arrayOf(PropTypes.object).isRequired,
-    failedLines: PropTypes.arrayOf(PropTypes.string).isRequired,
     p: polyglotPropTypes.isRequired,
     totalLoadedLines: PropTypes.number.isRequired,
+    totalFailedLines: PropTypes.number.isRequired,
     totalParsedLines: PropTypes.number.isRequired,
+    onClearParsing: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
     excerptColumns: getParsedExcerptColumns(state),
     excerptLines: state.parsing.excerptLines,
-    failedLines: state.parsing.failedLines,
+    failedLines: state.parsing.errors,
     loadingParsingResult: state.parsing.loading,
     totalLoadedLines: state.parsing.totalLoadedLines,
+    totalFailedLines: state.parsing.totalFailedLines,
     totalParsedLines: state.parsing.totalParsedLines,
 });
 
+const mapDispatchToProps = {
+    onClearParsing: clearParsing,
+};
+
 export default compose(
-    connect(mapStateToProps),
+    connect(mapStateToProps, mapDispatchToProps),
     translate,
 )(ParsingResultComponent);

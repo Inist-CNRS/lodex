@@ -5,9 +5,15 @@ import request from 'request';
 
 const forwardRequest = ctx =>
 new Promise((resolve, reject) => {
-    request.get(`${devServerHost}${ctx.url}`, (error, _, body) => {
+    request.get(`${devServerHost}${ctx.url}`, (error, response, body) => {
         if (error) {
             reject(error);
+            return;
+        }
+        if (response.statusCode === 404) {
+            const notFound = new Error('not found');
+            notFound.status = 404;
+            reject(notFound);
             return;
         }
         resolve(body);

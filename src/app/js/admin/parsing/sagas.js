@@ -6,6 +6,7 @@ import {
     loadParsingResultError,
     loadParsingResultSuccess,
 } from './';
+import { UPLOAD_FILE_SUCCESS } from '../upload';
 import { getToken } from '../../user';
 
 export const fetchParsingResult = token => fetch('/api/parsing', {
@@ -32,7 +33,7 @@ export function* handleLoadParsingResult() {
 }
 
 export function* watchLoadParsingResult() {
-    yield takeLatest(LOAD_PARSING_RESULT, handleLoadParsingResult);
+    yield takeLatest([LOAD_PARSING_RESULT, UPLOAD_FILE_SUCCESS], handleLoadParsingResult);
 }
 
 export default function* () {

@@ -2,8 +2,6 @@ import React, { PropTypes } from 'react';
 import translate from 'redux-polyglot/translate';
 
 import { List, ListItem } from 'material-ui/List';
-import { red400 } from 'material-ui/styles/colors';
-import ActionPlayArrow from 'material-ui/svg-icons/image/navigate-next';
 
 import { polyglot as polyglotPropTypes } from '../../lib/propTypes';
 import ParsingSummaryItem from './ParsingSummaryItem';
@@ -15,13 +13,8 @@ const styles = {
 };
 
 export const ParsingSummaryComponent = ({
-    onShowErrors,
-    onShowExcerpt,
     p: polyglot,
-    showErrors,
-    totalFailedLines,
     totalLoadedLines,
-    totalParsedLines,
 }) => (
     <List>
         <ListItem
@@ -29,32 +22,12 @@ export const ParsingSummaryComponent = ({
             primaryText={<ParsingSummaryItem count={totalLoadedLines} label={polyglot.t('total lines')} />}
             style={styles.ListItemTotalLoadedLines}
         />
-        <ListItem
-            onClick={onShowExcerpt}
-            primaryText={<ParsingSummaryItem count={totalParsedLines} label={polyglot.t('successfully parsed')} />}
-            rightIcon={!showErrors && <ActionPlayArrow />}
-        />
-        <ListItem
-            onClick={onShowErrors}
-            primaryText={
-                <ParsingSummaryItem
-                    color={totalFailedLines > 0 ? red400 : undefined}
-                    count={totalFailedLines}
-                    label={polyglot.t('with errors')}
-                />}
-            rightIcon={showErrors && <ActionPlayArrow />}
-        />
     </List>
 );
 
 ParsingSummaryComponent.propTypes = {
-    onShowErrors: PropTypes.func.isRequired,
-    onShowExcerpt: PropTypes.func.isRequired,
     p: polyglotPropTypes.isRequired,
-    showErrors: PropTypes.bool.isRequired,
-    totalFailedLines: PropTypes.number.isRequired,
     totalLoadedLines: PropTypes.number.isRequired,
-    totalParsedLines: PropTypes.number.isRequired,
 };
 
 export default translate(ParsingSummaryComponent);
