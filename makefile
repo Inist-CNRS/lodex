@@ -61,8 +61,9 @@ docker-run-dev: ## run node server with pm2 for development and webpack-dev-serv
 test-api-unit: ## Run the API unit tests
 	NODE_ENV=test BABEL_ENV=browser ./node_modules/.bin/mocha \
 		--require babel-polyfill \
-    	--compilers="js:babel-core/register" \
-    	"./src/api/**/*.spec.js"
+		--compilers="js:babel-core/register" \
+		"./src/api/**/*.spec.js" \
+		"./src/common/**/*.spec.js"
 
 test-frontend-unit: ## Run the frontend application unit tests
 	NODE_ENV=test BABEL_ENV=browser ./node_modules/.bin/mocha \
