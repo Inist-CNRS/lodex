@@ -10,6 +10,7 @@ import { submit, isSubmitting } from 'redux-form';
 import { polyglot as polyglotPropTypes } from '../lib/propTypes';
 import { login as loginAction, toggleLogin as toggleLoginAction, LOGIN_FORM_NAME } from './';
 import LoginForm from './LoginForm';
+import ButtonWithStatus from '../lib/ButtonWithStatus';
 
 class LoginDialog extends Component {
     handleSubmit = (values) => {
@@ -32,10 +33,9 @@ class LoginDialog extends Component {
                         label={polyglot.t('Cancel')}
                         onTouchTap={toggleLogin}
                     />,
-                    <FlatButton
+                    <ButtonWithStatus
                         label={polyglot.t('Sign in')}
-                        disabled={submitting}
-                        primary
+                        loading={submitting}
                         onTouchTap={this.handleSubmitButtonClick}
                     />,
                 ]}

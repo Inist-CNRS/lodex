@@ -3,8 +3,8 @@ import { red400 } from 'material-ui/styles/colors';
 
 const styles = {
     alert: {
+        display: 'inline-block',
         color: red400,
-        margin: '0.5rem',
     },
 };
 
