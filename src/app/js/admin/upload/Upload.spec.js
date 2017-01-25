@@ -6,7 +6,7 @@ import Alert from '../../lib/Alert';
 
 import { UploadComponent as Upload } from './Upload';
 
-describe.only('<Upload />', () => {
+describe('<Upload />', () => {
     it('should render the Upload button with no error', () => {
         const props = {
             error: false,
