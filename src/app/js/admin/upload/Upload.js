@@ -57,9 +57,7 @@ UploadComponent.propTypes = {
     onFileLoad: PropTypes.func.isRequired,
 };
 
-const mapsStateToProps = state => ({
-    ...state.upload,
-});
+const mapsStateToProps = ({ upload }) => upload;
 
 const mapDispatchToProps = {
     onFileLoad: uploadFile,

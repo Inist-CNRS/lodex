@@ -13,7 +13,7 @@ module.exports = {
         expiresIn: 10 * 3600 // 10 hours
     },
     csv: {
-        quote: '',
+        quote: '"',
         delimiter: ';',
     }
 };

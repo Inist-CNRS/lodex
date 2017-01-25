@@ -16,13 +16,12 @@ export function* uploadFile(action) {
             file: call(loadFile, action.payload, token),
             cancel: take([LOCATION_CHANGE]),
         });
-        console.log({ file });
         if (cancel) {
             return;
         }
         yield put(uploadFileSuccess(file));
     } catch (error) {
-        yield put(uploadFileError(error.message));
+        yield put(uploadFileError(error));
     }
 }
 

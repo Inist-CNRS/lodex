@@ -22,7 +22,7 @@ export default handleActions({
     UPLOAD_FILE_ERROR: (state, { payload }) => ({
         ...state,
         status: 'ERROR',
-        error: payload,
+        error: payload.message,
     }),
 }, defaultState);
 
