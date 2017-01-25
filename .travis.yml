@@ -3,6 +3,8 @@ language: node_js
 node_js:
     - "7.4.0"
 
+services: mongodb
+
 env:
     global:
         - CHROME_BIN="chromium-browser"
