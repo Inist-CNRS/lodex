@@ -1,6 +1,6 @@
 import jbj from 'jbj';
 
-export default (destinationColumn, doc, sourceColumn) =>
+export default (destinationColumn, sourceColumn) => doc =>
 new Promise((resolve, reject) => {
     return jbj.render({
         [`$${destinationColumn}`]: {
