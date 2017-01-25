@@ -37,3 +37,13 @@ export default handleActions({
 export const hasPublishedDataset = ({ publication: { published } }) => published;
 
 export const getColumns = ({ publication: { model } }) => model;
+
+export const getLoadPublicationRequest = state => ({
+    url: '/api/publication',
+    credentials: 'include',
+    headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${state.user.token}`,
+        'Content-Type': 'application/json',
+    },
+});

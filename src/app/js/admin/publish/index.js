@@ -29,3 +29,13 @@ export default handleActions({
         loading: false,
     }),
 }, defaultState);
+
+export const getPublishRequest = state => ({
+    url: '/api/publish',
+    credentials: 'include',
+    headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${state.user.token}`,
+        'Content-Type': 'application/json',
+    },
+});

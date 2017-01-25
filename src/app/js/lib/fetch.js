@@ -4,8 +4,8 @@ export default ({ url, config }) =>
 fetch(url, config)
 .then((response) => {
     if (response.status >= 200 && response.status < 300) {
-        return response.text()
-        .then(text => ({ response: JSON.parse(text) }));
+        return response.json()
+        .then(json => ({ response: json }));
     }
     const error = new Error(response.statusText);
     error.response = response;

@@ -3,32 +3,26 @@ import { call, fork, put, select } from 'redux-saga/effects';
 
 import {
     LOAD_PUBLICATION,
+    getLoadPublicationRequest,
     loadPublicationSuccess,
     loadPublicationError,
 } from './';
 import { PUBLISH_SUCCESS } from '../admin/publish';
-import { getToken } from '../user';
-
-export const fetchPublication = token => fetch('/api/publication', {
-    credentials: 'include',
-    headers: {
-        Accept: 'application/json',
-        Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json',
-    },
-}).then((response) => {
-    if (response.status >= 200 && response.status < 300) return response;
-    throw new Error(response.statusText);
-}).then(response => response.json());
+import fetchSaga from '../lib/fetchSaga';
 
 export function* handleLoadPublicationRequest() {
-    const token = yield select(getToken);
+    const request = yield select(getLoadPublicationRequest);
 
     try {
-        const publication = yield call(fetchPublication, token);
-        yield put(loadPublicationSuccess(publication));
+        const { error, response: publication } = yield call(fetchSaga, request);
+
+        if (error) {
+            return yield put(loadPublicationError(error));
+        }
+
+        return yield put(loadPublicationSuccess(publication));
     } catch (error) {
-        yield put(loadPublicationError(error));
+        return yield put(loadPublicationError(error));
     }
 }
 

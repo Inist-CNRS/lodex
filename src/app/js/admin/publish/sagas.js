@@ -1,29 +1,22 @@
 import { takeLatest } from 'redux-saga';
 import { call, fork, put, select } from 'redux-saga/effects';
 
-import { PUBLISH, publishSuccess, publishError } from './';
-import { getToken } from '../../user';
-
-export const fetchPublish = token => fetch('/api/publish', {
-    credentials: 'include',
-    headers: {
-        Accept: 'application/json',
-        Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json',
-    },
-}).then((response) => {
-    if (response.status >= 200 && response.status < 300) return response;
-    throw new Error(response.statusText);
-}).then(response => response.json());
+import { PUBLISH, getPublishRequest, publishSuccess, publishError } from './';
+import fetchSaga from '../../lib/fetchSaga';
 
 export function* handlePublishRequest() {
-    const token = yield select(getToken);
+    const request = yield select(getPublishRequest);
 
     try {
-        yield call(fetchPublish, token);
-        yield put(publishSuccess());
+        const { error } = yield call(fetchSaga, request);
+
+        if (error) {
+            return yield put(publishError(error));
+        }
+
+        return yield put(publishSuccess());
     } catch (error) {
-        yield put(publishError(error));
+        return yield put(publishError(error));
     }
 }
 

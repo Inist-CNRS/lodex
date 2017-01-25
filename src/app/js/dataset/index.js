@@ -35,3 +35,20 @@ export default handleActions({
         loading: false,
     }),
 }, defaultState);
+
+export const getLoadDatasetPageRequest = (state, { page, perPage }) => {
+    const { host, protocol } = window.location;
+    const url = new URL(`${protocol}//${host}/api/publishedDataset`);
+    url.searchParams.append('page', page);
+    url.searchParams.append('perPage', perPage);
+
+    return {
+        url,
+        credentials: 'include',
+        headers: {
+            Accept: 'application/json',
+            Authorization: `Bearer ${state.user.token}`,
+            'Content-Type': 'application/json',
+        },
+    };
+};
