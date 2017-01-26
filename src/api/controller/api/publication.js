@@ -4,6 +4,6 @@ export default async (ctx) => {
 
     ctx.body = {
         published: publishedDatasetCount > 0,
-        model: fields,
+        fields,
     };
 };

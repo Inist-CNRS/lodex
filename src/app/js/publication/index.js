@@ -10,7 +10,7 @@ export const loadPublicationError = createAction(LOAD_PUBLICATION_ERROR);
 
 export const defaultState = {
     loading: false,
-    model: null,
+    fields: null,
     published: null,
 };
 
@@ -20,11 +20,11 @@ export default handleActions({
         error: null,
         loading: true,
     }),
-    LOAD_PUBLICATION_SUCCESS: (state, { payload: { published, model } }) => ({
+    LOAD_PUBLICATION_SUCCESS: (state, { payload: { published, fields } }) => ({
         ...state,
         error: null,
         loading: false,
-        model,
+        fields,
         published,
     }),
     LOAD_PUBLICATION_ERROR: (state, { payload: error }) => ({
@@ -36,7 +36,7 @@ export default handleActions({
 
 export const hasPublishedDataset = ({ publication: { published } }) => published;
 
-export const getColumns = ({ publication: { model } }) => model;
+export const getColumns = ({ publication: { fields } }) => fields;
 
 export const getLoadPublicationRequest = state => ({
     url: '/api/publication',
