@@ -30,6 +30,7 @@ const styles = {
 
 export const UploadComponent = ({ onFileLoad, error }) => (
     <div
+        className="upload"
         style={styles.div}
     >
         { error ? <Alert>
@@ -43,6 +44,7 @@ export const UploadComponent = ({ onFileLoad, error }) => (
             icon={<ArchiveIcon />}
         >
             <input
+                name="file"
                 type="file"
                 onChange={e => onFileLoad(e.target.files[0])}
                 style={styles.input}

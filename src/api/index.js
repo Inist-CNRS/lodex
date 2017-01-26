@@ -58,7 +58,7 @@ app.context.onerror = function onError(err) {
 };
 
 if (!module.parent) {
-    global.console.log('Server listening on port ' + config.port);
+    global.console.log(`Server listening on port ${config.port}`);
     global.console.log('Press CTRL+C to stop server');
     app.listen(config.port);
 }

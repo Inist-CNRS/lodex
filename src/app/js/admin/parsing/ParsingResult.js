@@ -58,7 +58,7 @@ export class ParsingResultComponent extends Component {
         const { showErrors } = this.state;
 
         return (
-            <Card initiallyExpanded>
+            <Card className="parsingResult" initiallyExpanded>
                 <CardHeader
                     actAsExpander
                     showExpandableButton
