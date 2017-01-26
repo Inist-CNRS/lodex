@@ -15,7 +15,6 @@ export const getDocumentTransformations = columns => columns.map(getColumnTransf
 export const applyTransformation = documentTransformers => async (doc) => {
     const partialDocsPromises = documentTransformers
     .map(transformer => transformer(doc));
-
     const partialDocs = await Promise.all(partialDocsPromises);
 
     return partialDocs.reduce((newDoc, partialDoc) => ({

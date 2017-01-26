@@ -1,34 +1,19 @@
 /* eslint no-await-in-loop: off */
-import capitalize from 'lodash.capitalize';
+import getDocumentTransformer from '../../../common/getDocumentTransformer';
 
 export default async (ctx) => {
     const count = await ctx.dataset.count({});
     let handled = 0;
-    let firstData;
+
+    const publishedModel = await ctx.publishedModel.find({}).toArray();
+    const transformDocument = getDocumentTransformer(publishedModel);
 
     while (handled < count) {
         const dataset = await ctx.dataset.find({}).skip(handled).limit(100).toArray();
-
-        // Keep the first item in dataset for publication metas detection
-        if (!firstData) {
-            firstData = dataset[0];
-        }
-        await ctx.publishedDataset.insertMany(dataset);
+        const transformedDataset = await Promise.all(dataset.map(transformDocument));
+        await ctx.publishedDataset.insertMany(transformedDataset);
         handled += dataset.length;
     }
-
-    const publishedModel = Object
-        .keys(firstData)
-        .filter(k => k !== '_id') // Exclude the mongo db identifier
-        .reduce((columns, key) => [
-            ...columns,
-            {
-                key,
-                label: capitalize(key).replace('_', ' '),
-            },
-        ], []);
-
-    await ctx.publishedModel.insertMany(publishedModel);
 
     ctx.redirect('/api/publication');
 };
