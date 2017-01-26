@@ -17,10 +17,10 @@ export function* handleLoadParsingResult() {
     const { error, response } = yield call(fetchSaga, request);
 
     if (error) {
-        yield put(loadParsingResultError(error));
+        return yield put(loadParsingResultError(error));
     }
 
-    yield put(loadParsingResultSuccess(response));
+    return yield put(loadParsingResultSuccess(response));
 }
 
 export function* watchLoadParsingResult() {

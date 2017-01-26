@@ -1,6 +1,7 @@
 import expect from 'expect';
 import reducer, {
     defaultState,
+    getLoadParsingResultRequest,
     loadParsingResult,
     loadParsingResultError,
     loadParsingResultSuccess,
@@ -35,6 +36,21 @@ describe('parsing reducer', () => {
             ...defaultState,
             loading: false,
             parsing: true,
+        });
+    });
+
+    describe('getLoadParsingResultRequest', () => {
+        it('should return the correct request', () => {
+            const request = getLoadParsingResultRequest({ user: { token: 'test' } });
+            expect(request).toEqual({
+                url: '/api/parsing',
+                credentials: 'include',
+                headers: {
+                    Accept: 'application/json',
+                    Authorization: 'Bearer test',
+                    'Content-Type': 'application/json',
+                },
+            });
         });
     });
 });

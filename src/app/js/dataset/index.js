@@ -36,19 +36,12 @@ export default handleActions({
     }),
 }, defaultState);
 
-export const getLoadDatasetPageRequest = (state, { page, perPage }) => {
-    const { host, protocol } = window.location;
-    const url = new URL(`${protocol}//${host}/api/publishedDataset`);
-    url.searchParams.append('page', page);
-    url.searchParams.append('perPage', perPage);
-
-    return {
-        url,
-        credentials: 'include',
-        headers: {
-            Accept: 'application/json',
-            Authorization: `Bearer ${state.user.token}`,
-            'Content-Type': 'application/json',
-        },
-    };
-};
+export const getLoadDatasetPageRequest = (state, { page, perPage }) => ({
+    url: `/api/publishedDataset?page${encodeURIComponent(page)}&perPage=${encodeURIComponent(perPage)}`,
+    credentials: 'include',
+    headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${state.user.token}`,
+        'Content-Type': 'application/json',
+    },
+});
