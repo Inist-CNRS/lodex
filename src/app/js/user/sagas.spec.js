@@ -23,7 +23,7 @@ describe('user saga', () => {
         });
 
         it('should put loginSuccess action with the token from fetchLogin', () => {
-            expect(saga.next({ response: 'foo' }).value).toEqual(put(loginSuccess('foo')));
+            expect(saga.next({ response: { token: 'foo' } }).value).toEqual(put(loginSuccess('foo')));
         });
 
         it('should put stopSubmit action for login form', () => {
