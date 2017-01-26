@@ -1,3 +1,6 @@
 export default (db) => {
-    return db.collection('field');
+    const collection = db.collection('field');
+    collection.findAll = () => collection.find({}).toArray();
+
+    return collection;
 };
