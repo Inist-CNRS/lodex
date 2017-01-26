@@ -50,8 +50,4 @@ describe('Home page', function homeTests() {
         const elements = await driver.findElements(By.css('.dialog-login h3'));
         expect(elements.length).toEqual(0);
     });
-
-    after(() => {
-        driver.quit();
-    });
 });

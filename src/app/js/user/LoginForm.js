@@ -35,7 +35,7 @@ const renderTextField = ({ input, label, meta: { touched, error }, ...custom }) 
 renderTextField.propTypes = reduxFormPropTypes;
 
 export const LoginFormComponent = ({ error, handleSubmit, p: polyglot }) => (
-    <form onSubmit={handleSubmit}>
+    <form id="login_form" onSubmit={handleSubmit}>
         {error && <Alert><p>{error}</p></Alert>}
         <Field name="username" component={renderTextField} label={polyglot.t('Username')} fullWidth />
         <Field name="password" type="password" component={renderTextField} label={polyglot.t('Password')} fullWidth />
