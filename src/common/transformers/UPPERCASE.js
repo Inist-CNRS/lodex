@@ -1,8 +1,8 @@
-export default (destinationColumn, sourceColumn) => doc =>
+export default column => doc =>
 new Promise((resolve, reject) => {
     try {
         resolve({
-            [destinationColumn]: doc[sourceColumn],
+            [column]: doc[column].toUpperCase(),
         });
     } catch (error) {
         reject(error);

@@ -1,17 +1,16 @@
-import * as transformers from './transformers';
+import transformers from './transformers';
 import asyncCompose from './lib/asyncCompose';
 
-export const getDocumentTransformations = columns =>
-columns.reduce((acc, column) => {
-    const documentTransformers = transformers.map(({ func, args }) => transformers[func](column.name, ...args));
+export const getColumnTransformation = (column) => {
+    const documentTransformers = column.transformers
+    .map(({ operation, args }) => transformers[operation](column.name, ...args));
 
     const transformDocument = asyncCompose(documentTransformers);
 
-    return [
-        ...acc,
-        transformDocument,
-    ];
-}, {});
+    return transformDocument;
+};
+
+export const getDocumentTransformations = columns => columns.map(getColumnTransformation);
 
 export const applyTransformation = documentTransformers => async (doc) => {
     const partialDocsPromises = documentTransformers
