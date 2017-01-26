@@ -45,3 +45,13 @@ export const getParsedExcerptColumns = (state) => {
 };
 
 export const hasUploadedFile = state => state && state.parsing && state.parsing.totalLoadedLines;
+
+export const getLoadParsingResultRequest = state => ({
+    url: '/api/parsing',
+    credentials: 'include',
+    headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${state.user.token}`,
+        'Content-Type': 'application/json',
+    },
+});

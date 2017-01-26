@@ -28,3 +28,14 @@ export const loginSuccess = createAction(LOGIN_SUCCESS);
 
 export const isLoggedIn = state => !!state.user.token;
 export const getToken = state => state.user.token;
+
+export const getLoginRequest = (state, credentials) => ({
+    url: '/api/login',
+    body: JSON.stringify(credentials),
+    credentials: 'include',
+    headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+    },
+    method: 'POST',
+});
