@@ -3,46 +3,45 @@ import { bindActionCreators } from 'redux';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
-
-import Dialog from 'material-ui/Dialog';
-import FlatButton from 'material-ui/FlatButton';
 import { submit as submitAction, isSubmitting } from 'redux-form';
+import { Card, CardActions, CardHeader, CardText } from 'material-ui/Card';
 
 import { polyglot as polyglotPropTypes } from '../lib/propTypes';
 import { login as loginAction, toggleLogin as toggleLoginAction, LOGIN_FORM_NAME } from './';
 import LoginForm from './LoginForm';
 import ButtonWithStatus from '../lib/ButtonWithStatus';
 
-export const LoginDialog = ({ login, p: polyglot, showModal, submit, submitting, toggleLogin }) => (
-    <Dialog
-        className="dialog-login"
-        title="Sign in"
-        actions={[
-            <FlatButton
-                label={polyglot.t('Cancel')}
-                onTouchTap={toggleLogin}
-            />,
+const styles = {
+    container: {
+        marginTop: '0.5rem',
+    },
+};
+
+export const LoginComponent = ({ login, p: polyglot, submit, submitting }) => (
+    <Card style={styles.container}>
+        <CardHeader title={polyglot.t('Login')} />
+        <CardText>
+            <LoginForm onSubmit={login} />
+        </CardText>
+        <CardActions>
             <ButtonWithStatus
                 label={polyglot.t('Sign in')}
                 loading={submitting}
                 onTouchTap={submit}
             />,
-        ]}
-        modal
-        open={showModal}
-        onRequestClose={toggleLogin}
-    >
-        <LoginForm onSubmit={login} />
-    </Dialog>
+        </CardActions>
+    </Card>
 );
 
-LoginDialog.propTypes = {
-    showModal: PropTypes.bool.isRequired,
+LoginComponent.propTypes = {
     login: PropTypes.func.isRequired,
     p: polyglotPropTypes.isRequired,
     submit: PropTypes.func.isRequired,
     submitting: PropTypes.bool.isRequired,
-    toggleLogin: PropTypes.func.isRequired,
+};
+
+LoginComponent.defaultProps = {
+    previousState: null,
 };
 
 export const mapStateToProps = state => ({
@@ -50,8 +49,11 @@ export const mapStateToProps = state => ({
     submitting: isSubmitting(LOGIN_FORM_NAME)(state),
 });
 
-export const mapDispatchToProps = dispatch => bindActionCreators({
-    login: loginAction,
+export const mapDispatchToProps = (dispatch, ownProps) => bindActionCreators({
+    login: values => loginAction({
+        ...values,
+        previousState: ownProps.location && ownProps.location.state && ownProps.location.state.nextPathname,
+    }),
     submit: () => submitAction(LOGIN_FORM_NAME),
     toggleLogin: toggleLoginAction,
 }, dispatch);
@@ -59,4 +61,5 @@ export const mapDispatchToProps = dispatch => bindActionCreators({
 export default compose(
     connect(mapStateToProps, mapDispatchToProps),
     translate,
-)(LoginDialog);
+)(LoginComponent);
+

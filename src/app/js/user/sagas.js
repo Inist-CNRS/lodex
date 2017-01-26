@@ -1,10 +1,12 @@
 import { takeEvery } from 'redux-saga';
 import { call, fork, put, select } from 'redux-saga/effects';
 import { startSubmit, stopSubmit } from 'redux-form';
+import { push } from 'react-router-redux';
+
 import { LOGIN, LOGIN_FORM_NAME, getLoginRequest, loginSuccess } from './';
 import fetchSaga from '../lib/fetchSaga';
 
-export function* handleLoginRequest({ payload: credentials }) {
+export function* handleLoginRequest({ payload: { previousState, ...credentials } }) {
     yield put(startSubmit(LOGIN_FORM_NAME));
     const request = yield select(getLoginRequest, credentials);
     const { error, response } = yield call(fetchSaga, request);
@@ -14,6 +16,11 @@ export function* handleLoginRequest({ payload: credentials }) {
     }
 
     yield put(loginSuccess(response.token));
+
+    if (previousState) {
+        yield put(push(previousState));
+    }
+
     return yield put(stopSubmit(LOGIN_FORM_NAME));
 }
 
