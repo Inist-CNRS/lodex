@@ -7,13 +7,13 @@ import fetchSaga from '../lib/fetchSaga';
 export function* handleLoginRequest({ payload: credentials }) {
     yield put(startSubmit(LOGIN_FORM_NAME));
     const request = yield select(getLoginRequest, credentials);
-    const { error, response: token } = yield call(fetchSaga, request);
+    const { error, response } = yield call(fetchSaga, request);
 
     if (error) {
         return yield put(stopSubmit(LOGIN_FORM_NAME, { _error: error.message }));
     }
 
-    yield put(loginSuccess(token));
+    yield put(loginSuccess(response.token));
     return yield put(stopSubmit(LOGIN_FORM_NAME));
 }
 
