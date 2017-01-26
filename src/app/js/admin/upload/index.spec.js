@@ -7,7 +7,7 @@ import reducer, {
     UPLOAD_FILE_SUCCESS,
 } from './';
 
-describe.only('upload reduce', () => {
+describe('upload reduce', () => {
     it('should return defaultState when no state', () => {
         expect(reducer(undefined, {
             type: 'OTHER_ACTION',

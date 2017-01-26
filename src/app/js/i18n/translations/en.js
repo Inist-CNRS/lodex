@@ -12,4 +12,10 @@ export default {
     line: 'line',
     error: 'error',
     raw: 'raw',
+    Publication: 'Publication',
+    'Publication explanations': 'This will make your transformed data public. Once it has been published, you will not be able to modify it.',
+    Published: 'Your data has been published.',
+    showing: 'Showing {from} to {to} of {total}',
+    page: 'Page',
+    perPage: 'per page',
 };
