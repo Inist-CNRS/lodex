@@ -3,7 +3,7 @@ import publication from './publication';
 
 describe('publication', () => {
     it('should return the correct status if no dataset has been published', async () => {
-        const field = [{ foo: 'foo' }];
+        const fields = [{ foo: 'foo' }];
 
         const ctx = {
             publishedDataset: {
@@ -11,7 +11,7 @@ describe('publication', () => {
             },
             field: {
                 find: () => ({
-                    toArray: () => Promise.resolve(field),
+                    toArray: () => Promise.resolve(fields),
                 }),
             },
         };
@@ -20,12 +20,12 @@ describe('publication', () => {
 
         expect(ctx.body).toEqual({
             published: false,
-            model: field,
+            fields,
         });
     });
 
     it('should return the correct status if a dataset has been published', async () => {
-        const field = [{ foo: 'foo' }];
+        const fields = [{ foo: 'foo' }];
 
         const ctx = {
             publishedDataset: {
@@ -33,7 +33,7 @@ describe('publication', () => {
             },
             field: {
                 find: () => ({
-                    toArray: () => Promise.resolve(field),
+                    toArray: () => Promise.resolve(fields),
                 }),
             },
         };
@@ -42,7 +42,7 @@ describe('publication', () => {
 
         expect(ctx.body).toEqual({
             published: true,
-            model: field,
+            fields,
         });
     });
 });
