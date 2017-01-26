@@ -9,7 +9,10 @@ import {
     loadParsingResultSuccess,
 } from './';
 
-import { handleLoadParsingResult } from './sagas';
+
+import {
+    handleLoadParsingResult,
+} from './sagas';
 
 describe('parsing saga', () => {
     describe('handleLoadParsingResult', () => {

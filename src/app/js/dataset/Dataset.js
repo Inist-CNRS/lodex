@@ -4,6 +4,7 @@ import { compose } from 'recompose';
 import translate from 'redux-polyglot/translate';
 
 import { CardText } from 'material-ui/Card';
+
 import {
     Table,
     TableBody,
@@ -20,8 +21,8 @@ import { polyglot as polyglotPropTypes } from '../lib/propTypes';
 import { loadDatasetPage as loadDatasetPageAction } from './';
 import { getColumns } from '../publication';
 
-class DatasetComponent extends Component {
-    componentDidMount() {
+export class DatasetComponent extends Component {
+    componentWillMount() {
         const { loadDatasetPage, currentPage } = this.props;
         loadDatasetPage({ page: currentPage, perPage: 20 });
     }
@@ -71,13 +72,18 @@ class DatasetComponent extends Component {
 }
 
 DatasetComponent.propTypes = {
-    columns: PropTypes.arrayOf(PropTypes.object).isRequired,
+    columns: PropTypes.arrayOf(PropTypes.object),
     currentPage: PropTypes.number.isRequired,
-    dataset: PropTypes.arrayOf(PropTypes.object).isRequired,
+    dataset: PropTypes.arrayOf(PropTypes.object),
     loadDatasetPage: PropTypes.func.isRequired,
     loading: PropTypes.bool.isRequired,
     p: polyglotPropTypes.isRequired,
     total: PropTypes.number.isRequired,
+};
+
+DatasetComponent.defaultProps = {
+    columns: [],
+    dataset: [],
 };
 
 const mapStateToProps = state => ({
