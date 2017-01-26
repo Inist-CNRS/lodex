@@ -22,13 +22,13 @@ describe('publication reducer', () => {
     });
 
     it('should handle the LOAD_PUBLICATION_SUCCESS action', () => {
-        const action = loadPublicationSuccess({ published: true, model: [] });
+        const action = loadPublicationSuccess({ published: true, fields: [] });
         const state = reducer({ loading: true, error: true, published: false }, action);
         expect(state).toEqual({
             error: null,
             loading: false,
             published: true,
-            model: [],
+            fields: [],
         });
     });
 

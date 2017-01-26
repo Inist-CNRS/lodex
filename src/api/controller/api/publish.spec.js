@@ -1,51 +1,59 @@
 /* eslint max-len: off */
 import expect, { createSpy } from 'expect';
-import publish from './publish';
+import { publishMiddleware as publish } from './publish';
 
 describe('publish', () => {
     const dataset = [{ foo: 'foo1', bar: 'bar1' }, { foo: 'foo2', bar: 'bar2' }];
-    const toArray = createSpy().andReturn(dataset);
-    const limit = createSpy().andReturn({ toArray });
-    const skip = createSpy().andReturn({ limit });
+    const fields = ['field1', 'field2'];
+    const transformDocument = createSpy().andReturn(Promise.resolve('transformedDocument'));
+
     const ctx = {
         dataset: {
             count: createSpy().andReturn(Promise.resolve(201)),
-            find: createSpy().andReturn({ skip }),
+            findLimitFromSkip: createSpy().andReturn(dataset),
         },
         publishedDataset: {
             insertMany: createSpy(),
         },
-        publishedModel: {
-            insertMany: createSpy(),
+        field: {
+            findAll: createSpy().andReturn(fields),
         },
         redirect: createSpy(),
+        getDocumentTransformer: createSpy().andReturn(transformDocument),
     };
 
-    it('should get the total number of items in the original dataset', async () => {
+    beforeEach(async () => {
         await publish(ctx);
+    });
+
+    it('should get the total number of items in the original dataset', () => {
         expect(ctx.dataset.count).toHaveBeenCalledWith({});
     });
 
-    it('should load items from the original dataset and insert them in the publishedDataset by page of 100', async () => {
-        await publish(ctx);
-        expect(ctx.dataset.find).toHaveBeenCalledWith({});
-        expect(skip).toHaveBeenCalledWith(0);
-        expect(skip).toHaveBeenCalledWith(200); // Ensure we got to the third page
-        expect(limit).toHaveBeenCalledWith(100);
-        expect(toArray).toHaveBeenCalledWith();
-        expect(ctx.publishedDataset.insertMany).toHaveBeenCalledWith(dataset);
+    it('should get the columns', () => {
+        expect(ctx.field.findAll).toHaveBeenCalled();
     });
 
-    it('should have insert the publishedModel', async () => {
-        await publish(ctx);
-        expect(ctx.publishedModel.insertMany).toHaveBeenCalledWith([
-            { key: 'foo', label: 'Foo' },
-            { key: 'bar', label: 'Bar' },
-        ]);
+    it('should get the transformers', () => {
+        expect(ctx.getDocumentTransformer).toHaveBeenCalledWith(fields);
     });
 
-    it('should redirect to the publication route', async () => {
-        await publish(ctx);
+    it('should load items from the original dataset and insert them in the publishedDataset by page of 100', () => {
+        expect(ctx.dataset.findLimitFromSkip).toHaveBeenCalledWith(100, 0);
+        expect(ctx.dataset.findLimitFromSkip).toHaveBeenCalledWith(100, 200);
+        expect(ctx.publishedDataset.insertMany).toHaveBeenCalledWith(['transformedDocument', 'transformedDocument']);
+    });
+
+    it('should call transform document with each document in dataset', () => {
+        expect(transformDocument).toHaveBeenCalledWith(dataset[0], 0, dataset);
+        expect(transformDocument).toHaveBeenCalledWith(dataset[1], 1, dataset);
+    });
+
+    it('should insert all transformedDocument', () => {
+        expect(ctx.publishedDataset.insertMany).toHaveBeenCalledWith(['transformedDocument', 'transformedDocument']);
+    });
+
+    it('should redirect to the publication route', () => {
         expect(ctx.redirect).toHaveBeenCalledWith('/api/publication');
     });
 });

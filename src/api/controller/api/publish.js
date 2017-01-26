@@ -1,34 +1,24 @@
 /* eslint no-await-in-loop: off */
-import capitalize from 'lodash.capitalize';
+import getDocumentTransformer from '../../../common/getDocumentTransformer';
 
-export default async (ctx) => {
+export const publishMiddleware = async (ctx) => {
     const count = await ctx.dataset.count({});
     let handled = 0;
-    let firstData;
+
+    const columns = await ctx.field.findAll();
+    const transformDocument = ctx.getDocumentTransformer(columns);
 
     while (handled < count) {
-        const dataset = await ctx.dataset.find({}).skip(handled).limit(100).toArray();
-
-        // Keep the first item in dataset for publication metas detection
-        if (!firstData) {
-            firstData = dataset[0];
-        }
-        await ctx.publishedDataset.insertMany(dataset);
+        const dataset = await ctx.dataset.findLimitFromSkip(100, handled);
+        const transformedDataset = await Promise.all(dataset.map(transformDocument));
+        await ctx.publishedDataset.insertMany(transformedDataset);
         handled += dataset.length;
     }
 
-    const publishedModel = Object
-        .keys(firstData)
-        .filter(k => k !== '_id') // Exclude the mongo db identifier
-        .reduce((columns, key) => [
-            ...columns,
-            {
-                key,
-                label: capitalize(key).replace('_', ' '),
-            },
-        ], []);
-
-    await ctx.publishedModel.insertMany(publishedModel);
-
     ctx.redirect('/api/publication');
+};
+
+export default async (ctx) => {
+    ctx.getDocumentTransformer = getDocumentTransformer;
+    await publishMiddleware(ctx);
 };
