@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { compose } from 'recompose';
 import translate from 'redux-polyglot/translate';
 
-import { Card, CardText } from 'material-ui/Card';
+import { CardText } from 'material-ui/Card';
 import {
     Table,
     TableBody,
@@ -14,7 +14,7 @@ import {
     TableRowColumn,
 } from 'material-ui/Table';
 import Pagination from './Pagination';
-
+import Card from '../lib/Card';
 import { polyglot as polyglotPropTypes } from '../lib/propTypes';
 import { loadDatasetPage as loadDatasetPageAction } from './';
 import { getColumns } from '../publication';

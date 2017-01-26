@@ -1,20 +1,19 @@
 import React, { Component, PropTypes } from 'react';
+import { compose } from 'recompose';
 import { connect } from 'react-redux';
-import CircularProgress from 'material-ui/CircularProgress';
+import translate from 'redux-polyglot/translate';
 
+import { polyglot as polyglotPropTypes } from '../lib/propTypes';
 import {
     loadPublication as loadPublicationAction,
     hasPublishedDataset as selectHasPublishedDataset,
 } from '../publication';
 
+import Alert from '../lib/Alert';
+import Card from '../lib/Card';
+import Loading from '../lib/Loading';
 import Dataset from '../dataset/Dataset';
 import NoDataset from '../publication/NoDataset';
-
-const styles = {
-    container: {
-        marginTop: '0.5rem',
-    },
-};
 
 export class HomeComponent extends Component {
     static propTypes = {
@@ -22,6 +21,7 @@ export class HomeComponent extends Component {
         loading: PropTypes.bool.isRequired,
         loadPublication: PropTypes.func.isRequired,
         hasPublishedDataset: PropTypes.bool.isRequired,
+        p: polyglotPropTypes.isRequired,
     }
 
     componentWillMount() {
@@ -33,37 +33,28 @@ export class HomeComponent extends Component {
             error,
             hasPublishedDataset,
             loading,
+            p: polyglot,
         } = this.props;
 
         if (loading) {
             return (
-                <CircularProgress size={80} thickness={5} />
+                <Loading>{polyglot.t('loading')}</Loading>
             );
         }
 
         if (error) {
             return (
-                <h2>{error}</h2>
+                <Card>
+                    <Alert>{error}</Alert>
+                </Card>
             );
         }
 
         if (hasPublishedDataset) {
-            return (
-                <div>
-                    <div style={styles.container}>
-                        <Dataset />
-                    </div>
-                </div>
-            );
+            return <Dataset />;
         }
 
-        return (
-            <div>
-                <div style={styles.container}>
-                    <NoDataset />
-                </div>
-            </div>
-        );
+        return <NoDataset />;
     }
 }
 
@@ -77,4 +68,7 @@ const mapDispatchToProps = ({
     loadPublication: loadPublicationAction,
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(HomeComponent);
+export default compose(
+    connect(mapStateToProps, mapDispatchToProps),
+    translate,
+)(HomeComponent);

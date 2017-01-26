@@ -2,7 +2,7 @@ import React from 'react';
 import expect, { createSpy } from 'expect';
 import { shallow } from 'enzyme';
 
-import CircularProgress from 'material-ui/CircularProgress';
+import Loading from '../lib/Loading';
 import ParsingResult from './parsing/ParsingResult';
 import Upload from './upload/Upload';
 import { AdminComponent } from './Admin';
@@ -10,13 +10,23 @@ import { AdminComponent } from './Admin';
 describe('<Admin />', () => {
     it('should call loadParsingResult on mount', () => {
         const loadParsingResult = createSpy();
-        shallow(<AdminComponent hasUploadedFile loadParsingResult={loadParsingResult} loadPublication={() => {}} />);
+        shallow(<AdminComponent
+            hasUploadedFile
+            loadParsingResult={loadParsingResult}
+            loadPublication={() => {}}
+            p={{ t: () => {} }}
+        />);
         expect(loadParsingResult).toHaveBeenCalled();
     });
 
     it('should call loadPublication on mount', () => {
         const loadPublication = createSpy();
-        shallow(<AdminComponent hasUploadedFile loadPublication={loadPublication} loadParsingResult={() => {}} />);
+        shallow(<AdminComponent
+            hasUploadedFile
+            loadPublication={loadPublication}
+            loadParsingResult={() => {}}
+            p={{ t: () => {} }}
+        />);
         expect(loadPublication).toHaveBeenCalled();
     });
 
@@ -26,8 +36,9 @@ describe('<Admin />', () => {
             loadParsingResult={() => {}}
             loadPublication={() => {}}
             loadingParsingResult
+            p={{ t: () => {} }}
         />);
-        expect(wrapper.find(CircularProgress).length).toEqual(1);
+        expect(wrapper.find(Loading).length).toEqual(1);
     });
 
     it('should render the ParsingResult', () => {
@@ -35,6 +46,7 @@ describe('<Admin />', () => {
             hasUploadedFile
             loadParsingResult={() => {}}
             loadPublication={() => {}}
+            p={{ t: () => {} }}
         />);
         expect(wrapper.contains(<ParsingResult />)).toEqual(true);
     });
@@ -43,6 +55,7 @@ describe('<Admin />', () => {
         const wrapper = shallow(<AdminComponent
             loadParsingResult={() => {}}
             loadPublication={() => {}}
+            p={{ t: () => {} }}
         />);
         expect(wrapper.contains(<ParsingResult />)).toEqual(false);
         expect(wrapper.contains(<Upload />)).toEqual(true);

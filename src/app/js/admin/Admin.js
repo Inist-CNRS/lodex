@@ -1,6 +1,9 @@
 import React, { Component, PropTypes } from 'react';
+import { compose } from 'recompose';
 import { connect } from 'react-redux';
-import CircularProgress from 'material-ui/CircularProgress';
+import translate from 'redux-polyglot/translate';
+
+import { polyglot as polyglotPropTypes } from '../lib/propTypes';
 
 import {
     loadParsingResult as loadParsingResultAction,
@@ -14,12 +17,7 @@ import ParsingResult from './parsing/ParsingResult';
 import Publish from './publish/Publish';
 import Published from '../publication/Published';
 import Upload from './upload/Upload';
-
-const styles = {
-    container: {
-        marginTop: '0.5rem',
-    },
-};
+import Loading from '../lib/Loading';
 
 export class AdminComponent extends Component {
     static propTypes = {
@@ -28,6 +26,7 @@ export class AdminComponent extends Component {
         loadingParsingResult: PropTypes.bool.isRequired,
         hasPublishedDataset: PropTypes.bool.isRequired,
         hasUploadedFile: PropTypes.bool.isRequired,
+        p: polyglotPropTypes.isRequired,
     }
 
     componentWillMount() {
@@ -40,44 +39,27 @@ export class AdminComponent extends Component {
             loadingParsingResult,
             hasPublishedDataset,
             hasUploadedFile,
+            p: polyglot,
         } = this.props;
 
         if (loadingParsingResult) {
-            return (
-                <CircularProgress size={80} thickness={5} />
-            );
+            return <Loading>{polyglot.t('loading_parsing_results')}</Loading>;
         }
 
         if (hasPublishedDataset) {
-            return (
-                <div>
-                    <div style={styles.container}>
-                        <Published />
-                    </div>
-                </div>
-            );
+            return <Published />;
         }
 
         if (hasUploadedFile) {
             return (
                 <div>
-                    <div style={styles.container}>
-                        <ParsingResult />
-                    </div>
-                    <div style={styles.container}>
-                        <Publish />
-                    </div>
+                    <ParsingResult />
+                    <Publish />
                 </div>
             );
         }
 
-        return (
-            <div>
-                <div style={styles.container}>
-                    <Upload />
-                </div>
-            </div>
-        );
+        return <Upload />;
     }
 }
 
@@ -92,4 +74,7 @@ const mapDispatchToProps = ({
     loadPublication: loadPublicationAction,
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(AdminComponent);
+export default compose(
+    connect(mapStateToProps, mapDispatchToProps),
+    translate,
+)(AdminComponent);
