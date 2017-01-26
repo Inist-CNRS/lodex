@@ -37,13 +37,13 @@ class DatasetComponent extends Component {
                     <Table selectable={false} fixedHeader={false} style={{ width: 'auto' }}>
                         <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
                             <TableRow>
-                                {columns.map(c => <TableHeaderColumn>{c.label}</TableHeaderColumn>)}
+                                {columns.map(c => <TableHeaderColumn>{c.name}</TableHeaderColumn>)}
                             </TableRow>
                         </TableHeader>
                         <TableBody displayRowCheckbox={false}>
                             {dataset.map(data => (
                                 <TableRow>
-                                    {columns.map(c => <TableRowColumn>{data[c.key]}</TableRowColumn>)}
+                                    {columns.map(c => <TableRowColumn>{data[c.name]}</TableRowColumn>)}
                                 </TableRow>
                             ))}
                         </TableBody>
