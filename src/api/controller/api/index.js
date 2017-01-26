@@ -10,7 +10,7 @@ import parsing from './parsing';
 import publication from './publication';
 import publish from './publish';
 import publishedDataset from './publishedDataset';
-import { getAllField, saveField, removeField } from './field';
+import { getAllField, postField, putField, removeField } from './field';
 
 const app = new Koa();
 
@@ -21,7 +21,8 @@ app.use(route.get('/publication', publication));
 app.use(route.get('/publishedDataset', publishedDataset));
 
 app.use(route.get('/fields', getAllField));
-app.use(route.put('/fields/:name', saveField));
+app.use(route.post('/fields', postField));
+app.use(route.put('/fields/:name', putField));
 app.use(route.del('/fields/:name', removeField));
 
 app.use(jwt({ secret: auth.cookieSecret, cookie: 'lodex_token', key: 'cookie' }));
