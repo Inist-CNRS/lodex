@@ -1,35 +1,24 @@
-import { takeLatest } from 'redux-saga';
-import { call, fork, put } from 'redux-saga/effects';
+import { takeEvery } from 'redux-saga';
+import { call, fork, put, select } from 'redux-saga/effects';
 import { startSubmit, stopSubmit } from 'redux-form';
-import { LOGIN, LOGIN_FORM_NAME, loginSuccess } from './';
-
-export const fetchLogin = credentials => fetch('/api/login', {
-    body: JSON.stringify(credentials),
-    credentials: 'include',
-    headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-    },
-    method: 'POST',
-}).then((response) => {
-    if (response.status >= 200 && response.status < 300) return response;
-    throw new Error(response.statusText);
-}).then(response => response.json());
+import { LOGIN, LOGIN_FORM_NAME, getLoginRequest, loginSuccess } from './';
+import fetchSaga from '../lib/fetchSaga';
 
 export function* handleLoginRequest({ payload: credentials }) {
     yield put(startSubmit(LOGIN_FORM_NAME));
+    const request = yield select(getLoginRequest, credentials);
+    const { error, response: token } = yield call(fetchSaga, request);
 
-    try {
-        const { token } = yield call(fetchLogin, credentials);
-        yield put(loginSuccess(token));
-        yield put(stopSubmit(LOGIN_FORM_NAME));
-    } catch (error) {
-        yield put(stopSubmit(LOGIN_FORM_NAME, { _error: error.message }));
+    if (error) {
+        return yield put(stopSubmit(LOGIN_FORM_NAME, { _error: error.message }));
     }
+
+    yield put(loginSuccess(token));
+    return yield put(stopSubmit(LOGIN_FORM_NAME));
 }
 
 export function* watchLoginRequest() {
-    yield takeLatest(LOGIN, handleLoginRequest);
+    yield takeEvery(LOGIN, handleLoginRequest);
 }
 
 export default function* () {

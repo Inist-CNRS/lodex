@@ -1,9 +1,10 @@
 import expect from 'expect';
-import { call, put } from 'redux-saga/effects';
+import { call, put, select } from 'redux-saga/effects';
 import { startSubmit, stopSubmit } from 'redux-form';
-import { LOGIN_FORM_NAME, loginSuccess } from './';
 
-import { fetchLogin, handleLoginRequest } from './sagas';
+import fetchSaga from '../lib/fetchSaga';
+import { LOGIN_FORM_NAME, getLoginRequest, loginSuccess } from './';
+import { handleLoginRequest } from './sagas';
 
 describe('user saga', () => {
     describe('handleLoginRequest', () => {
@@ -13,23 +14,28 @@ describe('user saga', () => {
             expect(saga.next().value).toEqual(put(startSubmit(LOGIN_FORM_NAME)));
         });
 
-        it('should call fetchLogin with credentials from action', () => {
-            expect(saga.next().value).toEqual(call(fetchLogin, { username: 'foo', password: 'pwd' }));
+        it('should select getLoginRequest', () => {
+            expect(saga.next().value).toEqual(select(getLoginRequest, { username: 'foo', password: 'pwd' }));
+        });
+
+        it('should call fetchSaga with the request', () => {
+            expect(saga.next('request').value).toEqual(call(fetchSaga, 'request'));
         });
 
         it('should put loginSuccess action with the token from fetchLogin', () => {
-            expect(saga.next({ token: 'foo' }).value).toEqual(put(loginSuccess('foo')));
+            expect(saga.next({ response: 'foo' }).value).toEqual(put(loginSuccess('foo')));
         });
 
         it('should put stopSubmit action for login form', () => {
-            expect(saga.next({ token: 'foo' }).value).toEqual(put(stopSubmit(LOGIN_FORM_NAME)));
+            expect(saga.next().value).toEqual(put(stopSubmit(LOGIN_FORM_NAME)));
         });
 
         it('should put stopSubmit action for login form with error if any', () => {
             const failedSaga = handleLoginRequest({ payload: { username: 'foo', password: 'pwd' } });
             failedSaga.next();
             failedSaga.next();
-            expect(failedSaga.throw({ message: 'foo' }).value)
+            failedSaga.next();
+            expect(failedSaga.next({ error: { message: 'foo' } }).value)
                 .toEqual(put(stopSubmit(LOGIN_FORM_NAME, { _error: 'foo' })));
         });
     });

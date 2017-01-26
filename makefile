@@ -49,8 +49,8 @@ docker-run-dev: ## run node server with pm2 for development and webpack-dev-serv
 build-frontend: ## Build the frontend application
 	NODE_ENV=${NODE_ENV} BABEL_ENV=browser ./node_modules/.bin/webpack \
 	    --config=./src/app/webpack.config.babel.js \
-	    $(if $(filter production staging,$(NODE_ENV)),-p,-d) \
-	    --progress
+	    $(if $(filter production staging test,$(NODE_ENV)),-p,-d) \
+	    $(if $(filter test,$(NODE_ENV)),,--progress)
 
 npm: ## allow to run dockerized npm command eg make npm 'install koa --save'
 	docker-compose run --rm npm $(COMMAND_ARGS)

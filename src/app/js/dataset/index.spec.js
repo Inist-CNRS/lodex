@@ -1,6 +1,8 @@
 import expect from 'expect';
+
 import reducer, {
     defaultState,
+    getLoadDatasetPageRequest,
     loadDatasetPage,
     loadDatasetPageSuccess,
     loadDatasetPageError,
@@ -37,6 +39,21 @@ describe('dataset reducer', () => {
         expect(state).toEqual({
             loading: false,
             error: 'foo',
+        });
+    });
+
+    describe('getLoadDatasetPageRequest', () => {
+        it('should return the correct request', () => {
+            const request = getLoadDatasetPageRequest({ user: { token: 'test' } }, { page: 10, perPage: 50 });
+            expect(request).toEqual({
+                url: '/api/publishedDataset?page10&perPage=50',
+                credentials: 'include',
+                headers: {
+                    Accept: 'application/json',
+                    Authorization: 'Bearer test',
+                    'Content-Type': 'application/json',
+                },
+            });
         });
     });
 });

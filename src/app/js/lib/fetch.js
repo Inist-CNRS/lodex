@@ -1,6 +1,6 @@
 import fetch from 'isomorphic-fetch';
 
-export default ({ url, config }) =>
+export default ({ url, ...config }) =>
 fetch(url, config)
 .then((response) => {
     if (response.status >= 200 && response.status < 300) {

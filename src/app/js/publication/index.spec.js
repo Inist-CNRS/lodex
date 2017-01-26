@@ -1,6 +1,7 @@
 import expect from 'expect';
 import reducer, {
     defaultState,
+    getLoadPublicationRequest,
     loadPublication,
     loadPublicationSuccess,
     loadPublicationError,
@@ -36,6 +37,21 @@ describe('publication reducer', () => {
         expect(state).toEqual({
             loading: false,
             error: 'foo',
+        });
+    });
+
+    describe('getLoadPublicationRequest', () => {
+        it('should return the correct request', () => {
+            const request = getLoadPublicationRequest({ user: { token: 'test' } });
+            expect(request).toEqual({
+                url: '/api/publication',
+                credentials: 'include',
+                headers: {
+                    Accept: 'application/json',
+                    Authorization: 'Bearer test',
+                    'Content-Type': 'application/json',
+                },
+            });
         });
     });
 });
