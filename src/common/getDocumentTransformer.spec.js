@@ -58,8 +58,7 @@ describe('getDocumentTransformer', () => {
 
             const transform = getFieldTransformation(column);
 
-            expect(await transform({ a: 'hello' }))
-            .toEqual({
+            expect(await transform({ a: 'hello' })).toEqual({
                 A: 'HELLO',
             });
         });

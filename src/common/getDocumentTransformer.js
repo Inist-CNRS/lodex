@@ -3,7 +3,7 @@ import asyncCompose from './lib/asyncCompose';
 
 export const getFieldTransformation = (field) => {
     const documentTransformers = field.transformers
-    .map(({ operation, args }) => transformers[operation](field.name, ...args));
+        .map(({ operation, args }) => transformers[operation](field.name, ...args));
 
     const transformDocument = asyncCompose(documentTransformers);
 
@@ -14,7 +14,8 @@ export const getDocumentTransformations = fields => fields.map(getFieldTransform
 
 export const applyTransformation = documentTransformers => async (doc) => {
     const partialDocsPromises = documentTransformers
-    .map(transformer => transformer(doc));
+        .map(transformer => transformer(doc));
+
     const partialDocs = await Promise.all(partialDocsPromises);
 
     return partialDocs.reduce((newDoc, partialDoc) => ({
@@ -25,5 +26,6 @@ export const applyTransformation = documentTransformers => async (doc) => {
 
 export default (fields) => {
     const documentTransformers = getDocumentTransformations(fields);
+
     return applyTransformation(documentTransformers);
 };

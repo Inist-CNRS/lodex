@@ -7,8 +7,7 @@ describe('COLUMN', () => {
         expect(await COLUMN('newA', 'a')({
             a: 1,
             b: 2,
-        }, 'a'))
-        .toEqual({
+        }, 'a')).toEqual({
             newA: 1,
         });
     });

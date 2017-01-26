@@ -1,7 +1,6 @@
 export default funcs =>
 funcs
 .reduce(
-    (composedTransformer, transformer) => (...args) =>
-    composedTransformer(...args).then(transformer),
+    (composedTransformer, transformer) => (...args) => composedTransformer(...args).then(transformer),
     v => Promise.resolve(v),
 );
