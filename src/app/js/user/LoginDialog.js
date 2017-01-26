@@ -51,7 +51,7 @@ export const mapStateToProps = state => ({
 });
 
 export const mapDispatchToProps = dispatch => bindActionCreators({
-    login: values => loginAction(values),
+    login: loginAction,
     submit: () => submitAction(LOGIN_FORM_NAME),
     toggleLogin: toggleLoginAction,
 }, dispatch);
