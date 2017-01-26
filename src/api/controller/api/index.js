@@ -10,6 +10,7 @@ import parsing from './parsing';
 import publication from './publication';
 import publish from './publish';
 import publishedDataset from './publishedDataset';
+import { getAllField, saveField, removeField } from './field';
 
 const app = new Koa();
 
@@ -18,6 +19,10 @@ app.use(mongoClient);
 app.use(route.post('/login', login));
 app.use(route.get('/publication', publication));
 app.use(route.get('/publishedDataset', publishedDataset));
+
+app.use(route.get('/fields', getAllField));
+app.use(route.put('/fields/:name', saveField));
+app.use(route.del('/fields/:name', removeField));
 
 app.use(jwt({ secret: auth.cookieSecret, cookie: 'lodex_token', key: 'cookie' }));
 app.use(jwt({ secret: auth.headerSecret, key: 'header' }));

@@ -9,6 +9,7 @@ export default async (ctx, next) => {
     ctx.dataset = dataset(ctx.db);
     ctx.publishedDataset = publishedDataset(ctx.db);
     ctx.field = field(ctx.db);
+    await ctx.field.createIndex({ name: 1 }, { unique: true });
 
     try {
         await next();
