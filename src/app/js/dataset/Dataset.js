@@ -15,6 +15,7 @@ import {
 } from 'material-ui/Table';
 import Pagination from './Pagination';
 import Card from '../lib/Card';
+import Loading from '../lib/Loading';
 import { polyglot as polyglotPropTypes } from '../lib/propTypes';
 import { loadDatasetPage as loadDatasetPageAction } from './';
 import { getColumns } from '../publication';
@@ -30,7 +31,10 @@ class DatasetComponent extends Component {
     }
 
     render() {
-        const { columns, dataset, p: polyglot, total } = this.props;
+        const { columns, dataset, loading, p: polyglot, total } = this.props;
+
+        if (loading) return <Loading>{polyglot.t('loading')}</Loading>;
+
         return (
             <Card>
                 <CardText>
@@ -71,6 +75,7 @@ DatasetComponent.propTypes = {
     currentPage: PropTypes.number.isRequired,
     dataset: PropTypes.arrayOf(PropTypes.object).isRequired,
     loadDatasetPage: PropTypes.func.isRequired,
+    loading: PropTypes.bool.isRequired,
     p: polyglotPropTypes.isRequired,
     total: PropTypes.number.isRequired,
 };
