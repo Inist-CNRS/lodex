@@ -1,8 +1,8 @@
-export default (destinationColumn, sourceColumn) => doc =>
+export default (destinationField, sourceField) => doc =>
 new Promise((resolve, reject) => {
     try {
         resolve({
-            [destinationColumn]: doc[sourceColumn],
+            [destinationField]: doc[sourceField],
         });
     } catch (error) {
         reject(error);

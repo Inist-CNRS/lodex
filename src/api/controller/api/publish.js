@@ -5,8 +5,8 @@ export default async (ctx) => {
     const count = await ctx.dataset.count({});
     let handled = 0;
 
-    const publishedModel = await ctx.publishedModel.find({}).toArray();
-    const transformDocument = getDocumentTransformer(publishedModel);
+    const columns = await ctx.column.find({}).toArray();
+    const transformDocument = getDocumentTransformer(columns);
 
     while (handled < count) {
         const dataset = await ctx.dataset.find({}).skip(handled).limit(100).toArray();

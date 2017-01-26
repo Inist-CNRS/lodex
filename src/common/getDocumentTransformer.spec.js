@@ -1,6 +1,6 @@
 import expect from 'expect';
 
-import getDocumentTransformer, { getColumnTransformation, applyTransformation } from './getDocumentTransformer';
+import getDocumentTransformer, { getFieldTransformation, applyTransformation } from './getDocumentTransformer';
 
 describe('getDocumentTransformer', () => {
     it('should create a new document based on columns and doc', async () => {
@@ -46,7 +46,7 @@ describe('getDocumentTransformer', () => {
         expect(newDoc).toEqual({});
     });
 
-    describe('getColumnTransformation', () => {
+    describe('getFieldTransformation', () => {
         it('should create a function returnning new document with only transformed column name', async () => {
             const column = {
                 name: 'A',
@@ -56,7 +56,7 @@ describe('getDocumentTransformer', () => {
                 ],
             };
 
-            const transform = getColumnTransformation(column);
+            const transform = getFieldTransformation(column);
 
             expect(await transform({ a: 'hello' }))
             .toEqual({
