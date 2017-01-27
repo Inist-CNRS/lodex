@@ -16,6 +16,7 @@ describe('publish', () => {
             insertMany: createSpy(),
         },
         field: {
+            insertMany: createSpy(),
             findAll: createSpy().andReturn(fields),
         },
         redirect: createSpy(),
