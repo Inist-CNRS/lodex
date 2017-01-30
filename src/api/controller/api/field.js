@@ -3,6 +3,16 @@ import route from 'koa-route';
 
 import { validateField } from '../../models/field';
 
+export const setup = async (ctx, next) => {
+    ctx.validateField = validateField;
+    try {
+        await next();
+    } catch (error) {
+        ctx.status = 500;
+        ctx.body = error.message;
+    }
+};
+
 export const getAllField = async (ctx) => {
     ctx.body = await ctx.field.findAll();
 };
@@ -25,15 +35,7 @@ export const removeField = async (ctx, name) => {
 
 const app = new Koa();
 
-app.use(async (ctx, next) => {
-    ctx.validateField = validateField;
-    try {
-        await next();
-    } catch (error) {
-        ctx.status = 500;
-        ctx.body = error.message;
-    }
-});
+app.use(setup);
 
 app.use(route.get('/', getAllField));
 app.use(route.post('/', postField));
