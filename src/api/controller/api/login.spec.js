@@ -61,14 +61,14 @@ describe('login', () => {
         login(ctx);
         expect(ctx.body).toEqual({
             token: jwt.sign({
-                username: auth.username,
+                username: 'user',
                 exp: Math.ceil(Date.now() / 1000) + auth.expiresIn,
             }, auth.headerSecret),
         });
         expect(setCall).toEqual([
             'lodex_token',
             jwt.sign({
-                username: auth.username,
+                username: 'user',
                 exp: Math.ceil(Date.now() / 1000) + auth.expiresIn,
             }, auth.cookieSecret),
             { httpOnly: true },
