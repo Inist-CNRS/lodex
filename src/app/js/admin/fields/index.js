@@ -24,3 +24,5 @@ export const getLoadFieldRequest = state => ({
         'Content-Type': 'application/json',
     },
 });
+
+export const getFields = state => state.fields;
