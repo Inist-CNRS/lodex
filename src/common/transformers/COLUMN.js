@@ -1,4 +1,4 @@
-export default (destinationField, sourceField) => doc =>
+export default () => (destinationField, sourceField) => doc =>
 new Promise((resolve, reject) => {
     try {
         resolve({
