@@ -1,5 +1,6 @@
 import Koa from 'koa';
 import route from 'koa-route';
+import mount from 'koa-mount';
 import jwt from 'koa-jwt';
 import { auth } from 'config';
 
@@ -10,6 +11,7 @@ import parsing from './parsing';
 import publication from './publication';
 import publish from './publish';
 import publishedDataset from './publishedDataset';
+import fieldRoutes from './field';
 
 const app = new Koa();
 
@@ -18,6 +20,8 @@ app.use(mongoClient);
 app.use(route.post('/login', login));
 app.use(route.get('/publication', publication));
 app.use(route.get('/publishedDataset', publishedDataset));
+
+app.use(mount('/field', fieldRoutes));
 
 app.use(jwt({ secret: auth.cookieSecret, cookie: 'lodex_token', key: 'cookie' }));
 app.use(jwt({ secret: auth.headerSecret, key: 'header' }));
