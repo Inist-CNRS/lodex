@@ -8,7 +8,6 @@ const getStyles = style => ({
 
 const CardComponent = ({ children, style, ...props }) => (
     <Card
-        className="loading"
         style={getStyles(style)}
         {...props}
     >
