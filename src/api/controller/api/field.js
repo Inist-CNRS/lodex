@@ -1,3 +1,6 @@
+import Koa from 'koa';
+import route from 'koa-route';
+
 import { validateField } from '../../models/field';
 
 export const getAllField = async (ctx) => {
@@ -5,17 +8,36 @@ export const getAllField = async (ctx) => {
 };
 
 export const postField = async (ctx) => {
-    const newField = validateField(ctx.request.body);
+    const newField = ctx.validateField(ctx.request.body);
 
-    this.body = await ctx.field.insertOne(name, newField);
+    ctx.body = await ctx.field.insertOne(newField);
 };
 
 export const putField = async (ctx, name) => {
-    const newField = validateField(ctx.request.body);
+    const newField = ctx.validateField(ctx.request.body);
 
-    this.body = await ctx.field.updateOneByName(name, newField);
+    ctx.body = await ctx.field.updateOneByName(name, newField);
 };
 
 export const removeField = async (ctx, name) => {
-    this.body = await ctx.field.removeByName(name);
+    ctx.body = await ctx.field.removeByName(name);
 };
+
+const app = new Koa();
+
+app.use(async (ctx, next) => {
+    ctx.validateField = validateField;
+    try {
+        await next();
+    } catch (error) {
+        ctx.status = 500;
+        ctx.body = error.message;
+    }
+});
+
+app.use(route.get('/', getAllField));
+app.use(route.post('/', postField));
+app.use(route.put('/:name', putField));
+app.use(route.del('/:name', removeField));
+
+export default app;
