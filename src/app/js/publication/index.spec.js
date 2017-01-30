@@ -1,7 +1,9 @@
 import expect from 'expect';
 import reducer, {
     defaultState,
+    getColumns,
     getLoadPublicationRequest,
+    hasPublishedDataset,
     loadPublication,
     loadPublicationSuccess,
     loadPublicationError,
@@ -52,6 +54,21 @@ describe('publication reducer', () => {
                     'Content-Type': 'application/json',
                 },
             });
+        });
+    });
+
+    describe('getColumns', () => {
+        it('should return the model', () => {
+            expect(getColumns({ publication: { fields: [{ foo: 'bar' }] } })).toEqual([{ foo: 'bar' }]);
+        });
+    });
+
+    describe('hasPublishedDataset', () => {
+        it('should return true if published', () => {
+            expect(hasPublishedDataset({ publication: { published: true } })).toEqual(true);
+        });
+        it('should return false if published', () => {
+            expect(hasPublishedDataset({ publication: { published: false } })).toEqual(false);
         });
     });
 });

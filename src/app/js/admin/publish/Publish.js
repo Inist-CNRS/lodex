@@ -10,26 +10,27 @@ import Alert from '../../lib/Alert';
 import Card from '../../lib/Card';
 import ButtonWithStatus from '../../lib/ButtonWithStatus';
 
-export class PublicationComponent extends Component {
+export class PublishComponent extends Component {
     handleClick = () => {
-        this.props.publish();
+        this.props.onPublish();
     }
 
     render() {
         const { error, loading, p: polyglot, published } = this.props;
         return (
             <Card>
-                <CardHeader title={polyglot.t('Publication')} />
+                <CardHeader title={polyglot.t('publication')} />
                 <CardText>
-                    {polyglot.t('Publication explanations')}
+                    {polyglot.t('publication_explanations')}
                 </CardText>
                 <CardActions>
                     <ButtonWithStatus
+                        className="btn-publish"
                         loading={loading}
                         error={error}
                         success={published}
-                        label={polyglot.t('Publish')}
-                        onTouchTap={this.handleClick}
+                        label={polyglot.t('publish')}
+                        onClick={this.handleClick}
                     />
                     {error && <Alert><p>{error}</p></Alert>}
                 </CardActions>
@@ -38,15 +39,15 @@ export class PublicationComponent extends Component {
     }
 }
 
-PublicationComponent.propTypes = {
+PublishComponent.propTypes = {
     error: PropTypes.string,
     loading: PropTypes.bool.isRequired,
     p: polyglotPropTypes.isRequired,
-    publish: PropTypes.func.isRequired,
+    onPublish: PropTypes.func.isRequired,
     published: PropTypes.bool.isRequired,
 };
 
-PublicationComponent.defaultProps = {
+PublishComponent.defaultProps = {
     error: null,
 };
 
@@ -57,10 +58,10 @@ const mapStateToProps = ({ publication: { error, loading, published } }) => ({
 });
 
 const mapDispatchToProps = ({
-    publish: publishAction,
+    onPublish: publishAction,
 });
 
 export default compose(
     connect(mapStateToProps, mapDispatchToProps),
     translate,
-)(PublicationComponent);
+)(PublishComponent);

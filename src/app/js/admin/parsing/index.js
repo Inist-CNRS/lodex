@@ -44,7 +44,7 @@ export const getParsedExcerptColumns = (state) => {
     return Object.keys(state.parsing.excerptLines[0]);
 };
 
-export const hasUploadedFile = state => state && state.parsing && state.parsing.totalLoadedLines;
+export const hasUploadedFile = state => state && state.parsing && !!state.parsing.totalLoadedLines;
 
 export const getLoadParsingResultRequest = state => ({
     url: '/api/parsing',

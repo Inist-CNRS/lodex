@@ -43,23 +43,29 @@ export class AdminComponent extends Component {
         } = this.props;
 
         if (loadingParsingResult) {
-            return <Loading>{polyglot.t('loading_parsing_results')}</Loading>;
+            return (
+                <Loading className="admin">{polyglot.t('loading_parsing_results')}</Loading>
+            );
         }
 
         if (hasPublishedDataset) {
-            return <Published />;
+            return (
+                <Published className="admin" />
+            );
         }
 
         if (hasUploadedFile) {
             return (
-                <div>
+                <div className="admin">
                     <ParsingResult />
                     <Publish />
                 </div>
             );
         }
 
-        return <Upload />;
+        return (
+            <Upload className="admin" />
+        );
     }
 }
 

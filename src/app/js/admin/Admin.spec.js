@@ -57,7 +57,7 @@ describe('<Admin />', () => {
             loadPublication={() => {}}
             p={{ t: () => {} }}
         />);
-        expect(wrapper.contains(<ParsingResult />)).toEqual(false);
-        expect(wrapper.contains(<Upload />)).toEqual(true);
+        expect(wrapper.find(ParsingResult).length).toEqual(0);
+        expect(wrapper.find(Upload).length).toEqual(1);
     });
 });
