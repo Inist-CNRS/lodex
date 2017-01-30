@@ -37,7 +37,7 @@ export class DatasetComponent extends Component {
         if (loading) return <Loading>{polyglot.t('loading')}</Loading>;
 
         return (
-            <Card>
+            <Card className="dataset">
                 <CardText>
                     <Table selectable={false} fixedHeader={false} style={{ width: 'auto' }}>
                         <TableHeader displaySelectAll={false} adjustForCheckbox={false}>

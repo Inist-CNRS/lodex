@@ -5,7 +5,7 @@ import { polyglot as polyglotPropTypes } from '../lib/propTypes';
 import Card from '../lib/Card';
 
 const PublishedComponent = ({ p: polyglot }) => (
-    <Card>
+    <Card className="data-published">
         <CardText>
             {polyglot.t('Published')}
         </CardText>

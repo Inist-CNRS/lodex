@@ -25,6 +25,7 @@ export class PublishComponent extends Component {
                 </CardText>
                 <CardActions>
                     <ButtonWithStatus
+                        className="btn-publish"
                         loading={loading}
                         error={error}
                         success={published}

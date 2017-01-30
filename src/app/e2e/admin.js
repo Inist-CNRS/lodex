@@ -1,4 +1,5 @@
 import { until, By } from 'selenium-webdriver';
+import expect from 'expect';
 import path from 'path';
 import driver from '../../common/tests/chromeDriver';
 
@@ -32,6 +33,28 @@ describe('Admin page', function homeTests() {
             const input = await driver.findElement(By.css('input[name=file]'));
             await input.sendKeys(csvPath);
             await driver.wait(until.elementLocated(By.css('.parsingResult')));
+        });
+    });
+
+    describe('Publishing', () => {
+        it('should display the "data published" message after publication', async () => {
+            await driver.findElement(By.css('.btn-publish')).click();
+            await driver.wait(until.elementLocated(By.css('.data-published')));
+        });
+
+        it('should not display the upload after publication', async () => {
+            const parsingResult = await driver.findElements(By.css('.parsingResult'));
+            expect(parsingResult.length).toEqual(0);
+        });
+
+        it('should not display the parsing result after publication', async () => {
+            const upload = await driver.findElements(By.css('.upload'));
+            expect(upload.length).toEqual(0);
+        });
+
+        it('should display the published data on the home page', async () => {
+            await driver.get('http://localhost:3010/');
+            await driver.wait(until.elementLocated(By.css('.dataset')));
         });
     });
 
