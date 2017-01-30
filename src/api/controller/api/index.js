@@ -5,6 +5,7 @@ import jwt from 'koa-jwt';
 import { auth } from 'config';
 
 import mongoClient from '../../services/mongoClient';
+import ezMasterConfig from '../../services/ezMasterConfig';
 import login from './login';
 import upload from './upload';
 import parsing from './parsing';
@@ -15,6 +16,7 @@ import fieldRoutes from './field';
 
 const app = new Koa();
 
+app.use(ezMasterConfig);
 app.use(mongoClient);
 
 app.use(route.post('/login', login));

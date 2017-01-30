@@ -6,4 +6,5 @@ apps:
     watch:
         - ./src/api
         - config
+        - config.json
     node_args: --harmony-async-await --require babel-register
