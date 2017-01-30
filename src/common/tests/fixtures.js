@@ -2,19 +2,19 @@ import config from 'config';
 import { MongoClient } from 'mongodb';
 import datasetFactory from '../../api/models/dataset';
 import publishedDatasetFactory from '../../api/models/publishedDataset';
-import fieldsFactory from '../../api/models/field';
+import fieldFactory from '../../api/models/field';
 
 let db;
 let dataset;
 let publishedDataset;
-let fields;
+let field;
 
 async function connect() {
     if (!db) {
         db = await MongoClient.connect(`mongodb://${config.mongo.host}/${config.mongo.dbName}`);
-        dataset = datasetFactory(db);
-        publishedDataset = publishedDatasetFactory(db);
-        fields = fieldsFactory(db);
+        dataset = await datasetFactory(db);
+        publishedDataset = await publishedDatasetFactory(db);
+        field = await fieldFactory(db);
     }
 }
 
@@ -22,5 +22,5 @@ export async function clear() {
     await connect();
     await dataset.remove({});
     await publishedDataset.remove({});
-    await fields.remove({});
+    await field.remove({});
 }
