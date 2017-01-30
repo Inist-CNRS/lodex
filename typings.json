@@ -1,0 +1,8 @@
+{
+  "name": "lodex-v2",
+  "dependencies": {
+    "enzyme": "github:asvetliakov/typings-enzyme#da15db2a4042e3b1f454aebdec9484e51de46c0a",
+    "expect": "github:DefinitelyTyped/DefinitelyTyped/expect/index.d.ts#0f0c6ef326f2a5f627801cd27545e941268a5df1"
+  },
+  "devDependencies": {}
+}
