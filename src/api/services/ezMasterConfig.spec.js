@@ -40,10 +40,10 @@ describe('ezMasterConfig', () => {
         });
     });
 
-    it('should put ezMasterConfig on the context', () => {
+    it('should put ezMasterConfig on the context', async () => {
         const ctx = {};
 
-        ezMasterConfig(ctx, () => {});
+        await ezMasterConfig(ctx, () => {});
 
         expect(ctx.ezMasterConfig).toBeTruthy();
     });
