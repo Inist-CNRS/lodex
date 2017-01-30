@@ -59,7 +59,7 @@ describe('publication reducer', () => {
 
     describe('getColumns', () => {
         it('should return the model', () => {
-            expect(getColumns({ publication: { model: [{ foo: 'bar' }] } })).toEqual([{ foo: 'bar' }]);
+            expect(getColumns({ publication: { fields: [{ foo: 'bar' }] } })).toEqual([{ foo: 'bar' }]);
         });
     });
 

@@ -11,8 +11,8 @@ import Pagination from './Pagination';
 
 describe('<Dataset />', () => {
     const columns = [
-        { key: 'col1', label: 'Col 1' },
-        { key: 'col2', label: 'Col 2' },
+        { name: 'col1', label: 'Col 1' },
+        { name: 'col2', label: 'Col 2' },
     ];
     const dataset = [
         { col1: 'value11', col2: 'value12' },
@@ -50,8 +50,8 @@ describe('<Dataset />', () => {
         />);
 
         const headers = wrapper.find(TableHeaderColumn);
-        expect(headers.at(0).children().text()).toEqual('Col 1');
-        expect(headers.at(1).children().text()).toEqual('Col 2');
+        expect(headers.at(0).children().text()).toEqual('col1');
+        expect(headers.at(1).children().text()).toEqual('col2');
     });
 
     it('should render the TableRowColumn for each value for each column', () => {
