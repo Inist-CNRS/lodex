@@ -9,6 +9,7 @@ import { publish as publishAction } from './';
 import Alert from '../../lib/Alert';
 import Card from '../../lib/Card';
 import ButtonWithStatus from '../../lib/ButtonWithStatus';
+import ParsingExcerpt from '../parsing/ParsingExcerpt';
 
 export class PublishComponent extends Component {
     handleClick = () => {
@@ -16,13 +17,11 @@ export class PublishComponent extends Component {
     }
 
     render() {
-        const { error, loading, p: polyglot, published } = this.props;
+        const { error, loading, p: polyglot, published, transformedLines, columns } = this.props;
         return (
             <Card>
                 <CardHeader title={polyglot.t('publication')} />
-                <CardText>
-                    {polyglot.t('publication_explanations')}
-                </CardText>
+                <ParsingExcerpt columns={columns} lines={transformedLines} />
                 <CardActions>
                     <ButtonWithStatus
                         className="btn-publish"
@@ -34,6 +33,9 @@ export class PublishComponent extends Component {
                     />
                     {error && <Alert><p>{error}</p></Alert>}
                 </CardActions>
+                <CardText>
+                    {polyglot.t('publication_explanations')}
+                </CardText>
             </Card>
         );
     }
@@ -51,7 +53,9 @@ PublishComponent.defaultProps = {
     error: null,
 };
 
-const mapStateToProps = ({ publication: { error, loading, published } }) => ({
+const mapStateToProps = ({ publication: { error, loading, published }, parsing: { excerptLines } }) => ({
+    columns: Object.keys(excerptLines[0] || {}),
+    transformedLines: excerptLines,
     error: error && (error.message || error),
     loading,
     published,
