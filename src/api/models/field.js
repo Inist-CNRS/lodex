@@ -4,8 +4,9 @@ import transformers from '../../common/transformers';
 
 const validOperations = new RegExp(Object.keys(transformers).join('|'));
 
-export default (db) => {
+export default async (db) => {
     const collection = db.collection('field');
+    await collection.createIndex({ name: 1 }, { unique: true });
     collection.findAll = () => collection.find({}).toArray();
     collection.updateOneByName = (name, field) => collection.updateOne({
         name,
