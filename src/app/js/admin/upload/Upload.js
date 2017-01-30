@@ -1,5 +1,7 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
+import classnames from 'classnames';
+
 import RaisedButton from 'material-ui/RaisedButton';
 import ArchiveIcon from 'material-ui/svg-icons/content/archive';
 import Alert from '../../lib/Alert';
@@ -28,9 +30,9 @@ const styles = {
     },
 };
 
-export const UploadComponent = ({ onFileLoad, error }) => (
+export const UploadComponent = ({ onFileLoad, error, ...props }) => (
     <div
-        className="upload"
+        className={classnames('upload', props.className)}
         style={styles.div}
     >
         { error ? <Alert>
@@ -55,8 +57,13 @@ export const UploadComponent = ({ onFileLoad, error }) => (
 );
 
 UploadComponent.propTypes = {
+    className: PropTypes.string,
     error: PropTypes.string.isRequired,
     onFileLoad: PropTypes.func.isRequired,
+};
+
+UploadComponent.defaultProps = {
+    className: null,
 };
 
 const mapsStateToProps = ({ upload }) => upload;

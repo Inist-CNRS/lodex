@@ -44,17 +44,13 @@ export class AdminComponent extends Component {
 
         if (loadingParsingResult) {
             return (
-                <div className="admin">
-                    <Loading>{polyglot.t('loading_parsing_results')}</Loading>;
-                </div>
+                <Loading className="admin">{polyglot.t('loading_parsing_results')}</Loading>
             );
         }
 
         if (hasPublishedDataset) {
             return (
-                <div className="admin">
-                    <Published />
-                </div>
+                <Published className="admin" />
             );
         }
 
@@ -68,9 +64,7 @@ export class AdminComponent extends Component {
         }
 
         return (
-            <div className="admin">
-                <Upload />
-            </div>
+            <Upload className="admin" />
         );
     }
 }
