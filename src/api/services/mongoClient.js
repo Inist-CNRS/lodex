@@ -6,8 +6,8 @@ import field from '../models/field';
 
 export default async (ctx, next) => {
     ctx.db = await MongoClient.connect(`mongodb://${config.mongo.host}/${config.mongo.dbName}`);
-    ctx.dataset = dataset(ctx.db);
-    ctx.publishedDataset = publishedDataset(ctx.db);
+    ctx.dataset = await dataset(ctx.db);
+    ctx.publishedDataset = await publishedDataset(ctx.db);
     ctx.field = await field(ctx.db);
 
     try {

@@ -10,6 +10,8 @@ import publication from './publication';
 import publish from './admin/publish';
 import upload from './admin/upload';
 
+export const getCurrentLocation = state => state.routing;
+
 const rootReducer = combineReducers({
     dataset,
     form,
