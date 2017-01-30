@@ -9,6 +9,7 @@ import parsing from './admin/parsing';
 import publication from './publication';
 import publish from './admin/publish';
 import upload from './admin/upload';
+import fields from './admin/fields';
 
 export const getCurrentLocation = state => state.routing;
 
@@ -23,6 +24,7 @@ const rootReducer = combineReducers({
     routing,
     upload,
     user,
+    fields,
 });
 
 export default rootReducer;

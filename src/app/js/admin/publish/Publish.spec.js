@@ -9,6 +9,7 @@ describe('<Publish />', () => {
     it('should render a publish button', () => {
         const wrapper = shallow(<Publish
             p={{ t: key => key }}
+            loadField={() => {}}
             loading
             error
             published
@@ -26,6 +27,7 @@ describe('<Publish />', () => {
 
         const wrapper = shallow(<Publish
             p={{ t: key => key }}
+            loadField={() => {}}
             loading={false}
             onPublish={onPublish}
         />);

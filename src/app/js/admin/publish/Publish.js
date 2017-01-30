@@ -10,18 +10,23 @@ import Alert from '../../lib/Alert';
 import Card from '../../lib/Card';
 import ButtonWithStatus from '../../lib/ButtonWithStatus';
 import ParsingExcerpt from '../parsing/ParsingExcerpt';
+import { loadField } from '../fields';
 
 export class PublishComponent extends Component {
+    componentWillMount() {
+        this.props.loadField();
+    }
+
     handleClick = () => {
         this.props.onPublish();
     }
 
     render() {
-        const { error, loading, p: polyglot, published, transformedLines, columns } = this.props;
+        const { error, loading, p: polyglot, published, transformedLines, fields } = this.props;
         return (
             <Card>
                 <CardHeader title={polyglot.t('publication')} />
-                <ParsingExcerpt columns={columns} lines={transformedLines} />
+                <ParsingExcerpt columns={fields} lines={transformedLines} />
                 <CardActions>
                     <ButtonWithStatus
                         className="btn-publish"
@@ -47,14 +52,17 @@ PublishComponent.propTypes = {
     p: polyglotPropTypes.isRequired,
     onPublish: PropTypes.func.isRequired,
     published: PropTypes.bool.isRequired,
+    fields: PropTypes.arrayOf(PropTypes.string).isRequired,
+    transformedLines: PropTypes.arrayOf(PropTypes.string).isRequired,
+    loadField: PropTypes.func.isRequired,
 };
 
 PublishComponent.defaultProps = {
     error: null,
 };
 
-const mapStateToProps = ({ publication: { error, loading, published }, parsing: { excerptLines } }) => ({
-    columns: Object.keys(excerptLines[0] || {}),
+const mapStateToProps = ({ publication: { error, loading, published }, parsing: { excerptLines }, fields }) => ({
+    fields,
     transformedLines: excerptLines,
     error: error && (error.message || error),
     loading,
@@ -63,6 +71,7 @@ const mapStateToProps = ({ publication: { error, loading, published }, parsing: 
 
 const mapDispatchToProps = ({
     onPublish: publishAction,
+    loadField,
 });
 
 export default compose(
