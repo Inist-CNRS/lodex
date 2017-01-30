@@ -26,3 +26,5 @@ export const getLoadFieldRequest = state => ({
 });
 
 export const getFields = state => state.fields;
+
+export const getPublicationColumns = state => state.fields.map(({ label }) => label);
