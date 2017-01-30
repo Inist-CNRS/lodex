@@ -18,4 +18,6 @@ export default {
     showing: 'Showing {from} to {to} of {total}',
     page: 'Page',
     perPage: 'per page',
+    loading: 'Loading...',
+    loading_parsing_results: 'Loading parsing results',
 };

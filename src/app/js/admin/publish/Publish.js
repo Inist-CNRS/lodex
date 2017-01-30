@@ -2,11 +2,12 @@ import React, { Component, PropTypes } from 'react';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
-import { Card, CardActions, CardHeader, CardText } from 'material-ui/Card';
+import { CardActions, CardHeader, CardText } from 'material-ui/Card';
 
 import { polyglot as polyglotPropTypes } from '../../lib/propTypes';
 import { publish as publishAction } from './';
 import Alert from '../../lib/Alert';
+import Card from '../../lib/Card';
 import ButtonWithStatus from '../../lib/ButtonWithStatus';
 
 export class PublicationComponent extends Component {

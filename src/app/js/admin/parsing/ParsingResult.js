@@ -3,9 +3,10 @@ import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 
-import { Card, CardActions, CardHeader, CardText } from 'material-ui/Card';
+import { CardActions, CardHeader, CardText } from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
 import { grey400 } from 'material-ui/styles/colors';
+import Card from '../../lib/Card';
 
 import { polyglot as polyglotPropTypes } from '../../lib/propTypes';
 import { getParsedExcerptColumns, clearParsing } from './';
