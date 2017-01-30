@@ -1,7 +1,7 @@
 import expect from 'expect';
 import { validateField } from './field';
 
-describe.only('field', () => {
+describe('field', () => {
     describe('validateField', () => {
         it('should return field if valid', () => {
             const field = {
