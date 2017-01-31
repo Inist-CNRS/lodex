@@ -16,15 +16,20 @@ export default async (db) => {
     return collection;
 };
 
+export const INVALID_FIELD_MESSAGE = 'Invalid data for field need a name, label, cover, scheme, type and transformers array'; // eslint-disable-line
+
 export const validateField = (data) => {
     try {
         expect(data).toMatch({
-            name: /^[\S]{3,}$/,
+            cover: /^(dataset|collection|document)$/,
             label: /^.{3,}$/,
+            name: /^[\S]{3,}$/,
+            scheme: /^https?:\/\/.+$/,
             transformers: [],
+            type: /^https?:\/\/.+$/,
         });
     } catch (error) {
-        throw new Error('Invalid data for field need a name, label and transformers array');
+        throw new Error(INVALID_FIELD_MESSAGE);
     }
 
     data.transformers.forEach((transformer, index) => {
