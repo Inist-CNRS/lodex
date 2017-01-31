@@ -1,12 +1,14 @@
 import InistArk from 'inist-ark';
 
-export default ({ NAAN, subPublisherId }) => destinationField => () =>
+const ARBITRARY_SUBPUBLISHER = '39D';
+
+export default ({ naan, subpublisher }) => destinationField => () =>
     new Promise((resolve, reject) => {
         try {
-            if (NAAN && subPublisherId) {
+            if (naan && subpublisher) {
                 const ark = new InistArk({
-                    naan: NAAN,
-                    subpublisher: subPublisherId,
+                    naan,
+                    subpublisher,
                 });
 
                 return resolve({
@@ -15,7 +17,7 @@ export default ({ NAAN, subPublisherId }) => destinationField => () =>
             }
 
             const ark = new InistArk({
-                subpublisher: '39D',
+                subpublisher: ARBITRARY_SUBPUBLISHER,
             });
 
             return resolve({

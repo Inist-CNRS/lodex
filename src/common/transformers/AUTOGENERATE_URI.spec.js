@@ -5,7 +5,7 @@ import AUTOGENERATE_URI from './AUTOGENERATE_URI';
 
 describe('AUTOGENERATE_URI', () => {
     it('should generate a valid ark with naan and publisherId from config', async () => {
-        const doc = await AUTOGENERATE_URI({ NAAN: '67375', subPublisherId: '39D' })('newA', 'a')({
+        const doc = await AUTOGENERATE_URI({ naan: '67375', subpublisher: '39D' })('newA', 'a')({
             a: 1,
             b: 2,
         }, 'a');

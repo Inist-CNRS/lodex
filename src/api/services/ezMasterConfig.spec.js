@@ -13,20 +13,20 @@ describe('ezMasterConfig', () => {
             })).toThrow();
         });
 
-        it('should throw if NAAN is not valid', () => {
+        it('should throw if naan is not valid', () => {
             expect(() => validateConfig({
                 username: 'toto',
                 password: 'titi',
-                NAAN: 'abracadabra',
+                naan: 'abracadabra',
             })).toThrow();
         });
 
-        it('should throw if subPublisherId is not valid', () => {
+        it('should throw if subpublisher is not valid', () => {
             expect(() => validateConfig({
                 username: 'toto',
                 password: 'titi',
-                NAAN: '555555',
-                subPublisherId: 'abracadabra',
+                naan: '555555',
+                subpublisher: 'abracadabra',
             })).toThrow();
         });
 
@@ -34,8 +34,8 @@ describe('ezMasterConfig', () => {
             expect(() => validateConfig({
                 username: 'toto',
                 password: 'titi',
-                NAAN: '555555',
-                subPublisherId: 'ABC',
+                naan: '555555',
+                subpublisher: 'ABC',
             })).toThrow();
         });
     });
