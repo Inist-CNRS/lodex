@@ -2,8 +2,20 @@ import { auth } from 'config';
 import jwt from 'jsonwebtoken';
 
 export default (ctx) => {
+    if (!ctx.ezMasterConfig) {
+        throw new Error('Invalid EzMaster configuration.');
+    }
+
+    if (!ctx.ezMasterConfig.username) {
+        throw new Error('Invalid EzMaster configuration: missing username');
+    }
+
+    if (!ctx.ezMasterConfig.password) {
+        throw new Error('Invalid EzMaster configuration: missing password.');
+    }
+
     const { username, password } = ctx.request.body;
-    if (username !== auth.username || password !== auth.password) {
+    if (username !== ctx.ezMasterConfig.username || password !== ctx.ezMasterConfig.password) {
         ctx.status = 401;
         return;
     }

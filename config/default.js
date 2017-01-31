@@ -5,8 +5,6 @@ module.exports = {
         dbName: 'lodex',
     },
     auth: {
-        username: 'user',
-        password: 'secret',
         cookieSecret: 'cookie',
         headerSecret: 'header',
         expiresIn: 10 * 3600 // 10 hours
