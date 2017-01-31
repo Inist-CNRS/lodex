@@ -46,7 +46,7 @@ describe('dataset reducer', () => {
         it('should return the correct request', () => {
             const request = getLoadDatasetPageRequest({ user: { token: 'test' } }, { page: 10, perPage: 50 });
             expect(request).toEqual({
-                url: '/api/publishedDataset?page10&perPage=50',
+                url: '/api/publishedDataset?page=10&perPage=50',
                 credentials: 'include',
                 headers: {
                     Accept: 'application/json',

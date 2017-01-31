@@ -37,7 +37,7 @@ export default handleActions({
 }, defaultState);
 
 export const getLoadDatasetPageRequest = (state, { page, perPage }) => ({
-    url: `/api/publishedDataset?page${encodeURIComponent(page)}&perPage=${encodeURIComponent(perPage)}`,
+    url: `/api/publishedDataset?page=${encodeURIComponent(page)}&perPage=${encodeURIComponent(perPage)}`,
     credentials: 'include',
     headers: {
         Accept: 'application/json',

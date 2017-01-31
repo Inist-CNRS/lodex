@@ -33,7 +33,7 @@ describe('<Dataset />', () => {
 
         expect(loadDatasetPage).toHaveBeenCalledWith({
             page: 1,
-            perPage: 20,
+            perPage: 10,
         });
     });
 
