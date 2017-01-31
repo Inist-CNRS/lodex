@@ -38,6 +38,18 @@ export const hasPublishedDataset = ({ publication: { published } }) => published
 
 export const getColumns = ({ publication: { fields } }) => fields;
 
+export const getPublishData = ({ publication }) => {
+    const { error, published, editedFieldIndex, loading } = publication;
+
+    return {
+        published,
+        editedFieldIndex,
+        loading,
+        error: error && (error.message || error),
+    };
+};
+
+
 export const getLoadPublicationRequest = state => ({
     url: '/api/publication',
     credentials: 'include',

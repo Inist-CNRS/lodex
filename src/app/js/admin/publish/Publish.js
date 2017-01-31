@@ -5,12 +5,16 @@ import translate from 'redux-polyglot/translate';
 import { CardActions, CardHeader, CardText } from 'material-ui/Card';
 
 import { polyglot as polyglotPropTypes } from '../../lib/propTypes';
-import { publish as publishAction } from './';
+import {
+    publish as publishAction,
+    getPublishData,
+} from './';
 import Alert from '../../lib/Alert';
 import Card from '../../lib/Card';
 import ButtonWithStatus from '../../lib/ButtonWithStatus';
 import PublicationPreview from '../publicationPreview/PublicationPreview';
 import { loadField } from '../fields';
+import FieldForm from '../fields/FieldForm';
 
 export class PublishComponent extends Component {
     componentWillMount() {
@@ -27,6 +31,7 @@ export class PublishComponent extends Component {
             <Card>
                 <CardHeader title={polyglot.t('publication')} />
                 <PublicationPreview />
+                <FieldForm />
                 <CardActions>
                     <ButtonWithStatus
                         className="btn-publish"
@@ -59,11 +64,7 @@ PublishComponent.defaultProps = {
     error: null,
 };
 
-const mapStateToProps = ({ publication: { error, loading, published } }) => ({
-    error: error && (error.message || error),
-    loading,
-    published,
-});
+const mapStateToProps = getPublishData;
 
 const mapDispatchToProps = ({
     onPublish: publishAction,

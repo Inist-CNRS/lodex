@@ -62,4 +62,3 @@ export default compose(
     connect(mapStateToProps, mapDispatchToProps),
     translate,
 )(LoginComponent);
-
