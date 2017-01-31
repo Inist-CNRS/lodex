@@ -24,7 +24,7 @@ import { getColumns } from '../publication';
 export class DatasetComponent extends Component {
     componentWillMount() {
         const { loadDatasetPage, currentPage } = this.props;
-        loadDatasetPage({ page: currentPage, perPage: 20 });
+        loadDatasetPage({ page: currentPage, perPage: 10 });
     }
 
     handlePageChange = (currentPage, perPage) => {
