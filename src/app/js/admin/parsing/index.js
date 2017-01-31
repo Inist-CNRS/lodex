@@ -45,7 +45,7 @@ export const getExcerptLines = (state) => {
 };
 
 export const getParsedExcerptColumns = state =>
-    Object.keys(getExcerptLines(state)[0]);
+    Object.keys(getExcerptLines(state)[0] || {});
 
 export const hasUploadedFile = state => state && state.parsing && !!state.parsing.totalLoadedLines;
 
