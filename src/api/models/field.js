@@ -1,6 +1,7 @@
 import expect from 'expect';
 
 import transformers from '../../common/transformers';
+import schemeService from '../services/scheme';
 
 const validOperations = new RegExp(Object.keys(transformers).join('|'));
 
@@ -18,7 +19,7 @@ export default async (db) => {
 
 export const INVALID_FIELD_MESSAGE = 'Invalid data for field need a name, label, cover, scheme, type and transformers array'; // eslint-disable-line
 
-export const validateField = (data) => {
+export const validateFieldFactory = schemeServiceImpl => (data) => {
     try {
         expect(data).toMatch({
             cover: /^(dataset|collection|document)$/,
@@ -29,6 +30,10 @@ export const validateField = (data) => {
             type: /^https?:\/\/.+$/,
         });
     } catch (error) {
+        throw new Error(INVALID_FIELD_MESSAGE);
+    }
+
+    if (!schemeServiceImpl.isSchemeValid(data.scheme)) {
         throw new Error(INVALID_FIELD_MESSAGE);
     }
 
@@ -48,3 +53,5 @@ transformer must have a valid operation and an args array`,
 
     return data;
 };
+
+export const validateField = validateFieldFactory(schemeService);

@@ -1,5 +1,5 @@
 import expect from 'expect';
-import { INVALID_FIELD_MESSAGE, validateField } from './field';
+import { INVALID_FIELD_MESSAGE, validateFieldFactory } from './field';
 
 describe('field', () => {
     describe('validateField', () => {
@@ -14,7 +14,7 @@ describe('field', () => {
                 ],
                 type: 'https://www.w3.org/TR/xmlschema-2/#string',
             };
-            expect(validateField(field)).toEqual(field);
+            expect(validateFieldFactory({ isSchemeValid: () => true })(field)).toEqual(field);
         });
 
         it('should return field if no transformers', () => {
@@ -26,7 +26,7 @@ describe('field', () => {
                 transformers: [],
                 type: 'https://www.w3.org/TR/xmlschema-2/#string',
             };
-            expect(validateField(field)).toEqual(field);
+            expect(validateFieldFactory({ isSchemeValid: () => true })(field)).toEqual(field);
         });
 
         it('should throw an error if no cover', () => {
@@ -41,7 +41,7 @@ describe('field', () => {
                 type: 'https://www.w3.org/TR/xmlschema-2/#string',
             };
 
-            expect(() => validateField(field))
+            expect(() => validateFieldFactory({ isSchemeValid: () => true })(field))
                 .toThrow(INVALID_FIELD_MESSAGE);
         });
 
@@ -57,7 +57,7 @@ describe('field', () => {
                 type: 'https://www.w3.org/TR/xmlschema-2/#string',
             };
 
-            expect(() => validateField(field))
+            expect(() => validateFieldFactory({ isSchemeValid: () => true })(field))
                 .toThrow(INVALID_FIELD_MESSAGE);
         });
 
@@ -73,7 +73,7 @@ describe('field', () => {
                 type: 'https://www.w3.org/TR/xmlschema-2/#string',
             };
 
-            expect(() => validateField(field))
+            expect(() => validateFieldFactory({ isSchemeValid: () => true })(field))
                 .toThrow(INVALID_FIELD_MESSAGE);
         });
 
@@ -89,7 +89,7 @@ describe('field', () => {
                 type: 'https://www.w3.org/TR/xmlschema-2/#string',
             };
 
-            expect(() => validateField(field))
+            expect(() => validateFieldFactory({ isSchemeValid: () => true })(field))
                 .toThrow(INVALID_FIELD_MESSAGE);
         });
 
@@ -105,7 +105,7 @@ describe('field', () => {
                 type: 'https://www.w3.org/TR/xmlschema-2/#string',
             };
 
-            expect(() => validateField(field))
+            expect(() => validateFieldFactory({ isSchemeValid: () => true })(field))
                 .toThrow(INVALID_FIELD_MESSAGE);
         });
 
@@ -121,7 +121,7 @@ describe('field', () => {
                 type: 'https://www.w3.org/TR/xmlschema-2/#string',
             };
 
-            expect(() => validateField(field))
+            expect(() => validateFieldFactory({ isSchemeValid: () => true })(field))
                 .toThrow(INVALID_FIELD_MESSAGE);
         });
 
@@ -137,7 +137,7 @@ describe('field', () => {
                 type: 'https://www.w3.org/TR/xmlschema-2/#string',
             };
 
-            expect(() => validateField(field))
+            expect(() => validateFieldFactory({ isSchemeValid: () => true })(field))
                 .toThrow(INVALID_FIELD_MESSAGE);
         });
 
@@ -153,7 +153,23 @@ describe('field', () => {
                 type: 'https://www.w3.org/TR/xmlschema-2/#string',
             };
 
-            expect(() => validateField(field))
+            expect(() => validateFieldFactory({ isSchemeValid: () => true })(field))
+                .toThrow(INVALID_FIELD_MESSAGE);
+        });
+
+        it('should throw an error if schemeService return false', () => {
+            const field = {
+                cover: 'dataset',
+                label: 'label',
+                name: 'na',
+                scheme: 'http://purl.org/dc/terms/title',
+                transformers: [
+                    { operation: 'COLUMN', args: ['a'] },
+                ],
+                type: 'https://www.w3.org/TR/xmlschema-2/#string',
+            };
+
+            expect(() => validateFieldFactory({ isSchemeValid: () => false })(field))
                 .toThrow(INVALID_FIELD_MESSAGE);
         });
 
@@ -169,7 +185,7 @@ describe('field', () => {
                 type: undefined,
             };
 
-            expect(() => validateField(field))
+            expect(() => validateFieldFactory({ isSchemeValid: () => true })(field))
                 .toThrow(INVALID_FIELD_MESSAGE);
         });
 
@@ -185,7 +201,7 @@ describe('field', () => {
                 type: 'invalid_type',
             };
 
-            expect(() => validateField(field))
+            expect(() => validateFieldFactory({ isSchemeValid: () => true })(field))
                 .toThrow(INVALID_FIELD_MESSAGE);
         });
 
@@ -200,7 +216,7 @@ describe('field', () => {
                 ],
                 type: 'https://www.w3.org/TR/xmlschema-2/#string',
             };
-            expect(() => validateField(field)).toThrow(
+            expect(() => validateFieldFactory({ isSchemeValid: () => true })(field)).toThrow(
 `Invalid transformer in field at index: 0,
 transformer must have a valid operation and an args array`,
             );
@@ -218,7 +234,7 @@ transformer must have a valid operation and an args array`,
                 ],
                 type: 'https://www.w3.org/TR/xmlschema-2/#string',
             };
-            expect(() => validateField(field)).toThrow(
+            expect(() => validateFieldFactory({ isSchemeValid: () => true })(field)).toThrow(
 `Invalid transformer in field at index: 1,
 transformer must have a valid operation and an args array`,
             );
