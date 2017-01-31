@@ -26,7 +26,7 @@ describe('getDocumentTransformer', () => {
             c: 'or not',
         };
 
-        const newDoc = await getDocumentTransformer(columns)(doc);
+        const newDoc = await getDocumentTransformer({})(columns)('pre')(doc);
 
         expect(newDoc).toEqual({
             newA: 'HELLO',
@@ -41,7 +41,7 @@ describe('getDocumentTransformer', () => {
             c: 'or not',
         };
 
-        const newDoc = await getDocumentTransformer([])(doc);
+        const newDoc = await getDocumentTransformer({})([])('pre')(doc);
 
         expect(newDoc).toEqual({});
     });
@@ -56,7 +56,7 @@ describe('getDocumentTransformer', () => {
                 ],
             };
 
-            const transform = getFieldTransformation(column);
+            const transform = getFieldTransformation('pre', {})(column);
 
             expect(await transform({ a: 'hello' })).toEqual({
                 A: 'HELLO',
