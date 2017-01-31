@@ -59,7 +59,7 @@ docker-run-dev: ## run node server with pm2 for development and webpack-dev-serv
 	docker-compose up --force-recreate
 
 test-api-unit: ## Run the API unit tests
-	NODE_ENV=test BABEL_ENV=browser ./node_modules/.bin/mocha \
+	NODE_ENV=test ./node_modules/.bin/mocha \
 		--require babel-polyfill \
 		--compilers="js:babel-core/register" \
 		"./src/api/**/*.spec.js" \

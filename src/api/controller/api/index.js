@@ -4,20 +4,23 @@ import mount from 'koa-mount';
 import jwt from 'koa-jwt';
 import { auth } from 'config';
 
-import mongoClient from '../../services/mongoClient';
 import ezMasterConfig from '../../services/ezMasterConfig';
+import initializeFields from '../../services/initializeFields';
+import mongoClient from '../../services/mongoClient';
+
+import fieldRoutes from './field';
 import login from './login';
-import upload from './upload';
 import parsing from './parsing';
 import publication from './publication';
 import publish from './publish';
 import publishedDataset from './publishedDataset';
-import fieldRoutes from './field';
+import upload from './upload';
 
 const app = new Koa();
 
 app.use(ezMasterConfig);
 app.use(mongoClient);
+app.use(initializeFields);
 
 app.use(route.post('/login', login));
 app.use(route.get('/publication', publication));

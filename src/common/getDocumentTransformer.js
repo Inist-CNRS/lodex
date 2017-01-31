@@ -1,16 +1,17 @@
 import transformers from './transformers';
 import asyncCompose from './lib/asyncCompose';
 
-export const getFieldTransformation = (field) => {
+export const getFieldTransformation = (field, config) => {
     const documentTransformers = field.transformers
-        .map(({ operation, args }) => transformers[operation](field.name, ...args));
+        .map(({ operation, args }) => transformers[operation](config)(field.name, ...args));
 
     const transformDocument = asyncCompose(documentTransformers);
 
     return transformDocument;
 };
 
-export const getDocumentTransformations = fields => fields.map(getFieldTransformation);
+export const getDocumentTransformations = (fields, config) =>
+    fields.map(field => getFieldTransformation(field, config));
 
 export const applyTransformation = documentTransformers => async (doc) => {
     const partialDocsPromises = documentTransformers
@@ -24,8 +25,8 @@ export const applyTransformation = documentTransformers => async (doc) => {
     }), {});
 };
 
-export default (fields) => {
-    const documentTransformers = getDocumentTransformations(fields);
+export default (fields, config) => {
+    const documentTransformers = getDocumentTransformations(fields, config);
 
     return applyTransformation(documentTransformers);
 };

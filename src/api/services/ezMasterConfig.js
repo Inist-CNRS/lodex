@@ -6,12 +6,12 @@ export const validateConfig = (config) => {
         password: /.+/,
     });
 
-    if (config.NAAN) {
-        expect(config.NAAN).toMatch(/(\d{5,})/);
+    if (config.naan) {
+        expect(config.naan).toMatch(/(\d{5,})/);
     }
 
-    if (config.subPublisherId) {
-        expect(config.subPublisherId).toMatch(/[0123456789BCDFGHJKLMNPQRSTVWXZ]{3}/);
+    if (config.subpublisher) {
+        expect(config.subpublisher).toMatch(/[0123456789BCDFGHJKLMNPQRSTVWXZ]{3}/);
     }
 };
 

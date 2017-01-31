@@ -1,4 +1,4 @@
-export default field => doc =>
+export default () => field => doc =>
 new Promise((resolve, reject) => {
     try {
         resolve({
