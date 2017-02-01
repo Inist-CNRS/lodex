@@ -37,18 +37,10 @@ export const FieldComponent = ({ error, field, handleSubmit, p: polyglot }) => {
                 <Field
                     name="name"
                     component={FormTextField}
-                    onChange={(_, newValue) => handleSubmit({
-                        ...field,
-                        name: newValue,
-                    })}
                     label={polyglot.t('fieldName')}
                     fullWidth
                 />
                 <Field
-                    onChange={(_, newValue) => handleSubmit({
-                        ...field,
-                        label: newValue,
-                    })}
                     name="label"
                     component={FormTextField}
                     label={polyglot.t('fieldLabel')}

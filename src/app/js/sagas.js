@@ -9,6 +9,7 @@ import publishSaga from './admin/publish/sagas';
 import uploadFileSaga from './admin/upload/uploadFileSaga';
 import fieldsSaga from './admin/fields/sagas';
 import publicationPreviewSaga from './admin/publicationPreview/sagas';
+import saveFieldSaga from './admin/fields/saveFieldSaga';
 
 export default function* () {
     yield fork(datasetSaga);
@@ -19,5 +20,6 @@ export default function* () {
     yield fork(publishSaga);
     yield fork(uploadFileSaga);
     yield fork(fieldsSaga);
+    yield fork(saveFieldSaga);
     yield fork(publicationPreviewSaga);
 }
