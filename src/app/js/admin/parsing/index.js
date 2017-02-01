@@ -38,11 +38,14 @@ export const loadParsingResultError = createAction(LOAD_PARSING_RESULT_ERROR);
 export const loadParsingResultSuccess = createAction(LOAD_PARSING_RESULT_SUCCESS);
 export const clearParsing = createAction(CLEAR_PARSING);
 
-export const getParsedExcerptColumns = (state) => {
+export const getExcerptLines = (state) => {
     if (!state || !state.parsing || !state.parsing.excerptLines || !state.parsing.excerptLines.length) return [];
 
-    return Object.keys(state.parsing.excerptLines[0]);
+    return state.parsing.excerptLines;
 };
+
+export const getParsedExcerptColumns = state =>
+    Object.keys(getExcerptLines(state)[0] || {});
 
 export const hasUploadedFile = state => state && state.parsing && !!state.parsing.totalLoadedLines;
 

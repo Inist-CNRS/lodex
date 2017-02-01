@@ -7,6 +7,8 @@ import parsingSaga from './admin/parsing/sagas';
 import publicationSaga from './publication/sagas';
 import publishSaga from './admin/publish/sagas';
 import uploadFileSaga from './admin/upload/uploadFileSaga';
+import fieldsSaga from './admin/fields/sagas';
+import publicationPreviewSaga from './admin/publicationPreview/sagas';
 
 export default function* () {
     yield fork(datasetSaga);
@@ -16,4 +18,6 @@ export default function* () {
     yield fork(publicationSaga);
     yield fork(publishSaga);
     yield fork(uploadFileSaga);
+    yield fork(fieldsSaga);
+    yield fork(publicationPreviewSaga);
 }

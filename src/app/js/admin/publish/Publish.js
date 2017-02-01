@@ -9,8 +9,14 @@ import { publish as publishAction } from './';
 import Alert from '../../lib/Alert';
 import Card from '../../lib/Card';
 import ButtonWithStatus from '../../lib/ButtonWithStatus';
+import PublicationPreview from '../publicationPreview/PublicationPreview';
+import { loadField } from '../fields';
 
 export class PublishComponent extends Component {
+    componentWillMount() {
+        this.props.loadField();
+    }
+
     handleClick = () => {
         this.props.onPublish();
     }
@@ -20,9 +26,7 @@ export class PublishComponent extends Component {
         return (
             <Card>
                 <CardHeader title={polyglot.t('publication')} />
-                <CardText>
-                    {polyglot.t('publication_explanations')}
-                </CardText>
+                <PublicationPreview />
                 <CardActions>
                     <ButtonWithStatus
                         className="btn-publish"
@@ -34,6 +38,9 @@ export class PublishComponent extends Component {
                     />
                     {error && <Alert><p>{error}</p></Alert>}
                 </CardActions>
+                <CardText>
+                    {polyglot.t('publication_explanations')}
+                </CardText>
             </Card>
         );
     }
@@ -45,6 +52,7 @@ PublishComponent.propTypes = {
     p: polyglotPropTypes.isRequired,
     onPublish: PropTypes.func.isRequired,
     published: PropTypes.bool.isRequired,
+    loadField: PropTypes.func.isRequired,
 };
 
 PublishComponent.defaultProps = {
@@ -59,6 +67,7 @@ const mapStateToProps = ({ publication: { error, loading, published } }) => ({
 
 const mapDispatchToProps = ({
     onPublish: publishAction,
+    loadField,
 });
 
 export default compose(
