@@ -6,21 +6,26 @@ describe('publish', () => {
     const dataset = [{ foo: 'foo1', bar: 'bar1' }, { foo: 'foo2', bar: 'bar2' }];
     const fields = ['field1', 'field2'];
     const transformDocument = createSpy().andReturn(Promise.resolve('transformedDocument'));
+    const transformDocumentStageFactory = createSpy().andReturn(transformDocument);
+    const getDocumentTransformerImpl = createSpy().andReturn(transformDocumentStageFactory);
 
     const ctx = {
         dataset: {
             count: createSpy().andReturn(Promise.resolve(201)),
             findLimitFromSkip: createSpy().andReturn(dataset),
         },
-        publishedDataset: {
-            insertMany: createSpy(),
-        },
+        ezMasterConfig: {},
         field: {
             insertMany: createSpy(),
             findAll: createSpy().andReturn(fields),
         },
+        getDocumentTransformer: createSpy().andReturn(getDocumentTransformerImpl),
+        publishedDataset: {
+            insertMany: createSpy(),
+            findLimitFromSkip: createSpy().andReturn(dataset),
+            updateOne: createSpy(),
+        },
         redirect: createSpy(),
-        getDocumentTransformer: createSpy().andReturn(transformDocument),
     };
 
     beforeEach(async () => {
@@ -36,7 +41,7 @@ describe('publish', () => {
     });
 
     it('should get the transformers', () => {
-        expect(ctx.getDocumentTransformer).toHaveBeenCalledWith(fields);
+        expect(getDocumentTransformerImpl).toHaveBeenCalledWith(fields);
     });
 
     it('should load items from the original dataset and insert them in the publishedDataset by page of 100', () => {
