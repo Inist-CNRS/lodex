@@ -9,10 +9,12 @@ import {
     fetchSuccess,
 } from './';
 
+export const filterAction = action => action.type === FETCH && action.meta && action.meta.name === name;
+
 export function* handleFetch({ payload: config, meta: { name } }) {
     const { fetch } = yield race({
         fetch: call(fetchSaga, config),
-        cancel: take(action => action.type === FETCH && action.meta && action.meta.name === name),
+        cancel: take(filterAction),
     });
 
     if (fetch) {
