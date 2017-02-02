@@ -1,3 +1,4 @@
+/* eslint max-len: off */
 export default {
     Admin: 'Admin',
     'Sign in': 'Sign in',
@@ -21,4 +22,11 @@ export default {
     perPage: 'per page',
     loading: 'Loading...',
     loading_parsing_results: 'Loading parsing results',
+    publication_preview: 'Publication preview',
+    click_to_edit_publication_field: 'Click this field to edit it',
+    add_transformer: 'Add a transformer',
+    remove_transformer: 'Remove this transformer',
+    fieldLabel: 'Label',
+    fieldName: 'Name',
+    select_an_operation: 'Select an operation',
 };

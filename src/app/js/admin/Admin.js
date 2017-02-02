@@ -14,6 +14,7 @@ import {
     hasPublishedDataset as selectHasPublishedDataset,
 } from '../publication';
 import ParsingResult from './parsing/ParsingResult';
+import PublicationPreview from './publicationPreview/PublicationPreview';
 import Publish from './publish/Publish';
 import Published from '../publication/Published';
 import Upload from './upload/Upload';
@@ -58,6 +59,7 @@ export class AdminComponent extends Component {
             return (
                 <div className="admin">
                     <ParsingResult />
+                    <PublicationPreview />
                     <Publish />
                 </div>
             );

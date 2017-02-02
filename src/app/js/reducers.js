@@ -8,7 +8,7 @@ import i18n from './i18n';
 import user from './user';
 import parsing from './admin/parsing';
 import publication from './publication';
-import publish from './admin/publish';
+import publishReducer from './admin/publish';
 import upload from './admin/upload';
 import fields from './admin/fields';
 import publicationPreview from './admin/publicationPreview';
@@ -22,7 +22,7 @@ const rootReducer = combineReducers({
     parsing,
     polyglot,
     publication,
-    publish,
+    publish: publishReducer,
     routing,
     upload,
     user,

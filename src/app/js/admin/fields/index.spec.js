@@ -16,12 +16,12 @@ describe('fields', () => {
 
         it('should handle the LOAD_FIELD_SUCCESS', () => {
             const state = reducer([], loadFieldSuccess(['fields']));
-            expect(state).toEqual(['fields']);
+            expect(state).toEqual({ list: ['fields'] });
         });
 
         it('should handle the LOAD_FIELD_ERROR', () => {
-            const state = reducer(['fields'], loadFieldError());
-            expect(state).toEqual([]);
+            const state = reducer({ list: ['fields'] }, loadFieldError());
+            expect(state).toEqual(defaultState);
         });
     });
 

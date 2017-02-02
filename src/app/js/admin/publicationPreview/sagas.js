@@ -11,6 +11,7 @@ import {
 
 import {
     LOAD_FIELD_SUCCESS,
+    SAVE_FIELD,
     getFields,
 } from '../fields';
 
@@ -23,7 +24,7 @@ export function* handleComputePreview() {
     try {
         const fields = yield select(getFields);
 
-        const transformDocument = yield call(getDocumentTransformer, fields);
+        const transformDocument = yield call(getDocumentTransformer, fields, {});
 
         const lines = yield select(getExcerptLines);
         const preview = yield lines.map(line => call(transformDocument, line));
@@ -35,5 +36,10 @@ export function* handleComputePreview() {
 }
 
 export default function* watchComputePreview() {
-    yield takeLatest([COMPUTE_PREVIEW, LOAD_PARSING_RESULT_SUCCESS, LOAD_FIELD_SUCCESS], handleComputePreview);
+    yield takeLatest([
+        COMPUTE_PREVIEW,
+        LOAD_PARSING_RESULT_SUCCESS,
+        LOAD_FIELD_SUCCESS,
+        SAVE_FIELD,
+    ], handleComputePreview);
 }

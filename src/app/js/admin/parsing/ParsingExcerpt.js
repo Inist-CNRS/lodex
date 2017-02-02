@@ -1,10 +1,10 @@
 import React, { PropTypes } from 'react';
 import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn } from 'material-ui/Table';
 
-const ParsingExcerpt = ({ columns, lines }) => (
+const ParsingExcerpt = ({ columns, lines, onHeaderClick }) => (
     <Table selectable={false} fixedHeader={false} style={{ width: 'auto' }}>
         <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
-            <TableRow>
+            <TableRow onCellClick={(_, __, col) => onHeaderClick(col - 1)}>
                 {columns.map(c => <TableHeaderColumn>{c}</TableHeaderColumn>)}
             </TableRow>
         </TableHeader>
@@ -18,9 +18,14 @@ const ParsingExcerpt = ({ columns, lines }) => (
     </Table>
 );
 
+ParsingExcerpt.defaultProps = {
+    onHeaderClick: () => {},
+};
+
 ParsingExcerpt.propTypes = {
     columns: PropTypes.arrayOf(PropTypes.string).isRequired,
     lines: PropTypes.arrayOf(PropTypes.object).isRequired,
+    onHeaderClick: PropTypes.func,
 };
 
 export default ParsingExcerpt;
