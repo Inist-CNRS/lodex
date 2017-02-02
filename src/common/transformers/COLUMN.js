@@ -1,5 +1,4 @@
-
-const transformation = args => doc =>
+const transformation = (_, args) => doc =>
     new Promise((resolve, reject) => {
         try {
             const sourceField = args.find(a => a.name === 'column');

@@ -1,6 +1,6 @@
 import expect from 'expect';
 
-import parsing from './parsing';
+import { getExcerpt } from './parsing';
 
 describe('parsing', () => {
     it('should call ctx.dataset getExcerpt and count and return their result', async () => {
@@ -18,7 +18,7 @@ describe('parsing', () => {
                 },
             },
         };
-        await parsing(ctx);
+        await getExcerpt(ctx);
         expect(ctx.body).toEqual({
             excerptLines: 'getExcerpt Result',
             totalLoadedLines: 'count Result',

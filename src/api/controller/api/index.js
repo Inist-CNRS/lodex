@@ -32,7 +32,7 @@ app.use(jwt({ secret: auth.headerSecret, key: 'header' }));
 
 app.use(mount('/field', fieldRoutes));
 app.use(route.post('/upload', upload));
-app.use(route.get('/parsing', parsing));
+app.use(mount('/parsing', parsing));
 app.use(route.get('/publish', publish));
 
 app.use(async (ctx) => {
