@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
@@ -9,7 +9,13 @@ import { polyglot as polyglotPropTypes } from '../../lib/propTypes';
 import FormTextField from '../../lib/FormTextField';
 import FormSelectField from '../../lib/FormSelectField';
 import FormAutoCompleteField from '../../lib/FormAutoCompleteField';
-import { FIELD_FORM_NAME, getEditedField, saveField } from './';
+import {
+    FIELD_FORM_NAME,
+    getEditedField,
+    saveField,
+    getSchemeSearchRequest as selectGetSchemeSearchRequest,
+    getSchemeMenuItemsDataFromResponse as selectGetSchemeMenuItemsDataFromResponse,
+} from './';
 
 import Alert from '../../lib/Alert';
 import TransformerList from './TransformerList';
@@ -42,7 +48,14 @@ const styles = {
     },
 };
 
-export const FieldFormComponent = ({ error, field, handleSubmit, p: polyglot }) => {
+export const FieldFormComponent = ({
+    error,
+    field,
+    handleSubmit,
+    p: polyglot,
+    getSchemeSearchRequest,
+    getSchemeMenuItemsDataFromResponse,
+}) => {
     if (!field) {
         return <span />;
     }
@@ -76,17 +89,17 @@ export const FieldFormComponent = ({ error, field, handleSubmit, p: polyglot }) 
                 component={FormAutoCompleteField}
                 label={polyglot.t('scheme')}
                 fullWidth
-                fetch={query => ({
-                    url: `http://lov.okfn.org/dataset/lov/api/v2/vocabulary/autocomplete?q=${query}`,
-                })}
-                parseResponse={response => (response && response.results ? response.results.map(r => ({
-                    text: r.uri[0],
+                targetOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+                fetch={getSchemeSearchRequest}
+                parseResponse={response => getSchemeMenuItemsDataFromResponse(response).map(({ label, uri }) => ({
+                    text: uri,
                     value: (
-                        <MenuItem style={{ lineHeight: 1 }} value={r.uri[0]}>
-                            <div style={styles.schemeLabel}><b>{r['http://purl.org/dc/terms/title@en'][0]}</b></div>
-                            <small style={styles.schemeUri}>{r.uri[0]}</small>
-                        </MenuItem>),
-                })) : [])}
+                        <MenuItem style={{ lineHeight: 1 }} value={uri}>
+                            <div style={styles.schemeLabel}><b>{label}</b></div>
+                            <small style={styles.schemeUri}>{uri}</small>
+                        </MenuItem>
+                    ),
+                }))}
             />
             <FieldArray name="transformers" component={TransformerList} />
         </form>
@@ -99,11 +112,14 @@ FieldFormComponent.defaultProps = {
 FieldFormComponent.propTypes = {
     ...reduxFormPropTypes,
     p: polyglotPropTypes.isRequired,
+    getSchemeSearchRequest: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
     initialValues: getEditedField(state),
     field: getEditedField(state),
+    getSchemeSearchRequest: query => selectGetSchemeSearchRequest(state, query),
+    getSchemeMenuItemsDataFromResponse: query => selectGetSchemeMenuItemsDataFromResponse(state, query),
 });
 
 const mapDispatchToProps = {
