@@ -12,15 +12,16 @@ describe('publish', () => {
             count: createSpy().andReturn(Promise.resolve(201)),
             findLimitFromSkip: createSpy().andReturn(dataset),
         },
-        publishedDataset: {
-            insertMany: createSpy(),
-        },
+        ezMasterConfig: { naan: '55555' },
         field: {
             insertMany: createSpy(),
             findAll: createSpy().andReturn(fields),
         },
-        redirect: createSpy(),
         getDocumentTransformer: createSpy().andReturn(transformDocument),
+        publishedDataset: {
+            insertMany: createSpy(),
+        },
+        redirect: createSpy(),
     };
 
     beforeEach(async () => {
@@ -36,7 +37,7 @@ describe('publish', () => {
     });
 
     it('should get the transformers', () => {
-        expect(ctx.getDocumentTransformer).toHaveBeenCalledWith(fields);
+        expect(ctx.getDocumentTransformer).toHaveBeenCalledWith(fields, ctx.ezMasterConfig);
     });
 
     it('should load items from the original dataset and insert them in the publishedDataset by page of 100', () => {

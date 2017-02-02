@@ -5,16 +5,9 @@ export const publishMiddleware = async (ctx) => {
     const count = await ctx.dataset.count({});
     let handled = 0;
 
-    // TODO: remove this for stable state 2
-    const firstLines = await ctx.dataset.findLimitFromSkip(1, 0);
-    await ctx.field.insertMany(Object.keys(firstLines[0]).filter(k => k !== '_id').map(key => ({
-        name: key,
-        transformers: [],
-    })));
-
     const columns = await ctx.field.findAll();
 
-    const transformDocument = ctx.getDocumentTransformer(columns);
+    const transformDocument = ctx.getDocumentTransformer(columns, ctx.ezMasterConfig);
 
     while (handled < count) {
         const dataset = await ctx.dataset.findLimitFromSkip(100, handled);

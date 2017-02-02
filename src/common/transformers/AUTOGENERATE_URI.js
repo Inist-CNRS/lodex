@@ -2,7 +2,7 @@ import InistArk from 'inist-ark';
 
 const ARBITRARY_SUBPUBLISHER = '39D';
 
-export default ({ naan, subpublisher }) => destinationField => () =>
+const transformation = ({ naan, subpublisher }) => field => () =>
     new Promise((resolve, reject) => {
         try {
             if (naan && subpublisher) {
@@ -12,7 +12,7 @@ export default ({ naan, subpublisher }) => destinationField => () =>
                 });
 
                 return resolve({
-                    [destinationField]: ark.generate(),
+                    [field]: ark.generate(),
                 });
             }
 
@@ -21,9 +21,16 @@ export default ({ naan, subpublisher }) => destinationField => () =>
             });
 
             return resolve({
-                [destinationField]: ark.parse(ark.generate()).identifier,
+                [field]: ark.parse(ark.generate()).identifier,
             });
         } catch (error) {
             return reject(error);
         }
     });
+
+transformation.getMetas = () => ({
+    name: 'AUTOGENERATE_URI',
+    args: [],
+});
+
+export default transformation;

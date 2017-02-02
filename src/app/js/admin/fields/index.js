@@ -1,4 +1,5 @@
 import { createAction, handleActions } from 'redux-actions';
+import { getTransformersMetas, getTransformerMetas } from '../../../../common/transformers';
 
 export const FIELD_FORM_NAME = 'field';
 
@@ -41,7 +42,7 @@ export default handleActions({
         list: [
             ...state.list.slice(0, state.editedFieldIndex),
             payload,
-            ...state.list.slice(0, state.editedFieldIndex),
+            ...state.list.slice(state.editedFieldIndex + 1),
         ],
     }),
     EDIT_FIELD: (state, { payload }) => ({
@@ -61,7 +62,16 @@ export const getLoadFieldRequest = state => ({
 });
 
 export const getFields = state => state.fields.list;
+
 export const getEditedField =
     state => state.fields.list[state.fields.editedFieldIndex];
 
-export const getPublicationColumns = state => state.fields.list.map(field => (field && field.label) || '');
+export const getPublicationFields = state => state.fields.list;
+
+export const hasPublicationFields = state => state.fields.length > 0;
+
+export const getTransformers = () => getTransformersMetas();
+
+export const getTransformerArgs = (state, operation) => getTransformerMetas(operation);
+
+export const getFieldFormData = state => state.form.field.values;

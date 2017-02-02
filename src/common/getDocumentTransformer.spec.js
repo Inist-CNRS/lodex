@@ -8,14 +8,14 @@ describe('getDocumentTransformer', () => {
             {
                 name: 'newA',
                 transformers: [
-                    { operation: 'COLUMN', args: ['a'] },
+                    { operation: 'COLUMN', args: [{ name: 'column', value: 'a' }] },
                     { operation: 'UPPERCASE', args: [] },
                 ],
             },
             {
                 name: 'newB',
                 transformers: [
-                    { operation: 'COLUMN', args: ['b'] },
+                    { operation: 'COLUMN', args: [{ name: 'column', value: 'b' }] },
                 ],
             },
         ];
@@ -51,7 +51,7 @@ describe('getDocumentTransformer', () => {
             const column = {
                 name: 'A',
                 transformers: [
-                    { operation: 'COLUMN', args: ['a'] },
+                    { operation: 'COLUMN', args: [{ name: 'column', value: 'a' }] },
                     { operation: 'UPPERCASE', args: [] },
                 ],
             };

@@ -1,4 +1,4 @@
-export default () => field => doc =>
+const transformation = () => field => doc =>
 new Promise((resolve, reject) => {
     try {
         resolve({
@@ -8,3 +8,10 @@ new Promise((resolve, reject) => {
         reject(error);
     }
 });
+
+transformation.getMetas = () => ({
+    name: 'UPPERCASE',
+    args: [],
+});
+
+export default transformation;

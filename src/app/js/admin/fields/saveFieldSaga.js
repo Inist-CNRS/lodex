@@ -1,18 +1,36 @@
 import { takeLatest } from 'redux-saga';
-import { put, select } from 'redux-saga/effects';
+import { call, put, select } from 'redux-saga/effects';
 import { CHANGE as REDUX_FORM_CHANGE } from 'redux-form/lib/actionTypes';
+import { getFieldFormData, getTransformerArgs, saveField } from './';
 
-import {
-    saveField,
-} from './';
+export function* prepareTransformer(transformer) {
+    const args = yield select(getTransformerArgs, transformer.operation);
+    const originalArgs = transformer.args || args;
 
-const getFieldFormData = state => state.form.field.values;
+    return {
+        ...transformer,
+        args: (args || []).map(a => ({
+            ...a,
+            value: originalArgs.find(originalArg => a.name === originalArg.name).value,
+        })),
+    };
+}
+
+export function* prepareTransformers(transformers) {
+    if (!transformers || transformers.length === 0) {
+        return [];
+    }
+
+    return yield transformers.map(transformer => call(prepareTransformer, transformer));
+}
 
 export function* handleSaveField({ meta: { form } }) {
     if (form !== 'field') {
         return;
     }
     const fieldData = yield select(getFieldFormData);
+    fieldData.transformers = yield call(prepareTransformers, fieldData.transformers);
+
     yield put(saveField(fieldData));
 }
 

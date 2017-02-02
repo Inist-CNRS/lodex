@@ -3,7 +3,7 @@ import asyncCompose from './lib/asyncCompose';
 
 export const getFieldTransformation = (field, config) => {
     const documentTransformers = field.transformers
-        .map(({ operation, args }) => transformers[operation](config)(field.name, ...args));
+        .map(({ operation, args = [] }) => transformers[operation](config)(field.name, args));
 
     const transformDocument = asyncCompose(documentTransformers);
 

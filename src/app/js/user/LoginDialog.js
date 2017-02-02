@@ -13,7 +13,7 @@ import { login as loginAction, toggleLogin as toggleLoginAction, LOGIN_FORM_NAME
 import LoginForm from './LoginForm';
 import ButtonWithStatus from '../lib/ButtonWithStatus';
 
-export const LoginDialog = ({ login, p: polyglot, showModal, submit, submitting, toggleLogin }) => (
+export const LoginDialogComponent = ({ login, p: polyglot, showModal, submit, submitting, toggleLogin }) => (
     <Dialog
         className="dialog-login"
         title="Sign in"
@@ -36,7 +36,7 @@ export const LoginDialog = ({ login, p: polyglot, showModal, submit, submitting,
     </Dialog>
 );
 
-LoginDialog.propTypes = {
+LoginDialogComponent.propTypes = {
     showModal: PropTypes.bool.isRequired,
     login: PropTypes.func.isRequired,
     p: polyglotPropTypes.isRequired,
@@ -59,4 +59,4 @@ export const mapDispatchToProps = dispatch => bindActionCreators({
 export default compose(
     connect(mapStateToProps, mapDispatchToProps),
     translate,
-)(LoginDialog);
+)(LoginDialogComponent);
