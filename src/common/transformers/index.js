@@ -15,6 +15,7 @@ export default transformers;
 export const getTransformersMetas = () => [
     AUTOGENERATE_URI,
     COLUMN,
+    LINK,
     UPPERCASE,
 ].map(transformation => transformation.getMetas());
 
