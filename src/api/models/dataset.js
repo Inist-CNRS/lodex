@@ -15,7 +15,9 @@ export default (db) => {
             throw new Error(`${fieldName} value is not unique for every document`);
         }
 
-        return collection.find({ [fieldName]: value }).limit(1).toArray()[0];
+        const results = await collection.find({ [fieldName]: value }).limit(1).toArray();
+
+        return results[0];
     };
     return collection;
 };
