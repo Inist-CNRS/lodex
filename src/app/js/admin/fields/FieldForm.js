@@ -3,7 +3,7 @@ import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import { Card } from 'material-ui/Card';
 import translate from 'redux-polyglot/translate';
-import { Field, reduxForm, propTypes as reduxFormPropTypes } from 'redux-form';
+import { Field, FieldArray, reduxForm, propTypes as reduxFormPropTypes } from 'redux-form';
 
 import { polyglot as polyglotPropTypes } from '../../lib/propTypes';
 import FormTextField from '../../lib/FormTextField';
@@ -24,6 +24,36 @@ const validate = (values) => {
 
     return errors;
 };
+
+const renderTransformers = ({ fields, meta: { touched, error } }) => (
+    <ul>
+        <li>
+            <button type="button" onClick={() => fields.push({})}>Add transformer</button>
+            {touched && error && <span>{error}</span>}
+        </li>
+        {fields.map((transformer, index) =>
+            <li key={index}>
+                <button
+                    type="button"
+                    title="Remove transformer"
+                    // onClick={() => fields.remove(index)}
+                />
+                <Field
+                    name={`${transformer}.operation`}
+                    type="text"
+                    component={FormTextField}
+                    label="Operation"
+                />
+                <Field
+                    name={`${transformer}.args`}
+                    type="text"
+                    component={FormTextField}
+                    label="Args"
+                />
+            </li>,
+        )}
+    </ul>
+);
 
 export const FieldComponent = ({ error, field, handleSubmit, p: polyglot }) => {
     if (!field) {
@@ -46,6 +76,7 @@ export const FieldComponent = ({ error, field, handleSubmit, p: polyglot }) => {
                     label={polyglot.t('fieldLabel')}
                     fullWidth
                 />
+                <FieldArray name="transformers" component={renderTransformers} />
             </form>
         </Card>
     );
