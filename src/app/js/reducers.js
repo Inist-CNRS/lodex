@@ -11,23 +11,25 @@ import publication from './publication';
 import publishReducer from './admin/publish';
 import upload from './admin/upload';
 import fields from './admin/fields';
+import fetchReducer from './fetch';
 import publicationPreview from './admin/publicationPreview';
 
 export const getCurrentLocation = state => state.routing;
 
 const rootReducer = combineReducers({
     dataset,
+    fetch: fetchReducer,
+    fields,
     form,
     i18n,
     parsing,
     polyglot,
     publication,
+    publicationPreview,
     publish: publishReducer,
     routing,
     upload,
     user,
-    fields,
-    publicationPreview,
 });
 
 export default rootReducer;

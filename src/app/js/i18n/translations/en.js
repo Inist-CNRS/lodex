@@ -29,4 +29,7 @@ export default {
     fieldLabel: 'Label',
     fieldName: 'Name',
     select_an_operation: 'Select an operation',
+    cover: 'Select a coverage',
+    cover_dataset: 'Apply to whole dataset',
+    cover_collection: 'Different for each ressource',
 };

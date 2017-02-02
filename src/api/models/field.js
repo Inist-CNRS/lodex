@@ -31,7 +31,6 @@ export const validateFieldFactory = schemeServiceImpl => (data) => {
             name: /^[\S]{3,}$/,
             scheme: /^https?:\/\/.+$/,
             transformers: [],
-            type: /^https?:\/\/.+$/,
         });
     } catch (error) {
         throw new Error(INVALID_FIELD_MESSAGE);
