@@ -29,7 +29,6 @@ export function* handleComputePreview() {
 
         const lines = yield select(getExcerptLines);
         const preview = yield lines.map(line => call(transformDocument, line));
-
         yield put(computePreviewSuccess(preview));
     } catch (error) {
         yield put(computePreviewError(error));

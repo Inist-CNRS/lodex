@@ -28,12 +28,18 @@ describe('LINK', () => {
                 {
                     name: 'link',
                     transformers: [
-                        { operation: 'LINK', args: ['ref', 'id'] },
+                        {
+                            operation: 'LINK',
+                            args: [
+                                { name: 'referenceColumn', value: 'ref' },
+                                { name: 'identifierColumn', value: 'id' },
+                            ],
+                        },
                     ],
                 },
             ];
 
-            const newDoc = await getDocumentTransformer({ env: 'node', db })(fields)(doc);
+            const newDoc = await getDocumentTransformer({ env: 'node', db }, fields)(doc);
 
             expect(newDoc).toEqual({
                 link: 'uri2',

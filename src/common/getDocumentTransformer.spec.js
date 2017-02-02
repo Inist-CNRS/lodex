@@ -26,7 +26,7 @@ describe('getDocumentTransformer', () => {
             c: 'or not',
         };
 
-        const newDoc = await getDocumentTransformer({})(columns)(doc);
+        const newDoc = await getDocumentTransformer({}, columns)(doc);
 
         expect(newDoc).toEqual({
             newA: 'HELLO',
@@ -41,7 +41,7 @@ describe('getDocumentTransformer', () => {
             c: 'or not',
         };
 
-        const newDoc = await getDocumentTransformer({})([])(doc);
+        const newDoc = await getDocumentTransformer({}, [])(doc);
 
         expect(newDoc).toEqual({});
     });
