@@ -1,14 +1,14 @@
 import { takeLatest } from 'redux-saga';
 import { call, put, select } from 'redux-saga/effects';
 
-import fetchSaga from '../../lib/fetchSaga';
+import fetchSaga from '../../../lib/fetchSaga';
 
 import {
     LOAD_FIELD,
     getLoadFieldRequest,
     loadFieldError,
     loadFieldSuccess,
-} from './';
+} from '../';
 
 export function* handleLoadField() {
     const request = yield select(getLoadFieldRequest);

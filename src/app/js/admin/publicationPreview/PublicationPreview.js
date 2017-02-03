@@ -10,9 +10,14 @@ import { polyglot as polyglotPropTypes } from '../../lib/propTypes';
 import Card from '../../lib/Card';
 
 export const PublicationPreviewComponent = ({ columns, lines, editColumn, p: polyglot }) => (
-    <Card>
-        <CardHeader title={polyglot.t('publication_preview')} />
-        <CardText>
+    <Card initiallyExpanded>
+        <CardHeader
+            actAsExpander
+            showExpandableButton
+            title={polyglot.t('publication_preview')}
+        />
+
+        <CardText expandable initiallyExpanded>
             <PublicationExcerpt
                 columns={columns}
                 lines={lines}

@@ -18,19 +18,19 @@ export const getAllField = async (ctx) => {
 };
 
 export const postField = async (ctx) => {
-    const newField = ctx.validateField(ctx.request.body);
+    const newField = ctx.request.body;
 
     ctx.body = await ctx.field.insertOne(newField);
 };
 
-export const putField = async (ctx, name) => {
-    const newField = ctx.validateField(ctx.request.body);
+export const putField = async (ctx, id) => {
+    const newField = ctx.request.body;
 
-    ctx.body = await ctx.field.updateOneByName(name, newField);
+    ctx.body = await ctx.field.updateOneById(id, newField);
 };
 
-export const removeField = async (ctx, name) => {
-    ctx.body = await ctx.field.removeByName(name);
+export const removeField = async (ctx, id) => {
+    ctx.body = await ctx.field.removeById(id);
 };
 
 const app = new Koa();
@@ -39,7 +39,7 @@ app.use(setup);
 
 app.use(route.get('/', getAllField));
 app.use(route.post('/', postField));
-app.use(route.put('/:name', putField));
-app.use(route.del('/:name', removeField));
+app.use(route.put('/:id', putField));
+app.use(route.del('/:id', removeField));
 
 export default app;

@@ -1,18 +1,18 @@
 import expect from 'expect';
 import { call, put, select } from 'redux-saga/effects';
 
-import fetchSaga from '../../lib/fetchSaga';
+import fetchSaga from '../../../lib/fetchSaga';
 
 import {
     getLoadFieldRequest,
     loadFieldError,
     loadFieldSuccess,
-} from './';
+} from '../';
 
 
 import {
     handleLoadField,
-} from './sagas';
+} from './loadFields';
 
 describe('fields saga', () => {
     describe('handleLoadField', () => {
