@@ -1,20 +1,40 @@
 /* eslint no-await-in-loop: off */
 import getDocumentTransformer from '../../../common/getDocumentTransformer';
 
+export const tranformAllDocument = async (count, findLimitFromSkip, insertMany, transformer) => {
+    let handled = 0;
+    while (handled < count) {
+        const dataset = await findLimitFromSkip(100, handled);
+        const transformedDataset = await Promise.all(dataset.map(transformer));
+        await insertMany(transformedDataset);
+        handled += dataset.length;
+    }
+};
+
 export const publishMiddleware = async (ctx) => {
     const count = await ctx.dataset.count({});
-    let handled = 0;
 
     const columns = await ctx.field.findAll();
 
-    const transformDocument = ctx.getDocumentTransformer({ env: 'node', dataset: ctx.dataset }, columns);
+    const uriIndex = columns.findIndex(col => col.name === 'uri');
+    const addUri = ctx.getDocumentTransformer({ env: 'node', dataset: ctx.dataset }, columns[uriIndex]);
 
-    while (handled < count) {
-        const dataset = await ctx.dataset.findLimitFromSkip(100, handled);
-        const transformedDataset = await Promise.all(dataset.map(transformDocument));
-        await ctx.publishedDataset.insertMany(transformedDataset);
-        handled += dataset.length;
-    }
+    await tranformAllDocument(
+        count,
+        ctx.dataset.findLimitFromSkip,
+        ctx.uriDataset.insertMany,
+        addUri,
+    );
+
+    const transformDocument = ctx
+        .getDocumentTransformer({ env: 'node', dataset: ctx.dataset }, columns.splice(uriIndex));
+
+    await tranformAllDocument(
+        count,
+        ctx.uriDataset.findLimitFromSkip,
+        ctx.publishedDataset.insertMany,
+        transformDocument,
+    );
 
     ctx.redirect('/api/publication');
 };
