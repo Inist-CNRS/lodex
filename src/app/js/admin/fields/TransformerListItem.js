@@ -28,12 +28,13 @@ const TransformerListItem = ({ availableTransformers, fieldName, onRemove, p: po
             <ActionDeleteIcon />
         </IconButton>
         <Field
+            className="operation"
             name={`${fieldName}.operation`}
             type="text"
             component={FormSelectField}
             label={polyglot.t('select_an_operation')}
         >
-            {availableTransformers.map(t => <MenuItem value={t.name} primaryText={t.name} />)}
+            {availableTransformers.map(t => <MenuItem className={t.name} value={t.name} primaryText={t.name} />)}
         </Field>
         <FieldArray name={`${fieldName}.args`} component={TransformerArgList} />
     </div>

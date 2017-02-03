@@ -30,10 +30,51 @@ describe('Admin page', function homeTests() {
         });
 
         it('should display the parsing result after uploading a csv', async () => {
-            const csvPath = path.resolve(__dirname, './sample_csv.csv');
+            const csvPath = path.resolve(__dirname, './linked_sample_csv.csv');
             const input = await driver.findElement(By.css('input[name=file]'));
             await input.sendKeys(csvPath);
             await driver.wait(until.elementLocated(By.css('.parsingResult')));
+        });
+    });
+
+    describe('AUTOGENERATE_URI', async () => {
+        it('should display publication_preview', async () => {
+            await driver.wait(until.elementLocated(By.css('.publication-preview')));
+        });
+
+        it('should display only uri empty column', async () => {
+            const th = await driver.findElement(By.css('.publication-preview th'));
+            const text = await th.getText();
+            expect(text).toBe('uri');
+
+            const td = await driver.findElements(By.css('.publication-preview tr td:first-child'));
+            expect(td.length).toBe(3);
+            const tdTexts = await Promise.all(td.map(e => e.getText()));
+            expect(tdTexts).toEqual(['', '', '']);
+        });
+
+        it('should display form for uri column when clicking on uri column', async () => {
+            await driver.findElement(By.css('.publication-preview th')).click();
+            await driver.wait(until.elementLocated(By.css('#field_form')));
+            const name = await driver.findElement(By.css('#field_form input[name=name]'));
+            const label = await driver.findElement(By.css('#field_form input[name=label]'));
+            expect(await name.getAttribute('value')).toBe('uri');
+            expect(await label.getAttribute('value')).toBe('');
+        });
+
+        it('should allow to add a transformer AUTOGENERATE_URI', async () => {
+            await driver.findElement(By.css('#field_form .add-transformer')).click();
+
+            await driver.findElement(By.css('.operation')).click();
+            await driver.wait(until.elementLocated(By.css('.AUTOGENERATE_URI')));
+            await driver.findElement(By.css('.AUTOGENERATE_URI')).click();
+        });
+
+        it('should have completed uri column with generated uri', async () => {
+            const td = await driver.findElements(By.css('.publication-preview tr td:first-child'));
+            expect(td.length).toBe(3);
+            const tdTexts = await Promise.all(td.map(e => e.getText()));
+            expect(tdTexts).toMatch([/[A-Z0-9]{8}/]);
         });
     });
 
