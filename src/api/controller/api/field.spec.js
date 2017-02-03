@@ -58,13 +58,17 @@ describe('field routes', () => {
                     body: 'new field data',
                 },
                 field: {
-                    insertOne: expect.createSpy().andReturn(Promise.resolve('insertion result')),
+                    findOneById: expect.createSpy().andReturn(Promise.resolve('inserted item')),
+                    insertOne: expect.createSpy().andReturn(Promise.resolve({
+                        ops: [{ _id: 'foo' }],
+                    })),
                 },
             };
 
             await postField(ctx);
             expect(ctx.field.insertOne).toHaveBeenCalledWith('new field data');
-            expect(ctx.body).toBe('insertion result');
+            expect(ctx.field.findOneById).toHaveBeenCalledWith('foo');
+            expect(ctx.body).toBe('inserted item');
         });
     });
 
