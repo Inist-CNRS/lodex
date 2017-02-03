@@ -7,6 +7,7 @@ import FormTextField from '../../lib/FormTextField';
 
 const TransformerArgListItem = ({ fieldName, transformerArg }) => (
     <Field
+        className={transformerArg.name}
         name={`${fieldName}.value`}
         type="text"
         component={FormTextField}

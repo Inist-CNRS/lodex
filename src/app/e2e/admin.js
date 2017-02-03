@@ -1,10 +1,10 @@
-import { until, By } from 'selenium-webdriver';
+import { until, By, Actions } from 'selenium-webdriver';
 import expect from 'expect';
 import path from 'path';
 import driver from '../../common/tests/chromeDriver';
 import { clear } from '../../common/tests/fixtures';
 
-describe('Admin page', function homeTests() {
+describe.only('Admin page', function homeTests() {
     this.timeout(20000);
 
     describe('Uploading', () => {
@@ -37,7 +37,7 @@ describe('Admin page', function homeTests() {
         });
     });
 
-    describe('AUTOGENERATE_URI', async () => {
+    describe('configuring uri column', async () => {
         it('should display publication_preview', async () => {
             await driver.wait(until.elementLocated(By.css('.publication-preview')));
         });
@@ -78,7 +78,60 @@ describe('Admin page', function homeTests() {
         });
     });
 
-    describe('Publishing', () => {
+    describe('adding LINK column', () => {
+        it('should display form for newField2 column when clicking on add-column', async () => {
+            await driver.executeScript('document.getElementsByClassName("add-column")[0].scrollIntoView(true);');
+            await driver.sleep(1000);
+            await driver.findElement(By.css('.add-column')).click();
+            await driver.wait(until.elementLocated(By.css('#field_form')));
+            const name = await driver.findElement(By.css('#field_form input[name=name]'));
+            const label = await driver.findElement(By.css('#field_form input[name=label]'));
+            expect(await name.getAttribute('value')).toBe('newField2');
+            expect(await label.getAttribute('value')).toBe('newField 2');
+        });
+
+        it('should change column name', async () => {
+            const name = await driver.findElement(By.css('#field_form input[name=name]'));
+            const label = await driver.findElement(By.css('#field_form input[name=label]'));
+            await name.clear();
+            await name.sendKeys('stronger');
+            await label.clear();
+            await label.sendKeys('Stronger than');
+            const th = await driver.findElement(By.css('.publication-preview th:nth-child(2)'));
+            const text = await th.getText();
+            expect(text).toBe('Stronger than');
+        });
+
+        it('should add a transformer LINK', async () => {
+            await driver.findElement(By.css('#field_form .add-transformer')).click();
+            await driver.executeScript('document.getElementsByClassName("operation")[0].scrollIntoView(true);');
+            await driver.findElement(By.css('.operation')).click();
+            await driver.executeScript('document.getElementsByClassName("LINK")[0].scrollIntoView(true);');
+            await driver.wait(until.elementLocated(By.css('.LINK')));
+            await driver.findElement(By.css('.LINK')).click();
+        });
+
+        it('should configure transformer Link', async () => {
+            const reference = await driver.findElement(By.css('#field_form .reference input'));
+            reference.sendKeys('stronger_than');
+            const identifier = await driver.findElement(By.css('#field_form .identifier input'));
+            identifier.sendKeys('id');
+        });
+
+        it('should have added stronger column with link', async () => {
+            await driver.wait(until.elementLocated(By.css('.publication-preview tr td:nth-child(2)')));
+            const td = await driver.findElements(By.css('.publication-preview tr td:nth-child(2)'));
+            expect(td.length).toBe(3);
+            const tdTexts = await Promise.all(td.map(e => e.getText()));
+            expect(tdTexts).toEqual([
+                'uri to id: 3',
+                'uri to id: 1',
+                'uri to id: 2',
+            ]);
+        });
+    });
+
+    describe.skip('Publishing', () => {
         it('should display the "data published" message after publication', async () => {
             await driver.findElement(By.css('.btn-publish')).click();
             await driver.wait(until.elementLocated(By.css('.data-published')));
