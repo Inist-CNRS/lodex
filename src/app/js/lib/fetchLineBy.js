@@ -9,4 +9,9 @@ export default (fieldName, value, token) =>
             Authorization: `Bearer ${token}`,
             'Content-Type': 'application/json',
         },
+    }).then(({ response, error }) => {
+        if (error) {
+            throw error;
+        }
+        return response;
     });

@@ -1,16 +1,23 @@
-const transformation = (_, args) => doc =>
-    new Promise((resolve, reject) => {
+const transformation = (_, args) => {
+    const sourceField = args.find(a => a.name === 'column');
+
+    if (!sourceField) {
+        throw new Error('Innvalid Argument for COLUMN transformation');
+    }
+
+    return doc => new Promise((resolve, reject) => {
         try {
             if (!doc) {
                 resolve(null);
                 return;
             }
-            const sourceField = args.find(a => a.name === 'column');
             resolve(doc[sourceField.value]);
         } catch (error) {
             reject(error);
         }
     });
+};
+
 
 transformation.getMetas = () => ({
     name: 'COLUMN',

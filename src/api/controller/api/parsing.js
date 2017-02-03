@@ -14,7 +14,11 @@ export const getExcerpt = async (ctx) => {
 };
 
 export const findBy = async (ctx, fieldName, value) => {
-    ctx.body = ctx.dataset.findBy(fieldName, value);
+    const line = await ctx.dataset.findBy(fieldName, value);
+    ctx.body = {
+        ...line,
+        uri: `uri to ${fieldName}: ${value}`,
+    };
 };
 
 app.use(route.get('/', getExcerpt));
