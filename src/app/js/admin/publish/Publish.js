@@ -25,8 +25,12 @@ export class PublishComponent extends Component {
         this.props.onPublish();
     }
 
+    handleAddColumnClick = () => {
+        this.props.addColumn();
+    }
+
     render() {
-        const { addColumn, error, loading, p: polyglot, published } = this.props;
+        const { error, loading, p: polyglot, published } = this.props;
         return (
             <Card>
                 <CardHeader title={polyglot.t('publication')} />
@@ -34,7 +38,7 @@ export class PublishComponent extends Component {
                     <FieldForm />
                 </CardText>
                 <CardActions>
-                    <FlatButton label={polyglot.t('add column')} onClick={addColumn} />
+                    <FlatButton label={polyglot.t('add column')} onClick={this.handleAddColumnClick} />
 
                     <ButtonWithStatus
                         className="btn-publish"
