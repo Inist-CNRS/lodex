@@ -37,7 +37,7 @@ describe('publish', () => {
     });
 
     it('should get the transformers', () => {
-        expect(ctx.getDocumentTransformer).toHaveBeenCalledWith({ env: 'node' }, fields);
+        expect(ctx.getDocumentTransformer).toHaveBeenCalledWith({ env: 'node', dataset: ctx.dataset }, fields);
     });
 
     it('should load items from the original dataset and insert them in the publishedDataset by page of 100', () => {

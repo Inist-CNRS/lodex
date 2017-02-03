@@ -7,7 +7,7 @@ export const publishMiddleware = async (ctx) => {
 
     const columns = await ctx.field.findAll();
 
-    const transformDocument = ctx.getDocumentTransformer({ env: 'node' }, columns);
+    const transformDocument = ctx.getDocumentTransformer({ env: 'node', dataset: ctx.dataset }, columns);
 
     while (handled < count) {
         const dataset = await ctx.dataset.findLimitFromSkip(100, handled);
