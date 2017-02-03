@@ -12,7 +12,6 @@ describe('field', () => {
                 transformers: [
                     { operation: 'COLUMN', args: ['a'] },
                 ],
-                type: 'https://www.w3.org/TR/xmlschema-2/#string',
             };
             expect(validateFieldFactory({ isSchemeValid: () => true })(field)).toEqual(field);
         });
@@ -24,7 +23,6 @@ describe('field', () => {
                 name: 'name',
                 scheme: 'http://purl.org/dc/terms/title',
                 transformers: [],
-                type: 'https://www.w3.org/TR/xmlschema-2/#string',
             };
             expect(validateFieldFactory({ isSchemeValid: () => true })(field)).toEqual(field);
         });
@@ -38,7 +36,6 @@ describe('field', () => {
                 transformers: [
                     { operation: 'COLUMN', args: ['a'] },
                 ],
-                type: 'https://www.w3.org/TR/xmlschema-2/#string',
             };
 
             expect(() => validateFieldFactory({ isSchemeValid: () => true })(field))
@@ -54,7 +51,6 @@ describe('field', () => {
                 transformers: [
                     { operation: 'COLUMN', args: ['a'] },
                 ],
-                type: 'https://www.w3.org/TR/xmlschema-2/#string',
             };
 
             expect(() => validateFieldFactory({ isSchemeValid: () => true })(field))
@@ -70,7 +66,6 @@ describe('field', () => {
                 transformers: [
                     { operation: 'COLUMN', args: ['a'] },
                 ],
-                type: 'https://www.w3.org/TR/xmlschema-2/#string',
             };
 
             expect(() => validateFieldFactory({ isSchemeValid: () => true })(field))
@@ -86,7 +81,6 @@ describe('field', () => {
                 transformers: [
                     { operation: 'COLUMN', args: ['a'] },
                 ],
-                type: 'https://www.w3.org/TR/xmlschema-2/#string',
             };
 
             expect(() => validateFieldFactory({ isSchemeValid: () => true })(field))
@@ -102,7 +96,6 @@ describe('field', () => {
                 transformers: [
                     { operation: 'COLUMN', args: ['a'] },
                 ],
-                type: 'https://www.w3.org/TR/xmlschema-2/#string',
             };
 
             expect(() => validateFieldFactory({ isSchemeValid: () => true })(field))
@@ -118,7 +111,6 @@ describe('field', () => {
                 transformers: [
                     { operation: 'COLUMN', args: ['a'] },
                 ],
-                type: 'https://www.w3.org/TR/xmlschema-2/#string',
             };
 
             expect(() => validateFieldFactory({ isSchemeValid: () => true })(field))
@@ -134,7 +126,6 @@ describe('field', () => {
                 transformers: [
                     { operation: 'COLUMN', args: ['a'] },
                 ],
-                type: 'https://www.w3.org/TR/xmlschema-2/#string',
             };
 
             expect(() => validateFieldFactory({ isSchemeValid: () => true })(field))
@@ -150,7 +141,6 @@ describe('field', () => {
                 transformers: [
                     { operation: 'COLUMN', args: ['a'] },
                 ],
-                type: 'https://www.w3.org/TR/xmlschema-2/#string',
             };
 
             expect(() => validateFieldFactory({ isSchemeValid: () => true })(field))
@@ -166,42 +156,9 @@ describe('field', () => {
                 transformers: [
                     { operation: 'COLUMN', args: ['a'] },
                 ],
-                type: 'https://www.w3.org/TR/xmlschema-2/#string',
             };
 
             expect(() => validateFieldFactory({ isSchemeValid: () => false })(field))
-                .toThrow(INVALID_FIELD_MESSAGE);
-        });
-
-        it('should throw an error if no type', () => {
-            const field = {
-                cover: 'dataset',
-                label: 'label',
-                name: 'name',
-                scheme: 'http://purl.org/dc/terms/title',
-                transformers: [
-                    { operation: 'COLUMN', args: ['a'] },
-                ],
-                type: undefined,
-            };
-
-            expect(() => validateFieldFactory({ isSchemeValid: () => true })(field))
-                .toThrow(INVALID_FIELD_MESSAGE);
-        });
-
-        it('should throw an error if type is not an URI', () => {
-            const field = {
-                cover: 'dataset',
-                label: 'label',
-                name: 'na',
-                scheme: 'http://purl.org/dc/terms/title',
-                transformers: [
-                    { operation: 'COLUMN', args: ['a'] },
-                ],
-                type: 'invalid_type',
-            };
-
-            expect(() => validateFieldFactory({ isSchemeValid: () => true })(field))
                 .toThrow(INVALID_FIELD_MESSAGE);
         });
 
@@ -214,7 +171,6 @@ describe('field', () => {
                 transformers: [
                     { operation: 'COLUMN' },
                 ],
-                type: 'https://www.w3.org/TR/xmlschema-2/#string',
             };
             expect(() => validateFieldFactory({ isSchemeValid: () => true })(field)).toThrow(
 `Invalid transformer in field at index: 0,
@@ -232,7 +188,6 @@ transformer must have a valid operation and an args array`,
                     { operation: 'COLUMN', args: [] },
                     { operation: 'UNKNOWN', args: [] },
                 ],
-                type: 'https://www.w3.org/TR/xmlschema-2/#string',
             };
             expect(() => validateFieldFactory({ isSchemeValid: () => true })(field)).toThrow(
 `Invalid transformer in field at index: 1,
