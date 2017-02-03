@@ -32,4 +32,5 @@ export default {
     cover: 'Select a coverage',
     cover_dataset: 'Apply to whole dataset',
     cover_collection: 'Different for each ressource',
+    dataset_characteristics: 'Characteristics',
 };

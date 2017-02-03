@@ -13,28 +13,40 @@ import getDocumentTransformer from '../../../common/getDocumentTransformer';
 
 describe('publish', () => {
     describe('doPublish', () => {
-        const fields = ['uri', 'field1', 'field2'].map(name => ({ name }));
+        const fields = [
+            { name: 'uri', cover: 'collection' },
+            { name: 'field2', cover: 'collection' },
+            { name: 'field3', cover: 'dataset' },
+        ];
+
+        const publishedDataset = [
+            { field1: 'field1_value', field2: 'field2_value', field3: 'field3_value' },
+        ];
 
         const ctx = {
+            addUriToTransformResult: createSpy().andReturn('transformDocumentAndKeepUri()'),
+            addTransformResultToDoc: createSpy().andReturn('addUri()'),
             dataset: {
                 count: createSpy().andReturn(Promise.resolve('count')),
                 findLimitFromSkip: 'dataset.findLimitFromSkip()',
-            },
-            uriDataset: {
-                insertBatch: 'uriDataset.insertBatch()',
-                findLimitFromSkip: 'uriDataset.findLimitFromSkip()',
             },
             field: {
                 findAll: createSpy().andReturn(fields),
             },
             getDocumentTransformer: createSpy().andReturn('transformDocument()'),
-            addUriToTransformResult: createSpy().andReturn('transformDocumentAndKeepUri()'),
-            addTransformResultToDoc: createSpy().andReturn('addUri()'),
+            publishedCharacteristic: {
+                insertMany: createSpy(),
+            },
             publishedDataset: {
+                findLimitFromSkip: createSpy().andReturn(publishedDataset),
                 insertBatch: 'publishedDataset.insertBatch()',
             },
-            tranformAllDocuments: createSpy(),
             redirect: createSpy(),
+            tranformAllDocuments: createSpy(),
+            uriDataset: {
+                insertBatch: 'uriDataset.insertBatch()',
+                findLimitFromSkip: 'uriDataset.findLimitFromSkip()',
+            },
         };
 
         before(async () => {
@@ -73,6 +85,12 @@ describe('publish', () => {
             expect(ctx.tranformAllDocuments).toHaveBeenCalledWith('count', 'uriDataset.findLimitFromSkip()', 'publishedDataset.insertBatch()', 'transformDocumentAndKeepUri()');
         });
 
+        it('should insert all dataset characteristics', () => {
+            expect(ctx.publishedCharacteristic.insertMany).toHaveBeenCalledWith([{
+                name: 'field3',
+                value: 'field3_value',
+            }]);
+        });
 
         it('should redirect to the publication route', () => {
             expect(ctx.redirect).toHaveBeenCalledWith('/api/publication');

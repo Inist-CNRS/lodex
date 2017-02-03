@@ -39,7 +39,7 @@ export class DatasetComponent extends Component {
         return (
             <Card className="dataset">
                 <CardText>
-                    <Table selectable={false} fixedHeader={false} style={{ width: 'auto' }}>
+                    <Table selectable={false} fixedHeader={false} style={{ width: 'auto', minWidth: '100%' }}>
                         <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
                             <TableRow>
                                 {columns.map(c => <TableHeaderColumn>{c.name}</TableHeaderColumn>)}

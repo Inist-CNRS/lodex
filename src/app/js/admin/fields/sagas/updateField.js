@@ -30,8 +30,8 @@ export function* handleUpdateField({ meta: { form } }) {
         yield put(updateFieldError(error));
     } else {
         yield put(updateFieldSuccess(response));
+        yield put(updateField(fieldData));
     }
-    yield put(updateField(fieldData));
 }
 
 export default function* watchLoadField() {
