@@ -4,17 +4,14 @@ import {
     ADD_FIELD,
     getFieldFormData,
     getCreateFieldRequest,
-    createFieldError,
-    createFieldSuccess,
+    addFieldError,
+    addFieldSuccess,
 } from '../';
 import prepareTransformers from './prepareTransformers';
 
 import fetchSaga from '../../../lib/fetchSaga';
 
-export function* handleCreateField({ meta: { form } }) {
-    if (form !== 'field') {
-        return;
-    }
+export function* handleAddField() {
     const fieldData = yield select(getFieldFormData);
     fieldData.transformers = yield call(prepareTransformers, fieldData.transformers);
 
@@ -22,12 +19,12 @@ export function* handleCreateField({ meta: { form } }) {
     const { error, response } = yield call(fetchSaga, request);
 
     if (error) {
-        yield put(createFieldError(error));
+        yield put(addFieldError(error));
     } else {
-        yield put(createFieldSuccess(response));
+        yield put(addFieldSuccess(response));
     }
 }
 
 export default function* watchLoadField() {
-    yield takeLatest([ADD_FIELD], handleCreateField);
+    yield takeLatest([ADD_FIELD], handleAddField);
 }

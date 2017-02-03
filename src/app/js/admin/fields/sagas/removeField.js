@@ -11,10 +11,7 @@ import {
 
 import fetchSaga from '../../../lib/fetchSaga';
 
-export function* handleRemoveField({ meta: { form } }) {
-    if (form !== 'field') {
-        return;
-    }
+export function* handleRemoveField() {
     const fieldData = yield select(getFieldFormData);
     const request = yield select(getRemoveFieldRequest, fieldData);
 
