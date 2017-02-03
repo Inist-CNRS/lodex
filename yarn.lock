@@ -112,10 +112,6 @@ arr-flatten@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/arr-flatten/-/arr-flatten-1.0.1.tgz#e5ffe54d45e19f32f216e91eb99c8ce892bb604b"
 
-array-findindex-polyfill@^0.1.0:
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/array-findindex-polyfill/-/array-findindex-polyfill-0.1.0.tgz#c362665bec7645f22d7a3c3aac9793f71c3622ef"
-
 array-flatten@1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/array-flatten/-/array-flatten-1.1.1.tgz#9a5f699051b1e7073328f2a008968b64ea2955d2"
@@ -3443,7 +3439,7 @@ lodash.isarray@^3.0.0:
   version "3.0.4"
   resolved "https://registry.yarnpkg.com/lodash.isarray/-/lodash.isarray-3.0.4.tgz#79e4eb88c36a8122af86f844aa9bcd851b5fbb55"
 
-lodash.keys@^3.0.0, lodash.keys@^3.1.2:
+lodash.keys@^3.0.0:
   version "3.1.2"
   resolved "https://registry.yarnpkg.com/lodash.keys/-/lodash.keys-3.1.2.tgz#4dbc0472b156be50a0b286855d1bd0b0c656098a"
   dependencies:
@@ -3455,9 +3451,17 @@ lodash.map@^4.4.0:
   version "4.6.0"
   resolved "https://registry.yarnpkg.com/lodash.map/-/lodash.map-4.6.0.tgz#771ec7839e3473d9c4cde28b19394c3562f4f6d3"
 
+lodash.memoize@4.1.2:
+  version "4.1.2"
+  resolved "https://registry.yarnpkg.com/lodash.memoize/-/lodash.memoize-4.1.2.tgz#bcc6c49a42a2840ed997f323eada5ecd182e0bfe"
+
 lodash.merge@^4.4.0, lodash.merge@^4.6.0:
   version "4.6.0"
   resolved "https://registry.yarnpkg.com/lodash.merge/-/lodash.merge-4.6.0.tgz#69884ba144ac33fe699737a6086deffadd0f89c5"
+
+lodash.omit:
+  version "4.5.0"
+  resolved "https://registry.yarnpkg.com/lodash.omit/-/lodash.omit-4.5.0.tgz#6eb19ae5a1ee1dd9df0b969e66ce0b7fa30b5e60"
 
 lodash.once@^4.0.0:
   version "4.1.1"
@@ -4467,11 +4471,10 @@ redux-actions@1.2.0:
     lodash "^4.13.1"
     reduce-reducers "^0.1.0"
 
-redux-form@6.4.3:
-  version "6.4.3"
-  resolved "https://registry.yarnpkg.com/redux-form/-/redux-form-6.4.3.tgz#bd83a77770d9805f7b595a4ff18f00fe4267d3c8"
+redux-form@6.5.0:
+  version "6.5.0"
+  resolved "https://registry.yarnpkg.com/redux-form/-/redux-form-6.5.0.tgz#8c75ea77018afbabaa02f1389cf6b0e10787c5b8"
   dependencies:
-    array-findindex-polyfill "^0.1.0"
     deep-equal "^1.0.1"
     es6-error "^4.0.0"
     hoist-non-react-statics "^1.2.0"
@@ -4479,7 +4482,6 @@ redux-form@6.4.3:
     is-promise "^2.1.0"
     lodash "^4.17.3"
     lodash-es "^4.17.3"
-    shallowequal "^0.2.2"
 
 redux-localstorage:
   version "0.4.1"
@@ -4648,7 +4650,7 @@ requires-port@1.0.x, requires-port@1.x.x:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/requires-port/-/requires-port-1.0.0.tgz#925d2601d39ac485e091cf0da5c6e694dc3dcaff"
 
-reselect@^2.5.4:
+reselect@^2.5.4, reselect@2.5.4:
   version "2.5.4"
   resolved "https://registry.yarnpkg.com/reselect/-/reselect-2.5.4.tgz#b7d23fdf00b83fa7ad0279546f8dbbbd765c7047"
 
@@ -4805,12 +4807,6 @@ sha.js@^2.3.6:
   resolved "https://registry.yarnpkg.com/sha.js/-/sha.js-2.4.8.tgz#37068c2c476b6baf402d14a49c67f597921f634f"
   dependencies:
     inherits "^2.0.1"
-
-shallowequal@^0.2.2:
-  version "0.2.2"
-  resolved "https://registry.yarnpkg.com/shallowequal/-/shallowequal-0.2.2.tgz#1e32fd5bcab6ad688a4812cb0cc04efc75c7014e"
-  dependencies:
-    lodash.keys "^3.1.2"
 
 shelljs@^0.7.5:
   version "0.7.6"

@@ -19,11 +19,11 @@ const styles = {
     },
 };
 
-const TransformerListItem = ({ availableTransformers, index, fieldName, onRemove, p: polyglot }) => (
+const TransformerListItem = ({ availableTransformers, fieldName, onRemove, p: polyglot }) => (
     <div style={styles.container}>
         <IconButton
             tooltip={polyglot.t('remove_transformer')}
-            onClick={() => onRemove(index)}
+            onClick={onRemove}
         >
             <ActionDeleteIcon />
         </IconButton>

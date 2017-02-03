@@ -52,9 +52,8 @@ describe('field routes', () => {
     });
 
     describe('postField', () => {
-        it('should validateField and then insert new field', async () => {
+        it('should insert the new field', async () => {
             const ctx = {
-                validateField: expect.createSpy().andReturn('validated field'),
                 request: {
                     body: 'new field data',
                 },
@@ -64,66 +63,25 @@ describe('field routes', () => {
             };
 
             await postField(ctx);
-            expect(ctx.validateField).toHaveBeenCalledWith('new field data');
-            expect(ctx.field.insertOne).toHaveBeenCalledWith('validated field');
+            expect(ctx.field.insertOne).toHaveBeenCalledWith('new field data');
             expect(ctx.body).toBe('insertion result');
-        });
-
-        it('should be rejected if validateField throw an error', async () => {
-            const ctx = {
-                validateField: expect.createSpy().andThrow(new Error('invalid field')),
-                request: {
-                    body: 'new field data',
-                },
-                field: {
-                    insertOne: expect.createSpy(),
-                },
-            };
-
-            const error = await postField(ctx)
-            .catch(e => e);
-            expect(error.message).toBe('invalid field');
-            expect(ctx.validateField).toHaveBeenCalledWith('new field data');
-            expect(ctx.field.insertOne).toNotHaveBeenCalled();
-            expect(ctx.body).toBe(undefined);
         });
     });
 
     describe('putField', () => {
         it('should validateField and then update field', async () => {
             const ctx = {
-                validateField: expect.createSpy().andReturn('validated field'),
                 request: {
                     body: 'updated field data',
                 },
                 field: {
-                    updateOneByName: expect.createSpy().andReturn(Promise.resolve('update result')),
+                    updateOneById: expect.createSpy().andReturn(Promise.resolve('update result')),
                 },
             };
 
-            await putField(ctx, 'name');
-            expect(ctx.validateField).toHaveBeenCalledWith('updated field data');
-            expect(ctx.field.updateOneByName).toHaveBeenCalledWith('name', 'validated field');
+            await putField(ctx, 'id');
+            expect(ctx.field.updateOneById).toHaveBeenCalledWith('id', 'updated field data');
             expect(ctx.body).toBe('update result');
-        });
-
-        it('should be rejected if validateField throw an error', async () => {
-            const ctx = {
-                validateField: expect.createSpy().andThrow(new Error('invalid field')),
-                request: {
-                    body: 'updated field data',
-                },
-                field: {
-                    updateOneByName: expect.createSpy(),
-                },
-            };
-
-            const error = await postField(ctx)
-            .catch(e => e);
-            expect(error.message).toBe('invalid field');
-            expect(ctx.validateField).toHaveBeenCalledWith('updated field data');
-            expect(ctx.field.updateOneByName).toNotHaveBeenCalled();
-            expect(ctx.body).toBe(undefined);
         });
     });
 
@@ -134,12 +92,12 @@ describe('field routes', () => {
                     body: 'updated field data',
                 },
                 field: {
-                    removeByName: expect.createSpy().andReturn(Promise.resolve('deletion result')),
+                    removeById: expect.createSpy().andReturn(Promise.resolve('deletion result')),
                 },
             };
 
-            await removeField(ctx, 'name');
-            expect(ctx.field.removeByName).toHaveBeenCalledWith('name');
+            await removeField(ctx, 'id');
+            expect(ctx.field.removeById).toHaveBeenCalledWith('id');
             expect(ctx.body).toBe('deletion result');
         });
     });

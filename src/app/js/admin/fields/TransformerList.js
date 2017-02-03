@@ -11,17 +11,17 @@ import TransformerListItem from './TransformerListItem';
 
 const TransformerList = ({ fields, meta: { touched, error }, p: polyglot }) => (
     <div>
-        <FlatButton onClick={() => fields.push({})}>{polyglot.t('add_transformer')}</FlatButton>
         {touched && error && <span>{error}</span>}
 
         {fields.map((fieldName, index) => (
             <TransformerListItem
                 key={index}
                 fieldName={fieldName}
-                onRemove={fields.remove}
+                onRemove={() => fields.remove(index)}
                 operation={fields.get(index).operation}
             />
         ))}
+        <FlatButton onClick={() => fields.push({})} label={polyglot.t('add_transformer')} />
     </div>
 );
 

@@ -1,4 +1,6 @@
 import expect from 'expect';
+import omit from 'lodash.omit';
+import { ObjectID } from 'mongodb';
 
 import transformers from '../../common/transformers';
 import schemeService from '../services/scheme';
@@ -9,10 +11,12 @@ export default async (db) => {
     const collection = db.collection('field');
     await collection.createIndex({ name: 1 }, { unique: true });
     collection.findAll = () => collection.find({}).toArray();
-    collection.updateOneByName = (name, field) => collection.updateOne({
-        name,
-    }, field);
-    collection.removeByName = name => collection.remove({ name });
+    collection.updateOneById = (id, field) => collection.findOneAndUpdate({
+        _id: new ObjectID(id),
+    }, omit(field, ['_id']), {
+        returnOriginal: false,
+    }).then(result => result.value);
+    collection.removeById = id => collection.remove({ _id: new ObjectID(id) });
 
     return collection;
 };
