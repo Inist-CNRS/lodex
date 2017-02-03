@@ -4,11 +4,9 @@ import COLUMN from './COLUMN';
 
 describe('COLUMN', () => {
     it('should take a value from one key and rename it to another keeping only renamed key', async () => {
-        expect(await COLUMN()('newA', [{ name: 'column', value: 'a' }])({
-            a: 1,
-            b: 2,
-        }, 'a')).toEqual({
-            newA: 1,
-        });
+        expect(await COLUMN(null, [{ name: 'column', value: 'a' }])({
+            a: 'a value',
+            b: 'b value',
+        }, 'a')).toEqual('a value');
     });
 });
