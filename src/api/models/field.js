@@ -11,6 +11,7 @@ export default async (db) => {
     const collection = db.collection('field');
     await collection.createIndex({ name: 1 }, { unique: true });
     collection.findAll = () => collection.find({}).toArray();
+    collection.findOneById = id => collection.findOne({ _id: new ObjectID(id) });
     collection.updateOneById = (id, field) => collection.findOneAndUpdate({
         _id: new ObjectID(id),
     }, omit(field, ['_id']), {

@@ -138,8 +138,9 @@ export const getUpdateFieldRequest = (state, { _id, ...fieldData }) => ({
 
 export const getFields = state => state.fields.list;
 
-export const getEditedField =
-    state => state.fields.list[state.fields.editedFieldIndex];
+export const getLastField = state => state.fields.list[state.fields.list.length - 1];
+
+export const getEditedField = state => state.fields.list[state.fields.editedFieldIndex];
 
 export const getPublicationFields = state => state.fields.list;
 
