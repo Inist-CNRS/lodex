@@ -39,7 +39,7 @@ describe('LINK', () => {
                 },
             ];
 
-            const newDoc = await getDocumentTransformer({ env: 'node', db }, fields)(doc);
+            const newDoc = await getDocumentTransformer({ env: 'node', dataset: db.dataset }, fields)(doc);
 
             expect(newDoc).toEqual({
                 link: 'uri2',
