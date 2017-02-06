@@ -1,11 +1,17 @@
-import { until, By, Actions } from 'selenium-webdriver';
+import { until, By } from 'selenium-webdriver';
 import expect from 'expect';
 import path from 'path';
+import chunk from 'lodash.chunk';
+
 import driver from '../../common/tests/chromeDriver';
 import { clear } from '../../common/tests/fixtures';
 
-describe.only('Admin page', function homeTests() {
+describe('Admin page', function homeTests() {
     this.timeout(20000);
+
+    before(async () => {
+        await clear();
+    });
 
     describe('Uploading', () => {
         it('should redirect to the login page if not authenticated', async () => {
@@ -106,9 +112,10 @@ describe.only('Admin page', function homeTests() {
             await driver.findElement(By.css('#field_form .add-transformer')).click();
             await driver.executeScript('document.getElementsByClassName("operation")[0].scrollIntoView(true);');
             await driver.findElement(By.css('.operation')).click();
-            await driver.executeScript('document.getElementsByClassName("LINK")[0].scrollIntoView(true);');
             await driver.wait(until.elementLocated(By.css('.LINK')));
+            await driver.executeScript('document.getElementsByClassName("LINK")[0].scrollIntoView(true);');
             await driver.findElement(By.css('.LINK')).click();
+            await driver.wait(until.elementLocated(By.css('.reference input')));
         });
 
         it('should configure transformer Link', async () => {
@@ -131,8 +138,10 @@ describe.only('Admin page', function homeTests() {
         });
     });
 
-    describe.skip('Publishing', () => {
+    describe('Publishing', () => {
         it('should display the "data published" message after publication', async () => {
+            await driver.sleep(200);
+            await driver.findElement(By.css('.btn-publish')).click();
             await driver.findElement(By.css('.btn-publish')).click();
             await driver.wait(until.elementLocated(By.css('.data-published')));
         });
@@ -150,6 +159,17 @@ describe.only('Admin page', function homeTests() {
         it('should display the published data on the home page', async () => {
             await driver.get('http://localhost:3010/');
             await driver.wait(until.elementLocated(By.css('.dataset')));
+            const headers = await driver.findElements(By.css('.dataset table th'));
+            const headersText = await Promise.all(headers.map(h => h.getText()));
+            expect(headersText).toEqual(['uri', 'stronger']);
+
+            const tds = await driver.findElements(By.css('.dataset table tbody td'));
+            const tdsText = await Promise.all(tds.map(td => td.getText()));
+            const tdsTextByRow = chunk(tdsText, 2);
+
+            expect(tdsTextByRow[0][0]).toEqual(tdsTextByRow[1][1]);
+            expect(tdsTextByRow[1][0]).toEqual(tdsTextByRow[2][1]);
+            expect(tdsTextByRow[2][0]).toEqual(tdsTextByRow[0][1]);
         });
     });
 
