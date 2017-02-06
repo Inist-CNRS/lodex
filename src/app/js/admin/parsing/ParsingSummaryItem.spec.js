@@ -3,7 +3,7 @@ import expect from 'expect';
 import { shallow } from 'enzyme';
 import { grey500, grey800, red400 } from 'material-ui/styles/colors';
 
-import ParsingSummaryItem from './ParsingSummaryItem';
+import { ParsingSummaryItemComponent as ParsingSummaryItem } from './ParsingSummaryItem';
 
 describe('<ParsingSummaryItem />', () => {
     it('should render the count', () => {

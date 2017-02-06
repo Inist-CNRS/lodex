@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { compose } from 'recompose';
+import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 

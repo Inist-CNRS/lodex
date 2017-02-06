@@ -1,4 +1,7 @@
 import React, { PropTypes } from 'react';
+import compose from 'recompose/compose';
+import pure from 'recompose/pure';
+import withHandlers from 'recompose/withHandlers';
 import translate from 'redux-polyglot/translate';
 import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn } from 'material-ui/Table';
 import { polyglot as polyglotPropTypes } from '../../lib/propTypes';
@@ -15,7 +18,7 @@ const styles = {
 export const PublicationExcerptComponent = ({ columns, lines, onHeaderClick, p: polyglot }) => (
     <Table selectable={false} fixedHeader={false} style={styles.table}>
         <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
-            <TableRow onCellClick={(_, __, col) => onHeaderClick(col - 1)}>
+            <TableRow onCellClick={onHeaderClick}>
                 {columns.map(column => (
                     <TableHeaderColumn
                         style={styles.header}
@@ -35,15 +38,21 @@ export const PublicationExcerptComponent = ({ columns, lines, onHeaderClick, p: 
     </Table>
 );
 
-PublicationExcerptComponent.defaultProps = {
-    onHeaderClick: () => {},
-};
-
 PublicationExcerptComponent.propTypes = {
     columns: PropTypes.arrayOf(PropTypes.string).isRequired,
     lines: PropTypes.arrayOf(PropTypes.object).isRequired,
-    onHeaderClick: PropTypes.func,
+    onHeaderClick: PropTypes.func.isRequired,
     p: polyglotPropTypes.isRequired,
 };
 
-export default translate(PublicationExcerptComponent);
+export default compose(
+    translate,
+    pure,
+    withHandlers({
+        onHeaderClick: props => (_, __, col) => {
+            if (props.onHeaderClick) {
+                props.onHeaderClick(col - 1);
+            }
+        },
+    }),
+)(PublicationExcerptComponent);

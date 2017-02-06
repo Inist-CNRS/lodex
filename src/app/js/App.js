@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import { compose } from 'recompose';
+import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 import { Link } from 'react-router';
@@ -9,7 +9,7 @@ import CircularProgress from 'material-ui/CircularProgress';
 import FlatButton from 'material-ui/FlatButton';
 
 import { polyglot as polyglotPropTypes } from './lib/propTypes';
-import { isLoggedIn as isLoggedInAction, toggleLogin as toggleLoginAction } from './user';
+import { isLoggedIn as getIsLoggedIn, toggleLogin as toggleLoginAction } from './user';
 import LoginDialog from './user/LoginDialog';
 
 const styles = {
@@ -30,11 +30,14 @@ const styles = {
         color: 'white',
         textDecoration: 'none',
     },
+    loading: {
+        margin: 8,
+    },
 };
 
 export const AppComponent = ({ children, isLoading, isLoggedIn, p: polyglot, toggleLogin }) => {
     const LeftElement = isLoading
-        ? <CircularProgress color="#fff" size={30} thickness={2} style={{ margin: 8 }} />
+        ? <CircularProgress color="#fff" size={30} thickness={2} style={styles.loading} />
         : <span />;
 
     const RightElement = isLoggedIn
@@ -73,7 +76,7 @@ AppComponent.defaultProps = {
 
 const mapStateToProps = state => ({
     isLoading: state.loading,
-    isLoggedIn: isLoggedInAction(state),
+    isLoggedIn: getIsLoggedIn(state),
 });
 
 const mapDispatchToProps = ({

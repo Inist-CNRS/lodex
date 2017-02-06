@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
-import { compose } from 'recompose';
+import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 import { submit as submitAction, isSubmitting } from 'redux-form';

@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { compose } from 'recompose';
+import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 
 import { CardText } from 'material-ui/Card';
@@ -19,7 +19,7 @@ import Card from '../lib/Card';
 import Loading from '../lib/Loading';
 import { polyglot as polyglotPropTypes } from '../lib/propTypes';
 import { loadDatasetPage as loadDatasetPageAction } from './';
-import { getColumns } from '../publication';
+import { getCollectionFields } from '../publication';
 
 const styles = {
     table: {
@@ -95,7 +95,7 @@ DatasetComponent.defaultProps = {
 
 const mapStateToProps = state => ({
     loading: state.publication.loading,
-    columns: getColumns(state),
+    columns: getCollectionFields(state),
     currentPage: state.dataset.currentPage,
     dataset: state.dataset.dataset,
     total: state.dataset.total,

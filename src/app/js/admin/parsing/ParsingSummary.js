@@ -1,5 +1,7 @@
 import React, { PropTypes } from 'react';
+import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
+import pure from 'recompose/pure';
 
 import { List, ListItem } from 'material-ui/List';
 
@@ -30,4 +32,7 @@ ParsingSummaryComponent.propTypes = {
     totalLoadedLines: PropTypes.number.isRequired,
 };
 
-export default translate(ParsingSummaryComponent);
+export default compose(
+    translate,
+    pure,
+)(ParsingSummaryComponent);

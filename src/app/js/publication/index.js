@@ -1,4 +1,5 @@
 import { createAction, handleActions } from 'redux-actions';
+import { createSelector } from 'reselect';
 
 export const LOAD_PUBLICATION = 'LOAD_PUBLICATION';
 export const LOAD_PUBLICATION_SUCCESS = 'LOAD_PUBLICATION_SUCCESS';
@@ -38,19 +39,24 @@ export default handleActions({
 
 export const hasPublishedDataset = ({ publication: { published } }) => published;
 
-export const getColumns = ({ publication: { fields } }) => fields.filter(f => f.cover === 'collection');
+const getFields = ({ publication: { fields } }) => fields;
 
-export const getPublishData = ({ publication }) => {
-    const { error, published, editedFieldIndex, loading } = publication;
+export const getCollectionFields = createSelector(
+    getFields,
+    fields => fields.filter(f => f.cover === 'collection'),
+);
 
-    return {
+const getPublication = ({ publication }) => publication;
+
+export const getPublishData = createSelector(
+    getPublication,
+    ({ error, published, editedFieldIndex, loading }) => ({
         published,
         editedFieldIndex,
         loading,
         error: error && (error.message || error),
-    };
-};
-
+    }),
+);
 
 export const getLoadPublicationRequest = state => ({
     url: '/api/publication',

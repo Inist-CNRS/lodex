@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import { compose } from 'recompose';
+import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 import { Field, FieldArray, reduxForm, propTypes as reduxFormPropTypes } from 'redux-form';
@@ -35,6 +35,9 @@ const validate = (values) => {
 };
 
 const styles = {
+    menuItem: {
+        lineHeight: 1,
+    },
     schemeLabel: {
         fontSize: '0.9rem',
         margin: 0,
@@ -45,6 +48,10 @@ const styles = {
         color: 'grey',
         margin: 0,
         padding: 0,
+    },
+    targetOrigin: {
+        vertical: 'bottom',
+        horizontal: 'left',
     },
 };
 
@@ -89,12 +96,12 @@ export const FieldFormComponent = ({
                 component={FormAutoCompleteField}
                 label={polyglot.t('scheme')}
                 fullWidth
-                targetOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+                targetOrigin={styles.targetOrigin}
                 fetch={getSchemeSearchRequest}
                 parseResponse={response => getSchemeMenuItemsDataFromResponse(response).map(({ label, uri }) => ({
                     text: uri,
                     value: (
-                        <MenuItem style={{ lineHeight: 1 }} value={uri}>
+                        <MenuItem style={styles.menuItem} value={uri}>
                             <div style={styles.schemeLabel}><b>{label}</b></div>
                             <small style={styles.schemeUri}>{uri}</small>
                         </MenuItem>
