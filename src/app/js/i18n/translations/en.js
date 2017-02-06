@@ -35,4 +35,6 @@ export default {
     dataset_characteristics: 'Characteristics',
     export: 'Export',
     sign_out: 'Sign out',
+    back_to_list: 'Back to list',
+    not_found: 'Resource not found',
 };

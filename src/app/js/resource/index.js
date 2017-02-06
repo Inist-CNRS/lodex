@@ -42,3 +42,5 @@ export const getLoadResourceRequest = (state, uri) => ({
         'Content-Type': 'application/json',
     },
 });
+
+export const getResource = state => state.resource.resource;

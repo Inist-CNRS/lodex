@@ -7,6 +7,7 @@ import {
     loadResourceSuccess,
     loadResourceError,
 } from './';
+import { loadField } from '../admin/fields';
 import fetchSaga from '../lib/fetchSaga';
 
 const parsePathName = pathname => pathname.match(/^(\/resource)(\/ark:\/)?(.*?$)/) || [];
@@ -29,6 +30,7 @@ export function* handleLoadResource({ payload }) {
     }
 
     yield put(loadResourceSuccess(response));
+    yield put(loadField());
 }
 
 export function* watchLoadDatasetPageRequest() {
