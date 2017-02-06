@@ -3,7 +3,7 @@ module.exports = {
     port: 3000,
     mongo: {
         host: 'localhost:27017',
-        dbName: 'lodex',
+        dbName: 'lodex_test',
     },
     auth: {
         cookieSecret: 'cookie',
