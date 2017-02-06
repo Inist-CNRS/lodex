@@ -44,6 +44,12 @@ run-frontend: ## Run the frontend application
 docker-run-dev: ## run node server with pm2 for development and webpack-dev-server
 	docker-compose up --force-recreate
 
+mongo-shell: ## Start the mongo shell
+	docker exec -it lodexv2_mongo_1 mongo lodex --shell
+
+mongo-shell-test: ## Start the mongo shell for the test database
+	docker exec -it lodexv2_mongo_1 mongo lodex_test --shell
+
 # Build ==================================================================
 
 build-frontend: ## Build the frontend application
