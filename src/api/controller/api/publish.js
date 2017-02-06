@@ -7,7 +7,7 @@ import getDocumentTransformer from '../../../common/getDocumentTransformer';
 
 const app = new Koa();
 
-export const tranformAllDocument = async (count, findLimitFromSkip, insertBatch, transformer) => {
+export const tranformAllDocuments = async (count, findLimitFromSkip, insertBatch, transformer) => {
     let handled = 0;
     while (handled < count) {
         const dataset = await findLimitFromSkip(100, handled);
@@ -27,16 +27,34 @@ export const addUriToTransformResult = transformDocument => async doc => ({
     uri: doc.uri,
 });
 
+export const preparePublish = async (ctx, next) => {
+    ctx.tranformAllDocuments = tranformAllDocuments;
+    ctx.getDocumentTransformer = getDocumentTransformer;
+    ctx.addTransformResultToDoc = addTransformResultToDoc;
+    ctx.addUriToTransformResult = addUriToTransformResult;
+    await next();
+};
+
+export const handlePublishError = async (ctx, next) => {
+    try {
+        await next();
+    } catch (error) {
+        await ctx.uriDataset.remove({});
+        await ctx.publishedDataset.remove({});
+        throw error;
+    }
+};
+
 export const doPublish = async (ctx) => {
     const count = await ctx.dataset.count({});
 
     const columns = await ctx.field.findAll();
 
-    const uriIndex = columns.findIndex(col => col.name === 'uri');
-    const getUri = ctx.getDocumentTransformer({ env: 'node', dataset: ctx.dataset }, [columns[uriIndex]]);
+    const uriCol = columns.find(col => col.name === 'uri');
+    const getUri = ctx.getDocumentTransformer({ env: 'node', dataset: ctx.dataset }, [uriCol]);
     const addUri = ctx.addTransformResultToDoc(getUri);
 
-    await ctx.tranformAllDocument(
+    await ctx.tranformAllDocuments(
         count,
         ctx.dataset.findLimitFromSkip,
         ctx.uriDataset.insertBatch,
@@ -47,11 +65,11 @@ export const doPublish = async (ctx) => {
         .getDocumentTransformer({
             env: 'node',
             dataset: ctx.uriDataset,
-        }, columns.filter((_, index) => index !== uriIndex));
+        }, columns.filter(col => col.name !== 'uri'));
 
     const transformDocumentAndKeepUri = ctx.addUriToTransformResult(transformDocument);
 
-    await ctx.tranformAllDocument(
+    await ctx.tranformAllDocuments(
         count,
         ctx.uriDataset.findLimitFromSkip,
         ctx.publishedDataset.insertBatch,
@@ -61,21 +79,8 @@ export const doPublish = async (ctx) => {
     ctx.redirect('/api/publication');
 };
 
-export const tryPublish = async (ctx, next) => {
-    ctx.tranformAllDocument = tranformAllDocument;
-    ctx.getDocumentTransformer = getDocumentTransformer;
-    ctx.addTransformResultToDoc = addTransformResultToDoc;
-    ctx.addUriToTransformResult = addUriToTransformResult;
-    try {
-        await next();
-    } catch (error) {
-        await ctx.uriDataset.remove({});
-        await ctx.publishedDataset.remove({});
-        throw error;
-    }
-};
-
-app.use(route.post('/', tryPublish));
+app.use(route.post('/', preparePublish));
+app.use(route.post('/', handlePublishError));
 
 app.use(route.post('/', doPublish));
 

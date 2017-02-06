@@ -3,8 +3,9 @@ import expect, { createSpy } from 'expect';
 
 import {
     doPublish,
-    tryPublish,
-    tranformAllDocument,
+    preparePublish,
+    handlePublishError,
+    tranformAllDocuments,
     addTransformResultToDoc,
     addUriToTransformResult,
 } from './publish';
@@ -32,7 +33,7 @@ describe('publish', () => {
             publishedDataset: {
                 insertBatch: 'publishedDataset.insertBatch()',
             },
-            tranformAllDocument: createSpy(),
+            tranformAllDocuments: createSpy(),
             redirect: createSpy(),
         };
 
@@ -56,8 +57,8 @@ describe('publish', () => {
             expect(ctx.addTransformResultToDoc).toHaveBeenCalledWith('transformDocument()');
         });
 
-        it('should call ctx.tranformAllDocument', () => {
-            expect(ctx.tranformAllDocument).toHaveBeenCalledWith('count', 'dataset.findLimitFromSkip()', 'uriDataset.insertBatch()', 'addUri()');
+        it('should call ctx.tranformAllDocuments', () => {
+            expect(ctx.tranformAllDocuments).toHaveBeenCalledWith('count', 'dataset.findLimitFromSkip()', 'uriDataset.insertBatch()', 'addUri()');
         });
 
         it('should call getDocumentTransformer with all other fields', () => {
@@ -68,8 +69,8 @@ describe('publish', () => {
             expect(ctx.addUriToTransformResult).toHaveBeenCalledWith('transformDocument()');
         });
 
-        it('should call ctx.tranformAllDocument', () => {
-            expect(ctx.tranformAllDocument).toHaveBeenCalledWith('count', 'uriDataset.findLimitFromSkip()', 'publishedDataset.insertBatch()', 'transformDocumentAndKeepUri()');
+        it('should call ctx.tranformAllDocuments', () => {
+            expect(ctx.tranformAllDocuments).toHaveBeenCalledWith('count', 'uriDataset.findLimitFromSkip()', 'publishedDataset.insertBatch()', 'transformDocumentAndKeepUri()');
         });
 
 
@@ -78,20 +79,22 @@ describe('publish', () => {
         });
     });
 
-    describe('tryPublish', () => {
+    describe('preparePublish', () => {
         it('should provide ctx with needed dependency', async () => {
             const ctx = {};
             const next = createSpy();
-            await tryPublish(ctx, next);
+            await preparePublish(ctx, next);
 
             expect(ctx).toEqual({
-                tranformAllDocument,
+                tranformAllDocuments,
                 getDocumentTransformer,
                 addTransformResultToDoc,
                 addUriToTransformResult,
             });
         });
+    });
 
+    describe('handlePublishError', () => {
         it('should remove uriDataset and publishedDataset if next fail', (done) => {
             const ctx = {
                 uriDataset: {
@@ -103,7 +106,7 @@ describe('publish', () => {
             };
             const error = new Error('Boom');
             const next = createSpy().andReturn(Promise.reject(error));
-            tryPublish(ctx, next)
+            handlePublishError(ctx, next)
             .then(() => {
                 throw new Error('tryPublish promise should have been rejected');
             })
@@ -117,7 +120,7 @@ describe('publish', () => {
         });
     });
 
-    describe('tranformAllDocument', () => {
+    describe('tranformAllDocuments', () => {
         const dataset = [{ foo: 'foo1', bar: 'bar1' }, { foo: 'foo2', bar: 'bar2' }];
         const count = 201;
         const findLimitFromSkip = createSpy().andReturn(dataset);
@@ -125,7 +128,7 @@ describe('publish', () => {
         const transformDocument = createSpy().andReturn(Promise.resolve('transformedDocument'));
 
         before(async () => {
-            await tranformAllDocument(count, findLimitFromSkip, insertBatch, transformDocument);
+            await tranformAllDocuments(count, findLimitFromSkip, insertBatch, transformDocument);
         });
         it('should load items from the original dataset and insert them in the publishedDataset by page of 100', () => {
             expect(findLimitFromSkip).toHaveBeenCalledWith(100, 0);
