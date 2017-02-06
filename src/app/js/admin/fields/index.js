@@ -80,7 +80,7 @@ export default handleActions({
             ],
         };
     },
-    UPDATE_FIELD: (state, { payload }) => ({
+    REFRESH_FIELD: (state, { payload }) => ({
         ...state,
         list: [
             ...state.list.slice(0, state.editedFieldIndex),

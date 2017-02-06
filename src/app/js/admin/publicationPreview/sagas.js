@@ -13,7 +13,7 @@ import {
     LOAD_FIELD_SUCCESS,
     ADD_FIELD_SUCCESS,
     REMOVE_FIELD_SUCCESS,
-    UPDATE_FIELD,
+    REFRESH_FIELD,
     getFields,
 } from '../fields';
 
@@ -44,6 +44,6 @@ export default function* watchComputePreview() {
         LOAD_FIELD_SUCCESS,
         ADD_FIELD_SUCCESS,
         REMOVE_FIELD_SUCCESS,
-        UPDATE_FIELD,
+        REFRESH_FIELD,
     ], handleComputePreview);
 }
