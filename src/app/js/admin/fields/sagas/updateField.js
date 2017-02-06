@@ -8,7 +8,6 @@ import {
 import {
     getFieldFormData,
     getUpdateFieldRequest,
-    refreshField,
     updateFieldError,
     updateFieldSuccess,
 } from '../';
@@ -32,7 +31,6 @@ export function* handleUpdateField({ meta: { form } }) {
     }
 
     yield put(updateFieldSuccess(response));
-    yield put(refreshField(fieldData));
 }
 
 export default function* watchLoadField() {

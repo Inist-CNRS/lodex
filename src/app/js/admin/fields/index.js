@@ -80,14 +80,6 @@ export default handleActions({
             ],
         };
     },
-    REFRESH_FIELD: (state, { payload }) => ({
-        ...state,
-        list: [
-            ...state.list.slice(0, state.editedFieldIndex),
-            payload,
-            ...state.list.slice(state.editedFieldIndex + 1),
-        ],
-    }),
     UPDATE_FIELD_SUCCESS: (state, { payload }) => updateFieldByProperty(state, '_id', payload),
 }, defaultState);
 

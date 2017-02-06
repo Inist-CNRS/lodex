@@ -50,12 +50,6 @@ describe('fields saga', () => {
             expect(saga.next({ response: 'foo' }).value).toEqual(put(updateFieldSuccess('foo')));
         });
 
-        it('should put refreshField action', () => {
-            expect(saga.next().value).toEqual(put(refreshField({
-                transformers: 'updated_transformers',
-            })));
-        });
-
         it('should put updateFieldError action with error if any', () => {
             const failedSaga = handleUpdateField({ meta: { form: 'field' } });
             failedSaga.next();
