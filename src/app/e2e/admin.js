@@ -2,6 +2,7 @@ import { until, By } from 'selenium-webdriver';
 import expect from 'expect';
 import path from 'path';
 import driver from '../../common/tests/chromeDriver';
+import { clear } from '../../common/tests/fixtures';
 
 describe('Admin page', function homeTests() {
     this.timeout(20000);
@@ -59,6 +60,7 @@ describe('Admin page', function homeTests() {
     });
 
     after(async () => {
+        await clear();
         await driver.executeScript('localStorage.clear();');
     });
 });

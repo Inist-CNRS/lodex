@@ -4,10 +4,11 @@ import driver from '../../common/tests/chromeDriver';
 import { clear, loadFixtures } from '../../common/tests/fixtures';
 import fixtures from './home_published.json';
 
-describe('Home page with published data', function homeTests() {
+describe('Home page with published data', function homePublishedDataTests() {
     this.timeout(15000);
 
     before(async () => {
+        await clear(); // Had to ensure clear state for unknown reason
         await loadFixtures(fixtures);
         await driver.get('http://localhost:3010/');
     });
