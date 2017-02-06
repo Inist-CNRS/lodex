@@ -12,12 +12,14 @@ const transformers = {
 
 export default transformers;
 
-export const getTransformersMetas = () => [
+const transformersMetas = [
     AUTOGENERATE_URI,
     COLUMN,
     LINK,
     UPPERCASE,
 ].map(transformation => transformation.getMetas());
+
+export const getTransformersMetas = () => transformersMetas;
 
 export const getTransformerMetas = (operation) => {
     const transformer = transformers[operation];

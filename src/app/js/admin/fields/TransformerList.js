@@ -1,8 +1,10 @@
 /* eslint react/no-array-index-key: off */
 
 import React from 'react';
-import { compose } from 'recompose';
+import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
+import pure from 'recompose/pure';
+
 import FlatButton from 'material-ui/FlatButton';
 import { propTypes as reduxFormPropTypes } from 'redux-form';
 
@@ -32,4 +34,5 @@ TransformerList.propTypes = {
 
 export default compose(
     translate,
+    pure,
 )(TransformerList);

@@ -1,4 +1,5 @@
 import { createAction, handleActions } from 'redux-actions';
+import { createSelector } from 'reselect';
 
 export const LOAD_PARSING_RESULT = 'LOAD_PARSING_RESULT';
 export const LOAD_PARSING_RESULT_ERROR = 'LOAD_PARSING_RESULT_ERROR';
@@ -44,8 +45,10 @@ export const getExcerptLines = (state) => {
     return state.parsing.excerptLines;
 };
 
-export const getParsedExcerptColumns = state =>
-    Object.keys(getExcerptLines(state)[0] || {});
+export const getParsedExcerptColumns = createSelector(
+    getExcerptLines,
+    lines => Object.keys(lines[0] || {}),
+);
 
 export const hasUploadedFile = state => state && state.parsing && !!state.parsing.totalLoadedLines;
 

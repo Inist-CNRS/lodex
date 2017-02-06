@@ -1,5 +1,6 @@
 /* eslint react/no-array-index-key: off */
 import React from 'react';
+import pure from 'recompose/pure';
 import { propTypes as reduxFormPropTypes } from 'redux-form';
 
 import TransformerArgListItem from './TransformerArgListItem';
@@ -19,4 +20,4 @@ const TransformerArgList = ({ fields }) => (
 
 TransformerArgList.propTypes = reduxFormPropTypes;
 
-export default TransformerArgList;
+export default pure(TransformerArgList);

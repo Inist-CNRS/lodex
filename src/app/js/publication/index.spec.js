@@ -1,7 +1,7 @@
 import expect from 'expect';
 import reducer, {
     defaultState,
-    getColumns,
+    getCollectionFields,
     getLoadPublicationRequest,
     hasPublishedDataset,
     loadPublication,
@@ -63,9 +63,9 @@ describe('publication reducer', () => {
         });
     });
 
-    describe('getColumns', () => {
+    describe('getCollectionFields', () => {
         it('should return the model', () => {
-            expect(getColumns({
+            expect(getCollectionFields({
                 publication: {
                     fields: [
                         { foo: 'bar', cover: 'collection' },

@@ -1,5 +1,5 @@
 import React from 'react';
-import { compose } from 'recompose';
+import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 import { Field, reduxForm, propTypes as reduxFormPropTypes } from 'redux-form';
 import FormTextField from '../lib/FormTextField';

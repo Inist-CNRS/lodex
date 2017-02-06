@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { compose } from 'recompose';
+import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 import { CardHeader, CardText } from 'material-ui/Card';
 

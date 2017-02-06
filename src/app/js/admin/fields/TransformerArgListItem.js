@@ -1,4 +1,5 @@
 import React from 'react';
+import pure from 'recompose/pure';
 import { Field, propTypes as reduxFormPropTypes } from 'redux-form';
 
 import { polyglot as polyglotPropTypes } from '../../lib/propTypes';
@@ -18,4 +19,4 @@ TransformerArgListItem.propTypes = {
     p: polyglotPropTypes.isRequired,
 };
 
-export default TransformerArgListItem;
+export default pure(TransformerArgListItem);

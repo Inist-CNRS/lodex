@@ -3,7 +3,7 @@ import expect from 'expect';
 import { shallow } from 'enzyme';
 import { TableHeaderColumn, TableRowColumn } from 'material-ui/Table';
 
-import ParsingExcerpt from './ParsingExcerpt';
+import { ParsingExcerptComponent as ParsingExcerpt } from './ParsingExcerpt';
 
 describe('<ParsingExcerpt />', () => {
     it('should render headers', () => {
