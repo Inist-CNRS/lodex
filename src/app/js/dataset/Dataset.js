@@ -21,6 +21,13 @@ import { polyglot as polyglotPropTypes } from '../lib/propTypes';
 import { loadDatasetPage as loadDatasetPageAction } from './';
 import { getColumns } from '../publication';
 
+const styles = {
+    table: {
+        width: 'auto',
+        minWidth: '100%',
+    },
+};
+
 export class DatasetComponent extends Component {
     componentWillMount() {
         const { loadDatasetPage, currentPage } = this.props;
@@ -39,7 +46,7 @@ export class DatasetComponent extends Component {
         return (
             <Card className="dataset">
                 <CardText>
-                    <Table selectable={false} fixedHeader={false} style={{ width: 'auto', minWidth: '100%' }}>
+                    <Table selectable={false} fixedHeader={false} style={styles.table}>
                         <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
                             <TableRow>
                                 {columns.map(c => <TableHeaderColumn>{c.name}</TableHeaderColumn>)}

@@ -6,7 +6,7 @@ import fetchSaga from '../../../lib/fetchSaga';
 import {
     getFieldFormData,
     getUpdateFieldRequest,
-    updateField,
+    refreshField,
     updateFieldError,
     updateFieldSuccess,
 } from '../';
@@ -50,8 +50,8 @@ describe('fields saga', () => {
             expect(saga.next({ response: 'foo' }).value).toEqual(put(updateFieldSuccess('foo')));
         });
 
-        it('should put updateField action', () => {
-            expect(saga.next().value).toEqual(put(updateField({
+        it('should put refreshField action', () => {
+            expect(saga.next().value).toEqual(put(refreshField({
                 transformers: 'updated_transformers',
             })));
         });
