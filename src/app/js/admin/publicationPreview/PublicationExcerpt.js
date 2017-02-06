@@ -7,10 +7,13 @@ const styles = {
     header: {
         cursor: 'pointer',
     },
+    table: {
+        width: 'auto',
+    },
 };
 
 export const PublicationExcerptComponent = ({ columns, lines, onHeaderClick, p: polyglot }) => (
-    <Table selectable={false} fixedHeader={false} style={{ width: 'auto' }}>
+    <Table selectable={false} fixedHeader={false} style={styles.table}>
         <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
             <TableRow onCellClick={(_, __, col) => onHeaderClick(col - 1)}>
                 {columns.map(column => (

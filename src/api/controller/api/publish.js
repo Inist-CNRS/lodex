@@ -1,6 +1,7 @@
 import omit from 'lodash.omit';
 import Koa from 'koa';
 import route from 'koa-route';
+import pickBy from 'lodash.pickby';
 
 /* eslint no-await-in-loop: off */
 import getDocumentTransformer from '../../../common/getDocumentTransformer';
@@ -48,9 +49,10 @@ export const handlePublishError = async (ctx, next) => {
 export const doPublish = async (ctx) => {
     const count = await ctx.dataset.count({});
 
-    const columns = await ctx.field.findAll();
+    const fields = await ctx.field.findAll();
+    const datasetCoverFields = fields.filter(c => c.cover === 'dataset');
 
-    const uriCol = columns.find(col => col.name === 'uri');
+    const uriCol = fields.find(col => col.name === 'uri');
     const getUri = ctx.getDocumentTransformer({ env: 'node', dataset: ctx.dataset }, [uriCol]);
     const addUri = ctx.addTransformResultToDoc(getUri);
 
@@ -65,7 +67,7 @@ export const doPublish = async (ctx) => {
         .getDocumentTransformer({
             env: 'node',
             dataset: ctx.uriDataset,
-        }, columns.filter(col => col.name !== 'uri'));
+        }, fields.filter(col => col.name !== 'uri'));
 
     const transformDocumentAndKeepUri = ctx.addUriToTransformResult(transformDocument);
 
@@ -75,6 +77,18 @@ export const doPublish = async (ctx) => {
         ctx.publishedDataset.insertBatch,
         transformDocumentAndKeepUri,
     );
+
+    const [lastRessource] = await ctx.publishedDataset.findLimitFromSkip(1, count - 1);
+    const isPublishedCharacteristic = (value, key) => datasetCoverFields.some(({ name }) => key === name);
+    const publishedCharacteristics = pickBy(lastRessource, isPublishedCharacteristic);
+    const publishedCharacteristicsKeys = Object.keys(publishedCharacteristics);
+
+    if (publishedCharacteristicsKeys.length) {
+        await ctx.publishedCharacteristic.insertMany(publishedCharacteristicsKeys.map(key => ({
+            name: key,
+            value: publishedCharacteristics[key],
+        })));
+    }
 
     ctx.redirect('/api/publication');
 };

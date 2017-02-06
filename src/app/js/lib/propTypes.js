@@ -7,3 +7,8 @@ export const polyglot = PropTypes.shape({
     tu: PropTypes.func.isRequired,
     tm: PropTypes.func.isRequired,
 });
+
+export const datasetCharacteristic = PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    value: PropTypes.any.isRequired,
+});

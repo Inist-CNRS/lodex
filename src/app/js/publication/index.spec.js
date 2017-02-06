@@ -24,13 +24,19 @@ describe('publication reducer', () => {
     });
 
     it('should handle the LOAD_PUBLICATION_SUCCESS action', () => {
-        const action = loadPublicationSuccess({ published: true, fields: [] });
+        const action = loadPublicationSuccess({
+            characteristics: ['foo'],
+            fields: ['bar'],
+            published: true,
+        });
         const state = reducer({ loading: true, error: true, published: false }, action);
+
         expect(state).toEqual({
+            characteristics: ['foo'],
             error: null,
+            fields: ['bar'],
             loading: false,
             published: true,
-            fields: [],
         });
     });
 
@@ -59,7 +65,14 @@ describe('publication reducer', () => {
 
     describe('getColumns', () => {
         it('should return the model', () => {
-            expect(getColumns({ publication: { fields: [{ foo: 'bar' }] } })).toEqual([{ foo: 'bar' }]);
+            expect(getColumns({
+                publication: {
+                    fields: [
+                        { foo: 'bar', cover: 'collection' },
+                        { foo: 'bar2', cover: 'dataset' },
+                    ],
+                },
+            })).toEqual([{ foo: 'bar', cover: 'collection' }]);
         });
     });
 

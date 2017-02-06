@@ -11,6 +11,7 @@ export const loadPublicationError = createAction(LOAD_PUBLICATION_ERROR);
 export const defaultState = {
     loading: false,
     fields: null,
+    characteristics: [],
     published: null,
 };
 
@@ -20,8 +21,9 @@ export default handleActions({
         error: null,
         loading: true,
     }),
-    LOAD_PUBLICATION_SUCCESS: (state, { payload: { published, fields } }) => ({
+    LOAD_PUBLICATION_SUCCESS: (state, { payload: { characteristics, fields, published } }) => ({
         ...state,
+        characteristics,
         error: null,
         loading: false,
         fields,
@@ -36,7 +38,7 @@ export default handleActions({
 
 export const hasPublishedDataset = ({ publication: { published } }) => published;
 
-export const getColumns = ({ publication: { fields } }) => fields;
+export const getColumns = ({ publication: { fields } }) => fields.filter(f => f.cover === 'collection');
 
 export const getPublishData = ({ publication }) => {
     const { error, published, editedFieldIndex, loading } = publication;

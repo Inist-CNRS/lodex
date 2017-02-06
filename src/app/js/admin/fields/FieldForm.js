@@ -76,7 +76,7 @@ export const FieldFormComponent = ({
                 fullWidth
             />
             <Field
-                name="label"
+                name="cover"
                 component={FormSelectField}
                 label={polyglot.t('cover')}
                 fullWidth

@@ -13,6 +13,7 @@ const FormAutoCompleteField = ({ handleComplete, dataSource, input, label, meta:
         onUpdateInput={debounce(handleComplete, 500)}
         onNewRequest={value => (value.text ? input.onChange(value.text) : input.onChange(value))}
         dataSource={dataSource}
+        searchText={input.value}
         {...props}
     />
 );

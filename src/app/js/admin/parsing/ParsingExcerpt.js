@@ -1,8 +1,14 @@
 import React, { PropTypes } from 'react';
 import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn } from 'material-ui/Table';
 
+const styles = {
+    table: {
+        width: 'auto',
+    },
+};
+
 const ParsingExcerpt = ({ columns, lines, onHeaderClick }) => (
-    <Table selectable={false} fixedHeader={false} style={{ width: 'auto' }}>
+    <Table selectable={false} fixedHeader={false} style={styles.table}>
         <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
             <TableRow onCellClick={(_, __, col) => onHeaderClick(col - 1)}>
                 {columns.map(c => <TableHeaderColumn>{c}</TableHeaderColumn>)}

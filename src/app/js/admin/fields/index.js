@@ -13,7 +13,7 @@ export const LOAD_FIELD_ERROR = 'LOAD_FIELD_ERROR';
 export const REMOVE_FIELD = 'REMOVE_FIELD';
 export const REMOVE_FIELD_ERROR = 'REMOVE_FIELD_ERROR';
 export const REMOVE_FIELD_SUCCESS = 'REMOVE_FIELD_SUCCESS';
-export const UPDATE_FIELD = 'UPDATE_FIELD';
+export const REFRESH_FIELD = 'REFRESH_FIELD';
 export const UPDATE_FIELD_ERROR = 'UPDATE_FIELD_ERROR';
 export const UPDATE_FIELD_SUCCESS = 'UPDATE_FIELD_SUCCESS';
 
@@ -27,7 +27,7 @@ export const loadFieldSuccess = createAction(LOAD_FIELD_SUCCESS);
 export const removeField = createAction(REMOVE_FIELD);
 export const removeFieldError = createAction(REMOVE_FIELD_ERROR);
 export const removeFieldSuccess = createAction(REMOVE_FIELD_SUCCESS);
-export const updateField = createAction(UPDATE_FIELD);
+export const refreshField = createAction(REFRESH_FIELD);
 export const updateFieldError = createAction(UPDATE_FIELD_ERROR);
 export const updateFieldSuccess = createAction(UPDATE_FIELD_SUCCESS);
 
