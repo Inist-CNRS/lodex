@@ -90,43 +90,4 @@ describe('parsing reducer', () => {
             });
         });
     });
-
-    // describe('getLoadParsingResultRequest', () => {
-    //     it('should return the correct request', () => {
-    //         const request = getLoadParsingResultRequest({ user: { token: 'test' } });
-    //         expect(request).toEqual({
-    //             url: '/api/parsing',
-    //             credentials: 'include',
-    //             headers: {
-    //                 Accept: 'application/json',
-    //                 Authorization: 'Bearer test',
-    //                 'Content-Type': 'application/json',
-    //             },
-    //         });
-    //     });
-    // });
-
-    // describe('getParsedExcerptColumns', () => {
-    //     it('should return an empty array if no excerptLines in state', () => {
-    //         expect(getParsedExcerptColumns({ parsing: { excerptLines: [] } })).toEqual([]);
-    //     });
-
-    //     it('should return a list of columns from excerptLines', () => {
-    //         expect(getParsedExcerptColumns({ parsing: { excerptLines: [{
-    //             key1: 'key1_value',
-    //             key2: 'key2_value',
-    //             key3: 'key3_value',
-    //         }] } })).toEqual(['key1', 'key2', 'key3']);
-    //     });
-    // });
-
-    // describe('hasUploadedFile', () => {
-    //     it('should return true if totalLoadedLines is truthy', () => {
-    //         expect(hasUploadedFile({ parsing: { totalLoadedLines: 100 } })).toEqual(true);
-    //     });
-
-    //     it('should return true if totalLoadedLines is falsy', () => {
-    //         expect(hasUploadedFile({ parsing: { totalLoadedLines: 0 } })).toEqual(false);
-    //     });
-    // });
 });
