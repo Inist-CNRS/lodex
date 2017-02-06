@@ -32,6 +32,7 @@ export default handleActions({
 
 export const getPublishRequest = state => ({
     url: '/api/publish',
+    method: 'POST',
     credentials: 'include',
     headers: {
         Accept: 'application/json',

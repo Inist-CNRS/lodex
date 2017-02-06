@@ -43,6 +43,7 @@ describe('publication reducer', () => {
             const request = getPublishRequest({ user: { token: 'test' } });
             expect(request).toEqual({
                 url: '/api/publish',
+                method: 'POST',
                 credentials: 'include',
                 headers: {
                     Accept: 'application/json',

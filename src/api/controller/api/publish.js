@@ -1,5 +1,6 @@
 import omit from 'lodash.omit';
 import Koa from 'koa';
+import route from 'koa-route';
 
 /* eslint no-await-in-loop: off */
 import getDocumentTransformer from '../../../common/getDocumentTransformer';
@@ -74,8 +75,8 @@ export const tryPublish = async (ctx, next) => {
     }
 };
 
-app.use(tryPublish);
+app.use(route.post('/', tryPublish));
 
-app.use(doPublish);
+app.use(route.post('/', doPublish));
 
 export default app;

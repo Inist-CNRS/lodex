@@ -1,7 +1,10 @@
+import chunk from 'lodash.chunk';
+
 import ensureIsUnique from './ensureIsUnique';
 
 export default (db) => {
     const collection = db.collection('uriDataset');
+    collection.insertBatch = documents => chunk(documents, 100).map(data => collection.insertMany(data));
     collection.findLimitFromSkip = (limit, skip) => collection.find().skip(skip).limit(limit).toArray();
 
     collection.ensureIsUnique = ensureIsUnique(collection);
