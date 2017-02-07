@@ -28,6 +28,7 @@ describe('initializeFields', () => {
 
         expect(ctx.field.insertOne).toHaveBeenCalledWith({
             name: URI_FIELD_NAME,
+            cover: 'collection',
             transformers: [],
         });
     });
