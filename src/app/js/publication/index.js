@@ -39,7 +39,13 @@ export default handleActions({
 
 export const hasPublishedDataset = ({ publication: { published } }) => published;
 
-const getFields = ({ publication: { fields } }) => fields;
+export const getFields = ({ publication: { fields } }) => fields || [];
+
+// @TODO use template option to find which characteristic is the title
+export const getTitle = ({ publication: { characteristics } }) => {
+    const titleCharacteristic = characteristics.find(({ name }) => name === 'dataset_title');
+    return titleCharacteristic ? titleCharacteristic.value : null;
+};
 
 export const getCollectionFields = createSelector(
     getFields,
