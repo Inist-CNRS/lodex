@@ -4,16 +4,17 @@ import { reducer as form } from 'redux-form';
 import { polyglotReducer as polyglot } from 'redux-polyglot';
 
 import dataset from './dataset';
+import fetchReducer from './fetch';
+import fields from './admin/fields';
 import i18n from './i18n';
-import user from './user';
 import parsing from './admin/parsing';
 import publication from './publication';
-import publishReducer from './admin/publish';
-import upload from './admin/upload';
-import fields from './admin/fields';
-import fetchReducer from './fetch';
 import publicationPreview from './admin/publicationPreview';
+import publishReducer from './admin/publish';
 import resource from './resource';
+import upload from './admin/upload';
+import user from './user';
+import validation from './admin/validation';
 
 export const getCurrentLocation = state => state.routing;
 
@@ -28,10 +29,11 @@ const rootReducer = combineReducers({
     publication,
     publicationPreview,
     publish: publishReducer,
+    resource,
     routing,
     upload,
     user,
-    resource,
+    validation,
 });
 
 export default rootReducer;

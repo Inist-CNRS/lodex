@@ -21,7 +21,7 @@ import Alert from '../../lib/Alert';
 import TransformerList from './TransformerList';
 
 const validate = (values) => {
-    const errors = ['username', 'password'].reduce((currentErrors, field) => {
+    const errors = ['name', 'label', 'cover'].reduce((currentErrors, field) => {
         if (!values[field]) {
             return {
                 ...currentErrors,

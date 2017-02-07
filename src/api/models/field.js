@@ -22,7 +22,7 @@ export default async (db) => {
     return collection;
 };
 
-export const INVALID_FIELD_MESSAGE = 'Invalid data for field need a name, label, cover, scheme, type and transformers array'; // eslint-disable-line
+export const INVALID_FIELD_MESSAGE = 'Invalid data for field which need a name, a label, a cover, a valid scheme, a type and a transformers array'; // eslint-disable-line
 
 export const validateFieldFactory = schemeServiceImpl => (data) => {
     try {

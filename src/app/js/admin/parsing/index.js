@@ -1,6 +1,5 @@
 import { createAction, handleActions } from 'redux-actions';
 import { createSelector } from 'reselect';
-import omit from 'lodash.omit';
 
 export const LOAD_PARSING_RESULT = 'LOAD_PARSING_RESULT';
 export const LOAD_PARSING_RESULT_ERROR = 'LOAD_PARSING_RESULT_ERROR';

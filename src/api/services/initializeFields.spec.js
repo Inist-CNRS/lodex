@@ -1,6 +1,7 @@
 import expect, { createSpy } from 'expect';
 import initializeFields from './initializeFields';
 import { URI_FIELD_NAME } from '../../common/uris';
+import { COVER_COLLECTION } from '../../common/cover';
 
 describe('initializeFields', () => {
     it('should try to find an existing uri field', async () => {
@@ -27,6 +28,8 @@ describe('initializeFields', () => {
         await initializeFields(ctx, () => {});
 
         expect(ctx.field.insertOne).toHaveBeenCalledWith({
+            cover: COVER_COLLECTION,
+            label: URI_FIELD_NAME,
             name: URI_FIELD_NAME,
             cover: 'collection',
             transformers: [],

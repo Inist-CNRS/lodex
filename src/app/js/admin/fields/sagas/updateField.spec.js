@@ -6,7 +6,6 @@ import fetchSaga from '../../../lib/fetchSaga';
 import {
     getFieldFormData,
     getUpdateFieldRequest,
-    refreshField,
     updateFieldError,
     updateFieldSuccess,
 } from '../';

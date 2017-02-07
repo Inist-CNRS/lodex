@@ -16,7 +16,7 @@ const FormAutoCompleteField = ({
     input,
     label,
     meta: { error },
-    ...props,
+    ...props
 }) => (
     <AutoComplete
         floatingLabelText={error ? (error.message || error) : label}
