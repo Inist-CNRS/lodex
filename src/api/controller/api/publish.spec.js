@@ -247,10 +247,11 @@ describe('publish', () => {
                 uri: 'uri',
                 data: 'value',
             };
-
-            expect(await addUriToTransformResult(transform)(doc)).toEqual({
+            const date = new Date();
+            expect(await addUriToTransformResult(transform)(doc, date)).toEqual({
                 uri: 'uri',
                 transformed: 'data',
+                publicationDate: date,
             });
 
             expect(transform).toHaveBeenCalledWith(doc);

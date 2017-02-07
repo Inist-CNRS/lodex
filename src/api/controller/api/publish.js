@@ -23,9 +23,10 @@ export const addTransformResultToDoc = transform => async doc => ({
     ...await transform(doc),
 });
 
-export const addUriToTransformResult = transformDocument => async doc => ({
+export const addUriToTransformResult = transformDocument => async (doc, publicationDate = new Date()) => ({
     ...await transformDocument(doc),
     uri: doc.uri,
+    publicationDate,
 });
 
 export const publishCharacteristics = async (ctx, datasetCoverFields, count) => {
