@@ -6,8 +6,8 @@ import publishedDataset from '../models/publishedDataset';
 import publishedCharacteristic from '../models/publishedCharacteristic';
 import uriDataset from '../models/uriDataset';
 
-export default async (ctx, next) => {
-    ctx.db = await MongoClient.connect(`mongodb://${config.mongo.host}/${config.mongo.dbName}`);
+export const mongoClientFactory = MongoClientImpl => async (ctx, next) => {
+    ctx.db = await MongoClientImpl.connect(`mongodb://${config.mongo.host}/${config.mongo.dbName}`);
     ctx.dataset = await dataset(ctx.db);
     ctx.field = await field(ctx.db);
     ctx.publishedDataset = await publishedDataset(ctx.db);
@@ -22,3 +22,5 @@ export default async (ctx, next) => {
         }
     }
 };
+
+export default mongoClientFactory(MongoClient);

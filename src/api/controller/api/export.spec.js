@@ -1,10 +1,11 @@
 import expect, { createSpy } from 'expect';
+import EventEmitter from 'events';
 import { exportMiddleware } from './export';
 
 describe('export routes', () => {
     describe('exportMiddleware', () => {
         const characteristics = [{ name: 'characteristic1', value: 'characteristic1_value' }];
-        const resultStream = { resultStream: true };
+        const resultStream = new EventEmitter();
         const exporterStreamFactory = createSpy().andReturn(resultStream);
         const fields = [
             { name: 'field1', cover: 'collection' },
@@ -13,6 +14,9 @@ describe('export routes', () => {
         const mongoStream = { mongoStream: true };
 
         const ctx = {
+            db: {
+                close: createSpy(),
+            },
             field: {
                 find: createSpy().andReturn({
                     toArray: () => fields,
@@ -31,6 +35,12 @@ describe('export routes', () => {
             },
             set: createSpy(),
         };
+
+        it('it should set keepDbOpened to true', async () => {
+            await exportMiddleware(ctx, 'accepted-type');
+
+            expect(ctx.keepDbOpened).toEqual(true);
+        });
 
         it('it should get the exporterStreamFactory', async () => {
             await exportMiddleware(ctx, 'accepted-type');
@@ -64,6 +74,16 @@ describe('export routes', () => {
 
         it('it set the body the the exported stream', () => {
             expect(ctx.body).toEqual(resultStream);
+        });
+
+        it('it should close the db when resultStream emits an `end` event', () => {
+            resultStream.emit('end');
+            expect(ctx.db.close).toHaveBeenCalled();
+        });
+
+        it('it should close the db when resultStream emits an `error` event', () => {
+            resultStream.emit('error');
+            expect(ctx.db.close).toHaveBeenCalled();
         });
     });
 });
