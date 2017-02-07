@@ -17,6 +17,6 @@ export default async (ctx, next) => {
     try {
         await next();
     } finally {
-        await ctx.db.close();
+        // await ctx.db.close();
     }
 };
