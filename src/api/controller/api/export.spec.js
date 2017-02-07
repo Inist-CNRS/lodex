@@ -29,16 +29,11 @@ describe('export routes', () => {
                     stream: () => mongoStream,
                 }),
             },
-            request: {
-                header: {
-                    accept: 'accepted-type',
-                },
-            },
             set: createSpy(),
         };
 
         it('it should get the exporterStreamFactory', async () => {
-            await exportMiddleware(ctx);
+            await exportMiddleware(ctx, 'accepted-type');
 
             expect(ctx.getExporter).toHaveBeenCalledWith('accepted-type');
         });

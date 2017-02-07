@@ -1,17 +1,23 @@
+import Koa from 'koa';
+import route from 'koa-route';
+
 import * as exporters from '../../exporters';
 
 export const getExporter = (type) => {
     switch (type) {
-    case 'text/csv':
-    case 'text/tab-separated-values':
+    case 'csv':
         return exporters.csv;
     default:
         throw new Error(`Unsupported document type: ${type}`);
     }
 };
 
-export async function exportMiddleware(ctx) {
-    const type = ctx.request.header['accept'];
+export async function setup(ctx, next) {
+    ctx.getExporter = getExporter;
+    await next();
+}
+
+export async function exportMiddleware(ctx, type) {
     try {
         const exportStreamFactory = ctx.getExporter(type);
         const characteristics = await ctx.publishedCharacteristic.find({}).toArray();
@@ -28,8 +34,9 @@ export async function exportMiddleware(ctx) {
     }
 }
 
-export default async function exportPublishedDataset(ctx) {
-    ctx.getExporter = getExporter;
+const app = new Koa();
 
-    await exportMiddleware(ctx);
-}
+app.use(setup);
+app.use(route.get('/:type', exportMiddleware));
+
+export default app;

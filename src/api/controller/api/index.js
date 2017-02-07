@@ -23,7 +23,7 @@ app.use(ezMasterConfig);
 app.use(mongoClient);
 app.use(initializeFields);
 
-app.use(route.get('/export', exportPublishedDataset));
+app.use(mount('/export', exportPublishedDataset));
 app.use(route.post('/login', login));
 app.use(route.get('/publication', publication));
 app.use(route.get('/publishedDataset', publishedDataset));
