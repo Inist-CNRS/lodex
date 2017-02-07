@@ -33,4 +33,6 @@ export default {
     cover_dataset: 'Apply to whole dataset',
     cover_collection: 'Different for each ressource',
     dataset_characteristics: 'Characteristics',
+    export: 'Export',
+    sign_out: 'Sign out',
 };

@@ -1,6 +1,7 @@
 import { fork } from 'redux-saga/effects';
 
 import datasetSaga from './dataset/sagas';
+import exportSaga from './export/sagas';
 import fetchSaga from './fetch/sagas';
 import fieldsSaga from './admin/fields/sagas';
 import i18nSaga from './i18n/sagas';
@@ -13,6 +14,7 @@ import userSaga from './user/sagas';
 
 export default function* () {
     yield fork(datasetSaga);
+    yield fork(exportSaga);
     yield fork(fetchSaga);
     yield fork(fieldsSaga);
     yield fork(i18nSaga);

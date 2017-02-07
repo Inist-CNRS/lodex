@@ -8,6 +8,7 @@ import ezMasterConfig from '../../services/ezMasterConfig';
 import initializeFields from '../../services/initializeFields';
 import mongoClient from '../../services/mongoClient';
 
+import exportPublishedDataset from './export';
 import fieldRoutes from './field';
 import login from './login';
 import parsing from './parsing';
@@ -22,18 +23,18 @@ app.use(ezMasterConfig);
 app.use(mongoClient);
 app.use(initializeFields);
 
+app.use(mount('/export', exportPublishedDataset));
 app.use(route.post('/login', login));
 app.use(route.get('/publication', publication));
 app.use(route.get('/publishedDataset', publishedDataset));
-
 
 app.use(jwt({ secret: auth.cookieSecret, cookie: 'lodex_token', key: 'cookie' }));
 app.use(jwt({ secret: auth.headerSecret, key: 'header' }));
 
 app.use(mount('/field', fieldRoutes));
-app.use(route.post('/upload', upload));
 app.use(mount('/parsing', parsing));
 app.use(mount('/publish', publish));
+app.use(route.post('/upload', upload));
 
 app.use(async (ctx) => {
     ctx.status = 404;

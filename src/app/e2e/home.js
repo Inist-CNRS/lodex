@@ -4,6 +4,10 @@ import driver from '../../common/tests/chromeDriver';
 
 describe('Home page', function homeTests() {
     this.timeout(15000);
+    let button;
+    let username;
+    let password;
+    let form;
 
     it('should display the Appbar with correct title', async () => {
         await driver.get('http://localhost:3010/');
@@ -12,22 +16,25 @@ describe('Home page', function homeTests() {
         expect(text).toEqual('Lodex');
     });
 
-    it('should display the Appbar with a sign-in button', async () => {
-        const button = await driver.findElement(By.css('.appbar button'));
-        const text = await button.getText();
-        expect(text).toEqual('SIGN IN');
+    it('should display the Appbar with a menu button', async () => {
+        button = await driver.findElement(By.css('.appbar button'));
     });
 
     it('click on sign-in button should display the sign-in modal', async () => {
-        const button = await driver.findElement(By.css('.appbar button'));
         await button.click();
-        await driver.wait(until.elementLocated(By.css('.dialog-login h3')));
+
+        const buttonSignIn = await driver.findElement(By.css('.btn-sign-in'));
+        await driver.wait(until.elementIsVisible(buttonSignIn));
+        await buttonSignIn.click();
+
+        form = await driver.findElement(By.css('.dialog-login form'));
+        await driver.wait(until.elementIsVisible(form));
+        await driver.sleep(500); // Needed because of dialog animation
     });
 
     it('submitting the form with invalid credentials should show an error', async () => {
-        const username = await driver.findElement(By.css('input[name=username]'));
-        const password = await driver.findElement(By.css('input[name=password]'));
-        const form = await driver.findElement(By.css('.dialog-login form'));
+        username = await driver.findElement(By.css('input[name=username]'));
+        password = await driver.findElement(By.css('input[name=password]'));
         await username.sendKeys('foo');
         await password.sendKeys('foo');
         await form.submit();
@@ -38,9 +45,6 @@ describe('Home page', function homeTests() {
     });
 
     it('submitting the form with valid credentials should close it', async () => {
-        const username = await driver.findElement(By.css('input[name=username]'));
-        const password = await driver.findElement(By.css('input[name=password]'));
-        const form = await driver.findElement(By.css('.dialog-login form'));
         await username.clear();
         await username.sendKeys('user');
         await password.clear();
