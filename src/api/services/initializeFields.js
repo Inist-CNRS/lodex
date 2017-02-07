@@ -6,6 +6,7 @@ export default async (ctx, next) => {
     if (!uriColumn) {
         await ctx.field.insertOne({
             name: URI_FIELD_NAME,
+            cover: 'collection',
             transformers: [],
         });
     }

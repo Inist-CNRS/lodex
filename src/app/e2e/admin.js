@@ -109,6 +109,7 @@ describe('Admin page', function homeTests() {
         });
 
         it('should add a transformer LINK', async () => {
+            await driver.executeScript('document.getElementsByClassName("add-transformer")[0].scrollIntoView(true);');
             await driver.findElement(By.css('#field_form .add-transformer')).click();
             await driver.executeScript('document.getElementsByClassName("operation")[0].scrollIntoView(true);');
             await driver.findElement(By.css('.operation')).click();
@@ -140,7 +141,6 @@ describe('Admin page', function homeTests() {
 
     describe('Publishing', () => {
         it('should display the "data published" message after publication', async () => {
-            await driver.sleep(200);
             await driver.findElement(By.css('.btn-publish')).click();
             await driver.findElement(By.css('.btn-publish')).click();
             await driver.wait(until.elementLocated(By.css('.data-published')));
