@@ -42,6 +42,7 @@ export const handlePublishError = async (ctx, next) => {
     } catch (error) {
         await ctx.uriDataset.remove({});
         await ctx.publishedDataset.remove({});
+        await ctx.publishedCharacteristic.remove({});
         throw error;
     }
 };
@@ -50,6 +51,7 @@ export const doPublish = async (ctx) => {
     const count = await ctx.dataset.count({});
 
     const fields = await ctx.field.findAll();
+    const collectionCoverFields = fields.filter(c => c.cover === 'collection');
     const datasetCoverFields = fields.filter(c => c.cover === 'dataset');
 
     const uriCol = fields.find(col => col.name === 'uri');
@@ -67,7 +69,7 @@ export const doPublish = async (ctx) => {
         .getDocumentTransformer({
             env: 'node',
             dataset: ctx.uriDataset,
-        }, fields.filter(col => col.name !== 'uri'));
+        }, collectionCoverFields.filter(col => col.name !== 'uri'));
 
     const transformDocumentAndKeepUri = ctx.addUriToTransformResult(transformDocument);
 
@@ -78,16 +80,23 @@ export const doPublish = async (ctx) => {
         transformDocumentAndKeepUri,
     );
 
-    const [lastRessource] = await ctx.publishedDataset.findLimitFromSkip(1, count - 1);
-    const isPublishedCharacteristic = (value, key) => datasetCoverFields.some(({ name }) => key === name);
-    const publishedCharacteristics = pickBy(lastRessource, isPublishedCharacteristic);
-    const publishedCharacteristicsKeys = Object.keys(publishedCharacteristics);
+    const getPublishedCharacteristics = ctx
+        .getDocumentTransformer({
+            env: 'node',
+            dataset: ctx.uriDataset,
+        }, datasetCoverFields);
 
-    if (publishedCharacteristicsKeys.length) {
-        await ctx.publishedCharacteristic.insertMany(publishedCharacteristicsKeys.map(key => ({
-            name: key,
-            value: publishedCharacteristics[key],
-        })));
+    const [lastRessource] = await ctx.publishedDataset.findLimitFromSkip(1, count - 1);
+    const characteristics = await getPublishedCharacteristics(lastRessource);
+
+    const publishedCharacteristics = Object.keys(characteristics)
+        .map(name => ({
+            name,
+            value: characteristics[name],
+        }));
+
+    if (publishedCharacteristics.length) {
+        await ctx.publishedCharacteristic.insertMany(publishedCharacteristics);
     }
 
     ctx.redirect('/api/publication');
