@@ -8,6 +8,7 @@ import {
     tranformAllDocuments,
     addTransformResultToDoc,
     addUriToTransformResult,
+    publishCharacteristics,
 } from './publish';
 import getDocumentTransformer from '../../../common/getDocumentTransformer';
 
@@ -47,6 +48,7 @@ describe('publish', () => {
                 insertBatch: 'uriDataset.insertBatch()',
                 findLimitFromSkip: 'uriDataset.findLimitFromSkip()',
             },
+            publishCharacteristics: expect.createSpy(),
         };
 
         before(async () => {
@@ -74,7 +76,10 @@ describe('publish', () => {
         });
 
         it('should call getDocumentTransformer with all other fields', () => {
-            expect(ctx.getDocumentTransformer).toHaveBeenCalledWith({ env: 'node', dataset: ctx.uriDataset }, fields.slice(1));
+            expect(ctx.getDocumentTransformer).toHaveBeenCalledWith({
+                env: 'node',
+                dataset: ctx.uriDataset,
+            }, [fields[1]]);
         });
 
         it('should call ctx.addUriToTransformResult with transformDocument', () => {
@@ -85,15 +90,59 @@ describe('publish', () => {
             expect(ctx.tranformAllDocuments).toHaveBeenCalledWith('count', 'uriDataset.findLimitFromSkip()', 'publishedDataset.insertBatch()', 'transformDocumentAndKeepUri()');
         });
 
-        it('should insert all dataset characteristics', () => {
-            expect(ctx.publishedCharacteristic.insertMany).toHaveBeenCalledWith([{
+        it('should call publishCharacteristics', () => {
+            expect(ctx.publishCharacteristics).toHaveBeenCalledWith(ctx, [{
                 name: 'field3',
-                value: 'field3_value',
-            }]);
+                cover: 'dataset',
+            }], 'count');
         });
 
         it('should redirect to the publication route', () => {
             expect(ctx.redirect).toHaveBeenCalledWith('/api/publication');
+        });
+    });
+
+    describe('publishCharacteristics', () => {
+        const transformDocument = createSpy().andReturn({ transformed: 'document' });
+        const count = 5;
+        const ctx = {
+            getDocumentTransformer: createSpy().andReturn(transformDocument),
+            uriDataset: {
+                findLimitFromSkip: createSpy().andReturn(['doc']),
+            },
+            publishedCharacteristic: {
+                insertMany: createSpy(),
+            },
+        };
+
+        before(async () => {
+            await publishCharacteristics(ctx, ['dataset fields'], count);
+        });
+
+        it('should call getDocumentTransformer', () => {
+            expect(ctx.getDocumentTransformer)
+            .toHaveBeenCalledWith(
+                {
+                    env: 'node',
+                    dataset: ctx.uriDataset,
+                },
+                ['dataset fields'],
+            );
+        });
+
+        it('should call ctx.uriDataset.findLimitFromSkip', () => {
+            expect(ctx.uriDataset.findLimitFromSkip)
+                .toHaveBeenCalledWith(1, count - 1);
+        });
+
+        it('should call transformDocument returned by getDocumentTransformer', () => {
+            expect(transformDocument).toHaveBeenCalledWith('doc');
+        });
+
+        it('should call ctx.publishedCharacteristic.insertMany', () => {
+            expect(ctx.publishedCharacteristic.insertMany).toHaveBeenCalledWith([
+                { name: 'transformed', value: 'document' },
+            ]);
         });
     });
 
@@ -108,6 +157,7 @@ describe('publish', () => {
                 getDocumentTransformer,
                 addTransformResultToDoc,
                 addUriToTransformResult,
+                publishCharacteristics,
             });
         });
     });
@@ -121,6 +171,9 @@ describe('publish', () => {
                 publishedDataset: {
                     remove: createSpy(),
                 },
+                publishedCharacteristic: {
+                    remove: createSpy(),
+                },
             };
             const error = new Error('Boom');
             const next = createSpy().andReturn(Promise.reject(error));
@@ -132,6 +185,7 @@ describe('publish', () => {
                 expect(e).toEqual(error);
                 expect(ctx.uriDataset.remove).toHaveBeenCalled();
                 expect(ctx.publishedDataset.remove).toHaveBeenCalled();
+                expect(ctx.publishedCharacteristic.remove).toHaveBeenCalled();
                 done();
             })
             .catch(done);
