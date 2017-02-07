@@ -5,17 +5,23 @@ import { compose } from 'recompose';
 import { Link } from 'react-router';
 import HomeIcon from 'material-ui/svg-icons/action/home';
 
-import { getResource } from './';
+import { getResource, isLoading } from './';
 import { getFields, getTitle } from '../publication';
 import Card from '../lib/Card';
 import Detail from './Detail';
 import { polyglot as polyglotPropTypes } from '../lib/propTypes';
-import DataCharacteristics from '../dataset/DatasetCharacteristics';
+import DatasetCharacteristics from '../dataset/DatasetCharacteristics';
+import Loading from '../lib/Loading';
 
-export const ResourceComponent = ({ resource, title, p: polyglot }) => {
+export const ResourceComponent = ({ resource, title, loading, p: polyglot }) => {
+    if (loading) {
+        return (
+            <Loading className="resource">{polyglot.t('loading_resource')}</Loading>
+        );
+    }
     if (!resource) {
         return (
-            <Card>
+            <Card className="not-found">
                 <Link to="/home">
                     <HomeIcon />
                     {title || polyglot.t('back_to_list')}
@@ -33,7 +39,7 @@ export const ResourceComponent = ({ resource, title, p: polyglot }) => {
                 </Link>
             </Card>
             <Detail />
-            <DataCharacteristics />
+            <DatasetCharacteristics />
         </div>
     );
 };
@@ -47,12 +53,14 @@ ResourceComponent.propTypes = {
     resource: PropTypes.shape({}),
     p: polyglotPropTypes.isRequired,
     title: PropTypes.string,
+    loading: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = state => ({
     resource: getResource(state),
     title: getTitle(state),
     fields: getFields(state),
+    loading: isLoading(state),
 });
 
 const mapDispatchToProps = {};

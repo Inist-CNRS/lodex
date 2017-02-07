@@ -1,7 +1,7 @@
 import expect, { createSpy } from 'expect';
 import InistArk from 'inist-ark';
 
-import { getFromArkUri } from './ark';
+import getFromArkUri from './ark';
 
 describe('ark routes', () => {
     describe('getFromArkUri', () => {

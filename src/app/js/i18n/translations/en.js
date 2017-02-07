@@ -37,4 +37,5 @@ export default {
     sign_out: 'Sign out',
     back_to_list: 'Back to list',
     not_found: 'Resource not found',
+    loading_resource: 'Resource loading...',
 };

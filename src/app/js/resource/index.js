@@ -44,3 +44,5 @@ export const getLoadResourceRequest = (state, uri) => ({
 });
 
 export const getResource = state => state.resource.resource;
+
+export const isLoading = state => state.resource.loading;

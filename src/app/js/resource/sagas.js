@@ -4,6 +4,7 @@ import { LOCATION_CHANGE } from 'react-router-redux';
 
 import {
     getLoadResourceRequest,
+    loadResource,
     loadResourceSuccess,
     loadResourceError,
 } from './';
@@ -11,7 +12,7 @@ import { loadPublication } from '../publication';
 
 import fetchSaga from '../lib/fetchSaga';
 
-const parsePathName = pathname => pathname.match(/^(\/resource)(\/ark:\/)?(.*?$)/) || [];
+export const parsePathName = pathname => pathname.match(/^(\/resource)(\/ark:\/)?(.*?$)/) || [];
 
 export function* handleLoadResource({ payload }) {
     const [, name, isArk, ark] = yield call(parsePathName, payload.pathname);
@@ -20,6 +21,7 @@ export function* handleLoadResource({ payload }) {
         return;
     }
 
+    yield put(loadResource());
     const uri = isArk ? ark : payload.query.uri;
 
     const request = yield select(getLoadResourceRequest, uri);
