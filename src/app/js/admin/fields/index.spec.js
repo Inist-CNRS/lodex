@@ -27,6 +27,7 @@ describe('parsing reducer', () => {
                     {
                         name: 'newField2',
                         label: 'newField 2',
+                        cover: 'collection',
                         transformers: [],
                     },
                 ],

@@ -23,7 +23,11 @@ const TransformerList = ({ fields, meta: { touched, error }, p: polyglot }) => (
                 operation={fields.get(index).operation}
             />
         ))}
-        <FlatButton onClick={() => fields.push({})} label={polyglot.t('add_transformer')} />
+        <FlatButton
+            className="add-transformer"
+            onClick={() => fields.push({})}
+            label={polyglot.t('add_transformer')}
+        />
     </div>
 );
 

@@ -38,8 +38,11 @@ export class PublishComponent extends Component {
                     <FieldForm />
                 </CardText>
                 <CardActions>
-                    <FlatButton label={polyglot.t('add column')} onClick={this.handleAddColumnClick} />
-
+                    <FlatButton
+                        className="add-column"
+                        label={polyglot.t('add column')}
+                        onClick={this.handleAddColumnClick}
+                    />
                     <ButtonWithStatus
                         className="btn-publish"
                         loading={loading}

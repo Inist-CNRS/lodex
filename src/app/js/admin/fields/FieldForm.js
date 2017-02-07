@@ -68,7 +68,7 @@ export const FieldFormComponent = ({
     }
 
     return (
-        <form id="login_form" onSubmit={handleSubmit}>
+        <form id="field_form" onSubmit={handleSubmit}>
             {error && <Alert><p>{error}</p></Alert>}
             <Field
                 name="name"
