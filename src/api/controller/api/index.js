@@ -27,7 +27,7 @@ app.use(initializeFields);
 app.use(mount('/export', exportPublishedDataset));
 app.use(route.post('/login', login));
 app.use(route.get('/publication', publication));
-app.use(route.get('/publishedDataset', publishedDataset));
+app.use(mount('/publishedDataset', publishedDataset));
 app.use(route.get('/ark', ark));
 
 app.use(jwt({ secret: auth.cookieSecret, cookie: 'lodex_token', key: 'cookie' }));
