@@ -28,11 +28,35 @@ export const addUriToTransformResult = transformDocument => async doc => ({
     uri: doc.uri,
 });
 
+export const publishCharacteristics = async (ctx, datasetCoverFields, count) => {
+    if (!datasetCoverFields.length) {
+        return;
+    }
+    const getPublishedCharacteristics = ctx
+        .getDocumentTransformer({
+            env: 'node',
+            dataset: ctx.uriDataset,
+        }, datasetCoverFields);
+    const [lastRessource] = await ctx.uriDataset.findLimitFromSkip(1, count - 1);
+    const characteristics = await getPublishedCharacteristics(lastRessource);
+
+    const publishedCharacteristics = Object.keys(characteristics)
+        .map(name => ({
+            name,
+            value: characteristics[name],
+        }));
+
+    if (publishedCharacteristics.length) {
+        await ctx.publishedCharacteristic.insertMany(publishedCharacteristics);
+    }
+};
+
 export const preparePublish = async (ctx, next) => {
     ctx.tranformAllDocuments = tranformAllDocuments;
     ctx.getDocumentTransformer = getDocumentTransformer;
     ctx.addTransformResultToDoc = addTransformResultToDoc;
     ctx.addUriToTransformResult = addUriToTransformResult;
+    ctx.publishCharacteristics = publishCharacteristics;
     await next();
 };
 
@@ -79,25 +103,7 @@ export const doPublish = async (ctx) => {
         ctx.publishedDataset.insertBatch,
         transformDocumentAndKeepUri,
     );
-
-    const getPublishedCharacteristics = ctx
-        .getDocumentTransformer({
-            env: 'node',
-            dataset: ctx.uriDataset,
-        }, datasetCoverFields);
-
-    const [lastRessource] = await ctx.publishedDataset.findLimitFromSkip(1, count - 1);
-    const characteristics = await getPublishedCharacteristics(lastRessource);
-
-    const publishedCharacteristics = Object.keys(characteristics)
-        .map(name => ({
-            name,
-            value: characteristics[name],
-        }));
-
-    if (publishedCharacteristics.length) {
-        await ctx.publishedCharacteristic.insertMany(publishedCharacteristics);
-    }
+    await ctx.publishCharacteristics(ctx, datasetCoverFields, count);
 
     ctx.redirect('/api/publication');
 };
