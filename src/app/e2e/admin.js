@@ -66,7 +66,7 @@ describe('Admin page', function homeTests() {
             const name = await driver.findElement(By.css('#field_form input[name=name]'));
             const label = await driver.findElement(By.css('#field_form input[name=label]'));
             await driver.wait(elementValueIs(name, 'uri'));
-            await driver.wait(elementValueIs(label, ''));
+            await driver.wait(elementValueIs(label, 'uri'));
         });
 
         it('should allow to add a transformer AUTOGENERATE_URI', async () => {
