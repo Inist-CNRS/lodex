@@ -20,7 +20,7 @@ export default (db) => {
             {
                 $push: {
                     versions: {
-                        ...omit(newVersion, ['_id', 'uri', 'versions']),
+                        ...omit(newVersion, ['uri']),
                         publicationDate,
                     },
                 },

@@ -5,6 +5,9 @@ import reducer, {
     LOAD_RESOURCE,
     LOAD_RESOURCE_SUCCESS,
     LOAD_RESOURCE_ERROR,
+    SAVE_RESOURCE,
+    SAVE_RESOURCE_SUCCESS,
+    SAVE_RESOURCE_ERROR,
 } from './index';
 
 describe('resourceReducer', () => {
@@ -50,6 +53,40 @@ describe('resourceReducer', () => {
             key: 'value',
             error: null,
             loading: true,
+            saving: false,
+        });
+    });
+
+    it('should handle SAVE_RESOURCE', () => {
+        const state = reducer({
+            key: 'value',
+        }, { type: SAVE_RESOURCE });
+        expect(state).toEqual({
+            key: 'value',
+            error: null,
+            saving: true,
+        });
+    });
+
+    it('should handle SAVE_RESOURCE_SUCCESS', () => {
+        const state = reducer({
+            key: 'value',
+        }, { type: SAVE_RESOURCE_SUCCESS });
+        expect(state).toEqual({
+            key: 'value',
+            error: null,
+            saving: false,
+        });
+    });
+
+    it('should handle SAVE_RESOURCE_ERROR', () => {
+        const state = reducer({
+            key: 'value',
+        }, { type: SAVE_RESOURCE_ERROR, payload: { message: 'boom' } });
+        expect(state).toEqual({
+            key: 'value',
+            error: 'boom',
+            saving: false,
         });
     });
 });

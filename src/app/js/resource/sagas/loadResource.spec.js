@@ -12,7 +12,7 @@ import fetchSaga from '../../lib/fetchSaga';
 import { handleLoadResource, parsePathName } from './loadResource';
 
 describe('resource saga', () => {
-    describe('handleLoadPublicationRequest', () => {
+    describe('handleLoadResource', () => {
         const action = {
             payload: {
                 pathname: 'pathname',
