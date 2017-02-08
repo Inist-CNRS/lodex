@@ -1,49 +1,48 @@
-import expect from 'expect';
+import expect, { createSpy } from 'expect';
 
 import getDocumentTransformer from '../getDocumentTransformer';
-import * as fixtures from '../tests/fixtures';
 
 describe('LINK', () => {
-    describe('functional', () => {
-        beforeEach(async () => {
-            await fixtures.clear();
-        });
+    const doc = {
+        uri: 'uri1',
+        id: 'id1',
+        ref: 'id2',
+        data: 'some data',
+    };
 
-        it('should link ref column to id column returning uri toward referenced document', async () => {
-            const db = await fixtures.connect();
-            const doc = {
-                uri: 'uri1',
-                id: 'id1',
-                ref: 'id2',
-                data: 'some data',
-            };
-            const linkedDoc = {
-                uri: 'uri2',
-                id: 'id2',
-                ref: 'uri3',
-                data: 'some other data',
-            };
-            db.dataset.insertMany([doc, linkedDoc]);
-            const fields = [
-                {
-                    name: 'link',
-                    transformers: [
-                        {
-                            operation: 'LINK',
-                            args: [
-                                { name: 'referenceColumn', value: 'ref' },
-                                { name: 'identifierColumn', value: 'id' },
-                            ],
-                        },
-                    ],
-                },
-            ];
+    const linkedDoc = {
+        uri: 'uri2',
+        id: 'id2',
+        ref: 'uri3',
+        data: 'some other data',
+    };
 
-            const newDoc = await getDocumentTransformer({ env: 'node', dataset: db.dataset }, fields)(doc);
+    const db = {
+        dataset: {
+            findBy: createSpy().andReturn(linkedDoc),
+        },
+    };
 
-            expect(newDoc).toEqual({
-                link: 'uri2',
-            });
+    it('should link ref column to id column returning uri toward referenced document', async () => {
+        const fields = [
+            {
+                name: 'link',
+                transformers: [
+                    {
+                        operation: 'LINK',
+                        args: [
+                            { name: 'referenceColumn', value: 'ref' },
+                            { name: 'identifierColumn', value: 'id' },
+                        ],
+                    },
+                ],
+            },
+        ];
+
+        const newDoc = await getDocumentTransformer({ env: 'node', dataset: db.dataset }, fields)(doc);
+
+        expect(newDoc).toEqual({
+            link: 'uri2',
         });
     });
 });
