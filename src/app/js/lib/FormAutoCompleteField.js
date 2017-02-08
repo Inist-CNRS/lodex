@@ -1,5 +1,7 @@
 import React from 'react';
 import { bindActionCreators } from 'redux';
+import compose from 'recompose/compose';
+import withHandlers from 'recompose/withHandlers';
 import { connect } from 'react-redux';
 import { propTypes as reduxFormPropTypes } from 'redux-form';
 import AutoComplete from 'material-ui/AutoComplete';
@@ -7,11 +9,19 @@ import debounce from 'lodash.debounce';
 
 import { fetch as fetchAction } from '../fetch';
 
-const FormAutoCompleteField = ({ handleComplete, dataSource, input, label, meta: { error }, ...props }) => (
+const FormAutoCompleteField = ({
+    handleComplete,
+    handleValueChosen,
+    dataSource,
+    input,
+    label,
+    meta: { error },
+    ...props
+}) => (
     <AutoComplete
         floatingLabelText={error ? (error.message || error) : label}
         onUpdateInput={debounce(handleComplete, 500)}
-        onNewRequest={value => (value.text ? input.onChange(value.text) : input.onChange(value))}
+        onNewRequest={handleValueChosen}
         dataSource={dataSource}
         searchText={input.value}
         {...props}
@@ -32,4 +42,17 @@ const mapDispatchToProps = (dispatch, { input: { name }, fetch: getConfig }) => 
         ),
 }, dispatch);
 
-export default connect(mapStateToProps, mapDispatchToProps)(FormAutoCompleteField);
+const handleValueChosen = ({ allowNewItem, input: { onChange } }) => (value, index) => {
+    // Material UI doc: index is the index in dataSource of the list item selected,
+    // or -1 if enter is pressed in the TextField
+    if (!allowNewItem && index === -1) {
+        return onChange('');
+    }
+
+    return value.text ? onChange(value.text) : onChange(value);
+};
+
+export default compose(
+    connect(mapStateToProps, mapDispatchToProps),
+    withHandlers({ handleValueChosen }),
+)(FormAutoCompleteField);

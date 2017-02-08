@@ -15,6 +15,7 @@ import Card from '../../lib/Card';
 import ButtonWithStatus from '../../lib/ButtonWithStatus';
 import { addField, loadField } from '../fields';
 import FieldForm from '../fields/FieldForm';
+import Validation from '../validation/Validation';
 
 export class PublishComponent extends Component {
     componentWillMount() {
@@ -30,7 +31,7 @@ export class PublishComponent extends Component {
     }
 
     render() {
-        const { error, loading, p: polyglot, published } = this.props;
+        const { canPublish, error, loading, p: polyglot, published } = this.props;
         return (
             <Card>
                 <CardHeader title={polyglot.t('publication')} />
@@ -51,13 +52,14 @@ export class PublishComponent extends Component {
                         label={polyglot.t('publish')}
                         onClick={this.handleClick}
                         primary
-                        disabled={loading}
+                        disabled={!canPublish}
                     />
 
                     {error && <Alert><p>{error}</p></Alert>}
                 </CardActions>
                 <CardText>
-                    {polyglot.t('publication_explanations')}
+                    {canPublish && polyglot.t('publication_explanations')}
+                    {!canPublish && <Validation />}
                 </CardText>
             </Card>
         );
@@ -66,6 +68,7 @@ export class PublishComponent extends Component {
 
 PublishComponent.propTypes = {
     addColumn: PropTypes.func.isRequired,
+    canPublish: PropTypes.bool.isRequired,
     error: PropTypes.string,
     loading: PropTypes.bool.isRequired,
     p: polyglotPropTypes.isRequired,
@@ -78,7 +81,10 @@ PublishComponent.defaultProps = {
     error: null,
 };
 
-const mapStateToProps = state => state.publish;
+const mapStateToProps = ({ publish, validation: { isValid } }) => ({
+    ...publish,
+    canPublish: isValid,
+});
 
 const mapDispatchToProps = ({
     addColumn: addField,

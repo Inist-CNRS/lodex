@@ -54,9 +54,9 @@ export default handleActions({
         ...state,
         editedFieldIndex: state.list.length,
         list: state.list.concat({
-            name: `newField${state.list.length + 1}`,
-            label: `newField ${state.list.length + 1}`,
             cover: 'collection',
+            label: `newField ${state.list.length + 1}`,
+            name: `newField${state.list.length + 1}`,
             transformers: [],
         }),
     }),

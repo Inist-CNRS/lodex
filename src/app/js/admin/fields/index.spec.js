@@ -10,7 +10,7 @@ import reducer, {
     updateFieldSuccess,
 } from './';
 
-describe('parsing reducer', () => {
+describe('field reducer', () => {
     it('should initialize with correct state', () => {
         const state = reducer(undefined, { type: '@@INIT' });
         expect(state).toEqual(defaultState);
@@ -25,9 +25,9 @@ describe('parsing reducer', () => {
                 list: [
                     { existingField: true },
                     {
-                        name: 'newField2',
-                        label: 'newField 2',
                         cover: 'collection',
+                        label: 'newField 2',
+                        name: 'newField2',
                         transformers: [],
                     },
                 ],

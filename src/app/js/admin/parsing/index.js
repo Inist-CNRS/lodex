@@ -47,7 +47,7 @@ export const getExcerptLines = (state) => {
 
 export const getParsedExcerptColumns = createSelector(
     getExcerptLines,
-    lines => Object.keys(lines[0] || {}),
+    lines => Object.keys(lines[0] || {}).filter(key => key !== '_id'),
 );
 
 export const hasUploadedFile = state => state && state.parsing && !!state.parsing.totalLoadedLines;

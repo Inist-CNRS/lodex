@@ -54,8 +54,7 @@ describe('Home page', function homeTests() {
         await password.sendKeys('secret');
         await form.submit();
         await driver.sleep(500);
-        const elements = await driver.findElements(By.css('.dialog-login h3'));
-        expect(elements.length).toEqual(0);
+        await driver.wait(until.stalenessOf(form));
     });
 
     after(async () => {

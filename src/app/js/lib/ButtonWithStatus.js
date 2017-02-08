@@ -13,9 +13,9 @@ const getIcon = (error, loading, success) => {
     return null;
 };
 
-const ButtonWithStatus = ({ error, loading, success, ...props }) => (
+const ButtonWithStatus = ({ error, loading, disabled, success, ...props }) => (
     <FlatButton
-        disabled={loading}
+        disabled={disabled || loading}
         icon={getIcon(error, loading, success)}
         labelPosition="before"
         {...props}
@@ -24,6 +24,7 @@ const ButtonWithStatus = ({ error, loading, success, ...props }) => (
 
 ButtonWithStatus.propTypes = {
     error: PropTypes.bool,
+    disabled: PropTypes.bool,
     loading: PropTypes.bool.isRequired,
     success: PropTypes.bool,
 };

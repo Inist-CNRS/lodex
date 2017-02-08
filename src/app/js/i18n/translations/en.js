@@ -15,7 +15,7 @@ export default {
     raw: 'raw',
     publish: 'Publish',
     publication: 'Publication',
-    publication_explanations: 'This will make your transformed data public. Once it has been published, you will not be able to modify it.',
+    publication_explanations: 'Publishing will make your transformed data public. Once it has been published, you will not be able to modify it.',
     Published: 'Your data has been published.',
     showing: 'Showing {from} to {to} of {total}',
     page: 'Page',
@@ -38,4 +38,8 @@ export default {
     back_to_list: 'Back to list',
     not_found: 'Resource not found',
     loading_resource: 'Resource loading...',
+    error_label_required: 'Label is required',
+    error_name_required: 'Name is required',
+    error_cover_required: 'Cover is required',
+    error_cover_invalid_cover: 'Cover is invalid',
 };
