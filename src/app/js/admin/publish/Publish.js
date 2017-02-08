@@ -51,6 +51,7 @@ export class PublishComponent extends Component {
                         label={polyglot.t('publish')}
                         onClick={this.handleClick}
                         primary
+                        disabled={loading}
                     />
 
                     {error && <Alert><p>{error}</p></Alert>}
