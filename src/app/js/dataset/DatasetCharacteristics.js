@@ -23,7 +23,8 @@ const DatasetCharacteristics = ({ characteristics, p: polyglot }) => (
     <Card className="dataset-characteristics">
         <CardHeader title={polyglot.t('dataset_characteristics')} />
         <CardText style={styles.container}>
-            {characteristics.map(({ name, value, scheme }) => <Property name={name} value={value} scheme={scheme} />)}
+            {characteristics.map(({ name, value, scheme }) =>
+                <Property name={name} value={value} scheme={scheme} />)}
         </CardText>
     </Card>
 );

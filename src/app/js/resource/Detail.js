@@ -1,6 +1,8 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { CardHeader, CardText } from 'material-ui/Card';
+import { CardHeader, CardText, CardActions } from 'material-ui/Card';
+import { Link } from 'react-router';
+import FlatButton from 'material-ui/FlatButton';
 
 import {
     getResource,
@@ -19,6 +21,11 @@ export const DetailComponent = ({ resource, fields }) => (
                 <Property name={name} scheme={scheme} value={resource[name]} />
             ))}
         </CardText>
+        <CardActions>
+            <Link to={{ pathname: '/resource/edit', query: { uri: resource.uri } }}>
+                <FlatButton label={'Edit'} primary />
+            </Link>
+        </CardActions>
     </Card>
 );
 

@@ -14,6 +14,7 @@ import {
 } from '../publication';
 import Card from '../lib/Card';
 import Detail from './Detail';
+import EditDetail from './EditDetail';
 import { polyglot as polyglotPropTypes } from '../lib/propTypes';
 import DatasetCharacteristics from '../dataset/DatasetCharacteristics';
 import Loading from '../lib/Loading';
@@ -25,7 +26,7 @@ const styles = {
     },
 };
 
-export const ResourceComponent = ({ resource, datasetTitle, titleKey, loading, p: polyglot }) => {
+export const ResourceComponent = ({ resource, datasetTitle, titleKey, loading, edit, p: polyglot }) => {
     if (loading) {
         return (
             <Loading className="resource">{polyglot.t('loading_resource')}</Loading>
@@ -55,19 +56,25 @@ export const ResourceComponent = ({ resource, datasetTitle, titleKey, loading, p
                     <h1>{titleKey ? resource[titleKey] : resource.uri}</h1>
                 </CardText>
             </Card>
-            <Detail />
+            { edit ?
+                <EditDetail />
+                :
+                <Detail />
+            }
             <DatasetCharacteristics />
         </div>
     );
 };
 
 ResourceComponent.defaultProps = {
+    edit: false,
     resource: null,
     datasetTitle: null,
     titleKey: null,
 };
 
 ResourceComponent.propTypes = {
+    edit: PropTypes.bool.isRequired,
     resource: PropTypes.shape({}),
     p: polyglotPropTypes.isRequired,
     titleKey: PropTypes.string,
