@@ -5,6 +5,7 @@ import chunk from 'lodash.chunk';
 
 import driver from '../../common/tests/chromeDriver';
 import { clear } from '../../common/tests/fixtures';
+import { elementValueIs } from '../../common/tests/conditions';
 
 describe('Admin page', function homeTests() {
     this.timeout(20000);
@@ -64,8 +65,8 @@ describe('Admin page', function homeTests() {
             await driver.wait(until.elementLocated(By.css('#field_form')));
             const name = await driver.findElement(By.css('#field_form input[name=name]'));
             const label = await driver.findElement(By.css('#field_form input[name=label]'));
-            expect(await name.getAttribute('value')).toBe('uri');
-            expect(await label.getAttribute('value')).toBe('');
+            await driver.wait(elementValueIs(name, 'uri'));
+            await driver.wait(elementValueIs(label, ''));
         });
 
         it('should allow to add a transformer AUTOGENERATE_URI', async () => {
@@ -92,8 +93,9 @@ describe('Admin page', function homeTests() {
             await driver.wait(until.elementLocated(By.css('#field_form')));
             const name = await driver.findElement(By.css('#field_form input[name=name]'));
             const label = await driver.findElement(By.css('#field_form input[name=label]'));
-            expect(await name.getAttribute('value')).toBe('newField2');
-            expect(await label.getAttribute('value')).toBe('newField 2');
+
+            await driver.wait(elementValueIs(name, 'newField2'));
+            await driver.wait(elementValueIs(label, 'newField 2'));
         });
 
         it('should change column name', async () => {
