@@ -11,4 +11,5 @@ export const polyglot = PropTypes.shape({
 export const property = PropTypes.shape({
     name: PropTypes.string.isRequired,
     value: PropTypes.any.isRequired,
+    scheme: PropTypes.any.isRequired,
 });

@@ -1,4 +1,5 @@
 import React, { PropTypes } from 'react';
+import { property: propertyPropTypes } from './propTypes';
 
 const styles = {
     container: {
@@ -25,10 +26,6 @@ const Property = ({ name, value, scheme }) => (
     </dl>
 );
 
-Property.propTypes = {
-    name: PropTypes.string.isRequired,
-    value: PropTypes.string.isRequired,
-    scheme: PropTypes.string.isRequired,
-};
+Property.propTypes = propertyPropTypes;
 
 export default Property;
