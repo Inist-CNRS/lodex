@@ -1,4 +1,12 @@
-import { createAction, handleActions } from 'redux-actions';
+import { combineActions, createAction, handleActions } from 'redux-actions';
+
+import {
+    CHANGE as REDUX_FORM_CHANGE,
+    ARRAY_INSERT as REDUX_FORM_ARRAY_INSERT,
+    ARRAY_REMOVE as REDUX_FORM_ARRAY_REMOVE,
+} from 'redux-form/lib/actionTypes';
+
+import { UPDATE_FIELD_SUCCESS, UPDATE_FIELD_ERROR } from '../fields';
 
 export const PUBLISH = 'PUBLISH';
 export const PUBLISH_SUCCESS = 'PUBLISH_SUCCESS';
@@ -26,6 +34,14 @@ export default handleActions({
     PUBLISH_ERROR: (state, { payload: error }) => ({
         ...state,
         error,
+        loading: false,
+    }),
+    [combineActions(REDUX_FORM_CHANGE, REDUX_FORM_ARRAY_INSERT, REDUX_FORM_ARRAY_REMOVE)]: state => ({
+        ...state,
+        loading: true,
+    }),
+    [combineActions(UPDATE_FIELD_ERROR, UPDATE_FIELD_SUCCESS)]: state => ({
+        ...state,
         loading: false,
     }),
 }, defaultState);

@@ -5,9 +5,9 @@ import chunk from 'lodash.chunk';
 
 import driver from '../../common/tests/chromeDriver';
 import { clear } from '../../common/tests/fixtures';
-import { elementValueIs } from '../../common/tests/conditions';
+import { elementIsClickable, elementValueIs } from '../../common/tests/conditions';
 
-describe.only('Admin page', function homeTests() {
+describe('Admin page', function homeTests() {
     this.timeout(20000);
 
     before(async () => {
@@ -142,8 +142,9 @@ describe.only('Admin page', function homeTests() {
 
     describe('Publishing', () => {
         it('should display the "data published" message after publication', async () => {
-            await driver.sleep(1000); // Wait for changes to be sent to server
-            await driver.findElement(By.css('.btn-publish')).click();
+            const buttonPublish = await driver.findElement(By.css('.btn-publish'));
+            await driver.wait(elementIsClickable(buttonPublish));
+            await buttonPublish.click();
             await driver.wait(until.elementLocated(By.css('.data-published')));
         });
 
