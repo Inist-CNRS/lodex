@@ -14,6 +14,10 @@ export const loadResource = createAction(LOAD_RESOURCE);
 export const loadResourceSuccess = createAction(LOAD_RESOURCE_SUCCESS);
 export const loadResourceError = createAction(LOAD_RESOURCE_ERROR);
 
+export const saveResource = createAction(SAVE_RESOURCE);
+export const saveResourceSuccess = createAction(SAVE_RESOURCE_SUCCESS);
+export const saveResourceError = createAction(SAVE_RESOURCE_ERROR);
+
 export const defaultState = {
     resource: {},
     error: null,
@@ -44,9 +48,8 @@ export default handleActions({
         error: null,
         saving: true,
     }),
-    SAVE_RESOURCE_SUCCESS: (state, { payload }) => ({
+    SAVE_RESOURCE_SUCCESS: state => ({
         ...state,
-        resource: payload,
         error: null,
         saving: false,
     }),
@@ -67,6 +70,19 @@ export const getLoadResourceRequest = (state, uri) => ({
     },
 });
 
-export const getResource = state => state.resource.resource;
+export const getSaveResourceRequest = (state, resource) => ({
+    url: '/api/publishedDataset',
+    credentials: 'include',
+    method: 'POST',
+    headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${state.user.token}`,
+        'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(resource),
+});
 
+export const getResource = state => state.resource.resource;
+export const getResourceFormData = state => state.form.resource.values;
 export const isLoading = state => state.resource.loading;
+export const isSaving = state => state.resource.saving;

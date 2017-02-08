@@ -9,7 +9,8 @@ import FlatButton from 'material-ui/FlatButton';
 
 import {
     getResource,
-    saveField,
+    saveResource,
+    isSaving,
     RESOURCE_FORM_NAME,
 } from './';
 import { getCollectionFields } from '../publication';
@@ -80,10 +81,11 @@ const mapStateToProps = state => ({
     initialValues: getResource(state),
     resource: getResource(state),
     fields: getCollectionFields(state),
+    saving: isSaving(state),
 });
 
 const mapDispatchToProps = {
-    handleSubmit: saveField,
+    handleSubmit: saveResource,
 };
 
 export default compose(

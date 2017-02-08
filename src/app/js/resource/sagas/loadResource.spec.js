@@ -1,17 +1,15 @@
 import expect from 'expect';
-import { takeLatest } from 'redux-saga';
-import { call, fork, put, select } from 'redux-saga/effects';
-import { LOCATION_CHANGE } from 'react-router-redux';
+import { call, put, select } from 'redux-saga/effects';
 
 import {
     getLoadResourceRequest,
     loadResource,
     loadResourceSuccess,
     loadResourceError,
-} from './';
-import { loadPublication } from '../publication';
-import fetchSaga from '../lib/fetchSaga';
-import { handleLoadResource, parsePathName } from './sagas';
+} from '../';
+import { loadPublication } from '../../publication';
+import fetchSaga from '../../lib/fetchSaga';
+import { handleLoadResource, parsePathName } from './loadResource';
 
 describe('resource saga', () => {
     describe('handleLoadPublicationRequest', () => {

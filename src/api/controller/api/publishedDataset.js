@@ -35,5 +35,6 @@ export const editResource = async (ctx) => {
 };
 
 app.use(route.get('/', getPage));
+app.use(route.post('/', editResource));
 
 export default app;

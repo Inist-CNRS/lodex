@@ -4,7 +4,7 @@ import translate from 'redux-polyglot/translate';
 import { compose } from 'recompose';
 import { Link } from 'react-router';
 import HomeIcon from 'material-ui/svg-icons/action/home';
-import { CardHeader, CardText } from 'material-ui/Card';
+import { CardText } from 'material-ui/Card';
 
 import { getResource, isLoading } from './';
 import {
