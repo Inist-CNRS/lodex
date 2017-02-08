@@ -1,7 +1,6 @@
 import React from 'react';
 import TextField from 'material-ui/TextField';
 import withHandlers from 'recompose/withHandlers';
-import debounce from 'lodash.debounce';
 
 import { property as propertyPropTypes } from './propTypes';
 
@@ -9,6 +8,9 @@ const styles = {
     container: {
         display: 'flex',
         marginRight: '1rem',
+    },
+    inputContainer: {
+        marginTop: '-1rem',
     },
     name: {
         fontWeight: 'bold',
@@ -26,7 +28,7 @@ const Property = ({ name, onChange, scheme, value }) => (
             <div style={styles.name}>{name}</div>
             <div style={styles.scheme}>{scheme}</div>
         </dt>
-        <dd>
+        <dd style={styles.inputContainer}>
             <TextField
                 hintText="Hint Text"
                 value={value}

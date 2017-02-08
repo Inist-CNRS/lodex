@@ -43,8 +43,6 @@ describe('export routes', () => {
         });
 
         it('it should get the exporterStreamFactory', async () => {
-            await exportMiddleware(ctx, 'accepted-type');
-
             expect(ctx.getExporter).toHaveBeenCalledWith('accepted-type');
         });
 
