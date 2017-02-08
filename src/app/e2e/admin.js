@@ -7,7 +7,7 @@ import driver from '../../common/tests/chromeDriver';
 import { clear } from '../../common/tests/fixtures';
 import { elementValueIs } from '../../common/tests/conditions';
 
-describe('Admin page', function homeTests() {
+describe.only('Admin page', function homeTests() {
     this.timeout(20000);
 
     before(async () => {
@@ -106,8 +106,7 @@ describe('Admin page', function homeTests() {
             await label.clear();
             await label.sendKeys('Stronger than');
             const th = await driver.findElement(By.css('.publication-preview th:nth-child(2)'));
-            const text = await th.getText();
-            expect(text).toBe('Stronger than');
+            await driver.wait(until.elementTextIs(th, 'Stronger than'));
         });
 
         it('should add a transformer LINK', async () => {
@@ -143,7 +142,7 @@ describe('Admin page', function homeTests() {
 
     describe('Publishing', () => {
         it('should display the "data published" message after publication', async () => {
-            await driver.findElement(By.css('.btn-publish')).click();
+            await driver.sleep(1000); // Wait for changes to be sent to server
             await driver.findElement(By.css('.btn-publish')).click();
             await driver.wait(until.elementLocated(By.css('.data-published')));
         });
