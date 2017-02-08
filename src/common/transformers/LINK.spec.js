@@ -40,7 +40,7 @@ describe('LINK', () => {
         ];
 
         const newDoc = await getDocumentTransformer({ env: 'node', dataset: db.dataset }, fields)(doc);
-
+        expect(db.dataset.findBy).toHaveBeenCalledWith('id', 'id2');
         expect(newDoc).toEqual({
             link: 'uri2',
         });
