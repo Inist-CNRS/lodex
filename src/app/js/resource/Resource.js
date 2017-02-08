@@ -6,14 +6,18 @@ import { Link } from 'react-router';
 import HomeIcon from 'material-ui/svg-icons/action/home';
 
 import { getResource, isLoading } from './';
-import { getFields, getTitle } from '../publication';
+import {
+    getFields,
+    getDatasetTitle,
+    getTitleFieldName,
+} from '../publication';
 import Card from '../lib/Card';
 import Detail from './Detail';
 import { polyglot as polyglotPropTypes } from '../lib/propTypes';
 import DatasetCharacteristics from '../dataset/DatasetCharacteristics';
 import Loading from '../lib/Loading';
 
-export const ResourceComponent = ({ resource, title, loading, p: polyglot }) => {
+export const ResourceComponent = ({ resource, datasetTitle, titleKey, loading, p: polyglot }) => {
     if (loading) {
         return (
             <Loading className="resource">{polyglot.t('loading_resource')}</Loading>
@@ -24,7 +28,7 @@ export const ResourceComponent = ({ resource, title, loading, p: polyglot }) => 
             <Card className="not-found">
                 <Link to="/home">
                     <HomeIcon />
-                    {title || polyglot.t('back_to_list')}
+                    {datasetTitle || polyglot.t('back_to_list')}
                 </Link>
                 <h1>{polyglot.t('not_found')}</h1>
             </Card>
@@ -35,8 +39,9 @@ export const ResourceComponent = ({ resource, title, loading, p: polyglot }) => 
             <Card>
                 <Link to="/home">
                     <HomeIcon />
-                    {title || polyglot.t('back_to_list')}
+                    {datasetTitle || polyglot.t('back_to_list')}
                 </Link>
+                <h1>{titleKey ? resource[titleKey] : resource.uri}</h1>
             </Card>
             <Detail />
             <DatasetCharacteristics />
@@ -46,19 +51,22 @@ export const ResourceComponent = ({ resource, title, loading, p: polyglot }) => 
 
 ResourceComponent.defaultProps = {
     resource: null,
-    title: null,
+    datasetTitle: null,
+    titleKey: null,
 };
 
 ResourceComponent.propTypes = {
     resource: PropTypes.shape({}),
     p: polyglotPropTypes.isRequired,
-    title: PropTypes.string,
+    titleKey: PropTypes.string,
+    datasetTitle: PropTypes.string,
     loading: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = state => ({
     resource: getResource(state),
-    title: getTitle(state),
+    datasetTitle: getDatasetTitle(state),
+    titleKey: getTitleFieldName(state),
     fields: getFields(state),
     loading: isLoading(state),
 });

@@ -1,5 +1,5 @@
-import React, { PropTypes } from 'react';
-import { property: propertyPropTypes } from './propTypes';
+import React from 'react';
+import { property as propertyPropTypes } from './propTypes';
 
 const styles = {
     container: {
