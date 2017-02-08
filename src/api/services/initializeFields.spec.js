@@ -31,7 +31,6 @@ describe('initializeFields', () => {
             cover: COVER_COLLECTION,
             label: URI_FIELD_NAME,
             name: URI_FIELD_NAME,
-            cover: 'collection',
             transformers: [],
         });
     });
