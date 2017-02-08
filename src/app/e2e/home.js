@@ -2,6 +2,8 @@ import { until, By } from 'selenium-webdriver';
 import expect from 'expect';
 import driver from '../../common/tests/chromeDriver';
 
+import { elementIsClickable } from '../../common/tests/conditions';
+
 describe('Home page', function homeTests() {
     this.timeout(15000);
     let button;
@@ -28,13 +30,14 @@ describe('Home page', function homeTests() {
         await buttonSignIn.click();
 
         form = await driver.findElement(By.css('.dialog-login form'));
-        await driver.wait(until.elementIsVisible(form));
+        username = await driver.findElement(By.css('input[name=username]'));
+        password = await driver.findElement(By.css('input[name=password]'));
+
+        await driver.wait(elementIsClickable(username));
         await driver.sleep(500); // Needed because of dialog animation
     });
 
     it('submitting the form with invalid credentials should show an error', async () => {
-        username = await driver.findElement(By.css('input[name=username]'));
-        password = await driver.findElement(By.css('input[name=password]'));
         await username.sendKeys('foo');
         await password.sendKeys('foo');
         await form.submit();
