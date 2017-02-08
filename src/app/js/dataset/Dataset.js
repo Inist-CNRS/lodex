@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
+import { Link } from 'react-router';
 
 import { CardText } from 'material-ui/Card';
 
@@ -55,7 +56,15 @@ export class DatasetComponent extends Component {
                         <TableBody displayRowCheckbox={false}>
                             {dataset.map(data => (
                                 <TableRow>
-                                    {columns.map(c => <TableRowColumn>{data[c.name]}</TableRowColumn>)}
+                                    {columns.map(({ name }) => (
+                                        <TableRowColumn>
+                                            {name === 'uri' ?
+                                                <Link to={`/resource?uri=${data[name]}`}>{data[name]}</Link>
+                                                :
+                                                data[name]
+                                            }
+                                        </TableRowColumn>
+                                    ))}
                                 </TableRow>
                             ))}
                         </TableBody>

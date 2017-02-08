@@ -44,6 +44,7 @@ export const publishCharacteristics = async (ctx, datasetCoverFields, count) => 
         .map(name => ({
             name,
             value: characteristics[name],
+            scheme: datasetCoverFields.find(({ name: fieldName }) => fieldName === name).scheme,
         }));
 
     if (publishedCharacteristics.length) {

@@ -2,6 +2,7 @@ import App from './App';
 import adminRoutes from './admin/routes';
 import homeRoutes from './home/routes';
 import userRoutes from './user/routes';
+import resourceRoutes from './resource/routes';
 
 export default store => ({
     childRoutes: [{
@@ -12,6 +13,7 @@ export default store => ({
             ...adminRoutes(store),
             ...homeRoutes,
             ...userRoutes,
+            ...resourceRoutes,
         ],
     }],
 });

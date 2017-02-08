@@ -14,20 +14,21 @@ describe('Home page with published data', function homePublishedDataTests() {
     });
 
     it('should display the dataset characteristics', async () => {
-        const datasetCharacteristics = await driver.findElements(By.css('.dataset-characteristic'));
-        expect(datasetCharacteristics.length).toEqual(2);
-        expect(datasetCharacteristics.length).toEqual(2);
+        const datasetCharacteristics = await driver.findElements(By.css('.dataset-characteristics'));
+        expect(datasetCharacteristics.length).toEqual(1);
+        const properties = await driver.findElements(By.css('.dataset-characteristics .property'));
+        expect(properties.length).toEqual(2);
 
-        const movieLabel = await driver.findElement(By.css('.dataset-characteristic:first-child dt'));
+        const movieLabel = await driver.findElement(By.css('.dataset-characteristics .property:first-child dt'));
         expect(await movieLabel.getText()).toEqual('movie');
 
-        const movieValue = await driver.findElement(By.css('.dataset-characteristic:first-child dd'));
+        const movieValue = await driver.findElement(By.css('.dataset-characteristics .property:first-child dd'));
         expect(await movieValue.getText()).toEqual('LOTR');
 
-        const authorLabel = await driver.findElement(By.css('.dataset-characteristic:last-child dt'));
+        const authorLabel = await driver.findElement(By.css('.dataset-characteristics .property:last-child dt'));
         expect(await authorLabel.getText()).toEqual('author');
 
-        const authorValue = await driver.findElement(By.css('.dataset-characteristic:last-child dd'));
+        const authorValue = await driver.findElement(By.css('.dataset-characteristics .property:last-child dd'));
         expect(await authorValue.getText()).toEqual('Peter Jackson');
     });
 

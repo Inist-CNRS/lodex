@@ -1,13 +1,8 @@
-import Koa from 'koa';
-import route from 'koa-route';
 import InistArk from 'inist-ark';
 
-import mongoClient from '../services/mongoClient';
-
-const app = new Koa();
 const ARK_URI = new RegExp(/ark:\/(\d{5,})/, 'i');
 
-export const getFromArkUri = async (ctx, next) => {
+export default async (ctx, next) => {
     const uri = ctx.path;
     const matches = ARK_URI.exec(uri);
 
@@ -43,9 +38,3 @@ export const getFromArkUri = async (ctx, next) => {
 export const arkUriRouteHandler = async (ctx, identifier) => {
     ctx.body = await ctx.publishedDataset.findOne({ uri: identifier });
 };
-
-app.use(mongoClient);
-app.use(route.get('/', getFromArkUri));
-
-export default app;
-

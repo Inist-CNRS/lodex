@@ -37,13 +37,30 @@ export default handleActions({
     }),
 }, defaultState);
 
+export const titleScheme = 'http://purl.org/dc/terms/title';
+
 export const hasPublishedDataset = ({ publication: { published } }) => published;
 
-const getFields = ({ publication: { fields } }) => fields;
+export const getFields = ({ publication: { fields } }) => fields || [];
+
+export const getDatasetTitle = ({ publication: { characteristics } }) => {
+    const titleCharacteristic = characteristics.find(({ scheme }) => scheme === titleScheme);
+    return titleCharacteristic ? titleCharacteristic.value : null;
+};
 
 export const getCollectionFields = createSelector(
     getFields,
     fields => fields.filter(f => f.cover === 'collection'),
+);
+
+export const getTitleFieldName = createSelector(
+    getCollectionFields,
+    (fields) => {
+        const titleField = fields
+            .find(({ scheme }) => scheme === titleScheme);
+
+        return titleField ? titleField.name : null;
+    },
 );
 
 const getPublication = ({ publication }) => publication;

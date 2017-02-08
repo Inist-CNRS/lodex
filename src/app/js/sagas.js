@@ -11,6 +11,7 @@ import publicationSaga from './publication/sagas';
 import publishSaga from './admin/publish/sagas';
 import uploadFileSaga from './admin/upload/uploadFileSaga';
 import userSaga from './user/sagas';
+import resourceSagas from './resource/sagas';
 
 export default function* () {
     yield fork(datasetSaga);
@@ -24,4 +25,5 @@ export default function* () {
     yield fork(publishSaga);
     yield fork(uploadFileSaga);
     yield fork(userSaga);
+    yield fork(resourceSagas);
 }

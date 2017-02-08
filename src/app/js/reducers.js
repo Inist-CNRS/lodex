@@ -13,6 +13,7 @@ import upload from './admin/upload';
 import fields from './admin/fields';
 import fetchReducer from './fetch';
 import publicationPreview from './admin/publicationPreview';
+import resource from './resource';
 
 export const getCurrentLocation = state => state.routing;
 
@@ -30,6 +31,7 @@ const rootReducer = combineReducers({
     routing,
     upload,
     user,
+    resource,
 });
 
 export default rootReducer;

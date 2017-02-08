@@ -114,9 +114,13 @@ describe('publish', () => {
                 insertMany: createSpy(),
             },
         };
+        const datasetFields = [{
+            name: 'transformed',
+            scheme: 'scheme',
+        }];
 
         before(async () => {
-            await publishCharacteristics(ctx, ['dataset fields'], count);
+            await publishCharacteristics(ctx, datasetFields, count);
         });
 
         it('should call getDocumentTransformer', () => {
@@ -126,7 +130,7 @@ describe('publish', () => {
                     env: 'node',
                     dataset: ctx.uriDataset,
                 },
-                ['dataset fields'],
+                datasetFields,
             );
         });
 
@@ -141,7 +145,7 @@ describe('publish', () => {
 
         it('should call ctx.publishedCharacteristic.insertMany', () => {
             expect(ctx.publishedCharacteristic.insertMany).toHaveBeenCalledWith([
-                { name: 'transformed', value: 'document' },
+                { name: 'transformed', value: 'document', scheme: 'scheme' },
             ]);
         });
     });

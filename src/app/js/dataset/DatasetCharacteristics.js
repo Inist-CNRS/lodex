@@ -6,11 +6,11 @@ import { CardHeader, CardText } from 'material-ui/Card';
 import Card from '../lib/Card';
 
 import {
-    datasetCharacteristic as datasetCharacteristicPropTypes,
+    property as propertyPropTypes,
     polyglot as polyglotPropTypes,
 } from '../lib/propTypes';
 
-import DatasetCharacteristicsItem from './DatasetCharacteristicsItem';
+import Property from '../lib/Property';
 
 const styles = {
     container: {
@@ -23,13 +23,13 @@ const DatasetCharacteristics = ({ characteristics, p: polyglot }) => (
     <Card className="dataset-characteristics">
         <CardHeader title={polyglot.t('dataset_characteristics')} />
         <CardText style={styles.container}>
-            {characteristics.map(characteristic => <DatasetCharacteristicsItem characteristic={characteristic} />)}
+            {characteristics.map(({ name, value, scheme }) => <Property name={name} value={value} scheme={scheme} />)}
         </CardText>
     </Card>
 );
 
 DatasetCharacteristics.propTypes = {
-    characteristics: PropTypes.arrayOf(datasetCharacteristicPropTypes),
+    characteristics: PropTypes.arrayOf(propertyPropTypes),
     p: polyglotPropTypes.isRequired,
 };
 
