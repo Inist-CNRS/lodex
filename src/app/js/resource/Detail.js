@@ -14,7 +14,7 @@ import Card from '../lib/Card';
 import Property from '../lib/Property';
 
 export const DetailComponent = ({ resource, fields }) => (
-    <Card>
+    <Card className="detail">
         <CardHeader title={'Properties'} />
         <CardText>
             {fields.filter(({ cover }) => cover !== 'dataset').map(({ name, scheme }) => (
@@ -23,7 +23,7 @@ export const DetailComponent = ({ resource, fields }) => (
         </CardText>
         <CardActions>
             <Link to={{ pathname: '/resource/edit', query: { uri: resource.uri } }}>
-                <FlatButton label={'Edit'} primary />
+                <FlatButton className="edit-resource" label={'Edit'} primary />
             </Link>
         </CardActions>
     </Card>

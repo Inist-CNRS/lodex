@@ -35,9 +35,9 @@ const validate = (values) => {
 };
 
 export const EditDetailComponent = ({ resource, fields, saving, error, handleSubmit, p: polyglot }) => (
-    <Card>
+    <Card className="edit-detail">
         <CardText>
-            <form id="field_form" onSubmit={handleSubmit}>
+            <form id="resource_form" onSubmit={handleSubmit}>
                 {error && <Alert><p>{error}</p></Alert>}
                 {fields.map(field => (
                     <Field
@@ -52,6 +52,7 @@ export const EditDetailComponent = ({ resource, fields, saving, error, handleSub
         </CardText>
         <CardActions>
             <ButtonWithStatus
+                className="save-resource"
                 label={polyglot.t('save')}
                 primary
                 loading={saving}

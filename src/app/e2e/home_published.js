@@ -1,8 +1,10 @@
 import { until, By } from 'selenium-webdriver';
 import expect from 'expect';
+
 import driver from '../../common/tests/chromeDriver';
 import { clear, loadFixtures } from '../../common/tests/fixtures';
 import fixtures from './home_published.json';
+import { elementIsClickable, elementValueIs } from '../../common/tests/conditions';
 
 describe('Home page with published data', function homePublishedDataTests() {
     this.timeout(10000);
@@ -32,6 +34,74 @@ describe('Home page with published data', function homePublishedDataTests() {
 
         const authorValue = await driver.findElement(By.css('.dataset-characteristics .property:last-child dd'));
         expect(await authorValue.getText()).toEqual('Peter Jackson');
+    });
+
+    it('should display the list', async () => {
+        await driver.wait(until.elementLocated(By.css('.dataset')));
+        const headers = await driver.findElements(By.css('.dataset table th'));
+        const headersText = await Promise.all(headers.map(h => h.getText()));
+        expect(headersText).toEqual(['uri', 'fullname', 'email']);
+
+        const tds = await driver.findElements(By.css('.dataset table tbody td'));
+        const tdsText = await Promise.all(tds.map(td => td.getText()));
+
+        expect(tdsText.slice(1, 3)).toEqual([
+            'PEREGRIN.TOOK',
+            'peregrin.took@shire.net',
+        ]);
+    });
+
+    it('should go to detail page when clicking on uri', async () => {
+        const firstUriLink = await driver.findElement(By.css('.dataset table tbody td:first-child a'));
+        const firstUri = await firstUriLink.getText();
+        firstUriLink.click();
+        await driver.wait(until.elementLocated(By.css('.title')));
+        const title = await driver.findElement(By.css('.title, h1'));
+        expect(await title.getText()).toBe(firstUri);
+    });
+
+    it('should display all resource properties', async () => {
+        await driver.wait(until.elementLocated(By.css('.detail')));
+        const fullnameLabel = await driver.findElement(By.css('.detail .property:nth-child(2) dt'));
+        expect(await fullnameLabel.getText()).toEqual('fullname\nhttp://www.w3.org/ns/person');
+
+        const fullnameValue = await driver.findElement(By.css('.detail .property:nth-child(2) dd'));
+        expect(await fullnameValue.getText()).toEqual('PEREGRIN.TOOK');
+
+        const mailLabel = await driver.findElement(By.css('.detail .property:last-child dt'));
+        expect(await mailLabel.getText()).toEqual('email\nhttp://uri4uri.net/vocab');
+
+        const mailValue = await driver.findElement(By.css('.detail .property:last-child dd'));
+        expect(await mailValue.getText()).toEqual('peregrin.took@shire.net');
+    });
+
+    it('should allow to edit resource properties', async () => {
+        await driver.findElement(By.css('.edit-resource')).click();
+        await driver.wait(until.elementLocated(By.css('.edit-detail')));
+        const form = driver.findElement(By.css('#resource_form'));
+        const fullname = form.findElement(By.css('input[name=fullname]'));
+        await driver.wait(elementValueIs(fullname, 'PEREGRIN.TOOK'));
+        const email = form.findElement(By.css('input[name=email]'));
+        await driver.wait(elementValueIs(email, 'peregrin.took@shire.net'));
+
+        await email.clear();
+        await email.sendKeys('peregrin.took@gondor.net');
+        await driver.findElement(By.css('.save-resource')).click();
+    });
+
+    it('should save and return to resource page', async () => {
+        await driver.wait(until.elementLocated(By.css('.detail')));
+        const fullnameLabel = await driver.findElement(By.css('.detail .property:nth-child(2) dt'));
+        expect(await fullnameLabel.getText()).toEqual('fullname\nhttp://www.w3.org/ns/person');
+
+        const fullnameValue = await driver.findElement(By.css('.detail .property:nth-child(2) dd'));
+        expect(await fullnameValue.getText()).toEqual('PEREGRIN.TOOK');
+
+        const mailLabel = await driver.findElement(By.css('.detail .property:last-child dt'));
+        expect(await mailLabel.getText()).toEqual('email\nhttp://uri4uri.net/vocab');
+
+        const mailValue = await driver.findElement(By.css('.detail .property:last-child dd'));
+        expect(await mailValue.getText()).toEqual('peregrin.took@gondor.net');
     });
 
     after(async () => {

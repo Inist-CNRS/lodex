@@ -46,14 +46,14 @@ export const ResourceComponent = ({ resource, datasetTitle, titleKey, loading, e
         );
     }
     return (
-        <div>
+        <div className="resource">
             <Card>
                 <CardText>
                     <Link to="/home" style={styles.home} >
                         <HomeIcon />
                         {datasetTitle || polyglot.t('back_to_list')}
                     </Link>
-                    <h1>{titleKey ? resource[titleKey] : resource.uri}</h1>
+                    <h1 className="title">{titleKey ? resource[titleKey] : resource.uri}</h1>
                 </CardText>
             </Card>
             { edit ?
