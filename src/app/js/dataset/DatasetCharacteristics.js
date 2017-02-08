@@ -6,7 +6,7 @@ import { CardHeader, CardText } from 'material-ui/Card';
 import Card from '../lib/Card';
 
 import {
-    datasetCharacteristic as datasetCharacteristicPropTypes,
+    property as propertyPropTypes,
     polyglot as polyglotPropTypes,
 } from '../lib/propTypes';
 
@@ -29,7 +29,7 @@ const DatasetCharacteristics = ({ characteristics, p: polyglot }) => (
 );
 
 DatasetCharacteristics.propTypes = {
-    characteristics: PropTypes.arrayOf(datasetCharacteristicPropTypes),
+    characteristics: PropTypes.arrayOf(propertyPropTypes),
     p: polyglotPropTypes.isRequired,
 };
 
