@@ -5,7 +5,7 @@ import { Link } from 'react-router';
 import FlatButton from 'material-ui/FlatButton';
 
 import {
-    getResource,
+    getResourceLastVersion,
 } from './';
 import {
     getFields,
@@ -39,7 +39,7 @@ DetailComponent.propTypes = {
 };
 
 const mapStateToProps = state => ({
-    resource: getResource(state),
+    resource: getResourceLastVersion(state),
     fields: getFields(state),
 });
 

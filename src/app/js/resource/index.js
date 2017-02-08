@@ -19,7 +19,7 @@ export const saveResourceSuccess = createAction(SAVE_RESOURCE_SUCCESS);
 export const saveResourceError = createAction(SAVE_RESOURCE_ERROR);
 
 export const defaultState = {
-    resource: {},
+    resource: [],
     error: null,
     loading: false,
     saving: false,
@@ -82,7 +82,16 @@ export const getSaveResourceRequest = (state, resource) => ({
     body: JSON.stringify(resource),
 });
 
-export const getResource = state => state.resource.resource;
+export const getResourceLastVersion = (state) => {
+    if (!state.resource.resource.versions) {
+        return null;
+    }
+    return {
+        ...state.resource.resource.versions.slice(-1)[0],
+        uri: state.resource.resource.uri,
+    };
+};
+
 export const getResourceFormData = state => state.form.resource.values;
 export const isLoading = state => state.resource.loading;
 export const isSaving = state => state.resource.saving;

@@ -8,7 +8,7 @@ import { Link } from 'react-router';
 import FlatButton from 'material-ui/FlatButton';
 
 import {
-    getResource,
+    getResourceLastVersion,
     saveResource,
     isSaving,
     RESOURCE_FORM_NAME,
@@ -78,8 +78,8 @@ EditDetailComponent.propTypes = {
 };
 
 const mapStateToProps = state => ({
-    initialValues: getResource(state),
-    resource: getResource(state),
+    initialValues: getResourceLastVersion(state),
+    resource: getResourceLastVersion(state),
     fields: getCollectionFields(state),
     saving: isSaving(state),
 });

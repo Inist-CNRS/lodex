@@ -6,7 +6,7 @@ import { Link } from 'react-router';
 import HomeIcon from 'material-ui/svg-icons/action/home';
 import { CardText } from 'material-ui/Card';
 
-import { getResource, isLoading } from './';
+import { getResourceLastVersion, isLoading } from './';
 import {
     getFields,
     getDatasetTitle,
@@ -83,7 +83,7 @@ ResourceComponent.propTypes = {
 };
 
 const mapStateToProps = state => ({
-    resource: getResource(state),
+    resource: getResourceLastVersion(state),
     datasetTitle: getDatasetTitle(state),
     titleKey: getTitleFieldName(state),
     fields: getFields(state),

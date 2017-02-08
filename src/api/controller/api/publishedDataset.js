@@ -15,23 +15,23 @@ export const getPage = async (ctx) => {
 
     ctx.body = {
         total,
-        data,
+        data: data.map(doc => ({
+            ...doc.versions.slice(-1)[0],
+            uri: doc.uri,
+        })),
     };
 };
 
 export const editResource = async (ctx) => {
-    const newResource = ctx.request.body;
-    const oldVersion = ctx.publishedDataset.findById(newResource.replaceAndCancel);
-    if (!oldVersion) {
+    const newVersion = ctx.request.body;
+    const resource = await ctx.publishedDataset.findByUri(newVersion.uri);
+    if (!resource) {
         ctx.status = 403;
-        ctx.body = `Forbidden: No older version has been found for document ${newResource.uri}`;
+        ctx.body = `Forbidden: No older version has been found for document ${newVersion.uri}`;
         return;
     }
 
-    ctx.body = await ctx.publishedDataset.addVersion({
-        newResource,
-        uri: oldVersion.uri,
-    });
+    ctx.body = await ctx.publishedDataset.addVersion(resource, newVersion);
 };
 
 app.use(route.get('/', getPage));

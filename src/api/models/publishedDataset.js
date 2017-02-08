@@ -1,5 +1,6 @@
 import mongo from 'mongodb';
 import chunk from 'lodash/chunk';
+import omit from 'lodash.omit';
 
 export default (db) => {
     const collection = db.collection('publishedDataset');
@@ -7,13 +8,24 @@ export default (db) => {
     collection.findLimitFromSkip = (limit, skip) => collection.find().skip(skip).limit(limit).toArray();
     collection.findById = async (id) => {
         const oid = new mongo.ObjectID(id);
-        return collection.find({ _id: oid });
+        return collection.findOne({ _id: oid });
     };
-    collection.addVersion = async (resource, publicationDate = new Date()) =>
-        collection.insert({
-            ...resource,
-            publicationDate,
-        });
+
+    collection.findByUri = async uri =>
+        collection.findOne({ uri });
+
+    collection.addVersion = async (resource, newVersion, publicationDate = new Date()) =>
+        collection.update(
+            { uri: resource.uri },
+            {
+                $push: {
+                    versions: {
+                        ...omit(newVersion, ['_id', 'uri', 'versions']),
+                        publicationDate,
+                    },
+                },
+            },
+        );
 
 
     return collection;

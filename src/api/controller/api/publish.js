@@ -23,10 +23,12 @@ export const addTransformResultToDoc = transform => async doc => ({
     ...await transform(doc),
 });
 
-export const addUriToTransformResult = transformDocument => async (doc, publicationDate = new Date()) => ({
-    ...await transformDocument(doc),
+export const versionTransformResult = transformDocument => async (doc, _, __, publicationDate = new Date()) => ({
     uri: doc.uri,
-    publicationDate,
+    versions: [{
+        ...await transformDocument(doc),
+        publicationDate,
+    }],
 });
 
 export const publishCharacteristics = async (ctx, datasetCoverFields, count) => {
@@ -57,7 +59,7 @@ export const preparePublish = async (ctx, next) => {
     ctx.tranformAllDocuments = tranformAllDocuments;
     ctx.getDocumentTransformer = getDocumentTransformer;
     ctx.addTransformResultToDoc = addTransformResultToDoc;
-    ctx.addUriToTransformResult = addUriToTransformResult;
+    ctx.versionTransformResult = versionTransformResult;
     ctx.publishCharacteristics = publishCharacteristics;
     await next();
 };
@@ -97,7 +99,7 @@ export const doPublish = async (ctx) => {
             dataset: ctx.uriDataset,
         }, collectionCoverFields.filter(col => col.name !== 'uri'));
 
-    const transformDocumentAndKeepUri = ctx.addUriToTransformResult(transformDocument);
+    const transformDocumentAndKeepUri = ctx.versionTransformResult(transformDocument);
 
     await ctx.tranformAllDocuments(
         count,

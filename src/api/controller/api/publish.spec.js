@@ -7,7 +7,7 @@ import {
     handlePublishError,
     tranformAllDocuments,
     addTransformResultToDoc,
-    addUriToTransformResult,
+    versionTransformResult,
     publishCharacteristics,
 } from './publish';
 import getDocumentTransformer from '../../../common/getDocumentTransformer';
@@ -25,7 +25,7 @@ describe('publish', () => {
         ];
 
         const ctx = {
-            addUriToTransformResult: createSpy().andReturn('transformDocumentAndKeepUri()'),
+            versionTransformResult: createSpy().andReturn('transformDocumentAndKeepUri()'),
             addTransformResultToDoc: createSpy().andReturn('addUri()'),
             dataset: {
                 count: createSpy().andReturn(Promise.resolve('count')),
@@ -82,8 +82,8 @@ describe('publish', () => {
             }, [fields[1]]);
         });
 
-        it('should call ctx.addUriToTransformResult with transformDocument', () => {
-            expect(ctx.addUriToTransformResult).toHaveBeenCalledWith('transformDocument()');
+        it('should call ctx.versionTransformResult with transformDocument', () => {
+            expect(ctx.versionTransformResult).toHaveBeenCalledWith('transformDocument()');
         });
 
         it('should call ctx.tranformAllDocuments', () => {
@@ -160,7 +160,7 @@ describe('publish', () => {
                 tranformAllDocuments,
                 getDocumentTransformer,
                 addTransformResultToDoc,
-                addUriToTransformResult,
+                versionTransformResult,
                 publishCharacteristics,
             });
         });
@@ -239,7 +239,7 @@ describe('publish', () => {
         });
     });
 
-    describe('addUriToTransformResult', () => {
+    describe('versionTransformResult', () => {
         it('should add doc.uri to transform result', async () => {
             const transform = createSpy().andReturn({ transformed: 'data' });
             const doc = {
@@ -248,10 +248,12 @@ describe('publish', () => {
                 data: 'value',
             };
             const date = new Date();
-            expect(await addUriToTransformResult(transform)(doc, date)).toEqual({
+            expect(await versionTransformResult(transform)(doc, date)).toEqual({
                 uri: 'uri',
-                transformed: 'data',
-                publicationDate: date,
+                versions: [{
+                    transformed: 'data',
+                    publicationDate: date,
+                }],
             });
 
             expect(transform).toHaveBeenCalledWith(doc);
