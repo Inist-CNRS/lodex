@@ -13,7 +13,7 @@ import Alert from '../lib/Alert';
 import Card from '../lib/Card';
 import Loading from '../lib/Loading';
 import Dataset from '../dataset/Dataset';
-import DatasetCharacteristics from '../dataset/DatasetCharacteristics';
+import DatasetCharacteristics from '../characteristic/DatasetCharacteristics';
 import NoDataset from '../publication/NoDataset';
 
 export class HomeComponent extends Component {

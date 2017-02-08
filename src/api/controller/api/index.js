@@ -8,6 +8,7 @@ import ezMasterConfig from '../../services/ezMasterConfig';
 import initializeFields from '../../services/initializeFields';
 import mongoClient from '../../services/mongoClient';
 
+import characteristic from './characteristic';
 import exportPublishedDataset from './export';
 import fieldRoutes from './field';
 import login from './login';
@@ -33,6 +34,7 @@ app.use(route.get('/ark', ark));
 app.use(jwt({ secret: auth.cookieSecret, cookie: 'lodex_token', key: 'cookie' }));
 app.use(jwt({ secret: auth.headerSecret, key: 'header' }));
 
+app.use(mount('/characteristic', characteristic));
 app.use(mount('/field', fieldRoutes));
 app.use(mount('/parsing', parsing));
 app.use(mount('/publish', publish));
