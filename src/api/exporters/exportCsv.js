@@ -3,7 +3,7 @@ import through from 'through';
 
 export function getLastVersion({ uri, versions }) {
     this.queue({
-        ...versions.slice(-1)[0],
+        ...versions[versions.length - 1],
         uri,
     });
 }

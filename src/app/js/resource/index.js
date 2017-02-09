@@ -19,7 +19,7 @@ export const saveResourceSuccess = createAction(SAVE_RESOURCE_SUCCESS);
 export const saveResourceError = createAction(SAVE_RESOURCE_ERROR);
 
 export const defaultState = {
-    resource: [],
+    resource: {},
     error: null,
     loading: false,
     saving: false,
@@ -83,12 +83,14 @@ export const getSaveResourceRequest = (state, resource) => ({
 });
 
 export const getResourceLastVersion = (state) => {
-    if (!state.resource.resource.versions) {
+    const resource = state.resource.resource;
+    const { versions, uri } = resource;
+    if (!versions) {
         return null;
     }
     return {
-        ...state.resource.resource.versions.slice(-1)[0],
-        uri: state.resource.resource.uri,
+        ...versions[versions.length - 1],
+        uri,
     };
 };
 

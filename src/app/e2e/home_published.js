@@ -4,7 +4,7 @@ import expect from 'expect';
 import driver from '../../common/tests/chromeDriver';
 import { clear, loadFixtures } from '../../common/tests/fixtures';
 import fixtures from './home_published.json';
-import { elementIsClickable, elementValueIs } from '../../common/tests/conditions';
+import { elementValueIs } from '../../common/tests/conditions';
 
 describe('Home page with published data', function homePublishedDataTests() {
     this.timeout(10000);

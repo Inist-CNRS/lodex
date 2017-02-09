@@ -16,7 +16,7 @@ export const getPage = async (ctx) => {
     ctx.body = {
         total,
         data: data.map(doc => ({
-            ...doc.versions.slice(-1)[0],
+            ...doc.versions[doc.versions.length - 1],
             uri: doc.uri,
         })),
     };
@@ -26,8 +26,8 @@ export const editResource = async (ctx) => {
     const newVersion = ctx.request.body;
     const resource = await ctx.publishedDataset.findByUri(newVersion.uri);
     if (!resource) {
-        ctx.status = 403;
-        ctx.body = `Forbidden: No older version has been found for document ${newVersion.uri}`;
+        ctx.status = 404;
+        ctx.body = 'Document not found';
         return;
     }
 
