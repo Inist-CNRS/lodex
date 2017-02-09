@@ -1,5 +1,5 @@
 import { takeLatest } from 'redux-saga';
-import { call, fork, put, select } from 'redux-saga/effects';
+import { call, put, select } from 'redux-saga/effects';
 
 import {
     getUpdateCharacteristicsRequest,
@@ -20,10 +20,6 @@ export function* handleUpdateCharacteristics() {
     return yield put(updateCharacteristicsSuccess(response));
 }
 
-export function* watchUpdateCharacteristics() {
-    yield takeLatest(UPDATE_CHARACTERISTICS, handleUpdateCharacteristics);
-}
-
 export default function* () {
-    yield fork(watchUpdateCharacteristics);
+    yield takeLatest(UPDATE_CHARACTERISTICS, handleUpdateCharacteristics);
 }
