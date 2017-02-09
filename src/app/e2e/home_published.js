@@ -1,4 +1,4 @@
-import { By } from 'selenium-webdriver';
+import { until, By } from 'selenium-webdriver';
 import expect from 'expect';
 import driver from '../../common/tests/chromeDriver';
 import { clear, loadFixtures } from '../../common/tests/fixtures';
@@ -14,6 +14,7 @@ describe('Home page with published data', function homePublishedDataTests() {
     });
 
     it('should display the dataset characteristics', async () => {
+        await driver.wait(until.elementLocated(By.css('.dataset-characteristics')));
         const datasetCharacteristics = await driver.findElements(By.css('.dataset-characteristics'));
         expect(datasetCharacteristics.length).toEqual(1);
         const properties = await driver.findElements(By.css('.dataset-characteristics .property'));

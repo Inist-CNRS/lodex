@@ -4,6 +4,7 @@ import datasetFactory from '../../api/models/dataset';
 import publishedDatasetFactory from '../../api/models/publishedDataset';
 import publishedCharacteristicFactory from '../../api/models/publishedCharacteristic';
 import fieldFactory from '../../api/models/field';
+import uriDatasetFactory from '../../api/models/uriDataset';
 
 let db;
 
@@ -14,6 +15,7 @@ export async function connect() {
         db.publishedDataset = await publishedDatasetFactory(db);
         db.publishedCharacteristic = await publishedCharacteristicFactory(db);
         db.field = await fieldFactory(db);
+        db.uriDataset = await uriDatasetFactory(db);
     }
 
     return db;
@@ -32,6 +34,9 @@ export async function loadFixtures(fixtures) {
     if (fixtures.publishedCharacteristic) {
         db.publishedCharacteristic.insertMany(fixtures.publishedCharacteristic);
     }
+    if (fixtures.uriDataset) {
+        db.uriDataset.insertMany(fixtures.uriDataset);
+    }
 }
 
 export async function clear() {
@@ -40,4 +45,5 @@ export async function clear() {
     await db.publishedDataset.remove({});
     await db.publishedCharacteristic.remove({});
     await db.field.remove({});
+    await db.uriDataset.remove({});
 }

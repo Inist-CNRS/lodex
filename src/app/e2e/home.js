@@ -13,6 +13,7 @@ describe('Home page', function homeTests() {
 
     it('should display the Appbar with correct title', async () => {
         await driver.get('http://localhost:3010/');
+        await driver.wait(until.elementLocated(By.css('.appbar')));
         const title = await driver.findElement(By.css('.appbar a'));
         const text = await title.getText();
         expect(text).toEqual('Lodex');
@@ -26,7 +27,7 @@ describe('Home page', function homeTests() {
         await button.click();
 
         const buttonSignIn = await driver.findElement(By.css('.btn-sign-in'));
-        await driver.wait(until.elementIsVisible(buttonSignIn));
+        await driver.wait(elementIsClickable(buttonSignIn));
         await buttonSignIn.click();
 
         form = await driver.findElement(By.css('.dialog-login form'));
@@ -53,7 +54,6 @@ describe('Home page', function homeTests() {
         await password.clear();
         await password.sendKeys('secret');
         await form.submit();
-        await driver.sleep(500);
         await driver.wait(until.stalenessOf(form));
     });
 

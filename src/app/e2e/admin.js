@@ -8,7 +8,7 @@ import { clear } from '../../common/tests/fixtures';
 import { elementIsClickable, elementValueIs } from '../../common/tests/conditions';
 
 describe('Admin page', function homeTests() {
-    this.timeout(20000);
+    this.timeout(10000);
 
     before(async () => {
         await clear();
@@ -54,10 +54,9 @@ describe('Admin page', function homeTests() {
             const text = await th.getText();
             expect(text).toBe('uri');
 
-            const td = await driver.findElements(By.css('.publication-preview tr td:first-child'));
-            expect(td.length).toBe(3);
-            const tdTexts = await Promise.all(td.map(e => e.getText()));
-            expect(tdTexts).toEqual(['', '', '']);
+            const tds = await driver.findElements(By.css('.publication-preview tr td:first-child'));
+            expect(tds.length).toBe(3);
+            await Promise.all(tds.map(td => driver.wait(until.elementTextIs(td, ''))));
         });
 
         it('should display form for uri column when clicking on uri column', async () => {
@@ -78,10 +77,9 @@ describe('Admin page', function homeTests() {
         });
 
         it('should have completed uri column with generated uri', async () => {
-            const td = await driver.findElements(By.css('.publication-preview tr td:first-child'));
-            expect(td.length).toBe(3);
-            const tdTexts = await Promise.all(td.map(e => e.getText()));
-            expect(tdTexts).toMatch([/[A-Z0-9]{8}/]);
+            const tds = await driver.findElements(By.css('.publication-preview tr td:first-child'));
+            expect(tds.length).toBe(3);
+            await Promise.all(tds.map(td => driver.wait(until.elementTextMatches(td, /[A-Z0-9]{8}/))));
         });
     });
 
@@ -117,7 +115,8 @@ describe('Admin page', function homeTests() {
             await driver.wait(until.elementLocated(By.css('.LINK')));
             await driver.executeScript('document.getElementsByClassName("LINK")[0].scrollIntoView(true);');
             await driver.findElement(By.css('.LINK')).click();
-            await driver.wait(until.elementLocated(By.css('.reference input')));
+            const reference = await driver.findElement(By.css('#field_form .reference input'));
+            await driver.wait(elementIsClickable(reference));
         });
 
         it('should configure transformer Link', async () => {
@@ -129,14 +128,15 @@ describe('Admin page', function homeTests() {
 
         it('should have added stronger column with link', async () => {
             await driver.wait(until.elementLocated(By.css('.publication-preview tr td:nth-child(2)')));
-            const td = await driver.findElements(By.css('.publication-preview tr td:nth-child(2)'));
-            expect(td.length).toBe(3);
-            const tdTexts = await Promise.all(td.map(e => e.getText()));
-            expect(tdTexts).toEqual([
+            const tds = await driver.findElements(By.css('.publication-preview tr td:nth-child(2)'));
+            expect(tds.length).toBe(3);
+            const expectedTexts = [
                 'uri to id: 3',
                 'uri to id: 1',
                 'uri to id: 2',
-            ]);
+            ];
+
+            await Promise.all(tds.map((td, index) => driver.wait(until.elementTextIs(td, expectedTexts[index]))));
         });
     });
 
@@ -148,12 +148,12 @@ describe('Admin page', function homeTests() {
             await driver.wait(until.elementLocated(By.css('.data-published')));
         });
 
-        it('should not display the upload after publication', async () => {
+        it('should not display the parsing result after publication', async () => {
             const parsingResult = await driver.findElements(By.css('.parsingResult'));
             expect(parsingResult.length).toEqual(0);
         });
 
-        it('should not display the parsing result after publication', async () => {
+        it('should not display the upload after publication', async () => {
             const upload = await driver.findElements(By.css('.upload'));
             expect(upload.length).toEqual(0);
         });
