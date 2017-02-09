@@ -72,7 +72,7 @@ describe('characteristic reducer', () => {
     describe('getDatasetTitle', () => {
         it('should return characteristic name of characteristic with titleScheme', () => {
             const state = {
-                publication: {
+                characteristic: {
                     characteristics: [
                         { value: 'title', scheme: TITLE_SCHEME },
                         { value: 'other', scheme: 'other' },
@@ -83,7 +83,7 @@ describe('characteristic reducer', () => {
         });
         it('should return null if no matching characteristics found', () => {
             const state = {
-                publication: {
+                characteristic: {
                     characteristics: [
                         { value: 'other', scheme: 'other' },
                         { value: 'another', scheme: 'another' },
