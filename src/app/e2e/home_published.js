@@ -1,11 +1,12 @@
-import { By } from 'selenium-webdriver';
+import { until, By } from 'selenium-webdriver';
 import expect from 'expect';
 import driver from '../../common/tests/chromeDriver';
 import { clear, loadFixtures } from '../../common/tests/fixtures';
 import fixtures from './home_published.json';
 
 describe('Home page with published data', function homePublishedDataTests() {
-    this.timeout(15000);
+    this.timeout(10000);
+    const DEFAULT_WAIT_TIMEOUT = 9000; // A bit less than mocha's timeout to get explicit errors from selenium
 
     before(async () => {
         await clear(); // Had to ensure clear state for unknown reason
@@ -14,6 +15,7 @@ describe('Home page with published data', function homePublishedDataTests() {
     });
 
     it('should display the dataset characteristics', async () => {
+        await driver.wait(until.elementLocated(By.css('.dataset-characteristics')), DEFAULT_WAIT_TIMEOUT);
         const datasetCharacteristics = await driver.findElements(By.css('.dataset-characteristics'));
         expect(datasetCharacteristics.length).toEqual(1);
         const properties = await driver.findElements(By.css('.dataset-characteristics .property'));

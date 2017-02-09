@@ -5,7 +5,9 @@ import driver from '../../common/tests/chromeDriver';
 import { elementIsClickable } from '../../common/tests/conditions';
 
 describe('Home page', function homeTests() {
-    this.timeout(15000);
+    this.timeout(10000);
+    const DEFAULT_WAIT_TIMEOUT = 9000; // A bit less than mocha's timeout to get explicit errors from selenium
+
     let button;
     let username;
     let password;
@@ -13,6 +15,7 @@ describe('Home page', function homeTests() {
 
     it('should display the Appbar with correct title', async () => {
         await driver.get('http://localhost:3010/');
+        await driver.wait(until.elementLocated(By.css('.appbar')), DEFAULT_WAIT_TIMEOUT);
         const title = await driver.findElement(By.css('.appbar a'));
         const text = await title.getText();
         expect(text).toEqual('Lodex');
@@ -26,14 +29,14 @@ describe('Home page', function homeTests() {
         await button.click();
 
         const buttonSignIn = await driver.findElement(By.css('.btn-sign-in'));
-        await driver.wait(until.elementIsVisible(buttonSignIn));
+        await driver.wait(elementIsClickable(buttonSignIn), DEFAULT_WAIT_TIMEOUT);
         await buttonSignIn.click();
 
         form = await driver.findElement(By.css('.dialog-login form'));
         username = await driver.findElement(By.css('input[name=username]'));
         password = await driver.findElement(By.css('input[name=password]'));
 
-        await driver.wait(elementIsClickable(username));
+        await driver.wait(elementIsClickable(username), DEFAULT_WAIT_TIMEOUT);
         await driver.sleep(500); // Needed because of dialog animation
     });
 
@@ -41,7 +44,7 @@ describe('Home page', function homeTests() {
         await username.sendKeys('foo');
         await password.sendKeys('foo');
         await form.submit();
-        await driver.wait(until.elementLocated(By.css('.alert')));
+        await driver.wait(until.elementLocated(By.css('.alert')), DEFAULT_WAIT_TIMEOUT);
         const alert = await driver.findElement(By.css('.alert'));
         const text = await alert.getText();
         expect(text).toEqual('Unauthorized');
@@ -53,8 +56,7 @@ describe('Home page', function homeTests() {
         await password.clear();
         await password.sendKeys('secret');
         await form.submit();
-        await driver.sleep(500);
-        await driver.wait(until.stalenessOf(form));
+        await driver.wait(until.stalenessOf(form), DEFAULT_WAIT_TIMEOUT);
     });
 
     after(async () => {
