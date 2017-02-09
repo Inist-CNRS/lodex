@@ -29,9 +29,7 @@ describe('export routes', () => {
                 }),
             },
             publishedDataset: {
-                find: createSpy().andReturn({
-                    stream: () => mongoStream,
-                }),
+                getFindAllStream: createSpy().andReturn(mongoStream),
             },
             set: createSpy(),
         };
@@ -51,7 +49,7 @@ describe('export routes', () => {
         });
 
         it('it should get the publishedDataset', () => {
-            expect(ctx.publishedDataset.find).toHaveBeenCalledWith({});
+            expect(ctx.publishedDataset.getFindAllStream).toHaveBeenCalled();
         });
 
         it('it set the Content-disposition header', () => {

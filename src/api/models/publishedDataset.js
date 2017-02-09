@@ -13,6 +13,9 @@ export default (db) => {
     collection.findPage = (page = 0, perPage = 10) =>
         collection.find({ removedAt: { $exists: false } }).skip(page * perPage).limit(perPage).toArray();
 
+    collection.getFindAllStream = () =>
+        collection.find({ removedAt: { $exists: false } }).stream();
+
     collection.findById = async (id) => {
         const oid = new mongo.ObjectID(id);
         return collection.findOne({ _id: oid });

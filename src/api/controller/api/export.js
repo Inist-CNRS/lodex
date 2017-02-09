@@ -24,7 +24,7 @@ export async function exportMiddleware(ctx, type) {
         const exportStreamFactory = ctx.getExporter(type);
         const characteristics = await ctx.publishedCharacteristic.find({}).toArray();
         const fields = await ctx.field.find({}).toArray();
-        const publishedDatasetStream = await ctx.publishedDataset.find({}).stream();
+        const publishedDatasetStream = ctx.publishedDataset.getFindAllStream();
         const exportStream = exportStreamFactory(fields, characteristics, publishedDatasetStream);
 
         exportStream.on('end', () => {
