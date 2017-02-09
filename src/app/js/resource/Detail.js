@@ -33,7 +33,7 @@ export const DetailComponent = ({ resource, fields, isLogged, p: polyglot }) => 
                         <FlatButton className="edit-resource" label={polyglot.t('edit')} primary />
                     </Link>
                     <Link to={{ pathname: '/resource/hide', query: { uri: resource.uri } }}>
-                        <FlatButton className="remove-resource" label={polyglot.t('hide')} primary />
+                        <FlatButton className="hide-resource" label={polyglot.t('hide')} primary />
                     </Link>
                 </CardActions>
             :

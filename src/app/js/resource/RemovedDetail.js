@@ -21,16 +21,16 @@ const styles = {
     },
 };
 
-export const RemovedDetailComponent = ({ resource, p: polyglot }) => (
-    <Card>
+export const RemovedDetailComponent = ({ reason, removedAt, p: polyglot }) => (
+    <Card className="removed-detail">
         <CardHeader>
-            {polyglot.t('removed_resource_at', { date: moment(resource.removedAt).format('ll') })}
+            {polyglot.t('removed_resource_at', { date: moment(removedAt).format('ll') })}
         </CardHeader>
         <CardText>
             <dl style={styles.container}>
                 <dt style={styles.reason}>reason</dt>
-                <dd>
-                    {resource.reason.split('\n').map(line => <p>{line}</p>)}
+                <dd className="reason">
+                    {reason.split('\n').map(line => <p>{line}</p>)}
                 </dd>
             </dl>
         </CardText>
@@ -38,18 +38,18 @@ export const RemovedDetailComponent = ({ resource, p: polyglot }) => (
 );
 
 RemovedDetailComponent.defaultProps = {
-    resource: {
-        reason: '',
-    },
+    reason: '',
+    removedAt: null,
 };
 
 RemovedDetailComponent.propTypes = {
-    resource: PropTypes.shape({}),
+    reason: PropTypes.string,
+    removedAt: PropTypes.string,
     p: polyglotPropTypes.isRequired,
 };
 
 const mapStateToProps = state => ({
-    resource: getRemovedData(state),
+    ...getRemovedData(state),
 });
 
 const mapDispatchToProps = {};

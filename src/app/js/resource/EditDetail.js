@@ -58,8 +58,11 @@ export const EditDetailComponent = ({ resource, fields, saving, error, handleSub
                 loading={saving}
                 onTouchTap={handleSubmit}
             />
+            <Link to={{ pathname: '/resource/hide', query: { uri: resource.uri } }}>
+                <FlatButton label={polyglot.t('hide')} secondary />
+            </Link>
             <Link to={{ pathname: '/resource', query: { uri: resource.uri } }}>
-                <FlatButton label={'Cancel'} secondary />
+                <FlatButton label={polyglot.t('cancel')} secondary />
             </Link>
         </CardActions>
     </Card>

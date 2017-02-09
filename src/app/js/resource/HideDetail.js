@@ -22,7 +22,7 @@ import { polyglot as polyglotPropTypes } from '../lib/propTypes';
 import Property from '../lib/Property';
 
 export const HideDetailComponent = ({ resource, fields, saving, error, handleSubmit, p: polyglot }) => (
-    <Card className="edit-detail">
+    <Card className="hide-detail">
         <CardHeader title={polyglot.t('remove_resource')} />
         <CardText>
             {fields.map(({ name, scheme }) => (

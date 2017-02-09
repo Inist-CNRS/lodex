@@ -45,6 +45,7 @@ export default {
     remove_resource: 'Remove the resource',
     reason: 'Enter your reason',
     removed_resource_at: 'This resource was removed %{date}',
+    cancel: 'Cancel',
     edit: 'Edit',
     hide: 'Hide',
 };
