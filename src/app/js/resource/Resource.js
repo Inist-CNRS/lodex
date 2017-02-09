@@ -18,6 +18,13 @@ import { polyglot as polyglotPropTypes } from '../lib/propTypes';
 import DatasetCharacteristics from '../dataset/DatasetCharacteristics';
 import Loading from '../lib/Loading';
 
+const styles = {
+    home: {
+        display: 'flex',
+        alignItems: 'center',
+    },
+};
+
 export const ResourceComponent = ({ resource, datasetTitle, titleKey, loading, p: polyglot }) => {
     if (loading) {
         return (
@@ -28,7 +35,7 @@ export const ResourceComponent = ({ resource, datasetTitle, titleKey, loading, p
         return (
             <Card className="not-found">
                 <CardText>
-                    <Link to="/home">
+                    <Link to="/home" style={styles.home} >
                         <HomeIcon />
                         {datasetTitle || polyglot.t('back_to_list')}
                     </Link>
@@ -41,7 +48,7 @@ export const ResourceComponent = ({ resource, datasetTitle, titleKey, loading, p
         <div>
             <Card>
                 <CardText>
-                    <Link to="/home">
+                    <Link to="/home" style={styles.home} >
                         <HomeIcon />
                         {datasetTitle || polyglot.t('back_to_list')}
                     </Link>
