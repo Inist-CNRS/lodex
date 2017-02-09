@@ -7,7 +7,7 @@ import Loading from '../lib/Loading';
 import { ResourceComponent } from './Resource';
 import Detail from './Detail';
 import EditDetail from './EditDetail';
-import DatasetCharacteristics from '../dataset/DatasetCharacteristics';
+import DatasetCharacteristics from '../characteristic/DatasetCharacteristics';
 
 describe('<Resource />', () => {
     it('should display Loading if loading prop is true', () => {

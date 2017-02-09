@@ -1,4 +1,7 @@
 import expect from 'expect';
+
+import TITLE_SCHEME from '../../../common/titleScheme';
+
 import reducer, {
     defaultState,
     getCollectionFields,
@@ -7,9 +10,7 @@ import reducer, {
     loadPublication,
     loadPublicationSuccess,
     loadPublicationError,
-    titleScheme,
     getTitleFieldName,
-    getDatasetTitle,
 } from './';
 
 describe('publication reducer', () => {
@@ -35,7 +36,6 @@ describe('publication reducer', () => {
         const state = reducer({ loading: true, error: true, published: false }, action);
 
         expect(state).toEqual({
-            characteristics: ['foo'],
             error: null,
             fields: ['bar'],
             loading: false,
@@ -93,8 +93,8 @@ describe('publication reducer', () => {
             const state = {
                 publication: {
                     fields: [
-                        { cover: 'dataset', scheme: titleScheme, name: 'dataset title' },
-                        { cover: 'collection', scheme: titleScheme, name: 'title' },
+                        { cover: 'dataset', scheme: TITLE_SCHEME, name: 'dataset title' },
+                        { cover: 'collection', scheme: TITLE_SCHEME, name: 'title' },
                         { cover: 'collection', scheme: 'other scheme', name: 'other' },
                     ],
                 },
@@ -106,38 +106,13 @@ describe('publication reducer', () => {
             const state = {
                 publication: {
                     fields: [
-                        { cover: 'dataset', scheme: titleScheme, name: 'dataset title' },
+                        { cover: 'dataset', scheme: TITLE_SCHEME, name: 'dataset title' },
                         { cover: 'collection', scheme: 'other scheme', name: 'title' },
                         { cover: 'collection', scheme: 'other scheme', name: 'other' },
                     ],
                 },
             };
             expect(getTitleFieldName(state)).toBe(null);
-        });
-    });
-
-    describe('getDatasetTitle', () => {
-        it('should return characteristic name of characteristic with titleScheme', () => {
-            const state = {
-                publication: {
-                    characteristics: [
-                        { value: 'title', scheme: titleScheme },
-                        { value: 'other', scheme: 'other' },
-                    ],
-                },
-            };
-            expect(getDatasetTitle(state)).toBe('title');
-        });
-        it('should return null if no matching characteristics found', () => {
-            const state = {
-                publication: {
-                    characteristics: [
-                        { value: 'other', scheme: 'other' },
-                        { value: 'another', scheme: 'another' },
-                    ],
-                },
-            };
-            expect(getDatasetTitle(state)).toBe(null);
         });
     });
 });

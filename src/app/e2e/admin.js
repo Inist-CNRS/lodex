@@ -57,7 +57,9 @@ describe('Admin page', function homeTests() {
 
             const tds = await driver.findElements(By.css('.publication-preview tr td:first-child'));
             expect(tds.length).toBe(3);
-            await Promise.all(tds.map(td => driver.wait(until.elementTextIs(td, ''), DEFAULT_WAIT_TIMEOUT)));
+            await Promise.all(tds.map(td =>
+                driver.wait(until.elementTextIs(td, ''), DEFAULT_WAIT_TIMEOUT)),
+            );
         });
 
         it('should display form for uri column when clicking on uri column', async () => {

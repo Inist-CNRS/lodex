@@ -1,5 +1,6 @@
 import { fork } from 'redux-saga/effects';
 
+import characteristicSaga from './characteristic/sagas';
 import datasetSaga from './dataset/sagas';
 import exportSaga from './export/sagas';
 import fetchSaga from './fetch/sagas';
@@ -15,6 +16,7 @@ import userSaga from './user/sagas';
 import validationSaga from './admin/validation/sagas';
 
 export default function* () {
+    yield fork(characteristicSaga);
     yield fork(datasetSaga);
     yield fork(exportSaga);
     yield fork(fetchSaga);

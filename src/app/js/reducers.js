@@ -3,6 +3,7 @@ import { routerReducer as routing } from 'react-router-redux';
 import { reducer as form } from 'redux-form';
 import { polyglotReducer as polyglot } from 'redux-polyglot';
 
+import characteristic from './characteristic';
 import dataset from './dataset';
 import fetchReducer from './fetch';
 import fields from './admin/fields';
@@ -19,6 +20,7 @@ import validation from './admin/validation';
 export const getCurrentLocation = state => state.routing;
 
 const rootReducer = combineReducers({
+    characteristic,
     dataset,
     fetch: fetchReducer,
     fields,

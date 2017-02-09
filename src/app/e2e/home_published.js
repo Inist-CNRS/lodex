@@ -37,31 +37,28 @@ describe('Home page with published data', function homePublishedDataTests() {
     });
 
     it('should display the list', async () => {
-        await driver.wait(until.elementLocated(By.css('.dataset')));
+        await driver.wait(until.elementLocated(By.css('.dataset')), DEFAULT_WAIT_TIMEOUT);
         const headers = await driver.findElements(By.css('.dataset table th'));
         const headersText = await Promise.all(headers.map(h => h.getText()));
         expect(headersText).toEqual(['uri', 'fullname', 'email']);
 
         const tds = await driver.findElements(By.css('.dataset table tbody td'));
         const tdsText = await Promise.all(tds.map(td => td.getText()));
-
-        expect(tdsText.slice(1, 3)).toEqual([
-            'PEREGRIN.TOOK',
-            'peregrin.took@shire.net',
-        ]);
+        tdsText.some(t => t === 'PEREGRIN.TOOK');
+        tdsText.some(t => t === 'peregrin.took@shire.net');
     });
 
     it('should go to detail page when clicking on uri', async () => {
-        const firstUriLink = await driver.findElement(By.css('.dataset table tbody td:first-child a'));
+        const firstUriLink = await driver.findElement(By.linkText('1'));
         const firstUri = await firstUriLink.getText();
         firstUriLink.click();
         await driver.wait(until.elementLocated(By.css('.title')));
-        const title = await driver.findElement(By.css('.title, h1'));
-        expect(await title.getText()).toBe(firstUri);
+        const title = await driver.findElement(By.css('.title, h1'), DEFAULT_WAIT_TIMEOUT);
+        driver.wait(until.elementTextIs(title, firstUri), DEFAULT_WAIT_TIMEOUT);
     });
 
     it('should display all resource properties', async () => {
-        await driver.wait(until.elementLocated(By.css('.detail')));
+        await driver.wait(until.elementLocated(By.css('.detail')), DEFAULT_WAIT_TIMEOUT);
         const fullnameLabel = await driver.findElement(By.css('.detail .property:nth-child(2) dt'));
         expect(await fullnameLabel.getText()).toEqual('fullname\nhttp://www.w3.org/ns/person');
 
@@ -77,12 +74,12 @@ describe('Home page with published data', function homePublishedDataTests() {
 
     it('should allow to edit resource properties', async () => {
         await driver.findElement(By.css('.edit-resource')).click();
-        await driver.wait(until.elementLocated(By.css('.edit-detail')));
+        await driver.wait(until.elementLocated(By.css('.edit-detail')), DEFAULT_WAIT_TIMEOUT);
         const form = driver.findElement(By.css('#resource_form'));
         const fullname = form.findElement(By.css('input[name=fullname]'));
-        await driver.wait(elementValueIs(fullname, 'PEREGRIN.TOOK'));
+        await driver.wait(elementValueIs(fullname, 'PEREGRIN.TOOK'), DEFAULT_WAIT_TIMEOUT);
         const email = form.findElement(By.css('input[name=email]'));
-        await driver.wait(elementValueIs(email, 'peregrin.took@shire.net'));
+        await driver.wait(elementValueIs(email, 'peregrin.took@shire.net'), DEFAULT_WAIT_TIMEOUT);
 
         await email.clear();
         await email.sendKeys('peregrin.took@gondor.net');
@@ -90,7 +87,7 @@ describe('Home page with published data', function homePublishedDataTests() {
     });
 
     it('should save and return to resource page', async () => {
-        await driver.wait(until.elementLocated(By.css('.detail')));
+        await driver.wait(until.elementLocated(By.css('.detail')), DEFAULT_WAIT_TIMEOUT);
         const fullnameLabel = await driver.findElement(By.css('.detail .property:nth-child(2) dt'));
         expect(await fullnameLabel.getText()).toEqual('fullname\nhttp://www.w3.org/ns/person');
 

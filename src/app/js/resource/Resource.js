@@ -9,14 +9,16 @@ import { CardText } from 'material-ui/Card';
 import { getResourceLastVersion, isLoading } from './';
 import {
     getFields,
-    getDatasetTitle,
     getTitleFieldName,
 } from '../publication';
+import {
+    getDatasetTitle,
+} from '../characteristic';
 import Card from '../lib/Card';
 import Detail from './Detail';
 import EditDetail from './EditDetail';
 import { polyglot as polyglotPropTypes } from '../lib/propTypes';
-import DatasetCharacteristics from '../dataset/DatasetCharacteristics';
+import DatasetCharacteristics from '../characteristic/DatasetCharacteristics';
 import Loading from '../lib/Loading';
 
 const styles = {
