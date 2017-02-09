@@ -44,4 +44,5 @@ export default {
     error_cover_invalid_cover: 'Cover is invalid',
     remove_resource: 'Remove the resource',
     reason: 'Enter your reason',
+    removed_resource_at: 'This resource was removed the %{date}',
 };

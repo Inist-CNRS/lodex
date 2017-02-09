@@ -14,9 +14,13 @@ import fetchSaga from '../../lib/fetchSaga';
 
 export const parsePathName = pathname => pathname.match(/^(\/resource)(\/ark:\/)?(.*?$)/) || [];
 
-export function* handleHideResource() {
-    const resource = yield select(getHideResourceFormData);
-    const request = yield select(getHideResourceRequest, resource);
+export function* handleHideResource({ payload: uri }) {
+    console.log({ uri });
+    const { reason } = yield select(getHideResourceFormData);
+    const request = yield select(getHideResourceRequest, {
+        uri,
+        reason,
+    });
     const { error, response } = yield call(fetchSaga, request);
 
     if (error) {
@@ -25,7 +29,7 @@ export function* handleHideResource() {
     }
 
     yield put(hideResourceSuccess(response));
-    yield put(push({ pathname: '/resource', query: { uri: resource.uri } }));
+    yield put(push({ pathname: '/resource', query: { uri } }));
 }
 
 export default function* watchLoadDatasetPageRequest() {

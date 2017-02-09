@@ -3,6 +3,9 @@ import { connect } from 'react-redux';
 import { CardHeader, CardText, CardActions } from 'material-ui/Card';
 import { Link } from 'react-router';
 import FlatButton from 'material-ui/FlatButton';
+import moment from 'moment';
+import compose from 'recompose/compose';
+import translate from 'redux-polyglot/translate';
 
 import {
     getResourceLastVersion,
@@ -12,18 +15,35 @@ import {
 } from '../publication';
 import Card from '../lib/Card';
 import Property from '../lib/Property';
+import { polyglot as polyglotPropTypes } from '../lib/propTypes';
 
-export const DetailComponent = ({ resource, fields }) => {
+const styles = {
+    container: {
+        display: 'flex',
+        marginRight: '1rem',
+    },
+    reason: {
+        fontWeight: 'bold',
+    },
+};
+
+export const DetailComponent = ({ resource, fields, p: polyglot }) => {
     if (resource.removedAt) {
         return (
             <Card>
                 <CardText>
-                    <p>This resource was removed</p>
-                    <p>{resource.reason}</p>
+                    <p>{polyglot.t('removed_resource_at', { date: moment(resource.removedAt).format('ll') })}</p>
+                    <dl style={styles.container}>
+                        <dt style={styles.reason}>reason</dt>
+                        <dd>
+                            {resource.reason.split('\n').map(line => <p>{line}</p>)}
+                        </dd>
+                    </dl>
                 </CardText>
             </Card>
         );
     }
+
     return (
         <Card className="detail">
             <CardHeader title={'Properties'} />
@@ -44,7 +64,6 @@ export const DetailComponent = ({ resource, fields }) => {
     );
 };
 
-
 DetailComponent.defaultProps = {
     resource: null,
 };
@@ -52,6 +71,7 @@ DetailComponent.defaultProps = {
 DetailComponent.propTypes = {
     resource: PropTypes.shape({}),
     fields: PropTypes.arrayOf(PropTypes.object).isRequired,
+    p: polyglotPropTypes.isRequired,
 };
 
 const mapStateToProps = state => ({
@@ -61,4 +81,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {};
 
-export default connect(mapStateToProps, mapDispatchToProps)(DetailComponent);
+export default compose(
+    translate,
+    connect(mapStateToProps, mapDispatchToProps),
+)(DetailComponent);

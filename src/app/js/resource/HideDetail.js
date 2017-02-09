@@ -19,10 +19,16 @@ import FormTextField from '../lib/FormTextField';
 import Alert from '../lib/Alert';
 import ButtonWithStatus from '../lib/ButtonWithStatus';
 import { polyglot as polyglotPropTypes } from '../lib/propTypes';
+import Property from '../lib/Property';
 
-export const HideDetailComponent = ({ resource, saving, error, handleSubmit, p: polyglot }) => (
+export const HideDetailComponent = ({ resource, fields, saving, error, handleSubmit, p: polyglot }) => (
     <Card className="edit-detail">
         <CardHeader title={polyglot.t('remove_resource')} />
+        <CardText>
+            {fields.map(({ name, scheme }) => (
+                <Property name={name} scheme={scheme} value={resource[name]} />
+            ))}
+        </CardText>
         <CardText>
             <form id="hide_resource_form" onSubmit={() => handleSubmit(resource.uri)}>
                 {error && <Alert><p>{error}</p></Alert>}
@@ -41,7 +47,7 @@ export const HideDetailComponent = ({ resource, saving, error, handleSubmit, p: 
                 label={polyglot.t('hide')}
                 primary
                 loading={saving}
-                onTouchTap={handleSubmit}
+                onTouchTap={() => handleSubmit(resource.uri)}
             />
             <Link to={{ pathname: '/resource', query: { uri: resource.uri } }}>
                 <FlatButton label={'Cancel'} secondary />
