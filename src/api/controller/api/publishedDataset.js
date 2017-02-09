@@ -9,7 +9,7 @@ export const getPage = async (ctx) => {
     const intPerPage = parseInt(perPage, 10);
 
     const [data, total] = await Promise.all([
-        ctx.publishedDataset.findLimitFromSkip(intPerPage, intPage * intPerPage),
+        ctx.publishedDataset.findPage(intPage, intPerPage),
         ctx.publishedDataset.count(),
     ]);
 
@@ -34,7 +34,14 @@ export const editResource = async (ctx) => {
     ctx.body = await ctx.publishedDataset.addVersion(resource, newVersion);
 };
 
+export const removeResource = async (ctx, uri) => {
+    const { reason } = ctx.request.body;
+
+    ctx.body = await ctx.collection.hide(uri, reason);
+};
+
 app.use(route.get('/', getPage));
 app.use(route.post('/', editResource));
+app.use(route.del('/:uri', removeResource));
 
 export default app;
