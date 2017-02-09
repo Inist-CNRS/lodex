@@ -23,6 +23,10 @@ const HideResource = () => (
     <Resource mode="hide" />
 );
 
+const RemovedResource = () => (
+    <Resource mode="removed" />
+);
+
 export default store => [
     {
         path: '/resource',
@@ -36,6 +40,11 @@ export default store => [
     {
         path: '/resource/hide',
         component: HideResource,
+        onEnter: onEnterWithAuthenticationCheck(store),
+    },
+    {
+        path: '/resource/removed',
+        component: RemovedResource,
         onEnter: onEnterWithAuthenticationCheck(store),
     },
     {

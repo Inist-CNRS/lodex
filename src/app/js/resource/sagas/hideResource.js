@@ -15,7 +15,6 @@ import fetchSaga from '../../lib/fetchSaga';
 export const parsePathName = pathname => pathname.match(/^(\/resource)(\/ark:\/)?(.*?$)/) || [];
 
 export function* handleHideResource({ payload: uri }) {
-    console.log({ uri });
     const { reason } = yield select(getHideResourceFormData);
     const request = yield select(getHideResourceRequest, {
         uri,
@@ -29,7 +28,7 @@ export function* handleHideResource({ payload: uri }) {
     }
 
     yield put(hideResourceSuccess(response));
-    yield put(push({ pathname: '/resource', query: { uri } }));
+    yield put(push({ pathname: '/resource/removed', query: { uri } }));
 }
 
 export default function* watchLoadDatasetPageRequest() {

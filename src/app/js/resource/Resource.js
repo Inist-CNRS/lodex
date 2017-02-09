@@ -18,6 +18,7 @@ import Card from '../lib/Card';
 import Detail from './Detail';
 import EditDetail from './EditDetail';
 import HideDetail from './HideDetail';
+import RemovedDetail from './RemovedDetail';
 import { polyglot as polyglotPropTypes } from '../lib/propTypes';
 import DatasetCharacteristics from '../characteristic/DatasetCharacteristics';
 import Loading from '../lib/Loading';
@@ -35,6 +36,8 @@ export const getDetail = (mode) => {
         return <EditDetail />;
     case 'hide':
         return <HideDetail />;
+    case 'removed':
+        return <RemovedDetail />;
     case 'view':
     default:
         return <Detail />;

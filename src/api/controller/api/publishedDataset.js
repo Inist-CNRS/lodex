@@ -25,7 +25,7 @@ export const getPage = async (ctx) => {
 export const editResource = async (ctx) => {
     const newVersion = ctx.request.body;
     const resource = await ctx.publishedDataset.findByUri(newVersion.uri);
-    if (!resource) {
+    if (!resource || resource.removed_at) {
         ctx.status = 404;
         ctx.body = 'Document not found';
         return;

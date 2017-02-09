@@ -18,57 +18,29 @@ import Property from '../lib/Property';
 import { polyglot as polyglotPropTypes } from '../lib/propTypes';
 import { isLoggedIn } from '../user';
 
-const styles = {
-    container: {
-        display: 'flex',
-        marginRight: '1rem',
-    },
-    reason: {
-        fontWeight: 'bold',
-    },
-};
-
-export const DetailComponent = ({ resource, fields, isLogged, p: polyglot }) => {
-    if (resource.removedAt) {
-        return (
-            <Card>
-                <CardText>
-                    <p>{polyglot.t('removed_resource_at', { date: moment(resource.removedAt).format('ll') })}</p>
-                    <dl style={styles.container}>
-                        <dt style={styles.reason}>reason</dt>
-                        <dd>
-                            {resource.reason.split('\n').map(line => <p>{line}</p>)}
-                        </dd>
-                    </dl>
-                </CardText>
-            </Card>
-        );
-    }
-
-    return (
-        <Card className="detail">
-            <CardHeader title={'Properties'} />
-            <CardText>
-                {fields.filter(({ cover }) => cover !== 'dataset').map(({ name, scheme }) => (
-                    <Property name={name} scheme={scheme} value={resource[name]} />
-                ))}
-            </CardText>
-            {
-                isLogged ?
-                    <CardActions>
-                        <Link to={{ pathname: '/resource/edit', query: { uri: resource.uri } }}>
-                            <FlatButton className="edit-resource" label={'Edit'} primary />
-                        </Link>
-                        <Link to={{ pathname: '/resource/hide', query: { uri: resource.uri } }}>
-                            <FlatButton className="remove-resource" label={'Hide'} primary />
-                        </Link>
-                    </CardActions>
-                :
-                    <span />
-            }
-        </Card>
-    );
-};
+export const DetailComponent = ({ resource, fields, isLogged, p: polyglot }) => (
+    <Card className="detail">
+        <CardHeader title={'Properties'} />
+        <CardText>
+            {fields.filter(({ cover }) => cover !== 'dataset').map(({ name, scheme }) => (
+                <Property name={name} scheme={scheme} value={resource[name]} />
+            ))}
+        </CardText>
+        {
+            isLogged ?
+                <CardActions>
+                    <Link to={{ pathname: '/resource/edit', query: { uri: resource.uri } }}>
+                        <FlatButton className="edit-resource" label={polyglot.t('edit')} primary />
+                    </Link>
+                    <Link to={{ pathname: '/resource/hide', query: { uri: resource.uri } }}>
+                        <FlatButton className="remove-resource" label={polyglot.t('hide')} primary />
+                    </Link>
+                </CardActions>
+            :
+                <span />
+        }
+    </Card>
+);
 
 DetailComponent.defaultProps = {
     resource: null,
