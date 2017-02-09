@@ -5,7 +5,7 @@
         "label" : "URI",
         "cover" : "collection",
         "scheme" : "http://uri4uri.net/vocab"
-    }, { 
+    }, {
         "name" : "fullname",
         "label" : "Full name",
         "transformers" : [
@@ -14,16 +14,16 @@
         ],
         "cover" : "collection",
         "scheme" : "http://www.w3.org/ns/person"
-    }, { 
+    }, {
         "name" : "email",
         "label" : "Email",
-        "transformers" : [ { "operation" : "COLUMN", "args" : [ { "name" : "column", "type" : "column", "value" : "mail" } ] } ], 
+        "transformers" : [ { "operation" : "COLUMN", "args" : [ { "name" : "column", "type" : "column", "value" : "mail" } ] } ],
         "cover" : "collection",
         "scheme" : "http://uri4uri.net/vocab"
-    }, { 
+    }, {
         "name" : "movie",
         "label" : "Movie",
-        "transformers" : [ { "operation" : "COLUMN", "args" : [ { "name" : "column", "type" : "column", "value" : "movie" } ] } ], 
+        "transformers" : [ { "operation" : "COLUMN", "args" : [ { "name" : "column", "type" : "column", "value" : "movie" } ] } ],
         "cover" : "dataset",
         "scheme" : "http://www.w3.org/ns/person"
     }],
@@ -32,10 +32,40 @@
         { "name" : "author", "value" : "Peter Jackson" }
     ],
     "publishedDataset": [
-        { "uri" : "PDXD4308", "fullname" : "PEREGRIN.TOOK", "email" : "peregrin.took@shire.net", "movie" : "LOTR" },
-        { "uri" : "PZHX0GTF", "fullname" : "SAMSAGET.GAMGIE", "email" : "samsaget.gamgie@shire.net", "movie" : "LOTR" },
-        { "uri" : "MCV1M3B2", "fullname" : "BILBON.BAGGINS", "email" : "bilbon.saquet@shire.net", "movie" : "LOTR" },
-        { "uri" : "NVBWVLF3", "fullname" : "FRODO.BAGGINS", "email" : "frodo.saquet@shire.net", "movie" : "LOTR" },
-        { "uri" : "NQFXG9SH", "fullname" : "MERIADOC.BRANDYBUCK", "email" : "meriadoc.brandybuck@shire.net", "movie" : "LOTR" }
+        {
+            "uri" : "PDXD4308",
+            "versions": [{
+                "fullname" : "PEREGRIN.TOOK",
+                "email" : "peregrin.took@shire.net"
+            }]
+        },
+        {
+            "uri" : "PZHX0GTF",
+            "versions": [{
+                "fullname" : "SAMSAGET.GAMGIE",
+                "email" : "samsaget.gamgie@shire.net"
+            }]
+        },
+        {
+            "uri" : "MCV1M3B2",
+            "versions": [{
+                "fullname" : "BILBON.BAGGINS",
+                "email" : "bilbon.saquet@shire.net"
+            }]
+        },
+        {
+            "uri" : "NVBWVLF3",
+            "versions": [{
+                "fullname" : "FRODO.BAGGINS",
+                "email" : "frodo.saquet@shire.net"
+            }]
+        },
+        {
+            "uri" : "NQFXG9SH",
+            "versions": [{
+                "fullname" : "MERIADOC.BRANDYBUCK",
+                "email" : "meriadoc.brandybuck@shire.net"
+            }]
+        }
     ]
 }

@@ -6,6 +6,7 @@ import { Link } from 'react-router';
 import Loading from '../lib/Loading';
 import { ResourceComponent } from './Resource';
 import Detail from './Detail';
+import EditDetail from './EditDetail';
 import DatasetCharacteristics from '../dataset/DatasetCharacteristics';
 
 describe('<Resource />', () => {
@@ -47,6 +48,24 @@ describe('<Resource />', () => {
         expect(wrapper.find(Loading).length).toEqual(0);
         expect(wrapper.find('.not-found').length).toEqual(0);
         expect(wrapper.find(Detail).length).toEqual(1);
+        expect(wrapper.find(DatasetCharacteristics).length).toEqual(1);
+    });
+
+    it('should display EditDetail if resource and edit', () => {
+        const props = {
+            edit: true,
+            loading: false,
+            resource: 'resource',
+            p: { t: () => {} },
+        };
+
+        const wrapper = shallow(<ResourceComponent
+            {...props}
+        />);
+        expect(wrapper.find(Loading).length).toEqual(0);
+        expect(wrapper.find('.not-found').length).toEqual(0);
+        expect(wrapper.find(Detail).length).toEqual(0);
+        expect(wrapper.find(EditDetail).length).toEqual(1);
         expect(wrapper.find(DatasetCharacteristics).length).toEqual(1);
     });
 

@@ -1,5 +1,7 @@
 import expect, { createSpy } from 'expect';
-import { exportCsvFactory, getCsvFieldFactory } from './exportCsv';
+import through from 'through';
+
+import { exportCsvFactory, getCsvFieldFactory, getLastVersion } from './exportCsv';
 
 describe('exportCsv', () => {
     describe('getCsvField', () => {
@@ -27,7 +29,7 @@ describe('exportCsv', () => {
             expect(result.label).toEqual('foo');
         });
 
-        it('should return an object with a filter function returning the field value when field has a cover equal to `collection`', () => {
+        it('should return object with filter returning the field value when field cover is `collection`', () => {
             const result = getCsvField({
                 cover: 'collection',
                 name: 'foo',
@@ -36,7 +38,7 @@ describe('exportCsv', () => {
             expect(result.filter('bar')).toEqual('bar');
         });
 
-        it('should return an object with a filter function returning the getCharacteristicByName result when field has a cover equal to `dataset`', () => {
+        it('should return object with filter returning getCharacteristicByName result when field cover is `dataset`', () => {
             const result = getCsvField({
                 cover: 'dataset',
                 name: 'foo',
@@ -46,10 +48,34 @@ describe('exportCsv', () => {
         });
     });
 
+    describe('getLastVersion', () => {
+        it('should call this.queue with resource uri + last version', () => {
+            const queue = createSpy();
+            const bindedGetLastVersion = getLastVersion.bind({ queue });
+
+            bindedGetLastVersion({
+                uri: 'uri',
+                versions: [
+                    { version1: 'data1' },
+                    { version2: 'data2' },
+                    { version3: 'data3' },
+                ],
+            });
+
+            expect(queue).toHaveBeenCalledWith({
+                uri: 'uri',
+                version3: 'data3',
+            });
+        });
+    });
+
     describe('exportCsv', () => {
         const resultStream = { resultStream: true };
-        const datasetStream = {
+        const lastVersionStream = {
             pipe: createSpy().andReturn(resultStream),
+        };
+        const datasetStream = {
+            pipe: createSpy().andReturn(lastVersionStream),
         };
 
         const csvTransformStream = { csvTransformStream: true };
@@ -84,8 +110,9 @@ describe('exportCsv', () => {
             expect(configuredField[1].quoted).toEqual(true);
         });
 
-        it('should pipe the datasetStream to the csvTransformStream', () => {
-            expect(datasetStream.pipe).toHaveBeenCalledWith(csvTransformStream);
+        it('should pipe the datasetStream  to getLastVersion and then to csvTransformStream', () => {
+            expect(datasetStream.pipe).toHaveBeenCalledWith(through(getLastVersion));
+            expect(lastVersionStream.pipe).toHaveBeenCalledWith(csvTransformStream);
         });
     });
 });

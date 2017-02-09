@@ -39,7 +39,7 @@ describe('ark routes', () => {
             const ctx = {
                 path: uri,
                 publishedDataset: {
-                    findOne: createSpy().andReturn({ id: 'foo' }),
+                    findByUri: createSpy().andReturn({ id: 'foo' }),
                 },
                 query: {},
                 status: 200,
@@ -48,14 +48,14 @@ describe('ark routes', () => {
             await getFromArkUri(ctx);
             expect(ctx.status).toEqual(200);
             expect(ctx.body).toEqual({ id: 'foo' });
-            expect(ctx.publishedDataset.findOne).toHaveBeenCalledWith({ uri });
+            expect(ctx.publishedDataset.findByUri).toHaveBeenCalledWith(uri);
         });
 
         it('should return the data for the identifier in the uri query parameter', async () => {
             const ctx = {
                 path: 'foo',
                 publishedDataset: {
-                    findOne: createSpy().andReturn({ id: 'foo' }),
+                    findByUri: createSpy().andReturn({ id: 'foo' }),
                 },
                 query: { uri: 'ark_custom_uri' },
                 status: 200,
@@ -64,7 +64,7 @@ describe('ark routes', () => {
             await getFromArkUri(ctx);
             expect(ctx.status).toEqual(200);
             expect(ctx.body).toEqual({ id: 'foo' });
-            expect(ctx.publishedDataset.findOne).toHaveBeenCalledWith({ uri: 'ark_custom_uri' });
+            expect(ctx.publishedDataset.findByUri).toHaveBeenCalledWith('ark_custom_uri');
         });
     });
 });

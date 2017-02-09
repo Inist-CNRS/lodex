@@ -1,5 +1,5 @@
 import { takeLatest } from 'redux-saga';
-import { call, fork, put, select } from 'redux-saga/effects';
+import { call, put, select } from 'redux-saga/effects';
 import { LOCATION_CHANGE } from 'react-router-redux';
 
 import {
@@ -7,10 +7,10 @@ import {
     loadResource,
     loadResourceSuccess,
     loadResourceError,
-} from './';
-import { loadPublication } from '../publication';
+} from '../';
+import { loadPublication } from '../../publication';
 
-import fetchSaga from '../lib/fetchSaga';
+import fetchSaga from '../../lib/fetchSaga';
 
 export const parsePathName = pathname => pathname.match(/^(\/resource)(\/ark:\/)?(.*?$)/) || [];
 
@@ -36,10 +36,6 @@ export function* handleLoadResource({ payload }) {
     yield put(loadPublication());
 }
 
-export function* watchLoadDatasetPageRequest() {
+export default function* watchLoadDatasetPageRequest() {
     yield takeLatest(LOCATION_CHANGE, handleLoadResource);
-}
-
-export default function* () {
-    yield fork(watchLoadDatasetPageRequest);
 }

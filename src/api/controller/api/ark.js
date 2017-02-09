@@ -12,7 +12,7 @@ export default async (ctx, next) => {
     }
 
     if (ctx.query.uri) {
-        ctx.body = await ctx.publishedDataset.findOne({ uri: ctx.query.uri });
+        ctx.body = await ctx.publishedDataset.findByUri(ctx.query.uri);
         return;
     }
 
@@ -32,9 +32,9 @@ export default async (ctx, next) => {
         return;
     }
 
-    ctx.body = await ctx.publishedDataset.findOne({ uri });
+    ctx.body = await ctx.publishedDataset.findByUri(uri);
 };
 
 export const arkUriRouteHandler = async (ctx, identifier) => {
-    ctx.body = await ctx.publishedDataset.findOne({ uri: identifier });
+    ctx.body = await ctx.publishedDataset.findByUri(identifier);
 };
