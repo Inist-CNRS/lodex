@@ -6,7 +6,7 @@ import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 
 import {
-    getResourceLastVersion,
+    getRemovedData,
 } from './';
 import Card from '../lib/Card';
 import { polyglot as polyglotPropTypes } from '../lib/propTypes';
@@ -23,7 +23,9 @@ const styles = {
 
 export const RemovedDetailComponent = ({ resource, p: polyglot }) => (
     <Card>
-        <CardHeader>{polyglot.t('removed_resource_at', { date: moment(resource.removedAt).format('ll') })}</CardHeader>
+        <CardHeader>
+            {polyglot.t('removed_resource_at', { date: moment(resource.removedAt).format('ll') })}
+        </CardHeader>
         <CardText>
             <dl style={styles.container}>
                 <dt style={styles.reason}>reason</dt>
@@ -47,7 +49,7 @@ RemovedDetailComponent.propTypes = {
 };
 
 const mapStateToProps = state => ({
-    resource: getResourceLastVersion(state),
+    resource: getRemovedData(state),
 });
 
 const mapDispatchToProps = {};

@@ -122,20 +122,23 @@ export const getHideResourceRequest = (state, data) => ({
 
 export const getResourceLastVersion = (state) => {
     const resource = state.resource.resource;
-    const { versions, uri, removedAt, reason } = resource;
-    if (removedAt) {
-        return {
-            uri,
-            removedAt,
-            reason,
-        };
-    }
+    const { versions, uri } = resource;
     if (!versions) {
         return null;
     }
     return {
         ...versions[versions.length - 1],
         uri,
+    };
+};
+
+export const getRemovedData = (state) => {
+    const resource = state.resource.resource;
+    const { uri, removedAt, reason } = resource;
+    return {
+        uri,
+        removedAt,
+        reason,
     };
 };
 
