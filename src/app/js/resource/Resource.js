@@ -4,6 +4,7 @@ import translate from 'redux-polyglot/translate';
 import { compose } from 'recompose';
 import { Link } from 'react-router';
 import HomeIcon from 'material-ui/svg-icons/action/home';
+import { CardHeader, CardText } from 'material-ui/Card';
 
 import { getResource, isLoading } from './';
 import {
@@ -17,6 +18,13 @@ import { polyglot as polyglotPropTypes } from '../lib/propTypes';
 import DatasetCharacteristics from '../dataset/DatasetCharacteristics';
 import Loading from '../lib/Loading';
 
+const styles = {
+    home: {
+        display: 'flex',
+        alignItems: 'center',
+    },
+};
+
 export const ResourceComponent = ({ resource, datasetTitle, titleKey, loading, p: polyglot }) => {
     if (loading) {
         return (
@@ -26,22 +34,26 @@ export const ResourceComponent = ({ resource, datasetTitle, titleKey, loading, p
     if (!resource) {
         return (
             <Card className="not-found">
-                <Link to="/home">
-                    <HomeIcon />
-                    {datasetTitle || polyglot.t('back_to_list')}
-                </Link>
-                <h1>{polyglot.t('not_found')}</h1>
+                <CardText>
+                    <Link to="/home" style={styles.home} >
+                        <HomeIcon />
+                        {datasetTitle || polyglot.t('back_to_list')}
+                    </Link>
+                    <h1>{polyglot.t('not_found')}</h1>
+                </CardText>
             </Card>
         );
     }
     return (
         <div>
             <Card>
-                <Link to="/home">
-                    <HomeIcon />
-                    {datasetTitle || polyglot.t('back_to_list')}
-                </Link>
-                <h1>{titleKey ? resource[titleKey] : resource.uri}</h1>
+                <CardText>
+                    <Link to="/home" style={styles.home} >
+                        <HomeIcon />
+                        {datasetTitle || polyglot.t('back_to_list')}
+                    </Link>
+                    <h1>{titleKey ? resource[titleKey] : resource.uri}</h1>
+                </CardText>
             </Card>
             <Detail />
             <DatasetCharacteristics />
