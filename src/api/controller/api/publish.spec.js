@@ -248,7 +248,7 @@ describe('publish', () => {
                 data: 'value',
             };
             const date = new Date();
-            expect(await versionTransformResult(transform)(doc, date)).toEqual({
+            expect(await versionTransformResult(transform)(doc, null, null, date)).toEqual({
                 uri: 'uri',
                 versions: [{
                     transformed: 'data',

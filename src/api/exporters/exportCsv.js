@@ -1,4 +1,12 @@
 import { csv } from 'json-csv';
+import through from 'through';
+
+export function getLastVersion({ uri, versions }) {
+    this.queue({
+        ...versions.slice(-1)[0],
+        uri,
+    });
+}
 
 export const getCsvFieldFactory = getCharacteristicByName => ({ cover, label, name }) => ({
     filter: value => (cover === 'dataset' ? getCharacteristicByName(name).value : value),
@@ -16,7 +24,9 @@ export const exportCsvFactory = csvTransformStreamFactory => (fields, characteri
         fieldSeparator: ';',
     });
 
-    return stream.pipe(jsoncsvStream);
+    return stream
+        .pipe(through(getLastVersion))
+        .pipe(jsoncsvStream);
 };
 
 export default exportCsvFactory(csv);
