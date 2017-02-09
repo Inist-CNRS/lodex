@@ -17,6 +17,7 @@ import {
 import Card from '../lib/Card';
 import Detail from './Detail';
 import EditDetail from './EditDetail';
+import HideDetail from './HideDetail';
 import { polyglot as polyglotPropTypes } from '../lib/propTypes';
 import DatasetCharacteristics from '../characteristic/DatasetCharacteristics';
 import Loading from '../lib/Loading';
@@ -28,7 +29,19 @@ const styles = {
     },
 };
 
-export const ResourceComponent = ({ resource, datasetTitle, titleKey, loading, edit, p: polyglot }) => {
+export const getDetail = (mode) => {
+    switch (mode) {
+    case 'edit':
+        return <EditDetail />;
+    case 'hide':
+        return <HideDetail />;
+    case 'view':
+    default:
+        return <Detail />;
+    }
+};
+
+export const ResourceComponent = ({ resource, datasetTitle, titleKey, loading, mode, p: polyglot }) => {
     if (loading) {
         return (
             <Loading className="resource">{polyglot.t('loading_resource')}</Loading>
@@ -58,25 +71,21 @@ export const ResourceComponent = ({ resource, datasetTitle, titleKey, loading, e
                     <h1 className="title">{titleKey ? resource[titleKey] : resource.uri}</h1>
                 </CardText>
             </Card>
-            { edit ?
-                <EditDetail />
-                :
-                <Detail />
-            }
+            {getDetail(mode)}
             <DatasetCharacteristics />
         </div>
     );
 };
 
 ResourceComponent.defaultProps = {
-    edit: false,
+    mode: 'view',
     resource: null,
     datasetTitle: null,
     titleKey: null,
 };
 
 ResourceComponent.propTypes = {
-    edit: PropTypes.bool.isRequired,
+    mode: PropTypes.oneOf(['view', 'edit', 'hide']).isRequired,
     resource: PropTypes.shape({}),
     p: polyglotPropTypes.isRequired,
     titleKey: PropTypes.string,

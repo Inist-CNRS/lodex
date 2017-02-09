@@ -34,14 +34,14 @@ export const editResource = async (ctx) => {
     ctx.body = await ctx.publishedDataset.addVersion(resource, newVersion);
 };
 
-export const removeResource = async (ctx, uri) => {
-    const { reason } = ctx.request.body;
+export const removeResource = async (ctx) => {
+    const { uri, reason } = ctx.request.body;
 
-    ctx.body = await ctx.collection.hide(uri, reason);
+    ctx.body = await ctx.publishedDataset.hide(uri, reason);
 };
 
 app.use(route.get('/', getPage));
 app.use(route.post('/', editResource));
-app.use(route.del('/:uri', removeResource));
+app.use(route.del('/', removeResource));
 
 export default app;

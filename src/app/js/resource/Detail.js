@@ -13,21 +13,37 @@ import {
 import Card from '../lib/Card';
 import Property from '../lib/Property';
 
-export const DetailComponent = ({ resource, fields }) => (
-    <Card className="detail">
-        <CardHeader title={'Properties'} />
-        <CardText>
-            {fields.filter(({ cover }) => cover !== 'dataset').map(({ name, scheme }) => (
-                <Property name={name} scheme={scheme} value={resource[name]} />
-            ))}
-        </CardText>
-        <CardActions>
-            <Link to={{ pathname: '/resource/edit', query: { uri: resource.uri } }}>
-                <FlatButton className="edit-resource" label={'Edit'} primary />
-            </Link>
-        </CardActions>
-    </Card>
-);
+export const DetailComponent = ({ resource, fields }) => {
+    if (resource.removedAt) {
+        return (
+            <Card>
+                <CardText>
+                    <p>This resource was removed</p>
+                    <p>{resource.reason}</p>
+                </CardText>
+            </Card>
+        );
+    }
+    return (
+        <Card className="detail">
+            <CardHeader title={'Properties'} />
+            <CardText>
+                {fields.filter(({ cover }) => cover !== 'dataset').map(({ name, scheme }) => (
+                    <Property name={name} scheme={scheme} value={resource[name]} />
+                ))}
+            </CardText>
+            <CardActions>
+                <Link to={{ pathname: '/resource/edit', query: { uri: resource.uri } }}>
+                    <FlatButton className="edit-resource" label={'Edit'} primary />
+                </Link>
+                <Link to={{ pathname: '/resource/hide', query: { uri: resource.uri } }}>
+                    <FlatButton className="remove-resource" label={'Hide'} primary />
+                </Link>
+            </CardActions>
+        </Card>
+    );
+};
+
 
 DetailComponent.defaultProps = {
     resource: null,

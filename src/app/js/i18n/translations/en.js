@@ -42,4 +42,6 @@ export default {
     error_name_required: 'Name is required',
     error_cover_required: 'Cover is required',
     error_cover_invalid_cover: 'Cover is invalid',
+    remove_resource: 'Remove the resource',
+    reason: 'Enter your reason',
 };

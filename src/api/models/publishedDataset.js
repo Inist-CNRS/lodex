@@ -37,7 +37,7 @@ export default (db) => {
             },
         );
 
-    collection.hide = async (uri, reason, date) =>
+    collection.hide = async (uri, reason, date = new Date()) =>
         collection.update({ uri }, { $set: {
             removedAt: date,
             reason,

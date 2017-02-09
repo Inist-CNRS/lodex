@@ -3,7 +3,11 @@ import React from 'react';
 import Resource from './Resource';
 
 const EditResource = () => (
-    <Resource edit />
+    <Resource mode="edit" />
+);
+
+const HideResource = () => (
+    <Resource mode="hide" />
 );
 
 export default [
@@ -14,6 +18,10 @@ export default [
     {
         path: '/resource/edit',
         component: EditResource,
+    },
+    {
+        path: '/resource/hide',
+        component: HideResource,
     },
     {
         path: '/resource/ark:/:naan/:rest',
