@@ -16,6 +16,7 @@ import {
 import Card from '../lib/Card';
 import Property from '../lib/Property';
 import { polyglot as polyglotPropTypes } from '../lib/propTypes';
+import { isLoggedIn } from '../user';
 
 const styles = {
     container: {
@@ -27,7 +28,7 @@ const styles = {
     },
 };
 
-export const DetailComponent = ({ resource, fields, p: polyglot }) => {
+export const DetailComponent = ({ resource, fields, isLogged, p: polyglot }) => {
     if (resource.removedAt) {
         return (
             <Card>
@@ -52,14 +53,19 @@ export const DetailComponent = ({ resource, fields, p: polyglot }) => {
                     <Property name={name} scheme={scheme} value={resource[name]} />
                 ))}
             </CardText>
-            <CardActions>
-                <Link to={{ pathname: '/resource/edit', query: { uri: resource.uri } }}>
-                    <FlatButton className="edit-resource" label={'Edit'} primary />
-                </Link>
-                <Link to={{ pathname: '/resource/hide', query: { uri: resource.uri } }}>
-                    <FlatButton className="remove-resource" label={'Hide'} primary />
-                </Link>
-            </CardActions>
+            {
+                isLogged ?
+                    <CardActions>
+                        <Link to={{ pathname: '/resource/edit', query: { uri: resource.uri } }}>
+                            <FlatButton className="edit-resource" label={'Edit'} primary />
+                        </Link>
+                        <Link to={{ pathname: '/resource/hide', query: { uri: resource.uri } }}>
+                            <FlatButton className="remove-resource" label={'Hide'} primary />
+                        </Link>
+                    </CardActions>
+                :
+                    <span />
+            }
         </Card>
     );
 };
@@ -71,12 +77,14 @@ DetailComponent.defaultProps = {
 DetailComponent.propTypes = {
     resource: PropTypes.shape({}),
     fields: PropTypes.arrayOf(PropTypes.object).isRequired,
+    isLogged: PropTypes.bool.isRequired,
     p: polyglotPropTypes.isRequired,
 };
 
 const mapStateToProps = state => ({
     resource: getResourceLastVersion(state),
     fields: getFields(state),
+    isLogged: isLoggedIn(state),
 });
 
 const mapDispatchToProps = {};

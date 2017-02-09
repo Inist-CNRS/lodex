@@ -13,7 +13,7 @@ export default store => ({
             ...adminRoutes(store),
             ...homeRoutes,
             ...userRoutes,
-            ...resourceRoutes,
+            ...resourceRoutes(store),
         ],
     }],
 });
