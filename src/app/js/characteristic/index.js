@@ -66,7 +66,7 @@ export default handleActions({
     }),
 }, defaultState);
 
-export const getDatasetTitle = ({ publication: { characteristics } }) => {
+export const getDatasetTitle = ({ characteristic: { characteristics } }) => {
     const titleCharacteristic = characteristics.find(({ scheme }) => scheme === TITLE_SCHEME);
     return titleCharacteristic ? titleCharacteristic.value : null;
 };

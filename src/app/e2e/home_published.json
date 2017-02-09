@@ -1,7 +1,7 @@
 {
     "field": [{
         "name" : "uri",
-        "transformers" : [{ "operation" : "AUTOGENERATE_URI", "args" : [ ] } ],
+        "transformers" : [{ "operation" : "COLUMN", "args" : [ { "name" : "column", "type" : "column", "value" : "id" } ] } ],
         "label" : "URI",
         "cover" : "collection",
         "scheme" : "http://uri4uri.net/vocab"
@@ -33,35 +33,35 @@
     ],
     "publishedDataset": [
         {
-            "uri" : "PDXD4308",
+            "uri" : "1",
             "versions": [{
                 "fullname" : "PEREGRIN.TOOK",
                 "email" : "peregrin.took@shire.net"
             }]
         },
         {
-            "uri" : "PZHX0GTF",
+            "uri" : "2",
             "versions": [{
                 "fullname" : "SAMSAGET.GAMGIE",
                 "email" : "samsaget.gamgie@shire.net"
             }]
         },
         {
-            "uri" : "MCV1M3B2",
+            "uri" : "3",
             "versions": [{
                 "fullname" : "BILBON.BAGGINS",
                 "email" : "bilbon.saquet@shire.net"
             }]
         },
         {
-            "uri" : "NVBWVLF3",
+            "uri" : "4",
             "versions": [{
                 "fullname" : "FRODO.BAGGINS",
                 "email" : "frodo.saquet@shire.net"
             }]
         },
         {
-            "uri" : "NQFXG9SH",
+            "uri" : "5",
             "versions": [{
                 "fullname" : "MERIADOC.BRANDYBUCK",
                 "email" : "meriadoc.brandybuck@shire.net"
