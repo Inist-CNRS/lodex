@@ -19,8 +19,8 @@ const styles = {
 const Property = ({ name, value, scheme }) => (
     <dl className="property" style={styles.container}>
         <dt>
-            <div style={styles.name}>{name}</div>
-            <div style={styles.scheme}>{scheme}</div>
+            <div className="property_name" style={styles.name}>{name}</div>
+            <div className="property_scheme" style={styles.scheme}>{scheme}</div>
         </dt>
         <dd>{value}</dd>
     </dl>

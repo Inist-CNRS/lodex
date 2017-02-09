@@ -14,6 +14,7 @@ import {
 
 import { isLoggedIn } from '../user';
 import {
+    getCharacteristicsLastVersion,
     toggleCharacteristicsEdition as toggleCharacteristicsEditionAction,
 } from './';
 
@@ -43,7 +44,11 @@ const DatasetCharacteristics = ({
         </CardText>
         {canEdit &&
             <CardActions>
-                <FlatButton label={polyglot.t('edit')} onClick={toggleCharacteristicsEdition} />
+                <FlatButton
+                    className="btn-edit-characteristics"
+                    label={polyglot.t('edit')}
+                    onClick={toggleCharacteristicsEdition}
+                />
             </CardActions>
         }
     </Card>
@@ -63,7 +68,7 @@ DatasetCharacteristics.defaultProps = {
 
 const mapStateToProps = state => ({
     canEdit: isLoggedIn(state),
-    characteristics: state.characteristic.characteristics,
+    characteristics: getCharacteristicsLastVersion(state),
 });
 
 const mapDispatchToProps = {

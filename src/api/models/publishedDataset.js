@@ -1,5 +1,5 @@
 import mongo from 'mongodb';
-import chunk from 'lodash/chunk';
+import chunk from 'lodash.chunk';
 import omit from 'lodash.omit';
 
 export default (db) => {

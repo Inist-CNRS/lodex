@@ -36,7 +36,7 @@ describe('publish', () => {
             },
             getDocumentTransformer: createSpy().andReturn('transformDocument()'),
             publishedCharacteristic: {
-                insertMany: createSpy(),
+                addNewVersion: createSpy(),
             },
             publishedDataset: {
                 findLimitFromSkip: createSpy().andReturn(publishedDataset),
@@ -111,7 +111,7 @@ describe('publish', () => {
                 findLimitFromSkip: createSpy().andReturn(['doc']),
             },
             publishedCharacteristic: {
-                insertMany: createSpy(),
+                addNewVersion: createSpy(),
             },
         };
         const datasetFields = [{
@@ -143,10 +143,10 @@ describe('publish', () => {
             expect(transformDocument).toHaveBeenCalledWith('doc');
         });
 
-        it('should call ctx.publishedCharacteristic.insertMany', () => {
-            expect(ctx.publishedCharacteristic.insertMany).toHaveBeenCalledWith([
-                { name: 'transformed', value: 'document', scheme: 'scheme' },
-            ]);
+        it('should call ctx.publishedCharacteristic.addNewVersion', () => {
+            expect(ctx.publishedCharacteristic.addNewVersion).toHaveBeenCalledWith({
+                transformed: 'document',
+            });
         });
     });
 

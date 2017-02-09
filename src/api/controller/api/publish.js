@@ -1,7 +1,6 @@
 import omit from 'lodash.omit';
 import Koa from 'koa';
 import route from 'koa-route';
-import pickBy from 'lodash.pickby';
 
 /* eslint no-await-in-loop: off */
 import getDocumentTransformer from '../../../common/getDocumentTransformer';
@@ -40,18 +39,20 @@ export const publishCharacteristics = async (ctx, datasetCoverFields, count) => 
             env: 'node',
             dataset: ctx.uriDataset,
         }, datasetCoverFields);
+
     const [lastRessource] = await ctx.uriDataset.findLimitFromSkip(1, count - 1);
     const characteristics = await getPublishedCharacteristics(lastRessource);
 
-    const publishedCharacteristics = Object.keys(characteristics)
-        .map(name => ({
-            name,
-            value: characteristics[name],
-            scheme: datasetCoverFields.find(({ name: fieldName }) => fieldName === name).scheme,
-        }));
+    const characteristicsKeys = Object.keys(characteristics);
 
-    if (publishedCharacteristics.length) {
-        await ctx.publishedCharacteristic.insertMany(publishedCharacteristics);
+    if (characteristicsKeys.length) {
+        const publishedCharacteristics = characteristicsKeys
+            .reduce((result, name) => ({
+                ...result,
+                [name]: characteristics[name],
+            }), {});
+
+        await ctx.publishedCharacteristic.addNewVersion(publishedCharacteristics);
     }
 };
 

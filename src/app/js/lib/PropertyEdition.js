@@ -30,6 +30,7 @@ const Property = ({ name, onChange, scheme, value }) => (
         </dt>
         <dd style={styles.inputContainer}>
             <TextField
+                name={`${name}_value`}
                 hintText="Hint Text"
                 value={value}
                 onChange={onChange}

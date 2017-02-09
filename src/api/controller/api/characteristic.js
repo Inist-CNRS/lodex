@@ -4,13 +4,22 @@ import route from 'koa-route';
 const app = new Koa();
 
 export const updateCharacteristics = async (ctx) => {
-    const characteristics = ctx.request.body;
-    const newCharacteristics = await Promise.all(characteristics.map(({
-        _id,
-        value,
-    }) => ctx.publishedCharacteristic.updateValueById(_id, value)));
+    const requestedNewCharacteristics = ctx.request.body;
+    const characteristics = await ctx.publishedCharacteristic.findLastVersion();
 
-    ctx.body = newCharacteristics.map(r => r.value);
+    const newCharacteristics = Object
+        .keys(characteristics)
+        .filter(key => key !== 'publicationDate')
+        .reduce((result, name) => {
+            const newCharacteristic = requestedNewCharacteristics[name];
+
+            return {
+                ...result,
+                [name]: newCharacteristic || characteristics[name],
+            };
+        }, {});
+
+    ctx.body = await ctx.publishedCharacteristic.addNewVersion(newCharacteristics);
 };
 
 app.use(route.put('/', updateCharacteristics));
