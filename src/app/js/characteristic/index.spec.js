@@ -1,6 +1,7 @@
 import expect from 'expect';
 
 import TITLE_SCHEME from '../../../common/titleScheme';
+import { COVER_COLLECTION, COVER_DATASET } from '../../../common/cover';
 
 import reducer, {
     defaultState,
@@ -29,7 +30,7 @@ describe('characteristic reducer', () => {
         expect(state).toEqual({
             ...defaultState,
             characteristics: ['foo'],
-            newCharacteristics: ['foo'],
+            newCharacteristics: 'foo',
         });
     });
 
@@ -38,15 +39,7 @@ describe('characteristic reducer', () => {
             const request = getUpdateCharacteristicsRequest({
                 user: { token: 'test' },
                 characteristic: {
-                    newCharacteristics: [{
-                        _id: 'foo',
-                        value: 'foo1',
-                        foo: true,
-                    }, {
-                        _id: 'bar',
-                        value: 'bar1',
-                        bar: true,
-                    }],
+                    newCharacteristics: 'foo',
                 },
             });
             expect(request).toEqual({
@@ -58,13 +51,7 @@ describe('characteristic reducer', () => {
                     Authorization: 'Bearer test',
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify([{
-                    _id: 'foo',
-                    value: 'foo1',
-                }, {
-                    _id: 'bar',
-                    value: 'bar1',
-                }]),
+                body: JSON.stringify('foo'),
             });
         });
     });
@@ -72,22 +59,33 @@ describe('characteristic reducer', () => {
     describe('getDatasetTitle', () => {
         it('should return characteristic name of characteristic with titleScheme', () => {
             const state = {
-                characteristic: {
-                    characteristics: [
-                        { value: 'title', scheme: TITLE_SCHEME },
-                        { value: 'other', scheme: 'other' },
+                publication: {
+                    fields: [
+                        { name: 'title', scheme: TITLE_SCHEME, cover: COVER_DATASET },
+                        { name: 'title_ressource', scheme: TITLE_SCHEME, cover: COVER_COLLECTION },
+                        { name: 'other', scheme: 'other' },
                     ],
                 },
+                characteristic: {
+                    characteristics: {
+                        title: 'foo',
+                    },
+                },
             };
-            expect(getDatasetTitle(state)).toBe('title');
+            expect(getDatasetTitle(state)).toBe('foo');
         });
         it('should return null if no matching characteristics found', () => {
             const state = {
-                characteristic: {
-                    characteristics: [
-                        { value: 'other', scheme: 'other' },
-                        { value: 'another', scheme: 'another' },
+                publication: {
+                    fields: [
+                        { name: 'title_ressource', scheme: TITLE_SCHEME, cover: COVER_COLLECTION },
+                        { name: 'other', scheme: 'other' },
                     ],
+                },
+                characteristic: {
+                    characteristics: {
+                        foo: 'bar',
+                    },
                 },
             };
             expect(getDatasetTitle(state)).toBe(null);

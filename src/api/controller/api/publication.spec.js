@@ -14,7 +14,7 @@ describe('publication', () => {
                 }),
             },
             publishedCharacteristic: {
-                find: () => ({
+                findAllVersions: () => ({
                     toArray: () => Promise.resolve(characteristics),
                 }),
             },
@@ -40,7 +40,7 @@ describe('publication', () => {
                 }),
             },
             publishedCharacteristic: {
-                find: () => ({
+                findAllVersions: () => ({
                     toArray: () => Promise.resolve(characteristics),
                 }),
             },

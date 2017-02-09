@@ -23,13 +23,17 @@ describe('Home page with published data', function homePublishedDataTests() {
         const properties = await driver.findElements(By.css('.dataset-characteristics .property'));
         expect(properties.length).toEqual(2);
 
-        const movieLabel = await driver.findElement(By.css('.dataset-characteristics .property:first-child dt'));
+        const movieLabel = await driver.findElement(
+            By.css('.dataset-characteristics .property:first-child .property_name'),
+        );
         expect(await movieLabel.getText()).toEqual('movie');
 
         const movieValue = await driver.findElement(By.css('.dataset-characteristics .property:first-child dd'));
         expect(await movieValue.getText()).toEqual('LOTR');
 
-        const authorLabel = await driver.findElement(By.css('.dataset-characteristics .property:last-child dt'));
+        const authorLabel = await driver.findElement(
+            By.css('.dataset-characteristics .property:last-child .property_name'),
+        );
         expect(await authorLabel.getText()).toEqual('author');
 
         const authorValue = await driver.findElement(By.css('.dataset-characteristics .property:last-child dd'));

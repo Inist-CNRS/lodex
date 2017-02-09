@@ -12,6 +12,7 @@ import {
 } from '../lib/propTypes';
 
 import {
+    getNewCharacteristics,
     setCharacteristicValue as setCharacteristicValueAction,
     updateCharacteristics as updateCharacteristicsAction,
 } from './';
@@ -34,7 +35,7 @@ const DatasetCharacteristics = ({
     updateCharacteristics,
     updating,
 }) => (
-    <Card className="dataset-characteristics">
+    <Card className="dataset-characteristics-edition">
         <CardHeader
             title={polyglot.t('dataset_characteristics')}
         />
@@ -77,7 +78,7 @@ DatasetCharacteristics.defaultProps = {
 
 const mapStateToProps = state => ({
     error: state.characteristic.error,
-    newCharacteristics: state.characteristic.newCharacteristics,
+    newCharacteristics: getNewCharacteristics(state),
     updating: state.characteristic.updating,
 });
 

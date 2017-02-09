@@ -26,10 +26,15 @@
         "transformers" : [ { "operation" : "COLUMN", "args" : [ { "name" : "column", "type" : "column", "value" : "movie" } ] } ],
         "cover" : "dataset",
         "scheme" : "http://www.w3.org/ns/person"
+    }, {
+        "name" : "author",
+        "label" : "Author",
+        "transformers" : [ { "operation" : "COLUMN", "args" : [ { "name" : "column", "type" : "column", "value" : "author" } ] } ],
+        "cover" : "dataset",
+        "scheme" : "http://www.w3.org/ns/person"
     }],
     "publishedCharacteristic": [
-        { "name" : "movie", "value" : "LOTR" },
-        { "name" : "author", "value" : "Peter Jackson" }
+        { "movie": "LOTR" , "author": "Peter Jackson" }
     ],
     "publishedDataset": [
         {

@@ -5,6 +5,7 @@ import TITLE_SCHEME from '../../../common/titleScheme';
 import reducer, {
     defaultState,
     getCollectionFields,
+    getDatasetFields,
     getLoadPublicationRequest,
     hasPublishedDataset,
     loadPublication,
@@ -76,6 +77,19 @@ describe('publication reducer', () => {
                     ],
                 },
             })).toEqual([{ foo: 'bar', cover: 'collection' }]);
+        });
+    });
+
+    describe('getDatasetFields', () => {
+        it('should return the model', () => {
+            expect(getDatasetFields({
+                publication: {
+                    fields: [
+                        { foo: 'bar', cover: 'collection' },
+                        { foo: 'bar2', cover: 'dataset' },
+                    ],
+                },
+            })).toEqual([{ foo: 'bar2', cover: 'dataset' }]);
         });
     });
 

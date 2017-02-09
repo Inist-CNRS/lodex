@@ -1,7 +1,10 @@
 import { createAction, handleActions } from 'redux-actions';
+import { createSelector } from 'reselect';
 
 import TITLE_SCHEME from '../../../common/titleScheme';
-import { LOAD_PUBLICATION_SUCCESS } from '../publication';
+import { COVER_DATASET } from '../../../common/cover';
+
+import { getDatasetFields } from '../publication';
 
 export const TOGGLE_CHARACTERISTICS_EDITION = 'TOGGLE_CHARACTERISTICS_EDITION';
 export const SET_CHARACTERISTIC_VALUE = 'SET_CHARACTERISTIC_VALUE';
@@ -28,21 +31,15 @@ export default handleActions({
     LOAD_PUBLICATION_SUCCESS: (state, { payload: { characteristics } }) => ({
         ...state,
         characteristics,
-        newCharacteristics: characteristics,
+        newCharacteristics: characteristics[0],
     }),
-    SET_CHARACTERISTIC_VALUE: ({ newCharacteristics, ...state }, { payload: { name, value } }) => {
-        const index = newCharacteristics.findIndex(c => c.name === name);
-        const characteristic = newCharacteristics.find(c => c.name === name);
-
-        return {
-            ...state,
-            newCharacteristics: [
-                ...newCharacteristics.splice(0, index),
-                { ...characteristic, value },
-                ...newCharacteristics.splice(index + 1),
-            ],
-        };
-    },
+    SET_CHARACTERISTIC_VALUE: ({ newCharacteristics, ...state }, { payload: { name, value } }) => ({
+        ...state,
+        newCharacteristics: {
+            ...newCharacteristics,
+            [name]: value,
+        },
+    }),
     TOGGLE_CHARACTERISTICS_EDITION: ({ editing, ...state }) => ({
         ...state,
         editing: !editing,
@@ -58,7 +55,10 @@ export default handleActions({
     }),
     UPDATE_CHARACTERISTICS_SUCCESS: (state, { payload: characteristics }) => ({
         ...state,
-        characteristics,
+        characteristics: [
+            characteristics,
+            ...state.characteristics,
+        ],
         newCharacteristics: characteristics,
         editing: false,
         error: null,
@@ -66,10 +66,40 @@ export default handleActions({
     }),
 }, defaultState);
 
-export const getDatasetTitle = ({ characteristic: { characteristics } }) => {
-    const titleCharacteristic = characteristics.find(({ scheme }) => scheme === TITLE_SCHEME);
-    return titleCharacteristic ? titleCharacteristic.value : null;
+export const getDatasetTitle = ({ publication: { fields }, characteristic: { characteristics } }) => {
+    const titleCharacteristic = fields.find(({ cover, scheme }) =>
+        cover === COVER_DATASET && scheme === TITLE_SCHEME);
+
+    return titleCharacteristic && characteristics[titleCharacteristic.name]
+        ? characteristics[titleCharacteristic.name]
+        : null;
 };
+
+const getCharacteristics = state => state.characteristic.characteristics[0] || {};
+
+export const getCharacteristicsLastVersion = createSelector(
+    getCharacteristics,
+    getDatasetFields,
+    (characteristic, fields) => fields
+        .map(({ name, scheme }) => ({
+            name,
+            scheme,
+            value: characteristic[name],
+        })),
+);
+
+const selectNewCharacteristics = state => state.characteristic.newCharacteristics || {};
+
+export const getNewCharacteristics = createSelector(
+    selectNewCharacteristics,
+    getDatasetFields,
+    (newCharacteristics, fields) => fields
+        .map(({ name, scheme }) => ({
+            name,
+            scheme,
+            value: newCharacteristics[name],
+        })),
+);
 
 export const getUpdateCharacteristicsRequest = state => ({
     url: '/api/characteristic',
@@ -80,5 +110,5 @@ export const getUpdateCharacteristicsRequest = state => ({
         Authorization: `Bearer ${state.user.token}`,
         'Content-Type': 'application/json',
     },
-    body: JSON.stringify(state.characteristic.newCharacteristics.map(({ _id, value }) => ({ _id, value }))),
+    body: JSON.stringify(state.characteristic.newCharacteristics),
 });
