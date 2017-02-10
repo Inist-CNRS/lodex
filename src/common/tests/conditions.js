@@ -5,11 +5,16 @@ export const elementValueIs = (element, text) =>
         element.getAttribute('value').then(t => (t === text ? element : null)));
 
 export const inputElementIsFocusable = element =>
-    new WebElementCondition('until element is clicked', async () => {
-        const [isDisplayed, isEnabled] = await Promise.all([
+    new WebElementCondition('until element is focusable', async () => {
+        const [isDisplayed, isEnabled, tagName] = await Promise.all([
             element.isDisplayed(),
             element.isEnabled(),
+            element.getTagName(),
         ]);
+
+        if (tagName.toLowerCase() !== 'input') {
+            throw new Error('Invalid element: must be an input');
+        }
 
         if (!isDisplayed || !isEnabled) return null;
 
