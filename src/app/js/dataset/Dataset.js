@@ -15,7 +15,7 @@ import {
     TableRow,
     TableRowColumn,
 } from 'material-ui/Table';
-import Pagination from './Pagination';
+import Pagination from '../lib/Pagination';
 import Card from '../lib/Card';
 import Loading from '../lib/Loading';
 import { polyglot as polyglotPropTypes } from '../lib/propTypes';

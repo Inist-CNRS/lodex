@@ -31,7 +31,7 @@ export default {
     select_an_operation: 'Select an operation',
     cover: 'Select a coverage',
     cover_dataset: 'Apply to whole dataset',
-    cover_collection: 'Different for each ressource',
+    cover_collection: 'Different for each resource',
     dataset_characteristics: 'Characteristics',
     export: 'Export',
     sign_out: 'Sign out',
@@ -48,4 +48,6 @@ export default {
     cancel: 'Cancel',
     edit: 'Edit',
     hide: 'Hide',
+    removed_resources: 'Removed resources',
+    restore: 'Restore',
 };

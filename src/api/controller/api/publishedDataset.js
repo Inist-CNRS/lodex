@@ -10,7 +10,26 @@ export const getPage = async (ctx) => {
 
     const [data, total] = await Promise.all([
         ctx.publishedDataset.findPage(intPage, intPerPage),
-        ctx.publishedDataset.count(),
+        ctx.publishedDataset.countWithRemoved(),
+    ]);
+
+    ctx.body = {
+        total,
+        data: data.map(doc => ({
+            ...doc.versions[doc.versions.length - 1],
+            uri: doc.uri,
+        })),
+    };
+};
+
+export const getRemovedPage = async (ctx) => {
+    const { page = 0, perPage = 10 } = ctx.request.query;
+    const intPage = parseInt(page, 10);
+    const intPerPage = parseInt(perPage, 10);
+
+    const [data, total] = await Promise.all([
+        ctx.publishedDataset.findPage(intPage, intPerPage, true), // true for removed
+        ctx.publishedDataset.countWithRemoved(true), // true for removed
     ]);
 
     ctx.body = {
@@ -40,8 +59,15 @@ export const removeResource = async (ctx) => {
     ctx.body = await ctx.publishedDataset.hide(uri, reason);
 };
 
+export const restoreResource = async (ctx) => {
+    const { uri } = ctx.request.body;
+    ctx.body = await ctx.publishedDataset.restore(uri);
+};
+
+app.use(route.get('/removed', getRemovedPage));
 app.use(route.get('/', getPage));
 app.use(route.post('/', editResource));
+app.use(route.put('/restore', restoreResource));
 app.use(route.del('/', removeResource));
 
 export default app;

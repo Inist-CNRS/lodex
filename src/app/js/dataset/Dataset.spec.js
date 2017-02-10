@@ -7,7 +7,7 @@ import {
 } from 'material-ui/Table';
 
 import { DatasetComponent as Dataset } from './Dataset';
-import Pagination from './Pagination';
+import Pagination from '../lib/Pagination';
 
 describe('<Dataset />', () => {
     const columns = [

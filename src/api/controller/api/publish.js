@@ -40,8 +40,8 @@ export const publishCharacteristics = async (ctx, datasetCoverFields, count) => 
             dataset: ctx.uriDataset,
         }, datasetCoverFields);
 
-    const [lastRessource] = await ctx.uriDataset.findLimitFromSkip(1, count - 1);
-    const characteristics = await getPublishedCharacteristics(lastRessource);
+    const [lastResource] = await ctx.uriDataset.findLimitFromSkip(1, count - 1);
+    const characteristics = await getPublishedCharacteristics(lastResource);
 
     const characteristicsKeys = Object.keys(characteristics);
 
