@@ -6,7 +6,6 @@ import { Field, reduxForm, propTypes as reduxFormPropTypes } from 'redux-form';
 import { CardText, CardHeader, CardActions } from 'material-ui/Card';
 import { Link } from 'react-router';
 import FlatButton from 'material-ui/FlatButton';
-import Paper from 'material-ui/Paper';
 
 
 import {

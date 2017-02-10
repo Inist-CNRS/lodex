@@ -168,6 +168,16 @@ export const getResourceLastVersion = (state) => {
     };
 };
 
+export const getResourceUnvalidatedFields = (state) => {
+    const { contributions } = state.resource.resource;
+    if (!contributions) {
+        return [];
+    }
+    return contributions
+        .filter(({ validated }) => !validated)
+        .map(({ fieldName }) => fieldName);
+};
+
 export const getRemovedData = (state) => {
     const resource = state.resource.resource;
     const { uri, removedAt, reason } = resource;

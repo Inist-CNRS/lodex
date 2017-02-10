@@ -69,6 +69,7 @@ export default (db) => {
                 contributions: {
                     fieldName: field.name,
                     contributor,
+                    accepted: false,
                 },
             },
             $push: {

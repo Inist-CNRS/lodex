@@ -10,19 +10,27 @@ import {
     getResourceLastVersion,
 } from './';
 import {
-    getFields,
+    getCollectionFields,
+    getDocumentFields,
 } from '../publication';
 import Card from '../lib/Card';
 import Property from '../lib/Property';
 import { polyglot as polyglotPropTypes } from '../lib/propTypes';
 import { isLoggedIn } from '../user';
 
-export const DetailComponent = ({ resource, fields, isLogged, p: polyglot }) => (
+export const DetailComponent = ({ resource, collectionFields, documentFields, isLogged, p: polyglot }) => (
     <Card className="detail">
         <CardHeader title={'Properties'} />
         <CardText>
-            {fields.filter(({ cover }) => cover !== 'dataset').map(({ name, scheme }) => (
+            {collectionFields.map(({ name, scheme }) => (
                 <Property name={name} scheme={scheme} value={resource[name]} />
+            ))}
+            {documentFields.filter(({ name }) => !!resource[name]).map(({ name, scheme }) => (
+                <Property
+                    name={name}
+                    scheme={scheme}
+                    value={resource[name]}
+                />
             ))}
         </CardText>
         <CardActions>
@@ -44,14 +52,16 @@ DetailComponent.defaultProps = {
 
 DetailComponent.propTypes = {
     resource: PropTypes.shape({}),
-    fields: PropTypes.arrayOf(PropTypes.object).isRequired,
+    collectionFields: PropTypes.arrayOf(PropTypes.object).isRequired,
+    documentFields: PropTypes.arrayOf(PropTypes.object).isRequired,
     isLogged: PropTypes.bool.isRequired,
     p: polyglotPropTypes.isRequired,
 };
 
 const mapStateToProps = state => ({
     resource: getResourceLastVersion(state),
-    fields: getFields(state),
+    collectionFields: getCollectionFields(state),
+    documentFields: getDocumentFields(state),
     isLogged: isLoggedIn(state),
 });
 

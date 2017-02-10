@@ -1,7 +1,7 @@
 import { createAction, handleActions } from 'redux-actions';
 import { createSelector } from 'reselect';
 import TITLE_SCHEME from '../../../common/titleScheme';
-import { COVER_COLLECTION, COVER_DATASET } from '../../../common/cover';
+import { COVER_COLLECTION, COVER_DATASET, COVER_DOCUMENT } from '../../../common/cover';
 
 export const LOAD_PUBLICATION = 'LOAD_PUBLICATION';
 export const LOAD_PUBLICATION_SUCCESS = 'LOAD_PUBLICATION_SUCCESS';
@@ -45,6 +45,11 @@ export const getFields = ({ publication: { fields } }) => fields || [];
 export const getCollectionFields = createSelector(
     getFields,
     fields => fields.filter(f => f.cover === COVER_COLLECTION),
+);
+
+export const getDocumentFields = createSelector(
+    getFields,
+    fields => fields.filter(f => f.cover === COVER_DOCUMENT),
 );
 
 export const getDatasetFields = createSelector(
