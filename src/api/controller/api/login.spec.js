@@ -2,7 +2,7 @@ import { auth } from 'config';
 import jwt from 'jsonwebtoken';
 import expect from 'expect';
 
-import login from './login';
+import { loginMiddleware as login } from './login';
 
 describe('login', () => {
     it('should set ctx.status to 401, if ctx.body.username do not match with config', () => {
@@ -18,7 +18,7 @@ describe('login', () => {
                 },
             },
         };
-        login(ctx);
+        login()(ctx);
         expect(ctx.status).toBe(401);
     });
 
@@ -35,7 +35,7 @@ describe('login', () => {
                 },
             },
         };
-        login(ctx);
+        login()(ctx);
         expect(ctx.status).toBe(401);
     });
 
@@ -58,18 +58,21 @@ describe('login', () => {
                 },
             },
         };
-        login(ctx);
+
+        // This is set to now as default in login but we specify it here to avoid random failure in tests
+        const expDate = Date.now();
+        login(expDate)(ctx);
         expect(ctx.body).toEqual({
             token: jwt.sign({
                 username: 'user',
-                exp: Math.ceil(Date.now() / 1000) + auth.expiresIn,
+                exp: Math.ceil(expDate / 1000) + auth.expiresIn,
             }, auth.headerSecret),
         });
         expect(setCall).toEqual([
             'lodex_token',
             jwt.sign({
                 username: 'user',
-                exp: Math.ceil(Date.now() / 1000) + auth.expiresIn,
+                exp: Math.ceil(expDate / 1000) + auth.expiresIn,
             }, auth.cookieSecret),
             { httpOnly: true },
         ]);
