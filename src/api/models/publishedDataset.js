@@ -7,11 +7,11 @@ export default (db) => {
 
     collection.insertBatch = documents => chunk(documents, 100).map(data => collection.insertMany(data));
 
-    collection.findLimitFromSkip = (limit, skip) =>
-        collection.find().skip(skip).limit(limit).toArray();
+    collection.findLimitFromSkip = (limit, skip, filter) =>
+        collection.find(filter).skip(skip).limit(limit).toArray();
 
     collection.findPage = (page = 0, perPage = 10) =>
-        collection.find({ removedAt: { $exists: false } }).skip(page * perPage).limit(perPage).toArray();
+        collection.findLimitFromSkip(perPage, page * perPage, { removedAt: { $exists: false } });
 
     collection.getFindAllStream = () =>
         collection.find({ removedAt: { $exists: false } }).stream();

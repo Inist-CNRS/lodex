@@ -13,7 +13,7 @@ import reducer, {
     HIDE_RESOURCE_ERROR,
 } from './index';
 
-describe.only('resourceReducer', () => {
+describe('resourceReducer', () => {
     it('should initialize with correct state', () => {
         const state = reducer(undefined, { type: '@@INIT' });
         expect(state).toEqual(defaultState);

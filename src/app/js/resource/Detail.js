@@ -37,7 +37,7 @@ export const DetailComponent = ({ resource, fields, isLogged, p: polyglot }) => 
                     </Link>
                 </CardActions>
             :
-                <span />
+                null
         }
     </Card>
 );

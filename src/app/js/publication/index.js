@@ -13,7 +13,7 @@ export const loadPublicationError = createAction(LOAD_PUBLICATION_ERROR);
 
 export const defaultState = {
     loading: false,
-    fields: null,
+    fields: [],
     published: null,
 };
 

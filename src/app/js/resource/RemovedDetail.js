@@ -48,9 +48,7 @@ RemovedDetailComponent.propTypes = {
     p: polyglotPropTypes.isRequired,
 };
 
-const mapStateToProps = state => ({
-    ...getRemovedData(state),
-});
+const mapStateToProps = getRemovedData;
 
 const mapDispatchToProps = {};
 
