@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { CardHeader, CardText, CardActions } from 'material-ui/Card';
 import { Link } from 'react-router';
 import FlatButton from 'material-ui/FlatButton';
-import moment from 'moment';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 
@@ -26,19 +25,16 @@ export const DetailComponent = ({ resource, fields, isLogged, p: polyglot }) => 
                 <Property name={name} scheme={scheme} value={resource[name]} />
             ))}
         </CardText>
-        {
-            isLogged ?
-                <CardActions>
-                    <Link to={{ pathname: '/resource/edit', query: { uri: resource.uri } }}>
-                        <FlatButton className="edit-resource" label={polyglot.t('edit')} primary />
+        <CardActions>
+            {
+                (isLogged ? ['edit', 'hide', 'add-field'] : ['add-field'])
+                .map(name => (
+                    <Link to={{ pathname: `/resource/${name}`, query: { uri: resource.uri } }}>
+                        <FlatButton className={`${name}-resource`} label={polyglot.t(name)} primary />
                     </Link>
-                    <Link to={{ pathname: '/resource/hide', query: { uri: resource.uri } }}>
-                        <FlatButton className="hide-resource" label={polyglot.t('hide')} primary />
-                    </Link>
-                </CardActions>
-            :
-                null
-        }
+                ))
+            }
+        </CardActions>
     </Card>
 );
 

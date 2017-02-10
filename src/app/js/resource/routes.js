@@ -27,6 +27,10 @@ const RemovedResource = () => (
     <Resource mode="removed" />
 );
 
+const AddFieldResource = () => (
+    <Resource mode="add-field" />
+);
+
 export default store => [
     {
         path: '/resource',
@@ -46,6 +50,10 @@ export default store => [
         path: '/resource/removed',
         component: RemovedResource,
         onEnter: onEnterWithAuthenticationCheck(store),
+    },
+    {
+        path: '/resource/add-field',
+        component: AddFieldResource,
     },
     {
         path: '/resource/ark:/:naan/:rest',

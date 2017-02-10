@@ -12,8 +12,13 @@ export const HIDE_RESOURCE = 'HIDE_RESOURCE';
 export const HIDE_RESOURCE_SUCCESS = 'HIDE_RESOURCE_SUCCESS';
 export const HIDE_RESOURCE_ERROR = 'HIDE_RESOURCE_ERROR';
 
+export const ADD_FIELD_TO_RESOURCE = 'ADD_FIELD_TO_RESOURCE';
+export const ADD_FIELD_TO_RESOURCE_SUCCESS = 'ADD_FIELD_TO_RESOURCE_SUCCESS';
+export const ADD_FIELD_TO_RESOURCE_ERROR = 'ADD_FIELD_TO_RESOURCE_ERROR';
+
 export const RESOURCE_FORM_NAME = 'resource';
 export const HIDE_RESOURCE_FORM_NAME = 'hideResource';
+export const NEW_RESOURCE_FIELD_FORM_NAME = 'newResourceField';
 
 export const loadResource = createAction(LOAD_RESOURCE);
 export const loadResourceSuccess = createAction(LOAD_RESOURCE_SUCCESS);
@@ -26,6 +31,10 @@ export const saveResourceError = createAction(SAVE_RESOURCE_ERROR);
 export const hideResource = createAction(HIDE_RESOURCE);
 export const hideResourceSuccess = createAction(HIDE_RESOURCE_SUCCESS);
 export const hideResourceError = createAction(HIDE_RESOURCE_ERROR);
+
+export const addFieldToResource = createAction(ADD_FIELD_TO_RESOURCE);
+export const addFieldToResourceSuccess = createAction(ADD_FIELD_TO_RESOURCE_SUCCESS);
+export const addFieldToResourceError = createAction(ADD_FIELD_TO_RESOURCE_ERROR);
 
 export const defaultState = {
     resource: {},
@@ -80,6 +89,21 @@ export default handleActions({
         saving: false,
     }),
     HIDE_RESOURCE_ERROR: (state, { payload: error }) => ({
+        ...state,
+        error: error.message,
+        saving: false,
+    }),
+    ADD_FIELD_TO_RESOURCE: state => ({
+        ...state,
+        error: null,
+        saving: true,
+    }),
+    ADD_FIELD_TO_RESOURCE_SUCCESS: state => ({
+        ...state,
+        error: null,
+        saving: false,
+    }),
+    ADD_FIELD_TO_RESOURCE_ERROR: (state, { payload: error }) => ({
         ...state,
         error: error.message,
         saving: false,

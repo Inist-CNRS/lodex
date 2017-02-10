@@ -28,6 +28,7 @@ export default {
     remove_transformer: 'Remove this transformer',
     fieldLabel: 'Label',
     fieldName: 'Name',
+    fieldValue: 'Value',
     select_an_operation: 'Select an operation',
     cover: 'Select a coverage',
     cover_dataset: 'Apply to whole dataset',
@@ -52,4 +53,9 @@ export default {
     restore: 'Restore',
     removed_at: 'Removed at',
     removed_reason: 'Reason',
+    add_field_to_resource: 'add a field to this resource',
+    about_you: 'Enter your information:',
+    contributorName: 'Name',
+    contributorMail: 'Email',
+    new_field: 'Field to add',
 };
