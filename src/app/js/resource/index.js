@@ -178,6 +178,18 @@ export const getResourceUnvalidatedFields = (state) => {
         .map(({ fieldName }) => fieldName);
 };
 
+export const getResourceContributorsByField = (state) => {
+    const { contributions } = state.resource.resource;
+    if (!contributions) {
+        return [];
+    }
+    return contributions
+        .reduce((acc, { fieldName, contributor: { name } }) => ({
+            ...acc,
+            [fieldName]: name,
+        }), {});
+};
+
 export const getRemovedData = (state) => {
     const resource = state.resource.resource;
     const { uri, removedAt, reason } = resource;

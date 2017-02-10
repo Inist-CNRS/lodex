@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { property as propertyPropTypes } from './propTypes';
 import {
     getResourceUnvalidatedFields,
+    getResourceContributorsByField,
 } from '../resource';
 
 const styles = {
@@ -22,11 +23,16 @@ const styles = {
     },
 };
 
-const PropertyComponent = ({ name, value, scheme, unValidatedFields }) => (
+const PropertyComponent = ({ name, value, scheme, contributors, unValidatedFields }) => (
     <dl className="property" style={styles.container(unValidatedFields.includes(name))}>
         <dt>
             <div className="property_name" style={styles.name}>{name}</div>
             <div className="property_scheme" style={styles.scheme}>{scheme}</div>
+            { contributors[name] ?
+                <div className="property_contributor" style={styles.scheme}>{contributors[name]}</div>
+            :
+                null
+            }
         </dt>
         <dd>{value}</dd>
     </dl>
@@ -36,6 +42,7 @@ PropertyComponent.propTypes = propertyPropTypes;
 
 const mapStateToProps = state => ({
     unValidatedFields: getResourceUnvalidatedFields(state),
+    contributors: getResourceContributorsByField(state),
 });
 
 const mapDispatchToProps = {};
