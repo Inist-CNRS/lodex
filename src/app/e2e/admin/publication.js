@@ -5,7 +5,7 @@ import chunk from 'lodash.chunk';
 
 import driver from '../../../common/tests/chromeDriver';
 import { clear } from '../../../common/tests/fixtures';
-import { elementIsClickable, elementValueIs } from '../../../common/tests/conditions';
+import { elementIsClicked, inputElementIsFocusable, elementValueIs } from '../../../common/tests/conditions';
 
 describe('Admin', () => {
     describe('Admin page', function homeTests() {
@@ -26,6 +26,10 @@ describe('Admin', () => {
                 const username = await driver.findElement(By.css('input[name=username]'));
                 const password = await driver.findElement(By.css('input[name=password]'));
                 const form = await driver.findElement(By.css('#login_form'));
+
+                await driver.wait(inputElementIsFocusable(username, true), DEFAULT_WAIT_TIMEOUT);
+                await driver.wait(inputElementIsFocusable(password, true), DEFAULT_WAIT_TIMEOUT);
+
                 await username.clear();
                 await username.sendKeys('user');
                 await password.clear();
@@ -121,10 +125,9 @@ describe('Admin', () => {
                 await driver.wait(until.elementLocated(By.css('.LINK')), DEFAULT_WAIT_TIMEOUT);
                 await driver.executeScript('document.getElementsByClassName("LINK")[0].scrollIntoView(true);');
                 const linkButton = await driver.findElement(By.css('.LINK'));
-                await driver.wait(elementIsClickable(linkButton), DEFAULT_WAIT_TIMEOUT);
-                await linkButton.click();
+                await driver.wait(elementIsClicked(linkButton), DEFAULT_WAIT_TIMEOUT);
                 const reference = await driver.findElement(By.css('#field_form .reference input'));
-                await driver.wait(elementIsClickable(reference), DEFAULT_WAIT_TIMEOUT);
+                await driver.wait(inputElementIsFocusable(reference), DEFAULT_WAIT_TIMEOUT);
             });
 
             it('should configure transformer Link', async () => {
@@ -155,8 +158,7 @@ describe('Admin', () => {
         describe('Publishing', () => {
             it('should display the "data published" message after publication', async () => {
                 const buttonPublish = await driver.findElement(By.css('.btn-publish'));
-                await driver.wait(elementIsClickable(buttonPublish), DEFAULT_WAIT_TIMEOUT);
-                await buttonPublish.click();
+                await driver.wait(elementIsClicked(buttonPublish), DEFAULT_WAIT_TIMEOUT);
                 await driver.wait(until.elementLocated(By.css('.data-published')), DEFAULT_WAIT_TIMEOUT);
             });
 
