@@ -61,9 +61,6 @@ build-frontend: ## Build the frontend application
 npm: ## allow to run dockerized npm command eg make npm 'install koa --save'
 	docker-compose run --rm npm $(COMMAND_ARGS)
 
-docker-run-dev: ## run node server with pm2 for development and webpack-dev-server
-	docker-compose up --force-recreate
-
 test-api-unit: ## Run the API unit tests
 	NODE_ENV=test ./node_modules/.bin/mocha \
 		--require babel-polyfill \

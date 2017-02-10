@@ -1,6 +1,6 @@
 import { takeLatest } from 'redux-saga';
 import { call, put, select } from 'redux-saga/effects';
-import { LOCATION_CHANGE } from 'react-router-redux';
+import { LOCATION_CHANGE, push } from 'react-router-redux';
 
 import {
     getLoadResourceRequest,
@@ -16,7 +16,6 @@ export const parsePathName = pathname => pathname.match(/^(\/resource)(\/ark:\/)
 
 export function* handleLoadResource({ payload }) {
     const [, name, isArk, ark] = yield call(parsePathName, payload.pathname);
-
     if (name !== '/resource') {
         return;
     }
@@ -33,6 +32,9 @@ export function* handleLoadResource({ payload }) {
     }
 
     yield put(loadResourceSuccess(response));
+    if (response.removedAt && ark !== '/removed') {
+        yield put(push({ pathname: '/resource/removed', query: { uri } }));
+    }
     yield put(loadPublication());
 }
 

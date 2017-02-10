@@ -9,7 +9,7 @@ export const getPage = async (ctx) => {
     const intPerPage = parseInt(perPage, 10);
 
     const [data, total] = await Promise.all([
-        ctx.publishedDataset.findLimitFromSkip(intPerPage, intPage * intPerPage),
+        ctx.publishedDataset.findPage(intPage, intPerPage),
         ctx.publishedDataset.count(),
     ]);
 
@@ -25,7 +25,7 @@ export const getPage = async (ctx) => {
 export const editResource = async (ctx) => {
     const newVersion = ctx.request.body;
     const resource = await ctx.publishedDataset.findByUri(newVersion.uri);
-    if (!resource) {
+    if (!resource || resource.removed_at) {
         ctx.status = 404;
         ctx.body = 'Document not found';
         return;
@@ -34,7 +34,14 @@ export const editResource = async (ctx) => {
     ctx.body = await ctx.publishedDataset.addVersion(resource, newVersion);
 };
 
+export const removeResource = async (ctx) => {
+    const { uri, reason } = ctx.request.body;
+
+    ctx.body = await ctx.publishedDataset.hide(uri, reason);
+};
+
 app.use(route.get('/', getPage));
 app.use(route.post('/', editResource));
+app.use(route.del('/', removeResource));
 
 export default app;

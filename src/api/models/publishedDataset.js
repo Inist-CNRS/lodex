@@ -4,8 +4,18 @@ import omit from 'lodash.omit';
 
 export default (db) => {
     const collection = db.collection('publishedDataset');
+
     collection.insertBatch = documents => chunk(documents, 100).map(data => collection.insertMany(data));
-    collection.findLimitFromSkip = (limit, skip) => collection.find().skip(skip).limit(limit).toArray();
+
+    collection.findLimitFromSkip = (limit, skip, filter) =>
+        collection.find(filter).skip(skip).limit(limit).toArray();
+
+    collection.findPage = (page = 0, perPage = 10) =>
+        collection.findLimitFromSkip(perPage, page * perPage, { removedAt: { $exists: false } });
+
+    collection.getFindAllStream = () =>
+        collection.find({ removedAt: { $exists: false } }).stream();
+
     collection.findById = async (id) => {
         const oid = new mongo.ObjectID(id);
         return collection.findOne({ _id: oid });
@@ -27,6 +37,11 @@ export default (db) => {
             },
         );
 
+    collection.hide = async (uri, reason, date = new Date()) =>
+        collection.update({ uri }, { $set: {
+            removedAt: date,
+            reason,
+        } });
 
     return collection;
 };

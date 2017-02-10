@@ -3,15 +3,15 @@ import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 import { Field, reduxForm, propTypes as reduxFormPropTypes } from 'redux-form';
-import { CardText, CardActions } from 'material-ui/Card';
+import { CardText, CardHeader, CardActions } from 'material-ui/Card';
 import { Link } from 'react-router';
 import FlatButton from 'material-ui/FlatButton';
 
 import {
     getResourceLastVersion,
-    saveResource,
+    hideResource,
     isSaving,
-    RESOURCE_FORM_NAME,
+    HIDE_RESOURCE_FORM_NAME,
 } from './';
 import { getCollectionFields } from '../publication';
 import Card from '../lib/Card';
@@ -19,62 +19,50 @@ import FormTextField from '../lib/FormTextField';
 import Alert from '../lib/Alert';
 import ButtonWithStatus from '../lib/ButtonWithStatus';
 import { polyglot as polyglotPropTypes } from '../lib/propTypes';
+import Property from '../lib/Property';
 
-const validate = (values) => {
-    const errors = Object.keys(values).reduce((currentErrors, field) => {
-        if (!values[field]) {
-            return {
-                ...currentErrors,
-                [field]: 'Required',
-            };
-        }
-        return currentErrors;
-    }, {});
-
-    return errors;
-};
-
-export const EditDetailComponent = ({ resource, fields, saving, error, handleSubmit, p: polyglot }) => (
-    <Card className="edit-detail">
+export const HideDetailComponent = ({ resource, fields, saving, error, handleSubmit, p: polyglot }) => (
+    <Card className="hide-detail">
+        <CardHeader title={polyglot.t('remove_resource')} />
         <CardText>
-            <form id="resource_form" onSubmit={handleSubmit}>
+            {fields.map(({ name, scheme }) => (
+                <Property name={name} scheme={scheme} value={resource[name]} />
+            ))}
+        </CardText>
+        <CardText>
+            <form id="hide_resource_form" onSubmit={() => handleSubmit(resource.uri)}>
                 {error && <Alert><p>{error}</p></Alert>}
-                {fields.map(field => (
-                    <Field
-                        name={field.name}
-                        component={FormTextField}
-                        disabled={field.name === 'uri'}
-                        label={field.label}
-                        fullWidth
-                    />
-                ))}
+                <Field
+                    name="reason"
+                    component={FormTextField}
+                    label={polyglot.t('reason')}
+                    fullWidth
+                    multiLine
+                />
             </form>
         </CardText>
         <CardActions>
             <ButtonWithStatus
-                className="save-resource"
-                label={polyglot.t('save')}
+                className="hide-resource"
+                label={polyglot.t('hide')}
                 primary
                 loading={saving}
-                onTouchTap={handleSubmit}
+                onTouchTap={() => handleSubmit(resource.uri)}
             />
-            <Link to={{ pathname: '/resource/hide', query: { uri: resource.uri } }}>
-                <FlatButton label={polyglot.t('hide')} secondary />
-            </Link>
             <Link to={{ pathname: '/resource', query: { uri: resource.uri } }}>
-                <FlatButton label={polyglot.t('cancel')} secondary />
+                <FlatButton label={'Cancel'} secondary />
             </Link>
         </CardActions>
     </Card>
 );
 
-EditDetailComponent.defaultProps = {
+HideDetailComponent.defaultProps = {
     resource: null,
     error: null,
     saving: false,
 };
 
-EditDetailComponent.propTypes = {
+HideDetailComponent.propTypes = {
     ...reduxFormPropTypes,
     fields: PropTypes.arrayOf(PropTypes.object).isRequired,
     saving: PropTypes.bool,
@@ -89,14 +77,13 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = {
-    handleSubmit: saveResource,
+    handleSubmit: hideResource,
 };
 
 export default compose(
     connect(mapStateToProps, mapDispatchToProps),
     reduxForm({
-        form: RESOURCE_FORM_NAME,
-        validate,
+        form: HIDE_RESOURCE_FORM_NAME,
     }),
     translate,
-)(EditDetailComponent);
+)(HideDetailComponent);

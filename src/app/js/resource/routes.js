@@ -1,12 +1,33 @@
 import React from 'react';
 
 import Resource from './Resource';
+import { isLoggedIn as selectIsLoggedIn } from '../user';
+
+export const onEnterWithAuthenticationCheck = store => (nextState, replaceState) => {
+    const state = store.getState();
+    const isLoggedIn = selectIsLoggedIn(state);
+
+    if (!isLoggedIn) {
+        replaceState({
+            pathname: '/resource',
+            query: nextState.location.query,
+        });
+    }
+};
 
 const EditResource = () => (
-    <Resource edit />
+    <Resource mode="edit" />
 );
 
-export default [
+const HideResource = () => (
+    <Resource mode="hide" />
+);
+
+const RemovedResource = () => (
+    <Resource mode="removed" />
+);
+
+export default store => [
     {
         path: '/resource',
         component: Resource,
@@ -14,6 +35,17 @@ export default [
     {
         path: '/resource/edit',
         component: EditResource,
+        onEnter: onEnterWithAuthenticationCheck(store),
+    },
+    {
+        path: '/resource/hide',
+        component: HideResource,
+        onEnter: onEnterWithAuthenticationCheck(store),
+    },
+    {
+        path: '/resource/removed',
+        component: RemovedResource,
+        onEnter: onEnterWithAuthenticationCheck(store),
     },
     {
         path: '/resource/ark:/:naan/:rest',
