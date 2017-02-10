@@ -144,6 +144,18 @@ export const getHideResourceRequest = (state, data) => ({
     body: JSON.stringify(data),
 });
 
+export const getAddFieldToResourceRequest = (state, data) => ({
+    url: '/api/publishedDataset/add_field',
+    credentials: 'include',
+    method: 'POST',
+    headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${state.user.token}`,
+        'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
+});
+
 export const getResourceLastVersion = (state) => {
     const resource = state.resource.resource;
     const { versions, uri } = resource;
@@ -168,5 +180,6 @@ export const getRemovedData = (state) => {
 
 export const getResourceFormData = state => state.form.resource.values;
 export const getHideResourceFormData = state => state.form.hideResource.values;
+export const getNewResourceFieldFormData = state => state.form.newResourceField.values;
 export const isLoading = state => state.resource.loading;
 export const isSaving = state => state.resource.saving;

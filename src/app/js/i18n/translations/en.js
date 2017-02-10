@@ -29,6 +29,7 @@ export default {
     fieldLabel: 'Label',
     fieldName: 'Name',
     fieldValue: 'Value',
+    fieldScheme: 'Scheme',
     select_an_operation: 'Select an operation',
     cover: 'Select a coverage',
     cover_dataset: 'Apply to whole dataset',

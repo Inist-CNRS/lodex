@@ -72,6 +72,12 @@ export const HideDetailComponent = ({ resource, fields, saving, error, handleSub
                             label={polyglot.t('fieldValue')}
                             fullWidth
                         />
+                        <Field
+                            name="field.scheme"
+                            component={FormTextField}
+                            label={polyglot.t('fieldScheme')}
+                            fullWidth
+                        />
                     </CardText>
                 </div>
             </form>

@@ -31,6 +31,6 @@ export function* handleHideResource({ payload: uri }) {
     yield put(push({ pathname: '/resource/removed', query: { uri } }));
 }
 
-export default function* watchLoadDatasetPageRequest() {
+export default function* watchHideResource() {
     yield takeLatest(HIDE_RESOURCE, handleHideResource);
 }
