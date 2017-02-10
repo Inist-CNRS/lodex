@@ -1,4 +1,4 @@
-import mongo from 'mongodb';
+import { ObjectID } from 'mongodb';
 import chunk from 'lodash.chunk';
 import omit from 'lodash.omit';
 
@@ -13,11 +13,20 @@ export default (db) => {
     collection.findPage = (page = 0, perPage = 10) =>
         collection.findLimitFromSkip(perPage, page * perPage, { removedAt: { $exists: false } });
 
+    collection.findRemovedPage = (page = 0, perPage = 10) =>
+        collection.findLimitFromSkip(perPage, page * perPage, { removedAt: { $exists: true } });
+
+    collection.countRemoved = () =>
+        collection.count({ removedAt: { $exists: true } });
+
+    collection.countWithoutRemoved = () =>
+        collection.count({ removedAt: { $exists: false } });
+
     collection.getFindAllStream = () =>
         collection.find({ removedAt: { $exists: false } }).stream();
 
     collection.findById = async (id) => {
-        const oid = new mongo.ObjectID(id);
+        const oid = new ObjectID(id);
         return collection.findOne({ _id: oid });
     };
 
@@ -42,6 +51,9 @@ export default (db) => {
             removedAt: date,
             reason,
         } });
+
+    collection.restore = async uri =>
+        collection.update({ uri }, { $unset: { removedAt: true, reason: true } });
 
     return collection;
 };

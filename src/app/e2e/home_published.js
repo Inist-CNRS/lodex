@@ -47,8 +47,8 @@ describe('Home page with published data', function homePublishedDataTests() {
 
         const tds = await driver.findElements(By.css('.dataset table tbody td'));
         const tdsText = await Promise.all(tds.map(td => td.getText()));
-        tdsText.some(t => t === 'PEREGRIN.TOOK');
-        tdsText.some(t => t === 'peregrin.took@shire.net');
+        expect(tdsText.some(t => t === 'PEREGRIN.TOOK')).toEqual(true);
+        expect(tdsText.some(t => t === 'peregrin.took@shire.net')).toEqual(true);
     });
 
     after(async () => {

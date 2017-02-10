@@ -1,0 +1,185 @@
+/* eslint max-len: off */
+import expect, { createSpy } from 'expect';
+
+import {
+    getPage,
+    getRemovedPage,
+    editResource,
+    removeResource,
+    restoreResource,
+} from './publishedDataset';
+
+describe('publishedDataset', () => {
+    describe('getPage', () => {
+        const ctx = {
+            publishedDataset: {
+                findPage: createSpy().andReturn(Promise.resolve([
+                    { uri: 1, versions: [{ v: 1 }, { v: 2 }] },
+                    { uri: 2, versions: [{ v: 1 }, { v: 2 }, { v: 3 }] },
+                    { uri: 3, versions: [{ v: 1 }] },
+                ])),
+                countWithoutRemoved: createSpy().andReturn(Promise.resolve(42)),
+            },
+            request: {
+                query: {
+                    page: 1,
+                    perPage: 100,
+                },
+            },
+        };
+
+        it('should call ctx.publishedDataset.findPage', async () => {
+            await getPage(ctx);
+
+            expect(ctx.publishedDataset.findPage).toHaveBeenCalledWith(1, 100);
+        });
+
+        it('should call ctx.publishedDataset.countWithRemoved', async () => {
+            await getPage(ctx);
+
+            expect(ctx.publishedDataset.countWithoutRemoved).toHaveBeenCalled();
+        });
+
+        it('should return only the last version of each doc', async () => {
+            await getPage(ctx);
+
+            expect(ctx.body).toEqual({
+                data: [
+                    { uri: 1, v: 2 },
+                    { uri: 2, v: 3 },
+                    { uri: 3, v: 1 },
+                ],
+                total: 42,
+            });
+        });
+    });
+
+    describe('getRemovedPage', () => {
+        const ctx = {
+            publishedDataset: {
+                findRemovedPage: createSpy().andReturn(Promise.resolve([
+                    { uri: 1, versions: [{ v: 1 }, { v: 2 }] },
+                    { uri: 2, versions: [{ v: 1 }, { v: 2 }, { v: 3 }] },
+                    { uri: 3, versions: [{ v: 1 }] },
+                ])),
+                countRemoved: createSpy().andReturn(Promise.resolve(42)),
+            },
+            request: {
+                query: {
+                    page: 1,
+                    perPage: 100,
+                },
+            },
+        };
+
+        it('should call ctx.publishedDataset.findRemovedPage', async () => {
+            await getRemovedPage(ctx);
+
+            expect(ctx.publishedDataset.findRemovedPage).toHaveBeenCalledWith(1, 100);
+        });
+
+        it('should call ctx.publishedDataset.countRemoved', async () => {
+            await getRemovedPage(ctx);
+
+            expect(ctx.publishedDataset.countRemoved).toHaveBeenCalledWith();
+        });
+
+        it('should return only the last version of each doc', async () => {
+            await getRemovedPage(ctx);
+
+            expect(ctx.body).toEqual({
+                data: [
+                    { uri: 1, v: 2 },
+                    { uri: 2, v: 3 },
+                    { uri: 3, v: 1 },
+                ],
+                total: 42,
+            });
+        });
+    });
+
+    describe('editResource', () => {
+        const ctx = {
+            publishedDataset: {
+                findByUri: createSpy().andReturn(Promise.resolve('found resource')),
+                addVersion: createSpy().andReturn(Promise.resolve('foo')),
+            },
+            request: {
+                body: {
+                    uri: 'the uri',
+                },
+            },
+        };
+
+        it('should find the resource by its uri', async () => {
+            await editResource(ctx);
+
+            expect(ctx.publishedDataset.findByUri).toHaveBeenCalledWith('the uri');
+        });
+
+        it('should add the new version', async () => {
+            await editResource(ctx);
+
+            expect(ctx.publishedDataset.addVersion).toHaveBeenCalledWith('found resource', { uri: 'the uri' });
+        });
+
+        it('should return the new version', async () => {
+            await editResource(ctx);
+
+            expect(ctx.body).toEqual('foo');
+        });
+    });
+
+    describe('removeResource', () => {
+        const ctx = {
+            publishedDataset: {
+                hide: createSpy().andReturn(Promise.resolve('foo')),
+            },
+            request: {
+                body: {
+                    uri: 'the uri',
+                    reason: 'the reason',
+                },
+            },
+        };
+
+        it('should hide the resource', async () => {
+            await removeResource(ctx);
+
+            expect(ctx.publishedDataset.hide).toHaveBeenCalledWith('the uri', 'the reason');
+        });
+
+
+        it('should return the result', async () => {
+            await removeResource(ctx);
+
+            expect(ctx.body).toEqual('foo');
+        });
+    });
+
+    describe('restoreResource', () => {
+        const ctx = {
+            publishedDataset: {
+                restore: createSpy().andReturn(Promise.resolve('foo')),
+            },
+            request: {
+                body: {
+                    uri: 'the uri',
+                },
+            },
+        };
+
+        it('should restore the resource', async () => {
+            await restoreResource(ctx);
+
+            expect(ctx.publishedDataset.restore).toHaveBeenCalledWith('the uri');
+        });
+
+
+        it('should return the result', async () => {
+            await restoreResource(ctx);
+
+            expect(ctx.body).toEqual('foo');
+        });
+    });
+});

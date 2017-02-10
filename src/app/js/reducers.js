@@ -12,6 +12,7 @@ import parsing from './admin/parsing';
 import publication from './publication';
 import publicationPreview from './admin/publicationPreview';
 import publishReducer from './admin/publish';
+import removedResources from './admin/removedResources';
 import resource from './resource';
 import upload from './admin/upload';
 import user from './user';
@@ -31,6 +32,7 @@ const rootReducer = combineReducers({
     publication,
     publicationPreview,
     publish: publishReducer,
+    removedResources,
     resource,
     routing,
     upload,

@@ -62,7 +62,7 @@ describe('characteristic reducer', () => {
                 publication: {
                     fields: [
                         { name: 'title', scheme: TITLE_SCHEME, cover: COVER_DATASET },
-                        { name: 'title_ressource', scheme: TITLE_SCHEME, cover: COVER_COLLECTION },
+                        { name: 'title_resource', scheme: TITLE_SCHEME, cover: COVER_COLLECTION },
                         { name: 'other', scheme: 'other' },
                     ],
                 },
@@ -78,7 +78,7 @@ describe('characteristic reducer', () => {
             const state = {
                 publication: {
                     fields: [
-                        { name: 'title_ressource', scheme: TITLE_SCHEME, cover: COVER_COLLECTION },
+                        { name: 'title_resource', scheme: TITLE_SCHEME, cover: COVER_COLLECTION },
                         { name: 'other', scheme: 'other' },
                     ],
                 },
