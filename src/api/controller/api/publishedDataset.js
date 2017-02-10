@@ -66,10 +66,18 @@ export const restoreResource = async (ctx) => {
     ctx.body = await ctx.publishedDataset.restore(uri);
 };
 
+export const addFieldToResource = async (ctx) => {
+    const { uri, contributor, field } = ctx.request.body;
+    await ctx.field.addContributionField(field, contributor);
+
+    ctx.body = await ctx.publishedDataset.addFieldToResource(uri, contributor, field);
+};
+
 app.use(route.get('/removed', getRemovedPage));
 app.use(route.get('/', getPage));
 app.use(route.post('/', editResource));
 app.use(route.put('/restore', restoreResource));
 app.use(route.del('/', removeResource));
+app.use(route.post('/add_field', addFieldToResource));
 
 export default app;

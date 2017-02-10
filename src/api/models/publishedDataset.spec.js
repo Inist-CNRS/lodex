@@ -33,4 +33,55 @@ describe('publishedDataset', () => {
             );
         });
     });
+
+    describe('addFieldToResource', () => {
+        const previousResource = {
+            uri: 'uri',
+            versions: [{
+                field: 'value',
+            }],
+        };
+        const collection = {
+            findOne: createSpy().andReturn(previousResource),
+            update: createSpy(),
+        };
+        const db = {
+            collection: () => collection,
+        };
+        const publishedDatasetCollection = publishedDataset(db);
+
+        it('should call addFieldToResource with uri', async () => {
+            const contributor = {
+                name: 'peregrin took',
+                mail: 'peregrin.took@shire.net',
+            };
+
+            const field = {
+                name: 'newField',
+                value: 'newValue',
+            };
+            const date = new Date();
+            await publishedDatasetCollection.addFieldToResource('uri', contributor, field, date);
+
+            expect(collection.findOne).toHaveBeenCalledWith({ uri: 'uri' });
+            expect(collection.update).toHaveBeenCalledWith(
+                { uri: 'uri' },
+                {
+                    $addToSet: {
+                        contributions: {
+                            fieldName: field.name,
+                            contributor,
+                        },
+                    },
+                    $push: {
+                        versions: {
+                            field: 'value',
+                            newField: 'newValue',
+                            publicationDate: date,
+                        },
+                    },
+                },
+            );
+        });
+    });
 });
