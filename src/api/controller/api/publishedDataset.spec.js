@@ -18,7 +18,7 @@ describe('publishedDataset', () => {
                     { uri: 2, versions: [{ v: 1 }, { v: 2 }, { v: 3 }] },
                     { uri: 3, versions: [{ v: 1 }] },
                 ])),
-                countWithRemoved: createSpy().andReturn(Promise.resolve(42)),
+                countWithoutRemoved: createSpy().andReturn(Promise.resolve(42)),
             },
             request: {
                 query: {
@@ -37,7 +37,7 @@ describe('publishedDataset', () => {
         it('should call ctx.publishedDataset.countWithRemoved', async () => {
             await getPage(ctx);
 
-            expect(ctx.publishedDataset.countWithRemoved).toHaveBeenCalled();
+            expect(ctx.publishedDataset.countWithoutRemoved).toHaveBeenCalled();
         });
 
         it('should return only the last version of each doc', async () => {
@@ -57,12 +57,12 @@ describe('publishedDataset', () => {
     describe('getRemovedPage', () => {
         const ctx = {
             publishedDataset: {
-                findPage: createSpy().andReturn(Promise.resolve([
+                findRemovedPage: createSpy().andReturn(Promise.resolve([
                     { uri: 1, versions: [{ v: 1 }, { v: 2 }] },
                     { uri: 2, versions: [{ v: 1 }, { v: 2 }, { v: 3 }] },
                     { uri: 3, versions: [{ v: 1 }] },
                 ])),
-                countWithRemoved: createSpy().andReturn(Promise.resolve(42)),
+                countRemoved: createSpy().andReturn(Promise.resolve(42)),
             },
             request: {
                 query: {
@@ -72,16 +72,16 @@ describe('publishedDataset', () => {
             },
         };
 
-        it('should call ctx.publishedDataset.findPage', async () => {
+        it('should call ctx.publishedDataset.findRemovedPage', async () => {
             await getRemovedPage(ctx);
 
-            expect(ctx.publishedDataset.findPage).toHaveBeenCalledWith(1, 100, true);
+            expect(ctx.publishedDataset.findRemovedPage).toHaveBeenCalledWith(1, 100);
         });
 
-        it('should call ctx.publishedDataset.countWithRemoved', async () => {
+        it('should call ctx.publishedDataset.countRemoved', async () => {
             await getRemovedPage(ctx);
 
-            expect(ctx.publishedDataset.countWithRemoved).toHaveBeenCalledWith(true);
+            expect(ctx.publishedDataset.countRemoved).toHaveBeenCalledWith();
         });
 
         it('should return only the last version of each doc', async () => {

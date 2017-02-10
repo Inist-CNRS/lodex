@@ -10,11 +10,17 @@ export default (db) => {
     collection.findLimitFromSkip = (limit, skip, filter) =>
         collection.find(filter).skip(skip).limit(limit).toArray();
 
-    collection.findPage = (page = 0, perPage = 10, removed) =>
-        collection.findLimitFromSkip(perPage, page * perPage, { removedAt: { $exists: removed } });
+    collection.findPage = (page = 0, perPage = 10) =>
+        collection.findLimitFromSkip(perPage, page * perPage, { removedAt: { $exists: false } });
 
-    collection.countWithRemoved = removed =>
-        collection.count({ removedAt: { $exists: removed } });
+    collection.findRemovedPage = (page = 0, perPage = 10) =>
+        collection.findLimitFromSkip(perPage, page * perPage, { removedAt: { $exists: true } });
+
+    collection.countRemoved = () =>
+        collection.count({ removedAt: { $exists: true } });
+
+    collection.countWithoutRemoved = () =>
+        collection.count({ removedAt: { $exists: false } });
 
     collection.getFindAllStream = () =>
         collection.find({ removedAt: { $exists: false } }).stream();

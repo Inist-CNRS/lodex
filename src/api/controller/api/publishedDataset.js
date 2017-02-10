@@ -10,7 +10,7 @@ export const getPage = async (ctx) => {
 
     const [data, total] = await Promise.all([
         ctx.publishedDataset.findPage(intPage, intPerPage),
-        ctx.publishedDataset.countWithRemoved(),
+        ctx.publishedDataset.countWithoutRemoved(),
     ]);
 
     ctx.body = {
@@ -28,8 +28,8 @@ export const getRemovedPage = async (ctx) => {
     const intPerPage = parseInt(perPage, 10);
 
     const [data, total] = await Promise.all([
-        ctx.publishedDataset.findPage(intPage, intPerPage, true), // true for removed
-        ctx.publishedDataset.countWithRemoved(true), // true for removed
+        ctx.publishedDataset.findRemovedPage(intPage, intPerPage),
+        ctx.publishedDataset.countRemoved(),
     ]);
 
     ctx.body = {
