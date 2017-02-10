@@ -9,6 +9,7 @@ import { grey400 } from 'material-ui/styles/colors';
 import Card from '../../lib/Card';
 
 import { polyglot as polyglotPropTypes } from '../../lib/propTypes';
+import { addField } from '../fields';
 import { getParsedExcerptColumns, clearParsing } from './';
 import ParsingExcerpt from './ParsingExcerpt';
 import ParsingSummary from './ParsingSummary';
@@ -52,7 +53,8 @@ export class ParsingResultComponent extends Component {
             totalLoadedLines,
             totalFailedLines,
             totalParsedLines,
-            onClearParsing,
+            handleAddColumn,
+            handleClearParsing,
             p: polyglot,
         } = this.props;
         const { showErrors } = this.state;
@@ -77,12 +79,13 @@ export class ParsingResultComponent extends Component {
                             <ParsingExcerpt
                                 columns={excerptColumns}
                                 lines={excerptLines}
+                                onAddColumn={handleAddColumn}
                             />
                         }
                     </div>
                 </CardText>
                 <CardActions>
-                    <FlatButton onClick={onClearParsing} label={polyglot.t('Upload another file')} />
+                    <FlatButton onClick={handleClearParsing} label={polyglot.t('Upload another file')} />
                 </CardActions>
             </Card>
         );
@@ -96,7 +99,8 @@ ParsingResultComponent.propTypes = {
     totalLoadedLines: PropTypes.number.isRequired,
     totalFailedLines: PropTypes.number.isRequired,
     totalParsedLines: PropTypes.number.isRequired,
-    onClearParsing: PropTypes.func.isRequired,
+    handleAddColumn: PropTypes.func.isRequired,
+    handleClearParsing: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
@@ -110,7 +114,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = {
-    onClearParsing: clearParsing,
+    handleAddColumn: addField,
+    handleClearParsing: clearParsing,
 };
 
 export default compose(

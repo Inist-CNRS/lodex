@@ -19,19 +19,20 @@ export const PublicationExcerptComponent = ({ columns, lines, onHeaderClick, p: 
     <Table selectable={false} fixedHeader={false} style={styles.table}>
         <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
             <TableRow onCellClick={onHeaderClick}>
-                {columns.map(column => (
+                {columns.map(({ label, name }) => (
                     <TableHeaderColumn
+                        className={`publication-excerpt-column publication-excerpt-column-${name}`}
                         style={styles.header}
                         tooltip={polyglot.t('click_to_edit_publication_field')}
                     >
-                        {column.label || column.name}
+                        {label || name}
                     </TableHeaderColumn>))}
             </TableRow>
         </TableHeader>
         <TableBody displayRowCheckbox={false}>
             {lines.map(line => (
                 <TableRow>
-                    {columns.map(column => <TableRowColumn>{line[column.name]}</TableRowColumn>)}
+                    {columns.map(({ name }) => <TableRowColumn>{line[name]}</TableRowColumn>)}
                 </TableRow>
             ))}
         </TableBody>
@@ -49,9 +50,9 @@ export default compose(
     translate,
     pure,
     withHandlers({
-        onHeaderClick: props => (_, __, col) => {
-            if (props.onHeaderClick) {
-                props.onHeaderClick(col - 1);
+        onHeaderClick: ({ onHeaderClick }) => (_, __, col) => {
+            if (onHeaderClick) {
+                onHeaderClick(col - 1);
             }
         },
     }),

@@ -1,7 +1,6 @@
 import expect from 'expect';
 import reducer, {
     defaultState,
-    addField,
     addFieldSuccess,
     editField,
     loadFieldError,
@@ -17,31 +16,15 @@ describe('field reducer', () => {
     });
 
     describe('addField', () => {
-        it('should handle the ADD_FIELD action', () => {
-            const state = reducer({ list: [{ existingField: true }] }, addField());
-            expect(state).toEqual({
-                ...state,
-                editedFieldIndex: 1,
-                list: [
-                    { existingField: true },
-                    {
-                        cover: 'collection',
-                        label: 'newField 2',
-                        name: 'newField2',
-                        transformers: [],
-                    },
-                ],
-            });
-        });
-
         it('should handle the ADD_FIELD_SUCCESS action', () => {
             const state = reducer({
                 list: [{ name: 'foo' }, { name: 'bar' }],
-            }, addFieldSuccess({ name: 'bar', updated: true }));
+            }, addFieldSuccess({ name: 'i am new' }));
 
             expect(state).toEqual({
                 ...state,
-                list: [{ name: 'foo' }, { name: 'bar', updated: true }],
+                editedFieldIndex: 2,
+                list: [{ name: 'foo' }, { name: 'bar' }, { name: 'i am new' }],
             });
         });
     });

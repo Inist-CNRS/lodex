@@ -5,13 +5,15 @@ import withHandlers from 'recompose/withHandlers';
 
 import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn } from 'material-ui/Table';
 
+import ParsingExcerptAddColumn from './ParsingExcerptAddColumn';
+
 const styles = {
     table: {
         width: 'auto',
     },
 };
 
-export const ParsingExcerptComponent = ({ columns, lines, onHeaderClick }) => (
+export const ParsingExcerptComponent = ({ columns, lines, onAddColumn, onHeaderClick }) => (
     <Table selectable={false} fixedHeader={false} style={styles.table}>
         <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
             <TableRow onCellClick={onHeaderClick}>
@@ -24,6 +26,11 @@ export const ParsingExcerptComponent = ({ columns, lines, onHeaderClick }) => (
                     {columns.map(c => <TableRowColumn>{l[c]}</TableRowColumn>)}
                 </TableRow>
             ))}
+            <TableRow>
+                {columns.map(c => (
+                    <ParsingExcerptAddColumn name={c} onAddColumn={onAddColumn} />
+                ))}
+            </TableRow>
         </TableBody>
     </Table>
 );
@@ -31,15 +38,21 @@ export const ParsingExcerptComponent = ({ columns, lines, onHeaderClick }) => (
 ParsingExcerptComponent.propTypes = {
     columns: PropTypes.arrayOf(PropTypes.string).isRequired,
     lines: PropTypes.arrayOf(PropTypes.object).isRequired,
+    onAddColumn: PropTypes.func.isRequired,
     onHeaderClick: PropTypes.func.isRequired,
 };
 
 export default compose(
     pure,
     withHandlers({
-        onHeaderClick: props => (_, __, col) => {
-            if (props.onHeaderClick) {
-                props.onHeaderClick(col - 1);
+        onAddColumn: ({ onAddColumn }) => (name) => {
+            if (onAddColumn) {
+                onAddColumn(name);
+            }
+        },
+        onHeaderClick: ({ onHeaderClick }) => (_, __, col) => {
+            if (onHeaderClick) {
+                onHeaderClick(col - 1);
             }
         },
     }),
