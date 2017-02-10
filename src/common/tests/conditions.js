@@ -12,8 +12,8 @@ export const inputElementIsFocusable = element =>
             element.getTagName(),
         ]);
 
-        if (tagName.toLowerCase() !== 'input') {
-            throw new Error('Invalid element: must be an input');
+        if (tagName.toLowerCase() !== 'input' && tagName.toLowerCase() !== 'textarea') {
+            throw new Error('Invalid element: must be an input or a textarea');
         }
 
         if (!isDisplayed || !isEnabled) return null;
