@@ -1,7 +1,6 @@
 import { until, By } from 'selenium-webdriver';
 import expect from 'expect';
 import path from 'path';
-import chunk from 'lodash.chunk';
 
 import driver from '../../../common/tests/chromeDriver';
 import { clear } from '../../../common/tests/fixtures';
@@ -159,7 +158,6 @@ describe('Admin', () => {
 
         describe('adding column from original dataset', async () => {
             it('should add the auto configured column when clicking the add-column button for an original dataset field', async () => {
-                await driver.sleep(5000);
                 await driver.executeScript('document.getElementsByClassName("btn-excerpt-add-column-name")[0].scrollIntoView(true);');
                 const button = await driver.findElement(By.css('.btn-excerpt-add-column-name'));
                 await driver.wait(elementIsClicked(button), DEFAULT_WAIT_TIMEOUT);
@@ -199,13 +197,33 @@ describe('Admin', () => {
                 const headersText = await Promise.all(headers.map(h => h.getText()));
                 expect(headersText).toEqual(['uri', 'stronger', 'name']);
 
-                const tds = await driver.findElements(By.css('.dataset table tbody td'));
-                const tdsText = await Promise.all(tds.map(td => td.getText()));
-                const tdsTextByRow = chunk(tdsText, 2);
+                const rows = await Promise.all([1, 2, 3].map(index =>
+                    Promise.all([
+                        driver
+                            .findElement(By.css(`.dataset table tbody tr:nth-child(${index}) td.dataset-uri`))
+                            .getText(),
+                        driver
+                            .findElement(By.css(`.dataset table tbody tr:nth-child(${index}) td.dataset-stronger`))
+                            .getText(),
+                        driver
+                            .findElement(By.css(`.dataset table tbody tr:nth-child(${index}) td.dataset-name`))
+                            .getText(),
+                    ])
+                    .then(([uri, stronger, name]) => ({
+                        uri,
+                        stronger,
+                        name,
+                    }))));
 
-                expect(tdsTextByRow[0][0]).toEqual(tdsTextByRow[1][1]);
-                expect(tdsTextByRow[1][0]).toEqual(tdsTextByRow[2][1]);
-                expect(tdsTextByRow[2][0]).toEqual(tdsTextByRow[0][1]);
+                const expected = {
+                    rock: 'scissor',
+                    paper: 'rock',
+                    scissor: 'paper',
+                };
+
+                rows.forEach(({ stronger, name }) => {
+                    expect(rows.find(r => r.uri === stronger).name).toEqual(expected[name]);
+                });
             });
         });
 

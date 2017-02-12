@@ -57,7 +57,7 @@ export class DatasetComponent extends Component {
                             {dataset.map(data => (
                                 <TableRow>
                                     {columns.map(({ name }) => (
-                                        <TableRowColumn>
+                                        <TableRowColumn className={`dataset-${name}`}>
                                             {name === 'uri' ?
                                                 <Link to={`/resource?uri=${data[name]}`}>{data[name]}</Link>
                                                 :
