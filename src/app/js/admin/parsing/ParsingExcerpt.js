@@ -1,9 +1,10 @@
 import React, { PropTypes } from 'react';
 import compose from 'recompose/compose';
 import pure from 'recompose/pure';
-import withHandlers from 'recompose/withHandlers';
 
 import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn } from 'material-ui/Table';
+
+import ParsingExcerptAddColumn from './ParsingExcerptAddColumn';
 
 const styles = {
     table: {
@@ -24,6 +25,11 @@ export const ParsingExcerptComponent = ({ columns, lines, onHeaderClick }) => (
                     {columns.map(c => <TableRowColumn>{l[c]}</TableRowColumn>)}
                 </TableRow>
             ))}
+            <TableRow>
+                {columns.map(c => (
+                    <ParsingExcerptAddColumn name={c} />
+                ))}
+            </TableRow>
         </TableBody>
     </Table>
 );
@@ -36,11 +42,4 @@ ParsingExcerptComponent.propTypes = {
 
 export default compose(
     pure,
-    withHandlers({
-        onHeaderClick: props => (_, __, col) => {
-            if (props.onHeaderClick) {
-                props.onHeaderClick(col - 1);
-            }
-        },
-    }),
 )(ParsingExcerptComponent);

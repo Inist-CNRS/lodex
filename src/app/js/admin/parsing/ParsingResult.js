@@ -52,7 +52,7 @@ export class ParsingResultComponent extends Component {
             totalLoadedLines,
             totalFailedLines,
             totalParsedLines,
-            onClearParsing,
+            handleClearParsing,
             p: polyglot,
         } = this.props;
         const { showErrors } = this.state;
@@ -82,7 +82,7 @@ export class ParsingResultComponent extends Component {
                     </div>
                 </CardText>
                 <CardActions>
-                    <FlatButton onClick={onClearParsing} label={polyglot.t('Upload another file')} />
+                    <FlatButton onClick={handleClearParsing} label={polyglot.t('Upload another file')} />
                 </CardActions>
             </Card>
         );
@@ -96,7 +96,8 @@ ParsingResultComponent.propTypes = {
     totalLoadedLines: PropTypes.number.isRequired,
     totalFailedLines: PropTypes.number.isRequired,
     totalParsedLines: PropTypes.number.isRequired,
-    onClearParsing: PropTypes.func.isRequired,
+    handleAddColumn: PropTypes.func.isRequired,
+    handleClearParsing: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
@@ -110,7 +111,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = {
-    onClearParsing: clearParsing,
+    handleClearParsing: clearParsing,
 };
 
 export default compose(

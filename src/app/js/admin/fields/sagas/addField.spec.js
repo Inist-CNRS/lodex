@@ -4,7 +4,7 @@ import { call, put, select } from 'redux-saga/effects';
 import fetchSaga from '../../../lib/fetchSaga';
 
 import {
-    getLastField,
+    getNewFieldIndex,
     getCreateFieldRequest,
     addFieldError,
     addFieldSuccess,
@@ -16,26 +16,65 @@ import {
 
 describe('fields saga', () => {
     describe('handleAddField', () => {
-        const saga = handleAddField();
+        describe('handleAddField without a field name', () => {
+            const saga = handleAddField({});
 
-        it('should select getLastField', () => {
-            expect(saga.next().value).toEqual(select(getLastField));
+            it('should select getNewFieldIndex', () => {
+                expect(saga.next().value).toEqual(select(getNewFieldIndex));
+            });
+
+            it('should select getCreateFieldRequest', () => {
+                expect(saga.next(42).value).toEqual(select(getCreateFieldRequest, {
+                    cover: 'collection',
+                    label: 'newField 43',
+                    name: 'newField43',
+                    transformers: [],
+                }));
+            });
+
+            it('should call fetchSaga with the request', () => {
+                expect(saga.next('request').value).toEqual(call(fetchSaga, 'request'));
+            });
+
+            it('should put addFieldSuccess action', () => {
+                expect(saga.next({ response: 'foo' }).value).toEqual(put(addFieldSuccess('foo')));
+            });
         });
 
-        it('should select getCreateFieldRequest', () => {
-            expect(saga.next('last field').value).toEqual(select(getCreateFieldRequest, 'last field'));
-        });
+        describe('handleAddField with a field name', () => {
+            const saga = handleAddField({ payload: 'foo' });
 
-        it('should call fetchSaga with the request', () => {
-            expect(saga.next('request').value).toEqual(call(fetchSaga, 'request'));
-        });
+            it('should select getLastFieldIndex', () => {
+                expect(saga.next().value).toEqual(select(getNewFieldIndex));
+            });
 
-        it('should put addFieldSuccess action', () => {
-            expect(saga.next({ response: 'foo' }).value).toEqual(put(addFieldSuccess('foo')));
+            it('should select getCreateFieldRequest', () => {
+                expect(saga.next(42).value).toEqual(select(getCreateFieldRequest, {
+                    cover: 'collection',
+                    label: 'foo',
+                    name: 'foo',
+                    transformers: [{
+                        operation: 'COLUMN',
+                        args: [{
+                            name: 'column',
+                            type: 'column',
+                            value: 'foo',
+                        }],
+                    }],
+                }));
+            });
+
+            it('should call fetchSaga with the request', () => {
+                expect(saga.next('request').value).toEqual(call(fetchSaga, 'request'));
+            });
+
+            it('should put addFieldSuccess action', () => {
+                expect(saga.next({ response: 'foo' }).value).toEqual(put(addFieldSuccess('foo')));
+            });
         });
 
         it('should put addFieldError action with error if any', () => {
-            const failedSaga = handleAddField();
+            const failedSaga = handleAddField({});
             failedSaga.next();
             failedSaga.next();
             failedSaga.next('request');

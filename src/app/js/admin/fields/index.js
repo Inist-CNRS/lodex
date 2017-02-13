@@ -50,17 +50,11 @@ const updateFieldByProperty = (state, property, newField) => {
 };
 
 export default handleActions({
-    ADD_FIELD: state => ({
+    ADD_FIELD_SUCCESS: (state, { payload }) => ({
         ...state,
         editedFieldIndex: state.list.length,
-        list: state.list.concat({
-            cover: 'collection',
-            label: `newField ${state.list.length + 1}`,
-            name: `newField${state.list.length + 1}`,
-            transformers: [],
-        }),
+        list: state.list.concat([payload]),
     }),
-    ADD_FIELD_SUCCESS: (state, { payload }) => updateFieldByProperty(state, 'name', payload),
     LOAD_FIELD_SUCCESS: (state, { payload }) => ({
         ...state,
         list: payload,
@@ -131,7 +125,7 @@ export const getUpdateFieldRequest = (state, { _id, ...fieldData }) => ({
 
 export const getFields = state => state.fields.list;
 
-export const getLastField = state => state.fields.list[state.fields.list.length - 1];
+export const getNewFieldIndex = state => state.fields.list.length;
 
 export const getEditedField = state => state.fields.list[state.fields.editedFieldIndex];
 
