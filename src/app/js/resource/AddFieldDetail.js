@@ -7,22 +7,34 @@ import { CardText, CardHeader, CardActions } from 'material-ui/Card';
 import { Link } from 'react-router';
 import FlatButton from 'material-ui/FlatButton';
 
-
 import {
     getResourceLastVersion,
     addFieldToResource,
     isSaving,
     NEW_RESOURCE_FIELD_FORM_NAME,
+    getNewResourceFieldFormData,
 } from './';
-import { getCollectionFields } from '../publication';
+import {
+    getCollectionFields,
+    getFieldToAdd,
+} from '../publication';
 import Card from '../lib/Card';
 import FormTextField from '../lib/FormTextField';
 import Alert from '../lib/Alert';
 import ButtonWithStatus from '../lib/ButtonWithStatus';
 import { polyglot as polyglotPropTypes } from '../lib/propTypes';
 import Property from '../lib/Property';
+import SelectFieldToAdd from './SelectFieldToAdd';
 
-export const HideDetailComponent = ({ resource, fields, saving, error, handleSubmit, p: polyglot }) => (
+export const AddFieldDetailComponent = ({
+    resource,
+    fields,
+    saving,
+    error,
+    fieldToAdd,
+    handleSubmit,
+    p: polyglot,
+}) => (
     <Card className="hide-detail">
         <CardText>
             {fields.map(({ name, scheme }) => (
@@ -53,30 +65,41 @@ export const HideDetailComponent = ({ resource, fields, saving, error, handleSub
                 <div>
                     {polyglot.t('new_field')}
                     <CardText>
-                        <Field
-                            name="field.name"
-                            component={FormTextField}
-                            label={polyglot.t('fieldName')}
-                            fullWidth
-                        />
-                        <Field
-                            name="field.label"
-                            component={FormTextField}
-                            label={polyglot.t('fieldLabel')}
-                            fullWidth
-                        />
-                        <Field
-                            name="field.value"
-                            component={FormTextField}
-                            label={polyglot.t('fieldValue')}
-                            fullWidth
-                        />
-                        <Field
-                            name="field.scheme"
-                            component={FormTextField}
-                            label={polyglot.t('fieldScheme')}
-                            fullWidth
-                        />
+                        <SelectFieldToAdd />
+                        {
+                            fieldToAdd ?
+                                <div>
+                                    <Field
+                                        name="field.name"
+                                        disabled={fieldToAdd.name}
+                                        component={FormTextField}
+                                        label={polyglot.t('fieldName')}
+                                        fullWidth
+                                    />
+                                    <Field
+                                        name="field.label"
+                                        disabled={fieldToAdd.name}
+                                        component={FormTextField}
+                                        label={polyglot.t('fieldLabel')}
+                                        fullWidth
+                                    />
+                                    <Field
+                                        name="field.value"
+                                        disabled={fieldToAdd.name}
+                                        component={FormTextField}
+                                        label={polyglot.t('fieldValue')}
+                                        fullWidth
+                                    />
+                                    <Field
+                                        name="field.scheme"
+                                        disabled={fieldToAdd.name}
+                                        component={FormTextField}
+                                        label={polyglot.t('fieldScheme')}
+                                        fullWidth
+                                    />
+                                </div>
+                            : null
+                        }
                     </CardText>
                 </div>
             </form>
@@ -96,13 +119,13 @@ export const HideDetailComponent = ({ resource, fields, saving, error, handleSub
     </Card>
 );
 
-HideDetailComponent.defaultProps = {
+AddFieldDetailComponent.defaultProps = {
     resource: null,
     error: null,
     saving: false,
 };
 
-HideDetailComponent.propTypes = {
+AddFieldDetailComponent.propTypes = {
     ...reduxFormPropTypes,
     fields: PropTypes.arrayOf(PropTypes.object).isRequired,
     saving: PropTypes.bool,
@@ -113,6 +136,11 @@ const mapStateToProps = state => ({
     resource: getResourceLastVersion(state),
     fields: getCollectionFields(state),
     saving: isSaving(state),
+    fieldToAdd: getFieldToAdd(state),
+    initialValues: {
+        ...getNewResourceFieldFormData(state),
+        field: getFieldToAdd(state),
+    },
 });
 
 const mapDispatchToProps = {
@@ -123,6 +151,7 @@ export default compose(
     connect(mapStateToProps, mapDispatchToProps),
     reduxForm({
         form: NEW_RESOURCE_FIELD_FORM_NAME,
+        enableReinitialize: true,
     }),
     translate,
-)(HideDetailComponent);
+)(AddFieldDetailComponent);

@@ -1,4 +1,7 @@
 import { createAction, handleActions } from 'redux-actions';
+import { createSelector } from 'reselect';
+
+import { getContributionFields } from '../publication';
 
 export const LOAD_RESOURCE = 'LOAD_RESOURCE';
 export const LOAD_RESOURCE_SUCCESS = 'LOAD_RESOURCE_SUCCESS';
@@ -178,17 +181,18 @@ export const getResourceUnvalidatedFields = (state) => {
         .map(({ fieldName }) => fieldName);
 };
 
-export const getResourceContributorsByField = (state) => {
-    const { contributions } = state.resource.resource;
-    if (!contributions) {
-        return [];
-    }
-    return contributions
-        .reduce((acc, { fieldName, contributor: { name } }) => ({
-            ...acc,
-            [fieldName]: name,
-        }), {});
-};
+export const getResourceContributions = state =>
+    state.resource.resource.contributions || [];
+
+export const getResourceContributorsByField =
+    createSelector(
+        getResourceContributions,
+        contributions => contributions
+            .reduce((acc, { fieldName, contributor: { name } }) => ({
+                ...acc,
+                [fieldName]: name,
+            }), {}),
+    );
 
 export const getRemovedData = (state) => {
     const resource = state.resource.resource;
@@ -202,6 +206,12 @@ export const getRemovedData = (state) => {
 
 export const getResourceFormData = state => state.form.resource.values;
 export const getHideResourceFormData = state => state.form.hideResource.values;
-export const getNewResourceFieldFormData = state => state.form.newResourceField.values;
+export const getNewResourceFieldFormData = state => state.form.newResourceField && state.form.newResourceField.values;
 export const isLoading = state => state.resource.loading;
 export const isSaving = state => state.resource.saving;
+
+export const getNewContributionsField = createSelector(
+    getContributionFields,
+    getResourceContributorsByField,
+    (fields, contributors) => fields.filter(({ name }) => !contributors[name]),
+);

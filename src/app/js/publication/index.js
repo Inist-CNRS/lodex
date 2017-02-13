@@ -7,9 +7,13 @@ export const LOAD_PUBLICATION = 'LOAD_PUBLICATION';
 export const LOAD_PUBLICATION_SUCCESS = 'LOAD_PUBLICATION_SUCCESS';
 export const LOAD_PUBLICATION_ERROR = 'LOAD_PUBLICATION_ERROR';
 
+export const SELECT_FIELD = 'SELECT_FIELD';
+
 export const loadPublication = createAction(LOAD_PUBLICATION);
 export const loadPublicationSuccess = createAction(LOAD_PUBLICATION_SUCCESS);
 export const loadPublicationError = createAction(LOAD_PUBLICATION_ERROR);
+
+export const selectField = createAction(SELECT_FIELD);
 
 export const defaultState = {
     loading: false,
@@ -35,6 +39,10 @@ export default handleActions({
         error: error.message,
         loading: false,
     }),
+    SELECT_FIELD: (state, { payload: name }) => ({
+        ...state,
+        selectedField: name,
+    }),
 }, defaultState);
 
 
@@ -46,6 +54,20 @@ export const getCollectionFields = createSelector(
     getFields,
     fields => fields.filter(f => f.cover === COVER_COLLECTION),
 );
+
+export const getContributionFields = createSelector(
+    getFields,
+    fields => fields.filter(f => f.contribution),
+);
+
+export const getSelectedField = ({ publication: { selectedField } }) => selectedField;
+
+export const getFieldToAdd = ({ publication: { fields, selectedField } }) => {
+    if (selectedField === 'new') {
+        return {};
+    }
+    return fields.filter(({ name }) => name === selectedField)[0];
+};
 
 export const getDocumentFields = createSelector(
     getFields,
