@@ -19,6 +19,14 @@ export const getAllField = async (ctx) => {
 
 export const postField = async (ctx) => {
     const newField = ctx.request.body;
+    try {
+        await ctx.validateField(newField);
+    } catch (error) {
+        ctx.body = error.message;
+        ctx.status = 500;
+        return;
+    }
+
     const result = await ctx.field.insertOne(newField);
 
     if (result.ops && result.ops.length) {
@@ -31,6 +39,13 @@ export const postField = async (ctx) => {
 
 export const putField = async (ctx, id) => {
     const newField = ctx.request.body;
+    try {
+        await ctx.validateField(newField);
+    } catch (error) {
+        ctx.body = error.message;
+        ctx.status = 500;
+        return;
+    }
 
     ctx.body = await ctx.field.updateOneById(id, newField);
 };

@@ -24,20 +24,19 @@ export default async (db) => {
 
 export const INVALID_FIELD_MESSAGE = 'Invalid data for field which need a name, a label, a cover, a valid scheme, a type and a transformers array'; // eslint-disable-line
 
-export const validateFieldFactory = schemeServiceImpl => async (data) => {
+export const validateFieldFactory = isSchemeValidImpl => async (data) => {
     try {
         expect(data).toMatch({
             cover: /^(dataset|collection|document)$/,
             label: /^.{3,}$/,
             name: /^[\S]{3,}$/,
-            scheme: /^https?:\/\/.+$/,
             transformers: [],
         });
     } catch (error) {
         throw new Error(INVALID_FIELD_MESSAGE);
     }
 
-    if (!await schemeServiceImpl.isSchemeValid(data.scheme)) {
+    if (data.scheme && !await isSchemeValidImpl(data.scheme)) {
         throw new Error(INVALID_FIELD_MESSAGE);
     }
 
