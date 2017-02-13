@@ -65,9 +65,13 @@ export const getSelectedField = ({ publication: { selectedField } }) => selected
 
 export const getFieldToAdd = ({ publication: { fields, selectedField } }) => {
     if (selectedField === 'new') {
-        return {};
+        return { cover: 'document' };
     }
-    return omit(fields.filter(({ name }) => name === selectedField)[0], ['contributors', '_id', 'cover']);
+    const field = fields.filter(({ name }) => name === selectedField)[0];
+    if (!field) {
+        return null;
+    }
+    return omit(field, ['contributors', '_id']);
 };
 
 export const getDocumentFields = createSelector(

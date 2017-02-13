@@ -7,6 +7,7 @@ import { CardText, CardHeader, CardActions } from 'material-ui/Card';
 import { Link } from 'react-router';
 import FlatButton from 'material-ui/FlatButton';
 import SchemeAutoComplete from '../lib/SchemeAutoComplete';
+import MenuItem from 'material-ui/MenuItem';
 
 import {
     getResourceLastVersion,
@@ -28,6 +29,7 @@ import { polyglot as polyglotPropTypes } from '../lib/propTypes';
 import Property from '../lib/Property';
 import SelectFieldToAdd from './SelectFieldToAdd';
 import { isLoggedIn as getIsLoggedIn } from '../user';
+import FormSelectField from '../lib/FormSelectField';
 
 const required = value => (value ? undefined : 'Required');
 const validMail = value =>
@@ -110,12 +112,20 @@ export const AddFieldDetailComponent = ({
                                     <Field
                                         name="field.value"
                                         validate={required}
-                                        disabled={fieldToAdd.name}
                                         component={FormTextField}
                                         label={polyglot.t('fieldValue')}
                                         fullWidth
                                     />
-                                    <SchemeAutoComplete name="field.scheme" />
+                                    <Field
+                                        name="field.cover"
+                                        component={FormSelectField}
+                                        label={polyglot.t('cover')}
+                                        fullWidth
+                                        disabled
+                                    >
+                                        <MenuItem value="document" primaryText={polyglot.t('cover_document')} />
+                                    </Field>
+                                    <SchemeAutoComplete disabled={fieldToAdd.name} name="field.scheme" />
                                 </div>
                             : null
                         }

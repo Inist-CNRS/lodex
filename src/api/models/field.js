@@ -51,7 +51,7 @@ export default async (db) => {
                 contribution: true,
             }, {
                 $set: {
-                    ...field,
+                    ...omit(field, ['value']),
                     cover: 'document',
                     contribution: true,
                 },
@@ -65,7 +65,7 @@ export default async (db) => {
             contribution: true,
         }, {
             $set: {
-                ...field,
+                ...omit(field, ['value']),
                 cover: 'document',
                 contribution: true,
             },

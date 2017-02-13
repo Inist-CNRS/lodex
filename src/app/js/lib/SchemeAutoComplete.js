@@ -36,12 +36,14 @@ const styles = {
 
 export const SchemeAutoCompleteComponent = ({
     name,
+    disabled,
     p: polyglot,
     getSchemeSearchRequest,
     getSchemeMenuItemsDataFromResponse,
 }) => (
     <Field
         name={name}
+        disabled={disabled}
         component={FormAutoCompleteField}
         label={polyglot.t('scheme')}
         fullWidth
@@ -59,11 +61,16 @@ export const SchemeAutoCompleteComponent = ({
     />
 );
 
+SchemeAutoCompleteComponent.defaultProps = {
+    disabled: false,
+};
+
 SchemeAutoCompleteComponent.propTypes = {
     p: polyglotPropTypes.isRequired,
     getSchemeSearchRequest: PropTypes.func.isRequired,
     getSchemeMenuItemsDataFromResponse: PropTypes.func.isRequired,
     name: PropTypes.string.isRequired,
+    disabled: PropTypes.bool,
 };
 
 const mapStateToProps = state => ({

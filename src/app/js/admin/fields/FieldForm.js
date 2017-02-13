@@ -35,6 +35,7 @@ const validate = (values) => {
 export const FieldFormComponent = ({
     error,
     field,
+    isContribution,
     handleSubmit,
     p: polyglot,
 }) => {
@@ -67,7 +68,7 @@ export const FieldFormComponent = ({
                 <MenuItem value="collection" primaryText={polyglot.t('cover_collection')} />
             </Field>
             <SchemeAutoComplete name="scheme" />
-            <FieldArray name="transformers" component={TransformerList} />
+            { isContribution ? null : <FieldArray name="transformers" component={TransformerList} /> }
         </form>
     );
 };

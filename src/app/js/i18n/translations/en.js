@@ -34,6 +34,7 @@ export default {
     cover: 'Select a coverage',
     cover_dataset: 'Apply to whole dataset',
     cover_collection: 'Different for each resource',
+    cover_document: 'Only present on certain resource',
     dataset_characteristics: 'Characteristics',
     export: 'Export',
     sign_out: 'Sign out',
