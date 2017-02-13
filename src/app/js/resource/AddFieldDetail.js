@@ -16,6 +16,7 @@ import {
 } from './';
 import {
     getCollectionFields,
+    getDocumentFields,
     getFieldToAdd,
 } from '../publication';
 import Card from '../lib/Card';
@@ -26,9 +27,16 @@ import { polyglot as polyglotPropTypes } from '../lib/propTypes';
 import Property from '../lib/Property';
 import SelectFieldToAdd from './SelectFieldToAdd';
 
+const required = value => (value ? undefined : 'Required');
+const validMail = value =>
+    (value.match(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/) ? undefined : 'Invalid mail');
+const uniqueField = fields => value =>
+    (fields.find(({ name }) => name === value) ? 'field already exists' : undefined);
+
 export const AddFieldDetailComponent = ({
     resource,
-    fields,
+    collectionFields,
+    documentFields,
     saving,
     error,
     fieldToAdd,
@@ -37,7 +45,10 @@ export const AddFieldDetailComponent = ({
 }) => (
     <Card className="hide-detail">
         <CardText>
-            {fields.map(({ name, scheme }) => (
+            {collectionFields.map(({ name, scheme }) => (
+                <Property name={name} scheme={scheme} value={resource[name]} />
+            ))}
+            {documentFields.map(({ name, scheme }) => (
                 <Property name={name} scheme={scheme} value={resource[name]} />
             ))}
         </CardText>
@@ -49,12 +60,14 @@ export const AddFieldDetailComponent = ({
                     {polyglot.t('about_you')}
                     <CardText>
                         <Field
+                            validate={required}
                             name="contributor.name"
                             component={FormTextField}
                             label={polyglot.t('contributorName')}
                             fullWidth
                         />
                         <Field
+                            validate={[required, validMail]}
                             name="contributor.mail"
                             component={FormTextField}
                             label={polyglot.t('contributorMail')}
@@ -71,6 +84,10 @@ export const AddFieldDetailComponent = ({
                                 <div>
                                     <Field
                                         name="field.name"
+                                        validate={[
+                                            required,
+                                            uniqueField([...documentFields, ...collectionFields]),
+                                        ]}
                                         disabled={fieldToAdd.name}
                                         component={FormTextField}
                                         label={polyglot.t('fieldName')}
@@ -78,6 +95,7 @@ export const AddFieldDetailComponent = ({
                                     />
                                     <Field
                                         name="field.label"
+                                        validate={required}
                                         disabled={fieldToAdd.name}
                                         component={FormTextField}
                                         label={polyglot.t('fieldLabel')}
@@ -85,6 +103,7 @@ export const AddFieldDetailComponent = ({
                                     />
                                     <Field
                                         name="field.value"
+                                        validate={required}
                                         disabled={fieldToAdd.name}
                                         component={FormTextField}
                                         label={polyglot.t('fieldValue')}
@@ -92,6 +111,7 @@ export const AddFieldDetailComponent = ({
                                     />
                                     <Field
                                         name="field.scheme"
+                                        validate={required}
                                         disabled={fieldToAdd.name}
                                         component={FormTextField}
                                         label={polyglot.t('fieldScheme')}
@@ -134,7 +154,8 @@ AddFieldDetailComponent.propTypes = {
 
 const mapStateToProps = state => ({
     resource: getResourceLastVersion(state),
-    fields: getCollectionFields(state),
+    collectionFields: getCollectionFields(state),
+    documentFields: getDocumentFields(state),
     saving: isSaving(state),
     fieldToAdd: getFieldToAdd(state),
     initialValues: {
