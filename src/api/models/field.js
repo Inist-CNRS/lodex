@@ -3,7 +3,7 @@ import omit from 'lodash.omit';
 import { ObjectID } from 'mongodb';
 
 import transformers from '../../common/transformers';
-import schemeService from '../services/scheme';
+import isSchemeValid from '../services/isSchemeValid';
 
 const validOperations = new RegExp(Object.keys(transformers).join('|'));
 
@@ -24,7 +24,7 @@ export default async (db) => {
 
 export const INVALID_FIELD_MESSAGE = 'Invalid data for field which need a name, a label, a cover, a valid scheme, a type and a transformers array'; // eslint-disable-line
 
-export const validateFieldFactory = schemeServiceImpl => (data) => {
+export const validateFieldFactory = schemeServiceImpl => async (data) => {
     try {
         expect(data).toMatch({
             cover: /^(dataset|collection|document)$/,
@@ -37,7 +37,7 @@ export const validateFieldFactory = schemeServiceImpl => (data) => {
         throw new Error(INVALID_FIELD_MESSAGE);
     }
 
-    if (!schemeServiceImpl.isSchemeValid(data.scheme)) {
+    if (!await schemeServiceImpl.isSchemeValid(data.scheme)) {
         throw new Error(INVALID_FIELD_MESSAGE);
     }
 
@@ -58,4 +58,4 @@ transformer must have a valid operation and an args array`,
     return data;
 };
 
-export const validateField = validateFieldFactory(schemeService);
+export const validateField = validateFieldFactory(isSchemeValid);

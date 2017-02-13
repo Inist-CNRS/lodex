@@ -1,5 +1,5 @@
 import expect, { createSpy } from 'expect';
-import { isSchemeValidFactory } from './scheme';
+import { isSchemeValidFactory } from './isSchemeValid';
 
 describe('scheme service', () => {
     describe('isSchemeValid', () => {

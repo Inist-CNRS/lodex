@@ -9,4 +9,4 @@ export const isSchemeValidFactory = fetchImpl => async (scheme) => {
     return status !== 404;
 };
 
-export const isSchemeValid = isSchemeValidFactory(fetch);
+export default isSchemeValidFactory(fetch);
