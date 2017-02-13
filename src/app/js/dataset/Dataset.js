@@ -18,6 +18,8 @@ import {
 import Pagination from '../lib/Pagination';
 import Card from '../lib/Card';
 import Loading from '../lib/Loading';
+import Format from '../formats/Format';
+
 import { polyglot as polyglotPropTypes } from '../lib/propTypes';
 import { loadDatasetPage as loadDatasetPageAction } from './';
 import { getCollectionFields } from '../publication';
@@ -56,12 +58,12 @@ export class DatasetComponent extends Component {
                         <TableBody displayRowCheckbox={false}>
                             {dataset.map(data => (
                                 <TableRow>
-                                    {columns.map(({ name }) => (
-                                        <TableRowColumn className={`dataset-${name}`}>
-                                            {name === 'uri' ?
-                                                <Link to={`/resource?uri=${data[name]}`}>{data[name]}</Link>
+                                    {columns.map(column => (
+                                        <TableRowColumn className={`dataset-${column.name}`}>
+                                            {column.name === 'uri' ?
+                                                <Link to={`/resource?uri=${data[column.name]}`}>{data[column.name]}</Link>
                                                 :
-                                                data[name]
+                                                <Format resource={data} field={column} fields={columns} />
                                             }
                                         </TableRowColumn>
                                     ))}

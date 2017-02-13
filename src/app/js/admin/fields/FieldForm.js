@@ -15,6 +15,7 @@ import {
     saveField,
 } from './';
 
+import Format from '../../formats/FormatEdition';
 import Alert from '../../lib/Alert';
 import TransformerList from './TransformerList';
 
@@ -69,6 +70,12 @@ export const FieldFormComponent = ({
             </Field>
             <SchemeAutoComplete name="scheme" />
             { isContribution ? null : <FieldArray name="transformers" component={TransformerList} /> }
+            { isContribution ? null : <Field
+                name="format"
+                component={Format}
+                label={polyglot.t('format')}
+                fullWidth
+            />}
         </form>
     );
 };
