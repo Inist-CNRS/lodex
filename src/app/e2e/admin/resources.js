@@ -39,10 +39,12 @@ describe('Admin', () => {
             await driver.wait(until.elementLocated(By.css('.removed_resources')), DEFAULT_WAIT_TIMEOUT);
             const headers = await driver.findElements(By.css('.removed_resources table th'));
             const headersText = await Promise.all(headers.map(h => h.getText()));
-            expect(headersText).toEqual(['uri', 'fullname', 'email', '']);
+            expect(headersText).toEqual(['Removed at', 'Reason', 'uri', 'fullname', 'email', '']);
+
+            const trs = await driver.findElements(By.css('.removed_resources table tbody tr'));
+            expect(trs.length).toEqual(2);
 
             const tds = await driver.findElements(By.css('.removed_resources table tbody td'));
-            expect(tds.length).toEqual(8);
 
             const tdsText = await Promise.all(tds.map(td => td.getText()));
             expect(tdsText.some(t => t === 'PEREGRIN.TOOK')).toEqual(true);
@@ -56,8 +58,8 @@ describe('Admin', () => {
             await buttons[0].click();
 
             await driver.sleep(500);
-            const tds = await driver.findElements(By.css('.removed_resources table tbody td'));
-            expect(tds.length).toEqual(4);
+            const trs = await driver.findElements(By.css('.removed_resources table tbody tr'));
+            expect(trs.length).toEqual(1);
         });
 
         after(async () => {

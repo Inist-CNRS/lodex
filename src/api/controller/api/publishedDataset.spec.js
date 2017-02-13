@@ -58,9 +58,9 @@ describe('publishedDataset', () => {
         const ctx = {
             publishedDataset: {
                 findRemovedPage: createSpy().andReturn(Promise.resolve([
-                    { uri: 1, versions: [{ v: 1 }, { v: 2 }] },
-                    { uri: 2, versions: [{ v: 1 }, { v: 2 }, { v: 3 }] },
-                    { uri: 3, versions: [{ v: 1 }] },
+                    { uri: 1, versions: [{ v: 1 }, { v: 2 }], reason: 'reason1', removed_at: 'removed_at1' },
+                    { uri: 2, versions: [{ v: 1 }, { v: 2 }, { v: 3 }], reason: 'reason2', removed_at: 'removed_at2' },
+                    { uri: 3, versions: [{ v: 1 }], reason: 'reason3', removed_at: 'removed_at3' },
                 ])),
                 countRemoved: createSpy().andReturn(Promise.resolve(42)),
             },
@@ -89,9 +89,9 @@ describe('publishedDataset', () => {
 
             expect(ctx.body).toEqual({
                 data: [
-                    { uri: 1, v: 2 },
-                    { uri: 2, v: 3 },
-                    { uri: 3, v: 1 },
+                    { uri: 1, v: 2, reason: 'reason1', removed_at: 'removed_at1' },
+                    { uri: 2, v: 3, reason: 'reason2', removed_at: 'removed_at2' },
+                    { uri: 3, v: 1, reason: 'reason3', removed_at: 'removed_at3' },
                 ],
                 total: 42,
             });

@@ -50,4 +50,6 @@ export default {
     hide: 'Hide',
     removed_resources: 'Removed resources',
     restore: 'Restore',
+    removed_at: 'Removed at',
+    removed_reason: 'Reason',
 };

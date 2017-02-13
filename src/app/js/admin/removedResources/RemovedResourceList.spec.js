@@ -1,6 +1,8 @@
 import React from 'react';
 import expect, { createSpy } from 'expect';
 import { shallow } from 'enzyme';
+import moment from 'moment';
+
 import {
     TableHeaderColumn,
     TableRowColumn,
@@ -16,9 +18,9 @@ describe('<RemovedResourceList />', () => {
         { name: 'col2', label: 'Col 2' },
     ];
     const resources = [
-        { uri: 'value11', col2: 'value12' },
-        { uri: 'value21', col2: 'value22' },
-        { uri: 'value31', col2: 'value32' },
+        { uri: 'value11', col2: 'value12', reason: 'reason1', removedAt: moment().add(-1, 'd').toDate() },
+        { uri: 'value21', col2: 'value22', reason: 'reason2', removedAt: moment().add(-2, 'd').toDate() },
+        { uri: 'value31', col2: 'value32', reason: 'reason3', removedAt: moment().add(-3, 'd').toDate() },
     ];
 
     it('should call loadRemovedResourcePage on mount', () => {
@@ -51,8 +53,10 @@ describe('<RemovedResourceList />', () => {
         />);
 
         const headers = wrapper.find(TableHeaderColumn);
-        expect(headers.at(0).children().text()).toEqual('uri');
-        expect(headers.at(1).children().text()).toEqual('col2');
+        expect(headers.at(0).children().text()).toEqual('removed_at');
+        expect(headers.at(1).children().text()).toEqual('removed_reason');
+        expect(headers.at(2).children().text()).toEqual('uri');
+        expect(headers.at(3).children().text()).toEqual('col2');
     });
 
     it('should render the TableRowColumn for each value for each column', () => {
@@ -67,15 +71,23 @@ describe('<RemovedResourceList />', () => {
         />);
 
         const cells = wrapper.find(TableRowColumn);
-        expect(cells.at(0).children().text()).toEqual('value11');
-        expect(cells.at(1).children().text()).toEqual('value12');
-        expect(cells.at(2).children().text()).toEqual('<ButtonWithStatus />');
-        expect(cells.at(3).children().text()).toEqual('value21');
-        expect(cells.at(4).children().text()).toEqual('value22');
-        expect(cells.at(5).children().text()).toEqual('<ButtonWithStatus />');
-        expect(cells.at(6).children().text()).toEqual('value31');
-        expect(cells.at(7).children().text()).toEqual('value32');
-        expect(cells.at(8).children().text()).toEqual('<ButtonWithStatus />');
+        expect(cells.at(0).children().text()).toEqual(moment().add(-1, 'd').format('L'));
+        expect(cells.at(1).children().text()).toEqual('reason1');
+        expect(cells.at(2).children().text()).toEqual('value11');
+        expect(cells.at(3).children().text()).toEqual('value12');
+        expect(cells.at(4).children().text()).toEqual('<ButtonWithStatus />');
+
+        expect(cells.at(5).children().text()).toEqual(moment().add(-2, 'd').format('L'));
+        expect(cells.at(6).children().text()).toEqual('reason2');
+        expect(cells.at(7).children().text()).toEqual('value21');
+        expect(cells.at(8).children().text()).toEqual('value22');
+        expect(cells.at(9).children().text()).toEqual('<ButtonWithStatus />');
+
+        expect(cells.at(10).children().text()).toEqual(moment().add(-3, 'd').format('L'));
+        expect(cells.at(11).children().text()).toEqual('reason3');
+        expect(cells.at(12).children().text()).toEqual('value31');
+        expect(cells.at(13).children().text()).toEqual('value32');
+        expect(cells.at(14).children().text()).toEqual('<ButtonWithStatus />');
     });
 
     it('should render the Pagination', () => {
