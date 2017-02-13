@@ -188,6 +188,7 @@ export const getResourceContributorsByField =
     createSelector(
         getResourceContributions,
         contributions => contributions
+            .filter(({ contributor }) => !!contributor)
             .reduce((acc, { fieldName, contributor: { name } }) => ({
                 ...acc,
                 [fieldName]: name,

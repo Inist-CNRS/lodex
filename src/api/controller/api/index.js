@@ -28,12 +28,22 @@ app.use(initializeFields);
 app.use(mount('/export', exportPublishedDataset));
 app.use(route.post('/login', login));
 app.use(route.get('/publication', publication));
-app.use(mount('/publishedDataset', publishedDataset));
 app.use(route.get('/ark', ark));
 
-app.use(jwt({ secret: auth.cookieSecret, cookie: 'lodex_token', key: 'cookie' }));
-app.use(jwt({ secret: auth.headerSecret, key: 'header' }));
+app.use(jwt({ secret: auth.cookieSecret, cookie: 'lodex_token', key: 'cookie', passthrough: true }));
+app.use(jwt({ secret: auth.headerSecret, key: 'header', passthrough: true }));
 
+app.use(mount('/publishedDataset', publishedDataset));
+
+app.use(async (ctx, next) => {
+    if (!ctx.state.cookie || !ctx.state.header) {
+        ctx.status = 401;
+        ctx.body = 'No authentication token found';
+        return;
+    }
+
+    await next();
+});
 app.use(mount('/characteristic', characteristic));
 app.use(mount('/field', fieldRoutes));
 app.use(mount('/parsing', parsing));

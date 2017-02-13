@@ -3,6 +3,28 @@ import { ObjectID } from 'mongodb';
 
 import { validateField as validateFieldIsomorphic } from '../../common/validateFields';
 
+export const INVALID_FIELD_MESSAGE = 'Invalid data for field which need a name, a label, a cover, a valid scheme, a type and a transformers array'; // eslint-disable-line
+
+export const buildInvalidPropertiesMessage = name =>
+    `Invalid data for field ${name} which need a name, a label, a cover, a valid scheme if specified and a transformers array`; // eslint-disable-line
+
+export const buildInvalidTransformersMessage = name =>
+    `Invalid transformers for field ${name}: transformers must have a valid operation and an args array`; // eslint-disable-line
+
+export const validateField = (data, isContribution = false) => {
+    const validation = validateFieldIsomorphic(data, isContribution);
+
+    if (!validation.propertiesAreValid) {
+        throw new Error(buildInvalidPropertiesMessage(data.name));
+    }
+
+    if (!validation.transformersAreValid) {
+        throw new Error(buildInvalidTransformersMessage(data.name));
+    }
+
+    return data;
+};
+
 export default async (db) => {
     const collection = db.collection('field');
 
@@ -20,8 +42,25 @@ export default async (db) => {
 
     collection.removeById = id => collection.remove({ _id: new ObjectID(id) });
 
-    collection.addContributionField = (field, contributor) => {
-        collection.update({
+    collection.addContributionField = async (field, contributor, isLogged) => {
+        await validateField(field, true);
+
+        if (isLogged) {
+            return collection.update({
+                name: field.name,
+                contribution: true,
+            }, {
+                $set: {
+                    ...field,
+                    cover: 'document',
+                    contribution: true,
+                },
+            }, {
+                upsert: true,
+            });
+        }
+
+        return collection.update({
             name: field.name,
             contribution: true,
         }, {
@@ -39,24 +78,4 @@ export default async (db) => {
     };
 
     return collection;
-};
-
-export const buildInvalidPropertiesMessage = name =>
-    `Invalid data for field ${name} which need a name, a label, a cover, a valid scheme if specified and a transformers array`; // eslint-disable-line
-
-export const buildInvalidTransformersMessage = name =>
-    `Invalid transformers for field ${name}: transformers must have a valid operation and an args array`; // eslint-disable-line
-
-export const validateField = (data) => {
-    const validation = validateFieldIsomorphic(data);
-
-    if (!validation.propertiesAreValid) {
-        throw new Error(buildInvalidPropertiesMessage(data.name));
-    }
-
-    if (!validation.transformersAreValid) {
-        throw new Error(buildInvalidTransformersMessage(data.name));
-    }
-
-    return data;
 };

@@ -55,7 +55,7 @@ export default (db) => {
     collection.restore = async uri =>
         collection.update({ uri }, { $unset: { removedAt: true, reason: true } });
 
-    collection.addFieldToResource = async (uri, contributor, field, publicationDate = new Date()) => {
+    collection.addFieldToResource = async (uri, contributor, field, isLoggedIn, publicationDate = new Date()) => {
         const previousResource = await collection.findByUri(uri);
 
         const newVersion = {
@@ -69,7 +69,7 @@ export default (db) => {
                 contributions: {
                     fieldName: field.name,
                     contributor,
-                    accepted: false,
+                    accepted: isLoggedIn,
                 },
             },
             $push: {

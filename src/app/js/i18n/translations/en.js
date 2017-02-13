@@ -58,5 +58,5 @@ export default {
     about_you: 'Enter your information:',
     contributorName: 'Name',
     contributorMail: 'Email',
-    new_field: 'Field to add',
+    new_field: 'Field',
 };

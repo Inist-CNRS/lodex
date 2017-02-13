@@ -1,3 +1,4 @@
+import omit from 'lodash.omit';
 import { createAction, handleActions } from 'redux-actions';
 import { createSelector } from 'reselect';
 import TITLE_SCHEME from '../../../common/titleScheme';
@@ -66,7 +67,7 @@ export const getFieldToAdd = ({ publication: { fields, selectedField } }) => {
     if (selectedField === 'new') {
         return {};
     }
-    return fields.filter(({ name }) => name === selectedField)[0];
+    return omit(fields.filter(({ name }) => name === selectedField)[0], ['contributors', '_id', 'cover']);
 };
 
 export const getDocumentFields = createSelector(
