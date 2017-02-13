@@ -1,12 +1,13 @@
 import React, { PropTypes } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import compose from 'recompose/compose';
-import pure from 'recompose/pure';
 import translate from 'redux-polyglot/translate';
-import withHandlers from 'recompose/withHandlers';
 
 import { TableRowColumn } from 'material-ui/Table';
 import FlatButton from 'material-ui/FlatButton';
 
+import { addField } from '../fields';
 import { polyglot as polyglotPropTypes } from '../../lib/propTypes';
 
 export const ParsingExcerptAddColumnComponent = ({ addColumn, name, p: polyglot }) => (
@@ -25,10 +26,11 @@ ParsingExcerptAddColumnComponent.propTypes = {
     p: polyglotPropTypes.isRequired,
 };
 
+const mapDispatchtoProps = (dispatch, { name }) => bindActionCreators({
+    addColumn: () => addField(name),
+}, dispatch);
+
 export default compose(
-    pure,
+    connect(undefined, mapDispatchtoProps),
     translate,
-    withHandlers({
-        addColumn: ({ name, onAddColumn }) => () => onAddColumn(name),
-    }),
 )(ParsingExcerptAddColumnComponent);

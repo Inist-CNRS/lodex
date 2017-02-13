@@ -9,7 +9,6 @@ import { grey400 } from 'material-ui/styles/colors';
 import Card from '../../lib/Card';
 
 import { polyglot as polyglotPropTypes } from '../../lib/propTypes';
-import { addField } from '../fields';
 import { getParsedExcerptColumns, clearParsing } from './';
 import ParsingExcerpt from './ParsingExcerpt';
 import ParsingSummary from './ParsingSummary';
@@ -53,7 +52,6 @@ export class ParsingResultComponent extends Component {
             totalLoadedLines,
             totalFailedLines,
             totalParsedLines,
-            handleAddColumn,
             handleClearParsing,
             p: polyglot,
         } = this.props;
@@ -79,7 +77,6 @@ export class ParsingResultComponent extends Component {
                             <ParsingExcerpt
                                 columns={excerptColumns}
                                 lines={excerptLines}
-                                onAddColumn={handleAddColumn}
                             />
                         }
                     </div>
@@ -114,7 +111,6 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = {
-    handleAddColumn: addField,
     handleClearParsing: clearParsing,
 };
 

@@ -1,7 +1,6 @@
 import React, { PropTypes } from 'react';
 import compose from 'recompose/compose';
 import pure from 'recompose/pure';
-import withHandlers from 'recompose/withHandlers';
 
 import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn } from 'material-ui/Table';
 
@@ -13,7 +12,7 @@ const styles = {
     },
 };
 
-export const ParsingExcerptComponent = ({ columns, lines, onAddColumn, onHeaderClick }) => (
+export const ParsingExcerptComponent = ({ columns, lines, onHeaderClick }) => (
     <Table selectable={false} fixedHeader={false} style={styles.table}>
         <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
             <TableRow onCellClick={onHeaderClick}>
@@ -28,7 +27,7 @@ export const ParsingExcerptComponent = ({ columns, lines, onAddColumn, onHeaderC
             ))}
             <TableRow>
                 {columns.map(c => (
-                    <ParsingExcerptAddColumn name={c} onAddColumn={onAddColumn} />
+                    <ParsingExcerptAddColumn name={c} />
                 ))}
             </TableRow>
         </TableBody>
@@ -38,22 +37,9 @@ export const ParsingExcerptComponent = ({ columns, lines, onAddColumn, onHeaderC
 ParsingExcerptComponent.propTypes = {
     columns: PropTypes.arrayOf(PropTypes.string).isRequired,
     lines: PropTypes.arrayOf(PropTypes.object).isRequired,
-    onAddColumn: PropTypes.func.isRequired,
     onHeaderClick: PropTypes.func.isRequired,
 };
 
 export default compose(
     pure,
-    withHandlers({
-        onAddColumn: ({ onAddColumn }) => (name) => {
-            if (onAddColumn) {
-                onAddColumn(name);
-            }
-        },
-        onHeaderClick: ({ onHeaderClick }) => (_, __, col) => {
-            if (onHeaderClick) {
-                onHeaderClick(col - 1);
-            }
-        },
-    }),
 )(ParsingExcerptComponent);
