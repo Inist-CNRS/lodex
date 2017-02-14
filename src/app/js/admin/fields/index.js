@@ -140,11 +140,11 @@ export const getTransformerArgs = (state, operation) => getTransformerMetas(oper
 export const getFieldFormData = state => state.form.field.values;
 
 export const getSchemeSearchRequest = (state, query) => ({
-    url: `http://lov.okfn.org/dataset/lov/api/v2/vocabulary/autocomplete?q=${query}`,
+    url: `http://lov.okfn.org/dataset/lov/api/v2/term/autocomplete?q=${query}`,
 });
 
 export const getSchemeMenuItemsDataFromResponse = (state, response) => (
     response && response.results
-        ? response.results.map(r => ({ label: r['http://purl.org/dc/terms/title@en'][0], uri: r.uri[0] }))
+        ? response.results.map(r => ({ label: r.localName[0], uri: r.uri[0] }))
         : []
 );
