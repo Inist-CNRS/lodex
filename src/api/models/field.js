@@ -24,7 +24,7 @@ export const buildInvalidPropertiesMessage = name =>
 export const buildInvalidTransformersMessage = name =>
     `Invalid transformers for field ${name}: transformers must have a valid operation and an args array`; // eslint-disable-line
 
-export const validateField = async (data) => {
+export const validateField = (data) => {
     const validation = validateFieldIsomorphic(data);
 
     if (!validation.propertiesAreValid) {

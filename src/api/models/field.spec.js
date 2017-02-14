@@ -17,7 +17,7 @@ describe('field', () => {
                     { operation: 'COLUMN', args: ['a'] },
                 ],
             };
-            expect(await validateField(field)).toEqual(field);
+            expect(validateField(field)).toEqual(field);
         });
 
         it('should return field if no transformers', async () => {
@@ -28,10 +28,10 @@ describe('field', () => {
                 scheme: 'http://purl.org/dc/terms/title',
                 transformers: [],
             };
-            expect(await validateField(field)).toEqual(field);
+            expect(validateField(field)).toEqual(field);
         });
 
-        it('should throw an error if no cover', (done) => {
+        it('should throw an error if no cover', () => {
             const field = {
                 cover: undefined,
                 label: 'label',
@@ -42,18 +42,10 @@ describe('field', () => {
                 ],
             };
 
-            validateField(field)
-            .then(() => {
-                throw new Error('validateField should have thrown an error');
-            })
-            .catch((error) => {
-                expect(error.message).toEqual(buildInvalidPropertiesMessage('name'));
-                done();
-            })
-            .catch(done);
+            expect(() => validateField(field)).toThrow(buildInvalidPropertiesMessage('name'));
         });
 
-        it('should throw an error if cover is unknown', (done) => {
+        it('should throw an error if cover is unknown', () => {
             const field = {
                 cover: 'invalid_cover',
                 label: 'label',
@@ -64,18 +56,10 @@ describe('field', () => {
                 ],
             };
 
-            validateField(field)
-            .then(() => {
-                throw new Error('validateField should have thrown an error');
-            })
-            .catch((error) => {
-                expect(error.message).toEqual(buildInvalidPropertiesMessage('name'));
-                done();
-            })
-            .catch(done);
+            expect(() => validateField(field)).toThrow(buildInvalidPropertiesMessage('name'));
         });
 
-        it('should throw an error if no label', (done) => {
+        it('should throw an error if no label', () => {
             const field = {
                 cover: 'dataset',
                 name: 'name',
@@ -86,18 +70,10 @@ describe('field', () => {
                 ],
             };
 
-            validateField(field)
-            .then(() => {
-                throw new Error('validateField should have thrown an error');
-            })
-            .catch((error) => {
-                expect(error.message).toEqual(buildInvalidPropertiesMessage('name'));
-                done();
-            })
-            .catch(done);
+            expect(() => validateField(field)).toThrow(buildInvalidPropertiesMessage('name'));
         });
 
-        it('should throw an error if label less than ', (done) => {
+        it('should throw an error if label less than ', () => {
             const field = {
                 cover: 'dataset',
                 label: 'la',
@@ -108,18 +84,10 @@ describe('field', () => {
                 ],
             };
 
-            validateField(field)
-            .then(() => {
-                throw new Error('validateField should have thrown an error');
-            })
-            .catch((error) => {
-                expect(error.message).toEqual(buildInvalidPropertiesMessage('name'));
-                done();
-            })
-            .catch(done);
+            expect(() => validateField(field)).toThrow(buildInvalidPropertiesMessage('name'));
         });
 
-        it('should throw an error if no name', (done) => {
+        it('should throw an error if no name', () => {
             const field = {
                 cover: 'dataset',
                 label: 'label',
@@ -130,18 +98,10 @@ describe('field', () => {
                 ],
             };
 
-            validateField(field)
-            .then(() => {
-                throw new Error('validateField should have thrown an error');
-            })
-            .catch((error) => {
-                expect(error.message).toEqual(buildInvalidPropertiesMessage());
-                done();
-            })
-            .catch(done);
+            expect(() => validateField(field)).toThrow(buildInvalidPropertiesMessage());
         });
 
-        it('should throw an error if name less than ', (done) => {
+        it('should throw an error if name less than ', () => {
             const field = {
                 cover: 'dataset',
                 label: 'label',
@@ -152,19 +112,10 @@ describe('field', () => {
                 ],
             };
 
-            validateField(field)
-            .then(() => { 
-field;
-                throw new Error('validateField should have thrown an error');
-            })
-            .catch((error) => {
-                expect(error.message).toEqual(buildInvalidPropertiesMessage('na'));
-                done();
-            })
-            .catch(done);
+            expect(() => validateField(field)).toThrow(buildInvalidPropertiesMessage('na'));
         });
 
-        it('should throw an error if scheme is not a valid url', (done) => {
+        it('should throw an error if scheme is not a valid url', () => {
             const field = {
                 cover: 'dataset',
                 label: 'label',
@@ -175,18 +126,10 @@ field;
                 ],
             };
 
-            validateField(field)
-            .then(() => {
-                throw new Error('validateField should have thrown an error');
-            })
-            .catch((error) => {
-                expect(error.message).toEqual(buildInvalidPropertiesMessage('name'));
-                done();
-            })
-            .catch(done);
+            expect(() => validateField(field)).toThrow(buildInvalidPropertiesMessage('name'));
         });
 
-        it('should throw an error if transformer has no args', (done) => {
+        it('should throw an error if transformer has no args', () => {
             const field = {
                 cover: 'dataset',
                 label: 'label',
@@ -197,18 +140,10 @@ field;
                 ],
             };
 
-            validateField(field)
-            .then(() => {
-                throw new Error('validateField should have thrown an error');
-            })
-            .catch((error) => {
-                expect(error.message).toEqual(buildInvalidTransformersMessage('name'));
-                done();
-            })
-            .catch(done);
+            expect(() => validateField(field)).toThrow(buildInvalidTransformersMessage('name'));
         });
 
-        it('should throw an error if transformer operation has unknow operation', (done) => {
+        it('should throw an error if transformer operation has unknow operation', () => {
             const field = {
                 cover: 'dataset',
                 label: 'label',
@@ -220,15 +155,7 @@ field;
                 ],
             };
 
-            validateField(field)
-            .then(() => {
-                throw new Error('validateField should have thrown an error');
-            })
-            .catch((error) => {
-                expect(error.message).toEqual(buildInvalidTransformersMessage('name'));
-                done();
-            })
-            .catch(done);
+            expect(() => validateField(field)).toThrow(buildInvalidTransformersMessage('name'));
         });
     });
 });
