@@ -30,6 +30,7 @@ import Property from '../lib/Property';
 import SelectFieldToAdd from './SelectFieldToAdd';
 import { isLoggedIn as getIsLoggedIn } from '../user';
 import FormSelectField from '../lib/FormSelectField';
+import DetailProperties from './DetailProperties';
 
 const required = value => (value ? undefined : 'Required');
 const validMail = value =>
@@ -49,14 +50,7 @@ export const AddFieldDetailComponent = ({
     p: polyglot,
 }) => (
     <Card className="hide-detail">
-        <CardText>
-            {collectionFields.map(({ name, scheme }) => (
-                <Property name={name} scheme={scheme} value={resource[name]} />
-            ))}
-            {documentFields.map(({ name, scheme }) => (
-                <Property name={name} scheme={scheme} value={resource[name]} />
-            ))}
-        </CardText>
+        <DetailProperties />
         <CardHeader title={polyglot.t('add_field_to_resource')} />
         <CardText>
             <form id="add_field_resource_form" onSubmit={() => handleSubmit(resource.uri)}>

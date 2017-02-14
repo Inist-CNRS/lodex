@@ -19,16 +19,12 @@ import FormTextField from '../lib/FormTextField';
 import Alert from '../lib/Alert';
 import ButtonWithStatus from '../lib/ButtonWithStatus';
 import { polyglot as polyglotPropTypes } from '../lib/propTypes';
-import Property from '../lib/Property';
+import DetailProperties from './DetailProperties';
 
-export const HideDetailComponent = ({ resource, fields, saving, error, handleSubmit, p: polyglot }) => (
+export const HideDetailComponent = ({ resource, saving, error, handleSubmit, p: polyglot }) => (
     <Card className="hide-detail">
         <CardHeader title={polyglot.t('remove_resource')} />
-        <CardText>
-            {fields.map(({ name, scheme }) => (
-                <Property name={name} scheme={scheme} value={resource[name]} />
-            ))}
-        </CardText>
+        <DetailProperties />
         <CardText>
             <form id="hide_resource_form" onSubmit={() => handleSubmit(resource.uri)}>
                 {error && <Alert><p>{error}</p></Alert>}
@@ -64,7 +60,6 @@ HideDetailComponent.defaultProps = {
 
 HideDetailComponent.propTypes = {
     ...reduxFormPropTypes,
-    fields: PropTypes.arrayOf(PropTypes.object).isRequired,
     saving: PropTypes.bool,
     p: polyglotPropTypes.isRequired,
 };
@@ -72,7 +67,6 @@ HideDetailComponent.propTypes = {
 const mapStateToProps = state => ({
     initialValues: getResourceLastVersion(state),
     resource: getResourceLastVersion(state),
-    fields: getCollectionFields(state),
     saving: isSaving(state),
 });
 
