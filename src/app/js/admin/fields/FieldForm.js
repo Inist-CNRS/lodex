@@ -92,6 +92,7 @@ export const FieldFormComponent = ({
                 <MenuItem value="collection" primaryText={polyglot.t('cover_collection')} />
             </Field>
             <Field
+                className="scheme"
                 name="scheme"
                 component={FormAutoCompleteField}
                 label={polyglot.t('scheme')}

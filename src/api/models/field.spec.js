@@ -3,7 +3,7 @@ import { INVALID_FIELD_MESSAGE, validateFieldFactory } from './field';
 
 describe('field', () => {
     describe('validateField', () => {
-        it('should return field if valid', () => {
+        it('should return field if valid', async () => {
             const field = {
                 cover: 'dataset',
                 label: 'label',
@@ -13,10 +13,10 @@ describe('field', () => {
                     { operation: 'COLUMN', args: ['a'] },
                 ],
             };
-            expect(validateFieldFactory({ isSchemeValid: () => true })(field)).toEqual(field);
+            expect(await validateFieldFactory(() => true)(field)).toEqual(field);
         });
 
-        it('should return field if no transformers', () => {
+        it('should return field if no transformers', async () => {
             const field = {
                 cover: 'dataset',
                 label: 'label',
@@ -24,10 +24,10 @@ describe('field', () => {
                 scheme: 'http://purl.org/dc/terms/title',
                 transformers: [],
             };
-            expect(validateFieldFactory({ isSchemeValid: () => true })(field)).toEqual(field);
+            expect(await validateFieldFactory(() => true)(field)).toEqual(field);
         });
 
-        it('should throw an error if no cover', () => {
+        it('should throw an error if no cover', (done) => {
             const field = {
                 cover: undefined,
                 label: 'label',
@@ -38,11 +38,18 @@ describe('field', () => {
                 ],
             };
 
-            expect(() => validateFieldFactory({ isSchemeValid: () => true })(field))
-                .toThrow(INVALID_FIELD_MESSAGE);
+            validateFieldFactory(() => true)(field)
+            .then(() => {
+                throw new Error('validateFiel should have thrown an error');
+            })
+            .catch((error) => {
+                expect(error.message).toEqual(INVALID_FIELD_MESSAGE);
+                done();
+            })
+            .catch(done);
         });
 
-        it('should throw an error if cover is unknown', () => {
+        it('should throw an error if cover is unknown', (done) => {
             const field = {
                 cover: 'invalid_cover',
                 label: 'label',
@@ -53,11 +60,18 @@ describe('field', () => {
                 ],
             };
 
-            expect(() => validateFieldFactory({ isSchemeValid: () => true })(field))
-                .toThrow(INVALID_FIELD_MESSAGE);
+            validateFieldFactory(() => true)(field)
+            .then(() => {
+                throw new Error('validateFiel should have thrown an error');
+            })
+            .catch((error) => {
+                expect(error.message).toEqual(INVALID_FIELD_MESSAGE);
+                done();
+            })
+            .catch(done);
         });
 
-        it('should throw an error if no label', () => {
+        it('should throw an error if no label', (done) => {
             const field = {
                 cover: 'dataset',
                 name: 'name',
@@ -68,11 +82,18 @@ describe('field', () => {
                 ],
             };
 
-            expect(() => validateFieldFactory({ isSchemeValid: () => true })(field))
-                .toThrow(INVALID_FIELD_MESSAGE);
+            validateFieldFactory(() => true)(field)
+            .then(() => {
+                throw new Error('validateField should have thrown an error');
+            })
+            .catch((error) => {
+                expect(error.message).toEqual(INVALID_FIELD_MESSAGE);
+                done();
+            })
+            .catch(done);
         });
 
-        it('should throw an error if label less than ', () => {
+        it('should throw an error if label less than ', (done) => {
             const field = {
                 cover: 'dataset',
                 label: 'la',
@@ -83,11 +104,18 @@ describe('field', () => {
                 ],
             };
 
-            expect(() => validateFieldFactory({ isSchemeValid: () => true })(field))
-                .toThrow(INVALID_FIELD_MESSAGE);
+            validateFieldFactory(() => true)(field)
+            .then(() => {
+                throw new Error('validateFiel should have thrown an error');
+            })
+            .catch((error) => {
+                expect(error.message).toEqual(INVALID_FIELD_MESSAGE);
+                done();
+            })
+            .catch(done);
         });
 
-        it('should throw an error if no name', () => {
+        it('should throw an error if no name', (done) => {
             const field = {
                 cover: 'dataset',
                 label: 'label',
@@ -98,11 +126,18 @@ describe('field', () => {
                 ],
             };
 
-            expect(() => validateFieldFactory({ isSchemeValid: () => true })(field))
-                .toThrow(INVALID_FIELD_MESSAGE);
+            validateFieldFactory(() => true)(field)
+            .then(() => {
+                throw new Error('validateFiel should have thrown an error');
+            })
+            .catch((error) => {
+                expect(error.message).toEqual(INVALID_FIELD_MESSAGE);
+                done();
+            })
+            .catch(done);
         });
 
-        it('should throw an error if name less than ', () => {
+        it('should throw an error if name less than ', (done) => {
             const field = {
                 cover: 'dataset',
                 label: 'label',
@@ -113,41 +148,18 @@ describe('field', () => {
                 ],
             };
 
-            expect(() => validateFieldFactory({ isSchemeValid: () => true })(field))
-                .toThrow(INVALID_FIELD_MESSAGE);
+            validateFieldFactory(() => true)(field)
+            .then(() => {
+                throw new Error('validateFiel should have thrown an error');
+            })
+            .catch((error) => {
+                expect(error.message).toEqual(INVALID_FIELD_MESSAGE);
+                done();
+            })
+            .catch(done);
         });
 
-        it('should throw an error if no scheme', () => {
-            const field = {
-                cover: 'dataset',
-                label: 'label',
-                name: 'name',
-                scheme: undefined,
-                transformers: [
-                    { operation: 'COLUMN', args: ['a'] },
-                ],
-            };
-
-            expect(() => validateFieldFactory({ isSchemeValid: () => true })(field))
-                .toThrow(INVALID_FIELD_MESSAGE);
-        });
-
-        it('should throw an error if scheme is not an URI', () => {
-            const field = {
-                cover: 'dataset',
-                label: 'label',
-                name: 'na',
-                scheme: 'scheme',
-                transformers: [
-                    { operation: 'COLUMN', args: ['a'] },
-                ],
-            };
-
-            expect(() => validateFieldFactory({ isSchemeValid: () => true })(field))
-                .toThrow(INVALID_FIELD_MESSAGE);
-        });
-
-        it('should throw an error if schemeService return false', () => {
+        it('should throw an error if schemeService return false', (done) => {
             const field = {
                 cover: 'dataset',
                 label: 'label',
@@ -158,11 +170,18 @@ describe('field', () => {
                 ],
             };
 
-            expect(() => validateFieldFactory({ isSchemeValid: () => false })(field))
-                .toThrow(INVALID_FIELD_MESSAGE);
+            validateFieldFactory(() => false)(field)
+            .then(() => {
+                throw new Error('validateFiel should have thrown an error');
+            })
+            .catch((error) => {
+                expect(error.message).toEqual(INVALID_FIELD_MESSAGE);
+                done();
+            })
+            .catch(done);
         });
 
-        it('should throw an error if transformer has no args', () => {
+        it('should throw an error if transformer has no args', (done) => {
             const field = {
                 cover: 'dataset',
                 label: 'label',
@@ -172,13 +191,22 @@ describe('field', () => {
                     { operation: 'COLUMN' },
                 ],
             };
-            expect(() => validateFieldFactory({ isSchemeValid: () => true })(field)).toThrow(
+
+            validateFieldFactory(() => true)(field)
+            .then(() => {
+                throw new Error('validateFiel should have thrown an error');
+            })
+            .catch((error) => {
+                expect(error.message).toEqual(
 `Invalid transformer in field at index: 0,
 transformer must have a valid operation and an args array`,
-            );
+                );
+                done();
+            })
+            .catch(done);
         });
 
-        it('should throw an error if transformer operation has unknow operation', () => {
+        it('should throw an error if transformer operation has unknow operation', (done) => {
             const field = {
                 cover: 'dataset',
                 label: 'label',
@@ -189,10 +217,19 @@ transformer must have a valid operation and an args array`,
                     { operation: 'UNKNOWN', args: [] },
                 ],
             };
-            expect(() => validateFieldFactory({ isSchemeValid: () => true })(field)).toThrow(
+
+            validateFieldFactory(() => true)(field)
+            .then(() => {
+                throw new Error('validateFiel should have thrown an error');
+            })
+            .catch((error) => {
+                expect(error.message).toEqual(
 `Invalid transformer in field at index: 1,
 transformer must have a valid operation and an args array`,
-            );
+                );
+                done();
+            })
+            .catch(done);
         });
     });
 });

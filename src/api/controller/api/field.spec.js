@@ -1,4 +1,4 @@
-import expect from 'expect';
+import expect, { createSpy } from 'expect';
 
 import {
     setup,

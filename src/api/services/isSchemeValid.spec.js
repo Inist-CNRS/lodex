@@ -1,5 +1,5 @@
 import expect, { createSpy } from 'expect';
-import { isSchemeValidFactory } from './scheme';
+import { isSchemeValidFactory } from './isSchemeValid';
 
 describe('scheme service', () => {
     describe('isSchemeValid', () => {
@@ -9,7 +9,7 @@ describe('scheme service', () => {
             await isSchemeValidFactory(fetchImp)('foo');
 
             expect(fetchImp).toHaveBeenCalledWith(
-                'http://lov.okfn.org/dataset/lov/api/v2/vocabulary/info?vocab=foo',
+                'http://lov.okfn.org/dataset/lov/api/v2/term/search?vocab=foo',
             );
         });
 

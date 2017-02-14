@@ -19,6 +19,7 @@ export const getAllField = async (ctx) => {
 
 export const postField = async (ctx) => {
     const newField = ctx.request.body;
+
     const result = await ctx.field.insertOne(newField);
 
     if (result.ops && result.ops.length) {
