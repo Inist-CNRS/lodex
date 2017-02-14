@@ -1,9 +1,25 @@
 import expect, { createSpy } from 'expect';
 import through from 'through';
 
-import { exportCsvFactory, getCsvFieldFactory, getLastVersion } from './exportCsv';
+import { exportCsvFactory, getCsvFieldFactory, getLastVersionFactory, removeContributions } from './exportCsv';
 
-describe('exportCsv', () => {
+describe.only('exportCsv', () => {
+    describe('removeContributions', () => {
+        it('should remove contributions field not accepted', () => {
+            const doc = { field: 'value', contribution: 'contribution value' };
+            const contributions = [{ fieldName: 'contribution', accepted: false }];
+            expect(removeContributions(doc, contributions))
+                .toEqual({ field: 'value' });
+        });
+
+        it('should keep contributions field that are accepted', () => {
+            const doc = { field: 'value', contribution: 'contribution value' };
+            const contributions = [{ fieldName: 'contribution', accepted: true }];
+            expect(removeContributions(doc, contributions))
+                .toEqual(doc);
+        });
+    });
+
     describe('getCsvField', () => {
         const getCharacteristicByName = name => ({ value: `${name}_value` });
         const getCsvField = getCsvFieldFactory(getCharacteristicByName);
@@ -51,7 +67,7 @@ describe('exportCsv', () => {
     describe('getLastVersion', () => {
         it('should call this.queue with resource uri + last version', () => {
             const queue = createSpy();
-            const bindedGetLastVersion = getLastVersion.bind({ queue });
+            const bindedGetLastVersion = getLastVersionFactory({}).bind({ queue });
 
             bindedGetLastVersion({
                 uri: 'uri',
@@ -65,6 +81,76 @@ describe('exportCsv', () => {
             expect(queue).toHaveBeenCalledWith({
                 uri: 'uri',
                 version3: 'data3',
+            });
+        });
+
+        it('should remove unaccepted contribution', () => {
+            const queue = createSpy();
+            const bindedGetLastVersion = getLastVersionFactory({}).bind({ queue });
+
+            bindedGetLastVersion({
+                uri: 'uri',
+                versions: [
+                    { version1: 'data1' },
+                    { version2: 'data2', contribution: 'value' },
+                    { version3: 'data3', contribution: 'value', acceptedContribution: 'value' },
+                ],
+                contributions: [
+                    { fieldName: 'contribution', accepted: false },
+                    { fieldName: 'acceptedContribution', accepted: true },
+                ],
+            });
+
+            expect(queue).toHaveBeenCalledWith({
+                uri: 'uri',
+                version3: 'data3',
+                acceptedContribution: 'value',
+            });
+        });
+
+        it('should add value from default document', () => {
+            const queue = createSpy();
+            const defaultDocument = {
+                data: 'defaultValue',
+            };
+            const bindedGetLastVersion = getLastVersionFactory(defaultDocument).bind({ queue });
+
+            bindedGetLastVersion({
+                uri: 'uri',
+                versions: [
+                    { version1: 'data1' },
+                    { version2: 'data2' },
+                    { version3: 'data3' },
+                ],
+            });
+
+            expect(queue).toHaveBeenCalledWith({
+                uri: 'uri',
+                version3: 'data3',
+                data: 'defaultValue',
+            });
+        });
+
+        it('should not add value from default document if they are present', () => {
+            const queue = createSpy();
+            const defaultDocument = {
+                data: 'defaultValue',
+            };
+            const bindedGetLastVersion = getLastVersionFactory(defaultDocument).bind({ queue });
+
+            bindedGetLastVersion({
+                uri: 'uri',
+                versions: [
+                    { version1: 'data1' },
+                    { version2: 'data2' },
+                    { version3: 'data3', data: 'my value' },
+                ],
+            });
+
+            expect(queue).toHaveBeenCalledWith({
+                uri: 'uri',
+                version3: 'data3',
+                data: 'my value',
             });
         });
     });
@@ -111,7 +197,7 @@ describe('exportCsv', () => {
         });
 
         it('should pipe the datasetStream  to getLastVersion and then to csvTransformStream', () => {
-            expect(datasetStream.pipe).toHaveBeenCalledWith(through(getLastVersion));
+            expect(datasetStream.pipe).toHaveBeenCalledWith(through(getLastVersionFactory({})));
             expect(lastVersionStream.pipe).toHaveBeenCalledWith(csvTransformStream);
         });
     });
