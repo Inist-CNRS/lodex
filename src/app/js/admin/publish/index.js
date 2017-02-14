@@ -36,10 +36,14 @@ export default handleActions({
         error,
         loading: false,
     }),
-    [combineActions(REDUX_FORM_CHANGE, REDUX_FORM_ARRAY_INSERT, REDUX_FORM_ARRAY_REMOVE)]: state => ({
-        ...state,
-        loading: true,
-    }),
+    [combineActions(REDUX_FORM_CHANGE, REDUX_FORM_ARRAY_INSERT, REDUX_FORM_ARRAY_REMOVE)]: (state, { meta: { form } }) => (
+        form === 'field'
+        ? ({
+            ...state,
+            loading: true,
+        })
+        : state
+    ),
     [combineActions(UPDATE_FIELD_ERROR, UPDATE_FIELD_SUCCESS)]: state => ({
         ...state,
         loading: false,

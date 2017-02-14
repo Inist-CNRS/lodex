@@ -1,5 +1,9 @@
 import expect from 'expect';
-import { INVALID_FIELD_MESSAGE, validateFieldFactory } from './field';
+import {
+    validateField,
+    buildInvalidPropertiesMessage,
+    buildInvalidTransformersMessage,
+} from './field';
 
 describe('field', () => {
     describe('validateField', () => {
@@ -13,7 +17,7 @@ describe('field', () => {
                     { operation: 'COLUMN', args: ['a'] },
                 ],
             };
-            expect(await validateFieldFactory(() => true)(field)).toEqual(field);
+            expect(await validateField(field)).toEqual(field);
         });
 
         it('should return field if no transformers', async () => {
@@ -24,26 +28,26 @@ describe('field', () => {
                 scheme: 'http://purl.org/dc/terms/title',
                 transformers: [],
             };
-            expect(await validateFieldFactory(() => true)(field)).toEqual(field);
+            expect(await validateField(field)).toEqual(field);
         });
 
         it('should throw an error if no cover', (done) => {
             const field = {
                 cover: undefined,
                 label: 'label',
-                name: undefined,
+                name: 'name',
                 scheme: 'http://purl.org/dc/terms/title',
                 transformers: [
                     { operation: 'COLUMN', args: ['a'] },
                 ],
             };
 
-            validateFieldFactory(() => true)(field)
+            validateField(field)
             .then(() => {
-                throw new Error('validateFiel should have thrown an error');
+                throw new Error('validateField should have thrown an error');
             })
             .catch((error) => {
-                expect(error.message).toEqual(INVALID_FIELD_MESSAGE);
+                expect(error.message).toEqual(buildInvalidPropertiesMessage('name'));
                 done();
             })
             .catch(done);
@@ -53,19 +57,19 @@ describe('field', () => {
             const field = {
                 cover: 'invalid_cover',
                 label: 'label',
-                name: undefined,
+                name: 'name',
                 scheme: 'http://purl.org/dc/terms/title',
                 transformers: [
                     { operation: 'COLUMN', args: ['a'] },
                 ],
             };
 
-            validateFieldFactory(() => true)(field)
+            validateField(field)
             .then(() => {
-                throw new Error('validateFiel should have thrown an error');
+                throw new Error('validateField should have thrown an error');
             })
             .catch((error) => {
-                expect(error.message).toEqual(INVALID_FIELD_MESSAGE);
+                expect(error.message).toEqual(buildInvalidPropertiesMessage('name'));
                 done();
             })
             .catch(done);
@@ -82,12 +86,12 @@ describe('field', () => {
                 ],
             };
 
-            validateFieldFactory(() => true)(field)
+            validateField(field)
             .then(() => {
                 throw new Error('validateField should have thrown an error');
             })
             .catch((error) => {
-                expect(error.message).toEqual(INVALID_FIELD_MESSAGE);
+                expect(error.message).toEqual(buildInvalidPropertiesMessage('name'));
                 done();
             })
             .catch(done);
@@ -104,12 +108,12 @@ describe('field', () => {
                 ],
             };
 
-            validateFieldFactory(() => true)(field)
+            validateField(field)
             .then(() => {
-                throw new Error('validateFiel should have thrown an error');
+                throw new Error('validateField should have thrown an error');
             })
             .catch((error) => {
-                expect(error.message).toEqual(INVALID_FIELD_MESSAGE);
+                expect(error.message).toEqual(buildInvalidPropertiesMessage('name'));
                 done();
             })
             .catch(done);
@@ -126,12 +130,12 @@ describe('field', () => {
                 ],
             };
 
-            validateFieldFactory(() => true)(field)
+            validateField(field)
             .then(() => {
-                throw new Error('validateFiel should have thrown an error');
+                throw new Error('validateField should have thrown an error');
             })
             .catch((error) => {
-                expect(error.message).toEqual(INVALID_FIELD_MESSAGE);
+                expect(error.message).toEqual(buildInvalidPropertiesMessage());
                 done();
             })
             .catch(done);
@@ -148,34 +152,35 @@ describe('field', () => {
                 ],
             };
 
-            validateFieldFactory(() => true)(field)
-            .then(() => {
-                throw new Error('validateFiel should have thrown an error');
+            validateField(field)
+            .then(() => { 
+field;
+                throw new Error('validateField should have thrown an error');
             })
             .catch((error) => {
-                expect(error.message).toEqual(INVALID_FIELD_MESSAGE);
+                expect(error.message).toEqual(buildInvalidPropertiesMessage('na'));
                 done();
             })
             .catch(done);
         });
 
-        it('should throw an error if schemeService return false', (done) => {
+        it('should throw an error if scheme is not a valid url', (done) => {
             const field = {
                 cover: 'dataset',
                 label: 'label',
-                name: 'na',
-                scheme: 'http://purl.org/dc/terms/title',
+                name: 'name',
+                scheme: 'ftp://purl.org/dc/terms/title',
                 transformers: [
                     { operation: 'COLUMN', args: ['a'] },
                 ],
             };
 
-            validateFieldFactory(() => false)(field)
+            validateField(field)
             .then(() => {
-                throw new Error('validateFiel should have thrown an error');
+                throw new Error('validateField should have thrown an error');
             })
             .catch((error) => {
-                expect(error.message).toEqual(INVALID_FIELD_MESSAGE);
+                expect(error.message).toEqual(buildInvalidPropertiesMessage('name'));
                 done();
             })
             .catch(done);
@@ -185,22 +190,19 @@ describe('field', () => {
             const field = {
                 cover: 'dataset',
                 label: 'label',
-                name: 'field',
+                name: 'name',
                 scheme: 'http://purl.org/dc/terms/title',
                 transformers: [
                     { operation: 'COLUMN' },
                 ],
             };
 
-            validateFieldFactory(() => true)(field)
+            validateField(field)
             .then(() => {
-                throw new Error('validateFiel should have thrown an error');
+                throw new Error('validateField should have thrown an error');
             })
             .catch((error) => {
-                expect(error.message).toEqual(
-`Invalid transformer in field at index: 0,
-transformer must have a valid operation and an args array`,
-                );
+                expect(error.message).toEqual(buildInvalidTransformersMessage('name'));
                 done();
             })
             .catch(done);
@@ -210,7 +212,7 @@ transformer must have a valid operation and an args array`,
             const field = {
                 cover: 'dataset',
                 label: 'label',
-                name: 'field',
+                name: 'name',
                 scheme: 'http://purl.org/dc/terms/title',
                 transformers: [
                     { operation: 'COLUMN', args: [] },
@@ -218,15 +220,12 @@ transformer must have a valid operation and an args array`,
                 ],
             };
 
-            validateFieldFactory(() => true)(field)
+            validateField(field)
             .then(() => {
-                throw new Error('validateFiel should have thrown an error');
+                throw new Error('validateField should have thrown an error');
             })
             .catch((error) => {
-                expect(error.message).toEqual(
-`Invalid transformer in field at index: 1,
-transformer must have a valid operation and an args array`,
-                );
+                expect(error.message).toEqual(buildInvalidTransformersMessage('name'));
                 done();
             })
             .catch(done);
