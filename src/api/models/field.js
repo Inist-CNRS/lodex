@@ -1,11 +1,7 @@
-import expect from 'expect';
 import omit from 'lodash.omit';
 import { ObjectID } from 'mongodb';
 
-import transformers from '../../common/transformers';
-import isSchemeValid from '../services/isSchemeValid';
-
-const validOperations = new RegExp(Object.keys(transformers).join('|'));
+import { validateField as validateFieldIsomorphic } from '../../common/validateFields';
 
 export default async (db) => {
     const collection = db.collection('field');
@@ -22,39 +18,22 @@ export default async (db) => {
     return collection;
 };
 
-export const INVALID_FIELD_MESSAGE = 'Invalid data for field which need a name, a label, a cover, a valid scheme, a type and a transformers array'; // eslint-disable-line
+export const buildInvalidPropertiesMessage = name =>
+    `Invalid data for field ${name} which need a name, a label, a cover, a valid scheme if specified and a transformers array`; // eslint-disable-line
 
-export const validateFieldFactory = isSchemeValidImpl => async (data) => {
-    try {
-        expect(data).toMatch({
-            cover: /^(dataset|collection|document)$/,
-            label: /^.{3,}$/,
-            name: /^[\S]{3,}$/,
-            transformers: [],
-        });
-    } catch (error) {
-        throw new Error(INVALID_FIELD_MESSAGE);
+export const buildInvalidTransformersMessage = name =>
+    `Invalid transformers for field ${name}: transformers must have a valid operation and an args array`; // eslint-disable-line
+
+export const validateField = (data) => {
+    const validation = validateFieldIsomorphic(data);
+
+    if (!validation.propertiesAreValid) {
+        throw new Error(buildInvalidPropertiesMessage(data.name));
     }
 
-    if (data.scheme && !await isSchemeValidImpl(data.scheme)) {
-        throw new Error(INVALID_FIELD_MESSAGE);
+    if (!validation.transformersAreValid) {
+        throw new Error(buildInvalidTransformersMessage(data.name));
     }
-
-    data.transformers.forEach((transformer, index) => {
-        try {
-            expect(transformer).toMatch({
-                operation: validOperations,
-                args: [],
-            });
-        } catch (error) {
-            throw new Error(
-`Invalid transformer in field at index: ${index},
-transformer must have a valid operation and an args array`,
-            );
-        }
-    });
 
     return data;
 };
-
-export const validateField = validateFieldFactory(isSchemeValid);
