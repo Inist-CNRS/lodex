@@ -3,7 +3,7 @@ import through from 'through';
 
 import { exportCsvFactory, getCsvFieldFactory, getLastVersionFactory, removeContributions } from './exportCsv';
 
-describe.only('exportCsv', () => {
+describe('exportCsv', () => {
     describe('removeContributions', () => {
         it('should remove contributions field not accepted', () => {
             const doc = { field: 'value', contribution: 'contribution value' };

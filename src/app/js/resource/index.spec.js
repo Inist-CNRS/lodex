@@ -11,6 +11,12 @@ import reducer, {
     HIDE_RESOURCE,
     HIDE_RESOURCE_SUCCESS,
     HIDE_RESOURCE_ERROR,
+    ADD_FIELD_TO_RESOURCE,
+    ADD_FIELD_TO_RESOURCE_SUCCESS,
+    ADD_FIELD_TO_RESOURCE_ERROR,
+    getResourceUnvalidatedFields,
+    getResourceContributorsByField,
+    getResourceLastVersion,
 } from './index';
 
 describe('resourceReducer', () => {
@@ -62,69 +68,120 @@ describe('resourceReducer', () => {
         });
     });
 
-    it('should handle SAVE_RESOURCE', () => {
-        const state = reducer({
-            key: 'value',
-        }, { type: SAVE_RESOURCE });
-        expect(state).toEqual({
-            key: 'value',
-            error: null,
-            saving: true,
+    it('should handle SAVE_RESOURCE, HIDE_RESOURCE and ADD_FIELD_TO_RESOURCE', () => {
+        [
+            SAVE_RESOURCE,
+            HIDE_RESOURCE,
+            ADD_FIELD_TO_RESOURCE,
+        ].forEach((type) => {
+            const state = reducer({
+                key: 'value',
+            }, { type });
+            expect(state).toEqual({
+                key: 'value',
+                error: null,
+                saving: true,
+            });
         });
     });
 
-    it('should handle SAVE_RESOURCE_SUCCESS', () => {
-        const state = reducer({
-            key: 'value',
-        }, { type: SAVE_RESOURCE_SUCCESS });
-        expect(state).toEqual({
-            key: 'value',
-            error: null,
-            saving: false,
+    it('should handle SAVE_RESOURCE_SUCCESS, HIDE_RESOURCE_SUCCESS, ADD_FIELD_TO_RESOURCE_SUCCESS', () => {
+        [
+            SAVE_RESOURCE_SUCCESS,
+            HIDE_RESOURCE_SUCCESS,
+            ADD_FIELD_TO_RESOURCE_SUCCESS,
+        ].forEach((type) => {
+            const state = reducer({
+                key: 'value',
+            }, { type });
+            expect(state).toEqual({
+                key: 'value',
+                error: null,
+                saving: false,
+            });
         });
     });
 
-    it('should handle SAVE_RESOURCE_ERROR', () => {
-        const state = reducer({
-            key: 'value',
-        }, { type: SAVE_RESOURCE_ERROR, payload: { message: 'boom' } });
-        expect(state).toEqual({
-            key: 'value',
-            error: 'boom',
-            saving: false,
+    it('should handle SAVE_RESOURCE_ERROR, HIDE_RESOURCE_ERROR, ADD_FIELD_TO_RESOURCE_ERROR', () => {
+        [
+            SAVE_RESOURCE_ERROR,
+            HIDE_RESOURCE_ERROR,
+            ADD_FIELD_TO_RESOURCE_ERROR,
+        ].forEach((type) => {
+            const state = reducer({
+                key: 'value',
+            }, { type, payload: { message: 'boom' } });
+            expect(state).toEqual({
+                key: 'value',
+                error: 'boom',
+                saving: false,
+            });
         });
     });
 
-    it('should handle HIDE_RESOURCE', () => {
-        const state = reducer({
-            key: 'value',
-        }, { type: HIDE_RESOURCE });
-        expect(state).toEqual({
-            key: 'value',
-            error: null,
-            saving: true,
+    describe('selector', () => {
+        describe('getResourceUnvalidatedFields', () => {
+            it('should return list of fields with accepted false', () => {
+                const state = {
+                    resource: {
+                        resource: {
+                            contributions: [
+                                { fieldName: 'acceptedField', accepted: true },
+                                { fieldName: 'unvalidatedField', accepted: false },
+                                { fieldName: 'otherAcceptedField', accepted: true },
+                                { fieldName: 'otherUnvalidatedField', accepted: false },
+                            ],
+                        },
+                    },
+                };
+                expect(getResourceUnvalidatedFields(state)).toEqual(['unvalidatedField', 'otherUnvalidatedField']);
+            });
         });
-    });
 
-    it('should handle HIDE_RESOURCE_SUCCESS', () => {
-        const state = reducer({
-            key: 'value',
-        }, { type: HIDE_RESOURCE_SUCCESS });
-        expect(state).toEqual({
-            key: 'value',
-            error: null,
-            saving: false,
+        describe('getResourceContributorsByField', () => {
+            it('should return contributor name keyed with their field', () => {
+                const state = {
+                    resource: {
+                        resource: {
+                            contributions: [
+                                { fieldName: 'field1', contributor: { name: 'contributor1' } },
+                                { fieldName: 'field2', contributor: { name: 'contributor2' } },
+                                { fieldName: 'field3', contributor: { name: 'contributor3' } },
+                                { fieldName: 'field4', contributor: { name: 'contributor4' } },
+                            ],
+                        },
+                    },
+                };
+
+                expect(getResourceContributorsByField(state)).toEqual({
+                    field1: 'contributor1',
+                    field2: 'contributor2',
+                    field3: 'contributor3',
+                    field4: 'contributor4',
+                });
+            });
         });
-    });
 
-    it('should handle HIDE_RESOURCE_ERROR', () => {
-        const state = reducer({
-            key: 'value',
-        }, { type: HIDE_RESOURCE_ERROR, payload: { message: 'boom' } });
-        expect(state).toEqual({
-            key: 'value',
-            error: 'boom',
-            saving: false,
+        describe('getResourceLastVersion', () => {
+            it('should return lasst items in versions for resource + uri', () => {
+                const state = {
+                    resource: {
+                        resource: {
+                            uri: 'uri',
+                            versions: [
+                                { data: 'version1' },
+                                { data: 'version2' },
+                                { data: 'version3' },
+                            ],
+                        },
+                    },
+                };
+
+                expect(getResourceLastVersion(state)).toEqual({
+                    uri: 'uri',
+                    data: 'version3',
+                });
+            });
         });
     });
 });

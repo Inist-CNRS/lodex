@@ -1,5 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import compose from 'recompose/compose';
+import translate from 'redux-polyglot/translate';
 
 import { property as propertyPropTypes } from './propTypes';
 import {
@@ -23,13 +25,15 @@ const styles = {
     },
 };
 
-const PropertyComponent = ({ name, value, scheme, contributors, unValidatedFields }) => (
+const PropertyComponent = ({ name, value, scheme, contributors, unValidatedFields, p: polyglot }) => (
     <dl className="property" style={styles.container(unValidatedFields.includes(name))}>
         <dt>
             <div className="property_name" style={styles.name}>{name}</div>
             <div className="property_scheme" style={styles.scheme}>{scheme}</div>
             { contributors[name] ?
-                <div className="property_contributor" style={styles.scheme}>{contributors[name]}</div>
+                <div className="property_contributor" style={styles.scheme}>
+                    {polyglot.t('contributed_by', { name: contributors[name] })}
+                </div>
             :
                 null
             }
@@ -47,7 +51,10 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {};
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps,
+export default compose(
+    translate,
+    connect(
+        mapStateToProps,
+        mapDispatchToProps,
+    ),
 )(PropertyComponent);

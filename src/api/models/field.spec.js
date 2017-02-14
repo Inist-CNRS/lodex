@@ -157,5 +157,19 @@ describe('field', () => {
 
             expect(() => validateField(field)).toThrow(buildInvalidTransformersMessage('name'));
         });
+
+        it('should return field even if transformers is incorrect if isContribution is true', async () => {
+            const field = {
+                cover: 'dataset',
+                label: 'label',
+                name: 'name',
+                scheme: 'http://purl.org/dc/terms/title',
+                transformers: [
+                    { operation: 'COLUMN', args: [] },
+                    { operation: 'UNKNOWN', args: [] },
+                ],
+            };
+            expect(validateField(field, true)).toEqual(field);
+        });
     });
 });

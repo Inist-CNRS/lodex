@@ -14,6 +14,7 @@ export const property = PropTypes.shape({
     scheme: PropTypes.any.isRequired,
     accepted: PropTypes.bool,
     validatedFields: PropTypes.arrayOf(PropTypes.string).isRequired,
+    p: polyglot.isRequired,
 });
 
 export const validationFieldProperty = PropTypes.shape({

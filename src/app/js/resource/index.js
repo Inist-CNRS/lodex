@@ -1,4 +1,4 @@
-import { createAction, handleActions } from 'redux-actions';
+import { createAction, handleActions, combineActions } from 'redux-actions';
 import { createSelector } from 'reselect';
 
 import { getContributionFields } from '../publication';
@@ -66,47 +66,29 @@ export default handleActions({
         loading: false,
         saving: false,
     }),
-    SAVE_RESOURCE: state => ({
+    [combineActions(
+        SAVE_RESOURCE,
+        HIDE_RESOURCE,
+        ADD_FIELD_TO_RESOURCE,
+    )]: state => ({
         ...state,
         error: null,
         saving: true,
     }),
-    SAVE_RESOURCE_SUCCESS: state => ({
+    [combineActions(
+        SAVE_RESOURCE_SUCCESS,
+        HIDE_RESOURCE_SUCCESS,
+        ADD_FIELD_TO_RESOURCE_SUCCESS,
+    )]: state => ({
         ...state,
         error: null,
         saving: false,
     }),
-    SAVE_RESOURCE_ERROR: (state, { payload: error }) => ({
-        ...state,
-        error: error.message,
-        saving: false,
-    }),
-    HIDE_RESOURCE: state => ({
-        ...state,
-        error: null,
-        saving: true,
-    }),
-    HIDE_RESOURCE_SUCCESS: state => ({
-        ...state,
-        error: null,
-        saving: false,
-    }),
-    HIDE_RESOURCE_ERROR: (state, { payload: error }) => ({
-        ...state,
-        error: error.message,
-        saving: false,
-    }),
-    ADD_FIELD_TO_RESOURCE: state => ({
-        ...state,
-        error: null,
-        saving: true,
-    }),
-    ADD_FIELD_TO_RESOURCE_SUCCESS: state => ({
-        ...state,
-        error: null,
-        saving: false,
-    }),
-    ADD_FIELD_TO_RESOURCE_ERROR: (state, { payload: error }) => ({
+    [combineActions(
+        SAVE_RESOURCE_ERROR,
+        HIDE_RESOURCE_ERROR,
+        ADD_FIELD_TO_RESOURCE_ERROR)
+    ]: (state, { payload: error }) => ({
         ...state,
         error: error.message,
         saving: false,
@@ -177,7 +159,7 @@ export const getResourceUnvalidatedFields = (state) => {
         return [];
     }
     return contributions
-        .filter(({ validated }) => !validated)
+        .filter(({ accepted }) => !accepted)
         .map(({ fieldName }) => fieldName);
 };
 
@@ -213,6 +195,6 @@ export const isSaving = state => state.resource.saving;
 
 export const getNewContributionsField = createSelector(
     getContributionFields,
-    getResourceContributorsByField,
-    (fields, contributors) => fields.filter(({ name }) => !contributors[name]),
+    getResourceLastVersion,
+    (fields, resource) => fields.filter(({ name }) => !resource[name]),
 );

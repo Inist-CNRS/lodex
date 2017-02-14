@@ -6,9 +6,9 @@ import { Field, reduxForm, propTypes as reduxFormPropTypes } from 'redux-form';
 import { CardText, CardHeader, CardActions } from 'material-ui/Card';
 import { Link } from 'react-router';
 import FlatButton from 'material-ui/FlatButton';
-import SchemeAutoComplete from '../lib/SchemeAutoComplete';
 import MenuItem from 'material-ui/MenuItem';
 
+import SchemeAutoComplete from '../lib/SchemeAutoComplete';
 import {
     getResourceLastVersion,
     addFieldToResource,
@@ -26,7 +26,6 @@ import FormTextField from '../lib/FormTextField';
 import Alert from '../lib/Alert';
 import ButtonWithStatus from '../lib/ButtonWithStatus';
 import { polyglot as polyglotPropTypes } from '../lib/propTypes';
-import Property from '../lib/Property';
 import SelectFieldToAdd from './SelectFieldToAdd';
 import { isLoggedIn as getIsLoggedIn } from '../user';
 import FormSelectField from '../lib/FormSelectField';
@@ -63,6 +62,7 @@ export const AddFieldDetailComponent = ({
                             <Field
                                 validate={required}
                                 name="contributor.name"
+                                className="contributor-name"
                                 component={FormTextField}
                                 label={polyglot.t('contributorName')}
                                 fullWidth
@@ -70,6 +70,7 @@ export const AddFieldDetailComponent = ({
                             <Field
                                 validate={[required, validMail]}
                                 name="contributor.mail"
+                                className="contributor-mail"
                                 component={FormTextField}
                                 label={polyglot.t('contributorMail')}
                                 fullWidth
@@ -85,6 +86,7 @@ export const AddFieldDetailComponent = ({
                             fieldToAdd ?
                                 <div>
                                     <Field
+                                        className="field-name"
                                         name="field.name"
                                         validate={[
                                             required,
@@ -96,6 +98,7 @@ export const AddFieldDetailComponent = ({
                                         fullWidth
                                     />
                                     <Field
+                                        className="field-label"
                                         name="field.label"
                                         validate={required}
                                         disabled={fieldToAdd.name}
@@ -104,6 +107,7 @@ export const AddFieldDetailComponent = ({
                                         fullWidth
                                     />
                                     <Field
+                                        className="field-value"
                                         name="field.value"
                                         validate={required}
                                         component={FormTextField}
@@ -111,6 +115,7 @@ export const AddFieldDetailComponent = ({
                                         fullWidth
                                     />
                                     <Field
+                                        className="field-cover"
                                         name="field.cover"
                                         component={FormSelectField}
                                         label={polyglot.t('cover')}
@@ -119,7 +124,11 @@ export const AddFieldDetailComponent = ({
                                     >
                                         <MenuItem value="document" primaryText={polyglot.t('cover_document')} />
                                     </Field>
-                                    <SchemeAutoComplete disabled={fieldToAdd.name} name="field.scheme" />
+                                    <SchemeAutoComplete
+                                        disabled={fieldToAdd.name}
+                                        name="field.scheme"
+                                        className="field-scheme"
+                                    />
                                 </div>
                             : null
                         }
@@ -129,7 +138,7 @@ export const AddFieldDetailComponent = ({
         </CardText>
         <CardActions>
             <ButtonWithStatus
-                className="hide-resource"
+                className="add-field-to-resource"
                 label={polyglot.t('add_field')}
                 primary
                 loading={saving}

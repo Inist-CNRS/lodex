@@ -51,6 +51,7 @@ export default {
     cancel: 'Cancel',
     edit: 'Edit',
     hide: 'Hide',
+    'add-field': 'Add a field',
     removed_resources: 'Removed resources',
     restore: 'Restore',
     removed_at: 'Removed at',
@@ -60,4 +61,5 @@ export default {
     contributorName: 'Name',
     contributorMail: 'Email',
     new_field: 'Field',
+    contributed_by: 'Contributed by %{name}',
 };

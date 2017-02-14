@@ -8,14 +8,15 @@ import { selectField, getSelectedField } from '../publication';
 
 export const SelectFieldToAddComponent = ({ contributionFields, selectedField, onSelectField }) => (
     <SelectField
+        className="select-field"
         hintText="select field"
         fullWidth
         value={selectedField}
         onChange={(_, __, value) => onSelectField(value)}
     >
-        <MenuItem value="new" primaryText="create a new field" />
+        <MenuItem value="new" className="new" primaryText="create a new field" />
         {contributionFields.map(({ name, label }) => (
-            <MenuItem value={name} primaryText={label} />
+            <MenuItem className={name} value={name} primaryText={label} />
         ))}
     </SelectField>
 );

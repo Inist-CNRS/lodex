@@ -12,7 +12,7 @@ import {
 import Property from '../lib/Property';
 
 export const DetailPropertiesComponent = ({ resource, collectionFields, documentFields }) => (
-    <CardText>
+    <CardText className="detail-properties">
         {collectionFields.map(({ name, scheme }) => (
             <Property name={name} scheme={scheme} value={resource[name]} />
         ))}

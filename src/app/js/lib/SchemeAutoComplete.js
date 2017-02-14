@@ -36,12 +36,14 @@ const styles = {
 
 export const SchemeAutoCompleteComponent = ({
     name,
+    className,
     disabled,
     p: polyglot,
     getSchemeSearchRequest,
     getSchemeMenuItemsDataFromResponse,
 }) => (
     <Field
+        className={className}
         name={name}
         disabled={disabled}
         component={FormAutoCompleteField}
@@ -70,6 +72,7 @@ SchemeAutoCompleteComponent.propTypes = {
     getSchemeSearchRequest: PropTypes.func.isRequired,
     getSchemeMenuItemsDataFromResponse: PropTypes.func.isRequired,
     name: PropTypes.string.isRequired,
+    className: PropTypes.string.isRequired,
     disabled: PropTypes.bool,
 };
 

@@ -84,7 +84,7 @@ app.use(async (ctx, next) => {
         return;
     }
 
-    await next;
+    await next();
 });
 app.use(route.post('/', editResource));
 app.use(route.put('/restore', restoreResource));
