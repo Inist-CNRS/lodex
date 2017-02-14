@@ -37,6 +37,8 @@ export const getRemovedPage = async (ctx) => {
         data: data.map(doc => ({
             ...doc.versions[doc.versions.length - 1],
             uri: doc.uri,
+            removed_at: doc.removed_at,
+            reason: doc.reason,
         })),
     };
 };

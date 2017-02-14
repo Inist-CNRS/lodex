@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
+import moment from 'moment';
 
 import { CardHeader, CardText } from 'material-ui/Card';
 
@@ -59,6 +60,8 @@ export class RemovedResourceListComponent extends Component {
                     <Table selectable={false} fixedHeader={false} style={styles.table}>
                         <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
                             <TableRow>
+                                <TableHeaderColumn>{polyglot.t('removed_at')}</TableHeaderColumn>
+                                <TableHeaderColumn>{polyglot.t('removed_reason')}</TableHeaderColumn>
                                 {columns.map(c => <TableHeaderColumn>{c.name}</TableHeaderColumn>)}
                                 <TableHeaderColumn />
                             </TableRow>
@@ -66,6 +69,9 @@ export class RemovedResourceListComponent extends Component {
                         <TableBody displayRowCheckbox={false}>
                             {resources.map(data => (
                                 <TableRow>
+                                    <TableRowColumn>{moment(data.removedAt).format('L')}</TableRowColumn>
+                                    <TableRowColumn>{data.reason}</TableRowColumn>
+                                    
                                     {columns.map(({ name }) => (
                                         <TableRowColumn>{data[name]}</TableRowColumn>
                                     ))}
