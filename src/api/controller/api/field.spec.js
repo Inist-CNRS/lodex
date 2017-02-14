@@ -63,13 +63,11 @@ describe('field routes', () => {
                         ops: [{ _id: 'foo' }],
                     })),
                 },
-                validateField: createSpy(),
             };
 
             await postField(ctx);
             expect(ctx.field.insertOne).toHaveBeenCalledWith('new field data');
             expect(ctx.field.findOneById).toHaveBeenCalledWith('foo');
-            expect(ctx.validateField).toHaveBeenCalledWith(ctx.request.body);
             expect(ctx.body).toBe('inserted item');
         });
     });
@@ -83,12 +81,10 @@ describe('field routes', () => {
                 field: {
                     updateOneById: expect.createSpy().andReturn(Promise.resolve('update result')),
                 },
-                validateField: createSpy(),
             };
 
             await putField(ctx, 'id');
             expect(ctx.field.updateOneById).toHaveBeenCalledWith('id', 'updated field data');
-            expect(ctx.validateField).toHaveBeenCalledWith(ctx.request.body);
             expect(ctx.body).toBe('update result');
         });
     });

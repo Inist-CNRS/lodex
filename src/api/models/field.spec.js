@@ -84,7 +84,7 @@ describe('field', () => {
 
             validateFieldFactory(() => true)(field)
             .then(() => {
-                throw new Error('validateFiel should have thrown an error');
+                throw new Error('validateField should have thrown an error');
             })
             .catch((error) => {
                 expect(error.message).toEqual(INVALID_FIELD_MESSAGE);
