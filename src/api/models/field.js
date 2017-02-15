@@ -2,8 +2,7 @@ import omit from 'lodash.omit';
 import { ObjectID } from 'mongodb';
 
 import { validateField as validateFieldIsomorphic } from '../../common/validateFields';
-
-export const INVALID_FIELD_MESSAGE = 'Invalid data for field which need a name, a label, a cover, a valid scheme, a type and a transformers array'; // eslint-disable-line
+import { COVER_DOCUMENT } from '../../common/cover';
 
 export const buildInvalidPropertiesMessage = name =>
     `Invalid data for field ${name} which need a name, a label, a cover, a valid scheme if specified and a transformers array`; // eslint-disable-line
@@ -11,7 +10,7 @@ export const buildInvalidPropertiesMessage = name =>
 export const buildInvalidTransformersMessage = name =>
     `Invalid transformers for field ${name}: transformers must have a valid operation and an args array`; // eslint-disable-line
 
-export const validateField = (data, isContribution = false) => {
+export const validateField = (data, isContribution) => {
     const validation = validateFieldIsomorphic(data, isContribution);
 
     if (!validation.propertiesAreValid) {
@@ -52,7 +51,7 @@ export default async (db) => {
             }, {
                 $set: {
                     ...omit(field, ['value']),
-                    cover: 'document',
+                    cover: COVER_DOCUMENT,
                     contribution: true,
                 },
             }, {
@@ -66,7 +65,7 @@ export default async (db) => {
         }, {
             $set: {
                 ...omit(field, ['value']),
-                cover: 'document',
+                cover: COVER_DOCUMENT,
                 contribution: true,
             },
             $addToSet: {
