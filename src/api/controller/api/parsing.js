@@ -1,5 +1,6 @@
 import Koa from 'koa';
 import route from 'koa-route';
+import fetchLineBy from './fetchLineBy';
 
 const app = new Koa();
 
@@ -14,11 +15,7 @@ export const getExcerpt = async (ctx) => {
 };
 
 export const findBy = async (ctx, fieldName, value) => {
-    const line = await ctx.dataset.findBy(fieldName, value);
-    ctx.body = {
-        ...line,
-        uri: `uri to ${fieldName}: ${value}`,
-    };
+    ctx.body = await fetchLineBy(ctx)(fieldName, value);
 };
 
 app.use(route.get('/', getExcerpt));

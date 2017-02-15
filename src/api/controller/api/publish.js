@@ -1,6 +1,7 @@
 import omit from 'lodash.omit';
 import Koa from 'koa';
 import route from 'koa-route';
+import fetchLineBy from './fetchLineBy';
 
 /* eslint no-await-in-loop: off */
 import getDocumentTransformer from '../../../common/getDocumentTransformer';
@@ -98,6 +99,7 @@ export const doPublish = async (ctx) => {
         .getDocumentTransformer({
             env: 'node',
             dataset: ctx.uriDataset,
+            fetchLineBy,
         }, collectionCoverFields.filter(col => col.name !== 'uri'));
 
     const transformDocumentAndKeepUri = ctx.versionTransformResult(transformDocument);
