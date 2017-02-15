@@ -1,30 +1,22 @@
 import Koa from 'koa';
-import { devServerHost } from 'config';
+import webpack from 'webpack';
+import webpackDevMiddleware from 'webpack-dev-middleware';
+import webpackHotMiddleware from 'webpack-hot-middleware';
 
-import request from 'request';
+import webpackConfig from '../../../app/webpack.config.babel';
 
-const forwardRequest = ctx =>
-new Promise((resolve, reject) => {
-    request.get(`${devServerHost}${ctx.url}`, (error, response, body) => {
-        if (error) {
-            reject(error);
-            return;
-        }
-        if (response.statusCode === 404) {
-            const notFound = new Error('not found');
-            notFound.status = 404;
-            reject(notFound);
-            return;
-        }
-        resolve(body);
-    });
+const compiler = webpack(webpackConfig);
+const app = new Koa();
+
+app.use(async (ctx, next) => {
+    await webpackDevMiddleware(compiler, { publicPath: '/' })(ctx.req, {
+        end: (content) => {
+            ctx.body = content;
+        },
+        setHeader: (name, value) => {
+            ctx.headers[name] = value;
+        },
+    }, next);
 });
 
-export default () => {
-    const app = new Koa();
-    app.use(async (ctx) => {
-        ctx.body = await forwardRequest(ctx);
-    });
-
-    return app;
-};
+export default app;

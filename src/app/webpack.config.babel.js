@@ -82,6 +82,7 @@ export default {
     output: {
         filename: '[name].js',
         path: resolve(__dirname, '../build'),
+        publicPath: '/',
     },
     plugins: [
         // prints more readable module names in the browser console on HMR updates
