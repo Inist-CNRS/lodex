@@ -7,7 +7,7 @@ import { clear } from '../../../common/tests/fixtures';
 import { elementIsClicked, inputElementIsFocusable, elementValueIs } from '../../../common/tests/conditions';
 
 describe('Admin', () => {
-    describe('Admin page', function homeTests() {
+    describe('Publication', function homeTests() {
         this.timeout(10000);
         const DEFAULT_WAIT_TIMEOUT = 9000; // A bit less than mocha's timeout to get explicit errors from selenium
 
@@ -60,7 +60,7 @@ describe('Admin', () => {
                 expect(text).toBe('uri');
 
                 const tds = await driver.findElements(By.css('.publication-preview tr td:first-child'));
-                expect(tds.length).toBe(3);
+                expect(tds.length).toBe(4);
                 await Promise.all(tds.map(td =>
                     driver.wait(until.elementTextIs(td, ''), DEFAULT_WAIT_TIMEOUT)),
                 );
@@ -85,7 +85,7 @@ describe('Admin', () => {
 
             it('should have completed uri column with generated uri', async () => {
                 const tds = await driver.findElements(By.css('.publication-preview tr td:first-child'));
-                expect(tds.length).toBe(3);
+                expect(tds.length).toBe(4);
                 await Promise.all(tds.map(td =>
                     driver.wait(until.elementTextMatches(td, /[A-Z0-9]{8}/), DEFAULT_WAIT_TIMEOUT)),
                 );
@@ -144,11 +144,12 @@ describe('Admin', () => {
                     DEFAULT_WAIT_TIMEOUT,
                 );
                 const tds = await driver.findElements(By.css('.publication-preview tr td:nth-child(2)'));
-                expect(tds.length).toBe(3);
+                expect(tds.length).toBe(4);
                 const expectedTexts = [
                     'uri to id: 3',
                     'uri to id: 1',
                     'uri to id: 2',
+                    '',
                 ];
                 await Promise.all(tds.map((td, index) =>
                     driver.wait(until.elementTextIs(td, expectedTexts[index]), DEFAULT_WAIT_TIMEOUT)),
@@ -166,9 +167,9 @@ describe('Admin', () => {
 
             it('should have updated the preview', async () => {
                 const tds = await driver.findElements(By.css('.publication-preview tr td:last-child'));
-                expect(tds.length).toBe(3);
+                expect(tds.length).toBe(4);
                 await Promise.all(tds.map(td =>
-                    driver.wait(until.elementTextMatches(td, /rock|paper|scissor/), DEFAULT_WAIT_TIMEOUT)),
+                    driver.wait(until.elementTextMatches(td, /rock|paper|scissor|invalid_reference/), DEFAULT_WAIT_TIMEOUT)),
                 );
             });
         });
@@ -197,7 +198,9 @@ describe('Admin', () => {
                 const headersText = await Promise.all(headers.map(h => h.getText()));
                 expect(headersText).toEqual(['uri', 'stronger', 'name']);
 
-                const rows = await Promise.all([1, 2, 3].map(index =>
+                await driver.sleep(5000);
+
+                const rows = await Promise.all([1, 2, 3, 4].map(index =>
                     Promise.all([
                         driver
                             .findElement(By.css(`.dataset table tbody tr:nth-child(${index}) td.dataset-uri`))
@@ -219,10 +222,11 @@ describe('Admin', () => {
                     rock: 'scissor',
                     paper: 'rock',
                     scissor: 'paper',
+                    invalid_reference: '',
                 };
 
                 rows.forEach(({ stronger, name }) => {
-                    expect(rows.find(r => r.uri === stronger).name).toEqual(expected[name]);
+                    expect((rows.find(r => r.uri === stronger) || { name: '' }).name).toEqual(expected[name]);
                 });
             });
         });

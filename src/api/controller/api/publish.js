@@ -1,6 +1,7 @@
 import omit from 'lodash.omit';
 import Koa from 'koa';
 import route from 'koa-route';
+import fetchLineBy from './fetchLineBy';
 
 /* eslint no-await-in-loop: off */
 import getDocumentTransformer from '../../../common/getDocumentTransformer';
@@ -38,6 +39,7 @@ export const publishCharacteristics = async (ctx, datasetCoverFields, count) => 
         .getDocumentTransformer({
             env: 'node',
             dataset: ctx.uriDataset,
+            fetchLineBy,
         }, datasetCoverFields);
 
     const [lastResource] = await ctx.uriDataset.findLimitFromSkip(1, count - 1);
@@ -84,7 +86,11 @@ export const doPublish = async (ctx) => {
     const datasetCoverFields = fields.filter(c => c.cover === 'dataset');
 
     const uriCol = fields.find(col => col.name === 'uri');
-    const getUri = ctx.getDocumentTransformer({ env: 'node', dataset: ctx.dataset }, [uriCol]);
+    const getUri = ctx.getDocumentTransformer({
+        env: 'node',
+        dataset: ctx.dataset,
+        fetchLineBy,
+    }, [uriCol]);
     const addUri = ctx.addTransformResultToDoc(getUri);
 
     await ctx.tranformAllDocuments(
@@ -98,6 +104,7 @@ export const doPublish = async (ctx) => {
         .getDocumentTransformer({
             env: 'node',
             dataset: ctx.uriDataset,
+            fetchLineBy,
         }, collectionCoverFields.filter(col => col.name !== 'uri'));
 
     const transformDocumentAndKeepUri = ctx.versionTransformResult(transformDocument);

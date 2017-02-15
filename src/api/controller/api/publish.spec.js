@@ -11,6 +11,7 @@ import {
     publishCharacteristics,
 } from './publish';
 import getDocumentTransformer from '../../../common/getDocumentTransformer';
+import fetchLineBy from './fetchLineBy';
 
 describe('publish', () => {
     describe('doPublish', () => {
@@ -64,7 +65,11 @@ describe('publish', () => {
         });
 
         it('should call getDocumentTransformer to get the uri transformers', () => {
-            expect(ctx.getDocumentTransformer).toHaveBeenCalledWith({ env: 'node', dataset: ctx.dataset }, [fields[0]]);
+            expect(ctx.getDocumentTransformer).toHaveBeenCalledWith({
+                env: 'node',
+                dataset: ctx.dataset,
+                fetchLineBy,
+            }, [fields[0]]);
         });
 
         it('should call ctx.addTransformResultToDoc with transformDocument', () => {
@@ -79,6 +84,7 @@ describe('publish', () => {
             expect(ctx.getDocumentTransformer).toHaveBeenCalledWith({
                 env: 'node',
                 dataset: ctx.uriDataset,
+                fetchLineBy,
             }, [fields[1]]);
         });
 
@@ -129,6 +135,7 @@ describe('publish', () => {
                 {
                     env: 'node',
                     dataset: ctx.uriDataset,
+                    fetchLineBy,
                 },
                 datasetFields,
             );
