@@ -149,7 +149,7 @@ describe('Admin', () => {
                     'uri to id: 3',
                     'uri to id: 1',
                     'uri to id: 2',
-                    'uri to id: 5',
+                    '',
                 ];
                 await Promise.all(tds.map((td, index) =>
                     driver.wait(until.elementTextIs(td, expectedTexts[index]), DEFAULT_WAIT_TIMEOUT)),

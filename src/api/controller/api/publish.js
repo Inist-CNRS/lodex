@@ -39,6 +39,7 @@ export const publishCharacteristics = async (ctx, datasetCoverFields, count) => 
         .getDocumentTransformer({
             env: 'node',
             dataset: ctx.uriDataset,
+            fetchLineBy,
         }, datasetCoverFields);
 
     const [lastResource] = await ctx.uriDataset.findLimitFromSkip(1, count - 1);
@@ -85,7 +86,11 @@ export const doPublish = async (ctx) => {
     const datasetCoverFields = fields.filter(c => c.cover === 'dataset');
 
     const uriCol = fields.find(col => col.name === 'uri');
-    const getUri = ctx.getDocumentTransformer({ env: 'node', dataset: ctx.dataset }, [uriCol]);
+    const getUri = ctx.getDocumentTransformer({
+        env: 'node',
+        dataset: ctx.dataset,
+        fetchLineBy,
+    }, [uriCol]);
     const addUri = ctx.addTransformResultToDoc(getUri);
 
     await ctx.tranformAllDocuments(
