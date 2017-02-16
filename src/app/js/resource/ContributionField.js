@@ -11,7 +11,7 @@ import {
     getDocumentFields,
 } from '../publication';
 import FormTextField from '../lib/FormTextField';
-import { polyglot as polyglotPropTypes } from '../lib/propTypes';
+import { polyglot as polyglotPropTypes } from '../propTypes';
 import FormSelectField from '../lib/FormSelectField';
 
 const required = value => (value ? undefined : 'Required');

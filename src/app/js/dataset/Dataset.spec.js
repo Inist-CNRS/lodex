@@ -1,13 +1,11 @@
 import React from 'react';
 import expect, { createSpy } from 'expect';
 import { shallow } from 'enzyme';
-import {
-    TableHeaderColumn,
-    TableRowColumn,
-} from 'material-ui/Table';
+import { TableHeaderColumn } from 'material-ui/Table';
 
 import { DatasetComponent as Dataset } from './Dataset';
 import Pagination from '../lib/Pagination';
+import DatasetColumn from './DatasetColumn';
 
 describe('<Dataset />', () => {
     const columns = [
@@ -65,13 +63,37 @@ describe('<Dataset />', () => {
             total={3}
         />);
 
-        const cells = wrapper.find(TableRowColumn);
-        expect(cells.at(0).children().text()).toEqual('value11');
-        expect(cells.at(1).children().text()).toEqual('value12');
-        expect(cells.at(2).children().text()).toEqual('value21');
-        expect(cells.at(3).children().text()).toEqual('value22');
-        expect(cells.at(4).children().text()).toEqual('value31');
-        expect(cells.at(5).children().text()).toEqual('value32');
+        const cells = wrapper.find(DatasetColumn);
+        expect(cells.at(0).props()).toEqual({
+            column: columns.find(c => c.name === 'col1'),
+            columns,
+            resource: dataset[0],
+        });
+        expect(cells.at(1).props()).toEqual({
+            column: columns.find(c => c.name === 'col2'),
+            columns,
+            resource: dataset[0],
+        });
+        expect(cells.at(2).props()).toEqual({
+            column: columns.find(c => c.name === 'col1'),
+            columns,
+            resource: dataset[1],
+        });
+        expect(cells.at(3).props()).toEqual({
+            column: columns.find(c => c.name === 'col2'),
+            columns,
+            resource: dataset[1],
+        });
+        expect(cells.at(4).props()).toEqual({
+            column: columns.find(c => c.name === 'col1'),
+            columns,
+            resource: dataset[2],
+        });
+        expect(cells.at(5).props()).toEqual({
+            column: columns.find(c => c.name === 'col2'),
+            columns,
+            resource: dataset[2],
+        });
     });
 
     it('should render the Pagination', () => {

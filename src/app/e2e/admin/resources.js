@@ -55,7 +55,7 @@ describe('Admin', () => {
 
         it('should remove a resource which has been restored', async () => {
             const buttons = await driver.findElements(By.css('.btn-restore-resource'));
-            await buttons[0].click();
+            await driver.wait(elementIsClicked(buttons[0]), DEFAULT_WAIT_TIMEOUT);
 
             await driver.sleep(500);
             const trs = await driver.findElements(By.css('.removed_resources table tbody tr'));

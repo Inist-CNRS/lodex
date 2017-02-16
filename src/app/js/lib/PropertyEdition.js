@@ -2,7 +2,7 @@ import React from 'react';
 import TextField from 'material-ui/TextField';
 import withHandlers from 'recompose/withHandlers';
 
-import { property as propertyPropTypes } from './propTypes';
+import { property as propertyPropTypes } from '../propTypes';
 
 const styles = {
     container: {

@@ -198,8 +198,6 @@ describe('Admin', () => {
                 const headersText = await Promise.all(headers.map(h => h.getText()));
                 expect(headersText).toEqual(['uri', 'stronger', 'name']);
 
-                await driver.sleep(5000);
-
                 const rows = await Promise.all([1, 2, 3, 4].map(index =>
                     Promise.all([
                         driver

@@ -8,7 +8,7 @@ import pure from 'recompose/pure';
 import FlatButton from 'material-ui/FlatButton';
 import { propTypes as reduxFormPropTypes } from 'redux-form';
 
-import { polyglot as polyglotPropTypes } from '../../lib/propTypes';
+import { polyglot as polyglotPropTypes } from '../../propTypes';
 import TransformerListItem from './TransformerListItem';
 
 const TransformerList = ({ fields, meta: { touched, error }, p: polyglot }) => (

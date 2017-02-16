@@ -13,13 +13,13 @@ import {
     isSaving,
     HIDE_RESOURCE_FORM_NAME,
 } from './';
-import { getCollectionFields } from '../publication';
+
 import Card from '../lib/Card';
 import FormTextField from '../lib/FormTextField';
 import Alert from '../lib/Alert';
 import ButtonWithStatus from '../lib/ButtonWithStatus';
-import { polyglot as polyglotPropTypes } from '../lib/propTypes';
 import DetailProperties from './DetailProperties';
+import { polyglot as polyglotPropTypes } from '../propTypes';
 
 export const HideDetailComponent = ({ resource, saving, error, handleSubmit, p: polyglot }) => (
     <Card className="hide-detail">

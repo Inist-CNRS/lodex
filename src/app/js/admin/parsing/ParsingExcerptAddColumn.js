@@ -8,7 +8,7 @@ import { TableRowColumn } from 'material-ui/Table';
 import FlatButton from 'material-ui/FlatButton';
 
 import { addField } from '../fields';
-import { polyglot as polyglotPropTypes } from '../../lib/propTypes';
+import { polyglot as polyglotPropTypes } from '../../propTypes';
 
 export const ParsingExcerptAddColumnComponent = ({ addColumn, name, p: polyglot }) => (
     <TableRowColumn>

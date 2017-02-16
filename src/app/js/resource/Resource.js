@@ -20,7 +20,7 @@ import EditDetail from './EditDetail';
 import HideDetail from './HideDetail';
 import RemovedDetail from './RemovedDetail';
 import AddFieldDetail from './AddFieldDetail';
-import { polyglot as polyglotPropTypes } from '../lib/propTypes';
+import { polyglot as polyglotPropTypes } from '../propTypes';
 import DatasetCharacteristics from '../characteristic/DatasetCharacteristics';
 import Loading from '../lib/Loading';
 

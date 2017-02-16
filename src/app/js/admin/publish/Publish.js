@@ -5,7 +5,7 @@ import translate from 'redux-polyglot/translate';
 import { CardActions, CardHeader, CardText } from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
 
-import { polyglot as polyglotPropTypes } from '../../lib/propTypes';
+import { polyglot as polyglotPropTypes } from '../../propTypes';
 
 import {
     publish as publishAction,

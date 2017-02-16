@@ -5,7 +5,7 @@ import translate from 'redux-polyglot/translate';
 import { Field, FieldArray, reduxForm, propTypes as reduxFormPropTypes } from 'redux-form';
 import MenuItem from 'material-ui/MenuItem';
 
-import { polyglot as polyglotPropTypes } from '../../lib/propTypes';
+import { polyglot as polyglotPropTypes } from '../../propTypes';
 import FormTextField from '../../lib/FormTextField';
 import FormSelectField from '../../lib/FormSelectField';
 import SchemeAutoComplete from '../../lib/SchemeAutoComplete';
@@ -15,6 +15,7 @@ import {
     saveField,
 } from './';
 
+import Format from '../../formats/FormatEdition';
 import Alert from '../../lib/Alert';
 import TransformerList from './TransformerList';
 
@@ -69,6 +70,12 @@ export const FieldFormComponent = ({
             </Field>
             <SchemeAutoComplete name="scheme" />
             { isContribution ? null : <FieldArray name="transformers" component={TransformerList} /> }
+            { isContribution ? null : <Field
+                name="format"
+                component={Format}
+                label={polyglot.t('format')}
+                fullWidth
+            />}
         </form>
     );
 };

@@ -4,7 +4,7 @@ import translate from 'redux-polyglot/translate';
 import { Field, reduxForm, propTypes as reduxFormPropTypes } from 'redux-form';
 import FormTextField from '../lib/FormTextField';
 
-import { polyglot as polyglotPropTypes } from '../lib/propTypes';
+import { polyglot as polyglotPropTypes } from '../propTypes';
 import { LOGIN_FORM_NAME } from './';
 import Alert from '../lib/Alert';
 

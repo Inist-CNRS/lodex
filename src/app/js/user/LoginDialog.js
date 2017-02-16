@@ -8,7 +8,7 @@ import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import { submit as submitAction, isSubmitting } from 'redux-form';
 
-import { polyglot as polyglotPropTypes } from '../lib/propTypes';
+import { polyglot as polyglotPropTypes } from '../propTypes';
 import { login as loginAction, toggleLogin as toggleLoginAction, LOGIN_FORM_NAME } from './';
 import LoginForm from './LoginForm';
 import ButtonWithStatus from '../lib/ButtonWithStatus';
