@@ -1,8 +1,8 @@
-import component from './component';
-import editionComponent from './editionComponent';
+import Component from './Component';
+import EditionComponent from './EditionComponent';
 
 export default {
     format: 'uri',
-    component,
-    editionComponent,
+    Component,
+    EditionComponent,
 };

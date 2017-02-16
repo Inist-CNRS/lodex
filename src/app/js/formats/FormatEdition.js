@@ -57,7 +57,7 @@ class FormatEdition extends Component {
 
         switch (name) {
         case 'uri':
-            EditionComponent = uri.editionComponent;
+            EditionComponent = uri.EditionComponent;
             break;
 
         default:

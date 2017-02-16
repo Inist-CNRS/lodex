@@ -14,7 +14,7 @@ const Format = ({ field, fields, linkedResource, rawLinkedResource, resource }) 
     if (field.format && field.format.name) {
         switch (field.format.name) {
         case 'uri':
-            Component = uri.component;
+            Component = uri.Component;
             break;
 
         default:
