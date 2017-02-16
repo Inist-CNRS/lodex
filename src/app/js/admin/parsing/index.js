@@ -9,7 +9,6 @@ export const CLEAR_PARSING = 'CLEAR_PARSING';
 export const defaultState = {
     error: false,
     excerptLines: [],
-    failedLines: [],
     loading: false,
     parsing: false,
     totalLoadedLines: 0,
@@ -51,3 +50,10 @@ export const getParsedExcerptColumns = createSelector(
 );
 
 export const hasUploadedFile = state => state && state.parsing && !!state.parsing.totalLoadedLines;
+
+export const isParsingLoading = state => state.parsing.loading;
+export const getParsingSummary = state => ({
+    totalLoadedLines: state.parsing.totalLoadedLines,
+    totalFailedLines: state.parsing.totalFailedLines,
+    totalParsedLines: state.parsing.totalParsedLines,
+});

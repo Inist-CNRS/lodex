@@ -53,7 +53,7 @@ AppComponent.defaultProps = {
 };
 
 const mapStateToProps = state => ({
-    isLoading: state.loading,
+    isLoading: state.loading, // @TODO fix by adding a loading reducer handling all loading state
     isLoggedIn: getIsLoggedIn(state),
 });
 

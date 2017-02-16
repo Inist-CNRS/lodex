@@ -113,3 +113,6 @@ export const getPublishData = createSelector(
         error: error && (error.message || error),
     }),
 );
+
+export const isPublicationLoading = state => state.publication.loading;
+export const getPublicationError = state => state.publication.error;

@@ -19,7 +19,13 @@ import Card from '../lib/Card';
 import Loading from '../lib/Loading';
 
 import { polyglot as polyglotPropTypes } from '../propTypes';
-import { loadDatasetPage as loadDatasetPageAction } from './';
+import {
+    loadDatasetPage as loadDatasetPageAction,
+    isDatasetLoading,
+    getDatasetCurrentPage,
+    getDataset,
+    getDatasetTotal,
+} from './';
 import { getCollectionFields } from '../publication';
 
 const styles = {
@@ -101,11 +107,11 @@ DatasetComponent.defaultProps = {
 };
 
 const mapStateToProps = state => ({
-    loading: state.publication.loading,
+    loading: isDatasetLoading(state),
     columns: getCollectionFields(state),
-    currentPage: state.dataset.currentPage,
-    dataset: state.dataset.dataset,
-    total: state.dataset.total,
+    currentPage: getDatasetCurrentPage(state),
+    dataset: getDataset(state),
+    total: getDatasetTotal(state),
 });
 
 const mapDispatchToProps = ({

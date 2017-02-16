@@ -15,6 +15,8 @@ import {
     getNewCharacteristics,
     setCharacteristicValue as setCharacteristicValueAction,
     updateCharacteristics as updateCharacteristicsAction,
+    isCharacteristicUpdating,
+    getCharacteristicError,
 } from './';
 
 import PropertyEdition from '../lib/PropertyEdition';
@@ -77,9 +79,9 @@ DatasetCharacteristics.defaultProps = {
 };
 
 const mapStateToProps = state => ({
-    error: state.characteristic.error,
+    error: getCharacteristicError(state),
     newCharacteristics: getNewCharacteristics(state),
-    updating: state.characteristic.updating,
+    updating: isCharacteristicUpdating(state),
 });
 
 const mapDispatchToProps = {

@@ -7,6 +7,8 @@ import { polyglot as polyglotPropTypes } from '../propTypes';
 import {
     loadPublication as loadPublicationAction,
     hasPublishedDataset as selectHasPublishedDataset,
+    getPublicationError,
+    isPublicationLoading,
 } from '../publication';
 
 import Alert from '../lib/Alert';
@@ -65,8 +67,8 @@ export class HomeComponent extends Component {
 }
 
 const mapStateToProps = state => ({
-    error: state.publication.error,
-    loading: state.publication.loading,
+    error: getPublicationError(state),
+    loading: isPublicationLoading(state),
     hasPublishedDataset: selectHasPublishedDataset(state),
 });
 

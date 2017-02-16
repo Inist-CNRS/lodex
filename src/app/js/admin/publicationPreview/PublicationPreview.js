@@ -7,6 +7,7 @@ import { CardHeader, CardText } from 'material-ui/Card';
 import PublicationExcerpt from './PublicationExcerpt';
 import { getPublicationFields, editField } from '../fields';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
+import { getPublicationPreview } from './';
 import Card from '../../lib/Card';
 
 export const PublicationPreviewComponent = ({ columns, lines, editColumn, p: polyglot }) => (
@@ -36,7 +37,7 @@ PublicationPreviewComponent.propTypes = {
 
 const mapStateToProps = state => ({
     columns: getPublicationFields(state),
-    lines: state.publicationPreview,
+    lines: getPublicationPreview(state),
 });
 
 const mapDispatchToProps = {

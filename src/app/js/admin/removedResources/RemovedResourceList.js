@@ -24,6 +24,10 @@ import { polyglot as polyglotPropTypes } from '../../propTypes';
 import {
     loadRemovedResourcePage as loadRemovedResourcePageAction,
     restoreRessource as restoreRessourceAction,
+    isRemovedResourceLoading,
+    getRemovedResourceCurrentPage,
+    getRemovedResourceTotal,
+    getRemovedResourceItems,
 } from './';
 import { getCollectionFields } from '../../publication';
 
@@ -71,7 +75,6 @@ export class RemovedResourceListComponent extends Component {
                                 <TableRow>
                                     <TableRowColumn>{moment(data.removedAt).format('L')}</TableRowColumn>
                                     <TableRowColumn>{data.reason}</TableRowColumn>
-                                    
                                     {columns.map(({ name }) => (
                                         <TableRowColumn>{data[name]}</TableRowColumn>
                                     ))}
@@ -119,11 +122,11 @@ RemovedResourceListComponent.propTypes = {
 };
 
 const mapStateToProps = state => ({
-    loading: state.removedResources.loading,
+    loading: isRemovedResourceLoading(state),
     columns: getCollectionFields(state),
-    currentPage: state.removedResources.currentPage,
-    resources: state.removedResources.items,
-    total: state.removedResources.total,
+    currentPage: getRemovedResourceCurrentPage(state),
+    resources: getRemovedResourceItems(state),
+    total: getRemovedResourceTotal(state),
 });
 
 const mapDispatchToProps = ({

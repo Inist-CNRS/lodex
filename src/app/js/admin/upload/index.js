@@ -29,3 +29,6 @@ export default handleActions({
 export const uploadFile = createAction(UPLOAD_FILE);
 export const uploadFileSuccess = createAction(UPLOAD_FILE_SUCCESS);
 export const uploadFileError = createAction(UPLOAD_FILE_ERROR);
+
+export const getUpload = state => state.upload;
+export const isUploadPending = state => state.upload.status === 'PENDING';
