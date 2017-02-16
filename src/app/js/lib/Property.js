@@ -1,11 +1,20 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import compose from 'recompose/compose';
+import translate from 'redux-polyglot/translate';
+
 import { property as propertyPropTypes } from './propTypes';
+import {
+    getResourceUnvalidatedFields,
+    getResourceContributorsByField,
+} from '../resource';
 
 const styles = {
-    container: {
+    container: unValidated => ({
         display: 'flex',
         marginRight: '1rem',
-    },
+        color: unValidated ? 'grey' : 'black',
+    }),
     name: {
         fontWeight: 'bold',
     },
@@ -16,16 +25,36 @@ const styles = {
     },
 };
 
-const Property = ({ name, value, scheme }) => (
-    <dl className="property" style={styles.container}>
+const PropertyComponent = ({ name, value, scheme, contributors, unValidatedFields, p: polyglot }) => (
+    <dl className="property" style={styles.container(unValidatedFields.includes(name))}>
         <dt>
             <div className="property_name" style={styles.name}>{name}</div>
             <div className="property_scheme" style={styles.scheme}>{scheme}</div>
+            { contributors[name] ?
+                <div className="property_contributor" style={styles.scheme}>
+                    {polyglot.t('contributed_by', { name: contributors[name] })}
+                </div>
+            :
+                null
+            }
         </dt>
         <dd>{value}</dd>
     </dl>
 );
 
-Property.propTypes = propertyPropTypes;
+PropertyComponent.propTypes = propertyPropTypes;
 
-export default Property;
+const mapStateToProps = state => ({
+    unValidatedFields: getResourceUnvalidatedFields(state),
+    contributors: getResourceContributorsByField(state),
+});
+
+const mapDispatchToProps = {};
+
+export default compose(
+    translate,
+    connect(
+        mapStateToProps,
+        mapDispatchToProps,
+    ),
+)(PropertyComponent);

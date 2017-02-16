@@ -38,6 +38,6 @@ export function* handleLoadResource({ payload }) {
     yield put(loadPublication());
 }
 
-export default function* watchLoadDatasetPageRequest() {
+export default function* watchLocationChangeToResource() {
     yield takeLatest(LOCATION_CHANGE, handleLoadResource);
 }

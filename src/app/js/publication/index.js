@@ -1,15 +1,20 @@
+import omit from 'lodash.omit';
 import { createAction, handleActions } from 'redux-actions';
 import { createSelector } from 'reselect';
 import TITLE_SCHEME from '../../../common/titleScheme';
-import { COVER_COLLECTION, COVER_DATASET } from '../../../common/cover';
+import { COVER_COLLECTION, COVER_DATASET, COVER_DOCUMENT } from '../../../common/cover';
 
 export const LOAD_PUBLICATION = 'LOAD_PUBLICATION';
 export const LOAD_PUBLICATION_SUCCESS = 'LOAD_PUBLICATION_SUCCESS';
 export const LOAD_PUBLICATION_ERROR = 'LOAD_PUBLICATION_ERROR';
 
+export const SELECT_FIELD = 'SELECT_FIELD';
+
 export const loadPublication = createAction(LOAD_PUBLICATION);
 export const loadPublicationSuccess = createAction(LOAD_PUBLICATION_SUCCESS);
 export const loadPublicationError = createAction(LOAD_PUBLICATION_ERROR);
+
+export const selectField = createAction(SELECT_FIELD);
 
 export const defaultState = {
     loading: false,
@@ -35,6 +40,10 @@ export default handleActions({
         error: error.message,
         loading: false,
     }),
+    SELECT_FIELD: (state, { payload: name }) => ({
+        ...state,
+        selectedField: name,
+    }),
 }, defaultState);
 
 
@@ -45,6 +54,29 @@ export const getFields = ({ publication: { fields } }) => fields || [];
 export const getCollectionFields = createSelector(
     getFields,
     fields => fields.filter(f => f.cover === COVER_COLLECTION),
+);
+
+export const getContributionFields = createSelector(
+    getFields,
+    fields => fields.filter(f => f.contribution),
+);
+
+export const getSelectedField = ({ publication: { selectedField } }) => selectedField;
+
+export const getFieldToAdd = ({ publication: { fields, selectedField } }) => {
+    if (selectedField === 'new') {
+        return { cover: 'document' };
+    }
+    const field = fields.filter(({ name }) => name === selectedField)[0];
+    if (!field) {
+        return null;
+    }
+    return omit(field, ['contributors', '_id']);
+};
+
+export const getDocumentFields = createSelector(
+    getFields,
+    fields => fields.filter(f => f.cover === COVER_DOCUMENT),
 );
 
 export const getDatasetFields = createSelector(

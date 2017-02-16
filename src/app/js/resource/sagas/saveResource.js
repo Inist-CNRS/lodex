@@ -28,6 +28,6 @@ export function* handleSaveResource() {
     yield put(push({ pathname: '/resource', query: { uri: resource.uri } }));
 }
 
-export default function* watchLoadDatasetPageRequest() {
+export default function* watchSaveResource() {
     yield takeLatest(SAVE_RESOURCE, handleSaveResource);
 }

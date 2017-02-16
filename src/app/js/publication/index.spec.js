@@ -12,6 +12,8 @@ import reducer, {
     loadPublicationSuccess,
     loadPublicationError,
     getTitleFieldName,
+    selectField,
+    getContributionFields,
 } from './';
 
 describe('publication reducer', () => {
@@ -49,6 +51,14 @@ describe('publication reducer', () => {
         expect(state).toEqual({
             loading: false,
             error: 'foo',
+        });
+    });
+
+    it('should handle the SELECT_FIELD action', () => {
+        const state = reducer({ data: 'value' }, selectField('selectedFieldName'));
+        expect(state).toEqual({
+            data: 'value',
+            selectedField: 'selectedFieldName',
         });
     });
 
@@ -127,6 +137,26 @@ describe('publication reducer', () => {
                 },
             };
             expect(getTitleFieldName(state)).toBe(null);
+        });
+    });
+
+    describe('getContributionFields', () => {
+        it('should return fields with contribution true', () => {
+            const state = {
+                publication: {
+                    fields: [
+                        { fieldName: 'field1' },
+                        { fieldName: 'field2', contribution: true },
+                        { fieldName: 'field3' },
+                        { fieldName: 'field4', contribution: true },
+                    ],
+                },
+            };
+
+            expect(getContributionFields(state)).toEqual([
+                { fieldName: 'field2', contribution: true },
+                { fieldName: 'field4', contribution: true },
+            ]);
         });
     });
 });

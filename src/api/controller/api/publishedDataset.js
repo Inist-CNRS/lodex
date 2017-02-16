@@ -66,8 +66,26 @@ export const restoreResource = async (ctx) => {
     ctx.body = await ctx.publishedDataset.restore(uri);
 };
 
+export const addFieldToResource = async (ctx) => {
+    const isLoggedIn = !!ctx.state.header && !!ctx.state.cookie;
+    const { uri, contributor, field } = ctx.request.body;
+    await ctx.field.addContributionField(field, contributor, isLoggedIn);
+
+    ctx.body = await ctx.publishedDataset.addFieldToResource(uri, contributor, field, isLoggedIn);
+};
+
 app.use(route.get('/removed', getRemovedPage));
 app.use(route.get('/', getPage));
+app.use(route.post('/add_field', addFieldToResource));
+app.use(async (ctx, next) => {
+    if (!ctx.state.cookie || !ctx.state.header) {
+        this.status = 401;
+        this.body = 'No authentication token found';
+        return;
+    }
+
+    await next();
+});
 app.use(route.post('/', editResource));
 app.use(route.put('/restore', restoreResource));
 app.use(route.del('/', removeResource));
