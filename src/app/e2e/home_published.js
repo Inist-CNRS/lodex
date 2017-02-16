@@ -4,7 +4,7 @@ import expect from 'expect';
 import driver from '../../common/tests/chromeDriver';
 import { clear, loadFixtures } from '../../common/tests/fixtures';
 import fixtures from './home_published.json';
-import { inputElementIsFocusable } from '../../common/tests/conditions';
+import { inputElementIsFocusable, elementIsClicked } from '../../common/tests/conditions';
 
 
 describe('Home page with published data', function homePublishedDataTests() {
@@ -65,31 +65,36 @@ describe('Home page with published data', function homePublishedDataTests() {
     it('should display all resource properties', async () => {
         await driver.wait(until.elementLocated(By.css('.detail')), DEFAULT_WAIT_TIMEOUT);
         const fullnameLabel = await driver.findElement(By.css('.detail .property:nth-child(2) dt'));
-        expect(await fullnameLabel.getText()).toEqual('fullname\nhttp://www.w3.org/ns/person');
+        await driver.wait(until.elementTextIs(fullnameLabel, 'fullname\nhttp://www.w3.org/ns/person'), DEFAULT_WAIT_TIMEOUT);
 
         const fullnameValue = await driver.findElement(By.css('.detail .property:nth-child(2) dd'));
-        expect(await fullnameValue.getText()).toEqual('PEREGRIN.TOOK');
+        await driver.wait(until.elementTextIs(fullnameValue, 'PEREGRIN.TOOK'), DEFAULT_WAIT_TIMEOUT);
 
         const mailLabel = await driver.findElement(By.css('.detail .property:last-child dt'));
-        expect(await mailLabel.getText()).toEqual('email\nhttp://uri4uri.net/vocab');
+        await driver.wait(until.elementTextIs(mailLabel, 'email\nhttp://uri4uri.net/vocab'), DEFAULT_WAIT_TIMEOUT);
 
         const mailValue = await driver.findElement(By.css('.detail .property:last-child dd'));
-        expect(await mailValue.getText()).toEqual('peregrin.took@shire.net');
+        await driver.wait(until.elementTextIs(mailValue, 'peregrin.took@shire.net'), DEFAULT_WAIT_TIMEOUT);
     });
 
     it('should allow to add field resource properties', async () => {
-        await driver.findElement(By.css('.add-field-resource')).click();
+        const addFieldResource = await driver.findElement(By.css('.add-field-resource'));
+        await driver.wait(elementIsClicked(addFieldResource), DEFAULT_WAIT_TIMEOUT);
+
         await driver.wait(until.elementLocated(By.css('.detail-properties')), DEFAULT_WAIT_TIMEOUT);
         const form = driver.findElement(By.css('#add_field_resource_form'));
 
         const contributorName = form.findElement(By.css('.contributor-name input'));
+        await driver.wait(inputElementIsFocusable(contributorName, true), DEFAULT_WAIT_TIMEOUT);
         contributorName.sendKeys('john');
         const contributorMail = form.findElement(By.css('.contributor-mail input'));
+        await driver.wait(inputElementIsFocusable(contributorMail, true), DEFAULT_WAIT_TIMEOUT);
         contributorMail.sendKeys('john@doe.fr');
 
         const selectField = form.findElement(By.css('.select-field'));
-        selectField.click();
-        await driver.findElement(By.css('.new')).click();
+        await driver.wait(elementIsClicked(selectField), DEFAULT_WAIT_TIMEOUT);
+        const newField = await driver.findElement(By.css('.new'));
+        await driver.wait(elementIsClicked(newField), DEFAULT_WAIT_TIMEOUT);
 
         const fieldName = form.findElement(By.css('.field-name input'));
         await driver.wait(inputElementIsFocusable(fieldName, true), DEFAULT_WAIT_TIMEOUT);
@@ -104,16 +109,19 @@ describe('Home page with published data', function homePublishedDataTests() {
         await driver.wait(inputElementIsFocusable(fieldValue, true), DEFAULT_WAIT_TIMEOUT);
         fieldValue.sendKeys('my value');
 
-        await driver.findElement(By.css('.add-field-to-resource')).click();
+        const addFieldButton = await driver.findElement(By.css('.add-field-to-resource'));
+        await driver.wait(elementIsClicked(addFieldButton), DEFAULT_WAIT_TIMEOUT);
     });
 
     it('should display added field in new detail', async () => {
         await driver.wait(until.elementLocated(By.css('.detail')), DEFAULT_WAIT_TIMEOUT);
         const contributionLabel = await driver.findElement(By.css('.detail .property:last-child dt'));
-        expect(await contributionLabel.getText()).toEqual('myContribution\nContributed by john');
+        await driver.wait(
+            until.elementTextIs(contributionLabel, 'myContribution\nContributed by john'), DEFAULT_WAIT_TIMEOUT,
+        );
 
         const contributionValue = await driver.findElement(By.css('.detail .property:last-child dd'));
-        expect(await contributionValue.getText()).toEqual('my value');
+        await driver.wait(until.elementTextIs(contributionValue, 'my value'), DEFAULT_WAIT_TIMEOUT);
     });
 
     after(async () => {
