@@ -20,7 +20,7 @@ import {
 import Card from '../lib/Card';
 import Alert from '../lib/Alert';
 import ButtonWithStatus from '../lib/ButtonWithStatus';
-import { polyglot as polyglotPropTypes } from '../lib/propTypes';
+import { polyglot as polyglotPropTypes } from '../propTypes';
 import SelectFieldToAdd from './SelectFieldToAdd';
 import { isLoggedIn as getIsLoggedIn } from '../user';
 import DetailProperties from './DetailProperties';

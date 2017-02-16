@@ -4,7 +4,7 @@ import { Field } from 'redux-form';
 import { CardText } from 'material-ui/Card';
 
 import FormTextField from '../lib/FormTextField';
-import { polyglot as polyglotPropTypes } from '../lib/propTypes';
+import { polyglot as polyglotPropTypes } from '../propTypes';
 
 const required = value => (value ? undefined : 'Required');
 const validMail = value =>
