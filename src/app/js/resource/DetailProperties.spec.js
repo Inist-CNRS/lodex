@@ -32,16 +32,22 @@ describe('DetailPropertiesComponent', () => {
         properties.forEach((element, index) => {
             if (index === 2) {
                 expect(element.props()).toEqual({
-                    name: 'contribution1',
-                    value: `value${index + 1}`,
-                    scheme: `scheme${index + 1}`,
+                    field: { name: 'contribution1', scheme: 'scheme3' },
+                    resource: {
+                        field1: 'value1',
+                        field2: 'value2',
+                        contribution1: 'value3',
+                    },
                 });
                 return;
             }
             expect(element.props()).toEqual({
-                name: `field${index + 1}`,
-                value: `value${index + 1}`,
-                scheme: `scheme${index + 1}`,
+                field: { name: `field${index + 1}`, scheme: `scheme${index + 1}` },
+                resource: {
+                    field1: 'value1',
+                    field2: 'value2',
+                    contribution1: 'value3',
+                },
             });
         });
     });

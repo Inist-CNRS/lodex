@@ -13,15 +13,11 @@ import Property from '../lib/Property';
 
 export const DetailPropertiesComponent = ({ resource, collectionFields, documentFields }) => (
     <CardText className="detail-properties">
-        {collectionFields.map(({ name, scheme }) => (
-            <Property name={name} scheme={scheme} value={resource[name]} />
+        {collectionFields.map(field => (
+            <Property key={field.name} resource={resource} field={field} />
         ))}
-        {documentFields.filter(({ name }) => !!resource[name]).map(({ name, scheme }) => (
-            <Property
-                name={name}
-                scheme={scheme}
-                value={resource[name]}
-            />
+        {documentFields.filter(({ name }) => !!resource[name]).map(field => (
+            <Property key={field.name} resource={resource} field={field} />
         ))}
     </CardText>
 );

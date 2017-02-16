@@ -22,7 +22,7 @@ const styles = {
     },
 };
 
-const Property = ({ name, onChange, scheme, value }) => (
+const PropertyEdition = ({ name, onChange, scheme, value }) => (
     <dl className="property" style={styles.container}>
         <dt>
             <div style={styles.name}>{name}</div>
@@ -39,9 +39,9 @@ const Property = ({ name, onChange, scheme, value }) => (
     </dl>
 );
 
-Property.propTypes = propertyPropTypes;
+PropertyEdition.propTypes = propertyPropTypes;
 
 export default withHandlers({
     onChange: ({ name, onSetNewCharacteristicValue }) =>
         (event, value) => onSetNewCharacteristicValue({ name, value }),
-})(Property);
+})(PropertyEdition);

@@ -32,6 +32,25 @@
         "transformers" : [ { "operation" : "COLUMN", "args" : [ { "name" : "column", "type" : "column", "value" : "author" } ] } ],
         "cover" : "dataset",
         "scheme" : "http://www.w3.org/ns/person"
+    }, {
+        "name" : "best_friend_of",
+        "label" : "Best Friend Of",
+        "transformers" : [ {
+            "operation" : "LINK",
+            "args" : [
+                { "name" : "reference", "type" : "column", "value" : "best_friend_of" },
+                { "name" : "identifier", "type" : "column", "value" : "id" }
+            ]
+        }],
+        "cover" : "collection",
+        "scheme" : "http://www.w3.org/ns/person",
+        "format": {
+            "name": "uri",
+            "args": {
+                "type": "column",
+                "value": "fullname"
+            }
+        }
     }],
     "publishedCharacteristic": [
         { "movie": "LOTR" , "author": "Peter Jackson" }
@@ -41,14 +60,16 @@
             "uri" : "1",
             "versions": [{
                 "fullname" : "PEREGRIN.TOOK",
-                "email" : "peregrin.took@shire.net"
+                "email" : "peregrin.took@shire.net",
+                "best_friend_of": "5"
             }]
         },
         {
             "uri" : "2",
             "versions": [{
                 "fullname" : "SAMSAGET.GAMGIE",
-                "email" : "samsaget.gamgie@shire.net"
+                "email" : "samsaget.gamgie@shire.net",
+                "best_friend_of": "4"
             }]
         },
         {
@@ -62,14 +83,16 @@
             "uri" : "4",
             "versions": [{
                 "fullname" : "FRODO.BAGGINS",
-                "email" : "frodo.saquet@shire.net"
+                "email" : "frodo.saquet@shire.net",
+                "best_friend_of": "2"
             }]
         },
         {
             "uri" : "5",
             "versions": [{
                 "fullname" : "MERIADOC.BRANDYBUCK",
-                "email" : "meriadoc.brandybuck@shire.net"
+                "email" : "meriadoc.brandybuck@shire.net",
+                "best_friend_of": "1"
             }]
         }
     ]

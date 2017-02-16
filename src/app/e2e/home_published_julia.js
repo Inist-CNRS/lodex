@@ -75,11 +75,17 @@ describe('Home page with published data when logged as Julia', function homePubl
         const fullnameValue = await driver.findElement(By.css('.detail .property:nth-child(2) dd'));
         expect(await fullnameValue.getText()).toEqual('PEREGRIN.TOOK');
 
-        const mailLabel = await driver.findElement(By.css('.detail .property:last-child dt'));
-        expect(await mailLabel.getText()).toEqual('email\nhttp://uri4uri.net/vocab');
+        const mailLabel = await driver.findElement(By.css('.detail .property:nth-child(3) dt'));
+        await driver.wait(until.elementTextIs(mailLabel, 'email\nhttp://uri4uri.net/vocab'), DEFAULT_WAIT_TIMEOUT);
 
-        const mailValue = await driver.findElement(By.css('.detail .property:last-child dd'));
-        expect(await mailValue.getText()).toEqual('peregrin.took@shire.net');
+        const mailValue = await driver.findElement(By.css('.detail .property:nth-child(3) dd'));
+        await driver.wait(until.elementTextIs(mailValue, 'peregrin.took@shire.net'), DEFAULT_WAIT_TIMEOUT);
+
+        const bestFriendLabel = await driver.findElement(By.css('.detail .property:last-child dt'));
+        await driver.wait(until.elementTextIs(bestFriendLabel, 'best_friend_of\nhttp://www.w3.org/ns/person'), DEFAULT_WAIT_TIMEOUT);
+
+        const bestFriendValue = await driver.findElement(By.css('.detail .property:last-child dd'));
+        await driver.wait(until.elementTextIs(bestFriendValue, 'MERIADOC.BRANDYBUCK'), DEFAULT_WAIT_TIMEOUT);
     });
 
     it('should allow to edit resource properties', async () => {
@@ -104,11 +110,17 @@ describe('Home page with published data when logged as Julia', function homePubl
         const fullnameValue = await driver.findElement(By.css('.detail .property:nth-child(2) dd'));
         expect(await fullnameValue.getText()).toEqual('PEREGRIN.TOOK');
 
-        const mailLabel = await driver.findElement(By.css('.detail .property:last-child dt'));
-        expect(await mailLabel.getText()).toEqual('email\nhttp://uri4uri.net/vocab');
+        const mailLabel = await driver.findElement(By.css('.detail .property:nth-child(3) dt'));
+        await driver.wait(until.elementTextIs(mailLabel, 'email\nhttp://uri4uri.net/vocab'), DEFAULT_WAIT_TIMEOUT);
 
-        const mailValue = await driver.findElement(By.css('.detail .property:last-child dd'));
-        expect(await mailValue.getText()).toEqual('peregrin.took@gondor.net');
+        const mailValue = await driver.findElement(By.css('.detail .property:nth-child(3) dd'));
+        await driver.wait(until.elementTextIs(mailValue, 'peregrin.took@gondor.net'), DEFAULT_WAIT_TIMEOUT);
+
+        const bestFriendLabel = await driver.findElement(By.css('.detail .property:last-child dt'));
+        await driver.wait(until.elementTextIs(bestFriendLabel, 'best_friend_of\nhttp://www.w3.org/ns/person'), DEFAULT_WAIT_TIMEOUT);
+
+        const bestFriendValue = await driver.findElement(By.css('.detail .property:last-child dd'));
+        await driver.wait(until.elementTextIs(bestFriendValue, 'MERIADOC.BRANDYBUCK'), DEFAULT_WAIT_TIMEOUT);
     });
 
     it('should go to hide page', async () => {
