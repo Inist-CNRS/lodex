@@ -5,11 +5,11 @@ import fetchSaga from '../../lib/fetchSaga';
 
 import {
     LOAD_PARSING_RESULT,
-    getLoadParsingResultRequest,
     loadParsingResultError,
     loadParsingResultSuccess,
 } from './';
 import { UPLOAD_FILE_SUCCESS } from '../upload';
+import { getLoadParsingResultRequest } from '../../fetch/';
 
 export function* handleLoadParsingResult() {
     const request = yield select(getLoadParsingResultRequest);

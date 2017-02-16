@@ -78,51 +78,6 @@ export default handleActions({
     UPDATE_FIELD_SUCCESS: (state, { payload }) => updateFieldByProperty(state, '_id', payload),
 }, defaultState);
 
-export const getLoadFieldRequest = state => ({
-    credentials: 'include',
-    headers: {
-        Accept: 'application/json',
-        Authorization: `Bearer ${state.user.token}`,
-        'Content-Type': 'application/json',
-    },
-    url: '/api/field',
-});
-
-export const getCreateFieldRequest = (state, fieldData) => ({
-    body: JSON.stringify(fieldData),
-    credentials: 'include',
-    headers: {
-        Accept: 'application/json',
-        Authorization: `Bearer ${state.user.token}`,
-        'Content-Type': 'application/json',
-    },
-    method: 'POST',
-    url: '/api/field',
-});
-
-export const getRemoveFieldRequest = (state, { _id }) => ({
-    credentials: 'include',
-    headers: {
-        Accept: 'application/json',
-        Authorization: `Bearer ${state.user.token}`,
-        'Content-Type': 'application/json',
-    },
-    method: 'DELETE',
-    url: `/api/field/${_id}`,
-});
-
-export const getUpdateFieldRequest = (state, { _id, ...fieldData }) => ({
-    body: JSON.stringify(fieldData),
-    credentials: 'include',
-    headers: {
-        Accept: 'application/json',
-        Authorization: `Bearer ${state.user.token}`,
-        'Content-Type': 'application/json',
-    },
-    method: 'PUT',
-    url: `/api/field/${_id}`,
-});
-
 export const getFields = state => state.fields.list;
 
 export const getNewFieldIndex = state => state.fields.list.length;

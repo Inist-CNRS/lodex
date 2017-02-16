@@ -1,13 +1,14 @@
 import expect from 'expect';
 import reducer, {
     defaultState,
-    getLoadParsingResultRequest,
     getParsedExcerptColumns,
     hasUploadedFile,
     loadParsingResult,
     loadParsingResultError,
     loadParsingResultSuccess,
 } from './';
+
+
 
 describe('parsing reducer', () => {
     it('should initialize with correct state', () => {
@@ -38,21 +39,6 @@ describe('parsing reducer', () => {
             ...defaultState,
             loading: false,
             parsing: true,
-        });
-    });
-
-    describe('getLoadParsingResultRequest', () => {
-        it('should return the correct request', () => {
-            const request = getLoadParsingResultRequest({ user: { token: 'test' } });
-            expect(request).toEqual({
-                url: '/api/parsing',
-                credentials: 'include',
-                headers: {
-                    Accept: 'application/json',
-                    Authorization: 'Bearer test',
-                    'Content-Type': 'application/json',
-                },
-            });
         });
     });
 

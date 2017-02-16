@@ -40,10 +40,8 @@ export const getRequest = createSelector(
         headers: {
             Accept: 'application/json',
             'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
         },
         method,
     }),
 );
-
-export const getLoginRequest = (state, credentials) =>
-    getRequest(state, { uri: '/api/login', body: credentials, method: 'POST' });

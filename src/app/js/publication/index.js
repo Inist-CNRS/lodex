@@ -105,13 +105,3 @@ export const getPublishData = createSelector(
         error: error && (error.message || error),
     }),
 );
-
-export const getLoadPublicationRequest = state => ({
-    url: '/api/publication',
-    credentials: 'include',
-    headers: {
-        Accept: 'application/json',
-        Authorization: `Bearer ${state.user.token}`,
-        'Content-Type': 'application/json',
-    },
-});

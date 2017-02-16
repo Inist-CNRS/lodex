@@ -5,11 +5,10 @@ import fetchSaga from '../../../lib/fetchSaga';
 
 import {
     getFieldFormData,
-    getUpdateFieldRequest,
     updateFieldError,
     updateFieldSuccess,
 } from '../';
-
+import { getUpdateFieldRequest } from '../../../fetch';
 import prepareTransformers from './prepareTransformers';
 
 import {

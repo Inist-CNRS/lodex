@@ -3,12 +3,12 @@ import { call, put, select } from 'redux-saga/effects';
 import {
     ADD_FIELD,
     getNewFieldIndex,
-    getCreateFieldRequest,
     addFieldError,
     addFieldSuccess,
 } from '../';
 
 import fetchSaga from '../../../lib/fetchSaga';
+import { getCreateFieldRequest } from '../../../fetch/';
 
 export function* handleAddField({ payload: name }) {
     const index = yield select(getNewFieldIndex);

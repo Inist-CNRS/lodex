@@ -2,12 +2,12 @@ import expect from 'expect';
 import { call, put, select } from 'redux-saga/effects';
 
 import {
-    getLoadDatasetPageRequest,
     loadDatasetPageError,
     loadDatasetPageSuccess,
 } from './';
 
 import { handleLoadDatasetPageRequest } from './sagas';
+import { getLoadDatasetPageRequest } from '../fetch/';
 import fetchSaga from '../lib/fetchSaga';
 
 describe('dataset saga', () => {

@@ -2,10 +2,10 @@ import expect from 'expect';
 import { call, put, select } from 'redux-saga/effects';
 
 import {
-    getLoadPublicationRequest,
     loadPublicationError,
     loadPublicationSuccess,
 } from './';
+import { getLoadPublicationRequest } from '../fetch';
 import fetchSaga from '../lib/fetchSaga';
 
 import { handleLoadPublicationRequest } from './sagas';

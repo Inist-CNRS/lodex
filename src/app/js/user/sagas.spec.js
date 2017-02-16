@@ -3,7 +3,8 @@ import { call, put, select } from 'redux-saga/effects';
 import { startSubmit, stopSubmit } from 'redux-form';
 
 import fetchSaga from '../lib/fetchSaga';
-import { LOGIN_FORM_NAME, getLoginRequest, loginSuccess } from './';
+import { LOGIN_FORM_NAME, loginSuccess } from './';
+import { getLoginRequest } from '../fetch';
 import { handleLoginRequest } from './sagas';
 
 describe('user saga', () => {

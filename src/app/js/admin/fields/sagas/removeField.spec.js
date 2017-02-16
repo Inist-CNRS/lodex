@@ -5,11 +5,11 @@ import fetchSaga from '../../../lib/fetchSaga';
 
 import {
     getFieldFormData,
-    getRemoveFieldRequest,
     removeFieldError,
     removeFieldSuccess,
 } from '../';
 
+import { getRemoveFieldRequest } from '../../../fetch/';
 
 import {
     handleRemoveField,

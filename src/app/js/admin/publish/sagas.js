@@ -1,7 +1,8 @@
 import { takeLatest } from 'redux-saga';
 import { call, fork, put, select } from 'redux-saga/effects';
 
-import { PUBLISH, getPublishRequest, publishSuccess, publishError } from './';
+import { PUBLISH, publishSuccess, publishError } from './';
+import { getPublishRequest } from '../../fetch/';
 import fetchSaga from '../../lib/fetchSaga';
 
 export function* handlePublishRequest() {

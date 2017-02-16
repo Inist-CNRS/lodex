@@ -2,11 +2,11 @@ import { takeLatest } from 'redux-saga';
 import { call, put, select } from 'redux-saga/effects';
 
 import {
-    getUpdateCharacteristicsRequest,
     UPDATE_CHARACTERISTICS,
     updateCharacteristicsError,
     updateCharacteristicsSuccess,
 } from './';
+import { getUpdateCharacteristicsRequest } from '../fetch/';
 import fetchSaga from '../lib/fetchSaga';
 
 export function* handleUpdateCharacteristics() {

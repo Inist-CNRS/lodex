@@ -3,13 +3,12 @@ import { call, put, select } from 'redux-saga/effects';
 import { LOCATION_CHANGE, push } from 'react-router-redux';
 
 import {
-    getLoadResourceRequest,
     loadResource,
     loadResourceSuccess,
     loadResourceError,
 } from '../';
 import { loadPublication } from '../../publication';
-
+import { getLoadResourceRequest } from '../../fetch';
 import fetchSaga from '../../lib/fetchSaga';
 
 export const parsePathName = pathname => pathname.match(/^(\/resource)(\/ark:\/)?(.*?$)/) || [];

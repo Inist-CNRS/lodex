@@ -3,11 +3,10 @@ import { call, put, select } from 'redux-saga/effects';
 import fetchSaga from '../../lib/fetchSaga';
 
 import {
-    getPublishRequest,
     publishError,
     publishSuccess,
 } from './';
-
+import { getPublishRequest } from '../../fetch/';
 import { handlePublishRequest } from './sagas';
 
 describe('publication saga', () => {

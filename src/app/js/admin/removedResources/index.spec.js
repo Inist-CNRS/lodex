@@ -2,7 +2,6 @@ import expect from 'expect';
 
 import reducer, {
     defaultState,
-    getLoadRemovedResourcePageRequest,
     loadRemovedResourcePage,
     loadRemovedResourcePageSuccess,
     loadRemovedResourcePageError,
@@ -39,21 +38,6 @@ describe('removed resource reducer', () => {
         expect(state).toEqual({
             loading: false,
             error: 'foo',
-        });
-    });
-
-    describe('getLoadRemovedResourcePageRequest', () => {
-        it('should return the correct request', () => {
-            const request = getLoadRemovedResourcePageRequest({ user: { token: 'test' } }, { page: 10, perPage: 50 });
-            expect(request).toEqual({
-                url: '/api/publishedDataset/removed?page=10&perPage=50',
-                credentials: 'include',
-                headers: {
-                    Accept: 'application/json',
-                    Authorization: 'Bearer test',
-                    'Content-Type': 'application/json',
-                },
-            });
         });
     });
 });

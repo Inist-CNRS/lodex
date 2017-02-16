@@ -2,13 +2,13 @@ import expect from 'expect';
 import { call, put, select } from 'redux-saga/effects';
 
 import {
-    getLoadRemovedResourcePageRequest,
     loadRemovedResourcePageError,
     loadRemovedResourcePageSuccess,
 } from '../';
 
 import { handleLoadRemovedResourcePageRequest } from './loadRemovedResource';
 import fetchSaga from '../../../lib/fetchSaga';
+import { getLoadRemovedResourcePageRequest } from '../../../fetch/';
 
 describe('load removed resources saga', () => {
     describe('handleLoadRemovedResourcePageRequest', () => {

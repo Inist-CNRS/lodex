@@ -5,11 +5,10 @@ import fetchSaga from '../../../lib/fetchSaga';
 
 import {
     getNewFieldIndex,
-    getCreateFieldRequest,
     addFieldError,
     addFieldSuccess,
 } from '../';
-
+import { getCreateFieldRequest } from '../../../fetch/';
 import {
     handleAddField,
 } from './addField';

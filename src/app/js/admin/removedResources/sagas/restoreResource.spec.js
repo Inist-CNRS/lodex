@@ -2,11 +2,10 @@ import expect from 'expect';
 import { call, put, select } from 'redux-saga/effects';
 
 import {
-    getRestoreResourceRequest,
     restoreRessourceError,
     restoreRessourceSuccess,
 } from '../';
-
+import { getRestoreResourceRequest } from '../../../fetch/';
 import { handleRestoreResourceRequest } from './restoreResource';
 import fetchSaga from '../../../lib/fetchSaga';
 
