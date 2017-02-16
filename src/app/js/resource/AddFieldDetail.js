@@ -2,13 +2,11 @@ import React, { PropTypes } from 'react';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
-import { Field, reduxForm, propTypes as reduxFormPropTypes } from 'redux-form';
+import { reduxForm, propTypes as reduxFormPropTypes } from 'redux-form';
 import { CardText, CardHeader, CardActions } from 'material-ui/Card';
 import { Link } from 'react-router';
 import FlatButton from 'material-ui/FlatButton';
-import MenuItem from 'material-ui/MenuItem';
 
-import SchemeAutoComplete from '../lib/SchemeAutoComplete';
 import {
     getResourceLastVersion,
     addFieldToResource,
@@ -17,30 +15,20 @@ import {
     getNewResourceFieldFormData,
 } from './';
 import {
-    getCollectionFields,
-    getDocumentFields,
     getFieldToAdd,
 } from '../publication';
 import Card from '../lib/Card';
-import FormTextField from '../lib/FormTextField';
 import Alert from '../lib/Alert';
 import ButtonWithStatus from '../lib/ButtonWithStatus';
 import { polyglot as polyglotPropTypes } from '../lib/propTypes';
 import SelectFieldToAdd from './SelectFieldToAdd';
 import { isLoggedIn as getIsLoggedIn } from '../user';
-import FormSelectField from '../lib/FormSelectField';
 import DetailProperties from './DetailProperties';
-
-const required = value => (value ? undefined : 'Required');
-const validMail = value =>
-    (value.match(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/) ? undefined : 'Invalid mail');
-const uniqueField = fields => value =>
-    (fields.find(({ name }) => name === value) ? 'Field already exists' : undefined);
+import Contributor from './Contributor';
+import ContributionField from './ContributionField';
 
 export const AddFieldDetailComponent = ({
     resource,
-    collectionFields,
-    documentFields,
     saving,
     error,
     fieldToAdd,
@@ -56,27 +44,7 @@ export const AddFieldDetailComponent = ({
                 {error && <Alert><p>{error}</p></Alert>}
                 {
                     isLoggedIn ? null :
-                    <div>
-                        {polyglot.t('about_you')}
-                        <CardText>
-                            <Field
-                                validate={required}
-                                name="contributor.name"
-                                className="contributor-name"
-                                component={FormTextField}
-                                label={polyglot.t('contributorName')}
-                                fullWidth
-                            />
-                            <Field
-                                validate={[required, validMail]}
-                                name="contributor.mail"
-                                className="contributor-mail"
-                                component={FormTextField}
-                                label={polyglot.t('contributorMail')}
-                                fullWidth
-                            />
-                        </CardText>
-                    </div>
+                    <Contributor />
                 }
                 <div>
                     {polyglot.t('new_field')}
@@ -84,52 +52,7 @@ export const AddFieldDetailComponent = ({
                         <SelectFieldToAdd />
                         {
                             fieldToAdd ?
-                                <div>
-                                    <Field
-                                        className="field-name"
-                                        name="field.name"
-                                        validate={[
-                                            required,
-                                            uniqueField([...documentFields, ...collectionFields]),
-                                        ]}
-                                        disabled={fieldToAdd.name}
-                                        component={FormTextField}
-                                        label={polyglot.t('fieldName')}
-                                        fullWidth
-                                    />
-                                    <Field
-                                        className="field-label"
-                                        name="field.label"
-                                        validate={required}
-                                        disabled={fieldToAdd.name}
-                                        component={FormTextField}
-                                        label={polyglot.t('fieldLabel')}
-                                        fullWidth
-                                    />
-                                    <Field
-                                        className="field-value"
-                                        name="field.value"
-                                        validate={required}
-                                        component={FormTextField}
-                                        label={polyglot.t('fieldValue')}
-                                        fullWidth
-                                    />
-                                    <Field
-                                        className="field-cover"
-                                        name="field.cover"
-                                        component={FormSelectField}
-                                        label={polyglot.t('cover')}
-                                        fullWidth
-                                        disabled
-                                    >
-                                        <MenuItem value="document" primaryText={polyglot.t('cover_document')} />
-                                    </Field>
-                                    <SchemeAutoComplete
-                                        disabled={fieldToAdd.name}
-                                        name="field.scheme"
-                                        className="field-scheme"
-                                    />
-                                </div>
+                                <ContributionField isNewField={!fieldToAdd.name} />
                             : null
                         }
                     </CardText>
@@ -159,15 +82,12 @@ AddFieldDetailComponent.defaultProps = {
 
 AddFieldDetailComponent.propTypes = {
     ...reduxFormPropTypes,
-    fields: PropTypes.arrayOf(PropTypes.object).isRequired,
     saving: PropTypes.bool,
     p: polyglotPropTypes.isRequired,
 };
 
 const mapStateToProps = state => ({
     resource: getResourceLastVersion(state),
-    collectionFields: getCollectionFields(state),
-    documentFields: getDocumentFields(state),
     saving: isSaving(state),
     fieldToAdd: getFieldToAdd(state),
     initialValues: {
