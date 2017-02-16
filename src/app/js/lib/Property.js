@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
@@ -7,7 +7,12 @@ import {
     getResourceUnvalidatedFields,
     getResourceContributorsByField,
 } from '../resource';
-import { property as propertyPropTypes } from '../propTypes';
+import {
+    contributor as contributorPropTypes,
+    field as fieldPropTypes,
+    polyglot as polyglotPropTypes,
+    resource as resourcePropTypes,
+} from '../propTypes';
 import { getCollectionFields } from '../publication';
 import Format from '../formats/Format';
 
@@ -50,7 +55,14 @@ const PropertyComponent = ({ field, fields, resource, contributors, unValidatedF
     </dl>
 );
 
-PropertyComponent.propTypes = propertyPropTypes;
+PropertyComponent.propTypes = {
+    contributors: PropTypes.arrayOf(contributorPropTypes).isRequired,
+    field: fieldPropTypes.isRequired,
+    fields: PropTypes.arrayOf(fieldPropTypes).isRequired,
+    p: polyglotPropTypes.isRequired,
+    resource: resourcePropTypes.isRequired,
+    unValidatedFields: PropTypes.arrayOf(PropTypes.string).isRequired,
+};
 
 const mapStateToProps = state => ({
     unValidatedFields: getResourceUnvalidatedFields(state),

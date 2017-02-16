@@ -1,15 +1,15 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import Property from '../lib/Property';
 import { getFieldByName } from '../publication';
-import { field as fieldPropTypes } from '../propTypes';
+import { field as fieldPropTypes, resource as resourcePropTypes } from '../propTypes';
 
 const DatasetCharacteristicItemComponent = ({ resource, field }) => (
     <Property resource={resource} field={field} />
 );
 
 DatasetCharacteristicItemComponent.propTypes = {
-    resource: PropTypes.object.isRequired, // eslint-disable-line
+    resource: resourcePropTypes.isRequired,
     field: fieldPropTypes.isRequired,
 };
 
