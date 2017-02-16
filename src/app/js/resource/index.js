@@ -141,8 +141,7 @@ export const getAddFieldToResourceRequest = (state, data) => ({
     body: JSON.stringify(data),
 });
 
-export const getResourceLastVersion = (state) => {
-    const resource = state.resource.resource;
+export const getResourceLastVersion = (state, resource = state.resource.resource) => {
     const { versions, uri } = resource;
     if (!versions) {
         return null;

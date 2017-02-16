@@ -2,7 +2,6 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
-import { Link } from 'react-router';
 
 import { CardText } from 'material-ui/Card';
 
@@ -13,14 +12,13 @@ import {
     TableHeader,
     TableHeaderColumn,
     TableRow,
-    TableRowColumn,
 } from 'material-ui/Table';
+import DatasetColumn from './DatasetColumn';
 import Pagination from '../lib/Pagination';
 import Card from '../lib/Card';
 import Loading from '../lib/Loading';
-import Format from '../formats/Format';
 
-import { polyglot as polyglotPropTypes } from '../lib/propTypes';
+import { polyglot as polyglotPropTypes } from '../propTypes';
 import { loadDatasetPage as loadDatasetPageAction } from './';
 import { getCollectionFields } from '../publication';
 
@@ -59,13 +57,11 @@ export class DatasetComponent extends Component {
                             {dataset.map(data => (
                                 <TableRow>
                                     {columns.map(column => (
-                                        <TableRowColumn className={`dataset-${column.name}`}>
-                                            {column.name === 'uri' ?
-                                                <Link to={`/resource?uri=${data[column.name]}`}>{data[column.name]}</Link>
-                                                :
-                                                <Format resource={data} field={column} fields={columns} />
-                                            }
-                                        </TableRowColumn>
+                                        <DatasetColumn
+                                            column={column}
+                                            columns={columns}
+                                            resource={data}
+                                        />
                                     ))}
                                 </TableRow>
                             ))}

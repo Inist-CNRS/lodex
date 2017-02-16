@@ -67,4 +67,11 @@ class UriEdition extends Component {
     }
 }
 
+UriEdition.propTypes = {
+    type: PropTypes.string.isRequired,
+    value: PropTypes.string.isRequired,
+    onChange: PropTypes.func.isRequired,
+};
+
+
 export default UriEdition;

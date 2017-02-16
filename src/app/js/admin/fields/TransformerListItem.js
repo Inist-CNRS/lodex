@@ -7,7 +7,7 @@ import MenuItem from 'material-ui/MenuItem';
 import ActionDeleteIcon from 'material-ui/svg-icons/action/delete';
 import { Field, FieldArray, propTypes as reduxFormPropTypes } from 'redux-form';
 
-import { polyglot as polyglotPropTypes } from '../../lib/propTypes';
+import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { getTransformers, getTransformerArgs } from './';
 import FormSelectField from '../../lib/FormSelectField';
 import TransformerArgList from './TransformerArgList';

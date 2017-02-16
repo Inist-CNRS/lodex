@@ -20,7 +20,7 @@ import ButtonWithStatus from '../../lib/ButtonWithStatus';
 import Card from '../../lib/Card';
 import Loading from '../../lib/Loading';
 import Pagination from '../../lib/Pagination';
-import { polyglot as polyglotPropTypes } from '../../lib/propTypes';
+import { polyglot as polyglotPropTypes } from '../../propTypes';
 import {
     loadRemovedResourcePage as loadRemovedResourcePageAction,
     restoreRessource as restoreRessourceAction,

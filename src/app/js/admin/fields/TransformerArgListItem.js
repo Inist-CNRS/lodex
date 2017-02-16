@@ -2,7 +2,7 @@ import React from 'react';
 import pure from 'recompose/pure';
 import { Field, propTypes as reduxFormPropTypes } from 'redux-form';
 
-import { polyglot as polyglotPropTypes } from '../../lib/propTypes';
+import { polyglot as polyglotPropTypes } from '../../propTypes';
 import FormTextField from '../../lib/FormTextField';
 
 const TransformerArgListItem = ({ fieldName, transformerArg }) => (

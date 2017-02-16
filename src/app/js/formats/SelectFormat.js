@@ -16,4 +16,10 @@ const SelectFormat = ({ formats, value, onChange }) => (
     </SelectField>
 );
 
+SelectFormat.propTypes = {
+    formats: PropTypes.arrayOf(PropTypes.string).isRequired,
+    value: PropTypes.string.isRequired,
+    onChange: PropTypes.func.isRequired,
+};
+
 export default SelectFormat;

@@ -10,7 +10,7 @@ import {
     getResourceLastVersion,
 } from './';
 import Card from '../lib/Card';
-import { polyglot as polyglotPropTypes } from '../lib/propTypes';
+import { polyglot as polyglotPropTypes } from '../propTypes';
 import { isLoggedIn } from '../user';
 import DetailProperties from './DetailProperties';
 

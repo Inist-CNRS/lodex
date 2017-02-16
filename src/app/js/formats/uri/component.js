@@ -1,17 +1,21 @@
 import React, { PropTypes } from 'react';
 import { Link } from 'react-router';
+import { field as fieldPropTypes } from '../../propTypes';
 
-const UriComponent = ({ resource, field }) => {
+const UriComponent = ({ linkedResource, resource, field }) => {
+    const uri = resource[field.name];
     let label = resource[field.name];
 
     if (field.format.args.type) {
         switch (field.format.args.type) {
-        case 'test':
+        case 'text':
             label = field.format.args.value;
             break;
 
         case 'column': {
-            label = resource[field.format.args.value];
+            if (linkedResource) {
+                label = linkedResource[field.format.args.value];
+            }
             break;
         }
 
@@ -21,14 +25,13 @@ const UriComponent = ({ resource, field }) => {
         }
     }
 
-    return <a href={resource[field.name]}>{label}</a>;
+    return <Link to={`/resource?uri=${uri}`}>{label}</Link>;
 };
 
 UriComponent.propTypes = {
-    args: PropTypes.array.isRequired, // eslint-disable-line
+    field: fieldPropTypes.isRequired,
+    linkedResource: PropTypes.object.isRequired, // eslint-disable-line
     resource: PropTypes.object.isRequired, // eslint-disable-line
-    field: PropTypes.object.isRequired, // eslint-disable-line
-    fields: PropTypes.array.isRequired, // eslint-disable-line
 };
 
 export default UriComponent;

@@ -3,11 +3,11 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 
-import { property as propertyPropTypes } from './propTypes';
 import {
     getResourceUnvalidatedFields,
     getResourceContributorsByField,
 } from '../resource';
+import { property as propertyPropTypes } from '../propTypes';
 
 const styles = {
     container: unValidated => ({

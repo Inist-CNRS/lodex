@@ -3,7 +3,7 @@ import translate from 'redux-polyglot/translate';
 import classnames from 'classnames';
 
 import { CardText } from 'material-ui/Card';
-import { polyglot as polyglotPropTypes } from '../lib/propTypes';
+import { polyglot as polyglotPropTypes } from '../propTypes';
 import Card from '../lib/Card';
 
 const PublishedComponent = ({ p: polyglot, ...props }) => (

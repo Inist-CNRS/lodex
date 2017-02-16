@@ -8,7 +8,7 @@ import FlatButton from 'material-ui/FlatButton';
 import { grey400 } from 'material-ui/styles/colors';
 import Card from '../../lib/Card';
 
-import { polyglot as polyglotPropTypes } from '../../lib/propTypes';
+import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { getParsedExcerptColumns, clearParsing } from './';
 import ParsingExcerpt from './ParsingExcerpt';
 import ParsingSummary from './ParsingSummary';

@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 import compose from 'recompose/compose';
 import withHandlers from 'recompose/withHandlers';
 import translate from 'redux-polyglot/translate';
-import { polyglot as polyglotPropTypes, validationField as validationFieldPropType } from '../../lib/propTypes';
+import { polyglot as polyglotPropTypes, validationField as validationFieldPropType } from '../../propTypes';
 
 const styles = {
     label: {

@@ -8,6 +8,12 @@ export const polyglot = PropTypes.shape({
     tm: PropTypes.func.isRequired,
 });
 
+export const field = PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    label: PropTypes.string.isRequired,
+    scheme: PropTypes.string,
+});
+
 export const property = PropTypes.shape({
     name: PropTypes.string.isRequired,
     value: PropTypes.any.isRequired,

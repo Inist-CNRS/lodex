@@ -5,7 +5,7 @@ import pure from 'recompose/pure';
 
 import { List, ListItem } from 'material-ui/List';
 
-import { polyglot as polyglotPropTypes } from '../../lib/propTypes';
+import { polyglot as polyglotPropTypes } from '../../propTypes';
 import ParsingSummaryItem from './ParsingSummaryItem';
 
 const styles = {

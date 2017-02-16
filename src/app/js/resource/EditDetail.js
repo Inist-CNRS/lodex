@@ -18,7 +18,7 @@ import Card from '../lib/Card';
 import FormTextField from '../lib/FormTextField';
 import Alert from '../lib/Alert';
 import ButtonWithStatus from '../lib/ButtonWithStatus';
-import { polyglot as polyglotPropTypes } from '../lib/propTypes';
+import { polyglot as polyglotPropTypes } from '../propTypes';
 
 const validate = (values) => {
     const errors = Object.keys(values).reduce((currentErrors, field) => {

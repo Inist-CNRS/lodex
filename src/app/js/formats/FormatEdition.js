@@ -1,9 +1,10 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import { propTypes as reduxFormPropTypes } from 'redux-form';
+
 import SelectFormat from './SelectFormat';
 import FORMATS from './formats';
 
 import uri from './uri';
-
 
 const Empty = () => <span />;
 
@@ -76,5 +77,7 @@ class FormatEdition extends Component {
         );
     }
 }
+
+FormatEdition.propTypes = reduxFormPropTypes;
 
 export default FormatEdition;

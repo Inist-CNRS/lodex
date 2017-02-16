@@ -85,3 +85,19 @@ test-frontend-functional: ## Run the frontend application functional tests
 		./src/app/e2e
 
 test: test-frontend-unit test-api-unit test-frontend-functional
+
+clear-database:
+	docker-compose exec mongo mongo lodex --eval " \
+		db.publishedDataset.remove({}); \
+		db.publishedCharacteristic.remove({}); \
+		db.field.remove({}); \
+		db.uriDataset.remove({}); \
+		db.dataset.remove({}); \
+	"
+
+clear-publication:
+	docker-compose exec mongo mongo lodex --eval " \
+		db.publishedDataset.remove({}); \
+		db.publishedCharacteristic.remove({}); \
+		db.uriDataset.remove({}); \
+	"

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { getInvalidFields } from '../validation';
 import ValidationField from './ValidationField';
 import { editField as editFieldAction } from '../fields';
-import { validationField as validationFieldPropType } from '../../lib/propTypes';
+import { validationField as validationFieldPropType } from '../../propTypes';
 
 const styles = {
     list: {

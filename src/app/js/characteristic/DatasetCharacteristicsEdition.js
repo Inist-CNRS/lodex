@@ -9,7 +9,7 @@ import Card from '../lib/Card';
 import {
     property as propertyPropTypes,
     polyglot as polyglotPropTypes,
-} from '../lib/propTypes';
+} from '../propTypes';
 
 import {
     getNewCharacteristics,
