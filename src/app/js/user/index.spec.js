@@ -5,6 +5,7 @@ import reducer, {
     isLoggedIn,
     loginSuccess,
     toggleLogin,
+    getRequest,
 } from './';
 
 describe('user reducer', () => {
@@ -45,6 +46,25 @@ describe('user reducer', () => {
         it('should return the token from state', () => {
             const result = getToken({ user: { token: 'foo' } });
             expect(result).toEqual('foo');
+        });
+    });
+
+    describe('getRequest selector', () => {
+        it('should select config request with given token, url, body and method', () => {
+            const result = getRequest({
+                user: { token: 'token' },
+            }, { url: 'url', method: 'method', body: { data: 'value' } });
+            expect(result).toEqual({
+                url: 'url',
+                body: '{"data":"value"}',
+                credentials: 'include',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                    Authorization: 'Bearer token',
+                },
+                method: 'method',
+            });
         });
     });
 });
