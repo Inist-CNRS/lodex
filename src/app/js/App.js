@@ -15,7 +15,8 @@ const styles = {
     bodyContainer: {
         display: 'flex',
         flex: '1',
-        backgroundColor: '#edecec',
+        backgroundColor: 'red',
+        // backgroundColor: '#edecec',
     },
     body: {
         flex: 1,

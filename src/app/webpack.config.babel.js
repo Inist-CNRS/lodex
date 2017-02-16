@@ -32,6 +32,9 @@ export default {
                     resolve(__dirname, '../common'),
                 ],
                 loader: 'babel-loader',
+                options: {
+                    forceEnv: 'browser',
+                },
             }, {
                 test: /\.json$/,
                 loader: 'json-loader',
