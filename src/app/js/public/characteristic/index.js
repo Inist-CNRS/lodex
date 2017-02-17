@@ -4,7 +4,7 @@ import { createSelector } from 'reselect';
 import TITLE_SCHEME from '../../../../common/titleScheme';
 import { COVER_DATASET } from '../../../../common/cover';
 
-import { fromPublication } from '../../selectors';
+import { fromPublication } from '../publication';
 
 export const TOGGLE_CHARACTERISTICS_EDITION = 'TOGGLE_CHARACTERISTICS_EDITION';
 export const SET_CHARACTERISTIC_VALUE = 'SET_CHARACTERISTIC_VALUE';
@@ -66,6 +66,22 @@ export default handleActions({
     }),
 }, defaultState);
 
+const selectNewCharacteristics = state => state.characteristic.newCharacteristics || {};
+const isCharacteristicEditing = state => state.characteristic.editing;
+const isCharacteristicUpdating = state => state.characteristic.updating;
+const getCharacteristicError = state => state.characteristic.error;
+const getCharacteristics = state => state.characteristic.characteristics[0] || {};
+
+export const fromCharacteristic = {
+    selectNewCharacteristics,
+    isCharacteristicEditing,
+    isCharacteristicUpdating,
+    getCharacteristicError,
+    getCharacteristics,
+};
+
+
+// @TODO refactor in 2 selector one by reducer
 export const getDatasetTitle = ({ publication: { fields }, characteristic: { characteristics } }) => {
     const titleCharacteristic = fields.find(({ cover, scheme }) =>
         cover === COVER_DATASET && scheme === TITLE_SCHEME);
@@ -75,8 +91,7 @@ export const getDatasetTitle = ({ publication: { fields }, characteristic: { cha
         : null;
 };
 
-const getCharacteristics = state => state.characteristic.characteristics[0] || {};
-
+// @TODO refactor in 2 selector one by reducer
 export const getCharacteristicsLastVersion = createSelector(
     getCharacteristics,
     fromPublication.getDatasetFields,
@@ -88,8 +103,7 @@ export const getCharacteristicsLastVersion = createSelector(
         })),
 );
 
-const selectNewCharacteristics = state => state.characteristic.newCharacteristics || {};
-
+// @TODO refactor in 2 selector one by reducer
 export const getNewCharacteristics = createSelector(
     selectNewCharacteristics,
     fromPublication.getDatasetFields,
@@ -100,7 +114,3 @@ export const getNewCharacteristics = createSelector(
             value: newCharacteristics[name],
         })),
 );
-
-export const isCharacteristicEditing = state => state.characteristic.editing;
-export const isCharacteristicUpdating = state => state.characteristic.updating;
-export const getCharacteristicError = state => state.characteristic.error;
