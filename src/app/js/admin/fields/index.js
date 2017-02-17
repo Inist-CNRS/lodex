@@ -1,4 +1,6 @@
+import omit from 'lodash.omit';
 import { createAction, handleActions } from 'redux-actions';
+
 import { getTransformersMetas, getTransformerMetas } from '../../../../common/transformers';
 
 export const FIELD_FORM_NAME = 'field';
@@ -32,61 +34,55 @@ export const updateFieldError = createAction(UPDATE_FIELD_ERROR);
 export const updateFieldSuccess = createAction(UPDATE_FIELD_SUCCESS);
 
 export const defaultState = {
+    byId: {},
     list: [],
-    editedFieldIndex: null,
-};
-
-const updateFieldByProperty = (state, property, newField) => {
-    const index = state.list.findIndex(field => field[property] === newField[property]);
-
-    return {
-        ...state,
-        list: [
-            ...state.list.slice(0, index),
-            newField,
-            ...state.list.slice(index + 1),
-        ],
-    };
+    editedFieldId: null,
 };
 
 export default handleActions({
     ADD_FIELD_SUCCESS: (state, { payload }) => ({
         ...state,
-        editedFieldIndex: state.list.length,
-        list: state.list.concat([payload]),
+        editedFieldId: payload._id,
+        list: [...state.list, payload._id],
+        byId: {
+            ...state.byId,
+            [payload._id]: payload,
+        },
     }),
     LOAD_FIELD_SUCCESS: (state, { payload }) => ({
         ...state,
-        list: payload,
+        list: payload.map(({ _id }) => _id),
+        byId: payload.reduce((acc, field) => ({
+            ...acc,
+            [field._id]: field,
+        }), {}),
     }),
     LOAD_FIELD_ERROR: () => defaultState,
     EDIT_FIELD: (state, { payload }) => ({
         ...state,
-        editedFieldIndex: payload,
+        editedFieldId: payload,
     }),
-    REMOVE_FIELD: (state, { payload: { _id: idToRemove } }) => {
-        const index = state.list.findIndex(({ _id: fieldId }) => fieldId === idToRemove);
-
-        return {
-            ...state,
-            list: [
-                ...state.list.slice(0, index),
-                ...state.list.slice(index + 1),
-            ],
-        };
-    },
-    UPDATE_FIELD_SUCCESS: (state, { payload }) => updateFieldByProperty(state, '_id', payload),
+    REMOVE_FIELD: (state, { payload: { _id: idToRemove } }) => ({
+        ...state,
+        list: state.list.filter(id => id !== idToRemove),
+        byId: omit(state.byId, [idToRemove]),
+    }),
+    UPDATE_FIELD_SUCCESS: (state, { payload }) => ({
+        ...state,
+        byId: {
+            ...state.byId,
+            [payload._id]: payload,
+        },
+    }),
 }, defaultState);
 
-export const getFields = state => state.fields.list;
+export const getFields = ({ fields: { byId, list } }) => list.map(id => byId[id]);
 
 export const getNewFieldIndex = state => state.fields.list.length;
 
-export const getEditedField = state => state.fields.list[state.fields.editedFieldIndex];
+export const getEditedField = state => state.fields.byId[state.fields.editedFieldId];
 
-export const getPublicationFields = state => state.fields.list;
-
-export const hasPublicationFields = state => state.fields.length > 0;
+export const hasPublicationFields = state => state.fields.list.length > 0;
 
 export const getTransformers = () => getTransformersMetas();
 
