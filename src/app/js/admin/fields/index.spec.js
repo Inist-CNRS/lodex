@@ -63,10 +63,12 @@ describe('field reducer', () => {
 
     describe('editField', () => {
         it('should handle the EDIT_FIELD action', () => {
-            const state = reducer({ ...defaultState }, editField(42));
+            const state = reducer({
+                list: ['id1', 'id2', 'id3'],
+            }, editField(1));
             expect(state).toEqual({
-                ...defaultState,
-                editedFieldId: 42,
+                list: ['id1', 'id2', 'id3'],
+                editedFieldId: 'id2',
             });
         });
     });

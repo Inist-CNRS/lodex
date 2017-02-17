@@ -61,7 +61,7 @@ export default handleActions({
     LOAD_FIELD_ERROR: () => defaultState,
     EDIT_FIELD: (state, { payload }) => ({
         ...state,
-        editedFieldId: payload,
+        editedFieldId: state.list[payload],
     }),
     REMOVE_FIELD: (state, { payload: { _id: idToRemove } }) => ({
         ...state,
