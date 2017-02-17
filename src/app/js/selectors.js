@@ -1,5 +1,6 @@
 import { createSelector } from 'reselect';
 import { fromPublication as localFromPublication } from './publication';
+import { fromFields as localFromFields } from './admin/fields';
 
 export const getProps = (state, props) => props;
 
@@ -17,3 +18,5 @@ export const createGlobalSelectors = (getLocalState, selectors) => Object.keys(s
 const getPublicationState = state => state.publication;
 
 export const fromPublication = createGlobalSelectors(getPublicationState, localFromPublication);
+
+export const fromFields = createGlobalSelectors(state => state.fields, localFromFields);

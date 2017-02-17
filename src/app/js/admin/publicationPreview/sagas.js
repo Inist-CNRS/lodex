@@ -16,18 +16,18 @@ import {
     ADD_FIELD_SUCCESS,
     REMOVE_FIELD_SUCCESS,
     UPDATE_FIELD_SUCCESS,
-    getFields,
 } from '../fields';
 
 import {
     LOAD_PARSING_RESULT_SUCCESS,
     getExcerptLines,
 } from '../parsing';
+import { fromFields } from '../../selectors';
 
 export function* handleComputePreview() {
     try {
         const token = yield select(getToken);
-        const fields = yield select(getFields);
+        const fields = yield select(fromFields.getFields);
 
         const transformDocument = yield call(getDocumentTransformer, { env: 'browser', token, fetchLineBy }, fields);
 

@@ -1,6 +1,7 @@
 import expect from 'expect';
 import reducer, {
     defaultState,
+    fromFields,
     addFieldSuccess,
     editField,
     loadFieldError,
@@ -106,6 +107,44 @@ describe('field reducer', () => {
                     foo: { _id: 'foo', updated: true },
                     boo: { _id: 'boo' },
                 },
+            });
+        });
+    });
+
+    describe('fromFields', () => {
+        describe('getFields', () => {
+            it('should return array of all fields', () => {
+                const state = {
+                    list: ['id1', 'id2', 'id3'],
+                    byId: {
+                        id1: 'field1',
+                        id2: 'field2',
+                        id3: 'field3',
+                        id4: 'field4',
+                    },
+                };
+                expect(fromFields.getFields(state))
+                    .toEqual(['field1', 'field2', 'field3']);
+            });
+        });
+
+        describe('getNbFields', () => {
+            it('should return list length', () => {
+                expect(fromFields.getNbFields({ list: [1, 2, 3] }))
+                .toBe(3);
+            });
+        });
+
+        describe('getEditedField', () => {
+            it('should return editedField', () => {
+                expect(fromFields.getEditedField({
+                    editedFieldId: 'id2',
+                    byId: {
+                        id1: 'field1',
+                        id2: 'field2',
+                        id3: 'field3',
+                    },
+                })).toBe('field2');
             });
         });
     });

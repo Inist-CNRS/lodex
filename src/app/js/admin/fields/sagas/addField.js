@@ -1,17 +1,17 @@
 import { takeLatest } from 'redux-saga';
 import { call, put, select } from 'redux-saga/effects';
+
 import {
     ADD_FIELD,
-    getNewFieldIndex,
     addFieldError,
     addFieldSuccess,
 } from '../';
-
+import { fromFields } from '../../../selectors';
 import fetchSaga from '../../../lib/fetchSaga';
 import { getCreateFieldRequest } from '../../../fetch/';
 
 export function* handleAddField({ payload: name }) {
-    const index = yield select(getNewFieldIndex);
+    const index = yield select(fromFields.getNbFields);
 
     const newField = {
         cover: 'collection',

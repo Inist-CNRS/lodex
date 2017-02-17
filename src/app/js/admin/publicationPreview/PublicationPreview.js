@@ -5,10 +5,11 @@ import translate from 'redux-polyglot/translate';
 import { CardHeader, CardText } from 'material-ui/Card';
 
 import PublicationExcerpt from './PublicationExcerpt';
-import { getFields, editField } from '../fields';
+import { editField } from '../fields';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { getPublicationPreview } from './';
 import Card from '../../lib/Card';
+import { fromFields } from '../../selectors';
 
 export const PublicationPreviewComponent = ({ columns, lines, editColumn, p: polyglot }) => (
     <Card initiallyExpanded className="publication-preview">
@@ -36,7 +37,7 @@ PublicationPreviewComponent.propTypes = {
 };
 
 const mapStateToProps = state => ({
-    columns: getFields(state),
+    columns: fromFields.getFields(state),
     lines: getPublicationPreview(state),
 });
 

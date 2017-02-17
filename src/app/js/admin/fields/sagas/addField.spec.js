@@ -4,7 +4,6 @@ import { call, put, select } from 'redux-saga/effects';
 import fetchSaga from '../../../lib/fetchSaga';
 
 import {
-    getNewFieldIndex,
     addFieldError,
     addFieldSuccess,
 } from '../';
@@ -12,14 +11,15 @@ import { getCreateFieldRequest } from '../../../fetch/';
 import {
     handleAddField,
 } from './addField';
+import { fromFields } from '../../../selectors';
 
 describe('fields saga', () => {
     describe('handleAddField', () => {
         describe('handleAddField without a field name', () => {
             const saga = handleAddField({});
 
-            it('should select getNewFieldIndex', () => {
-                expect(saga.next().value).toEqual(select(getNewFieldIndex));
+            it('should select getNbFields', () => {
+                expect(saga.next().value).toEqual(select(fromFields.getNbFields));
             });
 
             it('should select getCreateFieldRequest', () => {
@@ -44,7 +44,7 @@ describe('fields saga', () => {
             const saga = handleAddField({ payload: 'foo' });
 
             it('should select getLastFieldIndex', () => {
-                expect(saga.next().value).toEqual(select(getNewFieldIndex));
+                expect(saga.next().value).toEqual(select(fromFields.getNbFields));
             });
 
             it('should select getCreateFieldRequest', () => {

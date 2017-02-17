@@ -1,6 +1,6 @@
 import { createAction, handleActions } from 'redux-actions';
 import { createSelector } from 'reselect';
-import { getFields } from '../fields';
+import { fromFields } from '../../selectors';
 
 export const SET_VALIDATION = 'SET_VALIDATION';
 
@@ -17,7 +17,7 @@ export default handleActions({
 const getValidationFields = state => state.validation.fields;
 
 export const getInvalidFields = createSelector(
-    getFields,
+    fromFields.getFields,
     getValidationFields,
     (fields = [], validationFields = []) => validationFields
         .filter(({ isValid }) => !isValid)

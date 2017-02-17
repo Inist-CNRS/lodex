@@ -1,5 +1,6 @@
 import omit from 'lodash.omit';
 import { createAction, handleActions } from 'redux-actions';
+import { createSelector } from 'reselect';
 
 import { getTransformersMetas, getTransformerMetas } from '../../../../common/transformers';
 
@@ -76,13 +77,11 @@ export default handleActions({
     }),
 }, defaultState);
 
-export const getFields = ({ fields: { byId, list } }) => list.map(id => byId[id]);
+const getFields = ({ byId, list }) => list.map(id => byId[id]);
 
-export const getNewFieldIndex = state => state.fields.list.length;
+const getNbFields = ({ list }) => list.length;
 
-export const getEditedField = state => state.fields.byId[state.fields.editedFieldId];
-
-export const hasPublicationFields = state => state.fields.list.length > 0;
+const getEditedField = state => state.byId[state.editedFieldId];
 
 export const getTransformers = () => getTransformersMetas();
 
@@ -99,3 +98,19 @@ export const getSchemeMenuItemsDataFromResponse = (state, response) => (
         ? response.results.map(r => ({ label: r.localName[0], uri: r.uri[0] }))
         : []
 );
+
+// @TODO use future version
+const multiCreateSelector = (baseSelector, selectors) =>
+    Object.keys(selectors).reduce((acc, key) => ({
+        ...acc,
+        [key]: createSelector(baseSelector, (_, props) => props, selectors[key]),
+    }), {});
+
+export const fromFields = {
+    getFields,
+    getNbFields,
+    getEditedField,
+};
+
+// @TODO move in selectors file
+export const fromGlobale = multiCreateSelector(state => state.fields, fromFields);
