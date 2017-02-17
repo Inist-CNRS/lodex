@@ -5,32 +5,16 @@ import driver from '../../common/tests/chromeDriver';
 import { clear, loadFixtures } from '../../common/tests/fixtures';
 import fixtures from './home_published.json';
 import { elementIsClicked, inputElementIsFocusable, elementValueIs } from '../../common/tests/conditions';
+import loginAsJulia from './loginAsJulia';
 
 describe('Home page with published data when logged as Julia', function homePublishedDataTests() {
     this.timeout(10000);
     const DEFAULT_WAIT_TIMEOUT = 9000; // A bit less than mocha's timeout to get explicit errors from selenium
 
     before(async () => {
-        await clear(); // Had to ensure clear state for unknown reason
+        await clear();
         await loadFixtures(fixtures);
-        await driver.get('http://localhost:3010/');
-
-        const button = await driver.findElement(By.css('.appbar button'));
-        await driver.wait(elementIsClicked(button), DEFAULT_WAIT_TIMEOUT);
-
-        const buttonSignIn = await driver.findElement(By.css('.btn-sign-in'));
-        await driver.wait(elementIsClicked(buttonSignIn), DEFAULT_WAIT_TIMEOUT);
-
-        const form = await driver.findElement(By.css('.dialog-login form'));
-        const username = await driver.findElement(By.css('input[name=username]'));
-        const password = await driver.findElement(By.css('input[name=password]'));
-        await driver.wait(inputElementIsFocusable(username, true), DEFAULT_WAIT_TIMEOUT);
-        await driver.wait(inputElementIsFocusable(password, true), DEFAULT_WAIT_TIMEOUT);
-
-        await username.sendKeys('user');
-        await password.sendKeys('secret');
-        await form.submit();
-        await driver.wait(until.stalenessOf(form), DEFAULT_WAIT_TIMEOUT);
+        await loginAsJulia();
     });
 
     it('should display the list with an edit button', async () => {
@@ -55,13 +39,14 @@ describe('Home page with published data when logged as Julia', function homePubl
 
         await driver.wait(until.elementLocated(By.css('.dataset-characteristics')), DEFAULT_WAIT_TIMEOUT);
         const movieValue = await driver.findElement(By.css('.dataset-characteristics .property:first-child dd'));
-        expect(await movieValue.getText()).toEqual('LOTR updated');
+        driver.wait(until.elementTextIs(movieValue, 'LOTR updated'), DEFAULT_WAIT_TIMEOUT);
     });
 
     it('should go to detail page when clicking on uri', async () => {
         const firstUriLink = await driver.findElement(By.linkText('1'));
         const firstUri = await firstUriLink.getText();
-        firstUriLink.click();
+        await driver.wait(elementIsClicked(firstUriLink), DEFAULT_WAIT_TIMEOUT);
+
         await driver.wait(until.elementLocated(By.css('.title')));
         const title = await driver.findElement(By.css('.title, h1'), DEFAULT_WAIT_TIMEOUT);
         driver.wait(until.elementTextIs(title, firstUri), DEFAULT_WAIT_TIMEOUT);
@@ -70,10 +55,10 @@ describe('Home page with published data when logged as Julia', function homePubl
     it('should display all resource properties', async () => {
         await driver.wait(until.elementLocated(By.css('.detail')), DEFAULT_WAIT_TIMEOUT);
         const fullnameLabel = await driver.findElement(By.css('.detail .property:nth-child(2) dt'));
-        expect(await fullnameLabel.getText()).toEqual('fullname\nhttp://www.w3.org/ns/person');
+        await driver.wait(until.elementTextIs(fullnameLabel, 'fullname\nhttp://www.w3.org/ns/person'), DEFAULT_WAIT_TIMEOUT);
 
         const fullnameValue = await driver.findElement(By.css('.detail .property:nth-child(2) dd'));
-        expect(await fullnameValue.getText()).toEqual('PEREGRIN.TOOK');
+        await driver.wait(until.elementTextIs(fullnameValue, 'PEREGRIN.TOOK'), DEFAULT_WAIT_TIMEOUT);
 
         const mailLabel = await driver.findElement(By.css('.detail .property:nth-child(3) dt'));
         await driver.wait(until.elementTextIs(mailLabel, 'email\nhttp://uri4uri.net/vocab'), DEFAULT_WAIT_TIMEOUT);
@@ -97,6 +82,7 @@ describe('Home page with published data when logged as Julia', function homePubl
         const email = form.findElement(By.css('input[name=email]'));
         await driver.wait(elementValueIs(email, 'peregrin.took@shire.net'), DEFAULT_WAIT_TIMEOUT);
 
+        await driver.wait(inputElementIsFocusable(email), DEFAULT_WAIT_TIMEOUT);
         await email.clear();
         await email.sendKeys('peregrin.took@gondor.net');
         await driver.findElement(By.css('.save-resource')).click();
@@ -129,6 +115,7 @@ describe('Home page with published data when logged as Julia', function homePubl
         const form = driver.findElement(By.css('#hide_resource_form'));
         const reason = form.findElement(By.css('textarea[name=reason]'));
 
+        await driver.wait(inputElementIsFocusable(reason), DEFAULT_WAIT_TIMEOUT);
         await reason.clear();
         await reason.sendKeys('My bad, should not be here');
         await driver.findElement(By.css('.hide-resource')).click();
@@ -137,7 +124,7 @@ describe('Home page with published data when logged as Julia', function homePubl
     it('should display reason for removal', async () => {
         await driver.wait(until.elementLocated(By.css('.removed-detail')), DEFAULT_WAIT_TIMEOUT);
         const reason = driver.findElement(By.css('.reason'));
-        expect(await reason.getText()).toBe('My bad, should not be here');
+        await driver.wait(until.elementTextIs(reason, 'My bad, should not be here'), DEFAULT_WAIT_TIMEOUT);
     });
 
     after(async () => {

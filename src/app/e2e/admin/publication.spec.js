@@ -5,6 +5,7 @@ import path from 'path';
 import driver from '../../../common/tests/chromeDriver';
 import { clear } from '../../../common/tests/fixtures';
 import { elementIsClicked, inputElementIsFocusable, elementValueIs } from '../../../common/tests/conditions';
+import loginAsJulia from '../loginAsJulia';
 
 describe('Admin', () => {
     describe('Publication', function homeTests() {
@@ -13,30 +14,11 @@ describe('Admin', () => {
 
         before(async () => {
             await clear();
+            await loginAsJulia();
+            await driver.get('http://localhost:3010/#/admin');
         });
 
         describe('Uploading', () => {
-            it('should redirect to the login page if not authenticated', async () => {
-                await driver.get('http://localhost:3010/#/admin');
-                await driver.wait(until.elementLocated(By.css('#login_form')), DEFAULT_WAIT_TIMEOUT);
-            });
-
-            it('should redirect to the admin after successfull login', async () => {
-                const username = await driver.findElement(By.css('input[name=username]'));
-                const password = await driver.findElement(By.css('input[name=password]'));
-                const form = await driver.findElement(By.css('#login_form'));
-
-                await driver.wait(inputElementIsFocusable(username, true), DEFAULT_WAIT_TIMEOUT);
-                await driver.wait(inputElementIsFocusable(password, true), DEFAULT_WAIT_TIMEOUT);
-
-                await username.clear();
-                await username.sendKeys('user');
-                await password.clear();
-                await password.sendKeys('secret');
-                await form.submit();
-                await driver.wait(until.elementLocated(By.css('.admin')), DEFAULT_WAIT_TIMEOUT);
-            });
-
             it('should display the upload component if no dataset has been loaded yet', async () => {
                 await driver.wait(until.elementLocated(By.css('.upload')), DEFAULT_WAIT_TIMEOUT);
             });
@@ -56,9 +38,8 @@ describe('Admin', () => {
 
             it('should display only uri empty column', async () => {
                 const th = await driver.findElement(By.css('.publication-preview th'));
-                const text = await th.getText();
-                expect(text).toBe('uri');
-
+                driver.wait(until.elementTextIs(th, 'uri'), DEFAULT_WAIT_TIMEOUT);
+                
                 const tds = await driver.findElements(By.css('.publication-preview tr td:first-child'));
                 expect(tds.length).toBe(4);
                 await Promise.all(tds.map(td =>
@@ -109,7 +90,11 @@ describe('Admin', () => {
 
             it('should change column name', async () => {
                 const name = await driver.findElement(By.css('#field_form input[name=name]'));
+                await driver.wait(inputElementIsFocusable(name), DEFAULT_WAIT_TIMEOUT);
+
                 const label = await driver.findElement(By.css('#field_form input[name=label]'));
+                await driver.wait(inputElementIsFocusable(label), DEFAULT_WAIT_TIMEOUT);
+
                 await name.clear();
                 await name.sendKeys('stronger');
                 await label.clear();
@@ -120,21 +105,28 @@ describe('Admin', () => {
 
             it('should add a transformer LINK', async () => {
                 await driver.executeScript('document.getElementsByClassName("add-transformer")[0].scrollIntoView(true);');
-                await driver.findElement(By.css('#field_form .add-transformer')).click();
+                const addTransformerButton = await driver.findElement(By.css('#field_form .add-transformer'));
+                await driver.wait(elementIsClicked(addTransformerButton), DEFAULT_WAIT_TIMEOUT);
+
                 await driver.executeScript('document.getElementsByClassName("operation")[0].scrollIntoView(true);');
-                await driver.findElement(By.css('.operation')).click();
+                const operationButton = await driver.findElement(By.css('.operation'));
+                await driver.wait(elementIsClicked(operationButton), DEFAULT_WAIT_TIMEOUT);
+
                 await driver.wait(until.elementLocated(By.css('.LINK')), DEFAULT_WAIT_TIMEOUT);
                 await driver.executeScript('document.getElementsByClassName("LINK")[0].scrollIntoView(true);');
                 const linkButton = await driver.findElement(By.css('.LINK'));
                 await driver.wait(elementIsClicked(linkButton), DEFAULT_WAIT_TIMEOUT);
-                const reference = await driver.findElement(By.css('#field_form .reference input'));
-                await driver.wait(inputElementIsFocusable(reference), DEFAULT_WAIT_TIMEOUT);
+
+                await driver.findElement(By.css('#field_form .reference input'));
             });
 
             it('should configure transformer Link', async () => {
                 const reference = await driver.findElement(By.css('#field_form .reference input'));
+                await driver.wait(inputElementIsFocusable(reference), DEFAULT_WAIT_TIMEOUT);
                 reference.sendKeys('stronger_than');
+
                 const identifier = await driver.findElement(By.css('#field_form .identifier input'));
+                await driver.wait(inputElementIsFocusable(identifier), DEFAULT_WAIT_TIMEOUT);
                 identifier.sendKeys('id');
             });
 
@@ -145,6 +137,7 @@ describe('Admin', () => {
                 );
                 const tds = await driver.findElements(By.css('.publication-preview tr td:nth-child(2)'));
                 expect(tds.length).toBe(4);
+
                 const expectedTexts = [
                     'uri to id: 3',
                     'uri to id: 1',

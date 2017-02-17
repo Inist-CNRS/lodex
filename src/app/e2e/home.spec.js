@@ -1,5 +1,4 @@
 import { until, By } from 'selenium-webdriver';
-import expect from 'expect';
 import driver from '../../common/tests/chromeDriver';
 
 import { elementIsClicked, inputElementIsFocusable } from '../../common/tests/conditions';
@@ -17,8 +16,7 @@ describe('Home page', function homeTests() {
         await driver.get('http://localhost:3010/');
         await driver.wait(until.elementLocated(By.css('.appbar')), DEFAULT_WAIT_TIMEOUT);
         const title = await driver.findElement(By.css('.appbar a'));
-        const text = await title.getText();
-        expect(text).toEqual('Lodex');
+        driver.wait(until.elementTextIs(title, 'Lodex'), DEFAULT_WAIT_TIMEOUT);
     });
 
     it('should display the Appbar with a menu button', async () => {
@@ -45,8 +43,7 @@ describe('Home page', function homeTests() {
         await form.submit();
         await driver.wait(until.elementLocated(By.css('.alert')), DEFAULT_WAIT_TIMEOUT);
         const alert = await driver.findElement(By.css('.alert'));
-        const text = await alert.getText();
-        expect(text).toEqual('Unauthorized');
+        driver.wait(until.elementTextIs(alert, 'Unauthorized'), DEFAULT_WAIT_TIMEOUT);
     });
 
     it('submitting the form with valid credentials should close it', async () => {

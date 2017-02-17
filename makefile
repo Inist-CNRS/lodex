@@ -82,7 +82,7 @@ test-frontend-functional: ## Run the frontend application functional tests
         --require babel-polyfill \
 		--compilers="js:babel-core/register" \
 		--recursive \
-		./src/app/e2e
+		"./src/app/e2e/**/*.spec.js"
 
 test: test-frontend-unit test-api-unit test-frontend-functional
 
