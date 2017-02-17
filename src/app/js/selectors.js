@@ -1,6 +1,7 @@
 import { createSelector } from 'reselect';
-import { fromPublication as localFromPublication } from './publication';
+
 import { fromFields as localFromFields } from './admin/fields';
+import { fromPublication as localFromPublication } from './public';
 
 export const getProps = (state, props) => props;
 
