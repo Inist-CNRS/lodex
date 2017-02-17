@@ -1,5 +1,6 @@
 import { createSelector } from 'reselect';
 import { fromPublication as localFromPublication } from './public';
+import { fromDataset as localFromDataset } from './public/dataset';
 
 export const getProps = (state, props) => props;
 
@@ -15,5 +16,7 @@ export const createGlobalSelectors = (getLocalState, selectors) => Object.keys(s
 }), {});
 
 const getPublicationState = state => state.public.publication;
-
 export const fromPublication = createGlobalSelectors(getPublicationState, localFromPublication);
+
+const getDatasetState = state => state.public.dataset;
+export const fromDataset = createGlobalSelectors(getDatasetState, localFromDataset);
