@@ -1,8 +1,6 @@
 import { createAction, handleActions, combineActions } from 'redux-actions';
 import { createSelector } from 'reselect';
 
-import { fromPublication } from '../publication';
-
 export const LOAD_RESOURCE = 'LOAD_RESOURCE';
 export const LOAD_RESOURCE_SUCCESS = 'LOAD_RESOURCE_SUCCESS';
 export const LOAD_RESOURCE_ERROR = 'LOAD_RESOURCE_ERROR';
@@ -95,7 +93,7 @@ export default handleActions({
     }),
 }, defaultState);
 
-const getResourceLastVersion = (state, resource = state.resource.resource) => {
+const getResourceLastVersion = (state, resource = state.resource) => {
     const { versions, uri } = resource;
     if (!versions) {
         return null;
@@ -107,7 +105,7 @@ const getResourceLastVersion = (state, resource = state.resource.resource) => {
 };
 
 const getResourceUnvalidatedFields = (state) => {
-    const { contributions } = state.resource.resource;
+    const { contributions } = state.resource;
     if (!contributions) {
         return [];
     }
@@ -117,7 +115,7 @@ const getResourceUnvalidatedFields = (state) => {
 };
 
 const getResourceContributions = state =>
-    state.resource.resource.contributions || [];
+    state.resource.contributions || [];
 
 const getResourceContributorsByField =
     createSelector(
@@ -131,7 +129,7 @@ const getResourceContributorsByField =
     );
 
 const getRemovedData = (state) => {
-    const resource = state.resource.resource;
+    const resource = state.resource;
     const { uri, removedAt, reason } = resource;
     return {
         uri,
@@ -154,9 +152,3 @@ export const fromResource = {
 export const getResourceFormData = state => state.form.resource.values;
 export const getHideResourceFormData = state => state.form.hideResource.values;
 export const getNewResourceFieldFormData = state => state.form.newResourceField && state.form.newResourceField.values;
-
-export const getNewContributionsField = createSelector(
-    fromPublication.getContributionFields,
-    getResourceLastVersion,
-    (fields, resource) => fields.filter(({ name }) => !resource[name]),
-);

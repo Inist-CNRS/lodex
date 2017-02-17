@@ -3,10 +3,12 @@ import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import { connect } from 'react-redux';
 
-import { getNewContributionsField } from './';
-import { selectField, getSelectedField } from '../publication';
+import { selectField } from '../publication';
+import { fromPublication, fromResource } from '../../selectors';
 
-export const SelectFieldToAddComponent = ({ contributionFields, selectedField, onSelectField }) => (
+import { resource as resourcePropTypes } from '../../propTypes';
+
+export const SelectFieldToAddComponent = ({ contributionFields, resource, selectedField, onSelectField }) => (
     <SelectField
         className="select-field"
         hintText="select field"
@@ -15,7 +17,7 @@ export const SelectFieldToAddComponent = ({ contributionFields, selectedField, o
         onChange={(_, __, value) => onSelectField(value)}
     >
         <MenuItem value="new" className="new" primaryText="create a new field" />
-        {contributionFields.map(({ name, label }) => (
+        {contributionFields.filter(({ name }) => !resource[name]).map(({ name, label }) => (
             <MenuItem className={name} value={name} primaryText={label} />
         ))}
     </SelectField>
@@ -28,12 +30,14 @@ SelectFieldToAddComponent.defaultProps = {
 SelectFieldToAddComponent.propTypes = {
     contributionFields: PropTypes.arrayOf(PropTypes.string).isRequired,
     onSelectField: PropTypes.func.isRequired,
+    resource: resourcePropTypes.isRequired,
     selectedField: PropTypes.string,
 };
 
 const mapStateToProps = state => ({
-    selectedField: getSelectedField(state),
-    contributionFields: getNewContributionsField(state),
+    selectedField: fromPublication.getSelectedField(state),
+    contributionFields: fromPublication.getContributionFields,
+    resource: fromResource.getResourceLastVersion(state),
 });
 
 const mapDispatchToProps = {
