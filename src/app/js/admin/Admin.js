@@ -13,7 +13,11 @@ import {
 import {
     loadPublication as loadPublicationAction,
     hasPublishedDataset as selectHasPublishedDataset,
+<<<<<<< 542fc24e7ab8a17284ff66943ddfc85fd336513f
 } from './publication';
+=======
+} from '../public';
+>>>>>>> [WIP] Refactoring
 import ParsingResult from './parsing/ParsingResult';
 import PublicationPreview from './publicationPreview/PublicationPreview';
 import Publish from './publish/Publish';

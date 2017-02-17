@@ -9,7 +9,6 @@ import { CardHeader, CardText } from 'material-ui/Card';
 import {
     Table,
     TableBody,
-    TableFooter,
     TableHeader,
     TableHeaderColumn,
     TableRow,
@@ -29,7 +28,7 @@ import {
     getRemovedResourceTotal,
     getRemovedResourceItems,
 } from './';
-import { getCollectionFields } from '../publication';
+import { getCollectionFields } from '../../public';
 
 const styles = {
     table: {
