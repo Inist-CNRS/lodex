@@ -17,8 +17,7 @@ export default {
     entry: {
         index: [].concat(process.env.NODE_ENV === 'development' ? [
             'react-hot-loader/patch',
-            'webpack-dev-server/client?http://localhost:8000',
-            'webpack/hot/only-dev-server',
+            'webpack-hot-middleware/client?path=/__webpack_hmr',
         ] : []).concat([
             resolve(__dirname, './js/index.js'),
         ]),
@@ -32,6 +31,9 @@ export default {
                     resolve(__dirname, '../common'),
                 ],
                 loader: 'babel-loader',
+                options: {
+                    forceEnv: 'browser',
+                },
             }, {
                 test: /\.json$/,
                 loader: 'json-loader',
@@ -82,6 +84,7 @@ export default {
     output: {
         filename: '[name].js',
         path: resolve(__dirname, '../build'),
+        publicPath: '/',
     },
     plugins: [
         // prints more readable module names in the browser console on HMR updates

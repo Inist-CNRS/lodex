@@ -1,30 +1,30 @@
 import Koa from 'koa';
-import { devServerHost } from 'config';
+import koaWebpack from 'koa-webpack';
 
-import request from 'request';
-
-const forwardRequest = ctx =>
-new Promise((resolve, reject) => {
-    request.get(`${devServerHost}${ctx.url}`, (error, response, body) => {
-        if (error) {
-            reject(error);
-            return;
-        }
-        if (response.statusCode === 404) {
-            const notFound = new Error('not found');
-            notFound.status = 404;
-            reject(notFound);
-            return;
-        }
-        resolve(body);
-    });
-});
+import webpackConfig from '../../../app/webpack.config.babel';
 
 export default () => {
     const app = new Koa();
-    app.use(async (ctx) => {
-        ctx.body = await forwardRequest(ctx);
-    });
+
+    app.use(koaWebpack({
+        config: webpackConfig,
+        dev: {
+            publicPath: webpackConfig.output.publicPath,
+            headers: {
+                'Content-Type': 'text/html; charset=utf-8',
+            },
+            stats: {
+                colors: true,
+            },
+            quiet: false,
+            noInfo: true,
+        },
+        hot: {
+            log: console.log,
+            path: '/__webpack_hmr',
+            heartbeat: 10 * 1000,
+        },
+    }));
 
     return app;
-};
+}
