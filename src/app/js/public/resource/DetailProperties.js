@@ -8,7 +8,7 @@ import {
 import {
     getCollectionFields,
     getDocumentFields,
-} from '../';
+} from '../publication';
 import Property from '../Property';
 
 export const DetailPropertiesComponent = ({ resource, collectionFields, documentFields }) => (

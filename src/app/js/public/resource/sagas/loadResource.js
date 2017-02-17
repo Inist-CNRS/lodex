@@ -6,7 +6,7 @@ import {
     loadResourceSuccess,
     loadResourceError,
 } from '../';
-import { loadPublication } from '../../';
+import { loadPublication } from '../../publication';
 import { getLoadResourceRequest } from '../../../fetch';
 import fetchSaga from '../../../lib/fetchSaga';
 

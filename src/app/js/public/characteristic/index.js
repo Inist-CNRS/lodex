@@ -4,7 +4,7 @@ import { createSelector } from 'reselect';
 import TITLE_SCHEME from '../../../../common/titleScheme';
 import { COVER_DATASET } from '../../../../common/cover';
 
-import { getDatasetFields } from '../';
+import { fromPublication } from '../../selectors';
 
 export const TOGGLE_CHARACTERISTICS_EDITION = 'TOGGLE_CHARACTERISTICS_EDITION';
 export const SET_CHARACTERISTIC_VALUE = 'SET_CHARACTERISTIC_VALUE';
@@ -79,7 +79,7 @@ const getCharacteristics = state => state.characteristic.characteristics[0] || {
 
 export const getCharacteristicsLastVersion = createSelector(
     getCharacteristics,
-    getDatasetFields,
+    fromPublication.getDatasetFields,
     (characteristic, fields) => fields
         .map(({ name, scheme }) => ({
             name,
@@ -92,7 +92,7 @@ const selectNewCharacteristics = state => state.characteristic.newCharacteristic
 
 export const getNewCharacteristics = createSelector(
     selectNewCharacteristics,
-    getDatasetFields,
+    fromPublication.getDatasetFields,
     (newCharacteristics, fields) => fields
         .map(({ name, scheme }) => ({
             name,

@@ -13,7 +13,7 @@ import {
     isSaving,
     RESOURCE_FORM_NAME,
 } from './';
-import { getCollectionFields } from '../';
+import { getCollectionFields } from '../publication';
 import Card from '../../lib/Card';
 import FormTextField from '../../lib/FormTextField';
 import Alert from '../../lib/Alert';

@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import Property from '../Property';
-import { getFieldByName } from '../';
+import { fromPublication } from '../../selectors';
 import { field as fieldPropTypes, resource as resourcePropTypes } from '../../propTypes';
 
 const DatasetCharacteristicItemComponent = ({ resource, field }) => (
@@ -14,7 +14,7 @@ DatasetCharacteristicItemComponent.propTypes = {
 };
 
 const mapStateToProps = (state, { characteristic: { name, scheme, value } }) => ({
-    field: getFieldByName(state, name),
+    field: fromPublication.getFieldByName(state, name),
     resource: { name, scheme, [name]: value },
 });
 

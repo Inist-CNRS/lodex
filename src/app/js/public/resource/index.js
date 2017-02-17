@@ -1,7 +1,7 @@
 import { createAction, handleActions, combineActions } from 'redux-actions';
 import { createSelector } from 'reselect';
 
-import { getContributionFields } from '../';
+import { fromPublication } from '../../selectors';
 
 export const LOAD_RESOURCE = 'LOAD_RESOURCE';
 export const LOAD_RESOURCE_SUCCESS = 'LOAD_RESOURCE_SUCCESS';
@@ -147,7 +147,7 @@ export const isLoading = state => state.resource.loading;
 export const isSaving = state => state.resource.saving;
 
 export const getNewContributionsField = createSelector(
-    getContributionFields,
+    fromPublication.getContributionFields,
     getResourceLastVersion,
     (fields, resource) => fields.filter(({ name }) => !resource[name]),
 );

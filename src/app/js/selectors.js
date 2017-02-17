@@ -14,6 +14,6 @@ export const createGlobalSelectors = (getLocalState, selectors) => Object.keys(s
     [key]: createGlobalSelector(getLocalState, selectors[key]),
 }), {});
 
-const getPublicationState = state => state.publication;
+const getPublicationState = state => state.public.publication;
 
 export const fromPublication = createGlobalSelectors(getPublicationState, localFromPublication);

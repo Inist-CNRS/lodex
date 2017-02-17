@@ -10,7 +10,7 @@ import reducer, {
 
 import {
     loadPublicationSuccess,
-} from '../';
+} from '../publication';
 
 describe('characteristic reducer', () => {
     it('should initialize with correct state', () => {

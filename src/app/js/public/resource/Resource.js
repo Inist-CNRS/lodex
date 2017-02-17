@@ -10,7 +10,7 @@ import { getResourceLastVersion, isLoading } from './';
 import {
     getFields,
     getTitleFieldName,
-} from '../';
+} from '../publication';
 import {
     getDatasetTitle,
 } from '../characteristic';

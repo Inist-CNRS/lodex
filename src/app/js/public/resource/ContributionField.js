@@ -9,7 +9,7 @@ import SchemeAutoComplete from '../../lib/SchemeAutoComplete';
 import {
     getCollectionFields,
     getDocumentFields,
-} from '../';
+} from '../publication';
 import FormTextField from '../../lib/FormTextField';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import FormSelectField from '../../lib/FormSelectField';

@@ -4,7 +4,7 @@ import MenuItem from 'material-ui/MenuItem';
 import { connect } from 'react-redux';
 
 import { getNewContributionsField } from './';
-import { selectField, getSelectedField } from '../';
+import { selectField, getSelectedField } from '../publication';
 
 export const SelectFieldToAddComponent = ({ contributionFields, selectedField, onSelectField }) => (
     <SelectField

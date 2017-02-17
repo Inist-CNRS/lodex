@@ -26,7 +26,7 @@ import {
     getDataset,
     getDatasetTotal,
 } from './';
-import { getCollectionFields } from '../';
+import { fromPublication } from '../../selectors';
 
 const styles = {
     table: {
@@ -108,7 +108,7 @@ DatasetComponent.defaultProps = {
 
 const mapStateToProps = state => ({
     loading: isDatasetLoading(state),
-    columns: getCollectionFields(state),
+    columns: fromPublication.getCollectionFields(state),
     currentPage: getDatasetCurrentPage(state),
     dataset: getDataset(state),
     total: getDatasetTotal(state),

@@ -47,32 +47,31 @@ export default handleActions({
     }),
 }, defaultState);
 
+const hasPublishedDataset = ({ published }) => published;
 
-export const hasPublishedDataset = ({ publication: { published } }) => published;
+const getFields = ({ fields }) => fields || [];
 
-export const getFields = ({ publication: { fields } }) => fields || [];
-
-export const getCollectionFields = createSelector(
+const getCollectionFields = createSelector(
     getFields,
     fields => fields.filter(f => f.cover === COVER_COLLECTION),
 );
 
 const getFieldNameFromParams = (state, params) => params;
 
-export const getFieldByName = createSelector(
+const getFieldByName = createSelector(
     getFields,
     getFieldNameFromParams,
     (fields, name) => fields.find(f => f.name === name),
 );
 
-export const getContributionFields = createSelector(
+const getContributionFields = createSelector(
     getFields,
     fields => fields.filter(f => f.contribution),
 );
 
-export const getSelectedField = ({ publication: { selectedField } }) => selectedField;
+const getSelectedField = ({ selectedField }) => selectedField;
 
-export const getFieldToAdd = ({ publication: { fields, selectedField } }) => {
+const getFieldToAdd = ({ fields, selectedField }) => {
     if (selectedField === 'new') {
         return { cover: 'document' };
     }
@@ -83,17 +82,17 @@ export const getFieldToAdd = ({ publication: { fields, selectedField } }) => {
     return omit(field, ['contributors', '_id']);
 };
 
-export const getDocumentFields = createSelector(
+const getDocumentFields = createSelector(
     getFields,
     fields => fields.filter(f => f.cover === COVER_DOCUMENT),
 );
 
-export const getDatasetFields = createSelector(
+const getDatasetFields = createSelector(
     getFields,
     fields => fields.filter(f => f.cover === COVER_DATASET),
 );
 
-export const getTitleFieldName = createSelector(
+const getTitleFieldName = createSelector(
     getCollectionFields,
     (fields) => {
         const titleField = fields
@@ -103,21 +102,27 @@ export const getTitleFieldName = createSelector(
     },
 );
 
-const getPublication = ({ publication }) => publication;
+const getPublishData = ({ error, published, editedFieldIndex, loading }) => ({
+    published,
+    editedFieldIndex,
+    loading,
+    error: error && (error.message || error),
+});
 
-export const getPublishData = createSelector(
-    getPublication,
-    ({ error, published, editedFieldIndex, loading }) => ({
-        published,
-        editedFieldIndex,
-        loading,
-        error: error && (error.message || error),
-    }),
-);
-
-export const isPublicationLoading = state => state.publication.loading;
-export const getPublicationError = state => state.publication.error;
+const isPublicationLoading = state => state.loading;
+const getPublicationError = state => state.error;
 
 export const fromPublication = {
+    getCollectionFields,
+    hasPublishedDataset,
+    getFieldByName,
+    getContributionFields,
+    getSelectedField,
+    getFieldToAdd,
+    getDocumentFields,
+    getDatasetFields,
+    getTitleFieldName,
     getPublishData,
+    isPublicationLoading,
+    getPublicationError,
 };

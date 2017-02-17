@@ -16,7 +16,7 @@ import {
 } from './';
 import {
     getFieldToAdd,
-} from '../';
+} from '../publication';
 import Card from '../../lib/Card';
 import Alert from '../../lib/Alert';
 import ButtonWithStatus from '../../lib/ButtonWithStatus';
