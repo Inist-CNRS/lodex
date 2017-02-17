@@ -29,7 +29,7 @@ import {
     getRemovedResourceTotal,
     getRemovedResourceItems,
 } from './';
-import { getCollectionFields } from '../../publication';
+import { getCollectionFields } from '../../public';
 
 const styles = {
     table: {

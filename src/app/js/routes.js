@@ -1,8 +1,7 @@
 import App from './App';
 import adminRoutes from './admin/routes';
-import homeRoutes from './home/routes';
+import homeRoutes from './public/routes';
 import userRoutes from './user/routes';
-import resourceRoutes from './resource/routes';
 
 export default store => ({
     childRoutes: [{
@@ -11,9 +10,8 @@ export default store => ({
         indexRoute: { onEnter: (nextState, replace) => replace('/home') },
         childRoutes: [
             ...adminRoutes(store),
-            ...homeRoutes,
+            ...homeRoutes(store),
             ...userRoutes,
-            ...resourceRoutes(store),
         ],
     }],
 });

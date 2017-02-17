@@ -14,7 +14,10 @@ export default function configureStore(rootReducer, initialState) {
         routerMiddleware(hashHistory),
     );
 
-    const devtools = window.devToolsExtension ? window.devToolsExtension() : f => f;
+    const devtools = (typeof window !== 'undefined' && window.devToolsExtension)
+        ? window.devToolsExtension()
+        : f => f;
+
     const persistStateEnhancer = persistState('user');
 
     const store = createStore(

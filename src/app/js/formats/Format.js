@@ -5,7 +5,7 @@ import withHandlers from 'recompose/withHandlers';
 import withState from 'recompose/withState';
 
 import DefaultFormat from './DefaultFormat';
-import { getResourceLastVersion } from '../resource';
+import { getResourceLastVersion } from '../public/resource';
 
 import fetchByUri from '../lib/fetchByUri';
 import { field as fieldPropTypes } from '../propTypes';

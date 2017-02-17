@@ -13,11 +13,11 @@ import {
 import {
     loadPublication as loadPublicationAction,
     hasPublishedDataset as selectHasPublishedDataset,
-} from '../publication';
+} from '../public';
 import ParsingResult from './parsing/ParsingResult';
 import PublicationPreview from './publicationPreview/PublicationPreview';
 import Publish from './publish/Publish';
-import Published from '../publication/Published';
+import Published from './publish/Published';
 import RemovedResourceList from './removedResources/RemovedResourceList';
 import Upload from './upload/Upload';
 import Loading from '../lib/Loading';
