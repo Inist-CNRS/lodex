@@ -1,5 +1,4 @@
-import { takeEvery } from 'redux-saga';
-import { call, race, take, put, select } from 'redux-saga/effects';
+import { call, race, take, put, select, takeEvery } from 'redux-saga/effects';
 import { LOCATION_CHANGE } from 'react-router-redux';
 
 import { getToken } from '../../user';
