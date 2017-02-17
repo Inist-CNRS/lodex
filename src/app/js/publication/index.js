@@ -1,6 +1,7 @@
 import omit from 'lodash.omit';
 import { createAction, handleActions } from 'redux-actions';
 import { createSelector } from 'reselect';
+
 import TITLE_SCHEME from '../../../common/titleScheme';
 import { COVER_COLLECTION, COVER_DATASET, COVER_DOCUMENT } from '../../../common/cover';
 
@@ -116,3 +117,7 @@ export const getPublishData = createSelector(
 
 export const isPublicationLoading = state => state.publication.loading;
 export const getPublicationError = state => state.publication.error;
+
+export const fromPublication = {
+    getPublishData,
+};
