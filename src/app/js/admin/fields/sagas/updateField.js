@@ -1,5 +1,4 @@
-import { takeLatest } from 'redux-saga';
-import { call, put, select } from 'redux-saga/effects';
+import { call, put, select, takeLatest } from 'redux-saga/effects';
 import {
     CHANGE as REDUX_FORM_CHANGE,
     ARRAY_INSERT as REDUX_FORM_ARRAY_INSERT,

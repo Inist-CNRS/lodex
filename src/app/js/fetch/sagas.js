@@ -1,5 +1,4 @@
-import { takeEvery } from 'redux-saga';
-import { race, call, put, take } from 'redux-saga/effects';
+import { race, call, put, take, takeEvery } from 'redux-saga/effects';
 
 import fetchSaga from '../lib/fetchSaga';
 
