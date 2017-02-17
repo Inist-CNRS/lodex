@@ -3,10 +3,10 @@ import { call, put, select } from 'redux-saga/effects';
 
 import {
     RESTORE_RESOURCE,
-    getRestoreResourceRequest,
     restoreRessourceSuccess,
     restoreRessourceError,
 } from '../';
+import { getRestoreResourceRequest } from '../../../fetch/';
 import fetchSaga from '../../../lib/fetchSaga';
 
 export function* handleRestoreResourceRequest({ payload: uri }) {

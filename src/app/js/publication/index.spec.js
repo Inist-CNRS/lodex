@@ -6,7 +6,6 @@ import reducer, {
     defaultState,
     getCollectionFields,
     getDatasetFields,
-    getLoadPublicationRequest,
     hasPublishedDataset,
     loadPublication,
     loadPublicationSuccess,
@@ -59,21 +58,6 @@ describe('publication reducer', () => {
         expect(state).toEqual({
             data: 'value',
             selectedField: 'selectedFieldName',
-        });
-    });
-
-    describe('getLoadPublicationRequest', () => {
-        it('should return the correct request', () => {
-            const request = getLoadPublicationRequest({ user: { token: 'test' } });
-            expect(request).toEqual({
-                url: '/api/publication',
-                credentials: 'include',
-                headers: {
-                    Accept: 'application/json',
-                    Authorization: 'Bearer test',
-                    'Content-Type': 'application/json',
-                },
-            });
         });
     });
 

@@ -35,13 +35,3 @@ export default handleActions({
         loading: false,
     }),
 }, defaultState);
-
-export const getLoadDatasetPageRequest = (state, { page, perPage }) => ({
-    url: `/api/publishedDataset?page=${encodeURIComponent(page)}&perPage=${encodeURIComponent(perPage)}`,
-    credentials: 'include',
-    headers: {
-        Accept: 'application/json',
-        Authorization: `Bearer ${state.user.token}`,
-        'Content-Type': 'application/json',
-    },
-});

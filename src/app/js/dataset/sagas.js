@@ -3,10 +3,10 @@ import { call, fork, put, select } from 'redux-saga/effects';
 
 import {
     LOAD_DATASET_PAGE,
-    getLoadDatasetPageRequest,
     loadDatasetPageSuccess,
     loadDatasetPageError,
 } from './';
+import { getLoadDatasetPageRequest } from '../fetch/';
 import fetchSaga from '../lib/fetchSaga';
 
 export function* handleLoadDatasetPageRequest({ payload }) {

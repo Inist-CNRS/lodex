@@ -3,11 +3,11 @@ import { call, put, select } from 'redux-saga/effects';
 
 import {
     LOAD_REMOVED_RESOURCE_PAGE,
-    getLoadRemovedResourcePageRequest,
     loadRemovedResourcePageSuccess,
     loadRemovedResourcePageError,
 } from '../';
 import fetchSaga from '../../../lib/fetchSaga';
+import { getLoadRemovedResourcePageRequest } from '../../../fetch/';
 
 export function* handleLoadRemovedResourcePageRequest({ payload }) {
     const request = yield select(getLoadRemovedResourcePageRequest, payload);

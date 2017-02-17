@@ -5,10 +5,11 @@ import fetchSaga from '../../../lib/fetchSaga';
 
 import {
     LOAD_FIELD,
-    getLoadFieldRequest,
     loadFieldError,
     loadFieldSuccess,
 } from '../';
+
+import { getLoadFieldRequest } from '../../../fetch/';
 
 export function* handleLoadField() {
     const request = yield select(getLoadFieldRequest);

@@ -2,13 +2,13 @@ import expect from 'expect';
 import { call, put, select } from 'redux-saga/effects';
 
 import {
-    getLoadResourceRequest,
     loadResource,
     loadResourceSuccess,
     loadResourceError,
 } from '../';
 import { loadPublication } from '../../publication';
 import fetchSaga from '../../lib/fetchSaga';
+import { getLoadResourceRequest } from '../../fetch';
 import { handleLoadResource, parsePathName } from './loadResource';
 
 describe('resource saga', () => {

@@ -3,11 +3,11 @@ import { call, fork, put, select } from 'redux-saga/effects';
 
 import {
     LOAD_PUBLICATION,
-    getLoadPublicationRequest,
     loadPublicationSuccess,
     loadPublicationError,
 } from './';
 import { PUBLISH_SUCCESS } from '../admin/publish';
+import { getLoadPublicationRequest } from '../fetch';
 import fetchSaga from '../lib/fetchSaga';
 
 export function* handleLoadPublicationRequest() {

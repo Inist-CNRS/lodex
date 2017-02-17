@@ -4,12 +4,12 @@ import { call, put, select } from 'redux-saga/effects';
 import {
     REMOVE_FIELD,
     getFieldFormData,
-    getRemoveFieldRequest,
     removeFieldError,
     removeFieldSuccess,
 } from '../';
 
 import fetchSaga from '../../../lib/fetchSaga';
+import { getRemoveFieldRequest } from '../../../fetch/';
 
 export function* handleRemoveField() {
     const fieldData = yield select(getFieldFormData);

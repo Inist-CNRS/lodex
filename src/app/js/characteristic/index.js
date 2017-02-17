@@ -100,15 +100,3 @@ export const getNewCharacteristics = createSelector(
             value: newCharacteristics[name],
         })),
 );
-
-export const getUpdateCharacteristicsRequest = state => ({
-    url: '/api/characteristic',
-    method: 'PUT',
-    credentials: 'include',
-    headers: {
-        Accept: 'application/json',
-        Authorization: `Bearer ${state.user.token}`,
-        'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(state.characteristic.newCharacteristics),
-});

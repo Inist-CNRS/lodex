@@ -3,12 +3,12 @@ import { call, put, select } from 'redux-saga/effects';
 import { push } from 'react-router-redux';
 
 import {
-    getAddFieldToResourceRequest,
     addFieldToResourceSuccess,
     addFieldToResourceError,
     getNewResourceFieldFormData,
 } from '../';
 import fetchSaga from '../../lib/fetchSaga';
+import { getAddFieldToResourceRequest } from '../../fetch';
 import { handleAddFieldToResource } from './addFieldToResource';
 
 describe('handleAddFieldToResource', () => {

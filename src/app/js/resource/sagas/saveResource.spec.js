@@ -3,12 +3,12 @@ import { call, put, select } from 'redux-saga/effects';
 import { push } from 'react-router-redux';
 
 import {
-    getSaveResourceRequest,
     getResourceFormData,
     saveResourceSuccess,
     saveResourceError,
 } from '../';
 import fetchSaga from '../../lib/fetchSaga';
+import { getSaveResourceRequest } from '../../fetch';
 import { handleSaveResource } from './saveResource';
 
 describe('resource saga', () => {

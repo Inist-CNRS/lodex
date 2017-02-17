@@ -95,52 +95,6 @@ export default handleActions({
     }),
 }, defaultState);
 
-export const getLoadResourceRequest = (state, uri) => ({
-    url: `/api/ark?uri=${uri}`,
-    credentials: 'include',
-    headers: {
-        Accept: 'application/json',
-        Authorization: `Bearer ${state.user.token}`,
-        'Content-Type': 'application/json',
-    },
-});
-
-export const getSaveResourceRequest = (state, resource) => ({
-    url: '/api/publishedDataset',
-    credentials: 'include',
-    method: 'POST',
-    headers: {
-        Accept: 'application/json',
-        Authorization: `Bearer ${state.user.token}`,
-        'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(resource),
-});
-
-export const getHideResourceRequest = (state, data) => ({
-    url: '/api/publishedDataset',
-    credentials: 'include',
-    method: 'DELETE',
-    headers: {
-        Accept: 'application/json',
-        Authorization: `Bearer ${state.user.token}`,
-        'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(data),
-});
-
-export const getAddFieldToResourceRequest = (state, data) => ({
-    url: '/api/publishedDataset/add_field',
-    credentials: 'include',
-    method: 'POST',
-    headers: {
-        Accept: 'application/json',
-        Authorization: `Bearer ${state.user.token}`,
-        'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(data),
-});
-
 export const getResourceLastVersion = (state, resource = state.resource.resource) => {
     const { versions, uri } = resource;
     if (!versions) {

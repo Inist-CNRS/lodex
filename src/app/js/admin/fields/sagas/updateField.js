@@ -7,10 +7,10 @@ import {
 } from 'redux-form/lib/actionTypes';
 import {
     getFieldFormData,
-    getUpdateFieldRequest,
     updateFieldError,
     updateFieldSuccess,
 } from '../';
+import { getUpdateFieldRequest } from '../../../fetch';
 import prepareTransformers from './prepareTransformers';
 
 import fetchSaga from '../../../lib/fetchSaga';

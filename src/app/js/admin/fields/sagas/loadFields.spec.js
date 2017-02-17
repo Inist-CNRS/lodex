@@ -4,11 +4,11 @@ import { call, put, select } from 'redux-saga/effects';
 import fetchSaga from '../../../lib/fetchSaga';
 
 import {
-    getLoadFieldRequest,
     loadFieldError,
     loadFieldSuccess,
 } from '../';
 
+import { getLoadFieldRequest } from '../../../fetch/';
 
 import {
     handleLoadField,

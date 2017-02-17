@@ -2,10 +2,10 @@ import expect from 'expect';
 import { call, put, select } from 'redux-saga/effects';
 
 import {
-    getUpdateCharacteristicsRequest,
     updateCharacteristicsError,
     updateCharacteristicsSuccess,
 } from './';
+import { getUpdateCharacteristicsRequest } from '../fetch/';
 import fetchSaga from '../lib/fetchSaga';
 
 import { handleUpdateCharacteristics } from './sagas';

@@ -1,4 +1,5 @@
 import { createAction, handleActions } from 'redux-actions';
+import { createSelector } from 'reselect';
 
 export const LOGIN_FORM_NAME = 'login';
 export const TOGGLE_LOGIN = 'TOGGLE_LOGIN';
@@ -29,13 +30,18 @@ export const loginSuccess = createAction(LOGIN_SUCCESS);
 export const isLoggedIn = state => !!state.user.token;
 export const getToken = state => state.user.token;
 
-export const getLoginRequest = (state, credentials) => ({
-    url: '/api/login',
-    body: JSON.stringify(credentials),
-    credentials: 'include',
-    headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-    },
-    method: 'POST',
-});
+export const getRequest = createSelector(
+    getToken,
+    (_, props) => props,
+    (token, { body, method = 'GET', url }) => ({
+        url,
+        body: JSON.stringify(body),
+        credentials: 'include',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+        },
+        method,
+    }),
+);

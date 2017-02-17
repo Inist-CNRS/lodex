@@ -3,7 +3,8 @@ import { call, fork, put, select } from 'redux-saga/effects';
 import { startSubmit, stopSubmit } from 'redux-form';
 import { push } from 'react-router-redux';
 
-import { LOGIN, LOGIN_FORM_NAME, getLoginRequest, loginSuccess } from './';
+import { LOGIN, LOGIN_FORM_NAME, loginSuccess } from './';
+import { getLoginRequest } from '../fetch';
 import fetchSaga from '../lib/fetchSaga';
 
 export function* handleLoginRequest({ payload: { previousState, ...credentials } }) {

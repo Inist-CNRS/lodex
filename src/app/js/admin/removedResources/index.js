@@ -49,25 +49,3 @@ export default handleActions({
         items: items.filter(r => r.uri !== uri),
     }),
 }, defaultState);
-
-export const getLoadRemovedResourcePageRequest = (state, { page, perPage }) => ({
-    url: `/api/publishedDataset/removed?page=${encodeURIComponent(page)}&perPage=${encodeURIComponent(perPage)}`,
-    credentials: 'include',
-    headers: {
-        Accept: 'application/json',
-        Authorization: `Bearer ${state.user.token}`,
-        'Content-Type': 'application/json',
-    },
-});
-
-export const getRestoreResourceRequest = (state, uri) => ({
-    url: '/api/publishedDataset/restore',
-    credentials: 'include',
-    method: 'PUT',
-    headers: {
-        Accept: 'application/json',
-        Authorization: `Bearer ${state.user.token}`,
-        'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ uri }),
-});

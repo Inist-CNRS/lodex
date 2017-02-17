@@ -5,7 +5,6 @@ import { COVER_COLLECTION, COVER_DATASET } from '../../../common/cover';
 
 import reducer, {
     defaultState,
-    getUpdateCharacteristicsRequest,
     getDatasetTitle,
 } from './';
 
@@ -31,28 +30,6 @@ describe('characteristic reducer', () => {
             ...defaultState,
             characteristics: ['foo'],
             newCharacteristics: 'foo',
-        });
-    });
-
-    describe('getUpdateCharacteristicsRequest', () => {
-        it('should return the correct request', () => {
-            const request = getUpdateCharacteristicsRequest({
-                user: { token: 'test' },
-                characteristic: {
-                    newCharacteristics: 'foo',
-                },
-            });
-            expect(request).toEqual({
-                url: '/api/characteristic',
-                method: 'PUT',
-                credentials: 'include',
-                headers: {
-                    Accept: 'application/json',
-                    Authorization: 'Bearer test',
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify('foo'),
-            });
         });
     });
 

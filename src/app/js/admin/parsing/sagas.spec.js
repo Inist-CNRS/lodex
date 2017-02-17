@@ -4,11 +4,11 @@ import { call, put, select } from 'redux-saga/effects';
 import fetchSaga from '../../lib/fetchSaga';
 
 import {
-    getLoadParsingResultRequest,
     loadParsingResultError,
     loadParsingResultSuccess,
 } from './';
 
+import { getLoadParsingResultRequest } from '../../fetch/';
 
 import {
     handleLoadParsingResult,
