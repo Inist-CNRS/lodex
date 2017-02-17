@@ -4,7 +4,8 @@ import expect from 'expect';
 import driver from '../../../common/tests/chromeDriver';
 import { clear, loadFixtures } from '../../../common/tests/fixtures';
 import fixtures from './resources.json';
-import { elementIsClicked, inputElementIsFocusable } from '../../../common/tests/conditions';
+import { elementIsClicked } from '../../../common/tests/conditions';
+import loginAsJulia from '../loginAsJulia';
 
 describe('Admin', () => {
     describe('Resource management', function homePublishedDataTests() {
@@ -14,24 +15,7 @@ describe('Admin', () => {
         before(async () => {
             await clear(); // Had to ensure clear state for unknown reason
             await loadFixtures(fixtures);
-            await driver.get('http://localhost:3010/');
-
-            const button = await driver.findElement(By.css('.appbar button'));
-            await driver.wait(elementIsClicked(button), DEFAULT_WAIT_TIMEOUT);
-
-            const buttonSignIn = await driver.findElement(By.css('.btn-sign-in'));
-            await driver.wait(elementIsClicked(buttonSignIn), DEFAULT_WAIT_TIMEOUT);
-
-            const form = await driver.findElement(By.css('.dialog-login form'));
-            const username = await driver.findElement(By.css('input[name=username]'));
-            const password = await driver.findElement(By.css('input[name=password]'));
-            await driver.wait(inputElementIsFocusable(username, true), DEFAULT_WAIT_TIMEOUT);
-            await driver.wait(inputElementIsFocusable(password, true), DEFAULT_WAIT_TIMEOUT);
-
-            await username.sendKeys('user');
-            await password.sendKeys('secret');
-            await form.submit();
-            await driver.wait(until.stalenessOf(form), DEFAULT_WAIT_TIMEOUT);
+            await loginAsJulia();
             await driver.get('http://localhost:3010/#/admin');
         });
 
