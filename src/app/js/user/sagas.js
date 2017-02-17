@@ -1,5 +1,4 @@
-import { takeEvery } from 'redux-saga';
-import { call, fork, put, select } from 'redux-saga/effects';
+import { call, fork, put, select, takeEvery } from 'redux-saga/effects';
 import { startSubmit, stopSubmit } from 'redux-form';
 import { push } from 'react-router-redux';
 

@@ -17,7 +17,7 @@ export default {
     entry: {
         index: [].concat(process.env.NODE_ENV === 'development' ? [
             'react-hot-loader/patch',
-            'webpack-hot-middleware/client?path=/__webpack_hmr',
+            'webpack-hot-middleware/client?path=/__webpack_hmr&reload=true',
         ] : []).concat([
             resolve(__dirname, './js/index.js'),
         ]),

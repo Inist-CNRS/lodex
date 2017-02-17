@@ -1,5 +1,4 @@
-import { takeLatest } from 'redux-saga';
-import { call, fork, put } from 'redux-saga/effects';
+import { call, fork, put, takeLatest } from 'redux-saga/effects';
 import { setLanguage } from 'redux-polyglot';
 import {
     SET_LANGUAGE_REQUEST,
