@@ -1,4 +1,7 @@
+import omit from 'lodash.omit';
 import { createAction, handleActions } from 'redux-actions';
+import { createSelector } from 'reselect';
+
 import { getTransformersMetas, getTransformerMetas } from '../../../../common/transformers';
 
 export const FIELD_FORM_NAME = 'field';
@@ -32,61 +35,53 @@ export const updateFieldError = createAction(UPDATE_FIELD_ERROR);
 export const updateFieldSuccess = createAction(UPDATE_FIELD_SUCCESS);
 
 export const defaultState = {
+    byId: {},
     list: [],
-    editedFieldIndex: null,
-};
-
-const updateFieldByProperty = (state, property, newField) => {
-    const index = state.list.findIndex(field => field[property] === newField[property]);
-
-    return {
-        ...state,
-        list: [
-            ...state.list.slice(0, index),
-            newField,
-            ...state.list.slice(index + 1),
-        ],
-    };
+    editedFieldId: null,
 };
 
 export default handleActions({
     ADD_FIELD_SUCCESS: (state, { payload }) => ({
         ...state,
-        editedFieldIndex: state.list.length,
-        list: state.list.concat([payload]),
+        editedFieldId: payload._id,
+        list: [...state.list, payload._id],
+        byId: {
+            ...state.byId,
+            [payload._id]: payload,
+        },
     }),
     LOAD_FIELD_SUCCESS: (state, { payload }) => ({
         ...state,
-        list: payload,
+        list: payload.map(({ _id }) => _id),
+        byId: payload.reduce((acc, field) => ({
+            ...acc,
+            [field._id]: field,
+        }), {}),
     }),
     LOAD_FIELD_ERROR: () => defaultState,
     EDIT_FIELD: (state, { payload }) => ({
         ...state,
-        editedFieldIndex: payload,
+        editedFieldId: state.list[payload],
     }),
-    REMOVE_FIELD: (state, { payload: { _id: idToRemove } }) => {
-        const index = state.list.findIndex(({ _id: fieldId }) => fieldId === idToRemove);
-
-        return {
-            ...state,
-            list: [
-                ...state.list.slice(0, index),
-                ...state.list.slice(index + 1),
-            ],
-        };
-    },
-    UPDATE_FIELD_SUCCESS: (state, { payload }) => updateFieldByProperty(state, '_id', payload),
+    REMOVE_FIELD: (state, { payload: { _id: idToRemove } }) => ({
+        ...state,
+        list: state.list.filter(id => id !== idToRemove),
+        byId: omit(state.byId, [idToRemove]),
+    }),
+    UPDATE_FIELD_SUCCESS: (state, { payload }) => ({
+        ...state,
+        byId: {
+            ...state.byId,
+            [payload._id]: payload,
+        },
+    }),
 }, defaultState);
 
-export const getFields = state => state.fields.list;
+const getFields = ({ byId, list }) => list.map(id => byId[id]);
 
-export const getNewFieldIndex = state => state.fields.list.length;
+const getNbFields = ({ list }) => list.length;
 
-export const getEditedField = state => state.fields.list[state.fields.editedFieldIndex];
-
-export const getPublicationFields = state => state.fields.list;
-
-export const hasPublicationFields = state => state.fields.length > 0;
+const getEditedField = state => state.byId[state.editedFieldId];
 
 export const getTransformers = () => getTransformersMetas();
 
@@ -103,3 +98,19 @@ export const getSchemeMenuItemsDataFromResponse = (state, response) => (
         ? response.results.map(r => ({ label: r.localName[0], uri: r.uri[0] }))
         : []
 );
+
+// @TODO use future version
+const multiCreateSelector = (baseSelector, selectors) =>
+    Object.keys(selectors).reduce((acc, key) => ({
+        ...acc,
+        [key]: createSelector(baseSelector, (_, props) => props, selectors[key]),
+    }), {});
+
+export const fromFields = {
+    getFields,
+    getNbFields,
+    getEditedField,
+};
+
+// @TODO move in selectors file
+export const fromGlobale = multiCreateSelector(state => state.fields, fromFields);

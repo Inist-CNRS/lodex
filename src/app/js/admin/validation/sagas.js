@@ -11,11 +11,11 @@ import {
     ADD_FIELD_SUCCESS,
     REMOVE_FIELD_SUCCESS,
     UPDATE_FIELD_SUCCESS,
-    getFields,
 } from '../fields';
+import { fromFields } from '../../selectors';
 
 export function* handleNeedValidation() {
-    const fields = yield select(getFields);
+    const fields = yield select(fromFields.getFields);
     const validation = yield call(validateFields, fields);
 
     yield put(setValidation(validation));

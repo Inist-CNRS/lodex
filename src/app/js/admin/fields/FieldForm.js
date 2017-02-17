@@ -11,9 +11,10 @@ import FormSelectField from '../../lib/FormSelectField';
 import SchemeAutoComplete from '../../lib/SchemeAutoComplete';
 import {
     FIELD_FORM_NAME,
-    getEditedField,
     saveField,
 } from './';
+
+import { fromFields } from '../../selectors';
 
 import Format from '../../formats/FormatEdition';
 import Alert from '../../lib/Alert';
@@ -90,8 +91,8 @@ FieldFormComponent.propTypes = {
 };
 
 const mapStateToProps = state => ({
-    initialValues: getEditedField(state),
-    field: getEditedField(state),
+    initialValues: fromFields.getEditedField(state),
+    field: fromFields.getEditedField(state),
 });
 
 const mapDispatchToProps = {

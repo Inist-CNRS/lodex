@@ -39,7 +39,6 @@ describe('Admin', () => {
             it('should display only uri empty column', async () => {
                 const th = await driver.findElement(By.css('.publication-preview th'));
                 driver.wait(until.elementTextIs(th, 'uri'), DEFAULT_WAIT_TIMEOUT);
-                
                 const tds = await driver.findElements(By.css('.publication-preview tr td:first-child'));
                 expect(tds.length).toBe(4);
                 await Promise.all(tds.map(td =>
@@ -104,7 +103,9 @@ describe('Admin', () => {
             });
 
             it('should add a transformer LINK', async () => {
-                await driver.executeScript('document.getElementsByClassName("add-transformer")[0].scrollIntoView(true);');
+                await driver.executeScript(
+                    'document.getElementsByClassName("add-transformer")[0].scrollIntoView(true);',
+                );
                 const addTransformerButton = await driver.findElement(By.css('#field_form .add-transformer'));
                 await driver.wait(elementIsClicked(addTransformerButton), DEFAULT_WAIT_TIMEOUT);
 
@@ -151,8 +152,10 @@ describe('Admin', () => {
         });
 
         describe('adding column from original dataset', async () => {
-            it('should add the auto configured column when clicking the add-column button for an original dataset field', async () => {
-                await driver.executeScript('document.getElementsByClassName("btn-excerpt-add-column-name")[0].scrollIntoView(true);');
+            it('should add auto configured column when clicking add-column button for an original field', async () => {
+                await driver.executeScript(
+                    'document.getElementsByClassName("btn-excerpt-add-column-name")[0].scrollIntoView(true);',
+                );
                 const button = await driver.findElement(By.css('.btn-excerpt-add-column-name'));
                 await driver.wait(elementIsClicked(button), DEFAULT_WAIT_TIMEOUT);
                 await driver.wait(until.elementLocated(By.css('.publication-excerpt-column-name')));
@@ -162,7 +165,9 @@ describe('Admin', () => {
                 const tds = await driver.findElements(By.css('.publication-preview tr td:last-child'));
                 expect(tds.length).toBe(4);
                 await Promise.all(tds.map(td =>
-                    driver.wait(until.elementTextMatches(td, /rock|paper|scissor|invalid_reference/), DEFAULT_WAIT_TIMEOUT)),
+                    driver.wait(
+                        until.elementTextMatches(td, /rock|paper|scissor|invalid_reference/), DEFAULT_WAIT_TIMEOUT),
+                    ),
                 );
             });
         });
