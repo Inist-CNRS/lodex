@@ -4,7 +4,7 @@ import expect from 'expect';
 import driver from '../../common/tests/chromeDriver';
 import { clear, loadFixtures } from '../../common/tests/fixtures';
 import fixtures from './home_published.json';
-import { inputElementIsFocusable, elementIsClicked } from '../../common/tests/conditions';
+import { inputElementIsFocusable, elementsCountIs, elementIsClicked } from '../../common/tests/conditions';
 
 describe('Home page with published data', function homePublishedDataTests() {
     this.timeout(10000);
@@ -141,6 +141,7 @@ describe('Home page with published data', function homePublishedDataTests() {
 
     it('should display added field in new detail', async () => {
         await driver.wait(until.elementLocated(By.css('.detail')), DEFAULT_WAIT_TIMEOUT);
+        await driver.wait(elementsCountIs(By.css('.detail .property'), 5), DEFAULT_WAIT_TIMEOUT);
         const contributionLabel = await driver.findElement(By.css('.detail .property:last-child dt'));
         await driver.wait(
             until.elementTextIs(contributionLabel, 'myContribution\nContributed by john'), DEFAULT_WAIT_TIMEOUT,

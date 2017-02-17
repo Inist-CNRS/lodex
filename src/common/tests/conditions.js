@@ -1,4 +1,4 @@
-import { WebElementCondition } from 'selenium-webdriver';
+import { Condition, WebElementCondition } from 'selenium-webdriver';
 
 export const elementValueIs = (element, text) =>
     new WebElementCondition('until element text is', () =>
@@ -37,4 +37,11 @@ export const elementIsClicked = element =>
                 .click()
                 .then(() => element)
                 .catch(() => null);
+    });
+
+export const elementsCountIs = (selector, count) =>
+    new Condition(`until "${selector}" count is ${count}`, async (driver) => {
+        const elements = await driver.findElements(selector);
+
+        return Promise.resolve(elements && elements.length === count);
     });
