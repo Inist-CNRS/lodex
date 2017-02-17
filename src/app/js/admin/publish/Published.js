@@ -1,13 +1,12 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
 import translate from 'redux-polyglot/translate';
-import classnames from 'classnames';
 
 import { CardText } from 'material-ui/Card';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import Card from '../../lib/Card';
 
-const PublishedComponent = ({ p: polyglot, ...props }) => (
-    <Card className={classnames('data-published', props.className)}>
+const PublishedComponent = ({ p: polyglot }) => (
+    <Card className="data-published">
         <CardText>
             {polyglot.t('Published')}
         </CardText>
@@ -15,12 +14,7 @@ const PublishedComponent = ({ p: polyglot, ...props }) => (
 );
 
 PublishedComponent.propTypes = {
-    className: PropTypes.string,
     p: polyglotPropTypes.isRequired,
-};
-
-PublishedComponent.defaultProps = {
-    className: null,
 };
 
 export default translate(PublishedComponent);

@@ -6,7 +6,7 @@ import publicationSaga from './publication/sagas';
 import publicationPreviewSaga from './publicationPreview/sagas';
 import publishSaga from './publish/sagas';
 import removedResourcesSagas from './removedResources/sagas';
-import uploadFileSaga from './upload/uploadFileSaga';
+import uploadFileSaga from './upload/sagas';
 import validationSaga from './validation/sagas';
 
 export default function* () {
