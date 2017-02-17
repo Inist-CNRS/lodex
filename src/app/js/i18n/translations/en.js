@@ -62,4 +62,5 @@ export default {
     contributorMail: 'Email',
     new_field: 'Field',
     contributed_by: 'Contributed by %{name}',
+    'add column': 'Add column',
 };

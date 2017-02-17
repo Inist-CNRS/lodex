@@ -49,3 +49,5 @@ export default handleActions({
         loading: false,
     }),
 }, defaultState);
+
+export const getPublish = state => state.admin.publish;

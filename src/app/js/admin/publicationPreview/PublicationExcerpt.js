@@ -4,7 +4,7 @@ import pure from 'recompose/pure';
 import withHandlers from 'recompose/withHandlers';
 import translate from 'redux-polyglot/translate';
 import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn } from 'material-ui/Table';
-import { polyglot as polyglotPropTypes } from '../../propTypes';
+import { polyglot as polyglotPropTypes, field as fieldPropTypes } from '../../propTypes';
 
 const styles = {
     header: {
@@ -21,6 +21,7 @@ export const PublicationExcerptComponent = ({ columns, lines, onHeaderClick, p: 
             <TableRow onCellClick={onHeaderClick}>
                 {columns.map(({ label, name }) => (
                     <TableHeaderColumn
+                        key={name}
                         className={`publication-excerpt-column publication-excerpt-column-${name}`}
                         style={styles.header}
                         tooltip={polyglot.t('click_to_edit_publication_field')}
@@ -30,9 +31,9 @@ export const PublicationExcerptComponent = ({ columns, lines, onHeaderClick, p: 
             </TableRow>
         </TableHeader>
         <TableBody displayRowCheckbox={false}>
-            {lines.map(line => (
-                <TableRow>
-                    {columns.map(({ name }) => <TableRowColumn>{line[name]}</TableRowColumn>)}
+            {lines.map((line, index) => (
+                <TableRow key={index}>
+                    {columns.map(({ name }) => <TableRowColumn key={`${name}_${index}`}>{line[name]}</TableRowColumn>)}
                 </TableRow>
             ))}
         </TableBody>
@@ -40,7 +41,7 @@ export const PublicationExcerptComponent = ({ columns, lines, onHeaderClick, p: 
 );
 
 PublicationExcerptComponent.propTypes = {
-    columns: PropTypes.arrayOf(PropTypes.string).isRequired,
+    columns: PropTypes.arrayOf(fieldPropTypes).isRequired,
     lines: PropTypes.arrayOf(PropTypes.object).isRequired,
     onHeaderClick: PropTypes.func.isRequired,
     p: polyglotPropTypes.isRequired,

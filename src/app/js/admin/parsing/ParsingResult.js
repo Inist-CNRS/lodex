@@ -13,7 +13,7 @@ import {
     getParsedExcerptColumns,
     getExcerptLines,
     isParsingLoading,
-    getParsingSummary,
+    getTotalLoadedLines,
     clearParsing,
 } from './';
 import ParsingExcerpt from './ParsingExcerpt';
@@ -56,8 +56,6 @@ export class ParsingResultComponent extends Component {
             excerptColumns,
             excerptLines,
             totalLoadedLines,
-            totalFailedLines,
-            totalParsedLines,
             handleClearParsing,
             p: polyglot,
         } = this.props;
@@ -70,13 +68,11 @@ export class ParsingResultComponent extends Component {
                     showExpandableButton
                     title={polyglot.t('Parsing summary')}
                 />
-                <CardText style={styles.parsingContainer} expandable initiallyExpanded>
+                <CardText style={styles.parsingContainer} expandable>
                     <ParsingSummary
                         onShowExcerpt={this.handleShowExcerpt}
                         showErrors={showErrors}
-                        totalFailedLines={totalFailedLines}
                         totalLoadedLines={totalLoadedLines}
-                        totalParsedLines={totalParsedLines}
                     />
                     <div style={styles.parsingRightSection}>
                         {!showErrors &&
@@ -100,8 +96,6 @@ ParsingResultComponent.propTypes = {
     excerptLines: PropTypes.arrayOf(PropTypes.object).isRequired,
     p: polyglotPropTypes.isRequired,
     totalLoadedLines: PropTypes.number.isRequired,
-    totalFailedLines: PropTypes.number.isRequired,
-    totalParsedLines: PropTypes.number.isRequired,
     handleClearParsing: PropTypes.func.isRequired,
 };
 
@@ -109,7 +103,7 @@ const mapStateToProps = state => ({
     excerptColumns: getParsedExcerptColumns(state),
     excerptLines: getExcerptLines(state),
     loadingParsingResult: isParsingLoading(state),
-    ...getParsingSummary(state),
+    totalLoadedLines: getTotalLoadedLines(state),
 });
 
 const mapDispatchToProps = {

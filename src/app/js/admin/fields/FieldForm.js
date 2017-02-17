@@ -87,7 +87,6 @@ FieldFormComponent.defaultProps = {
 FieldFormComponent.propTypes = {
     ...reduxFormPropTypes,
     p: polyglotPropTypes.isRequired,
-    getSchemeSearchRequest: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
