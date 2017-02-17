@@ -8,17 +8,15 @@ import { Link } from 'react-router';
 import FlatButton from 'material-ui/FlatButton';
 
 import {
-    getResourceLastVersion,
     saveResource,
-    isSaving,
     RESOURCE_FORM_NAME,
 } from './';
-import { getCollectionFields } from '../publication';
 import Card from '../../lib/Card';
 import FormTextField from '../../lib/FormTextField';
 import Alert from '../../lib/Alert';
 import ButtonWithStatus from '../../lib/ButtonWithStatus';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
+import { fromResource, fromPublication } from '../../selectors';
 
 const validate = (values) => {
     const errors = Object.keys(values).reduce((currentErrors, field) => {
@@ -82,10 +80,10 @@ EditDetailComponent.propTypes = {
 };
 
 const mapStateToProps = state => ({
-    initialValues: getResourceLastVersion(state),
-    resource: getResourceLastVersion(state),
-    fields: getCollectionFields(state),
-    saving: isSaving(state),
+    initialValues: fromResource.getResourceLastVersion(state),
+    resource: fromResource.getResourceLastVersion(state),
+    fields: fromPublication.getCollectionFields(state),
+    saving: fromResource.isSaving(state),
 });
 
 const mapDispatchToProps = {

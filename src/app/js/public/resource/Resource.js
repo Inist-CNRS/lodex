@@ -6,11 +6,7 @@ import { Link } from 'react-router';
 import HomeIcon from 'material-ui/svg-icons/action/home';
 import { CardText } from 'material-ui/Card';
 
-import { getResourceLastVersion, isLoading } from './';
-import {
-    getFields,
-    getTitleFieldName,
-} from '../publication';
+import { fromResource, fromPublication } from '../../selectors';
 import {
     getDatasetTitle,
 } from '../characteristic';
@@ -100,11 +96,11 @@ ResourceComponent.propTypes = {
 };
 
 const mapStateToProps = state => ({
-    resource: getResourceLastVersion(state),
+    resource: fromResource.getResourceLastVersion(state),
     datasetTitle: getDatasetTitle(state),
-    titleKey: getTitleFieldName(state),
-    fields: getFields(state),
-    loading: isLoading(state),
+    titleKey: fromPublication.getTitleFieldName(state),
+    fields: fromPublication.getFields(state),
+    loading: fromResource.isLoading(state),
 });
 
 const mapDispatchToProps = {};

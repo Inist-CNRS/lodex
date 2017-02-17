@@ -4,16 +4,15 @@ import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 
 import {
-    getResourceUnvalidatedFields,
-    getResourceContributorsByField,
-} from './resource';
+    fromResource,
+    fromPublication,
+} from '../selectors';
 import {
     contributor as contributorPropTypes,
     field as fieldPropTypes,
     polyglot as polyglotPropTypes,
     resource as resourcePropTypes,
 } from '../propTypes';
-import { getCollectionFields } from './';
 import Format from '../formats/Format';
 
 const styles = {
@@ -65,9 +64,9 @@ PropertyComponent.propTypes = {
 };
 
 const mapStateToProps = state => ({
-    unValidatedFields: getResourceUnvalidatedFields(state),
-    contributors: getResourceContributorsByField(state),
-    fields: getCollectionFields(state),
+    unValidatedFields: fromResource.getResourceUnvalidatedFields(state),
+    contributors: fromResource.getResourceContributorsByField(state),
+    fields: fromPublication.getCollectionFields(state),
 });
 
 export default compose(

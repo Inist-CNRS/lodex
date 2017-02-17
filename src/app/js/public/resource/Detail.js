@@ -7,8 +7,8 @@ import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 
 import {
-    getResourceLastVersion,
-} from './';
+    fromResource,
+} from '../../selectors';
 import Card from '../../lib/Card';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { isLoggedIn } from '../../user';
@@ -42,7 +42,7 @@ DetailComponent.propTypes = {
 };
 
 const mapStateToProps = state => ({
-    resource: getResourceLastVersion(state),
+    resource: fromResource.getResourceLastVersion(state),
     isLogged: isLoggedIn(state),
 });
 

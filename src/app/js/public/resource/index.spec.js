@@ -14,9 +14,7 @@ import reducer, {
     ADD_FIELD_TO_RESOURCE,
     ADD_FIELD_TO_RESOURCE_SUCCESS,
     ADD_FIELD_TO_RESOURCE_ERROR,
-    getResourceUnvalidatedFields,
-    getResourceContributorsByField,
-    getResourceLastVersion,
+    fromResource,
 } from './index';
 
 describe('resourceReducer', () => {
@@ -124,17 +122,16 @@ describe('resourceReducer', () => {
             it('should return list of fields with accepted false', () => {
                 const state = {
                     resource: {
-                        resource: {
-                            contributions: [
-                                { fieldName: 'acceptedField', accepted: true },
-                                { fieldName: 'unvalidatedField', accepted: false },
-                                { fieldName: 'otherAcceptedField', accepted: true },
-                                { fieldName: 'otherUnvalidatedField', accepted: false },
-                            ],
-                        },
+                        contributions: [
+                            { fieldName: 'acceptedField', accepted: true },
+                            { fieldName: 'unvalidatedField', accepted: false },
+                            { fieldName: 'otherAcceptedField', accepted: true },
+                            { fieldName: 'otherUnvalidatedField', accepted: false },
+                        ],
                     },
                 };
-                expect(getResourceUnvalidatedFields(state)).toEqual(['unvalidatedField', 'otherUnvalidatedField']);
+                expect(fromResource.getResourceUnvalidatedFields(state))
+                    .toEqual(['unvalidatedField', 'otherUnvalidatedField']);
             });
         });
 
@@ -142,18 +139,16 @@ describe('resourceReducer', () => {
             it('should return contributor name keyed with their field', () => {
                 const state = {
                     resource: {
-                        resource: {
-                            contributions: [
-                                { fieldName: 'field1', contributor: { name: 'contributor1' } },
-                                { fieldName: 'field2', contributor: { name: 'contributor2' } },
-                                { fieldName: 'field3', contributor: { name: 'contributor3' } },
-                                { fieldName: 'field4', contributor: { name: 'contributor4' } },
-                            ],
-                        },
+                        contributions: [
+                            { fieldName: 'field1', contributor: { name: 'contributor1' } },
+                            { fieldName: 'field2', contributor: { name: 'contributor2' } },
+                            { fieldName: 'field3', contributor: { name: 'contributor3' } },
+                            { fieldName: 'field4', contributor: { name: 'contributor4' } },
+                        ],
                     },
                 };
 
-                expect(getResourceContributorsByField(state)).toEqual({
+                expect(fromResource.getResourceContributorsByField(state)).toEqual({
                     field1: 'contributor1',
                     field2: 'contributor2',
                     field3: 'contributor3',
@@ -166,18 +161,16 @@ describe('resourceReducer', () => {
             it('should return lasst items in versions for resource + uri', () => {
                 const state = {
                     resource: {
-                        resource: {
-                            uri: 'uri',
-                            versions: [
-                                { data: 'version1' },
-                                { data: 'version2' },
-                                { data: 'version3' },
-                            ],
-                        },
+                        uri: 'uri',
+                        versions: [
+                            { data: 'version1' },
+                            { data: 'version2' },
+                            { data: 'version3' },
+                        ],
                     },
                 };
 
-                expect(getResourceLastVersion(state)).toEqual({
+                expect(fromResource.getResourceLastVersion(state)).toEqual({
                     uri: 'uri',
                     data: 'version3',
                 });

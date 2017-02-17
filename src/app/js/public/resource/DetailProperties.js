@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 import { CardText } from 'material-ui/Card';
 
 import {
-    getResourceLastVersion,
-} from './';
+    fromResource,
+} from '../../selectors';
 import {
     getCollectionFields,
     getDocumentFields,
@@ -33,7 +33,7 @@ DetailPropertiesComponent.propTypes = {
 };
 
 const mapStateToProps = state => ({
-    resource: getResourceLastVersion(state),
+    resource: fromResource.getResourceLastVersion(state),
     collectionFields: getCollectionFields(state),
     documentFields: getDocumentFields(state),
 });

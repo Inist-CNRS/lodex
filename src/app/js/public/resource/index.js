@@ -1,7 +1,7 @@
 import { createAction, handleActions, combineActions } from 'redux-actions';
 import { createSelector } from 'reselect';
 
-import { fromPublication } from '../../selectors';
+import { fromPublication } from '../publication';
 
 export const LOAD_RESOURCE = 'LOAD_RESOURCE';
 export const LOAD_RESOURCE_SUCCESS = 'LOAD_RESOURCE_SUCCESS';
@@ -95,7 +95,7 @@ export default handleActions({
     }),
 }, defaultState);
 
-export const getResourceLastVersion = (state, resource = state.resource.resource) => {
+const getResourceLastVersion = (state, resource = state.resource.resource) => {
     const { versions, uri } = resource;
     if (!versions) {
         return null;
@@ -106,7 +106,7 @@ export const getResourceLastVersion = (state, resource = state.resource.resource
     };
 };
 
-export const getResourceUnvalidatedFields = (state) => {
+const getResourceUnvalidatedFields = (state) => {
     const { contributions } = state.resource.resource;
     if (!contributions) {
         return [];
@@ -116,10 +116,10 @@ export const getResourceUnvalidatedFields = (state) => {
         .map(({ fieldName }) => fieldName);
 };
 
-export const getResourceContributions = state =>
+const getResourceContributions = state =>
     state.resource.resource.contributions || [];
 
-export const getResourceContributorsByField =
+const getResourceContributorsByField =
     createSelector(
         getResourceContributions,
         contributions => contributions
@@ -130,7 +130,7 @@ export const getResourceContributorsByField =
             }), {}),
     );
 
-export const getRemovedData = (state) => {
+const getRemovedData = (state) => {
     const resource = state.resource.resource;
     const { uri, removedAt, reason } = resource;
     return {
@@ -140,11 +140,20 @@ export const getRemovedData = (state) => {
     };
 };
 
+const isSaving = state => state.resource.saving;
+
+export const fromResource = {
+    getResourceLastVersion,
+    getResourceUnvalidatedFields,
+    getResourceContributions,
+    getResourceContributorsByField,
+    getRemovedData,
+    isSaving,
+};
+
 export const getResourceFormData = state => state.form.resource.values;
 export const getHideResourceFormData = state => state.form.hideResource.values;
 export const getNewResourceFieldFormData = state => state.form.newResourceField && state.form.newResourceField.values;
-export const isLoading = state => state.resource.loading;
-export const isSaving = state => state.resource.saving;
 
 export const getNewContributionsField = createSelector(
     fromPublication.getContributionFields,
