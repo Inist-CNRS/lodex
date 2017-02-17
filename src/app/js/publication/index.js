@@ -56,6 +56,14 @@ export const getCollectionFields = createSelector(
     fields => fields.filter(f => f.cover === COVER_COLLECTION),
 );
 
+const getFieldNameFromParams = (state, params) => params;
+
+export const getFieldByName = createSelector(
+    getFields,
+    getFieldNameFromParams,
+    (fields, name) => fields.find(f => f.name === name),
+);
+
 export const getContributionFields = createSelector(
     getFields,
     fields => fields.filter(f => f.contribution),

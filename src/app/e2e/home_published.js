@@ -6,9 +6,8 @@ import { clear, loadFixtures } from '../../common/tests/fixtures';
 import fixtures from './home_published.json';
 import { inputElementIsFocusable, elementIsClicked } from '../../common/tests/conditions';
 
-
 describe('Home page with published data', function homePublishedDataTests() {
-    this.timeout(10000);
+    this.timeout(100000);
     const DEFAULT_WAIT_TIMEOUT = 9000; // A bit less than mocha's timeout to get explicit errors from selenium
 
     before(async () => {
@@ -45,7 +44,7 @@ describe('Home page with published data', function homePublishedDataTests() {
         await driver.wait(until.elementLocated(By.css('.dataset')), DEFAULT_WAIT_TIMEOUT);
         const headers = await driver.findElements(By.css('.dataset table th'));
         const headersText = await Promise.all(headers.map(h => h.getText()));
-        expect(headersText).toEqual(['uri', 'fullname', 'email']);
+        expect(headersText).toEqual(['uri', 'fullname', 'email', 'best_friend_of']);
 
         const tds = await driver.findElements(By.css('.dataset table tbody td'));
         const tdsText = await Promise.all(tds.map(td => td.getText()));
@@ -70,11 +69,17 @@ describe('Home page with published data', function homePublishedDataTests() {
         const fullnameValue = await driver.findElement(By.css('.detail .property:nth-child(2) dd'));
         await driver.wait(until.elementTextIs(fullnameValue, 'PEREGRIN.TOOK'), DEFAULT_WAIT_TIMEOUT);
 
-        const mailLabel = await driver.findElement(By.css('.detail .property:last-child dt'));
+        const mailLabel = await driver.findElement(By.css('.detail .property:nth-child(3) dt'));
         await driver.wait(until.elementTextIs(mailLabel, 'email\nhttp://uri4uri.net/vocab'), DEFAULT_WAIT_TIMEOUT);
 
-        const mailValue = await driver.findElement(By.css('.detail .property:last-child dd'));
+        const mailValue = await driver.findElement(By.css('.detail .property:nth-child(3) dd'));
         await driver.wait(until.elementTextIs(mailValue, 'peregrin.took@shire.net'), DEFAULT_WAIT_TIMEOUT);
+
+        const bestFriendLabel = await driver.findElement(By.css('.detail .property:last-child dt'));
+        await driver.wait(until.elementTextIs(bestFriendLabel, 'best_friend_of\nhttp://www.w3.org/ns/person'), DEFAULT_WAIT_TIMEOUT);
+
+        const bestFriendValue = await driver.findElement(By.css('.detail .property:last-child dd'));
+        await driver.wait(until.elementTextIs(bestFriendValue, 'MERIADOC.BRANDYBUCK'), DEFAULT_WAIT_TIMEOUT);
     });
 
     it('should allow to add field resource properties', async () => {

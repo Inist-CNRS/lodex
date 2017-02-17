@@ -18,7 +18,7 @@ import {
     toggleCharacteristicsEdition as toggleCharacteristicsEditionAction,
 } from './';
 
-import Property from '../lib/Property';
+import DatasetCharacteristicItem from './DatasetCharacteristicItem';
 
 const styles = {
     container: {
@@ -38,8 +38,8 @@ const DatasetCharacteristics = ({
             title={polyglot.t('dataset_characteristics')}
         />
         <CardText style={styles.container}>
-            {characteristics.map(({ name, value, scheme }) => (
-                <Property name={name} value={value} scheme={scheme} />
+            {characteristics.map(characteristic => (
+                <DatasetCharacteristicItem characteristic={characteristic} />
             ))}
         </CardText>
         {canEdit &&

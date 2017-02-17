@@ -14,6 +14,12 @@ export const field = PropTypes.shape({
     scheme: PropTypes.string,
 });
 
+export const resource = PropTypes.shape({
+    uri: PropTypes.string.isRequired,
+});
+
+export const contributor = PropTypes.object;
+
 export const property = PropTypes.shape({
     name: PropTypes.string.isRequired,
     value: PropTypes.any.isRequired,
