@@ -1,7 +1,4 @@
 import { createAction, handleActions } from 'redux-actions';
-import { createSelector } from 'reselect';
-
-import { fromPublication } from '../publication';
 
 export const TOGGLE_CHARACTERISTICS_EDITION = 'TOGGLE_CHARACTERISTICS_EDITION';
 export const SET_CHARACTERISTIC_VALUE = 'SET_CHARACTERISTIC_VALUE';
@@ -63,28 +60,16 @@ export default handleActions({
     }),
 }, defaultState);
 
-const selectNewCharacteristics = state => state.newCharacteristics || {};
+const getNewCharacteristics = state => state.newCharacteristics || {};
 const isCharacteristicEditing = state => state.editing;
 const isCharacteristicUpdating = state => state.updating;
 const getCharacteristicError = state => state.error;
 const getCharacteristics = state => state.characteristics[0] || {};
 
 export const fromCharacteristic = {
-    selectNewCharacteristics,
+    getNewCharacteristics,
     isCharacteristicEditing,
     isCharacteristicUpdating,
     getCharacteristicError,
     getCharacteristics,
 };
-
-// @TODO refactor in 2 selector one by reducer
-export const getNewCharacteristics = createSelector(
-    selectNewCharacteristics,
-    fromPublication.getDatasetFields,
-    (newCharacteristics, fields) => fields
-        .map(({ name, scheme }) => ({
-            name,
-            scheme,
-            value: newCharacteristics[name],
-        })),
-);
