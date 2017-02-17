@@ -102,6 +102,16 @@ const getTitleFieldName = createSelector(
     },
 );
 
+const getDatasetTitleFieldName = createSelector(
+    getCollectionFields,
+    (fields) => {
+        const titleField = fields
+            .find(({ cover, scheme }) => scheme === TITLE_SCHEME && cover === COVER_DATASET);
+
+        return titleField ? titleField.name : null;
+    },
+);
+
 const getPublishData = ({ error, published, editedFieldIndex, loading }) => ({
     published,
     editedFieldIndex,
@@ -122,6 +132,7 @@ export const fromPublication = {
     getDocumentFields,
     getDatasetFields,
     getTitleFieldName,
+    getDatasetTitleFieldName,
     getPublishData,
     isPublicationLoading,
     getPublicationError,

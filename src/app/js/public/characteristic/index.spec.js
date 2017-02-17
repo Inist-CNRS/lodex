@@ -1,11 +1,7 @@
 import expect from 'expect';
 
-import TITLE_SCHEME from '../../../../common/titleScheme';
-import { COVER_COLLECTION, COVER_DATASET } from '../../../../common/cover';
-
 import reducer, {
     defaultState,
-    getDatasetTitle,
 } from './';
 
 import {
@@ -30,42 +26,6 @@ describe('characteristic reducer', () => {
             ...defaultState,
             characteristics: ['foo'],
             newCharacteristics: 'foo',
-        });
-    });
-
-    describe('getDatasetTitle', () => {
-        it('should return characteristic name of characteristic with titleScheme', () => {
-            const state = {
-                publication: {
-                    fields: [
-                        { name: 'title', scheme: TITLE_SCHEME, cover: COVER_DATASET },
-                        { name: 'title_resource', scheme: TITLE_SCHEME, cover: COVER_COLLECTION },
-                        { name: 'other', scheme: 'other' },
-                    ],
-                },
-                characteristic: {
-                    characteristics: {
-                        title: 'foo',
-                    },
-                },
-            };
-            expect(getDatasetTitle(state)).toBe('foo');
-        });
-        it('should return null if no matching characteristics found', () => {
-            const state = {
-                publication: {
-                    fields: [
-                        { name: 'title_resource', scheme: TITLE_SCHEME, cover: COVER_COLLECTION },
-                        { name: 'other', scheme: 'other' },
-                    ],
-                },
-                characteristic: {
-                    characteristics: {
-                        foo: 'bar',
-                    },
-                },
-            };
-            expect(getDatasetTitle(state)).toBe(null);
         });
     });
 });

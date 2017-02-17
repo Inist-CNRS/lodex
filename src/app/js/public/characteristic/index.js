@@ -1,9 +1,6 @@
 import { createAction, handleActions } from 'redux-actions';
 import { createSelector } from 'reselect';
 
-import TITLE_SCHEME from '../../../../common/titleScheme';
-import { COVER_DATASET } from '../../../../common/cover';
-
 import { fromPublication } from '../publication';
 
 export const TOGGLE_CHARACTERISTICS_EDITION = 'TOGGLE_CHARACTERISTICS_EDITION';
@@ -66,11 +63,11 @@ export default handleActions({
     }),
 }, defaultState);
 
-const selectNewCharacteristics = state => state.characteristic.newCharacteristics || {};
-const isCharacteristicEditing = state => state.characteristic.editing;
-const isCharacteristicUpdating = state => state.characteristic.updating;
-const getCharacteristicError = state => state.characteristic.error;
-const getCharacteristics = state => state.characteristic.characteristics[0] || {};
+const selectNewCharacteristics = state => state.newCharacteristics || {};
+const isCharacteristicEditing = state => state.editing;
+const isCharacteristicUpdating = state => state.updating;
+const getCharacteristicError = state => state.error;
+const getCharacteristics = state => state.characteristics[0] || {};
 
 export const fromCharacteristic = {
     selectNewCharacteristics,
@@ -79,29 +76,6 @@ export const fromCharacteristic = {
     getCharacteristicError,
     getCharacteristics,
 };
-
-
-// @TODO refactor in 2 selector one by reducer
-export const getDatasetTitle = ({ publication: { fields }, characteristic: { characteristics } }) => {
-    const titleCharacteristic = fields.find(({ cover, scheme }) =>
-        cover === COVER_DATASET && scheme === TITLE_SCHEME);
-
-    return titleCharacteristic && characteristics[titleCharacteristic.name]
-        ? characteristics[titleCharacteristic.name]
-        : null;
-};
-
-// @TODO refactor in 2 selector one by reducer
-export const getCharacteristicsLastVersion = createSelector(
-    getCharacteristics,
-    fromPublication.getDatasetFields,
-    (characteristic, fields) => fields
-        .map(({ name, scheme }) => ({
-            name,
-            scheme,
-            value: characteristic[name],
-        })),
-);
 
 // @TODO refactor in 2 selector one by reducer
 export const getNewCharacteristics = createSelector(

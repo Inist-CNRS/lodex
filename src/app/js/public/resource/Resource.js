@@ -6,10 +6,11 @@ import { Link } from 'react-router';
 import HomeIcon from 'material-ui/svg-icons/action/home';
 import { CardText } from 'material-ui/Card';
 
-import { fromResource, fromPublication } from '../../selectors';
 import {
-    getDatasetTitle,
-} from '../characteristic';
+    fromResource,
+    fromPublication,
+    fromCharacteristic,
+} from '../../selectors';
 import Card from '../../lib/Card';
 import Detail from './Detail';
 import EditDetail from './EditDetail';
@@ -43,7 +44,15 @@ export const getDetail = (mode) => {
     }
 };
 
-export const ResourceComponent = ({ resource, datasetTitle, titleKey, loading, mode, p: polyglot }) => {
+export const ResourceComponent = ({
+    resource,
+    titleKey,
+    datasetTitleKey,
+    characteristics,
+    loading,
+    mode,
+    p: polyglot,
+}) => {
     if (loading) {
         return (
             <Loading className="resource">{polyglot.t('loading_resource')}</Loading>
@@ -55,7 +64,7 @@ export const ResourceComponent = ({ resource, datasetTitle, titleKey, loading, m
                 <CardText>
                     <Link to="/home" style={styles.home} >
                         <HomeIcon />
-                        {datasetTitle || polyglot.t('back_to_list')}
+                        {(datasetTitleKey && characteristics[datasetTitleKey]) || polyglot.t('back_to_list')}
                     </Link>
                     <h1>{polyglot.t('not_found')}</h1>
                 </CardText>
@@ -68,7 +77,7 @@ export const ResourceComponent = ({ resource, datasetTitle, titleKey, loading, m
                 <CardText>
                     <Link to="/home" style={styles.home} >
                         <HomeIcon />
-                        {datasetTitle || polyglot.t('back_to_list')}
+                        {(datasetTitleKey && characteristics[datasetTitleKey]) || polyglot.t('back_to_list')}
                     </Link>
                     <h1 className="title">{titleKey ? resource[titleKey] : resource.uri}</h1>
                 </CardText>
@@ -83,6 +92,7 @@ ResourceComponent.defaultProps = {
     mode: 'view',
     resource: null,
     datasetTitle: null,
+    datasetTitleKey: null,
     titleKey: null,
 };
 
@@ -91,13 +101,15 @@ ResourceComponent.propTypes = {
     resource: PropTypes.shape({}),
     p: polyglotPropTypes.isRequired,
     titleKey: PropTypes.string,
-    datasetTitle: PropTypes.string,
+    datasetTitleKey: PropTypes.string,
+    characteristics: PropTypes.shape({}),
     loading: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = state => ({
     resource: fromResource.getResourceLastVersion(state),
-    datasetTitle: getDatasetTitle(state),
+    characteristics: fromCharacteristic.getCharacteristics(state),
+    datasetTitleKey: fromPublication.getDatasetTitleFieldName(state),
     titleKey: fromPublication.getTitleFieldName(state),
     fields: fromPublication.getFields(state),
     loading: fromResource.isLoading(state),
