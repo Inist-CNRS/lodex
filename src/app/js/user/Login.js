@@ -7,7 +7,12 @@ import { submit as submitAction, isSubmitting } from 'redux-form';
 import { Card, CardActions, CardHeader, CardText } from 'material-ui/Card';
 
 import { polyglot as polyglotPropTypes } from '../propTypes';
-import { login as loginAction, toggleLogin as toggleLoginAction, LOGIN_FORM_NAME } from './';
+import {
+    login as loginAction,
+    toggleLogin as toggleLoginAction,
+    LOGIN_FORM_NAME,
+    isUserModalShown,
+} from './';
 import LoginForm from './LoginForm';
 import ButtonWithStatus from '../lib/ButtonWithStatus';
 
@@ -45,7 +50,7 @@ LoginComponent.defaultProps = {
 };
 
 export const mapStateToProps = state => ({
-    showModal: state.user.showModal,
+    showModal: isUserModalShown(state),
     submitting: isSubmitting(LOGIN_FORM_NAME)(state),
 });
 

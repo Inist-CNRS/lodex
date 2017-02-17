@@ -49,3 +49,8 @@ export default handleActions({
         items: items.filter(r => r.uri !== uri),
     }),
 }, defaultState);
+
+export const isRemovedResourceLoading = state => state.removedResources.loading;
+export const getRemovedResourceCurrentPage = state => state.removedResources.currentPage;
+export const getRemovedResourceTotal = state => state.removedResources.total;
+export const getRemovedResourceItems = state => state.removedResources.items;

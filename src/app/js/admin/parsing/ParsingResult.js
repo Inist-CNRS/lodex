@@ -9,7 +9,13 @@ import { grey400 } from 'material-ui/styles/colors';
 import Card from '../../lib/Card';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
-import { getParsedExcerptColumns, clearParsing } from './';
+import {
+    getParsedExcerptColumns,
+    getExcerptLines,
+    isParsingLoading,
+    getParsingSummary,
+    clearParsing,
+} from './';
 import ParsingExcerpt from './ParsingExcerpt';
 import ParsingSummary from './ParsingSummary';
 
@@ -96,18 +102,14 @@ ParsingResultComponent.propTypes = {
     totalLoadedLines: PropTypes.number.isRequired,
     totalFailedLines: PropTypes.number.isRequired,
     totalParsedLines: PropTypes.number.isRequired,
-    handleAddColumn: PropTypes.func.isRequired,
     handleClearParsing: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
     excerptColumns: getParsedExcerptColumns(state),
-    excerptLines: state.parsing.excerptLines,
-    failedLines: state.parsing.errors,
-    loadingParsingResult: state.parsing.loading,
-    totalLoadedLines: state.parsing.totalLoadedLines,
-    totalFailedLines: state.parsing.totalFailedLines,
-    totalParsedLines: state.parsing.totalParsedLines,
+    excerptLines: getExcerptLines(state),
+    loadingParsingResult: isParsingLoading(state),
+    ...getParsingSummary(state),
 });
 
 const mapDispatchToProps = {

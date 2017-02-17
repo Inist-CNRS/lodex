@@ -100,3 +100,7 @@ export const getNewCharacteristics = createSelector(
             value: newCharacteristics[name],
         })),
 );
+
+export const isCharacteristicEditing = state => state.characteristic.editing;
+export const isCharacteristicUpdating = state => state.characteristic.updating;
+export const getCharacteristicError = state => state.characteristic.error;

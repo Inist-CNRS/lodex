@@ -5,10 +5,11 @@ import { connect } from 'react-redux';
 import { isLoggedIn } from '../user';
 import DatasetCharacteristicsEdition from './DatasetCharacteristicsEdition';
 import DatasetCharacteristicsView from './DatasetCharacteristicsView';
+import { isCharacteristicEditing } from './';
 
 const mapStateToProps = state => ({
     canEdit: isLoggedIn(state),
-    editing: state.characteristic.editing,
+    editing: isCharacteristicEditing(state),
 });
 
 export default compose(

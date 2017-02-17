@@ -35,3 +35,8 @@ export default handleActions({
         loading: false,
     }),
 }, defaultState);
+
+export const isDatasetLoading = state => state.dataset.loading;
+export const getDatasetCurrentPage = state => state.dataset.currentPage;
+export const getDataset = state => state.dataset.dataset;
+export const getDatasetTotal = state => state.dataset.total;

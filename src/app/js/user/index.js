@@ -45,3 +45,5 @@ export const getRequest = createSelector(
         method,
     }),
 );
+
+export const isUserModalShown = state => state.user.showModal;

@@ -6,7 +6,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import ArchiveIcon from 'material-ui/svg-icons/content/archive';
 import Alert from '../../lib/Alert';
 
-import { uploadFile } from './';
+import { uploadFile, getUpload } from './';
 
 const styles = {
     div: {
@@ -66,7 +66,7 @@ UploadComponent.defaultProps = {
     className: null,
 };
 
-const mapsStateToProps = ({ upload }) => upload;
+const mapsStateToProps = getUpload;
 
 const mapDispatchToProps = {
     onFileLoad: uploadFile,
