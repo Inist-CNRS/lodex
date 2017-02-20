@@ -11,14 +11,18 @@ const SelectFormat = ({ formats, value, onChange }) => (
         <MenuItem value="None" primaryText="None" />
 
         {formats.map(f =>
-            <MenuItem value={f} primaryText={f} />,
+            <MenuItem key={f} value={f} primaryText={f} />,
         )}
     </SelectField>
 );
 
+SelectFormat.defaultProps = {
+    value: null,
+};
+
 SelectFormat.propTypes = {
     formats: PropTypes.arrayOf(PropTypes.string).isRequired,
-    value: PropTypes.string.isRequired,
+    value: PropTypes.string,
     onChange: PropTypes.func.isRequired,
 };
 

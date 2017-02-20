@@ -20,8 +20,12 @@ import DatasetCharacteristics from './characteristic/DatasetCharacteristics';
 import NoDataset from './NoDataset';
 
 export class HomeComponent extends Component {
+    static defaultProps = {
+        error: null,
+    }
+
     static propTypes = {
-        error: PropTypes.string.isRequired,
+        error: PropTypes.string,
         loading: PropTypes.bool.isRequired,
         loadPublication: PropTypes.func.isRequired,
         hasPublishedDataset: PropTypes.bool.isRequired,

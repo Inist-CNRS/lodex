@@ -1,8 +1,7 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import pure from 'recompose/pure';
-import { Field, propTypes as reduxFormPropTypes } from 'redux-form';
+import { Field } from 'redux-form';
 
-import { polyglot as polyglotPropTypes } from '../../propTypes';
 import FormTextField from '../../lib/FormTextField';
 
 const TransformerArgListItem = ({ fieldName, transformerArg }) => (
@@ -16,8 +15,10 @@ const TransformerArgListItem = ({ fieldName, transformerArg }) => (
 );
 
 TransformerArgListItem.propTypes = {
-    ...reduxFormPropTypes,
-    p: polyglotPropTypes.isRequired,
+    fieldName: PropTypes.string.isRequired,
+    transformerArg: PropTypes.shape({
+        name: PropTypes.string.isRequired,
+    }).isRequired,
 };
 
 export default pure(TransformerArgListItem);

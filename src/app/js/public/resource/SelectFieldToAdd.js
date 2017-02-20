@@ -36,7 +36,7 @@ SelectFieldToAddComponent.propTypes = {
 
 const mapStateToProps = state => ({
     selectedField: fromPublication.getSelectedField(state),
-    contributionFields: fromPublication.getContributionFields,
+    contributionFields: fromPublication.getContributionFields(state),
     resource: fromResource.getResourceLastVersion(state),
 });
 

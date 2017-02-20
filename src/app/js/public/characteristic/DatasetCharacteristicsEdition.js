@@ -28,7 +28,7 @@ const styles = {
     },
 };
 
-const DatasetCharacteristics = ({
+const DatasetCharacteristicsEdition = ({
     error,
     newCharacteristics,
     fields,
@@ -50,6 +50,7 @@ const DatasetCharacteristics = ({
                 }))
                 .map(({ name, value, scheme }) => (
                     <PropertyEdition
+                        key={name}
                         name={name}
                         onSetNewCharacteristicValue={setCharacteristicValue}
                         scheme={scheme}
@@ -71,8 +72,8 @@ const DatasetCharacteristics = ({
     </Card>
 );
 
-DatasetCharacteristics.propTypes = {
-    error: PropTypes.string.isRequired,
+DatasetCharacteristicsEdition.propTypes = {
+    error: PropTypes.string,
     newCharacteristics: PropTypes.shape({}),
     fields: PropTypes.arrayOf(propertyPropTypes),
     p: polyglotPropTypes.isRequired,
@@ -81,10 +82,11 @@ DatasetCharacteristics.propTypes = {
     updating: PropTypes.bool.isRequired,
 };
 
-DatasetCharacteristics.defaultProps = {
+DatasetCharacteristicsEdition.defaultProps = {
     characteristics: [],
     newCharacteristics: {},
     fields: [],
+    error: null,
 };
 
 const mapStateToProps = state => ({
@@ -102,4 +104,4 @@ const mapDispatchToProps = {
 export default compose(
     connect(mapStateToProps, mapDispatchToProps),
     translate,
-)(DatasetCharacteristics);
+)(DatasetCharacteristicsEdition);

@@ -13,11 +13,20 @@ const styles = {
 };
 
 class UriEdition extends Component {
+    static propTypes = {
+        type: PropTypes.string,
+        value: PropTypes.string.isRequired,
+        onChange: PropTypes.func.isRequired,
+    }
+
+    static defaultProps = {
+        type: 'value',
+    }
     constructor(props) {
         super(props);
 
         this.state = {
-            type: this.props.type || 'value',
+            type: this.props.type,
             value: this.props.value,
         };
     }
@@ -66,12 +75,5 @@ class UriEdition extends Component {
         );
     }
 }
-
-UriEdition.propTypes = {
-    type: PropTypes.string.isRequired,
-    value: PropTypes.string.isRequired,
-    onChange: PropTypes.func.isRequired,
-};
-
 
 export default UriEdition;

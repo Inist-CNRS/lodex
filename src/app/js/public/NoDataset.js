@@ -7,7 +7,7 @@ import Card from '../lib/Card';
 const NoDatasetComponent = ({ p: polyglot }) => (
     <Card>
         <CardText>
-            {polyglot.t('NoDataset')}
+            {polyglot.t('no_dataset')}
         </CardText>
     </Card>
 );

@@ -20,7 +20,7 @@ export const selectField = createAction(SELECT_FIELD);
 export const defaultState = {
     loading: false,
     fields: [],
-    published: null,
+    published: false,
 };
 
 export default handleActions({
@@ -123,6 +123,7 @@ const isPublicationLoading = state => state.loading;
 const getPublicationError = state => state.error;
 
 export const fromPublication = {
+    getFields,
     getCollectionFields,
     hasPublishedDataset,
     getFieldByName,

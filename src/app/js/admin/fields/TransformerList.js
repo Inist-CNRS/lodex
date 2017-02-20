@@ -1,12 +1,10 @@
 /* eslint react/no-array-index-key: off */
 
-import React from 'react';
+import React, { PropTypes } from 'react';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 import pure from 'recompose/pure';
-
 import FlatButton from 'material-ui/FlatButton';
-import { propTypes as reduxFormPropTypes } from 'redux-form';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import TransformerListItem from './TransformerListItem';
@@ -32,7 +30,11 @@ const TransformerList = ({ fields, meta: { touched, error }, p: polyglot }) => (
 );
 
 TransformerList.propTypes = {
-    ...reduxFormPropTypes,
+    fields: PropTypes.shape({}).isRequired,
+    meta: PropTypes.shape({
+        touched: PropTypes.bool,
+        error: PropTypes.string,
+    }).isRequired,
     p: polyglotPropTypes.isRequired,
 };
 
