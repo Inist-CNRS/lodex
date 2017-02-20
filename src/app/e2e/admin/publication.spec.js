@@ -188,7 +188,7 @@ describe('Admin', () => {
                 expect(upload.length).toEqual(0);
             });
 
-            it.skip('should display the published data on the home page', async () => {
+            it('should display the published data on the home page', async () => {
                 await driver.get('http://localhost:3010/');
                 await driver.wait(until.elementLocated(By.css('.dataset')), DEFAULT_WAIT_TIMEOUT);
                 const headers = await driver.findElements(By.css('.dataset table th'));
