@@ -10,10 +10,7 @@ import {
     hasUploadedFile as selectHasUploadedFile,
     isParsingLoading,
 } from './parsing';
-import {
-    loadPublication as loadPublicationAction,
-    hasPublishedDataset as selectHasPublishedDataset,
-} from './publication';
+
 import ParsingResult from './parsing/ParsingResult';
 import PublicationPreview from './publicationPreview/PublicationPreview';
 import Publish from './publish/Publish';
