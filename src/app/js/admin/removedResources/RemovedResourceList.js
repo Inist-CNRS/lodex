@@ -72,7 +72,7 @@ export class RemovedResourceListComponent extends Component {
                         </TableHeader>
                         <TableBody displayRowCheckbox={false}>
                             {resources.map(data => (
-                                <TableRow key={data._id}>
+                                <TableRow key={data.uri}>
                                     <TableRowColumn>{moment(data.removedAt).format('L')}</TableRowColumn>
                                     <TableRowColumn>{data.reason}</TableRowColumn>
                                     {columns.map(({ name }) => (
