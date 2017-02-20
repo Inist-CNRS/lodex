@@ -122,9 +122,9 @@ const getResourceContributorsByField =
         getResourceContributions,
         contributions => contributions
             .filter(({ contributor }) => !!contributor)
-            .reduce((acc, { fieldName, contributor }) => ({
+            .reduce((acc, { fieldName, contributor: { name } }) => ({
                 ...acc,
-                [fieldName]: contributor,
+                [fieldName]: name,
             }), {}),
     );
 
