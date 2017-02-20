@@ -15,8 +15,7 @@ describe('Admin', () => {
         before(async () => {
             await clear(); // Had to ensure clear state for unknown reason
             await loadFixtures(fixtures);
-            await loginAsJulia();
-            await driver.get('http://localhost:3010/#/admin');
+            await loginAsJulia('/admin');
         });
 
         it('should display the removed resources', async () => {
