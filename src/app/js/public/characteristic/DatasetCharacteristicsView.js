@@ -50,7 +50,7 @@ const DatasetCharacteristicsView = ({
                     value: characteristics[name],
                 }))
                 .map(characteristicField => (
-                    <DatasetCharacteristicItem key={name} characteristic={characteristicField} />
+                    <DatasetCharacteristicItem key={characteristicField.name} characteristic={characteristicField} />
                 ))
         }
         </CardText>
