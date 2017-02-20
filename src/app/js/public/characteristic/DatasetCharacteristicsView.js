@@ -14,9 +14,13 @@ import {
 
 import { isLoggedIn } from '../../user';
 import {
-    getCharacteristicsLastVersion,
     toggleCharacteristicsEdition as toggleCharacteristicsEditionAction,
 } from './';
+
+import {
+    fromCharacteristic,
+    fromPublication,
+} from '../../selectors';
 
 import DatasetCharacteristicItem from './DatasetCharacteristicItem';
 
@@ -29,7 +33,8 @@ const styles = {
 
 const DatasetCharacteristics = ({
     canEdit,
-    characteristics,
+    characteristic,
+    fields,
     p: polyglot,
     toggleCharacteristicsEdition,
 }) => (
@@ -38,9 +43,16 @@ const DatasetCharacteristics = ({
             title={polyglot.t('dataset_characteristics')}
         />
         <CardText style={styles.container}>
-            {characteristics.map(characteristic => (
-                <DatasetCharacteristicItem characteristic={characteristic} />
-            ))}
+            {fields
+                .map(({ name, scheme }) => ({
+                    name,
+                    scheme,
+                    value: characteristic[name],
+                }))
+                .map(characteristicField => (
+                    <DatasetCharacteristicItem characteristic={characteristicField} />
+                ))
+        }
         </CardText>
         {canEdit &&
             <CardActions>
@@ -56,7 +68,8 @@ const DatasetCharacteristics = ({
 
 DatasetCharacteristics.propTypes = {
     canEdit: PropTypes.bool.isRequired,
-    characteristics: PropTypes.arrayOf(propertyPropTypes),
+    characteristic: PropTypes.shape({}).isRequired,
+    fields: PropTypes.arrayOf(propertyPropTypes).isRequired,
     p: polyglotPropTypes.isRequired,
     toggleCharacteristicsEdition: PropTypes.func.isRequired,
 };
@@ -68,7 +81,8 @@ DatasetCharacteristics.defaultProps = {
 
 const mapStateToProps = state => ({
     canEdit: isLoggedIn(state),
-    characteristics: getCharacteristicsLastVersion(state),
+    characteristics: fromCharacteristic.getCharacteristics(state),
+    fields: fromPublication.getDatasetFields(state),
 });
 
 const mapDispatchToProps = {

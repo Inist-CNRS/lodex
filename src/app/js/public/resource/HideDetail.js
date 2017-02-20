@@ -8,9 +8,7 @@ import { Link } from 'react-router';
 import FlatButton from 'material-ui/FlatButton';
 
 import {
-    getResourceLastVersion,
     hideResource,
-    isSaving,
     HIDE_RESOURCE_FORM_NAME,
 } from './';
 
@@ -20,6 +18,7 @@ import Alert from '../../lib/Alert';
 import ButtonWithStatus from '../../lib/ButtonWithStatus';
 import DetailProperties from './DetailProperties';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
+import { fromResource } from '../../selectors';
 
 export const HideDetailComponent = ({ resource, saving, error, handleSubmit, p: polyglot }) => (
     <Card className="hide-detail">
@@ -65,9 +64,9 @@ HideDetailComponent.propTypes = {
 };
 
 const mapStateToProps = state => ({
-    initialValues: getResourceLastVersion(state),
-    resource: getResourceLastVersion(state),
-    saving: isSaving(state),
+    initialValues: fromResource.getResourceLastVersion(state),
+    resource: fromResource.getResourceLastVersion(state),
+    saving: fromResource.isSaving(state),
 });
 
 const mapDispatchToProps = {

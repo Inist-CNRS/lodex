@@ -21,12 +21,8 @@ import Loading from '../../lib/Loading';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import {
     loadDatasetPage as loadDatasetPageAction,
-    isDatasetLoading,
-    getDatasetCurrentPage,
-    getDataset,
-    getDatasetTotal,
 } from './';
-import { getCollectionFields } from '../';
+import { fromPublication, fromDataset } from '../../selectors';
 
 const styles = {
     table: {
@@ -107,11 +103,11 @@ DatasetComponent.defaultProps = {
 };
 
 const mapStateToProps = state => ({
-    loading: isDatasetLoading(state),
-    columns: getCollectionFields(state),
-    currentPage: getDatasetCurrentPage(state),
-    dataset: getDataset(state),
-    total: getDatasetTotal(state),
+    loading: fromDataset.isDatasetLoading(state),
+    columns: fromPublication.getCollectionFields(state),
+    currentPage: fromDataset.getDatasetCurrentPage(state),
+    dataset: fromDataset.getDataset(state),
+    total: fromDataset.getDatasetTotal(state),
 });
 
 const mapDispatchToProps = ({

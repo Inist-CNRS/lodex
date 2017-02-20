@@ -1,10 +1,4 @@
 import { createAction, handleActions } from 'redux-actions';
-import { createSelector } from 'reselect';
-
-import TITLE_SCHEME from '../../../../common/titleScheme';
-import { COVER_DATASET } from '../../../../common/cover';
-
-import { getDatasetFields } from '../';
 
 export const TOGGLE_CHARACTERISTICS_EDITION = 'TOGGLE_CHARACTERISTICS_EDITION';
 export const SET_CHARACTERISTIC_VALUE = 'SET_CHARACTERISTIC_VALUE';
@@ -66,41 +60,16 @@ export default handleActions({
     }),
 }, defaultState);
 
-export const getDatasetTitle = ({ publication: { fields }, characteristic: { characteristics } }) => {
-    const titleCharacteristic = fields.find(({ cover, scheme }) =>
-        cover === COVER_DATASET && scheme === TITLE_SCHEME);
+const getNewCharacteristics = state => state.newCharacteristics || {};
+const isCharacteristicEditing = state => state.editing;
+const isCharacteristicUpdating = state => state.updating;
+const getCharacteristicError = state => state.error;
+const getCharacteristics = state => state.characteristics[0] || {};
 
-    return titleCharacteristic && characteristics[titleCharacteristic.name]
-        ? characteristics[titleCharacteristic.name]
-        : null;
-};
-
-const getCharacteristics = state => state.characteristic.characteristics[0] || {};
-
-export const getCharacteristicsLastVersion = createSelector(
+export const fromCharacteristic = {
+    getNewCharacteristics,
+    isCharacteristicEditing,
+    isCharacteristicUpdating,
+    getCharacteristicError,
     getCharacteristics,
-    getDatasetFields,
-    (characteristic, fields) => fields
-        .map(({ name, scheme }) => ({
-            name,
-            scheme,
-            value: characteristic[name],
-        })),
-);
-
-const selectNewCharacteristics = state => state.characteristic.newCharacteristics || {};
-
-export const getNewCharacteristics = createSelector(
-    selectNewCharacteristics,
-    getDatasetFields,
-    (newCharacteristics, fields) => fields
-        .map(({ name, scheme }) => ({
-            name,
-            scheme,
-            value: newCharacteristics[name],
-        })),
-);
-
-export const isCharacteristicEditing = state => state.characteristic.editing;
-export const isCharacteristicUpdating = state => state.characteristic.updating;
-export const getCharacteristicError = state => state.characteristic.error;
+};

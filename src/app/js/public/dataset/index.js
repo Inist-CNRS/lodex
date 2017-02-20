@@ -36,7 +36,14 @@ export default handleActions({
     }),
 }, defaultState);
 
-export const isDatasetLoading = state => state.dataset.loading;
-export const getDatasetCurrentPage = state => state.dataset.currentPage;
-export const getDataset = state => state.dataset.dataset;
-export const getDatasetTotal = state => state.dataset.total;
+const isDatasetLoading = state => state.loading;
+const getDatasetCurrentPage = state => state.currentPage;
+const getDataset = state => state.dataset;
+const getDatasetTotal = state => state.total;
+
+export const fromDataset = {
+    isDatasetLoading,
+    getDatasetCurrentPage,
+    getDataset,
+    getDatasetTotal,
+};

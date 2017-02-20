@@ -6,10 +6,11 @@ import translate from 'redux-polyglot/translate';
 import { polyglot as polyglotPropTypes } from '../propTypes';
 import {
     loadPublication as loadPublicationAction,
-    hasPublishedDataset as selectHasPublishedDataset,
-    getPublicationError,
-    isPublicationLoading,
-} from './';
+} from './publication';
+
+import {
+    fromPublication,
+} from '../selectors';
 
 import Alert from '../lib/Alert';
 import Card from '../lib/Card';
@@ -67,9 +68,9 @@ export class HomeComponent extends Component {
 }
 
 const mapStateToProps = state => ({
-    error: getPublicationError(state),
-    loading: isPublicationLoading(state),
-    hasPublishedDataset: selectHasPublishedDataset(state),
+    error: fromPublication.getPublicationError(state),
+    loading: fromPublication.isPublicationLoading(state),
+    hasPublishedDataset: fromPublication.hasPublishedDataset(state),
 });
 
 const mapDispatchToProps = ({

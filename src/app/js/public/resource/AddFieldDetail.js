@@ -8,15 +8,13 @@ import { Link } from 'react-router';
 import FlatButton from 'material-ui/FlatButton';
 
 import {
-    getResourceLastVersion,
     addFieldToResource,
-    isSaving,
     NEW_RESOURCE_FIELD_FORM_NAME,
     getNewResourceFieldFormData,
 } from './';
 import {
     getFieldToAdd,
-} from '../';
+} from '../publication';
 import Card from '../../lib/Card';
 import Alert from '../../lib/Alert';
 import ButtonWithStatus from '../../lib/ButtonWithStatus';
@@ -26,6 +24,7 @@ import { isLoggedIn as getIsLoggedIn } from '../../user';
 import DetailProperties from './DetailProperties';
 import Contributor from './Contributor';
 import ContributionField from './ContributionField';
+import { fromResource } from '../../selectors';
 
 export const AddFieldDetailComponent = ({
     resource,
@@ -87,8 +86,8 @@ AddFieldDetailComponent.propTypes = {
 };
 
 const mapStateToProps = state => ({
-    resource: getResourceLastVersion(state),
-    saving: isSaving(state),
+    resource: fromResource.getResourceLastVersion(state),
+    saving: fromResource.isSaving(state),
     fieldToAdd: getFieldToAdd(state),
     initialValues: {
         ...getNewResourceFieldFormData(state),

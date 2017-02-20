@@ -1,18 +1,14 @@
 import expect from 'expect';
 
-import TITLE_SCHEME from '../../../common/titleScheme';
+import TITLE_SCHEME from '../../../../common/titleScheme';
 
 import reducer, {
     defaultState,
-    getCollectionFields,
-    getDatasetFields,
-    hasPublishedDataset,
     loadPublication,
     loadPublicationSuccess,
     loadPublicationError,
-    getTitleFieldName,
     selectField,
-    getContributionFields,
+    fromPublication,
 } from './';
 
 describe('publication reducer', () => {
@@ -63,81 +59,71 @@ describe('publication reducer', () => {
 
     describe('getCollectionFields', () => {
         it('should return the model', () => {
-            expect(getCollectionFields({
-                publication: {
-                    fields: [
-                        { foo: 'bar', cover: 'collection' },
-                        { foo: 'bar2', cover: 'dataset' },
-                    ],
-                },
+            expect(fromPublication.getCollectionFields({
+                fields: [
+                    { foo: 'bar', cover: 'collection' },
+                    { foo: 'bar2', cover: 'dataset' },
+                ],
             })).toEqual([{ foo: 'bar', cover: 'collection' }]);
         });
     });
 
     describe('getDatasetFields', () => {
         it('should return the model', () => {
-            expect(getDatasetFields({
-                publication: {
-                    fields: [
-                        { foo: 'bar', cover: 'collection' },
-                        { foo: 'bar2', cover: 'dataset' },
-                    ],
-                },
+            expect(fromPublication.getDatasetFields({
+                fields: [
+                    { foo: 'bar', cover: 'collection' },
+                    { foo: 'bar2', cover: 'dataset' },
+                ],
             })).toEqual([{ foo: 'bar2', cover: 'dataset' }]);
         });
     });
 
     describe('hasPublishedDataset', () => {
         it('should return true if published', () => {
-            expect(hasPublishedDataset({ publication: { published: true } })).toEqual(true);
+            expect(fromPublication.hasPublishedDataset({ published: true })).toEqual(true);
         });
         it('should return false if published', () => {
-            expect(hasPublishedDataset({ publication: { published: false } })).toEqual(false);
+            expect(fromPublication.hasPublishedDataset({ published: false })).toEqual(false);
         });
     });
 
     describe('getTitleFieldName', () => {
         it('should return field name of field with title scheme and cover collection', () => {
             const state = {
-                publication: {
-                    fields: [
-                        { cover: 'dataset', scheme: TITLE_SCHEME, name: 'dataset title' },
-                        { cover: 'collection', scheme: TITLE_SCHEME, name: 'title' },
-                        { cover: 'collection', scheme: 'other scheme', name: 'other' },
-                    ],
-                },
+                fields: [
+                    { cover: 'dataset', scheme: TITLE_SCHEME, name: 'dataset title' },
+                    { cover: 'collection', scheme: TITLE_SCHEME, name: 'title' },
+                    { cover: 'collection', scheme: 'other scheme', name: 'other' },
+                ],
             };
-            expect(getTitleFieldName(state)).toBe('title');
+            expect(fromPublication.getTitleFieldName(state)).toBe('title');
         });
 
         it('should return null if no field found', () => {
             const state = {
-                publication: {
-                    fields: [
-                        { cover: 'dataset', scheme: TITLE_SCHEME, name: 'dataset title' },
-                        { cover: 'collection', scheme: 'other scheme', name: 'title' },
-                        { cover: 'collection', scheme: 'other scheme', name: 'other' },
-                    ],
-                },
+                fields: [
+                    { cover: 'dataset', scheme: TITLE_SCHEME, name: 'dataset title' },
+                    { cover: 'collection', scheme: 'other scheme', name: 'title' },
+                    { cover: 'collection', scheme: 'other scheme', name: 'other' },
+                ],
             };
-            expect(getTitleFieldName(state)).toBe(null);
+            expect(fromPublication.getTitleFieldName(state)).toBe(null);
         });
     });
 
     describe('getContributionFields', () => {
         it('should return fields with contribution true', () => {
             const state = {
-                publication: {
-                    fields: [
-                        { fieldName: 'field1' },
-                        { fieldName: 'field2', contribution: true },
-                        { fieldName: 'field3' },
-                        { fieldName: 'field4', contribution: true },
-                    ],
-                },
+                fields: [
+                    { fieldName: 'field1' },
+                    { fieldName: 'field2', contribution: true },
+                    { fieldName: 'field3' },
+                    { fieldName: 'field4', contribution: true },
+                ],
             };
 
-            expect(getContributionFields(state)).toEqual([
+            expect(fromPublication.getContributionFields(state)).toEqual([
                 { fieldName: 'field2', contribution: true },
                 { fieldName: 'field4', contribution: true },
             ]);

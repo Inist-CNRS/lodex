@@ -6,8 +6,8 @@ import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 
 import {
-    getRemovedData,
-} from './';
+    fromResource,
+} from '../../selectors';
 import Card from '../../lib/Card';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 
@@ -48,7 +48,7 @@ RemovedDetailComponent.propTypes = {
     p: polyglotPropTypes.isRequired,
 };
 
-const mapStateToProps = getRemovedData;
+const mapStateToProps = fromResource.getRemovedData;
 
 const mapDispatchToProps = {};
 

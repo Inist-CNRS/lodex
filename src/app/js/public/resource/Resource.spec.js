@@ -123,7 +123,8 @@ describe('<Resource />', () => {
         const props = {
             loading: false,
             resource: 'resource',
-            datasetTitle: 'dataset title',
+            datasetTitleKey: 'dataset_title',
+            characteristics: { dataset_title: 'dataset title' },
             p: { t: v => v },
         };
 
