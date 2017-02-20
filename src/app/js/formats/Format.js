@@ -19,7 +19,7 @@ export class FormatComponent extends Component {
         const linkTransformer = field.transformers && field.transformers.find(t => t.operation === 'LINK');
 
         if (linkTransformer) {
-            const uri = resource[linkTransformer.args.find(a => a.name === 'reference').value];
+            const uri = resource[field.name];
             this.props.fetchLinkedResource(uri);
         }
     }
@@ -68,7 +68,7 @@ const postMapStateToProps = (state, { linkedResource }) => ({
     linkedResource: linkedResource ? fromResource.getResourceLastVersion(state, linkedResource) : null,
     rawLinkedResource: linkedResource,
 });
-// http://localhost:3010/#/resource?uri=1
+
 export default compose(
     connect(preMapStateToProps),
     withState('linkedResource', 'setLinkedResource', null),

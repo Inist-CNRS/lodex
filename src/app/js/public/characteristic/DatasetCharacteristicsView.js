@@ -31,9 +31,9 @@ const styles = {
     },
 };
 
-const DatasetCharacteristics = ({
+const DatasetCharacteristicsView = ({
     canEdit,
-    characteristic,
+    characteristics,
     fields,
     p: polyglot,
     toggleCharacteristicsEdition,
@@ -47,10 +47,10 @@ const DatasetCharacteristics = ({
                 .map(({ name, scheme }) => ({
                     name,
                     scheme,
-                    value: characteristic[name],
+                    value: characteristics[name],
                 }))
                 .map(characteristicField => (
-                    <DatasetCharacteristicItem characteristic={characteristicField} />
+                    <DatasetCharacteristicItem key={name} characteristic={characteristicField} />
                 ))
         }
         </CardText>
@@ -66,15 +66,15 @@ const DatasetCharacteristics = ({
     </Card>
 );
 
-DatasetCharacteristics.propTypes = {
+DatasetCharacteristicsView.propTypes = {
     canEdit: PropTypes.bool.isRequired,
-    characteristic: PropTypes.shape({}).isRequired,
+    characteristics: PropTypes.shape({}).isRequired,
     fields: PropTypes.arrayOf(propertyPropTypes).isRequired,
     p: polyglotPropTypes.isRequired,
     toggleCharacteristicsEdition: PropTypes.func.isRequired,
 };
 
-DatasetCharacteristics.defaultProps = {
+DatasetCharacteristicsView.defaultProps = {
     characteristics: [],
     newCharacteristics: [],
 };
@@ -92,4 +92,4 @@ const mapDispatchToProps = {
 export default compose(
     connect(mapStateToProps, mapDispatchToProps),
     translate,
-)(DatasetCharacteristics);
+)(DatasetCharacteristicsView);

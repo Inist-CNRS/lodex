@@ -22,7 +22,7 @@ export const DetailComponent = ({ resource, isLogged, p: polyglot }) => (
             {
                 (isLogged ? ['edit', 'hide', 'add-field'] : ['add-field'])
                 .map(name => (
-                    <Link to={{ pathname: `/resource/${name}`, query: { uri: resource.uri } }}>
+                    <Link key={name} to={{ pathname: `/resource/${name}`, query: { uri: resource.uri } }}>
                         <FlatButton className={`${name}-resource`} label={polyglot.t(name)} primary />
                     </Link>
                 ))
@@ -36,7 +36,9 @@ DetailComponent.defaultProps = {
 };
 
 DetailComponent.propTypes = {
-    resource: PropTypes.shape({}),
+    resource: PropTypes.shape({
+        uri: PropTypes.string.isRequired,
+    }),
     isLogged: PropTypes.bool.isRequired,
     p: polyglotPropTypes.isRequired,
 };

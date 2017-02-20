@@ -8,7 +8,6 @@ import { CardText } from 'material-ui/Card';
 import {
     Table,
     TableBody,
-    TableFooter,
     TableHeader,
     TableHeaderColumn,
     TableRow,
@@ -52,14 +51,15 @@ export class DatasetComponent extends Component {
                     <Table selectable={false} fixedHeader={false} style={styles.table}>
                         <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
                             <TableRow>
-                                {columns.map(c => <TableHeaderColumn>{c.name}</TableHeaderColumn>)}
+                                {columns.map(c => <TableHeaderColumn key={c.name}>{c.name}</TableHeaderColumn>)}
                             </TableRow>
                         </TableHeader>
                         <TableBody displayRowCheckbox={false}>
                             {dataset.map(data => (
-                                <TableRow>
+                                <TableRow key={data.uri}>
                                     {columns.map(column => (
                                         <DatasetColumn
+                                            key={column.name}
                                             column={column}
                                             columns={columns}
                                             resource={data}
@@ -68,19 +68,17 @@ export class DatasetComponent extends Component {
                                 </TableRow>
                             ))}
                         </TableBody>
-                        <TableFooter>
-                            <Pagination
-                                onChange={this.handlePageChange}
-                                total={total}
-                                perPage={10}
-                                texts={{
-                                    page: polyglot.t('page'),
-                                    perPage: polyglot.t('perPage'),
-                                    showing: polyglot.t('showing'),
-                                }}
-                            />
-                        </TableFooter>
                     </Table>
+                    <Pagination
+                        onChange={this.handlePageChange}
+                        total={total}
+                        perPage={10}
+                        texts={{
+                            page: polyglot.t('page'),
+                            perPage: polyglot.t('perPage'),
+                            showing: polyglot.t('showing'),
+                        }}
+                    />
                 </CardText>
             </Card>
         );

@@ -22,11 +22,9 @@ export const contributor = PropTypes.object;
 
 export const property = PropTypes.shape({
     name: PropTypes.string.isRequired,
-    value: PropTypes.any.isRequired,
-    scheme: PropTypes.any.isRequired,
+    scheme: PropTypes.string,
     accepted: PropTypes.bool,
-    validatedFields: PropTypes.arrayOf(PropTypes.string).isRequired,
-    p: polyglot.isRequired,
+    validatedFields: PropTypes.arrayOf(PropTypes.string),
 });
 
 export const validationFieldProperty = PropTypes.shape({
@@ -40,3 +38,12 @@ export const validationField = PropTypes.shape({
     name: PropTypes.string.isRequired,
     properties: PropTypes.arrayOf(validationFieldProperty).isRequired,
 });
+
+export const formField = {
+    input: PropTypes.shape({}).isRequired,
+    label: PropTypes.string.isRequired,
+    meta: PropTypes.shape({
+        touched: PropTypes.bool.isRequired,
+        error: PropTypes.string,
+    }).isRequired,
+};

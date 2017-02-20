@@ -12,9 +12,6 @@ import {
     NEW_RESOURCE_FIELD_FORM_NAME,
     getNewResourceFieldFormData,
 } from './';
-import {
-    getFieldToAdd,
-} from '../publication';
 import Card from '../../lib/Card';
 import Alert from '../../lib/Alert';
 import ButtonWithStatus from '../../lib/ButtonWithStatus';
@@ -24,7 +21,10 @@ import { isLoggedIn as getIsLoggedIn } from '../../user';
 import DetailProperties from './DetailProperties';
 import Contributor from './Contributor';
 import ContributionField from './ContributionField';
-import { fromResource } from '../../selectors';
+import {
+    fromResource,
+    fromPublication,
+} from '../../selectors';
 
 export const AddFieldDetailComponent = ({
     resource,
@@ -88,10 +88,10 @@ AddFieldDetailComponent.propTypes = {
 const mapStateToProps = state => ({
     resource: fromResource.getResourceLastVersion(state),
     saving: fromResource.isSaving(state),
-    fieldToAdd: getFieldToAdd(state),
+    fieldToAdd: fromPublication.getFieldToAdd(state),
     initialValues: {
         ...getNewResourceFieldFormData(state),
-        field: getFieldToAdd(state),
+        field: fromPublication.getFieldToAdd(state),
     },
     isLoggedIn: getIsLoggedIn(state),
 });

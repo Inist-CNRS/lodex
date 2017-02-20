@@ -1,8 +1,6 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import TextField from 'material-ui/TextField';
 import withHandlers from 'recompose/withHandlers';
-
-import { property as propertyPropTypes } from '../propTypes';
 
 const styles = {
     container: {
@@ -39,7 +37,16 @@ const PropertyEdition = ({ name, onChange, scheme, value }) => (
     </dl>
 );
 
-PropertyEdition.propTypes = propertyPropTypes;
+PropertyEdition.propTypes = {
+    name: PropTypes.string.isRequired,
+    scheme: PropTypes.string,
+    value: PropTypes.string.isRequired,
+    onChange: PropTypes.func.isRequired,
+};
+
+PropertyEdition.defaultProps = {
+    scheme: null,
+};
 
 export default withHandlers({
     onChange: ({ name, onSetNewCharacteristicValue }) =>

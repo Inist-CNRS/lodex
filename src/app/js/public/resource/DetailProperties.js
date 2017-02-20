@@ -4,11 +4,8 @@ import { CardText } from 'material-ui/Card';
 
 import {
     fromResource,
+    fromPublication,
 } from '../../selectors';
-import {
-    getCollectionFields,
-    getDocumentFields,
-} from '../publication';
 import Property from '../Property';
 
 export const DetailPropertiesComponent = ({ resource, collectionFields, documentFields }) => (
@@ -34,8 +31,8 @@ DetailPropertiesComponent.propTypes = {
 
 const mapStateToProps = state => ({
     resource: fromResource.getResourceLastVersion(state),
-    collectionFields: getCollectionFields(state),
-    documentFields: getDocumentFields(state),
+    collectionFields: fromPublication.getCollectionFields(state),
+    documentFields: fromPublication.getDocumentFields(state),
 });
 
 const mapDispatchToProps = {};

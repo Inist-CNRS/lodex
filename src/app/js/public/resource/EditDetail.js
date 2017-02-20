@@ -39,6 +39,7 @@ export const EditDetailComponent = ({ resource, fields, saving, error, handleSub
                 {error && <Alert><p>{error}</p></Alert>}
                 {fields.map(field => (
                     <Field
+                        key={field.name}
                         name={field.name}
                         component={FormTextField}
                         disabled={field.name === 'uri'}

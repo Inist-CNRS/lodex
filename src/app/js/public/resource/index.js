@@ -138,7 +138,9 @@ const getRemovedData = (state) => {
     };
 };
 
-const isSaving = state => state.resource.saving;
+const isSaving = state => state.saving;
+
+const isLoading = state => state.loading;
 
 export const fromResource = {
     getResourceLastVersion,
@@ -147,6 +149,7 @@ export const fromResource = {
     getResourceContributorsByField,
     getRemovedData,
     isSaving,
+    isLoading,
 };
 
 export const getResourceFormData = state => state.form.resource.values;

@@ -11,7 +11,6 @@ import {
     contributor as contributorPropTypes,
     field as fieldPropTypes,
     polyglot as polyglotPropTypes,
-    resource as resourcePropTypes,
 } from '../propTypes';
 import Format from '../formats/Format';
 
@@ -55,11 +54,13 @@ const PropertyComponent = ({ field, fields, resource, contributors, unValidatedF
 );
 
 PropertyComponent.propTypes = {
-    contributors: PropTypes.arrayOf(contributorPropTypes).isRequired,
+    contributors: PropTypes.objectOf(contributorPropTypes).isRequired,
     field: fieldPropTypes.isRequired,
     fields: PropTypes.arrayOf(fieldPropTypes).isRequired,
     p: polyglotPropTypes.isRequired,
-    resource: resourcePropTypes.isRequired,
+    resource: PropTypes.shape({
+        name: PropTypes.string.isRequired,
+    }).isRequired,
     unValidatedFields: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 

@@ -6,7 +6,7 @@ const UriView = ({ linkedResource, resource, field }) => {
     const uri = resource[field.name];
     let label = resource[field.name];
 
-    if (field.format.args.type) {
+    if (field.format && field.format.args && field.format.args.type) {
         switch (field.format.args.type) {
         case 'text':
             label = field.format.args.value;
@@ -30,7 +30,7 @@ const UriView = ({ linkedResource, resource, field }) => {
 
 UriView.propTypes = {
     field: fieldPropTypes.isRequired,
-    linkedResource: PropTypes.object.isRequired, // eslint-disable-line
+    linkedResource: PropTypes.object, // eslint-disable-line
     resource: PropTypes.object.isRequired, // eslint-disable-line
 };
 

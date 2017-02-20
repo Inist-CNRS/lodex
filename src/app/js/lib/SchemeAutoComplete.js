@@ -8,10 +8,6 @@ import MenuItem from 'material-ui/MenuItem';
 import { polyglot as polyglotPropTypes } from '../propTypes';
 import FormAutoCompleteField from './FormAutoCompleteField';
 
-import {
-    getSchemeMenuItemsDataFromResponse as selectGetSchemeMenuItemsDataFromResponse,
-} from '../admin/fields';
-
 const styles = {
     menuItem: {
         lineHeight: 1,
@@ -64,6 +60,7 @@ export const SchemeAutoCompleteComponent = ({
 
 SchemeAutoCompleteComponent.defaultProps = {
     disabled: false,
+    className: null,
 };
 
 SchemeAutoCompleteComponent.propTypes = {
@@ -71,7 +68,7 @@ SchemeAutoCompleteComponent.propTypes = {
     getSchemeSearchRequest: PropTypes.func.isRequired,
     getSchemeMenuItemsDataFromResponse: PropTypes.func.isRequired,
     name: PropTypes.string.isRequired,
-    className: PropTypes.string.isRequired,
+    className: PropTypes.string,
     disabled: PropTypes.bool,
 };
 

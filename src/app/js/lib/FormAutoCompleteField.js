@@ -1,13 +1,14 @@
 import React from 'react';
+import omit from 'lodash.omit';
 import { bindActionCreators } from 'redux';
 import compose from 'recompose/compose';
 import withHandlers from 'recompose/withHandlers';
 import { connect } from 'react-redux';
-import { propTypes as reduxFormPropTypes } from 'redux-form';
 import AutoComplete from 'material-ui/AutoComplete';
 import debounce from 'lodash.debounce';
 
 import { fetch as fetchAction } from '../fetch';
+import { formField as formFieldPropTypes } from '../propTypes';
 
 const FormAutoCompleteField = ({
     handleComplete,
@@ -24,11 +25,11 @@ const FormAutoCompleteField = ({
         onNewRequest={handleValueChosen}
         dataSource={dataSource}
         searchText={input.value}
-        {...props}
+        {...omit(props, ['fetch', 'parseResponse'])}
     />
 );
 
-FormAutoCompleteField.propTypes = reduxFormPropTypes;
+FormAutoCompleteField.propTypes = formFieldPropTypes;
 
 const mapStateToProps = ({ fetch }, { input: { name }, parseResponse }) => ({
     dataSource: parseResponse(fetch[name] && fetch[name].response),

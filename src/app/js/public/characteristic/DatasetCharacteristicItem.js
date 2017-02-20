@@ -1,15 +1,15 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import Property from '../Property';
 import { fromPublication } from '../../selectors';
-import { field as fieldPropTypes, resource as resourcePropTypes } from '../../propTypes';
+import { field as fieldPropTypes } from '../../propTypes';
 
 const DatasetCharacteristicItemComponent = ({ resource, field }) => (
     <Property resource={resource} field={field} />
 );
 
 DatasetCharacteristicItemComponent.propTypes = {
-    resource: resourcePropTypes.isRequired,
+    resource: PropTypes.shape({}).isRequired,
     field: fieldPropTypes.isRequired,
 };
 

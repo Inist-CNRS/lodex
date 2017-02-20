@@ -1,6 +1,6 @@
 import React from 'react';
 import SelectField from 'material-ui/SelectField';
-import { propTypes as reduxFormPropTypes } from 'redux-form';
+import { formField as formFieldPropTypes } from '../propTypes';
 
 const FormSelectField = ({ input, label, meta: { touched, error }, ...props }) => (
     <SelectField
@@ -12,6 +12,7 @@ const FormSelectField = ({ input, label, meta: { touched, error }, ...props }) =
     />
 );
 
-FormSelectField.propTypes = reduxFormPropTypes;
+
+FormSelectField.propTypes = formFieldPropTypes;
 
 export default FormSelectField;

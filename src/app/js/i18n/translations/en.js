@@ -50,6 +50,7 @@ export default {
     removed_resource_at: 'This resource was removed %{date}',
     cancel: 'Cancel',
     edit: 'Edit',
+    save: 'Save',
     hide: 'Hide',
     'add-field': 'Add a field',
     removed_resources: 'Removed resources',
@@ -62,5 +63,8 @@ export default {
     contributorMail: 'Email',
     new_field: 'Field',
     contributed_by: 'Contributed by %{name}',
-    'add column': 'Add column',
+    add_column: 'Add column',
+    no_dataset: 'No dataset',
+    scheme: 'scheme',
+    format: 'format',
 };
