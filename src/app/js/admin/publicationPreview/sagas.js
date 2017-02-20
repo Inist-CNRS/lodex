@@ -22,7 +22,6 @@ import { fromFields, fromParsing } from '../';
 import {
     LOAD_PARSING_RESULT_SUCCESS,
 } from '../parsing';
-import { fromFields } from '../../selectors';
 
 export function* handleComputePreview() {
     try {
