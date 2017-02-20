@@ -1,5 +1,6 @@
 import { createSelector } from 'reselect';
-import { fromPublication as localFromPublication } from './public';
+
+import { fromPublication as localFromPublication } from './public/publication';
 import { fromDataset as localFromDataset } from './public/dataset';
 import { fromCharacteristic as localFromCharacteristic } from './public/characteristic';
 import { fromResource as localFromResource } from './public/resource';

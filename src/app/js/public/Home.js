@@ -6,7 +6,7 @@ import translate from 'redux-polyglot/translate';
 import { polyglot as polyglotPropTypes } from '../propTypes';
 import {
     loadPublication as loadPublicationAction,
-} from './';
+} from './publication';
 
 import {
     fromPublication,

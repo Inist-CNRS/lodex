@@ -7,9 +7,8 @@ import MenuItem from 'material-ui/MenuItem';
 
 import SchemeAutoComplete from '../../lib/SchemeAutoComplete';
 import {
-    getCollectionFields,
-    getDocumentFields,
-} from '../publication';
+    fromPublication,
+} from '../../selectors';
 import FormTextField from '../../lib/FormTextField';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import FormSelectField from '../../lib/FormSelectField';
@@ -81,8 +80,8 @@ AddFieldDetailComponent.propTypes = {
 };
 
 const mapStateToProps = (state, { isNewField }) => ({
-    collectionFields: getCollectionFields(state),
-    documentFields: getDocumentFields(state),
+    collectionFields: fromPublication.getCollectionFields(state),
+    documentFields: fromPublication.getDocumentFields(state),
     isNewField,
 });
 

@@ -12,7 +12,6 @@ import {
     loadPublication as loadPublicationAction,
 } from './publication';
 import { fromParsing, fromPublication, fromUpload } from './';
-
 import ParsingResult from './parsing/ParsingResult';
 import PublicationPreview from './publicationPreview/PublicationPreview';
 import Publish from './publish/Publish';
