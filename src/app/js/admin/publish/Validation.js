@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { fromFields } from '../';
+import { fromFields } from '../selectors';
 import ValidationField from './ValidationField';
 import { editField as editFieldAction } from '../fields';
 import { validationField as validationFieldPropType } from '../../propTypes';

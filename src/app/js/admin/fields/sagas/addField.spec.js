@@ -7,7 +7,7 @@ import {
     addFieldError,
     addFieldSuccess,
 } from '../';
-import { fromFields } from '../../';
+import { fromFields } from '../../selectors';
 
 import { getCreateFieldRequest } from '../../../fetch/';
 import { handleAddField } from './addField';

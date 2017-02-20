@@ -8,7 +8,7 @@ import PublicationExcerpt from './PublicationExcerpt';
 
 import { editField } from '../fields';
 import { polyglot as polyglotPropTypes, field as fieldPropTypes } from '../../propTypes';
-import { fromFields, fromPublicationPreview } from '../';
+import { fromFields, fromPublicationPreview } from '../selectors';
 import Card from '../../lib/Card';
 
 export const PublicationPreviewComponent = ({ columns, lines, editColumn, p: polyglot }) => (

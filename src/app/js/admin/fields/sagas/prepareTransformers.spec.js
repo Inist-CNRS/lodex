@@ -3,7 +3,7 @@ import { call, select } from 'redux-saga/effects';
 
 import {
     fromFields,
-} from '../../';
+} from '../../selectors';
 
 import prepareTransformers, { prepareTransformer } from './prepareTransformers';
 

@@ -17,7 +17,7 @@ import {
     UPDATE_FIELD_SUCCESS,
 } from '../fields';
 
-import { fromFields, fromParsing } from '../';
+import { fromFields, fromParsing } from '../selectors';
 
 import {
     LOAD_PARSING_RESULT_SUCCESS,

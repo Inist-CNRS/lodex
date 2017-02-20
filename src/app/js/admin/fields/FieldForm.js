@@ -14,7 +14,7 @@ import {
     saveField,
 } from './';
 
-import { fromFields } from '../';
+import { fromFields } from '../selectors';
 import Format from '../../formats/FormatEdition';
 import Alert from '../../lib/Alert';
 import TransformerList from './TransformerList';

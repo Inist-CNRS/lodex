@@ -9,7 +9,7 @@ import {
     UPDATE_FIELD_SUCCESS,
 } from '../';
 
-import { fromFields } from '../../';
+import { fromFields } from '../../selectors';
 
 export function* handleNeedValidation() {
     const fields = yield select(fromFields.getFields);

@@ -10,7 +10,7 @@ import { polyglot as polyglotPropTypes } from '../../propTypes';
 import {
     publish as publishAction,
 } from './';
-import { fromFields, fromPublish, fromPublication } from '../';
+import { fromFields, fromPublish, fromPublication } from '../selectors';
 import Alert from '../../lib/Alert';
 import Card from '../../lib/Card';
 import ButtonWithStatus from '../../lib/ButtonWithStatus';

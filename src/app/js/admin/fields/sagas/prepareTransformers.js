@@ -2,7 +2,7 @@ import { call, select } from 'redux-saga/effects';
 
 import {
     fromFields,
-} from '../..';
+} from '../../selectors';
 
 export function* prepareTransformer(transformer) {
     const args = yield select(fromFields.getTransformerArgs, transformer.operation);

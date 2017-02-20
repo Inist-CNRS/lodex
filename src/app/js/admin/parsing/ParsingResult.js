@@ -14,7 +14,7 @@ import {
 } from './';
 import {
     fromParsing,
-} from '../';
+} from '../selectors';
 import ParsingExcerpt from './ParsingExcerpt';
 import ParsingSummary from './ParsingSummary';
 

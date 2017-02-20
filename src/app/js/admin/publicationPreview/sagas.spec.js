@@ -11,7 +11,7 @@ import {
     computePreviewError,
 } from './';
 
-import { fromFields, fromParsing } from '../';
+import { fromFields, fromParsing } from '../selectors';
 import { handleComputePreview } from './sagas';
 
 describe('publication saga', () => {

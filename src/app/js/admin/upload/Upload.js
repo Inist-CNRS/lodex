@@ -7,7 +7,7 @@ import ArchiveIcon from 'material-ui/svg-icons/content/archive';
 import Alert from '../../lib/Alert';
 
 import { uploadFile } from './';
-import { fromUpload } from '../';
+import { fromUpload } from '../selectors';
 
 const styles = {
     div: {
