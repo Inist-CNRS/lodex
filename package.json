@@ -70,7 +70,7 @@
     "request": "2.79.0",
     "reselect": "2.5.4",
     "stream-buffers": "3.0.1",
-    "url-polyfill": "webcomponents/URL",
+    "url-api-polyfill": "1.1.0",
     "whatwg-fetch": "2.0.2",
     "winston": "2.3.0"
   },
@@ -108,8 +108,8 @@
     "selenium-webdriver": "3.0.1",
     "url-loader": "0.5.7",
     "webpack": "2.2.0",
-    "webpack-dev-server": "2.2.0",
     "webpack-dev-middleware": "1.10.0",
+    "webpack-dev-server": "2.2.0",
     "webpack-hot-middleware": "2.17.0"
   },
   "pre-commit": [

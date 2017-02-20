@@ -84,7 +84,7 @@ test-frontend-functional: ## Run the frontend application functional tests
 		--recursive \
 		"./src/app/e2e/**/*.spec.js"
 
-test: test-frontend-unit test-api-unit # test-frontend-functional
+test: test-frontend-unit test-api-unit test-frontend-functional
 
 clear-database:
 	docker-compose exec mongo mongo lodex --eval " \

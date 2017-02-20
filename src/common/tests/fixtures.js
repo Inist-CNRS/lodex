@@ -21,29 +21,35 @@ export async function connect() {
     return db;
 }
 
-export async function loadFixtures(fixtures) {
+export function loadFixtures(fixtures) {
+    const promises = [];
+
     if (fixtures.field) {
-        db.field.insertMany(fixtures.field);
+        promises.push(db.field.insertMany(fixtures.field));
     }
     if (fixtures.dataset) {
-        db.dataset.insertMany(fixtures.dataset);
+        promises.push(db.dataset.insertMany(fixtures.dataset));
     }
     if (fixtures.publishedDataset) {
-        db.publishedDataset.insertMany(fixtures.publishedDataset);
+        promises.push(db.publishedDataset.insertMany(fixtures.publishedDataset));
     }
     if (fixtures.publishedCharacteristic) {
-        db.publishedCharacteristic.insertMany(fixtures.publishedCharacteristic);
+        promises.push(db.publishedCharacteristic.insertMany(fixtures.publishedCharacteristic));
     }
     if (fixtures.uriDataset) {
-        db.uriDataset.insertMany(fixtures.uriDataset);
+        promises.push(db.uriDataset.insertMany(fixtures.uriDataset));
     }
+
+    return Promise.all(promises);
 }
 
 export async function clear() {
     await connect();
-    await db.dataset.remove({});
-    await db.publishedDataset.remove({});
-    await db.publishedCharacteristic.remove({});
-    await db.field.remove({});
-    await db.uriDataset.remove({});
+    await Promise.all([
+        db.dataset.remove({}),
+        db.publishedDataset.remove({}),
+        db.publishedCharacteristic.remove({}),
+        db.field.remove({}),
+        db.uriDataset.remove({}),
+    ]);
 }
