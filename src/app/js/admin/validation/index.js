@@ -14,7 +14,7 @@ export default handleActions({
     SET_VALIDATION: (state, { payload }) => payload,
 }, defaultState);
 
-const getValidationFields = state => state.validation.fields;
+const getValidationFields = state => state.admin.validation.fields;
 
 export const getInvalidFields = createSelector(
     fromFields.getFields,
@@ -26,3 +26,5 @@ export const getInvalidFields = createSelector(
             index: fields.findIndex(f => f.name === field.name),
         })),
 );
+
+export const getIsValid = state => state.admin.validation.isValid;

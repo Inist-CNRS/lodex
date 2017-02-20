@@ -1,6 +1,5 @@
 import omit from 'lodash.omit';
 import { createAction, handleActions } from 'redux-actions';
-import { createSelector } from 'reselect';
 
 import { getTransformersMetas, getTransformerMetas } from '../../../../common/transformers';
 
@@ -99,18 +98,8 @@ export const getSchemeMenuItemsDataFromResponse = (state, response) => (
         : []
 );
 
-// @TODO use future version
-const multiCreateSelector = (baseSelector, selectors) =>
-    Object.keys(selectors).reduce((acc, key) => ({
-        ...acc,
-        [key]: createSelector(baseSelector, (_, props) => props, selectors[key]),
-    }), {});
-
 export const fromFields = {
     getFields,
     getNbFields,
     getEditedField,
 };
-
-// @TODO move in selectors file
-export const fromGlobale = multiCreateSelector(state => state.fields, fromFields);

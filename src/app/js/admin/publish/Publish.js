@@ -8,8 +8,11 @@ import FlatButton from 'material-ui/FlatButton';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 
 import {
+    getPublish,
     publish as publishAction,
 } from './';
+import { getIsPublished } from '../publication';
+import { getIsValid } from '../validation';
 import Alert from '../../lib/Alert';
 import Card from '../../lib/Card';
 import ButtonWithStatus from '../../lib/ButtonWithStatus';
@@ -81,9 +84,10 @@ PublishComponent.defaultProps = {
     error: null,
 };
 
-const mapStateToProps = ({ publish, validation: { isValid } }) => ({
-    ...publish,
-    canPublish: isValid,
+const mapStateToProps = state => ({
+    ...getPublish(state),
+    canPublish: getIsValid(state),
+    published: getIsPublished(state),
 });
 
 const mapDispatchToProps = ({

@@ -58,7 +58,7 @@ export const UploadComponent = ({ onFileLoad, error, ...props }) => (
 
 UploadComponent.propTypes = {
     className: PropTypes.string,
-    error: PropTypes.string.isRequired,
+    error: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]).isRequired,
     onFileLoad: PropTypes.func.isRequired,
 };
 

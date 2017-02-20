@@ -10,7 +10,7 @@ import {
 
 import loadFile from '../../lib/loadFile';
 
-import { uploadFile as uploadFileSaga } from './uploadFileSaga';
+import { uploadFile as uploadFileSaga } from './sagas';
 
 describe('parsing saga', () => {
     describe('handleLoadParsingResult', () => {

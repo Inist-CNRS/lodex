@@ -29,7 +29,7 @@ import {
     getRemovedResourceTotal,
     getRemovedResourceItems,
 } from './';
-import { getCollectionFields } from '../../public';
+import { getCollectionFields } from '../publication';
 
 const styles = {
     table: {
@@ -66,17 +66,17 @@ export class RemovedResourceListComponent extends Component {
                             <TableRow>
                                 <TableHeaderColumn>{polyglot.t('removed_at')}</TableHeaderColumn>
                                 <TableHeaderColumn>{polyglot.t('removed_reason')}</TableHeaderColumn>
-                                {columns.map(c => <TableHeaderColumn>{c.name}</TableHeaderColumn>)}
+                                {columns.map(({ name }) => <TableHeaderColumn key={name}>{name}</TableHeaderColumn>)}
                                 <TableHeaderColumn />
                             </TableRow>
                         </TableHeader>
                         <TableBody displayRowCheckbox={false}>
                             {resources.map(data => (
-                                <TableRow>
+                                <TableRow key={data}>
                                     <TableRowColumn>{moment(data.removedAt).format('L')}</TableRowColumn>
                                     <TableRowColumn>{data.reason}</TableRowColumn>
                                     {columns.map(({ name }) => (
-                                        <TableRowColumn>{data[name]}</TableRowColumn>
+                                        <TableRowColumn key={data[name]}>{data[name]}</TableRowColumn>
                                     ))}
                                     <TableRowColumn>
                                         <ButtonWithStatus
@@ -91,19 +91,17 @@ export class RemovedResourceListComponent extends Component {
                                 </TableRow>
                             ))}
                         </TableBody>
-                        <TableFooter>
-                            <Pagination
-                                onChange={this.handlePageChange}
-                                total={total}
-                                perPage={10}
-                                texts={{
-                                    page: polyglot.t('page'),
-                                    perPage: polyglot.t('perPage'),
-                                    showing: polyglot.t('showing'),
-                                }}
-                            />
-                        </TableFooter>
                     </Table>
+                    <Pagination
+                        onChange={this.handlePageChange}
+                        total={total}
+                        perPage={10}
+                        texts={{
+                            page: polyglot.t('page'),
+                            perPage: polyglot.t('perPage'),
+                            showing: polyglot.t('showing'),
+                        }}
+                    />
                 </CardText>
             </Card>
         );

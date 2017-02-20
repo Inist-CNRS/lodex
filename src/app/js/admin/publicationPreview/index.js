@@ -15,4 +15,4 @@ export default handleActions({
     COMPUTE_PREVIEW_ERROR: () => defaultState,
 }, defaultState);
 
-export const getPublicationPreview = state => state.publicationPreview;
+export const getPublicationPreview = state => state.admin.publicationPreview;

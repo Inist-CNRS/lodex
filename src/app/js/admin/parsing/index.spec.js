@@ -44,25 +44,25 @@ describe('parsing reducer', () => {
 
     describe('getParsedExcerptColumns', () => {
         it('should return an empty array if no excerptLines in state', () => {
-            expect(getParsedExcerptColumns({ parsing: { excerptLines: [] } })).toEqual([]);
+            expect(getParsedExcerptColumns({ admin: { parsing: { excerptLines: [] } } })).toEqual([]);
         });
 
         it('should return a list of columns from excerptLines', () => {
-            expect(getParsedExcerptColumns({ parsing: { excerptLines: [{
+            expect(getParsedExcerptColumns({ admin: { parsing: { excerptLines: [{
                 key1: 'key1_value',
                 key2: 'key2_value',
                 key3: 'key3_value',
-            }] } })).toEqual(['key1', 'key2', 'key3']);
+            }] } } })).toEqual(['key1', 'key2', 'key3']);
         });
     });
 
     describe('hasUploadedFile', () => {
         it('should return true if totalLoadedLines is truthy', () => {
-            expect(hasUploadedFile({ parsing: { totalLoadedLines: 100 } })).toEqual(true);
+            expect(hasUploadedFile({ admin: { parsing: { totalLoadedLines: 100 } } })).toEqual(true);
         });
 
         it('should return true if totalLoadedLines is falsy', () => {
-            expect(hasUploadedFile({ parsing: { totalLoadedLines: 0 } })).toEqual(false);
+            expect(hasUploadedFile({ admin: { parsing: { totalLoadedLines: 0 } } })).toEqual(false);
         });
     });
 });
