@@ -3,7 +3,7 @@ import driver from '../../common/tests/chromeDriver';
 
 import { elementIsClicked, inputElementIsFocusable } from '../../common/tests/conditions';
 
-describe.skip('Home page', function homeTests() {
+describe('Home page', function homeTests() {
     this.timeout(10000);
     const DEFAULT_WAIT_TIMEOUT = 9000; // A bit less than mocha's timeout to get explicit errors from selenium
 
