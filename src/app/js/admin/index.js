@@ -7,7 +7,6 @@ import publicationPreview from './publicationPreview';
 import publishReducer from './publish';
 import removedResources from './removedResources';
 import upload from './upload';
-import validation from './validation';
 
 export default combineReducers({
     fields,
@@ -17,5 +16,4 @@ export default combineReducers({
     publish: publishReducer,
     removedResources,
     upload,
-    validation,
 });

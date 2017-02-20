@@ -1,9 +1,4 @@
-import omit from 'lodash.omit';
 import { createAction, handleActions } from 'redux-actions';
-import { createSelector } from 'reselect';
-
-import TITLE_SCHEME from '../../../../common/titleScheme';
-import { COVER_COLLECTION, COVER_DATASET, COVER_DOCUMENT } from '../../../../common/cover';
 
 export const LOAD_PUBLICATION = 'LOAD_PUBLICATION';
 export const LOAD_PUBLICATION_SUCCESS = 'LOAD_PUBLICATION_SUCCESS';
@@ -48,77 +43,8 @@ export default handleActions({
 }, defaultState);
 
 
-export const hasPublishedDataset = ({ admin: { publication: { published } } }) => published;
+export const hasPublishedDataset = ({ published }) => published;
 
-export const getFields = ({ admin: { publication: { fields } } }) => fields || [];
-
-export const getCollectionFields = createSelector(
-    getFields,
-    fields => fields.filter(f => f.cover === COVER_COLLECTION),
-);
-
-const getFieldNameFromParams = (state, params) => params;
-
-export const getFieldByName = createSelector(
-    getFields,
-    getFieldNameFromParams,
-    (fields, name) => fields.find(f => f.name === name),
-);
-
-export const getContributionFields = createSelector(
-    getFields,
-    fields => fields.filter(f => f.contribution),
-);
-
-export const getSelectedField = ({ admin: { publication: { selectedField } } }) => selectedField;
-
-export const getFieldToAdd = ({ admin: { publication: { fields, selectedField } } }) => {
-    if (selectedField === 'new') {
-        return { cover: 'document' };
-    }
-    const field = fields.filter(({ name }) => name === selectedField)[0];
-    if (!field) {
-        return null;
-    }
-    return omit(field, ['contributors', '_id']);
-};
-
-export const getDocumentFields = createSelector(
-    getFields,
-    fields => fields.filter(f => f.cover === COVER_DOCUMENT),
-);
-
-export const getDatasetFields = createSelector(
-    getFields,
-    fields => fields.filter(f => f.cover === COVER_DATASET),
-);
-
-export const getTitleFieldName = createSelector(
-    getCollectionFields,
-    (fields) => {
-        const titleField = fields
-            .find(({ cover, scheme }) => scheme === TITLE_SCHEME && cover === COVER_COLLECTION);
-
-        return titleField ? titleField.name : null;
-    },
-);
-
-const getPublication = ({ admin: { publication } }) => publication;
-
-export const getPublishData = createSelector(
-    getPublication,
-    ({ error, published, editedFieldIndex, loading }) => ({
-        published,
-        editedFieldIndex,
-        loading,
-        error: error && (error.message || error),
-    }),
-);
-
-export const isPublicationLoading = state => state.admin.publication.loading;
-export const getPublicationError = state => state.admin.publication.error;
-export const getIsPublished = state => state.admin.publication.published;
-
-export const fromPublication = {
-    getPublishData,
+export const selectors = {
+    hasPublishedDataset,
 };

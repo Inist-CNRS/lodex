@@ -17,11 +17,11 @@ import {
     UPDATE_FIELD_SUCCESS,
 } from '../fields';
 
+import { fromFields, fromParsing } from '../selectors';
+
 import {
     LOAD_PARSING_RESULT_SUCCESS,
-    getExcerptLines,
 } from '../parsing';
-import { fromFields } from '../../selectors';
 
 export function* handleComputePreview() {
     try {
@@ -30,7 +30,7 @@ export function* handleComputePreview() {
 
         const transformDocument = yield call(getDocumentTransformer, { env: 'browser', token, fetchLineBy }, fields);
 
-        const lines = yield select(getExcerptLines);
+        const lines = yield select(fromParsing.getExcerptLines);
         const preview = yield lines.map(line => call(transformDocument, line));
         yield put(computePreviewSuccess(preview));
     } catch (error) {

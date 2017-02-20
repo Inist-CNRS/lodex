@@ -9,7 +9,6 @@ import { CardHeader, CardText } from 'material-ui/Card';
 import {
     Table,
     TableBody,
-    TableFooter,
     TableHeader,
     TableHeaderColumn,
     TableRow,
@@ -24,12 +23,9 @@ import { polyglot as polyglotPropTypes } from '../../propTypes';
 import {
     loadRemovedResourcePage as loadRemovedResourcePageAction,
     restoreRessource as restoreRessourceAction,
-    isRemovedResourceLoading,
-    getRemovedResourceCurrentPage,
-    getRemovedResourceTotal,
-    getRemovedResourceItems,
 } from './';
-import { getCollectionFields } from '../publication';
+
+import { fromRemovedResources, fromFields } from '../selectors';
 
 const styles = {
     table: {
@@ -120,11 +116,11 @@ RemovedResourceListComponent.propTypes = {
 };
 
 const mapStateToProps = state => ({
-    loading: isRemovedResourceLoading(state),
-    columns: getCollectionFields(state),
-    currentPage: getRemovedResourceCurrentPage(state),
-    resources: getRemovedResourceItems(state),
-    total: getRemovedResourceTotal(state),
+    loading: fromRemovedResources.isRemovedResourceLoading(state),
+    columns: fromFields.getCollectionFields(state),
+    currentPage: fromRemovedResources.getRemovedResourceCurrentPage(state),
+    resources: fromRemovedResources.getRemovedResourceItems(state),
+    total: fromRemovedResources.getRemovedResourceTotal(state),
 });
 
 const mapDispatchToProps = ({

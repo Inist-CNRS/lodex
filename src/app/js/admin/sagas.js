@@ -7,7 +7,6 @@ import publicationPreviewSaga from './publicationPreview/sagas';
 import publishSaga from './publish/sagas';
 import removedResourcesSagas from './removedResources/sagas';
 import uploadFileSaga from './upload/sagas';
-import validationSaga from './validation/sagas';
 
 export default function* () {
     yield fork(fieldsSaga);
@@ -17,5 +16,4 @@ export default function* () {
     yield fork(publishSaga);
     yield fork(removedResourcesSagas);
     yield fork(uploadFileSaga);
-    yield fork(validationSaga);
 }

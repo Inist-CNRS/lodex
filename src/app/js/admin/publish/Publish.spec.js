@@ -10,7 +10,7 @@ describe('<Publish />', () => {
         const wrapper = shallow(<Publish
             p={{ t: key => key }}
             loadField={() => {}}
-            loading
+            isPublishing
             error
             published
         />);
@@ -28,7 +28,7 @@ describe('<Publish />', () => {
         const wrapper = shallow(<Publish
             p={{ t: key => key }}
             loadField={() => {}}
-            loading={false}
+            isPublishing={false}
             onPublish={onPublish}
         />);
 

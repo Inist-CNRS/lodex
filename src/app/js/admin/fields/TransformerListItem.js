@@ -8,7 +8,7 @@ import ActionDeleteIcon from 'material-ui/svg-icons/action/delete';
 import { Field, FieldArray, propTypes as reduxFormPropTypes } from 'redux-form';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
-import { getTransformers, getTransformerArgs } from './';
+import { fromFields } from '../selectors';
 import FormSelectField from '../../lib/FormSelectField';
 import TransformerArgList from './TransformerArgList';
 
@@ -50,8 +50,8 @@ TransformerListItem.propTypes = {
 };
 
 const mapStateToProps = (state, ownProps) => ({
-    availableTransformers: getTransformers(state),
-    transformerArgs: getTransformerArgs(state, ownProps.operation),
+    availableTransformers: fromFields.getTransformers(state),
+    transformerArgs: fromFields.getTransformerArgs(state, ownProps.operation),
 });
 
 export default compose(
