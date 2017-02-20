@@ -6,7 +6,7 @@ import reducer, {
     publishError,
 } from './';
 
-describe('publication reducer', () => {
+describe('publish reducer', () => {
     it('should initialize with correct state', () => {
         const state = reducer(undefined, { type: '@@INIT' });
         expect(state).toEqual(defaultState);
@@ -33,7 +33,7 @@ describe('publication reducer', () => {
         const state = reducer({ loading: true }, publishError(error));
         expect(state).toEqual({
             loading: false,
-            error,
+            error: 'foo',
         });
     });
 });

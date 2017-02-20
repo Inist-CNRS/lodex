@@ -101,7 +101,7 @@ export const getUpdateCharacteristicsRequest = state =>
     getRequest(state, {
         url: '/api/characteristic',
         method: 'PUT',
-        body: state.characteristic.newCharacteristics,
+        body: state.public.characteristic.newCharacteristics,
     });
 
 export const getLoadDatasetPageRequest = (state, { page, perPage }) =>

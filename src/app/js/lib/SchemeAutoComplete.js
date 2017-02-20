@@ -8,11 +8,6 @@ import MenuItem from 'material-ui/MenuItem';
 import { polyglot as polyglotPropTypes } from '../propTypes';
 import FormAutoCompleteField from './FormAutoCompleteField';
 
-import {
-    getSchemeSearchRequest as selectGetSchemeSearchRequest,
-    getSchemeMenuItemsDataFromResponse as selectGetSchemeMenuItemsDataFromResponse,
-} from '../admin/fields';
-
 const styles = {
     menuItem: {
         lineHeight: 1,
@@ -65,6 +60,7 @@ export const SchemeAutoCompleteComponent = ({
 
 SchemeAutoCompleteComponent.defaultProps = {
     disabled: false,
+    className: null,
 };
 
 SchemeAutoCompleteComponent.propTypes = {
@@ -72,13 +68,17 @@ SchemeAutoCompleteComponent.propTypes = {
     getSchemeSearchRequest: PropTypes.func.isRequired,
     getSchemeMenuItemsDataFromResponse: PropTypes.func.isRequired,
     name: PropTypes.string.isRequired,
-    className: PropTypes.string.isRequired,
+    className: PropTypes.string,
     disabled: PropTypes.bool,
 };
 
-const mapStateToProps = state => ({
-    getSchemeSearchRequest: query => selectGetSchemeSearchRequest(state, query),
-    getSchemeMenuItemsDataFromResponse: query => selectGetSchemeMenuItemsDataFromResponse(state, query),
+const mapStateToProps = () => ({
+    getSchemeSearchRequest: query => `http://lov.okfn.org/dataset/lov/api/v2/term/autocomplete?q=${query}`,
+    getSchemeMenuItemsDataFromResponse: response => (
+        response && response.results
+            ? response.results.map(r => ({ label: r.localName[0], uri: r.uri[0] }))
+            : []
+    ),
 });
 
 const mapDispatchToProps = {

@@ -50,7 +50,14 @@ export default handleActions({
     }),
 }, defaultState);
 
-export const isRemovedResourceLoading = state => state.removedResources.loading;
-export const getRemovedResourceCurrentPage = state => state.removedResources.currentPage;
-export const getRemovedResourceTotal = state => state.removedResources.total;
-export const getRemovedResourceItems = state => state.removedResources.items;
+export const isRemovedResourceLoading = state => state.loading;
+export const getRemovedResourceCurrentPage = state => state.currentPage;
+export const getRemovedResourceTotal = state => state.total;
+export const getRemovedResourceItems = state => state.items;
+
+export const selectors = {
+    isRemovedResourceLoading,
+    getRemovedResourceCurrentPage,
+    getRemovedResourceTotal,
+    getRemovedResourceItems,
+};

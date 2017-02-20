@@ -14,7 +14,7 @@ describe('<Format />', () => {
 
     const resource = {
         a_name: 'a_value',
-        reference_value: 'referenced_resource',
+        linked: 'referenced_resource',
     };
 
     const rawLinkedResource = {
@@ -31,10 +31,7 @@ describe('<Format />', () => {
             transformers: [
                 {
                     operation: 'LINK',
-                    args: [
-                        { name: 'reference', value: 'reference_value' },
-                        { name: 'identifier', value: 'identifier_value' },
-                    ],
+                    args: [],
                 },
             ],
         };

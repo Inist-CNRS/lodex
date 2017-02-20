@@ -29,6 +29,7 @@ describe('<RemovedResourceList />', () => {
         shallow(<RemovedResourceList
             currentPage={1}
             loadRemovedResourcePage={loadRemovedResourcePage}
+            loadField={() => {}}
             loading
             p={{ t: key => key }}
             total={0}
@@ -40,6 +41,20 @@ describe('<RemovedResourceList />', () => {
         });
     });
 
+    it('should call loadField on mount', () => {
+        const loadField = createSpy();
+
+        shallow(<RemovedResourceList
+            currentPage={1}
+            loadRemovedResourcePage={() => {}}
+            loadField={loadField}
+            loading
+            p={{ t: key => key }}
+            total={0}
+        />);
+
+        expect(loadField).toHaveBeenCalled();
+    });
 
     it('should render the TableHeaderColumn for each column', () => {
         const wrapper = shallow(<RemovedResourceList
@@ -47,6 +62,7 @@ describe('<RemovedResourceList />', () => {
             columns={columns}
             resources={resources}
             loadRemovedResourcePage={() => {}}
+            loadField={() => {}}
             loading={false}
             p={{ t: key => key }}
             total={3}
@@ -65,6 +81,7 @@ describe('<RemovedResourceList />', () => {
             columns={columns}
             resources={resources}
             loadRemovedResourcePage={() => {}}
+            loadField={() => {}}
             loading={false}
             p={{ t: key => key }}
             total={3}
@@ -97,6 +114,7 @@ describe('<RemovedResourceList />', () => {
             currentPage={1}
             resources={resources}
             loadRemovedResourcePage={() => {}}
+            loadField={() => {}}
             loading={false}
             total={3}
         />);
@@ -113,6 +131,7 @@ describe('<RemovedResourceList />', () => {
             columns={columns}
             currentPage={1}
             loadRemovedResourcePage={loadRemovedResourcePage}
+            loadField={() => {}}
             loading={false}
             resources={resources}
             total={3}
@@ -126,14 +145,14 @@ describe('<RemovedResourceList />', () => {
     });
 
     it('should call restoreRessource on restore button click', () => {
-        const loadRemovedResourcePage = createSpy();
         const restoreRessource = createSpy();
         const wrapper = shallow(<RemovedResourceList
             p={{ t: key => key }}
             columns={columns}
             currentPage={1}
-            loadRemovedResourcePage={loadRemovedResourcePage}
+            loadRemovedResourcePage={() => {}}
             restoreRessource={restoreRessource}
+            loadField={() => {}}
             loading={false}
             resources={resources}
             total={3}

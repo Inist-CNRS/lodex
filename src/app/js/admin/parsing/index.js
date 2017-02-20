@@ -38,22 +38,27 @@ export const loadParsingResultError = createAction(LOAD_PARSING_RESULT_ERROR);
 export const loadParsingResultSuccess = createAction(LOAD_PARSING_RESULT_SUCCESS);
 export const clearParsing = createAction(CLEAR_PARSING);
 
-export const getExcerptLines = (state) => {
-    if (!state || !state.parsing || !state.parsing.excerptLines || !state.parsing.excerptLines.length) return [];
-
-    return state.parsing.excerptLines;
-};
+export const getExcerptLines = ({ excerptLines }) => (
+    (!excerptLines || !excerptLines.length)
+    ? []
+    : excerptLines
+);
 
 export const getParsedExcerptColumns = createSelector(
     getExcerptLines,
     lines => Object.keys(lines[0] || {}).filter(key => key !== '_id'),
 );
 
-export const hasUploadedFile = state => state && state.parsing && !!state.parsing.totalLoadedLines;
+export const hasUploadedFile = ({ totalLoadedLines }) => !!totalLoadedLines;
 
-export const isParsingLoading = state => state.parsing.loading;
-export const getParsingSummary = state => ({
-    totalLoadedLines: state.parsing.totalLoadedLines,
-    totalFailedLines: state.parsing.totalFailedLines,
-    totalParsedLines: state.parsing.totalParsedLines,
-});
+export const isParsingLoading = ({ loading }) => loading;
+
+export const getTotalLoadedLines = ({ totalLoadedLines }) => totalLoadedLines;
+
+export const selectors = {
+    getExcerptLines,
+    getParsedExcerptColumns,
+    hasUploadedFile,
+    isParsingLoading,
+    getTotalLoadedLines,
+};

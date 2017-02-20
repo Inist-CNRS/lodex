@@ -1,7 +1,6 @@
 /* eslint react/no-array-index-key: off */
-import React from 'react';
+import React, { PropTypes } from 'react';
 import pure from 'recompose/pure';
-import { propTypes as reduxFormPropTypes } from 'redux-form';
 
 import TransformerArgListItem from './TransformerArgListItem';
 
@@ -18,6 +17,10 @@ const TransformerArgList = ({ fields }) => (
     </div>
 );
 
-TransformerArgList.propTypes = reduxFormPropTypes;
+TransformerArgList.propTypes = {
+    fields: PropTypes.shape({
+        map: PropTypes.func.isRequired,
+    }).isRequired,
+};
 
 export default pure(TransformerArgList);

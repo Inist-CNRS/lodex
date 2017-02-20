@@ -1,12 +1,13 @@
-import { takeLatest } from 'redux-saga';
-import { call, put, select } from 'redux-saga/effects';
+import { call, put, select, takeLatest } from 'redux-saga/effects';
 
 import {
     ADD_FIELD,
     addFieldError,
     addFieldSuccess,
 } from '../';
-import { fromFields } from '../../../selectors';
+
+import { fromFields } from '../../selectors';
+
 import fetchSaga from '../../../lib/fetchSaga';
 import { getCreateFieldRequest } from '../../../fetch/';
 

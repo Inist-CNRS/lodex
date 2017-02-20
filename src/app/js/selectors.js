@@ -1,6 +1,9 @@
 import { createSelector } from 'reselect';
-import { fromPublication as localFromPublication } from './publication';
-import { fromFields as localFromFields } from './admin/fields';
+
+import { fromPublication as localFromPublication } from './public/publication';
+import { fromDataset as localFromDataset } from './public/dataset';
+import { fromCharacteristic as localFromCharacteristic } from './public/characteristic';
+import { fromResource as localFromResource } from './public/resource';
 
 export const getProps = (state, props) => props;
 
@@ -15,8 +18,14 @@ export const createGlobalSelectors = (getLocalState, selectors) => Object.keys(s
     [key]: createGlobalSelector(getLocalState, selectors[key]),
 }), {});
 
-const getPublicationState = state => state.publication;
-
+const getPublicationState = state => state.public.publication;
 export const fromPublication = createGlobalSelectors(getPublicationState, localFromPublication);
 
-export const fromFields = createGlobalSelectors(state => state.fields, localFromFields);
+const getDatasetState = state => state.public.dataset;
+export const fromDataset = createGlobalSelectors(getDatasetState, localFromDataset);
+
+const getCharacteristicState = state => state.public.characteristic;
+export const fromCharacteristic = createGlobalSelectors(getCharacteristicState, localFromCharacteristic);
+
+const getResourceState = state => state.public.resource;
+export const fromResource = createGlobalSelectors(getResourceState, localFromResource);

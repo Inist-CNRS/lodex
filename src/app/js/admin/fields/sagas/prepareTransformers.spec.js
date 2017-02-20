@@ -2,8 +2,8 @@ import expect from 'expect';
 import { call, select } from 'redux-saga/effects';
 
 import {
-    getTransformerArgs,
-} from '../';
+    fromFields,
+} from '../../selectors';
 
 import prepareTransformers, { prepareTransformer } from './prepareTransformers';
 
@@ -13,7 +13,7 @@ describe('prepareTransformers', () => {
             const saga = prepareTransformer({ operation: 'foo', args: [] });
 
             it('should select getTransformerArgs', () => {
-                expect(saga.next().value).toEqual(select(getTransformerArgs, 'foo'));
+                expect(saga.next().value).toEqual(select(fromFields.getTransformerArgs, 'foo'));
             });
 
             it('should return the transformer with arg value initialized', async () => {
@@ -28,7 +28,7 @@ describe('prepareTransformers', () => {
             const saga = prepareTransformer({ operation: 'foo', args: [{ name: 'bar', value: 'bazinga' }] });
 
             it('should select getTransformerArgs', () => {
-                expect(saga.next().value).toEqual(select(getTransformerArgs, 'foo'));
+                expect(saga.next().value).toEqual(select(fromFields.getTransformerArgs, 'foo'));
             });
 
             it('should return the transformer with arg value initialized', async () => {

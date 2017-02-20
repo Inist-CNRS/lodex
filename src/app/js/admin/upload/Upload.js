@@ -6,7 +6,8 @@ import RaisedButton from 'material-ui/RaisedButton';
 import ArchiveIcon from 'material-ui/svg-icons/content/archive';
 import Alert from '../../lib/Alert';
 
-import { uploadFile, getUpload } from './';
+import { uploadFile } from './';
+import { fromUpload } from '../selectors';
 
 const styles = {
     div: {
@@ -58,7 +59,7 @@ export const UploadComponent = ({ onFileLoad, error, ...props }) => (
 
 UploadComponent.propTypes = {
     className: PropTypes.string,
-    error: PropTypes.string.isRequired,
+    error: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]).isRequired,
     onFileLoad: PropTypes.func.isRequired,
 };
 
@@ -66,7 +67,7 @@ UploadComponent.defaultProps = {
     className: null,
 };
 
-const mapsStateToProps = getUpload;
+const mapsStateToProps = fromUpload.getUpload;
 
 const mapDispatchToProps = {
     onFileLoad: uploadFile,

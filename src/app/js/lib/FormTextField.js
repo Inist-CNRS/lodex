@@ -1,6 +1,6 @@
 import React from 'react';
 import TextField from 'material-ui/TextField';
-import { propTypes as reduxFormPropTypes } from 'redux-form';
+import { formField as formFieldPropTypes } from '../propTypes';
 
 const FormTextField = ({ input, label, meta: { touched, error }, ...custom }) => (
     <TextField
@@ -12,6 +12,6 @@ const FormTextField = ({ input, label, meta: { touched, error }, ...custom }) =>
     />
 );
 
-FormTextField.propTypes = reduxFormPropTypes;
+FormTextField.propTypes = formFieldPropTypes;
 
 export default FormTextField;

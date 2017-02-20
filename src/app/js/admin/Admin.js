@@ -7,21 +7,18 @@ import { polyglot as polyglotPropTypes } from '../propTypes';
 
 import {
     loadParsingResult as loadParsingResultAction,
-    hasUploadedFile as selectHasUploadedFile,
-    isParsingLoading,
 } from './parsing';
 import {
     loadPublication as loadPublicationAction,
-    hasPublishedDataset as selectHasPublishedDataset,
-} from '../publication';
+} from './publication';
+import { fromParsing, fromPublication, fromUpload } from './selectors';
 import ParsingResult from './parsing/ParsingResult';
 import PublicationPreview from './publicationPreview/PublicationPreview';
 import Publish from './publish/Publish';
-import Published from '../publication/Published';
+import Published from './publish/Published';
 import RemovedResourceList from './removedResources/RemovedResourceList';
 import Upload from './upload/Upload';
 import Loading from '../lib/Loading';
-import { isUploadPending } from './upload';
 
 export class AdminComponent extends Component {
     static propTypes = {
@@ -78,9 +75,9 @@ export class AdminComponent extends Component {
 }
 
 const mapStateToProps = state => ({
-    loadingParsingResult: isParsingLoading(state) || isUploadPending(state),
-    hasUploadedFile: selectHasUploadedFile(state),
-    hasPublishedDataset: selectHasPublishedDataset(state),
+    loadingParsingResult: fromParsing.isParsingLoading(state) || fromUpload.isUploadPending(state),
+    hasUploadedFile: fromParsing.hasUploadedFile(state),
+    hasPublishedDataset: fromPublication.hasPublishedDataset(state),
 });
 
 const mapDispatchToProps = ({

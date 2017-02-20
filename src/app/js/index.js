@@ -1,5 +1,6 @@
 import 'babel-polyfill';
 import 'whatwg-fetch';
+import 'url-api-polyfill';
 
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import React from 'react';

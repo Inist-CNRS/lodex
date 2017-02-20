@@ -14,8 +14,7 @@ describe('Admin', () => {
 
         before(async () => {
             await clear();
-            await loginAsJulia();
-            await driver.get('http://localhost:3010/#/admin');
+            await loginAsJulia('/admin');
         });
 
         describe('Uploading', () => {
@@ -228,8 +227,8 @@ describe('Admin', () => {
         });
 
         after(async () => {
-            await clear();
             await driver.executeScript('localStorage.clear();');
+            await clear();
         });
     });
 });

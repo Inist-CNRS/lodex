@@ -5,7 +5,7 @@ import withHandlers from 'recompose/withHandlers';
 import withState from 'recompose/withState';
 
 import DefaultFormat from './DefaultFormat';
-import { getResourceLastVersion } from '../resource';
+import { fromResource } from '../selectors';
 
 import fetchByUri from '../lib/fetchByUri';
 import { field as fieldPropTypes } from '../propTypes';
@@ -19,7 +19,7 @@ export class FormatComponent extends Component {
         const linkTransformer = field.transformers && field.transformers.find(t => t.operation === 'LINK');
 
         if (linkTransformer) {
-            const uri = resource[linkTransformer.args.find(a => a.name === 'reference').value];
+            const uri = resource[field.name];
             this.props.fetchLinkedResource(uri);
         }
     }
@@ -65,20 +65,19 @@ const preMapStateToProps = state => ({
 });
 
 const postMapStateToProps = (state, { linkedResource }) => ({
-    linkedResource: linkedResource ? getResourceLastVersion(state, linkedResource) : null,
+    linkedResource: linkedResource ? fromResource.getResourceLastVersion(state, linkedResource) : null,
     rawLinkedResource: linkedResource,
 });
-// http://localhost:3010/#/resource?uri=1
+
 export default compose(
     connect(preMapStateToProps),
     withState('linkedResource', 'setLinkedResource', null),
     withHandlers({
-        fetchLinkedResource: ({ setLinkedResource, token }) => uri => {
-            return fetchByUri(uri, token)
+        fetchLinkedResource: ({ setLinkedResource, token }) => uri =>
+            fetchByUri(uri, token)
                 .then((linkedResource) => {
                     setLinkedResource(linkedResource);
-                });
-        },
+                }),
     }),
     connect(postMapStateToProps),
 )(FormatComponent);

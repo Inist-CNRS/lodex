@@ -14,7 +14,7 @@ export const ParsingExcerptAddColumnComponent = ({ addColumn, name, p: polyglot 
     <TableRowColumn>
         <FlatButton
             className={`btn-excerpt-add-column btn-excerpt-add-column-${name}`}
-            label={polyglot.t('add column')}
+            label={polyglot.t('add_column')}
             onClick={addColumn}
         />
     </TableRowColumn>

@@ -9,7 +9,6 @@ import { CardHeader, CardText } from 'material-ui/Card';
 import {
     Table,
     TableBody,
-    TableFooter,
     TableHeader,
     TableHeaderColumn,
     TableRow,
@@ -24,12 +23,12 @@ import { polyglot as polyglotPropTypes } from '../../propTypes';
 import {
     loadRemovedResourcePage as loadRemovedResourcePageAction,
     restoreRessource as restoreRessourceAction,
-    isRemovedResourceLoading,
-    getRemovedResourceCurrentPage,
-    getRemovedResourceTotal,
-    getRemovedResourceItems,
 } from './';
-import { getCollectionFields } from '../../publication';
+import {
+    loadField as loadFieldAction,
+} from '../fields';
+
+import { fromRemovedResources, fromFields } from '../selectors';
 
 const styles = {
     table: {
@@ -40,7 +39,8 @@ const styles = {
 
 export class RemovedResourceListComponent extends Component {
     componentWillMount() {
-        const { loadRemovedResourcePage, currentPage } = this.props;
+        const { loadField, loadRemovedResourcePage, currentPage } = this.props;
+        loadField();
         loadRemovedResourcePage({ page: currentPage, perPage: 10 });
     }
 
@@ -66,17 +66,17 @@ export class RemovedResourceListComponent extends Component {
                             <TableRow>
                                 <TableHeaderColumn>{polyglot.t('removed_at')}</TableHeaderColumn>
                                 <TableHeaderColumn>{polyglot.t('removed_reason')}</TableHeaderColumn>
-                                {columns.map(c => <TableHeaderColumn>{c.name}</TableHeaderColumn>)}
+                                {columns.map(({ name }) => <TableHeaderColumn key={name}>{name}</TableHeaderColumn>)}
                                 <TableHeaderColumn />
                             </TableRow>
                         </TableHeader>
                         <TableBody displayRowCheckbox={false}>
                             {resources.map(data => (
-                                <TableRow>
+                                <TableRow key={data.uri}>
                                     <TableRowColumn>{moment(data.removedAt).format('L')}</TableRowColumn>
                                     <TableRowColumn>{data.reason}</TableRowColumn>
                                     {columns.map(({ name }) => (
-                                        <TableRowColumn>{data[name]}</TableRowColumn>
+                                        <TableRowColumn key={data[name]}>{data[name]}</TableRowColumn>
                                     ))}
                                     <TableRowColumn>
                                         <ButtonWithStatus
@@ -91,19 +91,17 @@ export class RemovedResourceListComponent extends Component {
                                 </TableRow>
                             ))}
                         </TableBody>
-                        <TableFooter>
-                            <Pagination
-                                onChange={this.handlePageChange}
-                                total={total}
-                                perPage={10}
-                                texts={{
-                                    page: polyglot.t('page'),
-                                    perPage: polyglot.t('perPage'),
-                                    showing: polyglot.t('showing'),
-                                }}
-                            />
-                        </TableFooter>
                     </Table>
+                    <Pagination
+                        onChange={this.handlePageChange}
+                        total={total}
+                        perPage={10}
+                        texts={{
+                            page: polyglot.t('page'),
+                            perPage: polyglot.t('perPage'),
+                            showing: polyglot.t('showing'),
+                        }}
+                    />
                 </CardText>
             </Card>
         );
@@ -115,6 +113,7 @@ RemovedResourceListComponent.propTypes = {
     currentPage: PropTypes.number.isRequired,
     resources: PropTypes.arrayOf(PropTypes.object).isRequired,
     loading: PropTypes.bool.isRequired,
+    loadField: PropTypes.func.isRequired,
     loadRemovedResourcePage: PropTypes.func.isRequired,
     p: polyglotPropTypes.isRequired,
     restoreRessource: PropTypes.func.isRequired,
@@ -122,14 +121,15 @@ RemovedResourceListComponent.propTypes = {
 };
 
 const mapStateToProps = state => ({
-    loading: isRemovedResourceLoading(state),
-    columns: getCollectionFields(state),
-    currentPage: getRemovedResourceCurrentPage(state),
-    resources: getRemovedResourceItems(state),
-    total: getRemovedResourceTotal(state),
+    loading: fromRemovedResources.isRemovedResourceLoading(state),
+    columns: fromFields.getCollectionFields(state),
+    currentPage: fromRemovedResources.getRemovedResourceCurrentPage(state),
+    resources: fromRemovedResources.getRemovedResourceItems(state),
+    total: fromRemovedResources.getRemovedResourceTotal(state),
 });
 
 const mapDispatchToProps = ({
+    loadField: loadFieldAction,
     loadRemovedResourcePage: loadRemovedResourcePageAction,
     restoreRessource: restoreRessourceAction,
 });

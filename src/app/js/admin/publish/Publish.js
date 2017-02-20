@@ -10,12 +10,13 @@ import { polyglot as polyglotPropTypes } from '../../propTypes';
 import {
     publish as publishAction,
 } from './';
+import { fromFields, fromPublish, fromPublication } from '../selectors';
 import Alert from '../../lib/Alert';
 import Card from '../../lib/Card';
 import ButtonWithStatus from '../../lib/ButtonWithStatus';
 import { addField, loadField } from '../fields';
 import FieldForm from '../fields/FieldForm';
-import Validation from '../validation/Validation';
+import Validation from './Validation';
 
 export class PublishComponent extends Component {
     componentWillMount() {
@@ -31,7 +32,7 @@ export class PublishComponent extends Component {
     }
 
     render() {
-        const { canPublish, error, loading, p: polyglot, published } = this.props;
+        const { canPublish, error, isPublishing, p: polyglot, published } = this.props;
         return (
             <Card>
                 <CardHeader title={polyglot.t('publication')} />
@@ -41,12 +42,12 @@ export class PublishComponent extends Component {
                 <CardActions>
                     <FlatButton
                         className="add-column"
-                        label={polyglot.t('add column')}
+                        label={polyglot.t('add_column')}
                         onClick={this.handleAddColumnClick}
                     />
                     <ButtonWithStatus
                         className="btn-publish"
-                        loading={loading}
+                        loading={isPublishing}
                         error={error}
                         success={published}
                         label={polyglot.t('publish')}
@@ -70,7 +71,7 @@ PublishComponent.propTypes = {
     addColumn: PropTypes.func.isRequired,
     canPublish: PropTypes.bool.isRequired,
     error: PropTypes.string,
-    loading: PropTypes.bool.isRequired,
+    isPublishing: PropTypes.bool.isRequired,
     p: polyglotPropTypes.isRequired,
     onPublish: PropTypes.func.isRequired,
     published: PropTypes.bool.isRequired,
@@ -81,9 +82,11 @@ PublishComponent.defaultProps = {
     error: null,
 };
 
-const mapStateToProps = ({ publish, validation: { isValid } }) => ({
-    ...publish,
-    canPublish: isValid,
+const mapStateToProps = state => ({
+    canPublish: fromFields.areAllFieldsValid(state),
+    error: fromPublish.getPublishingError(state),
+    isPublishing: fromPublish.getIsPublishing(state),
+    published: fromPublication.hasPublishedDataset(state),
 });
 
 const mapDispatchToProps = ({

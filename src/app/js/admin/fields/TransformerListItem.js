@@ -5,10 +5,10 @@ import translate from 'redux-polyglot/translate';
 import IconButton from 'material-ui/IconButton';
 import MenuItem from 'material-ui/MenuItem';
 import ActionDeleteIcon from 'material-ui/svg-icons/action/delete';
-import { Field, FieldArray, propTypes as reduxFormPropTypes } from 'redux-form';
+import { Field, FieldArray } from 'redux-form';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
-import { getTransformers, getTransformerArgs } from './';
+import { fromFields } from '../selectors';
 import FormSelectField from '../../lib/FormSelectField';
 import TransformerArgList from './TransformerArgList';
 
@@ -34,7 +34,9 @@ const TransformerListItem = ({ availableTransformers, fieldName, onRemove, p: po
             component={FormSelectField}
             label={polyglot.t('select_an_operation')}
         >
-            {availableTransformers.map(t => <MenuItem className={t.name} value={t.name} primaryText={t.name} />)}
+            {availableTransformers.map(
+                t => <MenuItem key={t.name} className={t.name} value={t.name} primaryText={t.name} />,
+            )}
         </Field>
         <FieldArray name={`${fieldName}.args`} component={TransformerArgList} />
     </div>
@@ -43,15 +45,16 @@ const TransformerListItem = ({ availableTransformers, fieldName, onRemove, p: po
 TransformerListItem.propTypes = {
     availableTransformers: PropTypes.arrayOf(PropTypes.shape({
         name: PropTypes.string.isRequired,
-        type: PropTypes.string.isRequired,
+        args: PropTypes.arrayOf(PropTypes.any).isRequired,
     })).isRequired,
-    ...reduxFormPropTypes,
+    fieldName: PropTypes.string.isRequired,
+    onRemove: PropTypes.func.isRequired,
     p: polyglotPropTypes.isRequired,
 };
 
 const mapStateToProps = (state, ownProps) => ({
-    availableTransformers: getTransformers(state),
-    transformerArgs: getTransformerArgs(state, ownProps.operation),
+    availableTransformers: fromFields.getTransformers(state),
+    transformerArgs: fromFields.getTransformerArgs(state, ownProps.operation),
 });
 
 export default compose(
