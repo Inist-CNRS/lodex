@@ -98,7 +98,7 @@ ResourceComponent.defaultProps = {
 
 ResourceComponent.propTypes = {
     mode: PropTypes.oneOf(['view', 'edit', 'hide', 'add-field']).isRequired,
-    resource: PropTypes.shape({}),
+    resource: PropTypes.shape({ uri: PropTypes.string.isRequired }),
     p: polyglotPropTypes.isRequired,
     titleKey: PropTypes.string,
     datasetTitleKey: PropTypes.string,

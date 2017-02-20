@@ -1,5 +1,3 @@
-/* eslint react/no-array-index-key: off */
-
 import React, { PropTypes } from 'react';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
@@ -15,7 +13,7 @@ const TransformerList = ({ fields, meta: { touched, error }, p: polyglot }) => (
 
         {fields.map((fieldName, index) => (
             <TransformerListItem
-                key={index}
+                key={fieldName}
                 fieldName={fieldName}
                 onRemove={() => fields.remove(index)}
                 operation={fields.get(index).operation}
@@ -30,7 +28,11 @@ const TransformerList = ({ fields, meta: { touched, error }, p: polyglot }) => (
 );
 
 TransformerList.propTypes = {
-    fields: PropTypes.shape({}).isRequired,
+    fields: PropTypes.shape({
+        map: PropTypes.func.isRequired,
+        get: PropTypes.func.isRequired,
+        remove: PropTypes.func.isRequired,
+    }).isRequired,
     meta: PropTypes.shape({
         touched: PropTypes.bool,
         error: PropTypes.string,

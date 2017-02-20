@@ -74,7 +74,7 @@ const DatasetCharacteristicsEdition = ({
 
 DatasetCharacteristicsEdition.propTypes = {
     error: PropTypes.string,
-    newCharacteristics: PropTypes.shape({}),
+    newCharacteristics: PropTypes.shape({}).isRequired,
     fields: PropTypes.arrayOf(propertyPropTypes),
     p: polyglotPropTypes.isRequired,
     setCharacteristicValue: PropTypes.func.isRequired,

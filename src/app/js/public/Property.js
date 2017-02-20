@@ -58,7 +58,9 @@ PropertyComponent.propTypes = {
     field: fieldPropTypes.isRequired,
     fields: PropTypes.arrayOf(fieldPropTypes).isRequired,
     p: polyglotPropTypes.isRequired,
-    resource: PropTypes.shape({}).isRequired,
+    resource: PropTypes.shape({
+        name: PropTypes.string.isRequired,
+    }).isRequired,
     unValidatedFields: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 

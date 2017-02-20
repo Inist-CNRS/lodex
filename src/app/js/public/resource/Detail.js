@@ -36,7 +36,9 @@ DetailComponent.defaultProps = {
 };
 
 DetailComponent.propTypes = {
-    resource: PropTypes.shape({}),
+    resource: PropTypes.shape({
+        uri: PropTypes.string.isRequired,
+    }),
     isLogged: PropTypes.bool.isRequired,
     p: polyglotPropTypes.isRequired,
 };
