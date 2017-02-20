@@ -7,11 +7,10 @@ import {
     addFieldError,
     addFieldSuccess,
 } from '../';
+import { fromFields } from '../../';
+
 import { getCreateFieldRequest } from '../../../fetch/';
-import {
-    handleAddField,
-} from './addField';
-import { fromFields } from '../../../selectors';
+import { handleAddField } from './addField';
 
 describe('fields saga', () => {
     describe('handleAddField', () => {
@@ -43,7 +42,7 @@ describe('fields saga', () => {
         describe('handleAddField with a field name', () => {
             const saga = handleAddField({ payload: 'foo' });
 
-            it('should select getLastFieldIndex', () => {
+            it('should select getNbFields', () => {
                 expect(saga.next().value).toEqual(select(fromFields.getNbFields));
             });
 

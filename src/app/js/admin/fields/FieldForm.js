@@ -1,4 +1,4 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
@@ -14,8 +14,7 @@ import {
     saveField,
 } from './';
 
-import { fromFields } from '../../selectors';
-
+import { fromFields } from '../';
 import Format from '../../formats/FormatEdition';
 import Alert from '../../lib/Alert';
 import TransformerList from './TransformerList';

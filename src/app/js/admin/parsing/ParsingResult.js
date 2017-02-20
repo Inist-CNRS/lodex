@@ -10,12 +10,11 @@ import Card from '../../lib/Card';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import {
-    getParsedExcerptColumns,
-    getExcerptLines,
-    isParsingLoading,
-    getTotalLoadedLines,
     clearParsing,
 } from './';
+import {
+    fromParsing,
+} from '../';
 import ParsingExcerpt from './ParsingExcerpt';
 import ParsingSummary from './ParsingSummary';
 
@@ -100,10 +99,10 @@ ParsingResultComponent.propTypes = {
 };
 
 const mapStateToProps = state => ({
-    excerptColumns: getParsedExcerptColumns(state),
-    excerptLines: getExcerptLines(state),
-    loadingParsingResult: isParsingLoading(state),
-    totalLoadedLines: getTotalLoadedLines(state),
+    excerptColumns: fromParsing.getParsedExcerptColumns(state),
+    excerptLines: fromParsing.getExcerptLines(state),
+    loadingParsingResult: fromParsing.isParsingLoading(state),
+    totalLoadedLines: fromParsing.getTotalLoadedLines(state),
 });
 
 const mapDispatchToProps = {

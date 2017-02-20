@@ -8,9 +8,8 @@ import PublicationExcerpt from './PublicationExcerpt';
 
 import { editField } from '../fields';
 import { polyglot as polyglotPropTypes, field as fieldPropTypes } from '../../propTypes';
-import { getPublicationPreview } from './';
+import { fromFields, fromPublicationPreview } from '../';
 import Card from '../../lib/Card';
-import { fromFields } from '../../selectors';
 
 export const PublicationPreviewComponent = ({ columns, lines, editColumn, p: polyglot }) => (
     <Card initiallyExpanded className="publication-preview">
@@ -39,7 +38,7 @@ PublicationPreviewComponent.propTypes = {
 
 const mapStateToProps = state => ({
     columns: fromFields.getFields(state),
-    lines: getPublicationPreview(state),
+    lines: fromPublicationPreview.getPublicationPreview(state),
 });
 
 const mapDispatchToProps = {

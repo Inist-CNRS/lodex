@@ -8,17 +8,15 @@ import FlatButton from 'material-ui/FlatButton';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 
 import {
-    getPublish,
     publish as publishAction,
 } from './';
-import { getIsPublished } from '../publication';
-import { getIsValid } from '../validation';
+import { fromFields, fromPublish, fromPublication } from '../';
 import Alert from '../../lib/Alert';
 import Card from '../../lib/Card';
 import ButtonWithStatus from '../../lib/ButtonWithStatus';
 import { addField, loadField } from '../fields';
 import FieldForm from '../fields/FieldForm';
-import Validation from '../validation/Validation';
+import Validation from './Validation';
 
 export class PublishComponent extends Component {
     componentWillMount() {
@@ -34,7 +32,7 @@ export class PublishComponent extends Component {
     }
 
     render() {
-        const { canPublish, error, loading, p: polyglot, published } = this.props;
+        const { canPublish, error, isPublishing, p: polyglot, published } = this.props;
         return (
             <Card>
                 <CardHeader title={polyglot.t('publication')} />
@@ -49,7 +47,7 @@ export class PublishComponent extends Component {
                     />
                     <ButtonWithStatus
                         className="btn-publish"
-                        loading={loading}
+                        loading={isPublishing}
                         error={error}
                         success={published}
                         label={polyglot.t('publish')}
@@ -73,7 +71,7 @@ PublishComponent.propTypes = {
     addColumn: PropTypes.func.isRequired,
     canPublish: PropTypes.bool.isRequired,
     error: PropTypes.string,
-    loading: PropTypes.bool.isRequired,
+    isPublishing: PropTypes.bool.isRequired,
     p: polyglotPropTypes.isRequired,
     onPublish: PropTypes.func.isRequired,
     published: PropTypes.bool.isRequired,
@@ -85,9 +83,10 @@ PublishComponent.defaultProps = {
 };
 
 const mapStateToProps = state => ({
-    ...getPublish(state),
-    canPublish: getIsValid(state),
-    published: getIsPublished(state),
+    canPublish: fromFields.areAllFieldsValid(state),
+    error: fromPublish.getPublishingError(state),
+    isPublishing: fromPublish.getIsPublishing(state),
+    published: fromPublication.hasPublishedDataset(state),
 });
 
 const mapDispatchToProps = ({

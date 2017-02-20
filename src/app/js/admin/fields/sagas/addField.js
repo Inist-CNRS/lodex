@@ -5,7 +5,9 @@ import {
     addFieldError,
     addFieldSuccess,
 } from '../';
-import { fromFields } from '../../../selectors';
+
+import { fromFields } from '../../';
+
 import fetchSaga from '../../../lib/fetchSaga';
 import { getCreateFieldRequest } from '../../../fetch/';
 

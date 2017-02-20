@@ -1,7 +1,9 @@
 import omit from 'lodash.omit';
 import { createAction, handleActions } from 'redux-actions';
+import { createSelector } from 'reselect';
 
 import { getTransformersMetas, getTransformerMetas } from '../../../../common/transformers';
+import { COVER_COLLECTION } from '../../../../common/cover';
 
 export const FIELD_FORM_NAME = 'field';
 
@@ -16,6 +18,7 @@ export const REMOVE_FIELD = 'REMOVE_FIELD';
 export const REMOVE_FIELD_ERROR = 'REMOVE_FIELD_ERROR';
 export const REMOVE_FIELD_SUCCESS = 'REMOVE_FIELD_SUCCESS';
 export const REFRESH_FIELD = 'REFRESH_FIELD';
+export const SET_VALIDATION = 'SET_VALIDATION';
 export const UPDATE_FIELD_ERROR = 'UPDATE_FIELD_ERROR';
 export const UPDATE_FIELD_SUCCESS = 'UPDATE_FIELD_SUCCESS';
 
@@ -30,11 +33,13 @@ export const removeField = createAction(REMOVE_FIELD);
 export const removeFieldError = createAction(REMOVE_FIELD_ERROR);
 export const removeFieldSuccess = createAction(REMOVE_FIELD_SUCCESS);
 export const refreshField = createAction(REFRESH_FIELD);
+export const setValidation = createAction(SET_VALIDATION);
 export const updateFieldError = createAction(UPDATE_FIELD_ERROR);
 export const updateFieldSuccess = createAction(UPDATE_FIELD_SUCCESS);
 
 export const defaultState = {
     byId: {},
+    allValid: true,
     list: [],
     editedFieldId: null,
 };
@@ -74,6 +79,10 @@ export default handleActions({
             [payload._id]: payload,
         },
     }),
+    SET_VALIDATION: (state, { payload }) => ({
+        ...state,
+        ...payload,
+    }),
 }, defaultState);
 
 const getFields = ({ byId, list }) => list.map(id => byId[id]);
@@ -82,24 +91,41 @@ const getNbFields = ({ list }) => list.length;
 
 const getEditedField = state => state.byId[state.editedFieldId];
 
+export const getCollectionFields = createSelector(
+    getFields,
+    fields => fields.filter(f => f.cover === COVER_COLLECTION),
+);
+
+export const hasPublicationFields = ({ list }) => list.length > 0;
+
 export const getTransformers = () => getTransformersMetas();
 
 export const getTransformerArgs = (state, operation) => getTransformerMetas(operation);
 
 export const getFieldFormData = state => state.form.field.values;
 
-export const getSchemeSearchRequest = (state, query) => ({
-    url: `http://lov.okfn.org/dataset/lov/api/v2/term/autocomplete?q=${query}`,
-});
+const getValidationFields = state => state.fields;
 
-export const getSchemeMenuItemsDataFromResponse = (state, response) => (
-    response && response.results
-        ? response.results.map(r => ({ label: r.localName[0], uri: r.uri[0] }))
-        : []
+export const getInvalidFields = createSelector(
+    getFields,
+    getValidationFields,
+    (fields = [], validationFields = []) => validationFields
+        .filter(({ isValid }) => !isValid)
+        .map(field => ({
+            ...field,
+            index: fields.findIndex(f => f.name === field.name),
+        })),
 );
 
-export const fromFields = {
+export const areAllFieldsValid = state => state.allValid;
+
+export const selectors = {
+    areAllFieldsValid,
     getFields,
-    getNbFields,
+    getCollectionFields,
     getEditedField,
+    getNbFields,
+    hasPublicationFields,
+    getTransformers,
+    getTransformerArgs,
 };

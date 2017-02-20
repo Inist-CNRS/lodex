@@ -17,6 +17,7 @@ export const publishSuccess = createAction(PUBLISH_SUCCESS);
 export const publishError = createAction(PUBLISH_ERROR);
 
 export const defaultState = {
+    error: null,
     loading: false,
 };
 
@@ -33,7 +34,7 @@ export default handleActions({
     }),
     PUBLISH_ERROR: (state, { payload: error }) => ({
         ...state,
-        error,
+        error: error.message || error,
         loading: false,
     }),
     [combineActions(REDUX_FORM_CHANGE, REDUX_FORM_ARRAY_INSERT, REDUX_FORM_ARRAY_REMOVE)]: (state, { meta: { form } }) => (
@@ -50,4 +51,10 @@ export default handleActions({
     }),
 }, defaultState);
 
-export const getPublish = state => state.admin.publish;
+export const getIsPublishing = state => state.loading;
+export const getPublishingError = state => state.error;
+
+export const selectors = {
+    getIsPublishing,
+    getPublishingError,
+};

@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { getInvalidFields } from '../validation';
+import { fromFields } from '../';
 import ValidationField from './ValidationField';
 import { editField as editFieldAction } from '../fields';
 import { validationField as validationFieldPropType } from '../../propTypes';
@@ -25,7 +25,7 @@ ValidationComponent.propTypes = {
 
 
 const mapStateToProps = state => ({
-    fields: getInvalidFields(state),
+    fields: fromFields.getInvalidFields(state),
 });
 
 const mapDispatchToProps = { editField: editFieldAction };

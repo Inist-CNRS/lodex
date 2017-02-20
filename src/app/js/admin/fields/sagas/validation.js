@@ -1,17 +1,15 @@
 import { call, put, select, takeLatest } from 'redux-saga/effects';
-import validateFields from '../../../../common/validateFields';
-
-import {
-    setValidation,
-} from './';
+import validateFields from '../../../../../common/validateFields';
 
 import {
     LOAD_FIELD_SUCCESS,
+    setValidation,
     ADD_FIELD_SUCCESS,
     REMOVE_FIELD_SUCCESS,
     UPDATE_FIELD_SUCCESS,
-} from '../fields';
-import { fromFields } from '../../selectors';
+} from '../';
+
+import { fromFields } from '../../';
 
 export function* handleNeedValidation() {
     const fields = yield select(fromFields.getFields);
