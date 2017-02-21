@@ -21,7 +21,7 @@ describe('exportCsv', () => {
     });
 
     describe('getCsvField', () => {
-        const getCharacteristicByName = name => ({ value: `${name}_value` });
+        const getCharacteristicByName = name => `${name}_value`;
         const getCsvField = getCsvFieldFactory(getCharacteristicByName);
 
         it('should return an object with specified label', () => {
@@ -54,7 +54,7 @@ describe('exportCsv', () => {
             expect(result.filter('bar')).toEqual('bar');
         });
 
-        it('should return object with filter returning getCharacteristicByName result when field cover is `dataset`', () => {
+        it('should return object.filter returning getCharacteristicByName result if field cover is dataset', () => {
             const result = getCsvField({
                 cover: 'dataset',
                 name: 'foo',

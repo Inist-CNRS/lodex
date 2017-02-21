@@ -22,7 +22,7 @@ export const getLastVersionFactory = defaultDocument => function getLastVersion(
 };
 
 export const getCsvFieldFactory = getCharacteristicByName => ({ cover, label, name }) => ({
-    filter: value => (cover === 'dataset' ? getCharacteristicByName(name).value : value),
+    filter: value => (cover === 'dataset' ? getCharacteristicByName(name) : value),
     label: label || name,
     name,
     quoted: true,
@@ -35,7 +35,7 @@ export const getDefaultDocuments = fields =>
 
 export const exportCsvFactory = csvTransformStreamFactory => (fields, characteristics, stream) => {
     const defaultDocument = getDefaultDocuments(fields);
-    const getCharacteristicByName = name => characteristics.find(({ name: cName }) => cName === name);
+    const getCharacteristicByName = name => characteristics[0][name];
     const getCsvField = getCsvFieldFactory(getCharacteristicByName);
 
     const jsoncsvStream = csvTransformStreamFactory({

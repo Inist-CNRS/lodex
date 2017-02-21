@@ -6,7 +6,6 @@ describe('publication', () => {
     const characteristics = [{ characteristic1: 'characteristic1_value' }];
 
     it('should return the correct status if no dataset has been published', async () => {
-
         const ctx = {
             field: {
                 find: () => ({
@@ -14,9 +13,7 @@ describe('publication', () => {
                 }),
             },
             publishedCharacteristic: {
-                findAllVersions: () => ({
-                    toArray: () => Promise.resolve(characteristics),
-                }),
+                findAllVersions: () => Promise.resolve(characteristics),
             },
             publishedDataset: {
                 count: () => Promise.resolve(0),
@@ -40,9 +37,7 @@ describe('publication', () => {
                 }),
             },
             publishedCharacteristic: {
-                findAllVersions: () => ({
-                    toArray: () => Promise.resolve(characteristics),
-                }),
+                findAllVersions: () => Promise.resolve(characteristics),
             },
             publishedDataset: {
                 count: () => Promise.resolve(100),
