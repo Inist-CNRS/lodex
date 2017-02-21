@@ -29,7 +29,7 @@ const TransformerListItem = ({ availableTransformers, fieldName, onRemove, p: po
             label={polyglot.t('select_an_operation')}
         >
             {availableTransformers.map(
-                t => <MenuItem key={t.name} className={t.name} value={t.name} primaryText={t.name} />,
+                t => <MenuItem key={t.name} className={`transformer_${t.name}`} value={t.name} primaryText={t.name} />,
             )}
         </Field>
         <FieldArray name={`${fieldName}.args`} component={TransformerArgList} />

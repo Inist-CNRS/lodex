@@ -58,8 +58,8 @@ describe('Admin', () => {
                 await driver.findElement(By.css('#field_form .add-transformer')).click();
 
                 await driver.findElement(By.css('.operation')).click();
-                await driver.wait(until.elementLocated(By.css('.AUTOGENERATE_URI')));
-                await driver.findElement(By.css('.AUTOGENERATE_URI')).click();
+                await driver.wait(until.elementLocated(By.css('.transformer_AUTOGENERATE_URI')));
+                await driver.findElement(By.css('.transformer_AUTOGENERATE_URI')).click();
             });
 
             it('should have completed uri column with generated uri', async () => {
@@ -111,19 +111,19 @@ describe('Admin', () => {
                 const operationButton = await driver.findElement(By.css('.operation'));
                 await driver.wait(elementIsClicked(operationButton), DEFAULT_WAIT_TIMEOUT);
 
-                await driver.wait(until.elementLocated(By.css('.LINK')), DEFAULT_WAIT_TIMEOUT);
-                const linkButton = await driver.findElement(By.css('.LINK'));
+                await driver.wait(until.elementLocated(By.css('.transformer_LINK')), DEFAULT_WAIT_TIMEOUT);
+                const linkButton = await driver.findElement(By.css('.transformer_LINK'));
                 await driver.wait(elementIsClicked(linkButton), DEFAULT_WAIT_TIMEOUT);
 
-                await driver.findElement(By.css('#field_form .reference input'));
+                await driver.findElement(By.css('#field_form .transformer_arg_reference input'));
             });
 
             it('should configure transformer Link', async () => {
-                const reference = await driver.findElement(By.css('#field_form .reference input'));
+                const reference = await driver.findElement(By.css('#field_form .transformer_arg_reference input'));
                 await driver.wait(inputElementIsFocusable(reference), DEFAULT_WAIT_TIMEOUT);
                 reference.sendKeys('stronger_than');
 
-                const identifier = await driver.findElement(By.css('#field_form .identifier input'));
+                const identifier = await driver.findElement(By.css('#field_form .transformer_arg_identifier input'));
                 await driver.wait(inputElementIsFocusable(identifier), DEFAULT_WAIT_TIMEOUT);
                 identifier.sendKeys('id');
                 const backButton = await driver.findElement(By.css('.btn-exit-column-edition'));
@@ -171,6 +171,79 @@ describe('Admin', () => {
             });
         });
 
+        describe('adding VALUE column', () => {
+            it('should display form for newField4 column when clicking on btn-add-column', async () => {
+                await driver.executeScript('document.getElementsByClassName("add-column")[0].scrollIntoView(true);');
+                await driver.sleep(1000);
+                const button = await driver.findElement(By.css('.add-column'));
+                await driver.wait(elementIsClicked(button), DEFAULT_WAIT_TIMEOUT);
+
+                await driver.wait(until.elementLocated(By.css('#field_form')), DEFAULT_WAIT_TIMEOUT);
+                const name = await driver.findElement(By.css('#field_form input[name=name]'));
+                const label = await driver.findElement(By.css('#field_form input[name=label]'));
+
+                await driver.wait(elementValueIs(name, 'newField4'), DEFAULT_WAIT_TIMEOUT);
+                await driver.wait(elementValueIs(label, 'newField 4'), DEFAULT_WAIT_TIMEOUT);
+            });
+
+            it('should change column name', async () => {
+                const name = await driver.findElement(By.css('#field_form input[name=name]'));
+                await driver.wait(inputElementIsFocusable(name), DEFAULT_WAIT_TIMEOUT);
+
+                const label = await driver.findElement(By.css('#field_form input[name=label]'));
+                await driver.wait(inputElementIsFocusable(label), DEFAULT_WAIT_TIMEOUT);
+
+                await name.clear();
+                await name.sendKeys('custom');
+                await label.clear();
+                await label.sendKeys('Custom');
+                const th = await driver.findElement(By.css('.publication-preview th'));
+                await driver.wait(until.elementTextIs(th, 'Custom'), DEFAULT_WAIT_TIMEOUT);
+            });
+
+            it('should add a transformer VALUE', async () => {
+                const addTransformerButton = await driver.findElement(By.css('#field_form .add-transformer'));
+                await driver.wait(elementIsClicked(addTransformerButton), DEFAULT_WAIT_TIMEOUT);
+
+                const operationButton = await driver.findElement(By.css('.operation'));
+                await driver.wait(elementIsClicked(operationButton), DEFAULT_WAIT_TIMEOUT);
+
+                await driver.wait(until.elementLocated(By.css('.transformer_VALUE')), DEFAULT_WAIT_TIMEOUT);
+                const transformerButton = await driver.findElement(By.css('.transformer_VALUE'));
+                await driver.wait(elementIsClicked(transformerButton), DEFAULT_WAIT_TIMEOUT);
+
+                await driver.findElement(By.css('#field_form .transformer_arg_value input'));
+            });
+
+            it('should configure transformer VALUE', async () => {
+                const reference = await driver.findElement(By.css('#field_form .transformer_arg_value input'));
+                await driver.wait(inputElementIsFocusable(reference), DEFAULT_WAIT_TIMEOUT);
+                reference.sendKeys('a custom value');
+
+                const backButton = await driver.findElement(By.css('.btn-exit-column-edition'));
+                await driver.wait(elementIsClicked(backButton), DEFAULT_WAIT_TIMEOUT);
+            });
+
+            it('should have added custom column with value', async () => {
+                await driver.wait(
+                    until.elementLocated(By.css('.publication-preview tr td:nth-child(4)')),
+                    DEFAULT_WAIT_TIMEOUT,
+                );
+                const tds = await driver.findElements(By.css('.publication-preview tr td:nth-child(4)'));
+                expect(tds.length).toBe(4);
+
+                const expectedTexts = [
+                    'a custom value',
+                    'a custom value',
+                    'a custom value',
+                    'a custom value',
+                ];
+                await Promise.all(tds.map((td, index) =>
+                    driver.wait(until.elementTextIs(td, expectedTexts[index]), DEFAULT_WAIT_TIMEOUT)),
+                );
+            });
+        });
+
         describe('Publishing', () => {
             it('should display the "data published" message after publication', async () => {
                 const buttonPublish = await driver.findElement(By.css('.btn-publish'));
@@ -193,7 +266,7 @@ describe('Admin', () => {
                 await driver.wait(until.elementLocated(By.css('.dataset')), DEFAULT_WAIT_TIMEOUT);
                 const headers = await driver.findElements(By.css('.dataset table th'));
                 const headersText = await Promise.all(headers.map(h => h.getText()));
-                expect(headersText).toEqual(['uri', 'stronger', 'name']);
+                expect(headersText).toEqual(['uri', 'stronger', 'name', 'custom']);
 
                 const rows = await Promise.all([1, 2, 3, 4].map(index =>
                     Promise.all([
@@ -206,11 +279,15 @@ describe('Admin', () => {
                         driver
                             .findElement(By.css(`.dataset table tbody tr:nth-child(${index}) td.dataset-name`))
                             .getText(),
+                        driver
+                            .findElement(By.css(`.dataset table tbody tr:nth-child(${index}) td.dataset-custom`))
+                            .getText(),
                     ])
-                    .then(([uri, stronger, name]) => ({
+                    .then(([uri, stronger, name, custom]) => ({
                         uri,
                         stronger,
                         name,
+                        custom,
                     }))));
 
                 const expected = {
@@ -220,8 +297,9 @@ describe('Admin', () => {
                     invalid_reference: '',
                 };
 
-                rows.forEach(({ stronger, name }) => {
+                rows.forEach(({ stronger, name, custom }) => {
                     expect((rows.find(r => r.uri === stronger) || { name: '' }).name).toEqual(expected[name]);
+                    expect(custom).toEqual('a custom value');
                 });
             });
         });
