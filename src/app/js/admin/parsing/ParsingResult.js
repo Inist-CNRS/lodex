@@ -3,7 +3,7 @@ import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 
-import { CardActions, CardHeader, CardText } from 'material-ui/Card';
+import { CardHeader, CardText } from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
 import { grey400 } from 'material-ui/styles/colors';
 import Card from '../../lib/Card';
@@ -16,7 +16,6 @@ import {
     fromParsing,
 } from '../selectors';
 import ParsingExcerpt from './ParsingExcerpt';
-import ParsingSummary from './ParsingSummary';
 
 const styles = {
     list: {
@@ -29,13 +28,6 @@ const styles = {
     listItem: {
         whiteSpace: 'nowrap',
     },
-    parsingContainer: {
-        display: 'flex',
-        justifyContent: 'space-between',
-    },
-    parsingRightSection: {
-        flexGrow: 2,
-    },
     title: {
         height: '36px',
         lineHeight: '36px',
@@ -47,17 +39,6 @@ const styles = {
 };
 
 export class ParsingResultComponent extends Component {
-    constructor() {
-        super();
-        this.state = {
-            showErrors: false,
-        };
-    }
-
-    handleShowExcerpt = () => {
-        this.setState({ showErrors: false });
-    }
-
     handleClearParsing = () => {
         event.preventDefault();
         event.stopPropagation();
@@ -71,13 +52,12 @@ export class ParsingResultComponent extends Component {
             totalLoadedLines,
             p: polyglot,
         } = this.props;
-        const { showErrors } = this.state;
 
         return (
             <Card className="parsingResult" initiallyExpanded>
                 <CardHeader
                     showExpandableButton
-                    title={polyglot.t('Parsing summary')}
+                    title={polyglot.t('parsing_summary', { count: totalLoadedLines })}
                     titleStyle={styles.title}
                 >
                     <FlatButton
@@ -86,20 +66,11 @@ export class ParsingResultComponent extends Component {
                         label={polyglot.t('Upload another file')}
                     />
                 </CardHeader>
-                <CardText style={styles.parsingContainer} expandable>
-                    <ParsingSummary
-                        onShowExcerpt={this.handleShowExcerpt}
-                        showErrors={showErrors}
-                        totalLoadedLines={totalLoadedLines}
+                <CardText expandable>
+                    <ParsingExcerpt
+                        columns={excerptColumns}
+                        lines={excerptLines}
                     />
-                    <div style={styles.parsingRightSection}>
-                        {!showErrors &&
-                            <ParsingExcerpt
-                                columns={excerptColumns}
-                                lines={excerptLines}
-                            />
-                        }
-                    </div>
                 </CardText>
             </Card>
         );

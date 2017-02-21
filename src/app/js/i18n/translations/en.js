@@ -2,7 +2,7 @@
 export default {
     Admin: 'Admin',
     'Sign in': 'Sign in',
-    'Parsing summary': 'Parsing summary',
+    parsing_summary: 'Parsed %{count} lines',
     'total lines': 'total lines',
     'successfully parsed': 'successfully parsed',
     'with errors': 'with errors',
