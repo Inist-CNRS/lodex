@@ -2,7 +2,7 @@ const transformation = (_, args) => {
     const sourceField = args.find(a => a.name === 'column');
 
     if (!sourceField) {
-        throw new Error('Innvalid Argument for COLUMN transformation');
+        throw new Error('Invalid Argument for COLUMN transformation');
     }
 
     return doc => new Promise((resolve, reject) => {
