@@ -1,1 +1,5 @@
-export { default as csv } from './exportCsv';
+import csv from './exportCsv';
+
+export default {
+    csv,
+};

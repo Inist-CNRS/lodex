@@ -2,16 +2,15 @@ import React, { PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
-
 import translate from 'redux-polyglot/translate';
 import IconButton from 'material-ui/IconButton';
 import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
-import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
+import FileDownloadIcon from 'material-ui/svg-icons/file/file-download';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
-import { exportPublishedDataset } from '../../export';
-import { toggleLogin as toggleLoginAction } from '../../user';
+import { exportPublishedDataset as exportPublishedDatasetAction } from '../../export';
+import availableExports from '../../export/availableExports';
 
 const styles = {
     icon: {
@@ -21,38 +20,35 @@ const styles = {
 
 const origin = { horizontal: 'right', vertical: 'top' };
 
-export const MenuSignedInComponent = ({ onToggleLogin, onExport, p: polyglot, ...props }) => (
+export const MenuSignedInComponent = ({ exportPublishedDataset, p: polyglot, ...props }) => (
     <IconMenu
         {...props}
         iconStyle={styles.icon}
         iconButtonElement={
-            <IconButton><MoreVertIcon /></IconButton>
+            <IconButton><FileDownloadIcon /></IconButton>
         }
         targetOrigin={origin}
         anchorOrigin={origin}
     >
-        <MenuItem
-            className="btn-sign-in"
-            primaryText={polyglot.t('Sign in')}
-            onClick={onToggleLogin}
-        />
-        <MenuItem
-            className="btn-export"
-            primaryText={polyglot.t('export')}
-            onClick={onExport}
-        />
+        {
+            availableExports.map(type => (
+                <MenuItem
+                    className="btn-export"
+                    primaryText={polyglot.t('export', { type })}
+                    onClick={() => exportPublishedDataset(type)}
+                />
+            ))
+        }
     </IconMenu>
 );
 
 MenuSignedInComponent.propTypes = {
-    onExport: PropTypes.func.isRequired,
-    onToggleLogin: PropTypes.func.isRequired,
+    exportPublishedDataset: PropTypes.func.isRequired,
     p: polyglotPropTypes.isRequired,
 };
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-    onExport: () => exportPublishedDataset('csv'),
-    onToggleLogin: toggleLoginAction,
+    exportPublishedDataset: exportPublishedDatasetAction,
 }, dispatch);
 
 export default compose(

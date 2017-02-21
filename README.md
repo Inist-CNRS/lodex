@@ -78,3 +78,5 @@ For example for the loader csv:
         },
 ...
 ```
+
+## Adding new exporter
