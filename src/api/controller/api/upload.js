@@ -32,7 +32,7 @@ export async function uploadMiddleware(ctx) {
         await ctx.dataset.insertBatch(documents);
         ctx.status = 200;
         ctx.body = {
-            totalLines: documents.length,
+            totalLines: await ctx.dataset.count(),
         };
     } catch (error) {
         ctx.status = 500;

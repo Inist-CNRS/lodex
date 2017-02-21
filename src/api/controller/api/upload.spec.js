@@ -12,6 +12,7 @@ describe('upload', () => {
             },
             dataset: {
                 remove: () => Promise.resolve(),
+                count: () => Promise.resolve('dataset count'),
             },
             getParser: () => {
                 throw new Error('Parsing error');
@@ -27,7 +28,6 @@ describe('upload', () => {
     it('should call all ctx method in turn and have body set to parser result length', async () => {
         const myParser = () => Promise.resolve({
             name: 'myParser result',
-            length: 'myParser result length',
         });
         const myStream = {
             put: buffer => expect(buffer).toBe('buffer'),
@@ -44,9 +44,9 @@ describe('upload', () => {
                 insertBatch: (documents) => {
                     expect(documents).toEqual({
                         name: 'myParser result',
-                        length: 'myParser result length',
                     });
                 },
+                count: () => Promise.resolve('dataset count'),
             },
             getParser: (type) => {
                 expect(type).toBe('text/csv');
@@ -63,7 +63,7 @@ describe('upload', () => {
         await uploadMiddleware(ctx);
 
         expect(ctx.body).toEqual({
-            totalLines: 'myParser result length',
+            totalLines: 'dataset count',
         });
     });
 });
