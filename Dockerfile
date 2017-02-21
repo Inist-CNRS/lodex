@@ -22,7 +22,7 @@ RUN cp -n ./config/production-dist.js ./config/production.js && \
 # See https://github.com/Inist-CNRS/ezmaster#ezmasterizing-an-application
 RUN echo '{ \
   "httpPort": 3000, \
-  "configPath": "/app/config/production.js", \
+  "configPath": "/app/config.json", \
 }' > /etc/ezmaster.json
 
 EXPOSE 3000
