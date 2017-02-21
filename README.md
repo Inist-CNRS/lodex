@@ -41,10 +41,15 @@ You can add new loader to lodex.
 Loader are added in the `src/api/loaders` directory.
 You also need to declare the loader in `src/api/loaders/index.js`
 ```js
+import newLoader from './newLoader';
+export default {
+    //...
+    'content/type': newLoader,
+};
 export { default as new } from './newLoader';
 ```
-Notice how the `as new` will determine the name of the loader.
-This name must match the extension of the target file. Thus, a xls loader must be exported as xls.
+Notice how the key will determine the name of the loader.
+This name must match the content-type of the target file. Thus, a text/csv loader must be exported as text/csv.
 
 The loader must take the form of a curried function receiving a config and then a binary stream and returning a stream of javascript object
 ```js
