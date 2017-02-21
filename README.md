@@ -80,3 +80,15 @@ For example for the loader csv:
 ```
 
 ## Adding new exporter
+
+You can add new exporter to lodex.
+Exporter are added in the `src/api/exporters` directory.
+You also need to declare the exporter in `src/api/exporters/index.js`.
+```js
+import newExporter from './newExporter';
+export default {
+    //...
+    'new': newExporter,
+};
+```
+note that the key determine the name of the exporter
