@@ -5293,10 +5293,6 @@ url-parse@^1.1.1:
     querystringify "0.0.x"
     requires-port "1.0.x"
 
-url-polyfill@webcomponents/URL:
-  version "0.5.7"
-  resolved "https://codeload.github.com/webcomponents/URL/tar.gz/812ca9b2baae653290aceb36362d219cb96c0f35"
-
 url@^0.11.0:
   version "0.11.0"
   resolved "https://registry.yarnpkg.com/url/-/url-0.11.0.tgz#3838e97cfc60521eb73c525a8e55bfdd9e2e28f1"

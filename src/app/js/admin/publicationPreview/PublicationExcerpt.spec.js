@@ -33,9 +33,11 @@ describe('<PublicationExcerpt />', () => {
             lines={lines}
             p={{ t: key => key }}
         />);
-        expect(wrapper.contains(<TableRowColumn>foo1</TableRowColumn>)).toEqual(true);
-        expect(wrapper.contains(<TableRowColumn>bar1</TableRowColumn>)).toEqual(true);
-        expect(wrapper.contains(<TableRowColumn>foo2</TableRowColumn>)).toEqual(true);
-        expect(wrapper.contains(<TableRowColumn>bar2</TableRowColumn>)).toEqual(true);
+
+        const cols = wrapper.find(TableRowColumn);
+        expect(cols.at(0).children().text()).toEqual('foo1');
+        expect(cols.at(1).children().text()).toEqual('bar1');
+        expect(cols.at(2).children().text()).toEqual('foo2');
+        expect(cols.at(3).children().text()).toEqual('bar2');
     });
 });

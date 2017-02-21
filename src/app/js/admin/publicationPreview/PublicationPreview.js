@@ -5,7 +5,7 @@ import translate from 'redux-polyglot/translate';
 import { CardHeader, CardText } from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
 
-import PublicationExcerpt from './PublicationExcerpt';
+import Publication from './Publication';
 
 import { addField, editField } from '../fields';
 import { polyglot as polyglotPropTypes, field as fieldPropTypes } from '../../propTypes';
@@ -30,8 +30,14 @@ export class PublicationPreviewComponent extends Component {
         this.props.addColumn();
     }
 
+    handleExitColumEdition = (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        this.props.editColumn(null);
+    }
+
     render() {
-        const { columns, lines, editColumn, p: polyglot } = this.props;
+        const { columns, lines, editColumn, editedColumn, p: polyglot } = this.props;
 
         return (
             <Card initiallyExpanded className="publication-preview">
@@ -46,10 +52,19 @@ export class PublicationPreviewComponent extends Component {
                         onClick={this.handleAddColumnClick}
                         style={styles.button}
                     />
+                    {editedColumn &&
+                        <FlatButton
+                            className="btn-exit-column-edition"
+                            label={polyglot.t('exit_column_edition')}
+                            onClick={this.handleExitColumEdition}
+                            style={styles.button}
+                        />
+                    }
                 </CardHeader>
 
                 <CardText expandable>
-                    <PublicationExcerpt
+                    <Publication
+                        editedColumn={editedColumn}
                         columns={columns}
                         lines={lines}
                         onHeaderClick={editColumn}
@@ -63,13 +78,19 @@ export class PublicationPreviewComponent extends Component {
 PublicationPreviewComponent.propTypes = {
     addColumn: PropTypes.func.isRequired,
     columns: PropTypes.arrayOf(fieldPropTypes).isRequired,
+    editedColumn: fieldPropTypes,
     lines: PropTypes.arrayOf(PropTypes.object).isRequired,
     p: polyglotPropTypes.isRequired,
     editColumn: PropTypes.func.isRequired,
 };
 
+PublicationPreviewComponent.defaultProps = {
+    editedColumn: null,
+};
+
 const mapStateToProps = state => ({
     columns: fromFields.getFields(state),
+    editedColumn: fromFields.getEditedField(state),
     lines: fromPublicationPreview.getPublicationPreview(state),
 });
 

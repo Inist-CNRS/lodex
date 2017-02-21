@@ -28,13 +28,13 @@ export const property = PropTypes.shape({
 });
 
 export const validationFieldProperty = PropTypes.shape({
-    error: PropTypes.string.isRequired,
-    isValid: PropTypes.string.isRequired,
+    error: PropTypes.string,
+    isValid: PropTypes.bool.isRequired,
     name: PropTypes.string.isRequired,
 });
 
 export const validationField = PropTypes.shape({
-    isValid: PropTypes.string.isRequired,
+    isValid: PropTypes.bool.isRequired,
     name: PropTypes.string.isRequired,
     properties: PropTypes.arrayOf(validationFieldProperty).isRequired,
 });

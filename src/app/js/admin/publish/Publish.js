@@ -14,7 +14,6 @@ import Alert from '../../lib/Alert';
 import Card from '../../lib/Card';
 import ButtonWithStatus from '../../lib/ButtonWithStatus';
 import { loadField } from '../fields';
-import FieldForm from '../fields/FieldForm';
 import Validation from './Validation';
 
 const styles = {
@@ -43,7 +42,7 @@ export class PublishComponent extends Component {
                 <CardHeader
                     title={polyglot.t('publication')}
                     subtitle={polyglot.t('publication_explanations')}
-                    style={styles.title}
+                    titleStyle={styles.title}
                 >
                     <ButtonWithStatus
                         className="btn-publish"
@@ -58,12 +57,7 @@ export class PublishComponent extends Component {
                     />
                 </CardHeader>
                 <CardText>
-                    <FieldForm />
-                </CardText>
-                <CardActions>
                     {error && <Alert><p>{error}</p></Alert>}
-                </CardActions>
-                <CardText>
                     {!canPublish && <Validation />}
                 </CardText>
             </Card>

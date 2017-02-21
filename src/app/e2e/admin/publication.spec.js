@@ -68,6 +68,9 @@ describe('Admin', () => {
                 await Promise.all(tds.map(td =>
                     driver.wait(until.elementTextMatches(td, /[A-Z0-9]{8}/), DEFAULT_WAIT_TIMEOUT)),
                 );
+
+                const backButton = await driver.findElement(By.css('.btn-exit-column-edition'));
+                await driver.wait(elementIsClicked(backButton), DEFAULT_WAIT_TIMEOUT);
             });
         });
 
@@ -97,23 +100,18 @@ describe('Admin', () => {
                 await name.sendKeys('stronger');
                 await label.clear();
                 await label.sendKeys('Stronger than');
-                const th = await driver.findElement(By.css('.publication-preview th:nth-child(2)'));
+                const th = await driver.findElement(By.css('.publication-preview th'));
                 await driver.wait(until.elementTextIs(th, 'Stronger than'), DEFAULT_WAIT_TIMEOUT);
             });
 
             it('should add a transformer LINK', async () => {
-                await driver.executeScript(
-                    'document.getElementsByClassName("add-transformer")[0].scrollIntoView(true);',
-                );
                 const addTransformerButton = await driver.findElement(By.css('#field_form .add-transformer'));
                 await driver.wait(elementIsClicked(addTransformerButton), DEFAULT_WAIT_TIMEOUT);
 
-                await driver.executeScript('document.getElementsByClassName("operation")[0].scrollIntoView(true);');
                 const operationButton = await driver.findElement(By.css('.operation'));
                 await driver.wait(elementIsClicked(operationButton), DEFAULT_WAIT_TIMEOUT);
 
                 await driver.wait(until.elementLocated(By.css('.LINK')), DEFAULT_WAIT_TIMEOUT);
-                await driver.executeScript('document.getElementsByClassName("LINK")[0].scrollIntoView(true);');
                 const linkButton = await driver.findElement(By.css('.LINK'));
                 await driver.wait(elementIsClicked(linkButton), DEFAULT_WAIT_TIMEOUT);
 
@@ -128,6 +126,8 @@ describe('Admin', () => {
                 const identifier = await driver.findElement(By.css('#field_form .identifier input'));
                 await driver.wait(inputElementIsFocusable(identifier), DEFAULT_WAIT_TIMEOUT);
                 identifier.sendKeys('id');
+                const backButton = await driver.findElement(By.css('.btn-exit-column-edition'));
+                await driver.wait(elementIsClicked(backButton), DEFAULT_WAIT_TIMEOUT);
             });
 
             it('should have added stronger column with link', async () => {
