@@ -1,4 +1,4 @@
-import expect from 'expect';
+import expect, { createSpy } from 'expect';
 
 import { uploadMiddleware } from './upload';
 
@@ -11,12 +11,10 @@ describe('upload', () => {
                 },
             },
             dataset: {
-                remove: () => Promise.resolve(),
-                count: () => Promise.resolve('dataset count'),
+                remove: createSpy(),
+                count: () => createSpy().andReturn(Promise.resolve('dataset count')),
             },
-            getParser: () => {
-                throw new Error('Parsing error');
-            },
+            getParser: createSpy().andThrow(new Error('Parsing error')),
         };
 
         await uploadMiddleware(ctx);
@@ -26,13 +24,9 @@ describe('upload', () => {
     });
 
     it('should call all ctx method in turn and have body set to parser result length', async () => {
-        const myParser = () => Promise.resolve({
+        const myParser = createSpy().andReturn(Promise.resolve({
             name: 'myParser result',
-        });
-        const myStream = {
-            put: buffer => expect(buffer).toBe('buffer'),
-            stop() {},
-        };
+        }));
         const ctx = {
             request: {
                 header: {
@@ -40,28 +34,26 @@ describe('upload', () => {
                 },
             },
             dataset: {
-                remove: () => Promise.resolve(),
-                insertBatch: (documents) => {
-                    expect(documents).toEqual({
-                        name: 'myParser result',
-                    });
-                },
-                count: () => Promise.resolve('dataset count'),
+                remove: createSpy(),
+                insertBatch: createSpy(),
+                count: createSpy().andReturn(Promise.resolve('dataset count')),
             },
-            getParser: (type) => {
-                expect(type).toBe('text/csv');
-                return myParser;
-            },
+            getParser: createSpy().andReturn(myParser),
             req: 'req',
-            rawBody: (req) => {
-                expect(req).toBe('req');
-                return Promise.resolve('buffer');
-            },
-            ReadableStreamBuffer: () => myStream,
+            requestToStream: createSpy().andReturn(Promise.resolve('stream')),
+            streamToArray: createSpy().andReturn('documents'),
         };
 
         await uploadMiddleware(ctx);
 
+        expect(ctx.dataset.remove).toHaveBeenCalledWith({});
+        expect(ctx.getParser).toHaveBeenCalledWith('text/csv');
+        expect(ctx.requestToStream).toHaveBeenCalledWith('req');
+        expect(myParser).toHaveBeenCalledWith('stream');
+        expect(ctx.streamToArray).toHaveBeenCalledWith({
+            name: 'myParser result',
+        });
+        expect(ctx.dataset.count).toHaveBeenCalled();
         expect(ctx.body).toEqual({
             totalLines: 'dataset count',
         });
