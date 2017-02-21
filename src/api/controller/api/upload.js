@@ -1,8 +1,8 @@
-import config from 'config';
 import rawBody from 'raw-body';
 import streamBuffers from 'stream-buffers';
 import streamToArray from 'stream-to-array';
 
+import config from '../../../../config.json';
 import loaders from '../../loaders';
 
 export const getParser = (type) => {

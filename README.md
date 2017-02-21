@@ -39,26 +39,42 @@ make test
 
 You can add new loader to lodex.
 Loader are added in the `src/api/loaders` directory.
-You also need to declare the loader in `src/api/loaders/index.js`
+A loader receive a config and the uploaded file as a stream, and return the modified stream.
+example of a csv parser:
 ```js
-import newLoader from './newLoader';
+// src/api/loaders/parseCsv.js
+import parseCsv from 'csv-parse';
+
+export default config => stream =>
+    stream.pipe(parseCsv({
+        columns: true,
+        ...config,
+    }));
+```
+Once the loader created you also need to declare it in `src/api/loaders/index.js`
+```js
+import parseCsv from './parseCsv'; // eslint-disable-line
+
+
 export default {
-    //...
-    'content/type': newLoader,
+    // ...
+    'text/csv': parseCsv,
 };
-export { default as new } from './newLoader';
+
 ```
 Notice how the key will determine the name of the loader.
-This name must match the content-type of the target file. Thus, a text/csv loader must be exported as text/csv.
+This name must match the content-type of the target file.
+This is how we determine which loader to use.
+Thus, a text/csv loader must be exported as text/csv.
 
-The loader must take the form of a curried function receiving a config and then a binary stream and returning a stream of javascript object
-```js
-config => stream => {
-    stream.pipe(/*... your transformation ...*/)
-
-    return stream;
-}
+The config is taken from config.json, in `loader.<content-type>`, and allow to configure your loader on an instance basis.
+For example for the loader csv:
+```json
+...
+    "loader": {
+        "text/csv": {
+            "quote": "\"",
+            "delimiter": ";"
+        },
+...
 ```
-
-The config is taken from production.js, in `loader.fileExtension`, and allow to configure your loader on an instance basis.
-For example for the csv parser it allow to give the delimiter.

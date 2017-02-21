@@ -2,5 +2,15 @@
    "username": "user",
    "password": "secret",
    "naan": "67375",
-   "subPublisherId": "39D"
+   "subPublisherId": "39D",
+    "loader": {
+        "text/csv": {
+            "quote": "\"",
+            "delimiter": ";"
+        },
+        "text/tab-separated-values": {
+            "quote": "\"",
+            "delimiter": "\t"
+        }
+    }
 }

@@ -9,14 +9,4 @@ module.exports = {
         headerSecret: 'header',
         expiresIn: 10 * 3600, // 10 hours
     },
-    loader: {
-        'text/csv': {
-            quote: '"',
-            delimiter: ';',
-        },
-        'text/tab-separated-values': {
-            quote: '"',
-            delimiter: '\t',
-        },
-    },
 };
