@@ -1,13 +1,13 @@
 import rawBody from 'raw-body';
 import streamBuffers from 'stream-buffers';
 
-import * as parsers from '../../parsers';
+import * as loaders from '../../loaders';
 
 export const getParser = (type) => {
     switch (type) {
     case 'text/csv':
     case 'text/tab-separated-values':
-        return parsers.csv;
+        return loaders.csv;
     default:
         throw new Error(`Unsupported document type: ${type}`);
     }

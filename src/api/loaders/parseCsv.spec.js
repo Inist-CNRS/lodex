@@ -15,7 +15,7 @@ describe('parseCsv', () => {
         const stream = getStream(
 `a;b;c
 1;2;3
-4;"hello\nworld";6`
+4;"hello\nworld";6`,
         );
         expect(await parseCsv(stream)).toEqual([{
             a: '1',
@@ -33,7 +33,7 @@ describe('parseCsv', () => {
 `a;b;c
 1;2;3
 4;5;6;7
-8;9;10`
+8;9;10`,
         );
 
         let error;

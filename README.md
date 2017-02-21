@@ -35,18 +35,18 @@ To execute all tests, run the following command:
 make test
 ```
 
-## Adding a new parser
+## Adding a new loader
 
-You can add new parser to lodex.
-Parser are added in the `src/api/parsers` directory.
-You also need to declare the parser in `src/api/parsers/index.js`
+You can add new loader to lodex.
+Loader are added in the `src/api/loaders` directory.
+You also need to declare the loader in `src/api/loaders/index.js`
 ```js
-export { default as new } from './newParser';
+export { default as new } from './newLoader';
 ```
-Notice how the `as new` will determine the name of the parser.
-This name must match the extension of the target file. Thus, a xls parser must be exported as xls.
+Notice how the `as new` will determine the name of the loader.
+This name must match the extension of the target file. Thus, a xls loader must be exported as xls.
 
-The parser must take the form of a curried function receiving a config and then a binary stream and returning a stream of javascript object
+The loader must take the form of a curried function receiving a config and then a binary stream and returning a stream of javascript object
 ```js
 config => stream => {
     stream.pipe(/*... your transformation ...*/)
@@ -55,5 +55,5 @@ config => stream => {
 }
 ```
 
-The config is taken from production.js, in `parser.fileExtension`, and allow to configure your parser on an instance basis.
+The config is taken from production.js, in `loader.fileExtension`, and allow to configure your loader on an instance basis.
 For example for the csv parser it allow to give the delimiter.
