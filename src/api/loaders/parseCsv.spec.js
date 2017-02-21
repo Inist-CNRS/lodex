@@ -17,7 +17,9 @@ describe('parseCsv', () => {
 1;2;3
 4;"hello\nworld";6`,
         );
-        expect(await parseCsv(stream)).toEqual([{
+        expect(await parseCsv({
+            delimiter: ';',
+        })(stream)).toEqual([{
             a: '1',
             b: '2',
             c: '3',
@@ -38,7 +40,9 @@ describe('parseCsv', () => {
 
         let error;
         try {
-            await parseCsv(stream);
+            await parseCsv({
+                delimiter: ';',
+            })(stream);
         } catch (e) {
             error = e;
         }

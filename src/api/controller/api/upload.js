@@ -1,16 +1,15 @@
+import config from 'config';
 import rawBody from 'raw-body';
 import streamBuffers from 'stream-buffers';
 
-import * as loaders from '../../loaders';
+import loaders from '../../loaders';
 
 export const getParser = (type) => {
-    switch (type) {
-    case 'text/csv':
-    case 'text/tab-separated-values':
-        return loaders.csv;
-    default:
+    if (!loaders[type]) {
         throw new Error(`Unsupported document type: ${type}`);
     }
+
+    return loaders[type](config.loader[type]);
 };
 
 export async function uploadMiddleware(ctx) {

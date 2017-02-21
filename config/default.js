@@ -7,10 +7,16 @@ module.exports = {
     auth: {
         cookieSecret: 'cookie',
         headerSecret: 'header',
-        expiresIn: 10 * 3600 // 10 hours
+        expiresIn: 10 * 3600, // 10 hours
     },
-    csv: {
-        quote: '"',
-        delimiter: ';',
-    }
+    loader: {
+        'text/csv': {
+            quote: '"',
+            delimiter: ';',
+        },
+        'text/tab-separated-values': {
+            quote: '"',
+            delimiter: '\t',
+        },
+    },
 };
