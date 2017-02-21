@@ -3,6 +3,9 @@
 
 NODE_ENV ?= development
 
+export $UID = $(id -u)
+export $GID = $(id -g)
+
 help:
 	grep -P '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
@@ -40,6 +43,9 @@ install: copy-conf install-npm-dependencies install-selenium ## Install npm depe
 
 run-frontend: ## Run the frontend application
 	NODE_ENV=${NODE_ENV} BABEL_ENV=browser ./node_modules/.bin/webpack-dev-server --config=./src/app/webpack.config.babel.js --port=8080
+
+clean:
+	rm -rf src/build
 
 docker-run-dev: ## run node server with pm2 for development and webpack-dev-server
 	docker-compose up --force-recreate
