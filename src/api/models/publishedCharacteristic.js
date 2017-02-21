@@ -23,7 +23,7 @@ export default (db) => {
         return queryResult.ops[0];
     };
 
-    collection.findAllVersions = () => collection.find({}).sort({ publicationDate: -1 });
+    collection.findAllVersions = () => collection.find({}).sort({ publicationDate: -1 }).toArray();
 
     return collection;
 };

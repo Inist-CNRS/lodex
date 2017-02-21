@@ -22,7 +22,7 @@ export async function exportMiddleware(ctx, type) {
         ctx.keepDbOpened = true;
 
         const exportStreamFactory = ctx.getExporter(type);
-        const characteristics = await ctx.publishedCharacteristic.find({}).toArray();
+        const characteristics = await ctx.publishedCharacteristic.findAllVersions();
         const fields = await ctx.field.find({}).toArray();
         const publishedDatasetStream = ctx.publishedDataset.getFindAllStream();
         const exportStream = exportStreamFactory(fields, characteristics, publishedDatasetStream);
@@ -31,7 +31,7 @@ export async function exportMiddleware(ctx, type) {
             ctx.db.close();
         });
         exportStream.on('error', (error) => {
-            console.error(`Error while exporting published dataset into ${type}`, error);
+            global.console.error(`Error while exporting published dataset into ${type}`, error);
             ctx.db.close();
         });
 

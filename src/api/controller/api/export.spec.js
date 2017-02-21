@@ -24,9 +24,7 @@ describe('export routes', () => {
             },
             getExporter: createSpy().andReturn(exporterStreamFactory),
             publishedCharacteristic: {
-                find: createSpy().andReturn({
-                    toArray: () => characteristics,
-                }),
+                findAllVersions: createSpy().andReturn(Promise.resolve(characteristics)),
             },
             publishedDataset: {
                 getFindAllStream: createSpy().andReturn(mongoStream),
@@ -45,7 +43,7 @@ describe('export routes', () => {
         });
 
         it('it should get the characteristics', () => {
-            expect(ctx.publishedCharacteristic.find).toHaveBeenCalledWith({});
+            expect(ctx.publishedCharacteristic.findAllVersions).toHaveBeenCalled();
         });
 
         it('it should get the publishedDataset', () => {
