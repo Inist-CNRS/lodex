@@ -73,10 +73,10 @@ SchemeAutoCompleteComponent.propTypes = {
 };
 
 const mapStateToProps = () => ({
-    getSchemeSearchRequest: query => `http://lov.okfn.org/dataset/lov/api/v2/term/autocomplete?q=${query}`,
+    getSchemeSearchRequest: query => ({ url: `http://lov.okfn.org/dataset/lov/api/v2/term/search?q=${query}` }),
     getSchemeMenuItemsDataFromResponse: response => (
         response && response.results
-            ? response.results.map(r => ({ label: r.localName[0], uri: r.uri[0] }))
+            ? response.results.map(r => ({ label: r.prefixedName[0], uri: r.uri[0] }))
             : []
     ),
 });
