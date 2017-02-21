@@ -21,12 +21,6 @@ const styles = {
 
 const TransformerListItem = ({ availableTransformers, fieldName, onRemove, p: polyglot }) => (
     <div style={styles.container}>
-        <IconButton
-            tooltip={polyglot.t('remove_transformer')}
-            onClick={onRemove}
-        >
-            <ActionDeleteIcon />
-        </IconButton>
         <Field
             className="operation"
             name={`${fieldName}.operation`}
@@ -39,6 +33,12 @@ const TransformerListItem = ({ availableTransformers, fieldName, onRemove, p: po
             )}
         </Field>
         <FieldArray name={`${fieldName}.args`} component={TransformerArgList} />
+        <IconButton
+            tooltip={polyglot.t('remove_transformer')}
+            onClick={onRemove}
+        >
+            <ActionDeleteIcon />
+        </IconButton>
     </div>
 );
 

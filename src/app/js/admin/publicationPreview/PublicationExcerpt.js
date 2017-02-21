@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react';
 import compose from 'recompose/compose';
 import pure from 'recompose/pure';
+import withProps from 'recompose/withProps';
 import withHandlers from 'recompose/withHandlers';
 import translate from 'redux-polyglot/translate';
 import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn } from 'material-ui/Table';
@@ -13,10 +14,20 @@ const styles = {
     table: {
         width: 'auto',
     },
+    cell: {
+        cursor: 'pointer',
+    },
 };
 
-export const PublicationExcerptComponent = ({ columns, lines, onHeaderClick, p: polyglot }) => (
-    <Table selectable={false} fixedHeader={false} style={styles.table}>
+export const PublicationExcerptComponent = ({
+    areHeadersClickable,
+    columns,
+    lines,
+    onCellClick,
+    onHeaderClick,
+    p: polyglot,
+}) => (
+    <Table selectable={false} fixedHeader={false} style={styles.table} onCellClick={onCellClick}>
         <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
             <TableRow onCellClick={onHeaderClick}>
                 {columns.map(({ label, name }) => (
@@ -24,7 +35,7 @@ export const PublicationExcerptComponent = ({ columns, lines, onHeaderClick, p: 
                         key={name}
                         className={`publication-excerpt-column publication-excerpt-column-${name}`}
                         style={styles.header}
-                        tooltip={polyglot.t('click_to_edit_publication_field')}
+                        tooltip={areHeadersClickable ? polyglot.t('click_to_edit_publication_field') : ''}
                     >
                         {label || name}
                     </TableHeaderColumn>))}
@@ -33,7 +44,14 @@ export const PublicationExcerptComponent = ({ columns, lines, onHeaderClick, p: 
         <TableBody displayRowCheckbox={false}>
             {lines.map((line, index) => (
                 <TableRow key={index}>
-                    {columns.map(({ name }) => <TableRowColumn key={`${name}_${index}`}>{line[name]}</TableRowColumn>)}
+                    {columns.map(({ name }) => (
+                        <TableRowColumn
+                            key={`${name}_${index}`}
+                            style={styles.cell}
+                        >
+                            {line[name]}
+                        </TableRowColumn>
+                    ))}
                 </TableRow>
             ))}
         </TableBody>
@@ -41,8 +59,10 @@ export const PublicationExcerptComponent = ({ columns, lines, onHeaderClick, p: 
 );
 
 PublicationExcerptComponent.propTypes = {
+    areHeadersClickable: PropTypes.bool.isRequired,
     columns: PropTypes.arrayOf(fieldPropTypes).isRequired,
     lines: PropTypes.arrayOf(PropTypes.object).isRequired,
+    onCellClick: PropTypes.func.isRequired,
     onHeaderClick: PropTypes.func.isRequired,
     p: polyglotPropTypes.isRequired,
 };
@@ -50,8 +70,16 @@ PublicationExcerptComponent.propTypes = {
 export default compose(
     translate,
     pure,
+    withProps(({ onHeaderClick }) => ({
+        areHeadersClickable: typeof onHeaderClick === 'function',
+    })),
     withHandlers({
         onHeaderClick: ({ onHeaderClick }) => (_, __, col) => {
+            if (onHeaderClick) {
+                onHeaderClick(col - 1);
+            }
+        },
+        onCellClick: ({ onHeaderClick }) => (_, col) => {
             if (onHeaderClick) {
                 onHeaderClick(col - 1);
             }

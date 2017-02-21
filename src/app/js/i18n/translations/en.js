@@ -67,4 +67,5 @@ export default {
     no_dataset: 'No dataset',
     scheme: 'scheme',
     format: 'format',
+    exit_column_edition: 'Back to preview',
 };

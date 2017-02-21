@@ -41,6 +41,7 @@ export const defaultState = {
     byId: {},
     allValid: true,
     list: [],
+    invalidFields: [],
     editedFieldId: null,
 };
 
@@ -65,7 +66,7 @@ export default handleActions({
     LOAD_FIELD_ERROR: () => defaultState,
     EDIT_FIELD: (state, { payload }) => ({
         ...state,
-        editedFieldId: state.list[payload],
+        editedFieldId: typeof payload === 'number' ? state.list[payload] : null,
     }),
     REMOVE_FIELD: (state, { payload: { _id: idToRemove } }) => ({
         ...state,
@@ -79,9 +80,10 @@ export default handleActions({
             [payload._id]: payload,
         },
     }),
-    SET_VALIDATION: (state, { payload }) => ({
+    SET_VALIDATION: (state, { payload: { isValid: allValid, fields: invalidFields } }) => ({
         ...state,
-        ...payload,
+        allValid,
+        invalidFields,
     }),
 }, defaultState);
 
@@ -104,7 +106,7 @@ export const getTransformerArgs = (state, operation) => getTransformerMetas(oper
 
 export const getFieldFormData = state => state.form.field.values;
 
-const getValidationFields = state => state.fields;
+const getValidationFields = state => state.invalidFields;
 
 export const getInvalidFields = createSelector(
     getFields,
@@ -123,6 +125,7 @@ export const selectors = {
     areAllFieldsValid,
     getFields,
     getCollectionFields,
+    getInvalidFields,
     getEditedField,
     getNbFields,
     hasPublicationFields,
