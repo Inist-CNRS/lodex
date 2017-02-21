@@ -36,6 +36,14 @@ const styles = {
     parsingRightSection: {
         flexGrow: 2,
     },
+    title: {
+        height: '36px',
+        lineHeight: '36px',
+    },
+    button: {
+        float: 'right',
+        marginRight: '2rem',
+    },
 };
 
 export class ParsingResultComponent extends Component {
@@ -50,12 +58,17 @@ export class ParsingResultComponent extends Component {
         this.setState({ showErrors: false });
     }
 
+    handleClearParsing = () => {
+        event.preventDefault();
+        event.stopPropagation();
+        this.props.handleClearParsing();
+    }
+
     render() {
         const {
             excerptColumns,
             excerptLines,
             totalLoadedLines,
-            handleClearParsing,
             p: polyglot,
         } = this.props;
         const { showErrors } = this.state;
@@ -63,10 +76,16 @@ export class ParsingResultComponent extends Component {
         return (
             <Card className="parsingResult" initiallyExpanded>
                 <CardHeader
-                    actAsExpander
                     showExpandableButton
                     title={polyglot.t('Parsing summary')}
-                />
+                    titleStyle={styles.title}
+                >
+                    <FlatButton
+                        style={styles.button}
+                        onClick={this.handleClearParsing}
+                        label={polyglot.t('Upload another file')}
+                    />
+                </CardHeader>
                 <CardText style={styles.parsingContainer} expandable>
                     <ParsingSummary
                         onShowExcerpt={this.handleShowExcerpt}
@@ -82,9 +101,6 @@ export class ParsingResultComponent extends Component {
                         }
                     </div>
                 </CardText>
-                <CardActions>
-                    <FlatButton onClick={handleClearParsing} label={polyglot.t('Upload another file')} />
-                </CardActions>
             </Card>
         );
     }

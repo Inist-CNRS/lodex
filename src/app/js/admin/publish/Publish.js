@@ -3,7 +3,6 @@ import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 import { CardActions, CardHeader, CardText } from 'material-ui/Card';
-import FlatButton from 'material-ui/FlatButton';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 
@@ -14,9 +13,19 @@ import { fromFields, fromPublish, fromPublication } from '../selectors';
 import Alert from '../../lib/Alert';
 import Card from '../../lib/Card';
 import ButtonWithStatus from '../../lib/ButtonWithStatus';
-import { addField, loadField } from '../fields';
+import { loadField } from '../fields';
 import FieldForm from '../fields/FieldForm';
 import Validation from './Validation';
+
+const styles = {
+    title: {
+        height: '36px',
+        lineHeight: '36px',
+    },
+    button: {
+        float: 'right',
+    },
+};
 
 export class PublishComponent extends Component {
     componentWillMount() {
@@ -27,24 +36,15 @@ export class PublishComponent extends Component {
         this.props.onPublish();
     }
 
-    handleAddColumnClick = () => {
-        this.props.addColumn();
-    }
-
     render() {
         const { canPublish, error, isPublishing, p: polyglot, published } = this.props;
         return (
             <Card>
-                <CardHeader title={polyglot.t('publication')} />
-                <CardText>
-                    <FieldForm />
-                </CardText>
-                <CardActions>
-                    <FlatButton
-                        className="add-column"
-                        label={polyglot.t('add_column')}
-                        onClick={this.handleAddColumnClick}
-                    />
+                <CardHeader
+                    title={polyglot.t('publication')}
+                    subtitle={polyglot.t('publication_explanations')}
+                    style={styles.title}
+                >
                     <ButtonWithStatus
                         className="btn-publish"
                         loading={isPublishing}
@@ -54,12 +54,16 @@ export class PublishComponent extends Component {
                         onClick={this.handleClick}
                         primary
                         disabled={!canPublish}
+                        style={styles.button}
                     />
-
+                </CardHeader>
+                <CardText>
+                    <FieldForm />
+                </CardText>
+                <CardActions>
                     {error && <Alert><p>{error}</p></Alert>}
                 </CardActions>
                 <CardText>
-                    {canPublish && polyglot.t('publication_explanations')}
                     {!canPublish && <Validation />}
                 </CardText>
             </Card>
@@ -68,7 +72,6 @@ export class PublishComponent extends Component {
 }
 
 PublishComponent.propTypes = {
-    addColumn: PropTypes.func.isRequired,
     canPublish: PropTypes.bool.isRequired,
     error: PropTypes.string,
     isPublishing: PropTypes.bool.isRequired,
@@ -90,7 +93,6 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = ({
-    addColumn: addField,
     onPublish: publishAction,
     loadField,
 });
