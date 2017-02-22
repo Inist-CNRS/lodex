@@ -5,21 +5,24 @@ import {
     SourceMapDevToolPlugin,
     HotModuleReplacementPlugin,
     NamedModulesPlugin,
+    optimize,
 } from 'webpack';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import { resolve } from 'path';
 
 export default {
-    devServer: {
-        historyApiFallback: true,
-        hot: true,
-    },
     entry: {
         index: [].concat(process.env.NODE_ENV === 'development' ? [
             'react-hot-loader/patch',
             'webpack-hot-middleware/client?path=/__webpack_hmr&reload=true',
         ] : []).concat([
-            resolve(__dirname, './js/index.js'),
+            resolve(__dirname, './js/public/index.js'),
+        ]),
+        admin: [].concat(process.env.NODE_ENV === 'development' ? [
+            'react-hot-loader/patch',
+            'webpack-hot-middleware/client?path=/__webpack_hmr&reload=true',
+        ] : []).concat([
+            resolve(__dirname, './js/admin/index.js'),
         ]),
     },
     module: {
@@ -107,6 +110,14 @@ export default {
         new HtmlWebpackPlugin({
             filename: 'index.html',
             template: resolve(__dirname, './custom/index.html'),
+            chunks: ['index'],
+            inject: 'body',
+        }),
+        new HtmlWebpackPlugin({
+            filename: 'admin/index.html',
+            template: resolve(__dirname, './admin.html'),
+            chunks: ['admin'],
+            inject: 'body',
         }),
     ].concat(process.env.NODE_ENV === 'development'
         ? [

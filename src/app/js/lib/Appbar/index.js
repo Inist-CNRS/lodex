@@ -33,7 +33,7 @@ const AppbarComponent = ({ isLoading, isLoggedIn }) => {
     return (
         <AppBar
             className="appbar"
-            title={<Link style={styles.linkToHome} to="/home">Lodex</Link>}
+            title={<a style={styles.linkToHome} href="/">Lodex</a>}
             iconElementLeft={LeftElement}
             iconElementRight={RightElement}
         />

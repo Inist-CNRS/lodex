@@ -4,7 +4,7 @@ import { shallow } from 'enzyme';
 import { TableRowColumn } from 'material-ui/Table';
 
 import DefaultColumn from './DefaultColumn';
-import Format from '../../formats/Format';
+import Format from '../Format';
 
 describe('<DefaultColumn />', () => {
     const column = { name: 'a_name', label: 'Foo' };

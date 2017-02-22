@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { isLoggedIn } from '../../user';
 import DatasetCharacteristicsEdition from './DatasetCharacteristicsEdition';
 import DatasetCharacteristicsView from './DatasetCharacteristicsView';
-import { fromCharacteristic } from '../../selectors';
+import { fromCharacteristic } from '../selectors';
 
 const mapStateToProps = state => ({
     canEdit: isLoggedIn(state),

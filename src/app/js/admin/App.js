@@ -1,10 +1,10 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import AppBar from './lib/Appbar';
+import AppBar from '../lib/Appbar';
 
-import { isLoggedIn as getIsLoggedIn } from './user';
-import LoginDialog from './user/LoginDialog';
+import { isLoggedIn as getIsLoggedIn } from '../user';
+import LoginDialog from '../user/LoginDialog';
 
 const styles = {
     appContainer: {

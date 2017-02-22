@@ -3,11 +3,8 @@ import { Provider } from 'react-redux';
 import { Router, hashHistory } from 'react-router';
 import { syncHistoryWithStore } from 'react-router-redux';
 
-import routesFactory from './routes';
-
-const Root = ({ store }) => {
+const Root = ({ store, routes }) => {
     const history = syncHistoryWithStore(hashHistory, store);
-    const routes = routesFactory(store);
 
     return (
         <Provider {...{ store }}>
@@ -17,6 +14,7 @@ const Root = ({ store }) => {
 };
 
 Root.propTypes = {
+    routes: PropTypes.object.isRequired, // eslint-disable-line
     store: PropTypes.object.isRequired, // eslint-disable-line
 };
 

@@ -6,13 +6,13 @@ import translate from 'redux-polyglot/translate';
 import {
     fromResource,
     fromPublication,
-} from '../selectors';
+} from './selectors';
 import {
     contributor as contributorPropTypes,
     field as fieldPropTypes,
     polyglot as polyglotPropTypes,
 } from '../propTypes';
-import Format from '../formats/Format';
+import Format from './Format';
 
 const styles = {
     container: unValidated => ({

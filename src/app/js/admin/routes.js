@@ -1,5 +1,7 @@
+import App from './App';
 import Admin from './Admin';
 import { isLoggedIn as selectIsLoggedIn } from '../user';
+import userRoutes from '../user/routes';
 
 export const onEnterWithAuthenticationCheck = store => (nextState, replaceState) => {
     const state = store.getState();
@@ -10,8 +12,17 @@ export const onEnterWithAuthenticationCheck = store => (nextState, replaceState)
     }
 };
 
-export default store => [{
-    path: '/admin',
-    component: Admin,
-    onEnter: onEnterWithAuthenticationCheck(store),
-}];
+
+export default store => ({
+    path: '/',
+    component: App,
+    indexRoute: { onEnter: (nextState, replace) => replace('/home') },
+    childRoutes: [
+        {
+            path: '/home',
+            component: Admin,
+            onEnter: onEnterWithAuthenticationCheck(store),
+        },
+        ...userRoutes,
+    ],
+});

@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 
 import { TableRowColumn } from 'material-ui/Table';
-import Format from '../../formats/Format';
+import Format from '../Format';
 import { field as fieldPropTypes } from '../../propTypes';
 
 const DatasetColumn = ({ column, columns, resource }) => (

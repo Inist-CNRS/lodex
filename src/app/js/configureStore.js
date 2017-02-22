@@ -4,11 +4,9 @@ import { applyMiddleware, compose, createStore } from 'redux';
 import createSagaMiddleware from 'redux-saga';
 import persistState from 'redux-localstorage';
 
-import sagas from './sagas';
-
 const sagaMiddleware = createSagaMiddleware();
 
-export default function configureStore(rootReducer, initialState) {
+export default function configureStore(rootReducer, sagas, initialState) {
     const middlewares = applyMiddleware(
         sagaMiddleware,
         routerMiddleware(hashHistory),

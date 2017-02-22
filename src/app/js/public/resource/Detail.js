@@ -6,9 +6,7 @@ import FlatButton from 'material-ui/FlatButton';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 
-import {
-    fromResource,
-} from '../../selectors';
+import { fromResource } from '../selectors';
 import Card from '../../lib/Card';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { isLoggedIn } from '../../user';

@@ -24,7 +24,7 @@ import ContributionField from './ContributionField';
 import {
     fromResource,
     fromPublication,
-} from '../../selectors';
+} from '../selectors';
 
 export const AddFieldDetailComponent = ({
     resource,

@@ -16,7 +16,7 @@ import {
     updateCharacteristics as updateCharacteristicsAction,
 } from './';
 
-import { fromCharacteristic, fromPublication } from '../../selectors';
+import { fromCharacteristic, fromPublication } from '../selectors';
 
 import PropertyEdition from '../PropertyEdition';
 import ButtonWithStatus from '../../lib/ButtonWithStatus';

@@ -14,7 +14,7 @@ describe('Admin', () => {
 
         before(async () => {
             await clear();
-            await loginAsJulia('/admin');
+            await loginAsJulia('/admin', '/');
         });
 
         describe('Uploading', () => {

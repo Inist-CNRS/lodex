@@ -8,9 +8,7 @@ import {
     loadPublication as loadPublicationAction,
 } from './publication';
 
-import {
-    fromPublication,
-} from '../selectors';
+import { fromPublication } from './selectors';
 
 import Alert from '../lib/Alert';
 import Card from '../lib/Card';

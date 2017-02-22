@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import SelectFormat from './SelectFormat';
-import { getEditionComponent, FORMATS } from './components';
+import { getEditionComponent, FORMATS } from '../formats';
 import { formField as formFieldPropTypes } from '../propTypes';
 
 const styles = {

@@ -15,7 +15,7 @@ import {
 } from './';
 
 import { fromFields } from '../selectors';
-import Format from '../../formats/FormatEdition';
+import Format from '../FormatEdition';
 import Alert from '../../lib/Alert';
 import TransformerList from './TransformerList';
 

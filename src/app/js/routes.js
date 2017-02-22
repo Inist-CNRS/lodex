@@ -4,14 +4,12 @@ import homeRoutes from './public/routes';
 import userRoutes from './user/routes';
 
 export default store => ({
-    childRoutes: [{
-        path: '/',
-        component: App,
-        indexRoute: { onEnter: (nextState, replace) => replace('/home') },
-        childRoutes: [
-            ...adminRoutes(store),
-            ...homeRoutes(store),
-            ...userRoutes,
-        ],
-    }],
+    path: '/',
+    component: App,
+    indexRoute: { onEnter: (nextState, replace) => replace('/home') },
+    childRoutes: [
+        ...adminRoutes(store),
+        ...homeRoutes(store),
+        ...userRoutes,
+    ],
 });

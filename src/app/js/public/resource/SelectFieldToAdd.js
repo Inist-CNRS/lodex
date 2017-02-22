@@ -4,7 +4,7 @@ import MenuItem from 'material-ui/MenuItem';
 import { connect } from 'react-redux';
 
 import { selectField } from '../publication';
-import { fromPublication, fromResource } from '../../selectors';
+import { fromPublication, fromResource } from '../selectors';
 
 import { resource as resourcePropTypes } from '../../propTypes';
 
