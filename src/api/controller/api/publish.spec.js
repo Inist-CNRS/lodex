@@ -10,8 +10,7 @@ import {
     versionTransformResult,
     publishCharacteristics,
 } from './publish';
-import getDocumentTransformer from '../../../common/getDocumentTransformer';
-import fetchLineBy from './fetchLineBy';
+import getDocumentTransformer from '../../services/getDocumentTransformer';
 
 describe('publish', () => {
     describe('doPublish', () => {
@@ -65,11 +64,7 @@ describe('publish', () => {
         });
 
         it('should call getDocumentTransformer to get the uri transformers', () => {
-            expect(ctx.getDocumentTransformer).toHaveBeenCalledWith({
-                env: 'node',
-                dataset: ctx.dataset,
-                fetchLineBy,
-            }, [fields[0]]);
+            expect(ctx.getDocumentTransformer).toHaveBeenCalledWith([fields[0]]);
         });
 
         it('should call ctx.addTransformResultToDoc with transformDocument', () => {
@@ -81,11 +76,7 @@ describe('publish', () => {
         });
 
         it('should call getDocumentTransformer with all other fields', () => {
-            expect(ctx.getDocumentTransformer).toHaveBeenCalledWith({
-                env: 'node',
-                dataset: ctx.uriDataset,
-                fetchLineBy,
-            }, [fields[1]]);
+            expect(ctx.getDocumentTransformer).toHaveBeenCalledWith([fields[1]]);
         });
 
         it('should call ctx.versionTransformResult with transformDocument', () => {
@@ -131,14 +122,7 @@ describe('publish', () => {
 
         it('should call getDocumentTransformer', () => {
             expect(ctx.getDocumentTransformer)
-            .toHaveBeenCalledWith(
-                {
-                    env: 'node',
-                    dataset: ctx.uriDataset,
-                    fetchLineBy,
-                },
-                datasetFields,
-            );
+            .toHaveBeenCalledWith(datasetFields);
         });
 
         it('should call ctx.uriDataset.findLimitFromSkip', () => {
@@ -165,7 +149,7 @@ describe('publish', () => {
 
             expect(ctx).toEqual({
                 tranformAllDocuments,
-                getDocumentTransformer,
+                getDocumentTransformer: getDocumentTransformer(ctx),
                 addTransformResultToDoc,
                 versionTransformResult,
                 publishCharacteristics,

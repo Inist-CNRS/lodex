@@ -1,10 +1,9 @@
 import omit from 'lodash.omit';
 import Koa from 'koa';
 import route from 'koa-route';
-import fetchLineBy from './fetchLineBy';
 
 /* eslint no-await-in-loop: off */
-import getDocumentTransformer from '../../../common/getDocumentTransformer';
+import getDocumentTransformer from '../../services/getDocumentTransformer';
 
 const app = new Koa();
 
@@ -36,11 +35,7 @@ export const publishCharacteristics = async (ctx, datasetCoverFields, count) => 
         return;
     }
     const getPublishedCharacteristics = ctx
-        .getDocumentTransformer({
-            env: 'node',
-            dataset: ctx.uriDataset,
-            fetchLineBy,
-        }, datasetCoverFields);
+        .getDocumentTransformer(datasetCoverFields);
 
     const [lastResource] = await ctx.uriDataset.findLimitFromSkip(1, count - 1);
     const characteristics = await getPublishedCharacteristics(lastResource);
@@ -60,10 +55,10 @@ export const publishCharacteristics = async (ctx, datasetCoverFields, count) => 
 
 export const preparePublish = async (ctx, next) => {
     ctx.tranformAllDocuments = tranformAllDocuments;
-    ctx.getDocumentTransformer = getDocumentTransformer;
     ctx.addTransformResultToDoc = addTransformResultToDoc;
     ctx.versionTransformResult = versionTransformResult;
     ctx.publishCharacteristics = publishCharacteristics;
+    ctx.getDocumentTransformer = getDocumentTransformer(ctx);
     await next();
 };
 
@@ -86,11 +81,7 @@ export const doPublish = async (ctx) => {
     const datasetCoverFields = fields.filter(c => c.cover === 'dataset');
 
     const uriCol = fields.find(col => col.name === 'uri');
-    const getUri = ctx.getDocumentTransformer({
-        env: 'node',
-        dataset: ctx.dataset,
-        fetchLineBy,
-    }, [uriCol]);
+    const getUri = ctx.getDocumentTransformer([uriCol]);
     const addUri = ctx.addTransformResultToDoc(getUri);
 
     await ctx.tranformAllDocuments(
@@ -101,11 +92,7 @@ export const doPublish = async (ctx) => {
     );
 
     const transformDocument = ctx
-        .getDocumentTransformer({
-            env: 'node',
-            dataset: ctx.uriDataset,
-            fetchLineBy,
-        }, collectionCoverFields.filter(col => col.name !== 'uri'));
+        .getDocumentTransformer(collectionCoverFields.filter(col => col.name !== 'uri'));
 
     const transformDocumentAndKeepUri = ctx.versionTransformResult(transformDocument);
 
