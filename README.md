@@ -305,7 +305,9 @@ In browser:
 
 ##### Extending the context
 To add method to the context, you need to edit the code in two place.
- - Serverside: in `src/api/controller/api/publish
+
+- clientSide: in `src/app/lib/getDocumentTransformer`.
+- Serverside: in `src/api/services/getDocumentTransformer`, notice that you have access to ctx object from koa.
 
 #### arguments
 
