@@ -291,8 +291,6 @@ This context allow to know the environment (context.env):
     - browser: client side during preview
 
 Based on the env, the context expose different functionality.
-//TODO refactor context to be environment agnostic
-//TODO augment the context to allow more operation
 In node:
 
     - dataset: The dataset model that allow to execute mongo queries on the dataset collection.
