@@ -5,7 +5,7 @@ import webpack from 'webpack';
 
 let frontendBuilt = false;
 
-export const buildWithWebpack = new Promise((resolve, reject) => {
+export const buildWithWebpack = () => new Promise((resolve, reject) => {
     const webpackConfig = require('../../../app/webpack.config.babel').default; // eslint-disable-line
 
     webpack(webpackConfig, (error) => {
@@ -23,18 +23,16 @@ export const buildFrontend = async (ctx, next) => {
             await buildWithWebpack();
         } catch (error) {
             frontendBuilt = false;
-            console.error(JSON.stringify(error, null, 4));
+            console.error('Error while building frontend: ', error);
         }
     }
 
     await next();
 };
 
-export default () => {
-    const app = new Koa();
+const app = new Koa();
 
-    app.use(buildFrontend);
-    app.use(serve(path.join(__dirname, '../../../build')));
+app.use(buildFrontend);
+app.use(serve(path.join(__dirname, '../../../build')));
 
-    return app;
-};
+export default app;
