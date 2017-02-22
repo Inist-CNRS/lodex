@@ -83,7 +83,100 @@ For example for the loader csv:
 
 You can add new exporter to lodex.
 Exporter are added in the `src/api/exporters` directory.
+```js
+export default (fields, characteristics, stream) => {
+    const defaultDocument = getDefaultDocuments(fields);
+    const getCharacteristicByName = name => characteristics[0][name];
+    const getCsvField = getCsvFieldFactory(getCharacteristicByName);
+
+    const jsoncsvStream = csvTransformStreamFactory({
+        fields: fields.map(getCsvField),
+        fieldSeparator: ';',
+    });
+
+    return stream
+        .pipe(through(getLastVersionFactory(defaultDocument)))
+        .pipe(jsoncsvStream);
+}
+```
+It receives:
+
+    - fields
+        The list of fields
+```json
+{
+    "cover" : "collection", // either dataset, collection or document
+    "label" : "uri", // label of the field
+    "name" : "uri", // technical name of the field
+    "transformers" : [], // list of transformers used to compute the field from the original dataset
+    "format" : { // the format used to display the field
+        "name" : "uri"
+    },
+    "scheme": "http://uri4uri.net/vocab#URI"
+}
+```
+
+or
+
+```json
+{
+    "contribution" : true,
+    "name" : "note",
+    "cover" : "document",
+    "label" : "Contribution",
+    "scheme" : "http://www.w3.org/2004/02/skos/core#note",
+    "contributors" : [
+        {
+            "name" : "john",
+            "mail" : "john@doe.com"
+        }
+    ]
+}
+```
+
+    - characteristics
+        The list of all version of the characteristics sorted by their publicationDate (newer to oldest)
+
+```json
+{
+    "title" : "My title",
+    "Author" : "Myself",
+    "publicationDate" : "2017-02-22T09:56:07.765Z"
+}
+```
+
+    - stream
+        A stream of all document in the published dataset.
+
+```json
+{
+    "uri" : "HKPNG4WD",
+    "versions" : [ // list of all versions for the document (oldest to newest)
+        {
+            "key" : "value",
+                ...
+        },
+        {
+            "key" : "value",
+            "contribution" : "other value"
+            ...
+        }
+    ],
+    "contributions" : [
+        {
+            "fieldName" : "contribution",
+            "contributor" : {
+            "name" : "john",
+            "mail" : "john@doe.com"
+        },
+            "accepted" : false
+        }
+    ]
+}
+```
+
 You also need to declare the exporter in `src/api/exporters/index.js`.
+
 ```js
 import newExporter from './newExporter';
 export default {
@@ -91,4 +184,18 @@ export default {
     'new': newExporter,
 };
 ```
+
 note that the key determine the name of the exporter
+The exporters must be declared on a per instance basis in the config file.
+Simply add your exporter name in the exporters array, and it will appear in the export menu.
+
+```json
+// config.json
+{
+    ...
+    "exporters": [
+        "new",
+        ...
+    ]
+}
+```

@@ -10,7 +10,7 @@ import FileDownloadIcon from 'material-ui/svg-icons/file/file-download';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { exportPublishedDataset as exportPublishedDatasetAction } from '../../export';
-import availableExports from '../../export/availableExports';
+import config from '../../../../../config.json';
 
 const styles = {
     icon: {
@@ -31,7 +31,7 @@ export const MenuSignedInComponent = ({ exportPublishedDataset, p: polyglot, ...
         anchorOrigin={origin}
     >
         {
-            availableExports.map(type => (
+            config.exporters.map(type => (
                 <MenuItem
                     className="btn-export"
                     primaryText={polyglot.t('export', { type })}
