@@ -1,8 +1,7 @@
 import expect from 'expect';
 import { call, put, select } from 'redux-saga/effects';
 
-import getDocumentTransformer from '../../../../common/getDocumentTransformer';
-import fetchLineBy from '../../lib/fetchLineBy';
+import getDocumentTransformer from '../../lib/getDocumentTransformer';
 
 
 import { getToken } from '../../user';
@@ -31,11 +30,7 @@ describe('publication saga', () => {
         });
 
         it('should call getDocumentTransformer with correct context and field', () => {
-            expect(saga.next(fields).value).toEqual(call(getDocumentTransformer, {
-                env: 'browser',
-                token,
-                fetchLineBy,
-            }, fields));
+            expect(saga.next(fields).value).toEqual(call(getDocumentTransformer, fields, token));
         });
 
         it('should select fromParsing.getExcerptLines', () => {

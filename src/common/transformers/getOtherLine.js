@@ -3,5 +3,5 @@ export default (context, targetColumn) => async (prev) => {
         return context.dataset.findBy(targetColumn, prev);
     }
 
-    return context.fetchLineBy(targetColumn, prev, context.token);
+    return context.fetchLineBy(targetColumn, prev);
 };
