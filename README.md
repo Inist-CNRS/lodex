@@ -37,10 +37,10 @@ make test
 
 ## Adding a new loader
 
-You can add new loader to lodex.
-Loader are added in the `src/api/loaders` directory.
-A loader receive a config and the uploaded file as a stream, and return the modified stream.
-example of a csv parser:
+You can add new loaders to lodex.
+Loaders are added in the `src/api/loaders` directory.
+A loader receives a config and the uploaded file as a stream, and returns the modified stream.
+Example of a csv parser:
 ```js
 // src/api/loaders/parseCsv.js
 import parseCsv from 'csv-parse';
@@ -51,7 +51,7 @@ export default config => stream =>
         ...config,
     }));
 ```
-Once the loader created you also need to declare it in `src/api/loaders/index.js`
+Once the loader created, you also need to declare it in `src/api/loaders/index.js`
 ```js
 import parseCsv from './parseCsv'; // eslint-disable-line
 
