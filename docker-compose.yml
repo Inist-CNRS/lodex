@@ -24,6 +24,7 @@ server:
         - mongo
     ports:
         - 3000:3000
+    user: "${UID}:${GID}"
 
 mongo:
     image: mongo:3.0.14
