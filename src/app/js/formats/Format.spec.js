@@ -1,7 +1,7 @@
 import React from 'react';
 import expect, { createSpy } from 'expect';
 import { shallow } from 'enzyme';
-import UriView from './uri/Component';
+import UriView from './components/uri/Component';
 
 import { FormatComponent as Format } from './Format';
 

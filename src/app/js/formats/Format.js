@@ -4,14 +4,13 @@ import compose from 'recompose/compose';
 import withHandlers from 'recompose/withHandlers';
 import withState from 'recompose/withState';
 
-import DefaultFormat from './DefaultFormat';
 import { fromResource } from '../selectors';
 
 import fetchByUri from '../lib/fetchByUri';
 import { field as fieldPropTypes } from '../propTypes';
 import { getToken } from '../user';
 
-import uriFormat from './uri';
+import { getViewComponent } from './components';
 
 export class FormatComponent extends Component {
     componentWillMount() {
@@ -26,18 +25,7 @@ export class FormatComponent extends Component {
 
     render() {
         const { field, fields, linkedResource, rawLinkedResource, resource } = this.props;
-        let ViewComponent = DefaultFormat;
-        if (field.format && field.format.name) {
-            switch (field.format.name) {
-            case 'uri':
-                ViewComponent = uriFormat.Component;
-                break;
-
-            default:
-                ViewComponent = DefaultFormat;
-                break;
-            }
-        }
+        const ViewComponent = getViewComponent(field);
 
         return (
             <ViewComponent

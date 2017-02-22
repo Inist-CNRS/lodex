@@ -199,3 +199,38 @@ Simply add your exporter name in the exporters array, and it will appear in the 
     ]
 }
 ```
+
+## Adding a new format
+
+You can add new formats to lodex.
+The formats determine the react component used to display a field on the front.
+
+Formats are added in the `src/app/formats/components` folder, in their own directory.
+Eg, to add an uri format create the `src/app/formats/components/uri` directory
+A format is made of two components A view component for the front, and an edition component for the admin.
+Those component can be any react component.
+You then add an index in your directory to expose them:
+
+```js
+`src/app/formats/components/uri/index.js`
+import Component from './Component';
+import EditionComponent from './EditionComponent';
+
+export default {
+    Component,
+    EditionComponent,
+};
+```
+
+Finally add your new component into `src/app/formats/components`:
+
+```js
+import uri from './uri';
+import custom from './custom';
+
+const components = {
+    uri,
+    custom, // add your component here.
+};
+...
+```

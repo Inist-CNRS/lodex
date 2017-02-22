@@ -1,11 +1,8 @@
 import React, { Component } from 'react';
 
 import SelectFormat from './SelectFormat';
-import FORMATS from './formats';
-import uri from './uri';
+import { getEditionComponent, FORMATS } from './components';
 import { formField as formFieldPropTypes } from '../propTypes';
-
-const Empty = () => <span />;
 
 const styles = {
     container: {
@@ -52,17 +49,7 @@ class FormatEdition extends Component {
     render() {
         const { name } = this.state;
 
-        let EditionComponent = null;
-
-        switch (name) {
-        case 'uri':
-            EditionComponent = uri.EditionComponent;
-            break;
-
-        default:
-            EditionComponent = Empty;
-            break;
-        }
+        const EditionComponent = getEditionComponent(name);
 
         return (
             <div style={styles.container}>
