@@ -11,7 +11,11 @@ import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { toggleLogin as toggleLoginAction } from '../../user';
 
 export const MenuSignedInComponent = ({ onToggleLogin, p: polyglot }) => (
-    <IconButton tooltip={polyglot.t('Sign in')} onClick={onToggleLogin}>
+    <IconButton
+        className="btn-sign-in"
+        tooltip={polyglot.t('Sign in')}
+        onClick={onToggleLogin}
+    >
         <LockOutlineIcon color="white" />
     </IconButton>
 );
