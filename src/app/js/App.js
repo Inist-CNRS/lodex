@@ -16,6 +16,7 @@ const styles = {
         display: 'flex',
         flex: '1',
         backgroundColor: '#edecec',
+        // backgroundColor: 'red',
     },
     body: {
         flex: 1,

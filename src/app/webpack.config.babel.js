@@ -106,7 +106,7 @@ export default {
         }),
         new HtmlWebpackPlugin({
             filename: 'index.html',
-            template: resolve(__dirname, './index.html'),
+            template: resolve(__dirname, './custom/index.html'),
         }),
     ].concat(process.env.NODE_ENV === 'development'
         ? [
