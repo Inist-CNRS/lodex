@@ -17,11 +17,7 @@ describe('LINK', () => {
         data: 'some other data',
     };
 
-    const db = {
-        dataset: {
-            findBy: createSpy().andReturn(linkedDoc),
-        },
-    };
+    const fetchLineBy = createSpy().andReturn(linkedDoc);
 
     it('should link ref column to id column returning uri toward referenced document', async () => {
         const fields = [
@@ -39,8 +35,8 @@ describe('LINK', () => {
             },
         ];
 
-        const newDoc = await getDocumentTransformer({ env: 'node', dataset: db.dataset }, fields)(doc);
-        expect(db.dataset.findBy).toHaveBeenCalledWith('id', 'id2');
+        const newDoc = await getDocumentTransformer({ env: 'node', fetchLineBy }, fields)(doc);
+        expect(fetchLineBy).toHaveBeenCalledWith('id', 'id2');
         expect(newDoc).toEqual({
             link: 'uri2',
         });

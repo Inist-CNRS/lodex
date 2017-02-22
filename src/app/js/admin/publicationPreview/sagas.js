@@ -1,7 +1,6 @@
 import { call, put, select, takeLatest } from 'redux-saga/effects';
 
-import getDocumentTransformer from '../../../../common/getDocumentTransformer';
-import fetchLineBy from '../../lib/fetchLineBy';
+import getDocumentTransformer from '../../lib/getDocumentTransformer';
 
 import { getToken } from '../../user';
 import {
@@ -28,7 +27,7 @@ export function* handleComputePreview() {
         const token = yield select(getToken);
         const fields = yield select(fromFields.getFields);
 
-        const transformDocument = yield call(getDocumentTransformer, { env: 'browser', token, fetchLineBy }, fields);
+        const transformDocument = yield call(getDocumentTransformer, fields, token);
 
         const lines = yield select(fromParsing.getExcerptLines);
         const preview = yield lines.map(line => call(transformDocument, line));

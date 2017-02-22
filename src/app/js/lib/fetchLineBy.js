@@ -1,6 +1,6 @@
 import fetch from './fetch';
 
-export default (fieldName, value, token) =>
+export default token => (fieldName, value) =>
     fetch({
         url: `/api/parsing/${fieldName}/${value}`,
         credentials: 'include',
