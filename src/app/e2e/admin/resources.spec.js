@@ -9,13 +9,13 @@ import loginAsJulia from '../loginAsJulia';
 
 describe('Admin', () => {
     describe('Resource management', function homePublishedDataTests() {
-        this.timeout(10000);
+        this.timeout(30000);
         const DEFAULT_WAIT_TIMEOUT = 9000; // A bit less than mocha's timeout to get explicit errors from selenium
 
         before(async () => {
             await clear(); // Had to ensure clear state for unknown reason
             await loadFixtures(fixtures);
-            await loginAsJulia('/admin');
+            await loginAsJulia('/admin', '/');
         });
 
         it('should display the removed resources', async () => {

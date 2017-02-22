@@ -20,7 +20,7 @@ import {
 import {
     fromCharacteristic,
     fromPublication,
-} from '../../selectors';
+} from '../selectors';
 
 import DatasetCharacteristicItem from './DatasetCharacteristicItem';
 

@@ -5,7 +5,7 @@ import { CardText } from 'material-ui/Card';
 import {
     fromResource,
     fromPublication,
-} from '../../selectors';
+} from '../selectors';
 import Property from '../Property';
 
 export const DetailPropertiesComponent = ({ resource, collectionFields, documentFields }) => (

@@ -18,7 +18,7 @@ import Alert from '../../lib/Alert';
 import ButtonWithStatus from '../../lib/ButtonWithStatus';
 import DetailProperties from './DetailProperties';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
-import { fromResource } from '../../selectors';
+import { fromResource } from '../selectors';
 
 export const HideDetailComponent = ({ resource, saving, error, handleSubmit, p: polyglot }) => (
     <Card className="hide-detail">

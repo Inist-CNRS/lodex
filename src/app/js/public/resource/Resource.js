@@ -10,7 +10,7 @@ import {
     fromResource,
     fromPublication,
     fromCharacteristic,
-} from '../../selectors';
+} from '../selectors';
 import Card from '../../lib/Card';
 import Detail from './Detail';
 import EditDetail from './EditDetail';

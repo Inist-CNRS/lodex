@@ -8,13 +8,13 @@ import { elementIsClicked, inputElementIsFocusable, elementValueIs } from '../..
 import loginAsJulia from './loginAsJulia';
 
 describe('Home page with published data when logged as Julia', function homePublishedDataTests() {
-    this.timeout(10000);
+    this.timeout(30000);
     const DEFAULT_WAIT_TIMEOUT = 9000; // A bit less than mocha's timeout to get explicit errors from selenium
 
     before(async () => {
         await clear();
         await loadFixtures(fixtures);
-        await loginAsJulia('/');
+        await loginAsJulia('/', '/');
     });
 
     it('should display the list with an edit button', async () => {

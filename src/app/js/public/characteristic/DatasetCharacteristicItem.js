@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import Property from '../Property';
-import { fromPublication } from '../../selectors';
+import { fromPublication } from '../selectors';
 import { field as fieldPropTypes } from '../../propTypes';
 
 const DatasetCharacteristicItemComponent = ({ resource, field }) => (

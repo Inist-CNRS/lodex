@@ -1,15 +1,39 @@
-import { combineReducers } from 'redux';
+import 'babel-polyfill';
+import 'whatwg-fetch';
+import 'url-api-polyfill';
 
-import publication from './publication';
-import dataset from './dataset';
-import characteristic from './characteristic';
-import resource from './resource';
+import injectTapEventPlugin from 'react-tap-event-plugin';
+import React from 'react';
+import { render } from 'react-dom';
 
-const rootReducer = combineReducers({
-    publication,
-    dataset,
-    characteristic,
-    resource,
-});
+import Root from '../Root';
+import rootReducer from './reducers';
+import routesFactory from './routes';
+import sagas from './sagas';
+import configureStore from '../configureStore';
+import phrasesForEn from '../i18n/translations/en';
 
-export default rootReducer;
+const initialState = {
+    polyglot: {
+        locale: 'en',
+        phrases: phrasesForEn,
+    },
+};
+
+const store = configureStore(rootReducer, sagas, initialState);
+const routes = routesFactory(store);
+
+injectTapEventPlugin();
+
+render(
+    <Root {...{ store, routes }} />,
+    document.getElementById('root'),
+);
+
+// Hot Module Replacement API
+if (module.hot) {
+    module.hot.accept('../Root', () => {
+        const NewRoot = require('../Root').default; // eslint-disable-line
+        render(<NewRoot {...{ store, routes }} />, document.getElementById('root'));
+    });
+}

@@ -5,7 +5,7 @@ import { clear } from '../../../common/tests/fixtures';
 import { inputElementIsFocusable } from '../../../common/tests/conditions';
 
 describe('Admin', function adminTests() {
-    this.timeout(10000);
+    this.timeout(30000);
     const DEFAULT_WAIT_TIMEOUT = 9000; // A bit less than mocha's timeout to get explicit errors from selenium
 
     before(async () => {
@@ -13,7 +13,7 @@ describe('Admin', function adminTests() {
     });
 
     it('should redirect to the login page if not authenticated', async () => {
-        await driver.get('http://localhost:3010/#/admin');
+        await driver.get('http://localhost:3010/admin');
         await driver.wait(until.elementLocated(By.css('#login_form')), DEFAULT_WAIT_TIMEOUT);
     });
 

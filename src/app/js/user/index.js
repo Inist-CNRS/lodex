@@ -30,6 +30,8 @@ export const loginSuccess = createAction(LOGIN_SUCCESS);
 export const isLoggedIn = state => !!state.user.token;
 export const getToken = state => state.user.token;
 
+export const getCurrentLocation = state => state.routing;
+
 export const getRequest = createSelector(
     getToken,
     (_, props) => props,

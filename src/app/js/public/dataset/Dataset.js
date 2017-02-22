@@ -21,7 +21,7 @@ import { polyglot as polyglotPropTypes } from '../../propTypes';
 import {
     loadDatasetPage as loadDatasetPageAction,
 } from './';
-import { fromPublication, fromDataset } from '../../selectors';
+import { fromPublication, fromDataset } from '../selectors';
 
 const styles = {
     table: {

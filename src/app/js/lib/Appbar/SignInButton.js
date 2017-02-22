@@ -10,7 +10,7 @@ import LockOutlineIcon from 'material-ui/svg-icons/action/lock-outline';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { toggleLogin as toggleLoginAction } from '../../user';
 
-export const MenuSignedInComponent = ({ onToggleLogin, p: polyglot }) => (
+export const SignInButtonComponent = ({ onToggleLogin, p: polyglot }) => (
     <IconButton
         className="btn-sign-in"
         tooltip={polyglot.t('Sign in')}
@@ -21,7 +21,7 @@ export const MenuSignedInComponent = ({ onToggleLogin, p: polyglot }) => (
 );
 
 
-MenuSignedInComponent.propTypes = {
+SignInButtonComponent.propTypes = {
     onToggleLogin: PropTypes.func.isRequired,
     p: polyglotPropTypes.isRequired,
 };
@@ -33,4 +33,4 @@ const mapDispatchToProps = dispatch => bindActionCreators({
 export default compose(
     connect(undefined, mapDispatchToProps),
     translate,
-)(MenuSignedInComponent);
+)(SignInButtonComponent);

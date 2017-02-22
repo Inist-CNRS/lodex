@@ -8,7 +8,7 @@ import MenuItem from 'material-ui/MenuItem';
 import SchemeAutoComplete from '../../lib/SchemeAutoComplete';
 import {
     fromPublication,
-} from '../../selectors';
+} from '../selectors';
 import FormTextField from '../../lib/FormTextField';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import FormSelectField from '../../lib/FormSelectField';

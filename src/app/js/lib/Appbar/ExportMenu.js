@@ -9,7 +9,7 @@ import MenuItem from 'material-ui/MenuItem';
 import FileDownloadIcon from 'material-ui/svg-icons/file/file-download';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
-import { exportPublishedDataset as exportPublishedDatasetAction } from '../../export';
+import { exportPublishedDataset as exportPublishedDatasetAction } from '../../public/export';
 import config from '../../../../../config.json';
 
 const styles = {
@@ -20,7 +20,7 @@ const styles = {
 
 const origin = { horizontal: 'right', vertical: 'top' };
 
-export const MenuSignedInComponent = ({ exportPublishedDataset, p: polyglot, ...props }) => (
+export const ExportMenuComponent = ({ exportPublishedDataset, p: polyglot, ...props }) => (
     <IconMenu
         {...props}
         iconStyle={styles.icon}
@@ -33,6 +33,7 @@ export const MenuSignedInComponent = ({ exportPublishedDataset, p: polyglot, ...
         {
             config.exporters.map(type => (
                 <MenuItem
+                    key={type}
                     className="btn-export"
                     primaryText={polyglot.t('export', { type })}
                     onClick={() => exportPublishedDataset(type)}
@@ -42,7 +43,7 @@ export const MenuSignedInComponent = ({ exportPublishedDataset, p: polyglot, ...
     </IconMenu>
 );
 
-MenuSignedInComponent.propTypes = {
+ExportMenuComponent.propTypes = {
     exportPublishedDataset: PropTypes.func.isRequired,
     p: polyglotPropTypes.isRequired,
 };
@@ -54,4 +55,4 @@ const mapDispatchToProps = dispatch => bindActionCreators({
 export default compose(
     connect(undefined, mapDispatchToProps),
     translate,
-)(MenuSignedInComponent);
+)(ExportMenuComponent);

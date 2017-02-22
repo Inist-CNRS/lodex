@@ -4,13 +4,13 @@ import compose from 'recompose/compose';
 import withHandlers from 'recompose/withHandlers';
 import withState from 'recompose/withState';
 
-import { fromResource } from '../selectors';
+import { fromResource } from './selectors';
 
 import fetchByUri from '../lib/fetchByUri';
 import { field as fieldPropTypes } from '../propTypes';
 import { getToken } from '../user';
 
-import { getViewComponent } from './components';
+import { getViewComponent } from '../formats';
 
 export class FormatComponent extends Component {
     componentWillMount() {

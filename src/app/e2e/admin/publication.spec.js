@@ -9,12 +9,12 @@ import loginAsJulia from '../loginAsJulia';
 
 describe('Admin', () => {
     describe('Publication', function homeTests() {
-        this.timeout(10000);
+        this.timeout(30000);
         const DEFAULT_WAIT_TIMEOUT = 9000; // A bit less than mocha's timeout to get explicit errors from selenium
 
         before(async () => {
             await clear();
-            await loginAsJulia('/admin');
+            await loginAsJulia('/admin', '/');
         });
 
         describe('Uploading', () => {
