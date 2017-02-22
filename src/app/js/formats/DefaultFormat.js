@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import { field as fieldPropTypes } from '../../propTypes';
+import { field as fieldPropTypes } from '../propTypes';
 
 const DefaultView = ({ resource, field }) => (
     <span>{resource[field.name]}</span>
