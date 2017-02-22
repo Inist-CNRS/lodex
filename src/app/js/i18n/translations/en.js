@@ -36,7 +36,7 @@ export default {
     cover_collection: 'Different for each resource',
     cover_document: 'Only present on certain resource',
     dataset_characteristics: 'Characteristics',
-    export: 'Export',
+    export: 'Export as %{type}',
     sign_out: 'Sign out',
     back_to_list: 'Back to list',
     not_found: 'Resource not found',

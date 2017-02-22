@@ -4,8 +4,9 @@ import CircularProgress from 'material-ui/CircularProgress';
 
 import { Link } from 'react-router';
 
-import MenuSignedIn from './MenuSignedIn';
-import MenuAnonymous from './MenuAnonymous';
+import AdminButton from './AdminButton';
+import SignInButton from './SignInButton';
+import ExportMenu from './ExportMenu';
 
 const styles = {
     linkToHome: {
@@ -22,9 +23,12 @@ const AppbarComponent = ({ isLoading, isLoggedIn }) => {
         ? <CircularProgress color="#fff" size={30} thickness={2} style={styles.loading} />
         : <span />;
 
-    const RightElement = isLoggedIn
-        ? <MenuSignedIn />
-        : <MenuAnonymous />;
+    const RightElement = (
+        <div>
+            { isLoggedIn ? <AdminButton /> : <SignInButton /> }
+            <ExportMenu />
+        </div>
+    );
 
     return (
         <AppBar

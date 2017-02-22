@@ -1,7 +1,7 @@
 import Koa from 'koa';
 import route from 'koa-route';
 
-import * as exporters from '../../exporters';
+import exporters from '../../exporters';
 
 export const getExporter = (type) => {
     switch (type) {

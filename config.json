@@ -12,5 +12,8 @@
             "quote": "\"",
             "delimiter": "\t"
         }
-    }
+    },
+   "exporters": [
+       "csv"
+   ]
 }

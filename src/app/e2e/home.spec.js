@@ -7,7 +7,6 @@ describe('Home page', function homeTests() {
     this.timeout(10000);
     const DEFAULT_WAIT_TIMEOUT = 9000; // A bit less than mocha's timeout to get explicit errors from selenium
 
-    let button;
     let username;
     let password;
     let form;
@@ -19,13 +18,7 @@ describe('Home page', function homeTests() {
         driver.wait(until.elementTextIs(title, 'Lodex'), DEFAULT_WAIT_TIMEOUT);
     });
 
-    it('should display the Appbar with a menu button', async () => {
-        button = await driver.findElement(By.css('.appbar button'));
-    });
-
     it('click on sign-in button should display the sign-in modal', async () => {
-        await button.click();
-
         const buttonSignIn = await driver.findElement(By.css('.btn-sign-in'));
         await driver.wait(elementIsClicked(buttonSignIn), DEFAULT_WAIT_TIMEOUT);
 
