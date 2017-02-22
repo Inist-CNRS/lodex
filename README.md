@@ -199,3 +199,11 @@ Simply add your exporter name in the exporters array, and it will appear in the 
     ]
 }
 ```
+
+## Adding a new format
+
+You can add new formats to lodex.
+The formats determine the react component used to display a field on the front.
+
+Formats are added in the `src/app/formats` folder, in their own directory.
+Eg, to add a date format create the `src/app/formats/date` directory

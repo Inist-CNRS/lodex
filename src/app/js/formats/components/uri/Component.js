@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import { Link } from 'react-router';
-import { field as fieldPropTypes } from '../../propTypes';
+import { field as fieldPropTypes } from '../../../propTypes';
 
 const UriView = ({ linkedResource, resource, field }) => {
     const uri = resource[field.name];
