@@ -9,25 +9,27 @@ import { field as fieldPropTypes } from '../../propTypes';
 const styles = {
     container: {
         display: 'flex',
+        paddingBottom: '1rem',
     },
     form: {
-        borderLeft: '1px solid rgb(224, 224, 224)',
-        marginLeft: '4rem',
-        paddingLeft: '4rem',
+        borderRight: '1px solid rgb(224, 224, 224)',
+        marginRight: '4rem',
+        paddingRight: '4rem',
+        flexGrow: 1,
     },
 };
 
 const PublicationEditionComponent = ({ editedColumn, lines }) => (
     <div style={styles.container}>
+        <div style={styles.form}>
+            <FieldForm />
+        </div>
         <PublicationExcerpt
             columns={[editedColumn]}
             lines={lines}
             style={styles.column}
             onHeaderClick={null}
         />
-        <div style={styles.form}>
-            <FieldForm />
-        </div>
     </div>
 );
 
