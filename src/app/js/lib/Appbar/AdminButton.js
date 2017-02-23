@@ -10,9 +10,9 @@ import MoreVertIcon from 'material-ui/svg-icons/action/lock-open';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 
 export const AdminButtonComponent = ({ p: polyglot }) => (
-    <IconButton tooltip={polyglot.t('Admin')}>
-        <a href="/admin"><MoreVertIcon color="white" /></a>
-    </IconButton>
+    <a href="/admin"><MoreVertIcon color="white" />
+        <IconButton tooltip={polyglot.t('Admin')} />
+    </a>
 );
 
 AdminButtonComponent.propTypes = {
