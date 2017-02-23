@@ -20,10 +20,10 @@ const styles = {
     },
 };
 
-const PropertyEdition = ({ name, onChange, scheme, value }) => (
+const PropertyEdition = ({ name, label, onChange, scheme, value }) => (
     <dl className="property" style={styles.container}>
         <dt>
-            <div style={styles.name}>{name}</div>
+            <div style={styles.name}>{label}</div>
             <div style={styles.scheme}>{scheme}</div>
         </dt>
         <dd style={styles.inputContainer}>
@@ -39,6 +39,7 @@ const PropertyEdition = ({ name, onChange, scheme, value }) => (
 
 PropertyEdition.propTypes = {
     name: PropTypes.string.isRequired,
+    label: PropTypes.string.isRequired,
     scheme: PropTypes.string,
     value: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired,

@@ -43,15 +43,17 @@ const DatasetCharacteristicsEdition = ({
         />
         <CardText style={styles.container}>
             {fields
-                .map(({ name, scheme }) => ({
+                .map(({ name, label, scheme }) => ({
                     name,
+                    label,
                     scheme,
                     value: newCharacteristics[name],
                 }))
-                .map(({ name, value, scheme }) => (
+                .map(({ name, label, value, scheme }) => (
                     <PropertyEdition
                         key={name}
                         name={name}
+                        label={label}
                         onSetNewCharacteristicValue={setCharacteristicValue}
                         scheme={scheme}
                         value={value}

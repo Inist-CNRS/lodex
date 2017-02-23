@@ -51,7 +51,7 @@ export class DatasetComponent extends Component {
                     <Table selectable={false} fixedHeader={false} style={styles.table}>
                         <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
                             <TableRow>
-                                {columns.map(c => <TableHeaderColumn key={c.name}>{c.name}</TableHeaderColumn>)}
+                                {columns.map(c => <TableHeaderColumn key={c.name}>{c.label}</TableHeaderColumn>)}
                             </TableRow>
                         </TableHeader>
                         <TableBody displayRowCheckbox={false}>

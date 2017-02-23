@@ -33,7 +33,7 @@ const styles = {
 const PropertyComponent = ({ field, fields, resource, contributors, unValidatedFields, p: polyglot }) => (
     <dl className="property" style={styles.container(unValidatedFields.includes(resource.name))}>
         <dt>
-            <div className="property_name" style={styles.name}>{field.name}</div>
+            <div className="property_name" style={styles.name}>{field.label}</div>
             <div className="property_scheme" style={styles.scheme}>{field.scheme}</div>
             { contributors[field.name] ?
                 <div className="property_contributor" style={styles.scheme}>
