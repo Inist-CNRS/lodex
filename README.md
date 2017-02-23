@@ -65,23 +65,23 @@ import parseCsv from './parseCsv'; // eslint-disable-line
 
 export default {
     // ...
-    'text/csv': parseCsv,
+    'csv': parseCsv,
 };
 
 ```
 
 Notice how the key will determine the name of the loader.
-This name must match the content-type of the target file.
+This name must match the extension of the target file.
 This is how we determine which loader to use.
-Thus, a text/csv loader must be exported as text/csv.
+Thus, a loader for `.csv` file must be exported as csv.
 
-The config is taken from config.json, in `loader.<content-type>`, and allow to configure your loader on an instance basis.
+The config is taken from config.json, in `loader.<file extension>`, and allow to configure your loader on an instance basis.
 For example for the loader csv:
 
 ```json
 ...
     "loader": {
-        "text/csv": {
+        "csv": {
             "quote": "\"",
             "delimiter": ";"
         },
