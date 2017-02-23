@@ -15,7 +15,7 @@ const styles = {
         width: 'auto',
     },
     wrapper: {
-        overflowX: 'auto !important',
+        overflowX: 'auto',
     },
     cell: {
         cursor: 'pointer',
