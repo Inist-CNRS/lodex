@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
-import { CardHeader, CardText } from 'material-ui/Card';
+import { CardHeader } from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
 
 import Publication from './Publication';
@@ -11,6 +11,7 @@ import { addField, editField } from '../fields';
 import { polyglot as polyglotPropTypes, field as fieldPropTypes } from '../../propTypes';
 import { fromFields, fromPublicationPreview } from '../selectors';
 import Card from '../../lib/Card';
+import ScrollableCardContent from '../../lib/ScrollableCardContent';
 
 const styles = {
     title: {
@@ -62,14 +63,14 @@ export class PublicationPreviewComponent extends Component {
                     }
                 </CardHeader>
 
-                <CardText expandable>
+                <ScrollableCardContent expandable>
                     <Publication
                         editedColumn={editedColumn}
                         columns={columns}
                         lines={lines}
                         onHeaderClick={editColumn}
                     />
-                </CardText>
+                </ScrollableCardContent>
             </Card>
         );
     }

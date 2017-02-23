@@ -14,6 +14,9 @@ const styles = {
     table: {
         width: 'auto',
     },
+    wrapper: {
+        overflowX: 'auto',
+    },
     cell: {
         cursor: 'pointer',
     },
@@ -27,7 +30,13 @@ export const PublicationExcerptComponent = ({
     onHeaderClick,
     p: polyglot,
 }) => (
-    <Table selectable={false} fixedHeader={false} style={styles.table} onCellClick={onCellClick}>
+    <Table
+        selectable={false}
+        fixedHeader={false}
+        bodyStyle={styles.wrapper}
+        style={styles.table}
+        onCellClick={onCellClick}
+    >
         <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
             <TableRow onCellClick={onHeaderClick}>
                 {columns.map(({ label, name }) => (

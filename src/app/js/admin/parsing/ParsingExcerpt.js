@@ -10,10 +10,13 @@ const styles = {
     table: {
         width: 'auto',
     },
+    wrapper: {
+        overflowX: 'auto',
+    },
 };
 
 export const ParsingExcerptComponent = ({ columns, lines }) => (
-    <Table selectable={false} fixedHeader={false} style={styles.table}>
+    <Table selectable={false} fixedHeader={false} bodyStyle={styles.wrapper} style={styles.table}>
         <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
             <TableRow>
                 {columns.map(c => <TableHeaderColumn key={`header_${c}`}>{c}</TableHeaderColumn>)}

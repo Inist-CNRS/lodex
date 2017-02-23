@@ -3,10 +3,11 @@ import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 
-import { CardHeader, CardText } from 'material-ui/Card';
+import { CardHeader } from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
 import { grey400 } from 'material-ui/styles/colors';
 import Card from '../../lib/Card';
+import ScrollableCardContent from '../../lib/ScrollableCardContent';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import {
@@ -66,12 +67,12 @@ export class ParsingResultComponent extends Component {
                         label={polyglot.t('Upload another file')}
                     />
                 </CardHeader>
-                <CardText expandable>
+                <ScrollableCardContent expandable>
                     <ParsingExcerpt
                         columns={excerptColumns}
                         lines={excerptLines}
                     />
-                </CardText>
+                </ScrollableCardContent>
             </Card>
         );
     }
