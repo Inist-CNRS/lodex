@@ -4,12 +4,14 @@ import fieldFactory, {
     buildInvalidPropertiesMessage,
     buildInvalidTransformersMessage,
 } from './field';
+import { COVER_DOCUMENT } from '../../common/cover';
 
 describe('field', () => {
     describe('fieldFactory', () => {
         const fieldCollection = {
             createIndex: createSpy(),
             insertOne: createSpy(),
+            update: createSpy(),
         };
         const db = {
             collection: createSpy().andReturn(fieldCollection),
@@ -37,6 +39,81 @@ describe('field', () => {
                     name: /^[A-Za-z0-9+/]{4}$/,
                     field: 'data',
                 }]);
+            });
+        });
+
+        describe('field.addContributionField', () => {
+            it('should call insertOne if no field name when logged', async () => {
+                const fieldData = {
+                    label: 'label',
+                };
+                const contributor = { contributor: 'data' };
+                await field.addContributionField(fieldData, contributor, true, 'nameArg');
+                expect(fieldCollection.insertOne).toHaveBeenCalledWith({
+                    label: 'label',
+                    name: 'nameArg',
+                    cover: COVER_DOCUMENT,
+                    contribution: true,
+                });
+            });
+
+            it('should call insertOne if no field name with contributor when not logged', async () => {
+                const fieldData = {
+                    label: 'label',
+                    value: 'field value',
+                };
+                const contributor = { contributor: 'data' };
+                await field.addContributionField(fieldData, contributor, false, 'nameArg');
+                expect(fieldCollection.insertOne).toHaveBeenCalledWith({
+                    label: 'label',
+                    name: 'nameArg',
+                    cover: COVER_DOCUMENT,
+                    contribution: true,
+                    contributors: [contributor],
+                });
+            });
+
+            it('should call upadte if field has a name when logged', async () => {
+                const fieldData = {
+                    label: 'label',
+                    value: 'field value',
+                    name: 'this field name',
+                };
+                const contributor = { contributor: 'data' };
+                await field.addContributionField(fieldData, contributor, true, 'nameArg');
+                expect(fieldCollection.update).toHaveBeenCalledWith({
+                    name: 'this field name',
+                    contribution: true,
+                }, {
+                    $set: {
+                        label: 'label',
+                        cover: COVER_DOCUMENT,
+                        contribution: true,
+                    },
+                });
+            });
+
+            it('should call upadte if field has a name and adding contributor when not logged', async () => {
+                const fieldData = {
+                    label: 'label',
+                    value: 'field value',
+                    name: 'this field name',
+                };
+                const contributor = { contributor: 'data' };
+                await field.addContributionField(fieldData, contributor, false, 'nameArg');
+                expect(fieldCollection.update).toHaveBeenCalledWith({
+                    name: 'this field name',
+                    contribution: true,
+                }, {
+                    $set: {
+                        label: 'label',
+                        cover: COVER_DOCUMENT,
+                        contribution: true,
+                    },
+                    $addToSet: {
+                        contributors: contributor,
+                    },
+                });
             });
         });
     });

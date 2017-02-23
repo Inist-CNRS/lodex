@@ -1,4 +1,5 @@
 import omit from 'lodash.omit';
+import pick from 'lodash.pick';
 import { ObjectID } from 'mongodb';
 
 import { validateField as validateFieldIsomorphic } from '../../common/validateFields';
@@ -51,25 +52,29 @@ export default async (db) => {
 
     collection.removeById = id => collection.remove({ _id: new ObjectID(id) });
 
-    collection.addContributionField = async (field, contributor, isLogged) => {
-        const name = field.name || await generateUid();
+    collection.addContributionField = async (field, contributor, isLogged, nameArg) => {
+        const name = field.name || nameArg || await generateUid();
         await validateField({
             ...field,
+            cover: COVER_DOCUMENT,
             name,
         }, true);
 
         if (!field.name) {
             const fieldData = {
-                ...field,
+                ...pick(field, ['name', 'label', 'scheme']),
                 name,
                 cover: COVER_DOCUMENT,
                 contribution: true,
             };
-            if (isLogged) {
+            if (!isLogged) {
                 fieldData.contributors = [contributor];
             }
 
-            await collection.create(fieldData, name);
+            await collection.insertOne({
+                ...fieldData,
+                name,
+            });
 
             return name;
         }
@@ -80,7 +85,7 @@ export default async (db) => {
                 contribution: true,
             }, {
                 $set: {
-                    ...omit(field, ['value']),
+                    ...pick(field, ['label', 'scheme']),
                     cover: COVER_DOCUMENT,
                     contribution: true,
                 },
@@ -94,7 +99,7 @@ export default async (db) => {
             contribution: true,
         }, {
             $set: {
-                ...omit(field, ['value']),
+                ...pick(field, ['label', 'scheme']),
                 cover: COVER_DOCUMENT,
                 contribution: true,
             },
