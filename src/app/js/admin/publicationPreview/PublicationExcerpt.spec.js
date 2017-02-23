@@ -7,7 +7,7 @@ import { PublicationExcerptComponent as PublicationExcerpt } from './Publication
 
 describe('<PublicationExcerpt />', () => {
     it('should render headers', () => {
-        const columns = [{ name: 'foo' }, { name: 'bar', label: 'Super Bar' }];
+        const columns = [{ name: 'foo', label: 'foo' }, { name: 'bar', label: 'Super Bar' }];
         const lines = [
             { foo: 'foo1', bar: 'bar1' },
             { foo: 'foo2', bar: 'bar2' },
@@ -23,7 +23,7 @@ describe('<PublicationExcerpt />', () => {
     });
 
     it('should render lines', () => {
-        const columns = [{ name: 'foo' }, { name: 'bar' }];
+        const columns = [{ name: 'foo', label: 'foo' }, { name: 'bar', label: 'bar' }];
         const lines = [
             { foo: 'foo1', bar: 'bar1' },
             { foo: 'foo2', bar: 'bar2' },

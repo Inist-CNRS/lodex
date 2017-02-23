@@ -48,9 +48,7 @@ describe('Admin', () => {
             it('should display form for uri column when clicking on uri column', async () => {
                 await driver.findElement(By.css('.publication-preview th')).click();
                 await driver.wait(until.elementLocated(By.css('#field_form')), DEFAULT_WAIT_TIMEOUT);
-                const name = await driver.findElement(By.css('#field_form input[name=name]'));
                 const label = await driver.findElement(By.css('#field_form input[name=label]'));
-                await driver.wait(elementValueIs(name, 'uri'), DEFAULT_WAIT_TIMEOUT);
                 await driver.wait(elementValueIs(label, 'uri'), DEFAULT_WAIT_TIMEOUT);
             });
 
@@ -82,22 +80,15 @@ describe('Admin', () => {
                 await driver.wait(elementIsClicked(button), DEFAULT_WAIT_TIMEOUT);
 
                 await driver.wait(until.elementLocated(By.css('#field_form')), DEFAULT_WAIT_TIMEOUT);
-                const name = await driver.findElement(By.css('#field_form input[name=name]'));
                 const label = await driver.findElement(By.css('#field_form input[name=label]'));
 
-                await driver.wait(elementValueIs(name, 'newField2'), DEFAULT_WAIT_TIMEOUT);
                 await driver.wait(elementValueIs(label, 'newField 2'), DEFAULT_WAIT_TIMEOUT);
             });
 
             it('should change column name', async () => {
-                const name = await driver.findElement(By.css('#field_form input[name=name]'));
-                await driver.wait(inputElementIsFocusable(name), DEFAULT_WAIT_TIMEOUT);
-
                 const label = await driver.findElement(By.css('#field_form input[name=label]'));
                 await driver.wait(inputElementIsFocusable(label), DEFAULT_WAIT_TIMEOUT);
 
-                await name.clear();
-                await name.sendKeys('stronger');
                 await label.clear();
                 await label.sendKeys('Stronger than');
                 const th = await driver.findElement(By.css('.publication-preview th'));
@@ -179,22 +170,15 @@ describe('Admin', () => {
                 await driver.wait(elementIsClicked(button), DEFAULT_WAIT_TIMEOUT);
 
                 await driver.wait(until.elementLocated(By.css('#field_form')), DEFAULT_WAIT_TIMEOUT);
-                const name = await driver.findElement(By.css('#field_form input[name=name]'));
                 const label = await driver.findElement(By.css('#field_form input[name=label]'));
 
-                await driver.wait(elementValueIs(name, 'newField4'), DEFAULT_WAIT_TIMEOUT);
                 await driver.wait(elementValueIs(label, 'newField 4'), DEFAULT_WAIT_TIMEOUT);
             });
 
             it('should change column name', async () => {
-                const name = await driver.findElement(By.css('#field_form input[name=name]'));
-                await driver.wait(inputElementIsFocusable(name), DEFAULT_WAIT_TIMEOUT);
-
                 const label = await driver.findElement(By.css('#field_form input[name=label]'));
                 await driver.wait(inputElementIsFocusable(label), DEFAULT_WAIT_TIMEOUT);
 
-                await name.clear();
-                await name.sendKeys('custom');
                 await label.clear();
                 await label.sendKeys('Custom');
                 const th = await driver.findElement(By.css('.publication-preview th'));
@@ -266,15 +250,14 @@ describe('Admin', () => {
                 await driver.wait(until.elementLocated(By.css('.dataset')), DEFAULT_WAIT_TIMEOUT);
                 const headers = await driver.findElements(By.css('.dataset table th'));
                 const headersText = await Promise.all(headers.map(h => h.getText()));
-                expect(headersText).toEqual(['uri', 'stronger', 'name', 'custom']);
-
+                expect(headersText).toEqual(['uri', 'Stronger than', 'name', 'Custom']);
                 const rows = await Promise.all([1, 2, 3, 4].map(index =>
                     Promise.all([
                         driver
                             .findElement(By.css(`.dataset table tbody tr:nth-child(${index}) td.dataset-uri`))
                             .getText(),
                         driver
-                            .findElement(By.css(`.dataset table tbody tr:nth-child(${index}) td.dataset-stronger`))
+                            .findElement(By.css(`.dataset table tbody tr:nth-child(${index}) td.dataset-stronger_than`))
                             .getText(),
                         driver
                             .findElement(By.css(`.dataset table tbody tr:nth-child(${index}) td.dataset-name`))
