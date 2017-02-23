@@ -2,13 +2,14 @@ import React, { PropTypes } from 'react';
 import AppBar from 'material-ui/AppBar';
 import CircularProgress from 'material-ui/CircularProgress';
 
-import { Link } from 'react-router';
-
 import AdminButton from './AdminButton';
 import SignInButton from './SignInButton';
 import ExportMenu from './ExportMenu';
 
 const styles = {
+    appBar: {
+        zIndex: 1,
+    },
     linkToHome: {
         color: 'white',
         textDecoration: 'none',
@@ -36,6 +37,7 @@ const AppbarComponent = ({ isLoading, isLoggedIn }) => {
             title={<a style={styles.linkToHome} href="/">Lodex</a>}
             iconElementLeft={LeftElement}
             iconElementRight={RightElement}
+            style={styles.appBar}
         />
     );
 };

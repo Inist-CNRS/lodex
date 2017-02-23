@@ -10,7 +10,6 @@ const styles = {
     appContainer: {
         display: 'flex',
         flexDirection: 'column',
-        minHeight: '100vh',
     },
     bodyContainer: {
         display: 'flex',

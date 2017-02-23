@@ -5,9 +5,9 @@ import {
     SourceMapDevToolPlugin,
     HotModuleReplacementPlugin,
     NamedModulesPlugin,
-    optimize,
 } from 'webpack';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
+import CopyWebpackPlugin from 'copy-webpack-plugin';
 import { resolve } from 'path';
 
 export default {
@@ -118,6 +118,12 @@ export default {
             template: resolve(__dirname, './admin.html'),
             chunks: ['admin'],
             inject: 'body',
+        }),
+        new CopyWebpackPlugin([{
+            from: resolve(__dirname, './custom'),
+            to: resolve(__dirname, '../build'),
+        }], {
+            ignore: ['index.html', 'admin/index.js', 'index.js', '0.js'],
         }),
     ].concat(process.env.NODE_ENV === 'development'
         ? [
