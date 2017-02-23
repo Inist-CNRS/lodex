@@ -48,7 +48,7 @@ app.use(mount('/characteristic', characteristic));
 app.use(mount('/field', fieldRoutes));
 app.use(mount('/parsing', parsing));
 app.use(mount('/publish', publish));
-app.use(route.post('/upload', upload));
+app.use(mount('/upload', upload));
 
 app.use(async (ctx) => {
     ctx.status = 404;

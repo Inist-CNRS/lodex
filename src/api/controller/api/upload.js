@@ -1,3 +1,5 @@
+import Koa from 'koa';
+import route from 'koa-route';
 import rawBody from 'raw-body';
 import streamBuffers from 'stream-buffers';
 import streamToArray from 'stream-to-array';
@@ -25,9 +27,7 @@ export const requestToStream = (rawBodyImpl, ReadableStreamBuffer) => async (req
     return stream;
 };
 
-export async function uploadMiddleware(ctx) {
-    const type = ctx.request.header['content-type'];
-
+export async function uploadMiddleware(ctx, type) {
     await ctx.dataset.remove({});
 
     try {
@@ -48,10 +48,19 @@ export async function uploadMiddleware(ctx) {
     }
 }
 
-export default async function upload(ctx) {
+export const prepareUpload = async (ctx, next) => {
     ctx.getParser = getParser;
     ctx.requestToStream = requestToStream(rawBody, streamBuffers.ReadableStreamBuffer);
     ctx.streamToArray = streamToArray;
 
-    await uploadMiddleware(ctx);
-}
+    await next();
+};
+
+
+const app = new Koa();
+
+app.use(prepareUpload);
+
+app.use(route.post('/:type', uploadMiddleware));
+
+export default app;

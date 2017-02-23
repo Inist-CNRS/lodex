@@ -4,11 +4,11 @@
    "naan": "67375",
    "subPublisherId": "39D",
     "loader": {
-        "text/csv": {
+        "csv": {
             "quote": "\"",
             "delimiter": ";"
         },
-        "text/tab-separated-values": {
+        "tsv": {
             "quote": "\"",
             "delimiter": "\t"
         }
