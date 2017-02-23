@@ -69,9 +69,12 @@ export const restoreResource = async (ctx) => {
 export const addFieldToResource = async (ctx) => {
     const isLoggedIn = !!ctx.state.header && !!ctx.state.cookie;
     const { uri, contributor, field } = ctx.request.body;
-    await ctx.field.addContributionField(field, contributor, isLoggedIn);
+    const fieldName = await ctx.field.addContributionField(field, contributor, isLoggedIn);
 
-    ctx.body = await ctx.publishedDataset.addFieldToResource(uri, contributor, field, isLoggedIn);
+    ctx.body = await ctx.publishedDataset.addFieldToResource(uri, contributor, {
+        ...field,
+        name: fieldName,
+    }, isLoggedIn);
 };
 
 app.use(route.get('/removed', getRemovedPage));

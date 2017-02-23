@@ -34,8 +34,9 @@ export default async (db) => {
 
     collection.findOneById = id => collection.findOne({ _id: new ObjectID(id) });
 
-    collection.create = async (fieldData) => {
-        const name = await generateUid();
+    collection.create = async (fieldData, nameArg) => {
+        const name = nameArg || await generateUid();
+
         return collection.insertOne({
             ...fieldData,
             name,
@@ -51,11 +52,31 @@ export default async (db) => {
     collection.removeById = id => collection.remove({ _id: new ObjectID(id) });
 
     collection.addContributionField = async (field, contributor, isLogged) => {
-        await validateField(field, true);
+        const name = field.name || await generateUid();
+        await validateField({
+            ...field,
+            name,
+        }, true);
+
+        if (!field.name) {
+            const fieldData = {
+                ...field,
+                name,
+                cover: COVER_DOCUMENT,
+                contribution: true,
+            };
+            if (isLogged) {
+                fieldData.contributors = [contributor];
+            }
+
+            await collection.create(fieldData, name);
+
+            return name;
+        }
 
         if (isLogged) {
-            return collection.update({
-                name: field.name,
+            await collection.update({
+                name,
                 contribution: true,
             }, {
                 $set: {
@@ -63,13 +84,13 @@ export default async (db) => {
                     cover: COVER_DOCUMENT,
                     contribution: true,
                 },
-            }, {
-                upsert: true,
             });
+
+            return name;
         }
 
-        return collection.update({
-            name: field.name,
+        await collection.update({
+            name,
             contribution: true,
         }, {
             $set: {
@@ -80,9 +101,9 @@ export default async (db) => {
             $addToSet: {
                 contributors: contributor,
             },
-        }, {
-            upsert: true,
         });
+
+        return name;
     };
 
     return collection;
