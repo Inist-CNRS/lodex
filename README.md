@@ -73,7 +73,7 @@ export default {
 Notice how the key will determine the name of the loader.
 This name must match the extension of the target file.
 This is how we determine which loader to use.
-Thus, a loader for `.csv` file must be exported as csv.
+Thus, a loader for `.csv` file must be exported as `csv`.
 
 The config is taken from config.json, in `loader.<file extension>`, and allow to configure your loader on an instance basis.
 For example for the loader csv:
