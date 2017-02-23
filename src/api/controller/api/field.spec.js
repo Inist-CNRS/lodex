@@ -13,7 +13,7 @@ describe('field routes', () => {
     describe('setup', () => {
         it('should add validateField to ctx and call next', async () => {
             const ctx = {};
-            const next = expect.createSpy();
+            const next = createSpy();
 
             await setup(ctx, next);
 
@@ -24,7 +24,7 @@ describe('field routes', () => {
 
         it('should also set status and body if next is rejected', async () => {
             const ctx = {};
-            const next = expect.createSpy()
+            const next = createSpy()
                 .andReturn(Promise.reject(new Error('Boom')));
 
             await setup(ctx, next);
@@ -41,7 +41,7 @@ describe('field routes', () => {
         it('should call ctx.field.findAll and pass the result to ctx.body', async () => {
             const ctx = {
                 field: {
-                    findAll: expect.createSpy().andReturn(Promise.resolve('all fields')),
+                    findAll: createSpy().andReturn(Promise.resolve('all fields')),
                 },
             };
 
@@ -58,15 +58,15 @@ describe('field routes', () => {
                     body: 'new field data',
                 },
                 field: {
-                    findOneById: expect.createSpy().andReturn(Promise.resolve('inserted item')),
-                    insertOne: expect.createSpy().andReturn(Promise.resolve({
+                    findOneById: createSpy().andReturn(Promise.resolve('inserted item')),
+                    create: createSpy().andReturn(Promise.resolve({
                         ops: [{ _id: 'foo' }],
                     })),
                 },
             };
 
             await postField(ctx);
-            expect(ctx.field.insertOne).toHaveBeenCalledWith('new field data');
+            expect(ctx.field.create).toHaveBeenCalledWith('new field data');
             expect(ctx.field.findOneById).toHaveBeenCalledWith('foo');
             expect(ctx.body).toBe('inserted item');
         });
@@ -79,7 +79,7 @@ describe('field routes', () => {
                     body: 'updated field data',
                 },
                 field: {
-                    updateOneById: expect.createSpy().andReturn(Promise.resolve('update result')),
+                    updateOneById: createSpy().andReturn(Promise.resolve('update result')),
                 },
             };
 
@@ -96,7 +96,7 @@ describe('field routes', () => {
                     body: 'updated field data',
                 },
                 field: {
-                    removeById: expect.createSpy().andReturn(Promise.resolve('deletion result')),
+                    removeById: createSpy().andReturn(Promise.resolve('deletion result')),
                 },
             };
 

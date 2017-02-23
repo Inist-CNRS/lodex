@@ -3,6 +3,7 @@ import { ObjectID } from 'mongodb';
 
 import { validateField as validateFieldIsomorphic } from '../../common/validateFields';
 import { COVER_DOCUMENT } from '../../common/cover';
+import generateUid from '../services/generateUid';
 
 export const buildInvalidPropertiesMessage = name =>
     `Invalid data for field ${name} which need a name, a label, a cover, a valid scheme if specified and a transformers array`; // eslint-disable-line
@@ -32,6 +33,14 @@ export default async (db) => {
     collection.findAll = () => collection.find({}).toArray();
 
     collection.findOneById = id => collection.findOne({ _id: new ObjectID(id) });
+
+    collection.create = async (fieldData) => {
+        const name = await generateUid();
+        return collection.insertOne({
+            ...fieldData,
+            name,
+        });
+    };
 
     collection.updateOneById = (id, field) => collection.findOneAndUpdate({
         _id: new ObjectID(id),

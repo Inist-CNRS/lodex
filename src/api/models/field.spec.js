@@ -1,11 +1,46 @@
-import expect from 'expect';
-import {
+import expect, { createSpy } from 'expect';
+import fieldFactory, {
     validateField,
     buildInvalidPropertiesMessage,
     buildInvalidTransformersMessage,
 } from './field';
 
 describe('field', () => {
+    describe('fieldFactory', () => {
+        const fieldCollection = {
+            createIndex: createSpy(),
+            insertOne: createSpy(),
+        };
+        const db = {
+            collection: createSpy().andReturn(fieldCollection),
+        };
+        let field;
+
+        before(async () => {
+            field = await fieldFactory(db);
+        });
+
+        it('should call db.collection with `field`', () => {
+            expect(db.collection).toHaveBeenCalledWith('field');
+        });
+
+        it('should call fieldCollection.createIndex', () => {
+            expect(fieldCollection.createIndex).toHaveBeenCalledWith({ name: 1 }, { unique: true });
+        });
+
+        describe('field.create', () => {
+            it('should call collection.inserOne with given data and a random uid', async () => {
+                await field.create({ field: 'data' });
+
+                expect(fieldCollection.insertOne.calls.length).toBe(1);
+                expect(fieldCollection.insertOne.calls[0].arguments).toMatch([{
+                    name: /^[A-Za-z0-9]{4}$/,
+                    field: 'data',
+                }]);
+            });
+        });
+    });
+
     describe('validateField', () => {
         it('should return field if valid', async () => {
             const field = {
