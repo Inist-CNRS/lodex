@@ -1,5 +1,7 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
+import compose from 'recompose/compose';
+import translate from 'redux-polyglot/translate';
 import classnames from 'classnames';
 
 import RaisedButton from 'material-ui/RaisedButton';
@@ -8,16 +10,12 @@ import Alert from '../../lib/Alert';
 
 import { uploadFile } from './';
 import { fromUpload } from '../selectors';
+import { polyglot as polyglotPropTypes } from '../../propTypes';
 
 const styles = {
     div: {
         position: 'relative',
         margin: 100,
-    },
-    RaisedButton: {
-        width: 500,
-        height: 200,
-        color: 'white',
     },
     input: {
         position: 'absolute',
@@ -31,7 +29,7 @@ const styles = {
     },
 };
 
-export const UploadComponent = ({ onFileLoad, error, ...props }) => (
+export const UploadComponent = ({ onFileLoad, error, p: polyglot, ...props }) => (
     <div
         className={classnames('upload', props.className)}
         style={styles.div}
@@ -42,9 +40,9 @@ export const UploadComponent = ({ onFileLoad, error, ...props }) => (
         </Alert> : <span />}
         <RaisedButton
             containerElement="label"
-            secondary
-            style={styles.RaisedButton}
+            primary
             icon={<ArchiveIcon />}
+            label={polyglot.t('upload_file')}
         >
             <input
                 name="file"
@@ -52,7 +50,6 @@ export const UploadComponent = ({ onFileLoad, error, ...props }) => (
                 onChange={e => onFileLoad(e.target.files[0])}
                 style={styles.input}
             />
-            Import file
         </RaisedButton>
     </div>
 );
@@ -61,6 +58,7 @@ UploadComponent.propTypes = {
     className: PropTypes.string,
     error: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]).isRequired,
     onFileLoad: PropTypes.func.isRequired,
+    p: polyglotPropTypes.isRequired,
 };
 
 UploadComponent.defaultProps = {
@@ -73,4 +71,7 @@ const mapDispatchToProps = {
     onFileLoad: uploadFile,
 };
 
-export default connect(mapsStateToProps, mapDispatchToProps)(UploadComponent);
+export default compose(
+    connect(mapsStateToProps, mapDispatchToProps),
+    translate,
+)(UploadComponent);

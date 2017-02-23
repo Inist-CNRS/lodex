@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
-import { CardActions, CardHeader, CardText } from 'material-ui/Card';
+import { CardHeader, CardText } from 'material-ui/Card';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 
@@ -51,7 +51,7 @@ export class PublishComponent extends Component {
                         success={published}
                         label={polyglot.t('publish')}
                         onClick={this.handleClick}
-                        primary
+                        secondary
                         disabled={!canPublish}
                         style={styles.button}
                     />

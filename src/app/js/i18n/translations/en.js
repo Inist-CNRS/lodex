@@ -2,7 +2,7 @@
 export default {
     Admin: 'Admin',
     'Sign in': 'Sign in',
-    parsing_summary: 'Parsed %{count} lines',
+    parsing_summary: 'Input dataset - %{count} imported lines',
     'total lines': 'total lines',
     'successfully parsed': 'successfully parsed',
     'with errors': 'with errors',
@@ -63,9 +63,11 @@ export default {
     contributorMail: 'Email',
     new_field: 'Field',
     contributed_by: 'Contributed by %{name}',
-    add_column: 'Add column',
+    add_to_publication: 'Add to publication',
+    add_column: 'Add a new column',
     no_dataset: 'No dataset',
     scheme: 'scheme',
     format: 'format',
     exit_column_edition: 'Back to preview',
+    upload_file: 'Upload a file',
 };

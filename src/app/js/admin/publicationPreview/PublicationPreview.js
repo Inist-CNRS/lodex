@@ -52,6 +52,7 @@ export class PublicationPreviewComponent extends Component {
                         label={polyglot.t('add_column')}
                         onClick={this.handleAddColumnClick}
                         style={styles.button}
+                        secondary
                     />
                     {editedColumn &&
                         <FlatButton
