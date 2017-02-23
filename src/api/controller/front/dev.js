@@ -9,9 +9,6 @@ app.use(koaWebpack({
     config: webpackConfig,
     dev: {
         publicPath: webpackConfig.output.publicPath,
-        headers: {
-            'Content-Type': 'text/html; charset=utf-8',
-        },
         stats: {
             colors: true,
         },
