@@ -1,4 +1,4 @@
-import { race, call, put, take, takeEvery } from 'redux-saga/effects';
+import { race, call, put, take, takeLatest } from 'redux-saga/effects';
 
 import fetchSaga from '../lib/fetchSaga';
 
@@ -29,5 +29,5 @@ export function* handleFetch({ payload: config, meta: { name } }) {
 }
 
 export default function* watchFetch() {
-    yield takeEvery([FETCH], handleFetch);
+    yield takeLatest(FETCH, handleFetch);
 }
