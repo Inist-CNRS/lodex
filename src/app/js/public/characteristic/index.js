@@ -1,4 +1,5 @@
 import { createAction, handleActions } from 'redux-actions';
+import { createSelector } from 'reselect';
 
 export const TOGGLE_CHARACTERISTICS_EDITION = 'TOGGLE_CHARACTERISTICS_EDITION';
 export const SET_CHARACTERISTIC_VALUE = 'SET_CHARACTERISTIC_VALUE';
@@ -60,11 +61,45 @@ export default handleActions({
     }),
 }, defaultState);
 
-const getNewCharacteristics = state => state.newCharacteristics || {};
 const isCharacteristicEditing = state => state.editing;
 const isCharacteristicUpdating = state => state.updating;
 const getCharacteristicError = state => state.error;
-const getCharacteristics = state => state.characteristics[0] || {};
+
+const getCharacteristicsAsResource = state => state.characteristics[0] || {};
+const getNewCharacteristicsAsResource = state => state.newCharacteristics || {};
+
+const getParams = (state, params) => params;
+
+const getCharacteristics = createSelector(
+    getCharacteristicsAsResource,
+    getParams,
+    (characteristics, fields) => fields
+            .map(field => ({
+                ...field,
+                value: characteristics[field.name],
+            })),
+);
+
+const getNewCharacteristics = createSelector(
+    getNewCharacteristicsAsResource,
+    getParams,
+    (characteristics, fields) => fields
+            .map(field => ({
+                ...field,
+                value: characteristics[field.name],
+            })),
+);
+
+const getRootCharacteristics = createSelector(
+    getCharacteristicsAsResource,
+    getParams,
+    (characteristics, fields) => fields
+            .map(field => ({
+                ...field,
+                value: characteristics[field.name],
+            }))
+            .filter(field => !field.complete),
+);
 
 export const fromCharacteristic = {
     getNewCharacteristics,
@@ -72,4 +107,6 @@ export const fromCharacteristic = {
     isCharacteristicUpdating,
     getCharacteristicError,
     getCharacteristics,
+    getCharacteristicsAsResource,
+    getRootCharacteristics,
 };

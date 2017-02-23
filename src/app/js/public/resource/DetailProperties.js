@@ -31,8 +31,8 @@ DetailPropertiesComponent.propTypes = {
 
 const mapStateToProps = state => ({
     resource: fromResource.getResourceLastVersion(state),
-    collectionFields: fromPublication.getCollectionFields(state),
-    documentFields: fromPublication.getDocumentFields(state),
+    collectionFields: fromPublication.getRootCollectionFields(state),
+    documentFields: fromPublication.getRootDocumentFields(state),
 });
 
 const mapDispatchToProps = {};

@@ -108,7 +108,7 @@ ResourceComponent.propTypes = {
 
 const mapStateToProps = state => ({
     resource: fromResource.getResourceLastVersion(state),
-    characteristics: fromCharacteristic.getCharacteristics(state),
+    characteristics: fromCharacteristic.getCharacteristicsAsResource(state),
     datasetTitleKey: fromPublication.getDatasetTitleFieldName(state),
     titleKey: fromPublication.getTitleFieldName(state),
     fields: fromPublication.getFields(state),

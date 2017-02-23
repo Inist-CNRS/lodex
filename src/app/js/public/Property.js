@@ -2,6 +2,7 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
+import classnames from 'classnames';
 
 import {
     fromResource,
@@ -30,8 +31,20 @@ const styles = {
     },
 };
 
-const PropertyComponent = ({ field, fields, resource, contributors, unValidatedFields, p: polyglot }) => (
-    <dl className="property" style={styles.container(unValidatedFields.includes(resource.name))}>
+const PropertyComponent = ({
+    className,
+    field,
+    linkedFields,
+    fields,
+    resource,
+    contributors,
+    unValidatedFields,
+    p: polyglot,
+}) => (
+    <dl
+        className={classnames('property', className)}
+        style={styles.container(unValidatedFields.includes(resource.name))}
+    >
         <dt>
             <div className="property_name" style={styles.name}>{field.label}</div>
             <div className="property_scheme" style={styles.scheme}>{field.scheme}</div>
@@ -49,26 +62,43 @@ const PropertyComponent = ({ field, fields, resource, contributors, unValidatedF
                 fields={fields}
                 resource={resource}
             />
+            {linkedFields.map(linkedField => (
+                <Property
+                    key={linkedField._id}
+                    className="complete"
+                    field={linkedField}
+                    resource={resource}
+                />
+            ))}
         </dd>
     </dl>
 );
 
 PropertyComponent.propTypes = {
+    className: PropTypes.string,
     contributors: PropTypes.objectOf(contributorPropTypes).isRequired,
     field: fieldPropTypes.isRequired,
     fields: PropTypes.arrayOf(fieldPropTypes).isRequired,
+    linkedFields: PropTypes.arrayOf(fieldPropTypes).isRequired,
     p: polyglotPropTypes.isRequired,
     resource: PropTypes.shape({}).isRequired,
     unValidatedFields: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
-const mapStateToProps = state => ({
+PropertyComponent.defaultProps = {
+    className: null,
+};
+
+const mapStateToProps = (state, { field }) => ({
     unValidatedFields: fromResource.getResourceUnvalidatedFields(state),
     contributors: fromResource.getResourceContributorsByField(state),
     fields: fromPublication.getCollectionFields(state),
+    linkedFields: fromPublication.getLinkedFields(state, field),
 });
 
-export default compose(
+const Property = compose(
     translate,
     connect(mapStateToProps),
 )(PropertyComponent);
+
+export default Property;

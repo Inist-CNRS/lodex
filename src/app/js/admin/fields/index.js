@@ -98,6 +98,12 @@ export const getCollectionFields = createSelector(
     fields => fields.filter(f => f.cover === COVER_COLLECTION),
 );
 
+export const getFieldsExceptEdited = createSelector(
+    getFields,
+    getEditedField,
+    (fields, editedField) => fields.filter(f => f._id !== editedField._id),
+);
+
 export const hasPublicationFields = ({ list }) => list.length > 0;
 
 export const getTransformers = () => getTransformersMetas();
@@ -123,10 +129,11 @@ export const areAllFieldsValid = state => state.allValid;
 
 export const selectors = {
     areAllFieldsValid,
-    getFields,
     getCollectionFields,
-    getInvalidFields,
     getEditedField,
+    getFields,
+    getFieldsExceptEdited,
+    getInvalidFields,
     getNbFields,
     hasPublicationFields,
     getTransformers,

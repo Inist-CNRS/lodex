@@ -7,7 +7,7 @@ import { CardActions, CardHeader, CardText } from 'material-ui/Card';
 import Card from '../../lib/Card';
 
 import {
-    property as propertyPropTypes,
+    field as fieldPropTypes,
     polyglot as polyglotPropTypes,
 } from '../../propTypes';
 
@@ -31,7 +31,6 @@ const styles = {
 const DatasetCharacteristicsEdition = ({
     error,
     newCharacteristics,
-    fields,
     p: polyglot,
     setCharacteristicValue,
     updateCharacteristics,
@@ -41,26 +40,17 @@ const DatasetCharacteristicsEdition = ({
         <CardHeader
             title={polyglot.t('dataset_characteristics')}
         />
-        <CardText style={styles.container}>
-            {fields
-                .map(({ name, label, scheme }) => ({
-                    name,
-                    label,
-                    scheme,
-                    value: newCharacteristics[name],
-                }))
-                .map(({ name, label, value, scheme }) => (
-                    <PropertyEdition
-                        key={name}
-                        name={name}
-                        label={label}
-                        onSetNewCharacteristicValue={setCharacteristicValue}
-                        scheme={scheme}
-                        value={value}
-                    />
-                ))
-            }
-        </CardText>
+        {newCharacteristics.map(({ label, name, value, scheme }) => (
+            <CardText key={name} style={styles.container}>
+                <PropertyEdition
+                    name={name}
+                    label={label}
+                    onSetNewCharacteristicValue={setCharacteristicValue}
+                    scheme={scheme}
+                    value={value}
+                />
+            </CardText>
+        ))}
         <CardActions>
             <ButtonWithStatus
                 className="btn-update-characteristics"
@@ -76,8 +66,7 @@ const DatasetCharacteristicsEdition = ({
 
 DatasetCharacteristicsEdition.propTypes = {
     error: PropTypes.string,
-    newCharacteristics: PropTypes.shape({}).isRequired,
-    fields: PropTypes.arrayOf(propertyPropTypes),
+    newCharacteristics: PropTypes.arrayOf(fieldPropTypes).isRequired,
     p: polyglotPropTypes.isRequired,
     setCharacteristicValue: PropTypes.func.isRequired,
     updateCharacteristics: PropTypes.func.isRequired,
@@ -86,17 +75,20 @@ DatasetCharacteristicsEdition.propTypes = {
 
 DatasetCharacteristicsEdition.defaultProps = {
     characteristics: [],
-    newCharacteristics: {},
-    fields: [],
+    newCharacteristics: [],
     error: null,
 };
 
-const mapStateToProps = state => ({
-    error: fromCharacteristic.getCharacteristicError(state),
-    newCharacteristics: fromCharacteristic.getNewCharacteristics(state),
-    fields: fromPublication.getDatasetFields(state),
-    updating: fromCharacteristic.isCharacteristicUpdating(state),
-});
+const mapStateToProps = (state) => {
+    const fields = fromPublication.getDatasetFields(state);
+
+    return {
+        error: fromCharacteristic.getCharacteristicError(state),
+        newCharacteristics: fromCharacteristic.getNewCharacteristics(state, fields),
+        fields,
+        updating: fromCharacteristic.isCharacteristicUpdating(state),
+    };
+};
 
 const mapDispatchToProps = {
     setCharacteristicValue: setCharacteristicValueAction,
