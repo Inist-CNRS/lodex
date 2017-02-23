@@ -34,7 +34,7 @@ describe('field', () => {
 
                 expect(fieldCollection.insertOne.calls.length).toBe(1);
                 expect(fieldCollection.insertOne.calls[0].arguments).toMatch([{
-                    name: /^[A-Za-z0-9]{4}$/,
+                    name: /^[A-Za-z0-9+/]{4}$/,
                     field: 'data',
                 }]);
             });
@@ -77,7 +77,7 @@ describe('field', () => {
                 ],
             };
 
-            expect(() => validateField(field)).toThrow(buildInvalidPropertiesMessage('name'));
+            expect(() => validateField(field)).toThrow(buildInvalidPropertiesMessage('label'));
         });
 
         it('should throw an error if cover is unknown', () => {
@@ -91,7 +91,7 @@ describe('field', () => {
                 ],
             };
 
-            expect(() => validateField(field)).toThrow(buildInvalidPropertiesMessage('name'));
+            expect(() => validateField(field)).toThrow(buildInvalidPropertiesMessage('label'));
         });
 
         it('should throw an error if no label', () => {
@@ -105,7 +105,7 @@ describe('field', () => {
                 ],
             };
 
-            expect(() => validateField(field)).toThrow(buildInvalidPropertiesMessage('name'));
+            expect(() => validateField(field)).toThrow(buildInvalidPropertiesMessage());
         });
 
         it('should throw an error if label less than ', () => {
@@ -119,7 +119,7 @@ describe('field', () => {
                 ],
             };
 
-            expect(() => validateField(field)).toThrow(buildInvalidPropertiesMessage('name'));
+            expect(() => validateField(field)).toThrow(buildInvalidPropertiesMessage('la'));
         });
 
         it('should throw an error if no name', () => {
@@ -133,13 +133,13 @@ describe('field', () => {
                 ],
             };
 
-            expect(() => validateField(field)).toThrow(buildInvalidPropertiesMessage());
+            expect(() => validateField(field)).toThrow(buildInvalidPropertiesMessage('label'));
         });
 
         it('should throw an error if name less than ', () => {
             const field = {
                 cover: 'dataset',
-                label: 'label',
+                label: 'la',
                 name: 'na',
                 scheme: 'http://purl.org/dc/terms/title',
                 transformers: [
@@ -147,7 +147,7 @@ describe('field', () => {
                 ],
             };
 
-            expect(() => validateField(field)).toThrow(buildInvalidPropertiesMessage('na'));
+            expect(() => validateField(field)).toThrow(buildInvalidPropertiesMessage('la'));
         });
 
         it('should throw an error if scheme is not a valid url', () => {
@@ -161,7 +161,7 @@ describe('field', () => {
                 ],
             };
 
-            expect(() => validateField(field)).toThrow(buildInvalidPropertiesMessage('name'));
+            expect(() => validateField(field)).toThrow(buildInvalidPropertiesMessage('label'));
         });
 
         it('should throw an error if transformer has no args', () => {
@@ -175,7 +175,7 @@ describe('field', () => {
                 ],
             };
 
-            expect(() => validateField(field)).toThrow(buildInvalidTransformersMessage('name'));
+            expect(() => validateField(field)).toThrow(buildInvalidTransformersMessage('label'));
         });
 
         it('should throw an error if transformer operation has unknow operation', () => {
@@ -190,7 +190,7 @@ describe('field', () => {
                 ],
             };
 
-            expect(() => validateField(field)).toThrow(buildInvalidTransformersMessage('name'));
+            expect(() => validateField(field)).toThrow(buildInvalidTransformersMessage('label'));
         });
 
         it('should return field even if transformers is incorrect if isContribution is true', async () => {
