@@ -22,6 +22,10 @@ export const REFRESH_FIELD = 'REFRESH_FIELD';
 export const SET_VALIDATION = 'SET_VALIDATION';
 export const UPDATE_FIELD_ERROR = 'UPDATE_FIELD_ERROR';
 export const UPDATE_FIELD_SUCCESS = 'UPDATE_FIELD_SUCCESS';
+export const ADD_COMPOSED_OF = 'ADD_COMPOSED_OF';
+export const CLEAR_COMPOSED_OF = 'CLEAR_COMPOSED_OF';
+export const ADD_COMPOSED_OF_FIELD = 'ADD_COMPOSED_OF_FIELD';
+export const REMOVE_COMPOSED_OF_FIELD = 'REMOVE_COMPOSED_OF_FIELD';
 
 export const addField = createAction(ADD_FIELD);
 export const addFieldError = createAction(ADD_FIELD_ERROR);
@@ -37,6 +41,10 @@ export const refreshField = createAction(REFRESH_FIELD);
 export const setValidation = createAction(SET_VALIDATION);
 export const updateFieldError = createAction(UPDATE_FIELD_ERROR);
 export const updateFieldSuccess = createAction(UPDATE_FIELD_SUCCESS);
+export const addComposedOf = createAction(ADD_COMPOSED_OF);
+export const clearComposedOf = createAction(CLEAR_COMPOSED_OF);
+export const addComposedOfField = createAction(ADD_COMPOSED_OF_FIELD);
+export const removeComposedOfField = createAction(REMOVE_COMPOSED_OF_FIELD);
 
 export const defaultState = {
     byName: {},
@@ -86,6 +94,78 @@ export default handleActions({
         allValid,
         invalidFields,
     }),
+    ADD_COMPOSED_OF: (state) => {
+        const { editedFieldName, byName } = state;
+
+        return {
+            ...state,
+            byName: {
+                ...byName,
+                [editedFieldName]: {
+                    ...byName[editedFieldName],
+                    composedOf: {
+                        separator: ' ',
+                        fields: ['', ''],
+                    },
+                },
+            },
+        };
+    },
+    CLEAR_COMPOSED_OF: (state) => {
+        const { editedFieldName, byName } = state;
+
+        return {
+            ...state,
+            byName: {
+                ...byName,
+                [editedFieldName]: {
+                    ...byName[editedFieldName],
+                    composedOf: null,
+                },
+            },
+        };
+    },
+    ADD_COMPOSED_OF_FIELD: (state) => {
+        const { editedFieldName, byName } = state;
+
+        return {
+            ...state,
+            byName: {
+                ...byName,
+                [editedFieldName]: {
+                    ...byName[editedFieldName],
+                    composedOf: {
+                        separator: ' ',
+                        fields: [
+                            ...byName[editedFieldName].composedOf.fields,
+                            '',
+                        ],
+                    },
+                },
+            },
+        };
+    },
+    REMOVE_COMPOSED_OF_FIELD: (state) => {
+        const { editedFieldName, byName } = state;
+
+        if (byName[editedFieldName].composedOf.fields.length <= 2) {
+            return state;
+        }
+
+        return {
+            ...state,
+            byName: {
+                ...byName,
+                [editedFieldName]: {
+                    ...byName[editedFieldName],
+                    composedOf: {
+                        separator: ' ',
+                        fields: byName[editedFieldName].composedOf.fields.slice(0, -1),
+                    },
+                },
+            },
+        };
+    },
 }, defaultState);
 
 const getFields = ({ byName, list }) => list.map(name => byName[name]);

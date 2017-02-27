@@ -13,11 +13,11 @@ import {
     FIELD_FORM_NAME,
     saveField,
 } from './';
-
 import { fromFields } from '../selectors';
 import Format from '../FormatEdition';
 import Alert from '../../lib/Alert';
 import TransformerList from './TransformerList';
+import ComposedOf from './ComposedOf';
 
 const validate = (values) => {
     const errors = ['name', 'label', 'cover'].reduce((currentErrors, field) => {
@@ -44,6 +44,7 @@ export const FieldFormComponent = ({
     if (!field) {
         return <span />;
     }
+    console.log({ field });
 
     const otherFieldsMenuItems = fields.map(f => (
         <MenuItem
@@ -84,12 +85,13 @@ export const FieldFormComponent = ({
                 {otherFieldsMenuItems}
             </Field>
             { isContribution ? null : <FieldArray name="transformers" component={TransformerList} /> }
-            { isContribution ? null : <Field
+            { (isContribution) ? null : <Field
                 name="format"
                 component={Format}
                 label={polyglot.t('format')}
                 fullWidth
             />}
+            { isContribution ? null : <ComposedOf name="composedOf" value={field.composedOf} /> }
         </form>
     );
 };
