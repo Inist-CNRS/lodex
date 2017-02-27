@@ -8,7 +8,7 @@ import FlatButton from 'material-ui/FlatButton';
 import Card from '../../lib/Card';
 
 import {
-    property as propertyPropTypes,
+    field as fieldProptypes,
     polyglot as polyglotPropTypes,
 } from '../../propTypes';
 
@@ -34,7 +34,6 @@ const styles = {
 const DatasetCharacteristicsView = ({
     canEdit,
     characteristics,
-    fields,
     p: polyglot,
     toggleCharacteristicsEdition,
 }) => (
@@ -43,12 +42,7 @@ const DatasetCharacteristicsView = ({
             title={polyglot.t('dataset_characteristics')}
         />
         <CardText style={styles.container}>
-            {fields
-                .map(({ name, scheme }) => ({
-                    name,
-                    scheme,
-                    value: characteristics[name],
-                }))
+            {characteristics
                 .map(characteristicField => (
                     <DatasetCharacteristicItem key={characteristicField.name} characteristic={characteristicField} />
                 ))
@@ -68,8 +62,7 @@ const DatasetCharacteristicsView = ({
 
 DatasetCharacteristicsView.propTypes = {
     canEdit: PropTypes.bool.isRequired,
-    characteristics: PropTypes.shape({}).isRequired,
-    fields: PropTypes.arrayOf(propertyPropTypes).isRequired,
+    characteristics: PropTypes.arrayOf(fieldProptypes).isRequired,
     p: polyglotPropTypes.isRequired,
     toggleCharacteristicsEdition: PropTypes.func.isRequired,
 };
@@ -79,11 +72,15 @@ DatasetCharacteristicsView.defaultProps = {
     newCharacteristics: [],
 };
 
-const mapStateToProps = state => ({
-    canEdit: isLoggedIn(state),
-    characteristics: fromCharacteristic.getCharacteristics(state),
-    fields: fromPublication.getDatasetFields(state),
-});
+const mapStateToProps = (state) => {
+    const fields = fromPublication.getDatasetFields(state);
+
+    return {
+        canEdit: isLoggedIn(state),
+        characteristics: fromCharacteristic.getRootCharacteristics(state, fields),
+        fields,
+    };
+};
 
 const mapDispatchToProps = {
     toggleCharacteristicsEdition: toggleCharacteristicsEditionAction,

@@ -1,7 +1,10 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import Property from '../Property';
-import { fromPublication } from '../selectors';
+import {
+    fromCharacteristic,
+    fromPublication,
+} from '../selectors';
 import { field as fieldPropTypes } from '../../propTypes';
 
 const DatasetCharacteristicItemComponent = ({ resource, field }) => (
@@ -13,9 +16,9 @@ DatasetCharacteristicItemComponent.propTypes = {
     field: fieldPropTypes.isRequired,
 };
 
-const mapStateToProps = (state, { characteristic: { name, scheme, value } }) => ({
+const mapStateToProps = (state, { characteristic: { name } }) => ({
     field: fromPublication.getFieldByName(state, name),
-    resource: { name, scheme, [name]: value },
+    resource: { name, ...fromCharacteristic.getCharacteristicsAsResource(state) },
 });
 
 export default connect(mapStateToProps)(DatasetCharacteristicItemComponent);

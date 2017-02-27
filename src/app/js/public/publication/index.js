@@ -56,6 +56,11 @@ const getCollectionFields = createSelector(
     fields => fields.filter(f => f.cover === COVER_COLLECTION),
 );
 
+const getRootCollectionFields = createSelector(
+    getFields,
+    fields => fields.filter(f => f.cover === COVER_COLLECTION && !f.completes),
+);
+
 const getFieldNameFromParams = (state, params) => params;
 
 const getFieldByName = createSelector(
@@ -85,6 +90,25 @@ const getFieldToAdd = ({ fields, selectedField }) => {
 const getDocumentFields = createSelector(
     getFields,
     fields => fields.filter(f => f.cover === COVER_DOCUMENT),
+);
+
+const getRootDocumentFields = createSelector(
+    getFields,
+    fields => fields.filter(f => f.cover === COVER_DOCUMENT),
+);
+
+const getLinkedFieldsParams = (state, params) => params;
+
+const getLinkedFields = createSelector(
+    getFields,
+    getLinkedFieldsParams,
+    (fields, field) => fields.filter(f => f.completes && f.completes === field.name),
+);
+
+const getCompletedField = createSelector(
+    getFields,
+    getLinkedFieldsParams,
+    (fields, field) => fields.find(f => field.completes === f.name),
 );
 
 const getDatasetFields = createSelector(
@@ -125,12 +149,16 @@ const getPublicationError = state => state.error;
 export const fromPublication = {
     getFields,
     getCollectionFields,
+    getRootCollectionFields,
     hasPublishedDataset,
     getFieldByName,
     getContributionFields,
     getSelectedField,
     getFieldToAdd,
     getDocumentFields,
+    getRootDocumentFields,
+    getLinkedFields,
+    getCompletedField,
     getDatasetFields,
     getTitleFieldName,
     getDatasetTitleFieldName,

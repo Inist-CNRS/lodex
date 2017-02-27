@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 import { Field, FieldArray, reduxForm, propTypes as reduxFormPropTypes } from 'redux-form';
 import MenuItem from 'material-ui/MenuItem';
 
-import { polyglot as polyglotPropTypes } from '../../propTypes';
+import { field as fieldPropTypes, polyglot as polyglotPropTypes } from '../../propTypes';
 import FormTextField from '../../lib/FormTextField';
 import FormSelectField from '../../lib/FormSelectField';
 import SchemeAutoComplete from '../../lib/SchemeAutoComplete';
@@ -36,6 +36,7 @@ const validate = (values) => {
 export const FieldFormComponent = ({
     error,
     field,
+    fields,
     isContribution,
     handleSubmit,
     p: polyglot,
@@ -43,6 +44,15 @@ export const FieldFormComponent = ({
     if (!field) {
         return <span />;
     }
+
+    const otherFieldsMenuItems = fields.map(f => (
+        <MenuItem
+            className={`completes_${f.label.toLowerCase().replace(/\s/g, '_')}`}
+            key={f.name}
+            value={f.name}
+            primaryText={f.label}
+        />
+    ));
 
     return (
         <form id="field_form" onSubmit={handleSubmit}>
@@ -63,6 +73,16 @@ export const FieldFormComponent = ({
                 <MenuItem value="collection" primaryText={polyglot.t('cover_collection')} />
             </Field>
             <SchemeAutoComplete name="scheme" />
+            <Field
+                className="completes"
+                name="completes"
+                component={FormSelectField}
+                label={polyglot.t('completes_field')}
+                fullWidth
+            >
+                <MenuItem value="" primaryText={polyglot.t('complete_field_none')} />
+                {otherFieldsMenuItems}
+            </Field>
             { isContribution ? null : <FieldArray name="transformers" component={TransformerList} /> }
             { isContribution ? null : <Field
                 name="format"
@@ -74,17 +94,17 @@ export const FieldFormComponent = ({
     );
 };
 
-FieldFormComponent.defaultProps = {
-};
-
 FieldFormComponent.propTypes = {
     ...reduxFormPropTypes,
+    field: fieldPropTypes.isRequired,
+    fields: PropTypes.arrayOf(fieldPropTypes).isRequired,
     p: polyglotPropTypes.isRequired,
 };
 
 const mapStateToProps = state => ({
     initialValues: fromFields.getEditedField(state),
     field: fromFields.getEditedField(state),
+    fields: fromFields.getFieldsExceptEdited(state),
 });
 
 const mapDispatchToProps = {

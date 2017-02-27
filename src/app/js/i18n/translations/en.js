@@ -70,4 +70,7 @@ export default {
     format: 'format',
     exit_column_edition: 'Back to preview',
     upload_file: 'Upload a file',
+    completes_field: 'Complete another field',
+    completes_field_none: 'Optional - Select a field',
+    completes_field_X: 'Completes %{field}',
 };

@@ -24,11 +24,12 @@ export class FormatComponent extends Component {
     }
 
     render() {
-        const { field, fields, linkedResource, rawLinkedResource, resource } = this.props;
+        const { className, field, fields, linkedResource, rawLinkedResource, resource } = this.props;
         const ViewComponent = getViewComponent(field);
 
         return (
             <ViewComponent
+                className={className}
                 field={field}
                 fields={fields}
                 linkedResource={linkedResource}
@@ -40,12 +41,17 @@ export class FormatComponent extends Component {
 }
 
 FormatComponent.propTypes = {
+    className: PropTypes.string,
     fetchLinkedResource: PropTypes.func.isRequired,
     field: fieldPropTypes.isRequired,
     fields: PropTypes.arrayOf(fieldPropTypes).isRequired,
     linkedResource: PropTypes.object, // eslint-disable-line
     rawLinkedResource: PropTypes.object, // eslint-disable-line
     resource: PropTypes.object, // eslint-disable-line
+};
+
+FormatComponent.defaultProps = {
+    className: null,
 };
 
 const preMapStateToProps = state => ({

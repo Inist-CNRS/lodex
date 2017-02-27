@@ -6,6 +6,7 @@ import withHandlers from 'recompose/withHandlers';
 import translate from 'redux-polyglot/translate';
 import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn } from 'material-ui/Table';
 import { polyglot as polyglotPropTypes, field as fieldPropTypes } from '../../propTypes';
+import PublicationExcerptHeader from './PublicationExcerptHeader';
 
 const styles = {
     header: {
@@ -39,18 +40,18 @@ export const PublicationExcerptComponent = ({
     >
         <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
             <TableRow onCellClick={onHeaderClick}>
-                {columns.map(({ label, name }) => (
+                {columns.map(field => (
                     <TableHeaderColumn
-                        key={name}
+                        key={field.name}
                         className={
                             `publication-excerpt-column publication-excerpt-column-${
-                                label.toLowerCase().replace(' ', '_')
+                                field.label.toLowerCase().replace(/\s/g, '_')
                             }`
                         }
                         style={styles.header}
                         tooltip={areHeadersClickable ? polyglot.t('click_to_edit_publication_field') : ''}
                     >
-                        {label || name}
+                        <PublicationExcerptHeader field={field} />
                     </TableHeaderColumn>))}
             </TableRow>
         </TableHeader>

@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
-import { Field, reduxForm, propTypes as reduxFormPropTypes } from 'redux-form';
+import { reduxForm, propTypes as reduxFormPropTypes } from 'redux-form';
 import { CardText, CardActions } from 'material-ui/Card';
 import { Link } from 'react-router';
 import FlatButton from 'material-ui/FlatButton';
@@ -12,11 +12,11 @@ import {
     RESOURCE_FORM_NAME,
 } from './';
 import Card from '../../lib/Card';
-import FormTextField from '../../lib/FormTextField';
 import Alert from '../../lib/Alert';
 import ButtonWithStatus from '../../lib/ButtonWithStatus';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { fromResource, fromPublication } from '../selectors';
+import EditDetailsField from './EditDetailsField';
 
 const validate = (values) => {
     const errors = Object.keys(values).reduce((currentErrors, field) => {
@@ -38,14 +38,7 @@ export const EditDetailComponent = ({ resource, fields, saving, error, handleSub
             <form id="resource_form" onSubmit={handleSubmit}>
                 {error && <Alert><p>{error}</p></Alert>}
                 {fields.map(field => (
-                    <Field
-                        key={field.name}
-                        name={field.name}
-                        component={FormTextField}
-                        disabled={field.name === 'uri'}
-                        label={field.label}
-                        fullWidth
-                    />
+                    <EditDetailsField key={field.name} field={field} />
                 ))}
             </form>
         </CardText>

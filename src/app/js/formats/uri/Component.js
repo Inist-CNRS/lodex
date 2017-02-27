@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 import { Link } from 'react-router';
 import { field as fieldPropTypes } from '../../propTypes';
 
-const UriView = ({ linkedResource, resource, field }) => {
+const UriView = ({ className, linkedResource, resource, field }) => {
     const uri = resource[field.name];
     let label = resource[field.name];
 
@@ -25,13 +25,18 @@ const UriView = ({ linkedResource, resource, field }) => {
         }
     }
 
-    return <Link to={`/resource?uri=${uri}`}>{label}</Link>;
+    return <Link className={className} to={`/resource?uri=${uri}`}>{label}</Link>;
 };
 
 UriView.propTypes = {
+    className: PropTypes.string,
     field: fieldPropTypes.isRequired,
     linkedResource: PropTypes.object, // eslint-disable-line
     resource: PropTypes.object.isRequired, // eslint-disable-line
+};
+
+UriView.defaultProps = {
+    className: null,
 };
 
 export default UriView;
