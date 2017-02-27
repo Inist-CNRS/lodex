@@ -42,7 +42,7 @@ const PropertyComponent = ({
     p: polyglot,
 }) => (
     <dl
-        className={classnames('property', className, field.name)}
+        className={classnames('property', field.label.toLowerCase().replace(/\s/g, '_'), className)}
         style={styles.container(unValidatedFields.includes(resource.name))}
     >
         <dt>

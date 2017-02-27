@@ -75,11 +75,11 @@ describe('Admin', () => {
         describe('adding LINK column', () => {
             it('should display form for newField2 column when clicking on btn-add-column', async () => {
                 await driver.executeScript('document.getElementsByClassName("add-column")[0].scrollIntoView(true);');
-                await driver.sleep(1000);
                 const button = await driver.findElement(By.css('.add-column'));
                 await driver.wait(elementIsClicked(button), DEFAULT_WAIT_TIMEOUT);
 
                 await driver.wait(until.elementLocated(By.css('#field_form')), DEFAULT_WAIT_TIMEOUT);
+                await driver.executeScript('document.getElementById("field_form").scrollIntoView(true);');
                 const label = await driver.findElement(By.css('#field_form input[name=label]'));
 
                 await driver.wait(elementValueIs(label, 'newField 2'), DEFAULT_WAIT_TIMEOUT);
@@ -99,6 +99,8 @@ describe('Admin', () => {
                 const addTransformerButton = await driver.findElement(By.css('#field_form .add-transformer'));
                 await driver.wait(elementIsClicked(addTransformerButton), DEFAULT_WAIT_TIMEOUT);
 
+                await driver.sleep(500); // wait for transformers to be loaded
+                await driver.wait(until.elementLocated(By.css('.operation')), DEFAULT_WAIT_TIMEOUT);
                 const operationButton = await driver.findElement(By.css('.operation'));
                 await driver.wait(elementIsClicked(operationButton), DEFAULT_WAIT_TIMEOUT);
 
@@ -106,7 +108,7 @@ describe('Admin', () => {
                 const linkButton = await driver.findElement(By.css('.transformer_LINK'));
                 await driver.wait(elementIsClicked(linkButton), DEFAULT_WAIT_TIMEOUT);
 
-                await driver.findElement(By.css('#field_form .transformer_arg_reference input'));
+                await driver.wait(until.elementLocated(By.css('#field_form .transformer_arg_reference input')), DEFAULT_WAIT_TIMEOUT);
             });
 
             it('should configure transformer Link', async () => {
@@ -148,7 +150,7 @@ describe('Admin', () => {
                 );
                 const button = await driver.findElement(By.css('.btn-excerpt-add-column-name'));
                 await driver.wait(elementIsClicked(button), DEFAULT_WAIT_TIMEOUT);
-                await driver.wait(until.elementLocated(By.css('.publication-excerpt-column-name')));
+                await driver.wait(until.elementLocated(By.css('.publication-excerpt-column-name')), DEFAULT_WAIT_TIMEOUT);
             });
 
             it('should have updated the preview', async () => {
@@ -165,11 +167,11 @@ describe('Admin', () => {
         describe('adding VALUE column', () => {
             it('should display form for newField4 column when clicking on btn-add-column', async () => {
                 await driver.executeScript('document.getElementsByClassName("add-column")[0].scrollIntoView(true);');
-                await driver.sleep(1000);
                 const button = await driver.findElement(By.css('.add-column'));
                 await driver.wait(elementIsClicked(button), DEFAULT_WAIT_TIMEOUT);
 
                 await driver.wait(until.elementLocated(By.css('#field_form')), DEFAULT_WAIT_TIMEOUT);
+                await driver.executeScript('document.getElementById("field_form").scrollIntoView(true);');
                 const label = await driver.findElement(By.css('#field_form input[name=label]'));
 
                 await driver.wait(elementValueIs(label, 'newField 4'), DEFAULT_WAIT_TIMEOUT);
@@ -180,15 +182,17 @@ describe('Admin', () => {
                 await driver.wait(inputElementIsFocusable(label), DEFAULT_WAIT_TIMEOUT);
 
                 await label.clear();
-                await label.sendKeys('Custom');
+                await label.sendKeys('Title');
                 const th = await driver.findElement(By.css('.publication-preview th'));
-                await driver.wait(until.elementTextIs(th, 'Custom'), DEFAULT_WAIT_TIMEOUT);
+                await driver.wait(until.elementTextIs(th, 'Title'), DEFAULT_WAIT_TIMEOUT);
             });
 
             it('should add a transformer VALUE', async () => {
                 const addTransformerButton = await driver.findElement(By.css('#field_form .add-transformer'));
                 await driver.wait(elementIsClicked(addTransformerButton), DEFAULT_WAIT_TIMEOUT);
 
+                await driver.sleep(500); // wait for transformers to be loaded
+                await driver.wait(until.elementLocated(By.css('.operation')), DEFAULT_WAIT_TIMEOUT);
                 const operationButton = await driver.findElement(By.css('.operation'));
                 await driver.wait(elementIsClicked(operationButton), DEFAULT_WAIT_TIMEOUT);
 
@@ -196,13 +200,13 @@ describe('Admin', () => {
                 const transformerButton = await driver.findElement(By.css('.transformer_VALUE'));
                 await driver.wait(elementIsClicked(transformerButton), DEFAULT_WAIT_TIMEOUT);
 
-                await driver.findElement(By.css('#field_form .transformer_arg_value input'));
+                await driver.wait(until.elementLocated(By.css('#field_form .transformer_arg_value input')), DEFAULT_WAIT_TIMEOUT);
             });
 
             it('should configure transformer VALUE', async () => {
-                const reference = await driver.findElement(By.css('#field_form .transformer_arg_value input'));
-                await driver.wait(inputElementIsFocusable(reference), DEFAULT_WAIT_TIMEOUT);
-                reference.sendKeys('a custom value');
+                const value = await driver.findElement(By.css('#field_form .transformer_arg_value input'));
+                await driver.wait(inputElementIsFocusable(value), DEFAULT_WAIT_TIMEOUT);
+                value.sendKeys('Rock-Paper-Scissor');
 
                 const backButton = await driver.findElement(By.css('.btn-exit-column-edition'));
                 await driver.wait(elementIsClicked(backButton), DEFAULT_WAIT_TIMEOUT);
@@ -217,10 +221,92 @@ describe('Admin', () => {
                 expect(tds.length).toBe(4);
 
                 const expectedTexts = [
-                    'a custom value',
-                    'a custom value',
-                    'a custom value',
-                    'a custom value',
+                    'Rock-Paper-Scissor',
+                    'Rock-Paper-Scissor',
+                    'Rock-Paper-Scissor',
+                    'Rock-Paper-Scissor',
+                ];
+                await Promise.all(tds.map((td, index) =>
+                    driver.wait(until.elementTextIs(td, expectedTexts[index]), DEFAULT_WAIT_TIMEOUT)),
+                );
+            });
+        });
+
+        describe('adding completes column', () => {
+            it('should display form for newField5 column when clicking on btn-add-column', async () => {
+                await driver.executeScript('document.getElementsByClassName("add-column")[0].scrollIntoView(true);');
+                const button = await driver.findElement(By.css('.add-column'));
+                await driver.wait(elementIsClicked(button), DEFAULT_WAIT_TIMEOUT);
+
+                await driver.wait(until.elementLocated(By.css('#field_form')), DEFAULT_WAIT_TIMEOUT);
+                await driver.executeScript('document.getElementById("field_form").scrollIntoView(true);');
+                const label = await driver.findElement(By.css('#field_form input[name=label]'));
+
+                await driver.wait(elementValueIs(label, 'newField 5'), DEFAULT_WAIT_TIMEOUT);
+            });
+
+            it('should change column name', async () => {
+                const label = await driver.findElement(By.css('#field_form input[name=label]'));
+                await driver.wait(inputElementIsFocusable(label), DEFAULT_WAIT_TIMEOUT);
+
+                await label.clear();
+                await label.sendKeys('Genre');
+
+                const th = await driver.findElement(By.css('.publication-preview th'));
+                await driver.wait(until.elementTextIs(th, 'Genre'), DEFAULT_WAIT_TIMEOUT);
+            });
+
+            it('should add a transformer VALUE', async () => {
+                const addTransformerButton = await driver.findElement(By.css('#field_form .add-transformer'));
+                await driver.wait(elementIsClicked(addTransformerButton), DEFAULT_WAIT_TIMEOUT);
+
+                await driver.sleep(500); // wait for transformers to be loaded
+                await driver.wait(until.elementLocated(By.css('.operation')), DEFAULT_WAIT_TIMEOUT);
+                const operationButton = await driver.findElement(By.css('.operation'));
+                await driver.wait(elementIsClicked(operationButton), DEFAULT_WAIT_TIMEOUT);
+
+                await driver.wait(until.elementLocated(By.css('.transformer_VALUE')), DEFAULT_WAIT_TIMEOUT);
+                const transformerButton = await driver.findElement(By.css('.transformer_VALUE'));
+                await driver.wait(elementIsClicked(transformerButton), DEFAULT_WAIT_TIMEOUT);
+
+                await driver.wait(until.elementLocated(By.css('#field_form .transformer_arg_value input'), DEFAULT_WAIT_TIMEOUT));
+            });
+
+            it('should configure transformer VALUE', async () => {
+                const value = await driver.findElement(By.css('#field_form .transformer_arg_value input'));
+                await driver.wait(inputElementIsFocusable(value), DEFAULT_WAIT_TIMEOUT);
+                value.sendKeys('Zero-sum hand game');
+            });
+
+            it('should configure completes', async () => {
+                await driver.wait(until.elementLocated(By.css('#field_form .completes')), DEFAULT_WAIT_TIMEOUT);
+                const completes = await driver.findElement(By.css('#field_form .completes'));
+                await driver.wait(elementIsClicked(completes), DEFAULT_WAIT_TIMEOUT);
+
+                await driver.wait(until.elementLocated(By.css('.completes_title')), DEFAULT_WAIT_TIMEOUT);
+                const completesTitleButton = await driver.findElement(By.css('.completes_title'));
+                await driver.wait(elementIsClicked(completesTitleButton), DEFAULT_WAIT_TIMEOUT);
+
+                const th = await driver.findElement(By.css('.publication-preview th .completes_title'));
+                await driver.wait(until.elementTextIs(th, 'Completes Title'), DEFAULT_WAIT_TIMEOUT);
+
+                const backButton = await driver.findElement(By.css('.btn-exit-column-edition'));
+                await driver.wait(elementIsClicked(backButton), DEFAULT_WAIT_TIMEOUT);
+            });
+
+            it('should have added custom column with value', async () => {
+                await driver.wait(
+                    until.elementLocated(By.css('.publication-preview tr td:nth-child(4)')),
+                    DEFAULT_WAIT_TIMEOUT,
+                );
+                const tds = await driver.findElements(By.css('.publication-preview tr td:nth-child(5)'));
+                expect(tds.length).toBe(4);
+
+                const expectedTexts = [
+                    'Zero-sum hand game',
+                    'Zero-sum hand game',
+                    'Zero-sum hand game',
+                    'Zero-sum hand game',
                 ];
                 await Promise.all(tds.map((td, index) =>
                     driver.wait(until.elementTextIs(td, expectedTexts[index]), DEFAULT_WAIT_TIMEOUT)),
@@ -250,7 +336,7 @@ describe('Admin', () => {
                 await driver.wait(until.elementLocated(By.css('.dataset')), DEFAULT_WAIT_TIMEOUT);
                 const headers = await driver.findElements(By.css('.dataset table th'));
                 const headersText = await Promise.all(headers.map(h => h.getText()));
-                expect(headersText).toEqual(['uri', 'Stronger than', 'name', 'Custom']);
+                expect(headersText).toEqual(['uri', 'Stronger than', 'name', 'Title', 'Genre']);
                 const rows = await Promise.all([1, 2, 3, 4].map(index =>
                     Promise.all([
                         driver
@@ -263,14 +349,18 @@ describe('Admin', () => {
                             .findElement(By.css(`.dataset table tbody tr:nth-child(${index}) td.dataset-name`))
                             .getText(),
                         driver
-                            .findElement(By.css(`.dataset table tbody tr:nth-child(${index}) td.dataset-custom`))
+                            .findElement(By.css(`.dataset table tbody tr:nth-child(${index}) td.dataset-title`))
+                            .getText(),
+                        driver
+                            .findElement(By.css(`.dataset table tbody tr:nth-child(${index}) td.dataset-genre`))
                             .getText(),
                     ])
-                    .then(([uri, stronger, name, custom]) => ({
+                    .then(([uri, stronger, name, title, genre]) => ({
                         uri,
                         stronger,
                         name,
-                        custom,
+                        title,
+                        genre,
                     }))));
 
                 const expected = {
@@ -280,9 +370,10 @@ describe('Admin', () => {
                     invalid_reference: '',
                 };
 
-                rows.forEach(({ stronger, name, custom }) => {
+                rows.forEach(({ stronger, name, title, genre }) => {
                     expect((rows.find(r => r.uri === stronger) || { name: '' }).name).toEqual(expected[name]);
-                    expect(custom).toEqual('a custom value');
+                    expect(title).toEqual('Rock-Paper-Scissor');
+                    expect(genre).toEqual('Zero-sum hand game');
                 });
             });
         });

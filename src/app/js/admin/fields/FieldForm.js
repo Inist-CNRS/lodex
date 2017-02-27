@@ -46,7 +46,12 @@ export const FieldFormComponent = ({
     }
 
     const otherFieldsMenuItems = fields.map(f => (
-        <MenuItem key={f.name} value={f.name} primaryText={f.name} />
+        <MenuItem
+            className={`completes_${f.label.toLowerCase().replace(/\s/g, '_')}`}
+            key={f.name}
+            value={f.name}
+            primaryText={f.label}
+        />
     ));
 
     return (
@@ -69,6 +74,7 @@ export const FieldFormComponent = ({
             </Field>
             <SchemeAutoComplete name="scheme" />
             <Field
+                className="completes"
                 name="completes"
                 component={FormSelectField}
                 label={polyglot.t('completes_field')}

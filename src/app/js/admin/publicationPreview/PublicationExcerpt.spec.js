@@ -18,8 +18,8 @@ describe('<PublicationExcerpt />', () => {
             p={{ t: key => key }}
         />);
         const headers = wrapper.find(TableHeaderColumn);
-        expect(headers.at(0).children().text()).toEqual('foo');
-        expect(headers.at(1).children().text()).toEqual('Super Bar');
+        expect(headers.at(0).children().at(0).prop('field')).toEqual({ name: 'foo', label: 'foo' });
+        expect(headers.at(1).children().at(0).prop('field')).toEqual({ name: 'bar', label: 'Super Bar' });
     });
 
     it('should render lines', () => {

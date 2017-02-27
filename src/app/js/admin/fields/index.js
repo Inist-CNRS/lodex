@@ -4,6 +4,7 @@ import { createSelector } from 'reselect';
 
 import { getTransformersMetas, getTransformerMetas } from '../../../../common/transformers';
 import { COVER_COLLECTION } from '../../../../common/cover';
+import { getProps } from '../../lib/selectors';
 
 export const FIELD_FORM_NAME = 'field';
 
@@ -104,6 +105,13 @@ export const getFieldsExceptEdited = createSelector(
     (fields, editedField) => fields.filter(f => f._id !== editedField._id),
 );
 
+
+export const getCompletedField = createSelector(
+    getProps,
+    getFields,
+    (field, fields) => fields.find(f => f.name === field.completes),
+);
+
 export const hasPublicationFields = ({ list }) => list.length > 0;
 
 export const getTransformers = () => getTransformersMetas();
@@ -130,6 +138,7 @@ export const areAllFieldsValid = state => state.allValid;
 export const selectors = {
     areAllFieldsValid,
     getCollectionFields,
+    getCompletedField,
     getEditedField,
     getFields,
     getFieldsExceptEdited,

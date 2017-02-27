@@ -5,7 +5,7 @@ import Format from '../Format';
 import { field as fieldPropTypes } from '../../propTypes';
 
 const DatasetColumn = ({ column, columns, resource }) => (
-    <TableRowColumn className={`dataset-${column.label.toLowerCase().replace(' ', '_')}`}>
+    <TableRowColumn className={`dataset-${column.label.toLowerCase().replace(/\s/g, '_')}`}>
         <Format
             field={column}
             fields={columns}

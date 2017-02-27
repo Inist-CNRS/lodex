@@ -33,16 +33,16 @@ const styles = {
 };
 
 const PropertyEdition = ({ completedField, name, label, onChange, scheme, value, p: polyglot }) => {
-    let label = name;
+    let finalLabel = label;
 
     if (completedField) {
-        label = `${label} (${polyglot.t('complete_field_X', { field: completedField.label })})`;
+        finalLabel = `${label} (${polyglot.t('complete_field_X', { field: completedField.label })})`;
     }
 
     return (
         <dl className="property" style={styles.container}>
             <dt>
-                <div style={styles.name}>{label}</div>
+                <div style={styles.name}>{finalLabel}</div>
                 <div style={styles.scheme}>{scheme}</div>
             </dt>
             <dd style={styles.inputContainer}>
