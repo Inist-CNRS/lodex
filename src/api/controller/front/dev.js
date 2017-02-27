@@ -3,23 +3,25 @@ import koaWebpack from 'koa-webpack';
 
 import webpackConfig from '../../../app/webpack.config.babel';
 
-const app = new Koa();
+export default () => {
+    const app = new Koa();
 
-app.use(koaWebpack({
-    config: webpackConfig,
-    dev: {
-        publicPath: webpackConfig.output.publicPath,
-        stats: {
-            colors: true,
+    app.use(koaWebpack({
+        config: webpackConfig,
+        dev: {
+            publicPath: webpackConfig.output.publicPath,
+            stats: {
+                colors: true,
+            },
+            quiet: false,
+            noInfo: true,
         },
-        quiet: false,
-        noInfo: true,
-    },
-    hot: {
-        log: console.log,
-        path: '/__webpack_hmr',
-        heartbeat: 10 * 1000,
-    },
-}));
+        hot: {
+            log: console.log,
+            path: '/__webpack_hmr',
+            heartbeat: 10 * 1000,
+        },
+    }));
 
-export default app;
+    return app;
+};
