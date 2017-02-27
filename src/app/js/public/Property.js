@@ -42,7 +42,7 @@ const PropertyComponent = ({
     p: polyglot,
 }) => (
     <dl
-        className={classnames('property', className)}
+        className={classnames('property', className, field.name)}
         style={styles.container(unValidatedFields.includes(resource.name))}
     >
         <dt>
@@ -58,6 +58,7 @@ const PropertyComponent = ({
         </dt>
         <dd>
             <Format
+                className="property_value"
                 field={field}
                 fields={fields}
                 resource={resource}
@@ -65,7 +66,7 @@ const PropertyComponent = ({
             {linkedFields.map(linkedField => (
                 <Property
                     key={linkedField._id}
-                    className="completes"
+                    className={classnames('completes', `completes_${field.name}`)}
                     field={linkedField}
                     resource={resource}
                 />

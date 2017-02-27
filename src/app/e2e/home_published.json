@@ -17,6 +17,7 @@
     }, {
         "name" : "email",
         "label" : "Email",
+        "completes": "fullname",        
         "transformers" : [ { "operation" : "COLUMN", "args" : [ { "name" : "column", "type" : "column", "value" : "mail" } ] } ],
         "cover" : "collection",
         "scheme" : "http://uri4uri.net/vocab"
@@ -29,6 +30,7 @@
     }, {
         "name" : "author",
         "label" : "Author",
+        "completes": "movie",
         "transformers" : [ { "operation" : "COLUMN", "args" : [ { "name" : "column", "type" : "column", "value" : "author" } ] } ],
         "cover" : "dataset",
         "scheme" : "http://www.w3.org/ns/person"
