@@ -6,6 +6,7 @@ import UriView from '../formats/uri/Component';
 import { FormatComponent as Format } from './Format';
 
 describe('<Format />', () => {
+    const className = 'a_css_class';
     const field = { name: 'a_name', label: 'Foo', format: { name: 'uri' } };
     const fields = [
         field,
@@ -47,6 +48,7 @@ describe('<Format />', () => {
 
     const linkedResource = { linked: true };
     const wrapper = shallow(<Format
+        className={className}
         field={field}
         fields={fields}
         fetchLinkedResource={fetchLinkedResource}
@@ -59,6 +61,7 @@ describe('<Format />', () => {
         const element = wrapper.find(UriView);
 
         expect(element.props()).toEqual({
+            className,
             field,
             fields,
             resource,
