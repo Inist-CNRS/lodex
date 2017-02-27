@@ -3,113 +3,257 @@ import knownTransformers from './transformers';
 
 const validOperations = new RegExp(Object.keys(knownTransformers).join('|'));
 
-export const validateField = (field, isContribution = false, fields = []) => {
-    const properties = ['name', 'label', 'cover'].map((key) => {
-        const isValid = !!field[key];
-        const isValidNameAndLabel = (isValid && key !== 'cover') ? field[key].length > 2 : true;
-        const isValidCover = (isValid && key === 'cover') ? COVERS.includes(field[key]) : true;
+export const validateLabel = (field) => {
+    const result = {
+        name: 'label',
+        isValid: true,
+    };
 
-        let error = null;
-        if (!isValid) {
-            error = 'required';
-        }
-        if (isValid && !isValidNameAndLabel) {
-            error = `invalid_${key}`;
-        }
-        if (isValid && !isValidCover) {
-            error = 'invalid_cover';
-        }
-
+    if (!field.label) {
         return {
-            name: key,
-            isValid: isValid && isValidNameAndLabel && isValidCover,
-            error,
+            ...result,
+            isValid: false,
+            error: 'required',
         };
-    });
+    }
 
-    if (field.scheme && !field.scheme.startsWith('http://') && !field.scheme.startsWith('https://')) {
-        properties.push({
-            name: 'scheme',
+    if (field.label.length <= 2) {
+        return {
+            ...result,
+            isValid: false,
+            error: 'invalid_label',
+        };
+    }
+
+    return result;
+};
+
+export const validateCover = (field) => {
+    const result = {
+        name: 'cover',
+        isValid: true,
+    };
+
+    if (!field.cover) {
+        return {
+            ...result,
+            isValid: false,
+            error: 'required',
+        };
+    }
+
+    if (!COVERS.includes(field.cover)) {
+        return {
+            ...result,
+            isValid: false,
+            error: 'invalid_cover',
+        };
+    }
+
+    return result;
+};
+
+export const validateTransformers = (field, isContribution) => {
+    const result = {
+        name: 'transformers',
+        isValid: true,
+    };
+
+    if (isContribution && !field.transformers) {
+        return result;
+    }
+
+    if (isContribution && field.transformers) {
+        return {
+            ...result,
+            isValid: false,
+            error: 'contribution_no_transformers',
+        };
+    }
+
+    if (field.transformers && field.composedOf) {
+        return {
+            ...result,
+            isValid: false,
+            error: 'composed_of_conflict',
+        };
+    }
+
+    if ((!field.transformers || !field.transformers.length) && !field.composedOf) {
+        return {
+            ...result,
+            isValid: false,
+            error: 'required_or_composed_of_required',
+        };
+    }
+
+    return result;
+};
+
+export const validateComposedOf = (field, isContribution) => {
+    const result = {
+        name: 'composedOf',
+        isValid: true,
+    };
+
+    if (isContribution && !field.composedOf) {
+        return result;
+    }
+
+    if (isContribution && field.composedOf) {
+        return {
+            ...result,
+            isValid: false,
+            error: 'contribution_no_composed_of',
+        };
+    }
+
+    if (field.transformers && field.composedOf) {
+        return {
+            ...result,
+            isValid: false,
+            error: 'transformers_conflict',
+        };
+    }
+
+    if ((!field.transformers || !field.transformers.length) && !field.composedOf) {
+        return {
+            ...result,
+            isValid: false,
+            error: 'required_or_transformers_required',
+        };
+    }
+
+    return result;
+};
+
+export const validateComposedOfSeparator = (field) => {
+    if (!field.composedOf) {
+        return null;
+    }
+
+    const result = {
+        name: 'composedOf.separator',
+        isValid: true,
+    };
+
+    const { separator } = field.composedOf;
+
+    if (!separator) {
+        return {
+            ...result,
+            isValid: false,
+            error: 'required',
+        };
+    }
+
+    if (typeof separator !== 'string' && separator.length < 1) {
+        return {
+            ...result,
+            isValid: false,
+            error: 'invalid_composedOf.separator',
+        };
+    }
+
+    return result;
+};
+
+export const validateComposedOfFields = (field) => {
+    if (!field.composedOf) {
+        return null;
+    }
+
+    const result = {
+        name: 'composedOf.fields',
+        isValid: true,
+    };
+
+    const { fields } = field.composedOf;
+
+    if (!fields || fields.length < 2) {
+        return {
+            ...result,
+            isValid: false,
+            error: 'required',
+        };
+    }
+
+    return result;
+};
+
+export const validateComposedOfField = (field, allFields) => {
+    const isValid = allFields.find(otherfield => otherfield.name === field);
+
+    return {
+        name: `composedOf.fields[${field.name}]`,
+        isValid,
+        error: isValid ? undefined : 'inexisting_target_field',
+    };
+};
+
+export const validateEachComposedOfFields = (fields = [], allFields) =>
+    fields.map(field => validateComposedOfField(field, allFields));
+
+export const validateScheme = (field) => {
+    const result = {
+        name: 'scheme',
+        isValid: true,
+    };
+
+    if (!field.scheme) {
+        return result;
+    }
+
+    if (!field.scheme.startsWith('http://') && !field.scheme.startsWith('https://')) {
+        return {
+            ...result,
             isValid: false,
             error: 'invalid_scheme',
-        });
+        };
     }
+
+    return result;
+};
+
+export const validateTransformer = (transformer) => {
+    const isValid = validOperations.test(transformer.operation) && Array.isArray(transformer.args);
+    return {
+        name: transformer.operation,
+        isValid,
+        error: isValid ? undefined : 'invalid_transformer',
+    };
+};
+
+export const validateEachTransformer = (transformers = []) =>
+    transformers.map(validateTransformer);
+
+export const validateField = (field, isContribution = false, fields = []) => {
+    const properties = [
+        validateLabel(field),
+        validateCover(field),
+        validateScheme(field),
+        validateTransformers(field, isContribution),
+        validateComposedOf(field, isContribution),
+        validateComposedOfSeparator(field),
+        validateComposedOfFields(field),
+    ].filter(d => !!d);
+
     const propertiesAreValid = properties.reduce((areValid, p) => areValid && p.isValid, true);
 
-    let transformers = [];
-    let transformersAreValid = true;
-    const composedOf = {};
-    let composedOfIsValid = true;
-
-    if (!isContribution) {
-        if (field.composedOf && field.transformers) {
-            properties.push({
-                name: 'transformers',
-                isValid: false,
-                error: 'composed_of_conflict',
-            });
-            properties.push({
-                name: 'composedOf',
-                isValid: false,
-                error: 'transformers_conflict',
-            });
-        }
-        if (!field.composedOf && !field.transformers) {
-            properties.push({
-                name: 'transformers',
-                isValid: false,
-                error: 'required_or_composed_of_required',
-            });
-            properties.push({
-                name: 'composedOf',
-                isValid: false,
-                error: 'required_or_transformers_required',
-            });
-        }
-
-        if (field.transformers && !field.composedOf) {
-            transformers = field.transformers.map(transformer => ({
-                name: transformer.operation,
-                isValid: validOperations.test(transformer.operation) && Array.isArray(transformer.args),
-                error: 'invalid_transformer',
-            }));
-
-            transformersAreValid = transformers.reduce((areValid, t) => areValid && t.isValid, true);
-        }
-
-        if (field.composedOf && !field.transformers) {
-            const isValidSeparator = field.composedOf.separator && typeof field.composedOf.separator === 'string';
-            const composedOfFields = field.composedOf.fields && field.composedOf.fields
-                .map(f => !!fields.find(otherfield => ({
-                    name: otherfield.name,
-                    isValid: otherfield.name === f,
-                    error: 'inexisting_target_field',
-                })));
-
-            const areValidFields = composedOfFields.reduce((areValid, f) => areValid && f.isValid, true);
-            if (!isValidSeparator) {
-                composedOfIsValid = false;
-                composedOf.separator = {
-                    name: 'separator',
-                    isValid: false,
-                    error: 'invalid_separator',
-                };
-            }
-
-            if (!areValidFields) {
-                composedOfIsValid = false;
-                composedOf.fields = composedOfFields;
-            }
-        }
-    }
+    const transformers = validateEachTransformer(field.transformers);
+    const transformersAreValid = transformers.reduce((areValid, p) => areValid && p.isValid, true);
+    const composedOfFields = validateEachComposedOfFields(field.composedOf && field.composedOf.fields, fields);
+    const composedOfFieldsAreValid = composedOfFields.reduce((areValid, p) => areValid && p.isValid, true);
 
     return {
         name: field.name,
-        isValid: propertiesAreValid && transformersAreValid && composedOfIsValid,
+        isValid: propertiesAreValid && transformersAreValid && composedOfFieldsAreValid,
         properties,
         propertiesAreValid,
         transformers,
         transformersAreValid,
+        composedOfFields,
+        composedOfFieldsAreValid,
     };
 };
 

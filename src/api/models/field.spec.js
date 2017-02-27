@@ -140,7 +140,8 @@ describe('field', () => {
                 scheme: 'http://purl.org/dc/terms/title',
                 transformers: [],
             };
-            expect(validateField(field)).toEqual(field);
+            expect(() => validateField(field))
+                .toThrow(buildInvalidPropertiesMessage('label'));
         });
 
         it('should throw an error if no cover', () => {
@@ -185,39 +186,11 @@ describe('field', () => {
             expect(() => validateField(field)).toThrow(buildInvalidPropertiesMessage());
         });
 
-        it('should throw an error if label less than ', () => {
+        it('should throw an error if label less than 2', () => {
             const field = {
                 cover: 'dataset',
                 label: 'la',
                 name: 'name',
-                scheme: 'http://purl.org/dc/terms/title',
-                transformers: [
-                    { operation: 'COLUMN', args: ['a'] },
-                ],
-            };
-
-            expect(() => validateField(field)).toThrow(buildInvalidPropertiesMessage('la'));
-        });
-
-        it('should throw an error if no name', () => {
-            const field = {
-                cover: 'dataset',
-                label: 'label',
-                name: undefined,
-                scheme: 'http://purl.org/dc/terms/title',
-                transformers: [
-                    { operation: 'COLUMN', args: ['a'] },
-                ],
-            };
-
-            expect(() => validateField(field)).toThrow(buildInvalidPropertiesMessage('label'));
-        });
-
-        it('should throw an error if name less than ', () => {
-            const field = {
-                cover: 'dataset',
-                label: 'la',
-                name: 'na',
                 scheme: 'http://purl.org/dc/terms/title',
                 transformers: [
                     { operation: 'COLUMN', args: ['a'] },
@@ -270,7 +243,17 @@ describe('field', () => {
             expect(() => validateField(field)).toThrow(buildInvalidTransformersMessage('label'));
         });
 
-        it('should return field even if transformers is incorrect if isContribution is true', async () => {
+        it('should return field even if no transformers if isContribution is true', async () => {
+            const field = {
+                cover: 'dataset',
+                label: 'label',
+                name: 'name',
+                scheme: 'http://purl.org/dc/terms/title',
+            };
+            expect(validateField(field, true)).toEqual(field);
+        });
+
+        it('should throw an error if there is transformers and isContribution is true', async () => {
             const field = {
                 cover: 'dataset',
                 label: 'label',
@@ -278,10 +261,9 @@ describe('field', () => {
                 scheme: 'http://purl.org/dc/terms/title',
                 transformers: [
                     { operation: 'COLUMN', args: [] },
-                    { operation: 'UNKNOWN', args: [] },
                 ],
             };
-            expect(validateField(field, true)).toEqual(field);
+            expect(() => validateField(field, true)).toThrow(buildInvalidPropertiesMessage('label'));
         });
     });
 });
