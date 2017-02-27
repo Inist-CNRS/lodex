@@ -61,7 +61,7 @@ export const AddFieldDetailComponent = ({
         <CardActions>
             <ButtonWithStatus
                 className="add-field-to-resource"
-                label={polyglot.t('add_field')}
+                label={polyglot.t('add-field')}
                 primary
                 loading={saving}
                 onTouchTap={() => handleSubmit(resource.uri)}

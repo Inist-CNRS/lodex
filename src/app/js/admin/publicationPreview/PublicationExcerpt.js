@@ -42,7 +42,11 @@ export const PublicationExcerptComponent = ({
                 {columns.map(({ label, name }) => (
                     <TableHeaderColumn
                         key={name}
-                        className={`publication-excerpt-column publication-excerpt-column-${name}`}
+                        className={
+                            `publication-excerpt-column publication-excerpt-column-${
+                                label.toLowerCase().replace(' ', '_')
+                            }`
+                        }
                         style={styles.header}
                         tooltip={areHeadersClickable ? polyglot.t('click_to_edit_publication_field') : ''}
                     >
@@ -51,11 +55,11 @@ export const PublicationExcerptComponent = ({
             </TableRow>
         </TableHeader>
         <TableBody displayRowCheckbox={false}>
-            {lines.map((line, index) => (
-                <TableRow key={index}>
+            {lines.map(line => (
+                <TableRow key={line.uri}>
                     {columns.map(({ name }) => (
                         <TableRowColumn
-                            key={`${name}_${index}`}
+                            key={`${name}_${line.uri}`}
                             style={styles.cell}
                         >
                             {line[name]}

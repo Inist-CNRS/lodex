@@ -48,12 +48,6 @@ export const FieldFormComponent = ({
         <form id="field_form" onSubmit={handleSubmit}>
             {error && <Alert><p>{error}</p></Alert>}
             <Field
-                name="name"
-                component={FormTextField}
-                label={polyglot.t('fieldName')}
-                fullWidth
-            />
-            <Field
                 name="label"
                 component={FormTextField}
                 label={polyglot.t('fieldLabel')}

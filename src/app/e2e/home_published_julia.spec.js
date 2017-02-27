@@ -55,19 +55,20 @@ describe('Home page with published data when logged as Julia', function homePubl
     it('should display all resource properties', async () => {
         await driver.wait(until.elementLocated(By.css('.detail')), DEFAULT_WAIT_TIMEOUT);
         const fullnameLabel = await driver.findElement(By.css('.detail .property:nth-child(2) dt'));
-        await driver.wait(until.elementTextIs(fullnameLabel, 'fullname\nhttp://www.w3.org/ns/person'), DEFAULT_WAIT_TIMEOUT);
+        await driver.sleep();
+        await driver.wait(until.elementTextIs(fullnameLabel, 'Full name\nhttp://www.w3.org/ns/person'), DEFAULT_WAIT_TIMEOUT);
 
         const fullnameValue = await driver.findElement(By.css('.detail .property:nth-child(2) dd'));
         await driver.wait(until.elementTextIs(fullnameValue, 'PEREGRIN.TOOK'), DEFAULT_WAIT_TIMEOUT);
 
         const mailLabel = await driver.findElement(By.css('.detail .property:nth-child(3) dt'));
-        await driver.wait(until.elementTextIs(mailLabel, 'email\nhttp://uri4uri.net/vocab'), DEFAULT_WAIT_TIMEOUT);
+        await driver.wait(until.elementTextIs(mailLabel, 'Email\nhttp://uri4uri.net/vocab'), DEFAULT_WAIT_TIMEOUT);
 
         const mailValue = await driver.findElement(By.css('.detail .property:nth-child(3) dd'));
         await driver.wait(until.elementTextIs(mailValue, 'peregrin.took@shire.net'), DEFAULT_WAIT_TIMEOUT);
 
         const bestFriendLabel = await driver.findElement(By.css('.detail .property:last-child dt'));
-        await driver.wait(until.elementTextIs(bestFriendLabel, 'best_friend_of\nhttp://www.w3.org/ns/person'), DEFAULT_WAIT_TIMEOUT);
+        await driver.wait(until.elementTextIs(bestFriendLabel, 'Best Friend Of\nhttp://www.w3.org/ns/person'), DEFAULT_WAIT_TIMEOUT);
 
         const bestFriendValue = await driver.findElement(By.css('.detail .property:last-child dd'));
         await driver.wait(until.elementTextIs(bestFriendValue, 'MERIADOC.BRANDYBUCK'), DEFAULT_WAIT_TIMEOUT);
@@ -91,19 +92,19 @@ describe('Home page with published data when logged as Julia', function homePubl
     it('should save and return to resource page', async () => {
         await driver.wait(until.elementLocated(By.css('.detail')), DEFAULT_WAIT_TIMEOUT);
         const fullnameLabel = await driver.findElement(By.css('.detail .property:nth-child(2) dt'));
-        expect(await fullnameLabel.getText()).toEqual('fullname\nhttp://www.w3.org/ns/person');
+        expect(await fullnameLabel.getText()).toEqual('Full name\nhttp://www.w3.org/ns/person');
 
         const fullnameValue = await driver.findElement(By.css('.detail .property:nth-child(2) dd'));
         expect(await fullnameValue.getText()).toEqual('PEREGRIN.TOOK');
 
         const mailLabel = await driver.findElement(By.css('.detail .property:nth-child(3) dt'));
-        await driver.wait(until.elementTextIs(mailLabel, 'email\nhttp://uri4uri.net/vocab'), DEFAULT_WAIT_TIMEOUT);
+        await driver.wait(until.elementTextIs(mailLabel, 'Email\nhttp://uri4uri.net/vocab'), DEFAULT_WAIT_TIMEOUT);
 
         const mailValue = await driver.findElement(By.css('.detail .property:nth-child(3) dd'));
         await driver.wait(until.elementTextIs(mailValue, 'peregrin.took@gondor.net'), DEFAULT_WAIT_TIMEOUT);
 
         const bestFriendLabel = await driver.findElement(By.css('.detail .property:last-child dt'));
-        await driver.wait(until.elementTextIs(bestFriendLabel, 'best_friend_of\nhttp://www.w3.org/ns/person'), DEFAULT_WAIT_TIMEOUT);
+        await driver.wait(until.elementTextIs(bestFriendLabel, 'Best Friend Of\nhttp://www.w3.org/ns/person'), DEFAULT_WAIT_TIMEOUT);
 
         const bestFriendValue = await driver.findElement(By.css('.detail .property:last-child dd'));
         await driver.wait(until.elementTextIs(bestFriendValue, 'MERIADOC.BRANDYBUCK'), DEFAULT_WAIT_TIMEOUT);

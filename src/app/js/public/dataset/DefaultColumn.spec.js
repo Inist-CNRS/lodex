@@ -26,7 +26,7 @@ describe('<DefaultColumn />', () => {
     it('renders a TableRowColumn with correct class', () => {
         const element = wrapper.find(TableRowColumn);
 
-        expect(element.prop('className')).toEqual('dataset-a_name');
+        expect(element.prop('className')).toEqual('dataset-foo');
     });
 
     it('renders a Format with correct props', () => {

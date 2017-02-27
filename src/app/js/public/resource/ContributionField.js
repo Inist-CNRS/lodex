@@ -15,7 +15,7 @@ import FormSelectField from '../../lib/FormSelectField';
 
 const required = value => (value ? undefined : 'Required');
 const uniqueField = fields => value =>
-    (fields.find(({ name }) => name === value) ? 'Field already exists' : undefined);
+    (fields.find(({ label }) => label === value) ? 'Field already exists' : undefined);
 
 export const AddFieldDetailComponent = ({
     collectionFields,
@@ -26,21 +26,12 @@ export const AddFieldDetailComponent = ({
 
     <div>
         <Field
-            className="field-name"
-            name="field.name"
+            className="field-label"
+            name="field.label"
             validate={[
                 required,
                 uniqueField([...documentFields, ...collectionFields]),
             ]}
-            disabled={!isNewField}
-            component={FormTextField}
-            label={polyglot.t('fieldName')}
-            fullWidth
-        />
-        <Field
-            className="field-label"
-            name="field.label"
-            validate={required}
             disabled={!isNewField}
             component={FormTextField}
             label={polyglot.t('fieldLabel')}

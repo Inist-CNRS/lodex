@@ -48,8 +48,8 @@ describe('<Dataset />', () => {
         />);
 
         const headers = wrapper.find(TableHeaderColumn);
-        expect(headers.at(0).children().text()).toEqual('col1');
-        expect(headers.at(1).children().text()).toEqual('col2');
+        expect(headers.at(0).children().text()).toEqual('Col 1');
+        expect(headers.at(1).children().text()).toEqual('Col 2');
     });
 
     it('should render the TableRowColumn for each value for each column', () => {

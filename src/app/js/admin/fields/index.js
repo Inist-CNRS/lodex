@@ -38,46 +38,46 @@ export const updateFieldError = createAction(UPDATE_FIELD_ERROR);
 export const updateFieldSuccess = createAction(UPDATE_FIELD_SUCCESS);
 
 export const defaultState = {
-    byId: {},
+    byName: {},
     allValid: true,
     list: [],
     invalidFields: [],
-    editedFieldId: null,
+    editedFieldName: null,
 };
 
 export default handleActions({
     ADD_FIELD_SUCCESS: (state, { payload }) => ({
         ...state,
-        editedFieldId: payload._id,
-        list: [...state.list, payload._id],
-        byId: {
-            ...state.byId,
-            [payload._id]: payload,
+        editedFieldName: payload.name,
+        list: [...state.list, payload.name],
+        byName: {
+            ...state.byName,
+            [payload.name]: payload,
         },
     }),
     LOAD_FIELD_SUCCESS: (state, { payload }) => ({
         ...state,
-        list: payload.map(({ _id }) => _id),
-        byId: payload.reduce((acc, field) => ({
+        list: payload.map(({ name }) => name),
+        byName: payload.reduce((acc, field) => ({
             ...acc,
-            [field._id]: field,
+            [field.name]: field,
         }), {}),
     }),
     LOAD_FIELD_ERROR: () => defaultState,
     EDIT_FIELD: (state, { payload }) => ({
         ...state,
-        editedFieldId: typeof payload === 'number' ? state.list[payload] : null,
+        editedFieldName: typeof payload === 'number' ? state.list[payload] : null,
     }),
-    REMOVE_FIELD: (state, { payload: { _id: idToRemove } }) => ({
+    REMOVE_FIELD: (state, { payload: { name: nameToRemove } }) => ({
         ...state,
-        list: state.list.filter(id => id !== idToRemove),
-        byId: omit(state.byId, [idToRemove]),
+        list: state.list.filter(name => name !== nameToRemove),
+        byName: omit(state.byName, [nameToRemove]),
     }),
     UPDATE_FIELD_SUCCESS: (state, { payload }) => ({
         ...state,
-        byId: {
-            ...state.byId,
-            [payload._id]: payload,
+        byName: {
+            ...state.byName,
+            [payload.name]: payload,
         },
     }),
     SET_VALIDATION: (state, { payload: { isValid: allValid, fields: invalidFields } }) => ({
@@ -87,11 +87,11 @@ export default handleActions({
     }),
 }, defaultState);
 
-const getFields = ({ byId, list }) => list.map(id => byId[id]);
+const getFields = ({ byName, list }) => list.map(name => byName[name]);
 
 const getNbFields = ({ list }) => list.length;
 
-const getEditedField = state => state.byId[state.editedFieldId];
+const getEditedField = state => state.byName[state.editedFieldName];
 
 export const getCollectionFields = createSelector(
     getFields,

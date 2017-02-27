@@ -19,21 +19,21 @@ describe('field reducer', () => {
     describe('addField', () => {
         it('should handle the ADD_FIELD_SUCCESS action', () => {
             const state = reducer({
-                byId: {
-                    id1: { _id: 'id1', name: 'foo' },
-                    id2: { _id: 'id2', name: 'bar' },
+                byName: {
+                    name1: { name: 'name1', label: 'foo' },
+                    name2: { name: 'name2', label: 'bar' },
                 },
-                list: ['id1', 'id2'],
-            }, addFieldSuccess({ _id: 'new_id', name: 'i am new' }));
+                list: ['name1', 'name2'],
+            }, addFieldSuccess({ name: 'new_name', label: 'i am new' }));
 
             expect(state).toEqual({
                 ...state,
-                editedFieldId: 'new_id',
-                list: ['id1', 'id2', 'new_id'],
-                byId: {
-                    id1: { _id: 'id1', name: 'foo' },
-                    id2: { _id: 'id2', name: 'bar' },
-                    new_id: { _id: 'new_id', name: 'i am new' },
+                editedFieldName: 'new_name',
+                list: ['name1', 'name2', 'new_name'],
+                byName: {
+                    name2: { name: 'name2', label: 'bar' },
+                    name1: { name: 'name1', label: 'foo' },
+                    new_name: { name: 'new_name', label: 'i am new' },
                 },
             });
         });
@@ -47,15 +47,15 @@ describe('field reducer', () => {
 
         it('should handle the LOAD_FIELD_SUCCESS action', () => {
             const state = reducer({ ...defaultState, list: ['foo'] }, loadFieldSuccess([
-                { _id: 'bar_id', foo: 'bar' },
-                { _id: 'foo_id', foo: 'foo' },
+                { name: 'bar_name', foo: 'bar' },
+                { name: 'foo_name', foo: 'foo' },
             ]));
             expect(state).toEqual({
                 ...defaultState,
-                list: ['bar_id', 'foo_id'],
-                byId: {
-                    bar_id: { _id: 'bar_id', foo: 'bar' },
-                    foo_id: { _id: 'foo_id', foo: 'foo' },
+                list: ['bar_name', 'foo_name'],
+                byName: {
+                    bar_name: { name: 'bar_name', foo: 'bar' },
+                    foo_name: { name: 'foo_name', foo: 'foo' },
                 },
             });
         });
@@ -64,11 +64,11 @@ describe('field reducer', () => {
     describe('editField', () => {
         it('should handle the EDIT_FIELD action', () => {
             const state = reducer({
-                list: ['id1', 'id2', 'id3'],
+                list: ['name1', 'name2', 'name3'],
             }, editField(1));
             expect(state).toEqual({
-                list: ['id1', 'id2', 'id3'],
-                editedFieldId: 'id2',
+                list: ['name1', 'name2', 'name3'],
+                editedFieldName: 'name2',
             });
         });
     });
@@ -77,15 +77,15 @@ describe('field reducer', () => {
         it('should handle the REMOVE_FIELD action', () => {
             const state = reducer({
                 list: ['bar', 'foo'],
-                byId: {
-                    bar: { _id: 'bar' },
-                    foo: { _id: 'foo' },
+                byName: {
+                    bar: { name: 'bar' },
+                    foo: { name: 'foo' },
                 },
-            }, removeField({ _id: 'foo' }));
+            }, removeField({ name: 'foo' }));
             expect(state).toEqual({
                 list: ['bar'],
-                byId: {
-                    bar: { _id: 'bar' },
+                byName: {
+                    bar: { name: 'bar' },
                 },
             });
         });
@@ -95,19 +95,19 @@ describe('field reducer', () => {
         it('should handle the UPDATE_FIELD_SUCCESS action', () => {
             const state = reducer({
                 list: ['bar', 'foo', 'boo'],
-                byId: {
-                    bar: { _id: 'bar' },
-                    foo: { _id: 'foo' },
-                    boo: { _id: 'boo' },
+                byName: {
+                    bar: { name: 'bar' },
+                    foo: { name: 'foo' },
+                    boo: { name: 'boo' },
                 },
-            }, updateFieldSuccess({ _id: 'foo', updated: true }));
+            }, updateFieldSuccess({ name: 'foo', updated: true }));
 
             expect(state).toEqual({
                 list: ['bar', 'foo', 'boo'],
-                byId: {
-                    bar: { _id: 'bar' },
-                    foo: { _id: 'foo', updated: true },
-                    boo: { _id: 'boo' },
+                byName: {
+                    bar: { name: 'bar' },
+                    foo: { name: 'foo', updated: true },
+                    boo: { name: 'boo' },
                 },
             });
         });
@@ -117,12 +117,12 @@ describe('field reducer', () => {
         describe('getFields', () => {
             it('should return array of all fields', () => {
                 const state = {
-                    list: ['id1', 'id2', 'id3'],
-                    byId: {
-                        id1: 'field1',
-                        id2: 'field2',
-                        id3: 'field3',
-                        id4: 'field4',
+                    list: ['name1', 'name2', 'name3'],
+                    byName: {
+                        name1: 'field1',
+                        name2: 'field2',
+                        name3: 'field3',
+                        name4: 'field4',
                     },
                 };
                 expect(selectors.getFields(state))
@@ -140,11 +140,11 @@ describe('field reducer', () => {
         describe('getEditedField', () => {
             it('should return editedField', () => {
                 expect(selectors.getEditedField({
-                    editedFieldId: 'id2',
-                    byId: {
-                        id1: 'field1',
-                        id2: 'field2',
-                        id3: 'field3',
+                    editedFieldName: 'name2',
+                    byName: {
+                        name1: 'field1',
+                        name2: 'field2',
+                        name3: 'field3',
                     },
                 })).toBe('field2');
             });

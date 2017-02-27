@@ -26,7 +26,7 @@ describe('Home page with published data', function homePublishedDataTests() {
         const movieLabel = await driver.findElement(
             By.css('.dataset-characteristics .property:first-child .property_name'),
         );
-        driver.wait(until.elementTextIs(movieLabel, 'movie'), DEFAULT_WAIT_TIMEOUT);
+        driver.wait(until.elementTextIs(movieLabel, 'Movie'), DEFAULT_WAIT_TIMEOUT);
 
         const movieValue = await driver.findElement(By.css('.dataset-characteristics .property:first-child dd'));
         driver.wait(until.elementTextIs(movieValue, 'LOTR'), DEFAULT_WAIT_TIMEOUT);
@@ -34,7 +34,7 @@ describe('Home page with published data', function homePublishedDataTests() {
         const authorLabel = await driver.findElement(
             By.css('.dataset-characteristics .property:last-child .property_name'),
         );
-        driver.wait(until.elementTextIs(authorLabel, 'author'), DEFAULT_WAIT_TIMEOUT);
+        driver.wait(until.elementTextIs(authorLabel, 'Author'), DEFAULT_WAIT_TIMEOUT);
 
         const authorValue = await driver.findElement(By.css('.dataset-characteristics .property:last-child dd'));
         driver.wait(until.elementTextIs(authorValue, 'Peter Jackson'), DEFAULT_WAIT_TIMEOUT);
@@ -44,7 +44,7 @@ describe('Home page with published data', function homePublishedDataTests() {
         await driver.wait(until.elementLocated(By.css('.dataset')), DEFAULT_WAIT_TIMEOUT);
         const headers = await driver.findElements(By.css('.dataset table th'));
 
-        const expectedHeaders = ['uri', 'fullname', 'email', 'best_friend_of'];
+        const expectedHeaders = ['URI', 'Full name', 'Email', 'Best Friend Of'];
         await Promise.all(headers.map((header, index) =>
             driver.wait(until.elementTextIs(header, expectedHeaders[index]), DEFAULT_WAIT_TIMEOUT),
         ));
@@ -81,19 +81,19 @@ describe('Home page with published data', function homePublishedDataTests() {
     it('should display all resource properties', async () => {
         await driver.wait(until.elementLocated(By.css('.detail')), DEFAULT_WAIT_TIMEOUT);
         const fullnameLabel = await driver.findElement(By.css('.detail .property:nth-child(2) dt'));
-        await driver.wait(until.elementTextIs(fullnameLabel, 'fullname\nhttp://www.w3.org/ns/person'), DEFAULT_WAIT_TIMEOUT);
+        await driver.wait(until.elementTextIs(fullnameLabel, 'Full name\nhttp://www.w3.org/ns/person'), DEFAULT_WAIT_TIMEOUT);
 
         const fullnameValue = await driver.findElement(By.css('.detail .property:nth-child(2) dd'));
         await driver.wait(until.elementTextIs(fullnameValue, 'PEREGRIN.TOOK'), DEFAULT_WAIT_TIMEOUT);
 
         const mailLabel = await driver.findElement(By.css('.detail .property:nth-child(3) dt'));
-        await driver.wait(until.elementTextIs(mailLabel, 'email\nhttp://uri4uri.net/vocab'), DEFAULT_WAIT_TIMEOUT);
+        await driver.wait(until.elementTextIs(mailLabel, 'Email\nhttp://uri4uri.net/vocab'), DEFAULT_WAIT_TIMEOUT);
 
         const mailValue = await driver.findElement(By.css('.detail .property:nth-child(3) dd'));
         await driver.wait(until.elementTextIs(mailValue, 'peregrin.took@shire.net'), DEFAULT_WAIT_TIMEOUT);
 
         const bestFriendLabel = await driver.findElement(By.css('.detail .property:last-child dt'));
-        await driver.wait(until.elementTextIs(bestFriendLabel, 'best_friend_of\nhttp://www.w3.org/ns/person'), DEFAULT_WAIT_TIMEOUT);
+        await driver.wait(until.elementTextIs(bestFriendLabel, 'Best Friend Of\nhttp://www.w3.org/ns/person'), DEFAULT_WAIT_TIMEOUT);
 
         const bestFriendValue = await driver.findElement(By.css('.detail .property:last-child dd'));
         await driver.wait(until.elementTextIs(bestFriendValue, 'MERIADOC.BRANDYBUCK'), DEFAULT_WAIT_TIMEOUT);
@@ -119,10 +119,6 @@ describe('Home page with published data', function homePublishedDataTests() {
         const newField = await driver.findElement(By.css('.new'));
         await driver.wait(elementIsClicked(newField), DEFAULT_WAIT_TIMEOUT);
 
-        const fieldName = form.findElement(By.css('.field-name input'));
-        await driver.wait(inputElementIsFocusable(fieldName, true), DEFAULT_WAIT_TIMEOUT);
-        fieldName.sendKeys('myContribution');
-
         const fieldLabel = form.findElement(By.css('.field-label input'));
         await driver.wait(inputElementIsFocusable(fieldLabel, true), DEFAULT_WAIT_TIMEOUT);
         fieldLabel.sendKeys('my contribution');
@@ -144,7 +140,7 @@ describe('Home page with published data', function homePublishedDataTests() {
         await driver.wait(elementsCountIs(By.css('.detail .property'), 5), DEFAULT_WAIT_TIMEOUT);
         const contributionLabel = await driver.findElement(By.css('.detail .property:last-child dt'));
         await driver.wait(
-            until.elementTextIs(contributionLabel, 'myContribution\nContributed by john'), DEFAULT_WAIT_TIMEOUT,
+            until.elementTextIs(contributionLabel, 'my contribution\nContributed by john'), DEFAULT_WAIT_TIMEOUT,
         );
 
         const contributionValue = await driver.findElement(By.css('.detail .property:last-child dd'));
