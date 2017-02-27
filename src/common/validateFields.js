@@ -1,4 +1,4 @@
-import { COVERS } from './cover';
+import { COVERS, COVER_DOCUMENT } from './cover';
 import knownTransformers from './transformers';
 
 const validOperations = new RegExp(Object.keys(knownTransformers).join('|'));
@@ -28,7 +28,7 @@ export const validateLabel = (field) => {
     return result;
 };
 
-export const validateCover = (field) => {
+export const validateCover = (field, isContribution) => {
     const result = {
         name: 'cover',
         isValid: true,
@@ -39,6 +39,14 @@ export const validateCover = (field) => {
             ...result,
             isValid: false,
             error: 'required',
+        };
+    }
+
+    if (isContribution && field.cover !== COVER_DOCUMENT) {
+        return {
+            ...result,
+            isValid: false,
+            error: 'invalid_contribution_cover',
         };
     }
 
@@ -71,7 +79,7 @@ export const validateTransformers = (field, isContribution) => {
         };
     }
 
-    if (field.transformers && field.composedOf) {
+    if ((field.transformers && field.transformers.length) && field.composedOf) {
         return {
             ...result,
             isValid: false,
@@ -108,7 +116,7 @@ export const validateComposedOf = (field, isContribution) => {
         };
     }
 
-    if (field.transformers && field.composedOf) {
+    if ((field.transformers && field.transformers.length) && field.composedOf) {
         return {
             ...result,
             isValid: false,
@@ -182,7 +190,7 @@ export const validateComposedOfFields = (field) => {
 };
 
 export const validateComposedOfField = (field, allFields) => {
-    const isValid = allFields.find(otherfield => otherfield.name === field);
+    const isValid = !!allFields.find(otherfield => otherfield.name === field.name);
 
     return {
         name: `composedOf.fields[${field.name}]`,
@@ -227,10 +235,12 @@ export const validateTransformer = (transformer) => {
 export const validateEachTransformer = (transformers = []) =>
     transformers.map(validateTransformer);
 
+export const isListValid = list => list.reduce((areValid, { isValid }) => areValid && isValid, true);
+
 export const validateField = (field, isContribution = false, fields = []) => {
     const properties = [
         validateLabel(field),
-        validateCover(field),
+        validateCover(field, isContribution),
         validateScheme(field),
         validateTransformers(field, isContribution),
         validateComposedOf(field, isContribution),
@@ -238,12 +248,12 @@ export const validateField = (field, isContribution = false, fields = []) => {
         validateComposedOfFields(field),
     ].filter(d => !!d);
 
-    const propertiesAreValid = properties.reduce((areValid, p) => areValid && p.isValid, true);
+    const propertiesAreValid = isListValid(properties);
 
     const transformers = validateEachTransformer(field.transformers);
-    const transformersAreValid = transformers.reduce((areValid, p) => areValid && p.isValid, true);
+    const transformersAreValid = isListValid(transformers);
     const composedOfFields = validateEachComposedOfFields(field.composedOf && field.composedOf.fields, fields);
-    const composedOfFieldsAreValid = composedOfFields.reduce((areValid, p) => areValid && p.isValid, true);
+    const composedOfFieldsAreValid = isListValid(composedOfFields);
 
     return {
         name: field.name,

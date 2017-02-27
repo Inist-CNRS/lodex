@@ -245,7 +245,7 @@ describe('field', () => {
 
         it('should return field even if no transformers if isContribution is true', async () => {
             const field = {
-                cover: 'dataset',
+                cover: 'document',
                 label: 'label',
                 name: 'name',
                 scheme: 'http://purl.org/dc/terms/title',
