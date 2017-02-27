@@ -98,7 +98,7 @@ const getRootCharacteristics = createSelector(
                 ...field,
                 value: characteristics[field.name],
             }))
-            .filter(field => !field.complete),
+            .filter(field => !field.completes),
 );
 
 export const fromCharacteristic = {

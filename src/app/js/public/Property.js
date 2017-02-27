@@ -65,7 +65,7 @@ const PropertyComponent = ({
             {linkedFields.map(linkedField => (
                 <Property
                     key={linkedField._id}
-                    className="complete"
+                    className="completes"
                     field={linkedField}
                     resource={resource}
                 />

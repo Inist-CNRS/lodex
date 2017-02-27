@@ -69,9 +69,9 @@ export const FieldFormComponent = ({
             </Field>
             <SchemeAutoComplete name="scheme" />
             <Field
-                name="complete"
+                name="completes"
                 component={FormSelectField}
-                label={polyglot.t('complete_field')}
+                label={polyglot.t('completes_field')}
                 fullWidth
             >
                 <MenuItem value="" primaryText={polyglot.t('complete_field_none')} />

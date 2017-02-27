@@ -58,7 +58,7 @@ const getCollectionFields = createSelector(
 
 const getRootCollectionFields = createSelector(
     getFields,
-    fields => fields.filter(f => f.cover === COVER_COLLECTION && !f.complete),
+    fields => fields.filter(f => f.cover === COVER_COLLECTION && !f.completes),
 );
 
 const getFieldNameFromParams = (state, params) => params;
@@ -102,13 +102,13 @@ const getLinkedFieldsParams = (state, params) => params;
 const getLinkedFields = createSelector(
     getFields,
     getLinkedFieldsParams,
-    (fields, field) => fields.filter(f => f.complete && f.complete === field.name),
+    (fields, field) => fields.filter(f => f.completes && f.completes === field.name),
 );
 
 const getCompletedField = createSelector(
     getFields,
     getLinkedFieldsParams,
-    (fields, field) => fields.find(f => field.complete === f.name),
+    (fields, field) => fields.find(f => field.completes === f.name),
 );
 
 const getDatasetFields = createSelector(
