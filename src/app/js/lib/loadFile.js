@@ -1,6 +1,5 @@
 export default (file, token) =>
 new Promise((resolve, reject) => {
-    console.log({ file });
     const extension = file.name.split('.').pop();
     const oReq = new XMLHttpRequest();
     oReq.open('POST', `/api/upload/${extension}`, true);

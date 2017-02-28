@@ -4,10 +4,12 @@ import pure from 'recompose/pure';
 import withProps from 'recompose/withProps';
 import withHandlers from 'recompose/withHandlers';
 import translate from 'redux-polyglot/translate';
-import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn } from 'material-ui/Table';
+import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow } from 'material-ui/Table';
+
 import { polyglot as polyglotPropTypes, field as fieldPropTypes } from '../../propTypes';
 import PublicationExcerptHeader from './PublicationExcerptHeader';
 import PublicationExcerptRemoveColumn from './PublicationExcerptRemoveColumn';
+import PublicationExcerptLine from './PublicationExcerptLine';
 
 const styles = {
     header: {
@@ -60,16 +62,7 @@ export const PublicationExcerptComponent = ({
         </TableHeader>
         <TableBody displayRowCheckbox={false}>
             {lines.map((line, index) => (
-                <TableRow key={line.uri || index}>
-                    {columns.map(({ name }) => (
-                        <TableRowColumn
-                            key={`${name}_${line.uri}`}
-                            style={styles.cell}
-                        >
-                            {line[name]}
-                        </TableRowColumn>
-                    ))}
-                </TableRow>
+                <PublicationExcerptLine key={line.uri || index} line={line} columns={columns} />
             ))}
             {areHeadersClickable &&
                 <TableRow>

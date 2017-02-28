@@ -13,7 +13,7 @@ const styles = {
 };
 
 const ValidationComponent = ({ editField, fields }) => (
-    <ul style={styles.list}>
+    <ul className="validation" style={styles.list}>
         {fields.map(field => <ValidationField key={field.name} field={field} onEditField={editField} />)}
     </ul>
 );

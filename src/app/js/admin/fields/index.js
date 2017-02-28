@@ -1,6 +1,7 @@
 import omit from 'lodash.omit';
 import { createAction, handleActions } from 'redux-actions';
 import { createSelector } from 'reselect';
+import pad from 'lodash.pad';
 
 import { getTransformersMetas, getTransformerMetas } from '../../../../common/transformers';
 import { COVER_COLLECTION } from '../../../../common/cover';
@@ -22,6 +23,10 @@ export const REFRESH_FIELD = 'REFRESH_FIELD';
 export const SET_VALIDATION = 'SET_VALIDATION';
 export const UPDATE_FIELD_ERROR = 'UPDATE_FIELD_ERROR';
 export const UPDATE_FIELD_SUCCESS = 'UPDATE_FIELD_SUCCESS';
+export const ADD_COMPOSED_OF = 'ADD_COMPOSED_OF';
+export const CLEAR_COMPOSED_OF = 'CLEAR_COMPOSED_OF';
+export const ADD_COMPOSED_OF_FIELD = 'ADD_COMPOSED_OF_FIELD';
+export const REMOVE_COMPOSED_OF_FIELD = 'REMOVE_COMPOSED_OF_FIELD';
 
 export const addField = createAction(ADD_FIELD);
 export const addFieldError = createAction(ADD_FIELD_ERROR);
@@ -37,6 +42,10 @@ export const refreshField = createAction(REFRESH_FIELD);
 export const setValidation = createAction(SET_VALIDATION);
 export const updateFieldError = createAction(UPDATE_FIELD_ERROR);
 export const updateFieldSuccess = createAction(UPDATE_FIELD_SUCCESS);
+export const addComposedOf = createAction(ADD_COMPOSED_OF);
+export const clearComposedOf = createAction(CLEAR_COMPOSED_OF);
+export const addComposedOfField = createAction(ADD_COMPOSED_OF_FIELD);
+export const removeComposedOfField = createAction(REMOVE_COMPOSED_OF_FIELD);
 
 export const defaultState = {
     byName: {},
@@ -67,7 +76,7 @@ export default handleActions({
     LOAD_FIELD_ERROR: () => defaultState,
     EDIT_FIELD: (state, { payload }) => ({
         ...state,
-        editedFieldName: typeof payload === 'number' ? state.list[payload] : null,
+        editedFieldName: typeof payload === 'number' ? state.list[payload] : payload,
     }),
     REMOVE_FIELD_SUCCESS: (state, { payload: { name: nameToRemove } }) => ({
         ...state,
@@ -86,9 +95,82 @@ export default handleActions({
         allValid,
         invalidFields,
     }),
+    ADD_COMPOSED_OF: (state) => {
+        const { editedFieldName, byName } = state;
+
+        return {
+            ...state,
+            byName: {
+                ...byName,
+                [editedFieldName]: {
+                    ...byName[editedFieldName],
+                    composedOf: {
+                        separator: ' ',
+                        fields: ['', ''],
+                    },
+                },
+            },
+        };
+    },
+    CLEAR_COMPOSED_OF: (state) => {
+        const { editedFieldName, byName } = state;
+
+        return {
+            ...state,
+            byName: {
+                ...byName,
+                [editedFieldName]: {
+                    ...byName[editedFieldName],
+                    composedOf: null,
+                },
+            },
+        };
+    },
+    ADD_COMPOSED_OF_FIELD: (state) => {
+        const { editedFieldName, byName } = state;
+
+        return {
+            ...state,
+            byName: {
+                ...byName,
+                [editedFieldName]: {
+                    ...byName[editedFieldName],
+                    composedOf: {
+                        separator: ' ',
+                        fields: [
+                            ...byName[editedFieldName].composedOf.fields,
+                            '',
+                        ],
+                    },
+                },
+            },
+        };
+    },
+    REMOVE_COMPOSED_OF_FIELD: (state) => {
+        const { editedFieldName, byName } = state;
+
+        if (byName[editedFieldName].composedOf.fields.length <= 2) {
+            return state;
+        }
+
+        return {
+            ...state,
+            byName: {
+                ...byName,
+                [editedFieldName]: {
+                    ...byName[editedFieldName],
+                    composedOf: {
+                        separator: ' ',
+                        fields: byName[editedFieldName].composedOf.fields.slice(0, -1),
+                    },
+                },
+            },
+        };
+    },
 }, defaultState);
 
 const getFields = ({ byName, list }) => list.map(name => byName[name]);
+const getByName = ({ byName }) => byName;
 
 const getNbFields = ({ list }) => list.length;
 
@@ -129,17 +211,59 @@ export const getFieldFormData = state => state.form.field.values;
 const getValidationFields = state => state.invalidFields;
 
 export const getInvalidFields = createSelector(
-    getFields,
+    getByName,
     getValidationFields,
-    (fields = [], validationFields = []) => validationFields
+    (byName = {}, validationFields = []) => validationFields
         .filter(({ isValid }) => !isValid)
         .map(field => ({
+            ...byName[field.name],
             ...field,
-            index: fields.findIndex(f => f.name === field.name),
         })),
 );
 
 export const areAllFieldsValid = state => state.allValid;
+
+export const getLineColGetterFromAllFields = (fieldByName, field) => {
+    if (!field) {
+        return () => null;
+    }
+    if (field.composedOf) {
+        return (line) => {
+            const { separator, fields } = field.composedOf;
+
+            return fields
+                .map((name) => {
+                    if (!fieldByName[name]) {
+                        throw new Error('circular dependencies');
+                    }
+                    const getLineCol = getLineColGetterFromAllFields(omit(fieldByName, [name]), fieldByName[name]);
+
+                    return getLineCol(line);
+                })
+                .join(pad(separator, separator.length + 2));
+        };
+    }
+
+    return line => line[field.name];
+};
+
+export const getLineColGetter = createSelector(
+    getByName,
+    (_, field) => field,
+    (fieldByName, field) => {
+        const getLineCol = getLineColGetterFromAllFields(fieldByName, field);
+        return (line) => {
+            try {
+                return getLineCol(line);
+            } catch (error) {
+                if (error.message === 'circular dependencies') {
+                    return 'circular dependencies';
+                }
+                throw error;
+            }
+        };
+    },
+);
 
 export const selectors = {
     areAllFieldsValid,
@@ -154,4 +278,5 @@ export const selectors = {
     hasPublicationFields,
     getTransformers,
     getTransformerArgs,
+    getLineColGetter,
 };

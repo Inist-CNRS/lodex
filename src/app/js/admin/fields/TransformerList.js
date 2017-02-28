@@ -3,12 +3,14 @@ import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 import pure from 'recompose/pure';
 import FlatButton from 'material-ui/FlatButton';
+import { CardHeader } from 'material-ui/Card';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import TransformerListItem from './TransformerListItem';
 
 const TransformerList = ({ fields, meta: { touched, error }, p: polyglot }) => (
     <div>
+        <CardHeader>{polyglot.t('transformers')}</CardHeader>
         {touched && error && <span>{error}</span>}
 
         {fields.map((fieldName, index) => (
