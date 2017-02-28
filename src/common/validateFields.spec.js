@@ -46,13 +46,17 @@ describe('validateField', () => {
                     error: 'required_or_composed_of_required',
                 },
                 {
+                    name: 'completes',
+                    isValid: true,
+                    error: undefined,
+                },
+                {
                     name: 'composedOf',
                     isValid: false,
                     error: 'required_or_transformers_required',
                 },
             ],
             propertiesAreValid: false,
-            completesFieldIsValid: true,
             composedOfFields: [],
             composedOfFieldsAreValid: true,
             transformers: [],
@@ -92,12 +96,16 @@ describe('validateField', () => {
                     isValid: true,
                 },
                 {
+                    name: 'completes',
+                    isValid: true,
+                    error: undefined,
+                },
+                {
                     name: 'composedOf',
                     isValid: true,
                 },
             ],
             propertiesAreValid: true,
-            completesFieldIsValid: true,
             composedOfFields: [],
             composedOfFieldsAreValid: true,
             transformers: [{
@@ -401,7 +409,7 @@ describe('validateField', () => {
 
     describe('validateCompletesField', () => {
         it('should return valid result if field.completes is in allFields', () => {
-            expect(validateComposedOfField({ completes: 'field1' }, [{ name: 'field1' }])).toEqual({
+            expect(validateCompletesField({ completes: 'field1' }, [{ name: 'field1' }])).toEqual({
                 name: 'completes',
                 isValid: true,
                 error: undefined,
@@ -409,7 +417,7 @@ describe('validateField', () => {
         });
 
         it('should return invalid error if field.completes is not in allFields', () => {
-            expect(validateComposedOfField({ completes: 'field2' }, [{ name: 'field1' }])).toEqual({
+            expect(validateCompletesField({ completes: 'field2' }, [{ name: 'field1' }])).toEqual({
                 name: 'completes',
                 isValid: false,
                 error: 'inexisting_target_field',

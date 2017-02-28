@@ -257,6 +257,7 @@ export const validateField = (field, isContribution = false, fields = []) => {
         validateCover(field, isContribution),
         validateScheme(field),
         validateTransformers(field, isContribution),
+        validateCompletesField(field, fields),
         validateComposedOf(field, isContribution),
         validateComposedOfSeparator(field),
         validateComposedOfFields(field),
@@ -268,7 +269,6 @@ export const validateField = (field, isContribution = false, fields = []) => {
     const transformersAreValid = isListValid(transformers);
     const composedOfFields = validateEachComposedOfFields(field.composedOf && field.composedOf.fields, fields);
     const composedOfFieldsAreValid = isListValid(composedOfFields);
-    const completesFieldIsValid = validateCompletesField(field, fields);
 
     return {
         name: field.name,
@@ -279,7 +279,6 @@ export const validateField = (field, isContribution = false, fields = []) => {
         transformersAreValid,
         composedOfFields,
         composedOfFieldsAreValid,
-        completesFieldIsValid,
     };
 };
 
