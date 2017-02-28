@@ -73,16 +73,6 @@ export const FieldFormComponent = ({
                 <MenuItem value="collection" primaryText={polyglot.t('cover_collection')} />
             </Field>
             <SchemeAutoComplete name="scheme" />
-            <Field
-                className="completes"
-                name="completes"
-                component={FormSelectField}
-                label={polyglot.t('completes_field')}
-                fullWidth
-            >
-                <MenuItem value="" primaryText={polyglot.t('complete_field_none')} />
-                {otherFieldsMenuItems}
-            </Field>
             { isContribution ? null : <FieldArray name="transformers" component={TransformerList} /> }
             { (isContribution) ? null : <Field
                 name="format"
@@ -90,6 +80,16 @@ export const FieldFormComponent = ({
                 label={polyglot.t('format')}
                 fullWidth
             />}
+            <Field
+                className="completes"
+                name="completes"
+                component={FormSelectField}
+                label={polyglot.t('completes_field')}
+                fullWidth
+            >
+                <MenuItem primaryText={polyglot.t('completes_field_none')} />
+                {otherFieldsMenuItems}
+            </Field>
             { isContribution ? null : <ComposedOf name="composedOf" value={field.composedOf} /> }
         </form>
     );
