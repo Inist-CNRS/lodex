@@ -222,6 +222,48 @@ export const getInvalidFields = createSelector(
 
 export const areAllFieldsValid = state => state.allValid;
 
+export const getLineColGetterFromAllFields = (fieldByName, field) => {
+    if (!field) {
+        return () => null;
+    }
+    if (field.composedOf) {
+        return (line) => {
+            const { separator, fields } = field.composedOf;
+
+            return fields
+                .map((name) => {
+                    if (!fieldByName[name]) {
+                        throw new Error('recursive');
+                    }
+                    const getLineCol = getLineColGetterFromAllFields(omit(fieldByName, [name]), fieldByName[name]);
+
+                    return getLineCol(line);
+                })
+                .join(separator);
+        };
+    }
+
+    return line => line[field.name];
+};
+
+export const getLineColGetter = createSelector(
+    getByName,
+    (_, field) => field,
+    (fieldByName, field) => {
+        const getLineCol = getLineColGetterFromAllFields(fieldByName, field);
+        return (line) => {
+            try {
+                return getLineCol(line);
+            } catch (error) {
+                if (error.message === 'recursive') {
+                    return 'recursive dependencies';
+                }
+                throw error;
+            }
+        };
+    },
+);
+
 export const selectors = {
     areAllFieldsValid,
     getCollectionFields,
@@ -235,4 +277,5 @@ export const selectors = {
     hasPublicationFields,
     getTransformers,
     getTransformerArgs,
+    getLineColGetter,
 };

@@ -44,7 +44,6 @@ export const FieldFormComponent = ({
     if (!field) {
         return <span />;
     }
-    console.log({ field });
 
     const otherFieldsMenuItems = fields.map(f => (
         <MenuItem
