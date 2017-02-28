@@ -5,5 +5,5 @@ import tsv from './tsv'; // eslint-disable-line
 export default {
     CSV,
     csv,
-    tsv
+    tsv,
 };
