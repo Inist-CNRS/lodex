@@ -1,5 +1,6 @@
 import config from 'config';
 import {
+    optimize,
     DefinePlugin,
     LoaderOptionsPlugin,
     SourceMapDevToolPlugin,
@@ -8,7 +9,10 @@ import {
 } from 'webpack';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import CopyWebpackPlugin from 'copy-webpack-plugin';
+import CompressionPlugin from 'compression-webpack-plugin';
 import { resolve } from 'path';
+
+const { UglifyJsPlugin } = optimize;
 
 export default {
     entry: {
@@ -103,6 +107,7 @@ export default {
         }),
         new LoaderOptionsPlugin({
             options: {
+                debug: process.env.NODE_ENV === 'development',
                 context: __dirname,
                 minimize: process.env.NODE_ENV !== 'development',
             },
@@ -130,7 +135,21 @@ export default {
             new HotModuleReplacementPlugin(),
             new SourceMapDevToolPlugin({ filename: '[file].map' }),
         ]
-        : []),
+        : [
+            new UglifyJsPlugin({
+                beautify: false,
+                mangle: {
+                    screw_ie8: true,
+                    keep_fnames: true,
+                },
+                compress: {
+                    screw_ie8: true,
+                },
+                comments: false,
+                sourceMap: 'source-map',
+            }),
+            new CompressionPlugin(),
+        ]),
     resolve: {
         extensions: ['.js', '.jsx'],
     },
