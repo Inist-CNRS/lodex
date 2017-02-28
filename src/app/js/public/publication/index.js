@@ -61,11 +61,6 @@ const getListFields = createSelector(
     fields => fields.filter(f => !f.composedOf),
 );
 
-const getRootCollectionFields = createSelector(
-    getFields,
-    fields => fields.filter(f => f.cover === COVER_COLLECTION && !f.completes),
-);
-
 const getFieldNameFromParams = (state, params) => params;
 
 const getFieldByName = createSelector(
@@ -151,6 +146,40 @@ const getPublishData = ({ error, published, editedFieldIndex, loading }) => ({
 const isPublicationLoading = state => state.loading;
 const getPublicationError = state => state.error;
 
+const getComposedFields = createSelector(
+    getFields,
+    fields => fields.filter(({ composedOf }) => !!composedOf),
+);
+
+const getRootCollectionFields = createSelector(
+    getFields,
+    getComposedFields,
+    (allFields, composedFields) => allFields
+        .filter(f => f.cover === COVER_COLLECTION && !f.completes)
+        .filter(({ name }) => composedFields.some(({ composedOf: { fields } }) => !fields.includes(name))),
+);
+
+const getFieldsCatalog = createSelector(
+    getFields,
+    fields => fields.reduce((catalog, field) => ({
+        ...catalog,
+        [field.name]: field,
+    }), {}),
+);
+
+const getCompositeFields = createSelector(
+    getFieldsCatalog,
+    (_, field) => field,
+    (fieldsCatalog, field) => {
+        if (!field.composedOf) {
+            return [];
+        }
+        const { fields } = field.composedOf;
+
+        return fields.map(name => fieldsCatalog[name]);
+    },
+);
+
 export const fromPublication = {
     getFields,
     getCollectionFields,
@@ -171,4 +200,5 @@ export const fromPublication = {
     getPublishData,
     isPublicationLoading,
     getPublicationError,
+    getCompositeFields,
 };
