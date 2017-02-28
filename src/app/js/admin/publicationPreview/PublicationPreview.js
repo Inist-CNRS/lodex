@@ -7,7 +7,7 @@ import FlatButton from 'material-ui/FlatButton';
 
 import Publication from './Publication';
 
-import { addField, editField } from '../fields';
+import { addField, editField, removeField } from '../fields';
 import { polyglot as polyglotPropTypes, field as fieldPropTypes } from '../../propTypes';
 import { fromFields, fromPublicationPreview } from '../selectors';
 import Card from '../../lib/Card';
@@ -29,6 +29,13 @@ export class PublicationPreviewComponent extends Component {
         event.preventDefault();
         event.stopPropagation();
         this.props.addColumn();
+    }
+
+    handleRemoveColumnClick = (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        this.props.removeColumn(this.props.editedColumn.name);
+        this.props.editColumn(null);
     }
 
     handleExitColumEdition = (event) => {
@@ -56,6 +63,14 @@ export class PublicationPreviewComponent extends Component {
                     />
                     {editedColumn &&
                         <FlatButton
+                            className="btn-remove-column"
+                            label={polyglot.t('remove_from_publication')}
+                            onClick={this.handleRemoveColumnClick}
+                            style={styles.button}
+                        />
+                    }
+                    {editedColumn &&
+                        <FlatButton
                             className="btn-exit-column-edition"
                             label={polyglot.t('exit_column_edition')}
                             onClick={this.handleExitColumEdition}
@@ -81,9 +96,10 @@ PublicationPreviewComponent.propTypes = {
     addColumn: PropTypes.func.isRequired,
     columns: PropTypes.arrayOf(fieldPropTypes).isRequired,
     editedColumn: fieldPropTypes,
+    editColumn: PropTypes.func.isRequired,
     lines: PropTypes.arrayOf(PropTypes.object).isRequired,
     p: polyglotPropTypes.isRequired,
-    editColumn: PropTypes.func.isRequired,
+    removeColumn: PropTypes.func.isRequired,
 };
 
 PublicationPreviewComponent.defaultProps = {
@@ -99,6 +115,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = {
     addColumn: addField,
     editColumn: editField,
+    removeColumn: removeField,
 };
 
 export default compose(

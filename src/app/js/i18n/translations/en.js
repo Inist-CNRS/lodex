@@ -73,4 +73,5 @@ export default {
     completes_field: 'Complete another field',
     completes_field_none: 'Optional - Select a field',
     completes_field_X: 'Completes %{field}',
+    remove_from_publication: 'Remove',
 };

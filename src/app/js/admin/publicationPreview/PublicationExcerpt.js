@@ -7,6 +7,7 @@ import translate from 'redux-polyglot/translate';
 import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn } from 'material-ui/Table';
 import { polyglot as polyglotPropTypes, field as fieldPropTypes } from '../../propTypes';
 import PublicationExcerptHeader from './PublicationExcerptHeader';
+import PublicationExcerptRemoveColumn from './PublicationExcerptRemoveColumn';
 
 const styles = {
     header: {
@@ -56,8 +57,8 @@ export const PublicationExcerptComponent = ({
             </TableRow>
         </TableHeader>
         <TableBody displayRowCheckbox={false}>
-            {lines.map(line => (
-                <TableRow key={line.uri}>
+            {lines.map((line, index) => (
+                <TableRow key={line.uri || index}>
                     {columns.map(({ name }) => (
                         <TableRowColumn
                             key={`${name}_${line.uri}`}
@@ -68,6 +69,13 @@ export const PublicationExcerptComponent = ({
                     ))}
                 </TableRow>
             ))}
+            {areHeadersClickable &&
+                <TableRow>
+                    {columns.map(c => (
+                        <PublicationExcerptRemoveColumn key={`remove_column_${c}`} name={c.name} />
+                    ))}
+                </TableRow>
+            }
         </TableBody>
     </Table>
 );

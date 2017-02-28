@@ -39,8 +39,8 @@ describe('Admin', () => {
                 const th = await driver.findElement(By.css('.publication-preview th'));
                 driver.wait(until.elementTextIs(th, 'uri'), DEFAULT_WAIT_TIMEOUT);
                 const tds = await driver.findElements(By.css('.publication-preview tr td:first-child'));
-                expect(tds.length).toBe(4);
-                await Promise.all(tds.map(td =>
+                expect(tds.length).toBe(5);
+                await Promise.all(tds.slice(0, 3).map(td => // last td is the remove button
                     driver.wait(until.elementTextIs(td, ''), DEFAULT_WAIT_TIMEOUT)),
                 );
             });
@@ -129,7 +129,7 @@ describe('Admin', () => {
                     DEFAULT_WAIT_TIMEOUT,
                 );
                 const tds = await driver.findElements(By.css('.publication-preview tr td:nth-child(2)'));
-                expect(tds.length).toBe(4);
+                expect(tds.length).toBe(5);
 
                 const expectedTexts = [
                     'uri to id: 3',
@@ -137,7 +137,7 @@ describe('Admin', () => {
                     'uri to id: 2',
                     '',
                 ];
-                await Promise.all(tds.map((td, index) =>
+                await Promise.all(tds.slice(0, 3).map((td, index) => // last td is the remove button
                     driver.wait(until.elementTextIs(td, expectedTexts[index]), DEFAULT_WAIT_TIMEOUT)),
                 );
             });
@@ -218,7 +218,7 @@ describe('Admin', () => {
                     DEFAULT_WAIT_TIMEOUT,
                 );
                 const tds = await driver.findElements(By.css('.publication-preview tr td:nth-child(4)'));
-                expect(tds.length).toBe(4);
+                expect(tds.length).toBe(5);
 
                 const expectedTexts = [
                     'Rock-Paper-Scissor',
@@ -226,7 +226,7 @@ describe('Admin', () => {
                     'Rock-Paper-Scissor',
                     'Rock-Paper-Scissor',
                 ];
-                await Promise.all(tds.map((td, index) =>
+                await Promise.all(tds.slice(0, 3).map((td, index) => // last td is the remove button
                     driver.wait(until.elementTextIs(td, expectedTexts[index]), DEFAULT_WAIT_TIMEOUT)),
                 );
             });
@@ -296,11 +296,11 @@ describe('Admin', () => {
 
             it('should have added custom column with value', async () => {
                 await driver.wait(
-                    until.elementLocated(By.css('.publication-preview tr td:nth-child(4)')),
+                    until.elementLocated(By.css('.publication-preview tr td:last-child')),
                     DEFAULT_WAIT_TIMEOUT,
                 );
-                const tds = await driver.findElements(By.css('.publication-preview tr td:nth-child(5)'));
-                expect(tds.length).toBe(4);
+                const tds = await driver.findElements(By.css('.publication-preview tr td:last-child'));
+                expect(tds.length).toBe(5);
 
                 const expectedTexts = [
                     'Zero-sum hand game',
@@ -308,7 +308,53 @@ describe('Admin', () => {
                     'Zero-sum hand game',
                     'Zero-sum hand game',
                 ];
-                await Promise.all(tds.map((td, index) =>
+                await Promise.all(tds.slice(0, 3).map((td, index) => // last td is the remove button
+                    driver.wait(until.elementTextIs(td, expectedTexts[index]), DEFAULT_WAIT_TIMEOUT)),
+                );
+            });
+        });
+
+        describe('removing column', async () => {
+            it('should add auto configured column when clicking add-column button for an original field', async () => {
+                await driver.executeScript(
+                    'document.getElementsByClassName("btn-excerpt-add-column-name")[0].scrollIntoView(true);',
+                );
+                const button = await driver.findElement(By.css('.btn-excerpt-add-column-name'));
+                await driver.wait(elementIsClicked(button), DEFAULT_WAIT_TIMEOUT);
+                await driver.wait(until.elementLocated(By.css('.publication-excerpt-column-name')), DEFAULT_WAIT_TIMEOUT);
+            });
+
+            it('should have updated the preview', async () => {
+                const tds = await driver.findElements(By.css('.publication-preview tr td:last-child'));
+                expect(tds.length).toBe(4);
+                await Promise.all(tds.map(td =>
+                    driver.wait(
+                        until.elementTextMatches(td, /rock|paper|scissor|invalid_reference/), DEFAULT_WAIT_TIMEOUT),
+                    ),
+                );
+            });
+
+            it('should remove column when clicking btn-remove-column button for a field', async () => {
+                const button = await driver.findElement(By.css('.btn-remove-column'));
+                await driver.wait(elementIsClicked(button), DEFAULT_WAIT_TIMEOUT);
+                await driver.wait(until.stalenessOf(button), DEFAULT_WAIT_TIMEOUT);
+            });
+
+            it('should have updated the preview', async () => {
+                await driver.wait(
+                    until.elementLocated(By.css('.publication-preview tr td:last-child')),
+                    DEFAULT_WAIT_TIMEOUT,
+                );
+                const tds = await driver.findElements(By.css('.publication-preview tr td:last-child'));
+                expect(tds.length).toBe(5);
+
+                const expectedTexts = [
+                    'Zero-sum hand game',
+                    'Zero-sum hand game',
+                    'Zero-sum hand game',
+                    'Zero-sum hand game',
+                ];
+                await Promise.all(tds.slice(0, 3).map((td, index) => // last td is the remove button
                     driver.wait(until.elementTextIs(td, expectedTexts[index]), DEFAULT_WAIT_TIMEOUT)),
                 );
             });

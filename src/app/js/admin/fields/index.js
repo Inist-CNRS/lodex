@@ -69,7 +69,7 @@ export default handleActions({
         ...state,
         editedFieldName: typeof payload === 'number' ? state.list[payload] : null,
     }),
-    REMOVE_FIELD: (state, { payload: { name: nameToRemove } }) => ({
+    REMOVE_FIELD_SUCCESS: (state, { payload: { name: nameToRemove } }) => ({
         ...state,
         list: state.list.filter(name => name !== nameToRemove),
         byName: omit(state.byName, [nameToRemove]),
@@ -97,6 +97,12 @@ const getEditedField = state => state.byName[state.editedFieldName];
 export const getCollectionFields = createSelector(
     getFields,
     fields => fields.filter(f => f.cover === COVER_COLLECTION),
+);
+
+export const getFieldByName = createSelector(
+    getProps,
+    getFields,
+    (name, fields) => fields.find(f => f.name === name),
 );
 
 export const getFieldsExceptEdited = createSelector(
@@ -140,6 +146,7 @@ export const selectors = {
     getCollectionFields,
     getCompletedField,
     getEditedField,
+    getFieldByName,
     getFields,
     getFieldsExceptEdited,
     getInvalidFields,
