@@ -56,6 +56,11 @@ const getCollectionFields = createSelector(
     fields => fields.filter(f => f.cover === COVER_COLLECTION),
 );
 
+const getListFields = createSelector(
+    getCollectionFields,
+    fields => fields.filter(f => !f.composedOf),
+);
+
 const getRootCollectionFields = createSelector(
     getFields,
     fields => fields.filter(f => f.cover === COVER_COLLECTION && !f.completes),
@@ -149,6 +154,7 @@ const getPublicationError = state => state.error;
 export const fromPublication = {
     getFields,
     getCollectionFields,
+    getListFields,
     getRootCollectionFields,
     hasPublishedDataset,
     getFieldByName,

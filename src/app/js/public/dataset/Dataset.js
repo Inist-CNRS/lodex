@@ -102,7 +102,7 @@ DatasetComponent.defaultProps = {
 
 const mapStateToProps = state => ({
     loading: fromDataset.isDatasetLoading(state),
-    columns: fromPublication.getCollectionFields(state),
+    columns: fromPublication.getListFields(state),
     currentPage: fromDataset.getDatasetCurrentPage(state),
     dataset: fromDataset.getDataset(state),
     total: fromDataset.getDatasetTotal(state),
