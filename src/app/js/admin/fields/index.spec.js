@@ -8,6 +8,11 @@ import reducer, {
     loadFieldSuccess,
     removeFieldSuccess,
     updateFieldSuccess,
+    getLineColGetterFromAllFields,
+    addComposedOf,
+    clearComposedOf,
+    addComposedOfField,
+    removeComposedOfField,
 } from './';
 
 describe('field reducer', () => {
@@ -113,6 +118,151 @@ describe('field reducer', () => {
         });
     });
 
+    describe('addComposedOf', () => {
+        it('should handle the ADD_COMPOSED_OF action', () => {
+            const state = {
+                byName: {
+                    editedField: {
+                        name: 'editedFiedld',
+                    },
+                },
+                editedFieldName: 'editedField',
+            };
+
+            expect(reducer(state, addComposedOf()))
+                .toEqual({
+                    byName: {
+                        editedField: {
+                            name: 'editedFiedld',
+                            composedOf: {
+                                separator: ' ',
+                                fields: ['', ''],
+                            },
+                        },
+                    },
+                    editedFieldName: 'editedField',
+                });
+        });
+    });
+
+    describe('clearComposedOf', () => {
+        it('should handle the CLEAR_COMPOSED_OF action', () => {
+            const state = {
+                byName: {
+                    editedField: {
+                        name: 'editedFiedld',
+                        composedOf: {
+                            data: 'value',
+                        },
+                    },
+                },
+                editedFieldName: 'editedField',
+            };
+
+            expect(reducer(state, clearComposedOf()))
+                .toEqual({
+                    byName: {
+                        editedField: {
+                            name: 'editedFiedld',
+                            composedOf: null,
+                        },
+                    },
+                    editedFieldName: 'editedField',
+                });
+        });
+    });
+
+    describe('addComposedOfField', () => {
+        it('should handle the ADD_COMPOSED_OF_FIELD action', () => {
+            const state = {
+                byName: {
+                    editedField: {
+                        name: 'editedFiedld',
+                        composedOf: {
+                            separator: ' ',
+                            fields: ['field1', 'field2'],
+                        },
+                    },
+                },
+                editedFieldName: 'editedField',
+            };
+
+            expect(reducer(state, addComposedOfField()))
+                .toEqual({
+                    byName: {
+                        editedField: {
+                            name: 'editedFiedld',
+                            composedOf: {
+                                separator: ' ',
+                                fields: ['field1', 'field2', ''],
+                            },
+                        },
+                    },
+                    editedFieldName: 'editedField',
+                });
+        });
+    });
+
+    describe('addComposedOfField', () => {
+        it('should handle the REMOVE_COMPOSED_OF_FIELD action', () => {
+            const state = {
+                byName: {
+                    editedField: {
+                        name: 'editedFiedld',
+                        composedOf: {
+                            separator: ' ',
+                            fields: ['field1', 'field2', 'field3'],
+                        },
+                    },
+                },
+                editedFieldName: 'editedField',
+            };
+
+            expect(reducer(state, removeComposedOfField()))
+                .toEqual({
+                    byName: {
+                        editedField: {
+                            name: 'editedFiedld',
+                            composedOf: {
+                                separator: ' ',
+                                fields: ['field1', 'field2'],
+                            },
+                        },
+                    },
+                    editedFieldName: 'editedField',
+                });
+        });
+
+        it('should ignore the REMOVE_COMPOSED_OF_FIELD action if only 2 fields', () => {
+            const state = {
+                byName: {
+                    editedField: {
+                        name: 'editedFiedld',
+                        composedOf: {
+                            separator: ' ',
+                            fields: ['field1', 'field2'],
+                        },
+                    },
+                },
+                editedFieldName: 'editedField',
+            };
+
+            expect(reducer(state, removeComposedOfField()))
+                .toEqual({
+                    byName: {
+                        editedField: {
+                            name: 'editedFiedld',
+                            composedOf: {
+                                separator: ' ',
+                                fields: ['field1', 'field2'],
+                            },
+                        },
+                    },
+                    editedFieldName: 'editedField',
+                });
+        });
+    });
+
     describe('selectors', () => {
         describe('getFields', () => {
             it('should return array of all fields', () => {
@@ -147,6 +297,101 @@ describe('field reducer', () => {
                         name3: 'field3',
                     },
                 })).toBe('field2');
+            });
+        });
+
+        describe('getLineColGetterFromAllFields', () => {
+            it('should return a function returning line value for given field', () => {
+                const field = {
+                    name: 'field',
+                };
+                const getLineCol = getLineColGetterFromAllFields({ field }, field);
+                expect(getLineCol({ field: 'value', other: 'data' }))
+                    .toEqual('value');
+            });
+
+            it('should return a function returning line composed value for given field', () => {
+                const field1 = {
+                    name: 'field1',
+                    composedOf: {
+                        separator: 'separator',
+                        fields: ['field2', 'field3'],
+                    },
+                };
+                const field2 = {
+                    name: 'field2',
+                };
+                const field3 = {
+                    name: 'field3',
+                };
+
+                const getLineCol = getLineColGetterFromAllFields({ field1, field2, field3 }, field1);
+                expect(getLineCol({ field1: 'value1', field2: 'value2', field3: 'value3' }))
+                    .toEqual('value2 separator value3');
+            });
+
+            it('should work recursively', () => {
+                const field1 = {
+                    name: 'field1',
+                    composedOf: {
+                        separator: 'separator',
+                        fields: ['field2', 'field3'],
+                    },
+                };
+                const field2 = {
+                    name: 'field2',
+                    composedOf: {
+                        separator: '/',
+                        fields: ['field4', 'field5'],
+                    },
+                };
+                const field3 = {
+                    name: 'field3',
+                };
+                const field4 = {
+                    name: 'field4',
+                };
+                const field5 = {
+                    name: 'field5',
+                };
+
+                const getLineCol = getLineColGetterFromAllFields({ field1, field2, field3, field4, field5 }, field1);
+                expect(getLineCol({
+                    field1: 'value1',
+                    field2: 'value2',
+                    field3: 'value3',
+                    field4: 'value4',
+                    field5: 'value5',
+                }))
+                    .toEqual('value4 / value5 separator value3');
+            });
+
+            it('should throw an error on a circular dependency', () => {
+                const field1 = {
+                    name: 'field1',
+                    composedOf: {
+                        separator: 'separator',
+                        fields: ['field2', 'field3'],
+                    },
+                };
+                const field2 = {
+                    name: 'field2',
+                    composedOf: {
+                        separator: '/',
+                        fields: ['field1', 'field3'],
+                    },
+                };
+                const field3 = {
+                    name: 'field3',
+                };
+
+                const getLineCol = getLineColGetterFromAllFields({ field1, field2, field3 }, field1);
+                expect(() => getLineCol({
+                    field1: 'value1',
+                    field2: 'value2',
+                    field3: 'value3',
+                }))
+                    .toThrow('circular dependencies');
             });
         });
     });

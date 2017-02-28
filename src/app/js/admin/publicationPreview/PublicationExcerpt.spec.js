@@ -1,7 +1,8 @@
 import React from 'react';
 import expect from 'expect';
 import { shallow } from 'enzyme';
-import { TableHeaderColumn, TableRowColumn } from 'material-ui/Table';
+import { TableHeaderColumn } from 'material-ui/Table';
+import PublicationExcerptLine from './PublicationExcerptLine';
 
 import { PublicationExcerptComponent as PublicationExcerpt } from './PublicationExcerpt';
 
@@ -34,10 +35,14 @@ describe('<PublicationExcerpt />', () => {
             p={{ t: key => key }}
         />);
 
-        const cols = wrapper.find(TableRowColumn);
-        expect(cols.at(0).children().text()).toEqual('foo1');
-        expect(cols.at(1).children().text()).toEqual('bar1');
-        expect(cols.at(2).children().text()).toEqual('foo2');
-        expect(cols.at(3).children().text()).toEqual('bar2');
+        const excerptLines = wrapper.find(PublicationExcerptLine);
+        expect(excerptLines.at(0).props()).toEqual({
+            line: lines[0],
+            columns,
+        });
+        expect(excerptLines.at(1).props()).toEqual({
+            line: lines[1],
+            columns,
+        });
     });
 });

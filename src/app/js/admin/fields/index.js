@@ -234,7 +234,7 @@ export const getLineColGetterFromAllFields = (fieldByName, field) => {
             return fields
                 .map((name) => {
                     if (!fieldByName[name]) {
-                        throw new Error('recursive');
+                        throw new Error('circular dependencies');
                     }
                     const getLineCol = getLineColGetterFromAllFields(omit(fieldByName, [name]), fieldByName[name]);
 
@@ -256,8 +256,8 @@ export const getLineColGetter = createSelector(
             try {
                 return getLineCol(line);
             } catch (error) {
-                if (error.message === 'recursive') {
-                    return 'recursive dependencies';
+                if (error.message === 'circular dependencies') {
+                    return 'circular dependencies';
                 }
                 throw error;
             }
