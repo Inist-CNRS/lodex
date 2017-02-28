@@ -25,6 +25,7 @@ const PublicationEditionComponent = ({ editedColumn, lines }) => (
             <FieldForm />
         </div>
         <PublicationExcerpt
+            className="publication-excerpt-for-edition"
             columns={[editedColumn]}
             lines={lines}
             style={styles.column}

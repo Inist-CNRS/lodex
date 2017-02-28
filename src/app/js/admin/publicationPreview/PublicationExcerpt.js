@@ -26,6 +26,7 @@ const styles = {
 
 export const PublicationExcerptComponent = ({
     areHeadersClickable,
+    className,
     columns,
     lines,
     onCellClick,
@@ -33,6 +34,7 @@ export const PublicationExcerptComponent = ({
     p: polyglot,
 }) => (
     <Table
+        className={className}
         selectable={false}
         fixedHeader={false}
         bodyStyle={styles.wrapper}
@@ -82,11 +84,16 @@ export const PublicationExcerptComponent = ({
 
 PublicationExcerptComponent.propTypes = {
     areHeadersClickable: PropTypes.bool.isRequired,
+    className: PropTypes.string,
     columns: PropTypes.arrayOf(fieldPropTypes).isRequired,
     lines: PropTypes.arrayOf(PropTypes.object).isRequired,
     onCellClick: PropTypes.func.isRequired,
     onHeaderClick: PropTypes.func.isRequired,
     p: polyglotPropTypes.isRequired,
+};
+
+PublicationExcerptComponent.defaultProps = {
+    className: 'publication-excerpt',
 };
 
 export default compose(
