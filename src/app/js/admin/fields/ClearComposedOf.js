@@ -11,7 +11,6 @@ export const ClearComposedOfComponent = ({ p: polyglot, onClick }) => (
     <FlatButton onClick={onClick} label={polyglot.t('remove')} />
 );
 
-
 ClearComposedOfComponent.propTypes = {
     p: polyglotPropTypes.isRequired,
     onClick: PropTypes.func.isRequired,

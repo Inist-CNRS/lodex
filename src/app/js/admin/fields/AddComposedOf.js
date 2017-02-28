@@ -11,7 +11,6 @@ export const AddComposedOfComponent = ({ p: polyglot, onClick }) => (
     <FlatButton onClick={onClick} label={polyglot.t('add')} />
 );
 
-
 AddComposedOfComponent.propTypes = {
     p: polyglotPropTypes.isRequired,
     onClick: PropTypes.func.isRequired,

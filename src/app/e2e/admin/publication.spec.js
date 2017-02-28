@@ -109,7 +109,9 @@ describe('Admin', () => {
                 const linkButton = await driver.findElement(By.css('.transformer_LINK'));
                 await driver.wait(elementIsClicked(linkButton), DEFAULT_WAIT_TIMEOUT);
 
-                await driver.wait(until.elementLocated(By.css('#field_form .transformer_arg_reference input')), DEFAULT_WAIT_TIMEOUT);
+                await driver.wait(until.elementLocated(
+                    By.css('#field_form .transformer_arg_reference input'),
+                ), DEFAULT_WAIT_TIMEOUT);
             });
 
             it('should configure transformer Link', async () => {
@@ -148,7 +150,9 @@ describe('Admin', () => {
                 );
                 const button = await driver.findElement(By.css('.btn-excerpt-add-column-name'));
                 await driver.wait(elementIsClicked(button), DEFAULT_WAIT_TIMEOUT);
-                await driver.wait(until.elementLocated(By.css('.publication-excerpt-column-name')), DEFAULT_WAIT_TIMEOUT);
+                await driver.wait(until.elementLocated(
+                    By.css('.publication-excerpt-column-name'),
+                ), DEFAULT_WAIT_TIMEOUT);
             });
 
             it('should have updated the preview', async () => {
@@ -199,7 +203,9 @@ describe('Admin', () => {
                 const transformerButton = await driver.findElement(By.css('.transformer_VALUE'));
                 await driver.wait(elementIsClicked(transformerButton), DEFAULT_WAIT_TIMEOUT);
 
-                await driver.wait(until.elementLocated(By.css('#field_form .transformer_arg_value input')), DEFAULT_WAIT_TIMEOUT);
+                await driver.wait(until.elementLocated(
+                    By.css('#field_form .transformer_arg_value input'),
+                ), DEFAULT_WAIT_TIMEOUT);
             });
 
             it('should configure transformer VALUE', async () => {
@@ -265,7 +271,10 @@ describe('Admin', () => {
                 const transformerButton = await driver.findElement(By.css('.transformer_VALUE'));
                 await driver.wait(elementIsClicked(transformerButton), DEFAULT_WAIT_TIMEOUT);
 
-                await driver.wait(until.elementLocated(By.css('#field_form .transformer_arg_value input'), DEFAULT_WAIT_TIMEOUT));
+                await driver.wait(until.elementLocated(
+                    By.css('#field_form .transformer_arg_value input'),
+                    DEFAULT_WAIT_TIMEOUT,
+                ));
             });
 
             it('should configure transformer VALUE', async () => {

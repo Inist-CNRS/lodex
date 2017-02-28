@@ -14,7 +14,6 @@ export const AddComposedOfComponent = ({ onAdd, onRemove }) => (
     </div>
 );
 
-
 AddComposedOfComponent.propTypes = {
     onAdd: PropTypes.func.isRequired,
     onRemove: PropTypes.func.isRequired,

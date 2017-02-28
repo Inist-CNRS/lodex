@@ -43,7 +43,6 @@ const mapStateToProps = (state, { field, line }) => {
     };
 };
 
-
 export default compose(
     translate,
     connect(mapStateToProps),
