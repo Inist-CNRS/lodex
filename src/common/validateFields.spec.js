@@ -391,7 +391,7 @@ describe('validateField', () => {
 
     describe('validateComposedOfField', () => {
         it('should return valid result if field is in allFields', () => {
-            expect(validateComposedOfField({ name: 'field1' }, [{ name: 'field1' }])).toEqual({
+            expect(validateComposedOfField('field1', [{ name: 'field1' }])).toEqual({
                 name: 'composedOf.fields[field1]',
                 isValid: true,
                 error: undefined,
@@ -399,7 +399,7 @@ describe('validateField', () => {
         });
 
         it('should return invalid error if field is not in allFields', () => {
-            expect(validateComposedOfField({ name: 'field2' }, [{ name: 'field1' }])).toEqual({
+            expect(validateComposedOfField('field2', [{ name: 'field1' }])).toEqual({
                 name: 'composedOf.fields[field2]',
                 isValid: false,
                 error: 'inexisting_target_field',

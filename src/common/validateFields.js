@@ -190,17 +190,22 @@ export const validateComposedOfFields = (field) => {
 };
 
 export const validateComposedOfField = (field, allFields) => {
-    const isValid = !!allFields.find(otherfield => otherfield.name === field.name);
+    const isValid = !!allFields.find(otherfield => otherfield.name === field);
 
     return {
-        name: `composedOf.fields[${field.name}]`,
+        name: `composedOf.fields[${field}]`,
         isValid,
         error: isValid ? undefined : 'inexisting_target_field',
     };
 };
 
-export const validateEachComposedOfFields = (fields = [], allFields) =>
-    fields.map(field => validateComposedOfField(field, allFields));
+export const validateEachComposedOfFields = (fields, allFields) => {
+    if (!fields || !fields.length) {
+        return [];
+    }
+
+    return fields.map(field => validateComposedOfField(field, allFields));
+};
 
 export const validateCompletesField = (field, allFields) => {
     let isValid = true;

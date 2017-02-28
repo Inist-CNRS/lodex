@@ -25,8 +25,8 @@ describe('<PublicationExcerpt />', () => {
     it('should render lines', () => {
         const columns = [{ name: 'foo', label: 'foo' }, { name: 'bar', label: 'bar' }];
         const lines = [
-            { foo: 'foo1', bar: 'bar1' },
-            { foo: 'foo2', bar: 'bar2' },
+            { uri: 'uri1', foo: 'foo1', bar: 'bar1' },
+            { uri: 'uri2', foo: 'foo2', bar: 'bar2' },
         ];
         const wrapper = shallow(<PublicationExcerpt
             columns={columns}

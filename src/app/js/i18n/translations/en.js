@@ -77,4 +77,7 @@ export default {
     separator: 'separator',
     composed_of: 'composed of',
     transformers: 'transformers',
+    add: 'add',
+    remove: 'remove',
+    select_a_field: 'select a field',
 };

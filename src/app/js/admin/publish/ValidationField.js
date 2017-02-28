@@ -16,9 +16,9 @@ const styles = {
     },
 };
 
-const ValidationFieldComponent = ({ onEditField, field: { name, properties }, p: polyglot }) => (
+const ValidationFieldComponent = ({ onEditField, field: { label, properties }, p: polyglot }) => (
     <li>
-        <button onClick={onEditField} style={styles.label}>{name}:</button>
+        <button onClick={onEditField} style={styles.label}>{label}:</button>
         {properties.filter(p => !p.isValid).map(p => polyglot.t(`error_${p.name}_${p.error}`)).join(', ')}
     </li>
 );
@@ -33,7 +33,7 @@ export default compose(
     withHandlers({
         onEditField: props => (event) => {
             event.preventDefault();
-            props.onEditField(props.field.index);
+            props.onEditField(props.field.name);
         },
     }),
     translate,

@@ -75,7 +75,7 @@ export default handleActions({
     LOAD_FIELD_ERROR: () => defaultState,
     EDIT_FIELD: (state, { payload }) => ({
         ...state,
-        editedFieldName: typeof payload === 'number' ? state.list[payload] : null,
+        editedFieldName: typeof payload === 'number' ? state.list[payload] : payload,
     }),
     REMOVE_FIELD_SUCCESS: (state, { payload: { name: nameToRemove } }) => ({
         ...state,
@@ -169,6 +169,7 @@ export default handleActions({
 }, defaultState);
 
 const getFields = ({ byName, list }) => list.map(name => byName[name]);
+const getByName = ({ byName }) => byName;
 
 const getNbFields = ({ list }) => list.length;
 
@@ -209,13 +210,13 @@ export const getFieldFormData = state => state.form.field.values;
 const getValidationFields = state => state.invalidFields;
 
 export const getInvalidFields = createSelector(
-    getFields,
+    getByName,
     getValidationFields,
-    (fields = [], validationFields = []) => validationFields
+    (byName = {}, validationFields = []) => validationFields
         .filter(({ isValid }) => !isValid)
         .map(field => ({
+            ...byName[field.name],
             ...field,
-            index: fields.findIndex(f => f.name === field.name),
         })),
 );
 
