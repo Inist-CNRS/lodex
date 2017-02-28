@@ -202,6 +202,20 @@ export const validateComposedOfField = (field, allFields) => {
 export const validateEachComposedOfFields = (fields = [], allFields) =>
     fields.map(field => validateComposedOfField(field, allFields));
 
+export const validateCompletesField = (field, allFields) => {
+    let isValid = true;
+
+    if (field.completes) {
+        isValid = !!allFields.find(otherfield => otherfield.name === field.completes);
+    }
+
+    return {
+        name: 'completes',
+        isValid,
+        error: isValid ? undefined : 'inexisting_target_field',
+    };
+};
+
 export const validateScheme = (field) => {
     const result = {
         name: 'scheme',
@@ -254,6 +268,7 @@ export const validateField = (field, isContribution = false, fields = []) => {
     const transformersAreValid = isListValid(transformers);
     const composedOfFields = validateEachComposedOfFields(field.composedOf && field.composedOf.fields, fields);
     const composedOfFieldsAreValid = isListValid(composedOfFields);
+    const completesFieldIsValid = validateCompletesField(field, fields);
 
     return {
         name: field.name,
@@ -264,6 +279,7 @@ export const validateField = (field, isContribution = false, fields = []) => {
         transformersAreValid,
         composedOfFields,
         composedOfFieldsAreValid,
+        completesFieldIsValid,
     };
 };
 

@@ -10,6 +10,7 @@ import {
     validateCover,
     validateScheme,
     validateTransformers,
+    validateCompletesField,
     validateComposedOf,
     validateComposedOfFields,
     validateComposedOfSeparator,
@@ -51,6 +52,7 @@ describe('validateField', () => {
                 },
             ],
             propertiesAreValid: false,
+            completesFieldIsValid: true,
             composedOfFields: [],
             composedOfFieldsAreValid: true,
             transformers: [],
@@ -95,6 +97,7 @@ describe('validateField', () => {
                 },
             ],
             propertiesAreValid: true,
+            completesFieldIsValid: true,
             composedOfFields: [],
             composedOfFieldsAreValid: true,
             transformers: [{
@@ -390,6 +393,24 @@ describe('validateField', () => {
         it('should return invalid error if field is not in allFields', () => {
             expect(validateComposedOfField({ name: 'field2' }, [{ name: 'field1' }])).toEqual({
                 name: 'composedOf.fields[field2]',
+                isValid: false,
+                error: 'inexisting_target_field',
+            });
+        });
+    });
+
+    describe('validateCompletesField', () => {
+        it('should return valid result if field.completes is in allFields', () => {
+            expect(validateComposedOfField({ completes: 'field1' }, [{ name: 'field1' }])).toEqual({
+                name: 'completes',
+                isValid: true,
+                error: undefined,
+            });
+        });
+
+        it('should return invalid error if field.completes is not in allFields', () => {
+            expect(validateComposedOfField({ completes: 'field2' }, [{ name: 'field1' }])).toEqual({
+                name: 'completes',
                 isValid: false,
                 error: 'inexisting_target_field',
             });
