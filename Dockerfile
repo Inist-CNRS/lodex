@@ -12,11 +12,7 @@ ENV NODE_ENV production
 # Copy the local code source
 COPY . /app
 
-RUN cp -n ./config/production-dist.js ./config/production.js && \
-    BABEL_ENV=browser ./node_modules/.bin/webpack \
-        --config=src/app/webpack.config.babel.js \
-        -p && \
-    npm prune --production
+RUN cp -n ./config/production-dist.js ./config/production.js
 
 # ezmasterizing of lodex
 # See https://github.com/Inist-CNRS/ezmaster#ezmasterizing-an-application

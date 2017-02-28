@@ -8,10 +8,11 @@ module.exports = {
     auth: {
         cookieSecret: 'cookie',
         headerSecret: 'header',
-        expiresIn: 10 * 3600 // 10 hours
+        expiresIn: 10 * 3600, // 10 hours
     },
     csv: {
         quote: '"',
         delimiter: ';',
-    }
+    },
+    buildFrontend: false,
 };
