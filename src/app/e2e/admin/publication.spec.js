@@ -61,6 +61,7 @@ describe('Admin', () => {
             });
 
             it('should have completed uri column with generated uri', async () => {
+                await driver.wait(until.elementLocated(By.css('.publication-preview')), DEFAULT_WAIT_TIMEOUT);
                 const tds = await driver.findElements(By.css('.publication-preview tr td:first-child'));
                 expect(tds.length).toBe(4);
                 await Promise.all(tds.map(td =>
@@ -124,10 +125,7 @@ describe('Admin', () => {
             });
 
             it('should have added stronger column with link', async () => {
-                await driver.wait(
-                    until.elementLocated(By.css('.publication-preview tr td:nth-child(2)')),
-                    DEFAULT_WAIT_TIMEOUT,
-                );
+                await driver.wait(until.elementLocated(By.css('.publication-preview')), DEFAULT_WAIT_TIMEOUT);
                 const tds = await driver.findElements(By.css('.publication-preview tr td:nth-child(2)'));
                 expect(tds.length).toBe(5);
 
@@ -154,6 +152,7 @@ describe('Admin', () => {
             });
 
             it('should have updated the preview', async () => {
+                await driver.wait(until.elementLocated(By.css('.publication-preview')), DEFAULT_WAIT_TIMEOUT);
                 const tds = await driver.findElements(By.css('.publication-preview tr td:last-child'));
                 expect(tds.length).toBe(4);
                 await Promise.all(tds.map(td =>
@@ -213,10 +212,7 @@ describe('Admin', () => {
             });
 
             it('should have added custom column with value', async () => {
-                await driver.wait(
-                    until.elementLocated(By.css('.publication-preview tr td:nth-child(4)')),
-                    DEFAULT_WAIT_TIMEOUT,
-                );
+                await driver.wait(until.elementLocated(By.css('.publication-preview')), DEFAULT_WAIT_TIMEOUT);
                 const tds = await driver.findElements(By.css('.publication-preview tr td:nth-child(4)'));
                 expect(tds.length).toBe(5);
 
@@ -287,7 +283,8 @@ describe('Admin', () => {
                 const completesTitleButton = await driver.findElement(By.css('.completes_title'));
                 await driver.wait(elementIsClicked(completesTitleButton), DEFAULT_WAIT_TIMEOUT);
 
-                const th = await driver.findElement(By.css('.publication-preview th .completes_title'));
+                await driver.wait(until.elementLocated(By.css('.publication-excerpt-for-edition th .completes_title')), DEFAULT_WAIT_TIMEOUT);
+                const th = await driver.findElement(By.css('.publication-excerpt-for-edition th .completes_title'));
                 await driver.wait(until.elementTextIs(th, 'Completes Title'), DEFAULT_WAIT_TIMEOUT);
 
                 const backButton = await driver.findElement(By.css('.btn-exit-column-edition'));
@@ -295,10 +292,7 @@ describe('Admin', () => {
             });
 
             it('should have added custom column with value', async () => {
-                await driver.wait(
-                    until.elementLocated(By.css('.publication-preview tr td:last-child')),
-                    DEFAULT_WAIT_TIMEOUT,
-                );
+                await driver.wait(until.elementLocated(By.css('.publication-preview')), DEFAULT_WAIT_TIMEOUT);
                 const tds = await driver.findElements(By.css('.publication-preview tr td:last-child'));
                 expect(tds.length).toBe(5);
 
@@ -321,11 +315,12 @@ describe('Admin', () => {
                 );
                 const button = await driver.findElement(By.css('.btn-excerpt-add-column-name'));
                 await driver.wait(elementIsClicked(button), DEFAULT_WAIT_TIMEOUT);
-                await driver.wait(until.elementLocated(By.css('.publication-excerpt-column-name')), DEFAULT_WAIT_TIMEOUT);
+                await driver.wait(until.elementLocated(By.css('#field_form')), DEFAULT_WAIT_TIMEOUT);
             });
 
             it('should have updated the preview', async () => {
-                const tds = await driver.findElements(By.css('.publication-preview tr td:last-child'));
+                await driver.wait(until.elementLocated(By.css('.publication-excerpt-for-edition')), DEFAULT_WAIT_TIMEOUT);
+                const tds = await driver.findElements(By.css('.publication-excerpt-for-edition tr td'));
                 expect(tds.length).toBe(4);
                 await Promise.all(tds.map(td =>
                     driver.wait(
@@ -341,10 +336,7 @@ describe('Admin', () => {
             });
 
             it('should have updated the preview', async () => {
-                await driver.wait(
-                    until.elementLocated(By.css('.publication-preview tr td:last-child')),
-                    DEFAULT_WAIT_TIMEOUT,
-                );
+                await driver.wait(until.elementLocated(By.css('.publication-preview')), DEFAULT_WAIT_TIMEOUT);
                 const tds = await driver.findElements(By.css('.publication-preview tr td:last-child'));
                 expect(tds.length).toBe(5);
 
