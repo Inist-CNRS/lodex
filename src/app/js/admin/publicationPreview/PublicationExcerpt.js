@@ -8,11 +8,8 @@ import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow } from 'mate
 
 import { polyglot as polyglotPropTypes, field as fieldPropTypes } from '../../propTypes';
 import PublicationExcerptHeader from './PublicationExcerptHeader';
-<<<<<<< HEAD
 import PublicationExcerptRemoveColumn from './PublicationExcerptRemoveColumn';
-=======
 import PublicationExcerptLine from './PublicationExcerptLine';
->>>>>>> handle recursive composition
 
 const styles = {
     header: {
