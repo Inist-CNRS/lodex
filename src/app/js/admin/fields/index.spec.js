@@ -6,7 +6,7 @@ import reducer, {
     editField,
     loadFieldError,
     loadFieldSuccess,
-    removeField,
+    removeFieldSuccess,
     updateFieldSuccess,
 } from './';
 
@@ -73,15 +73,15 @@ describe('field reducer', () => {
         });
     });
 
-    describe('removeField', () => {
-        it('should handle the REMOVE_FIELD action', () => {
+    describe('removeFieldSuccess', () => {
+        it('should handle the REMOVE_FIELD_SUCCESS action', () => {
             const state = reducer({
                 list: ['bar', 'foo'],
                 byName: {
                     bar: { name: 'bar' },
                     foo: { name: 'foo' },
                 },
-            }, removeField({ name: 'foo' }));
+            }, removeFieldSuccess({ name: 'foo' }));
             expect(state).toEqual({
                 list: ['bar'],
                 byName: {
