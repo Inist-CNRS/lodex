@@ -155,7 +155,7 @@ export const validateComposedOfSeparator = (field) => {
         };
     }
 
-    if (typeof separator !== 'string' && separator.length < 1) {
+    if (typeof separator !== 'string') {
         return {
             ...result,
             isValid: false,

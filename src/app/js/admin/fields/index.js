@@ -1,6 +1,7 @@
 import omit from 'lodash.omit';
 import { createAction, handleActions } from 'redux-actions';
 import { createSelector } from 'reselect';
+import pad from 'lodash.pad';
 
 import { getTransformersMetas, getTransformerMetas } from '../../../../common/transformers';
 import { COVER_COLLECTION } from '../../../../common/cover';
@@ -239,7 +240,7 @@ export const getLineColGetterFromAllFields = (fieldByName, field) => {
 
                     return getLineCol(line);
                 })
-                .join(separator);
+                .join(pad(separator, separator.length + 2));
         };
     }
 
