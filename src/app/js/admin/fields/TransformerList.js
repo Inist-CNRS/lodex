@@ -3,14 +3,28 @@ import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 import pure from 'recompose/pure';
 import FlatButton from 'material-ui/FlatButton';
-import { CardHeader } from 'material-ui/Card';
+import Subheader from 'material-ui/Subheader';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import TransformerListItem from './TransformerListItem';
 
+const styles = {
+    header: {
+        fontSize: '16px',
+        paddingLeft: 0,
+    },
+};
+
 const TransformerList = ({ fields, meta: { touched, error }, p: polyglot }) => (
     <div>
-        <CardHeader>{polyglot.t('transformers')}</CardHeader>
+        <Subheader style={styles.header}>
+            {polyglot.t('transformers')}
+            <FlatButton
+                className="add-transformer"
+                onClick={() => fields.push({})}
+                label={polyglot.t('add_transformer')}
+            />
+        </Subheader>
         {touched && error && <span>{error}</span>}
 
         {fields.map((fieldName, index) => (
@@ -21,11 +35,6 @@ const TransformerList = ({ fields, meta: { touched, error }, p: polyglot }) => (
                 operation={fields.get(index).operation}
             />
         ))}
-        <FlatButton
-            className="add-transformer"
-            onClick={() => fields.push({})}
-            label={polyglot.t('add_transformer')}
-        />
     </div>
 );
 
