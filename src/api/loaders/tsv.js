@@ -5,5 +5,5 @@ ezs.use(ezsBasics);
 
 export default config => stream =>
     stream
-        .pipe(ezs('CSVParse', { separator: "\t" }))
+        .pipe(ezs('CSVParse', { ...config, separator: '\t' }))
         .pipe(ezs('CSVObject'));
