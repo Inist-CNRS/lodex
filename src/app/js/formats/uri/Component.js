@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 import { Link } from 'react-router';
 import { field as fieldPropTypes } from '../../propTypes';
 
-const UriView = ({ className, linkedResource, resource, field }) => {
+const UriView = ({ className, linkedResource, resource, field, fields }) => {
     const uri = resource[field.name];
     let label = resource[field.name];
 
@@ -14,7 +14,8 @@ const UriView = ({ className, linkedResource, resource, field }) => {
 
         case 'column': {
             if (linkedResource) {
-                label = linkedResource[field.format.args.value];
+                const fieldForLabel = fields.find(f => f.label === field.format.args.value);
+                label = linkedResource[fieldForLabel.name];
             }
             break;
         }

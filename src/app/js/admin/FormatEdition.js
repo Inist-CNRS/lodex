@@ -47,7 +47,7 @@ class FormatEdition extends Component {
     }
 
     render() {
-        const { name } = this.state;
+        const { name, args } = this.state;
 
         const EditionComponent = getEditionComponent(name);
 
@@ -58,7 +58,7 @@ class FormatEdition extends Component {
                     value={name}
                     onChange={this.setFormat}
                 />
-                <EditionComponent onChange={this.setArguments} {...{ ...this.props }} />
+                <EditionComponent onChange={this.setArguments} {...{ ...this.props, ...args }} />
             </div>
         );
     }

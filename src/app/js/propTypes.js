@@ -15,7 +15,7 @@ export const field = PropTypes.shape({
 });
 
 export const resource = PropTypes.shape({
-    uri: PropTypes.string.isRequired,
+    uri: PropTypes.string,
 });
 
 export const contributor = PropTypes.object;

@@ -32,7 +32,11 @@ export const PublicationExcerptLineColComponent = ({
 );
 
 PublicationExcerptLineColComponent.propTypes = {
-    value: PropTypes.string.isRequired,
+    value: PropTypes.string,
+};
+
+PublicationExcerptLineColComponent.defaultProps = {
+    value: null,
 };
 
 const mapStateToProps = (state, { field, line }) => {
