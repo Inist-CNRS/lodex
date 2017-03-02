@@ -1,6 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import FlatButton from 'material-ui/FlatButton';
+import IconButton from 'material-ui/IconButton';
+import ArrowDown from 'material-ui/svg-icons/hardware/keyboard-arrow-down';
+import ArrowUp from 'material-ui/svg-icons/hardware/keyboard-arrow-up';
 
 import {
     fromPublication,
@@ -10,8 +12,16 @@ import {
 } from '../propTypes';
 import Format from './Format';
 import Property from './Property';
+import interleave from '../lib/interleave';
 
-class CompositePropertyComponent extends Component {
+const styles = {
+    separator: {
+        paddingLeft: '0.5em',
+        paddingRight: '0.5em',
+    },
+};
+
+export class CompositePropertyComponent extends Component {
     static propTypes = {
         field: fieldPropTypes.isRequired,
         fields: PropTypes.arrayOf(fieldPropTypes).isRequired,
@@ -31,6 +41,12 @@ class CompositePropertyComponent extends Component {
         };
     }
 
+    toggleCompositeField() {
+        this.setState({
+            showCompositeField: !this.state.showCompositeField,
+        });
+    }
+
     render() {
         const {
             field,
@@ -41,24 +57,26 @@ class CompositePropertyComponent extends Component {
 
         return (
             <div>
-                {compositeFields.map((f, index) => (
-                    <span>
+                {interleave(
+                    compositeFields.map(f => (
                         <Format
                             className="property_value"
                             field={f}
                             fields={fields}
                             resource={resource}
                         />
-                        {
-                            index !== compositeFields.length - 1 ?
-                                <span>{field.composedOf.separator}</span> : null
-                        }
-                    </span>
-                ))}
-                <FlatButton
-                    onClick={() => this.setState({ showCompositeField: !this.state.showCompositeField })}
-                    label="detail"
-                />
+                    )),
+                    <span
+                        className="separator"
+                        style={styles.separator}
+                    >{field.composedOf.separator}</span>,
+                )}
+                <IconButton
+                    className="toggle-fields"
+                    onClick={() => this.toggleCompositeField()}
+                >
+                    {this.state.showCompositeField ? <ArrowUp /> : <ArrowDown />}
+                </IconButton>
                 { this.state.showCompositeField ? compositeFields.map(f => (
                     <Property
                         field={f}
