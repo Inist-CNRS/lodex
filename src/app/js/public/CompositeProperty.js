@@ -60,6 +60,7 @@ export class CompositePropertyComponent extends Component {
                 {interleave(
                     compositeFields.map(f => (
                         <Format
+                            key={f.name}
                             className="property_value"
                             field={f}
                             fields={fields}
@@ -70,7 +71,12 @@ export class CompositePropertyComponent extends Component {
                         className="separator"
                         style={styles.separator}
                     >{field.composedOf.separator}</span>,
-                )}
+                ).map((c, index) => {
+                    if (c.key) {
+                        return c;
+                    }
+                    return { ...c, key: index };
+                })}
                 <IconButton
                     className="toggle-fields"
                     onClick={() => this.toggleCompositeField()}
@@ -79,6 +85,7 @@ export class CompositePropertyComponent extends Component {
                 </IconButton>
                 { this.state.showCompositeField ? compositeFields.map(f => (
                     <Property
+                        key={f.name}
                         field={f}
                         fields={fields}
                         resource={resource}

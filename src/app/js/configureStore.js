@@ -14,7 +14,7 @@ export default function configureStore(rootReducer, sagas, initialState) {
     )(rootReducer);
 
     const storage = compose(
-        filter('user.token'),
+        filter('user'),
     )(adapter(window.sessionStorage));
 
     const middlewares = applyMiddleware(

@@ -2,7 +2,7 @@ import expect from 'expect';
 
 import interleave from './interleave';
 
-describe.only('interleave', () => {
+describe('interleave', () => {
     it('should interleave all item in array with separator', () => {
         expect(interleave([
             'item1', 'item2', 'item3',
