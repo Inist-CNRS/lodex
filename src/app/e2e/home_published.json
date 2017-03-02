@@ -50,7 +50,7 @@
             "name": "uri",
             "args": {
                 "type": "column",
-                "value": "fullname"
+                "value": "Full name"
             }
         }
     }],
