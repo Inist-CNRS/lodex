@@ -26,7 +26,7 @@ app.use(mongoClient);
 app.use(initializeFields);
 
 app.use(mount('/export', exportPublishedDataset));
-app.use(route.post('/login', login));
+app.use(route.post('/login', login()));
 app.use(route.get('/publication', publication));
 app.use(route.get('/ark', ark));
 
