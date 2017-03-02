@@ -2,7 +2,7 @@ import { auth } from 'config';
 import jwt from 'jsonwebtoken';
 import expect from 'expect';
 
-import { loginMiddleware as login } from './login';
+import login from './login';
 
 describe('login', () => {
     it('should set ctx.status to 401, if ctx.body.username do not match with config', () => {
@@ -18,7 +18,7 @@ describe('login', () => {
                 },
             },
         };
-        login()(ctx);
+        login(ctx);
         expect(ctx.status).toBe(401);
     });
 
@@ -35,7 +35,7 @@ describe('login', () => {
                 },
             },
         };
-        login()(ctx);
+        login(ctx);
         expect(ctx.status).toBe(401);
     });
 
@@ -61,7 +61,7 @@ describe('login', () => {
 
         // This is set to now as default in login but we specify it here to avoid random failure in tests
         const expDate = Date.now();
-        login(expDate)(ctx);
+        login(ctx, expDate);
         expect(ctx.body).toEqual({
             token: jwt.sign({
                 username: 'user',
