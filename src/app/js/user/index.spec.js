@@ -4,6 +4,7 @@ import reducer, {
     getToken,
     isLoggedIn,
     loginSuccess,
+    logout,
     toggleLogin,
     getRequest,
 } from './';
@@ -27,6 +28,14 @@ describe('user reducer', () => {
         expect(state).toEqual({
             showModal: false,
             token: 'foo',
+        });
+    });
+
+    it('should handle the LOGOUT action', () => {
+        const state = reducer({ showModal: false, token: 'C3PO&R2D2' }, logout());
+        expect(state).toEqual({
+            showModal: true,
+            token: null,
         });
     });
 
