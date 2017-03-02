@@ -12,6 +12,7 @@ describe('Home page with published data', function homePublishedDataTests() {
 
     before(async () => {
         await clear();
+        await driver.executeScript('window.sessionStorage.clear()');
         await loadFixtures(fixtures);
         await driver.get('http://localhost:3010/');
     });
@@ -36,7 +37,9 @@ describe('Home page with published data', function homePublishedDataTests() {
         );
         driver.wait(until.elementTextIs(authorLabel, 'Author'), DEFAULT_WAIT_TIMEOUT);
 
-        const authorValue = await driver.findElement(By.css('.dataset-characteristics .property.author.completes_movie .property_value'));
+        const authorValue = await driver.findElement(
+            By.css('.dataset-characteristics .property.author.completes_movie .property_value'),
+        );
         driver.wait(until.elementTextIs(authorValue, 'Peter Jackson'), DEFAULT_WAIT_TIMEOUT);
     });
 
@@ -89,9 +92,13 @@ describe('Home page with published data', function homePublishedDataTests() {
 
         const mailLabel = await driver.findElement(By.css('.detail .property.email.completes_fullname .property_name'));
         await driver.wait(until.elementTextIs(mailLabel, 'Email'), DEFAULT_WAIT_TIMEOUT);
-        const mailScheme = await driver.findElement(By.css('.detail .property.email.completes_fullname .property_scheme'));
+        const mailScheme = await driver.findElement(
+            By.css('.detail .property.email.completes_fullname .property_scheme'),
+        );
         await driver.wait(until.elementTextIs(mailScheme, 'http://uri4uri.net/vocab'), DEFAULT_WAIT_TIMEOUT);
-        const mailValue = await driver.findElement(By.css('.detail .property.email.completes_fullname .property_value'));
+        const mailValue = await driver.findElement(
+            By.css('.detail .property.email.completes_fullname .property_value'),
+        );
         await driver.wait(until.elementTextIs(mailValue, 'peregrin.took@shire.net'), DEFAULT_WAIT_TIMEOUT);
 
         const bestFriendLabel = await driver.findElement(By.css('.detail .property.best_friend_of .property_name'));
@@ -145,7 +152,9 @@ describe('Home page with published data', function homePublishedDataTests() {
 
         const contributionLabel = await driver.findElement(By.css('.detail .property.my_contribution .property_name'));
         await driver.wait(until.elementTextIs(contributionLabel, 'my contribution'), DEFAULT_WAIT_TIMEOUT);
-        const contributionContributor = await driver.findElement(By.css('.detail .property.my_contribution .property_contributor'));
+        const contributionContributor = await driver.findElement(
+            By.css('.detail .property.my_contribution .property_contributor'),
+        );
         await driver.wait(until.elementTextIs(contributionContributor, 'Contributed by john'), DEFAULT_WAIT_TIMEOUT);
 
         const contributionValue = await driver.findElement(By.css('.detail .property.my_contribution .property_value'));

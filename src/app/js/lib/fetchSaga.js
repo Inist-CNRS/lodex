@@ -1,7 +1,7 @@
 import { call, put, race, select, take } from 'redux-saga/effects';
 import { replace } from 'react-router-redux';
 import fetch from './fetch';
-import { getCurrentLocation } from '../user';
+import { getCurrentLocation, logout } from '../user';
 
 export default function* fetchSaga(request, interruptingActions = []) {
     const {
@@ -23,6 +23,8 @@ export default function* fetchSaga(request, interruptingActions = []) {
             pathname: '/login',
             state: { nextPathname: locationBeforeTransitions.pathname },
         }));
+
+        yield put(logout());
     }
 
     return fetchResult;

@@ -1,7 +1,7 @@
 import { auth } from 'config';
 import jwt from 'jsonwebtoken';
 
-export const loginMiddleware = (expDate = Date.now()) => (ctx) => {
+export const loginMiddleware = (getDate = Date.now) => (ctx) => {
     if (!ctx.ezMasterConfig) {
         throw new Error('Invalid EzMaster configuration.');
     }
@@ -20,7 +20,7 @@ export const loginMiddleware = (expDate = Date.now()) => (ctx) => {
         return;
     }
 
-    const exp = Math.ceil(expDate / 1000) + auth.expiresIn;
+    const exp = Math.ceil(getDate() / 1000) + auth.expiresIn;
     const tokenData = {
         username,
         exp,
@@ -35,4 +35,4 @@ export const loginMiddleware = (expDate = Date.now()) => (ctx) => {
     };
 };
 
-export default loginMiddleware();
+export default loginMiddleware;

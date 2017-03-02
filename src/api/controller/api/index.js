@@ -26,7 +26,7 @@ app.use(mongoClient);
 app.use(initializeFields);
 
 app.use(mount('/export', exportPublishedDataset));
-app.use(route.post('/login', login));
+app.use(route.post('/login', login()));
 app.use(route.get('/publication', publication));
 app.use(route.get('/ark', ark));
 
@@ -38,6 +38,7 @@ app.use(mount('/publishedDataset', publishedDataset));
 app.use(async (ctx, next) => {
     if (!ctx.state.cookie || !ctx.state.header) {
         ctx.status = 401;
+        ctx.cookies.set('lodex_token', '', { expires: new Date() });
         ctx.body = 'No authentication token found';
         return;
     }

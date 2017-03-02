@@ -11,6 +11,10 @@ describe('Home page', function homeTests() {
     let password;
     let form;
 
+    before(async () => {
+        await driver.executeScript('window.sessionStorage.clear()');
+    });
+
     it('should display the Appbar with correct title', async () => {
         await driver.get('http://localhost:3010/');
         await driver.wait(until.elementLocated(By.css('.appbar')), DEFAULT_WAIT_TIMEOUT);
