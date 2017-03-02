@@ -8,12 +8,12 @@ import { TableRowColumn } from 'material-ui/Table';
 import FlatButton from 'material-ui/FlatButton';
 
 import { removeField } from '../fields';
-import { polyglot as polyglotPropTypes } from '../../propTypes';
+import { polyglot as polyglotPropTypes, field as fieldPropTypes } from '../../propTypes';
 
-export const PublicationExcerptRemoveColumnComponent = ({ removeColumn, name, p: polyglot }) => (
+export const PublicationExcerptRemoveColumnComponent = ({ removeColumn, field: { label }, p: polyglot }) => (
     <TableRowColumn>
         <FlatButton
-            className={`btn-excerpt-remove-column btn-excerpt-remove-column-${name}`}
+            className={`btn-excerpt-remove-column btn-excerpt-remove-column-${label.toLowerCase().replace(/\s/g, '_')}`}
             label={polyglot.t('remove_from_publication')}
             onClick={removeColumn}
             primary
@@ -23,11 +23,11 @@ export const PublicationExcerptRemoveColumnComponent = ({ removeColumn, name, p:
 
 PublicationExcerptRemoveColumnComponent.propTypes = {
     removeColumn: PropTypes.func.isRequired,
-    name: PropTypes.string.isRequired,
+    field: fieldPropTypes.isRequired,
     p: polyglotPropTypes.isRequired,
 };
 
-const mapDispatchtoProps = (dispatch, { name }) => bindActionCreators({
+const mapDispatchtoProps = (dispatch, { field: { name } }) => bindActionCreators({
     removeColumn: () => removeField(name),
 }, dispatch);
 

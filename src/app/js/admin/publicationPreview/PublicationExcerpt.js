@@ -67,7 +67,7 @@ export const PublicationExcerptComponent = ({
             {areHeadersClickable &&
                 <TableRow>
                     {columns.map(c => (
-                        <PublicationExcerptRemoveColumn key={`remove_column_${c}`} name={c.name} />
+                        <PublicationExcerptRemoveColumn key={`remove_column_${c}`} field={c} />
                     ))}
                 </TableRow>
             }
