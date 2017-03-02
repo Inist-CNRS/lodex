@@ -15,12 +15,13 @@ const styles = {
 class UriEdition extends Component {
     static propTypes = {
         type: PropTypes.string,
-        value: PropTypes.string.isRequired,
+        value: PropTypes.string,
         onChange: PropTypes.func.isRequired,
     }
 
     static defaultProps = {
         type: 'value',
+        value: '',
     }
     constructor(props) {
         super(props);

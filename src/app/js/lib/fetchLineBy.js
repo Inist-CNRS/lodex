@@ -11,7 +11,7 @@ export default token => (fieldName, value) =>
         },
     }).then(({ response, error }) => {
         if (error) {
-            throw error;
+            return '';
         }
         return response;
     });
