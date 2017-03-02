@@ -5,6 +5,7 @@ export const LOGIN_FORM_NAME = 'login';
 export const TOGGLE_LOGIN = 'TOGGLE_LOGIN';
 export const LOGIN = 'LOGIN';
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
+export const LOGOUT = 'LOGOUT';
 
 export const defaultState = {
     showModal: false,
@@ -21,11 +22,17 @@ export default handleActions({
         showModal: false,
         token: payload,
     }),
+    LOGOUT: state => ({
+        ...state,
+        showModal: true,
+        token: null,
+    }),
 }, defaultState);
 
 export const toggleLogin = createAction(TOGGLE_LOGIN);
 export const login = createAction(LOGIN);
 export const loginSuccess = createAction(LOGIN_SUCCESS);
+export const logout = createAction(LOGOUT);
 
 export const isLoggedIn = state => !!state.user.token;
 export const getToken = state => state.user.token;
