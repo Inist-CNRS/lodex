@@ -38,6 +38,7 @@ app.use(mount('/publishedDataset', publishedDataset));
 app.use(async (ctx, next) => {
     if (!ctx.state.cookie || !ctx.state.header) {
         ctx.status = 401;
+        ctx.cookies.set('lodex_token', '', { expires: new Date() });
         ctx.body = 'No authentication token found';
         return;
     }
