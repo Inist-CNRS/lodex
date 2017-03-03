@@ -76,7 +76,7 @@ EditDetailComponent.propTypes = {
 const mapStateToProps = state => ({
     initialValues: fromResource.getResourceLastVersion(state),
     resource: fromResource.getResourceLastVersion(state),
-    fields: fromPublication.getRootCollectionFields(state),
+    fields: fromPublication.getCollectionFieldsExceptComposed(state),
     saving: fromResource.isSaving(state),
 });
 

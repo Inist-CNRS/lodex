@@ -151,12 +151,17 @@ const getComposedFields = createSelector(
     fields => fields.filter(({ composedOf }) => !!composedOf),
 );
 
-const getRootCollectionFields = createSelector(
+const getCollectionFieldsExceptComposed = createSelector(
     getFields,
     getComposedFields,
     (allFields, composedFields) => allFields
-        .filter(f => f.cover === COVER_COLLECTION && !f.completes)
-        .filter(({ name }) => composedFields.some(({ composedOf: { fields } }) => !fields.includes(name))),
+        .filter(({ name }) => !composedFields.some(({ composedOf: { fields } }) => fields.includes(name))),
+);
+
+const getRootCollectionFields = createSelector(
+    getCollectionFieldsExceptComposed,
+    allFields => allFields
+        .filter(f => f.cover === COVER_COLLECTION && !f.completes),
 );
 
 const getFieldsCatalog = createSelector(
@@ -184,6 +189,7 @@ export const fromPublication = {
     getFields,
     getCollectionFields,
     getListFields,
+    getCollectionFieldsExceptComposed,
     getRootCollectionFields,
     hasPublishedDataset,
     getFieldByName,
