@@ -8,6 +8,10 @@
             "quote": "\"",
             "delimiter": ";"
         },
+        "CSV": {
+            "quote": "\"",
+            "delimiter": ";"
+        },
         "tsv": {
             "quote": "\"",
             "delimiter": "\t"

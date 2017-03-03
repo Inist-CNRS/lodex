@@ -23,7 +23,7 @@ describe('Admin', () => {
             });
 
             it('should display the parsing result after uploading a csv', async () => {
-                const csvPath = path.resolve(__dirname, './linked_sample_csv.csv');
+                const csvPath = path.resolve(__dirname, './linked_sample_csv.CSV');
                 const input = await driver.findElement(By.css('input[name=file]'));
                 await input.sendKeys(csvPath);
                 await driver.wait(until.elementLocated(By.css('.parsingResult')), DEFAULT_WAIT_TIMEOUT);
@@ -292,7 +292,9 @@ describe('Admin', () => {
                 const completesTitleButton = await driver.findElement(By.css('.completes_title'));
                 await driver.wait(elementIsClicked(completesTitleButton), DEFAULT_WAIT_TIMEOUT);
 
-                await driver.wait(until.elementLocated(By.css('.publication-excerpt-for-edition th .completes_title')), DEFAULT_WAIT_TIMEOUT);
+                await driver.wait(until.elementLocated(
+                    By.css('.publication-excerpt-for-edition th .completes_title'),
+                ), DEFAULT_WAIT_TIMEOUT);
                 const th = await driver.findElement(By.css('.publication-excerpt-for-edition th .completes_title'));
                 await driver.wait(until.elementTextIs(th, 'Completes Title'), DEFAULT_WAIT_TIMEOUT);
 
@@ -328,7 +330,9 @@ describe('Admin', () => {
             });
 
             it('should have updated the preview', async () => {
-                await driver.wait(until.elementLocated(By.css('.publication-excerpt-for-edition')), DEFAULT_WAIT_TIMEOUT);
+                await driver.wait(until.elementLocated(
+                    By.css('.publication-excerpt-for-edition'),
+                ), DEFAULT_WAIT_TIMEOUT);
                 const tds = await driver.findElements(By.css('.publication-excerpt-for-edition tr td'));
                 expect(tds.length).toBe(4);
                 await Promise.all(tds.map(td =>
