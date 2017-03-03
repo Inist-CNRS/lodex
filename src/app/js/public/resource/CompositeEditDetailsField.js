@@ -42,7 +42,7 @@ CompositeEditDetailsFieldComponent.defaultProps = {
 };
 
 const mapStateToProps = (state, { field }) => ({
-    compositeFields: fromPublication.getCompositeFields(state, field),
+    compositeFields: fromPublication.getCompositeFieldsByField(state, field),
 });
 
 const CompositeEditDetailsField = connect(mapStateToProps)(CompositeEditDetailsFieldComponent);

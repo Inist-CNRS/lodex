@@ -99,7 +99,7 @@ export class CompositePropertyComponent extends Component {
 const mapStateToProps = (state, { field, resource }) => ({
     resource,
     fields: fromPublication.getCollectionFields(state),
-    compositeFields: fromPublication.getCompositeFields(state, field),
+    compositeFields: fromPublication.getCompositeFieldsByField(state, field),
 });
 
 const CompositeProperty = connect(mapStateToProps)(CompositePropertyComponent);

@@ -151,15 +151,18 @@ const getComposedFields = createSelector(
     fields => fields.filter(({ composedOf }) => !!composedOf),
 );
 
-const getCollectionFieldsExceptComposed = createSelector(
+export const isACompositeFields = (name, composedFields) =>
+    composedFields.some(({ composedOf: { fields } }) => fields.includes(name));
+
+const getCollectionFieldsExceptComposite = createSelector(
     getFields,
     getComposedFields,
     (allFields, composedFields) => allFields
-        .filter(({ name }) => !composedFields.some(({ composedOf: { fields } }) => fields.includes(name))),
+        .filter(({ name }) => !isACompositeFields(name, composedFields)),
 );
 
 const getRootCollectionFields = createSelector(
-    getCollectionFieldsExceptComposed,
+    getCollectionFieldsExceptComposite,
     allFields => allFields
         .filter(f => f.cover === COVER_COLLECTION && !f.completes),
 );
@@ -172,7 +175,7 @@ const getFieldsCatalog = createSelector(
     }), {}),
 );
 
-const getCompositeFields = createSelector(
+const getCompositeFieldsByField = createSelector(
     getFieldsCatalog,
     (_, field) => field,
     (fieldsCatalog, field) => {
@@ -189,7 +192,7 @@ export const fromPublication = {
     getFields,
     getCollectionFields,
     getListFields,
-    getCollectionFieldsExceptComposed,
+    getCollectionFieldsExceptComposite,
     getRootCollectionFields,
     hasPublishedDataset,
     getFieldByName,
@@ -206,5 +209,5 @@ export const fromPublication = {
     getPublishData,
     isPublicationLoading,
     getPublicationError,
-    getCompositeFields,
+    getCompositeFieldsByField,
 };

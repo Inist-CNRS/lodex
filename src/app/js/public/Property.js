@@ -104,7 +104,7 @@ const mapStateToProps = (state, { field }) => ({
     contributors: fromResource.getResourceContributorsByField(state),
     fields: fromPublication.getCollectionFields(state),
     linkedFields: fromPublication.getLinkedFields(state, field),
-    compositeFields: fromPublication.getCompositeFields(state, field),
+    compositeFields: fromPublication.getCompositeFieldsByField(state, field),
 });
 
 const Property = compose(
