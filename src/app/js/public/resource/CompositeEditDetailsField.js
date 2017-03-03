@@ -22,9 +22,10 @@ export const CompositeEditDetailsFieldComponent = ({ label, compositeFields }) =
         <div style={style.list}>
             {
                 compositeFields.map(f => (
-                    <div key={f.name} ><EditDetailsField
+                    <EditDetailsField
+                        key={f.name}
                         field={f}
-                    /></div>
+                    />
                 ))
             }
         </div>
