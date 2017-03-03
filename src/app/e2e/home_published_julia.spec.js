@@ -6,7 +6,7 @@ import fixtures from './home_published.json';
 import { elementIsClicked, inputElementIsFocusable, elementValueIs } from '../../common/tests/conditions';
 import loginAsJulia from './loginAsJulia';
 
-describe('Home page with published data when logged as Julia', function homePublishedDataTests() {
+describe.only('Home page with published data when logged as Julia', function homePublishedDataTests() {
     this.timeout(30000);
     const DEFAULT_WAIT_TIMEOUT = 9000; // A bit less than mocha's timeout to get explicit errors from selenium
 
@@ -57,14 +57,18 @@ describe('Home page with published data when logged as Julia', function homePubl
         await driver.wait(until.elementTextIs(fullnameLabel, 'Full name'), DEFAULT_WAIT_TIMEOUT);
         const fullnameScheme = await driver.findElement(By.css('.detail .property.full_name .property_scheme'));
         await driver.wait(until.elementTextIs(fullnameScheme, 'http://www.w3.org/ns/person'), DEFAULT_WAIT_TIMEOUT);
-        const fullnameValue = await driver.findElement(By.css('.detail .property.full_name .property_value'));
+        const fullnameValue = await driver.findElement(By.css('.detail .property.full_name .composite_property_value'));
         await driver.wait(until.elementTextIs(fullnameValue, 'PEREGRIN.TOOK'), DEFAULT_WAIT_TIMEOUT);
 
         const mailLabel = await driver.findElement(By.css('.detail .property.email.completes_fullname .property_name'));
         await driver.wait(until.elementTextIs(mailLabel, 'Email'), DEFAULT_WAIT_TIMEOUT);
-        const mailScheme = await driver.findElement(By.css('.detail .property.email.completes_fullname .property_scheme'));
+        const mailScheme = await driver.findElement(
+            By.css('.detail .property.email.completes_fullname .property_scheme'),
+        );
         await driver.wait(until.elementTextIs(mailScheme, 'http://uri4uri.net/vocab'), DEFAULT_WAIT_TIMEOUT);
-        const mailValue = await driver.findElement(By.css('.detail .property.email.completes_fullname .property_value'));
+        const mailValue = await driver.findElement(
+            By.css('.detail .property.email.completes_fullname .property_value'),
+        );
         await driver.wait(until.elementTextIs(mailValue, 'peregrin.took@shire.net'), DEFAULT_WAIT_TIMEOUT);
 
         const bestFriendLabel = await driver.findElement(By.css('.detail .property.best_friend_of .property_name'));
@@ -103,9 +107,13 @@ describe('Home page with published data when logged as Julia', function homePubl
 
         const mailLabel = await driver.findElement(By.css('.detail .property.email.completes_fullname .property_name'));
         await driver.wait(until.elementTextIs(mailLabel, 'Email'), DEFAULT_WAIT_TIMEOUT);
-        const mailScheme = await driver.findElement(By.css('.detail .property.email.completes_fullname .property_scheme'));
+        const mailScheme = await driver.findElement(
+            By.css('.detail .property.email.completes_fullname .property_scheme'),
+        );
         await driver.wait(until.elementTextIs(mailScheme, 'http://uri4uri.net/vocab'), DEFAULT_WAIT_TIMEOUT);
-        const mailValue = await driver.findElement(By.css('.detail .property.email.completes_fullname .property_value'));
+        const mailValue = await driver.findElement(
+            By.css('.detail .property.email.completes_fullname .property_value'),
+        );
         await driver.wait(until.elementTextIs(mailValue, 'peregrin.took@gondor.net'), DEFAULT_WAIT_TIMEOUT);
 
         const bestFriendLabel = await driver.findElement(By.css('.detail .property.best_friend_of .property_name'));

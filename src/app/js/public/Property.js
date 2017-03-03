@@ -62,23 +62,21 @@ const PropertyComponent = ({
             { compositeFields.length > 0 ?
                 <CompositeProperty field={field} resource={resource} />
             :
-                <div>
-                    <Format
-                        className="property_value"
-                        field={field}
-                        fields={fields}
-                        resource={resource}
-                    />
-                    {linkedFields.map(linkedField => (
-                        <Property
-                            key={linkedField._id}
-                            className={classnames('completes', `completes_${field.name}`)}
-                            field={linkedField}
-                            resource={resource}
-                        />
-                    ))}
-                </div>
+                <Format
+                    className="property_value"
+                    field={field}
+                    fields={fields}
+                    resource={resource}
+                />
             }
+            {linkedFields.map(linkedField => (
+                <Property
+                    key={linkedField._id}
+                    className={classnames('completes', `completes_${field.name}`)}
+                    field={linkedField}
+                    resource={resource}
+                />
+            ))}
         </dd>
     </dl>
 );

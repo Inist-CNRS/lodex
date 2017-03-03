@@ -1,6 +1,6 @@
-"id";"uid";"name";"mail";"movie";"best_friend_of"
-"1";"frodo.baggins";"BAGGINS";"frodo.saquet@shire.net";"LOTR";"3"
-"2";"bilbon.baggins";"BAGGINS";"bilbon.saquet@shire.net";"LOTR";
-"3";"samsaget.gamgie";"GAMGIE";"samsaget.gamgie@shire.net";"LOTR";"1"
-"4";"peregrin.took";"TOOK";"peregrin.took@shire.net";"LOTR";"5"
-"5";"meriadoc.brandybuck";"BRANDYBUCK";"meriadoc.brandybuck@shire.net";"LOTR";"4"
+"id";"firstname";"name";"mail";"movie";"best_friend_of"
+"1";"frodo";"baggins";"frodo.saquet@shire.net";"LOTR";"3"
+"2";"bilbon";"baggins";"bilbon.saquet@shire.net";"LOTR";
+"3";"samsaget";"gamgie";"samsaget.gamgie@shire.net";"LOTR";"1"
+"4";"peregrin";"took";"peregrin.took@shire.net";"LOTR";"5"
+"5";"meriadoc";"brandybuck";"meriadoc.brandybuck@shire.net";"LOTR";"4"

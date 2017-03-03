@@ -6,18 +6,32 @@
         "cover" : "collection",
         "scheme" : "http://uri4uri.net/vocab"
     }, {
+        "name": "firstname",
+        "label": "firstname",
+        "transformers": [
+            { "operation" : "COLUMN", "args" : [ { "name" : "column", "type" : "column", "value" : "firstname" } ] },
+            { "operation" : "UPPERCASE", "args" : [ ] }
+        ]
+    }, {
+        "name": "name",
+        "label": "name",
+        "transformers": [
+            { "operation" : "COLUMN", "args" : [ { "name" : "column", "type" : "column", "value" : "name" } ] },
+            { "operation" : "UPPERCASE", "args" : [ ] }
+        ]
+    }, {
         "name" : "fullname",
         "label" : "Full name",
-        "transformers" : [
-            { "operation" : "COLUMN", "args" : [ { "name" : "column", "type" : "column", "value" : "uid" } ] },
-            { "operation" : "UPPERCASE", "args" : [ ] }
-        ],
+        "composedOf": {
+            "separator": ".",
+            "fields": ["firstname", "name"]
+        },
         "cover" : "collection",
         "scheme" : "http://www.w3.org/ns/person"
     }, {
         "name" : "email",
         "label" : "Email",
-        "completes": "fullname",        
+        "completes": "fullname",
         "transformers" : [ { "operation" : "COLUMN", "args" : [ { "name" : "column", "type" : "column", "value" : "mail" } ] } ],
         "cover" : "collection",
         "scheme" : "http://uri4uri.net/vocab"
@@ -61,7 +75,8 @@
         {
             "uri" : "1",
             "versions": [{
-                "fullname" : "PEREGRIN.TOOK",
+                "firstname" : "PEREGRIN",
+                "name" : "TOOK",
                 "email" : "peregrin.took@shire.net",
                 "best_friend_of": "5"
             }]
@@ -69,7 +84,8 @@
         {
             "uri" : "2",
             "versions": [{
-                "fullname" : "SAMSAGET.GAMGIE",
+                "firstname" : "SAMSAGET",
+                "name" : "GAMGIE",
                 "email" : "samsaget.gamgie@shire.net",
                 "best_friend_of": "4"
             }]
@@ -77,14 +93,16 @@
         {
             "uri" : "3",
             "versions": [{
-                "fullname" : "BILBON.BAGGINS",
+                "firstname" : "BILBON",
+                "name" : "BAGGINS",
                 "email" : "bilbon.saquet@shire.net"
             }]
         },
         {
             "uri" : "4",
             "versions": [{
-                "fullname" : "FRODO.BAGGINS",
+                "firstname": "FRODO",
+                "name" : "BAGGINS",
                 "email" : "frodo.saquet@shire.net",
                 "best_friend_of": "2"
             }]
@@ -92,7 +110,8 @@
         {
             "uri" : "5",
             "versions": [{
-                "fullname" : "MERIADOC.BRANDYBUCK",
+                "firstname" : "MERIADOC",
+                "name" : "BRANDYBUCK",
                 "email" : "meriadoc.brandybuck@shire.net",
                 "best_friend_of": "1"
             }]

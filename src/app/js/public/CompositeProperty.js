@@ -56,27 +56,28 @@ export class CompositePropertyComponent extends Component {
         } = this.props;
 
         return (
-            <div>
-                {interleave(
-                    compositeFields.map(f => (
-                        <Format
-                            key={f.name}
-                            className="property_value"
-                            field={f}
-                            fields={fields}
-                            resource={resource}
-                        />
-                    )),
-                    <span
-                        className="separator"
-                        style={styles.separator}
-                    >{field.composedOf.separator}</span>,
-                ).map((c, index) => {
-                    if (c.key) {
-                        return c;
-                    }
-                    return { ...c, key: index };
-                })}
+            <span>
+                <span className="composite_property_value">
+                    {interleave(
+                        compositeFields.map(f => (
+                            <Format
+                                key={f.name}
+                                field={f}
+                                fields={fields}
+                                resource={resource}
+                            />
+                        )),
+                        <span
+                            className="separator"
+                            style={styles.separator}
+                        >{field.composedOf.separator}</span>,
+                    ).map((c, index) => {
+                        if (c.key) {
+                            return c;
+                        }
+                        return { ...c, key: index };
+                    })}
+                </span>
                 <IconButton
                     className="toggle-fields"
                     onClick={() => this.toggleCompositeField()}
@@ -91,7 +92,7 @@ export class CompositePropertyComponent extends Component {
                         resource={resource}
                     />
                 )) : null}
-            </div>
+            </span>
         );
     }
 }
