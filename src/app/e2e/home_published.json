@@ -1,73 +1,153 @@
 {
     "field": [{
-        "name" : "uri",
-        "transformers" : [{ "operation" : "COLUMN", "args" : [ { "name" : "column", "type" : "column", "value" : "id" } ] } ],
-        "label" : "URI",
-        "cover" : "collection",
-        "scheme" : "http://uri4uri.net/vocab"
-    }, {
-        "name": "firstname",
-        "label": "firstname",
-        "transformers": [
-            { "operation" : "COLUMN", "args" : [ { "name" : "column", "type" : "column", "value" : "firstname" } ] },
-            { "operation" : "UPPERCASE", "args" : [ ] }
-        ]
-    }, {
-        "name": "name",
-        "label": "name",
-        "transformers": [
-            { "operation" : "COLUMN", "args" : [ { "name" : "column", "type" : "column", "value" : "name" } ] },
-            { "operation" : "UPPERCASE", "args" : [ ] }
-        ]
-    }, {
-        "name" : "fullname",
-        "label" : "Full name",
-        "composedOf": {
-            "separator": ".",
-            "fields": ["firstname", "name"]
-        },
-        "cover" : "collection",
-        "scheme" : "http://www.w3.org/ns/person"
-    }, {
-        "name" : "email",
-        "label" : "Email",
-        "completes": "fullname",
-        "transformers" : [ { "operation" : "COLUMN", "args" : [ { "name" : "column", "type" : "column", "value" : "mail" } ] } ],
-        "cover" : "collection",
-        "scheme" : "http://uri4uri.net/vocab"
-    }, {
-        "name" : "movie",
-        "label" : "Movie",
-        "transformers" : [ { "operation" : "COLUMN", "args" : [ { "name" : "column", "type" : "column", "value" : "movie" } ] } ],
-        "cover" : "dataset",
-        "scheme" : "http://www.w3.org/ns/person"
-    }, {
-        "name" : "author",
-        "label" : "Author",
-        "completes": "movie",
-        "transformers" : [ { "operation" : "COLUMN", "args" : [ { "name" : "column", "type" : "column", "value" : "author" } ] } ],
-        "cover" : "dataset",
-        "scheme" : "http://www.w3.org/ns/person"
-    }, {
-        "name" : "best_friend_of",
-        "label" : "Best Friend Of",
-        "transformers" : [ {
-            "operation" : "LINK",
-            "args" : [
-                { "name" : "reference", "type" : "column", "value" : "best_friend_of" },
-                { "name" : "identifier", "type" : "column", "value" : "id" }
-            ]
-        }],
-        "cover" : "collection",
-        "scheme" : "http://www.w3.org/ns/person",
-        "format": {
             "name": "uri",
-            "args": {
-                "type": "column",
-                "value": "Full name"
+            "label": "URI",
+            "cover": "collection",
+            "transformers": [
+                {
+                    "operation": "AUTOGENERATE_URI",
+                    "args": []
+                }
+            ],
+            "format": {
+                "name": "uri"
+            },
+            "scheme": "http://uri4uri.net/vocab#URI"
+        }, {
+            "name": "name",
+            "label": "name",
+            "cover": "collection",
+            "transformers": [
+                {
+                    "operation": "COLUMN",
+                    "args": [
+                        {
+                            "name": "column",
+                            "type": "column",
+                            "value": "name"
+                        }
+                    ]
+                },
+                {
+                    "operation": "UPPERCASE",
+                    "args": []
+                }
+            ]
+        }, {
+            "name": "fullname",
+            "label": "Full name",
+            "cover": "collection",
+            "scheme": "http://www.w3.org/ns/person",
+            "transformers": [],
+            "composedOf": {
+                "separator": ".",
+                "fields": [
+                    "firstname",
+                    "name"
+                ]
             }
+        }, {
+            "name": "firstname",
+            "label": "firstname",
+            "cover": "collection",
+            "transformers": [
+                {
+                    "operation": "COLUMN",
+                    "args": [
+                        {
+                            "name": "column",
+                            "type": "column",
+                            "value": "firstname"
+                        }
+                    ]
+                },
+                {
+                    "operation": "UPPERCASE",
+                    "args": []
+                }
+            ]
+        }, {
+            "name": "email",
+            "label": "Email",
+            "cover": "collection",
+            "scheme": "http://uri4uri.net/vocab",
+            "transformers": [
+                {
+                    "operation": "COLUMN",
+                    "args": [
+                        {
+                            "name": "column",
+                            "type": "column",
+                            "value": "mail"
+                        }
+                    ]
+                }
+            ],
+            "completes": "fullname"
+        }, {
+            "name": "best_friend_of",
+            "label": "Best Friend Of",
+            "cover": "collection",
+            "scheme": "http://www.w3.org/ns/person",
+            "transformers": [
+                {
+                    "operation": "LINK",
+                    "args": [
+                        {
+                            "name": "reference",
+                            "type": "column",
+                            "value": "best_friend_of"
+                        },
+                        {
+                            "name": "identifier",
+                            "type": "column",
+                            "value": "id"
+                        }
+                    ]
+                }
+            ],
+            "format": {
+                "args": {
+                    "value": "firstname",
+                    "type": "column"
+                },
+                "name": "uri"
+            }
+        }, {
+            "name": "movie",
+            "label": "Movie",
+            "cover": "dataset",
+            "transformers": [
+                {
+                    "operation": "COLUMN",
+                    "args": [
+                        {
+                            "name": "column",
+                            "type": "column",
+                            "value": "movie"
+                        }
+                    ]
+                }
+            ]
+        }, {
+            "name": "author",
+            "label": "Author",
+            "cover": "dataset",
+            "transformers": [
+                {
+                    "operation": "VALUE",
+                    "args": [
+                        {
+                            "name": "value",
+                            "type": "string",
+                            "value": "Peter Jackson"
+                        }
+                    ]
+                }
+            ],
+            "completes": "movie"
         }
-    }],
+    ],
     "publishedCharacteristic": [
         { "movie": "LOTR" , "author": "Peter Jackson" }
     ],

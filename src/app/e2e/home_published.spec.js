@@ -12,8 +12,9 @@ describe('Home page with published data', function homePublishedDataTests() {
 
     before(async () => {
         await clear();
-        await driver.executeScript('window.sessionStorage.clear()');
         await loadFixtures(fixtures);
+        await driver.get('http://localhost:3010/');
+        await driver.executeScript('window.sessionStorage.clear()');
         await driver.get('http://localhost:3010/');
     });
 
@@ -47,17 +48,17 @@ describe('Home page with published data', function homePublishedDataTests() {
         await driver.wait(until.elementLocated(By.css('.dataset')), DEFAULT_WAIT_TIMEOUT);
         const headers = await driver.findElements(By.css('.dataset table th'));
 
-        const expectedHeaders = ['URI', 'Full name', 'Email', 'Best Friend Of'];
+        const expectedHeaders = ['URI', 'name', 'firstname', 'Email', 'Best Friend Of'];
         await Promise.all(headers.map((header, index) =>
             driver.wait(until.elementTextIs(header, expectedHeaders[index]), DEFAULT_WAIT_TIMEOUT),
         ));
 
         const expectedTds = [
-            ['1', 'PEREGRIN.TOOK', 'peregrin.took@shire.net', 'MERIADOC.BRANDYBUCK'],
-            ['2', 'SAMSAGET.GAMGIE', 'samsaget.gamgie@shire.net', 'FRODO.BAGGINS'],
-            ['3', 'BILBON.BAGGINS', 'bilbon.saquet@shire.net', ''],
-            ['4', 'FRODO.BAGGINS', 'frodo.saquet@shire.net', 'SAMSAGET.GAMGIE'],
-            ['5', 'MERIADOC.BRANDYBUCK', 'meriadoc.brandybuck@shire.net', 'PEREGRIN.TOOK'],
+            ['1', 'TOOK', 'PEREGRIN', 'peregrin.took@shire.net', 'MERIADOC'],
+            ['2', 'GAMGIE', 'SAMSAGET', 'samsaget.gamgie@shire.net', 'FRODO'],
+            ['3', 'BAGGINS', 'BILBON', 'bilbon.saquet@shire.net', ''],
+            ['4', 'BAGGINS', 'FRODO', 'frodo.saquet@shire.net', 'SAMSAGET'],
+            ['5', 'BRANDYBUCK', 'MERIADOC', 'meriadoc.brandybuck@shire.net', 'PEREGRIN'],
         ];
 
         const trs = await driver.findElements(By.css('.dataset table tbody tr'));
@@ -87,7 +88,8 @@ describe('Home page with published data', function homePublishedDataTests() {
         await driver.wait(until.elementTextIs(fullnameLabel, 'Full name'), DEFAULT_WAIT_TIMEOUT);
         const fullnameScheme = await driver.findElement(By.css('.detail .property.full_name .property_scheme'));
         await driver.wait(until.elementTextIs(fullnameScheme, 'http://www.w3.org/ns/person'), DEFAULT_WAIT_TIMEOUT);
-        const fullnameValue = await driver.findElement(By.css('.detail .property.full_name .property_value'));
+
+        const fullnameValue = await driver.findElement(By.css('.detail .property.full_name .composite_property_value'));
         await driver.wait(until.elementTextIs(fullnameValue, 'PEREGRIN.TOOK'), DEFAULT_WAIT_TIMEOUT);
 
         const mailLabel = await driver.findElement(By.css('.detail .property.email.completes_fullname .property_name'));
@@ -107,7 +109,7 @@ describe('Home page with published data', function homePublishedDataTests() {
         await driver.wait(until.elementTextIs(bestFriendScheme, 'http://www.w3.org/ns/person'), DEFAULT_WAIT_TIMEOUT);
         const bestFriendValue = await driver.findElement(By.css('.detail .property.best_friend_of .property_value'));
 
-        await driver.wait(until.elementTextIs(bestFriendValue, 'MERIADOC.BRANDYBUCK'), DEFAULT_WAIT_TIMEOUT);
+        await driver.wait(until.elementTextIs(bestFriendValue, 'MERIADOC'), DEFAULT_WAIT_TIMEOUT);
     });
 
     it('should allow to add field resource properties', async () => {
