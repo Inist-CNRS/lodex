@@ -13,8 +13,9 @@ import publishReducer from './publish';
 import removedResources from './removedResources';
 import upload from './upload';
 import user from '../user';
+import debugReducer from '../lib/debugReducer';
 
-export default combineReducers({
+const reducer = combineReducers({
     fetch: fetchReducer,
     fields,
     form,
@@ -29,3 +30,8 @@ export default combineReducers({
     upload,
     user,
 });
+
+export default __DEBUG__ ?
+    debugReducer(reducer)
+    :
+    reducer;

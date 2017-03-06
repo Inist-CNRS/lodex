@@ -47,7 +47,6 @@ export class PublicationPreviewComponent extends Component {
 
     render() {
         const { columns, lines, editColumn, editedColumn, p: polyglot } = this.props;
-
         return (
             <Card initiallyExpanded className="publication-preview">
                 <CardHeader

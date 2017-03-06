@@ -5,7 +5,6 @@ import logging from 'selenium-webdriver/lib/logging';
 
 import driver from '../../../common/tests/chromeDriver';
 import { clear } from '../../../common/tests/fixtures';
-import getState from '../../../common/tests/getState';
 import { elementIsClicked, inputElementIsFocusable, elementValueIs } from '../../../common/tests/conditions';
 import loginAsJulia from '../loginAsJulia';
 
@@ -311,8 +310,6 @@ describe.only('Admin 2', () => {
                             console.log('[%s] %s', entry.level.name, entry.message);
                         });
                     });
-                const state = await getState(driver);
-                console.log(JSON.stringify(state, null, 4));
                 await driver.wait(until.elementTextIs(th, 'Completes Title'), DEFAULT_WAIT_TIMEOUT);
 
                 const backButton = await driver.findElement(By.css('.btn-exit-column-edition'));

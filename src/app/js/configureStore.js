@@ -8,7 +8,17 @@ import filter from 'redux-localstorage-filter';
 
 const sagaMiddleware = createSagaMiddleware();
 
-export default function configureStore(rootReducer, sagas, initialState) {
+export default function configureStore(pureReducer, sagas, initialState) {
+    const rootReducer = __DEBUG__
+    ? (state, action) => {
+        switch (action.type) {
+        case 'SET_STATE':
+            return action.state || pureReducer({}, action);
+        default:
+            return pureReducer(state, action);
+        }
+    } : pureReducer;
+
     const reducer = compose(
         mergePersistedState(),
     )(rootReducer);
