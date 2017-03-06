@@ -7,7 +7,7 @@ import { clear } from '../../../common/tests/fixtures';
 import { elementIsClicked, inputElementIsFocusable, elementValueIs } from '../../../common/tests/conditions';
 import loginAsJulia from '../loginAsJulia';
 
-describe('Admin', () => {
+describe.skip('Admin', () => {
     describe('Publication', function homeTests() {
         this.timeout(10000);
         const DEFAULT_WAIT_TIMEOUT = 9000; // A bit less than mocha's timeout to get explicit errors from selenium
