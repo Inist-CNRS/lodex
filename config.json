@@ -19,5 +19,9 @@
     },
    "exporters": [
        "csv"
+   ],
+   "languages": [
+       { "code": "fr", "label": "Français" },
+       { "code": "en", "label": "English" }
    ]
 }

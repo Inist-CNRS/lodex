@@ -14,10 +14,11 @@ import {
     saveField,
 } from './';
 import { fromFields } from '../selectors';
-import Format from '../FormatEdition';
 import Alert from '../../lib/Alert';
-import TransformerList from './TransformerList';
 import ComposedOf from './ComposedOf';
+import Format from '../FormatEdition';
+import LanguagesField from './LanguagesField';
+import TransformerList from './TransformerList';
 
 const validate = (values) => {
     const errors = ['name', 'label', 'cover'].reduce((currentErrors, field) => {
@@ -91,6 +92,7 @@ export const FieldFormComponent = ({
                 {otherFieldsMenuItems}
             </Field>
             { isContribution ? null : <ComposedOf name="composedOf" value={field.composedOf} /> }
+            <LanguagesField field={field} />
         </form>
     );
 };

@@ -15,6 +15,7 @@ import {
 } from '../propTypes';
 import Format from './Format';
 import CompositeProperty from './CompositeProperty';
+import { languages } from '../../../../config.json';
 
 const styles = {
     container: unValidated => ({
@@ -24,6 +25,11 @@ const styles = {
     }),
     name: {
         fontWeight: 'bold',
+    },
+    language: {
+        marginLeft: '0.5rem',
+        fontSize: '0.75em',
+        color: 'grey',
     },
     scheme: {
         fontWeight: 'bold',
@@ -43,42 +49,50 @@ const PropertyComponent = ({
     unValidatedFields,
     p: polyglot,
 }) => (
-    <dl
+    <div
         className={classnames('property', field.label.toLowerCase().replace(/\s/g, '_'), className)}
-        style={styles.container(unValidatedFields.includes(resource.name))}
     >
-        <dt>
-            <div className="property_name" style={styles.name}>{field.label}</div>
-            <div className="property_scheme" style={styles.scheme}>{field.scheme}</div>
-            { contributors[field.name] ?
-                <div className="property_contributor" style={styles.scheme}>
-                    {polyglot.t('contributed_by', { name: contributors[field.name] })}
+        <dl style={styles.container(unValidatedFields.includes(resource.name))}>
+            <dt>
+                <div>
+                    <span className="property_name" style={styles.name}>{field.label}</span>
+                    {field.language &&
+                        <span className="property_language" style={styles.language}>
+                            ({languages.find(f => f.code === field.language).label})
+                        </span>
+                    }
                 </div>
-            :
-                null
-            }
-        </dt>
-        <dd>
-            { compositeFields.length > 0 ?
-                <CompositeProperty field={field} resource={resource} />
-            :
-                <Format
-                    className="property_value"
-                    field={field}
-                    fields={fields}
-                    resource={resource}
-                />
-            }
-            {linkedFields.map(linkedField => (
-                <Property
-                    key={linkedField._id}
-                    className={classnames('completes', `completes_${field.name}`)}
-                    field={linkedField}
-                    resource={resource}
-                />
-            ))}
-        </dd>
-    </dl>
+                { contributors[field.name] ?
+                    <div className="property_contributor" style={styles.scheme}>
+                        {polyglot.t('contributed_by', { name: contributors[field.name] })}
+                    </div>
+                :
+                    null
+                }
+            </dt>
+            <dd>
+                { compositeFields.length > 0 ?
+                    <CompositeProperty field={field} resource={resource} />
+                :
+                    <Format
+                        className="property_value"
+                        field={field}
+                        fields={fields}
+                        resource={resource}
+                    />
+                }
+                {linkedFields.map(linkedField => (
+                    <Property
+                        key={linkedField._id}
+                        className={classnames('completes', `completes_${field.name}`)}
+                        field={linkedField}
+                        resource={resource}
+                    />
+                ))}
+            </dd>
+        </dl>
+        <div className="property_scheme" style={styles.scheme}>{field.scheme}</div>
+    </div>
 );
 
 PropertyComponent.propTypes = {
