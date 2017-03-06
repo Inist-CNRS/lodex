@@ -7,9 +7,9 @@ import { clear } from '../../../common/tests/fixtures';
 import { elementIsClicked, inputElementIsFocusable, elementValueIs } from '../../../common/tests/conditions';
 import loginAsJulia from '../loginAsJulia';
 
-describe.skip('Admin', () => {
+describe.only('Admin 2', () => {
     describe('Publication', function homeTests() {
-        this.timeout(10000);
+        this.timeout(30000);
         const DEFAULT_WAIT_TIMEOUT = 9000; // A bit less than mocha's timeout to get explicit errors from selenium
 
         before(async () => {
@@ -61,7 +61,9 @@ describe.skip('Admin', () => {
             });
 
             it('should have completed uri column with generated uri', async () => {
-                await driver.wait(until.elementLocated(By.css('.publication-excerpt-for-edition')), DEFAULT_WAIT_TIMEOUT);
+                await driver.wait(until.elementLocated(
+                    By.css('.publication-excerpt-for-edition'),
+                ), DEFAULT_WAIT_TIMEOUT);
                 const tds = await driver.findElements(By.css('.publication-excerpt-for-edition tr td:first-child'));
                 expect(tds.length).toBe(4);
                 await Promise.all(tds.map(td =>
@@ -155,7 +157,9 @@ describe.skip('Admin', () => {
             });
 
             it('should have updated the preview', async () => {
-                await driver.wait(until.elementLocated(By.css('.publication-excerpt-for-edition')), DEFAULT_WAIT_TIMEOUT);
+                await driver.wait(until.elementLocated(
+                    By.css('.publication-excerpt-for-edition'),
+                ), DEFAULT_WAIT_TIMEOUT);
                 const tds = await driver.findElements(By.css('.publication-excerpt-for-edition tr td:last-child'));
                 expect(tds.length).toBe(4);
                 await Promise.all(tds.map(td =>
