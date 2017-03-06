@@ -5,6 +5,6 @@ ezs.use(ezsBasics);
 
 export default config => stream =>
     stream
-        .pipe(ezs('XMLParse', { separator: ["/RDF/*", "/rdf:RDF/*"],  ...config }))
-        .pipe(ezs('flatten', { separator: "/" }))
+        .pipe(ezs('XMLParse', { separator: ['/RDF/*', '/rdf:RDF/*'], ...config }))
+        .pipe(ezs('flatten', { separator: '/' }))
         .pipe(ezs('standardize'));
