@@ -3,8 +3,9 @@ import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 import { Field } from 'redux-form';
-import FormTextField from '../../lib/FormTextField';
 
+import CompositeEditDetailsField from './CompositeEditDetailsField';
+import FormTextField from '../../lib/FormTextField';
 import {
     fromPublication,
 } from '../selectors';
@@ -16,10 +17,16 @@ import {
 
 export const EditDetailsFieldComponent = ({ field, completedField, p: polyglot }) => {
     let label = field.label;
-
     if (completedField) {
         label = `${label} (${polyglot.t('complete_field_X', { field: completedField.label })})`;
     }
+
+    if (field.composedOf) {
+        return (
+            <CompositeEditDetailsField label={label} field={field} />
+        );
+    }
+
     return (
         <Field
             key={field.name}
@@ -46,7 +53,9 @@ const mapStateToProps = (state, { field }) => ({
     completedField: fromPublication.getCompletedField(state, field),
 });
 
-export default compose(
+const EditDetailsField = compose(
     connect(mapStateToProps),
     translate,
 )(EditDetailsFieldComponent);
+
+export default EditDetailsField;

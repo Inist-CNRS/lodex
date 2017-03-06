@@ -14,6 +14,7 @@ import {
     polyglot as polyglotPropTypes,
 } from '../propTypes';
 import Format from './Format';
+import CompositeProperty from './CompositeProperty';
 
 const styles = {
     container: unValidated => ({
@@ -35,6 +36,7 @@ const PropertyComponent = ({
     className,
     field,
     linkedFields,
+    compositeFields,
     fields,
     resource,
     contributors,
@@ -57,12 +59,16 @@ const PropertyComponent = ({
             }
         </dt>
         <dd>
-            <Format
-                className="property_value"
-                field={field}
-                fields={fields}
-                resource={resource}
-            />
+            { compositeFields.length > 0 ?
+                <CompositeProperty field={field} resource={resource} />
+            :
+                <Format
+                    className="property_value"
+                    field={field}
+                    fields={fields}
+                    resource={resource}
+                />
+            }
             {linkedFields.map(linkedField => (
                 <Property
                     key={linkedField._id}
@@ -81,6 +87,7 @@ PropertyComponent.propTypes = {
     field: fieldPropTypes.isRequired,
     fields: PropTypes.arrayOf(fieldPropTypes).isRequired,
     linkedFields: PropTypes.arrayOf(fieldPropTypes).isRequired,
+    compositeFields: PropTypes.arrayOf(fieldPropTypes).isRequired,
     p: polyglotPropTypes.isRequired,
     resource: PropTypes.shape({}).isRequired,
     unValidatedFields: PropTypes.arrayOf(PropTypes.string).isRequired,
@@ -95,6 +102,7 @@ const mapStateToProps = (state, { field }) => ({
     contributors: fromResource.getResourceContributorsByField(state),
     fields: fromPublication.getCollectionFields(state),
     linkedFields: fromPublication.getLinkedFields(state, field),
+    compositeFields: fromPublication.getCompositeFieldsByField(state, field),
 });
 
 const Property = compose(

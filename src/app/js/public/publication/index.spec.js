@@ -9,6 +9,7 @@ import reducer, {
     loadPublicationError,
     selectField,
     fromPublication,
+    isACompositeFields,
 } from './';
 
 describe('publication reducer', () => {
@@ -127,6 +128,52 @@ describe('publication reducer', () => {
                 { fieldName: 'field2', contribution: true },
                 { fieldName: 'field4', contribution: true },
             ]);
+        });
+    });
+
+    describe('isAcompositeFields', () => {
+        it('should return true if field name is part of composedOf of one of the composedOf Field', () => {
+            expect(isACompositeFields('composite', [
+                {
+                    composedOf: {
+                        fields: ['field1', 'field1'],
+                    },
+                },
+                {
+                    composedOf: {
+                        fields: ['field3', 'composite'],
+                    },
+                },
+                {
+                    composedOf: {
+                        fields: ['field4', 'field5'],
+                    },
+                },
+            ])).toBe(true);
+        });
+
+        it('should return true if field name is part of composedOf of one of the composedOf Field', () => {
+            expect(isACompositeFields('composite', [
+                {
+                    composedOf: {
+                        fields: ['field1', 'field1'],
+                    },
+                },
+                {
+                    composedOf: {
+                        fields: ['field3', 'field6'],
+                    },
+                },
+                {
+                    composedOf: {
+                        fields: ['field4', 'field5'],
+                    },
+                },
+            ])).toBe(false);
+        });
+
+        it('should return false if no composedOf Field', () => {
+            expect(isACompositeFields('composite', [])).toBe(false);
         });
     });
 });

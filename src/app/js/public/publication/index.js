@@ -56,9 +56,9 @@ const getCollectionFields = createSelector(
     fields => fields.filter(f => f.cover === COVER_COLLECTION),
 );
 
-const getRootCollectionFields = createSelector(
-    getFields,
-    fields => fields.filter(f => f.cover === COVER_COLLECTION && !f.completes),
+const getListFields = createSelector(
+    getCollectionFields,
+    fields => fields.filter(f => !f.composedOf),
 );
 
 const getFieldNameFromParams = (state, params) => params;
@@ -146,9 +146,53 @@ const getPublishData = ({ error, published, editedFieldIndex, loading }) => ({
 const isPublicationLoading = state => state.loading;
 const getPublicationError = state => state.error;
 
+const getComposedFields = createSelector(
+    getFields,
+    fields => fields.filter(({ composedOf }) => !!composedOf),
+);
+
+export const isACompositeFields = (name, composedFields) =>
+    composedFields.some(({ composedOf: { fields } }) => fields.includes(name));
+
+const getCollectionFieldsExceptComposite = createSelector(
+    getFields,
+    getComposedFields,
+    (allFields, composedFields) => allFields
+        .filter(({ name }) => !isACompositeFields(name, composedFields)),
+);
+
+const getRootCollectionFields = createSelector(
+    getCollectionFieldsExceptComposite,
+    allFields => allFields
+        .filter(f => f.cover === COVER_COLLECTION && !f.completes),
+);
+
+const getFieldsCatalog = createSelector(
+    getFields,
+    fields => fields.reduce((catalog, field) => ({
+        ...catalog,
+        [field.name]: field,
+    }), {}),
+);
+
+const getCompositeFieldsByField = createSelector(
+    getFieldsCatalog,
+    (_, field) => field,
+    (fieldsCatalog, field) => {
+        if (!field.composedOf) {
+            return [];
+        }
+        const { fields } = field.composedOf;
+
+        return fields.map(name => fieldsCatalog[name]);
+    },
+);
+
 export const fromPublication = {
     getFields,
     getCollectionFields,
+    getListFields,
+    getCollectionFieldsExceptComposite,
     getRootCollectionFields,
     hasPublishedDataset,
     getFieldByName,
@@ -165,4 +209,5 @@ export const fromPublication = {
     getPublishData,
     isPublicationLoading,
     getPublicationError,
+    getCompositeFieldsByField,
 };
