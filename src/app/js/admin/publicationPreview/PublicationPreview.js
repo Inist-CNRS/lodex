@@ -9,10 +9,12 @@ import PublicationExcerpt from './PublicationExcerpt';
 import PublicationEditionModal from './PublicationEditionModal';
 
 import { addField, editField, removeField } from '../fields';
+import { importFields } from '../import';
 import { polyglot as polyglotPropTypes, field as fieldPropTypes } from '../../propTypes';
 import { fromFields, fromPublicationPreview } from '../selectors';
 import Card from '../../lib/Card';
 import ScrollableCardContent from '../../lib/ScrollableCardContent';
+import ImportFieldsDialog from './ImportFieldsDialog';
 
 const styles = {
     title: {
@@ -23,9 +25,21 @@ const styles = {
         float: 'right',
         marginRight: '2rem',
     },
+    input: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        opacity: 0,
+        width: '100%',
+        cursor: 'pointer',
+    },
 };
 
 export class PublicationPreviewComponent extends Component {
+    constructor() {
+        super();
+        this.state = { showImportFieldsConfirmation: false };
+    }
     handleAddColumnClick = (event) => {
         event.preventDefault();
         event.stopPropagation();
@@ -45,8 +59,31 @@ export class PublicationPreviewComponent extends Component {
         this.props.editColumn(null);
     }
 
+    handleImportFieldsCancellation = () => {
+        this.setState({ showImportFieldsConfirmation: false });
+    }
+
+    handleImportFieldsConfirmation = () => {
+        this.setState({ showImportFieldsConfirmation: false });
+        this.fieldsImportInput.click();
+    }
+
+    handleImportFields = () => {
+        this.setState({ showImportFieldsConfirmation: true });
+    }
+
+    handleFieldsLoad = (event) => {
+        this.props.importFields(event.target.files[0]);
+    }
+
+    storeFieldsInputRef = (input) => {
+        this.fieldsImportInput = input;
+    }
+
     render() {
         const { columns, lines, editColumn, editedColumn, p: polyglot } = this.props;
+        const { showImportFieldsConfirmation } = this.state;
+
         return (
             <Card initiallyExpanded className="publication-preview">
                 <CardHeader
@@ -61,9 +98,24 @@ export class PublicationPreviewComponent extends Component {
                         style={styles.button}
                         secondary
                     />
+                    <FlatButton
+                        className="btn-import-fields"
+                        label={polyglot.t('import_fields')}
+                        onClick={this.handleImportFields}
+                        style={styles.button}
+                        secondary
+                    />
                 </CardHeader>
 
                 <ScrollableCardContent expandable>
+                    <input
+                        ref={this.storeFieldsInputRef}
+                        name="file"
+                        type="file"
+                        onChange={this.handleFieldsLoad}
+                        style={styles.input}
+                    />
+
                     <PublicationExcerpt
                         editedColumn={editedColumn}
                         columns={columns}
@@ -79,6 +131,12 @@ export class PublicationPreviewComponent extends Component {
                             onExitEdition={this.handleExitColumEdition}
                         />
                     }
+                    {showImportFieldsConfirmation &&
+                        <ImportFieldsDialog
+                            onConfirm={this.handleImportFieldsConfirmation}
+                            onCancel={this.handleImportFieldsCancellation}
+                        />
+                    }
                 </ScrollableCardContent>
             </Card>
         );
@@ -90,6 +148,7 @@ PublicationPreviewComponent.propTypes = {
     columns: PropTypes.arrayOf(fieldPropTypes).isRequired,
     editedColumn: fieldPropTypes,
     editColumn: PropTypes.func.isRequired,
+    importFields: PropTypes.func.isRequired,
     lines: PropTypes.arrayOf(PropTypes.object).isRequired,
     p: polyglotPropTypes.isRequired,
     removeColumn: PropTypes.func.isRequired,
@@ -109,6 +168,7 @@ const mapDispatchToProps = {
     addColumn: addField,
     editColumn: editField,
     removeColumn: removeField,
+    importFields,
 };
 
 export default compose(

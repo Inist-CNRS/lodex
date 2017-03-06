@@ -8,6 +8,8 @@ import {
     loadFieldSuccess,
 } from '../';
 
+import { IMPORT_FIELDS_SUCCESS } from '../../import';
+
 import { getLoadFieldRequest } from '../../../fetch/';
 
 export function* handleLoadField() {
@@ -23,5 +25,5 @@ export function* handleLoadField() {
 }
 
 export default function* watchLoadField() {
-    yield takeLatest([LOAD_FIELD], handleLoadField);
+    yield takeLatest([LOAD_FIELD, IMPORT_FIELDS_SUCCESS], handleLoadField);
 }

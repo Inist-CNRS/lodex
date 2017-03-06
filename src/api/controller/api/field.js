@@ -49,12 +49,23 @@ export const exportFields = async (ctx) => {
     ctx.body = fields;
 };
 
+export const importFields = async (ctx) => {
+    const fields = ctx.request.body;
+
+    await ctx.field.remove({});
+
+    await Promise.all(fields.map(field => ctx.field.create(field, field.name)));
+
+    ctx.status = 200;
+};
+
 const app = new Koa();
 
 app.use(setup);
 
 app.use(route.get('/', getAllField));
 app.use(route.get('/export', exportFields));
+app.use(route.post('/import', importFields));
 app.use(route.post('/', postField));
 app.use(route.put('/:id', putField));
 app.use(route.del('/:id', removeField));
