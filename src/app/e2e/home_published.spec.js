@@ -119,6 +119,7 @@ describe('Home page with published data', function homePublishedDataTests() {
         await driver.wait(until.elementLocated(By.css('.detail-properties')), DEFAULT_WAIT_TIMEOUT);
         const form = driver.findElement(By.css('#add_field_resource_form'));
 
+        await driver.wait(until.elementLocated(By.css('.contributor-name input')), DEFAULT_WAIT_TIMEOUT);
         const contributorName = form.findElement(By.css('.contributor-name input'));
         await driver.wait(inputElementIsFocusable(contributorName, true), DEFAULT_WAIT_TIMEOUT);
         contributorName.sendKeys('john');
