@@ -81,4 +81,5 @@ export default {
     remove: 'remove',
     select_a_field: 'select a field',
     complete_field_X: 'Completes %{field}',
+    language: 'Language',
 };

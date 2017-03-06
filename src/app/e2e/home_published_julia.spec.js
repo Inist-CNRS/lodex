@@ -55,7 +55,7 @@ describe('Home page with published data when logged as Julia', function homePubl
         await driver.wait(until.elementLocated(By.css('.detail')), DEFAULT_WAIT_TIMEOUT);
         const fullnameLabel = await driver.findElement(By.css('.detail .property.full_name .property_name'));
         await driver.wait(until.elementTextIs(fullnameLabel, 'Full name'), DEFAULT_WAIT_TIMEOUT);
-        const fullnameScheme = await driver.findElement(By.css('.detail .property.full_name .property_scheme'));
+        const fullnameScheme = await driver.findElement(By.css('.detail .property.full_name > .property_scheme'));
         await driver.wait(until.elementTextIs(fullnameScheme, 'http://www.w3.org/ns/person'), DEFAULT_WAIT_TIMEOUT);
         const fullnameValue = await driver.findElement(By.css('.detail .property.full_name .composite_property_value'));
         await driver.wait(until.elementTextIs(fullnameValue, 'PEREGRIN.TOOK'), DEFAULT_WAIT_TIMEOUT);
@@ -63,7 +63,7 @@ describe('Home page with published data when logged as Julia', function homePubl
         const mailLabel = await driver.findElement(By.css('.detail .property.email.completes_fullname .property_name'));
         await driver.wait(until.elementTextIs(mailLabel, 'Email'), DEFAULT_WAIT_TIMEOUT);
         const mailScheme = await driver.findElement(
-            By.css('.detail .property.email.completes_fullname .property_scheme'),
+            By.css('.detail .property.email.completes_fullname > .property_scheme'),
         );
         await driver.wait(until.elementTextIs(mailScheme, 'http://uri4uri.net/vocab'), DEFAULT_WAIT_TIMEOUT);
         const mailValue = await driver.findElement(
@@ -73,10 +73,12 @@ describe('Home page with published data when logged as Julia', function homePubl
 
         const bestFriendLabel = await driver.findElement(By.css('.detail .property.best_friend_of .property_name'));
         await driver.wait(until.elementTextIs(bestFriendLabel, 'Best Friend Of'), DEFAULT_WAIT_TIMEOUT);
-        const bestFriendScheme = await driver.findElement(By.css('.detail .property.best_friend_of .property_scheme'));
+        const bestFriendScheme = await driver.findElement(By.css('.detail .property.best_friend_of > .property_scheme'));
         await driver.wait(until.elementTextIs(bestFriendScheme, 'http://www.w3.org/ns/person'), DEFAULT_WAIT_TIMEOUT);
         const bestFriendValue = await driver.findElement(By.css('.detail .property.best_friend_of .property_value'));
         await driver.wait(until.elementTextIs(bestFriendValue, 'MERIADOC'), DEFAULT_WAIT_TIMEOUT);
+        const bestFriendLanguage = await driver.findElement(By.css('.detail .property.best_friend_of .property_language'));
+        await driver.wait(until.elementTextIs(bestFriendLanguage, '(Français)'), DEFAULT_WAIT_TIMEOUT);
     });
 
     it('should allow to edit resource properties', async () => {
@@ -101,7 +103,7 @@ describe('Home page with published data when logged as Julia', function homePubl
 
         const fullnameLabel = await driver.findElement(By.css('.detail .property.full_name .property_name'));
         await driver.wait(until.elementTextIs(fullnameLabel, 'Full name'), DEFAULT_WAIT_TIMEOUT);
-        const fullnameScheme = await driver.findElement(By.css('.detail .property.full_name .property_scheme'));
+        const fullnameScheme = await driver.findElement(By.css('.detail .property.full_name > .property_scheme'));
         await driver.wait(until.elementTextIs(fullnameScheme, 'http://www.w3.org/ns/person'), DEFAULT_WAIT_TIMEOUT);
 
         const fullnameValue = await driver.findElement(By.css('.detail .property.full_name .composite_property_value'));
@@ -110,7 +112,7 @@ describe('Home page with published data when logged as Julia', function homePubl
         const mailLabel = await driver.findElement(By.css('.detail .property.email.completes_fullname .property_name'));
         await driver.wait(until.elementTextIs(mailLabel, 'Email'), DEFAULT_WAIT_TIMEOUT);
         const mailScheme = await driver.findElement(
-            By.css('.detail .property.email.completes_fullname .property_scheme'),
+            By.css('.detail .property.email.completes_fullname > .property_scheme'),
         );
         await driver.wait(until.elementTextIs(mailScheme, 'http://uri4uri.net/vocab'), DEFAULT_WAIT_TIMEOUT);
         const mailValue = await driver.findElement(
@@ -120,9 +122,11 @@ describe('Home page with published data when logged as Julia', function homePubl
 
         const bestFriendLabel = await driver.findElement(By.css('.detail .property.best_friend_of .property_name'));
         await driver.wait(until.elementTextIs(bestFriendLabel, 'Best Friend Of'), DEFAULT_WAIT_TIMEOUT);
-        const bestFriendScheme = await driver.findElement(By.css('.detail .property.best_friend_of .property_scheme'));
+        const bestFriendScheme = await driver.findElement(By.css('.detail .property.best_friend_of > .property_scheme'));
         await driver.wait(until.elementTextIs(bestFriendScheme, 'http://www.w3.org/ns/person'), DEFAULT_WAIT_TIMEOUT);
         const bestFriendValue = await driver.findElement(By.css('.detail .property.best_friend_of .property_value'));
+        const bestFriendLanguage = await driver.findElement(By.css('.detail .property.best_friend_of .property_language'));
+        await driver.wait(until.elementTextIs(bestFriendLanguage, '(Français)'), DEFAULT_WAIT_TIMEOUT);
 
         await driver.wait(until.elementTextIs(bestFriendValue, 'MERIADOC'), DEFAULT_WAIT_TIMEOUT);
     });

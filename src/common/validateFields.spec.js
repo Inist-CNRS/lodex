@@ -5,16 +5,17 @@ import {
     COVER_COLLECTION,
 } from './cover';
 import {
-    validateField,
-    validateLabel,
-    validateCover,
-    validateScheme,
-    validateTransformers,
     validateCompletesField,
     validateComposedOf,
     validateComposedOfFields,
     validateComposedOfSeparator,
     validateComposedOfField,
+    validateCover,
+    validateField,
+    validateLabel,
+    validateLanguage,
+    validateScheme,
+    validateTransformers,
 } from './validateFields';
 
 describe('validateField', () => {
@@ -54,6 +55,10 @@ describe('validateField', () => {
                     name: 'composedOf',
                     isValid: false,
                     error: 'required_or_transformers_required',
+                },
+                {
+                    name: 'language',
+                    isValid: true,
                 },
             ],
             propertiesAreValid: false,
@@ -102,6 +107,10 @@ describe('validateField', () => {
                 },
                 {
                     name: 'composedOf',
+                    isValid: true,
+                },
+                {
+                    name: 'language',
                     isValid: true,
                 },
             ],
@@ -209,6 +218,37 @@ describe('validateField', () => {
             expect(validateScheme({})).toEqual({
                 name: 'scheme',
                 isValid: true,
+            });
+        });
+    });
+
+    describe('validateLanguage', () => {
+        it('returns valid result if language is known', () => {
+            expect(validateLanguage({ language: 'en' }, [{ code: 'en' }])).toEqual({
+                name: 'language',
+                isValid: true,
+            });
+        });
+
+        it('returns valid result if languages are not specified', () => {
+            expect(validateLanguage({ language: 'en' }, [])).toEqual({
+                name: 'language',
+                isValid: true,
+            });
+        });
+
+        it('returns valid if language is absent', () => {
+            expect(validateLanguage({})).toEqual({
+                name: 'language',
+                isValid: true,
+            });
+        });
+
+        it('returns invalid error if language is unknown', () => {
+            expect(validateLanguage({ language: 'foo' }, [{ code: 'en' }])).toEqual({
+                name: 'language',
+                isValid: false,
+                error: 'invalid_language',
             });
         });
     });

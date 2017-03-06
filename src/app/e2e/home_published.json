@@ -89,6 +89,7 @@
             "label": "Best Friend Of",
             "cover": "collection",
             "scheme": "http://www.w3.org/ns/person",
+            "language": "fr",
             "transformers": [
                 {
                     "operation": "LINK",

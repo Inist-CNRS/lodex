@@ -1,5 +1,6 @@
 import { COVERS, COVER_DOCUMENT } from './cover';
 import knownTransformers from './transformers';
+import { languages as languagesFromConfig } from '../../config.json';
 
 const validOperations = new RegExp(Object.keys(knownTransformers).join('|'));
 
@@ -254,6 +255,22 @@ export const validateTransformer = (transformer) => {
 export const validateEachTransformer = (transformers = []) =>
     transformers.map(validateTransformer);
 
+export const validateLanguage = (field, languages = languagesFromConfig) => {
+    const result = {
+        name: 'language',
+        isValid: true,
+    };
+
+    if (!field.language || !languages || !languages.length || languages.some(f => f.code === field.language)) {
+        return result;
+    }
+
+    return {
+        ...result,
+        isValid: false,
+        error: 'invalid_language',
+    };
+};
 export const isListValid = list => list.reduce((areValid, { isValid }) => areValid && isValid, true);
 
 export const validateField = (field, isContribution = false, fields = []) => {
@@ -266,6 +283,7 @@ export const validateField = (field, isContribution = false, fields = []) => {
         validateComposedOf(field, isContribution),
         validateComposedOfSeparator(field),
         validateComposedOfFields(field),
+        validateLanguage(field),
     ].filter(d => !!d);
 
     const propertiesAreValid = isListValid(properties);
