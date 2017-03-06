@@ -10,6 +10,7 @@ import i18n from '../i18n';
 import publication from './publication';
 import resource from './resource';
 import user from '../user';
+import debugReducer from '../lib/debugReducer';
 
 const rootReducer = combineReducers({
     characteristic,
@@ -24,4 +25,4 @@ const rootReducer = combineReducers({
     user,
 });
 
-export default rootReducer;
+export default __DEBUG__ ? debugReducer(rootReducer) : rootReducer;

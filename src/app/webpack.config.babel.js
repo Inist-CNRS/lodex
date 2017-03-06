@@ -99,6 +99,7 @@ export default {
 
         new DefinePlugin({
             API_URL: JSON.stringify(config.api_url),
+            __DEBUG__: config.debug,
             'process.env': {
                 NODE_ENV: process.env.NODE_ENV === 'development'
                     ? JSON.stringify(process.env.NODE_ENV)

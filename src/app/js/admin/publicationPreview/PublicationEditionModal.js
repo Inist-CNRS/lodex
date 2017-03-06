@@ -19,6 +19,8 @@ const styles = {
         marginRight: '1rem',
         paddingRight: '1rem',
         flexGrow: 1,
+        maxHeight: '50vw',
+        overflowY: 'auto',
     },
     modal: {
         maxWidth: '100%',
