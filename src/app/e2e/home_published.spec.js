@@ -112,7 +112,7 @@ describe('Home page with published data', function homePublishedDataTests() {
         await driver.wait(until.elementTextIs(bestFriendValue, 'MERIADOC'), DEFAULT_WAIT_TIMEOUT);
     });
 
-    it('should allow to add field resource properties', async () => {
+    it.skip('should allow to add field resource properties', async () => {
         const addFieldResource = await driver.findElement(By.css('.add-field-resource'));
         await driver.wait(elementIsClicked(addFieldResource), DEFAULT_WAIT_TIMEOUT);
 
@@ -149,7 +149,7 @@ describe('Home page with published data', function homePublishedDataTests() {
         await driver.wait(elementIsClicked(addFieldButton), DEFAULT_WAIT_TIMEOUT);
     });
 
-    it('should display added field in new detail', async () => {
+    it.skip('should display added field in new detail', async () => {
         await driver.wait(until.elementLocated(By.css('.detail')), DEFAULT_WAIT_TIMEOUT);
         await driver.wait(elementsCountIs(By.css('.detail .property'), 5), DEFAULT_WAIT_TIMEOUT);
 
