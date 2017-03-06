@@ -322,7 +322,7 @@ describe.only('Admin 2', () => {
             });
         });
 
-        describe('removing column', async () => {
+        describe.skip('removing column', async () => {
             it('should add auto configured column when clicking add-column button for an original field', async () => {
                 await driver.executeScript(
                     'document.getElementsByClassName("btn-excerpt-add-column-name")[0].scrollIntoView(true);',
@@ -380,7 +380,7 @@ describe.only('Admin 2', () => {
             });
         });
 
-        describe('Publishing', () => {
+        describe.skip('Publishing', () => {
             it('should display the "data published" message after publication', async () => {
                 const buttonPublish = await driver.findElement(By.css('.btn-publish'));
                 await driver.wait(elementIsClicked(buttonPublish), DEFAULT_WAIT_TIMEOUT);

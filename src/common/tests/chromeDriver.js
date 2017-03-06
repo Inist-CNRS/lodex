@@ -1,5 +1,7 @@
 import webdriver from 'selenium-webdriver';
 import chrome from 'selenium-webdriver/chrome';
+import logging from 'selenium-webdriver/lib/logging';
+import { debug } from 'config';
 
 const chromePath = `${__dirname}/../../../${process.env.SELENIUM_BROWSER_BINARY_PATH}`;
 const service = new chrome.ServiceBuilder(chromePath).build();
@@ -8,6 +10,11 @@ const DEFAULT_WAIT_TIMEOUT = 9000; // A bit less than mocha's timeout to get exp
 chrome.setDefaultService(service);
 
 const chromeCapabilities = webdriver.Capabilities.chrome();
+if (debug) {
+    const prefs = new logging.Preferences();
+    prefs.setLevel(logging.Type.BROWSER, logging.Level.DEBUG);
+    chromeCapabilities.setLoggingPrefs(prefs);
+}
 
 const chromeOptions = {
     args: ['--test-type', '--start-maximized', '--incognito'],
@@ -23,5 +30,18 @@ const driver = new webdriver.Builder()
 driver.manage()
     .timeouts()
     .implicitlyWait(DEFAULT_WAIT_TIMEOUT);
+
+if (debug) {
+    driver
+        .manage()
+        .logs()
+        .get(logging.Type.BROWSER)
+        .then((entries) => {
+            entries
+                .forEach((entry) => {
+                    console.log('[%s] %s', entry.level.name, entry.message);
+                });
+        });
+}
 
 export default driver;
