@@ -35,5 +35,8 @@ export default function configureStore(rootReducer, sagas, initialState) {
     );
 
     sagaMiddleware.run(sagas);
+    if (__DEBUG__) {
+        window.store = store;
+    }
     return store;
 }

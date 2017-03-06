@@ -31,17 +31,4 @@ driver.manage()
     .timeouts()
     .implicitlyWait(DEFAULT_WAIT_TIMEOUT);
 
-if (debug) {
-    driver
-        .manage()
-        .logs()
-        .get(logging.Type.BROWSER)
-        .then((entries) => {
-            entries
-                .forEach((entry) => {
-                    console.log('[%s] %s', entry.level.name, entry.message);
-                });
-        });
-}
-
 export default driver;
