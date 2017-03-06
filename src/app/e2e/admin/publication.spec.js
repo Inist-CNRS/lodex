@@ -1,7 +1,6 @@
 import { until, By } from 'selenium-webdriver';
 import expect from 'expect';
 import path from 'path';
-import logging from 'selenium-webdriver/lib/logging';
 
 import driver from '../../../common/tests/chromeDriver';
 import { clear } from '../../../common/tests/fixtures';
@@ -9,7 +8,7 @@ import { elementIsClicked, inputElementIsFocusable, elementValueIs } from '../..
 import loginAsJulia from '../loginAsJulia';
 
 
-describe.only('Admin 2', () => {
+describe('Admin', () => {
     describe('Publication', function homeTests() {
         this.timeout(30000);
         const DEFAULT_WAIT_TIMEOUT = 9000; // A bit less than mocha's timeout to get explicit errors from selenium
@@ -301,15 +300,6 @@ describe.only('Admin 2', () => {
                     By.css('.publication-excerpt-for-edition th .completes_title'),
                 ), DEFAULT_WAIT_TIMEOUT);
                 const th = await driver.findElement(By.css('.publication-excerpt-for-edition th .completes_title'));
-                await driver
-                    .manage()
-                    .logs()
-                    .get(logging.Type.BROWSER)
-                    .then((entries) => {
-                        entries.forEach((entry) => {
-                            console.log('[%s] %s', entry.level.name, entry.message);
-                        });
-                    });
                 await driver.wait(until.elementTextIs(th, 'Completes Title'), DEFAULT_WAIT_TIMEOUT);
 
                 const backButton = await driver.findElement(By.css('.btn-exit-column-edition'));
@@ -333,7 +323,7 @@ describe.only('Admin 2', () => {
             });
         });
 
-        describe.skip('removing column', async () => {
+        describe('removing column', async () => {
             it('should add auto configured column when clicking add-column button for an original field', async () => {
                 await driver.executeScript(
                     'document.getElementsByClassName("btn-excerpt-add-column-name")[0].scrollIntoView(true);',
@@ -391,7 +381,7 @@ describe.only('Admin 2', () => {
             });
         });
 
-        describe.skip('Publishing', () => {
+        describe('Publishing', () => {
             it('should display the "data published" message after publication', async () => {
                 const buttonPublish = await driver.findElement(By.css('.btn-publish'));
                 await driver.wait(elementIsClicked(buttonPublish), DEFAULT_WAIT_TIMEOUT);
