@@ -5,7 +5,8 @@ import translate from 'redux-polyglot/translate';
 import { CardHeader } from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
 
-import Publication from './Publication';
+import PublicationExcerpt from './PublicationExcerpt';
+import PublicationEditionModal from './PublicationEditionModal';
 
 import { addField, editField, removeField } from '../fields';
 import { polyglot as polyglotPropTypes, field as fieldPropTypes } from '../../propTypes';
@@ -61,31 +62,24 @@ export class PublicationPreviewComponent extends Component {
                         style={styles.button}
                         secondary
                     />
-                    {editedColumn &&
-                        <FlatButton
-                            className="btn-remove-column"
-                            label={polyglot.t('remove_from_publication')}
-                            onClick={this.handleRemoveColumnClick}
-                            style={styles.button}
-                        />
-                    }
-                    {editedColumn &&
-                        <FlatButton
-                            className="btn-exit-column-edition"
-                            label={polyglot.t('exit_column_edition')}
-                            onClick={this.handleExitColumEdition}
-                            style={styles.button}
-                        />
-                    }
                 </CardHeader>
 
                 <ScrollableCardContent expandable>
-                    <Publication
+                    <PublicationExcerpt
                         editedColumn={editedColumn}
                         columns={columns}
                         lines={lines}
                         onHeaderClick={editColumn}
                     />
+
+                    {editedColumn &&
+                        <PublicationEditionModal
+                            editedColumn={editedColumn}
+                            columns={columns}
+                            lines={lines}
+                            onExitEdition={this.handleExitColumEdition}
+                        />
+                    }
                 </ScrollableCardContent>
             </Card>
         );
