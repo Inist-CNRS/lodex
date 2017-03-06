@@ -15,7 +15,11 @@ describe('Home page with published data', function homePublishedDataTests() {
         await loadFixtures(fixtures);
         await driver.get('http://localhost:3010/');
         // if logged logout
-        await driver.findElement(By.css('.btn-sign-out')).click().catch(() => null);
+        const signOut = await driver.findElement(By.css('.btn-sign-out')).catch(() => null);
+        if (signOut) {
+            await signOut.click();
+            await driver.wait(until.stalenessOf(signOut), DEFAULT_WAIT_TIMEOUT);
+        }
     });
 
     it('should display the dataset characteristics', async () => {
