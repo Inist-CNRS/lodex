@@ -3,12 +3,12 @@ import { replace } from 'react-router-redux';
 import fetch from './fetch';
 import { getCurrentLocation, logout } from '../user';
 
-export default function* fetchSaga(request, interruptingActions = []) {
+export default function* fetchSaga(request, interruptingActions = [], mode = 'json') {
     const {
         fetchResult,
         cancel,
     } = yield race({
-        fetchResult: call(fetch, request),
+        fetchResult: call(fetch, request, mode),
         cancel: take([].concat(interruptingActions)),
     });
 

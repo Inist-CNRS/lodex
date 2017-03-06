@@ -6,6 +6,7 @@ import AdminButton from './AdminButton';
 import SignOutButton from './SignOutButton';
 import SignInButton from './SignInButton';
 import ExportMenu from './ExportMenu';
+import ExportFieldsButton from './ExportFieldsButton';
 
 const styles = {
     appBar: {
@@ -30,12 +31,15 @@ const AppbarComponent = ({ isLoading, isLoggedIn }) => {
             { isLoggedIn ?
                 <span>
                     <AdminButton />
-                    <SignOutButton />
+                    <ExportFieldsButton />
                 </span>
             :
                 <SignInButton />
             }
             <ExportMenu />
+            {isLoggedIn &&
+                <SignOutButton />
+            }
         </div>
     );
 

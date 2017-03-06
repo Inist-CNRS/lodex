@@ -141,3 +141,8 @@ export const getAddFieldToResourceRequest = (state, data) =>
         method: 'POST',
         body: data,
     });
+
+export const getExportFieldsRequest = state =>
+    getRequest(state, {
+        url: '/api/field/export',
+    });

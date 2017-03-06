@@ -83,4 +83,6 @@ export default {
     complete_field_X: 'Completes %{field}',
     language: 'Language',
     close: 'close',
+    export_data: 'Export',
+    export_fields: 'Export model',
 };

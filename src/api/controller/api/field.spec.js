@@ -3,6 +3,7 @@ import expect, { createSpy } from 'expect';
 import {
     setup,
     getAllField,
+    exportFields,
     postField,
     putField,
     removeField,
@@ -48,6 +49,23 @@ describe('field routes', () => {
             await getAllField(ctx);
             expect(ctx.field.findAll).toHaveBeenCalled();
             expect(ctx.body).toBe('all fields');
+        });
+    });
+
+    describe('exportFields', () => {
+        it('should call ctx.field.findAll and pass the result to ctx.body with correct headers', async () => {
+            const ctx = {
+                field: {
+                    findAll: createSpy().andReturn(Promise.resolve('all fields')),
+                },
+                attachment: createSpy(),
+            };
+
+            await exportFields(ctx);
+            expect(ctx.field.findAll).toHaveBeenCalled();
+            expect(ctx.body).toBe('all fields');
+            expect(ctx.attachment).toHaveBeenCalledWith('lodex_export.json');
+            expect(ctx.type).toBe('application/json');
         });
     });
 
