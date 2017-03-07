@@ -1,7 +1,7 @@
 import expect, { createSpy } from 'expect';
 
 import publishedDataset from './publishedDataset';
-import { VALIDATED } from '../../common/propositionStatus';
+import { VALIDATED, PROPOSED } from '../../common/propositionStatus';
 
 describe('publishedDataset', () => {
     describe('addVersion', () => {
@@ -77,7 +77,7 @@ describe('publishedDataset', () => {
                             },
                         },
                         $inc: {
-                            acceptedPropositionCount: 1,
+                            'contributionCount.VALIDATED': 1,
                         },
                         $push: {
                             versions: {
@@ -113,11 +113,11 @@ describe('publishedDataset', () => {
                             contributions: {
                                 fieldName: field.name,
                                 contributor,
-                                status: 'proposed',
+                                status: PROPOSED,
                             },
                         },
                         $inc: {
-                            proposedPropositionCount: 1,
+                            'contributionCount.PROPOSED': 1,
                         },
                         $push: {
                             versions: {
@@ -129,6 +129,45 @@ describe('publishedDataset', () => {
                     },
                 );
             });
+        });
+    });
+
+    describe('changePropositionStatus', () => {
+        const previousStatus = 'previousStatus';
+        const collection = {
+            aggregate: createSpy().andReturn({ status: previousStatus }),
+            update: createSpy(),
+        };
+        const db = {
+            collection: () => collection,
+        };
+        const publishedDatasetCollection = publishedDataset(db);
+
+        it('should call aggregate incorporating uri and name', async () => {
+            await publishedDatasetCollection.changePropositionStatus('uri', 'name', 'status');
+            expect(collection.aggregate).toHaveBeenCalledWith([
+                { $match: { uri: 'uri' } },
+                { $unwind: '$contributions' },
+                { $match: { 'contributions.fieldName': 'name' } },
+                { $project: { _id: 0, status: '$contributions.status' } },
+            ]);
+        });
+
+
+        it('should call update to increment received status and decrement previous status', async () => {
+            await publishedDatasetCollection.changePropositionStatus('uri', 'name', 'status');
+            expect(collection.update).toHaveBeenCalledWith(
+                { uri: 'uri', 'contributions.fieldName': 'name' },
+                {
+                    $set: { 'contributions.$.status': 'status' },
+                    $inc: {
+                        contributions: {
+                            status: 1,
+                            previousStatus: -1,
+                        },
+                    },
+                },
+            );
         });
     });
 });

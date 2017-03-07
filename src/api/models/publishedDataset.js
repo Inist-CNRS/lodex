@@ -75,9 +75,9 @@ export default (db) => {
                 },
             },
             $inc: isLoggedIn ? {
-                acceptedPropositionCount: 1,
+                [`contributionCount.${VALIDATED}`]: 1,
             } : {
-                proposedPropositionCount: 1,
+                [`contributionCount.${PROPOSED}`]: 1,
             },
             $push: {
                 versions: {
@@ -88,18 +88,42 @@ export default (db) => {
         });
     };
 
-    collection.validateProposedField = async (uri, name) => collection.update({
-        uri,
-        'contributions.fieldName': name,
-    }, {
-        $set: {
-            'contributions.$.status': 'validated',
-        },
-        $inc: {
-            acceptedPropositionCount: 1,
-            proposedPropositionCount: -1,
-        },
-    });
+    collection.getFieldStatus = async (uri, name) => {
+        const result = await collection.aggregate([
+            { $match: { uri } },
+            { $unwind: '$contributions' },
+            { $match: { 'contributions.fieldName': name } },
+            { $project: { _id: 0, status: '$contributions.status' } },
+        ]);
+
+        if (!result) {
+            return null;
+        }
+
+        return result.status;
+    };
+
+    collection.changePropositionStatus = async (uri, name, status) => {
+        const previousStatus = await collection.getFieldStatus(uri, name);
+        if (!previousStatus || previousStatus === status) {
+            return;
+        }
+
+        await collection.update({
+            uri,
+            'contributions.fieldName': name,
+        }, {
+            $set: {
+                'contributions.$.status': status,
+            },
+            $inc: {
+                contributions: {
+                    [status]: 1,
+                    [previousStatus]: -1,
+                },
+            },
+        });
+    };
 
     return collection;
 };
