@@ -24,8 +24,11 @@ server:
         - mongo
     ports:
         - 3000:3000
+        - 8000:8000
+        - 8080:8080
 
 mongo:
     image: mongo:3.0.14
+    command: "--smallfiles"
     ports:
         - 27017:27017
