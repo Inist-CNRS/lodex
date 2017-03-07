@@ -25,7 +25,7 @@ export const ExportMenuComponent = ({ exportPublishedDataset, p: polyglot, ...pr
         {...props}
         iconStyle={styles.icon}
         iconButtonElement={
-            <IconButton><FileDownloadIcon /></IconButton>
+            <IconButton tooltip={polyglot.t('export_data')}><FileDownloadIcon /></IconButton>
         }
         targetOrigin={origin}
         anchorOrigin={origin}

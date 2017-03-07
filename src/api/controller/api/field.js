@@ -40,11 +40,21 @@ export const removeField = async (ctx, id) => {
     ctx.body = await ctx.field.removeById(id);
 };
 
+export const exportFields = async (ctx) => {
+    const fields = await ctx.field.findAll();
+
+    ctx.attachment('lodex_export.json');
+    ctx.type = 'application/json';
+
+    ctx.body = fields;
+};
+
 const app = new Koa();
 
 app.use(setup);
 
 app.use(route.get('/', getAllField));
+app.use(route.get('/export', exportFields));
 app.use(route.post('/', postField));
 app.use(route.put('/:id', putField));
 app.use(route.del('/:id', removeField));
