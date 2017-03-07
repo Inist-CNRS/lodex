@@ -1,6 +1,8 @@
 /* eslint import/prefer-default-export: off */
 import { PropTypes } from 'react';
 
+import { PROPOSED, VALIDATED, REJECTED } from '../../common/propositionStatus';
+
 export const polyglot = PropTypes.shape({
     t: PropTypes.func.isRequired,
     tc: PropTypes.func.isRequired,
@@ -23,7 +25,7 @@ export const contributor = PropTypes.object;
 export const property = PropTypes.shape({
     name: PropTypes.string.isRequired,
     scheme: PropTypes.string,
-    status: PropTypes.oneOf(['proposed', 'validated', 'rejected']),
+    status: PropTypes.oneOf([PROPOSED, VALIDATED, REJECTED]),
     validatedFields: PropTypes.arrayOf(PropTypes.string),
 });
 

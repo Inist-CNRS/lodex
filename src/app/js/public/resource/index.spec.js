@@ -16,6 +16,7 @@ import reducer, {
     ADD_FIELD_TO_RESOURCE_ERROR,
     fromResource,
 } from './index';
+import { PROPOSED, VALIDATED, REJECTED } from '../../../../common/propositionStatus';
 
 describe('resourceReducer', () => {
     it('should initialize with correct state', () => {
@@ -123,11 +124,11 @@ describe('resourceReducer', () => {
                 const state = {
                     resource: {
                         contributions: [
-                            { fieldName: 'validatedField', status: 'validated' },
-                            { fieldName: 'proposedField', status: 'proposed' },
-                            { fieldName: 'othervalidatedField', status: 'validated' },
-                            { fieldName: 'otherProposedField', status: 'proposed' },
-                            { fieldName: 'rejectedField', status: 'rejected' },
+                            { fieldName: 'validatedField', status: VALIDATED },
+                            { fieldName: 'proposedField', status: PROPOSED },
+                            { fieldName: 'othervalidatedField', status: VALIDATED },
+                            { fieldName: 'otherProposedField', status: PROPOSED },
+                            { fieldName: 'rejectedField', status: REJECTED },
                         ],
                     },
                 };

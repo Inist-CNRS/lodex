@@ -1,6 +1,7 @@
 import expect, { createSpy } from 'expect';
 
 import publishedDataset from './publishedDataset';
+import { VALIDATED } from '../../common/propositionStatus';
 
 describe('publishedDataset', () => {
     describe('addVersion', () => {
@@ -71,7 +72,7 @@ describe('publishedDataset', () => {
                         contributions: {
                             fieldName: field.name,
                             contributor,
-                            status: 'validated',
+                            status: VALIDATED,
                         },
                     },
                     $push: {

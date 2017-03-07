@@ -2,9 +2,11 @@ import { csv } from 'json-csv';
 import through from 'through';
 import omit from 'lodash.omit';
 
+import { VALIDATED } from '../../common/propositionStatus';
+
 export const removeContributions = (doc, contributions) => {
     const fieldsToIgnore = contributions
-        .filter(({ status }) => status !== 'validated')
+        .filter(({ status }) => status !== VALIDATED)
         .map(({ fieldName }) => fieldName);
 
     return omit(doc, fieldsToIgnore);

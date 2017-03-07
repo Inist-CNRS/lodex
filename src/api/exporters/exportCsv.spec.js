@@ -1,7 +1,13 @@
 import expect, { createSpy } from 'expect';
 import through from 'through';
 
-import { exportCsvFactory, getCsvFieldFactory, getLastVersionFactory, removeContributions } from './exportCsv';
+import {
+    exportCsvFactory,
+    getCsvFieldFactory,
+    getLastVersionFactory,
+    removeContributions,
+} from './exportCsv';
+import { VALIDATED, REJECTED, PROPOSED } from '../../common/propositionStatus';
 
 describe('exportCsv', () => {
     describe('removeContributions', () => {
@@ -13,7 +19,7 @@ describe('exportCsv', () => {
             const contributions = [
                 {
                     fieldName: 'contribution',
-                    status: 'proposed',
+                    status: PROPOSED,
                 },
             ];
             expect(removeContributions(doc, contributions)).toEqual({ field: 'value' });
@@ -21,14 +27,14 @@ describe('exportCsv', () => {
 
         it('should remove contributions field with status rejected', () => {
             const doc = { field: 'value', contribution: 'contribution value' };
-            const contributions = [{ fieldName: 'contribution', status: 'rejected' }];
+            const contributions = [{ fieldName: 'contribution', status: REJECTED }];
             expect(removeContributions(doc, contributions))
                 .toEqual({ field: 'value' });
         });
 
         it('should keep contributions field that are validated', () => {
             const doc = { field: 'value', contribution: 'contribution value' };
-            const contributions = [{ fieldName: 'contribution', status: 'validated' }];
+            const contributions = [{ fieldName: 'contribution', status: VALIDATED }];
             expect(removeContributions(doc, contributions))
                 .toEqual(doc);
         });
@@ -125,9 +131,9 @@ describe('exportCsv', () => {
                     },
                 ],
                 contributions: [
-                    { fieldName: 'contribution', status: 'proposed' },
-                    { fieldName: 'validatedContribution', status: 'validated' },
-                    { fieldName: 'rejectedContribution', status: 'rejected' },
+                    { fieldName: 'contribution', status: PROPOSED },
+                    { fieldName: 'validatedContribution', status: VALIDATED },
+                    { fieldName: 'rejectedContribution', status: REJECTED },
                 ],
             });
 
