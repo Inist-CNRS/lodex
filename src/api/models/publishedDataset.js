@@ -88,5 +88,18 @@ export default (db) => {
         });
     };
 
+    collection.validateProposedField = async (uri, name) => collection.update({
+        uri,
+        'contributions.fieldName': name,
+    }, {
+        $set: {
+            'contributions.$.status': 'validated',
+        },
+        $inc: {
+            acceptedPropositionCount: 1,
+            proposedPropositionCount: -1,
+        },
+    });
+
     return collection;
 };
