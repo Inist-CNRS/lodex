@@ -15,4 +15,5 @@ module.exports = {
         delimiter: ';',
     },
     buildFrontend: false,
+    debug: true,
 };

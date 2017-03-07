@@ -25,14 +25,6 @@ const styles = {
         float: 'right',
         marginRight: '2rem',
     },
-    input: {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        opacity: 0,
-        width: '100%',
-        cursor: 'pointer',
-    },
 };
 
 export class PublicationPreviewComponent extends Component {
@@ -63,21 +55,13 @@ export class PublicationPreviewComponent extends Component {
         this.setState({ showImportFieldsConfirmation: false });
     }
 
-    handleImportFieldsConfirmation = () => {
-        this.setState({ showImportFieldsConfirmation: false });
-        this.fieldsImportInput.click();
-    }
-
     handleImportFields = () => {
         this.setState({ showImportFieldsConfirmation: true });
     }
 
-    handleFieldsLoad = (event) => {
+    handleFileUpload = (event) => {
+        this.setState({ showImportFieldsConfirmation: false });
         this.props.importFields(event.target.files[0]);
-    }
-
-    storeFieldsInputRef = (input) => {
-        this.fieldsImportInput = input;
     }
 
     render() {
@@ -108,14 +92,6 @@ export class PublicationPreviewComponent extends Component {
                 </CardHeader>
 
                 <ScrollableCardContent expandable>
-                    <input
-                        ref={this.storeFieldsInputRef}
-                        name="file_model"
-                        type="file"
-                        onChange={this.handleFieldsLoad}
-                        style={styles.input}
-                    />
-
                     <PublicationExcerpt
                         editedColumn={editedColumn}
                         columns={columns}
@@ -133,7 +109,7 @@ export class PublicationPreviewComponent extends Component {
                     }
                     {showImportFieldsConfirmation &&
                         <ImportFieldsDialog
-                            onConfirm={this.handleImportFieldsConfirmation}
+                            onFileUpload={this.handleFileUpload}
                             onCancel={this.handleImportFieldsCancellation}
                         />
                     }

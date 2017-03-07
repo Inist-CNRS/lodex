@@ -3,8 +3,9 @@ import expect from 'expect';
 import path from 'path';
 
 import driver from '../../../common/tests/chromeDriver';
-import { elementsCountIs } from '../../../common/tests/conditions';
+import { elementIsClicked, elementsCountIs } from '../../../common/tests/conditions';
 import { clear } from '../../../common/tests/fixtures';
+import { printBrowserLog } from '../../../common/tests/debug';
 import loginAsJulia from '../loginAsJulia';
 
 describe('Admin', () => {
@@ -32,9 +33,14 @@ describe('Admin', () => {
 
         describe('Uploading model', () => {
             it('should allow uploading a model as json', async () => {
+                await driver.wait(until.elementLocated(By.css('.btn-import-fields')), DEFAULT_WAIT_TIMEOUT);
+                const button = driver.findElement(By.css('.btn-import-fields'));
+                await driver.wait(elementIsClicked(button));
                 const modelPath = path.resolve(__dirname, './linked_sample_model.json');
                 const input = await driver.findElement(By.css('input[name=file_model]'));
                 await input.sendKeys(modelPath);
+                await driver.wait(until.elementLocated(By.css('.parsingResult')), DEFAULT_WAIT_TIMEOUT);
+
                 await driver.wait(
                     elementsCountIs(By.css('.publication-preview tr th'), 5),
                     DEFAULT_WAIT_TIMEOUT,
@@ -109,6 +115,11 @@ describe('Admin', () => {
                     driver.wait(until.elementTextIs(td, expectedTexts[index]), DEFAULT_WAIT_TIMEOUT)),
                 );
             });
+        });
+
+        after(async () => {
+            await driver.executeScript('localStorage.clear();');
+            await clear();
         });
     });
 });

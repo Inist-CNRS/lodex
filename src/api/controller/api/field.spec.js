@@ -71,43 +71,35 @@ describe('field routes', () => {
     });
 
     describe('importFields', () => {
-        it('should call ctx.field.remove', async () => {
-            const ctx = {
-                request: { body: [] },
-                field: {
-                    create: createSpy(),
-                    remove: createSpy(),
-                },
-            };
+        const rawBody = createSpy().andReturn(JSON.stringify([
+            { name: 'field1', label: 'Field 1' },
+            { name: 'field2', label: 'Field 2' },
+        ]));
+        const ctx = {
+            req: 'request',
+            field: {
+                create: createSpy(),
+                remove: createSpy(),
+            },
+        };
+        it('should call rawBody', async () => {
+            await importFields(rawBody)(ctx);
+            expect(rawBody).toHaveBeenCalledWith('request');
+        });
 
-            await importFields(ctx);
+        it('should call ctx.field.remove', async () => {
+            await importFields(rawBody)(ctx);
             expect(ctx.field.remove).toHaveBeenCalled();
         });
 
         it('should call ctx.field.create for each field', async () => {
-            const ctx = {
-                request: { body: [{ name: 'field1', label: 'Field 1' }, { name: 'field2', label: 'Field 2' }] },
-                field: {
-                    create: createSpy(),
-                    remove: createSpy(),
-                },
-            };
-
-            await importFields(ctx);
+            await importFields(rawBody)(ctx);
             expect(ctx.field.create).toHaveBeenCalledWith({ label: 'Field 1' }, 'field1');
             expect(ctx.field.create).toHaveBeenCalledWith({ label: 'Field 2' }, 'field2');
         });
 
         it('should set ctx.status to 200', async () => {
-            const ctx = {
-                request: { body: [{ name: 'field1', label: 'Field 1' }, { name: 'field2', label: 'Field 2' }] },
-                field: {
-                    create: createSpy(),
-                    remove: createSpy(),
-                },
-            };
-
-            await importFields(ctx);
+            await importFields(rawBody)(ctx);
             expect(ctx.status).toEqual(200);
         });
     });
