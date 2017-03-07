@@ -110,7 +110,7 @@ export class PublicationPreviewComponent extends Component {
                 <ScrollableCardContent expandable>
                     <input
                         ref={this.storeFieldsInputRef}
-                        name="file"
+                        name="file_model"
                         type="file"
                         onChange={this.handleFieldsLoad}
                         style={styles.input}

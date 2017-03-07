@@ -1,0 +1,92 @@
+[
+    {
+        "_id": "58be71521ca0622ba4cd8a6d",
+        "cover": "collection",
+        "label": "uri",
+        "name": "uri",
+        "transformers": [
+            {
+                "operation": "AUTOGENERATE_URI",
+                "args": []
+            }
+        ]
+    },
+    {
+        "_id": "58be71541ca0622ba4cd8a72",
+        "cover": "collection",
+        "label": "Stronger than",
+        "name": "Yivi",
+        "transformers": [
+            {
+                "operation": "LINK",
+                "args": [
+                    {
+                        "name": "reference",
+                        "type": "column",
+                        "value": "stronger_than"
+                    },
+                    {
+                        "name": "identifier",
+                        "type": "column",
+                        "value": "id"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "_id": "58be71561ca0622ba4cd8a73",
+        "cover": "collection",
+        "label": "name",
+        "name": "Yg1d",
+        "transformers": [
+            {
+                "operation": "COLUMN",
+                "args": [
+                    {
+                        "name": "column",
+                        "type": "column",
+                        "value": "name"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "_id": "58be71561ca0622ba4cd8a74",
+        "cover": "collection",
+        "label": "Title",
+        "name": "v8vy",
+        "transformers": [
+            {
+                "operation": "VALUE",
+                "args": [
+                    {
+                        "name": "value",
+                        "type": "string",
+                        "value": "Rock-Paper-Scissor"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "_id": "58be71571ca0622ba4cd8a75",
+        "cover": "collection",
+        "label": "Genre",
+        "name": "C5Lv",
+        "transformers": [
+            {
+                "operation": "VALUE",
+                "args": [
+                    {
+                        "name": "value",
+                        "type": "string",
+                        "value": "Zero-sum hand game"
+                    }
+                ]
+            }
+        ],
+        "completes": "v8vy"
+    }
+]
