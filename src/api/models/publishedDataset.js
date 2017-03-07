@@ -2,6 +2,8 @@ import { ObjectID } from 'mongodb';
 import chunk from 'lodash.chunk';
 import omit from 'lodash.omit';
 
+import { VALIDATED, PROPOSED } from '../../common/propositionStatus';
+
 export default (db) => {
     const collection = db.collection('publishedDataset');
 
@@ -69,7 +71,7 @@ export default (db) => {
                 contributions: {
                     fieldName: field.name,
                     contributor,
-                    accepted: isLoggedIn,
+                    status: isLoggedIn ? VALIDATED : PROPOSED,
                 },
             },
             $push: {

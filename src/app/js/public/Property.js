@@ -9,7 +9,6 @@ import {
     fromPublication,
 } from './selectors';
 import {
-    contributor as contributorPropTypes,
     field as fieldPropTypes,
     polyglot as polyglotPropTypes,
 } from '../propTypes';
@@ -97,7 +96,7 @@ const PropertyComponent = ({
 
 PropertyComponent.propTypes = {
     className: PropTypes.string,
-    contributors: PropTypes.objectOf(contributorPropTypes).isRequired,
+    contributors: PropTypes.objectOf(PropTypes.string).isRequired,
     field: fieldPropTypes.isRequired,
     fields: PropTypes.arrayOf(fieldPropTypes).isRequired,
     linkedFields: PropTypes.arrayOf(fieldPropTypes).isRequired,
@@ -112,7 +111,7 @@ PropertyComponent.defaultProps = {
 };
 
 const mapStateToProps = (state, { field }) => ({
-    unValidatedFields: fromResource.getResourceUnvalidatedFields(state),
+    unValidatedFields: fromResource.getResourceProposededFields(state),
     contributors: fromResource.getResourceContributorsByField(state),
     fields: fromPublication.getCollectionFields(state),
     linkedFields: fromPublication.getLinkedFields(state, field),

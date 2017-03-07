@@ -1,6 +1,8 @@
 import { createAction, handleActions, combineActions } from 'redux-actions';
 import { createSelector } from 'reselect';
 
+import { PROPOSED } from '../../../../common/propositionStatus';
+
 export const LOAD_RESOURCE = 'LOAD_RESOURCE';
 export const LOAD_RESOURCE_SUCCESS = 'LOAD_RESOURCE_SUCCESS';
 export const LOAD_RESOURCE_ERROR = 'LOAD_RESOURCE_ERROR';
@@ -104,13 +106,13 @@ const getResourceLastVersion = (state, resource = state.resource) => {
     };
 };
 
-const getResourceUnvalidatedFields = (state) => {
+const getResourceProposededFields = (state) => {
     const { contributions } = state.resource;
     if (!contributions) {
         return [];
     }
     return contributions
-        .filter(({ accepted }) => !accepted)
+        .filter(({ status }) => status === PROPOSED)
         .map(({ fieldName }) => fieldName);
 };
 
@@ -144,7 +146,7 @@ const isLoading = state => state.loading;
 
 export const fromResource = {
     getResourceLastVersion,
-    getResourceUnvalidatedFields,
+    getResourceProposededFields,
     getResourceContributions,
     getResourceContributorsByField,
     getRemovedData,

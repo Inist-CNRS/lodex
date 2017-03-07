@@ -16,6 +16,7 @@ import reducer, {
     ADD_FIELD_TO_RESOURCE_ERROR,
     fromResource,
 } from './index';
+import { PROPOSED, VALIDATED, REJECTED } from '../../../../common/propositionStatus';
 
 describe('resourceReducer', () => {
     it('should initialize with correct state', () => {
@@ -118,20 +119,21 @@ describe('resourceReducer', () => {
     });
 
     describe('selector', () => {
-        describe('getResourceUnvalidatedFields', () => {
-            it('should return list of fields with accepted false', () => {
+        describe('getResourceProposedFields', () => {
+            it('should return list of fields with status proposed', () => {
                 const state = {
                     resource: {
                         contributions: [
-                            { fieldName: 'acceptedField', accepted: true },
-                            { fieldName: 'unvalidatedField', accepted: false },
-                            { fieldName: 'otherAcceptedField', accepted: true },
-                            { fieldName: 'otherUnvalidatedField', accepted: false },
+                            { fieldName: 'validatedField', status: VALIDATED },
+                            { fieldName: 'proposedField', status: PROPOSED },
+                            { fieldName: 'othervalidatedField', status: VALIDATED },
+                            { fieldName: 'otherProposedField', status: PROPOSED },
+                            { fieldName: 'rejectedField', status: REJECTED },
                         ],
                     },
                 };
-                expect(fromResource.getResourceUnvalidatedFields(state))
-                    .toEqual(['unvalidatedField', 'otherUnvalidatedField']);
+                expect(fromResource.getResourceProposededFields(state))
+                    .toEqual(['proposedField', 'otherProposedField']);
             });
         });
 

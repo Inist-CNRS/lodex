@@ -1,20 +1,40 @@
 import expect, { createSpy } from 'expect';
 import through from 'through';
 
-import { exportCsvFactory, getCsvFieldFactory, getLastVersionFactory, removeContributions } from './exportCsv';
+import {
+    exportCsvFactory,
+    getCsvFieldFactory,
+    getLastVersionFactory,
+    removeContributions,
+} from './exportCsv';
+import { VALIDATED, REJECTED, PROPOSED } from '../../common/propositionStatus';
 
 describe('exportCsv', () => {
     describe('removeContributions', () => {
-        it('should remove contributions field not accepted', () => {
+        it('should remove contributions field with status proposed', () => {
+            const doc = {
+                field: 'value',
+                contribution: 'contribution value',
+            };
+            const contributions = [
+                {
+                    fieldName: 'contribution',
+                    status: PROPOSED,
+                },
+            ];
+            expect(removeContributions(doc, contributions)).toEqual({ field: 'value' });
+        });
+
+        it('should remove contributions field with status rejected', () => {
             const doc = { field: 'value', contribution: 'contribution value' };
-            const contributions = [{ fieldName: 'contribution', accepted: false }];
+            const contributions = [{ fieldName: 'contribution', status: REJECTED }];
             expect(removeContributions(doc, contributions))
                 .toEqual({ field: 'value' });
         });
 
-        it('should keep contributions field that are accepted', () => {
+        it('should keep contributions field that are validated', () => {
             const doc = { field: 'value', contribution: 'contribution value' };
-            const contributions = [{ fieldName: 'contribution', accepted: true }];
+            const contributions = [{ fieldName: 'contribution', status: VALIDATED }];
             expect(removeContributions(doc, contributions))
                 .toEqual(doc);
         });
@@ -84,27 +104,43 @@ describe('exportCsv', () => {
             });
         });
 
-        it('should remove unaccepted contribution', () => {
+        it('should remove non validated contribution', () => {
             const queue = createSpy();
             const bindedGetLastVersion = getLastVersionFactory({}).bind({ queue });
 
             bindedGetLastVersion({
                 uri: 'uri',
                 versions: [
-                    { version1: 'data1' },
-                    { version2: 'data2', contribution: 'value' },
-                    { version3: 'data3', contribution: 'value', acceptedContribution: 'value' },
+                    {
+                        version1: 'data1',
+                    },
+                    {
+                        version2: 'data2',
+                        contribution: 'value',
+                    },
+                    {
+                        version3: 'data3',
+                        contribution: 'value',
+                        validatedContribution: 'value',
+                    },
+                    {
+                        version4: 'data4',
+                        contribution: 'value',
+                        validatedContribution: 'value',
+                        rejectedContribution: 'rejected value',
+                    },
                 ],
                 contributions: [
-                    { fieldName: 'contribution', accepted: false },
-                    { fieldName: 'acceptedContribution', accepted: true },
+                    { fieldName: 'contribution', status: PROPOSED },
+                    { fieldName: 'validatedContribution', status: VALIDATED },
+                    { fieldName: 'rejectedContribution', status: REJECTED },
                 ],
             });
 
             expect(queue).toHaveBeenCalledWith({
                 uri: 'uri',
-                version3: 'data3',
-                acceptedContribution: 'value',
+                version4: 'data4',
+                validatedContribution: 'value',
             });
         });
 
