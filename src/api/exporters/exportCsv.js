@@ -4,7 +4,7 @@ import omit from 'lodash.omit';
 
 export const removeContributions = (doc, contributions) => {
     const fieldsToIgnore = contributions
-        .filter(({ accepted }) => !accepted)
+        .filter(({ status }) => status !== 'validated')
         .map(({ fieldName }) => fieldName);
 
     return omit(doc, fieldsToIgnore);

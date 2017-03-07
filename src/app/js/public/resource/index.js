@@ -104,13 +104,13 @@ const getResourceLastVersion = (state, resource = state.resource) => {
     };
 };
 
-const getResourceUnvalidatedFields = (state) => {
+const getResourceProposededFields = (state) => {
     const { contributions } = state.resource;
     if (!contributions) {
         return [];
     }
     return contributions
-        .filter(({ accepted }) => !accepted)
+        .filter(({ status }) => status === 'proposed')
         .map(({ fieldName }) => fieldName);
 };
 
@@ -144,7 +144,7 @@ const isLoading = state => state.loading;
 
 export const fromResource = {
     getResourceLastVersion,
-    getResourceUnvalidatedFields,
+    getResourceProposededFields,
     getResourceContributions,
     getResourceContributorsByField,
     getRemovedData,

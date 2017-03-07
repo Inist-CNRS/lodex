@@ -181,7 +181,7 @@ or
             "name" : "john",
             "mail" : "john@doe.com"
         },
-            "accepted" : false
+            "status" : 'proposed'
         }
     ]
 }

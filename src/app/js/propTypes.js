@@ -23,7 +23,7 @@ export const contributor = PropTypes.object;
 export const property = PropTypes.shape({
     name: PropTypes.string.isRequired,
     scheme: PropTypes.string,
-    accepted: PropTypes.bool,
+    status: PropTypes.oneOf(['proposed', 'validated', 'rejected']),
     validatedFields: PropTypes.arrayOf(PropTypes.string),
 });
 

@@ -61,7 +61,7 @@ describe('publishedDataset', () => {
                 value: 'newValue',
             };
             const date = new Date();
-            await publishedDatasetCollection.addFieldToResource('uri', contributor, field, 'isLoggedIn', date);
+            await publishedDatasetCollection.addFieldToResource('uri', contributor, field, true, date);
 
             expect(collection.findOne).toHaveBeenCalledWith({ uri: 'uri' });
             expect(collection.update).toHaveBeenCalledWith(
@@ -71,7 +71,7 @@ describe('publishedDataset', () => {
                         contributions: {
                             fieldName: field.name,
                             contributor,
-                            accepted: 'isLoggedIn',
+                            status: 'validated',
                         },
                     },
                     $push: {

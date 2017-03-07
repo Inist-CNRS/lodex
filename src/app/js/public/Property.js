@@ -112,7 +112,7 @@ PropertyComponent.defaultProps = {
 };
 
 const mapStateToProps = (state, { field }) => ({
-    unValidatedFields: fromResource.getResourceUnvalidatedFields(state),
+    unValidatedFields: fromResource.getResourceProposededFields(state),
     contributors: fromResource.getResourceContributorsByField(state),
     fields: fromPublication.getCollectionFields(state),
     linkedFields: fromPublication.getLinkedFields(state, field),

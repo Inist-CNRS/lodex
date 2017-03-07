@@ -69,7 +69,7 @@ export default (db) => {
                 contributions: {
                     fieldName: field.name,
                     contributor,
-                    accepted: isLoggedIn,
+                    status: isLoggedIn ? 'validated' : 'proposed',
                 },
             },
             $push: {

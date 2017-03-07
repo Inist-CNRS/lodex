@@ -5,16 +5,30 @@ import { exportCsvFactory, getCsvFieldFactory, getLastVersionFactory, removeCont
 
 describe('exportCsv', () => {
     describe('removeContributions', () => {
-        it('should remove contributions field not accepted', () => {
+        it('should remove contributions field with status proposed', () => {
+            const doc = {
+                field: 'value',
+                contribution: 'contribution value',
+            };
+            const contributions = [
+                {
+                    fieldName: 'contribution',
+                    status: 'proposed',
+                },
+            ];
+            expect(removeContributions(doc, contributions)).toEqual({ field: 'value' });
+        });
+
+        it('should remove contributions field with status rejected', () => {
             const doc = { field: 'value', contribution: 'contribution value' };
-            const contributions = [{ fieldName: 'contribution', accepted: false }];
+            const contributions = [{ fieldName: 'contribution', status: 'rejected' }];
             expect(removeContributions(doc, contributions))
                 .toEqual({ field: 'value' });
         });
 
-        it('should keep contributions field that are accepted', () => {
+        it('should keep contributions field that are validated', () => {
             const doc = { field: 'value', contribution: 'contribution value' };
-            const contributions = [{ fieldName: 'contribution', accepted: true }];
+            const contributions = [{ fieldName: 'contribution', status: 'validated' }];
             expect(removeContributions(doc, contributions))
                 .toEqual(doc);
         });
@@ -84,27 +98,43 @@ describe('exportCsv', () => {
             });
         });
 
-        it('should remove unaccepted contribution', () => {
+        it('should remove non validated contribution', () => {
             const queue = createSpy();
             const bindedGetLastVersion = getLastVersionFactory({}).bind({ queue });
 
             bindedGetLastVersion({
                 uri: 'uri',
                 versions: [
-                    { version1: 'data1' },
-                    { version2: 'data2', contribution: 'value' },
-                    { version3: 'data3', contribution: 'value', acceptedContribution: 'value' },
+                    {
+                        version1: 'data1',
+                    },
+                    {
+                        version2: 'data2',
+                        contribution: 'value',
+                    },
+                    {
+                        version3: 'data3',
+                        contribution: 'value',
+                        validatedContribution: 'value',
+                    },
+                    {
+                        version4: 'data4',
+                        contribution: 'value',
+                        validatedContribution: 'value',
+                        rejectedContribution: 'rejected value',
+                    },
                 ],
                 contributions: [
-                    { fieldName: 'contribution', accepted: false },
-                    { fieldName: 'acceptedContribution', accepted: true },
+                    { fieldName: 'contribution', status: 'proposed' },
+                    { fieldName: 'validatedContribution', status: 'validated' },
+                    { fieldName: 'rejectedContribution', status: 'rejected' },
                 ],
             });
 
             expect(queue).toHaveBeenCalledWith({
                 uri: 'uri',
-                version3: 'data3',
-                acceptedContribution: 'value',
+                version4: 'data4',
+                validatedContribution: 'value',
             });
         });
 

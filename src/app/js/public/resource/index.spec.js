@@ -118,20 +118,21 @@ describe('resourceReducer', () => {
     });
 
     describe('selector', () => {
-        describe('getResourceUnvalidatedFields', () => {
-            it('should return list of fields with accepted false', () => {
+        describe('getResourceProposedFields', () => {
+            it('should return list of fields with status proposed', () => {
                 const state = {
                     resource: {
                         contributions: [
-                            { fieldName: 'acceptedField', accepted: true },
-                            { fieldName: 'unvalidatedField', accepted: false },
-                            { fieldName: 'otherAcceptedField', accepted: true },
-                            { fieldName: 'otherUnvalidatedField', accepted: false },
+                            { fieldName: 'validatedField', status: 'validated' },
+                            { fieldName: 'proposedField', status: 'proposed' },
+                            { fieldName: 'othervalidatedField', status: 'validated' },
+                            { fieldName: 'otherProposedField', status: 'proposed' },
+                            { fieldName: 'rejectedField', status: 'rejected' },
                         ],
                     },
                 };
-                expect(fromResource.getResourceUnvalidatedFields(state))
-                    .toEqual(['unvalidatedField', 'otherUnvalidatedField']);
+                expect(fromResource.getResourceProposededFields(state))
+                    .toEqual(['proposedField', 'otherProposedField']);
             });
         });
 
