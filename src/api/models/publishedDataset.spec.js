@@ -51,39 +51,84 @@ describe('publishedDataset', () => {
         };
         const publishedDatasetCollection = publishedDataset(db);
 
-        it('should call addFieldToResource with uri', async () => {
-            const contributor = {
-                name: 'peregrin took',
-                mail: 'peregrin.took@shire.net',
-            };
+        describe('isLoggedIn: true', () => {
+            it('should call addFieldToResource with uri status validated and increment accepted count', async () => {
+                const contributor = {
+                    name: 'peregrin took',
+                    mail: 'peregrin.took@shire.net',
+                };
 
-            const field = {
-                name: 'newField',
-                value: 'newValue',
-            };
-            const date = new Date();
-            await publishedDatasetCollection.addFieldToResource('uri', contributor, field, true, date);
+                const field = {
+                    name: 'newField',
+                    value: 'newValue',
+                };
+                const date = new Date();
+                await publishedDatasetCollection.addFieldToResource('uri', contributor, field, true, date);
 
-            expect(collection.findOne).toHaveBeenCalledWith({ uri: 'uri' });
-            expect(collection.update).toHaveBeenCalledWith(
-                { uri: 'uri' },
-                {
-                    $addToSet: {
-                        contributions: {
-                            fieldName: field.name,
-                            contributor,
-                            status: VALIDATED,
+                expect(collection.findOne).toHaveBeenCalledWith({ uri: 'uri' });
+                expect(collection.update).toHaveBeenCalledWith(
+                    { uri: 'uri' },
+                    {
+                        $addToSet: {
+                            contributions: {
+                                fieldName: field.name,
+                                contributor,
+                                status: VALIDATED,
+                            },
+                        },
+                        $inc: {
+                            acceptedPropositionCount: 1,
+                        },
+                        $push: {
+                            versions: {
+                                field: 'value',
+                                newField: 'newValue',
+                                publicationDate: date,
+                            },
                         },
                     },
-                    $push: {
-                        versions: {
-                            field: 'value',
-                            newField: 'newValue',
-                            publicationDate: date,
+                );
+            });
+        });
+
+        describe('isLoggedIn: false', () => {
+            it('should call addFieldToResource with uri status proposed and increment proposedCount', async () => {
+                const contributor = {
+                    name: 'peregrin took',
+                    mail: 'peregrin.took@shire.net',
+                };
+
+                const field = {
+                    name: 'newField',
+                    value: 'newValue',
+                };
+                const date = new Date();
+                await publishedDatasetCollection.addFieldToResource('uri', contributor, field, false, date);
+
+                expect(collection.findOne).toHaveBeenCalledWith({ uri: 'uri' });
+                expect(collection.update).toHaveBeenCalledWith(
+                    { uri: 'uri' },
+                    {
+                        $addToSet: {
+                            contributions: {
+                                fieldName: field.name,
+                                contributor,
+                                status: 'proposed',
+                            },
+                        },
+                        $inc: {
+                            proposedPropositionCount: 1,
+                        },
+                        $push: {
+                            versions: {
+                                field: 'value',
+                                newField: 'newValue',
+                                publicationDate: date,
+                            },
                         },
                     },
-                },
-            );
+                );
+            });
         });
     });
 });

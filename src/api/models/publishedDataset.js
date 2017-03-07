@@ -74,6 +74,11 @@ export default (db) => {
                     status: isLoggedIn ? VALIDATED : PROPOSED,
                 },
             },
+            $inc: isLoggedIn ? {
+                acceptedPropositionCount: 1,
+            } : {
+                proposedPropositionCount: 1,
+            },
             $push: {
                 versions: {
                     ...newVersion,
