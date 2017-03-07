@@ -17,6 +17,7 @@ import PublicationPreview from './publicationPreview/PublicationPreview';
 import Publish from './publish/Publish';
 import Published from './publish/Published';
 import RemovedResourceList from './removedResources/RemovedResourceList';
+import ContributedResourceList from './contributedResources/ContributedResourceList';
 import Upload from './upload/Upload';
 import Loading from '../lib/Loading';
 
@@ -54,6 +55,7 @@ export class AdminComponent extends Component {
                 <div className="admin">
                     <Published />
                     <RemovedResourceList />
+                    <ContributedResourceList />
                 </div>
             );
         }

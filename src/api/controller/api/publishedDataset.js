@@ -101,7 +101,7 @@ app.use(async (ctx, next) => {
 app.use(route.post('/', editResource));
 app.use(route.put('/restore', restoreResource));
 app.use(route.del('/', removeResource));
-app.use(route.get('/contribution/:status', getPropositionPage));
+app.use(route.get('/contributed/:status', getPropositionPage));
 app.use(route.put('/:uri/change_contribution_status/:name/:status', changePropositionStatus));
 
 export default app;

@@ -8,6 +8,7 @@ import publicationSaga from './publication/sagas';
 import publicationPreviewSaga from './publicationPreview/sagas';
 import publishSaga from './publish/sagas';
 import removedResourcesSagas from './removedResources/sagas';
+import contributedResourcesSagas from './contributedResources/sagas';
 import uploadFileSaga from './upload/sagas';
 import userSagas from '../user/sagas';
 import fetchSaga from '../fetch/sagas';
@@ -22,6 +23,7 @@ export default function* () {
     yield fork(publicationPreviewSaga);
     yield fork(publishSaga);
     yield fork(removedResourcesSagas);
+    yield fork(contributedResourcesSagas);
     yield fork(uploadFileSaga);
     yield fork(userSagas);
 }
