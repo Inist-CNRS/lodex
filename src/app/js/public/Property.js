@@ -9,7 +9,6 @@ import {
     fromPublication,
 } from './selectors';
 import {
-    contributor as contributorPropTypes,
     field as fieldPropTypes,
     polyglot as polyglotPropTypes,
 } from '../propTypes';
@@ -97,7 +96,7 @@ const PropertyComponent = ({
 
 PropertyComponent.propTypes = {
     className: PropTypes.string,
-    contributors: PropTypes.objectOf(contributorPropTypes).isRequired,
+    contributors: PropTypes.objectOf(PropTypes.string).isRequired,
     field: fieldPropTypes.isRequired,
     fields: PropTypes.arrayOf(fieldPropTypes).isRequired,
     linkedFields: PropTypes.arrayOf(fieldPropTypes).isRequired,

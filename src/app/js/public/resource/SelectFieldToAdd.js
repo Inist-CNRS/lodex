@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { selectField } from '../publication';
 import { fromPublication, fromResource } from '../selectors';
 
-import { resource as resourcePropTypes } from '../../propTypes';
+import { resource as resourcePropTypes, field as fieldPropTypes } from '../../propTypes';
 
 export const SelectFieldToAddComponent = ({ contributionFields, resource, selectedField, onSelectField }) => (
     <SelectField
@@ -18,7 +18,7 @@ export const SelectFieldToAddComponent = ({ contributionFields, resource, select
     >
         <MenuItem value="new" className="new" primaryText="create a new field" />
         {contributionFields.filter(({ name }) => !resource[name]).map(({ name, label }) => (
-            <MenuItem className={name} value={name} primaryText={label} />
+            <MenuItem key={name} className={name} value={name} primaryText={label} />
         ))}
     </SelectField>
 );
@@ -28,7 +28,7 @@ SelectFieldToAddComponent.defaultProps = {
 };
 
 SelectFieldToAddComponent.propTypes = {
-    contributionFields: PropTypes.arrayOf(PropTypes.string).isRequired,
+    contributionFields: PropTypes.arrayOf(fieldPropTypes).isRequired,
     onSelectField: PropTypes.func.isRequired,
     resource: resourcePropTypes.isRequired,
     selectedField: PropTypes.string,
