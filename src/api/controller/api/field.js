@@ -54,7 +54,7 @@ export const importFields = async (ctx) => {
 
     await ctx.field.remove({});
 
-    await Promise.all(fields.map(field => ctx.field.create(field, field.name)));
+    await Promise.all(fields.map(({ name, ...field }) => ctx.field.create(field, name)));
 
     ctx.status = 200;
 };
