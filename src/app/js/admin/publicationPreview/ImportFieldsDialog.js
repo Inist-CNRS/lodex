@@ -1,10 +1,14 @@
 import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
+import { red300 } from 'material-ui/styles/colors';
 
+import { importFields as importFieldsAction } from '../import';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
+import { fromImport } from '../selectors';
 
 const styles = {
     input: {
@@ -17,34 +21,51 @@ const styles = {
         width: '100%',
         cursor: 'pointer',
     },
+    button: {
+        top: '12px',
+    },
+    error: {
+        color: red300,
+    },
 };
 
 class ImportFieldsDialogComponent extends Component {
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.succeeded) {
+            this.props.onClose();
+        }
+    }
+
     storeFieldsInputRef = (input) => {
         this.fieldsImportInput = input;
     }
 
+    handleFileUpload = (event) => {
+        this.props.importFields(event.target.files[0]);
+    }
+
     render() {
-        const { onCancel, onFileUpload, p: polyglot } = this.props;
+        const { failed, onClose, p: polyglot } = this.props;
 
         const actions = [
             <FlatButton
                 className="btn-confirm"
                 containerElement="label"
-                label={polyglot.t('yes')}
+                label={polyglot.t('import_fields')}
                 primary
+                style={styles.button}
             >
                 <input
                     name="file_model"
                     type="file"
-                    onChange={onFileUpload}
+                    onChange={this.handleFileUpload}
                     style={styles.input}
                 />
             </FlatButton>,
             <FlatButton
                 className="btn-cancel"
                 label={polyglot.t('no')}
-                onTouchTap={onCancel}
+                onTouchTap={onClose}
             />,
         ];
 
@@ -53,18 +74,31 @@ class ImportFieldsDialogComponent extends Component {
                 open
                 actions={actions}
             >
-                {polyglot.t('confirm_import_fields')}
+                {!failed && polyglot.t('confirm_import_fields')}
+                {failed && <span style={styles.error}>{polyglot.t('import_fields_failed')}</span>}
             </Dialog>
         );
     }
 }
 
 ImportFieldsDialogComponent.propTypes = {
-    onCancel: PropTypes.func.isRequired,
-    onFileUpload: PropTypes.func.isRequired,
+    failed: PropTypes.bool.isRequired,
+    importFields: PropTypes.func.isRequired,
+    onClose: PropTypes.func.isRequired,
     p: polyglotPropTypes.isRequired,
+    succeeded: PropTypes.bool.isRequired,
 };
+
+const mapStateToProps = state => ({
+    succeeded: fromImport.hasImportSucceeded(state),
+    failed: fromImport.hasImportFailed(state),
+});
+
+const mapDispatchToProps = ({
+    importFields: importFieldsAction,
+});
 
 export default compose(
     translate,
+    connect(mapStateToProps, mapDispatchToProps),
 )(ImportFieldsDialogComponent);

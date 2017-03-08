@@ -42,5 +42,5 @@ export function* uploadFile(action) {
 }
 
 export default function* uploadFileSaga() {
-    yield takeEvery([IMPORT_FIELDS], uploadFile);
+    yield takeEvery(IMPORT_FIELDS, uploadFile);
 }

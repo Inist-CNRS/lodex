@@ -9,7 +9,6 @@ import PublicationExcerpt from './PublicationExcerpt';
 import PublicationEditionModal from './PublicationEditionModal';
 
 import { addField, editField, removeField } from '../fields';
-import { importFields } from '../import';
 import { polyglot as polyglotPropTypes, field as fieldPropTypes } from '../../propTypes';
 import { fromFields, fromPublicationPreview } from '../selectors';
 import Card from '../../lib/Card';
@@ -51,17 +50,12 @@ export class PublicationPreviewComponent extends Component {
         this.props.editColumn(null);
     }
 
-    handleImportFieldsCancellation = () => {
+    handleImportFieldsClose = () => {
         this.setState({ showImportFieldsConfirmation: false });
     }
 
     handleImportFields = () => {
         this.setState({ showImportFieldsConfirmation: true });
-    }
-
-    handleFileUpload = (event) => {
-        this.setState({ showImportFieldsConfirmation: false });
-        this.props.importFields(event.target.files[0]);
     }
 
     render() {
@@ -109,8 +103,7 @@ export class PublicationPreviewComponent extends Component {
                     }
                     {showImportFieldsConfirmation &&
                         <ImportFieldsDialog
-                            onFileUpload={this.handleFileUpload}
-                            onCancel={this.handleImportFieldsCancellation}
+                            onClose={this.handleImportFieldsClose}
                         />
                     }
                 </ScrollableCardContent>
@@ -124,7 +117,6 @@ PublicationPreviewComponent.propTypes = {
     columns: PropTypes.arrayOf(fieldPropTypes).isRequired,
     editedColumn: fieldPropTypes,
     editColumn: PropTypes.func.isRequired,
-    importFields: PropTypes.func.isRequired,
     lines: PropTypes.arrayOf(PropTypes.object).isRequired,
     p: polyglotPropTypes.isRequired,
     removeColumn: PropTypes.func.isRequired,
@@ -144,7 +136,6 @@ const mapDispatchToProps = {
     addColumn: addField,
     editColumn: editField,
     removeColumn: removeField,
-    importFields,
 };
 
 export default compose(

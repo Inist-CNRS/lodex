@@ -1,6 +1,7 @@
 import { createGlobalSelectors } from '../lib/selectors';
 
 import { selectors as fieldsSelectors } from './fields';
+import { selectors as importSelectors } from './import';
 import { selectors as parsingSelectors } from './parsing';
 import { selectors as publicationSelectors } from './publication';
 import { selectors as publicationPreviewSelectors } from './publicationPreview';
@@ -18,3 +19,4 @@ export const fromPublicationPreview = createGlobalSelectors(
 export const fromPublish = createGlobalSelectors(s => s.publish, publishSelectors);
 export const fromRemovedResources = createGlobalSelectors(s => s.removedResources, removedResourcesSelectors);
 export const fromUpload = createGlobalSelectors(s => s.upload, uploadSelectors);
+export const fromImport = createGlobalSelectors(s => s.import, importSelectors);
