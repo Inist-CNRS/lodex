@@ -58,9 +58,10 @@ export class ContributedResourceListComponent extends Component {
             return <Loading>{polyglot.t('loading')}</Loading>;
         }
         return (
-            <div>
+            <div className="contributed_resources">
                 <CardHeader>
                     <SelectField
+                        className="filter"
                         style={styles.select}
                         autoWidth
                         value={filter}
@@ -69,6 +70,7 @@ export class ContributedResourceListComponent extends Component {
                         {propositionStatus.map(status => (
                             <MenuItem
                                 key={status}
+                                className={`filter_${status}`}
                                 value={status}
                                 primaryText={polyglot.t('contribution_filter', { status: polyglot.t(status) })}
                             />
@@ -76,7 +78,7 @@ export class ContributedResourceListComponent extends Component {
                     </SelectField>
                 </CardHeader>
 
-                <CardText className="contributed_resources">
+                <CardText >
                     <Table selectable={false} fixedHeader={false} style={styles.table}>
                         <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
                             <TableRow>
