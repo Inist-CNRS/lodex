@@ -137,8 +137,9 @@ const mapStateToProps = (state, { field }) => ({
     fieldStatus: fromResource.getFieldStatus(state, field),
 });
 
-const mapDispatchToProps = (dispatch, { field }) => bindActionCreators({
+const mapDispatchToProps = (dispatch, { field, resource: { uri } }) => bindActionCreators({
     changeStatus: (prevStatus, status) => changeFieldStatus({
+        uri,
         field: field.name,
         status,
         prevStatus,

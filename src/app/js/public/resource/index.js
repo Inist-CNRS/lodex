@@ -24,6 +24,8 @@ export const HIDE_RESOURCE_FORM_NAME = 'hideResource';
 export const NEW_RESOURCE_FIELD_FORM_NAME = 'newResourceField';
 
 export const CHANGE_FIELD_STATUS = 'CHANGE_FIELD_STATUS';
+export const CHANGE_FIELD_STATUS_SUCCESS = 'CHANGE_FIELD_STATUS_SUCCESS';
+export const CHANGE_FIELD_STATUS_ERROR = 'CHANGE_FIELD_STATUS_ERROR';
 
 export const loadResource = createAction(LOAD_RESOURCE);
 export const loadResourceSuccess = createAction(LOAD_RESOURCE_SUCCESS);
@@ -42,6 +44,8 @@ export const addFieldToResourceSuccess = createAction(ADD_FIELD_TO_RESOURCE_SUCC
 export const addFieldToResourceError = createAction(ADD_FIELD_TO_RESOURCE_ERROR);
 
 export const changeFieldStatus = createAction(CHANGE_FIELD_STATUS);
+export const changeFieldStatusSuccess = createAction(CHANGE_FIELD_STATUS_SUCCESS);
+export const changeFieldStatusError = createAction(CHANGE_FIELD_STATUS_ERROR);
 
 export const defaultState = {
     resource: {},
@@ -103,6 +107,7 @@ export default handleActions({
 
         return {
             ...state,
+            moderating: true,
             resource: {
                 ...state.resource,
                 contributions: [
@@ -116,6 +121,32 @@ export default handleActions({
             },
         };
     },
+    CHANGE_FIELD_STATUS_ERROR: (state, { payload: { error, field, prevStatus } }) => {
+        const { contributions } = state.resource;
+        const index = contributions.findIndex(({ fieldName }) => fieldName === field);
+
+        return {
+            ...state,
+            error,
+            moderating: false,
+            resource: {
+                ...state.resource,
+                contributions: [
+                    ...contributions.slice(0, index - 1),
+                    {
+                        ...contributions[index],
+                        status: prevStatus,
+                    },
+                    ...contributions.slice(index + 1),
+                ],
+            },
+        };
+    },
+    CHANGE_FIELD_STATUS_SUCCESS: state => ({
+        ...state,
+        error: null,
+        moderating: false,
+    }),
 }, defaultState);
 
 const getResourceLastVersion = (state, resource = state.resource) => {

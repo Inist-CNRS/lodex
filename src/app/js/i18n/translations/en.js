@@ -63,6 +63,7 @@ export default {
     contributorMail: 'Email',
     new_field: 'Field',
     contributed_by: 'Contributed by %{name}',
+    added_by: 'Added by %{name}',
     add_to_publication: 'Add to publication',
     add_column: 'Add a new column',
     no_dataset: 'No dataset',

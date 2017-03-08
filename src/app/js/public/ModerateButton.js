@@ -7,7 +7,6 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 import { red500, yellow500, green500, grey500 } from 'material-ui/styles/colors';
-import { bindActionCreators } from 'redux';
 
 import propositionStatus from '../../../common/propositionStatus';
 import { polyglot as polyglotPropTypes } from '../propTypes';
@@ -38,7 +37,11 @@ export const ModerateButtonComponent = ({ status, changeStatus, p: polyglot }) =
             propositionStatus.map(availableStatus => (
                 <IconButton
                     tooltip={polyglot.t(availableStatus)}
-                    onClick={() => changeStatus(availableStatus)}
+                    onClick={(e) => {
+                        e.preventDefault();
+                        changeStatus(status, availableStatus);
+                        return false;
+                    }}
                 >
                     { getIcons(availableStatus, status === availableStatus) }
                 </IconButton>
@@ -53,11 +56,7 @@ ModerateButtonComponent.propTypes = {
     p: polyglotPropTypes.isRequired,
 };
 
-const mapDispatchToProps = (dispatch, { status, changeStatus }) => bindActionCreators({
-    changeStatus: value => changeStatus(status, value),
-}, dispatch);
-
 export default compose(
     translate,
-    connect(undefined, mapDispatchToProps),
+    connect(),
 )(ModerateButtonComponent);
