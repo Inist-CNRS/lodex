@@ -2,8 +2,9 @@ import React, { PropTypes } from 'react';
 import compose from 'recompose/compose';
 import pure from 'recompose/pure';
 
-import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn } from 'material-ui/Table';
+import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow } from 'material-ui/Table';
 
+import ParsingExcerptColumn from './ParsingExcerptColumn';
 import ParsingExcerptAddColumn from './ParsingExcerptAddColumn';
 
 const styles = {
@@ -23,9 +24,9 @@ export const ParsingExcerptComponent = ({ columns, lines }) => (
             </TableRow>
         </TableHeader>
         <TableBody displayRowCheckbox={false}>
-            {lines.map((l, index) => (
-                <TableRow key={index}>
-                    {columns.map(c => <TableRowColumn key={`${c}_${index}`}>{l[c]}</TableRowColumn>)}
+            {lines.map(line => (
+                <TableRow key={`${line._id}_data_row`}>
+                    {columns.map(c => <ParsingExcerptColumn key={`${c}_${line._id}`} value={line[c]} />)}
                 </TableRow>
             ))}
             <TableRow>
