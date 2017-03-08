@@ -1,8 +1,7 @@
-export default (file, token) =>
+export const loadFile = (url, file, token) =>
 new Promise((resolve, reject) => {
-    const extension = file.name.split('.').pop();
     const oReq = new XMLHttpRequest();
-    oReq.open('POST', `/api/upload/${extension}`, true);
+    oReq.open('POST', url, true);
     oReq.withCredentials = true;
     oReq.setRequestHeader('Authorization', `Bearer ${token}`);
     oReq.onload = (event) => {
@@ -16,3 +15,14 @@ new Promise((resolve, reject) => {
 
     oReq.send(file);
 });
+
+export const loadDatasetFile = (file, token) => {
+    const extension = file.name.split('.').pop();
+    const url = `/api/upload/${extension}`;
+
+    return loadFile(url, file, token);
+};
+
+export const loadModelFile = (file, token) =>
+    loadFile('/api/field/import', file, token);
+

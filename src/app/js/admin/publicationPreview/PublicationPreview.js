@@ -13,6 +13,7 @@ import { polyglot as polyglotPropTypes, field as fieldPropTypes } from '../../pr
 import { fromFields, fromPublicationPreview } from '../selectors';
 import Card from '../../lib/Card';
 import ScrollableCardContent from '../../lib/ScrollableCardContent';
+import ImportFieldsDialog from './ImportFieldsDialog';
 
 const styles = {
     title: {
@@ -26,6 +27,10 @@ const styles = {
 };
 
 export class PublicationPreviewComponent extends Component {
+    constructor() {
+        super();
+        this.state = { showImportFieldsConfirmation: false };
+    }
     handleAddColumnClick = (event) => {
         event.preventDefault();
         event.stopPropagation();
@@ -45,8 +50,18 @@ export class PublicationPreviewComponent extends Component {
         this.props.editColumn(null);
     }
 
+    handleImportFieldsClose = () => {
+        this.setState({ showImportFieldsConfirmation: false });
+    }
+
+    handleImportFields = () => {
+        this.setState({ showImportFieldsConfirmation: true });
+    }
+
     render() {
         const { columns, lines, editColumn, editedColumn, p: polyglot } = this.props;
+        const { showImportFieldsConfirmation } = this.state;
+
         return (
             <Card initiallyExpanded className="publication-preview">
                 <CardHeader
@@ -58,6 +73,13 @@ export class PublicationPreviewComponent extends Component {
                         className="add-column"
                         label={polyglot.t('add_column')}
                         onClick={this.handleAddColumnClick}
+                        style={styles.button}
+                        secondary
+                    />
+                    <FlatButton
+                        className="btn-import-fields"
+                        label={polyglot.t('import_fields')}
+                        onClick={this.handleImportFields}
                         style={styles.button}
                         secondary
                     />
@@ -77,6 +99,11 @@ export class PublicationPreviewComponent extends Component {
                             columns={columns}
                             lines={lines}
                             onExitEdition={this.handleExitColumEdition}
+                        />
+                    }
+                    {showImportFieldsConfirmation &&
+                        <ImportFieldsDialog
+                            onClose={this.handleImportFieldsClose}
                         />
                     }
                 </ScrollableCardContent>

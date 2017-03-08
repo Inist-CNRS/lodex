@@ -1,5 +1,6 @@
 import Koa from 'koa';
 import route from 'koa-route';
+import rawBody from 'raw-body';
 
 import { validateField } from '../../models/field';
 
@@ -49,12 +50,23 @@ export const exportFields = async (ctx) => {
     ctx.body = fields;
 };
 
+export const importFields = rawBodyImpl => async (ctx) => {
+    const rawFields = await rawBodyImpl(ctx.req);
+    const fields = JSON.parse(rawFields.toString());
+
+    await ctx.field.remove({});
+    await Promise.all(fields.map(({ name, ...field }) => ctx.field.create(field, name)));
+
+    ctx.status = 200;
+};
+
 const app = new Koa();
 
 app.use(setup);
 
 app.use(route.get('/', getAllField));
 app.use(route.get('/export', exportFields));
+app.use(route.post('/import', importFields(rawBody)));
 app.use(route.post('/', postField));
 app.use(route.put('/:id', putField));
 app.use(route.del('/:id', removeField));

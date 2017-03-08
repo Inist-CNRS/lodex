@@ -8,7 +8,7 @@ import {
     uploadFileError,
 } from './';
 
-import loadFile from '../../lib/loadFile';
+import { loadDatasetFile } from '../../lib/loadFile';
 
 import { uploadFile as uploadFileSaga } from './sagas';
 
@@ -31,12 +31,12 @@ describe('parsing saga', () => {
             expect(value).toEqual(select(getToken));
         });
 
-        it('should race call(loadFile) and take(LOCATION_CHANGE)', () => {
+        it('should race call(loadDatasetFile) and take(LOCATION_CHANGE)', () => {
             saga.next();
             const { value } = saga.next('token');
 
             expect(value).toEqual(race({
-                file: call(loadFile, 'payload', 'token'),
+                file: call(loadDatasetFile, 'payload', 'token'),
                 cancel: take([LOCATION_CHANGE]),
             }));
         });

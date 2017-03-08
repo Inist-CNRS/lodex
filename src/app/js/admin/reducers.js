@@ -6,6 +6,7 @@ import { polyglotReducer as polyglot } from 'redux-polyglot';
 import fetchReducer from '../fetch';
 import fields from './fields';
 import i18n from '../i18n';
+import importReducer from './import';
 import parsing from './parsing';
 import publication from './publication';
 import publicationPreview from './publicationPreview';
@@ -20,6 +21,7 @@ const reducer = combineReducers({
     fields,
     form,
     i18n,
+    import: importReducer,
     polyglot,
     parsing,
     publication,
