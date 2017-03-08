@@ -4,7 +4,7 @@ import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 import moment from 'moment';
 
-import { CardHeader, CardText } from 'material-ui/Card';
+import { CardText } from 'material-ui/Card';
 
 import {
     Table,
@@ -16,7 +16,6 @@ import {
 } from 'material-ui/Table';
 
 import ButtonWithStatus from '../../lib/ButtonWithStatus';
-import Card from '../../lib/Card';
 import Loading from '../../lib/Loading';
 import Pagination from '../../lib/Pagination';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
@@ -58,52 +57,50 @@ export class RemovedResourceListComponent extends Component {
         if (loading) return <Loading>{polyglot.t('loading')}</Loading>;
 
         return (
-            <Card className="removed_resources">
-                <CardHeader title={polyglot.t('removed_resources')} />
-                <CardText>
-                    <Table selectable={false} fixedHeader={false} style={styles.table}>
-                        <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
-                            <TableRow>
-                                <TableHeaderColumn>{polyglot.t('removed_at')}</TableHeaderColumn>
-                                <TableHeaderColumn>{polyglot.t('removed_reason')}</TableHeaderColumn>
-                                {columns.map(({ name }) => <TableHeaderColumn key={name}>{name}</TableHeaderColumn>)}
-                                <TableHeaderColumn />
+            <CardText className="removed_resources">
+                <Table selectable={false} fixedHeader={false} style={styles.table}>
+                    <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
+                        <TableRow>
+                            <TableHeaderColumn>{polyglot.t('removed_at')}</TableHeaderColumn>
+                            <TableHeaderColumn>{polyglot.t('removed_reason')}</TableHeaderColumn>
+                            {columns.map(({ name, label }) =>
+                                <TableHeaderColumn key={name}>{label}</TableHeaderColumn>)}
+                            <TableHeaderColumn />
+                        </TableRow>
+                    </TableHeader>
+                    <TableBody displayRowCheckbox={false}>
+                        {resources.map(data => (
+                            <TableRow key={data.uri}>
+                                <TableRowColumn>{moment(data.removedAt).format('L')}</TableRowColumn>
+                                <TableRowColumn>{data.reason}</TableRowColumn>
+                                {columns.map(({ name }) => (
+                                    <TableRowColumn key={data[name]}>{data[name]}</TableRowColumn>
+                                ))}
+                                <TableRowColumn>
+                                    <ButtonWithStatus
+                                        className="btn-restore-resource"
+                                        loading={loading}
+                                        label={polyglot.t('restore')}
+                                        onClick={this.handleRestoreResourceClick(data.uri)}
+                                        primary
+                                        data={data.uri}
+                                    />
+                                </TableRowColumn>
                             </TableRow>
-                        </TableHeader>
-                        <TableBody displayRowCheckbox={false}>
-                            {resources.map(data => (
-                                <TableRow key={data.uri}>
-                                    <TableRowColumn>{moment(data.removedAt).format('L')}</TableRowColumn>
-                                    <TableRowColumn>{data.reason}</TableRowColumn>
-                                    {columns.map(({ name }) => (
-                                        <TableRowColumn key={data[name]}>{data[name]}</TableRowColumn>
-                                    ))}
-                                    <TableRowColumn>
-                                        <ButtonWithStatus
-                                            className="btn-restore-resource"
-                                            loading={loading}
-                                            label={polyglot.t('restore')}
-                                            onClick={this.handleRestoreResourceClick(data.uri)}
-                                            primary
-                                            data={data.uri}
-                                        />
-                                    </TableRowColumn>
-                                </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
-                    <Pagination
-                        onChange={this.handlePageChange}
-                        total={total}
-                        perPage={10}
-                        texts={{
-                            page: polyglot.t('page'),
-                            perPage: polyglot.t('perPage'),
-                            showing: polyglot.t('showing'),
-                        }}
-                    />
-                </CardText>
-            </Card>
+                        ))}
+                    </TableBody>
+                </Table>
+                <Pagination
+                    onChange={this.handlePageChange}
+                    total={total}
+                    perPage={10}
+                    texts={{
+                        page: polyglot.t('page'),
+                        perPage: polyglot.t('perPage'),
+                        showing: polyglot.t('showing'),
+                    }}
+                />
+            </CardText>
         );
     }
 }

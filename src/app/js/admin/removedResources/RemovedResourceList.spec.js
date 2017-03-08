@@ -14,7 +14,7 @@ import ButtonWithStatus from '../../lib/ButtonWithStatus';
 
 describe('<RemovedResourceList />', () => {
     const columns = [
-        { name: 'uri', label: 'Col 1' },
+        { name: 'uri', label: 'Uri' },
         { name: 'col2', label: 'Col 2' },
     ];
     const resources = [
@@ -71,8 +71,8 @@ describe('<RemovedResourceList />', () => {
         const headers = wrapper.find(TableHeaderColumn);
         expect(headers.at(0).children().text()).toEqual('removed_at');
         expect(headers.at(1).children().text()).toEqual('removed_reason');
-        expect(headers.at(2).children().text()).toEqual('uri');
-        expect(headers.at(3).children().text()).toEqual('col2');
+        expect(headers.at(2).children().text()).toEqual('Uri');
+        expect(headers.at(3).children().text()).toEqual('Col 2');
     });
 
     it('should render the TableRowColumn for each value for each column', () => {
