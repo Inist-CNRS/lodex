@@ -5,7 +5,7 @@ import ensureIsUnique from './ensureIsUnique';
 export default (db) => {
     const collection = db.collection('dataset');
     collection.insertBatch = documents => chunk(documents, 100).map(data => collection.insertMany(data));
-    collection.getExcerpt = () => collection.find().limit(5).toArray();
+    collection.getExcerpt = () => collection.find().limit(6).toArray();
     collection.findLimitFromSkip = (limit, skip) => collection.find().skip(skip).limit(limit).toArray();
 
     collection.ensureIsUnique = ensureIsUnique(collection);

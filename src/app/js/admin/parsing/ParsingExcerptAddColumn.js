@@ -4,21 +4,29 @@ import { bindActionCreators } from 'redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 
-import { TableRowColumn } from 'material-ui/Table';
-import FlatButton from 'material-ui/FlatButton';
+import RaisedButton from 'material-ui/RaisedButton';
 
 import { addField } from '../fields';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 
+const styles = {
+    button: {
+        position: 'absolute',
+        bottom: '-68px',
+        left: '1.5rem',
+        opacity: 1,
+        zIndex: 10000,
+    },
+};
+
 export const ParsingExcerptAddColumnComponent = ({ addColumn, name, p: polyglot }) => (
-    <TableRowColumn>
-        <FlatButton
-            className={`btn-excerpt-add-column btn-excerpt-add-column-${name}`}
-            label={polyglot.t('add_to_publication')}
-            onClick={addColumn}
-            primary
-        />
-    </TableRowColumn>
+    <RaisedButton
+        className={`btn-excerpt-add-column btn-excerpt-add-column-${name}`}
+        label={polyglot.t('add_to_publication')}
+        onClick={addColumn}
+        primary
+        style={styles.button}
+    />
 );
 
 ParsingExcerptAddColumnComponent.propTypes = {

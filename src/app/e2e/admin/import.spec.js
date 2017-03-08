@@ -5,7 +5,6 @@ import path from 'path';
 import driver from '../../../common/tests/chromeDriver';
 import { elementIsClicked, elementsCountIs } from '../../../common/tests/conditions';
 import { clear } from '../../../common/tests/fixtures';
-import { printBrowserLog } from '../../../common/tests/debug';
 import loginAsJulia from '../loginAsJulia';
 
 describe('Admin', () => {
