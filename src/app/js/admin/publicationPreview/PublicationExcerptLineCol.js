@@ -5,6 +5,7 @@ import { TableRowColumn } from 'material-ui/Table';
 import { connect } from 'react-redux';
 
 import { fromFields } from '../selectors';
+import { isLongText, getShortText } from '../../lib/longTexts';
 
 const styles = {
     header: {
@@ -21,14 +22,14 @@ const styles = {
     },
 };
 
-export const PublicationExcerptLineColComponent = ({
-    value,
-}) => (
-    <TableRowColumn
-        style={styles.cell}
-    >
-        {value}
-    </TableRowColumn>
+export const PublicationExcerptLineColComponent = ({ value }) => (
+    isLongText(value)
+    ? (
+        <TableRowColumn title={value} style={styles.cell}>
+            {getShortText(value)}
+        </TableRowColumn>
+    )
+    : <TableRowColumn style={styles.cell}>{value}</TableRowColumn>
 );
 
 PublicationExcerptLineColComponent.propTypes = {
