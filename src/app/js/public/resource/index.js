@@ -23,6 +23,8 @@ export const RESOURCE_FORM_NAME = 'resource';
 export const HIDE_RESOURCE_FORM_NAME = 'hideResource';
 export const NEW_RESOURCE_FIELD_FORM_NAME = 'newResourceField';
 
+export const CHANGE_FIELD_STATUS = 'CHANGE_FIELD_STATUS';
+
 export const loadResource = createAction(LOAD_RESOURCE);
 export const loadResourceSuccess = createAction(LOAD_RESOURCE_SUCCESS);
 export const loadResourceError = createAction(LOAD_RESOURCE_ERROR);
@@ -38,6 +40,8 @@ export const hideResourceError = createAction(HIDE_RESOURCE_ERROR);
 export const addFieldToResource = createAction(ADD_FIELD_TO_RESOURCE);
 export const addFieldToResourceSuccess = createAction(ADD_FIELD_TO_RESOURCE_SUCCESS);
 export const addFieldToResourceError = createAction(ADD_FIELD_TO_RESOURCE_ERROR);
+
+export const changeFieldStatus = createAction(CHANGE_FIELD_STATUS);
 
 export const defaultState = {
     resource: {},
@@ -93,6 +97,25 @@ export default handleActions({
         error: error.message,
         saving: false,
     }),
+    CHANGE_FIELD_STATUS: (state, { payload: { field, status } }) => {
+        const { contributions } = state.resource;
+        const index = contributions.findIndex(({ fieldName }) => fieldName === field);
+
+        return {
+            ...state,
+            resource: {
+                ...state.resource,
+                contributions: [
+                    ...contributions.slice(0, index - 1),
+                    {
+                        ...contributions[index],
+                        status,
+                    },
+                    ...contributions.slice(index + 1),
+                ],
+            },
+        };
+    },
 }, defaultState);
 
 const getResourceLastVersion = (state, resource = state.resource) => {

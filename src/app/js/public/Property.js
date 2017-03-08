@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 import classnames from 'classnames';
+import { bindActionCreators } from 'redux';
 
 import {
     fromResource,
@@ -16,12 +17,14 @@ import Format from './Format';
 import CompositeProperty from './CompositeProperty';
 import { languages } from '../../../../config.json';
 import propositionStatus, { PROPOSED, VALIDATED, REJECTED } from '../../../common/propositionStatus';
+import ModerateButton from './ModerateButton';
+import { changeFieldStatus } from './resource';
 
 const styles = {
     container: status => ({
         display: 'flex',
         marginRight: '1rem',
-        color: status !== VALIDATED ? 'grey' : 'black',
+        color: (status && status !== VALIDATED) ? 'grey' : 'black',
         textDecoration: status === REJECTED ? 'line-through' : 'none',
     }),
     name: {
@@ -49,6 +52,7 @@ const PropertyComponent = ({
     resource,
     contributors,
     fieldStatus,
+    changeStatus,
     p: polyglot,
 }) => (
     <div
@@ -63,19 +67,19 @@ const PropertyComponent = ({
                             ({languages.find(f => f.code === field.language).label})
                         </span>
                     }
-                </div>
-                { contributors[field.name] ?
-                    <div className="property_contributor" style={styles.scheme}>
-                        {
+                    { contributors[field.name] ?
+                        <div className="property_contributor" style={styles.scheme}>
+                            {
                             fieldStatus === PROPOSED ?
                                 polyglot.t('contributed_by', { name: contributors[field.name] })
                             :
                                 polyglot.t('added_by', { name: contributors[field.name] })
-                        }
-                    </div>
-                :
-                    null
-                }
+                            }
+                        </div>
+                    :
+                        null
+                    }
+                </div>
             </dt>
             <dd>
                 { compositeFields.length > 0 ?
@@ -97,6 +101,11 @@ const PropertyComponent = ({
                     />
                 ))}
             </dd>
+            {
+                fieldStatus ?
+                    <ModerateButton status={fieldStatus} changeStatus={changeStatus} />
+                : null
+            }
         </dl>
         <div className="property_scheme" style={styles.scheme}>{field.scheme}</div>
     </div>
@@ -112,6 +121,7 @@ PropertyComponent.propTypes = {
     p: polyglotPropTypes.isRequired,
     resource: PropTypes.shape({}).isRequired,
     fieldStatus: PropTypes.oneOf(propositionStatus),
+    changeStatus: PropTypes.func.isRequired,
 };
 
 PropertyComponent.defaultProps = {
@@ -127,9 +137,17 @@ const mapStateToProps = (state, { field }) => ({
     fieldStatus: fromResource.getFieldStatus(state, field),
 });
 
+const mapDispatchToProps = (dispatch, { field }) => bindActionCreators({
+    changeStatus: (prevStatus, status) => changeFieldStatus({
+        field: field.name,
+        status,
+        prevStatus,
+    }),
+}, dispatch);
+
 const Property = compose(
     translate,
-    connect(mapStateToProps),
+    connect(mapStateToProps, mapDispatchToProps),
 )(PropertyComponent);
 
 export default Property;
