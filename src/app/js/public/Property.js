@@ -15,12 +15,14 @@ import {
 import Format from './Format';
 import CompositeProperty from './CompositeProperty';
 import { languages } from '../../../../config.json';
+import propositionStatus, { PROPOSED, VALIDATED, REJECTED } from '../../../common/propositionStatus';
 
 const styles = {
-    container: unValidated => ({
+    container: status => ({
         display: 'flex',
         marginRight: '1rem',
-        color: unValidated ? 'grey' : 'black',
+        color: status !== VALIDATED ? 'grey' : 'black',
+        textDecoration: status === REJECTED ? 'line-through' : 'none',
     }),
     name: {
         fontWeight: 'bold',
@@ -46,13 +48,13 @@ const PropertyComponent = ({
     fields,
     resource,
     contributors,
-    unValidatedFields,
+    fieldStatus,
     p: polyglot,
 }) => (
     <div
         className={classnames('property', field.label.toLowerCase().replace(/\s/g, '_'), className)}
     >
-        <dl style={styles.container(unValidatedFields.includes(resource.name))}>
+        <dl style={styles.container(fieldStatus)}>
             <dt>
                 <div>
                     <span className="property_name" style={styles.name}>{field.label}</span>
@@ -64,7 +66,12 @@ const PropertyComponent = ({
                 </div>
                 { contributors[field.name] ?
                     <div className="property_contributor" style={styles.scheme}>
-                        {polyglot.t('contributed_by', { name: contributors[field.name] })}
+                        {
+                            fieldStatus === PROPOSED ?
+                                polyglot.t('contributed_by', { name: contributors[field.name] })
+                            :
+                                polyglot.t('added_by', { name: contributors[field.name] })
+                        }
                     </div>
                 :
                     null
@@ -104,19 +111,20 @@ PropertyComponent.propTypes = {
     compositeFields: PropTypes.arrayOf(fieldPropTypes).isRequired,
     p: polyglotPropTypes.isRequired,
     resource: PropTypes.shape({}).isRequired,
-    unValidatedFields: PropTypes.arrayOf(PropTypes.string).isRequired,
+    fieldStatus: PropTypes.oneOf(propositionStatus),
 };
 
 PropertyComponent.defaultProps = {
     className: null,
+    fieldStatus: null,
 };
 
 const mapStateToProps = (state, { field }) => ({
-    unValidatedFields: fromResource.getResourceProposededFields(state),
     contributors: fromResource.getResourceContributorsByField(state),
     fields: fromPublication.getCollectionFields(state),
     linkedFields: fromPublication.getLinkedFields(state, field),
     compositeFields: fromPublication.getCompositeFieldsByField(state, field),
+    fieldStatus: fromResource.getFieldStatus(state, field),
 });
 
 const Property = compose(

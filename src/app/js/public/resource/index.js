@@ -106,7 +106,7 @@ const getResourceLastVersion = (state, resource = state.resource) => {
     };
 };
 
-const getResourceProposededFields = (state) => {
+const getResourceProposedFields = (state) => {
     const { contributions } = state.resource;
     if (!contributions) {
         return [];
@@ -115,6 +115,23 @@ const getResourceProposededFields = (state) => {
         .filter(({ status }) => status === PROPOSED)
         .map(({ fieldName }) => fieldName);
 };
+
+const getProposedFieldStatus = (state) => {
+    const { contributions } = state.resource;
+    if (!contributions) {
+        return {};
+    }
+    return contributions
+        .reduce((acc, { fieldName, status }) => ({
+            [fieldName]: status,
+        }), {});
+};
+
+const getFieldStatus = createSelector(
+    getProposedFieldStatus,
+    (_, { name }) => name,
+    (fieldStatusByName, name) => fieldStatusByName[name],
+);
 
 const getResourceContributions = state =>
     state.resource.contributions || [];
@@ -146,12 +163,14 @@ const isLoading = state => state.loading;
 
 export const fromResource = {
     getResourceLastVersion,
-    getResourceProposededFields,
+    getResourceProposedFields,
     getResourceContributions,
     getResourceContributorsByField,
     getRemovedData,
     isSaving,
     isLoading,
+    getProposedFieldStatus,
+    getFieldStatus,
 };
 
 export const getResourceFormData = state => state.form.resource.values;
