@@ -18,7 +18,7 @@ export default (db) => {
     collection.findRemovedPage = (page = 0, perPage = 10) =>
         collection.findLimitFromSkip(perPage, page * perPage, { removedAt: { $exists: true } });
 
-    collection.findContributionPage = (page, perPage, status = PROPOSED) =>
+    collection.findContributedPage = (page, perPage, status) =>
         collection.findLimitFromSkip(perPage, page * perPage, {
             removedAt: { $exists: false },
             'contributions.status': status,
@@ -26,6 +26,9 @@ export default (db) => {
 
     collection.countRemoved = () =>
         collection.count({ removedAt: { $exists: true } });
+
+    collection.countContributed = status =>
+        collection.count({ removedAt: { $exists: false }, [`contributionCount${status}`]: { $gt: 1 } });
 
     collection.countWithoutRemoved = () =>
         collection.count({ removedAt: { $exists: false } });

@@ -146,3 +146,12 @@ export const getExportFieldsRequest = state =>
     getRequest(state, {
         url: '/api/field/export',
     });
+
+export const getLoadContributedResourcePageRequest = (state, { page, perPage, filter }) => {
+    const encodedPage = encodeURIComponent(page);
+    const encodedPerPage = encodeURIComponent(perPage);
+
+    return getRequest(state, {
+        url: `/api/publishedDataset/contributed/${filter}?page=${encodedPage}&perPage=${encodedPerPage}`,
+    });
+};

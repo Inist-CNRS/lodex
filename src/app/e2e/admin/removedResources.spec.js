@@ -3,12 +3,12 @@ import expect from 'expect';
 
 import driver from '../../../common/tests/chromeDriver';
 import { clear, loadFixtures } from '../../../common/tests/fixtures';
-import fixtures from './resources.json';
+import fixtures from './removedResources.json';
 import { elementIsClicked } from '../../../common/tests/conditions';
 import loginAsJulia from '../loginAsJulia';
 
 describe('Admin', () => {
-    describe('Resource management', function homePublishedDataTests() {
+    describe('Removed Resource management', function homePublishedDataTests() {
         this.timeout(30000);
         const DEFAULT_WAIT_TIMEOUT = 9000; // A bit less than mocha's timeout to get explicit errors from selenium
 
@@ -18,11 +18,17 @@ describe('Admin', () => {
             await loginAsJulia('/admin', '/');
         });
 
+        it('should activate removed-resources tab', async () => {
+            await driver.wait(until.elementLocated(By.css('.removed-tab')), DEFAULT_WAIT_TIMEOUT);
+            const tab = await driver.findElement(By.css('.removed-tab'));
+            await driver.wait(elementIsClicked(tab), DEFAULT_WAIT_TIMEOUT);
+        });
+
         it('should display the removed resources', async () => {
             await driver.wait(until.elementLocated(By.css('.removed_resources')), DEFAULT_WAIT_TIMEOUT);
             const headers = await driver.findElements(By.css('.removed_resources table th'));
             const headersText = await Promise.all(headers.map(h => h.getText()));
-            expect(headersText).toEqual(['Removed at', 'Reason', 'uri', 'fullname', 'email', '']);
+            expect(headersText).toEqual(['Removed at', 'Reason', 'URI', 'Full name', 'Email', '']);
 
             const trs = await driver.findElements(By.css('.removed_resources table tbody tr'));
             expect(trs.length).toEqual(2);

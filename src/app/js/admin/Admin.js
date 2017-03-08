@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
+import { Tab, Tabs } from 'material-ui/Tabs';
 
 import { polyglot as polyglotPropTypes } from '../propTypes';
 
@@ -17,8 +18,11 @@ import PublicationPreview from './publicationPreview/PublicationPreview';
 import Publish from './publish/Publish';
 import Published from './publish/Published';
 import RemovedResourceList from './removedResources/RemovedResourceList';
+import ContributedResourceList from './contributedResources/ContributedResourceList';
 import Upload from './upload/Upload';
 import Loading from '../lib/Loading';
+import Card from '../lib/Card';
+
 
 export class AdminComponent extends Component {
     static propTypes = {
@@ -51,10 +55,17 @@ export class AdminComponent extends Component {
 
         if (hasPublishedDataset) {
             return (
-                <div className="admin">
+                <Card className="admin">
                     <Published />
-                    <RemovedResourceList />
-                </div>
+                    <Tabs>
+                        <Tab label={polyglot.t('contributed_resources')} className="contributed-tab" >
+                            <ContributedResourceList />
+                        </Tab>
+                        <Tab label={polyglot.t('removed_resources')} className="removed-tab" >
+                            <RemovedResourceList />
+                        </Tab>
+                    </Tabs>
+                </Card>
             );
         }
 

@@ -15,6 +15,7 @@ import removedResources from './removedResources';
 import upload from './upload';
 import user from '../user';
 import debugReducer from '../lib/debugReducer';
+import contributedResources from './contributedResources';
 
 const reducer = combineReducers({
     fetch: fetchReducer,
@@ -31,6 +32,7 @@ const reducer = combineReducers({
     routing,
     upload,
     user,
+    contributedResources,
 });
 
 export default __DEBUG__ ?

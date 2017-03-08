@@ -1,0 +1,145 @@
+{
+    "field": [{
+        "name" : "uri",
+        "transformers" : [{ "operation" : "COLUMN", "args" : [ { "name" : "column", "type" : "column", "value" : "id" } ] } ],
+        "label" : "URI",
+        "cover" : "collection",
+        "scheme" : "http://uri4uri.net/vocab"
+    }, {
+        "name" : "fullname",
+        "label" : "Full name",
+        "transformers" : [
+            { "operation" : "COLUMN", "args" : [ { "name" : "column", "type" : "column", "value" : "uid" } ] },
+            { "operation" : "UPPERCASE", "args" : [ ] }
+        ],
+        "cover" : "collection",
+        "scheme" : "http://www.w3.org/ns/person"
+    }, {
+        "name" : "email",
+        "label" : "Email",
+        "transformers" : [ { "operation" : "COLUMN", "args" : [ { "name" : "column", "type" : "column", "value" : "mail" } ] } ],
+        "cover" : "collection",
+        "scheme" : "http://uri4uri.net/vocab"
+    }, {
+        "name" : "movie",
+        "label" : "Movie",
+        "transformers" : [ { "operation" : "COLUMN", "args" : [ { "name" : "column", "type" : "column", "value" : "movie" } ] } ],
+        "cover" : "dataset",
+        "scheme" : "http://www.w3.org/ns/person"
+    }, {
+        "name" : "author",
+        "label" : "Author",
+        "transformers" : [ { "operation" : "COLUMN", "args" : [ { "name" : "column", "type" : "column", "value" : "author" } ] } ],
+        "cover" : "dataset",
+        "scheme" : "http://www.w3.org/ns/person"
+    }, {
+        "name" : "note",
+        "label" : "Note",
+        "cover" : "document",
+        "contribution": true,
+        "scheme" : "http://www.w3.org/ns/note",
+        "contributors": [{
+            "name": "john",
+            "mail": "john@mail.com"
+        }]
+    }, {
+        "name": "age",
+        "label": "Age",
+        "cover": "document",
+        "contribution": true,
+        "scheme": "http://www.w3.org/ns/age",
+        "contributors": [
+            {
+                "name": "jane",
+                "mail": "jane@mail.com"
+            }
+        ]
+    }],
+    "publishedCharacteristic": [
+        { "movie": "LOTR" , "author": "Peter Jackson" }
+    ],
+    "publishedDataset": [
+        {
+            "uri" : "1",
+            "versions": [{
+                "fullname" : "PEREGRIN.TOOK",
+                "email" : "peregrin.took@shire.net"
+            }, {
+                "fullname": "PEREGRIN.TOOK",
+                "email": "peregrin.took@shire.net",
+                "note": "15/20"
+            }, {
+                "fullname": "PEREGRIN.TOOK",
+                "email": "peregrin.took@shire.net",
+                "note": "15/20",
+                "age": "94"
+            }],
+            "contributions": [{
+                "fieldName": "note",
+                "contributor": null,
+                "status": "VALIDATED"
+            }, {
+                "fieldName": "age",
+                "contributor": {
+                    "name": "jane",
+                    "mail": "jane@mail.com"
+                },
+                "status": "PROPOSED"
+            }],
+            "contributionCount": {
+                "VALIDATED": 1,
+                "PROPOSED": 1
+            }
+        },
+        {
+            "uri" : "2",
+            "versions": [{
+                "fullname" : "SAMSAGET.GAMGIE",
+                "email" : "samsaget.gamgie@shire.net"
+            }],
+            "contributions": [{
+                "fieldName": "note",
+                "contributor": {
+                    "name": "john",
+                    "mail": "john@mail.com"
+                },
+                "status": "PROPOSED"
+            }],
+            "contributionCount": {
+                "PROPOSED": 1
+            }
+        },
+        {
+            "uri" : "3",
+            "versions": [{
+                "fullname" : "BILBON.BAGGINS",
+                "email" : "bilbon.saquet@shire.net"
+            }],
+            "contributions": [{
+                "fieldName": "note",
+                "contributor": {
+                    "name": "john",
+                    "mail": "john@mail.com"
+                },
+                "status": "REJECTED"
+            }],
+            "contributionCount": {
+                "REJECTED": 1
+            }
+        },
+        {
+            "uri" : "4",
+            "versions": [{
+                "fullname" : "FRODO.BAGGINS",
+                "email" : "frodo.saquet@shire.net"
+            }]
+        },
+        {
+            "uri" : "5",
+            "versions": [{
+                "fullname" : "MERIADOC.BRANDYBUCK",
+                "email" : "meriadoc.brandybuck@shire.net"
+            }]
+        }
+    ]
+}

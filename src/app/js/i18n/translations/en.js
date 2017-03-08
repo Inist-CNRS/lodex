@@ -89,4 +89,10 @@ export default {
     confirm_import_fields: 'Importing a saved model will override your current work. Are you sure ?',
     import_fields_failed: 'Your model couldn\'t be imported. Please ensure you selected the correct file.',
     no: 'No',
+    contributed_resources: 'contributed resources',
+    review: 'review',
+    contribution_filter: 'list resources with %{status} contribution',
+    PROPOSED: 'proposed',
+    VALIDATED: 'validated',
+    REJECTED: 'rejected',
 };
