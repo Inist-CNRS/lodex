@@ -3,12 +3,12 @@ import expect from 'expect';
 
 import driver from '../../../common/tests/chromeDriver';
 import { clear, loadFixtures } from '../../../common/tests/fixtures';
-import fixtures from './resources.json';
+import fixtures from './removedResources.json';
 import { elementIsClicked } from '../../../common/tests/conditions';
 import loginAsJulia from '../loginAsJulia';
 
 describe('Admin', () => {
-    describe('Resource management', function homePublishedDataTests() {
+    describe('Removed Resource management', function homePublishedDataTests() {
         this.timeout(30000);
         const DEFAULT_WAIT_TIMEOUT = 9000; // A bit less than mocha's timeout to get explicit errors from selenium
 
