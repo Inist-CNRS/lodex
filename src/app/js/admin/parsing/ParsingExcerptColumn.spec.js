@@ -8,8 +8,11 @@ import { ParsingExcerptColumnComponent as ParsingExcerptColumn } from './Parsing
 
 describe('<ParsingExcerptColumn />', () => {
     it('should render the value directly when it is short', () => {
-        const wrapper = shallow(<ParsingExcerptColumn value="foo" />);
-        expect(wrapper.contains(<TableRowColumn>foo</TableRowColumn>)).toEqual(true);
+        const value = 'foo';
+        const wrapper = shallow(<ParsingExcerptColumn value={value} />);
+        const row = wrapper.find(TableRowColumn);
+        expect(row.prop('title')).toEqual(undefined);
+        expect(row.children().text()).toEqual(value);
     });
 
     it('should render the value truncated when it is long', () => {
@@ -17,6 +20,6 @@ describe('<ParsingExcerptColumn />', () => {
         const wrapper = shallow(<ParsingExcerptColumn value={value} />);
         const row = wrapper.find(TableRowColumn);
         expect(row.prop('title')).toEqual(value);
-        expect(row.prop('children')).toEqual(getShortText(value));
+        expect(row.children().text()).toEqual(getShortText(value));
     });
 });
