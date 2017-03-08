@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
-import moment from 'moment';
+import FlatButton from 'material-ui/FlatButton';
 
 import { CardHeader, CardText } from 'material-ui/Card';
 
@@ -15,7 +15,6 @@ import {
     TableRowColumn,
 } from 'material-ui/Table';
 
-import ButtonWithStatus from '../../lib/ButtonWithStatus';
 import Card from '../../lib/Card';
 import Loading from '../../lib/Loading';
 import Pagination from '../../lib/Pagination';
@@ -40,19 +39,13 @@ export class ContributedResourceListComponent extends Component {
     componentWillMount() {
         const { loadField, loadContributedResourcePage, currentPage } = this.props;
         loadField();
-        loadContributedResourcePage({ page: currentPage, perPage: 10 });
+        loadContributedResourcePage({ page: currentPage, perPage: 10, status: 'VALIDATED' });
     }
 
     handlePageChange = (currentPage, perPage) => {
         this
             .props
-            .loadContributedResourcePage({ page: currentPage, perPage });
-    }
-
-    handleRestoreResourceClick = id => () => {
-        this
-            .props
-            .restoreRessource(id);
+            .loadContributedResourcePage({ page: currentPage, perPage, status: 'VALIDATED' });
     }
 
     render() {
@@ -61,7 +54,6 @@ export class ContributedResourceListComponent extends Component {
         if (loading) {
             return <Loading>{polyglot.t('loading')}</Loading>;
         }
-
         return (
             <Card className="contributed_resources">
                 <CardHeader title={polyglot.t('contributed_resources')} />
@@ -69,30 +61,26 @@ export class ContributedResourceListComponent extends Component {
                     <Table selectable={false} fixedHeader={false} style={styles.table}>
                         <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
                             <TableRow>
-                                <TableHeaderColumn>{polyglot.t('removed_at')}</TableHeaderColumn>
-                                <TableHeaderColumn>{polyglot.t('removed_reason')}</TableHeaderColumn>
-                                {columns.map(({ name }) => <TableHeaderColumn key={name}>{name}</TableHeaderColumn>)}
                                 <TableHeaderColumn />
+                                {columns.map(({ name, label }) =>
+                                    <TableHeaderColumn key={name}>{label}</TableHeaderColumn>)}
                             </TableRow>
                         </TableHeader>
                         <TableBody displayRowCheckbox={false}>
                             {resources.map(data => (
                                 <TableRow key={data.uri}>
-                                    <TableRowColumn>{moment(data.removedAt).format('L')}</TableRowColumn>
-                                    <TableRowColumn>{data.reason}</TableRowColumn>
-                                    {columns.map(({ name }) => (
-                                        <TableRowColumn key={data[name]}>{data[name]}</TableRowColumn>
-                                    ))}
-                                    <TableRowColumn>
-                                        <ButtonWithStatus
-                                            className="btn-restore-resource"
-                                            loading={loading}
-                                            label={polyglot.t('restore')}
-                                            onClick={this.handleRestoreResourceClick(data.uri)}
-                                            primary
-                                            data={data.uri}
-                                        />
+                                    <TableRowColumn key="review">
+                                        <a href={`/#/resource?uri=${data.uri}`}>
+                                            <FlatButton
+                                                className="btn-review-resource"
+                                                label={polyglot.t('review')}
+                                                primary
+                                            />
+                                        </a>
                                     </TableRowColumn>
+                                    {columns.map(({ name }) => (
+                                        <TableRowColumn key={name}>{data[name]}</TableRowColumn>
+                                    ))}
                                 </TableRow>
                             ))}
                         </TableBody>
@@ -125,7 +113,6 @@ ContributedResourceListComponent.propTypes = {
     loadField: PropTypes.func.isRequired,
     loadContributedResourcePage: PropTypes.func.isRequired,
     p: polyglotPropTypes.isRequired,
-    restoreRessource: PropTypes.func.isRequired,
     total: PropTypes.number.isRequired,
 };
 

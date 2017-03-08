@@ -1,6 +1,8 @@
 import Koa from 'koa';
 import route from 'koa-route';
 
+import { PROPOSED } from '../../../common/propositionStatus';
+
 const app = new Koa();
 
 export const getPage = async (ctx) => {
@@ -81,9 +83,23 @@ export const changePropositionStatus = async (ctx, uri, name, status) => {
     ctx.body = await ctx.publishedDataset.changePropositionStatus(uri, name, status);
 };
 
-export const getPropositionPage = async (ctx, status) => {
+export const getPropositionPage = async (ctx, status = PROPOSED) => {
     const { page = 0, perPage = 10 } = ctx.request.query;
-    ctx.body = await ctx.publishedDataset.findContributionPage(page, perPage, status);
+    const intPage = parseInt(page, 10);
+    const intPerPage = parseInt(perPage, 10);
+
+    const [data, total] = await Promise.all([
+        ctx.publishedDataset.findContributedPage(intPage, intPerPage, status),
+        ctx.publishedDataset.countContributed(status),
+    ]);
+
+    ctx.body = {
+        total,
+        data: data.map(doc => ({
+            ...doc.versions[doc.versions.length - 1],
+            uri: doc.uri,
+        })),
+    };
 };
 
 app.use(route.get('/removed', getRemovedPage));
