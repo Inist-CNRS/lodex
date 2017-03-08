@@ -77,6 +77,15 @@ export const addFieldToResource = async (ctx) => {
     }, isLoggedIn);
 };
 
+export const changePropositionStatus = async (ctx, uri, name, status) => {
+    ctx.body = await ctx.publishedDataset.changePropositionStatus(uri, name, status);
+};
+
+export const getPropositionPage = async (ctx, status) => {
+    const { page = 0, perPage = 10 } = ctx.request.query;
+    ctx.body = await ctx.publishedDataset.findContributionPage(page, perPage, status);
+};
+
 app.use(route.get('/removed', getRemovedPage));
 app.use(route.get('/', getPage));
 app.use(route.post('/add_field', addFieldToResource));
@@ -92,5 +101,7 @@ app.use(async (ctx, next) => {
 app.use(route.post('/', editResource));
 app.use(route.put('/restore', restoreResource));
 app.use(route.del('/', removeResource));
+app.use(route.get('/contribution/:status', getPropositionPage));
+app.use(route.put('/:uri/change_contribution_status/:name/:status', changePropositionStatus));
 
 export default app;

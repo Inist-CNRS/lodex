@@ -18,6 +18,12 @@ export default (db) => {
     collection.findRemovedPage = (page = 0, perPage = 10) =>
         collection.findLimitFromSkip(perPage, page * perPage, { removedAt: { $exists: true } });
 
+    collection.findContributionPage = (page, perPage, status = PROPOSED) =>
+        collection.findLimitFromSkip(perPage, page * perPage, {
+            removedAt: { $exists: false },
+            'contributions.status': status,
+        });
+
     collection.countRemoved = () =>
         collection.count({ removedAt: { $exists: true } });
 
@@ -74,10 +80,52 @@ export default (db) => {
                     status: isLoggedIn ? VALIDATED : PROPOSED,
                 },
             },
+            $inc: isLoggedIn ? {
+                [`contributionCount.${VALIDATED}`]: 1,
+            } : {
+                [`contributionCount.${PROPOSED}`]: 1,
+            },
             $push: {
                 versions: {
                     ...newVersion,
                     publicationDate,
+                },
+            },
+        });
+    };
+
+    collection.getFieldStatus = async (uri, name) => {
+        const result = await collection.aggregate([
+            { $match: { uri } },
+            { $unwind: '$contributions' },
+            { $match: { 'contributions.fieldName': name } },
+            { $project: { _id: 0, status: '$contributions.status' } },
+        ]);
+
+        if (!result) {
+            return null;
+        }
+
+        return result.status;
+    };
+
+    collection.changePropositionStatus = async (uri, name, status) => {
+        const previousStatus = await collection.getFieldStatus(uri, name);
+        if (!previousStatus || previousStatus === status) {
+            return;
+        }
+
+        await collection.update({
+            uri,
+            'contributions.fieldName': name,
+        }, {
+            $set: {
+                'contributions.$.status': status,
+            },
+            $inc: {
+                contributions: {
+                    [status]: 1,
+                    [previousStatus]: -1,
                 },
             },
         });
