@@ -15,6 +15,7 @@ const styles = {
         bottom: '-68px',
         left: '1.5rem',
         opacity: 1,
+        zIndex: 10000,
     },
 };
 
