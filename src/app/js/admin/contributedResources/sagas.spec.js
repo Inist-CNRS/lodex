@@ -6,6 +6,7 @@ import { loadContributedResourcePageError, loadContributedResourcePageSuccess } 
 import { handleLoadContributedResourcePageRequest } from './sagas';
 import fetchSaga from '../../lib/fetchSaga';
 import { getLoadContributedResourcePageRequest } from '../../fetch/';
+import { fromContributedResources } from '../selectors';
 
 describe('load removed resources saga', () => {
     describe('handleLoadContributedResourcePageRequest', () => {
@@ -16,11 +17,16 @@ describe('load removed resources saga', () => {
             },
         });
 
+        it('should select getRequestData', () => {
+            expect(saga.next().value).toEqual(select(fromContributedResources.getRequestData));
+        });
+
         it('should select getLoadContributedResourcePageRequest', () => {
-            expect(saga.next().value).toEqual(select(getLoadContributedResourcePageRequest, {
-                page: 10,
-                perPage: 42,
-            }));
+            expect(saga.next({ page: 10, perPage: 42 }).value)
+                .toEqual(select(getLoadContributedResourcePageRequest, {
+                    page: 10,
+                    perPage: 42,
+                }));
         });
 
         it('should call fetchDafetchSagataset with the request', () => {
@@ -49,13 +55,9 @@ describe('load removed resources saga', () => {
         });
 
         it('should put loadContributedResourcePageError action with error if any', () => {
-            const failedSaga = handleLoadContributedResourcePageRequest({
-                payload: {
-                    page: 0,
-                    perPage: 20,
-                },
-            });
+            const failedSaga = handleLoadContributedResourcePageRequest();
             failedSaga.next();
+            failedSaga.next({ page: 0, perPage: 20 });
             failedSaga.next();
             expect(failedSaga.next({ error: 'foo' }).value).toEqual(put(loadContributedResourcePageError('foo')));
         });

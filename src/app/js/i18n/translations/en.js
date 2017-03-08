@@ -91,4 +91,8 @@ export default {
     no: 'No',
     contributed_resources: 'contributed resources',
     review: 'review',
+    contribution_filter: 'list resources with %{status} contribution',
+    PROPOSED: 'proposed',
+    VALIDATED: 'validated',
+    REJECTED: 'rejected',
 };
