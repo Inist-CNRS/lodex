@@ -108,8 +108,8 @@ app.use(route.get('/', getPage));
 app.use(route.post('/add_field', addFieldToResource));
 app.use(async (ctx, next) => {
     if (!ctx.state.cookie || !ctx.state.header) {
-        this.status = 401;
-        this.body = 'No authentication token found';
+        ctx.status = 401;
+        ctx.body = 'No authentication token found';
         return;
     }
 

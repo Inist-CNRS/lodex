@@ -155,3 +155,9 @@ export const getLoadContributedResourcePageRequest = (state, { page, perPage, fi
         url: `/api/publishedDataset/contributed/${filter}?page=${encodedPage}&perPage=${encodedPerPage}`,
     });
 };
+
+export const getChangeFieldStatusRequest = (state, { uri, field, status }) =>
+    getRequest(state, {
+        method: 'PUT',
+        url: `/api/publishedDataset/${uri}/change_contribution_status/${field}/${status}`,
+    });

@@ -1,26 +1,29 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
-import compose from 'recompose/compose';
-import translate from 'redux-polyglot/translate';
 import classnames from 'classnames';
+import { bindActionCreators } from 'redux';
 
 import {
     fromResource,
-    fromPublication,
 } from './selectors';
 import {
     field as fieldPropTypes,
-    polyglot as polyglotPropTypes,
 } from '../propTypes';
-import Format from './Format';
 import CompositeProperty from './CompositeProperty';
 import { languages } from '../../../../config.json';
+import propositionStatus, { VALIDATED, REJECTED } from '../../../common/propositionStatus';
+import ModerateButton from './ModerateButton';
+import { changeFieldStatus } from './resource';
+import PropertyContributor from './PropertyContributor';
+import PropertyLinkedFields from './PropertyLinkedFields';
+import { isLoggedIn } from '../user';
 
 const styles = {
-    container: unValidated => ({
+    container: status => ({
         display: 'flex',
         marginRight: '1rem',
-        color: unValidated ? 'grey' : 'black',
+        color: (status && status !== VALIDATED) ? 'grey' : 'black',
+        textDecoration: status === REJECTED ? 'line-through' : 'none',
     }),
     name: {
         fontWeight: 'bold',
@@ -41,87 +44,70 @@ const styles = {
 const PropertyComponent = ({
     className,
     field,
-    linkedFields,
-    compositeFields,
-    fields,
     resource,
-    contributors,
-    unValidatedFields,
-    p: polyglot,
-}) => (
-    <div
-        className={classnames('property', field.label.toLowerCase().replace(/\s/g, '_'), className)}
-    >
-        <dl style={styles.container(unValidatedFields.includes(resource.name))}>
-            <dt>
-                <div>
-                    <span className="property_name" style={styles.name}>{field.label}</span>
-                    {field.language &&
-                        <span className="property_language" style={styles.language}>
-                            ({languages.find(f => f.code === field.language).label})
-                        </span>
-                    }
-                </div>
-                { contributors[field.name] ?
-                    <div className="property_contributor" style={styles.scheme}>
-                        {polyglot.t('contributed_by', { name: contributors[field.name] })}
+    fieldStatus,
+    loggedIn,
+    changeStatus,
+}) => {
+    if (!loggedIn && fieldStatus === REJECTED) {
+        return null;
+    }
+
+    return (
+        <div
+            className={classnames('property', field.label.toLowerCase().replace(/\s/g, '_'), className)}
+        >
+            <dl style={styles.container(fieldStatus)}>
+                <dt>
+                    <div>
+                        <span className="property_name" style={styles.name}>{field.label}</span>
+                        {field.language &&
+                            <span className="property_language" style={styles.language}>
+                                ({languages.find(f => f.code === field.language).label})
+                            </span>
+                        }
+                        <PropertyContributor fieldName={field.name} fieldStatus={fieldStatus} />
                     </div>
-                :
-                    null
-                }
-            </dt>
-            <dd>
-                { compositeFields.length > 0 ?
+                </dt>
+                <dd>
                     <CompositeProperty field={field} resource={resource} />
-                :
-                    <Format
-                        className="property_value"
-                        field={field}
-                        fields={fields}
-                        resource={resource}
-                    />
-                }
-                {linkedFields.map(linkedField => (
-                    <Property
-                        key={linkedField._id}
-                        className={classnames('completes', `completes_${field.name}`)}
-                        field={linkedField}
-                        resource={resource}
-                    />
-                ))}
-            </dd>
-        </dl>
-        <div className="property_scheme" style={styles.scheme}>{field.scheme}</div>
-    </div>
-);
+                    <PropertyLinkedFields fieldName={field.name} resource={resource} />
+                </dd>
+                <ModerateButton status={fieldStatus} changeStatus={changeStatus} />
+            </dl>
+            <div className="property_scheme" style={styles.scheme}>{field.scheme}</div>
+        </div>
+    );
+};
 
 PropertyComponent.propTypes = {
     className: PropTypes.string,
-    contributors: PropTypes.objectOf(PropTypes.string).isRequired,
     field: fieldPropTypes.isRequired,
-    fields: PropTypes.arrayOf(fieldPropTypes).isRequired,
-    linkedFields: PropTypes.arrayOf(fieldPropTypes).isRequired,
-    compositeFields: PropTypes.arrayOf(fieldPropTypes).isRequired,
-    p: polyglotPropTypes.isRequired,
     resource: PropTypes.shape({}).isRequired,
-    unValidatedFields: PropTypes.arrayOf(PropTypes.string).isRequired,
+    fieldStatus: PropTypes.oneOf(propositionStatus),
+    changeStatus: PropTypes.func.isRequired,
+    loggedIn: PropTypes.bool.isRequired,
 };
 
 PropertyComponent.defaultProps = {
     className: null,
+    fieldStatus: null,
 };
 
 const mapStateToProps = (state, { field }) => ({
-    unValidatedFields: fromResource.getResourceProposededFields(state),
-    contributors: fromResource.getResourceContributorsByField(state),
-    fields: fromPublication.getCollectionFields(state),
-    linkedFields: fromPublication.getLinkedFields(state, field),
-    compositeFields: fromPublication.getCompositeFieldsByField(state, field),
+    loggedIn: isLoggedIn(state),
+    fieldStatus: fromResource.getFieldStatus(state, field),
 });
 
-const Property = compose(
-    translate,
-    connect(mapStateToProps),
-)(PropertyComponent);
+const mapDispatchToProps = (dispatch, { field, resource: { uri } }) => bindActionCreators({
+    changeStatus: (prevStatus, status) => changeFieldStatus({
+        uri,
+        field: field.name,
+        status,
+        prevStatus,
+    }),
+}, dispatch);
+
+const Property = connect(mapStateToProps, mapDispatchToProps)(PropertyComponent);
 
 export default Property;

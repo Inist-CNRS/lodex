@@ -134,8 +134,11 @@ describe('publishedDataset', () => {
 
     describe('changePropositionStatus', () => {
         const previousStatus = 'previousStatus';
+        const aggregateResult = {
+            toArray: createSpy().andReturn([{ status: previousStatus }]),
+        };
         const collection = {
-            aggregate: createSpy().andReturn({ status: previousStatus }),
+            aggregate: createSpy().andReturn(aggregateResult),
             update: createSpy(),
         };
         const db = {
@@ -161,10 +164,8 @@ describe('publishedDataset', () => {
                 {
                     $set: { 'contributions.$.status': 'status' },
                     $inc: {
-                        contributions: {
-                            status: 1,
-                            previousStatus: -1,
-                        },
+                        'contributionCount.status': 1,
+                        'contributionCount.previousStatus': -1,
                     },
                 },
             );

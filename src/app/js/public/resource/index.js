@@ -23,6 +23,10 @@ export const RESOURCE_FORM_NAME = 'resource';
 export const HIDE_RESOURCE_FORM_NAME = 'hideResource';
 export const NEW_RESOURCE_FIELD_FORM_NAME = 'newResourceField';
 
+export const CHANGE_FIELD_STATUS = 'CHANGE_FIELD_STATUS';
+export const CHANGE_FIELD_STATUS_SUCCESS = 'CHANGE_FIELD_STATUS_SUCCESS';
+export const CHANGE_FIELD_STATUS_ERROR = 'CHANGE_FIELD_STATUS_ERROR';
+
 export const loadResource = createAction(LOAD_RESOURCE);
 export const loadResourceSuccess = createAction(LOAD_RESOURCE_SUCCESS);
 export const loadResourceError = createAction(LOAD_RESOURCE_ERROR);
@@ -38,6 +42,10 @@ export const hideResourceError = createAction(HIDE_RESOURCE_ERROR);
 export const addFieldToResource = createAction(ADD_FIELD_TO_RESOURCE);
 export const addFieldToResourceSuccess = createAction(ADD_FIELD_TO_RESOURCE_SUCCESS);
 export const addFieldToResourceError = createAction(ADD_FIELD_TO_RESOURCE_ERROR);
+
+export const changeFieldStatus = createAction(CHANGE_FIELD_STATUS);
+export const changeFieldStatusSuccess = createAction(CHANGE_FIELD_STATUS_SUCCESS);
+export const changeFieldStatusError = createAction(CHANGE_FIELD_STATUS_ERROR);
 
 export const defaultState = {
     resource: {},
@@ -93,9 +101,58 @@ export default handleActions({
         error: error.message,
         saving: false,
     }),
+    CHANGE_FIELD_STATUS: (state, { payload: { field, status } }) => {
+        const { contributions } = state.resource;
+        const index = contributions.findIndex(({ fieldName }) => fieldName === field);
+
+        return {
+            ...state,
+            moderating: true,
+            resource: {
+                ...state.resource,
+                contributions: [
+                    ...contributions.slice(0, index - 1),
+                    {
+                        ...contributions[index],
+                        status,
+                    },
+                    ...contributions.slice(index + 1),
+                ],
+            },
+        };
+    },
+    CHANGE_FIELD_STATUS_ERROR: (state, { payload: { error, field, prevStatus } }) => {
+        const { contributions } = state.resource;
+        const index = contributions.findIndex(({ fieldName }) => fieldName === field);
+
+        return {
+            ...state,
+            error,
+            moderating: false,
+            resource: {
+                ...state.resource,
+                contributions: [
+                    ...contributions.slice(0, index - 1),
+                    {
+                        ...contributions[index],
+                        status: prevStatus,
+                    },
+                    ...contributions.slice(index + 1),
+                ],
+            },
+        };
+    },
+    CHANGE_FIELD_STATUS_SUCCESS: state => ({
+        ...state,
+        error: null,
+        moderating: false,
+    }),
 }, defaultState);
 
 const getResourceLastVersion = (state, resource = state.resource) => {
+    if (!resource) {
+        return null;
+    }
     const { versions, uri } = resource;
     if (!versions) {
         return null;
@@ -106,7 +163,7 @@ const getResourceLastVersion = (state, resource = state.resource) => {
     };
 };
 
-const getResourceProposededFields = (state) => {
+const getResourceProposedFields = (state) => {
     const { contributions } = state.resource;
     if (!contributions) {
         return [];
@@ -116,10 +173,27 @@ const getResourceProposededFields = (state) => {
         .map(({ fieldName }) => fieldName);
 };
 
+const getProposedFieldStatus = (state) => {
+    const { contributions } = state.resource;
+    if (!contributions) {
+        return {};
+    }
+    return contributions
+        .reduce((acc, { fieldName, status }) => ({
+            [fieldName]: status,
+        }), {});
+};
+
+const getFieldStatus = createSelector(
+    getProposedFieldStatus,
+    (_, { name }) => name,
+    (fieldStatusByName, name) => fieldStatusByName[name],
+);
+
 const getResourceContributions = state =>
     state.resource.contributions || [];
 
-const getResourceContributorsByField =
+const getResourceContributorsCatalog =
     createSelector(
         getResourceContributions,
         contributions => contributions
@@ -128,6 +202,13 @@ const getResourceContributorsByField =
                 ...acc,
                 [fieldName]: name,
             }), {}),
+    );
+
+const getResourceContributorForField =
+    createSelector(
+        getResourceContributorsCatalog,
+        (_, fieldName) => fieldName,
+        (contributorsCatalog, fieldName) => contributorsCatalog[fieldName],
     );
 
 const getRemovedData = (state) => {
@@ -145,13 +226,16 @@ const isSaving = state => state.saving;
 const isLoading = state => state.loading;
 
 export const fromResource = {
+    getResourceContributorsCatalog,
     getResourceLastVersion,
-    getResourceProposededFields,
+    getResourceProposedFields,
     getResourceContributions,
-    getResourceContributorsByField,
+    getResourceContributorForField,
     getRemovedData,
     isSaving,
     isLoading,
+    getProposedFieldStatus,
+    getFieldStatus,
 };
 
 export const getResourceFormData = state => state.form.resource.values;

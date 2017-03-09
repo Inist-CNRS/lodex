@@ -80,6 +80,11 @@ describe('Home page with published data', function homePublishedDataTests() {
         driver.wait(until.elementTextIs(title, firstUri), DEFAULT_WAIT_TIMEOUT);
     });
 
+    it('should not display moderate component when loggedOut', async () => {
+        const moderateComponents = await driver.findElements(By.css('.moderate'));
+        expect(moderateComponents.length).toBe(0);
+    });
+
     it('should display all resource properties', async () => {
         await driver.wait(until.elementLocated(By.css('.detail')), DEFAULT_WAIT_TIMEOUT);
         const fullnameLabel = await driver.findElement(By.css('.detail .property.full_name .property_name'));
@@ -103,11 +108,15 @@ describe('Home page with published data', function homePublishedDataTests() {
 
         const bestFriendLabel = await driver.findElement(By.css('.detail .property.best_friend_of .property_name'));
         await driver.wait(until.elementTextIs(bestFriendLabel, 'Best Friend Of'), DEFAULT_WAIT_TIMEOUT);
-        const bestFriendScheme = await driver.findElement(By.css('.detail .property.best_friend_of > .property_scheme'));
+        const bestFriendScheme = await driver.findElement(
+            By.css('.detail .property.best_friend_of > .property_scheme'),
+        );
         await driver.wait(until.elementTextIs(bestFriendScheme, 'http://www.w3.org/ns/person'), DEFAULT_WAIT_TIMEOUT);
         const bestFriendValue = await driver.findElement(By.css('.detail .property.best_friend_of .property_value'));
         await driver.wait(until.elementTextIs(bestFriendValue, 'MERIADOC'), DEFAULT_WAIT_TIMEOUT);
-        const bestFriendLanguage = await driver.findElement(By.css('.detail .property.best_friend_of .property_language'));
+        const bestFriendLanguage = await driver.findElement(
+            By.css('.detail .property.best_friend_of .property_language'),
+        );
         await driver.wait(until.elementTextIs(bestFriendLanguage, '(Français)'), DEFAULT_WAIT_TIMEOUT);
     });
 

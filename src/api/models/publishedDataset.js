@@ -98,12 +98,15 @@ export default (db) => {
     };
 
     collection.getFieldStatus = async (uri, name) => {
-        const result = await collection.aggregate([
+        const results = await collection.aggregate([
             { $match: { uri } },
             { $unwind: '$contributions' },
             { $match: { 'contributions.fieldName': name } },
             { $project: { _id: 0, status: '$contributions.status' } },
         ]);
+
+        const [result] = await results.toArray();
+
 
         if (!result) {
             return null;
@@ -115,7 +118,7 @@ export default (db) => {
     collection.changePropositionStatus = async (uri, name, status) => {
         const previousStatus = await collection.getFieldStatus(uri, name);
         if (!previousStatus || previousStatus === status) {
-            return;
+            return { result: 'noChange' };
         }
 
         await collection.update({
@@ -126,12 +129,14 @@ export default (db) => {
                 'contributions.$.status': status,
             },
             $inc: {
-                contributions: {
-                    [status]: 1,
-                    [previousStatus]: -1,
-                },
+                [`contributionCount.${status}`]: 1,
+                [`contributionCount.${previousStatus}`]: -1,
             },
         });
+
+        return {
+            result: 'resource contribution updated',
+        };
     };
 
     return collection;
