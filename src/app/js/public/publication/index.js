@@ -96,17 +96,17 @@ const getDocumentFields = createSelector(
         .filter(f => f.cover === COVER_DOCUMENT),
 );
 
-const getLinkedFieldsParams = (state, params) => params;
+const getParams = (state, params) => params;
 
 const getLinkedFields = createSelector(
     getFields,
-    getLinkedFieldsParams,
-    (fields, field) => fields.filter(f => f.completes && f.completes === field.name),
+    (getParams),
+    (fields, fieldName) => fields.filter(f => f.completes && f.completes === fieldName),
 );
 
 const getCompletedField = createSelector(
     getFields,
-    getLinkedFieldsParams,
+    getParams,
     (fields, field) => fields.find(f => field.completes === f.name),
 );
 

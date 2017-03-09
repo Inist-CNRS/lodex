@@ -30,7 +30,7 @@ export function* handleLoadResource({ payload }) {
     }
 
     yield put(loadResourceSuccess(response));
-    if (response.removedAt && ark !== '/removed') {
+    if (response && response.removedAt && ark !== '/removed') {
         yield put(push({ pathname: '/resource/removed', query: { uri } }));
     }
     yield put(loadPublication());

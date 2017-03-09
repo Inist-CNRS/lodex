@@ -17,6 +17,7 @@ import propositionStatus, { VALIDATED, REJECTED } from '../../../common/proposit
 import ModerateButton from './ModerateButton';
 import { changeFieldStatus } from './resource';
 import PropertyContributor from './PropertyContributor';
+import PropertyLinkedFields from './PropertyLinkedFields';
 
 const styles = {
     container: status => ({
@@ -44,7 +45,6 @@ const styles = {
 const PropertyComponent = ({
     className,
     field,
-    linkedFields,
     fields,
     resource,
     fieldStatus,
@@ -76,14 +76,7 @@ const PropertyComponent = ({
                         resource={resource}
                     />
                 }
-                {linkedFields.map(linkedField => (
-                    <Property
-                        key={linkedField._id}
-                        className={classnames('completes', `completes_${field.name}`)}
-                        field={linkedField}
-                        resource={resource}
-                    />
-                ))}
+                <PropertyLinkedFields fieldName={field.name} resource={resource} />
             </dd>
             <ModerateButton status={fieldStatus} changeStatus={changeStatus} />
         </dl>
@@ -95,7 +88,6 @@ PropertyComponent.propTypes = {
     className: PropTypes.string,
     field: fieldPropTypes.isRequired,
     fields: PropTypes.arrayOf(fieldPropTypes).isRequired,
-    linkedFields: PropTypes.arrayOf(fieldPropTypes).isRequired,
     resource: PropTypes.shape({}).isRequired,
     fieldStatus: PropTypes.oneOf(propositionStatus),
     changeStatus: PropTypes.func.isRequired,
@@ -108,7 +100,6 @@ PropertyComponent.defaultProps = {
 
 const mapStateToProps = (state, { field }) => ({
     fields: fromPublication.getCollectionFields(state),
-    linkedFields: fromPublication.getLinkedFields(state, field),
     fieldStatus: fromResource.getFieldStatus(state, field),
 });
 
