@@ -6,6 +6,8 @@ import reducer, {
     loadParsingResult,
     loadParsingResultError,
     loadParsingResultSuccess,
+    reloadParsingResult,
+    cancelReload,
 } from './';
 
 describe('parsing reducer', () => {
@@ -27,6 +29,7 @@ describe('parsing reducer', () => {
         expect(state).toEqual({
             ...defaultState,
             loading: false,
+            allowUpload: true,
             error: 'foo',
         });
     });
@@ -35,8 +38,25 @@ describe('parsing reducer', () => {
         const state = reducer({ ...defaultState, loading: true }, loadParsingResultSuccess({ parsing: true }));
         expect(state).toEqual({
             ...defaultState,
+            allowUpload: false,
             loading: false,
             parsing: true,
+        });
+    });
+
+    it('should handle the RELOAD_PARSING_RESULT action', () => {
+        const state = reducer({ ...defaultState, allowUpload: false }, reloadParsingResult());
+        expect(state).toEqual({
+            ...defaultState,
+            allowUpload: true,
+        });
+    });
+
+    it('should handle the CANCEL_RELOAD action', () => {
+        const state = reducer({ ...defaultState, allowUpload: true }, cancelReload());
+        expect(state).toEqual({
+            ...defaultState,
+            allowUpload: false,
         });
     });
 

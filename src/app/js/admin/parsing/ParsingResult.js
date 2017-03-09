@@ -11,7 +11,7 @@ import ScrollableCardContent from '../../lib/ScrollableCardContent';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import {
-    clearParsing,
+    reloadParsingResult,
 } from './';
 import {
     fromParsing,
@@ -94,7 +94,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = {
-    handleClearParsing: clearParsing,
+    handleClearParsing: reloadParsingResult,
 };
 
 export default compose(

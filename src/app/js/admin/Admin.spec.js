@@ -51,8 +51,9 @@ describe('<Admin />', () => {
         expect(wrapper.contains(<ParsingResult />)).toEqual(true);
     });
 
-    it('should render the Upload when no file umpladede', () => {
+    it('should render the Upload when no file uploaded', () => {
         const wrapper = shallow(<AdminComponent
+            canUploadFile
             loadParsingResult={() => {}}
             loadPublication={() => {}}
             p={{ t: () => {} }}
