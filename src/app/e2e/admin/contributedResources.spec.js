@@ -165,6 +165,7 @@ describe('Admin', () => {
         });
 
         it('should logout', async () => {
+            await driver.wait(until.elementLocated(By.css('.btn-sign-out')));
             const signOut = await driver.findElement(By.css('.btn-sign-out'));
             await driver.wait(elementIsClicked(signOut), DEFAULT_WAIT_TIMEOUT);
             await driver.wait(until.elementLocated(By.css('.btn-sign-in')));
