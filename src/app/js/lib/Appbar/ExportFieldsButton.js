@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
+import memoize from 'lodash.memoize';
 
 import translate from 'redux-polyglot/translate';
 import IconButton from 'material-ui/IconButton';
@@ -15,10 +16,12 @@ const styles = {
     },
 };
 
+const getStyles = memoize(style => Object.assign({}, styles.icon, style));
+
 export const ExportFieldsButtonComponent = ({ handleClick, iconStyle, p: polyglot }) => (
     <IconButton
         onClick={handleClick}
-        iconStyle={Object.assign({}, styles.icon, iconStyle)}
+        iconStyle={getStyles(iconStyle)}
         tooltip={polyglot.t('export_fields')}
     >
         <DescriptionIcon />
