@@ -11,6 +11,8 @@ import { red500, yellow500, green500, grey500 } from 'material-ui/styles/colors'
 import propositionStatus from '../../../common/propositionStatus';
 import { polyglot as polyglotPropTypes } from '../propTypes';
 
+import { isLoggedIn } from '../user';
+
 const icons = {
     PROPOSED: ProposedIcon,
     VALIDATED: ValidatedIcon,
@@ -31,32 +33,42 @@ const getIcons = (status, active) => {
     );
 };
 
-export const ModerateButtonComponent = ({ status, changeStatus, p: polyglot }) => (
-    <div className="moderate">
-        {
-            propositionStatus.map(availableStatus => (
-                <IconButton
-                    tooltip={polyglot.t(availableStatus)}
-                    onClick={(e) => {
-                        e.preventDefault();
-                        changeStatus(status, availableStatus);
-                        return false;
-                    }}
-                >
-                    { getIcons(availableStatus, status === availableStatus) }
-                </IconButton>
-            ))
-        }
-    </div>
-);
+export const ModerateButtonComponent = ({ status, changeStatus, loggedIn, p: polyglot }) => {
+    if (!loggedIn || !status) {
+        return null;
+    }
+    return (
+        <div className="moderate">
+            {
+                propositionStatus.map(availableStatus => (
+                    <IconButton
+                        tooltip={polyglot.t(availableStatus)}
+                        onClick={(e) => {
+                            e.preventDefault();
+                            changeStatus(status, availableStatus);
+                            return false;
+                        }}
+                    >
+                        { getIcons(availableStatus, status === availableStatus) }
+                    </IconButton>
+                ))
+            }
+        </div>
+    );
+};
 
 ModerateButtonComponent.propTypes = {
     status: PropTypes.oneOf(propositionStatus).isRequired,
     changeStatus: PropTypes.func.isRequired,
+    loggedIn: PropTypes.bool.isRequired,
     p: polyglotPropTypes.isRequired,
 };
 
+const mapStateToProps = state => ({
+    loggedIn: isLoggedIn(state),
+});
+
 export default compose(
     translate,
-    connect(),
+    connect(mapStateToProps),
 )(ModerateButtonComponent);

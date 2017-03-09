@@ -1,7 +1,5 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
-import compose from 'recompose/compose';
-import translate from 'redux-polyglot/translate';
 import classnames from 'classnames';
 import { bindActionCreators } from 'redux';
 
@@ -11,14 +9,14 @@ import {
 } from './selectors';
 import {
     field as fieldPropTypes,
-    polyglot as polyglotPropTypes,
 } from '../propTypes';
 import Format from './Format';
 import CompositeProperty from './CompositeProperty';
 import { languages } from '../../../../config.json';
-import propositionStatus, { PROPOSED, VALIDATED, REJECTED } from '../../../common/propositionStatus';
+import propositionStatus, { VALIDATED, REJECTED } from '../../../common/propositionStatus';
 import ModerateButton from './ModerateButton';
 import { changeFieldStatus } from './resource';
+import PropertyContributor from './PropertyContributor';
 
 const styles = {
     container: status => ({
@@ -47,13 +45,10 @@ const PropertyComponent = ({
     className,
     field,
     linkedFields,
-    compositeFields,
     fields,
     resource,
-    contributors,
     fieldStatus,
     changeStatus,
-    p: polyglot,
 }) => (
     <div
         className={classnames('property', field.label.toLowerCase().replace(/\s/g, '_'), className)}
@@ -67,22 +62,11 @@ const PropertyComponent = ({
                             ({languages.find(f => f.code === field.language).label})
                         </span>
                     }
-                    { contributors[field.name] ?
-                        <div className="property_contributor" style={styles.scheme}>
-                            {
-                            fieldStatus === PROPOSED ?
-                                polyglot.t('contributed_by', { name: contributors[field.name] })
-                            :
-                                polyglot.t('added_by', { name: contributors[field.name] })
-                            }
-                        </div>
-                    :
-                        null
-                    }
+                    <PropertyContributor fieldName={field.name} fieldStatus={fieldStatus} />
                 </div>
             </dt>
             <dd>
-                { compositeFields.length > 0 ?
+                { field.composedOf ?
                     <CompositeProperty field={field} resource={resource} />
                 :
                     <Format
@@ -101,11 +85,7 @@ const PropertyComponent = ({
                     />
                 ))}
             </dd>
-            {
-                fieldStatus ?
-                    <ModerateButton status={fieldStatus} changeStatus={changeStatus} />
-                : null
-            }
+            <ModerateButton status={fieldStatus} changeStatus={changeStatus} />
         </dl>
         <div className="property_scheme" style={styles.scheme}>{field.scheme}</div>
     </div>
@@ -113,12 +93,9 @@ const PropertyComponent = ({
 
 PropertyComponent.propTypes = {
     className: PropTypes.string,
-    contributors: PropTypes.objectOf(PropTypes.string).isRequired,
     field: fieldPropTypes.isRequired,
     fields: PropTypes.arrayOf(fieldPropTypes).isRequired,
     linkedFields: PropTypes.arrayOf(fieldPropTypes).isRequired,
-    compositeFields: PropTypes.arrayOf(fieldPropTypes).isRequired,
-    p: polyglotPropTypes.isRequired,
     resource: PropTypes.shape({}).isRequired,
     fieldStatus: PropTypes.oneOf(propositionStatus),
     changeStatus: PropTypes.func.isRequired,
@@ -130,10 +107,8 @@ PropertyComponent.defaultProps = {
 };
 
 const mapStateToProps = (state, { field }) => ({
-    contributors: fromResource.getResourceContributorsByField(state),
     fields: fromPublication.getCollectionFields(state),
     linkedFields: fromPublication.getLinkedFields(state, field),
-    compositeFields: fromPublication.getCompositeFieldsByField(state, field),
     fieldStatus: fromResource.getFieldStatus(state, field),
 });
 
@@ -146,9 +121,6 @@ const mapDispatchToProps = (dispatch, { field, resource: { uri } }) => bindActio
     }),
 }, dispatch);
 
-const Property = compose(
-    translate,
-    connect(mapStateToProps, mapDispatchToProps),
-)(PropertyComponent);
+const Property = connect(mapStateToProps, mapDispatchToProps)(PropertyComponent);
 
 export default Property;

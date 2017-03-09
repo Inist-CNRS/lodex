@@ -150,6 +150,9 @@ export default handleActions({
 }, defaultState);
 
 const getResourceLastVersion = (state, resource = state.resource) => {
+    if (!resource) {
+        return null;
+    }
     const { versions, uri } = resource;
     if (!versions) {
         return null;
@@ -190,7 +193,7 @@ const getFieldStatus = createSelector(
 const getResourceContributions = state =>
     state.resource.contributions || [];
 
-const getResourceContributorsByField =
+const getResourceContributorsCatalog =
     createSelector(
         getResourceContributions,
         contributions => contributions
@@ -199,6 +202,13 @@ const getResourceContributorsByField =
                 ...acc,
                 [fieldName]: name,
             }), {}),
+    );
+
+const getResourceContributorForField =
+    createSelector(
+        getResourceContributorsCatalog,
+        (_, fieldName) => fieldName,
+        (contributorsCatalog, fieldName) => contributorsCatalog[fieldName],
     );
 
 const getRemovedData = (state) => {
@@ -219,7 +229,7 @@ export const fromResource = {
     getResourceLastVersion,
     getResourceProposedFields,
     getResourceContributions,
-    getResourceContributorsByField,
+    getResourceContributorForField,
     getRemovedData,
     isSaving,
     isLoading,
