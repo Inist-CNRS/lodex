@@ -33,6 +33,13 @@ const getIcons = (status, active) => {
     );
 };
 
+const styles = {
+    iconButton: {
+        padding: 0,
+        height: null,
+    },
+};
+
 export const ModerateButtonComponent = ({ status, changeStatus, loggedIn, p: polyglot }) => {
     if (!loggedIn || !status) {
         return null;
@@ -42,6 +49,8 @@ export const ModerateButtonComponent = ({ status, changeStatus, loggedIn, p: pol
             {
                 propositionStatus.map(availableStatus => (
                     <IconButton
+                        style={styles.iconButton}
+                        key={availableStatus}
                         tooltip={polyglot.t(availableStatus)}
                         onClick={(e) => {
                             e.preventDefault();
