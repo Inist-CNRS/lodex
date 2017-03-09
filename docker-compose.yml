@@ -27,5 +27,6 @@ server:
 
 mongo:
     image: mongo:3.0.14
+    command: "--smallfiles"
     ports:
         - 27017:27017
