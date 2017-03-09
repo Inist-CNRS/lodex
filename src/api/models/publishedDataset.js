@@ -149,5 +149,7 @@ export default (db) => {
         };
     };
 
+    collection.findDistinctValuesForField = field => collection.distinct(field);
+
     return collection;
 };
