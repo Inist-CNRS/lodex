@@ -16,6 +16,7 @@ import Loading from '../lib/Loading';
 import Dataset from './dataset/Dataset';
 import DatasetCharacteristics from './characteristic/DatasetCharacteristics';
 import NoDataset from './NoDataset';
+import Toolbar from './Toolbar';
 
 export class HomeComponent extends Component {
     static defaultProps = {
@@ -59,6 +60,7 @@ export class HomeComponent extends Component {
         if (hasPublishedDataset) {
             return (
                 <div>
+                    <Toolbar />
                     <DatasetCharacteristics />
                     <Dataset />
                 </div>

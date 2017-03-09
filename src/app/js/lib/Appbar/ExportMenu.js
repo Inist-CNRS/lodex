@@ -20,10 +20,10 @@ const styles = {
 
 const origin = { horizontal: 'right', vertical: 'top' };
 
-export const ExportMenuComponent = ({ exportPublishedDataset, p: polyglot, ...props }) => (
+export const ExportMenuComponent = ({ exportPublishedDataset, iconStyle, p: polyglot, ...props }) => (
     <IconMenu
         {...props}
-        iconStyle={styles.icon}
+        iconStyle={Object.assign({}, styles.icon, iconStyle)}
         iconButtonElement={
             <IconButton tooltip={polyglot.t('export_data')}><FileDownloadIcon /></IconButton>
         }
@@ -45,7 +45,12 @@ export const ExportMenuComponent = ({ exportPublishedDataset, p: polyglot, ...pr
 
 ExportMenuComponent.propTypes = {
     exportPublishedDataset: PropTypes.func.isRequired,
+    iconStyle: PropTypes.object, // eslint-disable-line
     p: polyglotPropTypes.isRequired,
+};
+
+ExportMenuComponent.defaultProps = {
+    iconStyle: null,
 };
 
 const mapDispatchToProps = dispatch => bindActionCreators({

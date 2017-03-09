@@ -16,6 +16,7 @@ import DatasetColumn from './DatasetColumn';
 import Pagination from '../../lib/Pagination';
 import Card from '../../lib/Card';
 import Loading from '../../lib/Loading';
+import ScrollableCardContent from '../../lib/ScrollableCardContent';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import {
@@ -26,7 +27,9 @@ import { fromPublication, fromDataset } from '../selectors';
 const styles = {
     table: {
         width: 'auto',
-        minWidth: '100%',
+    },
+    wrapper: {
+        overflowX: 'auto',
     },
 };
 
@@ -47,8 +50,8 @@ export class DatasetComponent extends Component {
 
         return (
             <Card className="dataset">
-                <CardText>
-                    <Table selectable={false} fixedHeader={false} style={styles.table}>
+                <ScrollableCardContent>
+                    <Table selectable={false} fixedHeader={false} bodyStyle={styles.wrapper} style={styles.table}>
                         <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
                             <TableRow>
                                 {columns.map(c => <TableHeaderColumn key={c.name}>{c.label}</TableHeaderColumn>)}
@@ -79,7 +82,7 @@ export class DatasetComponent extends Component {
                             showing: polyglot.t('showing'),
                         }}
                     />
-                </CardText>
+                </ScrollableCardContent>
             </Card>
         );
     }
