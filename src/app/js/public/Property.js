@@ -5,12 +5,10 @@ import { bindActionCreators } from 'redux';
 
 import {
     fromResource,
-    fromPublication,
 } from './selectors';
 import {
     field as fieldPropTypes,
 } from '../propTypes';
-import Format from './Format';
 import CompositeProperty from './CompositeProperty';
 import { languages } from '../../../../config.json';
 import propositionStatus, { VALIDATED, REJECTED } from '../../../common/propositionStatus';
@@ -45,7 +43,6 @@ const styles = {
 const PropertyComponent = ({
     className,
     field,
-    fields,
     resource,
     fieldStatus,
     changeStatus,
@@ -66,16 +63,7 @@ const PropertyComponent = ({
                 </div>
             </dt>
             <dd>
-                { field.composedOf ?
-                    <CompositeProperty field={field} resource={resource} />
-                :
-                    <Format
-                        className="property_value"
-                        field={field}
-                        fields={fields}
-                        resource={resource}
-                    />
-                }
+                <CompositeProperty field={field} resource={resource} />
                 <PropertyLinkedFields fieldName={field.name} resource={resource} />
             </dd>
             <ModerateButton status={fieldStatus} changeStatus={changeStatus} />
@@ -87,7 +75,6 @@ const PropertyComponent = ({
 PropertyComponent.propTypes = {
     className: PropTypes.string,
     field: fieldPropTypes.isRequired,
-    fields: PropTypes.arrayOf(fieldPropTypes).isRequired,
     resource: PropTypes.shape({}).isRequired,
     fieldStatus: PropTypes.oneOf(propositionStatus),
     changeStatus: PropTypes.func.isRequired,
@@ -99,7 +86,6 @@ PropertyComponent.defaultProps = {
 };
 
 const mapStateToProps = (state, { field }) => ({
-    fields: fromPublication.getCollectionFields(state),
     fieldStatus: fromResource.getFieldStatus(state, field),
 });
 

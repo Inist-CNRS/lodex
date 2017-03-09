@@ -57,8 +57,12 @@ export const ModerateButtonComponent = ({ status, changeStatus, loggedIn, p: pol
     );
 };
 
+ModerateButtonComponent.defaultProps = {
+    status: null,
+};
+
 ModerateButtonComponent.propTypes = {
-    status: PropTypes.oneOf(propositionStatus).isRequired,
+    status: PropTypes.oneOf(propositionStatus),
     changeStatus: PropTypes.func.isRequired,
     loggedIn: PropTypes.bool.isRequired,
     p: polyglotPropTypes.isRequired,

@@ -24,7 +24,6 @@ const styles = {
 export class CompositePropertyComponent extends Component {
     static propTypes = {
         field: fieldPropTypes.isRequired,
-        fields: PropTypes.arrayOf(fieldPropTypes).isRequired,
         compositeFields: PropTypes.arrayOf(fieldPropTypes).isRequired,
         resource: PropTypes.shape({}).isRequired,
     }
@@ -51,9 +50,18 @@ export class CompositePropertyComponent extends Component {
         const {
             field,
             compositeFields,
-            fields,
             resource,
         } = this.props;
+
+        if (!compositeFields.length) {
+            return (
+                <Format
+                    className="property_value"
+                    field={field}
+                    resource={resource}
+                />
+            );
+        }
 
         return (
             <span>
@@ -63,7 +71,6 @@ export class CompositePropertyComponent extends Component {
                             <Format
                                 key={f.name}
                                 field={f}
-                                fields={fields}
                                 resource={resource}
                             />
                         )),
@@ -88,7 +95,6 @@ export class CompositePropertyComponent extends Component {
                     <Property
                         key={f.name}
                         field={f}
-                        fields={fields}
                         resource={resource}
                     />
                 )) : null}
@@ -99,7 +105,6 @@ export class CompositePropertyComponent extends Component {
 
 const mapStateToProps = (state, { field, resource }) => ({
     resource,
-    fields: fromPublication.getCollectionFields(state),
     compositeFields: fromPublication.getCompositeFieldsByField(state, field),
 });
 

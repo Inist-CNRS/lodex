@@ -4,7 +4,7 @@ import compose from 'recompose/compose';
 import withHandlers from 'recompose/withHandlers';
 import withState from 'recompose/withState';
 
-import { fromResource } from './selectors';
+import { fromResource, fromPublication } from './selectors';
 
 import fetchByUri from '../lib/fetchByUri';
 import { field as fieldPropTypes } from '../propTypes';
@@ -55,6 +55,7 @@ FormatComponent.defaultProps = {
 };
 
 const preMapStateToProps = state => ({
+    fields: fromPublication.getCollectionFields(state),
     token: getToken(state),
 });
 
