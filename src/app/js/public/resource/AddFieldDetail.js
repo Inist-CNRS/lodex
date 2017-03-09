@@ -41,10 +41,7 @@ export const AddFieldDetailComponent = ({
         <CardText>
             <form id="add_field_resource_form" onSubmit={() => handleSubmit(resource.uri)}>
                 {error && <Alert><p>{error}</p></Alert>}
-                {
-                    isLoggedIn ? null :
-                    <Contributor />
-                }
+                {isLoggedIn ? null : <Contributor />}
                 <div>
                     {polyglot.t('new_field')}
                     <CardText>

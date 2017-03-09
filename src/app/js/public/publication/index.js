@@ -58,7 +58,9 @@ const getCollectionFields = createSelector(
 
 const getListFields = createSelector(
     getCollectionFields,
-    fields => fields.filter(f => !f.composedOf),
+    fields => fields
+        .filter(f => f.display_in_list || f.name === 'uri')
+        .filter(f => !f.composedOf),
 );
 
 const getFieldNameFromParams = (state, params) => params;
@@ -89,12 +91,9 @@ const getFieldToAdd = ({ fields, selectedField }) => {
 
 const getDocumentFields = createSelector(
     getFields,
-    fields => fields.filter(f => f.cover === COVER_DOCUMENT),
-);
-
-const getRootDocumentFields = createSelector(
-    getFields,
-    fields => fields.filter(f => f.cover === COVER_DOCUMENT),
+    fields => fields
+        .filter(f => f.display_in_resource || f.contribution)
+        .filter(f => f.cover === COVER_DOCUMENT),
 );
 
 const getLinkedFieldsParams = (state, params) => params;
@@ -164,6 +163,7 @@ const getCollectionFieldsExceptComposite = createSelector(
 const getRootCollectionFields = createSelector(
     getCollectionFieldsExceptComposite,
     allFields => allFields
+        .filter(f => f.display_in_resource || f.contribution)
         .filter(f => f.cover === COVER_COLLECTION && !f.completes),
 );
 
@@ -200,7 +200,6 @@ export const fromPublication = {
     getSelectedField,
     getFieldToAdd,
     getDocumentFields,
-    getRootDocumentFields,
     getLinkedFields,
     getCompletedField,
     getDatasetFields,

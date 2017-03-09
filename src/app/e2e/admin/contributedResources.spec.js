@@ -8,7 +8,7 @@ import { elementIsClicked } from '../../../common/tests/conditions';
 import loginAsJulia from '../loginAsJulia';
 
 describe('Admin', () => {
-    describe.only('Contributed Resource management', function homePublishedDataTests() {
+    describe('Contributed Resource management', function homePublishedDataTests() {
         this.timeout(30000);
         const DEFAULT_WAIT_TIMEOUT = 9000; // A bit less than mocha's timeout to get explicit errors from selenium
 

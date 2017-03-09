@@ -63,10 +63,13 @@ export const getPreviousState = (ownProps, location) => {
     if (location) {
         const url = new URL(location.toString());
         const pathname = url.searchParams.get('nextpathname');
-        return pathname;
+
+        if (pathname) {
+            return pathname;
+        }
     }
 
-    return '';
+    return 'home';
 };
 
 export const mapDispatchToProps = (dispatch, ownProps) => bindActionCreators({

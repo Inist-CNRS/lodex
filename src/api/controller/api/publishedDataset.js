@@ -76,6 +76,7 @@ export const addFieldToResource = async (ctx) => {
     ctx.body = await ctx.publishedDataset.addFieldToResource(uri, contributor, {
         ...field,
         name: fieldName,
+        display_in_resource: true,
     }, isLoggedIn);
 };
 

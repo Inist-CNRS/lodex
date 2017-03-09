@@ -14,12 +14,6 @@ describe('Home page with published data', function homePublishedDataTests() {
         await clear();
         await loadFixtures(fixtures);
         await driver.get('http://localhost:3010/');
-        // if logged logout
-        const signOut = await driver.findElement(By.css('.btn-sign-out')).catch(() => null);
-        if (signOut) {
-            await signOut.click();
-            await driver.wait(until.stalenessOf(signOut), DEFAULT_WAIT_TIMEOUT);
-        }
     });
 
     it('should display the dataset characteristics', async () => {
@@ -58,11 +52,11 @@ describe('Home page with published data', function homePublishedDataTests() {
         ));
 
         const expectedTds = [
-            ['1', 'TOOK', 'PEREGRIN', 'peregrin.took@shire.net', 'MERIADOC'],
-            ['2', 'GAMGIE', 'SAMSAGET', 'samsaget.gamgie@shire.net', 'FRODO'],
-            ['3', 'BAGGINS', 'BILBON', 'bilbon.saquet@shire.net', ''],
-            ['4', 'BAGGINS', 'FRODO', 'frodo.saquet@shire.net', 'SAMSAGET'],
-            ['5', 'BRANDYBUCK', 'MERIADOC', 'meriadoc.brandybuck@shire.net', 'PEREGRIN'],
+            ['1', 'TOOK', 'PEREGRIN', 'peregrin.took@shire.net'],
+            ['2', 'GAMGIE', 'SAMSAGET', 'samsaget.gamgie@shire.net'],
+            ['3', 'BAGGINS', 'BILBON', 'bilbon.saquet@shire.net'],
+            ['4', 'BAGGINS', 'FRODO', 'frodo.saquet@shire.net'],
+            ['5', 'BRANDYBUCK', 'MERIADOC', 'meriadoc.brandybuck@shire.net'],
         ];
 
         const trs = await driver.findElements(By.css('.dataset table tbody tr'));
@@ -156,7 +150,7 @@ describe('Home page with published data', function homePublishedDataTests() {
 
     it('should display added field in new detail', async () => {
         await driver.wait(until.elementLocated(By.css('.detail')), DEFAULT_WAIT_TIMEOUT);
-        await driver.wait(elementsCountIs(By.css('.detail .property'), 5), DEFAULT_WAIT_TIMEOUT);
+        await driver.wait(elementsCountIs(By.css('.detail .property'), 4), DEFAULT_WAIT_TIMEOUT);
 
         const contributionLabel = await driver.findElement(By.css('.detail .property.my_contribution .property_name'));
         await driver.wait(until.elementTextIs(contributionLabel, 'my contribution'), DEFAULT_WAIT_TIMEOUT);
@@ -172,5 +166,6 @@ describe('Home page with published data', function homePublishedDataTests() {
     after(async () => {
         await clear();
         await driver.executeScript('localStorage.clear();');
+        await driver.executeScript('sessionStorage.clear();');
     });
 });

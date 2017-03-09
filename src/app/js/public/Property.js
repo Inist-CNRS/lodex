@@ -24,6 +24,7 @@ const styles = {
     }),
     name: {
         fontWeight: 'bold',
+        marginRight: '1rem',
     },
     language: {
         marginLeft: '0.5rem',
