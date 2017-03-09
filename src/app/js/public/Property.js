@@ -16,6 +16,7 @@ import ModerateButton from './ModerateButton';
 import { changeFieldStatus } from './resource';
 import PropertyContributor from './PropertyContributor';
 import PropertyLinkedFields from './PropertyLinkedFields';
+import { isLoggedIn } from '../user';
 
 const styles = {
     container: status => ({
@@ -45,32 +46,39 @@ const PropertyComponent = ({
     field,
     resource,
     fieldStatus,
+    loggedIn,
     changeStatus,
-}) => (
-    <div
-        className={classnames('property', field.label.toLowerCase().replace(/\s/g, '_'), className)}
-    >
-        <dl style={styles.container(fieldStatus)}>
-            <dt>
-                <div>
-                    <span className="property_name" style={styles.name}>{field.label}</span>
-                    {field.language &&
-                        <span className="property_language" style={styles.language}>
-                            ({languages.find(f => f.code === field.language).label})
-                        </span>
-                    }
-                    <PropertyContributor fieldName={field.name} fieldStatus={fieldStatus} />
-                </div>
-            </dt>
-            <dd>
-                <CompositeProperty field={field} resource={resource} />
-                <PropertyLinkedFields fieldName={field.name} resource={resource} />
-            </dd>
-            <ModerateButton status={fieldStatus} changeStatus={changeStatus} />
-        </dl>
-        <div className="property_scheme" style={styles.scheme}>{field.scheme}</div>
-    </div>
-);
+}) => {
+    if (!loggedIn && fieldStatus === REJECTED) {
+        return null;
+    }
+
+    return (
+        <div
+            className={classnames('property', field.label.toLowerCase().replace(/\s/g, '_'), className)}
+        >
+            <dl style={styles.container(fieldStatus)}>
+                <dt>
+                    <div>
+                        <span className="property_name" style={styles.name}>{field.label}</span>
+                        {field.language &&
+                            <span className="property_language" style={styles.language}>
+                                ({languages.find(f => f.code === field.language).label})
+                            </span>
+                        }
+                        <PropertyContributor fieldName={field.name} fieldStatus={fieldStatus} />
+                    </div>
+                </dt>
+                <dd>
+                    <CompositeProperty field={field} resource={resource} />
+                    <PropertyLinkedFields fieldName={field.name} resource={resource} />
+                </dd>
+                <ModerateButton status={fieldStatus} changeStatus={changeStatus} />
+            </dl>
+            <div className="property_scheme" style={styles.scheme}>{field.scheme}</div>
+        </div>
+    );
+};
 
 PropertyComponent.propTypes = {
     className: PropTypes.string,
@@ -78,6 +86,7 @@ PropertyComponent.propTypes = {
     resource: PropTypes.shape({}).isRequired,
     fieldStatus: PropTypes.oneOf(propositionStatus),
     changeStatus: PropTypes.func.isRequired,
+    loggedIn: PropTypes.bool.isRequired,
 };
 
 PropertyComponent.defaultProps = {
@@ -86,6 +95,7 @@ PropertyComponent.defaultProps = {
 };
 
 const mapStateToProps = (state, { field }) => ({
+    loggedIn: isLoggedIn(state),
     fieldStatus: fromResource.getFieldStatus(state, field),
 });
 
