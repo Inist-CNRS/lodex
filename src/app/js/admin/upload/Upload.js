@@ -40,7 +40,6 @@ export const UploadComponent = ({ onFileLoad, onCancel, hasUploadedFile, error, 
             <p>Error uploading given file: </p>
             <p>{error}</p>
         </Alert> : <span />}
-        {hasUploadedFile ? <FlatButton onClick={onCancel} label={polyglot.t('cancel')} /> : null}
         <RaisedButton
             containerElement="label"
             primary
@@ -54,6 +53,7 @@ export const UploadComponent = ({ onFileLoad, onCancel, hasUploadedFile, error, 
                 style={styles.input}
             />
         </RaisedButton>
+        {hasUploadedFile ? <FlatButton onClick={onCancel} label={polyglot.t('cancel')} /> : null}
     </div>
 );
 

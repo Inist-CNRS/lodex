@@ -4,7 +4,6 @@ import { createSelector } from 'reselect';
 export const LOAD_PARSING_RESULT = 'LOAD_PARSING_RESULT';
 export const LOAD_PARSING_RESULT_ERROR = 'LOAD_PARSING_RESULT_ERROR';
 export const LOAD_PARSING_RESULT_SUCCESS = 'LOAD_PARSING_RESULT_SUCCESS';
-export const CLEAR_PARSING = 'CLEAR_PARSING';
 export const RELOAD_PARSING_RESULT = 'RELOAD_PARSING_RESULT';
 export const CANCEL_RELOAD = 'CANCEL_RELOAD';
 
@@ -21,17 +20,19 @@ export const defaultState = {
 export default handleActions({
     LOAD_PARSING_RESULT: state => ({
         ...state,
+        allowUpload: false,
         loading: true,
     }),
     LOAD_PARSING_RESULT_ERROR: (state, { payload }) => ({
         ...state,
         loading: false,
+        allowUpload: true,
         error: payload,
     }),
     LOAD_PARSING_RESULT_SUCCESS: (state, { payload }) => ({
         ...state,
         ...payload,
-        allowUpload: false,
+        allowUpload: payload.totalLoadedLines === 0,
         loading: false,
     }),
     RELOAD_PARSING_RESULT: state => ({
@@ -42,13 +43,11 @@ export default handleActions({
         ...state,
         allowUpload: false,
     }),
-    CLEAR_PARSING: () => defaultState,
 }, defaultState);
 
 export const loadParsingResult = createAction(LOAD_PARSING_RESULT);
 export const loadParsingResultError = createAction(LOAD_PARSING_RESULT_ERROR);
 export const loadParsingResultSuccess = createAction(LOAD_PARSING_RESULT_SUCCESS);
-export const clearParsing = createAction(CLEAR_PARSING);
 export const reloadParsingResult = createAction(RELOAD_PARSING_RESULT);
 export const cancelReload = createAction(CANCEL_RELOAD);
 
