@@ -30,7 +30,7 @@ export class AdminComponent extends Component {
         loadPublication: PropTypes.func.isRequired,
         loadingParsingResult: PropTypes.bool.isRequired,
         hasPublishedDataset: PropTypes.bool.isRequired,
-        hasUploadedFile: PropTypes.bool.isRequired,
+        canUploadFile: PropTypes.bool.isRequired,
         p: polyglotPropTypes.isRequired,
     }
 
@@ -43,7 +43,7 @@ export class AdminComponent extends Component {
         const {
             loadingParsingResult,
             hasPublishedDataset,
-            hasUploadedFile,
+            canUploadFile,
             p: polyglot,
         } = this.props;
 
@@ -69,25 +69,25 @@ export class AdminComponent extends Component {
             );
         }
 
-        if (hasUploadedFile) {
+        if (canUploadFile) {
             return (
-                <div className="admin">
-                    <ParsingResult />
-                    <PublicationPreview />
-                    <Publish />
-                </div>
+                <Upload className="admin" />
             );
         }
 
         return (
-            <Upload className="admin" />
+            <div className="admin">
+                <ParsingResult />
+                <PublicationPreview />
+                <Publish />
+            </div>
         );
     }
 }
 
 const mapStateToProps = state => ({
     loadingParsingResult: fromParsing.isParsingLoading(state) || fromUpload.isUploadPending(state),
-    hasUploadedFile: fromParsing.hasUploadedFile(state),
+    canUploadFile: fromParsing.canUpload(state),
     hasPublishedDataset: fromPublication.hasPublishedDataset(state),
 });
 

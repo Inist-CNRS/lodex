@@ -5,11 +5,13 @@ import translate from 'redux-polyglot/translate';
 import classnames from 'classnames';
 
 import RaisedButton from 'material-ui/RaisedButton';
+import FlatButton from 'material-ui/FlatButton';
 import ArchiveIcon from 'material-ui/svg-icons/content/archive';
 import Alert from '../../lib/Alert';
 
 import { uploadFile } from './';
-import { fromUpload } from '../selectors';
+import { cancelReload } from '../parsing';
+import { fromUpload, fromParsing } from '../selectors';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 
 const styles = {
@@ -29,7 +31,7 @@ const styles = {
     },
 };
 
-export const UploadComponent = ({ onFileLoad, error, p: polyglot, ...props }) => (
+export const UploadComponent = ({ onFileLoad, onCancel, hasUploadedFile, error, p: polyglot, ...props }) => (
     <div
         className={classnames('upload', props.className)}
         style={styles.div}
@@ -38,6 +40,7 @@ export const UploadComponent = ({ onFileLoad, error, p: polyglot, ...props }) =>
             <p>Error uploading given file: </p>
             <p>{error}</p>
         </Alert> : <span />}
+        {hasUploadedFile ? <FlatButton onClick={onCancel} label={polyglot.t('cancel')} /> : null}
         <RaisedButton
             containerElement="label"
             primary
@@ -58,6 +61,8 @@ UploadComponent.propTypes = {
     className: PropTypes.string,
     error: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]).isRequired,
     onFileLoad: PropTypes.func.isRequired,
+    onCancel: PropTypes.func.isRequired,
+    hasUploadedFile: PropTypes.bool.isRequired,
     p: polyglotPropTypes.isRequired,
 };
 
@@ -65,10 +70,14 @@ UploadComponent.defaultProps = {
     className: null,
 };
 
-const mapsStateToProps = fromUpload.getUpload;
+const mapsStateToProps = state => ({
+    ...fromUpload.getUpload(state),
+    hasUploadedFile: fromParsing.hasUploadedFile(state),
+});
 
 const mapDispatchToProps = {
     onFileLoad: uploadFile,
+    onCancel: cancelReload,
 };
 
 export default compose(
