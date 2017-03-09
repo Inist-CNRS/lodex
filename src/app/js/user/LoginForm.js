@@ -1,5 +1,6 @@
 import React from 'react';
 import compose from 'recompose/compose';
+import withHandlers from 'recompose/withHandlers';
 import translate from 'redux-polyglot/translate';
 import { Field, reduxForm, propTypes as reduxFormPropTypes } from 'redux-form';
 import FormTextField from '../lib/FormTextField';
@@ -22,11 +23,26 @@ const validate = (values) => {
     return errors;
 };
 
-export const LoginFormComponent = ({ error, handleSubmit, p: polyglot }) => (
+export const LoginFormComponent = ({ error, handleKeyPress, handleSubmit, p: polyglot }) => (
     <form id="login_form" onSubmit={handleSubmit}>
         {error && <Alert><p>{error}</p></Alert>}
-        <Field name="username" component={FormTextField} label={polyglot.t('Username')} fullWidth />
-        <Field name="password" type="password" component={FormTextField} label={polyglot.t('Password')} fullWidth />
+
+        <Field
+            name="username"
+            component={FormTextField}
+            label={polyglot.t('Username')}
+            onKeyPress={handleKeyPress}
+            fullWidth
+        />
+
+        <Field
+            name="password"
+            type="password"
+            component={FormTextField}
+            label={polyglot.t('Password')}
+            onKeyPress={handleKeyPress}
+            fullWidth
+        />
     </form>
 );
 
@@ -39,6 +55,13 @@ export default compose(
     reduxForm({
         form: LOGIN_FORM_NAME,
         validate,
+    }),
+    withHandlers({
+        handleKeyPress: ({ handleSubmit }) => (event) => {
+            if (event.key === 'Enter') {
+                handleSubmit();
+            }
+        },
     }),
     translate,
 )(LoginFormComponent);
