@@ -226,6 +226,7 @@ const isSaving = state => state.saving;
 const isLoading = state => state.loading;
 
 export const fromResource = {
+    getResourceContributorsCatalog,
     getResourceLastVersion,
     getResourceProposedFields,
     getResourceContributions,

@@ -132,12 +132,12 @@ describe('resourceReducer', () => {
                         ],
                     },
                 };
-                expect(fromResource.getResourceProposededFields(state))
+                expect(fromResource.getResourceProposedFields(state))
                     .toEqual(['proposedField', 'otherProposedField']);
             });
         });
 
-        describe('getResourceContributorsByField', () => {
+        describe('getResourceContributorsCatalog', () => {
             it('should return contributor name keyed with their field', () => {
                 const state = {
                     resource: {
@@ -150,7 +150,7 @@ describe('resourceReducer', () => {
                     },
                 };
 
-                expect(fromResource.getResourceContributorsByField(state)).toEqual({
+                expect(fromResource.getResourceContributorsCatalog(state)).toEqual({
                     field1: 'contributor1',
                     field2: 'contributor2',
                     field3: 'contributor3',

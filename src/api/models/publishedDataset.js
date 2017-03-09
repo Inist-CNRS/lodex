@@ -129,8 +129,8 @@ export default (db) => {
                 'contributions.$.status': status,
             },
             $inc: {
-                [`contributionCount${status}`]: 1,
-                [`contributionCount${previousStatus}`]: -1,
+                [`contributionCount.${status}`]: 1,
+                [`contributionCount.${previousStatus}`]: -1,
             },
         });
 
