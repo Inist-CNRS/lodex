@@ -75,7 +75,7 @@ describe('validateField', () => {
             label: 'field label',
             cover: 'collection',
             transformers: [
-                { operation: 'COLUMN', args: [] },
+                { operation: 'COLUMN', args: [{ value: 'a' }] },
             ],
         };
         const result = validateField(field);
@@ -112,15 +112,17 @@ describe('validateField', () => {
                 {
                     name: 'language',
                     isValid: true,
+                }, {
+                    name: 'transformer.operation',
+                    isValid: true,
                 },
             ],
             propertiesAreValid: true,
             composedOfFields: [],
             composedOfFieldsAreValid: true,
             transformers: [{
-                name: 'COLUMN',
+                name: 'transformer.operation',
                 isValid: true,
-                error: undefined,
             }],
             transformersAreValid: true,
         });
@@ -210,7 +212,7 @@ describe('validateField', () => {
             expect(validateScheme({ scheme: 'google.fr' })).toEqual({
                 name: 'scheme',
                 isValid: false,
-                error: 'invalid_scheme',
+                error: 'invalid',
             });
         });
 
@@ -248,7 +250,7 @@ describe('validateField', () => {
             expect(validateLanguage({ language: 'foo' }, [{ code: 'en' }])).toEqual({
                 name: 'language',
                 isValid: false,
-                error: 'invalid_language',
+                error: 'invalid',
             });
         });
     });
@@ -371,7 +373,7 @@ describe('validateField', () => {
             })).toEqual({
                 name: 'composedOf.separator',
                 isValid: false,
-                error: 'invalid_composedOf.separator',
+                error: 'invalid',
             });
         });
 
@@ -432,7 +434,7 @@ describe('validateField', () => {
     describe('validateComposedOfField', () => {
         it('should return valid result if field is in allFields', () => {
             expect(validateComposedOfField('field1', [{ name: 'field1' }])).toEqual({
-                name: 'composedOf.fields[field1]',
+                name: 'composedOf.fields',
                 isValid: true,
                 error: undefined,
             });
@@ -440,9 +442,9 @@ describe('validateField', () => {
 
         it('should return invalid error if field is not in allFields', () => {
             expect(validateComposedOfField('field2', [{ name: 'field1' }])).toEqual({
-                name: 'composedOf.fields[field2]',
+                name: 'composedOf.fields',
                 isValid: false,
-                error: 'inexisting_target_field',
+                error: 'invalid',
             });
         });
     });

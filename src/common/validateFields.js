@@ -2,8 +2,6 @@ import { COVERS, COVER_DOCUMENT } from './cover';
 import knownTransformers from './transformers';
 import { languages as languagesFromConfig } from '../../config.json';
 
-const validOperations = new RegExp(Object.keys(knownTransformers).join('|'));
-
 export const validateLabel = (field) => {
     const result = {
         name: 'label',
@@ -243,12 +241,28 @@ export const validateScheme = (field) => {
 };
 
 export const validateTransformer = (transformer) => {
-    const isValid = validOperations.test(transformer.operation) && Array.isArray(transformer.args);
+    const transformerOperation = knownTransformers[transformer.operation];
+    if (!transformerOperation || !transformer.args) {
+        return {
+            name: 'transformer.operation',
+            isValid: false,
+            meta: { operation: transformer.operation },
+            error: 'invalid',
+        };
+    }
+    const transformerMeta = transformerOperation.getMetas();
+    if (transformerMeta.args.length !== transformer.args.filter(({ value }) => !!value).length) {
+        return {
+            name: 'transformer.args',
+            isValid: false,
+            meta: { operation: transformer.operation, args: transformerMeta.args.length },
+            error: 'invalid',
+        };
+    }
+
     return {
         name: 'transformer.operation',
-        isValid,
-        meta: { operation: transformer.operation },
-        error: isValid ? undefined : 'invalid',
+        isValid: true,
     };
 };
 

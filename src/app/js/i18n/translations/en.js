@@ -60,6 +60,7 @@ export default {
     error_cover_invalid_cover: 'Cover must be either dataset or collection',
     error_language_invalid: 'Language is invalid',
     'error_transformer.operation_invalid': 'Transformer Operation %{operation} does not exists',
+    'error_transformer.args_invalid': 'Transformer Operation %{operation} is invalid : need %{args} args',
     remove_resource: 'Remove the resource',
     reason: 'Enter your reason',
     removed_resource_at: 'This resource was removed %{date}',
