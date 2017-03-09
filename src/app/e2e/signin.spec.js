@@ -1,7 +1,7 @@
 import { until, By } from 'selenium-webdriver';
 import driver from '../../common/tests/chromeDriver';
 
-import { elementIsClicked, inputElementIsFocusable } from '../../common/tests/conditions';
+import { inputElementIsFocusable } from '../../common/tests/conditions';
 
 describe('Home page', function homeTests() {
     this.timeout(30000);
@@ -12,21 +12,13 @@ describe('Home page', function homeTests() {
     let form;
 
     before(async () => {
-        await driver.executeScript('window.sessionStorage.clear()');
+        await driver.get('http://localhost:3010/#/login');
     });
 
-    it('should display the Appbar with correct title', async () => {
-        await driver.get('http://localhost:3010/');
-        await driver.wait(until.elementLocated(By.css('.appbar')), DEFAULT_WAIT_TIMEOUT);
-        const title = await driver.findElement(By.css('.appbar a'));
-        driver.wait(until.elementTextIs(title, 'Lodex'), DEFAULT_WAIT_TIMEOUT);
-    });
+    it('shpw the sign-in form', async () => {
+        await driver.wait(until.elementLocated(By.css('#login_form')), DEFAULT_WAIT_TIMEOUT);
 
-    it('click on sign-in button should display the sign-in modal', async () => {
-        const buttonSignIn = await driver.findElement(By.css('.btn-sign-in'));
-        await driver.wait(elementIsClicked(buttonSignIn), DEFAULT_WAIT_TIMEOUT);
-
-        form = await driver.findElement(By.css('.dialog-login form'));
+        form = await driver.findElement(By.css('#login_form'));
         username = await driver.findElement(By.css('input[name=username]'));
         password = await driver.findElement(By.css('input[name=password]'));
 
@@ -49,10 +41,12 @@ describe('Home page', function homeTests() {
         await password.clear();
         await password.sendKeys('secret');
         await form.submit();
-        await driver.wait(until.stalenessOf(form), DEFAULT_WAIT_TIMEOUT);
+        await form.submit(); // Weird selenium bug
+        await driver.wait(until.urlIs('http://localhost:3010/#/home'), DEFAULT_WAIT_TIMEOUT);
     });
 
     after(async () => {
         await driver.executeScript('localStorage.clear();');
+        await driver.executeScript('sessionStorage.clear();');
     });
 });

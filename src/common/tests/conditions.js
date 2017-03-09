@@ -42,6 +42,5 @@ export const elementIsClicked = element =>
 export const elementsCountIs = (selector, count) =>
     new Condition(`until "${selector}" count is ${count}`, async (driver) => {
         const elements = await driver.findElements(selector);
-
         return Promise.resolve(elements && elements.length === count);
     });

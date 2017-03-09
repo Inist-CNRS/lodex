@@ -18,6 +18,8 @@ export function* handleAddField({ payload: name }) {
         cover: 'collection',
         label: name || `newField ${index + 1}`,
         name: name || `newField${index + 1}`,
+        display_in_list: true,
+        display_in_resouce: true,
         transformers: name ? [{
             operation: 'COLUMN',
             args: [{

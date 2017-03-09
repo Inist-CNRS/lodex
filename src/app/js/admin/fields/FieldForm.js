@@ -6,6 +6,7 @@ import { Field, FieldArray, reduxForm, propTypes as reduxFormPropTypes } from 'r
 import MenuItem from 'material-ui/MenuItem';
 
 import { field as fieldPropTypes, polyglot as polyglotPropTypes } from '../../propTypes';
+import FormCheckboxField from '../../lib/FormCheckboxField';
 import FormTextField from '../../lib/FormTextField';
 import FormSelectField from '../../lib/FormSelectField';
 import SchemeAutoComplete from '../../lib/SchemeAutoComplete';
@@ -93,6 +94,16 @@ export const FieldFormComponent = ({
             </Field>
             { isContribution ? null : <ComposedOf name="composedOf" value={field.composedOf} /> }
             <LanguagesField field={field} />
+            <Field
+                name="display_in_list"
+                component={FormCheckboxField}
+                label={polyglot.t('field_display_in_list')}
+            />
+            <Field
+                name="display_in_resource"
+                component={FormCheckboxField}
+                label={polyglot.t('field_display_in_resource')}
+            />
         </form>
     );
 };

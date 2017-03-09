@@ -23,9 +23,14 @@ const validate = (values) => {
     return errors;
 };
 
+const styles = {
+    alert: {
+        width: '100%',
+    },
+};
 export const LoginFormComponent = ({ error, handleKeyPress, handleSubmit, p: polyglot }) => (
     <form id="login_form" onSubmit={handleSubmit}>
-        {error && <Alert><p>{error}</p></Alert>}
+        {error && <Alert style={styles.alert}><p>{error}</p></Alert>}
 
         <Field
             name="username"

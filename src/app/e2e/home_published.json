@@ -3,6 +3,8 @@
             "name": "uri",
             "label": "URI",
             "cover": "collection",
+            "display_in_list": true,
+            "display_in_resource": false,
             "transformers": [
                 {
                     "operation": "AUTOGENERATE_URI",
@@ -17,6 +19,8 @@
             "name": "name",
             "label": "name",
             "cover": "collection",
+            "display_in_list": true,
+            "display_in_resource": false,
             "transformers": [
                 {
                     "operation": "COLUMN",
@@ -37,6 +41,8 @@
             "name": "fullname",
             "label": "Full name",
             "cover": "collection",
+            "display_in_list": true,
+            "display_in_resource": true,
             "scheme": "http://www.w3.org/ns/person",
             "transformers": [],
             "composedOf": {
@@ -50,6 +56,8 @@
             "name": "firstname",
             "label": "firstname",
             "cover": "collection",
+            "display_in_list": true,
+            "display_in_resource": false,
             "transformers": [
                 {
                     "operation": "COLUMN",
@@ -70,6 +78,8 @@
             "name": "email",
             "label": "Email",
             "cover": "collection",
+            "display_in_list": true,
+            "display_in_resource": true,
             "scheme": "http://uri4uri.net/vocab",
             "transformers": [
                 {
@@ -90,6 +100,8 @@
             "cover": "collection",
             "scheme": "http://www.w3.org/ns/person",
             "language": "fr",
+            "display_in_list": false,
+            "display_in_resource": true,
             "transformers": [
                 {
                     "operation": "LINK",

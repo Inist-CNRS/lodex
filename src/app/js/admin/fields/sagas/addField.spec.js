@@ -24,6 +24,8 @@ describe('fields saga', () => {
             it('should select getCreateFieldRequest', () => {
                 expect(saga.next(42).value).toEqual(select(getCreateFieldRequest, {
                     cover: 'collection',
+                    display_in_list: true,
+                    display_in_resouce: true,
                     label: 'newField 43',
                     name: 'newField43',
                     transformers: [],
@@ -51,6 +53,8 @@ describe('fields saga', () => {
                     cover: 'collection',
                     label: 'foo',
                     name: 'foo',
+                    display_in_list: true,
+                    display_in_resouce: true,
                     transformers: [{
                         operation: 'COLUMN',
                         args: [{
