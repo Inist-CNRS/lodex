@@ -96,6 +96,10 @@
             "versions": [{
                 "fullname" : "SAMSAGET.GAMGIE",
                 "email" : "samsaget.gamgie@shire.net"
+            }, {
+                "fullname": "SAMSAGET.GAMGIE",
+                "email": "samsaget.gamgie@shire.net",
+                "note": "14/20"
             }],
             "contributions": [{
                 "fieldName": "note",
@@ -114,6 +118,10 @@
             "versions": [{
                 "fullname" : "BILBON.BAGGINS",
                 "email" : "bilbon.saquet@shire.net"
+            }, {
+                "fullname": "BILBON.BAGGINS",
+                "email": "bilbon.saquet@shire.net",
+                "note": "0/20"
             }],
             "contributions": [{
                 "fieldName": "note",

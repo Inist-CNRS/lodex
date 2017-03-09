@@ -91,6 +91,90 @@ describe('Admin', () => {
             driver.wait(until.elementTextIs(title, '3'), DEFAULT_WAIT_TIMEOUT);
         });
 
+        it('should display note striked out with a moderate butoon on REJECTED', async () => {
+            await driver.wait(until.elementLocated(By.css('.property.note dl')));
+            const notePropertyDL = await driver.findElement(By.css('.property.note dl'));
+            expect(await notePropertyDL.getCssValue('text-decoration')).toBe('line-through');
+            expect(await notePropertyDL.getCssValue('color')).toBe('rgba(128, 128, 128, 1)');
+            const contributor = await notePropertyDL.findElement(By.css('.property_contributor'));
+            expect(await contributor.getText()).toBe('Added by john');
+            const moderateButton = await notePropertyDL.findElement(By.css('.moderate'));
+            const rejectButton = await moderateButton.findElement(By.css('.REJECTED'));
+            expect(await rejectButton.getAttribute('class'))
+                .toBe('REJECTED active');
+            const validateButton = await moderateButton.findElement(By.css('.VALIDATED'));
+            expect(await validateButton.getAttribute('class'))
+                .toBe('VALIDATED');
+            const proposeButton = await moderateButton.findElement(By.css('.PROPOSED'));
+            expect(await proposeButton.getAttribute('class'))
+                .toBe('PROPOSED');
+        });
+
+        it('should change note to proposed', async () => {
+            await driver.wait(until.elementLocated(By.css('.property.note dl')));
+            const notePropertyDL = await driver.findElement(By.css('.property.note dl'));
+            const moderateButton = await notePropertyDL.findElement(By.css('.moderate'));
+            const proposeButton = await moderateButton.findElement(By.css('.PROPOSED'));
+            await driver.wait(elementIsClicked(proposeButton), DEFAULT_WAIT_TIMEOUT);
+        });
+
+        it('should display note with a moderate button on PROPOSED', async () => {
+            await driver.wait(until.elementLocated(By.css('.property.note dl')));
+            const notePropertyDL = await driver.findElement(By.css('.property.note dl'));
+            expect(await notePropertyDL.getCssValue('text-decoration')).toBe('none');
+            expect(await notePropertyDL.getCssValue('color')).toBe('rgba(128, 128, 128, 1)');
+            const contributor = await notePropertyDL.findElement(By.css('.property_contributor'));
+            expect(await contributor.getText()).toBe('Contributed by john');
+            const moderateButton = await notePropertyDL.findElement(By.css('.moderate'));
+            const rejectButton = await moderateButton.findElement(By.css('.REJECTED'));
+            expect(await rejectButton.getAttribute('class'))
+                .toBe('REJECTED');
+            const validateButton = await moderateButton.findElement(By.css('.VALIDATED'));
+            expect(await validateButton.getAttribute('class'))
+                .toBe('VALIDATED');
+            const proposeButton = await moderateButton.findElement(By.css('.PROPOSED'));
+            expect(await proposeButton.getAttribute('class'))
+                .toBe('PROPOSED active');
+        });
+
+        it('should change note to validated', async () => {
+            await driver.wait(until.elementLocated(By.css('.property.note dl')));
+            const notePropertyDL = await driver.findElement(By.css('.property.note dl'));
+            const moderateButton = await notePropertyDL.findElement(By.css('.moderate'));
+            const validatedButton = await moderateButton.findElement(By.css('.VALIDATED'));
+            await driver.wait(elementIsClicked(validatedButton), DEFAULT_WAIT_TIMEOUT);
+        });
+
+        it('should display note with a moderate button on VALIDATED', async () => {
+            await driver.wait(until.elementLocated(By.css('.property.note dl')));
+            const notePropertyDL = await driver.findElement(By.css('.property.note dl'));
+            expect(await notePropertyDL.getCssValue('text-decoration')).toBe('none');
+            expect(await notePropertyDL.getCssValue('color')).toBe('rgba(0, 0, 0, 1)');
+            const contributor = await notePropertyDL.findElement(By.css('.property_contributor'));
+            expect(await contributor.getText()).toBe('Added by john');
+            const moderateButton = await notePropertyDL.findElement(By.css('.moderate'));
+            const rejectButton = await moderateButton.findElement(By.css('.REJECTED'));
+            expect(await rejectButton.getAttribute('class'))
+                .toBe('REJECTED');
+            const validateButton = await moderateButton.findElement(By.css('.VALIDATED'));
+            expect(await validateButton.getAttribute('class'))
+                .toBe('VALIDATED active');
+            const proposeButton = await moderateButton.findElement(By.css('.PROPOSED'));
+            expect(await proposeButton.getAttribute('class'))
+                .toBe('PROPOSED');
+        });
+
+        it('should logout', async () => {
+            const signOut = await driver.findElement(By.css('.btn-sign-out'));
+            await driver.wait(elementIsClicked(signOut), DEFAULT_WAIT_TIMEOUT);
+            await driver.wait(until.elementLocated(By.css('.btn-sign-in')));
+        });
+
+        it('should not display moderate compoenet when loggedOut', async () => {
+            const moderateComponents = await driver.findElements(By.css('.moderate'));
+            expect(moderateComponents.length).toBe(0);
+        });
+
         after(async () => {
             await clear();
             await driver.executeScript('sessionStorage.clear();');

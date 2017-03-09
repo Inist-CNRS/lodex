@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 import { red500, yellow500, green500, grey500 } from 'material-ui/styles/colors';
+import classnames from 'classnames';
 
 import propositionStatus from '../../../common/propositionStatus';
 import { polyglot as polyglotPropTypes } from '../propTypes';
@@ -49,6 +50,7 @@ export const ModerateButtonComponent = ({ status, changeStatus, loggedIn, p: pol
             {
                 propositionStatus.map(availableStatus => (
                     <IconButton
+                        className={classnames(availableStatus, { active: availableStatus === status })}
                         style={styles.iconButton}
                         key={availableStatus}
                         tooltip={polyglot.t(availableStatus)}
