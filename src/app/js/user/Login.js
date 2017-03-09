@@ -33,6 +33,7 @@ export const LoginComponent = ({ login, p: polyglot, submit, submitting }) => (
                 label={polyglot.t('Sign in')}
                 loading={submitting}
                 onTouchTap={submit}
+                primary
             />,
         </CardActions>
     </Card>
