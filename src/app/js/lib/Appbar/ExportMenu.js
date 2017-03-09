@@ -2,6 +2,7 @@ import React, { PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
+import memoize from 'lodash.memoize';
 import translate from 'redux-polyglot/translate';
 import IconButton from 'material-ui/IconButton';
 import IconMenu from 'material-ui/IconMenu';
@@ -20,10 +21,12 @@ const styles = {
 
 const origin = { horizontal: 'right', vertical: 'top' };
 
-export const ExportMenuComponent = ({ exportPublishedDataset, p: polyglot, ...props }) => (
+const getStyles = memoize(style => Object.assign({}, styles.icon, style));
+
+export const ExportMenuComponent = ({ exportPublishedDataset, iconStyle, p: polyglot, ...props }) => (
     <IconMenu
         {...props}
-        iconStyle={styles.icon}
+        iconStyle={getStyles(iconStyle)}
         iconButtonElement={
             <IconButton tooltip={polyglot.t('export_data')}><FileDownloadIcon /></IconButton>
         }
@@ -45,7 +48,12 @@ export const ExportMenuComponent = ({ exportPublishedDataset, p: polyglot, ...pr
 
 ExportMenuComponent.propTypes = {
     exportPublishedDataset: PropTypes.func.isRequired,
+    iconStyle: PropTypes.object, // eslint-disable-line
     p: polyglotPropTypes.isRequired,
+};
+
+ExportMenuComponent.defaultProps = {
+    iconStyle: null,
 };
 
 const mapDispatchToProps = dispatch => bindActionCreators({

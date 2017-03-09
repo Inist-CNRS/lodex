@@ -39,6 +39,18 @@ To execute all tests, run the following command:
 make test
 ```
 
+## Customizing the public layout
+
+On EzMaster, you can upload one or more files to create your own public layout.
+The only requirement is to provide an `index.html` file containing an element with id `root`.
+
+It is your responsability to include links to the administration and authentication pages:
+
+- administation: href must target `/admin`
+- authentication: href must target `#/login`
+
+You can download the original layout from EzMaster to get started.
+
 ## Adding a new loader
 
 You can add new loaders to lodex.
@@ -288,6 +300,7 @@ A transformer can be divided in two parts a transformation function,
 and a getMetas method.
 
 ### transformation
+
 The transformation function take a context and an array of arguments.
 
 #### Context
@@ -310,6 +323,7 @@ In browser:
     - fetchLineBy(field, value, token): Same as fetchLineBy but also need the token.
 
 ##### Extending the context
+
 To add method to the context, you need to edit the code in two place.
 
 - clientSide: in `src/app/lib/getDocumentTransformer`.
