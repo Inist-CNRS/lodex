@@ -164,18 +164,6 @@ describe('Admin', () => {
                 .toBe('PROPOSED');
         });
 
-        it('should logout', async () => {
-            await driver.wait(until.elementLocated(By.css('.btn-sign-out')));
-            const signOut = await driver.findElement(By.css('.btn-sign-out'));
-            await driver.wait(elementIsClicked(signOut), DEFAULT_WAIT_TIMEOUT);
-            await driver.wait(until.elementLocated(By.css('.btn-sign-in')));
-        });
-
-        it('should not display moderate compoenet when loggedOut', async () => {
-            const moderateComponents = await driver.findElements(By.css('.moderate'));
-            expect(moderateComponents.length).toBe(0);
-        });
-
         after(async () => {
             await clear();
             await driver.executeScript('sessionStorage.clear();');
