@@ -23,6 +23,7 @@ describe('<Dataset />', () => {
 
         shallow(<Dataset
             currentPage={1}
+            perPage={10}
             loadDatasetPage={loadDatasetPage}
             loading
             p={{ t: key => key }}
@@ -39,6 +40,7 @@ describe('<Dataset />', () => {
     it('should render the TableHeaderColumn for each column', () => {
         const wrapper = shallow(<Dataset
             currentPage={1}
+            perPage={10}
             columns={columns}
             dataset={dataset}
             loadDatasetPage={() => {}}
@@ -55,6 +57,7 @@ describe('<Dataset />', () => {
     it('should render the TableRowColumn for each value for each column', () => {
         const wrapper = shallow(<Dataset
             currentPage={1}
+            perPage={10}
             columns={columns}
             dataset={dataset}
             loadDatasetPage={() => {}}
@@ -101,6 +104,7 @@ describe('<Dataset />', () => {
             p={{ t: key => key }}
             columns={columns}
             currentPage={1}
+            perPage={10}
             dataset={dataset}
             loadDatasetPage={() => {}}
             loading={false}
@@ -117,6 +121,7 @@ describe('<Dataset />', () => {
         const wrapper = shallow(<Dataset
             p={{ t: key => key }}
             currentPage={1}
+            perPage={10}
             loadDatasetPage={loadDatasetPage}
             loading={false}
             total={3}

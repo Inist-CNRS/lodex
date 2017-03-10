@@ -40,7 +40,7 @@ export class DatasetComponent extends Component {
     }
 
     handlePageChange = (currentPage, perPage) => {
-        this.props.loadDatasetPage({ page: currentPage - 1, perPage });
+        this.props.loadDatasetPage({ page: currentPage, perPage });
     }
 
     handleFilterChange = (match) => {
@@ -58,7 +58,7 @@ export class DatasetComponent extends Component {
                     onChange={(_, e) => this.handleFilterChange(e)}
                 />
                 {
-                    !filtering ?
+                    filtering ?
                         <CircularProgress size={30} />
                     :
                      null

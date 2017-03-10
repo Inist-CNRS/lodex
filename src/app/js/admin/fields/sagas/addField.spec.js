@@ -26,6 +26,7 @@ describe('fields saga', () => {
                     cover: 'collection',
                     display_in_list: true,
                     display_in_resouce: true,
+                    searchable: true,
                     label: 'newField 43',
                     name: 'newField43',
                     transformers: [],
@@ -55,6 +56,7 @@ describe('fields saga', () => {
                     name: 'foo',
                     display_in_list: true,
                     display_in_resouce: true,
+                    searchable: true,
                     transformers: [{
                         operation: 'COLUMN',
                         args: [{

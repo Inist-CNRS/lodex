@@ -15,13 +15,15 @@ export function* handleLoadDatasetPageRequest({ payload }) {
     const { error, response } = yield call(fetchSaga, request);
 
     if (error) {
-        return yield put(loadDatasetPageError(error));
+        yield put(loadDatasetPageError(error));
+        return;
     }
 
     const { data: dataset, total } = response;
-    yield delay(500);
 
-    return yield put(loadDatasetPageSuccess({ dataset, page: payload.page, total }));
+    yield put(loadDatasetPageSuccess({ dataset, page: payload.page, total }));
+
+    yield delay(500);
 }
 
 export default function* () {
