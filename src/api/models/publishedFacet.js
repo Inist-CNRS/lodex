@@ -11,5 +11,33 @@ export default (db) => {
             value,
         })));
 
+    collection.findLimitFromSkip = (limit, skip, filter) =>
+        collection
+            .find(filter)
+            .skip(skip)
+            .limit(limit)
+            .sort({ value: 1 })
+            .toArray();
+
+    collection.findValuesForField = (field, filter, perPage = 10) => {
+        const filters = { field };
+
+        if (filter) {
+            filters.value = { $regex: `.*${filter}.*` };
+        }
+
+        return collection.findLimitFromSkip(perPage, 0 * perPage, filters);
+    };
+
+    collection.countValuesForField = (field, filter) => {
+        const filters = { field };
+
+        if (filter) {
+            filters.value = { $regex: `.*${filter}.*` };
+        }
+
+        return collection.count(filters);
+    };
+
     return collection;
 };

@@ -152,6 +152,11 @@ export const getExportFieldsRequest = state =>
         url: '/api/field/export',
     });
 
+export const getLoadFacetValuesRequest = (state, { field, filter }) =>
+    getRequest(state, {
+        url: `/api/facet/${field}/${filter || ''}`,
+    });
+
 export const getLoadContributedResourcePageRequest = (state, { page, perPage, filter }) => {
     const encodedPage = encodeURIComponent(page);
     const encodedPerPage = encodeURIComponent(perPage);

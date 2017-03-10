@@ -25,10 +25,10 @@ describe('fields saga', () => {
                 expect(saga.next(42).value).toEqual(select(getCreateFieldRequest, {
                     cover: 'collection',
                     display_in_list: true,
-                    display_in_resouce: true,
-                    searchable: true,
+                    display_in_resource: true,
                     label: 'newField 43',
                     name: 'newField43',
+                    searchable: true,
                     transformers: [],
                 }));
             });
@@ -55,7 +55,7 @@ describe('fields saga', () => {
                     label: 'foo',
                     name: 'foo',
                     display_in_list: true,
-                    display_in_resouce: true,
+                    display_in_resource: true,
                     searchable: true,
                     transformers: [{
                         operation: 'COLUMN',

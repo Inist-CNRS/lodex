@@ -17,6 +17,7 @@ import Dataset from './dataset/Dataset';
 import DatasetCharacteristics from './characteristic/DatasetCharacteristics';
 import NoDataset from './NoDataset';
 import Toolbar from './Toolbar';
+import AppliedFacetList from './facet/AppliedFacetList';
 
 export class HomeComponent extends Component {
     static defaultProps = {
@@ -61,6 +62,7 @@ export class HomeComponent extends Component {
             return (
                 <div>
                     <Toolbar />
+                    <AppliedFacetList />
                     <DatasetCharacteristics />
                     <Dataset />
                 </div>

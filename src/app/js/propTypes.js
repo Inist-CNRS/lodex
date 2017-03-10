@@ -16,6 +16,11 @@ export const field = PropTypes.shape({
     scheme: PropTypes.string,
 });
 
+export const facet = PropTypes.shape({
+    field,
+    value: PropTypes.string.isRequired,
+});
+
 export const resource = PropTypes.shape({
     uri: PropTypes.string,
 });

@@ -10,6 +10,7 @@ import mongoClient from '../../services/mongoClient';
 
 import characteristic from './characteristic';
 import exportPublishedDataset from './export';
+import facet from './facet';
 import fieldRoutes from './field';
 import login from './login';
 import parsing from './parsing';
@@ -26,6 +27,7 @@ app.use(mongoClient);
 app.use(initializeFields);
 
 app.use(mount('/export', exportPublishedDataset));
+app.use(mount('/facet', facet));
 app.use(route.post('/login', login()));
 app.use(route.get('/publication', publication));
 app.use(route.get('/ark', ark));

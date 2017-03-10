@@ -118,4 +118,6 @@ export default {
     filter: 'enter your search term here',
     no_result: 'No matching resource found',
     field_is_facet: 'Is a facet',
+    add_facet: 'Add a facet',
+    select_facet_value: 'Select a value for: %{facet}',
 };

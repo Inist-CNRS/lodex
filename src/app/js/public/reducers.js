@@ -5,6 +5,7 @@ import { polyglotReducer as polyglot } from 'redux-polyglot';
 
 import characteristic from './characteristic';
 import dataset from './dataset';
+import facet from './facet';
 import fetchReducer from '../fetch';
 import i18n from '../i18n';
 import publication from './publication';
@@ -15,6 +16,7 @@ import debugReducer from '../lib/debugReducer';
 const rootReducer = combineReducers({
     characteristic,
     dataset,
+    facet,
     fetch: fetchReducer,
     form,
     i18n,

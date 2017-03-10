@@ -149,7 +149,7 @@ export default (db) => {
         };
     };
 
-    collection.findDistinctValuesForField = field => collection.distinct(field);
+    collection.findDistinctValuesForField = field => collection.distinct(`versions.${field}`);
 
     return collection;
 };

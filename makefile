@@ -45,10 +45,10 @@ docker-run-dev: ## run node server with pm2 for development and webpack-dev-serv
 	docker-compose up --force-recreate
 
 mongo-shell: ## Start the mongo shell
-	docker exec -it lodexv2_mongo_1 mongo lodex --shell
+	docker-compose exec mongo mongo lodex
 
 mongo-shell-test: ## Start the mongo shell for the test database
-	docker exec -it lodexv2_mongo_1 mongo lodex_test --shell
+	docker-compose exec mongo mongo lodex_test
 
 # Build ==================================================================
 

@@ -167,6 +167,11 @@ const getRootCollectionFields = createSelector(
         .filter(f => f.cover === COVER_COLLECTION && !f.completes),
 );
 
+const getFacetFields = createSelector(
+    getFields,
+    allFields => allFields.filter(f => f.isFacet),
+);
+
 const getFieldsCatalog = createSelector(
     getFields,
     fields => fields.reduce((catalog, field) => ({
@@ -209,4 +214,5 @@ export const fromPublication = {
     isPublicationLoading,
     getPublicationError,
     getCompositeFieldsByField,
+    getFacetFields,
 };
