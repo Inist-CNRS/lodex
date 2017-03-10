@@ -21,7 +21,7 @@ export default (db) => {
 
         return collection.findLimitFromSkip(perPage, page * perPage, {
             ...filter,
-            $or: fieldNames.map(name => ({ [name]: regexMatch })),
+            $or: fieldNames.map(name => ({ [`versions.${name}`]: { $regex: regexMatch, $options: 'i' } })),
         });
     };
 

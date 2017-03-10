@@ -104,10 +104,15 @@ export const getUpdateCharacteristicsRequest = state =>
         body: state.characteristic.newCharacteristics,
     });
 
-export const getLoadDatasetPageRequest = (state, { page, perPage }) =>
-    getRequest(state, {
-        url: `/api/publishedDataset?page=${encodeURIComponent(page)}&perPage=${encodeURIComponent(perPage)}`,
+export const getLoadDatasetPageRequest = (state, params) => {
+    const paramString = ['page', 'perPage', 'match']
+        .filter(key => !!params[key])
+        .map(key => `${key}=${encodeURIComponent(params[key])}`)
+        .join('&');
+    return getRequest(state, {
+        url: `/api/publishedDataset?${paramString}`,
     });
+};
 
 export const getLoadPublicationRequest = state =>
     getRequest(state, {
