@@ -2,8 +2,6 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
-import TextField from 'material-ui/TextField';
-import CircularProgress from 'material-ui/CircularProgress';
 
 import {
     Table,
@@ -18,10 +16,7 @@ import Card from '../../lib/Card';
 import Loading from '../../lib/Loading';
 import ScrollableCardContent from '../../lib/ScrollableCardContent';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
-import {
-    loadDatasetPage as loadDatasetPageAction,
-    filterDataset as filterDatasetAction,
-} from './';
+import { loadDatasetPage as loadDatasetPageAction } from './';
 import { fromPublication, fromDataset } from '../selectors';
 
 const styles = {
@@ -46,27 +41,11 @@ export class DatasetComponent extends Component {
         this.props.loadDatasetPage({ page: currentPage, perPage });
     }
 
-    handleFilterChange = (match) => {
-        const { currentPage, perPage, filterDataset } = this.props;
-        filterDataset({ page: currentPage, perPage, match });
-    }
-
     render() {
-        const { columns, dataset, loading, filtering, p: polyglot, total, perPage, currentPage } = this.props;
+        const { columns, dataset, loading, p: polyglot, total, perPage, currentPage } = this.props;
         if (loading) return <Loading>{polyglot.t('loading')}</Loading>;
         return (
             <Card className="dataset">
-                <TextField
-                    className="filter"
-                    hintText={polyglot.t('filter')}
-                    onChange={(_, e) => this.handleFilterChange(e)}
-                />
-                {
-                    filtering ?
-                        <CircularProgress className="spinner" size={30} />
-                    :
-                     null
-                }
                 <ScrollableCardContent>
                     <Table selectable={false} fixedHeader={false} bodyStyle={styles.wrapper} style={styles.table}>
                         <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
@@ -116,9 +95,7 @@ DatasetComponent.propTypes = {
     perPage: PropTypes.number.isRequired,
     dataset: PropTypes.arrayOf(PropTypes.object),
     loadDatasetPage: PropTypes.func.isRequired,
-    filterDataset: PropTypes.func.isRequired,
     loading: PropTypes.bool.isRequired,
-    filtering: PropTypes.bool.isRequired,
     p: polyglotPropTypes.isRequired,
     total: PropTypes.number.isRequired,
 };
@@ -140,7 +117,6 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = ({
     loadDatasetPage: loadDatasetPageAction,
-    filterDataset: filterDatasetAction,
 });
 
 export default compose(

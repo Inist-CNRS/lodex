@@ -6,6 +6,7 @@ import { isLoggedIn as getIsLoggedIn } from '../user';
 import ExportMenu from '../lib/Appbar/ExportMenu';
 import ExportFieldsButton from '../lib/Appbar/ExportFieldsButton';
 import FacetSelector from './facet/FacetSelector';
+import Filter from './dataset/Filter';
 
 const styles = {
     icon: { color: 'black' },
@@ -16,6 +17,7 @@ export const ToolbarComponent = ({ isLoggedIn }) => (
         <ToolbarGroup firstChild>
             <ExportMenu iconStyle={styles.icon} />
             {isLoggedIn && <ExportFieldsButton iconStyle={styles.icon} />}
+            <Filter />
             <FacetSelector />
         </ToolbarGroup>
     </Toolbar>
