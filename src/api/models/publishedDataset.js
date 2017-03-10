@@ -12,8 +12,18 @@ export default (db) => {
     collection.findLimitFromSkip = (limit, skip, filter) =>
         collection.find(filter).skip(skip).limit(limit).toArray();
 
-    collection.findPage = (page = 0, perPage = 10) =>
-        collection.findLimitFromSkip(perPage, page * perPage, { removedAt: { $exists: false } });
+    collection.findPage = async (page = 0, perPage = 10, match, fieldNames) => {
+        const filter = { removedAt: { $exists: false } };
+        if (!match) {
+            return collection.findLimitFromSkip(perPage, page * perPage, filter);
+        }
+        const regexMatch = new RegExp(match);
+
+        return collection.findLimitFromSkip(perPage, page * perPage, {
+            ...filter,
+            $or: fieldNames.map(name => ({ [name]: regexMatch })),
+        });
+    };
 
     collection.findRemovedPage = (page = 0, perPage = 10) =>
         collection.findLimitFromSkip(perPage, page * perPage, { removedAt: { $exists: true } });
