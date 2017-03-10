@@ -126,7 +126,7 @@ describe('field', () => {
                 name: 'name',
                 scheme: 'http://purl.org/dc/terms/title',
                 transformers: [
-                    { operation: 'COLUMN', args: ['a'] },
+                    { operation: 'COLUMN', args: [{ value: 'a' }] },
                 ],
             };
             expect(validateField(field)).toEqual(field);

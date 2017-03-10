@@ -2,8 +2,6 @@ import { COVERS, COVER_DOCUMENT } from './cover';
 import knownTransformers from './transformers';
 import { languages as languagesFromConfig } from '../../config.json';
 
-const validOperations = new RegExp(Object.keys(knownTransformers).join('|'));
-
 export const validateLabel = (field) => {
     const result = {
         name: 'label',
@@ -160,7 +158,7 @@ export const validateComposedOfSeparator = (field) => {
         return {
             ...result,
             isValid: false,
-            error: 'invalid_composedOf.separator',
+            error: 'invalid',
         };
     }
 
@@ -179,7 +177,7 @@ export const validateComposedOfFields = (field) => {
 
     const { fields } = field.composedOf;
 
-    if (!fields || fields.length < 2) {
+    if (!fields || fields.filter(f => !!f).length < 2) {
         return {
             ...result,
             isValid: false,
@@ -194,9 +192,9 @@ export const validateComposedOfField = (field, allFields) => {
     const isValid = !!allFields.find(otherfield => otherfield.name === field);
 
     return {
-        name: `composedOf.fields[${field}]`,
+        name: 'composedOf.fields',
         isValid,
-        error: isValid ? undefined : 'inexisting_target_field',
+        error: isValid ? undefined : 'invalid',
     };
 };
 
@@ -210,7 +208,6 @@ export const validateEachComposedOfFields = (fields, allFields) => {
 
 export const validateCompletesField = (field, allFields) => {
     let isValid = true;
-
     if (field.completes) {
         isValid = !!allFields.find(otherfield => otherfield.name === field.completes);
     }
@@ -236,7 +233,7 @@ export const validateScheme = (field) => {
         return {
             ...result,
             isValid: false,
-            error: 'invalid_scheme',
+            error: 'invalid',
         };
     }
 
@@ -244,11 +241,28 @@ export const validateScheme = (field) => {
 };
 
 export const validateTransformer = (transformer) => {
-    const isValid = validOperations.test(transformer.operation) && Array.isArray(transformer.args);
+    const transformerOperation = knownTransformers[transformer.operation];
+    if (!transformerOperation || !transformer.args) {
+        return {
+            name: 'transformer.operation',
+            isValid: false,
+            meta: { operation: transformer.operation },
+            error: 'invalid',
+        };
+    }
+    const transformerMeta = transformerOperation.getMetas();
+    if (transformerMeta.args.length !== transformer.args.filter(({ value }) => !!value).length) {
+        return {
+            name: 'transformer.args',
+            isValid: false,
+            meta: { operation: transformer.operation, args: transformerMeta.args.length },
+            error: 'invalid',
+        };
+    }
+
     return {
-        name: transformer.operation,
-        isValid,
-        error: isValid ? undefined : 'invalid_transformer',
+        name: 'transformer.operation',
+        isValid: true,
     };
 };
 
@@ -268,7 +282,7 @@ export const validateLanguage = (field, languages = languagesFromConfig) => {
     return {
         ...result,
         isValid: false,
-        error: 'invalid_language',
+        error: 'invalid',
     };
 };
 export const isListValid = list => list.reduce((areValid, { isValid }) => areValid && isValid, true);
@@ -296,7 +310,11 @@ export const validateField = (field, isContribution = false, fields = []) => {
     return {
         name: field.name,
         isValid: propertiesAreValid && transformersAreValid && composedOfFieldsAreValid,
-        properties,
+        properties: [
+            ...properties,
+            ...transformers,
+            ...composedOfFields,
+        ],
         propertiesAreValid,
         transformers,
         transformersAreValid,

@@ -19,7 +19,7 @@ const styles = {
 const ValidationFieldComponent = ({ onEditField, field: { label, properties }, p: polyglot }) => (
     <li>
         <button onClick={onEditField} style={styles.label}>{label}:</button>
-        {properties.filter(p => !p.isValid).map(p => polyglot.t(`error_${p.name}_${p.error}`)).join(', ')}
+        {properties.filter(p => !p.isValid).map(p => polyglot.t(`error_${p.name}_${p.error}`, p.meta)).join(', ')}
     </li>
 );
 
