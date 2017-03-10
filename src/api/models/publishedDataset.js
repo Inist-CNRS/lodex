@@ -12,7 +12,7 @@ export default (db) => {
     collection.findLimitFromSkip = (limit, skip, filter) =>
         collection.find(filter).skip(skip).limit(limit).toArray();
 
-    collection.findPage = async (page = 0, perPage = 10, match, fieldNames) => {
+    collection.findPage = async (page = 0, perPage = 10, match = null, fieldNames = []) => {
         const filter = { removedAt: { $exists: false } };
         if (!match || !fieldNames.length) {
             return collection.findLimitFromSkip(perPage, page * perPage, filter);
