@@ -104,6 +104,11 @@ export const FieldFormComponent = ({
                 component={FormCheckboxField}
                 label={polyglot.t('field_display_in_resource')}
             />
+            <Field
+                name="searchable"
+                component={FormCheckboxField}
+                label={polyglot.t('field_searchable')}
+            />
         </form>
     );
 };

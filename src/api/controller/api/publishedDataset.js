@@ -6,12 +6,14 @@ import { PROPOSED } from '../../../common/propositionStatus';
 const app = new Koa();
 
 export const getPage = async (ctx) => {
-    const { page = 0, perPage = 10 } = ctx.request.query;
+    const { page = 0, perPage = 10, match } = ctx.request.query;
     const intPage = parseInt(page, 10);
     const intPerPage = parseInt(perPage, 10);
 
+    const searchableFieldNames = await ctx.field.findSearchableName();
+
     const [data, total] = await Promise.all([
-        ctx.publishedDataset.findPage(intPage, intPerPage),
+        ctx.publishedDataset.findPage(intPage, intPerPage, match, searchableFieldNames),
         ctx.publishedDataset.countWithoutRemoved(),
     ]);
 
@@ -77,6 +79,7 @@ export const addFieldToResource = async (ctx) => {
         ...field,
         name: fieldName,
         display_in_resource: true,
+        searchable: true,
     }, isLoggedIn);
 };
 

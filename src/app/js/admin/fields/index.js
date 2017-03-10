@@ -53,6 +53,7 @@ export const defaultState = {
     list: [],
     invalidFields: [],
     editedFieldName: null,
+    searchable: true,
 };
 
 export default handleActions({

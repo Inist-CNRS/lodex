@@ -1,7 +1,9 @@
-import { call, fork, put, select, takeLatest } from 'redux-saga/effects';
+import { call, put, select, takeLatest } from 'redux-saga/effects';
+import { delay } from 'redux-saga';
 
 import {
     LOAD_DATASET_PAGE,
+    FILTER_DATASET,
     loadDatasetPageSuccess,
     loadDatasetPageError,
 } from './';
@@ -13,17 +15,17 @@ export function* handleLoadDatasetPageRequest({ payload }) {
     const { error, response } = yield call(fetchSaga, request);
 
     if (error) {
-        return yield put(loadDatasetPageError(error));
+        yield put(loadDatasetPageError(error));
+        return;
     }
 
     const { data: dataset, total } = response;
-    return yield put(loadDatasetPageSuccess({ dataset, page: payload.page, total }));
-}
 
-export function* watchLoadDatasetPageRequest() {
-    yield takeLatest(LOAD_DATASET_PAGE, handleLoadDatasetPageRequest);
+    yield put(loadDatasetPageSuccess({ dataset, page: payload.page, total }));
+
+    yield delay(500);
 }
 
 export default function* () {
-    yield fork(watchLoadDatasetPageRequest);
+    yield takeLatest([LOAD_DATASET_PAGE, FILTER_DATASET], handleLoadDatasetPageRequest);
 }

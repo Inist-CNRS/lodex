@@ -114,4 +114,6 @@ export default {
     REJECTED: 'rejected',
     field_display_in_list: 'Display on list page',
     field_display_in_resource: 'Display on resource page',
+    field_searchable: 'Searchable',
+    filter: 'enter your search term here',
 };

@@ -1,5 +1,6 @@
 import expect from 'expect';
 import { call, put, select } from 'redux-saga/effects';
+import { delay } from 'redux-saga';
 
 import {
     loadDatasetPageError,
@@ -29,6 +30,11 @@ describe('dataset saga', () => {
                     page: 10,
                     total: 100,
                 })));
+        });
+
+        it('should delay 500', () => {
+            expect(saga.next({ response: { data: [{ foo: 42 }], total: 100 } }).value)
+                .toEqual(delay(500));
         });
 
         it('should put loadDatasetPageError action with error if any', () => {
