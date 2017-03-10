@@ -20,6 +20,7 @@ export function* handleAddField({ payload: name }) {
         name: name || `newField${index + 1}`,
         display_in_list: true,
         display_in_resouce: true,
+        searchable: true,
         transformers: name ? [{
             operation: 'COLUMN',
             args: [{

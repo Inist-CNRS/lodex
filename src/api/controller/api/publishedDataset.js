@@ -77,6 +77,7 @@ export const addFieldToResource = async (ctx) => {
         ...field,
         name: fieldName,
         display_in_resource: true,
+        searchable: true,
     }, isLoggedIn);
 };
 
