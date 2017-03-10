@@ -77,8 +77,10 @@ export class AdminComponent extends Component {
 
         return (
             <div className="admin">
-                <ParsingResult />
-                <PublicationPreview />
+                <Card className="parsingResult" initiallyExpanded>
+                    <ParsingResult />
+                    <PublicationPreview />
+                </Card>
                 <Publish />
             </div>
         );

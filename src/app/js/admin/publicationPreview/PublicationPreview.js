@@ -8,10 +8,9 @@ import FlatButton from 'material-ui/FlatButton';
 import PublicationExcerpt from './PublicationExcerpt';
 import PublicationEditionModal from './PublicationEditionModal';
 
-import { addField, editField, removeField } from '../fields';
+import { editField, removeField } from '../fields';
 import { polyglot as polyglotPropTypes, field as fieldPropTypes } from '../../propTypes';
 import { fromFields, fromPublicationPreview } from '../selectors';
-import Card from '../../lib/Card';
 import ScrollableCardContent from '../../lib/ScrollableCardContent';
 import ImportFieldsDialog from './ImportFieldsDialog';
 
@@ -30,11 +29,6 @@ export class PublicationPreviewComponent extends Component {
     constructor() {
         super();
         this.state = { showImportFieldsConfirmation: false };
-    }
-    handleAddColumnClick = (event) => {
-        event.preventDefault();
-        event.stopPropagation();
-        this.props.addColumn();
     }
 
     handleRemoveColumnClick = (event) => {
@@ -63,25 +57,18 @@ export class PublicationPreviewComponent extends Component {
         const { showImportFieldsConfirmation } = this.state;
 
         return (
-            <Card initiallyExpanded className="publication-preview">
+            <div className="publication-preview">
                 <CardHeader
                     showExpandableButton
                     title={polyglot.t('publication_preview')}
                     titleStyle={styles.title}
                 >
                     <FlatButton
-                        className="add-column"
-                        label={polyglot.t('add_column')}
-                        onClick={this.handleAddColumnClick}
-                        style={styles.button}
-                        secondary
-                    />
-                    <FlatButton
                         className="btn-import-fields"
                         label={polyglot.t('import_fields')}
                         onClick={this.handleImportFields}
                         style={styles.button}
-                        secondary
+                        primary
                     />
                 </CardHeader>
 
@@ -107,13 +94,12 @@ export class PublicationPreviewComponent extends Component {
                         />
                     }
                 </ScrollableCardContent>
-            </Card>
+            </div>
         );
     }
 }
 
 PublicationPreviewComponent.propTypes = {
-    addColumn: PropTypes.func.isRequired,
     columns: PropTypes.arrayOf(fieldPropTypes).isRequired,
     editedColumn: fieldPropTypes,
     editColumn: PropTypes.func.isRequired,
@@ -133,7 +119,6 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = {
-    addColumn: addField,
     editColumn: editField,
     removeColumn: removeField,
 };

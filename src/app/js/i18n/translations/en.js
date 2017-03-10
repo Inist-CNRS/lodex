@@ -120,4 +120,5 @@ export default {
     field_is_facet: 'Is a facet',
     add_facet: 'Add a facet',
     select_facet_value: 'Select a value for: %{facet}',
+    add_column_from_original_dataset: 'Add a column from original dataset',
 };
