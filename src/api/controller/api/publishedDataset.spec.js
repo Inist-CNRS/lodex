@@ -44,6 +44,8 @@ describe('publishedDataset', () => {
                 { facet1: 'facet1value' },
                 ['searchable1', 'searchable2'],
                 ['facet1', 'facet2'],
+                undefined,
+                undefined,
             );
         });
 

@@ -6,7 +6,7 @@ import { PROPOSED } from '../../../common/propositionStatus';
 const app = new Koa();
 
 export const getPage = async (ctx) => {
-    const { page = 0, perPage = 10, match, ...facets } = ctx.request.query;
+    const { page = 0, perPage = 10, match, sortBy, sortDir, ...facets } = ctx.request.query;
     const intPage = parseInt(page, 10);
     const intPerPage = parseInt(perPage, 10);
 
@@ -14,7 +14,16 @@ export const getPage = async (ctx) => {
     const facetFieldNames = await ctx.field.findFacetNames();
 
     const [data, total] = await Promise.all([
-        ctx.publishedDataset.findPage(intPage, intPerPage, match, facets, searchableFieldNames, facetFieldNames),
+        ctx.publishedDataset.findPage(
+            intPage,
+            intPerPage,
+            match,
+            facets,
+            searchableFieldNames,
+            facetFieldNames,
+            sortBy,
+            sortDir,
+        ),
         ctx.publishedDataset.countWithoutRemoved(),
     ]);
 

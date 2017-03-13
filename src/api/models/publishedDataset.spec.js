@@ -176,7 +176,8 @@ describe('publishedDataset', () => {
         const toArray = createSpy().andReturn('result');
         const limit = createSpy().andReturn({ toArray });
         const skip = createSpy().andReturn({ limit });
-        const find = createSpy().andReturn({ skip });
+        const sort = createSpy().andReturn({ skip });
+        const find = createSpy().andReturn({ sort, skip });
         const db = {
             collection: () => ({ find }),
         };
@@ -188,7 +189,7 @@ describe('publishedDataset', () => {
         });
 
         it('should call find with removedAt false and $regex on each fields if provided', async () => {
-            await publishedDatasetCollection.findPage('perPage', 'page', 'match', {}, ['field1', 'field2']);
+            await publishedDatasetCollection.findPage('perPage', 'page', null, null, 'match', {}, ['field1', 'field2']);
             expect(find).toHaveBeenCalledWith({
                 removedAt: { $exists: false },
                 $or: [
@@ -200,7 +201,14 @@ describe('publishedDataset', () => {
 
 
         it('should call find with removedAt false and facets if provided', async () => {
-            await publishedDatasetCollection.findPage('perPage', 'page', 'match', { field1: 'field1value' }, [], ['field1', 'field2']);
+            await publishedDatasetCollection.findPage(
+                'perPage',
+                'page',
+                'match',
+                { field1: 'field1value' },
+                [],
+                ['field1', 'field2'],
+            );
             expect(find).toHaveBeenCalledWith({
                 removedAt: { $exists: false },
                 $and: [
@@ -216,13 +224,23 @@ describe('publishedDataset', () => {
             });
         });
 
+        it('should call sort with sortBy: 1 if sortDir is ASC', async () => {
+            await publishedDatasetCollection.findPage(5, 2, 'field', 'ASC', 'match', []);
+            expect(sort).toHaveBeenCalledWith({ field: 1 });
+        });
+
+        it('should call sort with sortBy: -1 if sortDir is DESC', async () => {
+            await publishedDatasetCollection.findPage(5, 2, 'field', 'DESC', 'match', []);
+            expect(sort).toHaveBeenCalledWith({ field: -1 });
+        });
+
         it('should call skip with page * perPage', async () => {
-            await publishedDatasetCollection.findPage(5, 2, 'match', {}, []);
+            await publishedDatasetCollection.findPage(5, 2, null, null, 'match', {}, []);
             expect(skip).toHaveBeenCalledWith(10);
         });
 
         it('should call limit with perPage', async () => {
-            await publishedDatasetCollection.findPage('page', 'perPage', 'match', {}, []);
+            await publishedDatasetCollection.findPage('page', 'perPage', null, null, 'match', {}, []);
             expect(limit).toHaveBeenCalledWith('perPage');
         });
     });
