@@ -40,12 +40,12 @@ describe('publishedDataset', () => {
             expect(ctx.publishedDataset.findPage).toHaveBeenCalledWith(
                 1,
                 100,
+                undefined,
+                undefined,
                 'match',
                 { facet1: 'facet1value' },
                 ['searchable1', 'searchable2'],
                 ['facet1', 'facet2'],
-                undefined,
-                undefined,
             );
         });
 

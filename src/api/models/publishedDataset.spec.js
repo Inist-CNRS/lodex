@@ -204,6 +204,8 @@ describe('publishedDataset', () => {
             await publishedDatasetCollection.findPage(
                 'perPage',
                 'page',
+                null,
+                null,
                 'match',
                 { field1: 'field1value' },
                 [],
@@ -218,20 +220,20 @@ describe('publishedDataset', () => {
         });
 
         it('should ignore match if no fields provided', async () => {
-            await publishedDatasetCollection.findPage('page', 'perPage', 'match', {}, []);
+            await publishedDatasetCollection.findPage('page', 'perPage', null, null, 'match', {}, []);
             expect(find).toHaveBeenCalledWith({
                 removedAt: { $exists: false },
             });
         });
 
         it('should call sort with sortBy: 1 if sortDir is ASC', async () => {
-            await publishedDatasetCollection.findPage(5, 2, 'field', 'ASC', 'match', []);
-            expect(sort).toHaveBeenCalledWith({ field: 1 });
+            await publishedDatasetCollection.findPage(5, 2, 'field', 'ASC', 'match', {}, []);
+            expect(sort).toHaveBeenCalledWith({ 'versions.field': 1 });
         });
 
         it('should call sort with sortBy: -1 if sortDir is DESC', async () => {
-            await publishedDatasetCollection.findPage(5, 2, 'field', 'DESC', 'match', []);
-            expect(sort).toHaveBeenCalledWith({ field: -1 });
+            await publishedDatasetCollection.findPage(5, 2, 'field', 'DESC', 'match', {}, [], []);
+            expect(sort).toHaveBeenCalledWith({ 'versions.field': -1 });
         });
 
         it('should call skip with page * perPage', async () => {
