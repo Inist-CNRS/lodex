@@ -75,6 +75,9 @@ describe('Home page with published data', function homePublishedDataTests() {
         const filterInput = driver.findElement(By.css('.filter input'));
         await filterInput.sendKeys('baggins');
 
+        const spinner = await driver.findElement(By.css('.spinner')).catch(() => null);
+        await driver.wait(until.stalenessOf(spinner)).catch(() => null);
+
         const expectedTds = [
             ['3', 'BAGGINS', 'BILBON', 'bilbon.saquet@shire.net'],
             ['4', 'BAGGINS', 'FRODO', 'frodo.saquet@shire.net'],
@@ -98,6 +101,9 @@ describe('Home page with published data', function homePublishedDataTests() {
         await filterInput.clear();
         await filterInput.sendKeys('sauron');
 
+        const spinner = await driver.findElement(By.css('.spinner')).catch(() => null);
+        await driver.wait(until.stalenessOf(spinner)).catch(() => null);
+
         const tbody = await driver.findElement(By.css('.dataset table tbody'));
         expect(await tbody.getText()).toBe('No matching resource found');
     });
@@ -107,6 +113,9 @@ describe('Home page with published data', function homePublishedDataTests() {
         const filterInput = driver.findElement(By.css('.filter input'));
         await filterInput.clear();
         await filterInput.sendKeys(' \b'); // clear do not trigger onChange event forcing it (\b is backspace)
+
+        const spinner = await driver.findElement(By.css('.spinner')).catch(() => null);
+        await driver.wait(until.stalenessOf(spinner)).catch(() => null);
 
         const trs = await driver.findElements(By.css('.dataset table tbody tr'));
         expect(trs.length).toBe(5);
