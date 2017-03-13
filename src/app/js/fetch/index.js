@@ -105,8 +105,7 @@ export const getUpdateCharacteristicsRequest = state =>
     });
 
 export const getLoadDatasetPageRequest = (state, params) => {
-    const paramString = ['page', 'perPage', 'match']
-        .filter(key => !!params[key])
+    const paramString = Object.keys(params)
         .map(key => `${key}=${encodeURIComponent(params[key])}`)
         .join('&');
     return getRequest(state, {

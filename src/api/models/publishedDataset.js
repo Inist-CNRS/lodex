@@ -12,17 +12,27 @@ export default (db) => {
     collection.findLimitFromSkip = (limit, skip, filter) =>
         collection.find(filter).skip(skip).limit(limit).toArray();
 
-    collection.findPage = async (page = 0, perPage = 10, match = null, fieldNames = []) => {
-        const filter = { removedAt: { $exists: false } };
-        if (!match || !fieldNames.length) {
-            return collection.findLimitFromSkip(perPage, page * perPage, filter);
-        }
-        const regexMatch = new RegExp(match);
+    collection.findPage = async (page = 0, perPage = 10, match, facets, searchablefieldNames, facetFieldNames) => {
+        const filters = { removedAt: { $exists: false } };
 
-        return collection.findLimitFromSkip(perPage, page * perPage, {
-            ...filter,
-            $or: fieldNames.map(name => ({ [`versions.${name}`]: { $regex: regexMatch, $options: 'i' } })),
-        });
+        if (match && searchablefieldNames.length) {
+            const regexMatch = new RegExp(match);
+            filters.$or = searchablefieldNames.map(name => ({
+                [`versions.${name}`]: { $regex: regexMatch, $options: 'i' },
+            }));
+        }
+        if (facets && Object.keys(facets).length > 0 && facetFieldNames.length) {
+            filters.$and = facetFieldNames.reduce((acc, name) => {
+                if (!facets[name]) return acc;
+
+                return [
+                    ...acc,
+                    { [`versions.${name}`]: facets[name] },
+                ];
+            }, []);
+        }
+
+        return collection.findLimitFromSkip(perPage, page * perPage, filters);
     };
 
     collection.findRemovedPage = (page = 0, perPage = 10) =>

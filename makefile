@@ -99,5 +99,6 @@ clear-publication:
 	docker-compose exec mongo mongo lodex --eval " \
 		db.publishedDataset.remove({}); \
 		db.publishedCharacteristic.remove({}); \
+		db.publishedFacet.remove({}); \
 		db.uriDataset.remove({}); \
 	"

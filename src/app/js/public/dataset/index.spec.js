@@ -5,9 +5,7 @@ import reducer, {
     loadDatasetPage,
     loadDatasetPageSuccess,
     loadDatasetPageError,
-    filterDataset,
-    filterDatasetSuccess,
-    filterDatasetError,
+    applyFilter,
 } from './';
 
 describe('dataset reducer', () => {
@@ -31,20 +29,6 @@ describe('dataset reducer', () => {
         expect(state).toEqual({
             error: null,
             loading: false,
-            filtering: false,
-            dataset: [{ foo: 'bar' }],
-            currentPage: 42,
-            total: 1000,
-        });
-    });
-
-    it('should handle the FILTER_DATASET_SUCCESS action', () => {
-        const action = filterDatasetSuccess({ dataset: [{ foo: 'bar' }], page: 42, total: 1000 });
-        const state = reducer({ loading: true, error: true }, action);
-        expect(state).toEqual({
-            error: null,
-            loading: false,
-            filtering: false,
             dataset: [{ foo: 'bar' }],
             currentPage: 42,
             total: 1000,
@@ -55,25 +39,14 @@ describe('dataset reducer', () => {
         const state = reducer({ loading: true }, loadDatasetPageError(new Error('foo')));
         expect(state).toEqual({
             loading: false,
-            filtering: false,
             error: 'foo',
         });
     });
 
-    it('should handle the FILTER_DATASET_ERROR action', () => {
-        const state = reducer({ loading: true }, filterDatasetError(new Error('foo')));
-        expect(state).toEqual({
-            loading: false,
-            filtering: false,
-            error: 'foo',
-        });
-    });
-
-    it('should handle FILTER_DATASET action', () => {
-        const state = reducer({ filtering: false }, filterDataset('foo'));
+    it('should handle APPLY_FILTER action', () => {
+        const state = reducer({}, applyFilter('foo'));
         expect(state).toEqual({
             currentPage: 0,
-            filtering: true,
             match: 'foo',
         });
     });
