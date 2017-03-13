@@ -11,6 +11,7 @@ import { fetch as fetchAction } from '../fetch';
 import { formField as formFieldPropTypes } from '../propTypes';
 
 const FormAutoCompleteField = ({
+    allowNewItem,
     handleComplete,
     handleValueChosen,
     dataSource,

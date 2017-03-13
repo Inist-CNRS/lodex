@@ -38,6 +38,7 @@ export const SchemeAutoCompleteComponent = ({
     getSchemeMenuItemsDataFromResponse,
 }) => (
     <Field
+        allowNewItem
         className={className}
         name={name}
         disabled={disabled}
