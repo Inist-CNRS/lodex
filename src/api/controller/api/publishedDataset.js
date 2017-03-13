@@ -17,12 +17,12 @@ export const getPage = async (ctx) => {
         ctx.publishedDataset.findPage(
             intPage,
             intPerPage,
+            sortBy,
+            sortDir,
             match,
             facets,
             searchableFieldNames,
             facetFieldNames,
-            sortBy,
-            sortDir,
         ),
         ctx.publishedDataset.countWithoutRemoved(),
     ]);

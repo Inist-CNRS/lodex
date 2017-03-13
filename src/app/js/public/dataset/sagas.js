@@ -4,6 +4,7 @@ import { delay } from 'redux-saga';
 import {
     LOAD_DATASET_PAGE,
     APPLY_FILTER,
+    SORT_DATASET,
     loadDatasetPageSuccess,
     loadDatasetPageError,
 } from './';
@@ -18,6 +19,7 @@ export function* handleLoadDatasetPageRequest() {
     const match = yield select(fromDataset.getFilter);
     const page = yield select(fromDataset.getDatasetCurrentPage);
     const perPage = yield select(fromDataset.getDatasetPerPage);
+    const sort = yield select(fromDataset.getSort);
 
     const params = facets.reduce((acc, facet) => ({
         ...acc,
@@ -25,6 +27,7 @@ export function* handleLoadDatasetPageRequest() {
     }), {
         page,
         perPage,
+        ...sort,
     });
 
     if (match) {
@@ -47,5 +50,11 @@ export function* handleLoadDatasetPageRequest() {
 }
 
 export default function* () {
-    yield takeLatest([LOAD_DATASET_PAGE, APPLY_FILTER, APPLY_FACET, REMOVE_FACET], handleLoadDatasetPageRequest);
+    yield takeLatest([
+        LOAD_DATASET_PAGE,
+        APPLY_FILTER,
+        APPLY_FACET,
+        REMOVE_FACET,
+        SORT_DATASET,
+    ], handleLoadDatasetPageRequest);
 }

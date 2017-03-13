@@ -9,10 +9,10 @@ export default (db) => {
 
     collection.insertBatch = documents => chunk(documents, 100).map(data => collection.insertMany(data));
 
-    collection.findLimitFromSkip = async (limit, skip, filter, sortBy, sortDir = 'ASC') => {
+    collection.findLimitFromSkip = async (limit, skip, filter = 'ASC', sortBy, sortDir) => {
         if (sortBy) {
             return collection.find(filter).sort({
-                [sortBy]: sortDir === 'ASC' ? 1 : -1,
+                [sortBy === 'uri' ? sortBy : `versions.${sortBy}`]: sortDir === 'ASC' ? 1 : -1,
             }).skip(skip).limit(limit)
             .toArray();
         }
