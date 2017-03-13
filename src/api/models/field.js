@@ -33,8 +33,14 @@ export default async (db) => {
 
     collection.findAll = () => collection.find({}).toArray();
 
-    collection.findSearchableName = async () => {
+    collection.findSearchableNames = async () => {
         const searchableFields = await collection.find({ searchable: true }).toArray();
+
+        return searchableFields.map(({ name }) => name);
+    };
+
+    collection.findFacetNames = async () => {
+        const searchableFields = await collection.find({ isFacet: true }).toArray();
 
         return searchableFields.map(({ name }) => name);
     };

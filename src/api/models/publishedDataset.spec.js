@@ -188,7 +188,7 @@ describe('publishedDataset', () => {
         });
 
         it('should call find with removedAt false and $regex on each fields if provided', async () => {
-            await publishedDatasetCollection.findPage('perPage', 'page', 'match', ['field1', 'field2']);
+            await publishedDatasetCollection.findPage('perPage', 'page', 'match', {}, ['field1', 'field2']);
             expect(find).toHaveBeenCalledWith({
                 removedAt: { $exists: false },
                 $or: [
@@ -198,20 +198,31 @@ describe('publishedDataset', () => {
             });
         });
 
+
+        it('should call find with removedAt false and facets if provided', async () => {
+            await publishedDatasetCollection.findPage('perPage', 'page', 'match', { field1: 'field1value' }, [], ['field1', 'field2']);
+            expect(find).toHaveBeenCalledWith({
+                removedAt: { $exists: false },
+                $and: [
+                    { 'versions.field1': 'field1value' },
+                ],
+            });
+        });
+
         it('should ignore match if no fields provided', async () => {
-            await publishedDatasetCollection.findPage('page', 'perPage', 'match', []);
+            await publishedDatasetCollection.findPage('page', 'perPage', 'match', {}, []);
             expect(find).toHaveBeenCalledWith({
                 removedAt: { $exists: false },
             });
         });
 
         it('should call skip with page * perPage', async () => {
-            await publishedDatasetCollection.findPage(5, 2, 'match', []);
+            await publishedDatasetCollection.findPage(5, 2, 'match', {}, []);
             expect(skip).toHaveBeenCalledWith(10);
         });
 
         it('should call limit with perPage', async () => {
-            await publishedDatasetCollection.findPage('page', 'perPage', 'match', []);
+            await publishedDatasetCollection.findPage('page', 'perPage', 'match', {}, []);
             expect(limit).toHaveBeenCalledWith('perPage');
         });
     });

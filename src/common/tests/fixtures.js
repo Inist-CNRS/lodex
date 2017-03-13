@@ -1,8 +1,9 @@
 import config from 'config';
 import { MongoClient } from 'mongodb';
 import datasetFactory from '../../api/models/dataset';
-import publishedDatasetFactory from '../../api/models/publishedDataset';
 import publishedCharacteristicFactory from '../../api/models/publishedCharacteristic';
+import publishedDatasetFactory from '../../api/models/publishedDataset';
+import publishedFacetFactory from '../../api/models/publishedFacet';
 import fieldFactory from '../../api/models/field';
 import uriDatasetFactory from '../../api/models/uriDataset';
 
@@ -14,6 +15,7 @@ export async function connect() {
         db.dataset = await datasetFactory(db);
         db.publishedDataset = await publishedDatasetFactory(db);
         db.publishedCharacteristic = await publishedCharacteristicFactory(db);
+        db.publishedFacet = await publishedFacetFactory(db);
         db.field = await fieldFactory(db);
         db.uriDataset = await uriDatasetFactory(db);
     }
@@ -36,6 +38,9 @@ export function loadFixtures(fixtures) {
     if (fixtures.publishedCharacteristic) {
         promises.push(db.publishedCharacteristic.insertMany(fixtures.publishedCharacteristic));
     }
+    if (fixtures.publishedFacet) {
+        promises.push(db.publishedFacet.insertMany(fixtures.publishedFacet));
+    }
     if (fixtures.uriDataset) {
         promises.push(db.uriDataset.insertMany(fixtures.uriDataset));
     }
@@ -47,9 +52,10 @@ export async function clear() {
     await connect();
     await Promise.all([
         db.dataset.remove({}),
-        db.publishedDataset.remove({}),
-        db.publishedCharacteristic.remove({}),
         db.field.remove({}),
+        db.publishedCharacteristic.remove({}),
+        db.publishedDataset.remove({}),
+        db.publishedFacet.remove({}),
         db.uriDataset.remove({}),
     ]);
 }

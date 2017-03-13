@@ -10,13 +10,36 @@ import {
 import { handleLoadDatasetPageRequest } from './sagas';
 import { getLoadDatasetPageRequest } from '../../fetch/';
 import fetchSaga from '../../lib/fetchSaga';
+import { fromDataset, fromFacet } from '../selectors';
 
 describe('dataset saga', () => {
     describe('handleLoadDatasetPageRequest', () => {
-        const saga = handleLoadDatasetPageRequest({ payload: { page: 10, perPage: 42 } });
+        const saga = handleLoadDatasetPageRequest();
+
+        it('should select fromFacet.getAppliedFacets', () => {
+            expect(saga.next().value).toEqual(select(fromFacet.getAppliedFacets));
+        });
+
+        it('should select fromDataset.getFilter', () => {
+            expect(saga.next([{ field: { name: 'aFacet' }, value: 'aFacetValue' }]).value)
+                .toEqual(select(fromDataset.getFilter));
+        });
+
+        it('should select fromDataset.getDatasetCurrentPage', () => {
+            expect(saga.next('aFilter').value).toEqual(select(fromDataset.getDatasetCurrentPage));
+        });
+
+        it('should select fromDataset.getDatasetPerPage', () => {
+            expect(saga.next(10).value).toEqual(select(fromDataset.getDatasetPerPage));
+        });
 
         it('should select getLoadDatasetPageRequest', () => {
-            expect(saga.next().value).toEqual(select(getLoadDatasetPageRequest, { page: 10, perPage: 42 }));
+            expect(saga.next(20).value).toEqual(select(getLoadDatasetPageRequest, {
+                page: 10,
+                perPage: 20,
+                aFacet: 'aFacetValue',
+                match: 'aFilter',
+            }));
         });
 
         it('should call fetchDafetchSagataset with the request', () => {
@@ -38,7 +61,11 @@ describe('dataset saga', () => {
         });
 
         it('should put loadDatasetPageError action with error if any', () => {
-            const failedSaga = handleLoadDatasetPageRequest({ payload: { page: 0, perPage: 20 } });
+            const failedSaga = handleLoadDatasetPageRequest();
+            failedSaga.next();
+            failedSaga.next([]);
+            failedSaga.next();
+            failedSaga.next();
             failedSaga.next();
             failedSaga.next();
             expect(failedSaga.next({ error: 'foo' }).value)

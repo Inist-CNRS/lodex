@@ -105,8 +105,7 @@ export const getUpdateCharacteristicsRequest = state =>
     });
 
 export const getLoadDatasetPageRequest = (state, params) => {
-    const paramString = ['page', 'perPage', 'match']
-        .filter(key => !!params[key])
+    const paramString = Object.keys(params)
         .map(key => `${key}=${encodeURIComponent(params[key])}`)
         .join('&');
     return getRequest(state, {
@@ -150,6 +149,11 @@ export const getAddFieldToResourceRequest = (state, data) =>
 export const getExportFieldsRequest = state =>
     getRequest(state, {
         url: '/api/field/export',
+    });
+
+export const getLoadFacetValuesRequest = (state, { field, filter }) =>
+    getRequest(state, {
+        url: `/api/facet/${field}/${filter || ''}`,
     });
 
 export const getLoadContributedResourcePageRequest = (state, { page, perPage, filter }) => {

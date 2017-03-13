@@ -1,20 +1,17 @@
 import { createAction, handleActions, combineActions } from 'redux-actions';
+import { APPLY_FACET } from '../facet';
 
 export const LOAD_DATASET_PAGE = 'LOAD_DATASET_PAGE';
 export const LOAD_DATASET_PAGE_SUCCESS = 'LOAD_DATASET_PAGE_SUCCESS';
 export const LOAD_DATASET_PAGE_ERROR = 'LOAD_DATASET_PAGE_ERROR';
 
-export const FILTER_DATASET = 'FILTER_DATASET';
-export const FILTER_DATASET_SUCCESS = 'FILTER_DATASET_SUCCESS';
-export const FILTER_DATASET_ERROR = 'FILTER_DATASET_ERROR';
+export const APPLY_FILTER = 'APPLY_FILTER';
 
 export const loadDatasetPage = createAction(LOAD_DATASET_PAGE);
 export const loadDatasetPageSuccess = createAction(LOAD_DATASET_PAGE_SUCCESS);
 export const loadDatasetPageError = createAction(LOAD_DATASET_PAGE_ERROR);
 
-export const filterDataset = createAction(FILTER_DATASET);
-export const filterDatasetSuccess = createAction(FILTER_DATASET_SUCCESS);
-export const filterDatasetError = createAction(FILTER_DATASET_ERROR);
+export const applyFilter = createAction(APPLY_FILTER);
 
 export const defaultState = {
     match: null,
@@ -22,58 +19,56 @@ export const defaultState = {
     perPage: 10,
     dataset: [],
     loading: false,
-    filtering: false,
     total: 0,
 };
 
 export default handleActions({
-    LOAD_DATASET_PAGE: (state, { payload: { perPage } }) => ({
+    [combineActions(LOAD_DATASET_PAGE, APPLY_FACET, APPLY_FILTER)]: (state, { payload }) => ({
         ...state,
         error: null,
         loading: true,
-        perPage,
+        perPage: (payload && payload.perPage) || state.perPage,
     }),
     [combineActions(
         LOAD_DATASET_PAGE_SUCCESS,
-        FILTER_DATASET_SUCCESS,
     )]: (state, { payload: { dataset, page: currentPage, total } }) => ({
         ...state,
         currentPage,
         dataset,
         error: null,
         loading: false,
-        filtering: false,
         total,
     }),
     [combineActions(
         LOAD_DATASET_PAGE_ERROR,
-        FILTER_DATASET_ERROR,
     )]: (state, { payload: error }) => ({
         ...state,
         error: error.message,
         loading: false,
-        filtering: false,
     }),
-    FILTER_DATASET: (state, { payload: match }) => ({
+    [APPLY_FILTER]: (state, { payload: match }) => ({
         ...state,
         currentPage: 0,
-        filtering: true,
         match,
+    }),
+    [APPLY_FACET]: state => ({
+        ...state,
+        currentPage: 0,
     }),
 }, defaultState);
 
 const isDatasetLoading = state => state.loading;
-const isDatasetFiltering = state => state.filtering;
 const getDatasetCurrentPage = state => state.currentPage;
 const getDatasetPerPage = state => state.perPage;
 const getDataset = state => state.dataset;
 const getDatasetTotal = state => state.total;
+const getFilter = state => state.match;
 
 export const fromDataset = {
     isDatasetLoading,
-    isDatasetFiltering,
     getDatasetCurrentPage,
     getDatasetPerPage,
     getDataset,
     getDatasetTotal,
+    getFilter,
 };

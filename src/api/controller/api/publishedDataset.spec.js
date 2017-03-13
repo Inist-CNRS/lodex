@@ -21,13 +21,15 @@ describe('publishedDataset', () => {
                 countWithoutRemoved: createSpy().andReturn(Promise.resolve(42)),
             },
             field: {
-                findSearchableName: createSpy().andReturn(['v', 'data']),
+                findFacetNames: createSpy().andReturn(['facet1', 'facet2']),
+                findSearchableNames: createSpy().andReturn(['searchable1', 'searchable2']),
             },
             request: {
                 query: {
                     page: 1,
                     perPage: 100,
                     match: 'match',
+                    facet1: 'facet1value',
                 },
             },
         };
@@ -35,7 +37,14 @@ describe('publishedDataset', () => {
         it('should call ctx.publishedDataset.findPage', async () => {
             await getPage(ctx);
 
-            expect(ctx.publishedDataset.findPage).toHaveBeenCalledWith(1, 100, 'match', ['v', 'data']);
+            expect(ctx.publishedDataset.findPage).toHaveBeenCalledWith(
+                1,
+                100,
+                'match',
+                { facet1: 'facet1value' },
+                ['searchable1', 'searchable2'],
+                ['facet1', 'facet2'],
+            );
         });
 
         it('should call ctx.publishedDataset.countWithRemoved', async () => {

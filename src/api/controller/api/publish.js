@@ -53,11 +53,19 @@ export const publishCharacteristics = async (ctx, datasetCoverFields, count) => 
     }
 };
 
+export const publishFacets = async (ctx, facetFields) =>
+    Promise.all(facetFields.map(field =>
+        ctx.publishedDataset
+            .findDistinctValuesForField(field.name)
+            .then(values => ctx.publishedFacet.insertFacet(field.name, values)),
+    ));
+
 export const preparePublish = async (ctx, next) => {
     ctx.tranformAllDocuments = tranformAllDocuments;
     ctx.addTransformResultToDoc = addTransformResultToDoc;
     ctx.versionTransformResult = versionTransformResult;
     ctx.publishCharacteristics = publishCharacteristics;
+    ctx.publishFacets = publishFacets;
     ctx.getDocumentTransformer = getDocumentTransformer(ctx);
     await next();
 };
@@ -79,6 +87,7 @@ export const doPublish = async (ctx) => {
     const fields = await ctx.field.findAll();
     const collectionCoverFields = fields.filter(c => c.cover === 'collection');
     const datasetCoverFields = fields.filter(c => c.cover === 'dataset');
+    const facetFields = fields.filter(c => c.isFacet);
 
     const uriCol = fields.find(col => col.name === 'uri');
     const getUri = ctx.getDocumentTransformer([uriCol]);
@@ -103,6 +112,7 @@ export const doPublish = async (ctx) => {
         transformDocumentAndKeepUri,
     );
     await ctx.publishCharacteristics(ctx, datasetCoverFields, count);
+    await ctx.publishFacets(ctx, facetFields);
 
     ctx.redirect('/api/publication');
 };

@@ -9,6 +9,7 @@ export default async (ctx, next) => {
             cover: COVER_COLLECTION,
             label: URI_FIELD_NAME,
             name: URI_FIELD_NAME,
+            display_on_list: true,
             transformers: [],
         });
     }
