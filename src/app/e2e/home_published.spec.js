@@ -70,6 +70,48 @@ describe('Home page with published data', function homePublishedDataTests() {
         ));
     });
 
+    it('should filter list', async () => {
+        await driver.wait(until.elementLocated(By.css('.filter input')), DEFAULT_WAIT_TIMEOUT);
+        const filterInput = driver.findElement(By.css('.filter input'));
+        await filterInput.sendKeys('baggins');
+
+        const expectedTds = [
+            ['3', 'BAGGINS', 'BILBON', 'bilbon.saquet@shire.net'],
+            ['4', 'BAGGINS', 'FRODO', 'frodo.saquet@shire.net'],
+        ];
+
+        const trs = await driver.findElements(By.css('.dataset table tbody tr'));
+        await Promise.all(trs.map(tr => tr
+            .findElements(By.css('td'))
+            .then(tds => Promise.all(tds.map(td => td.getText())))
+            .then((tdsText) => {
+                const item = expectedTds.find(td => td.every((cell, index) => cell === tdsText[index]));
+                expect(item).toExist('Unexpected row');
+            }),
+        ));
+    });
+
+    it('should display `No matching resource found`', async () => {
+        await driver.wait(until.elementLocated(By.css('.filter input')), DEFAULT_WAIT_TIMEOUT);
+        const filterInput = driver.findElement(By.css('.filter input'));
+
+        await filterInput.clear();
+        await filterInput.sendKeys('sauron');
+
+        const tbody = await driver.findElement(By.css('.dataset table tbody'));
+        expect(await tbody.getText()).toBe('No matching resource found');
+    });
+
+    it('should clear filter', async () => {
+        await driver.wait(until.elementLocated(By.css('.filter input')), DEFAULT_WAIT_TIMEOUT);
+        const filterInput = driver.findElement(By.css('.filter input'));
+        await filterInput.clear();
+        await filterInput.sendKeys(' \b'); // clear do not trigger onChange event forcing it (\b is backspace)
+
+        const trs = await driver.findElements(By.css('.dataset table tbody tr'));
+        expect(trs.length).toBe(5);
+    });
+
     it('should go to detail page when clicking on uri', async () => {
         const firstUriLink = await driver.findElement(By.linkText('1'));
         const firstUri = await firstUriLink.getText();

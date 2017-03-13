@@ -94,7 +94,7 @@ describe('Admin', () => {
         it('should display note striked out with a moderate butoon on REJECTED', async () => {
             await driver.wait(until.elementLocated(By.css('.property.note dl')));
             const notePropertyDL = await driver.findElement(By.css('.property.note dl'));
-            expect(await notePropertyDL.getCssValue('text-decoration')).toBe('line-through');
+            expect(await notePropertyDL.getCssValue('text-decoration')).toContain('line-through');
             expect(await notePropertyDL.getCssValue('color')).toBe('rgba(128, 128, 128, 1)');
             const contributor = await notePropertyDL.findElement(By.css('.property_contributor'));
             expect(await contributor.getText()).toBe('Added by john');
@@ -121,7 +121,7 @@ describe('Admin', () => {
         it('should display note with a moderate button on PROPOSED', async () => {
             await driver.wait(until.elementLocated(By.css('.property.note dl')));
             const notePropertyDL = await driver.findElement(By.css('.property.note dl'));
-            expect(await notePropertyDL.getCssValue('text-decoration')).toBe('none');
+            expect(await notePropertyDL.getCssValue('text-decoration')).toContain('none');
             expect(await notePropertyDL.getCssValue('color')).toBe('rgba(128, 128, 128, 1)');
             const contributor = await notePropertyDL.findElement(By.css('.property_contributor'));
             expect(await contributor.getText()).toBe('Contributed by john');
@@ -148,7 +148,7 @@ describe('Admin', () => {
         it('should display note with a moderate button on VALIDATED', async () => {
             await driver.wait(until.elementLocated(By.css('.property.note dl')));
             const notePropertyDL = await driver.findElement(By.css('.property.note dl'));
-            expect(await notePropertyDL.getCssValue('text-decoration')).toBe('none');
+            expect(await notePropertyDL.getCssValue('text-decoration')).toContain('none');
             expect(await notePropertyDL.getCssValue('color')).toBe('rgba(0, 0, 0, 1)');
             const contributor = await notePropertyDL.findElement(By.css('.property_contributor'));
             expect(await contributor.getText()).toBe('Added by john');

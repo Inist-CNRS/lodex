@@ -31,6 +31,9 @@ const styles = {
     wrapper: {
         overflowX: 'auto',
     },
+    noResult: {
+        textAlign: 'center',
+    },
 };
 
 export class DatasetComponent extends Component {
@@ -54,12 +57,13 @@ export class DatasetComponent extends Component {
         return (
             <Card className="dataset">
                 <TextField
+                    className="filter"
                     hintText={polyglot.t('filter')}
                     onChange={(_, e) => this.handleFilterChange(e)}
                 />
                 {
                     filtering ?
-                        <CircularProgress size={30} />
+                        <CircularProgress className="spinner" size={30} />
                     :
                      null
                 }
@@ -71,18 +75,22 @@ export class DatasetComponent extends Component {
                             </TableRow>
                         </TableHeader>
                         <TableBody displayRowCheckbox={false}>
-                            {dataset.map(data => (
-                                <TableRow key={data.uri}>
-                                    {columns.map(column => (
-                                        <DatasetColumn
-                                            key={column.name}
-                                            column={column}
-                                            columns={columns}
-                                            resource={data}
-                                        />
-                                    ))}
-                                </TableRow>
-                            ))}
+                            {!dataset.length ? (
+                                <div>{polyglot.t('no_result')}</div>
+                            ) : (
+                                dataset.map(data => (
+                                    <TableRow key={data.uri}>
+                                        {columns.map(column => (
+                                            <DatasetColumn
+                                                key={column.name}
+                                                column={column}
+                                                columns={columns}
+                                                resource={data}
+                                            />
+                                        ))}
+                                    </TableRow>
+                                ))
+                            )}
                         </TableBody>
                     </Table>
                     <Pagination
