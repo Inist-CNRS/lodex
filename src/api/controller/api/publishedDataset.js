@@ -13,19 +13,16 @@ export const getPage = async (ctx) => {
     const searchableFieldNames = await ctx.field.findSearchableNames();
     const facetFieldNames = await ctx.field.findFacetNames();
 
-    const [data, total] = await Promise.all([
-        ctx.publishedDataset.findPage(
-            intPage,
-            intPerPage,
-            sortBy,
-            sortDir,
-            match,
-            facets,
-            searchableFieldNames,
-            facetFieldNames,
-        ),
-        ctx.publishedDataset.countWithoutRemoved(),
-    ]);
+    const { data, total } = await ctx.publishedDataset.findPage(
+        intPage,
+        intPerPage,
+        sortBy,
+        sortDir,
+        match,
+        facets,
+        searchableFieldNames,
+        facetFieldNames,
+    );
 
     ctx.body = {
         total,
@@ -41,10 +38,7 @@ export const getRemovedPage = async (ctx) => {
     const intPage = parseInt(page, 10);
     const intPerPage = parseInt(perPage, 10);
 
-    const [data, total] = await Promise.all([
-        ctx.publishedDataset.findRemovedPage(intPage, intPerPage),
-        ctx.publishedDataset.countRemoved(),
-    ]);
+    const { data, total } = await ctx.publishedDataset.findRemovedPage(intPage, intPerPage);
 
     ctx.body = {
         total,
@@ -102,10 +96,7 @@ export const getPropositionPage = async (ctx, status = PROPOSED) => {
     const intPage = parseInt(page, 10);
     const intPerPage = parseInt(perPage, 10);
 
-    const [data, total] = await Promise.all([
-        ctx.publishedDataset.findContributedPage(intPage, intPerPage, status),
-        ctx.publishedDataset.countContributed(status),
-    ]);
+    const { data, total } = await ctx.publishedDataset.findContributedPage(intPage, intPerPage, status);
 
     ctx.body = {
         total,
