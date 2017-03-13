@@ -171,4 +171,48 @@ describe('publishedDataset', () => {
             );
         });
     });
+
+    describe('getPage', () => {
+        const toArray = createSpy().andReturn('result');
+        const limit = createSpy().andReturn({ toArray });
+        const skip = createSpy().andReturn({ limit });
+        const find = createSpy().andReturn({ skip });
+        const db = {
+            collection: () => ({ find }),
+        };
+        const publishedDatasetCollection = publishedDataset(db);
+
+        it('should call find with removedAt false', async () => {
+            await publishedDatasetCollection.findPage('perPage', 'page');
+            expect(find).toHaveBeenCalledWith({ removedAt: { $exists: false } });
+        });
+
+        it('should call find with removedAt false and $regex on each fields if provided', async () => {
+            await publishedDatasetCollection.findPage('perPage', 'page', 'match', ['field1', 'field2']);
+            expect(find).toHaveBeenCalledWith({
+                removedAt: { $exists: false },
+                $or: [
+                    { 'versions.field1': { $regex: /match/, $options: 'i' } },
+                    { 'versions.field2': { $regex: /match/, $options: 'i' } },
+                ],
+            });
+        });
+
+        it('should ignore match if no fields provided', async () => {
+            await publishedDatasetCollection.findPage('page', 'perPage', 'match', []);
+            expect(find).toHaveBeenCalledWith({
+                removedAt: { $exists: false },
+            });
+        });
+
+        it('should call skip with page * perPage', async () => {
+            await publishedDatasetCollection.findPage(5, 2, 'match', []);
+            expect(skip).toHaveBeenCalledWith(10);
+        });
+
+        it('should call limit with perPage', async () => {
+            await publishedDatasetCollection.findPage('page', 'perPage', 'match', []);
+            expect(limit).toHaveBeenCalledWith('perPage');
+        });
+    });
 });

@@ -116,4 +116,5 @@ export default {
     field_display_in_resource: 'Display on resource page',
     field_searchable: 'Searchable',
     filter: 'enter your search term here',
+    no_result: 'No matching resource found',
 };

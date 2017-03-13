@@ -21,6 +21,7 @@
             "cover": "collection",
             "display_in_list": true,
             "display_in_resource": false,
+            "searchable": true,
             "transformers": [
                 {
                     "operation": "COLUMN",
@@ -58,6 +59,7 @@
             "cover": "collection",
             "display_in_list": true,
             "display_in_resource": false,
+            "searchable": true,
             "transformers": [
                 {
                     "operation": "COLUMN",
@@ -80,6 +82,7 @@
             "cover": "collection",
             "display_in_list": true,
             "display_in_resource": true,
+            "searchable": true,
             "scheme": "http://uri4uri.net/vocab",
             "transformers": [
                 {
