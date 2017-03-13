@@ -112,7 +112,6 @@ export const doPublish = async (ctx) => {
         transformDocumentAndKeepUri,
     );
     await ctx.publishCharacteristics(ctx, datasetCoverFields, count);
-    console.log({ facetFields });
     await ctx.publishFacets(ctx, facetFields);
 
     ctx.redirect('/api/publication');
