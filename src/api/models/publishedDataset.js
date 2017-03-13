@@ -63,15 +63,6 @@ export default (db) => {
             'contributions.status': status,
         });
 
-    collection.countRemoved = () =>
-        collection.count({ removedAt: { $exists: true } });
-
-    collection.countContributed = status =>
-        collection.count({ removedAt: { $exists: false }, [`contributionCount${status}`]: { $gt: 1 } });
-
-    collection.countWithoutRemoved = () =>
-        collection.count({ removedAt: { $exists: false } });
-
     collection.getFindAllStream = () =>
         collection.find({ removedAt: { $exists: false } }).stream();
 
