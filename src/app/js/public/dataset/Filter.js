@@ -6,14 +6,20 @@ import translate from 'redux-polyglot/translate';
 import TextField from 'material-ui/TextField';
 import { ToolbarGroup } from 'material-ui/Toolbar';
 import ActionSearch from 'material-ui/svg-icons/action/search';
+import CircularProgress from 'material-ui/CircularProgress';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { applyFilter as applyFilterAction } from './';
+import { fromDataset } from '../selectors';
 
-export const FilterComponent = ({ handleFilterChange, p: polyglot }) => (
+export const FilterComponent = ({ isDatasetLoading, handleFilterChange, p: polyglot }) => (
     <ToolbarGroup>
-        <ActionSearch />
+        {isDatasetLoading
+            ? <CircularProgress className="dataset-loading" size={20} /> :
+            <ActionSearch />
+        }
         <TextField
+            className="filter"
             hintText={polyglot.t('filter')}
             onChange={(_, e) => handleFilterChange(e)}
         />
@@ -22,16 +28,20 @@ export const FilterComponent = ({ handleFilterChange, p: polyglot }) => (
 
 FilterComponent.propTypes = {
     handleFilterChange: PropTypes.func.isRequired,
+    isDatasetLoading: PropTypes.bool.isRequired,
     p: polyglotPropTypes.isRequired,
 };
 
+const mapStateToProps = state => ({
+    isDatasetLoading: fromDataset.isDatasetLoading(state),
+});
 
 const mapDispatchToProps = ({
     applyFilter: applyFilterAction,
 });
 
 export default compose(
-    connect(undefined, mapDispatchToProps),
+    connect(mapStateToProps, mapDispatchToProps),
     withHandlers({
         handleFilterChange: ({ applyFilter }) => (match) => {
             applyFilter(match);

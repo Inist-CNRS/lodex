@@ -9,7 +9,7 @@ import {
 import { getLoadFacetValuesRequest } from '../../fetch';
 import fetchSaga from '../../lib/fetchSaga';
 
-export function* handleLoadPublicationRequest({ payload: { field, filter } }) {
+export function* handleLoadFacetValuesRequest({ payload: { field, filter } }) {
     const request = yield select(getLoadFacetValuesRequest, { field: field.name, filter });
 
     const { error, response: publication } = yield call(fetchSaga, request);
@@ -22,5 +22,5 @@ export function* handleLoadPublicationRequest({ payload: { field, filter } }) {
 }
 
 export default function* watchLoadPublicationRequest() {
-    yield takeLatest([SELECT_FACET, LOAD_FACET_VALUES], handleLoadPublicationRequest);
+    yield takeLatest([SELECT_FACET, LOAD_FACET_VALUES], handleLoadFacetValuesRequest);
 }

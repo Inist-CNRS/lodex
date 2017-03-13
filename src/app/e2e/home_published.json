@@ -21,6 +21,7 @@
             "cover": "collection",
             "display_in_list": true,
             "display_in_resource": false,
+            "isFacet": true,
             "searchable": true,
             "transformers": [
                 {
@@ -212,5 +213,11 @@
                 "best_friend_of": "1"
             }]
         }
+    ], 
+    "publishedFacet": [
+        { "field": "name", "value": "BAGGINS" },
+        { "field": "name", "value": "BRANDYBUCK" },
+        { "field": "name", "value": "GAMGIE" },
+        { "field": "name", "value": "TOOK" }
     ]
 }

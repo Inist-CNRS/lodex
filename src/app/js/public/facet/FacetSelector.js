@@ -48,6 +48,7 @@ export class FacetSelectorComponent extends Component {
         return (
             <ToolbarGroup>
                 <RaisedButton
+                    className="facet-selector"
                     label={selectedFacet ? selectedFacet.label : polyglot.t('add_facet')}
                     onClick={this.handleClick}
                 />
@@ -62,6 +63,7 @@ export class FacetSelectorComponent extends Component {
                     <Menu onChange={this.handleFacetClick}>
                         {fields.map(field => (
                             <MenuItem
+                                className={`facet-${field.label.toLowerCase().replace(/\s/g, '_')}`}
                                 key={field.name}
                                 primaryText={field.label}
                                 value={field}

@@ -4,7 +4,10 @@ import Chip from 'material-ui/Chip';
 import { facet as facetPropTypes } from '../../propTypes';
 
 export const AppliedFacetComponent = ({ facet: { field, value }, handleRequestDelete }) => (
-    <Chip onRequestDelete={handleRequestDelete}>
+    <Chip
+        className={`applied-facet-${field.label.toLowerCase().replace(/\s/g, '_')}`}
+        onRequestDelete={handleRequestDelete}
+    >
         <b>{field.label}</b>{' '}{value}
     </Chip>
 );

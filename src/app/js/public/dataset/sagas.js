@@ -8,7 +8,7 @@ import {
     loadDatasetPageError,
 } from './';
 
-import { APPLY_FACET } from '../facet';
+import { APPLY_FACET, REMOVE_FACET } from '../facet';
 import { getLoadDatasetPageRequest } from '../../fetch/';
 import fetchSaga from '../../lib/fetchSaga';
 import { fromDataset, fromFacet } from '../selectors';
@@ -47,5 +47,5 @@ export function* handleLoadDatasetPageRequest() {
 }
 
 export default function* () {
-    yield takeLatest([LOAD_DATASET_PAGE, APPLY_FILTER, APPLY_FACET], handleLoadDatasetPageRequest);
+    yield takeLatest([LOAD_DATASET_PAGE, APPLY_FILTER, APPLY_FACET, REMOVE_FACET], handleLoadDatasetPageRequest);
 }

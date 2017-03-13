@@ -7,6 +7,7 @@ import reducer, {
     loadDatasetPageError,
     applyFilter,
 } from './';
+import { APPLY_FACET } from '../facet';
 
 describe('dataset reducer', () => {
     it('should initialize with correct state', () => {
@@ -44,10 +45,23 @@ describe('dataset reducer', () => {
     });
 
     it('should handle APPLY_FILTER action', () => {
-        const state = reducer({}, applyFilter('foo'));
+        const state = reducer({ perPage: 20 }, applyFilter('foo'));
         expect(state).toEqual({
             currentPage: 0,
+            error: null,
+            loading: true,
             match: 'foo',
+            perPage: 20,
+        });
+    });
+
+    it('should handle APPLY_FACET action', () => {
+        const state = reducer({ perPage: 20 }, { type: APPLY_FACET });
+        expect(state).toEqual({
+            currentPage: 0,
+            error: null,
+            loading: true,
+            perPage: 20,
         });
     });
 });

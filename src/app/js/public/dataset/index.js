@@ -23,11 +23,11 @@ export const defaultState = {
 };
 
 export default handleActions({
-    [LOAD_DATASET_PAGE]: (state, { payload: { perPage } }) => ({
+    [combineActions(LOAD_DATASET_PAGE, APPLY_FACET, APPLY_FILTER)]: (state, { payload }) => ({
         ...state,
         error: null,
         loading: true,
-        perPage,
+        perPage: (payload && payload.perPage) || state.perPage,
     }),
     [combineActions(
         LOAD_DATASET_PAGE_SUCCESS,

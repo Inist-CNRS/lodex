@@ -4,10 +4,23 @@ import compose from 'recompose/compose';
 import withHandlers from 'recompose/withHandlers';
 import translate from 'redux-polyglot/translate';
 import AutoComplete from 'material-ui/AutoComplete';
+import MenuItem from 'material-ui/MenuItem';
+import memoize from 'lodash.memoize';
 
 import { field as fieldPropTypes, polyglot as polyglotPropTypes } from '../../propTypes';
 import { fromFacet } from '../selectors';
 import { loadFacetValues as loadFacetValuesAction, applyFacet as applyFacetAction } from './index';
+
+export const getValues = memoize(values => values.map(value => ({
+    text: value,
+    value: (
+        <MenuItem
+            className={`facet-value-${value.toLowerCase()}`}
+            primaryText={value}
+            value={value}
+        />
+    ),
+})));
 
 export const FacetValueSelectorComponent = ({
     handleChange,
@@ -17,7 +30,8 @@ export const FacetValueSelectorComponent = ({
     selectedFacet,
 }) => (
     <AutoComplete
-        dataSource={values}
+        className="facet-value-selector"
+        dataSource={getValues(values)}
         onNewRequest={handleChange}
         onUpdateInput={handleFilterChange}
         openOnFocus
@@ -51,7 +65,7 @@ const mapDispatchToProps = ({
 export default compose(
     connect(mapStateToProps, mapDispatchToProps),
     withHandlers({
-        handleChange: ({ applyFacet, selectedFacet: field }) => (value, index) => {
+        handleChange: ({ applyFacet, selectedFacet: field }) => ({ text: value }, index) => {
             if (index > -1) {
                 applyFacet({ field, value });
             }

@@ -7,7 +7,7 @@ import fixtures from './home_published.json';
 import { inputElementIsFocusable, elementsCountIs, elementIsClicked } from '../../common/tests/conditions';
 
 describe('Home page with published data', function homePublishedDataTests() {
-    this.timeout(100000);
+    this.timeout(10000);
     const DEFAULT_WAIT_TIMEOUT = 9000; // A bit less than mocha's timeout to get explicit errors from selenium
 
     before(async () => {
@@ -75,7 +75,7 @@ describe('Home page with published data', function homePublishedDataTests() {
         const filterInput = driver.findElement(By.css('.filter input'));
         await filterInput.sendKeys('baggins');
 
-        const spinner = await driver.findElement(By.css('.spinner')).catch(() => null);
+        const spinner = await driver.findElement(By.css('.dataset-loading')).catch(() => null);
         await driver.wait(until.stalenessOf(spinner)).catch(() => null);
 
         const expectedTds = [
@@ -101,7 +101,7 @@ describe('Home page with published data', function homePublishedDataTests() {
         await filterInput.clear();
         await filterInput.sendKeys('sauron');
 
-        const spinner = await driver.findElement(By.css('.spinner')).catch(() => null);
+        const spinner = await driver.findElement(By.css('.dataset-loading')).catch(() => null);
         await driver.wait(until.stalenessOf(spinner)).catch(() => null);
 
         const tbody = await driver.findElement(By.css('.dataset table tbody'));
@@ -114,7 +114,52 @@ describe('Home page with published data', function homePublishedDataTests() {
         await filterInput.clear();
         await filterInput.sendKeys(' \b'); // clear do not trigger onChange event forcing it (\b is backspace)
 
-        const spinner = await driver.findElement(By.css('.spinner')).catch(() => null);
+        const spinner = await driver.findElement(By.css('.dataset-loading')).catch(() => null);
+        await driver.wait(until.stalenessOf(spinner)).catch(() => null);
+
+        const trs = await driver.findElements(By.css('.dataset table tbody tr'));
+        expect(trs.length).toBe(5);
+    });
+
+    it('should filter list from facet', async () => {
+        await driver.wait(until.elementLocated(By.css('.facet-selector')), DEFAULT_WAIT_TIMEOUT);
+        const facetSelector = await driver.findElement(By.css('.facet-selector'));
+        await driver.wait(elementIsClicked(facetSelector), DEFAULT_WAIT_TIMEOUT);
+        await driver.wait(until.elementLocated(By.css('.facet-name')), DEFAULT_WAIT_TIMEOUT);
+        const facet = await driver.findElement(By.css('.facet-name'));
+        await driver.wait(elementIsClicked(facet), DEFAULT_WAIT_TIMEOUT);
+        await driver.wait(until.elementLocated(By.css('.facet-value-selector input')), DEFAULT_WAIT_TIMEOUT);
+        const facetValueSelector = await driver.findElement(By.css('.facet-value-selector input'));
+        await driver.wait(elementIsClicked(facetValueSelector), DEFAULT_WAIT_TIMEOUT);
+        await driver.wait(until.elementLocated(By.css('.facet-value-baggins')), DEFAULT_WAIT_TIMEOUT);
+        const facetValue = await driver.findElement(By.css('.facet-value-baggins'));
+        await driver.wait(elementIsClicked(facetValue), DEFAULT_WAIT_TIMEOUT);
+
+        const spinner = await driver.findElement(By.css('.dataset-loading')).catch(() => null);
+        await driver.wait(until.stalenessOf(spinner)).catch(() => null);
+
+        const expectedTds = [
+            ['3', 'BAGGINS', 'BILBON', 'bilbon.saquet@shire.net'],
+            ['4', 'BAGGINS', 'FRODO', 'frodo.saquet@shire.net'],
+        ];
+
+        const trs = await driver.findElements(By.css('.dataset table tbody tr'));
+        await Promise.all(trs.map(tr => tr
+            .findElements(By.css('td'))
+            .then(tds => Promise.all(tds.map(td => td.getText())))
+            .then((tdsText) => {
+                const item = expectedTds.find(td => td.every((cell, index) => cell === tdsText[index]));
+                expect(item).toExist('Unexpected row');
+            }),
+        ));
+    });
+
+    it('should clear filter', async () => {
+        await driver.wait(until.elementLocated(By.css('.applied-facet-name svg')), DEFAULT_WAIT_TIMEOUT);
+        const facetClear = await driver.findElement(By.css('.applied-facet-name svg'));
+        await driver.wait(elementIsClicked(facetClear), DEFAULT_WAIT_TIMEOUT);
+
+        const spinner = await driver.findElement(By.css('.dataset-loading')).catch(() => null);
         await driver.wait(until.stalenessOf(spinner)).catch(() => null);
 
         const trs = await driver.findElements(By.css('.dataset table tbody tr'));
