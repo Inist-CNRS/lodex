@@ -10,6 +10,7 @@ import ContentClear from 'material-ui/svg-icons/content/clear';
 
 import FloatingActionButton from '../../lib/FloatingActionButton';
 import { fromFields } from '../selectors';
+import { polyglot as polyglotPropTypes } from '../../propTypes';
 
 const styles = {
     actionButton: onBack => ({
@@ -36,6 +37,13 @@ const styles = {
 };
 
 export class ActionButtonComponent extends Component {
+    propTypes = {
+        onAddNewColumn: PropTypes.func.isRequired,
+        onHideExistingColumns: PropTypes.func.isRequired,
+        onShowExistingColumns: PropTypes.func.isRequired,
+        p: polyglotPropTypes.isRequired,
+    }
+
     constructor(props) {
         super(props);
 
