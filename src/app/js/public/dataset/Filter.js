@@ -10,30 +10,35 @@ import CircularProgress from 'material-ui/CircularProgress';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { applyFilter as applyFilterAction } from './';
-import { fromDataset } from '../selectors';
+import { fromDataset, fromPublication } from '../selectors';
 
-export const FilterComponent = ({ isDatasetLoading, handleFilterChange, p: polyglot }) => (
-    <ToolbarGroup>
-        {isDatasetLoading
-            ? <CircularProgress className="dataset-loading" size={20} /> :
-            <ActionSearch />
-        }
-        <TextField
-            className="filter"
-            hintText={polyglot.t('filter')}
-            onChange={(_, e) => handleFilterChange(e)}
-        />
-    </ToolbarGroup>
-);
+export const FilterComponent = ({ handleFilterChange, hasSearchableFields, isDatasetLoading, p: polyglot }) => (
+    hasSearchableFields
+    ? (
+        <ToolbarGroup>
+            {isDatasetLoading
+                ? <CircularProgress className="dataset-loading" size={20} /> :
+                <ActionSearch />
+            }
+            <TextField
+                className="filter"
+                hintText={polyglot.t('filter')}
+                onChange={(_, e) => handleFilterChange(e)}
+            />
+        </ToolbarGroup>
+    )
+    : null);
 
 FilterComponent.propTypes = {
     handleFilterChange: PropTypes.func.isRequired,
+    hasSearchableFields: PropTypes.bool.isRequired,
     isDatasetLoading: PropTypes.bool.isRequired,
     p: polyglotPropTypes.isRequired,
 };
 
 const mapStateToProps = state => ({
     isDatasetLoading: fromDataset.isDatasetLoading(state),
+    hasSearchableFields: fromPublication.hasSearchableFields(state),
 });
 
 const mapDispatchToProps = ({
