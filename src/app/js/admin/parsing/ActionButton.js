@@ -101,6 +101,7 @@ export class ActionButtonComponent extends Component {
         const tooltip = showCancel ? 'Cancel' : 'Add a column';
         return (
             <FloatingActionButton
+                className="btn-add-column"
                 tooltip={tooltip}
                 onClick={this.handleClick}
                 style={styles.actionButton(!showPopover)}
@@ -125,7 +126,7 @@ export class ActionButtonComponent extends Component {
                     </FloatingActionButton>
 
                     <FloatingActionButton
-                        className="btn-add-column"
+                        className="btn-add-free-column"
                         label={polyglot.t('add_column')}
                         onClick={this.handleAddNewColumn}
                         style={styles.button}

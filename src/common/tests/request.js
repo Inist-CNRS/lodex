@@ -4,7 +4,7 @@ import app from '../../api';
 
 export default function myRequest(params, authToken = null, cookies = {}) {
     return new Promise((resolve, reject) => {
-        const port = process.env.NODE_PORT || 3010;
+        const port = process.env.NODE_PORT || 3100;
         const portOrigin = process.env.NODE_PORT_ORIGIN || 8081;
         const baseUrl = `http://localhost:${port}`;
         const server = http.createServer(app.callback()).listen(port);

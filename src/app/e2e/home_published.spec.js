@@ -13,7 +13,7 @@ describe('Home page with published data', function homePublishedDataTests() {
     before(async () => {
         await clear();
         await loadFixtures(fixtures);
-        await driver.get('http://localhost:3010/');
+        await driver.get('http://localhost:3100/');
     });
 
     it('should display the dataset characteristics', async () => {

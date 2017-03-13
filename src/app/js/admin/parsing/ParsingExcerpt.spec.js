@@ -25,9 +25,9 @@ describe('<ParsingExcerpt />', () => {
             { foo: 'foo2', bar: 'bar2' },
         ];
         const wrapper = shallow(<ParsingExcerpt columns={columns} lines={lines} />);
-        expect(wrapper.contains(<ParsingExcerptColumn value="foo1" />)).toEqual(true);
-        expect(wrapper.contains(<ParsingExcerptColumn value="bar1" />)).toEqual(true);
-        expect(wrapper.contains(<ParsingExcerptColumn value="foo2" />)).toEqual(true);
-        expect(wrapper.contains(<ParsingExcerptColumn value="bar2" />)).toEqual(true);
+        expect(wrapper.find(ParsingExcerptColumn).at(0).prop('value')).toEqual('foo1');
+        expect(wrapper.find(ParsingExcerptColumn).at(1).prop('value')).toEqual('bar1');
+        expect(wrapper.find(ParsingExcerptColumn).at(2).prop('value')).toEqual('foo2');
+        expect(wrapper.find(ParsingExcerptColumn).at(3).prop('value')).toEqual('bar2');
     });
 });
