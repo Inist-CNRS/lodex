@@ -172,6 +172,16 @@ const getFacetFields = createSelector(
     allFields => allFields.filter(f => f.isFacet),
 );
 
+const hasFacetFields = createSelector(
+    getFacetFields,
+    facetFields => facetFields.length > 0,
+);
+
+const hasSearchableFields = createSelector(
+    getFields,
+    allFields => allFields.filter(f => f.searchable).length > 0,
+);
+
 const getFieldsCatalog = createSelector(
     getFields,
     fields => fields.reduce((catalog, field) => ({
@@ -215,4 +225,6 @@ export const fromPublication = {
     getPublicationError,
     getCompositeFieldsByField,
     getFacetFields,
+    hasFacetFields,
+    hasSearchableFields,
 };

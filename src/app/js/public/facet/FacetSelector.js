@@ -42,8 +42,10 @@ export class FacetSelectorComponent extends Component {
     }
 
     render() {
-        const { fields, p: polyglot, selectedFacet } = this.props;
+        const { fields, hasFacetFields, p: polyglot, selectedFacet } = this.props;
         const { anchorEl, showMenu } = this.state;
+
+        if (!hasFacetFields) return null;
 
         return (
             <ToolbarGroup>
@@ -82,6 +84,7 @@ export class FacetSelectorComponent extends Component {
 FacetSelectorComponent.propTypes = {
     fields: PropTypes.arrayOf(fieldPropTypes).isRequired,
     handleFacetSelected: PropTypes.func.isRequired,
+    hasFacetFields: PropTypes.bool.isRequired,
     p: polyglotPropTypes.isRequired,
     selectedFacet: fieldPropTypes,
 };
@@ -91,6 +94,7 @@ FacetSelectorComponent.defaultProps = {
 };
 
 const mapStateToProps = state => ({
+    hasFacetFields: fromPublication.hasFacetFields(state),
     selectedFacet: fromFacet.getSelectedFacet(state),
     fields: fromPublication.getFacetFields(state),
 });
