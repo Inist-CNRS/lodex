@@ -4,12 +4,13 @@ import route from 'koa-route';
 import exporters from '../../exporters';
 
 export const getExporter = (type) => {
-    switch (type) {
-    case 'csv':
-        return exporters.csv;
-    default:
+    const exporter = exporters[type];
+
+    if (!exporter) {
         throw new Error(`Unsupported document type: ${type}`);
     }
+
+    return exporter;
 };
 
 export async function setup(ctx, next) {
