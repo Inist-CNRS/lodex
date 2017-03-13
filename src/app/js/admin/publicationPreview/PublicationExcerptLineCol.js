@@ -19,6 +19,7 @@ const styles = {
     },
     cell: {
         cursor: 'pointer',
+        height: 'auto',
     },
 };
 

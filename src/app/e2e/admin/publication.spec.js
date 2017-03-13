@@ -7,7 +7,6 @@ import { clear } from '../../../common/tests/fixtures';
 import { elementIsClicked, inputElementIsFocusable, elementValueIs } from '../../../common/tests/conditions';
 import loginAsJulia from '../loginAsJulia';
 
-
 describe('Admin', () => {
     describe('Publication', function homeTests() {
         this.timeout(30000);
@@ -78,9 +77,11 @@ describe('Admin', () => {
 
         describe('adding LINK column', () => {
             it('should display form for newField2 column when clicking on btn-add-column', async () => {
-                await driver.executeScript('document.getElementsByClassName("add-column")[0].scrollIntoView(true);');
-                const button = await driver.findElement(By.css('.add-column'));
-                await driver.wait(elementIsClicked(button), DEFAULT_WAIT_TIMEOUT);
+                const buttonAddColumn = await driver.findElement(By.css('.btn-add-column'));
+                await driver.wait(elementIsClicked(buttonAddColumn), DEFAULT_WAIT_TIMEOUT);
+
+                const buttonAddFreeColumn = await driver.findElement(By.css('.btn-add-free-column'));
+                await driver.wait(elementIsClicked(buttonAddFreeColumn), DEFAULT_WAIT_TIMEOUT);
 
                 await driver.wait(until.elementLocated(By.css('#field_form')), DEFAULT_WAIT_TIMEOUT);
                 await driver.executeScript('document.getElementById("field_form").scrollIntoView(true);');
@@ -147,11 +148,17 @@ describe('Admin', () => {
 
         describe('adding column from original dataset', async () => {
             it('should add auto configured column when clicking add-column button for an original field', async () => {
-                await driver.executeScript(
-                    'document.getElementsByClassName("btn-excerpt-add-column-name")[0].scrollIntoView(true);',
-                );
+                const buttonAddColumn = await driver.findElement(By.css('.btn-add-column'));
+                await driver.wait(elementIsClicked(buttonAddColumn), DEFAULT_WAIT_TIMEOUT);
+
+                await driver.wait(until.elementLocated(By.css('.btn-add-column-from-dataset')));
+                const buttonAddColumnFromDataset = await driver.findElement(By.css('.btn-add-column-from-dataset'));
+                await driver.wait(elementIsClicked(buttonAddColumnFromDataset), DEFAULT_WAIT_TIMEOUT);
+
+                await driver.wait(until.elementLocated(By.css('.btn-excerpt-add-column-name')));
                 const button = await driver.findElement(By.css('.btn-excerpt-add-column-name'));
                 await driver.wait(elementIsClicked(button), DEFAULT_WAIT_TIMEOUT);
+
                 await driver.wait(until.elementLocated(
                     By.css('.publication-excerpt-column-name'),
                 ), DEFAULT_WAIT_TIMEOUT);
@@ -175,9 +182,11 @@ describe('Admin', () => {
 
         describe('adding VALUE column', () => {
             it('should display form for newField4 column when clicking on btn-add-column', async () => {
-                await driver.executeScript('document.getElementsByClassName("add-column")[0].scrollIntoView(true);');
-                const button = await driver.findElement(By.css('.add-column'));
-                await driver.wait(elementIsClicked(button), DEFAULT_WAIT_TIMEOUT);
+                const buttonAddColumn = await driver.findElement(By.css('.btn-add-column'));
+                await driver.wait(elementIsClicked(buttonAddColumn), DEFAULT_WAIT_TIMEOUT);
+
+                const buttonAddFreeColumn = await driver.findElement(By.css('.btn-add-free-column'));
+                await driver.wait(elementIsClicked(buttonAddFreeColumn), DEFAULT_WAIT_TIMEOUT);
 
                 await driver.wait(until.elementLocated(By.css('#field_form')), DEFAULT_WAIT_TIMEOUT);
                 await driver.executeScript('document.getElementById("field_form").scrollIntoView(true);');
@@ -241,9 +250,11 @@ describe('Admin', () => {
 
         describe('adding completes column', () => {
             it('should display form for newField5 column when clicking on btn-add-column', async () => {
-                await driver.executeScript('document.getElementsByClassName("add-column")[0].scrollIntoView(true);');
-                const button = await driver.findElement(By.css('.add-column'));
-                await driver.wait(elementIsClicked(button), DEFAULT_WAIT_TIMEOUT);
+                const buttonAddColumn = await driver.findElement(By.css('.btn-add-column'));
+                await driver.wait(elementIsClicked(buttonAddColumn), DEFAULT_WAIT_TIMEOUT);
+
+                const buttonAddFreeColumn = await driver.findElement(By.css('.btn-add-free-column'));
+                await driver.wait(elementIsClicked(buttonAddFreeColumn), DEFAULT_WAIT_TIMEOUT);
 
                 await driver.wait(until.elementLocated(By.css('#field_form')), DEFAULT_WAIT_TIMEOUT);
                 await driver.executeScript('document.getElementById("field_form").scrollIntoView(true);');
@@ -325,11 +336,17 @@ describe('Admin', () => {
 
         describe('removing column', async () => {
             it('should add auto configured column when clicking add-column button for an original field', async () => {
-                await driver.executeScript(
-                    'document.getElementsByClassName("btn-excerpt-add-column-name")[0].scrollIntoView(true);',
-                );
+                const buttonAddColumn = await driver.findElement(By.css('.btn-add-column'));
+                await driver.wait(elementIsClicked(buttonAddColumn), DEFAULT_WAIT_TIMEOUT);
+
+                await driver.wait(until.elementLocated(By.css('.btn-add-column-from-dataset')));
+                const buttonAddColumnFromDataset = await driver.findElement(By.css('.btn-add-column-from-dataset'));
+                await driver.wait(elementIsClicked(buttonAddColumnFromDataset), DEFAULT_WAIT_TIMEOUT);
+
+                await driver.wait(until.elementLocated(By.css('.btn-excerpt-add-column-name')));
                 const button = await driver.findElement(By.css('.btn-excerpt-add-column-name'));
                 await driver.wait(elementIsClicked(button), DEFAULT_WAIT_TIMEOUT);
+
                 await driver.wait(until.elementLocated(By.css('#field_form')), DEFAULT_WAIT_TIMEOUT);
             });
 
@@ -399,7 +416,7 @@ describe('Admin', () => {
             });
 
             it('should display the published data on the home page', async () => {
-                await driver.get('http://localhost:3010/');
+                await driver.get('http://localhost:3100/');
                 await driver.wait(until.elementLocated(By.css('.dataset')), DEFAULT_WAIT_TIMEOUT);
                 const headers = await driver.findElements(By.css('.dataset table th'));
                 const headersText = await Promise.all(headers.map(h => h.getText()));

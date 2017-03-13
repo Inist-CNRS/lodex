@@ -6,7 +6,6 @@ import translate from 'redux-polyglot/translate';
 import { CardHeader } from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
 import { grey400 } from 'material-ui/styles/colors';
-import Card from '../../lib/Card';
 import ScrollableCardContent from '../../lib/ScrollableCardContent';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
@@ -19,6 +18,9 @@ import {
 import ParsingExcerpt from './ParsingExcerpt';
 
 const styles = {
+    container: {
+        position: 'relative',
+    },
     list: {
         borderRight: `solid 1px ${grey400}`,
         listStyleType: 'none',
@@ -55,7 +57,7 @@ export class ParsingResultComponent extends Component {
         } = this.props;
 
         return (
-            <Card className="parsingResult" initiallyExpanded>
+            <div className="parsingResult" style={styles.container}>
                 <CardHeader
                     showExpandableButton
                     title={polyglot.t('parsing_summary', { count: totalLoadedLines })}
@@ -65,15 +67,16 @@ export class ParsingResultComponent extends Component {
                         style={styles.button}
                         onClick={this.handleClearParsing}
                         label={polyglot.t('Upload another file')}
+                        primary
                     />
                 </CardHeader>
-                <ScrollableCardContent expandable>
+                <ScrollableCardContent>
                     <ParsingExcerpt
                         columns={excerptColumns}
                         lines={excerptLines}
                     />
                 </ScrollableCardContent>
-            </Card>
+            </div>
         );
     }
 }

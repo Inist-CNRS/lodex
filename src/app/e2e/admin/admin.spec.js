@@ -13,7 +13,7 @@ describe('Admin', function adminTests() {
     });
 
     it('should redirect to the login page if not authenticated', async () => {
-        await driver.get('http://localhost:3010/admin');
+        await driver.get('http://localhost:3100/admin');
         await driver.wait(until.elementLocated(By.css('#login_form')), DEFAULT_WAIT_TIMEOUT);
     });
 

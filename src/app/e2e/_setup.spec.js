@@ -7,7 +7,7 @@ import { clear } from '../../common/tests/fixtures';
 before(async function before() {
     await clear();
     this.apiServer = http.createServer(api.callback());
-    this.apiServer.listen(3010);
+    this.apiServer.listen(3100);
 });
 
 after(async function after() {

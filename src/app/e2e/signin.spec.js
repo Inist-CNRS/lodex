@@ -12,7 +12,7 @@ describe('Home page', function homeTests() {
     let form;
 
     before(async () => {
-        await driver.get('http://localhost:3010/#/login');
+        await driver.get('http://localhost:3100/#/login');
     });
 
     it('shpw the sign-in form', async () => {
@@ -42,7 +42,7 @@ describe('Home page', function homeTests() {
         await password.sendKeys('secret');
         await form.submit();
         await form.submit(); // Weird selenium bug
-        await driver.wait(until.urlIs('http://localhost:3010/#/home'), DEFAULT_WAIT_TIMEOUT);
+        await driver.wait(until.urlIs('http://localhost:3100/#/home'), DEFAULT_WAIT_TIMEOUT);
     });
 
     after(async () => {

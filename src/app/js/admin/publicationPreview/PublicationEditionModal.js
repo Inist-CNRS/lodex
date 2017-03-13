@@ -25,6 +25,8 @@ const styles = {
     modal: {
         maxWidth: '100%',
     },
+    overlay: {
+    },
 };
 
 const PublicationEditionComponent = ({ editedColumn, lines, onExitEdition, p: polyglot }) => {
@@ -43,6 +45,7 @@ const PublicationEditionComponent = ({ editedColumn, lines, onExitEdition, p: po
             actions={actions}
             title={editedColumn.label}
             contentStyle={styles.modal}
+            style={styles.overlay}
         >
             <div style={styles.container}>
                 <div style={styles.form}>
