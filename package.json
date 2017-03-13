@@ -45,6 +45,7 @@
     "ezs": "1.1.3",
     "ezs-basics": "2.2.1",
     "file-loader": "0.9.0",
+    "file-saver": "1.3.3",
     "html-webpack-plugin": "2.26.0",
     "inist-ark": "2.0.0",
     "isomorphic-fetch": "2.2.1",

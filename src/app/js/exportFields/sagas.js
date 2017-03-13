@@ -1,6 +1,7 @@
 import { call, select, put, takeEvery } from 'redux-saga/effects';
-import fetchSaga from '../../lib/fetchSaga';
-import { getExportFieldsRequest } from '../../fetch/';
+import fetchSaga from '../lib/fetchSaga';
+import { getExportFieldsRequest } from '../fetch/';
+import FileSaver from 'file-saver';
 
 import {
     EXPORT_FIELDS,
@@ -8,15 +9,7 @@ import {
 } from './';
 
 export const downloadFile = (blob) => {
-    const objectUrl = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.style = 'display: none';
-    document.body.appendChild(a);
-    a.href = objectUrl;
-    a.download = 'lodex_export.json';
-    a.click();
-    window.URL.revokeObjectURL(objectUrl);
-    a.remove();
+    FileSaver.saveAs(blob, 'lodex_export.json');
 };
 
 export function* handleExportPublishedDatasetSuccess() {

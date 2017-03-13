@@ -5,7 +5,6 @@ import {
     loadPublicationSuccess,
     loadPublicationError,
 } from './';
-import { PUBLISH_SUCCESS } from '../../admin/publish';
 import { getLoadPublicationRequest } from '../../fetch';
 import fetchSaga from '../../lib/fetchSaga';
 
@@ -22,5 +21,5 @@ export function* handleLoadPublicationRequest() {
 }
 
 export default function* watchLoadPublicationRequest() {
-    yield takeLatest([LOAD_PUBLICATION, PUBLISH_SUCCESS], handleLoadPublicationRequest);
+    yield takeLatest([LOAD_PUBLICATION], handleLoadPublicationRequest);
 }

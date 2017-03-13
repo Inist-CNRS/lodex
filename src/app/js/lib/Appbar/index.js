@@ -2,7 +2,6 @@ import React, { PropTypes } from 'react';
 import AppBar from 'material-ui/AppBar';
 import CircularProgress from 'material-ui/CircularProgress';
 
-import AdminButton from './AdminButton';
 import SignOutButton from './SignOutButton';
 import SignInButton from './SignInButton';
 import ExportMenu from './ExportMenu';
@@ -29,14 +28,10 @@ const AppbarComponent = ({ isLoading, isLoggedIn }) => {
     const RightElement = (
         <div>
             { isLoggedIn ?
-                <span>
-                    <AdminButton />
-                    <ExportFieldsButton />
-                </span>
+                <ExportFieldsButton />
             :
                 <SignInButton />
             }
-            <ExportMenu />
             {isLoggedIn &&
                 <SignOutButton />
             }
