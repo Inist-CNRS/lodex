@@ -403,7 +403,7 @@ describe('Admin', () => {
                 await driver.wait(until.elementLocated(By.css('.dataset')), DEFAULT_WAIT_TIMEOUT);
                 const headers = await driver.findElements(By.css('.dataset table th'));
                 const headersText = await Promise.all(headers.map(h => h.getText()));
-                expect(headersText).toEqual(['uri', 'Stronger than', 'name', 'Title', 'Genre']);
+                expect(headersText).toEqual(['URI', 'STRONGER THAN', 'NAME', 'TITLE', 'GENRE']);
                 const rows = await Promise.all([1, 2, 3, 4].map(index =>
                     Promise.all([
                         driver

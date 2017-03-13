@@ -18,6 +18,7 @@ const styles = {
 const DatasetColumnHeader = ({ name, label, sortBy, sortDir, sortDataset }) => (
     <TableHeaderColumn>
         <FlatButton
+            className={`sort_${name}`}
             labelPosition="before"
             onClick={() => sortDataset(name)}
             label={label}

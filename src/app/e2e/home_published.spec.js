@@ -44,9 +44,9 @@ describe('Home page with published data', function homePublishedDataTests() {
 
     it('should display the list', async () => {
         await driver.wait(until.elementLocated(By.css('.dataset')), DEFAULT_WAIT_TIMEOUT);
-        const headers = await driver.findElements(By.css('.dataset table th'));
+        const headers = await driver.findElements(By.css('.dataset table th button'));
 
-        const expectedHeaders = ['URI', 'name', 'firstname', 'Email', 'Best Friend Of'];
+        const expectedHeaders = ['URI', 'NAME', 'FIRSTNAME', 'EMAIL', 'BEST FRIEND OF'];
         await Promise.all(headers.map((header, index) =>
             driver.wait(until.elementTextIs(header, expectedHeaders[index]), DEFAULT_WAIT_TIMEOUT),
         ));
@@ -57,6 +57,72 @@ describe('Home page with published data', function homePublishedDataTests() {
             ['3', 'BAGGINS', 'BILBON', 'bilbon.saquet@shire.net'],
             ['4', 'BAGGINS', 'FRODO', 'frodo.saquet@shire.net'],
             ['5', 'BRANDYBUCK', 'MERIADOC', 'meriadoc.brandybuck@shire.net'],
+        ];
+
+        const trs = await driver.findElements(By.css('.dataset table tbody tr'));
+        await Promise.all(trs.map(tr => tr
+            .findElements(By.css('td'))
+            .then(tds => Promise.all(tds.map(td => td.getText())))
+            .then((tdsText) => {
+                const item = expectedTds.find(td => td.every((cell, index) => cell === tdsText[index]));
+                expect(item).toExist('Unexpected row');
+            }),
+        ));
+    });
+
+    it('should sort the list by firstname', async () => {
+        const firstnameHeader = await driver.findElement(By.css('.sort_firstname'));
+        await driver.wait(elementIsClicked(firstnameHeader));
+        const expectedTds = [
+            ['3', 'BAGGINS', 'BILBON', 'bilbon.saquet@shire.net'],
+            ['4', 'BAGGINS', 'FRODO', 'frodo.saquet@shire.net'],
+            ['5', 'BRANDYBUCK', 'MERIADOC', 'meriadoc.brandybuck@shire.net'],
+            ['1', 'TOOK', 'PEREGRIN', 'peregrin.took@shire.net'],
+            ['2', 'GAMGIE', 'SAMSAGET', 'samsaget.gamgie@shire.net'],
+        ];
+
+        const trs = await driver.findElements(By.css('.dataset table tbody tr'));
+        await Promise.all(trs.map(tr => tr
+            .findElements(By.css('td'))
+            .then(tds => Promise.all(tds.map(td => td.getText())))
+            .then((tdsText) => {
+                const item = expectedTds.find(td => td.every((cell, index) => cell === tdsText[index]));
+                expect(item).toExist('Unexpected row');
+            }),
+        ));
+    });
+
+    it('should sort the list by name', async () => {
+        const nameHeader = await driver.findElement(By.css('.sort_name'));
+        await driver.wait(elementIsClicked(nameHeader));
+        const expectedTds = [
+            ['3', 'BAGGINS', 'BILBON', 'bilbon.saquet@shire.net'],
+            ['4', 'BAGGINS', 'FRODO', 'frodo.saquet@shire.net'],
+            ['5', 'BRANDYBUCK', 'MERIADOC', 'meriadoc.brandybuck@shire.net'],
+            ['2', 'GAMGIE', 'SAMSAGET', 'samsaget.gamgie@shire.net'],
+            ['1', 'TOOK', 'PEREGRIN', 'peregrin.took@shire.net'],
+        ];
+
+        const trs = await driver.findElements(By.css('.dataset table tbody tr'));
+        await Promise.all(trs.map(tr => tr
+            .findElements(By.css('td'))
+            .then(tds => Promise.all(tds.map(td => td.getText())))
+            .then((tdsText) => {
+                const item = expectedTds.find(td => td.every((cell, index) => cell === tdsText[index]));
+                expect(item).toExist('Unexpected row');
+            }),
+        ));
+    });
+
+    it('should invert the order', async () => {
+        const nameHeader = await driver.findElement(By.css('.sort_name'));
+        await driver.wait(elementIsClicked(nameHeader));
+        const expectedTds = [
+            ['1', 'TOOK', 'PEREGRIN', 'peregrin.took@shire.net'],
+            ['2', 'GAMGIE', 'SAMSAGET', 'samsaget.gamgie@shire.net'],
+            ['5', 'BRANDYBUCK', 'MERIADOC', 'meriadoc.brandybuck@shire.net'],
+            ['4', 'BAGGINS', 'FRODO', 'frodo.saquet@shire.net'],
+            ['3', 'BAGGINS', 'BILBON', 'bilbon.saquet@shire.net'],
         ];
 
         const trs = await driver.findElements(By.css('.dataset table tbody tr'));
