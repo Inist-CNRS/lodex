@@ -9,6 +9,7 @@ import {
     TableHeader,
     TableHeaderColumn,
     TableRow,
+    TableRowColumn,
 } from 'material-ui/Table';
 import DatasetColumn from './DatasetColumn';
 import Pagination from '../../lib/Pagination';
@@ -55,7 +56,9 @@ export class DatasetComponent extends Component {
                         </TableHeader>
                         <TableBody displayRowCheckbox={false}>
                             {!dataset.length ? (
-                                <div>{polyglot.t('no_result')}</div>
+                                <TableRow>
+                                    <TableRowColumn>{polyglot.t('no_result')}</TableRowColumn>
+                                </TableRow>
                             ) : (
                                 dataset.map(data => (
                                     <TableRow key={data.uri}>

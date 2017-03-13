@@ -6,12 +6,12 @@ import memoize from 'lodash.memoize';
 import translate from 'redux-polyglot/translate';
 import IconButton from 'material-ui/IconButton';
 import IconMenu from 'material-ui/IconMenu';
-import MenuItem from 'material-ui/MenuItem';
 import FileDownloadIcon from 'material-ui/svg-icons/file/file-download';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { exportPublishedDataset as exportPublishedDatasetAction } from '../../public/export';
 import config from '../../../../../config.json';
+import ExportMenuItem from './ExportMenuItem';
 
 const styles = {
     icon: {
@@ -23,9 +23,8 @@ const origin = { horizontal: 'right', vertical: 'top' };
 
 const getStyles = memoize(style => Object.assign({}, styles.icon, style));
 
-export const ExportMenuComponent = ({ exportPublishedDataset, iconStyle, p: polyglot, ...props }) => (
+export const ExportMenuComponent = ({ handleExportClick, iconStyle, p: polyglot }) => (
     <IconMenu
-        {...props}
         iconStyle={getStyles(iconStyle)}
         iconButtonElement={
             <IconButton tooltip={polyglot.t('export_data')}><FileDownloadIcon /></IconButton>
@@ -35,11 +34,10 @@ export const ExportMenuComponent = ({ exportPublishedDataset, iconStyle, p: poly
     >
         {
             config.exporters.map(type => (
-                <MenuItem
+                <ExportMenuItem
                     key={type}
-                    className="btn-export"
-                    primaryText={polyglot.t('export', { type })}
-                    onClick={() => exportPublishedDataset(type)}
+                    type={type}
+                    onClick={handleExportClick}
                 />
             ))
         }
@@ -47,7 +45,7 @@ export const ExportMenuComponent = ({ exportPublishedDataset, iconStyle, p: poly
 );
 
 ExportMenuComponent.propTypes = {
-    exportPublishedDataset: PropTypes.func.isRequired,
+    handleExportClick: PropTypes.func.isRequired,
     iconStyle: PropTypes.object, // eslint-disable-line
     p: polyglotPropTypes.isRequired,
 };
@@ -57,7 +55,7 @@ ExportMenuComponent.defaultProps = {
 };
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-    exportPublishedDataset: exportPublishedDatasetAction,
+    handleExportClick: exportPublishedDatasetAction,
 }, dispatch);
 
 export default compose(

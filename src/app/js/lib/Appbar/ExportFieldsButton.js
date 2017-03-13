@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
+import withHandlers from 'recompose/withHandlers';
 import memoize from 'lodash.memoize';
 
 import translate from 'redux-polyglot/translate';
@@ -8,7 +9,7 @@ import IconButton from 'material-ui/IconButton';
 import DescriptionIcon from 'material-ui/svg-icons/action/description';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
-import { exportFields } from '../../admin/export';
+import { exportFields as exportFieldsAction } from '../../exportFields';
 
 const styles = {
     icon: {
@@ -40,10 +41,15 @@ ExportFieldsButtonComponent.defaultProps = {
 
 
 const mapDispatchToProps = ({
-    handleClick: exportFields,
+    exportFields: exportFieldsAction,
 });
 
 export default compose(
     connect(undefined, mapDispatchToProps),
+    withHandlers({
+        handleClick: ({ exportFields }) => () => {
+            exportFields();
+        },
+    }),
     translate,
 )(ExportFieldsButtonComponent);
