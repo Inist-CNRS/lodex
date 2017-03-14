@@ -232,7 +232,10 @@ describe('Admin', () => {
             });
 
             it('should have added custom column with value', async () => {
-                await driver.wait(until.elementLocated(By.css('.publication-preview')), DEFAULT_WAIT_TIMEOUT);
+                await driver.wait(
+                    until.elementLocated(By.css('.publication-preview tr td:nth-child(4)')),
+                    DEFAULT_WAIT_TIMEOUT,
+                );
                 const tds = await driver.findElements(By.css('.publication-preview tr td:nth-child(4)'));
                 expect(tds.length).toBe(5);
 
@@ -288,8 +291,7 @@ describe('Admin', () => {
 
                 await driver.wait(until.elementLocated(
                     By.css('#field_form .transformer_arg_value input'),
-                    DEFAULT_WAIT_TIMEOUT,
-                ));
+                ), DEFAULT_WAIT_TIMEOUT);
             });
 
             it('should configure transformer VALUE', async () => {
@@ -420,7 +422,7 @@ describe('Admin', () => {
                 await driver.wait(until.elementLocated(By.css('.dataset')), DEFAULT_WAIT_TIMEOUT);
                 const headers = await driver.findElements(By.css('.dataset table th'));
                 const headersText = await Promise.all(headers.map(h => h.getText()));
-                expect(headersText).toEqual(['uri', 'Stronger than', 'name', 'Title', 'Genre']);
+                expect(headersText).toEqual(['URI', 'STRONGER THAN', 'NAME', 'TITLE', 'GENRE']);
                 const rows = await Promise.all([1, 2, 3, 4].map(index =>
                     Promise.all([
                         driver

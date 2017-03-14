@@ -33,12 +33,18 @@ describe('dataset saga', () => {
             expect(saga.next(10).value).toEqual(select(fromDataset.getDatasetPerPage));
         });
 
+        it('should select fromDataset.getSort', () => {
+            expect(saga.next(20).value).toEqual(select(fromDataset.getSort));
+        });
+
         it('should select getLoadDatasetPageRequest', () => {
-            expect(saga.next(20).value).toEqual(select(getLoadDatasetPageRequest, {
+            expect(saga.next({ sortBy: 'field', sortDir: 'ASC' }).value).toEqual(select(getLoadDatasetPageRequest, {
                 page: 10,
                 perPage: 20,
                 aFacet: 'aFacetValue',
                 match: 'aFilter',
+                sortBy: 'field',
+                sortDir: 'ASC',
             }));
         });
 
@@ -64,6 +70,7 @@ describe('dataset saga', () => {
             const failedSaga = handleLoadDatasetPageRequest();
             failedSaga.next();
             failedSaga.next([]);
+            failedSaga.next();
             failedSaga.next();
             failedSaga.next();
             failedSaga.next();

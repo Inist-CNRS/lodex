@@ -1,11 +1,11 @@
 import React from 'react';
 import expect, { createSpy } from 'expect';
 import { shallow } from 'enzyme';
-import { TableHeaderColumn } from 'material-ui/Table';
 
 import { DatasetComponent as Dataset } from './Dataset';
 import Pagination from '../../lib/Pagination';
 import DatasetColumn from './DatasetColumn';
+import DatasetColumnHeader from './DatasetColumnHeader';
 
 describe('<Dataset />', () => {
     const columns = [
@@ -49,9 +49,15 @@ describe('<Dataset />', () => {
             total={3}
         />);
 
-        const headers = wrapper.find(TableHeaderColumn);
-        expect(headers.at(0).children().text()).toEqual('Col 1');
-        expect(headers.at(1).children().text()).toEqual('Col 2');
+        const headers = wrapper.find(DatasetColumnHeader);
+        expect(headers.at(0).props()).toEqual({
+            name: 'col1',
+            label: 'Col 1',
+        });
+        expect(headers.at(1).props()).toEqual({
+            name: 'col2',
+            label: 'Col 2',
+        });
     });
 
     it('should render the TableRowColumn for each value for each column', () => {

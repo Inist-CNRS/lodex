@@ -5,6 +5,7 @@ import reducer, {
     loadDatasetPage,
     loadDatasetPageSuccess,
     loadDatasetPageError,
+    sortDataset,
     applyFilter,
 } from './';
 import { APPLY_FACET } from '../facet';
@@ -62,6 +63,36 @@ describe('dataset reducer', () => {
             error: null,
             loading: true,
             perPage: 20,
+        });
+    });
+
+    it('should handle SORT_DATASET action', () => {
+        const state = reducer({ sort: {} }, sortDataset('field'));
+        expect(state).toEqual({
+            sort: {
+                sortBy: 'field',
+                sortDir: 'ASC',
+            },
+        });
+    });
+
+    it('should handle SORT_DATASET action and invert sortDir when sortBy do not change', () => {
+        const state = reducer({ sort: { sortBy: 'field', sortDir: 'ASC' } }, sortDataset('field'));
+        expect(state).toEqual({
+            sort: {
+                sortBy: 'field',
+                sortDir: 'DESC',
+            },
+        });
+    });
+
+    it('should handle SORT_DATASET action and invert sortDir when sortBy do not change', () => {
+        const state = reducer({ sort: { sortBy: 'field', sortDir: 'DESC' } }, sortDataset('field'));
+        expect(state).toEqual({
+            sort: {
+                sortBy: 'field',
+                sortDir: 'ASC',
+            },
         });
     });
 });

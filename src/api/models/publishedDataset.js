@@ -9,10 +9,26 @@ export default (db) => {
 
     collection.insertBatch = documents => chunk(documents, 100).map(data => collection.insertMany(data));
 
-    collection.findLimitFromSkip = (limit, skip, filter) =>
-        collection.find(filter).skip(skip).limit(limit).toArray();
+    collection.findLimitFromSkip = async (limit, skip, filter, sortBy, sortDir = 'ASC') => {
+        if (sortBy) {
+            return collection.find(filter).sort({
+                [sortBy === 'uri' ? sortBy : `versions.${sortBy}`]: sortDir === 'ASC' ? 1 : -1,
+            }).skip(skip).limit(limit)
+            .toArray();
+        }
+        return collection.find(filter).skip(skip).limit(limit).toArray();
+    };
 
-    collection.findPage = async (page = 0, perPage = 10, match, facets, searchablefieldNames, facetFieldNames) => {
+    collection.findPage = async (
+        page = 0,
+        perPage = 10,
+        sortBy,
+        sortDir,
+        match,
+        facets,
+        searchablefieldNames,
+        facetFieldNames,
+    ) => {
         const filters = { removedAt: { $exists: false } };
 
         if (match && searchablefieldNames.length) {
@@ -32,7 +48,7 @@ export default (db) => {
             }, []);
         }
 
-        return collection.findLimitFromSkip(perPage, page * perPage, filters);
+        return collection.findLimitFromSkip(perPage, page * perPage, filters, sortBy, sortDir);
     };
 
     collection.findRemovedPage = (page = 0, perPage = 10) =>
