@@ -25,7 +25,9 @@ const styles = {
     modal: {
         maxWidth: '100%',
     },
-    overlay: {
+    column: {
+        minWidth: '10rem',
+        maxWidth: '10rem',
     },
 };
 
@@ -55,7 +57,7 @@ const PublicationEditionComponent = ({ editedColumn, lines, onExitEdition, p: po
                     className="publication-excerpt-for-edition"
                     columns={[editedColumn]}
                     lines={lines}
-                    style={styles.column}
+                    colStyle={styles.column}
                     onHeaderClick={null}
                 />
             </div>
