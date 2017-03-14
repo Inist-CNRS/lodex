@@ -223,7 +223,10 @@ describe('Admin', () => {
             });
 
             it('should have added custom column with value', async () => {
-                await driver.wait(until.elementLocated(By.css('.publication-preview')), DEFAULT_WAIT_TIMEOUT);
+                await driver.wait(
+                    until.elementLocated(By.css('.publication-preview tr td:nth-child(4)')),
+                    DEFAULT_WAIT_TIMEOUT,
+                );
                 const tds = await driver.findElements(By.css('.publication-preview tr td:nth-child(4)'));
                 expect(tds.length).toBe(5);
 
