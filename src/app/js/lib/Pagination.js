@@ -53,7 +53,8 @@ class Pagination extends Component {
 	static propTypes = {
 		onChange: PropTypes.func.isRequired,
 		total: PropTypes.number.isRequired,
-		perPage: PropTypes.number,
+		currentPage: PropTypes.number.isRequired,
+		perPage: PropTypes.number.isRequired,
 		texts: PropTypes.shape({
 			page: PropTypes.string.isRequired,
 			perPage: PropTypes.string.isRequired,
@@ -68,69 +69,41 @@ class Pagination extends Component {
 	};
 
 	state = {
-		currentPage: 1,
-		perPage: 10,
-		count: 0,
 		pages: [],
 	};
 
-	constructor(props) {
-		super(props);
-
-		this.handleChangePerPage = this.handleChangePerPage.bind(this);
-		this.handleChangePage = this.handleChangePage.bind(this);
-	}
-
 	componentDidMount() {
-		this.calculatePageCount(this.props.total)
+		this.calculatePageCount(this.props.total, this.props.perPage)
 	}
 
 	componentWillReceiveProps(nextProps) {
-		this.calculatePageCount(nextProps.total)
+		this.calculatePageCount(nextProps.total, nextProps.perPage);
 	}
 
-	calculatePageCount(total) {
-		let {perPage} = this.state,
-			pages = [],
-			count = Math.ceil(total/perPage);
+	calculatePageCount(total, perPage) {
+		const pages = [];
+		const count = Math.ceil(total / perPage);
 
-		for (var i = 1; i <= count; i++) {
+		for (var i = 0; i < count; i++) {
 			pages.push(i);
 		}
 
-		this.setState({pages, count});
+		this.setState({ pages, count });
 	}
 
 	handleChangePerPage(perPage) {
-		let currentPage = 1;
-		this.setState({perPage, currentPage});
-		this.calculatePageCount(this.props.total);
-
-		this.onChange(currentPage, perPage);
+		this.props.onChange(this.props.currentPage, perPage);
 	}
 
 	handleChangePage(currentPage) {
-		let { perPage, count } = this.state;
-
-		if(currentPage < 0)
-			currentPage = 0;
-		if(currentPage > count)
-			currentPage = count;
-
-		this.setState({currentPage})
-		this.onChange(currentPage, perPage);
-	}
-
-	onChange(currentPage, perPage) {
-		this.props.onChange(currentPage, perPage);
+		this.props.onChange(currentPage, this.props.perPage);
 	}
 
 	render() {
-		let { total, texts } = this.props,
-			{ perPage, currentPage, pages, count } = this.state;
+		const { perPage, currentPage, total, texts } = this.props;
+		const { pages, count } = this.state;
 
-
-		let to = currentPage * perPage,
+		let to = (currentPage + 1) * perPage,
 			_from = to - perPage;
 
 		if(to > total)
@@ -152,7 +125,7 @@ class Pagination extends Component {
 						{
 							pages.map(page => (
 								<MenuItem 
-									primaryText={page}
+									primaryText={page + 1}
 									value={page} 
 									key={`page-${page}`}/>
 							))
@@ -174,12 +147,12 @@ class Pagination extends Component {
 				<div style={styles.elements}>
 					<div style={styles.label}>{`${showing}`}</div>
 					<IconButton 
-						disabled={currentPage === 1}
+						disabled={currentPage === 0}
 						onTouchTap={e => this.handleChangePage(currentPage - 1)}>
 						<ChevronLeft/>
 					</IconButton>
 					<IconButton 
-						disabled={currentPage === count}
+						disabled={currentPage === count - 1}
 						onTouchTap={e => this.handleChangePage(currentPage + 1)}>
 						<ChevronRight/>
 					</IconButton>
