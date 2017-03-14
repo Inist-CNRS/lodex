@@ -277,8 +277,7 @@ describe('Admin', () => {
 
                 await driver.wait(until.elementLocated(
                     By.css('#field_form .transformer_arg_value input'),
-                    DEFAULT_WAIT_TIMEOUT,
-                ));
+                ), DEFAULT_WAIT_TIMEOUT);
             });
 
             it('should configure transformer VALUE', async () => {
