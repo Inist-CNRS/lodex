@@ -38,8 +38,8 @@ export class DatasetComponent extends Component {
         loadDatasetPage({ page: currentPage, perPage });
     }
 
-    handlePageChange = (currentPage, perPage) => {
-        this.props.loadDatasetPage({ page: currentPage, perPage });
+    handlePageChange = (page, perPage) => {
+        this.props.loadDatasetPage({ page, perPage });
     }
 
     render() {

@@ -14,12 +14,21 @@ import { getLoadDatasetPageRequest } from '../../fetch/';
 import fetchSaga from '../../lib/fetchSaga';
 import { fromDataset, fromFacet } from '../selectors';
 
-export function* handleLoadDatasetPageRequest() {
+export function* handleLoadDatasetPageRequest({ payload }) {
     const facets = yield select(fromFacet.getAppliedFacets);
     const match = yield select(fromDataset.getFilter);
-    const page = yield select(fromDataset.getDatasetCurrentPage);
-    const perPage = yield select(fromDataset.getDatasetPerPage);
     const sort = yield select(fromDataset.getSort);
+
+    let page = payload && payload.page;
+    let perPage = payload && payload.perPage;
+
+    if (page === false || typeof page === 'undefined') {
+        page = yield select(fromDataset.getDatasetCurrentPage);
+    }
+
+    if (!perPage) {
+        perPage = yield select(fromDataset.getDatasetPerPage);
+    }
 
     const params = facets.reduce((acc, facet) => ({
         ...acc,
@@ -43,7 +52,6 @@ export function* handleLoadDatasetPageRequest() {
     }
 
     const { data: dataset, total } = response;
-
     yield put(loadDatasetPageSuccess({ dataset, page, total }));
 
     yield delay(500);
