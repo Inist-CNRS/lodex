@@ -14,7 +14,7 @@ import { fromDataset, fromFacet } from '../selectors';
 
 describe('dataset saga', () => {
     describe('handleLoadDatasetPageRequest', () => {
-        const saga = handleLoadDatasetPageRequest();
+        const saga = handleLoadDatasetPageRequest({});
 
         it('should select fromFacet.getAppliedFacets', () => {
             expect(saga.next().value).toEqual(select(fromFacet.getAppliedFacets));
@@ -25,20 +25,21 @@ describe('dataset saga', () => {
                 .toEqual(select(fromDataset.getFilter));
         });
 
+        it('should select fromDataset.getSort', () => {
+            expect(saga.next('aFilter').value).toEqual(select(fromDataset.getSort));
+        });
+
         it('should select fromDataset.getDatasetCurrentPage', () => {
-            expect(saga.next('aFilter').value).toEqual(select(fromDataset.getDatasetCurrentPage));
+            expect(saga.next({ sortBy: 'field', sortDir: 'ASC' }).value)
+                .toEqual(select(fromDataset.getDatasetCurrentPage));
         });
 
         it('should select fromDataset.getDatasetPerPage', () => {
             expect(saga.next(10).value).toEqual(select(fromDataset.getDatasetPerPage));
         });
 
-        it('should select fromDataset.getSort', () => {
-            expect(saga.next(20).value).toEqual(select(fromDataset.getSort));
-        });
-
         it('should select getLoadDatasetPageRequest', () => {
-            expect(saga.next({ sortBy: 'field', sortDir: 'ASC' }).value).toEqual(select(getLoadDatasetPageRequest, {
+            expect(saga.next(20).value).toEqual(select(getLoadDatasetPageRequest, {
                 page: 10,
                 perPage: 20,
                 aFacet: 'aFacetValue',
@@ -67,7 +68,7 @@ describe('dataset saga', () => {
         });
 
         it('should put loadDatasetPageError action with error if any', () => {
-            const failedSaga = handleLoadDatasetPageRequest();
+            const failedSaga = handleLoadDatasetPageRequest({});
             failedSaga.next();
             failedSaga.next([]);
             failedSaga.next();
