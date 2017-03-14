@@ -10,13 +10,16 @@ export default (db) => {
     collection.insertBatch = documents => chunk(documents, 100).map(data => collection.insertMany(data));
 
     collection.findLimitFromSkip = async (limit, skip, filter, sortBy, sortDir = 'ASC') => {
+        let cursor = collection.find(filter);
         if (sortBy) {
-            return collection.find(filter).sort({
+            cursor = cursor.sort({
                 [sortBy === 'uri' ? sortBy : `versions.${sortBy}`]: sortDir === 'ASC' ? 1 : -1,
-            }).skip(skip).limit(limit)
-            .toArray();
+            });
         }
-        return collection.find(filter).skip(skip).limit(limit).toArray();
+        return {
+            data: await cursor.skip(skip).limit(limit).toArray(),
+            total: await cursor.count(),
+        };
     };
 
     collection.findPage = async (
@@ -59,15 +62,6 @@ export default (db) => {
             removedAt: { $exists: false },
             'contributions.status': status,
         });
-
-    collection.countRemoved = () =>
-        collection.count({ removedAt: { $exists: true } });
-
-    collection.countContributed = status =>
-        collection.count({ removedAt: { $exists: false }, [`contributionCount${status}`]: { $gt: 1 } });
-
-    collection.countWithoutRemoved = () =>
-        collection.count({ removedAt: { $exists: false } });
 
     collection.getFindAllStream = () =>
         collection.find({ removedAt: { $exists: false } }).stream();

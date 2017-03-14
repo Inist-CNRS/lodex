@@ -173,15 +173,24 @@ describe('publishedDataset', () => {
     });
 
     describe('getPage', () => {
+        const count = createSpy().andReturn('count');
         const toArray = createSpy().andReturn('result');
         const limit = createSpy().andReturn({ toArray });
         const skip = createSpy().andReturn({ limit });
-        const sort = createSpy().andReturn({ skip });
-        const find = createSpy().andReturn({ sort, skip });
+        const sort = createSpy().andReturn({ skip, count });
+        const find = createSpy().andReturn({ sort, skip, count });
         const db = {
             collection: () => ({ find }),
         };
         const publishedDatasetCollection = publishedDataset(db);
+
+        it('should return total and data', async () => {
+            const result = await publishedDatasetCollection.findPage('perPage', 'page');
+            expect(result).toEqual({
+                data: 'result',
+                total: 'count',
+            });
+        });
 
         it('should call find with removedAt false', async () => {
             await publishedDatasetCollection.findPage('perPage', 'page');
@@ -244,6 +253,10 @@ describe('publishedDataset', () => {
         it('should call limit with perPage', async () => {
             await publishedDatasetCollection.findPage('page', 'perPage', null, null, 'match', {}, []);
             expect(limit).toHaveBeenCalledWith('perPage');
+        });
+
+        it('should call count', () => {
+            expect(count).toHaveBeenCalled();
         });
     });
 });
