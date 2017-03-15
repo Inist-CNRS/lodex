@@ -4,7 +4,10 @@ module.exports = {
     auth: {
         cookieSecret: 'cookie',
         headerSecret: 'header',
-        expiresIn: 10 * 3600 // 10 hours
+        expiresIn: 10 * 3600, // 10 hours
     },
-    devServerHost: 'http://devserver:8000',
+    mongo: {
+        host: 'mongo:27017',
+        dbName: 'lodex',
+    },
 };
