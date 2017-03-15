@@ -2,12 +2,12 @@ import React from 'react';
 import expect, { createSpy } from 'expect';
 import { shallow } from 'enzyme';
 
-import { PublishComponent as Publish } from './Publish';
+import { PublishButtonComponent as PublishButton } from './PublishButton';
 import ButtonWithStatus from '../../lib/ButtonWithStatus';
 
 describe('<Publish />', () => {
     it('should render a publish button', () => {
-        const wrapper = shallow(<Publish
+        const wrapper = shallow(<PublishButton
             p={{ t: key => key }}
             loadField={() => {}}
             isPublishing
@@ -25,7 +25,7 @@ describe('<Publish />', () => {
     it('should trigger the onPublish action on click', () => {
         const onPublish = createSpy();
 
-        const wrapper = shallow(<Publish
+        const wrapper = shallow(<PublishButton
             p={{ t: key => key }}
             loadField={() => {}}
             isPublishing={false}

@@ -15,7 +15,6 @@ import {
 import { fromParsing, fromPublication, fromUpload } from './selectors';
 import ParsingResult from './parsing/ParsingResult';
 import PublicationPreview from './publicationPreview/PublicationPreview';
-import Publish from './publish/Publish';
 import Published from './publish/Published';
 import RemovedResourceList from './removedResources/RemovedResourceList';
 import ContributedResourceList from './contributedResources/ContributedResourceList';
@@ -81,7 +80,6 @@ export class AdminComponent extends Component {
                     <ParsingResult />
                     <PublicationPreview />
                 </Card>
-                <Publish />
             </div>
         );
     }

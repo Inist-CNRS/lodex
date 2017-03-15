@@ -8,9 +8,9 @@ import IconButton from 'material-ui/IconButton';
 import IconMenu from 'material-ui/IconMenu';
 import FileDownloadIcon from 'material-ui/svg-icons/file/file-download';
 
-import { polyglot as polyglotPropTypes } from '../../propTypes';
-import { exportPublishedDataset as exportPublishedDatasetAction } from '../../public/export';
-import config from '../../../../../config.json';
+import { polyglot as polyglotPropTypes } from '../propTypes';
+import { exportPublishedDataset as exportPublishedDatasetAction } from '../public/export';
+import config from '../../../../config.json';
 import ExportMenuItem from './ExportMenuItem';
 
 const styles = {

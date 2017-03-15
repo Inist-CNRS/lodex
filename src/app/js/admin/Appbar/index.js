@@ -4,8 +4,8 @@ import CircularProgress from 'material-ui/CircularProgress';
 
 import SignOutButton from './SignOutButton';
 import SignInButton from './SignInButton';
-import ExportMenu from './ExportMenu';
-import ExportFieldsButton from './ExportFieldsButton';
+import ExportFieldsButton from '../../lib/ExportFieldsButton';
+import PublicationButton from '../publish/PublicationButton';
 
 const styles = {
     appBar: {
@@ -27,13 +27,14 @@ const AppbarComponent = ({ isLoading, isLoggedIn }) => {
 
     const RightElement = (
         <div>
-            { isLoggedIn ?
-                <ExportFieldsButton />
-            :
-                <SignInButton />
-            }
+            { isLoggedIn ? <ExportFieldsButton /> : <SignInButton />}
+
             {isLoggedIn &&
                 <SignOutButton />
+            }
+
+            {isLoggedIn &&
+                <PublicationButton />
             }
         </div>
     );
