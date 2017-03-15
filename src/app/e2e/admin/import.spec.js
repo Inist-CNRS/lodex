@@ -7,7 +7,7 @@ import { elementIsClicked, elementsCountIs } from '../../../common/tests/conditi
 import { clear } from '../../../common/tests/fixtures';
 import loginAsJulia from '../loginAsJulia';
 
-describe.only('Admin', () => {
+describe('Admin', () => {
     describe('Import model', function homeTests() {
         this.timeout(30000);
         const DEFAULT_WAIT_TIMEOUT = 9000; // A bit less than mocha's timeout to get explicit errors from selenium
@@ -53,7 +53,7 @@ describe.only('Admin', () => {
                 );
             });
 
-            it.skip('should have completed uri column with generated uri', async () => {
+            it('should have completed uri column with generated uri', async () => {
                 await driver.wait(
                     elementsCountIs(By.css('.publication-preview tr td:first-child'), 5),
                     DEFAULT_WAIT_TIMEOUT,
@@ -66,7 +66,7 @@ describe.only('Admin', () => {
                 );
             });
 
-            it.skip('should have added stronger column with link', async () => {
+            it('should have added stronger column with link', async () => {
                 const tds = await driver.findElements(By.css('.publication-preview tr td:nth-child(2)'));
                 expect(tds.length).toBe(5);
 
@@ -81,7 +81,7 @@ describe.only('Admin', () => {
                 );
             });
 
-            it.skip('should have added the name column', async () => {
+            it('should have added the name column', async () => {
                 const tds = await driver.findElements(By.css('.publication-preview tr td:nth-child(3)'));
                 expect(tds.length).toBe(5);
                 await Promise.all(tds.slice(0, 3).map(td => // last td is the remove button
@@ -91,7 +91,7 @@ describe.only('Admin', () => {
                 );
             });
 
-            it.skip('should have added the title custom column with value', async () => {
+            it('should have added the title custom column with value', async () => {
                 const tds = await driver.findElements(By.css('.publication-preview tr td:nth-child(4)'));
                 expect(tds.length).toBe(5);
 
@@ -106,7 +106,7 @@ describe.only('Admin', () => {
                 );
             });
 
-            it.skip('should have added the genre custom column with value', async () => {
+            it('should have added the genre custom column with value', async () => {
                 await driver.wait(until.elementLocated(
                     By.css('.publication-preview th .completes_title'),
                 ), DEFAULT_WAIT_TIMEOUT);
