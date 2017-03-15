@@ -1,10 +1,10 @@
 import { until, By } from 'selenium-webdriver';
 import expect from 'expect';
+import { elementIsClicked } from 'selenium-smart-wait';
 
 import driver from '../../../common/tests/chromeDriver';
 import { clear, loadFixtures } from '../../../common/tests/fixtures';
 import fixtures from './removedResources.json';
-import { elementIsClicked } from '../../../common/tests/conditions';
 import loginAsJulia from '../loginAsJulia';
 
 describe('Admin', () => {
@@ -20,7 +20,7 @@ describe('Admin', () => {
 
         it('should activate removed-resources tab', async () => {
             await driver.wait(until.elementLocated(By.css('.removed-tab')), DEFAULT_WAIT_TIMEOUT);
-            const tab = await driver.findElement(By.css('.removed-tab'));
+            const tab = '.removed-tab';
             await driver.wait(elementIsClicked(tab), DEFAULT_WAIT_TIMEOUT);
         });
 
