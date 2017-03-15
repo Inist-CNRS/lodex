@@ -319,7 +319,7 @@ describe('Admin', () => {
                     By.css('.publication-excerpt-for-edition th .completes_title'),
                 ), DEFAULT_WAIT_TIMEOUT);
                 const th = await driver.findElement(By.css('.publication-excerpt-for-edition th .completes_title'));
-                await driver.wait(until.elementTextIs(th, 'Completes Title'), DEFAULT_WAIT_TIMEOUT);
+                await driver.wait(until.elementTextMatches(th, /Completes Title/), DEFAULT_WAIT_TIMEOUT);
 
                 const backButton = await driver.findElement(By.css('.btn-exit-column-edition'));
                 await driver.wait(elementIsClicked(backButton), DEFAULT_WAIT_TIMEOUT);
