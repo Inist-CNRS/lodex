@@ -51,6 +51,44 @@ It is your responsability to include links to the administration and authenticat
 
 You can download the original layout from EzMaster to get started.
 
+## Configuration
+
+### Instance configuration
+
+On EzMaster, you can edit the instance configuration:
+
+- `username`: Required - username for admin access
+- `password`: Required - password for admin access
+
+- `naan`: Optional - used to autogenerate URIs (see [node-inist-ark](https://github.com/Inist-CNRS/node-inist-ark))
+- `subPublisherId`: Optional - used to autogenerate URIs (see [node-inist-ark](https://github.com/Inist-CNRS/node-inist-ark))
+
+- `languages`: Required - an array of languages defined by a `label` and a `code` which will be proposed when selecting a property language
+
+- `exporters`: Required - an array of the allowed exporters
+
+- `loader`: Required - an array of loaders (which import your data) with their options
+
+### Technical documentation
+
+Technical configuration si handled by [node-config](https://github.com/lorenwest/node-config) and is located
+inside `./config`:
+
+- `default.js`: contains the default configuration which other files may override
+- `development-dist.js`: will be duplicated as `development.js` with `make install` and override the default config with values specific to the development environment.
+- `production-dist.js`: will be duplicated as `production.js` with `make install` and override the default config with values specific to the production environment.
+- `test-dist.js`: will be duplicated as `test.js` with `make install` and override the default config with values specific to the test environment.
+
+The expected configuration contains:
+
+- `port`: Number - The application port
+- `mongo`: Object - How to connect to the mongo server
+- `auth`: Object - Configuration of the authentication mechanims
+    - `cookieSecret`: String - secret used to encrypt the JWT token inside the authentication cookie
+    - `headerSecret`: String - secret used to encrypt the JWT token inside the authentication header
+    - `expiresIn`: Number - expiration delay of the JWT token in milliseconds
+- `buildFrontend`: Boolean - determines wether the API should build the frontend with webpack. Used to disable build on test environment.
+
 ## Adding a new loader
 
 You can add new loaders to lodex.
