@@ -41,7 +41,6 @@ describe('Home page', function homeTests() {
         await password.clear();
         await password.sendKeys('secret');
         await form.submit();
-        await form.submit(); // Weird selenium bug
         await driver.wait(until.urlIs('http://localhost:3100/#/home'), DEFAULT_WAIT_TIMEOUT);
     });
 
