@@ -38,10 +38,10 @@ describe('Admin', () => {
         it('should filter the validated contributed resources', async () => {
             const filter = await driver.findElement(By.css('.contributed_resources .filter'));
             await driver.wait(elementIsClicked(filter), DEFAULT_WAIT_TIMEOUT);
+            await driver.sleep(500); // animations
 
             await driver.wait(until.elementLocated(By.css('.filter_VALIDATED')), DEFAULT_WAIT_TIMEOUT);
             const filterValidated = await driver.findElement(By.css('.filter_VALIDATED'));
-            await driver.sleep(500); // animations
 
             await driver.wait(elementIsClicked(filterValidated), DEFAULT_WAIT_TIMEOUT);
         });
@@ -64,9 +64,9 @@ describe('Admin', () => {
         it('should filter the rejected contributed resources', async () => {
             const filter = await driver.findElement(By.css('.contributed_resources .filter'));
             await driver.wait(elementIsClicked(filter), DEFAULT_WAIT_TIMEOUT);
+            await driver.sleep(500); // animations
 
             await driver.wait(until.elementLocated(By.css('.filter_REJECTED')), DEFAULT_WAIT_TIMEOUT);
-            await driver.sleep(500); // animations
 
             const filterRejected = await driver.findElement(By.css('.filter_REJECTED'));
             await driver.wait(elementIsClicked(filterRejected), DEFAULT_WAIT_TIMEOUT);
