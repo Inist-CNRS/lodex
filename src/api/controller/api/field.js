@@ -1,6 +1,7 @@
 import Koa from 'koa';
 import route from 'koa-route';
 import rawBody from 'raw-body';
+import koaBodyParser from 'koa-bodyparser';
 
 import { validateField } from '../../models/field';
 
@@ -67,6 +68,7 @@ app.use(setup);
 app.use(route.get('/', getAllField));
 app.use(route.get('/export', exportFields));
 app.use(route.post('/import', importFields(rawBody)));
+app.use(koaBodyParser());
 app.use(route.post('/', postField));
 app.use(route.put('/:id', putField));
 app.use(route.del('/:id', removeField));

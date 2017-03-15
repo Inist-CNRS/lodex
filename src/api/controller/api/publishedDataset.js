@@ -1,5 +1,6 @@
 import Koa from 'koa';
 import route from 'koa-route';
+import koaBodyParser from 'koa-bodyparser';
 
 import { PROPOSED } from '../../../common/propositionStatus';
 
@@ -107,6 +108,7 @@ export const getPropositionPage = async (ctx, status = PROPOSED) => {
     };
 };
 
+app.use(koaBodyParser());
 app.use(route.get('/removed', getRemovedPage));
 app.use(route.get('/', getPage));
 app.use(route.post('/add_field', addFieldToResource));

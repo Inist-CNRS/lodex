@@ -1,7 +1,6 @@
 import Koa from 'koa';
 import config from 'config';
 import mount from 'koa-mount';
-import koaBodyParser from 'koa-bodyparser';
 
 import { httpLogger } from './services/logger';
 import controller from './controller';
@@ -24,8 +23,6 @@ app.use(async (ctx, next) => {
     ctx.httpLog.status = ctx.status;
     httpLogger.info(ctx.request.url, ctx.httpLog);
 });
-
-app.use(koaBodyParser());
 
 app.use(mount('/', controller));
 
