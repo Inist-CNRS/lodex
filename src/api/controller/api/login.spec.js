@@ -2,7 +2,7 @@ import { auth } from 'config';
 import jwt from 'jsonwebtoken';
 import expect from 'expect';
 
-import { loginMiddleware as login } from './login';
+import { postLogin as login } from './login';
 
 describe('login', () => {
     it('should set ctx.status to 401, if ctx.body.username do not match with config', () => {
