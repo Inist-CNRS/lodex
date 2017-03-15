@@ -79,6 +79,7 @@ export class ModelMenuComponent extends Component {
         return (
             <div style={styles.container}>
                 <RaisedButton
+                    className="btn-model-menu"
                     onTouchTap={this.handleTouchTap}
                     label={polyglot.t('model')}
                     labelPosition="before"
@@ -93,8 +94,15 @@ export class ModelMenuComponent extends Component {
                     animation={PopoverAnimationVertical}
                 >
                     <Menu>
-                        <MenuItem primaryText={polyglot.t('import_fields')} onClick={this.handleImportFields} />
-                        <MenuItem primaryText={polyglot.t('export_fields')} onClick={this.handleExportFields} />
+                        <MenuItem
+                            className="btn-import-fields"
+                            primaryText={polyglot.t('import_fields')}
+                            onClick={this.handleImportFields}
+                        />
+                        <MenuItem
+                            primaryText={polyglot.t('export_fields')}
+                            onClick={this.handleExportFields}
+                        />
                     </Menu>
                 </Popover>
 

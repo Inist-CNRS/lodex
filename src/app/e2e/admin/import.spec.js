@@ -39,6 +39,11 @@ describe('Admin', () => {
             let dialogImportFields;
 
             it('should allow uploading a model as json', async () => {
+                await driver.wait(until.elementLocated(By.css('.btn-model-menu')), DEFAULT_WAIT_TIMEOUT);
+                const buttonMenu = driver.findElement(By.css('.btn-model-menu'));
+                await driver.wait(elementIsClicked(buttonMenu));
+                await driver.sleep(500);
+
                 await driver.wait(until.elementLocated(By.css('.btn-import-fields')), DEFAULT_WAIT_TIMEOUT);
                 const button = '.btn-import-fields';
                 await driver.wait(elementIsClicked(button));
@@ -51,6 +56,7 @@ describe('Admin', () => {
                 await input.sendKeys(modelPath);
 
                 await driver.wait(until.stalenessOf(dialogImportFields), DEFAULT_WAIT_TIMEOUT);
+                await driver.sleep(500); // For overlay
 
                 await driver.wait(
                     elementsCountIs('.publication-preview tr th', 5),
