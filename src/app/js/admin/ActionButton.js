@@ -36,6 +36,7 @@ const styles = {
 
 export class ActionButtonComponent extends Component {
     static propTypes = {
+        editedColumn: PropTypes.object, // eslint-disable-line
         onAddNewColumn: PropTypes.func.isRequired,
         onHideExistingColumns: PropTypes.func.isRequired,
         onShowExistingColumns: PropTypes.func.isRequired,
@@ -53,7 +54,7 @@ export class ActionButtonComponent extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.editedColumn) {
+        if (nextProps.editedColumn !== this.props.editedColumn) {
             this.setState({
                 showPopover: false,
                 showCancel: false,
