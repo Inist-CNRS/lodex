@@ -51,7 +51,7 @@ export default async (db) => {
         const name = nameArg || await generateUid();
 
         return collection.insertOne({
-            ...fieldData,
+            ...omit(fieldData, ['_id']),
             name,
         });
     };

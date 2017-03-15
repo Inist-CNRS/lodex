@@ -2,7 +2,7 @@ import Koa from 'koa';
 import route from 'koa-route';
 import rawBody from 'raw-body';
 import koaBodyParser from 'koa-bodyparser';
-
+import omit from 'lodash.omit';
 import { validateField } from '../../models/field';
 
 export const setup = async (ctx, next) => {
@@ -48,7 +48,7 @@ export const exportFields = async (ctx) => {
     ctx.attachment('lodex_export.json');
     ctx.type = 'application/json';
 
-    ctx.body = fields;
+    ctx.body = fields.map(f => omit(f, ['_id']));
 };
 
 export const importFields = rawBodyImpl => async (ctx) => {
