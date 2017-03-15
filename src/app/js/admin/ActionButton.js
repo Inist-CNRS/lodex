@@ -8,15 +8,13 @@ import ActionDescription from 'material-ui/svg-icons/action/description';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import ContentClear from 'material-ui/svg-icons/content/clear';
 
-import FloatingActionButton from '../../lib/FloatingActionButton';
-import { fromFields } from '../selectors';
-import { polyglot as polyglotPropTypes } from '../../propTypes';
+import FloatingActionButton from '../lib/FloatingActionButton';
+import { fromFields } from './selectors';
+import { polyglot as polyglotPropTypes } from '../propTypes';
 
 const styles = {
     actionButton: onBack => ({
-        position: 'absolute',
-        bottom: -16,
-        right: 16,
+        marginRight: 16,
         zIndex: onBack ? 0 : 2400,
     }),
     popover: {

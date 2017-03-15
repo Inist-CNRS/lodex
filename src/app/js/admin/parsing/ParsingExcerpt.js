@@ -1,8 +1,6 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
-import withState from 'recompose/withState';
-import withHandlers from 'recompose/withHandlers';
 import pure from 'recompose/pure';
 import { spring } from 'react-motion';
 import Transition from 'react-motion-ui-pack';
@@ -12,7 +10,6 @@ import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow } from 'mate
 import { addField } from '../fields';
 import ParsingExcerptColumn from './ParsingExcerptColumn';
 import ParsingExcerptAddColumn from './ParsingExcerptAddColumn';
-import ActionButton from './ActionButton';
 
 const styles = {
     table: {
@@ -43,8 +40,6 @@ export const getRowStyle = (index, total) => {
 export const ParsingExcerptComponent = ({
     columns,
     handleAddColumn,
-    handleShowExistingColumns,
-    handleHideExistingColumns,
     lines,
     showAddColumns,
 }) => {
@@ -99,11 +94,6 @@ export const ParsingExcerptComponent = ({
                     ))}
                 </TableBody>
             </Table>
-            <ActionButton
-                onAddNewColumn={handleAddColumn}
-                onShowExistingColumns={handleShowExistingColumns}
-                onHideExistingColumns={handleHideExistingColumns}
-            />
         </div>
     );
 };
@@ -112,8 +102,6 @@ ParsingExcerptComponent.propTypes = {
     columns: PropTypes.arrayOf(PropTypes.string).isRequired,
     lines: PropTypes.arrayOf(PropTypes.object).isRequired,
     handleAddColumn: PropTypes.func.isRequired,
-    handleShowExistingColumns: PropTypes.func.isRequired,
-    handleHideExistingColumns: PropTypes.func.isRequired,
     showAddColumns: PropTypes.bool.isRequired,
 };
 
@@ -122,15 +110,6 @@ const mapDispatchToProps = ({
 });
 
 export default compose(
-    connect(null, mapDispatchToProps),
-    withState('showAddColumns', 'setShowAddColumns', false),
-    withHandlers({
-        handleShowExistingColumns: ({ setShowAddColumns }) => () => {
-            setShowAddColumns(true);
-        },
-        handleHideExistingColumns: ({ setShowAddColumns }) => () => {
-            setShowAddColumns(false);
-        },
-    }),
+    connect(undefined, mapDispatchToProps),
     pure,
 )(ParsingExcerptComponent);

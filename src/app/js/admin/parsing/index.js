@@ -6,6 +6,11 @@ export const LOAD_PARSING_RESULT_ERROR = 'LOAD_PARSING_RESULT_ERROR';
 export const LOAD_PARSING_RESULT_SUCCESS = 'LOAD_PARSING_RESULT_SUCCESS';
 export const RELOAD_PARSING_RESULT = 'RELOAD_PARSING_RESULT';
 export const CANCEL_RELOAD = 'CANCEL_RELOAD';
+export const SHOW_ADD_COLUMNS = 'SHOW_ADD_COLUMNS';
+export const HIDE_ADD_COLUMNS = 'HIDE_ADD_COLUMNS';
+
+export const showAddColumns = createAction(SHOW_ADD_COLUMNS);
+export const hideAddColumns = createAction(HIDE_ADD_COLUMNS);
 
 export const defaultState = {
     error: false,
@@ -13,6 +18,7 @@ export const defaultState = {
     loading: false,
     parsing: false,
     allowUpload: true,
+    showAddColumns: false,
     totalLoadedLines: 0,
     totalParsedLines: 0,
 };
@@ -43,6 +49,8 @@ export default handleActions({
         ...state,
         allowUpload: false,
     }),
+    SHOW_ADD_COLUMNS: state => ({ ...state, showAddColumns: true }),
+    HIDE_ADD_COLUMNS: state => ({ ...state, showAddColumns: false }),
 }, defaultState);
 
 export const loadParsingResult = createAction(LOAD_PARSING_RESULT);
@@ -70,6 +78,8 @@ export const isParsingLoading = ({ loading }) => loading;
 
 export const getTotalLoadedLines = ({ totalLoadedLines }) => totalLoadedLines;
 
+export const getShowAddColumns = state => state.showAddColumns;
+
 export const selectors = {
     getExcerptLines,
     getParsedExcerptColumns,
@@ -77,4 +87,5 @@ export const selectors = {
     canUpload,
     isParsingLoading,
     getTotalLoadedLines,
+    showAddColumns: getShowAddColumns,
 };

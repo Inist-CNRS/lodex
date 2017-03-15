@@ -21,7 +21,7 @@ import ContributedResourceList from './contributedResources/ContributedResourceL
 import Upload from './upload/Upload';
 import Loading from '../lib/Loading';
 import Card from '../lib/Card';
-
+import Statistics from './Statistics';
 
 export class AdminComponent extends Component {
     static propTypes = {
@@ -76,10 +76,9 @@ export class AdminComponent extends Component {
 
         return (
             <div className="admin">
-                <Card className="parsingResult" initiallyExpanded>
-                    <ParsingResult />
-                    <PublicationPreview />
-                </Card>
+                <ParsingResult />
+                <Statistics />
+                <PublicationPreview />
             </div>
         );
     }

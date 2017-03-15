@@ -7,7 +7,7 @@ const styles = {
     },
     container: {
         overflowX: 'auto',
-        width: '96vw',
+        width: 'auto',
     },
 };
 
