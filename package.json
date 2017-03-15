@@ -3,7 +3,7 @@
     "node": ">= 7.4.0"
   },
   "name": "lodex-v2",
-  "version": "5.13.1",
+  "version": "5.13.2",
   "description": "",
   "main": "src/api/index.js",
   "scripts": {
