@@ -1,26 +1,17 @@
 language: node_js
 
 node_js:
-    - "7.4.0"
+    - "7.7.3"
 
 services: mongodb
 
 env:
     global:
         - CHROME_BIN="chromium-browser"
-        - CXX=g++-4.8
         - DISPLAY=:99.0
         - NODE_ENV=test
 
 dist: trusty
-
-addons:
-    apt:
-        sources:
-            - ubuntu-toolchain-r-test
-        packages:
-            - gcc-4.8
-            - g++-4.8
 
 cache:
     directories:

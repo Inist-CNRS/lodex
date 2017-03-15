@@ -56,15 +56,17 @@ export const mapStateToProps = state => ({
 });
 
 export const getPreviousState = (ownProps, location) => {
-    if (ownProps.location && ownProps.location.state && ownProps.location.state.nextPathname) {
+    if (ownProps.location
+        && ownProps.location.state
+        && ownProps.location.state.nextPathname
+        && ownProps.location.state.nextPathname !== '/login') {
         return ownProps.location.state.nextPathname;
     }
 
     if (location) {
         const url = new URL(location.toString());
         const pathname = url.searchParams.get('nextpathname');
-
-        if (pathname) {
+        if (pathname && pathname !== '/login') {
             return pathname;
         }
     }

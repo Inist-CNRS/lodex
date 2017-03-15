@@ -28,7 +28,7 @@ app.use(initializeFields);
 
 app.use(mount('/export', exportPublishedDataset));
 app.use(mount('/facet', facet));
-app.use(route.post('/login', login()));
+app.use(mount('/login', login));
 app.use(route.get('/publication', publication));
 app.use(route.get('/ark', ark));
 

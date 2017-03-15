@@ -1,7 +1,11 @@
+import Koa from 'koa';
+import route from 'koa-route';
+import koaBodyParser from 'koa-bodyparser';
+
 import { auth } from 'config';
 import jwt from 'jsonwebtoken';
 
-export const loginMiddleware = (getDate = Date.now) => (ctx) => {
+export const postLogin = (getDate = Date.now) => (ctx) => {
     if (!ctx.ezMasterConfig) {
         throw new Error('Invalid EzMaster configuration.');
     }
@@ -35,4 +39,9 @@ export const loginMiddleware = (getDate = Date.now) => (ctx) => {
     };
 };
 
-export default loginMiddleware;
+const app = new Koa();
+
+app.use(koaBodyParser());
+app.use(route.post('/', postLogin()));
+
+export default app;

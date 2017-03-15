@@ -57,14 +57,20 @@ describe('field routes', () => {
         it('should call ctx.field.findAll and pass the result to ctx.body with correct headers', async () => {
             const ctx = {
                 field: {
-                    findAll: createSpy().andReturn(Promise.resolve('all fields')),
+                    findAll: createSpy().andReturn(Promise.resolve([
+                        { name: 'field1', _id: 'id1' },
+                        { name: 'field2', _id: 'id2' },
+                    ])),
                 },
                 attachment: createSpy(),
             };
 
             await exportFields(ctx);
             expect(ctx.field.findAll).toHaveBeenCalled();
-            expect(ctx.body).toBe('all fields');
+            expect(ctx.body).toEqual([
+                { name: 'field1' },
+                { name: 'field2' },
+            ]);
             expect(ctx.attachment).toHaveBeenCalledWith('lodex_export.json');
             expect(ctx.type).toBe('application/json');
         });

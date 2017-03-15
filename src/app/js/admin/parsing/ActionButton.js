@@ -37,7 +37,7 @@ const styles = {
 };
 
 export class ActionButtonComponent extends Component {
-    propTypes = {
+    static propTypes = {
         onAddNewColumn: PropTypes.func.isRequired,
         onHideExistingColumns: PropTypes.func.isRequired,
         onShowExistingColumns: PropTypes.func.isRequired,

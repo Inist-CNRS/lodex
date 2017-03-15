@@ -31,14 +31,21 @@ describe('Admin', () => {
         });
 
         describe('Uploading model', () => {
+            let dialogImportFields;
+
             it('should allow uploading a model as json', async () => {
                 await driver.wait(until.elementLocated(By.css('.btn-import-fields')), DEFAULT_WAIT_TIMEOUT);
                 const button = driver.findElement(By.css('.btn-import-fields'));
                 await driver.wait(elementIsClicked(button));
+
+                await driver.wait(until.elementLocated(By.css('.dialog-import-fields')), DEFAULT_WAIT_TIMEOUT);
+                dialogImportFields = driver.findElement(By.css('.dialog-import-fields'));
+
                 const modelPath = path.resolve(__dirname, './linked_sample_model.json');
                 const input = await driver.findElement(By.css('input[name=file_model]'));
                 await input.sendKeys(modelPath);
-                await driver.wait(until.elementLocated(By.css('.parsingResult')), DEFAULT_WAIT_TIMEOUT);
+
+                await driver.wait(until.stalenessOf(dialogImportFields), DEFAULT_WAIT_TIMEOUT);
 
                 await driver.wait(
                     elementsCountIs(By.css('.publication-preview tr th'), 5),
@@ -47,6 +54,11 @@ describe('Admin', () => {
             });
 
             it('should have completed uri column with generated uri', async () => {
+                await driver.wait(
+                    elementsCountIs(By.css('.publication-preview tr td:first-child'), 5),
+                    DEFAULT_WAIT_TIMEOUT,
+                );
+
                 const tds = await driver.findElements(By.css('.publication-preview tr td:first-child'));
                 expect(tds.length).toBe(5);
                 await Promise.all(tds.slice(0, 3).map(td => // last td is the remove button

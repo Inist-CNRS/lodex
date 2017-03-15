@@ -71,8 +71,9 @@ class ImportFieldsDialogComponent extends Component {
 
         return (
             <Dialog
-                open
                 actions={actions}
+                className="dialog-import-fields"
+                open
             >
                 {!failed && polyglot.t('confirm_import_fields')}
                 {failed && <span style={styles.error}>{polyglot.t('import_fields_failed')}</span>}
@@ -86,7 +87,6 @@ ImportFieldsDialogComponent.propTypes = {
     importFields: PropTypes.func.isRequired,
     onClose: PropTypes.func.isRequired,
     p: polyglotPropTypes.isRequired,
-    succeeded: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = state => ({
