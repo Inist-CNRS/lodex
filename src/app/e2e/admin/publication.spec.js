@@ -54,7 +54,7 @@ describe('Admin', () => {
 
             it('should allow to add a transformer AUTOGENERATE_URI', async () => {
                 await driver.findElement(By.css('#field_form .add-transformer')).click();
-                await driver.sleep(250); // animations
+                await driver.sleep(500); // animations
 
                 await driver.findElement(By.css('.operation')).click();
                 await driver.wait(until.elementLocated(By.css('.transformer_AUTOGENERATE_URI')));
@@ -82,7 +82,7 @@ describe('Admin', () => {
                 await driver.wait(elementIsClicked(buttonAddColumn), DEFAULT_WAIT_TIMEOUT);
 
                 const buttonAddFreeColumn = await driver.findElement(By.css('.btn-add-free-column'));
-                await driver.sleep(250); // animations
+                await driver.sleep(500); // animations
                 await driver.wait(elementIsClicked(buttonAddFreeColumn), DEFAULT_WAIT_TIMEOUT);
 
                 await driver.wait(until.elementLocated(By.css('#field_form')), DEFAULT_WAIT_TIMEOUT);
@@ -110,7 +110,7 @@ describe('Admin', () => {
 
                 await driver.wait(until.elementLocated(By.css('.transformer_LINK')), DEFAULT_WAIT_TIMEOUT);
                 const linkButton = await driver.findElement(By.css('.transformer_LINK'));
-                await driver.sleep(250); // animations
+                await driver.sleep(500); // animations
                 await driver.wait(elementIsClicked(linkButton), DEFAULT_WAIT_TIMEOUT);
 
                 await driver.wait(until.elementLocated(
@@ -154,12 +154,12 @@ describe('Admin', () => {
 
                 await driver.wait(until.elementLocated(By.css('.btn-add-column-from-dataset')));
                 const buttonAddColumnFromDataset = await driver.findElement(By.css('.btn-add-column-from-dataset'));
-                await driver.sleep(250); // animations
+                await driver.sleep(500); // animations
                 await driver.wait(elementIsClicked(buttonAddColumnFromDataset), DEFAULT_WAIT_TIMEOUT);
 
                 await driver.wait(until.elementLocated(By.css('.btn-excerpt-add-column-name')));
                 const button = await driver.findElement(By.css('.btn-excerpt-add-column-name'));
-                await driver.sleep(750); // animations
+                await driver.sleep(1000); // animations
                 await driver.wait(elementIsClicked(button), DEFAULT_WAIT_TIMEOUT);
 
                 await driver.wait(until.elementLocated(
@@ -189,7 +189,7 @@ describe('Admin', () => {
                 await driver.wait(elementIsClicked(buttonAddColumn), DEFAULT_WAIT_TIMEOUT);
 
                 const buttonAddFreeColumn = await driver.findElement(By.css('.btn-add-free-column'));
-                await driver.sleep(250); // animations
+                await driver.sleep(500); // animations
                 await driver.wait(elementIsClicked(buttonAddFreeColumn), DEFAULT_WAIT_TIMEOUT);
 
                 await driver.wait(until.elementLocated(By.css('#field_form')), DEFAULT_WAIT_TIMEOUT);
@@ -219,7 +219,7 @@ describe('Admin', () => {
 
                 await driver.wait(until.elementLocated(By.css('.transformer_VALUE')), DEFAULT_WAIT_TIMEOUT);
                 const transformerButton = await driver.findElement(By.css('.transformer_VALUE'));
-                await driver.sleep(250); // animations
+                await driver.sleep(500); // animations
                 await driver.wait(elementIsClicked(transformerButton), DEFAULT_WAIT_TIMEOUT);
 
                 await driver.wait(until.elementLocated(
@@ -262,7 +262,7 @@ describe('Admin', () => {
                 await driver.wait(elementIsClicked(buttonAddColumn), DEFAULT_WAIT_TIMEOUT);
 
                 const buttonAddFreeColumn = await driver.findElement(By.css('.btn-add-free-column'));
-                await driver.sleep(250); // animations
+                await driver.sleep(500); // animations
                 await driver.wait(elementIsClicked(buttonAddFreeColumn), DEFAULT_WAIT_TIMEOUT);
 
                 await driver.wait(until.elementLocated(By.css('#field_form')), DEFAULT_WAIT_TIMEOUT);
@@ -293,7 +293,7 @@ describe('Admin', () => {
 
                 await driver.wait(until.elementLocated(By.css('.transformer_VALUE')), DEFAULT_WAIT_TIMEOUT);
                 const transformerButton = await driver.findElement(By.css('.transformer_VALUE'));
-                await driver.sleep(250); // animations
+                await driver.sleep(500); // animations
                 await driver.wait(elementIsClicked(transformerButton), DEFAULT_WAIT_TIMEOUT);
 
                 await driver.wait(until.elementLocated(
@@ -314,7 +314,7 @@ describe('Admin', () => {
 
                 await driver.wait(until.elementLocated(By.css('.completes_title')), DEFAULT_WAIT_TIMEOUT);
                 const completesTitleButton = await driver.findElement(By.css('.completes_title'));
-                await driver.sleep(250); // animations
+                await driver.sleep(500); // animations
                 await driver.wait(elementIsClicked(completesTitleButton), DEFAULT_WAIT_TIMEOUT);
 
                 await driver.wait(until.elementLocated(
@@ -351,7 +351,7 @@ describe('Admin', () => {
 
                 await driver.wait(until.elementLocated(By.css('.btn-add-column-from-dataset')));
                 const buttonAddColumnFromDataset = await driver.findElement(By.css('.btn-add-column-from-dataset'));
-                await driver.sleep(250); // animations
+                await driver.sleep(500); // animations
                 await driver.wait(elementIsClicked(buttonAddColumnFromDataset), DEFAULT_WAIT_TIMEOUT);
 
                 await driver.wait(until.elementLocated(By.css('.btn-excerpt-add-column-name')));
