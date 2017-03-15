@@ -41,6 +41,8 @@ describe('Admin', () => {
 
             await driver.wait(until.elementLocated(By.css('.filter_VALIDATED')), DEFAULT_WAIT_TIMEOUT);
             const filterValidated = await driver.findElement(By.css('.filter_VALIDATED'));
+            await driver.sleep(250); // animations
+
             await driver.wait(elementIsClicked(filterValidated), DEFAULT_WAIT_TIMEOUT);
         });
 
@@ -64,6 +66,8 @@ describe('Admin', () => {
             await driver.wait(elementIsClicked(filter), DEFAULT_WAIT_TIMEOUT);
 
             await driver.wait(until.elementLocated(By.css('.filter_REJECTED')), DEFAULT_WAIT_TIMEOUT);
+            await driver.sleep(250); // animations
+
             const filterRejected = await driver.findElement(By.css('.filter_REJECTED'));
             await driver.wait(elementIsClicked(filterRejected), DEFAULT_WAIT_TIMEOUT);
         });
@@ -77,7 +81,6 @@ describe('Admin', () => {
             expect(trs.length).toEqual(1);
 
             const tds = await driver.findElements(By.css('.contributed_resources table tbody td'));
-
             const tdsText = await Promise.all(tds.map(td => td.getText()));
             expect(tdsText.some(t => t === 'BILBON.BAGGINS')).toEqual(true);
             expect(tdsText.some(t => t === 'bilbon.saquet@shire.net')).toEqual(true);
