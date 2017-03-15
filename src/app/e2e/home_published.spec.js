@@ -12,7 +12,7 @@ import { clear, loadFixtures } from '../../common/tests/fixtures';
 import fixtures from './home_published.json';
 import { inputElementIsFocusable } from '../../common/tests/conditions';
 
-describe('Home page with published data', function homePublishedDataTests() {
+describe.only('Home page with published data', function homePublishedDataTests() {
     this.timeout(30000);
     const DEFAULT_WAIT_TIMEOUT = 9000; // A bit less than mocha's timeout to get explicit errors from selenium
 
@@ -142,7 +142,7 @@ describe('Home page with published data', function homePublishedDataTests() {
         await filterInput.sendKeys('baggins');
 
         const spinner = '.dataset-loading';
-        await driver.wait(stalenessOf(spinner)).catch(() => null);
+        await driver.wait(stalenessOf(spinner), DEFAULT_WAIT_TIMEOUT);
         await driver.wait(until.elementLocated(By.css('.dataset table tbody tr')), DEFAULT_WAIT_TIMEOUT);
 
         const expectedTds = [
@@ -169,7 +169,7 @@ describe('Home page with published data', function homePublishedDataTests() {
         await filterInput.sendKeys('sauron');
 
         const spinner = '.dataset-loading';
-        await driver.wait(stalenessOf(spinner)).catch(() => null);
+        await driver.wait(stalenessOf(spinner), DEFAULT_WAIT_TIMEOUT);
         await driver.wait(until.elementLocated(By.css('.dataset table tbody')), DEFAULT_WAIT_TIMEOUT);
 
         const tbody = '.dataset table tbody';
@@ -184,7 +184,7 @@ describe('Home page with published data', function homePublishedDataTests() {
         await filterInput.sendKeys(' \b'); // clear do not trigger onChange event forcing it (\b is backspace)
 
         const spinner = '.dataset-loading';
-        await driver.wait(stalenessOf(spinner)).catch(() => null);
+        await driver.wait(stalenessOf(spinner), DEFAULT_WAIT_TIMEOUT);
         await driver.wait(until.elementLocated(By.css('.dataset table tbody tr')), DEFAULT_WAIT_TIMEOUT);
 
         await driver.wait(elementsCountIs('.dataset table tbody tr', 5));
@@ -205,7 +205,7 @@ describe('Home page with published data', function homePublishedDataTests() {
         await driver.wait(elementIsClicked(facetValue), DEFAULT_WAIT_TIMEOUT);
 
         const spinner = '.dataset-loading';
-        await driver.wait(stalenessOf(spinner)).catch(() => null);
+        await driver.wait(stalenessOf(spinner), DEFAULT_WAIT_TIMEOUT);
         await driver.wait(until.elementLocated(By.css('.dataset table tbody tr')), DEFAULT_WAIT_TIMEOUT);
 
         const expectedTds = [
