@@ -32,7 +32,7 @@ endif
 
 install-selenium:
 	echo "Installing Selenium server"
-	./node_modules/.bin/selenium-standalone install --version=3.3.0 --drivers.chrome.version=2.28
+	./node_modules/.bin/selenium-standalone install --version=3.3.0 --drivers.chrome.version=2.24
 
 install: copy-conf install-npm-dependencies install-selenium ## Install npm dependencies for the api, admin, and frontend apps
 
@@ -77,7 +77,7 @@ test-frontend-unit: ## Run the frontend application unit tests
 
 test-frontend-functional: ## Run the frontend application functional tests
 	NODE_ENV=test ${MAKE} build-frontend
-	NODE_ENV=test SELENIUM_BROWSER_BINARY_PATH="./node_modules/selenium-standalone/.selenium/chromedriver/2.28-x64-chromedriver" \
+	NODE_ENV=test SELENIUM_BROWSER_BINARY_PATH="./node_modules/selenium-standalone/.selenium/chromedriver/2.24-x64-chromedriver" \
 		./node_modules/.bin/mocha \
 		--require babel-polyfill \
 		--compilers="js:babel-core/register" \
