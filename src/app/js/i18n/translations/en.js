@@ -123,4 +123,5 @@ export default {
     add_column_from_original_dataset: 'Add a column from original dataset',
     Login: 'Sign in',
     show_publication_errors: 'Errors',
+    model: 'Model',
 };
