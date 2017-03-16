@@ -91,6 +91,7 @@ export const ResourceComponent = ({
             </Card>
             {getDetail(mode)}
             <DatasetCharacteristics />
+            <hr />
         </div>
     );
 };

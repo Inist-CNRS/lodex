@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { CardText } from 'material-ui/Card';
+import memoize from 'lodash.memoize';
 
 import {
     fromResource,
@@ -8,13 +9,35 @@ import {
 } from '../selectors';
 import Property from '../Property';
 
+const styles = {
+    container: {
+        display: 'flex',
+        flexDirection: 'column',
+    },
+    item: memoize((index, total) => ({
+        borderBottom: index < total - 1 ? '1px solid rgb(224, 224, 224)' : 'none',
+        paddingBottom: index < total - 1 ? '3rem' : 0,
+        paddingTop: '2rem',
+    })),
+};
+
 export const DetailPropertiesComponent = ({ resource, collectionFields, documentFields }) => (
-    <CardText className="detail-properties">
-        {collectionFields.map(field => (
-            <Property key={field.name} resource={resource} field={field} />
+    <CardText className="detail-properties" style={styles.container}>
+        {collectionFields.map((field, index) => (
+            <Property
+                key={field.name}
+                resource={resource}
+                field={field}
+                style={styles.item(index, collectionFields.length)}
+            />
         ))}
-        {documentFields.filter(({ name }) => !!resource[name]).map(field => (
-            <Property key={field.name} resource={resource} field={field} />
+        {documentFields.filter(({ name }) => !!resource[name]).map((field, index) => (
+            <Property
+                key={field.name}
+                resource={resource}
+                field={field}
+                style={styles.item(index, documentFields.length)}
+            />
         ))}
     </CardText>
 );
