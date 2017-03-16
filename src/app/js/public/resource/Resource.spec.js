@@ -149,7 +149,7 @@ describe('<Resource />', () => {
             {...props}
         />);
         const h1 = wrapper.find('h1').at(0);
-        expect(h1.text()).toBe('resource title');
+        expect(h1.text()).toContain('resource title');
     });
 
     it('should display resource.uri if titleKey is not set', () => {
@@ -167,6 +167,6 @@ describe('<Resource />', () => {
             {...props}
         />);
         const h1 = wrapper.find('h1').at(0);
-        expect(h1.text()).toBe('resource uri');
+        expect(h1.text()).toContain('resource uri');
     });
 });

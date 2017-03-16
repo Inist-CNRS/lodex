@@ -30,20 +30,7 @@ export function* handleLoadDatasetPageRequest({ payload }) {
         perPage = yield select(fromDataset.getDatasetPerPage);
     }
 
-    const params = facets.reduce((acc, facet) => ({
-        ...acc,
-        [facet.field.name]: facet.value,
-    }), {
-        page,
-        perPage,
-        ...sort,
-    });
-
-    if (match) {
-        params.match = match;
-    }
-
-    const request = yield select(getLoadDatasetPageRequest, params);
+    const request = yield select(getLoadDatasetPageRequest, { match, facets, sort, page, perPage });
     const { error, response } = yield call(fetchSaga, request);
 
     if (error) {

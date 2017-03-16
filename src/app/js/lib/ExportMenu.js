@@ -23,7 +23,7 @@ const origin = { horizontal: 'right', vertical: 'top' };
 
 const getStyles = memoize(style => Object.assign({}, styles.icon, style));
 
-export const ExportMenuComponent = ({ handleExportClick, iconStyle, p: polyglot }) => (
+export const ExportMenuComponent = ({ handleExportClick, uri, iconStyle, p: polyglot }) => (
     <IconMenu
         iconStyle={getStyles(iconStyle)}
         iconButtonElement={
@@ -37,6 +37,7 @@ export const ExportMenuComponent = ({ handleExportClick, iconStyle, p: polyglot 
                 <ExportMenuItem
                     key={type}
                     type={type}
+                    uri={uri}
                     onClick={handleExportClick}
                 />
             ))
@@ -47,11 +48,13 @@ export const ExportMenuComponent = ({ handleExportClick, iconStyle, p: polyglot 
 ExportMenuComponent.propTypes = {
     handleExportClick: PropTypes.func.isRequired,
     iconStyle: PropTypes.object, // eslint-disable-line
+    uri: PropTypes.string,
     p: polyglotPropTypes.isRequired,
 };
 
 ExportMenuComponent.defaultProps = {
     iconStyle: null,
+    uri: null,
 };
 
 const mapDispatchToProps = dispatch => bindActionCreators({

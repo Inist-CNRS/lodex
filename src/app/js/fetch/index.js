@@ -1,6 +1,7 @@
 import { createAction, handleActions } from 'redux-actions';
 
 import { getRequest } from '../user';
+import getQueryString from '../lib/getQueryString';
 
 export const FETCH = 'FETCH';
 export const FETCH_ERROR = 'FETCH_ERROR';
@@ -104,10 +105,9 @@ export const getUpdateCharacteristicsRequest = state =>
         body: state.characteristic.newCharacteristics,
     });
 
-export const getLoadDatasetPageRequest = (state, params) => {
-    const paramString = Object.keys(params)
-        .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`)
-        .join('&');
+export const getLoadDatasetPageRequest = (state, params = {}) => {
+    const paramString = getQueryString(params);
+
     return getRequest(state, {
         url: `/api/publishedDataset?${paramString}`,
     });
