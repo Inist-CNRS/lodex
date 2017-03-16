@@ -266,6 +266,7 @@ export const getLineColGetter = createSelector(
     },
 );
 
+
 export const selectors = {
     areAllFieldsValid,
     getCollectionFields,

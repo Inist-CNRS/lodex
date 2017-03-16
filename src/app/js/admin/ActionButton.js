@@ -8,15 +8,13 @@ import ActionDescription from 'material-ui/svg-icons/action/description';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import ContentClear from 'material-ui/svg-icons/content/clear';
 
-import FloatingActionButton from '../../lib/FloatingActionButton';
-import { fromFields } from '../selectors';
-import { polyglot as polyglotPropTypes } from '../../propTypes';
+import FloatingActionButton from '../lib/FloatingActionButton';
+import { fromFields } from './selectors';
+import { polyglot as polyglotPropTypes } from '../propTypes';
 
 const styles = {
     actionButton: onBack => ({
-        position: 'absolute',
-        bottom: -16,
-        right: 16,
+        marginRight: 16,
         zIndex: onBack ? 0 : 2400,
     }),
     popover: {
@@ -38,6 +36,7 @@ const styles = {
 
 export class ActionButtonComponent extends Component {
     static propTypes = {
+        editedColumn: PropTypes.object, // eslint-disable-line
         onAddNewColumn: PropTypes.func.isRequired,
         onHideExistingColumns: PropTypes.func.isRequired,
         onShowExistingColumns: PropTypes.func.isRequired,
@@ -56,13 +55,16 @@ export class ActionButtonComponent extends Component {
 
     componentWillReceiveProps(nextProps) {
         if (nextProps.editedColumn) {
-            this.setState({
-                showPopover: false,
-                showCancel: false,
-                showExistingColumns: false,
-            }, () => {
-                this.props.onHideExistingColumns();
-            });
+            const currentEditedColumnName = this.props.editedColumn ? this.props.editedColumn.name : undefined;
+            if (nextProps.editedColumn.name !== currentEditedColumnName) {
+                this.setState({
+                    showPopover: false,
+                    showCancel: false,
+                    showExistingColumns: false,
+                }, () => {
+                    this.props.onHideExistingColumns();
+                });
+            }
         }
     }
 

@@ -3,20 +3,33 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 import { CardHeader } from 'material-ui/Card';
-import FlatButton from 'material-ui/FlatButton';
 
 import PublicationExcerpt from './PublicationExcerpt';
 import PublicationEditionModal from './PublicationEditionModal';
 
+import Card from '../../lib/Card';
 import { editField, removeField } from '../fields';
 import { polyglot as polyglotPropTypes, field as fieldPropTypes } from '../../propTypes';
 import { fromFields, fromPublicationPreview } from '../selectors';
 import ScrollableCardContent from '../../lib/ScrollableCardContent';
 
 const styles = {
+    container: {
+        position: 'relative',
+        display: 'flex',
+    },
+    card: {
+        flexGrow: 2,
+    },
+    titleContainer: {
+        display: 'inline-block',
+        writingMode: 'vertical-rl',
+        textAlign: 'center',
+        textTransform: 'uppercase',
+    },
     title: {
-        height: '36px',
-        lineHeight: '36px',
+        paddingRight: 0,
+        verticalAlign: 'baseline',
     },
     button: {
         float: 'right',
@@ -42,30 +55,32 @@ export class PublicationPreviewComponent extends Component {
         const { columns, lines, editColumn, editedColumn, p: polyglot } = this.props;
 
         return (
-            <div className="publication-preview">
+            <div style={styles.container} className="publication-preview">
                 <CardHeader
-                    showExpandableButton
+                    style={styles.titleContainer}
+                    textStyle={styles.title}
                     title={polyglot.t('publication_preview')}
-                    titleStyle={styles.title}
                 />
 
-                <ScrollableCardContent expandable>
-                    <PublicationExcerpt
-                        editedColumn={editedColumn}
-                        columns={columns}
-                        lines={lines}
-                        onHeaderClick={editColumn}
-                    />
-
-                    {editedColumn &&
-                        <PublicationEditionModal
+                <Card style={styles.card}>
+                    <ScrollableCardContent>
+                        <PublicationExcerpt
                             editedColumn={editedColumn}
                             columns={columns}
                             lines={lines}
-                            onExitEdition={this.handleExitColumEdition}
+                            onHeaderClick={editColumn}
                         />
-                    }
-                </ScrollableCardContent>
+
+                        {editedColumn &&
+                            <PublicationEditionModal
+                                editedColumn={editedColumn}
+                                columns={columns}
+                                lines={lines}
+                                onExitEdition={this.handleExitColumEdition}
+                            />
+                        }
+                    </ScrollableCardContent>
+                </Card>
             </div>
         );
     }

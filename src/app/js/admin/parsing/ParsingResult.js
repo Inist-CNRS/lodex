@@ -4,22 +4,22 @@ import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 
 import { CardHeader } from 'material-ui/Card';
-import FlatButton from 'material-ui/FlatButton';
 import { grey400 } from 'material-ui/styles/colors';
+import Card from '../../lib/Card';
 import ScrollableCardContent from '../../lib/ScrollableCardContent';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
-import {
-    reloadParsingResult,
-} from './';
-import {
-    fromParsing,
-} from '../selectors';
+import { reloadParsingResult } from './';
+import { fromParsing } from '../selectors';
 import ParsingExcerpt from './ParsingExcerpt';
 
 const styles = {
     container: {
         position: 'relative',
+        display: 'flex',
+    },
+    card: {
+        flexGrow: 2,
     },
     list: {
         borderRight: `solid 1px ${grey400}`,
@@ -31,9 +31,15 @@ const styles = {
     listItem: {
         whiteSpace: 'nowrap',
     },
+    titleContainer: {
+        display: 'inline-block',
+        writingMode: 'vertical-rl',
+        textAlign: 'center',
+        textTransform: 'uppercase',
+    },
     title: {
-        height: '36px',
-        lineHeight: '36px',
+        paddingRight: 0,
+        verticalAlign: 'baseline',
     },
     button: {
         float: 'right',
@@ -52,30 +58,27 @@ export class ParsingResultComponent extends Component {
         const {
             excerptColumns,
             excerptLines,
-            totalLoadedLines,
             p: polyglot,
+            showAddColumns,
         } = this.props;
 
         return (
             <div className="parsingResult" style={styles.container}>
                 <CardHeader
-                    showExpandableButton
-                    title={polyglot.t('parsing_summary', { count: totalLoadedLines })}
-                    titleStyle={styles.title}
-                >
-                    <FlatButton
-                        style={styles.button}
-                        onClick={this.handleClearParsing}
-                        label={polyglot.t('Upload another file')}
-                        primary
-                    />
-                </CardHeader>
-                <ScrollableCardContent>
-                    <ParsingExcerpt
-                        columns={excerptColumns}
-                        lines={excerptLines}
-                    />
-                </ScrollableCardContent>
+                    style={styles.titleContainer}
+                    textStyle={styles.title}
+                    title={polyglot.t('parsing')}
+                />
+
+                <Card style={styles.card}>
+                    <ScrollableCardContent>
+                        <ParsingExcerpt
+                            columns={excerptColumns}
+                            lines={excerptLines}
+                            showAddColumns={showAddColumns}
+                        />
+                    </ScrollableCardContent>
+                </Card>
             </div>
         );
     }
@@ -85,15 +88,15 @@ ParsingResultComponent.propTypes = {
     excerptColumns: PropTypes.arrayOf(PropTypes.string).isRequired,
     excerptLines: PropTypes.arrayOf(PropTypes.object).isRequired,
     p: polyglotPropTypes.isRequired,
-    totalLoadedLines: PropTypes.number.isRequired,
     handleClearParsing: PropTypes.func.isRequired,
+    showAddColumns: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = state => ({
     excerptColumns: fromParsing.getParsedExcerptColumns(state),
     excerptLines: fromParsing.getExcerptLines(state),
     loadingParsingResult: fromParsing.isParsingLoading(state),
-    totalLoadedLines: fromParsing.getTotalLoadedLines(state),
+    showAddColumns: fromParsing.showAddColumns(state),
 });
 
 const mapDispatchToProps = {
