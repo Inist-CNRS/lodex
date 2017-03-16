@@ -17,15 +17,17 @@ const styles = {
     container: {
         position: 'relative',
         display: 'flex',
+        width: '99vw',
     },
-    card: {
-        flexGrow: 2,
+    content: {
+        overflow: 'auto',
     },
     titleContainer: {
         display: 'inline-block',
         writingMode: 'vertical-rl',
         textAlign: 'center',
         textTransform: 'uppercase',
+        flex: '0 0 1vw',
     },
     title: {
         paddingRight: 0,
@@ -62,25 +64,23 @@ export class PublicationPreviewComponent extends Component {
                     title={polyglot.t('publication_preview')}
                 />
 
-                <Card style={styles.card}>
-                    <ScrollableCardContent>
-                        <PublicationExcerpt
+                <ScrollableCardContent style={styles.content}>
+                    <PublicationExcerpt
+                        editedColumn={editedColumn}
+                        columns={columns}
+                        lines={lines}
+                        onHeaderClick={editColumn}
+                    />
+
+                    {editedColumn &&
+                        <PublicationEditionModal
                             editedColumn={editedColumn}
                             columns={columns}
                             lines={lines}
-                            onHeaderClick={editColumn}
+                            onExitEdition={this.handleExitColumEdition}
                         />
-
-                        {editedColumn &&
-                            <PublicationEditionModal
-                                editedColumn={editedColumn}
-                                columns={columns}
-                                lines={lines}
-                                onExitEdition={this.handleExitColumEdition}
-                            />
-                        }
-                    </ScrollableCardContent>
-                </Card>
+                    }
+                </ScrollableCardContent>
             </div>
         );
     }

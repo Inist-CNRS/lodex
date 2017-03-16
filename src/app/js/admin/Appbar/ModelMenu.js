@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import RaisedButton from 'material-ui/RaisedButton';
+import FlatButton from 'material-ui/FlatButton';
 import Popover, { PopoverAnimationVertical } from 'material-ui/Popover';
 import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
@@ -17,6 +17,9 @@ const styles = {
         display: 'inline-block',
         marginLeft: 4,
         marginRight: 4,
+    },
+    button: {
+        color: 'white',
     },
 };
 
@@ -78,12 +81,13 @@ export class ModelMenuComponent extends Component {
 
         return (
             <div style={styles.container}>
-                <RaisedButton
+                <FlatButton
                     className="btn-model-menu"
                     onTouchTap={this.handleTouchTap}
                     label={polyglot.t('model')}
                     labelPosition="before"
                     icon={<ArrowDown />}
+                    style={styles.button}
                 />
                 <Popover
                     open={open}

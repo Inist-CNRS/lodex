@@ -14,6 +14,7 @@ import ParsingExcerptAddColumn from './ParsingExcerptAddColumn';
 const styles = {
     table: {
         width: 'auto',
+        borderLeft: '1px solid rgb(224, 224, 224)',
     },
     wrapper: {
         overflowX: 'auto',
@@ -67,13 +68,8 @@ export const ParsingExcerptComponent = ({
                                 >
                                     <Transition
                                         component={false}
-                                        appear={{
-                                            opacity: 0,
-                                            translateX: 1000,
-                                        }}
                                         enter={{
                                             opacity: spring(1),
-                                            translateX: spring(0),
                                         }}
                                         leave={{
                                             opacity: 0,

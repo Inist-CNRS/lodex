@@ -29,6 +29,7 @@ const styles = {
         marginBottom: 8,
     },
     icon: {
+        color: 'white',
         height: 56,
         lineHeight: 56,
     },

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 
-import RaisedButton from 'material-ui/RaisedButton';
+import FlatButton from 'material-ui/FlatButton';
 
 import { uploadFile } from './';
 import { fromUpload } from '../selectors';
@@ -11,9 +11,9 @@ import { polyglot as polyglotPropTypes } from '../../propTypes';
 
 const styles = {
     button: {
+        color: 'white',
         marginLeft: 4,
         marginRight: 4,
-        marginTop: 4,
     },
     input: {
         position: 'absolute',
@@ -28,7 +28,7 @@ const styles = {
 };
 
 export const UploadButtonComponent = ({ onFileLoad, p: polyglot }) => (
-    <RaisedButton
+    <FlatButton
         className="btn-upload-dataset"
         containerElement="label"
         label={polyglot.t('upload_another_file')}
@@ -40,7 +40,7 @@ export const UploadButtonComponent = ({ onFileLoad, p: polyglot }) => (
             onChange={e => onFileLoad(e.target.files[0])}
             style={styles.input}
         />
-    </RaisedButton>
+    </FlatButton>
 );
 
 UploadButtonComponent.propTypes = {

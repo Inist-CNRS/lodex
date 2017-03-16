@@ -17,9 +17,14 @@ const styles = {
     container: {
         position: 'relative',
         display: 'flex',
+        width: '99vw',
     },
     card: {
-        flexGrow: 2,
+        marginTop: 0,
+    },
+    content: {
+        overflow: 'auto',
+        display: 'flex',
     },
     list: {
         borderRight: `solid 1px ${grey400}`,
@@ -36,6 +41,7 @@ const styles = {
         writingMode: 'vertical-rl',
         textAlign: 'center',
         textTransform: 'uppercase',
+        flex: '0 0 1vw',
     },
     title: {
         paddingRight: 0,
@@ -70,15 +76,13 @@ export class ParsingResultComponent extends Component {
                     title={polyglot.t('parsing')}
                 />
 
-                <Card style={styles.card}>
-                    <ScrollableCardContent>
-                        <ParsingExcerpt
-                            columns={excerptColumns}
-                            lines={excerptLines}
-                            showAddColumns={showAddColumns}
-                        />
-                    </ScrollableCardContent>
-                </Card>
+                <ScrollableCardContent style={styles.content}>
+                    <ParsingExcerpt
+                        columns={excerptColumns}
+                        lines={excerptLines}
+                        showAddColumns={showAddColumns}
+                    />
+                </ScrollableCardContent>
             </div>
         );
     }

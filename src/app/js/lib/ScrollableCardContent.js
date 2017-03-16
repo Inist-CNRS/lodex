@@ -1,25 +1,21 @@
 import React, { PropTypes } from 'react';
 import { CardText } from 'material-ui/Card';
+import memoize from 'lodash.memoize';
 
 const styles = {
-    cardText: {
+    cardText: memoize(style => Object.assign({
         paddingTop: 0,
-    },
-    container: {
-        overflowX: 'auto',
-        width: 'auto',
-    },
+    }, style)),
 };
 
-const ScrollableCardContent = ({ children, ...props }) => (
-    <CardText style={styles.cardText} {...props}>
-        <div style={styles.container}>
-            {children}
-        </div>
+const ScrollableCardContent = ({ children, style, ...props }) => (
+    <CardText style={styles.cardText(style)} {...props}>
+        {children}
     </CardText>
 );
 
 ScrollableCardContent.propTypes = {
+    style: PropTypes.object, // eslint-disable-line
     children: PropTypes.node.isRequired,
 };
 
