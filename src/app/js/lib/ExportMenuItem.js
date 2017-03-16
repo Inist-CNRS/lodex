@@ -29,7 +29,7 @@ ExportMenuItemComponent.defaultProps = {
 
 export default compose(
     withHandlers({
-        handleClick: ({ onClick, type }) => () => onClick(type),
+        handleClick: ({ onClick, type, uri }) => () => onClick({ type, uri }),
     }),
     translate,
 )(ExportMenuItemComponent);

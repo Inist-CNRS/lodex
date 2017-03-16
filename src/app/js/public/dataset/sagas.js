@@ -30,7 +30,7 @@ export function* handleLoadDatasetPageRequest({ payload }) {
         perPage = yield select(fromDataset.getDatasetPerPage);
     }
 
-    const request = yield select(getLoadDatasetPageRequest, match, facets, sort, page, perPage);
+    const request = yield select(getLoadDatasetPageRequest, { match, facets, sort, page, perPage });
     const { error, response } = yield call(fetchSaga, request);
 
     if (error) {

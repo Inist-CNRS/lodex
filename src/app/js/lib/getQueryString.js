@@ -22,7 +22,7 @@ export const addKeyToLiteral = (key, value) => (literal = {}) => {
     };
 };
 
-export default(match, facets, sort, page, perPage) => console.log({ match, facets, sort, page, perPage }) ||
+export default({ match, facets, sort, page, perPage, uri } = {}) =>
     compose(
         literalToQueryString,
         addFacetListToLiteral(facets),
@@ -31,6 +31,7 @@ export default(match, facets, sort, page, perPage) => console.log({ match, facet
         addKeyToLiteral('sortDir', sort.sortDir),
         addKeyToLiteral('page', page),
         addKeyToLiteral('perPage', perPage),
+        addKeyToLiteral('uri', uri),
     )({
         ...sort,
     });

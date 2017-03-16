@@ -20,12 +20,14 @@ import AddFieldDetail from './AddFieldDetail';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import DatasetCharacteristics from '../characteristic/DatasetCharacteristics';
 import Loading from '../../lib/Loading';
+import ExportMenu from '../../lib/ExportMenu';
 
 const styles = {
     home: {
         display: 'flex',
         alignItems: 'center',
     },
+    icon: { color: 'black' },
 };
 
 export const getDetail = (mode) => {
@@ -66,7 +68,9 @@ export const ResourceComponent = ({
                         <HomeIcon />
                         {(datasetTitleKey && characteristics[datasetTitleKey]) || polyglot.t('back_to_list')}
                     </Link>
-                    <h1>{polyglot.t('not_found')}</h1>
+                    <h1>
+                        {polyglot.t('not_found')}
+                    </h1>
                 </CardText>
             </Card>
         );
@@ -79,7 +83,10 @@ export const ResourceComponent = ({
                         <HomeIcon />
                         {(datasetTitleKey && characteristics[datasetTitleKey]) || polyglot.t('back_to_list')}
                     </Link>
-                    <h1 className="title">{titleKey ? resource[titleKey] : resource.uri}</h1>
+                    <h1 className="title">
+                        {titleKey ? resource[titleKey] : resource.uri}
+                        <ExportMenu uri={resource.uri} iconStyle={styles.icon} />
+                    </h1>
                 </CardText>
             </Card>
             {getDetail(mode)}

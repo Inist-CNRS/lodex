@@ -105,8 +105,8 @@ export const getUpdateCharacteristicsRequest = state =>
         body: state.characteristic.newCharacteristics,
     });
 
-export const getLoadDatasetPageRequest = (state, match, facets, sort, page, perPage) => {
-    const paramString = getQueryString(match, facets, sort, page, perPage);
+export const getLoadDatasetPageRequest = (state, params = {}) => {
+    const paramString = getQueryString(params);
 
     return getRequest(state, {
         url: `/api/publishedDataset?${paramString}`,
