@@ -12,6 +12,16 @@ import {
 import { changeFieldStatus } from './resource';
 import Property from './Property';
 
+const styles = {
+    container: {
+        paddingLeft: '2rem',
+        marginLeft: '2rem',
+        marginTop: '2rem',
+        paddingTop: '2rem',
+        borderLeft: '5px dotted rgb(224, 224, 224)',
+    },
+};
+
 const PropertyLinkedFieldsComponent = ({
     fieldName,
     linkedFields,
@@ -23,6 +33,7 @@ const PropertyLinkedFieldsComponent = ({
     return (
         <div
             className="linked_fields"
+            style={styles.container}
         >
             {linkedFields.map(linkedField => (
                 <Property
