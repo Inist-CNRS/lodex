@@ -1,11 +1,20 @@
-import { call, fork, takeEvery } from 'redux-saga/effects';
+import { call, fork, takeEvery, select } from 'redux-saga/effects';
 
 import {
     EXPORT_PUBLISHED_DATASET,
-} from './';
+}
+from './';
+import { fromDataset, fromFacet } from '../selectors';
+import getQueryString from '../../lib/getQueryString';
 
 export function* handleExportPublishedDatasetSuccess({ payload: type }) {
-    yield call(window.open, `/api/export/${type}`);
+    const facets = yield select(fromFacet.getAppliedFacets);
+    const match = yield select(fromDataset.getFilter);
+    const sort = yield select(fromDataset.getSort);
+
+    const queryString = yield call(getQueryString, match, facets, sort);
+
+    yield call(window.open, `/api/export/${type}?${queryString}`);
 }
 
 export function* watchExportPublishedDatasetRequest() {
