@@ -1,14 +1,15 @@
 import React, { PropTypes } from 'react';
 import { CardText } from 'material-ui/Card';
+import memoize from 'lodash.memoize';
 
 const styles = {
-    cardText: {
+    cardText: memoize(style => Object.assign({
         paddingTop: 0,
-    },
+    }, style)),
 };
 
 const ScrollableCardContent = ({ children, style, ...props }) => (
-    <CardText style={Object.assign({}, styles.cardText, style)} {...props}>
+    <CardText style={styles.cardText(style)} {...props}>
         {children}
     </CardText>
 );
