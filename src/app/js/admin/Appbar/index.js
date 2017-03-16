@@ -6,6 +6,7 @@ import SignOutButton from './SignOutButton';
 import SignInButton from './SignInButton';
 import PublicationButton from '../publish/PublicationButton';
 import ModelMenu from './ModelMenu';
+import UploadButton from '../upload/UploadButton';
 
 const styles = {
     appBar: {
@@ -27,15 +28,10 @@ const AppbarComponent = ({ isLoading, isLoggedIn }) => {
 
     const RightElement = (
         <div>
-            { isLoggedIn ? <ModelMenu /> : <SignInButton />}
-
-            {isLoggedIn &&
-                <SignOutButton />
-            }
-
-            {isLoggedIn &&
-                <PublicationButton />
-            }
+            {isLoggedIn && <UploadButton />}
+            {isLoggedIn ? <ModelMenu /> : <SignInButton />}
+            {isLoggedIn && <SignOutButton />}
+            {isLoggedIn && <PublicationButton /> }
         </div>
     );
 

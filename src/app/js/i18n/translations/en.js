@@ -9,7 +9,7 @@ export default {
     'total lines': 'total lines',
     'successfully parsed': 'successfully parsed',
     'with errors': 'with errors',
-    'Upload another file': 'Upload another file',
+    upload_another_file: 'Upload a dataset',
     Cancel: 'Cancel',
     Username: 'Username',
     Password: 'Password',
