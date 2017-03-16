@@ -7,6 +7,8 @@ from './';
 import { fromDataset, fromFacet } from '../selectors';
 import getQueryString from '../../lib/getQueryString';
 
+export const open = url => window.open(url);
+
 export function* handleExportPublishedDatasetSuccess({ payload: type }) {
     const facets = yield select(fromFacet.getAppliedFacets);
     const match = yield select(fromDataset.getFilter);
@@ -14,7 +16,7 @@ export function* handleExportPublishedDatasetSuccess({ payload: type }) {
 
     const queryString = yield call(getQueryString, match, facets, sort);
 
-    yield call(window.open, `/api/export/${type}?${queryString}`);
+    yield call(open, `/api/export/${type}?${queryString}`);
 }
 
 export function* watchExportPublishedDatasetRequest() {
