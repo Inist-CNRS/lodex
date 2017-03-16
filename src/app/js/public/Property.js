@@ -9,7 +9,7 @@ import { fromResource } from './selectors';
 import { field as fieldPropTypes } from '../propTypes';
 import CompositeProperty from './CompositeProperty';
 import { languages } from '../../../../config.json';
-import propositionStatus, { VALIDATED, REJECTED } from '../../../common/propositionStatus';
+import propositionStatus, { REJECTED } from '../../../common/propositionStatus';
 import ModerateButton from './ModerateButton';
 import { changeFieldStatus } from './resource';
 import PropertyContributor from './PropertyContributor';
@@ -17,18 +17,17 @@ import PropertyLinkedFields from './PropertyLinkedFields';
 import { isLoggedIn } from '../user';
 
 const styles = {
-    container: memoize((style, status) => Object.assign({
+    container: memoize(style => Object.assign({
         display: 'flex',
         flexDirection: 'column',
         marginRight: '1rem',
-        color: (status && status !== VALIDATED) ? 'grey' : 'black',
-        textDecoration: status === REJECTED ? 'line-through' : 'none',
     }, style)),
-    label: {
+    label: memoize(status => Object.assign({
         color: grey500,
         fontWeight: 'bold',
         marginRight: '1rem',
-    },
+        textDecoration: status === REJECTED ? 'line-through' : 'none',
+    })),
     language: {
         marginLeft: '0.5rem',
         fontSize: '0.75em',
@@ -61,7 +60,7 @@ const PropertyComponent = ({
             style={styles.container(style, fieldStatus)}
         >
             <div>
-                <span className="property_label" style={styles.label}>{field.label}</span>
+                <span className="property_label" style={styles.label(fieldStatus)}>{field.label}</span>
                 {field.language &&
                     <span className="property_language" style={styles.language}>
                         ({languages.find(f => f.code === field.language).label})
