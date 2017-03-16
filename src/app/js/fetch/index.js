@@ -106,7 +106,7 @@ export const getUpdateCharacteristicsRequest = state =>
 
 export const getLoadDatasetPageRequest = (state, params) => {
     const paramString = Object.keys(params)
-        .map(key => `${key}=${encodeURIComponent(params[key])}`)
+        .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`)
         .join('&');
     return getRequest(state, {
         url: `/api/publishedDataset?${paramString}`,
