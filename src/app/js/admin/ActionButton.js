@@ -54,14 +54,17 @@ export class ActionButtonComponent extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.editedColumn !== this.props.editedColumn) {
-            this.setState({
-                showPopover: false,
-                showCancel: false,
-                showExistingColumns: false,
-            }, () => {
-                this.props.onHideExistingColumns();
-            });
+        if (nextProps.editedColumn) {
+            const currentEditedColumnName = this.props.editedColumn ? this.props.editedColumn.name : undefined;
+            if (nextProps.editedColumn.name !== currentEditedColumnName) {
+                this.setState({
+                    showPopover: false,
+                    showCancel: false,
+                    showExistingColumns: false,
+                }, () => {
+                    this.props.onHideExistingColumns();
+                });
+            }
         }
     }
 
