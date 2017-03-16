@@ -59,6 +59,7 @@ const PublicationEditionComponent = ({ editedColumn, lines, onExitEdition, p: po
                     lines={lines}
                     colStyle={styles.column}
                     onHeaderClick={null}
+                    isPreview
                 />
             </div>
         </Dialog>

@@ -4,21 +4,21 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 
 import translate from 'redux-polyglot/translate';
-import RaisedButton from 'material-ui/RaisedButton';
+import FlatButton from 'material-ui/FlatButton';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { signOut } from '../../user';
 
 const styles = {
     button: {
+        color: 'white',
         marginLeft: 4,
         marginRight: 4,
-        marginTop: 4,
     },
 };
 
 export const SignOutButtonComponent = ({ onSignOut, p: polyglot }) => (
-    <RaisedButton
+    <FlatButton
         className="btn-sign-out"
         label={polyglot.t('sign_out')}
         onClick={onSignOut}

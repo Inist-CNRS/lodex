@@ -20,7 +20,6 @@ const styles = {
         display: 'inline-block',
         marginLeft: 4,
         marginRight: 4,
-        marginTop: 4,
     },
 };
 

@@ -75,11 +75,11 @@ export class AdminComponent extends Component {
         }
 
         return (
-            <div className="admin">
+            <Card className="admin">
                 <ParsingResult />
                 <Statistics />
                 <PublicationPreview />
-            </div>
+            </Card>
         );
     }
 }

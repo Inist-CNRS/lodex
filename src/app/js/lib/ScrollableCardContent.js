@@ -5,21 +5,16 @@ const styles = {
     cardText: {
         paddingTop: 0,
     },
-    container: {
-        overflowX: 'auto',
-        width: 'auto',
-    },
 };
 
-const ScrollableCardContent = ({ children, ...props }) => (
-    <CardText style={styles.cardText} {...props}>
-        <div style={styles.container}>
-            {children}
-        </div>
+const ScrollableCardContent = ({ children, style, ...props }) => (
+    <CardText style={Object.assign({}, styles.cardText, style)} {...props}>
+        {children}
     </CardText>
 );
 
 ScrollableCardContent.propTypes = {
+    style: PropTypes.object, // eslint-disable-line
     children: PropTypes.node.isRequired,
 };
 

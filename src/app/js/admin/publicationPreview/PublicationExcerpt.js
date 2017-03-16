@@ -16,9 +16,10 @@ const styles = {
     header: {
         cursor: 'pointer',
     },
-    table: {
+    table: memoize(separated => ({
         width: 'auto',
-    },
+        borderLeft: separated ? 'none' : '1px solid rgb(224, 224, 224)',
+    })),
     wrapper: {
         overflowX: 'auto',
     },
@@ -38,13 +39,14 @@ export const PublicationExcerptComponent = ({
     onCellClick,
     onHeaderClick,
     p: polyglot,
+    isPreview = false,
 }) => (
     <Table
         className={className}
         selectable={false}
         fixedHeader={false}
         bodyStyle={styles.wrapper}
-        style={styles.table}
+        style={styles.table(isPreview)}
         onCellClick={onCellClick}
     >
         <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
@@ -84,6 +86,7 @@ PublicationExcerptComponent.propTypes = {
     className: PropTypes.string,
     columns: PropTypes.arrayOf(fieldPropTypes).isRequired,
     colStyle: PropTypes.object, // eslint-disable-line
+    isPreview: PropTypes.bool, // eslint-disable-line
     lines: PropTypes.arrayOf(PropTypes.object).isRequired,
     onCellClick: PropTypes.func.isRequired,
     onHeaderClick: PropTypes.func.isRequired,

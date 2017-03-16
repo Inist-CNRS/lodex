@@ -11,6 +11,8 @@ import UploadButton from '../upload/UploadButton';
 const styles = {
     appBar: {
         zIndex: 1,
+        height: 54,
+        lineHeight: 'normal',
     },
     linkToHome: {
         color: 'white',
@@ -18,6 +20,9 @@ const styles = {
     },
     loading: {
         margin: 8,
+    },
+    buttons: {
+        display: 'flex',
     },
 };
 
@@ -27,7 +32,7 @@ const AppbarComponent = ({ isLoading, isLoggedIn }) => {
         : <span />;
 
     const RightElement = (
-        <div>
+        <div style={styles.buttons}>
             {isLoggedIn && <UploadButton />}
             {isLoggedIn ? <ModelMenu /> : <SignInButton />}
             {isLoggedIn && <SignOutButton />}
