@@ -52,13 +52,11 @@ UploadButtonComponent.defaultProps = {
     className: null,
 };
 
-const mapsStateToProps = state => fromUpload.getUpload(state);
-
 const mapDispatchToProps = {
     onFileLoad: uploadFile,
 };
 
 export default compose(
-    connect(mapsStateToProps, mapDispatchToProps),
+    connect(undefined, mapDispatchToProps),
     translate,
 )(UploadButtonComponent);
