@@ -1,21 +1,70 @@
 import { ObjectID } from 'mongodb';
 import chunk from 'lodash.chunk';
 import omit from 'lodash.omit';
+import compose from 'lodash.compose';
 
 import { VALIDATED, PROPOSED } from '../../common/propositionStatus';
+
+export const addMatchToFilters = (match, searchableFieldNames) => (filters) => {
+    if (!match || !searchableFieldNames) {
+        return filters;
+    }
+    const regexMatch = new RegExp(match);
+
+    return {
+        ...filters,
+        $or: searchableFieldNames.map(name => ({
+            [`versions.${name}`]: { $regex: regexMatch, $options: 'i' },
+        })),
+    };
+};
+
+export const addFacetToFilters = (facets, facetFieldNames) => (filters) => {
+    if (!facets || !Object.keys(facets).length || !facetFieldNames.length) {
+        return filters;
+    }
+    return {
+        ...filters,
+        $and: facetFieldNames.reduce((acc, name) => {
+            if (!facets[name]) return acc;
+
+            return [
+                ...acc,
+                { [`versions.${name}`]: facets[name] },
+            ];
+        }, []),
+    };
+};
+
+export const addKeyToFilters = (key, value) => (filters) => {
+    if (!value) {
+        return filters;
+    }
+
+    return {
+        ...filters,
+        [key]: value,
+    };
+};
 
 export default (db) => {
     const collection = db.collection('publishedDataset');
 
     collection.insertBatch = documents => chunk(documents, 100).map(data => collection.insertMany(data));
 
-    collection.findLimitFromSkip = async (limit, skip, filter, sortBy, sortDir = 'ASC') => {
+    collection.getFindCursor = (filter, sortBy, sortDir = 'ASC') => {
         let cursor = collection.find(filter);
         if (sortBy) {
             cursor = cursor.sort({
                 [sortBy === 'uri' ? sortBy : `versions.${sortBy}`]: sortDir === 'ASC' ? 1 : -1,
             });
         }
+        return cursor;
+    };
+
+    collection.findLimitFromSkip = async (limit, skip, filter, sortBy, sortDir = 'ASC') => {
+        const cursor = collection.getFindCursor(filter, sortBy, sortDir);
+
         return {
             data: await cursor.skip(skip).limit(limit).toArray(),
             total: await cursor.count(),
@@ -29,27 +78,13 @@ export default (db) => {
         sortDir,
         match,
         facets,
-        searchablefieldNames,
+        searchableFieldNames,
         facetFieldNames,
     ) => {
-        const filters = { removedAt: { $exists: false } };
-
-        if (match && searchablefieldNames.length) {
-            const regexMatch = new RegExp(match);
-            filters.$or = searchablefieldNames.map(name => ({
-                [`versions.${name}`]: { $regex: regexMatch, $options: 'i' },
-            }));
-        }
-        if (facets && Object.keys(facets).length > 0 && facetFieldNames.length) {
-            filters.$and = facetFieldNames.reduce((acc, name) => {
-                if (!facets[name]) return acc;
-
-                return [
-                    ...acc,
-                    { [`versions.${name}`]: facets[name] },
-                ];
-            }, []);
-        }
+        const filters = compose(
+            addMatchToFilters(match, searchableFieldNames),
+            addFacetToFilters(facets, facetFieldNames),
+        )({ removedAt: { $exists: false } });
 
         return collection.findLimitFromSkip(perPage, page * perPage, filters, sortBy, sortDir);
     };
@@ -63,8 +98,16 @@ export default (db) => {
             'contributions.status': status,
         });
 
-    collection.getFindAllStream = () =>
-        collection.find({ removedAt: { $exists: false } }).stream();
+    collection.getFindAllStream = (uri, match, searchableFieldNames, facets, facetFieldNames, sortBy, sortDir) => {
+        const filters = compose(
+            addKeyToFilters('uri', uri),
+            addMatchToFilters(match, searchableFieldNames),
+            addFacetToFilters(facets, facetFieldNames),
+        )({ removedAt: { $exists: false } });
+        const cursor = collection.getFindCursor(filters, sortBy, sortDir);
+
+        return cursor.stream();
+    };
 
     collection.findById = async (id) => {
         const oid = new ObjectID(id);
