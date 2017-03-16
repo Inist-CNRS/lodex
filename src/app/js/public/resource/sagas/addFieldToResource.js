@@ -26,7 +26,6 @@ export function* handleAddFieldToResource({ payload: uri }) {
     }
 
     yield put(addFieldToResourceSuccess(response));
-    yield put(push({ pathname: '/resource', query: { uri } }));
 }
 
 export default function* watchAddFieldToResource() {
