@@ -39,16 +39,16 @@ describe('dataset saga', () => {
         });
 
         it('should select getLoadDatasetPageRequest', () => {
-            expect(saga.next(20).value).toEqual(select(getLoadDatasetPageRequest,
-                'aFilter',
-                [{ field: { name: 'aFacet' }, value: 'aFacetValue' }],
-                {
+            expect(saga.next(20).value).toEqual(select(getLoadDatasetPageRequest, {
+                match: 'aFilter',
+                facets: [{ field: { name: 'aFacet' }, value: 'aFacetValue' }],
+                sort: {
                     sortBy: 'field',
                     sortDir: 'ASC',
                 },
-                10,
-                20,
-            ));
+                page: 10,
+                perPage: 20,
+            }));
         });
 
         it('should call fetchDafetchSagataset with the request', () => {

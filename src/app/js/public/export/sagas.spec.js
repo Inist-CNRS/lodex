@@ -8,7 +8,7 @@ import { fromDataset, fromFacet } from '../selectors';
 
 describe('export saga', () => {
     describe('handleExportPublishedDatasetSuccess', () => {
-        const saga = handleExportPublishedDatasetSuccess({ payload: 'type' });
+        const saga = handleExportPublishedDatasetSuccess({ payload: { type: 'type' } });
 
         it('should select fromFacet.getAppliedFacets', () => {
             expect(saga.next().value).toEqual(select(fromFacet.getAppliedFacets));
@@ -30,16 +30,21 @@ describe('export saga', () => {
         });
 
         it('should call getQueryString', () => {
-            expect(saga.next({ sortBy: 'field', sortDir: 'ASC' }).value).toEqual(call(getQueryString, 'aFilter', [
-                {
-                    field: {
-                        name: 'aFacet',
+            expect(saga.next({ sortBy: 'field', sortDir: 'ASC' }).value).toEqual(call(getQueryString, {
+                match: 'aFilter',
+                facets: [
+                    {
+                        field: {
+                            name: 'aFacet',
+                        },
+                        value: 'aFacetValue',
                     },
-                    value: 'aFacetValue',
+                ],
+                uri: undefined,
+                sort: {
+                    sortBy: 'field',
+                    sortDir: 'ASC',
                 },
-            ], {
-                sortBy: 'field',
-                sortDir: 'ASC',
             }));
         });
 

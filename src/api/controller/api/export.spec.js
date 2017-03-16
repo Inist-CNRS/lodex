@@ -66,7 +66,7 @@ describe('export routes', () => {
         });
 
         it('it call the exporterStreamFactory', () => {
-            expect(exporterStreamFactory).toHaveBeenCalledWith(fields, characteristics, mongoStream, {});
+            expect(exporterStreamFactory).toHaveBeenCalledWith(fields, characteristics, mongoStream, {}, null);
         });
 
         it('it set the body the the exported stream', () => {
