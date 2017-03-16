@@ -24,7 +24,7 @@ export async function exportMiddleware(ctx, type) {
 
         const exportStreamFactory = ctx.getExporter(type);
         const characteristics = await ctx.publishedCharacteristic.findAllVersions();
-        const fields = await ctx.field.find({}).toArray();
+        const fields = await ctx.field.findAll();
 
         const searchableFieldNames = await ctx.field.findSearchableNames();
         const facetFieldNames = await ctx.field.findFacetNames();
@@ -39,7 +39,7 @@ export async function exportMiddleware(ctx, type) {
             sortBy,
             sortDir,
         );
-        const exportStream = exportStreamFactory(fields, characteristics, publishedDatasetStream, ctx.query);
+        const exportStream = exportStreamFactory(fields, characteristics, publishedDatasetStream, ctx.request.query);
 
         exportStream.on('end', () => {
             ctx.db.close();

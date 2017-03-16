@@ -17,10 +17,13 @@ describe('export routes', () => {
             db: {
                 close: createSpy(),
             },
+            request: {
+                query: {},
+            },
             field: {
-                find: createSpy().andReturn({
-                    toArray: () => fields,
-                }),
+                findAll: createSpy().andReturn(fields),
+                findSearchableNames: createSpy().andReturn([]),
+                findFacetNames: createSpy().andReturn([]),
             },
             getExporter: createSpy().andReturn(exporterStreamFactory),
             publishedCharacteristic: {
@@ -63,7 +66,7 @@ describe('export routes', () => {
         });
 
         it('it call the exporterStreamFactory', () => {
-            expect(exporterStreamFactory).toHaveBeenCalledWith(fields, characteristics, mongoStream);
+            expect(exporterStreamFactory).toHaveBeenCalledWith(fields, characteristics, mongoStream, {});
         });
 
         it('it set the body the the exported stream', () => {

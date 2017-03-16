@@ -6,7 +6,7 @@ import compose from 'lodash.compose';
 import { VALIDATED, PROPOSED } from '../../common/propositionStatus';
 
 export const addMatchToFilters = (match, searchableFieldNames) => (filters) => {
-    if (!match || !searchableFieldNames) {
+    if (!match || !searchableFieldNames || !searchableFieldNames.length) {
         return filters;
     }
     const regexMatch = new RegExp(match);
@@ -20,7 +20,7 @@ export const addMatchToFilters = (match, searchableFieldNames) => (filters) => {
 };
 
 export const addFacetToFilters = (facets, facetFieldNames) => (filters) => {
-    if (!facets || !Object.keys(facets).length || !facetFieldNames.length) {
+    if (!facets || !Object.keys(facets).length || !facetFieldNames || !facetFieldNames.length) {
         return filters;
     }
     return {

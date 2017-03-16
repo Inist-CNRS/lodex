@@ -1,6 +1,10 @@
 import expect, { createSpy } from 'expect';
 
-import publishedDataset from './publishedDataset';
+import publishedDataset, {
+    addFacetToFilters,
+    addMatchToFilters,
+    addKeyToFilters,
+} from './publishedDataset';
 import { VALIDATED, PROPOSED } from '../../common/propositionStatus';
 
 describe('publishedDataset', () => {
@@ -257,6 +261,121 @@ describe('publishedDataset', () => {
 
         it('should call count', () => {
             expect(count).toHaveBeenCalled();
+        });
+    });
+
+    describe('addMatchToFilters', () => {
+        it('should add facet to filters', () => {
+            const facets = {
+                facet: 'value',
+                otherFacet: 'other value',
+            };
+            const facetNames = ['facet', 'otherFacet'];
+            expect(addFacetToFilters(facets, facetNames)({
+                filter: 'data',
+            }))
+            .toEqual({
+                filter: 'data',
+                $and: [
+                    { 'versions.facet': 'value' },
+                    { 'versions.otherFacet': 'other value' },
+                ],
+            });
+        });
+
+        it('should ignore facet not in facetNames', () => {
+            const facets = {
+                facet: 'value',
+                otherFacet: 'other value',
+            };
+            const facetNames = ['otherFacet'];
+            expect(addFacetToFilters(facets, facetNames)({
+                filter: 'data',
+            }))
+            .toEqual({
+                filter: 'data',
+                $and: [
+                    { 'versions.otherFacet': 'other value' },
+                ],
+            });
+        });
+
+        it('should return filters if no facets', () => {
+            const facets = null;
+            const facetNames = ['facet', 'otherFacet'];
+            expect(addFacetToFilters(facets, facetNames)({
+                filter: 'data',
+            }))
+            .toEqual({
+                filter: 'data',
+            });
+        });
+
+        it('should return filters if no facets names', () => {
+            const facets = {
+                facet: 'value',
+                otherFacet: 'other value',
+            };
+            const facetNames = null;
+            expect(addFacetToFilters(facets, facetNames)({
+                filter: 'data',
+            }))
+            .toEqual({
+                filter: 'data',
+            });
+        });
+    });
+
+    describe('addMatchToFilters', () => {
+        it('should add match for each searchablefields to filters', () => {
+            const match = 'match';
+            const searchableFields = ['field1', 'field2'];
+            expect(addMatchToFilters(match, searchableFields)({ filter: 'data' }))
+            .toEqual({
+                filter: 'data',
+                $or: [
+                    { 'versions.field1': { $regex: /match/, $options: 'i' } },
+                    { 'versions.field2': { $regex: /match/, $options: 'i' } },
+                ],
+            });
+        });
+
+        it('should return filters if no match', () => {
+            const match = null;
+            const searchableFields = ['field1', 'field2'];
+            expect(addMatchToFilters(match, searchableFields)({ filter: 'data' }))
+            .toEqual({
+                filter: 'data',
+            });
+        });
+
+        it('should return filters if no searchableFields', () => {
+            const match = 'match';
+            const searchableFields = null;
+            expect(addMatchToFilters(match, searchableFields)({ filter: 'data' }))
+            .toEqual({
+                filter: 'data',
+            });
+        });
+    });
+
+    describe('addKeyToFilters', () => {
+        it('should add value at key to filters', () => {
+            expect(addKeyToFilters('key', 'value')({
+                filter: 'data',
+            }))
+            .toEqual({
+                filter: 'data',
+                key: 'value',
+            });
+        });
+        it('should return filters if no values', () => {
+            expect(addKeyToFilters('key', null)({
+                filter: 'data',
+            }))
+            .toEqual({
+                filter: 'data',
+            });
         });
     });
 });
