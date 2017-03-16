@@ -93,7 +93,6 @@ export const ResourceComponent = ({
                     {mode !== 'removed' && <HideResource />}
                 </CardActions>
             </Card>
-            {getDetail(mode)}
         </div>
     );
 };

@@ -2,7 +2,7 @@ import React from 'react';
 import expect from 'expect';
 import { shallow } from 'enzyme';
 
-import { DetailPropertiesComponent } from './DetailProperties';
+import { DetailComponent } from './Detail';
 import Property from '../Property';
 
 describe('DetailPropertiesComponent', () => {
@@ -26,7 +26,7 @@ describe('DetailPropertiesComponent', () => {
             },
         };
 
-        const wrapper = shallow(<DetailPropertiesComponent {...props} />);
+        const wrapper = shallow(<DetailComponent {...props} />);
         const properties = wrapper.find(Property);
         expect(properties.length).toBe(3);
         properties.forEach((element, index) => {

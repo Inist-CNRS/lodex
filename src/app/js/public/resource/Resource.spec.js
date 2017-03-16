@@ -7,8 +7,6 @@ import Loading from '../../lib/Loading';
 import { ResourceComponent } from './Resource';
 import Detail from './Detail';
 import EditDetail from './EditDetail';
-import DatasetCharacteristics from '../characteristic/DatasetCharacteristics';
-import HideDetail from './HideDetail';
 import RemovedDetail from './RemovedDetail';
 
 describe('<Resource />', () => {
@@ -37,7 +35,7 @@ describe('<Resource />', () => {
         expect(wrapper.find('.not-found').length).toEqual(1);
     });
 
-    it('should display Detail and DetailCharacteristic if resource', () => {
+    it('should display Detail if resource', () => {
         const props = {
             loading: false,
             resource: 'resource',
@@ -50,7 +48,6 @@ describe('<Resource />', () => {
         expect(wrapper.find(Loading).length).toEqual(0);
         expect(wrapper.find('.not-found').length).toEqual(0);
         expect(wrapper.find(Detail).length).toEqual(1);
-        expect(wrapper.find(DatasetCharacteristics).length).toEqual(1);
     });
 
     it('should display EditDetail if resource and mode is edit', () => {
@@ -66,24 +63,6 @@ describe('<Resource />', () => {
         />);
         expect(wrapper.find(EditDetail).length).toEqual(1);
         expect(wrapper.find(Detail).length).toEqual(0);
-        expect(wrapper.find(HideDetail).length).toEqual(0);
-        expect(wrapper.find(RemovedDetail).length).toEqual(0);
-    });
-
-    it('should display HideDetail if resource and mode is hide', () => {
-        const props = {
-            mode: 'hide',
-            loading: false,
-            resource: 'resource',
-            p: { t: () => {} },
-        };
-
-        const wrapper = shallow(<ResourceComponent
-            {...props}
-        />);
-        expect(wrapper.find(HideDetail).length).toEqual(1);
-        expect(wrapper.find(Detail).length).toEqual(0);
-        expect(wrapper.find(EditDetail).length).toEqual(0);
         expect(wrapper.find(RemovedDetail).length).toEqual(0);
     });
 
@@ -101,7 +80,6 @@ describe('<Resource />', () => {
         expect(wrapper.find(RemovedDetail).length).toEqual(1);
         expect(wrapper.find(Detail).length).toEqual(0);
         expect(wrapper.find(EditDetail).length).toEqual(0);
-        expect(wrapper.find(HideDetail).length).toEqual(0);
     });
 
     it('should display back to list in link if no datasetTitle', () => {

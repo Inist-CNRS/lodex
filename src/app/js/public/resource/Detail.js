@@ -21,7 +21,7 @@ const styles = {
     })),
 };
 
-export const DetailPropertiesComponent = ({ resource, collectionFields, documentFields }) => (
+export const DetailComponent = ({ resource, collectionFields, documentFields }) => (
     <CardText className="detail-properties" style={styles.container}>
         {collectionFields.map((field, index) => (
             <Property
@@ -42,11 +42,11 @@ export const DetailPropertiesComponent = ({ resource, collectionFields, document
     </CardText>
 );
 
-DetailPropertiesComponent.defaultProps = {
+DetailComponent.defaultProps = {
     resource: null,
 };
 
-DetailPropertiesComponent.propTypes = {
+DetailComponent.propTypes = {
     resource: PropTypes.shape({}),
     collectionFields: PropTypes.arrayOf(PropTypes.object).isRequired,
     documentFields: PropTypes.arrayOf(PropTypes.object).isRequired,
@@ -60,4 +60,4 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {};
 
-export default connect(mapStateToProps, mapDispatchToProps)(DetailPropertiesComponent);
+export default connect(mapStateToProps, mapDispatchToProps)(DetailComponent);
