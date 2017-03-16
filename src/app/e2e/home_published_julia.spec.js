@@ -85,8 +85,10 @@ describe('Home page with published data when logged as Julia', function homePubl
             elementTextIs('.detail .property.best_friend_of > .property_scheme', 'http://www.w3.org/ns/person',
             DEFAULT_WAIT_TIMEOUT),
         );
-        await driver.wait(elementTextIs('.detail .property.best_friend_of .property_value', 'MERIADOC', DEFAULT_WAIT_TIMEOUT));
-        await driver.wait(elementTextIs('.detail .property.best_friend_of .property_language', '(Français)', DEFAULT_WAIT_TIMEOUT));
+        await driver.wait(
+            elementTextIs('.detail .property.best_friend_of .property_value', 'MERIADOC', DEFAULT_WAIT_TIMEOUT));
+        await driver.wait(
+            elementTextIs('.detail .property.best_friend_of .property_language', '(Français)', DEFAULT_WAIT_TIMEOUT));
     });
 
     it('should allow to edit resource properties', async () => {
