@@ -4,7 +4,7 @@ import withHandlers from 'recompose/withHandlers';
 import translate from 'redux-polyglot/translate';
 import MenuItem from 'material-ui/MenuItem';
 
-import { polyglot as polyglotPropTypes } from '../../propTypes';
+import { polyglot as polyglotPropTypes } from '../propTypes';
 
 export const ExportMenuItemComponent = ({ type, p: polyglot, handleClick }) => (
     <MenuItem

@@ -15,6 +15,11 @@ describe('Admin', () => {
         before(async () => {
             await clear(); // Had to ensure clear state for unknown reason
             await loadFixtures(fixtures);
+
+            await driver.get('http://localhost:3100/admin');
+            await driver.executeScript('return localStorage.clear();');
+            await driver.executeScript('return sessionStorage.clear();');
+
             await loginAsJulia('/admin', '/');
         });
 

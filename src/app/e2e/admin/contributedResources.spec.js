@@ -166,6 +166,7 @@ describe('Admin', () => {
 
         after(async () => {
             await clear();
+            await driver.executeScript('localStorage.clear();');
             await driver.executeScript('sessionStorage.clear();');
         });
     });

@@ -2,19 +2,12 @@ import React, { Component, PropTypes } from 'react';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
-import { CardHeader, CardText } from 'material-ui/Card';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
-
-import {
-    publish as publishAction,
-} from './';
+import { publish as publishAction } from './';
 import { fromFields, fromPublish, fromPublication } from '../selectors';
-import Alert from '../../lib/Alert';
-import Card from '../../lib/Card';
 import ButtonWithStatus from '../../lib/ButtonWithStatus';
 import { loadField } from '../fields';
-import Validation from './Validation';
 
 const styles = {
     title: {
@@ -22,11 +15,13 @@ const styles = {
         lineHeight: '36px',
     },
     button: {
-        float: 'right',
+        marginLeft: 4,
+        marginRight: 4,
+        marginTop: 4,
     },
 };
 
-export class PublishComponent extends Component {
+export class PublishButtonComponent extends Component {
     componentWillMount() {
         this.props.loadField();
     }
@@ -38,34 +33,23 @@ export class PublishComponent extends Component {
     render() {
         const { canPublish, error, isPublishing, p: polyglot, published } = this.props;
         return (
-            <Card>
-                <CardHeader
-                    title={polyglot.t('publication')}
-                    subtitle={polyglot.t('publication_explanations')}
-                    titleStyle={styles.title}
-                >
-                    <ButtonWithStatus
-                        className="btn-publish"
-                        loading={isPublishing}
-                        error={error}
-                        success={published}
-                        label={polyglot.t('publish')}
-                        onClick={this.handleClick}
-                        secondary
-                        disabled={!canPublish}
-                        style={styles.button}
-                    />
-                </CardHeader>
-                <CardText>
-                    {error && <Alert><p>{error}</p></Alert>}
-                    {!canPublish && <Validation />}
-                </CardText>
-            </Card>
+            <ButtonWithStatus
+                raised
+                backgroundColor="#a4c639"
+                className="btn-publish"
+                loading={isPublishing}
+                error={error}
+                success={published}
+                label={polyglot.t('publish')}
+                onClick={this.handleClick}
+                disabled={!canPublish}
+                style={styles.button}
+            />
         );
     }
 }
 
-PublishComponent.propTypes = {
+PublishButtonComponent.propTypes = {
     canPublish: PropTypes.bool.isRequired,
     error: PropTypes.string,
     isPublishing: PropTypes.bool.isRequired,
@@ -75,7 +59,7 @@ PublishComponent.propTypes = {
     loadField: PropTypes.func.isRequired,
 };
 
-PublishComponent.defaultProps = {
+PublishButtonComponent.defaultProps = {
     error: null,
 };
 
@@ -94,4 +78,4 @@ const mapDispatchToProps = ({
 export default compose(
     connect(mapStateToProps, mapDispatchToProps),
     translate,
-)(PublishComponent);
+)(PublishButtonComponent);
