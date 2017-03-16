@@ -1,5 +1,6 @@
 import Koa from 'koa';
 import route from 'koa-route';
+import { host } from 'config';
 
 import exporters from '../../exporters';
 
@@ -39,7 +40,14 @@ export async function exportMiddleware(ctx, type) {
             sortBy,
             sortDir,
         );
-        const exportStream = exportStreamFactory(fields, characteristics, publishedDatasetStream, ctx.request.query);
+
+        const exportStream = exportStreamFactory(
+            fields,
+            characteristics,
+            publishedDatasetStream,
+            ctx.request.query,
+            host,
+        );
 
         exportStream.on('end', () => {
             ctx.db.close();
