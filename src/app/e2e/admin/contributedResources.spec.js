@@ -91,7 +91,7 @@ describe('Admin', () => {
             await driver.wait(elementIsClicked(reviewButton), DEFAULT_WAIT_TIMEOUT);
             await driver.wait(until.elementLocated(By.css('.title')));
             const title = '.title, h1';
-            driver.wait(elementTextIs(title, '3'), DEFAULT_WAIT_TIMEOUT);
+            driver.wait(elementTextIs(title, '3', DEFAULT_WAIT_TIMEOUT));
         });
 
         it('should display note striked out with a moderate butoon on REJECTED', async () => {

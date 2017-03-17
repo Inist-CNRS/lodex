@@ -88,7 +88,7 @@ describe('Admin', () => {
                     '',
                 ];
                 await Promise.all(tds.slice(0, 3).map((td, index) => // last td is the remove button
-                    driver.wait(elementTextIs(td, expectedTexts[index]), DEFAULT_WAIT_TIMEOUT)),
+                    driver.wait(elementTextIs(td, expectedTexts[index], DEFAULT_WAIT_TIMEOUT))),
                 );
             });
 
@@ -97,7 +97,7 @@ describe('Admin', () => {
                 expect(tds.length).toBe(5);
                 await Promise.all(tds.slice(0, 3).map(td => // last td is the remove button
                     driver.wait(
-                        elementTextMatches(td, /rock|paper|scissor|invalid_reference/), DEFAULT_WAIT_TIMEOUT),
+                        elementTextMatches(td, /rock|paper|scissor|invalid_reference/, DEFAULT_WAIT_TIMEOUT)),
                     ),
                 );
             });
@@ -113,7 +113,7 @@ describe('Admin', () => {
                     'Rock-Paper-Scissor',
                 ];
                 await Promise.all(tds.slice(0, 3).map((td, index) => // last td is the remove button
-                    driver.wait(elementTextIs(td, expectedTexts[index]), DEFAULT_WAIT_TIMEOUT)),
+                    driver.wait(elementTextIs(td, expectedTexts[index], DEFAULT_WAIT_TIMEOUT))),
                 );
             });
 
@@ -122,7 +122,7 @@ describe('Admin', () => {
                     By.css('.publication-preview th .completes_title'),
                 ), DEFAULT_WAIT_TIMEOUT);
                 const th = '.publication-preview th:nth-child(5) .completes_title';
-                await driver.wait(elementTextIs(th, 'Completes Title'), DEFAULT_WAIT_TIMEOUT);
+                await driver.wait(elementTextIs(th, 'Completes Title', DEFAULT_WAIT_TIMEOUT));
 
                 const tds = await driver.findElements(By.css('.publication-preview tr td:nth-child(5)'));
                 expect(tds.length).toBe(5);
@@ -134,7 +134,7 @@ describe('Admin', () => {
                     'Zero-sum hand game',
                 ];
                 await Promise.all(tds.slice(0, 3).map((td, index) => // last td is the remove button
-                    driver.wait(elementTextIs(td, expectedTexts[index]), DEFAULT_WAIT_TIMEOUT)),
+                    driver.wait(elementTextIs(td, expectedTexts[index], DEFAULT_WAIT_TIMEOUT))),
                 );
             });
         });
