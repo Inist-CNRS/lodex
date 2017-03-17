@@ -91,7 +91,8 @@ describe('Home page with published data when logged as Julia', function homePubl
             elementTextIs('.detail .property.best_friend_of .property_language', '(Français)', DEFAULT_WAIT_TIMEOUT));
     });
 
-    it('should allow to edit resource properties', async () => {
+    // NOTE: SKipped until new edit button on individual field is implemented
+    it.skip('should allow to edit resource properties', async () => {
         await driver.findElement(By.css('.edit-resource')).click();
         await driver.wait(until.elementLocated(By.css('.edit-detail')), DEFAULT_WAIT_TIMEOUT);
         const form = driver.findElement(By.css('#resource_form'));
@@ -108,7 +109,8 @@ describe('Home page with published data when logged as Julia', function homePubl
         await driver.findElement(By.css('.save-resource')).click();
     });
 
-    it('should save and return to resource page', async () => {
+    // NOTE: SKipped until new edit button on individual field is implemented
+    it.skip('should save and return to resource page', async () => {
         await driver.wait(until.elementLocated(By.css('.detail')), DEFAULT_WAIT_TIMEOUT);
 
         const fullnameLabel = '.detail .property.full_name .property_label';
@@ -143,8 +145,10 @@ describe('Home page with published data when logged as Julia', function homePubl
     });
 
     it('should go to hide page', async () => {
-        await driver.findElement(By.css('.hide-resource')).click();
-        await driver.wait(until.elementLocated(By.css('.hide-detail')), DEFAULT_WAIT_TIMEOUT);
+        await driver.wait(until.elementLocated(By.css('#btn-hide-resource')));
+        const button = await driver.findElement(By.css('#btn-hide-resource'));
+        await driver.executeScript('document.getElementById("btn-hide-resource").scrollIntoView(true);');
+        await driver.wait(elementIsClicked(button));
         const form = driver.findElement(By.css('#hide_resource_form'));
         const reason = form.findElement(By.css('textarea[name=reason]'));
 

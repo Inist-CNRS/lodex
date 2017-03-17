@@ -22,7 +22,7 @@ const styles = {
 };
 
 export const DetailComponent = ({ resource, collectionFields, documentFields }) => (
-    <CardText className="detail-properties" style={styles.container}>
+    <CardText className="detail" style={styles.container}>
         {collectionFields.map((field, index) => (
             <Property
                 key={field.name}

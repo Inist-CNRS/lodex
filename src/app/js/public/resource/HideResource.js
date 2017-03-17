@@ -29,7 +29,7 @@ export const HideResourceComponent = ({ handleClose, handleOpen, handleSubmit, s
     return (
         <div style={style}>
             <FlatButton
-                className={'hide-resource'}
+                id="btn-hide-resource"
                 label={polyglot.t('hide')}
                 primary
                 onClick={handleOpen}

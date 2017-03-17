@@ -80,8 +80,9 @@ export default compose(
             event.preventDefault();
             setShow(false);
         },
-        handleSubmit: ({ submit }) => () => {
+        handleSubmit: ({ setShow, submit }) => () => {
             submit(NEW_RESOURCE_FIELD_FORM_NAME);
+            setShow(false);
         },
     }),
     translate,
