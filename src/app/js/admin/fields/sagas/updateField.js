@@ -1,23 +1,17 @@
 import { call, put, select, takeLatest } from 'redux-saga/effects';
-import {
-    CHANGE as REDUX_FORM_CHANGE,
-    ARRAY_INSERT as REDUX_FORM_ARRAY_INSERT,
-    ARRAY_REMOVE as REDUX_FORM_ARRAY_REMOVE,
-} from 'redux-form/lib/actionTypes';
+
 import {
     getFieldFormData,
     updateFieldError,
     updateFieldSuccess,
+    SAVE_FIELD,
 } from '../';
 import { getUpdateFieldRequest } from '../../../fetch';
 import prepareTransformers from './prepareTransformers';
 
 import fetchSaga from '../../../lib/fetchSaga';
 
-export function* handleUpdateField({ meta: { form } }) {
-    if (form !== 'field') {
-        return;
-    }
+export function* handleUpdateField() {
     const fieldData = yield select(getFieldFormData);
     fieldData.transformers = yield call(prepareTransformers, fieldData.transformers);
 
@@ -34,8 +28,6 @@ export function* handleUpdateField({ meta: { form } }) {
 
 export default function* watchLoadField() {
     yield takeLatest([
-        REDUX_FORM_CHANGE,
-        REDUX_FORM_ARRAY_INSERT,
-        REDUX_FORM_ARRAY_REMOVE,
+        SAVE_FIELD,
     ], handleUpdateField);
 }

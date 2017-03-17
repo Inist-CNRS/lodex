@@ -12,7 +12,6 @@ import FormSelectField from '../../lib/FormSelectField';
 import SchemeAutoComplete from '../../lib/SchemeAutoComplete';
 import {
     FIELD_FORM_NAME,
-    saveField,
 } from './';
 import { fromFields } from '../selectors';
 import Alert from '../../lib/Alert';
@@ -131,12 +130,8 @@ const mapStateToProps = state => ({
     fields: fromFields.getFieldsExceptEdited(state),
 });
 
-const mapDispatchToProps = {
-    handleSubmit: saveField,
-};
-
 export default compose(
-    connect(mapStateToProps, mapDispatchToProps),
+    connect(mapStateToProps),
     reduxForm({
         form: FIELD_FORM_NAME,
         validate,

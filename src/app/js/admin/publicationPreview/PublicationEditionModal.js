@@ -4,10 +4,13 @@ import withHandlers from 'recompose/withHandlers';
 import translate from 'redux-polyglot/translate';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
+import { connect } from 'react-redux';
 
 import PublicationExcerpt from './PublicationExcerpt';
 import FieldForm from '../fields/FieldForm';
+import { saveField } from '../fields';
 import { polyglot as polyglotPropTypes, field as fieldPropTypes } from '../../propTypes';
+
 
 const styles = {
     container: {
@@ -31,8 +34,14 @@ const styles = {
     },
 };
 
-const PublicationEditionComponent = ({ editedColumn, lines, onExitEdition, p: polyglot }) => {
+const PublicationEditionComponent = ({ editedColumn, lines, onSaveEdition, onExitEdition, p: polyglot }) => {
     const actions = [
+        <FlatButton
+            className="btn-exit-column-edition"
+            label={polyglot.t('save')}
+            primary
+            onTouchTap={onSaveEdition}
+        />,
         <FlatButton
             className="btn-exit-column-edition"
             label={polyglot.t('close')}
@@ -70,10 +79,16 @@ PublicationEditionComponent.propTypes = {
     editedColumn: fieldPropTypes.isRequired,
     lines: PropTypes.arrayOf(PropTypes.object).isRequired,
     onExitEdition: PropTypes.func.isRequired,
+    onSaveEdition: PropTypes.func.isRequired,
     p: polyglotPropTypes.isRequired,
 };
 
+const mapDispatchToProps = {
+    onSaveEdition: saveField,
+};
+
 export default compose(
+    connect(null, mapDispatchToProps),
     withHandlers({
         onHeaderClick: ({ onHeaderClick }) => () => onHeaderClick(null),
     }),
