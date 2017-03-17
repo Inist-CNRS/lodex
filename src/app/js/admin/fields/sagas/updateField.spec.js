@@ -17,11 +17,6 @@ import {
 
 describe('fields saga', () => {
     describe('handleUpdateField', () => {
-        it('should exit if meta.form is not `field`', () => {
-            const sagaNotField = handleUpdateField({ meta: { form: 'not_field' } });
-            expect(sagaNotField.next().done).toEqual(true);
-        });
-
         const saga = handleUpdateField({ meta: { form: 'field' } });
 
         it('should select getFieldFormData', () => {

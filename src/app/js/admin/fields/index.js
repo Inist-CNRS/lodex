@@ -24,10 +24,6 @@ export const SET_VALIDATION = 'SET_VALIDATION';
 export const SAVE_FIELD = 'SAVE_FIELD';
 export const UPDATE_FIELD_ERROR = 'UPDATE_FIELD_ERROR';
 export const UPDATE_FIELD_SUCCESS = 'UPDATE_FIELD_SUCCESS';
-export const ADD_COMPOSED_OF = 'ADD_COMPOSED_OF';
-export const CLEAR_COMPOSED_OF = 'CLEAR_COMPOSED_OF';
-export const ADD_COMPOSED_OF_FIELD = 'ADD_COMPOSED_OF_FIELD';
-export const REMOVE_COMPOSED_OF_FIELD = 'REMOVE_COMPOSED_OF_FIELD';
 
 export const addField = createAction(ADD_FIELD);
 export const addFieldError = createAction(ADD_FIELD_ERROR);
@@ -44,10 +40,6 @@ export const setValidation = createAction(SET_VALIDATION);
 export const saveField = createAction(SAVE_FIELD);
 export const updateFieldError = createAction(UPDATE_FIELD_ERROR);
 export const updateFieldSuccess = createAction(UPDATE_FIELD_SUCCESS);
-export const addComposedOf = createAction(ADD_COMPOSED_OF);
-export const clearComposedOf = createAction(CLEAR_COMPOSED_OF);
-export const addComposedOfField = createAction(ADD_COMPOSED_OF_FIELD);
-export const removeComposedOfField = createAction(REMOVE_COMPOSED_OF_FIELD);
 
 export const defaultState = {
     byName: {},
@@ -98,84 +90,34 @@ export default handleActions({
         allValid,
         invalidFields,
     }),
-    ADD_COMPOSED_OF: (state) => {
-        const { editedFieldName, byName } = state;
-
-        return {
-            ...state,
-            byName: {
-                ...byName,
-                [editedFieldName]: {
-                    ...byName[editedFieldName],
-                    composedOf: {
-                        separator: ' ',
-                        fields: ['', ''],
-                    },
-                },
-            },
-        };
-    },
-    CLEAR_COMPOSED_OF: (state) => {
-        const { editedFieldName, byName } = state;
-
-        return {
-            ...state,
-            byName: {
-                ...byName,
-                [editedFieldName]: {
-                    ...byName[editedFieldName],
-                    composedOf: null,
-                },
-            },
-        };
-    },
-    ADD_COMPOSED_OF_FIELD: (state) => {
-        const { editedFieldName, byName } = state;
-
-        return {
-            ...state,
-            byName: {
-                ...byName,
-                [editedFieldName]: {
-                    ...byName[editedFieldName],
-                    composedOf: {
-                        separator: ' ',
-                        fields: [
-                            ...byName[editedFieldName].composedOf.fields,
-                            '',
-                        ],
-                    },
-                },
-            },
-        };
-    },
-    REMOVE_COMPOSED_OF_FIELD: (state) => {
-        const { editedFieldName, byName } = state;
-
-        if (byName[editedFieldName].composedOf.fields.length <= 2) {
-            return state;
-        }
-
-        return {
-            ...state,
-            byName: {
-                ...byName,
-                [editedFieldName]: {
-                    ...byName[editedFieldName],
-                    composedOf: {
-                        separator: ' ',
-                        fields: byName[editedFieldName].composedOf.fields.slice(0, -1),
-                    },
-                },
-            },
-        };
-    },
 }, defaultState);
 
 const getFields = ({ byName, list }) => list.map(name => byName[name]);
 const getByName = ({ byName }) => byName;
 
 const getNbFields = ({ list }) => list.length;
+
+const getEditedFieldIndex = (state) => {
+    const index = state.list.indexOf(state.editedFieldName);
+    return index === -1 ? null : index;
+};
+
+const getFieldsForPreview = createSelector(
+    getFields,
+    getEditedFieldIndex,
+    (_, formData) => formData,
+    (fields, editedIndex, formData) => {
+        if (!editedIndex) {
+            return fields;
+        }
+
+        return [
+            ...fields.slice(0, editedIndex - 1),
+            formData,
+            ...fields.slice(editedIndex + 1),
+        ];
+    },
+);
 
 const getEditedField = state => state.byName[state.editedFieldName];
 
@@ -209,7 +151,13 @@ export const getTransformers = () => getTransformersMetas();
 
 export const getTransformerArgs = (state, operation) => getTransformerMetas(operation);
 
-export const getFieldFormData = state => state.form.field.values;
+export const getFieldFormData = (state) => {
+    try {
+        return state.form.field.values;
+    } catch (error) {
+        return null;
+    }
+};
 
 const getValidationFields = state => state.invalidFields;
 
@@ -274,6 +222,7 @@ export const selectors = {
     getCollectionFields,
     getCompletedField,
     getEditedField,
+    getFieldsForPreview,
     getFieldByName,
     getFields,
     getFieldsExceptEdited,

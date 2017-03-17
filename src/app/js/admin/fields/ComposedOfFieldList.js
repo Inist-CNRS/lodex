@@ -1,7 +1,13 @@
 import React, { PropTypes } from 'react';
+import FlatButton from 'material-ui/FlatButton';
 
 import ComposedOfFieldListItem from './ComposedOfFieldListItem';
-import AddComposedOfField from './AddComposedOfField';
+
+const removeField = fields => fields.length > 2 && fields.remove(fields.length - 1);
+const addFields = fields => fields.push({
+    separator: ' ',
+    fields: ['', ''],
+});
 
 export const ComposedOfFieldListComponent = ({ fields }) => (
     <div>
@@ -11,7 +17,14 @@ export const ComposedOfFieldListComponent = ({ fields }) => (
                 fieldName={fieldName}
             />
         ))}
-        <AddComposedOfField />
+        <FlatButton
+            label="+"
+            onClick={() => addFields(event)}
+        />
+        <FlatButton
+            label="-"
+            onClick={() => removeField(fields)}
+        />
     </div>
 );
 

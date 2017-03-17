@@ -9,7 +9,7 @@ import {
     computePreviewSuccess,
     computePreviewError,
 } from './';
-
+import { getFieldFormData } from '../fields';
 import { fromFields, fromParsing } from '../selectors';
 import { handleComputePreview } from './sagas';
 
@@ -25,8 +25,13 @@ describe('publication saga', () => {
             expect(saga.next().value).toEqual(select(getToken));
         });
 
+        it('should select getFieldFormData', () => {
+            expect(saga.next(token).value).toEqual(select(getFieldFormData));
+        });
+
         it('should select fromFields.getFields', () => {
-            expect(saga.next(token).value).toEqual(select(fromFields.getFields));
+            expect(saga.next('field form data').value)
+                .toEqual(select(fromFields.getFieldsForPreview, 'field form data'));
         });
 
         it('should call getDocumentTransformer with correct context and field', () => {
