@@ -16,7 +16,7 @@ describe('Home page', function homeTests() {
         await driver.get('http://localhost:3100/#/login');
     });
 
-    it('shpw the sign-in form', async () => {
+    it('show the sign-in form', async () => {
         await driver.wait(until.elementLocated(By.css('#login_form')), DEFAULT_WAIT_TIMEOUT);
 
         form = await driver.findElement(By.css('#login_form'));
@@ -28,14 +28,28 @@ describe('Home page', function homeTests() {
     });
 
     it('submitting the form with invalid credentials should show an error', async () => {
+        form = await driver.findElement(By.css('#login_form'));
+        username = await driver.findElement(By.css('input[name=username]'));
+        password = await driver.findElement(By.css('input[name=password]'));
+
+        await driver.wait(inputElementIsFocusable(username, true), DEFAULT_WAIT_TIMEOUT);
+        await driver.wait(inputElementIsFocusable(password, true), DEFAULT_WAIT_TIMEOUT);
+
         await username.sendKeys('foo');
         await password.sendKeys('foo');
         await form.submit();
         await driver.wait(until.elementLocated(By.css('.alert')), DEFAULT_WAIT_TIMEOUT);
-        driver.wait(elementTextIs('.alert', 'Unauthorized'), DEFAULT_WAIT_TIMEOUT);
+        await driver.wait(elementTextIs('.alert', 'Unauthorized', DEFAULT_WAIT_TIMEOUT));
     });
 
     it('submitting the form with valid credentials should close it', async () => {
+        form = await driver.findElement(By.css('#login_form'));
+        username = await driver.findElement(By.css('input[name=username]'));
+        password = await driver.findElement(By.css('input[name=password]'));
+
+        await driver.wait(inputElementIsFocusable(username, true), DEFAULT_WAIT_TIMEOUT);
+        await driver.wait(inputElementIsFocusable(password, true), DEFAULT_WAIT_TIMEOUT);
+
         await username.clear();
         await username.sendKeys('user');
         await password.clear();

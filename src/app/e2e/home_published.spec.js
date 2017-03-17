@@ -30,16 +30,16 @@ describe('Home page with published data', function homePublishedDataTests() {
         expect(properties.length).toEqual(2);
 
         const movieLabel = '.dataset-characteristics .property.movie .property_name';
-        driver.wait(elementTextIs(movieLabel, 'Movie'), DEFAULT_WAIT_TIMEOUT);
+        driver.wait(elementTextIs(movieLabel, 'Movie', DEFAULT_WAIT_TIMEOUT));
 
         const movieValue = '.dataset-characteristics .property.movie .property_value';
-        driver.wait(elementTextIs(movieValue, 'LOTR'), DEFAULT_WAIT_TIMEOUT);
+        driver.wait(elementTextIs(movieValue, 'LOTR', DEFAULT_WAIT_TIMEOUT));
 
         const authorLabel = '.dataset-characteristics .property.author.completes_movie .property_name';
-        driver.wait(elementTextIs(authorLabel, 'Author'), DEFAULT_WAIT_TIMEOUT);
+        driver.wait(elementTextIs(authorLabel, 'Author', DEFAULT_WAIT_TIMEOUT));
 
         const authorValue = '.dataset-characteristics .property.author.completes_movie .property_value';
-        driver.wait(elementTextIs(authorValue, 'Peter Jackson'), DEFAULT_WAIT_TIMEOUT);
+        driver.wait(elementTextIs(authorValue, 'Peter Jackson', DEFAULT_WAIT_TIMEOUT));
     });
 
     it('should display the list', async () => {
@@ -48,7 +48,7 @@ describe('Home page with published data', function homePublishedDataTests() {
 
         const expectedHeaders = ['URI', 'NAME', 'FIRSTNAME', 'EMAIL', 'BEST FRIEND OF'];
         await Promise.all(headers.map((header, index) =>
-            driver.wait(elementTextIs(header, expectedHeaders[index]), DEFAULT_WAIT_TIMEOUT),
+            driver.wait(elementTextIs(header, expectedHeaders[index], DEFAULT_WAIT_TIMEOUT)),
         ));
 
         const expectedTds = [
@@ -142,7 +142,7 @@ describe('Home page with published data', function homePublishedDataTests() {
         await filterInput.sendKeys('baggins');
         const spinner = await driver.findElement(By.css('.dataset-loading')).catch(() => null);
         if (spinner) {
-            await driver.wait(stalenessOf(spinner), DEFAULT_WAIT_TIMEOUT);
+            await driver.wait(stalenessOf(spinner, DEFAULT_WAIT_TIMEOUT));
         }
         await driver.wait(until.elementLocated(By.css('.dataset table tbody tr')), DEFAULT_WAIT_TIMEOUT);
 
@@ -171,13 +171,13 @@ describe('Home page with published data', function homePublishedDataTests() {
 
         const spinner = await driver.findElement(By.css('.dataset-loading')).catch(() => null);
         if (spinner) {
-            await driver.wait(stalenessOf(spinner), DEFAULT_WAIT_TIMEOUT);
+            await driver.wait(stalenessOf(spinner, DEFAULT_WAIT_TIMEOUT));
         }
         await driver.wait(until.elementLocated(By.css('.dataset table tbody')), DEFAULT_WAIT_TIMEOUT);
 
         const tbody = '.dataset table tbody';
 
-        await driver.wait(elementTextIs(tbody, 'No matching resource found'), DEFAULT_WAIT_TIMEOUT);
+        await driver.wait(elementTextIs(tbody, 'No matching resource found', DEFAULT_WAIT_TIMEOUT));
     });
 
     it('should clear filter', async () => {
@@ -188,7 +188,7 @@ describe('Home page with published data', function homePublishedDataTests() {
 
         const spinner = await driver.findElement(By.css('.dataset-loading')).catch(() => null);
         if (spinner) {
-            await driver.wait(stalenessOf(spinner), DEFAULT_WAIT_TIMEOUT);
+            await driver.wait(stalenessOf(spinner, DEFAULT_WAIT_TIMEOUT));
         }
         await driver.wait(until.elementLocated(By.css('.dataset table tbody tr')), DEFAULT_WAIT_TIMEOUT);
 
@@ -211,7 +211,7 @@ describe('Home page with published data', function homePublishedDataTests() {
 
         const spinner = await driver.findElement(By.css('.dataset-loading')).catch(() => null);
         if (spinner) {
-            await driver.wait(stalenessOf(spinner), DEFAULT_WAIT_TIMEOUT);
+            await driver.wait(stalenessOf(spinner, DEFAULT_WAIT_TIMEOUT));
         }
         await driver.wait(until.elementLocated(By.css('.dataset table tbody tr')), DEFAULT_WAIT_TIMEOUT);
 
@@ -248,7 +248,7 @@ describe('Home page with published data', function homePublishedDataTests() {
 
         await driver.wait(until.elementLocated(By.css('.title')));
         const title = await driver.findElement(By.css('.title, h1'), DEFAULT_WAIT_TIMEOUT);
-        driver.wait(elementTextIs(title, firstUri), DEFAULT_WAIT_TIMEOUT);
+        driver.wait(elementTextIs(title, firstUri, DEFAULT_WAIT_TIMEOUT));
     });
 
     it('should not display moderate component when loggedOut', async () => {
@@ -260,34 +260,34 @@ describe('Home page with published data', function homePublishedDataTests() {
         await driver.wait(until.elementLocated(By.css('.detail')), DEFAULT_WAIT_TIMEOUT);
 
         const fullnameLabel = '.detail .property.full_name .property_name';
-        await driver.wait(elementTextIs(fullnameLabel, 'Full name'), DEFAULT_WAIT_TIMEOUT);
+        await driver.wait(elementTextIs(fullnameLabel, 'Full name', DEFAULT_WAIT_TIMEOUT));
 
         const fullnameScheme = '.detail .property.full_name > .property_scheme';
-        await driver.wait(elementTextIs(fullnameScheme, 'http://www.w3.org/ns/person'), DEFAULT_WAIT_TIMEOUT);
+        await driver.wait(elementTextIs(fullnameScheme, 'http://www.w3.org/ns/person', DEFAULT_WAIT_TIMEOUT));
 
         const fullnameValue = '.detail .property.full_name .composite_property_value';
-        await driver.wait(elementTextIs(fullnameValue, 'PEREGRIN.TOOK'), DEFAULT_WAIT_TIMEOUT);
+        await driver.wait(elementTextIs(fullnameValue, 'PEREGRIN.TOOK', DEFAULT_WAIT_TIMEOUT));
 
         const mailLabel = '.detail .property.email.completes_fullname .property_name';
-        await driver.wait(elementTextIs(mailLabel, 'Email'), DEFAULT_WAIT_TIMEOUT);
+        await driver.wait(elementTextIs(mailLabel, 'Email', DEFAULT_WAIT_TIMEOUT));
 
         const mailScheme = '.detail .property.email.completes_fullname > .property_scheme';
-        await driver.wait(elementTextIs(mailScheme, 'http://uri4uri.net/vocab'), DEFAULT_WAIT_TIMEOUT);
+        await driver.wait(elementTextIs(mailScheme, 'http://uri4uri.net/vocab', DEFAULT_WAIT_TIMEOUT));
 
         const mailValue = '.detail .property.email.completes_fullname .property_value';
-        await driver.wait(elementTextIs(mailValue, 'peregrin.took@shire.net'), DEFAULT_WAIT_TIMEOUT);
+        await driver.wait(elementTextIs(mailValue, 'peregrin.took@shire.net', DEFAULT_WAIT_TIMEOUT));
 
         const bestFriendLabel = '.detail .property.best_friend_of .property_name';
-        await driver.wait(elementTextIs(bestFriendLabel, 'Best Friend Of'), DEFAULT_WAIT_TIMEOUT);
+        await driver.wait(elementTextIs(bestFriendLabel, 'Best Friend Of', DEFAULT_WAIT_TIMEOUT));
 
         const bestFriendScheme = '.detail .property.best_friend_of > .property_scheme';
-        await driver.wait(elementTextIs(bestFriendScheme, 'http://www.w3.org/ns/person'), DEFAULT_WAIT_TIMEOUT);
+        await driver.wait(elementTextIs(bestFriendScheme, 'http://www.w3.org/ns/person', DEFAULT_WAIT_TIMEOUT));
 
         const bestFriendValue = '.detail .property.best_friend_of .property_value';
-        await driver.wait(elementTextIs(bestFriendValue, 'MERIADOC'), DEFAULT_WAIT_TIMEOUT);
+        await driver.wait(elementTextIs(bestFriendValue, 'MERIADOC', DEFAULT_WAIT_TIMEOUT));
 
         const bestFriendLanguage = '.detail .property.best_friend_of .property_language';
-        await driver.wait(elementTextIs(bestFriendLanguage, '(Français)'), DEFAULT_WAIT_TIMEOUT);
+        await driver.wait(elementTextIs(bestFriendLanguage, '(Français)', DEFAULT_WAIT_TIMEOUT));
     });
 
     it('should allow to add field resource properties', async () => {
@@ -332,13 +332,13 @@ describe('Home page with published data', function homePublishedDataTests() {
         await driver.wait(elementsCountIs('.detail .property', 4), DEFAULT_WAIT_TIMEOUT);
 
         const contributionLabel = '.detail .property.my_contribution .property_name';
-        await driver.wait(elementTextIs(contributionLabel, 'my contribution'), DEFAULT_WAIT_TIMEOUT);
+        await driver.wait(elementTextIs(contributionLabel, 'my contribution', DEFAULT_WAIT_TIMEOUT));
 
         const contributionContributor = '.detail .property.my_contribution .property_contributor';
-        await driver.wait(elementTextIs(contributionContributor, 'Contributed by john'), DEFAULT_WAIT_TIMEOUT);
+        await driver.wait(elementTextIs(contributionContributor, 'Contributed by john', DEFAULT_WAIT_TIMEOUT));
 
         const contributionValue = '.detail .property.my_contribution .property_value';
-        await driver.wait(elementTextIs(contributionValue, 'my value'), DEFAULT_WAIT_TIMEOUT);
+        await driver.wait(elementTextIs(contributionValue, 'my value', DEFAULT_WAIT_TIMEOUT));
     });
 
     after(async () => {
