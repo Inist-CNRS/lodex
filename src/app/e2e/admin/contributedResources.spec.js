@@ -1,10 +1,10 @@
 import { until, By } from 'selenium-webdriver';
 import expect from 'expect';
-import { elementIsClicked, elementTextIs } from 'selenium-smart-wait';
 
 import driver from '../../../common/tests/chromeDriver';
 import { clear, loadFixtures } from '../../../common/tests/fixtures';
 import fixtures from './contributedResources.json';
+import { elementIsClicked } from '../../../common/tests/conditions';
 import loginAsJulia from '../loginAsJulia';
 
 describe('Admin', () => {
@@ -36,13 +36,13 @@ describe('Admin', () => {
         });
 
         it('should filter the validated contributed resources', async () => {
-            const filter = '.contributed_resources .filter';
+            const filter = await driver.findElement(By.css('.contributed_resources .filter'));
             await driver.wait(elementIsClicked(filter), DEFAULT_WAIT_TIMEOUT);
             await driver.sleep(500); // animations
 
             await driver.wait(until.elementLocated(By.css('.filter_VALIDATED')), DEFAULT_WAIT_TIMEOUT);
+            const filterValidated = await driver.findElement(By.css('.filter_VALIDATED'));
 
-            const filterValidated = '.filter_VALIDATED';
             await driver.wait(elementIsClicked(filterValidated), DEFAULT_WAIT_TIMEOUT);
         });
 
@@ -62,13 +62,13 @@ describe('Admin', () => {
         });
 
         it('should filter the rejected contributed resources', async () => {
-            const filter = '.contributed_resources .filter';
+            const filter = await driver.findElement(By.css('.contributed_resources .filter'));
             await driver.wait(elementIsClicked(filter), DEFAULT_WAIT_TIMEOUT);
             await driver.sleep(500); // animations
 
             await driver.wait(until.elementLocated(By.css('.filter_REJECTED')), DEFAULT_WAIT_TIMEOUT);
 
-            const filterRejected = '.filter_REJECTED';
+            const filterRejected = await driver.findElement(By.css('.filter_REJECTED'));
             await driver.wait(elementIsClicked(filterRejected), DEFAULT_WAIT_TIMEOUT);
         });
 
@@ -87,11 +87,11 @@ describe('Admin', () => {
         });
 
         it('should go to resource page when clicking on review', async () => {
-            const reviewButton = '.btn-review-resource';
+            const reviewButton = await driver.findElement(By.css('.btn-review-resource'));
             await driver.wait(elementIsClicked(reviewButton), DEFAULT_WAIT_TIMEOUT);
             await driver.wait(until.elementLocated(By.css('.title')));
-            const title = '.title, h1';
-            driver.wait(elementTextIs(title, '3'), DEFAULT_WAIT_TIMEOUT);
+            const title = await driver.findElement(By.css('.title, h1'), DEFAULT_WAIT_TIMEOUT);
+            driver.wait(until.elementTextIs(title, '3'), DEFAULT_WAIT_TIMEOUT);
         });
 
         it('should display note striked out with a moderate butoon on REJECTED', async () => {
@@ -115,8 +115,9 @@ describe('Admin', () => {
 
         it('should change note to proposed', async () => {
             await driver.wait(until.elementLocated(By.css('.property.note dl')));
-
-            const proposeButton = '.property.note dl .moderate .PROPOSED';
+            const notePropertyDL = await driver.findElement(By.css('.property.note dl'));
+            const moderateButton = await notePropertyDL.findElement(By.css('.moderate'));
+            const proposeButton = await moderateButton.findElement(By.css('.PROPOSED'));
             await driver.wait(elementIsClicked(proposeButton), DEFAULT_WAIT_TIMEOUT);
         });
 
@@ -141,7 +142,9 @@ describe('Admin', () => {
 
         it('should change note to validated', async () => {
             await driver.wait(until.elementLocated(By.css('.property.note dl')));
-            const validatedButton = '.property.note dl .moderate .VALIDATED';
+            const notePropertyDL = await driver.findElement(By.css('.property.note dl'));
+            const moderateButton = await notePropertyDL.findElement(By.css('.moderate'));
+            const validatedButton = await moderateButton.findElement(By.css('.VALIDATED'));
             await driver.wait(elementIsClicked(validatedButton), DEFAULT_WAIT_TIMEOUT);
         });
 
