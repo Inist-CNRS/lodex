@@ -294,7 +294,7 @@ describe('Home page with published data', function homePublishedDataTests() {
         const addFieldResource = await driver.findElement(By.css('.add-field-resource'));
         await driver.wait(elementIsClicked(addFieldResource), DEFAULT_WAIT_TIMEOUT);
 
-        await driver.wait(until.elementLocated(By.css('.detail-properties')), DEFAULT_WAIT_TIMEOUT);
+        await driver.wait(until.elementLocated(By.css('.detail')), DEFAULT_WAIT_TIMEOUT);
         const form = driver.findElement(By.css('#add_field_resource_form'));
 
         await driver.wait(until.elementLocated(By.css('.contributor-name input')), DEFAULT_WAIT_TIMEOUT);

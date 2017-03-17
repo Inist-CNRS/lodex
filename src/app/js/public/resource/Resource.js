@@ -1,10 +1,10 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
-import { compose } from 'recompose';
+import compose from 'recompose/compose';
 import { Link } from 'react-router';
 import HomeIcon from 'material-ui/svg-icons/action/home';
-import { CardText } from 'material-ui/Card';
+import { CardText, CardActions } from 'material-ui/Card';
 
 import {
     fromResource,
@@ -14,11 +14,10 @@ import {
 import Card from '../../lib/Card';
 import Detail from './Detail';
 import EditDetail from './EditDetail';
-import HideDetail from './HideDetail';
 import RemovedDetail from './RemovedDetail';
-import AddFieldDetail from './AddFieldDetail';
+import AddField from './AddField';
+import HideResource from './HideResource';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
-import DatasetCharacteristics from '../characteristic/DatasetCharacteristics';
 import Loading from '../../lib/Loading';
 import ExportMenu from '../../lib/ExportMenu';
 
@@ -27,19 +26,19 @@ const styles = {
         display: 'flex',
         alignItems: 'center',
     },
-    icon: { color: 'black' },
+
+    actions: {
+        display: 'flex',
+        justifyContent: 'flex-end',
+    },
 };
 
 export const getDetail = (mode) => {
     switch (mode) {
     case 'edit':
         return <EditDetail />;
-    case 'hide':
-        return <HideDetail />;
     case 'removed':
         return <RemovedDetail />;
-    case 'add-field':
-        return <AddFieldDetail />;
     case 'view':
     default:
         return <Detail />;
@@ -88,9 +87,12 @@ export const ResourceComponent = ({
                         <ExportMenu uri={resource.uri} iconStyle={styles.icon} />
                     </h1>
                 </CardText>
+                {getDetail(mode)}
+                <CardActions style={styles.actions}>
+                    {mode !== 'removed' && <AddField />}
+                    {mode !== 'removed' && <HideResource />}
+                </CardActions>
             </Card>
-            {getDetail(mode)}
-            <DatasetCharacteristics />
         </div>
     );
 };
