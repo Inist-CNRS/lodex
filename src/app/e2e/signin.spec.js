@@ -1,7 +1,6 @@
 import { until, By } from 'selenium-webdriver';
-import { elementTextIs } from 'selenium-smart-wait';
-
 import driver from '../../common/tests/chromeDriver';
+
 import { inputElementIsFocusable } from '../../common/tests/conditions';
 
 describe('Home page', function homeTests() {
@@ -32,7 +31,8 @@ describe('Home page', function homeTests() {
         await password.sendKeys('foo');
         await form.submit();
         await driver.wait(until.elementLocated(By.css('.alert')), DEFAULT_WAIT_TIMEOUT);
-        driver.wait(elementTextIs('.alert', 'Unauthorized'), DEFAULT_WAIT_TIMEOUT);
+        const alert = await driver.findElement(By.css('.alert'));
+        driver.wait(until.elementTextIs(alert, 'Unauthorized'), DEFAULT_WAIT_TIMEOUT);
     });
 
     it('submitting the form with valid credentials should close it', async () => {

@@ -1,9 +1,9 @@
 import { until, By } from 'selenium-webdriver';
 import expect from 'expect';
 import path from 'path';
-import { elementIsClicked, elementsCountIs, elementTextIs, elementTextMatches } from 'selenium-smart-wait';
 
 import driver from '../../../common/tests/chromeDriver';
+import { elementIsClicked, elementsCountIs } from '../../../common/tests/conditions';
 import { clear } from '../../../common/tests/fixtures';
 import loginAsJulia from '../loginAsJulia';
 
@@ -45,7 +45,7 @@ describe('Admin', () => {
                 await driver.sleep(500);
 
                 await driver.wait(until.elementLocated(By.css('.btn-import-fields')), DEFAULT_WAIT_TIMEOUT);
-                const button = '.btn-import-fields';
+                const button = driver.findElement(By.css('.btn-import-fields'));
                 await driver.wait(elementIsClicked(button));
 
                 await driver.wait(until.elementLocated(By.css('.dialog-import-fields')), DEFAULT_WAIT_TIMEOUT);
@@ -59,7 +59,7 @@ describe('Admin', () => {
                 await driver.sleep(500); // For overlay
 
                 await driver.wait(
-                    elementsCountIs('.publication-preview tr th', 5),
+                    elementsCountIs(By.css('.publication-preview tr th'), 5),
                     DEFAULT_WAIT_TIMEOUT,
                 );
             });
@@ -88,7 +88,7 @@ describe('Admin', () => {
                     '',
                 ];
                 await Promise.all(tds.slice(0, 3).map((td, index) => // last td is the remove button
-                    driver.wait(elementTextIs(td, expectedTexts[index]), DEFAULT_WAIT_TIMEOUT)),
+                    driver.wait(until.elementTextIs(td, expectedTexts[index]), DEFAULT_WAIT_TIMEOUT)),
                 );
             });
 
@@ -97,7 +97,7 @@ describe('Admin', () => {
                 expect(tds.length).toBe(5);
                 await Promise.all(tds.slice(0, 3).map(td => // last td is the remove button
                     driver.wait(
-                        elementTextMatches(td, /rock|paper|scissor|invalid_reference/), DEFAULT_WAIT_TIMEOUT),
+                        until.elementTextMatches(td, /rock|paper|scissor|invalid_reference/), DEFAULT_WAIT_TIMEOUT),
                     ),
                 );
             });
@@ -113,7 +113,7 @@ describe('Admin', () => {
                     'Rock-Paper-Scissor',
                 ];
                 await Promise.all(tds.slice(0, 3).map((td, index) => // last td is the remove button
-                    driver.wait(elementTextIs(td, expectedTexts[index]), DEFAULT_WAIT_TIMEOUT)),
+                    driver.wait(until.elementTextIs(td, expectedTexts[index]), DEFAULT_WAIT_TIMEOUT)),
                 );
             });
 
@@ -121,8 +121,8 @@ describe('Admin', () => {
                 await driver.wait(until.elementLocated(
                     By.css('.publication-preview th .completes_title'),
                 ), DEFAULT_WAIT_TIMEOUT);
-                const th = '.publication-preview th:nth-child(5) .completes_title';
-                await driver.wait(elementTextIs(th, 'Completes Title'), DEFAULT_WAIT_TIMEOUT);
+                const th = await driver.findElement(By.css('.publication-preview th:nth-child(5) .completes_title'));
+                await driver.wait(until.elementTextIs(th, 'Completes Title'), DEFAULT_WAIT_TIMEOUT);
 
                 const tds = await driver.findElements(By.css('.publication-preview tr td:nth-child(5)'));
                 expect(tds.length).toBe(5);
@@ -134,7 +134,7 @@ describe('Admin', () => {
                     'Zero-sum hand game',
                 ];
                 await Promise.all(tds.slice(0, 3).map((td, index) => // last td is the remove button
-                    driver.wait(elementTextIs(td, expectedTexts[index]), DEFAULT_WAIT_TIMEOUT)),
+                    driver.wait(until.elementTextIs(td, expectedTexts[index]), DEFAULT_WAIT_TIMEOUT)),
                 );
             });
         });
