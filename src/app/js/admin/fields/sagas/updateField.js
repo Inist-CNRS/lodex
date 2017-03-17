@@ -7,13 +7,11 @@ import {
     SAVE_FIELD,
 } from '../';
 import { getUpdateFieldRequest } from '../../../fetch';
-import prepareTransformers from './prepareTransformers';
 
 import fetchSaga from '../../../lib/fetchSaga';
 
 export function* handleUpdateField() {
     const fieldData = yield select(getFieldFormData);
-    fieldData.transformers = yield call(prepareTransformers, fieldData.transformers);
 
     const request = yield select(getUpdateFieldRequest, fieldData);
     const { error, response } = yield call(fetchSaga, request);

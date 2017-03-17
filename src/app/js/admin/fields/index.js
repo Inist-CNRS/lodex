@@ -24,6 +24,7 @@ export const SET_VALIDATION = 'SET_VALIDATION';
 export const SAVE_FIELD = 'SAVE_FIELD';
 export const UPDATE_FIELD_ERROR = 'UPDATE_FIELD_ERROR';
 export const UPDATE_FIELD_SUCCESS = 'UPDATE_FIELD_SUCCESS';
+export const CHANGE_OPERATION = 'CHANGE_OPERATION';
 
 export const addField = createAction(ADD_FIELD);
 export const addFieldError = createAction(ADD_FIELD_ERROR);
@@ -40,6 +41,7 @@ export const setValidation = createAction(SET_VALIDATION);
 export const saveField = createAction(SAVE_FIELD);
 export const updateFieldError = createAction(UPDATE_FIELD_ERROR);
 export const updateFieldSuccess = createAction(UPDATE_FIELD_SUCCESS);
+export const changeOperation = createAction(CHANGE_OPERATION);
 
 export const defaultState = {
     byName: {},
@@ -107,7 +109,7 @@ const getFieldsForPreview = createSelector(
     getEditedFieldIndex,
     (_, formData) => formData,
     (fields, editedIndex, formData) => {
-        if (!editedIndex) {
+        if (!editedIndex || !formData) {
             return fields;
         }
 

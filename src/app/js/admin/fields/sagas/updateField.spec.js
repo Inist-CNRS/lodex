@@ -9,7 +9,6 @@ import {
     updateFieldSuccess,
 } from '../';
 import { getUpdateFieldRequest } from '../../../fetch';
-import prepareTransformers from './prepareTransformers';
 
 import {
     handleUpdateField,
@@ -23,16 +22,8 @@ describe('fields saga', () => {
             expect(saga.next().value).toEqual(select(getFieldFormData));
         });
 
-        it('should call prepareTransformers', () => {
-            expect(saga.next({
-                transformers: 'transformers',
-            }).value).toEqual(call(prepareTransformers, 'transformers'));
-        });
-
         it('should select getUpdateFieldRequest', () => {
-            expect(saga.next('updated_transformers').value).toEqual(select(getUpdateFieldRequest, {
-                transformers: 'updated_transformers',
-            }));
+            expect(saga.next('field form data').value).toEqual(select(getUpdateFieldRequest, 'field form data'));
         });
 
         it('should call fetchSaga with the request', () => {
@@ -46,7 +37,6 @@ describe('fields saga', () => {
         it('should put updateFieldError action with error if any', () => {
             const failedSaga = handleUpdateField({ meta: { form: 'field' } });
             failedSaga.next();
-            failedSaga.next({});
             failedSaga.next();
             failedSaga.next();
             expect(failedSaga.next({ error: 'foo' }).value)

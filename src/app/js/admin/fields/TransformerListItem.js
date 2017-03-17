@@ -11,6 +11,7 @@ import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { fromFields } from '../selectors';
 import FormSelectField from '../../lib/FormSelectField';
 import TransformerArgList from './TransformerArgList';
+import { changeOperation } from './';
 
 const styles = {
     container: {
@@ -19,12 +20,13 @@ const styles = {
     },
 };
 
-const TransformerListItem = ({ availableTransformers, fieldName, onRemove, p: polyglot }) => (
+const TransformerListItem = ({ availableTransformers, fieldName, onRemove, p: polyglot, onChangeOperation }) => (
     <div style={styles.container}>
         <Field
             className="operation"
             name={`${fieldName}.operation`}
             type="text"
+            onChange={(_, operation) => onChangeOperation({ operation, fieldName })}
             component={FormSelectField}
             label={polyglot.t('select_an_operation')}
         >
@@ -47,6 +49,7 @@ TransformerListItem.propTypes = {
         name: PropTypes.string.isRequired,
         args: PropTypes.arrayOf(PropTypes.any).isRequired,
     })).isRequired,
+    onChangeOperation: PropTypes.func.isRequired,
     fieldName: PropTypes.string.isRequired,
     onRemove: PropTypes.func.isRequired,
     p: polyglotPropTypes.isRequired,
@@ -57,7 +60,11 @@ const mapStateToProps = (state, ownProps) => ({
     transformerArgs: fromFields.getTransformerArgs(state, ownProps.operation),
 });
 
+const mapDispatchToProps = {
+    onChangeOperation: changeOperation,
+};
+
 export default compose(
-    connect(mapStateToProps),
+    connect(mapStateToProps, mapDispatchToProps),
     translate,
 )(TransformerListItem);
