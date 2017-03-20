@@ -8,7 +8,6 @@ import memoize from 'lodash.memoize';
 import { fromResource } from './selectors';
 import { field as fieldPropTypes } from '../propTypes';
 import CompositeProperty from './CompositeProperty';
-import { languages } from '../../../../config.json';
 import propositionStatus, { REJECTED } from '../../../common/propositionStatus';
 import ModerateButton from './ModerateButton';
 import { changeFieldStatus } from './resource';
@@ -29,9 +28,10 @@ const styles = {
         textDecoration: status === REJECTED ? 'line-through' : 'none',
     })),
     language: {
-        marginLeft: '0.5rem',
+        marginRight: '1rem',
         fontSize: '0.75em',
         color: 'grey',
+        textTransform: 'uppercase',
     },
     scheme: {
         fontWeight: 'bold',
@@ -39,9 +39,13 @@ const styles = {
         color: 'grey',
         alignSelf: 'flex-end',
     },
-    schemeContainer: {
+    labelContainer: {
         display: 'flex',
         justifyContent: 'flex-end',
+        alignItems: 'center',
+    },
+    valueContainer: {
+        display: 'flex',
         alignItems: 'center',
     },
 };
@@ -67,7 +71,7 @@ const PropertyComponent = ({
             style={styles.container(style, fieldStatus)}
         >
             <div>
-                <div style={styles.schemeContainer}>
+                <div style={styles.labelContainer}>
                     <span className="property_label" style={styles.label(fieldStatus)}>{field.label}</span>
 
                     <EditField
@@ -77,19 +81,22 @@ const PropertyComponent = ({
                         onSaveProperty={onSaveProperty}
                     />
                 </div>
-                {field.language &&
-                    <span className="property_language" style={styles.language}>
-                        ({languages.find(f => f.code === field.language).label})
-                    </span>
-                }
                 <PropertyContributor fieldName={field.name} fieldStatus={fieldStatus} />
             </div>
-            <CompositeProperty
-                field={field}
-                isSaving={isSaving}
-                resource={resource}
-                onSaveProperty={onSaveProperty}
-            />
+            <div style={styles.valueContainer}>
+                {field.language &&
+                    <span className="property_language" style={styles.language}>
+                        {field.language}
+                    </span>
+                }
+
+                <CompositeProperty
+                    field={field}
+                    isSaving={isSaving}
+                    resource={resource}
+                    onSaveProperty={onSaveProperty}
+                />
+            </div>
             <div className="property_scheme" style={styles.scheme}>{field.scheme}</div>
             <PropertyLinkedFields
                 fieldName={field.name}

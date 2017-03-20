@@ -86,7 +86,7 @@ describe('Home page with published data when logged as Julia', function homePubl
         await driver.wait(
             elementTextIs('.detail .property.best_friend_of .property_value', 'MERIADOC', DEFAULT_WAIT_TIMEOUT));
         await driver.wait(
-            elementTextIs('.detail .property.best_friend_of .property_language', '(Français)', DEFAULT_WAIT_TIMEOUT));
+            elementTextIs('.detail .property.best_friend_of .property_language', 'FR', DEFAULT_WAIT_TIMEOUT));
     });
 
     let form;
@@ -131,7 +131,7 @@ describe('Home page with published data when logged as Julia', function homePubl
         await driver.wait(elementTextIs(bestFriendScheme, 'http://www.w3.org/ns/person', DEFAULT_WAIT_TIMEOUT));
 
         const bestFriendLanguage = '.detail .property.best_friend_of .property_language';
-        await driver.wait(elementTextIs(bestFriendLanguage, '(Français)', DEFAULT_WAIT_TIMEOUT));
+        await driver.wait(elementTextIs(bestFriendLanguage, 'FR', DEFAULT_WAIT_TIMEOUT));
 
         const bestFriendValue = '.detail .property.best_friend_of .property_value';
         await driver.wait(elementTextIs(bestFriendValue, 'MERIADOC', DEFAULT_WAIT_TIMEOUT));
