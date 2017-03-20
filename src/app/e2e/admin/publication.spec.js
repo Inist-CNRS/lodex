@@ -85,7 +85,7 @@ describe('Admin', () => {
                     driver.wait(elementTextMatches(td, /[A-Z0-9]{8}/, DEFAULT_WAIT_TIMEOUT))),
                 );
 
-                const backButton = '.btn-exit-column-edition';
+                const backButton = '.btn-save-column-edition';
                 await driver.wait(elementIsClicked(backButton), DEFAULT_WAIT_TIMEOUT);
             });
         });
@@ -142,7 +142,7 @@ describe('Admin', () => {
                 const identifier = await driver.findElement(By.css('#field_form .transformer_arg_identifier input'));
                 await driver.wait(inputElementIsFocusable(identifier), DEFAULT_WAIT_TIMEOUT);
                 identifier.sendKeys('id');
-                const backButton = '.btn-exit-column-edition';
+                const backButton = '.btn-save-column-edition';
                 await driver.wait(elementIsClicked(backButton), DEFAULT_WAIT_TIMEOUT);
             });
 
@@ -194,7 +194,7 @@ describe('Admin', () => {
                         elementTextMatches(td, /rock|paper|scissor|invalid_reference/, DEFAULT_WAIT_TIMEOUT)),
                     ),
                 );
-                const backButton = '.btn-exit-column-edition';
+                const backButton = '.btn-save-column-edition';
                 await driver.wait(elementIsClicked(backButton), DEFAULT_WAIT_TIMEOUT);
             });
         });
@@ -247,7 +247,7 @@ describe('Admin', () => {
                 await driver.wait(inputElementIsFocusable(value), DEFAULT_WAIT_TIMEOUT);
                 value.sendKeys('Rock-Paper-Scissor');
 
-                const backButton = await driver.findElement(By.css('.btn-exit-column-edition'));
+                const backButton = await driver.findElement(By.css('.btn-save-column-edition'));
                 await driver.wait(elementIsClicked(backButton), DEFAULT_WAIT_TIMEOUT);
             });
 
@@ -338,7 +338,7 @@ describe('Admin', () => {
                 const th = '.publication-excerpt-for-edition th .completes_title';
                 await driver.wait(elementTextMatches(th, /Completes Title/, DEFAULT_WAIT_TIMEOUT));
 
-                const backButton = '.btn-exit-column-edition';
+                const backButton = '.btn-save-column-edition';
                 await driver.wait(elementIsClicked(backButton), DEFAULT_WAIT_TIMEOUT);
             });
 
@@ -399,7 +399,7 @@ describe('Admin', () => {
                         elementTextMatches(td, /rock|paper|scissor|invalid_reference/, DEFAULT_WAIT_TIMEOUT)),
                     ),
                 );
-                const backButton = '.btn-exit-column-edition';
+                const backButton = '.btn-save-column-edition';
                 await driver.wait(elementIsClicked(backButton), DEFAULT_WAIT_TIMEOUT);
             });
 

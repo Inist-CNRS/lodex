@@ -117,27 +117,9 @@ export const FieldFormComponent = ({
     );
 };
 
-FieldFormComponent.defaultProps = {
-    field: {
-        cover: 'collection',
-        label: 'new Field',
-        display_in_list: true,
-        display_in_resource: true,
-        searchable: true,
-        transformers: name ? [{
-            operation: 'COLUMN',
-            args: [{
-                name: 'column',
-                type: 'column',
-                value: name,
-            }],
-        }] : [],
-    },
-};
-
 FieldFormComponent.propTypes = {
     ...reduxFormPropTypes,
-    field: fieldPropTypes,
+    field: fieldPropTypes.isRequired,
     fields: PropTypes.arrayOf(fieldPropTypes).isRequired,
     p: polyglotPropTypes.isRequired,
 };

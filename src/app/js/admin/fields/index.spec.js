@@ -18,23 +18,66 @@ describe('field reducer', () => {
     });
 
     describe('addField', () => {
-        it('should handle the ADD_FIELD action', () => {
+        it('should handle the ADD_FIELD action with no name', () => {
             const state = reducer({
                 byName: {
                     name1: { name: 'name1', label: 'foo' },
                     name2: { name: 'name2', label: 'bar' },
                 },
                 list: ['name1', 'name2'],
-            }, addField({ name: 'new_name', label: 'i am new' }));
+            }, addField());
 
             expect(state).toEqual({
                 ...state,
-                editedFieldName: 'new_name',
-                list: ['name1', 'name2', 'new_name'],
+                editedFieldName: 'new',
+                list: ['name1', 'name2', 'new'],
                 byName: {
                     name2: { name: 'name2', label: 'bar' },
                     name1: { name: 'name1', label: 'foo' },
-                    new_name: { name: 'new_name', label: 'i am new' },
+                    new: {
+                        label: 'newField 3',
+                        cover: 'collection',
+                        name: 'new',
+                        display_in_list: true,
+                        display_in_resource: true,
+                        searchable: true,
+                        transformers: [],
+                    },
+                },
+            });
+        });
+        it('should handle the ADD_FIELD action with name', () => {
+            const state = reducer({
+                byName: {
+                    name1: { name: 'name1', label: 'foo' },
+                    name2: { name: 'name2', label: 'bar' },
+                },
+                list: ['name1', 'name2'],
+            }, addField('target_col'));
+
+            expect(state).toEqual({
+                ...state,
+                editedFieldName: 'new',
+                list: ['name1', 'name2', 'new'],
+                byName: {
+                    name2: { name: 'name2', label: 'bar' },
+                    name1: { name: 'name1', label: 'foo' },
+                    new: {
+                        label: 'target_col',
+                        cover: 'collection',
+                        name: 'new',
+                        display_in_list: true,
+                        display_in_resource: true,
+                        searchable: true,
+                        transformers: [{
+                            operation: 'COLUMN',
+                            args: [{
+                                name: 'column',
+                                type: 'column',
+                                value: 'target_col',
+                            }],
+                        }],
+                    },
                 },
             });
         });
@@ -101,6 +144,7 @@ describe('field reducer', () => {
                     foo: { name: 'foo' },
                     boo: { name: 'boo' },
                 },
+                editedFieldName: 'foo',
             }, saveFieldSuccess({ name: 'foo', updated: true }));
 
             expect(state).toEqual({
@@ -110,6 +154,31 @@ describe('field reducer', () => {
                     foo: { name: 'foo', updated: true },
                     boo: { name: 'boo' },
                 },
+                editedFieldName: null,
+            });
+        });
+
+        it('should handle the SAVE_FIELD_SUCCESS action with new editedField', () => {
+            const state = reducer({
+                list: ['bar', 'foo', 'boo', 'new'],
+                byName: {
+                    bar: { name: 'bar' },
+                    foo: { name: 'foo' },
+                    boo: { name: 'boo' },
+                    new: { name: 'new' },
+                },
+                editedFieldName: 'new',
+            }, saveFieldSuccess({ name: 'new_name', updated: true }));
+
+            expect(state).toEqual({
+                list: ['bar', 'foo', 'boo', 'new_name'],
+                byName: {
+                    bar: { name: 'bar' },
+                    foo: { name: 'foo' },
+                    boo: { name: 'boo' },
+                    new_name: { name: 'new_name', updated: true },
+                },
+                editedFieldName: null,
             });
         });
     });
