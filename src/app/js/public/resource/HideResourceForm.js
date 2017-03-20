@@ -21,7 +21,7 @@ export const HideResourceFormComponent = ({ resource, error, handleSubmit, p: po
         <Field
             name="reason"
             component={FormTextField}
-            label={polyglot.t('reason')}
+            label={polyglot.t('enter_reason')}
             fullWidth
             multiLine
         />

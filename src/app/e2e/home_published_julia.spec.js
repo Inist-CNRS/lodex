@@ -45,11 +45,9 @@ describe('Home page with published data when logged as Julia', function homePubl
 
     it('should go to detail page when clicking on uri', async () => {
         const firstUriLink = await driver.findElement(By.linkText('1'));
-        const firstUri = await firstUriLink.getText();
         await driver.wait(elementIsClicked(firstUriLink), DEFAULT_WAIT_TIMEOUT);
 
-        await driver.wait(until.elementLocated(By.css('.title')));
-        driver.wait(elementTextIs('.title, h1', firstUri, DEFAULT_WAIT_TIMEOUT));
+        await driver.wait(until.elementLocated(By.css('.resource')));
     });
 
     it('should display all resource properties', async () => {

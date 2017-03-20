@@ -2,6 +2,7 @@ import React from 'react';
 import expect from 'expect';
 import { shallow } from 'enzyme';
 import { Link } from 'react-router';
+import FlatButton from 'material-ui/FlatButton';
 
 import Loading from '../../lib/Loading';
 import { ResourceComponent } from './Resource';
@@ -75,8 +76,8 @@ describe('<Resource />', () => {
         const wrapper = shallow(<ResourceComponent
             {...props}
         />);
-        const link = wrapper.find(Link).at(0);
-        expect(link.children().at(1).text()).toBe('back_to_list');
+        const link = wrapper.find(FlatButton).at(0);
+        expect(link.prop('label')).toEqual('back_to_list');
     });
 
     it('should display datasetTitle in link', () => {
@@ -91,42 +92,7 @@ describe('<Resource />', () => {
         const wrapper = shallow(<ResourceComponent
             {...props}
         />);
-        const link = wrapper.find(Link).at(0);
-        expect(link.children().at(1).text()).toBe('dataset title');
-    });
-
-    it('should display resource[titleKey] if titleKey is set', () => {
-        const props = {
-            loading: false,
-            resource: {
-                titleKey: 'resource title',
-            },
-            titleKey: 'titleKey',
-            p: { t: v => v },
-        };
-
-        const wrapper = shallow(<ResourceComponent
-            {...props}
-        />);
-        const h1 = wrapper.find('h1').at(0);
-        expect(h1.text()).toContain('resource title');
-    });
-
-    it('should display resource.uri if titleKey is not set', () => {
-        const props = {
-            loading: false,
-            resource: {
-                titleKey: 'resource title',
-                uri: 'resource uri',
-            },
-            titleKey: null,
-            p: { t: v => v },
-        };
-
-        const wrapper = shallow(<ResourceComponent
-            {...props}
-        />);
-        const h1 = wrapper.find('h1').at(0);
-        expect(h1.text()).toContain('resource uri');
+        const link = wrapper.find(FlatButton).at(0);
+        expect(link.prop('label')).toEqual('dataset title');
     });
 });

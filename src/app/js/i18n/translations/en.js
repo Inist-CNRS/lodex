@@ -65,7 +65,8 @@ export default {
     'error_transformer.operation_invalid': 'Operation %{operation} does not exists',
     'error_transformer.args_invalid': 'Operation %{operation} is invalid : it requires %{args} args',
     remove_resource: 'Remove the resource',
-    reason: 'Enter your reason',
+    enter_reason: 'Enter your reason',
+    reason: 'Reason',
     removed_resource_at: 'This resource was removed %{date}',
     cancel: 'Cancel',
     edit: 'Edit',
@@ -128,4 +129,7 @@ export default {
     Login: 'Sign in',
     show_publication_errors: 'Errors',
     model: 'Model',
+    resource_details: 'Details',
+    resource_share_export: 'Share/Export',
+    resource_ontology: 'Ontology',
 };

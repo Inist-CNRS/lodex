@@ -1,6 +1,6 @@
 import { until, By } from 'selenium-webdriver';
 import expect from 'expect';
-import { elementIsClicked, elementTextIs } from 'selenium-smart-wait';
+import { elementIsClicked } from 'selenium-smart-wait';
 
 import driver from '../../../common/tests/chromeDriver';
 import { clear, loadFixtures } from '../../../common/tests/fixtures';
@@ -89,9 +89,7 @@ describe('Admin', () => {
         it('should go to resource page when clicking on review', async () => {
             const reviewButton = '.btn-review-resource';
             await driver.wait(elementIsClicked(reviewButton), DEFAULT_WAIT_TIMEOUT);
-            await driver.wait(until.elementLocated(By.css('.title')));
-            const title = '.title, h1';
-            driver.wait(elementTextIs(title, '3', DEFAULT_WAIT_TIMEOUT));
+            await driver.wait(until.elementLocated(By.css('.resource')));
         });
 
         it('should display note striked out with a moderate butoon on REJECTED', async () => {
