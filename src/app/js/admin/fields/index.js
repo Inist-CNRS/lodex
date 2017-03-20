@@ -10,8 +10,6 @@ import { getProps } from '../../lib/selectors';
 export const FIELD_FORM_NAME = 'field';
 
 export const ADD_FIELD = 'ADD_FIELD';
-export const ADD_FIELD_ERROR = 'ADD_FIELD_ERROR';
-export const ADD_FIELD_SUCCESS = 'ADD_FIELD_SUCCESS';
 export const EDIT_FIELD = 'EDIT_FIELD';
 export const LOAD_FIELD = 'LOAD_FIELD';
 export const LOAD_FIELD_SUCCESS = 'LOAD_FIELD_SUCCESS';
@@ -27,8 +25,6 @@ export const UPDATE_FIELD_SUCCESS = 'UPDATE_FIELD_SUCCESS';
 export const CHANGE_OPERATION = 'CHANGE_OPERATION';
 
 export const addField = createAction(ADD_FIELD);
-export const addFieldError = createAction(ADD_FIELD_ERROR);
-export const addFieldSuccess = createAction(ADD_FIELD_SUCCESS);
 export const editField = createAction(EDIT_FIELD);
 export const loadField = createAction(LOAD_FIELD);
 export const loadFieldError = createAction(LOAD_FIELD_ERROR);
@@ -52,14 +48,31 @@ export const defaultState = {
     searchable: true,
 };
 
+const getDefaultField = (name, index) => ({
+    cover: 'collection',
+    label: name || `newField ${index + 1}`,
+    name: 'new',
+    display_in_list: true,
+    display_in_resource: true,
+    searchable: true,
+    transformers: name ? [{
+        operation: 'COLUMN',
+        args: [{
+            name: 'column',
+            type: 'column',
+            value: name,
+        }],
+    }] : [],
+});
+
 export default handleActions({
-    ADD_FIELD_SUCCESS: (state, { payload }) => ({
+    ADD_FIELD: (state, { payload: name }) => ({
         ...state,
-        editedFieldName: payload.name,
-        list: [...state.list, payload.name],
+        editedFieldName: 'new',
+        list: [...state.list, 'new'],
         byName: {
             ...state.byName,
-            [payload.name]: payload,
+            new: getDefaultField(name, state.list.length),
         },
     }),
     LOAD_FIELD_SUCCESS: (state, { payload }) => ({
@@ -71,10 +84,20 @@ export default handleActions({
         }), {}),
     }),
     LOAD_FIELD_ERROR: () => defaultState,
-    EDIT_FIELD: (state, { payload }) => ({
-        ...state,
-        editedFieldName: typeof payload === 'number' ? state.list[payload] : payload,
-    }),
+    EDIT_FIELD: (state, { payload }) => {
+        if (!payload && state.editedFieldName === 'new') {
+            return {
+                ...state,
+                editedFieldName: null,
+                byName: omit(state.byName, ['new']),
+                list: [...state.list.slice(0, -1)],
+            };
+        }
+        return {
+            ...state,
+            editedFieldName: typeof payload === 'number' ? state.list[payload] : payload,
+        };
+    },
     REMOVE_FIELD_SUCCESS: (state, { payload: { name: nameToRemove } }) => ({
         ...state,
         list: state.list.filter(name => name !== nameToRemove),
