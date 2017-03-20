@@ -5,6 +5,7 @@ import compose from 'recompose/compose';
 import { Link } from 'react-router';
 import HomeIcon from 'material-ui/svg-icons/action/home';
 import { CardText, CardActions } from 'material-ui/Card';
+import FlatButton from 'material-ui/FlatButton';
 
 import {
     fromResource,
@@ -14,23 +15,8 @@ import {
 import Card from '../../lib/Card';
 import Detail from './Detail';
 import RemovedDetail from './RemovedDetail';
-import AddField from './AddField';
-import HideResource from './HideResource';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import Loading from '../../lib/Loading';
-import ExportMenu from '../../lib/ExportMenu';
-
-const styles = {
-    home: {
-        display: 'flex',
-        alignItems: 'center',
-    },
-
-    actions: {
-        display: 'flex',
-        justifyContent: 'flex-end',
-    },
-};
 
 export const getDetail = (mode) => {
     switch (mode) {
@@ -44,7 +30,6 @@ export const getDetail = (mode) => {
 
 export const ResourceComponent = ({
     resource,
-    titleKey,
     datasetTitleKey,
     characteristics,
     loading,
@@ -56,40 +41,42 @@ export const ResourceComponent = ({
             <Loading className="resource">{polyglot.t('loading_resource')}</Loading>
         );
     }
+
+    const backToListLabel = (datasetTitleKey && characteristics[datasetTitleKey]) || polyglot.t('back_to_list');
+    const backToListButton = (
+        <FlatButton
+            containerElement={<Link to="/home" />}
+            label={backToListLabel}
+            icon={<HomeIcon />}
+        />
+    );
+
     if (!resource) {
         return (
-            <Card className="not-found">
-                <CardText>
-                    <Link to="/home" style={styles.home} >
-                        <HomeIcon />
-                        {(datasetTitleKey && characteristics[datasetTitleKey]) || polyglot.t('back_to_list')}
-                    </Link>
-                    <h1>
-                        {polyglot.t('not_found')}
-                    </h1>
-                </CardText>
-            </Card>
+            <div className="not-found">
+                <Card>
+                    <CardActions>
+                        {backToListButton}
+                    </CardActions>
+                </Card>
+                <Card>
+                    <CardText>
+                        <h1>
+                            {polyglot.t('not_found')}
+                        </h1>
+                    </CardText>
+                </Card>
+            </div>
         );
     }
     return (
         <div className="resource">
             <Card>
-                <CardText>
-                    <Link to="/home" style={styles.home} >
-                        <HomeIcon />
-                        {(datasetTitleKey && characteristics[datasetTitleKey]) || polyglot.t('back_to_list')}
-                    </Link>
-                    <h1 className="title">
-                        {titleKey ? resource[titleKey] : resource.uri}
-                        <ExportMenu uri={resource.uri} iconStyle={styles.icon} />
-                    </h1>
-                </CardText>
-                {getDetail(mode)}
-                <CardActions style={styles.actions}>
-                    {mode !== 'removed' && <AddField />}
-                    {mode !== 'removed' && <HideResource />}
+                <CardActions>
+                    {backToListButton}
                 </CardActions>
             </Card>
+            {getDetail(mode)}
         </div>
     );
 };
@@ -106,7 +93,6 @@ ResourceComponent.propTypes = {
     mode: PropTypes.oneOf(['view', 'edit', 'hide', 'add-field']).isRequired,
     resource: PropTypes.shape({ uri: PropTypes.string.isRequired }),
     p: polyglotPropTypes.isRequired,
-    titleKey: PropTypes.string,
     datasetTitleKey: PropTypes.string,
     characteristics: PropTypes.shape({}),
     loading: PropTypes.bool.isRequired,
@@ -116,7 +102,6 @@ const mapStateToProps = state => ({
     resource: fromResource.getResourceLastVersion(state),
     characteristics: fromCharacteristic.getCharacteristicsAsResource(state),
     datasetTitleKey: fromPublication.getDatasetTitleFieldName(state),
-    titleKey: fromPublication.getTitleFieldName(state),
     fields: fromPublication.getFields(state),
     loading: fromResource.isLoading(state),
 });

@@ -1,17 +1,23 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { CardText } from 'material-ui/Card';
+import translate from 'redux-polyglot/translate';
+import compose from 'recompose/compose';
+import { CardActions, CardText } from 'material-ui/Card';
+import { Tabs, Tab } from 'material-ui/Tabs';
 import memoize from 'lodash.memoize';
+import { cyan500 } from 'material-ui/styles/colors';
+import Card from '../../lib/Card';
 
-import {
-    saveResource as saveResourceAction,
-} from './';
-
+import { saveResource as saveResourceAction } from './';
+import { polyglot as polyglotPropTypes } from '../../propTypes';
 import {
     fromResource,
     fromPublication,
 } from '../selectors';
 import Property from '../Property';
+import AddField from './AddField';
+import HideResource from './HideResource';
+import ExportMenu from '../../lib/ExportMenu';
 
 const styles = {
     container: {
@@ -28,60 +34,105 @@ const styles = {
     property: {
         flexGrow: 2,
     },
+    tab: {
+        backgroundColor: 'transparent',
+        borderBottom: '1px solid rgb(224, 224, 224)',
+        color: 'black',
+    },
+    tabButton: {
+        color: cyan500,
+    },
+    actions: {
+        display: 'flex',
+        justifyContent: 'flex-end',
+    },
+    icon: {
+        color: 'black',
+    },
 };
 
 export const DetailComponent = ({
-    collectionFields,
-    documentFields,
+    fields,
     handleSaveResource,
     isSaving,
+    p: polyglot,
     resource,
-}) => (
-    <CardText className="detail" style={styles.container}>
-        {collectionFields.map((field, index) => (
-            <div key={field.name} style={styles.item(index, collectionFields.length)}>
-                <Property
-                    field={field}
-                    isSaving={isSaving}
-                    onSaveProperty={handleSaveResource}
-                    resource={resource}
-                    style={styles.property}
-                />
-            </div>
-        ))}
-        {documentFields.filter(({ name }) => !!resource[name]).map((field, index) => (
-            <div key={field.name} style={styles.item(index, documentFields.length)}>
-                <Property
-                    field={field}
-                    isSaving={isSaving}
-                    onSaveProperty={handleSaveResource}
-                    resource={resource}
-                    style={styles.property}
-                />
-            </div>
-        ))}
-    </CardText>
-);
+}) => {
+    const topFields = fields.slice(0, 2);
+    const otherFields = fields.slice(2);
+
+    return (
+        <div className="detail">
+            <Card>
+                <CardText style={styles.container}>
+                    {topFields.map((field, index) => (
+                        <div key={field.name} style={styles.item(index, topFields.length)}>
+                            <Property
+                                field={field}
+                                isSaving={isSaving}
+                                onSaveProperty={handleSaveResource}
+                                resource={resource}
+                                style={styles.property}
+                            />
+                        </div>
+                    ))}
+                </CardText>
+            </Card>
+            <Card>
+                <CardText style={styles.container}>
+                    <Tabs tabItemContainerStyle={styles.tab}>
+                        <Tab buttonStyle={styles.tabButton} label={polyglot.t('resource_details')}>
+                            {otherFields.map((field, index) => (
+                                <div key={field.name} style={styles.item(index, otherFields.length)}>
+                                    <Property
+                                        field={field}
+                                        isSaving={isSaving}
+                                        onSaveProperty={handleSaveResource}
+                                        resource={resource}
+                                        style={styles.property}
+                                    />
+                                </div>
+                            ))}
+                        </Tab>
+                        <Tab buttonStyle={styles.tabButton} label={polyglot.t('resource_share_export')} />
+                        <Tab buttonStyle={styles.tabButton} label={polyglot.t('resource_ontology')} />
+                    </Tabs>
+                </CardText>
+                <CardActions style={styles.actions}>
+                    <AddField />
+                    <HideResource />
+                    <ExportMenu uri={resource.uri} iconStyle={styles.icon} />
+                </CardActions>
+            </Card>
+        </div>
+    );
+};
 
 DetailComponent.defaultProps = {
     resource: null,
 };
 
 DetailComponent.propTypes = {
-    collectionFields: PropTypes.arrayOf(PropTypes.object).isRequired,
-    documentFields: PropTypes.arrayOf(PropTypes.object).isRequired,
+    fields: PropTypes.arrayOf(PropTypes.object).isRequired,
     isSaving: PropTypes.bool.isRequired,
     handleSaveResource: PropTypes.func.isRequired,
+    p: polyglotPropTypes.isRequired,
     resource: PropTypes.shape({}),
 };
 
-const mapStateToProps = state => ({
-    resource: fromResource.getResourceLastVersion(state),
-    isSaving: fromResource.isSaving(state),
-    collectionFields: fromPublication.getRootCollectionFields(state),
-    documentFields: fromPublication.getDocumentFields(state),
-});
+const mapStateToProps = (state) => {
+    const resource = fromResource.getResourceLastVersion(state);
+
+    return ({
+        resource,
+        isSaving: fromResource.isSaving(state),
+        fields: fromPublication.getResourceFields(state, resource),
+    });
+};
 
 const mapDispatchToProps = { handleSaveResource: saveResourceAction };
 
-export default connect(mapStateToProps, mapDispatchToProps)(DetailComponent);
+export default compose(
+    connect(mapStateToProps, mapDispatchToProps),
+    translate,
+)(DetailComponent);

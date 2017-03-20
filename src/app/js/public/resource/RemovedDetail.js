@@ -26,7 +26,7 @@ export const RemovedDetailComponent = ({ reason, removedAt, p: polyglot }) => (
         </CardHeader>
         <CardText>
             <dl style={styles.container}>
-                <dt style={styles.reason}>reason</dt>
+                <dt style={styles.reason}>{polyglot.t('reason')}</dt>
                 <dd className="reason">
                     {reason.split('\n').map(line => <p>{line}</p>)}
                 </dd>

@@ -243,12 +243,9 @@ describe('Home page with published data', function homePublishedDataTests() {
 
     it('should go to detail page when clicking on uri', async () => {
         const firstUriLink = await driver.findElement(By.linkText('1'));
-        const firstUri = await firstUriLink.getText();
         await driver.wait(elementIsClicked(firstUriLink), DEFAULT_WAIT_TIMEOUT);
 
-        await driver.wait(until.elementLocated(By.css('.title')));
-        const title = await driver.findElement(By.css('.title, h1'), DEFAULT_WAIT_TIMEOUT);
-        driver.wait(elementTextIs(title, firstUri, DEFAULT_WAIT_TIMEOUT));
+        await driver.wait(until.elementLocated(By.css('.resource')));
     });
 
     it('should not display moderate component when loggedOut', async () => {
