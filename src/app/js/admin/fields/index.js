@@ -86,6 +86,7 @@ export default handleActions({
             ...state.byName,
             [payload.name]: payload,
         },
+        editedFieldName: null,
     }),
     SET_VALIDATION: (state, { payload: { isValid: allValid, fields: invalidFields } }) => ({
         ...state,

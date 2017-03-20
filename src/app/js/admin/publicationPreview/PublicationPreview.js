@@ -7,7 +7,6 @@ import { CardHeader } from 'material-ui/Card';
 import PublicationExcerpt from './PublicationExcerpt';
 import PublicationEditionModal from './PublicationEditionModal';
 
-import Card from '../../lib/Card';
 import { editField, removeField } from '../fields';
 import { polyglot as polyglotPropTypes, field as fieldPropTypes } from '../../propTypes';
 import { fromFields, fromPublicationPreview } from '../selectors';
