@@ -213,6 +213,8 @@ const getCompositeFieldsByField = createSelector(
     },
 );
 
+const getNbColumns = state => state.fields.length;
+
 export const fromPublication = {
     getFields,
     getCollectionFields,
@@ -238,4 +240,5 @@ export const fromPublication = {
     getFacetFields,
     hasFacetFields,
     hasSearchableFields,
+    getNbColumns,
 };
