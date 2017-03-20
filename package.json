@@ -51,6 +51,7 @@
     "jbj": "7.1.4",
     "json-csv": "1.3.0",
     "json-loader": "0.5.4",
+    "jsonld": "^0.4.11",
     "jsonwebtoken": "7.2.1",
     "koa": "2.0.0-alpha.7",
     "koa-bodyparser": "3.2.0",
