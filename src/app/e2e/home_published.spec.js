@@ -284,7 +284,7 @@ describe('Home page with published data', function homePublishedDataTests() {
         await driver.wait(elementTextIs(bestFriendValue, 'MERIADOC', DEFAULT_WAIT_TIMEOUT));
 
         const bestFriendLanguage = '.detail .property.best_friend_of .property_language';
-        await driver.wait(elementTextIs(bestFriendLanguage, '(Français)', DEFAULT_WAIT_TIMEOUT));
+        await driver.wait(elementTextIs(bestFriendLanguage, 'FR', DEFAULT_WAIT_TIMEOUT));
     });
 
     it('should allow to add field resource properties', async () => {
