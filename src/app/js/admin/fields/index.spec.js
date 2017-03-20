@@ -2,12 +2,12 @@ import expect from 'expect';
 import reducer, {
     defaultState,
     selectors,
-    addFieldSuccess,
+    addField,
     editField,
     loadFieldError,
     loadFieldSuccess,
     removeFieldSuccess,
-    updateFieldSuccess,
+    saveFieldSuccess,
     getLineColGetterFromAllFields,
 } from './';
 
@@ -18,14 +18,14 @@ describe('field reducer', () => {
     });
 
     describe('addField', () => {
-        it('should handle the ADD_FIELD_SUCCESS action', () => {
+        it('should handle the ADD_FIELD action', () => {
             const state = reducer({
                 byName: {
                     name1: { name: 'name1', label: 'foo' },
                     name2: { name: 'name2', label: 'bar' },
                 },
                 list: ['name1', 'name2'],
-            }, addFieldSuccess({ name: 'new_name', label: 'i am new' }));
+            }, addField({ name: 'new_name', label: 'i am new' }));
 
             expect(state).toEqual({
                 ...state,
@@ -92,8 +92,8 @@ describe('field reducer', () => {
         });
     });
 
-    describe('updateFieldSuccess', () => {
-        it('should handle the UPDATE_FIELD_SUCCESS action', () => {
+    describe('saveFieldSuccess', () => {
+        it('should handle the SAVE_FIELD_SUCCESS action', () => {
             const state = reducer({
                 list: ['bar', 'foo', 'boo'],
                 byName: {
@@ -101,7 +101,7 @@ describe('field reducer', () => {
                     foo: { name: 'foo' },
                     boo: { name: 'boo' },
                 },
-            }, updateFieldSuccess({ name: 'foo', updated: true }));
+            }, saveFieldSuccess({ name: 'foo', updated: true }));
 
             expect(state).toEqual({
                 list: ['bar', 'foo', 'boo'],

@@ -18,9 +18,9 @@ import {
 } from './';
 import {
     LOAD_FIELD_SUCCESS,
-    ADD_FIELD_SUCCESS,
+    ADD_FIELD,
     REMOVE_FIELD_SUCCESS,
-    UPDATE_FIELD_SUCCESS,
+    SAVE_FIELD_SUCCESS,
     getFieldFormData,
 } from '../fields';
 import { fromFields, fromParsing } from '../selectors';
@@ -49,9 +49,9 @@ export default function* watchComputePreview() {
         COMPUTE_PREVIEW,
         LOAD_PARSING_RESULT_SUCCESS,
         LOAD_FIELD_SUCCESS,
-        ADD_FIELD_SUCCESS,
+        ADD_FIELD,
         REMOVE_FIELD_SUCCESS,
-        UPDATE_FIELD_SUCCESS,
+        SAVE_FIELD_SUCCESS,
         REDUX_FORM_CHANGE,
         REDUX_FORM_ARRAY_INSERT,
         REDUX_FORM_ARRAY_REMOVE,

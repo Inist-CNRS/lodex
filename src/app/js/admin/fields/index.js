@@ -20,8 +20,8 @@ export const REMOVE_FIELD_SUCCESS = 'REMOVE_FIELD_SUCCESS';
 export const REFRESH_FIELD = 'REFRESH_FIELD';
 export const SET_VALIDATION = 'SET_VALIDATION';
 export const SAVE_FIELD = 'SAVE_FIELD';
-export const UPDATE_FIELD_ERROR = 'UPDATE_FIELD_ERROR';
-export const UPDATE_FIELD_SUCCESS = 'UPDATE_FIELD_SUCCESS';
+export const SAVE_FIELD_ERROR = 'SAVE_FIELD_ERROR';
+export const SAVE_FIELD_SUCCESS = 'SAVE_FIELD_SUCCESS';
 export const CHANGE_OPERATION = 'CHANGE_OPERATION';
 
 export const addField = createAction(ADD_FIELD);
@@ -35,8 +35,8 @@ export const removeFieldSuccess = createAction(REMOVE_FIELD_SUCCESS);
 export const refreshField = createAction(REFRESH_FIELD);
 export const setValidation = createAction(SET_VALIDATION);
 export const saveField = createAction(SAVE_FIELD);
-export const updateFieldError = createAction(UPDATE_FIELD_ERROR);
-export const updateFieldSuccess = createAction(UPDATE_FIELD_SUCCESS);
+export const saveFieldError = createAction(SAVE_FIELD_ERROR);
+export const saveFieldSuccess = createAction(SAVE_FIELD_SUCCESS);
 export const changeOperation = createAction(CHANGE_OPERATION);
 
 export const defaultState = {
@@ -103,7 +103,7 @@ export default handleActions({
         list: state.list.filter(name => name !== nameToRemove),
         byName: omit(state.byName, [nameToRemove]),
     }),
-    UPDATE_FIELD_SUCCESS: (state, { payload }) => {
+    SAVE_FIELD_SUCCESS: (state, { payload }) => {
         if (state.editedFieldName === 'new') {
             const newIndex = state.list.indexOf('new');
 

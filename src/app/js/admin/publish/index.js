@@ -6,7 +6,7 @@ import {
     ARRAY_REMOVE as REDUX_FORM_ARRAY_REMOVE,
 } from 'redux-form/lib/actionTypes';
 
-import { UPDATE_FIELD_SUCCESS, UPDATE_FIELD_ERROR } from '../fields';
+import { SAVE_FIELD_SUCCESS, SAVE_FIELD_ERROR } from '../fields';
 
 export const PUBLISH = 'PUBLISH';
 export const PUBLISH_SUCCESS = 'PUBLISH_SUCCESS';
@@ -37,7 +37,11 @@ export default handleActions({
         error: error.message || error,
         loading: false,
     }),
-    [combineActions(REDUX_FORM_CHANGE, REDUX_FORM_ARRAY_INSERT, REDUX_FORM_ARRAY_REMOVE)]: (state, { meta: { form } }) => (
+    [combineActions(
+        REDUX_FORM_CHANGE,
+        REDUX_FORM_ARRAY_INSERT,
+        REDUX_FORM_ARRAY_REMOVE,
+    )]: (state, { meta: { form } }) => (
         form === 'field'
         ? ({
             ...state,
@@ -45,7 +49,7 @@ export default handleActions({
         })
         : state
     ),
-    [combineActions(UPDATE_FIELD_ERROR, UPDATE_FIELD_SUCCESS)]: state => ({
+    [combineActions(SAVE_FIELD_ERROR, SAVE_FIELD_SUCCESS)]: state => ({
         ...state,
         loading: false,
     }),
