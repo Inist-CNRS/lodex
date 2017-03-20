@@ -13,7 +13,6 @@ import {
 } from '../selectors';
 import Card from '../../lib/Card';
 import Detail from './Detail';
-import EditDetail from './EditDetail';
 import RemovedDetail from './RemovedDetail';
 import AddField from './AddField';
 import HideResource from './HideResource';
@@ -35,8 +34,6 @@ const styles = {
 
 export const getDetail = (mode) => {
     switch (mode) {
-    case 'edit':
-        return <EditDetail />;
     case 'removed':
         return <RemovedDetail />;
     case 'view':

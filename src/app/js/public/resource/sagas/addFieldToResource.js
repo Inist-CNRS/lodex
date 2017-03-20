@@ -1,5 +1,4 @@
 import { call, put, select, takeLatest } from 'redux-saga/effects';
-import { push } from 'react-router-redux';
 
 import {
     addFieldToResourceSuccess,

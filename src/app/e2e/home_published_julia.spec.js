@@ -17,23 +17,23 @@ describe('Home page with published data when logged as Julia', function homePubl
         await loginAsJulia('/', '/');
     });
 
-    it('should display the list with an edit button', async () => {
-        await driver.wait(until.elementLocated(By.css('.btn-edit-characteristics')), DEFAULT_WAIT_TIMEOUT);
+    it('should display the list with multiple edit buttons', async () => {
+        await driver.wait(until.elementLocated(By.css('.edit-field.movie')), DEFAULT_WAIT_TIMEOUT);
     });
 
-    it('should display the characteristics edition after clicking the edit button', async () => { // eslint-disable-line
-        await driver.wait(elementIsClicked('.btn-edit-characteristics'), DEFAULT_WAIT_TIMEOUT);
+    it('should display the characteristics edition dialog after clicking the edit button', async () => { // eslint-disable-line
+        await driver.wait(elementIsClicked('.edit-field.movie'), DEFAULT_WAIT_TIMEOUT);
 
-        await driver.wait(until.elementLocated(By.css('.dataset-characteristics-edition')), DEFAULT_WAIT_TIMEOUT);
+        await driver.wait(until.elementLocated(By.css('#field_form')), DEFAULT_WAIT_TIMEOUT);
     });
 
     it('should display the new characteristics after submitting them', async () => {
-        await driver.wait(until.elementLocated(By.css('input[name=movie_value]')), DEFAULT_WAIT_TIMEOUT);
-        const input = await driver.findElement(By.css('input[name=movie_value]'));
+        await driver.wait(until.elementLocated(By.css('input[name=movie]')), DEFAULT_WAIT_TIMEOUT);
+        const input = await driver.findElement(By.css('input[name=movie]'));
         await driver.wait(inputElementIsFocusable(input), DEFAULT_WAIT_TIMEOUT);
         input.sendKeys(' updated');
 
-        const button = await driver.findElement(By.css('.btn-update-characteristics'));
+        const button = await driver.findElement(By.css('.update-field'));
         button.click();
 
         await driver.wait(until.elementLocated(By.css('.dataset-characteristics')), DEFAULT_WAIT_TIMEOUT);
@@ -91,28 +91,23 @@ describe('Home page with published data when logged as Julia', function homePubl
             elementTextIs('.detail .property.best_friend_of .property_language', '(Français)', DEFAULT_WAIT_TIMEOUT));
     });
 
-    // NOTE: SKipped until new edit button on individual field is implemented
-    it.skip('should allow to edit resource properties', async () => {
-        await driver.findElement(By.css('.edit-resource')).click();
-        await driver.wait(until.elementLocated(By.css('.edit-detail')), DEFAULT_WAIT_TIMEOUT);
-        const form = driver.findElement(By.css('#resource_form'));
-        const name = form.findElement(By.css('input[name=name]'));
-        await driver.wait(elementValueIs(name, 'TOOK'), DEFAULT_WAIT_TIMEOUT);
-        const firstname = form.findElement(By.css('input[name=firstname]'));
-        await driver.wait(elementValueIs(firstname, 'PEREGRIN'), DEFAULT_WAIT_TIMEOUT);
+    let form;
+
+    it('should allow to edit resource properties', async () => {
+        await driver.findElement(By.css('.edit-field.email')).click();
+        form = driver.findElement(By.css('#field_form'));
+
         const email = form.findElement(By.css('input[name=email]'));
         await driver.wait(elementValueIs(email, 'peregrin.took@shire.net'), DEFAULT_WAIT_TIMEOUT);
 
         await driver.wait(inputElementIsFocusable(email), DEFAULT_WAIT_TIMEOUT);
         await email.clear();
         await email.sendKeys('peregrin.took@gondor.net');
-        await driver.findElement(By.css('.save-resource')).click();
+        await driver.findElement(By.css('.update-field')).click();
+        await driver.wait(until.stalenessOf(form), DEFAULT_WAIT_TIMEOUT);
     });
 
-    // NOTE: SKipped until new edit button on individual field is implemented
-    it.skip('should save and return to resource page', async () => {
-        await driver.wait(until.elementLocated(By.css('.detail')), DEFAULT_WAIT_TIMEOUT);
-
+    it('should save and return to resource page', async () => {
         const fullnameLabel = '.detail .property.full_name .property_label';
         await driver.wait(elementTextIs(fullnameLabel, 'Full name', DEFAULT_WAIT_TIMEOUT));
 
@@ -149,7 +144,7 @@ describe('Home page with published data when logged as Julia', function homePubl
         const button = await driver.findElement(By.css('#btn-hide-resource'));
         await driver.executeScript('document.getElementById("btn-hide-resource").scrollIntoView(true);');
         await driver.wait(elementIsClicked(button));
-        const form = driver.findElement(By.css('#hide_resource_form'));
+        form = driver.findElement(By.css('#hide_resource_form'));
         const reason = form.findElement(By.css('textarea[name=reason]'));
 
         await driver.wait(inputElementIsFocusable(reason), DEFAULT_WAIT_TIMEOUT);

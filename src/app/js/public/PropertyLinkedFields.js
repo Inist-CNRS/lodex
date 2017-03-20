@@ -17,13 +17,16 @@ const styles = {
         paddingLeft: '2rem',
         marginLeft: '2rem',
         marginTop: '2rem',
-        paddingTop: '2rem',
+        paddingTop: '1rem',
+        paddingBottom: '2rem',
         borderLeft: '5px dotted rgb(224, 224, 224)',
     },
 };
 
 const PropertyLinkedFieldsComponent = ({
     fieldName,
+    isSaving,
+    onSaveProperty,
     linkedFields,
     resource,
 }) => {
@@ -40,7 +43,9 @@ const PropertyLinkedFieldsComponent = ({
                     key={linkedField._id}
                     className={classnames('completes', `completes_${fieldName}`)}
                     field={linkedField}
+                    isSaving={isSaving}
                     resource={resource}
+                    onSaveProperty={onSaveProperty}
                 />
             ))}
         </div>
@@ -49,7 +54,9 @@ const PropertyLinkedFieldsComponent = ({
 
 PropertyLinkedFieldsComponent.propTypes = {
     fieldName: PropTypes.string.isRequired,
+    isSaving: PropTypes.bool.isRequired,
     linkedFields: PropTypes.arrayOf(fieldPropTypes).isRequired,
+    onSaveProperty: PropTypes.func.isRequired,
     resource: PropTypes.shape({}).isRequired,
 };
 

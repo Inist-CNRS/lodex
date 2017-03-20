@@ -1,6 +1,5 @@
 import expect from 'expect';
 import { call, put, select } from 'redux-saga/effects';
-import { push } from 'react-router-redux';
 
 import {
     addFieldToResourceSuccess,

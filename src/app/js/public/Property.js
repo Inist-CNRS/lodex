@@ -15,17 +15,17 @@ import { changeFieldStatus } from './resource';
 import PropertyContributor from './PropertyContributor';
 import PropertyLinkedFields from './PropertyLinkedFields';
 import { isLoggedIn } from '../user';
+import EditField from './EditField';
 
 const styles = {
     container: memoize(style => Object.assign({
         display: 'flex',
         flexDirection: 'column',
-        marginRight: '1rem',
     }, style)),
     label: memoize(status => Object.assign({
         color: grey500,
+        flexGrow: 2,
         fontWeight: 'bold',
-        marginRight: '1rem',
         textDecoration: status === REJECTED ? 'line-through' : 'none',
     })),
     language: {
@@ -37,17 +37,24 @@ const styles = {
         fontWeight: 'bold',
         fontSize: '0.75em',
         color: 'grey',
-        textAlign: 'right',
+        alignSelf: 'flex-end',
+    },
+    schemeContainer: {
+        display: 'flex',
+        justifyContent: 'flex-end',
+        alignItems: 'center',
     },
 };
 
 const PropertyComponent = ({
     className,
     field,
+    isSaving,
     resource,
     fieldStatus,
     loggedIn,
     changeStatus,
+    onSaveProperty,
     style,
 }) => {
     if (!loggedIn && fieldStatus === REJECTED) {
@@ -60,7 +67,16 @@ const PropertyComponent = ({
             style={styles.container(style, fieldStatus)}
         >
             <div>
-                <span className="property_label" style={styles.label(fieldStatus)}>{field.label}</span>
+                <div style={styles.schemeContainer}>
+                    <span className="property_label" style={styles.label(fieldStatus)}>{field.label}</span>
+
+                    <EditField
+                        field={field}
+                        isSaving={isSaving}
+                        resource={resource}
+                        onSaveProperty={onSaveProperty}
+                    />
+                </div>
                 {field.language &&
                     <span className="property_language" style={styles.language}>
                         ({languages.find(f => f.code === field.language).label})
@@ -68,21 +84,33 @@ const PropertyComponent = ({
                 }
                 <PropertyContributor fieldName={field.name} fieldStatus={fieldStatus} />
             </div>
-            <CompositeProperty field={field} resource={resource} />
+            <CompositeProperty
+                field={field}
+                isSaving={isSaving}
+                resource={resource}
+                onSaveProperty={onSaveProperty}
+            />
             <div className="property_scheme" style={styles.scheme}>{field.scheme}</div>
-            <PropertyLinkedFields fieldName={field.name} resource={resource} />
+            <PropertyLinkedFields
+                fieldName={field.name}
+                isSaving={isSaving}
+                resource={resource}
+                onSaveProperty={onSaveProperty}
+            />
             <ModerateButton status={fieldStatus} changeStatus={changeStatus} />
         </div>
     );
 };
 
 PropertyComponent.propTypes = {
+    changeStatus: PropTypes.func.isRequired,
     className: PropTypes.string,
     field: fieldPropTypes.isRequired,
-    resource: PropTypes.shape({}).isRequired,
     fieldStatus: PropTypes.oneOf(propositionStatus),
-    changeStatus: PropTypes.func.isRequired,
+    isSaving: PropTypes.bool.isRequired,
     loggedIn: PropTypes.bool.isRequired,
+    onSaveProperty: PropTypes.func.isRequired,
+    resource: PropTypes.shape({}).isRequired,
     style: PropTypes.object, // eslint-disable-line
 };
 

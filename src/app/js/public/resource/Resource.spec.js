@@ -6,7 +6,6 @@ import { Link } from 'react-router';
 import Loading from '../../lib/Loading';
 import { ResourceComponent } from './Resource';
 import Detail from './Detail';
-import EditDetail from './EditDetail';
 import RemovedDetail from './RemovedDetail';
 
 describe('<Resource />', () => {
@@ -50,22 +49,6 @@ describe('<Resource />', () => {
         expect(wrapper.find(Detail).length).toEqual(1);
     });
 
-    it('should display EditDetail if resource and mode is edit', () => {
-        const props = {
-            mode: 'edit',
-            loading: false,
-            resource: 'resource',
-            p: { t: () => {} },
-        };
-
-        const wrapper = shallow(<ResourceComponent
-            {...props}
-        />);
-        expect(wrapper.find(EditDetail).length).toEqual(1);
-        expect(wrapper.find(Detail).length).toEqual(0);
-        expect(wrapper.find(RemovedDetail).length).toEqual(0);
-    });
-
     it('should display RemovedDetail if resource and mode is removed', () => {
         const props = {
             mode: 'removed',
@@ -79,7 +62,6 @@ describe('<Resource />', () => {
         />);
         expect(wrapper.find(RemovedDetail).length).toEqual(1);
         expect(wrapper.find(Detail).length).toEqual(0);
-        expect(wrapper.find(EditDetail).length).toEqual(0);
     });
 
     it('should display back to list in link if no datasetTitle', () => {

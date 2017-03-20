@@ -3,11 +3,11 @@ import expect from 'expect';
 import { shallow } from 'enzyme';
 import { Field } from 'redux-form';
 
-import { EditDetailsFieldComponent as EditDetailsField } from './EditDetailsField';
-import CompositeEditDetailsField from './CompositeEditDetailsField';
-import FormTextField from '../../lib/FormTextField';
+import { FieldInputComponent as FieldInput } from './FieldInput';
+import CompositeFieldInput from './CompositeFieldInput';
+import FormTextField from '../lib/FormTextField';
 
-describe('EditDetailsField', () => {
+describe('EditFieldInput', () => {
     it('should render CompositeEditDetailsField if field.composedOf is set', () => {
         const props = {
             field: {
@@ -16,8 +16,8 @@ describe('EditDetailsField', () => {
                 composedOf: {},
             },
         };
-        const wrapper = shallow(<EditDetailsField {...props} />);
-        const compositeEditField = wrapper.find(CompositeEditDetailsField);
+        const wrapper = shallow(<FieldInput {...props} />);
+        const compositeEditField = wrapper.find(CompositeFieldInput);
         expect(compositeEditField.length).toBe(1);
         expect(compositeEditField.at(0).props()).toEqual({ field: props.field, label: 'Field' });
     });
@@ -29,8 +29,8 @@ describe('EditDetailsField', () => {
                 label: 'Field',
             },
         };
-        const wrapper = shallow(<EditDetailsField {...props} />);
-        const compositeEditField = wrapper.find(CompositeEditDetailsField);
+        const wrapper = shallow(<FieldInput {...props} />);
+        const compositeEditField = wrapper.find(CompositeFieldInput);
         expect(compositeEditField.length).toBe(0);
 
         const field = wrapper.find(Field);

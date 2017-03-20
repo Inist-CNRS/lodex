@@ -4,18 +4,18 @@ import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 import { Field } from 'redux-form';
 
-import CompositeEditDetailsField from './CompositeEditDetailsField';
-import FormTextField from '../../lib/FormTextField';
+import CompositeFieldInput from './CompositeFieldInput';
+import FormTextField from '../lib/FormTextField';
 import {
     fromPublication,
-} from '../selectors';
+} from './selectors';
 
 import {
     field as fieldPropTypes,
     polyglot as polyglotPropTypes,
-} from '../../propTypes';
+} from '../propTypes';
 
-export const EditDetailsFieldComponent = ({ field, completedField, p: polyglot }) => {
+export const FieldInputComponent = ({ field, completedField, p: polyglot, input }) => {
     let label = field.label;
     if (completedField) {
         label = `${label} (${polyglot.t('complete_field_X', { field: completedField.label })})`;
@@ -23,7 +23,7 @@ export const EditDetailsFieldComponent = ({ field, completedField, p: polyglot }
 
     if (field.composedOf) {
         return (
-            <CompositeEditDetailsField label={label} field={field} />
+            <CompositeFieldInput label={label} field={field} />
         );
     }
 
@@ -35,17 +35,18 @@ export const EditDetailsFieldComponent = ({ field, completedField, p: polyglot }
             disabled={field.name === 'uri'}
             label={label}
             fullWidth
+            {...input}
         />
     );
 };
 
-EditDetailsFieldComponent.propTypes = {
+FieldInputComponent.propTypes = {
     field: fieldPropTypes.isRequired,
     completedField: fieldPropTypes,
     p: polyglotPropTypes.isRequired,
 };
 
-EditDetailsFieldComponent.defaultProps = {
+FieldInputComponent.defaultProps = {
     completedField: null,
 };
 
@@ -56,6 +57,6 @@ const mapStateToProps = (state, { field }) => ({
 const EditDetailsField = compose(
     connect(mapStateToProps),
     translate,
-)(EditDetailsFieldComponent);
+)(FieldInputComponent);
 
 export default EditDetailsField;

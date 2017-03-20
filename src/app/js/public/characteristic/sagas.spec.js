@@ -12,10 +12,12 @@ import { handleUpdateCharacteristics } from './sagas';
 
 describe('characteristic saga', () => {
     describe('handleUpdateCharacteristics', () => {
-        const saga = handleUpdateCharacteristics();
+        const payload = 'characteristics';
+
+        const saga = handleUpdateCharacteristics({ payload });
 
         it('should select getUpdateCharacteristicsRequest', () => {
-            expect(saga.next().value).toEqual(select(getUpdateCharacteristicsRequest));
+            expect(saga.next().value).toEqual(select(getUpdateCharacteristicsRequest, payload));
         });
 
         it('should call fetchPublication with the request', () => {
@@ -33,7 +35,7 @@ describe('characteristic saga', () => {
         });
 
         it('should put loadPublicationError action with error if any', () => {
-            const failedSaga = handleUpdateCharacteristics();
+            const failedSaga = handleUpdateCharacteristics({ payload });
             failedSaga.next();
             failedSaga.next();
             expect(failedSaga.next({ error: 'foo' }).value)

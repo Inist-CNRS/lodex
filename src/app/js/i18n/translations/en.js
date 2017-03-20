@@ -69,6 +69,7 @@ export default {
     removed_resource_at: 'This resource was removed %{date}',
     cancel: 'Cancel',
     edit: 'Edit',
+    edit_field: 'Edit %{field}',
     save: 'Save',
     hide: 'Hide',
     'add-field': 'Add a field',
