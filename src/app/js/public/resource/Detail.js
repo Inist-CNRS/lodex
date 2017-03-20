@@ -18,6 +18,7 @@ import Property from '../Property';
 import AddField from './AddField';
 import HideResource from './HideResource';
 import ExportMenu from '../../lib/ExportMenu';
+import Ontology from '../Ontology';
 
 const styles = {
     container: {
@@ -94,8 +95,10 @@ export const DetailComponent = ({
                                 </div>
                             ))}
                         </Tab>
-                        <Tab buttonStyle={styles.tabButton} label={polyglot.t('resource_share_export')} />
-                        <Tab buttonStyle={styles.tabButton} label={polyglot.t('resource_ontology')} />
+                        <Tab className="tab-resource-export" buttonStyle={styles.tabButton} label={polyglot.t('resource_share_export')} />
+                        <Tab className="tab-resource-ontology" buttonStyle={styles.tabButton} label={polyglot.t('resource_ontology')}>
+                            <Ontology />
+                        </Tab>
                     </Tabs>
                 </CardText>
                 <CardActions style={styles.actions}>
