@@ -37,16 +37,16 @@ const styles = {
 const PublicationEditionComponent = ({ editedColumn, lines, onSaveEdition, onExitEdition, p: polyglot }) => {
     const actions = [
         <FlatButton
+            className="btn-exit-column-edition"
+            label={polyglot.t('cancel')}
+            primary
+            onTouchTap={onExitEdition}
+        />,
+        <FlatButton
             className="btn-save-column-edition"
             label={polyglot.t('save')}
             primary
             onTouchTap={onSaveEdition}
-        />,
-        <FlatButton
-            className="btn-exit-column-edition"
-            label={polyglot.t('close')}
-            primary
-            onTouchTap={onExitEdition}
         />,
     ];
 
