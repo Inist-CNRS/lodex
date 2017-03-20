@@ -399,8 +399,8 @@ describe('Admin', () => {
                         elementTextMatches(td, /rock|paper|scissor|invalid_reference/, DEFAULT_WAIT_TIMEOUT)),
                     ),
                 );
-                const backButton = '.btn-save-column-edition';
-                await driver.wait(elementIsClicked(backButton), DEFAULT_WAIT_TIMEOUT);
+                const saveButton = '.btn-save-column-edition';
+                await driver.wait(elementIsClicked(saveButton), DEFAULT_WAIT_TIMEOUT);
             });
 
             it('should remove column when clicking btn-excerpt-remove-column button for a field', async () => {
@@ -424,6 +424,36 @@ describe('Admin', () => {
                 await Promise.all(tds.slice(0, 3).map((td, index) => // last td is the remove button
                     driver.wait(elementTextIs(td, expectedTexts[index], DEFAULT_WAIT_TIMEOUT))),
                 );
+            });
+        });
+
+        describe('canceling creation', () => {
+            it('should add auto configured column when clicking add-column button for an original field', async () => {
+                const buttonAddColumn = '.btn-add-column';
+                await driver.wait(elementIsClicked(buttonAddColumn), DEFAULT_WAIT_TIMEOUT);
+                await driver.sleep(500); // animations
+
+                const buttonAddColumnFromDataset = '.btn-add-column-from-dataset';
+                await driver.wait(until.elementLocated(By.css(buttonAddColumnFromDataset)));
+                await driver.wait(elementIsClicked(buttonAddColumnFromDataset), DEFAULT_WAIT_TIMEOUT);
+                await driver.sleep(1000); // animations
+
+                const buttonExcerptAddColumnName = '.btn-excerpt-add-column-name';
+                await driver.wait(until.elementLocated(By.css(buttonExcerptAddColumnName)));
+                await driver.wait(elementIsClicked(buttonExcerptAddColumnName), DEFAULT_WAIT_TIMEOUT);
+
+                await driver.wait(until.elementLocated(By.css('#field_form')), DEFAULT_WAIT_TIMEOUT);
+            });
+
+            it('should cancel edition when clicking close', async () => {
+                const cancelButton = '.btn-exit-column-edition';
+                await driver.wait(elementIsClicked(cancelButton), DEFAULT_WAIT_TIMEOUT);
+            });
+
+            it('should not have added the new column', async () => {
+                await driver.wait(until.elementLocated(By.css('.publication-preview')), DEFAULT_WAIT_TIMEOUT);
+                const tds = await driver.findElements(By.css('.publication-preview tr td:last-child'));
+                expect(tds.length).toBe(5);
             });
         });
 
