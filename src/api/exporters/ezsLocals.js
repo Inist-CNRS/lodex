@@ -95,7 +95,6 @@ export function JSONLDString(data, feed) {
     } else {
         jsonld.toRDF(data, { format: 'application/nquads' })
             .then((out) => {
-                console.log('jsonld', data, '>>>', out);
                 feed.send(out);
             },
             (err) => {
@@ -103,3 +102,4 @@ export function JSONLDString(data, feed) {
             });
     }
 }
+
