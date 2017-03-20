@@ -13,7 +13,6 @@ import {
 import DatasetColumn from './DatasetColumn';
 import DatasetColumnHeader from './DatasetColumnHeader';
 import Pagination from '../../lib/Pagination';
-import Card from '../../lib/Card';
 import Loading from '../../lib/Loading';
 import ScrollableCardContent from '../../lib/ScrollableCardContent';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
@@ -46,52 +45,50 @@ export class DatasetComponent extends Component {
         const { columns, dataset, loading, p: polyglot, total, perPage, currentPage } = this.props;
         if (loading) return <Loading>{polyglot.t('loading')}</Loading>;
         return (
-            <Card className="dataset">
-                <ScrollableCardContent>
-                    <Table selectable={false} fixedHeader={false} bodyStyle={styles.wrapper} style={styles.table}>
-                        <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
+            <ScrollableCardContent className="dataset">
+                <Table selectable={false} fixedHeader={false} bodyStyle={styles.wrapper} style={styles.table}>
+                    <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
+                        <TableRow>
+                            {columns.map(c => <DatasetColumnHeader
+                                key={c.name}
+                                name={c.name}
+                                label={c.label}
+                            />)}
+                        </TableRow>
+                    </TableHeader>
+                    <TableBody displayRowCheckbox={false}>
+                        {!dataset.length ? (
                             <TableRow>
-                                {columns.map(c => <DatasetColumnHeader
-                                    key={c.name}
-                                    name={c.name}
-                                    label={c.label}
-                                />)}
+                                <TableRowColumn>{polyglot.t('no_result')}</TableRowColumn>
                             </TableRow>
-                        </TableHeader>
-                        <TableBody displayRowCheckbox={false}>
-                            {!dataset.length ? (
-                                <TableRow>
-                                    <TableRowColumn>{polyglot.t('no_result')}</TableRowColumn>
+                        ) : (
+                            dataset.map(data => (
+                                <TableRow key={data.uri}>
+                                    {columns.map(column => (
+                                        <DatasetColumn
+                                            key={column.name}
+                                            column={column}
+                                            columns={columns}
+                                            resource={data}
+                                        />
+                                    ))}
                                 </TableRow>
-                            ) : (
-                                dataset.map(data => (
-                                    <TableRow key={data.uri}>
-                                        {columns.map(column => (
-                                            <DatasetColumn
-                                                key={column.name}
-                                                column={column}
-                                                columns={columns}
-                                                resource={data}
-                                            />
-                                        ))}
-                                    </TableRow>
-                                ))
-                            )}
-                        </TableBody>
-                    </Table>
-                    <Pagination
-                        onChange={this.handlePageChange}
-                        total={total}
-                        perPage={perPage}
-                        currentPage={currentPage}
-                        texts={{
-                            page: polyglot.t('page'),
-                            perPage: polyglot.t('perPage'),
-                            showing: polyglot.t('showing'),
-                        }}
-                    />
-                </ScrollableCardContent>
-            </Card>
+                            ))
+                        )}
+                    </TableBody>
+                </Table>
+                <Pagination
+                    onChange={this.handlePageChange}
+                    total={total}
+                    perPage={perPage}
+                    currentPage={currentPage}
+                    texts={{
+                        page: polyglot.t('page'),
+                        perPage: polyglot.t('perPage'),
+                        showing: polyglot.t('showing'),
+                    }}
+                />
+            </ScrollableCardContent>
         );
     }
 }

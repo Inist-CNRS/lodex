@@ -133,4 +133,5 @@ export default {
     resource_details: 'Details',
     resource_share_export: 'Share/Export',
     resource_ontology: 'Ontology',
+    resources: 'resources',
 };
