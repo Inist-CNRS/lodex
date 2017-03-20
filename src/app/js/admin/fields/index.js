@@ -153,7 +153,7 @@ const getFieldsForPreview = createSelector(
     getEditedFieldIndex,
     (_, formData) => formData,
     (fields, editedIndex, formData) => {
-        if (!editedIndex || !formData) {
+        if (editedIndex === null || !formData) {
             return fields;
         }
 
