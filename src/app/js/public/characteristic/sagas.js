@@ -8,8 +8,8 @@ import {
 import { getUpdateCharacteristicsRequest } from '../../fetch/';
 import fetchSaga from '../../lib/fetchSaga';
 
-export function* handleUpdateCharacteristics() {
-    const request = yield select(getUpdateCharacteristicsRequest);
+export function* handleUpdateCharacteristics({ payload }) {
+    const request = yield select(getUpdateCharacteristicsRequest, payload);
     const { error, response } = yield call(fetchSaga, request);
 
     if (error) {

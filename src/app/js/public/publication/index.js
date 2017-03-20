@@ -167,6 +167,16 @@ const getRootCollectionFields = createSelector(
         .filter(f => f.cover === COVER_COLLECTION && !f.completes),
 );
 
+const getResourceFields = createSelector(
+    getParams,
+    getDocumentFields,
+    getRootCollectionFields,
+    (resource, documentFields, collectionFields) => [
+        ...collectionFields,
+        ...documentFields.filter(({ name }) => !!resource[name]),
+    ],
+);
+
 const getFacetFields = createSelector(
     getFields,
     allFields => allFields.filter(f => f.isFacet),
@@ -209,6 +219,7 @@ export const fromPublication = {
     getListFields,
     getCollectionFieldsExceptComposite,
     getRootCollectionFields,
+    getResourceFields,
     hasPublishedDataset,
     getFieldByName,
     getContributionFields,

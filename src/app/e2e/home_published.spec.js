@@ -29,13 +29,13 @@ describe('Home page with published data', function homePublishedDataTests() {
         const properties = await driver.findElements(By.css('.dataset-characteristics .property'));
         expect(properties.length).toEqual(2);
 
-        const movieLabel = '.dataset-characteristics .property.movie .property_name';
+        const movieLabel = '.dataset-characteristics .property.movie .property_label';
         driver.wait(elementTextIs(movieLabel, 'Movie', DEFAULT_WAIT_TIMEOUT));
 
         const movieValue = '.dataset-characteristics .property.movie .property_value';
         driver.wait(elementTextIs(movieValue, 'LOTR', DEFAULT_WAIT_TIMEOUT));
 
-        const authorLabel = '.dataset-characteristics .property.author.completes_movie .property_name';
+        const authorLabel = '.dataset-characteristics .property.author.completes_movie .property_label';
         driver.wait(elementTextIs(authorLabel, 'Author', DEFAULT_WAIT_TIMEOUT));
 
         const authorValue = '.dataset-characteristics .property.author.completes_movie .property_value';
@@ -243,12 +243,9 @@ describe('Home page with published data', function homePublishedDataTests() {
 
     it('should go to detail page when clicking on uri', async () => {
         const firstUriLink = await driver.findElement(By.linkText('1'));
-        const firstUri = await firstUriLink.getText();
         await driver.wait(elementIsClicked(firstUriLink), DEFAULT_WAIT_TIMEOUT);
 
-        await driver.wait(until.elementLocated(By.css('.title')));
-        const title = await driver.findElement(By.css('.title, h1'), DEFAULT_WAIT_TIMEOUT);
-        driver.wait(elementTextIs(title, firstUri, DEFAULT_WAIT_TIMEOUT));
+        await driver.wait(until.elementLocated(By.css('.resource')));
     });
 
     it('should not display moderate component when loggedOut', async () => {
@@ -259,7 +256,7 @@ describe('Home page with published data', function homePublishedDataTests() {
     it('should display all resource properties', async () => {
         await driver.wait(until.elementLocated(By.css('.detail')), DEFAULT_WAIT_TIMEOUT);
 
-        const fullnameLabel = '.detail .property.full_name .property_name';
+        const fullnameLabel = '.detail .property.full_name .property_label';
         await driver.wait(elementTextIs(fullnameLabel, 'Full name', DEFAULT_WAIT_TIMEOUT));
 
         const fullnameScheme = '.detail .property.full_name > .property_scheme';
@@ -268,7 +265,7 @@ describe('Home page with published data', function homePublishedDataTests() {
         const fullnameValue = '.detail .property.full_name .composite_property_value';
         await driver.wait(elementTextIs(fullnameValue, 'PEREGRIN.TOOK', DEFAULT_WAIT_TIMEOUT));
 
-        const mailLabel = '.detail .property.email.completes_fullname .property_name';
+        const mailLabel = '.detail .property.email.completes_fullname .property_label';
         await driver.wait(elementTextIs(mailLabel, 'Email', DEFAULT_WAIT_TIMEOUT));
 
         const mailScheme = '.detail .property.email.completes_fullname > .property_scheme';
@@ -277,7 +274,7 @@ describe('Home page with published data', function homePublishedDataTests() {
         const mailValue = '.detail .property.email.completes_fullname .property_value';
         await driver.wait(elementTextIs(mailValue, 'peregrin.took@shire.net', DEFAULT_WAIT_TIMEOUT));
 
-        const bestFriendLabel = '.detail .property.best_friend_of .property_name';
+        const bestFriendLabel = '.detail .property.best_friend_of .property_label';
         await driver.wait(elementTextIs(bestFriendLabel, 'Best Friend Of', DEFAULT_WAIT_TIMEOUT));
 
         const bestFriendScheme = '.detail .property.best_friend_of > .property_scheme';
@@ -287,14 +284,14 @@ describe('Home page with published data', function homePublishedDataTests() {
         await driver.wait(elementTextIs(bestFriendValue, 'MERIADOC', DEFAULT_WAIT_TIMEOUT));
 
         const bestFriendLanguage = '.detail .property.best_friend_of .property_language';
-        await driver.wait(elementTextIs(bestFriendLanguage, '(Français)', DEFAULT_WAIT_TIMEOUT));
+        await driver.wait(elementTextIs(bestFriendLanguage, 'FR', DEFAULT_WAIT_TIMEOUT));
     });
 
     it('should allow to add field resource properties', async () => {
         const addFieldResource = await driver.findElement(By.css('.add-field-resource'));
         await driver.wait(elementIsClicked(addFieldResource), DEFAULT_WAIT_TIMEOUT);
 
-        await driver.wait(until.elementLocated(By.css('.detail-properties')), DEFAULT_WAIT_TIMEOUT);
+        await driver.wait(until.elementLocated(By.css('.detail')), DEFAULT_WAIT_TIMEOUT);
         const form = driver.findElement(By.css('#add_field_resource_form'));
 
         await driver.wait(until.elementLocated(By.css('.contributor-name input')), DEFAULT_WAIT_TIMEOUT);
@@ -331,7 +328,7 @@ describe('Home page with published data', function homePublishedDataTests() {
         await driver.wait(until.elementLocated(By.css('.detail')), DEFAULT_WAIT_TIMEOUT);
         await driver.wait(elementsCountIs('.detail .property', 4), DEFAULT_WAIT_TIMEOUT);
 
-        const contributionLabel = '.detail .property.my_contribution .property_name';
+        const contributionLabel = '.detail .property.my_contribution .property_label';
         await driver.wait(elementTextIs(contributionLabel, 'my contribution', DEFAULT_WAIT_TIMEOUT));
 
         const contributionContributor = '.detail .property.my_contribution .property_contributor';

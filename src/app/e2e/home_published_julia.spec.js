@@ -17,23 +17,23 @@ describe('Home page with published data when logged as Julia', function homePubl
         await loginAsJulia('/', '/');
     });
 
-    it('should display the list with an edit button', async () => {
-        await driver.wait(until.elementLocated(By.css('.btn-edit-characteristics')), DEFAULT_WAIT_TIMEOUT);
+    it('should display the list with multiple edit buttons', async () => {
+        await driver.wait(until.elementLocated(By.css('.edit-field.movie')), DEFAULT_WAIT_TIMEOUT);
     });
 
-    it('should display the characteristics edition after clicking the edit button', async () => { // eslint-disable-line
-        await driver.wait(elementIsClicked('.btn-edit-characteristics'), DEFAULT_WAIT_TIMEOUT);
+    it('should display the characteristics edition dialog after clicking the edit button', async () => { // eslint-disable-line
+        await driver.wait(elementIsClicked('.edit-field.movie'), DEFAULT_WAIT_TIMEOUT);
 
-        await driver.wait(until.elementLocated(By.css('.dataset-characteristics-edition')), DEFAULT_WAIT_TIMEOUT);
+        await driver.wait(until.elementLocated(By.css('#field_form')), DEFAULT_WAIT_TIMEOUT);
     });
 
     it('should display the new characteristics after submitting them', async () => {
-        await driver.wait(until.elementLocated(By.css('input[name=movie_value]')), DEFAULT_WAIT_TIMEOUT);
-        const input = await driver.findElement(By.css('input[name=movie_value]'));
+        await driver.wait(until.elementLocated(By.css('input[name=movie]')), DEFAULT_WAIT_TIMEOUT);
+        const input = await driver.findElement(By.css('input[name=movie]'));
         await driver.wait(inputElementIsFocusable(input), DEFAULT_WAIT_TIMEOUT);
         input.sendKeys(' updated');
 
-        const button = await driver.findElement(By.css('.btn-update-characteristics'));
+        const button = await driver.findElement(By.css('.update-field'));
         button.click();
 
         await driver.wait(until.elementLocated(By.css('.dataset-characteristics')), DEFAULT_WAIT_TIMEOUT);
@@ -45,17 +45,15 @@ describe('Home page with published data when logged as Julia', function homePubl
 
     it('should go to detail page when clicking on uri', async () => {
         const firstUriLink = await driver.findElement(By.linkText('1'));
-        const firstUri = await firstUriLink.getText();
         await driver.wait(elementIsClicked(firstUriLink), DEFAULT_WAIT_TIMEOUT);
 
-        await driver.wait(until.elementLocated(By.css('.title')));
-        driver.wait(elementTextIs('.title, h1', firstUri, DEFAULT_WAIT_TIMEOUT));
+        await driver.wait(until.elementLocated(By.css('.resource')));
     });
 
     it('should display all resource properties', async () => {
         await driver.wait(until.elementLocated(By.css('.detail')), DEFAULT_WAIT_TIMEOUT);
         await driver.wait(
-            elementTextIs('.detail .property.full_name .property_name', 'Full name', DEFAULT_WAIT_TIMEOUT),
+            elementTextIs('.detail .property.full_name .property_label', 'Full name', DEFAULT_WAIT_TIMEOUT),
         );
         await driver.wait(
             elementTextIs('.detail .property.full_name > .property_scheme', 'http://www.w3.org/ns/person',
@@ -67,8 +65,7 @@ describe('Home page with published data when logged as Julia', function homePubl
         );
 
         await driver.wait(
-            elementTextIs('.detail .property.email.completes_fullname .property_name', 'Email',
-            DEFAULT_WAIT_TIMEOUT),
+            elementTextIs('.detail .property.email.completes_fullname .property_label', 'Email', DEFAULT_WAIT_TIMEOUT),
         );
         await driver.wait(
             elementTextIs('.detail .property.email.completes_fullname > .property_scheme', 'http://uri4uri.net/vocab',
@@ -80,38 +77,36 @@ describe('Home page with published data when logged as Julia', function homePubl
         );
 
         await driver.wait(
-            elementTextIs('.detail .property.best_friend_of .property_name', 'Best Friend Of',
-            DEFAULT_WAIT_TIMEOUT),
+            elementTextIs('.detail .property.best_friend_of .property_label', 'Best Friend Of', DEFAULT_WAIT_TIMEOUT),
         );
         await driver.wait(
             elementTextIs('.detail .property.best_friend_of > .property_scheme', 'http://www.w3.org/ns/person',
             DEFAULT_WAIT_TIMEOUT),
         );
-        await driver.wait(elementTextIs('.detail .property.best_friend_of .property_value', 'MERIADOC', DEFAULT_WAIT_TIMEOUT));
-        await driver.wait(elementTextIs('.detail .property.best_friend_of .property_language', '(Français)', DEFAULT_WAIT_TIMEOUT));
+        await driver.wait(
+            elementTextIs('.detail .property.best_friend_of .property_value', 'MERIADOC', DEFAULT_WAIT_TIMEOUT));
+        await driver.wait(
+            elementTextIs('.detail .property.best_friend_of .property_language', 'FR', DEFAULT_WAIT_TIMEOUT));
     });
 
+    let form;
+
     it('should allow to edit resource properties', async () => {
-        await driver.findElement(By.css('.edit-resource')).click();
-        await driver.wait(until.elementLocated(By.css('.edit-detail')), DEFAULT_WAIT_TIMEOUT);
-        const form = driver.findElement(By.css('#resource_form'));
-        const name = form.findElement(By.css('input[name=name]'));
-        await driver.wait(elementValueIs(name, 'TOOK'), DEFAULT_WAIT_TIMEOUT);
-        const firstname = form.findElement(By.css('input[name=firstname]'));
-        await driver.wait(elementValueIs(firstname, 'PEREGRIN'), DEFAULT_WAIT_TIMEOUT);
+        await driver.findElement(By.css('.edit-field.email')).click();
+        form = driver.findElement(By.css('#field_form'));
+
         const email = form.findElement(By.css('input[name=email]'));
         await driver.wait(elementValueIs(email, 'peregrin.took@shire.net'), DEFAULT_WAIT_TIMEOUT);
 
         await driver.wait(inputElementIsFocusable(email), DEFAULT_WAIT_TIMEOUT);
         await email.clear();
         await email.sendKeys('peregrin.took@gondor.net');
-        await driver.findElement(By.css('.save-resource')).click();
+        await driver.findElement(By.css('.update-field')).click();
+        await driver.wait(until.stalenessOf(form), DEFAULT_WAIT_TIMEOUT);
     });
 
     it('should save and return to resource page', async () => {
-        await driver.wait(until.elementLocated(By.css('.detail')), DEFAULT_WAIT_TIMEOUT);
-
-        const fullnameLabel = '.detail .property.full_name .property_name';
+        const fullnameLabel = '.detail .property.full_name .property_label';
         await driver.wait(elementTextIs(fullnameLabel, 'Full name', DEFAULT_WAIT_TIMEOUT));
 
         const fullnameScheme = '.detail .property.full_name > .property_scheme';
@@ -120,7 +115,7 @@ describe('Home page with published data when logged as Julia', function homePubl
         const fullnameValue = '.detail .property.full_name .composite_property_value';
         await driver.wait(elementTextIs(fullnameValue, 'PEREGRIN.TOOK', DEFAULT_WAIT_TIMEOUT));
 
-        const mailLabel = '.detail .property.email.completes_fullname .property_name';
+        const mailLabel = '.detail .property.email.completes_fullname .property_label';
         await driver.wait(elementTextIs(mailLabel, 'Email', DEFAULT_WAIT_TIMEOUT));
 
         const mailScheme = '.detail .property.email.completes_fullname > .property_scheme';
@@ -129,23 +124,25 @@ describe('Home page with published data when logged as Julia', function homePubl
         const mailValue = '.detail .property.email.completes_fullname .property_value';
         await driver.wait(elementTextIs(mailValue, 'peregrin.took@gondor.net', DEFAULT_WAIT_TIMEOUT));
 
-        const bestFriendLabel = '.detail .property.best_friend_of .property_name';
+        const bestFriendLabel = '.detail .property.best_friend_of .property_label';
         await driver.wait(elementTextIs(bestFriendLabel, 'Best Friend Of', DEFAULT_WAIT_TIMEOUT));
 
         const bestFriendScheme = '.detail .property.best_friend_of > .property_scheme';
         await driver.wait(elementTextIs(bestFriendScheme, 'http://www.w3.org/ns/person', DEFAULT_WAIT_TIMEOUT));
 
         const bestFriendLanguage = '.detail .property.best_friend_of .property_language';
-        await driver.wait(elementTextIs(bestFriendLanguage, '(Français)', DEFAULT_WAIT_TIMEOUT));
+        await driver.wait(elementTextIs(bestFriendLanguage, 'FR', DEFAULT_WAIT_TIMEOUT));
 
         const bestFriendValue = '.detail .property.best_friend_of .property_value';
         await driver.wait(elementTextIs(bestFriendValue, 'MERIADOC', DEFAULT_WAIT_TIMEOUT));
     });
 
     it('should go to hide page', async () => {
-        await driver.findElement(By.css('.hide-resource')).click();
-        await driver.wait(until.elementLocated(By.css('.hide-detail')), DEFAULT_WAIT_TIMEOUT);
-        const form = driver.findElement(By.css('#hide_resource_form'));
+        await driver.wait(until.elementLocated(By.css('#btn-hide-resource')));
+        const button = await driver.findElement(By.css('#btn-hide-resource'));
+        await driver.executeScript('document.getElementById("btn-hide-resource").scrollIntoView(true);');
+        await driver.wait(elementIsClicked(button));
+        form = driver.findElement(By.css('#hide_resource_form'));
         const reason = form.findElement(By.css('textarea[name=reason]'));
 
         await driver.wait(inputElementIsFocusable(reason), DEFAULT_WAIT_TIMEOUT);

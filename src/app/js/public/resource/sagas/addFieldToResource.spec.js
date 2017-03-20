@@ -1,6 +1,5 @@
 import expect from 'expect';
 import { call, put, select } from 'redux-saga/effects';
-import { push } from 'react-router-redux';
 
 import {
     addFieldToResourceSuccess,
@@ -51,9 +50,7 @@ describe('handleAddFieldToResource', () => {
         saga.next();
         saga.next({ reason: 'reason' });
         saga.next('request');
-        let next = saga.next({ response: 'response' });
+        const next = saga.next({ response: 'response' });
         expect(next.value).toEqual(put(addFieldToResourceSuccess('response')));
-        next = saga.next();
-        expect(next.value).toEqual(put(push({ pathname: '/resource', query: { uri: 'uri' } })));
     });
 });
