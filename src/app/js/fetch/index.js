@@ -1,4 +1,5 @@
 import { createAction, handleActions } from 'redux-actions';
+import omit from 'lodash.omit';
 
 import { getRequest } from '../user';
 import getQueryString from '../lib/getQueryString';
@@ -62,17 +63,25 @@ export const getCreateFieldRequest = (state, fieldData) =>
         method: 'POST',
     });
 
-export const getRemoveFieldRequest = (state, { _id }) =>
-    getRequest(state, {
-        url: `/api/field/${_id}`,
-        method: 'DELETE',
-    });
-
 export const getUpdateFieldRequest = (state, { _id, ...fieldData }) =>
     getRequest(state, {
         url: `/api/field/${_id}`,
         body: fieldData,
         method: 'PUT',
+    });
+
+export const getSaveFieldRequest = (state, fieldData) => {
+    if (fieldData.name === 'new') {
+        return getCreateFieldRequest(state, omit(fieldData, ['name']));
+    }
+
+    return getUpdateFieldRequest(state, fieldData);
+};
+
+export const getRemoveFieldRequest = (state, { _id }) =>
+    getRequest(state, {
+        url: `/api/field/${_id}`,
+        method: 'DELETE',
     });
 
 export const getLoadParsingResultRequest = state =>

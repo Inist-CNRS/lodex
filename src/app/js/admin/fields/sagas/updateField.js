@@ -6,14 +6,14 @@ import {
     updateFieldSuccess,
     SAVE_FIELD,
 } from '../';
-import { getUpdateFieldRequest } from '../../../fetch';
+import { getSaveFieldRequest } from '../../../fetch';
 
 import fetchSaga from '../../../lib/fetchSaga';
 
 export function* handleUpdateField() {
     const fieldData = yield select(getFieldFormData);
 
-    const request = yield select(getUpdateFieldRequest, fieldData);
+    const request = yield select(getSaveFieldRequest, fieldData);
     const { error, response } = yield call(fetchSaga, request);
 
     if (error) {

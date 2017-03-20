@@ -103,14 +103,34 @@ export default handleActions({
         list: state.list.filter(name => name !== nameToRemove),
         byName: omit(state.byName, [nameToRemove]),
     }),
-    UPDATE_FIELD_SUCCESS: (state, { payload }) => ({
-        ...state,
-        byName: {
-            ...state.byName,
-            [payload.name]: payload,
-        },
-        editedFieldName: null,
-    }),
+    UPDATE_FIELD_SUCCESS: (state, { payload }) => {
+        if (state.editedFieldName === 'new') {
+            const newIndex = state.list.indexOf('new');
+
+            return {
+                ...state,
+                byName: {
+                    ...omit(state.byName, ['new']),
+                    [payload.name]: payload,
+                },
+                list: [
+                    ...state.list.slice(0, newIndex),
+                    payload.name,
+                    ...state.list.slice(newIndex + 1),
+                ],
+                editedFieldName: null,
+            };
+        }
+
+        return {
+            ...state,
+            byName: {
+                ...state.byName,
+                [payload.name]: payload,
+            },
+            editedFieldName: null,
+        };
+    },
     SET_VALIDATION: (state, { payload: { isValid: allValid, fields: invalidFields } }) => ({
         ...state,
         allValid,
