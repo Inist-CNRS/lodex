@@ -1,10 +1,8 @@
 import { call, put, select, takeLatest } from 'redux-saga/effects';
-import { push } from 'react-router-redux';
 
 import {
     saveResourceSuccess,
     saveResourceError,
-    getResourceFormData,
     SAVE_RESOURCE,
 } from '../';
 import { getSaveResourceRequest } from '../../../fetch';
@@ -12,8 +10,7 @@ import fetchSaga from '../../../lib/fetchSaga';
 
 export const parsePathName = pathname => pathname.match(/^(\/resource)(\/ark:\/)?(.*?$)/) || [];
 
-export function* handleSaveResource() {
-    const resource = yield select(getResourceFormData);
+export function* handleSaveResource({ payload: resource }) {
     const request = yield select(getSaveResourceRequest, resource);
     const { error, response } = yield call(fetchSaga, request);
 
@@ -23,7 +20,6 @@ export function* handleSaveResource() {
     }
 
     yield put(saveResourceSuccess(response));
-    yield put(push({ pathname: '/resource', query: { uri: resource.uri } }));
 }
 
 export default function* watchSaveResource() {

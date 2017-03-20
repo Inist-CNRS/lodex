@@ -2,13 +2,13 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import Subheader from 'material-ui/Subheader';
 
-import EditDetailsField from './EditDetailsField';
+import FieldInput from './FieldInput';
 import {
     fromPublication,
-} from '../selectors';
+} from './selectors';
 import {
     field as fieldPropTypes,
-} from '../../propTypes';
+} from '../propTypes';
 
 const style = {
     list: {
@@ -16,13 +16,13 @@ const style = {
     },
 };
 
-export const CompositeEditDetailsFieldComponent = ({ label, compositeFields }) => (
+export const CompositeFieldInputComponent = ({ label, compositeFields }) => (
     <div>
         <Subheader>{label}</Subheader>
         <div style={style.list}>
             {
                 compositeFields.map(f => (
-                    <EditDetailsField
+                    <FieldInput
                         key={f.name}
                         field={f}
                     />
@@ -32,12 +32,12 @@ export const CompositeEditDetailsFieldComponent = ({ label, compositeFields }) =
     </div>
 );
 
-CompositeEditDetailsFieldComponent.propTypes = {
+CompositeFieldInputComponent.propTypes = {
     label: PropTypes.string.isRequired,
     compositeFields: PropTypes.arrayOf(fieldPropTypes).isRequired,
 };
 
-CompositeEditDetailsFieldComponent.defaultProps = {
+CompositeFieldInputComponent.defaultProps = {
     completedField: null,
 };
 
@@ -45,6 +45,6 @@ const mapStateToProps = (state, { field }) => ({
     compositeFields: fromPublication.getCompositeFieldsByField(state, field),
 });
 
-const CompositeEditDetailsField = connect(mapStateToProps)(CompositeEditDetailsFieldComponent);
+const CompositeEditDetailsField = connect(mapStateToProps)(CompositeFieldInputComponent);
 
 export default CompositeEditDetailsField;

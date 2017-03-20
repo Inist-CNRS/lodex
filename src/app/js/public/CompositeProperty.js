@@ -24,7 +24,9 @@ const styles = {
 export class CompositePropertyComponent extends Component {
     static propTypes = {
         field: fieldPropTypes.isRequired,
+        isSaving: PropTypes.bool.isRequired,
         compositeFields: PropTypes.arrayOf(fieldPropTypes).isRequired,
+        onSaveProperty: PropTypes.func.isRequired,
         resource: PropTypes.shape({}).isRequired,
     }
 
@@ -48,8 +50,10 @@ export class CompositePropertyComponent extends Component {
 
     render() {
         const {
-            field,
             compositeFields,
+            field,
+            isSaving,
+            onSaveProperty,
             resource,
         } = this.props;
 
@@ -95,7 +99,9 @@ export class CompositePropertyComponent extends Component {
                     <Property
                         key={f.name}
                         field={f}
+                        isSaving={isSaving}
                         resource={resource}
+                        onSaveProperty={onSaveProperty}
                     />
                 )) : null}
             </span>

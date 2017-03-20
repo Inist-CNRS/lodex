@@ -98,11 +98,11 @@ export const getRestoreResourceRequest = (state, uri) =>
         method: 'PUT',
     });
 
-export const getUpdateCharacteristicsRequest = state =>
+export const getUpdateCharacteristicsRequest = (state, newCharacteristics) =>
     getRequest(state, {
         url: '/api/characteristic',
         method: 'PUT',
-        body: state.characteristic.newCharacteristics,
+        body: newCharacteristics,
     });
 
 export const getLoadDatasetPageRequest = (state, params = {}) => {
