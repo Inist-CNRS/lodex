@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 
 import PublicationExcerpt from './PublicationExcerpt';
 import FieldForm from '../fields/FieldForm';
-import { saveField } from '../fields';
+import { saveField, getFieldFormData } from '../fields';
 import { polyglot as polyglotPropTypes, field as fieldPropTypes } from '../../propTypes';
 
 
@@ -83,12 +83,16 @@ PublicationEditionComponent.propTypes = {
     p: polyglotPropTypes.isRequired,
 };
 
+const mapStateToProps = (state, { editedColumn }) => ({
+    editedColumn: getFieldFormData(state) || editedColumn,
+});
+
 const mapDispatchToProps = {
     onSaveEdition: saveField,
 };
 
 export default compose(
-    connect(null, mapDispatchToProps),
+    connect(mapStateToProps, mapDispatchToProps),
     withHandlers({
         onHeaderClick: ({ onHeaderClick }) => () => onHeaderClick(null),
     }),
