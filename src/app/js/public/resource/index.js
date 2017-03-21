@@ -256,6 +256,11 @@ const getResourceSelectedVersion = createSelector(
     },
 );
 
+const isLastVersionSelected = createSelector(
+    getSelectedVersion,
+    state => state.resource.versions.length,
+    (selectedVersion, nbVersions) => selectedVersion === nbVersions - 1,
+);
 
 export const fromResource = {
     getResourceContributorsCatalog,
@@ -271,6 +276,7 @@ export const fromResource = {
     getFieldStatus,
     getVersions,
     getSelectedVersion,
+    isLastVersionSelected,
 };
 
 export const getResourceFormData = state => state.form.resource.values;
