@@ -2,17 +2,13 @@ import expect from 'expect';
 import reducer, {
     defaultState,
     selectors,
-    addFieldSuccess,
+    addField,
     editField,
     loadFieldError,
     loadFieldSuccess,
     removeFieldSuccess,
-    updateFieldSuccess,
+    saveFieldSuccess,
     getLineColGetterFromAllFields,
-    addComposedOf,
-    clearComposedOf,
-    addComposedOfField,
-    removeComposedOfField,
 } from './';
 
 describe('field reducer', () => {
@@ -22,23 +18,66 @@ describe('field reducer', () => {
     });
 
     describe('addField', () => {
-        it('should handle the ADD_FIELD_SUCCESS action', () => {
+        it('should handle the ADD_FIELD action with no name', () => {
             const state = reducer({
                 byName: {
                     name1: { name: 'name1', label: 'foo' },
                     name2: { name: 'name2', label: 'bar' },
                 },
                 list: ['name1', 'name2'],
-            }, addFieldSuccess({ name: 'new_name', label: 'i am new' }));
+            }, addField());
 
             expect(state).toEqual({
                 ...state,
-                editedFieldName: 'new_name',
-                list: ['name1', 'name2', 'new_name'],
+                editedFieldName: 'new',
+                list: ['name1', 'name2', 'new'],
                 byName: {
                     name2: { name: 'name2', label: 'bar' },
                     name1: { name: 'name1', label: 'foo' },
-                    new_name: { name: 'new_name', label: 'i am new' },
+                    new: {
+                        label: 'newField 3',
+                        cover: 'collection',
+                        name: 'new',
+                        display_in_list: true,
+                        display_in_resource: true,
+                        searchable: true,
+                        transformers: [],
+                    },
+                },
+            });
+        });
+        it('should handle the ADD_FIELD action with name', () => {
+            const state = reducer({
+                byName: {
+                    name1: { name: 'name1', label: 'foo' },
+                    name2: { name: 'name2', label: 'bar' },
+                },
+                list: ['name1', 'name2'],
+            }, addField('target_col'));
+
+            expect(state).toEqual({
+                ...state,
+                editedFieldName: 'new',
+                list: ['name1', 'name2', 'new'],
+                byName: {
+                    name2: { name: 'name2', label: 'bar' },
+                    name1: { name: 'name1', label: 'foo' },
+                    new: {
+                        label: 'target_col',
+                        cover: 'collection',
+                        name: 'new',
+                        display_in_list: true,
+                        display_in_resource: true,
+                        searchable: true,
+                        transformers: [{
+                            operation: 'COLUMN',
+                            args: [{
+                                name: 'column',
+                                type: 'column',
+                                value: 'target_col',
+                            }],
+                        }],
+                    },
                 },
             });
         });
@@ -96,8 +135,8 @@ describe('field reducer', () => {
         });
     });
 
-    describe('updateFieldSuccess', () => {
-        it('should handle the UPDATE_FIELD_SUCCESS action', () => {
+    describe('saveFieldSuccess', () => {
+        it('should handle the SAVE_FIELD_SUCCESS action', () => {
             const state = reducer({
                 list: ['bar', 'foo', 'boo'],
                 byName: {
@@ -105,7 +144,8 @@ describe('field reducer', () => {
                     foo: { name: 'foo' },
                     boo: { name: 'boo' },
                 },
-            }, updateFieldSuccess({ name: 'foo', updated: true }));
+                editedFieldName: 'foo',
+            }, saveFieldSuccess({ name: 'foo', updated: true }));
 
             expect(state).toEqual({
                 list: ['bar', 'foo', 'boo'],
@@ -114,152 +154,32 @@ describe('field reducer', () => {
                     foo: { name: 'foo', updated: true },
                     boo: { name: 'boo' },
                 },
+                editedFieldName: null,
             });
         });
-    });
 
-    describe('addComposedOf', () => {
-        it('should handle the ADD_COMPOSED_OF action', () => {
-            const state = {
+        it('should handle the SAVE_FIELD_SUCCESS action with new editedField', () => {
+            const state = reducer({
+                list: ['bar', 'foo', 'boo', 'new'],
                 byName: {
-                    editedField: {
-                        name: 'editedFiedld',
-                    },
+                    bar: { name: 'bar' },
+                    foo: { name: 'foo' },
+                    boo: { name: 'boo' },
+                    new: { name: 'new' },
                 },
-                editedFieldName: 'editedField',
-            };
+                editedFieldName: 'new',
+            }, saveFieldSuccess({ name: 'new_name', updated: true }));
 
-            expect(reducer(state, addComposedOf()))
-                .toEqual({
-                    byName: {
-                        editedField: {
-                            name: 'editedFiedld',
-                            composedOf: {
-                                separator: ' ',
-                                fields: ['', ''],
-                            },
-                        },
-                    },
-                    editedFieldName: 'editedField',
-                });
-        });
-    });
-
-    describe('clearComposedOf', () => {
-        it('should handle the CLEAR_COMPOSED_OF action', () => {
-            const state = {
+            expect(state).toEqual({
+                list: ['bar', 'foo', 'boo', 'new_name'],
                 byName: {
-                    editedField: {
-                        name: 'editedFiedld',
-                        composedOf: {
-                            data: 'value',
-                        },
-                    },
+                    bar: { name: 'bar' },
+                    foo: { name: 'foo' },
+                    boo: { name: 'boo' },
+                    new_name: { name: 'new_name', updated: true },
                 },
-                editedFieldName: 'editedField',
-            };
-
-            expect(reducer(state, clearComposedOf()))
-                .toEqual({
-                    byName: {
-                        editedField: {
-                            name: 'editedFiedld',
-                            composedOf: null,
-                        },
-                    },
-                    editedFieldName: 'editedField',
-                });
-        });
-    });
-
-    describe('addComposedOfField', () => {
-        it('should handle the ADD_COMPOSED_OF_FIELD action', () => {
-            const state = {
-                byName: {
-                    editedField: {
-                        name: 'editedFiedld',
-                        composedOf: {
-                            separator: ' ',
-                            fields: ['field1', 'field2'],
-                        },
-                    },
-                },
-                editedFieldName: 'editedField',
-            };
-
-            expect(reducer(state, addComposedOfField()))
-                .toEqual({
-                    byName: {
-                        editedField: {
-                            name: 'editedFiedld',
-                            composedOf: {
-                                separator: ' ',
-                                fields: ['field1', 'field2', ''],
-                            },
-                        },
-                    },
-                    editedFieldName: 'editedField',
-                });
-        });
-    });
-
-    describe('addComposedOfField', () => {
-        it('should handle the REMOVE_COMPOSED_OF_FIELD action', () => {
-            const state = {
-                byName: {
-                    editedField: {
-                        name: 'editedFiedld',
-                        composedOf: {
-                            separator: ' ',
-                            fields: ['field1', 'field2', 'field3'],
-                        },
-                    },
-                },
-                editedFieldName: 'editedField',
-            };
-
-            expect(reducer(state, removeComposedOfField()))
-                .toEqual({
-                    byName: {
-                        editedField: {
-                            name: 'editedFiedld',
-                            composedOf: {
-                                separator: ' ',
-                                fields: ['field1', 'field2'],
-                            },
-                        },
-                    },
-                    editedFieldName: 'editedField',
-                });
-        });
-
-        it('should ignore the REMOVE_COMPOSED_OF_FIELD action if only 2 fields', () => {
-            const state = {
-                byName: {
-                    editedField: {
-                        name: 'editedFiedld',
-                        composedOf: {
-                            separator: ' ',
-                            fields: ['field1', 'field2'],
-                        },
-                    },
-                },
-                editedFieldName: 'editedField',
-            };
-
-            expect(reducer(state, removeComposedOfField()))
-                .toEqual({
-                    byName: {
-                        editedField: {
-                            name: 'editedFiedld',
-                            composedOf: {
-                                separator: ' ',
-                                fields: ['field1', 'field2'],
-                            },
-                        },
-                    },
-                    editedFieldName: 'editedField',
-                });
+                editedFieldName: null,
+            });
         });
     });
 
