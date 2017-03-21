@@ -26,6 +26,7 @@ export const NEW_RESOURCE_FIELD_FORM_NAME = 'newResourceField';
 export const CHANGE_FIELD_STATUS = 'CHANGE_FIELD_STATUS';
 export const CHANGE_FIELD_STATUS_SUCCESS = 'CHANGE_FIELD_STATUS_SUCCESS';
 export const CHANGE_FIELD_STATUS_ERROR = 'CHANGE_FIELD_STATUS_ERROR';
+export const SELECT_VERSION = 'SELECT_VERSION';
 
 export const loadResource = createAction(LOAD_RESOURCE);
 export const loadResourceSuccess = createAction(LOAD_RESOURCE_SUCCESS);
@@ -46,12 +47,14 @@ export const addFieldToResourceError = createAction(ADD_FIELD_TO_RESOURCE_ERROR)
 export const changeFieldStatus = createAction(CHANGE_FIELD_STATUS);
 export const changeFieldStatusSuccess = createAction(CHANGE_FIELD_STATUS_SUCCESS);
 export const changeFieldStatusError = createAction(CHANGE_FIELD_STATUS_ERROR);
+export const selectVersion = createAction(SELECT_VERSION);
 
 export const defaultState = {
     resource: {},
     error: null,
     loading: false,
     saving: false,
+    selectedVersion: null,
 };
 
 export default handleActions({
@@ -147,6 +150,10 @@ export default handleActions({
         error: null,
         moderating: false,
     }),
+    SELECT_VERSION: (state, { payload: selectedVersion }) => ({
+        ...state,
+        selectedVersion,
+    }),
 }, defaultState);
 
 const getResourceLastVersion = (state, resource = state.resource) => {
@@ -225,8 +232,34 @@ const isSaving = state => state.saving;
 
 const isLoading = state => state.loading;
 
+const getVersions = state =>
+    state.resource.versions.map(({ publicationDate }) => publicationDate);
+
+const getSelectedVersion = state =>
+    (state.selectedVersion !== null ? state.selectedVersion : (state.resource.versions.length - 1));
+
+const getResourceSelectedVersion = createSelector(
+    state => state.resource,
+    getSelectedVersion,
+    (resource, selectedVersion) => {
+        if (!resource) {
+            return null;
+        }
+        const { versions, uri } = resource;
+        if (!versions) {
+            return null;
+        }
+        return {
+            ...versions[selectedVersion],
+            uri,
+        };
+    },
+);
+
+
 export const fromResource = {
     getResourceContributorsCatalog,
+    getResourceSelectedVersion,
     getResourceLastVersion,
     getResourceProposedFields,
     getResourceContributions,
@@ -236,6 +269,8 @@ export const fromResource = {
     isLoading,
     getProposedFieldStatus,
     getFieldStatus,
+    getVersions,
+    getSelectedVersion,
 };
 
 export const getResourceFormData = state => state.form.resource.values;

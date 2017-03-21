@@ -139,4 +139,8 @@ export default {
     dataset_share_link: 'Link to this dataset',
     share: 'Share',
     columns: 'Columns',
+    resource_share_export: 'Share/Export',
+    resource_ontology: 'Ontology',
+    versions: 'versions',
+    latest: 'latest',
 };

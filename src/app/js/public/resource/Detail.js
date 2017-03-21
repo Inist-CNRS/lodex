@@ -22,6 +22,7 @@ import Ontology from '../Ontology';
 import Export from '../Export';
 import Share from '../Share';
 import ShareLink from '../ShareLink';
+import SelectVersion from './SelectVersion';
 
 const styles = {
     container: {
@@ -124,6 +125,7 @@ export const DetailComponent = ({
                 <CardActions style={styles.actions}>
                     <AddField />
                     <HideResource />
+                    <SelectVersion />
                 </CardActions>
             </Card>
         </div>
@@ -146,7 +148,7 @@ DetailComponent.propTypes = {
 };
 
 const mapStateToProps = (state) => {
-    const resource = fromResource.getResourceLastVersion(state);
+    const resource = fromResource.getResourceSelectedVersion(state);
     const uri = new URL(`${window.location.protocol}//${window.location.host}`);
     let sharingTitle;
     uri.hash = `/resource?uri=${encodeURIComponent(resource.uri)}`;
