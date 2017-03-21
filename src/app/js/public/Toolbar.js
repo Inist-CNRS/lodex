@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { Toolbar, ToolbarGroup } from 'material-ui/Toolbar';
 
 import { isLoggedIn as getIsLoggedIn } from '../user';
-import ExportMenu from '../lib/ExportMenu';
 import ExportFieldsButton from '../lib/ExportFieldsButton';
 import FacetSelector from './facet/FacetSelector';
 import Filter from './dataset/Filter';
@@ -16,7 +15,6 @@ const styles = {
 export const ToolbarComponent = ({ isLoggedIn }) => (
     <Toolbar>
         <ToolbarGroup firstChild>
-            <ExportMenu iconStyle={styles.icon} />
             {isLoggedIn && <ExportFieldsButton iconStyle={styles.icon} />}
             <Filter />
             <FacetSelector />

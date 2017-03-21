@@ -118,8 +118,13 @@ const getDatasetFields = createSelector(
 const getTitleFieldName = createSelector(
     getCollectionFields,
     (fields) => {
-        const titleField = fields
+        let titleField = fields
             .find(({ cover, scheme }) => scheme === TITLE_SCHEME && cover === COVER_COLLECTION);
+
+        if (!titleField) {
+            titleField = fields
+                .find(({ label }) => label.match(/^title$/));
+        }
 
         return titleField ? titleField.name : null;
     },
@@ -128,8 +133,13 @@ const getTitleFieldName = createSelector(
 const getDatasetTitleFieldName = createSelector(
     getCollectionFields,
     (fields) => {
-        const titleField = fields
+        let titleField = fields
             .find(({ cover, scheme }) => scheme === TITLE_SCHEME && cover === COVER_DATASET);
+
+        if (!titleField) {
+            titleField = fields
+                .find(({ label }) => label.match(/^title$/));
+        }
 
         return titleField ? titleField.name : null;
     },

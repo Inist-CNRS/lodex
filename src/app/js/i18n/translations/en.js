@@ -134,4 +134,7 @@ export default {
     resource_share_export: 'Share/Export',
     resource_ontology: 'Ontology',
     resources: 'resources',
+    copy_to_clipboard: 'Copy',
+    resource_share_link: 'Link to this resource',
+    resource_share: 'Share',
 };
