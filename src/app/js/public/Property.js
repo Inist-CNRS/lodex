@@ -65,7 +65,6 @@ const PropertyComponent = ({
     if (!loggedIn && fieldStatus === REJECTED) {
         return null;
     }
-    console.log({ isLastVersionSelected });
     return (
         <div
             className={classnames('property', field.label.toLowerCase().replace(/\s/g, '_'), className)}
