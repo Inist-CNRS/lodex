@@ -6,8 +6,10 @@ import { CardActions, CardText } from 'material-ui/Card';
 import { Tabs, Tab } from 'material-ui/Tabs';
 import memoize from 'lodash.memoize';
 import { cyan500 } from 'material-ui/styles/colors';
-import Card from '../../lib/Card';
+import Subheader from 'material-ui/Subheader';
+import Divider from 'material-ui/Divider';
 
+import Card from '../../lib/Card';
 import { saveResource as saveResourceAction } from './';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import {
@@ -17,8 +19,10 @@ import {
 import Property from '../Property';
 import AddField from './AddField';
 import HideResource from './HideResource';
-import ExportMenu from '../../lib/ExportMenu';
 import Ontology from '../Ontology';
+import Export from '../Export';
+import Share from '../Share';
+import ResourceShareLink from './ResourceShareLink';
 
 const styles = {
     container: {
@@ -58,6 +62,8 @@ export const DetailComponent = ({
     isSaving,
     p: polyglot,
     resource,
+    sharingTitle,
+    sharingUri,
 }) => {
     const topFields = fields.slice(0, 2);
     const otherFields = fields.slice(2);
@@ -95,8 +101,23 @@ export const DetailComponent = ({
                                 </div>
                             ))}
                         </Tab>
-                        <Tab className="tab-resource-export" buttonStyle={styles.tabButton} label={polyglot.t('resource_share_export')} />
-                        <Tab className="tab-resource-ontology" buttonStyle={styles.tabButton} label={polyglot.t('resource_ontology')}>
+                        <Tab
+                            className="tab-resource-export"
+                            buttonStyle={styles.tabButton}
+                            label={polyglot.t('resource_share_export')}
+                        >
+                            <Subheader>{polyglot.t('export_data')}</Subheader>
+                            <Export uri={resource.uri} />
+                            <Subheader>{polyglot.t('resource_share_link')}</Subheader>
+                            <ResourceShareLink uri={sharingUri} />
+                            <Subheader>{polyglot.t('resource_share')}</Subheader>
+                            <Share uri={sharingUri} title={sharingTitle} />
+                        </Tab>
+                        <Tab
+                            className="tab-resource-ontology"
+                            buttonStyle={styles.tabButton}
+                            label={polyglot.t('resource_ontology')}
+                        >
                             <Ontology />
                         </Tab>
                     </Tabs>
@@ -104,7 +125,6 @@ export const DetailComponent = ({
                 <CardActions style={styles.actions}>
                     <AddField />
                     <HideResource />
-                    <ExportMenu uri={resource.uri} iconStyle={styles.icon} />
                 </CardActions>
             </Card>
         </div>
@@ -113,6 +133,7 @@ export const DetailComponent = ({
 
 DetailComponent.defaultProps = {
     resource: null,
+    sharingTitle: null,
 };
 
 DetailComponent.propTypes = {
@@ -121,15 +142,27 @@ DetailComponent.propTypes = {
     handleSaveResource: PropTypes.func.isRequired,
     p: polyglotPropTypes.isRequired,
     resource: PropTypes.shape({}),
+    sharingUri: PropTypes.string.isRequired,
+    sharingTitle: PropTypes.string,
 };
 
 const mapStateToProps = (state) => {
     const resource = fromResource.getResourceLastVersion(state);
+    const uri = new URL(`${window.location.protocol}//${window.location.host}`);
+    let sharingTitle;
+    uri.hash = `/resource?uri=${encodeURIComponent(resource.uri)}`;
+    const titleFieldName = fromPublication.getTitleFieldName(state);
+
+    if (titleFieldName) {
+        sharingTitle = resource[titleFieldName];
+    }
 
     return ({
         resource,
         isSaving: fromResource.isSaving(state),
         fields: fromPublication.getResourceFields(state, resource),
+        sharingUri: uri.toString(),
+        sharingTitle,
     });
 };
 

@@ -1,30 +1,27 @@
 import React, { PropTypes } from 'react';
+import classnames from 'classnames';
 import compose from 'recompose/compose';
 import withHandlers from 'recompose/withHandlers';
 import translate from 'redux-polyglot/translate';
-import MenuItem from 'material-ui/MenuItem';
+import { ListItem } from 'material-ui/List';
+import FileDownloadIcon from 'material-ui/svg-icons/file/file-download';
 
 import { polyglot as polyglotPropTypes } from '../propTypes';
 
-export const ExportMenuItemComponent = ({ type, p: polyglot, handleClick }) => (
-    <MenuItem
+export const ExportItemComponent = ({ type, p: polyglot, handleClick }) => (
+    <ListItem
         key={type}
-        className="btn-export"
+        className={classnames('btn-export', type)}
         primaryText={polyglot.t('export', { type })}
-        value={type}
+        leftIcon={<FileDownloadIcon />}
         onClick={handleClick}
     />
 );
 
-ExportMenuItemComponent.propTypes = {
+ExportItemComponent.propTypes = {
     handleClick: PropTypes.func.isRequired,
-    iconStyle: PropTypes.object, // eslint-disable-line
     p: polyglotPropTypes.isRequired,
     type: PropTypes.string.isRequired,
-};
-
-ExportMenuItemComponent.defaultProps = {
-    iconStyle: null,
 };
 
 export default compose(
@@ -32,4 +29,4 @@ export default compose(
         handleClick: ({ onClick, type, uri }) => () => onClick({ type, uri }),
     }),
     translate,
-)(ExportMenuItemComponent);
+)(ExportItemComponent);

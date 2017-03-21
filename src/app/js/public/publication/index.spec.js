@@ -101,12 +101,23 @@ describe('publication reducer', () => {
             expect(fromPublication.getTitleFieldName(state)).toBe('title');
         });
 
+        it('should return field name of field with a label matching title', () => {
+            const state = {
+                fields: [
+                    { cover: 'dataset', scheme: TITLE_SCHEME, name: 'dataset title', label: 'foo_dataset' },
+                    { cover: 'collection', scheme: 'other scheme', name: 'title', label: 'title' },
+                    { cover: 'collection', scheme: 'other scheme', name: 'other', label: 'foo2' },
+                ],
+            };
+            expect(fromPublication.getTitleFieldName(state)).toBe('title');
+        });
+
         it('should return null if no field found', () => {
             const state = {
                 fields: [
-                    { cover: 'dataset', scheme: TITLE_SCHEME, name: 'dataset title' },
-                    { cover: 'collection', scheme: 'other scheme', name: 'title' },
-                    { cover: 'collection', scheme: 'other scheme', name: 'other' },
+                    { cover: 'dataset', scheme: TITLE_SCHEME, name: 'dataset title', label: 'foo_dataset' },
+                    { cover: 'collection', scheme: 'other scheme', name: 'title', label: 'foo' },
+                    { cover: 'collection', scheme: 'other scheme', name: 'other', label: 'foo2' },
                 ],
             };
             expect(fromPublication.getTitleFieldName(state)).toBe(null);

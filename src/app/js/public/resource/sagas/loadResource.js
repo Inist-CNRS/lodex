@@ -15,7 +15,7 @@ import fetchSaga from '../../../lib/fetchSaga';
 
 import { fromResource } from '../../selectors';
 
-export const parsePathName = pathname => pathname.match(/^(\/resource)(\/ark:\/)?(.*?$)/) || [];
+export const parsePathName = pathname => pathname.match(/^(\/resource)(\/ark:\/)?(.*$)/) || [];
 
 export function* handleLoadResource({ payload }) {
     let isArk;

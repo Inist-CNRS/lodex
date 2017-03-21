@@ -329,7 +329,7 @@ describe('Admin', () => {
                 const completes = '#field_form .completes';
                 await driver.wait(until.elementLocated(By.css(completes)), DEFAULT_WAIT_TIMEOUT);
                 await driver.wait(elementIsClicked(completes), DEFAULT_WAIT_TIMEOUT);
-                await driver.sleep(500); // animations
+                await driver.sleep(1000); // animations
 
                 const completesTitleButton = '.completes_title';
                 await driver.wait(until.elementLocated(By.css(completesTitleButton)), DEFAULT_WAIT_TIMEOUT);
