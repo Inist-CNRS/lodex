@@ -85,8 +85,9 @@ describe('Admin', () => {
                     driver.wait(elementTextMatches(td, /[A-Z0-9]{8}/, DEFAULT_WAIT_TIMEOUT))),
                 );
 
-                const backButton = '.btn-save-column-edition';
-                await driver.wait(elementIsClicked(backButton), DEFAULT_WAIT_TIMEOUT);
+                const saveButton = '.btn-save-column-edition';
+                await driver.wait(elementIsClicked(saveButton), DEFAULT_WAIT_TIMEOUT);
+                await driver.sleep(500);
             });
         });
 
@@ -142,8 +143,9 @@ describe('Admin', () => {
                 const identifier = await driver.findElement(By.css('#field_form .transformer_arg_identifier input'));
                 await driver.wait(inputElementIsFocusable(identifier), DEFAULT_WAIT_TIMEOUT);
                 identifier.sendKeys('id');
-                const backButton = '.btn-save-column-edition';
-                await driver.wait(elementIsClicked(backButton), DEFAULT_WAIT_TIMEOUT);
+                const saveButton = '.btn-save-column-edition';
+                await driver.wait(elementIsClicked(saveButton), DEFAULT_WAIT_TIMEOUT);
+                await driver.sleep(500);
             });
 
             it('should have added stronger column with link', async () => {
@@ -194,8 +196,9 @@ describe('Admin', () => {
                         elementTextMatches(td, /rock|paper|scissor|invalid_reference/, DEFAULT_WAIT_TIMEOUT)),
                     ),
                 );
-                const backButton = '.btn-save-column-edition';
-                await driver.wait(elementIsClicked(backButton), DEFAULT_WAIT_TIMEOUT);
+                const saveButton = '.btn-save-column-edition';
+                await driver.wait(elementIsClicked(saveButton), DEFAULT_WAIT_TIMEOUT);
+                await driver.sleep(500);
             });
         });
 
@@ -247,8 +250,9 @@ describe('Admin', () => {
                 await driver.wait(inputElementIsFocusable(value), DEFAULT_WAIT_TIMEOUT);
                 value.sendKeys('Rock-Paper-Scissor');
 
-                const backButton = await driver.findElement(By.css('.btn-save-column-edition'));
-                await driver.wait(elementIsClicked(backButton), DEFAULT_WAIT_TIMEOUT);
+                const saveButton = await driver.findElement(By.css('.btn-save-column-edition'));
+                await driver.wait(elementIsClicked(saveButton), DEFAULT_WAIT_TIMEOUT);
+                await driver.sleep(500);
             });
 
             it('should have added custom column with value', async () => {
@@ -338,8 +342,9 @@ describe('Admin', () => {
                 const th = '.publication-excerpt-for-edition th .completes_title';
                 await driver.wait(elementTextMatches(th, /Completes Title/, DEFAULT_WAIT_TIMEOUT));
 
-                const backButton = '.btn-save-column-edition';
-                await driver.wait(elementIsClicked(backButton), DEFAULT_WAIT_TIMEOUT);
+                const saveButton = '.btn-save-column-edition';
+                await driver.wait(elementIsClicked(saveButton), DEFAULT_WAIT_TIMEOUT);
+                await driver.sleep(500);
             });
 
             it('should have added custom column with value', async () => {
