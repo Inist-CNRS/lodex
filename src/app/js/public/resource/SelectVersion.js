@@ -21,10 +21,10 @@ export const SelectVersionComponent = ({ versions, selectedVersion, onSelectVers
         {versions.map((date, index, { length }) => (
             <MenuItem
                 key={date}
-                className={date}
+                className={`version version_${index}`}
                 value={index}
                 primaryText={
-                    `${moment(date).format('llll')}${index === length - 1 ? ` (${polyglot.t('latest')})` : ''}`
+                    `${moment(date).format('L HH:mm:ss')}${index === length - 1 ? ` (${polyglot.t('latest')})` : ''}`
                 }
             />
         ))}
