@@ -7,7 +7,6 @@ import { Tabs, Tab } from 'material-ui/Tabs';
 import memoize from 'lodash.memoize';
 import { cyan500 } from 'material-ui/styles/colors';
 import Subheader from 'material-ui/Subheader';
-import Divider from 'material-ui/Divider';
 
 import Card from '../../lib/Card';
 import { saveResource as saveResourceAction } from './';
@@ -22,7 +21,7 @@ import HideResource from './HideResource';
 import Ontology from '../Ontology';
 import Export from '../Export';
 import Share from '../Share';
-import ResourceShareLink from './ResourceShareLink';
+import ShareLink from '../ShareLink';
 
 const styles = {
     container: {
@@ -104,19 +103,19 @@ export const DetailComponent = ({
                         <Tab
                             className="tab-resource-export"
                             buttonStyle={styles.tabButton}
-                            label={polyglot.t('resource_share_export')}
+                            label={polyglot.t('share_export')}
                         >
                             <Subheader>{polyglot.t('export_data')}</Subheader>
                             <Export uri={resource.uri} />
                             <Subheader>{polyglot.t('resource_share_link')}</Subheader>
-                            <ResourceShareLink uri={sharingUri} />
-                            <Subheader>{polyglot.t('resource_share')}</Subheader>
+                            <ShareLink uri={sharingUri} />
+                            <Subheader>{polyglot.t('share')}</Subheader>
                             <Share uri={sharingUri} title={sharingTitle} />
                         </Tab>
                         <Tab
                             className="tab-resource-ontology"
                             buttonStyle={styles.tabButton}
-                            label={polyglot.t('resource_ontology')}
+                            label={polyglot.t('ontology')}
                         >
                             <Ontology />
                         </Tab>

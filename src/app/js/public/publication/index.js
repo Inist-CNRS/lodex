@@ -131,7 +131,7 @@ const getTitleFieldName = createSelector(
 );
 
 const getDatasetTitleFieldName = createSelector(
-    getCollectionFields,
+    getDatasetFields,
     (fields) => {
         let titleField = fields
             .find(({ cover, scheme }) => scheme === TITLE_SCHEME && cover === COVER_DATASET);

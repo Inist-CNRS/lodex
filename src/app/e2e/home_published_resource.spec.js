@@ -155,11 +155,11 @@ describe('Resource page', function homePublishedDataTests() {
     });
 
     it('should have an export tab with a resource sharing link', async () => {
-        await driver.wait(until.elementLocated(By.css('.resource-share-link')), DEFAULT_WAIT_TIMEOUT);
+        await driver.wait(until.elementLocated(By.css('.share-link')), DEFAULT_WAIT_TIMEOUT);
 
-        expect(await driver.findElement(By.css('.resource-share-link input')).getAttribute('value')).toEqual('http://localhost:3100/#/resource?uri=1');
-        await driver.wait(until.elementLocated(By.css('.resource-share-link button')), DEFAULT_WAIT_TIMEOUT);
-        expect(await driver.findElement(By.css('.resource-share-link button')).getText()).toEqual('COPY');
+        expect(await driver.findElement(By.css('.share-link input')).getAttribute('value')).toEqual('http://localhost:3100/#/resource?uri=1');
+        await driver.wait(until.elementLocated(By.css('.share-link button')), DEFAULT_WAIT_TIMEOUT);
+        expect(await driver.findElement(By.css('.share-link button')).getText()).toEqual('COPY');
     });
 
     it('should have an export tab with resource social sharing buttons', async () => {
