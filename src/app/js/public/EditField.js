@@ -14,6 +14,8 @@ import ButtonWithStatus from '../lib/ButtonWithStatus';
 
 import { field as fieldPropTypes, polyglot as polyglotPropTypes } from '../propTypes';
 import EditFieldForm, { FORM_NAME } from './EditFieldForm';
+import { fromResource } from './selectors';
+import { isLoggedIn } from '../user';
 
 export const EditFieldComponent = ({
     field,
@@ -24,9 +26,14 @@ export const EditFieldComponent = ({
     p: polyglot,
     resource,
     isSaving,
+    loggedIn,
+    isLastVersionSelected,
     show,
     style,
 }) => {
+    if (!loggedIn || !isLastVersionSelected) {
+        return null;
+    }
     const actions = [
         <ButtonWithStatus
             className="update-field"
@@ -72,18 +79,25 @@ EditFieldComponent.propTypes = {
     handleSave: PropTypes.func.isRequired,
     handleSubmit: PropTypes.func.isRequired,
     isSaving: PropTypes.bool.isRequired,
+    loggedIn: PropTypes.bool.isRequired,
+    isLastVersionSelected: PropTypes.bool.isRequired,
     p: polyglotPropTypes.isRequired,
     resource: PropTypes.object.isRequired, // eslint-disable-line
     show: PropTypes.bool.isRequired,
     style: PropTypes.object, // eslint-disable-line
 };
 
+const mapStateToProps = state => ({
+    loggedIn: isLoggedIn(state),
+    isLastVersionSelected: fromResource.isLastVersionSelected(state),
+});
+
 const mapDispatchToProps = ({
     submit: submitAction,
 });
 
 export default compose(
-    connect(undefined, mapDispatchToProps),
+    connect(mapStateToProps, mapDispatchToProps),
     withState('show', 'setShow', false),
     withHandlers({
         handleOpen: ({ setShow }) => (event) => {

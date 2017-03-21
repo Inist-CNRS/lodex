@@ -60,7 +60,6 @@ const PropertyComponent = ({
     changeStatus,
     onSaveProperty,
     style,
-    isLastVersionSelected,
 }) => {
     if (!loggedIn && fieldStatus === REJECTED) {
         return null;
@@ -74,12 +73,12 @@ const PropertyComponent = ({
                 <div style={styles.labelContainer}>
                     <span className="property_label" style={styles.label(fieldStatus)}>{field.label}</span>
 
-                    {loggedIn && isLastVersionSelected && <EditField
+                    <EditField
                         field={field}
                         isSaving={isSaving}
                         resource={resource}
                         onSaveProperty={onSaveProperty}
-                    />}
+                    />
                 </div>
                 <PropertyContributor fieldName={field.name} fieldStatus={fieldStatus} />
             </div>
@@ -119,7 +118,6 @@ PropertyComponent.propTypes = {
     onSaveProperty: PropTypes.func.isRequired,
     resource: PropTypes.shape({}).isRequired,
     style: PropTypes.object, // eslint-disable-line
-    isLastVersionSelected: PropTypes.bool.isRequired,
 };
 
 PropertyComponent.defaultProps = {
@@ -130,7 +128,6 @@ PropertyComponent.defaultProps = {
 const mapStateToProps = (state, { field }) => ({
     loggedIn: isLoggedIn(state),
     fieldStatus: fromResource.getFieldStatus(state, field),
-    isLastVersionSelected: fromResource.isLastVersionSelected(state),
 });
 
 const mapDispatchToProps = (dispatch, { field, resource: { uri } }) => bindActionCreators({
