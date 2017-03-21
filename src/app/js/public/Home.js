@@ -20,6 +20,7 @@ import DatasetCharacteristics from './characteristic/DatasetCharacteristics';
 import NoDataset from './NoDataset';
 import Toolbar from './Toolbar';
 import AppliedFacetList from './facet/AppliedFacetList';
+import Ontology from './Ontology';
 
 const styles = {
     tab: {
@@ -86,7 +87,9 @@ export class HomeComponent extends Component {
                                 <Dataset />
                             </Tab>
                             <Tab buttonStyle={styles.tabButton} label={polyglot.t('resource_share_export')} />
-                            <Tab buttonStyle={styles.tabButton} label={polyglot.t('resource_ontology')} />
+                            <Tab buttonStyle={styles.tabButton} label={polyglot.t('resource_ontology')}>
+                                <Ontology />
+                            </Tab>
                         </Tabs>
                     </Card>
                 </div>
