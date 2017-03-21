@@ -10,13 +10,13 @@ import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { selectVersion } from '../resource';
 import { fromResource } from '../selectors';
 
-export const SelectFieldToAddComponent = ({ versions, selectedVersion, onSelectVersion, p: polyglot }) => (
+export const SelectVersionComponent = ({ versions, selectedVersion, onSelectVersion, p: polyglot }) => (
     <SelectField
-        className="select-field"
+        className="select-version"
         floatingLabelText={polyglot.t('versions')}
         value={selectedVersion}
         onChange={(_, __, value) => onSelectVersion(value)}
-        autoWidth
+        fullWidth
     >
         {versions.map((date, index, { length }) => (
             <MenuItem
@@ -31,7 +31,7 @@ export const SelectFieldToAddComponent = ({ versions, selectedVersion, onSelectV
     </SelectField>
 );
 
-SelectFieldToAddComponent.propTypes = {
+SelectVersionComponent.propTypes = {
     versions: PropTypes.arrayOf(PropTypes.string).isRequired,
     onSelectVersion: PropTypes.func.isRequired,
     selectedVersion: PropTypes.number.isRequired,
@@ -50,4 +50,4 @@ const mapDispatchToProps = {
 export default compose(
     connect(mapStateToProps, mapDispatchToProps),
     translate,
-)(SelectFieldToAddComponent);
+)(SelectVersionComponent);

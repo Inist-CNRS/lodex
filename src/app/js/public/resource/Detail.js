@@ -123,9 +123,9 @@ export const DetailComponent = ({
                     </Tabs>
                 </CardText>
                 <CardActions style={styles.actions}>
+                    <SelectVersion />
                     <AddField />
                     <HideResource />
-                    <SelectVersion />
                 </CardActions>
             </Card>
         </div>
