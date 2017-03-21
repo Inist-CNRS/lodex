@@ -6,7 +6,7 @@ import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
 import LinkIcon from 'material-ui/svg-icons/content/link';
 
-import { polyglot as polyglotPropTypes } from '../../propTypes';
+import { polyglot as polyglotPropTypes } from '../propTypes';
 
 const styles = {
     container: {
@@ -21,7 +21,7 @@ const styles = {
     },
 };
 
-export class ResourceShareLinkComponent extends Component {
+export class ShareLinkComponent extends Component {
     saveRef = (ref) => {
         this.input = ref;
     }
@@ -34,12 +34,12 @@ export class ResourceShareLinkComponent extends Component {
         const { uri, p: polyglot } = this.props;
 
         return (
-            <div className="resource-share-link" style={styles.container}>
+            <div className="share-link" style={styles.container}>
                 <LinkIcon style={styles.icon} />
 
                 <TextField
                     ref={this.saveRef}
-                    id="resource-share-link"
+                    id="share-link"
                     style={styles.input}
                     value={uri}
                     fullWidth
@@ -54,9 +54,9 @@ export class ResourceShareLinkComponent extends Component {
     }
 }
 
-ResourceShareLinkComponent.propTypes = {
+ShareLinkComponent.propTypes = {
     p: polyglotPropTypes.isRequired,
     uri: PropTypes.string.isRequired,
 };
 
-export default translate(ResourceShareLinkComponent);
+export default translate(ShareLinkComponent);
