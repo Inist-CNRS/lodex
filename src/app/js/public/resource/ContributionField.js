@@ -49,7 +49,7 @@ export const AddFieldDetailComponent = ({
             className="field-cover"
             name="field.cover"
             component={FormSelectField}
-            label={polyglot.t('cover')}
+            label={polyglot.t('select_cover')}
             fullWidth
             disabled
         >

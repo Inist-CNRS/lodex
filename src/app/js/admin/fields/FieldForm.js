@@ -68,7 +68,7 @@ export const FieldFormComponent = ({
             <Field
                 name="cover"
                 component={FormSelectField}
-                label={polyglot.t('cover')}
+                label={polyglot.t('select_cover')}
                 fullWidth
             >
                 <MenuItem value="dataset" primaryText={polyglot.t('cover_dataset')} />
