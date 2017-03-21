@@ -2,8 +2,7 @@ import React, { PropTypes } from 'react';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
-import { CardActions, CardHeader, CardText } from 'material-ui/Card';
-import FlatButton from 'material-ui/FlatButton';
+import { CardHeader, CardText } from 'material-ui/Card';
 import memoize from 'lodash.memoize';
 
 import Card from '../../lib/Card';
@@ -12,11 +11,6 @@ import {
     field as fieldProptypes,
     polyglot as polyglotPropTypes,
 } from '../../propTypes';
-
-import { isLoggedIn } from '../../user';
-import {
-    toggleCharacteristicsEdition as toggleCharacteristicsEditionAction,
-} from './';
 
 import {
     fromCharacteristic,
@@ -40,10 +34,8 @@ const styles = {
 };
 
 const DatasetCharacteristicsView = ({
-    canEdit,
     characteristics,
     p: polyglot,
-    toggleCharacteristicsEdition,
 }) => (
     <Card className="dataset-characteristics">
         <CardHeader
@@ -58,23 +50,12 @@ const DatasetCharacteristicsView = ({
                 ))
         }
         </CardText>
-        {canEdit &&
-            <CardActions>
-                <FlatButton
-                    className="btn-edit-characteristics"
-                    label={polyglot.t('edit')}
-                    onClick={toggleCharacteristicsEdition}
-                />
-            </CardActions>
-        }
     </Card>
 );
 
 DatasetCharacteristicsView.propTypes = {
-    canEdit: PropTypes.bool.isRequired,
     characteristics: PropTypes.arrayOf(fieldProptypes).isRequired,
     p: polyglotPropTypes.isRequired,
-    toggleCharacteristicsEdition: PropTypes.func.isRequired,
 };
 
 DatasetCharacteristicsView.defaultProps = {
@@ -86,17 +67,12 @@ const mapStateToProps = (state) => {
     const fields = fromPublication.getDatasetFields(state);
 
     return {
-        canEdit: isLoggedIn(state),
         characteristics: fromCharacteristic.getRootCharacteristics(state, fields),
         fields,
     };
 };
 
-const mapDispatchToProps = {
-    toggleCharacteristicsEdition: toggleCharacteristicsEditionAction,
-};
-
 export default compose(
-    connect(mapStateToProps, mapDispatchToProps),
+    connect(mapStateToProps),
     translate,
 )(DatasetCharacteristicsView);

@@ -1,14 +1,12 @@
 import { createAction, handleActions } from 'redux-actions';
 import { createSelector } from 'reselect';
 
-export const TOGGLE_CHARACTERISTICS_EDITION = 'TOGGLE_CHARACTERISTICS_EDITION';
 export const SET_CHARACTERISTIC_VALUE = 'SET_CHARACTERISTIC_VALUE';
 
 export const UPDATE_CHARACTERISTICS = 'UPDATE_CHARACTERISTICS';
 export const UPDATE_CHARACTERISTICS_ERROR = 'UPDATE_CHARACTERISTICS_ERROR';
 export const UPDATE_CHARACTERISTICS_SUCCESS = 'UPDATE_CHARACTERISTICS_SUCCESS';
 
-export const toggleCharacteristicsEdition = createAction(TOGGLE_CHARACTERISTICS_EDITION);
 export const setCharacteristicValue = createAction(SET_CHARACTERISTIC_VALUE);
 export const updateCharacteristics = createAction(UPDATE_CHARACTERISTICS);
 export const updateCharacteristicsError = createAction(UPDATE_CHARACTERISTICS_ERROR);
@@ -34,10 +32,6 @@ export default handleActions({
             ...newCharacteristics,
             [name]: value,
         },
-    }),
-    TOGGLE_CHARACTERISTICS_EDITION: ({ editing, ...state }) => ({
-        ...state,
-        editing: !editing,
     }),
     UPDATE_CHARACTERISTICS: state => ({
         ...state,

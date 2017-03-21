@@ -2,6 +2,8 @@ import React, { Component, PropTypes } from 'react';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
+import { Tabs, Tab } from 'material-ui/Tabs';
+import { cyan500 } from 'material-ui/styles/colors';
 
 import { polyglot as polyglotPropTypes } from '../propTypes';
 import {
@@ -18,6 +20,18 @@ import DatasetCharacteristics from './characteristic/DatasetCharacteristics';
 import NoDataset from './NoDataset';
 import Toolbar from './Toolbar';
 import AppliedFacetList from './facet/AppliedFacetList';
+import Ontology from './Ontology';
+
+const styles = {
+    tab: {
+        backgroundColor: 'transparent',
+        borderBottom: '1px solid rgb(224, 224, 224)',
+        color: 'black',
+    },
+    tabButton: {
+        color: cyan500,
+    },
+};
 
 export class HomeComponent extends Component {
     static defaultProps = {
@@ -64,7 +78,20 @@ export class HomeComponent extends Component {
                     <Toolbar />
                     <AppliedFacetList />
                     <DatasetCharacteristics />
-                    <Dataset />
+                    <Card>
+                        <Tabs tabItemContainerStyle={styles.tab}>
+                            <Tab
+                                label={polyglot.t('resources')}
+                                style={styles.tabButton}
+                            >
+                                <Dataset />
+                            </Tab>
+                            <Tab buttonStyle={styles.tabButton} label={polyglot.t('resource_share_export')} />
+                            <Tab buttonStyle={styles.tabButton} label={polyglot.t('resource_ontology')}>
+                                <Ontology />
+                            </Tab>
+                        </Tabs>
+                    </Card>
                 </div>
             );
         }

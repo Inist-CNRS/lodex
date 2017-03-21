@@ -7,6 +7,7 @@ import ExportMenu from '../lib/ExportMenu';
 import ExportFieldsButton from '../lib/ExportFieldsButton';
 import FacetSelector from './facet/FacetSelector';
 import Filter from './dataset/Filter';
+import Stats from './Stats';
 
 const styles = {
     icon: { color: 'black' },
@@ -20,6 +21,7 @@ export const ToolbarComponent = ({ isLoggedIn }) => (
             <Filter />
             <FacetSelector />
         </ToolbarGroup>
+        <Stats />
     </Toolbar>
 );
 
