@@ -138,7 +138,7 @@ export default handleActions({
     }),
 }, defaultState);
 
-const getFields = ({ byName, list }) => list.map(name => byName[name]);
+const getFields = ({ byName, list }) => list.map(name => byName[name]).sort((f1, f2) => f1.position > f2.position);
 const getByName = ({ byName }) => byName;
 
 const getNbFields = ({ list }) => list.length;

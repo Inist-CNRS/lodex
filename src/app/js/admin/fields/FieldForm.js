@@ -10,14 +10,13 @@ import FormCheckboxField from '../../lib/FormCheckboxField';
 import FormTextField from '../../lib/FormTextField';
 import FormSelectField from '../../lib/FormSelectField';
 import SchemeAutoComplete from '../../lib/SchemeAutoComplete';
-import {
-    FIELD_FORM_NAME,
-} from './';
+import { FIELD_FORM_NAME } from './';
 import { fromFields } from '../selectors';
 import Alert from '../../lib/Alert';
 import ComposedOf from './ComposedOf';
 import Format from '../FormatEdition';
 import LanguagesField from './LanguagesField';
+import PositionField from './PositionField';
 import TransformerList from './TransformerList';
 
 const validate = (values) => {
@@ -103,6 +102,7 @@ export const FieldFormComponent = ({
                 component={FormCheckboxField}
                 label={polyglot.t('field_display_in_resource')}
             />
+            <PositionField field={field} />
             <Field
                 name="searchable"
                 component={FormCheckboxField}
