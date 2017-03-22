@@ -78,7 +78,10 @@ describe('Resource page when not logged', function resourcePageTest() {
     it('should display version selector', async () => {
         const selectVersion = await driver.findElement(By.css('.select-version'));
         await driver.wait(
-            elementTextContains(selectVersion, '03/03/2017 04:03:03 (latest)', DEFAULT_WAIT_TIMEOUT),
+            elementTextContains(selectVersion, '03/03/2017', DEFAULT_WAIT_TIMEOUT),
+        );
+        await driver.wait(
+            elementTextContains(selectVersion, '(latest)', DEFAULT_WAIT_TIMEOUT),
         );
         await driver.wait(elementIsClicked(selectVersion));
         await driver.sleep(500);
@@ -91,15 +94,15 @@ describe('Resource page when not logged', function resourcePageTest() {
         expect(versions.length).toBe(3);
 
         const expectedVersion = [
-            '01/01/2017 02:01:01',
-            '02/02/2017 03:02:02',
-            '03/03/2017 04:03:03 (latest)',
+            '01/01/2017',
+            '02/02/2017',
+            '(latest)',
         ];
 
         await Promise.all(versions.map((v, index) =>
             v.getText()
             .then((text) => {
-                expect(text).toBe(expectedVersion[index]);
+                expect(text).toContain(expectedVersion[index]);
             }),
         ));
     });
@@ -112,7 +115,7 @@ describe('Resource page when not logged', function resourcePageTest() {
         await driver.wait(until.elementLocated(By.css('.detail')), DEFAULT_WAIT_TIMEOUT);
 
         await driver.wait(
-            elementTextContains('.select-version', '01/01/2017 02:01:01', DEFAULT_WAIT_TIMEOUT),
+            elementTextContains('.select-version', '01/01/2017', DEFAULT_WAIT_TIMEOUT),
         );
 
         const fullnameLabel = '.detail .property.full_name .property_label';
