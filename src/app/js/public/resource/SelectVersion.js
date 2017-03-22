@@ -1,35 +1,98 @@
-import React, { PropTypes } from 'react';
-import SelectField from 'material-ui/SelectField';
+import React, { PropTypes, Component } from 'react';
+import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
+import FlatButton from 'material-ui/FlatButton';
+import Popover from 'material-ui/Popover';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
-import { polyglot as polyglotPropTypes } from '../../propTypes';
+import withState from 'recompose/withState';
+import withHandlers from 'recompose/withHandlers';
+import ArrowDown from 'material-ui/svg-icons/hardware/keyboard-arrow-down';
 
+import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { selectVersion } from '../resource';
 import { fromResource } from '../selectors';
 
-export const SelectVersionComponent = ({ versions, selectedVersion, onSelectVersion, p: polyglot }) => (
-    <SelectField
-        className="select-version"
-        floatingLabelText={polyglot.t('versions')}
-        value={selectedVersion}
-        onChange={(_, __, value) => onSelectVersion(value)}
-        fullWidth
-    >
-        {versions.map((date, index, { length }) => (
-            <MenuItem
-                key={date}
-                className={`version version_${index}`}
-                value={index}
-                primaryText={
-                    `${moment(date).format('L HH:mm:ss')}${index === length - 1 ? ` (${polyglot.t('latest')})` : ''}`
-                }
-            />
-        ))}
-    </SelectField>
-);
+const getFormat = (latest, length) => (dateString, index) =>
+    `${moment(dateString).format('L HH:mm:ss')}${index === length - 1 ? ` (${latest})` : ''}`;
+
+const staticProps = {
+    anchorOrigin: { horizontal: 'left', vertical: 'bottom' },
+    targetOrigin: { horizontal: 'left', vertical: 'top' },
+};
+
+export class SelectVersionComponent extends Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            anchorEl: null,
+            showMenu: false,
+        };
+    }
+
+    getMenuItems = (versions, format) => versions.map((date, index) => (
+        <MenuItem
+            key={date}
+            className={`version version_${index}`}
+            value={index}
+            primaryText={format(date, index)}
+        />
+    ))
+
+    handleClick = (event) => {
+        this.setState({
+            anchorEl: event.target,
+            showMenu: true,
+        });
+    }
+
+    handleVersionClick = (event, value) => {
+        this.setState({ showMenu: false });
+        this.props.onSelectVersion(value);
+    }
+
+    handleRequestClose = () => {
+        this.setState({ showMenu: false });
+    }
+
+    render() {
+        const {
+            versions,
+            selectedVersion,
+            p: polyglot,
+        } = this.props;
+
+        const { showMenu, anchorEl } = this.state;
+
+        const format = getFormat(polyglot.t('latest'), versions.length);
+
+        return (
+            <div>
+                <FlatButton
+                    className="select-version"
+                    label={format(versions[selectedVersion], selectedVersion)}
+                    labelPosition="before"
+                    onClick={this.handleClick}
+                    icon={<ArrowDown />}
+                />
+                <Popover
+                    open={showMenu}
+                    onRequestClose={this.handleRequestClose}
+                    anchorEl={anchorEl}
+                    anchorOrigin={staticProps.anchorOrigin}
+                    targetOrigin={staticProps.targetOrigin}
+                >
+                    <Menu onChange={this.handleVersionClick}>
+                        {this.getMenuItems(versions, format)}
+                    </Menu>
+                </Popover>
+            </div>
+        );
+    }
+}
 
 SelectVersionComponent.propTypes = {
     versions: PropTypes.arrayOf(PropTypes.string).isRequired,
@@ -48,6 +111,11 @@ const mapDispatchToProps = {
 };
 
 export default compose(
+    withState('isOpen', 'setOpen', { open: false }),
+    withHandlers({
+        open: ({ setOpen }) => event => setOpen(() => ({ open: true, anchorEl: event.target })),
+        close: ({ setOpen }) => () => setOpen(() => ({ open: false })),
+    }),
     connect(mapStateToProps, mapDispatchToProps),
     translate,
 )(SelectVersionComponent);
