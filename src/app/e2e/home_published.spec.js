@@ -73,11 +73,11 @@ describe('Home page with published data', function homePublishedDataTests() {
         const firstnameHeader = '.sort_firstname';
         await driver.wait(elementIsClicked(firstnameHeader));
         const expectedTds = [
-            ['3', 'BAGGINS', 'BILBON', 'bilbon.saquet@shire.net'],
-            ['4', 'BAGGINS', 'FRODO', 'frodo.saquet@shire.net'],
-            ['5', 'BRANDYBUCK', 'MERIADOC', 'meriadoc.brandybuck@shire.net'],
-            ['1', 'TOOK', 'PEREGRIN', 'peregrin.took@shire.net'],
-            ['2', 'GAMGIE', 'SAMSAGET', 'samsaget.gamgie@shire.net'],
+            ['3', 'BILBON', 'BAGGINS', 'bilbon.saquet@shire.net'],
+            ['4', 'FRODO', 'BAGGINS', 'frodo.saquet@shire.net'],
+            ['5', 'MERIADOC', 'BRANDYBUCK', 'meriadoc.brandybuck@shire.net'],
+            ['1', 'PEREGRIN', 'TOOK', 'peregrin.took@shire.net'],
+            ['2', 'SAMSAGET', 'GAMGIE', 'samsaget.gamgie@shire.net'],
         ];
 
         const trs = await driver.findElements(By.css('.dataset table tbody tr'));
@@ -95,11 +95,11 @@ describe('Home page with published data', function homePublishedDataTests() {
         const nameHeader = '.sort_name';
         await driver.wait(elementIsClicked(nameHeader));
         const expectedTds = [
-            ['3', 'BAGGINS', 'BILBON', 'bilbon.saquet@shire.net'],
-            ['4', 'BAGGINS', 'FRODO', 'frodo.saquet@shire.net'],
-            ['5', 'BRANDYBUCK', 'MERIADOC', 'meriadoc.brandybuck@shire.net'],
-            ['2', 'GAMGIE', 'SAMSAGET', 'samsaget.gamgie@shire.net'],
-            ['1', 'TOOK', 'PEREGRIN', 'peregrin.took@shire.net'],
+            ['3', 'BILBON', 'BAGGINS', 'bilbon.saquet@shire.net'],
+            ['4', 'FRODO', 'BAGGINS', 'frodo.saquet@shire.net'],
+            ['5', 'MERIADOC', 'BRANDYBUCK', 'meriadoc.brandybuck@shire.net'],
+            ['2', 'SAMSAGET', 'GAMGIE', 'samsaget.gamgie@shire.net'],
+            ['1', 'PEREGRIN', 'TOOK', 'peregrin.took@shire.net'],
         ];
 
         const trs = await driver.findElements(By.css('.dataset table tbody tr'));
@@ -117,11 +117,11 @@ describe('Home page with published data', function homePublishedDataTests() {
         const nameHeader = '.sort_name';
         await driver.wait(elementIsClicked(nameHeader));
         const expectedTds = [
-            ['1', 'TOOK', 'PEREGRIN', 'peregrin.took@shire.net'],
-            ['2', 'GAMGIE', 'SAMSAGET', 'samsaget.gamgie@shire.net'],
-            ['5', 'BRANDYBUCK', 'MERIADOC', 'meriadoc.brandybuck@shire.net'],
-            ['4', 'BAGGINS', 'FRODO', 'frodo.saquet@shire.net'],
-            ['3', 'BAGGINS', 'BILBON', 'bilbon.saquet@shire.net'],
+            ['1', 'PEREGRIN', 'TOOK', 'peregrin.took@shire.net'],
+            ['2', 'SAMSAGET', 'GAMGIE', 'samsaget.gamgie@shire.net'],
+            ['5', 'MERIADOC', 'BRANDYBUCK', 'meriadoc.brandybuck@shire.net'],
+            ['4', 'FRODO', 'BAGGINS', 'frodo.saquet@shire.net'],
+            ['3', 'BILBON', 'BAGGINS', 'bilbon.saquet@shire.net'],
         ];
 
         const trs = await driver.findElements(By.css('.dataset table tbody tr'));
@@ -146,8 +146,8 @@ describe('Home page with published data', function homePublishedDataTests() {
         await driver.wait(until.elementLocated(By.css('.dataset table tbody tr')), DEFAULT_WAIT_TIMEOUT);
 
         const expectedTds = [
-            ['3', 'BAGGINS', 'BILBON', 'bilbon.saquet@shire.net'],
-            ['4', 'BAGGINS', 'FRODO', 'frodo.saquet@shire.net'],
+            ['3', 'BILBON', 'BAGGINS', 'bilbon.saquet@shire.net'],
+            ['4', 'FRODO', 'BAGGINS', 'frodo.saquet@shire.net'],
         ];
 
         const trs = await driver.findElements(By.css('.dataset table tbody tr'));
@@ -215,8 +215,8 @@ describe('Home page with published data', function homePublishedDataTests() {
         await driver.wait(until.elementLocated(By.css('.dataset table tbody tr')), DEFAULT_WAIT_TIMEOUT);
 
         const expectedTds = [
-            ['3', 'BAGGINS', 'BILBON', 'bilbon.saquet@shire.net'],
-            ['4', 'BAGGINS', 'FRODO', 'frodo.saquet@shire.net'],
+            ['3', 'BILBON', 'BAGGINS', 'bilbon.saquet@shire.net'],
+            ['4', 'FRODO', 'BAGGINS', 'frodo.saquet@shire.net'],
         ];
 
         const trs = await driver.findElements(By.css('.dataset table tbody tr'));

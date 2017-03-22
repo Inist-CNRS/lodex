@@ -8,7 +8,8 @@
                 "operation": "AUTOGENERATE_URI",
                 "args": []
             }
-        ]
+        ],
+        "position": 0
     },
     {
         "cover": "collection",
@@ -30,7 +31,8 @@
                     }
                 ]
             }
-        ]
+        ],
+        "position": 1
     },
     {
         "cover": "collection",
@@ -47,7 +49,8 @@
                     }
                 ]
             }
-        ]
+        ],
+        "position": 2
     },
     {
         "cover": "collection",
@@ -64,7 +67,8 @@
                     }
                 ]
             }
-        ]
+        ],
+        "position": 3
     },
     {
         "cover": "collection",
@@ -82,6 +86,7 @@
                 ]
             }
         ],
-        "completes": "v8vy"
+        "completes": "v8vy",
+        "position": 4
     }
 ]
