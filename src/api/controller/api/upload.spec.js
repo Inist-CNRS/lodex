@@ -9,6 +9,9 @@ describe('upload', () => {
                 remove: createSpy(),
                 count: () => createSpy().andReturn(Promise.resolve('dataset count')),
             },
+            field: {
+                initializeModel: createSpy().andReturn(Promise.resolve()),
+            },
             getParser: createSpy().andThrow(new Error('Parsing error')),
         };
 
@@ -18,22 +21,31 @@ describe('upload', () => {
         expect(ctx.body).toBe('Parsing error');
     });
 
-    it('should call all ctx method in turn and have body set to parser result length', async () => {
-        const myParser = createSpy().andReturn(Promise.resolve({
-            name: 'myParser result',
-        }));
-        const ctx = {
-            dataset: {
-                remove: createSpy(),
-                insertBatch: createSpy(),
-                count: createSpy().andReturn(Promise.resolve('dataset count')),
-            },
-            getParser: createSpy().andReturn(myParser),
-            req: 'req',
-            requestToStream: createSpy().andReturn(Promise.resolve('stream')),
-            streamToArray: createSpy().andReturn('documents'),
-        };
+    const myParser = createSpy().andReturn(Promise.resolve({
+        name: 'myParser result',
+    }));
+    const ctx = {
+        dataset: {
+            remove: createSpy(),
+            insertBatch: createSpy(),
+            count: createSpy().andReturn(Promise.resolve('dataset count')),
+        },
+        field: {
+            initializeModel: createSpy().andReturn(Promise.resolve()),
+        },
+        getParser: createSpy().andReturn(myParser),
+        req: 'req',
+        requestToStream: createSpy().andReturn(Promise.resolve('stream')),
+        streamToArray: createSpy().andReturn('documents'),
+    };
 
+    it('should initialize the model', async () => {
+        await uploadMiddleware(ctx, 'csv');
+
+        expect(ctx.field.initializeModel).toHaveBeenCalled();
+    });
+
+    it('should call all ctx method in turn and have body set to parser result length', async () => {
         await uploadMiddleware(ctx, 'csv');
 
         expect(ctx.dataset.remove).toHaveBeenCalledWith({});

@@ -3,7 +3,8 @@ import pick from 'lodash.pick';
 import { ObjectID } from 'mongodb';
 
 import { validateField as validateFieldIsomorphic } from '../../common/validateFields';
-import { COVER_DOCUMENT } from '../../common/cover';
+import { URI_FIELD_NAME } from '../../common/uris';
+import { COVER_DOCUMENT, COVER_COLLECTION } from '../../common/cover';
 import generateUid from '../services/generateUid';
 
 export const buildInvalidPropertiesMessage = name =>
@@ -121,6 +122,19 @@ export default async (db) => {
         });
 
         return name;
+    };
+    collection.initializeModel = async () => {
+        const uriColumn = await collection.findOne({ name: URI_FIELD_NAME });
+
+        if (!uriColumn) {
+            await collection.insertOne({
+                cover: COVER_COLLECTION,
+                label: URI_FIELD_NAME,
+                name: URI_FIELD_NAME,
+                display_on_list: true,
+                transformers: [],
+            });
+        }
     };
 
     return collection;

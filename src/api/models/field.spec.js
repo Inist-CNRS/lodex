@@ -4,12 +4,14 @@ import fieldFactory, {
     buildInvalidPropertiesMessage,
     buildInvalidTransformersMessage,
 } from './field';
-import { COVER_DOCUMENT } from '../../common/cover';
+import { URI_FIELD_NAME } from '../../common/uris';
+import { COVER_DOCUMENT, COVER_COLLECTION } from '../../common/cover';
 
 describe('field', () => {
     describe('fieldFactory', () => {
         const fieldCollection = {
             createIndex: createSpy(),
+            findOne: createSpy().andReturn(Promise.resolve(null)),
             insertOne: createSpy(),
             update: createSpy(),
         };
@@ -114,6 +116,43 @@ describe('field', () => {
                         contributors: contributor,
                     },
                 });
+            });
+        });
+
+        describe('field.initializeModel', () => {
+            it('should try to find an existing uri field', async () => {
+                await field.initializeModel();
+
+                expect(fieldCollection.findOne).toHaveBeenCalledWith({ name: URI_FIELD_NAME });
+            });
+
+            it('should create a new uri field if not present', async () => {
+                await field.initializeModel();
+
+                expect(fieldCollection.insertOne).toHaveBeenCalledWith({
+                    cover: COVER_COLLECTION,
+                    label: URI_FIELD_NAME,
+                    name: URI_FIELD_NAME,
+                    display_on_list: true,
+                    transformers: [],
+                });
+            });
+
+            it('should not create a new uri field if present', async () => {
+                const fieldCollectionNoUri = {
+                    createIndex: createSpy(),
+                    findOne: createSpy().andReturn(Promise.resolve({})),
+                    insertOne: createSpy(),
+                };
+                const dbNoUri = {
+                    collection: createSpy().andReturn(fieldCollectionNoUri),
+                };
+
+                const fieldNoUri = await fieldFactory(dbNoUri);
+
+                await fieldNoUri.initializeModel();
+
+                expect(fieldCollectionNoUri.insertOne).toNotHaveBeenCalled();
             });
         });
     });
