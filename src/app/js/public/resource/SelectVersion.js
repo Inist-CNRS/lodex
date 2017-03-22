@@ -71,6 +71,7 @@ export class SelectVersionComponent extends Component {
         return (
             <div>
                 <RaisedButton
+                    className="select-version"
                     label={format(versions[selectedVersion], selectedVersion)}
                     onClick={this.handleClick}
                 />

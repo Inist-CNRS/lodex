@@ -81,7 +81,7 @@ describe('Resource page when not logged', function resourcePageTest() {
             elementTextContains(selectVersion, '03/03/2017', DEFAULT_WAIT_TIMEOUT),
         );
         await driver.wait(
-            elementTextContains(selectVersion, '(latest)', DEFAULT_WAIT_TIMEOUT),
+            elementTextContains(selectVersion, '(LATEST)', DEFAULT_WAIT_TIMEOUT),
         );
         await driver.wait(elementIsClicked(selectVersion));
         await driver.sleep(500);
