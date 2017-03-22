@@ -5,12 +5,25 @@ import {
     saveResourceError,
     SAVE_RESOURCE,
 } from '../';
-import { getSaveResourceRequest } from '../../../fetch';
+
+import { getSaveResourceRequest, getSaveFieldRequest } from '../../../fetch';
 import fetchSaga from '../../../lib/fetchSaga';
 
 export const parsePathName = pathname => pathname.match(/^(\/resource)(\/ark:\/)?(.*?$)/) || [];
 
-export function* handleSaveResource({ payload: resource }) {
+export function* handleSaveResource({ payload }) {
+    const { position, field, ...resource } = payload;
+
+    if (position !== field.position) {
+        const requestFieldPosition = yield select(getSaveFieldRequest, { ...field, position });
+        const { error } = yield call(fetchSaga, requestFieldPosition);
+
+        if (error) {
+            yield put(saveResourceError(error));
+            return;
+        }
+    }
+
     const request = yield select(getSaveResourceRequest, resource);
     const { error, response } = yield call(fetchSaga, request);
 
