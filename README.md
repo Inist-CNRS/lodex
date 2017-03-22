@@ -144,7 +144,7 @@ You can add new exporter to lodex.
 Exporter are added in the `src/api/exporters` directory.
 
 ```js
-export default (fields, characteristics, stream) => {
+const exporter = (fields, characteristics, stream) => {
     const defaultDocument = getDefaultDocuments(fields);
     const getCharacteristicByName = name => characteristics[0][name];
     const getCsvField = getCsvFieldFactory(getCharacteristicByName);
@@ -158,6 +158,15 @@ export default (fields, characteristics, stream) => {
         .pipe(through(getLastVersionFactory(defaultDocument)))
         .pipe(jsoncsvStream);
 }
+
+// Required: this will be the exported file extension
+exporter.extension = 'csv';
+
+// Required: this will be the exported file mime type
+exporter.mimeType = 'text/csv';
+
+export default exporter;
+
 ```
 
 It receives:

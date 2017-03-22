@@ -5,7 +5,7 @@ import * as ezsLocals from './ezsLocals';
 ezs.use(ezsBasics);
 ezs.use(ezsLocals);
 
-export default (fields, characteristics, stream) =>
+const exporter = (fields, characteristics, stream) =>
     stream
         .pipe(ezs('filterVersions'))
         .pipe(ezs('filterContributions', { fields }))
@@ -15,3 +15,8 @@ export default (fields, characteristics, stream) =>
             scheme: 'http://www.w3.org/2004/02/skos/core#inScheme',
         }))
         .pipe(ezs('jsonify'));
+
+exporter.extension = 'json';
+exporter.mimeType = 'application/json';
+export default exporter;
+

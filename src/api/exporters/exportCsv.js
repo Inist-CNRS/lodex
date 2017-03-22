@@ -50,4 +50,8 @@ export const exportCsvFactory = csvTransformStreamFactory => (fields, characteri
         .pipe(jsoncsvStream);
 };
 
-export default exportCsvFactory(csv);
+const exporter = exportCsvFactory(csv);
+exporter.extension = 'csv';
+exporter.mimeType = 'text/csv';
+
+export default exporter;
