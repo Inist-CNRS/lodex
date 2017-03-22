@@ -40,9 +40,9 @@ const prefixes = {
     xfoaf: 'http://www.foafrealm.org/xfoaf/0.1/',
     xml: 'http://www.w3.org/XML/1998/namespace',
     xsd: 'http://www.w3.org/2001/XMLSchema#',
-}
+};
 
-export default (fields, characteristics, stream) =>
+const exporter = (fields, characteristics, stream) =>
     stream
         .pipe(ezs('filterVersions'))
         .pipe(ezs('filterContributions', { fields }))
@@ -55,3 +55,8 @@ export default (fields, characteristics, stream) =>
         .pipe(ezs('bufferify'))
         .pipe(N3.StreamParser({ format: 'N-Quads' }))
         .pipe(new N3.StreamWriter({ prefixes }));
+
+exporter.extension = 'json';
+exporter.mimeType = 'application/json';
+
+export default exporter;

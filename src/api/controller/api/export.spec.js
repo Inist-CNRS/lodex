@@ -7,6 +7,9 @@ describe('export routes', () => {
         const characteristics = [{ name: 'characteristic1', value: 'characteristic1_value' }];
         const resultStream = new EventEmitter();
         const exporterStreamFactory = createSpy().andReturn(resultStream);
+        exporterStreamFactory.mimeType = 'a_mime_type';
+        exporterStreamFactory.extension = 'foo';
+
         const fields = [
             { name: 'field1', cover: 'collection' },
             { name: 'characteristic1', cover: 'dataset' },
@@ -54,11 +57,11 @@ describe('export routes', () => {
         });
 
         it('it set the Content-disposition header', () => {
-            expect(ctx.set).toHaveBeenCalledWith('Content-disposition', 'attachment; filename=export.csv');
+            expect(ctx.set).toHaveBeenCalledWith('Content-disposition', 'attachment; filename=export.foo');
         });
 
         it('it set the Content-type header', () => {
-            expect(ctx.type).toEqual('accepted-type');
+            expect(ctx.type).toEqual(exporterStreamFactory.mimeType);
         });
 
         it('it set the status to 200', () => {
@@ -69,7 +72,7 @@ describe('export routes', () => {
             expect(exporterStreamFactory).toHaveBeenCalledWith(fields, characteristics, mongoStream, {}, null);
         });
 
-        it('it set the body the the exported stream', () => {
+        it('it set the body to the exported stream', () => {
             expect(ctx.body).toEqual(resultStream);
         });
 

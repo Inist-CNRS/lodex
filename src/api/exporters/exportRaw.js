@@ -6,6 +6,11 @@ ezs.use(ezsBasics);
 ezs.use(ezsLocals);
 
 
-export default (fields, characteristics, stream) =>
+const exporter = (fields, characteristics, stream) =>
     stream
         .pipe(ezs('jsonify'));
+
+exporter.extension = 'json';
+exporter.mimeType = 'application/json';
+
+export default exporter;

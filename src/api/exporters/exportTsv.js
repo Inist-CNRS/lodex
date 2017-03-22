@@ -5,9 +5,14 @@ import * as ezsLocals from './ezsLocals';
 ezs.use(ezsBasics);
 ezs.use(ezsLocals);
 
-export default (fields, characteristics, stream) =>
+const exporter = (fields, characteristics, stream) =>
     stream
         .pipe(ezs('filterVersions'))
         .pipe(ezs('filterContributions', { fields }))
         .pipe(ezs('useFieldNames', { fields }))
         .pipe(ezs('CSVString', { separator: '\t' }));
+
+exporter.extension = 'tsv';
+exporter.mimeType = 'text/tab-separated-values';
+
+export default exporter;

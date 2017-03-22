@@ -57,8 +57,8 @@ export async function exportMiddleware(ctx, type) {
             ctx.db.close();
         });
 
-        ctx.set('Content-disposition', 'attachment; filename=export.csv');
-        ctx.type = type;
+        ctx.set('Content-disposition', `attachment; filename=export.${exportStreamFactory.extension}`);
+        ctx.type = exportStreamFactory.mimeType;
         ctx.status = 200;
         ctx.body = exportStream;
     } catch (error) {
