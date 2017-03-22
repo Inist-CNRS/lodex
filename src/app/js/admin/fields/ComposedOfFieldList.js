@@ -19,7 +19,7 @@ export const ComposedOfFieldListComponent = ({ fields }) => (
         ))}
         <FlatButton
             label="+"
-            onClick={() => addFields(event)}
+            onClick={() => addFields(fields)}
         />
         <FlatButton
             label="-"
