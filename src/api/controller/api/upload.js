@@ -38,6 +38,8 @@ export async function uploadMiddleware(ctx, type) {
         const documents = await ctx.streamToArray(parsedStream);
 
         await ctx.dataset.insertBatch(documents);
+        await ctx.field.initializeModel();
+
         ctx.status = 200;
         ctx.body = {
             totalLines: await ctx.dataset.count(),

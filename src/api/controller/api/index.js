@@ -5,7 +5,6 @@ import jwt from 'koa-jwt';
 import { auth } from 'config';
 
 import ezMasterConfig from '../../services/ezMasterConfig';
-import initializeFields from '../../services/initializeFields';
 import mongoClient from '../../services/mongoClient';
 
 import characteristic from './characteristic';
@@ -24,7 +23,6 @@ const app = new Koa();
 
 app.use(ezMasterConfig);
 app.use(mongoClient);
-app.use(initializeFields);
 
 app.use(mount('/export', exportPublishedDataset));
 app.use(mount('/facet', facet));
