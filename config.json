@@ -18,7 +18,12 @@
         }
     },
    "exporters": [
-       "csv"
+       "nq",
+       "csv",
+       "tsv",
+       "raw",
+       "ttl",
+       "jsonld"
    ],
    "languages": [
        { "code": "fr", "label": "Français" },
