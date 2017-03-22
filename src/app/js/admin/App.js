@@ -4,7 +4,6 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import AppBar from './Appbar';
 
 import { isLoggedIn as getIsLoggedIn } from '../user';
-import LoginDialog from '../user/LoginDialog';
 
 const styles = {
     appContainer: {
@@ -37,7 +36,6 @@ export const AppComponent = ({ children, isLoading, isLoggedIn }) => (
             <div className="body" style={styles.bodyContainer}>
                 <div style={styles.body}>{children}</div>
             </div>
-            <LoginDialog />
         </div>
     </MuiThemeProvider>
 );
