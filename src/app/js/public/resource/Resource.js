@@ -45,6 +45,7 @@ export const ResourceComponent = ({
     const backToListLabel = (datasetTitleKey && characteristics[datasetTitleKey]) || polyglot.t('back_to_list');
     const backToListButton = (
         <FlatButton
+            className="btn-back-to-list"
             containerElement={<Link to="/home" />}
             label={backToListLabel}
             icon={<HomeIcon />}

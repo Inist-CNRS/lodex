@@ -17,7 +17,7 @@ export const PositionInputComponent = ({ field, fields, p: polyglot, input }) =>
         ? null
         : (
             <MenuItem
-                className={`after_${field.label.toLowerCase().replace(/\s/g, '_')}`}
+                className={`after_${otherField.label.toLowerCase().replace(/\s/g, '_')}`}
                 key={otherField.name}
                 value={currentFieldIndex < index ? index : index + 1}
                 primaryText={polyglot.t('after_field', { field: otherField.label })}
@@ -28,13 +28,14 @@ export const PositionInputComponent = ({ field, fields, p: polyglot, input }) =>
     return (
         <Field
             name="position"
+            className="select-position"
             component={FormSelectField}
             label={polyglot.t('position')}
             fullWidth
             {...input}
         >
             <MenuItem
-                className="first_position"
+                className="first-position"
                 key="first_position"
                 value={0}
                 primaryText={polyglot.t('first_position')}

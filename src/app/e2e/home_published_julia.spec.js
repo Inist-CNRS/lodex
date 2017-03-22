@@ -1,5 +1,6 @@
 import { until, By } from 'selenium-webdriver';
 import { elementValueIs, elementIsClicked, elementTextIs } from 'selenium-smart-wait';
+import expect from 'expect';
 
 import driver from '../../common/tests/chromeDriver';
 import { clear, loadFixtures } from '../../common/tests/fixtures';
@@ -101,6 +102,12 @@ describe('Home page with published data when logged as Julia', function homePubl
         await driver.wait(inputElementIsFocusable(email), DEFAULT_WAIT_TIMEOUT);
         await email.clear();
         await email.sendKeys('peregrin.took@gondor.net');
+
+        await driver.wait(elementIsClicked('.select-position'));
+        await driver.sleep(1000);
+        await driver.wait(elementIsClicked('.after_uri'));
+        await driver.sleep(1000);
+
         await driver.findElement(By.css('.update-field')).click();
         await driver.wait(until.stalenessOf(form), DEFAULT_WAIT_TIMEOUT);
     });
@@ -155,6 +162,37 @@ describe('Home page with published data when logged as Julia', function homePubl
         await driver.wait(until.elementLocated(By.css('.removed-detail')), DEFAULT_WAIT_TIMEOUT);
         const reason = '.reason';
         await driver.wait(elementTextIs(reason, 'My bad, should not be here', DEFAULT_WAIT_TIMEOUT));
+    });
+
+    it('should display the list with updated positions', async () => {
+        await driver.wait(elementIsClicked('.btn-back-to-list'), DEFAULT_WAIT_TIMEOUT);
+
+        await driver.wait(until.elementLocated(By.css('.dataset')), DEFAULT_WAIT_TIMEOUT);
+        const headers = await driver.findElements(By.css('.dataset table th button'));
+
+        const expectedHeaders = ['URI', 'EMAIL', 'FIRSTNAME', 'NAME'];
+        await Promise.all(headers.map((header, index) =>
+            driver.wait(elementTextIs(header, expectedHeaders[index], DEFAULT_WAIT_TIMEOUT)),
+        ));
+
+        const expectedTds = [
+            ['1', 'peregrin.took@gondor.net', 'PEREGRIN', 'TOOK'],
+            ['2', 'samsaget.gamgie@shire.net', 'SAMSAGET', 'GAMGIE'],
+            ['3', 'bilbon.saquet@shire.net', 'BILBON', 'BAGGINS'],
+            ['4', 'frodo.saquet@shire.net', 'FRODO', 'BAGGINS'],
+            ['5', 'meriadoc.brandybuck@shire.net', 'MERIADOC', 'BRANDYBUCK'],
+        ];
+
+        const trs = await driver.findElements(By.css('.dataset table tbody tr'));
+        await Promise.all(trs.map(tr => tr
+            .findElements(By.css('td'))
+            .then(tds => Promise.all(tds.map(td => td.getText())))
+            .then((tdsText) => {
+                const item = expectedTds.find(td => td.every((cell, index) => cell === tdsText[index]));
+
+                expect(item).toExist('Unexpected row');
+            }),
+        ));
     });
 
     after(async () => {
