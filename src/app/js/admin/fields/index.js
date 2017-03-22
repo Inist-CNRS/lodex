@@ -63,6 +63,7 @@ const getDefaultField = (name, index) => ({
             value: name,
         }],
     }] : [],
+    position: index,
 });
 
 export default handleActions({

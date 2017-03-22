@@ -167,6 +167,7 @@ export default async (db) => {
                 name: URI_FIELD_NAME,
                 display_on_list: true,
                 transformers: [],
+                position: 0,
             });
         }
     };

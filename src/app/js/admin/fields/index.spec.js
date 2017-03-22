@@ -42,6 +42,7 @@ describe('field reducer', () => {
                         display_in_resource: true,
                         searchable: true,
                         transformers: [],
+                        position: 2,
                     },
                 },
             });
@@ -77,6 +78,7 @@ describe('field reducer', () => {
                                 value: 'target_col',
                             }],
                         }],
+                        position: 2,
                     },
                 },
             });
