@@ -4,10 +4,7 @@ import FlatButton from 'material-ui/FlatButton';
 import ComposedOfFieldListItem from './ComposedOfFieldListItem';
 
 const removeField = fields => fields.length > 2 && fields.remove(fields.length - 1);
-const addFields = fields => fields.push({
-    separator: ' ',
-    fields: ['', ''],
-});
+const addFields = fields => fields.push('');
 
 export const ComposedOfFieldListComponent = ({ fields }) => (
     <div>

@@ -1,8 +1,11 @@
 import React, { Component, PropTypes } from 'react';
-import { Field, FieldArray } from 'redux-form';
+import { Field, FieldArray, change } from 'redux-form';
 import translate from 'redux-polyglot/translate';
 import Subheader from 'material-ui/Subheader';
 import FlatButton from 'material-ui/FlatButton';
+import { connect } from 'react-redux';
+import compose from 'recompose/compose';
+
 
 import FormTextField from '../../lib/FormTextField';
 import ComposedOfFieldList from './ComposedOfFieldList';
@@ -29,6 +32,7 @@ export class ComposedOfComponent extends Component {
             ...this.state,
             hasComposedOf: true,
         });
+        this.props.addComposedOf();
     }
 
     removeComposedOf() {
@@ -36,6 +40,7 @@ export class ComposedOfComponent extends Component {
             ...this.state,
             hasComposedOf: false,
         });
+        this.props.removeComposedOf();
     }
 
     render() {
@@ -78,7 +83,20 @@ ComposedOfComponent.defaultProps = {
 ComposedOfComponent.propTypes = {
     name: PropTypes.string.isRequired,
     value: PropTypes.shape({}),
+    addComposedOf: PropTypes.func.isRequired,
+    removeComposedOf: PropTypes.func.isRequired,
     p: polyglotPropTypes.isRequired,
 };
 
-export default translate(ComposedOfComponent);
+const mapDispatchToProps = {
+    addComposedOf: () => change('field', 'composedOf', {
+        separator: ' ',
+        fields: ['', ''],
+    }),
+    removeComposedOf: () => change('field', 'composedOf', undefined),
+};
+
+export default compose(
+    translate,
+    connect(null, mapDispatchToProps),
+)(ComposedOfComponent);
