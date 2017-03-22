@@ -1,7 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
-import RaisedButton from 'material-ui/RaisedButton';
+import FlatButton from 'material-ui/FlatButton';
 import Popover from 'material-ui/Popover';
 import { connect } from 'react-redux';
 import moment from 'moment';
@@ -9,8 +9,9 @@ import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
 import withState from 'recompose/withState';
 import withHandlers from 'recompose/withHandlers';
-import { polyglot as polyglotPropTypes } from '../../propTypes';
+import ArrowDown from 'material-ui/svg-icons/hardware/keyboard-arrow-down';
 
+import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { selectVersion } from '../resource';
 import { fromResource } from '../selectors';
 
@@ -70,10 +71,12 @@ export class SelectVersionComponent extends Component {
 
         return (
             <div>
-                <RaisedButton
+                <FlatButton
                     className="select-version"
                     label={format(versions[selectedVersion], selectedVersion)}
+                    labelPosition="before"
                     onClick={this.handleClick}
+                    icon={<ArrowDown />}
                 />
                 <Popover
                     open={showMenu}
