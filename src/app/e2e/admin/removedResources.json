@@ -4,7 +4,8 @@
         "transformers" : [{ "operation" : "COLUMN", "args" : [ { "name" : "column", "type" : "column", "value" : "id" } ] } ],
         "label" : "URI",
         "cover" : "collection",
-        "scheme" : "http://uri4uri.net/vocab"
+        "scheme" : "http://uri4uri.net/vocab",
+        "position": 0
     }, {
         "name" : "fullname",
         "label" : "Full name",
@@ -13,25 +14,29 @@
             { "operation" : "UPPERCASE", "args" : [ ] }
         ],
         "cover" : "collection",
-        "scheme" : "http://www.w3.org/ns/person"
+        "scheme" : "http://www.w3.org/ns/person",
+        "position": 1
     }, {
         "name" : "email",
         "label" : "Email",
         "transformers" : [ { "operation" : "COLUMN", "args" : [ { "name" : "column", "type" : "column", "value" : "mail" } ] } ],
         "cover" : "collection",
-        "scheme" : "http://uri4uri.net/vocab"
+        "scheme" : "http://uri4uri.net/vocab",
+        "position": 2
     }, {
         "name" : "movie",
         "label" : "Movie",
         "transformers" : [ { "operation" : "COLUMN", "args" : [ { "name" : "column", "type" : "column", "value" : "movie" } ] } ],
         "cover" : "dataset",
-        "scheme" : "http://www.w3.org/ns/person"
+        "scheme" : "http://www.w3.org/ns/person",
+        "position": 3
     }, {
         "name" : "author",
         "label" : "Author",
         "transformers" : [ { "operation" : "COLUMN", "args" : [ { "name" : "column", "type" : "column", "value" : "author" } ] } ],
         "cover" : "dataset",
-        "scheme" : "http://www.w3.org/ns/person"
+        "scheme" : "http://www.w3.org/ns/person",
+        "position": 4
     }],
     "publishedCharacteristic": [
         { "movie": "LOTR" , "author": "Peter Jackson" }

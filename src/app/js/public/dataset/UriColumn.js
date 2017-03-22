@@ -1,10 +1,11 @@
 import React, { PropTypes } from 'react';
+import classnames from 'classnames';
 import { Link } from 'react-router';
 import { TableRowColumn } from 'material-ui/Table';
 import { field as fieldPropTypes } from '../../propTypes';
 
 const UriColumn = ({ column, resource }) => (
-    <TableRowColumn className={`dataset-${column.name}`}>
+    <TableRowColumn className={classnames('dataset-column', `dataset-${column.name}`)}>
         <Link to={`/resource?uri=${resource[column.name]}`}>{resource[column.name]}</Link>
     </TableRowColumn>
 );

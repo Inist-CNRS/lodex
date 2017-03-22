@@ -20,7 +20,7 @@ describe('<UriColumn />', () => {
     it('renders a TableRowColumn with correct class', () => {
         const element = wrapper.find(TableRowColumn);
 
-        expect(element.prop('className')).toEqual('dataset-a_name');
+        expect(element.prop('className')).toEqual('dataset-column dataset-a_name');
     });
 
     const link = wrapper.find(Link);

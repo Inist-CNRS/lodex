@@ -14,7 +14,8 @@
             "format": {
                 "name": "uri"
             },
-            "scheme": "http://uri4uri.net/vocab#URI"
+            "scheme": "http://uri4uri.net/vocab#URI",
+            "position": 0
         }, {
             "name": "name",
             "label": "name",
@@ -38,7 +39,8 @@
                     "operation": "UPPERCASE",
                     "args": []
                 }
-            ]
+            ],
+            "position": 3
         }, {
             "name": "fullname",
             "label": "Full name",
@@ -53,7 +55,8 @@
                     "firstname",
                     "name"
                 ]
-            }
+            },
+            "position": 6
         }, {
             "name": "firstname",
             "label": "firstname",
@@ -76,7 +79,8 @@
                     "operation": "UPPERCASE",
                     "args": []
                 }
-            ]
+            ],
+            "position": 2
         }, {
             "name": "email",
             "label": "Email",
@@ -97,7 +101,8 @@
                     ]
                 }
             ],
-            "completes": "fullname"
+            "completes": "fullname",
+            "position": 4
         }, {
             "name": "best_friend_of",
             "label": "Best Friend Of",
@@ -129,7 +134,8 @@
                     "type": "column"
                 },
                 "name": "uri"
-            }
+            },
+            "position": 5
         }, {
             "name": "movie",
             "label": "Movie",
@@ -145,7 +151,8 @@
                         }
                     ]
                 }
-            ]
+            ],
+            "position": 1
         }, {
             "name": "author",
             "label": "Author",

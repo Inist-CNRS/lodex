@@ -32,7 +32,7 @@ export default async (db) => {
 
     await collection.createIndex({ name: 1 }, { unique: true });
 
-    collection.findAll = () => collection.find({}).toArray();
+    collection.findAll = () => collection.find({}).sort({ position: 1 }).toArray();
 
     collection.findSearchableNames = async () => {
         const searchableFields = await collection.find({ searchable: true }).toArray();
@@ -50,18 +50,52 @@ export default async (db) => {
 
     collection.create = async (fieldData, nameArg) => {
         const name = nameArg || await generateUid();
+        let position = fieldData.position;
+
+        if (!position) {
+            position = await collection.count({});
+        }
+
+        await collection.updateMany({
+            position: { $gte: fieldData.position },
+        }, {
+            $inc: { position: 1 },
+        });
 
         return collection.insertOne({
-            ...omit(fieldData, ['_id']),
+            ...omit({ ...fieldData, position }, ['_id']),
             name,
         });
     };
 
-    collection.updateOneById = (id, field) => collection.findOneAndUpdate({
-        _id: new ObjectID(id),
-    }, omit(field, ['_id']), {
-        returnOriginal: false,
-    }).then(result => result.value);
+    collection.updateOneById = async (id, field) => {
+        const objectId = new ObjectID(id);
+        const previousFieldVersion = await collection.findOneById(id);
+
+        if (previousFieldVersion.position > field.position) {
+            await collection.updateMany({
+                _id: { $ne: objectId },
+                position: { $gte: field.position, $lt: previousFieldVersion.position },
+            }, {
+                $inc: { position: 1 },
+            });
+        }
+
+        if (previousFieldVersion.position < field.position) {
+            await collection.updateMany({
+                _id: { $ne: objectId },
+                position: { $gt: previousFieldVersion.position, $lte: field.position },
+            }, {
+                $inc: { position: -1 },
+            });
+        }
+
+        return collection.findOneAndUpdate({
+            _id: objectId,
+        }, omit(field, ['_id']), {
+            returnOriginal: false,
+        }).then(result => result.value);
+    };
 
     collection.removeById = id => collection.remove({ _id: new ObjectID(id) });
 

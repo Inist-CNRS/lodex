@@ -12,7 +12,6 @@ import fetchSaga from '../../../lib/fetchSaga';
 
 export function* handleSaveField() {
     const fieldData = yield select(getFieldFormData);
-
     const request = yield select(getSaveFieldRequest, fieldData);
     const { error, response } = yield call(fetchSaga, request);
 

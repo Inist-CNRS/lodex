@@ -26,6 +26,16 @@ describe('Resource page', function homePublishedDataTests() {
         expect(moderateComponents.length).toBe(0);
     });
 
+    it('should display all resource properties correctly ordered', async () => {
+        await driver.wait(until.elementLocated(By.css('.detail')), DEFAULT_WAIT_TIMEOUT);
+
+        const properties = await driver.findElements(By.css('.detail .property'));
+
+        expect(properties.length).toEqual(3);
+        expect(await properties[0].getAttribute('class')).toContain('best_friend_of');
+        expect(await properties[1].getAttribute('class')).toContain('full_name');
+    });
+
     it('should display all resource properties', async () => {
         await driver.wait(until.elementLocated(By.css('.detail')), DEFAULT_WAIT_TIMEOUT);
 

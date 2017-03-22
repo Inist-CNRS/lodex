@@ -14,6 +14,8 @@ describe('field', () => {
             findOne: createSpy().andReturn(Promise.resolve(null)),
             insertOne: createSpy(),
             update: createSpy(),
+            count: createSpy().andReturn(10),
+            updateMany: createSpy(),
         };
         const db = {
             collection: createSpy().andReturn(fieldCollection),
@@ -22,6 +24,10 @@ describe('field', () => {
 
         before(async () => {
             field = await fieldFactory(db);
+        });
+
+        beforeEach(() => {
+            fieldCollection.insertOne.reset();
         });
 
         it('should call db.collection with `field`', () => {
@@ -40,7 +46,29 @@ describe('field', () => {
                 expect(fieldCollection.insertOne.calls[0].arguments).toMatch([{
                     name: /^[A-Za-z0-9+/]{4}$/,
                     field: 'data',
+                    position: 10,
                 }]);
+            });
+
+            it('should call collection.inserOne with given data and a random uid when position is specified', async () => {
+                await field.create({ field: 'data', position: 15 });
+
+                expect(fieldCollection.insertOne.calls.length).toBe(1);
+                expect(fieldCollection.insertOne.calls[0].arguments).toMatch([{
+                    name: /^[A-Za-z0-9+/]{4}$/,
+                    field: 'data',
+                    position: 15,
+                }]);
+            });
+
+            it('should call collection.updateMany to update existing columns indexes', async () => {
+                await field.create({ field: 'data', position: 15 });
+
+                expect(fieldCollection.updateMany).toHaveBeenCalledWith({
+                    position: { $gte: 15 },
+                }, {
+                    $inc: { position: 1 },
+                });
             });
         });
 

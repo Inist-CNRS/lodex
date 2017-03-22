@@ -143,4 +143,7 @@ export default {
     resource_ontology: 'Ontology',
     versions: 'versions',
     latest: 'latest',
+    after_field: 'After %{field}',
+    first_position: 'At first position',
+    position: 'Position',
 };
