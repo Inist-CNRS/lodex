@@ -124,7 +124,7 @@ export const DetailComponent = ({
                 </CardText>
                 <CardActions style={styles.actions}>
                     <SelectVersion />
-                    <AddField />
+                    <AddField style={{ marginLeft: 'auto' }} />
                     <HideResource />
                 </CardActions>
             </Card>
