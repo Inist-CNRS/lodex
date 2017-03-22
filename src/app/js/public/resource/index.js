@@ -235,8 +235,15 @@ const isLoading = state => state.loading;
 const getVersions = state =>
     state.resource.versions.map(({ publicationDate }) => publicationDate);
 
-const getSelectedVersion = state =>
-    (state.selectedVersion !== null ? state.selectedVersion : (state.resource.versions.length - 1));
+const getNbVersions = state =>
+    (state.resource && state.resource.versions && state.resource.versions.length) || 0;
+
+const getSelectedVersion = createSelector(
+    state => state.selectedVersion,
+    getNbVersions,
+    (selectedVersion, nbVersions) =>
+        (selectedVersion !== null ? selectedVersion : (nbVersions - 1)),
+);
 
 const getResourceSelectedVersion = createSelector(
     state => state.resource,
@@ -258,7 +265,7 @@ const getResourceSelectedVersion = createSelector(
 
 const isLastVersionSelected = createSelector(
     getSelectedVersion,
-    state => state.resource.versions.length,
+    getNbVersions,
     (selectedVersion, nbVersions) => selectedVersion === nbVersions - 1,
 );
 
