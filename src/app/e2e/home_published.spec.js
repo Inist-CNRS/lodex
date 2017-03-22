@@ -45,17 +45,17 @@ describe('Home page with published data', function homePublishedDataTests() {
         await driver.wait(until.elementLocated(By.css('.dataset')), DEFAULT_WAIT_TIMEOUT);
         const headers = await driver.findElements(By.css('.dataset table th button'));
 
-        const expectedHeaders = ['URI', 'NAME', 'FIRSTNAME', 'EMAIL', 'BEST FRIEND OF'];
+        const expectedHeaders = ['URI', 'FIRSTNAME', 'NAME', 'EMAIL', 'BEST FRIEND OF'];
         await Promise.all(headers.map((header, index) =>
             driver.wait(elementTextIs(header, expectedHeaders[index], DEFAULT_WAIT_TIMEOUT)),
         ));
 
         const expectedTds = [
-            ['1', 'TOOK', 'PEREGRIN', 'peregrin.took@shire.net'],
-            ['2', 'GAMGIE', 'SAMSAGET', 'samsaget.gamgie@shire.net'],
-            ['3', 'BAGGINS', 'BILBON', 'bilbon.saquet@shire.net'],
-            ['4', 'BAGGINS', 'FRODO', 'frodo.saquet@shire.net'],
-            ['5', 'BRANDYBUCK', 'MERIADOC', 'meriadoc.brandybuck@shire.net'],
+            ['1', 'PEREGRIN', 'TOOK', 'peregrin.took@shire.net'],
+            ['2', 'SAMSAGET', 'GAMGIE', 'samsaget.gamgie@shire.net'],
+            ['3', 'BILBON', 'BAGGINS', 'bilbon.saquet@shire.net'],
+            ['4', 'FRODO', 'BAGGINS', 'frodo.saquet@shire.net'],
+            ['5', 'MERIADOC', 'BRANDYBUCK', 'meriadoc.brandybuck@shire.net'],
         ];
 
         const trs = await driver.findElements(By.css('.dataset table tbody tr'));
