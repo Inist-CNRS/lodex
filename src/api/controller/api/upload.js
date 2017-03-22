@@ -1,7 +1,7 @@
 import Koa from 'koa';
 import route from 'koa-route';
 import rawBody from 'raw-body';
-import streamBuffers from 'stream-buffers';
+import stream from 'stream';
 import streamToArray from 'stream-to-array';
 
 import config from '../../../../config.json';
@@ -15,16 +15,12 @@ export const getParser = (type) => {
     return loaders[type](config.loader[type]);
 };
 
-export const requestToStream = (rawBodyImpl, ReadableStreamBuffer) => async (req) => {
+export const requestToStream = (rawBodyImpl, PassThrough) => async (req) => {
     const buffer = await rawBodyImpl(req);
-    const stream = new ReadableStreamBuffer({
-        frequency: 10,   // in milliseconds.
-        chunkSize: 2048,  // in bytes.
-    });
-    stream.put(buffer);
-    stream.stop();
+    const bufferStream = new PassThrough();
+    bufferStream.end(buffer);
 
-    return stream;
+    return bufferStream;
 };
 
 export async function uploadMiddleware(ctx, type) {
@@ -33,8 +29,8 @@ export async function uploadMiddleware(ctx, type) {
     try {
         const parseStream = ctx.getParser(type);
 
-        const stream = await ctx.requestToStream(ctx.req);
-        const parsedStream = await parseStream(stream);
+        const requestStream = await ctx.requestToStream(ctx.req);
+        const parsedStream = await parseStream(requestStream);
         const documents = await ctx.streamToArray(parsedStream);
 
         await ctx.dataset.insertBatch(documents);
@@ -52,7 +48,7 @@ export async function uploadMiddleware(ctx, type) {
 
 export const prepareUpload = async (ctx, next) => {
     ctx.getParser = getParser;
-    ctx.requestToStream = requestToStream(rawBody, streamBuffers.ReadableStreamBuffer);
+    ctx.requestToStream = requestToStream(rawBody, stream.PassThrough);
     ctx.streamToArray = streamToArray;
 
     await next();

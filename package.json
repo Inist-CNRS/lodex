@@ -97,7 +97,6 @@
     "redux-saga": "0.14.3",
     "request": "2.79.0",
     "reselect": "2.5.4",
-    "stream-buffers": "3.0.1",
     "stream-to-array": "2.3.0",
     "url-api-polyfill": "1.1.0",
     "url-loader": "0.5.7",
