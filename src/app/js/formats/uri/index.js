@@ -1,7 +1,7 @@
 import Component from './Component';
-import EditionComponent from './EditionComponent';
+import AdminComponent from './AdminComponent';
 
 export default {
     Component,
-    EditionComponent,
+    AdminComponent,
 };

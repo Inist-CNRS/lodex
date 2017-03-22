@@ -19,5 +19,6 @@ const Empty = () => <span />;
 
 export default {
     Component: DefaultView,
+    AdminComponent: Empty,
     EditionComponent: Empty,
 };
