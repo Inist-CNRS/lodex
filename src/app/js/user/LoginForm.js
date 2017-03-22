@@ -37,6 +37,7 @@ export const LoginFormComponent = ({ error, handleKeyPress, handleSubmit, p: pol
             component={FormTextField}
             label={polyglot.t('Username')}
             onKeyPress={handleKeyPress}
+            autoFocus
             fullWidth
         />
 
