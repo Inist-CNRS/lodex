@@ -149,7 +149,7 @@ class Pagination extends Component {
         let showing = texts.showing.replace('{total}', total)
             .replace('{from}', _from)
             .replace('{to}', to);
-        
+
         return (
             <div style={styles.pagination}>
                 <div style={styles.pageSelect}>
