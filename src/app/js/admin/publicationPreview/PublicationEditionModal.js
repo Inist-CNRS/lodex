@@ -22,7 +22,7 @@ const styles = {
         marginRight: '1rem',
         paddingRight: '1rem',
         flexGrow: 1,
-        maxHeight: '50vw',
+        maxHeight: '55vh',
         overflowY: 'auto',
     },
     modal: {
@@ -56,7 +56,6 @@ const PublicationEditionComponent = ({ editedColumn, lines, onSaveEdition, onExi
             actions={actions}
             title={editedColumn.label}
             contentStyle={styles.modal}
-            style={styles.overlay}
         >
             <div style={styles.container}>
                 <div style={styles.form}>
