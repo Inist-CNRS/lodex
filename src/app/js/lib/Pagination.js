@@ -163,7 +163,7 @@ class Pagination extends Component {
 							{
 								pages.map(page => (
 									<MenuItem 
-										primaryText={pageToDisplay}
+										primaryText={page + 1}
 										value={page} 
 										key={`page-${page}`}/>
 								))
