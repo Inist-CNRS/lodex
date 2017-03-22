@@ -7,8 +7,6 @@ import { connect } from 'react-redux';
 import moment from 'moment';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
-import withState from 'recompose/withState';
-import withHandlers from 'recompose/withHandlers';
 import ArrowDown from 'material-ui/svg-icons/hardware/keyboard-arrow-down';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
@@ -44,7 +42,7 @@ export class SelectVersionComponent extends Component {
 
     handleClick = (event) => {
         this.setState({
-            anchorEl: event.target,
+            anchorEl: event.currentTarget,
             showMenu: true,
         });
     }
@@ -111,11 +109,6 @@ const mapDispatchToProps = {
 };
 
 export default compose(
-    withState('isOpen', 'setOpen', { open: false }),
-    withHandlers({
-        open: ({ setOpen }) => event => setOpen(() => ({ open: true, anchorEl: event.target })),
-        close: ({ setOpen }) => () => setOpen(() => ({ open: false })),
-    }),
     connect(mapStateToProps, mapDispatchToProps),
     translate,
 )(SelectVersionComponent);
