@@ -64,7 +64,6 @@ const PropertyComponent = ({
     if (!loggedIn && fieldStatus === REJECTED) {
         return null;
     }
-
     return (
         <div
             className={classnames('property', field.label.toLowerCase().replace(/\s/g, '_'), className)}

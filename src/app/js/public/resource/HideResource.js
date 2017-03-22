@@ -13,8 +13,21 @@ import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { fromResource } from '../selectors';
 import { HIDE_RESOURCE_FORM_NAME } from './';
 import HideResourceForm from './HideResourceForm';
+import { isLoggedIn } from '../../user';
 
-export const HideResourceComponent = ({ handleClose, handleOpen, handleSubmit, saving, show, style, p: polyglot }) => {
+export const HideResourceComponent = ({
+    handleClose,
+    handleOpen,
+    handleSubmit,
+    saving,
+    show,
+    loggedIn,
+    style,
+    p: polyglot,
+}) => {
+    if (!loggedIn) {
+        return null;
+    }
     const actions = [
         <ButtonWithStatus
             className="hide-resource"
@@ -54,12 +67,14 @@ HideResourceComponent.propTypes = {
     handleSubmit: PropTypes.func.isRequired,
     p: polyglotPropTypes.isRequired,
     saving: PropTypes.bool.isRequired,
+    loggedIn: PropTypes.bool.isRequired,
     show: PropTypes.bool.isRequired,
     style: PropTypes.object, // eslint-disable-line
 };
 
 const mapStateToProps = state => ({
     saving: fromResource.isSaving(state),
+    loggedIn: isLoggedIn(state),
 });
 
 const mapDispatchToProps = ({
