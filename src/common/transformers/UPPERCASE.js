@@ -1,13 +1,14 @@
 export const upperCase = (value) => {
+    if (!value) {
+        return null;
+    }
+
     if (Array.isArray(value)) {
         return value.map(upperCase);
     }
 
     if (typeof value === 'object') {
-        return Object.keys(value).reduce((result, key) => ({
-            ...result,
-            [key]: upperCase(value[key]),
-        }), {});
+        return null;
     }
 
     return value.toUpperCase();

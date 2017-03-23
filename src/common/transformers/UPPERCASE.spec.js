@@ -11,10 +11,10 @@ describe('UPPERCASE', () => {
         expect(upperCase(['hello', 'world'])).toEqual(['HELLO', 'WORLD']);
     });
 
-    it('should return uppercase value of each value in literal', () => {
+    it('should return null if value is literal', () => {
         expect(upperCase({
             a: 'hello',
             b: 'world',
-        })).toEqual({ a: 'HELLO', b: 'WORLD' });
+        })).toEqual(null);
     });
 });
