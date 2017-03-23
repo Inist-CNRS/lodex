@@ -72,6 +72,7 @@ export default {
     cancel: 'Cancel',
     edit: 'Edit',
     edit_field: 'Edit %{field}',
+    edit_ontology_field: '%{field} parameters',
     save: 'Save',
     hide: 'Hide',
     'add-field': 'Add a field',
