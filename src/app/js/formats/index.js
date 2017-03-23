@@ -23,4 +23,5 @@ export const getComponent = (field) => {
 };
 
 export const getViewComponent = field => getComponent(field).Component;
+export const getAdminComponent = name => getComponent(name).AdminComponent;
 export const getEditionComponent = name => getComponent(name).EditionComponent;

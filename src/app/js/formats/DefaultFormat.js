@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
 import { field as fieldPropTypes } from '../propTypes';
+import FormTextField from '../lib/FormTextField';
 
 const DefaultView = ({ className, resource, field }) => (
     <span className={className}>{resource[field.name]}</span>
@@ -20,5 +21,5 @@ const Empty = () => <span />;
 export default {
     Component: DefaultView,
     AdminComponent: Empty,
-    EditionComponent: Empty,
+    EditionComponent: FormTextField,
 };

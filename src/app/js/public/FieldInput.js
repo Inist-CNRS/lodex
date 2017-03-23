@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 import { Field } from 'redux-form';
 
+import { getEditionComponent } from '../formats';
 import CompositeFieldInput from './CompositeFieldInput';
-import FormTextField from '../lib/FormTextField';
 import {
     fromPublication,
 } from './selectors';
@@ -31,7 +31,7 @@ export const FieldInputComponent = ({ field, completedField, p: polyglot, input 
         <Field
             key={field.name}
             name={field.name}
-            component={FormTextField}
+            component={getEditionComponent(field)}
             disabled={field.name === 'uri'}
             label={label}
             fullWidth
@@ -44,10 +44,12 @@ FieldInputComponent.propTypes = {
     field: fieldPropTypes.isRequired,
     completedField: fieldPropTypes,
     p: polyglotPropTypes.isRequired,
+    input: PropTypes.shape({}),
 };
 
 FieldInputComponent.defaultProps = {
     completedField: null,
+    input: null,
 };
 
 const mapStateToProps = (state, { field }) => ({
