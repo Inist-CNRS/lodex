@@ -3,7 +3,6 @@ import expect from 'expect';
 import path from 'path';
 import {
     elementIsClicked,
-    elementIsNotVisible,
     stalenessOf,
     elementValueIs,
     elementTextIs,
@@ -15,15 +14,12 @@ import driver from '../../../common/tests/chromeDriver';
 import { clear } from '../../../common/tests/fixtures';
 import { inputElementIsFocusable } from '../../../common/tests/conditions';
 import loginAsJulia from '../loginAsJulia';
+import waitForPreviewComputing from './waitForPreviewComputing';
 
 describe('Admin', () => {
     describe('Publication', function homeTests() {
         this.timeout(30000);
         const DEFAULT_WAIT_TIMEOUT = 9000; // A bit less than mocha's timeout to get explicit errors from selenium
-
-        const waitForPreviewComputing = async () => {
-            await driver.wait(elementIsNotVisible('.publication-preview-is-computing', DEFAULT_WAIT_TIMEOUT));
-        };
 
         before(async () => {
             await clear();
