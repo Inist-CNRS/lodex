@@ -11,7 +11,7 @@ import { fromFields } from '../selectors';
 
 export const ComposedOfFieldListItemComponent = ({ fieldName, availableFields, p: polyglot }) => (
     <Field
-        className="operation"
+        className="composite-field"
         name={fieldName}
         type="text"
         component={FormSelectField}
@@ -31,7 +31,7 @@ ComposedOfFieldListItemComponent.propTypes = {
 
 const mapStateToProps = (state, { fieldName }) => ({
     fieldName,
-    availableFields: fromFields.getFields(state),
+    availableFields: fromFields.getFieldsExceptEdited(state),
 });
 
 export default compose(

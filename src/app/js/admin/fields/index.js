@@ -159,9 +159,9 @@ const getFieldsForPreview = createSelector(
         }
 
         return [
-            ...fields.slice(0, editedIndex - 1),
+            ...fields.slice(0, editedIndex),
             formData,
-            ...fields.slice(editedIndex + 1),
+            ...fields.slice(editedIndex),
         ];
     },
 );

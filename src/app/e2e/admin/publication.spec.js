@@ -179,7 +179,7 @@ describe('Admin', () => {
                 const buttonAddExcerptColumn = '.btn-excerpt-add-column-name';
                 await driver.wait(until.elementLocated(By.css(buttonAddExcerptColumn)));
                 await driver.wait(elementIsClicked(buttonAddExcerptColumn), DEFAULT_WAIT_TIMEOUT);
-
+                await driver.sleep(500);
                 await driver.wait(until.elementLocated(
                     By.css('.publication-excerpt-column-name'),
                 ), DEFAULT_WAIT_TIMEOUT);
