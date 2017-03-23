@@ -1,3 +1,8 @@
 export default (context, targetColumn) =>
-    async prev =>
-        context.fetchLineBy(targetColumn, prev);
+    (prev) => {
+        if (targetColumn) {
+            return context.fetchLineBy(targetColumn, prev);
+        }
+
+        return null;
+    };

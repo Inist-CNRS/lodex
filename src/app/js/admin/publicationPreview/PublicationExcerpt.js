@@ -100,7 +100,6 @@ PublicationExcerptComponent.defaultProps = {
 
 export default compose(
     translate,
-    pure,
     withProps(({ onHeaderClick }) => ({
         areHeadersClickable: typeof onHeaderClick === 'function',
     })),

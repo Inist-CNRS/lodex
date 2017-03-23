@@ -4,7 +4,6 @@ import fetchSaga from '../../../lib/fetchSaga';
 
 import {
     LOAD_FIELD,
-    SAVE_FIELD_SUCCESS,
     loadFieldError,
     loadFieldSuccess,
 } from '../';
@@ -30,5 +29,5 @@ export function* handleLoadField() {
 }
 
 export default function* watchLoadField() {
-    yield takeLatest([LOAD_FIELD, IMPORT_FIELDS_SUCCESS, SAVE_FIELD_SUCCESS, UPLOAD_FILE_SUCCESS], handleLoadField);
+    yield takeLatest([LOAD_FIELD, IMPORT_FIELDS_SUCCESS, UPLOAD_FILE_SUCCESS], handleLoadField);
 }

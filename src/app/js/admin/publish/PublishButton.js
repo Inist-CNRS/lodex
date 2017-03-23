@@ -7,7 +7,6 @@ import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { publish as publishAction } from './';
 import { fromFields, fromPublish, fromPublication } from '../selectors';
 import ButtonWithStatus from '../../lib/ButtonWithStatus';
-import { loadField } from '../fields';
 
 const styles = {
     title: {
@@ -21,10 +20,6 @@ const styles = {
 };
 
 export class PublishButtonComponent extends Component {
-    componentWillMount() {
-        this.props.loadField();
-    }
-
     handleClick = () => {
         this.props.onPublish();
     }
@@ -55,7 +50,6 @@ PublishButtonComponent.propTypes = {
     p: polyglotPropTypes.isRequired,
     onPublish: PropTypes.func.isRequired,
     published: PropTypes.bool.isRequired,
-    loadField: PropTypes.func.isRequired,
 };
 
 PublishButtonComponent.defaultProps = {
@@ -71,7 +65,6 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = ({
     onPublish: publishAction,
-    loadField,
 });
 
 export default compose(

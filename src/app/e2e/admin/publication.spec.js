@@ -3,6 +3,7 @@ import expect from 'expect';
 import path from 'path';
 import {
     elementIsClicked,
+    elementIsVisible,
     stalenessOf,
     elementValueIs,
     elementTextIs,
@@ -43,6 +44,7 @@ describe('Admin', () => {
         });
 
         describe('configuring uri column', async () => {
+            let fieldForm;
             it('should display publication_preview', async () => {
                 await driver.wait(until.elementLocated(By.css('.publication-preview')), DEFAULT_WAIT_TIMEOUT);
             });
@@ -60,6 +62,7 @@ describe('Admin', () => {
             it('should display form for uri column when clicking on uri column', async () => {
                 await driver.findElement(By.css('.publication-preview th')).click();
                 await driver.wait(until.elementLocated(By.css('#field_form')), DEFAULT_WAIT_TIMEOUT);
+                fieldForm = await driver.findElement(By.css('#field_form'));
 
                 const label = '#field_form input[name=label]';
                 await driver.wait(elementValueIs(label, 'uri'), DEFAULT_WAIT_TIMEOUT);
@@ -73,25 +76,25 @@ describe('Admin', () => {
                 await driver.sleep(500); // animations
                 await driver.wait(until.elementLocated(By.css('.transformer_AUTOGENERATE_URI')));
                 await driver.findElement(By.css('.transformer_AUTOGENERATE_URI')).click();
-            });
-
-            it('should have completed uri column with generated uri', async () => {
-                await driver.wait(until.elementLocated(
-                    By.css('.publication-excerpt-for-edition'),
-                ), DEFAULT_WAIT_TIMEOUT);
-                const tds = await driver.findElements(By.css('.publication-excerpt-for-edition tr td:first-child'));
-                expect(tds.length).toBe(4);
-                await Promise.all(tds.map(td =>
-                    driver.wait(elementTextMatches(td, /[A-Z0-9]{8}/, DEFAULT_WAIT_TIMEOUT))),
-                );
 
                 const saveButton = '.btn-save-column-edition';
                 await driver.wait(elementIsClicked(saveButton), DEFAULT_WAIT_TIMEOUT);
-                await driver.sleep(500);
+                await driver.wait(stalenessOf(fieldForm, DEFAULT_WAIT_TIMEOUT));
+                await driver.sleep(500); // dialog animations
+            });
+
+            it('should have completed uri column with generated uri', async () => {
+                await driver.wait(elementIsVisible('.publication-preview', DEFAULT_WAIT_TIMEOUT));
+                const tds = await driver.findElements(By.css('.publication-preview tr td:first-child'));
+
+                await Promise.all(tds.slice(0, 3).map(td => // last td is the remove button
+                    driver.wait(elementTextMatches(td, /[A-Z0-9]{8}/, DEFAULT_WAIT_TIMEOUT))),
+                );
             });
         });
 
         describe('adding LINK column', () => {
+            let fieldForm;
             it('should display form for newField2 column when clicking on btn-add-column', async () => {
                 const buttonAddColumn = '.btn-add-column';
                 await driver.wait(elementIsClicked(buttonAddColumn), DEFAULT_WAIT_TIMEOUT);
@@ -101,6 +104,7 @@ describe('Admin', () => {
                 await driver.wait(elementIsClicked(buttonAddFreeColumn), DEFAULT_WAIT_TIMEOUT);
 
                 await driver.wait(until.elementLocated(By.css('#field_form')), DEFAULT_WAIT_TIMEOUT);
+                fieldForm = await driver.findElement(By.css('#field_form'));
                 const label = '#field_form input[name=label]';
 
                 await driver.wait(elementValueIs(label, 'newField 2'), DEFAULT_WAIT_TIMEOUT);
@@ -145,7 +149,8 @@ describe('Admin', () => {
                 identifier.sendKeys('id');
                 const saveButton = '.btn-save-column-edition';
                 await driver.wait(elementIsClicked(saveButton), DEFAULT_WAIT_TIMEOUT);
-                await driver.sleep(500);
+                await driver.wait(stalenessOf(fieldForm, DEFAULT_WAIT_TIMEOUT));
+                await driver.sleep(500); // dialog animations
             });
 
             it('should have added stronger column with link', async () => {
@@ -166,6 +171,7 @@ describe('Admin', () => {
         });
 
         describe('adding column from original dataset', async () => {
+            let fieldForm;
             it('should add auto configured column when clicking add-column button for an original field', async () => {
                 const buttonAddColumn = '.btn-add-column';
                 await driver.wait(elementIsClicked(buttonAddColumn), DEFAULT_WAIT_TIMEOUT);
@@ -179,30 +185,31 @@ describe('Admin', () => {
                 const buttonAddExcerptColumn = '.btn-excerpt-add-column-name';
                 await driver.wait(until.elementLocated(By.css(buttonAddExcerptColumn)));
                 await driver.wait(elementIsClicked(buttonAddExcerptColumn), DEFAULT_WAIT_TIMEOUT);
-                await driver.sleep(500);
-                await driver.wait(until.elementLocated(
-                    By.css('.publication-excerpt-column-name'),
-                ), DEFAULT_WAIT_TIMEOUT);
+
+                await driver.wait(until.elementLocated(By.css('#field_form')), DEFAULT_WAIT_TIMEOUT);
+                fieldForm = await driver.findElement(By.css('#field_form'));
+
+                const saveButton = '.btn-save-column-edition';
+                await driver.wait(elementIsClicked(saveButton), DEFAULT_WAIT_TIMEOUT);
+                await driver.wait(stalenessOf(fieldForm, DEFAULT_WAIT_TIMEOUT));
+                await driver.sleep(500); // dialog animations
             });
 
             it('should have updated the preview', async () => {
-                await driver.wait(until.elementLocated(
-                    By.css('.publication-excerpt-for-edition'),
-                ), DEFAULT_WAIT_TIMEOUT);
-                const tds = await driver.findElements(By.css('.publication-excerpt-for-edition tr td:last-child'));
-                expect(tds.length).toBe(4);
-                await Promise.all(tds.map(td =>
+                await driver.wait(until.elementLocated(By.css('.publication-preview')), DEFAULT_WAIT_TIMEOUT);
+                const tds = await driver.findElements(By.css('.publication-preview tr td:nth-child(3)'));
+
+                await Promise.all(tds.slice(0, 3).map(td => // last td is the remove button
                     driver.wait(
                         elementTextMatches(td, /rock|paper|scissor|invalid_reference/, DEFAULT_WAIT_TIMEOUT)),
                     ),
                 );
-                const saveButton = '.btn-save-column-edition';
-                await driver.wait(elementIsClicked(saveButton), DEFAULT_WAIT_TIMEOUT);
-                await driver.sleep(500);
             });
         });
 
         describe('adding VALUE column', () => {
+            let fieldForm;
+
             it('should display form for newField4 column when clicking on btn-add-column', async () => {
                 const buttonAddColumn = '.btn-add-column';
                 await driver.wait(elementIsClicked(buttonAddColumn), DEFAULT_WAIT_TIMEOUT);
@@ -212,6 +219,7 @@ describe('Admin', () => {
                 await driver.wait(elementIsClicked(buttonAddFreeColumn), DEFAULT_WAIT_TIMEOUT);
 
                 await driver.wait(until.elementLocated(By.css('#field_form')), DEFAULT_WAIT_TIMEOUT);
+                fieldForm = await driver.findElement(By.css('#field_form'));
 
                 const label = '#field_form input[name=label]';
                 await driver.wait(elementValueIs(label, 'newField 4'), DEFAULT_WAIT_TIMEOUT);
@@ -252,7 +260,8 @@ describe('Admin', () => {
 
                 const saveButton = await driver.findElement(By.css('.btn-save-column-edition'));
                 await driver.wait(elementIsClicked(saveButton), DEFAULT_WAIT_TIMEOUT);
-                await driver.sleep(500);
+                await driver.wait(stalenessOf(fieldForm, DEFAULT_WAIT_TIMEOUT));
+                await driver.sleep(500); // dialog animations
             });
 
             it('should have added custom column with value', async () => {
@@ -276,6 +285,8 @@ describe('Admin', () => {
         });
 
         describe('adding completes column', () => {
+            let fieldForm;
+
             it('should display form for newField5 column when clicking on btn-add-column', async () => {
                 const buttonAddColumn = '.btn-add-column';
                 await driver.wait(elementIsClicked(buttonAddColumn), DEFAULT_WAIT_TIMEOUT);
@@ -285,6 +296,7 @@ describe('Admin', () => {
                 await driver.wait(elementIsClicked(buttonAddFreeColumn), DEFAULT_WAIT_TIMEOUT);
 
                 await driver.wait(until.elementLocated(By.css('#field_form')), DEFAULT_WAIT_TIMEOUT);
+                fieldForm = await driver.findElement(By.css('#field_form'));
 
                 const label = '#field_form input[name=label]';
                 await driver.wait(elementValueIs(label, 'newField 5'), DEFAULT_WAIT_TIMEOUT);
@@ -344,7 +356,8 @@ describe('Admin', () => {
 
                 const saveButton = '.btn-save-column-edition';
                 await driver.wait(elementIsClicked(saveButton), DEFAULT_WAIT_TIMEOUT);
-                await driver.sleep(500);
+                await driver.wait(stalenessOf(fieldForm, DEFAULT_WAIT_TIMEOUT));
+                await driver.sleep(500); // dialog animations
             });
 
             it('should have added custom column with value', async () => {
@@ -365,6 +378,8 @@ describe('Admin', () => {
         });
 
         describe('removing column', async () => {
+            let fieldForm;
+
             it('should add auto configured column when clicking add-column button for an original field', async () => {
                 const buttonAddColumn = '.btn-add-column';
                 await driver.wait(elementIsClicked(buttonAddColumn), DEFAULT_WAIT_TIMEOUT);
@@ -380,6 +395,7 @@ describe('Admin', () => {
                 await driver.wait(elementIsClicked(buttonExcerptAddColumnName), DEFAULT_WAIT_TIMEOUT);
 
                 await driver.wait(until.elementLocated(By.css('#field_form')), DEFAULT_WAIT_TIMEOUT);
+                fieldForm = await driver.findElement(By.css('#field_form'));
             });
 
             it('should change column name', async () => {
@@ -391,21 +407,21 @@ describe('Admin', () => {
 
                 const th = '.publication-excerpt-for-edition th';
                 await driver.wait(elementTextIs(th, 'To Remove', DEFAULT_WAIT_TIMEOUT));
+                const saveButton = '.btn-save-column-edition';
+                await driver.wait(elementIsClicked(saveButton), DEFAULT_WAIT_TIMEOUT);
+                await driver.wait(stalenessOf(fieldForm, DEFAULT_WAIT_TIMEOUT));
+                await driver.sleep(500); // dialog animations
             });
 
             it('should have updated the preview', async () => {
-                await driver.wait(until.elementLocated(
-                    By.css('.publication-excerpt-for-edition'),
-                ), DEFAULT_WAIT_TIMEOUT);
-                const tds = await driver.findElements(By.css('.publication-excerpt-for-edition tr td'));
-                expect(tds.length).toBe(4);
-                await Promise.all(tds.map(td =>
+                await driver.wait(until.elementLocated(By.css('.publication-preview')), DEFAULT_WAIT_TIMEOUT);
+                const tds = await driver.findElements(By.css('.publication-preview tr td:last-child'));
+                expect(tds.length).toBe(5);
+                await Promise.all(tds.slice(0, 3).map(td => // last td is the remove button
                     driver.wait(
                         elementTextMatches(td, /rock|paper|scissor|invalid_reference/, DEFAULT_WAIT_TIMEOUT)),
                     ),
                 );
-                const saveButton = '.btn-save-column-edition';
-                await driver.wait(elementIsClicked(saveButton), DEFAULT_WAIT_TIMEOUT);
             });
 
             it('should remove column when clicking btn-excerpt-remove-column button for a field', async () => {
@@ -413,7 +429,7 @@ describe('Admin', () => {
                 const button = await driver.findElement(By.css('.btn-excerpt-remove-column-to_remove'));
                 await driver.wait(elementIsClicked(button), DEFAULT_WAIT_TIMEOUT);
                 await driver.wait(stalenessOf(button, DEFAULT_WAIT_TIMEOUT));
-                await driver.sleep(1000);
+                await driver.wait(elementsCountIs('.publication-preview th', 5));
             });
 
             it('should have updated the preview', async () => {
@@ -456,9 +472,18 @@ describe('Admin', () => {
             });
 
             it('should not have added the new column', async () => {
-                await driver.wait(until.elementLocated(By.css('.publication-preview')), DEFAULT_WAIT_TIMEOUT);
                 const tds = await driver.findElements(By.css('.publication-preview tr td:last-child'));
                 expect(tds.length).toBe(5);
+
+                const expectedTexts = [
+                    'Zero-sum hand game',
+                    'Zero-sum hand game',
+                    'Zero-sum hand game',
+                    'Zero-sum hand game',
+                ];
+                await Promise.all(tds.slice(0, 3).map((td, index) => // last td is the remove button
+                    driver.wait(elementTextIs(td, expectedTexts[index], DEFAULT_WAIT_TIMEOUT))),
+                );
             });
         });
 

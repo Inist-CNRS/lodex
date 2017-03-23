@@ -7,7 +7,7 @@ import { CardHeader } from 'material-ui/Card';
 import PublicationExcerpt from './PublicationExcerpt';
 import PublicationEditionModal from './PublicationEditionModal';
 
-import { editField, removeField } from '../fields';
+import { editField, loadField, removeField } from '../fields';
 import { polyglot as polyglotPropTypes, field as fieldPropTypes } from '../../propTypes';
 import { fromFields, fromPublicationPreview } from '../selectors';
 import ScrollableCardContent from '../../lib/ScrollableCardContent';
@@ -39,6 +39,10 @@ const styles = {
 };
 
 export class PublicationPreviewComponent extends Component {
+    componentWillMount() {
+        this.props.loadField();
+    }
+
     handleRemoveColumnClick = (event) => {
         event.preventDefault();
         event.stopPropagation();
@@ -90,6 +94,7 @@ PublicationPreviewComponent.propTypes = {
     editedColumn: fieldPropTypes,
     editColumn: PropTypes.func.isRequired,
     lines: PropTypes.arrayOf(PropTypes.object).isRequired,
+    loadField: PropTypes.func.isRequired,
     p: polyglotPropTypes.isRequired,
     removeColumn: PropTypes.func.isRequired,
 };
@@ -106,6 +111,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
     editColumn: editField,
+    loadField,
     removeColumn: removeField,
 };
 
