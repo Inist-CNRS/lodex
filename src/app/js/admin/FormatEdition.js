@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import SelectFormat from './SelectFormat';
-import { getEditionComponent, FORMATS } from '../formats';
+import { getAdminComponent, FORMATS } from '../formats';
 import { formField as formFieldPropTypes } from '../propTypes';
 
 const styles = {
@@ -49,7 +49,7 @@ class FormatEdition extends Component {
     render() {
         const { name, args } = this.state;
 
-        const EditionComponent = getEditionComponent(name);
+        const AdminComponent = getAdminComponent(name);
 
         return (
             <div style={styles.container}>
@@ -58,7 +58,7 @@ class FormatEdition extends Component {
                     value={name}
                     onChange={this.setFormat}
                 />
-                <EditionComponent onChange={this.setArguments} {...{ ...this.props, ...args }} />
+                <AdminComponent onChange={this.setArguments} {...{ ...this.props, ...args }} />
             </div>
         );
     }
