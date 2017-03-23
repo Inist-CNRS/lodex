@@ -14,6 +14,7 @@ import { clear, loadFixtures } from '../../../common/tests/fixtures';
 import fixtures from './composedOf.json';
 import { inputElementIsFocusable } from '../../../common/tests/conditions';
 import loginAsJulia from '../loginAsJulia';
+import waitForPreviewComputing from './waitForPreviewComputing';
 
 describe('Admin', () => {
     describe('composedOf', function homeTests() {
@@ -29,6 +30,7 @@ describe('Admin', () => {
             await driver.executeScript('return sessionStorage.clear();');
             await loginAsJulia('/admin', '/');
         });
+        let fieldForm;
 
         it('should display form for newField4 column when clicking on btn-add-column', async () => {
             const buttonAddColumn = '.btn-add-column';
@@ -39,6 +41,7 @@ describe('Admin', () => {
             await driver.wait(elementIsClicked(buttonAddFreeColumn), DEFAULT_WAIT_TIMEOUT);
 
             await driver.wait(until.elementLocated(By.css('#field_form')), DEFAULT_WAIT_TIMEOUT);
+            fieldForm = await driver.findElement(By.css('#field_form'));
 
             const label = '#field_form input[name=label]';
             await driver.wait(elementValueIs(label, 'newField 4'), DEFAULT_WAIT_TIMEOUT);
@@ -68,9 +71,7 @@ describe('Admin', () => {
 
             await Promise.all(
                 compositeFields
-                    .map(field => field.getText()
-                        .then(text => expect(text).toBe('select a field')),
-                    ),
+                    .map(field => driver.wait(elementTextIs(field, 'select a field', DEFAULT_WAIT_TIMEOUT))),
             );
         });
 
@@ -122,31 +123,13 @@ describe('Admin', () => {
             const separator = await driver.findElement(By.css('.separator input'));
             await separator.clear();
             await separator.sendKeys('-');
-            // await driver.wait(elementHasBeenSentKeys('.separator input', '-', DEFAULT_WAIT_TIMEOUT));
-        });
-
-        it('should display the preview', async () => {
-            await driver.wait(until.elementLocated(
-                By.css('.publication-excerpt-for-edition'),
-            ), DEFAULT_WAIT_TIMEOUT);
-            const tds = await driver.findElements(By.css('.publication-excerpt-for-edition tr td:last-child'));
-            expect(tds.length).toBe(5);
-            const expectedTexts = [
-                'PEREGRIN - TOOK',
-                'SAMSAGET - GAMGIE',
-                'BILBON - BAGGINS',
-                'FRODO - BAGGINS',
-                'MERIADOC - BRANDYBUCK',
-            ];
-            await Promise.all(tds.map((td, index) =>
-                driver.wait(elementTextIs(td, expectedTexts[index], DEFAULT_WAIT_TIMEOUT))),
-            );
         });
 
         it('should save the field', async () => {
             const saveButton = '.btn-save-column-edition';
             await driver.wait(elementIsClicked(saveButton), DEFAULT_WAIT_TIMEOUT);
-            await driver.sleep(500);
+            await driver.wait(stalenessOf(fieldForm, DEFAULT_WAIT_TIMEOUT));
+            await waitForPreviewComputing();
         });
 
         it('should have added custom column with composedOf', async () => {
