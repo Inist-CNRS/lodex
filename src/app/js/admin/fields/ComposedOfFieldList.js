@@ -15,10 +15,12 @@ export const ComposedOfFieldListComponent = ({ fields }) => (
             />
         ))}
         <FlatButton
+            className="add-composite-field"
             label="+"
             onClick={() => addFields(fields)}
         />
         <FlatButton
+            className="remove-composite-field"
             label="-"
             onClick={() => removeField(fields)}
         />

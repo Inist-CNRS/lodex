@@ -51,7 +51,11 @@ export class ComposedOfComponent extends Component {
                 <div>
                     <Subheader style={styles.header}>
                         {polyglot.t('composed_of')}
-                        <FlatButton onClick={() => this.addComposedOf()} label={polyglot.t('add')} />
+                        <FlatButton
+                            className="add-composed-of"
+                            onClick={() => this.addComposedOf()}
+                            label={polyglot.t('add')}
+                        />
                     </Subheader>
                 </div>
             );
@@ -61,7 +65,11 @@ export class ComposedOfComponent extends Component {
             <div>
                 <Subheader>
                     {polyglot.t('composed_of')}
-                    <FlatButton onClick={() => this.removeComposedOf()} label={polyglot.t('remove')} />
+                    <FlatButton
+                        className="remove-composed-of"
+                        label={polyglot.t('remove')}
+                        onClick={() => this.removeComposedOf()}
+                    />
                 </Subheader>
                 <Field
                     className="separator"
