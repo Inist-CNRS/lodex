@@ -3,12 +3,12 @@ export const upperCase = (value) => {
         return null;
     }
 
-    if (typeof value === 'object') {
-        return null;
-    }
-
     if (Array.isArray(value)) {
         return value.map(upperCase);
+    }
+
+    if (typeof value === 'object') {
+        return null;
     }
 
     return value.toUpperCase();
