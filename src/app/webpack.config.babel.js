@@ -138,6 +138,7 @@ export default {
         ]
         : [
             new UglifyJsPlugin({
+                warning: false,
                 beautify: false,
                 mangle: {
                     screw_ie8: true,
