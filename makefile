@@ -55,7 +55,6 @@ mongo-shell-test: ## Start the mongo shell for the test database
 build-frontend: ## Build the frontend application
 	NODE_ENV=${NODE_ENV} BABEL_ENV=browser ./node_modules/.bin/webpack \
 	    --config=./src/app/webpack.config.babel.js \
-	    $(if $(filter production staging test,$(NODE_ENV)),-p,-d) \
 	    $(if $(filter test,$(NODE_ENV)),,--progress)
 
 npm: ## allow to run dockerized npm command eg make npm 'install koa --save'

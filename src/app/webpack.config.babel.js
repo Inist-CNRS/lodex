@@ -39,6 +39,7 @@ export default {
                 ],
                 loader: 'babel-loader',
                 options: {
+                    cacheDirectory: true,
                     forceEnv: 'browser',
                 },
             }, {
@@ -138,21 +139,25 @@ export default {
         ]
         : [
             new UglifyJsPlugin({
-                warning: false,
                 beautify: false,
                 mangle: {
                     screw_ie8: true,
-                    keep_fnames: true,
                 },
                 compress: {
                     screw_ie8: true,
                 },
                 comments: false,
-                sourceMap: 'source-map',
+                sourceMap: false,
             }),
             new CompressionPlugin(),
         ]),
     resolve: {
-        extensions: ['.js', '.jsx'],
+        modules: [
+            resolve(__dirname, '../'),
+            resolve(__dirname, '../../node_modules'),
+        ],
+    },
+    resolveLoader: {
+        modules: [resolve(__dirname, '../../node_modules')],
     },
 };
