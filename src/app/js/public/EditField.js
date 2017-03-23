@@ -35,6 +35,11 @@ export const EditFieldComponent = ({
         return null;
     }
     const actions = [
+        <FlatButton
+            label={'Cancel'}
+            onClick={handleClose}
+            primary
+        />,
         <ButtonWithStatus
             className="update-field"
             label={polyglot.t('save')}
@@ -42,7 +47,6 @@ export const EditFieldComponent = ({
             loading={isSaving}
             onTouchTap={handleSubmit}
         />,
-        <FlatButton label={'Cancel'} onClick={handleClose} />,
     ];
 
     return (
