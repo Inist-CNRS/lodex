@@ -1,16 +1,16 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
-import translate from 'redux-polyglot/translate';
 import { CardHeader } from 'material-ui/Card';
 
 import PublicationExcerpt from './PublicationExcerpt';
 import PublicationEditionModal from './PublicationEditionModal';
 
 import { editField, loadField, removeField } from '../fields';
-import { polyglot as polyglotPropTypes, field as fieldPropTypes } from '../../propTypes';
+import { field as fieldPropTypes } from '../../propTypes';
 import { fromFields, fromPublicationPreview } from '../selectors';
 import ScrollableCardContent from '../../lib/ScrollableCardContent';
+import PublicationPreviewTitle from './PublicationPreviewTitle';
 
 const styles = {
     container: {
@@ -57,14 +57,14 @@ export class PublicationPreviewComponent extends Component {
     }
 
     render() {
-        const { columns, lines, editColumn, editedColumn, p: polyglot } = this.props;
+        const { columns, lines, editColumn, editedColumn } = this.props;
 
         return (
             <div style={styles.container} className="publication-preview">
                 <CardHeader
                     style={styles.titleContainer}
                     textStyle={styles.title}
-                    title={polyglot.t('publication_preview')}
+                    title={<PublicationPreviewTitle />}
                 />
 
                 <ScrollableCardContent style={styles.content}>
@@ -95,7 +95,6 @@ PublicationPreviewComponent.propTypes = {
     editColumn: PropTypes.func.isRequired,
     lines: PropTypes.arrayOf(PropTypes.object).isRequired,
     loadField: PropTypes.func.isRequired,
-    p: polyglotPropTypes.isRequired,
     removeColumn: PropTypes.func.isRequired,
 };
 
@@ -117,5 +116,4 @@ const mapDispatchToProps = {
 
 export default compose(
     connect(mapStateToProps, mapDispatchToProps),
-    translate,
 )(PublicationPreviewComponent);

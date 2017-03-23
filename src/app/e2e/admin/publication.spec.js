@@ -3,7 +3,7 @@ import expect from 'expect';
 import path from 'path';
 import {
     elementIsClicked,
-    elementIsVisible,
+    elementIsNotVisible,
     stalenessOf,
     elementValueIs,
     elementTextIs,
@@ -20,6 +20,10 @@ describe('Admin', () => {
     describe('Publication', function homeTests() {
         this.timeout(30000);
         const DEFAULT_WAIT_TIMEOUT = 9000; // A bit less than mocha's timeout to get explicit errors from selenium
+
+        const waitForPreviewComputing = async () => {
+            await driver.wait(elementIsNotVisible('.publication-preview-is-computing', DEFAULT_WAIT_TIMEOUT));
+        };
 
         before(async () => {
             await clear();
@@ -80,11 +84,11 @@ describe('Admin', () => {
                 const saveButton = '.btn-save-column-edition';
                 await driver.wait(elementIsClicked(saveButton), DEFAULT_WAIT_TIMEOUT);
                 await driver.wait(stalenessOf(fieldForm, DEFAULT_WAIT_TIMEOUT));
-                await driver.sleep(500); // dialog animations
+                await waitForPreviewComputing();
             });
 
             it('should have completed uri column with generated uri', async () => {
-                await driver.wait(elementIsVisible('.publication-preview', DEFAULT_WAIT_TIMEOUT));
+                await driver.wait(until.elementLocated(By.css('.publication-preview')), DEFAULT_WAIT_TIMEOUT);
                 const tds = await driver.findElements(By.css('.publication-preview tr td:first-child'));
 
                 await Promise.all(tds.slice(0, 3).map(td => // last td is the remove button
@@ -150,7 +154,7 @@ describe('Admin', () => {
                 const saveButton = '.btn-save-column-edition';
                 await driver.wait(elementIsClicked(saveButton), DEFAULT_WAIT_TIMEOUT);
                 await driver.wait(stalenessOf(fieldForm, DEFAULT_WAIT_TIMEOUT));
-                await driver.sleep(500); // dialog animations
+                await waitForPreviewComputing();
             });
 
             it('should have added stronger column with link', async () => {
@@ -192,7 +196,7 @@ describe('Admin', () => {
                 const saveButton = '.btn-save-column-edition';
                 await driver.wait(elementIsClicked(saveButton), DEFAULT_WAIT_TIMEOUT);
                 await driver.wait(stalenessOf(fieldForm, DEFAULT_WAIT_TIMEOUT));
-                await driver.sleep(500); // dialog animations
+                await waitForPreviewComputing();
             });
 
             it('should have updated the preview', async () => {
@@ -261,7 +265,7 @@ describe('Admin', () => {
                 const saveButton = await driver.findElement(By.css('.btn-save-column-edition'));
                 await driver.wait(elementIsClicked(saveButton), DEFAULT_WAIT_TIMEOUT);
                 await driver.wait(stalenessOf(fieldForm, DEFAULT_WAIT_TIMEOUT));
-                await driver.sleep(500); // dialog animations
+                await waitForPreviewComputing();
             });
 
             it('should have added custom column with value', async () => {
@@ -357,7 +361,7 @@ describe('Admin', () => {
                 const saveButton = '.btn-save-column-edition';
                 await driver.wait(elementIsClicked(saveButton), DEFAULT_WAIT_TIMEOUT);
                 await driver.wait(stalenessOf(fieldForm, DEFAULT_WAIT_TIMEOUT));
-                await driver.sleep(500); // dialog animations
+                await waitForPreviewComputing();
             });
 
             it('should have added custom column with value', async () => {
@@ -410,7 +414,7 @@ describe('Admin', () => {
                 const saveButton = '.btn-save-column-edition';
                 await driver.wait(elementIsClicked(saveButton), DEFAULT_WAIT_TIMEOUT);
                 await driver.wait(stalenessOf(fieldForm, DEFAULT_WAIT_TIMEOUT));
-                await driver.sleep(500); // dialog animations
+                await waitForPreviewComputing();
             });
 
             it('should have updated the preview', async () => {

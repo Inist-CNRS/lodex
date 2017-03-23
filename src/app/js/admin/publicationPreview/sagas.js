@@ -8,7 +8,6 @@ import {
     DESTROY as REDUX_FORM_DESTROY,
 } from 'redux-form/lib/actionTypes';
 
-
 import getDocumentTransformer from '../../lib/getDocumentTransformer';
 import { getToken } from '../../user';
 import {
