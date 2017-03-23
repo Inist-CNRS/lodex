@@ -6,7 +6,7 @@ import { field as fieldPropTypes } from '../../propTypes';
 
 const UriColumn = ({ column, resource }) => (
     <TableRowColumn className={classnames('dataset-column', `dataset-${column.name}`)}>
-        <Link to={`/resource?uri=${resource[column.name]}`}>{resource[column.name]}</Link>
+        <Link to={`/resource?uri=${encodeURIComponent(resource[column.name])}`}>{resource[column.name]}</Link>
     </TableRowColumn>
 );
 

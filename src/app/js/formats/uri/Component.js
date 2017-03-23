@@ -26,12 +26,13 @@ const UriView = ({ className, linkedResource, resource, field, fields }) => {
         }
     }
 
-    return <Link className={className} to={`/resource?uri=${uri}`}>{label}</Link>;
+    return <Link className={className} to={`/resource?uri=${encodeURIComponent(uri)}`}>{label}</Link>;
 };
 
 UriView.propTypes = {
     className: PropTypes.string,
     field: fieldPropTypes.isRequired,
+    fields: PropTypes.arrayOf(fieldPropTypes).isRequired,
     linkedResource: PropTypes.object, // eslint-disable-line
     resource: PropTypes.object.isRequired, // eslint-disable-line
 };
