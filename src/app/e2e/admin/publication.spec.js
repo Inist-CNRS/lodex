@@ -449,6 +449,8 @@ describe('Admin', () => {
         });
 
         describe('canceling creation', () => {
+            let fieldForm;
+
             it('should add auto configured column when clicking add-column button for an original field', async () => {
                 const buttonAddColumn = '.btn-add-column';
                 await driver.wait(elementIsClicked(buttonAddColumn), DEFAULT_WAIT_TIMEOUT);
@@ -464,11 +466,14 @@ describe('Admin', () => {
                 await driver.wait(elementIsClicked(buttonExcerptAddColumnName), DEFAULT_WAIT_TIMEOUT);
 
                 await driver.wait(until.elementLocated(By.css('#field_form')), DEFAULT_WAIT_TIMEOUT);
+                fieldForm = await driver.findElement(By.css('#field_form'));
             });
 
             it('should cancel edition when clicking close', async () => {
                 const cancelButton = '.btn-exit-column-edition';
                 await driver.wait(elementIsClicked(cancelButton), DEFAULT_WAIT_TIMEOUT);
+                await driver.wait(stalenessOf(fieldForm, DEFAULT_WAIT_TIMEOUT));
+                await driver.sleep(500); // dialog animations
             });
 
             it('should not have added the new column', async () => {
