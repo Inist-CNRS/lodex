@@ -98,6 +98,7 @@
     "request": "2.79.0",
     "reselect": "2.5.4",
     "stream-to-array": "2.3.0",
+    "through": "2.3.8",
     "url-api-polyfill": "1.1.0",
     "url-loader": "0.5.7",
     "webpack": "2.2.0",

@@ -13,6 +13,7 @@ describe('upload', () => {
                 initializeModel: createSpy().andReturn(Promise.resolve()),
             },
             getParser: createSpy().andThrow(new Error('Parsing error')),
+            saveStream: createSpy(),
         };
 
         await uploadMiddleware(ctx, 'csv');
@@ -27,7 +28,7 @@ describe('upload', () => {
     const ctx = {
         dataset: {
             remove: createSpy(),
-            insertBatch: createSpy(),
+            insertMany: createSpy(),
             count: createSpy().andReturn(Promise.resolve('dataset count')),
         },
         field: {
@@ -36,7 +37,7 @@ describe('upload', () => {
         getParser: createSpy().andReturn(myParser),
         req: 'req',
         requestToStream: createSpy().andReturn(Promise.resolve('stream')),
-        streamToArray: createSpy().andReturn('documents'),
+        saveStream: createSpy(),
     };
 
     it('should initialize the model', async () => {
@@ -52,9 +53,7 @@ describe('upload', () => {
         expect(ctx.getParser).toHaveBeenCalledWith('csv');
         expect(ctx.requestToStream).toHaveBeenCalledWith('req');
         expect(myParser).toHaveBeenCalledWith('stream');
-        expect(ctx.streamToArray).toHaveBeenCalledWith({
-            name: 'myParser result',
-        });
+        expect(ctx.saveStream).toHaveBeenCalled('myParser result', ctx.dataset.insertMany.bind(ctx.dataset.insertMany));
         expect(ctx.dataset.count).toHaveBeenCalled();
         expect(ctx.body).toEqual({
             totalLines: 'dataset count',

@@ -6,6 +6,7 @@ import streamToArray from 'stream-to-array';
 
 import config from '../../../../config.json';
 import loaders from '../../loaders';
+import saveStream from '../../services/saveStream';
 
 export const getParser = (type) => {
     if (!loaders[type]) {
@@ -31,9 +32,8 @@ export async function uploadMiddleware(ctx, type) {
 
         const requestStream = await ctx.requestToStream(ctx.req);
         const parsedStream = await parseStream(requestStream);
-        const documents = await ctx.streamToArray(parsedStream);
 
-        await ctx.dataset.insertBatch(documents);
+        await ctx.saveStream(parsedStream, ctx.dataset.insertMany.bind(ctx.dataset));
         await ctx.field.initializeModel();
 
         ctx.status = 200;
@@ -50,6 +50,7 @@ export const prepareUpload = async (ctx, next) => {
     ctx.getParser = getParser;
     ctx.requestToStream = requestToStream(rawBody, stream.PassThrough);
     ctx.streamToArray = streamToArray;
+    ctx.saveStream = saveStream;
 
     await next();
 };
