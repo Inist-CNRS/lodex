@@ -17,12 +17,11 @@ const styles = {
         cursor: 'pointer',
     },
     table: memoize(separated => ({
+        display: 'block',
+        overflowX: 'auto',
         width: 'auto',
         borderLeft: separated ? 'none' : '1px solid rgb(224, 224, 224)',
     })),
-    wrapper: {
-        overflowX: 'auto',
-    },
     cell: {
         cursor: 'pointer',
     },
@@ -45,7 +44,6 @@ export const PublicationExcerptComponent = ({
         className={className}
         selectable={false}
         fixedHeader={false}
-        bodyStyle={styles.wrapper}
         style={styles.table(isPreview)}
         onCellClick={onCellClick}
     >

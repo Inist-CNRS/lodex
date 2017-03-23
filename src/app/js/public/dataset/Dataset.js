@@ -21,10 +21,12 @@ import { fromPublication, fromDataset } from '../selectors';
 
 const styles = {
     table: {
+        display: 'block',
+        overflowX: 'auto',
         width: 'auto',
     },
     wrapper: {
-        overflowX: 'auto',
+        maxWidth: '100%',
     },
     noResult: {
         textAlign: 'center',
@@ -45,8 +47,8 @@ export class DatasetComponent extends Component {
         const { columns, dataset, loading, p: polyglot, total, perPage, currentPage } = this.props;
         if (loading) return <Loading>{polyglot.t('loading')}</Loading>;
         return (
-            <ScrollableCardContent className="dataset">
-                <Table selectable={false} fixedHeader={false} bodyStyle={styles.wrapper} style={styles.table}>
+            <ScrollableCardContent className="dataset" style={styles.wrapper}>
+                <Table selectable={false} fixedHeader={false} style={styles.table}>
                     <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
                         <TableRow>
                             {columns.map(c => <DatasetColumnHeader

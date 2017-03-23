@@ -5,7 +5,6 @@ import translate from 'redux-polyglot/translate';
 
 import { CardHeader } from 'material-ui/Card';
 import { grey400 } from 'material-ui/styles/colors';
-import Card from '../../lib/Card';
 import ScrollableCardContent from '../../lib/ScrollableCardContent';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
@@ -17,7 +16,6 @@ const styles = {
     container: {
         position: 'relative',
         display: 'flex',
-        width: '99vw',
     },
     card: {
         marginTop: 0,

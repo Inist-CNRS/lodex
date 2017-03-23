@@ -13,11 +13,10 @@ import ParsingExcerptAddColumn from './ParsingExcerptAddColumn';
 
 const styles = {
     table: {
+        display: 'block',
+        overflowX: 'auto',
         width: 'auto',
         borderLeft: '1px solid rgb(224, 224, 224)',
-    },
-    wrapper: {
-        overflowX: 'auto',
     },
     body: {
         position: 'relative',
@@ -48,7 +47,7 @@ export const ParsingExcerptComponent = ({
 
     return (
         <div>
-            <Table selectable={false} fixedHeader={false} bodyStyle={styles.wrapper} style={styles.table}>
+            <Table selectable={false} fixedHeader={false} style={styles.table}>
                 <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
                     <TableRow>
                         {columns.map(c => <TableHeaderColumn key={`header_${c}`}>{c}</TableHeaderColumn>)}
