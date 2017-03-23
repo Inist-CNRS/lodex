@@ -16,7 +16,6 @@ const styles = {
     container: {
         position: 'relative',
         display: 'flex',
-        width: '99vw',
     },
     content: {
         overflow: 'auto',

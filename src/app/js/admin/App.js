@@ -6,18 +6,8 @@ import AppBar from './Appbar';
 import { isLoggedIn as getIsLoggedIn } from '../user';
 
 const styles = {
-    appContainer: {
-        display: 'flex',
-        flexDirection: 'column',
-        minHeight: '100vh',
-    },
-    bodyContainer: {
-        display: 'flex',
-        flex: '1',
-        backgroundColor: '#edecec',
-    },
     body: {
-        flex: 1,
+        backgroundColor: '#edecec',
     },
     linkToHome: {
         color: 'white',
@@ -30,11 +20,11 @@ const styles = {
 
 export const AppComponent = ({ children, isLoading, isLoggedIn }) => (
     <MuiThemeProvider>
-        <div style={styles.appContainer}>
+        <div>
             <AppBar isLoading={isLoading} isLoggedIn={isLoggedIn} />
 
-            <div className="body" style={styles.bodyContainer}>
-                <div style={styles.body}>{children}</div>
+            <div className="body" style={styles.body}>
+                {children}
             </div>
         </div>
     </MuiThemeProvider>
