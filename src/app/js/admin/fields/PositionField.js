@@ -8,6 +8,7 @@ import MenuItem from 'material-ui/MenuItem';
 import { field as fieldPropTypes, polyglot as polyglotPropTypes } from '../../propTypes';
 import FormSelectField from '../../lib/FormSelectField';
 import { fromFields } from '../selectors';
+import getFieldClassName from '../../lib/getFieldClassName';
 
 export const PositionFieldComponent = ({ field, fields, p: polyglot, ...props }) => {
     const currentFieldIndex = fields.findIndex(f => f.name === field.name);
@@ -17,7 +18,7 @@ export const PositionFieldComponent = ({ field, fields, p: polyglot, ...props })
         ? null
         : (
             <MenuItem
-                className={`after_${field.label.toLowerCase().replace(/\s/g, '_')}`}
+                className={`after_${getFieldClassName(field)}`}
                 key={otherField.name}
                 value={currentFieldIndex < index ? index : index + 1}
                 primaryText={polyglot.t('after_field', { field: otherField.label })}

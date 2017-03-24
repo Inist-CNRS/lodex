@@ -15,6 +15,7 @@ import PropertyContributor from './PropertyContributor';
 import PropertyLinkedFields from './PropertyLinkedFields';
 import { isLoggedIn } from '../user';
 import EditField from './EditField';
+import getFieldClassName from '../lib/getFieldClassName';
 
 const styles = {
     container: memoize(style => Object.assign({
@@ -66,7 +67,7 @@ const PropertyComponent = ({
     }
     return (
         <div
-            className={classnames('property', field.label.toLowerCase().replace(/\s/g, '_'), className)}
+            className={classnames('property', getFieldClassName(field), className)}
             style={styles.container(style, fieldStatus)}
         >
             <div>
