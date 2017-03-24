@@ -52,8 +52,8 @@ export const EditOntologyFieldComponent = ({
     return (
         <div style={styles.container}>
             <IconButton
-                className={classnames('edit-field', getFieldClassName(field))}
-                tooltip={polyglot.t('edit_field', { field: field.label })}
+                className={classnames('configure-field', getFieldClassName(field))}
+                tooltip={polyglot.t('configure_field', { field: field.label })}
                 onClick={handleOpen}
             >
                 <SettingsIcon />
