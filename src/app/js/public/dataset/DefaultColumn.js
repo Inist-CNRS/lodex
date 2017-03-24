@@ -4,10 +4,11 @@ import classnames from 'classnames';
 import { TableRowColumn } from 'material-ui/Table';
 import Format from '../Format';
 import { field as fieldPropTypes } from '../../propTypes';
+import getFieldClassName from '../../lib/getFieldClassName';
 
 const DatasetColumn = ({ column, columns, resource }) => (
     <TableRowColumn
-        className={classnames('dataset-column', `dataset-${column.label.toLowerCase().replace(/\s/g, '_')}`)}
+        className={classnames('dataset-column', `dataset-${getFieldClassName(column)}`)}
     >
         <Format
             field={column}

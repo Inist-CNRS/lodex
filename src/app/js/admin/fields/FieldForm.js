@@ -18,6 +18,7 @@ import Format from '../FormatEdition';
 import LanguagesField from './LanguagesField';
 import PositionField from './PositionField';
 import TransformerList from './TransformerList';
+import getFieldClassName from '../../lib/getFieldClassName';
 
 const validate = (values) => {
     const errors = ['name', 'label', 'cover'].reduce((currentErrors, field) => {
@@ -47,7 +48,7 @@ export const FieldFormComponent = ({
 
     const otherFieldsMenuItems = fields.map(f => (
         <MenuItem
-            className={`completes_${f.label.toLowerCase().replace(/\s/g, '_')}`}
+            className={`completes_${getFieldClassName(f)}`}
             key={f.name}
             value={f.name}
             primaryText={f.label}
