@@ -1,0 +1,27 @@
+import { call, put, select, takeLatest } from 'redux-saga/effects';
+
+import {
+    SAVE_FIELD,
+    saveFieldSuccess,
+    saveFieldError,
+    getFieldFormData,
+} from '../';
+import { getUpdateFieldRequest } from '../../../fetch';
+import fetchSaga from '../../../lib/fetchSaga';
+
+export function* handleSaveFieldRequest() {
+    const formData = yield select(getFieldFormData);
+    const request = yield select(getUpdateFieldRequest, formData);
+
+    const { error, response: field } = yield call(fetchSaga, request);
+
+    if (error) {
+        return yield put(saveFieldError(error));
+    }
+
+    return yield put(saveFieldSuccess(field));
+}
+
+export default function* watchsaveFieldRequest() {
+    yield takeLatest(SAVE_FIELD, handleSaveFieldRequest);
+}

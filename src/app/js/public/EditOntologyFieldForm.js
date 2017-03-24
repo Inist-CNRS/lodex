@@ -52,11 +52,10 @@ EditOntologyFieldFormComponent.propTypes = {
     p: polyglotPropTypes.isRequired,
 };
 
-
 export default compose(
     withHandlers({
-        onSubmit: ({ onSaveProperty }) => (values) => {
-            onSaveProperty(values);
+        onSubmit: ({ onSaveField }) => (values) => {
+            onSaveField(values);
         },
     }),
     withProps(({ field, ...props }) => ({

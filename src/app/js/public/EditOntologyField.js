@@ -14,8 +14,10 @@ import ButtonWithStatus from '../lib/ButtonWithStatus';
 import getFieldClassName from '../lib/getFieldClassName';
 
 import { field as fieldPropTypes, polyglot as polyglotPropTypes } from '../propTypes';
-import EditOntologyFieldForm, { FORM_NAME } from './EditOntologyFieldForm';
+import EditOntologyFieldForm from './EditOntologyFieldForm';
 import { isLoggedIn } from '../user';
+import { saveField } from './publication';
+import { fromPublication } from './selectors';
 
 const styles = {
     container: {
@@ -27,7 +29,6 @@ export const EditOntologyFieldComponent = ({
     field,
     handleClose,
     handleOpen,
-    handleSubmit,
     handleSave,
     p: polyglot,
     isSaving,
@@ -43,7 +44,7 @@ export const EditOntologyFieldComponent = ({
             label={polyglot.t('save')}
             primary
             loading={isSaving}
-            onTouchTap={handleSubmit}
+            onTouchTap={handleSave}
         />,
         <FlatButton label={'Cancel'} onClick={handleClose} />,
     ];
@@ -67,7 +68,7 @@ export const EditOntologyFieldComponent = ({
             >
                 <EditOntologyFieldForm
                     field={field}
-                    onSaveProperty={handleSave}
+                    onSaveField={handleSave}
                 />
             </Dialog>
         </div>
@@ -79,7 +80,6 @@ EditOntologyFieldComponent.propTypes = {
     handleClose: PropTypes.func.isRequired,
     handleOpen: PropTypes.func.isRequired,
     handleSave: PropTypes.func.isRequired,
-    handleSubmit: PropTypes.func.isRequired,
     isSaving: PropTypes.bool.isRequired,
     loggedIn: PropTypes.bool.isRequired,
     p: polyglotPropTypes.isRequired,
@@ -89,10 +89,12 @@ EditOntologyFieldComponent.propTypes = {
 
 const mapStateToProps = state => ({
     loggedIn: isLoggedIn(state),
+    isSaving: fromPublication.isPublicationSaving(state),
 });
 
 const mapDispatchToProps = ({
     submit: submitAction,
+    onSaveField: saveField,
 });
 
 export default compose(
@@ -107,11 +109,8 @@ export default compose(
             event.preventDefault();
             setShow(false);
         },
-        handleSubmit: ({ submit }) => () => {
-            submit(FORM_NAME);
-        },
-        handleSave: ({ onSaveProperty, setShow }) => (values) => {
-            onSaveProperty(values);
+        handleSave: ({ onSaveField, setShow }) => (values) => {
+            onSaveField(values);
             setShow(false);
         },
     }),

@@ -12,14 +12,23 @@ export const LOAD_PUBLICATION_ERROR = 'LOAD_PUBLICATION_ERROR';
 
 export const SELECT_FIELD = 'SELECT_FIELD';
 
+export const SAVE_FIELD = 'SAVE_FIELD';
+export const SAVE_FIELD_SUCCESS = 'SAVE_FIELD_SUCCESS';
+export const SAVE_FIELD_ERROR = 'SAVE_FIELD_ERROR';
+
 export const loadPublication = createAction(LOAD_PUBLICATION);
 export const loadPublicationSuccess = createAction(LOAD_PUBLICATION_SUCCESS);
 export const loadPublicationError = createAction(LOAD_PUBLICATION_ERROR);
 
 export const selectField = createAction(SELECT_FIELD);
 
+export const saveField = createAction(SAVE_FIELD);
+export const saveFieldSuccess = createAction(SAVE_FIELD_SUCCESS);
+export const saveFieldError = createAction(SAVE_FIELD_ERROR);
+
 export const defaultState = {
     loading: false,
+    isSaving: false,
     fields: [],
     byName: {},
     published: false,
@@ -51,6 +60,25 @@ export default handleActions({
     SELECT_FIELD: (state, { payload: name }) => ({
         ...state,
         selectedField: name,
+    }),
+    SAVE_FIELD: state => ({
+        ...state,
+        error: null,
+        isSaving: true,
+    }),
+    SAVE_FIELD_SUCCESS: (state, { payload: field }) => ({
+        ...state,
+        isSaving: false,
+        error: null,
+        byName: {
+            ...state.byName,
+            [field.name]: field,
+        },
+    }),
+    SAVE_FIELD_ERROR: (state, { payload: error }) => ({
+        ...state,
+        isSaving: false,
+        error: error.message,
     }),
 }, defaultState);
 
@@ -155,6 +183,7 @@ const getPublishData = ({ error, published, editedFieldIndex, loading }) => ({
 });
 
 const isPublicationLoading = state => state.loading;
+const isPublicationSaving = state => state.isSaving;
 const getPublicationError = state => state.error;
 
 const getComposedFields = createSelector(
@@ -221,6 +250,8 @@ const getCompositeFieldsByField = createSelector(
 
 const getNbColumns = state => state.fields.length;
 
+export const getFieldFormData = state => state.form.ONTOLOGY_FIELD_FORM && state.form.ONTOLOGY_FIELD_FORM.values;
+
 export const fromPublication = {
     getFields,
     getCollectionFields,
@@ -241,6 +272,7 @@ export const fromPublication = {
     getDatasetTitleFieldName,
     getPublishData,
     isPublicationLoading,
+    isPublicationSaving,
     getPublicationError,
     getCompositeFieldsByField,
     getFacetFields,
