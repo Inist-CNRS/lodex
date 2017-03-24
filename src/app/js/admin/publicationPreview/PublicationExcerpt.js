@@ -11,6 +11,7 @@ import { polyglot as polyglotPropTypes, field as fieldPropTypes } from '../../pr
 import PublicationExcerptHeader from './PublicationExcerptHeader';
 import PublicationExcerptRemoveColumn from './PublicationExcerptRemoveColumn';
 import PublicationExcerptLine from './PublicationExcerptLine';
+import getFieldClassName from '../../lib/getFieldClassName';
 
 const styles = {
     header: {
@@ -54,7 +55,7 @@ export const PublicationExcerptComponent = ({
                         key={field.name}
                         className={
                             `publication-excerpt-column publication-excerpt-column-${
-                                field.label.toLowerCase().replace(/\s/g, '_')
+                                getFieldClassName(field)
                             }`
                         }
                         style={getColStyle(colStyle)}

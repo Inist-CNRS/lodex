@@ -4,6 +4,7 @@ import translate from 'redux-polyglot/translate';
 import { connect } from 'react-redux';
 import { fromFields } from '../selectors';
 import { polyglot as polyglotPropTypes, field as fieldPropTypes } from '../../propTypes';
+import getFieldClassName from '../../lib/getFieldClassName';
 
 const PublicationExcerptHeaderComponent = ({
     completedField,
@@ -13,7 +14,7 @@ const PublicationExcerptHeaderComponent = ({
     <div>
         {label || name}
         {completedField &&
-            <div className={`completes_${completedField.label.toLowerCase().replace(/\s/g, '_')}`}>
+            <div className={`completes_${getFieldClassName(completedField)}`}>
                 {polyglot.t('completes_field_X', { field: completedField.label })}
             </div>
         }

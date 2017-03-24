@@ -16,6 +16,7 @@ import { field as fieldPropTypes, polyglot as polyglotPropTypes } from '../propT
 import EditFieldForm, { FORM_NAME } from './EditFieldForm';
 import { fromResource } from './selectors';
 import { isLoggedIn } from '../user';
+import getFieldClassName from '../lib/getFieldClassName';
 
 export const EditFieldComponent = ({
     field,
@@ -52,7 +53,7 @@ export const EditFieldComponent = ({
     return (
         <div style={style}>
             <IconButton
-                className={classnames('edit-field', field.label.toLowerCase().replace(/\s/g, '_'))}
+                className={classnames('edit-field', getFieldClassName(field))}
                 tooltip={polyglot.t('edit_field', { field: field.label })}
                 onClick={handleOpen}
             >

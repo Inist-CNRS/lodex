@@ -8,6 +8,7 @@ import memoize from 'lodash.memoize';
 import { field as fieldPropTypes, polyglot as polyglotPropTypes } from '../propTypes';
 import { fromPublication } from './selectors';
 import { languages } from '../../../../config.json';
+import getFieldClassName from '../lib/getFieldClassName';
 
 const styles = {
     container: {
@@ -42,7 +43,7 @@ export const OntologyComponent = ({ fields, p: polyglot }) => (
         {fields.map((field, index) => (
             <div key={field.name} style={styles.field(index < fields.length - 1)}>
                 <h4
-                    className={classnames('field-label', field.label.toLowerCase().replace(/\s/g, '_'))}
+                    className={classnames('field-label', getFieldClassName(field))}
                     style={styles.name}
                 >
                     {field.label}
@@ -51,7 +52,7 @@ export const OntologyComponent = ({ fields, p: polyglot }) => (
                     <dl style={styles.property}>
                         <dt style={styles.label}>{polyglot.t('scheme')}</dt>
                         <dd
-                            className={classnames('field-scheme', field.label.toLowerCase().replace(/\s/g, '_'))}
+                            className={classnames('field-scheme', getFieldClassName(field))}
                         >
                             {field.scheme}
                         </dd>
@@ -60,7 +61,7 @@ export const OntologyComponent = ({ fields, p: polyglot }) => (
                 <dl style={styles.property}>
                     <dt style={styles.label}>{polyglot.t('cover')}</dt>
                     <dd
-                        className={classnames('field-cover', field.label.toLowerCase().replace(/\s/g, '_'))}
+                        className={classnames('field-cover', getFieldClassName(field))}
                     >
                         {polyglot.t(`cover_${field.cover}`)}
                     </dd>
@@ -69,7 +70,7 @@ export const OntologyComponent = ({ fields, p: polyglot }) => (
                     <dl style={styles.property}>
                         <dt style={styles.label}>{polyglot.t('language')}</dt>
                         <dd
-                            className={classnames('field-language', field.label.toLowerCase().replace(/\s/g, '_'))}
+                            className={classnames('field-language', getFieldClassName(field))}
                         >
                             {languages.find(l => l.code === field.language).label}
                         </dd>

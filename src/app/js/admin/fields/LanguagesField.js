@@ -6,11 +6,12 @@ import MenuItem from 'material-ui/MenuItem';
 import { languages } from '../../../../../config.json';
 import { field as fieldPropTypes, polyglot as polyglotPropTypes } from '../../propTypes';
 import FormSelectField from '../../lib/FormSelectField';
+import getFieldClassName from '../../lib/getFieldClassName';
 
 export const LanguagesFieldComponent = ({ field, p: polyglot, ...props }) => {
     const languagesItems = languages.map(language => (
         <MenuItem
-            className={`language_${field.label.toLowerCase().replace(/\s/g, '_')}`}
+            className={`language_${getFieldClassName(field)}`}
             key={language.code}
             value={language.code}
             primaryText={language.label}

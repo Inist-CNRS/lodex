@@ -12,6 +12,7 @@ import { field as fieldPropTypes, polyglot as polyglotPropTypes } from '../../pr
 import { fromFacet, fromPublication } from '../selectors';
 import { selectFacet } from './index';
 import FacetValueSelector from './FacetValueSelector';
+import getFieldClassName from '../../lib/getFieldClassName';
 
 const anchorOrigin = { horizontal: 'left', vertical: 'bottom' };
 const targetOrigin = { horizontal: 'left', vertical: 'top' };
@@ -65,7 +66,7 @@ export class FacetSelectorComponent extends Component {
                     <Menu onChange={this.handleFacetClick}>
                         {fields.map(field => (
                             <MenuItem
-                                className={`facet-${field.label.toLowerCase().replace(/\s/g, '_')}`}
+                                className={`facet-${getFieldClassName(field)}`}
                                 key={field.name}
                                 primaryText={field.label}
                                 value={field}
