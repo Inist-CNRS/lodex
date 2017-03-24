@@ -3,14 +3,13 @@ import compose from 'recompose/compose';
 import withHandlers from 'recompose/withHandlers';
 import withProps from 'recompose/withProps';
 import translate from 'redux-polyglot/translate';
-import { reduxForm, propTypes as reduxFormPropTypes } from 'redux-form';
+import { reduxForm, Field, propTypes as reduxFormPropTypes } from 'redux-form';
 
 import Alert from '../lib/Alert';
 import { polyglot as polyglotPropTypes } from '../propTypes';
-import FieldInput from './FieldInput';
-import PositionInput from './PositionInput';
+import FormCheckboxField from '../lib/FormCheckboxField';
 
-export const FORM_NAME = 'PROPERTY_FORM';
+export const FORM_NAME = 'ONTOLOGY_FIELD_FORM';
 
 const validate = (values) => {
     const errors = Object.keys(values).reduce((currentErrors, field) => {
@@ -26,38 +25,46 @@ const validate = (values) => {
     return errors;
 };
 
-export const EditFieldFormComponent = ({ field, error, handleSubmit }) => (
+export const EditOntologyFieldFormComponent = ({ error, handleSubmit, p: polyglot }) => (
     <form id="field_form" onSubmit={handleSubmit}>
         {error && <Alert><p>{error}</p></Alert>}
-        <FieldInput field={field} />
-        <PositionInput field={field} />
+        <Field
+            name="display_in_list"
+            component={FormCheckboxField}
+            label={polyglot.t('field_display_in_list')}
+        />
+        <Field
+            name="display_in_resource"
+            component={FormCheckboxField}
+            label={polyglot.t('field_display_in_resource')}
+        />
     </form>
 );
 
-EditFieldFormComponent.defaultProps = {
+EditOntologyFieldFormComponent.defaultProps = {
     resource: null,
     error: null,
     saving: false,
 };
 
-EditFieldFormComponent.propTypes = {
+EditOntologyFieldFormComponent.propTypes = {
     ...reduxFormPropTypes,
     p: polyglotPropTypes.isRequired,
 };
 
-
 export default compose(
     withHandlers({
-        onSubmit: ({ onSaveProperty }) => (values) => {
-            onSaveProperty(values);
+        onSubmit: ({ onSaveField }) => (values) => {
+            onSaveField(values);
         },
     }),
-    withProps(({ resource, field }) => ({
-        initialValues: { ...resource, position: field.position, field },
+    withProps(({ field, ...props }) => ({
+        ...props,
+        initialValues: field,
     })),
     reduxForm({
         form: FORM_NAME,
         validate,
     }),
     translate,
-)(EditFieldFormComponent);
+)(EditOntologyFieldFormComponent);

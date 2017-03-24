@@ -4,6 +4,7 @@ import { createSelector } from 'reselect';
 
 import TITLE_SCHEME from '../../../../common/titleScheme';
 import { COVER_COLLECTION, COVER_DATASET, COVER_DOCUMENT } from '../../../../common/cover';
+import getCatalogFromArray from '../../lib/getCatalogFromArray';
 
 export const LOAD_PUBLICATION = 'LOAD_PUBLICATION';
 export const LOAD_PUBLICATION_SUCCESS = 'LOAD_PUBLICATION_SUCCESS';
@@ -11,15 +12,25 @@ export const LOAD_PUBLICATION_ERROR = 'LOAD_PUBLICATION_ERROR';
 
 export const SELECT_FIELD = 'SELECT_FIELD';
 
+export const SAVE_FIELD = 'SAVE_FIELD';
+export const SAVE_FIELD_SUCCESS = 'SAVE_FIELD_SUCCESS';
+export const SAVE_FIELD_ERROR = 'SAVE_FIELD_ERROR';
+
 export const loadPublication = createAction(LOAD_PUBLICATION);
 export const loadPublicationSuccess = createAction(LOAD_PUBLICATION_SUCCESS);
 export const loadPublicationError = createAction(LOAD_PUBLICATION_ERROR);
 
 export const selectField = createAction(SELECT_FIELD);
 
+export const saveField = createAction(SAVE_FIELD);
+export const saveFieldSuccess = createAction(SAVE_FIELD_SUCCESS);
+export const saveFieldError = createAction(SAVE_FIELD_ERROR);
+
 export const defaultState = {
     loading: false,
+    isSaving: false,
     fields: [],
+    byName: {},
     published: false,
 };
 
@@ -29,13 +40,18 @@ export default handleActions({
         error: null,
         loading: true,
     }),
-    LOAD_PUBLICATION_SUCCESS: (state, { payload: { fields, published } }) => ({
-        ...state,
-        error: null,
-        loading: false,
-        fields,
-        published,
-    }),
+    LOAD_PUBLICATION_SUCCESS: (state, { payload: { fields, published } }) => {
+        const { catalog, list } = getCatalogFromArray(fields, 'name');
+
+        return {
+            ...state,
+            error: null,
+            loading: false,
+            byName: catalog,
+            fields: list,
+            published,
+        };
+    },
     LOAD_PUBLICATION_ERROR: (state, { payload: error }) => ({
         ...state,
         error: error.message,
@@ -45,11 +61,31 @@ export default handleActions({
         ...state,
         selectedField: name,
     }),
+    SAVE_FIELD: state => ({
+        ...state,
+        error: null,
+        isSaving: true,
+    }),
+    SAVE_FIELD_SUCCESS: (state, { payload: field }) => ({
+        ...state,
+        isSaving: false,
+        error: null,
+        byName: {
+            ...state.byName,
+            [field.name]: field,
+        },
+    }),
+    SAVE_FIELD_ERROR: (state, { payload: error }) => ({
+        ...state,
+        isSaving: false,
+        error: error.message,
+    }),
 }, defaultState);
 
 const hasPublishedDataset = ({ published }) => published;
 
-const getFields = ({ fields }) => fields || [];
+const getFields = ({ fields = [], byName }) =>
+    fields.map(name => byName[name]);
 
 const getCollectionFields = createSelector(
     getFields,
@@ -63,13 +99,7 @@ const getListFields = createSelector(
         .filter(f => !f.composedOf),
 );
 
-const getFieldNameFromParams = (state, params) => params;
-
-const getFieldByName = createSelector(
-    getFields,
-    getFieldNameFromParams,
-    (fields, name) => fields.find(f => f.name === name),
-);
+const getFieldByName = (state, name) => state.byName[name];
 
 const getContributionFields = createSelector(
     getFields,
@@ -78,11 +108,11 @@ const getContributionFields = createSelector(
 
 const getSelectedField = ({ selectedField }) => selectedField;
 
-const getFieldToAdd = ({ fields, selectedField }) => {
+const getFieldToAdd = ({ byName, selectedField }) => {
     if (selectedField === 'new') {
         return { cover: 'document' };
     }
-    const field = fields.filter(({ name }) => name === selectedField)[0];
+    const field = byName[selectField];
     if (!field) {
         return null;
     }
@@ -153,6 +183,7 @@ const getPublishData = ({ error, published, editedFieldIndex, loading }) => ({
 });
 
 const isPublicationLoading = state => state.loading;
+const isPublicationSaving = state => state.isSaving;
 const getPublicationError = state => state.error;
 
 const getComposedFields = createSelector(
@@ -202,13 +233,7 @@ const hasSearchableFields = createSelector(
     allFields => allFields.filter(f => f.searchable).length > 0,
 );
 
-const getFieldsCatalog = createSelector(
-    getFields,
-    fields => fields.reduce((catalog, field) => ({
-        ...catalog,
-        [field.name]: field,
-    }), {}),
-);
+const getFieldsCatalog = state => state.byName;
 
 const getCompositeFieldsByField = createSelector(
     getFieldsCatalog,
@@ -224,6 +249,8 @@ const getCompositeFieldsByField = createSelector(
 );
 
 const getNbColumns = state => state.fields.length;
+
+export const getFieldFormData = state => state.form.ONTOLOGY_FIELD_FORM && state.form.ONTOLOGY_FIELD_FORM.values;
 
 export const fromPublication = {
     getFields,
@@ -245,6 +272,7 @@ export const fromPublication = {
     getDatasetTitleFieldName,
     getPublishData,
     isPublicationLoading,
+    isPublicationSaving,
     getPublicationError,
     getCompositeFieldsByField,
     getFacetFields,

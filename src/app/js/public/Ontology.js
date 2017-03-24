@@ -9,6 +9,7 @@ import { field as fieldPropTypes, polyglot as polyglotPropTypes } from '../propT
 import { fromPublication } from './selectors';
 import { languages } from '../../../../config.json';
 import getFieldClassName from '../lib/getFieldClassName';
+import EditOntologyField from './EditOntologyField';
 
 const styles = {
     container: {
@@ -20,6 +21,7 @@ const styles = {
         borderBottom: hasBorder ? '1px solid rgb(224, 224, 224)' : 'none',
         paddingBottom: '1rem',
         paddingTop: '1rem',
+        display: 'flex',
     })),
     name: {
         marginTop: '1rem',
@@ -42,40 +44,44 @@ export const OntologyComponent = ({ fields, p: polyglot }) => (
     <div className="ontology" style={styles.container}>
         {fields.map((field, index) => (
             <div key={field.name} style={styles.field(index < fields.length - 1)}>
-                <h4
-                    className={classnames('field-label', getFieldClassName(field))}
-                    style={styles.name}
-                >
-                    {field.label}
-                </h4>
-                {field.scheme &&
-                    <dl style={styles.property}>
-                        <dt style={styles.label}>{polyglot.t('scheme')}</dt>
-                        <dd
-                            className={classnames('field-scheme', getFieldClassName(field))}
-                        >
-                            {field.scheme}
-                        </dd>
-                    </dl>
-                }
-                <dl style={styles.property}>
-                    <dt style={styles.label}>{polyglot.t('cover')}</dt>
-                    <dd
-                        className={classnames('field-cover', getFieldClassName(field))}
+
+                <div>
+                    <h4
+                        className={classnames('field-label', getFieldClassName(field))}
+                        style={styles.name}
                     >
-                        {polyglot.t(`cover_${field.cover}`)}
-                    </dd>
-                </dl>
-                {field.language &&
+                        {field.label}
+                    </h4>
+                    {field.scheme &&
+                        <dl style={styles.property}>
+                            <dt style={styles.label}>{polyglot.t('scheme')}</dt>
+                            <dd
+                                className={classnames('field-scheme', getFieldClassName(field))}
+                            >
+                                {field.scheme}
+                            </dd>
+                        </dl>
+                    }
                     <dl style={styles.property}>
-                        <dt style={styles.label}>{polyglot.t('language')}</dt>
+                        <dt style={styles.label}>{polyglot.t('cover')}</dt>
                         <dd
-                            className={classnames('field-language', getFieldClassName(field))}
+                            className={classnames('field-cover', getFieldClassName(field))}
                         >
-                            {languages.find(l => l.code === field.language).label}
+                            {polyglot.t(`cover_${field.cover}`)}
                         </dd>
                     </dl>
-                }
+                    {field.language &&
+                        <dl style={styles.property}>
+                            <dt style={styles.label}>{polyglot.t('language')}</dt>
+                            <dd
+                                className={classnames('field-language', getFieldClassName(field))}
+                            >
+                                {languages.find(l => l.code === field.language).label}
+                            </dd>
+                        </dl>
+                    }
+                </div>
+                <EditOntologyField field={field} />
             </div>
         ))}
     </div>

@@ -88,7 +88,11 @@ export const DetailComponent = ({
             <Card>
                 <CardText style={styles.container}>
                     <Tabs tabItemContainerStyle={styles.tab}>
-                        <Tab buttonStyle={styles.tabButton} label={polyglot.t('resource_details')}>
+                        <Tab
+                            className="tab-resource-details"
+                            buttonStyle={styles.tabButton}
+                            label={polyglot.t('resource_details')}
+                        >
                             {otherFields.map((field, index) => (
                                 <div key={field.name} style={styles.item(index, otherFields.length)}>
                                     <Property

@@ -4,11 +4,11 @@ import { call, put, select } from 'redux-saga/effects';
 import {
     loadPublicationError,
     loadPublicationSuccess,
-} from './';
-import { getLoadPublicationRequest } from '../../fetch';
-import fetchSaga from '../../lib/fetchSaga';
+} from '../';
+import { getLoadPublicationRequest } from '../../../fetch';
+import fetchSaga from '../../../lib/fetchSaga';
 
-import { handleLoadPublicationRequest } from './sagas';
+import { handleLoadPublicationRequest } from './loadPublication';
 
 describe('publication saga', () => {
     describe('handleLoadPublicationRequest', () => {
