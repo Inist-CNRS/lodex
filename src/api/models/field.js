@@ -97,7 +97,7 @@ export default async (db) => {
         }).then(result => result.value);
     };
 
-    collection.removeById = id => collection.remove({ _id: new ObjectID(id) });
+    collection.removeById = id => collection.remove({ _id: new ObjectID(id), name: { $ne: 'uri' } });
 
     collection.addContributionField = async (field, contributor, isLogged, nameArg) => {
         const name = field.name || nameArg || await generateUid();
