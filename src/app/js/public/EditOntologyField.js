@@ -11,6 +11,7 @@ import FlatButton from 'material-ui/FlatButton';
 import IconButton from 'material-ui/IconButton';
 import Dialog from 'material-ui/Dialog';
 import ButtonWithStatus from '../lib/ButtonWithStatus';
+import getFieldClassName from '../lib/getFieldClassName';
 
 import { field as fieldPropTypes, polyglot as polyglotPropTypes } from '../propTypes';
 import EditOntologyFieldForm, { FORM_NAME } from './EditOntologyFieldForm';
@@ -50,7 +51,7 @@ export const EditOntologyFieldComponent = ({
     return (
         <div style={styles.container}>
             <IconButton
-                className={classnames('edit-field', field.label.toLowerCase().replace(/\s/g, '_'))}
+                className={classnames('edit-field', getFieldClassName(field))}
                 tooltip={polyglot.t('edit_field', { field: field.label })}
                 onClick={handleOpen}
             >

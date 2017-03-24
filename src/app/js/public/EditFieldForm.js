@@ -52,8 +52,7 @@ export default compose(
             onSaveProperty(values);
         },
     }),
-    withProps(({ resource, field, ...props }) => ({
-        ...props,
+    withProps(({ resource, field }) => ({
         initialValues: { ...resource, position: field.position, field },
     })),
     reduxForm({
