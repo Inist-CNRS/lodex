@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
+import { CardActions } from 'material-ui/Card';
 
 import {
     Table,
@@ -18,6 +19,7 @@ import ScrollableCardContent from '../../lib/ScrollableCardContent';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { loadDatasetPage as loadDatasetPageAction } from './';
 import { fromPublication, fromDataset } from '../selectors';
+import AddCharacteristic from './AddCharacteristic';
 
 const styles = {
     table: {
@@ -90,6 +92,9 @@ export class DatasetComponent extends Component {
                         showing: polyglot.t('showing'),
                     }}
                 />
+                <CardActions style={styles.actions}>
+                    <AddCharacteristic />
+                </CardActions>
             </ScrollableCardContent>
         );
     }

@@ -1,11 +1,17 @@
 import { createAction, handleActions } from 'redux-actions';
 import { createSelector } from 'reselect';
 
+export const NEW_CHARACTERISTIC_FORM_NAME = 'NEW_CHARACTERISTIC_FORM_NAME';
+
 export const SET_CHARACTERISTIC_VALUE = 'SET_CHARACTERISTIC_VALUE';
 
 export const UPDATE_CHARACTERISTICS = 'UPDATE_CHARACTERISTICS';
 export const UPDATE_CHARACTERISTICS_ERROR = 'UPDATE_CHARACTERISTICS_ERROR';
 export const UPDATE_CHARACTERISTICS_SUCCESS = 'UPDATE_CHARACTERISTICS_SUCCESS';
+
+export const ADD_CHARACTERISTIC = 'ADD_CHARACTERISTIC';
+export const ADD_CHARACTERISTIC_SUCCESS = 'ADD_CHARACTERISTIC_SUCCESS';
+export const ADD_CHARACTERISTIC_ERROR = 'ADD_CHARACTERISTIC_ERROR';
 
 export const setCharacteristicValue = createAction(SET_CHARACTERISTIC_VALUE);
 export const updateCharacteristics = createAction(UPDATE_CHARACTERISTICS);
@@ -18,6 +24,7 @@ export const defaultState = {
     error: null,
     newCharacteristics: null,
     updating: false,
+    isSaving: false,
 };
 
 export default handleActions({
@@ -95,6 +102,8 @@ const getRootCharacteristics = createSelector(
             .filter(field => !field.completes),
 );
 
+const isSaving = state => state.isSaving;
+
 export const fromCharacteristic = {
     getNewCharacteristics,
     isCharacteristicEditing,
@@ -103,4 +112,5 @@ export const fromCharacteristic = {
     getCharacteristics,
     getCharacteristicsAsResource,
     getRootCharacteristics,
+    isSaving,
 };

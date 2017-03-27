@@ -1,6 +1,8 @@
 import { createAction, handleActions, combineActions } from 'redux-actions';
 import { APPLY_FACET } from '../facet';
 
+export const NEW_CHARACTERISTIC_FORM_NAME = 'NEW_CHARACTERISTIC_FORM_NAME';
+
 export const LOAD_DATASET_PAGE = 'LOAD_DATASET_PAGE';
 export const LOAD_DATASET_PAGE_SUCCESS = 'LOAD_DATASET_PAGE_SUCCESS';
 export const LOAD_DATASET_PAGE_ERROR = 'LOAD_DATASET_PAGE_ERROR';
