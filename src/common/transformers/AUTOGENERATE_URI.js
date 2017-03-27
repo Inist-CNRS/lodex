@@ -30,6 +30,7 @@ const transformation = autoGenerateUri(config);
 
 transformation.getMetas = () => ({
     name: 'AUTOGENERATE_URI',
+    type: 'value',
     args: [],
 });
 

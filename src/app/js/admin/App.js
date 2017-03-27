@@ -5,25 +5,12 @@ import AppBar from './Appbar';
 
 import { isLoggedIn as getIsLoggedIn } from '../user';
 
-const styles = {
-    body: {
-        backgroundColor: '#edecec',
-    },
-    linkToHome: {
-        color: 'white',
-        textDecoration: 'none',
-    },
-    loading: {
-        margin: 8,
-    },
-};
-
 export const AppComponent = ({ children, isLoading, isLoggedIn }) => (
     <MuiThemeProvider>
         <div>
             <AppBar isLoading={isLoading} isLoggedIn={isLoggedIn} />
 
-            <div className="body" style={styles.body}>
+            <div className="body">
                 {children}
             </div>
         </div>

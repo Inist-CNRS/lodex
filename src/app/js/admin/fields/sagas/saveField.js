@@ -1,9 +1,11 @@
 import { call, put, select, takeLatest } from 'redux-saga/effects';
+import { destroy } from 'redux-form';
 
 import {
     getFieldFormData,
     saveFieldError,
     saveFieldSuccess,
+    FIELD_FORM_NAME,
     SAVE_FIELD,
 } from '../';
 import { getSaveFieldRequest } from '../../../fetch';
@@ -21,6 +23,7 @@ export function* handleSaveField() {
     }
 
     yield put(saveFieldSuccess(response));
+    yield put(destroy(FIELD_FORM_NAME));
 }
 
 export default function* watchSaveField() {

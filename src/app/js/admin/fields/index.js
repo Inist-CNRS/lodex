@@ -194,9 +194,9 @@ export const getCompletedField = createSelector(
 
 export const hasPublicationFields = ({ list }) => list.length > 0;
 
-export const getTransformers = () => getTransformersMetas();
+export const getTransformers = (state, type) => getTransformersMetas(type);
 
-export const getTransformerArgs = (state, operation) => getTransformerMetas(operation);
+export const getTransformerArgs = (state, operation) => getTransformerMetas(operation).args;
 
 export const getFieldFormData = (state) => {
     try {

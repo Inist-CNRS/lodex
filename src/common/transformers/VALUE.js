@@ -12,6 +12,7 @@ const transformation = (_, args) => () => new Promise((resolve, reject) => {
 
 transformation.getMetas = () => ({
     name: 'VALUE',
+    type: 'value',
     args: [{
         name: 'value',
         type: 'string',

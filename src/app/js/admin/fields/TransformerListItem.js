@@ -6,6 +6,7 @@ import IconButton from 'material-ui/IconButton';
 import MenuItem from 'material-ui/MenuItem';
 import ActionDeleteIcon from 'material-ui/svg-icons/action/delete';
 import { Field, FieldArray } from 'redux-form';
+import memoize from 'lodash.memoize';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { fromFields } from '../selectors';
@@ -14,14 +15,14 @@ import TransformerArgList from './TransformerArgList';
 import { changeOperation } from './';
 
 const styles = {
-    container: {
+    container: memoize(show => ({
         alignItems: 'flex-end',
-        display: 'flex',
-    },
+        display: show ? 'flex' : 'none',
+    })),
 };
 
-const TransformerListItem = ({ availableTransformers, fieldName, onRemove, p: polyglot, onChangeOperation }) => (
-    <div style={styles.container}>
+const TransformerListItem = ({ availableTransformers, fieldName, onRemove, p: polyglot, onChangeOperation, show }) => (
+    <div style={styles.container(show)}>
         <Field
             className="operation"
             name={`${fieldName}.operation`}
@@ -53,11 +54,12 @@ TransformerListItem.propTypes = {
     fieldName: PropTypes.string.isRequired,
     onRemove: PropTypes.func.isRequired,
     p: polyglotPropTypes.isRequired,
+    show: PropTypes.bool.isRequired,
 };
 
-const mapStateToProps = (state, ownProps) => ({
-    availableTransformers: fromFields.getTransformers(state),
-    transformerArgs: fromFields.getTransformerArgs(state, ownProps.operation),
+const mapStateToProps = (state, { operation, type }) => ({
+    availableTransformers: fromFields.getTransformers(state, type),
+    transformerArgs: fromFields.getTransformerArgs(state, operation),
 });
 
 const mapDispatchToProps = {

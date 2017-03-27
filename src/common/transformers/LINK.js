@@ -11,6 +11,7 @@ const transformation = (context, [ref, idCol, uriField = { name: 'column', value
 
 transformation.getMetas = () => ({
     name: 'LINK',
+    type: 'value',
     args: [
         { name: 'reference', type: 'column' },
         { name: 'identifier', type: 'column' },

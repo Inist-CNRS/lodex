@@ -4,7 +4,7 @@ import compose from 'recompose/compose';
 import { CardHeader } from 'material-ui/Card';
 
 import PublicationExcerpt from './PublicationExcerpt';
-import PublicationEditionModal from './PublicationEditionModal';
+import PublicationEditionModal from '../fields/wizard';
 
 import { editField, loadField, removeField } from '../fields';
 import { field as fieldPropTypes } from '../../propTypes';
@@ -74,14 +74,12 @@ export class PublicationPreviewComponent extends Component {
                         onHeaderClick={editColumn}
                     />
 
-                    {editedColumn &&
-                        <PublicationEditionModal
-                            editedColumn={editedColumn}
-                            columns={columns}
-                            lines={lines}
-                            onExitEdition={this.handleExitColumEdition}
-                        />
-                    }
+                    <PublicationEditionModal
+                        editedColumn={editedColumn}
+                        columns={columns}
+                        lines={lines}
+                        onExitEdition={this.handleExitColumEdition}
+                    />
                 </ScrollableCardContent>
             </div>
         );

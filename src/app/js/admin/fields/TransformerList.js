@@ -4,9 +4,12 @@ import translate from 'redux-polyglot/translate';
 import pure from 'recompose/pure';
 import FlatButton from 'material-ui/FlatButton';
 import Subheader from 'material-ui/Subheader';
+import memoize from 'lodash.memoize';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import TransformerListItem from './TransformerListItem';
+import { getTransformerMetas } from '../../../../common/transformers';
+
 
 const styles = {
     header: {
@@ -15,7 +18,12 @@ const styles = {
     },
 };
 
-const TransformerList = ({ fields, meta: { touched, error }, p: polyglot }) => (
+const showTransformer = memoize(
+    (operation, type) => !type || !operation || getTransformerMetas(operation).type === type,
+    (operation, type) => `${operation}_${type}`,
+);
+
+const TransformerList = ({ fields, meta: { touched, error }, type, p: polyglot }) => (
     <div>
         <Subheader style={styles.header}>
             {polyglot.t('transformers')}
@@ -33,6 +41,8 @@ const TransformerList = ({ fields, meta: { touched, error }, p: polyglot }) => (
                 fieldName={fieldName}
                 onRemove={() => fields.remove(index)}
                 operation={fields.get(index).operation}
+                type={type}
+                show={showTransformer(fields.get(index).operation, type)}
             />
         ))}
     </div>
@@ -49,6 +59,11 @@ TransformerList.propTypes = {
         error: PropTypes.string,
     }).isRequired,
     p: polyglotPropTypes.isRequired,
+    type: PropTypes.string,
+};
+
+TransformerList.defaultProps = {
+    type: null,
 };
 
 export default compose(

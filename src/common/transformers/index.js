@@ -22,12 +22,12 @@ const transformersMetas = [
     VALUE,
 ].map(transformation => transformation.getMetas());
 
-export const getTransformersMetas = () => transformersMetas;
+export const getTransformersMetas = type => (type ? transformersMetas.filter(m => m.type === type) : transformersMetas);
 
 export const getTransformerMetas = (operation) => {
     const transformer = transformers[operation];
 
     if (!transformer) return [];
 
-    return transformer.getMetas().args;
+    return transformer.getMetas();
 };
