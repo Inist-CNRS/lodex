@@ -34,7 +34,7 @@ describe('Home page with published data when logged as Julia', function homePubl
         await driver.wait(inputElementIsFocusable(input), DEFAULT_WAIT_TIMEOUT);
         input.sendKeys(' updated');
 
-        const button = await driver.findElement(By.css('.update-field'));
+        const button = await driver.findElement(By.css('.edit-field.save'));
         button.click();
 
         await driver.wait(until.elementLocated(By.css('.dataset-characteristics')), DEFAULT_WAIT_TIMEOUT);
@@ -113,7 +113,7 @@ describe('Home page with published data when logged as Julia', function homePubl
         await driver.wait(elementIsClicked('.after_uri'));
         await driver.sleep(1000);
 
-        await driver.findElement(By.css('.update-field')).click();
+        await driver.findElement(By.css('.edit-field.save')).click();
         await driver.wait(until.stalenessOf(form), DEFAULT_WAIT_TIMEOUT);
     });
 
