@@ -18,6 +18,10 @@ export const updateCharacteristics = createAction(UPDATE_CHARACTERISTICS);
 export const updateCharacteristicsError = createAction(UPDATE_CHARACTERISTICS_ERROR);
 export const updateCharacteristicsSuccess = createAction(UPDATE_CHARACTERISTICS_SUCCESS);
 
+export const addCharacteristic = createAction(ADD_CHARACTERISTIC);
+export const addCharacteristicSuccess = createAction(ADD_CHARACTERISTIC_SUCCESS);
+export const addCharacteristicError = createAction(ADD_CHARACTERISTIC_ERROR);
+
 export const defaultState = {
     characteristics: [],
     editing: false,

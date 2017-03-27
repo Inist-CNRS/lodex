@@ -114,6 +114,13 @@ export const getUpdateCharacteristicsRequest = (state, newCharacteristics) =>
         body: newCharacteristics,
     });
 
+export const getAddCharacteristicRequest = (state, newCharacteristics) =>
+    getRequest(state, {
+        url: '/api/characteristic',
+        method: 'POST',
+        body: newCharacteristics,
+    });
+
 export const getLoadDatasetPageRequest = (state, params = {}) => {
     const paramString = getQueryString(params);
 
