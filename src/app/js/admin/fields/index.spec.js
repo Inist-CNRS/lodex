@@ -316,5 +316,54 @@ describe('field reducer', () => {
                     .toThrow('circular dependencies');
             });
         });
+
+        describe('getFieldsForPreview', () => {
+            it('should return all fields if no formData', () => {
+                const state = {
+                    list: ['field1', 'field2', 'field3'],
+                    editedFieldName: 'field2',
+                    byName: {
+                        field1: 'value1',
+                        field2: 'value2',
+                        field3: 'value3',
+                    },
+                };
+
+                expect(selectors.getFieldsForPreview(state)).toEqual(['value1', 'value2', 'value3']);
+            });
+
+            it('should return all fields if no editedFieldName', () => {
+                const state = {
+                    list: ['field1', 'field2', 'field3'],
+                    byName: {
+                        field1: 'value1',
+                        field2: 'value2',
+                        field3: 'value3',
+                    },
+                };
+
+                expect(selectors.getFieldsForPreview(state, 'form data')).toEqual(['value1', 'value2', 'value3']);
+            });
+
+            it('should return all fields replacing editedFieldName by formData', () => {
+                const state = {
+                    list: ['field1', 'field2', 'field3'],
+                    byName: {
+                        field1: 'value1',
+                        field2: 'value2',
+                        field3: 'value3',
+                    },
+                };
+
+                expect(selectors.getFieldsForPreview({ ...state, editedFieldName: 'field1' }, 'form data'))
+                    .toEqual(['form data', 'value2', 'value3']);
+
+                expect(selectors.getFieldsForPreview({ ...state, editedFieldName: 'field2' }, 'form data'))
+                    .toEqual(['value1', 'form data', 'value3']);
+
+                expect(selectors.getFieldsForPreview({ ...state, editedFieldName: 'field3' }, 'form data'))
+                    .toEqual(['value1', 'value2', 'form data']);
+            });
+        });
     });
 });
