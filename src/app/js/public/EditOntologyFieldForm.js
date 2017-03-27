@@ -4,16 +4,18 @@ import withHandlers from 'recompose/withHandlers';
 import withProps from 'recompose/withProps';
 import translate from 'redux-polyglot/translate';
 import { reduxForm, Field, propTypes as reduxFormPropTypes } from 'redux-form';
+import { connect } from 'react-redux';
 
 import Alert from '../lib/Alert';
 import { polyglot as polyglotPropTypes } from '../propTypes';
 import FormCheckboxField from '../lib/FormCheckboxField';
+import { saveField } from './publication';
 
 export const FORM_NAME = 'ONTOLOGY_FIELD_FORM';
 
 const validate = (values) => {
     const errors = Object.keys(values).reduce((currentErrors, field) => {
-        if (!values[field]) {
+        if (values[field] !== false && values[field] !== true) {
             return {
                 ...currentErrors,
                 [field]: 'Required',
@@ -26,7 +28,7 @@ const validate = (values) => {
 };
 
 export const EditOntologyFieldFormComponent = ({ error, handleSubmit, p: polyglot }) => (
-    <form id="field_form" onSubmit={handleSubmit}>
+    <form id="field_form" onSubmit={() => handleSubmit()}>
         {error && <Alert><p>{error}</p></Alert>}
         <Field
             name="display_in_list"
@@ -52,7 +54,12 @@ EditOntologyFieldFormComponent.propTypes = {
     p: polyglotPropTypes.isRequired,
 };
 
+const mapDispatchToProps = {
+    onSaveField: saveField,
+};
+
 export default compose(
+    connect(null, mapDispatchToProps),
     withHandlers({
         onSubmit: ({ onSaveField }) => (values) => {
             onSaveField(values);

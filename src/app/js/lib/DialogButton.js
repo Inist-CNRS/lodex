@@ -9,6 +9,7 @@ import FlatButton from 'material-ui/FlatButton';
 import Dialog from 'material-ui/Dialog';
 import IconButton from 'material-ui/IconButton';
 import classnames from 'classnames';
+import CircularProgress from 'material-ui/CircularProgress';
 
 import ButtonWithStatus from './ButtonWithStatus';
 import { polyglot as polyglotPropTypes } from '../propTypes';
@@ -33,7 +34,7 @@ export const AddCharacteristicComponent = ({
     const actions = [
         <ButtonWithStatus
             className="add-field-to-resource"
-            label={polyglot.t(label)}
+            label={polyglot.t('save')}
             primary
             loading={saving}
             onTouchTap={handleSubmit}
@@ -44,15 +45,15 @@ export const AddCharacteristicComponent = ({
     const openButton = icon ? (
         <IconButton
             className={classnames('save', className)}
-            tooltip={polyglot.t(label)}
+            tooltip={label}
             onClick={handleOpen}
         >
-            {icon}
+            {saving ? <CircularProgress /> : icon}
         </IconButton>
         ) : (
             <FlatButton
                 className={className}
-                label={polyglot.t(label)}
+                label={label}
                 primary
                 onClick={handleOpen}
             />
@@ -63,7 +64,7 @@ export const AddCharacteristicComponent = ({
             {openButton}
 
             <Dialog
-                title={polyglot.t(label)}
+                title={label}
                 actions={actions}
                 modal={false}
                 open={open}

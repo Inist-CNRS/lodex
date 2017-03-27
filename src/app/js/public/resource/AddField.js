@@ -10,15 +10,15 @@ import {
     NEW_RESOURCE_FIELD_FORM_NAME,
 } from './';
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state, { p }) => ({
     saving: fromResource.isSaving(state),
     formName: NEW_RESOURCE_FIELD_FORM_NAME,
     form: <AddFieldForm />,
-    label: 'add-field-to-resource',
+    label: p.t('add-field-to-resource'),
     className: 'add-field-resource',
 });
 
 export default compose(
-    connect(mapStateToProps),
     translate,
+    connect(mapStateToProps),
 )(DialogButton);
