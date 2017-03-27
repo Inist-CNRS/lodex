@@ -161,7 +161,7 @@ const getFieldsForPreview = createSelector(
         return [
             ...fields.slice(0, editedIndex),
             formData,
-            ...fields.slice(editedIndex),
+            ...fields.slice(editedIndex + 1),
         ];
     },
 );
