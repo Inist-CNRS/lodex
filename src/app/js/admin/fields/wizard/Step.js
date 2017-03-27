@@ -4,7 +4,7 @@ import withProps from 'recompose/withProps';
 import withHandlers from 'recompose/withHandlers';
 import translate from 'redux-polyglot/translate';
 import { reduxForm } from 'redux-form';
-import { Step, StepLabel, StepContent } from 'material-ui/Stepper';
+import { Step, StepButton, StepLabel, StepContent } from 'material-ui/Stepper';
 
 import { polyglot as polyglotPropTypes } from '../../../propTypes';
 import { FIELD_FORM_NAME } from '../';
@@ -13,15 +13,17 @@ export const StepComponent = ({
     active,
     completed,
     disabled,
-    index,
+    handleSelectStep,
+    step,
     last,
     style,
     label,
     children,
+    icon,
     p: polyglot,
 }) => (
-    <Step active={active} completed={completed} disabled={disabled} index={index} last={last} style={style}>
-        <StepLabel>{polyglot.t(label)}</StepLabel>
+    <Step active={active} completed={completed} disabled={disabled} icon={icon} index={step} last={last} style={style}>
+        <StepButton onTouchTap={handleSelectStep}>{polyglot.t(label)}</StepButton>
         <StepContent>
             {children}
         </StepContent>
@@ -32,16 +34,18 @@ StepComponent.propTypes = {
     active: PropTypes.bool,
     completed: PropTypes.bool,
     disabled: PropTypes.bool,
-    index: PropTypes.number.isRequired,
+    handleSelectStep: PropTypes.func.isRequired,
     last: PropTypes.bool,
     style: PropTypes.object, // eslint-disable-line
     label: PropTypes.string.isRequired,
     children: PropTypes.node.isRequired,
     p: polyglotPropTypes.isRequired,
+    step: PropTypes.number.isRequired,
 };
 
 StepComponent.defaultProps = {
     active: false,
+    canSelectStep: false,
     completed: false,
     disabled: false,
     last: false,
@@ -50,8 +54,8 @@ StepComponent.defaultProps = {
 export default compose(
     withProps(({ field }) => ({ initialValues: field })),
     withHandlers({
-        handleSelectStep: ({ index, onSelectStep }) => () => {
-            onSelectStep(index);
+        handleSelectStep: ({ step, onSelectStep }) => () => {
+            onSelectStep(step);
         },
     }),
     reduxForm({

@@ -171,6 +171,10 @@ class FieldEditionWizardComponent extends Component {
         this.setState({ step: this.state.step - 1 });
     }
 
+    handleSelectStep = (step) => {
+        this.setState({ step });
+    }
+
     handleCancel = () => {
         this.props.editField(null);
     }
@@ -193,11 +197,11 @@ class FieldEditionWizardComponent extends Component {
 
         if (field && field.name !== 'uri') {
             steps = [
-                <StepIdentity key={'identity'} field={field} fields={fields} />,
-                <StepValue key={'value'} field={field} fields={fields} />,
-                <StepTransforms key={'transformations'} field={field} fields={fields} />,
-                <StepSearch key={'search'} field={field} fields={fields} />,
-                <StepDisplay key={'display'} field={field} fields={fields} />,
+                <StepIdentity key={'identity'} active={step === 0} step={0} field={field} fields={fields} onSelectStep={this.handleSelectStep} />,
+                <StepValue key={'value'} step={1} active={step === 1} field={field} fields={fields} onSelectStep={this.handleSelectStep} />,
+                <StepTransforms key={'transformations'} active={step === 2} step={2} field={field} fields={fields} onSelectStep={this.handleSelectStep} />,
+                <StepSearch key={'search'} active={step === 3} step={3} field={field} fields={fields} onSelectStep={this.handleSelectStep} />,
+                <StepDisplay key={'display'} active={step === 4} step={4} field={field} fields={fields} onSelectStep={this.handleSelectStep} />,
             ];
         }
 
@@ -224,7 +228,7 @@ class FieldEditionWizardComponent extends Component {
                         <div style={styles.form}>
                             {field.name !== 'uri'
                                 ? (
-                                    <Stepper activeStep={step} orientation="vertical">
+                                    <Stepper linear={false} activeStep={step} orientation="vertical">
                                         {steps}
                                     </Stepper>
                                 )

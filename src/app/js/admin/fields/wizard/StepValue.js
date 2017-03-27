@@ -56,13 +56,14 @@ export class StepValueComponent extends Component {
 
         let column;
         let columns = ['', ''];
-        let separator;
+        let separator = '';
         let type;
-        let value;
+        let value = '';
 
         if (composedOf && composedOf.fields.length > 1) {
             type = 'composition';
             columns = composedOf.fields;
+            separator = composedOf.separator;
         } else if (valueTransformer && valueTransformer.operation === 'VALUE') {
             type = 'value';
             value = valueTransformer.args && valueTransformer.args[0] && valueTransformer.args[0].value;
