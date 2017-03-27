@@ -98,6 +98,7 @@ const getActions = memoize((
                 className="btn-previous"
                 label={polyglot.t('previous')}
                 onTouchTap={handlePreviousStep}
+                primary
             />,
             <FlatButton
                 className="btn-next"
