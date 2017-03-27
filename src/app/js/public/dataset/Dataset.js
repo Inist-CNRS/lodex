@@ -19,7 +19,7 @@ import ScrollableCardContent from '../../lib/ScrollableCardContent';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { loadDatasetPage as loadDatasetPageAction } from './';
 import { fromPublication, fromDataset } from '../selectors';
-import AddCharacteristic from './AddCharacteristic';
+import AddCharacteristic from '../characteristic/AddCharacteristic';
 
 const styles = {
     table: {

@@ -13,6 +13,7 @@ import DialogButton from '../lib/DialogButton';
 
 const mapStateToProps = (state, { field, resource, onSaveProperty, style, p }) => ({
     show: isLoggedIn(state) && fromResource.isLastVersionSelected(state),
+    saving: fromResource.isSaving(state),
     form: <EditFieldForm
         field={field}
         onSaveProperty={onSaveProperty}

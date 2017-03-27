@@ -9,7 +9,7 @@ import { CardText } from 'material-ui/Card';
 import {
     addCharacteristic as addCharacteristicAction,
     NEW_CHARACTERISTIC_FORM_NAME,
-} from '../characteristic';
+} from './';
 import Alert from '../../lib/Alert';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import {

@@ -4,9 +4,9 @@ import {
     UPDATE_CHARACTERISTICS,
     updateCharacteristicsError,
     updateCharacteristicsSuccess,
-} from './';
-import { getUpdateCharacteristicsRequest } from '../../fetch/';
-import fetchSaga from '../../lib/fetchSaga';
+} from '../';
+import { getUpdateCharacteristicsRequest } from '../../../fetch/';
+import fetchSaga from '../../../lib/fetchSaga';
 
 export function* handleUpdateCharacteristics({ payload }) {
     const request = yield select(getUpdateCharacteristicsRequest, payload);

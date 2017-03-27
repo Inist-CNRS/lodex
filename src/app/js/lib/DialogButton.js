@@ -14,7 +14,7 @@ import CircularProgress from 'material-ui/CircularProgress';
 import ButtonWithStatus from './ButtonWithStatus';
 import { polyglot as polyglotPropTypes } from '../propTypes';
 
-export const AddCharacteristicComponent = ({
+export const DialogButtonComponent = ({
     handleClose,
     handleOpen,
     handleSubmit,
@@ -76,12 +76,12 @@ export const AddCharacteristicComponent = ({
     );
 };
 
-AddCharacteristicComponent.defaultProps = {
+DialogButtonComponent.defaultProps = {
     icon: null,
     show: true,
 };
 
-AddCharacteristicComponent.propTypes = {
+DialogButtonComponent.propTypes = {
     handleClose: PropTypes.func.isRequired,
     handleOpen: PropTypes.func.isRequired,
     handleSubmit: PropTypes.func.isRequired,
@@ -116,4 +116,4 @@ export default compose(
         },
     }),
     translate,
-)(AddCharacteristicComponent);
+)(DialogButtonComponent);
