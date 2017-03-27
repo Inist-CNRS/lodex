@@ -112,7 +112,7 @@ const getFieldToAdd = ({ byName, selectedField }) => {
     if (selectedField === 'new') {
         return { cover: 'document' };
     }
-    const field = byName[selectField];
+    const field = byName[selectedField];
     if (!field) {
         return null;
     }
