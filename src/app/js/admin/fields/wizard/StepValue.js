@@ -252,7 +252,7 @@ export class StepValueComponent extends Component {
                     <div style={styles.inset}>
                         {columns.map((col, index) => (
                             <div
-                                key={`compotransformerssition_${index}`} // eslint-disable-line
+                                key={`composition_${index}`} // eslint-disable-line
                                 style={styles.compositionContainer}
                             >
                                 <SelectField

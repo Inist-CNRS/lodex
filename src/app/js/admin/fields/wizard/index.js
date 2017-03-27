@@ -65,7 +65,7 @@ const getActions = memoize((
             <FlatButton
                 className="btn-next"
                 label={polyglot.t('save')}
-                primary
+                secondary
                 onTouchTap={handleSave}
             />,
         ];
@@ -102,7 +102,7 @@ const getActions = memoize((
             <FlatButton
                 className="btn-next"
                 label={polyglot.t('save')}
-                primary
+                secondary
                 onTouchTap={handleSave}
             />,
         ];
@@ -125,6 +125,12 @@ const getActions = memoize((
             label={polyglot.t('next')}
             primary
             onTouchTap={handleNextStep}
+        />,
+        <FlatButton
+            className="btn-next"
+            label={polyglot.t('save')}
+            secondary
+            onTouchTap={handleSave}
         />,
     ];
 }, (field, step, stepsCount) => (field ? `${field.name}_${step}_${stepsCount}` : 'not_editing'));
