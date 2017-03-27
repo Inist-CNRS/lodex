@@ -228,4 +228,66 @@ describe('publication reducer', () => {
             expect(isACompositeFields('composite', [])).toBe(false);
         });
     });
+
+    describe('getFieldToAdd', () => {
+        it('should return byName[selectedField]', () => {
+            const state = {
+                byName: {
+                    name: {
+                        field: 'data',
+                    },
+                },
+                selectedField: 'name',
+            };
+
+            expect(fromPublication.getFieldToAdd(state)).toEqual({ field: 'data' });
+        });
+
+        it('should omit contributors and _id from byName[selectedField]', () => {
+            const state = {
+                byName: {
+                    name: {
+                        field: 'data',
+                        cover: 'collection',
+                        _id: 'who cares',
+                        contributors: 'some random guy',
+                    },
+                },
+                selectedField: 'name',
+            };
+
+            expect(fromPublication.getFieldToAdd(state)).toEqual({
+                field: 'data',
+                cover: 'collection',
+            });
+        });
+
+        it('should return { cover: document } if selectedField is new', () => {
+            const state = {
+                byName: {
+                    name: {
+                        field: 'data',
+                    },
+                    new: 'ignore me',
+                },
+                selectedField: 'new',
+            };
+
+            expect(fromPublication.getFieldToAdd(state)).toEqual({ cover: 'document' });
+        });
+
+
+        it('should return null if selectedField is not in byName', () => {
+            const state = {
+                byName: {
+                    name: {
+                        field: 'data',
+                    },
+                },
+                selectedField: '404',
+            };
+
+            expect(fromPublication.getFieldToAdd(state)).toBe(null);
+        });
+    });
 });
