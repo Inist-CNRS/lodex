@@ -75,7 +75,7 @@ test-frontend-unit: ## Run the frontend application unit tests
 		"./src/app/js/**/*.spec.js"
 
 test-frontend-functional: ## Run the frontend application functional tests
-	NODE_ENV=test ${MAKE} build-frontend
+	# NODE_ENV=test ${MAKE} build-frontend
 	NODE_ENV=test SELENIUM_BROWSER_BINARY_PATH="./node_modules/selenium-standalone/.selenium/chromedriver/2.24-x64-chromedriver" \
 		./node_modules/.bin/mocha \
 		--require babel-polyfill \

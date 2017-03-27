@@ -118,7 +118,7 @@ describe('Ontology', function homePublishedDataTests() {
 
         await listDisplayInput.click();
         await driver.sleep(100);
-        await driver.wait(elementIsClicked('.update-field', DEFAULT_WAIT_TIMEOUT));
+        await driver.wait(elementIsClicked('.configure-field.save', DEFAULT_WAIT_TIMEOUT));
     });
 
     it('should have removed email from list', async () => {
@@ -233,7 +233,7 @@ describe('Ontology', function homePublishedDataTests() {
 
         await resourceDisplayInput.click();
         await driver.sleep(500);
-        await driver.wait(elementIsClicked('.update-field', DEFAULT_WAIT_TIMEOUT));
+        await driver.wait(elementIsClicked('.configure-field.save', DEFAULT_WAIT_TIMEOUT));
     });
 
     it('should not display best_friend_of anymore', async () => {

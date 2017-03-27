@@ -33,7 +33,7 @@ export const AddCharacteristicComponent = ({
     }
     const actions = [
         <ButtonWithStatus
-            className="add-field-to-resource"
+            className={classnames(className, 'save')}
             label={polyglot.t('save')}
             primary
             loading={saving}
@@ -44,7 +44,7 @@ export const AddCharacteristicComponent = ({
 
     const openButton = icon ? (
         <IconButton
-            className={classnames('save', className)}
+            className={classnames('open', className)}
             tooltip={label}
             onClick={handleOpen}
         >

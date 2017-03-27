@@ -156,9 +156,9 @@ describe('Home page with published data when logged as Julia', function homePubl
     });
 
     it('should go to hide page', async () => {
-        await driver.wait(until.elementLocated(By.css('#btn-hide-resource')));
-        const button = await driver.findElement(By.css('#btn-hide-resource'));
-        await driver.executeScript('document.getElementById("btn-hide-resource").scrollIntoView(true);');
+        await driver.wait(until.elementLocated(By.css('.hide-resource')));
+        const button = await driver.findElement(By.css('.hide-resource'));
+        await driver.executeScript('document.getElementsByClassName("hide-resource")[0].scrollIntoView(true);');
         await driver.wait(elementIsClicked(button));
         form = driver.findElement(By.css('#hide_resource_form'));
         const reason = form.findElement(By.css('textarea[name=reason]'));
@@ -166,7 +166,7 @@ describe('Home page with published data when logged as Julia', function homePubl
         await driver.wait(inputElementIsFocusable(reason), DEFAULT_WAIT_TIMEOUT);
         await reason.clear();
         await reason.sendKeys('My bad, should not be here');
-        await driver.findElement(By.css('.hide-resource')).click();
+        await driver.wait(elementIsClicked('.hide-resource.save'));
     });
 
     it('should display reason for removal', async () => {
