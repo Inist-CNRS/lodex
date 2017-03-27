@@ -129,7 +129,7 @@ export const getLoadPublicationRequest = state =>
 
 export const getLoadResourceRequest = (state, uri) =>
     getRequest(state, {
-        url: `/api/ark?uri=${uri}`,
+        url: `/api/ark?uri=${encodeURIComponent(uri)}`,
 
     });
 
