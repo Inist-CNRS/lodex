@@ -171,4 +171,5 @@ export default {
     add_characteristic: 'add characteristic',
     label: 'label',
     value: 'value',
+    'add-field-to-resource': 'add field',
 };

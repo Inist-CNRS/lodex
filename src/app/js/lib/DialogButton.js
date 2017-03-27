@@ -1,0 +1,118 @@
+import React, { PropTypes } from 'react';
+import { connect } from 'react-redux';
+import translate from 'redux-polyglot/translate';
+import compose from 'recompose/compose';
+import withState from 'recompose/withState';
+import withHandlers from 'recompose/withHandlers';
+import { submit as submitAction } from 'redux-form';
+import FlatButton from 'material-ui/FlatButton';
+import Dialog from 'material-ui/Dialog';
+import IconButton from 'material-ui/IconButton';
+import classnames from 'classnames';
+
+import ButtonWithStatus from './ButtonWithStatus';
+import { polyglot as polyglotPropTypes } from '../propTypes';
+
+export const AddCharacteristicComponent = ({
+    handleClose,
+    handleOpen,
+    handleSubmit,
+    saving,
+    open,
+    show,
+    style,
+    icon,
+    form,
+    className,
+    label,
+    p: polyglot,
+}) => {
+    if (!show) {
+        return null;
+    }
+    const actions = [
+        <ButtonWithStatus
+            className="add-field-to-resource"
+            label={polyglot.t(label)}
+            primary
+            loading={saving}
+            onTouchTap={handleSubmit}
+        />,
+        <FlatButton label={polyglot.t('cancel')} onClick={handleClose} />,
+    ];
+
+    const openButton = icon ? (
+        <IconButton
+            className={classnames('save', className)}
+            tooltip={polyglot.t(label)}
+            onClick={handleOpen}
+        >
+            {icon}
+        </IconButton>
+        ) : (
+            <FlatButton
+                className={className}
+                label={polyglot.t(label)}
+                primary
+                onClick={handleOpen}
+            />
+        );
+
+    return (
+        <div style={style}>
+            {openButton}
+
+            <Dialog
+                title={polyglot.t(label)}
+                actions={actions}
+                modal={false}
+                open={open}
+                onRequestClose={handleClose}
+            >
+                {form}
+            </Dialog>
+        </div>
+    );
+};
+
+AddCharacteristicComponent.defaultProps = {
+    icon: null,
+    show: true,
+};
+
+AddCharacteristicComponent.propTypes = {
+    handleClose: PropTypes.func.isRequired,
+    handleOpen: PropTypes.func.isRequired,
+    handleSubmit: PropTypes.func.isRequired,
+    p: polyglotPropTypes.isRequired,
+    saving: PropTypes.bool.isRequired,
+    open: PropTypes.bool.isRequired,
+    show: PropTypes.bool,
+    style: PropTypes.object, // eslint-disable-line
+    form: PropTypes.node.isRequired,
+    icon: PropTypes.node,
+    label: PropTypes.string.isRequired,
+    className: PropTypes.string.isRequired,
+};
+
+const mapDispatchToProps = ({ submit: submitAction });
+
+export default compose(
+    connect(null, mapDispatchToProps),
+    withState('open', 'setOpen', false),
+    withHandlers({
+        handleOpen: ({ setOpen }) => (event) => {
+            event.preventDefault();
+            setOpen(true);
+        },
+        handleClose: ({ setOpen }) => (event) => {
+            event.preventDefault();
+            setOpen(false);
+        },
+        handleSubmit: ({ setOpen, submit, formName }) => () => {
+            submit(formName);
+            setOpen(false);
+        },
+    }),
+    translate,
+)(AddCharacteristicComponent);
