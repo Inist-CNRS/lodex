@@ -4,7 +4,7 @@ import withProps from 'recompose/withProps';
 import withHandlers from 'recompose/withHandlers';
 import translate from 'redux-polyglot/translate';
 import { reduxForm } from 'redux-form';
-import { Step, StepButton, StepLabel, StepContent } from 'material-ui/Stepper';
+import { Step, StepButton, StepContent } from 'material-ui/Stepper';
 
 import { polyglot as polyglotPropTypes } from '../../../propTypes';
 import { FIELD_FORM_NAME } from '../';
@@ -39,6 +39,7 @@ StepComponent.propTypes = {
     style: PropTypes.object, // eslint-disable-line
     label: PropTypes.string.isRequired,
     children: PropTypes.node.isRequired,
+    icon: PropTypes.node,
     p: polyglotPropTypes.isRequired,
     step: PropTypes.number.isRequired,
 };
@@ -49,6 +50,7 @@ StepComponent.defaultProps = {
     completed: false,
     disabled: false,
     last: false,
+    icon: null,
 };
 
 export default compose(
