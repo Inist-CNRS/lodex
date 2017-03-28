@@ -1,6 +1,9 @@
 import omit from 'lodash.omit';
-import { createAction, handleActions } from 'redux-actions';
+import { createAction, handleActions, combineActions } from 'redux-actions';
 import { createSelector } from 'reselect';
+
+import { UPDATE_CHARACTERISTICS_SUCCESS } from '../characteristic';
+import { SAVE_RESOURCE_SUCCESS } from '../resource';
 
 import TITLE_SCHEME from '../../../../common/titleScheme';
 import { COVER_COLLECTION, COVER_DATASET, COVER_DOCUMENT } from '../../../../common/cover';
@@ -16,6 +19,9 @@ export const SAVE_FIELD = 'SAVE_FIELD';
 export const SAVE_FIELD_SUCCESS = 'SAVE_FIELD_SUCCESS';
 export const SAVE_FIELD_ERROR = 'SAVE_FIELD_ERROR';
 
+export const OPEN_EDIT_FIELD_VALUE = 'OPEN_EDIT_FIELD_VALUE';
+export const CLOSE_EDIT_FIELD_VALUE = 'CLOSE_EDIT_FIELD_VALUE';
+
 export const loadPublication = createAction(LOAD_PUBLICATION);
 export const loadPublicationSuccess = createAction(LOAD_PUBLICATION_SUCCESS);
 export const loadPublicationError = createAction(LOAD_PUBLICATION_ERROR);
@@ -26,11 +32,15 @@ export const saveField = createAction(SAVE_FIELD);
 export const saveFieldSuccess = createAction(SAVE_FIELD_SUCCESS);
 export const saveFieldError = createAction(SAVE_FIELD_ERROR);
 
+export const openEditFieldValue = createAction(OPEN_EDIT_FIELD_VALUE);
+export const closeEditFieldValue = createAction(CLOSE_EDIT_FIELD_VALUE);
+
 export const defaultState = {
     loading: false,
     isSaving: false,
     fields: [],
     byName: {},
+    editedValueFieldName: null,
     published: false,
 };
 
@@ -50,6 +60,7 @@ export default handleActions({
             byName: catalog,
             fields: list,
             published,
+            editedValueFieldName: null,
         };
     },
     LOAD_PUBLICATION_ERROR: (state, { payload: error }) => ({
@@ -79,6 +90,18 @@ export default handleActions({
         ...state,
         isSaving: false,
         error: error.message,
+    }),
+    OPEN_EDIT_FIELD_VALUE: (state, { payload: editedValueFieldName }) => ({
+        ...state,
+        editedValueFieldName,
+    }),
+    [combineActions(
+        CLOSE_EDIT_FIELD_VALUE,
+        UPDATE_CHARACTERISTICS_SUCCESS,
+        SAVE_RESOURCE_SUCCESS,
+    )]: state => ({
+        ...state,
+        editedValueFieldName: null,
     }),
 }, defaultState);
 
@@ -252,6 +275,15 @@ const getNbColumns = state => state.fields.length;
 
 export const getFieldFormData = state => state.form.ONTOLOGY_FIELD_FORM && state.form.ONTOLOGY_FIELD_FORM.values;
 
+const getEditedValueFieldName = ({ editedValueFieldName }) => editedValueFieldName;
+
+const isFieldEdited = createSelector(
+    getEditedValueFieldName,
+    (_, fieldName) => fieldName,
+    (editedFieldName, fieldName) => editedFieldName === fieldName,
+);
+
+
 export const fromPublication = {
     getFields,
     getCollectionFields,
@@ -279,4 +311,6 @@ export const fromPublication = {
     hasFacetFields,
     hasSearchableFields,
     getNbColumns,
+    getEditedValueFieldName,
+    isFieldEdited,
 };

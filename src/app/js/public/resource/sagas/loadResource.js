@@ -4,7 +4,6 @@ import { LOCATION_CHANGE, push } from 'react-router-redux';
 import {
     ADD_FIELD_TO_RESOURCE_SUCCESS,
     HIDE_RESOURCE_SUCCESS,
-    SAVE_RESOURCE_SUCCESS,
     loadResource,
     loadResourceSuccess,
     loadResourceError,
@@ -60,6 +59,5 @@ export default function* watchLocationChangeToResource() {
         LOCATION_CHANGE,
         ADD_FIELD_TO_RESOURCE_SUCCESS,
         HIDE_RESOURCE_SUCCESS,
-        SAVE_RESOURCE_SUCCESS,
     ], handleLoadResource);
 }

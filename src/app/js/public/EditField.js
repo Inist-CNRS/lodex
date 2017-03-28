@@ -6,12 +6,17 @@ import compose from 'recompose/compose';
 import EditIcon from 'material-ui/svg-icons/editor/mode-edit';
 
 import EditFieldForm, { FORM_NAME } from './EditFieldForm';
-import { fromResource } from './selectors';
+import { fromResource, fromPublication } from './selectors';
 import { isLoggedIn } from '../user';
 import getFieldClassName from '../lib/getFieldClassName';
 import DialogButton from '../lib/DialogButton';
+import {
+    openEditFieldValue,
+    closeEditFieldValue,
+} from './publication';
 
 const mapStateToProps = (state, { field, resource, onSaveProperty, style, p }) => ({
+    open: fromPublication.isFieldEdited(state, field.name),
     show: isLoggedIn(state) && fromResource.isLastVersionSelected(state),
     saving: fromResource.isSaving(state),
     form: <EditFieldForm
@@ -26,7 +31,12 @@ const mapStateToProps = (state, { field, resource, onSaveProperty, style, p }) =
     style,
 });
 
+const mapDispatchToProps = (dispatch, { field: { name } }) => ({
+    handleOpen: () => dispatch(openEditFieldValue(name)),
+    handleClose: () => dispatch(closeEditFieldValue()),
+});
+
 export default compose(
     translate,
-    connect(mapStateToProps),
+    connect(mapStateToProps, mapDispatchToProps),
 )(DialogButton);

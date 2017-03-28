@@ -86,8 +86,13 @@ export default handleActions({
         error: null,
         saving: true,
     }),
+    SAVE_RESOURCE_SUCCESS: (state, { payload: resource }) => console.log({ resource }) || ({
+        ...state,
+        resource,
+        error: null,
+        saving: false,
+    }),
     [combineActions(
-        SAVE_RESOURCE_SUCCESS,
         HIDE_RESOURCE_SUCCESS,
         ADD_FIELD_TO_RESOURCE_SUCCESS,
     )]: state => ({
