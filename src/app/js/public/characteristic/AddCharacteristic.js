@@ -7,10 +7,13 @@ import { fromCharacteristic } from '../selectors';
 import AddCharacteristicForm from './AddCharacteristicForm';
 import {
     NEW_CHARACTERISTIC_FORM_NAME,
+    addCharacteristicOpen,
+    addCharacteristicCancel,
 } from './';
 import DialogButton from '../../lib/DialogButton';
 
 const mapStateToProps = (state, { p }) => ({
+    open: fromCharacteristic.isAdding(state),
     saving: fromCharacteristic.isSaving(state),
     form: <AddCharacteristicForm />,
     formName: NEW_CHARACTERISTIC_FORM_NAME,
@@ -18,7 +21,12 @@ const mapStateToProps = (state, { p }) => ({
     className: 'add-characteristic',
 });
 
+const mapDispatchToProps = {
+    handleOpen: () => addCharacteristicOpen(),
+    handleClose: () => addCharacteristicCancel(),
+};
+
 export default compose(
     translate,
-    connect(mapStateToProps),
+    connect(mapStateToProps, mapDispatchToProps),
 )(DialogButton);

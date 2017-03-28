@@ -13,10 +13,11 @@ export function* handleAddCharacteristic({ payload }) {
     const { error, response } = yield call(fetchSaga, request);
 
     if (error) {
-        return yield put(addCharacteristicError(error));
+        yield put(addCharacteristicError(error.message));
+        return;
     }
 
-    return yield put(addCharacteristicSuccess(response));
+    yield put(addCharacteristicSuccess(response));
 }
 
 export default function* () {

@@ -2,7 +2,6 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
-import withState from 'recompose/withState';
 import withHandlers from 'recompose/withHandlers';
 import { submit as submitAction } from 'redux-form';
 import FlatButton from 'material-ui/FlatButton';
@@ -100,19 +99,9 @@ const mapDispatchToProps = ({ submit: submitAction });
 
 export default compose(
     connect(null, mapDispatchToProps),
-    withState('open', 'setOpen', false),
     withHandlers({
-        handleOpen: ({ setOpen }) => (event) => {
-            event.preventDefault();
-            setOpen(true);
-        },
-        handleClose: ({ setOpen }) => (event) => {
-            event.preventDefault();
-            setOpen(false);
-        },
-        handleSubmit: ({ setOpen, submit, formName }) => () => {
+        handleSubmit: ({ submit, formName }) => () => {
             submit(formName);
-            setOpen(false);
         },
     }),
     translate,

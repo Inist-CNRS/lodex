@@ -18,13 +18,27 @@ import {
 import FormTextField from '../../lib/FormTextField';
 import SchemeAutoComplete from '../../lib/SchemeAutoComplete';
 
+const validate = (values) => {
+    const errors = ['label', 'value'].reduce((currentErrors, field) => {
+        if (!values[field]) {
+            return {
+                ...currentErrors,
+                [field]: 'Required',
+            };
+        }
+        return currentErrors;
+    }, {});
+
+    return errors;
+};
+
 export const AddFieldFormComponent = ({
-    error,
+    addCharacteristicError,
     onSubmit,
     p: polyglot,
 }) => (
     <form id="add_field_resource_form" className="hide-detail" onSubmit={onSubmit}>
-        {error && <Alert><p>{error}</p></Alert>}
+        {addCharacteristicError && <Alert><p>{addCharacteristicError}</p></Alert>}
         <div>
             <CardText>
                 <Field
@@ -57,6 +71,7 @@ AddFieldFormComponent.propTypes = {
 };
 
 const mapStateToProps = state => ({
+    addCharacteristicError: fromCharacteristic.getError(state),
     saving: fromCharacteristic.isSaving(state),
 });
 
@@ -73,6 +88,7 @@ export default compose(
     }),
     reduxForm({
         form: NEW_CHARACTERISTIC_FORM_NAME,
+        validate,
     }),
     translate,
 )(AddFieldFormComponent);

@@ -5,6 +5,7 @@ import {
     saveFieldSuccess,
     saveFieldError,
     getFieldFormData,
+    loadPublication,
 } from '../';
 import { getUpdateFieldRequest } from '../../../fetch';
 import fetchSaga from '../../../lib/fetchSaga';
@@ -16,10 +17,12 @@ export function* handleSaveFieldRequest() {
     const { error, response: field } = yield call(fetchSaga, request);
 
     if (error) {
-        return yield put(saveFieldError(error));
+        yield put(saveFieldError(error));
+        return;
     }
 
-    return yield put(saveFieldSuccess(field));
+    yield put(saveFieldSuccess(field));
+    yield put(loadPublication());
 }
 
 export default function* watchsaveFieldRequest() {

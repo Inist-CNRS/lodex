@@ -11,7 +11,6 @@ import { isLoggedIn } from '../user';
 import { fromPublication } from './selectors';
 import DialogButton from '../lib/DialogButton';
 
-
 const mapStateToProps = (state, { field, p }) => ({
     show: isLoggedIn(state),
     saving: fromPublication.isPublicationSaving(state),
