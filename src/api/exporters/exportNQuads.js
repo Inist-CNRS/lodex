@@ -16,7 +16,7 @@ const exporter = (fields, characteristics, stream) =>
         }))
         .pipe(ezs('JSONLDString'));
 
-exporter.extension = 'json';
-exporter.mimeType = 'application/json';
+exporter.extension = 'nq';
+exporter.mimeType = 'application/n-quads';
 
 export default exporter;
