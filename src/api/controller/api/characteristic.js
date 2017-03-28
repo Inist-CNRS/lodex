@@ -2,6 +2,8 @@ import Koa from 'koa';
 import route from 'koa-route';
 import koaBodyParser from 'koa-bodyparser';
 
+import { COVER_DATASET } from '../../../common/cover';
+
 const app = new Koa();
 
 export const updateCharacteristics = async (ctx) => {
@@ -23,7 +25,28 @@ export const updateCharacteristics = async (ctx) => {
     ctx.body = await ctx.publishedCharacteristic.addNewVersion(newCharacteristics);
 };
 
+export const createCharacteristic = async (ctx) => {
+    const { value, ...fieldData } = ctx.request.body;
+
+    const field = await ctx.field.create({
+        ...fieldData,
+        cover: COVER_DATASET,
+    });
+
+    const prevCharacteristics = await ctx.publishedCharacteristic.findLastVersion();
+    const characteristics = await ctx.publishedCharacteristic.addNewVersion({
+        ...prevCharacteristics,
+        [field.name]: value,
+    });
+
+    ctx.body = {
+        field,
+        characteristics,
+    };
+};
+
 app.use(koaBodyParser());
 app.use(route.put('/', updateCharacteristics));
+app.use(route.post('/', createCharacteristic));
 
 export default app;

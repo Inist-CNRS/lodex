@@ -4,12 +4,14 @@ import {
     ADD_CHARACTERISTIC,
     addCharacteristicError,
     addCharacteristicSuccess,
+    getNewCharacteristicFormData,
 } from '../';
 import { getAddCharacteristicRequest } from '../../../fetch/';
 import fetchSaga from '../../../lib/fetchSaga';
 
-export function* handleAddCharacteristic({ payload }) {
-    const request = yield select(getAddCharacteristicRequest, payload);
+export function* handleAddCharacteristic() {
+    const formData = yield select(getNewCharacteristicFormData);
+    const request = yield select(getAddCharacteristicRequest, formData);
     const { error, response } = yield call(fetchSaga, request);
 
     if (error) {

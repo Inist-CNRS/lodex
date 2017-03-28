@@ -2,7 +2,10 @@ import omit from 'lodash.omit';
 import { createAction, handleActions, combineActions } from 'redux-actions';
 import { createSelector } from 'reselect';
 
-import { UPDATE_CHARACTERISTICS_SUCCESS } from '../characteristic';
+import {
+    UPDATE_CHARACTERISTICS_SUCCESS,
+    ADD_CHARACTERISTIC_SUCCESS,
+} from '../characteristic';
 import { SAVE_RESOURCE_SUCCESS } from '../resource';
 
 import TITLE_SCHEME from '../../../../common/titleScheme';
@@ -120,6 +123,17 @@ export default handleActions({
     )]: state => ({
         ...state,
         editedValueFieldName: null,
+    }),
+    [ADD_CHARACTERISTIC_SUCCESS]: (state, { payload: { field } }) => ({
+        ...state,
+        fields: [
+            ...state.fields,
+            field.name,
+        ],
+        byName: {
+            ...state.byName,
+            [field.name]: field,
+        },
     }),
 }, defaultState);
 

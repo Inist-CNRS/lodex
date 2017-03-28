@@ -75,8 +75,13 @@ export default handleActions({
         isAdding: true,
         error: null,
     }),
-    ADD_CHARACTERISTIC_SUCCESS: state => ({
+    ADD_CHARACTERISTIC_SUCCESS: (state, { payload: { characteristics } }) => ({
         ...state,
+        characteristics: [
+            characteristics,
+            ...state.characteristics,
+        ],
+        newCharacteristics: characteristics,
         isAdding: false,
         error: null,
     }),
@@ -136,6 +141,8 @@ const isSaving = state => state.isSaving;
 const isAdding = state => state.isAdding;
 
 const getError = state => state.error;
+
+export const getNewCharacteristicFormData = state => state.form[NEW_CHARACTERISTIC_FORM_NAME].values;
 
 export const fromCharacteristic = {
     getNewCharacteristics,
