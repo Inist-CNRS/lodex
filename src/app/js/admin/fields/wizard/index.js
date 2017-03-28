@@ -1,14 +1,12 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
-
 import Dialog from 'material-ui/Dialog';
 import { Stepper } from 'material-ui/Stepper';
 
-import { editField as editFieldAction, saveField as saveFieldAction } from '../';
+import { getFieldFormData, editField as editFieldAction, saveField as saveFieldAction } from '../';
 import { field as fieldPropTypes } from '../../../propTypes';
 import { fromFields } from '../../selectors';
-
 import StepValue from './StepValue';
 import StepUri from './StepUri';
 import StepTransforms from './StepTransforms';
@@ -44,6 +42,7 @@ const styles = {
 class FieldEditionWizardComponent extends Component {
     static propTypes = {
         editField: PropTypes.func.isRequired,
+        editedField: fieldPropTypes,
         field: fieldPropTypes,
         fields: PropTypes.arrayOf(fieldPropTypes),
         lines: PropTypes.arrayOf(PropTypes.object).isRequired,
@@ -51,6 +50,7 @@ class FieldEditionWizardComponent extends Component {
     }
 
     static defaultProps = {
+        editedField: null,
         field: null,
         fields: null,
     }
@@ -89,12 +89,15 @@ class FieldEditionWizardComponent extends Component {
 
     render() {
         const {
+            editedField,
             field,
             fields,
             lines,
         } = this.props;
 
         const { step } = this.state;
+
+        if (!field) return null;
 
         let steps = [];
 
@@ -142,7 +145,7 @@ class FieldEditionWizardComponent extends Component {
                         </div>
                         <PublicationExcerpt
                             className="publication-excerpt-for-edition"
-                            columns={[field]}
+                            columns={[editedField]}
                             lines={lines}
                             colStyle={styles.column}
                             onHeaderClick={null}
@@ -157,9 +160,11 @@ class FieldEditionWizardComponent extends Component {
 
 const mapStateToProps = (state) => {
     const field = fromFields.getEditedField(state);
+    const editedField = getFieldFormData(state) || field;
 
     return {
         field,
+        editedField,
         initialValues: field ? fromFields.getEditedField(state) : null,
         fields: field ? fromFields.getFieldsExceptEdited(state) : null,
     };
