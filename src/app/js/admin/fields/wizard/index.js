@@ -19,6 +19,7 @@ import StepTransforms from './StepTransforms';
 import StepIdentity from './StepIdentity';
 import StepDisplay from './StepDisplay';
 import StepSearch from './StepSearch';
+import StepSemantics from './StepSemantics';
 import PublicationExcerpt from '../../publicationPreview/PublicationExcerpt';
 
 const styles = {
@@ -200,8 +201,9 @@ class FieldEditionWizardComponent extends Component {
                 <StepIdentity key={'identity'} active={step === 0} step={0} field={field} fields={fields} onSelectStep={this.handleSelectStep} />,
                 <StepValue key={'value'} step={1} active={step === 1} field={field} fields={fields} onSelectStep={this.handleSelectStep} />,
                 <StepTransforms key={'transformations'} active={step === 2} step={2} field={field} fields={fields} onSelectStep={this.handleSelectStep} />,
-                <StepSearch key={'search'} active={step === 3} step={3} field={field} fields={fields} onSelectStep={this.handleSelectStep} />,
+                <StepSemantics key={'semantics'} active={step === 3} step={3} field={field} fields={fields} onSelectStep={this.handleSelectStep} />,
                 <StepDisplay key={'display'} active={step === 4} step={4} field={field} fields={fields} onSelectStep={this.handleSelectStep} />,
+                <StepSearch key={'search'} active={step === 5} step={5} field={field} fields={fields} onSelectStep={this.handleSelectStep} />,
             ];
         }
 

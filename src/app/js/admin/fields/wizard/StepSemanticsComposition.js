@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import RadioButton from 'material-ui/RadioButton';
+import Subheader from 'material-ui/Subheader';
 import TextField from 'material-ui/TextField';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
@@ -10,17 +10,14 @@ import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
 import withHandlers from 'recompose/withHandlers';
 import { connect } from 'react-redux';
-import { formValueSelector } from 'redux-form';
+import { change, formValueSelector } from 'redux-form';
 import { FIELD_FORM_NAME } from '../';
 
-import { polyglot as polyglotPropTypes } from '../../../propTypes';
+import { polyglot as polyglotPropTypes, field as fieldPropTypes } from '../../../propTypes';
 
 const styles = {
     inset: {
         paddingLeft: 40,
-    },
-    radio: {
-        marginTop: 12,
     },
     compositionContainer: {
         display: 'flex',
@@ -28,79 +25,71 @@ const styles = {
     select: {
         flexGrow: 2,
     },
+    header: {
+        paddingLeft: 0,
+    },
 };
 
-export const StepValueCompositionComponent = ({
+export const StepSemanticsCompositionComponent = ({
     columns,
-    datasetFields,
+    fields,
     handleAddColumn,
     handleChangeSeparator,
     handleSelectColumn,
-    handleSelect,
     handleRemoveColumn,
     p: polyglot,
-    selected,
     separator,
 }) => (
     <div>
-        <RadioButton
-            label={polyglot.t('a_composition')}
-            value="composition"
-            onClick={handleSelect}
-            checked={selected}
-            style={styles.radio}
-        />
-        {selected &&
-            <div style={styles.inset}>
-                {columns.map((col, index) => (
-                    <div
-                        key={`compotransformerssition_${index}`} // eslint-disable-line
-                        style={styles.compositionContainer}
+        <Subheader style={styles.header}>{polyglot.t('composed_of')}</Subheader>
+        <div style={styles.inset}>
+            {columns.map((col, index) => (
+                <div
+                    key={`compotransformerssition_${index}`} // eslint-disable-line
+                    style={styles.compositionContainer}
+                >
+                    <SelectField
+                        onChange={handleSelectColumn(index)}
+                        style={styles.select}
+                        hintText={polyglot.t('select_a_column')}
+                        value={col}
                     >
-                        <SelectField
-                            onChange={handleSelectColumn(index)}
-                            style={styles.select}
-                            hintText={polyglot.t('select_a_column')}
-                            value={col}
+                        {fields.map(f => (
+                            <MenuItem
+                                key={`select_composition_${index}_${f.name}`} // eslint-disable-line
+                                value={f.name}
+                                primaryText={f.label}
+                            />
+                        ))}
+                    </SelectField>
+                    {index > 1 &&
+                        <IconButton
+                            onClick={handleRemoveColumn(index)}
+                            title={polyglot.t('remove_composition_column')}
                         >
-                            {datasetFields.map(column => (
-                                <MenuItem
-                                    key={`select_composition_${index}_${column}`} // eslint-disable-line
-                                    insetChildren
-                                    value={column}
-                                    primaryText={column}
-                                />
-                            ))}
-                        </SelectField>
-                        {index > 1 &&
-                            <IconButton
-                                onClick={handleRemoveColumn(index)}
-                                title={polyglot.t('remove_composition_column')}
-                            >
-                                <IconDelete />
-                            </IconButton>
-                        }
-                    </div>
-                ))}
-                <FlatButton
-                    label={polyglot.t('add_composition_column')}
-                    onClick={handleAddColumn}
-                />
-                <TextField
-                    id="textbox_separator"
-                    fullWidth
-                    placeholder={polyglot.t('enter_a_separator')}
-                    onChange={handleChangeSeparator}
-                    value={separator}
-                />
-            </div>
-        }
+                            <IconDelete />
+                        </IconButton>
+                    }
+                </div>
+            ))}
+            <FlatButton
+                label={polyglot.t('add_composition_column')}
+                onClick={handleAddColumn}
+            />
+            <TextField
+                id="textbox_separator"
+                fullWidth
+                placeholder={polyglot.t('enter_a_separator')}
+                onChange={handleChangeSeparator}
+                value={separator}
+            />
+        </div>
     </div>
 );
 
-StepValueCompositionComponent.propTypes = {
+StepSemanticsCompositionComponent.propTypes = {
     columns: PropTypes.arrayOf(PropTypes.string).isRequired,
-    datasetFields: PropTypes.arrayOf(PropTypes.string).isRequired,
+    fields: PropTypes.arrayOf(fieldPropTypes).isRequired,
     handleAddColumn: PropTypes.func.isRequired,
     handleChangeSeparator: PropTypes.func.isRequired,
     handleSelectColumn: PropTypes.func.isRequired,
@@ -111,7 +100,7 @@ StepValueCompositionComponent.propTypes = {
     separator: PropTypes.string,
 };
 
-StepValueCompositionComponent.defaultProps = {
+StepSemanticsCompositionComponent.defaultProps = {
     columns: ['', ''],
     separator: undefined,
 };
@@ -130,8 +119,14 @@ const mapStateToProps = (state) => {
     return { selected: false, columns: ['', ''], separator: '' };
 };
 
+const mapDispatchToProps = dispatch => ({
+    onChange: (composedOf) => {
+        dispatch(change(FIELD_FORM_NAME, 'composedOf', composedOf));
+    },
+});
+
 export default compose(
-    connect(mapStateToProps),
+    connect(mapStateToProps, mapDispatchToProps),
     withHandlers({
         handleSelect: ({ onChange, columns, separator }) => () => {
             onChange({
@@ -175,4 +170,4 @@ export default compose(
         },
     }),
     translate,
-)(StepValueCompositionComponent);
+)(StepSemanticsCompositionComponent);

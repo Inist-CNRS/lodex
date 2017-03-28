@@ -15,26 +15,25 @@ import StepValueColumn from './StepValueColumn';
 export const StepValueComponent = ({
     datasetFields,
     field,
-    handleTransformerChange,
+    handleChange,
     ...props
 }) => (
     <Step label="field_wizard_step_value" {...props}>
         <StepValueValue
             field={field}
-            onChange={handleTransformerChange}
+            onChange={handleChange}
         />
         <StepValueColumn
             datasetFields={datasetFields}
             field={field}
-            onChange={handleTransformerChange}
+            onChange={handleChange}
         />
     </Step>
 );
 
 StepValueComponent.propTypes = {
     datasetFields: PropTypes.arrayOf(PropTypes.string).isRequired,
-    handleComposedOfChange: PropTypes.func.isRequired,
-    handleTransformerChange: PropTypes.func.isRequired,
+    handleChange: PropTypes.func.isRequired,
     field: fieldPropTypes.isRequired,
 };
 
@@ -43,7 +42,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = (dispatch, { field: { transformers } }) => ({
-    handleTransformerChange: (valueTransformer) => {
+    handleChange: (valueTransformer) => {
         let newTransformers = [];
         const firstTransformerIsValueTransformer =
             transformers
@@ -57,19 +56,6 @@ const mapDispatchToProps = (dispatch, { field: { transformers } }) => ({
         ];
 
         dispatch(change(FIELD_FORM_NAME, 'transformers', newTransformers));
-    },
-    handleComposedOfChange: (composedOf) => {
-        const firstTransformerIsValueTransformer =
-            transformers
-            && transformers[0]
-            && transformers[0].operation
-            && getTransformerMetas(transformers[0].operation).type === 'value';
-
-        if (firstTransformerIsValueTransformer) {
-            dispatch(change(FIELD_FORM_NAME, 'transformers', transformers.slice(1)));
-        }
-
-        dispatch(change(FIELD_FORM_NAME, 'composedOf', composedOf));
     },
 });
 
