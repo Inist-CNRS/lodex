@@ -10,8 +10,13 @@ import EditOntologyFieldForm, { FORM_NAME } from './EditOntologyFieldForm';
 import { isLoggedIn } from '../user';
 import { fromPublication } from './selectors';
 import DialogButton from '../lib/DialogButton';
+import {
+    openConfigureField,
+    closeConfigureField,
+} from './publication';
 
 const mapStateToProps = (state, { field, p }) => ({
+    open: fromPublication.isFieldConfigured(state, field.name),
     show: isLoggedIn(state),
     saving: fromPublication.isPublicationSaving(state),
     className: classnames('configure-field', getFieldClassName(field)),
@@ -24,7 +29,12 @@ const mapStateToProps = (state, { field, p }) => ({
     },
 });
 
+const mapDispatchToProps = (dispatch, { field: { name } }) => ({
+    handleOpen: () => dispatch(openConfigureField(name)),
+    handleClose: () => dispatch(closeConfigureField()),
+});
+
 export default compose(
     translate,
-    connect(mapStateToProps),
+    connect(mapStateToProps, mapDispatchToProps),
 )(DialogButton);

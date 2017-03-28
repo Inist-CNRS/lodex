@@ -10,6 +10,7 @@ import Alert from '../lib/Alert';
 import { polyglot as polyglotPropTypes } from '../propTypes';
 import FormCheckboxField from '../lib/FormCheckboxField';
 import { saveField } from './publication';
+import { fromPublication } from './selectors';
 
 export const FORM_NAME = 'ONTOLOGY_FIELD_FORM';
 
@@ -27,9 +28,9 @@ const validate = (values) => {
     return errors;
 };
 
-export const EditOntologyFieldFormComponent = ({ error, handleSubmit, p: polyglot }) => (
+export const EditOntologyFieldFormComponent = ({ publicationError, handleSubmit, p: polyglot }) => (
     <form id="field_form" onSubmit={() => handleSubmit()}>
-        {error && <Alert><p>{error}</p></Alert>}
+        {publicationError && <Alert><p>{publicationError}</p></Alert>}
         <Field
             name="display_in_list"
             component={FormCheckboxField}
@@ -54,12 +55,16 @@ EditOntologyFieldFormComponent.propTypes = {
     p: polyglotPropTypes.isRequired,
 };
 
+const mapStateToProps = state => ({
+    publicationError: fromPublication.getError(state),
+});
+
 const mapDispatchToProps = {
     onSaveField: saveField,
 };
 
 export default compose(
-    connect(null, mapDispatchToProps),
+    connect(mapStateToProps, mapDispatchToProps),
     withHandlers({
         onSubmit: ({ onSaveField }) => (values) => {
             onSaveField(values);

@@ -22,6 +22,9 @@ export const SAVE_FIELD_ERROR = 'SAVE_FIELD_ERROR';
 export const OPEN_EDIT_FIELD_VALUE = 'OPEN_EDIT_FIELD_VALUE';
 export const CLOSE_EDIT_FIELD_VALUE = 'CLOSE_EDIT_FIELD_VALUE';
 
+export const OPEN_CONFIGURE_FIELD = 'OPEN_CONFIGURE_FIELD';
+export const CLOSE_CONFIGURE_FIELD = 'CLOSE_CONFIGURE_FIELD';
+
 export const loadPublication = createAction(LOAD_PUBLICATION);
 export const loadPublicationSuccess = createAction(LOAD_PUBLICATION_SUCCESS);
 export const loadPublicationError = createAction(LOAD_PUBLICATION_ERROR);
@@ -35,12 +38,16 @@ export const saveFieldError = createAction(SAVE_FIELD_ERROR);
 export const openEditFieldValue = createAction(OPEN_EDIT_FIELD_VALUE);
 export const closeEditFieldValue = createAction(CLOSE_EDIT_FIELD_VALUE);
 
+export const openConfigureField = createAction(OPEN_CONFIGURE_FIELD);
+export const closeConfigureField = createAction(CLOSE_CONFIGURE_FIELD);
+
 export const defaultState = {
     loading: false,
     isSaving: false,
     fields: [],
     byName: {},
     editedValueFieldName: null,
+    configuredFieldName: null,
     published: false,
 };
 
@@ -81,6 +88,7 @@ export default handleActions({
         ...state,
         isSaving: false,
         error: null,
+        configuredFieldName: null,
         byName: {
             ...state.byName,
             [field.name]: field,
@@ -94,6 +102,17 @@ export default handleActions({
     OPEN_EDIT_FIELD_VALUE: (state, { payload: editedValueFieldName }) => ({
         ...state,
         editedValueFieldName,
+        error: null,
+    }),
+    OPEN_CONFIGURE_FIELD: (state, { payload: configuredFieldName }) => ({
+        ...state,
+        configuredFieldName,
+        error: null,
+    }),
+    CLOSE_CONFIGURE_FIELD: state => ({
+        ...state,
+        configuredFieldName: null,
+        error: null,
     }),
     [combineActions(
         CLOSE_EDIT_FIELD_VALUE,
@@ -283,6 +302,15 @@ const isFieldEdited = createSelector(
     (editedFieldName, fieldName) => editedFieldName === fieldName,
 );
 
+const getConfiguredFieldName = ({ configuredFieldName }) => configuredFieldName;
+
+const isFieldConfigured = createSelector(
+    getConfiguredFieldName,
+    (_, fieldName) => fieldName,
+    (editedFieldName, fieldName) => editedFieldName === fieldName,
+);
+
+const getError = ({ error }) => error;
 
 export const fromPublication = {
     getFields,
@@ -313,4 +341,6 @@ export const fromPublication = {
     getNbColumns,
     getEditedValueFieldName,
     isFieldEdited,
+    isFieldConfigured,
+    getError,
 };
