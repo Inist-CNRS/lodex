@@ -60,8 +60,13 @@ describe('Home page with published data when logged as Julia', function homePubl
             elementTextIs('.detail .property.full_name > .property_scheme', 'http://www.w3.org/ns/person',
             DEFAULT_WAIT_TIMEOUT),
         );
+
         await driver.wait(
-            elementTextIs('.detail .property.full_name .composite_property_value', 'PEREGRIN.TOOK',
+            elementTextIs('.detail .property.full_name .compose_full_name.property.name .property_value', 'TOOK',
+            DEFAULT_WAIT_TIMEOUT),
+        );
+        await driver.wait(
+            elementTextIs('.detail .property.full_name .compose_full_name.property.firstname .property_value', 'PEREGRIN',
             DEFAULT_WAIT_TIMEOUT),
         );
 
@@ -119,8 +124,14 @@ describe('Home page with published data when logged as Julia', function homePubl
         const fullnameScheme = '.detail .property.full_name > .property_scheme';
         await driver.wait(elementTextIs(fullnameScheme, 'http://www.w3.org/ns/person', DEFAULT_WAIT_TIMEOUT));
 
-        const fullnameValue = '.detail .property.full_name .composite_property_value';
-        await driver.wait(elementTextIs(fullnameValue, 'PEREGRIN.TOOK', DEFAULT_WAIT_TIMEOUT));
+        await driver.wait(
+            elementTextIs('.detail .property.full_name .compose_full_name.property.name .property_value', 'TOOK',
+            DEFAULT_WAIT_TIMEOUT),
+        );
+        await driver.wait(
+            elementTextIs('.detail .property.full_name .compose_full_name.property.firstname .property_value', 'PEREGRIN',
+            DEFAULT_WAIT_TIMEOUT),
+        );
 
         const mailLabel = '.detail .property.email.completes_fullname .property_label';
         await driver.wait(elementTextIs(mailLabel, 'Email', DEFAULT_WAIT_TIMEOUT));

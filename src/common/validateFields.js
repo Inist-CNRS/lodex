@@ -78,19 +78,11 @@ export const validateTransformers = (field, isContribution) => {
         };
     }
 
-    if ((field.transformers && field.transformers.length) && field.composedOf) {
+    if ((!field.transformers || !field.transformers.length)) {
         return {
             ...result,
             isValid: false,
-            error: 'composed_of_conflict',
-        };
-    }
-
-    if ((!field.transformers || !field.transformers.length) && !field.composedOf) {
-        return {
-            ...result,
-            isValid: false,
-            error: 'required_or_composed_of_required',
+            error: 'required',
         };
     }
 
@@ -112,22 +104,6 @@ export const validateComposedOf = (field, isContribution) => {
             ...result,
             isValid: false,
             error: 'contribution_no_composed_of',
-        };
-    }
-
-    if ((field.transformers && field.transformers.length) && field.composedOf) {
-        return {
-            ...result,
-            isValid: false,
-            error: 'transformers_conflict',
-        };
-    }
-
-    if ((!field.transformers || !field.transformers.length) && !field.composedOf) {
-        return {
-            ...result,
-            isValid: false,
-            error: 'required_or_transformers_required',
         };
     }
 
