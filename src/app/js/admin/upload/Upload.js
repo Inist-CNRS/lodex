@@ -17,7 +17,8 @@ import { polyglot as polyglotPropTypes } from '../../propTypes';
 const styles = {
     div: {
         position: 'relative',
-        margin: 100,
+        marginTop: 10,
+        marginLeft: 10,
     },
     input: {
         position: 'absolute',

@@ -21,6 +21,7 @@ const transformation = (_, args) => {
 
 transformation.getMetas = () => ({
     name: 'COLUMN',
+    type: 'value',
     args: [{
         name: 'column',
         type: 'column',

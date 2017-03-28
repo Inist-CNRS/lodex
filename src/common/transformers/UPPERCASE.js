@@ -25,6 +25,7 @@ const transformation = () => value =>
 
 transformation.getMetas = () => ({
     name: 'UPPERCASE',
+    type: 'transform',
     args: [],
 });
 

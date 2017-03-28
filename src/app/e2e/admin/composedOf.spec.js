@@ -16,7 +16,7 @@ import { inputElementIsFocusable } from '../../../common/tests/conditions';
 import loginAsJulia from '../loginAsJulia';
 import waitForPreviewComputing from './waitForPreviewComputing';
 
-describe('Admin', () => {
+describe.skip('Admin', () => {
     describe('composedOf', function homeTests() {
         this.timeout(30000);
         const DEFAULT_WAIT_TIMEOUT = 9000; // A bit less than mocha's timeout to get explicit errors from selenium
