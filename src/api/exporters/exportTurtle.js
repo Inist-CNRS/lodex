@@ -56,7 +56,7 @@ const exporter = (fields, characteristics, stream) =>
         .pipe(N3.StreamParser({ format: 'N-Quads' }))
         .pipe(new N3.StreamWriter({ prefixes }));
 
-exporter.extension = 'json';
-exporter.mimeType = 'application/json';
+exporter.extension = 'ttl';
+exporter.mimeType = 'text/turtle';
 
 export default exporter;
