@@ -13,16 +13,16 @@ export const StepComponent = ({
     active,
     completed,
     disabled,
-    handleSelectStep,
-    step,
     last,
     style,
+    icon,
+    handleSelectStep,
+    index,
     label,
     children,
-    icon,
     p: polyglot,
 }) => (
-    <Step active={active} completed={completed} disabled={disabled} icon={icon} index={step} last={last} style={style}>
+    <Step active={active} completed={completed} disabled={disabled} icon={icon} index={index} last={last} style={style}>
         <StepButton onTouchTap={handleSelectStep}>{polyglot.t(label)}</StepButton>
         <StepContent>
             {children}
@@ -31,17 +31,19 @@ export const StepComponent = ({
 );
 
 StepComponent.propTypes = {
+    // The following are props injected by the MUI Stepper component
     active: PropTypes.bool,
     completed: PropTypes.bool,
     disabled: PropTypes.bool,
-    handleSelectStep: PropTypes.func.isRequired,
+    index: PropTypes.number.isRequired,
     last: PropTypes.bool,
     style: PropTypes.object, // eslint-disable-line
+    icon: PropTypes.node,
+
+    handleSelectStep: PropTypes.func.isRequired,
     label: PropTypes.string.isRequired,
     children: PropTypes.node.isRequired,
-    icon: PropTypes.node,
     p: polyglotPropTypes.isRequired,
-    step: PropTypes.number.isRequired,
 };
 
 StepComponent.defaultProps = {

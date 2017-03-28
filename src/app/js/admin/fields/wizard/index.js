@@ -1,16 +1,12 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
-import translate from 'redux-polyglot/translate';
-import memoize from 'lodash.memoize';
 
 import Dialog from 'material-ui/Dialog';
-import FlatButton from 'material-ui/FlatButton';
 import { Stepper } from 'material-ui/Stepper';
 
 import { editField as editFieldAction, saveField as saveFieldAction } from '../';
-
-import { polyglot as polyglotPropTypes, field as fieldPropTypes } from '../../../propTypes';
+import { field as fieldPropTypes } from '../../../propTypes';
 import { fromFields } from '../../selectors';
 
 import StepValue from './StepValue';
@@ -21,6 +17,7 @@ import StepDisplay from './StepDisplay';
 import StepSearch from './StepSearch';
 import StepSemantics from './StepSemantics';
 import PublicationExcerpt from '../../publicationPreview/PublicationExcerpt';
+import Actions from './Actions';
 
 const styles = {
     container: {
@@ -44,99 +41,6 @@ const styles = {
     },
 };
 
-const getActions = memoize((
-    field,
-    step,
-    stepsCount,
-    polyglot,
-    handlePreviousStep,
-    handleNextStep,
-    handleCancel,
-    handleSave,
-) => {
-    if (!field) return [];
-
-    if (field.name === 'uri') {
-        return [
-            <FlatButton
-                className="btn-exit-column-edition"
-                label={polyglot.t('cancel')}
-                onTouchTap={handleCancel}
-            />,
-            <FlatButton
-                className="btn-next"
-                label={polyglot.t('save')}
-                secondary
-                onTouchTap={handleSave}
-            />,
-        ];
-    }
-
-    if (step === 0) {
-        return [
-            <FlatButton
-                className="btn-exit-column-edition"
-                label={polyglot.t('cancel')}
-                onTouchTap={handleCancel}
-            />,
-            <FlatButton
-                className="btn-next"
-                label={polyglot.t('next')}
-                primary
-                onTouchTap={handleNextStep}
-            />,
-        ];
-    }
-
-    if (step === stepsCount - 1) {
-        return [
-            <FlatButton
-                className="btn-exit-column-edition"
-                label={polyglot.t('cancel')}
-                onTouchTap={handleCancel}
-            />,
-            <FlatButton
-                className="btn-previous"
-                label={polyglot.t('previous')}
-                onTouchTap={handlePreviousStep}
-                primary
-            />,
-            <FlatButton
-                className="btn-next"
-                label={polyglot.t('save')}
-                secondary
-                onTouchTap={handleSave}
-            />,
-        ];
-    }
-
-    return [
-        <FlatButton
-            className="btn-exit-column-edition"
-            label={polyglot.t('cancel')}
-            onTouchTap={handleCancel}
-        />,
-        <FlatButton
-            className="btn-previous"
-            label={polyglot.t('previous')}
-            primary
-            onTouchTap={handlePreviousStep}
-        />,
-        <FlatButton
-            className="btn-next"
-            label={polyglot.t('next')}
-            primary
-            onTouchTap={handleNextStep}
-        />,
-        <FlatButton
-            className="btn-next"
-            label={polyglot.t('save')}
-            secondary
-            onTouchTap={handleSave}
-        />,
-    ];
-}, (field, step, stepsCount) => (field ? `${field.name}_${step}_${stepsCount}` : 'not_editing'));
-
 class FieldEditionWizardComponent extends Component {
     static propTypes = {
         editField: PropTypes.func.isRequired,
@@ -144,7 +48,6 @@ class FieldEditionWizardComponent extends Component {
         fields: PropTypes.arrayOf(fieldPropTypes),
         lines: PropTypes.arrayOf(PropTypes.object).isRequired,
         saveField: PropTypes.func.isRequired,
-        p: polyglotPropTypes.isRequired,
     }
 
     static defaultProps = {
@@ -189,7 +92,6 @@ class FieldEditionWizardComponent extends Component {
             field,
             fields,
             lines,
-            p: polyglot,
         } = this.props;
 
         const { step } = this.state;
@@ -198,24 +100,25 @@ class FieldEditionWizardComponent extends Component {
 
         if (field && field.name !== 'uri') {
             steps = [
-                <StepIdentity key={'identity'} active={step === 0} step={0} field={field} fields={fields} onSelectStep={this.handleSelectStep} />,
-                <StepValue key={'value'} step={1} active={step === 1} field={field} fields={fields} onSelectStep={this.handleSelectStep} />,
-                <StepTransforms key={'transformations'} active={step === 2} step={2} field={field} fields={fields} onSelectStep={this.handleSelectStep} />,
-                <StepSemantics key={'semantics'} active={step === 3} step={3} field={field} fields={fields} onSelectStep={this.handleSelectStep} />,
-                <StepDisplay key={'display'} active={step === 4} step={4} field={field} fields={fields} onSelectStep={this.handleSelectStep} />,
-                <StepSearch key={'search'} active={step === 5} step={5} field={field} fields={fields} onSelectStep={this.handleSelectStep} />,
+                <StepIdentity key={'identity'} index={0} active={step === 0} field={field} fields={fields} onSelectStep={this.handleSelectStep} />,
+                <StepValue key={'value'} index={1} active={step === 1} field={field} fields={fields} onSelectStep={this.handleSelectStep} />,
+                <StepTransforms key={'transformations'} index={2} active={step === 2} field={field} fields={fields} onSelectStep={this.handleSelectStep} />,
+                <StepSemantics key={'semantics'} index={3} active={step === 3} field={field} fields={fields} onSelectStep={this.handleSelectStep} />,
+                <StepDisplay key={'display'} index={4} active={step === 4} field={field} fields={fields} onSelectStep={this.handleSelectStep} />,
+                <StepSearch key={'search'} index={5} active={step === 5} field={field} fields={fields} onSelectStep={this.handleSelectStep} />,
             ];
         }
 
-        const actions = getActions(
-            field,
-            step,
-            steps.length,
-            polyglot,
-            this.handlePreviousStep,
-            this.handleNextStep,
-            this.handleCancel,
-            this.handleSave,
+        const actions = (
+            <Actions
+                field={field}
+                step={step}
+                stepsCount={steps.length}
+                onPreviousStep={this.handlePreviousStep}
+                onNextStep={this.handleNextStep}
+                onCancel={this.handleCancel}
+                onSave={this.handleSave}
+            />
         );
 
         return (
@@ -227,7 +130,7 @@ class FieldEditionWizardComponent extends Component {
             >
                 {field &&
                     <div style={styles.container}>
-                        <div style={styles.form}>
+                        <div id="field_form" style={styles.form}>
                             {field.name !== 'uri'
                                 ? (
                                     <Stepper linear={false} activeStep={step} orientation="vertical">
@@ -269,5 +172,4 @@ const mapDispatchToProps = {
 
 export default compose(
     connect(mapStateToProps, mapDispatchToProps),
-    translate,
 )(FieldEditionWizardComponent);
