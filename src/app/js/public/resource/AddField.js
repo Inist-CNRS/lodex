@@ -7,10 +7,14 @@ import { fromResource } from '../selectors';
 import AddFieldForm from './AddFieldForm';
 import DialogButton from '../../lib/DialogButton';
 import {
+    addFieldToResourceOpen,
+    addFieldToResourceCancel,
     NEW_RESOURCE_FIELD_FORM_NAME,
+
 } from './';
 
 const mapStateToProps = (state, { p }) => ({
+    open: fromResource.isAdding(state),
     saving: fromResource.isSaving(state),
     formName: NEW_RESOURCE_FIELD_FORM_NAME,
     form: <AddFieldForm />,
@@ -18,7 +22,12 @@ const mapStateToProps = (state, { p }) => ({
     className: 'add-field-resource',
 });
 
+const mapDispatchToProps = {
+    handleOpen: () => addFieldToResourceOpen(),
+    handleClose: () => addFieldToResourceCancel(),
+};
+
 export default compose(
     translate,
-    connect(mapStateToProps),
+    connect(mapStateToProps, mapDispatchToProps),
 )(DialogButton);

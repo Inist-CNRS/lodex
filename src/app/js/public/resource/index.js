@@ -16,6 +16,8 @@ export const HIDE_RESOURCE_SUCCESS = 'HIDE_RESOURCE_SUCCESS';
 export const HIDE_RESOURCE_ERROR = 'HIDE_RESOURCE_ERROR';
 
 export const ADD_FIELD_TO_RESOURCE = 'ADD_FIELD_TO_RESOURCE';
+export const ADD_FIELD_TO_RESOURCE_OPEN = 'ADD_FIELD_TO_RESOURCE_OPEN';
+export const ADD_FIELD_TO_RESOURCE_CANCEL = 'ADD_FIELD_TO_RESOURCE_CANCEL';
 export const ADD_FIELD_TO_RESOURCE_SUCCESS = 'ADD_FIELD_TO_RESOURCE_SUCCESS';
 export const ADD_FIELD_TO_RESOURCE_ERROR = 'ADD_FIELD_TO_RESOURCE_ERROR';
 
@@ -41,6 +43,8 @@ export const hideResourceSuccess = createAction(HIDE_RESOURCE_SUCCESS);
 export const hideResourceError = createAction(HIDE_RESOURCE_ERROR);
 
 export const addFieldToResource = createAction(ADD_FIELD_TO_RESOURCE);
+export const addFieldToResourceOpen = createAction(ADD_FIELD_TO_RESOURCE_OPEN);
+export const addFieldToResourceCancel = createAction(ADD_FIELD_TO_RESOURCE_CANCEL);
 export const addFieldToResourceSuccess = createAction(ADD_FIELD_TO_RESOURCE_SUCCESS);
 export const addFieldToResourceError = createAction(ADD_FIELD_TO_RESOURCE_ERROR);
 
@@ -54,6 +58,7 @@ export const defaultState = {
     error: null,
     loading: false,
     saving: false,
+    addingField: false,
     selectedVersion: null,
 };
 
@@ -99,6 +104,7 @@ export default handleActions({
         ...state,
         error: null,
         saving: false,
+        addingField: null,
     }),
     [combineActions(
         SAVE_RESOURCE_ERROR,
@@ -158,6 +164,16 @@ export default handleActions({
     SELECT_VERSION: (state, { payload: selectedVersion }) => ({
         ...state,
         selectedVersion,
+    }),
+    ADD_FIELD_TO_RESOURCE_OPEN: state => ({
+        ...state,
+        addingField: true,
+        error: null,
+    }),
+    ADD_FIELD_TO_RESOURCE_CANCEL: state => ({
+        ...state,
+        addingField: false,
+        error: null,
     }),
 }, defaultState);
 
@@ -274,6 +290,10 @@ const isLastVersionSelected = createSelector(
     (selectedVersion, nbVersions) => selectedVersion === nbVersions - 1,
 );
 
+const isAdding = state => state.addingField;
+
+const getError = ({ error }) => error;
+
 export const fromResource = {
     getResourceContributorsCatalog,
     getResourceSelectedVersion,
@@ -289,6 +309,8 @@ export const fromResource = {
     getVersions,
     getSelectedVersion,
     isLastVersionSelected,
+    isAdding,
+    getError,
 };
 
 export const getResourceFormData = state => state.form.resource.values;
