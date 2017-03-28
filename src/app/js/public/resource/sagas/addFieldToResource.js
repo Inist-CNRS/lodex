@@ -21,7 +21,7 @@ export function* handleAddFieldToResource({ payload: uri }) {
         ...formData,
         uri,
     });
-    const { error = { message: 'boom' }, response } = yield call(fetchSaga, request);
+    const { error, response } = yield call(fetchSaga, request);
 
     if (error) {
         yield put(addFieldToResourceError(error));

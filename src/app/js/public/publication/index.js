@@ -15,15 +15,15 @@ export const LOAD_PUBLICATION_ERROR = 'LOAD_PUBLICATION_ERROR';
 
 export const SELECT_FIELD = 'SELECT_FIELD';
 
-export const SAVE_FIELD = 'SAVE_FIELD';
-export const SAVE_FIELD_SUCCESS = 'SAVE_FIELD_SUCCESS';
-export const SAVE_FIELD_ERROR = 'SAVE_FIELD_ERROR';
+export const CONFIGURE_FIELD = 'CONFIGURE_FIELD';
+export const CONFIGURE_FIELD_OPEN = 'CONFIGURE_FIELD_OPEN';
+export const CONFIGURE_FIELD_CANCEL = 'CONFIGURE_FIELD_CANCEL';
+export const CONFIGURE_FIELD_SUCCESS = 'CONFIGURE_FIELD_SUCCESS';
+export const CONFIGURE_FIELD_ERROR = 'CONFIGURE_FIELD_ERROR';
 
 export const OPEN_EDIT_FIELD_VALUE = 'OPEN_EDIT_FIELD_VALUE';
 export const CLOSE_EDIT_FIELD_VALUE = 'CLOSE_EDIT_FIELD_VALUE';
 
-export const OPEN_CONFIGURE_FIELD = 'OPEN_CONFIGURE_FIELD';
-export const CLOSE_CONFIGURE_FIELD = 'CLOSE_CONFIGURE_FIELD';
 
 export const loadPublication = createAction(LOAD_PUBLICATION);
 export const loadPublicationSuccess = createAction(LOAD_PUBLICATION_SUCCESS);
@@ -31,15 +31,14 @@ export const loadPublicationError = createAction(LOAD_PUBLICATION_ERROR);
 
 export const selectField = createAction(SELECT_FIELD);
 
-export const saveField = createAction(SAVE_FIELD);
-export const saveFieldSuccess = createAction(SAVE_FIELD_SUCCESS);
-export const saveFieldError = createAction(SAVE_FIELD_ERROR);
+export const configureField = createAction(CONFIGURE_FIELD);
+export const configureFieldOpen = createAction(CONFIGURE_FIELD_OPEN);
+export const configureFieldCancel = createAction(CONFIGURE_FIELD_CANCEL);
+export const configureFieldSuccess = createAction(CONFIGURE_FIELD_SUCCESS);
+export const configureFieldError = createAction(CONFIGURE_FIELD_ERROR);
 
 export const openEditFieldValue = createAction(OPEN_EDIT_FIELD_VALUE);
 export const closeEditFieldValue = createAction(CLOSE_EDIT_FIELD_VALUE);
-
-export const openConfigureField = createAction(OPEN_CONFIGURE_FIELD);
-export const closeConfigureField = createAction(CLOSE_CONFIGURE_FIELD);
 
 export const defaultState = {
     loading: false,
@@ -79,12 +78,12 @@ export default handleActions({
         ...state,
         selectedField: name,
     }),
-    SAVE_FIELD: state => ({
+    CONFIGURE_FIELD: state => ({
         ...state,
         error: null,
         isSaving: true,
     }),
-    SAVE_FIELD_SUCCESS: (state, { payload: field }) => ({
+    CONFIGURE_FIELD_SUCCESS: (state, { payload: field }) => ({
         ...state,
         isSaving: false,
         error: null,
@@ -94,22 +93,22 @@ export default handleActions({
             [field.name]: field,
         },
     }),
-    SAVE_FIELD_ERROR: (state, { payload: error }) => ({
+    CONFIGURE_FIELD_ERROR: (state, { payload: error }) => ({
         ...state,
         isSaving: false,
         error: error.message,
+    }),
+    CONFIGURE_FIELD_OPEN: (state, { payload: configuredFieldName }) => ({
+        ...state,
+        configuredFieldName,
+        error: null,
     }),
     OPEN_EDIT_FIELD_VALUE: (state, { payload: editedValueFieldName }) => ({
         ...state,
         editedValueFieldName,
         error: null,
     }),
-    OPEN_CONFIGURE_FIELD: (state, { payload: configuredFieldName }) => ({
-        ...state,
-        configuredFieldName,
-        error: null,
-    }),
-    CLOSE_CONFIGURE_FIELD: state => ({
+    CONFIGURE_FIELD_CANCEL: state => ({
         ...state,
         configuredFieldName: null,
         error: null,

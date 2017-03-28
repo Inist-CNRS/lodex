@@ -9,7 +9,7 @@ import { connect } from 'react-redux';
 import Alert from '../lib/Alert';
 import { polyglot as polyglotPropTypes } from '../propTypes';
 import FormCheckboxField from '../lib/FormCheckboxField';
-import { saveField } from './publication';
+import { configureField } from './publication';
 import { fromPublication } from './selectors';
 
 export const FORM_NAME = 'ONTOLOGY_FIELD_FORM';
@@ -60,7 +60,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = {
-    onSaveField: saveField,
+    onSaveField: configureField,
 };
 
 export default compose(

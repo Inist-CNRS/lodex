@@ -1,9 +1,9 @@
 import { call, put, select, takeLatest } from 'redux-saga/effects';
 
 import {
-    SAVE_FIELD,
-    saveFieldSuccess,
-    saveFieldError,
+    CONFIGURE_FIELD,
+    configureFieldSuccess,
+    configureFieldError,
     getFieldFormData,
 } from '../';
 import { getUpdateFieldRequest } from '../../../fetch';
@@ -16,13 +16,13 @@ export function* handleSaveFieldRequest() {
     const { error, response: field } = yield call(fetchSaga, request);
 
     if (error) {
-        yield put(saveFieldError(error));
+        yield put(configureFieldError(error));
         return;
     }
 
-    yield put(saveFieldSuccess(field));
+    yield put(configureFieldSuccess(field));
 }
 
 export default function* watchsaveFieldRequest() {
-    yield takeLatest(SAVE_FIELD, handleSaveFieldRequest);
+    yield takeLatest(CONFIGURE_FIELD, handleSaveFieldRequest);
 }

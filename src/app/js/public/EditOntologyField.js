@@ -11,8 +11,8 @@ import { isLoggedIn } from '../user';
 import { fromPublication } from './selectors';
 import DialogButton from '../lib/DialogButton';
 import {
-    openConfigureField,
-    closeConfigureField,
+    configureFieldOpen,
+    configureFieldCancel,
 } from './publication';
 
 const mapStateToProps = (state, { field, p }) => ({
@@ -30,8 +30,8 @@ const mapStateToProps = (state, { field, p }) => ({
 });
 
 const mapDispatchToProps = (dispatch, { field: { name } }) => ({
-    handleOpen: () => dispatch(openConfigureField(name)),
-    handleClose: () => dispatch(closeConfigureField()),
+    handleOpen: () => dispatch(configureFieldOpen(name)),
+    handleClose: () => dispatch(configureFieldCancel()),
 });
 
 export default compose(

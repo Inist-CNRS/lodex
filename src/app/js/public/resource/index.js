@@ -96,7 +96,7 @@ export default handleActions({
         error: null,
         saving: true,
     }),
-    SAVE_RESOURCE_SUCCESS: (state, { payload: resource }) => console.log({ resource }) || ({
+    SAVE_RESOURCE_SUCCESS: (state, { payload: resource }) => ({
         ...state,
         resource,
         error: null,
@@ -130,7 +130,7 @@ export default handleActions({
             resource: {
                 ...state.resource,
                 contributions: [
-                    ...contributions.slice(0, index - 1),
+                    ...contributions.slice(0, index),
                     {
                         ...contributions[index],
                         status,
@@ -151,7 +151,7 @@ export default handleActions({
             resource: {
                 ...state.resource,
                 contributions: [
-                    ...contributions.slice(0, index - 1),
+                    ...contributions.slice(0, index),
                     {
                         ...contributions[index],
                         status: prevStatus,

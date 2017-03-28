@@ -57,7 +57,7 @@ describe('resource saga', () => {
             saga.next();
             saga.next('old');
             saga.next('request');
-            const next = saga.next({ response: 'response' });
+            const next = saga.next({ response: { value: 'response' } });
             expect(next.value).toEqual(put(saveResourceSuccess('response')));
         });
     });
@@ -136,7 +136,7 @@ describe('resource saga', () => {
             saga.next({});
             saga.next('old');
             saga.next('request');
-            const next = saga.next({ response: 'response' });
+            const next = saga.next({ response: { value: 'response' } });
             expect(next.value).toEqual(put(saveResourceSuccess('response')));
         });
     });

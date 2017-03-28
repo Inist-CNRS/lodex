@@ -24,7 +24,7 @@ describe('characteristic saga', () => {
             expect(saga.next('request').value).toEqual(call(fetchSaga, 'request'));
         });
 
-        it('should put loadPublicationSuccess action', () => {
+        it('should put addCharacteristicSuccess action', () => {
             expect(saga.next({ response: [
                 'value1',
                 'value2',
@@ -34,11 +34,11 @@ describe('characteristic saga', () => {
             ])));
         });
 
-        it('should put loadPublicationError action with error if any', () => {
+        it('should put addCharacteristicError action with error if any', () => {
             const failedSaga = handleAddCharacteristic({ payload });
             failedSaga.next();
             failedSaga.next();
-            expect(failedSaga.next({ error: 'foo' }).value)
+            expect(failedSaga.next({ error: { message: 'foo' } }).value)
                 .toEqual(put(addCharacteristicError('foo')));
         });
     });
