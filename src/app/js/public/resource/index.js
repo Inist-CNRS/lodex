@@ -12,6 +12,8 @@ export const SAVE_RESOURCE_SUCCESS = 'SAVE_RESOURCE_SUCCESS';
 export const SAVE_RESOURCE_ERROR = 'SAVE_RESOURCE_ERROR';
 
 export const HIDE_RESOURCE = 'HIDE_RESOURCE';
+export const HIDE_RESOURCE_OPEN = 'HIDE_RESOURCE_OPEN';
+export const HIDE_RESOURCE_CANCEL = 'HIDE_RESOURCE_CANCEL';
 export const HIDE_RESOURCE_SUCCESS = 'HIDE_RESOURCE_SUCCESS';
 export const HIDE_RESOURCE_ERROR = 'HIDE_RESOURCE_ERROR';
 
@@ -39,6 +41,8 @@ export const saveResourceSuccess = createAction(SAVE_RESOURCE_SUCCESS);
 export const saveResourceError = createAction(SAVE_RESOURCE_ERROR);
 
 export const hideResource = createAction(HIDE_RESOURCE);
+export const hideResourceOpen = createAction(HIDE_RESOURCE_OPEN);
+export const hideResourceCancel = createAction(HIDE_RESOURCE_CANCEL);
 export const hideResourceSuccess = createAction(HIDE_RESOURCE_SUCCESS);
 export const hideResourceError = createAction(HIDE_RESOURCE_ERROR);
 
@@ -59,6 +63,7 @@ export const defaultState = {
     loading: false,
     saving: false,
     addingField: false,
+    hiding: false,
     selectedVersion: null,
 };
 
@@ -173,6 +178,16 @@ export default handleActions({
     ADD_FIELD_TO_RESOURCE_CANCEL: state => ({
         ...state,
         addingField: false,
+        error: null,
+    }),
+    HIDE_RESOURCE_OPEN: state => ({
+        ...state,
+        hiding: true,
+        error: null,
+    }),
+    HIDE_RESOURCE_CANCEL: state => ({
+        ...state,
+        hiding: false,
         error: null,
     }),
 }, defaultState);
@@ -292,6 +307,8 @@ const isLastVersionSelected = createSelector(
 
 const isAdding = state => state.addingField;
 
+const isHiding = state => state.hiding;
+
 const getError = ({ error }) => error;
 
 export const fromResource = {
@@ -310,6 +327,7 @@ export const fromResource = {
     getSelectedVersion,
     isLastVersionSelected,
     isAdding,
+    isHiding,
     getError,
 };
 

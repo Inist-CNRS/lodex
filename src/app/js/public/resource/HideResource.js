@@ -4,12 +4,17 @@ import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 
 import { fromResource } from '../selectors';
-import { HIDE_RESOURCE_FORM_NAME } from './';
+import {
+    hideResourceOpen,
+    hideResourceCancel,
+    HIDE_RESOURCE_FORM_NAME,
+} from './';
 import HideResourceForm from './HideResourceForm';
 import { isLoggedIn } from '../../user';
 import DialogButton from '../../lib/DialogButton';
 
 const mapStateToProps = (state, { p }) => ({
+    open: fromResource.isHiding(state),
     saving: fromResource.isSaving(state),
     show: isLoggedIn(state),
     formName: HIDE_RESOURCE_FORM_NAME,
@@ -18,7 +23,12 @@ const mapStateToProps = (state, { p }) => ({
     className: 'hide-resource',
 });
 
+const mapDispatchToProps = {
+    handleOpen: () => hideResourceOpen(),
+    handleClose: () => hideResourceCancel(),
+};
+
 export default compose(
     translate,
-    connect(mapStateToProps),
+    connect(mapStateToProps, mapDispatchToProps),
 )(DialogButton);
