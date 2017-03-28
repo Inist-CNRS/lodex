@@ -225,22 +225,6 @@ export const getLineColGetterFromAllFields = (fieldByName, field) => {
     if (!field) {
         return () => null;
     }
-    if (field.composedOf) {
-        return (line) => {
-            const { separator, fields } = field.composedOf;
-
-            return fields
-                .map((name) => {
-                    if (!fieldByName[name]) {
-                        throw new Error('circular dependencies');
-                    }
-                    const getLineCol = getLineColGetterFromAllFields(omit(fieldByName, [name]), fieldByName[name]);
-
-                    return getLineCol(line);
-                })
-                .join(pad(separator, separator.length + 2));
-        };
-    }
 
     return line => line[field.name];
 };

@@ -11,7 +11,7 @@ import { clear, loadFixtures } from '../../common/tests/fixtures';
 import fixtures from './home_published.json';
 import loginAsJulia from './loginAsJulia';
 
-describe.only('Ontology', function homePublishedDataTests() {
+describe('Ontology', function homePublishedDataTests() {
     this.timeout(30000);
     const DEFAULT_WAIT_TIMEOUT = 9000; // A bit less than mocha's timeout to get explicit errors from selenium
 
@@ -249,5 +249,11 @@ describe.only('Ontology', function homePublishedDataTests() {
 
         const bestFriendLabel = await driver.findElements(By.css('.detail .property.best_friend_of .property_label'));
         expect(bestFriendLabel.length).toBe(0);
+    });
+
+    after(async () => {
+        await clear();
+        await driver.executeScript('localStorage.clear();');
+        await driver.executeScript('sessionStorage.clear();');
     });
 });

@@ -18,7 +18,7 @@ import {
     validateTransformers,
 } from './validateFields';
 
-describe('validateField', () => {
+describe.only('validateField', () => {
     it('should return invalid result if receiving an empty field', () => {
         const field = {};
         const result = validateField(field);
@@ -44,7 +44,7 @@ describe('validateField', () => {
                 {
                     name: 'transformers',
                     isValid: false,
-                    error: 'required_or_composed_of_required',
+                    error: 'required',
                 },
                 {
                     name: 'completes',
@@ -53,8 +53,7 @@ describe('validateField', () => {
                 },
                 {
                     name: 'composedOf',
-                    isValid: false,
-                    error: 'required_or_transformers_required',
+                    isValid: true,
                 },
                 {
                     name: 'language',
@@ -263,21 +262,11 @@ describe('validateField', () => {
             });
         });
 
-        it('should return valid result if no transformers and there is composedOf', () => {
-            expect(validateTransformers({
-                transformers: [],
-                composedOf: 'composedOf data',
-            })).toEqual({
-                name: 'transformers',
-                isValid: true,
-            });
-        });
-
         it('should return invalid result if transformers is empty', () => {
             expect(validateTransformers({ transformers: [] })).toEqual({
                 name: 'transformers',
                 isValid: false,
-                error: 'required_or_composed_of_required',
+                error: 'required',
             });
         });
 
@@ -285,18 +274,7 @@ describe('validateField', () => {
             expect(validateTransformers({})).toEqual({
                 name: 'transformers',
                 isValid: false,
-                error: 'required_or_composed_of_required',
-            });
-        });
-
-        it('should return invalid result if transformers and composedOf are both present', () => {
-            expect(validateTransformers({
-                transformers: ['transformer data'],
-                composedOf: {},
-            })).toEqual({
-                name: 'transformers',
-                isValid: false,
-                error: 'composed_of_conflict',
+                error: 'required',
             });
         });
     });
@@ -309,13 +287,6 @@ describe('validateField', () => {
             });
         });
 
-        it('should return valid result if no composedOf and transformers', () => {
-            expect(validateComposedOf({ transformers: ['transformer'] })).toEqual({
-                name: 'composedOf',
-                isValid: true,
-            });
-        });
-
         it('should return valid result if no composedOf and isContribution is true', () => {
             expect(validateComposedOf({}, true)).toEqual({
                 name: 'composedOf',
@@ -323,22 +294,10 @@ describe('validateField', () => {
             });
         });
 
-        it('should return invalid result if composedOf is absent', () => {
+        it('should return valid result if composedOf is absent', () => {
             expect(validateComposedOf({})).toEqual({
                 name: 'composedOf',
-                isValid: false,
-                error: 'required_or_transformers_required',
-            });
-        });
-
-        it('should return invalid result if composedOf is present along with transformers', () => {
-            expect(validateComposedOf({
-                transformers: ['transformer'],
-                composedOf: 'composedOf data',
-            })).toEqual({
-                name: 'composedOf',
-                isValid: false,
-                error: 'transformers_conflict',
+                isValid: true,
             });
         });
 

@@ -16,6 +16,7 @@ import PropertyLinkedFields from './PropertyLinkedFields';
 import { isLoggedIn } from '../user';
 import EditField from './EditField';
 import getFieldClassName from '../lib/getFieldClassName';
+import Format from './Format';
 
 const styles = {
     container: memoize(style => Object.assign({
@@ -90,14 +91,20 @@ const PropertyComponent = ({
                     </span>
                 }
 
-                <CompositeProperty
+                <Format
+                    className="property_value"
                     field={field}
-                    isSaving={isSaving}
                     resource={resource}
-                    onSaveProperty={onSaveProperty}
                 />
             </div>
             <div className="property_scheme" style={styles.scheme}>{field.scheme}</div>
+            <CompositeProperty
+                field={field}
+                isSaving={isSaving}
+                resource={resource}
+                onSaveProperty={onSaveProperty}
+            />
+
             <PropertyLinkedFields
                 fieldName={field.name}
                 isSaving={isSaving}

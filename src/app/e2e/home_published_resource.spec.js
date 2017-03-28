@@ -31,7 +31,7 @@ describe('Resource page', function homePublishedDataTests() {
 
         const properties = await driver.findElements(By.css('.detail .property'));
 
-        expect(properties.length).toEqual(3);
+        expect(properties.length).toEqual(5);
         expect(await properties[0].getAttribute('class')).toContain('best_friend_of');
         expect(await properties[1].getAttribute('class')).toContain('full_name');
     });
@@ -45,8 +45,14 @@ describe('Resource page', function homePublishedDataTests() {
         const fullnameScheme = '.detail .property.full_name > .property_scheme';
         await driver.wait(elementTextIs(fullnameScheme, 'http://www.w3.org/ns/person', DEFAULT_WAIT_TIMEOUT));
 
-        const fullnameValue = '.detail .property.full_name .composite_property_value';
-        await driver.wait(elementTextIs(fullnameValue, 'PEREGRIN.TOOK', DEFAULT_WAIT_TIMEOUT));
+        await driver.wait(
+            elementTextIs('.detail .property.full_name .compose_full_name.property.name .property_value', 'TOOK',
+            DEFAULT_WAIT_TIMEOUT),
+        );
+        await driver.wait(
+            elementTextIs('.detail .property.full_name .compose_full_name.property.firstname .property_value', 'PEREGRIN',
+            DEFAULT_WAIT_TIMEOUT),
+        );
 
         const mailLabel = '.detail .property.email.completes_fullname .property_label';
         await driver.wait(elementTextIs(mailLabel, 'Email', DEFAULT_WAIT_TIMEOUT));
@@ -109,7 +115,7 @@ describe('Resource page', function homePublishedDataTests() {
 
     it('should display added field in new detail', async () => {
         await driver.wait(until.elementLocated(By.css('.detail')), DEFAULT_WAIT_TIMEOUT);
-        await driver.wait(elementsCountIs('.detail .property', 4), DEFAULT_WAIT_TIMEOUT);
+        await driver.wait(elementsCountIs('.detail .property', 6), DEFAULT_WAIT_TIMEOUT);
 
         const contributionLabel = '.detail .property.my_contribution .property_label';
         await driver.wait(elementTextIs(contributionLabel, 'my contribution', DEFAULT_WAIT_TIMEOUT));

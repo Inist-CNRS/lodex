@@ -58,6 +58,30 @@ describe('Admin', () => {
             await driver.wait(elementTextIs(th, 'Fullname', DEFAULT_WAIT_TIMEOUT));
         });
 
+        it('should add a transformer VALUE', async () => {
+            const addTransformerButton = '#field_form .add-transformer';
+            await driver.wait(elementIsClicked(addTransformerButton), DEFAULT_WAIT_TIMEOUT);
+
+            const operationButton = '.operation';
+            await driver.wait(until.elementLocated(By.css(operationButton)), DEFAULT_WAIT_TIMEOUT);
+            await driver.wait(elementIsClicked(operationButton), DEFAULT_WAIT_TIMEOUT);
+            await driver.sleep(500); // animations
+
+            const transformerButton = '.transformer_VALUE';
+            await driver.wait(until.elementLocated(By.css(transformerButton)), DEFAULT_WAIT_TIMEOUT);
+            await driver.wait(elementIsClicked(transformerButton), DEFAULT_WAIT_TIMEOUT);
+
+            await driver.wait(until.elementLocated(
+                By.css('#field_form .transformer_arg_value input'),
+            ), DEFAULT_WAIT_TIMEOUT);
+        });
+
+        it('should configure transformer VALUE', async () => {
+            const value = await driver.findElement(By.css('#field_form .transformer_arg_value input'));
+            await driver.wait(inputElementIsFocusable(value), DEFAULT_WAIT_TIMEOUT);
+            value.sendKeys('A value');
+        });
+
         it('should add composedOf', async () => {
             const addComposedOf = await driver.findElement(By.css('.add-composed-of'));
             await driver.wait(elementIsClicked(addComposedOf, DEFAULT_WAIT_TIMEOUT));
@@ -137,16 +161,21 @@ describe('Admin', () => {
             const tds = await driver.findElements(By.css('.publication-preview tr td:last-child'));
             expect(tds.length).toBe(6);
 
-            const expectedTexts = [
-                'PEREGRIN - TOOK',
-                'SAMSAGET - GAMGIE',
-                'BILBON - BAGGINS',
-                'FRODO - BAGGINS',
-                'MERIADOC - BRANDYBUCK',
-            ];
-            await Promise.all(tds.slice(0, 3).map((td, index) => // last td is the remove button
-                driver.wait(elementTextIs(td, expectedTexts[index], DEFAULT_WAIT_TIMEOUT))),
+            await Promise.all(tds.slice(0, 3).map(td => // last td is the remove button
+                driver.wait(elementTextIs(td, 'A value', DEFAULT_WAIT_TIMEOUT))),
             );
+        });
+
+        it('should display the published data on the home page', async () => {
+            const buttonPublish = '.btn-publish';
+            await driver.wait(elementIsClicked(buttonPublish), DEFAULT_WAIT_TIMEOUT);
+            await driver.wait(until.elementLocated(By.css('.data-published')), DEFAULT_WAIT_TIMEOUT);
+
+            await driver.get('http://localhost:3100/');
+            await driver.wait(until.elementLocated(By.css('.dataset-uri a')), DEFAULT_WAIT_TIMEOUT);
+            await driver.wait(elementIsClicked('.dataset-uri a'), DEFAULT_WAIT_TIMEOUT);
+            await driver.wait(until.elementLocated(By.css('.compose_fullname.property.firstname')), DEFAULT_WAIT_TIMEOUT);
+            await driver.wait(until.elementLocated(By.css('.compose_fullname.property.name')), DEFAULT_WAIT_TIMEOUT);
         });
 
         after(async () => {
