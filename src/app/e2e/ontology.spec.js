@@ -250,4 +250,10 @@ describe('Ontology', function homePublishedDataTests() {
         const bestFriendLabel = await driver.findElements(By.css('.detail .property.best_friend_of .property_label'));
         expect(bestFriendLabel.length).toBe(0);
     });
+
+    after(async () => {
+        await clear();
+        await driver.executeScript('localStorage.clear();');
+        await driver.executeScript('sessionStorage.clear();');
+    });
 });
