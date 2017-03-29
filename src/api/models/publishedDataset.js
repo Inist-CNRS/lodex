@@ -129,7 +129,7 @@ export default (db) => {
                 },
             },
             {
-                returnNewDocument: true,
+                returnOriginal: false,
             },
         );
 

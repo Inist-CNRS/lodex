@@ -66,6 +66,7 @@ export default async (db) => {
             ...omit({ ...fieldData, position }, ['_id']),
             name,
         });
+
         return collection.findOne({ _id: insertedId });
     };
 

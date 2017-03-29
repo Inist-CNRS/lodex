@@ -28,10 +28,8 @@ export const addCharacteristicCancel = createAction(ADD_CHARACTERISTIC_CANCEL);
 
 export const defaultState = {
     characteristics: [],
-    editing: false,
     error: null,
     newCharacteristics: null,
-    updating: false,
     isSaving: false,
     isAdding: false,
 };
@@ -52,11 +50,12 @@ export default handleActions({
     UPDATE_CHARACTERISTICS: state => ({
         ...state,
         error: null,
-        updating: true,
+        isSaving: true,
     }),
     UPDATE_CHARACTERISTICS_ERROR: (state, { payload: error }) => ({
         ...state,
         error,
+        isSaving: false,
     }),
     UPDATE_CHARACTERISTICS_SUCCESS: (state, { payload: characteristics }) => ({
         ...state,
@@ -65,10 +64,13 @@ export default handleActions({
             ...state.characteristics,
         ],
         newCharacteristics: characteristics,
-        editing: false,
         error: null,
-        updating: false,
-        isAdding: false,
+        isSaving: false,
+    }),
+    ADD_CHARACTERISTIC: state => ({
+        ...state,
+        error: null,
+        isSaving: true,
     }),
     ADD_CHARACTERISTIC_OPEN: state => ({
         ...state,
@@ -83,10 +85,12 @@ export default handleActions({
         ],
         newCharacteristics: characteristics,
         isAdding: false,
+        isSaving: false,
         error: null,
     }),
     ADD_CHARACTERISTIC_ERROR: (state, { payload: error }) => ({
         ...state,
+        isSaving: false,
         error,
     }),
     ADD_CHARACTERISTIC_CANCEL: state => ({
@@ -96,8 +100,6 @@ export default handleActions({
     }),
 }, defaultState);
 
-const isCharacteristicEditing = state => state.editing;
-const isCharacteristicUpdating = state => state.updating;
 const getCharacteristicError = state => state.error;
 
 const getCharacteristicsAsResource = state => state.characteristics[0] || {};
@@ -146,8 +148,6 @@ export const getNewCharacteristicFormData = state => state.form[NEW_CHARACTERIST
 
 export const fromCharacteristic = {
     getNewCharacteristics,
-    isCharacteristicEditing,
-    isCharacteristicUpdating,
     getCharacteristicError,
     getCharacteristics,
     getCharacteristicsAsResource,
