@@ -278,17 +278,26 @@ The formats determine the react component used to display a field on the front.
 
 Formats are added in the `src/app/formats` folder, in their own directory.
 Eg, to add an uri format create the `src/app/formats/uri` directory
-A format is made of two components A view component for the front, and an edition component for the admin.
-Those component can be any react component.
+A format is made of three components: A view component for the front, an edition component for the admin and an
+edition component for the front (editing a resource value once published).
+
+Those component can be any react component. They will receive the following props:
+
+- `resource`: the resource
+- `field`: the field definition
+- `shrink`: Only for the ViewComponent, a boolean indicating whether the value should be shrinked if possible. This is useful for the public table where large contents can be shrinked (with ellipsis for example) for easier reading.
+
 You then add an index in your directory to expose them:
 
 ```js
 `src/app/formats/uri/index.js`
 import Component from './Component';
+import AdminComponent from './AdminComponent';
 import EditionComponent from './EditionComponent';
 
 export default {
     Component,
+    AdminComponent,
     EditionComponent,
 };
 ```
@@ -304,6 +313,22 @@ const components = {
     custom, // add your component here.
 };
 ...
+```
+
+> **NOTE** If your edition component does not have anything special to do, you can fallback to the default one
+
+```js
+`src/app/formats/uri/index.js`
+import Component from './Component';
+import AdminComponent from './AdminComponent';
+import EditionComponent from './EditionComponent';
+import DefaultFormat from '../DefaultFormat';
+
+export default {
+    Component,
+    AdminComponent,
+    EditionComponent: DefaultFormat.EditionComponent,
+};
 ```
 
 ## Adding transformers

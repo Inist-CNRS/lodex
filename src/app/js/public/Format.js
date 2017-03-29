@@ -24,7 +24,7 @@ export class FormatComponent extends Component {
     }
 
     render() {
-        const { className, field, fields, linkedResource, rawLinkedResource, resource } = this.props;
+        const { className, field, fields, linkedResource, rawLinkedResource, resource, shrink } = this.props;
         const ViewComponent = getViewComponent(field);
 
         return (
@@ -35,6 +35,7 @@ export class FormatComponent extends Component {
                 linkedResource={linkedResource}
                 rawLinkedResource={rawLinkedResource}
                 resource={resource}
+                shrink={shrink}
             />
         );
     }
@@ -48,10 +49,12 @@ FormatComponent.propTypes = {
     linkedResource: PropTypes.object, // eslint-disable-line
     rawLinkedResource: PropTypes.object, // eslint-disable-line
     resource: PropTypes.object, // eslint-disable-line
+    shrink: PropTypes.bool,
 };
 
 FormatComponent.defaultProps = {
     className: null,
+    shrink: false,
 };
 
 const preMapStateToProps = state => ({

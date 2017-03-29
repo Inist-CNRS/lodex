@@ -14,6 +14,7 @@ const DatasetColumn = ({ column, columns, resource }) => (
             field={column}
             fields={columns}
             resource={resource}
+            shrink
         />
     </TableRowColumn>
 );
