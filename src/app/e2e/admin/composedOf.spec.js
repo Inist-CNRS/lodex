@@ -6,7 +6,6 @@ import {
     elementValueIs,
     elementTextIs,
     elementsCountIs,
-    elementTextContains,
 } from 'selenium-smart-wait';
 
 import driver from '../../../common/tests/chromeDriver';
@@ -16,9 +15,9 @@ import { inputElementIsFocusable } from '../../../common/tests/conditions';
 import loginAsJulia from '../loginAsJulia';
 import waitForPreviewComputing from './waitForPreviewComputing';
 
-describe.skip('Admin', () => {
+describe('Admin', () => {
     describe('composedOf', function homeTests() {
-        this.timeout(30000);
+        this.timeout(100000);
         const DEFAULT_WAIT_TIMEOUT = 9000; // A bit less than mocha's timeout to get explicit errors from selenium
 
         before(async () => {
@@ -52,105 +51,71 @@ describe.skip('Admin', () => {
             await driver.wait(inputElementIsFocusable(label), DEFAULT_WAIT_TIMEOUT);
 
             await label.clear();
+            await driver.sleep(250);
             await label.sendKeys('Fullname');
 
             const th = '.publication-excerpt-for-edition th';
             await driver.wait(elementTextIs(th, 'Fullname', DEFAULT_WAIT_TIMEOUT));
+            await driver.wait(elementIsClicked('.btn-next'), DEFAULT_WAIT_TIMEOUT);
+            await driver.sleep(500); // animations
         });
 
         it('should add a transformer VALUE', async () => {
-            const addTransformerButton = '#field_form .add-transformer';
-            await driver.wait(elementIsClicked(addTransformerButton), DEFAULT_WAIT_TIMEOUT);
-
-            const operationButton = '.operation';
-            await driver.wait(until.elementLocated(By.css(operationButton)), DEFAULT_WAIT_TIMEOUT);
-            await driver.wait(elementIsClicked(operationButton), DEFAULT_WAIT_TIMEOUT);
-            await driver.sleep(500); // animations
-
-            const transformerButton = '.transformer_VALUE';
-            await driver.wait(until.elementLocated(By.css(transformerButton)), DEFAULT_WAIT_TIMEOUT);
-            await driver.wait(elementIsClicked(transformerButton), DEFAULT_WAIT_TIMEOUT);
+            const button = '.radio_value';
+            await driver.wait(until.elementLocated(By.css(button)), DEFAULT_WAIT_TIMEOUT);
+            await driver.wait(elementIsClicked(button), DEFAULT_WAIT_TIMEOUT);
 
             await driver.wait(until.elementLocated(
-                By.css('#field_form .transformer_arg_value input'),
+                By.css('#textbox_value'),
             ), DEFAULT_WAIT_TIMEOUT);
         });
 
         it('should configure transformer VALUE', async () => {
-            const value = await driver.findElement(By.css('#field_form .transformer_arg_value input'));
+            const value = await driver.findElement(By.css('#textbox_value'));
             await driver.wait(inputElementIsFocusable(value), DEFAULT_WAIT_TIMEOUT);
             value.sendKeys('A value');
-        });
-
-        it('should add composedOf', async () => {
-            const addComposedOf = await driver.findElement(By.css('.add-composed-of'));
-            await driver.wait(elementIsClicked(addComposedOf, DEFAULT_WAIT_TIMEOUT));
-            await driver.wait(stalenessOf(addComposedOf, DEFAULT_WAIT_TIMEOUT));
-            await driver.wait(until.elementsLocated(By.css('.remove-composed-of')), DEFAULT_WAIT_TIMEOUT);
-            await driver.wait(until.elementLocated(By.css('.separator')), DEFAULT_WAIT_TIMEOUT);
-            await driver.wait(elementValueIs('.separator input', ' ', DEFAULT_WAIT_TIMEOUT));
-
-            const compositeFields = await driver.findElements(By.css('.composite-field'));
-            expect(compositeFields.length).toBe(2);
-
-            await Promise.all(
-                compositeFields
-                    .map(field => driver.wait(elementTextIs(field, 'select a field', DEFAULT_WAIT_TIMEOUT))),
-            );
+            await driver.wait(elementIsClicked('.btn-next'), DEFAULT_WAIT_TIMEOUT);
+            await driver.sleep(500); // animations
+            await driver.wait(elementIsClicked('.btn-next'), DEFAULT_WAIT_TIMEOUT);
+            await driver.sleep(500); // animations
         });
 
         it('should select first field', async () => {
-            const compositeFields = await driver.findElements(By.css('.composite-field'));
-            await driver.wait(elementIsClicked(compositeFields[0], DEFAULT_WAIT_TIMEOUT));
-            await driver.wait(elementTextIs('.field_uri', 'URI', DEFAULT_WAIT_TIMEOUT));
-            await driver.wait(elementTextIs('.field_firstname', 'firstname', DEFAULT_WAIT_TIMEOUT));
-            await driver.wait(elementTextIs('.field_name', 'name', DEFAULT_WAIT_TIMEOUT));
-            await driver.wait(elementIsClicked('.field_firstname'));
-            await driver.wait(elementTextContains('.composite-field:first-child', 'firstname', DEFAULT_WAIT_TIMEOUT));
+            await driver.wait(until.elementLocated(By.css('.composite-field')), DEFAULT_WAIT_TIMEOUT);
+            await driver.wait(elementIsClicked(By.css('.composite-field-0'), DEFAULT_WAIT_TIMEOUT));
+            await driver.wait(elementTextIs('.composite-field-0-uri', 'URI', DEFAULT_WAIT_TIMEOUT));
+            await driver.wait(elementTextIs('.composite-field-0-firstname', 'firstname', DEFAULT_WAIT_TIMEOUT));
+            await driver.wait(elementTextIs('.composite-field-0-name', 'name', DEFAULT_WAIT_TIMEOUT));
+            await driver.wait(elementIsClicked('.composite-field-0-firstname'));
         });
 
         it('should select second field', async () => {
-            const compositeFields = await driver.findElements(By.css('.composite-field'));
-            await driver.wait(elementIsClicked(compositeFields[1], DEFAULT_WAIT_TIMEOUT));
-            await driver.wait(elementTextIs('.field_uri', 'URI', DEFAULT_WAIT_TIMEOUT));
-            await driver.wait(elementTextIs('.field_firstname', 'firstname', DEFAULT_WAIT_TIMEOUT));
-            await driver.wait(elementTextIs('.field_name', 'name', DEFAULT_WAIT_TIMEOUT));
-            await driver.wait(elementIsClicked('.field_name'));
-            await driver.wait(elementTextContains('.composite-field:nth-child(2)', 'name', DEFAULT_WAIT_TIMEOUT));
+            await driver.wait(elementIsClicked(By.css('.composite-field-1'), DEFAULT_WAIT_TIMEOUT));
+            await driver.wait(elementTextIs('.composite-field-1-uri', 'URI', DEFAULT_WAIT_TIMEOUT));
+            await driver.wait(elementTextIs('.composite-field-1-firstname', 'firstname', DEFAULT_WAIT_TIMEOUT));
+            await driver.wait(elementTextIs('.composite-field-1-name', 'name', DEFAULT_WAIT_TIMEOUT));
+            await driver.wait(elementIsClicked('.composite-field-1-name'));
         });
 
         it('should add third field', async () => {
-            await driver.wait(elementIsClicked('.add-composite-field', DEFAULT_WAIT_TIMEOUT));
-            await driver.wait(elementsCountIs('.composite-field', 3, DEFAULT_WAIT_TIMEOUT));
-            await driver.wait(
-                elementTextContains('.composite-field:nth-child(3)', 'select a field', DEFAULT_WAIT_TIMEOUT),
-            );
+            await driver.wait(elementIsClicked('.btn-add-composition-column', DEFAULT_WAIT_TIMEOUT));
+            await driver.wait(until.elementLocated(By.css('.composite-field-2')), DEFAULT_WAIT_TIMEOUT);
+            await driver.wait(until.elementLocated(By.css('.btn-remove-composite-field-2')), DEFAULT_WAIT_TIMEOUT);
         });
 
         it('should remove third field', async () => {
-            await driver.wait(elementIsClicked('.remove-composite-field', DEFAULT_WAIT_TIMEOUT));
-            await driver.wait(elementsCountIs('.composite-field', 2, DEFAULT_WAIT_TIMEOUT));
-            await driver.wait(
-                elementTextContains('.composite-field:nth-child(1)', 'firstname', DEFAULT_WAIT_TIMEOUT),
-            );
-            await driver.wait(
-                elementTextContains('.composite-field:nth-child(2)', 'name', DEFAULT_WAIT_TIMEOUT),
-            );
-        });
-
-        it('should try to remove second field', async () => {
-            await driver.wait(elementIsClicked('.remove-composite-field', DEFAULT_WAIT_TIMEOUT));
+            await driver.wait(elementIsClicked('.btn-remove-composite-field-2'), DEFAULT_WAIT_TIMEOUT);
             await driver.wait(elementsCountIs('.composite-field', 2, DEFAULT_WAIT_TIMEOUT));
         });
 
         it('should change the separator', async () => {
-            const separator = await driver.findElement(By.css('.separator input'));
+            const separator = await driver.findElement(By.css('#textbox_separator'));
             await separator.clear();
             await separator.sendKeys('-');
         });
 
         it('should save the field', async () => {
-            const saveButton = '.btn-save-column-edition';
+            const saveButton = '.btn-save';
             await driver.wait(elementIsClicked(saveButton), DEFAULT_WAIT_TIMEOUT);
             await driver.wait(stalenessOf(fieldForm, DEFAULT_WAIT_TIMEOUT));
             await waitForPreviewComputing();

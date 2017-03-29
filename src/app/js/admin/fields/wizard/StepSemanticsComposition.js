@@ -49,6 +49,7 @@ export const StepSemanticsCompositionComponent = ({
                     style={styles.compositionContainer}
                 >
                     <SelectField
+                        className={`composite-field composite-field-${index}`}
                         onChange={handleSelectColumn(index)}
                         style={styles.select}
                         hintText={polyglot.t('select_a_column')}
@@ -56,7 +57,8 @@ export const StepSemanticsCompositionComponent = ({
                     >
                         {fields.map(f => (
                             <MenuItem
-                                key={`select_composition_${index}_${f.name}`} // eslint-disable-line
+                                className={`composite-field-${index}-${f.name}`}
+                                key={`composite-field-${index}-${f.name}`} // eslint-disable-line
                                 value={f.name}
                                 primaryText={f.label}
                             />
@@ -64,6 +66,7 @@ export const StepSemanticsCompositionComponent = ({
                     </SelectField>
                     {index > 1 &&
                         <IconButton
+                            className={`btn-remove-composite-field btn-remove-composite-field-${index}`}
                             onClick={handleRemoveColumn(index)}
                             title={polyglot.t('remove_composition_column')}
                         >
@@ -73,6 +76,7 @@ export const StepSemanticsCompositionComponent = ({
                 </div>
             ))}
             <FlatButton
+                className="btn-add-composition-column"
                 label={polyglot.t('add_composition_column')}
                 onClick={handleAddColumn}
             />
