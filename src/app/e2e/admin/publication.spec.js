@@ -16,7 +16,7 @@ import { inputElementIsFocusable } from '../../../common/tests/conditions';
 import loginAsJulia from '../loginAsJulia';
 import waitForPreviewComputing from './waitForPreviewComputing';
 
-describe.skip('Admin', () => {
+describe('Admin', () => {
     describe('Publication', function homeTests() {
         this.timeout(30000);
         const DEFAULT_WAIT_TIMEOUT = 9000; // A bit less than mocha's timeout to get explicit errors from selenium
@@ -63,23 +63,14 @@ describe.skip('Admin', () => {
                 await driver.findElement(By.css('.publication-preview th')).click();
                 await driver.wait(until.elementLocated(By.css('#field_form')), DEFAULT_WAIT_TIMEOUT);
                 fieldForm = await driver.findElement(By.css('#field_form'));
-
-                const label = '#field_form input[name=label]';
-                await driver.wait(elementValueIs(label, 'uri'), DEFAULT_WAIT_TIMEOUT);
             });
 
             it('should allow to add a transformer AUTOGENERATE_URI', async () => {
-                await driver.findElement(By.css('#field_form .add-transformer')).click();
-                await driver.sleep(500); // animations
-
-                await driver.findElement(By.css('.operation')).click();
-                await driver.sleep(500); // animations
-                await driver.wait(until.elementLocated(By.css('.transformer_AUTOGENERATE_URI')));
-                await driver.findElement(By.css('.transformer_AUTOGENERATE_URI')).click();
-
-                const saveButton = '.btn-save-column-edition';
-                await driver.wait(elementIsClicked(saveButton), DEFAULT_WAIT_TIMEOUT);
+                await driver.wait(until.elementLocated(By.css('.radio_generate')), DEFAULT_WAIT_TIMEOUT);
+                await driver.wait(elementIsClicked('.radio_generate'), DEFAULT_WAIT_TIMEOUT);
+                await driver.wait(elementIsClicked('.btn-save'), DEFAULT_WAIT_TIMEOUT);
                 await driver.wait(stalenessOf(fieldForm, DEFAULT_WAIT_TIMEOUT));
+
                 await waitForPreviewComputing();
             });
 
@@ -119,36 +110,31 @@ describe.skip('Admin', () => {
 
                 const th = '.publication-excerpt-for-edition th';
                 await driver.wait(elementTextIs(th, 'Stronger than', DEFAULT_WAIT_TIMEOUT));
+                await driver.wait(elementIsClicked('.btn-next'), DEFAULT_WAIT_TIMEOUT);
+                await driver.sleep(500); // animations
             });
 
             it('should add a transformer LINK', async () => {
-                const addTransformerButton = '#field_form .add-transformer';
-                await driver.wait(elementIsClicked(addTransformerButton), DEFAULT_WAIT_TIMEOUT);
+                const button = '.radio_link';
+                await driver.wait(until.elementLocated(By.css(button)), DEFAULT_WAIT_TIMEOUT);
+                await driver.wait(elementIsClicked(button), DEFAULT_WAIT_TIMEOUT);
 
-                await driver.wait(until.elementLocated(By.css('.operation')), DEFAULT_WAIT_TIMEOUT);
-                const operationButton = '.operation';
-                await driver.wait(elementIsClicked(operationButton), DEFAULT_WAIT_TIMEOUT);
-                await driver.sleep(500); // animations
-
-                await driver.wait(until.elementLocated(By.css('.transformer_LINK')), DEFAULT_WAIT_TIMEOUT);
-                const linkButton = '.transformer_LINK';
-                await driver.wait(elementIsClicked(linkButton), DEFAULT_WAIT_TIMEOUT);
-
-                await driver.wait(until.elementLocated(
-                    By.css('#field_form .transformer_arg_reference input'),
-                ), DEFAULT_WAIT_TIMEOUT);
+                await driver.wait(until.elementLocated(By.css('#select_ref_column')), DEFAULT_WAIT_TIMEOUT);
+                await driver.wait(until.elementLocated(By.css('#select_id_column')), DEFAULT_WAIT_TIMEOUT);
             });
 
             it('should configure transformer Link', async () => {
-                const reference = await driver.findElement(By.css('#field_form .transformer_arg_reference input'));
-                await driver.wait(inputElementIsFocusable(reference), DEFAULT_WAIT_TIMEOUT);
-                reference.sendKeys('stronger_than');
+                await driver.wait(elementIsClicked('#select_id_column'), DEFAULT_WAIT_TIMEOUT);
+                await driver.sleep(500); // animations
+                await driver.wait(until.elementLocated(By.css('.id-column-stronger_than')), DEFAULT_WAIT_TIMEOUT);
+                await driver.wait(elementIsClicked('.id-column-stronger_than'), DEFAULT_WAIT_TIMEOUT);
 
-                const identifier = await driver.findElement(By.css('#field_form .transformer_arg_identifier input'));
-                await driver.wait(inputElementIsFocusable(identifier), DEFAULT_WAIT_TIMEOUT);
-                identifier.sendKeys('id');
-                const saveButton = '.btn-save-column-edition';
-                await driver.wait(elementIsClicked(saveButton), DEFAULT_WAIT_TIMEOUT);
+                await driver.wait(elementIsClicked('#select_ref_column'), DEFAULT_WAIT_TIMEOUT);
+                await driver.sleep(500); // animations
+                await driver.wait(until.elementLocated(By.css('.ref-column-id')), DEFAULT_WAIT_TIMEOUT);
+                await driver.wait(elementIsClicked('.ref-column-id'), DEFAULT_WAIT_TIMEOUT);
+
+                await driver.wait(elementIsClicked('.btn-save'), DEFAULT_WAIT_TIMEOUT);
                 await driver.wait(stalenessOf(fieldForm, DEFAULT_WAIT_TIMEOUT));
                 await waitForPreviewComputing();
             });
@@ -189,7 +175,7 @@ describe.skip('Admin', () => {
                 await driver.wait(until.elementLocated(By.css('#field_form')), DEFAULT_WAIT_TIMEOUT);
                 fieldForm = await driver.findElement(By.css('#field_form'));
 
-                const saveButton = '.btn-save-column-edition';
+                const saveButton = '.btn-save';
                 await driver.wait(elementIsClicked(saveButton), DEFAULT_WAIT_TIMEOUT);
                 await driver.wait(stalenessOf(fieldForm, DEFAULT_WAIT_TIMEOUT));
                 await waitForPreviewComputing();
@@ -233,32 +219,26 @@ describe.skip('Admin', () => {
                 await label.sendKeys('Title');
                 const th = '.publication-excerpt-for-edition th';
                 await driver.wait(elementTextIs(th, 'Title', DEFAULT_WAIT_TIMEOUT));
+                await driver.wait(elementIsClicked('.btn-next'), DEFAULT_WAIT_TIMEOUT);
+                await driver.sleep(500); // animations
             });
 
             it('should add a transformer VALUE', async () => {
-                const addTransformerButton = '#field_form .add-transformer';
-                await driver.wait(elementIsClicked(addTransformerButton), DEFAULT_WAIT_TIMEOUT);
-
-                const operationButton = '.operation';
-                await driver.wait(until.elementLocated(By.css(operationButton)), DEFAULT_WAIT_TIMEOUT);
-                await driver.wait(elementIsClicked(operationButton), DEFAULT_WAIT_TIMEOUT);
-                await driver.sleep(500); // animations
-
-                const transformerButton = '.transformer_VALUE';
-                await driver.wait(until.elementLocated(By.css(transformerButton)), DEFAULT_WAIT_TIMEOUT);
-                await driver.wait(elementIsClicked(transformerButton), DEFAULT_WAIT_TIMEOUT);
+                const button = '.radio_value';
+                await driver.wait(until.elementLocated(By.css(button)), DEFAULT_WAIT_TIMEOUT);
+                await driver.wait(elementIsClicked(button), DEFAULT_WAIT_TIMEOUT);
 
                 await driver.wait(until.elementLocated(
-                    By.css('#field_form .transformer_arg_value input'),
+                    By.css('#textbox_value'),
                 ), DEFAULT_WAIT_TIMEOUT);
             });
 
             it('should configure transformer VALUE', async () => {
-                const value = await driver.findElement(By.css('#field_form .transformer_arg_value input'));
+                const value = await driver.findElement(By.css('#textbox_value'));
                 await driver.wait(inputElementIsFocusable(value), DEFAULT_WAIT_TIMEOUT);
                 value.sendKeys('Rock-Paper-Scissor');
 
-                const saveButton = await driver.findElement(By.css('.btn-save-column-edition'));
+                const saveButton = await driver.findElement(By.css('.btn-save'));
                 await driver.wait(elementIsClicked(saveButton), DEFAULT_WAIT_TIMEOUT);
                 await driver.wait(stalenessOf(fieldForm, DEFAULT_WAIT_TIMEOUT));
                 await waitForPreviewComputing();
@@ -311,30 +291,27 @@ describe.skip('Admin', () => {
 
                 const th = '.publication-excerpt-for-edition th';
                 await driver.wait(elementTextIs(th, 'Genre', DEFAULT_WAIT_TIMEOUT));
+                await driver.wait(elementIsClicked('.btn-next'), DEFAULT_WAIT_TIMEOUT);
+                await driver.sleep(500); // animations
             });
 
             it('should add a transformer VALUE', async () => {
-                const addTransformerButton = '#field_form .add-transformer';
-                await driver.wait(elementIsClicked(addTransformerButton), DEFAULT_WAIT_TIMEOUT);
-
-                const operationButton = '.operation';
-                await driver.wait(until.elementLocated(By.css(operationButton)), DEFAULT_WAIT_TIMEOUT);
-                await driver.wait(elementIsClicked(operationButton), DEFAULT_WAIT_TIMEOUT);
-                await driver.sleep(500); // animations
-
-                const transformerButton = '.transformer_VALUE';
-                await driver.wait(until.elementLocated(By.css(transformerButton)), DEFAULT_WAIT_TIMEOUT);
-                await driver.wait(elementIsClicked(transformerButton), DEFAULT_WAIT_TIMEOUT);
+                const button = '.radio_value';
+                await driver.wait(until.elementLocated(By.css(button)), DEFAULT_WAIT_TIMEOUT);
+                await driver.wait(elementIsClicked(button), DEFAULT_WAIT_TIMEOUT);
 
                 await driver.wait(until.elementLocated(
-                    By.css('#field_form .transformer_arg_value input'),
+                    By.css('#textbox_value'),
                 ), DEFAULT_WAIT_TIMEOUT);
             });
 
             it('should configure transformer VALUE', async () => {
-                const value = await driver.findElement(By.css('#field_form .transformer_arg_value input'));
+                const value = await driver.findElement(By.css('#textbox_value'));
                 await driver.wait(inputElementIsFocusable(value), DEFAULT_WAIT_TIMEOUT);
                 value.sendKeys('Zero-sum hand game');
+
+                await driver.wait(elementIsClicked('.btn-next'), DEFAULT_WAIT_TIMEOUT);
+                await driver.wait(elementIsClicked('.btn-next'), DEFAULT_WAIT_TIMEOUT);
             });
 
             it('should configure completes', async () => {
@@ -346,6 +323,7 @@ describe.skip('Admin', () => {
                 const completesTitleButton = '.completes_title';
                 await driver.wait(until.elementLocated(By.css(completesTitleButton)), DEFAULT_WAIT_TIMEOUT);
                 await driver.wait(elementIsClicked(completesTitleButton), DEFAULT_WAIT_TIMEOUT);
+                await driver.sleep(500); // animations
 
                 await driver.wait(until.elementLocated(
                     By.css('.publication-excerpt-for-edition th .completes_title'),
@@ -354,7 +332,7 @@ describe.skip('Admin', () => {
                 const th = '.publication-excerpt-for-edition th .completes_title';
                 await driver.wait(elementTextMatches(th, /Completes Title/, DEFAULT_WAIT_TIMEOUT));
 
-                const saveButton = '.btn-save-column-edition';
+                const saveButton = '.btn-save';
                 await driver.wait(elementIsClicked(saveButton), DEFAULT_WAIT_TIMEOUT);
                 await driver.wait(stalenessOf(fieldForm, DEFAULT_WAIT_TIMEOUT));
                 await waitForPreviewComputing();
@@ -407,7 +385,7 @@ describe.skip('Admin', () => {
 
                 const th = '.publication-excerpt-for-edition th';
                 await driver.wait(elementTextIs(th, 'To Remove', DEFAULT_WAIT_TIMEOUT));
-                const saveButton = '.btn-save-column-edition';
+                const saveButton = '.btn-save';
                 await driver.wait(elementIsClicked(saveButton), DEFAULT_WAIT_TIMEOUT);
                 await driver.wait(stalenessOf(fieldForm, DEFAULT_WAIT_TIMEOUT));
                 await waitForPreviewComputing();

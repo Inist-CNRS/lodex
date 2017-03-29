@@ -19,6 +19,9 @@ const styles = {
     radio: {
         marginTop: 12,
     },
+    select: {
+        width: '100%',
+    },
 };
 
 export const StepValueColumnComponent = ({

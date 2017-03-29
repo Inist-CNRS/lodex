@@ -25,7 +25,7 @@ export const ActionsComponent = ({
                     onTouchTap={onCancel}
                 />
                 <FlatButton
-                    className="btn-next"
+                    className="btn-save"
                     label={polyglot.t('save')}
                     secondary
                     onTouchTap={onSave}
@@ -48,6 +48,12 @@ export const ActionsComponent = ({
                     primary
                     onTouchTap={onNextStep}
                 />
+                <FlatButton
+                    className="btn-save"
+                    label={polyglot.t('save')}
+                    secondary
+                    onTouchTap={onSave}
+                />
             </div>
         );
     }
@@ -67,7 +73,7 @@ export const ActionsComponent = ({
                     primary
                 />
                 <FlatButton
-                    className="btn-next"
+                    className="btn-save"
                     label={polyglot.t('save')}
                     secondary
                     onTouchTap={onSave}
@@ -96,7 +102,7 @@ export const ActionsComponent = ({
                 onTouchTap={onNextStep}
             />
             <FlatButton
-                className="btn-next"
+                className="btn-save"
                 label={polyglot.t('save')}
                 secondary
                 onTouchTap={onSave}
