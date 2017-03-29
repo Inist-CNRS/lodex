@@ -12,14 +12,24 @@ import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { applyFilter as applyFilterAction } from './';
 import { fromDataset, fromPublication } from '../selectors';
 
+const styles = {
+    icon: {
+        marginLeft: 16,
+        marginRight: 8,
+        marginTop: 8,
+    },
+};
+
 export const FilterComponent = ({ handleFilterChange, hasSearchableFields, isDatasetLoading, p: polyglot }) => (
     hasSearchableFields
     ? (
         <ToolbarGroup>
-            {isDatasetLoading
-                ? <CircularProgress className="dataset-loading" size={20} /> :
-                <ActionSearch />
-            }
+            <div style={styles.icon}>
+                {isDatasetLoading
+                    ? <CircularProgress className="dataset-loading" size={20} /> :
+                    <ActionSearch />
+                }
+            </div>
             <TextField
                 className="filter"
                 hintText={polyglot.t('filter')}
