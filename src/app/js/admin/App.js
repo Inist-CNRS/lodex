@@ -1,14 +1,11 @@
 import React, { PropTypes } from 'react';
-import { connect } from 'react-redux';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import AppBar from './Appbar';
 
-import { isLoggedIn as getIsLoggedIn } from '../user';
-
-export const AppComponent = ({ children, isLoading, isLoggedIn }) => (
+export const AppComponent = ({ children }) => (
     <MuiThemeProvider>
         <div>
-            <AppBar isLoading={isLoading} isLoggedIn={isLoggedIn} />
+            <AppBar />
 
             <div className="body">
                 {children}
@@ -19,17 +16,6 @@ export const AppComponent = ({ children, isLoading, isLoggedIn }) => (
 
 AppComponent.propTypes = {
     children: PropTypes.node.isRequired,
-    isLoading: PropTypes.bool,
-    isLoggedIn: PropTypes.bool.isRequired,
 };
 
-AppComponent.defaultProps = {
-    isLoading: false,
-};
-
-const mapStateToProps = state => ({
-    isLoading: state.loading, // @TODO fix by adding a loading reducer handling all loading state
-    isLoggedIn: getIsLoggedIn(state),
-});
-
-export default connect(mapStateToProps)(AppComponent);
+export default AppComponent;

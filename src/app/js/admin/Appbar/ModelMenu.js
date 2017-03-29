@@ -25,6 +25,7 @@ const styles = {
 
 export class ModelMenuComponent extends Component {
     static propTypes = {
+        canImport: PropTypes.bool.isRequired,
         exportFields: PropTypes.func.isRequired,
         p: polyglotPropTypes.isRequired,
     }
@@ -76,46 +77,58 @@ export class ModelMenuComponent extends Component {
     }
 
     render() {
-        const { p: polyglot } = this.props;
+        const { canImport, p: polyglot } = this.props;
         const { open, anchorEl, showImportFieldsConfirmation } = this.state;
 
-        return (
-            <div style={styles.container}>
-                <FlatButton
-                    className="btn-model-menu"
-                    onTouchTap={this.handleTouchTap}
-                    label={polyglot.t('model')}
-                    labelPosition="before"
-                    icon={<ArrowDown />}
-                    style={styles.button}
-                />
-                <Popover
-                    open={open}
-                    anchorEl={anchorEl}
-                    anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
-                    targetOrigin={{ horizontal: 'left', vertical: 'top' }}
-                    onRequestClose={this.handleRequestClose}
-                    animation={PopoverAnimationVertical}
-                >
-                    <Menu>
-                        <MenuItem
-                            className="btn-import-fields"
-                            primaryText={polyglot.t('import_fields')}
-                            onClick={this.handleImportFields}
-                        />
-                        <MenuItem
-                            primaryText={polyglot.t('export_fields')}
-                            onClick={this.handleExportFields}
-                        />
-                    </Menu>
-                </Popover>
-
-                {showImportFieldsConfirmation &&
-                    <ImportFieldsDialog
-                        onClose={this.handleImportFieldsClose}
+        if (canImport) {
+            return (
+                <div style={styles.container}>
+                    <FlatButton
+                        className="btn-model-menu"
+                        onTouchTap={this.handleTouchTap}
+                        label={polyglot.t('model')}
+                        labelPosition="before"
+                        icon={<ArrowDown />}
+                        style={styles.button}
                     />
-                }
-            </div>
+                    <Popover
+                        open={open}
+                        anchorEl={anchorEl}
+                        anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
+                        targetOrigin={{ horizontal: 'left', vertical: 'top' }}
+                        onRequestClose={this.handleRequestClose}
+                        animation={PopoverAnimationVertical}
+                    >
+                        <Menu>
+                            <MenuItem
+                                className="btn-import-fields"
+                                primaryText={polyglot.t('import_fields')}
+                                onClick={this.handleImportFields}
+                            />
+                            <MenuItem
+                                primaryText={polyglot.t('export_fields')}
+                                onClick={this.handleExportFields}
+                            />
+                        </Menu>
+                    </Popover>
+
+                    {showImportFieldsConfirmation &&
+                        <ImportFieldsDialog
+                            onClose={this.handleImportFieldsClose}
+                        />
+                    }
+                </div>
+            );
+        }
+
+        return (
+            <FlatButton
+                className="btn-model-menu"
+                label={polyglot.t('export_fields')}
+                onTouchTap={this.handleExportFields}
+                labelPosition="before"
+                style={styles.button}
+            />
         );
     }
 }
