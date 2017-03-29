@@ -36,7 +36,7 @@ export const StepValueLinkComponent = ({
     <div>
         <RadioButton
             className="radio_link"
-            label={polyglot.t('a_link_to_another_link')}
+            label={polyglot.t('a_link_to_another_column')}
             value="link"
             onClick={handleSelect}
             checked={selected}
