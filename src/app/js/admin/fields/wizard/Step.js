@@ -58,8 +58,8 @@ StepComponent.defaultProps = {
 export default compose(
     withProps(({ field }) => ({ initialValues: field })),
     withHandlers({
-        handleSelectStep: ({ step, onSelectStep }) => () => {
-            onSelectStep(step);
+        handleSelectStep: ({ index, onSelectStep }) => () => {
+            onSelectStep(index);
         },
     }),
     reduxForm({
