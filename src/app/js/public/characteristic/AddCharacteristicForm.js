@@ -4,7 +4,6 @@ import withHandlers from 'recompose/withHandlers';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 import { reduxForm, Field, propTypes as reduxFormPropTypes } from 'redux-form';
-import { CardText } from 'material-ui/Card';
 
 import {
     addCharacteristic as addCharacteristicAction,
@@ -37,25 +36,21 @@ export const AddFieldFormComponent = ({
     onSubmit,
     p: polyglot,
 }) => (
-    <form id="add_field_resource_form" className="hide-detail" onSubmit={onSubmit}>
+    <form id="add_characteristic_form" onSubmit={onSubmit}>
         {addCharacteristicError && <Alert><p>{addCharacteristicError}</p></Alert>}
-        <div>
-            <CardText>
-                <Field
-                    name="label"
-                    fullWidth
-                    component={FormTextField}
-                    label={polyglot.t('label')}
-                />
-                <Field
-                    name="value"
-                    fullWidth
-                    component={FormTextField}
-                    label={polyglot.t('value')}
-                />
-                <SchemeAutoComplete name="scheme" />
-            </CardText>
-        </div>
+        <Field
+            name="label"
+            fullWidth
+            component={FormTextField}
+            label={polyglot.t('label')}
+        />
+        <Field
+            name="value"
+            fullWidth
+            component={FormTextField}
+            label={polyglot.t('value')}
+        />
+        <SchemeAutoComplete name="scheme" />
     </form>
 );
 
