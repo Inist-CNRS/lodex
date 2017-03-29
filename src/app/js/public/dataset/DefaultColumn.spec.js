@@ -36,6 +36,7 @@ describe('<DefaultColumn />', () => {
             field: column,
             fields: columns,
             resource,
+            shrink: true,
         });
     });
 });

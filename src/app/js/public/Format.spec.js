@@ -67,6 +67,7 @@ describe('<Format />', () => {
             resource,
             linkedResource,
             rawLinkedResource,
+            shrink: false,
         });
     });
 });
