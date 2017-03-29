@@ -48,6 +48,12 @@ export const ActionsComponent = ({
                     primary
                     onTouchTap={onNextStep}
                 />
+                <FlatButton
+                    className="btn-save"
+                    label={polyglot.t('save')}
+                    secondary
+                    onTouchTap={onSave}
+                />
             </div>
         );
     }
