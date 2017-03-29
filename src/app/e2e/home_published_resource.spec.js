@@ -94,6 +94,7 @@ describe('Resource page', function homePublishedDataTests() {
 
         const selectField = '.select-field';
         await driver.wait(elementIsClicked(selectField), DEFAULT_WAIT_TIMEOUT);
+        await driver.sleep(500); // animations
         const newField = '.new';
         await driver.wait(elementIsClicked(newField), DEFAULT_WAIT_TIMEOUT);
 
