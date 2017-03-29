@@ -1,4 +1,5 @@
 import { call, put, select, takeLatest } from 'redux-saga/effects';
+import isEqual from 'lodash.isequal';
 
 import {
     saveResourceSuccess,
@@ -8,6 +9,7 @@ import {
 
 import { getSaveResourceRequest, getSaveFieldRequest } from '../../../fetch';
 import fetchSaga from '../../../lib/fetchSaga';
+import { fromResource } from '../../selectors';
 
 export const parsePathName = pathname => pathname.match(/^(\/resource)(\/ark:\/)?(.*?$)/) || [];
 
@@ -24,15 +26,21 @@ export function* handleSaveResource({ payload }) {
         }
     }
 
-    const request = yield select(getSaveResourceRequest, resource);
-    const { error, response } = yield call(fetchSaga, request);
+    const oldResource = yield select(fromResource.getResourceLastVersion);
+    if (!isEqual(oldResource, resource)) {
+        const request = yield select(getSaveResourceRequest, resource);
+        const { error, response } = yield call(fetchSaga, request);
 
-    if (error) {
-        yield put(saveResourceError(error));
+        if (error) {
+            yield put(saveResourceError(error));
+            return;
+        }
+
+        yield put(saveResourceSuccess(response));
         return;
     }
 
-    yield put(saveResourceSuccess(response));
+    yield put(saveResourceSuccess());
 }
 
 export default function* watchSaveResource() {
