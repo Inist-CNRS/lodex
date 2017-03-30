@@ -177,5 +177,5 @@ export const getLoadContributedResourcePageRequest = (state, { page, perPage, fi
 export const getChangeFieldStatusRequest = (state, { uri, field, status }) =>
     getRequest(state, {
         method: 'PUT',
-        url: `/api/publishedDataset/${uri}/change_contribution_status/${field}/${status}`,
+        url: `/api/publishedDataset/${encodeURIComponent(uri)}/change_contribution_status/${field}/${status}`,
     });
