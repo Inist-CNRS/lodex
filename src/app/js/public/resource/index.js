@@ -185,8 +185,10 @@ const getProposedFieldStatus = (state) => {
     if (!contributions) {
         return {};
     }
+
     return contributions
         .reduce((acc, { fieldName, status }) => ({
+            ...acc,
             [fieldName]: status,
         }), {});
 };

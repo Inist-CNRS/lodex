@@ -11,7 +11,7 @@ import classnames from 'classnames';
 
 import propositionStatus from '../../../common/propositionStatus';
 import { polyglot as polyglotPropTypes } from '../propTypes';
-
+import { fromResource } from './selectors';
 import { isLoggedIn } from '../user';
 
 const icons = {
@@ -41,8 +41,8 @@ const styles = {
     },
 };
 
-export const ModerateButtonComponent = ({ status, changeStatus, loggedIn, p: polyglot }) => {
-    if (!loggedIn || !status) {
+export const ModerateButtonComponent = ({ contributor, status, changeStatus, loggedIn, p: polyglot }) => {
+    if (!loggedIn || !status || !contributor) {
         return null;
     }
     return (
@@ -69,17 +69,20 @@ export const ModerateButtonComponent = ({ status, changeStatus, loggedIn, p: pol
 };
 
 ModerateButtonComponent.defaultProps = {
+    contributor: null,
     status: null,
 };
 
 ModerateButtonComponent.propTypes = {
+    contributor: PropTypes.string,
     status: PropTypes.oneOf(propositionStatus),
     changeStatus: PropTypes.func.isRequired,
     loggedIn: PropTypes.bool.isRequired,
     p: polyglotPropTypes.isRequired,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state, { fieldName }) => ({
+    contributor: fromResource.getResourceContributorForField(state, fieldName),
     loggedIn: isLoggedIn(state),
 });
 
