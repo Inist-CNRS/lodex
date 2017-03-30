@@ -9,7 +9,7 @@ import getFieldClassName from '../lib/getFieldClassName';
 import EditOntologyFieldForm, { FORM_NAME } from './EditOntologyFieldForm';
 import { isLoggedIn } from '../user';
 import { fromPublication } from './selectors';
-import DialogButton from '../lib/DialogButton';
+import ButtonWithDialog from '../lib/ButtonWithDialog';
 import {
     configureFieldOpen,
     configureFieldCancel,
@@ -37,4 +37,4 @@ const mapDispatchToProps = (dispatch, { field: { name } }) => ({
 export default compose(
     translate,
     connect(mapStateToProps, mapDispatchToProps),
-)(DialogButton);
+)(ButtonWithDialog);

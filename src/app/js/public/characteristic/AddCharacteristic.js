@@ -10,9 +10,11 @@ import {
     addCharacteristicOpen,
     addCharacteristicCancel,
 } from './';
-import DialogButton from '../../lib/DialogButton';
+import ButtonWithDialog from '../../lib/ButtonWithDialog';
+import { isLoggedIn } from '../../user';
 
 const mapStateToProps = (state, { p }) => ({
+    show: isLoggedIn(state),
     open: fromCharacteristic.isAdding(state),
     saving: fromCharacteristic.isSaving(state),
     form: <AddCharacteristicForm />,
@@ -29,4 +31,4 @@ const mapDispatchToProps = {
 export default compose(
     translate,
     connect(mapStateToProps, mapDispatchToProps),
-)(DialogButton);
+)(ButtonWithDialog);

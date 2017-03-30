@@ -9,7 +9,7 @@ import EditFieldForm, { FORM_NAME } from './EditFieldForm';
 import { fromResource, fromPublication } from './selectors';
 import { isLoggedIn } from '../user';
 import getFieldClassName from '../lib/getFieldClassName';
-import DialogButton from '../lib/DialogButton';
+import ButtonWithDialog from '../lib/ButtonWithDialog';
 import {
     openEditFieldValue,
     closeEditFieldValue,
@@ -39,4 +39,4 @@ const mapDispatchToProps = (dispatch, { field: { name } }) => ({
 export default compose(
     translate,
     connect(mapStateToProps, mapDispatchToProps),
-)(DialogButton);
+)(ButtonWithDialog);

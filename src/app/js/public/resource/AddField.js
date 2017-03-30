@@ -5,7 +5,7 @@ import compose from 'recompose/compose';
 
 import { fromResource } from '../selectors';
 import AddFieldForm from './AddFieldForm';
-import DialogButton from '../../lib/DialogButton';
+import ButtonWithDialog from '../../lib/ButtonWithDialog';
 import {
     addFieldToResourceOpen,
     addFieldToResourceCancel,
@@ -30,4 +30,4 @@ const mapDispatchToProps = {
 export default compose(
     translate,
     connect(mapStateToProps, mapDispatchToProps),
-)(DialogButton);
+)(ButtonWithDialog);
