@@ -13,76 +13,102 @@ import { handleLoadResource, parsePathName } from './loadResource';
 
 describe('resource saga', () => {
     describe('handleLoadResource', () => {
-        const action = {
-            payload: {
-                pathname: 'pathname',
-                query: {
-                    uri: 'uri',
+        it('should end if pathname is not /resource', () => {
+            const saga = handleLoadResource({
+                payload: {
+                    pathname: '/different',
                 },
-            },
-        };
-        let saga;
-
-        beforeEach(() => {
-            saga = handleLoadResource(action);
-        });
-
-        it('should call parsePathName', () => {
-            expect(saga.next().value).toEqual(call(parsePathName, 'pathname'));
-        });
-
-        it('should end if parsePathName return name different of /resource', () => {
+            });
             saga.next();
             const next = saga.next([null, '/different']);
             expect(next.done).toBe(true);
         });
 
-        it('should put loadResource', () => {
-            saga.next();
-            const next = saga.next([null, '/resource', true, 'ark']);
-            expect(next.value).toEqual(put(loadResource()));
-        });
+        describe('with /resource pathname', () => {
+            const action = {
+                payload: {
+                    pathname: '/resource',
+                    query: {
+                        uri: 'uri',
+                    },
+                },
+            };
 
-        it('should select getLoadResourceRequest with ark if returned by parsePathName', () => {
-            saga.next();
-            saga.next([null, '/resource', true, 'ark']);
-            const next = saga.next();
-            expect(next.value).toEqual(select(getLoadResourceRequest, 'ark'));
-        });
+            let saga;
 
-        it('should select getLoadResourceRequest with payload.query.uri if ark not returned by parsePathName', () => {
-            saga.next();
-            saga.next([null, '/resource', false]);
-            const next = saga.next();
-            expect(next.value).toEqual(select(getLoadResourceRequest, 'uri'));
-        });
+            it('should call parsePathName', () => {
+                saga = handleLoadResource(action);
+                expect(saga.next().value).toEqual(call(parsePathName, '/resource'));
+            });
 
-        it('should call fetchSaga with returned request', () => {
-            saga.next();
-            saga.next([null, '/resource', false]);
-            saga.next();
-            const next = saga.next('request');
-            expect(next.value).toEqual(call(fetchSaga, 'request'));
-        });
+            it('should put loadResource', () => {
+                saga = handleLoadResource(action);
+                saga.next();
+                const next = saga.next([null, '/resource', true, 'ark']);
+                expect(next.value).toEqual(put(loadResource()));
+            });
 
-        it('should put loadResourceError if fetchSaga returned an error', () => {
-            saga.next();
-            saga.next([null, '/resource', false]);
-            saga.next();
-            saga.next('request');
-            const next = saga.next({ error: 'error' });
-            expect(next.value).toEqual(put(loadResourceError('error')));
-        });
+            it('should select getLoadResourceRequest with ark if returned by parsePathName', () => {
+                saga = handleLoadResource(action);
+                saga.next();
+                saga.next([null, '/resource', true, 'ark']);
+                const next = saga.next();
+                expect(next.value).toEqual(select(getLoadResourceRequest, 'ark'));
+            });
 
-        it('should put loadResourceSuccess and loadPublication if fetchSaga succeeded', () => {
-            saga.next();
-            saga.next([null, '/resource', false]);
-            saga.next();
-            saga.next('request');
-            let next = saga.next({ response: 'response' });
-            expect(next.value).toEqual(put(loadResourceSuccess('response')));
-            next = saga.next();
-            expect(next.value).toEqual(put(loadPublication()));
+            it('should select getLoadResourceRequest with uri returned from state', () => {
+                saga = handleLoadResource({
+                    payload: {
+                        pathname: '/resource',
+                        state: {
+                            uri: 'uri',
+                        },
+                    },
+                });
+                saga.next();
+                saga.next([]);
+                const next = saga.next();
+                expect(next.value).toEqual(select(getLoadResourceRequest, 'uri'));
+            });
+
+            it('should select getLoadResourceRequest with payload.query.uri if ark not returned by parsePathName', () => {
+                saga = handleLoadResource(action);
+                saga.next();
+                saga.next([null, '/resource', false]);
+                const next = saga.next();
+                expect(next.value).toEqual(select(getLoadResourceRequest, 'uri'));
+            });
+
+            it('should call fetchSaga with returned request', () => {
+                saga = handleLoadResource(action);
+                saga.next();
+                saga.next([null, '/resource', false]);
+                saga.next();
+                const next = saga.next('request');
+                expect(next.value).toEqual(call(fetchSaga, 'request'));
+            });
+
+            it('should put loadResourceError if fetchSaga returned an error', () => {
+                saga = handleLoadResource(action);
+                saga.next();
+                saga.next([null, '/resource', false]);
+                saga.next();
+                saga.next('request');
+                const next = saga.next({ error: 'error' });
+                expect(next.value).toEqual(put(loadResourceError('error')));
+            });
+
+            it('should put loadResourceSuccess and loadPublication if fetchSaga succeeded', () => {
+                saga = handleLoadResource(action);
+                saga.next();
+                saga.next([null, '/resource', false]);
+                saga.next();
+                saga.next('request');
+                let next = saga.next({ response: 'response' });
+                expect(next.value).toEqual(put(loadResourceSuccess('response')));
+                next = saga.next();
+                expect(next.value).toEqual(put(loadPublication()));
+            });
         });
     });
 });

@@ -8,6 +8,14 @@ import filter from 'redux-localstorage-filter';
 
 const sagaMiddleware = createSagaMiddleware();
 
+export const getResourceUri = (location) => {
+    if (location.pathname.startsWith('/ark:/') || location.pathname.startsWith('/uid:/')) {
+        return location.pathname.substr(1);
+    }
+
+    return null;
+};
+
 export default function configureStore(pureReducer, sagas, initialState) {
     const rootReducer = __DEBUG__
     ? (state, action) => {
@@ -48,5 +56,15 @@ export default function configureStore(pureReducer, sagas, initialState) {
     if (__DEBUG__) {
         window.store = store;
     }
+
+    const resourceUri = getResourceUri(window.location);
+
+    if (resourceUri) {
+        hashHistory.replace({
+            pathname: 'resource',
+            state: { uri: resourceUri },
+        });
+    }
+
     return store;
 }

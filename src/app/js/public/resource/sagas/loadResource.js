@@ -22,12 +22,18 @@ export function* handleLoadResource({ payload }) {
     let name;
     let uri;
 
+    if (payload && payload.pathname !== '/resource') {
+        return;
+    }
+
     if (payload && payload.pathname) {
         [, name, isArk, ark] = yield call(parsePathName, payload.pathname);
-        if (name !== '/resource') {
-            return;
+
+        if (payload && payload.state && payload.state.uri) {
+            uri = payload.state.uri;
+        } else if (name === '/resource') {
+            uri = isArk ? ark : payload.query.uri;
         }
-        uri = isArk ? ark : payload.query.uri;
     } else {
         const resource = yield select(fromResource.getResourceLastVersion);
 
