@@ -178,4 +178,5 @@ export default {
     'easy-update': 'You can easily modify them and enrich them with a guarantee of traceability.',
     'first-upload': 'First load a data file.',
     start: 'start',
+    'choose-field': 'Choose the fields you want to expose to Semantic Web!',
 };

@@ -1,11 +1,12 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
+import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
 import Dialog from 'material-ui/Dialog';
 import { Stepper } from 'material-ui/Stepper';
 
 import { getFieldFormData, editField as editFieldAction, saveField as saveFieldAction } from '../';
-import { field as fieldPropTypes } from '../../../propTypes';
+import { field as fieldPropTypes, polyglot as polyglotPropTypes } from '../../../propTypes';
 import { fromFields } from '../../selectors';
 import StepValue from './StepValue';
 import StepUri from './StepUri';
@@ -37,6 +38,15 @@ const styles = {
         minWidth: '10rem',
         maxWidth: '10rem',
     },
+    title: {
+        display: 'flex',
+    },
+    titleLabel: {
+    },
+    titlePunchline: {
+        fontSize: 'medium',
+        marginLeft: 'auto',
+    },
 };
 
 class FieldEditionWizardComponent extends Component {
@@ -47,6 +57,7 @@ class FieldEditionWizardComponent extends Component {
         fields: PropTypes.arrayOf(fieldPropTypes),
         lines: PropTypes.arrayOf(PropTypes.object).isRequired,
         saveField: PropTypes.func.isRequired,
+        p: polyglotPropTypes.isRequired,
     }
 
     static defaultProps = {
@@ -93,6 +104,7 @@ class FieldEditionWizardComponent extends Component {
             field,
             fields,
             lines,
+            p: polyglot,
         } = this.props;
 
         const { step } = this.state;
@@ -103,12 +115,53 @@ class FieldEditionWizardComponent extends Component {
 
         if (field && field.name !== 'uri') {
             steps = [
-                <StepIdentity key={'identity'} index={0} active={step === 0} field={field} fields={fields} onSelectStep={this.handleSelectStep} />,
-                <StepValue key={'value'} index={1} active={step === 1} field={field} fields={fields} onSelectStep={this.handleSelectStep} />,
-                <StepTransforms key={'transformations'} index={2} active={step === 2} field={field} fields={fields} onSelectStep={this.handleSelectStep} />,
-                <StepSemantics key={'semantics'} index={3} active={step === 3} field={field} fields={fields} onSelectStep={this.handleSelectStep} />,
-                <StepDisplay key={'display'} index={4} active={step === 4} field={field} fields={fields} onSelectStep={this.handleSelectStep} />,
-                <StepSearch key={'search'} index={5} active={step === 5} field={field} fields={fields} onSelectStep={this.handleSelectStep} />,
+                <StepIdentity
+                    key={'identity'}
+                    index={0}
+                    active={step === 0}
+                    field={field}
+                    fields={fields}
+                    onSelectStep={this.handleSelectStep}
+                />,
+                <StepValue
+                    key={'value'}
+                    index={1} active={step === 1}
+                    field={field}
+                    fields={fields}
+                    onSelectStep={this.handleSelectStep}
+                />,
+                <StepTransforms
+                    key={'transformations'}
+                    index={2}
+                    active={step === 2}
+                    field={field}
+                    fields={fields}
+                    onSelectStep={this.handleSelectStep}
+                />,
+                <StepSemantics
+                    key={'semantics'}
+                    index={3}
+                    active={step === 3}
+                    field={field}
+                    fields={fields}
+                    onSelectStep={this.handleSelectStep}
+                />,
+                <StepDisplay
+                    key={'display'}
+                    index={4}
+                    active={step === 4}
+                    field={field}
+                    fields={fields}
+                    onSelectStep={this.handleSelectStep}
+                />,
+                <StepSearch
+                    key={'search'}
+                    index={5}
+                    active={step === 5}
+                    field={field}
+                    fields={fields}
+                    onSelectStep={this.handleSelectStep}
+                />,
             ];
         }
 
@@ -124,11 +177,18 @@ class FieldEditionWizardComponent extends Component {
             />
         );
 
+        const title = (
+            <div style={styles.title}>
+                <span>{field ? field.label : ''}</span>
+                <span style={styles.titlePunchline}>{polyglot.t('choose-field')}</span>
+            </div>
+        );
+
         return (
             <Dialog
                 open={!!field}
                 actions={actions}
-                title={field ? field.label : ''}
+                title={title}
                 contentStyle={styles.modal}
             >
                 {field &&
@@ -176,5 +236,6 @@ const mapDispatchToProps = {
 };
 
 export default compose(
+    translate,
     connect(mapStateToProps, mapDispatchToProps),
 )(FieldEditionWizardComponent);

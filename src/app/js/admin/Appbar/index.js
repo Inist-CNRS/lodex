@@ -11,7 +11,7 @@ import PublicationButton from '../publish/PublicationButton';
 import ModelMenu from './ModelMenu';
 import UploadButton from '../upload/UploadButton';
 import { isLoggedIn as getIsLoggedIn } from '../../user';
-import { fromPublication } from '../selectors';
+import { fromPublication, fromParsing } from '../selectors';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 
 const styles = {
@@ -77,7 +77,7 @@ AppbarComponent.propTypes = {
 
 const mapStateToProps = state => ({
     hasPublishedDataset: fromPublication.hasPublishedDataset(state),
-    hasLoadedDataset: fromPublication.hasLoadedDataset(state),
+    hasLoadedDataset: fromParsing.hasUploadedFile(state),
     isLoading: state.loading, // @TODO fix by adding a loading reducer handling all loading state
     isLoggedIn: getIsLoggedIn(state),
 });
