@@ -60,6 +60,47 @@ export const validateCover = (field, isContribution) => {
     return result;
 };
 
+export const validatePosition = (field) => {
+    const result = {
+        name: 'position',
+        isValid: true,
+    };
+
+    if (typeof field.position === 'undefined' || field.position === null) {
+        return {
+            ...result,
+            isValid: false,
+            error: 'required',
+        };
+    }
+
+    if (field.position < 0) {
+        return {
+            ...result,
+            isValid: false,
+            error: 'invalid',
+        };
+    }
+
+    if (field.position === 0 && field.name !== 'uri') {
+        return {
+            ...result,
+            isValid: false,
+            error: 'uri_must_come_first',
+        };
+    }
+
+    if (field.position > 0 && field.name === 'uri') {
+        return {
+            ...result,
+            isValid: false,
+            error: 'uri_must_come_first',
+        };
+    }
+
+    return result;
+};
+
 export const validateTransformers = (field, isContribution) => {
     const result = {
         name: 'transformers',
@@ -268,6 +309,7 @@ export const validateField = (field, isContribution = false, fields = []) => {
         validateLabel(field),
         validateCover(field, isContribution),
         validateScheme(field),
+        validatePosition(field),
         validateTransformers(field, isContribution),
         validateCompletesField(field, fields),
         validateComposedOf(field, isContribution),

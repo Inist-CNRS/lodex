@@ -103,10 +103,12 @@ export default async (db) => {
 
     collection.addContributionField = async (field, contributor, isLogged, nameArg) => {
         const name = field.name || nameArg || await generateUid();
+        const position = await collection.count();
         await validateField({
             ...field,
             cover: COVER_DOCUMENT,
             name,
+            position,
         }, true);
 
         if (!field.name) {
@@ -115,15 +117,13 @@ export default async (db) => {
                 name,
                 cover: COVER_DOCUMENT,
                 contribution: true,
+                position,
             };
             if (!isLogged) {
                 fieldData.contributors = [contributor];
             }
 
-            await collection.insertOne({
-                ...fieldData,
-                name,
-            });
+            await collection.insertOne(fieldData);
 
             return name;
         }

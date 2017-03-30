@@ -14,6 +14,7 @@ import {
     validateField,
     validateLabel,
     validateLanguage,
+    validatePosition,
     validateScheme,
     validateTransformers,
 } from './validateFields';
@@ -40,6 +41,11 @@ describe('validateField', () => {
                 {
                     name: 'scheme',
                     isValid: true,
+                },
+                {
+                    name: 'position',
+                    isValid: false,
+                    error: 'required',
                 },
                 {
                     name: 'transformers',
@@ -73,6 +79,7 @@ describe('validateField', () => {
             name: 'field name',
             label: 'field label',
             cover: 'collection',
+            position: 1,
             transformers: [
                 { operation: 'COLUMN', args: [{ value: 'a' }] },
             ],
@@ -93,6 +100,10 @@ describe('validateField', () => {
                 },
                 {
                     name: 'scheme',
+                    isValid: true,
+                },
+                {
+                    name: 'position',
                     isValid: true,
                 },
                 {
@@ -186,6 +197,54 @@ describe('validateField', () => {
         it('should return required error if cover is absent', () => {
             expect(validateCover({})).toEqual({
                 name: 'cover',
+                isValid: false,
+                error: 'required',
+            });
+        });
+    });
+
+    describe('validatePosition', () => {
+        it('should return valid result if position is greater than 0 and field is not uri', () => {
+            expect(validatePosition({ position: 1, name: 'foo' })).toEqual({
+                name: 'position',
+                isValid: true,
+            });
+        });
+
+        it('should return valid result if position is 0 and field is uri', () => {
+            expect(validatePosition({ position: 0, name: 'uri' })).toEqual({
+                name: 'position',
+                isValid: true,
+            });
+        });
+
+        it('should return invalid result if position is 0 and field is not uri', () => {
+            expect(validatePosition({ position: 0, name: 'foo' }, true)).toEqual({
+                name: 'position',
+                isValid: false,
+                error: 'uri_must_come_first',
+            });
+        });
+
+        it('should return invalid result if position is greater than 0 and field is uri', () => {
+            expect(validatePosition({ position: 1, name: 'uri' })).toEqual({
+                name: 'position',
+                isValid: false,
+                error: 'uri_must_come_first',
+            });
+        });
+
+        it('should return invalid result if position is less than 0', () => {
+            expect(validatePosition({ position: -1, name: 'uri' })).toEqual({
+                name: 'position',
+                isValid: false,
+                error: 'invalid',
+            });
+        });
+
+        it('should return required error if position is absent', () => {
+            expect(validatePosition({})).toEqual({
+                name: 'position',
                 isValid: false,
                 error: 'required',
             });

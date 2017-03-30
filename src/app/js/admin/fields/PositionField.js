@@ -34,13 +34,6 @@ export const PositionFieldComponent = ({ field, fields, p: polyglot, ...props })
             fullWidth
             {...props}
         >
-            <MenuItem
-                className="first_position"
-                key="first_position"
-                value={0}
-                primaryText={polyglot.t('first_position')}
-            />
-
             {fieldItems}
         </Field>
     );

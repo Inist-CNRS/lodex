@@ -93,6 +93,7 @@ describe('field', () => {
                     name: 'nameArg',
                     cover: COVER_DOCUMENT,
                     contribution: true,
+                    position: 10,
                 });
             });
 
@@ -109,6 +110,7 @@ describe('field', () => {
                     cover: COVER_DOCUMENT,
                     contribution: true,
                     contributors: [contributor],
+                    position: 10,
                 });
             });
 
@@ -202,6 +204,7 @@ describe('field', () => {
                 label: 'label',
                 name: 'name',
                 scheme: 'http://purl.org/dc/terms/title',
+                position: 1,
                 transformers: [
                     { operation: 'COLUMN', args: [{ value: 'a' }] },
                 ],
@@ -215,6 +218,7 @@ describe('field', () => {
                 label: 'label',
                 name: 'name',
                 scheme: 'http://purl.org/dc/terms/title',
+                position: 1,
                 transformers: [],
             };
             expect(() => validateField(field))
@@ -227,6 +231,7 @@ describe('field', () => {
                 label: 'label',
                 name: 'name',
                 scheme: 'http://purl.org/dc/terms/title',
+                position: 1,
                 transformers: [
                     { operation: 'COLUMN', args: ['a'] },
                 ],
@@ -241,6 +246,7 @@ describe('field', () => {
                 label: 'label',
                 name: 'name',
                 scheme: 'http://purl.org/dc/terms/title',
+                position: 1,
                 transformers: [
                     { operation: 'COLUMN', args: ['a'] },
                 ],
@@ -255,6 +261,7 @@ describe('field', () => {
                 name: 'name',
                 label: undefined,
                 scheme: 'http://purl.org/dc/terms/title',
+                position: 1,
                 transformers: [
                     { operation: 'COLUMN', args: ['a'] },
                 ],
@@ -269,6 +276,7 @@ describe('field', () => {
                 label: 'la',
                 name: 'name',
                 scheme: 'http://purl.org/dc/terms/title',
+                position: 1,
                 transformers: [
                     { operation: 'COLUMN', args: ['a'] },
                 ],
@@ -283,6 +291,7 @@ describe('field', () => {
                 label: 'label',
                 name: 'name',
                 scheme: 'ftp://purl.org/dc/terms/title',
+                position: 1,
                 transformers: [
                     { operation: 'COLUMN', args: ['a'] },
                 ],
@@ -297,6 +306,7 @@ describe('field', () => {
                 label: 'label',
                 name: 'name',
                 scheme: 'http://purl.org/dc/terms/title',
+                position: 1,
                 transformers: [
                     { operation: 'COLUMN' },
                 ],
@@ -311,6 +321,7 @@ describe('field', () => {
                 label: 'label',
                 name: 'name',
                 scheme: 'http://purl.org/dc/terms/title',
+                position: 1,
                 transformers: [
                     { operation: 'COLUMN', args: [] },
                     { operation: 'UNKNOWN', args: [] },
@@ -325,6 +336,7 @@ describe('field', () => {
                 cover: 'document',
                 label: 'label',
                 name: 'name',
+                position: 1,
                 scheme: 'http://purl.org/dc/terms/title',
             };
             expect(validateField(field, true)).toEqual(field);
@@ -336,6 +348,7 @@ describe('field', () => {
                 label: 'label',
                 name: 'name',
                 scheme: 'http://purl.org/dc/terms/title',
+                position: 1,
                 transformers: [
                     { operation: 'COLUMN', args: [] },
                 ],
