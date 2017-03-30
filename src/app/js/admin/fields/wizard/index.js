@@ -4,6 +4,7 @@ import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
 import Dialog from 'material-ui/Dialog';
 import { Stepper } from 'material-ui/Stepper';
+import { blue500 } from 'material-ui/styles/colors';
 
 import { getFieldFormData, editField as editFieldAction, saveField as saveFieldAction } from '../';
 import { field as fieldPropTypes, polyglot as polyglotPropTypes } from '../../../propTypes';
@@ -44,6 +45,7 @@ const styles = {
     titleLabel: {
     },
     titlePunchline: {
+        color: blue500,
         fontSize: 'medium',
         marginLeft: 'auto',
     },

@@ -7,6 +7,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
 import ArchiveIcon from 'material-ui/svg-icons/content/archive';
 import { Card, CardText, CardActions } from 'material-ui/Card';
+import { blue500 } from 'material-ui/styles/colors';
 
 import Alert from '../../lib/Alert';
 import { uploadFile } from './';
@@ -34,6 +35,9 @@ const styles = {
         width: '100%',
         cursor: 'pointer',
     },
+    punchLine: {
+        color: blue500,
+    },
 };
 
 export const UploadComponent = ({ onFileLoad, onCancel, hasUploadedFile, error, p: polyglot, ...props }) => (
@@ -46,7 +50,7 @@ export const UploadComponent = ({ onFileLoad, onCancel, hasUploadedFile, error, 
             <p>{error}</p>
         </Alert> : <span />}
         <Card>
-            <CardText>
+            <CardText style={styles.punchLine}>
                 <p>{polyglot.t('easy-creation')}</p>
                 <p>{polyglot.t('semantic-web-compatibility')}</p>
                 <p>{polyglot.t('easy-update')}</p>
