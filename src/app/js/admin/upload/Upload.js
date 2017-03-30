@@ -38,6 +38,10 @@ const styles = {
     punchLine: {
         color: blue500,
     },
+    actionText: {
+        color: blue500,
+        paddingLeft: '10px',
+    },
 };
 
 export const UploadComponent = ({ onFileLoad, onCancel, hasUploadedFile, error, p: polyglot, ...props }) => (
@@ -56,7 +60,7 @@ export const UploadComponent = ({ onFileLoad, onCancel, hasUploadedFile, error, 
                 <p>{polyglot.t('easy-update')}</p>
             </CardText>
             <CardActions style={styles.cardActions}>
-                <span>{polyglot.t('first-upload')}</span>
+                <span style={styles.actionText}>{polyglot.t('first-upload')}</span>
                 <RaisedButton
                     containerElement="label"
                     primary

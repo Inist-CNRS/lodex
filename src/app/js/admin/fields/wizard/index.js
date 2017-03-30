@@ -182,7 +182,9 @@ class FieldEditionWizardComponent extends Component {
         const title = (
             <div style={styles.title}>
                 <span>{field ? field.label : ''}</span>
-                <span style={styles.titlePunchline}>{polyglot.t('choose-field')}</span>
+                {field && field.name !== 'uri' && <span style={styles.titlePunchline}>
+                    {polyglot.t('choose-field')}
+                </span>}
             </div>
         );
 
