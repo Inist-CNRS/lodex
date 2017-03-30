@@ -168,4 +168,8 @@ export default {
     a_link_to_another_column: 'A link to another column',
     select_a_ref_column: 'Select the column which identifies the linked column',
     select_an_id_column: 'Select the column which targets the linked column',
+    add_characteristic: 'add characteristic',
+    label: 'label',
+    value: 'value',
+    'add-field-to-resource': 'add field',
 };

@@ -12,7 +12,7 @@ describe('field', () => {
         const fieldCollection = {
             createIndex: createSpy(),
             findOne: createSpy().andReturn(Promise.resolve(null)),
-            insertOne: createSpy(),
+            insertOne: createSpy().andReturn({ insertedId: 'insertedId' }),
             update: createSpy(),
             count: createSpy().andReturn(10),
             updateMany: createSpy(),
@@ -28,6 +28,7 @@ describe('field', () => {
 
         beforeEach(() => {
             fieldCollection.insertOne.reset();
+            fieldCollection.findOne.reset();
         });
 
         it('should call db.collection with `field`', () => {
@@ -50,7 +51,7 @@ describe('field', () => {
                 }]);
             });
 
-            it('should call collection.inserOne with given data and a random uid when position is specified', async () => {
+            it('should call collection.inserOne with given data and random uid when given position', async () => {
                 await field.create({ field: 'data', position: 15 });
 
                 expect(fieldCollection.insertOne.calls.length).toBe(1);
@@ -68,6 +69,14 @@ describe('field', () => {
                     position: { $gte: 15 },
                 }, {
                     $inc: { position: 1 },
+                });
+            });
+
+            it('should call collection.findOne with insertedId', async () => {
+                await field.create({ field: 'data', position: 15 });
+
+                expect(fieldCollection.findOne).toHaveBeenCalledWith({
+                    _id: 'insertedId',
                 });
             });
         });

@@ -1,6 +1,12 @@
 import omit from 'lodash.omit';
-import { createAction, handleActions } from 'redux-actions';
+import { createAction, handleActions, combineActions } from 'redux-actions';
 import { createSelector } from 'reselect';
+
+import {
+    UPDATE_CHARACTERISTICS_SUCCESS,
+    ADD_CHARACTERISTIC_SUCCESS,
+} from '../characteristic';
+import { SAVE_RESOURCE_SUCCESS } from '../resource';
 
 import TITLE_SCHEME from '../../../../common/titleScheme';
 import { COVER_COLLECTION, COVER_DATASET, COVER_DOCUMENT } from '../../../../common/cover';
@@ -12,9 +18,15 @@ export const LOAD_PUBLICATION_ERROR = 'LOAD_PUBLICATION_ERROR';
 
 export const SELECT_FIELD = 'SELECT_FIELD';
 
-export const SAVE_FIELD = 'SAVE_FIELD';
-export const SAVE_FIELD_SUCCESS = 'SAVE_FIELD_SUCCESS';
-export const SAVE_FIELD_ERROR = 'SAVE_FIELD_ERROR';
+export const CONFIGURE_FIELD = 'CONFIGURE_FIELD';
+export const CONFIGURE_FIELD_OPEN = 'CONFIGURE_FIELD_OPEN';
+export const CONFIGURE_FIELD_CANCEL = 'CONFIGURE_FIELD_CANCEL';
+export const CONFIGURE_FIELD_SUCCESS = 'CONFIGURE_FIELD_SUCCESS';
+export const CONFIGURE_FIELD_ERROR = 'CONFIGURE_FIELD_ERROR';
+
+export const OPEN_EDIT_FIELD_VALUE = 'OPEN_EDIT_FIELD_VALUE';
+export const CLOSE_EDIT_FIELD_VALUE = 'CLOSE_EDIT_FIELD_VALUE';
+
 
 export const loadPublication = createAction(LOAD_PUBLICATION);
 export const loadPublicationSuccess = createAction(LOAD_PUBLICATION_SUCCESS);
@@ -22,15 +34,22 @@ export const loadPublicationError = createAction(LOAD_PUBLICATION_ERROR);
 
 export const selectField = createAction(SELECT_FIELD);
 
-export const saveField = createAction(SAVE_FIELD);
-export const saveFieldSuccess = createAction(SAVE_FIELD_SUCCESS);
-export const saveFieldError = createAction(SAVE_FIELD_ERROR);
+export const configureField = createAction(CONFIGURE_FIELD);
+export const configureFieldOpen = createAction(CONFIGURE_FIELD_OPEN);
+export const configureFieldCancel = createAction(CONFIGURE_FIELD_CANCEL);
+export const configureFieldSuccess = createAction(CONFIGURE_FIELD_SUCCESS);
+export const configureFieldError = createAction(CONFIGURE_FIELD_ERROR);
+
+export const openEditFieldValue = createAction(OPEN_EDIT_FIELD_VALUE);
+export const closeEditFieldValue = createAction(CLOSE_EDIT_FIELD_VALUE);
 
 export const defaultState = {
     loading: false,
     isSaving: false,
     fields: [],
     byName: {},
+    editedValueFieldName: null,
+    configuredFieldName: null,
     published: false,
 };
 
@@ -50,6 +69,7 @@ export default handleActions({
             byName: catalog,
             fields: list,
             published,
+            editedValueFieldName: null,
         };
     },
     LOAD_PUBLICATION_ERROR: (state, { payload: error }) => ({
@@ -61,24 +81,59 @@ export default handleActions({
         ...state,
         selectedField: name,
     }),
-    SAVE_FIELD: state => ({
+    CONFIGURE_FIELD: state => ({
         ...state,
         error: null,
         isSaving: true,
     }),
-    SAVE_FIELD_SUCCESS: (state, { payload: field }) => ({
+    CONFIGURE_FIELD_SUCCESS: (state, { payload: field }) => ({
         ...state,
         isSaving: false,
         error: null,
+        configuredFieldName: null,
         byName: {
             ...state.byName,
             [field.name]: field,
         },
     }),
-    SAVE_FIELD_ERROR: (state, { payload: error }) => ({
+    CONFIGURE_FIELD_ERROR: (state, { payload: error }) => ({
         ...state,
         isSaving: false,
         error: error.message,
+    }),
+    CONFIGURE_FIELD_OPEN: (state, { payload: configuredFieldName }) => ({
+        ...state,
+        configuredFieldName,
+        error: null,
+    }),
+    OPEN_EDIT_FIELD_VALUE: (state, { payload: editedValueFieldName }) => ({
+        ...state,
+        editedValueFieldName,
+        error: null,
+    }),
+    CONFIGURE_FIELD_CANCEL: state => ({
+        ...state,
+        configuredFieldName: null,
+        error: null,
+    }),
+    [combineActions(
+        CLOSE_EDIT_FIELD_VALUE,
+        UPDATE_CHARACTERISTICS_SUCCESS,
+        SAVE_RESOURCE_SUCCESS,
+    )]: state => ({
+        ...state,
+        editedValueFieldName: null,
+    }),
+    [ADD_CHARACTERISTIC_SUCCESS]: (state, { payload: { field } }) => ({
+        ...state,
+        fields: [
+            ...state.fields,
+            field.name,
+        ],
+        byName: {
+            ...state.byName,
+            [field.name]: field,
+        },
     }),
 }, defaultState);
 
@@ -252,6 +307,24 @@ const getNbColumns = state => state.fields.length;
 
 export const getFieldFormData = state => state.form.ONTOLOGY_FIELD_FORM && state.form.ONTOLOGY_FIELD_FORM.values;
 
+const getEditedValueFieldName = ({ editedValueFieldName }) => editedValueFieldName;
+
+const isFieldEdited = createSelector(
+    getEditedValueFieldName,
+    (_, fieldName) => fieldName,
+    (editedFieldName, fieldName) => editedFieldName === fieldName,
+);
+
+const getConfiguredFieldName = ({ configuredFieldName }) => configuredFieldName;
+
+const isFieldConfigured = createSelector(
+    getConfiguredFieldName,
+    (_, fieldName) => fieldName,
+    (editedFieldName, fieldName) => editedFieldName === fieldName,
+);
+
+const getError = ({ error }) => error;
+
 export const fromPublication = {
     getFields,
     getCollectionFields,
@@ -279,4 +352,8 @@ export const fromPublication = {
     hasFacetFields,
     hasSearchableFields,
     getNbColumns,
+    getEditedValueFieldName,
+    isFieldEdited,
+    isFieldConfigured,
+    getError,
 };

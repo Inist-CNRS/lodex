@@ -1,6 +1,8 @@
 import { createAction, handleActions, combineActions } from 'redux-actions';
 import { APPLY_FACET } from '../facet';
 
+export const NEW_CHARACTERISTIC_FORM_NAME = 'NEW_CHARACTERISTIC_FORM_NAME';
+
 export const LOAD_DATASET_PAGE = 'LOAD_DATASET_PAGE';
 export const LOAD_DATASET_PAGE_SUCCESS = 'LOAD_DATASET_PAGE_SUCCESS';
 export const LOAD_DATASET_PAGE_ERROR = 'LOAD_DATASET_PAGE_ERROR';
@@ -18,6 +20,7 @@ export const applyFilter = createAction(APPLY_FILTER);
 export const sortDataset = createAction(SORT_DATASET);
 
 export const defaultState = {
+    isSaving: false,
     match: null,
     currentPage: 0,
     perPage: 10,
@@ -77,6 +80,7 @@ const getDataset = state => state.dataset;
 const getDatasetTotal = state => state.total;
 const getFilter = state => state.match;
 const getSort = state => state.sort;
+const isSaving = state => state.isSaving;
 
 export const fromDataset = {
     isDatasetLoading,
@@ -86,4 +90,5 @@ export const fromDataset = {
     getDatasetTotal,
     getFilter,
     getSort,
+    isSaving,
 };

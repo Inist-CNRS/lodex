@@ -23,14 +23,14 @@ import {
 } from '../selectors';
 
 export const AddFieldFormComponent = ({
-    error,
+    resourceError,
     fieldToAdd,
     isLoggedIn,
     onSubmit,
     p: polyglot,
 }) => (
     <form id="add_field_resource_form" className="hide-detail" onSubmit={onSubmit}>
-        {error && <Alert><p>{error}</p></Alert>}
+        {resourceError && <Alert><p>{resourceError}</p></Alert>}
         {isLoggedIn ? null : <Contributor />}
         <div>
             {polyglot.t('new_field')}
@@ -47,7 +47,7 @@ export const AddFieldFormComponent = ({
 );
 
 AddFieldFormComponent.defaultProps = {
-    error: null,
+    resourceError: null,
     saving: false,
 };
 
@@ -58,6 +58,7 @@ AddFieldFormComponent.propTypes = {
 };
 
 const mapStateToProps = state => ({
+    resourceError: fromResource.getError(state),
     resource: fromResource.getResourceLastVersion(state),
     saving: fromResource.isSaving(state),
     fieldToAdd: fromPublication.getFieldToAdd(state),

@@ -30,7 +30,7 @@ DatasetCharacteristicItemComponent.propTypes = {
 const mapStateToProps = (state, { characteristic: { name } }) => ({
     field: fromPublication.getFieldByName(state, name),
     resource: { name, ...fromCharacteristic.getCharacteristicsAsResource(state) },
-    isSaving: fromCharacteristic.isCharacteristicUpdating(state),
+    isSaving: fromCharacteristic.isSaving(state),
 });
 
 const mapDispatchToProps = {

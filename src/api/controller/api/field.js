@@ -24,8 +24,8 @@ export const postField = async (ctx) => {
 
     const result = await ctx.field.create(newField);
 
-    if (result.ops && result.ops.length) {
-        ctx.body = await ctx.field.findOneById(result.ops[0]._id);
+    if (result) {
+        ctx.body = result;
         return;
     }
 

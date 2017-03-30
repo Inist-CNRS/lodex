@@ -51,7 +51,7 @@ describe('Admin', () => {
 
             it('should display only uri empty column', async () => {
                 const th = '.publication-preview th';
-                driver.wait(elementTextIs(th, 'uri', DEFAULT_WAIT_TIMEOUT));
+                await driver.wait(elementTextIs(th, 'uri', DEFAULT_WAIT_TIMEOUT));
                 const tds = await driver.findElements(By.css('.publication-preview tr td:first-child'));
                 await driver.wait(elementsCountIs(tds, 5), DEFAULT_WAIT_TIMEOUT);
                 await Promise.all(tds.slice(0, 3).map(td => // last td is the remove button

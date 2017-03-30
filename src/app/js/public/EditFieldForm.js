@@ -20,6 +20,7 @@ const validate = (values) => {
                 [field]: 'Required',
             };
         }
+
         return currentErrors;
     }, {});
 

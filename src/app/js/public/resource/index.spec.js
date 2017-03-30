@@ -6,7 +6,7 @@ import reducer, {
     LOAD_RESOURCE_SUCCESS,
     LOAD_RESOURCE_ERROR,
     SAVE_RESOURCE,
-    SAVE_RESOURCE_SUCCESS,
+    saveResourceSuccess,
     SAVE_RESOURCE_ERROR,
     HIDE_RESOURCE,
     HIDE_RESOURCE_SUCCESS,
@@ -14,6 +14,14 @@ import reducer, {
     ADD_FIELD_TO_RESOURCE,
     ADD_FIELD_TO_RESOURCE_SUCCESS,
     ADD_FIELD_TO_RESOURCE_ERROR,
+    changeFieldStatus,
+    changeFieldStatusSuccess,
+    changeFieldStatusError,
+    selectVersion,
+    addFieldToResourceOpen,
+    addFieldToResourceCancel,
+    hideResourceOpen,
+    hideResourceCancel,
     fromResource,
 } from './index';
 import { PROPOSED, VALIDATED, REJECTED } from '../../../../common/propositionStatus';
@@ -84,9 +92,19 @@ describe('resourceReducer', () => {
         });
     });
 
-    it('should handle SAVE_RESOURCE_SUCCESS, HIDE_RESOURCE_SUCCESS, ADD_FIELD_TO_RESOURCE_SUCCESS', () => {
+    it('should handle SAVE_RESOURCE_SUCCESS', () => {
+        const state = { data: 'value' };
+        expect(reducer(state, saveResourceSuccess('new resource')))
+        .toEqual({
+            data: 'value',
+            resource: 'new resource',
+            error: null,
+            saving: false,
+        });
+    });
+
+    it('should handle HIDE_RESOURCE_SUCCESS, ADD_FIELD_TO_RESOURCE_SUCCESS', () => {
         [
-            SAVE_RESOURCE_SUCCESS,
             HIDE_RESOURCE_SUCCESS,
             ADD_FIELD_TO_RESOURCE_SUCCESS,
         ].forEach((type) => {
@@ -97,6 +115,7 @@ describe('resourceReducer', () => {
                 key: 'value',
                 error: null,
                 saving: false,
+                addingField: null,
             });
         });
     });
@@ -116,6 +135,142 @@ describe('resourceReducer', () => {
                 saving: false,
             });
         });
+    });
+
+    it('should handle CHANGE_FIELD_STATUS', () => {
+        const state = {
+            resource: {
+                data: 'value',
+                contributions: [
+                    { fieldName: 'field', status: 'status', other: 'data' },
+                    { fieldName: 'target', status: 'status', other: 'data' },
+                    { fieldName: 'miss', status: 'status', other: 'data' },
+                ],
+            },
+        };
+
+        expect(reducer(state, changeFieldStatus({ field: 'target', status: 'new status' })))
+            .toEqual({
+                moderating: true,
+                resource: {
+                    data: 'value',
+                    contributions: [
+                        { fieldName: 'field', status: 'status', other: 'data' },
+                        { fieldName: 'target', status: 'new status', other: 'data' },
+                        { fieldName: 'miss', status: 'status', other: 'data' },
+                    ],
+                },
+            });
+    });
+
+    it('should handle CHANGE_FIELD_STATUS_SUCCESS', () => {
+        const state = {
+            data: 'value',
+        };
+
+        expect(reducer(state, changeFieldStatusSuccess()))
+            .toEqual({
+                data: 'value',
+                error: null,
+                moderating: false,
+            });
+    });
+
+    it('should handle CHANGE_FIELD_STATUS_ERROR', () => {
+        const state = {
+            data: 'value',
+            resource: {
+                contributions: [
+                    { fieldName: 'field', status: 'status', other: 'data' },
+                    { fieldName: 'target', status: 'updated status', other: 'data' },
+                    { fieldName: 'miss', status: 'status', other: 'data' },
+                ],
+            },
+        };
+
+        const action = changeFieldStatusError({
+            error: 'boom',
+            field: 'target',
+            prevStatus: 'previous status',
+        });
+
+        expect(reducer(state, action))
+            .toEqual({
+                data: 'value',
+                error: 'boom',
+                moderating: false,
+                resource: {
+                    contributions: [
+                        { fieldName: 'field', status: 'status', other: 'data' },
+                        { fieldName: 'target', status: 'previous status', other: 'data' },
+                        { fieldName: 'miss', status: 'status', other: 'data' },
+                    ],
+                },
+            });
+    });
+
+    it('should handle SELECT_VERSION action', () => {
+        const state = {
+            data: 'value',
+        };
+
+        expect(reducer(state, selectVersion('version')))
+            .toEqual({
+                data: 'value',
+                selectedVersion: 'version',
+            });
+    });
+
+    it('should handle ADD_FIELD_TO_RESOURCE_OPEN action', () => {
+        const state = {
+            data: 'value',
+        };
+
+        expect(reducer(state, addFieldToResourceOpen()))
+            .toEqual({
+                data: 'value',
+                error: null,
+                addingField: true,
+            });
+    });
+
+    it('should handle ADD_FIELD_TO_RESOURCE_CANCEL action', () => {
+        const state = {
+            data: 'value',
+        };
+
+        expect(reducer(state, addFieldToResourceCancel()))
+            .toEqual({
+                data: 'value',
+                error: null,
+                addingField: false,
+            });
+    });
+
+    it('should handle HIDE_RESOURCE_OPEN action', () => {
+        const state = {
+            data: 'value',
+        };
+
+        expect(reducer(state, hideResourceOpen()))
+            .toEqual({
+                data: 'value',
+                error: null,
+                hiding: true,
+            });
+    });
+
+    it('should handle HIDE_RESOURCE_CANCEL action', () => {
+        const state = {
+            data: 'value',
+        };
+
+        expect(reducer(state, hideResourceCancel()))
+            .toEqual({
+                data: 'value',
+                error: null,
+                hiding: false,
+            });
     });
 
     describe('selector', () => {

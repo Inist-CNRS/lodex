@@ -10,7 +10,7 @@ import { VALIDATED, PROPOSED } from '../../common/propositionStatus';
 describe('publishedDataset', () => {
     describe('addVersion', () => {
         const collection = {
-            update: createSpy(),
+            findOneAndUpdate: createSpy(),
         };
         const db = {
             collection: () => collection,
@@ -25,7 +25,7 @@ describe('publishedDataset', () => {
                 new: 'version',
                 uri: 'uri',
             }, date);
-            expect(collection.update).toHaveBeenCalledWith(
+            expect(collection.findOneAndUpdate).toHaveBeenCalledWith(
                 { uri: 'uri' },
                 {
                     $push: {
@@ -34,6 +34,9 @@ describe('publishedDataset', () => {
                             publicationDate: date,
                         },
                     },
+                },
+                {
+                    returnNewDocument: true,
                 },
             );
         });

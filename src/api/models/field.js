@@ -62,10 +62,12 @@ export default async (db) => {
             $inc: { position: 1 },
         });
 
-        return collection.insertOne({
+        const { insertedId } = await collection.insertOne({
             ...omit({ ...fieldData, position }, ['_id']),
             name,
         });
+
+        return collection.findOne({ _id: insertedId });
     };
 
     collection.updateOneById = async (id, field) => {

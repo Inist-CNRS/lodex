@@ -4,11 +4,11 @@ import { call, put, select } from 'redux-saga/effects';
 import {
     updateCharacteristicsError,
     updateCharacteristicsSuccess,
-} from './';
-import { getUpdateCharacteristicsRequest } from '../../fetch/';
-import fetchSaga from '../../lib/fetchSaga';
+} from '../';
+import { getUpdateCharacteristicsRequest } from '../../../fetch/';
+import fetchSaga from '../../../lib/fetchSaga';
 
-import { handleUpdateCharacteristics } from './sagas';
+import { handleUpdateCharacteristics } from './updateCharacteristic';
 
 describe('characteristic saga', () => {
     describe('handleUpdateCharacteristics', () => {

@@ -34,11 +34,11 @@ describe('Home page with published data when logged as Julia', function homePubl
         await driver.wait(inputElementIsFocusable(input), DEFAULT_WAIT_TIMEOUT);
         input.sendKeys(' updated');
 
-        const button = await driver.findElement(By.css('.update-field'));
+        const button = await driver.findElement(By.css('.edit-field.save'));
         button.click();
 
         await driver.wait(until.elementLocated(By.css('.dataset-characteristics')), DEFAULT_WAIT_TIMEOUT);
-        driver.wait(
+        await driver.wait(
             elementTextIs('.dataset-characteristics .property.movie .property_value', 'LOTR updated',
             DEFAULT_WAIT_TIMEOUT),
         );
@@ -66,8 +66,11 @@ describe('Home page with published data when logged as Julia', function homePubl
             DEFAULT_WAIT_TIMEOUT),
         );
         await driver.wait(
-            elementTextIs('.detail .property.full_name .compose_full_name.property.firstname .property_value', 'PEREGRIN',
-            DEFAULT_WAIT_TIMEOUT),
+            elementTextIs(
+                '.detail .property.full_name .compose_full_name.property.firstname .property_value',
+                'PEREGRIN',
+                DEFAULT_WAIT_TIMEOUT,
+            ),
         );
 
         await driver.wait(
@@ -113,7 +116,7 @@ describe('Home page with published data when logged as Julia', function homePubl
         await driver.wait(elementIsClicked('.after_uri'));
         await driver.sleep(1000);
 
-        await driver.findElement(By.css('.update-field')).click();
+        await driver.findElement(By.css('.edit-field.save')).click();
         await driver.wait(until.stalenessOf(form), DEFAULT_WAIT_TIMEOUT);
     });
 
@@ -129,8 +132,11 @@ describe('Home page with published data when logged as Julia', function homePubl
             DEFAULT_WAIT_TIMEOUT),
         );
         await driver.wait(
-            elementTextIs('.detail .property.full_name .compose_full_name.property.firstname .property_value', 'PEREGRIN',
-            DEFAULT_WAIT_TIMEOUT),
+            elementTextIs(
+                '.detail .property.full_name .compose_full_name.property.firstname .property_value',
+                'PEREGRIN',
+                DEFAULT_WAIT_TIMEOUT,
+            ),
         );
 
         const mailLabel = '.detail .property.email.completes_fullname .property_label';
@@ -156,9 +162,9 @@ describe('Home page with published data when logged as Julia', function homePubl
     });
 
     it('should go to hide page', async () => {
-        await driver.wait(until.elementLocated(By.css('#btn-hide-resource')));
-        const button = await driver.findElement(By.css('#btn-hide-resource'));
-        await driver.executeScript('document.getElementById("btn-hide-resource").scrollIntoView(true);');
+        await driver.wait(until.elementLocated(By.css('.hide-resource')));
+        const button = await driver.findElement(By.css('.hide-resource'));
+        await driver.executeScript('document.getElementsByClassName("hide-resource")[0].scrollIntoView(true);');
         await driver.wait(elementIsClicked(button));
         form = driver.findElement(By.css('#hide_resource_form'));
         const reason = form.findElement(By.css('textarea[name=reason]'));
@@ -166,7 +172,7 @@ describe('Home page with published data when logged as Julia', function homePubl
         await driver.wait(inputElementIsFocusable(reason), DEFAULT_WAIT_TIMEOUT);
         await reason.clear();
         await reason.sendKeys('My bad, should not be here');
-        await driver.findElement(By.css('.hide-resource')).click();
+        await driver.wait(elementIsClicked('.hide-resource.save'));
     });
 
     it('should display reason for removal', async () => {

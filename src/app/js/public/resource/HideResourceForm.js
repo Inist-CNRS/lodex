@@ -15,9 +15,19 @@ import Alert from '../../lib/Alert';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { fromResource } from '../selectors';
 
-export const HideResourceFormComponent = ({ resource, error, handleSubmit, p: polyglot }) => (
+const validate = (values) => {
+    if (!values.reason) {
+        return {
+            reason: 'Required',
+        };
+    }
+
+    return {};
+};
+
+export const HideResourceFormComponent = ({ resource, resourceError, handleSubmit, p: polyglot }) => (
     <form id="hide_resource_form" onSubmit={() => handleSubmit(resource.uri)}>
-        {error && <Alert><p>{error}</p></Alert>}
+        {resourceError && <Alert><p>{resourceError}</p></Alert>}
         <Field
             name="reason"
             component={FormTextField}
@@ -30,7 +40,7 @@ export const HideResourceFormComponent = ({ resource, error, handleSubmit, p: po
 
 HideResourceFormComponent.defaultProps = {
     resource: null,
-    error: null,
+    resourceError: null,
 };
 
 HideResourceFormComponent.propTypes = {
@@ -39,6 +49,7 @@ HideResourceFormComponent.propTypes = {
 };
 
 const mapStateToProps = state => ({
+    resourceError: fromResource.getError(state),
     initialValues: fromResource.getResourceLastVersion(state),
     resource: fromResource.getResourceLastVersion(state),
 });
@@ -56,6 +67,7 @@ export default compose(
     }),
     reduxForm({
         form: HIDE_RESOURCE_FORM_NAME,
+        validate,
     }),
     translate,
 )(HideResourceFormComponent);

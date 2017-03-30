@@ -110,7 +110,7 @@ describe('Resource page', function homePublishedDataTests() {
         await driver.wait(inputElementIsFocusable(fieldValue, true), DEFAULT_WAIT_TIMEOUT);
         fieldValue.sendKeys('my value');
 
-        const addFieldButton = '.add-field-to-resource';
+        const addFieldButton = '.add-field-resource.save';
         await driver.wait(elementIsClicked(addFieldButton), DEFAULT_WAIT_TIMEOUT);
     });
 
@@ -135,32 +135,52 @@ describe('Resource page', function homePublishedDataTests() {
 
         expect(await driver.findElement(By.css('.ontology .field-label.uri')).getText()).toEqual('URI');
         expect(await driver.findElement(By.css('.ontology .field-scheme.uri')).getText()).toEqual('http://uri4uri.net/vocab#URI');
-        expect(await driver.findElement(By.css('.ontology .field-cover.uri')).getText()).toEqual('Different for each resource');
+        expect(await driver.findElement(
+            By.css('.ontology .field-cover.uri'),
+        ).getText()).toEqual('Different for each resource');
 
         expect(await driver.findElement(By.css('.ontology .field-label.name')).getText()).toEqual('name');
-        expect(await driver.findElement(By.css('.ontology .field-cover.name')).getText()).toEqual('Different for each resource');
+        expect(await driver.findElement(
+            By.css('.ontology .field-cover.name'),
+        ).getText()).toEqual('Different for each resource');
 
         expect(await driver.findElement(By.css('.ontology .field-label.full_name')).getText()).toEqual('Full name');
         expect(await driver.findElement(By.css('.ontology .field-scheme.full_name')).getText()).toEqual('http://www.w3.org/ns/person');
-        expect(await driver.findElement(By.css('.ontology .field-cover.full_name')).getText()).toEqual('Different for each resource');
+        expect(await driver.findElement(
+            By.css('.ontology .field-cover.full_name'),
+        ).getText()).toEqual('Different for each resource');
 
         expect(await driver.findElement(By.css('.ontology .field-label.firstname')).getText()).toEqual('firstname');
-        expect(await driver.findElement(By.css('.ontology .field-cover.firstname')).getText()).toEqual('Different for each resource');
+        expect(await driver.findElement(
+            By.css('.ontology .field-cover.firstname'),
+        ).getText()).toEqual('Different for each resource');
 
         expect(await driver.findElement(By.css('.ontology .field-label.email')).getText()).toEqual('Email');
         expect(await driver.findElement(By.css('.ontology .field-scheme.email')).getText()).toEqual('http://uri4uri.net/vocab');
-        expect(await driver.findElement(By.css('.ontology .field-cover.email')).getText()).toEqual('Different for each resource');
+        expect(await driver.findElement(
+            By.css('.ontology .field-cover.email'),
+        ).getText()).toEqual('Different for each resource');
 
-        expect(await driver.findElement(By.css('.ontology .field-label.best_friend_of')).getText()).toEqual('Best Friend Of');
+        expect(await driver.findElement(
+            By.css('.ontology .field-label.best_friend_of'),
+        ).getText()).toEqual('Best Friend Of');
         expect(await driver.findElement(By.css('.ontology .field-scheme.best_friend_of')).getText()).toEqual('http://www.w3.org/ns/person');
-        expect(await driver.findElement(By.css('.ontology .field-cover.best_friend_of')).getText()).toEqual('Different for each resource');
-        expect(await driver.findElement(By.css('.ontology .field-language.best_friend_of')).getText()).toEqual('Français');
+        expect(await driver.findElement(
+            By.css('.ontology .field-cover.best_friend_of'),
+        ).getText()).toEqual('Different for each resource');
+        expect(await driver.findElement(
+            By.css('.ontology .field-language.best_friend_of'),
+        ).getText()).toEqual('Français');
 
         expect(await driver.findElement(By.css('.ontology .field-label.movie')).getText()).toEqual('Movie');
-        expect(await driver.findElement(By.css('.ontology .field-cover.movie')).getText()).toEqual('Apply to whole dataset');
+        expect(await driver.findElement(
+            By.css('.ontology .field-cover.movie'),
+        ).getText()).toEqual('Apply to whole dataset');
 
         expect(await driver.findElement(By.css('.ontology .field-label.author')).getText()).toEqual('Author');
-        expect(await driver.findElement(By.css('.ontology .field-cover.author')).getText()).toEqual('Apply to whole dataset');
+        expect(await driver.findElement(
+            By.css('.ontology .field-cover.author'),
+        ).getText()).toEqual('Apply to whole dataset');
     });
 
     it('should have an export tab', async () => {

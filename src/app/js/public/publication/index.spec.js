@@ -8,6 +8,13 @@ import reducer, {
     loadPublicationSuccess,
     loadPublicationError,
     selectField,
+    configureField,
+    configureFieldSuccess,
+    configureFieldError,
+    configureFieldOpen,
+    configureFieldCancel,
+    openEditFieldValue,
+    closeEditFieldValue,
     fromPublication,
     isACompositeFields,
 } from './';
@@ -44,6 +51,7 @@ describe('publication reducer', () => {
             },
             loading: false,
             published: true,
+            editedValueFieldName: null,
         });
     });
 
@@ -63,169 +71,262 @@ describe('publication reducer', () => {
         });
     });
 
-    describe('getCollectionFields', () => {
-        it('should return the model', () => {
-            expect(fromPublication.getCollectionFields({
-                fields: ['first', 'second'],
-                byName: {
-                    first: { name: 'first', foo: 'bar', cover: 'collection' },
-                    second: { name: 'second', foo: 'bar2', cover: 'dataset' },
-                },
-            })).toEqual([{ name: 'first', foo: 'bar', cover: 'collection' }]);
+    it('should handle the CONFIGURE_FIELD action', () => {
+        const state = reducer({ data: 'value' }, configureField());
+        expect(state).toEqual({
+            data: 'value',
+            error: null,
+            isSaving: true,
         });
     });
 
-    describe('getDatasetFields', () => {
-        it('should return the model', () => {
-            expect(fromPublication.getDatasetFields({
-                fields: ['first', 'second'],
-                byName: {
-                    first: { name: 'first', foo: 'bar', cover: 'collection' },
-                    second: { name: 'second', foo: 'bar2', cover: 'dataset' },
-                },
-            })).toEqual([{ name: 'second', foo: 'bar2', cover: 'dataset' }]);
+    it('should handle the CONFIGURE_FIELD_SUCCESS action', () => {
+        const state = reducer({ data: 'value', byName: {} }, configureFieldSuccess({ name: 'name', data: 'updated' }));
+        expect(state).toEqual({
+            data: 'value',
+            byName: {
+                name: { name: 'name', data: 'updated' },
+            },
+            isSaving: false,
+            error: null,
+            configuredFieldName: null,
         });
     });
 
-    describe('hasPublishedDataset', () => {
-        it('should return true if published', () => {
-            expect(fromPublication.hasPublishedDataset({ published: true })).toEqual(true);
-        });
-        it('should return false if published', () => {
-            expect(fromPublication.hasPublishedDataset({ published: false })).toEqual(false);
-        });
-    });
-
-    describe('getTitleFieldName', () => {
-        it('should return field name of field with title scheme and cover collection', () => {
-            const state = {
-                fields: ['dataset title', 'title', 'other'],
-                byName: {
-                    'dataset title': { cover: 'dataset', scheme: TITLE_SCHEME, name: 'dataset title' },
-                    title: { cover: 'collection', scheme: TITLE_SCHEME, name: 'title' },
-                    other: { cover: 'collection', scheme: 'other scheme', name: 'other' },
-                },
-            };
-            expect(fromPublication.getTitleFieldName(state)).toBe('title');
-        });
-
-        it('should return field name of field with a label matching title', () => {
-            const state = {
-                fields: ['dataset title', 'title', 'other'],
-                byName: {
-                    'dataset title': {
-                        cover: 'dataset',
-                        scheme: TITLE_SCHEME,
-                        name: 'dataset title',
-                        label: 'foo_dataset',
-                    },
-                    title: {
-                        cover: 'collection',
-                        scheme: 'other scheme',
-                        name: 'title',
-                        label: 'title',
-                    },
-                    other: {
-                        cover: 'collection',
-                        scheme: 'other scheme',
-                        name: 'other',
-                        label: 'foo2',
-                    },
-                },
-            };
-            expect(fromPublication.getTitleFieldName(state)).toBe('title');
-        });
-
-        it('should return null if no field found', () => {
-            const state = {
-                fields: ['dataset title', 'title', 'other'],
-                byName: {
-                    'dataset title': {
-                        cover: 'dataset',
-                        scheme: TITLE_SCHEME,
-                        name: 'dataset title',
-                        label: 'foo_dataset',
-                    },
-                    title: {
-                        cover: 'collection',
-                        scheme: 'other scheme',
-                        name: 'title',
-                        label: 'foo',
-                    },
-                    other: {
-                        cover: 'collection',
-                        scheme: 'other scheme',
-                        name: 'other',
-                        label: 'foo2',
-                    },
-                },
-            };
-            expect(fromPublication.getTitleFieldName(state)).toBe(null);
+    it('should handle the CONFIGURE_FIELD_ERROR action', () => {
+        const state = reducer({ data: 'value' }, configureFieldError({ message: 'Boom' }));
+        expect(state).toEqual({
+            data: 'value',
+            error: 'Boom',
+            isSaving: false,
         });
     });
 
-    describe('getContributionFields', () => {
-        it('should return fields with contribution true', () => {
-            const state = {
-                fields: ['field1', 'field2', 'field3', 'field4'],
-                byName: {
-                    field1: { name: 'field1' },
-                    field2: { name: 'field2', contribution: true },
-                    field3: { name: 'field3' },
-                    field4: { name: 'field4', contribution: true },
-                },
-            };
+    it('should handle the CONFIGURE_FIELD_OPEN action', () => {
+        const state = reducer({ data: 'value' }, configureFieldOpen('fieldName'));
+        expect(state).toEqual({
+            data: 'value',
+            configuredFieldName: 'fieldName',
+            error: null,
+        });
+    });
 
-            expect(fromPublication.getContributionFields(state)).toEqual([
+    it('should handle the CONFIGURE_FIELD_CANCEL action', () => {
+        const state = reducer({ data: 'value' }, configureFieldCancel());
+        expect(state).toEqual({
+            data: 'value',
+            configuredFieldName: null,
+            error: null,
+        });
+    });
+
+    it('should handle the OPEN_FIELD_VALUE action', () => {
+        const state = reducer({ data: 'value' }, openEditFieldValue('fieldName'));
+        expect(state).toEqual({
+            data: 'value',
+            editedValueFieldName: 'fieldName',
+            error: null,
+        });
+    });
+
+
+    it('should handle the CLOSE_EDIT_FIELD_VALUE action', () => {
+        const state = reducer({ data: 'value' }, closeEditFieldValue('fieldName'));
+        expect(state).toEqual({
+            data: 'value',
+            editedValueFieldName: null,
+        });
+    });
+
+    describe('selectors', () => {
+        describe('getCollectionFields', () => {
+            it('should return the model', () => {
+                expect(fromPublication.getCollectionFields({
+                    fields: ['first', 'second'],
+                    byName: {
+                        first: { name: 'first', foo: 'bar', cover: 'collection' },
+                        second: { name: 'second', foo: 'bar2', cover: 'dataset' },
+                    },
+                })).toEqual([{ name: 'first', foo: 'bar', cover: 'collection' }]);
+            });
+        });
+
+        describe('getDatasetFields', () => {
+            it('should return the model', () => {
+                expect(fromPublication.getDatasetFields({
+                    fields: ['first', 'second'],
+                    byName: {
+                        first: { name: 'first', foo: 'bar', cover: 'collection' },
+                        second: { name: 'second', foo: 'bar2', cover: 'dataset' },
+                    },
+                })).toEqual([{ name: 'second', foo: 'bar2', cover: 'dataset' }]);
+            });
+        });
+
+        describe('hasPublishedDataset', () => {
+            it('should return true if published', () => {
+                expect(fromPublication.hasPublishedDataset({ published: true })).toEqual(true);
+            });
+            it('should return false if published', () => {
+                expect(fromPublication.hasPublishedDataset({ published: false })).toEqual(false);
+            });
+        });
+
+        describe('getTitleFieldName', () => {
+            it('should return field name of field with title scheme and cover collection', () => {
+                const state = {
+                    fields: ['dataset title', 'title', 'other'],
+                    byName: {
+                        'dataset title': { cover: 'dataset', scheme: TITLE_SCHEME, name: 'dataset title' },
+                        title: { cover: 'collection', scheme: TITLE_SCHEME, name: 'title' },
+                        other: { cover: 'collection', scheme: 'other scheme', name: 'other' },
+                    },
+                };
+                expect(fromPublication.getTitleFieldName(state)).toBe('title');
+            });
+
+            it('should return field name of field with a label matching title', () => {
+                const state = {
+                    fields: ['dataset title', 'title', 'other'],
+                    byName: {
+                        'dataset title': {
+                            cover: 'dataset',
+                            scheme: TITLE_SCHEME,
+                            name: 'dataset title',
+                            label: 'foo_dataset',
+                        },
+                        title: {
+                            cover: 'collection',
+                            scheme: 'other scheme',
+                            name: 'title',
+                            label: 'title',
+                        },
+                        other: {
+                            cover: 'collection',
+                            scheme: 'other scheme',
+                            name: 'other',
+                            label: 'foo2',
+                        },
+                    },
+                };
+                expect(fromPublication.getTitleFieldName(state)).toBe('title');
+            });
+
+            it('should return null if no field found', () => {
+                const state = {
+                    fields: ['dataset title', 'title', 'other'],
+                    byName: {
+                        'dataset title': {
+                            cover: 'dataset',
+                            scheme: TITLE_SCHEME,
+                            name: 'dataset title',
+                            label: 'foo_dataset',
+                        },
+                        title: {
+                            cover: 'collection',
+                            scheme: 'other scheme',
+                            name: 'title',
+                            label: 'foo',
+                        },
+                        other: {
+                            cover: 'collection',
+                            scheme: 'other scheme',
+                            name: 'other',
+                            label: 'foo2',
+                        },
+                    },
+                };
+                expect(fromPublication.getTitleFieldName(state)).toBe(null);
+            });
+        });
+
+        describe('getContributionFields', () => {
+            it('should return fields with contribution true', () => {
+                const state = {
+                    fields: ['field1', 'field2', 'field3', 'field4'],
+                    byName: {
+                        field1: { name: 'field1' },
+                        field2: { name: 'field2', contribution: true },
+                        field3: { name: 'field3' },
+                        field4: { name: 'field4', contribution: true },
+                    },
+                };
+
+                expect(fromPublication.getContributionFields(state)).toEqual([
                 { name: 'field2', contribution: true },
                 { name: 'field4', contribution: true },
-            ]);
-        });
-    });
-
-    describe('isAcompositeFields', () => {
-        it('should return true if field name is part of composedOf of one of the composedOf Field', () => {
-            expect(isACompositeFields('composite', [
-                {
-                    composedOf: {
-                        fields: ['field1', 'field1'],
-                    },
-                },
-                {
-                    composedOf: {
-                        fields: ['field3', 'composite'],
-                    },
-                },
-                {
-                    composedOf: {
-                        fields: ['field4', 'field5'],
-                    },
-                },
-            ])).toBe(true);
+                ]);
+            });
         });
 
-        it('should return true if field name is part of composedOf of one of the composedOf Field', () => {
-            expect(isACompositeFields('composite', [
-                {
-                    composedOf: {
-                        fields: ['field1', 'field1'],
+        describe('isAcompositeFields', () => {
+            it('should return true if field name is part of composedOf of one of the composedOf Field', () => {
+                expect(isACompositeFields('composite', [
+                    {
+                        composedOf: {
+                            fields: ['field1', 'field1'],
+                        },
                     },
-                },
-                {
-                    composedOf: {
-                        fields: ['field3', 'field6'],
+                    {
+                        composedOf: {
+                            fields: ['field3', 'composite'],
+                        },
                     },
-                },
-                {
-                    composedOf: {
-                        fields: ['field4', 'field5'],
+                    {
+                        composedOf: {
+                            fields: ['field4', 'field5'],
+                        },
                     },
-                },
-            ])).toBe(false);
+                ])).toBe(true);
+            });
+
+            it('should return true if field name is part of composedOf of one of the composedOf Field', () => {
+                expect(isACompositeFields('composite', [
+                    {
+                        composedOf: {
+                            fields: ['field1', 'field1'],
+                        },
+                    },
+                    {
+                        composedOf: {
+                            fields: ['field3', 'field6'],
+                        },
+                    },
+                    {
+                        composedOf: {
+                            fields: ['field4', 'field5'],
+                        },
+                    },
+                ])).toBe(false);
+            });
+
+            it('should return false if no composedOf Field', () => {
+                expect(isACompositeFields('composite', [])).toBe(false);
+            });
         });
 
-        it('should return false if no composedOf Field', () => {
-            expect(isACompositeFields('composite', [])).toBe(false);
+        describe('isFieldEdited', () => {
+            it('should return true if given fieldname is equal to editedValueFieldName', () => {
+                expect(fromPublication.isFieldEdited({ editedValueFieldName: 'name' }, 'name'))
+                    .toBe(true);
+            });
+
+            it('should return false if given fieldname is different from editedValueFieldName', () => {
+                expect(fromPublication.isFieldEdited({ editedValueFieldName: 'name' }, 'no name'))
+                    .toBe(false);
+            });
+        });
+
+        describe('isFieldConfigured', () => {
+            it('should return true if given fieldname is equal to configuredFieldName', () => {
+                expect(fromPublication.isFieldConfigured({ configuredFieldName: 'name' }, 'name'))
+                    .toBe(true);
+            });
+
+            it('should return false if given fieldname is different from configuredFieldName', () => {
+                expect(fromPublication.isFieldConfigured({ configuredFieldName: 'name' }, 'no name'))
+                    .toBe(false);
+            });
         });
     });
 

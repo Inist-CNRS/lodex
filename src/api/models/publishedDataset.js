@@ -118,7 +118,7 @@ export default (db) => {
         collection.findOne({ uri });
 
     collection.addVersion = async (resource, newVersion, publicationDate = new Date()) =>
-        collection.update(
+        collection.findOneAndUpdate(
             { uri: resource.uri },
             {
                 $push: {
@@ -127,6 +127,9 @@ export default (db) => {
                         publicationDate,
                     },
                 },
+            },
+            {
+                returnOriginal: false,
             },
         );
 
