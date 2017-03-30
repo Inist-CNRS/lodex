@@ -172,4 +172,10 @@ export default {
     label: 'label(FR)',
     value: 'value(FR)',
     'add-field-to-resource': 'add field(FR)',
+    'semantic-publication-system': 'Système de publication sémantique',
+    'modelize-your-data': 'Modélisez et publiez vos données vers le web sémantique !',
+    'easy-creation': 'Créez facilement votre site web personnalisé à partir de vos fichiers CSV, XML, etc.',
+    'semantic-web-compatibility': 'Vos référentiels, thésaurus, résultats d\'expérimentation seront compatibles avec le Web Sémantique !',
+    'easy-update': 'Vous pourrez toujours facilement les modifier et les enrichir avec une garantie de traçabilité.',
+    'first-upload': 'Commencez en chargeant un fichier de données.',
 };

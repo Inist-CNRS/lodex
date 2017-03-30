@@ -176,7 +176,5 @@ export default {
     'easy-creation': 'Easily create your custom website from your CSV, XML, etc.',
     'semantic-web-compatibility': 'Your repositories, thesauri, experiment results will be compatible with the semantic web!',
     'easy-update': 'You can easily modify them and enrich them with a guarantee of traceability.',
-    'first-upload': 'First load a data file.',
-    start: 'start',
-    'choose-field': 'Choose the fields you want to expose to semantic web!',
+    'first-upload': 'Start by loading a data file.',
 };
