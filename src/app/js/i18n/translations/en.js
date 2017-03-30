@@ -171,4 +171,6 @@ export default {
     label: 'label',
     value: 'value',
     'add-field-to-resource': 'add field',
+    'semantic-publication-system': 'semantic publication System',
+    'modelize-your-data': 'Model and publish your data to the semantic web!',
 };

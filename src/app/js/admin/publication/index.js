@@ -44,7 +44,9 @@ export default handleActions({
 
 
 export const hasPublishedDataset = ({ published }) => published;
+export const hasLoadedDataset = ({ fields }) => !!fields.length;
 
 export const selectors = {
     hasPublishedDataset,
+    hasLoadedDataset,
 };
