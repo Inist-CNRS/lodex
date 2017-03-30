@@ -95,6 +95,7 @@ const PropertyComponent = ({
                     className="property_value"
                     field={field}
                     resource={resource}
+                    fieldStatus={fieldStatus}
                 />
             </div>
             <div className="property_scheme" style={styles.scheme}>{field.scheme}</div>
