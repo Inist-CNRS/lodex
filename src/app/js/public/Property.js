@@ -95,6 +95,7 @@ const PropertyComponent = ({
                     className="property_value"
                     field={field}
                     resource={resource}
+                    fieldStatus={fieldStatus}
                 />
             </div>
             <div className="property_scheme" style={styles.scheme}>{field.scheme}</div>
@@ -111,7 +112,11 @@ const PropertyComponent = ({
                 resource={resource}
                 onSaveProperty={onSaveProperty}
             />
-            <ModerateButton status={fieldStatus} changeStatus={changeStatus} />
+            <ModerateButton
+                fieldName={field.name}
+                status={fieldStatus}
+                changeStatus={changeStatus}
+            />
         </div>
     );
 };

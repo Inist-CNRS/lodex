@@ -285,6 +285,7 @@ Those component can be any react component. They will receive the following prop
 
 - `resource`: the resource
 - `field`: the field definition
+- `fieldStatus`: Only for the ViewComponent and if the field is a contribution. Statuses are `PROPOSED`, `ACCEPTED` and `REJECTED`
 - `shrink`: Only for the ViewComponent, a boolean indicating whether the value should be shrinked if possible. This is useful for the public table where large contents can be shrinked (with ellipsis for example) for easier reading.
 
 You then add an index in your directory to expose them:

@@ -24,13 +24,23 @@ export class FormatComponent extends Component {
     }
 
     render() {
-        const { className, field, fields, linkedResource, rawLinkedResource, resource, shrink } = this.props;
+        const {
+            className,
+            field,
+            fieldStatus,
+            fields,
+            linkedResource,
+            rawLinkedResource,
+            resource,
+            shrink,
+        } = this.props;
         const ViewComponent = getViewComponent(field);
 
         return (
             <ViewComponent
                 className={className}
                 field={field}
+                fieldStatus={fieldStatus}
                 fields={fields}
                 linkedResource={linkedResource}
                 rawLinkedResource={rawLinkedResource}
@@ -45,6 +55,7 @@ FormatComponent.propTypes = {
     className: PropTypes.string,
     fetchLinkedResource: PropTypes.func.isRequired,
     field: fieldPropTypes.isRequired,
+    fieldStatus: PropTypes.string,
     fields: PropTypes.arrayOf(fieldPropTypes).isRequired,
     linkedResource: PropTypes.object, // eslint-disable-line
     rawLinkedResource: PropTypes.object, // eslint-disable-line
@@ -54,6 +65,7 @@ FormatComponent.propTypes = {
 
 FormatComponent.defaultProps = {
     className: null,
+    fieldStatus: null,
     shrink: false,
 };
 

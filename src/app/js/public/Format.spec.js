@@ -38,6 +38,7 @@ describe('<Format />', () => {
         };
         shallow(<Format
             field={linkedField}
+            fieldStatus={null}
             fields={fields.concat(linkedField)}
             resource={resource}
             fetchLinkedResource={fetchLinkedResource}
@@ -50,6 +51,7 @@ describe('<Format />', () => {
     const wrapper = shallow(<Format
         className={className}
         field={field}
+        fieldStatus={null}
         fields={fields}
         fetchLinkedResource={fetchLinkedResource}
         linkedResource={linkedResource}
@@ -63,6 +65,7 @@ describe('<Format />', () => {
         expect(element.props()).toEqual({
             className,
             field,
+            fieldStatus: null,
             fields,
             resource,
             linkedResource,
