@@ -178,4 +178,5 @@ export default {
     'semantic-web-compatibility': 'Vos référentiels, thésaurus, résultats d\'expérimentation seront compatibles avec le Web Sémantique !',
     'easy-update': 'Vous pourrez toujours facilement les modifier et les enrichir avec une garantie de traçabilité.',
     'first-upload': 'Commencez en chargeant un fichier de données.',
+    'publish-punchline': 'Publiez, vous pourrez toujours facilement les modifier et les enrichir à posteriori avec une garantie de traçabilité.',
 };

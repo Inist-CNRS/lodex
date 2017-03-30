@@ -177,4 +177,5 @@ export default {
     'semantic-web-compatibility': 'Your repositories, thesauri, experiment results will be compatible with the semantic web!',
     'easy-update': 'You can easily modify them and enrich them with a guarantee of traceability.',
     'first-upload': 'Start by loading a data file.',
+    'publish-punchline': 'Publish, you can always easily modify and enrich them later with a guarantee of traceability.',
 };
