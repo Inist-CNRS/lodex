@@ -29,16 +29,16 @@ describe('Home page with published data', function homePublishedDataTests() {
         expect(properties.length).toEqual(2);
 
         const movieLabel = '.dataset-characteristics .property.movie .property_label';
-        driver.wait(elementTextIs(movieLabel, 'Movie', DEFAULT_WAIT_TIMEOUT));
+        await driver.wait(elementTextIs(movieLabel, 'Movie', DEFAULT_WAIT_TIMEOUT));
 
         const movieValue = '.dataset-characteristics .property.movie .property_value';
-        driver.wait(elementTextIs(movieValue, 'LOTR', DEFAULT_WAIT_TIMEOUT));
+        await driver.wait(elementTextIs(movieValue, 'LOTR', DEFAULT_WAIT_TIMEOUT));
 
         const authorLabel = '.dataset-characteristics .property.author.completes_movie .property_label';
-        driver.wait(elementTextIs(authorLabel, 'Author', DEFAULT_WAIT_TIMEOUT));
+        await driver.wait(elementTextIs(authorLabel, 'Author', DEFAULT_WAIT_TIMEOUT));
 
         const authorValue = '.dataset-characteristics .property.author.completes_movie .property_value';
-        driver.wait(elementTextIs(authorValue, 'Peter Jackson', DEFAULT_WAIT_TIMEOUT));
+        await driver.wait(elementTextIs(authorValue, 'Peter Jackson', DEFAULT_WAIT_TIMEOUT));
     });
 
     it('should display the list', async () => {

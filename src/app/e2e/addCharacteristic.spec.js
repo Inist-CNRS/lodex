@@ -14,7 +14,6 @@ describe('add characteristic', function homePublishedDataTests() {
     before(async () => {
         await clear();
         await loadFixtures(fixtures);
-        await driver.get('http://localhost:3100/');
         await loginAsJulia('/', '/');
     });
 
@@ -26,16 +25,16 @@ describe('add characteristic', function homePublishedDataTests() {
         expect(properties.length).toEqual(2);
 
         const movieLabel = '.dataset-characteristics .property.movie .property_label';
-        driver.wait(elementTextIs(movieLabel, 'Movie', DEFAULT_WAIT_TIMEOUT));
+        await driver.wait(elementTextIs(movieLabel, 'Movie', DEFAULT_WAIT_TIMEOUT));
 
         const movieValue = '.dataset-characteristics .property.movie .property_value';
-        driver.wait(elementTextIs(movieValue, 'LOTR', DEFAULT_WAIT_TIMEOUT));
+        await driver.wait(elementTextIs(movieValue, 'LOTR', DEFAULT_WAIT_TIMEOUT));
 
         const authorLabel = '.dataset-characteristics .property.author.completes_movie .property_label';
-        driver.wait(elementTextIs(authorLabel, 'Author', DEFAULT_WAIT_TIMEOUT));
+        await driver.wait(elementTextIs(authorLabel, 'Author', DEFAULT_WAIT_TIMEOUT));
 
         const authorValue = '.dataset-characteristics .property.author.completes_movie .property_value';
-        driver.wait(elementTextIs(authorValue, 'Peter Jackson', DEFAULT_WAIT_TIMEOUT));
+        await driver.wait(elementTextIs(authorValue, 'Peter Jackson', DEFAULT_WAIT_TIMEOUT));
     });
 
     it('should open addCharacteristic modal', async () => {
@@ -72,22 +71,22 @@ describe('add characteristic', function homePublishedDataTests() {
         expect(properties.length).toEqual(3);
 
         const movieLabel = '.dataset-characteristics .property.movie .property_label';
-        driver.wait(elementTextIs(movieLabel, 'Movie', DEFAULT_WAIT_TIMEOUT));
+        await driver.wait(elementTextIs(movieLabel, 'Movie', DEFAULT_WAIT_TIMEOUT));
 
         const movieValue = '.dataset-characteristics .property.movie .property_value';
-        driver.wait(elementTextIs(movieValue, 'LOTR', DEFAULT_WAIT_TIMEOUT));
+        await driver.wait(elementTextIs(movieValue, 'LOTR', DEFAULT_WAIT_TIMEOUT));
 
         const authorLabel = '.dataset-characteristics .property.author.completes_movie .property_label';
-        driver.wait(elementTextIs(authorLabel, 'Author', DEFAULT_WAIT_TIMEOUT));
+        await driver.wait(elementTextIs(authorLabel, 'Author', DEFAULT_WAIT_TIMEOUT));
 
         const authorValue = '.dataset-characteristics .property.author.completes_movie .property_value';
-        driver.wait(elementTextIs(authorValue, 'Peter Jackson', DEFAULT_WAIT_TIMEOUT));
+        await driver.wait(elementTextIs(authorValue, 'Peter Jackson', DEFAULT_WAIT_TIMEOUT));
 
-        const licenceLabel = '.dataset-characteristics .property.licence.completes_movie .property_label';
-        driver.wait(elementTextIs(licenceLabel, 'licence', DEFAULT_WAIT_TIMEOUT));
+        const licenceLabel = '.dataset-characteristics .property.licence .property_label';
+        await driver.wait(elementTextIs(licenceLabel, 'licence', DEFAULT_WAIT_TIMEOUT));
 
-        const licenceValue = '.dataset-characteristics .property.author.completes_movie .property_value';
-        driver.wait(elementTextIs(licenceValue, 'CECILL', DEFAULT_WAIT_TIMEOUT));
+        const licenceValue = '.dataset-characteristics .property.licence .property_value';
+        await driver.wait(elementTextIs(licenceValue, 'CECILL', DEFAULT_WAIT_TIMEOUT));
     });
 
     after(async () => {

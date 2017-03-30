@@ -38,7 +38,7 @@ describe('Home page with published data when logged as Julia', function homePubl
         button.click();
 
         await driver.wait(until.elementLocated(By.css('.dataset-characteristics')), DEFAULT_WAIT_TIMEOUT);
-        driver.wait(
+        await driver.wait(
             elementTextIs('.dataset-characteristics .property.movie .property_value', 'LOTR updated',
             DEFAULT_WAIT_TIMEOUT),
         );
@@ -66,8 +66,11 @@ describe('Home page with published data when logged as Julia', function homePubl
             DEFAULT_WAIT_TIMEOUT),
         );
         await driver.wait(
-            elementTextIs('.detail .property.full_name .compose_full_name.property.firstname .property_value', 'PEREGRIN',
-            DEFAULT_WAIT_TIMEOUT),
+            elementTextIs(
+                '.detail .property.full_name .compose_full_name.property.firstname .property_value',
+                'PEREGRIN',
+                DEFAULT_WAIT_TIMEOUT,
+            ),
         );
 
         await driver.wait(
@@ -129,8 +132,11 @@ describe('Home page with published data when logged as Julia', function homePubl
             DEFAULT_WAIT_TIMEOUT),
         );
         await driver.wait(
-            elementTextIs('.detail .property.full_name .compose_full_name.property.firstname .property_value', 'PEREGRIN',
-            DEFAULT_WAIT_TIMEOUT),
+            elementTextIs(
+                '.detail .property.full_name .compose_full_name.property.firstname .property_value',
+                'PEREGRIN',
+                DEFAULT_WAIT_TIMEOUT,
+            ),
         );
 
         const mailLabel = '.detail .property.email.completes_fullname .property_label';
