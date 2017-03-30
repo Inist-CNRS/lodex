@@ -1,6 +1,7 @@
 import Koa from 'koa';
 import route from 'koa-route';
 import { host } from 'config';
+import config from '../../../../config.json';
 
 import exporters from '../../exporters';
 
@@ -47,6 +48,7 @@ export async function exportMiddleware(ctx, type) {
             publishedDatasetStream,
             ctx.request.query,
             host,
+            config,
         );
 
         exportStream.on('end', () => {

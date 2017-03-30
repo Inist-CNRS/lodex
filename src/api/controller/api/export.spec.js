@@ -1,6 +1,7 @@
 import expect, { createSpy } from 'expect';
 import EventEmitter from 'events';
 import { exportMiddleware } from './export';
+import config from '../../../../config.json';
 
 describe('export routes', () => {
     describe('exportMiddleware', () => {
@@ -69,7 +70,7 @@ describe('export routes', () => {
         });
 
         it('it call the exporterStreamFactory', () => {
-            expect(exporterStreamFactory).toHaveBeenCalledWith(fields, characteristics, mongoStream, {}, null);
+            expect(exporterStreamFactory).toHaveBeenCalledWith(fields, characteristics, mongoStream, {}, null, config);
         });
 
         it('it set the body to the exported stream', () => {

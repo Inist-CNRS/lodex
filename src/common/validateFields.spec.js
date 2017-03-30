@@ -18,7 +18,7 @@ import {
     validateTransformers,
 } from './validateFields';
 
-describe.only('validateField', () => {
+describe('validateField', () => {
     it('should return invalid result if receiving an empty field', () => {
         const field = {};
         const result = validateField(field);
