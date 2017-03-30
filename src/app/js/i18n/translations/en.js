@@ -173,4 +173,9 @@ export default {
     'add-field-to-resource': 'add field',
     'semantic-publication-system': 'semantic publication System',
     'modelize-your-data': 'Model and publish your data to the semantic web!',
+    'easy-creation': 'Easily create your custom website from your CSV, XML, etc.',
+    'semantic-web-compatibility': 'Your repositories, thesauri, experiment results will be compatible with the Semantic Web!',
+    'easy-update': 'You can easily modify them and enrich them with a guarantee of traceability.',
+    'first-upload': 'First load a data file.',
+    start: 'start',
 };
