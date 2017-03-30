@@ -31,6 +31,13 @@ const styles = {
     buttons: {
         display: 'flex',
     },
+    title: {
+        display: 'flex',
+        lineHeight: '54px',
+    },
+    punchLine: {
+        marginLeft: 'auto',
+    },
 };
 
 const AppbarComponent = ({ hasPublishedDataset, hasLoadedDataset, isLoading, isLoggedIn, p: polyglot }) => {
@@ -51,14 +58,14 @@ const AppbarComponent = ({ hasPublishedDataset, hasLoadedDataset, isLoading, isL
         <AppBar
             className="appbar"
             title={
-                <span>
+                <div style={styles.title}>
                     <a style={styles.linkToHome} href="/">Lodex</a>
-                    {!hasPublishedDataset && <span> {hasLoadedDataset ?
+                    {!hasPublishedDataset && <div style={styles.punchLine}> {hasLoadedDataset ?
                         polyglot.t('modelize-your-data')
                         :
                         polyglot.t('semantic-publication-system')
-                    }</span>}
-                </span>
+                    }</div>}
+                </div>
             }
             iconElementLeft={LeftElement}
             iconElementRight={RightElement}

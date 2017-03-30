@@ -48,6 +48,7 @@ const styles = {
         color: blue500,
         fontSize: 'medium',
         marginLeft: 'auto',
+        marginRight: 'auto',
     },
 };
 
