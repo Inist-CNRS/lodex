@@ -36,7 +36,7 @@ describe('publishedDataset', () => {
                     },
                 },
                 {
-                    returnNewDocument: true,
+                    returnOriginal: false,
                 },
             );
         });
