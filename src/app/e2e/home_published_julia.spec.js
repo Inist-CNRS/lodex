@@ -1,5 +1,5 @@
 import { until, By } from 'selenium-webdriver';
-import { elementValueIs, elementIsClicked, elementTextIs } from 'selenium-smart-wait';
+import { elementValueIs, elementIsClicked, elementTextIs, stalenessOf } from 'selenium-smart-wait';
 import expect from 'expect';
 
 import driver from '../../common/tests/chromeDriver';
@@ -161,7 +161,7 @@ describe('Home page with published data when logged as Julia', function homePubl
         await driver.wait(elementTextIs(bestFriendValue, 'MERIADOC', DEFAULT_WAIT_TIMEOUT));
     });
 
-    it('should go to hide page', async () => {
+    it('should display the hide modal', async () => {
         await driver.wait(until.elementLocated(By.css('.hide-resource')));
         const button = await driver.findElement(By.css('.hide-resource'));
         await driver.executeScript('document.getElementsByClassName("hide-resource")[0].scrollIntoView(true);');
@@ -172,7 +172,8 @@ describe('Home page with published data when logged as Julia', function homePubl
         await driver.wait(inputElementIsFocusable(reason), DEFAULT_WAIT_TIMEOUT);
         await reason.clear();
         await reason.sendKeys('My bad, should not be here');
-        await driver.wait(elementIsClicked('.hide-resource.save'));
+        await driver.wait(elementIsClicked('.hide-resource.save'), DEFAULT_WAIT_TIMEOUT);
+        await driver.wait(stalenessOf(form, DEFAULT_WAIT_TIMEOUT));
     });
 
     it('should display reason for removal', async () => {

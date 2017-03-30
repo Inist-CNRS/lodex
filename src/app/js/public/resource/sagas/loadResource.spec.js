@@ -51,7 +51,7 @@ describe('resource saga', () => {
             it('should select getLoadResourceRequest with ark if returned by parsePathName', () => {
                 saga = handleLoadResource(action);
                 saga.next();
-                saga.next([null, '/resource', true, 'ark']);
+                saga.next([null, true, 'ark']);
                 const next = saga.next();
                 expect(next.value).toEqual(select(getLoadResourceRequest, 'ark'));
             });
@@ -74,7 +74,7 @@ describe('resource saga', () => {
             it('should select getLoadResourceRequest with payload.query.uri if ark not returned by parsePathName', () => {
                 saga = handleLoadResource(action);
                 saga.next();
-                saga.next([null, '/resource', false]);
+                saga.next([null, false]);
                 const next = saga.next();
                 expect(next.value).toEqual(select(getLoadResourceRequest, 'uri'));
             });
@@ -82,7 +82,7 @@ describe('resource saga', () => {
             it('should call fetchSaga with returned request', () => {
                 saga = handleLoadResource(action);
                 saga.next();
-                saga.next([null, '/resource', false]);
+                saga.next([null, false]);
                 saga.next();
                 const next = saga.next('request');
                 expect(next.value).toEqual(call(fetchSaga, 'request'));
@@ -91,7 +91,7 @@ describe('resource saga', () => {
             it('should put loadResourceError if fetchSaga returned an error', () => {
                 saga = handleLoadResource(action);
                 saga.next();
-                saga.next([null, '/resource', false]);
+                saga.next([null, false]);
                 saga.next();
                 saga.next('request');
                 const next = saga.next({ error: 'error' });
@@ -101,7 +101,7 @@ describe('resource saga', () => {
             it('should put loadResourceSuccess and loadPublication if fetchSaga succeeded', () => {
                 saga = handleLoadResource(action);
                 saga.next();
-                saga.next([null, '/resource', false]);
+                saga.next([null, false]);
                 saga.next();
                 saga.next('request');
                 let next = saga.next({ response: 'response' });

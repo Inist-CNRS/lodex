@@ -14,24 +14,23 @@ import fetchSaga from '../../../lib/fetchSaga';
 
 import { fromResource } from '../../selectors';
 
-export const parsePathName = pathname => pathname.match(/^(\/resource)(\/ark:\/)?(.*$)/) || [];
+export const parsePathName = pathname => pathname.match(/^\/resource(\/ark:\/)?(.*$)/) || [];
 
 export function* handleLoadResource({ payload }) {
     let isArk;
     let ark;
-    let name;
     let uri;
 
-    if (payload && payload.pathname !== '/resource') {
+    if (payload && payload.pathname && !payload.pathname.startsWith('/resource')) {
         return;
     }
 
     if (payload && payload.pathname) {
-        [, name, isArk, ark] = yield call(parsePathName, payload.pathname);
+        [, isArk, ark] = yield call(parsePathName, payload.pathname);
 
         if (payload && payload.state && payload.state.uri) {
             uri = payload.state.uri;
-        } else if (name === '/resource') {
+        } else {
             uri = isArk ? ark : payload.query.uri;
         }
     } else {
