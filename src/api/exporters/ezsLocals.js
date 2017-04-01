@@ -2,6 +2,7 @@ import { promises as jsonld } from 'jsonld';
 import path from 'path';
 import omit from 'lodash.omit';
 import { VALIDATED } from '../../common/propositionStatus';
+import generateUid from '../services/generateUid';
 
 
 export function filterVersions(data, feed) {
@@ -55,7 +56,7 @@ export function linkDataset(data, feed) {
     feed.send(data);
 }
 
-export function JSONLDObject(data, feed) {
+export async function JSONLDObject(data, feed) {
     if (this.isLast()) {
         feed.close();
     } else {
@@ -84,7 +85,26 @@ export function JSONLDObject(data, feed) {
                 }
             }
         });
-        feed.send(output);
+
+        const transformCompleteFields = async (field) => {
+            const propertyName0 = await generateUid();
+            const propertyName1 = field.name;
+            const propertyName2 = field.completes;
+            output[propertyName0] = {};
+            output[propertyName0][propertyName1] = data[propertyName1];
+            output[propertyName0][propertyName2] = data[propertyName2];
+            delete output[propertyName2];
+            output['@context'][propertyName0] = {};
+            output['@context'][propertyName0]['@id'] = output['@context'][propertyName2]['@id'];
+            output['@context'][propertyName2]['@id'] = 'http://www.w3.org/2000/01/rdf-schema#label';
+        };
+        const allFields = fields
+            .filter(field => field.completes !== undefined)
+            .map(field => transformCompleteFields(field));
+
+        Promise.all(allFields).then(() => {
+            feed.send(output);
+        });
     }
 }
 
@@ -97,9 +117,9 @@ export function JSONLDString(data, feed) {
             .then((out) => {
                 feed.send(out);
             },
-            (err) => {
-                throw err;
-            });
+                (err) => {
+                    throw err;
+                });
     }
 }
 
