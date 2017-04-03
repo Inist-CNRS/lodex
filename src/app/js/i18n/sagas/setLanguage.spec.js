@@ -5,9 +5,9 @@ import { setLanguage } from 'redux-polyglot';
 import {
     setLanguageSuccess,
     setLanguageError,
-} from './';
+} from '../';
 
-import { loadPhrases, handleSetLanguage } from './sagas';
+import { loadPhrases, handleSetLanguage } from './setLanguage';
 
 describe('i18n saga', () => {
     describe('handleSetLanguage', () => {
