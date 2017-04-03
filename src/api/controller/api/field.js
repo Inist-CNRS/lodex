@@ -48,7 +48,7 @@ export const exportFields = async (ctx) => {
     ctx.attachment('lodex_export.json');
     ctx.type = 'application/json';
 
-    ctx.body = fields.map(f => omit(f, ['_id']));
+    ctx.body = JSON.stringify(fields.map(f => omit(f, ['_id'])), null, 4);
 };
 
 export const importFields = rawBodyImpl => async (ctx) => {
