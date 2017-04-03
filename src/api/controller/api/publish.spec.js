@@ -42,6 +42,7 @@ describe('publish', () => {
             publishedDataset: {
                 findLimitFromSkip: createSpy().andReturn(publishedDataset),
                 insertBatch: 'publishedDataset.insertBatch()',
+                countByFacet: createSpy().andReturn(100),
             },
             redirect: createSpy(),
             tranformAllDocuments: createSpy(),
@@ -147,6 +148,7 @@ describe('publish', () => {
         const ctx = {
             publishedDataset: {
                 findDistinctValuesForField: createSpy().andReturn(Promise.resolve(['value1', 'value2'])),
+                countByFacet: createSpy().andReturn(Promise.resolve(100)),
             },
             publishedFacet: {
                 insertFacet: createSpy().andReturn(Promise.resolve()),
@@ -168,8 +170,8 @@ describe('publish', () => {
         });
 
         it('should call ctx.publishedFacet.insertFacet for each facet field with their distinct values', () => {
-            expect(ctx.publishedFacet.insertFacet).toHaveBeenCalledWith('facet1', ['value1', 'value2']);
-            expect(ctx.publishedFacet.insertFacet).toHaveBeenCalledWith('facet2', ['value1', 'value2']);
+            expect(ctx.publishedFacet.insertFacet).toHaveBeenCalledWith('facet1', [{ value: 'value1', count: 100 }, { value: 'value2', count: 100 }]);
+            expect(ctx.publishedFacet.insertFacet).toHaveBeenCalledWith('facet2', [{ value: 'value1', count: 100 }, { value: 'value2', count: 100 }]);
         });
     });
 

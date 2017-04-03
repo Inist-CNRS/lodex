@@ -11,13 +11,14 @@ import { field as fieldPropTypes, polyglot as polyglotPropTypes } from '../../pr
 import { fromFacet } from '../selectors';
 import { loadFacetValues as loadFacetValuesAction, applyFacet as applyFacetAction } from './index';
 
-export const getValues = memoize(values => values.map(value => ({
-    text: value,
+export const getValues = memoize(facets => facets.map(facet => ({
+    text: facet.value,
     value: (
         <MenuItem
-            className={`facet-value-${value.toLowerCase()}`}
-            primaryText={value}
-            value={value}
+            className={`facet-value-${facet.value.toLowerCase()}`}
+            primaryText={facet.value}
+            secondaryText={facet.count}
+            value={facet.value}
         />
     ),
 })));
@@ -41,7 +42,7 @@ export const FacetValueSelectorComponent = ({
 );
 
 FacetValueSelectorComponent.propTypes = {
-    values: PropTypes.arrayOf(PropTypes.string).isRequired,
+    values: PropTypes.arrayOf(PropTypes.object).isRequired,
     handleChange: PropTypes.func.isRequired,
     handleFilterChange: PropTypes.func.isRequired,
     p: polyglotPropTypes.isRequired,

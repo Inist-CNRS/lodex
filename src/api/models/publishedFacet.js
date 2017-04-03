@@ -8,7 +8,7 @@ export default (db) => {
     collection.insertFacet = (field, values) =>
         collection.insertBatch(values.map(value => ({
             field,
-            value,
+            ...value,
         })));
 
     collection.findLimitFromSkip = (limit, skip, filter) =>
