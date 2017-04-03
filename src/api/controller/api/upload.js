@@ -1,8 +1,6 @@
 import Koa from 'koa';
 import route from 'koa-route';
-import rawBody from 'raw-body';
-import stream from 'stream';
-import streamToArray from 'stream-to-array';
+import asyncBusboy from 'async-busboy';
 
 import config from '../../../../config.json';
 import loaders from '../../loaders';
@@ -16,12 +14,9 @@ export const getParser = (type) => {
     return loaders[type](config.loader[type]);
 };
 
-export const requestToStream = (rawBodyImpl, PassThrough) => async (req) => {
-    const buffer = await rawBodyImpl(req);
-    const bufferStream = new PassThrough();
-    bufferStream.end(buffer);
-
-    return bufferStream;
+export const requestToStream = asyncBusboyImpl => async (req) => {
+    const { files } = await asyncBusboyImpl(req);
+    return files[0];
 };
 
 export async function uploadMiddleware(ctx, type) {
@@ -29,7 +24,6 @@ export async function uploadMiddleware(ctx, type) {
 
     try {
         const parseStream = ctx.getParser(type);
-
         const requestStream = await ctx.requestToStream(ctx.req);
         const parsedStream = await parseStream(requestStream);
 
@@ -48,8 +42,7 @@ export async function uploadMiddleware(ctx, type) {
 
 export const prepareUpload = async (ctx, next) => {
     ctx.getParser = getParser;
-    ctx.requestToStream = requestToStream(rawBody, stream.PassThrough);
-    ctx.streamToArray = streamToArray;
+    ctx.requestToStream = requestToStream(asyncBusboy);
     ctx.saveStream = saveStream;
 
     await next();
