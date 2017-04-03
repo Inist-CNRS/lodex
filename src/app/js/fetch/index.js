@@ -196,3 +196,9 @@ export const getLoadExportersRequest = state =>
     getRequest(state, {
         url: '/api/export',
     });
+
+export const getClearUploadRequest = state =>
+    getRequest(state, {
+        method: 'DELETE',
+        url: '/api/upload/clear',
+    });

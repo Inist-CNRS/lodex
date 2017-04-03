@@ -21,6 +21,7 @@ export const requestToStream = asyncBusboyImpl => async (req) => {
 
 export const clearUpload = async (ctx) => {
     await ctx.dataset.remove({});
+    ctx.body = true;
 };
 
 export async function uploadMiddleware(ctx, type) {

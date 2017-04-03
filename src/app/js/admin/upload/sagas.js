@@ -4,13 +4,22 @@ import { LOCATION_CHANGE } from 'react-router-redux';
 import { getToken } from '../../user';
 import { loadDatasetFile } from '../../lib/loadFile';
 import { UPLOAD_FILE, uploadFileError, uploadFileSuccess } from './';
+import fetch from '../../lib/fetch';
+import { getClearUploadRequest } from '../../fetch';
 
 export function* uploadFile(action) {
     if (!action || !action.payload) {
         return;
     }
-    const token = yield select(getToken);
     try {
+        const clearUploadRequest = yield select(getClearUploadRequest);
+
+        const { error } = yield call(fetch, clearUploadRequest);
+        if (error) {
+            yield put(uploadFileError(error));
+            return;
+        }
+        const token = yield select(getToken);
         const { file, cancel } = yield race({
             file: call(loadDatasetFile, action.payload, token),
             cancel: take([LOCATION_CHANGE]),
