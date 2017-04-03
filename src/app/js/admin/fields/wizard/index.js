@@ -44,12 +44,6 @@ const styles = {
     },
     titleLabel: {
     },
-    titlePunchline: {
-        color: lightBlue500,
-        fontSize: 'medium',
-        marginLeft: 'auto',
-        padding: '10px',
-    },
 };
 
 class FieldEditionWizardComponent extends Component {
@@ -183,9 +177,7 @@ class FieldEditionWizardComponent extends Component {
         const title = (
             <div style={styles.title}>
                 <span>{field ? field.label : ''}</span>
-                {field && field.name !== 'uri' && <span style={styles.titlePunchline}>
-                    {polyglot.t('choose-field')}
-                </span>}
+                {field && field.name !== 'uri'}
             </div>
         );
 

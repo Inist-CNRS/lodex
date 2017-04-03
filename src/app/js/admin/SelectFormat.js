@@ -1,12 +1,21 @@
 import React, { PropTypes } from 'react';
 import MenuItem from 'material-ui/MenuItem';
 import SelectField from 'material-ui/SelectField';
+import translate from 'redux-polyglot/translate';
+import { polyglot as polyglotPropTypes } from '../propTypes';
 
-const SelectFormat = ({ formats, value, onChange }) => (
+const styles = {
+    select: {
+        width: '100%',
+    },
+};
+
+const SelectFormat = ({ formats, value, onChange, p: polyglot }) => (
     <SelectField
-        floatingLabelText="Select a format"
+        floatingLabelText={polyglot.t('select_a_format')}
         onChange={(event, index, newValue) => onChange(newValue)}
         value={value}
+        style={styles.select}
     >
         <MenuItem value="None" primaryText="None" />
 
@@ -24,6 +33,7 @@ SelectFormat.propTypes = {
     formats: PropTypes.arrayOf(PropTypes.string).isRequired,
     value: PropTypes.string,
     onChange: PropTypes.func.isRequired,
+    p: polyglotPropTypes.isRequired,
 };
 
-export default SelectFormat;
+export default translate(SelectFormat);

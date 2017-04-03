@@ -23,6 +23,7 @@ const styles = {
     linkToHome: {
         color: 'white',
         textDecoration: 'none',
+        marginRight: '1rem',
     },
     loading: {
         margin: 8,
@@ -31,13 +32,7 @@ const styles = {
         display: 'flex',
     },
     title: {
-        display: 'flex',
         lineHeight: '54px',
-    },
-    punchLine: {
-        marginLeft: 'auto',
-        marginRight: 'auto',
-        fontSize: 'medium',
     },
 };
 
@@ -61,11 +56,16 @@ const AppbarComponent = ({ hasPublishedDataset, hasLoadedDataset, isLoading, isL
             title={
                 <div style={styles.title}>
                     <a style={styles.linkToHome} href="/">Lodex</a>
-                    {!hasPublishedDataset && <div style={styles.punchLine}> {hasLoadedDataset ?
-                        polyglot.t('modelize-your-data')
-                        :
-                        polyglot.t('semantic-publication-system')
-                    }</div>}
+                    {!hasPublishedDataset &&
+                        <small>
+                            -{' '}
+                            {
+                                hasLoadedDataset
+                                ? polyglot.t('modelize-your-data')
+                                : polyglot.t('semantic-publication-system')
+                            }
+                        </small>
+                    }
                 </div>
             }
             iconElementLeft={LeftElement}
@@ -78,9 +78,13 @@ const AppbarComponent = ({ hasPublishedDataset, hasLoadedDataset, isLoading, isL
 AppbarComponent.propTypes = {
     hasPublishedDataset: PropTypes.bool.isRequired,
     hasLoadedDataset: PropTypes.bool.isRequired,
-    isLoading: PropTypes.bool.isRequired,
+    isLoading: PropTypes.bool,
     isLoggedIn: PropTypes.bool.isRequired,
     p: polyglotPropTypes.isRequired,
+};
+
+AppbarComponent.defaultProps = {
+    isLoading: false,
 };
 
 const mapStateToProps = state => ({

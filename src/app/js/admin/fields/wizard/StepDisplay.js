@@ -30,7 +30,6 @@ export const StepDisplayComponent = ({
             name="format"
             component={Format}
             label={polyglot.t('format')}
-            fullWidth
         />
     </Step>
 );

@@ -27,10 +27,6 @@ import Statistics from './Statistics';
 const styles = {
     punchLine: {
         padding: '16px',
-        margin: '16px',
-        borderColor: lightBlue500,
-        borderStyle: 'solid',
-        borderWidth: '2px',
         textAlign: 'center',
         color: lightBlue500,
     },

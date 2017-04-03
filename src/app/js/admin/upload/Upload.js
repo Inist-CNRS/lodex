@@ -4,23 +4,17 @@ import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 import classnames from 'classnames';
 import RaisedButton from 'material-ui/RaisedButton';
-import FlatButton from 'material-ui/FlatButton';
 import ArchiveIcon from 'material-ui/svg-icons/content/archive';
-import { Card, CardText, CardActions } from 'material-ui/Card';
 import { lightBlue500 } from 'material-ui/styles/colors';
 
 import Alert from '../../lib/Alert';
 import { uploadFile } from './';
-import { cancelReload } from '../parsing';
-import { fromUpload, fromParsing } from '../selectors';
+import { fromUpload } from '../selectors';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 
 const styles = {
     div: {
-        margin: 10,
-        borderColor: lightBlue500,
-        borderStyle: 'solid',
-        borderWidth: '2px',
+        textAlign: 'center',
     },
     cardActions: {
         display: 'flex',
@@ -39,7 +33,7 @@ const styles = {
         cursor: 'pointer',
     },
     punchLine: {
-        color: lightBlue500,
+        marginTop: '2rem',
     },
     actionText: {
         color: lightBlue500,
@@ -47,7 +41,7 @@ const styles = {
     },
 };
 
-export const UploadComponent = ({ onFileLoad, onCancel, hasUploadedFile, error, p: polyglot, ...props }) => (
+export const UploadComponent = ({ onFileLoad, error, p: polyglot, ...props }) => (
     <div
         className={classnames('upload', props.className)}
         style={styles.div}
@@ -56,31 +50,26 @@ export const UploadComponent = ({ onFileLoad, onCancel, hasUploadedFile, error, 
             <p>Error uploading given file: </p>
             <p>{error}</p>
         </Alert> : <span />}
-        <Card>
-            <CardText style={styles.punchLine}>
-                <p>{polyglot.t('easy-creation')}</p>
-                <p>{polyglot.t('semantic-web-compatibility')}</p>
-                <p>{polyglot.t('easy-update')}</p>
-            </CardText>
-            <CardActions style={styles.cardActions}>
-                <span style={styles.actionText}>{polyglot.t('first-upload')}</span>
-                <RaisedButton
-                    containerElement="label"
-                    primary
-                    icon={<ArchiveIcon />}
-                    label={polyglot.t('start')}
-                    style={styles.button}
-                >
-                    <input
-                        name="file"
-                        type="file"
-                        onChange={e => onFileLoad(e.target.files[0])}
-                        style={styles.input}
-                    />
-                </RaisedButton>
-            </CardActions>
-        </Card>
-        {hasUploadedFile ? <FlatButton onClick={onCancel} label={polyglot.t('cancel')} /> : null}
+        <div style={styles.punchLine}>
+            <p>{polyglot.t('easy-creation')}</p>
+            <p>{polyglot.t('semantic-web-compatibility')}</p>
+            <p>{polyglot.t('easy-update')}</p>
+
+            <RaisedButton
+                containerElement="label"
+                primary
+                icon={<ArchiveIcon />}
+                label={polyglot.t('first-upload')}
+                style={styles.button}
+            >
+                <input
+                    name="file"
+                    type="file"
+                    onChange={e => onFileLoad(e.target.files[0])}
+                    style={styles.input}
+                />
+            </RaisedButton>
+        </div>
     </div>
 );
 
@@ -88,8 +77,6 @@ UploadComponent.propTypes = {
     className: PropTypes.string,
     error: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]).isRequired,
     onFileLoad: PropTypes.func.isRequired,
-    onCancel: PropTypes.func.isRequired,
-    hasUploadedFile: PropTypes.bool.isRequired,
     p: polyglotPropTypes.isRequired,
 };
 
@@ -99,12 +86,10 @@ UploadComponent.defaultProps = {
 
 const mapsStateToProps = state => ({
     ...fromUpload.getUpload(state),
-    hasUploadedFile: fromParsing.hasUploadedFile(state),
 });
 
 const mapDispatchToProps = {
     onFileLoad: uploadFile,
-    onCancel: cancelReload,
 };
 
 export default compose(
