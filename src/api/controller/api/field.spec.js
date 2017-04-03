@@ -67,10 +67,10 @@ describe('field routes', () => {
 
             await exportFields(ctx);
             expect(ctx.field.findAll).toHaveBeenCalled();
-            expect(ctx.body).toEqual([
+            expect(ctx.body).toEqual(JSON.stringify([
                 { name: 'field1' },
                 { name: 'field2' },
-            ]);
+            ], null, 4));
             expect(ctx.attachment).toHaveBeenCalledWith('lodex_export.json');
             expect(ctx.type).toBe('application/json');
         });
