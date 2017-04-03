@@ -19,9 +19,11 @@ export const requestToStream = asyncBusboyImpl => async (req) => {
     return files[0];
 };
 
-export async function uploadMiddleware(ctx, type) {
+export const clearUpload = async (ctx) => {
     await ctx.dataset.remove({});
+};
 
+export async function uploadMiddleware(ctx, type) {
     try {
         const parseStream = ctx.getParser(type);
         const requestStream = await ctx.requestToStream(ctx.req);
@@ -48,11 +50,11 @@ export const prepareUpload = async (ctx, next) => {
     await next();
 };
 
-
 const app = new Koa();
 
 app.use(prepareUpload);
 
 app.use(route.post('/:type', uploadMiddleware));
+app.use(route.del('/clear', clearUpload));
 
 export default app;
