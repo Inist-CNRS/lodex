@@ -22,7 +22,6 @@ const styles = {
     },
     linkToHome: {
         color: 'white',
-        fontSize: 'medium',
         textDecoration: 'none',
     },
     loading: {
@@ -37,6 +36,8 @@ const styles = {
     },
     punchLine: {
         marginLeft: 'auto',
+        marginRight: 'auto',
+        fontSize: 'medium',
     },
 };
 

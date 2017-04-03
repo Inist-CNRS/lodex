@@ -7,7 +7,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
 import ArchiveIcon from 'material-ui/svg-icons/content/archive';
 import { Card, CardText, CardActions } from 'material-ui/Card';
-import { blue500 } from 'material-ui/styles/colors';
+import { lightBlue500 } from 'material-ui/styles/colors';
 
 import Alert from '../../lib/Alert';
 import { uploadFile } from './';
@@ -18,6 +18,9 @@ import { polyglot as polyglotPropTypes } from '../../propTypes';
 const styles = {
     div: {
         margin: 10,
+        borderColor: lightBlue500,
+        borderStyle: 'solid',
+        borderWidth: '2px',
     },
     cardActions: {
         display: 'flex',
@@ -36,10 +39,10 @@ const styles = {
         cursor: 'pointer',
     },
     punchLine: {
-        color: blue500,
+        color: lightBlue500,
     },
     actionText: {
-        color: blue500,
+        color: lightBlue500,
         paddingLeft: '10px',
     },
 };
