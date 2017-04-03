@@ -26,7 +26,6 @@ export function* handleHideResource({ payload: uri }) {
     }
 
     yield put(hideResourceSuccess(response));
-    yield put(push({ pathname: '/resource/removed', query: { uri } }));
 }
 
 export default function* watchHideResource() {

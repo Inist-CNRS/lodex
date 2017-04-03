@@ -68,6 +68,7 @@ On EzMaster, you can edit the instance configuration:
 - `exporters`: Required - an array of the allowed exporters
 
 - `loader`: Required - an array of loaders (which import your data) with their options
+- `host`: Optional - the public host which will be used to generate resources URIs. It will fallback on the EzMaster environment variable `EZMASTER_PUBLIC_URL`. Format is `http://[host]` (no ending slash)
 
 - `mongo`: Optional - Allow to override the default mongo configuration given by ezMaster. You can override all or part of the config, available properties are :
 

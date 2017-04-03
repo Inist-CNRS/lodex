@@ -67,7 +67,7 @@
     ],
     "publishedDataset": [
         {
-            "uri" : "1",
+            "uri" : "uid:/1",
             "versions": [{
                 "fullname" : "PEREGRIN.TOOK",
                 "email" : "peregrin.took@shire.net"
@@ -99,7 +99,7 @@
             }
         },
         {
-            "uri" : "2",
+            "uri" : "uid:/2",
             "versions": [{
                 "fullname" : "SAMSAGET.GAMGIE",
                 "email" : "samsaget.gamgie@shire.net"
@@ -121,7 +121,7 @@
             }
         },
         {
-            "uri" : "3",
+            "uri" : "uid:/3",
             "versions": [{
                 "fullname" : "BILBON.BAGGINS",
                 "email" : "bilbon.saquet@shire.net"
@@ -143,14 +143,14 @@
             }
         },
         {
-            "uri" : "4",
+            "uri" : "uid:/4",
             "versions": [{
                 "fullname" : "FRODO.BAGGINS",
                 "email" : "frodo.saquet@shire.net"
             }]
         },
         {
-            "uri" : "5",
+            "uri" : "uid:/5",
             "versions": [{
                 "fullname" : "MERIADOC.BRANDYBUCK",
                 "email" : "meriadoc.brandybuck@shire.net"

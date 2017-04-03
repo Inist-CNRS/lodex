@@ -27,6 +27,7 @@ import {
 import { loadField as loadFieldAction } from '../fields';
 import { fromContributedResources, fromFields } from '../selectors';
 import propositionStatus from '../../../../common/propositionStatus';
+import { getResourceUri } from '../../../../common/uris';
 
 const styles = {
     table: {
@@ -91,7 +92,7 @@ export class ContributedResourceListComponent extends Component {
                             {resources.map(data => (
                                 <TableRow key={data.uri}>
                                     <TableRowColumn key="review">
-                                        <a href={`/#/resource?uri=${data.uri}`}>
+                                        <a href={getResourceUri(data, `${window.location.protocol}//${window.location.host}`)}>
                                             <FlatButton
                                                 className="btn-review-resource"
                                                 label={polyglot.t('review')}

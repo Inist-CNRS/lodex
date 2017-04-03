@@ -51,9 +51,7 @@ describe('handleHideResource', () => {
         saga.next();
         saga.next({ reason: 'reason' });
         saga.next('request');
-        let next = saga.next({ response: 'response' });
+        const next = saga.next({ response: 'response' });
         expect(next.value).toEqual(put(hideResourceSuccess('response')));
-        next = saga.next();
-        expect(next.value).toEqual(put(push({ pathname: '/resource/removed', query: { uri: 'uri' } })));
     });
 });

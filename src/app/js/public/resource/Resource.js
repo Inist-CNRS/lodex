@@ -18,22 +18,12 @@ import RemovedDetail from './RemovedDetail';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import Loading from '../../lib/Loading';
 
-export const getDetail = (mode) => {
-    switch (mode) {
-    case 'removed':
-        return <RemovedDetail />;
-    case 'view':
-    default:
-        return <Detail />;
-    }
-};
-
 export const ResourceComponent = ({
     resource,
     datasetTitleKey,
     characteristics,
     loading,
-    mode,
+    removed,
     p: polyglot,
 }) => {
     if (loading) {
@@ -77,13 +67,18 @@ export const ResourceComponent = ({
                     {backToListButton}
                 </CardActions>
             </Card>
-            {getDetail(mode)}
+            {removed &&
+                <RemovedDetail />
+            }
+            {!removed &&
+                <Detail />
+            }
         </div>
     );
 };
 
 ResourceComponent.defaultProps = {
-    mode: 'view',
+    characteristics: null,
     resource: null,
     datasetTitle: null,
     datasetTitleKey: null,
@@ -91,16 +86,17 @@ ResourceComponent.defaultProps = {
 };
 
 ResourceComponent.propTypes = {
-    mode: PropTypes.oneOf(['view', 'removed']).isRequired,
+    characteristics: PropTypes.shape({}),
     resource: PropTypes.shape({ uri: PropTypes.string.isRequired }),
     p: polyglotPropTypes.isRequired,
     datasetTitleKey: PropTypes.string,
-    characteristics: PropTypes.shape({}),
     loading: PropTypes.bool.isRequired,
+    removed: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = state => ({
     resource: fromResource.getResourceLastVersion(state),
+    removed: fromResource.hasBeenRemoved(state),
     characteristics: fromCharacteristic.getCharacteristicsAsResource(state),
     datasetTitleKey: fromPublication.getDatasetTitleFieldName(state),
     fields: fromPublication.getFields(state),

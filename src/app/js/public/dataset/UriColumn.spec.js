@@ -7,8 +7,16 @@ import { Link } from 'react-router';
 import UriColumn from './UriColumn';
 
 describe('<UriColumn />', () => {
+    global.window = {
+        location: {
+            host: 'localhost',
+            protocol: 'http:',
+        },
+    };
+
     const column = { name: 'a_name' };
     const resource = {
+        uri: 'an_uri',
         a_name: 'a_value',
     };
 
@@ -25,7 +33,7 @@ describe('<UriColumn />', () => {
 
     const link = wrapper.find(Link);
     it('renders a Link with correct href', () => {
-        expect(link.prop('to')).toEqual('/resource?uri=a_value');
+        expect(link.prop('to')).toEqual('http://localhost/an_uri');
     });
 
     it('renders a Link with correct text', () => {

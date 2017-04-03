@@ -15,15 +15,14 @@ const styles = {
         marginRight: '1rem',
     },
     reason: {
+        marginRight: '1rem',
         fontWeight: 'bold',
     },
 };
 
 export const RemovedDetailComponent = ({ reason, removedAt, p: polyglot }) => (
     <Card className="removed-detail">
-        <CardHeader>
-            {polyglot.t('removed_resource_at', { date: moment(removedAt).format('ll') })}
-        </CardHeader>
+        <CardHeader title={polyglot.t('removed_resource_at', { date: moment(removedAt).format('ll') })} />
         <CardText>
             <dl style={styles.container}>
                 <dt style={styles.reason}>{polyglot.t('reason')}</dt>

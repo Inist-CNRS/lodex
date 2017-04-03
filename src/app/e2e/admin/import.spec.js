@@ -5,7 +5,7 @@ import { elementIsClicked, elementsCountIs, elementTextIs, elementTextMatches } 
 
 import driver from '../../../common/tests/chromeDriver';
 import { clear } from '../../../common/tests/fixtures';
-import loginAsJulia from '../loginAsJulia';
+import loginAsJulia from './loginAsJulia';
 
 describe('Admin', () => {
     describe('Import model', function homeTests() {
@@ -19,7 +19,7 @@ describe('Admin', () => {
             await driver.executeScript('return localStorage.clear();');
             await driver.executeScript('return sessionStorage.clear();');
 
-            await loginAsJulia('/admin', '/');
+            await loginAsJulia('/admin');
         });
 
         describe('Uploading dataset', () => {

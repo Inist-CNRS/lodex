@@ -17,7 +17,7 @@ describe('Resource page when not logged', function resourcePageTest() {
     before(async () => {
         await clear();
         await loadFixtures(fixtures);
-        await driver.get('http://localhost:3100/#/resource?uri=1');
+        await driver.get('http://localhost:3100/uid:/1');
     });
 
     it('should display all resource properties', async () => {
