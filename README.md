@@ -69,8 +69,7 @@ On EzMaster, you can edit the instance configuration:
 
 - `loader`: Required - an array of loaders (which import your data) with their options
 
-- `mongo`: Optional - Allow to override the default mongo configuration given by ezMaster. You can override all or part of the config.
-Composed of :
+- `mongo`: Optional - Allow to override the default mongo configuration given by ezMaster. You can override all or part of the config, available properties are :
 
     - `host`: the host and port pointing to the mongo instance eg: `localhost:27017`
     - `dbName`: The name of the database eg: `lodex`
