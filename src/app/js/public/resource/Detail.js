@@ -23,6 +23,7 @@ import Export from '../Export';
 import Share from '../Share';
 import ShareLink from '../ShareLink';
 import SelectVersion from './SelectVersion';
+import { getResourceUri } from '../../../../common/uris';
 
 const styles = {
     container: {
@@ -153,9 +154,7 @@ DetailComponent.propTypes = {
 
 const mapStateToProps = (state) => {
     const resource = fromResource.getResourceSelectedVersion(state);
-    const uri = new URL(`${window.location.protocol}//${window.location.host}`);
     let sharingTitle;
-    uri.hash = `/resource?uri=${encodeURIComponent(resource.uri)}`;
     const titleFieldName = fromPublication.getTitleFieldName(state);
 
     if (titleFieldName) {
@@ -166,7 +165,7 @@ const mapStateToProps = (state) => {
         resource,
         isSaving: fromResource.isSaving(state),
         fields: fromPublication.getResourceFields(state, resource),
-        sharingUri: uri.toString(),
+        sharingUri: getResourceUri(resource, `${window.location.protocol}//${window.location.host}`),
         sharingTitle,
     });
 };

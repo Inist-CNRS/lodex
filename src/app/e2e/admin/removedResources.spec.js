@@ -5,7 +5,7 @@ import { elementIsClicked } from 'selenium-smart-wait';
 import driver from '../../../common/tests/chromeDriver';
 import { clear, loadFixtures } from '../../../common/tests/fixtures';
 import fixtures from './removedResources.json';
-import loginAsJulia from '../loginAsJulia';
+import loginAsJulia from './loginAsJulia';
 
 describe('Admin', () => {
     describe('Removed Resource management', function homePublishedDataTests() {
@@ -20,7 +20,7 @@ describe('Admin', () => {
             await driver.executeScript('return localStorage.clear();');
             await driver.executeScript('return sessionStorage.clear();');
 
-            await loginAsJulia('/admin', '/');
+            await loginAsJulia('/admin');
         });
 
         it('should activate removed-resources tab', async () => {

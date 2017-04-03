@@ -14,24 +14,21 @@ import fetchSaga from '../../../lib/fetchSaga';
 
 import { fromResource } from '../../selectors';
 
-export const parsePathName = pathname => pathname.match(/^\/resource(\/ark:\/)?(.*$)/) || [];
+export const parsePathName = pathname => pathname.match(/^\/(ark|uid:\/.*$)/) || [];
 
-export function* handleLoadResource({ payload }) {
-    let isArk;
+export function* handleLoadResource({ payload, type }) {
     let ark;
     let uri;
 
-    if (payload && payload.pathname && !payload.pathname.startsWith('/resource')) {
-        return;
-    }
-
-    if (payload && payload.pathname) {
-        [, isArk, ark] = yield call(parsePathName, payload.pathname);
-
+    if (type === LOCATION_CHANGE) {
+        [, ark] = yield call(parsePathName, payload.pathname);
+        if (!ark && (!payload.state || !payload.state.uri)) {
+            return;
+        }
         if (payload && payload.state && payload.state.uri) {
             uri = payload.state.uri;
         } else {
-            uri = isArk ? ark : payload.query.uri;
+            uri = ark || payload.query.uri;
         }
     } else {
         const resource = yield select(fromResource.getResourceLastVersion);
@@ -53,9 +50,6 @@ export function* handleLoadResource({ payload }) {
     }
 
     yield put(loadResourceSuccess(response));
-    if (response && response.removedAt && ark !== '/removed') {
-        yield put(push({ pathname: '/resource/removed', query: { uri } }));
-    }
     yield put(loadPublication());
 }
 

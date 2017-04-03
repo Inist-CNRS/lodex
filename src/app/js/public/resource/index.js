@@ -206,6 +206,14 @@ const getResourceLastVersion = (state, resource = state.resource) => {
     };
 };
 
+const hasBeenRemoved = (state, resource = state.resource) => {
+    if (!resource) {
+        return null;
+    }
+
+    return !!resource.removedAt;
+};
+
 const getResourceProposedFields = (state) => {
     const { contributions } = state.resource;
     if (!contributions) {
@@ -331,6 +339,7 @@ export const fromResource = {
     isAdding,
     isHiding,
     getError,
+    hasBeenRemoved,
 };
 
 export const getResourceFormData = state => state.form.resource.values;

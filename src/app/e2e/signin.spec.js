@@ -13,7 +13,7 @@ describe('Home page', function homeTests() {
     let form;
 
     before(async () => {
-        await driver.get('http://localhost:3100/#/login');
+        await driver.get('http://localhost:3100/login');
     });
 
     it('show the sign-in form', async () => {
@@ -55,7 +55,7 @@ describe('Home page', function homeTests() {
         await password.clear();
         await password.sendKeys('secret');
         await form.submit();
-        await driver.wait(until.urlIs('http://localhost:3100/#/home'), DEFAULT_WAIT_TIMEOUT);
+        await driver.wait(until.urlIs('http://localhost:3100/home'), DEFAULT_WAIT_TIMEOUT);
     });
 
     after(async () => {

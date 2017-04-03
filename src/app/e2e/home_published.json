@@ -177,25 +177,25 @@
     ],
     "publishedDataset": [
         {
-            "uri" : "1",
+            "uri" : "uid:/1",
             "versions": [{
                 "firstname" : "PEREGRIN",
                 "name" : "TOOK",
                 "email" : "peregrin.took@shire.net",
-                "best_friend_of": "5"
+                "best_friend_of": "uid:/5"
             }]
         },
         {
-            "uri" : "2",
+            "uri" : "uid:/2",
             "versions": [{
                 "firstname" : "SAMSAGET",
                 "name" : "GAMGIE",
                 "email" : "samsaget.gamgie@shire.net",
-                "best_friend_of": "4"
+                "best_friend_of": "uid:/4"
             }]
         },
         {
-            "uri" : "3",
+            "uri" : "uid:/3",
             "versions": [{
                 "firstname" : "BILBON",
                 "name" : "BAGGINS",
@@ -203,21 +203,21 @@
             }]
         },
         {
-            "uri" : "4",
+            "uri" : "uid:/4",
             "versions": [{
                 "firstname": "FRODO",
                 "name" : "BAGGINS",
                 "email" : "frodo.saquet@shire.net",
-                "best_friend_of": "2"
+                "best_friend_of": "uid:/2"
             }]
         },
         {
-            "uri" : "5",
+            "uri" : "uid:/5",
             "versions": [{
                 "firstname" : "MERIADOC",
                 "name" : "BRANDYBUCK",
                 "email" : "meriadoc.brandybuck@shire.net",
-                "best_friend_of": "1"
+                "best_friend_of": "uid:/1"
             }]
         }
     ], 

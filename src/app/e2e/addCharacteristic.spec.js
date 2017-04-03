@@ -14,7 +14,7 @@ describe('add characteristic', function homePublishedDataTests() {
     before(async () => {
         await clear();
         await loadFixtures(fixtures);
-        await loginAsJulia('/', '/');
+        await loginAsJulia('/');
     });
 
     it('should display the dataset characteristics', async () => {
