@@ -4,6 +4,7 @@ import tsv from './tsv'; // eslint-disable-line
 import skos from './skos'; // eslint-disable-line
 import json from './json'; // eslint-disable-line
 import xml from './xml'; // eslint-disable-line
+import corpus from './corpus'; // eslint-disable-line
 
 export default {
     CSV,
@@ -16,4 +17,5 @@ export default {
     atom: xml,
     mods: xml,
     tei: xml,
+    corpus,
 };
