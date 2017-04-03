@@ -99,8 +99,8 @@ export async function JSONLDObject(data, feed) {
             output['@context'][propertyName2]['@id'] = 'http://www.w3.org/2000/01/rdf-schema#label';
         };
         const allFields = fields
-            .filter(field => field.completes !== undefined)
-            .map(field => transformCompleteFields(field));
+            .filter(field => field.completes)
+            .map(transformCompleteFields);
 
         Promise.all(allFields).then(() => {
             feed.send(output);
