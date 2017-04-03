@@ -14,7 +14,7 @@ import fetchSaga from '../../../lib/fetchSaga';
 
 import { fromResource } from '../../selectors';
 
-export const parsePathName = pathname => pathname.match(/^\/(ark|uid:\/.*$)/) || [];
+export const parsePathName = pathname => pathname.match(/^\/((?:ark|uid):\/.*$)/) || [];
 
 export function* handleLoadResource({ payload, type }) {
     let ark;
@@ -22,6 +22,7 @@ export function* handleLoadResource({ payload, type }) {
 
     if (type === LOCATION_CHANGE) {
         [, ark] = yield call(parsePathName, payload.pathname);
+
         if (!ark && (!payload.state || !payload.state.uri)) {
             return;
         }
