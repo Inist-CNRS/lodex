@@ -1,4 +1,4 @@
-FROM node:7.4
+FROM node:7.8.0
 
 RUN npm install pm2 -g
 
