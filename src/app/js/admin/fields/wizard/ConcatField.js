@@ -15,6 +15,7 @@ import { fromParsing } from '../../selectors';
 const styles = {
     container: {
         display: 'flex',
+        alignItems: 'flex-end',
     },
     select: {
         width: '100%',
