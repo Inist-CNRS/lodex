@@ -1,6 +1,10 @@
 import expect from 'expect';
 
-import getDocumentTransformer, { getFieldTransformation, applyTransformation } from './getDocumentTransformer';
+import getDocumentTransformer, {
+    getFieldTransformation,
+    applyTransformation,
+    sanitizeUris,
+} from './getDocumentTransformer';
 
 describe('getDocumentTransformer', () => {
     it('should create a new document based on columns and doc', async () => {
@@ -79,6 +83,36 @@ describe('getDocumentTransformer', () => {
                 a: 1,
                 original: doc,
             });
+        });
+    });
+
+    describe('sanitizeUris', () => {
+        it('does not change uris which start with ark:', () => {
+            const doc = { uri: 'ark:/an_ark' };
+            const result = sanitizeUris(doc);
+
+            expect(result).toEqual(doc);
+        });
+
+        it('does not change uris which start with uid:', () => {
+            const doc = { uri: 'uid:/an_uid' };
+            const result = sanitizeUris(doc);
+
+            expect(result).toEqual(doc);
+        });
+
+        it('sanitizes uris which do not start with uid: nor ark:', () => {
+            const doc = { uri: 'an id' };
+            const result = sanitizeUris(doc);
+
+            expect(result).toEqual({ uri: 'uid:/an%20id' });
+        });
+
+        it('sanitizes http uris', () => {
+            const doc = { uri: 'http://www.an_uri.com' };
+            const result = sanitizeUris(doc);
+
+            expect(result).toEqual({ uri: 'uid:/http%3A%2F%2Fwww.an_uri.com' });
         });
     });
 });
