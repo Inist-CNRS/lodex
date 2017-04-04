@@ -5,7 +5,6 @@ import { change } from 'redux-form';
 
 import Step from './Step';
 import { field as fieldPropTypes } from '../../../propTypes';
-import { fromParsing } from '../../selectors';
 import { FIELD_FORM_NAME } from '../';
 import { getTransformerMetas } from '../../../../../common/transformers';
 
@@ -15,7 +14,6 @@ import StepValueLink from './StepValueLink';
 import StepValueConcat from './StepValueConcat';
 
 export const StepValueComponent = ({
-    datasetFields,
     field,
     handleChange,
     ...props
@@ -26,17 +24,14 @@ export const StepValueComponent = ({
             onChange={handleChange}
         />
         <StepValueColumn
-            datasetFields={datasetFields}
             field={field}
             onChange={handleChange}
         />
         <StepValueLink
-            datasetFields={datasetFields}
             field={field}
             onChange={handleChange}
         />
         <StepValueConcat
-            datasetFields={datasetFields}
             field={field}
             onChange={handleChange}
         />
@@ -44,14 +39,9 @@ export const StepValueComponent = ({
 );
 
 StepValueComponent.propTypes = {
-    datasetFields: PropTypes.arrayOf(PropTypes.string).isRequired,
     handleChange: PropTypes.func.isRequired,
     field: fieldPropTypes.isRequired,
 };
-
-const mapStateToProps = state => ({
-    datasetFields: fromParsing.getParsedExcerptColumns(state),
-});
 
 const mapDispatchToProps = (dispatch, { field: { transformers } }) => ({
     handleChange: (valueTransformer) => {
@@ -72,5 +62,5 @@ const mapDispatchToProps = (dispatch, { field: { transformers } }) => ({
 });
 
 export default compose(
-    connect(mapStateToProps, mapDispatchToProps),
+    connect(null, mapDispatchToProps),
 )(StepValueComponent);

@@ -30,7 +30,6 @@ export const StepValueConcatComponent = ({
     p: polyglot,
     selected,
     columns,
-    datasetFields,
     handleChange,
     handleAddColumn,
     handleRemoveColumn,
@@ -53,7 +52,6 @@ export const StepValueConcatComponent = ({
                         removable={index > 1}
                         handleChange={handleChange}
                         handleRemoveColumn={handleRemoveColumn}
-                        datasetFields={datasetFields}
                     />
 
                 ))}
@@ -68,7 +66,6 @@ export const StepValueConcatComponent = ({
 
 StepValueConcatComponent.propTypes = {
     columns: PropTypes.arrayOf(PropTypes.string),
-    datasetFields: PropTypes.arrayOf(PropTypes.string).isRequired,
     handleChange: PropTypes.func.isRequired,
     handleSelect: PropTypes.func.isRequired,
     handleAddColumn: PropTypes.func.isRequired,

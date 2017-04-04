@@ -126,13 +126,13 @@ describe('Admin', () => {
             it('should configure transformer Link', async () => {
                 await driver.wait(elementIsClicked('#select_id_column'), DEFAULT_WAIT_TIMEOUT);
                 await driver.sleep(500); // animations
-                await driver.wait(until.elementLocated(By.css('.id-column-stronger_than')), DEFAULT_WAIT_TIMEOUT);
-                await driver.wait(elementIsClicked('.id-column-stronger_than'), DEFAULT_WAIT_TIMEOUT);
+                await driver.wait(until.elementLocated(By.css('.column-stronger_than')), DEFAULT_WAIT_TIMEOUT);
+                await driver.wait(elementIsClicked('.column-stronger_than'), DEFAULT_WAIT_TIMEOUT);
 
                 await driver.wait(elementIsClicked('#select_ref_column'), DEFAULT_WAIT_TIMEOUT);
                 await driver.sleep(500); // animations
-                await driver.wait(until.elementLocated(By.css('.ref-column-id')), DEFAULT_WAIT_TIMEOUT);
-                await driver.wait(elementIsClicked('.ref-column-id'), DEFAULT_WAIT_TIMEOUT);
+                await driver.wait(until.elementLocated(By.css('.column-id')), DEFAULT_WAIT_TIMEOUT);
+                await driver.wait(elementIsClicked('.column-id'), DEFAULT_WAIT_TIMEOUT);
 
                 await driver.wait(elementIsClicked('.btn-save'), DEFAULT_WAIT_TIMEOUT);
                 await driver.wait(stalenessOf(fieldForm, DEFAULT_WAIT_TIMEOUT));
