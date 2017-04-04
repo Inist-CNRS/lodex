@@ -108,12 +108,6 @@ describe('Admin', () => {
             await driver.wait(elementsCountIs('.composite-field', 2, DEFAULT_WAIT_TIMEOUT));
         });
 
-        it('should change the separator', async () => {
-            const separator = await driver.findElement(By.css('#textbox_separator'));
-            await separator.clear();
-            await separator.sendKeys('-');
-        });
-
         it('should save the field', async () => {
             const saveButton = '.btn-save';
             await driver.wait(elementIsClicked(saveButton), DEFAULT_WAIT_TIMEOUT);

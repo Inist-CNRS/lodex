@@ -8,7 +8,6 @@ import {
     validateCompletesField,
     validateComposedOf,
     validateComposedOfFields,
-    validateComposedOfSeparator,
     validateComposedOfField,
     validateCover,
     validateField,
@@ -368,45 +367,6 @@ describe('validateField', () => {
                 isValid: false,
                 error: 'contribution_no_composed_of',
             });
-        });
-    });
-
-    describe('validateComposedOfSeparator', () => {
-        it('should return valid result if composedOf.separator is valid', () => {
-            expect(validateComposedOfSeparator({
-                composedOf: {
-                    separator: ' ',
-                },
-            })).toEqual({
-                name: 'composedOf.separator',
-                isValid: true,
-            });
-        });
-
-        it('should return invalid result if composedOf.separator is invalid', () => {
-            expect(validateComposedOfSeparator({
-                composedOf: {
-                    separator: [],
-                },
-            })).toEqual({
-                name: 'composedOf.separator',
-                isValid: false,
-                error: 'invalid',
-            });
-        });
-
-        it('should return required error if composedOf.separator is absent', () => {
-            expect(validateComposedOfSeparator({
-                composedOf: {},
-            })).toEqual({
-                name: 'composedOf.separator',
-                isValid: false,
-                error: 'required',
-            });
-        });
-
-        it('should return null if no composedOf', () => {
-            expect(validateComposedOfSeparator({})).toEqual(null);
         });
     });
 
