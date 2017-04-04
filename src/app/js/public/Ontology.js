@@ -7,14 +7,21 @@ import memoize from 'lodash.memoize';
 
 import { field as fieldPropTypes, polyglot as polyglotPropTypes } from '../propTypes';
 import { fromPublication } from './selectors';
+import { isLoggedIn as getIsLoggedIn } from '../user';
 import { languages } from '../../../../config.json';
 import getFieldClassName from '../lib/getFieldClassName';
 import EditOntologyField from './EditOntologyField';
+import ExportFieldsButton from './ExportFieldsButton';
 
 const styles = {
     container: {
         display: 'flex',
         flexDirection: 'column',
+        marginTop: '3rem',
+    },
+    exportContainer: {
+        display: 'flex',
+        justifyContent: 'flex-end',
         marginTop: '3rem',
     },
     field: memoize(hasBorder => ({
@@ -38,10 +45,16 @@ const styles = {
         minWidth: '10rem',
         textAlign: 'right',
     },
+    icon: { color: 'black' },
 };
 
-export const OntologyComponent = ({ fields, p: polyglot }) => (
+export const OntologyComponent = ({ fields, isLoggedIn, p: polyglot }) => (
     <div className="ontology" style={styles.container}>
+        {isLoggedIn &&
+            <div style={styles.exportContainer}>
+                <ExportFieldsButton iconStyle={styles.icon} />
+            </div>
+        }
         {fields.map((field, index) => (
             <div key={field.name} style={styles.field(index < fields.length - 1)}>
 
@@ -89,11 +102,13 @@ export const OntologyComponent = ({ fields, p: polyglot }) => (
 
 OntologyComponent.propTypes = {
     fields: PropTypes.arrayOf(fieldPropTypes).isRequired,
+    isLoggedIn: PropTypes.bool.isRequired,
     p: polyglotPropTypes.isRequired,
 };
 
 const mapStateToProps = state => ({
     fields: fromPublication.getFields(state),
+    isLoggedIn: getIsLoggedIn(state),
 });
 
 export default compose(
