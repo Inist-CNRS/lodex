@@ -1,5 +1,5 @@
 npm:
-    image: node:7.4.0
+    image: node:7.8.0
     volumes:
         - .:/app
     working_dir: /app
