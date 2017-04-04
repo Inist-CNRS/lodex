@@ -12,6 +12,7 @@ import { getTransformerMetas } from '../../../../../common/transformers';
 import StepValueValue from './StepValueValue';
 import StepValueColumn from './StepValueColumn';
 import StepValueLink from './StepValueLink';
+import StepValueConcat from './StepValueConcat';
 
 export const StepValueComponent = ({
     datasetFields,
@@ -30,6 +31,11 @@ export const StepValueComponent = ({
             onChange={handleChange}
         />
         <StepValueLink
+            datasetFields={datasetFields}
+            field={field}
+            onChange={handleChange}
+        />
+        <StepValueConcat
             datasetFields={datasetFields}
             field={field}
             onChange={handleChange}

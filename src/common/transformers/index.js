@@ -3,6 +3,7 @@ import COLUMN from './COLUMN';
 import UPPERCASE from './UPPERCASE';
 import LINK from './LINK';
 import VALUE from './VALUE';
+import CONCAT from './CONCAT';
 
 const transformers = {
     AUTOGENERATE_URI,
@@ -10,6 +11,7 @@ const transformers = {
     UPPERCASE,
     LINK,
     VALUE,
+    CONCAT,
 };
 
 export default transformers;
@@ -20,6 +22,7 @@ const transformersMetas = [
     LINK,
     UPPERCASE,
     VALUE,
+    CONCAT,
 ].map(transformation => transformation.getMetas());
 
 export const getTransformersMetas = type => (type ? transformersMetas.filter(m => m.type === type) : transformersMetas);
