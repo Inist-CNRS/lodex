@@ -18,7 +18,7 @@ import {
 export const FieldInputComponent = ({ field, completedField, p: polyglot, input }) => {
     let label = field.label;
     if (completedField) {
-        label = `${label} (${polyglot.t('complete_field_X', { field: completedField.label })})`;
+        label = `${label} (${polyglot.t('completes_field_X', { field: completedField.label })})`;
     }
 
     if (field.composedOf) {
