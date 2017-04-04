@@ -77,10 +77,10 @@ describe('field routes', () => {
     });
 
     describe('importFields', () => {
-        const rawBody = createSpy().andReturn(JSON.stringify([
+        const getUploadedFields = createSpy().andReturn([
             { name: 'field1', label: 'Field 1' },
             { name: 'field2', label: 'Field 2' },
-        ]));
+        ]);
         const ctx = {
             req: 'request',
             field: {
@@ -89,23 +89,23 @@ describe('field routes', () => {
             },
         };
         it('should call rawBody', async () => {
-            await importFields(rawBody)(ctx);
-            expect(rawBody).toHaveBeenCalledWith('request');
+            await importFields(getUploadedFields)(ctx);
+            expect(getUploadedFields).toHaveBeenCalledWith('request');
         });
 
         it('should call ctx.field.remove', async () => {
-            await importFields(rawBody)(ctx);
+            await importFields(getUploadedFields)(ctx);
             expect(ctx.field.remove).toHaveBeenCalled();
         });
 
         it('should call ctx.field.create for each field', async () => {
-            await importFields(rawBody)(ctx);
+            await importFields(getUploadedFields)(ctx);
             expect(ctx.field.create).toHaveBeenCalledWith({ label: 'Field 1' }, 'field1');
             expect(ctx.field.create).toHaveBeenCalledWith({ label: 'Field 2' }, 'field2');
         });
 
         it('should set ctx.status to 200', async () => {
-            await importFields(rawBody)(ctx);
+            await importFields(getUploadedFields)(ctx);
             expect(ctx.status).toEqual(200);
         });
     });
