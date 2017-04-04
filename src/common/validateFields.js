@@ -151,37 +151,6 @@ export const validateComposedOf = (field, isContribution) => {
     return result;
 };
 
-export const validateComposedOfSeparator = (field) => {
-    if (!field.composedOf) {
-        return null;
-    }
-
-    const result = {
-        name: 'composedOf.separator',
-        isValid: true,
-    };
-
-    const { separator } = field.composedOf;
-
-    if (!separator) {
-        return {
-            ...result,
-            isValid: false,
-            error: 'required',
-        };
-    }
-
-    if (typeof separator !== 'string') {
-        return {
-            ...result,
-            isValid: false,
-            error: 'invalid',
-        };
-    }
-
-    return result;
-};
-
 export const validateComposedOfFields = (field) => {
     if (!field.composedOf) {
         return null;
@@ -313,7 +282,6 @@ export const validateField = (field, isContribution = false, fields = []) => {
         validateTransformers(field, isContribution),
         validateCompletesField(field, fields),
         validateComposedOf(field, isContribution),
-        validateComposedOfSeparator(field),
         validateComposedOfFields(field),
         validateLanguage(field),
     ].filter(d => !!d);
