@@ -2,11 +2,7 @@
 
 import React, { PropTypes } from 'react';
 import RadioButton from 'material-ui/RadioButton';
-import SelectField from 'material-ui/SelectField';
-import MenuItem from 'material-ui/MenuItem';
 import FlatButton from 'material-ui/FlatButton';
-import IconButton from 'material-ui/IconButton';
-import ActionDeleteIcon from 'material-ui/svg-icons/action/delete';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
 import withHandlers from 'recompose/withHandlers';
@@ -15,6 +11,7 @@ import { formValueSelector } from 'redux-form';
 
 import { FIELD_FORM_NAME } from '../';
 import { polyglot as polyglotPropTypes } from '../../../propTypes';
+import ConcatField from './ConcatField';
 
 const styles = {
     inset: {
@@ -49,29 +46,15 @@ export const StepValueConcatComponent = ({
         {selected &&
             <div style={styles.inset}>
                 {columns.map((column, index) => (
-                    <div key={`${column}_${index}`}>
-                        <SelectField
-                            id="select_column"
-                            onChange={(event, key, value) => handleChange(event, key, value, index)}
-                            style={styles.select}
-                            hintText={polyglot.t('select_a_column')}
-                            value={column}
-                        >
-                            {datasetFields.map(datasetField => (
-                                <MenuItem
-                                    key={datasetField}
-                                    value={datasetField}
-                                    primaryText={datasetField}
-                                />
-                            ))}
-                        </SelectField>
-                        <IconButton
-                            tooltip={polyglot.t('remove_column')}
-                            onClick={() => handleRemoveColumn(index)}
-                        >
-                            <ActionDeleteIcon />
-                        </IconButton>
-                    </div>
+                    <ConcatField
+                        key={index}
+                        index={index}
+                        column={column}
+                        handleChange={handleChange}
+                        handleRemoveColumn={handleRemoveColumn}
+                        datasetFields={datasetFields}
+                    />
+
                 ))}
                 <FlatButton
                     label={polyglot.t('add_column')}
