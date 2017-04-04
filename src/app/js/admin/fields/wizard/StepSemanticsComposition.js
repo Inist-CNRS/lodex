@@ -41,7 +41,7 @@ export const StepSemanticsCompositionComponent = ({
     separator,
 }) => (
     <div>
-        <Subheader style={styles.header}>{polyglot.t('composed_of')}</Subheader>
+        <Subheader style={styles.header}>{polyglot.t('wizard_composed_of')}</Subheader>
         <div style={styles.inset}>
             {columns.map((col, index) => (
                 <div
