@@ -6,7 +6,6 @@ import translate from 'redux-polyglot/translate';
 import FlatButton from 'material-ui/FlatButton';
 
 import { uploadFile } from './';
-import { fromUpload } from '../selectors';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 
 const styles = {
