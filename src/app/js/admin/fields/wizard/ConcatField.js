@@ -12,11 +12,8 @@ import withHandlers from 'recompose/withHandlers';
 import { polyglot as polyglotPropTypes } from '../../../propTypes';
 
 const styles = {
-    inset: {
-        paddingLeft: 40,
-    },
-    radio: {
-        marginTop: 12,
+    container: {
+        display: 'flex',
     },
     select: {
         width: '100%',
@@ -29,8 +26,9 @@ export const ConcatFieldComponent = ({
     handleChange,
     handleRemoveColumn,
     column,
+    removable,
 }) => (
-    <div>
+    <div style={styles.container}>
         <SelectField
             id="select_column"
             onChange={handleChange}
@@ -46,12 +44,12 @@ export const ConcatFieldComponent = ({
                 />
             ))}
         </SelectField>
-        <IconButton
+        {removable && <IconButton
             tooltip={polyglot.t('remove_column')}
             onClick={handleRemoveColumn}
         >
             <ActionDeleteIcon />
-        </IconButton>
+        </IconButton>}
     </div>
 );
 
@@ -60,6 +58,7 @@ ConcatFieldComponent.propTypes = {
     column: PropTypes.string,
     handleChange: PropTypes.func.isRequired,
     handleRemoveColumn: PropTypes.func.isRequired,
+    removable: PropTypes.bool.isRequired,
     p: polyglotPropTypes.isRequired,
 };
 

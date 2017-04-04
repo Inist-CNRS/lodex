@@ -37,7 +37,7 @@ export const StepValueConcatComponent = ({
 }) => (
     <div>
         <RadioButton
-            label={polyglot.t('a_concat')}
+            label={polyglot.t('multi_field_concat')}
             value="concat"
             onClick={handleSelect}
             checked={selected}
@@ -50,6 +50,7 @@ export const StepValueConcatComponent = ({
                         key={index}
                         index={index}
                         column={column}
+                        removable={index > 1}
                         handleChange={handleChange}
                         handleRemoveColumn={handleRemoveColumn}
                         datasetFields={datasetFields}
