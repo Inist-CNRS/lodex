@@ -15,7 +15,22 @@ describe('upload reduce', () => {
         .toEqual(defaultState);
     });
 
-    it('should set status to PENDING and to error false on UPLOAD_FILE', () => {
+    it('should set status to PENDING and to error false on UPLOAD_FILE with a file', () => {
+        expect(reducer({
+            state: 'value',
+        }, {
+            type: UPLOAD_FILE,
+            payload: {},
+        }))
+        .toEqual({
+            state: 'value',
+            error: false,
+            status: 'PENDING',
+        });
+    });
+
+
+    it('should return state as is on UPLOAD_FILE without a file (cancel file selection dialog)', () => {
         expect(reducer({
             state: 'value',
         }, {
@@ -23,8 +38,6 @@ describe('upload reduce', () => {
         }))
         .toEqual({
             state: 'value',
-            error: false,
-            status: 'PENDING',
         });
     });
 
