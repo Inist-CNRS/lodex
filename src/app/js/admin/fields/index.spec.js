@@ -231,6 +231,14 @@ describe('field reducer', () => {
                 expect(getLineCol({ field: 'value', other: 'data' }))
                     .toEqual('value');
             });
+            it('should stringify result if it is an array', () => {
+                const field = {
+                    name: 'field',
+                };
+                const getLineCol = getLineColGetterFromAllFields({ field }, field);
+                expect(getLineCol({ field: ['value1', 'value2'], other: 'data' }))
+                    .toEqual('["value1","value2"]');
+            });
         });
 
         describe('getFieldsForPreview', () => {
