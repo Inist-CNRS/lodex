@@ -36,7 +36,7 @@ const PropertyEdition = ({ completedField, name, label, onChange, scheme, value,
     let finalLabel = label;
 
     if (completedField) {
-        finalLabel = `${label} (${polyglot.t('complete_field_X', { field: completedField.label })})`;
+        finalLabel = `${label} (${polyglot.t('completes_field_X', { field: completedField.label })})`;
     }
 
     return (

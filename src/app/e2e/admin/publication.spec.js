@@ -330,7 +330,7 @@ describe('Admin', () => {
                 ), DEFAULT_WAIT_TIMEOUT);
 
                 const th = '.publication-excerpt-for-edition th .completes_title';
-                await driver.wait(elementTextMatches(th, /Completes Title/, DEFAULT_WAIT_TIMEOUT));
+                await driver.wait(elementTextMatches(th, /Annotates Title/, DEFAULT_WAIT_TIMEOUT));
 
                 const saveButton = '.btn-save';
                 await driver.wait(elementIsClicked(saveButton), DEFAULT_WAIT_TIMEOUT);

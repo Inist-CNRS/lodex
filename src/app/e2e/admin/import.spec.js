@@ -122,7 +122,7 @@ describe('Admin', () => {
                     By.css('.publication-preview th .completes_title'),
                 ), DEFAULT_WAIT_TIMEOUT);
                 const th = '.publication-preview th:nth-child(5) .completes_title';
-                await driver.wait(elementTextIs(th, 'Completes Title', DEFAULT_WAIT_TIMEOUT));
+                await driver.wait(elementTextIs(th, 'Annotates Title', DEFAULT_WAIT_TIMEOUT));
 
                 const tds = await driver.findElements(By.css('.publication-preview tr td:nth-child(5)'));
                 expect(tds.length).toBe(5);
