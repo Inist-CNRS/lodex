@@ -87,7 +87,11 @@ const mapStateToProps = (state) => {
     if (valueTransformer) {
         return {
             selected: true,
-            columns: (valueTransformer.args && valueTransformer.args[0] && valueTransformer.args[0].value) || [],
+            columns: (
+                valueTransformer.args &&
+                valueTransformer.args[0] &&
+                valueTransformer.args.map(({ value }) => value)
+            ) || [],
         };
     }
 
@@ -101,47 +105,51 @@ export default compose(
             onChange({
                 operation: 'CONCAT',
                 args: [{
-                    name: 'columns',
-                    type: 'columns',
-                    value: [null, null],
+                    name: 'column',
+                    type: 'column',
+                    value: null,
+                }, {
+                    name: 'column',
+                    type: 'column',
+                    value: null,
                 }],
             });
         },
         handleChange: ({ onChange, columns }) => (event, key, value, index) => {
             onChange({
                 operation: 'CONCAT',
-                args: [{
-                    name: 'columns',
-                    type: 'columns',
-                    value: [
-                        ...columns.slice(0, index),
-                        value,
-                        ...columns.slice(index + 1),
-                    ],
-                }],
+                args: [
+                    ...columns.slice(0, index),
+                    value,
+                    ...columns.slice(index + 1),
+                ].map(v => ({
+                    name: 'column',
+                    type: 'column',
+                    value: v,
+                })),
             });
         },
         handleAddColumn: ({ onChange, columns }) => {
             onChange({
                 operation: 'CONCAT',
-                args: [{
-                    name: 'columns',
-                    type: 'columns',
-                    value: [...columns, null],
-                }],
+                args: [...columns, null].map(v => ({
+                    name: 'column',
+                    type: 'column',
+                    value: v,
+                })),
             });
         },
         handleRemoveColumn: ({ onChange, columns }) => (index) => {
             onChange({
                 operation: 'CONCAT',
-                args: [{
-                    name: 'columns',
-                    type: 'columns',
-                    value: [
-                        ...columns.slice(0, index),
-                        ...columns.slice(index + 1),
-                    ],
-                }],
+                args: [
+                    ...columns.slice(0, index),
+                    ...columns.slice(index + 1),
+                ].map(v => ({
+                    name: 'column',
+                    type: 'column',
+                    value: v,
+                })),
             });
         },
     }),
