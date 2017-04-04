@@ -226,5 +226,7 @@ export default (db) => {
 
     collection.findDistinctValuesForField = field => collection.distinct(`versions.${field}`);
 
+    collection.countByFacet = (field, value) => collection.count({ [`versions.${field}`]: value });
+
     return collection;
 };
