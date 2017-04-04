@@ -7,7 +7,7 @@ import { getResourceUri } from '../../../../common/uris';
 
 const getHumanUri = (uri) => {
     if (uri.startsWith('uid:/')) {
-        return `uid:/${decodeURIComponent(uri.substr(4))}`;
+        return `uid:/${decodeURIComponent(uri.substr(5))}`;
     }
 
     return uri;
