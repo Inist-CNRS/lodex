@@ -48,8 +48,8 @@ export class DatasetComponent extends Component {
         const { columns, dataset, loading, p: polyglot, total, perPage, currentPage } = this.props;
         if (loading) return <Loading>{polyglot.t('loading')}</Loading>;
         return (
-            <div style={styles.wrapper}>
-                <Table className="dataset" selectable={false} fixedHeader={false} style={styles.table}>
+            <div className="dataset" style={styles.wrapper}>
+                <Table selectable={false} fixedHeader={false} style={styles.table}>
                     <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
                         <TableRow>
                             {columns.map(c => <DatasetColumnHeader
