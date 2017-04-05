@@ -178,4 +178,6 @@ export default {
     'easy-update': 'Vous pourrez toujours facilement les modifier et les enrichir avec une garantie de traçabilité.',
     'first-upload': 'Commencez en chargeant un fichier de données.',
     'publish-punchline': 'Publiez vos données, vous pourrez toujours facilement les modifier et les enrichir à posteriori avec une garantie de traçabilité.',
+    remove_column: 'Remove this column(FR)',
+    multi_field_concat: 'A list of values from several existing columns(FR)',
 };
