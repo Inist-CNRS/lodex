@@ -16,9 +16,6 @@ const styles = {
     container: {
         paddingLeft: '2rem',
         marginLeft: '2rem',
-        marginTop: '2rem',
-        paddingTop: '1rem',
-        paddingBottom: '2rem',
         borderLeft: '5px dotted rgb(224, 224, 224)',
     },
 };

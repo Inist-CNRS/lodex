@@ -29,6 +29,7 @@ const mapStateToProps = (state, { field, resource, onSaveProperty, style, p }) =
     label: p.t('edit_field', { field: field.label }),
     icon: <EditIcon />,
     style,
+    buttonStyle: { padding: 0, height: 'auto', width: 'auto' },
 });
 
 const mapDispatchToProps = (dispatch, { field: { name } }) => ({
