@@ -46,7 +46,7 @@ The only requirement is to provide an `index.html` file containing an element wi
 
 It is your responsability to include links to the administration and authentication pages:
 
-- administation: href must target `/admin`
+- administration: href must target `/admin`
 - authentication: href must target `#/login`
 
 You can download the original layout from EzMaster to get started.
@@ -434,3 +434,14 @@ The meta object have the following keys
     + type: The type of the arg, either:
         - column: the value is the name of a column in the original dataset
         - string: a string
+
+## Troubleshooting
+
+### Behind a proxy
+If you launch lodex behind a proxy, environment variables `http_proxy`, `https_proxy` (optionally `no_proxy`) are required.
+Otherwise, you could get this error after `make docker-run-dev:
+
+```
+npm http request GET https://registry.npmjs.org/pm2
+npm info retry will retry, error on last attempt: Error: connect ETIMEDOUT
+```
