@@ -1,7 +1,9 @@
 import uri from './uri';
+import html from './html';
 import DefaultFormat from './DefaultFormat';
 
 const components = {
+    html,
     uri,
 };
 

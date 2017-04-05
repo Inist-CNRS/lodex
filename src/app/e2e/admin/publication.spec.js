@@ -408,6 +408,7 @@ describe('Admin', () => {
                 await driver.wait(elementIsClicked(button), DEFAULT_WAIT_TIMEOUT);
                 await driver.wait(stalenessOf(button, DEFAULT_WAIT_TIMEOUT));
                 await driver.wait(elementsCountIs('.publication-preview th', 5));
+                await waitForPreviewComputing();
             });
 
             it('should have updated the preview', async () => {
@@ -452,6 +453,7 @@ describe('Admin', () => {
                 await driver.wait(elementIsClicked(cancelButton), DEFAULT_WAIT_TIMEOUT);
                 await driver.wait(stalenessOf(fieldForm, DEFAULT_WAIT_TIMEOUT));
                 await driver.sleep(500); // dialog animations
+                await waitForPreviewComputing();
             });
 
             it('should not have added the new column', async () => {
