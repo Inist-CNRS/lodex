@@ -15,7 +15,6 @@ import DatasetColumn from './DatasetColumn';
 import DatasetColumnHeader from './DatasetColumnHeader';
 import Pagination from '../../lib/Pagination';
 import Loading from '../../lib/Loading';
-import ScrollableCardContent from '../../lib/ScrollableCardContent';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { loadDatasetPage as loadDatasetPageAction } from './';
 import { fromPublication, fromDataset } from '../selectors';
@@ -49,7 +48,7 @@ export class DatasetComponent extends Component {
         const { columns, dataset, loading, p: polyglot, total, perPage, currentPage } = this.props;
         if (loading) return <Loading>{polyglot.t('loading')}</Loading>;
         return (
-            <ScrollableCardContent className="dataset" style={styles.wrapper}>
+            <div className="dataset" style={styles.wrapper}>
                 <Table selectable={false} fixedHeader={false} style={styles.table}>
                     <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
                         <TableRow>
@@ -95,7 +94,7 @@ export class DatasetComponent extends Component {
                 <CardActions style={styles.actions}>
                     <AddCharacteristic />
                 </CardActions>
-            </ScrollableCardContent>
+            </div>
         );
     }
 }

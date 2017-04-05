@@ -20,7 +20,7 @@ export const PublicationPreviewTitleComponent = ({ isComputing, p: polyglot }) =
         <CircularProgress
             className="publication-preview-is-computing"
             style={styles.progress(isComputing)}
-            size={20}
+            size={10}
         />
     </div>
 );

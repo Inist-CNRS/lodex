@@ -46,50 +46,48 @@ export const ParsingExcerptComponent = ({
     const total = lines.length;
 
     return (
-        <div>
-            <Table selectable={false} fixedHeader={false} style={styles.table}>
-                <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
-                    <TableRow>
-                        {columns.map(c => <TableHeaderColumn key={`header_${c}`}>{c}</TableHeaderColumn>)}
-                    </TableRow>
-                </TableHeader>
-                <TableBody style={styles.body} displayRowCheckbox={false}>
-                    {lines.map((line, index) => (
-                        <TableRow
-                            displayBorder={false}
-                            key={`${line._id}_data_row`}
-                            style={getRowStyle(index, total)}
-                        >
-                            {columns.map(c => (
-                                <ParsingExcerptColumn
-                                    key={`${c}_${line._id}`}
-                                    value={line[c]}
+        <Table selectable={false} fixedHeader={false} style={styles.table}>
+            <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
+                <TableRow>
+                    {columns.map(c => <TableHeaderColumn key={`header_${c}`}>{c}</TableHeaderColumn>)}
+                </TableRow>
+            </TableHeader>
+            <TableBody style={styles.body} displayRowCheckbox={false}>
+                {lines.map((line, index) => (
+                    <TableRow
+                        displayBorder={false}
+                        key={`${line._id}_data_row`}
+                        style={getRowStyle(index, total)}
+                    >
+                        {columns.map(c => (
+                            <ParsingExcerptColumn
+                                key={`${c}_${line._id}`}
+                                value={line[c]}
+                            >
+                                <Transition
+                                    component={false}
+                                    enter={{
+                                        opacity: spring(1),
+                                    }}
+                                    leave={{
+                                        opacity: 0,
+                                    }}
+                                    runOnMount
                                 >
-                                    <Transition
-                                        component={false}
-                                        enter={{
-                                            opacity: spring(1),
-                                        }}
-                                        leave={{
-                                            opacity: 0,
-                                        }}
-                                        runOnMount
-                                    >
-                                        {showAddColumns && index === total - 3 &&
-                                            <ParsingExcerptAddColumn
-                                                key={`add_column_${c}`}
-                                                name={c}
-                                                onAddColumn={handleAddColumn}
-                                            />
-                                        }
-                                    </Transition>
-                                </ParsingExcerptColumn>
-                            ))}
-                        </TableRow>
-                    ))}
-                </TableBody>
-            </Table>
-        </div>
+                                    {showAddColumns && index === total - 3 &&
+                                        <ParsingExcerptAddColumn
+                                            key={`add_column_${c}`}
+                                            name={c}
+                                            onAddColumn={handleAddColumn}
+                                        />
+                                    }
+                                </Transition>
+                            </ParsingExcerptColumn>
+                        ))}
+                    </TableRow>
+                ))}
+            </TableBody>
+        </Table>
     );
 };
 

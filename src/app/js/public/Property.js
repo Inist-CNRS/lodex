@@ -27,6 +27,7 @@ const styles = {
         color: grey500,
         flexGrow: 2,
         fontWeight: 'bold',
+        fontSize: '1rem',
         textDecoration: status === REJECTED ? 'line-through' : 'none',
     })),
     language: {

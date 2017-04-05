@@ -30,13 +30,15 @@ const styles = {
         display: 'flex',
         flexDirection: 'column',
     },
-    item: memoize((index, total) => ({
+    topItem: {
         display: 'flex',
         flexDirection: 'column',
-        borderBottom: index < total - 1 ? '1px solid rgb(224, 224, 224)' : 'none',
-        paddingBottom: index < total - 1 ? '3rem' : 0,
-        paddingTop: '2rem',
-    })),
+    },
+    item: {
+        display: 'flex',
+        flexDirection: 'column',
+        padding: '0.5rem',
+    },
     property: {
         flexGrow: 2,
     },
@@ -47,6 +49,9 @@ const styles = {
     },
     tabButton: {
         color: cyan500,
+    },
+    propertiesContainer: {
+        paddingTop: '1rem',
     },
     actions: {
         display: 'flex',
@@ -73,8 +78,8 @@ export const DetailComponent = ({
         <div className="detail">
             <Card>
                 <CardText style={styles.container}>
-                    {topFields.map((field, index) => (
-                        <div key={field.name} style={styles.item(index, topFields.length)}>
+                    {topFields.map(field => (
+                        <div key={field.name} style={styles.topItem}>
                             <Property
                                 field={field}
                                 isSaving={isSaving}
@@ -94,17 +99,19 @@ export const DetailComponent = ({
                             buttonStyle={styles.tabButton}
                             label={polyglot.t('resource_details')}
                         >
-                            {otherFields.map((field, index) => (
-                                <div key={field.name} style={styles.item(index, otherFields.length)}>
-                                    <Property
-                                        field={field}
-                                        isSaving={isSaving}
-                                        onSaveProperty={handleSaveResource}
-                                        resource={resource}
-                                        style={styles.property}
-                                    />
-                                </div>
-                            ))}
+                            <div style={styles.propertiesContainer}>
+                                {otherFields.map(field => (
+                                    <div key={field.name} style={styles.item}>
+                                        <Property
+                                            field={field}
+                                            isSaving={isSaving}
+                                            onSaveProperty={handleSaveResource}
+                                            resource={resource}
+                                            style={styles.property}
+                                        />
+                                    </div>
+                                ))}
+                            </div>
                         </Tab>
                         <Tab
                             className="tab-resource-export"

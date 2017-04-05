@@ -18,6 +18,9 @@ const styles = {
         marginRight: 8,
         marginTop: 8,
     },
+    textbox: {
+        fontSize: '1.5rem',
+    },
 };
 
 export const FilterComponent = ({ handleFilterChange, hasSearchableFields, isDatasetLoading, p: polyglot }) => (
@@ -34,6 +37,7 @@ export const FilterComponent = ({ handleFilterChange, hasSearchableFields, isDat
                 className="filter"
                 hintText={polyglot.t('filter')}
                 onChange={(_, e) => handleFilterChange(e)}
+                style={styles.textbox}
             />
         </ToolbarGroup>
     )

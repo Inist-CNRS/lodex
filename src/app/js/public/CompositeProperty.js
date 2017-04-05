@@ -13,14 +13,13 @@ const styles = {
     container: {
         paddingLeft: '2rem',
         marginLeft: '2rem',
-        marginTop: '2rem',
         borderLeft: '5px dotted rgb(224, 224, 224)',
         display: 'flex',
         flexDirection: 'column',
     },
     property: {
-        paddingTop: '1rem',
-        paddingBottom: '1rem',
+        paddingTop: '0.5rem',
+        paddingBottom: '0.5rem',
     },
 };
 
