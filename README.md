@@ -439,7 +439,7 @@ The meta object have the following keys
 
 ### Behind a proxy
 If you launch lodex behind a proxy, environment variables `http_proxy`, `https_proxy` (optionally `no_proxy`) are required.
-Otherwise, you could get this error after `make docker-run-dev:
+Otherwise, you could get this error after `make docker-run-dev`:
 
 ```
 npm http request GET https://registry.npmjs.org/pm2
