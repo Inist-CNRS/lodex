@@ -8,6 +8,7 @@ import compose from 'recompose/compose';
 import withHandlers from 'recompose/withHandlers';
 import { connect } from 'react-redux';
 import { formValueSelector } from 'redux-form';
+import get from 'lodash.get';
 
 import { FIELD_FORM_NAME } from '../';
 import { polyglot as polyglotPropTypes } from '../../../propTypes';
@@ -81,17 +82,15 @@ StepValueConcatComponent.defaultProps = {
 const mapStateToProps = (state) => {
     const transformers = formValueSelector(FIELD_FORM_NAME)(state, 'transformers');
     const valueTransformer =
-        transformers && transformers[0] && transformers[0].operation === 'CONCAT'
+        get(transformers, '[0].operation') === 'CONCAT'
         ? transformers[0]
         : null;
     if (valueTransformer) {
+        const args = get(valueTransformer, 'args', []);
         return {
             selected: true,
-            columns: (
-                valueTransformer.args &&
-                valueTransformer.args[0] &&
-                valueTransformer.args.map(({ value }) => value)
-            ) || [],
+            columns: args.map(({ value }) => value),
+            args,
         };
     }
 
@@ -115,41 +114,40 @@ export default compose(
                 }],
             });
         },
-        handleChange: ({ onChange, columns }) => (event, key, value, index) => {
+        handleChange: ({ onChange, args }) => (event, key, value, index) => {
             onChange({
                 operation: 'CONCAT',
                 args: [
-                    ...columns.slice(0, index),
-                    value,
-                    ...columns.slice(index + 1),
-                ].map(v => ({
-                    name: 'column',
-                    type: 'column',
-                    value: v,
-                })),
+                    ...args.slice(0, index),
+                    {
+                        name: 'column',
+                        type: 'column',
+                        value,
+                    },
+                    ...args.slice(index + 1),
+                ],
             });
         },
-        handleAddColumn: ({ onChange, columns }) => {
-            onChange({
-                operation: 'CONCAT',
-                args: [...columns, null].map(v => ({
-                    name: 'column',
-                    type: 'column',
-                    value: v,
-                })),
-            });
-        },
-        handleRemoveColumn: ({ onChange, columns }) => (index) => {
+        handleAddColumn: ({ onChange, args }) => {
             onChange({
                 operation: 'CONCAT',
                 args: [
-                    ...columns.slice(0, index),
-                    ...columns.slice(index + 1),
-                ].map(v => ({
-                    name: 'column',
-                    type: 'column',
-                    value: v,
-                })),
+                    ...args,
+                    {
+                        name: 'column',
+                        type: 'column',
+                        value: null,
+                    },
+                ],
+            });
+        },
+        handleRemoveColumn: ({ onChange, args }) => (index) => {
+            onChange({
+                operation: 'CONCAT',
+                args: [
+                    ...args.slice(0, index),
+                    ...args.slice(index + 1),
+                ],
             });
         },
     }),
