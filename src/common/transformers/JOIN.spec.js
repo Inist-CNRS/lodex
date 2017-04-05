@@ -2,7 +2,7 @@ import expect from 'expect';
 
 import { join } from './JOIN';
 
-describe('UPPERCASE', () => {
+describe('JOIN', () => {
     it('should return joined value', () => {
         expect(join(['hello', 'world'], ' dear ')).toBe('hello dear world');
     });
@@ -12,6 +12,6 @@ describe('UPPERCASE', () => {
     });
 
     it('should throw an error if value is not an array', () => {
-        expect(() => join('hello', ' ')).toThrow('null');
+        expect(() => join('hello', ' ')).toThrow('Invalid value: need an array');
     });
 });

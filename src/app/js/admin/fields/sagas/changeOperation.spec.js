@@ -1,9 +1,8 @@
 import expect from 'expect';
-import { put, select } from 'redux-saga/effects';
-import { change } from 'redux-form';
+import { call, select } from 'redux-saga/effects';
 
 import { fromFields } from '../../selectors';
-
+import updateReduxFormArray from '../../../lib/updateReduxFormArray';
 import { handleChangeOperation } from './changeOperation';
 
 describe('fields saga', () => {
@@ -16,7 +15,7 @@ describe('fields saga', () => {
 
         it('should put redux-form change', () => {
             expect(saga.next('transformer args').value)
-                .toEqual(put(change('field', 'fieldName.args', 'transformer args')));
+                .toEqual(call(updateReduxFormArray, 'field', 'fieldName.args', 'transformer args'));
         });
     });
 });
