@@ -1,6 +1,7 @@
 import omit from 'lodash.omit';
 import Koa from 'koa';
 import route from 'koa-route';
+import get from 'lodash.get';
 
 /* eslint no-await-in-loop: off */
 import getDocumentTransformer from '../../services/getDocumentTransformer';
@@ -120,6 +121,24 @@ export const doPublish = async (ctx) => {
 
     ctx.redirect('/api/publication');
 };
+
+export const verifyUri = async (ctx) => {
+    const uriField = await ctx.field.findOneByName('uri');
+    if (get(uriField, 'transformers[0].operation') === 'AUTOGENERATE_URI') {
+        ctx.body = { valid: true };
+        return;
+    }
+
+    const fields = get(uriField, 'transformers[0].args')
+        .filter(({ type }) => type === 'column')
+        .map(({ value }) => value);
+
+    ctx.body = {
+        valid: await ctx.dataset.ensureIsUnique(fields),
+    };
+};
+
+app.use(route.get('/verifyUri', verifyUri));
 
 app.use(route.post('/', preparePublish));
 app.use(route.post('/', handlePublishError));

@@ -48,6 +48,8 @@ export default async (db) => {
 
     collection.findOneById = id => collection.findOne({ _id: new ObjectID(id) });
 
+    collection.findOneByName = name => collection.findOne({ name });
+
     collection.create = async (fieldData, nameArg) => {
         const name = nameArg || await generateUid();
         let position = fieldData.position;
