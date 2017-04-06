@@ -46,7 +46,7 @@ The only requirement is to provide an `index.html` file containing an element wi
 
 It is your responsability to include links to the administration and authentication pages:
 
-- administation: href must target `/admin`
+- administration: href must target `/admin`
 - authentication: href must target `#/login`
 
 You can download the original layout from EzMaster to get started.
@@ -68,10 +68,16 @@ On EzMaster, you can edit the instance configuration:
 - `exporters`: Required - an array of the allowed exporters
 
 - `loader`: Required - an array of loaders (which import your data) with their options
+- `host`: Optional - the public host which will be used to generate resources URIs. It will fallback on the EzMaster environment variable `EZMASTER_PUBLIC_URL`. Format is `http://[host]` (no ending slash)
+
+- `mongo`: Optional - Allow to override the default mongo configuration given by ezMaster. You can override all or part of the config, available properties are :
+
+    - `host`: the host and port pointing to the mongo instance eg: `localhost:27017`
+    - `dbName`: The name of the database eg: `lodex`
 
 ### Technical documentation
 
-Technical configuration si handled by [node-config](https://github.com/lorenwest/node-config) and is located
+Technical configuration is handled by [node-config](https://github.com/lorenwest/node-config) and is located
 inside `./config`:
 
 - `default.js`: contains the default configuration which other files may override
@@ -428,3 +434,14 @@ The meta object have the following keys
     + type: The type of the arg, either:
         - column: the value is the name of a column in the original dataset
         - string: a string
+
+## Troubleshooting
+
+### Behind a proxy
+If you launch lodex behind a proxy, environment variables `http_proxy`, `https_proxy` (optionally `no_proxy`) are required.
+Otherwise, you could get this error after `make docker-run-dev`:
+
+```
+npm http request GET https://registry.npmjs.org/pm2
+npm info retry will retry, error on last attempt: Error: connect ETIMEDOUT
+```

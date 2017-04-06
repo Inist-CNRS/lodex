@@ -12,6 +12,7 @@ import { getSaveFieldRequest } from '../../../fetch';
 
 import {
     handleSaveField,
+    sanitizeField,
 } from './saveField';
 
 describe('fields saga', () => {
@@ -22,8 +23,13 @@ describe('fields saga', () => {
             expect(saga.next().value).toEqual(select(getFieldFormData));
         });
 
+        it('should call sanitizeField with field form data', () => {
+            expect(saga.next('field form data').value).toEqual(call(sanitizeField, 'field form data'));
+        });
+
         it('should select getSaveFieldRequest', () => {
-            expect(saga.next('field form data').value).toEqual(select(getSaveFieldRequest, 'field form data'));
+            expect(saga.next('sanitized field form data').value)
+                .toEqual(select(getSaveFieldRequest, 'sanitized field form data'));
         });
 
         it('should call fetchSaga with the request', () => {
@@ -36,6 +42,7 @@ describe('fields saga', () => {
 
         it('should put saveFieldError action with error if any', () => {
             const failedSaga = handleSaveField({ meta: { form: 'field' } });
+            failedSaga.next();
             failedSaga.next();
             failedSaga.next();
             failedSaga.next();

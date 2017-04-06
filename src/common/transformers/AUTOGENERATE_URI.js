@@ -20,7 +20,7 @@ export const autoGenerateUri = ({ naan, subpublisher }) => () => () =>
                 subpublisher: ARBITRARY_SUBPUBLISHER,
             });
 
-            return resolve(ark.parse(ark.generate()).identifier);
+            return resolve(`uid:/${ark.parse(ark.generate()).identifier}`);
         } catch (error) {
             return reject(error);
         }

@@ -50,9 +50,9 @@ describe('<Resource />', () => {
         expect(wrapper.find(Detail).length).toEqual(1);
     });
 
-    it('should display RemovedDetail if resource and mode is removed', () => {
+    it('should display RemovedDetail if resource is removed', () => {
         const props = {
-            mode: 'removed',
+            removed: true,
             loading: false,
             resource: 'resource',
             p: { t: () => {} },

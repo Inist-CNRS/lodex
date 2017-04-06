@@ -1,16 +1,15 @@
 import React, { PropTypes } from 'react';
 import RadioButton from 'material-ui/RadioButton';
-import SelectField from 'material-ui/SelectField';
-import MenuItem from 'material-ui/MenuItem';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
 import withHandlers from 'recompose/withHandlers';
 import withState from 'recompose/withState';
 import { connect } from 'react-redux';
 import { formValueSelector } from 'redux-form';
-import { FIELD_FORM_NAME } from '../';
 
+import { FIELD_FORM_NAME } from '../';
 import { polyglot as polyglotPropTypes } from '../../../propTypes';
+import SelectDatasetField from './SelectDatasetField';
 
 const styles = {
     inset: {
@@ -19,14 +18,10 @@ const styles = {
     radio: {
         marginTop: 12,
     },
-    select: {
-        width: '100%',
-    },
 };
 
 export const StepValueColumnComponent = ({
     column,
-    datasetFields,
     handleChange,
     handleSelect,
     p: polyglot,
@@ -42,21 +37,11 @@ export const StepValueColumnComponent = ({
         />
         {selected &&
             <div style={styles.inset}>
-                <SelectField
-                    id="select_column"
-                    onChange={handleChange}
-                    style={styles.select}
-                    hintText={polyglot.t('select_a_column')}
-                    value={column}
-                >
-                    {datasetFields.map(datasetField => (
-                        <MenuItem
-                            key={datasetField}
-                            value={datasetField}
-                            primaryText={datasetField}
-                        />
-                    ))}
-                </SelectField>
+                <SelectDatasetField
+                    handleChange={handleChange}
+                    label="select_a_column"
+                    column={column}
+                />
             </div>
         }
     </div>
@@ -64,7 +49,6 @@ export const StepValueColumnComponent = ({
 
 StepValueColumnComponent.propTypes = {
     column: PropTypes.string,
-    datasetFields: PropTypes.arrayOf(PropTypes.string).isRequired,
     handleChange: PropTypes.func.isRequired,
     handleSelect: PropTypes.func.isRequired,
     p: polyglotPropTypes.isRequired,

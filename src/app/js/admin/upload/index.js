@@ -10,11 +10,11 @@ export const defaultState = {
 };
 
 export default handleActions({
-    UPLOAD_FILE: state => ({
+    UPLOAD_FILE: (state, { payload }) => (payload ? ({
         ...state,
         error: false,
         status: 'PENDING',
-    }),
+    }) : state),
     UPLOAD_FILE_SUCCESS: state => ({
         ...state,
         status: 'SUCCESS',

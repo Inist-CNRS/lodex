@@ -34,14 +34,12 @@ export const StepSemanticsCompositionComponent = ({
     columns,
     fields,
     handleAddColumn,
-    handleChangeSeparator,
     handleSelectColumn,
     handleRemoveColumn,
     p: polyglot,
-    separator,
 }) => (
     <div>
-        <Subheader style={styles.header}>{polyglot.t('composed_of')}</Subheader>
+        <Subheader style={styles.header}>{polyglot.t('wizard_composed_of')}</Subheader>
         <div style={styles.inset}>
             {columns.map((col, index) => (
                 <div
@@ -80,13 +78,6 @@ export const StepSemanticsCompositionComponent = ({
                 label={polyglot.t('add_composition_column')}
                 onClick={handleAddColumn}
             />
-            <TextField
-                id="textbox_separator"
-                fullWidth
-                placeholder={polyglot.t('enter_a_separator')}
-                onChange={handleChangeSeparator}
-                value={separator}
-            />
         </div>
     </div>
 );
@@ -95,18 +86,13 @@ StepSemanticsCompositionComponent.propTypes = {
     columns: PropTypes.arrayOf(PropTypes.string).isRequired,
     fields: PropTypes.arrayOf(fieldPropTypes).isRequired,
     handleAddColumn: PropTypes.func.isRequired,
-    handleChangeSeparator: PropTypes.func.isRequired,
     handleSelectColumn: PropTypes.func.isRequired,
-    handleSelect: PropTypes.func.isRequired,
     handleRemoveColumn: PropTypes.func.isRequired,
     p: polyglotPropTypes.isRequired,
-    selected: PropTypes.bool.isRequired,
-    separator: PropTypes.string,
 };
 
 StepSemanticsCompositionComponent.defaultProps = {
     columns: ['', ''],
-    separator: undefined,
 };
 
 const mapStateToProps = (state) => {
@@ -116,7 +102,6 @@ const mapStateToProps = (state) => {
         return {
             selected: true,
             columns: composedOf.fields || ['', ''],
-            separator: composedOf.separator || '',
         };
     }
 
@@ -132,44 +117,34 @@ const mapDispatchToProps = dispatch => ({
 export default compose(
     connect(mapStateToProps, mapDispatchToProps),
     withHandlers({
-        handleSelect: ({ onChange, columns, separator }) => () => {
+        handleSelect: ({ onChange, columns }) => () => {
             onChange({
                 fields: columns,
-                separator,
             });
         },
-        handleChangeSeparator: ({ columns, onChange }) => (event) => {
-            onChange({
-                fields: columns,
-                separator: event.target.value,
-            });
-        },
-        handleSelectColumn: ({ columns, onChange, separator }) => index => (event, key, column) => {
+        handleSelectColumn: ({ columns, onChange }) => index => (event, key, column) => {
             onChange({
                 fields: [
                     ...columns.slice(0, index),
                     column,
                     ...columns.slice(index + 1),
                 ],
-                separator,
             });
         },
-        handleAddColumn: ({ columns, onChange, separator }) => () => {
+        handleAddColumn: ({ columns, onChange }) => () => {
             onChange({
                 fields: [
                     ...columns,
                     '',
                 ],
-                separator,
             });
         },
-        handleRemoveColumn: ({ columns, onChange, separator }) => index => () => {
+        handleRemoveColumn: ({ columns, onChange }) => index => () => {
             onChange({
                 fields: [
                     ...columns.slice(0, index),
                     ...columns.slice(index + 1),
                 ],
-                separator,
             });
         },
     }),

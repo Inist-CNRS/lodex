@@ -2,6 +2,8 @@ import { ObjectID } from 'mongodb';
 import chunk from 'lodash.chunk';
 import omit from 'lodash.omit';
 import compose from 'lodash.compose';
+import config from 'config';
+import { getResourceUri } from '../../common/uris';
 
 import { VALIDATED, PROPOSED } from '../../common/propositionStatus';
 
@@ -106,7 +108,14 @@ export default (db) => {
         )({ removedAt: { $exists: false } });
         const cursor = collection.getFindCursor(filters, sortBy, sortDir);
 
-        return cursor.stream();
+        return cursor
+            .map(resource => (
+                resource.uri.startsWith('http') ? resource : ({
+                    ...resource,
+                    uri: getResourceUri(resource, config.host),
+                })
+            ))
+            .stream();
     };
 
     collection.findById = async (id) => {
@@ -216,6 +225,8 @@ export default (db) => {
     };
 
     collection.findDistinctValuesForField = field => collection.distinct(`versions.${field}`);
+
+    collection.countByFacet = (field, value) => collection.count({ [`versions.${field}`]: value });
 
     return collection;
 };

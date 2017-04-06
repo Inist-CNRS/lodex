@@ -4,32 +4,34 @@ const ARK_URI = new RegExp(/ark:\/(\d{5,})/, 'i');
 
 export default async (ctx, next) => {
     const uri = ctx.path;
-    const matches = ARK_URI.exec(uri);
-
-    if (!uri.startsWith('ark:/') && !ctx.query.uri) {
+    if (!uri.startsWith('ark:/') && !uri.startsWith('uid:/') && !ctx.query.uri) {
         await next();
         return;
     }
+
+    const arkMatches = ARK_URI.exec(uri);
 
     if (ctx.query.uri) {
         ctx.body = await ctx.publishedDataset.findByUri(ctx.query.uri);
         return;
     }
 
-    if (!matches) {
+    if (!arkMatches) {
         ctx.status = 404;
         return;
     }
 
-    const ark = new InistArk({
-        naan: matches[1],
-    });
+    if (arkMatches) {
+        const ark = new InistArk({
+            naan: arkMatches[1],
+        });
 
-    const validation = ark.validate(uri);
+        const validation = ark.validate(uri);
 
-    if (!validation.ark) {
-        ctx.status = 404;
-        return;
+        if (!validation.ark) {
+            ctx.status = 404;
+            return;
+        }
     }
 
     ctx.body = await ctx.publishedDataset.findByUri(uri);

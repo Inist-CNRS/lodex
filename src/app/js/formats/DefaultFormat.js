@@ -8,6 +8,7 @@ import { REJECTED } from '../../../common/propositionStatus';
 
 const styles = {
     text: memoize(status => Object.assign({
+        fontSize: '1.5rem',
         textDecoration: status === REJECTED ? 'line-through' : 'none',
     })),
 };

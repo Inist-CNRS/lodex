@@ -4,7 +4,7 @@ import route from 'koa-route';
 export const getFacetFilteredValues = async (ctx, name, filter) => {
     const data = await ctx.publishedFacet.findValuesForField(name, typeof filter === 'function' ? undefined : filter);
     const total = await ctx.publishedFacet.countValuesForField(name, typeof filter === 'function' ? undefined : filter);
-    ctx.body = { data: data.map(d => d.value), total };
+    ctx.body = { data: data.map(d => ({ value: d.value, count: d.count })), total };
 };
 
 const app = new Koa();

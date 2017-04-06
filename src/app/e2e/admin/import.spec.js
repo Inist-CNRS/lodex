@@ -5,7 +5,7 @@ import { elementIsClicked, elementsCountIs, elementTextIs, elementTextMatches } 
 
 import driver from '../../../common/tests/chromeDriver';
 import { clear } from '../../../common/tests/fixtures';
-import loginAsJulia from '../loginAsJulia';
+import loginAsJulia from './loginAsJulia';
 
 describe('Admin', () => {
     describe('Import model', function homeTests() {
@@ -19,7 +19,7 @@ describe('Admin', () => {
             await driver.executeScript('return localStorage.clear();');
             await driver.executeScript('return sessionStorage.clear();');
 
-            await loginAsJulia('/admin', '/');
+            await loginAsJulia('/admin');
         });
 
         describe('Uploading dataset', () => {
@@ -122,7 +122,7 @@ describe('Admin', () => {
                     By.css('.publication-preview th .completes_title'),
                 ), DEFAULT_WAIT_TIMEOUT);
                 const th = '.publication-preview th:nth-child(5) .completes_title';
-                await driver.wait(elementTextIs(th, 'Completes Title', DEFAULT_WAIT_TIMEOUT));
+                await driver.wait(elementTextIs(th, 'Annotates Title', DEFAULT_WAIT_TIMEOUT));
 
                 const tds = await driver.findElements(By.css('.publication-preview tr td:nth-child(5)'));
                 expect(tds.length).toBe(5);

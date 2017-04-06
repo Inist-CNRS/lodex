@@ -45,7 +45,7 @@ describe('Home page with published data when logged as Julia', function homePubl
     });
 
     it('should go to detail page when clicking on uri', async () => {
-        const firstUriLink = await driver.findElement(By.linkText('1'));
+        const firstUriLink = await driver.findElement(By.linkText('uid:/1'));
         await driver.wait(elementIsClicked(firstUriLink), DEFAULT_WAIT_TIMEOUT);
 
         await driver.wait(until.elementLocated(By.css('.resource')));
@@ -54,16 +54,18 @@ describe('Home page with published data when logged as Julia', function homePubl
     it('should display all resource properties', async () => {
         await driver.wait(until.elementLocated(By.css('.detail')), DEFAULT_WAIT_TIMEOUT);
         await driver.wait(
-            elementTextIs('.detail .property.full_name .property_label', 'Full name', DEFAULT_WAIT_TIMEOUT),
+            elementTextIs('.detail .property.full_name .property_label.full_name', 'Full name', DEFAULT_WAIT_TIMEOUT),
         );
         await driver.wait(
-            elementTextIs('.detail .property.full_name > .property_scheme', 'http://www.w3.org/ns/person',
+            elementTextIs('.detail .property.full_name .property_scheme.full_name', 'http://www.w3.org/ns/person',
             DEFAULT_WAIT_TIMEOUT),
         );
 
         await driver.wait(
-            elementTextIs('.detail .property.full_name .compose_full_name.property.name .property_value', 'TOOK',
-            DEFAULT_WAIT_TIMEOUT),
+            elementTextIs(
+                '.detail .property.full_name .compose_full_name.property.name .property_value',
+                'TOOK',
+                DEFAULT_WAIT_TIMEOUT),
         );
         await driver.wait(
             elementTextIs(
@@ -74,14 +76,14 @@ describe('Home page with published data when logged as Julia', function homePubl
         );
 
         await driver.wait(
-            elementTextIs('.detail .property.email.completes_fullname .property_label', 'Email', DEFAULT_WAIT_TIMEOUT),
+            elementTextIs('.detail .property.email.completes_fullname .property_label.email', 'Email', DEFAULT_WAIT_TIMEOUT),
         );
         await driver.wait(
-            elementTextIs('.detail .property.email.completes_fullname > .property_scheme', 'http://uri4uri.net/vocab',
+            elementTextIs('.detail .property.email.completes_fullname .property_scheme.email', 'http://uri4uri.net/vocab',
             DEFAULT_WAIT_TIMEOUT),
         );
         await driver.wait(
-            elementTextIs('.detail .property.email.completes_fullname .property_value', 'peregrin.took@shire.net',
+            elementTextIs('.detail .property.email.completes_fullname .property_value.email', 'peregrin.took@shire.net',
             DEFAULT_WAIT_TIMEOUT),
         );
 
@@ -194,11 +196,11 @@ describe('Home page with published data when logged as Julia', function homePubl
         ));
 
         const expectedTds = [
-            ['1', 'peregrin.took@gondor.net', 'PEREGRIN', 'TOOK'],
-            ['2', 'samsaget.gamgie@shire.net', 'SAMSAGET', 'GAMGIE'],
-            ['3', 'bilbon.saquet@shire.net', 'BILBON', 'BAGGINS'],
-            ['4', 'frodo.saquet@shire.net', 'FRODO', 'BAGGINS'],
-            ['5', 'meriadoc.brandybuck@shire.net', 'MERIADOC', 'BRANDYBUCK'],
+            ['uid:/1', 'peregrin.took@gondor.net', 'PEREGRIN', 'TOOK'],
+            ['uid:/2', 'samsaget.gamgie@shire.net', 'SAMSAGET', 'GAMGIE'],
+            ['uid:/3', 'bilbon.saquet@shire.net', 'BILBON', 'BAGGINS'],
+            ['uid:/4', 'frodo.saquet@shire.net', 'FRODO', 'BAGGINS'],
+            ['uid:/5', 'meriadoc.brandybuck@shire.net', 'MERIADOC', 'BRANDYBUCK'],
         ];
 
         const trs = await driver.findElements(By.css('.dataset table tbody tr'));

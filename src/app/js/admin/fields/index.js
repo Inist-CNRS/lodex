@@ -1,7 +1,6 @@
 import omit from 'lodash.omit';
 import { createAction, handleActions } from 'redux-actions';
 import { createSelector } from 'reselect';
-import pad from 'lodash.pad';
 
 import { getTransformersMetas, getTransformerMetas } from '../../../../common/transformers';
 import { COVER_COLLECTION } from '../../../../common/cover';
@@ -139,7 +138,10 @@ export default handleActions({
     }),
 }, defaultState);
 
-const getFields = ({ byName, list }) => list.map(name => byName[name]).sort((f1, f2) => f1.position > f2.position);
+const getFields = ({ byName, list }) => list
+    .map(name => byName[name])
+    .sort((f1, f2) => f1.position - f2.position);
+
 const getByName = ({ byName }) => byName;
 
 const getNbFields = ({ list }) => list.length;
@@ -226,7 +228,10 @@ export const getLineColGetterFromAllFields = (fieldByName, field) => {
         return () => null;
     }
 
-    return line => line[field.name];
+    return (line) => {
+        const lineValue = line[field.name];
+        return Array.isArray(lineValue) ? JSON.stringify(lineValue) : lineValue;
+    };
 };
 
 export const getLineColGetter = createSelector(

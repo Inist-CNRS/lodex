@@ -7,6 +7,7 @@ import { formField as formFieldPropTypes } from '../propTypes';
 const styles = {
     container: {
         display: 'inline-flex',
+        width: '100%',
     },
 };
 

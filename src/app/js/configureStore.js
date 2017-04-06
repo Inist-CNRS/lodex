@@ -1,4 +1,4 @@
-import { hashHistory } from 'react-router';
+import { browserHistory } from 'react-router';
 import { routerMiddleware } from 'react-router-redux';
 import { applyMiddleware, compose, createStore } from 'redux';
 import createSagaMiddleware from 'redux-saga';
@@ -7,14 +7,6 @@ import adapter from 'redux-localstorage/lib/adapters/localStorage';
 import filter from 'redux-localstorage-filter';
 
 const sagaMiddleware = createSagaMiddleware();
-
-export const getResourceUri = (location) => {
-    if (location.pathname.startsWith('/ark:/') || location.pathname.startsWith('/uid:/')) {
-        return location.pathname.substr(1);
-    }
-
-    return null;
-};
 
 export default function configureStore(pureReducer, sagas, initialState) {
     const rootReducer = __DEBUG__
@@ -37,7 +29,7 @@ export default function configureStore(pureReducer, sagas, initialState) {
 
     const middlewares = applyMiddleware(
         sagaMiddleware,
-        routerMiddleware(hashHistory),
+        routerMiddleware(browserHistory),
     );
 
     const devtools = (typeof window !== 'undefined' && window.devToolsExtension)
@@ -55,15 +47,6 @@ export default function configureStore(pureReducer, sagas, initialState) {
     sagaMiddleware.run(sagas);
     if (__DEBUG__) {
         window.store = store;
-    }
-
-    const resourceUri = getResourceUri(window.location);
-
-    if (resourceUri) {
-        hashHistory.replace({
-            pathname: 'resource',
-            state: { uri: resourceUri },
-        });
     }
 
     return store;

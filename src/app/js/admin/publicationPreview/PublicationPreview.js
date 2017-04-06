@@ -1,16 +1,14 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
-import { CardHeader } from 'material-ui/Card';
+import translate from 'redux-polyglot/translate';
 
 import PublicationExcerpt from './PublicationExcerpt';
 import PublicationEditionModal from '../fields/wizard';
 
 import { editField, loadField, removeField } from '../fields';
-import { field as fieldPropTypes } from '../../propTypes';
+import { field as fieldPropTypes, polyglot as polyglotPropTypes } from '../../propTypes';
 import { fromFields, fromPublicationPreview } from '../selectors';
-import ScrollableCardContent from '../../lib/ScrollableCardContent';
-import PublicationPreviewTitle from './PublicationPreviewTitle';
 
 const styles = {
     container: {
@@ -21,15 +19,14 @@ const styles = {
         overflow: 'auto',
     },
     titleContainer: {
-        display: 'inline-block',
-        writingMode: 'vertical-rl',
-        textAlign: 'center',
-        textTransform: 'uppercase',
-        flex: '0 0 1vw',
+        alignSelf: 'center',
+        flexGrow: 0,
+        flexShrink: 0,
+        width: 50,
     },
     title: {
-        paddingRight: 0,
-        verticalAlign: 'baseline',
+        textTransform: 'uppercase',
+        transform: 'rotate(-90deg)',
     },
     button: {
         float: 'right',
@@ -56,31 +53,29 @@ export class PublicationPreviewComponent extends Component {
     }
 
     render() {
-        const { columns, lines, editColumn, editedColumn } = this.props;
+        const { columns, lines, editColumn, editedColumn, p: polyglot } = this.props;
 
         return (
             <div style={styles.container} className="publication-preview">
-                <CardHeader
-                    style={styles.titleContainer}
-                    textStyle={styles.title}
-                    title={<PublicationPreviewTitle />}
+                <div style={styles.titleContainer}>
+                    <div style={styles.title}>
+                        {polyglot.t('publication_preview')}
+                    </div>
+                </div>
+
+                <PublicationExcerpt
+                    editedColumn={editedColumn}
+                    columns={columns}
+                    lines={lines}
+                    onHeaderClick={editColumn}
                 />
 
-                <ScrollableCardContent style={styles.content}>
-                    <PublicationExcerpt
-                        editedColumn={editedColumn}
-                        columns={columns}
-                        lines={lines}
-                        onHeaderClick={editColumn}
-                    />
-
-                    <PublicationEditionModal
-                        editedColumn={editedColumn}
-                        columns={columns}
-                        lines={lines}
-                        onExitEdition={this.handleExitColumEdition}
-                    />
-                </ScrollableCardContent>
+                <PublicationEditionModal
+                    editedColumn={editedColumn}
+                    columns={columns}
+                    lines={lines}
+                    onExitEdition={this.handleExitColumEdition}
+                />
             </div>
         );
     }
@@ -93,6 +88,7 @@ PublicationPreviewComponent.propTypes = {
     lines: PropTypes.arrayOf(PropTypes.object).isRequired,
     loadField: PropTypes.func.isRequired,
     removeColumn: PropTypes.func.isRequired,
+    p: polyglotPropTypes.isRequired,
 };
 
 PublicationPreviewComponent.defaultProps = {
@@ -113,4 +109,5 @@ const mapDispatchToProps = {
 
 export default compose(
     connect(mapStateToProps, mapDispatchToProps),
+    translate,
 )(PublicationPreviewComponent);

@@ -12,7 +12,7 @@ import driver from '../../../common/tests/chromeDriver';
 import { clear, loadFixtures } from '../../../common/tests/fixtures';
 import fixtures from './composedOf.json';
 import { inputElementIsFocusable } from '../../../common/tests/conditions';
-import loginAsJulia from '../loginAsJulia';
+import loginAsJulia from './loginAsJulia';
 import waitForPreviewComputing from './waitForPreviewComputing';
 
 describe('Admin', () => {
@@ -27,7 +27,7 @@ describe('Admin', () => {
             await driver.get('http://localhost:3100/admin');
             await driver.executeScript('return localStorage.clear();');
             await driver.executeScript('return sessionStorage.clear();');
-            await loginAsJulia('/admin', '/');
+            await loginAsJulia('/admin');
         });
         let fieldForm;
 
@@ -106,12 +106,6 @@ describe('Admin', () => {
         it('should remove third field', async () => {
             await driver.wait(elementIsClicked('.btn-remove-composite-field-2'), DEFAULT_WAIT_TIMEOUT);
             await driver.wait(elementsCountIs('.composite-field', 2, DEFAULT_WAIT_TIMEOUT));
-        });
-
-        it('should change the separator', async () => {
-            const separator = await driver.findElement(By.css('#textbox_separator'));
-            await separator.clear();
-            await separator.sendKeys('-');
         });
 
         it('should save the field', async () => {

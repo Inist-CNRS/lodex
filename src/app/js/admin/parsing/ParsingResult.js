@@ -5,7 +5,6 @@ import translate from 'redux-polyglot/translate';
 
 import { CardHeader } from 'material-ui/Card';
 import { grey400 } from 'material-ui/styles/colors';
-import ScrollableCardContent from '../../lib/ScrollableCardContent';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { reloadParsingResult } from './';
@@ -35,15 +34,14 @@ const styles = {
         whiteSpace: 'nowrap',
     },
     titleContainer: {
-        display: 'inline-block',
-        writingMode: 'vertical-rl',
-        textAlign: 'center',
-        textTransform: 'uppercase',
-        flex: '0 0 1vw',
+        alignSelf: 'center',
+        flexGrow: 0,
+        flexShrink: 0,
+        width: 50,
     },
     title: {
-        paddingRight: 0,
-        verticalAlign: 'baseline',
+        textTransform: 'uppercase',
+        transform: 'rotate(-90deg)',
     },
     button: {
         float: 'right',
@@ -68,19 +66,17 @@ export class ParsingResultComponent extends Component {
 
         return (
             <div className="parsingResult" style={styles.container}>
-                <CardHeader
-                    style={styles.titleContainer}
-                    textStyle={styles.title}
-                    title={polyglot.t('parsing')}
-                />
+                <div style={styles.titleContainer}>
+                    <div style={styles.title}>
+                        {polyglot.t('parsing')}
+                    </div>
+                </div>
 
-                <ScrollableCardContent style={styles.content}>
-                    <ParsingExcerpt
-                        columns={excerptColumns}
-                        lines={excerptLines}
-                        showAddColumns={showAddColumns}
-                    />
-                </ScrollableCardContent>
+                <ParsingExcerpt
+                    columns={excerptColumns}
+                    lines={excerptLines}
+                    showAddColumns={showAddColumns}
+                />
             </div>
         );
     }

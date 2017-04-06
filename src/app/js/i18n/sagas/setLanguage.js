@@ -1,14 +1,15 @@
 import { call, fork, put, takeLatest } from 'redux-saga/effects';
 import { setLanguage } from 'redux-polyglot';
+
 import {
     SET_LANGUAGE_REQUEST,
     SUPPORTED_LANGUAGES,
     setLanguageSuccess,
     setLanguageError,
-} from './';
+} from '../';
 
 export function loadPhrases(locale) {
-    return System.import(`./translations/${locale}`).then(module => module.default);
+    return System.import(`../translations/${locale}`).then(module => module.default);
 }
 
 export function* handleSetLanguage({ payload: language }) {

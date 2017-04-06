@@ -5,9 +5,10 @@ import { inputElementIsFocusable } from '../../common/tests/conditions';
 
 const DEFAULT_WAIT_TIMEOUT = 9000; // A bit less than mocha's timeout to get explicit errors from selenium
 
-export default async (baseAppPath, nextpathname) => {
-    await driver.get(`http://localhost:3100${baseAppPath}?nextpathname=${encodeURIComponent(nextpathname)}#/login`);
+export default async (nextpathname) => {
+    await driver.get(`http://localhost:3100/login?nextPathname=${encodeURIComponent(nextpathname)}`);
 
+    await driver.wait(until.elementLocated(By.css('form')));
     const form = await driver.findElement(By.css('form'));
     const username = await driver.findElement(By.css('input[name=username]'));
     const password = await driver.findElement(By.css('input[name=password]'));

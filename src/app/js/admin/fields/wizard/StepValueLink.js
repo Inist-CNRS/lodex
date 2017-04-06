@@ -1,15 +1,14 @@
 import React, { PropTypes } from 'react';
 import RadioButton from 'material-ui/RadioButton';
-import SelectField from 'material-ui/SelectField';
-import MenuItem from 'material-ui/MenuItem';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
 import withHandlers from 'recompose/withHandlers';
 import { connect } from 'react-redux';
 import { formValueSelector } from 'redux-form';
-import { FIELD_FORM_NAME } from '../';
 
+import { FIELD_FORM_NAME } from '../';
 import { polyglot as polyglotPropTypes } from '../../../propTypes';
+import SelectDatasetField from './SelectDatasetField';
 
 const styles = {
     inset: {
@@ -18,13 +17,9 @@ const styles = {
     radio: {
         marginTop: 12,
     },
-    select: {
-        width: '100%',
-    },
 };
 
 export const StepValueLinkComponent = ({
-    datasetFields,
     handleChangeId,
     handleChangeRef,
     handleSelect,
@@ -44,45 +39,24 @@ export const StepValueLinkComponent = ({
         />
         {selected &&
             <div style={styles.inset}>
-                <SelectField
+                <SelectDatasetField
                     id="select_id_column"
-                    onChange={handleChangeId}
-                    style={styles.select}
-                    floatingLabelText={polyglot.t('select_an_id_column')}
-                    value={idColumn}
-                >
-                    {datasetFields.map(datasetField => (
-                        <MenuItem
-                            key={`id_${datasetField}`}
-                            className={`id-column-${datasetField}`}
-                            value={datasetField}
-                            primaryText={datasetField}
-                        />
-                    ))}
-                </SelectField>
-                <SelectField
+                    handleChange={handleChangeId}
+                    label="select_an_id_column"
+                    column={idColumn}
+                />
+                <SelectDatasetField
                     id="select_ref_column"
-                    onChange={handleChangeRef}
-                    style={styles.select}
-                    floatingLabelText={polyglot.t('select_a_ref_column')}
-                    value={refColumn}
-                >
-                    {datasetFields.map(datasetField => (
-                        <MenuItem
-                            key={`ref_${datasetField}`}
-                            className={`ref-column-${datasetField}`}
-                            value={datasetField}
-                            primaryText={datasetField}
-                        />
-                    ))}
-                </SelectField>
+                    handleChange={handleChangeRef}
+                    label="select_a_ref_column"
+                    column={refColumn}
+                />
             </div>
         }
     </div>
 );
 
 StepValueLinkComponent.propTypes = {
-    datasetFields: PropTypes.arrayOf(PropTypes.string).isRequired,
     handleChangeId: PropTypes.func.isRequired,
     handleChangeRef: PropTypes.func.isRequired,
     handleSelect: PropTypes.func.isRequired,

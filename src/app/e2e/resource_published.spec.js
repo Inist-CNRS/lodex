@@ -17,16 +17,18 @@ describe('Resource page when not logged', function resourcePageTest() {
     before(async () => {
         await clear();
         await loadFixtures(fixtures);
-        await driver.get('http://localhost:3100/#/resource?uri=1');
+        await driver.get('http://localhost:3100/uid:/1');
     });
 
     it('should display all resource properties', async () => {
         await driver.wait(until.elementLocated(By.css('.detail')), DEFAULT_WAIT_TIMEOUT);
 
-        const fullnameLabel = '.detail .property.full_name .property_label';
+        const fullnameLabel = '.detail .property.full_name .property_label.full_name';
+        const fullNameLabelElements = await driver.findElements(By.css(fullnameLabel));
+        expect(fullNameLabelElements.length).toEqual(1); // Ensure it is not displayed twice as it complete email too
         await driver.wait(elementTextIs(fullnameLabel, 'Full name', DEFAULT_WAIT_TIMEOUT));
 
-        const fullnameScheme = '.detail .property.full_name > .property_scheme';
+        const fullnameScheme = '.detail .property.full_name .property_scheme.full_name';
         await driver.wait(elementTextIs(fullnameScheme, 'http://www.w3.org/ns/person', DEFAULT_WAIT_TIMEOUT));
 
         await driver.wait(
@@ -38,10 +40,12 @@ describe('Resource page when not logged', function resourcePageTest() {
             DEFAULT_WAIT_TIMEOUT),
         );
 
-        const mailLabel = '.detail .property.email.completes_fullname .property_label';
+        const mailLabel = '.detail .property.email.completes_fullname .property_label.email';
+        const mailLabelElements = await driver.findElements(By.css(mailLabel));
+        expect(mailLabelElements.length).toEqual(1); // Ensure it is not displayed twice as it complete fullname too
         await driver.wait(elementTextIs(mailLabel, 'Email', DEFAULT_WAIT_TIMEOUT));
 
-        const mailScheme = '.detail .property.email.completes_fullname > .property_scheme';
+        const mailScheme = '.detail .property.email.completes_fullname .property_scheme.email';
         await driver.wait(elementTextIs(mailScheme, 'http://uri4uri.net/vocab', DEFAULT_WAIT_TIMEOUT));
 
         const mailValue = '.detail .property.email.completes_fullname .property_value';
@@ -50,7 +54,7 @@ describe('Resource page when not logged', function resourcePageTest() {
         const bestFriendLabel = '.detail .property.best_friend_of .property_label';
         await driver.wait(elementTextIs(bestFriendLabel, 'Best Friend Of', DEFAULT_WAIT_TIMEOUT));
 
-        const bestFriendScheme = '.detail .property.best_friend_of > .property_scheme';
+        const bestFriendScheme = '.detail .property.best_friend_of .property_scheme.best_friend_of';
         await driver.wait(elementTextIs(bestFriendScheme, 'http://www.w3.org/ns/person', DEFAULT_WAIT_TIMEOUT));
 
         const bestFriendValue = '.detail .property.best_friend_of .property_value';

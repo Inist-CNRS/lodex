@@ -14,6 +14,7 @@ import ButtonWithStatus from './ButtonWithStatus';
 import { polyglot as polyglotPropTypes } from '../propTypes';
 
 export const ButtonWithDialogComponent = ({
+    buttonStyle,
     handleClose,
     handleOpen,
     handleSubmit,
@@ -46,6 +47,7 @@ export const ButtonWithDialogComponent = ({
             className={classnames('open', className)}
             tooltip={label}
             onClick={handleOpen}
+            style={buttonStyle}
         >
             {saving ? <CircularProgress /> : icon}
         </IconButton>
@@ -55,6 +57,7 @@ export const ButtonWithDialogComponent = ({
                 label={label}
                 primary
                 onClick={handleOpen}
+                style={buttonStyle}
             />
         );
 
@@ -88,6 +91,7 @@ ButtonWithDialogComponent.propTypes = {
     saving: PropTypes.bool.isRequired,
     open: PropTypes.bool.isRequired,
     show: PropTypes.bool,
+    buttonStyle: PropTypes.object, // eslint-disable-line
     style: PropTypes.object, // eslint-disable-line
     form: PropTypes.node.isRequired,
     icon: PropTypes.node,

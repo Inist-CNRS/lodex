@@ -1,5 +1,7 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
+import translate from 'redux-polyglot/translate';
+import compose from 'recompose/compose';
 import AppBar from 'material-ui/AppBar';
 import CircularProgress from 'material-ui/CircularProgress';
 
@@ -9,7 +11,8 @@ import PublicationButton from '../publish/PublicationButton';
 import ModelMenu from './ModelMenu';
 import UploadButton from '../upload/UploadButton';
 import { isLoggedIn as getIsLoggedIn } from '../../user';
-import { fromPublication } from '../selectors';
+import { fromPublication, fromParsing } from '../selectors';
+import { polyglot as polyglotPropTypes } from '../../propTypes';
 
 const styles = {
     appBar: {
@@ -20,6 +23,7 @@ const styles = {
     linkToHome: {
         color: 'white',
         textDecoration: 'none',
+        marginRight: '1rem',
     },
     loading: {
         margin: 8,
@@ -27,9 +31,12 @@ const styles = {
     buttons: {
         display: 'flex',
     },
+    title: {
+        lineHeight: '54px',
+    },
 };
 
-const AppbarComponent = ({ hasPublishedDataset, isLoading, isLoggedIn }) => {
+const AppbarComponent = ({ hasPublishedDataset, hasLoadedDataset, isLoading, isLoggedIn, p: polyglot }) => {
     const LeftElement = isLoading
         ? <CircularProgress color="#fff" size={30} thickness={2} style={styles.loading} />
         : <span />;
@@ -46,7 +53,21 @@ const AppbarComponent = ({ hasPublishedDataset, isLoading, isLoggedIn }) => {
     return (
         <AppBar
             className="appbar"
-            title={<a style={styles.linkToHome} href="/">Lodex</a>}
+            title={
+                <div style={styles.title}>
+                    <a style={styles.linkToHome} href="/">Lodex</a>
+                    {!hasPublishedDataset &&
+                        <small>
+                            -{' '}
+                            {
+                                hasLoadedDataset
+                                ? polyglot.t('modelize-your-data')
+                                : polyglot.t('semantic-publication-system')
+                            }
+                        </small>
+                    }
+                </div>
+            }
             iconElementLeft={LeftElement}
             iconElementRight={RightElement}
             style={styles.appBar}
@@ -56,15 +77,24 @@ const AppbarComponent = ({ hasPublishedDataset, isLoading, isLoggedIn }) => {
 
 AppbarComponent.propTypes = {
     hasPublishedDataset: PropTypes.bool.isRequired,
-    isLoading: PropTypes.bool.isRequired,
+    hasLoadedDataset: PropTypes.bool.isRequired,
+    isLoading: PropTypes.bool,
     isLoggedIn: PropTypes.bool.isRequired,
+    p: polyglotPropTypes.isRequired,
+};
+
+AppbarComponent.defaultProps = {
+    isLoading: false,
 };
 
 const mapStateToProps = state => ({
     hasPublishedDataset: fromPublication.hasPublishedDataset(state),
+    hasLoadedDataset: fromParsing.hasUploadedFile(state),
     isLoading: state.loading, // @TODO fix by adding a loading reducer handling all loading state
     isLoggedIn: getIsLoggedIn(state),
 });
 
-export default connect(mapStateToProps)(AppbarComponent);
-
+export default compose(
+    translate,
+    connect(mapStateToProps),
+)(AppbarComponent);

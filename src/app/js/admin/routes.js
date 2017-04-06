@@ -14,12 +14,12 @@ export const onEnterWithAuthenticationCheck = store => (nextState, replaceState)
 
 
 export default store => ({
-    path: '/',
+    path: '/admin',
     component: App,
-    indexRoute: { onEnter: (nextState, replace) => replace('/home') },
+    indexRoute: { onEnter: (nextState, replace) => replace('/admin/dashboard') },
     childRoutes: [
         {
-            path: '/home',
+            path: '/admin/dashboard',
             component: Admin,
             onEnter: onEnterWithAuthenticationCheck(store),
         },

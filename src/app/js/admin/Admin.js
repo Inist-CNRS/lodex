@@ -3,6 +3,7 @@ import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 import { Tab, Tabs } from 'material-ui/Tabs';
+import { lightBlue500 } from 'material-ui/styles/colors';
 
 import { polyglot as polyglotPropTypes } from '../propTypes';
 
@@ -22,6 +23,14 @@ import Upload from './upload/Upload';
 import Loading from '../lib/Loading';
 import Card from '../lib/Card';
 import Statistics from './Statistics';
+
+const styles = {
+    punchLine: {
+        padding: '16px',
+        textAlign: 'center',
+        color: lightBlue500,
+    },
+};
 
 export class AdminComponent extends Component {
     static propTypes = {
@@ -79,6 +88,7 @@ export class AdminComponent extends Component {
                 <ParsingResult />
                 <Statistics />
                 <PublicationPreview />
+                <div style={styles.punchLine}>{polyglot.t('publish-punchline')}</div>
             </Card>
         );
     }

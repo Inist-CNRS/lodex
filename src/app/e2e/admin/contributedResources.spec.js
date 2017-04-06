@@ -5,7 +5,7 @@ import { elementIsClicked } from 'selenium-smart-wait';
 import driver from '../../../common/tests/chromeDriver';
 import { clear, loadFixtures } from '../../../common/tests/fixtures';
 import fixtures from './contributedResources.json';
-import loginAsJulia from '../loginAsJulia';
+import loginAsJulia from './loginAsJulia';
 
 describe('Admin', () => {
     describe('Contributed Resource management', function homePublishedDataTests() {
@@ -15,7 +15,7 @@ describe('Admin', () => {
         before(async () => {
             await clear(); // Had to ensure clear state for unknown reason
             await loadFixtures(fixtures);
-            await loginAsJulia('/admin', '/');
+            await loginAsJulia('/admin');
         });
 
         it('should display the proposed contributed resources', async () => {
@@ -88,6 +88,7 @@ describe('Admin', () => {
 
         it('should go to resource page when clicking on review', async () => {
             const reviewButton = '.btn-review-resource';
+            await driver.sleep(10000);
             await driver.wait(elementIsClicked(reviewButton), DEFAULT_WAIT_TIMEOUT);
             await driver.wait(until.elementLocated(By.css('.resource')));
         });
