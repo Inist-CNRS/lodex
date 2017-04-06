@@ -20,7 +20,7 @@ describe('Resource page when not logged', function resourcePageTest() {
         await driver.get('http://localhost:3100/uid:/1');
     });
 
-    it.only('should display all resource properties', async () => {
+    it('should display all resource properties', async () => {
         await driver.wait(until.elementLocated(By.css('.detail')), DEFAULT_WAIT_TIMEOUT);
 
         const fullnameLabel = '.detail .property.full_name .property_label.full_name';
@@ -70,7 +70,7 @@ describe('Resource page when not logged', function resourcePageTest() {
         await driver.wait(elementTextIs(noteValue, '17/20', DEFAULT_WAIT_TIMEOUT));
     });
 
-    it.only('should not display moderate component when loggedOut', async () => {
+    it('should not display moderate component when loggedOut', async () => {
         const moderateComponents = await driver.findElements(By.css('.moderate'));
         expect(moderateComponents.length).toBe(0);
     });
