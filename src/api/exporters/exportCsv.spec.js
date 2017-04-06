@@ -213,7 +213,7 @@ describe('exportCsv', () => {
             { name: 'bar', value: 'bar_value' },
         ];
 
-        exportCsv(fields, characteristics, datasetStream);
+        exportCsv({}, fields, characteristics, datasetStream);
 
         it('should correctly initialized the csvTransformStream', () => {
             expect(csvTransformStreamFactory).toHaveBeenCalled();

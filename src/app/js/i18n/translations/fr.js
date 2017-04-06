@@ -183,4 +183,9 @@ export default {
     duplicated_uri: '%{nbInvalidUri} documents have duplicated uri and will not be published',
     warn_publication: 'Warning: uri is not unique for every document',
     force_publish: 'Publish anyway',
+    embed_widget: 'Embed this resource in your website',
+    select_exported_fields_all: 'All fields',
+    select_exported_fields: 'Select the fields to display in the widget',
+    filter_fields_for_widgets: 'Type here to filter the list of fields',
+    widgetResource: 'Default widget',
 };

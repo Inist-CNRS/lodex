@@ -5,7 +5,7 @@ import * as ezsLocals from './ezsLocals';
 ezs.use(ezsBasics);
 ezs.use(ezsLocals);
 
-const exporter = (fields, characteristics, stream) =>
+const exporter = (config, fields, characteristics, stream) =>
     stream
         .pipe(ezs('filterVersions'))
         .pipe(ezs('filterContributions', { fields }))
@@ -14,5 +14,6 @@ const exporter = (fields, characteristics, stream) =>
 
 exporter.extension = 'tsv';
 exporter.mimeType = 'text/tab-separated-values';
+exporter.type = 'file';
 
 export default exporter;

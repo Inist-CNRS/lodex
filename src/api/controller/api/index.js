@@ -18,6 +18,7 @@ import publish from './publish';
 import publishedDataset from './publishedDataset';
 import upload from './upload';
 import ark from './ark';
+import widget from './widget';
 
 const app = new Koa();
 
@@ -27,6 +28,7 @@ app.use(mongoClient);
 app.use(mount('/export', exportPublishedDataset));
 app.use(mount('/facet', facet));
 app.use(mount('/login', login));
+app.use(mount('/widget', widget));
 app.use(route.get('/publication', publication));
 app.use(route.get('/ark', ark));
 

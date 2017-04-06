@@ -2,9 +2,9 @@ import expect from 'expect';
 import { call, select } from 'redux-saga/effects';
 
 
-import { handleExportPublishedDatasetSuccess, open } from './sagas';
-import getQueryString from '../../lib/getQueryString';
-import { fromDataset, fromFacet } from '../selectors';
+import { handleExportPublishedDatasetSuccess, open } from './exportPublishedDataset';
+import getQueryString from '../../../lib/getQueryString';
+import { fromDataset, fromFacet } from '../../selectors';
 
 describe('export saga', () => {
     describe('handleExportPublishedDatasetSuccess', () => {

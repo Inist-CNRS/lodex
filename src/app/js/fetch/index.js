@@ -191,3 +191,8 @@ export const getChangeFieldStatusRequest = (state, { uri, field, status }) =>
         method: 'PUT',
         url: `/api/publishedDataset/${encodeURIComponent(uri)}/change_contribution_status/${field}/${status}`,
     });
+
+export const getLoadExportersRequest = state =>
+    getRequest(state, {
+        url: '/api/export',
+    });

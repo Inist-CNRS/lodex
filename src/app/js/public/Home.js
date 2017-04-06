@@ -90,36 +90,34 @@ export class HomeComponent extends Component {
                     <AppliedFacetList />
                     <DatasetCharacteristics />
                     <Card>
-                        <CardText style={styles.container}>
-                            <Tabs tabItemContainerStyle={styles.tab}>
-                                <Tab
-                                    className="tab-dataset-resources"
-                                    label={polyglot.t('resources')}
-                                    style={styles.tabButton}
-                                >
-                                    <Dataset />
-                                </Tab>
-                                <Tab
-                                    className="tab-dataset-export"
-                                    buttonStyle={styles.tabButton}
-                                    label={polyglot.t('share_export')}
-                                >
-                                    <Subheader>{polyglot.t('export_data')}</Subheader>
-                                    <Export />
-                                    <Subheader>{polyglot.t('dataset_share_link')}</Subheader>
-                                    <ShareLink uri={sharingUri} />
-                                    <Subheader>{polyglot.t('share')}</Subheader>
-                                    <Share uri={sharingUri} title={sharingTitle} />
-                                </Tab>
-                                <Tab
-                                    className="tab-dataset-ontology"
-                                    buttonStyle={styles.tabButton}
-                                    label={polyglot.t('ontology')}
-                                >
-                                    <Ontology />
-                                </Tab>
-                            </Tabs>
-                        </CardText>
+                        <Tabs tabItemContainerStyle={styles.tab}>
+                            <Tab
+                                className="tab-dataset-resources"
+                                label={polyglot.t('resources')}
+                                style={styles.tabButton}
+                            >
+                                <Dataset />
+                            </Tab>
+                            <Tab
+                                className="tab-dataset-export"
+                                buttonStyle={styles.tabButton}
+                                label={polyglot.t('share_export')}
+                            >
+                                <Subheader>{polyglot.t('export_data')}</Subheader>
+                                <Export />
+                                <Subheader>{polyglot.t('dataset_share_link')}</Subheader>
+                                <ShareLink uri={sharingUri} />
+                                <Subheader>{polyglot.t('share')}</Subheader>
+                                <Share uri={sharingUri} title={sharingTitle} />
+                            </Tab>
+                            <Tab
+                                className="tab-dataset-ontology"
+                                buttonStyle={styles.tabButton}
+                                label={polyglot.t('ontology')}
+                            >
+                                <Ontology />
+                            </Tab>
+                        </Tabs>
                     </Card>
                 </div>
             );
