@@ -29,6 +29,14 @@ To access the mongo shell, run:
 make mongo-shell
 ```
 
+### State reset
+
+During development, you may need to get an application state, where no data is published.
+
+One way is to modify `config/development.js`, and change the `dbName` to a new one.
+
+> **Note**: an alternative way is to use the mongo-shell and drop the database.
+
 ## Tests
 
 Ensure you initialized the development environment first.
