@@ -4,6 +4,13 @@ import omit from 'lodash.omit';
 import { VALIDATED } from '../../common/propositionStatus';
 import generateUid from '../services/generateUid';
 
+const transformCompleteFields = async (field) => {
+    const propertyName0 = await generateUid();
+    const propertyName1 = field.name;
+    const propertyName2 = field.completes;
+    return [propertyName0, propertyName1, propertyName2];
+};
+
 
 export function filterVersions(data, feed) {
     if (data && data.versions) {
@@ -50,7 +57,7 @@ export function linkDataset(data, feed) {
         data.dataset = uri;
         data['@context'].dataset = {
             '@id': scheme,
-//             '@type': 'https://www.w3.org/TR/xmlschema-2/#anyURI',
+            //             '@type': 'https://www.w3.org/TR/xmlschema-2/#anyURI',
         };
     }
     feed.send(data);
@@ -86,23 +93,23 @@ export async function JSONLDObject(data, feed) {
             }
         });
 
-        const transformCompleteFields = async (field) => {
-            const propertyName0 = await generateUid();
-            const propertyName1 = field.name;
-            const propertyName2 = field.completes;
-            output[propertyName0] = {};
-            output[propertyName0][propertyName1] = data[propertyName1];
-            output[propertyName0][propertyName2] = data[propertyName2];
-            delete output[propertyName2];
-            output['@context'][propertyName0] = {};
-            output['@context'][propertyName0]['@id'] = output['@context'][propertyName2]['@id'];
-            output['@context'][propertyName2]['@id'] = 'http://www.w3.org/2000/01/rdf-schema#label';
-        };
-        const allFields = fields
+        const completesFields = fields
             .filter(field => field.completes)
             .map(transformCompleteFields);
 
-        Promise.all(allFields).then(() => {
+        Promise.all(completesFields).then((propertyNames) => {
+            propertyNames.forEach((field) => {
+                const propertyName0 = field[0];
+                const propertyName1 = field[1];
+                const propertyName2 = field[2];
+                output[propertyName0] = {};
+                output[propertyName0][propertyName1] = data[propertyName1];
+                output[propertyName0][propertyName2] = data[propertyName2];
+                delete output[propertyName2];
+                output['@context'][propertyName0] = {};
+                output['@context'][propertyName0]['@id'] = output['@context'][propertyName2]['@id'];
+                output['@context'][propertyName2]['@id'] = 'http://www.w3.org/2000/01/rdf-schema#label';
+            });
             feed.send(output);
         });
     }
