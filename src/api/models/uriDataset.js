@@ -30,7 +30,7 @@ export default (db) => {
         (await collection.countNotUnique(fieldName)) === 0;
 
     collection.findBy = async (fieldName, value) => {
-        if (await collection.ensureIsUnique(fieldName)) {
+        if (!await collection.ensureIsUnique(fieldName)) {
             throw new Error(`${fieldName} value is not unique for every document`);
         }
 

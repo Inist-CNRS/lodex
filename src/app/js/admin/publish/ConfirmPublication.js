@@ -22,8 +22,8 @@ const styles = {
 
 export const ConfirmPublicationComponent = ({ nbInvalidUri, confirmPublication, cancelPublication, p: polyglot }) => {
     const actions = [
-        <FlatButton primary label={polyglot.t('force_publish')} onClick={confirmPublication} />,
-        <FlatButton secondary label={polyglot.t('cancel')} onClick={cancelPublication} />,
+        <FlatButton primary className="confirm" label={polyglot.t('force_publish')} onClick={confirmPublication} />,
+        <FlatButton secondary className="cancel" label={polyglot.t('cancel')} onClick={cancelPublication} />,
     ];
     return (
         <Dialog
@@ -32,7 +32,7 @@ export const ConfirmPublicationComponent = ({ nbInvalidUri, confirmPublication, 
             title={polyglot.t('warn_publication')}
             contentStyle={styles.modal}
         >
-            <div style={styles.container}>
+            <div style={styles.container} id="confirm-publication">
                 <p>{polyglot.t('duplicated_uri', { nbInvalidUri })}</p>
             </div>
         </Dialog>

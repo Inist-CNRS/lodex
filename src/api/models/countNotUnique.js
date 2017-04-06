@@ -16,7 +16,6 @@ const countNotUnique = collection => async (fieldName) => {
             await countUniqueConcatenation(collection)(fieldName)
         :
             (await collection.distinct(fieldName)).length;
-
     return count - distinct;
 };
 

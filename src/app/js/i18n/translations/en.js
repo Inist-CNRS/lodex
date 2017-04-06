@@ -181,7 +181,7 @@ export default {
     'publish-punchline': 'Publish your data, you can always easily modify and enrich them later with a guarantee of traceability.',
     remove_column: 'Remove this column',
     multi_field_concat: 'A list of values from several existing columns',
-    duplicated_uri: '%{nbInvalidUri} documents have duplicated Uri and will not be published',
+    duplicated_uri: '%{nbInvalidUri} documents have duplicated uri and will not be published',
     warn_publication: 'Warning: uri is not unique for every document',
     force_publish: 'Publish anyway',
 };

@@ -40,6 +40,7 @@ export const StepValueConcatComponent = ({
 }) => (
     <div>
         <RadioButton
+            className="radio_concat"
             label={polyglot.t('multi_field_concat')}
             value="concat"
             onClick={handleSelect}
@@ -49,7 +50,7 @@ export const StepValueConcatComponent = ({
         {selected &&
             <div style={styles.inset}>
                 <TextField
-                    id="textbox_value"
+                    id="separator"
                     fullWidth
                     placeholder={polyglot.t('separator')}
                     onChange={handleSeparatorChange}
