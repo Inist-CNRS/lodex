@@ -95,6 +95,11 @@ export const getPublishRequest = state =>
         method: 'POST',
     });
 
+export const getVerifyUriRequest = state => getRequest(state, {
+    url: '/api/publish/verifyUri',
+    method: 'GET',
+});
+
 export const getLoadRemovedResourcePageRequest = (state, { page, perPage }) =>
     getRequest(state, {
         url: `/api/publishedDataset/removed?page=${encodeURIComponent(page)}&perPage=${encodeURIComponent(perPage)}`,
