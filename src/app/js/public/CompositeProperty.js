@@ -28,6 +28,7 @@ export const CompositePropertyComponent = ({
     field,
     isSaving,
     onSaveProperty,
+    parents,
     resource,
 }) => {
     if (!compositeFields.length) {
@@ -42,8 +43,9 @@ export const CompositePropertyComponent = ({
                     key={f.name}
                     field={f}
                     isSaving={isSaving}
-                    resource={resource}
                     onSaveProperty={onSaveProperty}
+                    parents={parents}
+                    resource={resource}
                     style={styles.property}
                 />
             ))}
@@ -56,6 +58,7 @@ CompositePropertyComponent.propTypes = {
     isSaving: PropTypes.bool.isRequired,
     compositeFields: PropTypes.arrayOf(fieldPropTypes).isRequired,
     onSaveProperty: PropTypes.func.isRequired,
+    parents: PropTypes.arrayOf(PropTypes.string).isRequired,
     resource: PropTypes.shape({}).isRequired,
 };
 
@@ -63,10 +66,15 @@ CompositePropertyComponent.defaultProps = {
     className: null,
 };
 
-const mapStateToProps = (state, { field, resource }) => ({
-    resource,
-    compositeFields: fromPublication.getCompositeFieldsByField(state, field),
-});
+const mapStateToProps = (state, { field, resource, parents }) => {
+    const allCompositeFields = fromPublication.getCompositeFieldsByField(state, field);
+    const compositeFields = allCompositeFields.filter(f => !parents.includes(f.name));
+
+    return {
+        resource,
+        compositeFields,
+    };
+};
 
 const CompositeProperty = connect(mapStateToProps)(CompositePropertyComponent);
 

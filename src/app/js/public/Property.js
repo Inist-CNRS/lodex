@@ -1,5 +1,7 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
+import compose from 'recompose/compose';
+import withProps from 'recompose/withProps';
 import classnames from 'classnames';
 import { bindActionCreators } from 'redux';
 import { grey500 } from 'material-ui/styles/colors';
@@ -63,18 +65,25 @@ const PropertyComponent = ({
     changeStatus,
     onSaveProperty,
     style,
+    parents,
 }) => {
     if (!loggedIn && fieldStatus === REJECTED) {
         return null;
     }
+    const fieldClassName = getFieldClassName(field);
     return (
         <div
-            className={classnames('property', getFieldClassName(field), className)}
+            className={classnames('property', fieldClassName, className)}
             style={styles.container(style, fieldStatus)}
         >
             <div>
                 <div style={styles.labelContainer}>
-                    <span className="property_label" style={styles.label(fieldStatus)}>{field.label}</span>
+                    <span
+                        className={classnames('property_label', fieldClassName)}
+                        style={styles.label(fieldStatus)}
+                    >
+                        {field.label}
+                    </span>
 
                     <EditField
                         field={field}
@@ -87,24 +96,25 @@ const PropertyComponent = ({
             </div>
             <div style={styles.valueContainer}>
                 {field.language &&
-                    <span className="property_language" style={styles.language}>
+                    <span className={classnames('property_language', fieldClassName)} style={styles.language}>
                         {field.language}
                     </span>
                 }
 
                 <Format
-                    className="property_value"
+                    className={classnames('property_value', fieldClassName)}
                     field={field}
                     resource={resource}
                     fieldStatus={fieldStatus}
                 />
             </div>
-            <div className="property_scheme" style={styles.scheme}>{field.scheme}</div>
+            <div className={classnames('property_scheme', fieldClassName)} style={styles.scheme}>{field.scheme}</div>
             <CompositeProperty
                 field={field}
                 isSaving={isSaving}
                 resource={resource}
                 onSaveProperty={onSaveProperty}
+                parents={parents}
             />
 
             <PropertyLinkedFields
@@ -112,6 +122,7 @@ const PropertyComponent = ({
                 isSaving={isSaving}
                 resource={resource}
                 onSaveProperty={onSaveProperty}
+                parents={parents}
             />
             <ModerateButton
                 fieldName={field.name}
@@ -131,6 +142,7 @@ PropertyComponent.propTypes = {
     loggedIn: PropTypes.bool.isRequired,
     onSaveProperty: PropTypes.func.isRequired,
     resource: PropTypes.shape({}).isRequired,
+    parents: PropTypes.arrayOf(PropTypes.string).isRequired,
     style: PropTypes.object, // eslint-disable-line
 };
 
@@ -153,6 +165,9 @@ const mapDispatchToProps = (dispatch, { field, resource: { uri } }) => bindActio
     }),
 }, dispatch);
 
-const Property = connect(mapStateToProps, mapDispatchToProps)(PropertyComponent);
+const Property = compose(
+    connect(mapStateToProps, mapDispatchToProps),
+    withProps(({ field, parents = [] }) => ({ parents: [field.name, ...parents] })),
+)(PropertyComponent);
 
 export default Property;
