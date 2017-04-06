@@ -49,6 +49,7 @@ describe('publish', () => {
             uriDataset: {
                 insertBatch: 'uriDataset.insertBatch()',
                 findLimitFromSkip: 'uriDataset.findLimitFromSkip()',
+                distinct: createSpy().andReturn({ length: 'count' }),
             },
             publishCharacteristics: createSpy(),
             publishFacets: createSpy(),
