@@ -11,17 +11,17 @@ const middleware = process.env.NODE_ENV === 'development' ? dev() : prod();
 app.use(async (ctx, next) => {
     const uri = ctx.path;
 
-    if (!uri.startsWith('/api')
-        && uri !== '/admin'
-        && uri.indexOf('.js') === -1
-        && uri.indexOf('__webpack_hmr') === -1) {
-        if (uri.startsWith('/admin')) {
-            ctx.path = '/admin';
-            await next();
-            return;
-        }
+    if (uri.startsWith('/uid:/')
+        || uri.startsWith('/ark:/')
+        || uri.startsWith('/login')
+        || uri.startsWith('/home')) {
         // Override the path so that webpack serves the application correctly
         ctx.path = '/';
+    }
+
+    if (uri.startsWith('/admin/')) {
+        // Override the path so that webpack serves the application correctly
+        ctx.path = '/admin';
     }
 
     await next();

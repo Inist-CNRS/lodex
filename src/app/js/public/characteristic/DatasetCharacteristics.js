@@ -1,16 +1,12 @@
 import React, { PropTypes } from 'react';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
-import translate from 'redux-polyglot/translate';
-import { CardHeader, CardText } from 'material-ui/Card';
+import { CardText } from 'material-ui/Card';
 import memoize from 'lodash.memoize';
 
 import Card from '../../lib/Card';
 
-import {
-    field as fieldProptypes,
-    polyglot as polyglotPropTypes,
-} from '../../propTypes';
+import { field as fieldProptypes } from '../../propTypes';
 
 import {
     fromCharacteristic,
@@ -33,14 +29,8 @@ const styles = {
     })),
 };
 
-const DatasetCharacteristicsView = ({
-    characteristics,
-    p: polyglot,
-}) => (
+const DatasetCharacteristicsView = ({ characteristics }) => (
     <Card className="dataset-characteristics">
-        <CardHeader
-            title={polyglot.t('dataset_characteristics')}
-        />
         <CardText style={styles.container}>
             {characteristics
                 .map((characteristicField, index) => (
@@ -55,7 +45,6 @@ const DatasetCharacteristicsView = ({
 
 DatasetCharacteristicsView.propTypes = {
     characteristics: PropTypes.arrayOf(fieldProptypes).isRequired,
-    p: polyglotPropTypes.isRequired,
 };
 
 DatasetCharacteristicsView.defaultProps = {
@@ -74,5 +63,4 @@ const mapStateToProps = (state) => {
 
 export default compose(
     connect(mapStateToProps),
-    translate,
 )(DatasetCharacteristicsView);
