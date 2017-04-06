@@ -23,8 +23,9 @@ const styles = {
 const PropertyLinkedFieldsComponent = ({
     fieldName,
     isSaving,
-    onSaveProperty,
     linkedFields,
+    onSaveProperty,
+    parents,
     resource,
 }) => {
     if (!linkedFields.length) {
@@ -42,6 +43,7 @@ const PropertyLinkedFieldsComponent = ({
                     field={linkedField}
                     isSaving={isSaving}
                     resource={resource}
+                    parents={parents}
                     onSaveProperty={onSaveProperty}
                 />
             ))}
@@ -54,6 +56,7 @@ PropertyLinkedFieldsComponent.propTypes = {
     isSaving: PropTypes.bool.isRequired,
     linkedFields: PropTypes.arrayOf(fieldPropTypes).isRequired,
     onSaveProperty: PropTypes.func.isRequired,
+    parents: PropTypes.arrayOf(PropTypes.string).isRequired,
     resource: PropTypes.shape({}).isRequired,
 };
 
@@ -61,9 +64,12 @@ PropertyLinkedFieldsComponent.defaultProps = {
     fieldStatus: null,
 };
 
-const mapStateToProps = (state, { fieldName }) => ({
-    linkedFields: fromPublication.getLinkedFields(state, fieldName),
-});
+const mapStateToProps = (state, { fieldName, parents }) => {
+    const allLinkedFields = fromPublication.getLinkedFields(state, fieldName);
+    const linkedFields = allLinkedFields.filter(f => !parents.includes(f.name));
+
+    return { linkedFields };
+};
 
 const mapDispatchToProps = (dispatch, { field, resource: { uri } }) => bindActionCreators({
     changeStatus: (prevStatus, status) => changeFieldStatus({
@@ -74,9 +80,6 @@ const mapDispatchToProps = (dispatch, { field, resource: { uri } }) => bindActio
     }),
 }, dispatch);
 
-const PropertyLinkedFields = connect(
-    mapStateToProps,
-    mapDispatchToProps,
-)(PropertyLinkedFieldsComponent);
+const PropertyLinkedFields = connect(mapStateToProps, mapDispatchToProps)(PropertyLinkedFieldsComponent);
 
 export default PropertyLinkedFields;
