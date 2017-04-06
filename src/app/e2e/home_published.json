@@ -45,7 +45,6 @@
             "name": "fullname",
             "label": "Full name",
             "cover": "collection",
-            "completes": "fullname",
             "display_in_list": true,
             "display_in_resource": true,
             "scheme": "http://www.w3.org/ns/person",
