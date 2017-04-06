@@ -12,7 +12,7 @@ const styles = {
     },
 };
 
-class UriEdition extends Component {
+class EmailEdition extends Component {
     static propTypes = {
         type: PropTypes.string,
         value: PropTypes.string,
@@ -77,4 +77,4 @@ class UriEdition extends Component {
     }
 }
 
-export default UriEdition;
+export default EmailEdition;
