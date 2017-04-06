@@ -21,6 +21,8 @@ export const getExporterConfig = () => ({
 });
 
 export async function exportFileMiddleware(ctx, type, exportStreamFactory, exporterConfig) {
+    ctx.keepDbOpened = true;
+
     const characteristics = await ctx.publishedCharacteristic.findAllVersions();
     const fields = await ctx.field.findAll();
 
@@ -77,8 +79,6 @@ export async function setup(ctx, next) {
 
 export async function exportMiddleware(ctx, type) {
     try {
-        ctx.keepDbOpened = true;
-
         const exporterConfig = ctx.getExporterConfig();
 
         const exportStreamFactory = ctx.getExporter(type);

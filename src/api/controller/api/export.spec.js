@@ -1,6 +1,6 @@
 import expect, { createSpy } from 'expect';
 import EventEmitter from 'events';
-import { exportMiddleware } from './export';
+import { exportFileMiddleware } from './export';
 import config from '../../../../config.json';
 
 describe('export routes', () => {
@@ -10,6 +10,7 @@ describe('export routes', () => {
         const exporterStreamFactory = createSpy().andReturn(resultStream);
         exporterStreamFactory.mimeType = 'a_mime_type';
         exporterStreamFactory.extension = 'foo';
+        exporterStreamFactory.type = 'file';
 
         const fields = [
             { name: 'field1', cover: 'collection' },
@@ -40,13 +41,9 @@ describe('export routes', () => {
         };
 
         it('it should set keepDbOpened to true', async () => {
-            await exportMiddleware(ctx, 'accepted-type');
+            await exportFileMiddleware(ctx, 'accepted-type', exporterStreamFactory, config);
 
             expect(ctx.keepDbOpened).toEqual(true);
-        });
-
-        it('it should get the exporterStreamFactory', async () => {
-            expect(ctx.getExporter).toHaveBeenCalledWith('accepted-type');
         });
 
         it('it should get the characteristics', () => {
@@ -70,7 +67,7 @@ describe('export routes', () => {
         });
 
         it('it call the exporterStreamFactory', () => {
-            expect(exporterStreamFactory).toHaveBeenCalledWith(fields, characteristics, mongoStream, {}, null, config);
+            expect(exporterStreamFactory).toHaveBeenCalledWith(config, fields, characteristics, mongoStream, {});
         });
 
         it('it set the body to the exported stream', () => {
