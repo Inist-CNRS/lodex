@@ -181,5 +181,6 @@ export default {
     remove_column: 'Remove this column(FR)',
     multi_field_concat: 'A list of values from several existing columns(FR)',
     duplicated_uri: '%{nbInvalidUri} documents have duplicated Uri and will not be published',
-    warn_publication: 'Warning: uri are not unique',
+    warn_publication: 'Warning: uri is not unique for every document',
+    force_publish: 'Publish anyway',
 };

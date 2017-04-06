@@ -67,7 +67,7 @@ export const PublicationExcerptComponent = ({
         </TableHeader>
         <TableBody displayRowCheckbox={false}>
             {lines.map((line, index) => (
-                <PublicationExcerptLine key={line.uri || index} line={line} columns={columns} />
+                <PublicationExcerptLine key={`${line.uri}-${index}` || index} line={line} columns={columns} />
             ))}
             {areHeadersClickable &&
                 <TableRow>

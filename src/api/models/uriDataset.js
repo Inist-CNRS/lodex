@@ -5,7 +5,8 @@ import countNotUnique from './countNotUnique';
 export default (db) => {
     const collection = db.collection('uriDataset');
 
-    collection.insertBatch = documents => chunk(documents, 100).map(data => collection.insertMany(data));
+    collection.insertBatch = documents =>
+        Promise.all(chunk(documents, 100).map(data => collection.insertMany(data)));
 
     collection.findLimitFromSkip = async (limit, skip) => {
         const fields = Object.keys(await collection.findOne()).filter(name => name !== '_id');

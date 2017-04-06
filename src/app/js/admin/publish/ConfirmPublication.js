@@ -22,8 +22,8 @@ const styles = {
 
 export const ConfirmPublicationComponent = ({ nbInvalidUri, confirmPublication, cancelPublication, p: polyglot }) => {
     const actions = [
-        <FlatButton label={polyglot.t('confirm')} onClick={confirmPublication} />,
-        <FlatButton label={polyglot.t('cancel')} onClick={cancelPublication} />,
+        <FlatButton primary label={polyglot.t('force_publish')} onClick={confirmPublication} />,
+        <FlatButton secondary label={polyglot.t('cancel')} onClick={cancelPublication} />,
     ];
     return (
         <Dialog

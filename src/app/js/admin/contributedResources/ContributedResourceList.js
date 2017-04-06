@@ -53,7 +53,16 @@ export class ContributedResourceListComponent extends Component {
     }
 
     render() {
-        const { columns, resources, loading, p: polyglot, total, filter, onChangeFilter } = this.props;
+        const {
+            columns,
+            resources,
+            loading, p:
+            polyglot,
+            total,
+            filter,
+            onChangeFilter,
+            currentPage,
+        } = this.props;
 
         if (loading) {
             return <Loading>{polyglot.t('loading')}</Loading>;
@@ -92,7 +101,15 @@ export class ContributedResourceListComponent extends Component {
                             {resources.map(data => (
                                 <TableRow key={data.uri}>
                                     <TableRowColumn key="review">
-                                        <a href={getResourceUri(data, `${window.location.protocol}//${window.location.host}`)}>
+                                        <a
+                                            href={
+                                                getResourceUri(data, `${
+                                                    window.location.protocol
+                                                }//${
+                                                    window.location.host
+                                                }`)
+                                            }
+                                        >
                                             <FlatButton
                                                 className="btn-review-resource"
                                                 label={polyglot.t('review')}
@@ -111,6 +128,7 @@ export class ContributedResourceListComponent extends Component {
                         onChange={this.handlePageChange}
                         total={total}
                         perPage={10}
+                        currentPage={currentPage}
                         texts={{
                             page: polyglot.t('page'),
                             perPage: polyglot.t('perPage'),
