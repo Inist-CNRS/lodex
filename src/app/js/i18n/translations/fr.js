@@ -149,7 +149,7 @@ export default {
     position: 'Position',
     field_wizard_step_value: 'How the value is generated',
     field_wizard_step_tranforms: 'Transformations applied on the value',
-    field_wizard_step_identity: 'Général informations',
+    field_wizard_step_identity: 'General informations',
     field_wizard_step_display: 'How and where it is displayed',
     field_wizard_step_search: 'Search related',
     field_wizard_step_semantic: 'Semantics',
