@@ -110,8 +110,9 @@ export const doPublish = async (ctx) => {
 
     const transformDocumentAndKeepUri = ctx.versionTransformResult(transformDocument);
 
+    const countUnique = (await ctx.uriDataset.distinct('uri')).length;
     await ctx.tranformAllDocuments(
-        count,
+        countUnique,
         ctx.uriDataset.findLimitFromSkip,
         ctx.publishedDataset.insertBatch,
         transformDocumentAndKeepUri,
@@ -134,7 +135,7 @@ export const verifyUri = async (ctx) => {
         .map(({ value }) => value);
 
     ctx.body = {
-        valid: await ctx.dataset.ensureIsUnique(fields),
+        nbInvalidUri: await ctx.dataset.countNotUnique(fields),
     };
 };
 

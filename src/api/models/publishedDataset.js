@@ -49,8 +49,10 @@ export const addKeyToFilters = (key, value) => (filters) => {
     };
 };
 
-export default (db) => {
+export default async (db) => {
     const collection = db.collection('publishedDataset');
+
+    await collection.createIndex({ uri: 1 }, { unique: true });
 
     collection.insertBatch = documents => chunk(documents, 100).map(data => collection.insertMany(data));
 

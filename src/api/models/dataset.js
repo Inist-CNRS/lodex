@@ -1,6 +1,6 @@
 import chunk from 'lodash.chunk';
 
-import ensureIsUnique from './ensureIsUnique';
+import countNotUnique from './countNotUnique';
 
 export default (db) => {
     const collection = db.collection('dataset');
@@ -8,7 +8,10 @@ export default (db) => {
     collection.getExcerpt = () => collection.find().limit(6).toArray();
     collection.findLimitFromSkip = (limit, skip) => collection.find().skip(skip).limit(limit).toArray();
 
-    collection.ensureIsUnique = ensureIsUnique(collection);
+    collection.countNotUnique = countNotUnique(collection);
+
+    collection.ensureIsUnique = async fieldName =>
+        (await collection.countNotUnique(fieldName)) === 0;
 
     collection.findBy = async (fieldName, value) => {
         if (!await collection.ensureIsUnique(fieldName)) {

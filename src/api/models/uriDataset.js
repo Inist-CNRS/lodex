@@ -1,16 +1,35 @@
 import chunk from 'lodash.chunk';
 
-import ensureIsUnique from './ensureIsUnique';
+import countNotUnique from './countNotUnique';
 
 export default (db) => {
     const collection = db.collection('uriDataset');
-    collection.insertBatch = documents => chunk(documents, 100).map(data => collection.insertMany(data));
-    collection.findLimitFromSkip = (limit, skip) => collection.find().skip(skip).limit(limit).toArray();
 
-    collection.ensureIsUnique = ensureIsUnique(collection);
+    collection.insertBatch = documents => chunk(documents, 100).map(data => collection.insertMany(data));
+
+    collection.findLimitFromSkip = async (limit, skip) => {
+        const fields = Object.keys(await collection.findOne()).filter(name => name !== '_id');
+
+        return collection.aggregate([
+            { $group: {
+                _id: '$uri',
+                ...fields.reduce((acc, name) => ({
+                    ...acc,
+                    [name]: { $first: `$${name}` },
+                }), {}),
+            } },
+            { $skip: skip },
+            { $limit: limit },
+        ]).toArray();
+    };
+
+    collection.countNotUnique = countNotUnique(collection);
+
+    collection.ensureIsUnique = async fieldName =>
+        (await collection.countNotUnique(fieldName)) === 0;
 
     collection.findBy = async (fieldName, value) => {
-        if (!await collection.ensureIsUnique(fieldName)) {
+        if (await collection.ensureIsUnique(fieldName)) {
             throw new Error(`${fieldName} value is not unique for every document`);
         }
 
