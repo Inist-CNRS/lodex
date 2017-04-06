@@ -5,7 +5,7 @@ import { shallow } from 'enzyme';
 import LinkView from './Component';
 
 describe('<LinkView />', () => {
-    it.only('should render', () => {
+    it('should render', () => {
         const resource = { foo: 'http://example.com' };
         const field = { name: 'foo', label: 'label' };
         const fields = [];
