@@ -1,8 +1,12 @@
 import html from './html';
+<<<<<<< HEAD
 import email from './email';
 import link from './link';
 import list from './list';
 import uri from './uri';
+=======
+import istex from './istex';
+>>>>>>> add istex format WIP
 import DefaultFormat from './DefaultFormat';
 
 const components = {
@@ -11,6 +15,7 @@ const components = {
     uri,
     email,
     link,
+    istex,
 };
 
 export const FORMATS = Object.keys(components);
