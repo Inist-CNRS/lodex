@@ -1,5 +1,6 @@
 import { until, By } from 'selenium-webdriver';
 import expect from 'expect';
+
 import {
     elementTextIs,
     elementsCountIs,
@@ -10,6 +11,7 @@ import driver from '../../common/tests/chromeDriver';
 import { clear, loadFixtures } from '../../common/tests/fixtures';
 import fixtures from './home_published.json';
 import { inputElementIsFocusable } from '../../common/tests/conditions';
+import navigate from './navigate';
 
 describe('Resource page', function homePublishedDataTests() {
     this.timeout(30000);
@@ -18,7 +20,7 @@ describe('Resource page', function homePublishedDataTests() {
     before(async () => {
         await clear();
         await loadFixtures(fixtures);
-        await driver.get('http://localhost:3100/uid:/1');
+        await navigate('/uid:/1');
     });
 
     it('should not display moderate component when loggedOut', async () => {
@@ -194,7 +196,7 @@ describe('Resource page', function homePublishedDataTests() {
     it('should have an export tab with a resource sharing link', async () => {
         await driver.wait(until.elementLocated(By.css('.share-link')), DEFAULT_WAIT_TIMEOUT);
 
-        expect(await driver.findElement(By.css('.share-link input')).getAttribute('value')).toEqual('http://localhost:3100/uid:/1');
+        expect(await driver.findElement(By.css('.share-link input')).getAttribute('value')).toMatch(/.*\/uid:\/1/);
         await driver.wait(until.elementLocated(By.css('.share-link button')), DEFAULT_WAIT_TIMEOUT);
         expect(await driver.findElement(By.css('.share-link button')).getText()).toEqual('COPY');
     });

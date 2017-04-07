@@ -1,11 +1,13 @@
 import { until, By } from 'selenium-webdriver';
 import expect from 'expect';
+
 import path from 'path';
 import { elementIsClicked, elementsCountIs, elementTextIs, elementTextMatches } from 'selenium-smart-wait';
 
 import driver from '../../../common/tests/chromeDriver';
 import { clear } from '../../../common/tests/fixtures';
 import loginAsJulia from './loginAsJulia';
+import navigate from '../navigate';
 
 describe('Admin', () => {
     describe('Import model', function homeTests() {
@@ -15,7 +17,7 @@ describe('Admin', () => {
         before(async () => {
             await clear();
 
-            await driver.get('http://localhost:3100/admin');
+            await navigate('/admin');
             await driver.executeScript('return localStorage.clear();');
             await driver.executeScript('return sessionStorage.clear();');
 

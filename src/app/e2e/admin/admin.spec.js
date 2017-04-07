@@ -3,6 +3,7 @@ import { until, By } from 'selenium-webdriver';
 import driver from '../../../common/tests/chromeDriver';
 import { clear } from '../../../common/tests/fixtures';
 import { inputElementIsFocusable } from '../../../common/tests/conditions';
+import navigate from '../navigate';
 
 describe('Admin', function adminTests() {
     this.timeout(30000);
@@ -15,7 +16,7 @@ describe('Admin', function adminTests() {
     });
 
     it('should redirect to the login page if not authenticated', async () => {
-        await driver.get('http://localhost:3100/admin');
+        await navigate('/admin');
         await driver.wait(until.elementLocated(By.css('#login_form')), DEFAULT_WAIT_TIMEOUT);
     });
 
