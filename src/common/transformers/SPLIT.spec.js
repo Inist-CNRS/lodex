@@ -7,8 +7,10 @@ describe('SPLIT', () => {
         expect(split('hello dear world', ' dear ')).toEqual(['hello', 'world']);
     });
 
-    it('should return empty string if value is null', () => {
-        expect(split(undefined, ' dear ')).toEqual('');
+    it('should return empty array if value is null', () => {
+        const result = split(undefined, ' dear ');
+        expect(result).toBeA(Array);
+        expect(result).toEqual([]);
     });
 
     it('should throw an error if value is not a string', () => {
