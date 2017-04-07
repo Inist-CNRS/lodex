@@ -23,12 +23,10 @@ const renderResource = (fields, requestedFields) => (resource) => {
         ...resource.versions[resource.versions.length - 1],
     };
 
-    return html`
-            ${Object
-                .keys(lastVersion)
-                .filter(k => k !== 'publicationDate' && (requestedFields.length === 0 || requestedFields.includes(k)))
-                .map(renderField(fields, lastVersion))}
-    `;
+    return Object
+        .keys(lastVersion)
+        .filter(k => k !== 'publicationDate' && (requestedFields.length === 0 || requestedFields.includes(k)))
+        .map(renderField(fields, lastVersion));
 };
 
 function exporter(config, fields, resources, requestedFields) {
