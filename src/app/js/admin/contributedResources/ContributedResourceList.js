@@ -67,6 +67,9 @@ export class ContributedResourceListComponent extends Component {
         if (loading) {
             return <Loading>{polyglot.t('loading')}</Loading>;
         }
+
+        const baseUri = `${window.location.protocol}//${window.location.host}`;
+
         return (
             <div className="contributed_resources">
                 <CardHeader>
@@ -102,13 +105,7 @@ export class ContributedResourceListComponent extends Component {
                                 <TableRow key={data.uri}>
                                     <TableRowColumn key="review">
                                         <a
-                                            href={
-                                                getResourceUri(data, `${
-                                                    window.location.protocol
-                                                }//${
-                                                    window.location.host
-                                                }`)
-                                            }
+                                            href={getResourceUri(data, baseUri)}
                                         >
                                             <FlatButton
                                                 className="btn-review-resource"
