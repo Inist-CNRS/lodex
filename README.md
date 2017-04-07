@@ -29,6 +29,13 @@ To access the mongo shell, run:
 make mongo-shell
 ```
 
+### Database reset
+
+During development, you may need to get an application state, where no data is published.
+
+- `make clear-publication`: just clear the published data but keep your uploaded dataset and your model
+- `make clear-database`: clear the whole database
+
 ## Tests
 
 Ensure you initialized the development environment first.
@@ -282,17 +289,19 @@ Simply add your exporter name in the exporters array, and it will appear in the 
 You can add new formats to lodex.
 The formats determine the react component used to display a field on the front.
 
-Formats are added in the `src/app/formats` folder, in their own directory.
-Eg, to add an uri format create the `src/app/formats/uri` directory
-A format is made of three components: A view component for the front, an edition component for the admin and an
-edition component for the front (editing a resource value once published).
+Formats are added in the `src/app/js/formats` folder, in their own directory.
+Eg, to add an uri format create the `src/app/js/formats/uri` directory.
+A format is made of three components:
+1. a view component for the front
+2. an edition component for the admin
+3. an edition component for the front (editing a resource value once published).
 
-Those component can be any react component. They will receive the following props:
+Those components can be any react component. They will receive the following props:
 
 - `resource`: the resource
 - `field`: the field definition
-- `fieldStatus`: Only for the ViewComponent and if the field is a contribution. Statuses are `PROPOSED`, `ACCEPTED` and `REJECTED`
-- `shrink`: Only for the ViewComponent, a boolean indicating whether the value should be shrinked if possible. This is useful for the public table where large contents can be shrinked (with ellipsis for example) for easier reading.
+- `fieldStatus`: only for the ViewComponent and if the field is a contribution. Statuses are `PROPOSED`, `ACCEPTED` and `REJECTED`
+- `shrink`: only for the ViewComponent, a boolean indicating whether the value should be shrinked if possible. This is useful for the public table where large contents can be shrinked (with ellipsis for example) for easier reading.
 
 You then add an index in your directory to expose them:
 

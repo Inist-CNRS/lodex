@@ -1,10 +1,14 @@
 import uri from './uri';
 import html from './html';
+import email from './email';
+import link from './link';
 import DefaultFormat from './DefaultFormat';
 
 const components = {
     html,
     uri,
+    email,
+    link,
 };
 
 export const FORMATS = Object.keys(components);
