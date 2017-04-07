@@ -8,6 +8,7 @@ import compose from 'recompose/compose';
 import withHandlers from 'recompose/withHandlers';
 import { connect } from 'react-redux';
 import { formValueSelector } from 'redux-form';
+import TextField from 'material-ui/TextField';
 import get from 'lodash.get';
 
 import { FIELD_FORM_NAME } from '../';
@@ -31,12 +32,15 @@ export const StepValueConcatComponent = ({
     p: polyglot,
     selected,
     columns,
+    separator,
     handleChange,
+    handleSeparatorChange,
     handleAddColumn,
     handleRemoveColumn,
 }) => (
     <div>
         <RadioButton
+            className="radio_concat"
             label={polyglot.t('multi_field_concat')}
             value="concat"
             onClick={handleSelect}
@@ -45,6 +49,13 @@ export const StepValueConcatComponent = ({
         />
         {selected &&
             <div style={styles.inset}>
+                <TextField
+                    id="separator"
+                    fullWidth
+                    placeholder={polyglot.t('separator')}
+                    onChange={handleSeparatorChange}
+                    value={separator}
+                />
                 {columns.map((column, index) => (
                     <ConcatField
                         key={index}
@@ -71,8 +82,10 @@ StepValueConcatComponent.propTypes = {
     handleSelect: PropTypes.func.isRequired,
     handleAddColumn: PropTypes.func.isRequired,
     handleRemoveColumn: PropTypes.func.isRequired,
+    handleSeparatorChange: PropTypes.func.isRequired,
     p: polyglotPropTypes.isRequired,
     selected: PropTypes.bool.isRequired,
+    separator: PropTypes.string.isRequired,
 };
 
 StepValueConcatComponent.defaultProps = {
@@ -82,19 +95,19 @@ StepValueConcatComponent.defaultProps = {
 const mapStateToProps = (state) => {
     const transformers = formValueSelector(FIELD_FORM_NAME)(state, 'transformers');
     const valueTransformer =
-        get(transformers, '[0].operation') === 'CONCAT'
+        get(transformers, '[0].operation') === 'CONCAT_URI'
         ? transformers[0]
         : null;
     if (valueTransformer) {
-        const args = get(valueTransformer, 'args', []);
         return {
             selected: true,
-            columns: args.map(({ value }) => value),
-            args,
+            separator: get(valueTransformer, 'args[0].value', ''),
+            columns: get(valueTransformer, 'args', []).slice(1).map(({ value }) => value) || [],
+            args: valueTransformer.args || [],
         };
     }
 
-    return { selected: false, columns: [] };
+    return { selected: false, columns: [], separator: '' };
 };
 
 export default compose(
@@ -102,8 +115,12 @@ export default compose(
     withHandlers({
         handleSelect: ({ onChange }) => () => {
             onChange({
-                operation: 'CONCAT',
+                operation: 'CONCAT_URI',
                 args: [{
+                    name: 'separator',
+                    type: 'string',
+                    value: '',
+                }, {
                     name: 'column',
                     type: 'column',
                     value: null,
@@ -116,21 +133,30 @@ export default compose(
         },
         handleChange: ({ onChange, args }) => (event, key, value, index) => {
             onChange({
-                operation: 'CONCAT',
+                operation: 'CONCAT_URI',
                 args: [
-                    ...args.slice(0, index),
+                    ...args.slice(0, index + 1),
                     {
                         name: 'column',
                         type: 'column',
                         value,
                     },
-                    ...args.slice(index + 1),
+                    ...args.slice(index + 2),
+                ],
+            });
+        },
+        handleSeparatorChange: ({ onChange, args }) => (event, value) => {
+            onChange({
+                operation: 'CONCAT_URI',
+                args: [
+                    { name: 'separator', type: 'string', value },
+                    ...args.slice(1),
                 ],
             });
         },
         handleAddColumn: ({ onChange, args }) => {
             onChange({
-                operation: 'CONCAT',
+                operation: 'CONCAT_URI',
                 args: [
                     ...args,
                     {
@@ -143,10 +169,10 @@ export default compose(
         },
         handleRemoveColumn: ({ onChange, args }) => (index) => {
             onChange({
-                operation: 'CONCAT',
+                operation: 'CONCAT_URI',
                 args: [
-                    ...args.slice(0, index),
-                    ...args.slice(index + 1),
+                    ...args.slice(0, index + 1),
+                    ...args.slice(index + 2),
                 ],
             });
         },

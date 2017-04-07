@@ -1,6 +1,7 @@
 import omit from 'lodash.omit';
 import Koa from 'koa';
 import route from 'koa-route';
+import get from 'lodash.get';
 
 /* eslint no-await-in-loop: off */
 import getDocumentTransformer from '../../services/getDocumentTransformer';
@@ -109,8 +110,9 @@ export const doPublish = async (ctx) => {
 
     const transformDocumentAndKeepUri = ctx.versionTransformResult(transformDocument);
 
+    const countUnique = (await ctx.uriDataset.distinct('uri')).length;
     await ctx.tranformAllDocuments(
-        count,
+        countUnique,
         ctx.uriDataset.findLimitFromSkip,
         ctx.publishedDataset.insertBatch,
         transformDocumentAndKeepUri,
@@ -120,6 +122,24 @@ export const doPublish = async (ctx) => {
 
     ctx.redirect('/api/publication');
 };
+
+export const verifyUri = async (ctx) => {
+    const uriField = await ctx.field.findOneByName('uri');
+    if (get(uriField, 'transformers[0].operation') === 'AUTOGENERATE_URI') {
+        ctx.body = { valid: true };
+        return;
+    }
+
+    const fields = get(uriField, 'transformers[0].args')
+        .filter(({ type }) => type === 'column')
+        .map(({ value }) => value);
+
+    ctx.body = {
+        nbInvalidUri: await ctx.dataset.countNotUnique(fields),
+    };
+};
+
+app.use(route.get('/verifyUri', verifyUri));
 
 app.use(route.post('/', preparePublish));
 app.use(route.post('/', handlePublishError));

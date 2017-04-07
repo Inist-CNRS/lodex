@@ -28,9 +28,11 @@ export const ConcatFieldComponent = ({
     handleRemoveColumn,
     column,
     removable,
+    index,
 }) => (
     <div style={styles.container}>
         <SelectDatasetField
+            id={`select-column-${index}`}
             label="select_a_column"
             column={column}
             handleChange={handleChange}
@@ -50,6 +52,7 @@ ConcatFieldComponent.propTypes = {
     handleRemoveColumn: PropTypes.func.isRequired,
     removable: PropTypes.bool.isRequired,
     p: polyglotPropTypes.isRequired,
+    index: PropTypes.number.isRequired,
 };
 
 ConcatFieldComponent.defaultProps = {

@@ -7,6 +7,7 @@ import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { publish as publishAction } from './';
 import { fromFields, fromPublish, fromPublication } from '../selectors';
 import ButtonWithStatus from '../../lib/ButtonWithStatus';
+import ConfirmPublication from './ConfirmPublication';
 
 const styles = {
     title: {
@@ -27,18 +28,21 @@ export class PublishButtonComponent extends Component {
     render() {
         const { canPublish, error, isPublishing, p: polyglot, published } = this.props;
         return (
-            <ButtonWithStatus
-                raised
-                backgroundColor="#a4c639"
-                className="btn-publish"
-                loading={isPublishing}
-                error={error}
-                success={published}
-                label={polyglot.t('publish')}
-                onClick={this.handleClick}
-                disabled={!canPublish}
-                style={styles.button}
-            />
+            <div>
+                <ButtonWithStatus
+                    raised
+                    backgroundColor="#a4c639"
+                    className="btn-publish"
+                    loading={isPublishing}
+                    error={error}
+                    success={published}
+                    label={polyglot.t('publish')}
+                    onClick={this.handleClick}
+                    disabled={!canPublish}
+                    style={styles.button}
+                />
+                <ConfirmPublication />
+            </div>
         );
     }
 }

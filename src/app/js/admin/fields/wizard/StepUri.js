@@ -10,6 +10,7 @@ import { getTransformerMetas } from '../../../../../common/transformers';
 
 import StepUriAutogenerate from './StepUriAutogenerate';
 import StepValueColumn from './StepValueColumn';
+import StepUriConcat from './StepUriConcat';
 
 export const StepValueComponent = ({
     datasetFields,
@@ -23,6 +24,10 @@ export const StepValueComponent = ({
         />
         <StepValueColumn
             datasetFields={datasetFields}
+            field={field}
+            onChange={handleTransformerChange}
+        />
+        <StepUriConcat
             field={field}
             onChange={handleTransformerChange}
         />

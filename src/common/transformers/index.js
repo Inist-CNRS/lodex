@@ -5,6 +5,7 @@ import LINK from './LINK';
 import VALUE from './VALUE';
 import CONCAT from './CONCAT';
 import JOIN from './JOIN';
+import CONCAT_URI from './CONCAT_URI';
 
 const transformers = {
     AUTOGENERATE_URI,
@@ -14,6 +15,7 @@ const transformers = {
     VALUE,
     CONCAT,
     JOIN,
+    CONCAT_URI,
 };
 
 export default transformers;
@@ -26,6 +28,7 @@ const transformersMetas = [
     VALUE,
     CONCAT,
     JOIN,
+    CONCAT_URI,
 ].map(transformation => transformation.getMetas());
 
 export const getTransformersMetas = type => (type ? transformersMetas.filter(m => m.type === type) : transformersMetas);

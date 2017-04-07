@@ -52,7 +52,14 @@ export class RemovedResourceListComponent extends Component {
     }
 
     render() {
-        const { columns, resources, loading, p: polyglot, total } = this.props;
+        const {
+            columns,
+            resources,
+            loading,
+            p: polyglot,
+            total,
+            currentPage,
+        } = this.props;
 
         if (loading) return <Loading>{polyglot.t('loading')}</Loading>;
 
@@ -94,6 +101,7 @@ export class RemovedResourceListComponent extends Component {
                     onChange={this.handlePageChange}
                     total={total}
                     perPage={10}
+                    currentPage={currentPage}
                     texts={{
                         page: polyglot.t('page'),
                         perPage: polyglot.t('perPage'),

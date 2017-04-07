@@ -180,4 +180,7 @@ export default {
     'publish-punchline': 'Publiez vos données, vous pourrez toujours facilement les modifier et les enrichir à posteriori avec une garantie de traçabilité.',
     remove_column: 'Remove this column(FR)',
     multi_field_concat: 'A list of values from several existing columns(FR)',
+    duplicated_uri: '%{nbInvalidUri} documents have duplicated uri and will not be published',
+    warn_publication: 'Warning: uri is not unique for every document',
+    force_publish: 'Publish anyway',
 };
