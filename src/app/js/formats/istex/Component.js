@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import memoize from 'lodash.memoize';
 
-import FetchIstexDataHOC from './FetchIstexDataHOC';
+import FetchPaginatedDataHOC from '../../lib/FetchPaginatedDataHOC';
 import { REJECTED } from '../../../../common/propositionStatus';
 
 const styles = {
@@ -38,9 +38,11 @@ IstexView.defaultProps = {
     data: null,
 };
 
-const fetchProps = async (value, page, perPage) => {
+const fetchProps = async ({ resource, field }, page, perPage) => {
+    const value = resource[field.name];
     const response = await fetch(`https://api.istex.fr/document/?q="${value}"&from=${page * perPage}&size=${perPage}`);
+
     return response.json();
 };
 
-export default FetchIstexDataHOC(fetchProps, IstexView);
+export default FetchPaginatedDataHOC(fetchProps, IstexView);

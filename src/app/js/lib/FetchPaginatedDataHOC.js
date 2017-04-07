@@ -1,8 +1,7 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
 import CircularProgress from 'material-ui/CircularProgress';
 
-import { field as fieldPropTypes } from '../../propTypes';
-import Pagination from '../../lib/Pagination';
+import Pagination from './Pagination';
 
 export default (fetchProps, Component) =>
     class extends React.Component {
@@ -13,22 +12,16 @@ export default (fetchProps, Component) =>
             perPage: 10,
         };
 
-        static propTypes = {
-            field: fieldPropTypes.isRequired,
-            resource: PropTypes.object.isRequired, // eslint-disable-line
-        }
         componentDidMount() {
             this.fetchData();
         }
 
         fetchData() {
-            const { resource, field } = this.props;
-            const value = resource[field.name];
             const { page, perPage } = this.state;
             this.setState({
                 ...this.state,
                 isLoading: true,
-            }, () => fetchProps(value, page, perPage)
+            }, () => fetchProps(this.props, page, perPage)
                 .then(data => this.setState({
                     data,
                     isLoading: false,
