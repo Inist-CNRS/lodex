@@ -1,13 +1,11 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
 import Dialog from 'material-ui/Dialog';
 import { Stepper } from 'material-ui/Stepper';
-import { lightBlue500 } from 'material-ui/styles/colors';
 
 import { getFieldFormData, editField as editFieldAction, saveField as saveFieldAction } from '../';
-import { field as fieldPropTypes, polyglot as polyglotPropTypes } from '../../../propTypes';
+import { field as fieldPropTypes } from '../../../propTypes';
 import { fromFields } from '../../selectors';
 import StepValue from './StepValue';
 import StepUri from './StepUri';
@@ -54,7 +52,6 @@ class FieldEditionWizardComponent extends Component {
         fields: PropTypes.arrayOf(fieldPropTypes),
         lines: PropTypes.arrayOf(PropTypes.object).isRequired,
         saveField: PropTypes.func.isRequired,
-        p: polyglotPropTypes.isRequired,
     }
 
     static defaultProps = {
@@ -101,7 +98,6 @@ class FieldEditionWizardComponent extends Component {
             field,
             fields,
             lines,
-            p: polyglot,
         } = this.props;
 
         const { step } = this.state;
@@ -233,6 +229,5 @@ const mapDispatchToProps = {
 };
 
 export default compose(
-    translate,
     connect(mapStateToProps, mapDispatchToProps),
 )(FieldEditionWizardComponent);
