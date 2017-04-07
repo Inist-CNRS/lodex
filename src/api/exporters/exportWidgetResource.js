@@ -1,6 +1,6 @@
 import { html } from 'common-tags';
 
-function renderField(fields, resource, fieldName) {
+const renderField = (fields, resource) => (fieldName) => {
     const field = fields.find(f => f.name === fieldName);
 
     return html`
@@ -15,9 +15,9 @@ function renderField(fields, resource, fieldName) {
             </div>
         </div>
     `;
-}
+};
 
-function renderResource(fields, requestedFields, resource) {
+const renderResource = (fields, requestedFields) => (resource) => {
     const lastVersion = {
         uri: resource.uri,
         ...resource.versions[resource.versions.length - 1],
@@ -27,9 +27,9 @@ function renderResource(fields, requestedFields, resource) {
             ${Object
                 .keys(lastVersion)
                 .filter(k => k !== 'publicationDate' && (requestedFields.length === 0 || requestedFields.includes(k)))
-                .map(renderField.bind(null, fields, lastVersion))}
+                .map(renderField(fields, lastVersion))}
     `;
-}
+};
 
 function exporter(config, fields, resources, requestedFields) {
     return html`
@@ -43,7 +43,7 @@ function exporter(config, fields, resources, requestedFields) {
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-xs-12">
-                            ${resources.map(renderResource.bind(null, fields, requestedFields))}
+                            ${resources.map(renderResource(fields, requestedFields))}
                         </div>
                     </div>
                 </div>
