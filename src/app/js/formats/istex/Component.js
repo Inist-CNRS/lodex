@@ -1,8 +1,7 @@
 import React, { PropTypes } from 'react';
 import memoize from 'lodash.memoize';
 
-import { field as fieldPropTypes } from '../../propTypes';
-import { isLongText, getShortText } from '../../lib/longTexts';
+import FetchIstexDataHOC from './FetchIstexDataHOC';
 import { REJECTED } from '../../../../common/propositionStatus';
 
 const styles = {
@@ -12,28 +11,25 @@ const styles = {
     })),
 };
 
-const IstexView = ({ className, resource, field, fieldStatus, shrink }) => (
+const IstexView = ({ fieldStatus, data }) => (
     <span style={styles.text(fieldStatus)}>
         {
-            shrink && isLongText(resource[field.name])
-            ? <span className={className}>{getShortText(resource[field.name])}</span>
-            : <span className={className}>{resource[field.name]}</span>
+            JSON.stringify(data, null, 4)
         }
     </span>
 );
 
 IstexView.propTypes = {
-    className: PropTypes.string,
-    field: fieldPropTypes.isRequired,
     fieldStatus: PropTypes.string,
     resource: PropTypes.object.isRequired, // eslint-disable-line
-    shrink: PropTypes.bool,
+    data: PropTypes.shape({}),
 };
 
 IstexView.defaultProps = {
     className: null,
     fieldStatus: null,
     shrink: false,
+    data: null,
 };
 
-export default IstexView;
+export default FetchIstexDataHOC(IstexView);
