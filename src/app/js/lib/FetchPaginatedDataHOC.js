@@ -3,6 +3,12 @@ import CircularProgress from 'material-ui/CircularProgress';
 
 import Pagination from './Pagination';
 
+const styles = {
+    container: {
+        width: '100%',
+    },
+};
+
 export default (fetchProps, Component) =>
     class extends React.Component {
         state = {
@@ -13,6 +19,10 @@ export default (fetchProps, Component) =>
         };
 
         componentDidMount() {
+            this.fetchData();
+        }
+
+        componentWillReceiveProps() {
             this.fetchData();
         }
 
@@ -43,7 +53,7 @@ export default (fetchProps, Component) =>
             }
 
             return (
-                <div>
+                <div style={styles.container}>
                     {
                         isLoading ? (
                             <CircularProgress />
