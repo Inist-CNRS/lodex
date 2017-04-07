@@ -15,6 +15,7 @@ import { clear } from '../../../common/tests/fixtures';
 import { inputElementIsFocusable } from '../../../common/tests/conditions';
 import loginAsJulia from './loginAsJulia';
 import waitForPreviewComputing from './waitForPreviewComputing';
+import navigate from '../navigate';
 
 describe('Admin', () => {
     describe('Publication', function homeTests() {
@@ -24,7 +25,7 @@ describe('Admin', () => {
         before(async () => {
             await clear();
 
-            await driver.get('http://localhost:3100/admin');
+            await navigate('/admin');
             await driver.executeScript('return localStorage.clear();');
             await driver.executeScript('return sessionStorage.clear();');
             await loginAsJulia('/admin');
@@ -490,7 +491,7 @@ describe('Admin', () => {
             });
 
             it('should display the published data on the home page', async () => {
-                await driver.get('http://localhost:3100/');
+                await navigate('/');
                 await driver.wait(until.elementLocated(By.css('.dataset')), DEFAULT_WAIT_TIMEOUT);
                 const headers = await driver.findElements(By.css('.dataset table th'));
                 const headersText = await Promise.all(headers.map(h => h.getText()));

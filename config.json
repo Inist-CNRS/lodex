@@ -23,7 +23,8 @@
        "tsv",
        "raw",
        "ttl",
-       "jsonld"
+       "jsonld",
+       "widgetResource"
    ],
    "languages": [
        { "code": "fr", "label": "Français" },

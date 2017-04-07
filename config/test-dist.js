@@ -1,5 +1,7 @@
+const PORT = 3010;
+
 module.exports = {
-    port: 3010,
+    port: PORT,
     mongo: {
         host: 'localhost:27017',
         dbName: 'lodex_test',
@@ -14,5 +16,5 @@ module.exports = {
         delimiter: ';',
     },
     buildFrontend: false,
-    debug: true,
+    host: `http://localhost:${PORT}`,
 };

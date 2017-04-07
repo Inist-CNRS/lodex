@@ -4,9 +4,8 @@ import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
 import { CardActions, CardText } from 'material-ui/Card';
 import { Tabs, Tab } from 'material-ui/Tabs';
-import memoize from 'lodash.memoize';
 import { cyan500 } from 'material-ui/styles/colors';
-import Subheader from 'material-ui/Subheader';
+import Divider from 'material-ui/Divider';
 
 import Card from '../../lib/Card';
 import { saveResource as saveResourceAction } from './';
@@ -20,6 +19,7 @@ import AddField from './AddField';
 import HideResource from './HideResource';
 import Ontology from '../Ontology';
 import Export from '../Export';
+import Widgets from '../Widgets';
 import Share from '../Share';
 import ShareLink from '../ShareLink';
 import SelectVersion from './SelectVersion';
@@ -27,6 +27,10 @@ import { getResourceUri } from '../../../../common/uris';
 
 const styles = {
     container: {
+        display: 'flex',
+        flexDirection: 'column',
+    },
+    containerTabs: {
         display: 'flex',
         flexDirection: 'column',
     },
@@ -91,49 +95,48 @@ export const DetailComponent = ({
                     ))}
                 </CardText>
             </Card>
-            <Card>
-                <CardText style={styles.container}>
-                    <Tabs tabItemContainerStyle={styles.tab}>
-                        <Tab
-                            className="tab-resource-details"
-                            buttonStyle={styles.tabButton}
-                            label={polyglot.t('resource_details')}
-                        >
-                            <div style={styles.propertiesContainer}>
-                                {otherFields.map(field => (
-                                    <div key={field.name} style={styles.item}>
-                                        <Property
-                                            field={field}
-                                            isSaving={isSaving}
-                                            onSaveProperty={handleSaveResource}
-                                            resource={resource}
-                                            style={styles.property}
-                                        />
-                                    </div>
-                                ))}
-                            </div>
-                        </Tab>
-                        <Tab
-                            className="tab-resource-export"
-                            buttonStyle={styles.tabButton}
-                            label={polyglot.t('share_export')}
-                        >
-                            <Subheader>{polyglot.t('export_data')}</Subheader>
-                            <Export uri={resource.uri} />
-                            <Subheader>{polyglot.t('resource_share_link')}</Subheader>
-                            <ShareLink uri={sharingUri} />
-                            <Subheader>{polyglot.t('share')}</Subheader>
-                            <Share uri={sharingUri} title={sharingTitle} />
-                        </Tab>
-                        <Tab
-                            className="tab-resource-ontology"
-                            buttonStyle={styles.tabButton}
-                            label={polyglot.t('ontology')}
-                        >
-                            <Ontology />
-                        </Tab>
-                    </Tabs>
-                </CardText>
+            <Card style={styles.container}>
+                <Tabs tabItemContainerStyle={styles.tab}>
+                    <Tab
+                        className="tab-resource-details"
+                        buttonStyle={styles.tabButton}
+                        label={polyglot.t('resource_details')}
+                    >
+                        <div style={styles.propertiesContainer}>
+                            {otherFields.map(field => (
+                                <div key={field.name} style={styles.item}>
+                                    <Property
+                                        field={field}
+                                        isSaving={isSaving}
+                                        onSaveProperty={handleSaveResource}
+                                        resource={resource}
+                                        style={styles.property}
+                                    />
+                                </div>
+                            ))}
+                        </div>
+                    </Tab>
+                    <Tab
+                        className="tab-resource-export"
+                        buttonStyle={styles.tabButton}
+                        label={polyglot.t('share_export')}
+                    >
+                        <Export uri={resource.uri} />
+                        <Divider />
+                        <Widgets uri={resource.uri} />
+                        <Divider />
+                        <ShareLink uri={sharingUri} />
+                        <Divider />
+                        <Share uri={sharingUri} title={sharingTitle} />
+                    </Tab>
+                    <Tab
+                        className="tab-resource-ontology"
+                        buttonStyle={styles.tabButton}
+                        label={polyglot.t('ontology')}
+                    >
+                        <Ontology />
+                    </Tab>
+                </Tabs>
                 <CardActions style={styles.actions}>
                     <SelectVersion />
                     <AddField style={{ marginLeft: 'auto' }} />

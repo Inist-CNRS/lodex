@@ -9,6 +9,7 @@ import {
 import driver from '../../common/tests/chromeDriver';
 import { clear, loadFixtures } from '../../common/tests/fixtures';
 import fixtures from './resource_published.json';
+import navigate from './navigate';
 
 describe('Resource page when not logged', function resourcePageTest() {
     this.timeout(30000);
@@ -17,7 +18,7 @@ describe('Resource page when not logged', function resourcePageTest() {
     before(async () => {
         await clear();
         await loadFixtures(fixtures);
-        await driver.get('http://localhost:3100/uid:/1');
+        await navigate('/uid:/1');
     });
 
     it('should display all resource properties', async () => {

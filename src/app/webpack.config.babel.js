@@ -105,7 +105,7 @@ export default {
                 NODE_ENV: process.env.NODE_ENV === 'development'
                     ? JSON.stringify(process.env.NODE_ENV)
                     : JSON.stringify('production'), // eslint-disable-line max-len
-                EZMASTER_PUBLIC_URL: JSON.stringify.apply(process.env.EZMASTER_PUBLIC_URL),
+                PUBLIC_URL: JSON.stringify(config.host),
             },
         }),
         new LoaderOptionsPlugin({

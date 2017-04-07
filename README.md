@@ -157,7 +157,7 @@ You can add new exporter to lodex.
 Exporter are added in the `src/api/exporters` directory.
 
 ```js
-const exporter = (fields, characteristics, stream) => {
+const exporter = (config, fields, characteristics, stream, query) => {
     const defaultDocument = getDefaultDocuments(fields);
     const getCharacteristicByName = name => characteristics[0][name];
     const getCsvField = getCsvFieldFactory(getCharacteristicByName);
@@ -178,13 +178,19 @@ exporter.extension = 'csv';
 // Required: this will be the exported file mime type
 exporter.mimeType = 'text/csv';
 
+// Required: this define wether this exporter will output a file or a string (for widgets)
+// Accepted types are `file` or `string`
+exporter.type = 'file';
+
 export default exporter;
 
 ```
 
 It receives:
 
-    - fields
+    - `config`: The configuration provided through the `config.json` file
+
+    - `fields`
         The list of fields
 
 ```json
@@ -218,7 +224,7 @@ or
 }
 ```
 
-    - characteristics
+    - `characteristics`
         The list of all version of the characteristics sorted by their publicationDate (newer to oldest)
 
 ```json
@@ -229,7 +235,7 @@ or
 }
 ```
 
-    - stream
+    - `stream`
         A stream of all document in the published dataset.
 
 ```json
@@ -258,6 +264,8 @@ or
     ]
 }
 ```
+
+    - `query`: the request query
 
 You also need to declare the exporter in `src/api/exporters/index.js`.
 

@@ -14,6 +14,7 @@ import fixtures from './composedOf.json';
 import { inputElementIsFocusable } from '../../../common/tests/conditions';
 import loginAsJulia from './loginAsJulia';
 import waitForPreviewComputing from './waitForPreviewComputing';
+import navigate from '../navigate';
 
 describe('Admin', () => {
     describe('composedOf', function homeTests() {
@@ -24,7 +25,7 @@ describe('Admin', () => {
             await clear();
             await loadFixtures(fixtures);
 
-            await driver.get('http://localhost:3100/admin');
+            await navigate('/admin');
             await driver.executeScript('return localStorage.clear();');
             await driver.executeScript('return sessionStorage.clear();');
             await loginAsJulia('/admin');
@@ -130,7 +131,7 @@ describe('Admin', () => {
             await driver.wait(elementIsClicked(buttonPublish), DEFAULT_WAIT_TIMEOUT);
             await driver.wait(until.elementLocated(By.css('.data-published')), DEFAULT_WAIT_TIMEOUT);
 
-            await driver.get('http://localhost:3100/');
+            await navigate('/');
             await driver.wait(until.elementLocated(By.css('.dataset-uri a')), DEFAULT_WAIT_TIMEOUT);
             await driver.wait(elementIsClicked('.dataset-uri a'), DEFAULT_WAIT_TIMEOUT);
             await driver.wait(until.elementLocated(By.css('.compose_fullname.property.firstname')), DEFAULT_WAIT_TIMEOUT);

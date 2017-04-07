@@ -58,5 +58,6 @@ const exporter = (fields, characteristics, stream) =>
 
 exporter.extension = 'ttl';
 exporter.mimeType = 'text/turtle';
+exporter.type = 'file';
 
 export default exporter;

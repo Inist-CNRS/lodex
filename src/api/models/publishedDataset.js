@@ -126,8 +126,7 @@ export default async (db) => {
         return collection.findOne({ _id: oid });
     };
 
-    collection.findByUri = async uri =>
-        collection.findOne({ uri });
+    collection.findByUri = uri => collection.findOne({ uri });
 
     collection.addVersion = async (resource, newVersion, publicationDate = new Date()) =>
         collection.findOneAndUpdate(

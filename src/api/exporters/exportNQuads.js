@@ -5,7 +5,7 @@ import * as ezsLocals from './ezsLocals';
 ezs.use(ezsBasics);
 ezs.use(ezsLocals);
 
-const exporter = (fields, characteristics, stream) =>
+const exporter = (config, fields, characteristics, stream) =>
     stream
         .pipe(ezs('filterVersions'))
         .pipe(ezs('filterContributions', { fields }))
@@ -18,5 +18,6 @@ const exporter = (fields, characteristics, stream) =>
 
 exporter.extension = 'nq';
 exporter.mimeType = 'application/n-quads';
+exporter.type = 'file';
 
 export default exporter;

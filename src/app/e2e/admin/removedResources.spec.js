@@ -6,6 +6,7 @@ import driver from '../../../common/tests/chromeDriver';
 import { clear, loadFixtures } from '../../../common/tests/fixtures';
 import fixtures from './removedResources.json';
 import loginAsJulia from './loginAsJulia';
+import navigate from '../navigate';
 
 describe('Admin', () => {
     describe('Removed Resource management', function homePublishedDataTests() {
@@ -16,7 +17,7 @@ describe('Admin', () => {
             await clear(); // Had to ensure clear state for unknown reason
             await loadFixtures(fixtures);
 
-            await driver.get('http://localhost:3100/admin');
+            await navigate('/admin');
             await driver.executeScript('return localStorage.clear();');
             await driver.executeScript('return sessionStorage.clear();');
 
