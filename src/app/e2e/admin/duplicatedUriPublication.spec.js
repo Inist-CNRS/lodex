@@ -11,6 +11,7 @@ import { clear, loadFixtures } from '../../../common/tests/fixtures';
 import loginAsJulia from './loginAsJulia';
 import fixtures from './duplicatedUriPublication.json';
 import waitForPreviewComputing from './waitForPreviewComputing';
+import navigate from '../navigate';
 
 describe('Admin', () => {
     describe('Publication with duplicated uri', function homeTests() {
@@ -22,7 +23,7 @@ describe('Admin', () => {
                 await clear();
                 await loadFixtures(fixtures);
 
-                await driver.get('http://localhost:3100/admin');
+                await navigate('/admin');
                 await driver.executeScript('return localStorage.clear();');
                 await driver.executeScript('return sessionStorage.clear();');
                 await loginAsJulia('/admin');
@@ -45,7 +46,7 @@ describe('Admin', () => {
             });
 
             it('should display the published data on the home page', async () => {
-                await driver.get('http://localhost:3100/');
+                await navigate('/');
                 await driver.wait(until.elementLocated(By.css('.dataset')), DEFAULT_WAIT_TIMEOUT);
                 const headers = await driver.findElements(By.css('.dataset table th'));
                 const headersText = await Promise.all(headers.map(h => h.getText()));
@@ -87,7 +88,7 @@ describe('Admin', () => {
                 await clear();
                 await loadFixtures(fixtures);
 
-                await driver.get('http://localhost:3100/admin');
+                await navigate('/admin');
                 await driver.executeScript('return localStorage.clear();');
                 await driver.executeScript('return sessionStorage.clear();');
                 await loginAsJulia('/admin');
@@ -139,7 +140,7 @@ describe('Admin', () => {
             });
 
             it('should display the published data on the home page', async () => {
-                await driver.get('http://localhost:3100/');
+                await navigate('/');
                 await driver.wait(until.elementLocated(By.css('.dataset')), DEFAULT_WAIT_TIMEOUT);
                 const headers = await driver.findElements(By.css('.dataset table th'));
                 const headersText = await Promise.all(headers.map(h => h.getText()));
