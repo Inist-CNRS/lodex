@@ -11,13 +11,19 @@ const styles = {
     })),
 };
 
-const IstexView = ({ fieldStatus, data }) => (
-    <span style={styles.text(fieldStatus)}>
-        {
-            JSON.stringify(data, null, 4)
-        }
-    </span>
-);
+const IstexView = ({ fieldStatus, data }) => {
+    if (!data) {
+        return null;
+    }
+
+    return (
+        <span style={styles.text(fieldStatus)}>
+            {
+                JSON.stringify(data, null, 4)
+            }
+        </span>
+    );
+};
 
 IstexView.propTypes = {
     fieldStatus: PropTypes.string,
@@ -32,4 +38,9 @@ IstexView.defaultProps = {
     data: null,
 };
 
-export default FetchIstexDataHOC(IstexView);
+const fetchProps = async (value, page, perPage) => {
+    const response = await fetch(`https://api.istex.fr/document/?q="${value}"&from=${page * perPage}&size=${perPage}`);
+    return response.json();
+};
+
+export default FetchIstexDataHOC(fetchProps, IstexView);
