@@ -12,7 +12,7 @@ const styles = {
     },
 };
 
-class LinkEdition extends Component {
+class DefaultEditionWithLabel extends Component {
     static propTypes = {
         type: PropTypes.string,
         value: PropTypes.string,
@@ -77,4 +77,4 @@ class LinkEdition extends Component {
     }
 }
 
-export default LinkEdition;
+export default DefaultEditionWithLabel;
