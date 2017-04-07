@@ -85,7 +85,7 @@ test-frontend-functional: ## Run the frontend application functional tests
 
 test: test-frontend-unit test-api-unit test-frontend-functional
 
-clear-database:
+clear-database: ## Clear the whole database
 	docker-compose exec mongo mongo lodex --eval " \
 		db.publishedDataset.remove({}); \
 		db.publishedCharacteristic.remove({}); \
@@ -94,7 +94,7 @@ clear-database:
 		db.dataset.remove({}); \
 	"
 
-clear-publication:
+clear-publication: ## Clear the published data, keep uploaded dataset and model
 	docker-compose exec mongo mongo lodex --eval " \
 		db.publishedDataset.remove({}); \
 		db.publishedCharacteristic.remove({}); \

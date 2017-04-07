@@ -29,13 +29,12 @@ To access the mongo shell, run:
 make mongo-shell
 ```
 
-### State reset
+### Database reset
 
 During development, you may need to get an application state, where no data is published.
 
-One way is to modify `config/development.js`, and change the `dbName` to a new one.
-
-> **Note**: an alternative way is to use the mongo-shell and drop the database.
+- `make clear-publication`: just clear the published data but keep your uploaded dataset and your model
+- `make clear-database`: clear the whole database
 
 ## Tests
 
