@@ -105,6 +105,7 @@ export default {
     add: 'add',
     remove: 'remove',
     select_a_field: 'select a field',
+    select_a_format: 'Apply a format',
     language: 'Language',
     close: 'close',
     export_data: 'Export',
