@@ -191,4 +191,10 @@ export default {
     list_format_select_type: 'Select a type of list',
     list_format_unordered: 'Unordered list',
     list_format_ordered: 'Ordered list',
+    uri_format_select_type: 'How is the label defined ?',
+    uri_format_column: 'Label is the column content',
+    uri_format_custom: 'List is a custom text (same for all resources)',
+    uri_format_another_column: 'Label is the content of another column',
+    uri_format_custom_value: 'The custom text',
+    uri_format_another_column_value: 'The column',
 };
