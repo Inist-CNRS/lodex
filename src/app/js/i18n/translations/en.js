@@ -189,4 +189,7 @@ export default {
     select_exported_fields: 'Select the fields to display in the widget',
     filter_fields_for_widgets: 'Type here to filter the list of fields',
     widgetResource: 'Default widget',
+    list_format_select_type: 'Select a type of list',
+    list_format_unordered: 'Unordered list',
+    list_format_ordered: 'Ordered list',
 };

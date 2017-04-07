@@ -1,11 +1,13 @@
-import uri from './uri';
 import html from './html';
 import email from './email';
 import link from './link';
+import list from './list';
+import uri from './uri';
 import DefaultFormat from './DefaultFormat';
 
 const components = {
     html,
+    list,
     uri,
     email,
     link,
