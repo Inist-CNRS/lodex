@@ -1,8 +1,6 @@
 {
    "username": "user",
    "password": "secret",
-   "naan": "67375",
-   "subpublisher": "39D",
     "loader": {
         "csv": {
             "quote": "\"",
