@@ -9,7 +9,7 @@ const styles = {
     },
 };
 
-export default (fetchProps, Component) =>
+export default fetchProps => Component =>
     class extends React.Component {
         state = {
             isLoading: true,
@@ -35,7 +35,12 @@ export default (fetchProps, Component) =>
                 .then(data => this.setState({
                     data,
                     isLoading: false,
-                })));
+                }))
+                .catch(error => this.setState({
+                    error: error.message,
+                    isLoading: false,
+                })),
+            );
         }
 
         onPaginationChange = (page, perPage) => {
@@ -47,10 +52,7 @@ export default (fetchProps, Component) =>
         }
 
         render() {
-            const { isLoading, data, page, perPage } = this.state;
-            if (!data) {
-                return <CircularProgress />;
-            }
+            const { isLoading, data, error, page, perPage } = this.state;
 
             return (
                 <div style={styles.container}>
@@ -61,15 +63,16 @@ export default (fetchProps, Component) =>
                             <Component
                                 {...this.props}
                                 data={data}
+                                error={error}
                             />
                         )
                     }
-                    <Pagination
+                    {data && <Pagination
                         onChange={this.onPaginationChange}
                         currentPage={page}
                         perPage={perPage}
                         total={data.total}
-                    />
+                    />}
                 </div>
             );
         }
