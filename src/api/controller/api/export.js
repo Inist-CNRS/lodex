@@ -74,6 +74,7 @@ export async function setup(ctx, next) {
     ctx.getExporter = getExporter;
     ctx.exportFileMiddleware = exportFileMiddleware;
     ctx.exportWidgetMiddleware = exportWidgetMiddleware;
+    ctx.getExporterConfig = getExporterConfig;
     await next();
 }
 
