@@ -198,4 +198,6 @@ export default {
     uri_format_another_column: 'Label is the content of another column',
     uri_format_custom_value: 'The custom text',
     uri_format_another_column_value: 'The column',
+    'TypeError: Failed to fetch': 'Could not access api',
+    istex_results: 'ISTEX search results for %{searchTerm}:',
 };

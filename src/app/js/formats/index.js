@@ -3,6 +3,7 @@ import email from './email';
 import link from './link';
 import list from './list';
 import uri from './uri';
+import istex from './istex';
 import DefaultFormat from './DefaultFormat';
 
 const components = {
@@ -11,6 +12,7 @@ const components = {
     uri,
     email,
     link,
+    istex,
 };
 
 export const FORMATS = Object.keys(components);
