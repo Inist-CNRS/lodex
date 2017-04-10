@@ -1,7 +1,6 @@
 import React, { PropTypes } from 'react';
 import memoize from 'lodash.memoize';
-import { List, ListItem } from 'material-ui/List';
-import PdfIcon from 'material-ui/svg-icons/image/picture-as-pdf';
+import { List } from 'material-ui/List';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
 
@@ -10,6 +9,7 @@ import Alert from '../../lib/Alert';
 import { REJECTED } from '../../../../common/propositionStatus';
 import { field as fieldPropTypes, polyglot as polyglotPropTypes } from '../../propTypes';
 import fetchIstexData from './fetchIstexData';
+import IstexItem from './IstexItem';
 
 const styles = {
     text: memoize(status => Object.assign({
@@ -25,12 +25,12 @@ const IstexView = ({ fieldStatus, data, error, field, resource, p: { t } }) => (
         {data && <List>
             {
                 data.hits.map(({ id, title, publicationDate, fulltext, abstract }) => (
-                    <ListItem
+                    <IstexItem
                         key={id}
-                        onClick={() => window.open(fulltext)}
-                        leftIcon={<PdfIcon />}
-                        primaryText={`${title} ${publicationDate}`}
-                        secondaryText={abstract}
+                        fulltext={fulltext}
+                        title={title}
+                        publicationDate={publicationDate}
+                        abstract={abstract}
                     />
                 ))
             }
