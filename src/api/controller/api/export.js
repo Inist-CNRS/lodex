@@ -74,12 +74,13 @@ export async function setup(ctx, next) {
     ctx.getExporter = getExporter;
     ctx.exportFileMiddleware = exportFileMiddleware;
     ctx.exportWidgetMiddleware = exportWidgetMiddleware;
+    ctx.getExporterConfig = getExporterConfig;
     await next();
 }
 
 export async function exportMiddleware(ctx, type) {
     try {
-        const exporterConfig = getExporterConfig();
+        const exporterConfig = ctx.getExporterConfig();
 
         const exportStreamFactory = ctx.getExporter(type);
 
