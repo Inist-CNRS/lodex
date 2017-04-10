@@ -187,10 +187,7 @@ describe('resource saga', () => {
                 resource: 'resource',
                 uri: 'uri',
             });
-            expect(next.value).toEqual(put(saveResourceSuccess({
-                resource: 'resource',
-                uri: 'uri',
-            })));
+            expect(next.value).toEqual(put(saveResourceSuccess()));
         });
     });
 });
