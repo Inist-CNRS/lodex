@@ -5,11 +5,11 @@ import PdfIcon from 'material-ui/svg-icons/image/picture-as-pdf';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
 
-import fetch from '../../lib/fetch';
 import FetchPaginatedDataHOC from '../../lib/FetchPaginatedDataHOC';
 import Alert from '../../lib/Alert';
 import { REJECTED } from '../../../../common/propositionStatus';
 import { field as fieldPropTypes, polyglot as polyglotPropTypes } from '../../propTypes';
+import fetchIstexData from './fetchIstexData';
 
 const styles = {
     text: memoize(status => Object.assign({
@@ -24,10 +24,10 @@ const IstexView = ({ fieldStatus, data, error, field, resource, p: { t } }) => (
         {error && <Alert><p>{t(error)}</p></Alert>}
         {data && <List>
             {
-                data.hits.map(({ id, title, publicationDate, fullText, abstract }) => (
+                data.hits.map(({ id, title, publicationDate, fulltext, abstract }) => (
                     <ListItem
                         key={id}
-                        onClick={() => window.open(fullText)}
+                        onClick={() => window.open(fulltext)}
                         leftIcon={<PdfIcon />}
                         primaryText={`${title} ${publicationDate}`}
                         secondaryText={abstract}
@@ -55,25 +55,7 @@ IstexView.defaultProps = {
     error: null,
 };
 
-const fetchProps = async ({ resource, field }, page, perPage) => {
-    const value = resource[field.name];
-    const fetchResult = await fetch({ url: `https://api.istex.fr/document/?q="${value}"&from=${page * perPage}&size=${perPage}&output=id,title,publicationDate,fulltext,abstract` });
-
-    if (fetchResult.error) {
-        throw new Error(fetchResult.error);
-    }
-    const { response: { total, hits } } = fetchResult;
-
-    return {
-        hits: hits.map(hit => ({
-            ...hit,
-            fullText: hit.fulltext.find(({ extension }) => extension === 'pdf').uri,
-        })),
-        total,
-    };
-};
-
 export default compose(
     translate,
-    FetchPaginatedDataHOC(fetchProps),
+    FetchPaginatedDataHOC(fetchIstexData),
 )(IstexView);
