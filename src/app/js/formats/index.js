@@ -38,7 +38,7 @@ export const getViewComponent = (field, isList) => {
         return component.ListComponent || component.Component;
     }
 
-    return components.Component;
+    return component.Component;
 };
 export const getAdminComponent = name => getComponent(name).AdminComponent;
 export const getEditionComponent = name => getComponent(name).EditionComponent;
