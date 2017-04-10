@@ -1,8 +1,8 @@
 import React, { Component, PropTypes } from 'react';
+import translate from 'redux-polyglot/translate';
 import MenuItem from 'material-ui/MenuItem';
 import SelectField from 'material-ui/SelectField';
 import TextField from 'material-ui/TextField';
-import translate from 'redux-polyglot/translate';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 
 const styles = {

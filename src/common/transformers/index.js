@@ -4,6 +4,7 @@ import UPPERCASE from './UPPERCASE';
 import LINK from './LINK';
 import VALUE from './VALUE';
 import CONCAT from './CONCAT';
+import JBJ from './JBJ';
 import JOIN from './JOIN';
 import CONCAT_URI from './CONCAT_URI';
 import SPLIT from './SPLIT';
@@ -15,6 +16,7 @@ const transformers = {
     LINK,
     VALUE,
     CONCAT,
+    JBJ,
     JOIN,
     CONCAT_URI,
     SPLIT,
@@ -29,6 +31,7 @@ const transformersMetas = [
     UPPERCASE,
     VALUE,
     CONCAT,
+    JBJ,
     JOIN,
     CONCAT_URI,
     SPLIT,
