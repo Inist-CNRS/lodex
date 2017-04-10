@@ -18,11 +18,11 @@ const styles = {
     })),
 };
 
-const IstexView = ({ fieldStatus, data, error, field, resource, p: { t } }) => (
+export const IstexView = ({ fieldStatus, data, error, field, resource, p: { t } }) => (
     <span style={styles.text(fieldStatus)}>
         <span>ISTEX results for {resource[field.name]}:</span>
         {error && <Alert><p>{t(error)}</p></Alert>}
-        {data && <List>
+        {data && data.hits && <List>
             {
                 data.hits.map(({ id, title, publicationDate, fulltext, abstract }) => (
                     <IstexItem
