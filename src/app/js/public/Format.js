@@ -33,8 +33,9 @@ export class FormatComponent extends Component {
             rawLinkedResource,
             resource,
             shrink,
+            isList,
         } = this.props;
-        const ViewComponent = getViewComponent(field);
+        const ViewComponent = getViewComponent(field, isList);
 
         return (
             <ViewComponent
@@ -61,12 +62,14 @@ FormatComponent.propTypes = {
     rawLinkedResource: PropTypes.object, // eslint-disable-line
     resource: PropTypes.object, // eslint-disable-line
     shrink: PropTypes.bool,
+    isList: PropTypes.bool,
 };
 
 FormatComponent.defaultProps = {
     className: null,
     fieldStatus: null,
     shrink: false,
+    isList: false,
 };
 
 const preMapStateToProps = state => ({
