@@ -312,7 +312,9 @@ describe('Admin', () => {
                 value.sendKeys('Zero-sum hand game');
 
                 await driver.wait(elementIsClicked('.btn-next'), DEFAULT_WAIT_TIMEOUT);
+                await driver.sleep(500); // animations
                 await driver.wait(elementIsClicked('.btn-next'), DEFAULT_WAIT_TIMEOUT);
+                await driver.sleep(500); // animations
             });
 
             it('should configure completes', async () => {
