@@ -106,6 +106,7 @@ export default {
                     ? JSON.stringify(process.env.NODE_ENV)
                     : JSON.stringify('production'), // eslint-disable-line max-len
                 PUBLIC_URL: JSON.stringify(config.host),
+                ISTEX_API_URL: JSON.stringify(config.istexApiUrl),
             },
         }),
         new LoaderOptionsPlugin({

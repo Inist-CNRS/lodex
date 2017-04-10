@@ -1,10 +1,14 @@
 import fetch from '../../lib/fetch';
 import composeAsync from '../../lib/composeAsync';
 
+const istexApiUrl = process.env.ISTEX_API_URL;
+
 export const getUrl = ({ props: { resource, field }, page, perPage }) => {
     const value = resource[field.name];
+    const output = 'id,title,publicationDate,fulltext,abstract';
+
     return {
-        url: `https://api.istex.fr/document/?q="${value}"&from=${page * perPage}&size=${perPage}&output=id,title,publicationDate,fulltext,abstract`,
+        url: `${istexApiUrl}/?q="${value}"&from=${page * perPage}&size=${perPage}&output=${output}`,
     };
 };
 
