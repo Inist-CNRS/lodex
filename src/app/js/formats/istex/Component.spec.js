@@ -7,7 +7,7 @@ import Alert from '../../lib/Alert';
 import { IstexView } from './Component';
 import IstexItem from './IstexItem';
 
-describe.only('<IstexView />', () => {
+describe('<IstexView />', () => {
     it('should display List if data.hits', () => {
         const wrapper = shallow(<IstexView
             fieldStatus=""
