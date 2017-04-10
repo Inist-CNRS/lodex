@@ -1,22 +1,30 @@
 import React, { PropTypes } from 'react';
 import { ListItem } from 'material-ui/List';
 import PdfIcon from 'material-ui/svg-icons/image/picture-as-pdf';
-import compose from 'recompose/compose';
-import withHandlers from 'recompose/withHandlers';
 
-export const IstexItemComponent = ({ title, publicationDate, abstract, handleOpenUrl }) => (
-    <ListItem
-        onClick={handleOpenUrl}
-        leftIcon={<PdfIcon />}
-        primaryText={`${title} ${publicationDate}`}
-        secondaryText={abstract}
-    />
+const styles = {
+    link: { textDecoration: 'none' },
+};
+
+export const IstexItemComponent = ({ title, publicationDate, abstract, fulltext }) => (
+    <a
+        href={fulltext}
+        rel="noopener noreferrer"
+        target="_blank"
+        style={styles.link}
+    >
+        <ListItem
+            leftIcon={<PdfIcon />}
+            primaryText={`${title} ${publicationDate}`}
+            secondaryText={abstract}
+        />
+    </a>
 );
 
 IstexItemComponent.propTypes = {
     title: PropTypes.string.isRequired,
     publicationDate: PropTypes.string.isRequired,
-    handleOpenUrl: PropTypes.func.isRequired,
+    fulltext: PropTypes.string.isRequired,
     abstract: PropTypes.string,
 };
 
@@ -24,8 +32,4 @@ IstexItemComponent.defaultProps = {
     abstract: null,
 };
 
-export default compose(
-    withHandlers({
-        handleOpenUrl: ({ fulltext }) => () => window.open(fulltext),
-    }),
-)(IstexItemComponent);
+export default IstexItemComponent;

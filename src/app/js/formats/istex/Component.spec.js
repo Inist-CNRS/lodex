@@ -76,7 +76,7 @@ describe('<IstexView />', () => {
         />);
         const span = wrapper.find('span');
         // expect(span.length).toBe(1);
-        expect(span.at(1).text()).toBe('ISTEX results for value:');
+        expect(span.at(1).text()).toBe('istex_results');
     });
 
     it('should dislay Alert with error if there is one error', () => {

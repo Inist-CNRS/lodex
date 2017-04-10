@@ -4,7 +4,7 @@ import { List } from 'material-ui/List';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
 
-import FetchPaginatedDataHOC from '../../lib/FetchPaginatedDataHOC';
+import fetchPaginatedDataForComponent from '../../lib/fetchPaginatedDataForComponent';
 import Alert from '../../lib/Alert';
 import { REJECTED } from '../../../../common/propositionStatus';
 import { field as fieldPropTypes, polyglot as polyglotPropTypes } from '../../propTypes';
@@ -18,10 +18,10 @@ const styles = {
     })),
 };
 
-export const IstexView = ({ fieldStatus, data, error, field, resource, p: { t } }) => (
+export const IstexView = ({ fieldStatus, data, error, field, resource, p: polyglot }) => (
     <span style={styles.text(fieldStatus)}>
-        <span>ISTEX results for {resource[field.name]}:</span>
-        {error && <Alert><p>{t(error)}</p></Alert>}
+        <span>{polyglot.t('istex_results', { searchTerm: resource[field.name] })}</span>
+        {error && <Alert><p>{polyglot.t(error)}</p></Alert>}
         {data && data.hits && <List>
             {
                 data.hits.map(({ id, title, publicationDate, fulltext, abstract }) => (
@@ -57,5 +57,5 @@ IstexView.defaultProps = {
 
 export default compose(
     translate,
-    FetchPaginatedDataHOC(fetchIstexData),
+    fetchPaginatedDataForComponent(fetchIstexData),
 )(IstexView);
