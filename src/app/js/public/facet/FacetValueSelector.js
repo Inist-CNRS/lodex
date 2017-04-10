@@ -7,16 +7,26 @@ import AutoComplete from 'material-ui/AutoComplete';
 import MenuItem from 'material-ui/MenuItem';
 import memoize from 'lodash.memoize';
 
+import { isLongText, getShortText } from '../../lib/longTexts';
 import { field as fieldPropTypes, polyglot as polyglotPropTypes } from '../../propTypes';
 import { fromFacet } from '../selectors';
 import { loadFacetValues as loadFacetValuesAction, applyFacet as applyFacetAction } from './index';
+
+const getMenuText = memoize((text) => {
+    if (isLongText(text, 25)) {
+        return getShortText(text, 25);
+    }
+
+    return text;
+});
 
 export const getValues = memoize(facets => facets.map(facet => ({
     text: facet.value,
     value: (
         <MenuItem
             className={`facet-value-${facet.value.toLowerCase()}`}
-            primaryText={facet.value}
+            primaryText={getMenuText(facet.value)}
+            title={facet.value}
             secondaryText={facet.count}
             value={facet.value}
         />
