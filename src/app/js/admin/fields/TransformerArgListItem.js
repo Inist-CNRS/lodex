@@ -11,6 +11,7 @@ const TransformerArgListItem = ({ fieldName, transformerArg }) => (
         type="text"
         component={FormTextField}
         label={transformerArg.name}
+        multiLine={transformerArg.type === 'text'}
     />
 );
 

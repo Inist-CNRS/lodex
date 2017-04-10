@@ -101,6 +101,7 @@ export default {
     remove_from_publication: 'Remove',
     separator: 'separator',
     composed_of: 'Composed of',
+    wizard_composed_of: 'Composed of - the following fields will be displayed under it',
     transformers: 'Operations',
     add: 'add',
     remove: 'remove',
