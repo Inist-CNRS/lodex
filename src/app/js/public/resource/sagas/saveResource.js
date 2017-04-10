@@ -40,7 +40,7 @@ export function* handleSaveResource({ payload }) {
         return;
     }
 
-    yield put(saveResourceSuccess(resource));
+    yield put(saveResourceSuccess());
 }
 
 export default function* watchSaveResource() {
