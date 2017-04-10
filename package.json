@@ -84,7 +84,7 @@
     "lodash.pick": "4.4.0",
     "lodash.pickby": "4.6.0",
     "lodash.set": "4.3.2",
-    "material-ui": "0.17.1",
+    "material-ui": "0.17.2",
     "material-ui-superselectfield": "Sharlaan/material-ui-superselectfield",
     "moment": "2.18.1",
     "mongodb": "2.2.25",
