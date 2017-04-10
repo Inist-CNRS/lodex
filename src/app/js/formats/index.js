@@ -32,6 +32,13 @@ export const getComponent = (field) => {
     return components[field.format.name] || DefaultFormat;
 };
 
-export const getViewComponent = field => getComponent(field).Component;
+export const getViewComponent = (field, isList) => {
+    const component = getComponent(field);
+    if (isList) {
+        return component.ListComponent || component.Component;
+    }
+
+    return component.Component;
+};
 export const getAdminComponent = name => getComponent(name).AdminComponent;
 export const getEditionComponent = name => getComponent(name).EditionComponent;

@@ -299,10 +299,12 @@ The formats determine the react component used to display a field on the front.
 
 Formats are added in the `src/app/js/formats` folder, in their own directory.
 Eg, to add an uri format create the `src/app/js/formats/uri` directory.
-A format is made of three components:
+A format is made of three mandatory components and one optional :
+
 1. a view component for the front
-2. an edition component for the admin
-3. an edition component for the front (editing a resource value once published).
+2. an optional list view component for the front, will be used instead of the view component for the list if set
+3. an edition component for the admin
+4. an edition component for the front (editing a resource value once published).
 
 Those components can be any react component. They will receive the following props:
 
@@ -316,11 +318,13 @@ You then add an index in your directory to expose them:
 ```js
 `src/app/formats/uri/index.js`
 import Component from './Component';
+import ListComponent from './ListComponent';
 import AdminComponent from './AdminComponent';
 import EditionComponent from './EditionComponent';
 
 export default {
     Component,
+    ListComponent, // optional
     AdminComponent,
     EditionComponent,
 };

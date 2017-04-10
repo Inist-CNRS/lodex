@@ -41,6 +41,7 @@ const Empty = () => <span />;
 
 export default {
     Component: DefaultView,
+    ListComponent: DefaultView,
     AdminComponent: Empty,
     EditionComponent: FormTextField,
 };
