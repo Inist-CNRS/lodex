@@ -200,4 +200,5 @@ export default {
     uri_format_another_column_value: 'The column',
     'TypeError: Failed to fetch': 'Could not access api',
     istex_results: 'ISTEX search results for %{searchTerm}:',
+    none: 'none',
 };
