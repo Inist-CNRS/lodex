@@ -28,10 +28,11 @@ export default fetchProps => Component =>
 
         fetchData() {
             const { page, perPage } = this.state;
+            const props = this.props;
             this.setState({
                 ...this.state,
                 isLoading: true,
-            }, () => fetchProps(this.props, page, perPage)
+            }, () => fetchProps({ props, page, perPage })
                 .then(data => this.setState({
                     data,
                     isLoading: false,

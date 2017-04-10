@@ -5,7 +5,7 @@ import { getUrl, parseFetchResult } from './fetchIstexData';
 describe('fetchIstexData', () => {
     describe('getUrl', () => {
         it('should create istex url from given parameter', () => {
-            expect(getUrl([{ field: { name: 'name' }, resource: { name: 'value' } }, 7, 5]))
+            expect(getUrl({ props: { field: { name: 'name' }, resource: { name: 'value' } }, page: 7, perPage: 5 }))
                 .toEqual({
                     url: 'https://api.istex.fr/document/?q="value"&from=35&size=5&output=id,title,publicationDate,fulltext,abstract',
                 });
