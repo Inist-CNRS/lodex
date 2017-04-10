@@ -33,7 +33,7 @@ export const StepIdentityComponent = ({
                 label={polyglot.t('completes_field')}
                 fullWidth
             >
-                <MenuItem primaryText={polyglot.t('completes_field_none')} />
+                <MenuItem value={null} primaryText={polyglot.t('completes_field_none')} />
                 {otherFieldsMenuItems}
             </Field>
             <StepSemanticsComposition field={field} fields={fields} />
