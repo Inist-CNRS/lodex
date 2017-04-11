@@ -4,6 +4,8 @@ import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
 import AppBar from 'material-ui/AppBar';
 import CircularProgress from 'material-ui/CircularProgress';
+import FlatButton from 'material-ui/FlatButton';
+import { Link } from 'react-router';
 
 import SignOutButton from './SignOutButton';
 import SignInButton from './SignInButton';
@@ -25,6 +27,9 @@ const styles = {
         textDecoration: 'none',
         marginRight: '1rem',
     },
+    button: {
+        color: 'white',
+    },
     loading: {
         margin: 8,
     },
@@ -44,6 +49,20 @@ const AppbarComponent = ({ hasPublishedDataset, hasLoadedDataset, isLoading, isL
     const RightElement = (
         <div style={styles.buttons}>
             {isLoggedIn && !hasPublishedDataset && <UploadButton />}
+            {isLoggedIn && hasPublishedDataset &&
+                <FlatButton
+                    label={polyglot.t('moderation')}
+                    containerElement={<Link to="/admin/contributions" />}
+                    style={styles.button}
+                />
+            }
+            {isLoggedIn && hasPublishedDataset &&
+                <FlatButton
+                    label={polyglot.t('removed_resources')}
+                    containerElement={<Link to="/admin/removed" />}
+                    style={styles.button}
+                />
+            }
             {isLoggedIn ? <ModelMenu canImport={!hasPublishedDataset} /> : <SignInButton />}
             {isLoggedIn && <SignOutButton />}
             {isLoggedIn && !hasPublishedDataset && <PublicationButton /> }
@@ -55,17 +74,15 @@ const AppbarComponent = ({ hasPublishedDataset, hasLoadedDataset, isLoading, isL
             className="appbar"
             title={
                 <div style={styles.title}>
-                    <a style={styles.linkToHome} href="/">Lodex</a>
-                    {!hasPublishedDataset &&
-                        <small>
-                            -{' '}
-                            {
-                                hasLoadedDataset
-                                ? polyglot.t('modelize-your-data')
-                                : polyglot.t('semantic-publication-system')
-                            }
-                        </small>
-                    }
+                    <Link to="/admin" style={styles.linkToHome}>Lodex</Link>
+                    <small>
+                        -{' '}
+                        {
+                            hasLoadedDataset
+                            ? polyglot.t('modelize-your-data')
+                            : polyglot.t('semantic-publication-system')
+                        }
+                    </small>
                 </div>
             }
             iconElementLeft={LeftElement}

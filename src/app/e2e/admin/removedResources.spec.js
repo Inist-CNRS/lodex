@@ -21,13 +21,7 @@ describe('Admin', () => {
             await driver.executeScript('return localStorage.clear();');
             await driver.executeScript('return sessionStorage.clear();');
 
-            await loginAsJulia('/admin');
-        });
-
-        it('should activate removed-resources tab', async () => {
-            await driver.wait(until.elementLocated(By.css('.removed-tab')), DEFAULT_WAIT_TIMEOUT);
-            const tab = '.removed-tab';
-            await driver.wait(elementIsClicked(tab), DEFAULT_WAIT_TIMEOUT);
+            await loginAsJulia('/admin/removed');
         });
 
         it('should display the removed resources', async () => {

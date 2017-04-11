@@ -72,7 +72,7 @@ export class ContributedResourceListComponent extends Component {
 
         return (
             <div className="contributed_resources">
-                <CardHeader>
+                <CardText>
                     <SelectField
                         className="filter"
                         style={styles.select}
@@ -89,9 +89,9 @@ export class ContributedResourceListComponent extends Component {
                             />
                         ))}
                     </SelectField>
-                </CardHeader>
+                </CardText>
 
-                <CardText >
+                <CardText>
                     <Table selectable={false} fixedHeader={false} style={styles.table}>
                         <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
                             <TableRow>

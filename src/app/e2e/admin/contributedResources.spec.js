@@ -15,7 +15,7 @@ describe('Admin', () => {
         before(async () => {
             await clear(); // Had to ensure clear state for unknown reason
             await loadFixtures(fixtures);
-            await loginAsJulia('/admin');
+            await loginAsJulia('/admin/contributions');
         });
 
         it('should display the proposed contributed resources', async () => {

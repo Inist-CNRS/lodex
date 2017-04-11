@@ -1,5 +1,7 @@
 import App from './App';
 import Admin from './Admin';
+import ContributedResourcePage from './contributedResources/ContributedResourcePage';
+import RemovedResourcePage from './removedResources/RemovedResourcePage';
 import { isLoggedIn as selectIsLoggedIn } from '../user';
 import userRoutes from '../user/routes';
 
@@ -21,6 +23,16 @@ export default store => ({
         {
             path: '/admin/dashboard',
             component: Admin,
+            onEnter: onEnterWithAuthenticationCheck(store),
+        },
+        {
+            path: '/admin/contributions',
+            component: ContributedResourcePage,
+            onEnter: onEnterWithAuthenticationCheck(store),
+        },
+        {
+            path: '/admin/removed',
+            component: RemovedResourcePage,
             onEnter: onEnterWithAuthenticationCheck(store),
         },
         ...userRoutes,
