@@ -1,6 +1,5 @@
 import React, { PropTypes } from 'react';
 import Subheader from 'material-ui/Subheader';
-import TextField from 'material-ui/TextField';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import FlatButton from 'material-ui/FlatButton';
@@ -53,6 +52,11 @@ export const StepSemanticsCompositionComponent = ({
                         hintText={polyglot.t('select_a_column')}
                         value={col}
                     >
+                        <MenuItem
+                            className={'composite-field-none'}
+                            value={null}
+                            primaryText={null}
+                        />
                         {fields.map(f => (
                             <MenuItem
                                 className={`composite-field-${index}-${f.name}`}

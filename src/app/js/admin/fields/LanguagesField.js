@@ -26,6 +26,12 @@ export const LanguagesFieldComponent = ({ field, p: polyglot, ...props }) => {
             fullWidth
             {...props}
         >
+            <MenuItem
+                className={`language_${getFieldClassName(field)}`}
+                key={null}
+                value={null}
+                primaryText={polyglot.t('none')}
+            />
             {languagesItems}
         </Field>
     );
