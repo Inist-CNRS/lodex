@@ -37,7 +37,7 @@ const mapStateToProps = ({ fetch }, { input: { name }, parseResponse }) => ({
 });
 
 const mapDispatchToProps = (dispatch, { input: { name }, fetch: getConfig }) => bindActionCreators({
-    handleComplete: searchText => (
+    handleSearch: searchText => (
         searchText
             ? fetchAction({ config: getConfig(searchText), name })
             : { type: '@@NULL' } // We must return an action so return an action which will not be handled
@@ -54,7 +54,14 @@ const handleValueChosen = ({ allowNewItem, input: { onChange } }) => (value, ind
     return value.text ? onChange(value.text) : onChange(value);
 };
 
+const handleComplete = ({ allowNewItem, input: { onChange }, handleSearch }) => (searchText) => {
+    if (allowNewItem) {
+        onChange(searchText);
+        handleSearch(searchText);
+    }
+};
+
 export default compose(
     connect(mapStateToProps, mapDispatchToProps),
-    withHandlers({ handleValueChosen }),
+    withHandlers({ handleValueChosen, handleComplete }),
 )(FormAutoCompleteField);
