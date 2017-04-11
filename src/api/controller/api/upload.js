@@ -3,6 +3,7 @@ import route from 'koa-route';
 import asyncBusboy from 'async-busboy';
 import fs from 'fs';
 import config from 'config';
+import MemoryStream from 'memorystream';
 
 import jsonConfig from '../../../../config.json';
 import loaders from '../../loaders';
@@ -71,19 +72,28 @@ const fsStats = filename =>
         });
     });
 
+const fsExists = async (filename) => {
+    try {
+        const stats = await fsStats(filename);
+
+        return stats.isFile();
+    } catch (e) {
+        return false;
+    }
+};
+
 export const getChunkSize = async (identifier, chunkNumber) => {
     try {
         const filename = `${config.uploadDir}/${identifier}.${chunkNumber}`;
-        const { size } = fsStats(filename);
-
-        return size;
+        const { size } = await fsStats(filename);
+        return parseInt(size, 10);
     } catch (error) {
         return 0;
     }
 };
 
 export const checkChunkExists = async (identifier, chunkNumber, chunkSize) =>
-    getChunkSize(identifier, chunkNumber) === chunkSize;
+    (await getChunkSize(identifier, chunkNumber)) === parseInt(chunkSize, 10);
 
 export const isUploadComplete = async (identifier, totalChunk, totalSize) => {
     const loop = async (chunkNumber, curSize = 0) => {
@@ -92,7 +102,6 @@ export const isUploadComplete = async (identifier, totalChunk, totalSize) => {
         }
 
         const chunkSize = await getChunkSize(identifier, chunkNumber);
-
         if (chunkSize === 0) {
             return false;
         }
@@ -103,7 +112,35 @@ export const isUploadComplete = async (identifier, totalChunk, totalSize) => {
     return loop(1);
 };
 
-export async function uploadChunkMiddleware(ctx) {
+export const append = (writeStream, readStream) =>
+    new Promise((resolve, reject) => {
+        readStream.pipe(writeStream, {
+            end: false,
+        });
+        readStream.on('end', resolve);
+        readStream.on('error', reject);
+    });
+
+export const chunksToStream = async (identifier) => {
+    const stream = new MemoryStream(null);
+    const loop = async (number) => {
+        const chunkFilename = `${config.uploadDir}/${identifier}.${number}`;
+        const exists = await fsExists(chunkFilename);
+        if (exists) {
+            const sourceStream = fs.createReadStream(chunkFilename);
+
+            await append(stream, sourceStream);
+            return loop(number + 1);
+        }
+        stream.end();
+
+        return stream;
+    };
+
+    return loop(1);
+};
+
+export async function uploadChunkMiddleware(ctx, type) {
     try {
         const { stream, fields } = await ctx.requestToStream(ctx.req);
 
@@ -116,8 +153,19 @@ export async function uploadChunkMiddleware(ctx) {
 
         await saveStreamInFile(stream, `${config.uploadDir}/${resumableIdentifier}.${resumableChunkNumber}`);
 
-        if (await isUploadComplete(resumableIdentifier, resumableTotalChunks, resumableTotalSize)) {
+        if (await isUploadComplete(resumableIdentifier, resumableTotalChunks, parseInt(resumableTotalSize, 10))) {
+            const parseStream = ctx.getParser(type);
+
+            const chunkStream = await chunksToStream(resumableIdentifier);
+            const parsedStream = await parseStream(chunkStream);
+
+            await ctx.saveStream(parsedStream, ctx.dataset.insertMany.bind(ctx.dataset));
+            await ctx.field.initializeModel();
+
             ctx.status = 200;
+            ctx.body = {
+                totalLines: await ctx.dataset.count(),
+            };
         }
 
         ctx.status = 200;
