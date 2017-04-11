@@ -27,7 +27,7 @@ const mapStateToProps = (state, { field, resource, onSaveProperty, style, p }) =
     formName: FORM_NAME,
     className: classnames('edit-field', getFieldClassName(field)),
     label: p.t('edit_field', { field: field.label }),
-    icon: <EditIcon />,
+    icon: <EditIcon viewBox="-10 0 32 32" />,
     style,
     buttonStyle: { padding: 0, height: 'auto', width: 'auto' },
 });
