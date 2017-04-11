@@ -11,8 +11,8 @@ const exporter = (config, fields, characteristics, stream) =>
         .pipe(ezs('filterContributions', { fields }))
         .pipe(ezs('JSONLDObject', { fields }))
         .pipe(ezs('linkDataset', {
-            uri: 'http://lod.istex.fr/',
-            scheme: 'http://www.w3.org/2004/02/skos/core#inScheme',
+            uri: config.host,
+            scheme: config.schemeForDatasetLink,
         }))
         .pipe(ezs('JSONLDString'));
 
