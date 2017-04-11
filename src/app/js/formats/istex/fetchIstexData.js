@@ -8,7 +8,7 @@ export const getUrl = ({ props: { resource, field }, page, perPage }) => {
     const output = 'id,title,publicationDate,fulltext,abstract';
 
     return {
-        url: `${istexApiUrl}/?q="${value}"&from=${page * perPage}&size=${perPage}&output=${output}`,
+        url: `${istexApiUrl}/?q=${encodeURIComponent(value)}&from=${page * perPage}&size=${perPage}&output=${output}`,
     };
 };
 
