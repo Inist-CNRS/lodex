@@ -71,24 +71,54 @@ const fsStats = filename =>
         });
     });
 
-export const checkChunkExists = async (identifier, chunkNumber, chunkSize) => {
+export const getChunkSize = async (identifier, chunkNumber) => {
     try {
         const filename = `${config.uploadDir}/${identifier}.${chunkNumber}`;
         const { size } = fsStats(filename);
 
-        return size === chunkSize;
+        return size;
     } catch (error) {
-        return false;
+        return 0;
     }
+};
+
+export const checkChunkExists = async (identifier, chunkNumber, chunkSize) =>
+    getChunkSize(identifier, chunkNumber) === chunkSize;
+
+export const isUploadComplete = async (identifier, totalChunk, totalSize) => {
+    const loop = async (chunkNumber, curSize = 0) => {
+        if (chunkNumber > totalChunk) {
+            return totalSize === curSize;
+        }
+
+        const chunkSize = await getChunkSize(identifier, chunkNumber);
+
+        if (chunkSize === 0) {
+            return false;
+        }
+
+        return loop(chunkNumber + 1, curSize + chunkSize);
+    };
+
+    return loop(1);
 };
 
 export async function uploadChunkMiddleware(ctx) {
     try {
         const { stream, fields } = await ctx.requestToStream(ctx.req);
 
-        const { resumableChunkNumber, resumableIdentifier } = fields;
+        const {
+            resumableChunkNumber,
+            resumableIdentifier,
+            resumableTotalChunks,
+            resumableTotalSize,
+        } = fields;
 
         await saveStreamInFile(stream, `${config.uploadDir}/${resumableIdentifier}.${resumableChunkNumber}`);
+
+        if (await isUploadComplete(resumableIdentifier, resumableTotalChunks, resumableTotalSize)) {
+            ctx.status = 200;
+        }
 
         ctx.status = 200;
     } catch (error) {
