@@ -9,6 +9,15 @@ import FormSelectField from '../../../lib/FormSelectField';
 import { polyglot as polyglotPropTypes, field as fieldPropTypes } from '../../../propTypes';
 import StepSemanticsComposition from './StepSemanticsComposition';
 
+const styles = {
+    complete: {
+        paddingLeft: '40px',
+    },
+    header: {
+        paddingLeft: 0,
+    },
+};
+
 export const StepIdentityComponent = ({
     field,
     fields,
@@ -26,11 +35,13 @@ export const StepIdentityComponent = ({
 
     return (
         <Step label="field_wizard_step_semantic" {...props}>
+            <div style={styles.header}>{polyglot.t('annotate_field')}</div>
             <Field
+                style={styles.complete}
                 className="completes"
                 name="completes"
                 component={FormSelectField}
-                label={polyglot.t('completes_field')}
+                hint={polyglot.t('select_a_column')}
                 fullWidth
             >
                 <MenuItem value={null} primaryText={polyglot.t('completes_field_none')} />
