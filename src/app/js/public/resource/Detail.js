@@ -6,6 +6,7 @@ import { CardActions, CardText } from 'material-ui/Card';
 import { Tabs, Tab } from 'material-ui/Tabs';
 import { cyan500 } from 'material-ui/styles/colors';
 import Divider from 'material-ui/Divider';
+import memoize from 'lodash.memoize';
 
 import Card from '../../lib/Card';
 import { saveResource as saveResourceAction } from './';
@@ -34,15 +35,24 @@ const styles = {
         display: 'flex',
         flexDirection: 'column',
     },
-    topItem: {
+    topItem: memoize((index, total) => ({
         display: 'flex',
         flexDirection: 'column',
-    },
-    item: {
+        borderBottom: index < total - 1 ? '1px solid rgb(224, 224, 224)' : 'none',
+        paddingTop: index > 0 ? '0.5rem' : 0,
+        paddingBottom: index < total - 1 ? '0.5rem' : 0,
+        paddingLeft: '0.5rem',
+        paddingRight: '0.5rem',
+    })),
+    item: memoize((index, total) => ({
         display: 'flex',
         flexDirection: 'column',
-        padding: '0.5rem',
-    },
+        borderBottom: index < total - 1 ? '1px solid rgb(224, 224, 224)' : 'none',
+        paddingTop: index > 0 ? '0.5rem' : 0,
+        paddingBottom: index < total - 1 ? '0.5rem' : 0,
+        paddingLeft: '0.5rem',
+        paddingRight: '0.5rem',
+    })),
     property: {
         flexGrow: 2,
     },
@@ -56,6 +66,8 @@ const styles = {
     },
     propertiesContainer: {
         paddingTop: '1rem',
+        paddingLeft: '1rem',
+        paddingRight: '1rem',
     },
     actions: {
         display: 'flex',
@@ -82,8 +94,8 @@ export const DetailComponent = ({
         <div className="detail">
             <Card>
                 <CardText style={styles.container}>
-                    {topFields.map(field => (
-                        <div key={field.name} style={styles.topItem}>
+                    {topFields.map((field, index) => (
+                        <div key={field.name} style={styles.topItem(index, topFields.length)}>
                             <Property
                                 field={field}
                                 isSaving={isSaving}
@@ -103,8 +115,8 @@ export const DetailComponent = ({
                         label={polyglot.t('resource_details')}
                     >
                         <div style={styles.propertiesContainer}>
-                            {otherFields.map(field => (
-                                <div key={field.name} style={styles.item}>
+                            {otherFields.map((field, index) => (
+                                <div key={field.name} style={styles.item(index, otherFields.length)}>
                                     <Property
                                         field={field}
                                         isSaving={isSaving}
