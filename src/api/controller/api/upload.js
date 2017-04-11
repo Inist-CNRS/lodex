@@ -1,8 +1,10 @@
 import Koa from 'koa';
 import route from 'koa-route';
 import asyncBusboy from 'async-busboy';
+import fs from 'fs';
+import config from 'config';
 
-import config from '../../../../config.json';
+import jsonConfig from '../../../../config.json';
 import loaders from '../../loaders';
 import saveStream from '../../services/saveStream';
 
@@ -11,20 +13,34 @@ export const getParser = (type) => {
         throw new Error(`Unsupported document type: ${type}`);
     }
 
-    return loaders[type](config.loader[type]);
+    return loaders[type](jsonConfig.loader[type]);
 };
 
 export const requestToStream = asyncBusboyImpl => async (req) => {
-    const { files } = await asyncBusboyImpl(req);
-    return files[0];
+    const {
+        files,
+        fields,
+    } = await asyncBusboyImpl(req);
+
+    return { stream: files[0], fields };
 };
+
+export const saveStreamInFile = (stream, filename) =>
+    new Promise((resolve, reject) => {
+        const writableStream = fs.createWriteStream(filename);
+
+        stream.pipe(writableStream);
+
+        stream.on('end', resolve);
+        stream.on('error', reject);
+    });
 
 export const clearUpload = async (ctx) => {
     await ctx.dataset.remove({});
     ctx.body = true;
 };
 
-export async function uploadMiddleware(ctx, type) {
+export async function uploadFileMiddleware(ctx, type) {
     try {
         const parseStream = ctx.getParser(type);
         const requestStream = await ctx.requestToStream(ctx.req);
@@ -43,6 +59,44 @@ export async function uploadMiddleware(ctx, type) {
     }
 }
 
+const fsStats = filename =>
+    new Promise((resolve, reject) => {
+        fs.stat(filename, (error, result) => {
+            if (error) {
+                reject(error);
+                return;
+            }
+
+            resolve(result);
+        });
+    });
+
+export const checkChunkExists = async (identifier, chunkNumber, chunkSize) => {
+    try {
+        const filename = `${config.uploadDir}/${identifier}.${chunkNumber}`;
+        const { size } = fsStats(filename);
+
+        return size === chunkSize;
+    } catch (error) {
+        return false;
+    }
+};
+
+export async function uploadChunkMiddleware(ctx) {
+    try {
+        const { stream, fields } = await ctx.requestToStream(ctx.req);
+
+        const { resumableChunkNumber, resumableIdentifier } = fields;
+
+        await saveStreamInFile(stream, `${config.uploadDir}/${resumableIdentifier}.${resumableChunkNumber}`);
+
+        ctx.status = 200;
+    } catch (error) {
+        ctx.status = 500;
+        ctx.body = error.message;
+    }
+}
+
 export const prepareUpload = async (ctx, next) => {
     ctx.getParser = getParser;
     ctx.requestToStream = requestToStream(asyncBusboy);
@@ -51,11 +105,22 @@ export const prepareUpload = async (ctx, next) => {
     await next();
 };
 
+export const checkChunkMiddleware = async (ctx) => {
+    const {
+        resumableChunkNumber,
+        resumableIdentifier,
+        resumableCurrentChunkSize,
+    } = ctx.request.query;
+    const exists = await checkChunkExists(resumableIdentifier, resumableChunkNumber, resumableCurrentChunkSize);
+    ctx.status = exists ? 200 : 204;
+};
+
 const app = new Koa();
 
 app.use(prepareUpload);
 
-app.use(route.post('/:type', uploadMiddleware));
+app.use(route.post('/:type', uploadChunkMiddleware));
+app.use(route.get('/:type', checkChunkMiddleware));
 app.use(route.del('/clear', clearUpload));
 
 export default app;
