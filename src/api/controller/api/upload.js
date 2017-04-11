@@ -3,7 +3,6 @@ import route from 'koa-route';
 import asyncBusboy from 'async-busboy';
 import fs from 'fs';
 import config from 'config';
-import MemoryStream from 'memorystream';
 
 import jsonConfig from '../../../../config.json';
 import loaders from '../../loaders';
@@ -122,19 +121,18 @@ export const append = (writeStream, readStream) =>
     });
 
 export const chunksToStream = async (identifier) => {
-    const stream = new MemoryStream(null);
+    const stream = fs.createWriteStream('upload/file');
     const loop = async (number) => {
         const chunkFilename = `${config.uploadDir}/${identifier}.${number}`;
         const exists = await fsExists(chunkFilename);
         if (exists) {
             const sourceStream = fs.createReadStream(chunkFilename);
-
             await append(stream, sourceStream);
             return loop(number + 1);
         }
         stream.end();
 
-        return stream;
+        return fs.createReadStream('upload/file');
     };
 
     return loop(1);
@@ -149,7 +147,13 @@ export async function uploadChunkMiddleware(ctx, type) {
             resumableIdentifier,
             resumableTotalChunks,
             resumableTotalSize,
+            resumableCurrentChunkSize,
         } = fields;
+
+        if (await checkChunkExists(resumableIdentifier, resumableChunkNumber, resumableCurrentChunkSize)) {
+            ctx.status = 200;
+            return;
+        }
 
         await saveStreamInFile(stream, `${config.uploadDir}/${resumableIdentifier}.${resumableChunkNumber}`);
 

@@ -86,7 +86,6 @@
     "lodash.set": "4.3.2",
     "material-ui": "0.17.2",
     "material-ui-superselectfield": "Sharlaan/material-ui-superselectfield",
-    "memorystream": "0.3.1",
     "moment": "2.18.1",
     "mongodb": "2.2.25",
     "n3": "0.9.1",
