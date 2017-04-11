@@ -15,5 +15,6 @@ const exporter = (config, fields, characteristics, stream) =>
 exporter.extension = 'tsv';
 exporter.mimeType = 'text/tab-separated-values';
 exporter.type = 'file';
+exporter.label = 'tsv';
 
 export default exporter;

@@ -19,5 +19,6 @@ const exporter = (config, fields, characteristics, stream) =>
 exporter.extension = 'nq';
 exporter.mimeType = 'application/n-quads';
 exporter.type = 'file';
+exporter.label = 'nquads';
 
 export default exporter;

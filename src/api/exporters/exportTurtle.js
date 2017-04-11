@@ -25,5 +25,6 @@ const exporter = (config, fields, characteristics, stream) =>
 exporter.extension = 'ttl';
 exporter.mimeType = 'text/turtle';
 exporter.type = 'file';
+exporter.label = 'turtle';
 
 export default exporter;

@@ -103,7 +103,7 @@ export async function getExporters(ctx) {
         const exportStreamFactory = ctx.getExporter(exporter);
 
         return {
-            name: exporter,
+            name: exportStreamFactory.label,
             type: exportStreamFactory.type,
         };
     });

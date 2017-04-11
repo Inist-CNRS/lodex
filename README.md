@@ -172,6 +172,10 @@ const exporter = (config, fields, characteristics, stream, query) => {
         .pipe(jsoncsvStream);
 }
 
+// Required: this will be used as the translation key to get the exporter label
+// If no translation is provided for this key, the key itself will be used for the label
+exporter.label = 'csv';
+
 // Required: this will be the exported file extension
 exporter.extension = 'csv';
 

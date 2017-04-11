@@ -19,6 +19,7 @@ const exporter = (config, fields, characteristics, stream) =>
 exporter.extension = 'json';
 exporter.mimeType = 'application/json';
 exporter.type = 'file';
+exporter.label = 'jsonld';
 
 export default exporter;
 
