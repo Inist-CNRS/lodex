@@ -12,7 +12,7 @@ export const ExportItemComponent = ({ type, p: polyglot, handleClick }) => (
     <ListItem
         key={type}
         className={classnames('btn-export', type)}
-        primaryText={polyglot.t('export', { type })}
+        primaryText={polyglot.t('export', { type: polyglot.t(type) })}
         leftIcon={<FileDownloadIcon />}
         onClick={handleClick}
     />

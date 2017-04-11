@@ -54,5 +54,6 @@ const exporter = exportCsvFactory(csv);
 exporter.extension = 'csv';
 exporter.mimeType = 'text/csv';
 exporter.type = 'file';
+exporter.label = 'csv';
 
 export default exporter;
