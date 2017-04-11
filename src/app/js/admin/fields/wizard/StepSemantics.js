@@ -3,7 +3,6 @@ import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 import { Field } from 'redux-form';
 import MenuItem from 'material-ui/MenuItem';
-import Subheader from 'material-ui/Subheader';
 
 import Step from './Step';
 import FormSelectField from '../../../lib/FormSelectField';
@@ -36,7 +35,7 @@ export const StepIdentityComponent = ({
 
     return (
         <Step label="field_wizard_step_semantic" {...props}>
-            <Subheader style={styles.header}>{polyglot.t('completes_field')}</Subheader>
+            <div style={styles.header}>{polyglot.t('annotate_field')}</div>
             <Field
                 style={styles.complete}
                 className="completes"

@@ -1,5 +1,4 @@
 import React, { PropTypes } from 'react';
-import Subheader from 'material-ui/Subheader';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import FlatButton from 'material-ui/FlatButton';
@@ -38,7 +37,7 @@ export const StepSemanticsCompositionComponent = ({
     p: polyglot,
 }) => (
     <div>
-        <Subheader style={styles.header}>{polyglot.t('wizard_composed_of')}</Subheader>
+        <div style={styles.header}>{polyglot.t('wizard_composed_of')}</div>
         <div style={styles.inset}>
             {columns.map((col, index) => (
                 <div
