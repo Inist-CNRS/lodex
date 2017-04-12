@@ -32,11 +32,11 @@ export class ShareLinkComponent extends Component {
     }
 
     render() {
-        const { uri, p: polyglot } = this.props;
+        const { uri, title, p: polyglot } = this.props;
 
         return (
             <div className="share-link">
-                <Subheader>{polyglot.t('resource_share_link')}</Subheader>
+                <Subheader>{title}</Subheader>
 
                 <CardText style={styles.container}>
                     <LinkIcon style={styles.icon} />
@@ -61,6 +61,7 @@ export class ShareLinkComponent extends Component {
 
 ShareLinkComponent.propTypes = {
     p: polyglotPropTypes.isRequired,
+    title: PropTypes.string.isRequired,
     uri: PropTypes.string.isRequired,
 };
 

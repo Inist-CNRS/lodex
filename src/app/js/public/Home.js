@@ -105,8 +105,7 @@ export class HomeComponent extends Component {
                             >
                                 <Subheader>{polyglot.t('export_data')}</Subheader>
                                 <Export />
-                                <Subheader>{polyglot.t('dataset_share_link')}</Subheader>
-                                <ShareLink uri={sharingUri} />
+                                <ShareLink title={polyglot.t('dataset_share_link')} uri={sharingUri} />
                                 <Subheader>{polyglot.t('share')}</Subheader>
                                 <Share uri={sharingUri} title={sharingTitle} />
                             </Tab>

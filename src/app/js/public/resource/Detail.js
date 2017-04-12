@@ -137,7 +137,7 @@ export const DetailComponent = ({
                         <Divider />
                         <Widgets uri={resource.uri} />
                         <Divider />
-                        <ShareLink uri={sharingUri} />
+                        <ShareLink title={polyglot.t('resource_share_link')} uri={sharingUri} />
                         <Divider />
                         <Share uri={sharingUri} title={sharingTitle} />
                     </Tab>
