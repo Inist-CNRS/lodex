@@ -51,5 +51,6 @@ function exporter(config, fields, resources, requestedFields) {
 }
 
 exporter.type = 'widget';
+exporter.label = 'widget';
 
 export default exporter;

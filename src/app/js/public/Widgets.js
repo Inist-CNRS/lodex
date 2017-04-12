@@ -41,10 +41,11 @@ export class WidgetsComponent extends Component {
                         onChange={this.handleSelectedFieldsChange}
                     />
                     {
-                        widgets.map(({ name }) => (
+                        widgets.map(({ name, type }) => (
                             <WidgetExportItem
                                 key={name}
-                                type={name}
+                                type={type}
+                                label={name}
                                 uri={uri}
                                 fields={exportedFields.map(field => field.value)}
                             />
