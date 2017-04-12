@@ -1,5 +1,4 @@
 import React, { PropTypes } from 'react';
-import { Link } from 'react-router';
 import { field as fieldPropTypes } from '../../propTypes';
 
 const LinkView = ({ className, linkedResource, resource, field, fields }) => {
@@ -26,7 +25,7 @@ const LinkView = ({ className, linkedResource, resource, field, fields }) => {
         }
     }
 
-    return <Link className={className} to={`${link}`}>{label}</Link>;
+    return <a className={className} href={`${link}`}>{label}</a>;
 };
 
 LinkView.propTypes = {
