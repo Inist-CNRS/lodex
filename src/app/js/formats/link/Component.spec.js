@@ -10,7 +10,7 @@ describe('<LinkView />', () => {
         const field = { name: 'foo', label: 'label' };
         const fields = [];
         const wrapper = shallow(<LinkView resource={resource} field={field} fields={fields} />);
-        expect(wrapper.find('Link').length).toEqual(1);
-        expect(wrapper.prop('to')).toEqual('http://example.com');
+        expect(wrapper.find('a').length).toEqual(1);
+        expect(wrapper.prop('href')).toEqual('http://example.com');
     });
 });
