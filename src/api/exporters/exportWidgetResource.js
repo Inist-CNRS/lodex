@@ -26,7 +26,8 @@ const renderResource = (fields, requestedFields) => (resource) => {
     return Object
         .keys(lastVersion)
         .filter(k => k !== 'publicationDate' && (requestedFields.length === 0 || requestedFields.includes(k)))
-        .map(renderField(fields, lastVersion));
+        .map(renderField(fields, lastVersion))
+        .join('');
 };
 
 function exporter(config, fields, resources, requestedFields) {
