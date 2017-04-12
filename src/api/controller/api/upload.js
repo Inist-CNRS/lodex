@@ -71,6 +71,17 @@ const fsStats = filename =>
         });
     });
 
+const fsUnlink = filename => new Promise((resolve, reject) => {
+    fs.unlink(filename, (error, result) => {
+        if (error) {
+            reject(error);
+            return;
+        }
+
+        resolve(result);
+    });
+});
+
 const fsExists = async (filename) => {
     try {
         const stats = await fsStats(filename);
@@ -121,18 +132,19 @@ export const append = (writeStream, readStream) =>
     });
 
 export const chunksToStream = async (identifier) => {
-    const stream = fs.createWriteStream('upload/file');
+    const stream = fs.createWriteStream(`${config.uploadDir}/${identifier}`);
     const loop = async (number) => {
         const chunkFilename = `${config.uploadDir}/${identifier}.${number}`;
         const exists = await fsExists(chunkFilename);
         if (exists) {
             const sourceStream = fs.createReadStream(chunkFilename);
             await append(stream, sourceStream);
+            await fsUnlink(chunkFilename);
             return loop(number + 1);
         }
         stream.end();
 
-        return fs.createReadStream('upload/file');
+        return fs.createReadStream(`${config.uploadDir}/${identifier}`);
     };
 
     return loop(1);
@@ -164,6 +176,7 @@ export async function uploadChunkMiddleware(ctx, type) {
             const parsedStream = await parseStream(chunkStream);
 
             await ctx.saveStream(parsedStream, ctx.dataset.insertMany.bind(ctx.dataset));
+            await fsUnlink(resumableIdentifier);
             await ctx.field.initializeModel();
 
             ctx.status = 200;
