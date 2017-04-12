@@ -13,12 +13,12 @@ const styles = {
         lineHeight: 1,
     },
     schemeLabel: {
-        fontSize: '0.9rem',
+        fontSize: '0.9em',
         margin: 0,
-        padding: '0.2rem 0',
+        padding: '0.2em 0',
     },
     schemeUri: {
-        fontSize: '0.7rem',
+        fontSize: '0.7em',
         color: 'grey',
         margin: 0,
         padding: 0,
