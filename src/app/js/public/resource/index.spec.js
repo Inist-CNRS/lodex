@@ -93,11 +93,22 @@ describe('resourceReducer', () => {
     });
 
     it('should handle SAVE_RESOURCE_SUCCESS', () => {
-        const state = { data: 'value' };
+        const state = { data: 'value', resource: 'resource' };
         expect(reducer(state, saveResourceSuccess('new resource')))
         .toEqual({
             data: 'value',
             resource: 'new resource',
+            error: null,
+            saving: false,
+        });
+    });
+
+    it('should handle SAVE_RESOURCE_SUCCESS with no resource change', () => {
+        const state = { data: 'value', resource: 'resource' };
+        expect(reducer(state, saveResourceSuccess()))
+        .toEqual({
+            data: 'value',
+            resource: 'resource',
             error: null,
             saving: false,
         });

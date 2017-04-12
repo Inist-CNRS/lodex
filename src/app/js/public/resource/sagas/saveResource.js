@@ -7,6 +7,10 @@ import {
     SAVE_RESOURCE,
 } from '../';
 
+import {
+    loadPublication,
+} from '../../publication';
+
 import { getSaveResourceRequest, getSaveFieldRequest } from '../../../fetch';
 import fetchSaga from '../../../lib/fetchSaga';
 import { fromResource } from '../../selectors';
@@ -19,11 +23,11 @@ export function* handleSaveResource({ payload }) {
     if (position !== field.position) {
         const requestFieldPosition = yield select(getSaveFieldRequest, { ...field, position });
         const { error } = yield call(fetchSaga, requestFieldPosition);
-
         if (error) {
             yield put(saveResourceError(error));
             return;
         }
+        yield put(loadPublication());
     }
 
     const oldResource = yield select(fromResource.getResourceLastVersion);

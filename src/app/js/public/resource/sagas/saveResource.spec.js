@@ -5,6 +5,7 @@ import {
     saveResourceSuccess,
     saveResourceError,
 } from '../';
+import { loadPublication } from '../../publication';
 import fetchSaga from '../../../lib/fetchSaga';
 import { getSaveResourceRequest, getSaveFieldRequest } from '../../../fetch';
 import { handleSaveResource } from './saveResource';
@@ -93,10 +94,18 @@ describe('resource saga', () => {
             expect(next.value).toEqual(put(saveResourceError('error')));
         });
 
-        it('should select fromResource.getResourceLastVersion', () => {
+        it('should put loadPublication if fetchSaga returned no error', () => {
             saga.next();
             saga.next();
             const next = saga.next({});
+            expect(next.value).toEqual(put(loadPublication()));
+        });
+
+        it('should select fromResource.getResourceLastVersion', () => {
+            saga.next();
+            saga.next();
+            saga.next({});
+            const next = saga.next();
             expect(next.value).toEqual(select(fromResource.getResourceLastVersion));
         });
 
@@ -104,6 +113,7 @@ describe('resource saga', () => {
             saga.next();
             saga.next();
             saga.next({});
+            saga.next();
             const next = saga.next('old');
             expect(next.value).toEqual(select(getSaveResourceRequest, {
                 resource: 'resource',
@@ -115,6 +125,7 @@ describe('resource saga', () => {
             saga.next();
             saga.next();
             saga.next({});
+            saga.next();
             saga.next('old');
             const next = saga.next('request');
             expect(next.value).toEqual(call(fetchSaga, 'request'));
@@ -124,6 +135,7 @@ describe('resource saga', () => {
             saga.next();
             saga.next();
             saga.next({});
+            saga.next();
             saga.next('old');
             saga.next('request');
             const next = saga.next({ error: 'error' });
@@ -134,6 +146,7 @@ describe('resource saga', () => {
             saga.next();
             saga.next();
             saga.next({});
+            saga.next();
             saga.next('old');
             saga.next('request');
             const next = saga.next({ response: { value: 'response' } });
@@ -172,10 +185,18 @@ describe('resource saga', () => {
             expect(next.value).toEqual(put(saveResourceError('error')));
         });
 
-        it('should select fromResource.getResourceLastVersion', () => {
+        it('should put loadPublication if fetchSaga returned no error', () => {
             saga.next();
             saga.next();
             const next = saga.next({});
+            expect(next.value).toEqual(put(loadPublication()));
+        });
+
+        it('should select fromResource.getResourceLastVersion', () => {
+            saga.next();
+            saga.next();
+            saga.next({});
+            const next = saga.next();
             expect(next.value).toEqual(select(fromResource.getResourceLastVersion));
         });
 
@@ -183,6 +204,7 @@ describe('resource saga', () => {
             saga.next();
             saga.next();
             saga.next({});
+            saga.next();
             const next = saga.next({
                 resource: 'resource',
                 uri: 'uri',
