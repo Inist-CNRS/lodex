@@ -22,7 +22,7 @@
        "raw",
        "ttl",
        "jsonld",
-       "widgetResource"
+       "widget"
    ],
    "languages": [
        { "code": "fr", "label": "Français" },

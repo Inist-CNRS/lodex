@@ -4,7 +4,7 @@ import tsv from './exportTsv';
 import nq from './exportNQuads';
 import ttl from './exportTurtle';
 import jsonld from './exportJsonld';
-import widgetResource from './exportWidgetResource';
+import widget from './exportWidgetResource';
 
 export default {
     csv,
@@ -13,5 +13,5 @@ export default {
     jsonld,
     nq,
     ttl,
-    widgetResource,
+    widget,
 };

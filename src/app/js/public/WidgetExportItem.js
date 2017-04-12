@@ -52,12 +52,12 @@ export class ShareLinkComponent extends Component {
     }
 
     render() {
-        const { type, p: polyglot } = this.props;
+        const { label, p: polyglot } = this.props;
         const { value } = this.state;
 
         return (
             <div className="share-widget">
-                <Subheader>{polyglot.t(type)}</Subheader>
+                <Subheader>{polyglot.t(label)}</Subheader>
                 <div style={styles.container}>
                     <TextField
                         ref={this.saveRef}
@@ -80,6 +80,7 @@ export class ShareLinkComponent extends Component {
 ShareLinkComponent.propTypes = {
     fields: PropTypes.arrayOf(PropTypes.string).isRequired,
     p: polyglotPropTypes.isRequired,
+    label: PropTypes.string.isRequired,
     type: PropTypes.string.isRequired,
     uri: PropTypes.string.isRequired,
 };
