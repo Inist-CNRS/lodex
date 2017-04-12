@@ -98,7 +98,7 @@ export default handleActions({
     }),
     SAVE_RESOURCE_SUCCESS: (state, { payload: resource }) => ({
         ...state,
-        resource,
+        resource: resource || state.resource,
         error: null,
         saving: false,
     }),
