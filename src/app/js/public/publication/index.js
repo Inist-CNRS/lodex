@@ -139,8 +139,13 @@ export default handleActions({
 
 const hasPublishedDataset = ({ published }) => published;
 
-const getFields = ({ fields = [], byName }) =>
-    fields.map(name => byName[name]);
+const innerGetFields = ({ fields = [] }) => fields;
+const innerGetFieldsByName = ({ byName }) => byName;
+const getFields = createSelector(
+    innerGetFields,
+    innerGetFieldsByName,
+    (fields, byName) => fields.map(name => byName[name]).sort((f1, f2) => f1.position - f2.position),
+);
 
 const getCollectionFields = createSelector(
     getFields,

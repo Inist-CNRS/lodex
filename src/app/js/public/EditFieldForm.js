@@ -8,7 +8,6 @@ import { reduxForm, propTypes as reduxFormPropTypes } from 'redux-form';
 import Alert from '../lib/Alert';
 import { polyglot as polyglotPropTypes } from '../propTypes';
 import FieldInput from './FieldInput';
-import PositionInput from './PositionInput';
 
 export const FORM_NAME = 'PROPERTY_FORM';
 
@@ -31,7 +30,6 @@ export const EditFieldFormComponent = ({ field, error, handleSubmit }) => (
     <form id="field_form" onSubmit={handleSubmit}>
         {error && <Alert><p>{error}</p></Alert>}
         <FieldInput field={field} />
-        <PositionInput field={field} />
     </form>
 );
 
@@ -53,8 +51,8 @@ export default compose(
             onSaveProperty(values);
         },
     }),
-    withProps(({ resource, field }) => ({
-        initialValues: { ...resource, position: field.position, field },
+    withProps(({ resource }) => ({
+        initialValues: resource,
     })),
     reduxForm({
         form: FORM_NAME,
