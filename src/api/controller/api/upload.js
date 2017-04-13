@@ -38,49 +38,48 @@ export const clearUpload = async (ctx) => {
     ctx.body = true;
 };
 
-export async function uploadChunkMiddleware(ctx, type) {
+export const prepareUpload = async (ctx, next) => {
+    ctx.getParser = getParser;
+    ctx.requestToStream = requestToStream(asyncBusboy);
+    ctx.saveStream = saveStream;
+
+    await next();
+};
+
+export const parseRequest = async (ctx, type, next) => {
+    const { stream, fields } = await ctx.requestToStream(ctx.req);
+    ctx.stream = stream;
+
+    const {
+        resumableChunkNumber,
+        resumableIdentifier,
+        resumableTotalChunks,
+        resumableTotalSize,
+        resumableCurrentChunkSize,
+    } = fields;
+
+    const chunkNumber = parseInt(resumableChunkNumber, 10);
+    ctx.totalChunks = parseInt(resumableTotalChunks, 10);
+    ctx.totalSize = parseInt(resumableTotalSize, 10);
+    ctx.currentChunkSize = parseInt(resumableCurrentChunkSize, 10);
+
+    ctx.filename = `${config.uploadDir}/${resumableIdentifier}`;
+    ctx.chunkname = `${ctx.filename}.${chunkNumber}`;
+
+    await next();
+};
+
+export async function uploadChunkMiddleware(ctx, type, next) {
     try {
-        const { stream, fields } = await ctx.requestToStream(ctx.req);
-
-        const {
-            resumableChunkNumber,
-            resumableIdentifier,
-            resumableTotalChunks,
-            resumableTotalSize,
-            resumableCurrentChunkSize,
-        } = fields;
-
-        const chunkNumber = parseInt(resumableChunkNumber, 10);
-        const totalChunks = parseInt(resumableTotalChunks, 10);
-        const totalSize = parseInt(resumableTotalSize, 10);
-        const currentChunkSize = parseInt(resumableCurrentChunkSize, 10);
-
-        const filename = `${config.uploadDir}/${resumableIdentifier}`;
-        const chunkname = `${filename}.${chunkNumber}`;
-
-        if (await checkFileExists(chunkname, currentChunkSize)) {
+        if (await checkFileExists(ctx.chunkname, ctx.currentChunkSize)) {
             ctx.status = 200;
             return;
         }
 
-        await saveStreamInFile(stream, chunkname);
+        await saveStreamInFile(ctx.stream, ctx.chunkname);
 
-        if (await areFileChunksComplete(filename, totalChunks, totalSize)) {
-            await mergeChunks(filename, totalChunks);
-            await clearChunks(filename, totalChunks);
-            const fileStream = fs.createReadStream(filename);
-
-            const parseStream = ctx.getParser(type);
-            const parsedStream = await parseStream(fileStream);
-
-            await ctx.saveStream(parsedStream, ctx.dataset.insertMany.bind(ctx.dataset));
-            await unlinkFile(filename);
-            await ctx.field.initializeModel();
-
-            ctx.status = 200;
-            ctx.body = {
-                totalLines: await ctx.dataset.count(),
-            };
+        if (await areFileChunksComplete(ctx.filename, ctx.totalChunks, ctx.totalSize)) {
+            await next(); // pass to uploadFile middleware
         }
 
         ctx.status = 200;
@@ -90,13 +89,23 @@ export async function uploadChunkMiddleware(ctx, type) {
     }
 }
 
-export const prepareUpload = async (ctx, next) => {
-    ctx.getParser = getParser;
-    ctx.requestToStream = requestToStream(asyncBusboy);
-    ctx.saveStream = saveStream;
+export async function uploadFileMiddleware(ctx, type) {
+    await mergeChunks(ctx.filename, ctx.totalChunks);
+    await clearChunks(ctx.filename, ctx.totalChunks);
+    const fileStream = fs.createReadStream(ctx.filename);
 
-    await next();
-};
+    const parseStream = ctx.getParser(type);
+    const parsedStream = await parseStream(fileStream);
+
+    await ctx.saveStream(parsedStream, ctx.dataset.insertMany.bind(ctx.dataset));
+    await unlinkFile(ctx.filename);
+    await ctx.field.initializeModel();
+
+    ctx.status = 200;
+    ctx.body = {
+        totalLines: await ctx.dataset.count(),
+    };
+}
 
 export const checkChunkMiddleware = async (ctx) => {
     const {
@@ -113,8 +122,12 @@ const app = new Koa();
 
 app.use(prepareUpload);
 
+app.use(route.post('/:type', parseRequest));
 app.use(route.post('/:type', uploadChunkMiddleware));
+app.use(route.post('/:type', uploadFileMiddleware));
+
 app.use(route.get('/:type', checkChunkMiddleware));
+
 app.use(route.del('/clear', clearUpload));
 
 export default app;
