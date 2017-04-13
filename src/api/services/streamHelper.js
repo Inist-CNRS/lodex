@@ -1,23 +1,26 @@
-export const append = writeStream => readStream =>
+import composeAsync from '../../common/lib/composeAsync';
+
+const pipeTo = (writeStream, options) => readStream =>
+    readStream.pipe(writeStream, options);
+
+const waitForStreamToComplete = stream =>
     new Promise((resolve, reject) => {
-        readStream.pipe(writeStream, { end: false });
-        readStream.on('end', resolve);
-        readStream.on('error', reject);
+        stream.on('end', resolve);
+        stream.on('error', reject);
     });
 
-export const concatStreams = (sourceStreams, resultStream) => {
-    const nbSources = sourceStreams.length;
-    const appendToResult = append(resultStream);
-    const loop = async (index) => {
-        if (index >= nbSources) {
-            resultStream.end();
+export const append = (writeStream) => {
+    const pipeToWriteStream = pipeTo(writeStream, { end: false });
 
-            return null;
-        }
-        await appendToResult(sourceStreams[index]);
-
-        return loop(index + 1);
+    return async (readStream) => {
+        pipeToWriteStream(readStream);
+        return waitForStreamToComplete(readStream);
     };
+};
 
-    return loop(0);
+export const concatStreams = (sourceStreams, resultStream) => {
+    const appendToResult = append(resultStream);
+    composeAsync(
+        sourceStreams.map(appendToResult),
+    );
 };

@@ -1,5 +1,8 @@
 import fs from 'fs';
 import range from 'lodash.range';
+import rangeRight from 'lodash.rangeright';
+
+import composeAsync from '../../common/lib/composeAsync';
 
 import { concatStreams } from './streamHelper';
 
@@ -25,17 +28,17 @@ export const unlinkFile = filename => new Promise((resolve, reject) => {
     });
 });
 
-export const getFileSize = async (filename) => {
-    try {
-        const { size } = await getFileStats(filename);
-        return size;
-    } catch (error) {
-        return 0;
-    }
-};
+export const getFileSize = filename =>
+    composeAsync(
+        getFileStats,
+        ({ size }) => size,
+    )(filename).catch(() => 0);
 
-export const checkFileExists = async (filename, size) =>
-    (await getFileSize(filename)) === size;
+export const checkFileExists = (filename, expectedSize) =>
+    composeAsync(
+        getFileSize,
+        size => size === expectedSize,
+    )(filename);
 
 export const saveStreamInFile = (stream, filename) =>
     new Promise((resolve, reject) => {
@@ -47,30 +50,47 @@ export const saveStreamInFile = (stream, filename) =>
         stream.on('error', reject);
     });
 
+export const createWriteStream = chunkname =>
+    fs.createWriteStream(chunkname);
+
+export const createReadStream = chunkname =>
+    fs.createReadStream(chunkname);
+
 export const mergeChunks = async (filename, nbChunks) => {
-    const stream = fs.createWriteStream(filename);
+    const stream = createWriteStream(filename);
     const sourceStreams = range(1, nbChunks + 1)
         .map(nb => `${filename}.${nb}`)
-        .map(chunkname => fs.createReadStream(chunkname));
+        .map(createReadStream);
 
     await concatStreams(sourceStreams, stream);
 };
 
+const addFileSize = chunkFilename => async (totalSize = 0) => {
+    const size = await getFileSize(chunkFilename);
+
+    if (size === 0) {
+        throw new Error('empty chunk');
+    }
+
+    return size + totalSize;
+};
+
 export const areFileChunksComplete = async (filename, totalChunk, totalSize) => {
-    const loop = async (chunkNumber, curSize = 0) => {
-        if (chunkNumber === 0) {
-            return totalSize === curSize;
-        }
-        const chunkname = `${filename}.${chunkNumber}`;
-        const chunkSize = await getFileSize(chunkname);
-        if (chunkSize === 0) {
+    const sizeComputation = rangeRight(1, totalChunk + 1)
+        .map(nb => `${filename}.${nb}`)
+        .map(addFileSize);
+
+    try {
+        const size = await composeAsync(...sizeComputation)();
+
+        return size === totalSize;
+    } catch (error) {
+        if (error.message === 'empty chunk') {
             return false;
         }
 
-        return loop(chunkNumber - 1, curSize + chunkSize);
-    };
-
-    return loop(totalChunk);
+        throw error;
+    }
 };
 
 export const clearChunks = async (filename, nbChunks) =>
