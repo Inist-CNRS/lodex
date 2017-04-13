@@ -18,6 +18,8 @@ const styles = {
         display: 'flex',
         flexDirection: 'column',
         marginTop: '3rem',
+        paddingLeft: '1rem',
+        paddingRight: '1rem',
     },
     exportContainer: {
         display: 'flex',

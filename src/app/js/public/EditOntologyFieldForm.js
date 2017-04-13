@@ -11,12 +11,13 @@ import { polyglot as polyglotPropTypes } from '../propTypes';
 import FormCheckboxField from '../lib/FormCheckboxField';
 import { configureField } from './publication';
 import { fromPublication } from './selectors';
+import PositionInput from './PositionInput';
 
 export const FORM_NAME = 'ONTOLOGY_FIELD_FORM';
 
 const validate = (values) => {
     const errors = Object.keys(values).reduce((currentErrors, field) => {
-        if (values[field] !== false && values[field] !== true) {
+        if (field !== 'position' && values[field] !== false && values[field] !== true) {
             return {
                 ...currentErrors,
                 [field]: 'Required',
@@ -28,7 +29,7 @@ const validate = (values) => {
     return errors;
 };
 
-export const EditOntologyFieldFormComponent = ({ publicationError, handleSubmit, p: polyglot }) => (
+export const EditOntologyFieldFormComponent = ({ field, fields, publicationError, handleSubmit, p: polyglot }) => (
     <form id="field_form" onSubmit={() => handleSubmit()}>
         {publicationError && <Alert><p>{publicationError}</p></Alert>}
         <Field
@@ -41,6 +42,7 @@ export const EditOntologyFieldFormComponent = ({ publicationError, handleSubmit,
             component={FormCheckboxField}
             label={polyglot.t('field_display_in_resource')}
         />
+        <PositionInput field={field} fields={fields} />
     </form>
 );
 
@@ -56,6 +58,7 @@ EditOntologyFieldFormComponent.propTypes = {
 };
 
 const mapStateToProps = state => ({
+    fields: fromPublication.getFields(state),
     publicationError: fromPublication.getError(state),
 });
 

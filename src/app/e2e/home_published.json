@@ -169,7 +169,8 @@
                     ]
                 }
             ],
-            "completes": "movie"
+            "completes": "movie",
+            "position": 7
         }
     ],
     "publishedCharacteristic": [

@@ -102,11 +102,32 @@ describe('Ontology', function homePublishedDataTests() {
         expect(editButtons.length).toBe(8);
     });
 
+    it('should edit form for full_name field changing its position', async () => {
+        await driver.wait(elementIsClicked('.configure-field.full_name', DEFAULT_WAIT_TIMEOUT));
+        await driver.wait(until.elementLocated(By.css('#field_form')));
+        const form = await driver.findElement(By.css('#field_form'));
+
+        await driver.wait(elementIsClicked('.select-position'));
+        await driver.sleep(1000);
+        await driver.wait(elementIsClicked('.after_uri'));
+        await driver.sleep(1000);
+
+        await driver.wait(elementIsClicked('.configure-field.save', DEFAULT_WAIT_TIMEOUT));
+        await driver.wait(until.stalenessOf(form));
+    });
+
+    it('should have updated positions', async () => {
+        const fields = await driver.findElements(By.css('.field-label'));
+        const expectedFields = ['URI', 'Full name', 'Movie', 'firstname', 'name', 'Email', 'Best Friend Of', 'Author'];
+        await Promise.all(fields.map(async (header, index) =>
+            driver.wait(elementTextIs(header, expectedFields[index], DEFAULT_WAIT_TIMEOUT)),
+        ));
+    });
+
     it('should edit form for email field removing it from list', async () => {
         await driver.wait(elementIsClicked('.configure-field.email', DEFAULT_WAIT_TIMEOUT));
         await driver.wait(until.elementLocated(By.css('#field_form')));
         const fields = await driver.findElements(By.css('#field_form > div'));
-        expect(fields.length).toBe(2);
         const listDisplayLabel = await fields[0].findElement(By.css('label'));
         await driver.wait(elementTextIs(listDisplayLabel, 'Display on list page', DEFAULT_WAIT_TIMEOUT));
         const listDisplayInput = await fields[0].findElement(By.css('input'));
@@ -221,7 +242,6 @@ describe('Ontology', function homePublishedDataTests() {
         await driver.wait(elementIsClicked('.configure-field.best_friend_of', DEFAULT_WAIT_TIMEOUT));
         await driver.wait(until.elementLocated(By.css('#field_form')));
         const fields = await driver.findElements(By.css('#field_form > div'));
-        expect(fields.length).toBe(2);
         const listDisplayLabel = await fields[0].findElement(By.css('label'));
         await driver.wait(elementTextIs(listDisplayLabel, 'Display on list page', DEFAULT_WAIT_TIMEOUT));
         const listDisplayInput = await fields[0].findElement(By.css('input'));
