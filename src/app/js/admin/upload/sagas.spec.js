@@ -7,9 +7,9 @@ import {
     uploadFileSuccess,
     uploadFileError,
 } from './';
-
+import { getClearUploadRequest } from '../../fetch';
 import { loadDatasetFile } from '../../lib/loadFile';
-
+import fetch from '../../lib/fetch';
 import { uploadFile as uploadFileSaga } from './sagas';
 
 describe('parsing saga', () => {
@@ -25,14 +25,31 @@ describe('parsing saga', () => {
             expect(saga.next().done).toBe(true);
         });
 
-        it('should select getToken', () => {
+        it('should select getClearRequest', () => {
             const { value } = saga.next();
+
+            expect(value).toEqual(select(getClearUploadRequest));
+        });
+
+        it('should call fetch with clearUploadRequest', () => {
+            saga.next();
+            const { value } = saga.next('clearUploadRequest');
+
+            expect(value).toEqual(call(fetch, 'clearUploadRequest'));
+        });
+
+        it('should select getToken', () => {
+            saga.next();
+            saga.next();
+            const { value } = saga.next({});
 
             expect(value).toEqual(select(getToken));
         });
 
         it('should race call(loadDatasetFile) and take(LOCATION_CHANGE)', () => {
             saga.next();
+            saga.next();
+            saga.next({});
             const { value } = saga.next('token');
 
             expect(value).toEqual(race({
@@ -43,6 +60,8 @@ describe('parsing saga', () => {
 
         it('should end if receiving cancel', () => {
             saga.next();
+            saga.next();
+            saga.next({});
             saga.next('token');
             const { done } = saga.next({ cancel: true });
             expect(done).toBe(true);
@@ -50,6 +69,8 @@ describe('parsing saga', () => {
 
         it('should put uploadFileError if an error is thrown', () => {
             saga.next();
+            saga.next();
+            saga.next({});
             saga.next('token');
             const error = new Error('Boom');
             const { value } = saga.throw(error);
@@ -58,6 +79,8 @@ describe('parsing saga', () => {
 
         it('should put loadFileSuccess with file', () => {
             saga.next();
+            saga.next();
+            saga.next({});
             saga.next('token');
             const { value } = saga.next({ file: 'file' });
             expect(value).toEqual(put(uploadFileSuccess('file')));
