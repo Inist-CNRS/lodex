@@ -2,7 +2,7 @@ import expect, { createSpy } from 'expect';
 
 import { append, concatStreamsFactory } from './streamHelper';
 
-describe.only('streamHepler', () => {
+describe('streamHepler', () => {
     describe('append', () => {
         it('should call readStream.pipe with writeStream and on and resolve ', async () => {
             const readStream = {

@@ -35,4 +35,15 @@ describe('composeAsync', () => {
 
         expect(await (fn([1, 2, 3]))).toBe('previous result is 1/2/3');
     });
+
+    it('should execute function serially', async () => {
+        const fn = composeAsync(
+            args => args.toUpperCase(),
+            prev => prev.split(''),
+        );
+
+        expect(fn).toBeA('function');
+
+        expect(await (fn('hello'))).toEqual(['H', 'E', 'L', 'L', 'O']);
+    });
 });

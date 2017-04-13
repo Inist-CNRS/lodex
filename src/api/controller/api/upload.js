@@ -2,7 +2,6 @@ import Koa from 'koa';
 import route from 'koa-route';
 import asyncBusboy from 'async-busboy';
 import config from 'config';
-import fs from 'fs';
 
 import jsonConfig from '../../../../config.json';
 import loaders from '../../loaders';
@@ -14,6 +13,7 @@ import {
     mergeChunks,
     clearChunks,
     areFileChunksComplete,
+    createReadStream,
 } from '../../services/fsHelpers';
 
 export const getParser = (type) => {
@@ -42,6 +42,13 @@ export const prepareUpload = async (ctx, next) => {
     ctx.getParser = getParser;
     ctx.requestToStream = requestToStream(asyncBusboy);
     ctx.saveStream = saveStream;
+    ctx.checkFileExists = checkFileExists;
+    ctx.saveStreamInFile = saveStreamInFile;
+    ctx.areFileChunksComplete = areFileChunksComplete;
+    ctx.mergeChunks = mergeChunks;
+    ctx.clearChunks = clearChunks;
+    ctx.createReadStream = createReadStream;
+    ctx.unlinkFile = unlinkFile;
 
     await next();
 };
@@ -71,15 +78,13 @@ export const parseRequest = async (ctx, type, next) => {
 
 export async function uploadChunkMiddleware(ctx, type, next) {
     try {
-        if (await checkFileExists(ctx.chunkname, ctx.currentChunkSize)) {
-            ctx.status = 200;
-            return;
+        if (!await ctx.checkFileExists(ctx.chunkname, ctx.currentChunkSize)) {
+            await ctx.saveStreamInFile(ctx.stream, ctx.chunkname);
         }
 
-        await saveStreamInFile(ctx.stream, ctx.chunkname);
-
-        if (await areFileChunksComplete(ctx.filename, ctx.totalChunks, ctx.totalSize)) {
-            await next(); // pass to uploadFile middleware
+        if (await ctx.areFileChunksComplete(ctx.filename, ctx.totalChunks, ctx.totalSize)) {
+            await next();
+            return;
         }
 
         ctx.status = 200;
@@ -90,15 +95,15 @@ export async function uploadChunkMiddleware(ctx, type, next) {
 }
 
 export async function uploadFileMiddleware(ctx, type) {
-    await mergeChunks(ctx.filename, ctx.totalChunks);
-    await clearChunks(ctx.filename, ctx.totalChunks);
-    const fileStream = fs.createReadStream(ctx.filename);
+    await ctx.mergeChunks(ctx.filename, ctx.totalChunks);
+    await ctx.clearChunks(ctx.filename, ctx.totalChunks);
+    const fileStream = ctx.createReadStream(ctx.filename);
 
     const parseStream = ctx.getParser(type);
     const parsedStream = await parseStream(fileStream);
 
     await ctx.saveStream(parsedStream, ctx.dataset.insertMany.bind(ctx.dataset));
-    await unlinkFile(ctx.filename);
+    await ctx.unlinkFile(ctx.filename);
     await ctx.field.initializeModel();
 
     ctx.status = 200;

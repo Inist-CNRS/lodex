@@ -6,8 +6,8 @@ import composeAsync from '../../common/lib/composeAsync';
 
 import { concatStreams } from './streamHelper';
 
-export const getFileStats = filename => new Promise((resolve, reject) => {
-    fs.stat(filename, (error, result) => {
+export const unlinkFile = filename => new Promise((resolve, reject) => {
+    fs.unlink(filename, (error, result) => {
         if (error) {
             reject(error);
             return;
@@ -17,8 +17,36 @@ export const getFileStats = filename => new Promise((resolve, reject) => {
     });
 });
 
-export const unlinkFile = filename => new Promise((resolve, reject) => {
-    fs.unlink(filename, (error, result) => {
+export const saveStreamInFile = (stream, filename) =>
+    new Promise((resolve, reject) => {
+        const writableStream = fs.createWriteStream(filename);
+
+        stream.pipe(writableStream);
+
+        stream.on('end', resolve);
+        stream.on('error', reject);
+    });
+
+export const createWriteStream = chunkname =>
+    fs.createWriteStream(chunkname);
+
+export const createReadStream = chunkname =>
+    fs.createReadStream(chunkname);
+
+export const mergeChunksFactory = (createWriteStreamImpl, createReadStreamImpl, concatStreamsImpl) =>
+    async (filename, nbChunks) => {
+        const stream = createWriteStreamImpl(filename);
+        const sourceStreams = range(1, nbChunks + 1)
+            .map(nb => `${filename}.${nb}`)
+            .map(chunkname => createReadStreamImpl(chunkname));
+
+        await concatStreamsImpl(sourceStreams, stream);
+    };
+
+export const mergeChunks = mergeChunksFactory(createWriteStream, createReadStream, concatStreams);
+
+export const getFileStats = filename => new Promise((resolve, reject) => {
+    fs.stat(filename, (error, result) => {
         if (error) {
             reject(error);
             return;
@@ -40,31 +68,6 @@ export const checkFileExists = (filename, expectedSize) =>
         size => size === expectedSize,
     )(filename);
 
-export const saveStreamInFile = (stream, filename) =>
-    new Promise((resolve, reject) => {
-        const writableStream = fs.createWriteStream(filename);
-
-        stream.pipe(writableStream);
-
-        stream.on('end', resolve);
-        stream.on('error', reject);
-    });
-
-export const createWriteStream = chunkname =>
-    fs.createWriteStream(chunkname);
-
-export const createReadStream = chunkname =>
-    fs.createReadStream(chunkname);
-
-export const mergeChunks = async (filename, nbChunks) => {
-    const stream = createWriteStream(filename);
-    const sourceStreams = range(1, nbChunks + 1)
-        .map(nb => `${filename}.${nb}`)
-        .map(createReadStream);
-
-    await concatStreams(sourceStreams, stream);
-};
-
 const addFileSize = chunkFilename => async (totalSize = 0) => {
     const size = await getFileSize(chunkFilename);
 
@@ -75,10 +78,10 @@ const addFileSize = chunkFilename => async (totalSize = 0) => {
     return size + totalSize;
 };
 
-export const areFileChunksComplete = async (filename, totalChunk, totalSize) => {
+export const areFileChunksCompleteFactory = addFileSizeImpl => async (filename, totalChunk, totalSize) => {
     const sizeComputation = rangeRight(1, totalChunk + 1)
         .map(nb => `${filename}.${nb}`)
-        .map(addFileSize);
+        .map(name => addFileSizeImpl(name));
 
     try {
         const size = await composeAsync(...sizeComputation)();
@@ -93,7 +96,11 @@ export const areFileChunksComplete = async (filename, totalChunk, totalSize) => 
     }
 };
 
-export const clearChunks = async (filename, nbChunks) =>
+export const areFileChunksComplete = areFileChunksCompleteFactory(addFileSize);
+
+export const clearChunksFactory = unlinkFileImpl => async (filename, nbChunks) =>
     Promise.all(
-        range(1, nbChunks + 1).map(nb => unlinkFile(`${filename}.${nb}`)),
+        range(1, nbChunks + 1).map(nb => unlinkFileImpl(`${filename}.${nb}`)),
     );
+
+export const clearChunks = clearChunksFactory(unlinkFile);
