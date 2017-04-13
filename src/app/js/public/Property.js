@@ -44,6 +44,9 @@ const styles = {
         color: 'grey',
         alignSelf: 'flex-end',
     },
+    editButton: {
+        alignSelf: 'flex-end',
+    },
     labelContainer: {
         display: 'flex',
         justifyContent: 'flex-end',
@@ -52,6 +55,9 @@ const styles = {
     valueContainer: {
         display: 'flex',
         alignItems: 'center',
+    },
+    value: {
+        flexGrow: 2,
     },
 };
 
@@ -78,19 +84,13 @@ const PropertyComponent = ({
         >
             <div>
                 <div style={styles.labelContainer}>
-                    <span
-                        className={classnames('property_label', fieldClassName)}
-                        style={styles.label(fieldStatus)}
-                    >
+                    <span className={classnames('property_label', fieldClassName)} style={styles.label(fieldStatus)}>
                         {field.label}
                     </span>
 
-                    <EditField
-                        field={field}
-                        isSaving={isSaving}
-                        resource={resource}
-                        onSaveProperty={onSaveProperty}
-                    />
+                    <span className={classnames('property_scheme', fieldClassName)} style={styles.scheme}>
+                        {field.scheme}
+                    </span>
                 </div>
                 <PropertyContributor fieldName={field.name} fieldStatus={fieldStatus} />
             </div>
@@ -101,14 +101,22 @@ const PropertyComponent = ({
                     </span>
                 }
 
-                <Format
-                    className={classnames('property_value', fieldClassName)}
+                <div style={styles.value}>
+                    <Format
+                        className={classnames('property_value', fieldClassName)}
+                        field={field}
+                        resource={resource}
+                        fieldStatus={fieldStatus}
+                    />
+                </div>
+
+                <EditField
                     field={field}
+                    isSaving={isSaving}
                     resource={resource}
-                    fieldStatus={fieldStatus}
+                    onSaveProperty={onSaveProperty}
                 />
             </div>
-            <div className={classnames('property_scheme', fieldClassName)} style={styles.scheme}>{field.scheme}</div>
             <CompositeProperty
                 field={field}
                 isSaving={isSaving}

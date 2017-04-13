@@ -91,7 +91,7 @@ describe('Home page with published data when logged as Julia', function homePubl
             elementTextIs('.detail .property.best_friend_of .property_label', 'Best Friend Of', DEFAULT_WAIT_TIMEOUT),
         );
         await driver.wait(
-            elementTextIs('.detail .property.best_friend_of > .property_scheme', 'http://www.w3.org/ns/person',
+            elementTextIs('.detail .property.best_friend_of .property_scheme', 'http://www.w3.org/ns/person',
             DEFAULT_WAIT_TIMEOUT),
         );
         await driver.wait(
@@ -126,7 +126,7 @@ describe('Home page with published data when logged as Julia', function homePubl
         const fullnameLabel = '.detail .property.full_name .property_label';
         await driver.wait(elementTextIs(fullnameLabel, 'Full name', DEFAULT_WAIT_TIMEOUT));
 
-        const fullnameScheme = '.detail .property.full_name > .property_scheme';
+        const fullnameScheme = '.detail .property.full_name .property_scheme';
         await driver.wait(elementTextIs(fullnameScheme, 'http://www.w3.org/ns/person', DEFAULT_WAIT_TIMEOUT));
 
         await driver.wait(
@@ -144,7 +144,7 @@ describe('Home page with published data when logged as Julia', function homePubl
         const mailLabel = '.detail .property.email.completes_fullname .property_label';
         await driver.wait(elementTextIs(mailLabel, 'Email', DEFAULT_WAIT_TIMEOUT));
 
-        const mailScheme = '.detail .property.email.completes_fullname > .property_scheme';
+        const mailScheme = '.detail .property.email.completes_fullname .property_scheme';
         await driver.wait(elementTextIs(mailScheme, 'http://uri4uri.net/vocab', DEFAULT_WAIT_TIMEOUT));
 
         const mailValue = '.detail .property.email.completes_fullname .property_value';
@@ -153,7 +153,7 @@ describe('Home page with published data when logged as Julia', function homePubl
         const bestFriendLabel = '.detail .property.best_friend_of .property_label';
         await driver.wait(elementTextIs(bestFriendLabel, 'Best Friend Of', DEFAULT_WAIT_TIMEOUT));
 
-        const bestFriendScheme = '.detail .property.best_friend_of > .property_scheme';
+        const bestFriendScheme = '.detail .property.best_friend_of .property_scheme';
         await driver.wait(elementTextIs(bestFriendScheme, 'http://www.w3.org/ns/person', DEFAULT_WAIT_TIMEOUT));
 
         const bestFriendLanguage = '.detail .property.best_friend_of .property_language';
