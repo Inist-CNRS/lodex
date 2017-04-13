@@ -18,9 +18,11 @@ export const append = (writeStream) => {
     };
 };
 
-export const concatStreams = (sourceStreams, resultStream) => {
-    const appendToResult = append(resultStream);
-    composeAsync(
+export const concatStreamsFactory = appendImpl => (sourceStreams, resultStream) => {
+    const appendToResult = appendImpl(resultStream);
+    return composeAsync(
         sourceStreams.map(appendToResult),
-    );
+    )();
 };
+
+export const concatStreams = concatStreamsFactory(append);
