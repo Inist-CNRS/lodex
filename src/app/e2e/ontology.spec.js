@@ -127,6 +127,7 @@ describe('Ontology', function homePublishedDataTests() {
     it('should edit form for email field removing it from list', async () => {
         await driver.wait(elementIsClicked('.configure-field.email', DEFAULT_WAIT_TIMEOUT));
         await driver.wait(until.elementLocated(By.css('#field_form')));
+        const form = driver.findElement(By.css('#field_form'));
         const fields = await driver.findElements(By.css('#field_form > div'));
         const listDisplayLabel = await fields[0].findElement(By.css('label'));
         await driver.wait(elementTextIs(listDisplayLabel, 'Display on list page', DEFAULT_WAIT_TIMEOUT));
@@ -141,11 +142,12 @@ describe('Ontology', function homePublishedDataTests() {
         await listDisplayInput.click();
         await driver.sleep(100);
         await driver.wait(elementIsClicked('.configure-field.save', DEFAULT_WAIT_TIMEOUT));
+        await driver.wait(until.stalenessOf(form, DEFAULT_WAIT_TIMEOUT));
     });
 
     it('should have removed email from list', async () => {
         await driver.wait(until.elementLocated(By.css('.tab-dataset-resources')), DEFAULT_WAIT_TIMEOUT);
-        await driver.wait(elementIsClicked('.tab-dataset-resources', DEFAULT_WAIT_TIMEOUT));
+        await driver.findElement(By.css('.tab-dataset-resources')).click();
         await driver.wait(until.elementLocated(By.css('.dataset')), DEFAULT_WAIT_TIMEOUT);
         const headers = await driver.findElements(By.css('.dataset table th button'));
 
