@@ -19,7 +19,7 @@ import waitForPreviewComputing from './waitForPreviewComputing';
 describe('Admin', () => {
     describe('Publication', function homeTests() {
         this.timeout(100000);
-        const DEFAULT_WAIT_TIMEOUT = 9000; // A bit less than mocha's timeout to get explicit errors from selenium
+        const DEFAULT_WAIT_TIMEOUT = 19000; // A bit less than mocha's timeout to get explicit errors from selenium
 
         before(async () => {
             await clear();
