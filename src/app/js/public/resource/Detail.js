@@ -4,7 +4,6 @@ import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
 import { CardActions, CardText } from 'material-ui/Card';
 import { Tabs, Tab } from 'material-ui/Tabs';
-import { cyan500 } from 'material-ui/styles/colors';
 import Divider from 'material-ui/Divider';
 import memoize from 'lodash.memoize';
 
@@ -62,7 +61,10 @@ const styles = {
         color: 'black',
     },
     tabButton: {
-        color: cyan500,
+        color: 'black',
+    },
+    inkBarStyle: {
+        backgroundColor: 'black',
     },
     propertiesContainer: {
         paddingTop: '1rem',
@@ -108,7 +110,10 @@ export const DetailComponent = ({
                 </CardText>
             </Card>
             <Card style={styles.container}>
-                <Tabs tabItemContainerStyle={styles.tab}>
+                <Tabs
+                    tabItemContainerStyle={styles.tab}
+                    inkBarStyle={styles.inkBarStyle}
+                >
                     <Tab
                         className="tab-resource-details"
                         buttonStyle={styles.tabButton}
