@@ -11,6 +11,7 @@ import driver from '../../common/tests/chromeDriver';
 import { clear, loadFixtures } from '../../common/tests/fixtures';
 import fixtures from './home_published.json';
 import navigate from './navigate';
+import { inputElementIsFocusable } from '../../common/tests/conditions';
 
 describe('Resource page', function homePublishedDataTests() {
     this.timeout(30000);
@@ -98,13 +99,17 @@ describe('Resource page', function homePublishedDataTests() {
         await driver.wait(elementIsClicked(newField), DEFAULT_WAIT_TIMEOUT);
         await driver.sleep(500); // animations
 
-        const fieldLabel = form.findElement(By.css('.field-label input'));
+        await driver.wait(until.elementLocated(By.css('.field-label input')), DEFAULT_WAIT_TIMEOUT);
+        const fieldLabel = await form.findElement(By.css('.field-label input'));
+        await driver.wait(inputElementIsFocusable(fieldLabel, true), DEFAULT_WAIT_TIMEOUT);
         fieldLabel.sendKeys('my contribution');
 
-        const fieldScheme = form.findElement(By.css('.field-scheme input'));
+        const fieldScheme = await form.findElement(By.css('.field-scheme input'));
+        await driver.wait(inputElementIsFocusable(fieldScheme, true), DEFAULT_WAIT_TIMEOUT);
         fieldScheme.sendKeys('http://vocab/field');
 
-        const fieldValue = form.findElement(By.css('.field-value input'));
+        const fieldValue = await form.findElement(By.css('.field-value input'));
+        await driver.wait(inputElementIsFocusable(fieldValue, true), DEFAULT_WAIT_TIMEOUT);
         fieldValue.sendKeys('my value');
 
         const addFieldButton = '.add-field-resource.save';
