@@ -101,15 +101,13 @@ describe.only('Resource page', function homePublishedDataTests() {
 
         await driver.wait(until.elementLocated(By.css('#add_field_resource_form .field-label input')), DEFAULT_WAIT_TIMEOUT);
         const fieldLabel = await form.findElement(By.css('#add_field_resource_form .field-label input'));
-        await driver.wait(inputElementIsFocusable(fieldLabel, true), DEFAULT_WAIT_TIMEOUT);
+        await driver.wait(until.elementIsVisible(fieldLabel, true), DEFAULT_WAIT_TIMEOUT);
         fieldLabel.sendKeys('my contribution');
 
         const fieldScheme = await form.findElement(By.css('#add_field_resource_form .field-scheme input'));
-        await driver.wait(inputElementIsFocusable(fieldScheme, true), DEFAULT_WAIT_TIMEOUT);
         fieldScheme.sendKeys('http://vocab/field');
 
         const fieldValue = await form.findElement(By.css('#add_field_resource_form .field-value input'));
-        await driver.wait(inputElementIsFocusable(fieldValue, true), DEFAULT_WAIT_TIMEOUT);
         fieldValue.sendKeys('my value');
 
         const addFieldButton = '.add-field-resource.save';
