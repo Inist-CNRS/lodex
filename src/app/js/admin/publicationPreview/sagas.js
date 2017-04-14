@@ -22,20 +22,27 @@ import {
     SAVE_FIELD_SUCCESS,
     getFieldFormData,
 } from '../fields';
-import { fromFields, fromParsing } from '../selectors';
+import { fromFields, fromParsing, fromPublicationPreview } from '../selectors';
 import {
     LOAD_PARSING_RESULT_SUCCESS,
 } from '../parsing';
 
 export function* handleComputePreview() {
     try {
-        const token = yield select(getToken);
         const formData = yield select(getFieldFormData);
+        const hasPreview = yield select(fromPublicationPreview.hasPublicationPreview);
+        if (!formData && hasPreview) {
+            return;
+        }
         const fields = yield select(fromFields.getFieldsForPreview, formData);
+        const lines = yield select(fromParsing.getExcerptLines);
+        if (!fields.length || !lines.length) {
+            return;
+        }
 
+        const token = yield select(getToken);
         const transformDocument = yield call(getDocumentTransformer, fields, token);
 
-        const lines = yield select(fromParsing.getExcerptLines);
         const preview = yield lines.map(line => call(transformDocument, line));
         yield put(computePreviewSuccess(preview));
     } catch (error) {

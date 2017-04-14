@@ -10,7 +10,7 @@ import {
     computePreviewError,
 } from './';
 import { getFieldFormData } from '../fields';
-import { fromFields, fromParsing } from '../selectors';
+import { fromFields, fromParsing, fromPublicationPreview } from '../selectors';
 import { handleComputePreview } from './sagas';
 
 describe('publication saga', () => {
@@ -21,29 +21,33 @@ describe('publication saga', () => {
         const lines = ['line1', 'line2'];
         const transformDocument = () => {};
 
-        it('should select getToken', () => {
-            expect(saga.next().value).toEqual(select(getToken));
+        it('should select getFieldFormData', () => {
+            expect(saga.next().value).toEqual(select(getFieldFormData));
         });
 
-        it('should select getFieldFormData', () => {
-            expect(saga.next(token).value).toEqual(select(getFieldFormData));
+        it('should select fromPublication.hasPublicationPreview', () => {
+            expect(saga.next('field form data').value).toEqual(select(fromPublicationPreview.hasPublicationPreview));
         });
 
         it('should select fromFields.getFields', () => {
-            expect(saga.next('field form data').value)
+            expect(saga.next(false).value)
                 .toEqual(select(fromFields.getFieldsForPreview, 'field form data'));
         });
 
-        it('should call getDocumentTransformer with correct context and field', () => {
-            expect(saga.next(fields).value).toEqual(call(getDocumentTransformer, fields, token));
+        it('should select fromParsing.getExcerptLines', () => {
+            expect(saga.next(fields).value).toEqual(select(fromParsing.getExcerptLines));
         });
 
-        it('should select fromParsing.getExcerptLines', () => {
-            expect(saga.next(transformDocument).value).toEqual(select(fromParsing.getExcerptLines));
+        it('should select getToken', () => {
+            expect(saga.next(lines).value).toEqual(select(getToken));
+        });
+
+        it('should call getDocumentTransformer with correct context and field', () => {
+            expect(saga.next(token).value).toEqual(call(getDocumentTransformer, fields, token));
         });
 
         it('should call transformDocument for each lines', () => {
-            expect(saga.next(lines).value).toEqual(lines.map(line => call(transformDocument, line)));
+            expect(saga.next(transformDocument).value).toEqual(lines.map(line => call(transformDocument, line)));
         });
 
         it('should put computePreviewSuccess action', () => {
@@ -57,6 +61,33 @@ describe('publication saga', () => {
             failedSaga.next();
             expect(failedSaga.throw(error).value)
                 .toEqual(put(computePreviewError(error)));
+        });
+
+        it('should end if hasPublicationPreview is true and no form data', () => {
+            const it = handleComputePreview();
+            expect(it.next().value).toEqual(select(getFieldFormData));
+            expect(it.next(null).value).toEqual(select(fromPublicationPreview.hasPublicationPreview));
+            expect(it.next(true).done).toBe(true);
+        });
+
+        it('should end if no fields returned', () => {
+            const it = handleComputePreview();
+            expect(it.next().value).toEqual(select(getFieldFormData));
+            expect(it.next('field form data').value).toEqual(select(fromPublicationPreview.hasPublicationPreview));
+            expect(it.next(false).value)
+                .toEqual(select(fromFields.getFieldsForPreview, 'field form data'));
+            expect(it.next([]).value).toEqual(select(fromParsing.getExcerptLines));
+            expect(it.next(lines).done).toBe(true);
+        });
+
+        it('should end if no lines returned', () => {
+            const it = handleComputePreview();
+            expect(it.next().value).toEqual(select(getFieldFormData));
+            expect(it.next('field form data').value).toEqual(select(fromPublicationPreview.hasPublicationPreview));
+            expect(it.next(false).value)
+                .toEqual(select(fromFields.getFieldsForPreview, 'field form data'));
+            expect(it.next(fields).value).toEqual(select(fromParsing.getExcerptLines));
+            expect(it.next([]).done).toBe(true);
         });
     });
 });

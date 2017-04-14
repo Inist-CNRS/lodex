@@ -54,8 +54,10 @@ export default handleActions({
 
 export const isComputing = state => state.isComputing;
 export const getPublicationPreview = state => state.resources;
+export const hasPublicationPreview = state => !!state.resources.length;
 
 export const selectors = {
     isComputing,
     getPublicationPreview,
+    hasPublicationPreview,
 };
