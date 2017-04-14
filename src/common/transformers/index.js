@@ -1,3 +1,4 @@
+import memoizeTransformer from './memoizeTransformer';
 import AUTOGENERATE_URI from './AUTOGENERATE_URI';
 import COLUMN from './COLUMN';
 import UPPERCASE from './UPPERCASE';
@@ -10,16 +11,16 @@ import CONCAT_URI from './CONCAT_URI';
 import SPLIT from './SPLIT';
 
 const transformers = {
-    AUTOGENERATE_URI,
-    COLUMN,
-    UPPERCASE,
-    LINK,
-    VALUE,
-    CONCAT,
-    JBJ,
-    JOIN,
-    CONCAT_URI,
-    SPLIT,
+    AUTOGENERATE_URI: memoizeTransformer(AUTOGENERATE_URI),
+    COLUMN: memoizeTransformer(COLUMN),
+    UPPERCASE: memoizeTransformer(UPPERCASE),
+    LINK: memoizeTransformer(LINK),
+    VALUE: memoizeTransformer(VALUE),
+    CONCAT: memoizeTransformer(CONCAT),
+    JBJ: memoizeTransformer(JBJ),
+    JOIN: memoizeTransformer(JOIN),
+    CONCAT_URI: memoizeTransformer(CONCAT_URI),
+    SPLIT: memoizeTransformer(SPLIT),
 };
 
 export default transformers;
