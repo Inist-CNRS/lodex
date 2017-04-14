@@ -3,7 +3,6 @@ import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 import { Tabs, Tab } from 'material-ui/Tabs';
-import { cyan500 } from 'material-ui/styles/colors';
 import { push } from 'react-router-redux';
 
 import { polyglot as polyglotPropTypes } from '../propTypes';
@@ -34,7 +33,10 @@ const styles = {
         color: 'black',
     },
     tabButton: {
-        color: cyan500,
+        color: 'black',
+    },
+    inkBarStyle: {
+        backgroundColor: 'black',
     },
 };
 
@@ -96,7 +98,12 @@ export class HomeComponent extends Component {
                     <AppliedFacetList />
                     <DatasetCharacteristics />
                     <Card>
-                        <Tabs value={selectedTab} onChange={this.handleTabChange} tabItemContainerStyle={styles.tab}>
+                        <Tabs
+                            inkBarStyle={styles.inkBarStyle}
+                            value={selectedTab}
+                            onChange={this.handleTabChange}
+                            tabItemContainerStyle={styles.tab}
+                        >
                             <Tab
                                 className="tab-dataset-resources"
                                 label={polyglot.t('resources')}
