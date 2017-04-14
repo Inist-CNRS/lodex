@@ -61,7 +61,7 @@ describe('login', () => {
 
         // This is set to now as default in login but we specify it here to avoid random failure in tests
         const expDate = Date.now();
-        login(() => expDate)(ctx);
+        login(expDate)(ctx);
         expect(ctx.body).toEqual({
             token: jwt.sign({
                 username: 'user',
