@@ -137,54 +137,6 @@ describe('field reducer', () => {
         });
     });
 
-    describe('saveFieldSuccess', () => {
-        it('should handle the SAVE_FIELD_SUCCESS action', () => {
-            const state = reducer({
-                list: ['bar', 'foo', 'boo'],
-                byName: {
-                    bar: { name: 'bar' },
-                    foo: { name: 'foo' },
-                    boo: { name: 'boo' },
-                },
-                editedFieldName: 'foo',
-            }, saveFieldSuccess({ name: 'foo', updated: true }));
-
-            expect(state).toEqual({
-                list: ['bar', 'foo', 'boo'],
-                byName: {
-                    bar: { name: 'bar' },
-                    foo: { name: 'foo', updated: true },
-                    boo: { name: 'boo' },
-                },
-                editedFieldName: null,
-            });
-        });
-
-        it('should handle the SAVE_FIELD_SUCCESS action with new editedField', () => {
-            const state = reducer({
-                list: ['bar', 'foo', 'boo', 'new'],
-                byName: {
-                    bar: { name: 'bar' },
-                    foo: { name: 'foo' },
-                    boo: { name: 'boo' },
-                    new: { name: 'new' },
-                },
-                editedFieldName: 'new',
-            }, saveFieldSuccess({ name: 'new_name', updated: true }));
-
-            expect(state).toEqual({
-                list: ['bar', 'foo', 'boo', 'new_name'],
-                byName: {
-                    bar: { name: 'bar' },
-                    foo: { name: 'foo' },
-                    boo: { name: 'boo' },
-                    new_name: { name: 'new_name', updated: true },
-                },
-                editedFieldName: null,
-            });
-        });
-    });
-
     describe('selectors', () => {
         describe('getFields', () => {
             it('should return array of all fields', () => {

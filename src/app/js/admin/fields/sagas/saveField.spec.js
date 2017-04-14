@@ -6,7 +6,7 @@ import fetchSaga from '../../../lib/fetchSaga';
 import {
     getFieldFormData,
     saveFieldError,
-    saveFieldSuccess,
+    loadField,
 } from '../';
 import { getSaveFieldRequest } from '../../../fetch';
 
@@ -37,7 +37,7 @@ describe('fields saga', () => {
         });
 
         it('should put saveFieldSuccess action', () => {
-            expect(saga.next({ response: 'foo' }).value).toEqual(put(saveFieldSuccess('foo')));
+            expect(saga.next({ response: 'foo' }).value).toEqual(put(loadField()));
         });
 
         it('should put saveFieldError action with error if any', () => {

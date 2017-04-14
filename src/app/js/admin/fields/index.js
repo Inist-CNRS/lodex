@@ -77,6 +77,7 @@ export default handleActions({
     }),
     LOAD_FIELD_SUCCESS: (state, { payload }) => ({
         ...state,
+        editedFieldName: null,
         list: payload.map(({ name }) => name),
         byName: payload.reduce((acc, field) => ({
             ...acc,
@@ -103,34 +104,6 @@ export default handleActions({
         list: state.list.filter(name => name !== nameToRemove),
         byName: omit(state.byName, [nameToRemove]),
     }),
-    SAVE_FIELD_SUCCESS: (state, { payload }) => {
-        if (state.editedFieldName === 'new') {
-            const newIndex = state.list.indexOf('new');
-
-            return {
-                ...state,
-                byName: {
-                    ...omit(state.byName, ['new']),
-                    [payload.name]: payload,
-                },
-                list: [
-                    ...state.list.slice(0, newIndex),
-                    payload.name,
-                    ...state.list.slice(newIndex + 1),
-                ],
-                editedFieldName: null,
-            };
-        }
-
-        return {
-            ...state,
-            byName: {
-                ...state.byName,
-                [payload.name]: payload,
-            },
-            editedFieldName: null,
-        };
-    },
     SET_VALIDATION: (state, { payload: { isValid: allValid, fields: invalidFields } }) => ({
         ...state,
         allValid,
