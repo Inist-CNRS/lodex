@@ -10,7 +10,6 @@ import {
 import driver from '../../common/tests/chromeDriver';
 import { clear, loadFixtures } from '../../common/tests/fixtures';
 import fixtures from './home_published.json';
-import { inputElementIsFocusable } from '../../common/tests/conditions';
 import navigate from './navigate';
 
 describe('Resource page', function homePublishedDataTests() {
@@ -87,11 +86,9 @@ describe('Resource page', function homePublishedDataTests() {
 
         await driver.wait(until.elementLocated(By.css('.contributor-name input')), DEFAULT_WAIT_TIMEOUT);
         const contributorName = form.findElement(By.css('.contributor-name input'));
-        await driver.wait(inputElementIsFocusable(contributorName, true), DEFAULT_WAIT_TIMEOUT);
         contributorName.sendKeys('john');
 
         const contributorMail = form.findElement(By.css('.contributor-mail input'));
-        await driver.wait(inputElementIsFocusable(contributorMail, true), DEFAULT_WAIT_TIMEOUT);
         contributorMail.sendKeys('john@doe.fr');
 
         const selectField = '.select-field';
@@ -99,17 +96,15 @@ describe('Resource page', function homePublishedDataTests() {
         await driver.sleep(500); // animations
         const newField = '.new';
         await driver.wait(elementIsClicked(newField), DEFAULT_WAIT_TIMEOUT);
+        await driver.sleep(500); // animations
 
         const fieldLabel = form.findElement(By.css('.field-label input'));
-        await driver.wait(inputElementIsFocusable(fieldLabel, true), DEFAULT_WAIT_TIMEOUT);
         fieldLabel.sendKeys('my contribution');
 
         const fieldScheme = form.findElement(By.css('.field-scheme input'));
-        await driver.wait(inputElementIsFocusable(fieldScheme, true), DEFAULT_WAIT_TIMEOUT);
         fieldScheme.sendKeys('http://vocab/field');
 
         const fieldValue = form.findElement(By.css('.field-value input'));
-        await driver.wait(inputElementIsFocusable(fieldValue, true), DEFAULT_WAIT_TIMEOUT);
         fieldValue.sendKeys('my value');
 
         const addFieldButton = '.add-field-resource.save';
