@@ -55,7 +55,6 @@ export const prepareUpload = async (ctx, next) => {
 
 export const parseRequest = async (ctx, type, next) => {
     const { stream, fields } = await ctx.requestToStream(ctx.req);
-    ctx.stream = stream;
 
     const {
         resumableChunkNumber,
@@ -66,23 +65,34 @@ export const parseRequest = async (ctx, type, next) => {
     } = fields;
 
     const chunkNumber = parseInt(resumableChunkNumber, 10);
-    ctx.totalChunks = parseInt(resumableTotalChunks, 10);
-    ctx.totalSize = parseInt(resumableTotalSize, 10);
-    ctx.currentChunkSize = parseInt(resumableCurrentChunkSize, 10);
-
-    ctx.filename = `${config.uploadDir}/${resumableIdentifier}`;
-    ctx.chunkname = `${ctx.filename}.${chunkNumber}`;
+    ctx.resumable = {
+        totalChunks: parseInt(resumableTotalChunks, 10),
+        totalSize: parseInt(resumableTotalSize, 10),
+        currentChunkSize: parseInt(resumableCurrentChunkSize, 10),
+        filename: `${config.uploadDir}/${resumableIdentifier}`,
+        chunkname: `${config.uploadDir}/${resumableIdentifier}.${chunkNumber}`,
+        stream,
+    };
 
     await next();
 };
 
 export async function uploadChunkMiddleware(ctx, type, next) {
     try {
-        if (!await ctx.checkFileExists(ctx.chunkname, ctx.currentChunkSize)) {
-            await ctx.saveStreamInFile(ctx.stream, ctx.chunkname);
+        const {
+            chunkname,
+            currentChunkSize,
+            stream,
+            filename,
+            totalChunks,
+            totalSize,
+        } = ctx.resumable;
+
+        if (!await ctx.checkFileExists(chunkname, currentChunkSize)) {
+            await ctx.saveStreamInFile(stream, chunkname);
         }
 
-        if (await ctx.areFileChunksComplete(ctx.filename, ctx.totalChunks, ctx.totalSize)) {
+        if (await ctx.areFileChunksComplete(filename, totalChunks, totalSize)) {
             await next();
             return;
         }
@@ -95,9 +105,13 @@ export async function uploadChunkMiddleware(ctx, type, next) {
 }
 
 export async function uploadFileMiddleware(ctx, type) {
-    await ctx.mergeChunks(ctx.filename, ctx.totalChunks);
-    await ctx.clearChunks(ctx.filename, ctx.totalChunks);
-    const fileStream = ctx.createReadStream(ctx.filename);
+    const {
+        filename,
+        totalChunks,
+    } = ctx.resumable;
+    await ctx.mergeChunks(filename, totalChunks);
+    await ctx.clearChunks(filename, totalChunks);
+    const fileStream = ctx.createReadStream(filename);
 
     const parseStream = ctx.getParser(type);
     const parsedStream = await parseStream(fileStream);

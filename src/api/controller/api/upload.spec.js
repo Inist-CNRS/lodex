@@ -21,13 +21,11 @@ describe('upload', () => {
 
         const next = createSpy();
 
-        it('should put info from parsed request into ctx', async () => {
+        it('should put info from resumable parsed request into ctx.resumable', async () => {
             await parseRequest(ctx, null, next);
             expect(ctx.requestToStream).toHaveBeenCalledWith('req');
             expect(next).toHaveBeenCalled();
-            expect(ctx).toEqual({
-                requestToStream: ctx.requestToStream,
-                req: 'req',
+            expect(ctx.resumable).toEqual({
                 stream: 'stream',
                 filename: `${config.uploadDir}/identifier`,
                 chunkname: `${config.uploadDir}/identifier.10`,
@@ -44,12 +42,14 @@ describe('upload', () => {
                 checkFileExists: createSpy().andReturn(true),
                 saveStreamInFile: createSpy(),
                 areFileChunksComplete: createSpy().andReturn(false),
-                chunkname: 'chunkname',
-                filename: 'filename',
-                totalChunks: 'totalChunks',
-                totalSize: 'totalSize',
-                currentChunkSize: 'currentChunkSize',
-                stream: 'stream',
+                resumable: {
+                    chunkname: 'chunkname',
+                    filename: 'filename',
+                    totalChunks: 'totalChunks',
+                    totalSize: 'totalSize',
+                    currentChunkSize: 'currentChunkSize',
+                    stream: 'stream',
+                },
             };
 
             const next = createSpy();
@@ -84,12 +84,14 @@ describe('upload', () => {
                 checkFileExists: createSpy().andReturn(true),
                 saveStreamInFile: createSpy(),
                 areFileChunksComplete: createSpy().andReturn(true),
-                chunkname: 'chunkname',
-                filename: 'filename',
-                totalChunks: 'totalChunks',
-                totalSize: 'totalSize',
-                currentChunkSize: 'currentChunkSize',
-                stream: 'stream',
+                resumable: {
+                    chunkname: 'chunkname',
+                    filename: 'filename',
+                    totalChunks: 'totalChunks',
+                    totalSize: 'totalSize',
+                    currentChunkSize: 'currentChunkSize',
+                    stream: 'stream',
+                },
             };
 
             const next = createSpy();
@@ -124,12 +126,14 @@ describe('upload', () => {
                 checkFileExists: createSpy().andReturn(false),
                 saveStreamInFile: createSpy(),
                 areFileChunksComplete: createSpy().andReturn(true),
-                chunkname: 'chunkname',
-                filename: 'filename',
-                totalChunks: 'totalChunks',
-                totalSize: 'totalSize',
-                currentChunkSize: 'currentChunkSize',
-                stream: 'stream',
+                resumable: {
+                    chunkname: 'chunkname',
+                    filename: 'filename',
+                    totalChunks: 'totalChunks',
+                    totalSize: 'totalSize',
+                    currentChunkSize: 'currentChunkSize',
+                    stream: 'stream',
+                },
             };
 
             const next = createSpy();
@@ -164,12 +168,14 @@ describe('upload', () => {
                 checkFileExists: createSpy().andReturn(false),
                 saveStreamInFile: createSpy(),
                 areFileChunksComplete: createSpy().andReturn(false),
-                chunkname: 'chunkname',
-                filename: 'filename',
-                totalChunks: 'totalChunks',
-                totalSize: 'totalSize',
-                currentChunkSize: 'currentChunkSize',
-                stream: 'stream',
+                resumable: {
+                    chunkname: 'chunkname',
+                    filename: 'filename',
+                    totalChunks: 'totalChunks',
+                    totalSize: 'totalSize',
+                    currentChunkSize: 'currentChunkSize',
+                    stream: 'stream',
+                },
             };
 
             const next = createSpy();
