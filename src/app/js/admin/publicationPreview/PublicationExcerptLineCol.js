@@ -1,4 +1,5 @@
 import React, { PropTypes } from 'react';
+import classnames from 'classnames';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 import { TableRowColumn } from 'material-ui/Table';
@@ -6,6 +7,7 @@ import { connect } from 'react-redux';
 
 import { fromFields } from '../selectors';
 import { isLongText, getShortText } from '../../lib/longTexts';
+import getFieldClassName from '../../lib/getFieldClassName';
 
 const styles = {
     header: {
@@ -23,14 +25,25 @@ const styles = {
     },
 };
 
-export const PublicationExcerptLineColComponent = ({ value }) => (
+export const PublicationExcerptLineColComponent = ({ field, value = '' }) => (
     isLongText(value)
     ? (
-        <TableRowColumn title={value} style={styles.cell}>
+        <TableRowColumn
+            title={value}
+            style={styles.cell}
+            className={classnames('publication-preview-column', getFieldClassName(field))}
+        >
             {getShortText(value)}
         </TableRowColumn>
     )
-    : <TableRowColumn style={styles.cell}>{value}</TableRowColumn>
+    : (
+        <TableRowColumn
+            style={styles.cell}
+            className={classnames('publication-preview-column', getFieldClassName(field))}
+        >
+            {value}
+        </TableRowColumn>
+    )
 );
 
 PublicationExcerptLineColComponent.propTypes = {
@@ -38,14 +51,15 @@ PublicationExcerptLineColComponent.propTypes = {
 };
 
 PublicationExcerptLineColComponent.defaultProps = {
-    value: null,
+    value: '',
 };
 
 const mapStateToProps = (state, { field, line }) => {
     const getLineCol = fromFields.getLineColGetter(state, field);
+    const value = getLineCol(line) || '';
 
     return {
-        value: getLineCol(line),
+        value,
     };
 };
 

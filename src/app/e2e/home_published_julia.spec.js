@@ -1,6 +1,5 @@
 import { until, By } from 'selenium-webdriver';
 import { elementValueIs, elementIsClicked, elementTextIs, stalenessOf } from 'selenium-smart-wait';
-import expect from 'expect';
 
 import driver from '../../common/tests/chromeDriver';
 import { clear, loadFixtures } from '../../common/tests/fixtures';
@@ -18,14 +17,13 @@ describe('Home page with published data when logged as Julia', function homePubl
         await loginAsJulia('/', '/');
     });
 
-    it('should display the list with multiple edit buttons', async () => {
-        await driver.wait(until.elementLocated(By.css('.edit-field.movie')), DEFAULT_WAIT_TIMEOUT);
-    });
+    it('should display the list with multiple edit buttons', () =>
+        driver.wait(until.elementLocated(By.css('.edit-field.movie'))));
 
     it('should display the characteristics edition dialog after clicking the edit button', async () => { // eslint-disable-line
-        await driver.wait(elementIsClicked('.edit-field.movie'), DEFAULT_WAIT_TIMEOUT);
+        driver.findElement(By.css('.edit-field.movie')).click();
 
-        await driver.wait(until.elementLocated(By.css('#field_form')), DEFAULT_WAIT_TIMEOUT);
+        return driver.wait(until.elementLocated(By.css('#field_form')));
     });
 
     it('should display the new characteristics after submitting them', async () => {

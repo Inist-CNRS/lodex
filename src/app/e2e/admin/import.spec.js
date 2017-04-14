@@ -8,6 +8,7 @@ import driver from '../../../common/tests/chromeDriver';
 import { clear } from '../../../common/tests/fixtures';
 import loginAsJulia from './loginAsJulia';
 import navigate from '../navigate';
+import waitForPreviewComputing from './waitForPreviewComputing';
 
 describe('Admin', () => {
     describe('Import model', function homeTests() {
@@ -64,6 +65,8 @@ describe('Admin', () => {
                     elementsCountIs('.publication-preview tr th', 5),
                     DEFAULT_WAIT_TIMEOUT,
                 );
+
+                await waitForPreviewComputing();
             });
 
             it('should have completed uri column with generated uri', async () => {

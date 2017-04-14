@@ -39,7 +39,7 @@ describe('add characteristic', function homePublishedDataTests() {
 
     it('should open addCharacteristic modal', async () => {
         await driver.wait(elementIsClicked('.add-characteristic', DEFAULT_WAIT_TIMEOUT));
-        await driver.wait(until.elementLocated(By.css('#add_characteristic_form')));
+        const form = await driver.wait(until.elementLocated(By.css('#add_characteristic_form')));
         const fields = await driver.findElements(By.css('#add_characteristic_form > div'));
         expect(fields.length).toBe(3);
 
@@ -61,6 +61,7 @@ describe('add characteristic', function homePublishedDataTests() {
         await driver.wait(elementValueIs(schemeInput, '', DEFAULT_WAIT_TIMEOUT));
 
         await driver.wait(elementIsClicked('.add-characteristic.save', DEFAULT_WAIT_TIMEOUT));
+        await driver.wait(until.stalenessOf(form));
     });
 
     it('should display the new dataset characteristics', async () => {

@@ -24,11 +24,8 @@ describe('Admin', () => {
         before(async () => {
             await clear();
             await loadFixtures(fixtures);
-
-            await navigate('/admin');
-            await driver.executeScript('return localStorage.clear();');
-            await driver.executeScript('return sessionStorage.clear();');
             await loginAsJulia('/admin');
+            await driver.wait(elementsCountIs('.parsingResult tr td:first-child', 5), DEFAULT_WAIT_TIMEOUT);
         });
         let fieldForm;
 
