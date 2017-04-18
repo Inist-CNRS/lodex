@@ -2,18 +2,18 @@ import React from 'react';
 import expect from 'expect';
 import { shallow } from 'enzyme';
 import { TableHeaderColumn } from 'material-ui/Table';
-import PublicationExcerptLine from './PublicationExcerptLine';
+import ExcerptLine from './ExcerptLine';
 
-import { PublicationExcerptComponent as PublicationExcerpt } from './PublicationExcerpt';
+import { ExcerptComponent as Excerpt } from './Excerpt';
 
-describe('<PublicationExcerpt />', () => {
+describe('<Excerpt />', () => {
     it('should render headers', () => {
         const columns = [{ name: 'foo', label: 'foo' }, { name: 'bar', label: 'Super Bar' }];
         const lines = [
             { foo: 'foo1', bar: 'bar1' },
             { foo: 'foo2', bar: 'bar2' },
         ];
-        const wrapper = shallow(<PublicationExcerpt
+        const wrapper = shallow(<Excerpt
             columns={columns}
             lines={lines}
             p={{ t: key => key }}
@@ -29,13 +29,13 @@ describe('<PublicationExcerpt />', () => {
             { uri: 'uri1', foo: 'foo1', bar: 'bar1' },
             { uri: 'uri2', foo: 'foo2', bar: 'bar2' },
         ];
-        const wrapper = shallow(<PublicationExcerpt
+        const wrapper = shallow(<Excerpt
             columns={columns}
             lines={lines}
             p={{ t: key => key }}
         />);
 
-        const excerptLines = wrapper.find(PublicationExcerptLine);
+        const excerptLines = wrapper.find(ExcerptLine);
         expect(excerptLines.at(0).props()).toEqual({
             line: lines[0],
             columns,

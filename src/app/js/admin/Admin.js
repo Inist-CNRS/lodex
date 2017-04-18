@@ -8,7 +8,7 @@ import { polyglot as polyglotPropTypes } from '../propTypes';
 import withInitialData from './withInitialData';
 import { fromParsing, fromPublication, fromUpload } from './selectors';
 import ParsingResult from './parsing/ParsingResult';
-import PublicationPreview from './publicationPreview/PublicationPreview';
+import PublicationPreview from './preview/publication/PublicationPreview';
 import Published from './publish/Published';
 import Upload from './upload/Upload';
 import Loading from '../lib/Loading';

@@ -4,14 +4,14 @@ import { shallow } from 'enzyme';
 import FlatButton from 'material-ui/FlatButton';
 
 import {
-    PublicationExcerptRemoveColumnComponent as PublicationExcerptRemoveColumn,
-} from './PublicationExcerptRemoveColumn';
+    ExcerptRemoveColumnComponent as ExcerptRemoveColumn,
+} from './ExcerptRemoveColumn';
 
-describe('<PublicationExcerptRemoveColumn />', () => {
+describe('<ExcerptRemoveColumn />', () => {
     it('renders a remove button if column is not uri', () => {
         const field = { name: 'foo', label: 'foo' };
 
-        const wrapper = shallow(<PublicationExcerptRemoveColumn
+        const wrapper = shallow(<ExcerptRemoveColumn
             field={field}
             removeColumn={() => {}}
             p={{ t: key => key }}
@@ -23,7 +23,7 @@ describe('<PublicationExcerptRemoveColumn />', () => {
     it('does not render a remove button if column is uri', () => {
         const field = { name: 'uri', label: 'foo' };
 
-        const wrapper = shallow(<PublicationExcerptRemoveColumn
+        const wrapper = shallow(<ExcerptRemoveColumn
             field={field}
             removeColumn={() => {}}
             p={{ t: key => key }}

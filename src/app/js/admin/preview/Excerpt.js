@@ -8,9 +8,9 @@ import memoize from 'lodash.memoize';
 import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow } from 'material-ui/Table';
 
 import { polyglot as polyglotPropTypes, field as fieldPropTypes } from '../../propTypes';
-import PublicationExcerptHeader from './PublicationExcerptHeader';
-import PublicationExcerptRemoveColumn from './PublicationExcerptRemoveColumn';
-import PublicationExcerptLine from './PublicationExcerptLine';
+import ExcerptHeader from './ExcerptHeader';
+import ExcerptRemoveColumn from './ExcerptRemoveColumn';
+import ExcerptLine from './ExcerptLine';
 import getFieldClassName from '../../lib/getFieldClassName';
 
 const styles = {
@@ -30,7 +30,7 @@ const styles = {
 
 const getColStyle = memoize(style => Object.assign(styles.header, style));
 
-export const PublicationExcerptComponent = ({
+export const ExcerptComponent = ({
     colStyle,
     areHeadersClickable,
     className,
@@ -61,18 +61,18 @@ export const PublicationExcerptComponent = ({
                         style={getColStyle(colStyle)}
                         tooltip={areHeadersClickable ? polyglot.t('click_to_edit_publication_field') : ''}
                     >
-                        <PublicationExcerptHeader field={field} />
+                        <ExcerptHeader field={field} />
                     </TableHeaderColumn>))}
             </TableRow>
         </TableHeader>
         <TableBody displayRowCheckbox={false}>
             {lines.map((line, index) => (
-                <PublicationExcerptLine key={`${line.uri}-${index}` || index} line={line} columns={columns} />
+                <ExcerptLine key={`${line.uri}-${index}` || index} line={line} columns={columns} />
             ))}
             {areHeadersClickable &&
                 <TableRow>
                     {columns.map(c => (
-                        <PublicationExcerptRemoveColumn key={`remove_column_${c}`} field={c} />
+                        <ExcerptRemoveColumn key={`remove_column_${c}`} field={c} />
                     ))}
                 </TableRow>
             }
@@ -80,7 +80,7 @@ export const PublicationExcerptComponent = ({
     </Table>
 );
 
-PublicationExcerptComponent.propTypes = {
+ExcerptComponent.propTypes = {
     areHeadersClickable: PropTypes.bool.isRequired,
     className: PropTypes.string,
     columns: PropTypes.arrayOf(fieldPropTypes).isRequired,
@@ -92,7 +92,7 @@ PublicationExcerptComponent.propTypes = {
     p: polyglotPropTypes.isRequired,
 };
 
-PublicationExcerptComponent.defaultProps = {
+ExcerptComponent.defaultProps = {
     className: 'publication-excerpt',
     colStyle: null,
 };
@@ -115,4 +115,4 @@ export default compose(
             }
         },
     }),
-)(PublicationExcerptComponent);
+)(ExcerptComponent);

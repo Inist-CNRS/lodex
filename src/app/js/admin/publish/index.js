@@ -1,11 +1,5 @@
 import { combineActions, createAction, handleActions } from 'redux-actions';
 
-import {
-    CHANGE as REDUX_FORM_CHANGE,
-    ARRAY_INSERT as REDUX_FORM_ARRAY_INSERT,
-    ARRAY_REMOVE as REDUX_FORM_ARRAY_REMOVE,
-} from 'redux-form/lib/actionTypes';
-
 import { SAVE_FIELD_SUCCESS, SAVE_FIELD_ERROR } from '../fields';
 
 export const PUBLISH = 'PUBLISH';
@@ -57,18 +51,6 @@ export default handleActions({
         loading: false,
         nbInvalidUri: 0,
     }),
-    [combineActions(
-        REDUX_FORM_CHANGE,
-        REDUX_FORM_ARRAY_INSERT,
-        REDUX_FORM_ARRAY_REMOVE,
-    )]: (state, { meta: { form } }) => (
-        form === 'field'
-        ? ({
-            ...state,
-            loading: true,
-        })
-        : state
-    ),
     [combineActions(SAVE_FIELD_ERROR, SAVE_FIELD_SUCCESS)]: state => ({
         ...state,
         loading: false,

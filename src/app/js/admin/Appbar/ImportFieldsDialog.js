@@ -31,7 +31,7 @@ const styles = {
 
 class ImportFieldsDialogComponent extends Component {
     componentWillReceiveProps(nextProps) {
-        if (nextProps.succeeded) {
+        if (nextProps.succeeded) { // eslint-disable-line
             this.props.onClose();
         }
     }

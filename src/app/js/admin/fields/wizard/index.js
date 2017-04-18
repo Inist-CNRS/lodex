@@ -4,7 +4,7 @@ import compose from 'recompose/compose';
 import Dialog from 'material-ui/Dialog';
 import { Stepper } from 'material-ui/Stepper';
 
-import { getFieldFormData, editField as editFieldAction, saveField as saveFieldAction } from '../';
+import { editField as editFieldAction, saveField as saveFieldAction } from '../';
 import { field as fieldPropTypes } from '../../../propTypes';
 import { fromFields } from '../../selectors';
 import StepValue from './StepValue';
@@ -14,7 +14,7 @@ import StepIdentity from './StepIdentity';
 import StepDisplay from './StepDisplay';
 import StepSearch from './StepSearch';
 import StepSemantics from './StepSemantics';
-import PublicationExcerpt from '../../publicationPreview/PublicationExcerpt';
+import FieldExcerpt from '../../preview/field/FieldExcerpt';
 import Actions from './Actions';
 
 const styles = {
@@ -47,17 +47,15 @@ const styles = {
 class FieldEditionWizardComponent extends Component {
     static propTypes = {
         editField: PropTypes.func.isRequired,
-        editedField: fieldPropTypes,
         field: fieldPropTypes,
         fields: PropTypes.arrayOf(fieldPropTypes),
-        lines: PropTypes.arrayOf(PropTypes.object).isRequired,
         saveField: PropTypes.func.isRequired,
     }
 
     static defaultProps = {
-        editedField: null,
         field: null,
         fields: null,
+        editedField: null,
     }
 
     constructor(props) {
@@ -94,10 +92,8 @@ class FieldEditionWizardComponent extends Component {
 
     render() {
         const {
-            editedField,
             field,
             fields,
-            lines,
         } = this.props;
 
         const { step } = this.state;
@@ -198,10 +194,8 @@ class FieldEditionWizardComponent extends Component {
                                 : <StepUri field={field} fields={fields} />
                             }
                         </div>
-                        <PublicationExcerpt
+                        <FieldExcerpt
                             className="publication-excerpt-for-edition"
-                            columns={[editedField]}
-                            lines={lines}
                             colStyle={styles.column}
                             onHeaderClick={null}
                             isPreview
@@ -215,11 +209,9 @@ class FieldEditionWizardComponent extends Component {
 
 const mapStateToProps = (state) => {
     const field = fromFields.getEditedField(state);
-    const editedField = getFieldFormData(state) || field;
 
     return {
         field,
-        editedField,
         initialValues: field ? fromFields.getEditedField(state) : null,
         fields: field ? fromFields.getFieldsExceptEdited(state) : null,
     };

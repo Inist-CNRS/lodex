@@ -3,8 +3,6 @@ import validateFields from '../../../../../common/validateFields';
 
 import {
     setValidation,
-    ADD_FIELD,
-    EDIT_FIELD,
     LOAD_FIELD_SUCCESS,
     REMOVE_FIELD_SUCCESS,
     SAVE_FIELD_SUCCESS,
@@ -21,8 +19,6 @@ export function* handleNeedValidation() {
 
 export default function* watch() {
     yield takeLatest([
-        ADD_FIELD,
-        EDIT_FIELD,
         LOAD_FIELD_SUCCESS,
         REMOVE_FIELD_SUCCESS,
         SAVE_FIELD_SUCCESS,
