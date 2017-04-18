@@ -1,7 +1,6 @@
 import { call, put, select, takeLatest } from 'redux-saga/effects';
 import {
     CHANGE as REDUX_FORM_CHANGE,
-    ARRAY_PUSH as REDUX_FORM_ARRAY_PUSH,
     ARRAY_REMOVE as REDUX_FORM_ARRAY_REMOVE,
     DESTROY as REDUX_FORM_DESTROY,
     INITIALIZE as REDUX_FORM_INITIALIZE,
@@ -19,7 +18,7 @@ import {
 } from '../../fields';
 import { fromParsing } from '../../selectors';
 
-export function* handleComputePreview() {
+export function* handleComputeFieldPreview() {
     try {
         const formData = yield select(getFieldFormData);
 
@@ -40,9 +39,8 @@ export default function* watchComputePreview() {
     yield takeLatest([
         COMPUTE_FIELD_PREVIEW,
         REDUX_FORM_CHANGE,
-        REDUX_FORM_ARRAY_PUSH,
         REDUX_FORM_ARRAY_REMOVE,
         REDUX_FORM_INITIALIZE,
         REDUX_FORM_DESTROY,
-    ], handleComputePreview);
+    ], handleComputeFieldPreview);
 }
