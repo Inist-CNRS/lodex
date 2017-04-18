@@ -4,7 +4,6 @@ import withHandlers from 'recompose/withHandlers';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 import { reduxForm, propTypes as reduxFormPropTypes } from 'redux-form';
-import { CardText } from 'material-ui/Card';
 
 import {
     addFieldToResource as addFieldToResourceAction,
@@ -27,22 +26,16 @@ export const AddFieldFormComponent = ({
     fieldToAdd,
     isLoggedIn,
     onSubmit,
-    p: polyglot,
 }) => (
     <form id="add_field_resource_form" className="hide-detail" onSubmit={onSubmit}>
         {resourceError && <Alert><p>{resourceError}</p></Alert>}
         {isLoggedIn ? null : <Contributor />}
-        <div>
-            {polyglot.t('new_field')}
-            <CardText>
-                <SelectFieldToAdd />
-                {
-                    fieldToAdd ?
-                        <ContributionField isNewField={!fieldToAdd.name} />
-                    : null
-                }
-            </CardText>
-        </div>
+        <SelectFieldToAdd />
+        {
+            fieldToAdd ?
+                <ContributionField isNewField={!fieldToAdd.name} />
+            : null
+        }
     </form>
 );
 

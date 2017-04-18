@@ -26,7 +26,7 @@ const FormAutoCompleteField = ({
         onNewRequest={handleValueChosen}
         dataSource={dataSource}
         searchText={input.value}
-        {...omit(props, ['fetch', 'parseResponse'])}
+        {...omit(props, ['fetch', 'parseResponse', 'handleSearch'])}
     />
 );
 

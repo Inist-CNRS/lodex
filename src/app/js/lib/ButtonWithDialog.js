@@ -71,6 +71,7 @@ export const ButtonWithDialogComponent = ({
                 modal={false}
                 open={open}
                 onRequestClose={handleClose}
+                autoScrollBodyContent
             >
                 {form}
             </Dialog>

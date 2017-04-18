@@ -14,7 +14,7 @@ import navigate from './navigate';
 
 describe('Ontology', function homePublishedDataTests() {
     this.timeout(30000);
-    const DEFAULT_WAIT_TIMEOUT = 9000; // A bit less than mocha's timeout to get explicit errors from selenium
+    const DEFAULT_WAIT_TIMEOUT = 19000; // A bit less than mocha's timeout to get explicit errors from selenium
 
     before(async () => {
         await clear();
@@ -127,6 +127,7 @@ describe('Ontology', function homePublishedDataTests() {
     it('should edit form for email field removing it from list', async () => {
         await driver.wait(elementIsClicked('.configure-field.email', DEFAULT_WAIT_TIMEOUT));
         await driver.wait(until.elementLocated(By.css('#field_form')));
+        const form = driver.findElement(By.css('#field_form'));
         const fields = await driver.findElements(By.css('#field_form > div'));
         const listDisplayLabel = await fields[0].findElement(By.css('label'));
         await driver.wait(elementTextIs(listDisplayLabel, 'Display on list page', DEFAULT_WAIT_TIMEOUT));
@@ -139,13 +140,15 @@ describe('Ontology', function homePublishedDataTests() {
         await driver.wait(elementValueIs(resourceDisplayInput, 'on', DEFAULT_WAIT_TIMEOUT));
 
         await listDisplayInput.click();
-        await driver.sleep(100);
+        await driver.sleep(500);
         await driver.wait(elementIsClicked('.configure-field.save', DEFAULT_WAIT_TIMEOUT));
+        await driver.wait(until.stalenessOf(form, DEFAULT_WAIT_TIMEOUT));
+        await driver.sleep(500);
     });
 
     it('should have removed email from list', async () => {
         await driver.wait(until.elementLocated(By.css('.tab-dataset-resources')), DEFAULT_WAIT_TIMEOUT);
-        await driver.wait(elementIsClicked('.tab-dataset-resources', DEFAULT_WAIT_TIMEOUT));
+        await driver.findElement(By.css('.tab-dataset-resources')).click();
         await driver.wait(until.elementLocated(By.css('.dataset')), DEFAULT_WAIT_TIMEOUT);
         const headers = await driver.findElements(By.css('.dataset table th button'));
 
@@ -241,6 +244,7 @@ describe('Ontology', function homePublishedDataTests() {
     it('should edit form for best friend field removing it from resource', async () => {
         await driver.wait(elementIsClicked('.configure-field.best_friend_of', DEFAULT_WAIT_TIMEOUT));
         await driver.wait(until.elementLocated(By.css('#field_form')));
+        const form = await driver.findElement(By.css('#field_form'));
         const fields = await driver.findElements(By.css('#field_form > div'));
         const listDisplayLabel = await fields[0].findElement(By.css('label'));
         await driver.wait(elementTextIs(listDisplayLabel, 'Display on list page', DEFAULT_WAIT_TIMEOUT));
@@ -255,11 +259,17 @@ describe('Ontology', function homePublishedDataTests() {
         await resourceDisplayInput.click();
         await driver.sleep(500);
         await driver.wait(elementIsClicked('.configure-field.save', DEFAULT_WAIT_TIMEOUT));
+        await driver.wait(until.stalenessOf(form, DEFAULT_WAIT_TIMEOUT));
+        await driver.sleep(500);
     });
 
     it('should not display best_friend_of anymore', async () => {
         await driver.wait(until.elementLocated(By.css('.tab-resource-details')), DEFAULT_WAIT_TIMEOUT);
-        await driver.wait(elementIsClicked('.tab-resource-details', DEFAULT_WAIT_TIMEOUT));
+        const tab = await driver.findElement(By.css('.tab-resource-details'));
+        await driver.executeScript('document.getElementsByClassName("resource")[0].scrollIntoView(true);');
+        await driver.sleep(500);
+        await driver.wait(until.elementIsVisible(tab), DEFAULT_WAIT_TIMEOUT);
+        await tab.click();
         await driver.wait(until.elementLocated(By.css('.detail')), DEFAULT_WAIT_TIMEOUT);
 
         const fullnameLabel = '.detail .property.full_name .property_label';

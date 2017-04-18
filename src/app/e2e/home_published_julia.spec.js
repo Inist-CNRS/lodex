@@ -1,6 +1,5 @@
 import { until, By } from 'selenium-webdriver';
 import { elementValueIs, elementIsClicked, elementTextIs, stalenessOf } from 'selenium-smart-wait';
-import expect from 'expect';
 
 import driver from '../../common/tests/chromeDriver';
 import { clear, loadFixtures } from '../../common/tests/fixtures';
@@ -10,7 +9,7 @@ import loginAsJulia from './loginAsJulia';
 
 describe('Home page with published data when logged as Julia', function homePublishedDataTests() {
     this.timeout(30000);
-    const DEFAULT_WAIT_TIMEOUT = 9000; // A bit less than mocha's timeout to get explicit errors from selenium
+    const DEFAULT_WAIT_TIMEOUT = 19000; // A bit less than mocha's timeout to get explicit errors from selenium
 
     before(async () => {
         await clear();
@@ -18,14 +17,13 @@ describe('Home page with published data when logged as Julia', function homePubl
         await loginAsJulia('/', '/');
     });
 
-    it('should display the list with multiple edit buttons', async () => {
-        await driver.wait(until.elementLocated(By.css('.edit-field.movie')), DEFAULT_WAIT_TIMEOUT);
-    });
+    it('should display the list with multiple edit buttons', () =>
+        driver.wait(until.elementLocated(By.css('.edit-field.movie'))));
 
     it('should display the characteristics edition dialog after clicking the edit button', async () => { // eslint-disable-line
-        await driver.wait(elementIsClicked('.edit-field.movie'), DEFAULT_WAIT_TIMEOUT);
+        driver.findElement(By.css('.edit-field.movie')).click();
 
-        await driver.wait(until.elementLocated(By.css('#field_form')), DEFAULT_WAIT_TIMEOUT);
+        return driver.wait(until.elementLocated(By.css('#field_form')));
     });
 
     it('should display the new characteristics after submitting them', async () => {
@@ -115,6 +113,7 @@ describe('Home page with published data when logged as Julia', function homePubl
 
         await driver.findElement(By.css('.edit-field.save')).click();
         await driver.wait(until.stalenessOf(form), DEFAULT_WAIT_TIMEOUT);
+        await driver.sleep(500);
     });
 
     it('should save and return to resource page', async () => {

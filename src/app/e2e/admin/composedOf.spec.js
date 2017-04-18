@@ -19,16 +19,13 @@ import navigate from '../navigate';
 describe('Admin', () => {
     describe('composedOf', function homeTests() {
         this.timeout(30000);
-        const DEFAULT_WAIT_TIMEOUT = 9000; // A bit less than mocha's timeout to get explicit errors from selenium
+        const DEFAULT_WAIT_TIMEOUT = 19000; // A bit less than mocha's timeout to get explicit errors from selenium
 
         before(async () => {
             await clear();
             await loadFixtures(fixtures);
-
-            await navigate('/admin');
-            await driver.executeScript('return localStorage.clear();');
-            await driver.executeScript('return sessionStorage.clear();');
             await loginAsJulia('/admin');
+            await driver.wait(elementsCountIs('.parsingResult tr td:first-child', 5), DEFAULT_WAIT_TIMEOUT);
         });
         let fieldForm;
 

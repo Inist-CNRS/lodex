@@ -29,6 +29,7 @@ const PublishedComponent = ({ p: polyglot }) => (
         </CardText>
         <CardText style={styles.container}>
             <RaisedButton
+                className="btn-navigate-to-published-data"
                 href="/"
                 label={polyglot.t('navigate_to_published_data')}
                 primary
