@@ -16,12 +16,6 @@ if (debug) {
     chromeCapabilities.setLoggingPrefs(prefs);
 }
 
-const chromeOptions = {
-    args: ['--test-type', '--start-maximized', '--incognito'],
-};
-
-chromeCapabilities.set('chromeOptions', chromeOptions);
-
 const driver = new webdriver.Builder()
     .forBrowser('chrome')
     .withCapabilities(chromeCapabilities)
@@ -30,5 +24,9 @@ const driver = new webdriver.Builder()
 driver.manage()
     .timeouts()
     .implicitlyWait(DEFAULT_WAIT_TIMEOUT);
+
+driver.manage()
+    .window()
+    .maximize();
 
 export default driver;

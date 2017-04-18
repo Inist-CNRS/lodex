@@ -13,7 +13,7 @@ import fixtures from './home_published.json';
 import navigate from './navigate';
 import { inputElementIsFocusable } from '../../common/tests/conditions';
 
-describe.only('Resource page', function homePublishedDataTests() {
+describe('Resource page', function homePublishedDataTests() {
     this.timeout(30000);
     const DEFAULT_WAIT_TIMEOUT = 19000; // A bit less than mocha's timeout to get explicit errors from selenium
 
@@ -23,12 +23,12 @@ describe.only('Resource page', function homePublishedDataTests() {
         await navigate('/uid:/1');
     });
 
-    it.skip('should not display moderate component when loggedOut', async () => {
+    it('should not display moderate component when loggedOut', async () => {
         const moderateComponents = await driver.findElements(By.css('.moderate'));
         expect(moderateComponents.length).toBe(0);
     });
 
-    it.skip('should display all resource properties correctly ordered', async () => {
+    it('should display all resource properties correctly ordered', async () => {
         await driver.wait(until.elementLocated(By.css('.detail')), DEFAULT_WAIT_TIMEOUT);
 
         const properties = await driver.findElements(By.css('.detail .property'));
@@ -38,7 +38,7 @@ describe.only('Resource page', function homePublishedDataTests() {
         expect(await properties[1].getAttribute('class')).toContain('full_name');
     });
 
-    it.skip('should display all resource properties', async () => {
+    it('should display all resource properties', async () => {
         await driver.wait(until.elementLocated(By.css('.detail')), DEFAULT_WAIT_TIMEOUT);
 
         const fullnameLabel = '.property_label.full_name';
@@ -98,32 +98,25 @@ describe.only('Resource page', function homePublishedDataTests() {
         const newField = '.new';
         await driver.wait(elementIsClicked(newField), DEFAULT_WAIT_TIMEOUT);
         await driver.sleep(500); // animations
-        let screenshot = await driver.takeScreenshot();
-        console.log({ screenshot });
 
         await driver.wait(until.elementLocated(By.css('#add_field_resource_form .field-label input')), DEFAULT_WAIT_TIMEOUT);
-        screenshot = await driver.takeScreenshot();
-        console.log({ screenshot });
-
         const fieldLabel = await form.findElement(By.css('#add_field_resource_form .field-label input'));
-        screenshot = await driver.takeScreenshot();
-        console.log({ screenshot });
-        await driver.wait(until.elementIsVisible(fieldLabel, true), DEFAULT_WAIT_TIMEOUT);
+        await driver.wait(inputElementIsFocusable(fieldLabel, true), DEFAULT_WAIT_TIMEOUT);
         fieldLabel.sendKeys('my contribution');
 
         const fieldScheme = await form.findElement(By.css('#add_field_resource_form .field-scheme input'));
+        await driver.wait(inputElementIsFocusable(fieldScheme, true), DEFAULT_WAIT_TIMEOUT);
         fieldScheme.sendKeys('http://vocab/field');
 
         const fieldValue = await form.findElement(By.css('#add_field_resource_form .field-value input'));
+        await driver.wait(inputElementIsFocusable(fieldValue, true), DEFAULT_WAIT_TIMEOUT);
         fieldValue.sendKeys('my value');
-        screenshot = await driver.takeScreenshot();
-        console.log({ screenshot });
 
         const addFieldButton = '.add-field-resource.save';
         await driver.wait(elementIsClicked(addFieldButton), DEFAULT_WAIT_TIMEOUT);
     });
 
-    it.skip('should display added field in new detail', async () => {
+    it('should display added field in new detail', async () => {
         await driver.wait(until.elementLocated(By.css('.detail')), DEFAULT_WAIT_TIMEOUT);
         await driver.wait(elementsCountIs('.detail .property', 6), DEFAULT_WAIT_TIMEOUT);
 
@@ -137,7 +130,7 @@ describe.only('Resource page', function homePublishedDataTests() {
         await driver.wait(elementTextIs(contributionValue, 'my value', DEFAULT_WAIT_TIMEOUT));
     });
 
-    it.skip('should have an ontology tab', async () => {
+    it('should have an ontology tab', async () => {
         await driver.wait(until.elementLocated(By.css('.tab-resource-ontology')), DEFAULT_WAIT_TIMEOUT);
         await driver.wait(elementIsClicked('.tab-resource-ontology'));
         await driver.wait(until.elementLocated(By.css('.ontology')), DEFAULT_WAIT_TIMEOUT);
@@ -192,7 +185,7 @@ describe.only('Resource page', function homePublishedDataTests() {
         ).getText()).toEqual('Apply to whole dataset');
     });
 
-    it.skip('should have an export tab', async () => {
+    it('should have an export tab', async () => {
         await driver.wait(until.elementLocated(By.css('.tab-resource-export')), DEFAULT_WAIT_TIMEOUT);
         await driver.wait(elementIsClicked('.tab-resource-export'));
         await driver.wait(until.elementLocated(By.css('.export')), DEFAULT_WAIT_TIMEOUT);
@@ -200,7 +193,7 @@ describe.only('Resource page', function homePublishedDataTests() {
         expect(await driver.findElement(By.css('.export .btn-export.csv')).getText()).toMatch('Export as csv');
     });
 
-    it.skip('should have an export tab with a resource sharing link', async () => {
+    it('should have an export tab with a resource sharing link', async () => {
         await driver.wait(until.elementLocated(By.css('.share-link')), DEFAULT_WAIT_TIMEOUT);
 
         expect(await driver.findElement(By.css('.share-link input')).getAttribute('value')).toMatch(/.*\/uid:\/1/);
@@ -208,7 +201,7 @@ describe.only('Resource page', function homePublishedDataTests() {
         expect(await driver.findElement(By.css('.share-link button')).getText()).toEqual('COPY');
     });
 
-    it.skip('should have an export tab with resource social sharing buttons', async () => {
+    it('should have an export tab with resource social sharing buttons', async () => {
         await driver.wait(until.elementLocated(By.css('.share')), DEFAULT_WAIT_TIMEOUT);
         await driver.wait(until.elementLocated(By.css('.share .share-facebook')), DEFAULT_WAIT_TIMEOUT);
         await driver.wait(until.elementLocated(By.css('.share .share-google')), DEFAULT_WAIT_TIMEOUT);
