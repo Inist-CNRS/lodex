@@ -11,7 +11,7 @@ import { removeField } from '../fields';
 import { polyglot as polyglotPropTypes, field as fieldPropTypes } from '../../propTypes';
 import getFieldClassName from '../../lib/getFieldClassName';
 
-export const PublicationExcerptRemoveColumnComponent = ({ removeColumn, field: { label = '', name }, p: polyglot }) => (
+export const ExcerptRemoveColumnComponent = ({ removeColumn, field: { label = '', name }, p: polyglot }) => (
     <TableRowColumn>
         {name !== 'uri'
         ? (
@@ -26,7 +26,7 @@ export const PublicationExcerptRemoveColumnComponent = ({ removeColumn, field: {
     </TableRowColumn>
 );
 
-PublicationExcerptRemoveColumnComponent.propTypes = {
+ExcerptRemoveColumnComponent.propTypes = {
     removeColumn: PropTypes.func.isRequired,
     field: fieldPropTypes.isRequired,
     p: polyglotPropTypes.isRequired,
@@ -39,4 +39,4 @@ const mapDispatchtoProps = (dispatch, { field: { name } }) => bindActionCreators
 export default compose(
     connect(undefined, mapDispatchtoProps),
     translate,
-)(PublicationExcerptRemoveColumnComponent);
+)(ExcerptRemoveColumnComponent);

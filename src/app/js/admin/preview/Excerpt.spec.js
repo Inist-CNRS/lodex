@@ -2,7 +2,7 @@ import React from 'react';
 import expect from 'expect';
 import { shallow } from 'enzyme';
 import { TableHeaderColumn } from 'material-ui/Table';
-import PublicationExcerptLine from './PublicationExcerptLine';
+import ExcerptLine from './ExcerptLine';
 
 import { ExcerptComponent as Excerpt } from './Excerpt';
 
@@ -35,7 +35,7 @@ describe('<Excerpt />', () => {
             p={{ t: key => key }}
         />);
 
-        const excerptLines = wrapper.find(PublicationExcerptLine);
+        const excerptLines = wrapper.find(ExcerptLine);
         expect(excerptLines.at(0).props()).toEqual({
             line: lines[0],
             columns,

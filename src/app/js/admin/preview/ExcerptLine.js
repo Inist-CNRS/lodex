@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 import { TableRow } from 'material-ui/Table';
 
 import { field as fieldPropTypes, resource as linePropTypes } from '../../propTypes';
-import PublicationExcerptLineCol from './PublicationExcerptLineCol';
+import ExcerptLineCol from './ExcerptLineCol';
 
 const styles = {
     row: {
@@ -10,20 +10,20 @@ const styles = {
     },
 };
 
-const PublicationExcerptLine = ({
+const ExcerptLine = ({
     columns,
     line,
 }) => (
     <TableRow displayBorder={false} style={styles.row}>
         {columns.map(col => (
-            <PublicationExcerptLineCol key={`${line.uri}_${col.name}`} field={col} line={line} />
+            <ExcerptLineCol key={`${line.uri}_${col.name}`} field={col} line={line} />
         ))}
     </TableRow>
 );
 
-PublicationExcerptLine.propTypes = {
+ExcerptLine.propTypes = {
     columns: PropTypes.arrayOf(fieldPropTypes).isRequired,
     line: linePropTypes.isRequired,
 };
 
-export default PublicationExcerptLine;
+export default ExcerptLine;

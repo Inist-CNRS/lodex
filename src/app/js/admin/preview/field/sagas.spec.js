@@ -8,7 +8,7 @@ import {
     computeFieldPreviewSuccess,
     computeFieldPreviewError,
 } from './';
-import { fromFields, fromParsing } from '../../selectors';
+import { fromParsing } from '../../selectors';
 import { handleComputeFieldPreview } from './sagas';
 
 describe('field saga', () => {

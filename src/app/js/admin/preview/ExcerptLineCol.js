@@ -25,7 +25,7 @@ const styles = {
     },
 };
 
-export const PublicationExcerptLineColComponent = ({ field, value = '' }) => (
+export const ExcerptLineColComponent = ({ field, value = '' }) => (
     isLongText(value)
     ? (
         <TableRowColumn
@@ -46,11 +46,11 @@ export const PublicationExcerptLineColComponent = ({ field, value = '' }) => (
     )
 );
 
-PublicationExcerptLineColComponent.propTypes = {
+ExcerptLineColComponent.propTypes = {
     value: PropTypes.string,
 };
 
-PublicationExcerptLineColComponent.defaultProps = {
+ExcerptLineColComponent.defaultProps = {
     value: '',
 };
 
@@ -66,4 +66,4 @@ const mapStateToProps = (state, { field, line }) => {
 export default compose(
     translate,
     connect(mapStateToProps),
-)(PublicationExcerptLineColComponent);
+)(ExcerptLineColComponent);

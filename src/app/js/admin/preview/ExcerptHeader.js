@@ -6,7 +6,7 @@ import { fromFields } from '../selectors';
 import { polyglot as polyglotPropTypes, field as fieldPropTypes } from '../../propTypes';
 import getFieldClassName from '../../lib/getFieldClassName';
 
-const PublicationExcerptHeaderComponent = ({
+const ExcerptHeaderComponent = ({
     completedField,
     field: { name, label },
     p: polyglot,
@@ -21,13 +21,13 @@ const PublicationExcerptHeaderComponent = ({
     </div>
 );
 
-PublicationExcerptHeaderComponent.propTypes = {
+ExcerptHeaderComponent.propTypes = {
     completedField: fieldPropTypes,
     field: fieldPropTypes.isRequired,
     p: polyglotPropTypes.isRequired,
 };
 
-PublicationExcerptHeaderComponent.defaultProps = {
+ExcerptHeaderComponent.defaultProps = {
     completedField: null,
 };
 
@@ -38,4 +38,4 @@ const mapStateToProps = (state, { field }) => ({
 export default compose(
     connect(mapStateToProps),
     translate,
-)(PublicationExcerptHeaderComponent);
+)(ExcerptHeaderComponent);
