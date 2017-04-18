@@ -12,7 +12,7 @@ import fixtures from './home_published.json';
 import loginAsJulia from './loginAsJulia';
 import navigate from './navigate';
 
-describe('Ontology', function homePublishedDataTests() {
+describe.only('Ontology', function homePublishedDataTests() {
     this.timeout(30000);
     const DEFAULT_WAIT_TIMEOUT = 19000; // A bit less than mocha's timeout to get explicit errors from selenium
 
@@ -261,16 +261,22 @@ describe('Ontology', function homePublishedDataTests() {
 
     it('should not display best_friend_of anymore', async () => {
         await driver.wait(until.elementLocated(By.css('.tab-resource-details')), DEFAULT_WAIT_TIMEOUT);
+        console.log('tab-resource-details located');
         await driver.wait(elementIsClicked('.tab-resource-details', DEFAULT_WAIT_TIMEOUT));
+        console.log('tab-resource-details clicked');
         await driver.wait(until.elementLocated(By.css('.detail')), DEFAULT_WAIT_TIMEOUT);
+        console.log('details clicked');
 
         const fullnameLabel = '.detail .property.full_name .property_label';
         await driver.wait(elementTextIs(fullnameLabel, 'Full name', DEFAULT_WAIT_TIMEOUT));
+        console.log('full_name checked');
 
         const mailLabel = '.detail .property.email.completes_fullname .property_label';
         await driver.wait(elementTextIs(mailLabel, 'Email', DEFAULT_WAIT_TIMEOUT));
+        console.log('email checked');
 
         const bestFriendLabel = await driver.findElements(By.css('.detail .property.best_friend_of .property_label'));
+        console.log('best_friend_of checked');
         expect(bestFriendLabel.length).toBe(0);
     });
 
