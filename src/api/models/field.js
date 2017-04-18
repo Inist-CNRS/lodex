@@ -17,10 +17,12 @@ export const validateField = (data, isContribution) => {
     const validation = validateFieldIsomorphic(data, isContribution);
 
     if (!validation.propertiesAreValid) {
+        console.error('propertiesAreValid', JSON.stringify(validation));
         throw new Error(buildInvalidPropertiesMessage(data.label));
     }
 
     if (!validation.transformersAreValid) {
+        console.error('transformersAreValid', JSON.stringify(validation));
         throw new Error(buildInvalidTransformersMessage(data.label));
     }
 
