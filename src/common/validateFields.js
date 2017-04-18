@@ -239,7 +239,7 @@ export const validateTransformer = (transformer) => {
         };
     }
     const transformerMeta = transformerOperation.getMetas();
-    if (transformerMeta.args.length !== transformerArgs.filter(({ value }) => !!value).length) {
+    if (transformerMeta.args.length > transformerArgs.filter(({ value }) => !!value).length) {
         return {
             name: 'transformer.args',
             isValid: false,
