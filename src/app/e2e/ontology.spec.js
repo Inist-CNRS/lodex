@@ -266,9 +266,9 @@ describe('Ontology', function homePublishedDataTests() {
     it('should not display best_friend_of anymore', async () => {
         await driver.wait(until.elementLocated(By.css('.tab-resource-details')), DEFAULT_WAIT_TIMEOUT);
         const tab = await driver.findElement(By.css('.tab-resource-details'));
+        await driver.executeScript('document.getElementsByClassName("resource")[0].scrollIntoView(true);');
+        await driver.sleep(500);
         await driver.wait(until.elementIsVisible(tab), DEFAULT_WAIT_TIMEOUT);
-        const screenshot = await driver.takeScreenshot();
-        console.log({ screenshot });
         await tab.click();
         await driver.wait(until.elementLocated(By.css('.detail')), DEFAULT_WAIT_TIMEOUT);
 
