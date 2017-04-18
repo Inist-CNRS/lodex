@@ -30,12 +30,10 @@ describe('Admin', () => {
         let fieldForm;
 
         it('should display form for newField4 column when clicking on btn-add-column', async () => {
-            const buttonAddColumn = '.btn-add-column';
-            await driver.wait(elementIsClicked(buttonAddColumn), DEFAULT_WAIT_TIMEOUT);
+            await driver.findElement(By.css('.btn-add-column')).click();
             await driver.sleep(500); // animations
 
-            const buttonAddFreeColumn = '.btn-add-free-column';
-            await driver.wait(elementIsClicked(buttonAddFreeColumn), DEFAULT_WAIT_TIMEOUT);
+            await driver.findElement(By.css('.btn-add-free-column')).click();
 
             await driver.wait(until.elementLocated(By.css('#field_form')), DEFAULT_WAIT_TIMEOUT);
             fieldForm = await driver.findElement(By.css('#field_form'));
@@ -124,10 +122,8 @@ describe('Admin', () => {
         });
 
         it('should display the published data on the home page', async () => {
-            const buttonPublish = '.btn-publish';
-            await driver.wait(elementIsClicked(buttonPublish), DEFAULT_WAIT_TIMEOUT);
+            await driver.findElement(By.css('.btn-publish')).click();
             await driver.wait(until.elementLocated(By.css('.data-published')), DEFAULT_WAIT_TIMEOUT);
-
             await navigate('/');
             await driver.wait(until.elementLocated(By.css('.dataset-uri a')), DEFAULT_WAIT_TIMEOUT);
             await driver.wait(elementIsClicked('.dataset-uri a'), DEFAULT_WAIT_TIMEOUT);

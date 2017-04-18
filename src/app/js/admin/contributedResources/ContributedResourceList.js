@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 import FlatButton from 'material-ui/FlatButton';
-import { CardText, CardHeader } from 'material-ui/Card';
+import { CardText } from 'material-ui/Card';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import {
@@ -24,7 +24,7 @@ import {
     restoreRessource as restoreRessourceAction,
     changeContributedResourceFilter,
 } from './';
-import { loadField as loadFieldAction } from '../fields';
+
 import { fromContributedResources, fromFields } from '../selectors';
 import propositionStatus from '../../../../common/propositionStatus';
 import { getResourceUri } from '../../../../common/uris';
@@ -41,8 +41,7 @@ const styles = {
 
 export class ContributedResourceListComponent extends Component {
     componentWillMount() {
-        const { loadField, loadContributedResourcePage, currentPage, filter } = this.props;
-        loadField();
+        const { loadContributedResourcePage, currentPage, filter } = this.props;
         loadContributedResourcePage({ page: currentPage, perPage: 10, filter });
     }
 
@@ -147,7 +146,6 @@ ContributedResourceListComponent.propTypes = {
         .arrayOf(PropTypes.object)
         .isRequired,
     loading: PropTypes.bool.isRequired,
-    loadField: PropTypes.func.isRequired,
     loadContributedResourcePage: PropTypes.func.isRequired,
     p: polyglotPropTypes.isRequired,
     total: PropTypes.number.isRequired,
@@ -165,7 +163,6 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = ({
-    loadField: loadFieldAction,
     loadContributedResourcePage: loadContributedResourcePageAction,
     restoreRessource: restoreRessourceAction,
     onChangeFilter: changeContributedResourceFilter,

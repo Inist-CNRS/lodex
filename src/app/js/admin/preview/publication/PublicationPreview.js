@@ -5,7 +5,7 @@ import translate from 'redux-polyglot/translate';
 
 import PublicationExcerpt from './PublicationExcerpt';
 import PublicationEditionModal from '../../fields/wizard';
-import { editField, loadField } from '../../fields';
+import { editField } from '../../fields';
 import { polyglot as polyglotPropTypes } from '../../../propTypes';
 
 const styles = {
@@ -33,10 +33,6 @@ const styles = {
 };
 
 export class PublicationPreviewComponent extends Component {
-    componentWillMount() {
-        this.props.loadField();
-    }
-
     handleExitColumEdition = (event) => {
         event.preventDefault();
         event.stopPropagation();
@@ -68,13 +64,11 @@ export class PublicationPreviewComponent extends Component {
 
 PublicationPreviewComponent.propTypes = {
     editColumn: PropTypes.func.isRequired,
-    loadField: PropTypes.func.isRequired,
     p: polyglotPropTypes.isRequired,
 };
 
 const mapDispatchToProps = {
     editColumn: editField,
-    loadField,
 };
 
 export default compose(

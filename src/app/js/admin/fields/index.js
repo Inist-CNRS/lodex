@@ -39,6 +39,7 @@ export const saveFieldSuccess = createAction(SAVE_FIELD_SUCCESS);
 export const changeOperation = createAction(CHANGE_OPERATION);
 
 export const defaultState = {
+    loading: false,
     byName: {},
     allValid: true,
     list: [],
@@ -75,6 +76,7 @@ export default handleActions({
             new: getDefaultField(name, state.list.length),
         },
     }),
+    LOAD_FIELD: state => ({ ...state, loading: true }),
     LOAD_FIELD_SUCCESS: (state, { payload }) => ({
         ...state,
         editedFieldName: null,
@@ -83,6 +85,7 @@ export default handleActions({
             ...acc,
             [field.name]: field,
         }), {}),
+        loading: false,
     }),
     LOAD_FIELD_ERROR: () => defaultState,
     EDIT_FIELD: (state, { payload }) => {
