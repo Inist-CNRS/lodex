@@ -265,7 +265,7 @@ describe('Ontology', function homePublishedDataTests() {
 
     it('should not display best_friend_of anymore', async () => {
         await driver.wait(until.elementLocated(By.css('.tab-resource-details')), DEFAULT_WAIT_TIMEOUT);
-        await driver.sleep(500);
+        await driver.wait(until.elementIsVisible(By.css('.tab-resource-details')), DEFAULT_WAIT_TIMEOUT);
         await driver.findElement(By.css('.tab-resource-details')).click();
         await driver.wait(until.elementLocated(By.css('.detail')), DEFAULT_WAIT_TIMEOUT);
 
