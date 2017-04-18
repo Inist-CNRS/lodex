@@ -79,45 +79,46 @@ describe.only('Resource page', function homePublishedDataTests() {
     });
 
     it('should allow to add field resource properties', async () => {
-        try {
-            const addFieldResource = await driver.findElement(By.css('.add-field-resource'));
-            await driver.wait(elementIsClicked(addFieldResource), DEFAULT_WAIT_TIMEOUT);
+        const addFieldResource = await driver.findElement(By.css('.add-field-resource'));
+        await driver.wait(elementIsClicked(addFieldResource), DEFAULT_WAIT_TIMEOUT);
 
-            await driver.wait(until.elementLocated(By.css('.detail')), DEFAULT_WAIT_TIMEOUT);
-            const form = driver.findElement(By.css('#add_field_resource_form'));
+        await driver.wait(until.elementLocated(By.css('.detail')), DEFAULT_WAIT_TIMEOUT);
+        const form = driver.findElement(By.css('#add_field_resource_form'));
 
-            await driver.wait(until.elementLocated(By.css('.contributor-name input')), DEFAULT_WAIT_TIMEOUT);
-            const contributorName = form.findElement(By.css('.contributor-name input'));
-            contributorName.sendKeys('john');
+        await driver.wait(until.elementLocated(By.css('.contributor-name input')), DEFAULT_WAIT_TIMEOUT);
+        const contributorName = form.findElement(By.css('.contributor-name input'));
+        contributorName.sendKeys('john');
 
-            const contributorMail = form.findElement(By.css('.contributor-mail input'));
-            contributorMail.sendKeys('john@doe.fr');
+        const contributorMail = form.findElement(By.css('.contributor-mail input'));
+        contributorMail.sendKeys('john@doe.fr');
 
-            const selectField = '.select-field';
-            await driver.wait(elementIsClicked(selectField), DEFAULT_WAIT_TIMEOUT);
-            await driver.sleep(500); // animations
-            const newField = '.new';
-            await driver.wait(elementIsClicked(newField), DEFAULT_WAIT_TIMEOUT);
-            await driver.sleep(500); // animations
+        const selectField = '.select-field';
+        await driver.wait(elementIsClicked(selectField), DEFAULT_WAIT_TIMEOUT);
+        await driver.sleep(500); // animations
+        const newField = '.new';
+        await driver.wait(elementIsClicked(newField), DEFAULT_WAIT_TIMEOUT);
+        await driver.sleep(500); // animations
+        let screenshot = await driver.takeScreenshot();
+        console.log({ screenshot });
 
-            await driver.wait(until.elementLocated(By.css('#add_field_resource_form .field-label input')), DEFAULT_WAIT_TIMEOUT);
-            const fieldLabel = await form.findElement(By.css('#add_field_resource_form .field-label input'));
-            await driver.wait(until.elementIsVisible(fieldLabel, true), DEFAULT_WAIT_TIMEOUT);
-            fieldLabel.sendKeys('my contribution');
+        await driver.wait(until.elementLocated(By.css('#add_field_resource_form .field-label input')), DEFAULT_WAIT_TIMEOUT);
+        screenshot = await driver.takeScreenshot();
+        console.log({ screenshot });
 
-            const fieldScheme = await form.findElement(By.css('#add_field_resource_form .field-scheme input'));
-            fieldScheme.sendKeys('http://vocab/field');
+        const fieldLabel = await form.findElement(By.css('#add_field_resource_form .field-label input'));
+        screenshot = await driver.takeScreenshot();
+        console.log({ screenshot });
+        await driver.wait(until.elementIsVisible(fieldLabel, true), DEFAULT_WAIT_TIMEOUT);
+        fieldLabel.sendKeys('my contribution');
 
-            const fieldValue = await form.findElement(By.css('#add_field_resource_form .field-value input'));
-            fieldValue.sendKeys('my value');
+        const fieldScheme = await form.findElement(By.css('#add_field_resource_form .field-scheme input'));
+        fieldScheme.sendKeys('http://vocab/field');
 
-            const addFieldButton = '.add-field-resource.save';
-            await driver.wait(elementIsClicked(addFieldButton), DEFAULT_WAIT_TIMEOUT);
-        } catch (error) {
-            const screenshot = await driver.takeScreenshot();
-            console.log({ screenshot });
-            throw error;
-        }
+        const fieldValue = await form.findElement(By.css('#add_field_resource_form .field-value input'));
+        fieldValue.sendKeys('my value');
+
+        const addFieldButton = '.add-field-resource.save';
+        await driver.wait(elementIsClicked(addFieldButton), DEFAULT_WAIT_TIMEOUT);
     });
 
     it.skip('should display added field in new detail', async () => {
