@@ -117,7 +117,7 @@ export async function uploadFileMiddleware(ctx, type) {
     const parsedStream = await parseStream(fileStream);
 
     await ctx.saveStream(parsedStream, ctx.dataset.insertMany.bind(ctx.dataset));
-    await ctx.unlinkFile(ctx.filename);
+    await ctx.unlinkFile(filename);
     await ctx.field.initializeModel();
 
     ctx.status = 200;
