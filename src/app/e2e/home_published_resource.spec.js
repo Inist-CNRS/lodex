@@ -28,7 +28,7 @@ describe.only('Resource page', function homePublishedDataTests() {
         expect(moderateComponents.length).toBe(0);
     });
 
-    it('should display all resource properties correctly ordered', async () => {
+    it.skip('should display all resource properties correctly ordered', async () => {
         await driver.wait(until.elementLocated(By.css('.detail')), DEFAULT_WAIT_TIMEOUT);
 
         const properties = await driver.findElements(By.css('.detail .property'));
@@ -38,7 +38,7 @@ describe.only('Resource page', function homePublishedDataTests() {
         expect(await properties[1].getAttribute('class')).toContain('full_name');
     });
 
-    it('should display all resource properties', async () => {
+    it.skip('should display all resource properties', async () => {
         await driver.wait(until.elementLocated(By.css('.detail')), DEFAULT_WAIT_TIMEOUT);
 
         const fullnameLabel = '.property_label.full_name';
