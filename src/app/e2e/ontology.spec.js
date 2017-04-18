@@ -12,7 +12,7 @@ import fixtures from './home_published.json';
 import loginAsJulia from './loginAsJulia';
 import navigate from './navigate';
 
-describe.only('Ontology', function homePublishedDataTests() {
+describe('Ontology', function homePublishedDataTests() {
     this.timeout(30000);
     const DEFAULT_WAIT_TIMEOUT = 19000; // A bit less than mocha's timeout to get explicit errors from selenium
 
