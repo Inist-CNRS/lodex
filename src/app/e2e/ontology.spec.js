@@ -267,6 +267,8 @@ describe('Ontology', function homePublishedDataTests() {
         await driver.wait(until.elementLocated(By.css('.tab-resource-details')), DEFAULT_WAIT_TIMEOUT);
         const tab = await driver.findElement(By.css('.tab-resource-details'));
         await driver.wait(until.elementIsVisible(tab), DEFAULT_WAIT_TIMEOUT);
+        const screenshot = await driver.takeScreenshot();
+        console.log({ screenshot });
         await tab.click();
         await driver.wait(until.elementLocated(By.css('.detail')), DEFAULT_WAIT_TIMEOUT);
 
