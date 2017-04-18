@@ -113,6 +113,7 @@ describe('Home page with published data when logged as Julia', function homePubl
 
         await driver.findElement(By.css('.edit-field.save')).click();
         await driver.wait(until.stalenessOf(form), DEFAULT_WAIT_TIMEOUT);
+        await driver.sleep(500);
     });
 
     it('should save and return to resource page', async () => {
