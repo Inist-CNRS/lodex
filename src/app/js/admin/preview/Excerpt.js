@@ -30,7 +30,7 @@ const styles = {
 
 const getColStyle = memoize(style => Object.assign(styles.header, style));
 
-export const PublicationExcerptComponent = ({
+export const ExcerptComponent = ({
     colStyle,
     areHeadersClickable,
     className,
@@ -80,7 +80,7 @@ export const PublicationExcerptComponent = ({
     </Table>
 );
 
-PublicationExcerptComponent.propTypes = {
+ExcerptComponent.propTypes = {
     areHeadersClickable: PropTypes.bool.isRequired,
     className: PropTypes.string,
     columns: PropTypes.arrayOf(fieldPropTypes).isRequired,
@@ -92,7 +92,7 @@ PublicationExcerptComponent.propTypes = {
     p: polyglotPropTypes.isRequired,
 };
 
-PublicationExcerptComponent.defaultProps = {
+ExcerptComponent.defaultProps = {
     className: 'publication-excerpt',
     colStyle: null,
 };
@@ -115,4 +115,4 @@ export default compose(
             }
         },
     }),
-)(PublicationExcerptComponent);
+)(ExcerptComponent);

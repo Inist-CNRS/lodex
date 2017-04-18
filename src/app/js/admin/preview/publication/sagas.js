@@ -17,7 +17,7 @@ import {
     LOAD_PARSING_RESULT_SUCCESS,
 } from '../../parsing';
 
-export function* handleComputePreview() {
+export function* handleComputePublicationPreview() {
     try {
         const fields = yield select(fromFields.getFieldsForPreview);
         const lines = yield select(fromParsing.getExcerptLines);
@@ -41,5 +41,5 @@ export default function* watchComputePreview() {
         LOAD_FIELD_SUCCESS,
         REMOVE_FIELD_SUCCESS,
         SAVE_FIELD_SUCCESS,
-    ], handleComputePreview);
+    ], handleComputePublicationPreview);
 }

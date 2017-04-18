@@ -6,32 +6,23 @@ import getDocumentTransformer from '../../../lib/getDocumentTransformer';
 
 import { getToken } from '../../../user';
 import {
-    computePreviewSuccess,
-    computePreviewError,
+    computePublicationPreviewSuccess,
+    computePublicationPreviewError,
 } from './';
-import { getFieldFormData } from '../../fields';
-import { fromFields, fromParsing, fromPublicationPreview } from '../../selectors';
-import { handleComputePreview } from './sagas';
+import { fromFields, fromParsing } from '../../selectors';
+import { handleComputePublicationPreview } from './sagas';
 
 describe('publication saga', () => {
-    describe('handleComputePreview', () => {
-        const saga = handleComputePreview();
+    describe('handleComputePublicationPreview', () => {
+        const saga = handleComputePublicationPreview();
         const token = 'token';
         const fields = 'fields';
         const lines = ['line1', 'line2'];
         const transformDocument = () => {};
 
-        it('should select getFieldFormData', () => {
-            expect(saga.next().value).toEqual(select(getFieldFormData));
-        });
-
-        it('should select fromPublication.hasPublicationPreview', () => {
-            expect(saga.next('field form data').value).toEqual(select(fromPublicationPreview.hasPublicationPreview));
-        });
-
         it('should select fromFields.getFields', () => {
-            expect(saga.next(false).value)
-                .toEqual(select(fromFields.getFieldsForPreview, 'field form data'));
+            expect(saga.next().value)
+                .toEqual(select(fromFields.getFieldsForPreview));
         });
 
         it('should select fromParsing.getExcerptLines', () => {
@@ -51,41 +42,28 @@ describe('publication saga', () => {
         });
 
         it('should put computePreviewSuccess action', () => {
-            expect(saga.next('preview').value).toEqual(put(computePreviewSuccess('preview')));
+            expect(saga.next('preview').value).toEqual(put(computePublicationPreviewSuccess('preview')));
         });
 
         it('should put computePreviewError action with error if any', () => {
-            const failedSaga = handleComputePreview();
+            const failedSaga = handleComputePublicationPreview();
             const error = { message: 'foo' };
             failedSaga.next();
             failedSaga.next();
             expect(failedSaga.throw(error).value)
-                .toEqual(put(computePreviewError(error)));
-        });
-
-        it('should end if hasPublicationPreview is true and no form data', () => {
-            const it = handleComputePreview();
-            expect(it.next().value).toEqual(select(getFieldFormData));
-            expect(it.next(null).value).toEqual(select(fromPublicationPreview.hasPublicationPreview));
-            expect(it.next(true).done).toBe(true);
+                .toEqual(put(computePublicationPreviewError(error)));
         });
 
         it('should end if no fields returned', () => {
-            const it = handleComputePreview();
-            expect(it.next().value).toEqual(select(getFieldFormData));
-            expect(it.next('field form data').value).toEqual(select(fromPublicationPreview.hasPublicationPreview));
-            expect(it.next(false).value)
-                .toEqual(select(fromFields.getFieldsForPreview, 'field form data'));
+            const it = handleComputePublicationPreview();
+            expect(it.next().value).toEqual(select(fromFields.getFieldsForPreview));
             expect(it.next([]).value).toEqual(select(fromParsing.getExcerptLines));
             expect(it.next(lines).done).toBe(true);
         });
 
         it('should end if no lines returned', () => {
-            const it = handleComputePreview();
-            expect(it.next().value).toEqual(select(getFieldFormData));
-            expect(it.next('field form data').value).toEqual(select(fromPublicationPreview.hasPublicationPreview));
-            expect(it.next(false).value)
-                .toEqual(select(fromFields.getFieldsForPreview, 'field form data'));
+            const it = handleComputePublicationPreview();
+            expect(it.next().value).toEqual(select(fromFields.getFieldsForPreview));
             expect(it.next(fields).value).toEqual(select(fromParsing.getExcerptLines));
             expect(it.next([]).done).toBe(true);
         });
