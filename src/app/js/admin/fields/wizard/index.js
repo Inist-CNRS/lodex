@@ -14,7 +14,7 @@ import StepIdentity from './StepIdentity';
 import StepDisplay from './StepDisplay';
 import StepSearch from './StepSearch';
 import StepSemantics from './StepSemantics';
-import PublicationExcerpt from '../../publicationPreview/PublicationExcerpt';
+import PublicationExcerpt from '../../preview/PublicationExcerpt';
 import Actions from './Actions';
 
 const styles = {

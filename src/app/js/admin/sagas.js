@@ -5,7 +5,7 @@ import importSaga from './import/sagas';
 import fieldsSaga from './fields/sagas';
 import parsingSaga from './parsing/sagas';
 import publicationSaga from './publication/sagas';
-import publicationPreviewSaga from './publicationPreview/sagas';
+import publicationPreviewSaga from './preview/publication/sagas';
 import publishSaga from './publish/sagas';
 import removedResourcesSagas from './removedResources/sagas';
 import contributedResourcesSagas from './contributedResources/sagas';

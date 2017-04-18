@@ -4,7 +4,7 @@ import { selectors as fieldsSelectors } from './fields';
 import { selectors as importSelectors } from './import';
 import { selectors as parsingSelectors } from './parsing';
 import { selectors as publicationSelectors } from './publication';
-import { selectors as publicationPreviewSelectors } from './publicationPreview';
+import { selectors as publicationPreviewSelectors } from './preview/publication';
 import { selectors as publishSelectors } from './publish';
 import { selectors as removedResourcesSelectors } from './removedResources';
 import { selectors as uploadSelectors } from './upload';

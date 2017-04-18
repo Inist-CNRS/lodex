@@ -1,16 +1,16 @@
 import expect from 'expect';
 import { call, put, select } from 'redux-saga/effects';
 
-import getDocumentTransformer from '../../lib/getDocumentTransformer';
+import getDocumentTransformer from '../../../lib/getDocumentTransformer';
 
 
-import { getToken } from '../../user';
+import { getToken } from '../../../user';
 import {
     computePreviewSuccess,
     computePreviewError,
 } from './';
-import { getFieldFormData } from '../fields';
-import { fromFields, fromParsing, fromPublicationPreview } from '../selectors';
+import { getFieldFormData } from '../../fields';
+import { fromFields, fromParsing, fromPublicationPreview } from '../../selectors';
 import { handleComputePreview } from './sagas';
 
 describe('publication saga', () => {

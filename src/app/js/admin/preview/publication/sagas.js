@@ -8,8 +8,8 @@ import {
     DESTROY as REDUX_FORM_DESTROY,
 } from 'redux-form/lib/actionTypes';
 
-import getDocumentTransformer from '../../lib/getDocumentTransformer';
-import { getToken } from '../../user';
+import getDocumentTransformer from '../../../lib/getDocumentTransformer';
+import { getToken } from '../../../user';
 import {
     COMPUTE_PREVIEW,
     computePreviewSuccess,
@@ -21,11 +21,11 @@ import {
     REMOVE_FIELD_SUCCESS,
     SAVE_FIELD_SUCCESS,
     getFieldFormData,
-} from '../fields';
-import { fromFields, fromParsing, fromPublicationPreview } from '../selectors';
+} from '../../fields';
+import { fromFields, fromParsing, fromPublicationPreview } from '../../selectors';
 import {
     LOAD_PARSING_RESULT_SUCCESS,
-} from '../parsing';
+} from '../../parsing';
 
 export function* handleComputePreview() {
     try {

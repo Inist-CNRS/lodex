@@ -14,11 +14,11 @@ import {
     ADD_FIELD,
     REMOVE_FIELD_SUCCESS,
     SAVE_FIELD_SUCCESS,
-} from '../fields';
+} from '../../fields';
 
 import {
     LOAD_PARSING_RESULT_SUCCESS,
-} from '../parsing';
+} from '../../parsing';
 
 export const COMPUTE_PREVIEW = 'COMPUTE_PREVIEW';
 export const COMPUTE_PREVIEW_SUCCESS = 'COMPUTE_PREVIEW_SUCCESS';
