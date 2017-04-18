@@ -243,6 +243,7 @@ describe.only('Ontology', function homePublishedDataTests() {
     it('should edit form for best friend field removing it from resource', async () => {
         await driver.wait(elementIsClicked('.configure-field.best_friend_of', DEFAULT_WAIT_TIMEOUT));
         await driver.wait(until.elementLocated(By.css('#field_form')));
+        const form = await driver.findElement(By.css('#field_form'));
         const fields = await driver.findElements(By.css('#field_form > div'));
         const listDisplayLabel = await fields[0].findElement(By.css('label'));
         await driver.wait(elementTextIs(listDisplayLabel, 'Display on list page', DEFAULT_WAIT_TIMEOUT));
@@ -257,26 +258,21 @@ describe.only('Ontology', function homePublishedDataTests() {
         await resourceDisplayInput.click();
         await driver.sleep(500);
         await driver.wait(elementIsClicked('.configure-field.save', DEFAULT_WAIT_TIMEOUT));
+        await driver.wait(until.stalenessOf(form, DEFAULT_WAIT_TIMEOUT));
     });
 
     it('should not display best_friend_of anymore', async () => {
         await driver.wait(until.elementLocated(By.css('.tab-resource-details')), DEFAULT_WAIT_TIMEOUT);
-        console.log('tab-resource-details located');
         await driver.findElement(By.css('.tab-resource-details')).click();
-        console.log('tab-resource-details clicked');
         await driver.wait(until.elementLocated(By.css('.detail')), DEFAULT_WAIT_TIMEOUT);
-        console.log('details clicked');
 
         const fullnameLabel = '.detail .property.full_name .property_label';
         await driver.wait(elementTextIs(fullnameLabel, 'Full name', DEFAULT_WAIT_TIMEOUT));
-        console.log('full_name checked');
 
         const mailLabel = '.detail .property.email.completes_fullname .property_label';
         await driver.wait(elementTextIs(mailLabel, 'Email', DEFAULT_WAIT_TIMEOUT));
-        console.log('email checked');
 
         const bestFriendLabel = await driver.findElements(By.css('.detail .property.best_friend_of .property_label'));
-        console.log('best_friend_of checked');
         expect(bestFriendLabel.length).toBe(0);
     });
 
