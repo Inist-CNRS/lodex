@@ -116,6 +116,8 @@ describe.only('Resource page', function homePublishedDataTests() {
 
         const fieldValue = await form.findElement(By.css('#add_field_resource_form .field-value input'));
         fieldValue.sendKeys('my value');
+        screenshot = await driver.takeScreenshot();
+        console.log({ screenshot });
 
         const addFieldButton = '.add-field-resource.save';
         await driver.wait(elementIsClicked(addFieldButton), DEFAULT_WAIT_TIMEOUT);
