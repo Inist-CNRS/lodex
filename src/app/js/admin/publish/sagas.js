@@ -1,4 +1,4 @@
-import { call, fork, put, take, race, select, takeLatest } from 'redux-saga/effects';
+import { call, put, take, race, select, takeLatest } from 'redux-saga/effects';
 
 import {
     PUBLISH,
@@ -44,10 +44,6 @@ export function* handlePublishRequest() {
     yield put(publishSuccess());
 }
 
-export function* watchPublishRequest() {
-    yield takeLatest(PUBLISH, handlePublishRequest);
-}
-
 export default function* () {
-    yield fork(watchPublishRequest);
+    yield takeLatest(PUBLISH, handlePublishRequest);
 }
