@@ -1,5 +1,5 @@
 import fetch from '../../lib/fetch';
-import composeAsync from '../../lib/composeAsync';
+import composeAsync from '../../../../common/lib/composeAsync';
 
 const istexApiUrl = process.env.ISTEX_API_URL;
 

@@ -24,4 +24,5 @@ module.exports = {
     },
     istexApiUrl: 'https://api.istex.fr/document',
     host: getHost(),
+    uploadDir: 'upload',
 };

@@ -1,9 +1,9 @@
 import CONCAT from './CONCAT';
 import JOIN from './JOIN';
-import asyncCompose from '../lib/asyncCompose';
+import composeTransformers from '../lib/composeTransformers';
 
 const transformation = (context, args) =>
-    asyncCompose([
+    composeTransformers([
         CONCAT(context, args.slice(1)),
         JOIN(context, [args[0]]),
     ]);

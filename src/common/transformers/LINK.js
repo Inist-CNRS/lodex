@@ -1,9 +1,9 @@
 import COLUMN from './COLUMN';
 import getOtherLine from './getOtherLine';
-import asyncCompose from '../lib/asyncCompose';
+import composeTransformers from '../lib/composeTransformers';
 
 const transformation = (context, [ref, idCol, uriField = { name: 'column', value: 'uri' }]) =>
-    asyncCompose([
+    composeTransformers([
         COLUMN(context, [{ name: 'column', value: ref.value }]),
         getOtherLine(context, idCol.value),
         COLUMN(context, [uriField]),
