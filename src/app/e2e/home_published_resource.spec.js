@@ -13,7 +13,7 @@ import fixtures from './home_published.json';
 import navigate from './navigate';
 import { inputElementIsFocusable } from '../../common/tests/conditions';
 
-describe('Resource page', function homePublishedDataTests() {
+describe.only('Resource page', function homePublishedDataTests() {
     this.timeout(30000);
     const DEFAULT_WAIT_TIMEOUT = 19000; // A bit less than mocha's timeout to get explicit errors from selenium
 
@@ -210,8 +210,14 @@ describe('Resource page', function homePublishedDataTests() {
         await driver.findElement(By.css('.widget-select-field')).click();
         await driver.sleep(500); // animations
         await driver.findElement(By.css('.widget-select-field-item.full_name')).click();
+        await driver.sleep(500); // animations
+        let screenshot = await driver.takeScreenshot();
+        console.log({ screenshot });
         await driver.findElement(By.css('.btn-apply-widget-select')).click();
         await driver.sleep(500); // animations
+        screenshot = await driver.takeScreenshot();
+        console.log({ screenshot });
+
         await driver.wait(until.elementLocated(By.css('.widget-selected-field-item.full_name')), DEFAULT_WAIT_TIMEOUT);
 
         widgetCode = await driver.findElement(By.css('#share-widget')).getAttribute('value');
