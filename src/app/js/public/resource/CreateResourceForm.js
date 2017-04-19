@@ -49,9 +49,16 @@ CreateResourceFormComponent.propTypes = {
     p: polyglotPropTypes.isRequired,
 };
 
-const mapStateToProps = state => ({
-    fields: fromPublication.getCollectionFieldsExceptComposite(state),
-});
+const mapStateToProps = (state) => {
+    const fields = fromPublication.getCollectionFieldsExceptComposite(state);
+    return {
+        fields,
+        initialValues: fields.reduce((acc, { name }) => ({
+            ...acc,
+            [name]: null,
+        }), {}),
+    };
+};
 
 const mapDispatchToProps = {
     onSubmit: createResource,

@@ -230,5 +230,16 @@ export default async (db) => {
 
     collection.countByFacet = (field, value) => collection.count({ [`versions.${field}`]: value });
 
+    collection.create = async (resource, publicationDate = new Date()) => {
+        const { uri, ...version } = resource;
+        return collection.insertOne({
+            uri,
+            versions: [{
+                ...version,
+                publicationDate,
+            }],
+        });
+    };
+
     return collection;
 };

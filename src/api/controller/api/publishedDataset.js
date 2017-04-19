@@ -3,6 +3,7 @@ import route from 'koa-route';
 import koaBodyParser from 'koa-bodyparser';
 
 import { PROPOSED } from '../../../common/propositionStatus';
+import generateUri from '../../../common/transformers/AUTOGENERATE_URI';
 
 const app = new Koa();
 
@@ -108,6 +109,22 @@ export const getPropositionPage = async (ctx, status = PROPOSED) => {
     };
 };
 
+export const createResource = async (ctx) => {
+    const newResource = ctx.request.body;
+    if (!newResource.uri) {
+        newResource.uri = await generateUri()();
+    }
+
+    const resource = await ctx.publishedDataset.findByUri(newResource.uri);
+    if (resource) {
+        ctx.status = 400;
+        ctx.body = 'A Document already exists with the same uri';
+        return;
+    }
+
+    ctx.body = await ctx.publishedDataset.create(newResource);
+};
+
 app.use(koaBodyParser());
 app.use(route.get('/removed', getRemovedPage));
 app.use(route.get('/', getPage));
@@ -121,6 +138,7 @@ app.use(async (ctx, next) => {
 
     await next();
 });
+app.use(route.post('/create_resource', createResource));
 app.use(route.post('/', editResource));
 app.use(route.put('/restore', restoreResource));
 app.use(route.del('/', removeResource));

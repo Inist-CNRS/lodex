@@ -115,6 +115,17 @@ export default handleActions({
         error: null,
         saving: false,
     }),
+    CREATE_RESOURCE_SUCCESS: state => ({
+        ...state,
+        isCreating: false,
+        saving: false,
+        error: null,
+    }),
+    CREATE_RESOURCE_ERROR: (state, { payload: error }) => ({
+        ...state,
+        saving: false,
+        error,
+    }),
     [combineActions(
         HIDE_RESOURCE_SUCCESS,
         ADD_FIELD_TO_RESOURCE_SUCCESS,
@@ -369,3 +380,5 @@ export const fromResource = {
 export const getResourceFormData = state => state.form.resource.values;
 export const getHideResourceFormData = state => state.form.hideResource.values;
 export const getNewResourceFieldFormData = state => state.form.newResourceField && state.form.newResourceField.values;
+export const getNewResourceFormData = state =>
+    state.form[CREATE_RESOURCE_FORM_NAME] && state.form[CREATE_RESOURCE_FORM_NAME].values;

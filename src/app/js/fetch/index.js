@@ -167,6 +167,13 @@ export const getAddFieldToResourceRequest = (state, data) =>
         body: data,
     });
 
+export const getCreateResourceRequest = (state, data) =>
+    getRequest(state, {
+        url: '/api/publishedDataset/create_resource',
+        method: 'POST',
+        body: data,
+    });
+
 export const getExportFieldsRequest = state =>
     getRequest(state, {
         url: '/api/field/export',
