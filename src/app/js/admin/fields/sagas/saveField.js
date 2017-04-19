@@ -4,6 +4,7 @@ import set from 'lodash.set';
 import get from 'lodash.get';
 
 import {
+    loadField,
     getFieldFormData,
     saveFieldError,
     saveFieldSuccess,
@@ -36,14 +37,14 @@ export function* handleSaveField() {
     const fieldData = yield select(getFieldFormData);
     const sanitizedFieldData = yield call(sanitizeField, fieldData);
     const request = yield select(getSaveFieldRequest, sanitizedFieldData);
-    const { error, response } = yield call(fetchSaga, request);
+    const { error } = yield call(fetchSaga, request);
 
     if (error) {
         yield put(saveFieldError(error));
         return;
     }
 
-    yield put(saveFieldSuccess(response));
+    yield put(loadField());
     yield put(destroy(FIELD_FORM_NAME));
 }
 

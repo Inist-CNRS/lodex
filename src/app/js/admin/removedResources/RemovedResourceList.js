@@ -23,9 +23,6 @@ import {
     loadRemovedResourcePage as loadRemovedResourcePageAction,
     restoreRessource as restoreRessourceAction,
 } from './';
-import {
-    loadField as loadFieldAction,
-} from '../fields';
 
 import { fromRemovedResources, fromFields } from '../selectors';
 
@@ -38,8 +35,7 @@ const styles = {
 
 export class RemovedResourceListComponent extends Component {
     componentWillMount() {
-        const { loadField, loadRemovedResourcePage, currentPage } = this.props;
-        loadField();
+        const { loadRemovedResourcePage, currentPage } = this.props;
         loadRemovedResourcePage({ page: currentPage, perPage: 10 });
     }
 
@@ -118,7 +114,6 @@ RemovedResourceListComponent.propTypes = {
     currentPage: PropTypes.number.isRequired,
     resources: PropTypes.arrayOf(PropTypes.object).isRequired,
     loading: PropTypes.bool.isRequired,
-    loadField: PropTypes.func.isRequired,
     loadRemovedResourcePage: PropTypes.func.isRequired,
     p: polyglotPropTypes.isRequired,
     restoreRessource: PropTypes.func.isRequired,
@@ -134,7 +129,6 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = ({
-    loadField: loadFieldAction,
     loadRemovedResourcePage: loadRemovedResourcePageAction,
     restoreRessource: restoreRessourceAction,
 });

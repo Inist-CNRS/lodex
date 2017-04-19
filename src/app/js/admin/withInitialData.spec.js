@@ -14,6 +14,7 @@ describe('withInitialData HOC', () => {
             hasUploadedFile
             loadParsingResult={loadParsingResult}
             loadPublication={() => {}}
+            loadField={() => {}}
             p={{ t: () => {} }}
         />);
         expect(loadParsingResult).toHaveBeenCalled();
@@ -25,8 +26,21 @@ describe('withInitialData HOC', () => {
             hasUploadedFile
             loadPublication={loadPublication}
             loadParsingResult={() => {}}
+            loadField={() => {}}
             p={{ t: () => {} }}
         />);
         expect(loadPublication).toHaveBeenCalled();
+    });
+
+    it('should call loadField on mount', () => {
+        const loadField = createSpy();
+        shallow(<Component
+            hasUploadedFile
+            loadPublication={() => {}}
+            loadParsingResult={() => {}}
+            loadField={loadField}
+            p={{ t: () => {} }}
+        />);
+        expect(loadField).toHaveBeenCalled();
     });
 });
