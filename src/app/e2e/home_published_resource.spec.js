@@ -13,7 +13,7 @@ import fixtures from './home_published.json';
 import navigate from './navigate';
 import { inputElementIsFocusable } from '../../common/tests/conditions';
 
-describe.only('Resource page', function homePublishedDataTests() {
+describe('Resource page', function homePublishedDataTests() {
     this.timeout(30000);
     const DEFAULT_WAIT_TIMEOUT = 19000; // A bit less than mocha's timeout to get explicit errors from selenium
 
@@ -185,7 +185,7 @@ describe.only('Resource page', function homePublishedDataTests() {
         ).getText()).toEqual('Apply to whole dataset');
     });
 
-    it.only('should have an export tab', async () => {
+    it('should have an export tab', async () => {
         await driver.wait(until.elementLocated(By.css('.tab-resource-export')), DEFAULT_WAIT_TIMEOUT);
         await driver.wait(elementIsClicked('.tab-resource-export'));
         await driver.wait(until.elementLocated(By.css('.export')), DEFAULT_WAIT_TIMEOUT);
@@ -193,7 +193,7 @@ describe.only('Resource page', function homePublishedDataTests() {
         expect(await driver.findElement(By.css('.export .btn-export.csv')).getText()).toMatch('Export as csv');
     });
 
-    it.only('should have an export tab with a resource sharing link', async () => {
+    it('should have an export tab with a resource sharing link', async () => {
         await driver.wait(until.elementLocated(By.css('.share-link')), DEFAULT_WAIT_TIMEOUT);
 
         expect(await driver.findElement(By.css('.share-link input')).getAttribute('value')).toMatch(/.*\/uid:\/1/);
@@ -201,7 +201,7 @@ describe.only('Resource page', function homePublishedDataTests() {
         expect(await driver.findElement(By.css('.share-link button')).getText()).toEqual('COPY');
     });
 
-    it.only('should have an export tab with a widget', async () => {
+    it('should have an export tab with a widget', async () => {
         await driver.wait(until.elementLocated(By.css('.widget')), DEFAULT_WAIT_TIMEOUT);
         await driver.executeScript('document.getElementsByClassName("widget")[0].scrollIntoView(true);');
         let widgetCode = await driver.findElement(By.css('#share-widget')).getAttribute('value');
