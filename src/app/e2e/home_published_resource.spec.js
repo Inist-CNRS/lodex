@@ -14,7 +14,7 @@ import navigate from './navigate';
 import { inputElementIsFocusable } from '../../common/tests/conditions';
 
 describe('Resource page', function homePublishedDataTests() {
-    this.timeout(100000);
+    this.timeout(30000);
     const DEFAULT_WAIT_TIMEOUT = 19000; // A bit less than mocha's timeout to get explicit errors from selenium
 
     before(async () => {
