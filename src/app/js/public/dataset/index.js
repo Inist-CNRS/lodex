@@ -21,6 +21,7 @@ export const sortDataset = createAction(SORT_DATASET);
 
 export const defaultState = {
     isSaving: false,
+    isCreating: false,
     match: null,
     currentPage: 0,
     perPage: 10,

@@ -26,11 +26,18 @@ export const ADD_FIELD_TO_RESOURCE_ERROR = 'ADD_FIELD_TO_RESOURCE_ERROR';
 export const RESOURCE_FORM_NAME = 'resource';
 export const HIDE_RESOURCE_FORM_NAME = 'hideResource';
 export const NEW_RESOURCE_FIELD_FORM_NAME = 'newResourceField';
+export const CREATE_RESOURCE_FORM_NAME = 'createResource';
 
 export const CHANGE_FIELD_STATUS = 'CHANGE_FIELD_STATUS';
 export const CHANGE_FIELD_STATUS_SUCCESS = 'CHANGE_FIELD_STATUS_SUCCESS';
 export const CHANGE_FIELD_STATUS_ERROR = 'CHANGE_FIELD_STATUS_ERROR';
 export const SELECT_VERSION = 'SELECT_VERSION';
+
+export const CREATE_RESOURCE = 'CREATE_RESOURCE';
+export const CREATE_RESOURCE_CANCEL = 'CREATE_RESOURCE_CANCEL';
+export const CREATE_RESOURCE_OPEN = 'CREATE_RESOURCE_OPEN';
+export const CREATE_RESOURCE_SUCCESS = 'CREATE_RESOURCE_SUCCESS';
+export const CREATE_RESOURCE_ERROR = 'CREATE_RESOURCE_ERROR';
 
 export const loadResource = createAction(LOAD_RESOURCE);
 export const loadResourceSuccess = createAction(LOAD_RESOURCE_SUCCESS);
@@ -56,6 +63,12 @@ export const changeFieldStatus = createAction(CHANGE_FIELD_STATUS);
 export const changeFieldStatusSuccess = createAction(CHANGE_FIELD_STATUS_SUCCESS);
 export const changeFieldStatusError = createAction(CHANGE_FIELD_STATUS_ERROR);
 export const selectVersion = createAction(SELECT_VERSION);
+
+export const createResource = createAction(CREATE_RESOURCE);
+export const createResourceOpen = createAction(CREATE_RESOURCE_OPEN);
+export const createResourceCancel = createAction(CREATE_RESOURCE_CANCEL);
+export const createResourceSuccess = createAction(CREATE_RESOURCE_SUCCESS);
+export const createResourceError = createAction(CREATE_RESOURCE_ERROR);
 
 export const defaultState = {
     resource: {},
@@ -190,6 +203,14 @@ export default handleActions({
         hiding: false,
         error: null,
     }),
+    CREATE_RESOURCE_OPEN: state => ({
+        ...state,
+        isCreating: true,
+    }),
+    CREATE_RESOURCE_CANCEL: state => ({
+        ...state,
+        isCreating: false,
+    }),
 }, defaultState);
 
 const getResourceLastVersion = (state, resource = state.resource) => {
@@ -321,6 +342,8 @@ const isHiding = state => state.hiding;
 
 const getError = ({ error }) => error;
 
+const isCreating = state => state.isCreating;
+
 export const fromResource = {
     getResourceContributorsCatalog,
     getResourceSelectedVersion,
@@ -340,6 +363,7 @@ export const fromResource = {
     isHiding,
     getError,
     hasBeenRemoved,
+    isCreating,
 };
 
 export const getResourceFormData = state => state.form.resource.values;

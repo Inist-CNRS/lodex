@@ -19,6 +19,7 @@ import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { loadDatasetPage as loadDatasetPageAction } from './';
 import { fromPublication, fromDataset } from '../selectors';
 import AddCharacteristic from '../characteristic/AddCharacteristic';
+import CreateResource from '../resource/CreateResource';
 
 const styles = {
     table: {
@@ -93,6 +94,7 @@ export class DatasetComponent extends Component {
                 />
                 <CardActions style={styles.actions}>
                     <AddCharacteristic />
+                    <CreateResource />
                 </CardActions>
             </div>
         );
