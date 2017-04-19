@@ -31,7 +31,7 @@ export class WidgetsComponent extends Component {
         const { exportedFields } = this.state;
 
         return (
-            <div>
+            <div className="widget">
                 <Subheader>{polyglot.t('embed_widget')}</Subheader>
 
                 <CardText>

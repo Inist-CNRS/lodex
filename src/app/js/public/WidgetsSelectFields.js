@@ -2,9 +2,12 @@ import React, { Component, PropTypes } from 'react';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 import SuperSelectField from 'material-ui-superselectfield';
+import classnames from 'classnames';
+import FlatButton from 'material-ui/FlatButton';
 
 import { polyglot as polyglotPropTypes } from '../propTypes';
 import WidgetsSelectFieldItem from './WidgetsSelectFieldItem';
+import getFieldClassName from '../lib/getFieldClassName';
 
 const styles = {
     chip: {
@@ -20,6 +23,11 @@ const styles = {
     empty: {
         minHeight: 42,
         lineHeight: '42px',
+    },
+    menuFooter: {
+        display: 'flex',
+        flexGrow: 2,
+        justifyContent: 'flex-start',
     },
 };
 
@@ -60,20 +68,34 @@ export class WidgetsSelectFieldsComponent extends Component {
         const { fields, value, p: polyglot } = this.props;
 
         return (
-            <SuperSelectField
-                checkPosition="left"
-                multiple
-                onChange={this.handleChange}
-                selectionsRenderer={this.renderSelected}
-                style={styles.select}
-                value={value}
-                floatingLabel={polyglot.t('select_exported_fields')}
-                hintTextAutocomplete={polyglot.t('filter_fields_for_widgets')}
-            >
-                {fields.map(({ name, label }) => (
-                    <div key={name} value={name} label={label}>{label}</div>
-                ))}
-            </SuperSelectField>
+            <div className="widget-select-field">
+                <SuperSelectField
+                    checkPosition="left"
+                    multiple
+                    onChange={this.handleChange}
+                    selectionsRenderer={this.renderSelected}
+                    style={styles.select}
+                    value={value}
+                    floatingLabel={polyglot.t('select_exported_fields')}
+                    hintTextAutocomplete={polyglot.t('filter_fields_for_widgets')}
+                    menuCloseButton={<FlatButton
+                        className="btn-apply-widget-select"
+                        label={polyglot.t('apply')}
+                    />}
+                    menuFooterStyle={styles.menuFooter}
+                >
+                    {fields.map(field => (
+                        <div
+                            key={field.name}
+                            className={classnames('widget-select-field-item', getFieldClassName(field))}
+                            value={field.name}
+                            label={field.label}
+                        >
+                            {field.label}
+                        </div>
+                    ))}
+                </SuperSelectField>
+            </div>
         );
     }
 }
