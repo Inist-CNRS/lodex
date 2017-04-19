@@ -210,7 +210,11 @@ describe.only('Resource page', function homePublishedDataTests() {
         await driver.findElement(By.css('.widget-select-field')).click();
         await driver.sleep(500); // animations
         await driver.executeScript('document.querySelector(".widget-select-field-item.name").scrollIntoView(true);');
-        await driver.findElement(By.css('.widget-select-field-item.name')).click();
+        await driver.wait(until.elementLocated(By.css('.widget-select-field-item.name')), DEFAULT_WAIT_TIMEOUT);
+        const item = await driver.findElement(By.css('.widget-select-field-item.name'));
+        await driver.wait(until.elementIsVisible(item), DEFAULT_WAIT_TIMEOUT);
+        item.click();
+
         await driver.sleep(500); // animations
         await driver.findElement(By.css('.btn-apply-widget-select')).click();
         await driver.sleep(500); // animations
