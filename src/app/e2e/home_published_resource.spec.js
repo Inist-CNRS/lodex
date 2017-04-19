@@ -185,7 +185,7 @@ describe.only('Resource page', function homePublishedDataTests() {
         ).getText()).toEqual('Apply to whole dataset');
     });
 
-    it('should have an export tab', async () => {
+    it.only('should have an export tab', async () => {
         await driver.wait(until.elementLocated(By.css('.tab-resource-export')), DEFAULT_WAIT_TIMEOUT);
         await driver.wait(elementIsClicked('.tab-resource-export'));
         await driver.wait(until.elementLocated(By.css('.export')), DEFAULT_WAIT_TIMEOUT);
@@ -193,7 +193,7 @@ describe.only('Resource page', function homePublishedDataTests() {
         expect(await driver.findElement(By.css('.export .btn-export.csv')).getText()).toMatch('Export as csv');
     });
 
-    it('should have an export tab with a resource sharing link', async () => {
+    it.only('should have an export tab with a resource sharing link', async () => {
         await driver.wait(until.elementLocated(By.css('.share-link')), DEFAULT_WAIT_TIMEOUT);
 
         expect(await driver.findElement(By.css('.share-link input')).getAttribute('value')).toMatch(/.*\/uid:\/1/);
@@ -201,7 +201,7 @@ describe.only('Resource page', function homePublishedDataTests() {
         expect(await driver.findElement(By.css('.share-link button')).getText()).toEqual('COPY');
     });
 
-    it('should have an export tab with a widget', async () => {
+    it.only('should have an export tab with a widget', async () => {
         await driver.wait(until.elementLocated(By.css('.widget')), DEFAULT_WAIT_TIMEOUT);
         await driver.executeScript('document.getElementsByClassName("widget")[0].scrollIntoView(true);');
         let widgetCode = await driver.findElement(By.css('#share-widget')).getAttribute('value');
@@ -209,19 +209,16 @@ describe.only('Resource page', function homePublishedDataTests() {
 
         await driver.findElement(By.css('.widget-select-field')).click();
         await driver.sleep(500); // animations
-        await driver.findElement(By.css('.widget-select-field-item.full_name')).click();
+        await driver.executeScript('document.querySelector(".widget-select-field-item.name").scrollIntoView(true);');
+        await driver.findElement(By.css('.widget-select-field-item.name')).click();
         await driver.sleep(500); // animations
-        let screenshot = await driver.takeScreenshot();
-        console.log({ screenshot });
         await driver.findElement(By.css('.btn-apply-widget-select')).click();
         await driver.sleep(500); // animations
-        screenshot = await driver.takeScreenshot();
-        console.log({ screenshot });
 
-        await driver.wait(until.elementLocated(By.css('.widget-selected-field-item.full_name')), DEFAULT_WAIT_TIMEOUT);
+        await driver.wait(until.elementLocated(By.css('.widget-selected-field-item.name')), DEFAULT_WAIT_TIMEOUT);
 
         widgetCode = await driver.findElement(By.css('#share-widget')).getAttribute('value');
-        expect(widgetCode).toMatch(/.+\/api\/widget\?type=.+&uri=.+&fields=%5B%22fullname%22%5D/);
+        expect(widgetCode).toMatch(/.+\/api\/widget\?type=.+&uri=.+&fields=%5B%22name%22%5D/);
     });
 
     it('should have an export tab with resource social sharing buttons', async () => {
