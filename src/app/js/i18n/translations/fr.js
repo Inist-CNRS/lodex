@@ -206,4 +206,5 @@ export default {
     none: 'none',
     navigate_to_published_data: 'Go to my published data',
     moderation: 'Moderation',
+    apply: 'Apply',
 };

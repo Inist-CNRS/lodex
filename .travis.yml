@@ -5,6 +5,11 @@ node_js:
 
 services: mongodb
 
+addons:
+    apt:
+        packages:
+            - google-chrome-stable
+
 env:
     global:
         - CHROME_BIN="chromium-browser"
