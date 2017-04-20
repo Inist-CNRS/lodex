@@ -1,4 +1,5 @@
 import { call, put, select, takeLatest } from 'redux-saga/effects';
+import { push } from 'react-router-redux';
 
 import {
     createResourceSuccess,
@@ -20,7 +21,8 @@ export function* handleCreateResource() {
         return;
     }
 
-    yield put(createResourceSuccess(response.value));
+    yield put(createResourceSuccess());
+    yield put(push(`/${response.uri}`));
 }
 
 export default function* watchSaveResource() {

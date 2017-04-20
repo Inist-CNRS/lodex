@@ -122,7 +122,11 @@ export const createResource = async (ctx) => {
         return;
     }
 
-    ctx.body = await ctx.publishedDataset.create(newResource);
+    await ctx.publishedDataset.create(newResource);
+
+    ctx.body = {
+        uri: newResource.uri,
+    };
 };
 
 app.use(koaBodyParser());

@@ -10,11 +10,11 @@ import {
 } from './';
 import Alert from '../../lib/Alert';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
-import { fromPublication } from '../selectors';
+import { fromPublication, fromResource } from '../selectors';
 import FieldInput from '../FieldInput';
 import UriFieldInput from '../../lib/UriFieldInput';
 
-const validate = (values, { p: polyglot }) => {
+export const validate = (values, { p: polyglot }) => {
     const errors = Object.keys(values).reduce((currentErrors, field) => {
         if (field === 'uri') {
             const uri = values[field];
@@ -66,6 +66,7 @@ const mapStateToProps = (state) => {
     const fields = fromPublication.getCollectionFieldsExceptComposite(state);
     return {
         fields,
+        error: fromResource.getError(state),
         initialValues: fields.reduce((acc, { name }) => ({
             ...acc,
             [name]: null,

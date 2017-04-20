@@ -191,7 +191,7 @@ describe('publishedDataset', () => {
         });
     });
 
-    describe.only('createResource', () => {
+    describe('createResource', () => {
         it('should call findByUri with body.uri and create with body', async () => {
             const ctx = {
                 publishedDataset: {

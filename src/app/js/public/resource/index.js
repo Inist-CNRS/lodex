@@ -115,17 +115,6 @@ export default handleActions({
         error: null,
         saving: false,
     }),
-    CREATE_RESOURCE_SUCCESS: state => ({
-        ...state,
-        isCreating: false,
-        saving: false,
-        error: null,
-    }),
-    CREATE_RESOURCE_ERROR: (state, { payload: error }) => ({
-        ...state,
-        saving: false,
-        error,
-    }),
     [combineActions(
         HIDE_RESOURCE_SUCCESS,
         ADD_FIELD_TO_RESOURCE_SUCCESS,
@@ -138,8 +127,9 @@ export default handleActions({
     [combineActions(
         SAVE_RESOURCE_ERROR,
         HIDE_RESOURCE_ERROR,
-        ADD_FIELD_TO_RESOURCE_ERROR)
-    ]: (state, { payload: error }) => ({
+        ADD_FIELD_TO_RESOURCE_ERROR,
+        CREATE_RESOURCE_ERROR,
+    )]: (state, { payload: error }) => ({
         ...state,
         error: error.message,
         saving: false,
@@ -217,10 +207,18 @@ export default handleActions({
     CREATE_RESOURCE_OPEN: state => ({
         ...state,
         isCreating: true,
+        error: null,
     }),
     CREATE_RESOURCE_CANCEL: state => ({
         ...state,
         isCreating: false,
+        error: null,
+    }),
+    CREATE_RESOURCE_SUCCESS: state => ({
+        ...state,
+        isCreating: false,
+        saving: false,
+        error: null,
     }),
 }, defaultState);
 
