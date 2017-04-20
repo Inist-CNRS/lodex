@@ -9,7 +9,7 @@ import {
 } from '../';
 
 import { getCreateResourceRequest } from '../../../fetch';
-import fetchSaga from '../../../lib/fetchSaga';
+import fetchSaga from '../../../lib/sagas/fetchSaga';
 
 export function* handleCreateResource() {
     const resource = yield select(getNewResourceFormData);

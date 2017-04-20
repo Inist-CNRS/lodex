@@ -5,7 +5,7 @@ import compose from 'recompose/compose';
 
 import { fromResource } from '../selectors';
 import CreateResourceForm from './CreateResourceForm';
-import ButtonWithDialog from '../../lib/ButtonWithDialog';
+import ButtonWithDialog from '../../lib/components/ButtonWithDialog';
 import {
     createResourceOpen,
     createResourceCancel,

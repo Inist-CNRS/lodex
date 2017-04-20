@@ -6,7 +6,7 @@ import { Field } from 'redux-form';
 import FormTextField from './FormTextField';
 import {
     polyglot as polyglotPropTypes,
-} from '../propTypes';
+} from '../../propTypes';
 
 export const FieldInputComponent = ({ p: polyglot, input }) => (
     <Field

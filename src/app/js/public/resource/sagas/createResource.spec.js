@@ -10,7 +10,7 @@ import {
 } from '../';
 
 import { getCreateResourceRequest } from '../../../fetch';
-import fetchSaga from '../../../lib/fetchSaga';
+import fetchSaga from '../../../lib/sagas/fetchSaga';
 
 describe('createResource saga', () => {
     it('should post new resource and put createResourceSuccess on success', () => {

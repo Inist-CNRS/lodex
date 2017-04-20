@@ -4,8 +4,8 @@ import { shallow } from 'enzyme';
 
 import { CreateResourceFormComponent } from './CreateResourceForm';
 import FieldInput from '../FieldInput';
-import UriFieldInput from '../../lib/UriFieldInput';
-import Alert from '../../lib/Alert';
+import UriFieldInput from '../../lib/components/UriFieldInput';
+import Alert from '../../lib/components/Alert';
 
 describe('<Resource />', () => {
     it('should display a FieldInput for each fields except uri', () => {

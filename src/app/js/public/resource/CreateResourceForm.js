@@ -8,11 +8,11 @@ import {
     createResource,
     CREATE_RESOURCE_FORM_NAME,
 } from './';
-import Alert from '../../lib/Alert';
+import Alert from '../../lib/components/Alert';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { fromPublication, fromResource } from '../selectors';
 import FieldInput from '../FieldInput';
-import UriFieldInput from '../../lib/UriFieldInput';
+import UriFieldInput from '../../lib/components/UriFieldInput';
 
 export const validate = (values, { p: polyglot }) => {
     const errors = Object.keys(values).reduce((currentErrors, field) => {
