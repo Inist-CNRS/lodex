@@ -10,7 +10,7 @@ import {
     addCharacteristicOpen,
     addCharacteristicCancel,
 } from './';
-import ButtonWithDialog from '../../lib/ButtonWithDialog';
+import ButtonWithDialog from '../../lib/components/ButtonWithDialog';
 import { isLoggedIn } from '../../user';
 
 const mapStateToProps = (state, { p }) => ({

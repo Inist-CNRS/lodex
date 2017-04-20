@@ -1,5 +1,5 @@
 import { call, put, select, takeLatest } from 'redux-saga/effects';
-import { LOCATION_CHANGE, push } from 'react-router-redux';
+import { LOCATION_CHANGE } from 'react-router-redux';
 
 import {
     ADD_FIELD_TO_RESOURCE_SUCCESS,
@@ -10,7 +10,7 @@ import {
 } from '../';
 import { loadPublication } from '../../publication';
 import { getLoadResourceRequest } from '../../../fetch';
-import fetchSaga from '../../../lib/fetchSaga';
+import fetchSaga from '../../../lib/sagas/fetchSaga';
 
 import { fromResource } from '../../selectors';
 

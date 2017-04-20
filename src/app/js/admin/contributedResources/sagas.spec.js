@@ -4,7 +4,7 @@ import { call, put, select } from 'redux-saga/effects';
 import { loadContributedResourcePageError, loadContributedResourcePageSuccess } from './';
 
 import { handleLoadContributedResourcePageRequest } from './sagas';
-import fetchSaga from '../../lib/fetchSaga';
+import fetchSaga from '../../lib/sagas/fetchSaga';
 import { getLoadContributedResourcePageRequest } from '../../fetch/';
 import { fromContributedResources } from '../selectors';
 

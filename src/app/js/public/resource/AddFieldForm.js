@@ -10,7 +10,7 @@ import {
     NEW_RESOURCE_FIELD_FORM_NAME,
     getNewResourceFieldFormData,
 } from './';
-import Alert from '../../lib/Alert';
+import Alert from '../../lib/components/Alert';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import SelectFieldToAdd from './SelectFieldToAdd';
 import { isLoggedIn as getIsLoggedIn } from '../../user';

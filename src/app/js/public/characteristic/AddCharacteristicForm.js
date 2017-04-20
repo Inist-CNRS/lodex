@@ -9,13 +9,13 @@ import {
     addCharacteristic as addCharacteristicAction,
     NEW_CHARACTERISTIC_FORM_NAME,
 } from './';
-import Alert from '../../lib/Alert';
+import Alert from '../../lib/components/Alert';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import {
     fromCharacteristic,
 } from '../selectors';
-import FormTextField from '../../lib/FormTextField';
-import SchemeAutoComplete from '../../lib/SchemeAutoComplete';
+import FormTextField from '../../lib/components/FormTextField';
+import SchemeAutoComplete from '../../lib/components/SchemeAutoComplete';
 
 const validate = (values) => {
     const errors = ['label', 'value'].reduce((currentErrors, field) => {

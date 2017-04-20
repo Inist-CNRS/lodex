@@ -9,7 +9,7 @@ import EditFieldForm, { FORM_NAME } from './EditFieldForm';
 import { fromResource, fromPublication } from './selectors';
 import { isLoggedIn } from '../user';
 import getFieldClassName from '../lib/getFieldClassName';
-import ButtonWithDialog from '../lib/ButtonWithDialog';
+import ButtonWithDialog from '../lib/components/ButtonWithDialog';
 import {
     openEditFieldValue,
     closeEditFieldValue,

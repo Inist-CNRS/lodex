@@ -9,7 +9,7 @@ import getFieldClassName from '../lib/getFieldClassName';
 import EditOntologyFieldForm, { FORM_NAME } from './EditOntologyFieldForm';
 import { isLoggedIn } from '../user';
 import { fromPublication } from './selectors';
-import ButtonWithDialog from '../lib/ButtonWithDialog';
+import ButtonWithDialog from '../lib/components/ButtonWithDialog';
 import {
     configureFieldOpen,
     configureFieldCancel,

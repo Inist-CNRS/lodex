@@ -7,7 +7,7 @@ import {
     getNewCharacteristicFormData,
 } from '../';
 import { getAddCharacteristicRequest } from '../../../fetch/';
-import fetchSaga from '../../../lib/fetchSaga';
+import fetchSaga from '../../../lib/sagas/fetchSaga';
 
 export function* handleAddCharacteristic() {
     const formData = yield select(getNewCharacteristicFormData);

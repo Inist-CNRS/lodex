@@ -6,7 +6,7 @@ import {
     addFieldToResourceError,
     getNewResourceFieldFormData,
 } from '../';
-import fetchSaga from '../../../lib/fetchSaga';
+import fetchSaga from '../../../lib/sagas/fetchSaga';
 import { getAddFieldToResourceRequest } from '../../../fetch';
 import { handleAddFieldToResource } from './addFieldToResource';
 

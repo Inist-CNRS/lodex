@@ -6,7 +6,7 @@ import {
     CHANGE_FIELD_STATUS,
 } from '../';
 import { getChangeFieldStatusRequest } from '../../../fetch';
-import fetchSaga from '../../../lib/fetchSaga';
+import fetchSaga from '../../../lib/sagas/fetchSaga';
 
 export const parsePathName = pathname => pathname.match(/^(\/resource)(\/ark:\/)?(.*?$)/) || [];
 

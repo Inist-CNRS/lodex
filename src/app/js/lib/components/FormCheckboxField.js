@@ -1,6 +1,6 @@
 import React from 'react';
 import Checkbox from 'material-ui/Checkbox';
-import { formField as formFieldPropTypes } from '../propTypes';
+import { formField as formFieldPropTypes } from '../../propTypes';
 
 const FormCheckboxField = ({ input, label, meta, ...custom }) => (
     <Checkbox

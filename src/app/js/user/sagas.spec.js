@@ -2,7 +2,7 @@ import expect from 'expect';
 import { call, put, select } from 'redux-saga/effects';
 import { startSubmit, stopSubmit } from 'redux-form';
 
-import fetchSaga from '../lib/fetchSaga';
+import fetchSaga from '../lib/sagas/fetchSaga';
 import { LOGIN_FORM_NAME, loginSuccess } from './';
 import { getLoginRequest } from '../fetch';
 import { handleLoginRequest } from './sagas';

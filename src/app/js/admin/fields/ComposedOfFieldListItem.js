@@ -5,7 +5,7 @@ import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 
-import FormSelectField from '../../lib/FormSelectField';
+import FormSelectField from '../../lib/components/FormSelectField';
 import { polyglot as polyglotPropTypes, field as fieldPropTypes } from '../../propTypes';
 import { fromFields } from '../selectors';
 

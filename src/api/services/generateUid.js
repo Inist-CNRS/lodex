@@ -6,6 +6,6 @@ export default () => new Promise((resolve, reject) =>
             reject(error);
             return;
         }
-        resolve(result.toString('base64').replace(/[+\/]/g, 'z'));
+        resolve(result.toString('base64').replace(/[+/]/g, 'z'));
     }),
 );

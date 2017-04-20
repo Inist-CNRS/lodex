@@ -2,7 +2,7 @@ import React from 'react';
 import translate from 'redux-polyglot/translate';
 import { Field } from 'redux-form';
 
-import FormTextField from '../../lib/FormTextField';
+import FormTextField from '../../lib/components/FormTextField';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 
 const required = value => (value ? undefined : 'Required');

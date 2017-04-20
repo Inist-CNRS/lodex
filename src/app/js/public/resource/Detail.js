@@ -7,7 +7,7 @@ import { Tabs, Tab } from 'material-ui/Tabs';
 import Divider from 'material-ui/Divider';
 import memoize from 'lodash.memoize';
 
-import Card from '../../lib/Card';
+import Card from '../../lib/components/Card';
 import { saveResource as saveResourceAction } from './';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import {

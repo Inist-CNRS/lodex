@@ -9,7 +9,7 @@ import {
 
 import { handleLoadDatasetPageRequest } from './sagas';
 import { getLoadDatasetPageRequest } from '../../fetch/';
-import fetchSaga from '../../lib/fetchSaga';
+import fetchSaga from '../../lib/sagas/fetchSaga';
 import { fromDataset, fromFacet } from '../selectors';
 
 describe('dataset saga', () => {

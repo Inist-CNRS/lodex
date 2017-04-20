@@ -8,7 +8,7 @@ import AutoComplete from 'material-ui/AutoComplete';
 import debounce from 'lodash.debounce';
 
 import { fetch as fetchAction } from '../fetch';
-import { formField as formFieldPropTypes } from '../propTypes';
+import { formField as formFieldPropTypes } from '../../propTypes';
 
 const FormAutoCompleteField = ({
     allowNewItem,

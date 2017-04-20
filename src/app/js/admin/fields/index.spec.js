@@ -7,7 +7,6 @@ import reducer, {
     loadFieldError,
     loadFieldSuccess,
     removeFieldSuccess,
-    saveFieldSuccess,
     getLineColGetterFromAllFields,
 } from './';
 

@@ -3,11 +3,11 @@ import compose from 'recompose/compose';
 import withHandlers from 'recompose/withHandlers';
 import translate from 'redux-polyglot/translate';
 import { Field, reduxForm, propTypes as reduxFormPropTypes } from 'redux-form';
-import FormTextField from '../lib/FormTextField';
+import FormTextField from '../lib/components/FormTextField';
 
 import { polyglot as polyglotPropTypes } from '../propTypes';
 import { LOGIN_FORM_NAME } from './';
-import Alert from '../lib/Alert';
+import Alert from '../lib/components/Alert';
 
 const validate = (values) => {
     const errors = ['username', 'password'].reduce((currentErrors, field) => {

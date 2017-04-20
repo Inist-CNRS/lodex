@@ -23,9 +23,22 @@ const initialState = {
 };
 
 export default handleActions({
-    [LOAD_EXPORTERS]: state => ({ ...state, error: false, loading: true }),
-    [LOAD_EXPORTERS_ERROR]: (state, { payload: error }) => ({ ...state, error, loading: false }),
-    [LOAD_EXPORTERS_SUCCESS]: (state, { payload: exporters }) => ({ ...state, error: false, exporters, loading: false }),
+    [LOAD_EXPORTERS]: state => ({
+        ...state,
+        error: false,
+        loading: true,
+    }),
+    [LOAD_EXPORTERS_ERROR]: (state, { payload: error }) => ({
+        ...state,
+        error,
+        loading: false,
+    }),
+    [LOAD_EXPORTERS_SUCCESS]: (state, { payload: exporters }) => ({
+        ...state,
+        error: false,
+        exporters,
+        loading: false,
+    }),
 }, initialState);
 
 export const getExporters = state => state.exporters.filter(e => e.type === 'file');

@@ -11,7 +11,7 @@ import {
 
 import { APPLY_FACET, REMOVE_FACET } from '../facet';
 import { getLoadDatasetPageRequest } from '../../fetch/';
-import fetchSaga from '../../lib/fetchSaga';
+import fetchSaga from '../../lib/sagas/fetchSaga';
 import { fromDataset, fromFacet } from '../selectors';
 
 export function* handleLoadDatasetPageRequest({ payload }) {

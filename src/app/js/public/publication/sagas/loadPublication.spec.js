@@ -6,7 +6,7 @@ import {
     loadPublicationSuccess,
 } from '../';
 import { getLoadPublicationRequest } from '../../../fetch';
-import fetchSaga from '../../../lib/fetchSaga';
+import fetchSaga from '../../../lib/sagas/fetchSaga';
 
 import { handleLoadPublicationRequest } from './loadPublication';
 

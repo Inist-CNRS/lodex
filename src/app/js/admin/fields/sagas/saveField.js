@@ -7,13 +7,12 @@ import {
     loadField,
     getFieldFormData,
     saveFieldError,
-    saveFieldSuccess,
     FIELD_FORM_NAME,
     SAVE_FIELD,
 } from '../';
 import { getSaveFieldRequest } from '../../../fetch';
 
-import fetchSaga from '../../../lib/fetchSaga';
+import fetchSaga from '../../../lib/sagas/fetchSaga';
 
 export const sanitizeField = (fieldData) => {
     const valueOperation = get(fieldData, 'transformers[0].operation');

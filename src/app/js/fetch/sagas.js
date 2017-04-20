@@ -1,6 +1,6 @@
 import { race, call, put, take, takeLatest } from 'redux-saga/effects';
 
-import fetchSaga from '../lib/fetchSaga';
+import fetchSaga from '../lib/sagas/fetchSaga';
 
 import {
     FETCH,

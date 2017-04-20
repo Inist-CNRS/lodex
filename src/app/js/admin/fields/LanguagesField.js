@@ -5,7 +5,7 @@ import MenuItem from 'material-ui/MenuItem';
 
 import { languages } from '../../../../../config.json';
 import { field as fieldPropTypes, polyglot as polyglotPropTypes } from '../../propTypes';
-import FormSelectField from '../../lib/FormSelectField';
+import FormSelectField from '../../lib/components/FormSelectField';
 import getFieldClassName from '../../lib/getFieldClassName';
 
 export const LanguagesFieldComponent = ({ field, p: polyglot, ...props }) => {

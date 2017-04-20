@@ -15,8 +15,8 @@ import {
     TableRowColumn,
 } from 'material-ui/Table';
 
-import Loading from '../../lib/Loading';
-import Pagination from '../../lib/Pagination';
+import Loading from '../../lib/components/Loading';
+import Pagination from '../../lib/components/Pagination';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import {
     loadContributedResourcePage as

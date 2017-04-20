@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { CardText } from 'material-ui/Card';
 import memoize from 'lodash.memoize';
 
-import Card from '../../lib/Card';
+import Card from '../../lib/components/Card';
 
 import { field as fieldProptypes } from '../../propTypes';
 

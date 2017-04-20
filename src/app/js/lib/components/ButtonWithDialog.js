@@ -11,7 +11,7 @@ import classnames from 'classnames';
 import CircularProgress from 'material-ui/CircularProgress';
 
 import ButtonWithStatus from './ButtonWithStatus';
-import { polyglot as polyglotPropTypes } from '../propTypes';
+import { polyglot as polyglotPropTypes } from '../../propTypes';
 
 export const ButtonWithDialogComponent = ({
     buttonStyle,

@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 import pure from 'recompose/pure';
 import { Field } from 'redux-form';
 
-import FormTextField from '../../lib/FormTextField';
+import FormTextField from '../../lib/components/FormTextField';
 
 const TransformerArgListItem = ({ fieldName, transformerArg }) => (
     <Field

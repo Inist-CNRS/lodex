@@ -1,13 +1,12 @@
 import expect from 'expect';
 import { call, put, select } from 'redux-saga/effects';
-import { push } from 'react-router-redux';
 
 import {
     getHideResourceFormData,
     hideResourceSuccess,
     hideResourceError,
 } from '../';
-import fetchSaga from '../../../lib/fetchSaga';
+import fetchSaga from '../../../lib/sagas/fetchSaga';
 import { getHideResourceRequest } from '../../../fetch';
 import { handleHideResource } from './hideResource';
 

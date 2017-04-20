@@ -5,7 +5,7 @@ import {
     saveResourceSuccess,
     saveResourceError,
 } from '../';
-import fetchSaga from '../../../lib/fetchSaga';
+import fetchSaga from '../../../lib/sagas/fetchSaga';
 import { getSaveResourceRequest } from '../../../fetch';
 import { handleSaveResource } from './saveResource';
 import { fromResource } from '../../selectors';

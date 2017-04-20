@@ -6,7 +6,7 @@ import {
     loadContributedResourcePageSuccess,
     loadContributedResourcePageError,
 } from './';
-import fetchSaga from '../../lib/fetchSaga';
+import fetchSaga from '../../lib/sagas/fetchSaga';
 import { getLoadContributedResourcePageRequest } from '../../fetch/';
 import { fromContributedResources } from '../selectors';
 

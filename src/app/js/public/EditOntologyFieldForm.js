@@ -6,9 +6,9 @@ import translate from 'redux-polyglot/translate';
 import { reduxForm, Field, propTypes as reduxFormPropTypes } from 'redux-form';
 import { connect } from 'react-redux';
 
-import Alert from '../lib/Alert';
+import Alert from '../lib/components/Alert';
 import { polyglot as polyglotPropTypes } from '../propTypes';
-import FormCheckboxField from '../lib/FormCheckboxField';
+import FormCheckboxField from '../lib/components/FormCheckboxField';
 import { configureField } from './publication';
 import { fromPublication } from './selectors';
 import PositionInput from './PositionInput';

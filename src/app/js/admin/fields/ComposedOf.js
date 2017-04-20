@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 
 
-import FormTextField from '../../lib/FormTextField';
+import FormTextField from '../../lib/components/FormTextField';
 import ComposedOfFieldList from './ComposedOfFieldList';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 

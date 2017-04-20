@@ -10,7 +10,7 @@ import memoize from 'lodash.memoize';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { fromFields } from '../selectors';
-import FormSelectField from '../../lib/FormSelectField';
+import FormSelectField from '../../lib/components/FormSelectField';
 import TransformerArgList from './TransformerArgList';
 import { changeOperation } from './';
 

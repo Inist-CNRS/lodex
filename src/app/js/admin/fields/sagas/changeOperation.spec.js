@@ -2,7 +2,7 @@ import expect from 'expect';
 import { call, select } from 'redux-saga/effects';
 
 import { fromFields } from '../../selectors';
-import updateReduxFormArray from '../../../lib/updateReduxFormArray';
+import updateReduxFormArray from '../../../lib/sagas/updateReduxFormArray';
 import { handleChangeOperation } from './changeOperation';
 
 describe('fields saga', () => {

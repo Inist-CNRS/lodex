@@ -5,7 +5,7 @@ import {
     loadRemovedResourcePageSuccess,
     loadRemovedResourcePageError,
 } from '../';
-import fetchSaga from '../../../lib/fetchSaga';
+import fetchSaga from '../../../lib/sagas/fetchSaga';
 import { getLoadRemovedResourcePageRequest } from '../../../fetch/';
 
 export function* handleLoadRemovedResourcePageRequest({ payload }) {

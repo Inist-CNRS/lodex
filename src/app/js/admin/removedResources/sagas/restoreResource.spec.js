@@ -7,7 +7,7 @@ import {
 } from '../';
 import { getRestoreResourceRequest } from '../../../fetch/';
 import { handleRestoreResourceRequest } from './restoreResource';
-import fetchSaga from '../../../lib/fetchSaga';
+import fetchSaga from '../../../lib/sagas/fetchSaga';
 
 describe('restore removed resources saga', () => {
     describe('handleRestoreResourceRequest', () => {

@@ -5,7 +5,7 @@ import withProps from 'recompose/withProps';
 import translate from 'redux-polyglot/translate';
 import { reduxForm, propTypes as reduxFormPropTypes } from 'redux-form';
 
-import Alert from '../lib/Alert';
+import Alert from '../lib/components/Alert';
 import { polyglot as polyglotPropTypes } from '../propTypes';
 import FieldInput from './FieldInput';
 

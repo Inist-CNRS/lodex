@@ -12,11 +12,11 @@ import {
     fromPublication,
     fromCharacteristic,
 } from '../selectors';
-import Card from '../../lib/Card';
+import Card from '../../lib/components/Card';
 import Detail from './Detail';
 import RemovedDetail from './RemovedDetail';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
-import Loading from '../../lib/Loading';
+import Loading from '../../lib/components/Loading';
 
 export const ResourceComponent = ({
     resource,

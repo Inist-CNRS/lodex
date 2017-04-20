@@ -13,8 +13,8 @@ import {
 } from 'material-ui/Table';
 import DatasetColumn from './DatasetColumn';
 import DatasetColumnHeader from './DatasetColumnHeader';
-import Pagination from '../../lib/Pagination';
-import Loading from '../../lib/Loading';
+import Pagination from '../../lib/components/Pagination';
+import Loading from '../../lib/components/Loading';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { loadDatasetPage as loadDatasetPageAction } from './';
 import { fromPublication, fromDataset } from '../selectors';
