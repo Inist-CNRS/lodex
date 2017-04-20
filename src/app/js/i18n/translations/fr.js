@@ -207,4 +207,8 @@ export default {
     navigate_to_published_data: 'Go to my published data',
     moderation: 'Moderation',
     apply: 'Apply',
+    auto_generate_uri: 'Generate URI for me',
+    required: 'Required',
+    invalid_uri: 'Uri must either start with /:uid or /:ark or be a valid url',
+    create_resource: 'Create a new resource',
 };

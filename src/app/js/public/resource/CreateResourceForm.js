@@ -12,16 +12,28 @@ import Alert from '../../lib/Alert';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { fromPublication } from '../selectors';
 import FieldInput from '../FieldInput';
+import UriFieldInput from '../../lib/UriFieldInput';
 
-const validate = (values) => {
+const validate = (values, { p: polyglot }) => {
     const errors = Object.keys(values).reduce((currentErrors, field) => {
-        if (!values[field]) {
+        if (field === 'uri') {
+            const uri = values[field];
+            if (!uri || uri.startsWith('uid:/') || uri.startsWith('ark:/') || uri.startsWith('http://')) {
+                return currentErrors;
+            }
             return {
                 ...currentErrors,
-                [field]: 'Required',
+                [field]: polyglot.t('invalid_uri'),
             };
         }
-        return currentErrors;
+        if (values[field]) {
+            return currentErrors;
+        }
+
+        return {
+            ...currentErrors,
+            [field]: polyglot.t('required'),
+        };
     }, {});
 
     return errors;
@@ -30,6 +42,7 @@ const validate = (values) => {
 export const CreateResourceFormComponent = ({ fields, error, handleSubmit }) => (
     <form id="resource_form" onSubmit={handleSubmit}>
         {error && <Alert><p>{error}</p></Alert>}
+        <UriFieldInput />
         {fields.filter(({ name }) => name !== 'uri').map(field => (
             <FieldInput key={field.name} field={field} />
         ))}
@@ -65,10 +78,10 @@ const mapDispatchToProps = {
 };
 
 export default compose(
+    translate,
     connect(mapStateToProps, mapDispatchToProps),
     reduxForm({
         form: CREATE_RESOURCE_FORM_NAME,
         validate,
     }),
-    translate,
 )(CreateResourceFormComponent);

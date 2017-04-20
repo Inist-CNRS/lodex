@@ -17,7 +17,7 @@ const mapStateToProps = (state, { p }) => ({
     saving: fromResource.isSaving(state),
     formName: CREATE_RESOURCE_FORM_NAME,
     form: <CreateResourceForm />,
-    label: p.t('create-resource'),
+    label: p.t('create_resource'),
     className: 'create-resource',
 });
 
