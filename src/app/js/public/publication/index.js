@@ -255,7 +255,7 @@ export const isACompositeFields = (name, composedFields) =>
     composedFields.some(({ composedOf: { fields } }) => fields.includes(name));
 
 const getCollectionFieldsExceptComposite = createSelector(
-    getFields,
+    getCollectionFields,
     getComposedFields,
     (allFields, composedFields) => allFields
         .filter(({ name }) => !isACompositeFields(name, composedFields)),

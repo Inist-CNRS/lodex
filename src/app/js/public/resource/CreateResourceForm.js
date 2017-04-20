@@ -26,14 +26,8 @@ export const validate = (values, { p: polyglot }) => {
                 [field]: polyglot.t('invalid_uri'),
             };
         }
-        if (values[field]) {
-            return currentErrors;
-        }
 
-        return {
-            ...currentErrors,
-            [field]: polyglot.t('required'),
-        };
+        return currentErrors;
     }, {});
 
     return errors;

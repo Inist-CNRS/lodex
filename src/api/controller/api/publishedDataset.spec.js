@@ -208,7 +208,7 @@ describe('publishedDataset', () => {
 
             await createResource(ctx);
 
-            expect(ctx.body).toBe('create result');
+            expect(ctx.body).toEqual({ uri: 'the uri' });
             expect(ctx.publishedDataset.findByUri).toHaveBeenCalledWith('the uri');
             expect(ctx.publishedDataset.create).toHaveBeenCalledWith({
                 uri: 'the uri',
