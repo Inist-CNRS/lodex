@@ -30,7 +30,6 @@ const styles = {
 };
 
 export const FieldSchemeInputComponent = ({
-    name,
     className,
     disabled,
     p: polyglot,
@@ -40,7 +39,7 @@ export const FieldSchemeInputComponent = ({
     <Field
         allowNewItem
         className={className}
-        name={name}
+        name="scheme"
         disabled={disabled}
         component={FormAutoCompleteField}
         label={polyglot.t('scheme')}
@@ -68,7 +67,6 @@ FieldSchemeInputComponent.propTypes = {
     p: polyglotPropTypes.isRequired,
     getSchemeSearchRequest: PropTypes.func.isRequired,
     getSchemeMenuItemsDataFromResponse: PropTypes.func.isRequired,
-    name: PropTypes.string.isRequired,
     className: PropTypes.string,
     disabled: PropTypes.bool,
 };
