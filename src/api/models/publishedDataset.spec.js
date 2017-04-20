@@ -406,4 +406,34 @@ describe('publishedDataset', () => {
             });
         });
     });
+
+    describe('create', () => {
+        const insertOne = createSpy().andReturn('inserted');
+        const db = {
+            collection: () => ({
+                insertOne,
+                createIndex: createSpy(),
+            }),
+        };
+
+        let publishedDatasetCollection;
+
+        before(async () => {
+            publishedDatasetCollection = await publishedDataset(db);
+        });
+
+        it('should call connection.insertOne with { uri, versions: [rest] }', async () => {
+            const date = new Date();
+            const result = await publishedDatasetCollection.create({ uri: 'uri', data: 'value' }, date);
+            expect(result).toBe('inserted');
+
+            expect(insertOne).toHaveBeenCalledWith({
+                uri: 'uri',
+                versions: [{
+                    data: 'value',
+                    publicationDate: date,
+                }],
+            });
+        });
+    });
 });
