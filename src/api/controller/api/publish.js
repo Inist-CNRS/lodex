@@ -11,7 +11,7 @@ const app = new Koa();
 export const tranformAllDocuments = async (count, findLimitFromSkip, insertBatch, transformer) => {
     let handled = 0;
     while (handled < count) {
-        const dataset = await findLimitFromSkip(100, handled);
+        const dataset = await findLimitFromSkip(1000, handled);
         const transformedDataset = await Promise.all(dataset.map(transformer));
         await insertBatch(transformedDataset);
         handled += dataset.length;

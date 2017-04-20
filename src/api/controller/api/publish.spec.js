@@ -234,8 +234,8 @@ describe('publish', () => {
             await tranformAllDocuments(count, findLimitFromSkip, insertBatch, transformDocument);
         });
         it('should load items from the original dataset and insert them in the publishedDataset by page of 100', () => {
-            expect(findLimitFromSkip).toHaveBeenCalledWith(100, 0);
-            expect(findLimitFromSkip).toHaveBeenCalledWith(100, 200);
+            expect(findLimitFromSkip).toHaveBeenCalledWith(1000, 0);
+            expect(findLimitFromSkip).toHaveBeenCalledWith(1000, 200);
             expect(insertBatch).toHaveBeenCalledWith(['transformedDocument', 'transformedDocument']);
         });
 
