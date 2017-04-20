@@ -11,12 +11,12 @@ import FieldInput from './FieldInput';
 
 export const FORM_NAME = 'PROPERTY_FORM';
 
-const validate = (values) => {
+const validate = (values, { p: polyglot }) => {
     const errors = Object.keys(values).reduce((currentErrors, field) => {
         if (!values[field]) {
             return {
                 ...currentErrors,
-                [field]: 'Required',
+                [field]: polyglot.t('required'),
             };
         }
 
@@ -46,6 +46,7 @@ EditFieldFormComponent.propTypes = {
 
 
 export default compose(
+    translate,
     withHandlers({
         onSubmit: ({ onSaveProperty }) => (values) => {
             onSaveProperty(values);
@@ -58,5 +59,4 @@ export default compose(
         form: FORM_NAME,
         validate,
     }),
-    translate,
 )(EditFieldFormComponent);
