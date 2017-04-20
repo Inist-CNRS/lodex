@@ -11,8 +11,10 @@ import {
     createResourceCancel,
     CREATE_RESOURCE_FORM_NAME,
 } from './';
+import { isLoggedIn } from '../../user';
 
 const mapStateToProps = (state, { p }) => ({
+    show: isLoggedIn(state),
     open: fromResource.isCreating(state),
     saving: fromResource.isSaving(state),
     formName: CREATE_RESOURCE_FORM_NAME,

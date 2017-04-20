@@ -62,9 +62,8 @@ export const ButtonWithDialogComponent = ({
         );
 
     return (
-        <div style={style}>
+        <span style={style}>
             {openButton}
-
             <Dialog
                 title={label}
                 actions={actions}
@@ -75,7 +74,7 @@ export const ButtonWithDialogComponent = ({
             >
                 {form}
             </Dialog>
-        </div>
+        </span>
     );
 };
 
