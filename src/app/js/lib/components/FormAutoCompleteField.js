@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import AutoComplete from 'material-ui/AutoComplete';
 import debounce from 'lodash.debounce';
 
-import { fetch as fetchAction } from '../fetch';
+import { fetch as fetchAction } from '../../fetch';
 import { formField as formFieldPropTypes } from '../../propTypes';
 
 const FormAutoCompleteField = ({
@@ -26,7 +26,7 @@ const FormAutoCompleteField = ({
         onNewRequest={handleValueChosen}
         dataSource={dataSource}
         searchText={input.value}
-        {...omit(props, ['fetch', 'parseResponse', 'handleSearch'])}
+        {...omit(props, ['getFetchRequest', 'parseResponse', 'handleSearch'])}
     />
 );
 
@@ -36,10 +36,10 @@ const mapStateToProps = ({ fetch }, { input: { name }, parseResponse }) => ({
     dataSource: parseResponse(fetch[name] && fetch[name].response),
 });
 
-const mapDispatchToProps = (dispatch, { input: { name }, fetch: getConfig }) => bindActionCreators({
+const mapDispatchToProps = (dispatch, { input: { name }, getFetchRequest }) => bindActionCreators({
     handleSearch: searchText => (
         searchText
-            ? fetchAction({ config: getConfig(searchText), name })
+            ? fetchAction({ config: getFetchRequest(searchText), name })
             : { type: '@@NULL' } // We must return an action so return an action which will not be handled
         ),
 }, dispatch);

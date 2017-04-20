@@ -44,7 +44,7 @@ export const defaultState = {
     allValid: true,
     list: [],
     invalidFields: [],
-    editedFieldName: null,
+    editedFieldName: undefined,
     searchable: true,
 };
 
@@ -79,7 +79,7 @@ export default handleActions({
     LOAD_FIELD: state => ({ ...state, loading: true }),
     LOAD_FIELD_SUCCESS: (state, { payload }) => ({
         ...state,
-        editedFieldName: null,
+        editedFieldName: undefined,
         list: payload.map(({ name }) => name),
         byName: payload.reduce((acc, field) => ({
             ...acc,
@@ -92,7 +92,7 @@ export default handleActions({
         if (!payload && state.editedFieldName === 'new') {
             return {
                 ...state,
-                editedFieldName: null,
+                editedFieldName: undefined,
                 byName: omit(state.byName, ['new']),
                 list: [...state.list.slice(0, -1)],
             };
@@ -180,7 +180,7 @@ export const getFieldFormData = (state) => {
     try {
         return state.form.field.values;
     } catch (error) {
-        return null;
+        return undefined;
     }
 };
 

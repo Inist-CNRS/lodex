@@ -1,13 +1,10 @@
 import React, { PropTypes } from 'react';
-import compose from 'recompose/compose';
-import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 import { Field } from 'redux-form';
 import MenuItem from 'material-ui/MenuItem';
 
 import { field as fieldPropTypes, polyglot as polyglotPropTypes } from '../../propTypes';
 import FormSelectField from '../../lib/components/FormSelectField';
-import { fromFields } from '../selectors';
 import getFieldClassName from '../../lib/getFieldClassName';
 
 export const PositionFieldComponent = ({ field, fields, p: polyglot, ...props }) => {
@@ -45,11 +42,4 @@ PositionFieldComponent.propTypes = {
     p: polyglotPropTypes.isRequired,
 };
 
-const mapStateToProps = state => ({
-    fields: fromFields.getFields(state),
-});
-
-export default compose(
-    connect(mapStateToProps),
-    translate,
-)(PositionFieldComponent);
+export default translate(PositionFieldComponent);

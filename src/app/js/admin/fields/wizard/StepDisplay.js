@@ -1,15 +1,17 @@
 import React, { Component, PropTypes } from 'react';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
-import { Field, change, getFormValues } from 'redux-form';
 import { connect } from 'react-redux';
+import { change, getFormValues } from 'redux-form';
 
 import Step from './Step';
-import FormCheckboxField from '../../../lib/components/FormCheckboxField';
-import PositionField from '../PositionField';
-import Format from '../../FormatEdition';
+import FieldPositionInput from '../../../lib/components/FieldPositionInput';
+import FieldFormatInput from '../../../lib/components/FieldFormatInput';
+import FieldDisplayInListInput from '../../../lib/components/FieldDisplayInListInput';
+import FieldDisplayInResourceInput from '../../../lib/components/FieldDisplayInResourceInput';
 import { polyglot as polyglotPropTypes, field as fieldPropTypes } from '../../../propTypes';
 import { FIELD_FORM_NAME } from '../';
+import { fromFields } from '../../selectors';
 
 export class StepDisplayComponent extends Component {
     componentWillReceiveProps(nextProps) {
@@ -21,28 +23,17 @@ export class StepDisplayComponent extends Component {
     render() {
         const {
             field,
+            fields,
             p: polyglot,
             ...props
         } = this.props;
 
         return (
             <Step label="field_wizard_step_display" {...props}>
-                <Field
-                    name="display_in_list"
-                    component={FormCheckboxField}
-                    label={polyglot.t('field_display_in_list')}
-                />
-                <Field
-                    name="display_in_resource"
-                    component={FormCheckboxField}
-                    label={polyglot.t('field_display_in_resource')}
-                />
-                <PositionField field={field} />
-                <Field
-                    name="format"
-                    component={Format}
-                    label={polyglot.t('format')}
-                />
+                <FieldDisplayInListInput />
+                <FieldDisplayInResourceInput />
+                <FieldPositionInput field={field} fields={fields} />
+                <FieldFormatInput />
             </Step>
         );
     }
@@ -51,17 +42,19 @@ export class StepDisplayComponent extends Component {
 StepDisplayComponent.propTypes = {
     transformers: PropTypes.arrayOf(PropTypes.object).isRequired,
     field: fieldPropTypes.isRequired,
+    fields: PropTypes.arrayOf(fieldPropTypes).isRequired,
     format: PropTypes.object, // eslint-disable-line
     p: polyglotPropTypes.isRequired,
     updateField: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => {
-    const { format, transformers } = getFormValues(FIELD_FORM_NAME)(state);
+    const values = getFormValues(FIELD_FORM_NAME)(state);
 
     return {
-        format,
-        transformers,
+        fields: fromFields.getFields(state),
+        format: values && values.format,
+        transformers: values ? values.transformers : [],
     };
 };
 

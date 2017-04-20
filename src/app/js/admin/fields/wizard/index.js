@@ -83,7 +83,7 @@ class FieldEditionWizardComponent extends Component {
     }
 
     handleCancel = () => {
-        this.props.editField(null);
+        this.props.editField(undefined);
     }
 
     handleSave = () => {
