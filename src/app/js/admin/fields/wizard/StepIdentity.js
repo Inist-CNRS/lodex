@@ -5,10 +5,10 @@ import { Field } from 'redux-form';
 import MenuItem from 'material-ui/MenuItem';
 
 import Step from './Step';
-import FormTextField from '../../../lib/components/FormTextField';
 import FormSelectField from '../../../lib/components/FormSelectField';
-import SchemeAutoComplete from '../../../lib/components/SchemeAutoComplete';
-import LanguagesField from '../LanguagesField';
+import FieldSchemeInput from '../../../lib/components/FieldSchemeInput';
+import FieldLanguageInput from '../../../lib/components/FieldLanguageInput';
+import FieldLabelInput from '../../../lib/components/FieldLabelInput';
 import { polyglot as polyglotPropTypes, field as fieldPropTypes } from '../../../propTypes';
 
 export const StepIdentityComponent = ({
@@ -17,12 +17,7 @@ export const StepIdentityComponent = ({
     ...props
 }) => (
     <Step label="field_wizard_step_identity" {...props}>
-        <Field
-            name="label"
-            component={FormTextField}
-            label={polyglot.t('fieldLabel')}
-            fullWidth
-        />
+        <FieldLabelInput />
         <Field
             name="cover"
             component={FormSelectField}
@@ -32,8 +27,8 @@ export const StepIdentityComponent = ({
             <MenuItem value="dataset" primaryText={polyglot.t('cover_dataset')} />
             <MenuItem value="collection" primaryText={polyglot.t('cover_collection')} />
         </Field>
-        <SchemeAutoComplete name="scheme" />
-        <LanguagesField field={field} />
+        <FieldSchemeInput name="scheme" />
+        <FieldLanguageInput field={field} />
     </Step>
 );
 

@@ -15,7 +15,7 @@ import {
     fromCharacteristic,
 } from '../selectors';
 import FormTextField from '../../lib/components/FormTextField';
-import SchemeAutoComplete from '../../lib/components/SchemeAutoComplete';
+import FieldSchemeInput from '../../lib/components/FieldSchemeInput';
 
 const validate = (values) => {
     const errors = ['label', 'value'].reduce((currentErrors, field) => {
@@ -50,7 +50,7 @@ export const AddFieldFormComponent = ({
             component={FormTextField}
             label={polyglot.t('value')}
         />
-        <SchemeAutoComplete name="scheme" />
+        <FieldSchemeInput name="scheme" />
     </form>
 );
 

@@ -29,7 +29,7 @@ const styles = {
     },
 };
 
-export const SchemeAutoCompleteComponent = ({
+export const FieldSchemeInputComponent = ({
     name,
     className,
     disabled,
@@ -46,7 +46,7 @@ export const SchemeAutoCompleteComponent = ({
         label={polyglot.t('scheme')}
         fullWidth
         targetOrigin={styles.targetOrigin}
-        fetch={getSchemeSearchRequest}
+        getFetchRequest={getSchemeSearchRequest}
         parseResponse={response => getSchemeMenuItemsDataFromResponse(response).map(({ label, uri }) => ({
             text: uri,
             value: (
@@ -59,12 +59,12 @@ export const SchemeAutoCompleteComponent = ({
     />
 );
 
-SchemeAutoCompleteComponent.defaultProps = {
+FieldSchemeInputComponent.defaultProps = {
     disabled: false,
     className: null,
 };
 
-SchemeAutoCompleteComponent.propTypes = {
+FieldSchemeInputComponent.propTypes = {
     p: polyglotPropTypes.isRequired,
     getSchemeSearchRequest: PropTypes.func.isRequired,
     getSchemeMenuItemsDataFromResponse: PropTypes.func.isRequired,
@@ -88,4 +88,4 @@ const mapDispatchToProps = {
 export default compose(
     connect(mapStateToProps, mapDispatchToProps),
     translate,
-)(SchemeAutoCompleteComponent);
+)(FieldSchemeInputComponent);

@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 import { Field } from 'redux-form';
 
-import SchemeAutoComplete from '../../lib/components/SchemeAutoComplete';
+import FieldSchemeInput from '../../lib/components/FieldSchemeInput';
 import {
     fromPublication,
 } from '../selectors';
@@ -43,7 +43,7 @@ export const AddFieldDetailComponent = ({
             label={polyglot.t('fieldValue')}
             fullWidth
         />
-        <SchemeAutoComplete
+        <FieldSchemeInput
             disabled={!isNewField}
             name="field.scheme"
             className="field-scheme"
