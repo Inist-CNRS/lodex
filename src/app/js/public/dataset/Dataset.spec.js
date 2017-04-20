@@ -3,7 +3,7 @@ import expect, { createSpy } from 'expect';
 import { shallow } from 'enzyme';
 
 import { DatasetComponent as Dataset } from './Dataset';
-import Pagination from '../../lib/Pagination';
+import Pagination from '../../lib/components/Pagination';
 import DatasetColumn from './DatasetColumn';
 import DatasetColumnHeader from './DatasetColumnHeader';
 

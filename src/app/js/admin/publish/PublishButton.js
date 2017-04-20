@@ -6,7 +6,7 @@ import translate from 'redux-polyglot/translate';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { publish as publishAction } from './';
 import { fromFields, fromPublish, fromPublication } from '../selectors';
-import ButtonWithStatus from '../../lib/ButtonWithStatus';
+import ButtonWithStatus from '../../lib/components/ButtonWithStatus';
 import ConfirmPublication from './ConfirmPublication';
 
 const styles = {

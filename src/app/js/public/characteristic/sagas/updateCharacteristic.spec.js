@@ -6,7 +6,7 @@ import {
     updateCharacteristicsSuccess,
 } from '../';
 import { getUpdateCharacteristicsRequest } from '../../../fetch/';
-import fetchSaga from '../../../lib/fetchSaga';
+import fetchSaga from '../../../lib/sagas/fetchSaga';
 
 import { handleUpdateCharacteristics } from './updateCharacteristic';
 

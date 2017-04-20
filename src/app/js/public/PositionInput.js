@@ -6,7 +6,7 @@ import { Field } from 'redux-form';
 import MenuItem from 'material-ui/MenuItem';
 
 import { field as fieldPropTypes, polyglot as polyglotPropTypes } from '../propTypes';
-import FormSelectField from '../lib/FormSelectField';
+import FormSelectField from '../lib/components/FormSelectField';
 import { fromPublication } from './selectors';
 import getFieldClassName from '../lib/getFieldClassName';
 
@@ -43,6 +43,7 @@ export const PositionInputComponent = ({ field, fields, p: polyglot, input }) =>
 PositionInputComponent.propTypes = {
     field: fieldPropTypes.isRequired,
     fields: PropTypes.arrayOf(fieldPropTypes).isRequired,
+    input: PropTypes.object.isRequired, // eslint-disable-line
     p: polyglotPropTypes.isRequired,
 };
 

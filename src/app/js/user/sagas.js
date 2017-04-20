@@ -4,7 +4,7 @@ import { push } from 'react-router-redux';
 
 import { LOGIN, LOGIN_FORM_NAME, loginSuccess } from './';
 import { getLoginRequest } from '../fetch';
-import fetchSaga from '../lib/fetchSaga';
+import fetchSaga from '../lib/sagas/fetchSaga';
 
 export function* handleLoginRequest({ payload: { previousState, ...credentials } }) {
     yield put(startSubmit(LOGIN_FORM_NAME));

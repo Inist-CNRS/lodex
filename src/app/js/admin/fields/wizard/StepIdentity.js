@@ -5,9 +5,9 @@ import { Field } from 'redux-form';
 import MenuItem from 'material-ui/MenuItem';
 
 import Step from './Step';
-import FormTextField from '../../../lib/FormTextField';
-import FormSelectField from '../../../lib/FormSelectField';
-import SchemeAutoComplete from '../../../lib/SchemeAutoComplete';
+import FormTextField from '../../../lib/components/FormTextField';
+import FormSelectField from '../../../lib/components/FormSelectField';
+import SchemeAutoComplete from '../../../lib/components/SchemeAutoComplete';
 import LanguagesField from '../LanguagesField';
 import { polyglot as polyglotPropTypes, field as fieldPropTypes } from '../../../propTypes';
 

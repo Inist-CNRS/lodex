@@ -6,7 +6,7 @@ import { Field } from 'redux-form';
 import MenuItem from 'material-ui/MenuItem';
 
 import { field as fieldPropTypes, polyglot as polyglotPropTypes } from '../../propTypes';
-import FormSelectField from '../../lib/FormSelectField';
+import FormSelectField from '../../lib/components/FormSelectField';
 import { fromFields } from '../selectors';
 import getFieldClassName from '../../lib/getFieldClassName';
 

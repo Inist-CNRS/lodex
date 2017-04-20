@@ -9,8 +9,8 @@ import {
 } from 'material-ui/Table';
 
 import { RemovedResourceListComponent as RemovedResourceList } from './RemovedResourceList';
-import Pagination from '../../lib/Pagination';
-import ButtonWithStatus from '../../lib/ButtonWithStatus';
+import Pagination from '../../lib/components/Pagination';
+import ButtonWithStatus from '../../lib/components/ButtonWithStatus';
 
 describe('<RemovedResourceList />', () => {
     const columns = [

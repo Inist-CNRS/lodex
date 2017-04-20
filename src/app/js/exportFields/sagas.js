@@ -1,7 +1,7 @@
 import { call, select, put, takeEvery } from 'redux-saga/effects';
-import fetchSaga from '../lib/fetchSaga';
-import { getExportFieldsRequest } from '../fetch/';
 import FileSaver from 'file-saver';
+import fetchSaga from '../lib/sagas/fetchSaga';
+import { getExportFieldsRequest } from '../fetch/';
 
 import {
     EXPORT_FIELDS,

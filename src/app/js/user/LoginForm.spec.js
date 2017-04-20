@@ -3,7 +3,7 @@ import expect from 'expect';
 import { shallow } from 'enzyme';
 import { Field } from 'redux-form';
 
-import Alert from '../lib/Alert';
+import Alert from '../lib/components/Alert';
 import { LoginFormComponent } from './LoginForm';
 
 describe('<LoginForm />', () => {

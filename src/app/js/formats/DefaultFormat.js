@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 import memoize from 'lodash.memoize';
 
 import { field as fieldPropTypes } from '../propTypes';
-import FormTextField from '../lib/FormTextField';
+import FormTextField from '../lib/components/FormTextField';
 import { isLongText, getShortText } from '../lib/longTexts';
 import { REJECTED } from '../../../common/propositionStatus';
 

@@ -7,7 +7,7 @@ import {
     getNewCharacteristicFormData,
 } from '../';
 import { getAddCharacteristicRequest } from '../../../fetch/';
-import fetchSaga from '../../../lib/fetchSaga';
+import fetchSaga from '../../../lib/sagas/fetchSaga';
 
 import { handleAddCharacteristic } from './addCharacteristic';
 

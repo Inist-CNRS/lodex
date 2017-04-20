@@ -1,5 +1,4 @@
 import { call, put, select, takeLatest } from 'redux-saga/effects';
-import { push } from 'react-router-redux';
 
 import {
     hideResourceSuccess,
@@ -8,7 +7,7 @@ import {
     HIDE_RESOURCE,
 } from '../';
 import { getHideResourceRequest } from '../../../fetch';
-import fetchSaga from '../../../lib/fetchSaga';
+import fetchSaga from '../../../lib/sagas/fetchSaga';
 
 export const parsePathName = pathname => pathname.match(/^(\/resource)(\/ark:\/)?(.*?$)/) || [];
 

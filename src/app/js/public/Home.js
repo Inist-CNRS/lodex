@@ -9,9 +9,9 @@ import { polyglot as polyglotPropTypes } from '../propTypes';
 import { loadPublication as loadPublicationAction } from './publication';
 import { fromPublication, fromCharacteristic } from './selectors';
 
-import Alert from '../lib/Alert';
-import Card from '../lib/Card';
-import Loading from '../lib/Loading';
+import Alert from '../lib/components/Alert';
+import Card from '../lib/components/Card';
+import Loading from '../lib/components/Loading';
 import Dataset from './dataset/Dataset';
 import DatasetCharacteristics from './characteristic/DatasetCharacteristics';
 import NoDataset from './NoDataset';

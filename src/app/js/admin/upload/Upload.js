@@ -7,7 +7,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import ArchiveIcon from 'material-ui/svg-icons/content/archive';
 import { lightBlue500 } from 'material-ui/styles/colors';
 
-import Alert from '../../lib/Alert';
+import Alert from '../../lib/components/Alert';
 import { uploadFile } from './';
 import { fromUpload } from '../selectors';
 import { polyglot as polyglotPropTypes } from '../../propTypes';

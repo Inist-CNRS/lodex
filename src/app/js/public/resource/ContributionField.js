@@ -4,11 +4,11 @@ import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 import { Field } from 'redux-form';
 
-import SchemeAutoComplete from '../../lib/SchemeAutoComplete';
+import SchemeAutoComplete from '../../lib/components/SchemeAutoComplete';
 import {
     fromPublication,
 } from '../selectors';
-import FormTextField from '../../lib/FormTextField';
+import FormTextField from '../../lib/components/FormTextField';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 
 const required = value => (value ? undefined : 'Required');

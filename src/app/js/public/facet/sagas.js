@@ -7,7 +7,7 @@ import {
     loadFacetValuesSuccess,
 } from './';
 import { getLoadFacetValuesRequest } from '../../fetch';
-import fetchSaga from '../../lib/fetchSaga';
+import fetchSaga from '../../lib/sagas/fetchSaga';
 
 export function* handleLoadFacetValuesRequest({ payload: { field, filter } }) {
     const request = yield select(getLoadFacetValuesRequest, { field: field.name, filter });

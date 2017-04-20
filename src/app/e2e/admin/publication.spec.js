@@ -73,7 +73,7 @@ describe('Admin', () => {
                 await waitForPreviewComputing();
 
                 for (let index = 1; index < 5; index += 1) {
-                    await driver.wait(
+                    await driver.wait( // eslint-disable-line
                         elementTextMatches(
                             `.publication-preview tr:nth-child(${index}) td:first-child`,
                             /[A-Z0-9]{8}/,
@@ -149,14 +149,16 @@ describe('Admin', () => {
                 ];
 
                 await Promise.all(
-                    Array.from(Array(4).keys()).map(index =>
-                        driver.wait(
+                    Array.from(Array(4).keys()).map((index) => {
+                        const xpath = `//tr[position()=${index + 1}]//td[@class='publication-preview-column stronger_than' and ${expectedTexts[index]}]`;
+
+                        return driver.wait(
                             until.elementLocated(
-                                By.xpath(`//tr[position()=${index + 1}]//td[@class='publication-preview-column stronger_than' and ${expectedTexts[index]}]`),
+                                By.xpath(xpath),
                             ),
                             DEFAULT_WAIT_TIMEOUT,
-                        ),
-                    ),
+                        );
+                    }),
                 );
             });
         });

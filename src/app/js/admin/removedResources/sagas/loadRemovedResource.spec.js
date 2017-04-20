@@ -7,7 +7,7 @@ import {
 } from '../';
 
 import { handleLoadRemovedResourcePageRequest } from './loadRemovedResource';
-import fetchSaga from '../../../lib/fetchSaga';
+import fetchSaga from '../../../lib/sagas/fetchSaga';
 import { getLoadRemovedResourcePageRequest } from '../../../fetch/';
 
 describe('load removed resources saga', () => {

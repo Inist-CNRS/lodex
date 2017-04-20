@@ -8,6 +8,7 @@ import { connect } from 'react-redux';
 import { fromFields } from '../selectors';
 import { isLongText, getShortText } from '../../lib/longTexts';
 import getFieldClassName from '../../lib/getFieldClassName';
+import { field as fieldPropTypes } from '../../propTypes';
 
 const styles = {
     header: {
@@ -47,6 +48,7 @@ export const ExcerptLineColComponent = ({ field, value = '' }) => (
 );
 
 ExcerptLineColComponent.propTypes = {
+    field: fieldPropTypes.isRequired,
     value: PropTypes.string,
 };
 

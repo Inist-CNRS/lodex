@@ -15,9 +15,9 @@ import {
     TableRowColumn,
 } from 'material-ui/Table';
 
-import ButtonWithStatus from '../../lib/ButtonWithStatus';
-import Loading from '../../lib/Loading';
-import Pagination from '../../lib/Pagination';
+import ButtonWithStatus from '../../lib/components/ButtonWithStatus';
+import Loading from '../../lib/components/Loading';
+import Pagination from '../../lib/components/Pagination';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import {
     loadRemovedResourcePage as loadRemovedResourcePageAction,

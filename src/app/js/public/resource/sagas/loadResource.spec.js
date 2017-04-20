@@ -8,7 +8,7 @@ import {
     loadResourceError,
 } from '../';
 import { loadPublication } from '../../publication';
-import fetchSaga from '../../../lib/fetchSaga';
+import fetchSaga from '../../../lib/sagas/fetchSaga';
 import { getLoadResourceRequest } from '../../../fetch';
 import { handleLoadResource, parsePathName } from './loadResource';
 

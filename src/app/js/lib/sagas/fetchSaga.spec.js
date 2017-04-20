@@ -3,8 +3,8 @@ import expect from 'expect';
 import { replace } from 'react-router-redux';
 
 import fetchSaga from './fetchSaga';
-import fetch from './fetch';
-import { getCurrentLocation, logout } from '../user';
+import fetch from '../fetch';
+import { getCurrentLocation, logout } from '../../user';
 
 
 describe('sagas fetch', () => {

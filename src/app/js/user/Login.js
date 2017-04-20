@@ -14,7 +14,7 @@ import {
     isUserModalShown,
 } from './';
 import LoginForm from './LoginForm';
-import ButtonWithStatus from '../lib/ButtonWithStatus';
+import ButtonWithStatus from '../lib/components/ButtonWithStatus';
 
 const styles = {
     container: {

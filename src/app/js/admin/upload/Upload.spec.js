@@ -2,7 +2,7 @@ import React from 'react';
 import expect from 'expect';
 import { shallow } from 'enzyme';
 import RaisedButton from 'material-ui/RaisedButton';
-import Alert from '../../lib/Alert';
+import Alert from '../../lib/components/Alert';
 
 import { UploadComponent as Upload } from './Upload';
 

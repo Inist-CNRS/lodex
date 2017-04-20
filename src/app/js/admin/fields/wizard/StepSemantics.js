@@ -5,7 +5,7 @@ import { Field } from 'redux-form';
 import MenuItem from 'material-ui/MenuItem';
 
 import Step from './Step';
-import FormSelectField from '../../../lib/FormSelectField';
+import FormSelectField from '../../../lib/components/FormSelectField';
 import { polyglot as polyglotPropTypes, field as fieldPropTypes } from '../../../propTypes';
 import StepSemanticsComposition from './StepSemanticsComposition';
 

@@ -6,7 +6,7 @@ import {
     restoreRessourceError,
 } from '../';
 import { getRestoreResourceRequest } from '../../../fetch/';
-import fetchSaga from '../../../lib/fetchSaga';
+import fetchSaga from '../../../lib/sagas/fetchSaga';
 
 export function* handleRestoreResourceRequest({ payload: uri }) {
     const request = yield select(getRestoreResourceRequest, uri);

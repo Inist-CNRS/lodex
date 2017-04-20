@@ -11,7 +11,7 @@ import {
 } from './';
 import HideResourceForm from './HideResourceForm';
 import { isLoggedIn } from '../../user';
-import ButtonWithDialog from '../../lib/ButtonWithDialog';
+import ButtonWithDialog from '../../lib/components/ButtonWithDialog';
 
 const mapStateToProps = (state, { p }) => ({
     open: fromResource.isHiding(state),

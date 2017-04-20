@@ -5,7 +5,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import { cyan500 } from 'material-ui/styles/colors';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
-import Card from '../../lib/Card';
+import Card from '../../lib/components/Card';
 
 const styles = {
     container: {

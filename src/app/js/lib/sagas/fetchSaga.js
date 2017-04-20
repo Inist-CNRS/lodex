@@ -1,7 +1,7 @@
 import { call, put, race, select, take } from 'redux-saga/effects';
 import { replace } from 'react-router-redux';
-import fetch from './fetch';
-import { getCurrentLocation, logout } from '../user';
+import fetch from '../fetch';
+import { getCurrentLocation, logout } from '../../user';
 
 export default function* fetchSaga(request, interruptingActions = [], mode = 'json') {
     const {

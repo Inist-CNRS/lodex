@@ -4,7 +4,7 @@ import translate from 'redux-polyglot/translate';
 import { Field } from 'redux-form';
 
 import Step from './Step';
-import FormCheckboxField from '../../../lib/FormCheckboxField';
+import FormCheckboxField from '../../../lib/components/FormCheckboxField';
 import { polyglot as polyglotPropTypes } from '../../../propTypes';
 
 export const StepSearchComponent = ({ p: polyglot, ...props }) => (

@@ -5,7 +5,7 @@ import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
 
 import fetchPaginatedDataForComponent from '../../lib/fetchPaginatedDataForComponent';
-import Alert from '../../lib/Alert';
+import Alert from '../../lib/components/Alert';
 import { REJECTED } from '../../../../common/propositionStatus';
 import { field as fieldPropTypes, polyglot as polyglotPropTypes } from '../../propTypes';
 import fetchIstexData from './fetchIstexData';

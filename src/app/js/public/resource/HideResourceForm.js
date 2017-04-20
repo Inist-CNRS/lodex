@@ -10,8 +10,8 @@ import {
     HIDE_RESOURCE_FORM_NAME,
 } from './';
 
-import FormTextField from '../../lib/FormTextField';
-import Alert from '../../lib/Alert';
+import FormTextField from '../../lib/components/FormTextField';
+import Alert from '../../lib/components/Alert';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { fromResource } from '../selectors';
 

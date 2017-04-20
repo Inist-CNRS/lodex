@@ -9,7 +9,7 @@ import {
     publishWarn,
 } from './';
 import { getPublishRequest, getVerifyUriRequest } from '../../fetch/';
-import fetchSaga from '../../lib/fetchSaga';
+import fetchSaga from '../../lib/sagas/fetchSaga';
 
 export function* handlePublishRequest() {
     const verifyUriRequest = yield select(getVerifyUriRequest);

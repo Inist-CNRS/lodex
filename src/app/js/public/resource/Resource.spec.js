@@ -1,10 +1,9 @@
 import React from 'react';
 import expect from 'expect';
 import { shallow } from 'enzyme';
-import { Link } from 'react-router';
 import FlatButton from 'material-ui/FlatButton';
 
-import Loading from '../../lib/Loading';
+import Loading from '../../lib/components/Loading';
 import { ResourceComponent } from './Resource';
 import Detail from './Detail';
 import RemovedDetail from './RemovedDetail';

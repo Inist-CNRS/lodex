@@ -2,7 +2,7 @@ import { call, takeEvery, select, put } from 'redux-saga/effects';
 
 import { LOAD_EXPORTERS, loadExportersError, loadExportersSuccess } from '../';
 import { getLoadExportersRequest } from '../../../fetch';
-import fetchSaga from '../../../lib/fetchSaga';
+import fetchSaga from '../../../lib/sagas/fetchSaga';
 
 export function* handleLoadExporters() {
     const request = yield select(getLoadExportersRequest);

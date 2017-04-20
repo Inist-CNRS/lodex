@@ -2,7 +2,7 @@ import React from 'react';
 import expect from 'expect';
 import { shallow } from 'enzyme';
 
-import Loading from '../lib/Loading';
+import Loading from '../lib/components/Loading';
 import ParsingResult from './parsing/ParsingResult';
 import Upload from './upload/Upload';
 import { AdminComponent } from './Admin';

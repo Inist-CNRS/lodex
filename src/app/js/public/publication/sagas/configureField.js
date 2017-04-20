@@ -8,7 +8,7 @@ import {
     loadPublication,
 } from '../';
 import { getUpdateFieldRequest } from '../../../fetch';
-import fetchSaga from '../../../lib/fetchSaga';
+import fetchSaga from '../../../lib/sagas/fetchSaga';
 
 export function* handleSaveFieldRequest() {
     const formData = yield select(getFieldFormData);

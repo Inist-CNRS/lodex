@@ -7,7 +7,7 @@ import {
 } from './';
 import { PUBLISH_SUCCESS } from '../publish';
 import { getLoadPublicationRequest } from '../../fetch';
-import fetchSaga from '../../lib/fetchSaga';
+import fetchSaga from '../../lib/sagas/fetchSaga';
 
 export function* handleLoadPublicationRequest() {
     const request = yield select(getLoadPublicationRequest);

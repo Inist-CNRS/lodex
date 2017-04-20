@@ -7,7 +7,7 @@ import {
 } from '../';
 
 import { fromFields } from '../../selectors';
-import fetchSaga from '../../../lib/fetchSaga';
+import fetchSaga from '../../../lib/sagas/fetchSaga';
 import { getRemoveFieldRequest } from '../../../fetch/';
 
 export function* handleRemoveField({ payload: name }) {

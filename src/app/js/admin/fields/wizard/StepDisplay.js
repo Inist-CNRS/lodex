@@ -5,7 +5,7 @@ import { Field, change, getFormValues } from 'redux-form';
 import { connect } from 'react-redux';
 
 import Step from './Step';
-import FormCheckboxField from '../../../lib/FormCheckboxField';
+import FormCheckboxField from '../../../lib/components/FormCheckboxField';
 import PositionField from '../PositionField';
 import Format from '../../FormatEdition';
 import { polyglot as polyglotPropTypes, field as fieldPropTypes } from '../../../propTypes';
@@ -49,7 +49,9 @@ export class StepDisplayComponent extends Component {
 }
 
 StepDisplayComponent.propTypes = {
+    transformers: PropTypes.arrayOf(PropTypes.object).isRequired,
     field: fieldPropTypes.isRequired,
+    format: PropTypes.object, // eslint-disable-line
     p: polyglotPropTypes.isRequired,
     updateField: PropTypes.func.isRequired,
 };

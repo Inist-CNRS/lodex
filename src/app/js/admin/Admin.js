@@ -11,8 +11,8 @@ import ParsingResult from './parsing/ParsingResult';
 import PublicationPreview from './preview/publication/PublicationPreview';
 import Published from './publish/Published';
 import Upload from './upload/Upload';
-import Loading from '../lib/Loading';
-import Card from '../lib/Card';
+import Loading from '../lib/components/Loading';
+import Card from '../lib/components/Card';
 import Statistics from './Statistics';
 
 const styles = {
