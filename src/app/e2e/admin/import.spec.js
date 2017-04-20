@@ -34,7 +34,7 @@ describe('Admin', () => {
                 const csvPath = path.resolve(__dirname, './linked_sample_csv.CSV');
                 const input = await driver.findElement(By.css('input[name=file]'));
                 await input.sendKeys(csvPath);
-                await driver.wait(until.elementLocated(By.css('.parsingResult')), DEFAULT_WAIT_TIMEOUT);
+                await driver.wait(until.elementLocated(By.css('.parsingResult')));
             });
         });
 
