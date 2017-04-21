@@ -223,9 +223,12 @@ describe('publish', () => {
         });
     });
 
-    describe('tranformAllDocuments', () => {
-        const dataset = [{ foo: 'foo1', bar: 'bar1' }, { foo: 'foo2', bar: 'bar2' }];
-        const count = 201;
+    describe.only('tranformAllDocuments', () => {
+        const dataset = {
+            length: 1000,
+            map: createSpy().andReturn(['transformed dataset']),
+        };
+        const count = 2001;
         const findLimitFromSkip = createSpy().andReturn(dataset);
         const insertBatch = createSpy();
         const transformDocument = createSpy().andReturn(Promise.resolve('transformedDocument'));
@@ -235,17 +238,16 @@ describe('publish', () => {
         });
         it('should load items from the original dataset and insert them in the publishedDataset by page of 100', () => {
             expect(findLimitFromSkip).toHaveBeenCalledWith(1000, 0);
-            expect(findLimitFromSkip).toHaveBeenCalledWith(1000, 200);
-            expect(insertBatch).toHaveBeenCalledWith(['transformedDocument', 'transformedDocument']);
+            expect(findLimitFromSkip).toHaveBeenCalledWith(1000, 1000);
+            expect(findLimitFromSkip).toHaveBeenCalledWith(1000, 2000);
         });
 
-        it('should call transform document with each document in dataset', () => {
-            expect(transformDocument).toHaveBeenCalledWith(dataset[0], 0, dataset);
-            expect(transformDocument).toHaveBeenCalledWith(dataset[1], 1, dataset);
+        it('should map dataset to transformDocument', () => {
+            expect(dataset.map).toHaveBeenCalledWith(transformDocument);
         });
 
         it('should insert all transformedDocument', () => {
-            expect(insertBatch).toHaveBeenCalledWith(['transformedDocument', 'transformedDocument']);
+            expect(insertBatch).toHaveBeenCalledWith(['transformed dataset']);
         });
     });
 
