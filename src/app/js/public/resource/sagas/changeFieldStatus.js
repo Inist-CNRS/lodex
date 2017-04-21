@@ -8,8 +8,6 @@ import {
 import { getChangeFieldStatusRequest } from '../../../fetch';
 import fetchSaga from '../../../lib/sagas/fetchSaga';
 
-export const parsePathName = pathname => pathname.match(/^(\/resource)(\/ark:\/)?(.*?$)/) || [];
-
 export function* handleChangeFieldStatus({ payload: { uri, field, status, prevStatus } }) {
     const request = yield select(getChangeFieldStatusRequest, {
         uri,

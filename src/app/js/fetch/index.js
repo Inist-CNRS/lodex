@@ -141,14 +141,13 @@ export const getLoadPublicationRequest = state =>
 
 export const getLoadResourceRequest = (state, uri) =>
     getRequest(state, {
-        url: `/api/ark?uri=${encodeURIComponent(uri)}`,
-
+        url: `/api/publishedDataset/ark?uri=${encodeURIComponent(uri)}`,
     });
 
 export const getSaveResourceRequest = (state, resource) =>
     getRequest(state, {
         url: '/api/publishedDataset',
-        method: 'POST',
+        method: 'PUT',
         body: resource,
     });
 
@@ -163,13 +162,13 @@ export const getHideResourceRequest = (state, data) =>
 export const getAddFieldToResourceRequest = (state, data) =>
     getRequest(state, {
         url: '/api/publishedDataset/add_field',
-        method: 'POST',
+        method: 'PUT',
         body: data,
     });
 
 export const getCreateResourceRequest = (state, data) =>
     getRequest(state, {
-        url: '/api/publishedDataset/create_resource',
+        url: '/api/publishedDataset',
         method: 'POST',
         body: data,
     });
@@ -189,7 +188,7 @@ export const getLoadContributedResourcePageRequest = (state, { page, perPage, fi
     const encodedPerPage = encodeURIComponent(perPage);
 
     return getRequest(state, {
-        url: `/api/publishedDataset/contributed/${filter}?page=${encodedPage}&perPage=${encodedPerPage}`,
+        url: `/api/publishedDataset/${filter}?page=${encodedPage}&perPage=${encodedPerPage}`,
     });
 };
 

@@ -17,7 +17,6 @@ import publication from './publication';
 import publish from './publish';
 import publishedDataset from './publishedDataset';
 import upload from './upload';
-import ark from './ark';
 import widget from './widget';
 
 const app = new Koa();
@@ -30,7 +29,6 @@ app.use(mount('/facet', facet));
 app.use(mount('/login', login));
 app.use(mount('/widget', widget));
 app.use(route.get('/publication', publication));
-app.use(route.get('/ark', ark));
 
 app.use(jwt({ secret: auth.cookieSecret, cookie: 'lodex_token', key: 'cookie', passthrough: true }));
 app.use(jwt({ secret: auth.headerSecret, key: 'header', passthrough: true }));

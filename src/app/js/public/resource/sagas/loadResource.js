@@ -23,7 +23,7 @@ export function* handleLoadResource({ payload, type }) {
     if (type === LOCATION_CHANGE) {
         [, ark] = yield call(parsePathName, payload.pathname);
 
-        if (!ark && (!payload.state || !payload.state.uri)) {
+        if (!ark && (!payload.state || !payload.state.uri) && !payload.query.uri) {
             return;
         }
         if (payload && payload.state && payload.state.uri) {

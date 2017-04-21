@@ -9,8 +9,6 @@ import {
 import { getAddFieldToResourceRequest } from '../../../fetch';
 import fetchSaga from '../../../lib/sagas/fetchSaga';
 
-export const parsePathName = pathname => pathname.match(/^(\/resource)(\/ark:\/)?(.*?$)/) || [];
-
 export function* handleAddFieldToResource({ payload: uri }) {
     const formData = yield select(getNewResourceFieldFormData);
     if (!formData.field) {

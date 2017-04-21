@@ -9,8 +9,6 @@ import {
 import { getHideResourceRequest } from '../../../fetch';
 import fetchSaga from '../../../lib/sagas/fetchSaga';
 
-export const parsePathName = pathname => pathname.match(/^(\/resource)(\/ark:\/)?(.*?$)/) || [];
-
 export function* handleHideResource({ payload: uri }) {
     const { reason } = yield select(getHideResourceFormData);
     const request = yield select(getHideResourceRequest, {

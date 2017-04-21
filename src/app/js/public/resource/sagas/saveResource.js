@@ -11,8 +11,6 @@ import { getSaveResourceRequest } from '../../../fetch';
 import fetchSaga from '../../../lib/sagas/fetchSaga';
 import { fromResource } from '../../selectors';
 
-export const parsePathName = pathname => pathname.match(/^(\/resource)(\/ark:\/)?(.*?$)/) || [];
-
 export function* handleSaveResource({ payload: resource }) {
     const oldResource = yield select(fromResource.getResourceLastVersion);
     if (!isEqual(oldResource, resource)) {
