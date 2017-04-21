@@ -3,6 +3,8 @@ import route from 'koa-route';
 import koaBodyParser from 'koa-bodyparser';
 
 import { PROPOSED } from '../../../common/propositionStatus';
+import generateUri from '../../../common/transformers/AUTOGENERATE_URI';
+import ark from './ark';
 
 const app = new Koa();
 
@@ -52,18 +54,6 @@ export const getRemovedPage = async (ctx) => {
     };
 };
 
-export const editResource = async (ctx) => {
-    const newVersion = ctx.request.body;
-    const resource = await ctx.publishedDataset.findByUri(newVersion.uri);
-    if (!resource || resource.removed_at) {
-        ctx.status = 404;
-        ctx.body = 'Document not found';
-        return;
-    }
-
-    ctx.body = await ctx.publishedDataset.addVersion(resource, newVersion);
-};
-
 export const removeResource = async (ctx) => {
     const { uri, reason } = ctx.request.body;
 
@@ -108,10 +98,47 @@ export const getPropositionPage = async (ctx, status = PROPOSED) => {
     };
 };
 
+export const editResource = async (ctx) => {
+    const newVersion = ctx.request.body;
+    const resource = await ctx
+        .publishedDataset
+        .findByUri(newVersion.uri);
+    if (!resource || resource.removed_at) {
+        ctx.status = 404;
+        ctx.body = 'Document not found';
+        return;
+    }
+
+    ctx.body = await ctx
+        .publishedDataset
+        .addVersion(resource, newVersion);
+};
+
+export const createResource = async (ctx) => {
+    const newResource = ctx.request.body;
+    if (!newResource.uri) {
+        newResource.uri = await generateUri()();
+    }
+
+    const resource = await ctx.publishedDataset.findByUri(newResource.uri);
+    if (resource) {
+        ctx.status = 400;
+        ctx.body = 'uri_conflict';
+        return;
+    }
+
+    await ctx.publishedDataset.create(newResource);
+
+    ctx.body = {
+        uri: newResource.uri,
+    };
+};
+
 app.use(koaBodyParser());
 app.use(route.get('/removed', getRemovedPage));
 app.use(route.get('/', getPage));
-app.use(route.post('/add_field', addFieldToResource));
+app.use(route.put('/add_field', addFieldToResource));
+app.use(route.get('/ark', ark));
 app.use(async (ctx, next) => {
     if (!ctx.state.cookie || !ctx.state.header) {
         ctx.status = 401;
@@ -121,10 +148,11 @@ app.use(async (ctx, next) => {
 
     await next();
 });
-app.use(route.post('/', editResource));
+app.use(route.post('/', createResource));
+app.use(route.put('/', editResource));
 app.use(route.put('/restore', restoreResource));
 app.use(route.del('/', removeResource));
-app.use(route.get('/contributed/:status', getPropositionPage));
+app.use(route.get('/:status', getPropositionPage));
 app.use(route.put('/:uri/change_contribution_status/:name/:status', changePropositionStatus));
 
 export default app;

@@ -15,12 +15,12 @@ import PositionInput from './PositionInput';
 
 export const FORM_NAME = 'ONTOLOGY_FIELD_FORM';
 
-const validate = (values) => {
+const validate = (values, { p: polyglot }) => {
     const errors = Object.keys(values).reduce((currentErrors, field) => {
         if (field !== 'position' && values[field] !== false && values[field] !== true) {
             return {
                 ...currentErrors,
-                [field]: 'Required',
+                [field]: polyglot.t('required'),
             };
         }
         return currentErrors;
@@ -67,6 +67,7 @@ const mapDispatchToProps = {
 };
 
 export default compose(
+    translate,
     connect(mapStateToProps, mapDispatchToProps),
     withHandlers({
         onSubmit: ({ onSaveField }) => (values) => {
@@ -81,5 +82,4 @@ export default compose(
         form: FORM_NAME,
         validate,
     }),
-    translate,
 )(EditOntologyFieldFormComponent);

@@ -9,12 +9,12 @@ import { polyglot as polyglotPropTypes } from '../propTypes';
 import { LOGIN_FORM_NAME } from './';
 import Alert from '../lib/components/Alert';
 
-const validate = (values) => {
+const validate = (values, { p: polyglot }) => {
     const errors = ['username', 'password'].reduce((currentErrors, field) => {
         if (!values[field]) {
             return {
                 ...currentErrors,
-                [field]: 'Required',
+                [field]: polyglot.t('required'),
             };
         }
         return currentErrors;
@@ -58,6 +58,7 @@ LoginFormComponent.propTypes = {
 };
 
 export default compose(
+    translate,
     reduxForm({
         form: LOGIN_FORM_NAME,
         validate,
@@ -69,5 +70,4 @@ export default compose(
             }
         },
     }),
-    translate,
 )(LoginFormComponent);

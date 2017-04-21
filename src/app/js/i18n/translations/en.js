@@ -206,4 +206,9 @@ export default {
     navigate_to_published_data: 'Go to my published data',
     moderation: 'Moderation',
     apply: 'Apply',
+    auto_generate_uri: 'Leave empty to autogenerate uri',
+    required: 'Required',
+    invalid_uri: 'Uri must either start with /:uid or /:ark or be a valid url',
+    create_resource: 'Add a new resource to the dataset',
+    uri_conflict: 'A Document already exists with the same uri',
 };

@@ -7,6 +7,7 @@ import {
     editResource,
     removeResource,
     restoreResource,
+    createResource,
 } from './publishedDataset';
 
 describe('publishedDataset', () => {
@@ -187,6 +188,54 @@ describe('publishedDataset', () => {
             await restoreResource(ctx);
 
             expect(ctx.body).toEqual('foo');
+        });
+    });
+
+    describe('createResource', () => {
+        it('should call findByUri with body.uri and create with body', async () => {
+            const ctx = {
+                publishedDataset: {
+                    findByUri: createSpy().andReturn(null),
+                    create: createSpy().andReturn('create result'),
+                },
+                request: {
+                    body: {
+                        uri: 'the uri',
+                        data: 'value',
+                    },
+                },
+            };
+
+            await createResource(ctx);
+
+            expect(ctx.body).toEqual({ uri: 'the uri' });
+            expect(ctx.publishedDataset.findByUri).toHaveBeenCalledWith('the uri');
+            expect(ctx.publishedDataset.create).toHaveBeenCalledWith({
+                uri: 'the uri',
+                data: 'value',
+            });
+        });
+
+        it('should call findByUri with body.uri and return 401 if it found something', async () => {
+            const ctx = {
+                publishedDataset: {
+                    findByUri: createSpy().andReturn('found something'),
+                    create: createSpy().andReturn('create result'),
+                },
+                request: {
+                    body: {
+                        uri: 'the uri',
+                        data: 'value',
+                    },
+                },
+            };
+
+            await createResource(ctx);
+
+            expect(ctx.body).toBe('uri_conflict');
+            expect(ctx.status).toBe(400);
+            expect(ctx.publishedDataset.findByUri).toHaveBeenCalledWith('the uri');
+            expect(ctx.publishedDataset.create).toNotHaveBeenCalled();
         });
     });
 });
