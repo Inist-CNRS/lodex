@@ -4,7 +4,7 @@ import { field as fieldPropTypes } from '../../propTypes';
 
 const UriView = ({ className, linkedResource, resource, field, fields }) => {
     const uri = resource[field.name];
-    let label = resource[field.name];
+    let label;
 
     if (field.format && field.format.args && field.format.args.type) {
         switch (field.format.args.type) {
@@ -21,7 +21,7 @@ const UriView = ({ className, linkedResource, resource, field, fields }) => {
         }
 
         default:
-            label = resource[field.name];
+            label = uri;
             break;
         }
     }
