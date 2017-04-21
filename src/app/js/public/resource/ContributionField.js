@@ -12,8 +12,12 @@ import FormTextField from '../../lib/components/FormTextField';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 
 const required = value => (value ? undefined : 'Required');
-const uniqueField = fields => value =>
-    (fields.find(({ label }) => label === value) ? 'Field already exists' : undefined);
+const uniqueField = (fields, isNewField) => (value) => {
+    if (!isNewField) {
+        return null;
+    }
+    return (fields.find(({ label }) => label === value) ? 'Field already exists' : undefined);
+};
 
 export const AddFieldDetailComponent = ({
     collectionFields,
@@ -28,7 +32,7 @@ export const AddFieldDetailComponent = ({
             name="field.label"
             validate={[
                 required,
-                uniqueField([...documentFields, ...collectionFields]),
+                uniqueField([...documentFields, ...collectionFields], isNewField),
             ]}
             disabled={!isNewField}
             component={FormTextField}
