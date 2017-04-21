@@ -55,7 +55,10 @@ export default async (db) => {
     await collection.createIndex({ uri: 1 }, { unique: true });
 
     collection.insertBatch = documents =>
-        Promise.all(chunk(documents, 100).map(data => collection.insertMany(data)));
+        Promise.all(chunk(documents, 1000).map(data => collection.insertMany(data, {
+            forceServerObjectId: true,
+            w: 1,
+        })));
 
     collection.getFindCursor = (filter, sortBy, sortDir = 'ASC') => {
         let cursor = collection.find(filter);

@@ -6,7 +6,10 @@ export default (db) => {
     const collection = db.collection('uriDataset');
 
     collection.insertBatch = documents =>
-        Promise.all(chunk(documents, 100).map(data => collection.insertMany(data)));
+        Promise.all(chunk(documents, 1000).map(data => collection.insertMany(data, {
+            forceServerObjectId: true,
+            w: 1,
+        })));
 
     collection.findLimitFromSkip = async (limit, skip) => {
         const fields = Object.keys(await collection.findOne()).filter(name => name !== '_id');
