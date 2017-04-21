@@ -9,13 +9,12 @@ import getFieldClassName from '../../lib/getFieldClassName';
 
 export const PositionFieldComponent = ({ field, fields, p: polyglot, ...props }) => {
     const currentFieldIndex = fields.findIndex(f => f.name === field.name);
-
     const fieldItems = fields.map((otherField, index) => (
         otherField.name === field.name
         ? null
         : (
             <MenuItem
-                className={`after_${getFieldClassName(field)}`}
+                className={`after_${getFieldClassName(otherField)}`}
                 key={otherField.name}
                 value={currentFieldIndex < index ? index : index + 1}
                 primaryText={polyglot.t('after_field', { field: otherField.label })}
@@ -28,6 +27,7 @@ export const PositionFieldComponent = ({ field, fields, p: polyglot, ...props })
             name="position"
             component={FormSelectField}
             label={polyglot.t('position')}
+            className="field-position"
             fullWidth
             {...props}
         >

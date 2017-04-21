@@ -107,9 +107,9 @@ describe('Ontology', function homePublishedDataTests() {
         await driver.wait(until.elementLocated(By.css('#field_form')));
         const form = await driver.findElement(By.css('#field_form'));
 
-        await driver.wait(elementIsClicked('.select-position'));
+        await driver.wait(elementIsClicked('.field-position button', DEFAULT_WAIT_TIMEOUT));
         await driver.sleep(1000);
-        await driver.wait(elementIsClicked('.after_uri'));
+        await driver.wait(elementIsClicked('.after_uri', DEFAULT_WAIT_TIMEOUT));
         await driver.sleep(1000);
 
         await driver.wait(elementIsClicked('.configure-field.save', DEFAULT_WAIT_TIMEOUT));
@@ -128,18 +128,11 @@ describe('Ontology', function homePublishedDataTests() {
         await driver.wait(elementIsClicked('.configure-field.email', DEFAULT_WAIT_TIMEOUT));
         await driver.wait(until.elementLocated(By.css('#field_form')));
         const form = driver.findElement(By.css('#field_form'));
-        const fields = await driver.findElements(By.css('#field_form > div'));
-        const listDisplayLabel = await fields[0].findElement(By.css('label'));
-        await driver.wait(elementTextIs(listDisplayLabel, 'Display on list page', DEFAULT_WAIT_TIMEOUT));
-        const listDisplayInput = await fields[0].findElement(By.css('input'));
-        await driver.wait(elementValueIs(listDisplayInput, 'on', DEFAULT_WAIT_TIMEOUT));
 
-        const resourceDisplayLabel = await fields[1].findElement(By.css('label'));
-        await driver.wait(elementTextIs(resourceDisplayLabel, 'Display on resource page', DEFAULT_WAIT_TIMEOUT));
-        const resourceDisplayInput = await fields[1].findElement(By.css('input'));
-        await driver.wait(elementValueIs(resourceDisplayInput, 'on', DEFAULT_WAIT_TIMEOUT));
+        await driver.wait(elementValueIs('.display_in_list input', 'on', DEFAULT_WAIT_TIMEOUT));
+        await driver.wait(elementValueIs('.display_in_resource input', 'on', DEFAULT_WAIT_TIMEOUT));
+        await driver.wait(elementIsClicked('.display_in_list', DEFAULT_WAIT_TIMEOUT));
 
-        await listDisplayInput.click();
         await driver.sleep(500);
         await driver.wait(elementIsClicked('.configure-field.save', DEFAULT_WAIT_TIMEOUT));
         await driver.wait(until.stalenessOf(form, DEFAULT_WAIT_TIMEOUT));
@@ -245,18 +238,11 @@ describe('Ontology', function homePublishedDataTests() {
         await driver.wait(elementIsClicked('.configure-field.best_friend_of', DEFAULT_WAIT_TIMEOUT));
         await driver.wait(until.elementLocated(By.css('#field_form')));
         const form = await driver.findElement(By.css('#field_form'));
-        const fields = await driver.findElements(By.css('#field_form > div'));
-        const listDisplayLabel = await fields[0].findElement(By.css('label'));
-        await driver.wait(elementTextIs(listDisplayLabel, 'Display on list page', DEFAULT_WAIT_TIMEOUT));
-        const listDisplayInput = await fields[0].findElement(By.css('input'));
-        await driver.wait(elementValueIs(listDisplayInput, 'on', DEFAULT_WAIT_TIMEOUT));
 
-        const resourceDisplayLabel = await fields[1].findElement(By.css('label'));
-        await driver.wait(elementTextIs(resourceDisplayLabel, 'Display on resource page', DEFAULT_WAIT_TIMEOUT));
-        const resourceDisplayInput = await fields[1].findElement(By.css('input'));
-        await driver.wait(elementValueIs(resourceDisplayInput, 'on', DEFAULT_WAIT_TIMEOUT));
+        await driver.wait(elementValueIs('.display_in_list input', 'on', DEFAULT_WAIT_TIMEOUT));
+        await driver.wait(elementValueIs('.display_in_resource input', 'on', DEFAULT_WAIT_TIMEOUT));
+        await driver.wait(elementIsClicked('.display_in_resource', DEFAULT_WAIT_TIMEOUT));
 
-        await resourceDisplayInput.click();
         await driver.sleep(500);
         await driver.wait(elementIsClicked('.configure-field.save', DEFAULT_WAIT_TIMEOUT));
         await driver.wait(until.stalenessOf(form, DEFAULT_WAIT_TIMEOUT));
