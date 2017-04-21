@@ -23,7 +23,7 @@ import Widgets from '../Widgets';
 import Share from '../Share';
 import ShareLink from '../ShareLink';
 import SelectVersion from './SelectVersion';
-import { getResourceUri } from '../../../../common/uris';
+import { getFullResourceUri } from '../../../../common/uris';
 
 const styles = {
     container: {
@@ -192,7 +192,7 @@ const mapStateToProps = (state) => {
         resource,
         isSaving: fromResource.isSaving(state),
         fields: fromPublication.getResourceFields(state, resource),
-        sharingUri: getResourceUri(resource, `${window.location.protocol}//${window.location.host}`),
+        sharingUri: getFullResourceUri(resource, `${window.location.protocol}//${window.location.host}`),
         sharingTitle,
     });
 };

@@ -3,7 +3,7 @@ import chunk from 'lodash.chunk';
 import omit from 'lodash.omit';
 import compose from 'lodash.compose';
 import config from 'config';
-import { getResourceUri } from '../../common/uris';
+import { getFullResourceUri } from '../../common/uris';
 
 import { VALIDATED, PROPOSED } from '../../common/propositionStatus';
 
@@ -118,7 +118,7 @@ export default async (db) => {
             .map(resource => (
                 resource.uri.startsWith('http') ? resource : ({
                     ...resource,
-                    uri: getResourceUri(resource, config.host),
+                    uri: getFullResourceUri(resource, config.host),
                 })
             ))
             .stream();

@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react';
 import { Link } from 'react-router';
 import { field as fieldPropTypes } from '../../propTypes';
+import { getResourceUri } from '../../../../common/uris';
 
 const UriView = ({ className, linkedResource, resource, field, fields }) => {
     const uri = resource[field.name];
@@ -26,7 +27,7 @@ const UriView = ({ className, linkedResource, resource, field, fields }) => {
         }
     }
 
-    return <Link className={className} to={`/resource?uri=${encodeURIComponent(uri)}`}>{label}</Link>;
+    return <Link className={className} to={getResourceUri({ uri })}>{label}</Link>;
 };
 
 UriView.propTypes = {
