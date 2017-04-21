@@ -33,7 +33,7 @@ export const AddFieldFormComponent = ({
         <SelectFieldToAdd />
         {
             fieldToAdd ?
-                <ContributionField isNewField={!fieldToAdd.name} />
+                <ContributionField isNewField={!fieldToAdd.name} isLoggedIn={isLoggedIn} />
             : null
         }
     </form>
