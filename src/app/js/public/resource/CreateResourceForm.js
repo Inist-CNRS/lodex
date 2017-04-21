@@ -33,9 +33,9 @@ export const validate = (values, { p: polyglot }) => {
     return errors;
 };
 
-export const CreateResourceFormComponent = ({ fields, error, handleSubmit }) => (
+export const CreateResourceFormComponent = ({ fields, error, handleSubmit, p: polyglot }) => (
     <form id="resource_form" onSubmit={handleSubmit}>
-        {error && <Alert><p>{error}</p></Alert>}
+        {error && <Alert><p>{polyglot.t(error)}</p></Alert>}
         <UriFieldInput />
         {fields.filter(({ name }) => name !== 'uri').map(field => (
             <FieldInput key={field.name} field={field} />

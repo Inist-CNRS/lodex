@@ -118,7 +118,7 @@ export const createResource = async (ctx) => {
     const resource = await ctx.publishedDataset.findByUri(newResource.uri);
     if (resource) {
         ctx.status = 400;
-        ctx.body = 'A Document already exists with the same uri';
+        ctx.body = 'uri_conflict';
         return;
     }
 

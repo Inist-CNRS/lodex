@@ -232,7 +232,7 @@ describe('publishedDataset', () => {
 
             await createResource(ctx);
 
-            expect(ctx.body).toBe('A Document already exists with the same uri');
+            expect(ctx.body).toBe('uri_conflict');
             expect(ctx.status).toBe(400);
             expect(ctx.publishedDataset.findByUri).toHaveBeenCalledWith('the uri');
             expect(ctx.publishedDataset.create).toNotHaveBeenCalled();

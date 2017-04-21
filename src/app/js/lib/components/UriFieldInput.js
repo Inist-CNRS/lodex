@@ -8,7 +8,7 @@ import {
     polyglot as polyglotPropTypes,
 } from '../../propTypes';
 
-export const FieldInputComponent = ({ p: polyglot, input }) => (
+export const UriFieldInputComponent = ({ p: polyglot, input }) => (
     <Field
         key="uri"
         name="uri"
@@ -21,16 +21,16 @@ export const FieldInputComponent = ({ p: polyglot, input }) => (
     />
 );
 
-FieldInputComponent.propTypes = {
+UriFieldInputComponent.propTypes = {
     p: polyglotPropTypes.isRequired,
     input: PropTypes.shape({}),
 };
 
-FieldInputComponent.defaultProps = {
+UriFieldInputComponent.defaultProps = {
     completedField: null,
     input: null,
 };
 
 export default compose(
     translate,
-)(FieldInputComponent);
+)(UriFieldInputComponent);
