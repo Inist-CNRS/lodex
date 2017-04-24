@@ -2,9 +2,14 @@ import React, { PropTypes } from 'react';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
-import { Field } from 'redux-form';
+import { Field, FormSection } from 'redux-form';
 
 import FieldSchemeInput from '../../lib/components/FieldSchemeInput';
+import FieldLabelInput from '../../lib/components/FieldLabelInput';
+import FieldFormatInput from '../../lib/components/FieldFormatInput';
+import FieldIsSearchableInput from '../../lib/components/FieldIsSearchableInput';
+import FieldIsFacetInput from '../../lib/components/FieldIsFacetInput';
+import FieldPositionInput from '../../lib/components/FieldPositionInput';
 import {
     fromPublication,
 } from '../selectors';
@@ -23,25 +28,20 @@ export const AddFieldDetailComponent = ({
     collectionFields,
     documentFields,
     isNewField,
+    isLoggedIn,
     p: polyglot,
 }) => (
 
-    <div>
-        <Field
-            className="field-label"
-            name="field.label"
+    <FormSection name="field">
+        <FieldLabelInput
             validate={[
                 required,
                 uniqueField([...documentFields, ...collectionFields], isNewField),
             ]}
-            disabled={!isNewField}
-            component={FormTextField}
-            label={polyglot.t('fieldLabel')}
-            fullWidth
         />
         <Field
             className="field-value"
-            name="field.value"
+            name="value"
             validate={required}
             component={FormTextField}
             label={polyglot.t('fieldValue')}
@@ -49,10 +49,19 @@ export const AddFieldDetailComponent = ({
         />
         <FieldSchemeInput
             disabled={!isNewField}
-            name="field.scheme"
+            name="scheme"
             className="field-scheme"
         />
-    </div>
+        {isLoggedIn && [
+            <FieldFormatInput />,
+            <FieldIsSearchableInput />,
+            <FieldIsFacetInput />,
+            <FieldPositionInput
+                field={{}}
+                fields={[...documentFields, ...collectionFields]}
+            />,
+        ]}
+    </FormSection>
 );
 
 AddFieldDetailComponent.propTypes = {
@@ -60,6 +69,7 @@ AddFieldDetailComponent.propTypes = {
     documentFields: PropTypes.arrayOf(PropTypes.object).isRequired,
     isNewField: PropTypes.bool.isRequired,
     p: polyglotPropTypes.isRequired,
+    isLoggedIn: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = (state, { isNewField }) => ({
