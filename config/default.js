@@ -14,7 +14,7 @@ const getHost = () => {
 module.exports = {
     port: PORT,
     mongo: {
-        host: 'localhost:27017',
+        host: 'mongo:27017',
         dbName: 'lodex',
     },
     auth: {

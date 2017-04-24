@@ -1,0 +1,20 @@
+version: "2"
+services:
+    api-unit:
+        image: node:7.8.0
+        volumes:
+            - .:/app
+        working_dir: /app
+        environment:
+            NODE_ENV: test
+        command: node_modules/mocha/bin/mocha --require babel-polyfill --compilers="js:babel-core/register" ./src/api/**/*.spec.js ./src/common/**/*.spec.js
+
+    frontend-unit:
+        image: node:7.8.0
+        volumes:
+            - .:/app
+        working_dir: /app
+        environment:
+            NODE_ENV: test
+            BABEL_ENV: browser
+        command: node_modules/mocha/bin/mocha --require babel-polyfill --require='./src/app/js/test.spec.js' --compilers="css:./src/common/tests/webpack-null-compiler,js:babel-core/register" "./src/app/js/**/*.spec.js"

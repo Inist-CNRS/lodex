@@ -61,18 +61,10 @@ npm: ## allow to run dockerized npm command eg make npm 'install koa --save'
 	docker-compose run --rm npm $(COMMAND_ARGS)
 
 test-api-unit: ## Run the API unit tests
-	NODE_ENV=test ./node_modules/.bin/mocha \
-		--require babel-polyfill \
-		--compilers="js:babel-core/register" \
-		"./src/api/**/*.spec.js" \
-		"./src/common/**/*.spec.js"
+	docker-compose -f docker-compose.test.yml run --rm api-unit
 
 test-frontend-unit: ## Run the frontend application unit tests
-	NODE_ENV=test BABEL_ENV=browser ./node_modules/.bin/mocha \
-		--require babel-polyfill \
-		--require='./src/app/js/test.spec.js' \
-		--compilers="css:./src/common/tests/webpack-null-compiler,js:babel-core/register" \
-		"./src/app/js/**/*.spec.js"
+	docker-compose -f docker-compose.test.yml run --rm frontend-unit
 
 test-frontend-functional: ## Run the frontend application functional tests
 	NODE_ENV=test ${MAKE} build-frontend
