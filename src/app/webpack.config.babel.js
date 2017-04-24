@@ -11,6 +11,7 @@ import HtmlWebpackPlugin from 'html-webpack-plugin';
 import CopyWebpackPlugin from 'copy-webpack-plugin';
 import CompressionPlugin from 'compression-webpack-plugin';
 import { resolve } from 'path';
+import { loaderKeys } from '../api/loaders';
 
 const { UglifyJsPlugin } = optimize;
 
@@ -108,6 +109,7 @@ export default {
                 PUBLIC_URL: JSON.stringify(config.host),
                 ISTEX_API_URL: JSON.stringify(config.istexApiUrl),
             },
+            LOADERS: JSON.stringify(loaderKeys),
         }),
         new LoaderOptionsPlugin({
             options: {

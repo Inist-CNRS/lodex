@@ -16,6 +16,7 @@
         "import/no-extraneous-dependencies": "off"
     },
     "globals": {
-        "__DEBUG__": true
+        "__DEBUG__": true,
+        "LOADERS": true
     }
 }

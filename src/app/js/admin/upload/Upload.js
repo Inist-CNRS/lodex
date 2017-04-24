@@ -69,6 +69,7 @@ export const UploadComponent = ({ onFileLoad, error, p: polyglot, ...props }) =>
                     style={styles.input}
                 />
             </RaisedButton>
+            <p>{polyglot.t('supported_format_list')} {LOADERS.join(', ')}</p>
         </div>
     </div>
 );
