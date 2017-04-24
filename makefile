@@ -68,10 +68,18 @@ test-frontend-unit: ## Run the frontend application unit tests
 
 test-frontend-functional: ## Run the frontend application functional tests
 	NODE_ENV=test ${MAKE} build-frontend
-	docker-compose -f docker-compose.e2e.yml up -d mongo
-	sleep 10
 	docker-compose -f docker-compose.e2e.yml run --rm e2e
+
+setup-frontend-functional-debug:
+	docker-compose -f docker-compose.e2e-debug.yml up -d chromedebug hub mongo api
+	@echo "launch vnc viewer and connect to localhost:5900 (password: secret) to access the frontend test environment"
+
+test-frontend-functional-debug: ## Run the frontend application functional tests in debug mode
+	docker-compose -f docker-compose.e2e.yml run --rm e2e
+
+cleanup-test: ## Stop and remove all container used in e2e test
 	docker-compose -f docker-compose.e2e.yml down
+	docker-compose -f docker-compose.e2e-debug.yml down
 
 test: test-frontend-unit test-api-unit test-frontend-functional
 

@@ -3,17 +3,8 @@ language: node_js
 node_js:
     - "7.8.0"
 
-services: mongodb
-
-addons:
-    apt:
-        packages:
-            - google-chrome-stable
-
 env:
     global:
-        - CHROME_BIN="chromium-browser"
-        - DISPLAY=:99.0
         - NODE_ENV=test
 
 dist: trusty
@@ -24,10 +15,7 @@ cache:
 
 before_script:
     - cp ./config/test-dist.js ./config/test.js
-
-before_install:
-    - "/sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :99 -ac -screen 0 1280x1024x16"
-    - sh -e /etc/init.d/xvfb start
+    - docker-compose -f docker-compose.e2e.yml up -d mongo
     - sleep 3
 
 install:
