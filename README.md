@@ -46,6 +46,24 @@ To execute all tests, run the following command:
 make test
 ```
 
+### Debugging frontend test
+
+You will need vnc viewer to access the docker graphical rendering [install here](https://chrome.google.com/webstore/detail/vnc%C2%AE-viewer-for-google-ch/iabmpiboiopbgfabjmgeedhcmjenhbla)
+first run
+```sh
+make setup-frontend-functional-debug
+```
+You will then be able to connect with vnc viewer on port 5900 (the password is secret)
+From here you will be able to launch chrome and access the appli in test environment in `http://api:3010`
+
+To launch the test in debug mode and see them in actions do:
+```sh
+make test-frontend-functional-debug
+```
+You will then see them in vnc viewer
+
+when you are done call `make cleanup test` to stop and remove all docker container used in debug
+
 ## Customizing the public layout
 
 On EzMaster, you can upload one or more files to create your own public layout.
