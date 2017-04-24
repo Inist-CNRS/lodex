@@ -1,6 +1,7 @@
 import html from './html';
 import email from './email';
 import link from './link';
+import trelloTimeline from './trello-timeline';
 import list from './list';
 import uri from './uri';
 import istex from './istex';
@@ -12,6 +13,7 @@ const components = {
     uri,
     email,
     link,
+    trelloTimeline,
     istex,
 };
 
