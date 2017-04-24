@@ -30,8 +30,8 @@ const styles = {
 };
 
 export const FieldSchemeInputComponent = ({
-    name,
     className,
+    name,
     disabled,
     p: polyglot,
     getSchemeSearchRequest,
@@ -62,14 +62,15 @@ export const FieldSchemeInputComponent = ({
 FieldSchemeInputComponent.defaultProps = {
     disabled: false,
     className: null,
+    name: 'scheme',
 };
 
 FieldSchemeInputComponent.propTypes = {
     p: polyglotPropTypes.isRequired,
     getSchemeSearchRequest: PropTypes.func.isRequired,
     getSchemeMenuItemsDataFromResponse: PropTypes.func.isRequired,
-    name: PropTypes.string.isRequired,
     className: PropTypes.string,
+    name: PropTypes.string,
     disabled: PropTypes.bool,
 };
 

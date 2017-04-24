@@ -223,7 +223,7 @@ describe('publish', () => {
         });
     });
 
-    describe.only('tranformAllDocuments', () => {
+    describe('tranformAllDocuments', () => {
         const dataset = {
             length: 1000,
             map: createSpy().andReturn(['transformed dataset']),

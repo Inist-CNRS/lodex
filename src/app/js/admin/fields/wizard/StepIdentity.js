@@ -27,7 +27,7 @@ export const StepIdentityComponent = ({
             <MenuItem value="dataset" primaryText={polyglot.t('cover_dataset')} />
             <MenuItem value="collection" primaryText={polyglot.t('cover_collection')} />
         </Field>
-        <FieldSchemeInput name="scheme" />
+        <FieldSchemeInput />
         <FieldLanguageInput field={field} />
     </Step>
 );

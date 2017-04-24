@@ -12,6 +12,7 @@ import { clear, loadFixtures } from '../../common/tests/fixtures';
 import fixtures from './home_published.json';
 import navigate from './navigate';
 import { inputElementIsFocusable } from '../../common/tests/conditions';
+import sendKeysToInputByName from './sendKeysToInputByName';
 
 describe('Resource page', function homePublishedDataTests() {
     this.timeout(30000);
@@ -85,32 +86,24 @@ describe('Resource page', function homePublishedDataTests() {
         await driver.wait(until.elementLocated(By.css('.detail')), DEFAULT_WAIT_TIMEOUT);
         const form = driver.findElement(By.css('#add_field_resource_form'));
 
-        await driver.wait(until.elementLocated(By.css('.contributor-name input')), DEFAULT_WAIT_TIMEOUT);
-        const contributorName = form.findElement(By.css('.contributor-name input'));
-        contributorName.sendKeys('john');
-
-        const contributorMail = form.findElement(By.css('.contributor-mail input'));
-        contributorMail.sendKeys('john@doe.fr');
+        await sendKeysToInputByName(driver, 'contributor.name', 'john', DEFAULT_WAIT_TIMEOUT);
+        await sendKeysToInputByName(driver, 'contributor.mail', 'john@doe.fr', DEFAULT_WAIT_TIMEOUT);
 
         const selectField = '.select-field';
         await driver.wait(elementIsClicked(selectField), DEFAULT_WAIT_TIMEOUT);
         await driver.sleep(500); // animations
         const newField = '.new';
         await driver.wait(elementIsClicked(newField), DEFAULT_WAIT_TIMEOUT);
+        await driver.wait(until.elementLocated(By.css('#add_field_resource_form')));
         await driver.sleep(500); // animations
 
-        await driver.wait(until.elementLocated(By.css('#add_field_resource_form .field-label input')), DEFAULT_WAIT_TIMEOUT);
-        const fieldLabel = await form.findElement(By.css('#add_field_resource_form .field-label input'));
-        await driver.wait(inputElementIsFocusable(fieldLabel, true), DEFAULT_WAIT_TIMEOUT);
-        fieldLabel.sendKeys('my contribution');
+        await sendKeysToInputByName(driver, 'field.label', 'my contribution', DEFAULT_WAIT_TIMEOUT);
 
         const fieldScheme = await form.findElement(By.css('#add_field_resource_form .field-scheme input'));
         await driver.wait(inputElementIsFocusable(fieldScheme, true), DEFAULT_WAIT_TIMEOUT);
         fieldScheme.sendKeys('http://vocab/field');
 
-        const fieldValue = await form.findElement(By.css('#add_field_resource_form .field-value input'));
-        await driver.wait(inputElementIsFocusable(fieldValue, true), DEFAULT_WAIT_TIMEOUT);
-        fieldValue.sendKeys('my value');
+        await sendKeysToInputByName(driver, 'field.value', 'my value', DEFAULT_WAIT_TIMEOUT);
 
         const addFieldButton = '.add-field-resource.save';
         await driver.wait(elementIsClicked(addFieldButton), DEFAULT_WAIT_TIMEOUT);

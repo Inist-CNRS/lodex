@@ -7,4 +7,5 @@ export default () => <FieldInput
     name="label"
     component={FormTextField}
     labelKey="fieldLabel"
+    fullWidth
 />;

@@ -2,47 +2,37 @@ import React from 'react';
 import compose from 'recompose/compose';
 import withHandlers from 'recompose/withHandlers';
 import withProps from 'recompose/withProps';
-import translate from 'redux-polyglot/translate';
-import { reduxForm, Field, propTypes as reduxFormPropTypes } from 'redux-form';
+import { reduxForm, propTypes as reduxFormPropTypes } from 'redux-form';
 import { connect } from 'react-redux';
 
 import Alert from '../lib/components/Alert';
 import { polyglot as polyglotPropTypes } from '../propTypes';
-import FormCheckboxField from '../lib/components/FormCheckboxField';
 import { configureField } from './publication';
 import { fromPublication } from './selectors';
-import PositionInput from './PositionInput';
+import FieldLabelInput from '../lib/components/FieldLabelInput';
+import FieldSchemeInput from '../lib/components/FieldSchemeInput';
+import FieldLanguageInput from '../lib/components/FieldLanguageInput';
+import FieldPositionInput from '../lib/components/FieldPositionInput';
+import FieldFormatInput from '../lib/components/FieldFormatInput';
+import FieldDisplayInListInput from '../lib/components/FieldDisplayInListInput';
+import FieldDisplayInResourceInput from '../lib/components/FieldDisplayInResourceInput';
+import FieldIsSearchableInput from '../lib/components/FieldIsSearchableInput';
+import FieldIsFacetInput from '../lib/components/FieldIsFacetInput';
 
 export const FORM_NAME = 'ONTOLOGY_FIELD_FORM';
 
-const validate = (values, { p: polyglot }) => {
-    const errors = Object.keys(values).reduce((currentErrors, field) => {
-        if (field !== 'position' && values[field] !== false && values[field] !== true) {
-            return {
-                ...currentErrors,
-                [field]: polyglot.t('required'),
-            };
-        }
-        return currentErrors;
-    }, {});
-
-    return errors;
-};
-
-export const EditOntologyFieldFormComponent = ({ field, fields, publicationError, handleSubmit, p: polyglot }) => (
+export const EditOntologyFieldFormComponent = ({ field, fields, publicationError, handleSubmit }) => (
     <form id="field_form" onSubmit={() => handleSubmit()}>
         {publicationError && <Alert><p>{publicationError}</p></Alert>}
-        <Field
-            name="display_in_list"
-            component={FormCheckboxField}
-            label={polyglot.t('field_display_in_list')}
-        />
-        <Field
-            name="display_in_resource"
-            component={FormCheckboxField}
-            label={polyglot.t('field_display_in_resource')}
-        />
-        <PositionInput field={field} fields={fields} />
+        <FieldLabelInput />
+        <FieldSchemeInput />
+        <FieldLanguageInput field={field} />
+        <FieldDisplayInListInput />
+        <FieldDisplayInResourceInput />
+        <FieldPositionInput field={field} fields={fields} />
+        <FieldFormatInput />
+        <FieldIsSearchableInput />
+        <FieldIsFacetInput />
     </form>
 );
 
@@ -67,7 +57,6 @@ const mapDispatchToProps = {
 };
 
 export default compose(
-    translate,
     connect(mapStateToProps, mapDispatchToProps),
     withHandlers({
         onSubmit: ({ onSaveField }) => (values) => {
@@ -80,6 +69,5 @@ export default compose(
     })),
     reduxForm({
         form: FORM_NAME,
-        validate,
     }),
 )(EditOntologyFieldFormComponent);
