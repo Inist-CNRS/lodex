@@ -33,7 +33,7 @@ describe('<UriColumn />', () => {
 
     const link = wrapper.find(Link);
     it('renders a Link with correct href', () => {
-        expect(link.prop('to')).toEqual('http://localhost/an_uri');
+        expect(link.prop('to')).toEqual('/uid:/an_uri');
     });
 
     it('renders a Link with correct text', () => {

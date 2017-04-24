@@ -27,7 +27,7 @@ import {
 
 import { fromContributedResources, fromFields } from '../selectors';
 import propositionStatus from '../../../../common/propositionStatus';
-import { getResourceUri } from '../../../../common/uris';
+import { getFullResourceUri } from '../../../../common/uris';
 
 const styles = {
     table: {
@@ -104,7 +104,7 @@ export class ContributedResourceListComponent extends Component {
                                 <TableRow key={data.uri}>
                                     <TableRowColumn key="review">
                                         <a
-                                            href={getResourceUri(data, baseUri)}
+                                            href={getFullResourceUri(data, baseUri)}
                                         >
                                             <FlatButton
                                                 className="btn-review-resource"
