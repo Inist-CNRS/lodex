@@ -5,11 +5,12 @@ import { clear } from '../../../common/tests/fixtures';
 import { inputElementIsFocusable } from '../../../common/tests/conditions';
 import navigate from '../navigate';
 
-describe('Admin', function adminTests() {
+describe.only('Admin', function adminTests() {
     this.timeout(30000);
     const DEFAULT_WAIT_TIMEOUT = 19000; // A bit less than mocha's timeout to get explicit errors from selenium
 
     before(async () => {
+        await navigate('/');
         await driver.executeScript('localStorage.clear();');
         await driver.executeScript('sessionStorage.clear();');
         await clear();

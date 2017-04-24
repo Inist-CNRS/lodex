@@ -3,7 +3,7 @@ const PORT = 3010;
 module.exports = {
     port: PORT,
     mongo: {
-        host: 'localhost:27017',
+        host: 'mongo:27017',
         dbName: 'lodex_test',
     },
     auth: {
@@ -16,5 +16,5 @@ module.exports = {
         delimiter: ';',
     },
     buildFrontend: false,
-    host: `http://localhost:${PORT}`,
+    host: `http://api:${PORT}`,
 };

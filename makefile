@@ -68,12 +68,10 @@ test-frontend-unit: ## Run the frontend application unit tests
 
 test-frontend-functional: ## Run the frontend application functional tests
 	NODE_ENV=test ${MAKE} build-frontend
-	NODE_ENV=test SELENIUM_BROWSER_BINARY_PATH="./node_modules/selenium-standalone/.selenium/chromedriver/2.29-x64-chromedriver" \
-		./node_modules/.bin/mocha \
-		--require babel-polyfill \
-		--compilers="js:babel-core/register" \
-		--recursive \
-		"./src/app/e2e/**/*.spec.js"
+	docker-compose -f docker-compose.e2e.yml up -d mongo
+	sleep 10
+	docker-compose -f docker-compose.e2e.yml run --rm e2e
+	docker-compose -f docker-compose.e2e.yml down
 
 test: test-frontend-unit test-api-unit test-frontend-functional
 

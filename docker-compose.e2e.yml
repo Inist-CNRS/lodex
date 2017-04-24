@@ -1,0 +1,50 @@
+version: "2"
+
+services:
+    hub:
+        image: selenium/hub:3.4.0
+
+
+    chrome:
+        image: selenium/node-chrome:3.4.0
+        volumes:
+            - .:/app
+        working_dir: /app
+        links:
+            - hub
+            - api
+        environment:
+            HUB_PORT_4444_TCP_ADDR: hub
+            HUB_PORT_4444_TCP_PORT: 4444
+
+    api:
+        image: node:7.8.0
+        volumes:
+            - .:/app
+        working_dir: /app
+        environment:
+            NODE_APP_INSTANCE: test
+            NODE_ENV: test
+            no_proxy: "localhost,127.0.0.1,"
+        links:
+            - mongo
+        command: node --harmony-async-await --require babel-register ./src/api
+
+    mongo:
+        image: mongo:3.0.14
+        command: "--smallfiles"
+
+    e2e:
+        image: node:7.8.0
+        volumes:
+            - .:/app
+        working_dir: /app
+        links:
+            - hub
+            - chrome
+        depends_on:
+            - hub
+        environment:
+            NODE_ENV: test
+            SELENIUM_BROWSER_BINARY_PATH: ./node_modules/selenium-standalone/.selenium/chromedriver/2.29-x64-chromedriver
+        command: ./node_modules/.bin/mocha --require babel-polyfill --compilers="js:babel-core/register" --recursive "./src/app/e2e/**/*.spec.js"
