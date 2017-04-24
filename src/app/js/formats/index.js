@@ -1,22 +1,25 @@
-import html from './html';
+import chart from './chart';
 import email from './email';
+import html from './html';
 import image from './image';
+import istex from './istex';
 import link from './link';
 import list from './list';
-import chart from './chart';
 import uri from './uri';
-import istex from './istex';
+import trelloTimeline from './trello-timeline';
+
 import DefaultFormat from './DefaultFormat';
 
 const components = {
-    html,
-    list,
-    uri,
-    email,
-    image,
-    link,
     chart,
+    email,
+    html,
+    image,
     istex,
+    link,
+    list,
+    trelloTimeline,
+    uri,
 };
 
 export const FORMATS = Object.keys(components);
