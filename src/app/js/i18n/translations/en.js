@@ -211,4 +211,5 @@ export default {
     invalid_uri: 'Uri must either start with /:uid or /:ark or be a valid url',
     create_resource: 'Add a new resource to the dataset',
     uri_conflict: 'A Document already exists with the same uri',
+    supported_format_list: 'List of supported file format:',
 };
