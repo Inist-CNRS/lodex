@@ -6,7 +6,7 @@ import {
     getNewResourceFieldFormData,
     ADD_FIELD_TO_RESOURCE,
 } from '../';
-import { getAddFieldToResourceRequest } from '../../../fetch';
+import { fromUser } from '../../../sharedSelectors';
 import fetchSaga from '../../../lib/sagas/fetchSaga';
 
 export function* handleAddFieldToResource({ payload: uri }) {
@@ -15,7 +15,7 @@ export function* handleAddFieldToResource({ payload: uri }) {
         yield put(addFieldToResourceError(new Error('You need to select a field or create a new one')));
         return;
     }
-    const request = yield select(getAddFieldToResourceRequest, {
+    const request = yield select(fromUser.getAddFieldToResourceRequest, {
         ...formData,
         uri,
     });

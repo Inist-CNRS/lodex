@@ -2,12 +2,12 @@ import App from './App';
 import Admin from './Admin';
 import ContributedResourcePage from './contributedResources/ContributedResourcePage';
 import RemovedResourcePage from './removedResources/RemovedResourcePage';
-import { isLoggedIn as selectIsLoggedIn } from '../user';
+import { fromUser } from '../sharedSelectors';
 import userRoutes from '../user/routes';
 
 export const onEnterWithAuthenticationCheck = store => (nextState, replaceState) => {
     const state = store.getState();
-    const isLoggedIn = selectIsLoggedIn(state);
+    const isLoggedIn = fromUser.isLoggedIn(state);
 
     if (!isLoggedIn) {
         replaceState({ pathname: '/login', state: { nextPathname: nextState.location.pathname } });

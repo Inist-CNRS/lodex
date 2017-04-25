@@ -13,7 +13,7 @@ import {
 import Alert from '../../lib/components/Alert';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import SelectFieldToAdd from './SelectFieldToAdd';
-import { isLoggedIn as getIsLoggedIn } from '../../user';
+import { fromUser } from '../../sharedSelectors';
 import Contributor from './Contributor';
 import ContributionField from './ContributionField';
 import {
@@ -59,7 +59,7 @@ const mapStateToProps = state => ({
         ...getNewResourceFieldFormData(state),
         field: fromPublication.getFieldToAdd(state),
     },
-    isLoggedIn: getIsLoggedIn(state),
+    isLoggedIn: fromUser.isLoggedIn(state),
 });
 
 const mapDispatchToProps = {

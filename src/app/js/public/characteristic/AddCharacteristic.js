@@ -11,10 +11,10 @@ import {
     addCharacteristicCancel,
 } from './';
 import ButtonWithDialog from '../../lib/components/ButtonWithDialog';
-import { isLoggedIn } from '../../user';
+import { fromUser } from '../../sharedSelectors';
 
 const mapStateToProps = (state, { p }) => ({
-    show: isLoggedIn(state),
+    show: fromUser.isLoggedIn(state),
     open: fromCharacteristic.isAdding(state),
     saving: fromCharacteristic.isSaving(state),
     form: <AddCharacteristicForm />,

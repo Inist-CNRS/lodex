@@ -9,7 +9,7 @@ import {
 } from '../';
 import { loadPublication } from '../../publication';
 import fetchSaga from '../../../lib/sagas/fetchSaga';
-import { getLoadResourceRequest } from '../../../fetch';
+import { fromUser } from '../../../sharedSelectors';
 import { handleLoadResource, parsePathName } from './loadResource';
 
 describe('resource saga', () => {
@@ -41,7 +41,7 @@ describe('resource saga', () => {
             saga.next();
             saga.next([null, 'ark']);
             const next = saga.next();
-            expect(next.value).toEqual(select(getLoadResourceRequest, 'ark'));
+            expect(next.value).toEqual(select(fromUser.getLoadResourceRequest, 'ark'));
         });
 
         it('should select getLoadResourceRequest with uri returned from state', () => {
@@ -57,7 +57,7 @@ describe('resource saga', () => {
             saga.next();
             saga.next([]);
             const next = saga.next();
-            expect(next.value).toEqual(select(getLoadResourceRequest, 'uri'));
+            expect(next.value).toEqual(select(fromUser.getLoadResourceRequest, 'uri'));
         });
 
         it('should call fetchSaga with returned request', () => {

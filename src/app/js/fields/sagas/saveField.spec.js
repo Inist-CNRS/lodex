@@ -8,7 +8,7 @@ import {
     saveFieldError,
     loadField,
 } from '../';
-import { getSaveFieldRequest } from '../../fetch';
+import { fromUser } from '../../sharedSelectors';
 
 import {
     handleSaveField,
@@ -29,7 +29,7 @@ describe('fields saga', () => {
 
         it('should select getSaveFieldRequest', () => {
             expect(saga.next('sanitized field form data').value)
-                .toEqual(select(getSaveFieldRequest, 'sanitized field form data'));
+                .toEqual(select(fromUser.getSaveFieldRequest, 'sanitized field form data'));
         });
 
         it('should call fetchSaga with the request', () => {

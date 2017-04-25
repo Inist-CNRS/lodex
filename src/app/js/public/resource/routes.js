@@ -1,9 +1,9 @@
 import Resource from './Resource';
-import { isLoggedIn as selectIsLoggedIn } from '../../user';
+import { fromUser } from '../../sharedSelectors';
 
 export const onEnterWithAuthenticationCheck = store => (nextState, replaceState) => {
     const state = store.getState();
-    const isLoggedIn = selectIsLoggedIn(state);
+    const isLoggedIn = fromUser.isLoggedIn(state);
 
     if (!isLoggedIn) {
         replaceState({

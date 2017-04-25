@@ -7,12 +7,12 @@ import {
     loadContributedResourcePageError,
 } from './';
 import fetchSaga from '../../lib/sagas/fetchSaga';
-import { getLoadContributedResourcePageRequest } from '../../fetch/';
+import { fromUser } from '../../sharedSelectors';
 import { fromContributedResources } from '../selectors';
 
 export function* handleLoadContributedResourcePageRequest() {
     const data = yield select(fromContributedResources.getRequestData);
-    const request = yield select(getLoadContributedResourcePageRequest, data);
+    const request = yield select(fromUser.getLoadContributedResourcePageRequest, data);
     const { error, response } = yield call(fetchSaga, request);
 
     if (error) {

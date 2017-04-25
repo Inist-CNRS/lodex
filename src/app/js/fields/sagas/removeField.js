@@ -6,13 +6,12 @@ import {
     removeFieldSuccess,
 } from '../';
 
-import { fromFields } from '../../admin/selectors';
+import { fromFields, fromUser } from '../../sharedSelectors';
 import fetchSaga from '../../lib/sagas/fetchSaga';
-import { getRemoveFieldRequest } from '../../fetch/';
 
 export function* handleRemoveField({ payload: name }) {
     const field = yield select(fromFields.getFieldByName, name);
-    const request = yield select(getRemoveFieldRequest, field);
+    const request = yield select(fromUser.getRemoveFieldRequest, field);
 
     const { error } = yield call(fetchSaga, request);
 

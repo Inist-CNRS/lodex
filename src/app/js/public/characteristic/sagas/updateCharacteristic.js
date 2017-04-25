@@ -5,11 +5,11 @@ import {
     updateCharacteristicsError,
     updateCharacteristicsSuccess,
 } from '../';
-import { getUpdateCharacteristicsRequest } from '../../../fetch/';
+import { fromUser } from '../../../sharedSelectors';
 import fetchSaga from '../../../lib/sagas/fetchSaga';
 
 export function* handleUpdateCharacteristics({ payload }) {
-    const request = yield select(getUpdateCharacteristicsRequest, payload);
+    const request = yield select(fromUser.getUpdateCharacteristicsRequest, payload);
     const { error, response } = yield call(fetchSaga, request);
 
     if (error) {

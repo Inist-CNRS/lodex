@@ -15,7 +15,7 @@ import ModerateButton from './ModerateButton';
 import { changeFieldStatus } from './resource';
 import PropertyContributor from './PropertyContributor';
 import PropertyLinkedFields from './PropertyLinkedFields';
-import { isLoggedIn } from '../user';
+import { fromUser } from '../sharedSelectors';
 import EditField from './EditField';
 import getFieldClassName from '../lib/getFieldClassName';
 import Format from './Format';
@@ -160,7 +160,7 @@ PropertyComponent.defaultProps = {
 };
 
 const mapStateToProps = (state, { field }) => ({
-    loggedIn: isLoggedIn(state),
+    loggedIn: fromUser.isLoggedIn(state),
     fieldStatus: fromResource.getFieldStatus(state, field),
 });
 

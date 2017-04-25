@@ -8,7 +8,7 @@ import { fromResource, fromPublication } from './selectors';
 
 import fetchByUri from '../lib/fetchByUri';
 import { field as fieldPropTypes } from '../propTypes';
-import { getToken } from '../user';
+import { fromUser } from '../sharedSelectors';
 
 import { getViewComponent } from '../formats';
 
@@ -74,7 +74,7 @@ FormatComponent.defaultProps = {
 
 const preMapStateToProps = state => ({
     fields: fromPublication.getCollectionFields(state),
-    token: getToken(state),
+    token: fromUser.getToken(state),
 });
 
 const postMapStateToProps = (state, { linkedResource }) => ({

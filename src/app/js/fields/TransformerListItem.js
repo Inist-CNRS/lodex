@@ -9,7 +9,7 @@ import { Field, FieldArray } from 'redux-form';
 import memoize from 'lodash.memoize';
 
 import { polyglot as polyglotPropTypes } from '../propTypes';
-import { fromFields } from '../admin/selectors';
+import { fromFields } from '../sharedSelectors';
 import FormSelectField from '../lib/components/FormSelectField';
 import TransformerArgList from './TransformerArgList';
 import { changeOperation } from './';

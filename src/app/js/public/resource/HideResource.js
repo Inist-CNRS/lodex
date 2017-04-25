@@ -10,13 +10,13 @@ import {
     HIDE_RESOURCE_FORM_NAME,
 } from './';
 import HideResourceForm from './HideResourceForm';
-import { isLoggedIn } from '../../user';
+import { fromUser } from '../../sharedSelectors';
 import ButtonWithDialog from '../../lib/components/ButtonWithDialog';
 
 const mapStateToProps = (state, { p }) => ({
     open: fromResource.isHiding(state),
     saving: fromResource.isSaving(state),
-    show: isLoggedIn(state),
+    show: fromUser.isLoggedIn(state),
     formName: HIDE_RESOURCE_FORM_NAME,
     form: <HideResourceForm />,
     label: p.t('hide'),

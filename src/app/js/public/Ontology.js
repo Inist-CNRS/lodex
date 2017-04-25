@@ -7,7 +7,7 @@ import memoize from 'lodash.memoize';
 
 import { field as fieldPropTypes, polyglot as polyglotPropTypes } from '../propTypes';
 import { fromPublication } from './selectors';
-import { isLoggedIn as getIsLoggedIn } from '../user';
+import { fromUser } from '../sharedSelectors';
 import { languages } from '../../../../config.json';
 import getFieldClassName from '../lib/getFieldClassName';
 import EditOntologyField from './EditOntologyField';
@@ -110,7 +110,7 @@ OntologyComponent.propTypes = {
 
 const mapStateToProps = state => ({
     fields: fromPublication.getFields(state),
-    isLoggedIn: getIsLoggedIn(state),
+    isLoggedIn: fromUser.isLoggedIn(state),
 });
 
 export default compose(

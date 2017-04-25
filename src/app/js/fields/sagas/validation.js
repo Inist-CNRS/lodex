@@ -8,7 +8,7 @@ import {
     SAVE_FIELD_SUCCESS,
 } from '../';
 
-import { fromFields } from '../../admin/selectors';
+import { fromFields } from '../../sharedSelectors';
 
 export function* handleNeedValidation() {
     const fields = yield select(fromFields.getFields);

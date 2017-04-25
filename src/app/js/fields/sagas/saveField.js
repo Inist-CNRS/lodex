@@ -10,7 +10,7 @@ import {
     FIELD_FORM_NAME,
     SAVE_FIELD,
 } from '../';
-import { getSaveFieldRequest } from '../../fetch';
+import { fromUser } from '../../sharedSelectors';
 
 import fetchSaga from '../../lib/sagas/fetchSaga';
 
@@ -35,7 +35,7 @@ export const sanitizeField = (fieldData) => {
 export function* handleSaveField() {
     const fieldData = yield select(getFieldFormData);
     const sanitizedFieldData = yield call(sanitizeField, fieldData);
-    const request = yield select(getSaveFieldRequest, sanitizedFieldData);
+    const request = yield select(fromUser.getSaveFieldRequest, sanitizedFieldData);
     const { error } = yield call(fetchSaga, request);
 
     if (error) {

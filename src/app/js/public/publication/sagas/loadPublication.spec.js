@@ -5,7 +5,7 @@ import {
     loadPublicationError,
     loadPublicationSuccess,
 } from '../';
-import { getLoadPublicationRequest } from '../../../fetch';
+import { fromUser } from '../../../sharedSelectors';
 import fetchSaga from '../../../lib/sagas/fetchSaga';
 
 import { handleLoadPublicationRequest } from './loadPublication';
@@ -15,7 +15,7 @@ describe('publication saga', () => {
         const saga = handleLoadPublicationRequest();
 
         it('should select getLoadPublicationRequest', () => {
-            expect(saga.next().value).toEqual(select(getLoadPublicationRequest));
+            expect(saga.next().value).toEqual(select(fromUser.getLoadPublicationRequest));
         });
 
         it('should call fetchPublication with the request', () => {

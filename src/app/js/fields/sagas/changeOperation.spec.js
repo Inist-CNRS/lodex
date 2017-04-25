@@ -1,7 +1,7 @@
 import expect from 'expect';
 import { call, select } from 'redux-saga/effects';
 
-import { fromFields } from '../../admin/selectors';
+import { fromFields } from '../../sharedSelectors';
 import updateReduxFormArray from '../../lib/sagas/updateReduxFormArray';
 import { handleChangeOperation } from './changeOperation';
 

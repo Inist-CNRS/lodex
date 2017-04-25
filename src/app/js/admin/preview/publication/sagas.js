@@ -1,7 +1,7 @@
 import { call, put, select, takeLatest } from 'redux-saga/effects';
 
 import getDocumentTransformer from '../../../lib/getDocumentTransformer';
-import { getToken } from '../../../user';
+import { fromUser, fromFields } from '../../../sharedSelectors';
 import {
     COMPUTE_PUBLICATION_PREVIEW,
     computePublicationPreviewSuccess,
@@ -12,7 +12,7 @@ import {
     REMOVE_FIELD_SUCCESS,
     SAVE_FIELD_SUCCESS,
 } from '../../../fields';
-import { fromFields, fromParsing } from '../../selectors';
+import { fromParsing } from '../../selectors';
 import {
     LOAD_PARSING_RESULT_SUCCESS,
 } from '../../parsing';
@@ -24,7 +24,7 @@ export function* handleComputePublicationPreview() {
         if (!fields.length || !lines.length) {
             return;
         }
-        const token = yield select(getToken);
+        const token = yield select(fromUser.getToken);
         const transformDocument = yield call(getDocumentTransformer, fields, token);
 
         const preview = yield lines.map(line => call(transformDocument, line));

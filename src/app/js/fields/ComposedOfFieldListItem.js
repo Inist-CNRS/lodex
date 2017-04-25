@@ -7,7 +7,7 @@ import translate from 'redux-polyglot/translate';
 
 import FormSelectField from '../lib/components/FormSelectField';
 import { polyglot as polyglotPropTypes, field as fieldPropTypes } from '../propTypes';
-import { fromFields } from '../admin/selectors';
+import { fromFields } from '../sharedSelectors';
 
 export const ComposedOfFieldListItemComponent = ({ fieldName, availableFields, p: polyglot }) => (
     <Field

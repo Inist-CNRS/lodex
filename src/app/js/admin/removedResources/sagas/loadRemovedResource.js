@@ -6,10 +6,10 @@ import {
     loadRemovedResourcePageError,
 } from '../';
 import fetchSaga from '../../../lib/sagas/fetchSaga';
-import { getLoadRemovedResourcePageRequest } from '../../../fetch/';
+import { fromUser } from '../../../sharedSelectors';
 
 export function* handleLoadRemovedResourcePageRequest({ payload }) {
-    const request = yield select(getLoadRemovedResourcePageRequest, payload);
+    const request = yield select(fromUser.getLoadRemovedResourcePageRequest, payload);
     const { error, response } = yield call(fetchSaga, request);
 
     if (error) {

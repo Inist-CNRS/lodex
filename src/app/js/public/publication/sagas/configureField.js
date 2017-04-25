@@ -7,12 +7,12 @@ import {
     getFieldFormData,
     loadPublication,
 } from '../';
-import { getUpdateFieldRequest } from '../../../fetch';
+import { fromUser } from '../../../sharedSelectors';
 import fetchSaga from '../../../lib/sagas/fetchSaga';
 
 export function* handleSaveFieldRequest() {
     const formData = yield select(getFieldFormData);
-    const request = yield select(getUpdateFieldRequest, formData);
+    const request = yield select(fromUser.getUpdateFieldRequest, formData);
 
     const { error, response: field } = yield call(fetchSaga, request);
 

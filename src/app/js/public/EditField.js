@@ -7,7 +7,7 @@ import EditIcon from 'material-ui/svg-icons/editor/mode-edit';
 
 import EditFieldForm, { FORM_NAME } from './EditFieldForm';
 import { fromResource, fromPublication } from './selectors';
-import { isLoggedIn } from '../user';
+import { fromUser } from '../sharedSelectors';
 import getFieldClassName from '../lib/getFieldClassName';
 import ButtonWithDialog from '../lib/components/ButtonWithDialog';
 import {
@@ -17,7 +17,7 @@ import {
 
 const mapStateToProps = (state, { field, resource, onSaveProperty, style, p }) => ({
     open: fromPublication.isFieldEdited(state, field.name),
-    show: isLoggedIn(state) && fromResource.isLastVersionSelected(state),
+    show: fromUser.isLoggedIn(state) && fromResource.isLastVersionSelected(state),
     saving: fromResource.isSaving(state),
     form: <EditFieldForm
         field={field}

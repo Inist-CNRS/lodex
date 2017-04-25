@@ -6,7 +6,7 @@ import { Stepper } from 'material-ui/Stepper';
 
 import { editField as editFieldAction, saveField as saveFieldAction } from '../';
 import { field as fieldPropTypes } from '../../propTypes';
-import { fromFields } from '../../admin/selectors';
+import { fromFields } from '../../sharedSelectors';
 import StepValue from './StepValue';
 import StepUri from './StepUri';
 import StepTransforms from './StepTransforms';

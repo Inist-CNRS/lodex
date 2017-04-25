@@ -3,7 +3,7 @@ import { select, takeEvery, call } from 'redux-saga/effects';
 import {
     CHANGE_OPERATION,
 } from '../';
-import { fromFields } from '../../admin/selectors';
+import { fromFields } from '../../sharedSelectors';
 import updateReduxFormArray from '../../lib/sagas/updateReduxFormArray';
 
 export function* handleChangeOperation({ payload: { operation, fieldName } }) {

@@ -9,7 +9,7 @@ import {
     loadResourceError,
 } from '../';
 import { loadPublication } from '../../publication';
-import { getLoadResourceRequest } from '../../../fetch';
+import { fromUser } from '../../../sharedSelectors';
 import fetchSaga from '../../../lib/sagas/fetchSaga';
 
 import { fromResource } from '../../selectors';
@@ -41,7 +41,7 @@ export function* handleLoadResource({ payload, type }) {
     }
 
     yield put(loadResource());
-    const request = yield select(getLoadResourceRequest, uri);
+    const request = yield select(fromUser.getLoadResourceRequest, uri);
     const { error, response } = yield call(fetchSaga, request);
 
     if (error) {

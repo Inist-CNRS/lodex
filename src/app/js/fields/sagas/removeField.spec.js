@@ -7,14 +7,10 @@ import {
     removeFieldError,
     removeFieldSuccess,
 } from '../';
-
-import { getRemoveFieldRequest } from '../../fetch/';
-
 import {
     handleRemoveField,
 } from './removeField';
-
-import { fromFields } from '../../admin/selectors';
+import { fromFields, fromUser } from '../../sharedSelectors';
 
 describe('fields saga', () => {
     describe('handleRemoveField', () => {
@@ -25,7 +21,7 @@ describe('fields saga', () => {
         });
 
         it('should select getRemoveFieldRequest', () => {
-            expect(saga.next('field').value).toEqual(select(getRemoveFieldRequest, 'field'));
+            expect(saga.next('field').value).toEqual(select(fromUser.getRemoveFieldRequest, 'field'));
         });
 
         it('should call fetchSaga with the request', () => {

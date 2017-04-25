@@ -11,7 +11,7 @@ import FieldDisplayInListInput from '../../lib/components/FieldDisplayInListInpu
 import FieldDisplayInResourceInput from '../../lib/components/FieldDisplayInResourceInput';
 import { polyglot as polyglotPropTypes, field as fieldPropTypes } from '../../propTypes';
 import { FIELD_FORM_NAME } from '../';
-import { fromFields } from '../../admin/selectors';
+import { fromFields } from '../../sharedSelectors';
 
 export class StepDisplayComponent extends Component {
     componentWillReceiveProps(nextProps) {

@@ -5,9 +5,10 @@ import translate from 'redux-polyglot/translate';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { publish as publishAction } from './';
-import { fromFields, fromPublish, fromPublication } from '../selectors';
+import { fromPublish, fromPublication } from '../selectors';
 import ButtonWithStatus from '../../lib/components/ButtonWithStatus';
 import ConfirmPublication from './ConfirmPublication';
+import { fromFields } from '../../sharedSelectors';
 
 const styles = {
     title: {

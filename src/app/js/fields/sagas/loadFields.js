@@ -12,10 +12,10 @@ import { UPLOAD_FILE_SUCCESS } from '../../admin/upload';
 
 import { IMPORT_FIELDS_SUCCESS } from '../../admin/import';
 
-import { getLoadFieldRequest } from '../../fetch/';
+import { fromUser } from '../../sharedSelectors';
 
 export function* handleLoadField() {
-    const request = yield select(getLoadFieldRequest);
+    const request = yield select(fromUser.getLoadFieldRequest);
 
     const { error, response } = yield call(fetchSaga, request);
 

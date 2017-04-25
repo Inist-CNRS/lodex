@@ -8,7 +8,7 @@ import {
     loadFieldSuccess,
 } from '../';
 
-import { getLoadFieldRequest } from '../../fetch/';
+import { fromUser } from '../../sharedSelectors';
 
 import {
     handleLoadField,
@@ -19,7 +19,7 @@ describe('fields saga', () => {
         const saga = handleLoadField();
 
         it('should select getLoadFieldRequest', () => {
-            expect(saga.next().value).toEqual(select(getLoadFieldRequest));
+            expect(saga.next().value).toEqual(select(fromUser.getLoadFieldRequest));
         });
 
         it('should call fetchSaga with the request', () => {

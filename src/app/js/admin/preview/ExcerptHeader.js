@@ -4,7 +4,7 @@ import translate from 'redux-polyglot/translate';
 import { connect } from 'react-redux';
 import memoize from 'lodash.memoize';
 
-import { fromFields } from '../selectors';
+import { fromFields } from '../../sharedSelectors';
 import { polyglot as polyglotPropTypes, field as fieldPropTypes } from '../../propTypes';
 import getFieldClassName from '../../lib/getFieldClassName';
 import { isLongText, getShortText } from '../../lib/longTexts';
