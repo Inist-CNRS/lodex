@@ -13,13 +13,10 @@ import {
 import Alert from '../../lib/components/Alert';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import SelectFieldToAdd from './SelectFieldToAdd';
-import { fromUser } from '../../sharedSelectors';
+import { fromUser, fromFields } from '../../sharedSelectors';
 import Contributor from './Contributor';
 import ContributionField from './ContributionField';
-import {
-    fromResource,
-    fromPublication,
-} from '../selectors';
+import { fromResource } from '../selectors';
 
 export const AddFieldFormComponent = ({
     resourceError,
@@ -54,10 +51,10 @@ const mapStateToProps = state => ({
     resourceError: fromResource.getError(state),
     resource: fromResource.getResourceLastVersion(state),
     saving: fromResource.isSaving(state),
-    fieldToAdd: fromPublication.getFieldToAdd(state),
+    fieldToAdd: fromFields.getFieldToAdd(state),
     initialValues: {
         ...getNewResourceFieldFormData(state),
-        field: fromPublication.getFieldToAdd(state),
+        field: fromFields.getFieldToAdd(state),
     },
     isLoggedIn: fromUser.isLoggedIn(state),
 });

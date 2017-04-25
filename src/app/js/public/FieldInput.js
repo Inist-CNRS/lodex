@@ -7,8 +7,8 @@ import { Field } from 'redux-form';
 import { getEditionComponent } from '../formats';
 import CompositeFieldInput from './CompositeFieldInput';
 import {
-    fromPublication,
-} from './selectors';
+    fromFields,
+} from '../sharedSelectors';
 
 import {
     field as fieldPropTypes,
@@ -53,7 +53,7 @@ FieldInputComponent.defaultProps = {
 };
 
 const mapStateToProps = (state, { field }) => ({
-    completedField: fromPublication.getCompletedField(state, field),
+    completedField: fromFields.getCompletedField(state, field),
 });
 
 const EditDetailsField = compose(

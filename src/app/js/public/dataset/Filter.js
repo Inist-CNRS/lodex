@@ -10,7 +10,8 @@ import CircularProgress from 'material-ui/CircularProgress';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { applyFilter as applyFilterAction } from './';
-import { fromDataset, fromPublication } from '../selectors';
+import { fromDataset } from '../selectors';
+import { fromFields } from '../../sharedSelectors';
 
 const styles = {
     icon: {
@@ -52,7 +53,7 @@ FilterComponent.propTypes = {
 
 const mapStateToProps = state => ({
     isDatasetLoading: fromDataset.isDatasetLoading(state),
-    hasSearchableFields: fromPublication.hasSearchableFields(state),
+    hasSearchableFields: fromFields.hasSearchableFields(state),
 });
 
 const mapDispatchToProps = ({

@@ -8,10 +8,9 @@ import Card from '../../lib/components/Card';
 
 import { field as fieldProptypes } from '../../propTypes';
 
-import {
-    fromCharacteristic,
-    fromPublication,
-} from '../selectors';
+
+import { fromCharacteristic } from '../selectors';
+import { fromFields } from '../../sharedSelectors';
 
 import DatasetCharacteristicItem from './DatasetCharacteristicItem';
 
@@ -53,7 +52,7 @@ DatasetCharacteristicsView.defaultProps = {
 };
 
 const mapStateToProps = (state) => {
-    const fields = fromPublication.getDatasetFields(state);
+    const fields = fromFields.getDatasetFields(state);
 
     return {
         characteristics: fromCharacteristic.getRootCharacteristics(state, fields),

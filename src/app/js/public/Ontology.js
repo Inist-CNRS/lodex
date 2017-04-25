@@ -6,8 +6,7 @@ import translate from 'redux-polyglot/translate';
 import memoize from 'lodash.memoize';
 
 import { field as fieldPropTypes, polyglot as polyglotPropTypes } from '../propTypes';
-import { fromPublication } from './selectors';
-import { fromUser } from '../sharedSelectors';
+import { fromUser, fromFields } from '../sharedSelectors';
 import { languages } from '../../../../config.json';
 import getFieldClassName from '../lib/getFieldClassName';
 import EditOntologyField from './EditOntologyField';
@@ -109,7 +108,7 @@ OntologyComponent.propTypes = {
 };
 
 const mapStateToProps = state => ({
-    fields: fromPublication.getFields(state),
+    fields: fromFields.getFields(state),
     isLoggedIn: fromUser.isLoggedIn(state),
 });
 

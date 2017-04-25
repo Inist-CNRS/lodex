@@ -3,9 +3,7 @@ import { connect } from 'react-redux';
 import Subheader from 'material-ui/Subheader';
 
 import FieldInput from './FieldInput';
-import {
-    fromPublication,
-} from './selectors';
+import { fromFields } from '../sharedSelectors';
 import {
     field as fieldPropTypes,
 } from '../propTypes';
@@ -42,7 +40,7 @@ CompositeFieldInputComponent.defaultProps = {
 };
 
 const mapStateToProps = (state, { field }) => ({
-    compositeFields: fromPublication.getCompositeFieldsByField(state, field),
+    compositeFields: fromFields.getCompositeFieldsByField(state, field),
 });
 
 const CompositeEditDetailsField = connect(mapStateToProps)(CompositeFieldInputComponent);

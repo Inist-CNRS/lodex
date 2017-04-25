@@ -7,11 +7,8 @@ import HomeIcon from 'material-ui/svg-icons/action/home';
 import { CardText, CardActions } from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
 
-import {
-    fromResource,
-    fromPublication,
-    fromCharacteristic,
-} from '../selectors';
+import { fromResource, fromCharacteristic } from '../selectors';
+import { fromFields } from '../../sharedSelectors';
 import Card from '../../lib/components/Card';
 import Detail from './Detail';
 import RemovedDetail from './RemovedDetail';
@@ -98,8 +95,8 @@ const mapStateToProps = state => ({
     resource: fromResource.getResourceLastVersion(state),
     removed: fromResource.hasBeenRemoved(state),
     characteristics: fromCharacteristic.getCharacteristicsAsResource(state),
-    datasetTitleKey: fromPublication.getDatasetTitleFieldName(state),
-    fields: fromPublication.getFields(state),
+    datasetTitleKey: fromFields.getDatasetTitleFieldName(state),
+    fields: fromFields.getFields(state),
     loading: fromResource.isLoading(state),
 });
 

@@ -6,17 +6,17 @@ import compose from 'recompose/compose';
 import EditIcon from 'material-ui/svg-icons/editor/mode-edit';
 
 import EditFieldForm, { FORM_NAME } from './EditFieldForm';
-import { fromResource, fromPublication } from './selectors';
-import { fromUser } from '../sharedSelectors';
+import { fromResource } from './selectors';
+import { fromUser, fromFields } from '../sharedSelectors';
 import getFieldClassName from '../lib/getFieldClassName';
 import ButtonWithDialog from '../lib/components/ButtonWithDialog';
 import {
     openEditFieldValue,
     closeEditFieldValue,
-} from './publication';
+} from '../fields';
 
 const mapStateToProps = (state, { field, resource, onSaveProperty, style, p }) => ({
-    open: fromPublication.isFieldEdited(state, field.name),
+    open: fromFields.isFieldEdited(state, field.name),
     show: fromUser.isLoggedIn(state) && fromResource.isLastVersionSelected(state),
     saving: fromResource.isSaving(state),
     form: <EditFieldForm

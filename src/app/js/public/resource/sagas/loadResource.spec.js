@@ -7,7 +7,7 @@ import {
     loadResourceSuccess,
     loadResourceError,
 } from '../';
-import { loadPublication } from '../../publication';
+import { loadPublication } from '../../../fields';
 import fetchSaga from '../../../lib/sagas/fetchSaga';
 import { fromUser } from '../../../sharedSelectors';
 import { handleLoadResource, parsePathName } from './loadResource';

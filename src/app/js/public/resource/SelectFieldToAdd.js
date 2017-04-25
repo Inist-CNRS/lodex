@@ -5,8 +5,9 @@ import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 
-import { selectField } from '../publication';
-import { fromPublication, fromResource } from '../selectors';
+import { selectField } from '../../fields';
+import { fromResource } from '../selectors';
+import { fromFields } from '../../sharedSelectors';
 
 import { resource as resourcePropTypes, field as fieldPropTypes, polyglot as polyglotPropTypes } from '../../propTypes';
 
@@ -44,8 +45,8 @@ SelectFieldToAddComponent.propTypes = {
 };
 
 const mapStateToProps = state => ({
-    selectedField: fromPublication.getSelectedField(state),
-    contributionFields: fromPublication.getContributionFields(state),
+    selectedField: fromFields.getSelectedField(state),
+    contributionFields: fromFields.getContributionFields(state),
     resource: fromResource.getResourceLastVersion(state),
 });
 

@@ -6,7 +6,8 @@ import translate from 'redux-polyglot/translate';
 import { CardText } from 'material-ui/Card';
 import Subheader from 'material-ui/Subheader';
 
-import { fromExport, fromPublication } from './selectors';
+import { fromExport } from './selectors';
+import { fromFields } from '../sharedSelectors';
 import { loadExporters as loadExportersAction } from '../public/export';
 import WidgetExportItem from './WidgetExportItem';
 import WidgetsSelectFields from './WidgetsSelectFields';
@@ -71,7 +72,7 @@ WidgetsComponent.defaultProps = {
 };
 
 const mapStateToProps = state => ({
-    fields: fromPublication.getFields(state),
+    fields: fromFields.getFields(state),
     widgets: fromExport.getWidgets(state),
 });
 

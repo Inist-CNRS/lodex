@@ -10,9 +10,7 @@ import FieldFormatInput from '../../lib/components/FieldFormatInput';
 import FieldIsSearchableInput from '../../lib/components/FieldIsSearchableInput';
 import FieldIsFacetInput from '../../lib/components/FieldIsFacetInput';
 import FieldPositionInput from '../../lib/components/FieldPositionInput';
-import {
-    fromPublication,
-} from '../selectors';
+import { fromFields } from '../../sharedSelectors';
 import FormTextField from '../../lib/components/FormTextField';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 
@@ -73,8 +71,8 @@ AddFieldDetailComponent.propTypes = {
 };
 
 const mapStateToProps = (state, { isNewField }) => ({
-    collectionFields: fromPublication.getCollectionFields(state),
-    documentFields: fromPublication.getDocumentFields(state),
+    collectionFields: fromFields.getCollectionFields(state),
+    documentFields: fromFields.getDocumentFields(state),
     isNewField,
 });
 

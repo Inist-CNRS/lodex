@@ -7,18 +7,17 @@ import SettingsIcon from 'material-ui/svg-icons/action/settings';
 import getFieldClassName from '../lib/getFieldClassName';
 
 import EditOntologyFieldForm, { FORM_NAME } from './EditOntologyFieldForm';
-import { fromUser } from '../sharedSelectors';
-import { fromPublication } from './selectors';
+import { fromUser, fromFields } from '../sharedSelectors';
 import ButtonWithDialog from '../lib/components/ButtonWithDialog';
 import {
     configureFieldOpen,
     configureFieldCancel,
-} from './publication';
+} from '../fields';
 
 const mapStateToProps = (state, { field, p }) => ({
-    open: fromPublication.isFieldConfigured(state, field.name),
+    open: fromFields.isFieldConfigured(state, field.name),
     show: fromUser.isLoggedIn(state),
-    saving: fromPublication.isPublicationSaving(state),
+    saving: fromFields.isSaving(state),
     className: classnames('configure-field', getFieldClassName(field)),
     label: p.t('configure_field', { field: field.label }),
     form: <EditOntologyFieldForm field={field} />,

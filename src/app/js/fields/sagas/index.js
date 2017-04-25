@@ -4,6 +4,8 @@ import removeField from './removeField';
 import saveField from './saveField';
 import validation from './validation';
 import changeOperation from './changeOperation';
+import loadPublication from './loadPublication';
+import configureField from './configureField';
 
 export default function* () {
     yield fork(loadFields);
@@ -11,4 +13,6 @@ export default function* () {
     yield fork(saveField);
     yield fork(validation);
     yield fork(changeOperation);
+    yield fork(loadPublication);
+    yield fork(configureField);
 }

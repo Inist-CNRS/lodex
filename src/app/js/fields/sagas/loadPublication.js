@@ -5,8 +5,8 @@ import {
     loadPublicationSuccess,
     loadPublicationError,
 } from '../';
-import { fromUser } from '../../../sharedSelectors';
-import fetchSaga from '../../../lib/sagas/fetchSaga';
+import { fromUser } from '../../sharedSelectors';
+import fetchSaga from '../../lib/sagas/fetchSaga';
 
 export function* handleLoadPublicationRequest() {
     const request = yield select(fromUser.getLoadPublicationRequest);

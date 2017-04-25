@@ -8,7 +8,7 @@ import {
     loadResourceSuccess,
     loadResourceError,
 } from '../';
-import { loadPublication } from '../../publication';
+import { loadPublication } from '../../../fields';
 import { fromUser } from '../../../sharedSelectors';
 import fetchSaga from '../../../lib/sagas/fetchSaga';
 

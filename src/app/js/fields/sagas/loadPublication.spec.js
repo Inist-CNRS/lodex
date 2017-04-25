@@ -5,8 +5,8 @@ import {
     loadPublicationError,
     loadPublicationSuccess,
 } from '../';
-import { fromUser } from '../../../sharedSelectors';
-import fetchSaga from '../../../lib/sagas/fetchSaga';
+import { fromUser } from '../../sharedSelectors';
+import fetchSaga from '../../lib/sagas/fetchSaga';
 
 import { handleLoadPublicationRequest } from './loadPublication';
 

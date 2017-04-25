@@ -7,8 +7,8 @@ import { connect } from 'react-redux';
 
 import Alert from '../lib/components/Alert';
 import { polyglot as polyglotPropTypes } from '../propTypes';
-import { configureField } from './publication';
-import { fromPublication } from './selectors';
+import { configureField } from '../fields';
+import { fromFields } from '../sharedSelectors';
 import FieldLabelInput from '../lib/components/FieldLabelInput';
 import FieldSchemeInput from '../lib/components/FieldSchemeInput';
 import FieldLanguageInput from '../lib/components/FieldLanguageInput';
@@ -48,8 +48,8 @@ EditOntologyFieldFormComponent.propTypes = {
 };
 
 const mapStateToProps = state => ({
-    fields: fromPublication.getFields(state),
-    publicationError: fromPublication.getError(state),
+    fields: fromFields.getFields(state),
+    publicationError: fromFields.getError(state),
 });
 
 const mapDispatchToProps = {

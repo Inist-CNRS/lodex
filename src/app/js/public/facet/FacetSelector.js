@@ -9,7 +9,8 @@ import MenuItem from 'material-ui/MenuItem';
 import { ToolbarGroup } from 'material-ui/Toolbar';
 
 import { field as fieldPropTypes, polyglot as polyglotPropTypes } from '../../propTypes';
-import { fromFacet, fromPublication } from '../selectors';
+import { fromFacet } from '../selectors';
+import { fromFields } from '../../sharedSelectors';
 import { selectFacet } from './index';
 import FacetValueSelector from './FacetValueSelector';
 import getFieldClassName from '../../lib/getFieldClassName';
@@ -95,9 +96,9 @@ FacetSelectorComponent.defaultProps = {
 };
 
 const mapStateToProps = state => ({
-    hasFacetFields: fromPublication.hasFacetFields(state),
+    hasFacetFields: fromFields.hasFacetFields(state),
     selectedFacet: fromFacet.getSelectedFacet(state),
-    fields: fromPublication.getFacetFields(state),
+    fields: fromFields.getFacetFields(state),
 });
 
 const mapDispatchToProps = ({
