@@ -15,7 +15,7 @@ import {
 } from './';
 import {
     getFieldFormData,
-} from '../../fields';
+} from '../../../fields';
 import { fromParsing } from '../../selectors';
 
 export function* handleComputeFieldPreview() {

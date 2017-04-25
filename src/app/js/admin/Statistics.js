@@ -8,7 +8,7 @@ import CircularProgress from 'material-ui/CircularProgress';
 import { fromParsing, fromFields, fromPublicationPreview } from './selectors';
 import { polyglot as polyglotPropTypes } from '../propTypes';
 import ActionButton from './ActionButton';
-import { addField } from './fields';
+import { addField } from '../fields';
 import { showAddColumns, hideAddColumns } from './parsing';
 
 const styles = {

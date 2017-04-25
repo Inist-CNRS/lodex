@@ -2,7 +2,7 @@ import expect from 'expect';
 import { call, put, select } from 'redux-saga/effects';
 
 import getDocumentTransformer from '../../../lib/getDocumentTransformer';
-import { getFieldFormData } from '../../fields';
+import { getFieldFormData } from '../../../fields';
 import { getToken } from '../../../user';
 import {
     computeFieldPreviewSuccess,

@@ -4,7 +4,7 @@ import {
     LOAD_FIELD_SUCCESS,
     REMOVE_FIELD_SUCCESS,
     SAVE_FIELD_SUCCESS,
-} from '../../fields';
+} from '../../../fields';
 
 import {
     LOAD_PARSING_RESULT_SUCCESS,

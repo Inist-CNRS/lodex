@@ -1,6 +1,6 @@
 import { createGlobalSelectors } from '../lib/selectors';
 
-import { selectors as fieldsSelectors } from './fields';
+import { selectors as fieldsSelectors } from '../fields';
 import { selectors as importSelectors } from './import';
 import { selectors as parsingSelectors } from './parsing';
 import { selectors as publicationSelectors } from './publication';
