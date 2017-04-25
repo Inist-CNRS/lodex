@@ -5,10 +5,10 @@ import { connect } from 'react-redux';
 import { change, getFormValues } from 'redux-form';
 
 import Step from './Step';
-import FieldPositionInput from '../../lib/components/FieldPositionInput';
-import FieldFormatInput from '../../lib/components/FieldFormatInput';
-import FieldDisplayInListInput from '../../lib/components/FieldDisplayInListInput';
-import FieldDisplayInResourceInput from '../../lib/components/FieldDisplayInResourceInput';
+import FieldPositionInput from '../FieldPositionInput';
+import FieldFormatInput from '../FieldFormatInput';
+import FieldDisplayInListInput from '../FieldDisplayInListInput';
+import FieldDisplayInResourceInput from '../FieldDisplayInResourceInput';
 import { polyglot as polyglotPropTypes, field as fieldPropTypes } from '../../propTypes';
 import { FIELD_FORM_NAME } from '../';
 import { fromFields } from '../../sharedSelectors';

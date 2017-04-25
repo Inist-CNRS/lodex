@@ -3,10 +3,10 @@ import { connect } from 'react-redux';
 import Subheader from 'material-ui/Subheader';
 
 import FieldInput from './FieldInput';
-import { fromFields } from '../sharedSelectors';
+import { fromFields } from '../../sharedSelectors';
 import {
     field as fieldPropTypes,
-} from '../propTypes';
+} from '../../propTypes';
 
 const style = {
     list: {

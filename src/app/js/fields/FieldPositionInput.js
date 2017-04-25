@@ -3,9 +3,9 @@ import translate from 'redux-polyglot/translate';
 import { Field } from 'redux-form';
 import MenuItem from 'material-ui/MenuItem';
 
-import { field as fieldPropTypes, polyglot as polyglotPropTypes } from '../../propTypes';
-import FormSelectField from '../../lib/components/FormSelectField';
-import getFieldClassName from '../../lib/getFieldClassName';
+import { field as fieldPropTypes, polyglot as polyglotPropTypes } from '../propTypes';
+import FormSelectField from '../lib/components/FormSelectField';
+import getFieldClassName from '../lib/getFieldClassName';
 
 export const PositionFieldComponent = ({ field, fields, p: polyglot, ...props }) => {
     const currentFieldIndex = fields.findIndex(f => f.name === field.name);

@@ -12,7 +12,7 @@ import Alert from '../../lib/components/Alert';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { fromResource } from '../selectors';
 import { fromFields } from '../../sharedSelectors';
-import FieldInput from '../FieldInput';
+import FieldInput from '../../fields/editFieldValue/FieldInput';
 import UriFieldInput from '../../lib/components/UriFieldInput';
 
 export const validate = (values, { p: polyglot }) => {

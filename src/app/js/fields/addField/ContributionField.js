@@ -4,12 +4,12 @@ import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 import { Field, FormSection } from 'redux-form';
 
-import FieldSchemeInput from '../../lib/components/FieldSchemeInput';
-import FieldLabelInput from '../../lib/components/FieldLabelInput';
-import FieldFormatInput from '../../lib/components/FieldFormatInput';
-import FieldIsSearchableInput from '../../lib/components/FieldIsSearchableInput';
-import FieldIsFacetInput from '../../lib/components/FieldIsFacetInput';
-import FieldPositionInput from '../../lib/components/FieldPositionInput';
+import FieldSchemeInput from '../FieldSchemeInput';
+import FieldLabelInput from '../FieldLabelInput';
+import FieldFormatInput from '../FieldFormatInput';
+import FieldIsSearchableInput from '../FieldIsSearchableInput';
+import FieldIsFacetInput from '../FieldIsFacetInput';
+import FieldPositionInput from '../FieldPositionInput';
 import { fromFields } from '../../sharedSelectors';
 import FormTextField from '../../lib/components/FormTextField';
 import { polyglot as polyglotPropTypes } from '../../propTypes';

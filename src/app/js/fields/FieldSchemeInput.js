@@ -5,8 +5,8 @@ import translate from 'redux-polyglot/translate';
 import { Field } from 'redux-form';
 import MenuItem from 'material-ui/MenuItem';
 
-import { polyglot as polyglotPropTypes } from '../../propTypes';
-import FormAutoCompleteField from './FormAutoCompleteField';
+import { polyglot as polyglotPropTypes } from '../propTypes';
+import FormAutoCompleteField from '../lib/components/FormAutoCompleteField';
 
 const styles = {
     menuItem: {

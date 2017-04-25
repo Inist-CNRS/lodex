@@ -5,19 +5,19 @@ import withProps from 'recompose/withProps';
 import { reduxForm, propTypes as reduxFormPropTypes } from 'redux-form';
 import { connect } from 'react-redux';
 
-import Alert from '../lib/components/Alert';
-import { polyglot as polyglotPropTypes } from '../propTypes';
-import { configureField } from '../fields';
-import { fromFields } from '../sharedSelectors';
-import FieldLabelInput from '../lib/components/FieldLabelInput';
-import FieldSchemeInput from '../lib/components/FieldSchemeInput';
-import FieldLanguageInput from '../lib/components/FieldLanguageInput';
-import FieldPositionInput from '../lib/components/FieldPositionInput';
-import FieldFormatInput from '../lib/components/FieldFormatInput';
-import FieldDisplayInListInput from '../lib/components/FieldDisplayInListInput';
-import FieldDisplayInResourceInput from '../lib/components/FieldDisplayInResourceInput';
-import FieldIsSearchableInput from '../lib/components/FieldIsSearchableInput';
-import FieldIsFacetInput from '../lib/components/FieldIsFacetInput';
+import Alert from '../../lib/components/Alert';
+import { polyglot as polyglotPropTypes } from '../../propTypes';
+import { configureField } from '../';
+import { fromFields } from '../../sharedSelectors';
+import FieldLabelInput from '../FieldLabelInput';
+import FieldSchemeInput from '../FieldSchemeInput';
+import FieldLanguageInput from '../FieldLanguageInput';
+import FieldPositionInput from '../FieldPositionInput';
+import FieldFormatInput from '../FieldFormatInput';
+import FieldDisplayInListInput from '../FieldDisplayInListInput';
+import FieldDisplayInResourceInput from '../FieldDisplayInResourceInput';
+import FieldIsSearchableInput from '../FieldIsSearchableInput';
+import FieldIsFacetInput from '../FieldIsFacetInput';
 
 export const FORM_NAME = 'ONTOLOGY_FIELD_FORM';
 

@@ -4,16 +4,16 @@ import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 import { Field } from 'redux-form';
 
-import { getEditionComponent } from '../formats';
+import { getEditionComponent } from '../../formats';
 import CompositeFieldInput from './CompositeFieldInput';
 import {
     fromFields,
-} from '../sharedSelectors';
+} from '../../sharedSelectors';
 
 import {
     field as fieldPropTypes,
     polyglot as polyglotPropTypes,
-} from '../propTypes';
+} from '../../propTypes';
 
 export const FieldInputComponent = ({ field, completedField, p: polyglot, input }) => {
     let label = field.label;

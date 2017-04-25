@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 
 import { selectField } from '../../fields';
-import { fromResource } from '../selectors';
+import { fromResource } from '../../public/selectors';
 import { fromFields } from '../../sharedSelectors';
 
 import { resource as resourcePropTypes, field as fieldPropTypes, polyglot as polyglotPropTypes } from '../../propTypes';

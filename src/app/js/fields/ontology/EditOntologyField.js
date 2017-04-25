@@ -4,15 +4,15 @@ import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
 import SettingsIcon from 'material-ui/svg-icons/action/settings';
-import getFieldClassName from '../lib/getFieldClassName';
 
+import getFieldClassName from '../../lib/getFieldClassName';
 import EditOntologyFieldForm, { FORM_NAME } from './EditOntologyFieldForm';
-import { fromUser, fromFields } from '../sharedSelectors';
-import ButtonWithDialog from '../lib/components/ButtonWithDialog';
+import { fromUser, fromFields } from '../../sharedSelectors';
+import ButtonWithDialog from '../../lib/components/ButtonWithDialog';
 import {
     configureFieldOpen,
     configureFieldCancel,
-} from '../fields';
+} from '../';
 
 const mapStateToProps = (state, { field, p }) => ({
     open: fromFields.isFieldConfigured(state, field.name),

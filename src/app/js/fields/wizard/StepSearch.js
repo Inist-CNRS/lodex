@@ -3,8 +3,8 @@ import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 
 import Step from './Step';
-import FieldIsSearchableInput from '../../lib/components/FieldIsSearchableInput';
-import FieldIsFacetInput from '../../lib/components/FieldIsFacetInput';
+import FieldIsSearchableInput from '../FieldIsSearchableInput';
+import FieldIsFacetInput from '../FieldIsFacetInput';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 
 export const StepSearchComponent = ({ p: polyglot, ...props }) => (

@@ -6,9 +6,9 @@ import MenuItem from 'material-ui/MenuItem';
 
 import Step from './Step';
 import FormSelectField from '../../lib/components/FormSelectField';
-import FieldSchemeInput from '../../lib/components/FieldSchemeInput';
-import FieldLanguageInput from '../../lib/components/FieldLanguageInput';
-import FieldLabelInput from '../../lib/components/FieldLabelInput';
+import FieldSchemeInput from '../FieldSchemeInput';
+import FieldLanguageInput from '../FieldLanguageInput';
+import FieldLabelInput from '../FieldLabelInput';
 import { polyglot as polyglotPropTypes, field as fieldPropTypes } from '../../propTypes';
 
 export const StepIdentityComponent = ({

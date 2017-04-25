@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
 
-import { fromResource } from '../selectors';
+import { fromResource } from '../../public/selectors';
 import AddFieldForm from './AddFieldForm';
 import ButtonWithDialog from '../../lib/components/ButtonWithDialog';
 import {
@@ -11,7 +11,7 @@ import {
     addFieldToResourceCancel,
     NEW_RESOURCE_FIELD_FORM_NAME,
 
-} from './';
+} from '../../public/resource';
 
 const mapStateToProps = (state, { p }) => ({
     open: fromResource.isAdding(state),

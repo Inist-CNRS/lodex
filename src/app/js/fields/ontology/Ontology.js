@@ -5,12 +5,12 @@ import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 import memoize from 'lodash.memoize';
 
-import { field as fieldPropTypes, polyglot as polyglotPropTypes } from '../propTypes';
-import { fromUser, fromFields } from '../sharedSelectors';
-import { languages } from '../../../../config.json';
-import getFieldClassName from '../lib/getFieldClassName';
+import { field as fieldPropTypes, polyglot as polyglotPropTypes } from '../../propTypes';
+import { fromUser, fromFields } from '../../sharedSelectors';
+import { languages } from '../../../../../config.json';
+import getFieldClassName from '../../lib/getFieldClassName';
 import EditOntologyField from './EditOntologyField';
-import ExportFieldsButton from './ExportFieldsButton';
+import ExportFieldsButton from '../../public/ExportFieldsButton';
 
 const styles = {
     container: {

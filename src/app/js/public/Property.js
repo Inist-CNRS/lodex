@@ -16,7 +16,7 @@ import { changeFieldStatus } from './resource';
 import PropertyContributor from './PropertyContributor';
 import PropertyLinkedFields from './PropertyLinkedFields';
 import { fromUser } from '../sharedSelectors';
-import EditField from './EditField';
+import EditField from '../fields/editFieldValue/EditField';
 import getFieldClassName from '../lib/getFieldClassName';
 import Format from './Format';
 

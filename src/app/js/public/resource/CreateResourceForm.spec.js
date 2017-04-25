@@ -3,7 +3,7 @@ import expect from 'expect';
 import { shallow } from 'enzyme';
 
 import { CreateResourceFormComponent } from './CreateResourceForm';
-import FieldInput from '../FieldInput';
+import FieldInput from '../../fields/editFieldValue/FieldInput';
 import UriFieldInput from '../../lib/components/UriFieldInput';
 import Alert from '../../lib/components/Alert';
 

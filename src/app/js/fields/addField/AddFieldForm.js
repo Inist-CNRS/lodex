@@ -9,14 +9,14 @@ import {
     addFieldToResource as addFieldToResourceAction,
     NEW_RESOURCE_FIELD_FORM_NAME,
     getNewResourceFieldFormData,
-} from './';
+} from '../../public/resource';
 import Alert from '../../lib/components/Alert';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import SelectFieldToAdd from './SelectFieldToAdd';
 import { fromUser, fromFields } from '../../sharedSelectors';
 import Contributor from './Contributor';
 import ContributionField from './ContributionField';
-import { fromResource } from '../selectors';
+import { fromResource } from '../../public/selectors';
 
 export const AddFieldFormComponent = ({
     resourceError,

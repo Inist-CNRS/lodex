@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 
-import FormTextField from './FormTextField';
-import FieldInput from './FieldInput';
+import FormTextField from '../lib/components/FormTextField';
+import FieldInput from '../lib/components/FieldInput';
 
 export const FieldLabelInputComponent = ({ validate }) => <FieldInput
     name="label"
