@@ -16,11 +16,11 @@
         }
     },
     "exporters": [
-        "nq",
+        "nquads",
         "csv",
         "tsv",
         "raw",
-        "ttl",
+        "turtle",
         "jsonld",
         "widget"
     ],
