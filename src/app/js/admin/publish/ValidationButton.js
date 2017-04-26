@@ -8,9 +8,9 @@ import RaisedButton from 'material-ui/RaisedButton';
 import { List } from 'material-ui/List';
 import Popover from 'material-ui/Popover';
 
-import { fromFields } from '../selectors';
+import { fromFields } from '../../sharedSelectors';
 import ValidationField from './ValidationField';
-import { editField as editFieldAction } from '../fields';
+import { editField as editFieldAction } from '../../fields';
 import { polyglot as polyglotPropTypes, validationField as validationFieldPropType } from '../../propTypes';
 
 const anchorOrigin = { horizontal: 'right', vertical: 'top' };

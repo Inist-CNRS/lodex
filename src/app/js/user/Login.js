@@ -11,8 +11,8 @@ import {
     login as loginAction,
     toggleLogin as toggleLoginAction,
     LOGIN_FORM_NAME,
-    isUserModalShown,
 } from './';
+import { fromUser } from '../sharedSelectors';
 import LoginForm from './LoginForm';
 import ButtonWithStatus from '../lib/components/ButtonWithStatus';
 
@@ -51,7 +51,7 @@ LoginComponent.defaultProps = {
 };
 
 export const mapStateToProps = state => ({
-    showModal: isUserModalShown(state),
+    showModal: fromUser.isUserModalShown(state),
     submitting: isSubmitting(LOGIN_FORM_NAME)(state),
 });
 

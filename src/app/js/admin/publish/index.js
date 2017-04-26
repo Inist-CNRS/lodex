@@ -1,6 +1,6 @@
 import { combineActions, createAction, handleActions } from 'redux-actions';
 
-import { SAVE_FIELD_SUCCESS, SAVE_FIELD_ERROR } from '../fields';
+import { SAVE_FIELD_SUCCESS, SAVE_FIELD_ERROR } from '../../fields';
 
 export const PUBLISH = 'PUBLISH';
 export const PUBLISH_WARN = 'PUBLISH_WARN';

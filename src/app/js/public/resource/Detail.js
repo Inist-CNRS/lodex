@@ -10,14 +10,12 @@ import memoize from 'lodash.memoize';
 import Card from '../../lib/components/Card';
 import { saveResource as saveResourceAction } from './';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
-import {
-    fromResource,
-    fromPublication,
-} from '../selectors';
+import { fromResource } from '../selectors';
+import { fromFields } from '../../sharedSelectors';
 import Property from '../Property';
-import AddField from './AddField';
+import AddField from '../../fields/addField/AddField';
 import HideResource from './HideResource';
-import Ontology from '../Ontology';
+import Ontology from '../../fields/ontology/Ontology';
 import Export from '../Export';
 import Widgets from '../Widgets';
 import Share from '../Share';
@@ -182,7 +180,7 @@ DetailComponent.propTypes = {
 const mapStateToProps = (state) => {
     const resource = fromResource.getResourceSelectedVersion(state);
     let sharingTitle;
-    const titleFieldName = fromPublication.getTitleFieldName(state);
+    const titleFieldName = fromFields.getTitleFieldName(state);
 
     if (titleFieldName) {
         sharingTitle = resource[titleFieldName];
@@ -191,7 +189,7 @@ const mapStateToProps = (state) => {
     return ({
         resource,
         isSaving: fromResource.isSaving(state),
-        fields: fromPublication.getResourceFields(state, resource),
+        fields: fromFields.getResourceFields(state, resource),
         sharingUri: getFullResourceUri(resource, `${window.location.protocol}//${window.location.host}`),
         sharingTitle,
     });

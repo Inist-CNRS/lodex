@@ -24,8 +24,8 @@ import {
     restoreRessource as restoreRessourceAction,
     changeContributedResourceFilter,
 } from './';
-
-import { fromContributedResources, fromFields } from '../selectors';
+import { fromContributedResources } from '../selectors';
+import { fromFields } from '../../sharedSelectors';
 import propositionStatus from '../../../../common/propositionStatus';
 import { getFullResourceUri } from '../../../../common/uris';
 

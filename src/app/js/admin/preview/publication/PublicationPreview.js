@@ -4,8 +4,8 @@ import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 
 import PublicationExcerpt from './PublicationExcerpt';
-import PublicationEditionModal from '../../fields/wizard';
-import { editField } from '../../fields';
+import PublicationEditionModal from '../../../fields/wizard';
+import { editField } from '../../../fields';
 import { polyglot as polyglotPropTypes } from '../../../propTypes';
 
 const styles = {

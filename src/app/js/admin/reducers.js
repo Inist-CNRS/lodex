@@ -4,7 +4,7 @@ import { reducer as form } from 'redux-form';
 import { polyglotReducer as polyglot } from 'redux-polyglot';
 
 import fetchReducer from '../fetch';
-import fields from './fields';
+import fields from '../fields';
 import i18n from '../i18n';
 import importReducer from './import';
 import parsing from './parsing';

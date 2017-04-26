@@ -10,8 +10,9 @@ import {
 } from './';
 import Alert from '../../lib/components/Alert';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
-import { fromPublication, fromResource } from '../selectors';
-import FieldInput from '../FieldInput';
+import { fromResource } from '../selectors';
+import { fromFields } from '../../sharedSelectors';
+import FieldInput from '../../fields/editFieldValue/FieldInput';
 import UriFieldInput from '../../lib/components/UriFieldInput';
 
 export const validate = (values, { p: polyglot }) => {
@@ -57,7 +58,7 @@ CreateResourceFormComponent.propTypes = {
 };
 
 const mapStateToProps = (state) => {
-    const fields = fromPublication.getCollectionFieldsExceptComposite(state);
+    const fields = fromFields.getCollectionFieldsExceptComposite(state);
     return {
         fields,
         error: fromResource.getError(state),

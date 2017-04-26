@@ -81,6 +81,7 @@ export const ButtonWithDialogComponent = ({
 ButtonWithDialogComponent.defaultProps = {
     icon: null,
     show: true,
+    open: false,
 };
 
 ButtonWithDialogComponent.propTypes = {
@@ -89,7 +90,7 @@ ButtonWithDialogComponent.propTypes = {
     handleSubmit: PropTypes.func.isRequired,
     p: polyglotPropTypes.isRequired,
     saving: PropTypes.bool.isRequired,
-    open: PropTypes.bool.isRequired,
+    open: PropTypes.bool,
     show: PropTypes.bool,
     buttonStyle: PropTypes.object, // eslint-disable-line
     style: PropTypes.object, // eslint-disable-line

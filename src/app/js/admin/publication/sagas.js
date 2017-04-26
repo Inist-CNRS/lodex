@@ -6,11 +6,11 @@ import {
     loadPublicationError,
 } from './';
 import { PUBLISH_SUCCESS } from '../publish';
-import { getLoadPublicationRequest } from '../../fetch';
+import { fromUser } from '../../sharedSelectors';
 import fetchSaga from '../../lib/sagas/fetchSaga';
 
 export function* handleLoadPublicationRequest() {
-    const request = yield select(getLoadPublicationRequest);
+    const request = yield select(fromUser.getLoadPublicationRequest);
 
     const { error, response: publication } = yield call(fetchSaga, request);
 

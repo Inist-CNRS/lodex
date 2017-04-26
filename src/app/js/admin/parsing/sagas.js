@@ -8,10 +8,10 @@ import {
     loadParsingResultSuccess,
 } from './';
 import { UPLOAD_FILE_SUCCESS } from '../upload';
-import { getLoadParsingResultRequest } from '../../fetch/';
+import { fromUser } from '../../sharedSelectors';
 
 export function* handleLoadParsingResult() {
-    const request = yield select(getLoadParsingResultRequest);
+    const request = yield select(fromUser.getLoadParsingResultRequest);
 
     const { error, response } = yield call(fetchSaga, request);
 

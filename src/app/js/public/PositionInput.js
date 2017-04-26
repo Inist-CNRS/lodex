@@ -7,7 +7,7 @@ import MenuItem from 'material-ui/MenuItem';
 
 import { field as fieldPropTypes, polyglot as polyglotPropTypes } from '../propTypes';
 import FormSelectField from '../lib/components/FormSelectField';
-import { fromPublication } from './selectors';
+import { fromFields } from '../sharedSelectors';
 import getFieldClassName from '../lib/getFieldClassName';
 
 export const PositionInputComponent = ({ field, fields, p: polyglot, input }) => {
@@ -48,7 +48,7 @@ PositionInputComponent.propTypes = {
 };
 
 const mapStateToProps = state => ({
-    fields: fromPublication.getFields(state),
+    fields: fromFields.getFields(state),
 });
 
 export default compose(

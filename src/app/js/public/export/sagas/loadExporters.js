@@ -1,11 +1,11 @@
 import { call, takeEvery, select, put } from 'redux-saga/effects';
 
 import { LOAD_EXPORTERS, loadExportersError, loadExportersSuccess } from '../';
-import { getLoadExportersRequest } from '../../../fetch';
+import { fromUser } from '../../../sharedSelectors';
 import fetchSaga from '../../../lib/sagas/fetchSaga';
 
 export function* handleLoadExporters() {
-    const request = yield select(getLoadExportersRequest);
+    const request = yield select(fromUser.getLoadExportersRequest);
     const { response, error } = yield call(fetchSaga, request);
 
     if (error) {

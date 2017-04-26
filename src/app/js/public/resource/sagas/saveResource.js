@@ -7,14 +7,14 @@ import {
     SAVE_RESOURCE,
 } from '../';
 
-import { getSaveResourceRequest } from '../../../fetch';
+import { fromUser } from '../../../sharedSelectors';
 import fetchSaga from '../../../lib/sagas/fetchSaga';
 import { fromResource } from '../../selectors';
 
 export function* handleSaveResource({ payload: resource }) {
     const oldResource = yield select(fromResource.getResourceLastVersion);
     if (!isEqual(oldResource, resource)) {
-        const request = yield select(getSaveResourceRequest, resource);
+        const request = yield select(fromUser.getSaveResourceRequest, resource);
         const { error, response } = yield call(fetchSaga, request);
 
         if (error) {

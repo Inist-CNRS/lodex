@@ -9,7 +9,7 @@ import {
     PUBLISH_CONFIRM,
     PUBLISH_CANCEL,
 } from './';
-import { getPublishRequest, getVerifyUriRequest } from '../../fetch/';
+import { fromUser } from '../../sharedSelectors';
 import { handlePublishRequest } from './sagas';
 
 describe('publication saga', () => {
@@ -17,7 +17,7 @@ describe('publication saga', () => {
         const saga = handlePublishRequest();
 
         it('should select getVerifyUriRequest', () => {
-            expect(saga.next().value).toEqual(select(getVerifyUriRequest));
+            expect(saga.next().value).toEqual(select(fromUser.getVerifyUriRequest));
         });
 
         it('should call fetchSaga with the verify uri request', () => {
@@ -25,7 +25,7 @@ describe('publication saga', () => {
         });
 
         it('should select getPublishRequest', () => {
-            expect(saga.next({ response: { nbInvalidUri: 0 } }).value).toEqual(select(getPublishRequest));
+            expect(saga.next({ response: { nbInvalidUri: 0 } }).value).toEqual(select(fromUser.getPublishRequest));
         });
 
         it('should call fetchSaga with the request', () => {
@@ -51,7 +51,7 @@ describe('publication saga', () => {
         const saga = handlePublishRequest();
 
         it('should select getVerifyUriRequest', () => {
-            expect(saga.next().value).toEqual(select(getVerifyUriRequest));
+            expect(saga.next().value).toEqual(select(fromUser.getVerifyUriRequest));
         });
 
         it('should call fetchSaga with the verify uri request', () => {
@@ -81,7 +81,7 @@ describe('publication saga', () => {
         const saga = handlePublishRequest();
 
         it('should select getVerifyUriRequest', () => {
-            expect(saga.next().value).toEqual(select(getVerifyUriRequest));
+            expect(saga.next().value).toEqual(select(fromUser.getVerifyUriRequest));
         });
 
         it('should call fetchSaga with the verify uri request', () => {
@@ -103,7 +103,7 @@ describe('publication saga', () => {
 
         it('should continue if ok', () => {
             expect(saga.next({ ok: true }).value)
-                .toEqual(select(getPublishRequest));
+                .toEqual(select(fromUser.getPublishRequest));
         });
     });
 });

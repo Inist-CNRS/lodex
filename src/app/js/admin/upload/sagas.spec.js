@@ -2,12 +2,11 @@ import expect from 'expect';
 import { call, take, put, select, race } from 'redux-saga/effects';
 import { LOCATION_CHANGE } from 'react-router-redux';
 
-import { getToken } from '../../user';
+import { fromUser } from '../../sharedSelectors';
 import {
     uploadFileSuccess,
     uploadFileError,
 } from './';
-import { getClearUploadRequest } from '../../fetch';
 import { loadDatasetFile } from '../../lib/loadFile';
 import fetch from '../../lib/fetch';
 import { uploadFile as uploadFileSaga } from './sagas';
@@ -28,7 +27,7 @@ describe('parsing saga', () => {
         it('should select getClearRequest', () => {
             const { value } = saga.next();
 
-            expect(value).toEqual(select(getClearUploadRequest));
+            expect(value).toEqual(select(fromUser.getClearUploadRequest));
         });
 
         it('should call fetch with clearUploadRequest', () => {
@@ -43,7 +42,7 @@ describe('parsing saga', () => {
             saga.next();
             const { value } = saga.next({});
 
-            expect(value).toEqual(select(getToken));
+            expect(value).toEqual(select(fromUser.getToken));
         });
 
         it('should race call(loadDatasetFile) and take(LOCATION_CHANGE)', () => {

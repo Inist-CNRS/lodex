@@ -9,7 +9,7 @@ import {
     getNewResourceFormData,
 } from '../';
 
-import { getCreateResourceRequest } from '../../../fetch';
+import { fromUser } from '../../../sharedSelectors';
 import fetchSaga from '../../../lib/sagas/fetchSaga';
 
 describe('createResource saga', () => {
@@ -18,7 +18,7 @@ describe('createResource saga', () => {
         expect(saga.next().value)
             .toEqual(select(getNewResourceFormData));
         expect(saga.next('new resource').value)
-            .toEqual(select(getCreateResourceRequest, 'new resource'));
+            .toEqual(select(fromUser.getCreateResourceRequest, 'new resource'));
         expect(saga.next('create resource request').value)
             .toEqual(call(fetchSaga, 'create resource request'));
         expect(saga.next({ response: { uri: 'response uri' } }).value)
@@ -32,7 +32,7 @@ describe('createResource saga', () => {
         expect(saga.next().value)
             .toEqual(select(getNewResourceFormData));
         expect(saga.next('new resource').value)
-            .toEqual(select(getCreateResourceRequest, 'new resource'));
+            .toEqual(select(fromUser.getCreateResourceRequest, 'new resource'));
         expect(saga.next('create resource request').value)
             .toEqual(call(fetchSaga, 'create resource request'));
         expect(saga.next({ error: 'response error' }).value)

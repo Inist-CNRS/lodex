@@ -5,7 +5,7 @@ import { loadContributedResourcePageError, loadContributedResourcePageSuccess } 
 
 import { handleLoadContributedResourcePageRequest } from './sagas';
 import fetchSaga from '../../lib/sagas/fetchSaga';
-import { getLoadContributedResourcePageRequest } from '../../fetch/';
+import { fromUser } from '../../sharedSelectors';
 import { fromContributedResources } from '../selectors';
 
 describe('load removed resources saga', () => {
@@ -23,7 +23,7 @@ describe('load removed resources saga', () => {
 
         it('should select getLoadContributedResourcePageRequest', () => {
             expect(saga.next({ page: 10, perPage: 42 }).value)
-                .toEqual(select(getLoadContributedResourcePageRequest, {
+                .toEqual(select(fromUser.getLoadContributedResourcePageRequest, {
                     page: 10,
                     perPage: 42,
                 }));

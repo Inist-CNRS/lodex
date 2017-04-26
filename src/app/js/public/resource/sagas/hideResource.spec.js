@@ -7,7 +7,7 @@ import {
     hideResourceError,
 } from '../';
 import fetchSaga from '../../../lib/sagas/fetchSaga';
-import { getHideResourceRequest } from '../../../fetch';
+import { fromUser } from '../../../sharedSelectors';
 import { handleHideResource } from './hideResource';
 
 describe('handleHideResource', () => {
@@ -25,7 +25,7 @@ describe('handleHideResource', () => {
     it('should select getHideResourceRequest with resource', () => {
         saga.next();
         const next = saga.next({ reason: 'reason' });
-        expect(next.value).toEqual(select(getHideResourceRequest, {
+        expect(next.value).toEqual(select(fromUser.getHideResourceRequest, {
             uri: 'uri',
             reason: 'reason',
         }));

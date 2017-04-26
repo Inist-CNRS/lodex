@@ -8,12 +8,12 @@ import {
     CREATE_RESOURCE,
 } from '../';
 
-import { getCreateResourceRequest } from '../../../fetch';
+import { fromUser } from '../../../sharedSelectors';
 import fetchSaga from '../../../lib/sagas/fetchSaga';
 
 export function* handleCreateResource() {
     const resource = yield select(getNewResourceFormData);
-    const request = yield select(getCreateResourceRequest, resource);
+    const request = yield select(fromUser.getCreateResourceRequest, resource);
     const { error, response } = yield call(fetchSaga, request);
 
     if (error) {

@@ -9,7 +9,7 @@ import exportReducer from './export';
 import facet from './facet';
 import fetchReducer from '../fetch';
 import i18n from '../i18n';
-import publication from './publication';
+import fields from '../fields';
 import resource from './resource';
 import user from '../user';
 import debugReducer from '../lib/debugReducer';
@@ -23,7 +23,7 @@ const rootReducer = combineReducers({
     form,
     i18n,
     polyglot,
-    publication,
+    fields,
     resource,
     routing,
     user,

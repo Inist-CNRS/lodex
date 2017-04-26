@@ -3,7 +3,7 @@ import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 
-import { loadField as loadFieldAction } from './fields';
+import { loadField as loadFieldAction } from '../fields';
 import { loadParsingResult as loadParsingResultAction } from './parsing';
 import { loadPublication as loadPublicationAction } from './publication';
 

@@ -6,8 +6,9 @@ import { Tabs, Tab } from 'material-ui/Tabs';
 import { push } from 'react-router-redux';
 
 import { polyglot as polyglotPropTypes } from '../propTypes';
-import { loadPublication as loadPublicationAction } from './publication';
-import { fromPublication, fromCharacteristic } from './selectors';
+import { loadPublication as loadPublicationAction } from '../fields';
+import { fromCharacteristic } from './selectors';
+import { fromFields } from '../sharedSelectors';
 
 import Alert from '../lib/components/Alert';
 import Card from '../lib/components/Card';
@@ -17,7 +18,7 @@ import DatasetCharacteristics from './characteristic/DatasetCharacteristics';
 import NoDataset from './NoDataset';
 import Toolbar from './Toolbar';
 import AppliedFacetList from './facet/AppliedFacetList';
-import Ontology from './Ontology';
+import Ontology from '../fields/ontology/Ontology';
 import Export from './Export';
 import Share from './Share';
 import ShareLink from './ShareLink';
@@ -141,8 +142,8 @@ export class HomeComponent extends Component {
 }
 
 const mapStateToProps = (state, { params: { tab = 'dataset' } }) => {
-    const titleFieldName = fromPublication.getDatasetTitleFieldName(state);
-    const fields = fromPublication.getDatasetFields(state);
+    const titleFieldName = fromFields.getDatasetTitleFieldName(state);
+    const fields = fromFields.getDatasetFields(state);
     const characteristics = fromCharacteristic.getCharacteristics(state, fields);
     let sharingTitle;
 
@@ -153,9 +154,9 @@ const mapStateToProps = (state, { params: { tab = 'dataset' } }) => {
         selectedTab: tab,
         sharingTitle,
         sharingUri: window.location.toString(),
-        error: fromPublication.getPublicationError(state),
-        loading: fromPublication.isPublicationLoading(state),
-        hasPublishedDataset: fromPublication.hasPublishedDataset(state),
+        error: fromFields.getError(state),
+        loading: fromFields.isLoading(state),
+        hasPublishedDataset: fromFields.hasPublishedDataset(state),
     });
 };
 

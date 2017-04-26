@@ -4,8 +4,8 @@ import classnames from 'classnames';
 import { bindActionCreators } from 'redux';
 
 import {
-    fromPublication,
-} from './selectors';
+    fromFields,
+} from '../sharedSelectors';
 import {
     field as fieldPropTypes,
 } from '../propTypes';
@@ -65,7 +65,7 @@ PropertyLinkedFieldsComponent.defaultProps = {
 };
 
 const mapStateToProps = (state, { fieldName, parents }) => {
-    const allLinkedFields = fromPublication.getLinkedFields(state, fieldName);
+    const allLinkedFields = fromFields.getLinkedFields(state, fieldName);
     const linkedFields = allLinkedFields.filter(f => !parents.includes(f.name));
 
     return { linkedFields };

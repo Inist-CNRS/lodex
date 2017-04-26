@@ -24,7 +24,8 @@ import {
     restoreRessource as restoreRessourceAction,
 } from './';
 
-import { fromRemovedResources, fromFields } from '../selectors';
+import { fromRemovedResources } from '../selectors';
+import { fromFields } from '../../sharedSelectors';
 
 const styles = {
     table: {

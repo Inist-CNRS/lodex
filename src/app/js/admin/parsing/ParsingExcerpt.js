@@ -7,7 +7,7 @@ import Transition from 'react-motion-ui-pack';
 
 import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow } from 'material-ui/Table';
 
-import { addField } from '../fields';
+import { addField } from '../../fields';
 import ParsingExcerptColumn from './ParsingExcerptColumn';
 import ParsingExcerptAddColumn from './ParsingExcerptAddColumn';
 

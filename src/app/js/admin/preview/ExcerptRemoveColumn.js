@@ -7,7 +7,7 @@ import translate from 'redux-polyglot/translate';
 import { TableRowColumn } from 'material-ui/Table';
 import FlatButton from 'material-ui/FlatButton';
 
-import { removeField } from '../fields';
+import { removeField } from '../../fields';
 import { polyglot as polyglotPropTypes, field as fieldPropTypes } from '../../propTypes';
 import getFieldClassName from '../../lib/getFieldClassName';
 

@@ -8,14 +8,15 @@ import {
 
 import { handleLoadRemovedResourcePageRequest } from './loadRemovedResource';
 import fetchSaga from '../../../lib/sagas/fetchSaga';
-import { getLoadRemovedResourcePageRequest } from '../../../fetch/';
+import { fromUser } from '../../../sharedSelectors';
 
 describe('load removed resources saga', () => {
     describe('handleLoadRemovedResourcePageRequest', () => {
         const saga = handleLoadRemovedResourcePageRequest({ payload: { page: 10, perPage: 42 } });
 
         it('should select getLoadRemovedResourcePageRequest', () => {
-            expect(saga.next().value).toEqual(select(getLoadRemovedResourcePageRequest, { page: 10, perPage: 42 }));
+            expect(saga.next().value)
+                .toEqual(select(fromUser.getLoadRemovedResourcePageRequest, { page: 10, perPage: 42 }));
         });
 
         it('should call fetchDafetchSagataset with the request', () => {

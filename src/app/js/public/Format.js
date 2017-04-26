@@ -4,11 +4,11 @@ import compose from 'recompose/compose';
 import withHandlers from 'recompose/withHandlers';
 import withState from 'recompose/withState';
 
-import { fromResource, fromPublication } from './selectors';
+import { fromResource } from './selectors';
+import { fromUser, fromFields } from '../sharedSelectors';
 
 import fetchByUri from '../lib/fetchByUri';
 import { field as fieldPropTypes } from '../propTypes';
-import { getToken } from '../user';
 
 import { getViewComponent } from '../formats';
 
@@ -73,8 +73,8 @@ FormatComponent.defaultProps = {
 };
 
 const preMapStateToProps = state => ({
-    fields: fromPublication.getCollectionFields(state),
-    token: getToken(state),
+    fields: fromFields.getCollectionFields(state),
+    token: fromUser.getToken(state),
 });
 
 const postMapStateToProps = (state, { linkedResource }) => ({

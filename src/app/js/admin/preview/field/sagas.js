@@ -7,7 +7,7 @@ import {
 } from 'redux-form/lib/actionTypes';
 
 import getDocumentTransformer from '../../../lib/getDocumentTransformer';
-import { getToken } from '../../../user';
+import { fromUser } from '../../../sharedSelectors';
 import {
     COMPUTE_FIELD_PREVIEW,
     computeFieldPreviewSuccess,
@@ -15,7 +15,7 @@ import {
 } from './';
 import {
     getFieldFormData,
-} from '../../fields';
+} from '../../../fields';
 import { fromParsing } from '../../selectors';
 
 export function* handleComputeFieldPreview() {
@@ -25,7 +25,7 @@ export function* handleComputeFieldPreview() {
         const fields = [formData];
         const lines = yield select(fromParsing.getExcerptLines);
 
-        const token = yield select(getToken);
+        const token = yield select(fromUser.getToken);
         const transformDocument = yield call(getDocumentTransformer, fields, token);
 
         const preview = yield lines.map(line => call(transformDocument, line));

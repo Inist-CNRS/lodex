@@ -8,11 +8,11 @@ import {
     publishError,
     publishWarn,
 } from './';
-import { getPublishRequest, getVerifyUriRequest } from '../../fetch/';
+import { fromUser } from '../../sharedSelectors';
 import fetchSaga from '../../lib/sagas/fetchSaga';
 
 export function* handlePublishRequest() {
-    const verifyUriRequest = yield select(getVerifyUriRequest);
+    const verifyUriRequest = yield select(fromUser.getVerifyUriRequest);
 
     const { error: verifyError, response: { nbInvalidUri } } = yield call(fetchSaga, verifyUriRequest);
 
@@ -33,7 +33,7 @@ export function* handlePublishRequest() {
         }
     }
 
-    const request = yield select(getPublishRequest);
+    const request = yield select(fromUser.getPublishRequest);
     const { error } = yield call(fetchSaga, request);
 
     if (error) {

@@ -6,7 +6,7 @@ import {
     saveResourceError,
 } from '../';
 import fetchSaga from '../../../lib/sagas/fetchSaga';
-import { getSaveResourceRequest } from '../../../fetch';
+import { fromUser } from '../../../sharedSelectors';
 import { handleSaveResource } from './saveResource';
 import { fromResource } from '../../selectors';
 
@@ -26,7 +26,7 @@ describe('resource saga', () => {
     it('should select getSaveResourceRequest with resource', () => {
         saga.next();
         const next = saga.next({ field: 'oldValue', uri: 'uri' });
-        expect(next.value).toEqual(select(getSaveResourceRequest, {
+        expect(next.value).toEqual(select(fromUser.getSaveResourceRequest, {
             field: 'value',
         }));
     });

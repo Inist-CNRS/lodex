@@ -12,7 +12,7 @@ import SignInButton from './SignInButton';
 import PublicationButton from '../publish/PublicationButton';
 import ModelMenu from './ModelMenu';
 import UploadButton from '../upload/UploadButton';
-import { isLoggedIn as getIsLoggedIn } from '../../user';
+import { fromUser } from '../../sharedSelectors';
 import { fromPublication, fromParsing } from '../selectors';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 
@@ -108,7 +108,7 @@ const mapStateToProps = state => ({
     hasPublishedDataset: fromPublication.hasPublishedDataset(state),
     hasLoadedDataset: fromParsing.hasUploadedFile(state),
     isLoading: state.loading, // @TODO fix by adding a loading reducer handling all loading state
-    isLoggedIn: getIsLoggedIn(state),
+    isLoggedIn: fromUser.isLoggedIn(state),
 });
 
 export default compose(

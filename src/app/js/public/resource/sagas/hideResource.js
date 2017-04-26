@@ -6,12 +6,12 @@ import {
     getHideResourceFormData,
     HIDE_RESOURCE,
 } from '../';
-import { getHideResourceRequest } from '../../../fetch';
+import { fromUser } from '../../../sharedSelectors';
 import fetchSaga from '../../../lib/sagas/fetchSaga';
 
 export function* handleHideResource({ payload: uri }) {
     const { reason } = yield select(getHideResourceFormData);
-    const request = yield select(getHideResourceRequest, {
+    const request = yield select(fromUser.getHideResourceRequest, {
         uri,
         reason,
     });

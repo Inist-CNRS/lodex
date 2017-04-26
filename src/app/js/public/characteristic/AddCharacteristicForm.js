@@ -15,7 +15,7 @@ import {
     fromCharacteristic,
 } from '../selectors';
 import FormTextField from '../../lib/components/FormTextField';
-import FieldSchemeInput from '../../lib/components/FieldSchemeInput';
+import FieldSchemeInput from '../../fields/FieldSchemeInput';
 
 const validate = (values, { p: polyglot }) => {
     const errors = ['label', 'value'].reduce((currentErrors, field) => {

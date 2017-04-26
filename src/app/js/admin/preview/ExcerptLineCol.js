@@ -5,7 +5,7 @@ import translate from 'redux-polyglot/translate';
 import { TableRowColumn } from 'material-ui/Table';
 import { connect } from 'react-redux';
 
-import { fromFields } from '../selectors';
+import { fromFields } from '../../sharedSelectors';
 import { isLongText, getShortText } from '../../lib/longTexts';
 import getFieldClassName from '../../lib/getFieldClassName';
 import { field as fieldPropTypes } from '../../propTypes';

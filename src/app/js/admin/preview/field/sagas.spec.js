@@ -2,8 +2,8 @@ import expect from 'expect';
 import { call, put, select } from 'redux-saga/effects';
 
 import getDocumentTransformer from '../../../lib/getDocumentTransformer';
-import { getFieldFormData } from '../../fields';
-import { getToken } from '../../../user';
+import { getFieldFormData } from '../../../fields';
+import { fromUser } from '../../../sharedSelectors';
 import {
     computeFieldPreviewSuccess,
     computeFieldPreviewError,
@@ -27,7 +27,7 @@ describe('field saga', () => {
         });
 
         it('should select getToken', () => {
-            expect(saga.next(lines).value).toEqual(select(getToken));
+            expect(saga.next(lines).value).toEqual(select(fromUser.getToken));
         });
 
         it('should call getDocumentTransformer with correct context and field', () => {

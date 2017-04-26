@@ -2,7 +2,7 @@ import { fork } from 'redux-saga/effects';
 
 import exportSaga from '../exportFields/sagas';
 import importSaga from './import/sagas';
-import fieldsSaga from './fields/sagas';
+import fieldsSaga from '../fields/sagas';
 import parsingSaga from './parsing/sagas';
 import publicationSaga from './publication/sagas';
 import previewSaga from './preview/sagas';

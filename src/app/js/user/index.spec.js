@@ -41,28 +41,26 @@ describe('user reducer', () => {
 
     describe('isLoggedIn selector', () => {
         it('should return false if state has no token', () => {
-            const result = isLoggedIn({ user: {} });
+            const result = isLoggedIn({});
             expect(result).toEqual(false);
         });
 
         it('should return true if state has a token', () => {
-            const result = isLoggedIn({ user: { token: 'foo' } });
+            const result = isLoggedIn({ token: 'foo' });
             expect(result).toEqual(true);
         });
     });
 
     describe('getToken selector', () => {
         it('should return the token from state', () => {
-            const result = getToken({ user: { token: 'foo' } });
+            const result = getToken({ token: 'foo' });
             expect(result).toEqual('foo');
         });
     });
 
     describe('getRequest selector', () => {
         it('should select config request with given token, url, body and method', () => {
-            const result = getRequest({
-                user: { token: 'token' },
-            }, { url: 'url', method: 'method', body: { data: 'value' } });
+            const result = getRequest({ token: 'token' }, { url: 'url', method: 'method', body: { data: 'value' } });
             expect(result).toEqual({
                 url: 'url',
                 body: '{"data":"value"}',
