@@ -103,3 +103,17 @@ export function JSONLDString(data, feed) {
     }
 }
 
+
+export function JSONLDCompacter(data, feed) {
+    if (this.isLast()) {
+        feed.close();
+    } else {
+        jsonld.compact(data, {})
+            .then((out) => {
+                feed.send(out);
+            },
+            (err) => {
+                throw err;
+            });
+    }
+}
