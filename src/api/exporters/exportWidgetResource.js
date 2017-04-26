@@ -40,7 +40,7 @@ const renderResources = (fields, displayedFields, resources) => {
 
     return html `<table class="table">
         <thead>
-            <tr class="success">
+            <tr>
                 ${displayedFields.map(name => fieldsByName[name].label).map(label => `<th>${label}</th>`)}
             </tr>
         </thead>
