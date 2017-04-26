@@ -106,7 +106,7 @@ class Pagination extends Component {
 		if (count < this.state.count) {
 			currentPage = count - 1;
 		}
-		
+
         this.props.onChange(currentPage, perPage);
     }
 
@@ -139,6 +139,10 @@ class Pagination extends Component {
         const { pages, count } = this.state;
 		const pageToDisplay = currentPage + 1;
 
+        if (perPage >= total) {
+            return null;
+        }
+
         let to = pageToDisplay * perPage,
             _from = to - perPage;
 
@@ -155,16 +159,16 @@ class Pagination extends Component {
                 <div style={styles.pageSelect}>
                     <div style={styles.label}>{`${texts.page} `}</div>
 					{pages.length < 11 &&
-						<SelectField 
+						<SelectField
 							onChange={this.handleChangePageFromSelect}
 							value={currentPage}
 							style={styles.input}
 							underlineStyle={styles.underline}>
 							{
 								pages.map(page => (
-									<MenuItem 
+									<MenuItem
 										primaryText={page + 1}
-										value={page} 
+										value={page}
 										key={`page-${page}`}/>
 								))
 							}
@@ -183,10 +187,10 @@ class Pagination extends Component {
                 </div>
                 <div style={styles.elements}>
                     <div style={styles.label}>{`${texts.perPage} `}</div>
-                    <SelectField 
+                    <SelectField
                         onChange={this.handleChangePerPage}
                         value={perPage}
-                        style={styles.select} 
+                        style={styles.select}
                         underlineStyle={styles.underline}>
                         <MenuItem value={10} primaryText="10"/>
                         <MenuItem value={15} primaryText="15"/>
@@ -195,12 +199,12 @@ class Pagination extends Component {
                 </div>
                 <div style={styles.elements}>
                     <div style={styles.label}>{`${showing}`}</div>
-                    <IconButton 
+                    <IconButton
                         disabled={currentPage === 0}
                         onTouchTap={this.handlePreviousPageClick}>
                         <ChevronLeft/>
                     </IconButton>
-                    <IconButton 
+                    <IconButton
                         disabled={currentPage === count - 1}
                         onTouchTap={this.handleNextPageClick}>
                         <ChevronRight/>
