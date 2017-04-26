@@ -83,6 +83,7 @@ const getPaginationHtml = (page, perPage, total, displayedFields) => {
                     <span aria-hidden="true">&laquo;</span>
                 </a>
             </li>
+            <li><a>${(page * perPage) + 1} - ${(page + 1) * perPage} / ${total}</a></li>
             <li class=${!nextLink && 'disabled'}>
                 <a href="${nextLink}" aria-label="Next">
                     <span aria-hidden="true">&raquo;</span>
