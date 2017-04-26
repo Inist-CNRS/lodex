@@ -83,10 +83,7 @@ const mapStateToProps = () => ({
     ),
 });
 
-const mapDispatchToProps = {
-};
-
 export default compose(
-    connect(mapStateToProps, mapDispatchToProps),
+    connect(mapStateToProps),
     translate,
 )(FieldSchemeInputComponent);

@@ -23,7 +23,6 @@ export class StepDisplayComponent extends Component {
     render() {
         const {
             field,
-            fields,
             p: polyglot,
             ...props
         } = this.props;
@@ -32,7 +31,7 @@ export class StepDisplayComponent extends Component {
             <Step label="field_wizard_step_display" {...props}>
                 <FieldDisplayInListInput />
                 <FieldDisplayInResourceInput />
-                <FieldPositionInput field={field} fields={fields} />
+                <FieldPositionInput field={field} />
                 <FieldFormatInput />
             </Step>
         );
@@ -42,7 +41,6 @@ export class StepDisplayComponent extends Component {
 StepDisplayComponent.propTypes = {
     transformers: PropTypes.arrayOf(PropTypes.object).isRequired,
     field: fieldPropTypes.isRequired,
-    fields: PropTypes.arrayOf(fieldPropTypes).isRequired,
     format: PropTypes.object, // eslint-disable-line
     p: polyglotPropTypes.isRequired,
     updateField: PropTypes.func.isRequired,

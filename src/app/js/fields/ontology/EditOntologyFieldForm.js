@@ -21,7 +21,7 @@ import FieldIsFacetInput from '../FieldIsFacetInput';
 
 export const FORM_NAME = 'ONTOLOGY_FIELD_FORM';
 
-export const EditOntologyFieldFormComponent = ({ field, fields, publicationError, handleSubmit }) => (
+export const EditOntologyFieldFormComponent = ({ field, publicationError, handleSubmit }) => (
     <form id="field_form" onSubmit={() => handleSubmit()}>
         {publicationError && <Alert><p>{publicationError}</p></Alert>}
         <FieldLabelInput />
@@ -29,7 +29,7 @@ export const EditOntologyFieldFormComponent = ({ field, fields, publicationError
         <FieldLanguageInput field={field} />
         <FieldDisplayInListInput />
         <FieldDisplayInResourceInput />
-        <FieldPositionInput field={field} fields={fields} />
+        <FieldPositionInput field={field} />
         <FieldFormatInput />
         <FieldIsSearchableInput />
         <FieldIsFacetInput />
@@ -48,7 +48,6 @@ EditOntologyFieldFormComponent.propTypes = {
 };
 
 const mapStateToProps = state => ({
-    fields: fromFields.getFields(state),
     publicationError: fromFields.getError(state),
 });
 
