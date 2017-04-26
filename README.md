@@ -100,6 +100,8 @@ On EzMaster, you can edit the instance configuration:
     - `host`: the host and port pointing to the mongo instance eg: `localhost:27017`
     - `dbName`: The name of the database eg: `lodex`
 
+- `perPage`: Optional - the number of item perPage when displaying the dataset. Default to 10
+
 ### Technical documentation
 
 Technical configuration is handled by [node-config](https://github.com/lorenwest/node-config) and is located
