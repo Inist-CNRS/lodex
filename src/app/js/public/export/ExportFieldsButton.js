@@ -6,8 +6,8 @@ import withHandlers from 'recompose/withHandlers';
 import translate from 'redux-polyglot/translate';
 import RaisedButton from 'material-ui/RaisedButton';
 
-import { polyglot as polyglotPropTypes } from '../propTypes';
-import { exportFields as exportFieldsAction } from '../exportFields';
+import { polyglot as polyglotPropTypes } from '../../propTypes';
+import { exportFields as exportFieldsAction } from '../../exportFields';
 
 const styles = {
     button: {
