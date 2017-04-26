@@ -1,46 +1,61 @@
-import React, { PropTypes } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { Timeline, TimelineEvent } from 'react-event-timeline/dist';
 import TextSMS from 'material-ui/svg-icons/communication/textsms';
-import Email from 'material-ui/svg-icons/communication/email';
+// import Email from 'material-ui/svg-icons/communication/email';
+import { milestones } from 'inist-roadmap';
 import { field as fieldPropTypes } from '../../propTypes';
 
-const LinkView = ({ resource, field }) => {
-    const link = resource[field.name];
-    const smallIcon = {
-        width: 18,
-        height: 18,
-    };
+export default class Roadmap extends Component {
+    constructor(props) {
+        super(props);
+        this.state = { milestones: [] };
+    }
 
-    return (
-        <Timeline>
-            <TimelineEvent
-                title={link}
-                createdAt="2016-09-12 10:06 PM"
-                icon={<TextSMS iconStyle={smallIcon} style={smallIcon} />}
-            >
-            I received the payment for $543. Should be shipping the item within a couple of hours.
-            </TimelineEvent>
-            <TimelineEvent
-                title="You sent an email to John Doe"
-                createdAt="2016-09-11 09:06 AM"
-                icon={<Email iconStyle={smallIcon} style={smallIcon} />}
-            >
-            Like we talked, you said that you would share the shipment details? This is an urgent order and so I
-            am losing patience. Can you expedite the process and pls do share the details asap. Consider this a
-            gentle reminder if you are on track already!
-            </TimelineEvent>
-        </Timeline>
-    );
-};
+    componentDidMount() {
+        // const { resource, field } = this.props;
+        // const link = resource[field.name];
+        const options = {
+            token: 'bb675decf284b0f774584b9b96cf91e23615c4b26b8f3c92988bfa986baebe0b',
+            key: '7fa507c389612aa4ca03f781cf2a8242',
+        };
+        milestones('https://trello.com/b/VlDBeVjL/lodex-roadmap', options).then((values) => {
+            this.setState({ milestones: values });
+        }).catch((error) => {
+            console.error(error);
+        });
+    }
 
-LinkView.propTypes = {
+    render() {
+        const smallIcon = {
+            width: 18,
+            height: 18,
+        };
+
+        return (
+            <Timeline>
+                {
+                        this.state.milestones.map(milestone => (
+                            <TimelineEvent
+                                title={milestone.title}
+                                createdAt={milestone.rangeLabel}
+                                icon={<TextSMS iconStyle={smallIcon} style={smallIcon} />}
+                            >
+                            ...
+                            </TimelineEvent>
+                        ))
+                 }
+            </Timeline>
+        );
+    }
+}
+
+
+Roadmap.propTypes = {
     field: fieldPropTypes.isRequired,
     linkedResource: PropTypes.object, // eslint-disable-line
     resource: PropTypes.object.isRequired, // eslint-disable-line
 };
 
-LinkView.defaultProps = {
+Roadmap.defaultProps = {
     className: null,
 };
-
-export default LinkView;
