@@ -228,6 +228,25 @@ export const getLineColGetter = createSelector(
     },
 );
 
+const getFieldsCatalog = state => state.byName;
+
+const getCompositeFieldsByField = createSelector(
+    getFieldsCatalog,
+    (_, field) => field,
+    (fieldsCatalog, field) => {
+        if (!field.composedOf) {
+            return [];
+        }
+        const { fields } = field.composedOf;
+
+        return fields.map(name => fieldsCatalog[name]);
+    },
+);
+
+const getCompositeFieldsNamesByField = createSelector(
+    getCompositeFieldsByField,
+    fields => fields.map(({ label }) => label),
+);
 
 export const selectors = {
     areAllFieldsValid,
@@ -244,4 +263,6 @@ export const selectors = {
     getTransformers,
     getTransformerArgs,
     getLineColGetter,
+    getCompositeFieldsByField,
+    getCompositeFieldsNamesByField,
 };

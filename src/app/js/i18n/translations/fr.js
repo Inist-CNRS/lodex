@@ -213,4 +213,5 @@ export default {
     create_resource: 'Create a new resource',
     uri_conflict: 'A Document already exists with the same uri',
     supported_format_list: 'List of supported file format:',
+    composed_of_fields: 'Composed of %{fields}',
 };
