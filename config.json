@@ -15,6 +15,7 @@
             "delimiter": "\t"
         }
     },
+    "perPage": 10,
     "exporters": [
         "nquads",
         "csv",
