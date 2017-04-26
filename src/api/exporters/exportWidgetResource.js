@@ -61,8 +61,38 @@ const getResourcesHtml = (fields, requestedFields, resources) =>
     :
         renderOneResource(fields, requestedFields)(getLastVersion(resources)));
 
+const getPaginationHtml = (page, perPage, total, displayedFields) => {
+    if (!total || perPage >= total) {
+        return '';
+    }
 
-function exporter(config, fields, resources, requestedFields) {
+    const encDisplayedFields = encodeURIComponent(JSON.stringify(displayedFields));
+
+    const previousLink = page > 0 ?
+        `/api/widget?type=widget&fields=${encDisplayedFields}&page=${page - 1}`
+    : '';
+
+    const nextLink = (page + 1) * perPage < total ?
+        `/api/widget?type=widget&fields=${encDisplayedFields}&page=${page + 1}`
+    : '';
+
+    return html`<nav aria-label="Page navigation">
+        <ul class="pagination">
+            <li class=${!previousLink && 'disabled'}>
+                <a href="${previousLink}" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            <li class=${!nextLink && 'disabled'}>
+                <a href="${nextLink}" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>`;
+};
+
+function exporter(config, fields, resources, requestedFields, page, perPage, total) {
     const displayedFields = requestedFields.length ? requestedFields : fields.map(({ name }) => name);
     const resourcesHtml = getResourcesHtml(fields, displayedFields, resources);
     return html`
@@ -87,6 +117,7 @@ function exporter(config, fields, resources, requestedFields) {
                     <div class="row">
                         <dl class="dl-horizontal">
                             ${resourcesHtml}
+                            ${getPaginationHtml(page, perPage, total, displayedFields)}
                         </dl>
                     </div>
                 </div>
