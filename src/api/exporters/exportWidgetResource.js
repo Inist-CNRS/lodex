@@ -17,26 +17,54 @@ const renderField = (fields, resource) => (fieldName) => {
         </dt>
         <dd class="description">
             <div class="value">
-                 ${resource[fieldName]}
+                ${resource[fieldName]}
             </div>
         </dd>
     `;
 };
 
-const renderResource = (fields, requestedFields) => (resource) => {
-    const lastVersion = {
-        uri: resource.uri,
-        ...resource.versions[resource.versions.length - 1],
-    };
-
-    return Object
-        .keys(lastVersion)
-        .filter(k => k !== 'publicationDate' && (requestedFields.length === 0 || requestedFields.includes(k)))
-        .map(renderField(fields, lastVersion))
+const renderOneResource = (fields, requestedFields) => resource =>
+    Object.keys(resource)
+        .filter(k => k !== 'publicationDate' && (requestedFields.includes(k)))
+        .map(renderField(fields, resource))
         .join('');
+
+const renderResourceInTable = displayedFields => resource =>
+    html`<tr>${displayedFields.map(name => `<td>${resource[name]}</td>`)}</tr>`;
+
+const renderResources = (fields, displayedFields, resources) => {
+    const fieldsByName = fields.reduce((acc, field) => ({
+        ...acc,
+        [field.name]: field,
+    }), {});
+
+    return html `<table class="table">
+        <thead>
+            <tr class="success">
+                ${displayedFields.map(name => fieldsByName[name].label).map(label => `<th>${label}</th>`)}
+            </tr>
+        </thead>
+        <tbody>
+            ${resources.map(renderResourceInTable(displayedFields))}
+        </tbody>
+    </table>`;
 };
 
+const getLastVersion = resource => ({
+    uri: resource.uri,
+    ...resource.versions[resource.versions.length - 1],
+});
+
+const getResourcesHtml = (fields, requestedFields, resources) =>
+    (Array.isArray(resources) ?
+        renderResources(fields, requestedFields, resources.map(getLastVersion))
+    :
+        renderOneResource(fields, requestedFields)(getLastVersion(resources)));
+
+
 function exporter(config, fields, resources, requestedFields) {
+    const displayedFields = requestedFields.length ? requestedFields : fields.map(({ name }) => name);
+    const resourcesHtml = getResourcesHtml(fields, displayedFields, resources);
     return html`
         <!DOCTYPE html>
         <html>
@@ -58,7 +86,7 @@ function exporter(config, fields, resources, requestedFields) {
                 <div class="container-fluid">
                     <div class="row">
                         <dl class="dl-horizontal">
-                            ${resources.map(renderResource(fields, requestedFields))}
+                            ${resourcesHtml}
                         </dl>
                     </div>
                 </div>
