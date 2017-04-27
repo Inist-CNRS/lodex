@@ -11,7 +11,9 @@ import HtmlWebpackPlugin from 'html-webpack-plugin';
 import CopyWebpackPlugin from 'copy-webpack-plugin';
 import CompressionPlugin from 'compression-webpack-plugin';
 import { resolve } from 'path';
+
 import { loaderKeys } from '../api/loaders';
+import jsonConfig from '../../config.json';
 
 const { UglifyJsPlugin } = optimize;
 
@@ -108,6 +110,7 @@ export default {
                     : JSON.stringify('production'), // eslint-disable-line max-len
                 PUBLIC_URL: JSON.stringify(config.host),
                 ISTEX_API_URL: JSON.stringify(config.istexApiUrl),
+                PER_PAGE: JSON.stringify(jsonConfig.perPage),
             },
             LOADERS: JSON.stringify(loaderKeys),
         }),
