@@ -29,13 +29,13 @@ export default class Roadmap extends Component {
     }
 
     componentDidMount() {
-        // const { resource, field } = this.props;
-        // const link = resource[field.name];
+        const { resource, field } = this.props;
+        const trelloURL = resource[field.name];
         const options = {
-            token: 'bb675decf284b0f774584b9b96cf91e23615c4b26b8f3c92988bfa986baebe0b',
-            key: '7fa507c389612aa4ca03f781cf2a8242',
+            token: field.format.args.trelloToken,
+            key: field.format.args.trelloKey,
         };
-        milestones('https://trello.com/b/VlDBeVjL/lodex-roadmap', options).then((values) => {
+        milestones(trelloURL, options).then((values) => {
             this.setState({ milestones: values });
         }).catch((error) => {
             console.error(error);
@@ -51,6 +51,7 @@ export default class Roadmap extends Component {
                 {
                         this.state.milestones.map(milestone => (
                             <TimelineEvent
+                                title=""
                                 createdAt={milestone.rangeLabel}
                                 icon={getIconFromLabel(milestone.labels)}
                             >
