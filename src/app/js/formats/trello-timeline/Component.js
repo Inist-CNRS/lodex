@@ -1,9 +1,26 @@
 import React, { Component, PropTypes } from 'react';
 import { Timeline, TimelineEvent } from 'react-event-timeline/dist';
-import TextSMS from 'material-ui/svg-icons/communication/textsms';
-// import Email from 'material-ui/svg-icons/communication/email';
+import { ActionDateRange, ActionAlarm, ActionBookmark, ActionRecordVoiceOver, ActionTrendingUp } from 'material-ui/svg-icons';
 import { milestones } from 'inist-roadmap';
 import { field as fieldPropTypes } from '../../propTypes';
+
+
+function getIconFromLabel(labels) {
+    const smallIcon = {
+        width: 18,
+        height: 18,
+    };
+    if (labels.indexOf('sprint-review') !== -1) {
+        return <ActionAlarm iconStyle={smallIcon} style={smallIcon} />;
+    } else if (labels.indexOf('communication') !== -1) {
+        return <ActionRecordVoiceOver iconStyle={smallIcon} style={smallIcon} />;
+    } else if (labels.indexOf('objectif') !== -1) {
+        return <ActionTrendingUp iconStyle={smallIcon} style={smallIcon} />;
+    } else if (labels.indexOf('reunion') !== -1) {
+        return <ActionDateRange iconStyle={smallIcon} style={smallIcon} />;
+    }
+    return <ActionBookmark iconStyle={smallIcon} style={smallIcon} />;
+}
 
 export default class Roadmap extends Component {
     constructor(props) {
@@ -26,21 +43,21 @@ export default class Roadmap extends Component {
     }
 
     render() {
-        const smallIcon = {
-            width: 18,
-            height: 18,
+        const SeeMoreStyle = {
+            float: 'right',
         };
-
         return (
             <Timeline>
                 {
                         this.state.milestones.map(milestone => (
                             <TimelineEvent
-                                title={milestone.title}
                                 createdAt={milestone.rangeLabel}
-                                icon={<TextSMS iconStyle={smallIcon} style={smallIcon} />}
+                                icon={getIconFromLabel(milestone.labels)}
                             >
-                            ...
+                                <div style={SeeMoreStyle}>
+                                    <a href={milestone.trelloLink}>See more</a>
+                                </div>
+                                {milestone.title}
                             </TimelineEvent>
                         ))
                  }
