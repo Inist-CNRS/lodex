@@ -4,16 +4,22 @@ const renderField = (fields, resource) => (fieldName) => {
     const field = fields.find(f => f.name === fieldName);
 
     return html`
-        <div class="panel panel-success">
-            <div class="panel-heading">
-                <h3 class="panel-title">
-                    ${field.label}
-                </h3>
+        <dt class="title">
+            <div class="language">
+                ${field.language}
             </div>
-            <div class="panel-body">
-                ${resource[fieldName]}
+            <div class="name">
+                ${field.label}
             </div>
-        </div>
+            <div class="scheme">
+                ${field.scheme}
+            </div>
+        </dt>
+        <dd class="description">
+            <div class="value">
+                 ${resource[fieldName]}
+            </div>
+        </dd>
     `;
 };
 
@@ -37,13 +43,23 @@ function exporter(config, fields, resources, requestedFields) {
             <head>
                 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
                 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+                <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans&subset=latin,latin-ext" type="text/css">
+                <style>
+                    div.name { color: grey; }
+                    dt.title { padding-top: 10px; width: 260px; }
+                    dd.description { padding-top: 10px; padding-right: 10px; margin-left: 275px; }
+                    div.scheme { font-size: 9px; color: lightslategrey; }
+                    div.language { float: right; color: darkgrey; font-size: 10px; padding-left: 3px; }
+                    div.value { font-size: 16px; }
+                    body { padding: 10px; font-family: 'Open Sans', sans-serif; }
+                </style>
             </head>
             <body>
                 <div class="container-fluid">
                     <div class="row">
-                        <div class="col-xs-12">
+                        <dl class="dl-horizontal">
                             ${resources.map(renderResource(fields, requestedFields))}
-                        </div>
+                        </dl>
                     </div>
                 </div>
             </body>
