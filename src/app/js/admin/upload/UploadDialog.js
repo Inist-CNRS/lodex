@@ -3,13 +3,19 @@ import translate from 'redux-polyglot/translate';
 import RaisedButton from 'material-ui/RaisedButton';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
+import TextField from 'material-ui/TextField';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
-import { uploadFile } from './';
+import {
+    uploadFile,
+    changeUploadUrl,
+    uploadUrl,
+} from './';
+import { fromUpload } from '../selectors';
+
 
 const styles = {
     button: {
-        // color: 'white',
         marginLeft: 4,
         marginRight: 4,
     },
@@ -23,9 +29,30 @@ const styles = {
         width: '100%',
         cursor: 'pointer',
     },
+    divider: {
+        display: 'flex',
+        margin: '10px',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    dividerLabel: {
+        margin: '1rem',
+    },
+    dividerHr: {
+        flexGrow: 2,
+        marginLeft: '1rem',
+        marginRight: '1rem',
+    },
 };
 
-export const UploadDialogComponent = ({ onFileLoad, p: polyglot }) => (
+export const UploadDialogComponent = ({
+    url,
+    isUrlValid,
+    onChangeUrl,
+    onFileLoad,
+    onUrlUpload,
+    p: polyglot,
+}) => (
     <div>
         <RaisedButton
             className="btn-upload-dataset"
@@ -42,20 +69,54 @@ export const UploadDialogComponent = ({ onFileLoad, p: polyglot }) => (
                 style={styles.input}
             />
         </RaisedButton>
+        <div style={styles.divider}>
+            <hr style={styles.dividerHr} />
+            <div style={styles.dividerLabel}>{polyglot.t('or')}</div>
+            <hr style={styles.dividerHr} />
+        </div>
+        <div>
+            <TextField
+                fullWidth
+                value={url}
+                onChange={onChangeUrl}
+                errorText={url && !isUrlValid && polyglot.t('invalid_url')}
+                hintText="URL"
+            />
+            <RaisedButton
+                onClick={onUrlUpload}
+                disabled={!isUrlValid}
+                className="btn-upload-url"
+                containerElement="label"
+                primary
+                fullWidth
+                label={polyglot.t('upload_url')}
+                style={styles.button}
+            />
+        </div>
     </div>
 );
 
 UploadDialogComponent.propTypes = {
+    url: PropTypes.string.isRequired,
+    isUrlValid: PropTypes.bool.isRequired,
+    onChangeUrl: PropTypes.func.isRequired,
     onFileLoad: PropTypes.func.isRequired,
+    onUrlUpload: PropTypes.func.isRequired,
     p: polyglotPropTypes.isRequired,
 };
 
+const mapStateToProps = state => ({
+    url: fromUpload.getUrl(state),
+    isUrlValid: fromUpload.isUrlValid(state),
+});
 
 const mapDispatchToProps = {
     onFileLoad: uploadFile,
+    onUrlUpload: uploadUrl,
+    onChangeUrl: (_, value) => changeUploadUrl(value),
 };
 
 export default compose(
     translate,
-    connect(null, mapDispatchToProps),
+    connect(mapStateToProps, mapDispatchToProps),
 )(UploadDialogComponent);

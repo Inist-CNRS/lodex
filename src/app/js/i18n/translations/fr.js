@@ -220,4 +220,7 @@ export default {
     jsonld: 'JSON-LD',
     nquads: 'N-Quads',
     turtle: 'Turtle',
+    upload_url: 'upload from url',
+    invalid_url: 'url is invalid',
+    or: 'or',
 };
