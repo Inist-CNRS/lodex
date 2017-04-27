@@ -2,9 +2,11 @@ import expect from 'expect';
 
 import reducer, {
     defaultState,
-    UPLOAD_FILE,
-    UPLOAD_FILE_ERROR,
-    UPLOAD_FILE_SUCCESS,
+    uploadFile,
+    uploadFileError,
+    uploadFileSuccess,
+    openUpload,
+    closeUpload,
 } from './';
 
 describe('upload reduce', () => {
@@ -18,14 +20,12 @@ describe('upload reduce', () => {
     it('should set status to PENDING and to error false on UPLOAD_FILE with a file', () => {
         expect(reducer({
             state: 'value',
-        }, {
-            type: UPLOAD_FILE,
-            payload: {},
-        }))
+        }, uploadFile({})))
         .toEqual({
             state: 'value',
             error: false,
             status: 'PENDING',
+            open: false,
         });
     });
 
@@ -33,9 +33,7 @@ describe('upload reduce', () => {
     it('should return state as is on UPLOAD_FILE without a file (cancel file selection dialog)', () => {
         expect(reducer({
             state: 'value',
-        }, {
-            type: UPLOAD_FILE,
-        }))
+        }, uploadFile()))
         .toEqual({
             state: 'value',
         });
@@ -44,9 +42,7 @@ describe('upload reduce', () => {
     it('should set status to SUCCESS on UPLOAD_FILE_SUCCESS', () => {
         expect(reducer({
             state: 'value',
-        }, {
-            type: UPLOAD_FILE_SUCCESS,
-        }))
+        }, uploadFileSuccess()))
         .toEqual({
             state: 'value',
             status: 'SUCCESS',
@@ -54,16 +50,36 @@ describe('upload reduce', () => {
     });
 
     it('should set status to ERROR and error to action.payload on UPLOAD_FILE_ERROR', () => {
-        expect(reducer({
-            state: 'value',
-        }, {
-            type: UPLOAD_FILE_ERROR,
-            payload: new Error('boom'),
-        }))
+        expect(reducer(
+            { state: 'value' },
+            uploadFileError(new Error('boom')),
+        ))
         .toEqual({
             state: 'value',
             status: 'ERROR',
             error: 'boom',
+        });
+    });
+
+    it('should handle openUpload', () => {
+        expect(reducer(
+            { state: 'value' },
+            openUpload(),
+        ))
+        .toEqual({
+            state: 'value',
+            open: true,
+        });
+    });
+
+    it('should handle closeUpload', () => {
+        expect(reducer(
+            { state: 'value' },
+            closeUpload(),
+        ))
+        .toEqual({
+            state: 'value',
+            open: false,
         });
     });
 });
