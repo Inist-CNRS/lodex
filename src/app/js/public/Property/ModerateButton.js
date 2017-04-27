@@ -9,10 +9,10 @@ import translate from 'redux-polyglot/translate';
 import { red500, yellow500, green500, grey500 } from 'material-ui/styles/colors';
 import classnames from 'classnames';
 
-import propositionStatus from '../../../common/propositionStatus';
-import { polyglot as polyglotPropTypes } from '../propTypes';
-import { fromResource } from './selectors';
-import { fromUser } from '../sharedSelectors';
+import propositionStatus from '../../../../common/propositionStatus';
+import { polyglot as polyglotPropTypes } from '../../propTypes';
+import { fromResource } from '../selectors';
+import { fromUser } from '../../sharedSelectors';
 
 const icons = {
     PROPOSED: ProposedIcon,

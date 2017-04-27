@@ -3,9 +3,9 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 
-import { fromResource } from './selectors';
-import { polyglot as polyglotPropTypes } from '../propTypes';
-import propositionStatus, { PROPOSED, VALIDATED, REJECTED } from '../../../common/propositionStatus';
+import { fromResource } from '../selectors';
+import { polyglot as polyglotPropTypes } from '../../propTypes';
+import propositionStatus, { PROPOSED, VALIDATED, REJECTED } from '../../../../common/propositionStatus';
 
 const styles = {
     container: status => ({
