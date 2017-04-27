@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 import { Tabs, Tab } from 'material-ui/Tabs';
 import { push } from 'react-router-redux';
+import Divider from 'material-ui/Divider';
 
 import { polyglot as polyglotPropTypes } from '../propTypes';
 import { loadPublication as loadPublicationAction } from '../fields';
@@ -22,6 +23,7 @@ import Ontology from '../fields/ontology/Ontology';
 import Export from './Export';
 import Share from './Share';
 import ShareLink from './ShareLink';
+import Widgets from './Widgets';
 
 const styles = {
     container: {
@@ -120,6 +122,8 @@ export class HomeComponent extends Component {
                                 value="export"
                             >
                                 <Export />
+                                <Divider />
+                                <Widgets />
                                 <ShareLink title={polyglot.t('dataset_share_link')} uri={sharingUri} />
                                 <Share uri={sharingUri} title={sharingTitle} />
                             </Tab>

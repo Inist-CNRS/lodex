@@ -1,9 +1,8 @@
 import { html } from 'common-tags';
 
-const renderField = (fields, resource) => (fieldName) => {
-    const field = fields.find(f => f.name === fieldName);
 
-    return html`
+const renderField = (field, value) => html`
+    <dl class="dl-horizontal">
         <dt class="title">
             <div class="language">
                 ${field.language}
@@ -17,26 +16,81 @@ const renderField = (fields, resource) => (fieldName) => {
         </dt>
         <dd class="description">
             <div class="value">
-                 ${resource[fieldName]}
+                ${value}
             </div>
         </dd>
-    `;
-};
+    </dl>`;
 
-const renderResource = (fields, requestedFields) => (resource) => {
-    const lastVersion = {
-        uri: resource.uri,
-        ...resource.versions[resource.versions.length - 1],
-    };
-
-    return Object
-        .keys(lastVersion)
-        .filter(k => k !== 'publicationDate' && (requestedFields.length === 0 || requestedFields.includes(k)))
-        .map(renderField(fields, lastVersion))
+const renderOneResource = (fieldsByName, requestedFields) => resource =>
+    requestedFields
+        .map(name => renderField(fieldsByName[name], resource[name]))
         .join('');
+
+const renderResourceInTable = displayedFields => resource =>
+    html`<tr>${displayedFields.map(name => `<td>${resource[name]}</td>`)}</tr>`;
+
+const renderResources = (fieldsByName, displayedFields, resources) => html `<table class="table">
+        <thead>
+            <tr>
+                ${displayedFields.map(name => fieldsByName[name].label).map(label => `<th>${label}</th>`)}
+            </tr>
+        </thead>
+        <tbody>
+            ${resources.map(renderResourceInTable(displayedFields))}
+        </tbody>
+    </table>`;
+
+const getLastVersion = resource => ({
+    uri: resource.uri,
+    ...resource.versions[resource.versions.length - 1],
+});
+
+const getResourcesHtml = (fieldsByName, requestedFields, resources) =>
+    (Array.isArray(resources) ?
+        renderResources(fieldsByName, requestedFields, resources.map(getLastVersion))
+    :
+        renderOneResource(fieldsByName, requestedFields)(getLastVersion(resources)));
+
+const getPaginationHtml = (page, perPage, total, displayedFields) => {
+    if (!total || perPage >= total) {
+        return '';
+    }
+
+    const encDisplayedFields = encodeURIComponent(JSON.stringify(displayedFields));
+
+    const previousLink = page > 0 ?
+        `/api/widget?type=widget&fields=${encDisplayedFields}&page=${page - 1}`
+    : '';
+
+    const nextLink = (page + 1) * perPage < total ?
+        `/api/widget?type=widget&fields=${encDisplayedFields}&page=${page + 1}`
+    : '';
+
+    return html`<nav aria-label="Page navigation">
+        <ul class="pagination">
+            <li class=${!previousLink && 'disabled'}>
+                <a href="${previousLink}" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            <li><a>${(page * perPage) + 1} - ${(page + 1) * perPage} / ${total}</a></li>
+            <li class=${!nextLink && 'disabled'}>
+                <a href="${nextLink}" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>`;
 };
 
-function exporter(config, fields, resources, requestedFields) {
+function exporter(config, fields, resources, requestedFields, page, perPage, total) {
+    const fieldsByName = fields.reduce((acc, field) => ({
+        ...acc,
+        [field.name]: field,
+    }), {});
+    const displayedFields = requestedFields.length ? requestedFields : fields.map(({ name }) => name);
+    const resourcesHtml = getResourcesHtml(fieldsByName, displayedFields, resources);
+
     return html`
         <!DOCTYPE html>
         <html>
@@ -57,9 +111,8 @@ function exporter(config, fields, resources, requestedFields) {
             <body>
                 <div class="container-fluid">
                     <div class="row">
-                        <dl class="dl-horizontal">
-                            ${resources.map(renderResource(fields, requestedFields))}
-                        </dl>
+                        ${resourcesHtml}
+                        ${getPaginationHtml(page, perPage, total, displayedFields)}
                     </div>
                 </div>
             </body>

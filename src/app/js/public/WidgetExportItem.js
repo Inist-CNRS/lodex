@@ -25,7 +25,7 @@ export function generateWidget(uri, fields, type) {
     const encUri = encodeURIComponent(uri);
     const encType = encodeURIComponent(type);
 
-    return `<iframe src="${baseUrl}/api/widget?type=${encType}&uri=${encUri}&fields=${encFields}"></iframe>`;
+    return `<iframe src="${baseUrl}/api/widget?type=${encType}${uri ? `&uri=${encUri}` : ''}&fields=${encFields}"></iframe>`;
 }
 
 export class ShareLinkComponent extends Component {
