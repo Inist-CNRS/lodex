@@ -60,11 +60,15 @@ const UploadButtonComponent = ({ open, label, raised, handleOpen, handleClose, p
 
 UploadButtonComponent.propTypes = {
     open: PropTypes.bool.isRequired,
-    raised: PropTypes.bool.isRequired,
+    raised: PropTypes.bool,
     label: PropTypes.string.isRequired,
     handleOpen: PropTypes.func.isRequired,
     handleClose: PropTypes.func.isRequired,
     p: polyglotPropTypes.isRequired,
+};
+
+UploadButtonComponent.defaultProps = {
+    raised: false,
 };
 
 const mapStateToProps = state => ({

@@ -4,7 +4,6 @@ import RaisedButton from 'material-ui/RaisedButton';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import TextField from 'material-ui/TextField';
-import { bindActionCreators } from 'redux';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import {
@@ -111,11 +110,11 @@ const mapStateToProps = state => ({
     isUrlValid: fromUpload.isUrlValid(state),
 });
 
-const mapDispatchToProps = (dispatch, { url }) => bindActionCreators({
+const mapDispatchToProps = {
     onFileLoad: uploadFile,
-    onUrlUpload: () => uploadUrl(url),
+    onUrlUpload: uploadUrl,
     onChangeUrl: (_, value) => changeUploadUrl(value),
-}, dispatch);
+};
 
 export default compose(
     translate,

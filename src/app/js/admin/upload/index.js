@@ -22,6 +22,7 @@ export const defaultState = {
     error: false,
     status: 'NONE',
     open: false,
+    isUrlValid: false,
     url: '',
 };
 
