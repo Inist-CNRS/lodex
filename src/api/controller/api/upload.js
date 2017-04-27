@@ -46,7 +46,7 @@ export const getStreamFromUrl = url =>
 export const prepareUpload = async (ctx, next) => {
     ctx.getParser = getParser;
     ctx.requestToStream = requestToStream(asyncBusboy);
-    ctx.saveStream = saveStream;
+    ctx.saveStream = saveStream(ctx.dataset.insertMany.bind(ctx.dataset));
     ctx.checkFileExists = checkFileExists;
     ctx.saveStreamInFile = saveStreamInFile;
     ctx.areFileChunksComplete = areFileChunksComplete;
@@ -122,7 +122,7 @@ export async function uploadFileMiddleware(ctx, type) {
     const parseStream = ctx.getParser(type);
     const parsedStream = await parseStream(fileStream);
 
-    await ctx.saveStream(parsedStream, ctx.dataset.insertMany.bind(ctx.dataset));
+    await ctx.saveStream(parsedStream);
     await ctx.unlinkFile(filename);
     await ctx.field.initializeModel();
 
@@ -143,10 +143,9 @@ export const checkChunkMiddleware = async (ctx) => {
     ctx.status = exists ? 200 : 204;
 };
 
-
 export const uploadUrl = async (ctx) => {
     const { url } = ctx.request.body;
-    const type = url.match(/[^.]*$/);
+    const [type] = url.match(/[^.]*$/);
 
     const parseStream = ctx.getParser(type);
 
@@ -155,7 +154,7 @@ export const uploadUrl = async (ctx) => {
     const stream = ctx.getStreamFromUrl(url);
     const parsedStream = await parseStream(stream);
 
-    await ctx.saveStream(parsedStream, ctx.dataset.insertMany.bind(ctx.dataset));
+    await ctx.saveStream(parsedStream);
 
     ctx.status = 200;
     ctx.body = {
