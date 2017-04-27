@@ -1,24 +1,20 @@
 import { createAction, handleActions, combineActions } from 'redux-actions';
 
 export const UPLOAD_FILE = 'UPLOAD_FILE';
-export const UPLOAD_FILE_ERROR = 'UPLOAD_FILE_ERROR';
-export const UPLOAD_FILE_SUCCESS = 'UPLOAD_FILE_SUCCESS';
+export const UPLOAD_URL = 'UPLOAD_URL';
+export const UPLOAD_ERROR = 'UPLOAD_ERROR';
+export const UPLOAD_SUCCESS = 'UPLOAD_SUCCESS';
 export const OPEN_UPLOAD = 'OPEN_UPLOAD';
 export const CLOSE_UPLOAD = 'CLOSE_UPLOAD';
 export const CHANGE_UPLOAD_URL = 'CHANGE_UPLOAD_URL';
-export const UPLOAD_URL = 'UPLOAD_URL';
-export const UPLOAD_URL_ERROR = 'UPLOAD_URL_ERROR';
-export const UPLOAD_URL_SUCCESS = 'UPLOAD_URL_SUCCESS';
 
 export const uploadFile = createAction(UPLOAD_FILE);
-export const uploadFileSuccess = createAction(UPLOAD_FILE_SUCCESS);
-export const uploadFileError = createAction(UPLOAD_FILE_ERROR);
+export const uploadUrl = createAction(UPLOAD_URL);
+export const uploadSuccess = createAction(UPLOAD_SUCCESS);
+export const uploadError = createAction(UPLOAD_ERROR);
 export const openUpload = createAction(OPEN_UPLOAD);
 export const closeUpload = createAction(CLOSE_UPLOAD);
 export const changeUploadUrl = createAction(CHANGE_UPLOAD_URL);
-export const uploadUrl = createAction(UPLOAD_URL);
-export const uploadUrlSuccess = createAction(UPLOAD_URL_SUCCESS);
-export const uploadUrlError = createAction(UPLOAD_URL_ERROR);
 
 const validateUrl = url => url.startsWith('http://') || url.startsWith('https://');
 
@@ -26,7 +22,7 @@ export const defaultState = {
     error: false,
     status: 'NONE',
     open: false,
-    url: null,
+    url: '',
 };
 
 export default handleActions({
@@ -37,11 +33,11 @@ export default handleActions({
         open: false,
         status: 'PENDING',
     }) : state),
-    [combineActions(UPLOAD_FILE_SUCCESS, UPLOAD_URL_SUCCESS)]: state => ({
+    UPLOAD_SUCCESS: state => ({
         ...state,
         status: 'SUCCESS',
     }),
-    [combineActions(UPLOAD_FILE_ERROR, UPLOAD_URL_ERROR)]: (state, { payload }) => ({
+    UPLOAD_ERROR: (state, { payload }) => ({
         ...state,
         status: 'ERROR',
         error: payload.message,

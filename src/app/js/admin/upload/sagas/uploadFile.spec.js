@@ -2,14 +2,14 @@ import expect from 'expect';
 import { call, take, put, select, race } from 'redux-saga/effects';
 import { LOCATION_CHANGE } from 'react-router-redux';
 
-import { fromUser } from '../../sharedSelectors';
+import { fromUser } from '../../../sharedSelectors';
 import {
-    uploadFileSuccess,
-    uploadFileError,
+    uploadSuccess,
+    uploadError,
 } from './';
-import { loadDatasetFile } from '../../lib/loadFile';
-import fetch from '../../lib/fetch';
-import { uploadFile as uploadFileSaga } from './sagas';
+import { loadDatasetFile } from '../../../lib/loadFile';
+import fetch from '../../../lib/fetch';
+import { handleUploadFile as uploadFileSaga } from './uploadFile';
 
 describe('parsing saga', () => {
     describe('handleLoadParsingResult', () => {
@@ -66,14 +66,14 @@ describe('parsing saga', () => {
             expect(done).toBe(true);
         });
 
-        it('should put uploadFileError if an error is thrown', () => {
+        it('should put uploadError if an error is thrown', () => {
             saga.next();
             saga.next();
             saga.next({});
             saga.next('token');
             const error = new Error('Boom');
             const { value } = saga.throw(error);
-            expect(value).toEqual(put(uploadFileError(error)));
+            expect(value).toEqual(put(uploadError(error)));
         });
 
         it('should put loadFileSuccess with file', () => {
@@ -82,7 +82,7 @@ describe('parsing saga', () => {
             saga.next({});
             saga.next('token');
             const { value } = saga.next({ file: 'file' });
-            expect(value).toEqual(put(uploadFileSuccess('file')));
+            expect(value).toEqual(put(uploadSuccess('file')));
         });
     });
 });
