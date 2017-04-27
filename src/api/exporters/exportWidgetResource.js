@@ -2,22 +2,24 @@ import { html } from 'common-tags';
 
 
 const renderField = (field, value) => html`
-    <dt class="title">
-        <div class="language">
-            ${field.language}
-        </div>
-        <div class="name">
-            ${field.label}
-        </div>
-        <div class="scheme">
-            ${field.scheme}
-        </div>
-    </dt>
-    <dd class="description">
-        <div class="value">
-            ${value}
-        </div>
-    </dd>`;
+    <dl class="dl-horizontal">
+        <dt class="title">
+            <div class="language">
+                ${field.language}
+            </div>
+            <div class="name">
+                ${field.label}
+            </div>
+            <div class="scheme">
+                ${field.scheme}
+            </div>
+        </dt>
+        <dd class="description">
+            <div class="value">
+                ${value}
+            </div>
+        </dd>
+    </dl>`;
 
 const renderOneResource = (fieldsByName, requestedFields) => resource =>
     requestedFields
@@ -109,10 +111,8 @@ function exporter(config, fields, resources, requestedFields, page, perPage, tot
             <body>
                 <div class="container-fluid">
                     <div class="row">
-                        <dl class="dl-horizontal">
-                            ${resourcesHtml}
-                            ${getPaginationHtml(page, perPage, total, displayedFields)}
-                        </dl>
+                        ${resourcesHtml}
+                        ${getPaginationHtml(page, perPage, total, displayedFields)}
                     </div>
                 </div>
             </body>
