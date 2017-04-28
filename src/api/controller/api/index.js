@@ -18,6 +18,7 @@ import publish from './publish';
 import publishedDataset from './publishedDataset';
 import upload from './upload';
 import widget from './widget';
+import reduce from './reduce';
 
 const app = new Koa();
 
@@ -28,6 +29,7 @@ app.use(mount('/export', exportPublishedDataset));
 app.use(mount('/facet', facet));
 app.use(mount('/login', login));
 app.use(mount('/widget', widget));
+app.use(mount('/reduce', reduce));
 app.use(route.get('/publication', publication));
 
 app.use(jwt({ secret: auth.cookieSecret, cookie: 'lodex_token', key: 'cookie', passthrough: true }));
