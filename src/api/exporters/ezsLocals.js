@@ -3,7 +3,6 @@ import path from 'path';
 import omit from 'lodash.omit';
 import { VALIDATED } from '../../common/propositionStatus';
 
-
 export function filterVersions(data, feed) {
     if (data && data.versions) {
         const lastVersion = data.versions[data.versions.length - 1];
@@ -20,9 +19,9 @@ export function filterVersions(data, feed) {
 export function filterContributions(data, feed) {
     if (data && data.contributions) {
         const fieldsToIgnore = data.contributions
-            .filter(({ status }) => status !== VALIDATED)
-            .map(({ fieldName }) => fieldName)
-            .concat('contributions', 'contributionCount');
+      .filter(({ status }) => status !== VALIDATED)
+      .map(({ fieldName }) => fieldName)
+      .concat('contributions', 'contributionCount');
         feed.send(omit(data, fieldsToIgnore));
     } else {
         feed.send(data);
@@ -49,7 +48,7 @@ export function linkDataset(data, feed) {
         data.dataset = uri;
         data['@context'].dataset = {
             '@id': scheme,
-//             '@type': 'https://www.w3.org/TR/xmlschema-2/#anyURI',
+      //             '@type': 'https://www.w3.org/TR/xmlschema-2/#anyURI',
         };
     }
     feed.send(data);
@@ -61,9 +60,12 @@ export function JSONLDObject(data, feed) {
     } else {
         const output = {};
 
-        if (data.uri.indexOf('http://') !== 0 &&
-            data.uri.indexOf('https://') !== 0) {
-            data.uri = path.normalize(this.getParam('hostname', 'http://lod.istex.fr/').concat(data.uri));
+        if (
+      data.uri.indexOf('http://') !== 0 && data.uri.indexOf('https://') !== 0
+    ) {
+            data.uri = path.normalize(
+        this.getParam('hostname', 'http://lod.istex.fr/').concat(data.uri),
+      );
         }
         output['@id'] = data.uri;
         output['@context'] = {};
@@ -88,18 +90,33 @@ export function JSONLDObject(data, feed) {
     }
 }
 
+export function extractIstexQuery(data, feed) {
+    if (this.isLast()) {
+        feed.close();
+    } else {
+        const fields = this.getParam('fields', {});
+
+        fields
+      .filter(field => field.format && field.format.name === 'istex')
+      .forEach((field) => {
+          const propertyName = field.name;
+          console.log(data[propertyName]);
+      });
+        feed.send(data);
+    }
+}
 
 export function JSONLDString(data, feed) {
     if (this.isLast()) {
         feed.close();
     } else {
-        jsonld.toRDF(data, { format: 'application/nquads' })
-            .then((out) => {
-                feed.send(out);
-            },
-            (err) => {
-                throw err;
-            });
+        jsonld.toRDF(data, { format: 'application/nquads' }).then(
+      (out) => {
+          feed.send(out);
+      },
+      (err) => {
+          throw err;
+      },
+    );
     }
 }
-

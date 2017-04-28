@@ -18,6 +18,7 @@
     "perPage": 10,
     "exporters": [
         "nquads",
+        "istex",
         "csv",
         "tsv",
         "raw",
