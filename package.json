@@ -95,6 +95,7 @@
     "react-copy-to-clipboard": "4.2.3",
     "react-dom": "15.4.2",
     "react-fa": "4.1.2",
+    "react-medium-image-zoom": "1.0.0",
     "react-motion": "0.4.7",
     "react-motion-ui-pack": "0.10.2",
     "react-redux": "5.0.3",
