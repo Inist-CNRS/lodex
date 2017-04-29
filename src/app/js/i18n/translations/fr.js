@@ -15,7 +15,6 @@ export default {
     Password: 'Password',
     line: 'line',
     error: 'error',
-    raw: 'raw',
     publish: 'Publish',
     publication: 'Publication',
     publication_explanations: 'Publishing will make your transformed data public. Once it has been published, y' +
@@ -215,4 +214,10 @@ export default {
     supported_format_list: 'List of supported file format:',
     composed_of_fields: 'Composed of %{fields}',
     field_label_exists: 'Field already exists',
+    raw: 'JSON',
+    csv: 'CSV',
+    tsv: 'TSV',
+    jsonld: 'JSON-LD',
+    nquads: 'N-Quads',
+    turtle: 'Turtle',
 };
