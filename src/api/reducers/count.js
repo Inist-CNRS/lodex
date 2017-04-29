@@ -1,23 +1,16 @@
+/* eslint-disable */
+//
+// MongoDB JS functions
+//
+
 module.exports.map = function () {
-  /* global exp, emit */
-  var doc = this;
-  function access(obj, prop) {
-    var segs = prop.split('.');
-    while (segs.length) {
-      var k = segs.shift();
-      if (obj[k]) {
-        obj = obj[k];
-      }
-      else {
-        obj = undefined;
-      }
-    }
-    return obj;
-  }
-  var field = access(doc, exp[0]);
-  if (field !== undefined) {
-    emit(exp[0], 1);
-  }
+    var doc = this;
+    var dta = doc.versions[doc.versions.length - 1];
+    fields.forEach(function(key) {
+        if (dta[key] || doc[key]) {
+            emit(key, 1);
+        }
+    });
 };
 
 module.exports.reduce = function (key, values) {

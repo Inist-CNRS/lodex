@@ -9,33 +9,31 @@ const findAndExpose = (result) => {
     return result.find({}).toArray();
 };
 
-export const askingWithReducer = async (ctx, reducer) => {
+export const mapAndReduce = async (ctx, reducer) => {
     if (!reducers[reducer]) {
         throw new Error(`Unknown reducer '${reducer}'`);
     }
     const { map, reduce } = reducers[reducer];
-    const fields = ctx.request.query.fields || 'uri';
-    const exp = Array.isArray(fields) ? fields : [fields];
+    const field = ctx.request.query.field || 'uri';
+    const fields = Array.isArray(field) ? field : [field];
     const options = {
         query: {},
         out: { inline: 1 },
 //        out: { replace: 'replacethiscollection' },
         scope: {
-            exp: exp,
+            fields,
         },
     };
     const result = await ctx.publishedDataset.mapReduce(map, reduce, options);
     const data = await findAndExpose(result);
-    console.log('exp', options.scope.exp);
-
     if (data && data[0]) {
         ctx.body = {
-            data: data[0],
-            total: data[0].value.length,
+            data,
+            total: data.length,
         };
     } else {
         ctx.body = {
-            data: {},
+            data: [],
             total: 0,
         };
     }
@@ -43,6 +41,6 @@ export const askingWithReducer = async (ctx, reducer) => {
 
 const app = new Koa();
 
-app.use(route.get('/:reducer', askingWithReducer));
+app.use(route.get('/:reducer', mapAndReduce));
 
 export default app;
