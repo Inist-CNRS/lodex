@@ -25,7 +25,7 @@ describe('Admin', () => {
             await loginAsJulia('/admin');
         });
 
-        describe.only('Uploading dataset', () => {
+        describe('Uploading dataset', () => {
             it('should display the upload component if no dataset has been loaded yet', async () => {
                 await driver.wait(until.elementLocated(By.css('.upload')), DEFAULT_WAIT_TIMEOUT);
             });
