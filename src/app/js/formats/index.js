@@ -1,5 +1,6 @@
 import html from './html';
 import email from './email';
+import image from './image';
 import link from './link';
 import list from './list';
 import uri from './uri';
@@ -11,6 +12,7 @@ const components = {
     list,
     uri,
     email,
+    image,
     link,
     istex,
 };
