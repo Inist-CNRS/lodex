@@ -7,7 +7,7 @@ import {
     loadParsingResultError,
     loadParsingResultSuccess,
 } from './';
-import { UPLOAD_FILE_SUCCESS } from '../upload';
+import { UPLOAD_SUCCESS } from '../upload';
 import { fromUser } from '../../sharedSelectors';
 
 export function* handleLoadParsingResult() {
@@ -23,7 +23,7 @@ export function* handleLoadParsingResult() {
 }
 
 export function* watchLoadParsingResult() {
-    yield takeLatest([LOAD_PARSING_RESULT, UPLOAD_FILE_SUCCESS], handleLoadParsingResult);
+    yield takeLatest([LOAD_PARSING_RESULT, UPLOAD_SUCCESS], handleLoadParsingResult);
 }
 
 export default function* () {
