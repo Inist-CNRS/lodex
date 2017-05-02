@@ -27,11 +27,11 @@ const styles = {
 export const getRowStyle = (index, total) => {
     let opacity = 1;
 
-    if (index === (total - 2)) {
+    if (total > 2 && index === (total - 2)) {
         opacity = 0.45;
     }
 
-    if (index === (total - 1)) {
+    if (total > 2 && index === (total - 1)) {
         opacity = 0.25;
     }
 
@@ -65,31 +65,39 @@ export const ParsingExcerptComponent = ({
                         key={`${line._id}_data_row`}
                         style={getRowStyle(index, total)}
                     >
-                        {columns.map(c => (
-                            <ParsingExcerptColumn
-                                key={`${c}_${line._id}`}
-                                value={line[c]}
-                            >
-                                <Transition
-                                    component={false}
-                                    enter={{
-                                        opacity: spring(1),
-                                    }}
-                                    leave={{
-                                        opacity: 0,
-                                    }}
-                                    runOnMount
+                        {columns.map((column) => {
+                            const showAddColumnButton =
+                                showAddColumns
+                                && showAddColumns
+                                && (index === total - 3 || (total < 3 && index === 0));
+
+                            return (
+                                <ParsingExcerptColumn
+                                    key={`${column}_${line._id}`}
+                                    value={line[column]}
                                 >
-                                    {showAddColumns && index === total - 3 &&
-                                        <ParsingExcerptAddColumn
-                                            key={`add_column_${c}`}
-                                            name={c}
-                                            onAddColumn={handleAddColumn}
-                                        />
-                                    }
-                                </Transition>
-                            </ParsingExcerptColumn>
-                        ))}
+                                    <Transition
+                                        component={false}
+                                        enter={{
+                                            opacity: spring(1),
+                                        }}
+                                        leave={{
+                                            opacity: 0,
+                                        }}
+                                        runOnMount
+                                    >
+                                        {showAddColumnButton &&
+                                            <ParsingExcerptAddColumn
+                                                key={`add_column_${column}`}
+                                                name={column}
+                                                onAddColumn={handleAddColumn}
+                                                atTop={total < 3}
+                                            />
+                                        }
+                                    </Transition>
+                                </ParsingExcerptColumn>
+                            );
+                        })}
                     </TableRow>
                 ))}
             </TableBody>
