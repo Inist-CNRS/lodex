@@ -418,7 +418,7 @@ const getCompositeFieldsByField = createSelector(
 
 const getCompositeFieldsNamesByField = createSelector(
     getCompositeFieldsByField,
-    fields => fields.map(({ label }) => label),
+    fields => fields.filter(f => !!f).map(({ label }) => label),
 );
 
 const hasPublishedDataset = ({ published }) => published;

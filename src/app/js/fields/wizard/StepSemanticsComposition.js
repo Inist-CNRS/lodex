@@ -54,7 +54,7 @@ export const StepSemanticsCompositionComponent = ({
                         <MenuItem
                             className={'composite-field-none'}
                             value={null}
-                            primaryText={null}
+                            primaryText={polyglot.t('completes_field_none')}
                         />
                         {fields.map(f => (
                             <MenuItem

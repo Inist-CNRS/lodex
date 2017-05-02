@@ -11,8 +11,8 @@ export const polyglot = PropTypes.shape({
 });
 
 export const field = PropTypes.shape({
-    name: PropTypes.string.isRequired,
-    label: PropTypes.string.isRequired,
+    name: PropTypes.string,
+    label: PropTypes.string,
     scheme: PropTypes.string,
 });
 

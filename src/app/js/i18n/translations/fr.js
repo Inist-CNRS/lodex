@@ -218,6 +218,7 @@ export default {
     csv: 'CSV',
     tsv: 'TSV',
     jsonld: 'JSON-LD',
+    jsonldcompacted: 'JSON-LD (Compacted)',
     nquads: 'N-Quads',
     turtle: 'Turtle',
 };

@@ -44,7 +44,6 @@ EditOntologyFieldFormComponent.defaultProps = {
 
 EditOntologyFieldFormComponent.propTypes = {
     ...reduxFormPropTypes,
-    p: polyglotPropTypes.isRequired,
 };
 
 const mapStateToProps = state => ({
