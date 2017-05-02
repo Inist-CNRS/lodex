@@ -5,11 +5,12 @@ import pure from 'recompose/pure';
 import { spring } from 'react-motion';
 import Transition from 'react-motion-ui-pack';
 
-import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow } from 'material-ui/Table';
+import { Table, TableBody, TableHeader, TableRow } from 'material-ui/Table';
 
 import { addField } from '../../fields';
-import ParsingExcerptColumn from './ParsingExcerptColumn';
 import ParsingExcerptAddColumn from './ParsingExcerptAddColumn';
+import ParsingExcerptColumn from './ParsingExcerptColumn';
+import ParsingExcerptHeaderColumn from './ParsingExcerptHeaderColumn';
 
 const styles = {
     table: {
@@ -49,7 +50,12 @@ export const ParsingExcerptComponent = ({
         <Table selectable={false} fixedHeader={false} style={styles.table}>
             <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
                 <TableRow>
-                    {columns.map(c => <TableHeaderColumn key={`header_${c}`}>{c}</TableHeaderColumn>)}
+                    {columns.map(column => (
+                        <ParsingExcerptHeaderColumn
+                            key={`header_${column}`}
+                            column={column}
+                        />
+                    ))}
                 </TableRow>
             </TableHeader>
             <TableBody style={styles.body} displayRowCheckbox={false}>

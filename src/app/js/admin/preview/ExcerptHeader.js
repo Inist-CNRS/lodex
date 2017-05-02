@@ -44,7 +44,7 @@ const ExcerptHeaderComponent = ({
     <div
         style={getStyle(field)}
     >
-        {field.label || field.name}
+        {ensureTextIsShort(field.label || field.name)}
         {completedField &&
             <div className={`completes_${getFieldClassName(completedField)}`}>
                 {polyglot.t('completes_field_X', { field: completedField.label })}
