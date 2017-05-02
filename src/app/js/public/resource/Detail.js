@@ -16,7 +16,7 @@ import Property from '../Property';
 import AddField from '../../fields/addField/AddField';
 import HideResource from './HideResource';
 import Ontology from '../../fields/ontology/Ontology';
-import Export from '../Export';
+import Export from '../export/Export';
 import Widgets from '../Widgets';
 import Share from '../Share';
 import ShareLink from '../ShareLink';

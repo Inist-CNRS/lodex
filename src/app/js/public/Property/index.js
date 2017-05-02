@@ -7,18 +7,18 @@ import { bindActionCreators } from 'redux';
 import { grey500 } from 'material-ui/styles/colors';
 import memoize from 'lodash.memoize';
 
-import { fromResource } from './selectors';
-import { field as fieldPropTypes } from '../propTypes';
+import { fromResource } from '../selectors';
+import { field as fieldPropTypes } from '../../propTypes';
 import CompositeProperty from './CompositeProperty';
-import propositionStatus, { REJECTED } from '../../../common/propositionStatus';
+import propositionStatus, { REJECTED } from '../../../../common/propositionStatus';
 import ModerateButton from './ModerateButton';
-import { changeFieldStatus } from './resource';
+import { changeFieldStatus } from '../resource';
 import PropertyContributor from './PropertyContributor';
 import PropertyLinkedFields from './PropertyLinkedFields';
-import { fromUser } from '../sharedSelectors';
-import EditField from '../fields/editFieldValue/EditField';
-import getFieldClassName from '../lib/getFieldClassName';
-import Format from './Format';
+import { fromUser } from '../../sharedSelectors';
+import EditField from '../../fields/editFieldValue/EditField';
+import getFieldClassName from '../../lib/getFieldClassName';
+import Format from '../Format';
 
 const styles = {
     container: memoize(style => Object.assign({

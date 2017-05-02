@@ -6,7 +6,7 @@ import translate from 'redux-polyglot/translate';
 import { ListItem } from 'material-ui/List';
 import FileDownloadIcon from 'material-ui/svg-icons/file/file-download';
 
-import { polyglot as polyglotPropTypes } from '../propTypes';
+import { polyglot as polyglotPropTypes } from '../../propTypes';
 
 export const ExportItemComponent = ({ type, p: polyglot, handleClick }) => (
     <ListItem
