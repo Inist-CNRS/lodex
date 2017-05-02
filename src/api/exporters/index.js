@@ -15,6 +15,5 @@ export default {
     jsonldcompacted,
     nquads,
     turtle,
-    jsonldcompacted,
     widget,
 };
