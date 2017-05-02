@@ -33,7 +33,7 @@ describe('upload reduce', () => {
             });
     });
 
-    it('should set status to SUCCESS on UPLOAD_FILE_SUCCESS', () => {
+    it('should set status to SUCCESS on UPLOAD_SUCCESS', () => {
         expect(reducer({ state: 'value' }, uploadSuccess()))
             .toEqual({
                 state: 'value',

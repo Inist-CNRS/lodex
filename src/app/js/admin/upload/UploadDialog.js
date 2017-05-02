@@ -13,7 +13,6 @@ import {
 } from './';
 import { fromUpload } from '../selectors';
 
-
 const styles = {
     button: {
         marginLeft: 4,
@@ -65,7 +64,7 @@ export const UploadDialogComponent = ({
             <input
                 name="file"
                 type="file"
-                onChange={e => onFileLoad(e.target.files[0])}
+                onChange={onFileLoad}
                 style={styles.input}
             />
         </RaisedButton>
@@ -98,11 +97,15 @@ export const UploadDialogComponent = ({
 
 UploadDialogComponent.propTypes = {
     url: PropTypes.string.isRequired,
-    isUrlValid: PropTypes.bool.isRequired,
+    isUrlValid: PropTypes.bool,
     onChangeUrl: PropTypes.func.isRequired,
     onFileLoad: PropTypes.func.isRequired,
     onUrlUpload: PropTypes.func.isRequired,
     p: polyglotPropTypes.isRequired,
+};
+
+UploadDialogComponent.defaultProps = {
+    isUrlValid: true,
 };
 
 const mapStateToProps = state => ({
@@ -111,8 +114,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = {
-    onFileLoad: uploadFile,
     onUrlUpload: uploadUrl,
+    onFileLoad: e => uploadFile(e.target.files[0]),
     onChangeUrl: (_, value) => changeUploadUrl(value),
 };
 
