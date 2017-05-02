@@ -36,12 +36,10 @@ export const AddFieldDetailComponent = ({
             className="field-scheme"
         />
         {isLoggedIn && [
-            <FieldFormatInput />,
-            <FieldIsSearchableInput />,
-            <FieldIsFacetInput />,
-            <FieldPositionInput
-                field={{}}
-            />,
+            <FieldFormatInput key="field_format" />,
+            <FieldIsSearchableInput key="field_searchable" />,
+            <FieldIsFacetInput key="field_facet" />,
+            <FieldPositionInput key="field_position" field={{}} />,
         ]}
     </FormSection>
 );

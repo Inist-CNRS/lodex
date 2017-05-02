@@ -28,7 +28,7 @@ export function generateWidget(uri, fields, type) {
     return `<iframe src="${baseUrl}/api/widget?type=${encType}${uri ? `&uri=${encUri}` : ''}&fields=${encFields}"></iframe>`;
 }
 
-export class ShareLinkComponent extends Component {
+export class WidgetExportItemComponent extends Component {
     constructor(props) {
         super(props);
         const { uri, fields, type } = this.props;
@@ -77,12 +77,17 @@ export class ShareLinkComponent extends Component {
     }
 }
 
-ShareLinkComponent.propTypes = {
+WidgetExportItemComponent.propTypes = {
     fields: PropTypes.arrayOf(PropTypes.string).isRequired,
     p: polyglotPropTypes.isRequired,
     label: PropTypes.string.isRequired,
     type: PropTypes.string.isRequired,
-    uri: PropTypes.string.isRequired,
+    uri: PropTypes.string,
 };
 
-export default translate(ShareLinkComponent);
+WidgetExportItemComponent.defaultProps = {
+    uri: null,
+};
+
+
+export default translate(WidgetExportItemComponent);
