@@ -6,13 +6,13 @@ import { fromUser } from '../../../sharedSelectors';
 import {
     uploadSuccess,
     uploadError,
-} from './';
+} from '../';
 import { loadDatasetFile } from '../../../lib/loadFile';
 import fetch from '../../../lib/fetch';
 import { handleUploadFile as uploadFileSaga } from './uploadFile';
 
 describe('parsing saga', () => {
-    describe('handleLoadParsingResult', () => {
+    describe('handleUploadFile', () => {
         let saga;
 
         beforeEach(() => {
