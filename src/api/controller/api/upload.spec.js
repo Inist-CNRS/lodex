@@ -206,7 +206,7 @@ describe('upload', () => {
         });
     });
 
-    describe.only('uploadUrl', () => {
+    describe('uploadUrl', () => {
         const parser = createSpy().andReturn('parsedStream');
         const ctx = {
             request: {
