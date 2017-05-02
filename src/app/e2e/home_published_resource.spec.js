@@ -183,7 +183,7 @@ describe('Resource page', function homePublishedDataTests() {
         await driver.wait(elementIsClicked('.tab-resource-export'));
         await driver.wait(until.elementLocated(By.css('.export')), DEFAULT_WAIT_TIMEOUT);
 
-        expect(await driver.findElement(By.css('.export .btn-export.csv')).getText()).toMatch('Export as csv');
+        expect(await driver.findElement(By.css('.export .btn-export.csv')).getText()).toMatch('Export as CSV');
     });
 
     it('should have an export tab with a resource sharing link', async () => {
