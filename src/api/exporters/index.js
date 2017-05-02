@@ -5,11 +5,11 @@ import nquads from './exportNQuads';
 import turtle from './exportTurtle';
 import jsonld from './exportJsonld';
 import widget from './exportWidgetResource';
-import istex from './exportIstex';
+import extendednquads from './exportExtendedNquads';
 
 export default {
     csv,
-    istex,
+    extendednquads,
     raw,
     tsv,
     jsonld,
