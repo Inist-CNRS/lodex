@@ -73,7 +73,7 @@ async function transformCompleteFields(field) {
     const name = await generateUid();
     const complete = field.name;
     const completed = field.completes;
-    return [name, complete, completed];
+    return { name, complete, completed };
 }
 
 function getFieldContext(field, scheme = field.scheme) {
@@ -87,10 +87,12 @@ function getFieldContext(field, scheme = field.scheme) {
     if (field.language) {
         fieldContext['@language'] = field.language;
     }
+
+    return fieldContext;
 }
 
-function mergeCompleteField(ouput, field, fields, data) {
-    const [name, complete, completed] = transformCompleteFields(field);
+async function mergeCompleteField(ouput, field, fields, data) {
+    const { name, complete, completed } = await transformCompleteFields(field);
     const completedField = fields.find(f => f.name === completed);
 
     const fieldContext = getFieldContext(field, completedField.scheme);
@@ -140,25 +142,26 @@ export async function JSONLDObject(data, feed) {
     }
     const fields = this.getParam('fields', {});
 
-    const output = fields
+    const output = await fields
         .filter(field => field.cover === 'collection')
-        .reduce((currentOutput, field) => {
-            const propertyName = field.name;
-            const isCompletedByAnotherField = fields.some(f => f.completes === field.name);
-            const completesAnotherField = field.completes;
+        .reduce((currentOutputPromise, field) =>
+            currentOutputPromise.then((currentOutput) => {
+                const propertyName = field.name;
+                const isCompletedByAnotherField = fields.some(f => f.completes === field.name);
+                const completesAnotherField = field.completes;
 
-            if (completesAnotherField) {
-                return mergeCompleteField(currentOutput, field, fields, data);
-            }
+                if (completesAnotherField) {
+                    return mergeCompleteField(currentOutput, field, fields, data);
+                }
 
-            if (field.scheme && data[propertyName] && !isCompletedByAnotherField) {
-                return mergeSimpleField(currentOutput, field, data);
-            }
+                if (field.scheme && data[propertyName] && !isCompletedByAnotherField) {
+                    return Promise.resolve(mergeSimpleField(currentOutput, field, data));
+                }
 
-            return currentOutput;
-        }, {
-            '@id': getUri(data.uri),
-        });
+                return Promise.resolve(currentOutput);
+            }), Promise.resolve({
+                '@id': getUri(data.uri),
+            }));
 
     feed.send(output);
 }
