@@ -91,22 +91,25 @@ function getFieldContext(field, scheme = field.scheme) {
     return fieldContext;
 }
 
-async function mergeCompleteField(ouput, field, fields, data) {
+async function mergeCompleteField(output, field, fields, data) {
     const { name, complete, completed } = await transformCompleteFields(field);
     const completedField = fields.find(f => f.name === completed);
+    const completeField = fields.find(f => f.name === complete);
 
     const fieldContext = getFieldContext(field, completedField.scheme);
     const completedFieldContext = getFieldContext(completedField, 'http://www.w3.org/2000/01/rdf-schema#label');
+    const completeFieldContext = getFieldContext(field, completeField.scheme);
 
     return {
-        ...ouput,
+        ...output,
         [name]: {
             [complete]: data[complete],
             [completed]: data[completed],
         },
         '@context': {
-            ...ouput['@content'],
+            ...output['@context'],
             [name]: fieldContext,
+            [complete]: completeFieldContext,
             [completed]: completedFieldContext,
         },
     };
@@ -120,7 +123,7 @@ function mergeSimpleField(output, field, data) {
         ...output,
         [propertyName]: data[propertyName],
         '@context': {
-            ...output['@content'],
+            ...output['@context'],
             [propertyName]: fieldContext,
         },
     };
@@ -151,7 +154,7 @@ export async function JSONLDObject(data, feed) {
                 const completesAnotherField = field.completes;
 
                 if (completesAnotherField) {
-                    return mergeCompleteField(currentOutput, field, fields, data);
+                    return Promise.resolve(mergeCompleteField(currentOutput, field, fields, data));
                 }
 
                 if (field.scheme && data[propertyName] && !isCompletedByAnotherField) {
