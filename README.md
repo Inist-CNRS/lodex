@@ -29,6 +29,13 @@ To access the mongo shell, run:
 make mongo-shell
 ```
 
+### Database reset
+
+During development, you may need to get an application state, where no data is published.
+
+- `make clear-publication`: just clear the published data but keep your uploaded dataset and your model
+- `make clear-database`: clear the whole database
+
 ## Tests
 
 Ensure you initialized the development environment first.
@@ -38,6 +45,24 @@ To execute all tests, run the following command:
 ```sh
 make test
 ```
+
+### Debugging frontend test
+
+You will need vnc viewer to access the docker graphical rendering [install here](https://chrome.google.com/webstore/detail/vnc%C2%AE-viewer-for-google-ch/iabmpiboiopbgfabjmgeedhcmjenhbla)
+first run
+```sh
+make setup-frontend-functional-debug
+```
+You will then be able to connect with vnc viewer on port 5900 (the password is secret)
+From here you will be able to launch chrome and access the appli in test environment in `http://api:3010`
+
+To launch the test in debug mode and see them in actions do:
+```sh
+make test-frontend-functional-debug
+```
+You will then see them in vnc viewer
+
+when you are done call `make cleanup test` to stop and remove all docker container used in debug
 
 ## Customizing the public layout
 
@@ -74,6 +99,8 @@ On EzMaster, you can edit the instance configuration:
 
     - `host`: the host and port pointing to the mongo instance eg: `localhost:27017`
     - `dbName`: The name of the database eg: `lodex`
+
+- `perPage`: Optional - the number of item perPage when displaying the dataset. Default to 10
 
 ### Technical documentation
 
@@ -150,7 +177,7 @@ You can add new exporter to lodex.
 Exporter are added in the `src/api/exporters` directory.
 
 ```js
-const exporter = (fields, characteristics, stream) => {
+const exporter = (config, fields, characteristics, stream, query) => {
     const defaultDocument = getDefaultDocuments(fields);
     const getCharacteristicByName = name => characteristics[0][name];
     const getCsvField = getCsvFieldFactory(getCharacteristicByName);
@@ -165,11 +192,19 @@ const exporter = (fields, characteristics, stream) => {
         .pipe(jsoncsvStream);
 }
 
+// Required: this will be used as the translation key to get the exporter label
+// If no translation is provided for this key, the key itself will be used for the label
+exporter.label = 'csv';
+
 // Required: this will be the exported file extension
 exporter.extension = 'csv';
 
 // Required: this will be the exported file mime type
 exporter.mimeType = 'text/csv';
+
+// Required: this define wether this exporter will output a file or a string (for widgets)
+// Accepted types are `file` or `string`
+exporter.type = 'file';
 
 export default exporter;
 
@@ -177,7 +212,9 @@ export default exporter;
 
 It receives:
 
-    - fields
+    - `config`: The configuration provided through the `config.json` file
+
+    - `fields`
         The list of fields
 
 ```json
@@ -211,7 +248,7 @@ or
 }
 ```
 
-    - characteristics
+    - `characteristics`
         The list of all version of the characteristics sorted by their publicationDate (newer to oldest)
 
 ```json
@@ -222,7 +259,7 @@ or
 }
 ```
 
-    - stream
+    - `stream`
         A stream of all document in the published dataset.
 
 ```json
@@ -251,6 +288,8 @@ or
     ]
 }
 ```
+
+    - `query`: the request query
 
 You also need to declare the exporter in `src/api/exporters/index.js`.
 
@@ -282,28 +321,34 @@ Simply add your exporter name in the exporters array, and it will appear in the 
 You can add new formats to lodex.
 The formats determine the react component used to display a field on the front.
 
-Formats are added in the `src/app/formats` folder, in their own directory.
-Eg, to add an uri format create the `src/app/formats/uri` directory
-A format is made of three components: A view component for the front, an edition component for the admin and an
-edition component for the front (editing a resource value once published).
+Formats are added in the `src/app/js/formats` folder, in their own directory.
+Eg, to add an uri format create the `src/app/js/formats/uri` directory.
+A format is made of three mandatory components and one optional :
 
-Those component can be any react component. They will receive the following props:
+1. a view component for the front
+2. an optional list view component for the front, will be used instead of the view component for the list if set
+3. an edition component for the admin
+4. an edition component for the front (editing a resource value once published).
+
+Those components can be any react component. They will receive the following props:
 
 - `resource`: the resource
 - `field`: the field definition
-- `fieldStatus`: Only for the ViewComponent and if the field is a contribution. Statuses are `PROPOSED`, `ACCEPTED` and `REJECTED`
-- `shrink`: Only for the ViewComponent, a boolean indicating whether the value should be shrinked if possible. This is useful for the public table where large contents can be shrinked (with ellipsis for example) for easier reading.
+- `fieldStatus`: only for the ViewComponent and if the field is a contribution. Statuses are `PROPOSED`, `ACCEPTED` and `REJECTED`
+- `shrink`: only for the ViewComponent, a boolean indicating whether the value should be shrinked if possible. This is useful for the public table where large contents can be shrinked (with ellipsis for example) for easier reading.
 
 You then add an index in your directory to expose them:
 
 ```js
 `src/app/formats/uri/index.js`
 import Component from './Component';
+import ListComponent from './ListComponent';
 import AdminComponent from './AdminComponent';
 import EditionComponent from './EditionComponent';
 
 export default {
     Component,
+    ListComponent, // optional
     AdminComponent,
     EditionComponent,
 };

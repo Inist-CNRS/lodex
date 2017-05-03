@@ -13,12 +13,14 @@ import {
 } from 'material-ui/Table';
 import DatasetColumn from './DatasetColumn';
 import DatasetColumnHeader from './DatasetColumnHeader';
-import Pagination from '../../lib/Pagination';
-import Loading from '../../lib/Loading';
+import Pagination from '../../lib/components/Pagination';
+import Loading from '../../lib/components/Loading';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { loadDatasetPage as loadDatasetPageAction } from './';
-import { fromPublication, fromDataset } from '../selectors';
+import { fromDataset } from '../selectors';
+import { fromFields } from '../../sharedSelectors';
 import AddCharacteristic from '../characteristic/AddCharacteristic';
+import CreateResource from '../resource/CreateResource';
 
 const styles = {
     table: {
@@ -93,6 +95,7 @@ export class DatasetComponent extends Component {
                 />
                 <CardActions style={styles.actions}>
                     <AddCharacteristic />
+                    <CreateResource />
                 </CardActions>
             </div>
         );
@@ -117,7 +120,7 @@ DatasetComponent.defaultProps = {
 
 const mapStateToProps = state => ({
     loading: fromDataset.isDatasetLoading(state),
-    columns: fromPublication.getListFields(state),
+    columns: fromFields.getListFields(state),
     currentPage: fromDataset.getDatasetCurrentPage(state),
     perPage: fromDataset.getDatasetPerPage(state),
     dataset: fromDataset.getDataset(state),

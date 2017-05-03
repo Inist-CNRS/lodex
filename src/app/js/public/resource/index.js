@@ -26,11 +26,18 @@ export const ADD_FIELD_TO_RESOURCE_ERROR = 'ADD_FIELD_TO_RESOURCE_ERROR';
 export const RESOURCE_FORM_NAME = 'resource';
 export const HIDE_RESOURCE_FORM_NAME = 'hideResource';
 export const NEW_RESOURCE_FIELD_FORM_NAME = 'newResourceField';
+export const CREATE_RESOURCE_FORM_NAME = 'createResource';
 
 export const CHANGE_FIELD_STATUS = 'CHANGE_FIELD_STATUS';
 export const CHANGE_FIELD_STATUS_SUCCESS = 'CHANGE_FIELD_STATUS_SUCCESS';
 export const CHANGE_FIELD_STATUS_ERROR = 'CHANGE_FIELD_STATUS_ERROR';
 export const SELECT_VERSION = 'SELECT_VERSION';
+
+export const CREATE_RESOURCE = 'CREATE_RESOURCE';
+export const CREATE_RESOURCE_CANCEL = 'CREATE_RESOURCE_CANCEL';
+export const CREATE_RESOURCE_OPEN = 'CREATE_RESOURCE_OPEN';
+export const CREATE_RESOURCE_SUCCESS = 'CREATE_RESOURCE_SUCCESS';
+export const CREATE_RESOURCE_ERROR = 'CREATE_RESOURCE_ERROR';
 
 export const loadResource = createAction(LOAD_RESOURCE);
 export const loadResourceSuccess = createAction(LOAD_RESOURCE_SUCCESS);
@@ -56,6 +63,12 @@ export const changeFieldStatus = createAction(CHANGE_FIELD_STATUS);
 export const changeFieldStatusSuccess = createAction(CHANGE_FIELD_STATUS_SUCCESS);
 export const changeFieldStatusError = createAction(CHANGE_FIELD_STATUS_ERROR);
 export const selectVersion = createAction(SELECT_VERSION);
+
+export const createResource = createAction(CREATE_RESOURCE);
+export const createResourceOpen = createAction(CREATE_RESOURCE_OPEN);
+export const createResourceCancel = createAction(CREATE_RESOURCE_CANCEL);
+export const createResourceSuccess = createAction(CREATE_RESOURCE_SUCCESS);
+export const createResourceError = createAction(CREATE_RESOURCE_ERROR);
 
 export const defaultState = {
     resource: {},
@@ -98,7 +111,7 @@ export default handleActions({
     }),
     SAVE_RESOURCE_SUCCESS: (state, { payload: resource }) => ({
         ...state,
-        resource,
+        resource: resource || state.resource,
         error: null,
         saving: false,
     }),
@@ -114,8 +127,9 @@ export default handleActions({
     [combineActions(
         SAVE_RESOURCE_ERROR,
         HIDE_RESOURCE_ERROR,
-        ADD_FIELD_TO_RESOURCE_ERROR)
-    ]: (state, { payload: error }) => ({
+        ADD_FIELD_TO_RESOURCE_ERROR,
+        CREATE_RESOURCE_ERROR,
+    )]: (state, { payload: error }) => ({
         ...state,
         error: error.message,
         saving: false,
@@ -188,6 +202,22 @@ export default handleActions({
     HIDE_RESOURCE_CANCEL: state => ({
         ...state,
         hiding: false,
+        error: null,
+    }),
+    CREATE_RESOURCE_OPEN: state => ({
+        ...state,
+        isCreating: true,
+        error: null,
+    }),
+    CREATE_RESOURCE_CANCEL: state => ({
+        ...state,
+        isCreating: false,
+        error: null,
+    }),
+    CREATE_RESOURCE_SUCCESS: state => ({
+        ...state,
+        isCreating: false,
+        saving: false,
         error: null,
     }),
 }, defaultState);
@@ -321,6 +351,8 @@ const isHiding = state => state.hiding;
 
 const getError = ({ error }) => error;
 
+const isCreating = state => state.isCreating;
+
 export const fromResource = {
     getResourceContributorsCatalog,
     getResourceSelectedVersion,
@@ -340,8 +372,11 @@ export const fromResource = {
     isHiding,
     getError,
     hasBeenRemoved,
+    isCreating,
 };
 
 export const getResourceFormData = state => state.form.resource.values;
 export const getHideResourceFormData = state => state.form.hideResource.values;
 export const getNewResourceFieldFormData = state => state.form.newResourceField && state.form.newResourceField.values;
+export const getNewResourceFormData = state =>
+    state.form[CREATE_RESOURCE_FORM_NAME] && state.form[CREATE_RESOURCE_FORM_NAME].values;

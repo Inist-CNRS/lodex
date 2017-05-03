@@ -9,8 +9,8 @@ import {
 } from 'material-ui/Table';
 
 import { RemovedResourceListComponent as RemovedResourceList } from './RemovedResourceList';
-import Pagination from '../../lib/Pagination';
-import ButtonWithStatus from '../../lib/ButtonWithStatus';
+import Pagination from '../../lib/components/Pagination';
+import ButtonWithStatus from '../../lib/components/ButtonWithStatus';
 
 describe('<RemovedResourceList />', () => {
     const columns = [
@@ -29,7 +29,6 @@ describe('<RemovedResourceList />', () => {
         shallow(<RemovedResourceList
             currentPage={1}
             loadRemovedResourcePage={loadRemovedResourcePage}
-            loadField={() => {}}
             loading
             p={{ t: key => key }}
             total={0}
@@ -41,28 +40,12 @@ describe('<RemovedResourceList />', () => {
         });
     });
 
-    it('should call loadField on mount', () => {
-        const loadField = createSpy();
-
-        shallow(<RemovedResourceList
-            currentPage={1}
-            loadRemovedResourcePage={() => {}}
-            loadField={loadField}
-            loading
-            p={{ t: key => key }}
-            total={0}
-        />);
-
-        expect(loadField).toHaveBeenCalled();
-    });
-
     it('should render the TableHeaderColumn for each column', () => {
         const wrapper = shallow(<RemovedResourceList
             currentPage={1}
             columns={columns}
             resources={resources}
             loadRemovedResourcePage={() => {}}
-            loadField={() => {}}
             loading={false}
             p={{ t: key => key }}
             total={3}
@@ -81,7 +64,6 @@ describe('<RemovedResourceList />', () => {
             columns={columns}
             resources={resources}
             loadRemovedResourcePage={() => {}}
-            loadField={() => {}}
             loading={false}
             p={{ t: key => key }}
             total={3}
@@ -114,7 +96,6 @@ describe('<RemovedResourceList />', () => {
             currentPage={1}
             resources={resources}
             loadRemovedResourcePage={() => {}}
-            loadField={() => {}}
             loading={false}
             total={3}
         />);
@@ -131,7 +112,6 @@ describe('<RemovedResourceList />', () => {
             columns={columns}
             currentPage={1}
             loadRemovedResourcePage={loadRemovedResourcePage}
-            loadField={() => {}}
             loading={false}
             resources={resources}
             total={3}
@@ -152,7 +132,6 @@ describe('<RemovedResourceList />', () => {
             currentPage={1}
             loadRemovedResourcePage={() => {}}
             restoreRessource={restoreRessource}
-            loadField={() => {}}
             loading={false}
             resources={resources}
             total={3}

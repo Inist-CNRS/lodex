@@ -5,13 +5,11 @@ import {
     changeFieldStatusError,
     CHANGE_FIELD_STATUS,
 } from '../';
-import { getChangeFieldStatusRequest } from '../../../fetch';
-import fetchSaga from '../../../lib/fetchSaga';
-
-export const parsePathName = pathname => pathname.match(/^(\/resource)(\/ark:\/)?(.*?$)/) || [];
+import { fromUser } from '../../../sharedSelectors';
+import fetchSaga from '../../../lib/sagas/fetchSaga';
 
 export function* handleChangeFieldStatus({ payload: { uri, field, status, prevStatus } }) {
-    const request = yield select(getChangeFieldStatusRequest, {
+    const request = yield select(fromUser.getChangeFieldStatusRequest, {
         uri,
         field,
         status,

@@ -1,5 +1,5 @@
 import transformers from './transformers';
-import asyncCompose from './lib/asyncCompose';
+import composeTransformers from './lib/composeTransformers';
 
 export const getFieldTransformation = (context, field) => {
     if (!field.transformers.length) {
@@ -8,10 +8,10 @@ export const getFieldTransformation = (context, field) => {
     const documentTransformers = field.transformers
         .map(({ operation, args = [] }) => transformers[operation](context, args));
 
-    const transformDocument = asyncCompose(documentTransformers);
+    const transformDocument = composeTransformers(documentTransformers);
 
     return async doc => ({
-        [field.name]: await transformDocument(doc),
+        [field.name]: await transformDocument(doc).catch(() => ''),
     });
 };
 

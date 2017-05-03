@@ -5,16 +5,16 @@ import {
     restoreRessourceError,
     restoreRessourceSuccess,
 } from '../';
-import { getRestoreResourceRequest } from '../../../fetch/';
+import { fromUser } from '../../../sharedSelectors';
 import { handleRestoreResourceRequest } from './restoreResource';
-import fetchSaga from '../../../lib/fetchSaga';
+import fetchSaga from '../../../lib/sagas/fetchSaga';
 
 describe('restore removed resources saga', () => {
     describe('handleRestoreResourceRequest', () => {
         const saga = handleRestoreResourceRequest({ payload: 'an_uri' });
 
         it('should select getRestoreResourceRequest', () => {
-            expect(saga.next().value).toEqual(select(getRestoreResourceRequest, 'an_uri'));
+            expect(saga.next().value).toEqual(select(fromUser.getRestoreResourceRequest, 'an_uri'));
         });
 
         it('should call fetchDafetchSagataset with the request', () => {

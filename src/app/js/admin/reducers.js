@@ -4,12 +4,12 @@ import { reducer as form } from 'redux-form';
 import { polyglotReducer as polyglot } from 'redux-polyglot';
 
 import fetchReducer from '../fetch';
-import fields from './fields';
+import fields from '../fields';
 import i18n from '../i18n';
 import importReducer from './import';
 import parsing from './parsing';
 import publication from './publication';
-import publicationPreview from './publicationPreview';
+import preview from './preview';
 import publishReducer from './publish';
 import removedResources from './removedResources';
 import upload from './upload';
@@ -26,7 +26,7 @@ const reducer = combineReducers({
     polyglot,
     parsing,
     publication,
-    publicationPreview,
+    preview,
     publish: publishReducer,
     removedResources,
     routing,

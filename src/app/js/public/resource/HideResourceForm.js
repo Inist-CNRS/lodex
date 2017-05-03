@@ -10,15 +10,15 @@ import {
     HIDE_RESOURCE_FORM_NAME,
 } from './';
 
-import FormTextField from '../../lib/FormTextField';
-import Alert from '../../lib/Alert';
+import FormTextField from '../../lib/components/FormTextField';
+import Alert from '../../lib/components/Alert';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { fromResource } from '../selectors';
 
-const validate = (values) => {
+const validate = (values, { p: polyglot }) => {
     if (!values.reason) {
         return {
-            reason: 'Required',
+            reason: polyglot.t('required'),
         };
     }
 
@@ -59,6 +59,7 @@ const mapDispatchToProps = {
 };
 
 export default compose(
+    translate,
     connect(mapStateToProps, mapDispatchToProps),
     withHandlers({
         onSubmit: ({ hideResource, resource }) => () => {
@@ -69,5 +70,4 @@ export default compose(
         form: HIDE_RESOURCE_FORM_NAME,
         validate,
     }),
-    translate,
 )(HideResourceFormComponent);

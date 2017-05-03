@@ -6,11 +6,11 @@ import {
     loadFacetValuesError,
     loadFacetValuesSuccess,
 } from './';
-import { getLoadFacetValuesRequest } from '../../fetch';
-import fetchSaga from '../../lib/fetchSaga';
+import { fromUser } from '../../sharedSelectors';
+import fetchSaga from '../../lib/sagas/fetchSaga';
 
 export function* handleLoadFacetValuesRequest({ payload: { field, filter } }) {
-    const request = yield select(getLoadFacetValuesRequest, { field: field.name, filter });
+    const request = yield select(fromUser.getLoadFacetValuesRequest, { field: field.name, filter });
 
     const { error, response: publication } = yield call(fetchSaga, request);
 

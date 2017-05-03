@@ -9,9 +9,9 @@ import {
     addTransformResultToDoc,
     versionTransformResult,
     publishCharacteristics,
-    publishFacets,
 } from './publish';
 import getDocumentTransformer from '../../services/getDocumentTransformer';
+import publishFacets from './publishFacets';
 
 describe('publish', () => {
     describe('doPublish', () => {
@@ -49,6 +49,7 @@ describe('publish', () => {
             uriDataset: {
                 insertBatch: 'uriDataset.insertBatch()',
                 findLimitFromSkip: 'uriDataset.findLimitFromSkip()',
+                distinct: createSpy().andReturn({ length: 'count' }),
             },
             publishCharacteristics: createSpy(),
             publishFacets: createSpy(),
@@ -144,37 +145,6 @@ describe('publish', () => {
         });
     });
 
-    describe('publishFacets', () => {
-        const ctx = {
-            publishedDataset: {
-                findDistinctValuesForField: createSpy().andReturn(Promise.resolve(['value1', 'value2'])),
-                countByFacet: createSpy().andReturn(Promise.resolve(100)),
-            },
-            publishedFacet: {
-                insertFacet: createSpy().andReturn(Promise.resolve()),
-            },
-        };
-        const facetFields = [{
-            name: 'facet1',
-        }, {
-            name: 'facet2',
-        }];
-
-        before(async () => {
-            await publishFacets(ctx, facetFields);
-        });
-
-        it('should call publishedDataset.findDistinctValuesForField for each facet field', () => {
-            expect(ctx.publishedDataset.findDistinctValuesForField).toHaveBeenCalledWith('facet1');
-            expect(ctx.publishedDataset.findDistinctValuesForField).toHaveBeenCalledWith('facet2');
-        });
-
-        it('should call ctx.publishedFacet.insertFacet for each facet field with their distinct values', () => {
-            expect(ctx.publishedFacet.insertFacet).toHaveBeenCalledWith('facet1', [{ value: 'value1', count: 100 }, { value: 'value2', count: 100 }]);
-            expect(ctx.publishedFacet.insertFacet).toHaveBeenCalledWith('facet2', [{ value: 'value1', count: 100 }, { value: 'value2', count: 100 }]);
-        });
-    });
-
     describe('preparePublish', () => {
         it('should provide ctx with needed dependency', async () => {
             const ctx = {};
@@ -223,8 +193,11 @@ describe('publish', () => {
     });
 
     describe('tranformAllDocuments', () => {
-        const dataset = [{ foo: 'foo1', bar: 'bar1' }, { foo: 'foo2', bar: 'bar2' }];
-        const count = 201;
+        const dataset = {
+            length: 1000,
+            map: createSpy().andReturn(['transformed dataset']),
+        };
+        const count = 2001;
         const findLimitFromSkip = createSpy().andReturn(dataset);
         const insertBatch = createSpy();
         const transformDocument = createSpy().andReturn(Promise.resolve('transformedDocument'));
@@ -233,18 +206,17 @@ describe('publish', () => {
             await tranformAllDocuments(count, findLimitFromSkip, insertBatch, transformDocument);
         });
         it('should load items from the original dataset and insert them in the publishedDataset by page of 100', () => {
-            expect(findLimitFromSkip).toHaveBeenCalledWith(100, 0);
-            expect(findLimitFromSkip).toHaveBeenCalledWith(100, 200);
-            expect(insertBatch).toHaveBeenCalledWith(['transformedDocument', 'transformedDocument']);
+            expect(findLimitFromSkip).toHaveBeenCalledWith(1000, 0);
+            expect(findLimitFromSkip).toHaveBeenCalledWith(1000, 1000);
+            expect(findLimitFromSkip).toHaveBeenCalledWith(1000, 2000);
         });
 
-        it('should call transform document with each document in dataset', () => {
-            expect(transformDocument).toHaveBeenCalledWith(dataset[0], 0, dataset);
-            expect(transformDocument).toHaveBeenCalledWith(dataset[1], 1, dataset);
+        it('should map dataset to transformDocument', () => {
+            expect(dataset.map).toHaveBeenCalledWith(transformDocument);
         });
 
         it('should insert all transformedDocument', () => {
-            expect(insertBatch).toHaveBeenCalledWith(['transformedDocument', 'transformedDocument']);
+            expect(insertBatch).toHaveBeenCalledWith(['transformed dataset']);
         });
     });
 

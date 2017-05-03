@@ -1,7 +1,7 @@
 import expect from 'expect';
 import { race, call, put, take } from 'redux-saga/effects';
 
-import fetchSaga from '../lib/fetchSaga';
+import fetchSaga from '../lib/sagas/fetchSaga';
 
 import {
     fetchError,

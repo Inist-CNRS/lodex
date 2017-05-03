@@ -1,6 +1,5 @@
 import { until, By } from 'selenium-webdriver';
 import { elementValueIs, elementIsClicked, elementTextIs, stalenessOf } from 'selenium-smart-wait';
-import expect from 'expect';
 
 import driver from '../../common/tests/chromeDriver';
 import { clear, loadFixtures } from '../../common/tests/fixtures';
@@ -10,7 +9,7 @@ import loginAsJulia from './loginAsJulia';
 
 describe('Home page with published data when logged as Julia', function homePublishedDataTests() {
     this.timeout(30000);
-    const DEFAULT_WAIT_TIMEOUT = 9000; // A bit less than mocha's timeout to get explicit errors from selenium
+    const DEFAULT_WAIT_TIMEOUT = 19000; // A bit less than mocha's timeout to get explicit errors from selenium
 
     before(async () => {
         await clear();
@@ -18,14 +17,13 @@ describe('Home page with published data when logged as Julia', function homePubl
         await loginAsJulia('/', '/');
     });
 
-    it('should display the list with multiple edit buttons', async () => {
-        await driver.wait(until.elementLocated(By.css('.edit-field.movie')), DEFAULT_WAIT_TIMEOUT);
-    });
+    it('should display the list with multiple edit buttons', () =>
+        driver.wait(until.elementLocated(By.css('.edit-field.movie'))));
 
     it('should display the characteristics edition dialog after clicking the edit button', async () => { // eslint-disable-line
-        await driver.wait(elementIsClicked('.edit-field.movie'), DEFAULT_WAIT_TIMEOUT);
+        driver.findElement(By.css('.edit-field.movie')).click();
 
-        await driver.wait(until.elementLocated(By.css('#field_form')), DEFAULT_WAIT_TIMEOUT);
+        return driver.wait(until.elementLocated(By.css('#field_form')));
     });
 
     it('should display the new characteristics after submitting them', async () => {
@@ -91,7 +89,7 @@ describe('Home page with published data when logged as Julia', function homePubl
             elementTextIs('.detail .property.best_friend_of .property_label', 'Best Friend Of', DEFAULT_WAIT_TIMEOUT),
         );
         await driver.wait(
-            elementTextIs('.detail .property.best_friend_of > .property_scheme', 'http://www.w3.org/ns/person',
+            elementTextIs('.detail .property.best_friend_of .property_scheme', 'http://www.w3.org/ns/person',
             DEFAULT_WAIT_TIMEOUT),
         );
         await driver.wait(
@@ -113,20 +111,16 @@ describe('Home page with published data when logged as Julia', function homePubl
         await email.clear();
         await email.sendKeys('peregrin.took@gondor.net');
 
-        await driver.wait(elementIsClicked('.select-position'));
-        await driver.sleep(1000);
-        await driver.wait(elementIsClicked('.after_uri'));
-        await driver.sleep(1000);
-
         await driver.findElement(By.css('.edit-field.save')).click();
         await driver.wait(until.stalenessOf(form), DEFAULT_WAIT_TIMEOUT);
+        await driver.sleep(500);
     });
 
     it('should save and return to resource page', async () => {
         const fullnameLabel = '.detail .property.full_name .property_label';
         await driver.wait(elementTextIs(fullnameLabel, 'Full name', DEFAULT_WAIT_TIMEOUT));
 
-        const fullnameScheme = '.detail .property.full_name > .property_scheme';
+        const fullnameScheme = '.detail .property.full_name .property_scheme';
         await driver.wait(elementTextIs(fullnameScheme, 'http://www.w3.org/ns/person', DEFAULT_WAIT_TIMEOUT));
 
         await driver.wait(
@@ -144,7 +138,7 @@ describe('Home page with published data when logged as Julia', function homePubl
         const mailLabel = '.detail .property.email.completes_fullname .property_label';
         await driver.wait(elementTextIs(mailLabel, 'Email', DEFAULT_WAIT_TIMEOUT));
 
-        const mailScheme = '.detail .property.email.completes_fullname > .property_scheme';
+        const mailScheme = '.detail .property.email.completes_fullname .property_scheme';
         await driver.wait(elementTextIs(mailScheme, 'http://uri4uri.net/vocab', DEFAULT_WAIT_TIMEOUT));
 
         const mailValue = '.detail .property.email.completes_fullname .property_value';
@@ -153,7 +147,7 @@ describe('Home page with published data when logged as Julia', function homePubl
         const bestFriendLabel = '.detail .property.best_friend_of .property_label';
         await driver.wait(elementTextIs(bestFriendLabel, 'Best Friend Of', DEFAULT_WAIT_TIMEOUT));
 
-        const bestFriendScheme = '.detail .property.best_friend_of > .property_scheme';
+        const bestFriendScheme = '.detail .property.best_friend_of .property_scheme';
         await driver.wait(elementTextIs(bestFriendScheme, 'http://www.w3.org/ns/person', DEFAULT_WAIT_TIMEOUT));
 
         const bestFriendLanguage = '.detail .property.best_friend_of .property_language';
@@ -182,37 +176,6 @@ describe('Home page with published data when logged as Julia', function homePubl
         await driver.wait(until.elementLocated(By.css('.removed-detail')), DEFAULT_WAIT_TIMEOUT);
         const reason = '.reason';
         await driver.wait(elementTextIs(reason, 'My bad, should not be here', DEFAULT_WAIT_TIMEOUT));
-    });
-
-    it('should display the list with updated positions', async () => {
-        await driver.wait(elementIsClicked('.btn-back-to-list'), DEFAULT_WAIT_TIMEOUT);
-
-        await driver.wait(until.elementLocated(By.css('.dataset')), DEFAULT_WAIT_TIMEOUT);
-        const headers = await driver.findElements(By.css('.dataset table th button'));
-
-        const expectedHeaders = ['URI', 'EMAIL', 'FIRSTNAME', 'NAME'];
-        await Promise.all(headers.map((header, index) =>
-            driver.wait(elementTextIs(header, expectedHeaders[index], DEFAULT_WAIT_TIMEOUT)),
-        ));
-
-        const expectedTds = [
-            ['uid:/1', 'peregrin.took@gondor.net', 'PEREGRIN', 'TOOK'],
-            ['uid:/2', 'samsaget.gamgie@shire.net', 'SAMSAGET', 'GAMGIE'],
-            ['uid:/3', 'bilbon.saquet@shire.net', 'BILBON', 'BAGGINS'],
-            ['uid:/4', 'frodo.saquet@shire.net', 'FRODO', 'BAGGINS'],
-            ['uid:/5', 'meriadoc.brandybuck@shire.net', 'MERIADOC', 'BRANDYBUCK'],
-        ];
-
-        const trs = await driver.findElements(By.css('.dataset table tbody tr'));
-        await Promise.all(trs.map(tr => tr
-            .findElements(By.css('td'))
-            .then(tds => Promise.all(tds.map(td => td.getText())))
-            .then((tdsText) => {
-                const item = expectedTds.find(td => td.every((cell, index) => cell === tdsText[index]));
-
-                expect(item).toExist('Unexpected row');
-            }),
-        ));
     });
 
     after(async () => {

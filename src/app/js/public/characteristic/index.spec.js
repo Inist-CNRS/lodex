@@ -15,7 +15,7 @@ import reducer, {
 
 import {
     loadPublicationSuccess,
-} from '../publication';
+} from '../../fields';
 
 describe('characteristic reducer', () => {
     it('should initialize with correct state', () => {

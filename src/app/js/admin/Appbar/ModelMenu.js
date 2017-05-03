@@ -8,7 +8,7 @@ import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 import ArrowDown from 'material-ui/svg-icons/hardware/keyboard-arrow-down';
 
-import ImportFieldsDialog from '../publicationPreview/ImportFieldsDialog';
+import ImportFieldsDialog from './ImportFieldsDialog';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { exportFields as exportFieldsAction } from '../../exportFields';
 

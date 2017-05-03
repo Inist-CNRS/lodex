@@ -8,8 +8,8 @@ import {
 } from './';
 
 import { handleLoadDatasetPageRequest } from './sagas';
-import { getLoadDatasetPageRequest } from '../../fetch/';
-import fetchSaga from '../../lib/fetchSaga';
+import { fromUser } from '../../sharedSelectors';
+import fetchSaga from '../../lib/sagas/fetchSaga';
 import { fromDataset, fromFacet } from '../selectors';
 
 describe('dataset saga', () => {
@@ -39,7 +39,7 @@ describe('dataset saga', () => {
         });
 
         it('should select getLoadDatasetPageRequest', () => {
-            expect(saga.next(20).value).toEqual(select(getLoadDatasetPageRequest, {
+            expect(saga.next(20).value).toEqual(select(fromUser.getLoadDatasetPageRequest, {
                 match: 'aFilter',
                 facets: [{ field: { name: 'aFacet' }, value: 'aFacetValue' }],
                 sort: {

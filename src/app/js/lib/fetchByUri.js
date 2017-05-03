@@ -2,7 +2,7 @@ import fetch from './fetch';
 
 export default (uri, token) =>
     fetch({
-        url: `/api/ark?uri=${uri}`,
+        url: `/api/publishedDataset/ark?uri=${uri}`,
         credentials: 'include',
         headers: {
             Accept: 'application/json',

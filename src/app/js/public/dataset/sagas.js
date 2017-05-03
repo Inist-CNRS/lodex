@@ -10,8 +10,8 @@ import {
 } from './';
 
 import { APPLY_FACET, REMOVE_FACET } from '../facet';
-import { getLoadDatasetPageRequest } from '../../fetch/';
-import fetchSaga from '../../lib/fetchSaga';
+import { fromUser } from '../../sharedSelectors';
+import fetchSaga from '../../lib/sagas/fetchSaga';
 import { fromDataset, fromFacet } from '../selectors';
 
 export function* handleLoadDatasetPageRequest({ payload }) {
@@ -30,7 +30,7 @@ export function* handleLoadDatasetPageRequest({ payload }) {
         perPage = yield select(fromDataset.getDatasetPerPage);
     }
 
-    const request = yield select(getLoadDatasetPageRequest, { match, facets, sort, page, perPage });
+    const request = yield select(fromUser.getLoadDatasetPageRequest, { match, facets, sort, page, perPage });
     const { error, response } = yield call(fetchSaga, request);
 
     if (error) {

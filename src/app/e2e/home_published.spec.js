@@ -10,15 +10,16 @@ import {
 import driver from '../../common/tests/chromeDriver';
 import { clear, loadFixtures } from '../../common/tests/fixtures';
 import fixtures from './home_published.json';
+import navigate from './navigate';
 
 describe('Home page with published data', function homePublishedDataTests() {
     this.timeout(30000);
-    const DEFAULT_WAIT_TIMEOUT = 9000; // A bit less than mocha's timeout to get explicit errors from selenium
+    const DEFAULT_WAIT_TIMEOUT = 19000; // A bit less than mocha's timeout to get explicit errors from selenium
 
     before(async () => {
         await clear();
         await loadFixtures(fixtures);
-        await driver.get('http://localhost:3100/');
+        await navigate('/');
     });
 
     it('should display the dataset characteristics', async () => {
@@ -245,13 +246,13 @@ describe('Home page with published data', function homePublishedDataTests() {
         await driver.wait(elementIsClicked('.tab-dataset-export'));
         await driver.wait(until.elementLocated(By.css('.export')), DEFAULT_WAIT_TIMEOUT);
 
-        expect(await driver.findElement(By.css('.export .btn-export.csv')).getText()).toMatch('Export as csv');
+        expect(await driver.findElement(By.css('.export .btn-export.csv')).getText()).toMatch('Export as CSV');
     });
 
     it('should have an export tab with a sharing link', async () => {
         await driver.wait(until.elementLocated(By.css('.share-link')), DEFAULT_WAIT_TIMEOUT);
 
-        expect(await driver.findElement(By.css('.share-link input')).getAttribute('value')).toEqual('http://localhost:3100/home');
+        expect(await driver.findElement(By.css('.share-link input')).getAttribute('value')).toMatch(/\/home/);
         await driver.wait(until.elementLocated(By.css('.share-link button')), DEFAULT_WAIT_TIMEOUT);
         expect(await driver.findElement(By.css('.share-link button')).getText()).toEqual('COPY');
     });

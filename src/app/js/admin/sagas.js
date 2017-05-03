@@ -2,10 +2,10 @@ import { fork } from 'redux-saga/effects';
 
 import exportSaga from '../exportFields/sagas';
 import importSaga from './import/sagas';
-import fieldsSaga from './fields/sagas';
+import fieldsSaga from '../fields/sagas';
 import parsingSaga from './parsing/sagas';
 import publicationSaga from './publication/sagas';
-import publicationPreviewSaga from './publicationPreview/sagas';
+import previewSaga from './preview/sagas';
 import publishSaga from './publish/sagas';
 import removedResourcesSagas from './removedResources/sagas';
 import contributedResourcesSagas from './contributedResources/sagas';
@@ -21,7 +21,7 @@ export default function* () {
     yield fork(importSaga);
     yield fork(parsingSaga);
     yield fork(publicationSaga);
-    yield fork(publicationPreviewSaga);
+    yield fork(previewSaga);
     yield fork(publishSaga);
     yield fork(removedResourcesSagas);
     yield fork(contributedResourcesSagas);

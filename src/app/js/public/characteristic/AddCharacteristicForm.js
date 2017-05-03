@@ -9,20 +9,20 @@ import {
     addCharacteristic as addCharacteristicAction,
     NEW_CHARACTERISTIC_FORM_NAME,
 } from './';
-import Alert from '../../lib/Alert';
+import Alert from '../../lib/components/Alert';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import {
     fromCharacteristic,
 } from '../selectors';
-import FormTextField from '../../lib/FormTextField';
-import SchemeAutoComplete from '../../lib/SchemeAutoComplete';
+import FormTextField from '../../lib/components/FormTextField';
+import FieldSchemeInput from '../../fields/FieldSchemeInput';
 
-const validate = (values) => {
+const validate = (values, { p: polyglot }) => {
     const errors = ['label', 'value'].reduce((currentErrors, field) => {
         if (!values[field]) {
             return {
                 ...currentErrors,
-                [field]: 'Required',
+                [field]: polyglot.t('required'),
             };
         }
         return currentErrors;
@@ -50,7 +50,7 @@ export const AddFieldFormComponent = ({
             component={FormTextField}
             label={polyglot.t('value')}
         />
-        <SchemeAutoComplete name="scheme" />
+        <FieldSchemeInput name="scheme" />
     </form>
 );
 
@@ -75,6 +75,7 @@ const mapDispatchToProps = {
 };
 
 export default compose(
+    translate,
     connect(mapStateToProps, mapDispatchToProps),
     withHandlers({
         onSubmit: ({ addCharacteristic }) => () => {
@@ -85,5 +86,4 @@ export default compose(
         form: NEW_CHARACTERISTIC_FORM_NAME,
         validate,
     }),
-    translate,
 )(AddFieldFormComponent);

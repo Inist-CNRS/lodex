@@ -4,25 +4,19 @@ import omit from 'lodash.omit';
 import { VALIDATED } from '../../common/propositionStatus';
 import generateUid from '../services/generateUid';
 
-const transformCompleteFields = async (field) => {
-    const propertyName0 = await generateUid();
-    const propertyName1 = field.name;
-    const propertyName2 = field.completes;
-    return [propertyName0, propertyName1, propertyName2];
-};
-
-
 export function filterVersions(data, feed) {
     if (data && data.versions) {
-        const lastVersion = data.versions[data.versions.length - 1];
-        delete data.versions;
+        const { versions, ...dataWithoutVersions } = data;
+        const lastVersion = versions[versions.length - 1];
+
         feed.send({
-            ...data,
+            ...dataWithoutVersions,
             ...lastVersion,
         });
-    } else {
-        feed.send(data);
+        return;
     }
+
+    feed.send(data);
 }
 
 export function filterContributions(data, feed) {
@@ -32,101 +26,168 @@ export function filterContributions(data, feed) {
             .map(({ fieldName }) => fieldName)
             .concat('contributions', 'contributionCount');
         feed.send(omit(data, fieldsToIgnore));
-    } else {
-        feed.send(data);
+        return;
     }
+
+    feed.send(data);
 }
 
 export function useFieldNames(data, feed) {
     const fields = this.getParam('fields', {});
-    const output = {};
+
     if (this.isLast()) {
         feed.close();
-    } else {
-        fields.filter(field => field.cover === 'collection').forEach((field) => {
-            output[field.label || field.name] = data[field.name];
-        });
-        feed.send(output);
+        return;
     }
+
+    const output = fields.filter(field => field.cover === 'collection').map((currentOutput, field) => ({
+        ...currentOutput,
+        [field.label || field.name]: data[field.name],
+    }), {});
+
+    feed.send(output);
 }
 
 export function linkDataset(data, feed) {
     const uri = this.getParam('uri');
     const scheme = this.getParam('scheme', 'http://purl.org/dc/terms/isPartOf');
+
     if (uri && data && data['@context']) {
-        data.dataset = uri;
-        data['@context'].dataset = {
-            '@id': scheme,
-            //             '@type': 'https://www.w3.org/TR/xmlschema-2/#anyURI',
-        };
+        feed.send({
+            ...data,
+            dataset: uri,
+            '@context': {
+                ...data['@context'],
+                dataset: {
+                    '@id': scheme,
+                },
+            },
+        });
+        return;
     }
+
     feed.send(data);
+}
+
+async function transformCompleteFields(field) {
+    const name = await generateUid();
+    const complete = field.name;
+    const completed = field.completes;
+    return [name, complete, completed];
+}
+
+function getFieldContext(field, scheme = field.scheme) {
+    const fieldContext = {
+        '@id': scheme,
+    };
+
+    if (field.type) {
+        fieldContext['@type'] = field.type;
+    }
+    if (field.language) {
+        fieldContext['@language'] = field.language;
+    }
+}
+
+function mergeCompleteField(ouput, field, fields, data) {
+    const [name, complete, completed] = transformCompleteFields(field);
+    const completedField = fields.find(f => f.name === completed);
+
+    const fieldContext = getFieldContext(field, completedField.scheme);
+    const completedFieldContext = getFieldContext(completedField, 'http://www.w3.org/2000/01/rdf-schema#label');
+
+    return {
+        ...ouput,
+        [name]: {
+            [complete]: data[complete],
+            [completed]: data[completed],
+        },
+        '@context': {
+            ...ouput['@content'],
+            [name]: fieldContext,
+            [completed]: completedFieldContext,
+        },
+    };
+}
+
+function mergeSimpleField(output, field, data) {
+    const propertyName = field.name;
+    const fieldContext = getFieldContext(field);
+
+    return {
+        ...output,
+        [propertyName]: data[propertyName],
+        '@context': {
+            ...output['@content'],
+            [propertyName]: fieldContext,
+        },
+    };
+}
+
+function getUri(uri) {
+    if (uri.indexOf('http://') !== 0 &&
+        uri.indexOf('https://') !== 0) {
+        return path.normalize(this.getParam('hostname', 'http://lod.istex.fr/').concat(uri));
+    }
+
+    return uri;
 }
 
 export async function JSONLDObject(data, feed) {
     if (this.isLast()) {
         feed.close();
-    } else {
-        const output = {};
-
-        if (data.uri.indexOf('http://') !== 0 &&
-            data.uri.indexOf('https://') !== 0) {
-            data.uri = path.normalize(this.getParam('hostname', 'http://lod.istex.fr/').concat(data.uri));
-        }
-        output['@id'] = data.uri;
-        output['@context'] = {};
-
-        const fields = this.getParam('fields', {});
-
-        fields.filter(field => field.cover === 'collection').forEach((field) => {
-            const propertyName = field.name;
-            if (field.scheme && data[propertyName]) {
-                output[propertyName] = data[propertyName];
-                output['@context'][propertyName] = {};
-                output['@context'][propertyName]['@id'] = field.scheme;
-                if (field.type) {
-                    output['@context'][propertyName]['@type'] = field.type;
-                }
-                if (field.language) {
-                    output['@context'][propertyName]['@language'] = field.language;
-                }
-            }
-        });
-
-        const completesFields = fields
-            .filter(field => field.completes)
-            .map(transformCompleteFields);
-
-        Promise.all(completesFields).then((propertyNames) => {
-            propertyNames.forEach((field) => {
-                const propertyName0 = field[0];
-                const propertyName1 = field[1];
-                const propertyName2 = field[2];
-                output[propertyName0] = {};
-                output[propertyName0][propertyName1] = data[propertyName1];
-                output[propertyName0][propertyName2] = data[propertyName2];
-                delete output[propertyName2];
-                output['@context'][propertyName0] = {};
-                output['@context'][propertyName0]['@id'] = output['@context'][propertyName2]['@id'];
-                output['@context'][propertyName2]['@id'] = 'http://www.w3.org/2000/01/rdf-schema#label';
-            });
-            feed.send(output);
-        });
+        return;
     }
-}
+    const fields = this.getParam('fields', {});
 
+    const output = fields
+        .filter(field => field.cover === 'collection')
+        .reduce((currentOutput, field) => {
+            const propertyName = field.name;
+            const isCompletedByAnotherField = fields.some(f => f.completes === field.name);
+            const completesAnotherField = field.completes;
+
+            if (completesAnotherField) {
+                return mergeCompleteField(currentOutput, field, fields, data);
+            }
+
+            if (field.scheme && data[propertyName] && !isCompletedByAnotherField) {
+                return mergeSimpleField(currentOutput, field, data);
+            }
+
+            return currentOutput;
+        }, {
+            '@id': getUri(data.uri),
+        });
+
+    feed.send(output);
+}
 
 export function JSONLDString(data, feed) {
     if (this.isLast()) {
-        feed.close();
-    } else {
-        jsonld.toRDF(data, { format: 'application/nquads' })
-            .then((out) => {
-                feed.send(out);
-            },
-                (err) => {
-                    throw err;
-                });
+        return feed.close();
     }
+
+    jsonld.toRDF(data, { format: 'application/nquads' })
+        .then((out) => {
+            feed.send(out);
+        },
+            (err) => {
+                throw err;
+            });
+}
+
+export function JSONLDCompacter(data, feed) {
+    if (this.isLast()) {
+        return feed.close();
+    }
+
+    jsonld.compact(data, {})
+        .then((out) => {
+            feed.send(out);
+        },
+            (err) => {
+                throw err;
+            });
 }
 

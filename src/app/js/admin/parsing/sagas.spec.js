@@ -1,14 +1,14 @@
 import expect from 'expect';
 import { call, put, select } from 'redux-saga/effects';
 
-import fetchSaga from '../../lib/fetchSaga';
+import fetchSaga from '../../lib/sagas/fetchSaga';
 
 import {
     loadParsingResultError,
     loadParsingResultSuccess,
 } from './';
 
-import { getLoadParsingResultRequest } from '../../fetch/';
+import { fromUser } from '../../sharedSelectors';
 
 import {
     handleLoadParsingResult,
@@ -19,7 +19,7 @@ describe('parsing saga', () => {
         const saga = handleLoadParsingResult();
 
         it('should select getLoadParsingResultRequest', () => {
-            expect(saga.next().value).toEqual(select(getLoadParsingResultRequest));
+            expect(saga.next().value).toEqual(select(fromUser.getLoadParsingResultRequest));
         });
 
         it('should call fetchSaga with the request', () => {

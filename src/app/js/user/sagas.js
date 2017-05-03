@@ -3,12 +3,12 @@ import { startSubmit, stopSubmit } from 'redux-form';
 import { push } from 'react-router-redux';
 
 import { LOGIN, LOGIN_FORM_NAME, loginSuccess } from './';
-import { getLoginRequest } from '../fetch';
-import fetchSaga from '../lib/fetchSaga';
+import { fromUser } from '../sharedSelectors';
+import fetchSaga from '../lib/sagas/fetchSaga';
 
 export function* handleLoginRequest({ payload: { previousState, ...credentials } }) {
     yield put(startSubmit(LOGIN_FORM_NAME));
-    const request = yield select(getLoginRequest, credentials);
+    const request = yield select(fromUser.getLoginRequest, credentials);
     const { error, response } = yield call(fetchSaga, request);
 
     if (error) {

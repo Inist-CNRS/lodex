@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 import FlatButton from 'material-ui/FlatButton';
-import { CardText, CardHeader } from 'material-ui/Card';
+import { CardText } from 'material-ui/Card';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import {
@@ -15,8 +15,8 @@ import {
     TableRowColumn,
 } from 'material-ui/Table';
 
-import Loading from '../../lib/Loading';
-import Pagination from '../../lib/Pagination';
+import Loading from '../../lib/components/Loading';
+import Pagination from '../../lib/components/Pagination';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import {
     loadContributedResourcePage as
@@ -24,10 +24,10 @@ import {
     restoreRessource as restoreRessourceAction,
     changeContributedResourceFilter,
 } from './';
-import { loadField as loadFieldAction } from '../fields';
-import { fromContributedResources, fromFields } from '../selectors';
+import { fromContributedResources } from '../selectors';
+import { fromFields } from '../../sharedSelectors';
 import propositionStatus from '../../../../common/propositionStatus';
-import { getResourceUri } from '../../../../common/uris';
+import { getFullResourceUri } from '../../../../common/uris';
 
 const styles = {
     table: {
@@ -41,8 +41,7 @@ const styles = {
 
 export class ContributedResourceListComponent extends Component {
     componentWillMount() {
-        const { loadField, loadContributedResourcePage, currentPage, filter } = this.props;
-        loadField();
+        const { loadContributedResourcePage, currentPage, filter } = this.props;
         loadContributedResourcePage({ page: currentPage, perPage: 10, filter });
     }
 
@@ -53,14 +52,26 @@ export class ContributedResourceListComponent extends Component {
     }
 
     render() {
-        const { columns, resources, loading, p: polyglot, total, filter, onChangeFilter } = this.props;
+        const {
+            columns,
+            resources,
+            loading, p:
+            polyglot,
+            total,
+            filter,
+            onChangeFilter,
+            currentPage,
+        } = this.props;
 
         if (loading) {
             return <Loading>{polyglot.t('loading')}</Loading>;
         }
+
+        const baseUri = `${window.location.protocol}//${window.location.host}`;
+
         return (
             <div className="contributed_resources">
-                <CardHeader>
+                <CardText>
                     <SelectField
                         className="filter"
                         style={styles.select}
@@ -77,9 +88,9 @@ export class ContributedResourceListComponent extends Component {
                             />
                         ))}
                     </SelectField>
-                </CardHeader>
+                </CardText>
 
-                <CardText >
+                <CardText>
                     <Table selectable={false} fixedHeader={false} style={styles.table}>
                         <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
                             <TableRow>
@@ -92,7 +103,9 @@ export class ContributedResourceListComponent extends Component {
                             {resources.map(data => (
                                 <TableRow key={data.uri}>
                                     <TableRowColumn key="review">
-                                        <a href={getResourceUri(data, `${window.location.protocol}//${window.location.host}`)}>
+                                        <a
+                                            href={getFullResourceUri(data, baseUri)}
+                                        >
                                             <FlatButton
                                                 className="btn-review-resource"
                                                 label={polyglot.t('review')}
@@ -111,6 +124,7 @@ export class ContributedResourceListComponent extends Component {
                         onChange={this.handlePageChange}
                         total={total}
                         perPage={10}
+                        currentPage={currentPage}
                         texts={{
                             page: polyglot.t('page'),
                             perPage: polyglot.t('perPage'),
@@ -132,7 +146,6 @@ ContributedResourceListComponent.propTypes = {
         .arrayOf(PropTypes.object)
         .isRequired,
     loading: PropTypes.bool.isRequired,
-    loadField: PropTypes.func.isRequired,
     loadContributedResourcePage: PropTypes.func.isRequired,
     p: polyglotPropTypes.isRequired,
     total: PropTypes.number.isRequired,
@@ -150,7 +163,6 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = ({
-    loadField: loadFieldAction,
     loadContributedResourcePage: loadContributedResourcePageAction,
     restoreRessource: restoreRessourceAction,
     onChangeFilter: changeContributedResourceFilter,

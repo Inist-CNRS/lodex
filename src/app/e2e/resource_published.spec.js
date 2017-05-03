@@ -9,15 +9,16 @@ import {
 import driver from '../../common/tests/chromeDriver';
 import { clear, loadFixtures } from '../../common/tests/fixtures';
 import fixtures from './resource_published.json';
+import navigate from './navigate';
 
 describe('Resource page when not logged', function resourcePageTest() {
     this.timeout(30000);
-    const DEFAULT_WAIT_TIMEOUT = 9000; // A bit less than mocha's timeout to get explicit errors from selenium
+    const DEFAULT_WAIT_TIMEOUT = 19000; // A bit less than mocha's timeout to get explicit errors from selenium
 
     before(async () => {
         await clear();
         await loadFixtures(fixtures);
-        await driver.get('http://localhost:3100/uid:/1');
+        await navigate('/uid:/1');
     });
 
     it('should display all resource properties', async () => {
@@ -131,7 +132,7 @@ describe('Resource page when not logged', function resourcePageTest() {
         const fullnameLabel = '.detail .property.full_name .property_label';
         await driver.wait(elementTextIs(fullnameLabel, 'Full name', DEFAULT_WAIT_TIMEOUT));
 
-        const fullnameScheme = '.detail .property.full_name > .property_scheme';
+        const fullnameScheme = '.detail .property.full_name .property_scheme';
         await driver.wait(elementTextIs(fullnameScheme, 'http://www.w3.org/ns/person', DEFAULT_WAIT_TIMEOUT));
 
         await driver.wait(
@@ -146,7 +147,7 @@ describe('Resource page when not logged', function resourcePageTest() {
         const mailLabel = '.detail .property.email.completes_fullname .property_label';
         await driver.wait(elementTextIs(mailLabel, 'Email', DEFAULT_WAIT_TIMEOUT));
 
-        const mailScheme = '.detail .property.email.completes_fullname > .property_scheme';
+        const mailScheme = '.detail .property.email.completes_fullname .property_scheme';
         await driver.wait(elementTextIs(mailScheme, 'http://uri4uri.net/vocab', DEFAULT_WAIT_TIMEOUT));
 
         const mailValue = '.detail .property.email.completes_fullname .property_value';
@@ -155,7 +156,7 @@ describe('Resource page when not logged', function resourcePageTest() {
         const bestFriendLabel = '.detail .property.best_friend_of .property_label';
         await driver.wait(elementTextIs(bestFriendLabel, 'Best Friend Of', DEFAULT_WAIT_TIMEOUT));
 
-        const bestFriendScheme = '.detail .property.best_friend_of > .property_scheme';
+        const bestFriendScheme = '.detail .property.best_friend_of .property_scheme';
         await driver.wait(elementTextIs(bestFriendScheme, 'http://www.w3.org/ns/person', DEFAULT_WAIT_TIMEOUT));
 
         const bestFriendValue = '.detail .property.best_friend_of .property_value';

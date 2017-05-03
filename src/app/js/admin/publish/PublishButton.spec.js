@@ -3,7 +3,7 @@ import expect, { createSpy } from 'expect';
 import { shallow } from 'enzyme';
 
 import { PublishButtonComponent as PublishButton } from './PublishButton';
-import ButtonWithStatus from '../../lib/ButtonWithStatus';
+import ButtonWithStatus from '../../lib/components/ButtonWithStatus';
 
 describe('<Publish />', () => {
     it('should render a publish button', () => {

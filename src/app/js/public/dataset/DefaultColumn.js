@@ -11,6 +11,7 @@ const DatasetColumn = ({ column, columns, resource }) => (
         className={classnames('dataset-column', `dataset-${getFieldClassName(column)}`)}
     >
         <Format
+            isList
             field={column}
             fields={columns}
             resource={resource}

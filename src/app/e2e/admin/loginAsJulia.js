@@ -2,11 +2,12 @@ import { until, By } from 'selenium-webdriver';
 
 import driver from '../../../common/tests/chromeDriver';
 import { inputElementIsFocusable } from '../../../common/tests/conditions';
+import navigate from '../navigate';
 
-const DEFAULT_WAIT_TIMEOUT = 9000; // A bit less than mocha's timeout to get explicit errors from selenium
+const DEFAULT_WAIT_TIMEOUT = 19000; // A bit less than mocha's timeout to get explicit errors from selenium
 
 export default async (nextpathname) => {
-    await driver.get(`http://localhost:3100${nextpathname}`);
+    await navigate(nextpathname);
 
     await driver.wait(until.elementLocated(By.css('form')));
     const form = await driver.findElement(By.css('form'));

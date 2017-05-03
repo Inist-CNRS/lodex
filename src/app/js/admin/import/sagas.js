@@ -1,7 +1,7 @@
 import { call, race, take, put, select, takeEvery } from 'redux-saga/effects';
 import { LOCATION_CHANGE } from 'react-router-redux';
 
-import { getToken } from '../../user';
+import { fromUser } from '../../sharedSelectors';
 import { IMPORT_FIELDS, importFieldsError, importFieldsSuccess } from './';
 import { loadModelFile } from '../../lib/loadFile';
 
@@ -9,7 +9,7 @@ export function* handleLoadModel(action) {
     if (!action || !action.payload) {
         return;
     }
-    const token = yield select(getToken);
+    const token = yield select(fromUser.getToken);
     try {
         const { file, cancel } = yield race({
             file: call(loadModelFile, action.payload, token),

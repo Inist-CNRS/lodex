@@ -1,5 +1,5 @@
 import { call, put, select, takeLatest } from 'redux-saga/effects';
-import { LOCATION_CHANGE, push } from 'react-router-redux';
+import { LOCATION_CHANGE } from 'react-router-redux';
 
 import {
     ADD_FIELD_TO_RESOURCE_SUCCESS,
@@ -8,9 +8,9 @@ import {
     loadResourceSuccess,
     loadResourceError,
 } from '../';
-import { loadPublication } from '../../publication';
-import { getLoadResourceRequest } from '../../../fetch';
-import fetchSaga from '../../../lib/fetchSaga';
+import { loadPublication } from '../../../fields';
+import { fromUser } from '../../../sharedSelectors';
+import fetchSaga from '../../../lib/sagas/fetchSaga';
 
 import { fromResource } from '../../selectors';
 
@@ -22,8 +22,7 @@ export function* handleLoadResource({ payload, type }) {
 
     if (type === LOCATION_CHANGE) {
         [, ark] = yield call(parsePathName, payload.pathname);
-
-        if (!ark && (!payload.state || !payload.state.uri)) {
+        if (!ark && (!payload.state || !payload.state.uri) && !payload.query.uri) {
             return;
         }
         if (payload && payload.state && payload.state.uri) {
@@ -42,7 +41,7 @@ export function* handleLoadResource({ payload, type }) {
     }
 
     yield put(loadResource());
-    const request = yield select(getLoadResourceRequest, uri);
+    const request = yield select(fromUser.getLoadResourceRequest, uri);
     const { error, response } = yield call(fetchSaga, request);
 
     if (error) {

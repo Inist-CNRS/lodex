@@ -1,21 +1,24 @@
 import { until, By } from 'selenium-webdriver';
 import expect from 'expect';
+
 import path from 'path';
 import { elementIsClicked, elementsCountIs, elementTextIs, elementTextMatches } from 'selenium-smart-wait';
 
 import driver from '../../../common/tests/chromeDriver';
 import { clear } from '../../../common/tests/fixtures';
 import loginAsJulia from './loginAsJulia';
+import navigate from '../navigate';
+import waitForPreviewComputing from './waitForPreviewComputing';
 
 describe('Admin', () => {
     describe('Import model', function homeTests() {
         this.timeout(30000);
-        const DEFAULT_WAIT_TIMEOUT = 9000; // A bit less than mocha's timeout to get explicit errors from selenium
+        const DEFAULT_WAIT_TIMEOUT = 19000; // A bit less than mocha's timeout to get explicit errors from selenium
 
         before(async () => {
             await clear();
 
-            await driver.get('http://localhost:3100/admin');
+            await navigate('/admin');
             await driver.executeScript('return localStorage.clear();');
             await driver.executeScript('return sessionStorage.clear();');
 
@@ -27,11 +30,15 @@ describe('Admin', () => {
                 await driver.wait(until.elementLocated(By.css('.upload')), DEFAULT_WAIT_TIMEOUT);
             });
 
+            it('should open upload modal', async () => {
+                await driver.wait(elementIsClicked('.open-upload'));
+            });
+
             it('should display the parsing result after uploading a csv', async () => {
                 const csvPath = path.resolve(__dirname, './linked_sample_csv.CSV');
                 const input = await driver.findElement(By.css('input[name=file]'));
                 await input.sendKeys(csvPath);
-                await driver.wait(until.elementLocated(By.css('.parsingResult')), DEFAULT_WAIT_TIMEOUT);
+                await driver.wait(until.elementLocated(By.css('.parsingResult')));
             });
         });
 
@@ -62,6 +69,8 @@ describe('Admin', () => {
                     elementsCountIs('.publication-preview tr th', 5),
                     DEFAULT_WAIT_TIMEOUT,
                 );
+
+                await waitForPreviewComputing();
             });
 
             it('should have completed uri column with generated uri', async () => {

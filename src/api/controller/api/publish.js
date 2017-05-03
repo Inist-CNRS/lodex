@@ -1,16 +1,18 @@
 import omit from 'lodash.omit';
 import Koa from 'koa';
 import route from 'koa-route';
+import get from 'lodash.get';
 
 /* eslint no-await-in-loop: off */
 import getDocumentTransformer from '../../services/getDocumentTransformer';
+import publishFacets from './publishFacets';
 
 const app = new Koa();
 
 export const tranformAllDocuments = async (count, findLimitFromSkip, insertBatch, transformer) => {
     let handled = 0;
     while (handled < count) {
-        const dataset = await findLimitFromSkip(100, handled);
+        const dataset = await findLimitFromSkip(1000, handled);
         const transformedDataset = await Promise.all(dataset.map(transformer));
         await insertBatch(transformedDataset);
         handled += dataset.length;
@@ -53,16 +55,6 @@ export const publishCharacteristics = async (ctx, datasetCoverFields, count) => 
     }
 };
 
-export const publishFacets = async (ctx, facetFields) =>
-    Promise.all(facetFields.map(field =>
-        ctx.publishedDataset
-            .findDistinctValuesForField(field.name)
-            .then(values => Promise.all(values.map(value =>
-                ctx.publishedDataset
-                    .countByFacet(field.name, value)
-                    .then(count => ({ value, count })))))
-            .then(values => ctx.publishedFacet.insertFacet(field.name, values)),
-    ));
 
 export const preparePublish = async (ctx, next) => {
     ctx.tranformAllDocuments = tranformAllDocuments;
@@ -91,7 +83,6 @@ export const doPublish = async (ctx) => {
     const fields = await ctx.field.findAll();
     const collectionCoverFields = fields.filter(c => c.cover === 'collection');
     const datasetCoverFields = fields.filter(c => c.cover === 'dataset');
-    const facetFields = fields.filter(c => c.isFacet);
 
     const uriCol = fields.find(col => col.name === 'uri');
     const getUri = ctx.getDocumentTransformer([uriCol]);
@@ -109,17 +100,36 @@ export const doPublish = async (ctx) => {
 
     const transformDocumentAndKeepUri = ctx.versionTransformResult(transformDocument);
 
+    const countUnique = (await ctx.uriDataset.distinct('uri')).length;
     await ctx.tranformAllDocuments(
-        count,
+        countUnique,
         ctx.uriDataset.findLimitFromSkip,
         ctx.publishedDataset.insertBatch,
         transformDocumentAndKeepUri,
     );
     await ctx.publishCharacteristics(ctx, datasetCoverFields, count);
-    await ctx.publishFacets(ctx, facetFields);
+    await ctx.publishFacets(ctx, fields);
 
     ctx.redirect('/api/publication');
 };
+
+export const verifyUri = async (ctx) => {
+    const uriField = await ctx.field.findOneByName('uri');
+    if (get(uriField, 'transformers[0].operation') === 'AUTOGENERATE_URI') {
+        ctx.body = { valid: true };
+        return;
+    }
+
+    const fields = get(uriField, 'transformers[0].args')
+        .filter(({ type }) => type === 'column')
+        .map(({ value }) => value);
+
+    ctx.body = {
+        nbInvalidUri: await ctx.dataset.countNotUnique(fields),
+    };
+};
+
+app.use(route.get('/verifyUri', verifyUri));
 
 app.use(route.post('/', preparePublish));
 app.use(route.post('/', handlePublishError));

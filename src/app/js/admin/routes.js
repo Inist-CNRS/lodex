@@ -1,11 +1,13 @@
 import App from './App';
 import Admin from './Admin';
-import { isLoggedIn as selectIsLoggedIn } from '../user';
+import ContributedResourcePage from './contributedResources/ContributedResourcePage';
+import RemovedResourcePage from './removedResources/RemovedResourcePage';
+import { fromUser } from '../sharedSelectors';
 import userRoutes from '../user/routes';
 
 export const onEnterWithAuthenticationCheck = store => (nextState, replaceState) => {
     const state = store.getState();
-    const isLoggedIn = selectIsLoggedIn(state);
+    const isLoggedIn = fromUser.isLoggedIn(state);
 
     if (!isLoggedIn) {
         replaceState({ pathname: '/login', state: { nextPathname: nextState.location.pathname } });
@@ -21,6 +23,16 @@ export default store => ({
         {
             path: '/admin/dashboard',
             component: Admin,
+            onEnter: onEnterWithAuthenticationCheck(store),
+        },
+        {
+            path: '/admin/contributions',
+            component: ContributedResourcePage,
+            onEnter: onEnterWithAuthenticationCheck(store),
+        },
+        {
+            path: '/admin/removed',
+            component: RemovedResourcePage,
             onEnter: onEnterWithAuthenticationCheck(store),
         },
         ...userRoutes,

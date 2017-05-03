@@ -1,10 +1,22 @@
-import uri from './uri';
 import html from './html';
+import email from './email';
+import image from './image';
+import link from './link';
+import list from './list';
+import chart from './chart';
+import uri from './uri';
+import istex from './istex';
 import DefaultFormat from './DefaultFormat';
 
 const components = {
     html,
+    list,
     uri,
+    email,
+    image,
+    link,
+    chart,
+    istex,
 };
 
 export const FORMATS = Object.keys(components);
@@ -24,6 +36,13 @@ export const getComponent = (field) => {
     return components[field.format.name] || DefaultFormat;
 };
 
-export const getViewComponent = field => getComponent(field).Component;
+export const getViewComponent = (field, isList) => {
+    const component = getComponent(field);
+    if (isList) {
+        return component.ListComponent || component.Component;
+    }
+
+    return component.Component;
+};
 export const getAdminComponent = name => getComponent(name).AdminComponent;
 export const getEditionComponent = name => getComponent(name).EditionComponent;

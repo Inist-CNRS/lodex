@@ -3,13 +3,13 @@
     "env": {
         "browser": true,
         "mocha": true,
-        "node": true,
+        "node": true
     },
     "extends": "airbnb",
     "rules": {
         "indent": ["error", 4],
         "max-len": ["error", {"code": 120, "tabWidth": 4, "ignoreUrls": true}],
         "import/no-extraneous-dependencies": "off",
-        "no-param-reassign": ["error", { "props": false }],
-    },
+        "no-param-reassign": ["error", { "props": false }]
+    }
 }

@@ -35,7 +35,7 @@ export const getDefaultDocuments = fields =>
         [key]: '',
     }));
 
-export const exportCsvFactory = csvTransformStreamFactory => (fields, characteristics, stream) => {
+export const exportCsvFactory = csvTransformStreamFactory => (config, fields, characteristics, stream) => {
     const defaultDocument = getDefaultDocuments(fields);
     const getCharacteristicByName = name => characteristics[0][name];
     const getCsvField = getCsvFieldFactory(getCharacteristicByName);
@@ -53,5 +53,7 @@ export const exportCsvFactory = csvTransformStreamFactory => (fields, characteri
 const exporter = exportCsvFactory(csv);
 exporter.extension = 'csv';
 exporter.mimeType = 'text/csv';
+exporter.type = 'file';
+exporter.label = 'csv';
 
 export default exporter;

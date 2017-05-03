@@ -1,22 +1,20 @@
 import config from '../config.json';
 
+const PORT = 3000;
+
 const getHost = () => {
     if (config.host) {
         return config.host;
     }
 
-    const { EZMASTER_PUBLIC_DOMAIN, EZMASTER_TECHNICAL_NAME } = process.env;
-    if (EZMASTER_PUBLIC_DOMAIN && EZMASTER_TECHNICAL_NAME) {
-        return `http://${EZMASTER_TECHNICAL_NAME}.${EZMASTER_PUBLIC_DOMAIN}`;
-    }
-
-    return null;
+    const host = process.env.EZMASTER_PUBLIC_URL || `http://localhost:${PORT}`;
+    return host;
 };
 
 module.exports = {
-    port: 3000,
+    port: PORT,
     mongo: {
-        host: 'localhost:27017',
+        host: 'mongo:27017',
         dbName: 'lodex',
     },
     auth: {
@@ -24,5 +22,7 @@ module.exports = {
         headerSecret: 'header',
         expiresIn: 10 * 3600, // 10 hours
     },
+    istexApiUrl: 'https://api.istex.fr/document',
     host: getHost(),
+    uploadDir: 'upload',
 };

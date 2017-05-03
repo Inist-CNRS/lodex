@@ -3,7 +3,7 @@ import chunk from 'lodash.chunk';
 import omit from 'lodash.omit';
 import compose from 'lodash.compose';
 import config from 'config';
-import { getResourceUri } from '../../common/uris';
+import { getFullResourceUri } from '../../common/uris';
 
 import { VALIDATED, PROPOSED } from '../../common/propositionStatus';
 
@@ -49,10 +49,16 @@ export const addKeyToFilters = (key, value) => (filters) => {
     };
 };
 
-export default (db) => {
+export default async (db) => {
     const collection = db.collection('publishedDataset');
 
-    collection.insertBatch = documents => chunk(documents, 100).map(data => collection.insertMany(data));
+    await collection.createIndex({ uri: 1 }, { unique: true });
+
+    collection.insertBatch = documents =>
+        Promise.all(chunk(documents, 1000).map(data => collection.insertMany(data, {
+            forceServerObjectId: true,
+            w: 1,
+        })));
 
     collection.getFindCursor = (filter, sortBy, sortDir = 'ASC') => {
         let cursor = collection.find(filter);
@@ -112,7 +118,7 @@ export default (db) => {
             .map(resource => (
                 resource.uri.startsWith('http') ? resource : ({
                     ...resource,
-                    uri: getResourceUri(resource, config.host),
+                    uri: getFullResourceUri(resource, config.host),
                 })
             ))
             .stream();
@@ -123,8 +129,7 @@ export default (db) => {
         return collection.findOne({ _id: oid });
     };
 
-    collection.findByUri = async uri =>
-        collection.findOne({ uri });
+    collection.findByUri = uri => collection.findOne({ uri });
 
     collection.addVersion = async (resource, newVersion, publicationDate = new Date()) =>
         collection.findOneAndUpdate(
@@ -227,6 +232,17 @@ export default (db) => {
     collection.findDistinctValuesForField = field => collection.distinct(`versions.${field}`);
 
     collection.countByFacet = (field, value) => collection.count({ [`versions.${field}`]: value });
+
+    collection.create = async (resource, publicationDate = new Date()) => {
+        const { uri, ...version } = resource;
+        return collection.insertOne({
+            uri,
+            versions: [{
+                ...version,
+                publicationDate,
+            }],
+        });
+    };
 
     return collection;
 };

@@ -3,26 +3,27 @@ import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 import { Tabs, Tab } from 'material-ui/Tabs';
-import { cyan500 } from 'material-ui/styles/colors';
-import Subheader from 'material-ui/Subheader';
-import { CardText } from 'material-ui/Card';
+import { push } from 'react-router-redux';
+import Divider from 'material-ui/Divider';
 
 import { polyglot as polyglotPropTypes } from '../propTypes';
-import { loadPublication as loadPublicationAction } from './publication';
-import { fromPublication, fromCharacteristic } from './selectors';
+import { loadPublication as loadPublicationAction } from '../fields';
+import { fromCharacteristic } from './selectors';
+import { fromFields } from '../sharedSelectors';
 
-import Alert from '../lib/Alert';
-import Card from '../lib/Card';
-import Loading from '../lib/Loading';
+import Alert from '../lib/components/Alert';
+import Card from '../lib/components/Card';
+import Loading from '../lib/components/Loading';
 import Dataset from './dataset/Dataset';
 import DatasetCharacteristics from './characteristic/DatasetCharacteristics';
 import NoDataset from './NoDataset';
 import Toolbar from './Toolbar';
 import AppliedFacetList from './facet/AppliedFacetList';
-import Ontology from './Ontology';
-import Export from './Export';
+import Ontology from '../fields/ontology/Ontology';
+import Export from './export/Export';
 import Share from './Share';
 import ShareLink from './ShareLink';
+import Widgets from './Widgets';
 
 const styles = {
     container: {
@@ -35,7 +36,10 @@ const styles = {
         color: 'black',
     },
     tabButton: {
-        color: cyan500,
+        color: 'black',
+    },
+    inkBarStyle: {
+        backgroundColor: 'black',
     },
 };
 
@@ -50,7 +54,9 @@ export class HomeComponent extends Component {
         loading: PropTypes.bool.isRequired,
         loadPublication: PropTypes.func.isRequired,
         hasPublishedDataset: PropTypes.bool.isRequired,
+        navigateTo: PropTypes.func.isRequired,
         p: polyglotPropTypes.isRequired,
+        selectedTab: PropTypes.string.isRequired,
         sharingTitle: PropTypes.string,
         sharingUri: PropTypes.string.isRequired,
     }
@@ -59,12 +65,17 @@ export class HomeComponent extends Component {
         this.props.loadPublication();
     }
 
+    handleTabChange = (value) => {
+        this.props.navigateTo(`/home/${value}`);
+    }
+
     render() {
         const {
             error,
             hasPublishedDataset,
             loading,
             p: polyglot,
+            selectedTab,
             sharingTitle,
             sharingUri,
         } = this.props;
@@ -90,36 +101,41 @@ export class HomeComponent extends Component {
                     <AppliedFacetList />
                     <DatasetCharacteristics />
                     <Card>
-                        <CardText style={styles.container}>
-                            <Tabs tabItemContainerStyle={styles.tab}>
-                                <Tab
-                                    className="tab-dataset-resources"
-                                    label={polyglot.t('resources')}
-                                    style={styles.tabButton}
-                                >
-                                    <Dataset />
-                                </Tab>
-                                <Tab
-                                    className="tab-dataset-export"
-                                    buttonStyle={styles.tabButton}
-                                    label={polyglot.t('share_export')}
-                                >
-                                    <Subheader>{polyglot.t('export_data')}</Subheader>
-                                    <Export />
-                                    <Subheader>{polyglot.t('dataset_share_link')}</Subheader>
-                                    <ShareLink uri={sharingUri} />
-                                    <Subheader>{polyglot.t('share')}</Subheader>
-                                    <Share uri={sharingUri} title={sharingTitle} />
-                                </Tab>
-                                <Tab
-                                    className="tab-dataset-ontology"
-                                    buttonStyle={styles.tabButton}
-                                    label={polyglot.t('ontology')}
-                                >
-                                    <Ontology />
-                                </Tab>
-                            </Tabs>
-                        </CardText>
+                        <Tabs
+                            inkBarStyle={styles.inkBarStyle}
+                            value={selectedTab}
+                            onChange={this.handleTabChange}
+                            tabItemContainerStyle={styles.tab}
+                        >
+                            <Tab
+                                className="tab-dataset-resources"
+                                label={polyglot.t('resources')}
+                                style={styles.tabButton}
+                                value="dataset"
+                            >
+                                <Dataset />
+                            </Tab>
+                            <Tab
+                                className="tab-dataset-export"
+                                buttonStyle={styles.tabButton}
+                                label={polyglot.t('share_export')}
+                                value="export"
+                            >
+                                <Export />
+                                <Divider />
+                                <Widgets />
+                                <ShareLink title={polyglot.t('dataset_share_link')} uri={sharingUri} />
+                                <Share uri={sharingUri} title={sharingTitle} />
+                            </Tab>
+                            <Tab
+                                className="tab-dataset-ontology"
+                                buttonStyle={styles.tabButton}
+                                label={polyglot.t('ontology')}
+                                value="ontology"
+                            >
+                                <Ontology />
+                            </Tab>
+                        </Tabs>
                     </Card>
                 </div>
             );
@@ -129,27 +145,28 @@ export class HomeComponent extends Component {
     }
 }
 
-const mapStateToProps = (state) => {
-    const titleFieldName = fromPublication.getDatasetTitleFieldName(state);
-    const fields = fromPublication.getDatasetFields(state);
+const mapStateToProps = (state, { params: { tab = 'dataset' } }) => {
+    const titleFieldName = fromFields.getDatasetTitleFieldName(state);
+    const fields = fromFields.getDatasetFields(state);
     const characteristics = fromCharacteristic.getCharacteristics(state, fields);
-
     let sharingTitle;
 
     if (titleFieldName) {
         sharingTitle = characteristics.find(f => f.name === titleFieldName).value;
     }
     return ({
+        selectedTab: tab,
         sharingTitle,
         sharingUri: window.location.toString(),
-        error: fromPublication.getPublicationError(state),
-        loading: fromPublication.isPublicationLoading(state),
-        hasPublishedDataset: fromPublication.hasPublishedDataset(state),
+        error: fromFields.getError(state),
+        loading: fromFields.isLoading(state),
+        hasPublishedDataset: fromFields.hasPublishedDataset(state),
     });
 };
 
 const mapDispatchToProps = ({
     loadPublication: loadPublicationAction,
+    navigateTo: push,
 });
 
 export default compose(

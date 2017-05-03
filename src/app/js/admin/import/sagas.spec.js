@@ -2,7 +2,7 @@ import expect from 'expect';
 import { call, take, put, select, race } from 'redux-saga/effects';
 import { LOCATION_CHANGE } from 'react-router-redux';
 
-import { getToken } from '../../user';
+import { fromUser } from '../../sharedSelectors';
 import {
     importFieldsSuccess,
     importFieldsError,
@@ -28,7 +28,7 @@ describe('import model saga', () => {
         it('should select getToken', () => {
             const { value } = saga.next();
 
-            expect(value).toEqual(select(getToken));
+            expect(value).toEqual(select(fromUser.getToken));
         });
 
         it('should race call(loadModelFile) and take(LOCATION_CHANGE)', () => {

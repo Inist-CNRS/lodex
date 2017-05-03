@@ -5,10 +5,11 @@ import translate from 'redux-polyglot/translate';
 import memoize from 'lodash.memoize';
 import CircularProgress from 'material-ui/CircularProgress';
 
-import { fromParsing, fromFields, fromPublicationPreview } from './selectors';
+import { fromParsing, fromPublicationPreview } from './selectors';
+import { fromFields } from '../sharedSelectors';
 import { polyglot as polyglotPropTypes } from '../propTypes';
 import ActionButton from './ActionButton';
-import { addField } from './fields';
+import { addField } from '../fields';
 import { showAddColumns, hideAddColumns } from './parsing';
 
 const styles = {

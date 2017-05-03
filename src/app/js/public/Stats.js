@@ -4,7 +4,8 @@ import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 import { ToolbarGroup, ToolbarSeparator } from 'material-ui/Toolbar';
 
-import { fromPublication, fromDataset } from './selectors';
+import { fromDataset } from './selectors';
+import { fromFields } from '../sharedSelectors';
 import { polyglot as polyglotPropTypes } from '../propTypes';
 
 const styles = {
@@ -42,7 +43,7 @@ StatsComponent.propTypes = {
 };
 
 const mapStateToProps = state => ({
-    nbColumns: fromPublication.getNbColumns(state),
+    nbColumns: fromFields.getNbColumns(state),
     nbResources: fromDataset.getDatasetTotal(state),
 });
 

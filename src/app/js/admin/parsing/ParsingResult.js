@@ -2,8 +2,6 @@ import React, { Component, PropTypes } from 'react';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
-
-import { CardHeader } from 'material-ui/Card';
 import { grey400 } from 'material-ui/styles/colors';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';

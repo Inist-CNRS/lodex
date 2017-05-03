@@ -1,7 +1,7 @@
 import { call, select, put, takeEvery } from 'redux-saga/effects';
-import fetchSaga from '../lib/fetchSaga';
-import { getExportFieldsRequest } from '../fetch/';
 import FileSaver from 'file-saver';
+import fetchSaga from '../lib/sagas/fetchSaga';
+import { fromUser } from '../sharedSelectors';
 
 import {
     EXPORT_FIELDS,
@@ -13,7 +13,7 @@ export const downloadFile = (blob) => {
 };
 
 export function* handleExportPublishedDatasetSuccess() {
-    const request = yield select(getExportFieldsRequest);
+    const request = yield select(fromUser.getExportFieldsRequest);
     const { error, response } = yield call(fetchSaga, request, [], 'blob');
 
     if (error) {

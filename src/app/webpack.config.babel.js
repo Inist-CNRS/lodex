@@ -12,6 +12,9 @@ import CopyWebpackPlugin from 'copy-webpack-plugin';
 import CompressionPlugin from 'compression-webpack-plugin';
 import { resolve } from 'path';
 
+import { loaderKeys } from '../api/loaders';
+import jsonConfig from '../../config.json';
+
 const { UglifyJsPlugin } = optimize;
 
 export default {
@@ -105,8 +108,11 @@ export default {
                 NODE_ENV: process.env.NODE_ENV === 'development'
                     ? JSON.stringify(process.env.NODE_ENV)
                     : JSON.stringify('production'), // eslint-disable-line max-len
-                EZMASTER_PUBLIC_URL: JSON.stringify.apply(process.env.EZMASTER_PUBLIC_URL),
+                PUBLIC_URL: JSON.stringify(config.host),
+                ISTEX_API_URL: JSON.stringify(config.istexApiUrl),
+                PER_PAGE: JSON.stringify(jsonConfig.perPage),
             },
+            LOADERS: JSON.stringify(loaderKeys),
         }),
         new LoaderOptionsPlugin({
             options: {

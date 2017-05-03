@@ -5,8 +5,8 @@ import {
     updateCharacteristicsError,
     updateCharacteristicsSuccess,
 } from '../';
-import { getUpdateCharacteristicsRequest } from '../../../fetch/';
-import fetchSaga from '../../../lib/fetchSaga';
+import { fromUser } from '../../../sharedSelectors';
+import fetchSaga from '../../../lib/sagas/fetchSaga';
 
 import { handleUpdateCharacteristics } from './updateCharacteristic';
 
@@ -17,7 +17,7 @@ describe('characteristic saga', () => {
         const saga = handleUpdateCharacteristics({ payload });
 
         it('should select getUpdateCharacteristicsRequest', () => {
-            expect(saga.next().value).toEqual(select(getUpdateCharacteristicsRequest, payload));
+            expect(saga.next().value).toEqual(select(fromUser.getUpdateCharacteristicsRequest, payload));
         });
 
         it('should call fetchPublication with the request', () => {

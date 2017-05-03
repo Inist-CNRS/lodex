@@ -4,14 +4,13 @@ import { connect } from 'react-redux';
 import { CardText } from 'material-ui/Card';
 import memoize from 'lodash.memoize';
 
-import Card from '../../lib/Card';
+import Card from '../../lib/components/Card';
 
 import { field as fieldProptypes } from '../../propTypes';
 
-import {
-    fromCharacteristic,
-    fromPublication,
-} from '../selectors';
+
+import { fromCharacteristic } from '../selectors';
+import { fromFields } from '../../sharedSelectors';
 
 import DatasetCharacteristicItem from './DatasetCharacteristicItem';
 
@@ -24,8 +23,8 @@ const styles = {
         display: 'flex',
         flexDirection: 'column',
         borderBottom: index < total - 1 ? '1px solid rgb(224, 224, 224)' : 'none',
-        paddingBottom: index < total - 1 ? '3rem' : 0,
-        paddingTop: '2rem',
+        paddingTop: index > 0 ? '0.5rem' : 0,
+        paddingBottom: index < total - 1 ? '0.5rem' : 0,
     })),
 };
 
@@ -53,7 +52,7 @@ DatasetCharacteristicsView.defaultProps = {
 };
 
 const mapStateToProps = (state) => {
-    const fields = fromPublication.getDatasetFields(state);
+    const fields = fromFields.getDatasetFields(state);
 
     return {
         characteristics: fromCharacteristic.getRootCharacteristics(state, fields),

@@ -8,8 +8,8 @@ import ActionDescription from 'material-ui/svg-icons/action/description';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import ContentClear from 'material-ui/svg-icons/content/clear';
 
-import FloatingActionButton from '../lib/FloatingActionButton';
-import { fromFields } from './selectors';
+import FloatingActionButton from '../lib/components/FloatingActionButton';
+import { fromFields } from '../sharedSelectors';
 import { polyglot as polyglotPropTypes } from '../propTypes';
 
 const styles = {

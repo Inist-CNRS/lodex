@@ -15,19 +15,17 @@ import {
     TableRowColumn,
 } from 'material-ui/Table';
 
-import ButtonWithStatus from '../../lib/ButtonWithStatus';
-import Loading from '../../lib/Loading';
-import Pagination from '../../lib/Pagination';
+import ButtonWithStatus from '../../lib/components/ButtonWithStatus';
+import Loading from '../../lib/components/Loading';
+import Pagination from '../../lib/components/Pagination';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import {
     loadRemovedResourcePage as loadRemovedResourcePageAction,
     restoreRessource as restoreRessourceAction,
 } from './';
-import {
-    loadField as loadFieldAction,
-} from '../fields';
 
-import { fromRemovedResources, fromFields } from '../selectors';
+import { fromRemovedResources } from '../selectors';
+import { fromFields } from '../../sharedSelectors';
 
 const styles = {
     table: {
@@ -38,8 +36,7 @@ const styles = {
 
 export class RemovedResourceListComponent extends Component {
     componentWillMount() {
-        const { loadField, loadRemovedResourcePage, currentPage } = this.props;
-        loadField();
+        const { loadRemovedResourcePage, currentPage } = this.props;
         loadRemovedResourcePage({ page: currentPage, perPage: 10 });
     }
 
@@ -52,7 +49,14 @@ export class RemovedResourceListComponent extends Component {
     }
 
     render() {
-        const { columns, resources, loading, p: polyglot, total } = this.props;
+        const {
+            columns,
+            resources,
+            loading,
+            p: polyglot,
+            total,
+            currentPage,
+        } = this.props;
 
         if (loading) return <Loading>{polyglot.t('loading')}</Loading>;
 
@@ -94,6 +98,7 @@ export class RemovedResourceListComponent extends Component {
                     onChange={this.handlePageChange}
                     total={total}
                     perPage={10}
+                    currentPage={currentPage}
                     texts={{
                         page: polyglot.t('page'),
                         perPage: polyglot.t('perPage'),
@@ -110,7 +115,6 @@ RemovedResourceListComponent.propTypes = {
     currentPage: PropTypes.number.isRequired,
     resources: PropTypes.arrayOf(PropTypes.object).isRequired,
     loading: PropTypes.bool.isRequired,
-    loadField: PropTypes.func.isRequired,
     loadRemovedResourcePage: PropTypes.func.isRequired,
     p: polyglotPropTypes.isRequired,
     restoreRessource: PropTypes.func.isRequired,
@@ -126,7 +130,6 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = ({
-    loadField: loadFieldAction,
     loadRemovedResourcePage: loadRemovedResourcePageAction,
     restoreRessource: restoreRessourceAction,
 });

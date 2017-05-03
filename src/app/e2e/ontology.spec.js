@@ -10,15 +10,16 @@ import driver from '../../common/tests/chromeDriver';
 import { clear, loadFixtures } from '../../common/tests/fixtures';
 import fixtures from './home_published.json';
 import loginAsJulia from './loginAsJulia';
+import navigate from './navigate';
 
 describe('Ontology', function homePublishedDataTests() {
     this.timeout(30000);
-    const DEFAULT_WAIT_TIMEOUT = 9000; // A bit less than mocha's timeout to get explicit errors from selenium
+    const DEFAULT_WAIT_TIMEOUT = 19000; // A bit less than mocha's timeout to get explicit errors from selenium
 
     before(async () => {
         await clear();
         await loadFixtures(fixtures);
-        await driver.get('http://localhost:3100/');
+        await navigate('/');
     });
 
     it('should display all header in list', async () => {
@@ -101,29 +102,46 @@ describe('Ontology', function homePublishedDataTests() {
         expect(editButtons.length).toBe(8);
     });
 
+    it('should edit form for full_name field changing its position', async () => {
+        await driver.wait(elementIsClicked('.configure-field.full_name', DEFAULT_WAIT_TIMEOUT));
+        await driver.wait(until.elementLocated(By.css('#field_form')));
+        const form = await driver.findElement(By.css('#field_form'));
+
+        await driver.wait(elementIsClicked('.field-position button', DEFAULT_WAIT_TIMEOUT));
+        await driver.sleep(1000);
+        await driver.wait(elementIsClicked('.after_uri', DEFAULT_WAIT_TIMEOUT));
+        await driver.sleep(1000);
+
+        await driver.wait(elementIsClicked('.configure-field.save', DEFAULT_WAIT_TIMEOUT));
+        await driver.wait(until.stalenessOf(form));
+    });
+
+    it('should have updated positions', async () => {
+        const fields = await driver.findElements(By.css('.field-label'));
+        const expectedFields = ['URI', 'Full name', 'Movie', 'firstname', 'name', 'Email', 'Best Friend Of', 'Author'];
+        await Promise.all(fields.map(async (header, index) =>
+            driver.wait(elementTextIs(header, expectedFields[index], DEFAULT_WAIT_TIMEOUT)),
+        ));
+    });
+
     it('should edit form for email field removing it from list', async () => {
         await driver.wait(elementIsClicked('.configure-field.email', DEFAULT_WAIT_TIMEOUT));
         await driver.wait(until.elementLocated(By.css('#field_form')));
-        const fields = await driver.findElements(By.css('#field_form > div'));
-        expect(fields.length).toBe(2);
-        const listDisplayLabel = await fields[0].findElement(By.css('label'));
-        await driver.wait(elementTextIs(listDisplayLabel, 'Display on list page', DEFAULT_WAIT_TIMEOUT));
-        const listDisplayInput = await fields[0].findElement(By.css('input'));
-        await driver.wait(elementValueIs(listDisplayInput, 'on', DEFAULT_WAIT_TIMEOUT));
+        const form = driver.findElement(By.css('#field_form'));
 
-        const resourceDisplayLabel = await fields[1].findElement(By.css('label'));
-        await driver.wait(elementTextIs(resourceDisplayLabel, 'Display on resource page', DEFAULT_WAIT_TIMEOUT));
-        const resourceDisplayInput = await fields[1].findElement(By.css('input'));
-        await driver.wait(elementValueIs(resourceDisplayInput, 'on', DEFAULT_WAIT_TIMEOUT));
+        await driver.wait(elementValueIs('.display_in_list input', 'on', DEFAULT_WAIT_TIMEOUT));
+        await driver.wait(elementValueIs('.display_in_resource input', 'on', DEFAULT_WAIT_TIMEOUT));
+        await driver.wait(elementIsClicked('.display_in_list', DEFAULT_WAIT_TIMEOUT));
 
-        await listDisplayInput.click();
-        await driver.sleep(100);
+        await driver.sleep(500);
         await driver.wait(elementIsClicked('.configure-field.save', DEFAULT_WAIT_TIMEOUT));
+        await driver.wait(until.stalenessOf(form, DEFAULT_WAIT_TIMEOUT));
+        await driver.sleep(500);
     });
 
     it('should have removed email from list', async () => {
         await driver.wait(until.elementLocated(By.css('.tab-dataset-resources')), DEFAULT_WAIT_TIMEOUT);
-        await driver.wait(elementIsClicked('.tab-dataset-resources', DEFAULT_WAIT_TIMEOUT));
+        await driver.findElement(By.css('.tab-dataset-resources')).click();
         await driver.wait(until.elementLocated(By.css('.dataset')), DEFAULT_WAIT_TIMEOUT);
         const headers = await driver.findElements(By.css('.dataset table th button'));
 
@@ -219,26 +237,25 @@ describe('Ontology', function homePublishedDataTests() {
     it('should edit form for best friend field removing it from resource', async () => {
         await driver.wait(elementIsClicked('.configure-field.best_friend_of', DEFAULT_WAIT_TIMEOUT));
         await driver.wait(until.elementLocated(By.css('#field_form')));
-        const fields = await driver.findElements(By.css('#field_form > div'));
-        expect(fields.length).toBe(2);
-        const listDisplayLabel = await fields[0].findElement(By.css('label'));
-        await driver.wait(elementTextIs(listDisplayLabel, 'Display on list page', DEFAULT_WAIT_TIMEOUT));
-        const listDisplayInput = await fields[0].findElement(By.css('input'));
-        await driver.wait(elementValueIs(listDisplayInput, 'on', DEFAULT_WAIT_TIMEOUT));
+        const form = await driver.findElement(By.css('#field_form'));
 
-        const resourceDisplayLabel = await fields[1].findElement(By.css('label'));
-        await driver.wait(elementTextIs(resourceDisplayLabel, 'Display on resource page', DEFAULT_WAIT_TIMEOUT));
-        const resourceDisplayInput = await fields[1].findElement(By.css('input'));
-        await driver.wait(elementValueIs(resourceDisplayInput, 'on', DEFAULT_WAIT_TIMEOUT));
+        await driver.wait(elementValueIs('.display_in_list input', 'on', DEFAULT_WAIT_TIMEOUT));
+        await driver.wait(elementValueIs('.display_in_resource input', 'on', DEFAULT_WAIT_TIMEOUT));
+        await driver.wait(elementIsClicked('.display_in_resource', DEFAULT_WAIT_TIMEOUT));
 
-        await resourceDisplayInput.click();
         await driver.sleep(500);
         await driver.wait(elementIsClicked('.configure-field.save', DEFAULT_WAIT_TIMEOUT));
+        await driver.wait(until.stalenessOf(form, DEFAULT_WAIT_TIMEOUT));
+        await driver.sleep(500);
     });
 
     it('should not display best_friend_of anymore', async () => {
         await driver.wait(until.elementLocated(By.css('.tab-resource-details')), DEFAULT_WAIT_TIMEOUT);
-        await driver.wait(elementIsClicked('.tab-resource-details', DEFAULT_WAIT_TIMEOUT));
+        const tab = await driver.findElement(By.css('.tab-resource-details'));
+        await driver.executeScript('document.getElementsByClassName("resource")[0].scrollIntoView(true);');
+        await driver.sleep(500);
+        await driver.wait(until.elementIsVisible(tab), DEFAULT_WAIT_TIMEOUT);
+        await tab.click();
         await driver.wait(until.elementLocated(By.css('.detail')), DEFAULT_WAIT_TIMEOUT);
 
         const fullnameLabel = '.detail .property.full_name .property_label';

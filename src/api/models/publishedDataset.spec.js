@@ -10,12 +10,17 @@ import { VALIDATED, PROPOSED } from '../../common/propositionStatus';
 describe('publishedDataset', () => {
     describe('addVersion', () => {
         const collection = {
+            createIndex: createSpy(),
             findOneAndUpdate: createSpy(),
         };
         const db = {
             collection: () => collection,
         };
-        const publishedDatasetCollection = publishedDataset(db);
+        let publishedDatasetCollection;
+
+        before(async () => {
+            publishedDatasetCollection = await publishedDataset(db);
+        });
 
         it('should call update', async () => {
             const date = new Date();
@@ -52,11 +57,17 @@ describe('publishedDataset', () => {
         const collection = {
             findOne: createSpy().andReturn(previousResource),
             update: createSpy(),
+            createIndex: createSpy(),
         };
         const db = {
             collection: () => collection,
         };
-        const publishedDatasetCollection = publishedDataset(db);
+
+        let publishedDatasetCollection;
+
+        before(async () => {
+            publishedDatasetCollection = await publishedDataset(db);
+        });
 
         describe('isLoggedIn: true', () => {
             it('should call addFieldToResource with uri status validated and increment accepted count', async () => {
@@ -147,11 +158,17 @@ describe('publishedDataset', () => {
         const collection = {
             aggregate: createSpy().andReturn(aggregateResult),
             update: createSpy(),
+            createIndex: createSpy(),
         };
         const db = {
             collection: () => collection,
         };
-        const publishedDatasetCollection = publishedDataset(db);
+
+        let publishedDatasetCollection;
+
+        before(async () => {
+            publishedDatasetCollection = await publishedDataset(db);
+        });
 
         it('should call aggregate incorporating uri and name', async () => {
             await publishedDatasetCollection.changePropositionStatus('uri', 'name', 'status');
@@ -187,9 +204,17 @@ describe('publishedDataset', () => {
         const sort = createSpy().andReturn({ skip, count });
         const find = createSpy().andReturn({ sort, skip, count });
         const db = {
-            collection: () => ({ find }),
+            collection: () => ({
+                find,
+                createIndex: createSpy(),
+            }),
         };
-        const publishedDatasetCollection = publishedDataset(db);
+
+        let publishedDatasetCollection;
+
+        before(async () => {
+            publishedDatasetCollection = await publishedDataset(db);
+        });
 
         it('should return total and data', async () => {
             const result = await publishedDatasetCollection.findPage('perPage', 'page');
@@ -378,6 +403,36 @@ describe('publishedDataset', () => {
             }))
             .toEqual({
                 filter: 'data',
+            });
+        });
+    });
+
+    describe('create', () => {
+        const insertOne = createSpy().andReturn('inserted');
+        const db = {
+            collection: () => ({
+                insertOne,
+                createIndex: createSpy(),
+            }),
+        };
+
+        let publishedDatasetCollection;
+
+        before(async () => {
+            publishedDatasetCollection = await publishedDataset(db);
+        });
+
+        it('should call connection.insertOne with { uri, versions: [rest] }', async () => {
+            const date = new Date();
+            const result = await publishedDatasetCollection.create({ uri: 'uri', data: 'value' }, date);
+            expect(result).toBe('inserted');
+
+            expect(insertOne).toHaveBeenCalledWith({
+                uri: 'uri',
+                versions: [{
+                    data: 'value',
+                    publicationDate: date,
+                }],
             });
         });
     });

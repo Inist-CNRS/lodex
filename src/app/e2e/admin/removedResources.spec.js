@@ -6,27 +6,22 @@ import driver from '../../../common/tests/chromeDriver';
 import { clear, loadFixtures } from '../../../common/tests/fixtures';
 import fixtures from './removedResources.json';
 import loginAsJulia from './loginAsJulia';
+import navigate from '../navigate';
 
 describe('Admin', () => {
     describe('Removed Resource management', function homePublishedDataTests() {
         this.timeout(30000);
-        const DEFAULT_WAIT_TIMEOUT = 9000; // A bit less than mocha's timeout to get explicit errors from selenium
+        const DEFAULT_WAIT_TIMEOUT = 19000; // A bit less than mocha's timeout to get explicit errors from selenium
 
         before(async () => {
             await clear(); // Had to ensure clear state for unknown reason
             await loadFixtures(fixtures);
 
-            await driver.get('http://localhost:3100/admin');
+            await navigate('/admin');
             await driver.executeScript('return localStorage.clear();');
             await driver.executeScript('return sessionStorage.clear();');
 
-            await loginAsJulia('/admin');
-        });
-
-        it('should activate removed-resources tab', async () => {
-            await driver.wait(until.elementLocated(By.css('.removed-tab')), DEFAULT_WAIT_TIMEOUT);
-            const tab = '.removed-tab';
-            await driver.wait(elementIsClicked(tab), DEFAULT_WAIT_TIMEOUT);
+            await loginAsJulia('/admin/removed');
         });
 
         it('should display the removed resources', async () => {

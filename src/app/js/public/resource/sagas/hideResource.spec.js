@@ -1,14 +1,13 @@
 import expect from 'expect';
 import { call, put, select } from 'redux-saga/effects';
-import { push } from 'react-router-redux';
 
 import {
     getHideResourceFormData,
     hideResourceSuccess,
     hideResourceError,
 } from '../';
-import fetchSaga from '../../../lib/fetchSaga';
-import { getHideResourceRequest } from '../../../fetch';
+import fetchSaga from '../../../lib/sagas/fetchSaga';
+import { fromUser } from '../../../sharedSelectors';
 import { handleHideResource } from './hideResource';
 
 describe('handleHideResource', () => {
@@ -26,7 +25,7 @@ describe('handleHideResource', () => {
     it('should select getHideResourceRequest with resource', () => {
         saga.next();
         const next = saga.next({ reason: 'reason' });
-        expect(next.value).toEqual(select(getHideResourceRequest, {
+        expect(next.value).toEqual(select(fromUser.getHideResourceRequest, {
             uri: 'uri',
             reason: 'reason',
         }));

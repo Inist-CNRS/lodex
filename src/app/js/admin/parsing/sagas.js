@@ -1,17 +1,17 @@
 import { call, fork, put, select, takeLatest } from 'redux-saga/effects';
 
-import fetchSaga from '../../lib/fetchSaga';
+import fetchSaga from '../../lib/sagas/fetchSaga';
 
 import {
     LOAD_PARSING_RESULT,
     loadParsingResultError,
     loadParsingResultSuccess,
 } from './';
-import { UPLOAD_FILE_SUCCESS } from '../upload';
-import { getLoadParsingResultRequest } from '../../fetch/';
+import { UPLOAD_SUCCESS } from '../upload';
+import { fromUser } from '../../sharedSelectors';
 
 export function* handleLoadParsingResult() {
-    const request = yield select(getLoadParsingResultRequest);
+    const request = yield select(fromUser.getLoadParsingResultRequest);
 
     const { error, response } = yield call(fetchSaga, request);
 
@@ -23,7 +23,7 @@ export function* handleLoadParsingResult() {
 }
 
 export function* watchLoadParsingResult() {
-    yield takeLatest([LOAD_PARSING_RESULT, UPLOAD_FILE_SUCCESS], handleLoadParsingResult);
+    yield takeLatest([LOAD_PARSING_RESULT, UPLOAD_SUCCESS], handleLoadParsingResult);
 }
 
 export default function* () {

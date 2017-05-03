@@ -32,7 +32,7 @@ endif
 
 install-selenium:
 	echo "Installing Selenium server"
-	./node_modules/.bin/selenium-standalone install --version=3.3.0 --drivers.chrome.version=2.24
+	./node_modules/.bin/selenium-standalone install --version=3.3.0 --drivers.chrome.version=2.29
 
 install: copy-conf install-npm-dependencies install-selenium ## Install npm dependencies for the api, admin, and frontend apps
 
@@ -61,31 +61,29 @@ npm: ## allow to run dockerized npm command eg make npm 'install koa --save'
 	docker-compose run --rm npm $(COMMAND_ARGS)
 
 test-api-unit: ## Run the API unit tests
-	NODE_ENV=test ./node_modules/.bin/mocha \
-		--require babel-polyfill \
-		--compilers="js:babel-core/register" \
-		"./src/api/**/*.spec.js" \
-		"./src/common/**/*.spec.js"
+	docker-compose -f docker-compose.unit.yml run --rm api-unit
 
 test-frontend-unit: ## Run the frontend application unit tests
-	NODE_ENV=test BABEL_ENV=browser ./node_modules/.bin/mocha \
-		--require babel-polyfill \
-		--require='./src/app/js/test.spec.js' \
-		--compilers="css:./src/common/tests/webpack-null-compiler,js:babel-core/register" \
-		"./src/app/js/**/*.spec.js"
+	docker-compose -f docker-compose.unit.yml run --rm frontend-unit
 
 test-frontend-functional: ## Run the frontend application functional tests
 	NODE_ENV=test ${MAKE} build-frontend
-	NODE_ENV=test SELENIUM_BROWSER_BINARY_PATH="./node_modules/selenium-standalone/.selenium/chromedriver/2.24-x64-chromedriver" \
-		./node_modules/.bin/mocha \
-		--require babel-polyfill \
-		--compilers="js:babel-core/register" \
-		--recursive \
-		"./src/app/e2e/**/*.spec.js"
+	docker-compose -f docker-compose.e2e.yml run --rm e2e
+
+setup-frontend-functional-debug:
+	docker-compose -f docker-compose.e2e-debug.yml up -d chromedebug hub mongo api
+	@echo "launch vnc viewer and connect to localhost:5900 (password: secret) to access the frontend test environment"
+
+test-frontend-functional-debug: ## Run the frontend application functional tests in debug mode
+	docker-compose -f docker-compose.e2e.yml run --rm e2e
+
+cleanup-test: ## Stop and remove all container used in e2e test
+	docker-compose -f docker-compose.e2e.yml down
+	docker-compose -f docker-compose.e2e-debug.yml down
 
 test: test-frontend-unit test-api-unit test-frontend-functional
 
-clear-database:
+clear-database: ## Clear the whole database
 	docker-compose exec mongo mongo lodex --eval " \
 		db.publishedDataset.remove({}); \
 		db.publishedCharacteristic.remove({}); \
@@ -94,7 +92,7 @@ clear-database:
 		db.dataset.remove({}); \
 	"
 
-clear-publication:
+clear-publication: ## Clear the published data, keep uploaded dataset and model
 	docker-compose exec mongo mongo lodex --eval " \
 		db.publishedDataset.remove({}); \
 		db.publishedCharacteristic.remove({}); \

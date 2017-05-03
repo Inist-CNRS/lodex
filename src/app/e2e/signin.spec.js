@@ -1,19 +1,21 @@
 import { until, By } from 'selenium-webdriver';
 import { elementTextIs } from 'selenium-smart-wait';
+import config from 'config';
 
 import driver from '../../common/tests/chromeDriver';
 import { inputElementIsFocusable } from '../../common/tests/conditions';
+import navigate from './navigate';
 
 describe('Home page', function homeTests() {
     this.timeout(30000);
-    const DEFAULT_WAIT_TIMEOUT = 9000; // A bit less than mocha's timeout to get explicit errors from selenium
+    const DEFAULT_WAIT_TIMEOUT = 19000; // A bit less than mocha's timeout to get explicit errors from selenium
 
     let username;
     let password;
     let form;
 
     before(async () => {
-        await driver.get('http://localhost:3100/login');
+        await navigate('/login');
     });
 
     it('show the sign-in form', async () => {
@@ -55,7 +57,7 @@ describe('Home page', function homeTests() {
         await password.clear();
         await password.sendKeys('secret');
         await form.submit();
-        await driver.wait(until.urlIs('http://localhost:3100/home'), DEFAULT_WAIT_TIMEOUT);
+        await driver.wait(until.urlIs(`${config.host}/home`), DEFAULT_WAIT_TIMEOUT);
     });
 
     after(async () => {

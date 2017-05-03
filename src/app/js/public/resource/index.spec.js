@@ -22,6 +22,9 @@ import reducer, {
     addFieldToResourceCancel,
     hideResourceOpen,
     hideResourceCancel,
+    createResourceCancel,
+    createResourceOpen,
+    createResourceSuccess,
     fromResource,
 } from './index';
 import { PROPOSED, VALIDATED, REJECTED } from '../../../../common/propositionStatus';
@@ -93,11 +96,22 @@ describe('resourceReducer', () => {
     });
 
     it('should handle SAVE_RESOURCE_SUCCESS', () => {
-        const state = { data: 'value' };
+        const state = { data: 'value', resource: 'resource' };
         expect(reducer(state, saveResourceSuccess('new resource')))
         .toEqual({
             data: 'value',
             resource: 'new resource',
+            error: null,
+            saving: false,
+        });
+    });
+
+    it('should handle SAVE_RESOURCE_SUCCESS with no resource change', () => {
+        const state = { data: 'value', resource: 'resource' };
+        expect(reducer(state, saveResourceSuccess()))
+        .toEqual({
+            data: 'value',
+            resource: 'resource',
             error: null,
             saving: false,
         });
@@ -270,6 +284,46 @@ describe('resourceReducer', () => {
                 data: 'value',
                 error: null,
                 hiding: false,
+            });
+    });
+
+    it('should handle CREATE_RESOURCE_OPEN action', () => {
+        const state = {
+            data: 'value',
+        };
+
+        expect(reducer(state, createResourceOpen()))
+            .toEqual({
+                data: 'value',
+                error: null,
+                isCreating: true,
+            });
+    });
+
+    it('should handle CREATE_RESOURCE_CANCEL action', () => {
+        const state = {
+            data: 'value',
+        };
+
+        expect(reducer(state, createResourceCancel()))
+            .toEqual({
+                data: 'value',
+                error: null,
+                isCreating: false,
+            });
+    });
+
+    it('should handle CREATE_RESOURCE_SUCCESS action', () => {
+        const state = {
+            data: 'value',
+        };
+
+        expect(reducer(state, createResourceSuccess()))
+            .toEqual({
+                data: 'value',
+                error: null,
+                isCreating: false,
+                saving: false,
             });
     });
 

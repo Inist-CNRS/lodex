@@ -1,7 +1,7 @@
-import { WebElementCondition } from 'selenium-webdriver';
+import { Condition } from 'selenium-webdriver';
 
 export const inputElementIsFocusable = element => // eslint-disable-line
-    new WebElementCondition('until element is focusable', async () => {
+    new Condition('until element is focusable', async () => {
         const [isDisplayed, isEnabled, tagName] = await Promise.all([
             element.isDisplayed(),
             element.isEnabled(),
@@ -12,10 +12,7 @@ export const inputElementIsFocusable = element => // eslint-disable-line
             throw new Error('Invalid element: must be an input or a textarea');
         }
 
-        if (!isDisplayed || !isEnabled) return null;
+        if (!isDisplayed || !isEnabled) return false;
 
-        return element
-                .sendKeys('')
-                .then(() => element)
-                .catch(() => null);
+        return true;
     });

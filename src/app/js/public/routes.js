@@ -9,7 +9,7 @@ export default store => ({
     component: App,
     indexRoute: { onEnter: (nextState, replace) => replace('/home') },
     childRoutes: [
-        { path: '/home', component: Home },
+        { path: '/home(/:tab)', component: Home },
         ...userRoutes,
         ...resourceRoutes(store),
     ],

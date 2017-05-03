@@ -21,9 +21,10 @@ export const sortDataset = createAction(SORT_DATASET);
 
 export const defaultState = {
     isSaving: false,
+    isCreating: false,
     match: null,
     currentPage: 0,
-    perPage: 10,
+    perPage: process.env.PER_PAGE || 10,
     dataset: [],
     loading: false,
     sort: {},

@@ -6,8 +6,8 @@ import {
     addFieldToResourceError,
     getNewResourceFieldFormData,
 } from '../';
-import fetchSaga from '../../../lib/fetchSaga';
-import { getAddFieldToResourceRequest } from '../../../fetch';
+import fetchSaga from '../../../lib/sagas/fetchSaga';
+import { fromUser } from '../../../sharedSelectors';
 import { handleAddFieldToResource } from './addFieldToResource';
 
 describe('handleAddFieldToResource', () => {
@@ -32,7 +32,7 @@ describe('handleAddFieldToResource', () => {
     it('should select getAddFieldToResourceRequest with resource', () => {
         saga.next();
         const next = saga.next({ field: 'field data' });
-        expect(next.value).toEqual(select(getAddFieldToResourceRequest, {
+        expect(next.value).toEqual(select(fromUser.getAddFieldToResourceRequest, {
             uri: 'uri',
             field: 'field data',
         }));

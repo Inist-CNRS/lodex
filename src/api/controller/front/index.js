@@ -14,7 +14,8 @@ app.use(async (ctx, next) => {
     if (uri.startsWith('/uid:/')
         || uri.startsWith('/ark:/')
         || uri.startsWith('/login')
-        || uri.startsWith('/home')) {
+        || uri.startsWith('/home')
+        || uri.startsWith('/resource')) {
         // Override the path so that webpack serves the application correctly
         ctx.path = '/';
     }

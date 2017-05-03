@@ -3,7 +3,7 @@ import expect, { createSpy } from 'expect';
 import { shallow } from 'enzyme';
 
 import { HomeComponent as Home } from './Home';
-import Loading from '../lib/Loading';
+import Loading from '../lib/components/Loading';
 import Dataset from './dataset/Dataset';
 import NoDataset from './NoDataset';
 

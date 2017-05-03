@@ -7,28 +7,14 @@ import {
     SAVE_RESOURCE,
 } from '../';
 
-import { getSaveResourceRequest, getSaveFieldRequest } from '../../../fetch';
-import fetchSaga from '../../../lib/fetchSaga';
+import { fromUser } from '../../../sharedSelectors';
+import fetchSaga from '../../../lib/sagas/fetchSaga';
 import { fromResource } from '../../selectors';
 
-export const parsePathName = pathname => pathname.match(/^(\/resource)(\/ark:\/)?(.*?$)/) || [];
-
-export function* handleSaveResource({ payload }) {
-    const { position, field, ...resource } = payload;
-
-    if (position !== field.position) {
-        const requestFieldPosition = yield select(getSaveFieldRequest, { ...field, position });
-        const { error } = yield call(fetchSaga, requestFieldPosition);
-
-        if (error) {
-            yield put(saveResourceError(error));
-            return;
-        }
-    }
-
+export function* handleSaveResource({ payload: resource }) {
     const oldResource = yield select(fromResource.getResourceLastVersion);
     if (!isEqual(oldResource, resource)) {
-        const request = yield select(getSaveResourceRequest, resource);
+        const request = yield select(fromUser.getSaveResourceRequest, resource);
         const { error, response } = yield call(fetchSaga, request);
 
         if (error) {
@@ -40,7 +26,7 @@ export function* handleSaveResource({ payload }) {
         return;
     }
 
-    yield put(saveResourceSuccess(resource));
+    yield put(saveResourceSuccess());
 }
 
 export default function* watchSaveResource() {

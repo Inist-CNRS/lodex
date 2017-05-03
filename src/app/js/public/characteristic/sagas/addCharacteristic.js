@@ -6,12 +6,12 @@ import {
     addCharacteristicSuccess,
     getNewCharacteristicFormData,
 } from '../';
-import { getAddCharacteristicRequest } from '../../../fetch/';
-import fetchSaga from '../../../lib/fetchSaga';
+import { fromUser } from '../../../sharedSelectors';
+import fetchSaga from '../../../lib/sagas/fetchSaga';
 
 export function* handleAddCharacteristic() {
     const formData = yield select(getNewCharacteristicFormData);
-    const request = yield select(getAddCharacteristicRequest, formData);
+    const request = yield select(fromUser.getAddCharacteristicRequest, formData);
     const { error, response } = yield call(fetchSaga, request);
 
     if (error) {

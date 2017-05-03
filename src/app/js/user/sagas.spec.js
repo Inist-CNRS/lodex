@@ -2,9 +2,9 @@ import expect from 'expect';
 import { call, put, select } from 'redux-saga/effects';
 import { startSubmit, stopSubmit } from 'redux-form';
 
-import fetchSaga from '../lib/fetchSaga';
+import fetchSaga from '../lib/sagas/fetchSaga';
 import { LOGIN_FORM_NAME, loginSuccess } from './';
-import { getLoginRequest } from '../fetch';
+import { fromUser } from '../sharedSelectors';
 import { handleLoginRequest } from './sagas';
 
 describe('user saga', () => {
@@ -16,7 +16,7 @@ describe('user saga', () => {
         });
 
         it('should select getLoginRequest', () => {
-            expect(saga.next().value).toEqual(select(getLoginRequest, { username: 'foo', password: 'pwd' }));
+            expect(saga.next().value).toEqual(select(fromUser.getLoginRequest, { username: 'foo', password: 'pwd' }));
         });
 
         it('should call fetchSaga with the request', () => {

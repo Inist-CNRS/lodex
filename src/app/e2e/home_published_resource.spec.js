@@ -1,5 +1,6 @@
 import { until, By } from 'selenium-webdriver';
 import expect from 'expect';
+
 import {
     elementTextIs,
     elementsCountIs,
@@ -9,16 +10,18 @@ import {
 import driver from '../../common/tests/chromeDriver';
 import { clear, loadFixtures } from '../../common/tests/fixtures';
 import fixtures from './home_published.json';
+import navigate from './navigate';
 import { inputElementIsFocusable } from '../../common/tests/conditions';
+import sendKeysToInputByName from './sendKeysToInputByName';
 
 describe('Resource page', function homePublishedDataTests() {
     this.timeout(30000);
-    const DEFAULT_WAIT_TIMEOUT = 9000; // A bit less than mocha's timeout to get explicit errors from selenium
+    const DEFAULT_WAIT_TIMEOUT = 19000; // A bit less than mocha's timeout to get explicit errors from selenium
 
     before(async () => {
         await clear();
         await loadFixtures(fixtures);
-        await driver.get('http://localhost:3100/uid:/1');
+        await navigate('/uid:/1');
     });
 
     it('should not display moderate component when loggedOut', async () => {
@@ -39,10 +42,10 @@ describe('Resource page', function homePublishedDataTests() {
     it('should display all resource properties', async () => {
         await driver.wait(until.elementLocated(By.css('.detail')), DEFAULT_WAIT_TIMEOUT);
 
-        const fullnameLabel = '.detail .property.full_name .property_label';
+        const fullnameLabel = '.property_label.full_name';
         await driver.wait(elementTextIs(fullnameLabel, 'Full name', DEFAULT_WAIT_TIMEOUT));
 
-        const fullnameScheme = '.detail .property.full_name > .property_scheme';
+        const fullnameScheme = '.property_scheme.full_name';
         await driver.wait(elementTextIs(fullnameScheme, 'http://www.w3.org/ns/person', DEFAULT_WAIT_TIMEOUT));
 
         await driver.wait(
@@ -57,7 +60,7 @@ describe('Resource page', function homePublishedDataTests() {
         const mailLabel = '.detail .property.email.completes_fullname .property_label';
         await driver.wait(elementTextIs(mailLabel, 'Email', DEFAULT_WAIT_TIMEOUT));
 
-        const mailScheme = '.detail .property.email.completes_fullname > .property_scheme';
+        const mailScheme = '.detail .property.email.completes_fullname .property_scheme';
         await driver.wait(elementTextIs(mailScheme, 'http://uri4uri.net/vocab', DEFAULT_WAIT_TIMEOUT));
 
         const mailValue = '.detail .property.email.completes_fullname .property_value';
@@ -66,7 +69,7 @@ describe('Resource page', function homePublishedDataTests() {
         const bestFriendLabel = '.detail .property.best_friend_of .property_label';
         await driver.wait(elementTextIs(bestFriendLabel, 'Best Friend Of', DEFAULT_WAIT_TIMEOUT));
 
-        const bestFriendScheme = '.detail .property.best_friend_of > .property_scheme';
+        const bestFriendScheme = '.detail .property.best_friend_of .property_scheme';
         await driver.wait(elementTextIs(bestFriendScheme, 'http://www.w3.org/ns/person', DEFAULT_WAIT_TIMEOUT));
 
         const bestFriendValue = '.detail .property.best_friend_of .property_value';
@@ -83,32 +86,24 @@ describe('Resource page', function homePublishedDataTests() {
         await driver.wait(until.elementLocated(By.css('.detail')), DEFAULT_WAIT_TIMEOUT);
         const form = driver.findElement(By.css('#add_field_resource_form'));
 
-        await driver.wait(until.elementLocated(By.css('.contributor-name input')), DEFAULT_WAIT_TIMEOUT);
-        const contributorName = form.findElement(By.css('.contributor-name input'));
-        await driver.wait(inputElementIsFocusable(contributorName, true), DEFAULT_WAIT_TIMEOUT);
-        contributorName.sendKeys('john');
-
-        const contributorMail = form.findElement(By.css('.contributor-mail input'));
-        await driver.wait(inputElementIsFocusable(contributorMail, true), DEFAULT_WAIT_TIMEOUT);
-        contributorMail.sendKeys('john@doe.fr');
+        await sendKeysToInputByName(driver, 'contributor.name', 'john', DEFAULT_WAIT_TIMEOUT);
+        await sendKeysToInputByName(driver, 'contributor.mail', 'john@doe.fr', DEFAULT_WAIT_TIMEOUT);
 
         const selectField = '.select-field';
         await driver.wait(elementIsClicked(selectField), DEFAULT_WAIT_TIMEOUT);
         await driver.sleep(500); // animations
         const newField = '.new';
         await driver.wait(elementIsClicked(newField), DEFAULT_WAIT_TIMEOUT);
+        await driver.wait(until.elementLocated(By.css('#add_field_resource_form')));
+        await driver.sleep(500); // animations
 
-        const fieldLabel = form.findElement(By.css('.field-label input'));
-        await driver.wait(inputElementIsFocusable(fieldLabel, true), DEFAULT_WAIT_TIMEOUT);
-        fieldLabel.sendKeys('my contribution');
+        await sendKeysToInputByName(driver, 'field.label', 'my contribution', DEFAULT_WAIT_TIMEOUT);
 
-        const fieldScheme = form.findElement(By.css('.field-scheme input'));
+        const fieldScheme = await form.findElement(By.css('#add_field_resource_form .field-scheme input'));
         await driver.wait(inputElementIsFocusable(fieldScheme, true), DEFAULT_WAIT_TIMEOUT);
         fieldScheme.sendKeys('http://vocab/field');
 
-        const fieldValue = form.findElement(By.css('.field-value input'));
-        await driver.wait(inputElementIsFocusable(fieldValue, true), DEFAULT_WAIT_TIMEOUT);
-        fieldValue.sendKeys('my value');
+        await sendKeysToInputByName(driver, 'field.value', 'my value', DEFAULT_WAIT_TIMEOUT);
 
         const addFieldButton = '.add-field-resource.save';
         await driver.wait(elementIsClicked(addFieldButton), DEFAULT_WAIT_TIMEOUT);
@@ -188,15 +183,38 @@ describe('Resource page', function homePublishedDataTests() {
         await driver.wait(elementIsClicked('.tab-resource-export'));
         await driver.wait(until.elementLocated(By.css('.export')), DEFAULT_WAIT_TIMEOUT);
 
-        expect(await driver.findElement(By.css('.export .btn-export.csv')).getText()).toMatch('Export as csv');
+        expect(await driver.findElement(By.css('.export .btn-export.csv')).getText()).toMatch('Export as CSV');
     });
 
     it('should have an export tab with a resource sharing link', async () => {
         await driver.wait(until.elementLocated(By.css('.share-link')), DEFAULT_WAIT_TIMEOUT);
 
-        expect(await driver.findElement(By.css('.share-link input')).getAttribute('value')).toEqual('http://localhost:3100/uid:/1');
+        expect(await driver.findElement(By.css('.share-link input')).getAttribute('value')).toMatch(/.*\/uid:\/1/);
         await driver.wait(until.elementLocated(By.css('.share-link button')), DEFAULT_WAIT_TIMEOUT);
         expect(await driver.findElement(By.css('.share-link button')).getText()).toEqual('COPY');
+    });
+
+    it('should have an export tab with a widget', async () => {
+        await driver.wait(until.elementLocated(By.css('.widget')), DEFAULT_WAIT_TIMEOUT);
+        await driver.executeScript('document.getElementsByClassName("widget")[0].scrollIntoView(true);');
+        let widgetCode = await driver.findElement(By.css('#share-widget')).getAttribute('value');
+        expect(widgetCode).toMatch(/.+\/api\/widget\?type=.+&uri=.+&fields=%5B%5D/);
+
+        await driver.findElement(By.css('.widget-select-field')).click();
+        await driver.sleep(500); // animations
+        await driver.wait(until.elementLocated(By.css('.widget-select-field-item.author')), DEFAULT_WAIT_TIMEOUT);
+        const item = await driver.findElement(By.css('.widget-select-field-item.author'));
+        await driver.wait(until.elementIsVisible(item), DEFAULT_WAIT_TIMEOUT);
+        item.click();
+
+        await driver.sleep(500); // animations
+        await driver.findElement(By.css('.btn-apply-widget-select')).click();
+        await driver.sleep(500); // animations
+
+        await driver.wait(until.elementLocated(By.css('.widget-selected-field-item.author')), DEFAULT_WAIT_TIMEOUT);
+
+        widgetCode = await driver.findElement(By.css('#share-widget')).getAttribute('value');
+        expect(widgetCode).toMatch(/.+\/api\/widget\?type=.+&uri=.+&fields=%5B%22author%22%5D/);
     });
 
     it('should have an export tab with resource social sharing buttons', async () => {

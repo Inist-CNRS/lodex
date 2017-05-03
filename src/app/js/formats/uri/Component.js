@@ -1,10 +1,11 @@
 import React, { PropTypes } from 'react';
 import { Link } from 'react-router';
 import { field as fieldPropTypes } from '../../propTypes';
+import { getResourceUri } from '../../../../common/uris';
 
 const UriView = ({ className, linkedResource, resource, field, fields }) => {
     const uri = resource[field.name];
-    let label = resource[field.name];
+    let label;
 
     if (field.format && field.format.args && field.format.args.type) {
         switch (field.format.args.type) {
@@ -21,12 +22,12 @@ const UriView = ({ className, linkedResource, resource, field, fields }) => {
         }
 
         default:
-            label = resource[field.name];
+            label = uri;
             break;
         }
     }
 
-    return <Link className={className} to={`/resource?uri=${encodeURIComponent(uri)}`}>{label}</Link>;
+    return <Link className={className} to={getResourceUri({ uri })}>{label}</Link>;
 };
 
 UriView.propTypes = {

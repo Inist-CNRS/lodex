@@ -1,13 +1,9 @@
 import webdriver from 'selenium-webdriver';
-import chrome from 'selenium-webdriver/chrome';
 import logging from 'selenium-webdriver/lib/logging';
 import { debug } from 'config';
 
-const chromePath = `${__dirname}/../../../${process.env.SELENIUM_BROWSER_BINARY_PATH}`;
-const service = new chrome.ServiceBuilder(chromePath).build();
-const DEFAULT_WAIT_TIMEOUT = 9000; // A bit less than mocha's timeout to get explicit errors from selenium
+const DEFAULT_WAIT_TIMEOUT = 5000; // A bit less than mocha's timeout to get explicit errors from selenium
 
-chrome.setDefaultService(service);
 
 const chromeCapabilities = webdriver.Capabilities.chrome();
 if (debug) {
@@ -16,19 +12,18 @@ if (debug) {
     chromeCapabilities.setLoggingPrefs(prefs);
 }
 
-const chromeOptions = {
-    args: ['--test-type', '--start-maximized', '--incognito'],
-};
-
-chromeCapabilities.set('chromeOptions', chromeOptions);
-
 const driver = new webdriver.Builder()
     .forBrowser('chrome')
     .withCapabilities(chromeCapabilities)
+    .usingServer('http://hub:4444/wd/hub')
     .build();
 
 driver.manage()
     .timeouts()
     .implicitlyWait(DEFAULT_WAIT_TIMEOUT);
+
+driver.manage()
+    .window()
+    .maximize();
 
 export default driver;

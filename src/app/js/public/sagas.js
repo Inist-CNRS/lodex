@@ -7,7 +7,7 @@ import exportFieldsSaga from '../exportFields/sagas';
 import facetSaga from './facet/sagas';
 import fetchSaga from '../fetch/sagas';
 import i18nSaga from '../i18n/sagas';
-import publicationSagas from './publication/sagas';
+import fieldsSagas from '../fields/sagas';
 import resourceSagas from './resource/sagas';
 import userSagas from '../user/sagas';
 
@@ -19,7 +19,7 @@ export default function* () {
     yield fork(facetSaga);
     yield fork(fetchSaga);
     yield fork(i18nSaga);
-    yield fork(publicationSagas);
+    yield fork(fieldsSagas);
     yield fork(resourceSagas);
     yield fork(userSagas);
 }

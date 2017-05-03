@@ -6,7 +6,7 @@ import json from './json'; // eslint-disable-line
 import xml from './xml'; // eslint-disable-line
 import corpus from './corpus'; // eslint-disable-line
 
-export default {
+const loaders = {
     CSV,
     csv,
     tsv,
@@ -19,3 +19,7 @@ export default {
     tei: xml,
     corpus,
 };
+
+export default loaders;
+
+export const loaderKeys = Object.keys(loaders);

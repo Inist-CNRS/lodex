@@ -6,8 +6,8 @@ import {
     addCharacteristicSuccess,
     getNewCharacteristicFormData,
 } from '../';
-import { getAddCharacteristicRequest } from '../../../fetch/';
-import fetchSaga from '../../../lib/fetchSaga';
+import { fromUser } from '../../../sharedSelectors';
+import fetchSaga from '../../../lib/sagas/fetchSaga';
 
 import { handleAddCharacteristic } from './addCharacteristic';
 
@@ -20,7 +20,7 @@ describe('characteristic saga', () => {
         });
 
         it('should select getAddCharacteristicsRequest', () => {
-            expect(saga.next('form data').value).toEqual(select(getAddCharacteristicRequest, 'form data'));
+            expect(saga.next('form data').value).toEqual(select(fromUser.getAddCharacteristicRequest, 'form data'));
         });
 
         it('should call fetchPublication with the request', () => {

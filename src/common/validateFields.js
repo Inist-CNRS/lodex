@@ -228,7 +228,9 @@ export const validateScheme = (field) => {
 
 export const validateTransformer = (transformer) => {
     const transformerOperation = knownTransformers[transformer.operation];
-    if (!transformerOperation || !transformer.args) {
+    const transformerArgs = transformer.args || [];
+
+    if (!transformerOperation) {
         return {
             name: 'transformer.operation',
             isValid: false,
@@ -237,7 +239,7 @@ export const validateTransformer = (transformer) => {
         };
     }
     const transformerMeta = transformerOperation.getMetas();
-    if (transformerMeta.args.length !== transformer.args.filter(({ value }) => !!value).length) {
+    if (transformerMeta.args.length > transformerArgs.filter(({ value }) => !!value).length) {
         return {
             name: 'transformer.args',
             isValid: false,
