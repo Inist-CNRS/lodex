@@ -12,7 +12,7 @@ export default async (ctx, next) => {
     const arkMatches = ARK_URI.exec(uri);
 
     if (ctx.query.uri) {
-        ctx.body = await ctx.publishedDataset.findByUri(decodeURIComponent(ctx.query.uri));
+        ctx.body = await ctx.publishedDataset.findByUri(ctx.query.uri);
         return;
     }
 
