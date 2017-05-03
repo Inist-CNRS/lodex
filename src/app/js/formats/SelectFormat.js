@@ -20,7 +20,7 @@ const SelectFormat = ({ formats, value, onChange, p: polyglot }) => (
         <MenuItem value="None" primaryText="None" />
 
         {formats.map(f =>
-            <MenuItem key={f} value={f} primaryText={f} />,
+            <MenuItem key={f} value={f} primaryText={polyglot.t(f)} />,
         )}
     </SelectField>
 );
