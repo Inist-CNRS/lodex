@@ -4,6 +4,7 @@ import tsv from './exportTsv';
 import nquads from './exportNQuads';
 import turtle from './exportTurtle';
 import jsonld from './exportJsonld';
+import jsonldcompacted from './exportJsonldCompacted';
 import widget from './exportWidgetResource';
 
 export default {
@@ -11,6 +12,7 @@ export default {
     raw,
     tsv,
     jsonld,
+    jsonldcompacted,
     nquads,
     turtle,
     widget,

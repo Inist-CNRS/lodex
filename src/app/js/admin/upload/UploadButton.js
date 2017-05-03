@@ -1,11 +1,15 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
-import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
-
+import compose from 'recompose/compose';
+import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
+import RaisedButton from 'material-ui/RaisedButton';
+import ArchiveIcon from 'material-ui/svg-icons/content/archive';
 
-import { uploadFile } from './';
+import UploadDialog from './UploadDialog';
+import { fromUpload } from '../selectors';
+import { openUpload, closeUpload } from './';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 
 const styles = {
@@ -14,48 +18,70 @@ const styles = {
         marginLeft: 4,
         marginRight: 4,
     },
-    input: {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        opacity: 0,
-        width: '100%',
-        cursor: 'pointer',
-    },
 };
 
-export const UploadButtonComponent = ({ onFileLoad, p: polyglot }) => (
-    <FlatButton
-        className="btn-upload-dataset"
-        containerElement="label"
-        label={polyglot.t('upload_another_file')}
-        style={styles.button}
-    >
-        <input
-            name="file"
-            type="file"
-            onChange={e => onFileLoad(e.target.files[0])}
-            style={styles.input}
-        />
-    </FlatButton>
-);
+const UploadButtonComponent = ({ open, label, raised, handleOpen, handleClose, p: polyglot }) => {
+    const actions = [
+        <FlatButton label={polyglot.t('cancel')} onClick={handleClose} />,
+    ];
+
+    return (
+        <span>
+            { raised ?
+                <RaisedButton
+                    style={styles.button}
+                    className="open-upload"
+                    icon={<ArchiveIcon />}
+                    label={label}
+                    primary
+                    onClick={handleOpen}
+                />
+            :
+                <FlatButton
+                    style={styles.button}
+                    className="open-upload"
+                    label={label}
+                    primary
+                    onClick={handleOpen}
+                />
+            }
+            <Dialog
+                actions={actions}
+                modal={false}
+                open={open}
+                onRequestClose={handleClose}
+                autoScrollBodyContent
+            >
+                <UploadDialog />
+            </Dialog>
+        </span>
+    );
+};
 
 UploadButtonComponent.propTypes = {
-    onFileLoad: PropTypes.func.isRequired,
+    open: PropTypes.bool.isRequired,
+    raised: PropTypes.bool,
+    label: PropTypes.string.isRequired,
+    handleOpen: PropTypes.func.isRequired,
+    handleClose: PropTypes.func.isRequired,
     p: polyglotPropTypes.isRequired,
 };
 
 UploadButtonComponent.defaultProps = {
-    className: null,
+    raised: false,
 };
 
+const mapStateToProps = state => ({
+    open: fromUpload.isOpen(state),
+    saving: fromUpload.isUploadPending(state),
+});
+
 const mapDispatchToProps = {
-    onFileLoad: uploadFile,
+    handleOpen: openUpload,
+    handleClose: closeUpload,
 };
 
 export default compose(
-    connect(undefined, mapDispatchToProps),
     translate,
+    connect(mapStateToProps, mapDispatchToProps),
 )(UploadButtonComponent);

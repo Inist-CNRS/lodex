@@ -32,6 +32,10 @@ describe('Admin', () => {
                 await driver.wait(until.elementLocated(By.css('.upload')), DEFAULT_WAIT_TIMEOUT);
             });
 
+            it('should open upload modal', async () => {
+                await driver.wait(elementIsClicked('.open-upload'));
+            });
+
             it('should display the parsing result after uploading a csv', async () => {
                 const csvPath = path.resolve(__dirname, './linked_sample_csv.CSV');
                 const input = await driver.findElement(By.css('input[name=file]'));

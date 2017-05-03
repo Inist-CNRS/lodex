@@ -5,12 +5,12 @@ import { bindActionCreators } from 'redux';
 
 import {
     fromFields,
-} from '../sharedSelectors';
+} from '../../sharedSelectors';
 import {
     field as fieldPropTypes,
-} from '../propTypes';
-import { changeFieldStatus } from './resource';
-import Property from './Property';
+} from '../../propTypes';
+import { changeFieldStatus } from '../resource';
+import Property from './';
 
 const styles = {
     container: {

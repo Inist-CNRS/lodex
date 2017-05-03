@@ -4,7 +4,6 @@ services:
     hub:
         image: selenium/hub:3.4.0
 
-
     chrome:
         image: selenium/node-chrome:3.4.0
         volumes:

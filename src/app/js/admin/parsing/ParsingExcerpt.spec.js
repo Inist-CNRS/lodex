@@ -1,8 +1,9 @@
 import React from 'react';
 import expect from 'expect';
 import { shallow } from 'enzyme';
-import { TableHeaderColumn } from 'material-ui/Table';
+
 import ParsingExcerptColumn from './ParsingExcerptColumn';
+import ParsingExcerptHeaderColumn from './ParsingExcerptHeaderColumn';
 
 import { ParsingExcerptComponent as ParsingExcerpt } from './ParsingExcerpt';
 
@@ -14,8 +15,8 @@ describe('<ParsingExcerpt />', () => {
             { foo: 'foo2', bar: 'bar2' },
         ];
         const wrapper = shallow(<ParsingExcerpt columns={columns} lines={lines} />);
-        expect(wrapper.contains(<TableHeaderColumn>foo</TableHeaderColumn>)).toEqual(true);
-        expect(wrapper.contains(<TableHeaderColumn>bar</TableHeaderColumn>)).toEqual(true);
+        expect(wrapper.find(ParsingExcerptHeaderColumn).at(0).prop('column')).toEqual('foo');
+        expect(wrapper.find(ParsingExcerptHeaderColumn).at(1).prop('column')).toEqual('bar');
     });
 
     it('should render lines', () => {

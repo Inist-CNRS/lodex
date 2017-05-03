@@ -1,12 +1,12 @@
 import { call, race, take, put, select, takeEvery } from 'redux-saga/effects';
 import { LOCATION_CHANGE } from 'react-router-redux';
 
-import { fromUser } from '../../sharedSelectors';
-import { loadDatasetFile } from '../../lib/loadFile';
-import { UPLOAD_FILE, uploadFileError, uploadFileSuccess } from './';
-import fetch from '../../lib/fetch';
+import { fromUser } from '../../../sharedSelectors';
+import { loadDatasetFile } from '../../../lib/loadFile';
+import { UPLOAD_FILE, uploadError, uploadSuccess } from '../';
+import fetch from '../../../lib/fetch';
 
-export function* uploadFile(action) {
+export function* handleUploadFile(action) {
     if (!action || !action.payload) {
         return;
     }
@@ -15,7 +15,7 @@ export function* uploadFile(action) {
 
         const { error } = yield call(fetch, clearUploadRequest);
         if (error) {
-            yield put(uploadFileError(error));
+            yield put(uploadError(error));
             return;
         }
         const token = yield select(fromUser.getToken);
@@ -26,12 +26,12 @@ export function* uploadFile(action) {
         if (cancel) {
             return;
         }
-        yield put(uploadFileSuccess(file));
+        yield put(uploadSuccess(file));
     } catch (error) {
-        yield put(uploadFileError(error));
+        yield put(uploadError(error));
     }
 }
 
 export default function* uploadFileSaga() {
-    yield takeEvery([UPLOAD_FILE], uploadFile);
+    yield takeEvery(UPLOAD_FILE, handleUploadFile);
 }

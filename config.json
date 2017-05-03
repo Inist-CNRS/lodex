@@ -23,6 +23,7 @@
         "raw",
         "turtle",
         "jsonld",
+        "jsonldcompacted",
         "widget"
     ],
     "languages": [

@@ -6,13 +6,13 @@ import translate from 'redux-polyglot/translate';
 import { List } from 'material-ui/List';
 import Subheader from 'material-ui/Subheader';
 
-import { fromExport } from './selectors';
+import { fromExport } from '../selectors';
 import {
     loadExporters as loadExportersAction,
     exportPublishedDataset as exportPublishedDatasetAction,
-} from '../public/export';
+} from './';
 import ExportItem from './ExportItem';
-import { polyglot as polyglotPropTypes } from '../propTypes';
+import { polyglot as polyglotPropTypes } from '../../propTypes';
 
 export class ExportComponent extends Component {
     constructor(props) {

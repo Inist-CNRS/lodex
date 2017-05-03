@@ -3,7 +3,7 @@
     "node": ">= 7.8.0"
   },
   "name": "lodex-v2",
-  "version": "7.10.1",
+  "version": "7.10.4",
   "description": "",
   "main": "src/api/index.js",
   "scripts": {
@@ -97,6 +97,7 @@
     "react-dom": "15.4.2",
     "react-event-timeline": "1.2.2",
     "react-fa": "4.1.2",
+    "react-medium-image-zoom": "1.0.0",
     "react-motion": "0.4.7",
     "react-motion-ui-pack": "0.10.2",
     "react-redux": "5.0.3",
@@ -119,6 +120,7 @@
     "through": "2.3.8",
     "url-api-polyfill": "1.1.0",
     "url-loader": "0.5.8",
+    "victory": "0.18.4",
     "webpack": "2.3.3",
     "whatwg-fetch": "2.0.3",
     "winston": "2.3.1"

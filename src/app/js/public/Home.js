@@ -20,7 +20,7 @@ import NoDataset from './NoDataset';
 import Toolbar from './Toolbar';
 import AppliedFacetList from './facet/AppliedFacetList';
 import Ontology from '../fields/ontology/Ontology';
-import Export from './Export';
+import Export from './export/Export';
 import Share from './Share';
 import ShareLink from './ShareLink';
 import Widgets from './Widgets';
