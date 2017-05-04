@@ -15,7 +15,7 @@ const exporter = (config, fields, characteristics, stream) =>
 exporter.extension = 'json';
 exporter.mimeType = 'application/json';
 exporter.type = 'file';
-exporter.label = 'extended nquads';
+exporter.label = 'extendednquads';
 
 export default exporter;
 
