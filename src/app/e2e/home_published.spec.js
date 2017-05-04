@@ -52,11 +52,11 @@ describe('Home page with published data', function homePublishedDataTests() {
         ));
 
         const expectedTds = [
-            ['uid:/1', 'PEREGRIN', 'TOOK', 'peregrin.took@shire.net'],
-            ['uid:/2', 'SAMSAGET', 'GAMGIE', 'samsaget.gamgie@shire.net'],
-            ['uid:/3', 'BILBON', 'BAGGINS', 'bilbon.saquet@shire.net'],
-            ['uid:/4', 'FRODO', 'BAGGINS', 'frodo.saquet@shire.net'],
-            ['uid:/5', 'MERIADOC', 'BRANDYBUCK', 'meriadoc.brandybuck@shire.net'],
+            ['1', 'PEREGRIN', 'TOOK', 'peregrin.took@shire.net'],
+            ['2', 'SAMSAGET', 'GAMGIE', 'samsaget.gamgie@shire.net'],
+            ['3', 'BILBON', 'BAGGINS', 'bilbon.saquet@shire.net'],
+            ['4', 'FRODO', 'BAGGINS', 'frodo.saquet@shire.net'],
+            ['5', 'MERIADOC', 'BRANDYBUCK', 'meriadoc.brandybuck@shire.net'],
         ];
 
         const trs = await driver.findElements(By.css('.dataset table tbody tr'));
@@ -74,11 +74,11 @@ describe('Home page with published data', function homePublishedDataTests() {
         const firstnameHeader = '.sort_firstname';
         await driver.wait(elementIsClicked(firstnameHeader));
         const expectedTds = [
-            ['uid:/3', 'BILBON', 'BAGGINS', 'bilbon.saquet@shire.net'],
-            ['uid:/4', 'FRODO', 'BAGGINS', 'frodo.saquet@shire.net'],
-            ['uid:/5', 'MERIADOC', 'BRANDYBUCK', 'meriadoc.brandybuck@shire.net'],
-            ['uid:/1', 'PEREGRIN', 'TOOK', 'peregrin.took@shire.net'],
-            ['uid:/2', 'SAMSAGET', 'GAMGIE', 'samsaget.gamgie@shire.net'],
+            ['3', 'BILBON', 'BAGGINS', 'bilbon.saquet@shire.net'],
+            ['4', 'FRODO', 'BAGGINS', 'frodo.saquet@shire.net'],
+            ['5', 'MERIADOC', 'BRANDYBUCK', 'meriadoc.brandybuck@shire.net'],
+            ['1', 'PEREGRIN', 'TOOK', 'peregrin.took@shire.net'],
+            ['2', 'SAMSAGET', 'GAMGIE', 'samsaget.gamgie@shire.net'],
         ];
 
         const trs = await driver.findElements(By.css('.dataset table tbody tr'));
@@ -96,11 +96,11 @@ describe('Home page with published data', function homePublishedDataTests() {
         const nameHeader = '.sort_name';
         await driver.wait(elementIsClicked(nameHeader));
         const expectedTds = [
-            ['uid:/3', 'BILBON', 'BAGGINS', 'bilbon.saquet@shire.net'],
-            ['uid:/4', 'FRODO', 'BAGGINS', 'frodo.saquet@shire.net'],
-            ['uid:/5', 'MERIADOC', 'BRANDYBUCK', 'meriadoc.brandybuck@shire.net'],
-            ['uid:/2', 'SAMSAGET', 'GAMGIE', 'samsaget.gamgie@shire.net'],
-            ['uid:/1', 'PEREGRIN', 'TOOK', 'peregrin.took@shire.net'],
+            ['3', 'BILBON', 'BAGGINS', 'bilbon.saquet@shire.net'],
+            ['4', 'FRODO', 'BAGGINS', 'frodo.saquet@shire.net'],
+            ['5', 'MERIADOC', 'BRANDYBUCK', 'meriadoc.brandybuck@shire.net'],
+            ['2', 'SAMSAGET', 'GAMGIE', 'samsaget.gamgie@shire.net'],
+            ['1', 'PEREGRIN', 'TOOK', 'peregrin.took@shire.net'],
         ];
 
         const trs = await driver.findElements(By.css('.dataset table tbody tr'));
@@ -118,11 +118,11 @@ describe('Home page with published data', function homePublishedDataTests() {
         const nameHeader = '.sort_name';
         await driver.wait(elementIsClicked(nameHeader));
         const expectedTds = [
-            ['uid:/1', 'PEREGRIN', 'TOOK', 'peregrin.took@shire.net'],
-            ['uid:/2', 'SAMSAGET', 'GAMGIE', 'samsaget.gamgie@shire.net'],
-            ['uid:/5', 'MERIADOC', 'BRANDYBUCK', 'meriadoc.brandybuck@shire.net'],
-            ['uid:/4', 'FRODO', 'BAGGINS', 'frodo.saquet@shire.net'],
-            ['uid:/3', 'BILBON', 'BAGGINS', 'bilbon.saquet@shire.net'],
+            ['1', 'PEREGRIN', 'TOOK', 'peregrin.took@shire.net'],
+            ['2', 'SAMSAGET', 'GAMGIE', 'samsaget.gamgie@shire.net'],
+            ['5', 'MERIADOC', 'BRANDYBUCK', 'meriadoc.brandybuck@shire.net'],
+            ['4', 'FRODO', 'BAGGINS', 'frodo.saquet@shire.net'],
+            ['3', 'BILBON', 'BAGGINS', 'bilbon.saquet@shire.net'],
         ];
 
         const trs = await driver.findElements(By.css('.dataset table tbody tr'));
@@ -147,8 +147,8 @@ describe('Home page with published data', function homePublishedDataTests() {
         await driver.wait(until.elementLocated(By.css('.dataset table tbody tr')), DEFAULT_WAIT_TIMEOUT);
 
         const expectedTds = [
-            ['uid:/3', 'BILBON', 'BAGGINS', 'bilbon.saquet@shire.net'],
-            ['uid:/4', 'FRODO', 'BAGGINS', 'frodo.saquet@shire.net'],
+            ['3', 'BILBON', 'BAGGINS', 'bilbon.saquet@shire.net'],
+            ['4', 'FRODO', 'BAGGINS', 'frodo.saquet@shire.net'],
         ];
 
         const trs = await driver.findElements(By.css('.dataset table tbody tr'));
@@ -216,8 +216,8 @@ describe('Home page with published data', function homePublishedDataTests() {
         await driver.wait(until.elementLocated(By.css('.dataset table tbody tr')), DEFAULT_WAIT_TIMEOUT);
 
         const expectedTds = [
-            ['uid:/3', 'BILBON', 'BAGGINS', 'bilbon.saquet@shire.net'],
-            ['uid:/4', 'FRODO', 'BAGGINS', 'frodo.saquet@shire.net'],
+            ['3', 'BILBON', 'BAGGINS', 'bilbon.saquet@shire.net'],
+            ['4', 'FRODO', 'BAGGINS', 'frodo.saquet@shire.net'],
         ];
 
         const trs = await driver.findElements(By.css('.dataset table tbody tr'));
@@ -272,7 +272,7 @@ describe('Home page with published data', function homePublishedDataTests() {
         await driver.wait(until.elementLocated(By.css('.tab-dataset-resources')), DEFAULT_WAIT_TIMEOUT);
         await driver.wait(elementIsClicked('.tab-dataset-resources'));
 
-        const firstUriLink = await driver.findElement(By.linkText('uid:/1'));
+        const firstUriLink = await driver.findElement(By.linkText('1'));
         await driver.wait(elementIsClicked(firstUriLink), DEFAULT_WAIT_TIMEOUT);
 
         await driver.wait(until.elementLocated(By.css('.resource')));
