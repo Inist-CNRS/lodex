@@ -18,7 +18,7 @@
     "perPage": 10,
     "exporters": [
         "nquads",
-        "istex",
+        "extendednquads",
         "csv",
         "tsv",
         "raw",
@@ -49,5 +49,9 @@
         "xfoaf": "http://www.foafrealm.org/xfoaf/0.1/",
         "xml": "http://www.w3.org/XML/1998/namespace",
         "xsd": "http://www.w3.org/2001/XMLSchema#"
+    },
+    "istexQuery" : {
+        "language": "http://purl.org/dc/terms/language",
+        "output": "doi,id,language"
     }
 }

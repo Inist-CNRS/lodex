@@ -96,12 +96,10 @@ export function extractIstexQuery(data, feed) {
     } else {
         const fields = this.getParam('fields', {});
 
-        fields
-      .filter(field => field.format && field.format.name === 'istex')
-      .forEach((field) => {
-          const propertyName = field.name;
-          console.log(data[propertyName]);
-      });
+        fields.filter(field => field.format && field.format.name === 'istex').forEach((field) => {
+            const propertyName = field.name;
+            console.log(data[propertyName]);
+        });
         feed.send(data);
     }
 }
