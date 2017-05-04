@@ -197,3 +197,21 @@ export function JSONLDCompacter(data, feed) {
             });
 }
 
+export function extractIstexQuery(data, feed) {
+    if (this.isLast()) {
+        feed.close();
+    } else {
+        const fields = this.getParam('fields', {});
+
+        fields
+      .filter(field => field.format && field.format.name === 'istex')
+      .forEach((field) => {
+          const propertyName = field.name;
+          /* eslint-disable*/
+          console.log(data[propertyName]);
+          /* eslint-enable */
+      });
+        feed.send(data);
+    }
+}
+
