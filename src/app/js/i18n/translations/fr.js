@@ -224,4 +224,12 @@ export default {
     upload_url: 'upload from url',
     invalid_url: 'url is invalid',
     or: 'or',
+    html: 'Balises HTML',
+    list: 'Liste de valeurs',
+    uri: 'Lien interne',
+    email: 'Lien courriel',
+    image: 'URL d\'une image',
+    link: 'URL externe',
+    chart: 'Graphique contextuel',
+    istex: 'Requête ISTEX',
 };

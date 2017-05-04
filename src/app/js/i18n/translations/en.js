@@ -223,4 +223,12 @@ export default {
     upload_url: 'upload from url',
     invalid_url: 'url is invalid',
     or: 'or',
+    html: 'HTML content',
+    list: 'List content (Array)',
+    uri: 'Internal URI',
+    email: 'Email value',
+    image: 'Image URL',
+    link: 'External URL',
+    chart: 'Contextual chart',
+    istex: 'ISTEX Query',
 };
