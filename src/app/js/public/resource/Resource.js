@@ -59,16 +59,11 @@ export const ResourceComponent = ({
     }
     return (
         <div className="resource">
-            <Card>
-                <CardActions>
-                    {backToListButton}
-                </CardActions>
-            </Card>
             {removed &&
                 <RemovedDetail />
             }
             {!removed &&
-                <Detail />
+                <Detail backToListLabel={backToListLabel} />
             }
         </div>
     );
