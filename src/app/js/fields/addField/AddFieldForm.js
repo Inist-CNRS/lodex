@@ -15,7 +15,7 @@ import { polyglot as polyglotPropTypes } from '../../propTypes';
 import SelectFieldToAdd from './SelectFieldToAdd';
 import { fromUser, fromFields } from '../../sharedSelectors';
 import Contributor from './Contributor';
-import ContributionField from './ContributionField';
+import AddFieldDetail from './AddFieldDetail';
 import { fromResource } from '../../public/selectors';
 
 export const AddFieldFormComponent = ({
@@ -30,7 +30,7 @@ export const AddFieldFormComponent = ({
         <SelectFieldToAdd />
         {
             fieldToAdd ?
-                <ContributionField isNewField={!fieldToAdd.name} isLoggedIn={isLoggedIn} />
+                <AddFieldDetail isNewField={!fieldToAdd.name} isLoggedIn={isLoggedIn} />
             : null
         }
     </form>

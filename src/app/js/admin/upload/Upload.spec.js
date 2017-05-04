@@ -42,27 +42,6 @@ describe('<Upload />', () => {
         </Alert>)).toBe(true);
     });
 
-    it('should map input.onChange to onFileLoad props', () => {
-        let onFileLoadCall;
-        const props = {
-            p: { t: key => key },
-            error: false,
-            onFileLoad(...args) {
-                onFileLoadCall = args;
-            },
-        };
-        const wrapper = shallow(<Upload {...props} />);
-        const fileInput = wrapper.find('input').at(0);
-        const onChange = fileInput.prop('onChange');
-        onChange({
-            target: {
-                files: ['file'],
-            },
-        });
-
-        expect(onFileLoadCall).toEqual(['file']);
-    });
-
     after(() => {
         delete global.LOADERS;
     });

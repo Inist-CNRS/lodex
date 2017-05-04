@@ -5,6 +5,7 @@ import get from 'lodash.get';
 
 /* eslint no-await-in-loop: off */
 import getDocumentTransformer from '../../services/getDocumentTransformer';
+import publishFacets from './publishFacets';
 
 const app = new Koa();
 
@@ -54,16 +55,6 @@ export const publishCharacteristics = async (ctx, datasetCoverFields, count) => 
     }
 };
 
-export const publishFacets = async (ctx, facetFields) =>
-    Promise.all(facetFields.map(field =>
-        ctx.publishedDataset
-            .findDistinctValuesForField(field.name)
-            .then(values => Promise.all(values.map(value =>
-                ctx.publishedDataset
-                    .countByFacet(field.name, value)
-                    .then(count => ({ value, count })))))
-            .then(values => ctx.publishedFacet.insertFacet(field.name, values)),
-    ));
 
 export const preparePublish = async (ctx, next) => {
     ctx.tranformAllDocuments = tranformAllDocuments;
@@ -92,7 +83,6 @@ export const doPublish = async (ctx) => {
     const fields = await ctx.field.findAll();
     const collectionCoverFields = fields.filter(c => c.cover === 'collection');
     const datasetCoverFields = fields.filter(c => c.cover === 'dataset');
-    const facetFields = fields.filter(c => c.isFacet);
 
     const uriCol = fields.find(col => col.name === 'uri');
     const getUri = ctx.getDocumentTransformer([uriCol]);
@@ -118,7 +108,7 @@ export const doPublish = async (ctx) => {
         transformDocumentAndKeepUri,
     );
     await ctx.publishCharacteristics(ctx, datasetCoverFields, count);
-    await ctx.publishFacets(ctx, facetFields);
+    await ctx.publishFacets(ctx, fields);
 
     ctx.redirect('/api/publication');
 };

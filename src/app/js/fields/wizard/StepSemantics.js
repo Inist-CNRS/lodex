@@ -14,6 +14,7 @@ const styles = {
         paddingLeft: '40px',
     },
     header: {
+        lineHeight: '48px',
         paddingLeft: 0,
     },
 };

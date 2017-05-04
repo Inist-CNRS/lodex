@@ -3,7 +3,7 @@ import expect from 'expect';
 import { shallow } from 'enzyme';
 
 import { CompositePropertyComponent as CompositeProperty } from './CompositeProperty';
-import Property from './Property';
+import Property from './';
 
 describe('CompositeProperty', () => {
     it('should render all linked properties', () => {

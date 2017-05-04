@@ -1,11 +1,11 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { fromFields } from '../sharedSelectors';
+import { fromFields } from '../../sharedSelectors';
 import {
     field as fieldPropTypes,
-} from '../propTypes';
-import Property from './Property';
-import getFieldClassName from '../lib/getFieldClassName';
+} from '../../propTypes';
+import Property from './';
+import getFieldClassName from '../../lib/getFieldClassName';
 
 const styles = {
     container: {

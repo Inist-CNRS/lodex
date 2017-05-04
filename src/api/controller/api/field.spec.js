@@ -9,6 +9,7 @@ import {
     putField,
     removeField,
 } from './field';
+import publishFacets from './publishFacets';
 import { validateField } from '../../models/field';
 
 describe('field routes', () => {
@@ -20,6 +21,7 @@ describe('field routes', () => {
             await setup(ctx, next);
 
             expect(ctx).toEqual({
+                publishFacets,
                 validateField,
             });
         });
@@ -32,6 +34,7 @@ describe('field routes', () => {
             await setup(ctx, next);
 
             expect(ctx).toEqual({
+                publishFacets,
                 validateField,
                 body: 'Boom',
                 status: 500,
@@ -128,19 +131,29 @@ describe('field routes', () => {
     });
 
     describe('putField', () => {
-        it('should validateField and then update field', async () => {
-            const ctx = {
-                request: {
-                    body: 'updated field data',
-                },
-                field: {
-                    updateOneById: createSpy().andReturn(Promise.resolve('update result')),
-                },
-            };
+        const ctx = {
+            request: {
+                body: 'updated field data',
+            },
+            field: {
+                updateOneById: createSpy().andReturn(Promise.resolve('update result')),
+                findAll: createSpy().andReturn(Promise.resolve('all fields')),
+            },
+            publishFacets: createSpy(),
+        };
 
+        it('should validateField and then update field', async () => {
             await putField(ctx, 'id');
             expect(ctx.field.updateOneById).toHaveBeenCalledWith('id', 'updated field data');
             expect(ctx.body).toBe('update result');
+        });
+
+        it('gets the current fields', () => {
+            expect(ctx.field.findAll).toHaveBeenCalled();
+        });
+
+        it('update the published facets', () => {
+            expect(ctx.publishFacets).toHaveBeenCalled();
         });
     });
 

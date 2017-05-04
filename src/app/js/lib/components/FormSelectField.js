@@ -13,7 +13,10 @@ const FormSelectField = ({ input, label, hint, meta: { touched, error }, ...prop
     />
 );
 
-
 FormSelectField.propTypes = formFieldPropTypes;
+
+FormSelectField.defaultProps = {
+    label: '',
+};
 
 export default FormSelectField;

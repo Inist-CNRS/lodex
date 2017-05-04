@@ -6,9 +6,11 @@ import asyncBusboy from 'async-busboy';
 import streamToString from 'stream-to-string';
 
 import { validateField } from '../../models/field';
+import publishFacets from './publishFacets';
 
 export const setup = async (ctx, next) => {
     ctx.validateField = validateField;
+    ctx.publishFacets = publishFacets;
     try {
         await next();
     } catch (error) {
@@ -38,6 +40,9 @@ export const putField = async (ctx, id) => {
     const newField = ctx.request.body;
 
     ctx.body = await ctx.field.updateOneById(id, newField);
+
+    const fields = await ctx.field.findAll();
+    await ctx.publishFacets(ctx, fields);
 };
 
 export const removeField = async (ctx, id) => {

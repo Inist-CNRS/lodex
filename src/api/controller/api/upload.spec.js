@@ -1,7 +1,7 @@
 import expect, { createSpy } from 'expect';
 import config from 'config';
 
-import { parseRequest, uploadChunkMiddleware } from './upload';
+import { parseRequest, uploadChunkMiddleware, uploadUrl } from './upload';
 
 describe('upload', () => {
     describe('parseRequest', () => {
@@ -202,6 +202,58 @@ describe('upload', () => {
 
             it('should have set ctx.status to 200', () => {
                 expect(ctx.status).toBe(200);
+            });
+        });
+    });
+
+    describe('uploadUrl', () => {
+        const parser = createSpy().andReturn('parsedStream');
+        const ctx = {
+            request: {
+                body: {
+                    url: 'http://host/file.name.type',
+                },
+            },
+            getParser: createSpy().andReturn(parser),
+            dataset: {
+                remove: createSpy(),
+                count: createSpy().andReturn('count'),
+            },
+            getStreamFromUrl: createSpy().andReturn('streamUrl'),
+            saveStream: createSpy(),
+        };
+
+        before(async () => {
+            await uploadUrl(ctx);
+        });
+
+        it('should have called getParser with url file extension', () => {
+            expect(ctx.getParser).toHaveBeenCalledWith('type');
+        });
+
+        it('should have called dataset.remove', () => {
+            expect(ctx.dataset.remove).toHaveBeenCalled();
+        });
+
+        it('should have called getStreamForUrl with url', () => {
+            expect(ctx.getStreamFromUrl).toHaveBeenCalledWith('http://host/file.name.type');
+        });
+
+        it('should have called parser with streamUrl', () => {
+            expect(parser).toHaveBeenCalledWith('streamUrl');
+        });
+
+        it('should have called saveStream with parsedStream', () => {
+            expect(ctx.saveStream).toHaveBeenCalledWith('parsedStream');
+        });
+
+        it('should have called dataset.count', () => {
+            expect(ctx.dataset.count).toHaveBeenCalled();
+        });
+
+        it('should add body.totalLines: count', () => {
+            expect(ctx.body).toEqual({
+                totalLines: 'count',
             });
         });
     });

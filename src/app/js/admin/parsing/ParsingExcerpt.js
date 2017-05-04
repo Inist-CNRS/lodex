@@ -5,11 +5,12 @@ import pure from 'recompose/pure';
 import { spring } from 'react-motion';
 import Transition from 'react-motion-ui-pack';
 
-import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow } from 'material-ui/Table';
+import { Table, TableBody, TableHeader, TableRow } from 'material-ui/Table';
 
 import { addField } from '../../fields';
-import ParsingExcerptColumn from './ParsingExcerptColumn';
 import ParsingExcerptAddColumn from './ParsingExcerptAddColumn';
+import ParsingExcerptColumn from './ParsingExcerptColumn';
+import ParsingExcerptHeaderColumn from './ParsingExcerptHeaderColumn';
 
 const styles = {
     table: {
@@ -26,11 +27,11 @@ const styles = {
 export const getRowStyle = (index, total) => {
     let opacity = 1;
 
-    if (index === (total - 2)) {
+    if (total > 2 && index === (total - 2)) {
         opacity = 0.45;
     }
 
-    if (index === (total - 1)) {
+    if (total > 2 && index === (total - 1)) {
         opacity = 0.25;
     }
 
@@ -49,7 +50,12 @@ export const ParsingExcerptComponent = ({
         <Table selectable={false} fixedHeader={false} style={styles.table}>
             <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
                 <TableRow>
-                    {columns.map(c => <TableHeaderColumn key={`header_${c}`}>{c}</TableHeaderColumn>)}
+                    {columns.map(column => (
+                        <ParsingExcerptHeaderColumn
+                            key={`header_${column}`}
+                            column={column}
+                        />
+                    ))}
                 </TableRow>
             </TableHeader>
             <TableBody style={styles.body} displayRowCheckbox={false}>
@@ -59,31 +65,39 @@ export const ParsingExcerptComponent = ({
                         key={`${line._id}_data_row`}
                         style={getRowStyle(index, total)}
                     >
-                        {columns.map(c => (
-                            <ParsingExcerptColumn
-                                key={`${c}_${line._id}`}
-                                value={line[c]}
-                            >
-                                <Transition
-                                    component={false}
-                                    enter={{
-                                        opacity: spring(1),
-                                    }}
-                                    leave={{
-                                        opacity: 0,
-                                    }}
-                                    runOnMount
+                        {columns.map((column) => {
+                            const showAddColumnButton =
+                                showAddColumns
+                                && showAddColumns
+                                && (index === total - 3 || (total < 3 && index === 0));
+
+                            return (
+                                <ParsingExcerptColumn
+                                    key={`${column}_${line._id}`}
+                                    value={line[column]}
                                 >
-                                    {showAddColumns && index === total - 3 &&
-                                        <ParsingExcerptAddColumn
-                                            key={`add_column_${c}`}
-                                            name={c}
-                                            onAddColumn={handleAddColumn}
-                                        />
-                                    }
-                                </Transition>
-                            </ParsingExcerptColumn>
-                        ))}
+                                    <Transition
+                                        component={false}
+                                        enter={{
+                                            opacity: spring(1),
+                                        }}
+                                        leave={{
+                                            opacity: 0,
+                                        }}
+                                        runOnMount
+                                    >
+                                        {showAddColumnButton &&
+                                            <ParsingExcerptAddColumn
+                                                key={`add_column_${column}`}
+                                                name={column}
+                                                onAddColumn={handleAddColumn}
+                                                atTop={total < 3}
+                                            />
+                                        }
+                                    </Transition>
+                                </ParsingExcerptColumn>
+                            );
+                        })}
                     </TableRow>
                 ))}
             </TableBody>

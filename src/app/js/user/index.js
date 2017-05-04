@@ -229,6 +229,15 @@ export const getClearUploadRequest = state =>
         url: '/api/upload/clear',
     });
 
+export const getUploadUrlRequest = (state, url) =>
+    getRequest(state, {
+        method: 'POST',
+        url: '/api/upload/url',
+        body: {
+            url,
+        },
+    });
+
 export const selectors = {
     isLoggedIn,
     getToken,
@@ -260,4 +269,5 @@ export const selectors = {
     getUpdateFieldRequest,
     getCreateFieldRequest,
     getLoadFieldRequest,
+    getUploadUrlRequest,
 };

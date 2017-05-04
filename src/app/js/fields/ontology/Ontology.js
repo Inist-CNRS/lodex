@@ -10,7 +10,7 @@ import { fromUser, fromFields } from '../../sharedSelectors';
 import { languages } from '../../../../../config.json';
 import getFieldClassName from '../../lib/getFieldClassName';
 import EditOntologyField from './EditOntologyField';
-import ExportFieldsButton from '../../public/ExportFieldsButton';
+import ExportFieldsButton from '../../public/export/ExportFieldsButton';
 
 const styles = {
     container: {
