@@ -129,7 +129,7 @@ export const DetailComponent = ({
                             <div>
                                 <div style={styles.labelContainer}>
                                     <span className="property_label back_to_list" style={styles.label}>
-                                        {polyglot.t('resources')}
+                                        {polyglot.t('dataset')}
                                     </span>
                                     <span className="property_scheme in_scheme" style={styles.scheme}>
                                         {schemeForDatasetLink}
