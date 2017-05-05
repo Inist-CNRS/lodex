@@ -3,6 +3,7 @@ import email from './email';
 import image from './image';
 import link from './link';
 import list from './list';
+import markdown from './markdown';
 import chart from './chart';
 import uri from './uri';
 import istex from './istex';
@@ -15,6 +16,7 @@ const components = {
     email,
     image,
     link,
+    markdown,
     chart,
     istex,
 };
