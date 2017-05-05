@@ -1,6 +1,6 @@
 import ezs from 'ezs';
 import ezsBasics from 'ezs-basics';
-import * as ezsLocals from './ezsLocals';
+import ezsLocals from './ezsLocals';
 
 ezs.use(ezsBasics);
 ezs.use(ezsLocals);
