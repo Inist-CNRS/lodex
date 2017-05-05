@@ -1,73 +1,5 @@
-import { promises as jsonld } from 'jsonld';
 import path from 'path';
-import omit from 'lodash.omit';
-import { VALIDATED } from '../../common/propositionStatus';
-import generateUid from '../services/generateUid';
-
-export function filterVersions(data, feed) {
-    if (data && data.versions) {
-        const { versions, ...dataWithoutVersions } = data;
-        const lastVersion = versions[versions.length - 1];
-
-        feed.send({
-            ...dataWithoutVersions,
-            ...lastVersion,
-        });
-        return;
-    }
-
-    feed.send(data);
-}
-
-export function filterContributions(data, feed) {
-    if (data && data.contributions) {
-        const fieldsToIgnore = data.contributions
-            .filter(({ status }) => status !== VALIDATED)
-            .map(({ fieldName }) => fieldName)
-            .concat('contributions', 'contributionCount');
-        feed.send(omit(data, fieldsToIgnore));
-        return;
-    }
-
-    feed.send(data);
-}
-
-export function useFieldNames(data, feed) {
-    const fields = this.getParam('fields', {});
-
-    if (this.isLast()) {
-        feed.close();
-        return;
-    }
-
-    const output = fields.filter(field => field.cover === 'collection').map((currentOutput, field) => ({
-        ...currentOutput,
-        [field.label || field.name]: data[field.name],
-    }), {});
-
-    feed.send(output);
-}
-
-export function linkDataset(data, feed) {
-    const uri = this.getParam('uri');
-    const scheme = this.getParam('scheme', 'http://purl.org/dc/terms/isPartOf');
-
-    if (uri && data && data['@context']) {
-        feed.send({
-            ...data,
-            dataset: uri,
-            '@context': {
-                ...data['@context'],
-                dataset: {
-                    '@id': scheme,
-                },
-            },
-        });
-        return;
-    }
-
-    feed.send(data);
-}
+import generateUid from '../../services/generateUid';
 
 async function transformCompleteFields(field) {
     const name = await generateUid();
@@ -138,7 +70,7 @@ function getUri(uri) {
     return uri;
 }
 
-export async function JSONLDObject(data, feed) {
+export default async function JSONLDObject(data, feed) {
     if (this.isLast()) {
         feed.close();
         return;
@@ -168,32 +100,3 @@ export async function JSONLDObject(data, feed) {
 
     feed.send(output);
 }
-
-export function JSONLDString(data, feed) {
-    if (this.isLast()) {
-        return feed.close();
-    }
-
-    jsonld.toRDF(data, { format: 'application/nquads' })
-        .then((out) => {
-            feed.send(out);
-        },
-            (err) => {
-                throw err;
-            });
-}
-
-export function JSONLDCompacter(data, feed) {
-    if (this.isLast()) {
-        return feed.close();
-    }
-
-    jsonld.compact(data, {})
-        .then((out) => {
-            feed.send(out);
-        },
-            (err) => {
-                throw err;
-            });
-}
-
