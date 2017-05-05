@@ -232,10 +232,10 @@ export default {
     link: 'URL externe',
     chart: 'Graphique contextuel',
     istex: 'Requête ISTEX',
-    title: 'Title',
+    title: 'Titre',
     level1: 'Title 1',
     level2: 'Title 2',
     level3: 'Title 3',
     level4: 'Title 4',
-    list_format_select_level: 'Choose title level',
+    list_format_select_level: 'Niveau du titre',
 };
