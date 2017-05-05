@@ -6,5 +6,7 @@ module.exports = {
     linkDataset: require('./linkDataset.js'),
     JSONLDCompacter: require('./JSONLDCompacter.js'),
     JSONLDString: require('./JSONLDString.js'),
-    JSONLDObject: require('./JSONLDObject.js')
+    JSONLDObject: require('./JSONLDObject.js'),
+    extractIstexQuery: require('./extractIstexQuery.js'),
+    scroll: require('./scroll.js')
 };
