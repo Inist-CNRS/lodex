@@ -1,4 +1,4 @@
-export default function linkDataset(data, feed) {
+module.exports = function linkDataset(data, feed) {
     const uri = this.getParam('uri');
     const scheme = this.getParam('scheme', 'http://purl.org/dc/terms/isPartOf');
 

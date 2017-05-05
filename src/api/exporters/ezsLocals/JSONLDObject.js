@@ -70,7 +70,7 @@ function getUri(uri) {
     return uri;
 }
 
-export default async function JSONLDObject(data, feed) {
+module.exports = async function JSONLDObject(data, feed) {
     if (this.isLast()) {
         feed.close();
         return;
@@ -99,4 +99,4 @@ export default async function JSONLDObject(data, feed) {
             }));
 
     feed.send(output);
-}
+};

@@ -1,6 +1,6 @@
 import { promises as jsonld } from 'jsonld';
 
-export default function JSONLDCompacter(data, feed) {
+module.exports = function JSONLDCompacter(data, feed) {
     if (this.isLast()) {
         return feed.close();
     }
@@ -12,4 +12,4 @@ export default function JSONLDCompacter(data, feed) {
             (err) => {
                 throw err;
             });
-}
+};

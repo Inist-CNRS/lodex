@@ -1,4 +1,4 @@
-export default function useFieldNames(data, feed) {
+module.exports = function useFieldNames(data, feed) {
     const fields = this.getParam('fields', {});
 
     if (this.isLast()) {
@@ -11,4 +11,4 @@ export default function useFieldNames(data, feed) {
     }), {});
 
     feed.send(output);
-}
+};
