@@ -78,25 +78,25 @@ module.exports = async function JSONLDObject(data, feed) {
     const fields = this.getParam('fields', {});
 
     const output = await fields
-        .filter(field => field.cover === 'collection')
-        .reduce((currentOutputPromise, field) =>
-            currentOutputPromise.then((currentOutput) => {
-                const propertyName = field.name;
-                const isCompletedByAnotherField = fields.some(f => f.completes === field.name);
-                const completesAnotherField = field.completes;
+    .filter(field => field.cover === 'collection')
+    .reduce((currentOutputPromise, field) =>
+        currentOutputPromise.then((currentOutput) => {
+            const propertyName = field.name;
+            const isCompletedByAnotherField = fields.some(f => f.completes === field.name);
+            const completesAnotherField = field.completes;
 
-                if (completesAnotherField) {
-                    return Promise.resolve(mergeCompleteField(currentOutput, field, fields, data));
-                }
+            if (completesAnotherField) {
+                return Promise.resolve(mergeCompleteField(currentOutput, field, fields, data));
+            }
 
-                if (field.scheme && data[propertyName] && !isCompletedByAnotherField) {
-                    return Promise.resolve(mergeSimpleField(currentOutput, field, data));
-                }
+            if (field.scheme && data[propertyName] && !isCompletedByAnotherField) {
+                return Promise.resolve(mergeSimpleField(currentOutput, field, data));
+            }
 
-                return Promise.resolve(currentOutput);
-            }), Promise.resolve({
-                '@id': getUri(data.uri),
-            }));
+            return Promise.resolve(currentOutput);
+        }), Promise.resolve({
+            '@id': getUri(data.uri),
+        }));
 
     feed.send(output);
 };

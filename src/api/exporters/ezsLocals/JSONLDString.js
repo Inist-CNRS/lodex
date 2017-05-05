@@ -6,11 +6,11 @@ module.exports = function JSONLDString(data, feed) {
     }
 
     jsonld.toRDF(data, { format: 'application/nquads' }).then(
-    (out) => {
-        feed.send(out);
-    },
-    (err) => {
-        throw err;
-    },
-  );
+      (out) => {
+          feed.send(out);
+      },
+      (err) => {
+          throw err;
+      },
+    );
 };

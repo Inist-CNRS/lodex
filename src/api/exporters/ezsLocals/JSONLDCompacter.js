@@ -9,7 +9,7 @@ module.exports = function JSONLDCompacter(data, feed) {
         .then((out) => {
             feed.send(out);
         },
-            (err) => {
-                throw err;
-            });
+        (err) => {
+            throw err;
+        });
 };
