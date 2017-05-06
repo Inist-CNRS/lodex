@@ -1,7 +1,6 @@
 import React from 'react';
 import expect from 'expect';
 import { shallow } from 'enzyme';
-import FlatButton from 'material-ui/FlatButton';
 
 import Loading from '../../lib/components/Loading';
 import { ResourceComponent } from './Resource';
@@ -75,8 +74,7 @@ describe('<Resource />', () => {
         const wrapper = shallow(<ResourceComponent
             {...props}
         />);
-        const link = wrapper.find(FlatButton).at(0);
-        expect(link.prop('label')).toEqual('back_to_list');
+        expect(wrapper.find(Detail).prop('backToListLabel')).toEqual('back_to_list');
     });
 
     it('should display datasetTitle in link', () => {
@@ -91,7 +89,6 @@ describe('<Resource />', () => {
         const wrapper = shallow(<ResourceComponent
             {...props}
         />);
-        const link = wrapper.find(FlatButton).at(0);
-        expect(link.prop('label')).toEqual('dataset title');
+        expect(wrapper.find(Detail).prop('backToListLabel')).toEqual('dataset title');
     });
 });
