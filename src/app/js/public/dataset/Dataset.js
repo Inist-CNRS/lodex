@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 import { CardActions } from 'material-ui/Card';
+import { grey500 } from 'material-ui/styles/colors';
 
 import {
     Table,
@@ -34,6 +35,23 @@ const styles = {
     noResult: {
         textAlign: 'center',
     },
+    propertiesContainer: {
+        paddingTop: '1rem',
+        paddingLeft: '1rem',
+        paddingRight: '1rem',
+    },
+    label: {
+        color: grey500,
+        flexGrow: 2,
+        fontWeight: 'bold',
+        fontSize: '1rem',
+        textDecoration: 'none',
+    },
+    labelContainer: {
+        display: 'flex',
+        justifyContent: 'flex-end',
+        alignItems: 'center',
+    },
 };
 
 export class DatasetComponent extends Component {
@@ -51,6 +69,15 @@ export class DatasetComponent extends Component {
         if (loading) return <Loading>{polyglot.t('loading')}</Loading>;
         return (
             <div className="dataset" style={styles.wrapper}>
+                <div className="dataset" style={styles.wrapper}>
+                    <div style={styles.propertiesContainer}>
+                        <div style={styles.labelContainer}>
+                            <span className="property_label resources" style={styles.label}>
+                                {polyglot.t('resources')}
+                            </span>
+                        </div>
+                    </div>
+                </div>
                 <Table selectable={false} fixedHeader={false} style={styles.table}>
                     <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
                         <TableRow>
