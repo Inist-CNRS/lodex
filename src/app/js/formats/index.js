@@ -6,6 +6,7 @@ import list from './list';
 import chart from './chart';
 import uri from './uri';
 import istex from './istex';
+import title from './title';
 import DefaultFormat from './DefaultFormat';
 
 const components = {
@@ -17,6 +18,7 @@ const components = {
     link,
     chart,
     istex,
+    title,
 };
 
 export const FORMATS = Object.keys(components);
