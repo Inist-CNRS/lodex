@@ -32,7 +32,6 @@ services:
     mongo:
         image: mongo:3.0.14
         command: "--smallfiles"
-
     e2e:
         image: node:7.8.0
         volumes:
