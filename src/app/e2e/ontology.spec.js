@@ -155,7 +155,7 @@ describe('Ontology', function homePublishedDataTests() {
         await driver.wait(until.elementLocated(By.css('.tab-dataset-resources')), DEFAULT_WAIT_TIMEOUT);
         await driver.wait(elementIsClicked('.tab-dataset-resources'));
 
-        const firstUriLink = await driver.findElement(By.linkText('uid:/1'));
+        const firstUriLink = await driver.findElement(By.linkText('1'));
         await driver.wait(elementIsClicked(firstUriLink), DEFAULT_WAIT_TIMEOUT);
 
         await driver.wait(until.elementLocated(By.css('.resource')));

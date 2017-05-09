@@ -69,10 +69,10 @@ describe('Admin', () => {
                         firstname,
                     }))));
                 expect(rows).toEqual([
-                    { uri: 'uid:/BRANDYBUCK', name: 'BRANDYBUCK', firstname: 'MERIADOC' },
-                    { uri: 'uid:/BAGGINS', name: 'BAGGINS', firstname: 'BILBON' },
-                    { uri: 'uid:/GAMGIE', name: 'GAMGIE', firstname: 'SAMSAGET' },
-                    { uri: 'uid:/TOOK', name: 'TOOK', firstname: 'PEREGRIN' },
+                    { uri: 'BRANDYBUCK', name: 'BRANDYBUCK', firstname: 'MERIADOC' },
+                    { uri: 'BAGGINS', name: 'BAGGINS', firstname: 'BILBON' },
+                    { uri: 'GAMGIE', name: 'GAMGIE', firstname: 'SAMSAGET' },
+                    { uri: 'TOOK', name: 'TOOK', firstname: 'PEREGRIN' },
                 ]);
             });
 
@@ -163,11 +163,11 @@ describe('Admin', () => {
                         firstname,
                     }))));
                 expect(rows).toEqual([
-                    { uri: 'uid:/BRANDYBUCK-MERIADOC', name: 'BRANDYBUCK', firstname: 'MERIADOC' },
-                    { uri: 'uid:/BAGGINS-FRODO', name: 'BAGGINS', firstname: 'FRODO' },
-                    { uri: 'uid:/BAGGINS-BILBON', name: 'BAGGINS', firstname: 'BILBON' },
-                    { uri: 'uid:/GAMGIE-SAMSAGET', name: 'GAMGIE', firstname: 'SAMSAGET' },
-                    { uri: 'uid:/TOOK-PEREGRIN', name: 'TOOK', firstname: 'PEREGRIN' },
+                    { uri: 'BRANDYBUCK-MERIADOC', name: 'BRANDYBUCK', firstname: 'MERIADOC' },
+                    { uri: 'BAGGINS-FRODO', name: 'BAGGINS', firstname: 'FRODO' },
+                    { uri: 'BAGGINS-BILBON', name: 'BAGGINS', firstname: 'BILBON' },
+                    { uri: 'GAMGIE-SAMSAGET', name: 'GAMGIE', firstname: 'SAMSAGET' },
+                    { uri: 'TOOK-PEREGRIN', name: 'TOOK', firstname: 'PEREGRIN' },
                 ]);
             });
         });
