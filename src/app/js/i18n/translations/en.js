@@ -238,4 +238,10 @@ export default {
     eighty_percent: '80 %',
     hundred_percent: '100 %',
     list_format_select_image_width: 'Percent of width',
+    title: 'Title',
+    level1: 'Title 1',
+    level2: 'Title 2',
+    level3: 'Title 3',
+    level4: 'Title 4',
+    list_format_select_level: 'Choose title level',
 };

@@ -29,7 +29,7 @@ export const sanitizeUris = (doc) => {
 
     return {
         ...doc,
-        uri: `uid:/${encodeURIComponent(doc.uri)}`,
+        uri: `uid:/${doc.uri}`,
     };
 };
 

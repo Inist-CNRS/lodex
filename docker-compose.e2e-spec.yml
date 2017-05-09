@@ -1,0 +1,17 @@
+version: "2"
+
+services:
+   e2e:
+        image: node:7.8.0
+        volumes:
+            - .:/app
+        working_dir: /app
+        links:
+            - hub
+            - chromedebug
+        depends_on:
+            - hub
+        environment:
+            NODE_ENV: test
+            SELENIUM_BROWSER_BINARY_PATH: ./node_modules/selenium-standalone/.selenium/chromedriver/2.29-x64-chromedriver
+        command: ./node_modules/.bin/mocha --require babel-polyfill --compilers="js:babel-core/register" --recursive ${SPEC}

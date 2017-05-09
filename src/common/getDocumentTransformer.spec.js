@@ -105,14 +105,14 @@ describe('getDocumentTransformer', () => {
             const doc = { uri: 'an id' };
             const result = sanitizeUris(doc);
 
-            expect(result).toEqual({ uri: 'uid:/an%20id' });
+            expect(result).toEqual({ uri: 'uid:/an id' });
         });
 
         it('sanitizes http uris', () => {
             const doc = { uri: 'http://www.an_uri.com' };
             const result = sanitizeUris(doc);
 
-            expect(result).toEqual({ uri: 'uid:/http%3A%2F%2Fwww.an_uri.com' });
+            expect(result).toEqual({ uri: 'uid:/http://www.an_uri.com' });
         });
     });
 });
