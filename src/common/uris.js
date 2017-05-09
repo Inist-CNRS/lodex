@@ -5,7 +5,10 @@ export const getResourceUri = (resource) => {
     if (!uri) {
         return null;
     }
-    if (uri.startsWith('uid:/') || uri.startsWith('ark:/')) {
+    if (uri.startsWith('uid:/')) {
+        return `/uid:/${encodeURIComponent(uri.substr(5))}`;
+    }
+    if (uri.startsWith('ark:/')) {
         return `/${uri}`;
     }
     if (uri.startsWith('http://' || uri.startsWith('https://'))) {

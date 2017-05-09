@@ -86,7 +86,7 @@ On EzMaster, you can edit the instance configuration:
 - `password`: Required - password for admin access
 
 - `naan`: Optional - used to autogenerate URIs (see [node-inist-ark](https://github.com/Inist-CNRS/node-inist-ark))
-- `subPublisherId`: Optional - used to autogenerate URIs (see [node-inist-ark](https://github.com/Inist-CNRS/node-inist-ark))
+- `subpublisher`: Optional - used to autogenerate URIs (see [node-inist-ark](https://github.com/Inist-CNRS/node-inist-ark))
 
 - `languages`: Required - an array of languages defined by a `label` and a `code` which will be proposed when selecting a property language
 

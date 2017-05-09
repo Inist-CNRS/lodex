@@ -7,7 +7,7 @@ import link from './link';
 import list from './list';
 import trelloTimeline from './trello-timeline';
 import uri from './uri';
-
+import title from './title';
 import DefaultFormat from './DefaultFormat';
 
 const components = {
@@ -20,6 +20,7 @@ const components = {
     list,
     trelloTimeline,
     uri,
+    title,
 };
 
 export const FORMATS = Object.keys(components);
