@@ -109,7 +109,7 @@ export class HomeComponent extends Component {
                         >
                             <Tab
                                 className="tab-dataset-resources"
-                                label={polyglot.t('resources')}
+                                label={polyglot.t('details')}
                                 style={styles.tabButton}
                                 value="dataset"
                             >

@@ -1,10 +1,12 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
 import { CardActions, CardText } from 'material-ui/Card';
 import { Tabs, Tab } from 'material-ui/Tabs';
 import Divider from 'material-ui/Divider';
+import { grey500 } from 'material-ui/styles/colors';
 import memoize from 'lodash.memoize';
 
 import Card from '../../lib/components/Card';
@@ -22,6 +24,7 @@ import Share from '../Share';
 import ShareLink from '../ShareLink';
 import SelectVersion from './SelectVersion';
 import { getFullResourceUri } from '../../../../common/uris';
+import { schemeForDatasetLink } from '../../../../../config.json';
 
 const styles = {
     container: {
@@ -35,7 +38,7 @@ const styles = {
     topItem: memoize((index, total) => ({
         display: 'flex',
         flexDirection: 'column',
-        borderBottom: index < total - 1 ? '1px solid rgb(224, 224, 224)' : 'none',
+        borderBottom: index === 0 ? '1px solid rgb(224, 224, 224)' : 'none',
         paddingTop: index > 0 ? '0.5rem' : 0,
         paddingBottom: index < total - 1 ? '0.5rem' : 0,
         paddingLeft: '0.5rem',
@@ -69,6 +72,31 @@ const styles = {
         paddingLeft: '1rem',
         paddingRight: '1rem',
     },
+    valueContainer: {
+        display: 'flex',
+        alignItems: 'center',
+    },
+    value: {
+        flexGrow: 2,
+    },
+    label: {
+        color: grey500,
+        flexGrow: 2,
+        fontWeight: 'bold',
+        fontSize: '1rem',
+        textDecoration: 'none',
+    },
+    scheme: {
+        fontWeight: 'bold',
+        fontSize: '0.75em',
+        color: 'grey',
+        alignSelf: 'flex-end',
+    },
+    labelContainer: {
+        display: 'flex',
+        justifyContent: 'flex-end',
+        alignItems: 'center',
+    },
     actions: {
         display: 'flex',
         justifyContent: 'flex-end',
@@ -86,16 +114,38 @@ export const DetailComponent = ({
     resource,
     sharingTitle,
     sharingUri,
+    backToListLabel,
 }) => {
     const topFields = fields.slice(0, 2);
     const otherFields = fields.slice(2);
+
 
     return (
         <div className="detail">
             <Card>
                 <CardText style={styles.container}>
+                    <div style={styles.topItem(0, topFields.length + 1)}>
+                        <div className="property schemeForDatasetLink" style={styles.container}>
+                            <div>
+                                <div style={styles.labelContainer}>
+                                    <span className="property_label back_to_list" style={styles.label}>
+                                        {polyglot.t('dataset')}
+                                    </span>
+                                    <span className="property_scheme in_scheme" style={styles.scheme}>
+                                        {schemeForDatasetLink}
+                                    </span>
+                                </div>
+                            </div>
+                            <div style={styles.valueContainer}>
+                                <div style={styles.value}>
+                                    <Link to="/home">{backToListLabel}</Link>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     {topFields.map((field, index) => (
-                        <div key={field.name} style={styles.topItem(index, topFields.length)}>
+                        <div key={field.name} style={styles.topItem(index + 1, topFields.length + 1)}>
                             <Property
                                 field={field}
                                 isSaving={isSaving}
@@ -165,6 +215,7 @@ export const DetailComponent = ({
 DetailComponent.defaultProps = {
     resource: null,
     sharingTitle: null,
+    backToListLabel: null,
 };
 
 DetailComponent.propTypes = {
@@ -175,6 +226,7 @@ DetailComponent.propTypes = {
     resource: PropTypes.shape({}),
     sharingUri: PropTypes.string.isRequired,
     sharingTitle: PropTypes.string,
+    backToListLabel: PropTypes.string,
 };
 
 const mapStateToProps = (state) => {
