@@ -232,6 +232,7 @@ export default {
     link: 'URL externe',
     chart: 'Graphique contextuel',
     istex: 'Requête ISTEX',
+    markdown: 'Syntaxe Markdown',
     ten_percent: '10 %',
     twenty_percent: '20 %',
     thirty_percent: '30 %',

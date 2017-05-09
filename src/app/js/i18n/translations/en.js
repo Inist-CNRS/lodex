@@ -231,6 +231,7 @@ export default {
     link: 'External URL',
     chart: 'Contextual chart',
     istex: 'ISTEX Query',
+    markdown: 'Markdown',
     ten_percent: '10 %',
     twenty_percent: '20 %',
     thirty_percent: '30 %',
