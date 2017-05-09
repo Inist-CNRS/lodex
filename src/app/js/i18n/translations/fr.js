@@ -232,5 +232,5 @@ export default {
     link: 'URL externe',
     chart: 'Graphique contextuel',
     istex: 'Requête ISTEX',
-    markdown: 'Syntax Markdown',
+    markdown: 'Syntaxe Markdown',
 };

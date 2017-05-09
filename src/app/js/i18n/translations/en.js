@@ -231,4 +231,5 @@ export default {
     link: 'External URL',
     chart: 'Contextual chart',
     istex: 'ISTEX Query',
+    markdown: 'Markdown',
 };
