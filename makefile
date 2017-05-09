@@ -78,7 +78,20 @@ test-frontend-functional-debug: ## Run the frontend application functional tests
 	docker-compose -f docker-compose.e2e.yml run --rm e2e
 
 e2e: ## Run test for just one spec file eg make e2e ./src/app/e2e/admin/composedOf.spec.js
-	@SPEC=$(COMMAND_ARGS) docker-compose -f docker-compose.e2e-debug.yml -f docker-compose.e2e-spec.yml run --rm e2e
+	@echo "BE CAREFUL : In this case, frontend application will not be rebuild."
+	@docker-compose -f docker-compose.e2e-debug.yml up -d mongo
+	@echo "Temporizing..." && sleep 2
+	@echo "Cleaning Database..." && docker-compose exec mongo mongo lodex_test --eval " \
+		db.publishedDataset.remove({}); \
+		db.publishedCharacteristic.remove({}); \
+		db.field.remove({}); \
+		db.uriDataset.remove({}); \
+		db.dataset.remove({}); \
+	"
+	@echo "Temporizing..." && sleep 3
+	@echo "Recreating Containers..." && docker-compose -f docker-compose.e2e-debug.yml up -d --force-recreate
+	@echo "Temporizing..." && sleep 3
+	@echo "Running test..." && SPEC=$(COMMAND_ARGS) docker-compose -f docker-compose.e2e-debug.yml -f docker-compose.e2e-spec.yml run --rm e2e
 
 cleanup-test: ## Stop and remove all container used in e2e test
 	docker-compose -f docker-compose.e2e.yml down
@@ -94,7 +107,6 @@ clear-database: ## Clear the whole database
 		db.uriDataset.remove({}); \
 		db.dataset.remove({}); \
 	"
-
 clear-publication: ## Clear the published data, keep uploaded dataset and model
 	docker-compose exec mongo mongo lodex --eval " \
 		db.publishedDataset.remove({}); \
