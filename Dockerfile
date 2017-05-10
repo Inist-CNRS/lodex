@@ -7,7 +7,7 @@ RUN rm -rf ./node_modules && \
     npm install && \
     npm cache clean
 
-ENV NODE_ENV production 
+ENV NODE_ENV production
 
 # Copy the local code source
 COPY . /app
@@ -20,6 +20,7 @@ RUN echo '{ \
   "httpPort": 3000, \
   "configPath": "/app/config.json", \
   "dataPath": "/app/src/app/custom/" \
+  "cleanup": "/app/src/common/mongoCleanup.sh" \
 }' > /etc/ezmaster.json
 
 EXPOSE 3000
