@@ -1,25 +1,30 @@
-import html from './html';
+import chart from './chart';
 import email from './email';
+import html from './html';
 import image from './image';
+import istex from './istex';
 import link from './link';
 import list from './list';
+import trelloTimeline from './trello-timeline';
 import markdown from './markdown';
 import chart from './chart';
 import uri from './uri';
-import istex from './istex';
 import title from './title';
 import DefaultFormat from './DefaultFormat';
 
 const components = {
-    html,
-    list,
-    uri,
+    chart,
     email,
+    html,
     image,
+    istex,
     link,
+    link,
+    list,
+    trelloTimeline,
     markdown,
     chart,
-    istex,
+    uri,
     title,
 };
 
