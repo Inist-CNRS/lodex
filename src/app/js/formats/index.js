@@ -7,7 +7,6 @@ import link from './link';
 import list from './list';
 import trelloTimeline from './trello-timeline';
 import markdown from './markdown';
-import chart from './chart';
 import uri from './uri';
 import title from './title';
 import DefaultFormat from './DefaultFormat';
@@ -19,11 +18,9 @@ const components = {
     image,
     istex,
     link,
-    link,
     list,
     trelloTimeline,
     markdown,
-    chart,
     uri,
     title,
 };
