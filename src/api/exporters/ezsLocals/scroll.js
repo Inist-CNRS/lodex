@@ -15,26 +15,32 @@ function scrollRecursive(feed) {
         json,
     };
 
-    request(options, (error, response, body) => {
-        if (!error) {
+    request.get(options, (error, response, body) => {
+        if (error) {
             /* eslint-disable */
             console.error('options:', options);
             console.error('error', error);
-            console.error('response',
-                         response.statusCode,
-                         response.statusMessage,
-                         response.headers);
+            console.error(
+                'response',
+                response && response.statusCode,
+                response && response.statusMessage,
+                response && response.headers,
+            );
             /* eslint-enable */
+
+            return feed.end();
+        }
+
+        if (body && body.hits && body.hits.length === 0) {
             return feed.end();
         }
 
         feed.write(body);
 
-        if (!body.noMoreScrollResults) {
-            return scrollRecursive(feed);
+        if (body.noMoreScrollResults) {
+            return feed.close();
         }
-
-        return feed.end();
+        return scrollRecursive(feed);
     });
 }
 
@@ -44,6 +50,13 @@ function scrollRecursive(feed) {
  * data: url
  */
 module.exports = function scroll(data, feed) {
+    if (this.isLast()) {
+        return feed.close();
+    }
+
+  /**
+   * Params of the API request
+   */
     const output = this.getParam('output', 'doi');
     const sid = this.getParam('sid', 'lodex');
     json = this.getParam('json', true);
@@ -54,35 +67,36 @@ module.exports = function scroll(data, feed) {
     /** Remove when api turn to v5 */
         hostname: 'api-v5.istex.fr',
         pathname: 'document',
-        search: `${query.search}&scroll=30s&output=${output}&sid=${sid}`,
+        search: `${query.search}&scroll=30s&output=${output}&size=10&sid=${sid}`,
     };
 
     const options = {
         uri: url.format(urlObj),
-        method: 'GET',
         json,
     };
 
-    request(options, (error, response, body) => {
-        if (!error) {
+    return request.get(options, (error, reponse, body) => {
+        if (error) {
             /* eslint-disable */
             console.error('options:', options);
             console.error('error', error);
-            console.error('response',
-                         response.statusCode,
-                         response.statusMessage,
-                         response.headers);
-            /* eslint-enable */
+            console.error(
+                'response',
+                reponse.statusCode,
+                reponse.statusMessage,
+                reponse.headers,
+            );
+           /* eslint-enable */
             return feed.end();
         }
 
         feed.write(body);
 
-        if (!body.noMoreScrollResults) {
-            nextURI = body.nextScrollURI;
-            return scrollRecursive(feed);
+        if (body.noMoreScrollResults) {
+            return feed.close();
         }
 
-        return feed.end();
+        nextURI = body.nextScrollURI;
+        return scrollRecursive(feed);
     });
 };
