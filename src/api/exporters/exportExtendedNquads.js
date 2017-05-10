@@ -10,7 +10,14 @@ const exporter = (config, fields, characteristics, stream) =>
     .pipe(ezs('filterVersions'))
     .pipe(ezs('filterContributions', { fields }))
     .pipe(ezs('extractIstexQuery', { fields }))
-    .pipe(ezs('jsonify'));
+    .pipe(ezs('scroll'))
+    .pipe(ezs('convertToExtendedNquads', { graph: `${config.host}/graph` }))
+    .pipe(
+      ezs((data, feed) => {
+          console.log('Export NQUADS Extended', data);
+          feed.end();
+      }),
+    );
 
 exporter.extension = 'json';
 exporter.mimeType = 'application/json';
@@ -18,19 +25,3 @@ exporter.type = 'file';
 exporter.label = 'extendednquads';
 
 export default exporter;
-
-/*
-  stream
-    .pipe(ezs('filterVersions'))
-    .pipe(ezs('filterContributions', { fields }))
-    .pipe(ezs('JSONLDObject', { fields }))
-    .pipe(
-      ezs('linkDataset', {
-          uri: config.host,
-          scheme: config.schemeForDatasetLink,
-      }),
-    )
-    .pipe(hello)
-    .pipe(ezs('jsonify'));
-
-    */

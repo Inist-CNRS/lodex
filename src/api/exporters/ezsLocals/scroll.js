@@ -1,5 +1,6 @@
 import request from 'request';
 import url from 'url';
+import config from 'config';
 
 let json;
 let nextURI;
@@ -16,7 +17,7 @@ function scrollRecursive(feed) {
     };
 
     request.get(options, (error, response, body) => {
-        if (error) {
+        if (error || response.statusCode !== 200) {
             /* eslint-disable */
             console.error('options:', options);
             console.error('error', error);
@@ -64,8 +65,7 @@ module.exports = function scroll(data, feed) {
 
     const urlObj = {
         protocol: 'https:',
-    /** Remove when api turn to v5 */
-        hostname: 'api-v5.istex.fr',
+        hostname: url.parse(config.istexApiUrl).hostname,
         pathname: 'document',
         search: `${query.search}&scroll=30s&output=${output}&size=10&sid=${sid}`,
     };
@@ -75,16 +75,16 @@ module.exports = function scroll(data, feed) {
         json,
     };
 
-    return request.get(options, (error, reponse, body) => {
-        if (error) {
+    return request.get(options, (error, response, body) => {
+        if (error || response.statusCode !== 200) {
             /* eslint-disable */
             console.error('options:', options);
             console.error('error', error);
             console.error(
                 'response',
-                reponse.statusCode,
-                reponse.statusMessage,
-                reponse.headers,
+                response.statusCode,
+                response.statusMessage,
+                response.headers,
             );
            /* eslint-enable */
             return feed.end();

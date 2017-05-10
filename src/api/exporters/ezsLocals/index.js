@@ -8,5 +8,6 @@ module.exports = {
     JSONLDString: require('./JSONLDString.js'),
     JSONLDObject: require('./JSONLDObject.js'),
     extractIstexQuery: require('./extractIstexQuery.js'),
-    scroll: require('./scroll.js')
+    scroll: require('./scroll.js'),
+    convertToExtendedNquads: require('./convertToExtendedNquads.js')
 };
