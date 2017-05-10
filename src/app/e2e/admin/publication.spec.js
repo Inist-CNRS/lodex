@@ -16,10 +16,13 @@ import { inputElementIsFocusable } from '../../../common/tests/conditions';
 import loginAsJulia from './loginAsJulia';
 import waitForPreviewComputing from './waitForPreviewComputing';
 
+const factor = 3;
+
 describe('Admin', () => {
     describe('Publication', function homeTests() {
-        this.timeout(100000);
-        const DEFAULT_WAIT_TIMEOUT = 19000; // A bit less than mocha's timeout to get explicit errors from selenium
+        this.timeout(100000 * factor);
+        const DEFAULT_WAIT_TIMEOUT = (19000 * factor); // A bit less than mocha's timeout
+                                                       // to get explicit errors from selenium
 
         before(async () => {
             await clear();
@@ -522,7 +525,8 @@ describe('Admin', () => {
                 };
 
                 rows.forEach(({ stronger, name, title, genre }) => {
-                    expect((rows.find(r => r.uri === stronger) || { name: '' }).name).toEqual(expected[name]);
+                    const humanStronger = String(stronger).substr(5);
+                    expect((rows.find(r => r.uri === humanStronger) || { name: '' }).name).toEqual(expected[name]);
                     expect(title).toEqual('Rock-Paper-Scissor');
                     expect(genre).toEqual('Zero-sum hand game');
                 });

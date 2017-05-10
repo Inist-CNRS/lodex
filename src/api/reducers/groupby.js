@@ -11,11 +11,21 @@ module.exports.map = function () {
         .filter(function(key) {
             return (dta[key] || doc[key]);
         })
+        .map(function(key) {
+            return dta[key] || doc[key];
+        })
         .forEach(function(field) {
-            emit(field, 1);
+            if (field instanceof Array) {
+                field.forEach(function (fld) {
+                    emit(fld, dta);
+                });
+            }
+            else {
+                emit(field, dta);
+            }
         });
 };
 
 module.exports.reduce = function (key, values) {
-  return Array.sum(values);
+    return { docs: values };
 };

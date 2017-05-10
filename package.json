@@ -3,7 +3,7 @@
     "node": ">= 7.8.0"
   },
   "name": "lodex-v2",
-  "version": "7.10.4",
+  "version": "7.11.0",
   "description": "",
   "main": "src/api/index.js",
   "scripts": {
@@ -87,6 +87,7 @@
     "lodash.range": "3.2.0",
     "lodash.rangeright": "4.2.0",
     "lodash.set": "4.3.2",
+    "marked": "0.3.6",
     "material-ui": "0.17.2",
     "material-ui-superselectfield": "Sharlaan/material-ui-superselectfield",
     "moment": "2.18.1",
