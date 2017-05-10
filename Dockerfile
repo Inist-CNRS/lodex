@@ -19,8 +19,8 @@ RUN cp -n ./config/production-dist.js ./config/production.js
 RUN echo '{ \
   "httpPort": 3000, \
   "configPath": "/app/config.json", \
-  "dataPath": "/app/src/app/custom/" \
-  "cleanup": "/app/src/common/mongoCleanup.sh" \
+  "dataPath": "/app/src/app/custom/", \
+  "cleanupScript": "/app/src/common/mongoCleanup.sh" \
 }' > /etc/ezmaster.json
 
 EXPOSE 3000
