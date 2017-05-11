@@ -52,7 +52,7 @@
         "xsd": "http://www.w3.org/2001/XMLSchema#"
     },
     "istexQuery" : {
-        "language": "http://purl.org/dc/terms/language",
-        "output": "doi,id,language"
+        "language": "dcterms:language",
+        "doi": "bibo:doi"
     }
 }

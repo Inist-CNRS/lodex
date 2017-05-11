@@ -9,6 +9,13 @@ import fs from 'fs';
 const dataTest = require('./fixture.data.json');
 const ezsLocals = require('.');
 
+const config = {
+    istexQuery: {
+        doi: 'http://purl.org/ontology/bibo/doi',
+    },
+};
+
+
 ezs.use(ezsLocals);
 describe('conversion to extended Nquads', () => {
     let sandbox;
@@ -29,7 +36,7 @@ describe('conversion to extended Nquads', () => {
     /* Fake URL */
         from(['https://api-v5.istex.fr/document/?q=language:test'])
         .pipe(ezs('scroll'))
-        .pipe(ezs('convertToExtendedNquads', { graph: 'http://test-unit.fr' }))
+        .pipe(ezs('convertToExtendedNquads', { graph: 'http://test-unit.fr', config }))
         .pipe(ezs((data, feed) => {
             if (data === null) {
                 done();

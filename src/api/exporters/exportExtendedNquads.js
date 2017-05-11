@@ -10,10 +10,11 @@ const exporter = (config, fields, characteristics, stream) =>
     .pipe(ezs('filterVersions'))
     .pipe(ezs('filterContributions', { fields }))
     .pipe(ezs('extractIstexQuery', { fields }))
-    .pipe(ezs('scroll'))
-    .pipe(ezs('convertToExtendedNquads', { graph: `${config.host}/graph` }))
+    .pipe(ezs('scroll', { output: Object.keys(config.istexQuery).join() }))
+    .pipe(ezs('convertToExtendedNquads', { graph: `${config.host}/graph`, config }))
     .pipe(
       ezs((data, feed) => {
+          //eslint-disable-next-line
           console.log('Export NQUADS Extended', data);
           feed.end();
       }),
