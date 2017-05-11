@@ -15,8 +15,8 @@ describe('conversion to extended Nquads', () => {
     beforeEach(() => {
         sandbox = sinon.sandbox.create();
         const s = sandbox.stub(request, 'get');
-        s.onFirstCall().yields(null, null, dataTest[0]);
-        s.onSecondCall().yields(null, null, dataTest[1]);
+        s.onFirstCall().yields(null, { statusCode: 200 }, dataTest[0]);
+        s.onSecondCall().yields(null, { statusCode: 200 }, dataTest[1]);
     });
 
     afterEach(() => {
@@ -26,7 +26,6 @@ describe('conversion to extended Nquads', () => {
     it('should return nquads from the dataset', (done) => {
     /* should result of the nquads conversion */
         const dataNquads = fs.readFileSync(`${__dirname}/fixture.data.nq`, 'utf8');
-
     /* Fake URL */
         from(['https://api-v5.istex.fr/document/?q=language:test'])
         .pipe(ezs('scroll'))

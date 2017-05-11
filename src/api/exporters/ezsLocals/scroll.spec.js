@@ -15,8 +15,8 @@ describe('scrollISTEX request', () => {
     beforeEach(() => {
         sandbox = sinon.sandbox.create();
         const s = sandbox.stub(request, 'get');
-        s.onFirstCall().yields(null, null, dataTest[0]);
-        s.onSecondCall().yields(null, null, dataTest[1]);
+        s.onFirstCall().yields(null, { statusCode: 200 }, dataTest[0]);
+        s.onSecondCall().yields(null, { statusCode: 200 }, dataTest[1]);
     });
 
     afterEach(() => {
