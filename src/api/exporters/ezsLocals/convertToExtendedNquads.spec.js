@@ -11,9 +11,13 @@ const ezsLocals = require('.');
 
 const config = {
     istexQuery: {
-        doi: 'http://purl.org/ontology/bibo/doi',
+        labels: '',
+        context: {
+            doi: 'http://purl.org/ontology/bibo/doi',
+        },
     },
 };
+
 
 
 ezs.use(ezsLocals);
