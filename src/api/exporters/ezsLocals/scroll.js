@@ -69,6 +69,7 @@ module.exports = function scroll(data, feed) {
         protocol: 'https:',
         hostname: url.parse(config.istexApiUrl).hostname,
         pathname: 'document',
+        /* change '&' to valid the query like a URI component */
         search: `${query.search.replace(/&/g, '%26')}&scroll=30s&output=${output}&size=${size}&sid=${sid}`,
     };
 

@@ -46,18 +46,18 @@ module.exports = function convertToExtendedNquads(data, feed) {
 
     const hits = data.hits;
 
-    /* eslint-disable */
-    hits.map((e) => {
-        e.id = `https://api-v5.fr/document/${e.id}`;
+    hits.forEach((e) => {
+        e['@id'] = `https://api-v5.fr/document/${e.id}`;
+        e['@type'] = 'http://purl.org/ontology/bibo/Document';
+        delete e.id;
     });
-    /* eslint-enable */
 
-    const hitsString = JSON.stringify(hits).replace(/"id":/g, '"@id":');
+    // const hitsString = JSON.stringify(hits).replace(/"id":/g, '"@id":');
 
     const doc = {
         '@context': context,
         '@id': graph,
-        '@graph': JSON.parse(hitsString),
+        '@graph': hits,
     };
 
     return jsonld.toRDF(doc, { format: 'application/nquads' }, (err, nquads) => {
