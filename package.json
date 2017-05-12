@@ -118,6 +118,7 @@
     "through": "2.3.8",
     "url-api-polyfill": "1.1.0",
     "url-loader": "0.5.8",
+    "valid-url": "1.0.9",
     "victory": "0.18.4",
     "webpack": "2.3.3",
     "whatwg-fetch": "2.0.3",
