@@ -52,7 +52,10 @@
         "xsd": "http://www.w3.org/2001/XMLSchema#"
     },
     "istexQuery" : {
-        "language": "dcterms:language",
-        "doi": "bibo:doi"
+       "labels": "",
+       "context": {
+          "language": "dcterms:language",
+          "doi": "bibo:doi"
+       }
     }
 }

@@ -9,8 +9,8 @@ import validUrl from 'valid-url';
 function getContext(config) {
     const context = {};
 
-    Object.keys(config.istexQuery).map((v) => {
-        const propertyValue = config.istexQuery[v];
+    Object.keys(config.istexQuery.context).map((v) => {
+        const propertyValue = config.istexQuery.context[v];
 
         if (validUrl.isWebUri(propertyValue)) {
             return (context[v] = propertyValue);

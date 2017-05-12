@@ -55,11 +55,13 @@ module.exports = function scroll(data, feed) {
         return feed.close();
     }
 
+
   /**
    * Params of the API request
    */
     const output = this.getParam('output', 'doi');
     const sid = this.getParam('sid', 'lodex');
+    const size = this.getParam('size', 100);
     json = this.getParam('json', true);
     const query = url.parse(data);
 
@@ -67,7 +69,7 @@ module.exports = function scroll(data, feed) {
         protocol: 'https:',
         hostname: url.parse(config.istexApiUrl).hostname,
         pathname: 'document',
-        search: `${query.search}&scroll=30s&output=${output}&size=10&sid=${sid}`,
+        search: `${query.search.replace(/&/g, '%26')}&scroll=30s&output=${output}&size=${size}&sid=${sid}`,
     };
 
     const options = {
@@ -76,7 +78,7 @@ module.exports = function scroll(data, feed) {
     };
 
     return request.get(options, (error, response, body) => {
-        if (error || response.statusCode !== 200) {
+        if (error || (response.statusCode !== 200 && response.statusCode !== 502)) {
             /* eslint-disable */
             console.error('options:', options);
             console.error('error', error);
