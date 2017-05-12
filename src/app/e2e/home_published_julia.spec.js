@@ -43,7 +43,7 @@ describe('Home page with published data when logged as Julia', function homePubl
     });
 
     it('should go to detail page when clicking on uri', async () => {
-        const firstUriLink = await driver.findElement(By.linkText('uid:/1'));
+        const firstUriLink = await driver.findElement(By.linkText('1'));
         await driver.wait(elementIsClicked(firstUriLink), DEFAULT_WAIT_TIMEOUT);
 
         await driver.wait(until.elementLocated(By.css('.resource')));

@@ -13,11 +13,12 @@ export const mapAndReduce = async (ctx, reducer) => {
     if (!reducers[reducer]) {
         throw new Error(`Unknown reducer '${reducer}'`);
     }
-    const { map, reduce } = reducers[reducer];
+    const { map, reduce, finalize } = reducers[reducer];
     const field = ctx.request.query.field || 'uri';
     const fields = Array.isArray(field) ? field : [field];
     const options = {
         query: {},
+        finalize,
         out: { inline: 1 },
 //        out: { replace: 'replacethiscollection' },
         scope: {

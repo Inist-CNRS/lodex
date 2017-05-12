@@ -7,13 +7,9 @@ module.exports.map = function () {
     var doc = this;
     var dta = doc.versions[doc.versions.length - 1];
     dta.uri = doc.uri;
-    fields
-        .filter(function(key) {
-            return (dta[key] || doc[key]);
-        })
-        .forEach(function(field) {
-            emit(field, 1);
-        });
+    Object.keys(dta).forEach(function (key) {
+      emit(key, 1);
+    });
 };
 
 module.exports.reduce = function (key, values) {

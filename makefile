@@ -7,7 +7,7 @@ help:
 	grep -P '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
 # If the first argument is one of the supported commands...
-SUPPORTED_COMMANDS := npm restore-db-dev _restore_db_dev restore-db-prod _restore_db_prod build import_units import_users import_sections import_unit_sections
+SUPPORTED_COMMANDS := e2e npm restore-db-dev _restore_db_dev restore-db-prod _restore_db_prod build import_units import_users import_sections import_unit_sections
 SUPPORTS_MAKE_ARGS := $(findstring $(firstword $(MAKECMDGOALS)), $(SUPPORTED_COMMANDS))
 ifneq "$(SUPPORTS_MAKE_ARGS)" ""
     # use the rest as arguments for the command
@@ -70,12 +70,28 @@ test-frontend-functional: ## Run the frontend application functional tests
 	NODE_ENV=test ${MAKE} build-frontend
 	docker-compose -f docker-compose.e2e.yml run --rm e2e
 
-setup-frontend-functional-debug:
+setup-frontend-functional-debug:## Enable Test debug mode
 	docker-compose -f docker-compose.e2e-debug.yml up -d chromedebug hub mongo api
 	@echo "launch vnc viewer and connect to localhost:5900 (password: secret) to access the frontend test environment"
 
 test-frontend-functional-debug: ## Run the frontend application functional tests in debug mode
 	docker-compose -f docker-compose.e2e.yml run --rm e2e
+
+e2e: ## Run test for just one spec file eg make e2e ./src/app/e2e/admin/composedOf.spec.js
+	@echo "BE CAREFUL : In this case, frontend application will not be rebuild."
+	@docker-compose -f docker-compose.e2e-debug.yml up -d mongo
+	@echo "Temporizing..." && sleep 2
+	@echo "Cleaning Database..." && docker-compose exec mongo mongo lodex_test --eval " \
+		db.publishedDataset.remove({}); \
+		db.publishedCharacteristic.remove({}); \
+		db.field.remove({}); \
+		db.uriDataset.remove({}); \
+		db.dataset.remove({}); \
+	"
+	@echo "Temporizing..." && sleep 3
+	@echo "Recreating Containers..." && docker-compose -f docker-compose.e2e-debug.yml up -d --force-recreate
+	@echo "Temporizing..." && sleep 3
+	@echo "Running test..." && SPEC=$(COMMAND_ARGS) docker-compose -f docker-compose.e2e-debug.yml -f docker-compose.e2e-spec.yml run --rm e2e
 
 cleanup-test: ## Stop and remove all container used in e2e test
 	docker-compose -f docker-compose.e2e.yml down
@@ -91,7 +107,6 @@ clear-database: ## Clear the whole database
 		db.uriDataset.remove({}); \
 		db.dataset.remove({}); \
 	"
-
 clear-publication: ## Clear the published data, keep uploaded dataset and model
 	docker-compose exec mongo mongo lodex --eval " \
 		db.publishedDataset.remove({}); \
