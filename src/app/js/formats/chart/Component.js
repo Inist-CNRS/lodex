@@ -60,13 +60,13 @@ class ChartView extends Component {
                         strokeDasharray="6 6"
                         isFront
                     />
-                    <Bar 
+                    <Bar
                         dataKey="value"
                         fill="#8884d8"
                     >
                         {
                             data.map((entry, index) => (
-                                <Cell key={`cell-${field.name}-${index}`} fill={index === selected ? tomato : charcoal} />
+                                <Cell key={`cell-${field.name}-${entry}`} fill={index === selected ? tomato : charcoal} />
                             ))
                         }
                     </Bar>
