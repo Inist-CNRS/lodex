@@ -245,4 +245,5 @@ export default {
     level3: 'Title 3',
     level4: 'Title 4',
     list_format_select_level: 'Choose title level',
+    dataset: 'Dataset',
 };
