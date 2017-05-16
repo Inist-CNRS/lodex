@@ -9,6 +9,7 @@ import trelloTimeline from './trello-timeline';
 import markdown from './markdown';
 import uri from './uri';
 import title from './title';
+import paragraph from './paragraph';
 import DefaultFormat from './DefaultFormat';
 
 const components = {
@@ -23,6 +24,7 @@ const components = {
     markdown,
     uri,
     title,
+    paragraph,
 };
 
 export const FORMATS = Object.keys(components);
