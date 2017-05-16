@@ -24,7 +24,7 @@ import Share from '../Share';
 import ShareLink from '../ShareLink';
 import SelectVersion from './SelectVersion';
 import { getFullResourceUri } from '../../../../common/uris';
-import { schemeForDatasetLink } from '../../../../../config.json';
+import { schemeForDatasetLink, topFieldsCount } from '../../../../../config.json';
 
 const styles = {
     container: {
@@ -116,8 +116,8 @@ export const DetailComponent = ({
     sharingUri,
     backToListLabel,
 }) => {
-    const topFields = fields.slice(0, 2);
-    const otherFields = fields.slice(2);
+    const topFields = fields.slice(0, Number(topFieldsCount));
+    const otherFields = fields.slice(Number(topFieldsCount));
 
 
     return (
