@@ -40,8 +40,8 @@ module.exports = function convertToExtendedNquads(data, feed) {
         return feed.close();
     }
 
-    const graph = this.getParam('graph', '');
     const config = this.getParam('config', {});
+    const graph = config.istexQuery.graph || this.getParam('graph', '');
     const context = this.getParam('context', getContext(config));
 
     const hits = data.hits;
