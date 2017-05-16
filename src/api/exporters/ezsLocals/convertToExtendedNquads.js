@@ -16,7 +16,9 @@ function getContext(config) {
             return (context[v] = propertyValue);
         }
 
-        const istexProperty = propertyValue.split(':');
+        const istexProperty = propertyValue
+        .split(':')
+        .map(e => e.trim());
 
         if (!config.prefixes[istexProperty[0]]) {
             // eslint-disable-next-line

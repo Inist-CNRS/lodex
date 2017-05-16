@@ -61,7 +61,7 @@ module.exports = function scroll(data, feed) {
    */
     const output = this.getParam('output', 'doi');
     const sid = this.getParam('sid', 'lodex');
-    const size = this.getParam('size', 100);
+    const size = this.getParam('size', 2000);
     json = this.getParam('json', true);
     const query = url.parse(data);
 
