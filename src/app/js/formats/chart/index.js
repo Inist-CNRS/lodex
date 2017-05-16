@@ -1,8 +1,10 @@
 import Component from './Component';
+import AdminComponent from './AdminComponent';
 import DefaultFormat from '../DefaultFormat';
 
 export default {
     Component,
-    AdminComponent: DefaultFormat.AdminComponent,
+    ListComponent: DefaultFormat.ListComponent,
+    AdminComponent,
     EditionComponent: DefaultFormat.EditionComponent,
 };
