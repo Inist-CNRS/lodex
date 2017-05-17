@@ -32,7 +32,7 @@ describe('conversion to extended Nquads', () => {
         sandbox.restore();
     });
 
-    it('should return nquads from the dataset', (done) => {
+    it('should return nquads from the dataset', () => {
     /* should result of the nquads conversion */
         // const dataNquads = fs.readFileSync(`${__dirname}/fixture.data.nq`, 'utf8');
         // let buffData;
@@ -49,7 +49,7 @@ describe('conversion to extended Nquads', () => {
                 //     return done(e);
                 // }
 
-                return done();
+                // return done();
             }
             // buffData += data;
             return feed.end();
