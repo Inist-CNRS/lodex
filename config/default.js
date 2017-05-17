@@ -22,7 +22,8 @@ module.exports = {
         headerSecret: 'header',
         expiresIn: 10 * 3600, // 10 hours
     },
-    istexApiUrl: 'https://api.istex.fr/document',
+    /** Remove when api turn to v5 */
+    istexApiUrl: 'https://api-v5.istex.fr/document',
     host: getHost(),
     uploadDir: 'upload',
 };

@@ -123,11 +123,13 @@
     "through": "2.3.8",
     "url-api-polyfill": "1.1.0",
     "url-loader": "0.5.8",
+    "valid-url": "1.0.9",
     "webpack": "2.3.3",
     "whatwg-fetch": "2.0.3",
     "winston": "2.3.1"
   },
   "devDependencies": {
+    "chai": "3.5.0",
     "enzyme": "2.8.0",
     "eslint": "3.19.0",
     "eslint-config-airbnb": "14.1.0",
@@ -143,7 +145,8 @@
     "react-hot-loader": "3.0.0-beta.6",
     "selenium-smart-wait": "0.0.7",
     "selenium-standalone": "6.2.0",
-    "selenium-webdriver": "3.3.0"
+    "selenium-webdriver": "3.3.0",
+    "sinon": "2.2.0"
   },
   "pre-commit": [
     "lint"
