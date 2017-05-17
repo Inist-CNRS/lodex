@@ -247,4 +247,5 @@ export default {
     level4: 'Title 4',
     list_format_select_level: 'Niveau du titre',
     dataset: 'Jeu de données',
+    paragraph: 'Paragraphe',
 };
