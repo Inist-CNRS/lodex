@@ -53,6 +53,7 @@
     },
     "istexQuery" : {
        "labels": "",
+       "linked": "language",
        "context": {
           "language": "dcterms:language",
           "doi": "bibo:doi"

@@ -33,6 +33,12 @@ function getContext(config) {
         ));
     });
 
+    // console.log(context[config.istexQuery.linked]);
+    context[config.istexQuery.linked] = {
+        '@id': context[config.istexQuery.linked],
+        '@type': '@id',
+    };
+
     return context;
 }
 
@@ -46,11 +52,12 @@ module.exports = function convertToExtendedNquads(data, feed) {
     const graph = config.istexQuery.graph || this.getParam('graph', '');
     const context = this.getParam('context', getContext(config));
 
-    const hits = data.hits;
+    const hits = data.content.hits;
 
     hits.forEach((e) => {
         e['@id'] = `https://api-v5.fr/document/${e.id}`;
         e['@type'] = 'http://purl.org/ontology/bibo/Document';
+        e[config.istexQuery.linked] = data.uri;
         delete e.id;
     });
 

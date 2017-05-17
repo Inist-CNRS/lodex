@@ -21,10 +21,20 @@ module.exports = function extractIstexQuery(data, feed) {
         }
 
         if (validUrl.isUri(data[propertyName])) {
-            return feed.send(data[propertyName]);
+            return feed.send({
+                lodex: {
+                    uri: data.uri,
+                },
+                content: data[propertyName],
+            });
         }
 
         /* the hostname will be replace in scroll */
-        return feed.send(`http://replace-api.fr/document/?q=${data[propertyName]}`);
+        return feed.send({
+            lodex: {
+                uri: data.uri,
+            },
+            content: `http://replace-api.fr/document/?q=${data[propertyName]}`,
+        });
     });
 };

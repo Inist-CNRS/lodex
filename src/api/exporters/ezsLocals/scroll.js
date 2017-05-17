@@ -9,7 +9,7 @@ let nextURI;
  * Get the nextURI in the API and call himself until body have noMoreScrollResults : true
  *
  */
-function scrollRecursive(feed) {
+function scrollRecursive(data, feed) {
     const options = {
         uri: nextURI,
         method: 'GET',
@@ -36,12 +36,15 @@ function scrollRecursive(feed) {
             return feed.end();
         }
 
-        feed.write(body);
+        feed.write({
+            ...data.lodex,
+            content: body,
+        });
 
         if (body.noMoreScrollResults) {
             return feed.end();
         }
-        return scrollRecursive(feed);
+        return scrollRecursive(data, feed);
     });
 }
 
@@ -61,8 +64,11 @@ module.exports = function scroll(data, feed) {
     const output = this.getParam('output', 'doi');
     const sid = this.getParam('sid', 'lodex');
     const size = this.getParam('size', 5000);
+    const query = url.parse(data.content);
+
+    console.log(output);
+
     json = this.getParam('json', true);
-    const query = url.parse(data);
 
     const urlObj = {
         protocol: 'https:',
@@ -99,13 +105,16 @@ module.exports = function scroll(data, feed) {
             return feed.end();
         }
 
-        feed.write(body);
+        feed.write({
+            ...data.lodex,
+            content: body,
+        });
 
         if (body.noMoreScrollResults) {
             return feed.end();
         }
 
         nextURI = body.nextScrollURI;
-        return scrollRecursive(feed);
+        return scrollRecursive(data, feed);
     });
 };
