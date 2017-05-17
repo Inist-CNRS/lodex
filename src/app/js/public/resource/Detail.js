@@ -116,8 +116,9 @@ export const DetailComponent = ({
     sharingUri,
     backToListLabel,
 }) => {
-    const topFields = fields.slice(0, Number(topFieldsCount));
-    const otherFields = fields.slice(Number(topFieldsCount));
+    const topFieldsLimit = Number(topFieldsCount) || 2;
+    const topFields = fields.slice(0, topFieldsLimit);
+    const otherFields = fields.slice(topFieldsLimit);
 
 
     return (
