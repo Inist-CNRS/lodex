@@ -2,8 +2,8 @@ import request from 'request';
 import ezs from 'ezs';
 import from from 'from';
 import sinon from 'sinon';
-import fs from 'fs';
-import { expect } from 'chai';
+// import fs from 'fs';
+// import { expect } from 'chai';
 
 /* eslint-disable-nextline */
 const dataTest = require('./fixture.data.json');
@@ -17,8 +17,6 @@ const config = {
         },
     },
 };
-
-
 
 ezs.use(ezsLocals);
 describe('conversion to extended Nquads', () => {

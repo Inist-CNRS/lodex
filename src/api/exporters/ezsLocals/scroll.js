@@ -66,8 +66,6 @@ module.exports = function scroll(data, feed) {
     const size = this.getParam('size', 5000);
     const query = url.parse(data.content);
 
-    console.log(output);
-
     json = this.getParam('json', true);
 
     const urlObj = {

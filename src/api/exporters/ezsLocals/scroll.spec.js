@@ -35,6 +35,7 @@ describe('scrollISTEX request', () => {
             }
 
             feed.end();
+            return done();
         }),
       );
     });
