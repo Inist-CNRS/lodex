@@ -17,4 +17,4 @@ module.exports = function linkDataset(data, feed) {
     }
 
     feed.send(data);
-}
+};

@@ -39,7 +39,7 @@ function scrollRecursive(feed) {
         feed.write(body);
 
         if (body.noMoreScrollResults) {
-            return feed.close();
+            return feed.end();
         }
         return scrollRecursive(feed);
     });
@@ -55,13 +55,12 @@ module.exports = function scroll(data, feed) {
         return feed.close();
     }
 
-
   /**
    * Params of the API request
    */
     const output = this.getParam('output', 'doi');
     const sid = this.getParam('sid', 'lodex');
-    const size = this.getParam('size', 2000);
+    const size = this.getParam('size', 5000);
     json = this.getParam('json', true);
     const query = url.parse(data);
 
@@ -93,10 +92,17 @@ module.exports = function scroll(data, feed) {
             return feed.end();
         }
 
+        /** API result can have any nextURI */
+        if (body.nextScrollURI === undefined) {
+            // eslint-disable-next-line
+            console.error('API Result error: ', `No results to '${query.search}'`);
+            return feed.end();
+        }
+
         feed.write(body);
 
         if (body.noMoreScrollResults) {
-            return feed.close();
+            return feed.end();
         }
 
         nextURI = body.nextScrollURI;
