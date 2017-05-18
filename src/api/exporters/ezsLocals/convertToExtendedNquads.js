@@ -64,8 +64,6 @@ module.exports = function convertToExtendedNquads(data, feed) {
         delete e.id;
     });
 
-    // const hitsString = JSON.stringify(hits).replace(/"id":/g, '"@id":');
-
     const doc = {
         '@context': context,
         '@id': graph,
