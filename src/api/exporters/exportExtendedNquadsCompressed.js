@@ -1,6 +1,6 @@
 import ezs from 'ezs';
 import ezsBasics from 'ezs-basics';
-import zlib from 'zlib';
+import compressToGzip from './ezsLocals/compressToGzip';
 import ezsLocals from './ezsLocals';
 
 ezs.use(ezsBasics);
@@ -15,7 +15,7 @@ const exporter = (config, fields, characteristics, stream) =>
                                         .filter(e => e !== config.istexQuery.linked)
                                         .join() }))
     .pipe(ezs('convertToExtendedNquads', { graph: `${config.host}/notice/graph`, config }))
-    .pipe(zlib.createGzip());
+    .pipe(compressToGzip);
 
 exporter.extension = 'nq.gz';
 exporter.mimeType = 'application/gzip';
