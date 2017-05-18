@@ -58,7 +58,7 @@ module.exports = function convertToExtendedNquads(data, feed) {
     const hits = data.content.hits;
 
     hits.forEach((e) => {
-        e['@id'] = `https://api-v5.fr/document/${e.id}`;
+        e['@id'] = `https://api-v5.istex.fr/document/${e.id}`;
         e['@type'] = 'http://purl.org/ontology/bibo/Document';
         e[config.istexQuery.linked] = data.uri;
         delete e.id;

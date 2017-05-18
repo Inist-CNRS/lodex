@@ -4,7 +4,6 @@ import ezs from 'ezs';
 import from from 'from';
 import sinon from 'sinon';
 
-/* eslint-disable-nextline */
 const dataTest = require('./fixture.data.json');
 const ezsLocals = require('.');
 
