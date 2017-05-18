@@ -102,6 +102,8 @@ On EzMaster, you can edit the instance configuration:
 
 - `perPage`: Optional - the number of item perPage when displaying the dataset. Default to 10
 
+- `topFieldsCount`: Optional - the number of fields displayed in the resource page, before displaying the tabs (`DETAILS`, `SHARE/EXPORT`, `ONTOLOGY`)
+
 ### Technical documentation
 
 Technical configuration is handled by [node-config](https://github.com/lorenwest/node-config) and is located
