@@ -31,6 +31,7 @@
         { "code": "fr", "label": "Français" },
         { "code": "en", "label": "English" }
     ],
+    "topFieldsCount": 2,
     "schemeForDatasetLink": "http://www.w3.org/2004/02/skos/core#inScheme",
     "prefixes":  {
         "bibo": "http://purl.org/ontology/bibo/",
