@@ -33,7 +33,10 @@ function getContext(config) {
         ));
     });
 
-    // console.log(context[config.istexQuery.linked]);
+    if (context[config.istexQuery.linked] === undefined) {
+        // eslint-disable-next-line
+        return console.error('ConvertToExtendedNquads', `${config.istexQuery.linked} not found in context`);
+    }
     context[config.istexQuery.linked] = {
         '@id': context[config.istexQuery.linked],
         '@type': '@id',

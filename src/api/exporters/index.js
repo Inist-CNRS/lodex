@@ -7,10 +7,12 @@ import jsonld from './exportJsonld';
 import jsonldcompacted from './exportJsonldCompacted';
 import widget from './exportWidgetResource';
 import extendednquads from './exportExtendedNquads';
+import extendednquadscompressed from './exportExtendedNquadsCompressed';
 
 export default {
     csv,
     extendednquads,
+    extendednquadscompressed,
     raw,
     tsv,
     jsonld,

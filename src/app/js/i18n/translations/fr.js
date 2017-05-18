@@ -220,6 +220,8 @@ export default {
     jsonld: 'JSON-LD',
     jsonldcompacted: 'JSON-LD (Compacted)',
     nquads: 'N-Quads',
+    extendednquads: 'Extended N-Quads',
+    extendednquadscompressed: 'Extended N-Quads (Compressed)',
     turtle: 'Turtle',
     upload_url: 'upload from url',
     invalid_url: 'url is invalid',
