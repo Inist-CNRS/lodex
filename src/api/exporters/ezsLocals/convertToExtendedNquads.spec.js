@@ -2,17 +2,19 @@ import request from 'request';
 import ezs from 'ezs';
 import from from 'from';
 import sinon from 'sinon';
-// import fs from 'fs';
-// import { expect } from 'chai';
+import btoa from 'btoa';
+import { expect } from 'chai';
 
-/* eslint-disable-nextline */
 const dataTest = require('./fixture.data.json');
+const dataNquads = require('./fixture.data.nq.json');
 const ezsLocals = require('.');
 
 const config = {
     istexQuery: {
         labels: '',
+        linked: 'language',
         context: {
+            language: 'http://purl.org/ontology/dc/language',
             doi: 'http://purl.org/ontology/bibo/doi',
         },
     },
@@ -32,26 +34,22 @@ describe('conversion to extended Nquads', () => {
         sandbox.restore();
     });
 
-    it('should return nquads from the dataset', () => {
+    it('should return nquads from the dataset', (done) => {
     /* should result of the nquads conversion */
-        // const dataNquads = fs.readFileSync(`${__dirname}/fixture.data.nq`, 'utf8');
-        // let buffData;
         /* Fake URL */
-        from(['https://api-v5.istex.fr/document/?q=language:test'])
+        from([{ lodex: { uri: 'https://lodex-uri.fr/URI' }, content: 'https://api-v5.istex.fr/document/?q=language:test' }])
         .pipe(ezs('scroll'))
         .pipe(ezs('convertToExtendedNquads', { graph: 'http://test-unit.fr', config }))
-        // .pipe(fs.createWriteStream('test.txt'));
         .pipe(ezs((data, feed) => {
-            if (data === null) {
-                // try {
-                //     expect(dataNquads).to.be.not.equal(buffData);
-                // } catch (e) {
-                //     return done(e);
-                // }
-
-                // return done();
+            if (data !== null) {
+                try {
+                    expect(dataNquads).to.contain(btoa(data));
+                } catch (e) {
+                    return done(e);
+                }
+            } else {
+                return done();
             }
-            // buffData += data;
             return feed.end();
         }));
     });
