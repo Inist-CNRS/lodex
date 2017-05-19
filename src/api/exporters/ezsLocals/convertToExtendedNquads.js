@@ -37,6 +37,7 @@ function getContext(config) {
         // eslint-disable-next-line
         return console.error('ConvertToExtendedNquads', `${config.istexQuery.linked} not found in context`);
     }
+
     context[config.istexQuery.linked] = {
         '@id': context[config.istexQuery.linked],
         '@type': '@id',
@@ -58,7 +59,7 @@ module.exports = function convertToExtendedNquads(data, feed) {
     const hits = data.content.hits;
 
     hits.forEach((e) => {
-        e['@id'] = `https://api-v5.istex.fr/document/${e.id}`;
+        e['@id'] = `https://api.istex.fr/document/${e.id}`;
         e['@type'] = 'http://purl.org/ontology/bibo/Document';
         e[config.istexQuery.linked] = data.uri;
         delete e.id;
