@@ -97,8 +97,6 @@ export class HomeComponent extends Component {
         if (hasPublishedDataset) {
             return (
                 <div>
-                    <Toolbar />
-                    <AppliedFacetList />
                     <DatasetCharacteristics />
                     <Card>
                         <Tabs
@@ -113,6 +111,8 @@ export class HomeComponent extends Component {
                                 style={styles.tabButton}
                                 value="dataset"
                             >
+                                <Toolbar />
+                                <AppliedFacetList />
                                 <Dataset />
                             </Tab>
                             <Tab
