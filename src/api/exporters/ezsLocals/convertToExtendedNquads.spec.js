@@ -37,13 +37,13 @@ describe('conversion to extended Nquads', () => {
     it('should return nquads from the dataset', (done) => {
     /* should result of the nquads conversion */
         /* Fake URL */
-        from([{ lodex: {}, content: 'https://api-v5.istex.fr/document/?q=language:test' }])
+        from([{ lodex: { uri: 'https://lodex-uri.fr/URI' }, content: 'https://api-v5.istex.fr/document/?q=language:test' }])
         .pipe(ezs('scroll'))
         .pipe(ezs('convertToExtendedNquads', { graph: 'http://test-unit.fr', config }))
         .pipe(ezs((data, feed) => {
             if (data !== null) {
                 try {
-                    expect(dataNquads).contain(btoa(data));
+                    expect(dataNquads).to.contain(btoa(data));
                 } catch (e) {
                     return done(e);
                 }
