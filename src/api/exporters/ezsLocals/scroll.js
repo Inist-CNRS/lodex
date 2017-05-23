@@ -17,19 +17,32 @@ function scrollRecursive(data, feed) {
     };
 
     request.get(options, (error, response, body) => {
-        if (error || response.statusCode !== 200) {
+        if (error || (response.statusCode !== 200 && response.statusCode !== 502 && response.statusCode !== 500)) {
             /* eslint-disable */
             console.error('options:', options);
             console.error('error', error);
             console.error(
                 'response',
-                response && response.statusCode,
-                response && response.statusMessage,
-                response && response.headers,
+                response.statusCode,
+                response.statusMessage,
+                response.headers,
             );
-            /* eslint-enable */
-
+           /* eslint-enable */
             return feed.end();
+        }
+
+        if (response.statusCode === 500 || response.statusCode === 502) {
+            /* eslint-disable */
+            console.error('options:', options);
+            console.error('error', error);
+            console.error(
+                'response',
+                response.statusCode,
+                response.statusMessage,
+                response.headers,
+            );
+           /* eslint-enable */
+            return setTimeout(scrollRecursive, 500, data, feed);
         }
 
         if (body && body.hits && body.hits.length === 0) {
@@ -82,7 +95,7 @@ module.exports = function scroll(data, feed) {
     };
 
     return request.get(options, (error, response, body) => {
-        if (error || (response.statusCode !== 200 && response.statusCode !== 502)) {
+        if (error || (response.statusCode !== 200 && response.statusCode !== 502 && response.statusCode !== 500)) {
             /* eslint-disable */
             console.error('options:', options);
             console.error('error', error);
@@ -94,6 +107,10 @@ module.exports = function scroll(data, feed) {
             );
            /* eslint-enable */
             return feed.end();
+        }
+
+        if (response.statusCode === 500 || response.statusCode === 502) {
+            return setTimeout(scroll, 500, data, feed);
         }
 
         /** API result can have any nextURI */
