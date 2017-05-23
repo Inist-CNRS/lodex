@@ -114,9 +114,10 @@ module.exports = function scroll(data, feed) {
         }
 
         /** API result can have any nextURI */
-        if (body.nextScrollURI === undefined) {
-            // eslint-disable-next-line
+        if (body.nextScrollURI === undefined && body.total) {
+            /* eslint-disable */
             console.error('API Result error: ', `No results to '${query.search}'`);
+            /* eslint-enable */
             return feed.end();
         }
 
