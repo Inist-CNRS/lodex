@@ -24,6 +24,7 @@ module.exports = {
     },
     /** Remove when api turn to v5 */
     istexApiUrl: 'https://api-v5.istex.fr/document',
+    hostname: 'http://data.istex.fr/',
     host: getHost(),
     uploadDir: 'upload',
 };

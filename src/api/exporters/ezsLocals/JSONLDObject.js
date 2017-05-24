@@ -1,4 +1,5 @@
 import path from 'path';
+import { hostname } from 'config';
 import generateUid from '../../services/generateUid';
 
 async function transformCompleteFields(field) {
@@ -77,7 +78,7 @@ function getUri(uri) {
 
     if (u.indexOf('http://') !== 0 &&
         u.indexOf('https://') !== 0) {
-        return path.normalize(this.getParam('hostname', 'http://lod.istex.fr/').concat(u));
+        return path.normalize(hostname.concat(u));
     }
 
     return u;
