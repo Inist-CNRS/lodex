@@ -17,7 +17,7 @@ function scrollRecursive(data, feed) {
     };
 
     request.get(options, (error, response, body) => {
-        if (error || (response.statusCode !== 200 && response.statusCode !== 502 && response.statusCode !== 500)) {
+        if (error || ![200, 502, 500, 504].includes(response.statusCode)) {
             /* eslint-disable */
             console.error('options:', options);
             console.error('error', error);
@@ -31,7 +31,7 @@ function scrollRecursive(data, feed) {
             return feed.end();
         }
 
-        if (response.statusCode === 500 || response.statusCode === 502) {
+        if ([502, 500, 503, 504].includes(response.statusCode)) {
             /* eslint-disable */
             console.error('options:', options);
             console.error('error', error);
@@ -95,7 +95,7 @@ module.exports = function scroll(data, feed) {
     };
 
     return request.get(options, (error, response, body) => {
-        if (error || (response.statusCode !== 200 && response.statusCode !== 502 && response.statusCode !== 500)) {
+        if (error || ![200, 500, 502, 503, 504].includes(response.statusCode)) {
             /* eslint-disable */
             console.error('options:', options);
             console.error('error', error);
@@ -109,17 +109,19 @@ module.exports = function scroll(data, feed) {
             return feed.end();
         }
 
-        if (response.statusCode === 500 || response.statusCode === 502) {
+        if ([502, 500, 503, 504].includes(response.statusCode)) {
             return setTimeout(scroll, 500, data, feed);
         }
 
         /** API result can have any nextURI */
-        if (body.nextScrollURI === undefined && body.total) {
+        if (body.nextScrollURI === undefined && !body.total) {
             /* eslint-disable */
             console.error('API Result error: ', `No results to '${query.search}'`);
             /* eslint-enable */
             return feed.end();
         }
+
+        console.log('API query: ', query.search);
 
         feed.write({
             ...data.lodex,
@@ -131,6 +133,11 @@ module.exports = function scroll(data, feed) {
         }
 
         nextURI = body.nextScrollURI;
-        return scrollRecursive(data, feed);
+
+        if (nextURI !== undefined) {
+            return scrollRecursive(data, feed);
+        }
+
+        return feed.end();
     });
 };
