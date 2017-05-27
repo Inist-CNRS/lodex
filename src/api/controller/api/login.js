@@ -27,7 +27,7 @@ export const postLogin = date => (ctx) => {
     if (!date) {
         exp = Math.ceil(Date.now() / 1000);
     } else {
-        exp = Math.ceil(date / 1000) + auth.expiresIn;
+        exp = Math.ceil(date / 1000);
     }
     exp += auth.expiresIn;
 

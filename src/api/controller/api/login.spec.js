@@ -4,6 +4,8 @@ import expect from 'expect';
 
 import { postLogin as login } from './login';
 
+const expDate = Date.now();
+
 describe('login', () => {
     it('should set ctx.status to 401, if ctx.body.username do not match with config', () => {
         const ctx = {
@@ -18,7 +20,7 @@ describe('login', () => {
                 },
             },
         };
-        login()(ctx);
+        login(expDate)(ctx);
         expect(ctx.status).toBe(401);
     });
 
@@ -35,7 +37,7 @@ describe('login', () => {
                 },
             },
         };
-        login()(ctx);
+        login(expDate)(ctx);
         expect(ctx.status).toBe(401);
     });
 
@@ -59,8 +61,6 @@ describe('login', () => {
             },
         };
 
-        // This is set to now as default in login but we specify it here to avoid random failure in tests
-        const expDate = Date.now();
         login(expDate)(ctx);
         expect(ctx.body).toEqual({
             token: jwt.sign({
