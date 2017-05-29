@@ -4,7 +4,7 @@ import { prefix } from './PREFIX';
 
 describe('PREFIX', () => {
     it('should return splitted value', () => {
-        expect(prefix('dear world', ' hello ')).toEqual('hello dear world');
+        expect(prefix('dear world', 'hello ')).toEqual('hello dear world');
     });
 
     it('should return empty array if value is null', () => {
