@@ -9,6 +9,7 @@ import JBJ from './JBJ';
 import JOIN from './JOIN';
 import CONCAT_URI from './CONCAT_URI';
 import SPLIT from './SPLIT';
+import PREFIX from './PREFIX';
 
 const transformers = {
     AUTOGENERATE_URI: memoizeTransformer(AUTOGENERATE_URI),
@@ -21,6 +22,7 @@ const transformers = {
     JOIN: memoizeTransformer(JOIN),
     CONCAT_URI: memoizeTransformer(CONCAT_URI),
     SPLIT: memoizeTransformer(SPLIT),
+    PREFIX: memoizeTransformer(PREFIX),
 };
 
 export default transformers;
@@ -36,6 +38,7 @@ const transformersMetas = [
     JOIN,
     CONCAT_URI,
     SPLIT,
+    PREFIX,
 ].map(transformation => transformation.getMetas());
 
 export const getTransformersMetas = type => (type ? transformersMetas.filter(m => m.type === type) : transformersMetas);
