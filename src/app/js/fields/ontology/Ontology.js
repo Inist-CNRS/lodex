@@ -66,6 +66,14 @@ export const OntologyComponent = ({ fields, isLoggedIn, p: polyglot }) => (
                     >
                         {field.label}
                     </h4>
+                    <dl style={styles.property}>
+                        <dt style={styles.label}>{polyglot.t('identifier')}</dt>
+                        <dd
+                            className={classnames('field-identifier', getFieldClassName(field))}
+                        >
+                            {field.name}
+                        </dd>
+                    </dl>
                     {field.scheme &&
                         <dl style={styles.property}>
                             <dt style={styles.label}>{polyglot.t('scheme')}</dt>
