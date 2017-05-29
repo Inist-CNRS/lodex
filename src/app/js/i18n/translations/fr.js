@@ -202,6 +202,7 @@ export default {
     uri_format_another_column_value: 'The column',
     'TypeError: Failed to fetch': 'Could not access api',
     istex_results: 'ISTEX search results for %{searchTerm}:',
+    istex_total: '%{total} résultats',
     none: 'None',
     navigate_to_published_data: 'Go to my published data',
     moderation: 'Moderation',
