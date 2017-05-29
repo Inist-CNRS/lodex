@@ -5,7 +5,7 @@ import koaBodyParser from 'koa-bodyparser';
 import { auth } from 'config';
 import jwt from 'jsonwebtoken';
 
-export const postLogin = (date = Date.now()) => (ctx) => {
+export const postLogin = date => (ctx) => {
     if (!ctx.ezMasterConfig) {
         throw new Error('Invalid EzMaster configuration.');
     }
@@ -23,8 +23,14 @@ export const postLogin = (date = Date.now()) => (ctx) => {
         ctx.status = 401;
         return;
     }
+    let exp;
+    if (!date) {
+        exp = Math.ceil(Date.now() / 1000);
+    } else {
+        exp = Math.ceil(date / 1000);
+    }
+    exp += auth.expiresIn;
 
-    const exp = Math.ceil(date / 1000) + auth.expiresIn;
     const tokenData = {
         username,
         exp,
