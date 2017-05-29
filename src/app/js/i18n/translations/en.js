@@ -179,7 +179,7 @@ export default {
     'semantic-web-compatibility': 'Your repositories, thesauri, experiment results will be compatible with the semantic web!',
     'easy-update': 'You can easily modify them and enrich them with a guarantee of traceability.',
     'first-upload': 'Start by loading a data file.',
-    'publish-punchlinme': 'Publish your data, you can always easily modify and enrich them later with a guarantee of traceability.',
+    'publish-punchline': 'Publish your data, you can always easily modify and enrich them later with a guarantee of traceability.',
     remove_column: 'Remove this column',
     multi_field_concat: 'A list of values from several existing columns',
     duplicated_uri: '%{nbInvalidUri} documents have duplicated uri and will not be published',
