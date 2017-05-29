@@ -249,4 +249,6 @@ export default {
     list_format_select_level: 'Choose title level',
     dataset: 'Dataset',
     paragraph: 'Paragraph',
+    identifier: 'Identifier',
+    count_of_field: '# doccuments',
 };
