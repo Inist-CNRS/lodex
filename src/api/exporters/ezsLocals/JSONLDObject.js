@@ -1,4 +1,5 @@
 import path from 'path';
+import { hostname } from 'config';
 import generateUid from '../../services/generateUid';
 
 async function transformCompleteFields(field) {
@@ -61,13 +62,26 @@ function mergeSimpleField(output, field, data) {
     };
 }
 
-function getUri(uri) {
-    if (uri.indexOf('http://') !== 0 &&
-        uri.indexOf('https://') !== 0) {
-        return path.normalize(this.getParam('hostname', 'http://lod.istex.fr/').concat(uri));
+function removeNumberInstance(uri) {
+    const reg = new RegExp('(\\-\\d+)(\\.[a-z]+)+');
+    const match = reg.exec(uri);
+
+    if (match !== null) {
+        return uri.replace(match[1], '');
     }
 
     return uri;
+}
+
+function getUri(uri) {
+    const u = removeNumberInstance(uri);
+
+    if (u.indexOf('http://') !== 0 &&
+        u.indexOf('https://') !== 0) {
+        return path.normalize(hostname.concat(u));
+    }
+
+    return u;
 }
 
 module.exports = async function JSONLDObject(data, feed) {

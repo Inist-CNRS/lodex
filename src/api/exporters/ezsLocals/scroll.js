@@ -1,40 +1,57 @@
 import request from 'request';
 import url from 'url';
 import config from 'config';
-
-let json;
-let nextURI;
+import { httpLogger } from '../../services/logger';
 
 /**
- * Get the nextURI in the API and call himself until body have noMoreScrollResults : true
+ * Recursive scroll
  *
+ * @param uri   string  URI of the API query
+ * @param data  Object  {content: uri, lodex: LODEX URI }
+ * @param feed  Stream  stream managed with ezs
  */
-function scrollRecursive(data, feed) {
+function scrollR(uri, data, feed) {
     const options = {
-        uri: nextURI,
-        method: 'GET',
-        json,
+        uri,
+        json: true,
     };
 
     request.get(options, (error, response, body) => {
-        if (error || response.statusCode !== 200) {
-            /* eslint-disable */
-            console.error('options:', options);
-            console.error('error', error);
-            console.error(
-                'response',
-                response && response.statusCode,
-                response && response.statusMessage,
-                response && response.headers,
-            );
-            /* eslint-enable */
-
+        const errorObj = {
+            options,
+            error,
+            response: {
+                statusCode: response.statusCode,
+                statusMessage: response.statusMessage,
+                headers: response.headers,
+            },
+        };
+        let logLevel = 'warn';
+        if (error || ![200, 500, 502, 503, 504].includes(response.statusCode)) {
+            httpLogger.log(logLevel, errorObj);
             return feed.end();
         }
 
-        if (body && body.hits && body.hits.length === 0) {
+        // Case(s) when API replied, but we got no data (we lose data)
+        if (response.statusCode === 502) {
+            logLevel = 'error';
+            errorObj.lodexMessage = 'Some data lost beyond proxy';
+        }
+
+        // We got an error, let's try again
+        if ([500, 502, 503, 504].includes(response.statusCode)) {
+            httpLogger.log(logLevel, errorObj);
+            return setTimeout(scrollR, 500, uri, data, feed);
+        }
+
+        if (!body.total) {
+            errorObj.lodexMessage = 'No results';
+            httpLogger.log(logLevel, errorObj);
+            // Go to next query
             return feed.end();
         }
+
+        httpLogger.log('debug', `API query: ${url.parse(uri).query}`);
 
         feed.write({
             ...data.lodex,
@@ -44,75 +61,44 @@ function scrollRecursive(data, feed) {
         if (body.noMoreScrollResults) {
             return feed.end();
         }
-        return scrollRecursive(data, feed);
+
+        const nextURI = body.nextScrollURI;
+
+        if (nextURI) {
+            return scrollR(nextURI, data, feed);
+        }
+        return feed.end();
     });
 }
 
-
 /**
- * scroll use the scrolling features of API istex
- * data: url
+ * Query the ISTEX API in scroll mode
+ *
+ * @param data  Object  {content: uri, lodex: LODEX URI }
+ * @param feed  Stream  stream managed with ezs
  */
 module.exports = function scroll(data, feed) {
     if (this.isLast()) {
         return feed.close();
     }
 
-  /**
-   * Params of the API request
-   */
+    /**
+     * Parameters of the API query
+     */
     const output = this.getParam('output', 'doi');
     const sid = this.getParam('sid', 'lodex');
     const size = this.getParam('size', 5000);
     const query = url.parse(data.content);
 
-    json = this.getParam('json', true);
-
     const urlObj = {
-        protocol: 'https:',
+        protocol: 'https',
         hostname: url.parse(config.istexApiUrl).hostname,
         pathname: 'document',
-        /* change '&' to valid the query like a URI component */
+        // Change '&' to validate the query as an URI component (and not the '?'
+        // at the beginning)
         search: `${query.search.replace(/&/g, '%26')}&scroll=30s&output=${output}&size=${size}&sid=${sid}`,
     };
+    const uri = url.format(urlObj);
 
-    const options = {
-        uri: url.format(urlObj),
-        json,
-    };
-
-    return request.get(options, (error, response, body) => {
-        if (error || (response.statusCode !== 200 && response.statusCode !== 502)) {
-            /* eslint-disable */
-            console.error('options:', options);
-            console.error('error', error);
-            console.error(
-                'response',
-                response.statusCode,
-                response.statusMessage,
-                response.headers,
-            );
-           /* eslint-enable */
-            return feed.end();
-        }
-
-        /** API result can have any nextURI */
-        if (body.nextScrollURI === undefined) {
-            // eslint-disable-next-line
-            console.error('API Result error: ', `No results to '${query.search}'`);
-            return feed.end();
-        }
-
-        feed.write({
-            ...data.lodex,
-            content: body,
-        });
-
-        if (body.noMoreScrollResults) {
-            return feed.end();
-        }
-
-        nextURI = body.nextScrollURI;
-        return scrollRecursive(data, feed);
-    });
+    return scrollR(uri, data, feed);
 };
