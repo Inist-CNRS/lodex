@@ -10,6 +10,7 @@ import JOIN from './JOIN';
 import CONCAT_URI from './CONCAT_URI';
 import SPLIT from './SPLIT';
 import PREFIX from './PREFIX';
+import SUFFIX from './SUFFIX';
 
 const transformers = {
     AUTOGENERATE_URI: memoizeTransformer(AUTOGENERATE_URI),
@@ -23,6 +24,7 @@ const transformers = {
     CONCAT_URI: memoizeTransformer(CONCAT_URI),
     SPLIT: memoizeTransformer(SPLIT),
     PREFIX: memoizeTransformer(PREFIX),
+    SUFFIX: memoizeTransformer(SUFFIX),
 };
 
 export default transformers;
@@ -39,6 +41,7 @@ const transformersMetas = [
     CONCAT_URI,
     SPLIT,
     PREFIX,
+    SUFFIX,
 ].map(transformation => transformation.getMetas());
 
 export const getTransformersMetas = type => (type ? transformersMetas.filter(m => m.type === type) : transformersMetas);
