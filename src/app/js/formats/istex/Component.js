@@ -16,11 +16,19 @@ const styles = {
         fontSize: '1.5rem',
         textDecoration: status === REJECTED ? 'line-through' : 'none',
     })),
+    total: {
+        fontSize: '1.2rem',
+        fontWeight: 'bold',
+        color: 'rgba(0,0,0,0.54)',
+        position: 'absolute',
+        right: 15,
+    },
 };
 
 export const IstexView = ({ fieldStatus, data, error, field, resource, p: polyglot }) => (
     <span style={styles.text(fieldStatus)}>
         <span>{polyglot.t('istex_results', { searchTerm: resource[field.name] })}</span>
+        <span style={styles.total}>{polyglot.t('istex_total', { total: data.total })}</span>
         {error && <Alert><p>{polyglot.t(error)}</p></Alert>}
         {data && data.hits && <List>
             {

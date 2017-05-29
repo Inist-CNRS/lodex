@@ -58,6 +58,7 @@ const styles = {
     },
     value: {
         flexGrow: 2,
+        width: '100%',
     },
 };
 
