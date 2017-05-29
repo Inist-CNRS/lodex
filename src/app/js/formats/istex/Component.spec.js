@@ -27,11 +27,25 @@ describe('<IstexView />', () => {
     it('should not display List if no data.hits', () => {
         const wrapper = shallow(<IstexView
             fieldStatus=""
+            data={{ total: 0 }}
             field={{ name: 'name' }}
             resource={{ name: 'value' }}
             p={{ t: v => v }}
         />);
         expect(wrapper.find(List).length).toEqual(0);
+    });
+
+    // The above condition should never happen
+    // The next test is more realistic, but should ideally not display 1 element
+    it('should display List if data.hits is empty', () => {
+        const wrapper = shallow(<IstexView
+            fieldStatus=""
+            data={{ total: 0, hits: [] }}
+            field={{ name: 'name' }}
+            resource={{ name: 'value' }}
+            p={{ t: v => v }}
+        />);
+        expect(wrapper.find(List).length).toEqual(1);
     });
 
     it('should create one IstexItem per hit inside List', () => {
