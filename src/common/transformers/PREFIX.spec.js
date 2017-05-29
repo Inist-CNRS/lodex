@@ -9,7 +9,6 @@ describe('PREFIX', () => {
 
     it('should return empty array if value is null', () => {
         const result = prefix(undefined, 'hello');
-        expect(result).toBeA(String);
         expect(result).toEqual('hello');
     });
 

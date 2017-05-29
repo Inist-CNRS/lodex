@@ -9,7 +9,6 @@ describe('SUFFIX', () => {
 
     it('should return empty array if value is null', () => {
         const result = suffix(undefined, 'hello');
-        expect(result).toBeA(String);
         expect(result).toEqual('hello');
     });
 
