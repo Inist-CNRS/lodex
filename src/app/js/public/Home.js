@@ -14,6 +14,7 @@ import { fromFields } from '../sharedSelectors';
 import Alert from '../lib/components/Alert';
 import Card from '../lib/components/Card';
 import Loading from '../lib/components/Loading';
+import Overview from './overview/Overview';
 import Dataset from './dataset/Dataset';
 import DatasetCharacteristics from './characteristic/DatasetCharacteristics';
 import NoDataset from './NoDataset';
@@ -99,12 +100,21 @@ export class HomeComponent extends Component {
                 <div>
                     <DatasetCharacteristics />
                     <Card>
+
                         <Tabs
                             inkBarStyle={styles.inkBarStyle}
                             value={selectedTab}
                             onChange={this.handleTabChange}
                             tabItemContainerStyle={styles.tab}
                         >
+                            <Tab
+                                className="tab-dataset-overview"
+                                label={polyglot.t('overview')}
+                                style={styles.tabButton}
+                                value="overview"
+                            >
+                                <Overview />
+                            </Tab>
                             <Tab
                                 className="tab-dataset-resources"
                                 label={polyglot.t('details')}
@@ -145,7 +155,7 @@ export class HomeComponent extends Component {
     }
 }
 
-const mapStateToProps = (state, { params: { tab = 'dataset' } }) => {
+const mapStateToProps = (state, { params: { tab = 'overview' } }) => {
     const titleFieldName = fromFields.getDatasetTitleFieldName(state);
     const fields = fromFields.getDatasetFields(state);
     const characteristics = fromCharacteristic.getCharacteristics(state, fields);

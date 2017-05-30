@@ -134,6 +134,7 @@ export default {
     Login: 'Sign in',
     show_publication_errors: 'Errors',
     model: 'Model',
+    overview: 'Overview',
     resource_details: 'Details',
     share_export: 'Share/Export',
     ontology: 'Ontology',
