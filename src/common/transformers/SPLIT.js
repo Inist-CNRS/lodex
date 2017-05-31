@@ -14,7 +14,7 @@ const transformation = (_, args) => (value) => {
     const separator = args.find(a => a.name === 'separator');
 
     if (!separator) {
-        throw new Error('Invalid Argument for JOIN transformation');
+        throw new Error('Invalid Argument for SPLIT transformation');
     }
 
     return new Promise((resolve, reject) => {
