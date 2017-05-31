@@ -3,7 +3,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
-import { Card, CardHeader, Avatar, IconButton } from 'material-ui';
+import { Card, CardHeader, Avatar } from 'material-ui';
 import LocalLibrary from 'material-ui/svg-icons/maps/local-library';
 
 import { gray300 } from 'material-ui/styles/colors';
