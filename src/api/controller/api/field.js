@@ -41,7 +41,16 @@ export const putField = async (ctx, id) => {
 
     ctx.body = await ctx.field.updateOneById(id, newField);
 
-    const fields = await ctx.field.findAll();
+    let fields = await ctx.field.findAll();
+
+    await Promise.all(fields.filter(field => field.overview === newField.overview
+                        && String(field._id) !== id)
+          .map((e) => {
+              delete e.overview;
+              return ctx.field.updateOneById(e._id, e);
+          }));
+
+    fields = await ctx.field.findAll();
     await ctx.publishFacets(ctx, fields);
 };
 

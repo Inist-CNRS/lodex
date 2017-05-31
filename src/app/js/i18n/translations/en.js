@@ -204,6 +204,7 @@ export default {
     istex_results: 'ISTEX search results for %{searchTerm}:',
     istex_total: '%{total} results',
     none: 'None',
+    description: 'Description',
     navigate_to_published_data: 'Go to my published data',
     moderation: 'Moderation',
     apply: 'Apply',

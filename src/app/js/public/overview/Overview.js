@@ -1,3 +1,4 @@
+/* eslint react/prop-types: 0 */
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
@@ -28,6 +29,12 @@ const styles = {
         height: '100px',
         margin: '5px',
     },
+    subtitle: {
+        textOverflow: 'ellipsis',
+        overflow: 'hidden',
+        whiteSpace: 'nowrap',
+        width: '265px',
+    },
 };
 
 export class OverviewComponent extends Component {
@@ -50,7 +57,6 @@ export class OverviewComponent extends Component {
                 <div
                     style={styles.container}
                 >
-                { JSON.stringify(columns)}
                     { dataset.map(data => (
                         <Card
                             style={styles.item}
@@ -62,7 +68,17 @@ export class OverviewComponent extends Component {
                                         color={gray300}
                                     />
                                 }
-                                title={<a href={`/${data.uri}`}>coucou</a>}
+                                title={<a href={`/${data.uri}`}>{
+                                    (columns.filter(e => e.overview === 1).length) ?
+                                        data[columns.filter(e => e.overview === 1)[0].name] :
+                                        data.uri
+                                    }</a>}
+                                subtitle={
+                                    (columns.filter(e => e.overview === 2).length) ?
+                                        data[columns.filter(e => e.overview === 2)[0].name] :
+                                        ''
+                                    }
+                                subtitleStyle={styles.subtitle}
                             />
                         </Card>
                 )) }
@@ -95,11 +111,14 @@ OverviewComponent.PropTypes = {
     total: PropTypes.number.isRequired,
 };
 
-OverviewComponent.defaultProps = {};
+OverviewComponent.defaultProps = {
+    columns: [],
+    dataset: [],
+};
 
 const mapStateToProps = state => ({
     loading: fromDataset.isDatasetLoading(state),
-    columns: fromFields.getResourceFields(state),
+    columns: fromFields.getAllListFields(state),
     currentPage: fromDataset.getDatasetCurrentPage(state),
     perPage: fromDataset.getDatasetPerPage(state),
     dataset: fromDataset.getDataset(state),
