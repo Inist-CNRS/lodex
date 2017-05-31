@@ -17,6 +17,10 @@ describe('Home page: Creating new resource as Julia', function homePublishedData
         await loginAsJulia('/', '/');
     });
 
+    it('should go to details with tab details button', () => {
+        driver.findElement(By.css('.tab-dataset-resources')).click();
+    });
+
     it('should display the list with multiple edit buttons', () =>
         driver.wait(until.elementLocated(By.css('.create-resource'))));
 
