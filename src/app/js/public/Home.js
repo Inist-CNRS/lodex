@@ -113,6 +113,8 @@ export class HomeComponent extends Component {
                                 style={styles.tabButton}
                                 value="overview"
                             >
+                                <Toolbar />
+                                <AppliedFacetList />
                                 <Overview />
                             </Tab>
                             <Tab
@@ -131,6 +133,8 @@ export class HomeComponent extends Component {
                                 label={polyglot.t('share_export')}
                                 value="export"
                             >
+                                <Toolbar />
+                                <AppliedFacetList />
                                 <Export />
                                 <Divider />
                                 <Widgets />

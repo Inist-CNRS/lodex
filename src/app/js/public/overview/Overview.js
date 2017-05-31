@@ -3,7 +3,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
-import { Card, CardHeader, Avatar } from 'material-ui';
+import { Card, CardHeader, Avatar, IconButton } from 'material-ui';
 import LocalLibrary from 'material-ui/svg-icons/maps/local-library';
 
 import { gray300 } from 'material-ui/styles/colors';
@@ -29,7 +29,7 @@ const styles = {
         height: '100px',
         margin: '5px',
     },
-    subtitle: {
+    title: {
         textOverflow: 'ellipsis',
         overflow: 'hidden',
         whiteSpace: 'nowrap',
@@ -68,7 +68,15 @@ export class OverviewComponent extends Component {
                                         color={gray300}
                                     />
                                 }
-                                title={<a href={`/${data.uri}`}>{
+                                title={
+                                    <a
+                                        href={`/${data.uri}`}
+                                        title={
+                                        (columns.filter(e => e.overview === 1).length) ?
+                                        data[columns.filter(e => e.overview === 1)[0].name] :
+                                        data.uri}
+                                    >
+                                        {
                                     (columns.filter(e => e.overview === 1).length) ?
                                         data[columns.filter(e => e.overview === 1)[0].name] :
                                         data.uri
@@ -78,7 +86,8 @@ export class OverviewComponent extends Component {
                                         data[columns.filter(e => e.overview === 2)[0].name] :
                                         ''
                                     }
-                                subtitleStyle={styles.subtitle}
+                                titleStyle={styles.title}
+                                subtitleStyle={styles.title}
                             />
                         </Card>
                 )) }
