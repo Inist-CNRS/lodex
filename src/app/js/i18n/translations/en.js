@@ -250,5 +250,5 @@ export default {
     dataset: 'Dataset',
     paragraph: 'Paragraph',
     identifier: 'Identifier',
-    count_of_field: '# doccuments',
+    count_of_field: '# documents',
 };
