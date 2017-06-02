@@ -29,9 +29,9 @@ services:
         environment:
             http_proxy:  ${http_proxy}
             https_proxy: ${https_proxy}
+            no_proxy: "localhost,127.0.0.1,api,hub,mongo"
             NODE_APP_INSTANCE: test
             NODE_ENV: test
-            no_proxy: "localhost,127.0.0.1,api,hub"
         links:
             - mongo
         depends_on:
