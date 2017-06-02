@@ -13,6 +13,7 @@ import fixtures from './home_published.json';
 import navigate from './navigate';
 import { inputElementIsFocusable } from '../../common/tests/conditions';
 import sendKeysToInputByName from './sendKeysToInputByName';
+import gotToDetails from './goToDetails';
 
 describe('Resource page', function homePublishedDataTests() {
     this.timeout(30000);
@@ -21,6 +22,7 @@ describe('Resource page', function homePublishedDataTests() {
     before(async () => {
         await clear();
         await loadFixtures(fixtures);
+        await gotToDetails();
         await navigate('/uid:/1');
     });
 

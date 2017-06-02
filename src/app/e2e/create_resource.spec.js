@@ -1,11 +1,12 @@
 import { until, By } from 'selenium-webdriver';
-import { elementTextIs, elementIsClicked } from 'selenium-smart-wait';
+import { elementTextIs } from 'selenium-smart-wait';
 
 import driver from '../../common/tests/chromeDriver';
 import { clear, loadFixtures } from '../../common/tests/fixtures';
 import fixtures from './home_published.json';
 import loginAsJulia from './loginAsJulia';
 import sendKeysToInputByName from './sendKeysToInputByName';
+import gotToDetails from './goToDetails';
 
 describe('Home page: Creating new resource as Julia', function homePublishedDataTests() {
     this.timeout(30000);
@@ -15,13 +16,7 @@ describe('Home page: Creating new resource as Julia', function homePublishedData
         await clear();
         await loadFixtures(fixtures);
         await loginAsJulia('/', '/');
-    });
-
-    it('should go to details with tab details button', async () => {
-        const reviewButton = '.tab-dataset-resources';
-        await driver.sleep(10000);
-        await driver.wait(elementIsClicked(reviewButton), DEFAULT_WAIT_TIMEOUT);
-        await driver.wait(until.elementLocated(By.xpath('//div[contains(@value,"dataset")]')));
+        await gotToDetails();
     });
 
     it('should display the list with multiple edit buttons', () =>

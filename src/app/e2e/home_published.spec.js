@@ -19,7 +19,7 @@ describe('Home page with published data', function homePublishedDataTests() {
     before(async () => {
         await clear();
         await loadFixtures(fixtures);
-        await navigate('/');
+        await navigate('/home/dataset');
     });
 
     it('should display the dataset characteristics', async () => {
@@ -140,11 +140,12 @@ describe('Home page with published data', function homePublishedDataTests() {
         await driver.wait(until.elementLocated(By.css('.filter input')), DEFAULT_WAIT_TIMEOUT);
         const filterInput = driver.findElement(By.css('.filter input'));
         await filterInput.sendKeys('baggins');
-        const spinner = await driver.findElement(By.css('.dataset-loading')).catch(() => null);
-        if (spinner) {
-            await driver.wait(stalenessOf(spinner, DEFAULT_WAIT_TIMEOUT));
-        }
+        // const spinner = await driver.findElement(By.css('.dataset .loading')).catch(() => null);
+        // if (spinner) {
+        //     await driver.wait(stalenessOf(spinner, DEFAULT_WAIT_TIMEOUT));
+        // }
         await driver.wait(until.elementLocated(By.css('.dataset table tbody tr')), DEFAULT_WAIT_TIMEOUT);
+
 
         const expectedTds = [
             ['3', 'BILBON', 'BAGGINS', 'bilbon.saquet@shire.net'],
@@ -168,11 +169,11 @@ describe('Home page with published data', function homePublishedDataTests() {
 
         await filterInput.clear();
         await filterInput.sendKeys('sauron');
-
-        const spinner = await driver.findElement(By.css('.dataset-loading')).catch(() => null);
-        if (spinner) {
-            await driver.wait(stalenessOf(spinner, DEFAULT_WAIT_TIMEOUT));
-        }
+        await driver.sleep(1000);
+        // const spinner = await driver.findElement(By.css('.dataset .loading')).catch(() => null);
+        // if (spinner) {
+        //     await driver.wait(stalenessOf(spinner, DEFAULT_WAIT_TIMEOUT));
+        // }
         await driver.wait(until.elementLocated(By.css('.dataset table tbody')), DEFAULT_WAIT_TIMEOUT);
 
         const tbody = '.dataset table tbody';
@@ -185,11 +186,11 @@ describe('Home page with published data', function homePublishedDataTests() {
         const filterInput = driver.findElement(By.css('.filter input'));
         await filterInput.clear();
         await filterInput.sendKeys(' \b'); // clear do not trigger onChange event forcing it (\b is backspace)
-
-        const spinner = await driver.findElement(By.css('.dataset-loading')).catch(() => null);
-        if (spinner) {
-            await driver.wait(stalenessOf(spinner, DEFAULT_WAIT_TIMEOUT));
-        }
+        await driver.sleep(1000);
+        // const spinner = await driver.findElement(By.css('.dataset .loading')).catch(() => null);
+        // if (spinner) {
+        //     await driver.wait(stalenessOf(spinner, DEFAULT_WAIT_TIMEOUT));
+        // }
         await driver.wait(until.elementLocated(By.css('.dataset table tbody tr')), DEFAULT_WAIT_TIMEOUT);
 
         await driver.wait(elementsCountIs('.dataset table tbody tr', 5));
@@ -209,7 +210,7 @@ describe('Home page with published data', function homePublishedDataTests() {
         const facetValue = '.facet-value-baggins';
         await driver.wait(elementIsClicked(facetValue), DEFAULT_WAIT_TIMEOUT);
 
-        const spinner = await driver.findElement(By.css('.dataset-loading')).catch(() => null);
+        const spinner = await driver.findElement(By.css('.dataset .loading')).catch(() => null);
         if (spinner) {
             await driver.wait(stalenessOf(spinner, DEFAULT_WAIT_TIMEOUT));
         }

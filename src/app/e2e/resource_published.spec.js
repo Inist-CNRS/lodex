@@ -10,6 +10,7 @@ import driver from '../../common/tests/chromeDriver';
 import { clear, loadFixtures } from '../../common/tests/fixtures';
 import fixtures from './resource_published.json';
 import navigate from './navigate';
+import goToDetails from './goToDetails';
 
 describe('Resource page when not logged', function resourcePageTest() {
     this.timeout(30000);
@@ -18,6 +19,7 @@ describe('Resource page when not logged', function resourcePageTest() {
     before(async () => {
         await clear();
         await loadFixtures(fixtures);
+        await goToDetails();
         await navigate('/uid:/1');
     });
 

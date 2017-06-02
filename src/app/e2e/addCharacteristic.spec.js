@@ -6,6 +6,7 @@ import driver from '../../common/tests/chromeDriver';
 import { clear, loadFixtures } from '../../common/tests/fixtures';
 import fixtures from './home_published.json';
 import loginAsJulia from './loginAsJulia';
+import goToDetails from './goToDetails';
 
 describe('add characteristic', function homePublishedDataTests() {
     this.timeout(30000);
@@ -15,6 +16,7 @@ describe('add characteristic', function homePublishedDataTests() {
         await clear();
         await loadFixtures(fixtures);
         await loginAsJulia('/');
+        await goToDetails();
     });
 
     it('should display the dataset characteristics', async () => {
