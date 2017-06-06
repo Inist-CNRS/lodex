@@ -11,6 +11,7 @@ import { clear, loadFixtures } from '../../common/tests/fixtures';
 import fixtures from './home_published.json';
 import loginAsJulia from './loginAsJulia';
 import navigate from './navigate';
+import goToDetails from './goToDetails';
 
 describe('Ontology', function homePublishedDataTests() {
     this.timeout(30000);
@@ -20,6 +21,7 @@ describe('Ontology', function homePublishedDataTests() {
         await clear();
         await loadFixtures(fixtures);
         await navigate('/');
+        await goToDetails();
     });
 
     it('should display all header in list', async () => {

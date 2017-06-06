@@ -46,7 +46,7 @@ describe('Admin', () => {
             });
 
             it('should display the published data on the home page', async () => {
-                await navigate('/');
+                await navigate('/home/dataset');
                 await driver.wait(until.elementLocated(By.css('.dataset')), DEFAULT_WAIT_TIMEOUT);
                 const headers = await driver.findElements(By.css('.dataset table th'));
                 const headersText = await Promise.all(headers.map(h => h.getText()));
@@ -140,7 +140,7 @@ describe('Admin', () => {
             });
 
             it('should display the published data on the home page', async () => {
-                await navigate('/');
+                await navigate('/home/dataset');
                 await driver.wait(until.elementLocated(By.css('.dataset')), DEFAULT_WAIT_TIMEOUT);
                 const headers = await driver.findElements(By.css('.dataset table th'));
                 const headersText = await Promise.all(headers.map(h => h.getText()));

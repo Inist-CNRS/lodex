@@ -15,6 +15,8 @@ import { clear } from '../../../common/tests/fixtures';
 import { inputElementIsFocusable } from '../../../common/tests/conditions';
 import loginAsJulia from './loginAsJulia';
 import waitForPreviewComputing from './waitForPreviewComputing';
+import navigate from '../navigate';
+import goToDetails from '../goToDetails';
 
 const factor = 3;
 
@@ -472,6 +474,7 @@ describe('Admin', () => {
             it('should display the "data published" message after publication', async () => {
                 const buttonPublish = '.btn-publish';
                 await driver.wait(elementIsClicked(buttonPublish), DEFAULT_WAIT_TIMEOUT);
+                await goToDetails();
                 await driver.wait(until.elementLocated(By.css('.data-published')), DEFAULT_WAIT_TIMEOUT);
             });
 
@@ -486,7 +489,7 @@ describe('Admin', () => {
             });
 
             it('should display the published data on the home page', async () => {
-                await driver.findElement(By.css('.btn-navigate-to-published-data')).click();
+                await navigate('/home/dataset');
                 await driver.wait(until.elementLocated(By.css('.dataset')), DEFAULT_WAIT_TIMEOUT);
                 const headers = await driver.findElements(By.css('.dataset table th'));
                 const headersText = await Promise.all(headers.map(h => h.getText()));

@@ -124,7 +124,7 @@ describe('Admin', () => {
         it('should display the published data on the home page', async () => {
             await driver.findElement(By.css('.btn-publish')).click();
             await driver.wait(until.elementLocated(By.css('.data-published')), DEFAULT_WAIT_TIMEOUT);
-            await navigate('/');
+            await navigate('/home/dataset');
             await driver.wait(until.elementLocated(By.css('.dataset-uri a')), DEFAULT_WAIT_TIMEOUT);
             await driver.wait(elementIsClicked('.dataset-uri a'), DEFAULT_WAIT_TIMEOUT);
             await driver.wait(until.elementLocated(By.css('.compose_fullname.property.firstname')), DEFAULT_WAIT_TIMEOUT);
