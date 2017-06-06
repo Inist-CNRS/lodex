@@ -474,6 +474,7 @@ describe('Admin', () => {
             it('should display the "data published" message after publication', async () => {
                 const buttonPublish = '.btn-publish';
                 await driver.wait(elementIsClicked(buttonPublish), DEFAULT_WAIT_TIMEOUT);
+                await navigate('/');
                 await goToDetails();
                 await driver.wait(until.elementLocated(By.css('.data-published')), DEFAULT_WAIT_TIMEOUT);
             });

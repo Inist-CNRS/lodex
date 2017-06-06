@@ -15,7 +15,7 @@ describe('Home page with published data when logged as Julia', function homePubl
     before(async () => {
         await clear();
         await loadFixtures(fixtures);
-        await loginAsJulia('/', '/');
+        await loginAsJulia('/');
         await gotToDetails();
     });
 

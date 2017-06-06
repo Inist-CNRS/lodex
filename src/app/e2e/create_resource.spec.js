@@ -15,7 +15,7 @@ describe('Home page: Creating new resource as Julia', function homePublishedData
     before(async () => {
         await clear();
         await loadFixtures(fixtures);
-        await loginAsJulia('/', '/');
+        await loginAsJulia('/');
         await gotToDetails();
     });
 
