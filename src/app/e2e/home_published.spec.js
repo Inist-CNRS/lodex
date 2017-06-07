@@ -137,8 +137,9 @@ describe('Home page with published data', function homePublishedDataTests() {
     });
 
     it('should filter list', async () => {
-        await driver.wait(until.elementLocated(By.css('.filter input')), DEFAULT_WAIT_TIMEOUT);
-        const filterInput = driver.findElement(By.css('.filter input'));
+        await driver.wait(until.elementLocated(By.xpath("(//div[@class='filter'])[2]/input")), DEFAULT_WAIT_TIMEOUT);
+        await driver.sleep(1000);
+        const filterInput = driver.findElement(By.xpath("(//div[@class='filter'])[2]/input"));
         await filterInput.sendKeys('baggins');
         // const spinner = await driver.findElement(By.css('.dataset .loading')).catch(() => null);
         // if (spinner) {
@@ -164,8 +165,8 @@ describe('Home page with published data', function homePublishedDataTests() {
     });
 
     it('should display `No matching resource found`', async () => {
-        await driver.wait(until.elementLocated(By.css('.filter input')), DEFAULT_WAIT_TIMEOUT);
-        const filterInput = driver.findElement(By.css('.filter input'));
+        await driver.wait(until.elementLocated(By.xpath("(//div[@class='filter'])[2]/input")), DEFAULT_WAIT_TIMEOUT);
+        const filterInput = driver.findElement(By.xpath("(//div[@class='filter'])[2]/input"));
 
         await filterInput.clear();
         await filterInput.sendKeys('sauron');
@@ -182,8 +183,8 @@ describe('Home page with published data', function homePublishedDataTests() {
     });
 
     it('should clear filter', async () => {
-        await driver.wait(until.elementLocated(By.css('.filter input')), DEFAULT_WAIT_TIMEOUT);
-        const filterInput = driver.findElement(By.css('.filter input'));
+        await driver.wait(until.elementLocated(By.xpath("(//div[@class='filter'])[2]/input")), DEFAULT_WAIT_TIMEOUT);
+        const filterInput = driver.findElement(By.xpath("(//div[@class='filter'])[2]/input"));
         await filterInput.clear();
         await filterInput.sendKeys(' \b'); // clear do not trigger onChange event forcing it (\b is backspace)
         await driver.sleep(1000);
@@ -197,6 +198,7 @@ describe('Home page with published data', function homePublishedDataTests() {
     });
 
     it('should filter list from facet', async () => {
+        await driver.wait(elementIsClicked('.tab-dataset-overview'), DEFAULT_WAIT_TIMEOUT);
         await driver.wait(until.elementLocated(By.css('.facet-selector')), DEFAULT_WAIT_TIMEOUT);
         const facetSelector = '.facet-selector';
         await driver.wait(elementIsClicked(facetSelector), DEFAULT_WAIT_TIMEOUT);
@@ -209,7 +211,7 @@ describe('Home page with published data', function homePublishedDataTests() {
         await driver.wait(until.elementLocated(By.css('.facet-value-baggins')), DEFAULT_WAIT_TIMEOUT);
         const facetValue = '.facet-value-baggins';
         await driver.wait(elementIsClicked(facetValue), DEFAULT_WAIT_TIMEOUT);
-
+        await driver.wait(elementIsClicked('.tab-dataset-resources'), DEFAULT_WAIT_TIMEOUT);
         const spinner = await driver.findElement(By.css('.dataset .loading')).catch(() => null);
         if (spinner) {
             await driver.wait(stalenessOf(spinner, DEFAULT_WAIT_TIMEOUT));
@@ -233,6 +235,7 @@ describe('Home page with published data', function homePublishedDataTests() {
     });
 
     it('should clear filter', async () => {
+        await driver.wait(elementIsClicked('.tab-dataset-overview'), DEFAULT_WAIT_TIMEOUT);
         await driver.wait(until.elementLocated(By.css('.applied-facet-name svg')), DEFAULT_WAIT_TIMEOUT);
         const facetClear = '.applied-facet-name svg';
         await driver.wait(elementIsClicked(facetClear), DEFAULT_WAIT_TIMEOUT);
@@ -240,6 +243,11 @@ describe('Home page with published data', function homePublishedDataTests() {
         await driver.wait(until.elementLocated(By.css('.dataset table tbody tr')), DEFAULT_WAIT_TIMEOUT);
 
         await driver.wait(elementsCountIs('.dataset table tbody tr', 5), DEFAULT_WAIT_TIMEOUT);
+    });
+
+    it('should have an overview tab', async () => {
+        await driver.wait(until.elementLocated(By.css('.tab-dataset-overview')), DEFAULT_WAIT_TIMEOUT);
+        await driver.wait(elementIsClicked('.tab-dataset-overview'));
     });
 
     it('should have an export tab', async () => {
