@@ -89,8 +89,10 @@ const styles = {
     scheme: {
         fontWeight: 'bold',
         fontSize: '0.75em',
-        color: 'grey',
         alignSelf: 'flex-end',
+    },
+    schemeLink: {
+        color: 'grey',
     },
     labelContainer: {
         display: 'flex',
@@ -133,7 +135,9 @@ export const DetailComponent = ({
                                         {polyglot.t('dataset')}
                                     </span>
                                     <span className="property_scheme in_scheme" style={styles.scheme}>
-                                        {schemeForDatasetLink}
+                                        <a style={styles.schemeLink} href={schemeForDatasetLink}>
+                                            {schemeForDatasetLink}
+                                        </a>
                                     </span>
                                 </div>
                             </div>

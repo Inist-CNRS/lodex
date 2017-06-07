@@ -29,7 +29,7 @@ const styles = {
         color: grey500,
         flexGrow: 2,
         fontWeight: 'bold',
-        fontSize: '1rem',
+        fontSize: '1.1rem',
         textDecoration: status === REJECTED ? 'line-through' : 'none',
     })),
     language: {
@@ -41,8 +41,10 @@ const styles = {
     scheme: {
         fontWeight: 'bold',
         fontSize: '0.75em',
-        color: 'grey',
         alignSelf: 'flex-end',
+    },
+    schemeLink: {
+        color: 'grey',
     },
     editButton: {
         alignSelf: 'flex-end',
@@ -59,6 +61,9 @@ const styles = {
     value: {
         flexGrow: 2,
         width: '100%',
+        padding: '0.75rem',
+        paddingRight: '3rem',
+        textAlign: 'justify',
     },
 };
 
@@ -90,7 +95,7 @@ const PropertyComponent = ({
                     </span>
 
                     <span className={classnames('property_scheme', fieldClassName)} style={styles.scheme}>
-                        {field.scheme}
+                        <a style={styles.schemeLink} href={field.scheme}>{field.scheme}</a>
                     </span>
                 </div>
                 <PropertyContributor fieldName={field.name} fieldStatus={fieldStatus} />
