@@ -141,10 +141,10 @@ describe('Home page with published data', function homePublishedDataTests() {
         await driver.sleep(1000);
         const filterInput = driver.findElement(By.xpath("(//div[@class='filter'])[2]/input"));
         await filterInput.sendKeys('baggins');
-        // const spinner = await driver.findElement(By.css('.dataset .loading')).catch(() => null);
-        // if (spinner) {
-        //     await driver.wait(stalenessOf(spinner, DEFAULT_WAIT_TIMEOUT));
-        // }
+        const spinner = await driver.findElement(By.css('.dataset .loading')).catch(() => null);
+        if (spinner) {
+            await driver.wait(stalenessOf(spinner, DEFAULT_WAIT_TIMEOUT));
+        }
         await driver.wait(until.elementLocated(By.css('.dataset table tbody tr')), DEFAULT_WAIT_TIMEOUT);
 
 
