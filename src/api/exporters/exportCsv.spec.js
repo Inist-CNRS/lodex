@@ -6,7 +6,7 @@ import {
     getCsvFieldFactory,
     getLastVersionFactory,
     removeContributions,
-} from './exportCsv';
+} from './ezsLocals/convertToCSV';
 import { VALIDATED, REJECTED, PROPOSED } from '../../common/propositionStatus';
 
 describe('exportCsv', () => {
