@@ -56,6 +56,7 @@ describe('field reducer', () => {
                         searchable: true,
                         transformers: [],
                         position: 2,
+                        overview: 0,
                     },
                 },
             });
@@ -92,6 +93,7 @@ describe('field reducer', () => {
                             }],
                         }],
                         position: 2,
+                        overview: 0,
                     },
                 },
             });

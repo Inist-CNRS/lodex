@@ -98,6 +98,7 @@ const getDefaultField = (name, index) => ({
         }],
     }] : [],
     position: index,
+    overview: 0,
 });
 
 export default handleActions({
@@ -320,6 +321,12 @@ const getListFields = createSelector(
         .filter(f => !f.composedOf),
 );
 
+const getAllListFields = createSelector(
+    getCollectionFields,
+    fields => fields
+            .filter(f => !f.composedOf),
+);
+
 export const getFieldByName = createSelector(
     getProps,
     getFields,
@@ -531,6 +538,7 @@ export const selectors = {
     getCompositeFieldsByField,
     getCompositeFieldsNamesByField,
     getListFields,
+    getAllListFields,
     getCollectionFieldsExceptComposite,
     getRootCollectionFields,
     getResourceFields,

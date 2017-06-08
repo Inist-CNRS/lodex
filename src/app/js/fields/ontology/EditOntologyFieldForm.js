@@ -6,13 +6,13 @@ import { reduxForm, propTypes as reduxFormPropTypes } from 'redux-form';
 import { connect } from 'react-redux';
 
 import Alert from '../../lib/components/Alert';
-import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { configureField } from '../';
 import { fromFields } from '../../sharedSelectors';
 import FieldLabelInput from '../FieldLabelInput';
 import FieldSchemeInput from '../FieldSchemeInput';
 import FieldLanguageInput from '../FieldLanguageInput';
 import FieldPositionInput from '../FieldPositionInput';
+import FieldOverviewInput from '../FieldOverviewInput';
 import FieldFormatInput from '../FieldFormatInput';
 import FieldDisplayInListInput from '../FieldDisplayInListInput';
 import FieldDisplayInResourceInput from '../FieldDisplayInResourceInput';
@@ -30,6 +30,7 @@ export const EditOntologyFieldFormComponent = ({ field, publicationError, handle
         <FieldDisplayInListInput />
         <FieldDisplayInResourceInput />
         <FieldPositionInput field={field} />
+        <FieldOverviewInput />
         <FieldFormatInput />
         <FieldIsSearchableInput />
         <FieldIsFacetInput />
