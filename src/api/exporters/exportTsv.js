@@ -1,16 +1,23 @@
-import ezs from 'ezs';
-import ezsBasics from 'ezs-basics';
-import ezsLocals from './ezsLocals';
+import { csv } from 'json-csv';
+import through from 'through';
+import { getDefaultDocuments, getCsvFieldFactory, getLastVersionFactory } from './ezsLocals/convertToCSV';
 
-ezs.use(ezsBasics);
-ezs.use(ezsLocals);
+export const exportCsvFactory = csvTransformStreamFactory => (config, fields, characteristics, stream) => {
+    const defaultDocument = getDefaultDocuments(fields);
+    const getCharacteristicByName = name => characteristics[0][name];
+    const getCsvField = getCsvFieldFactory(getCharacteristicByName);
 
-const exporter = (config, fields, characteristics, stream) =>
-    stream
-        .pipe(ezs('filterVersions'))
-        .pipe(ezs('filterContributions', { fields }))
-        .pipe(ezs('useFieldNames', { fields }))
-        .pipe(ezs('CSVString', { separator: '\t' }));
+    const jsoncsvStream = csvTransformStreamFactory({
+        fields: fields.map(getCsvField),
+        fieldSeparator: '\t',
+    });
+
+    return stream
+        .pipe(through(getLastVersionFactory(defaultDocument)))
+        .pipe(jsoncsvStream);
+};
+
+const exporter = exportCsvFactory(csv);
 
 exporter.extension = 'tsv';
 exporter.mimeType = 'text/tab-separated-values';
