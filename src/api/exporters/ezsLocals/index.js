@@ -1,13 +1,26 @@
 /* eslint-disable  */
+import filterVersions from './filterVersions.js';
+import filterContributions from './filterContributions.js';
+import MinimalObject from './minimalObject.js';
+import useFieldNames from './useFieldNames.js';
+import linkDataset from './linkDataset.js';
+import JSONLDCompacter from './JSONLDCompacter.js';
+import JSONLDString from './JSONLDString.js';
+import JSONLDObject from './JSONLDObject.js';
+import extractIstexQuery from './extractIstexQuery.js';
+import scroll from './scroll.js';
+import convertToExtendedNquads from './convertToExtendedNquads.js';
+
 module.exports = {
-    filterVersions: require('./filterVersions.js'),
-    filterContributions: require('./filterContributions.js'),
-    useFieldNames: require('./useFieldNames.js'),
-    linkDataset: require('./linkDataset.js'),
-    JSONLDCompacter: require('./JSONLDCompacter.js'),
-    JSONLDString: require('./JSONLDString.js'),
-    JSONLDObject: require('./JSONLDObject.js'),
-    extractIstexQuery: require('./extractIstexQuery.js'),
-    scroll: require('./scroll.js'),
-    convertToExtendedNquads: require('./convertToExtendedNquads.js')
+    filterVersions,
+    filterContributions,
+    MinimalObject,
+    useFieldNames,
+    linkDataset,
+    JSONLDCompacter,
+    JSONLDString,
+    JSONLDObject,
+    extractIstexQuery,
+    scroll,
+    convertToExtendedNquads,
 };
