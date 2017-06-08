@@ -2,11 +2,13 @@ import expect, { createSpy } from 'expect';
 import through from 'through';
 
 import {
-    exportCsvFactory,
     getCsvFieldFactory,
     getLastVersionFactory,
     removeContributions,
-} from './exportCsv';
+} from './ezsLocals/convertToCSV';
+
+import { exportCsvFactory } from './exportCsv';
+
 import { VALIDATED, REJECTED, PROPOSED } from '../../common/propositionStatus';
 
 describe('exportCsv', () => {
