@@ -16,7 +16,6 @@ import { inputElementIsFocusable } from '../../../common/tests/conditions';
 import loginAsJulia from './loginAsJulia';
 import waitForPreviewComputing from './waitForPreviewComputing';
 import navigate from '../navigate';
-import goToDetails from '../goToDetails';
 
 const factor = 3;
 
