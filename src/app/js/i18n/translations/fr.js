@@ -251,4 +251,6 @@ export default {
     list_format_select_level: 'Niveau du titre',
     dataset: 'Jeu de données',
     paragraph: 'Paragraphe',
+    identifier: 'Identifiant',
+    count_of_field: 'Nb. de doc.',
 };
