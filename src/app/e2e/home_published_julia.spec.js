@@ -6,6 +6,7 @@ import { clear, loadFixtures } from '../../common/tests/fixtures';
 import fixtures from './home_published.json';
 import { inputElementIsFocusable } from '../../common/tests/conditions';
 import loginAsJulia from './loginAsJulia';
+import gotToDetails from './goToDetails';
 
 describe('Home page with published data when logged as Julia', function homePublishedDataTests() {
     this.timeout(30000);
@@ -14,7 +15,8 @@ describe('Home page with published data when logged as Julia', function homePubl
     before(async () => {
         await clear();
         await loadFixtures(fixtures);
-        await loginAsJulia('/', '/');
+        await loginAsJulia('/');
+        await gotToDetails();
     });
 
     it('should display the list with multiple edit buttons', () =>

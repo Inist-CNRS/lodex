@@ -137,7 +137,7 @@ describe('field routes', () => {
             },
             field: {
                 updateOneById: createSpy().andReturn(Promise.resolve('update result')),
-                findAll: createSpy().andReturn(Promise.resolve('all fields')),
+                findAll: createSpy().andReturn(Promise.resolve(['update result'])),
             },
             publishFacets: createSpy(),
         };
@@ -145,7 +145,7 @@ describe('field routes', () => {
         it('should validateField and then update field', async () => {
             await putField(ctx, 'id');
             expect(ctx.field.updateOneById).toHaveBeenCalledWith('id', 'updated field data');
-            expect(ctx.body).toBe('update result');
+            expect(ctx.body).toInclude(['update result']);
         });
 
         it('gets the current fields', () => {

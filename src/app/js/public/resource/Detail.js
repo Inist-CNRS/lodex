@@ -173,8 +173,21 @@ export const DetailComponent = ({
                         label={polyglot.t('resource_details')}
                     >
                         <div style={styles.propertiesContainer}>
+                            <div style={styles.item(1, otherFields.length + 1)}>
+                                <div style={styles.labelContainer}>
+                                    <span style={styles.label}>
+                                        URI
+                                    </span>
+                                    <span style={styles.scheme}>
+                                        https://www.w3.org/TR/xmlschema-2/#anyURI
+                                    </span>
+                                </div>
+                                <div>
+                                    <a href={`/${resource.uri}`}>{`${window.location.protocol}//${window.location.host}/${resource.uri}`}</a>
+                                </div>
+                            </div>
                             {otherFields.map((field, index) => (
-                                <div key={field.name} style={styles.item(index, otherFields.length)}>
+                                <div key={field.name} style={styles.item(index + 1, otherFields.length)}>
                                     <Property
                                         field={field}
                                         isSaving={isSaving}

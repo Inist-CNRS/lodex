@@ -13,6 +13,9 @@ services:
             - hub
             - api
         environment:
+            http_proxy:  ${http_proxy}
+            https_proxy: ${https_proxy}
+            no_proxy: "localhost,127.0.0.1,api,hub"
             HUB_PORT_4444_TCP_ADDR: hub
             HUB_PORT_4444_TCP_PORT: 4444
         ports:
@@ -24,9 +27,11 @@ services:
             - .:/app
         working_dir: /app
         environment:
+            http_proxy:  ${http_proxy}
+            https_proxy: ${https_proxy}
+            no_proxy: "localhost,127.0.0.1,api,hub,mongo"
             NODE_APP_INSTANCE: test
             NODE_ENV: test
-            no_proxy: "localhost,127.0.0.1,"
         links:
             - mongo
         depends_on:

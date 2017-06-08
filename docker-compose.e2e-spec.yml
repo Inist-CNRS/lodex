@@ -12,6 +12,9 @@ services:
         depends_on:
             - hub
         environment:
+            http_proxy:  ${http_proxy}
+            https_proxy: ${https_proxy}
+            no_proxy: "localhost,127.0.0.1,api,hub,mongo,chromedebug"
             NODE_ENV: test
             SELENIUM_BROWSER_BINARY_PATH: ./node_modules/selenium-standalone/.selenium/chromedriver/2.29-x64-chromedriver
         command: ./node_modules/.bin/mocha --require babel-polyfill --compilers="js:babel-core/register" --recursive ${SPEC}
