@@ -209,6 +209,7 @@ export default {
     navigate_to_published_data: 'Go to my published data',
     moderation: 'Moderation',
     apply: 'Apply',
+    details: 'Détails',
     auto_generate_uri: 'Leave empty to autogenerate uri',
     required: 'Required',
     invalid_uri: 'Uri must either start with /:uid or /:ark or be a valid url',

@@ -57,9 +57,11 @@ export class OverviewComponent extends Component {
                 <div
                     style={styles.container}
                 >
-                    { dataset.map(data => (
+                    { dataset.map((data, index) => (
                         <Card
                             style={styles.item}
+                            // eslint-disable-next-line
+                            key={`overview-${index}`}
                         >
                             <CardHeader
                                 avatar={

@@ -138,6 +138,7 @@ export default {
     share_export: 'Share/Export',
     ontology: 'Ontology',
     resources: 'Resources',
+    details: 'Details',
     copy_to_clipboard: 'Copy',
     resource_share_link: 'Link to this resource',
     dataset_share_link: 'Link to this dataset',
