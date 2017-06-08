@@ -179,7 +179,9 @@ export const DetailComponent = ({
                                         URI
                                     </span>
                                     <span style={styles.scheme}>
+                                        <a style={styles.schemeLink} href="https://www.w3.org/TR/xmlschema-2/#anyURI">
                                         https://www.w3.org/TR/xmlschema-2/#anyURI
+                                        </a>
                                     </span>
                                 </div>
                                 <div>
