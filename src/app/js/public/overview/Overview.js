@@ -6,7 +6,7 @@ import translate from 'redux-polyglot/translate';
 import { Card, CardHeader, Avatar } from 'material-ui';
 import LocalLibrary from 'material-ui/svg-icons/maps/local-library';
 
-import { gray300 } from 'material-ui/styles/colors';
+import { grey50 } from 'material-ui/styles/colors';
 
 import Pagination from '../../lib/components/Pagination';
 import Loading from '../../lib/components/Loading';
@@ -66,8 +66,9 @@ export class OverviewComponent extends Component {
                             <CardHeader
                                 avatar={
                                     <Avatar
-                                        icon={<LocalLibrary />}
-                                        color={gray300}
+                                        icon={<img alt="lodex_logo" src="/lodex.png" />}
+                                        backgroundColor={grey50}
+                                        size={60}
                                     />
                                 }
                                 title={
