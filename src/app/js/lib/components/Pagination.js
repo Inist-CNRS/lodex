@@ -103,7 +103,7 @@ class Pagination extends Component {
 		const count = Math.ceil(this.props.total / perPage);
 		let currentPage = this.props.currentPage;
 
-		if (count < this.state.count) {
+		if (count < this.state.count && currentPage !== 0) {
 			currentPage = count - 1;
 		}
 
@@ -138,10 +138,6 @@ class Pagination extends Component {
         const { perPage, currentPage, total, texts } = this.props;
         const { pages, count } = this.state;
 		const pageToDisplay = currentPage + 1;
-
-        if (perPage >= total) {
-            return null;
-        }
 
         let to = pageToDisplay * perPage,
             _from = to - perPage;
