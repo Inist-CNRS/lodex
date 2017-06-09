@@ -33,7 +33,7 @@ const styles = {
         textOverflow: 'ellipsis',
         overflow: 'hidden',
         whiteSpace: 'nowrap',
-        width: '265px',
+        width: '255px',
     },
 };
 
