@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 import { Card, CardHeader, Avatar } from 'material-ui';
-import LocalLibrary from 'material-ui/svg-icons/maps/local-library';
 
 import { grey50 } from 'material-ui/styles/colors';
 
