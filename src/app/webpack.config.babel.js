@@ -139,6 +139,10 @@ export default {
         }], {
             ignore: ['index.html', 'admin/index.js', 'index.js', '0.js'],
         }),
+        new CopyWebpackPlugin([{
+            from: resolve(__dirname, './lodex.png'),
+            to: resolve(__dirname, '../build'),
+        }]),
     ].concat(process.env.NODE_ENV === 'development'
         ? [
             new HotModuleReplacementPlugin(),
