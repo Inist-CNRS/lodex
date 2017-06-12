@@ -49,11 +49,15 @@ export const FilterComponent = ({ getFilter,
                 </ToolbarGroup>
                 : null);
 
+FilterComponent.defaultProps = {
+    getFilter: '',
+};
+
 FilterComponent.propTypes = {
     handleFilterChange: PropTypes.func.isRequired,
     hasSearchableFields: PropTypes.bool.isRequired,
     isDatasetLoading: PropTypes.bool.isRequired,
-    getFilter: PropTypes.string.isRequired,
+    getFilter: PropTypes.string,
     p: polyglotPropTypes.isRequired,
 };
 
