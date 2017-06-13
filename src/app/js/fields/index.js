@@ -88,7 +88,7 @@ const getDefaultField = (name, index) => ({
     name: 'new',
     display_in_list: true,
     display_in_resource: true,
-    searchable: false,
+    searchable: true,
     transformers: name ? [{
         operation: 'COLUMN',
         args: [{
