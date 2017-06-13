@@ -255,4 +255,6 @@ export default {
     paragraph: 'Paragraph',
     identifier: 'Identifier',
     count_of_field: '# documents',
+    isFacet: 'isFacet',
+    searchable: 'Searchable',
 };

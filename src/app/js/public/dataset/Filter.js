@@ -24,9 +24,6 @@ const styles = {
     },
 };
 
-// export class FilterComponent extends Component {
-//     handleFilterChange
-// }
 export const FilterComponent = ({ getFilter,
                                 handleFilterChange,
                                 hasSearchableFields,
