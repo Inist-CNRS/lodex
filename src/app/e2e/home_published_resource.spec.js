@@ -112,7 +112,7 @@ describe('Resource page', function homePublishedDataTests() {
 
     it('should display added field in new detail', async () => {
         await driver.wait(until.elementLocated(By.css('.detail')), DEFAULT_WAIT_TIMEOUT);
-        await driver.wait(elementsCountIs('.detail .property', 7), DEFAULT_WAIT_TIMEOUT);
+        await driver.wait(elementsCountIs('.detail .property', 8), DEFAULT_WAIT_TIMEOUT);
 
         const contributionLabel = '.detail .property.my_contribution .property_label';
         await driver.wait(elementTextIs(contributionLabel, 'my contribution', DEFAULT_WAIT_TIMEOUT));
