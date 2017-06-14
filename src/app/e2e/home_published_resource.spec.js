@@ -34,7 +34,7 @@ describe('Resource page', function homePublishedDataTests() {
 
         const properties = await driver.findElements(By.css('.detail .property'));
 
-        expect(properties.length).toEqual(6);
+        expect(properties.length).toEqual(7);
         expect(await properties[0].getAttribute('class')).toContain('schemeForDatasetLink');
         expect(await properties[1].getAttribute('class')).toContain('best_friend_of');
         expect(await properties[2].getAttribute('class')).toContain('full_name');
