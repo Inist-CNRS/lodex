@@ -256,4 +256,6 @@ export default {
     paragraph: 'Paragraphe',
     identifier: 'Identifiant',
     count_of_field: 'Nb. de doc.',
+    isFacet: 'Est une facette',
+    searchable: 'Recherchable',
 };

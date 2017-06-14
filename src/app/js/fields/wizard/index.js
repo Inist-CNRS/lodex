@@ -61,12 +61,23 @@ class FieldEditionWizardComponent extends Component {
     constructor(props) {
         super(props);
 
-        this.state = { step: 0 };
+        this.state = { step: 0, cover: '', search: null, facet: null };
     }
 
     componentWillReceiveProps(nextProps) {
         if (!nextProps.field || !this.props.field || nextProps.field.name !== this.props.field.name) {
             this.setState({ step: 0 });
+        }
+
+        if (nextProps.field) {
+            this.setState({
+                cover: nextProps.field.cover,
+                search: nextProps.field.searchable || false,
+                facet: nextProps.field.isFacet || false });
+
+            if (this.state.cover === 'dataset') {
+                this.setState({ search: false, facet: false });
+            }
         }
     }
 
@@ -86,7 +97,18 @@ class FieldEditionWizardComponent extends Component {
         this.props.editField(undefined);
     }
 
+    handleVerify = (_, cover) => {
+        this.setState({ cover });
+
+        if (cover === 'dataset') {
+            this.setState({ search: false, facet: false });
+        }
+    }
+
     handleSave = () => {
+        if (this.state.cover === 'dataset') {
+            this.setState({ search: false, facet: false });
+        }
         this.props.saveField();
     }
 
@@ -96,7 +118,7 @@ class FieldEditionWizardComponent extends Component {
             fields,
         } = this.props;
 
-        const { step } = this.state;
+        const { step, cover, facet, search } = this.state;
 
         if (!field) return null;
 
@@ -110,6 +132,7 @@ class FieldEditionWizardComponent extends Component {
                     active={step === 0}
                     field={field}
                     fields={fields}
+                    verify={this.handleVerify}
                     onSelectStep={this.handleSelectStep}
                 />,
                 <StepValue
@@ -150,6 +173,9 @@ class FieldEditionWizardComponent extends Component {
                     field={field}
                     fields={fields}
                     onSelectStep={this.handleSelectStep}
+                    searchValue={search}
+                    facetValue={facet}
+                    searchable={(cover !== 'dataset')}
                 />,
             ];
         }

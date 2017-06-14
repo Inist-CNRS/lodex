@@ -13,6 +13,7 @@ import { polyglot as polyglotPropTypes, field as fieldPropTypes } from '../../pr
 
 export const StepIdentityComponent = ({
     field,
+    verify,
     p: polyglot,
     ...props
 }) => (
@@ -22,6 +23,7 @@ export const StepIdentityComponent = ({
             name="cover"
             component={FormSelectField}
             label={polyglot.t('select_cover')}
+            onChange={verify}
             fullWidth
         >
             <MenuItem value="dataset" primaryText={polyglot.t('cover_dataset')} />
@@ -35,6 +37,7 @@ export const StepIdentityComponent = ({
 StepIdentityComponent.propTypes = {
     field: fieldPropTypes.isRequired,
     p: polyglotPropTypes.isRequired,
+    verify: React.PropTypes.func.isRequired,
 };
 
 export default compose(

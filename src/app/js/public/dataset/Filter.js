@@ -24,36 +24,44 @@ const styles = {
     },
 };
 
-export const FilterComponent = ({ handleFilterChange, hasSearchableFields, isDatasetLoading, p: polyglot }) => (
-    hasSearchableFields
-    ? (
-        <ToolbarGroup>
-            <div style={styles.icon}>
-                {isDatasetLoading
-                    ? <CircularProgress className="dataset-loading" size={20} /> :
-                    <ActionSearch />
-                }
-            </div>
-            <TextField
-                className="filter"
-                hintText={polyglot.t('filter')}
-                onChange={(_, e) => handleFilterChange(e)}
-                style={styles.textbox}
-            />
-        </ToolbarGroup>
-    )
-    : null);
+export const FilterComponent = ({ getFilter,
+                                handleFilterChange,
+                                hasSearchableFields,
+                                isDatasetLoading,
+                                p: polyglot }) =>
+            (hasSearchableFields
+                ? <ToolbarGroup>
+                    <div style={styles.icon}>
+                        {isDatasetLoading
+                        ? <CircularProgress className="dataset-loading" size={20} />
+                        : <ActionSearch />}
+                    </div>
+                    <TextField
+                        className="filter"
+                        value={getFilter}
+                        hintText={polyglot.t('filter')}
+                        onChange={(_, e) => handleFilterChange(e)}
+                        style={styles.textbox}
+                    />
+                </ToolbarGroup>
+                : null);
+
+FilterComponent.defaultProps = {
+    getFilter: '',
+};
 
 FilterComponent.propTypes = {
     handleFilterChange: PropTypes.func.isRequired,
     hasSearchableFields: PropTypes.bool.isRequired,
     isDatasetLoading: PropTypes.bool.isRequired,
+    getFilter: PropTypes.string,
     p: polyglotPropTypes.isRequired,
 };
 
 const mapStateToProps = state => ({
     isDatasetLoading: fromDataset.isDatasetLoading(state),
     hasSearchableFields: fromFields.hasSearchableFields(state),
+    getFilter: fromDataset.getFilter(state),
 });
 
 const mapDispatchToProps = ({

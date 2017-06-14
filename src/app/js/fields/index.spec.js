@@ -53,7 +53,7 @@ describe('field reducer', () => {
                         name: 'new',
                         display_in_list: true,
                         display_in_resource: true,
-                        searchable: true,
+                        searchable: false,
                         transformers: [],
                         position: 2,
                         overview: 0,

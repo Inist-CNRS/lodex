@@ -50,7 +50,6 @@ export const publishCharacteristics = async (ctx, datasetCoverFields, count) => 
                 ...result,
                 [name]: characteristics[name],
             }), {});
-
         await ctx.publishedCharacteristic.addNewVersion(publishedCharacteristics);
     }
 };
