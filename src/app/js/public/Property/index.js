@@ -29,17 +29,18 @@ const styles = {
         color: grey500,
         flexGrow: 2,
         fontWeight: 'bold',
-        fontSize: '1.1rem',
+        fontSize: '2rem',
         textDecoration: status === REJECTED ? 'line-through' : 'none',
     })),
-    language: {
+    language: memoize(hide => ({
         marginRight: '1rem',
-        fontSize: '0.75em',
+        fontSize: '0.6em',
         color: 'grey',
         textTransform: 'uppercase',
-    },
+        visibility: hide ? 'hidden' : 'visible',
+    })),
     scheme: {
-        fontWeight: 'bold',
+        fontWeight: 'normale',
         fontSize: '0.75em',
         alignSelf: 'flex-end',
     },
@@ -101,12 +102,9 @@ const PropertyComponent = ({
                 <PropertyContributor fieldName={field.name} fieldStatus={fieldStatus} />
             </div>
             <div style={styles.valueContainer}>
-                {field.language &&
-                    <span className={classnames('property_language', fieldClassName)} style={styles.language}>
-                        {field.language}
-                    </span>
-                }
-
+                <span className={classnames('property_language', fieldClassName)} style={styles.language(!field.language)}>
+                    {field.language || 'XX'}
+                </span>
                 <div style={styles.value}>
                     <Format
                         className={classnames('property_value', fieldClassName)}
