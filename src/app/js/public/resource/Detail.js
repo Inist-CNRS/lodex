@@ -78,19 +78,30 @@ const styles = {
     },
     value: {
         flexGrow: 2,
+        width: '100%',
+        padding: '0.75rem',
+        paddingRight: '3rem',
+        textAlign: 'justify',
     },
     label: {
         color: grey500,
         flexGrow: 2,
         fontWeight: 'bold',
-        fontSize: '1rem',
+        fontSize: '2rem',
         textDecoration: 'none',
     },
     scheme: {
-        fontWeight: 'bold',
+        fontWeight: 'normal',
         fontSize: '0.75em',
         alignSelf: 'flex-end',
     },
+    language: memoize(hide => ({
+        marginRight: '1rem',
+        fontSize: '0.6em',
+        color: 'grey',
+        textTransform: 'uppercase',
+        visibility: hide ? 'hidden' : 'visible',
+    })),
     schemeLink: {
         color: 'grey',
     },
@@ -142,6 +153,9 @@ export const DetailComponent = ({
                                 </div>
                             </div>
                             <div style={styles.valueContainer}>
+                                <span className="property_language" style={styles.language(true)}>
+                                   XX
+                                </span>
                                 <div style={styles.value}>
                                     <Link to="/home">{backToListLabel}</Link>
                                 </div>
@@ -173,23 +187,8 @@ export const DetailComponent = ({
                         label={polyglot.t('resource_details')}
                     >
                         <div style={styles.propertiesContainer}>
-                            <div style={styles.item(1, otherFields.length + 1)}>
-                                <div style={styles.labelContainer}>
-                                    <span style={styles.label}>
-                                        URI
-                                    </span>
-                                    <span style={styles.scheme}>
-                                        <a style={styles.schemeLink} href="https://www.w3.org/TR/xmlschema-2/#anyURI">
-                                        https://www.w3.org/TR/xmlschema-2/#anyURI
-                                        </a>
-                                    </span>
-                                </div>
-                                <div>
-                                    <a href={`/${resource.uri}`}>{`${window.location.protocol}//${window.location.host}/${resource.uri}`}</a>
-                                </div>
-                            </div>
                             {otherFields.map((field, index) => (
-                                <div key={field.name} style={styles.item(index + 1, otherFields.length)}>
+                                <div key={field.name} style={styles.item(index, otherFields.length + 1)}>
                                     <Property
                                         field={field}
                                         isSaving={isSaving}
@@ -199,6 +198,30 @@ export const DetailComponent = ({
                                     />
                                 </div>
                             ))}
+                            <div style={styles.item(otherFields.length, otherFields.length + 1)}>
+                                <div className="property resourceURI" style={styles.container}>
+                                    <div>
+                                        <div style={styles.labelContainer}>
+                                            <span className="property_label resource_uri" style={styles.label}>
+                                                URI
+                                            </span>
+                                            <span className="property_scheme resource_uri_scheme" style={styles.scheme}>
+                                                <a style={styles.schemeLink} href="https://www.w3.org/TR/xmlschema-2/#anyURI">
+                                                    https://www.w3.org/TR/xmlschema-2/#anyURI
+                                                </a>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div style={styles.valueContainer}>
+                                        <span className="property_language" style={styles.language(true)}>
+                                           XX
+                                        </span>
+                                        <div style={styles.value}>
+                                            <a href={`/${resource.uri}`}>{`${window.location.protocol}//${window.location.host}/${resource.uri}`}</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </Tab>
                     <Tab
