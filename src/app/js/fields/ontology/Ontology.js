@@ -112,7 +112,7 @@ export class OntologyComponent extends Component {
                                     <dd
                                         className={classnames('field-scheme', getFieldClassName(field))}
                                     >
-                                        {field.scheme}
+                                        <a href={field.scheme}>{field.scheme}</a>
                                     </dd>
                                 </dl>
                             }
