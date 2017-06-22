@@ -130,8 +130,8 @@ export const DetailComponent = ({
     backToListLabel,
 }) => {
     const topFieldsLimit = Number(topFieldsCount) || 2;
-    const topFields = fields.slice(0, topFieldsLimit);
-    const otherFields = fields.slice(topFieldsLimit);
+    const topFields = fields.filter(field => resource[field.name]).slice(0, topFieldsLimit);
+    const otherFields = fields.filter(field => resource[field.name]).slice(topFieldsLimit);
 
 
     return (
