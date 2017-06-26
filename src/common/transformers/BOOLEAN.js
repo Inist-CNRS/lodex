@@ -7,7 +7,7 @@ export const toBoolean = (value) => {
         return value.map(toBoolean);
     }
 
-    if (typeof value !== 'string') {
+    if (typeof value === 'string') {
         const val = value.trim();
         if (val === '1' || value === 'true' || value === 'on') {
             return true;

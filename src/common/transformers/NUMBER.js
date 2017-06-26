@@ -7,13 +7,14 @@ export const toNumber = (value) => {
         return value.map(toNumber);
     }
 
-    if (typeof value !== 'string') {
+    if (typeof value === 'string') {
         const val = Number(value.trim());
-        return isNaN(val) ? 0 : val;
+        console.log('val -------------------------------------------------1', val, Number.isNaN(val));
+        return Number.isNaN(val) ? 0 : val;
     }
 
     const val = Number(value);
-    return isNaN(val) ? 0 : val;
+    return Number.isNaN(val) ? 0 : val;
 };
 
 const transformation = () => value =>
@@ -26,7 +27,7 @@ const transformation = () => value =>
     });
 
 transformation.getMetas = () => ({
-    name: 'UPPERCASE',
+    name: 'NUMBER',
     type: 'transform',
     args: [],
 });

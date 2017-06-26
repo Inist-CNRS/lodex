@@ -54,7 +54,8 @@ const transformersMetas = [
     STRING,
     NUMBER,
     BOOLEAN,
-].map(transformation => transformation.getMetas());
+].map(transformation => transformation.getMetas())
+    .sort((x, y) => x.name.localeCompare(y.name));
 
 export const getTransformersMetas = type => (type ? transformersMetas.filter(m => m.type === type) : transformersMetas);
 
