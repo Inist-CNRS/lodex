@@ -236,7 +236,7 @@ export default {
     email: 'Lien courriel',
     image: 'URL d\'une image',
     link: 'URL externe',
-    chart: 'Graphique contextuel',
+    contextualBarchart: 'Graphique contextuel',
     istex: 'Requête ISTEX',
     markdown: 'Syntaxe Markdown',
     ten_percent: '10 %',

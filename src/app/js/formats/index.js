@@ -1,4 +1,4 @@
-import chart from './chart';
+import contextualBarchart from './contextual-bar-chart';
 import email from './email';
 import html from './html';
 import image from './image';
@@ -14,7 +14,7 @@ import resource from './lodex-resource';
 import DefaultFormat from './DefaultFormat';
 
 const components = {
-    chart,
+    contextualBarchart,
     email,
     html,
     image,

@@ -235,7 +235,7 @@ export default {
     email: 'Email value',
     image: 'Image URL',
     link: 'External URL',
-    chart: 'Contextual chart',
+    contextualBarchart: 'Contextual chart',
     istex: 'ISTEX Query',
     markdown: 'Markdown',
     ten_percent: '10 %',
