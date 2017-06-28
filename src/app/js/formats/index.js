@@ -1,4 +1,5 @@
 import contextualBarchart from './contextual-bar-chart';
+import globalPiechart from './global-pie-chart/';
 import email from './email';
 import html from './html';
 import image from './image';
@@ -15,6 +16,7 @@ import DefaultFormat from './DefaultFormat';
 
 const components = {
     contextualBarchart,
+    globalPiechart,
     email,
     html,
     image,
@@ -29,7 +31,7 @@ const components = {
     resource,
 };
 
-export const FORMATS = Object.keys(components);
+export const FORMATS = Object.keys(components).sort();
 
 export const getComponent = (field) => {
     if (!field) {
