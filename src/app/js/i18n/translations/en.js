@@ -255,4 +255,13 @@ export default {
     paragraph: 'Paragraph',
     identifier: 'Identifier',
     count_of_field: '# documents',
+    resource: 'Resource',
+    globalPiechart: 'Pie Chart',
+    max_fields: 'Maximum fields number',
+    colors_set: 'Colors set',
+    order_by: 'Order by',
+    label_asc: 'Label ↗',
+    label_desc: 'Label ↘',
+    value_desc: 'Value ↘',
+    value_asc: 'Value ↗',
 };

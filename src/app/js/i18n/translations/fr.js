@@ -256,4 +256,13 @@ export default {
     paragraph: 'Paragraphe',
     identifier: 'Identifiant',
     count_of_field: 'Nb. de doc.',
+    resource: 'Ressource',
+    globalPiechart: 'Diagramme circulaire',
+    max_fields: 'Maximum fields number',
+    colors_set: 'Jeu de couleurs',
+    order_by: 'Trier par',
+    label_asc: 'Label ↗',
+    label_desc: 'Label ↘',
+    value_desc: 'Valeur ↘',
+    value_asc: 'Valeur ↗',
 };
