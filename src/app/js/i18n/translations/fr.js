@@ -258,7 +258,7 @@ export default {
     count_of_field: 'Nb. de doc.',
     resource: 'Ressource',
     globalPiechart: 'Diagramme circulaire',
-    max_fields: 'Maximum fields number',
+    max_fields: 'Nombre max de champs',
     colors_set: 'Jeu de couleurs',
     order_by: 'Trier par',
     label_asc: 'Label ↗',
