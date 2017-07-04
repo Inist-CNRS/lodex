@@ -13,6 +13,17 @@ module.exports = function linkDataset(data, feed) {
                 },
             },
         });
+
+        console.log({
+            ...data,
+            dataset: uri,
+            '@context': {
+                ...data['@context'],
+                dataset: {
+                    '@id': scheme,
+                },
+            },
+        });
         return;
     }
 

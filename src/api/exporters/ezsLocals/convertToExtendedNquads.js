@@ -53,7 +53,8 @@ module.exports = function convertToExtendedNquads(data, feed) {
     }
 
     const config = this.getParam('config', {});
-    const graph = config.istexQuery.graph || this.getParam('graph', '');
+    // const graph = config.istexQuery.graph || this.getParam('graph', '');
+    const graph = 'http://wos-category-5.data.istex.fr/notice/graph';
     const context = this.getParam('context', getContext(config));
 
     const hits = data.content.hits;
@@ -65,12 +66,16 @@ module.exports = function convertToExtendedNquads(data, feed) {
         delete e.id;
     });
 
+    // Replace http to https and remove number instance
+    const protocol = /http:\/\//;
+    const number = /\/\/([a-z]+-[a-z]+)(-\d)(\D+)/;
+    const cleanGraph = graph.replace(protocol, 'https://').replace(number, '//$1$3');
+
     const doc = {
         '@context': context,
-        '@id': graph,
+        '@id': cleanGraph,
         '@graph': hits,
     };
-
     return jsonld.toRDF(doc, { format: 'application/nquads' }, (err, nquads) => {
         if (err) {
             // eslint-disable-next-line
