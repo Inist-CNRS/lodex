@@ -257,6 +257,7 @@ export default {
     count_of_field: '# documents',
     resource: 'Resource',
     globalPiechart: 'Pie Chart',
+    globalRadarchart: 'Radar Chart',
     max_fields: 'Maximum fields number',
     colors_set: 'Colors set',
     order_by: 'Order by',
