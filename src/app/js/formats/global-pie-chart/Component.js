@@ -10,7 +10,7 @@ import CustomizedLabel from './CustomizedLabel';
 
 const valueMoreThan = level => item => (item.value > level);
 
-class ChartView extends Component {
+class PieChartView extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -20,16 +20,17 @@ class ChartView extends Component {
 
     componentDidMount() {
         const { field, resource } = this.props;
-        const orderBy = String(field.format.args.orderBy || '').split('/');
+        const { orderBy, maxSize } = field.format.args;
+        const [sortBy, sortDir] = String(orderBy || 'value/asc').split('/');
         const uri = url.parse(resource[field.name]);
         const query = querystring.parse(uri.query || '');
         const uriNew = {
             ...uri,
             query: {
                 ...query,
-                perPage: String(field.format.args.maxSize || '5'),
-                sortBy: orderBy[0] || 'value',
-                sortDir: orderBy[1] || 'asc',
+                pergPage: maxSize,
+                sortBy,
+                sortDir,
             },
             search: '',
         };
@@ -91,15 +92,15 @@ class ChartView extends Component {
     }
 }
 
-ChartView.propTypes = {
+PieChartView.propTypes = {
     field: fieldPropTypes.isRequired,
     linkedResource: PropTypes.object, // eslint-disable-line
     resource: PropTypes.object.isRequired, // eslint-disable-line
 };
 
-ChartView.defaultProps = {
+PieChartView.defaultProps = {
     className: null,
 };
 
-export default translate(ChartView);
+export default translate(PieChartView);
 
