@@ -1,9 +1,32 @@
+import validUrl from 'valid-url';
+import { set } from 'lodash';
+import deepObject from 'deep-object-map';
+
+/**
+ * replace uri blankNode to unique uri
+ * @param {object} data
+ */
 function blankNodeSpecifier(data) {
+    let count = 0;
     Object.keys(data).map((e) => {
         if (e !== '@context' && typeof data[e] === 'object') {
-            data[e] = { '@id': `${data['@id']}/${e}/${Math.floor(new Date())}`, ...data[e] };
+            count += 1;
+            data[e] = { '@id': `${data['@id']}/${e}/${count}`, ...data[e] };
         }
         return 0;
+    });
+    return data;
+}
+
+/**
+ * replace @value with @id in JSON-LD
+ * @param {object} data
+ */
+function uriSpecifier(data) {
+    deepObject.deepMapValues(data, async (value, path) => {
+        if (validUrl.isWebUri(value) && !path.includes('@id', '@context')) {
+            await set(data, path, { '@id': value });
+        }
     });
     return data;
 }
@@ -14,7 +37,7 @@ module.exports = function linkDataset(data, feed) {
 
     if (uri && data && data['@context']) {
         feed.send({
-            ...blankNodeSpecifier(data),
+            ...uriSpecifier(blankNodeSpecifier(data)),
             dataset: uri,
             '@context': {
                 ...data['@context'],
