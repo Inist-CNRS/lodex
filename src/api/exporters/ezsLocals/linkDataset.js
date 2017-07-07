@@ -38,13 +38,13 @@ module.exports = function linkDataset(data, feed) {
     if (uri && data && data['@context']) {
         feed.send({
             ...uriSpecifier(blankNodeSpecifier(data)),
-            dataset: uri,
             '@context': {
                 ...data['@context'],
                 dataset: {
                     '@id': scheme,
                 },
             },
+            dataset: uri,
         });
 
         return;
