@@ -5,7 +5,9 @@ import { formField as formFieldPropTypes } from '../../propTypes';
 const FormTextField = ({ input, label, meta: { touched, error }, ...custom }) => (
     <TextField
         hintText={label}
-        floatingLabelText={label}    
+        floatingLabelText={label}
+        multiLine={true}
+        rows={4}
         errorText={touched && error}
         {...input}
         {...custom}
