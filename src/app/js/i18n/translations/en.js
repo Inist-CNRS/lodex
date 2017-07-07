@@ -27,6 +27,7 @@ export default {
     publication_preview: 'Preview',
     click_to_edit_publication_field: 'Click this field to edit it',
     add_transformer: 'Add an operation',
+    add_class: 'Add an class',
     remove_transformer: 'Remove this operation',
     fieldLabel: 'Label',
     fieldName: 'Name',
