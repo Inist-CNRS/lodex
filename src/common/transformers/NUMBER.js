@@ -9,7 +9,6 @@ export const toNumber = (value) => {
 
     if (typeof value === 'string') {
         const val = Number(value.trim());
-        console.log('val -------------------------------------------------1', val, Number.isNaN(val));
         return Number.isNaN(val) ? 0 : val;
     }
 
