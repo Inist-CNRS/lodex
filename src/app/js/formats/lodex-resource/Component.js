@@ -17,24 +17,36 @@ class LodexResource extends Component {
 
     componentDidMount() {
         const { field, resource } = this.props;
-        const uri = url.parse(resource[field.name]);
-        uri.query = {
-            uri: uri.path.slice(1),
+        const targetURI = url.parse(resource[field.name]);
+        const originalURI = url.parse(resource[field.name]);
+        targetURI.query = {
+            uri: targetURI.path.slice(1),
         };
-        uri.pathname = '/api/export/min';
-        const apiurl = url.format(uri);
-        fetch(apiurl)
+        if (!targetURI.host) {
+            targetURI.host = window.location.host;
+            targetURI.protocol = window.location.protocol;
+            targetURI.query.uri = resource[field.name];
+        }
+        targetURI.pathname = '/api/export/min';
+
+        let originalURL = url.format(originalURI);
+        if (!originalURI.host) {
+            originalURL = '//'.concat(window.location.host).concat('/').concat(resource[field.name]);
+        }
+        const targetURL = url.format(targetURI);
+        console.log('targetURI', targetURI);
+        console.log('originalURL', originalURL);
+        fetch(targetURL)
             .then((response) => {
                 if (response.status >= 400) {
                     throw new Error('Bad response from server');
                 }
                 return response.json().then((json) => {
                     const { value } = json.shift();
-                    const title = value || uri;
-                    console.log('title/uri', title, uri);
+                    const title = value || originalURL;
                     this.setState({
                         title,
-                        uri,
+                        uri: originalURL,
                     });
                 });
             });

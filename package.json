@@ -65,6 +65,7 @@
     "json-loader": "0.5.4",
     "jsonld": "0.4.11",
     "jsonwebtoken": "7.3.0",
+    "kcors": "2.2.1",
     "koa": "2.2.0",
     "koa-bodyparser": "4.2.0",
     "koa-connect": "2.0.0",

@@ -1,12 +1,16 @@
 import Koa from 'koa';
 import config from 'config';
 import mount from 'koa-mount';
+import cors from 'kcors';
+
 
 import { httpLogger } from './services/logger';
 import controller from './controller';
 
 const env = process.env.NODE_ENV;
 const app = new Koa();
+
+app.use(cors());
 
 // server logs
 app.use(async (ctx, next) => {
