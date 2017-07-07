@@ -53,8 +53,7 @@ module.exports = function convertToExtendedNquads(data, feed) {
     }
 
     const config = this.getParam('config', {});
-    // const graph = config.istexQuery.graph || this.getParam('graph', '');
-    const graph = 'http://wos-category-5.data.istex.fr/notice/graph';
+    const graph = config.istexQuery.graph || this.getParam('graph', '');
     const context = this.getParam('context', getContext(config));
 
     const hits = data.content.hits;
