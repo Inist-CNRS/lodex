@@ -7,11 +7,11 @@ describe('BOOLEAN', () => {
         expect(toBoolean('true')).toBe(true);
     });
 
-    it('should return uppercase value of each item in array', () => {
+    it('should return booleans for each item in array', () => {
         expect(toBoolean(['1', '0'])).toEqual([true, false]);
     });
 
-    it('should return null if value is literal', () => {
+    it('should return false if value is any string (except 1, true, on)', () => {
         expect(toBoolean({
             a: 'hello',
             b: 'world',
