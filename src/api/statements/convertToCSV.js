@@ -1,6 +1,6 @@
 import omit from 'lodash.omit';
 
-import { VALIDATED } from '../../../common/propositionStatus';
+import { VALIDATED } from '../../common/propositionStatus';
 
 export const removeContributions = (doc, contributions) => {
     const fieldsToIgnore = contributions
