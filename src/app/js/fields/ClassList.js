@@ -11,26 +11,38 @@ import ClassListItem from './ClassListItem';
 
 const styles = {
     header: {
+        lineHeight: '48px',
+        paddingLeft: 0,
+    },
+    subHeader: {
         fontSize: '16px',
         paddingLeft: 0,
+        marginBottom: 10,
+    },
+    tab: {
+        paddingLeft: '40px',
     },
 };
 
-const ClassList = ({ fields, p: polyglot, onRemove}) => (
+const ClassList = ({ fields, p: polyglot}) => (
     <div>
-        <Subheader style={styles.header}>
+        <div style={styles.header}>{polyglot.t('annotate_class')}</div>
+        <Subheader style={styles.subHeader}>
             <FlatButton
                 className="add-class"
                 onClick={() => fields.push()}
                 label={polyglot.t('add_class')}
             />
         </Subheader>
-        {fields.map((fieldName, index) => (
-            <ClassListItem
-                fieldName={fieldName}
-                onRemove={onRemove}
-            />
+        <div style={styles.tab}>
+            {fields.map((fieldName, index) => (
+                <ClassListItem
+                    key={fieldName}
+                    fieldName={fieldName}
+                    onRemove={() => fields.remove(index)}
+                />
         ))}
+        </div>
     </div>
 );
 
@@ -38,8 +50,8 @@ ClassList.PropTypes = {
     fields: PropTypes.shape({
         map: PropTypes.func.isRequired,
         get: PropTypes.func.isRequired,
+        remove: PropTypes.func.isRequired,
     }).isRequired,
-    onRemove: PropTypes.func.isRequired,
     p: polyglotPropTypes.isRequired,
 };
 
