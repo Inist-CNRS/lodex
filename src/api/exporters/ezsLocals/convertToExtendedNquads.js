@@ -65,10 +65,9 @@ module.exports = function convertToExtendedNquads(data, feed) {
         delete e.id;
     });
 
-    // Replace http to https and remove number instance
-    const protocol = /http:\/\//;
-    const number = /\/\/([a-z]+-[a-z]+)(-\d)(\D+)/;
-    const cleanGraph = graph.replace(protocol, 'https://').replace(number, '//$1$3');
+    // Remove number instance
+    const number = /\/\/([a-z0-9]+-[a-z0-9]+)(-\d)(\D+)/;
+    const cleanGraph = graph.replace(number, '//$1$3');
 
     const doc = {
         '@context': context,
