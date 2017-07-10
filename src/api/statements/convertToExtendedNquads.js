@@ -65,12 +65,15 @@ module.exports = function convertToExtendedNquads(data, feed) {
         delete e.id;
     });
 
+    // Remove number instance
+    const number = /\/\/([a-z0-9]+-[a-z0-9]+)(-\d)(\D+)/;
+    const cleanGraph = graph.replace(number, '//$1$3');
+
     const doc = {
         '@context': context,
-        '@id': graph,
+        '@id': cleanGraph,
         '@graph': hits,
     };
-
     return jsonld.toRDF(doc, { format: 'application/nquads' }, (err, nquads) => {
         if (err) {
             // eslint-disable-next-line

@@ -39,7 +39,7 @@ describe('conversion to extended Nquads', () => {
         /* Fake URL */
         from([{ lodex: { uri: 'https://lodex-uri.fr/URI' }, content: 'https://api-v5.istex.fr/document/?q=language:test' }])
         .pipe(ezs('scroll'))
-        .pipe(ezs('convertToExtendedNquads', { graph: 'http://test-unit.fr', config }))
+        .pipe(ezs('convertToExtendedNquads', { graph: 'https://test-unit.fr', config }))
         .pipe(ezs((data, feed) => {
             if (data !== null) {
                 try {
