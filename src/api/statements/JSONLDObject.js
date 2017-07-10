@@ -1,6 +1,6 @@
 import path from 'path';
 import { hostname } from 'config';
-import generateUid from '../../services/generateUid';
+import generateUid from '../services/generateUid';
 
 async function transformCompleteFields(field) {
     const name = await generateUid();
