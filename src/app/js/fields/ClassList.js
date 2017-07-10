@@ -4,10 +4,8 @@ import translate from 'redux-polyglot/translate';
 import pure from 'recompose/pure';
 import FlatButton from 'material-ui/FlatButton';
 import Subheader from 'material-ui/Subheader';
-import memoize from 'lodash.memoize';
-
 import { polyglot as polyglotPropTypes } from '../propTypes';
-import ClassListItem from './ClassListItem';
+import ListItem from './ClassListItem';
 
 const styles = {
     header: {
@@ -24,7 +22,7 @@ const styles = {
     },
 };
 
-const ClassList = ({ fields, p: polyglot}) => (
+const ClassList = ({ fields, p: polyglot }) => (
     <div>
         <div style={styles.header}>{polyglot.t('annotate_class')}</div>
         <Subheader style={styles.subHeader}>
@@ -36,7 +34,7 @@ const ClassList = ({ fields, p: polyglot}) => (
         </Subheader>
         <div style={styles.tab}>
             {fields.map((fieldName, index) => (
-                <ClassListItem
+                <ListItem
                     key={fieldName}
                     fieldName={fieldName}
                     onRemove={() => fields.remove(index)}
