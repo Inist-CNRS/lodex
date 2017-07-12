@@ -9,7 +9,9 @@ import TextField from 'material-ui/TextField';
 import { red600 } from 'material-ui/styles/colors';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
+import ButtonWithStatus from '../../lib/components/ButtonWithStatus';
 import { clearDataset as clearDatasetAction } from '../clear';
+import { fromClear } from '../selectors';
 
 const styles = {
     dialog: {
@@ -41,8 +43,13 @@ class ClearDialogComponent extends Component {
         });
     }
 
+    handleClearDataset = () => {
+        console.log('handleClearDataset');
+        this.props.clearDataset();
+    }
+
     render() {
-        const { type, p: polyglot, onClose } = this.props;
+        const { type, p: polyglot, onClose, isClearing } = this.props;
         const { validName } = this.state;
 
         const actions = [
@@ -52,12 +59,15 @@ class ClearDialogComponent extends Component {
                 onTouchTap={onClose}
                 primary
             />,
-            <RaisedButton
+            <ButtonWithStatus
+                raised
                 className="btn-submit"
                 label={polyglot.t('valid')}
                 color={`${red600}`}
+                onTouchTap={this.handleClearDataset}
                 secondary
                 disabled={!validName}
+                loading={isClearing}
             />,
         ];
         return (
@@ -87,9 +97,13 @@ ClearDialogComponent.propTypes = {
     type: PropTypes.string.isRequired,
     p: polyglotPropTypes.isRequired,
     onClose: PropTypes.func.isRequired,
+    clearDataset: PropTypes.func.isRequired,
+    isClearing: PropTypes.bool.isRequired,
 };
 
-const mapStateToProps = state => ({});
+const mapStateToProps = state => ({
+    isClearing: fromClear.getIsClearing(state),
+});
 
 const mapDispatchToProps = ({
     clearDataset: clearDatasetAction,
