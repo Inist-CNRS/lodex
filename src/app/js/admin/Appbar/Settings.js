@@ -23,7 +23,8 @@ const styles = {
     },
 };
 
-class DangerZoneComponent extends Component {
+class SettingsComponent extends Component {
+
 
     static propTypes = {
         p: polyglotPropTypes.isRequired,
@@ -128,4 +129,4 @@ const mapDispatchToProps = ({});
 export default compose(
     translate,
     connect(mapStateToProps, mapDispatchToProps),
-)(DangerZoneComponent);
+)(SettingsComponent);

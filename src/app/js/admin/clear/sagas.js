@@ -1,4 +1,4 @@
-import { call, put, take, race, select, takeLatest } from 'redux-saga/effects';
+import { call, put, select, takeLatest } from 'redux-saga/effects';
 
 import {
     CLEAR_DATASET,
@@ -11,11 +11,20 @@ import fetchSaga from '../../lib/sagas/fetchSaga';
 
 export function* handleClearDatasetRequest() {
     const request = yield select(fromUser.getClearDatasetRequest);
-    const { error } = yield call(fetchSaga, request);
+    const { error, response } = yield call(fetchSaga, request);
 
-    yield console.log(error);
+    if (error || response.status !== 'success') {
+        return yield put(clearDatasetError(error));
+    }
+
+    return yield put(clearDatasetSuccess());
+}
+
+export function* handleClearPublishedRequest() {
+    
 }
 
 export default function* () {
+    yield takeLatest(CLEAR_DATASET, handleClearDatasetRequest);
     yield takeLatest(CLEAR_DATASET, handleClearDatasetRequest);
 }
