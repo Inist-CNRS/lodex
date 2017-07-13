@@ -43,6 +43,7 @@ export default {
     export: 'Export as %{type}',
     sign_out: 'Sign out',
     back_to_list: 'Back to list',
+    powered: 'Propulsé par',
     not_found: 'Resource not found',
     loading_resource: 'Resource loading...',
     error_label_required: 'Label is required',
