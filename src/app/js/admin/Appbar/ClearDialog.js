@@ -14,6 +14,7 @@ import { clearDataset as clearDatasetAction,
          clearPublished as clearPublishedAction } from '../clear';
 
 import { reloadParsingResult } from '../parsing';
+import { reloadPublication as reloadPublicationAction } from '../publication';
 import { fromClear } from '../selectors';
 
 const styles = {
@@ -36,7 +37,17 @@ class ClearDialogComponent extends Component {
     componentWillReceiveProps(nextProps) {
         if (nextProps.succeeded) { // eslint-disable-line
             this.props.onClose();
-            this.props.reloadParsing();
+
+            switch (this.props.type) {
+            case 'dataset':
+                this.props.reloadParsing();
+                break;
+            case 'published':
+                this.props.reloadPublication();
+                break;
+            default:
+                break;
+            }
         }
     }
 
@@ -117,6 +128,7 @@ ClearDialogComponent.propTypes = {
     clearDataset: PropTypes.func.isRequired,
     clearPublished: PropTypes.func.isRequired,
     reloadParsing: PropTypes.func.isRequired,
+    reloadPublication: PropTypes.func.isRequired,
     isClearing: PropTypes.bool.isRequired,
     hasFailed: PropTypes.bool.isRequired,
 };
@@ -131,6 +143,7 @@ const mapDispatchToProps = ({
     clearDataset: clearDatasetAction,
     clearPublished: clearPublishedAction,
     reloadParsing: reloadParsingResult,
+    reloadPublication: reloadPublicationAction,
 });
 
 export default compose(

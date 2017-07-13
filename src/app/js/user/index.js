@@ -125,6 +125,11 @@ export const getClearDatasetRequest = state => getRequest(state, {
     method: 'DELETE',
 });
 
+export const getClearPublishedRequest = state => getRequest(state, {
+    url: '/api/publish',
+    method: 'DELETE',
+});
+
 export const getLoadRemovedResourcePageRequest = (state, { page, perPage }) =>
     getRequest(state, {
         url: `/api/publishedDataset/removed?page=${encodeURIComponent(page)}&perPage=${encodeURIComponent(perPage)}`,
@@ -251,6 +256,7 @@ export const selectors = {
     getLoginRequest,
     getClearUploadRequest,
     getClearDatasetRequest,
+    getClearPublishedRequest,
     getLoadExportersRequest,
     getChangeFieldStatusRequest,
     getLoadContributedResourcePageRequest,

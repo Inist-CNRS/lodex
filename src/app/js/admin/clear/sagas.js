@@ -1,7 +1,10 @@
-import { call, put, select, takeLatest } from 'redux-saga/effects';
+import { call, put, select, fork, takeLatest } from 'redux-saga/effects';
 
 import {
     CLEAR_DATASET,
+    CLEAR_PUBLISHED,
+    clearPublishedError,
+    clearPublishedSuccess,
     clearDatasetError,
     clearDatasetSuccess,
 } from './';
@@ -21,10 +24,25 @@ export function* handleClearDatasetRequest() {
 }
 
 export function* handleClearPublishedRequest() {
-    
+    const request = yield select(fromUser.getClearPublishedRequest);
+    const { error, response } = yield call(fetchSaga, request);
+
+    if (error || response.status !== 'success') {
+        return yield put(clearPublishedError(error));
+    }
+
+    return yield put(clearPublishedSuccess());
+}
+
+export function* watchClearDatasetRequest() {
+    yield takeLatest(CLEAR_DATASET, handleClearDatasetRequest);
+}
+
+export function* watchClearPublishedRequest() {
+    yield takeLatest(CLEAR_PUBLISHED, handleClearPublishedRequest);
 }
 
 export default function* () {
-    yield takeLatest(CLEAR_DATASET, handleClearDatasetRequest);
-    yield takeLatest(CLEAR_DATASET, handleClearDatasetRequest);
+    yield fork(watchClearDatasetRequest);
+    yield fork(watchClearPublishedRequest);
 }

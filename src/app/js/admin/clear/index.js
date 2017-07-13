@@ -9,6 +9,8 @@ export const CLEAR_PUBLISHED_SUCCESS = 'CLEAR_PUBLISHED_SUCCESS';
 
 export const clearDataset = createAction(CLEAR_DATASET);
 export const clearPublished = createAction(CLEAR_PUBLISHED);
+export const clearPublishedError = createAction(CLEAR_PUBLISHED_ERROR);
+export const clearPublishedSuccess = createAction(CLEAR_PUBLISHED_SUCCESS);
 export const clearDatasetError = createAction(CLEAR_DATASET_ERROR);
 export const clearDatasetSuccess = createAction(CLEAR_DATASET_SUCCESS);
 
@@ -23,6 +25,8 @@ export default handleActions({
     CLEAR_PUBLISHED: state => ({ ...state, loading: true }),
     CLEAR_DATASET_ERROR: (state, { payload: error }) => ({ ...state, status: 'error', error, loading: false }),
     CLEAR_DATASET_SUCCESS: state => ({ ...state, status: 'success', loading: false }),
+    CLEAR_PUBLISHED_ERROR: (state, { payload: error }) => ({ ...state, status: 'error', error, loading: false }),
+    CLEAR_PUBLISHED_SUCCESS: state => ({ ...state, status: 'success', loading: false }),
 }, initialState);
 
 export const getIsClearing = state => state.loading;
