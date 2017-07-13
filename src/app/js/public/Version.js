@@ -4,7 +4,7 @@ import compose from 'recompose/compose';
 
 import { polyglot as polyglotPropTypes } from '../propTypes';
 
-const version = require('../../../../package.json').version;
+const { version } = require('../../../../package.json');
 
 const link = `//github.com/Inist-CNRS/lodex/releases/tag/v${version}`;
 
