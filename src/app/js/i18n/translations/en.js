@@ -43,6 +43,7 @@ export default {
     sign_out: 'Sign out',
     back_to_list: 'Back to list',
     not_found: 'Resource not found',
+    powered: 'Powered by',
     loading_resource: 'Resource loading...',
     error_label_required: 'Label is required',
     error_cover_required: 'Cover is required',
