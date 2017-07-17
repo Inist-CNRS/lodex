@@ -14,7 +14,7 @@ import { clearDataset as clearDatasetAction,
          clearPublished as clearPublishedAction } from '../clear';
 
 import { reloadParsingResult } from '../parsing';
-import { reloadPublication as reloadPublicationAction } from '../publication';
+// import { reloadPublication as reloadPublicationAction } from '../publication';
 import { fromClear } from '../selectors';
 
 const styles = {
@@ -43,7 +43,9 @@ class ClearDialogComponent extends Component {
                 this.props.reloadParsing();
                 break;
             case 'published':
-                this.props.reloadPublication();
+                // this.props.reloadPublication();
+                // must be change
+                window.location.href = '/admin/dashboard';
                 break;
             default:
                 break;
@@ -51,8 +53,10 @@ class ClearDialogComponent extends Component {
         }
     }
 
+    getInstanceName = () => /\/\/([a-z0-9-]+)./.exec(window.location.href)[1];
+
     handleChangeField = (_, value) => {
-        const instanceName = /\/\/([a-z0-9-]+)./.exec(window.location.href)[1];
+        const instanceName = this.getInstanceName();
 
         if (instanceName !== value) {
             return this.setState({
@@ -64,6 +68,8 @@ class ClearDialogComponent extends Component {
             validName: true,
         });
     }
+
+    handleClear = type => (type === 'dataset' && this.handleClearDataset) || (type === 'published' && this.handleClearPublished);
 
     handleClearDataset = () => {
         this.props.clearDataset();
@@ -89,8 +95,7 @@ class ClearDialogComponent extends Component {
                 className="btn-submit"
                 label={polyglot.t('valid')}
                 color={`${red600}`}
-                onTouchTap={(type === 'dataset' && this.handleClearDataset)
-                         || (type === 'published' && this.handleClearPublished)}
+                onTouchTap={this.handleClear(type)}
                 secondary
                 error={hasFailed}
                 disabled={!validName}
@@ -100,20 +105,22 @@ class ClearDialogComponent extends Component {
         return (
             <Dialog
                 open
-                title={type}
+                title={`${polyglot.t('clear')} ${type}`}
                 actions={actions}
                 contentStyle={styles.dialog}
             >
-                {polyglot.t('listen_up')}
+                <b>{polyglot.t('listen_up')}</b>
+                <br />
                 <br />
                 <div>
-                    {polyglot.t('enter_name')}
+                    {polyglot.t('enter_name')} :
+                    <b> {this.getInstanceName()}</b>
                     <TextField
                         name="field-name-instance"
                         hintText={polyglot.t('instance_name')}
                         fullWidth
                         onChange={this.handleChangeField}
-                        errorText={hasFailed && 'Erreur dans la suppression'}
+                        errorText={hasFailed && polyglot.t('error')}
                     />
                 </div>
             </Dialog>
@@ -128,7 +135,6 @@ ClearDialogComponent.propTypes = {
     clearDataset: PropTypes.func.isRequired,
     clearPublished: PropTypes.func.isRequired,
     reloadParsing: PropTypes.func.isRequired,
-    reloadPublication: PropTypes.func.isRequired,
     isClearing: PropTypes.bool.isRequired,
     hasFailed: PropTypes.bool.isRequired,
 };
@@ -143,7 +149,7 @@ const mapDispatchToProps = ({
     clearDataset: clearDatasetAction,
     clearPublished: clearPublishedAction,
     reloadParsing: reloadParsingResult,
-    reloadPublication: reloadPublicationAction,
+    // reloadPublication: reloadPublicationAction,
 });
 
 export default compose(

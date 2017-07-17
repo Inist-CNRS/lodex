@@ -5,12 +5,12 @@ import MenuItem from 'material-ui/MenuItem';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
-import { red400, red600 } from 'material-ui/styles/colors';
 import Popover, { PopoverAnimationVertical } from 'material-ui/Popover';
 import SettingsIcon from 'material-ui/svg-icons/action/settings';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 
 import ClearDialog from './ClearDialog';
+import { fromPublication, fromParsing } from '../selectors';
 
 const styles = {
     container: {
@@ -28,6 +28,8 @@ class SettingsComponent extends Component {
 
     static propTypes = {
         p: polyglotPropTypes.isRequired,
+        hasPublishedDataset: PropTypes.bool.isRequired,
+        hasLoadedDataset: PropTypes.bool.isRequired,
     }
 
     constructor(props) {
@@ -82,7 +84,7 @@ class SettingsComponent extends Component {
     }
 
     render() {
-        const { p: polyglot } = this.props;
+        const { p: polyglot, hasLoadedDataset, hasPublishedDataset } = this.props;
         const { open, anchorEl, showClearPublished, showClearDataset } = this.state;
         return (
             <div style={styles.container}>
@@ -106,12 +108,14 @@ class SettingsComponent extends Component {
                         <MenuItem
                             className="btn-clear-published"
                             primaryText={polyglot.t('clear_publish')}
-                            onClick={this.handleClearPublished}
+                            onTouchTap={this.handleClearPublished}
+                            disabled={!hasPublishedDataset}
                         />
                         <MenuItem
                             className="btn-clear-dataset"
                             primaryText={polyglot.t('clear_dataset')}
-                            onClick={this.handleClearDataset}
+                            onTouchTap={this.handleClearDataset}
+                            disabled={!hasLoadedDataset}
                         />
                     </Menu>
                 </Popover>
@@ -122,11 +126,13 @@ class SettingsComponent extends Component {
     }
 }
 
-const mapStateToProps = state => ({});
+const mapStateToProps = state => ({
+    hasPublishedDataset: fromPublication.hasPublishedDataset(state),
+    hasLoadedDataset: fromParsing.hasUploadedFile(state),
+});
 
-const mapDispatchToProps = ({});
 
 export default compose(
     translate,
-    connect(mapStateToProps, mapDispatchToProps),
+    connect(mapStateToProps),
 )(SettingsComponent);
