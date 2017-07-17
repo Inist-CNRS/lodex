@@ -6,6 +6,7 @@ import translate from 'redux-polyglot/translate';
 import { Card, CardHeader, Avatar } from 'material-ui';
 
 import { grey50 } from 'material-ui/styles/colors';
+import validUrl from 'valid-url';
 
 import Pagination from '../../lib/components/Pagination';
 import Loading from '../../lib/components/Loading';
@@ -56,8 +57,12 @@ export class OverviewComponent extends Component {
                 <div
                     style={styles.container}
                 >
-                    { dataset.map((data, index) => (
-                        <Card
+                    { dataset.map((data, index) => {
+                        const identifier = data.uri.substring(0, 5);
+                        const resource = data.uri.substring(5, data.uri.length);
+                        const uri = validUrl.isWebUri(resource) ? `/${identifier}${encodeURIComponent(resource)}` : `/${data.uri}`;
+
+                        return (<Card
                             style={styles.item}
                             // eslint-disable-next-line
                             key={`overview-${index}`}
@@ -72,7 +77,7 @@ export class OverviewComponent extends Component {
                                 }
                                 title={
                                     <a
-                                        href={`/${data.uri}`}
+                                        href={uri}
                                         title={
                                         (columns.filter(e => e.overview === 1).length) ?
                                         data[columns.filter(e => e.overview === 1)[0].name] :
@@ -91,8 +96,8 @@ export class OverviewComponent extends Component {
                                 titleStyle={styles.title}
                                 subtitleStyle={styles.title}
                             />
-                        </Card>
-                )) }
+                        </Card>);
+                    }) }
                 </div>
                 <Pagination
                     onChange={this.handlePageChange}
