@@ -1,5 +1,4 @@
 import jsonld from 'jsonld';
-import url from 'url';
 import validUrl from 'valid-url';
 
 /**
@@ -9,7 +8,7 @@ import validUrl from 'valid-url';
 function getContext(config) {
     const context = {};
 
-    Object.keys(config.istexQuery.context).map((v) => {
+    Object.keys(config.istexQuery.context).forEach((v) => {
         const propertyValue = config.istexQuery.context[v];
 
         if (validUrl.isWebUri(propertyValue)) {
@@ -27,10 +26,7 @@ function getContext(config) {
             );
         }
 
-        return (context[v] = url.resolve(
-        config.prefixes[istexProperty[0]],
-        istexProperty[1],
-        ));
+        return (context[v] = `${config.prefixes[istexProperty[0]]}${istexProperty[1]}`);
     });
 
     if (context[config.istexQuery.linked] === undefined) {
@@ -53,7 +49,6 @@ module.exports = function convertToExtendedNquads(data, feed) {
     }
 
     const config = this.getParam('config', {});
-    const graph = config.istexQuery.graph || this.getParam('graph', '');
     const context = this.getParam('context', getContext(config));
 
     const hits = data.content.hits;
@@ -65,13 +60,8 @@ module.exports = function convertToExtendedNquads(data, feed) {
         delete e.id;
     });
 
-    // Remove number instance
-    const number = /\/\/([a-z0-9]+-[a-z0-9]+)(-\d)(\D+)/;
-    const cleanGraph = graph.replace(number, '//$1$3');
-
     const doc = {
         '@context': context,
-        '@id': cleanGraph,
         '@graph': hits,
     };
     return jsonld.toRDF(doc, { format: 'application/nquads' }, (err, nquads) => {
