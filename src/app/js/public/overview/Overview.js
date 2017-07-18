@@ -13,6 +13,7 @@ import Loading from '../../lib/components/Loading';
 import { loadDatasetPage as loadDatasetPageAction } from '../dataset';
 import { fromDataset } from '../selectors';
 import { fromFields } from '../../sharedSelectors';
+import { getResourceUri } from '../../../../common/uris';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 
 const styles = {
@@ -57,47 +58,40 @@ export class OverviewComponent extends Component {
                 <div
                     style={styles.container}
                 >
-                    { dataset.map((data, index) => {
-                        const identifier = data.uri.substring(0, 5);
-                        const resource = data.uri.substring(5, data.uri.length);
-                        const uri = validUrl.isWebUri(resource) ? `/${identifier}${encodeURIComponent(resource)}` : `/${data.uri}`;
-
-                        return (<Card
-                            style={styles.item}
+                    { dataset.map((data, index) => (<Card
+                        style={styles.item}
                             // eslint-disable-next-line
-                            key={`overview-${index}`}
-                        >
-                            <CardHeader
-                                avatar={
-                                    <Avatar
-                                        icon={<img alt="lodex_logo" src="/lodex.png" />}
-                                        backgroundColor={grey50}
-                                        size={60}
-                                    />
-                                }
-                                title={
-                                    <a
-                                        href={uri}
-                                        title={
-                                        (columns.filter(e => e.overview === 1).length) ?
-                                        data[columns.filter(e => e.overview === 1)[0].name] :
-                                        data.uri}
-                                    >
-                                        {
+                            key={`overview-${index}`}>
+                        <CardHeader
+                            avatar={
+                                <Avatar
+                                    icon={<img alt="lodex_logo" src="/lodex.png" />}
+                                    backgroundColor={grey50}
+                                    size={60}
+                                />
+                            }
+                            title={
+                                <a
+                                    href={getResourceUri(data)}
+                                    title={
                                     (columns.filter(e => e.overview === 1).length) ?
-                                        data[columns.filter(e => e.overview === 1)[0].name] :
-                                        data.uri
-                                    }</a>}
-                                subtitle={
-                                    (columns.filter(e => e.overview === 2).length) ?
-                                        data[columns.filter(e => e.overview === 2)[0].name] :
-                                        ''
-                                    }
-                                titleStyle={styles.title}
-                                subtitleStyle={styles.title}
-                            />
-                        </Card>);
-                    }) }
+                                    data[columns.filter(e => e.overview === 1)[0].name] :
+                                    data.uri}
+                                >
+                                    {
+                                (columns.filter(e => e.overview === 1).length) ?
+                                    data[columns.filter(e => e.overview === 1)[0].name] :
+                                    data.uri
+                                }</a>}
+                            subtitle={
+                                (columns.filter(e => e.overview === 2).length) ?
+                                    data[columns.filter(e => e.overview === 2)[0].name] :
+                                    ''
+                                }
+                            titleStyle={styles.title}
+                            subtitleStyle={styles.title}
+                        />
+                    </Card>)) }
                 </div>
                 <Pagination
                     onChange={this.handlePageChange}
