@@ -11,7 +11,7 @@ const exporter = (config, fields, characteristics, stream) =>
         .pipe(ezs('filterContributions', { fields }))
         .pipe(ezs('JSONLDObject', { fields }))
         .pipe(ezs('linkDataset', {
-            uri: config.host,
+            uri: config.cleanHost,
             scheme: config.schemeForDatasetLink,
         }))
         .pipe(ezs('JSONLDCompacter'))

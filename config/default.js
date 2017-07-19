@@ -11,6 +11,17 @@ const getHost = () => {
     return host;
 };
 
+const getCleanHost = () => {
+    const host = process.env.EZMASTER_PUBLIC_URL || `http://localhost:${PORT}`;
+    const reg = new RegExp('(\\-\\d+)(\\.[a-z]+)+');
+    const match = reg.exec(host);
+
+    if (match !== null) {
+        return host.replace(match[1], '');
+    }
+    return host;
+};
+
 module.exports = {
     port: PORT,
     mongo: {
@@ -25,5 +36,6 @@ module.exports = {
     istexApiUrl: 'https://api.istex.fr/document',
     hostname: 'http://data.istex.fr/',
     host: getHost(),
+    cleanHost: getCleanHost(),
     uploadDir: 'upload',
 };
