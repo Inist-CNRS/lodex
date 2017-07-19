@@ -120,11 +120,6 @@ export const getVerifyUriRequest = state => getRequest(state, {
     method: 'GET',
 });
 
-export const getClearDatasetRequest = state => getRequest(state, {
-    url: '/api/dataset',
-    method: 'DELETE',
-});
-
 export const getClearPublishedRequest = state => getRequest(state, {
     url: '/api/publish',
     method: 'DELETE',
@@ -188,6 +183,11 @@ export const getHideResourceRequest = (state, data) =>
         body: data,
 
     });
+
+export const getClearDatasetRequest = state => getRequest(state, {
+    url: '/api/dataset',
+    method: 'DELETE',
+});
 
 export const getAddFieldToResourceRequest = (state, data) =>
     getRequest(state, {
