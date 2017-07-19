@@ -11,6 +11,7 @@ import SignOutButton from './SignOutButton';
 import SignInButton from './SignInButton';
 import PublicationButton from '../publish/PublicationButton';
 import ModelMenu from './ModelMenu';
+import Settings from './Settings';
 import UploadButton from '../upload/UploadButton';
 import { fromUser } from '../../sharedSelectors';
 import { fromPublication, fromParsing } from '../selectors';
@@ -64,6 +65,7 @@ const AppbarComponent = ({ hasPublishedDataset, hasLoadedDataset, isLoading, isL
                 />
             }
             {isLoggedIn ? <ModelMenu canImport={!hasPublishedDataset} /> : <SignInButton />}
+            {isLoggedIn && <Settings />}
             {isLoggedIn && <SignOutButton />}
             {isLoggedIn && !hasPublishedDataset && <PublicationButton /> }
         </div>
