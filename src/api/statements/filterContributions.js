@@ -1,5 +1,5 @@
 import omit from 'lodash.omit';
-import { VALIDATED } from '../../../common/propositionStatus';
+import { VALIDATED } from '../../common/propositionStatus';
 
 module.exports = function filterContributions(data, feed) {
     if (data && data.contributions) {

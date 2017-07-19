@@ -5,7 +5,7 @@ import {
     getCsvFieldFactory,
     getLastVersionFactory,
     removeContributions,
-} from './ezsLocals/convertToCSV';
+} from '../statements/convertToCSV';
 
 import { exportCsvFactory } from './exportCsv';
 

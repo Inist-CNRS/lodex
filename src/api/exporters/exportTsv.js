@@ -1,6 +1,6 @@
 import { csv } from 'json-csv';
 import through from 'through';
-import { getDefaultDocuments, getCsvFieldFactory, getLastVersionFactory } from './ezsLocals/convertToCSV';
+import { getDefaultDocuments, getCsvFieldFactory, getLastVersionFactory } from '../statements/convertToCSV';
 
 export const exportCsvFactory = csvTransformStreamFactory => (config, fields, characteristics, stream) => {
     const defaultDocument = getDefaultDocuments(fields);

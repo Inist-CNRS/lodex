@@ -129,11 +129,30 @@ export const verifyUri = async (ctx) => {
     };
 };
 
+export const clearPublished = async (ctx) => {
+    try {
+        await ctx.publishedDataset.remove({});
+        await ctx.publishedCharacteristic.remove({});
+        await ctx.publishedFacet.remove({});
+        await ctx.uriDataset.remove({});
+
+        ctx.body = {
+            status: 'success',
+        };
+    } catch (error) {
+        ctx.body = {
+            status: 'error',
+        };
+    }
+};
+
 app.use(route.get('/verifyUri', verifyUri));
 
 app.use(route.post('/', preparePublish));
 app.use(route.post('/', handlePublishError));
 
 app.use(route.post('/', doPublish));
+
+app.use(route.delete('/', clearPublished));
 
 export default app;

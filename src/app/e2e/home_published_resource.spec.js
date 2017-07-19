@@ -34,7 +34,7 @@ describe('Resource page', function homePublishedDataTests() {
 
         const properties = await driver.findElements(By.css('.detail .property'));
 
-        expect(properties.length).toEqual(6);
+        expect(properties.length).toEqual(7);
         expect(await properties[0].getAttribute('class')).toContain('schemeForDatasetLink');
         expect(await properties[1].getAttribute('class')).toContain('best_friend_of');
         expect(await properties[2].getAttribute('class')).toContain('full_name');
@@ -112,7 +112,7 @@ describe('Resource page', function homePublishedDataTests() {
 
     it('should display added field in new detail', async () => {
         await driver.wait(until.elementLocated(By.css('.detail')), DEFAULT_WAIT_TIMEOUT);
-        await driver.wait(elementsCountIs('.detail .property', 7), DEFAULT_WAIT_TIMEOUT);
+        await driver.wait(elementsCountIs('.detail .property', 8), DEFAULT_WAIT_TIMEOUT);
 
         const contributionLabel = '.detail .property.my_contribution .property_label';
         await driver.wait(elementTextIs(contributionLabel, 'my contribution', DEFAULT_WAIT_TIMEOUT));

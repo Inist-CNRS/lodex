@@ -55,8 +55,9 @@
     },
     "istexQuery" : {
        "labels": "",
-       "linked": "language",
+       "linked": "link",
        "context": {
+          "link": "dcterms:ispartOf",
           "language": "dcterms:language",
           "doi": "bibo:doi"
        }
