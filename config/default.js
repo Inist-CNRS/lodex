@@ -16,7 +16,7 @@ const getCleanHost = () => {
     const reg = new RegExp('(\\-\\d+)(\\.[a-z]+)+');
     const match = reg.exec(host);
 
-    if (match !== null) {
+    if (match) {
         return host.replace(match[1], '');
     }
     return host;
