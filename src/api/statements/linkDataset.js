@@ -27,19 +27,13 @@ function uriSpecify(data, uri) {
         if (path.includes('@id', '@context')) {
             return;
         }
-
-        console.log('VALUE:', value);
-
         /**
          * If value is an URL
          */
         if (validUrl.isWebUri(value)) {
-            console.log('URL: ', path, value);
             await set(data, path, { '@id': value });
             return;
         }
-
-        console.log('URI ? :', path, value);
 
         /**
          * If value is an uri as ark:/ or uid:/
@@ -64,7 +58,7 @@ module.exports = function linkDataset(data, feed) {
                     '@id': scheme,
                 },
             },
-            dataset: uri,
+            dataset: { '@id': uri },
         });
 
         return;
