@@ -13,6 +13,7 @@ import uploadFileSaga from './upload/sagas';
 import userSagas from '../user/sagas';
 import fetchSaga from '../fetch/sagas';
 import i18nSagas from '../i18n/sagas';
+import clearSaga from './clear/sagas';
 
 export default function* () {
     yield fork(exportSaga);
@@ -28,4 +29,5 @@ export default function* () {
     yield fork(uploadFileSaga);
     yield fork(userSagas);
     yield fork(i18nSagas);
+    yield fork(clearSaga);
 }
