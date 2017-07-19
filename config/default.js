@@ -13,10 +13,10 @@ const getHost = () => {
 
 const getCleanHost = () => {
     const host = process.env.EZMASTER_PUBLIC_URL || `http://localhost:${PORT}`;
-    const reg = new RegExp('(\\-\\d+)(\\.[a-z]+)+');
+    const reg = new RegExp('(\\-\\d+)(\\.[a-z0-9]+)+');
     const match = reg.exec(host);
 
-    if (match !== null) {
+    if (match) {
         return host.replace(match[1], '');
     }
     return host;
