@@ -124,8 +124,8 @@ The expected configuration contains:
 - `mongo`: Object - How to connect to the mongo server
 - `auth`: Object - Configuration of the authentication mechanims
   - `cookieSecret`: String - secret used to encrypt the JWT token inside the authentication cookie
-    - `headerSecret`: String - secret used to encrypt the JWT token inside the authentication header
-    - `expiresIn`: Number - expiration delay of the JWT token in milliseconds
+  - `headerSecret`: String - secret used to encrypt the JWT token inside the authentication header
+  - `expiresIn`: Number - expiration delay of the JWT token in milliseconds
 - `buildFrontend`: Boolean - determines wether the API should build the frontend with webpack. Used to disable build on test environment.
 
 ## Adding a new loader
@@ -483,8 +483,8 @@ The meta object have the following keys
 - args: Array describing each args needed by the transformer.
   - name: The name of the arg as displayed in the admin
   - type: The type of the arg, either:
-        - column: the value is the name of a column in the original dataset
-        - string: a string
+    - column: the value is the name of a column in the original dataset
+    - string: a string
 
 ## Troubleshooting
 
