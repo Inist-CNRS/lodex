@@ -22,10 +22,24 @@ function blankNodeSpecify(data) {
  * replace @value with @id in JSON-LD
  * @param {object} data - JSON-LD
  */
-function uriSpecify(data) {
+function uriSpecify(data, uri) {
     deepObject.deepMapValues(data, async (value, path) => {
-        if (validUrl.isWebUri(value) && !path.includes('@id', '@context')) {
+        if (path.includes('@id', '@context')) {
+            return;
+        }
+        /**
+         * If value is an URL
+         */
+        if (validUrl.isWebUri(value)) {
             await set(data, path, { '@id': value });
+            return;
+        }
+
+        /**
+         * If value is an uri as ark:/ or uid:/
+         */
+        if (validUrl.isUri(value) && !path.includes('@id', '@context')) {
+            await set(data, path, { '@id': `${uri}/${value}` });
         }
     });
     return data;
@@ -37,14 +51,14 @@ module.exports = function linkDataset(data, feed) {
 
     if (uri && data && data['@context']) {
         feed.send({
-            ...uriSpecify(blankNodeSpecify(data)),
+            ...uriSpecify(blankNodeSpecify(data), uri),
             '@context': {
                 ...data['@context'],
                 dataset: {
                     '@id': scheme,
                 },
             },
-            dataset: uri,
+            dataset: { '@id': uri },
         });
 
         return;
