@@ -50,16 +50,20 @@ make test
 
 You will need vnc viewer to access the docker graphical rendering [install here](https://chrome.google.com/webstore/detail/vnc%C2%AE-viewer-for-google-ch/iabmpiboiopbgfabjmgeedhcmjenhbla)
 first run
+
 ```sh
 make setup-frontend-functional-debug
 ```
+
 You will then be able to connect with vnc viewer on port 5900 (the password is secret)
 From here you will be able to launch chrome and access the appli in test environment in `http://api:3010`
 
 To launch the test in debug mode and see them in actions do:
+
 ```sh
 make test-frontend-functional-debug
 ```
+
 You will then see them in vnc viewer
 
 when you are done call `make cleanup test` to stop and remove all docker container used in debug
@@ -97,8 +101,8 @@ On EzMaster, you can edit the instance configuration:
 
 - `mongo`: Optional - Allow to override the default mongo configuration given by ezMaster. You can override all or part of the config, available properties are :
 
-    - `host`: the host and port pointing to the mongo instance eg: `localhost:27017`
-    - `dbName`: The name of the database eg: `lodex`
+  - `host`: the host and port pointing to the mongo instance eg: `localhost:27017`
+  - `dbName`: The name of the database eg: `lodex`
 
 - `perPage`: Optional - the number of item perPage when displaying the dataset. Default to 10
 
@@ -119,7 +123,7 @@ The expected configuration contains:
 - `port`: Number - The application port
 - `mongo`: Object - How to connect to the mongo server
 - `auth`: Object - Configuration of the authentication mechanims
-    - `cookieSecret`: String - secret used to encrypt the JWT token inside the authentication cookie
+  - `cookieSecret`: String - secret used to encrypt the JWT token inside the authentication cookie
     - `headerSecret`: String - secret used to encrypt the JWT token inside the authentication header
     - `expiresIn`: Number - expiration delay of the JWT token in milliseconds
 - `buildFrontend`: Boolean - determines wether the API should build the frontend with webpack. Used to disable build on test environment.
@@ -477,34 +481,37 @@ The meta object have the following keys
 
 - name: the name of the transformer, as displayed on the admin
 - args: Array describing each args needed by the transformer.
-    + name: The name of the arg as displayed in the admin
-    + type: The type of the arg, either:
+  - name: The name of the arg as displayed in the admin
+  - type: The type of the arg, either:
         - column: the value is the name of a column in the original dataset
         - string: a string
 
 ## Troubleshooting
 
 ### Behind a proxy
+
 If you launch lodex behind a proxy, environment variables `http_proxy`, `https_proxy` (optionally `no_proxy`) are required.
 Otherwise, you could get this error after `make docker-run-dev`:
 
-```
+```bash
 npm http request GET https://registry.npmjs.org/pm2
 npm info retry will retry, error on last attempt: Error: connect ETIMEDOUT
 ```
 
 ### Using ezmaster
+
 If you are behind a proxy, and try to test your development version, pay attention to your environment variables: `http_proxy`, `https_proxy` and `no_proxy` have to be passed to docker.
 
 ```bash
-$ docker build -t lodex:dev --build-arg http_proxy --build-arg https_proxy --build-arg no_proxy .
+docker build -t lodex:dev --build-arg http_proxy --build-arg https_proxy --build-arg no_proxy .
 ```
 
 ### Looking at the logs
+
 The server's logs are within `logs/http.log`.
 
 To look at it easily:
 
 ```bash
-$ tail -f ./logs/http.log |jq
+tail -f ./logs/http.log | jq
 ```
