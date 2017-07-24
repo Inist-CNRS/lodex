@@ -1,7 +1,7 @@
 import ezs from 'ezs';
 import N3 from 'n3';
 import ezsBasics from 'ezs-basics';
-import ezsLocals from './ezsLocals';
+import ezsLocals from '../statements';
 
 ezs.use(ezsBasics);
 ezs.use(ezsLocals);

@@ -25,6 +25,7 @@ import Export from './export/Export';
 import Share from './Share';
 import ShareLink from './ShareLink';
 import Widgets from './Widgets';
+import Version from './Version';
 
 const styles = {
     container: {
@@ -116,6 +117,7 @@ export class HomeComponent extends Component {
                                 <Toolbar />
                                 <AppliedFacetList />
                                 <Overview />
+                                <Version />
                             </Tab>
                             <Tab
                                 className="tab-dataset-resources"
@@ -126,6 +128,7 @@ export class HomeComponent extends Component {
                                 <Toolbar />
                                 <AppliedFacetList />
                                 <Dataset />
+                                <Version />
                             </Tab>
                             <Tab
                                 className="tab-dataset-export"
@@ -140,6 +143,7 @@ export class HomeComponent extends Component {
                                 <Widgets />
                                 <ShareLink title={polyglot.t('dataset_share_link')} uri={sharingUri} />
                                 <Share uri={sharingUri} title={sharingTitle} />
+                                <Version />
                             </Tab>
                             <Tab
                                 className="tab-dataset-ontology"
@@ -148,6 +152,7 @@ export class HomeComponent extends Component {
                                 value="ontology"
                             >
                                 <Ontology />
+                                <Version />
                             </Tab>
                         </Tabs>
                     </Card>
