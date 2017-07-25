@@ -95,6 +95,7 @@ module.exports = async function JSONLDObject(data, feed) {
     .filter(field => field.cover === 'collection')
     .reduce((currentOutputPromise, field) =>
         currentOutputPromise.then((currentOutput) => {
+            console.log(field);
             const propertyName = field.name;
             const isCompletedByAnotherField = fields.some(f => f.completes === field.name);
             const completesAnotherField = field.completes;

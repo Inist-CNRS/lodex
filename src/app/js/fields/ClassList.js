@@ -2,20 +2,23 @@ import React, { PropTypes } from 'react';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 import pure from 'recompose/pure';
-import FlatButton from 'material-ui/FlatButton';
-import Subheader from 'material-ui/Subheader';
+import FloatingActionButton from 'material-ui/FloatingActionButton';
+import ContentAdd from 'material-ui/svg-icons/content/add';
 import { polyglot as polyglotPropTypes } from '../propTypes';
 import ListItem from './ClassListItem';
 
 const styles = {
     header: {
-        lineHeight: '48px',
-        paddingLeft: 0,
+        lineHeight: '36px',
+        marginBottom: '10',
+    },
+    add: {
+        marginLeft: '10px',
     },
     subHeader: {
         fontSize: '16px',
         paddingLeft: 0,
-        marginBottom: 10,
+        marginBottom: '10px',
     },
     tab: {
         paddingLeft: '40px',
@@ -24,14 +27,17 @@ const styles = {
 
 const ClassList = ({ fields, p: polyglot }) => (
     <div>
-        <div style={styles.header}>{polyglot.t('annotate_class')}</div>
-        <Subheader style={styles.subHeader}>
-            <FlatButton
+        <div style={styles.header}>
+            {polyglot.t('annotate_class')}
+            <FloatingActionButton
                 className="add-class"
-                onClick={() => fields.push()}
-                label={polyglot.t('add_class')}
-            />
-        </Subheader>
+                onTouchTap={() => fields.push()}
+                mini
+                style={styles.add}
+            >
+                <ContentAdd />
+            </FloatingActionButton>
+        </div>
         <div style={styles.tab}>
             {fields.map((fieldName, index) => (
                 <ListItem
@@ -51,6 +57,7 @@ ClassList.PropTypes = {
         remove: PropTypes.func.isRequired,
     }).isRequired,
     p: polyglotPropTypes.isRequired,
+    onChangeClass: PropTypes.func.isRequired,
 };
 
 export default compose(

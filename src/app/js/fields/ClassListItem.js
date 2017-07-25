@@ -58,10 +58,10 @@ export const ClassListItem = ({
                 fullWidth
                 hintText={polyglot.t('enter_class')}
                 label={`${polyglot.t('class')} ${parseInt(/\d+/.exec(fieldName)[0], 10) + 1}`}
-                name={`${fieldName}.class`}
+                name={`${fieldName}`}
                 component={FormAutoCompleteField}
                 disabled={disabled}
-                onChange={(_, type) => onChangeClass({ type, fieldName })}
+                onChange={(_, value) => onChangeClass({ value, fieldName })}
                 getFetchRequest={getSchemeSearchRequest}
                 parseResponse={response => getSchemeMenuItemsDataFromResponse(response).map(({ label, uri }) => ({
                     text: uri,
