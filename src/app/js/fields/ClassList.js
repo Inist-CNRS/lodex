@@ -10,7 +10,7 @@ import ListItem from './ClassListItem';
 const styles = {
     header: {
         lineHeight: '36px',
-        marginBottom: '10',
+        marginBottom: '10px',
     },
     add: {
         marginLeft: '10px',
