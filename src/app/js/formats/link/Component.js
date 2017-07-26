@@ -38,27 +38,6 @@ const LinkView = ({ className, linkedResource, resource, field, fields }) => {
     }
 
     const link = resource[field.name];
-/*
-    if (field.format && field.format.args && field.format.args.type) {
-        switch (field.format.args.type) {
-        case 'text':
-            label = field.format.args.value;
-            break;
-
-        case 'column': {
-            if (linkedResource) {
-                const fieldForLabel = fields.find(f => f.label === field.format.args.value);
-                label = linkedResource[fieldForLabel.name];
-            }
-            break;
-        }
-
-        default:
-            label = resource[field.name];
-            break;
-        }
-    }
-*/
     return <a className={className} href={`${link}`}>{label}</a>;
 };
 
