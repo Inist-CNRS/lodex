@@ -339,7 +339,7 @@ A format is made of three mandatory components and one optional :
 Those components can be any react component. They will receive the following props:
 
 - `resource`: the resource
-- `field`: the field definition
+- `field`: the field definition in the model
 - `fieldStatus`: only for the ViewComponent and if the field is a contribution. Statuses are `PROPOSED`, `ACCEPTED` and `REJECTED`
 - `shrink`: only for the ViewComponent, a boolean indicating whether the value should be shrinked if possible. This is useful for the public table where large contents can be shrinked (with ellipsis for example) for easier reading.
 
