@@ -84,12 +84,35 @@ function getUri(uri) {
     return u;
 }
 
+function mergeCompose(output, field, data, composed) {
+    const propertyName = field.name;
+    const composeFields = field.composedOf.fields;
+    const fieldContext = getFieldContext(field);
+    let count = 0;
+
+    return {
+        ...output,
+        [propertyName]: composeFields.map((e) => {
+            composed.push(e);
+            count += 1;
+            return {
+                '@id': `${getUri(data.uri)}/${e}/${count}`,
+                [e]: data[e] };
+        }),
+        '@context': {
+            ...output['@context'],
+            [propertyName]: fieldContext,
+        },
+    };
+}
+
 module.exports = async function JSONLDObject(data, feed) {
     if (this.isLast()) {
         feed.close();
         return;
     }
     const fields = this.getParam('fields', {});
+    const composeFields = [];
 
     const output = await fields
     .filter(field => field.cover === 'collection')
@@ -97,7 +120,19 @@ module.exports = async function JSONLDObject(data, feed) {
         currentOutputPromise.then((currentOutput) => {
             const propertyName = field.name;
             const isCompletedByAnotherField = fields.some(f => f.completes === field.name);
+            const isComposedOf = Boolean(field.composedOf);
             const completesAnotherField = field.completes;
+
+            if (isComposedOf) {
+                return Promise.resolve(mergeCompose(currentOutput, field, data, composeFields));
+            }
+
+            /**
+             * If the field is already in group fields
+             */
+            if (composeFields.includes(propertyName)) {
+                return Promise.resolve(currentOutput);
+            }
 
             if (completesAnotherField) {
                 return Promise.resolve(mergeCompleteField(currentOutput, field, fields, data));
