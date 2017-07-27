@@ -84,10 +84,14 @@ function getUri(uri) {
     return u;
 }
 
-function mergeCompose(output, field, data, composed) {
+function mergeCompose(output, field, data, composed, fields) {
     const propertyName = field.name;
     const composeFields = field.composedOf.fields;
     const fieldContext = getFieldContext(field);
+    const composeFieldsContext = fields
+    .filter(e => composeFields.includes(e.name))
+    .reduce((a, e) => ({ ...a, [e.name]: getFieldContext(e) }), {});
+
     let count = 0;
 
     return {
@@ -101,6 +105,7 @@ function mergeCompose(output, field, data, composed) {
         }),
         '@context': {
             ...output['@context'],
+            ...composeFieldsContext,
             [propertyName]: fieldContext,
         },
     };
@@ -124,12 +129,9 @@ module.exports = async function JSONLDObject(data, feed) {
             const completesAnotherField = field.completes;
 
             if (isComposedOf) {
-                return Promise.resolve(mergeCompose(currentOutput, field, data, composeFields));
+                return Promise.resolve(mergeCompose(currentOutput, field, data, composeFields, fields));
             }
 
-            /**
-             * If the field is already in group fields
-             */
             if (composeFields.includes(propertyName)) {
                 return Promise.resolve(currentOutput);
             }
@@ -146,6 +148,5 @@ module.exports = async function JSONLDObject(data, feed) {
         }), Promise.resolve({
             '@id': getUri(data.uri),
         }));
-
     feed.send(output);
 };
