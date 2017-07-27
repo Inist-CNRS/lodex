@@ -8,8 +8,14 @@ export const toBoolean = (value) => {
     }
 
     if (typeof value === 'string') {
-        const val = value.trim();
-        if (val === '1' || value === 'true' || value === 'on') {
+        const val = value.trim().toLocaleLowerCase();
+        if (val === '1'
+            || val === 'true'
+            || val === 'on'
+            || val === 'ok'
+            || val === 'oui'
+            || val === 'yes'
+    ) {
             return true;
         }
         return false;
