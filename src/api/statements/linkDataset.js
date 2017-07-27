@@ -9,7 +9,7 @@ import deepObject from 'deep-object-map';
 function blankNodeSpecify(data) {
     let count = 0;
     Object.keys(data).map((e) => {
-        if (e !== '@context' && typeof data[e] === 'object') {
+        if (e !== '@context' && typeof data[e] === 'object' && !Array.isArray(data[e])) {
             count += 1;
             data[e] = { '@id': `${data['@id']}/${e}/${count}`, ...data[e] };
         }
