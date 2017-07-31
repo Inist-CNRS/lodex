@@ -84,12 +84,40 @@ function getUri(uri) {
     return u;
 }
 
+function mergeCompose(output, field, data, composed, fields) {
+    const propertyName = field.name;
+    const composeFields = field.composedOf.fields;
+    const fieldContext = getFieldContext(field);
+    const composeFieldsContext = fields
+    .filter(e => composeFields.includes(e.name))
+    .reduce((a, e) => ({ ...a, [e.name]: getFieldContext(e) }), {});
+
+    let count = 0;
+
+    return {
+        ...output,
+        [propertyName]: composeFields.map((e) => {
+            composed.push(e);
+            count += 1;
+            return {
+                '@id': `${getUri(data.uri)}/${e}/${count}`,
+                [e]: data[e] };
+        }),
+        '@context': {
+            ...output['@context'],
+            ...composeFieldsContext,
+            [propertyName]: fieldContext,
+        },
+    };
+}
+
 module.exports = async function JSONLDObject(data, feed) {
     if (this.isLast()) {
         feed.close();
         return;
     }
     const fields = this.getParam('fields', {});
+    const composedFields = [];
 
     const output = await fields
     .filter(field => field.cover === 'collection')
@@ -98,7 +126,16 @@ module.exports = async function JSONLDObject(data, feed) {
             console.log(field);
             const propertyName = field.name;
             const isCompletedByAnotherField = fields.some(f => f.completes === field.name);
+            const isComposedOf = Boolean(field.composedOf);
             const completesAnotherField = field.completes;
+
+            if (isComposedOf) {
+                return Promise.resolve(mergeCompose(currentOutput, field, data, composedFields, fields));
+            }
+
+            if (composedFields.includes(propertyName)) {
+                return Promise.resolve(currentOutput);
+            }
 
             if (completesAnotherField) {
                 return Promise.resolve(mergeCompleteField(currentOutput, field, fields, data));
@@ -112,6 +149,5 @@ module.exports = async function JSONLDObject(data, feed) {
         }), Promise.resolve({
             '@id': getUri(data.uri),
         }));
-
     feed.send(output);
 };

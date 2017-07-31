@@ -15,6 +15,8 @@ import DEFAULT from './DEFAULT';
 import STRING from './STRING';
 import NUMBER from './NUMBER';
 import BOOLEAN from './BOOLEAN';
+import TRUNCATE from './TRUNCATE';
+import SHIFT from './SHIFT';
 
 const transformers = {
     AUTOGENERATE_URI: memoizeTransformer(AUTOGENERATE_URI),
@@ -33,6 +35,8 @@ const transformers = {
     STRING: memoizeTransformer(STRING),
     NUMBER: memoizeTransformer(NUMBER),
     BOOLEAN: memoizeTransformer(BOOLEAN),
+    TRUNCATE: memoizeTransformer(TRUNCATE),
+    SHIFT: memoizeTransformer(SHIFT),
 };
 
 export default transformers;
@@ -54,6 +58,8 @@ const transformersMetas = [
     STRING,
     NUMBER,
     BOOLEAN,
+    TRUNCATE,
+    SHIFT,
 ].map(transformation => transformation.getMetas())
     .sort((x, y) => x.name.localeCompare(y.name));
 

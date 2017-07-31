@@ -15,7 +15,7 @@ const exporter = (config, fields, characteristics, stream) =>
     .pipe(ezs('scroll', { output: Object.keys(config.istexQuery.context)
                                         .filter(e => e !== config.istexQuery.linked)
                                         .join() }))
-    .pipe(ezs('convertToExtendedNquads', { graph: `${config.host}/notice/graph`, config }))
+    .pipe(ezs('convertToExtendedNquads', { config }))
     .pipe(zlib.createGzip());
 
 exporter.extension = 'nq.gz';
