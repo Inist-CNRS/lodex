@@ -9,7 +9,7 @@ import deepObject from 'deep-object-map';
 function blankNodeSpecify(data) {
     let count = 0;
     Object.keys(data).map((e) => {
-        if (e !== '@context' && typeof data[e] === 'object' && !Array.isArray(data[e])) {
+        if (!['@context', '@type'].includes(e) && typeof data[e] === 'object' && !Array.isArray(data[e])) {
             count += 1;
             data[e] = { '@id': `${data['@id']}/${e}/${count}`, ...data[e] };
         }
@@ -23,25 +23,25 @@ function blankNodeSpecify(data) {
  * @param {object} data - JSON-LD
  */
 function uriSpecify(data, uri) {
-    deepObject.deepMapValues(data, async (value, path) => {
-        if (path.includes('@id', '@context')) {
-            return;
-        }
-        /**
-         * If value is an URL
-         */
-        if (validUrl.isWebUri(value)) {
-            await set(data, path, { '@id': value });
-            return;
-        }
+    // deepObject.deepMapValues(data, async (value, path) => {
+    //     if (path.includes('@id', '@context', '@type')) {
+    //         return;
+    //     }
+    //     /**
+    //      * If value is an URL
+    //      */
+    //     if (validUrl.isWebUri(value)) {
+    //         await set(data, path, { '@id': value });
+    //         return;
+    //     }
 
-        /**
-         * If value is an uri as ark:/ or uid:/
-         */
-        if (validUrl.isUri(value) && !path.includes('@id', '@context')) {
-            await set(data, path, { '@id': `${uri}/${value}` });
-        }
-    });
+    //     /**
+    //      * If value is an uri as ark:/ or uid:/
+    //      */
+    //     if (validUrl.isUri(value) && !path.includes('@id', '@context')) {
+    //         await set(data, path, { '@id': `${uri}/${value}` });
+    //     }
+    // });
     return data;
 }
 

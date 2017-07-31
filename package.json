@@ -149,7 +149,8 @@
     "selenium-smart-wait": "0.0.7",
     "selenium-standalone": "6.2.0",
     "selenium-webdriver": "3.3.0",
-    "sinon": "2.2.0"
+    "sinon": "2.2.0",
+    "pre-commit": "1.2.2"
   },
   "pre-commit": [
     "lint"

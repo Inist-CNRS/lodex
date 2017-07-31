@@ -84,29 +84,60 @@ function getUri(uri) {
     return u;
 }
 
-function mergeCompose(output, field, data, composed, fields) {
-    const propertyName = field.name;
-    const composeFields = field.composedOf.fields;
-    const fieldContext = getFieldContext(field);
-    const composeFieldsContext = fields
-    .filter(e => composeFields.includes(e.name))
-    .reduce((a, e) => ({ ...a, [e.name]: getFieldContext(e) }), {});
+// function mergeCompose(output, field, data, composed, fields) {
+//     const propertyName = field.name;
+//     const composeFields = field.composedOf.fields;
+//     const fieldContext = getFieldContext(field);
+//     const composeFieldsContext = fields
+//     .filter(e => composeFields.includes(e.name))
+//     .reduce((a, e) => ({ ...a, [e.name]: getFieldContext(e) }), {});
 
-    let count = 0;
+//     let count = 0;
+
+//     return {
+//         ...output,
+//         [propertyName]: composeFields.map((e) => {
+//             composed.push(e);
+//             count += 1;
+//             return {
+//                 '@id': `${getUri(data.uri)}/${e}/${count}`,
+//                 [e]: data[e] };
+//         }),
+//         '@context': {
+//             ...output['@context'],
+//             ...composeFieldsContext,
+//             [propertyName]: fieldContext,
+//         },
+//     };
+// }
+
+function addClasses(output, field, data) {
+    const propertyName = field.name;
+    const classes = field.classes;
+    const fieldContext = getFieldContext(field);
+    let property = [];
+
+    if (Array.isArray(data[propertyName])) {
+        property = data[propertyName].map((value, i) => ({
+            '@id': `${getUri(data.uri)}/${propertyName}/${i}`,
+            '@type': classes,
+            label: value,
+        }));
+    } else {
+        property = {
+            '@id': `${getUri(data.uri)}/${propertyName}/0`,
+            '@type': classes,
+            label: data[propertyName],
+        };
+    }
 
     return {
         ...output,
-        [propertyName]: composeFields.map((e) => {
-            composed.push(e);
-            count += 1;
-            return {
-                '@id': `${getUri(data.uri)}/${e}/${count}`,
-                [e]: data[e] };
-        }),
+        [propertyName]: property,
         '@context': {
             ...output['@context'],
-            ...composeFieldsContext,
             [propertyName]: fieldContext,
+            label: { '@id': 'https://www.w3.org/2000/01/rdf-schema#label' },
         },
     };
 }
@@ -117,24 +148,28 @@ module.exports = async function JSONLDObject(data, feed) {
         return;
     }
     const fields = this.getParam('fields', {});
-    const composedFields = [];
+    // const composedFields = [];
 
     const output = await fields
     .filter(field => field.cover === 'collection')
     .reduce((currentOutputPromise, field) =>
         currentOutputPromise.then((currentOutput) => {
-            console.log(field);
             const propertyName = field.name;
             const isCompletedByAnotherField = fields.some(f => f.completes === field.name);
-            const isComposedOf = Boolean(field.composedOf);
+            // const isComposedOf = Boolean(field.composedOf);
             const completesAnotherField = field.completes;
+            const haveClasses = Boolean(field.classes);
 
-            if (isComposedOf) {
-                return Promise.resolve(mergeCompose(currentOutput, field, data, composedFields, fields));
-            }
+            // if (isComposedOf) {
+            //     return Promise.resolve(mergeCompose(currentOutput, field, data, composedFields, fields));
+            // }
 
-            if (composedFields.includes(propertyName)) {
-                return Promise.resolve(currentOutput);
+            // if (composedFields.includes(propertyName)) {
+            //     return Promise.resolve(currentOutput);
+            // }
+
+            if (haveClasses) {
+                return Promise.resolve(addClasses(currentOutput, field, data));
             }
 
             if (completesAnotherField) {
