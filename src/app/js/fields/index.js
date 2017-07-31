@@ -99,7 +99,7 @@ const getDefaultField = (name, index) => ({
             value: name,
         }],
     }] : [],
-    class: [],
+    classes: [],
     position: index,
     overview: 0,
 });

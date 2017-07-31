@@ -75,7 +75,7 @@ FieldSchemeInputComponent.propTypes = {
 };
 
 const mapStateToProps = () => ({
-    getSchemeSearchRequest: query => ({ url: `http://lov.okfn.org/dataset/lov/api/v2/term/search?q=${query}` }),
+    getSchemeSearchRequest: query => ({ url: `https://lov.okfn.org/dataset/lov/api/v2/term/search?q=${query}` }),
     getSchemeMenuItemsDataFromResponse: response => (
         response && response.results
             ? response.results.map(r => ({ label: r.prefixedName[0], uri: r.uri[0] }))
