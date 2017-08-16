@@ -1,5 +1,6 @@
 import mergeCompleteField from './mergeCompleteField';
 import mergeSimpleField from './mergeSimpleField';
+import mergeClasses from './mergeClasses';
 import mergeCompose from './mergeCompose';
 import getUri from './getUri';
 
@@ -18,14 +19,15 @@ module.exports = async function JSONLDObject(data, feed) {
             const propertyName = field.name;
             const isCompletedByAnotherField = fields.some(f => f.completes === field.name);
             const isComposedOf = Boolean(field.composedOf);
+            const haveClasses = Boolean(field.classes);
             const completesAnotherField = field.completes;
 
             if (isComposedOf) {
                 return Promise.resolve(mergeCompose(currentOutput, field, data, composedFields, fields));
             }
 
-            if (composedFields.includes(propertyName)) {
-                return Promise.resolve(currentOutput);
+            if (haveClasses) {
+                return Promise.resolve(mergeClasses(currentOutput, field, data));
             }
 
             if (completesAnotherField) {
