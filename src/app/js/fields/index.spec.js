@@ -95,7 +95,7 @@ describe('field reducer', () => {
                         }],
                         position: 2,
                         overview: 0,
-                        class: [],
+                        classes: [],
                     },
                 },
             });
