@@ -21,7 +21,7 @@ export default function mergeCompose(output, field, data, composedFields, fields
             composedFields.push(e);
             if (fields.find(f => f.name === e).scheme) {
                 return {
-                    '@id': `${getUri(data.uri)}/compose/${e}`,
+                    '@id': `${getUri(data.uri)}/compose/${propertyName}`,
                     [e]: data[e] };
             }
             return null;
