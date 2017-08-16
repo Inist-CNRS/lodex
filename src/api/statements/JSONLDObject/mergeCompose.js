@@ -1,7 +1,7 @@
 import getFieldContext from './getFieldContext';
 import getUri from './getUri';
 
-export default function mergeCompose(output, field, data, composedFields, fields) {
+export default function mergeCompose(output, field, data, composedFields, fields, haveClasses) {
     const propertyName = field.name;
     const composeFields = field.composedOf.fields;
     const fieldContext = getFieldContext(field);
@@ -19,17 +19,34 @@ export default function mergeCompose(output, field, data, composedFields, fields
         ...output,
         [propertyName]: composeFields.map((e) => {
             composedFields.push(e);
-            if (fields.find(f => f.name === e).scheme) {
+
+            const composeField = fields.find(f => f.name === e);
+            const composeHaveClasses = Boolean(composeField.classes) && Boolean(composeField.classes.length);
+
+            let resultData = data[e];
+
+            if (composeHaveClasses) {
+                resultData = {
+                    '@id': `${getUri(data.uri)}/classes/${propertyName}/${e}`,
+                    '@type': composeField.classes,
+                    label: data[e],
+                };
+            }
+
+            if (composeField.scheme) {
                 return {
                     '@id': `${getUri(data.uri)}/compose/${propertyName}`,
-                    [e]: data[e] };
+                    '@type': haveClasses ? field.classes : [],
+                    [e]: resultData };
             }
+
             return null;
         }),
         '@context': {
             ...output['@context'],
             ...composeFieldsContext,
             [propertyName]: fieldContext,
+            label: { '@id': 'https://www.w3.org/2000/01/rdf-schema#label' },
         },
     };
 

@@ -8,14 +8,8 @@ const mergeClasses = (output, field, data) => {
     let property = [];
 
     if (Array.isArray(data[propertyName])) {
-        property = data[propertyName].map((value, i) => ({
-            '@id': `${getUri(data.uri)}/${propertyName}/${i}`,
-            '@type': classes,
-            label: value,
-        }));
-    } else {
         property = {
-            '@id': `${getUri(data.uri)}/${propertyName}/0`,
+            '@id': `${getUri(data.uri)}/classes/${propertyName}`,
             '@type': classes,
             label: data[propertyName],
         };

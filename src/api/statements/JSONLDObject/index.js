@@ -19,14 +19,14 @@ module.exports = async function JSONLDObject(data, feed) {
             const propertyName = field.name;
             const isCompletedByAnotherField = fields.some(f => f.completes === field.name);
             const isComposedOf = Boolean(field.composedOf);
-            const haveClasses = Boolean(field.classes);
+            const haveClasses = Boolean(field.classes) && Boolean(field.classes.length);
             const completesAnotherField = field.completes;
 
             if (isComposedOf) {
-                return Promise.resolve(mergeCompose(currentOutput, field, data, composedFields, fields));
+                return Promise.resolve(mergeCompose(currentOutput, field, data, composedFields, fields, haveClasses));
             }
 
-            if (haveClasses) {
+            if (haveClasses && !isComposedOf) {
                 return Promise.resolve(mergeClasses(currentOutput, field, data));
             }
 
