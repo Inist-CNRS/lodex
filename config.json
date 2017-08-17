@@ -24,6 +24,7 @@
         "tsv",
         "raw",
         "turtle",
+        "atom",
         "jsonld",
         "jsonldcompacted",
         "widget"

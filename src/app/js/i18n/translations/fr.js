@@ -15,6 +15,7 @@ export default {
     Password: 'Mot de passe',
     line: 'ligne',
     error: 'erreur',
+    atom: 'atom',
     publish: 'Publier',
     publication: 'Publication',
     publication_explanations: 'Publishing will make your transformed data public. Once it has been published, y' +

@@ -10,6 +10,7 @@ import JSONLDObject from './JSONLDObject';
 import extractIstexQuery from './extractIstexQuery.js';
 import scroll from './scroll.js';
 import convertToExtendedNquads from './convertToExtendedNquads.js';
+import convertToAtom from './convertToAtom.js'
 
 module.exports = {
     filterVersions,
@@ -23,4 +24,5 @@ module.exports = {
     extractIstexQuery,
     scroll,
     convertToExtendedNquads,
+    convertToAtom
 };
