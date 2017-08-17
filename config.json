@@ -25,6 +25,7 @@
         "raw",
         "min",
         "turtle",
+        "atom",
         "jsonld",
         "jsonldcompacted",
         "widget"
