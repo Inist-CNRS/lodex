@@ -11,7 +11,7 @@ const exporter = (config, fields, characteristics, stream) => {
     return stream
         .pipe(ezs('filterVersions'))
         .pipe(ezs('filterContributions', { fields }))
-        .pipe(ezs('convertToAtom', { fields, atomFeed }));
+        .pipe(ezs('convertToAtom', { fields, config, atomFeed }));
 };
 
 exporter.extension = 'atom';

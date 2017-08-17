@@ -1,9 +1,20 @@
+let count = 0;
 
 module.exports = function convertToAtom(data, feed) {
     const fields = this.getParam('fields', {});
     const atomFeed = this.getParam('atomFeed', {});
+    const config = this.getParam('config', {});
 
-    if (this.isLast()) {
+    if (this.getIndex() < config.perPage && count !== 0) {
+        count = 0;
+    }
+
+    if (this.isLast() || this.getIndex() > config.perPage) {
+        if (count !== 0) {
+            return null;
+        }
+        count += 1;
+
         feed.write(atomFeed.atom1());
         return feed.close();
     }
