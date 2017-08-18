@@ -1,7 +1,7 @@
 import getFieldContext from './getFieldContext';
 import getUri from './getUri';
 
-export default function mergeCompose(output, field, data, composedFields, fields, haveClasses) {
+export default function mergeCompose(output, field, data, fields, haveClasses) {
     const propertyName = field.name;
     const composeFields = field.composedOf.fields;
     const fieldContext = getFieldContext(field);
@@ -18,8 +18,6 @@ export default function mergeCompose(output, field, data, composedFields, fields
     const result = {
         ...output,
         [propertyName]: composeFields.map((e) => {
-            composedFields.push(e);
-
             const composeField = fields.find(f => f.name === e);
             const composeHaveClasses = Boolean(composeField.classes) && Boolean(composeField.classes.length);
 
