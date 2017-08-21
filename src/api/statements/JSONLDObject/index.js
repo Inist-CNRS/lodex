@@ -10,6 +10,7 @@ module.exports = async function JSONLDObject(data, feed) {
         return;
     }
     const fields = this.getParam('fields', {});
+    const collectionClass = this.getParam('collectionClass', {});
 
     const output = await fields
     .filter(field => field.cover === 'collection')
@@ -22,6 +23,8 @@ module.exports = async function JSONLDObject(data, feed) {
             const isComposedOf = Boolean(field.composedOf);
             const haveClasses = Boolean(field.classes) && Boolean(field.classes.length);
             const completesAnotherField = field.completes;
+
+            currentOutput['@type'] = collectionClass;
 
             if (isComposedOf) {
                 return Promise.resolve(mergeCompose(currentOutput, field, data, fields, haveClasses));

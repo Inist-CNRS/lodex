@@ -9,7 +9,7 @@ const exporter = (config, fields, characteristics, stream) =>
     stream
         .pipe(ezs('filterVersions'))
         .pipe(ezs('filterContributions', { fields }))
-        .pipe(ezs('JSONLDObject', { fields }))
+        .pipe(ezs('JSONLDObject', { fields, collectionClass: config.collectionClass }))
         .pipe(ezs('linkDataset', {
             uri: config.cleanHost,
             scheme: config.schemeForDatasetLink,

@@ -34,6 +34,7 @@
     ],
     "topFieldsCount": 2,
     "schemeForDatasetLink": "http://www.w3.org/2004/02/skos/core#inScheme",
+    "collectionClass": "",
     "prefixes":  {
         "bibo": "http://purl.org/ontology/bibo/",
         "dcdoc": "http://dublincore.org/documents/",
