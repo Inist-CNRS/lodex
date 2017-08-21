@@ -1,4 +1,5 @@
 import getFieldContext from './getFieldContext';
+import formatData from './formatData';
 
 export default function mergeSimpleField(output, field, data) {
     const propertyName = field.name;
@@ -6,7 +7,7 @@ export default function mergeSimpleField(output, field, data) {
 
     return {
         ...output,
-        [propertyName]: data[propertyName],
+        [propertyName]: formatData(data, propertyName),
         '@context': {
             ...output['@context'],
             [propertyName]: fieldContext,

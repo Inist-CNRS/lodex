@@ -1,5 +1,6 @@
 import getFieldContext from './getFieldContext';
 import getUri from './getUri';
+import formatData from './formatData';
 
 const mergeClasses = (output, field, data) => {
     const propertyName = field.name;
@@ -11,7 +12,7 @@ const mergeClasses = (output, field, data) => {
         property = {
             '@id': `${getUri(data.uri)}/classes/${propertyName}`,
             '@type': classes,
-            label: data[propertyName],
+            label: formatData(data, propertyName),
         };
     }
 

@@ -13,6 +13,7 @@ export default async function mergeCompleteField(output, field, fields, data) {
     return {
         ...output,
         [name]: {
+            '@id': `${data.uri}/complete/${name}`,
             [complete]: data[complete],
             [completed]: data[completed],
         },

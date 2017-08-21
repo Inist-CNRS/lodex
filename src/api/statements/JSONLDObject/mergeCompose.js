@@ -1,5 +1,6 @@
 import getFieldContext from './getFieldContext';
 import getUri from './getUri';
+import formatData from './formatData';
 
 export default function mergeCompose(output, field, data, fields, haveClasses) {
     const propertyName = field.name;
@@ -21,13 +22,13 @@ export default function mergeCompose(output, field, data, fields, haveClasses) {
             const composeField = fields.find(f => f.name === e);
             const composeHaveClasses = Boolean(composeField.classes) && Boolean(composeField.classes.length);
 
-            let resultData = data[e];
+            let resultData = formatData(data, e);
 
             if (composeHaveClasses) {
                 resultData = {
                     '@id': `${getUri(data.uri)}/classes/${propertyName}/${e}`,
                     '@type': composeField.classes,
-                    label: data[e],
+                    label: formatData(data, e),
                 };
             }
 

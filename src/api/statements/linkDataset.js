@@ -1,49 +1,3 @@
-import validUrl from 'valid-url';
-import { set } from 'lodash';
-import deepObject from 'deep-object-map';
-
-/**
- * replace uri blankNode with unique uri
- * @param {object} data - JSON-LD
- */
-function blankNodeSpecify(data) {
-    let count = 0;
-    Object.keys(data).map((e) => {
-        if (!['@context', '@type'].includes(e) && typeof data[e] === 'object' && !Array.isArray(data[e])) {
-            count += 1;
-            data[e] = { '@id': `${data['@id']}/${e}/${count}`, ...data[e] };
-        }
-        return 0;
-    });
-    return data;
-}
-
-/**
- * replace @value with @id in JSON-LD
- * @param {object} data - JSON-LD
- */
-function uriSpecify(data, uri) {
-    // deepObject.deepMapValues(data, async (value, path) => {
-    //     if (path.includes('@id', '@context', '@type')) {
-    //         return;
-    //     }
-    //     /**
-    //      * If value is an URL
-    //      */
-    //     if (validUrl.isWebUri(value)) {
-    //         await set(data, path, { '@id': value });
-    //         return;
-    //     }
-
-    //     /**
-    //      * If value is an uri as ark:/ or uid:/
-    //      */
-    //     if (validUrl.isUri(value) && !path.includes('@id', '@context')) {
-    //         await set(data, path, { '@id': `${uri}/${value}` });
-    //     }
-    // });
-    return data;
-}
 
 module.exports = function linkDataset(data, feed) {
     const uri = this.getParam('uri');
@@ -51,7 +5,7 @@ module.exports = function linkDataset(data, feed) {
 
     if (uri && data && data['@context']) {
         feed.send({
-            ...uriSpecify(blankNodeSpecify(data), uri),
+            ...data,
             '@context': {
                 ...data['@context'],
                 dataset: {
