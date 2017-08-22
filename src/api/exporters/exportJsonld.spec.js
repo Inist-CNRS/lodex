@@ -45,7 +45,7 @@ describe('export jsonLD', () => {
                 outputString += data;
             } else {
                 try {
-                    expect(outputString).toEqual('[{"@id":"http://data.istex.fr","@type":{},"Q98n":"Terminator","@context":{"Q98n":{"@id":"http://purl.org/dc/terms/title"}}}]');
+                    expect(outputString).toEqual('[{"@id":"http://data.istex.fr","@type":"","Q98n":"Terminator","@context":{"Q98n":{"@id":"http://purl.org/dc/terms/title"}}}]');
                 } catch (e) {
                     return done(e);
                 }
