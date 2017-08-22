@@ -10,7 +10,7 @@ module.exports = async function JSONLDObject(data, feed) {
         return;
     }
     const fields = this.getParam('fields', {});
-    const collectionClass = this.getParam('collectionClass', {});
+    const collectionClass = this.getParam('collectionClass', '');
 
     const output = await fields
     .filter(field => field.cover === 'collection')

@@ -13,6 +13,7 @@ const exporter = (config, fields, characteristics, stream) =>
         .pipe(ezs('linkDataset', {
             uri: config.cleanHost,
             scheme: config.schemeForDatasetLink,
+            datasetClass: config.datasetClass,
         }))
         .pipe(ezs('JSONLDString'));
 
