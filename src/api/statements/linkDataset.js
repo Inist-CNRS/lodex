@@ -10,10 +10,12 @@ module.exports = function linkDataset(data, feed) {
             '@context': {
                 ...data['@context'],
                 dataset: {
+                    ...data['@context'].dataset,
                     '@id': scheme,
                 },
             },
             dataset: {
+                ...data.dataset,
                 '@id': uri,
                 '@type': datasetClass },
         });
