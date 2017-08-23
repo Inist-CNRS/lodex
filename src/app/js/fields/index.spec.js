@@ -57,6 +57,7 @@ describe('field reducer', () => {
                         transformers: [],
                         position: 2,
                         overview: 0,
+                        classes: [],
                     },
                 },
             });
@@ -94,6 +95,7 @@ describe('field reducer', () => {
                         }],
                         position: 2,
                         overview: 0,
+                        classes: [],
                     },
                 },
             });
