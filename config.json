@@ -23,6 +23,7 @@
         "csv",
         "tsv",
         "raw",
+        "min",
         "turtle",
         "jsonld",
         "jsonldcompacted",

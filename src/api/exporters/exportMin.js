@@ -12,7 +12,7 @@ const exporter = (config, fields, characteristics, stream) =>
         .pipe(ezs('MinimalObject', { fields }))
         .pipe(ezs('jsonify'));
 
-exporter.extension = 'js';
+exporter.extension = 'json';
 exporter.mimeType = 'application/json';
 exporter.type = 'file';
 exporter.label = 'min';
