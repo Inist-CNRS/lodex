@@ -218,12 +218,12 @@ export default exporter;
 
 It receives:
 
-    - `config`: The configuration provided through the `config.json` file
+- `config`: The configuration provided through the `config.json` file
 
-    - `fields`
+- `fields`
         The list of fields
 
-```json
+```js
 {
     "cover" : "collection", // either dataset, collection or document
     "label" : "uri", // label of the field
@@ -254,8 +254,7 @@ or
 }
 ```
 
-    - `characteristics`
-        The list of all version of the characteristics sorted by their publicationDate (newer to oldest)
+- `characteristics`: The list of all version of the characteristics sorted by their publicationDate (newer to oldest)
 
 ```json
 {
@@ -265,10 +264,9 @@ or
 }
 ```
 
-    - `stream`
-        A stream of all document in the published dataset.
+- `stream`: A stream of all document in the published dataset.
 
-```json
+```js
 {
     "uri" : "HKPNG4WD",
     "versions" : [ // list of all versions for the document (oldest to newest)
@@ -295,7 +293,7 @@ or
 }
 ```
 
-    - `query`: the request query
+- `query`: the request query
 
 You also need to declare the exporter in `src/api/exporters/index.js`.
 
@@ -332,9 +330,9 @@ Eg, to add an uri format create the `src/app/js/formats/uri` directory.
 A format is made of three mandatory components and one optional :
 
 1. a view component for the front
-2. an optional list view component for the front, will be used instead of the view component for the list if set
-3. an edition component for the admin
-4. an edition component for the front (editing a resource value once published).
+1. an optional list view component for the front, will be used instead of the view component for the list if set
+1. an edition component for the admin
+1. an edition component for the front (editing a resource value once published).
 
 Those components can be any react component. They will receive the following props:
 
@@ -438,19 +436,19 @@ The transformation function take a context and an array of arguments.
 The context differ based on the environment.
 This context allow to know the environment (context.env):
 
-    - node: server side during publication
-    - browser: client side during preview
+- node: server side during publication
+- browser: client side during preview
 
 Based on the env, the context expose different functionality.
 In node:
 
-    - dataset: The dataset model that allow to execute mongo queries on the dataset collection.
-    - fetchLineBy(field, value): That allow to get a raw dataset line where its field equal value.
+- dataset: The dataset model that allow to execute mongo queries on the dataset collection.
+- fetchLineBy(field, value): That allow to get a raw dataset line where its field equal value.
 
 In browser:
 
-    - token: authentification token of the current session
-    - fetchLineBy(field, value, token): Same as fetchLineBy but also need the token.
+- token: authentification token of the current session
+- fetchLineBy(field, value, token): Same as fetchLineBy but also need the token.
 
 ##### Extending the context
 
@@ -481,10 +479,10 @@ The meta object have the following keys
 
 - name: the name of the transformer, as displayed on the admin
 - args: Array describing each args needed by the transformer.
-  - name: The name of the arg as displayed in the admin
-  - type: The type of the arg, either:
-    - column: the value is the name of a column in the original dataset
-    - string: a string
+- name: The name of the arg as displayed in the admin
+- type: The type of the arg, either:
+  - column: the value is the name of a column in the original dataset
+  - string: a string
 
 ## Troubleshooting
 

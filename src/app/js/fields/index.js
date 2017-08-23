@@ -28,6 +28,7 @@ export const SAVE_FIELD = 'SAVE_FIELD';
 export const SAVE_FIELD_ERROR = 'SAVE_FIELD_ERROR';
 export const SAVE_FIELD_SUCCESS = 'SAVE_FIELD_SUCCESS';
 export const CHANGE_OPERATION = 'CHANGE_OPERATION';
+export const CHANGE_CLASS = 'CHANGE_CLASS';
 
 export const SELECT_FIELD = 'SELECT_FIELD';
 export const CONFIGURE_FIELD = 'CONFIGURE_FIELD';
@@ -56,6 +57,7 @@ export const saveField = createAction(SAVE_FIELD);
 export const saveFieldError = createAction(SAVE_FIELD_ERROR);
 export const saveFieldSuccess = createAction(SAVE_FIELD_SUCCESS);
 export const changeOperation = createAction(CHANGE_OPERATION);
+export const changeClass = createAction(CHANGE_CLASS);
 
 export const selectField = createAction(SELECT_FIELD);
 export const configureField = createAction(CONFIGURE_FIELD);
@@ -97,6 +99,7 @@ const getDefaultField = (name, index) => ({
             value: name,
         }],
     }] : [],
+    classes: [],
     position: index,
     overview: 0,
 });

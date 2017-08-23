@@ -23,6 +23,8 @@ const styles = {
     },
 };
 
+const baseUrl = process.env.PUBLIC_URL;
+
 class ClearDialogComponent extends Component {
 
     constructor(props) {
@@ -53,7 +55,7 @@ class ClearDialogComponent extends Component {
         }
     }
 
-    getInstanceName = () => /\/\/([a-z0-9-]+)./.exec(window.location.href)[1];
+    getInstanceName = () => /\/\/([a-z0-9-]+)./.exec(baseUrl)[1];
 
     handleChangeField = (_, value) => {
         const instanceName = this.getInstanceName();

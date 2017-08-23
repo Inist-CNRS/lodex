@@ -1,7 +1,7 @@
 import React from 'react';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
-import { Field } from 'redux-form';
+import { Field, FieldArray } from 'redux-form';
 import MenuItem from 'material-ui/MenuItem';
 
 import Step from './Step';
@@ -10,6 +10,8 @@ import FieldSchemeInput from '../FieldSchemeInput';
 import FieldLanguageInput from '../FieldLanguageInput';
 import FieldLabelInput from '../FieldLabelInput';
 import { polyglot as polyglotPropTypes, field as fieldPropTypes } from '../../propTypes';
+
+import ClassList from '../ClassList';
 
 export const StepIdentityComponent = ({
     field,
@@ -28,6 +30,7 @@ export const StepIdentityComponent = ({
             <MenuItem value="collection" primaryText={polyglot.t('cover_collection')} />
         </Field>
         <FieldSchemeInput />
+        <FieldArray name="classes" component={ClassList} type="classes" />
         <FieldLanguageInput field={field} />
     </Step>
 );
