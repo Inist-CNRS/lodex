@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 import Popover, { PopoverAnimationVertical } from 'material-ui/Popover';
 import ArrowDown from 'material-ui/svg-icons/hardware/keyboard-arrow-down';
+
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 
 import ClearDialog from './ClearDialog';

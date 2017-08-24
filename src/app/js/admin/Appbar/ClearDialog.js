@@ -81,6 +81,20 @@ class ClearDialogComponent extends Component {
         this.props.clearPublished();
     }
 
+    handleKeyPress = (e, type) => {
+        if (e.key !== 'Enter' || !this.state.validName) {
+            return null;
+        }
+
+        if (type === 'dataset') {
+            return this.handleClearDataset();
+        } else if (type === 'published') {
+            return this.handleClearPublished();
+        }
+
+        return null;
+    }
+
     render() {
         const { type, p: polyglot, onClose, isClearing, hasFailed } = this.props;
         const { validName } = this.state;
@@ -122,6 +136,7 @@ class ClearDialogComponent extends Component {
                         hintText={polyglot.t('instance_name')}
                         fullWidth
                         onChange={this.handleChangeField}
+                        onKeyPress={e => this.handleKeyPress(e, type)}
                         errorText={hasFailed && polyglot.t('error')}
                     />
                 </div>
