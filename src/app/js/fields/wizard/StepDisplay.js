@@ -7,6 +7,7 @@ import { change, getFormValues } from 'redux-form';
 import Step from './Step';
 import FieldPositionInput from '../FieldPositionInput';
 import FieldFormatInput from '../FieldFormatInput';
+import FieldOverviewInput from '../FieldOverviewInput';
 import FieldDisplayInListInput from '../FieldDisplayInListInput';
 import FieldDisplayInResourceInput from '../FieldDisplayInResourceInput';
 import { polyglot as polyglotPropTypes, field as fieldPropTypes } from '../../propTypes';
@@ -32,6 +33,7 @@ export class StepDisplayComponent extends Component {
                 <FieldDisplayInListInput />
                 <FieldDisplayInResourceInput />
                 <FieldPositionInput field={field} />
+                <FieldOverviewInput />
                 <FieldFormatInput />
             </Step>
         );
