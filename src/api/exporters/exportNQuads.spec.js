@@ -1,0 +1,57 @@
+import expect from 'expect';
+import ezs from 'ezs';
+import from from 'from';
+import exportNQuads from './exportNQuads';
+
+const fields = [{
+    cover: 'collection',
+    label: 'title',
+    transformers: [
+        {
+            operation: 'COLUMN',
+            args: [
+                {
+                    name: 'column',
+                    type: 'column',
+                    value: 'title',
+                },
+            ],
+        },
+    ],
+    scheme: 'http://purl.org/dc/terms/title',
+    format: {
+        name: 'None',
+    },
+    display_in_list: true,
+    display_in_resource: true,
+    searchable: true,
+    position: 3,
+    name: 'Q98n',
+}];
+
+describe('export Nquads', () => {
+    it('should export simple property', (done) => {
+        let outputString = '';
+        exportNQuads(
+            {
+                cleanHost: '',
+                schemeForDatasetLink: '',
+            },
+            fields.slice(0, 1),
+            null,
+            from([{ uri: 'http://data.istex.fr', Q98n: 'Terminator' }]),
+        ).pipe(ezs((data, feed) => {
+            if (data !== null) {
+                outputString += data;
+            } else {
+                try {
+                    expect(outputString).toEqual('<http://data.istex.fr> <http://purl.org/dc/terms/title> "Terminator" .\n');
+                } catch (e) {
+                    return done(e);
+                }
+                return done();
+            }
+            return feed.end();
+        }));
+    });
+});
