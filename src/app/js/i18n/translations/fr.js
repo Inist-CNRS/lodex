@@ -237,6 +237,7 @@ export default {
     csv: 'CSV',
     tsv: 'TSV',
     jsonld: 'JSON-LD',
+    min: 'Min',
     jsonldcompacted: 'JSON-LD (Compacté)',
     nquads: 'N-Quads',
     extendednquads: 'N-Quads Étendus',

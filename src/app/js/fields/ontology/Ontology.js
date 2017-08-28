@@ -2,9 +2,12 @@ import React, { Component, PropTypes } from 'react';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
+import withHandlers from 'recompose/withHandlers';
 import translate from 'redux-polyglot/translate';
 import memoize from 'lodash.memoize';
 import fetch from 'isomorphic-fetch';
+import Reorder from 'material-ui/svg-icons/action/reorder';
+import { SortableContainer, SortableElement, SortableHandle } from 'react-sortable-hoc';
 
 import { field as fieldPropTypes, polyglot as polyglotPropTypes } from '../../propTypes';
 import { fromUser, fromFields } from '../../sharedSelectors';
@@ -12,6 +15,7 @@ import { languages } from '../../../../../config.json';
 import getFieldClassName from '../../lib/getFieldClassName';
 import EditOntologyField from './EditOntologyField';
 import ExportFieldsButton from '../../public/export/ExportFieldsButton';
+import { changePosition } from '../';
 
 const styles = {
     container: {
@@ -28,6 +32,7 @@ const styles = {
     },
     field: memoize(hasBorder => ({
         borderBottom: hasBorder ? '1px solid rgb(224, 224, 224)' : 'none',
+        backgroundColor: 'white',
         paddingBottom: '1rem',
         paddingTop: '1rem',
         display: 'flex',
@@ -50,6 +55,22 @@ const styles = {
     icon: { color: 'black' },
 };
 
+const DragHandle = SortableHandle(() => <Reorder />);
+
+const SortableItem = SortableElement(({ value }) => (
+    <div>
+        <DragHandle />
+        {value}
+    </div>));
+
+const SortableList = SortableContainer(({ items }) => (
+    <ul>
+        {items.map((value, index) => (
+            // eslint-disable-next-line
+            <SortableItem key={`item-${index}`} index={index} value={value} />
+        ))}
+    </ul>
+    ));
 
 export class OntologyComponent extends Component {
     constructor(props) {
@@ -78,8 +99,14 @@ export class OntologyComponent extends Component {
             });
     }
 
+    onSortEnd = ({ oldIndex, newIndex }, _, fields, handleChangePosition) => {
+        // const fieldName = fields[oldIndex].name;
+        handleChangePosition({ newPosition: newIndex, oldPosition: oldIndex });
+        // handleChangePosition({ fieldName: fields[newIndex].name, position: oldIndex });
+    };
+
     render() {
-        const { fields, isLoggedIn, p: polyglot } = this.props;
+        const { fields, isLoggedIn, p: polyglot, handleChangePosition } = this.props;
         const { fieldsToCount } = this.state;
         return (
             <div className="ontology" style={styles.container}>
@@ -88,73 +115,94 @@ export class OntologyComponent extends Component {
                         <ExportFieldsButton iconStyle={styles.icon} />
                     </div>
                 }
-                {fields.map((field, index) => (
-                    <div key={field.name} style={styles.field(index < fields.length - 1)}>
+                <SortableList
+                    lockAxis="y"
+                    useDragHandle
+                    items={fields.map((field, index) => (
+                        <div key={field.name} style={styles.field(index < fields.length - 1)}>
 
-                        <div>
-                            <h4
-                                className={classnames('field-label', getFieldClassName(field))}
-                                style={styles.name}
-                            >
-                                {field.label}
-                            </h4>
-                            <dl style={styles.property}>
-                                <dt style={styles.label}>{polyglot.t('count_of_field')}</dt>
-                                <dd
-                                    className={classnames('field-count', getFieldClassName(field))}
+                            <div>
+                                <h4
+                                    className={classnames('field-label', getFieldClassName(field))}
+                                    style={styles.name}
                                 >
-                                    {fieldsToCount[field.name] || 1}
-                                </dd>
-                            </dl>
-                            {field.scheme &&
+                                    {field.label}
+                                </h4>
                                 <dl style={styles.property}>
-                                    <dt style={styles.label}>{polyglot.t('scheme')}</dt>
+                                    <dt style={styles.label}>{polyglot.t('count_of_field')}</dt>
                                     <dd
-                                        className={classnames('field-scheme', getFieldClassName(field))}
+                                        className={classnames('field-count', getFieldClassName(field))}
                                     >
-                                        <a href={field.scheme}>{field.scheme}</a>
+                                        {fieldsToCount[field.name] || 1}
                                     </dd>
                                 </dl>
-                            }
-                            <dl style={styles.property}>
-                                <dt style={styles.label}>{polyglot.t('cover')}</dt>
-                                <dd
-                                    className={classnames('field-cover', getFieldClassName(field))}
-                                >
-                                    {polyglot.t(`cover_${field.cover}`)}
-                                </dd>
-                            </dl>
-                            {field.language &&
+                                {field.scheme &&
+                                    <dl style={styles.property}>
+                                        <dt style={styles.label}>{polyglot.t('scheme')}</dt>
+                                        <dd
+                                            className={classnames('field-scheme', getFieldClassName(field))}
+                                        >
+                                            <a href={field.scheme}>{field.scheme}</a>
+                                        </dd>
+                                    </dl>
+                                }
                                 <dl style={styles.property}>
-                                    <dt style={styles.label}>{polyglot.t('language')}</dt>
+                                    <dt style={styles.label}>{polyglot.t('cover')}</dt>
                                     <dd
-                                        className={classnames('field-language', getFieldClassName(field))}
+                                        className={classnames('field-cover', getFieldClassName(field))}
                                     >
-                                        {languages.find(l => l.code === field.language).label}
+                                        {polyglot.t(`cover_${field.cover}`)}
                                     </dd>
                                 </dl>
-                            }
-                            <dl style={styles.property}>
-                                <dt style={styles.label}>{polyglot.t('identifier')}</dt>
-                                <dd
-                                    className={classnames('field-identifier', getFieldClassName(field))}
-                                >
-                                    {field.name}
-                                </dd>
-                            </dl>
+                                {field.language &&
+                                    <dl style={styles.property}>
+                                        <dt style={styles.label}>{polyglot.t('language')}</dt>
+                                        <dd
+                                            className={classnames('field-language', getFieldClassName(field))}
+                                        >
+                                            {languages.find(l => l.code === field.language).label}
+                                        </dd>
+                                    </dl>
+                                }
+                                <dl style={styles.property}>
+                                    <dt style={styles.label}>{polyglot.t('identifier')}</dt>
+                                    <dd
+                                        className={classnames('field-identifier', getFieldClassName(field))}
+                                    >
+                                        {field.name}
+                                    </dd>
+                                </dl>
+                            </div>
+                            <EditOntologyField field={field} />
                         </div>
-                        <EditOntologyField field={field} />
-                    </div>
-                ))}
+                    ))}
+                    onSortEnd={(oldIndex, newIndex) => this.onSortEnd(oldIndex, newIndex, fields, handleChangePosition)}
+                />
             </div>
         );
     }
 }
 
+// class SortableComponent extends Component {
+//     state = {
+//         items: ['Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5', 'Item 6'],
+//     };
+//     onSortEnd = ({ oldIndex, newIndex }) => {
+//         this.setState({
+//             items: arrayMove(this.state.items, oldIndex, newIndex),
+//         });
+//     };
+//     render() {
+//         return <SortableList items={this.state.items} onSortEnd={this.onSortEnd} />;
+//     }
+// }
+
+
 OntologyComponent.propTypes = {
     fields: PropTypes.arrayOf(fieldPropTypes).isRequired,
     isLoggedIn: PropTypes.bool.isRequired,
     p: polyglotPropTypes.isRequired,
+    handleChangePosition: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
@@ -162,7 +210,16 @@ const mapStateToProps = state => ({
     isLoggedIn: fromUser.isLoggedIn(state),
 });
 
+const mapDispatchToProps = {
+    changePositionAction: changePosition,
+};
+
 export default compose(
-    connect(mapStateToProps),
+    connect(mapStateToProps, mapDispatchToProps),
+    withHandlers({
+        handleChangePosition: ({ changePositionAction }) => (field) => {
+            changePositionAction(field);
+        },
+    }),
     translate,
 )(OntologyComponent);
