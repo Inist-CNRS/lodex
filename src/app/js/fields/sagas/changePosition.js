@@ -4,7 +4,8 @@ import {
     changePositionValue as changePosition,
 } from '../';
 
-import { fromFields } from '../../sharedSelectors';
+import { fromFields, fromUser } from '../../sharedSelectors';
+import fetchSaga from '../../lib/sagas/fetchSaga';
 
 export const move = (tab, previousIndex, newIndex) => {
     const array = tab.slice(0);
@@ -27,6 +28,14 @@ export function* handleChangePosition({ payload: { newPosition, oldPosition } })
     const resultArray = yield call(move, fields, oldPosition, newPosition);
 
     yield put(changePosition({ fields: resultArray }));
+
+    for (let i = 0; i < resultArray.length; i += 1) {
+        const request = yield select(fromUser.getUpdateFieldRequest, resultArray[i]);
+        const { error } = yield call(fetchSaga, request);
+        if (error) {
+            yield put(changePosition({ fields: [fields.find(e => e.name === resultArray[i].name)] }));
+        }
+    }
 }
 
 export default function* watchLoadField() {
