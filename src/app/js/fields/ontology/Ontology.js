@@ -3,9 +3,8 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import withHandlers from 'recompose/withHandlers';
 import translate from 'redux-polyglot/translate';
-import memoize from 'lodash.memoize';
 import fetch from 'isomorphic-fetch';
-import Reorder from 'material-ui/svg-icons/action/reorder';
+import Reorder from 'material-ui/svg-icons/editor/format-line-spacing';
 import AppBar from 'material-ui/AppBar';
 import { grey300, grey900 } from 'material-ui/styles/colors';
 import { SortableContainer, SortableElement, SortableHandle } from 'react-sortable-hoc';
@@ -62,9 +61,16 @@ const SortableItem = SortableElement(({ value, sortIndex }) => (
 const SortableList = SortableContainer(({ items }) => (
     <ul>
         {items.map((value, index) => (
-            // eslint-disable-next-line
-            <SortableItem disabled={index === 0} key={`item-${index}`} sortIndex={index} index={index} value={value} />
-        ))}
+            <SortableItem
+                collection={value.props.cover}
+                disabled={index === 0}
+                key={
+                // eslint-disable-next-line
+                `item-${index}`}
+                sortIndex={index}
+                index={index}
+                value={value}
+            />))}
     </ul>
     ));
 
@@ -109,11 +115,6 @@ export class OntologyComponent extends Component {
                         <div style={styles.exportContainer}>
                             <ExportFieldsButton iconStyle={styles.icon} />
                         </div>
-                        {/* {<OntologyField
-                            field={fields[0]}
-                            index={0}
-                            fieldsToCount={Array.isArray(fieldsToCount) ? {} : fieldsToCount}
-                        />} */}
                         <SortableList
                             lockAxis="y"
                             useDragHandle
