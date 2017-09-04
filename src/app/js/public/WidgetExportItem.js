@@ -20,12 +20,10 @@ const styles = {
 };
 
 export function generateWidget(uri, fields, type) {
-    const baseUrl = process.env.PUBLIC_URL;
-    const encFields = encodeURIComponent(JSON.stringify(fields));
-    const encUri = encodeURIComponent(uri);
-    const encType = encodeURIComponent(type);
+    const baseUrl = process.env.PUBLIC_URL.replace(/https?:/, '');
+    const strFields = JSON.stringify(fields);
 
-    return `<iframe src="${baseUrl}/api/widget?type=${encType}${uri ? `&uri=${encUri}` : ''}&fields=${encFields}"></iframe>`;
+    return `<iframe src="${baseUrl}/api/widget?type=${type}${uri ? `&uri=${uri}` : ''}&fields=${strFields}"></iframe>`;
 }
 
 export class WidgetExportItemComponent extends Component {
