@@ -44,7 +44,7 @@ describe('Admin', () => {
                 const csvPath = path.resolve(__dirname, './linked_sample_csv.CSV');
                 const input = await driver.findElement(By.css('input[name=file]'));
                 await input.sendKeys(csvPath);
-                await navigate('/admin');
+                // await navigate('/admin');
                 await driver.wait(until.elementLocated(By.css('.parsingResult')), DEFAULT_WAIT_TIMEOUT);
             });
         });
@@ -480,7 +480,7 @@ describe('Admin', () => {
 
             it('should not display the parsing result after publication', async () => {
                 const parsingResult = await driver.findElements(By.css('.parsingResult'));
-                expect(parsingResult.length).toEqual(1);
+                expect(parsingResult.length).toEqual(0);
             });
 
             it('should not display the upload after publication', async () => {
