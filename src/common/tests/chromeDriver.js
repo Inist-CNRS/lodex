@@ -31,6 +31,6 @@ driver.manage()
 
 driver.manage()
     .window()
-    .maximize();
+    .setSize(1000, 900);
 
 export default driver;
