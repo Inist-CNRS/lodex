@@ -1,5 +1,7 @@
 # lodex-v2
 
+[![bitHound Overall Score](https://www.bithound.io/github/Inist-CNRS/lodex/badges/score.svg)](https://www.bithound.io/github/Inist-CNRS/lodex) [![Build Status](https://travis-ci.org/Inist-CNRS/lodex.svg?branch=danger-zone)](https://travis-ci.org/Inist-CNRS/lodex) [![bitHound Overall Score](https://cdn.rawgit.com/aleen42/badges/master/src/gitbook_1.svg)](https://lodex.gitbooks.io/lodex-user-documentation/content/)
+
 ## Development
 
 First, run the following command to install dependencies:
@@ -93,6 +95,10 @@ On EzMaster, you can edit the instance configuration:
 - `subpublisher`: Optional - used to autogenerate URIs (see [node-inist-ark](https://github.com/Inist-CNRS/node-inist-ark))
 
 - `languages`: Required - an array of languages defined by a `label` and a `code` which will be proposed when selecting a property language
+
+- `collectionClass`: Optional - the class `rdf:type` of each resource
+
+- `datasetClass`: Optional - the class `rdf:type` of the dataset
 
 - `exporters`: Required - an array of the allowed exporters
 
