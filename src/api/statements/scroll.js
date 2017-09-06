@@ -1,7 +1,7 @@
 import request from 'request';
 import url from 'url';
 import config from 'config';
-import { httpLogger } from '../../services/logger';
+import { httpLogger } from '../services/logger';
 
 /**
  * Recursive scroll

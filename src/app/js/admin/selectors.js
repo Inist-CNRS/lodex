@@ -9,6 +9,7 @@ import { selectors as publishSelectors } from './publish';
 import { selectors as removedResourcesSelectors } from './removedResources';
 import { selectors as uploadSelectors } from './upload';
 import { selectors as contributedResourcesSelectors } from './contributedResources';
+import { selectors as clearSelectors } from './clear';
 
 export const fromParsing = createGlobalSelectors(s => s.parsing, parsingSelectors);
 export const fromPublication = createGlobalSelectors(s => s.publication, publicationSelectors);
@@ -24,5 +25,6 @@ export const fromPublish = createGlobalSelectors(s => s.publish, publishSelector
 export const fromRemovedResources = createGlobalSelectors(s => s.removedResources, removedResourcesSelectors);
 export const fromUpload = createGlobalSelectors(s => s.upload, uploadSelectors);
 export const fromImport = createGlobalSelectors(s => s.import, importSelectors);
+export const fromClear = createGlobalSelectors(s => s.clear, clearSelectors);
 export const fromContributedResources =
     createGlobalSelectors(s => s.contributedResources, contributedResourcesSelectors);

@@ -23,6 +23,7 @@
         "csv",
         "tsv",
         "raw",
+        "min",
         "turtle",
         "jsonld",
         "jsonldcompacted",
@@ -34,6 +35,9 @@
     ],
     "topFieldsCount": 2,
     "schemeForDatasetLink": "http://www.w3.org/2004/02/skos/core#inScheme",
+    "datasetClass": "http://test.fr/datasetClass",
+    "exportDataset": "true",
+    "collectionClass": "",
     "prefixes":  {
         "bibo": "http://purl.org/ontology/bibo/",
         "dcdoc": "http://dublincore.org/documents/",
@@ -55,8 +59,9 @@
     },
     "istexQuery" : {
        "labels": "",
-       "linked": "language",
+       "linked": "link",
        "context": {
+          "link": "dcterms:ispartOf",
           "language": "dcterms:language",
           "doi": "bibo:doi"
        }

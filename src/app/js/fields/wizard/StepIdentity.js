@@ -30,7 +30,7 @@ export const StepIdentityComponent = ({
             <MenuItem value="collection" primaryText={polyglot.t('cover_collection')} />
         </Field>
         <FieldSchemeInput />
-        <FieldArray name="class" component={ClassList} type="class" />
+        <FieldArray name="classes" component={ClassList} type="classes" />
         <FieldLanguageInput field={field} />
     </Step>
 );

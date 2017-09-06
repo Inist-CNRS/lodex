@@ -2,35 +2,51 @@ import React, { PropTypes } from 'react';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 import pure from 'recompose/pure';
-import FlatButton from 'material-ui/FlatButton';
-import Subheader from 'material-ui/Subheader';
-import memoize from 'lodash.memoize';
-
+import FloatingActionButton from 'material-ui/FloatingActionButton';
+import ContentAdd from 'material-ui/svg-icons/content/add';
 import { polyglot as polyglotPropTypes } from '../propTypes';
-import ClassListItem from './ClassListItem';
+import ListItem from './ClassListItem';
 
 const styles = {
     header: {
+        lineHeight: '36px',
+        marginBottom: '10px',
+    },
+    add: {
+        marginLeft: '10px',
+    },
+    subHeader: {
         fontSize: '16px',
         paddingLeft: 0,
+        marginBottom: '10px',
+    },
+    tab: {
+        paddingLeft: '40px',
     },
 };
 
-const ClassList = ({ fields, p: polyglot, onRemove}) => (
+const ClassList = ({ fields, p: polyglot }) => (
     <div>
-        <Subheader style={styles.header}>
-            <FlatButton
+        <div style={styles.header}>
+            {polyglot.t('annotate_class')}
+            <FloatingActionButton
                 className="add-class"
-                onClick={() => fields.push()}
-                label={polyglot.t('add_class')}
-            />
-        </Subheader>
-        {fields.map((fieldName, index) => (
-            <ClassListItem
-                fieldName={fieldName}
-                onRemove={onRemove}
-            />
+                onTouchTap={() => fields.push()}
+                mini
+                style={styles.add}
+            >
+                <ContentAdd />
+            </FloatingActionButton>
+        </div>
+        <div style={styles.tab}>
+            {fields.map((fieldName, index) => (
+                <ListItem
+                    key={fieldName}
+                    fieldName={fieldName}
+                    onRemove={() => fields.remove(index)}
+                />
         ))}
+        </div>
     </div>
 );
 
@@ -38,9 +54,10 @@ ClassList.PropTypes = {
     fields: PropTypes.shape({
         map: PropTypes.func.isRequired,
         get: PropTypes.func.isRequired,
+        remove: PropTypes.func.isRequired,
     }).isRequired,
-    onRemove: PropTypes.func.isRequired,
     p: polyglotPropTypes.isRequired,
+    onChangeClass: PropTypes.func.isRequired,
 };
 
 export default compose(

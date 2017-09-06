@@ -50,16 +50,20 @@ make test
 
 You will need vnc viewer to access the docker graphical rendering [install here](https://chrome.google.com/webstore/detail/vnc%C2%AE-viewer-for-google-ch/iabmpiboiopbgfabjmgeedhcmjenhbla)
 first run
+
 ```sh
 make setup-frontend-functional-debug
 ```
+
 You will then be able to connect with vnc viewer on port 5900 (the password is secret)
 From here you will be able to launch chrome and access the appli in test environment in `http://api:3010`
 
 To launch the test in debug mode and see them in actions do:
+
 ```sh
 make test-frontend-functional-debug
 ```
+
 You will then see them in vnc viewer
 
 when you are done call `make cleanup test` to stop and remove all docker container used in debug
@@ -97,8 +101,8 @@ On EzMaster, you can edit the instance configuration:
 
 - `mongo`: Optional - Allow to override the default mongo configuration given by ezMaster. You can override all or part of the config, available properties are :
 
-    - `host`: the host and port pointing to the mongo instance eg: `localhost:27017`
-    - `dbName`: The name of the database eg: `lodex`
+  - `host`: the host and port pointing to the mongo instance eg: `localhost:27017`
+  - `dbName`: The name of the database eg: `lodex`
 
 - `perPage`: Optional - the number of item perPage when displaying the dataset. Default to 10
 
@@ -119,9 +123,9 @@ The expected configuration contains:
 - `port`: Number - The application port
 - `mongo`: Object - How to connect to the mongo server
 - `auth`: Object - Configuration of the authentication mechanims
-    - `cookieSecret`: String - secret used to encrypt the JWT token inside the authentication cookie
-    - `headerSecret`: String - secret used to encrypt the JWT token inside the authentication header
-    - `expiresIn`: Number - expiration delay of the JWT token in milliseconds
+  - `cookieSecret`: String - secret used to encrypt the JWT token inside the authentication cookie
+  - `headerSecret`: String - secret used to encrypt the JWT token inside the authentication header
+  - `expiresIn`: Number - expiration delay of the JWT token in milliseconds
 - `buildFrontend`: Boolean - determines wether the API should build the frontend with webpack. Used to disable build on test environment.
 
 ## Adding a new loader
@@ -214,12 +218,12 @@ export default exporter;
 
 It receives:
 
-    - `config`: The configuration provided through the `config.json` file
+- `config`: The configuration provided through the `config.json` file
 
-    - `fields`
+- `fields`
         The list of fields
 
-```json
+```js
 {
     "cover" : "collection", // either dataset, collection or document
     "label" : "uri", // label of the field
@@ -250,8 +254,7 @@ or
 }
 ```
 
-    - `characteristics`
-        The list of all version of the characteristics sorted by their publicationDate (newer to oldest)
+- `characteristics`: The list of all version of the characteristics sorted by their publicationDate (newer to oldest)
 
 ```json
 {
@@ -261,10 +264,9 @@ or
 }
 ```
 
-    - `stream`
-        A stream of all document in the published dataset.
+- `stream`: A stream of all document in the published dataset.
 
-```json
+```js
 {
     "uri" : "HKPNG4WD",
     "versions" : [ // list of all versions for the document (oldest to newest)
@@ -291,7 +293,7 @@ or
 }
 ```
 
-    - `query`: the request query
+- `query`: the request query
 
 You also need to declare the exporter in `src/api/exporters/index.js`.
 
@@ -328,14 +330,14 @@ Eg, to add an uri format create the `src/app/js/formats/uri` directory.
 A format is made of three mandatory components and one optional :
 
 1. a view component for the front
-2. an optional list view component for the front, will be used instead of the view component for the list if set
-3. an edition component for the admin
-4. an edition component for the front (editing a resource value once published).
+1. an optional list view component for the front, will be used instead of the view component for the list if set
+1. an edition component for the admin
+1. an edition component for the front (editing a resource value once published).
 
 Those components can be any react component. They will receive the following props:
 
 - `resource`: the resource
-- `field`: the field definition
+- `field`: the field definition in the model
 - `fieldStatus`: only for the ViewComponent and if the field is a contribution. Statuses are `PROPOSED`, `ACCEPTED` and `REJECTED`
 - `shrink`: only for the ViewComponent, a boolean indicating whether the value should be shrinked if possible. This is useful for the public table where large contents can be shrinked (with ellipsis for example) for easier reading.
 
@@ -434,19 +436,19 @@ The transformation function take a context and an array of arguments.
 The context differ based on the environment.
 This context allow to know the environment (context.env):
 
-    - node: server side during publication
-    - browser: client side during preview
+- node: server side during publication
+- browser: client side during preview
 
 Based on the env, the context expose different functionality.
 In node:
 
-    - dataset: The dataset model that allow to execute mongo queries on the dataset collection.
-    - fetchLineBy(field, value): That allow to get a raw dataset line where its field equal value.
+- dataset: The dataset model that allow to execute mongo queries on the dataset collection.
+- fetchLineBy(field, value): That allow to get a raw dataset line where its field equal value.
 
 In browser:
 
-    - token: authentification token of the current session
-    - fetchLineBy(field, value, token): Same as fetchLineBy but also need the token.
+- token: authentification token of the current session
+- fetchLineBy(field, value, token): Same as fetchLineBy but also need the token.
 
 ##### Extending the context
 
@@ -477,34 +479,37 @@ The meta object have the following keys
 
 - name: the name of the transformer, as displayed on the admin
 - args: Array describing each args needed by the transformer.
-    + name: The name of the arg as displayed in the admin
-    + type: The type of the arg, either:
-        - column: the value is the name of a column in the original dataset
-        - string: a string
+- name: The name of the arg as displayed in the admin
+- type: The type of the arg, either:
+  - column: the value is the name of a column in the original dataset
+  - string: a string
 
 ## Troubleshooting
 
 ### Behind a proxy
+
 If you launch lodex behind a proxy, environment variables `http_proxy`, `https_proxy` (optionally `no_proxy`) are required.
 Otherwise, you could get this error after `make docker-run-dev`:
 
-```
+```bash
 npm http request GET https://registry.npmjs.org/pm2
 npm info retry will retry, error on last attempt: Error: connect ETIMEDOUT
 ```
 
 ### Using ezmaster
+
 If you are behind a proxy, and try to test your development version, pay attention to your environment variables: `http_proxy`, `https_proxy` and `no_proxy` have to be passed to docker.
 
 ```bash
-$ docker build -t lodex:dev --build-arg http_proxy --build-arg https_proxy --build-arg no_proxy .
+docker build -t lodex:dev --build-arg http_proxy --build-arg https_proxy --build-arg no_proxy .
 ```
 
 ### Looking at the logs
+
 The server's logs are within `logs/http.log`.
 
 To look at it easily:
 
 ```bash
-$ tail -f ./logs/http.log |jq
+tail -f ./logs/http.log | jq
 ```

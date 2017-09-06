@@ -16,6 +16,7 @@ import parsing from './parsing';
 import publication from './publication';
 import publish from './publish';
 import publishedDataset from './publishedDataset';
+import dataset from './dataset';
 import upload from './upload';
 import widget from './widget';
 import reduce from './reduce';
@@ -52,6 +53,7 @@ app.use(mount('/field', fieldRoutes));
 app.use(mount('/parsing', parsing));
 app.use(mount('/publish', publish));
 app.use(mount('/upload', upload));
+app.use(mount('/dataset', dataset));
 
 app.use(async (ctx) => {
     ctx.status = 404;
