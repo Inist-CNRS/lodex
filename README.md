@@ -1,6 +1,5 @@
-# lodex-v2
+# Lodex [![bitHound Overall Score](https://www.bithound.io/github/Inist-CNRS/lodex/badges/score.svg)](https://www.bithound.io/github/Inist-CNRS/lodex) [![Build Status](https://travis-ci.org/Inist-CNRS/lodex.svg?branch=danger-zone)](https://travis-ci.org/Inist-CNRS/lodex) [![bitHound Overall Score](https://cdn.rawgit.com/aleen42/badges/master/src/gitbook_1.svg)](https://lodex.gitbooks.io/lodex-user-documentation)
 
-[![bitHound Overall Score](https://www.bithound.io/github/Inist-CNRS/lodex/badges/score.svg)](https://www.bithound.io/github/Inist-CNRS/lodex) [![Build Status](https://travis-ci.org/Inist-CNRS/lodex.svg?branch=danger-zone)](https://travis-ci.org/Inist-CNRS/lodex) [![bitHound Overall Score](https://cdn.rawgit.com/aleen42/badges/master/src/gitbook_1.svg)](https://lodex.gitbooks.io/lodex-user-documentation/content/)
 
 ## Development
 
@@ -19,9 +18,9 @@ make docker-run-dev
 This will initialize the docker containers which can take some time.
 When done, three containers will be running:
 
-- `lodexv2_mongo_1`: the mongo server
-- `lodexv2_server_1`: the API server (node process) running at `http://localhost:3000`
-- `lodexv2_devserver_1`: the webpack server for the frontend running at `http://localhost:8080`
+- `lodex_mongo_1`: the mongo server
+- `lodex_server_1`: the API server (node process) running at `http://localhost:3000`
+- `lodex_devserver_1`: the webpack server for the frontend running at `http://localhost:8080`
 
 The default username and password are specified in the `./config.json` file along with default `naan` and `subpublisher` for ARK generation.
 
