@@ -6,15 +6,11 @@ const mergeClasses = (output, field, data) => {
     const propertyName = field.name;
     const classes = field.classes;
     const fieldContext = getFieldContext(field);
-    let property = [];
-
-    if (Array.isArray(data[propertyName])) {
-        property = {
-            '@id': `${getUri(data.uri)}/classes/${propertyName}`,
-            '@type': classes,
-            label: formatData(data, propertyName),
-        };
-    }
+    const property = {
+        '@id': `${getUri(data.uri)}/classes/${propertyName}`,
+        '@type': classes,
+        label: formatData(data, propertyName),
+    };
 
     return {
         ...output,
