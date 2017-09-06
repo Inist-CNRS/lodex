@@ -6,7 +6,7 @@ import translate from 'redux-polyglot/translate';
 import fetch from 'isomorphic-fetch';
 import Reorder from 'material-ui/svg-icons/editor/format-line-spacing';
 import AppBar from 'material-ui/AppBar';
-import { grey300, grey900 } from 'material-ui/styles/colors';
+import { grey300, grey800, grey900 } from 'material-ui/styles/colors';
 import { SortableContainer, SortableElement, SortableHandle } from 'react-sortable-hoc';
 
 import { field as fieldPropTypes } from '../../propTypes';
@@ -34,7 +34,15 @@ const styles = {
         height: '2.5em',
         backgroundColor: grey300,
         cursor: 'ns-resize',
+        textAlign: 'right',
         zIndex: 0,
+    },
+    handleTitle: {
+        marginTop: '-14px',
+        fontStyle: 'italic',
+        color: grey800,
+        fontSize: 'large',
+        // backgroundColor: 'black',
     },
     handleIcon: {
         color: grey900,
@@ -43,26 +51,29 @@ const styles = {
     icon: { color: 'black' },
 };
 
-const DragHandle = SortableHandle(() =>
+const DragHandle = SortableHandle(({ cover }) =>
     <AppBar
         style={styles.handle}
         iconElementLeft={
             <Reorder
                 style={styles.handleIcon}
-            />}
+            />
+        }
+        title={cover}
+        titleStyle={styles.handleTitle}
     />);
 
 const SortableItem = SortableElement(({ value, sortIndex }) => (
     <div>
-        { Boolean(sortIndex) && <DragHandle /> }
+        { Boolean(sortIndex) && <DragHandle cover={value.props.field.cover} /> }
         {value}
     </div>));
 
 const SortableList = SortableContainer(({ items }) => (
-    <ul>
+    <div>
         {items.map((value, index) => (
             <SortableItem
-                collection={value.props.cover}
+                collection={value.props.field.cover}
                 disabled={index === 0}
                 key={
                 // eslint-disable-next-line
@@ -71,7 +82,7 @@ const SortableList = SortableContainer(({ items }) => (
                 index={index}
                 value={value}
             />))}
-    </ul>
+    </div>
     ));
 
 export class OntologyComponent extends Component {
@@ -119,12 +130,16 @@ export class OntologyComponent extends Component {
                             lockAxis="y"
                             useDragHandle
                             items={
-                            fields.map((field, index) => (
+                            fields
+                            .filter(field => !fields.some(f => f.composedOf &&
+                                             f.composedOf.fields.includes(field.name)))
+                            .map((field, index) => (
                                 <OntologyField
                                     field={field}
                                     index={index + 1}
                                     fieldsToCount={Array.isArray(fieldsToCount) ? {} : fieldsToCount}
-                                />))}
+                                />
+                                ))}
                             onSortEnd={(oldIndex, newIndex) =>
                                        this.onSortEnd(oldIndex, newIndex, fields, handleChangePosition)}
                         />
