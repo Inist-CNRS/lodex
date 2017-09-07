@@ -1,5 +1,6 @@
 import jsonld from 'jsonld';
 import validUrl from 'valid-url';
+import get from 'lodash.get';
 
 /**
  * Create a JSONLD context with prefixes and istexQuery informations in config.json
@@ -42,6 +43,20 @@ function getContext(config) {
     return context;
 }
 
+const checkWeb = (data) => {
+    if (validUrl.isWebUri(data)) {
+        return { '@id': data };
+    }
+    return data;
+};
+
+const formatData = (data) => {
+    if (!Array.isArray(data)) {
+        return checkWeb(data);
+    }
+    return data.map(e => checkWeb(e));
+};
+
 
 module.exports = function convertToExtendedNquads(data, feed) {
     if (this.isLast()) {
@@ -53,17 +68,26 @@ module.exports = function convertToExtendedNquads(data, feed) {
 
     const hits = data.content.hits;
 
-    hits.forEach((e) => {
-        e['@id'] = `https://api.istex.fr/document/${e.id}`;
-        e['@type'] = 'http://purl.org/ontology/bibo/Document';
-        e[config.istexQuery.linked] = data.uri;
-        delete e.id;
+    const searchKeys = Object.keys(context)
+    .filter(v => !Object.keys(hits[0]).includes(v) && v !== config.istexQuery.linked);
+
+    hits.forEach((hit) => {
+        hit['@id'] = `https://api.istex.fr/document/${hit.id}`;
+        hit['@type'] = 'http://purl.org/ontology/bibo/Document';
+        hit[config.istexQuery.linked] = data.uri;
+
+        searchKeys.forEach((key) => {
+            const dataFromKey = get(hit, key);
+            hit[key] = formatData(dataFromKey);
+        });
+        delete hit.id;
     });
 
     const doc = {
         '@context': context,
         '@graph': hits,
     };
+
     return jsonld.toRDF(doc, { format: 'application/nquads' }, (err, nquads) => {
         if (err) {
             // eslint-disable-next-line
