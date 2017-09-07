@@ -2,7 +2,7 @@
 
 <img src="https://user-images.githubusercontent.com/7420853/30152932-1794db3c-93b5-11e7-98ab-a7f28d0061cb.png" width=150 align=right>
 
-Lodex is a tool to enable publishing a set of tabular data `csv, tsc, ...` in semantic web formats `JSON-LD, N-Quads, ...` and propose to manipulate them in a backoffice.
+Lodex is a tool to enable publishing a set of tabular data `csv, tsv, ...` in semantic web formats `JSON-LD, N-Quads, ...` and propose to manipulate them in a backoffice.
 
 To see what Lodex can do, check out https://data.istex.fr/ or the user documentation at https://lodex.gitbooks.io/lodex-user-documentation/ 
 
