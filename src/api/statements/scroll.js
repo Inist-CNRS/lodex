@@ -85,10 +85,11 @@ module.exports = function scroll(data, feed) {
     /**
      * Parameters of the API query
      */
-    const output = this.getParam('output', 'doi');
+    const output = this.getParam('output', ['doi']);
     const sid = this.getParam('sid', 'lodex');
     const size = this.getParam('size', 5000);
     const query = url.parse(data.content);
+    const cleanOutput = output.map(e => /\w+/.exec(e)[0]).join();
 
     const urlObj = {
         protocol: 'https',
@@ -96,7 +97,7 @@ module.exports = function scroll(data, feed) {
         pathname: 'document',
         // Change '&' to validate the query as an URI component (and not the '?'
         // at the beginning)
-        search: `${query.search.replace(/&/g, '%26')}&scroll=30s&output=${output}&size=${size}&sid=${sid}`,
+        search: `${query.search.replace(/&/g, '%26')}&scroll=30s&output=${cleanOutput}&size=${size}&sid=${sid}`,
     };
     const uri = url.format(urlObj);
 
