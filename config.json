@@ -63,7 +63,8 @@
        "context": {
           "link": "dcterms:ispartOf",
           "language": "dcterms:language",
-          "doi": "bibo:doi"
+          "doi": "bibo:doi",
+          "fulltext[0].uri": "dcterms:hasFormat"
        }
     }
 }
