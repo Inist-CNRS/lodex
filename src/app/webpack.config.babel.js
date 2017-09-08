@@ -1,6 +1,5 @@
 import config from 'config';
 import {
-    optimize,
     DefinePlugin,
     LoaderOptionsPlugin,
     SourceMapDevToolPlugin,
@@ -10,12 +9,11 @@ import {
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import CopyWebpackPlugin from 'copy-webpack-plugin';
 import CompressionPlugin from 'compression-webpack-plugin';
+import UglifyJsPlugin from 'uglifyjs-webpack-plugin';
 import { resolve } from 'path';
 
 import { loaderKeys } from '../api/loaders';
 import jsonConfig from '../../config.json';
-
-const { UglifyJsPlugin } = optimize;
 
 export default {
     entry: {
