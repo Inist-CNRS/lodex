@@ -199,7 +199,7 @@ describe('Resource page', function homePublishedDataTests() {
         await driver.wait(until.elementLocated(By.css('.widget')), DEFAULT_WAIT_TIMEOUT);
         await driver.executeScript('document.getElementsByClassName("widget")[0].scrollIntoView(true);');
         let widgetCode = await driver.findElement(By.css('#share-widget')).getAttribute('value');
-        expect(widgetCode).toMatch(/.+\/api\/widget\?type=.+&uri=.+&fields=%5B%5D/);
+        expect(widgetCode).toMatch(/.+api\/widget\?type=.+&uri=.+&fields=\[].+/);
 
         await driver.findElement(By.css('.widget-select-field')).click();
         await driver.sleep(500); // animations
@@ -215,7 +215,7 @@ describe('Resource page', function homePublishedDataTests() {
         await driver.wait(until.elementLocated(By.css('.widget-selected-field-item.author')), DEFAULT_WAIT_TIMEOUT);
 
         widgetCode = await driver.findElement(By.css('#share-widget')).getAttribute('value');
-        expect(widgetCode).toMatch(/.+\/api\/widget\?type=.+&uri=.+&fields=%5B%22author%22%5D/);
+        expect(widgetCode).toMatch(/.+api\/widget\?type=.+&uri=.+&fields=\["author"].+/);
     });
 
     it('should have an export tab with resource social sharing buttons', async () => {
