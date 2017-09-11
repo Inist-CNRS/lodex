@@ -23,6 +23,7 @@ import Widgets from '../Widgets';
 import Share from '../Share';
 import ShareLink from '../ShareLink';
 import SelectVersion from './SelectVersion';
+import Version from '../Version';
 import { getFullResourceUri } from '../../../../common/uris';
 import { schemeForDatasetLink, topFieldsCount } from '../../../../../config.json';
 
@@ -116,6 +117,9 @@ const styles = {
     },
     icon: {
         color: 'black',
+    },
+    version: {
+        paddingRight: '16px',
     },
 };
 
@@ -250,6 +254,9 @@ export const DetailComponent = ({
                     <AddField style={{ marginLeft: 'auto' }} />
                     <HideResource />
                 </CardActions>
+                <div style={styles.version}>
+                    <Version />
+                </div>
             </Card>
         </div>
     );
