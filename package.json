@@ -97,6 +97,7 @@
     "node-object-hash": "1.2.0",
     "react": "15.4.2",
     "react-copy-to-clipboard": "4.2.3",
+    "react-document-title": "2.0.3",
     "react-dom": "15.4.2",
     "react-event-timeline": "1.2.2",
     "react-fa": "4.1.2",
