@@ -7,7 +7,15 @@ ezs.use(ezsBasics);
 ezs.use(ezsLocals);
 
 const exporter = (config, fields, characteristics, stream) => {
-    const atomFeed = new Feed({});
+    const title = `${/https?:\/\/([\w-]+)/.exec(config.cleanHost)[1]} feed`;
+
+    const atomFeed = new Feed({
+        title,
+        generator: 'Lodex',
+        id: config.cleanHost,
+        link: config.cleanHost,
+        image: 'https://user-images.githubusercontent.com/7420853/30152932-1794db3c-93b5-11e7-98ab-a7f28d0061cb.png',
+    });
     return stream
         .pipe(ezs('filterVersions'))
         .pipe(ezs('filterContributions', { fields }))
