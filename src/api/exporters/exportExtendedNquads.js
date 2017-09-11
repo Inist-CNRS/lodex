@@ -11,8 +11,7 @@ const exporter = (config, fields, characteristics, stream) =>
     .pipe(ezs('filterContributions', { fields }))
     .pipe(ezs('extractIstexQuery', { fields, config }))
     .pipe(ezs('scroll', { output: Object.keys(config.istexQuery.context)
-                                        .filter(e => e !== config.istexQuery.linked)
-                                        .join() }))
+                                        .filter(e => e !== config.istexQuery.linked) }))
     .pipe(ezs('convertToExtendedNquads', { config }));
 
 exporter.extension = 'nq';

@@ -6,7 +6,6 @@ import translate from 'redux-polyglot/translate';
 import { Card, CardHeader, Avatar } from 'material-ui';
 
 import { grey50 } from 'material-ui/styles/colors';
-import validUrl from 'valid-url';
 
 import Pagination from '../../lib/components/Pagination';
 import Loading from '../../lib/components/Loading';
