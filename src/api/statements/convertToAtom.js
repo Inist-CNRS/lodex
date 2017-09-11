@@ -10,6 +10,8 @@ module.exports = function convertToAtom(data, feed) {
     }
 
     if (this.isLast() || this.getIndex() > config.perPage) {
+        // Export lodex might be pass twin instead one time for an unknow reason,
+        // the count resolve this problem.
         if (count !== 0) {
             return null;
         }
