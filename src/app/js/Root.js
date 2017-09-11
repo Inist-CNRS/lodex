@@ -6,9 +6,9 @@ import DocumentTitle from 'react-document-title';
 
 const Root = ({ store, routes }) => {
     const history = syncHistoryWithStore(browserHistory, store);
-
+    const pageTitle = /https?:\/\/([\w-]+)/.exec(process.env.PUBLIC_URL)[1];
     return (
-        <DocumentTitle title={/https?:\/\/([\w-]+)/.exec(process.env.PUBLIC_URL)[1]}>
+        <DocumentTitle title={pageTitle}>
             <Provider {...{ store }}>
                 <Router {...{ history, routes }} />
             </Provider>
