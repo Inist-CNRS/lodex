@@ -2,14 +2,17 @@ import React, { PropTypes } from 'react';
 import { Provider } from 'react-redux';
 import { Router, browserHistory } from 'react-router';
 import { syncHistoryWithStore } from 'react-router-redux';
+import DocumentTitle from 'react-document-title';
 
 const Root = ({ store, routes }) => {
     const history = syncHistoryWithStore(browserHistory, store);
-
+    const pageTitle = /https?:\/\/([\w-]+)/.exec(process.env.PUBLIC_URL)[1];
     return (
-        <Provider {...{ store }}>
-            <Router {...{ history, routes }} />
-        </Provider>
+        <DocumentTitle title={pageTitle}>
+            <Provider {...{ store }}>
+                <Router {...{ history, routes }} />
+            </Provider>
+        </DocumentTitle>
     );
 };
 
