@@ -89,7 +89,7 @@
     "lodash.range": "3.2.0",
     "lodash.rangeright": "4.2.0",
     "lodash.set": "4.3.2",
-    "marked": "0.3.6",
+    "markdown-it": "8.4.0",
     "material-ui": "0.17.2",
     "material-ui-superselectfield": "Sharlaan/material-ui-superselectfield",
     "moment": "2.18.1",
