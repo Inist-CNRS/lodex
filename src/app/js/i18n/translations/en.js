@@ -15,6 +15,7 @@ export default {
     Password: 'Password',
     line: 'line',
     error: 'error',
+    atom: 'atom',
     publish: 'Publish',
     publication: 'Publication',
     publication_explanations: 'Publishing will make your transformed data public. Once it has been published, you will not be able to modify it.',
