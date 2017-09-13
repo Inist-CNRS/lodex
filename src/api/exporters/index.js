@@ -4,6 +4,7 @@ import tsv from './exportTsv';
 import min from './exportMin';
 import nquads from './exportNQuads';
 import turtle from './exportTurtle';
+import atom from './exportAtom';
 import jsonld from './exportJsonld';
 import jsonldcompacted from './exportJsonldCompacted';
 import widget from './exportWidgetResource';
@@ -21,5 +22,6 @@ export default {
     jsonldcompacted,
     nquads,
     turtle,
+    atom,
     widget,
 };
