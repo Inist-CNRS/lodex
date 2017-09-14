@@ -137,7 +137,6 @@ export const DetailComponent = ({
     const topFields = fields.filter(field => resource[field.name] || field.composedOf).slice(0, topFieldsLimit);
     const otherFields = fields.filter(field => resource[field.name] || field.composedOf).slice(topFieldsLimit);
 
-
     return (
         <div className="detail">
             <Card>

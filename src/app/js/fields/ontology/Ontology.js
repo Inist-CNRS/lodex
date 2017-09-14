@@ -83,7 +83,7 @@ const SortableList = SortableContainer(({ items }) => (
                 value={value}
             />))}
     </div>
-    ));
+));
 
 export class OntologyComponent extends Component {
     constructor(props) {
@@ -130,18 +130,15 @@ export class OntologyComponent extends Component {
                             lockAxis="y"
                             useDragHandle
                             items={
-                            fields
-                            .filter(field => !fields.some(f => f.composedOf &&
-                                             f.composedOf.fields.includes(field.name)))
-                            .map((field, index) => (
-                                <OntologyField
-                                    field={field}
-                                    index={index + 1}
-                                    fieldsToCount={Array.isArray(fieldsToCount) ? {} : fieldsToCount}
-                                />
+                                fields.map((field, index) => (
+                                    <OntologyField
+                                        field={field}
+                                        index={index + 1}
+                                        fieldsToCount={Array.isArray(fieldsToCount) ? {} : fieldsToCount}
+                                    />
                                 ))}
                             onSortEnd={(oldIndex, newIndex) =>
-                                       this.onSortEnd(oldIndex, newIndex, fields, handleChangePosition)}
+                                this.onSortEnd(oldIndex, newIndex, fields, handleChangePosition)}
                         />
                     </div>}
                 {!isLoggedIn &&

@@ -11,7 +11,6 @@ import { fromFields } from '../../sharedSelectors';
 import FieldLabelInput from '../FieldLabelInput';
 import FieldSchemeInput from '../FieldSchemeInput';
 import FieldLanguageInput from '../FieldLanguageInput';
-import FieldPositionInput from '../FieldPositionInput';
 import FieldOverviewInput from '../FieldOverviewInput';
 import FieldFormatInput from '../FieldFormatInput';
 import FieldDisplayInListInput from '../FieldDisplayInListInput';
@@ -29,7 +28,6 @@ export const EditOntologyFieldFormComponent = ({ field, publicationError, handle
         <FieldLanguageInput field={field} />
         <FieldDisplayInListInput />
         <FieldDisplayInResourceInput />
-        <FieldPositionInput field={field} />
         <FieldOverviewInput />
         <FieldFormatInput />
         <FieldIsSearchableInput />

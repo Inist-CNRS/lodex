@@ -344,7 +344,7 @@ const getListFields = createSelector(
 const getAllListFields = createSelector(
     getCollectionFields,
     fields => fields
-            .filter(f => !f.composedOf),
+        .filter(f => !f.composedOf),
 );
 
 export const getFieldByName = createSelector(
