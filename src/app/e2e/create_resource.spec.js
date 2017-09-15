@@ -33,7 +33,7 @@ describe('Home page: Creating new resource as Julia', function homePublishedData
         await sendKeysToInputByName(driver, 'name', 'THE GREY');
         await sendKeysToInputByName(driver, 'email', 'gandalf@maiar.net');
 
-        await driver.findElement(By.css('.create-resource.save')).click();
+        await driver.findElement(By.xpath('(//button[@class="create-resource save"])[2]')).click();
     });
 
     it('should redirect to detail page for new resource', async () => {
