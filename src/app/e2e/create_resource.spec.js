@@ -23,7 +23,7 @@ describe('Home page: Creating new resource as Julia', function homePublishedData
         driver.wait(until.elementLocated(By.css('.create-resource'))));
 
     it('should display the characteristics edition dialog after clicking the edit button', async () => { // eslint-disable-line
-        driver.findElement(By.css('.create-resource')).click();
+        driver.findElement(By.xpath('(//button[@class="create-resource"])[2]')).click();
 
         return driver.wait(until.elementLocated(By.css('#resource_form')));
     });

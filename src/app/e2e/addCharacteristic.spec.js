@@ -1,6 +1,6 @@
 import { until, By } from 'selenium-webdriver';
 import expect from 'expect';
-import { elementTextIs, elementIsClicked, elementValueIs } from 'selenium-smart-wait';
+import { elementTextIs, elementValueIs } from 'selenium-smart-wait';
 
 import driver from '../../common/tests/chromeDriver';
 import { clear, loadFixtures } from '../../common/tests/fixtures';
@@ -40,10 +40,10 @@ describe('add characteristic', function homePublishedDataTests() {
     });
 
     it('should open addCharacteristic modal', async () => {
-        await driver.wait(elementIsClicked('.add-characteristic', DEFAULT_WAIT_TIMEOUT));
+        await driver.findElement(By.xpath('(//button[@class="add-characteristic"])[2]')).click();
         const form = await driver.wait(until.elementLocated(By.css('#add_characteristic_form')));
-        const fields = await driver.findElements(By.css('#add_characteristic_form > div'));
-        expect(fields.length).toBe(4);
+        const fields = await driver.findElements(By.xpath('(//form[@id="add_characteristic_form"])[2]/div'));
+        expect(fields.length).toBe(5);
 
         const labelLabel = await fields[0].findElement(By.css('label'));
         await driver.wait(elementTextIs(labelLabel, 'label', DEFAULT_WAIT_TIMEOUT));
@@ -62,7 +62,7 @@ describe('add characteristic', function homePublishedDataTests() {
         const schemeInput = await fields[2].findElement(By.css('input'));
         await driver.wait(elementValueIs(schemeInput, '', DEFAULT_WAIT_TIMEOUT));
 
-        await driver.wait(elementIsClicked('.add-characteristic.save', DEFAULT_WAIT_TIMEOUT));
+        await driver.findElement(By.xpath('(//button[@class="add-characteristic save"])[2]')).click();
         await driver.wait(until.stalenessOf(form));
     });
 

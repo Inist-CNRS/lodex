@@ -1,14 +1,12 @@
 import React from 'react';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
-import { Field, FieldArray } from 'redux-form';
-import MenuItem from 'material-ui/MenuItem';
-
+import { FieldArray } from 'redux-form';
 import Step from './Step';
-import FormSelectField from '../../lib/components/FormSelectField';
 import FieldSchemeInput from '../FieldSchemeInput';
 import FieldLanguageInput from '../FieldLanguageInput';
 import FieldLabelInput from '../FieldLabelInput';
+import FieldCoverInput from '../../fields/FieldCoverInput';
 import { polyglot as polyglotPropTypes, field as fieldPropTypes } from '../../propTypes';
 
 import ClassList from '../ClassList';
@@ -20,15 +18,7 @@ export const StepIdentityComponent = ({
 }) => (
     <Step label="field_wizard_step_identity" {...props}>
         <FieldLabelInput />
-        <Field
-            name="cover"
-            component={FormSelectField}
-            label={polyglot.t('select_cover')}
-            fullWidth
-        >
-            <MenuItem value="dataset" primaryText={polyglot.t('cover_dataset')} />
-            <MenuItem value="collection" primaryText={polyglot.t('cover_collection')} />
-        </Field>
+        <FieldCoverInput />
         <FieldSchemeInput />
         <FieldArray name="classes" component={ClassList} type="classes" />
         <FieldLanguageInput field={field} />
