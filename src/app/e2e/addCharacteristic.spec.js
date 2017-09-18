@@ -71,7 +71,7 @@ describe('add characteristic', function homePublishedDataTests() {
         const datasetCharacteristics = await driver.findElements(By.css('.dataset-characteristics'));
         expect(datasetCharacteristics.length).toEqual(1);
         const properties = await driver.findElements(By.css('.dataset-characteristics .property'));
-        expect(properties.length).toEqual(3);
+        expect(properties.length).toEqual(2);
 
         const movieLabel = '.dataset-characteristics .property.movie .property_label';
         await driver.wait(elementTextIs(movieLabel, 'Movie', DEFAULT_WAIT_TIMEOUT));
