@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 import { change, getFormValues } from 'redux-form';
 
 import Step from './Step';
-import FieldPositionInput from '../FieldPositionInput';
 import FieldFormatInput from '../FieldFormatInput';
 import FieldOverviewInput from '../FieldOverviewInput';
 import FieldDisplayInListInput from '../FieldDisplayInListInput';
@@ -32,7 +31,6 @@ export class StepDisplayComponent extends Component {
             <Step label="field_wizard_step_display" {...props}>
                 <FieldDisplayInListInput />
                 <FieldDisplayInResourceInput />
-                <FieldPositionInput field={field} />
                 <FieldOverviewInput />
                 <FieldFormatInput />
             </Step>

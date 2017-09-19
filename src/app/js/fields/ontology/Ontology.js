@@ -1,17 +1,19 @@
 import React, { Component, PropTypes } from 'react';
-import classnames from 'classnames';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
+import withHandlers from 'recompose/withHandlers';
 import translate from 'redux-polyglot/translate';
-import memoize from 'lodash.memoize';
 import fetch from 'isomorphic-fetch';
+import Reorder from 'material-ui/svg-icons/editor/format-line-spacing';
+import AppBar from 'material-ui/AppBar';
+import { grey300, grey800, grey900 } from 'material-ui/styles/colors';
+import { SortableContainer, SortableElement, SortableHandle } from 'react-sortable-hoc';
 
-import { field as fieldPropTypes, polyglot as polyglotPropTypes } from '../../propTypes';
+import { field as fieldPropTypes } from '../../propTypes';
 import { fromUser, fromFields } from '../../sharedSelectors';
-import { languages } from '../../../../../config.json';
-import getFieldClassName from '../../lib/getFieldClassName';
-import EditOntologyField from './EditOntologyField';
+import OntologyField from './OntologyField';
 import ExportFieldsButton from '../../public/export/ExportFieldsButton';
+import { changePosition } from '../';
 
 const styles = {
     container: {
@@ -25,31 +27,63 @@ const styles = {
         display: 'flex',
         justifyContent: 'flex-end',
         marginTop: '3rem',
-    },
-    field: memoize(hasBorder => ({
-        borderBottom: hasBorder ? '1px solid rgb(224, 224, 224)' : 'none',
-        paddingBottom: '1rem',
-        paddingTop: '1rem',
-        display: 'flex',
-    })),
-    name: {
-        marginTop: '1rem',
         marginBottom: '1rem',
-        fontStyle: 'italic',
     },
-    property: {
-        display: 'flex',
-        marginLeft: '3rem',
-        marginBottom: '0.5rem',
-    },
-    label: {
-        marginRight: '1rem',
-        minWidth: '10rem',
+    handle: {
+        width: '100%',
+        height: '2.5em',
+        backgroundColor: grey300,
+        cursor: 'ns-resize',
         textAlign: 'right',
+        zIndex: 0,
+    },
+    handleTitle: {
+        marginTop: '-14px',
+        fontStyle: 'italic',
+        color: grey800,
+        fontSize: 'large',
+        // backgroundColor: 'black',
+    },
+    handleIcon: {
+        color: grey900,
+        marginTop: '-1px',
     },
     icon: { color: 'black' },
 };
 
+const DragHandle = SortableHandle(({ cover }) =>
+    <AppBar
+        style={styles.handle}
+        iconElementLeft={
+            <Reorder
+                style={styles.handleIcon}
+            />
+        }
+        title={cover}
+        titleStyle={styles.handleTitle}
+    />);
+
+const SortableItem = SortableElement(({ value, sortIndex }) => (
+    <div>
+        { Boolean(sortIndex) && <DragHandle cover={value.props.field.cover} /> }
+        {value}
+    </div>));
+
+const SortableList = SortableContainer(({ items }) => (
+    <div>
+        {items.map((value, index) => (
+            <SortableItem
+                collection={value.props.field.cover}
+                disabled={index === 0}
+                key={
+                // eslint-disable-next-line
+                `item-${index}`}
+                sortIndex={index}
+                index={index}
+                value={value}
+            />))}
+    </div>
+));
 
 export class OntologyComponent extends Component {
     constructor(props) {
@@ -78,74 +112,42 @@ export class OntologyComponent extends Component {
             });
     }
 
+    onSortEnd = ({ oldIndex, newIndex }, _, fields, handleChangePosition) => {
+        handleChangePosition({ newPosition: newIndex, oldPosition: oldIndex });
+    };
+
     render() {
-        const { fields, isLoggedIn, p: polyglot } = this.props;
+        const { fields, isLoggedIn, handleChangePosition } = this.props;
         const { fieldsToCount } = this.state;
         return (
             <div className="ontology" style={styles.container}>
                 {isLoggedIn &&
-                    <div style={styles.exportContainer}>
-                        <ExportFieldsButton iconStyle={styles.icon} />
-                    </div>
-                }
-                {fields.map((field, index) => (
-                    <div key={field.name} style={styles.field(index < fields.length - 1)}>
-
-                        <div>
-                            <h4
-                                className={classnames('field-label', getFieldClassName(field))}
-                                style={styles.name}
-                            >
-                                {field.label}
-                            </h4>
-                            <dl style={styles.property}>
-                                <dt style={styles.label}>{polyglot.t('count_of_field')}</dt>
-                                <dd
-                                    className={classnames('field-count', getFieldClassName(field))}
-                                >
-                                    {fieldsToCount[field.name] || 1}
-                                </dd>
-                            </dl>
-                            {field.scheme &&
-                                <dl style={styles.property}>
-                                    <dt style={styles.label}>{polyglot.t('scheme')}</dt>
-                                    <dd
-                                        className={classnames('field-scheme', getFieldClassName(field))}
-                                    >
-                                        <a href={field.scheme}>{field.scheme}</a>
-                                    </dd>
-                                </dl>
-                            }
-                            <dl style={styles.property}>
-                                <dt style={styles.label}>{polyglot.t('cover')}</dt>
-                                <dd
-                                    className={classnames('field-cover', getFieldClassName(field))}
-                                >
-                                    {polyglot.t(`cover_${field.cover}`)}
-                                </dd>
-                            </dl>
-                            {field.language &&
-                                <dl style={styles.property}>
-                                    <dt style={styles.label}>{polyglot.t('language')}</dt>
-                                    <dd
-                                        className={classnames('field-language', getFieldClassName(field))}
-                                    >
-                                        {languages.find(l => l.code === field.language).label}
-                                    </dd>
-                                </dl>
-                            }
-                            <dl style={styles.property}>
-                                <dt style={styles.label}>{polyglot.t('identifier')}</dt>
-                                <dd
-                                    className={classnames('field-identifier', getFieldClassName(field))}
-                                >
-                                    {field.name}
-                                </dd>
-                            </dl>
+                    <div>
+                        <div style={styles.exportContainer}>
+                            <ExportFieldsButton iconStyle={styles.icon} />
                         </div>
-                        <EditOntologyField field={field} />
-                    </div>
-                ))}
+                        <SortableList
+                            lockAxis="y"
+                            useDragHandle
+                            items={
+                                fields.map((field, index) => (
+                                    <OntologyField
+                                        field={field}
+                                        index={index + 1}
+                                        fieldsToCount={Array.isArray(fieldsToCount) ? {} : fieldsToCount}
+                                    />
+                                ))}
+                            onSortEnd={(oldIndex, newIndex) =>
+                                this.onSortEnd(oldIndex, newIndex, fields, handleChangePosition)}
+                        />
+                    </div>}
+                {!isLoggedIn &&
+                        fields.map((field, index) => (
+                            <OntologyField
+                                field={field}
+                                index={index}
+                                fieldsToCount={Array.isArray(fieldsToCount) ? {} : fieldsToCount}
+                            />))}
             </div>
         );
     }
@@ -154,7 +156,7 @@ export class OntologyComponent extends Component {
 OntologyComponent.propTypes = {
     fields: PropTypes.arrayOf(fieldPropTypes).isRequired,
     isLoggedIn: PropTypes.bool.isRequired,
-    p: polyglotPropTypes.isRequired,
+    handleChangePosition: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
@@ -162,7 +164,16 @@ const mapStateToProps = state => ({
     isLoggedIn: fromUser.isLoggedIn(state),
 });
 
+const mapDispatchToProps = {
+    changePositionAction: changePosition,
+};
+
 export default compose(
-    connect(mapStateToProps),
+    connect(mapStateToProps, mapDispatchToProps),
+    withHandlers({
+        handleChangePosition: ({ changePositionAction }) => (field) => {
+            changePositionAction(field);
+        },
+    }),
     translate,
 )(OntologyComponent);

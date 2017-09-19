@@ -37,7 +37,7 @@ const DatasetCharacteristicsView = ({ characteristics }) => (
                         <DatasetCharacteristicItem characteristic={characteristicField} />
                     </div>
                 ))
-        }
+            }
         </CardText>
     </Card>
 );
