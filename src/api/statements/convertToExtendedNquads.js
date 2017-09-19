@@ -17,13 +17,13 @@ function getContext(config) {
         }
 
         const istexProperty = propertyValue
-        .split(':')
-        .map(e => e.trim());
+            .split(':')
+            .map(e => e.trim());
 
         if (!config.prefixes[istexProperty[0]]) {
             // eslint-disable-next-line
             return console.error(
-            `property "${istexProperty[0]}" in istexQuery is not found in prefixes`,
+                `property "${istexProperty[0]}" in istexQuery is not found in prefixes`,
             );
         }
 
@@ -69,7 +69,7 @@ module.exports = function convertToExtendedNquads(data, feed) {
     const hits = data.content.hits;
 
     const searchKeys = Object.keys(context)
-    .filter(v => !Object.keys(hits[0]).includes(v) && v !== config.istexQuery.linked);
+        .filter(v => !Object.keys(hits[0]).includes(v) && v !== config.istexQuery.linked);
 
     hits.forEach((hit) => {
         hit['@id'] = `https://api.istex.fr/document/${hit.id}`;
