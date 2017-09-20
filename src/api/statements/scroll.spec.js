@@ -25,20 +25,20 @@ describe('scrollISTEX request', () => {
     it('should return dataset of the API', (done) => {
     /* Fake URL */
         from([{ lodex: {}, content: 'https://api-v5.istex.fr/document/?q=language:test' }])
-        .pipe(ezs('scroll'))
-        .pipe(
-            ezs((data, feed) => {
-                try {
-                    expect(dataTest).toContain(data.content);
-                } catch (error) {
-                    return done(error);
-                }
+            .pipe(ezs('scroll'))
+            .pipe(
+                ezs((data, feed) => {
+                    try {
+                        expect(dataTest).toContain(data.content);
+                    } catch (error) {
+                        return done(error);
+                    }
 
-                if (data.content.noMoreScrollResults) {
-                    return done();
-                }
-                return feed.end();
-            }),
-      );
+                    if (data.content.noMoreScrollResults) {
+                        return done();
+                    }
+                    return feed.end();
+                }),
+            );
     });
 });
