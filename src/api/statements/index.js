@@ -11,6 +11,10 @@ import extractIstexQuery from './extractIstexQuery.js';
 import scroll from './scroll.js';
 import convertToExtendedNquads from './convertToExtendedNquads.js';
 import convertToAtom from './convertToAtom.js'
+import LodexContext from './LodexContext.js'
+import LodexConfig from './LodexConfig.js'
+import LodexRunQuery from './LodexRunQuery.js'
+import LodexParseQuery from './LodexParseQuery.js'
 
 module.exports = {
     filterVersions,
@@ -24,5 +28,9 @@ module.exports = {
     extractIstexQuery,
     scroll,
     convertToExtendedNquads,
-    convertToAtom
+    convertToAtom,
+    LodexContext,
+    LodexConfig,
+    LodexParseQuery,
+    LodexRunQuery,
 };

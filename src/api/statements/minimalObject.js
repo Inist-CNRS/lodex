@@ -1,11 +1,14 @@
 module.exports = function minimalObject(data, feed) {
-    const fields = this.getParam('fields', {});
     if (this.isLast()) {
         feed.close();
         return;
     }
+    const fields = this.getParam('fields', data.fields || []);
+    const titleScheme = this.getParam('titleScheme', 'http://purl.org/dc/terms/title');
     const collectionFields = fields.filter(field => field.cover === 'collection');
-    const titleField = collectionFields.find(({ overview }) => overview === 1);
+    const titleField =
+        collectionFields.find(({ scheme }) => scheme === titleScheme) ||
+        collectionFields.find(({ label }) => label.match(/^title$/));
 
     let title;
     if (titleField && titleField.name && data[titleField.name]) {

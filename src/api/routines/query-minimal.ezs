@@ -1,0 +1,28 @@
+# Export with only the ID & a TITLE
+
+extension = js
+mimeType = application/json
+type = file
+label = min
+
+[use]
+plugin = basics
+plugin = ../statements
+
+# Run query from URL
+[LodexParseQuery]
+#[LodexRunQuery]
+#target = $context
+
+# Inject Lodex context (fields & characteristics)
+#[LodexContext?single]
+#target = $context
+
+# Generate a minimal object  id & label
+#[MinimalObject]
+#titleScheme = http://purl.org/dc/terms/title
+
+# Generate JSON
+[jsonify]
+indent = true
+

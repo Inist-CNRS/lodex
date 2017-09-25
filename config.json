@@ -16,6 +16,11 @@
         }
     },
     "perPage": 10,
+    "routinesRepository" : "",
+    "routines": [
+        "query-minimal",
+        "export-minimal"
+    ],
     "exporters": [
         "nquads",
         "extendednquads",
