@@ -9,12 +9,14 @@ label = min
 plugin = basics
 plugin = ../statements
 
+# Find all docs
 [LodexRunQuery]
 target = $context
 
 # Inject Lodex context (fields & characteristics)
 [LodexContext?single]
 target = $context
+
 
 # Generate a minimal object  id & label
 [MinimalObject]

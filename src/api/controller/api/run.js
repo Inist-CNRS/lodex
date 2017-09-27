@@ -16,7 +16,7 @@ const routinesLocal = config.routines
         fileName,
         ezs.metaFile(fileName),
         basename(fileName, '.ezs'),
-        ezs.fromFile(fileName),
+        fs.readFileSync(fileName).toString(),
     ]);
 
 const routineRepository = 'https://raw.githubusercontent.com/Inist-CNRS/lodex/master/';
@@ -42,39 +42,28 @@ export const runRoutine = async (ctx, local) => {
             return response.text();
         });
         if (routineScript) {
-            routinesDistant[1] = ezs.meatString(routineScript);
-            routinesDistant[3] = ezs.fromString(routineScript);
+            routinesDistant[1] = ezs.metaString(routineScript);
+            routinesDistant[3] = routineScript;
         }
     }
     const routine = routineLocal || routineDistant;
     if (!routine) {
         throw new Error(`Unknown routine '${local}'`);
     }
-    const [, metaData, , routineFunc] = routine;
-
+    const [, metaData, , script] = routine;
+    const query = ctx.request.querystring || 'XX';
     const input = new PassThrough({ objectMode: true });
-    //    input.end(ctx.request.querystring || '');
-    input.write('ssssss1');
-    input.write('ssssss2');
-    input.end();
     const output = input
-       .pipe(routineFunc)
+        .pipe(ezs.fromString(script))
         .pipe(ezs((data, feed) => {
-            console.log('data', data);
-
-            feed.send(data);
-        }))
-        .pipe(ezs.toBuffer())
-        /*   .pipe(ezs((data, feed) => {
             if (data instanceof Error) {
                 global.console.error('Error in pipeline.', data);
                 feed.end();
             } else {
                 feed.send(data);
             }
-        })
-        )
-        */
+        }))
+        .pipe(ezs.toBuffer())
     ;
     if (metaData.fileName) {
         ctx.set('Content-disposition', `attachment; filename=${metaData.fileName}`);
@@ -82,6 +71,9 @@ export const runRoutine = async (ctx, local) => {
     ctx.type = metaData.mimeType;
     ctx.status = 200;
     ctx.body = output;
+
+    input.write(query);
+    input.end();
 };
 
 const app = new Koa();
