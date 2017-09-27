@@ -13,7 +13,7 @@ class Feed extends PassThrough {
     }
 }
 
-describe.only('filterVersions', () => {
+describe('filterVersions', () => {
     it('should return data without versions', (done) => {
         const feed = new Feed();
         filterVersions(
