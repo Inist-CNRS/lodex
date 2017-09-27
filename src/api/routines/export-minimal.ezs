@@ -23,6 +23,6 @@ target = $context
 titleScheme = http://purl.org/dc/terms/title
 
 # Generate JSON
-[jsonify]
+[JSONString]
 indent = true
 

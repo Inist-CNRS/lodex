@@ -10,8 +10,8 @@ plugin = basics
 plugin = ../statements
 
 # Run query from URL
+# ex: http://localhost:3000/api/run/query-minimal?$query[versions.0.Q98n]=Rocky
 [LodexParseQuery]
-[debug]
 
 [LodexRunQuery]
 target = $context
@@ -25,6 +25,6 @@ target = $context
 titleScheme = http://purl.org/dc/terms/title
 
 # Generate JSON
-[jsonify]
+[JSONString]
 indent = true
 

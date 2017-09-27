@@ -46,7 +46,7 @@
     "diff": "3.3.1",
     "expect": "1.20.2",
     "ezs": "4.3.1",
-    "ezs-basics": "2.3.0",
+    "ezs-basics": "3.0.2",
     "ezs-istex": "2.0.1",
     "feed": "1.1.0",
     "file-loader": "0.11.2",
