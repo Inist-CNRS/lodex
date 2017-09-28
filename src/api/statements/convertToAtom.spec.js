@@ -8,6 +8,7 @@ import statements from './index';
 ezs.use(statements);
 
 describe('convertToAtom', () => {
+    // FIXME: only one test using ezs is successful.
     it('should return the correct feed', (done) => {
         const atomFeed = new Feed({
             title: 'title',
