@@ -4,8 +4,7 @@ import from from 'from';
 import exportAtom from './exportAtom';
 
 describe('exportAtom', () => {
-    // FIXME: only one test using ezs is successful, any one of them.
-    it.skip('should return a feed', (done) => {
+    it('should return a feed', (done) => {
         let outputString = '';
         const config = {
             cleanHost: 'http://project-study-1',
@@ -21,6 +20,7 @@ describe('exportAtom', () => {
             if (data) {
                 outputString += data;
             } else {
+                feed.close();
                 try {
                     expect(outputString).toContain('<feed xmlns');
                 } catch (e) {
@@ -39,24 +39,27 @@ describe('exportAtom', () => {
         };
         const fields = [{ overview: 1, name: 'title' }, { overview: 2, name: 'description' }];
         const characteristics = null;
+        const input = from([{ uri: 'http://uri ', title: 'Title', description: 'Description' }]);
         exportAtom(
             config,
             fields,
             characteristics,
-            from([{ uri: 'http://uri ', title: 'Title', description: 'Description' }]),
-        ).pipe(ezs((data, feed) => {
-            if (data) {
-                outputString += data;
-            } else {
-                try {
-                    expect(outputString).toContain('Title');
-                    expect(outputString).toContain('http://uri');
-                } catch (e) {
-                    return done(e);
+            input,
+        )
+            .pipe(ezs((data, feed) => {
+                if (data) {
+                    outputString += data;
+                } else {
+                    feed.close();
+                    try {
+                        expect(outputString).toContain('Title');
+                        expect(outputString).toContain('http://uri');
+                    } catch (e) {
+                        return done(e);
+                    }
+                    return done();
                 }
-                return done();
-            }
-            return feed.end();
-        }));
+                return feed.end();
+            }));
     });
 });
