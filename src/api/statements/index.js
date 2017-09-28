@@ -1,7 +1,7 @@
 /* eslint-disable  */
 import filterVersions from './filterVersions.js';
 import filterContributions from './filterContributions.js';
-import MinimalObject from './minimalObject.js';
+import minimalObject from './minimalObject.js';
 import useFieldNames from './useFieldNames.js';
 import linkDataset from './linkDataset.js';
 import JSONLDCompacter from './JSONLDCompacter.js';
@@ -15,7 +15,7 @@ import convertToAtom from './convertToAtom.js'
 module.exports = {
     filterVersions,
     filterContributions,
-    MinimalObject,
+    minimalObject,
     useFieldNames,
     linkDataset,
     JSONLDCompacter,

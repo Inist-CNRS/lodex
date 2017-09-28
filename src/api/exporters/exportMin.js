@@ -9,7 +9,7 @@ const exporter = (config, fields, characteristics, stream) =>
     stream
         .pipe(ezs('filterVersions'))
         .pipe(ezs('filterContributions', { fields }))
-        .pipe(ezs('MinimalObject', { fields }))
+        .pipe(ezs('minimalObject', { fields }))
         .pipe(ezs('jsonify'));
 
 exporter.extension = 'json';
