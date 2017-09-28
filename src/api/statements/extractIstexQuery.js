@@ -16,47 +16,47 @@ module.exports = function extractIstexQuery(data, feed) {
         return feed.close();
     }
 
-    const fields = this.getParam('fields', {});
+    const fields = this.getParam('fields', []);
     const config = this.getParam('config', {});
 
     const labels = config.istexQuery.labels.split(',');
 
     /**
-     * If we have any istexQuery, close the export
+     * If we don't have any istexQuery, close the export
      */
     if (!fields.some(f => f.format && f.format.name === 'istex')) {
         return feed.close();
     }
 
     return fields
-    .filter(field => field.format
-         && field.format.name === 'istex')
-    .forEach((field) => {
-        const propertyName = field.name;
+        .filter(field => field.format
+                && field.format.name === 'istex')
+        .forEach((field) => {
+            const propertyName = field.name;
 
-        if (!labels.includes(field.label) &&
-            !(labels.length === 1 && labels[0] === '')) {
-            return null;
-        }
+            if (!labels.includes(field.label) &&
+                !(labels.length === 1 && labels[0] === '')) {
+                return null;
+            }
 
-        const formatedUri = removeNumberInstance(data.uri);
+            const formatedUri = removeNumberInstance(data.uri);
 
-        if (validUrl.isUri(data[propertyName])) {
+            if (validUrl.isUri(data[propertyName])) {
+                return feed.send({
+                    lodex: {
+                        uri: formatedUri,
+                    },
+                    content: data[propertyName],
+                });
+            }
+
+
+            /* the hostname will be replace in scroll */
             return feed.send({
                 lodex: {
                     uri: formatedUri,
                 },
-                content: data[propertyName],
+                content: `http://replace-api.fr/document/?q=${data[propertyName]}`,
             });
-        }
-
-
-        /* the hostname will be replace in scroll */
-        return feed.send({
-            lodex: {
-                uri: formatedUri,
-            },
-            content: `http://replace-api.fr/document/?q=${data[propertyName]}`,
         });
-    });
 };
