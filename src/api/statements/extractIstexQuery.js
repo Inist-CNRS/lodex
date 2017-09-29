@@ -36,7 +36,7 @@ module.exports = function extractIstexQuery(data, feed) {
 
             if (!labels.includes(field.label) &&
                 !(labels.length === 1 && labels[0] === '')) {
-                return null;
+                return feed.close();
             }
 
             const formatedUri = removeNumberInstance(data.uri);

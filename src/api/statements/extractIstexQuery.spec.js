@@ -27,8 +27,7 @@ describe('extractIstexQuery', () => {
             }));
     });
 
-    // FIXME: time out. Why? Returns a Stream instead of null
-    it.skip('should return null if no label matches the query field', (done) => {
+    it('should return null if no label matches the query field', (done) => {
         from([{}])
             .pipe(ezs('extractIstexQuery', {
                 fields: [{
