@@ -16,8 +16,9 @@
         }
     },
     "perPage": 10,
-    "routinesRepository" : "",
+    "routinesRepository" : "https://raw.githubusercontent.com/Inist-CNRS/lodex-routines/master/",
     "routines": [
+        "hello-world",
         "query-minimal",
         "export-minimal"
     ],

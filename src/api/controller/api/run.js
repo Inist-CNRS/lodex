@@ -1,5 +1,6 @@
 import Koa from 'koa';
-import { resolve, basename } from 'path';
+import Path from 'path';
+import URL from 'url';
 import route from 'koa-route';
 import fs from 'fs';
 import ezs from 'ezs';
@@ -8,24 +9,24 @@ import { PassThrough } from 'stream';
 import config from '../../../../config.json';
 
 
-const routineLocalDirectory = resolve(__dirname, '../../routines/');
+const routineLocalDirectory = Path.resolve(__dirname, '../../routines/');
 const routinesLocal = config.routines
-    .map(routineName => resolve(routineLocalDirectory, routineName.concat('.ezs')))
+    .map(routineName => Path.resolve(routineLocalDirectory, routineName.concat('.ezs')))
     .filter(fileName => fs.existsSync(fileName))
     .map(fileName => [
         fileName,
         ezs.metaFile(fileName),
-        basename(fileName, '.ezs'),
+        Path.basename(fileName, '.ezs'),
         fs.readFileSync(fileName).toString(),
     ]);
 
-const routineRepository = 'https://raw.githubusercontent.com/Inist-CNRS/lodex/master/';
+const routineRepository = config.routinesRepository;
 const routinesDistant = config.routines
-    .map(routineName => resolve(routineRepository, routineName.concat('.ezs')))
+    .map(routineName => URL.resolve(routineRepository, routineName.concat('.ezs')))
     .map(fileName => [
         fileName,
         null,
-        basename(fileName, '.ezs'),
+        Path.basename(fileName, '.ezs'),
         null,
     ]);
 
@@ -33,7 +34,6 @@ const routinesDistant = config.routines
 export const runRoutine = async (ctx, local) => {
     const routineLocal = routinesLocal.filter(r => r[2] === local)[0];
     const routineDistant = routinesDistant.filter(r => r[2] === local)[0];
-
     if (!routineLocal && routineDistant) {
         const routineScript = await fetch(routineDistant[0]).then((response) => {
             if (response.status >= 400) {
@@ -42,8 +42,8 @@ export const runRoutine = async (ctx, local) => {
             return response.text();
         });
         if (routineScript) {
-            routinesDistant[1] = ezs.metaString(routineScript);
-            routinesDistant[3] = routineScript;
+            routineDistant[1] = ezs.metaString(routineScript);
+            routineDistant[3] = routineScript;
         }
     }
     const routine = routineLocal || routineDistant;
