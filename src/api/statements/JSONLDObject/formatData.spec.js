@@ -1,7 +1,7 @@
 import expect from 'expect';
 import formatData from './formatData';
 
-describe('JSONLD formatData', () => {
+describe('JSONLDObject / formatData', () => {
     it('should be undefined when data is a string', () => {
         const output = formatData('http://valid.uri/');
         expect(output).toBe(undefined);
