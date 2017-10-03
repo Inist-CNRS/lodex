@@ -20,7 +20,8 @@ class PieChartView extends Component {
 
     componentDidMount() {
         const { field, resource } = this.props;
-        const { orderBy, maxSize } = field.format.args;
+        const orderBy = field.format && field.format.args && field.format.args.orderBy ? field.format.args.orderBy : 'value/asc';
+        const maxSize = field.format && field.format.args && field.format.args.maxSize ? field.format.args.maxSize : '5';
         const [sortBy, sortDir] = String(orderBy || 'value/asc').split('/');
         const uri = url.parse(resource[field.name]);
         const query = querystring.parse(uri.query || '');
