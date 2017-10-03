@@ -15,10 +15,18 @@ module.exports = function extractIstexQuery(data, feed) {
     if (this.isLast()) {
         return feed.close();
     }
+
     const fields = this.getParam('fields', {});
     const config = this.getParam('config', {});
 
     const labels = config.istexQuery.labels.split(',');
+
+    /**
+     * If we have any istexQuery, close the export
+     */
+    if (!fields.some(f => f.format && f.format.name === 'istex')) {
+        return feed.close();
+    }
 
     return fields
     .filter(field => field.format
@@ -41,6 +49,7 @@ module.exports = function extractIstexQuery(data, feed) {
                 content: data[propertyName],
             });
         }
+
 
         /* the hostname will be replace in scroll */
         return feed.send({

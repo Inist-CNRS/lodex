@@ -12,6 +12,11 @@ import SPLIT from './SPLIT';
 import PREFIX from './PREFIX';
 import SUFFIX from './SUFFIX';
 import DEFAULT from './DEFAULT';
+import STRING from './STRING';
+import NUMBER from './NUMBER';
+import BOOLEAN from './BOOLEAN';
+import TRUNCATE from './TRUNCATE';
+import SHIFT from './SHIFT';
 
 const transformers = {
     AUTOGENERATE_URI: memoizeTransformer(AUTOGENERATE_URI),
@@ -27,6 +32,11 @@ const transformers = {
     PREFIX: memoizeTransformer(PREFIX),
     SUFFIX: memoizeTransformer(SUFFIX),
     DEFAULT: memoizeTransformer(DEFAULT),
+    STRING: memoizeTransformer(STRING),
+    NUMBER: memoizeTransformer(NUMBER),
+    BOOLEAN: memoizeTransformer(BOOLEAN),
+    TRUNCATE: memoizeTransformer(TRUNCATE),
+    SHIFT: memoizeTransformer(SHIFT),
 };
 
 export default transformers;
@@ -45,7 +55,13 @@ const transformersMetas = [
     PREFIX,
     SUFFIX,
     DEFAULT,
-].map(transformation => transformation.getMetas());
+    STRING,
+    NUMBER,
+    BOOLEAN,
+    TRUNCATE,
+    SHIFT,
+].map(transformation => transformation.getMetas())
+    .sort((x, y) => x.name.localeCompare(y.name));
 
 export const getTransformersMetas = type => (type ? transformersMetas.filter(m => m.type === type) : transformersMetas);
 

@@ -1,6 +1,6 @@
 import Koa from 'koa';
 import route from 'koa-route';
-import { host } from 'config';
+import { host, cleanHost } from 'config';
 import config from '../../../../config.json';
 
 import exporters from '../../exporters';
@@ -18,6 +18,7 @@ export const getExporter = (type) => {
 export const getExporterConfig = () => ({
     ...config,
     host,
+    cleanHost,
 });
 
 export async function exportFileMiddleware(ctx, type, exportStreamFactory, exporterConfig) {

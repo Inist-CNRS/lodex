@@ -120,6 +120,11 @@ export const getVerifyUriRequest = state => getRequest(state, {
     method: 'GET',
 });
 
+export const getClearPublishedRequest = state => getRequest(state, {
+    url: '/api/publish',
+    method: 'DELETE',
+});
+
 export const getLoadRemovedResourcePageRequest = (state, { page, perPage }) =>
     getRequest(state, {
         url: `/api/publishedDataset/removed?page=${encodeURIComponent(page)}&perPage=${encodeURIComponent(perPage)}`,
@@ -178,6 +183,11 @@ export const getHideResourceRequest = (state, data) =>
         body: data,
 
     });
+
+export const getClearDatasetRequest = state => getRequest(state, {
+    url: '/api/dataset',
+    method: 'DELETE',
+});
 
 export const getAddFieldToResourceRequest = (state, data) =>
     getRequest(state, {
@@ -245,6 +255,8 @@ export const selectors = {
     isUserModalShown,
     getLoginRequest,
     getClearUploadRequest,
+    getClearDatasetRequest,
+    getClearPublishedRequest,
     getLoadExportersRequest,
     getChangeFieldStatusRequest,
     getLoadContributedResourcePageRequest,

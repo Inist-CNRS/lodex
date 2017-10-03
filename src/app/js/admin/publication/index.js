@@ -3,7 +3,6 @@ import { createAction, handleActions } from 'redux-actions';
 export const LOAD_PUBLICATION = 'LOAD_PUBLICATION';
 export const LOAD_PUBLICATION_SUCCESS = 'LOAD_PUBLICATION_SUCCESS';
 export const LOAD_PUBLICATION_ERROR = 'LOAD_PUBLICATION_ERROR';
-
 export const SELECT_FIELD = 'SELECT_FIELD';
 
 export const loadPublication = createAction(LOAD_PUBLICATION);

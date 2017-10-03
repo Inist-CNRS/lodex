@@ -43,7 +43,7 @@ describe('add characteristic', function homePublishedDataTests() {
         await driver.wait(elementIsClicked('.add-characteristic', DEFAULT_WAIT_TIMEOUT));
         const form = await driver.wait(until.elementLocated(By.css('#add_characteristic_form')));
         const fields = await driver.findElements(By.css('#add_characteristic_form > div'));
-        expect(fields.length).toBe(3);
+        expect(fields.length).toBe(4);
 
         const labelLabel = await fields[0].findElement(By.css('label'));
         await driver.wait(elementTextIs(labelLabel, 'label', DEFAULT_WAIT_TIMEOUT));

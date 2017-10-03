@@ -7,7 +7,7 @@ export const split = (value, separator) => {
         throw new Error('Invalid value: need a string');
     }
 
-    return value.split(separator);
+    return value.split(separator).map(x => x.trim());
 };
 
 const transformation = (_, args) => (value) => {

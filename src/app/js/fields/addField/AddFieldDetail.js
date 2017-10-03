@@ -7,7 +7,6 @@ import FieldLabelInput from '../FieldLabelInput';
 import FieldFormatInput from '../FieldFormatInput';
 import FieldIsSearchableInput from '../FieldIsSearchableInput';
 import FieldIsFacetInput from '../FieldIsFacetInput';
-import FieldPositionInput from '../FieldPositionInput';
 import FormTextField from '../../lib/components/FormTextField';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 
@@ -39,7 +38,6 @@ export const AddFieldDetailComponent = ({
             <FieldFormatInput key="field_format" />,
             <FieldIsSearchableInput key="field_searchable" />,
             <FieldIsFacetInput key="field_facet" />,
-            <FieldPositionInput key="field_position" field={{}} />,
         ]}
     </FormSection>
 );

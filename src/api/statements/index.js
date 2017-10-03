@@ -6,10 +6,15 @@ import useFieldNames from './useFieldNames.js';
 import linkDataset from './linkDataset.js';
 import JSONLDCompacter from './JSONLDCompacter.js';
 import JSONLDString from './JSONLDString.js';
-import JSONLDObject from './JSONLDObject.js';
+import JSONLDObject from './JSONLDObject';
 import extractIstexQuery from './extractIstexQuery.js';
 import scroll from './scroll.js';
 import convertToExtendedNquads from './convertToExtendedNquads.js';
+import convertToAtom from './convertToAtom.js'
+import LodexContext from './LodexContext.js'
+import LodexConfig from './LodexConfig.js'
+import LodexRunQuery from './LodexRunQuery.js'
+import LodexParseQuery from './LodexParseQuery.js'
 
 module.exports = {
     filterVersions,
@@ -23,4 +28,9 @@ module.exports = {
     extractIstexQuery,
     scroll,
     convertToExtendedNquads,
+    convertToAtom,
+    LodexContext,
+    LodexConfig,
+    LodexParseQuery,
+    LodexRunQuery,
 };

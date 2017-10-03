@@ -23,8 +23,8 @@ const styles = {
         display: 'flex',
         flexDirection: 'column',
         borderBottom: index < total - 1 ? '1px solid rgb(224, 224, 224)' : 'none',
-        paddingTop: index > 0 ? '0.5rem' : 0,
-        paddingBottom: index < total - 1 ? '0.5rem' : 0,
+        paddingTop: index > 0 ? '2rem' : 0,
+        paddingBottom: index < total - 1 ? '1rem' : 0,
     })),
 };
 
@@ -37,7 +37,7 @@ const DatasetCharacteristicsView = ({ characteristics }) => (
                         <DatasetCharacteristicItem characteristic={characteristicField} />
                     </div>
                 ))
-        }
+            }
         </CardText>
     </Card>
 );

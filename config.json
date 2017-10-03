@@ -16,6 +16,12 @@
         }
     },
     "perPage": 10,
+    "routinesRepository" : "https://raw.githubusercontent.com/Inist-CNRS/lodex-routines/master/",
+    "routines": [
+        "hello-world",
+        "query-minimal",
+        "export-minimal"
+    ],
     "exporters": [
         "nquads",
         "extendednquads",
@@ -23,7 +29,9 @@
         "csv",
         "tsv",
         "raw",
+        "min",
         "turtle",
+        "atom",
         "jsonld",
         "jsonldcompacted",
         "widget"
@@ -34,6 +42,9 @@
     ],
     "topFieldsCount": 2,
     "schemeForDatasetLink": "http://www.w3.org/2004/02/skos/core#inScheme",
+    "datasetClass": "http://test.fr/datasetClass",
+    "exportDataset": "true",
+    "collectionClass": "",
     "prefixes":  {
         "bibo": "http://purl.org/ontology/bibo/",
         "dcdoc": "http://dublincore.org/documents/",
@@ -55,10 +66,12 @@
     },
     "istexQuery" : {
        "labels": "",
-       "linked": "language",
+       "linked": "link",
        "context": {
+          "link": "dcterms:ispartOf",
           "language": "dcterms:language",
-          "doi": "bibo:doi"
+          "doi": "bibo:doi",
+          "fulltext[0].uri": "dcterms:hasFormat"
        }
     }
 }

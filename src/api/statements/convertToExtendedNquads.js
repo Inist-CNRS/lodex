@@ -1,6 +1,6 @@
 import jsonld from 'jsonld';
-import url from 'url';
 import validUrl from 'valid-url';
+import get from 'lodash.get';
 
 /**
  * Create a JSONLD context with prefixes and istexQuery informations in config.json
@@ -9,7 +9,7 @@ import validUrl from 'valid-url';
 function getContext(config) {
     const context = {};
 
-    Object.keys(config.istexQuery.context).map((v) => {
+    Object.keys(config.istexQuery.context).forEach((v) => {
         const propertyValue = config.istexQuery.context[v];
 
         if (validUrl.isWebUri(propertyValue)) {
@@ -17,20 +17,17 @@ function getContext(config) {
         }
 
         const istexProperty = propertyValue
-        .split(':')
-        .map(e => e.trim());
+            .split(':')
+            .map(e => e.trim());
 
         if (!config.prefixes[istexProperty[0]]) {
             // eslint-disable-next-line
             return console.error(
-            `property "${istexProperty[0]}" in istexQuery is not found in prefixes`,
+                `property "${istexProperty[0]}" in istexQuery is not found in prefixes`,
             );
         }
 
-        return (context[v] = url.resolve(
-        config.prefixes[istexProperty[0]],
-        istexProperty[1],
-        ));
+        return (context[v] = `${config.prefixes[istexProperty[0]]}${istexProperty[1]}`);
     });
 
     if (context[config.istexQuery.linked] === undefined) {
@@ -46,6 +43,20 @@ function getContext(config) {
     return context;
 }
 
+const checkWeb = (data) => {
+    if (validUrl.isWebUri(data)) {
+        return { '@id': data };
+    }
+    return data;
+};
+
+const formatData = (data) => {
+    if (!Array.isArray(data)) {
+        return checkWeb(data);
+    }
+    return data.map(e => checkWeb(e));
+};
+
 
 module.exports = function convertToExtendedNquads(data, feed) {
     if (this.isLast()) {
@@ -53,21 +64,27 @@ module.exports = function convertToExtendedNquads(data, feed) {
     }
 
     const config = this.getParam('config', {});
-    const graph = config.istexQuery.graph || this.getParam('graph', '');
     const context = this.getParam('context', getContext(config));
 
     const hits = data.content.hits;
 
-    hits.forEach((e) => {
-        e['@id'] = `https://api.istex.fr/document/${e.id}`;
-        e['@type'] = 'http://purl.org/ontology/bibo/Document';
-        e[config.istexQuery.linked] = data.uri;
-        delete e.id;
+    const searchKeys = Object.keys(context)
+        .filter(v => !Object.keys(hits[0]).includes(v) && v !== config.istexQuery.linked);
+
+    hits.forEach((hit) => {
+        hit['@id'] = `https://api.istex.fr/document/${hit.id}`;
+        hit['@type'] = 'http://purl.org/ontology/bibo/Document';
+        hit[config.istexQuery.linked] = data.uri;
+
+        searchKeys.forEach((key) => {
+            const dataFromKey = get(hit, key);
+            hit[key] = formatData(dataFromKey);
+        });
+        delete hit.id;
     });
 
     const doc = {
         '@context': context,
-        '@id': graph,
         '@graph': hits,
     };
 

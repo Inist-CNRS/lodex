@@ -28,6 +28,9 @@ export const SAVE_FIELD = 'SAVE_FIELD';
 export const SAVE_FIELD_ERROR = 'SAVE_FIELD_ERROR';
 export const SAVE_FIELD_SUCCESS = 'SAVE_FIELD_SUCCESS';
 export const CHANGE_OPERATION = 'CHANGE_OPERATION';
+export const CHANGE_POSITION = 'CHANGE_POSITION';
+export const CHANGE_POSITION_VALUE = 'CHANGE_POSITION_VALUE';
+export const CHANGE_CLASS = 'CHANGE_CLASS';
 
 export const SELECT_FIELD = 'SELECT_FIELD';
 export const CONFIGURE_FIELD = 'CONFIGURE_FIELD';
@@ -56,6 +59,9 @@ export const saveField = createAction(SAVE_FIELD);
 export const saveFieldError = createAction(SAVE_FIELD_ERROR);
 export const saveFieldSuccess = createAction(SAVE_FIELD_SUCCESS);
 export const changeOperation = createAction(CHANGE_OPERATION);
+export const changePosition = createAction(CHANGE_POSITION);
+export const changePositionValue = createAction(CHANGE_POSITION_VALUE);
+export const changeClass = createAction(CHANGE_CLASS);
 
 export const selectField = createAction(SELECT_FIELD);
 export const configureField = createAction(CONFIGURE_FIELD);
@@ -97,6 +103,7 @@ const getDefaultField = (name, index) => ({
             value: name,
         }],
     }] : [],
+    classes: [],
     position: index,
     overview: 0,
 });
@@ -206,6 +213,18 @@ export default handleActions({
             [field.name]: field,
         },
     }),
+    CHANGE_POSITION_VALUE: (state, { payload: { fields } }) => {
+        const result = state.byName;
+        fields.forEach((e) => {
+            result[e.name].position = e.position;
+        });
+        return {
+            ...state,
+            byName: {
+                ...result,
+            },
+        };
+    },
     LOAD_PUBLICATION: state => ({
         ...state,
         error: null,
@@ -235,6 +254,7 @@ const getFields = ({ byName, list }) => list
     .map(name => byName[name])
     .sort((f1, f2) => f1.position - f2.position);
 
+const getState = state => state.list;
 const getByName = ({ byName }) => byName;
 
 const getNbFields = ({ list }) => list.length;
@@ -324,7 +344,7 @@ const getListFields = createSelector(
 const getAllListFields = createSelector(
     getCollectionFields,
     fields => fields
-            .filter(f => !f.composedOf),
+        .filter(f => !f.composedOf),
 );
 
 export const getFieldByName = createSelector(
@@ -528,6 +548,7 @@ export const selectors = {
     getFieldsForPreview,
     getFieldByName,
     getFields,
+    getState,
     getFieldsExceptEdited,
     getInvalidFields,
     getNbFields,

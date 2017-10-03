@@ -23,6 +23,7 @@ import Widgets from '../Widgets';
 import Share from '../Share';
 import ShareLink from '../ShareLink';
 import SelectVersion from './SelectVersion';
+import Version from '../Version';
 import { getFullResourceUri } from '../../../../common/uris';
 import { schemeForDatasetLink, topFieldsCount } from '../../../../../config.json';
 
@@ -35,24 +36,24 @@ const styles = {
         display: 'flex',
         flexDirection: 'column',
     },
-    topItem: memoize((index, total) => ({
+    item: {
         display: 'flex',
         flexDirection: 'column',
-        borderBottom: index === 0 ? '1px solid rgb(224, 224, 224)' : 'none',
-        paddingTop: index > 0 ? '0.5rem' : 0,
-        paddingBottom: index < total - 1 ? '0.5rem' : 0,
+        borderTop: '1px solid rgb(224, 224, 224)',
+        paddingTop: '2rem',
+        paddingBottom: '1rem',
         paddingLeft: '0.5rem',
         paddingRight: '0.5rem',
-    })),
-    item: memoize((index, total) => ({
+    },
+    firstItem: {
         display: 'flex',
         flexDirection: 'column',
-        borderBottom: index < total - 1 ? '1px solid rgb(224, 224, 224)' : 'none',
-        paddingTop: index > 0 ? '0.5rem' : 0,
-        paddingBottom: index < total - 1 ? '0.5rem' : 0,
+        borderBottom: 'none',
+        paddingTop: '2rem',
+        paddingBottom: '1rem',
         paddingLeft: '0.5rem',
         paddingRight: '0.5rem',
-    })),
+    },
     property: {
         flexGrow: 2,
     },
@@ -117,6 +118,9 @@ const styles = {
     icon: {
         color: 'black',
     },
+    version: {
+        paddingRight: '16px',
+    },
 };
 
 export const DetailComponent = ({
@@ -130,15 +134,14 @@ export const DetailComponent = ({
     backToListLabel,
 }) => {
     const topFieldsLimit = Number(topFieldsCount) || 2;
-    const topFields = fields.slice(0, topFieldsLimit);
-    const otherFields = fields.slice(topFieldsLimit);
-
+    const topFields = fields.filter(field => resource[field.name] || field.composedOf).slice(0, topFieldsLimit);
+    const otherFields = fields.filter(field => resource[field.name] || field.composedOf).slice(topFieldsLimit);
 
     return (
         <div className="detail">
             <Card>
                 <CardText style={styles.container}>
-                    <div style={styles.topItem(0, topFields.length + 1)}>
+                    <div style={styles.firstItem}>
                         <div className="property schemeForDatasetLink" style={styles.container}>
                             <div>
                                 <div style={styles.labelContainer}>
@@ -163,8 +166,8 @@ export const DetailComponent = ({
                         </div>
                     </div>
 
-                    {topFields.map((field, index) => (
-                        <div key={field.name} style={styles.topItem(index + 1, topFields.length + 1)}>
+                    {topFields.map(field => (
+                        <div key={field.name} style={styles.item}>
                             <Property
                                 field={field}
                                 isSaving={isSaving}
@@ -187,8 +190,8 @@ export const DetailComponent = ({
                         label={polyglot.t('resource_details')}
                     >
                         <div style={styles.propertiesContainer}>
-                            {otherFields.map((field, index) => (
-                                <div key={field.name} style={styles.item(index, otherFields.length + 1)}>
+                            {otherFields.map(field => (
+                                <div key={field.name} style={styles.item}>
                                     <Property
                                         field={field}
                                         isSaving={isSaving}
@@ -198,7 +201,7 @@ export const DetailComponent = ({
                                     />
                                 </div>
                             ))}
-                            <div style={styles.item(otherFields.length, otherFields.length + 1)}>
+                            <div style={styles.item}>
                                 <div className="property resourceURI" style={styles.container}>
                                     <div>
                                         <div style={styles.labelContainer}>
@@ -250,6 +253,9 @@ export const DetailComponent = ({
                     <AddField style={{ marginLeft: 'auto' }} />
                     <HideResource />
                 </CardActions>
+                <div style={styles.version}>
+                    <Version />
+                </div>
             </Card>
         </div>
     );
