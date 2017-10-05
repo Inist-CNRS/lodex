@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import fetch from 'isomorphic-fetch';
+import MQS from 'mongodb-querystring';
 import url from 'url';
 import querystring from 'querystring';
 import translate from 'redux-polyglot/translate';
@@ -19,14 +20,25 @@ class RadarChartView extends Component {
 
     componentDidMount() {
         const { field, resource } = this.props;
+        const orderBy = field.format && field.format.args && field.format.args.orderBy ? field.format.args.orderBy : 'value/asc';
+        const maxSize = field.format && field.format.args && field.format.args.maxSize ? field.format.args.maxSize : '5';
+        const [sortBy, sortDir] = String(orderBy || 'value/asc').split('/');
+        const by = sortBy === 'value' ? 'value' : '_id';
+        const dir = sortDir === 'asc' ? 1 : -1;
+        const sort = {};
+        sort[by] = dir;
+
         const uri = url.parse(resource[field.name]);
         const query = querystring.parse(uri.query || '');
+        const mongoQuery = {
+            $query: query,
+            $skip: 0,
+            $limit: maxSize,
+            $orderby: sort,
+        };
         const uriNew = {
             ...uri,
-            query: {
-                ...query,
-            },
-            search: '',
+            search: MQS.stringify(mongoQuery),
         };
         if (uri.pathname.indexOf('/api/') === 0) {
             uriNew.host = window.location.host;
@@ -61,6 +73,7 @@ class RadarChartView extends Component {
         const { colors } = field.format.args || { colors: '' };
         const colorsSet = String(colors).split(/[^\w]/).filter(x => x.length > 0).map(x => String('#').concat(x));
         const color = colorsSet[0];
+
         return (
             <ResponsiveContainer width={600} height={300}>
                 <RadarChart
