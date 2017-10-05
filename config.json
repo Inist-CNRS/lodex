@@ -20,7 +20,9 @@
     "routines": [
         "hello-world",
         "query-minimal",
-        "export-minimal"
+        "export-minimal",
+        "reduce-distinct",
+        "distinct-by-date"
     ],
     "exporters": [
         "nquads",

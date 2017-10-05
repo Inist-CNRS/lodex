@@ -1,0 +1,31 @@
+# Reduce to ditinct values form one or more fields
+
+extension = js
+mimeType = application/json
+type = file
+label = distinct
+
+[use]
+plugin = basics
+plugin = ../statements
+
+# Parse query from URL
+# ex: http://localhost:3000/api/run/distinct-release-date/
+[LodexParseQuery]
+
+# Inject Lodex context (fields & characteristics)
+[LodexContext?single]
+
+# Set $field from specific scheme
+[LodexSetField]
+fromScheme = http://purl.org/dc/terms/date
+fromScheme = http://schema.org/releaseDate
+
+# Run an d reduce query result
+[LodexReduceQuery]
+reducer = distinct
+
+# Generate Data Object { data: [], total : ? }
+[DataObject]
+indent = true
+

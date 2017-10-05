@@ -1,4 +1,6 @@
-import chart from './chart';
+import contextualBarchart from './contextual-bar-chart';
+import globalPiechart from './global-pie-chart/';
+import globalRadarchart from './global-radar-chart/';
 import email from './email';
 import html from './html';
 import image from './image';
@@ -14,7 +16,9 @@ import resource from './lodex-resource';
 import DefaultFormat from './DefaultFormat';
 
 const components = {
-    chart,
+    contextualBarchart,
+    globalPiechart,
+    globalRadarchart,
     email,
     html,
     image,
@@ -29,7 +33,7 @@ const components = {
     resource,
 };
 
-export const FORMATS = Object.keys(components);
+export const FORMATS = Object.keys(components).sort();
 
 export const getComponent = (field) => {
     if (!field) {

@@ -14,7 +14,10 @@ import convertToAtom from './convertToAtom.js'
 import LodexContext from './LodexContext.js'
 import LodexConfig from './LodexConfig.js'
 import LodexRunQuery from './LodexRunQuery.js'
+import LodexSetField from './LodexSetField.js'
 import LodexParseQuery from './LodexParseQuery.js'
+import LodexReduceQuery from './LodexReduceQuery.js'
+import DataObject from './DataObject.js'
 
 module.exports = {
     filterVersions,
@@ -33,4 +36,7 @@ module.exports = {
     LodexConfig,
     LodexParseQuery,
     LodexRunQuery,
+    LodexReduceQuery,
+    LodexSetField,
+    DataObject,
 };

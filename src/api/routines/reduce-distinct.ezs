@@ -1,0 +1,23 @@
+# Reduce to ditinct values form one or more fields
+
+extension = js
+mimeType = application/json
+type = file
+label = distinct
+
+[use]
+plugin = basics
+plugin = ../statements
+
+# Parse query from URL
+# ex: http://localhost:3000/api/run/reduce-distinct?$field=Q98n
+[LodexParseQuery]
+
+# Run an d reduce query result
+[LodexReduceQuery]
+reducer = distinct
+
+# Generate JSON
+[JSONString]
+indent = true
+
