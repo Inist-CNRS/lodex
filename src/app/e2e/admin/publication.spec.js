@@ -23,7 +23,7 @@ describe('Admin', () => {
     describe('Publication', function homeTests() {
         this.timeout(100000 * factor);
         const DEFAULT_WAIT_TIMEOUT = (19000 * factor); // A bit less than mocha's timeout
-                                                       // to get explicit errors from selenium
+        //                                                to get explicit errors from selenium
 
         before(async () => {
             await clear();
@@ -512,13 +512,13 @@ describe('Admin', () => {
                             .findElement(By.css(`.dataset table tbody tr:nth-child(${index}) td.dataset-genre`))
                             .getText(),
                     ])
-                    .then(([uri, stronger, name, title, genre]) => ({
-                        uri,
-                        stronger,
-                        name,
-                        title,
-                        genre,
-                    }))));
+                        .then(([uri, stronger, name, title, genre]) => ({
+                            uri,
+                            stronger,
+                            name,
+                            title,
+                            genre,
+                        }))));
 
                 const expected = {
                     rock: 'scissor',

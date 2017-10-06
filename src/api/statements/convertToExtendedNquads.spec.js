@@ -38,19 +38,19 @@ describe('conversion to extended Nquads', () => {
     /* should result of the nquads conversion */
         /* Fake URL */
         from([{ lodex: { uri: 'https://lodex-uri.fr/URI' }, content: 'https://api-v5.istex.fr/document/?q=language:test' }])
-        .pipe(ezs('scroll'))
-        .pipe(ezs('convertToExtendedNquads', { config }))
-        .pipe(ezs((data, feed) => {
-            if (data !== null) {
-                try {
-                    expect(dataNquads).to.contain(btoa(data));
-                } catch (e) {
-                    return done(e);
+            .pipe(ezs('scroll'))
+            .pipe(ezs('convertToExtendedNquads', { config }))
+            .pipe(ezs((data, feed) => {
+                if (data !== null) {
+                    try {
+                        expect(dataNquads).to.contain(btoa(data));
+                    } catch (e) {
+                        return done(e);
+                    }
+                } else {
+                    return done();
                 }
-            } else {
-                return done();
-            }
-            return feed.end();
-        }));
+                return feed.end();
+            }));
     });
 });

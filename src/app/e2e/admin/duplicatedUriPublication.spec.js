@@ -63,11 +63,11 @@ describe('Admin', () => {
                             .findElement(By.css(`.dataset table tbody tr:nth-child(${index}) td.dataset-firstname`))
                             .getText(),
                     ])
-                    .then(([uri, name, firstname]) => ({
-                        uri,
-                        name,
-                        firstname,
-                    }))));
+                        .then(([uri, name, firstname]) => ({
+                            uri,
+                            name,
+                            firstname,
+                        }))));
                 expect(rows).toEqual([
                     { uri: 'BRANDYBUCK', name: 'BRANDYBUCK', firstname: 'MERIADOC' },
                     { uri: 'BAGGINS', name: 'BAGGINS', firstname: 'BILBON' },
@@ -157,11 +157,11 @@ describe('Admin', () => {
                             .findElement(By.css(`.dataset table tbody tr:nth-child(${index}) td.dataset-firstname`))
                             .getText(),
                     ])
-                    .then(([uri, name, firstname]) => ({
-                        uri,
-                        name,
-                        firstname,
-                    }))));
+                        .then(([uri, name, firstname]) => ({
+                            uri,
+                            name,
+                            firstname,
+                        }))));
                 expect(rows).toEqual([
                     { uri: 'BRANDYBUCK-MERIADOC', name: 'BRANDYBUCK', firstname: 'MERIADOC' },
                     { uri: 'BAGGINS-FRODO', name: 'BAGGINS', firstname: 'FRODO' },

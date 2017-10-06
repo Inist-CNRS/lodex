@@ -17,8 +17,8 @@ const DefaultView = ({ className, resource, field, fieldStatus, shrink }) => (
     <span style={styles.text(fieldStatus)}>
         {
             shrink && isLongText(resource[field.name])
-            ? <span className={className}>{getShortText(resource[field.name])}</span>
-            : <span className={className}>{resource[field.name]}</span>
+                ? <span className={className}>{getShortText(resource[field.name])}</span>
+                : <span className={className}>{resource[field.name]}</span>
         }
     </span>
 );

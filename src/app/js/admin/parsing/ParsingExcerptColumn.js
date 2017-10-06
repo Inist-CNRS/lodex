@@ -14,17 +14,17 @@ const styles = {
 
 export const ParsingExcerptColumnComponent = ({ children, style, value }) => (
     isLongText(value)
-    ? (
-        <TableRowColumn style={Object.assign(styles.col, style)} title={value}>
-            {getShortText(value)}
-            {children}
-        </TableRowColumn>
-    )
-    : (
-        <TableRowColumn style={styles.col}>
-            {value}
-            {children}
-        </TableRowColumn>)
+        ? (
+            <TableRowColumn style={Object.assign(styles.col, style)} title={value}>
+                {getShortText(value)}
+                {children}
+            </TableRowColumn>
+        )
+        : (
+            <TableRowColumn style={styles.col}>
+                {value}
+                {children}
+            </TableRowColumn>)
 );
 
 ParsingExcerptColumnComponent.propTypes = {

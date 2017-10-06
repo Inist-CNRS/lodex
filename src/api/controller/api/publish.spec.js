@@ -126,7 +126,7 @@ describe('publish', () => {
 
         it('should call getDocumentTransformer', () => {
             expect(ctx.getDocumentTransformer)
-            .toHaveBeenCalledWith(datasetFields);
+                .toHaveBeenCalledWith(datasetFields);
         });
 
         it('should call ctx.uriDataset.findLimitFromSkip', () => {
@@ -178,17 +178,17 @@ describe('publish', () => {
             const error = new Error('Boom');
             const next = createSpy().andReturn(Promise.reject(error));
             handlePublishError(ctx, next)
-            .then(() => {
-                throw new Error('tryPublish promise should have been rejected');
-            })
-            .catch((e) => {
-                expect(e).toEqual(error);
-                expect(ctx.uriDataset.remove).toHaveBeenCalled();
-                expect(ctx.publishedDataset.remove).toHaveBeenCalled();
-                expect(ctx.publishedCharacteristic.remove).toHaveBeenCalled();
-                done();
-            })
-            .catch(done);
+                .then(() => {
+                    throw new Error('tryPublish promise should have been rejected');
+                })
+                .catch((e) => {
+                    expect(e).toEqual(error);
+                    expect(ctx.uriDataset.remove).toHaveBeenCalled();
+                    expect(ctx.publishedDataset.remove).toHaveBeenCalled();
+                    expect(ctx.publishedCharacteristic.remove).toHaveBeenCalled();
+                    done();
+                })
+                .catch(done);
         });
     });
 

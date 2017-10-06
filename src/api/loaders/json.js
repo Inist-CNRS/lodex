@@ -5,6 +5,6 @@ ezs.use(ezsBasics);
 
 export default config => stream =>
     stream
-    .pipe(ezs('JSONParse', { separator: '*', ...config }))
-    .pipe(ezs('flatten'))
-    .pipe(ezs('standardize'));
+        .pipe(ezs('JSONParse', { separator: '*', ...config }))
+        .pipe(ezs('flatten'))
+        .pipe(ezs('standardize'));

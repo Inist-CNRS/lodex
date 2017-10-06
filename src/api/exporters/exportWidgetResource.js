@@ -48,7 +48,7 @@ const getLastVersion = resource => ({
 const getResourcesHtml = (fieldsByName, requestedFields, resources) =>
     (Array.isArray(resources) ?
         renderResources(fieldsByName, requestedFields, resources.map(getLastVersion))
-    :
+        :
         renderOneResource(fieldsByName, requestedFields)(getLastVersion(resources)));
 
 const getPaginationHtml = (page, perPage, total, displayedFields) => {
@@ -60,11 +60,11 @@ const getPaginationHtml = (page, perPage, total, displayedFields) => {
 
     const previousLink = page > 0 ?
         `/api/widget?type=widget&fields=${encDisplayedFields}&page=${page - 1}`
-    : '';
+        : '';
 
     const nextLink = (page + 1) * perPage < total ?
         `/api/widget?type=widget&fields=${encDisplayedFields}&page=${page + 1}`
-    : '';
+        : '';
 
     return html`<nav aria-label="Page navigation">
         <ul class="pagination">
