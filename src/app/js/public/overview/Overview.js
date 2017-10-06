@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 import { Card, CardHeader, Avatar } from 'material-ui';
+import { CardActions } from 'material-ui/Card';
 
 import { grey50 } from 'material-ui/styles/colors';
 
@@ -14,6 +15,8 @@ import { fromDataset } from '../selectors';
 import { fromFields } from '../../sharedSelectors';
 import { getResourceUri } from '../../../../common/uris';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
+import AddCharacteristic from '../characteristic/AddCharacteristic';
+import CreateResource from '../resource/CreateResource';
 
 const styles = {
     wrapper: {
@@ -38,7 +41,6 @@ const styles = {
 };
 
 export class OverviewComponent extends Component {
-
     componentWillMount() {
         const { loadDatasetPage, currentPage, perPage } = this.props;
         loadDatasetPage({ page: currentPage, perPage });
@@ -59,7 +61,7 @@ export class OverviewComponent extends Component {
                 >
                     { dataset.map((data, index) => (<Card
                         style={styles.item}
-                            // eslint-disable-next-line
+                        // eslint-disable-next-line
                             key={`overview-${index}`}>
                         <CardHeader
                             avatar={
@@ -73,20 +75,20 @@ export class OverviewComponent extends Component {
                                 <a
                                     href={getResourceUri(data)}
                                     title={
-                                    (columns.filter(e => e.overview === 1).length) ?
-                                    data[columns.filter(e => e.overview === 1)[0].name] :
-                                    data.uri}
+                                        (columns.filter(e => e.overview === 1).length) ?
+                                            data[columns.filter(e => e.overview === 1)[0].name] :
+                                            data.uri}
                                 >
                                     {
-                                (columns.filter(e => e.overview === 1).length) ?
-                                    data[columns.filter(e => e.overview === 1)[0].name] :
-                                    data.uri
-                                }</a>}
+                                        (columns.filter(e => e.overview === 1).length) ?
+                                            data[columns.filter(e => e.overview === 1)[0].name] :
+                                            data.uri
+                                    }</a>}
                             subtitle={
                                 (columns.filter(e => e.overview === 2).length) ?
                                     data[columns.filter(e => e.overview === 2)[0].name] :
                                     ''
-                                }
+                            }
                             titleStyle={styles.title}
                             subtitleStyle={styles.title}
                         />
@@ -103,7 +105,10 @@ export class OverviewComponent extends Component {
                         showing: polyglot.t('showing'),
                     }}
                 />
-
+                <CardActions style={styles.actions}>
+                    <AddCharacteristic />
+                    <CreateResource />
+                </CardActions>
             </div>
         );
     }

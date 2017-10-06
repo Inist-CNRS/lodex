@@ -17,6 +17,7 @@ import {
 import FormTextField from '../../lib/components/FormTextField';
 import FieldSchemeInput from '../../fields/FieldSchemeInput';
 import FieldFormatInput from '../../fields/FieldFormatInput';
+import FieldCoverInput from '../../fields/FieldCoverInput';
 
 const validate = (values, { p: polyglot }) => {
     const errors = ['label', 'value'].reduce((currentErrors, field) => {
@@ -53,6 +54,7 @@ export const AddFieldFormComponent = ({
         />
         <FieldSchemeInput name="scheme" />
         <FieldFormatInput name="format" />
+        <FieldCoverInput name="cover" />
     </form>
 );
 
