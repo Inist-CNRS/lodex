@@ -17,7 +17,7 @@ const styles = {
     })),
 };
 
-export const ParsingExcerptAddColumnComponent = ({ handleAddColumn, name, p: polyglot, style, atTop }) => (
+export const ParsingExcerptAddColumnComponent = ({ handleAddColumn, name, p: polyglot, atTop }) => (
     <RaisedButton
         className={`btn-excerpt-add-column btn-excerpt-add-column-${name}`}
         label={polyglot.t('add_to_publication')}
