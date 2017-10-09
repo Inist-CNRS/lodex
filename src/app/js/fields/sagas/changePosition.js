@@ -19,8 +19,8 @@ export const move = (tab, previousIndex, newIndex) => {
     array.splice(newIndex, 0, array.splice(previousIndex, 1)[0]);
 
     return array
-    .map((e, i) => ({ ...e, position: i }))
-    .filter(e => tab.some(f => f.name === e.name && f.position !== e.position));
+        .map((e, i) => ({ ...e, position: i }))
+        .filter(e => tab.some(f => f.name === e.name && f.position !== e.position));
 };
 
 export function* handleChangePosition({ payload: { newPosition, oldPosition } }) {

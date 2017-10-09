@@ -65,8 +65,8 @@ const mapStateToProps = (state) => {
 
     const valueTransformer =
         transformers && transformers[0] && transformers[0].operation === 'VALUE'
-        ? transformers[0]
-        : null;
+            ? transformers[0]
+            : null;
 
     if (valueTransformer) {
         return {

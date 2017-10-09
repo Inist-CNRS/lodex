@@ -25,8 +25,6 @@ const styles = {
 };
 
 class SettingsComponent extends Component {
-
-
     static propTypes = {
         p: polyglotPropTypes.isRequired,
         hasPublishedDataset: PropTypes.bool.isRequired,

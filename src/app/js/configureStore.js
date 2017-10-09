@@ -10,14 +10,14 @@ const sagaMiddleware = createSagaMiddleware();
 
 export default function configureStore(pureReducer, sagas, initialState) {
     const rootReducer = __DEBUG__
-    ? (state, action) => {
-        switch (action.type) {
-        case 'SET_STATE':
-            return action.state || pureReducer({}, action);
-        default:
-            return pureReducer(state, action);
-        }
-    } : pureReducer;
+        ? (state, action) => {
+            switch (action.type) {
+            case 'SET_STATE':
+                return action.state || pureReducer({}, action);
+            default:
+                return pureReducer(state, action);
+            }
+        } : pureReducer;
 
     const reducer = compose(
         mergePersistedState(),

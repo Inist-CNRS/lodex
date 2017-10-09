@@ -36,7 +36,7 @@ const UploadButtonComponent = ({ open, label, raised, handleOpen, handleClose, p
                     primary
                     onClick={handleOpen}
                 />
-            :
+                :
                 <FlatButton
                     style={styles.button}
                     className="open-upload"

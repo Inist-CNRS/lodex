@@ -27,27 +27,28 @@ const styles = {
 // export class FilterComponent extends Component {
 //     handleFilterChange
 // }
-export const FilterComponent = ({ getFilter,
-                                handleFilterChange,
-                                hasSearchableFields,
-                                isDatasetLoading,
-                                p: polyglot }) =>
-            (hasSearchableFields
-                ? <ToolbarGroup>
-                    <div style={styles.icon}>
-                        {isDatasetLoading
-                        ? <CircularProgress className="dataset-loading" size={20} />
-                        : <ActionSearch />}
-                    </div>
-                    <TextField
-                        className="filter"
-                        value={getFilter}
-                        hintText={polyglot.t('filter')}
-                        onChange={(_, e) => handleFilterChange(e)}
-                        style={styles.textbox}
-                    />
-                </ToolbarGroup>
-                : null);
+export const FilterComponent = ({
+    getFilter,
+    handleFilterChange,
+    hasSearchableFields,
+    isDatasetLoading,
+    p: polyglot }) =>
+    (hasSearchableFields
+        ? <ToolbarGroup>
+            <div style={styles.icon}>
+                {isDatasetLoading
+                    ? <CircularProgress className="dataset-loading" size={20} />
+                    : <ActionSearch />}
+            </div>
+            <TextField
+                className="filter"
+                value={getFilter}
+                hintText={polyglot.t('filter')}
+                onChange={(_, e) => handleFilterChange(e)}
+                style={styles.textbox}
+            />
+        </ToolbarGroup>
+        : null);
 
 FilterComponent.propTypes = {
     handleFilterChange: PropTypes.func.isRequired,

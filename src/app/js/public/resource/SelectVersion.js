@@ -22,7 +22,6 @@ const staticProps = {
 };
 
 export class SelectVersionComponent extends Component {
-
     constructor(props) {
         super(props);
         this.state = {

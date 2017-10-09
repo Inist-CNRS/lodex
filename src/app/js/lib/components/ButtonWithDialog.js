@@ -51,15 +51,15 @@ export const ButtonWithDialogComponent = ({
         >
             {saving ? <CircularProgress /> : icon}
         </IconButton>
-        ) : (
-            <FlatButton
-                className={className}
-                label={label}
-                primary
-                onClick={handleOpen}
-                style={buttonStyle}
-            />
-        );
+    ) : (
+        <FlatButton
+            className={className}
+            label={label}
+            primary
+            onClick={handleOpen}
+            style={buttonStyle}
+        />
+    );
 
     return (
         <span style={style}>

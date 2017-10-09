@@ -106,9 +106,9 @@ describe('Admin', () => {
                 expect(tds.length).toBe(5);
                 await Promise.all(tds.slice(0, 3).map(td => // last td is the remove button
                     driver.wait(
-                        elementTextMatches(td, /rock|paper|scissor|invalid_reference/, DEFAULT_WAIT_TIMEOUT)),
+                        elementTextMatches(td, /rock|paper|scissor|invalid_reference/, DEFAULT_WAIT_TIMEOUT),
                     ),
-                );
+                ));
             });
 
             it('should have added the title custom column with value', async () => {

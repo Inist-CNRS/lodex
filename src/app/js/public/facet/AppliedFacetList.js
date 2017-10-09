@@ -9,16 +9,16 @@ import AppliedFacet from './AppliedFacet';
 
 export const AppliedFacetListComponent = ({ facets, removeFacet }) => (
     facets.length
-    ? (
-        <Toolbar>
-            <ToolbarGroup firstChild>
-                {facets.map(facet => (
-                    <AppliedFacet key={`${facet.field.name}-${facet.value}`} facet={facet} onRemove={removeFacet} />
-                ))}
-            </ToolbarGroup>
-        </Toolbar>
-    )
-    : null
+        ? (
+            <Toolbar>
+                <ToolbarGroup firstChild>
+                    {facets.map(facet => (
+                        <AppliedFacet key={`${facet.field.name}-${facet.value}`} facet={facet} onRemove={removeFacet} />
+                    ))}
+                </ToolbarGroup>
+            </Toolbar>
+        )
+        : null
 );
 
 AppliedFacetListComponent.propTypes = {

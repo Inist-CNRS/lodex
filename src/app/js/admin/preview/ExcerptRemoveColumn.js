@@ -14,15 +14,15 @@ import getFieldClassName from '../../lib/getFieldClassName';
 export const ExcerptRemoveColumnComponent = ({ removeColumn, field: { label = '', name }, p: polyglot }) => (
     <TableRowColumn>
         {name !== 'uri'
-        ? (
-            <FlatButton
-                className={`btn-excerpt-remove-column btn-excerpt-remove-column-${getFieldClassName({ label })}`}
-                label={polyglot.t('remove_from_publication')}
-                onClick={removeColumn}
-                primary
-            />
-        )
-        : null}
+            ? (
+                <FlatButton
+                    className={`btn-excerpt-remove-column btn-excerpt-remove-column-${getFieldClassName({ label })}`}
+                    label={polyglot.t('remove_from_publication')}
+                    onClick={removeColumn}
+                    primary
+                />
+            )
+            : null}
     </TableRowColumn>
 );
 

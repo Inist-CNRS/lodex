@@ -28,23 +28,23 @@ const styles = {
 
 export const ExcerptLineColComponent = ({ field, value = '' }) => (
     isLongText(value)
-    ? (
-        <TableRowColumn
-            title={value}
-            style={styles.cell}
-            className={classnames('publication-preview-column', getFieldClassName(field))}
-        >
-            {getShortText(value)}
-        </TableRowColumn>
-    )
-    : (
-        <TableRowColumn
-            style={styles.cell}
-            className={classnames('publication-preview-column', getFieldClassName(field))}
-        >
-            {value}
-        </TableRowColumn>
-    )
+        ? (
+            <TableRowColumn
+                title={value}
+                style={styles.cell}
+                className={classnames('publication-preview-column', getFieldClassName(field))}
+            >
+                {getShortText(value)}
+            </TableRowColumn>
+        )
+        : (
+            <TableRowColumn
+                style={styles.cell}
+                className={classnames('publication-preview-column', getFieldClassName(field))}
+            >
+                {value}
+            </TableRowColumn>
+        )
 );
 
 ExcerptLineColComponent.propTypes = {

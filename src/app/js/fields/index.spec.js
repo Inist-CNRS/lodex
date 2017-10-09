@@ -285,7 +285,7 @@ describe('field reducer', () => {
         describe('getNbFields', () => {
             it('should return list length', () => {
                 expect(selectors.getNbFields({ list: [1, 2, 3] }))
-                .toBe(3);
+                    .toBe(3);
             });
         });
 

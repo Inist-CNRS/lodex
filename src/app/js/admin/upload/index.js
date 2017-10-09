@@ -28,12 +28,12 @@ export const defaultState = {
 
 export default handleActions({
     [combineActions(UPLOAD_FILE, UPLOAD_URL)]: (state, { payload }) => (payload
-    ? ({
-        ...state,
-        error: false,
-        open: false,
-        status: 'PENDING',
-    }) : state),
+        ? ({
+            ...state,
+            error: false,
+            open: false,
+            status: 'PENDING',
+        }) : state),
     UPLOAD_SUCCESS: state => ({
         ...state,
         status: 'SUCCESS',
