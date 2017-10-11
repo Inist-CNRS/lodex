@@ -37,8 +37,10 @@ describe('exportMin', () => {
             '_transformState',
             'func',
             'index',
+            'selector',
             'params',
-            'scope']);
+            'scope',
+            'ezs']);
         done();
     });
 });
