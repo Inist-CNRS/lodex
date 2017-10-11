@@ -15,7 +15,6 @@ cache:
 
 before_script:
     - cp ./config/test-dist.js ./config/test.js
-    - docker-compose -f docker-compose.e2e.yml up -d mongo api hub chrome
     - sleep 10
 
 install:
