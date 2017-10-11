@@ -81,8 +81,8 @@ const AppbarComponent = ({ hasPublishedDataset, hasLoadedDataset, isLoading, isL
                         -{' '}
                         {
                             hasLoadedDataset
-                            ? polyglot.t('modelize-your-data')
-                            : polyglot.t('semantic-publication-system')
+                                ? polyglot.t('modelize-your-data')
+                                : polyglot.t('semantic-publication-system')
                         }
                     </small>
                 </div>

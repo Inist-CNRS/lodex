@@ -13,7 +13,8 @@ function getContext(config) {
         const propertyValue = config.istexQuery.context[v];
 
         if (validUrl.isWebUri(propertyValue)) {
-            return (context[v] = propertyValue);
+            context[v] = propertyValue;
+            return context[v];
         }
 
         const istexProperty = propertyValue
@@ -27,7 +28,8 @@ function getContext(config) {
             );
         }
 
-        return (context[v] = `${config.prefixes[istexProperty[0]]}${istexProperty[1]}`);
+        context[v] = `${config.prefixes[istexProperty[0]]}${istexProperty[1]}`;
+        return context[v];
     });
 
     if (context[config.istexQuery.linked] === undefined) {

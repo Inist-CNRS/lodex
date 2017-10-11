@@ -4,7 +4,7 @@
 NODE_ENV ?= development
 
 help:
-	grep -P '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
+	@grep -P '^[a-zA-Z0-9_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
 # If the first argument is one of the supported commands...
 SUPPORTED_COMMANDS := e2e npm restore-db-dev _restore_db_dev restore-db-prod _restore_db_prod build import_units import_users import_sections import_unit_sections
@@ -70,7 +70,7 @@ test-frontend-functional: ## Run the frontend application functional tests
 	NODE_ENV=test ${MAKE} build-frontend
 	docker-compose -f docker-compose.e2e.yml run --rm e2e
 
-setup-frontend-functional-debug:## Enable Test debug mode
+setup-frontend-functional-debug: ## Enable Test debug mode
 	docker-compose -f docker-compose.e2e-debug.yml up -d chromedebug hub mongo api
 	@echo "launch vnc viewer and connect to localhost:5900 (password: secret) to access the frontend test environment"
 

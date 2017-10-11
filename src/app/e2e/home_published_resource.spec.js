@@ -51,11 +51,11 @@ describe('Resource page', function homePublishedDataTests() {
 
         await driver.wait(
             elementTextIs('.detail .property.full_name .compose_full_name.property.name .property_value', 'TOOK',
-            DEFAULT_WAIT_TIMEOUT),
+                DEFAULT_WAIT_TIMEOUT),
         );
         await driver.wait(
             elementTextIs('.detail .property.full_name .compose_full_name.property.firstname .property_value', 'PEREGRIN',
-            DEFAULT_WAIT_TIMEOUT),
+                DEFAULT_WAIT_TIMEOUT),
         );
 
         const mailLabel = '.detail .property.email.completes_fullname .property_label';

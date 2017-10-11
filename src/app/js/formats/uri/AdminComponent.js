@@ -72,9 +72,9 @@ class UriEdition extends Component {
                     <TextField
                         floatingLabelText={
                             type !== 'text'
-                            ? polyglot.t('uri_format_custom_value')
-                            : polyglot.t('uri_format_another_column_value',
-                        )}
+                                ? polyglot.t('uri_format_custom_value')
+                                : polyglot.t('uri_format_another_column_value',
+                                )}
                         onChange={(event, newValue) => this.setValue(newValue)}
                         style={styles.input}
                         value={value}

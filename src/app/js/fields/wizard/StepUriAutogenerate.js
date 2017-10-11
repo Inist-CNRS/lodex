@@ -46,8 +46,8 @@ const mapStateToProps = (state) => {
 
     const valueTransformer =
         transformers && transformers[0] && transformers[0].operation === 'AUTOGENERATE_URI'
-        ? transformers[0]
-        : null;
+            ? transformers[0]
+            : null;
 
     if (valueTransformer) {
         return {

@@ -7,14 +7,14 @@ export default function mergeCompose(output, field, data, fields, haveClasses) {
     const composeFields = field.composedOf.fields;
     const fieldContext = getFieldContext(field);
     const composeFieldsContext = fields
-    .filter(e => composeFields.includes(e.name))
-    .reduce((a, e) => {
-        if (!e.scheme) {
-            return a;
-        }
+        .filter(e => composeFields.includes(e.name))
+        .reduce((a, e) => {
+            if (!e.scheme) {
+                return a;
+            }
 
-        return { ...a, [e.name]: getFieldContext(e) };
-    }, {});
+            return { ...a, [e.name]: getFieldContext(e) };
+        }, {});
 
     const result = {
         ...output,

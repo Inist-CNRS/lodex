@@ -26,6 +26,14 @@ export default fetchProps => Component =>
             this.fetchData();
         }
 
+        onPaginationChange = (page, perPage) => {
+            this.setState({
+                ...this.state,
+                page,
+                perPage,
+            }, () => this.fetchData());
+        }
+
         fetchData() {
             const { page, perPage } = this.state;
             const props = this.props;
@@ -42,14 +50,6 @@ export default fetchProps => Component =>
                     isLoading: false,
                 })),
             );
-        }
-
-        onPaginationChange = (page, perPage) => {
-            this.setState({
-                ...this.state,
-                page,
-                perPage,
-            }, () => this.fetchData());
         }
 
         render() {

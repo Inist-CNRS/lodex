@@ -25,6 +25,8 @@ const styles = {
     },
 };
 
+// FIXME: the props are declared, but ESLint warns!
+// eslint-disable-next-line react/prop-types
 const ClassList = ({ fields, p: polyglot }) => (
     <div>
         <div style={styles.header}>
@@ -45,7 +47,7 @@ const ClassList = ({ fields, p: polyglot }) => (
                     fieldName={fieldName}
                     onRemove={() => fields.remove(index)}
                 />
-        ))}
+            ))}
         </div>
     </div>
 );

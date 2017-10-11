@@ -48,19 +48,19 @@ export class WidgetsSelectFieldsComponent extends Component {
 
         return (
             values.length
-            ? (
-                <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-                    {values.map(({ label, value }) => (
-                        <WidgetsSelectFieldItem
-                            key={value}
-                            value={value}
-                            label={label}
-                            onRemove={this.handleRemove}
-                        />
-                    ))}
-                </div>
-            )
-            : <div style={styles.empty}>{polyglot.t('select_exported_fields_all')}</div>
+                ? (
+                    <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+                        {values.map(({ label, value }) => (
+                            <WidgetsSelectFieldItem
+                                key={value}
+                                value={value}
+                                label={label}
+                                onRemove={this.handleRemove}
+                            />
+                        ))}
+                    </div>
+                )
+                : <div style={styles.empty}>{polyglot.t('select_exported_fields_all')}</div>
         );
     }
 

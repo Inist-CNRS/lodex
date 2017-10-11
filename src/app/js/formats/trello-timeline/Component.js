@@ -38,7 +38,7 @@ export default class Roadmap extends Component {
         milestones(trelloURL, options).then((values) => {
             this.setState({ milestones: values });
         }).catch((error) => {
-            console.error(error);
+            console.error(error); // eslint-disable-line no-console
         });
     }
 
@@ -49,19 +49,19 @@ export default class Roadmap extends Component {
         return (
             <Timeline>
                 {
-                        this.state.milestones.map(milestone => (
-                            <TimelineEvent
-                                title=""
-                                createdAt={milestone.rangeLabel}
-                                icon={getIconFromLabel(milestone.labels)}
-                            >
-                                <div style={SeeMoreStyle}>
-                                    <a href={milestone.trelloLink}>See more</a>
-                                </div>
-                                {milestone.title}
-                            </TimelineEvent>
-                        ))
-                 }
+                    this.state.milestones.map(milestone => (
+                        <TimelineEvent
+                            title=""
+                            createdAt={milestone.rangeLabel}
+                            icon={getIconFromLabel(milestone.labels)}
+                        >
+                            <div style={SeeMoreStyle}>
+                                <a href={milestone.trelloLink}>See more</a>
+                            </div>
+                            {milestone.title}
+                        </TimelineEvent>
+                    ))
+                }
             </Timeline>
         );
     }

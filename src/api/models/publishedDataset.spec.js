@@ -302,13 +302,13 @@ describe('publishedDataset', () => {
             expect(addFacetToFilters(facets, facetNames)({
                 filter: 'data',
             }))
-            .toEqual({
-                filter: 'data',
-                $and: [
-                    { 'versions.facet': 'value' },
-                    { 'versions.otherFacet': 'other value' },
-                ],
-            });
+                .toEqual({
+                    filter: 'data',
+                    $and: [
+                        { 'versions.facet': 'value' },
+                        { 'versions.otherFacet': 'other value' },
+                    ],
+                });
         });
 
         it('should ignore facet not in facetNames', () => {
@@ -320,12 +320,12 @@ describe('publishedDataset', () => {
             expect(addFacetToFilters(facets, facetNames)({
                 filter: 'data',
             }))
-            .toEqual({
-                filter: 'data',
-                $and: [
-                    { 'versions.otherFacet': 'other value' },
-                ],
-            });
+                .toEqual({
+                    filter: 'data',
+                    $and: [
+                        { 'versions.otherFacet': 'other value' },
+                    ],
+                });
         });
 
         it('should return filters if no facets', () => {
@@ -334,9 +334,9 @@ describe('publishedDataset', () => {
             expect(addFacetToFilters(facets, facetNames)({
                 filter: 'data',
             }))
-            .toEqual({
-                filter: 'data',
-            });
+                .toEqual({
+                    filter: 'data',
+                });
         });
 
         it('should return filters if no facets names', () => {
@@ -348,9 +348,9 @@ describe('publishedDataset', () => {
             expect(addFacetToFilters(facets, facetNames)({
                 filter: 'data',
             }))
-            .toEqual({
-                filter: 'data',
-            });
+                .toEqual({
+                    filter: 'data',
+                });
         });
     });
 
@@ -359,31 +359,31 @@ describe('publishedDataset', () => {
             const match = 'match';
             const searchableFields = ['field1', 'field2'];
             expect(addMatchToFilters(match, searchableFields)({ filter: 'data' }))
-            .toEqual({
-                filter: 'data',
-                $or: [
-                    { 'versions.field1': { $regex: /match/, $options: 'i' } },
-                    { 'versions.field2': { $regex: /match/, $options: 'i' } },
-                ],
-            });
+                .toEqual({
+                    filter: 'data',
+                    $or: [
+                        { 'versions.field1': { $regex: /match/, $options: 'i' } },
+                        { 'versions.field2': { $regex: /match/, $options: 'i' } },
+                    ],
+                });
         });
 
         it('should return filters if no match', () => {
             const match = null;
             const searchableFields = ['field1', 'field2'];
             expect(addMatchToFilters(match, searchableFields)({ filter: 'data' }))
-            .toEqual({
-                filter: 'data',
-            });
+                .toEqual({
+                    filter: 'data',
+                });
         });
 
         it('should return filters if no searchableFields', () => {
             const match = 'match';
             const searchableFields = null;
             expect(addMatchToFilters(match, searchableFields)({ filter: 'data' }))
-            .toEqual({
-                filter: 'data',
-            });
+                .toEqual({
+                    filter: 'data',
+                });
         });
     });
 
@@ -392,18 +392,18 @@ describe('publishedDataset', () => {
             expect(addKeyToFilters('key', 'value')({
                 filter: 'data',
             }))
-            .toEqual({
-                filter: 'data',
-                key: 'value',
-            });
+                .toEqual({
+                    filter: 'data',
+                    key: 'value',
+                });
         });
         it('should return filters if no values', () => {
             expect(addKeyToFilters('key', null)({
                 filter: 'data',
             }))
-            .toEqual({
-                filter: 'data',
-            });
+                .toEqual({
+                    filter: 'data',
+                });
         });
     });
 

@@ -1,5 +1,6 @@
 import path from 'path';
 import { hostname } from 'config';
+import url from 'url';
 
 const removeNumberInstance = (uri) => {
     const reg = new RegExp('(\\-\\d+)(\\.[a-z]+)+');
@@ -15,9 +16,11 @@ const removeNumberInstance = (uri) => {
 const getUri = (uri) => {
     const u = removeNumberInstance(uri);
 
-    if (u.indexOf('http://') !== 0 &&
-        u.indexOf('https://') !== 0) {
-        return path.normalize(hostname.concat(u));
+    if (!u.startsWith('http://') &&
+        !u.startsWith('https://')) {
+        const host = url.parse(hostname);
+        const newPath = path.normalize(host.pathname.concat(u));
+        return `${host.protocol}//${host.hostname}${newPath}`;
     }
 
     return u;

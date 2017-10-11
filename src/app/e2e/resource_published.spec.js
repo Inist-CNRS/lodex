@@ -34,11 +34,11 @@ describe('Resource page when not logged', function resourcePageTest() {
 
         await driver.wait(
             elementTextIs('.detail .property.full_name .compose_full_name.property.name .property_value', 'TOOK',
-            DEFAULT_WAIT_TIMEOUT),
+                DEFAULT_WAIT_TIMEOUT),
         );
         await driver.wait(
             elementTextIs('.detail .property.full_name .compose_full_name.property.firstname .property_value', 'PEREGRIN',
-            DEFAULT_WAIT_TIMEOUT),
+                DEFAULT_WAIT_TIMEOUT),
         );
 
         const mailLabel = '.detail .property.email.completes_fullname .property_label.email';
@@ -112,9 +112,9 @@ describe('Resource page when not logged', function resourcePageTest() {
 
         await Promise.all(versions.map((v, index) =>
             v.getText()
-            .then((text) => {
-                expect(text).toContain(expectedVersion[index]);
-            }),
+                .then((text) => {
+                    expect(text).toContain(expectedVersion[index]);
+                }),
         ));
     });
 
@@ -137,11 +137,11 @@ describe('Resource page when not logged', function resourcePageTest() {
 
         await driver.wait(
             elementTextIs('.detail .property.full_name .compose_full_name.property.name .property_value', 'TOOK',
-            DEFAULT_WAIT_TIMEOUT),
+                DEFAULT_WAIT_TIMEOUT),
         );
         await driver.wait(
             elementTextIs('.detail .property.full_name .compose_full_name.property.firstname .property_value', 'PEREGRIN',
-            DEFAULT_WAIT_TIMEOUT),
+                DEFAULT_WAIT_TIMEOUT),
         );
 
         const mailLabel = '.detail .property.email.completes_fullname .property_label';

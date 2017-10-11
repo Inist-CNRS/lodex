@@ -11,7 +11,7 @@ import { polyglot as polyglotPropTypes } from '../../propTypes';
 import ButtonWithStatus from '../../lib/components/ButtonWithStatus';
 
 import { clearDataset as clearDatasetAction,
-         clearPublished as clearPublishedAction } from '../clear';
+    clearPublished as clearPublishedAction } from '../clear';
 
 import { reloadParsingResult } from '../parsing';
 // import { reloadPublication as reloadPublicationAction } from '../publication';
@@ -26,7 +26,6 @@ const styles = {
 const baseUrl = process.env.PUBLIC_URL;
 
 class ClearDialogComponent extends Component {
-
     constructor(props) {
         super(props);
 

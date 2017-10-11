@@ -29,9 +29,9 @@ export const AddFieldFormComponent = ({
         {isLoggedIn ? null : <Contributor />}
         <SelectFieldToAdd />
         {
-            fieldToAdd ?
-                <AddFieldDetail isNewField={!fieldToAdd.name} isLoggedIn={isLoggedIn} />
-            : null
+            fieldToAdd
+                ? <AddFieldDetail isNewField={!fieldToAdd.name} isLoggedIn={isLoggedIn} />
+                : null
         }
     </form>
 );

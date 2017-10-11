@@ -1,0 +1,185 @@
+import expect from 'expect';
+import ezs from 'ezs';
+import from from 'from';
+import statements from './index';
+
+ezs.use(statements);
+
+describe('linkDataset', () => {
+    it('should return when no uri', (done) => {
+        from([{}])
+            .pipe(ezs('linkDataset', {
+                scheme: 'http://scheme',
+                datasetClass: 'DataSet',
+            }))
+            .pipe(ezs((output) => {
+                try {
+                    expect(output).toEqual({});
+                    done();
+                } catch (e) {
+                    done(e);
+                }
+            }));
+    });
+
+    it('should return null when no data', (done) => {
+        from([])
+            .pipe(ezs('linkDataset', {
+                uri: 'http://uri',
+                scheme: 'http://scheme',
+                datasetClass: 'DataSet',
+            }))
+            .pipe(ezs((output) => {
+                try {
+                    expect(output).toBe(null);
+                    done();
+                } catch (e) {
+                    done(e);
+                }
+            }));
+    });
+
+    it('should return when no data[@context]', (done) => {
+        from([{}])
+            .pipe(ezs('linkDataset', {
+                uri: 'http://uri',
+                scheme: 'http://scheme',
+                datasetClass: 'DataSet',
+            }))
+            .pipe(ezs((output) => {
+                try {
+                    expect(output).toEqual({});
+                    done();
+                } catch (e) {
+                    done(e);
+                }
+            }));
+    });
+
+    it('should return restructured data', (done) => {
+        const options = {
+            uri: 'http://uri',
+            scheme: 'http://scheme',
+            datasetClass: 'DataSet',
+        };
+        const data = {
+            someData: 'some data',
+            dataset: {
+                this: 'should',
+                be: 'a dataset',
+            },
+            '@context': {
+                dataset: [1, 2],
+            },
+        };
+        from([data])
+            .pipe(ezs('linkDataset', options))
+            .pipe(ezs((output) => {
+                try {
+                    expect(output).toEqual({
+                        '@context': {
+                            dataset: {
+                                0: 1,
+                                1: 2,
+                                '@id': options.scheme,
+                            },
+                        },
+                        dataset: {
+                            '@id': options.uri,
+                            '@type': options.datasetClass,
+                            this: 'should',
+                            be: 'a dataset',
+                        },
+                        someData: data.someData,
+                    });
+                    done();
+                } catch (e) {
+                    done(e);
+                }
+            }));
+    });
+
+    it('should return restructured data when no scheme', (done) => {
+        const options = {
+            uri: 'http://uri',
+            datasetClass: 'DataSet',
+        };
+        const data = {
+            someData: 'some data',
+            dataset: {
+                this: 'should',
+                be: 'a dataset',
+            },
+            '@context': {
+                dataset: [1, 2],
+            },
+        };
+        from([data])
+            .pipe(ezs('linkDataset', options))
+            .pipe(ezs((output) => {
+                try {
+                    expect(output).toEqual({
+                        '@context': {
+                            dataset: {
+                                0: 1,
+                                1: 2,
+                                '@id': 'http://purl.org/dc/terms/isPartOf',
+                            },
+                        },
+                        dataset: {
+                            '@id': options.uri,
+                            '@type': options.datasetClass,
+                            this: 'should',
+                            be: 'a dataset',
+                        },
+                        someData: data.someData,
+                    });
+                    done();
+                } catch (e) {
+                    done(e);
+                }
+            }));
+    });
+
+    it('should return restructured data when no datasetClass', (done) => {
+        const options = {
+            uri: 'http://uri',
+            scheme: 'http://scheme',
+        };
+        const data = {
+            someData: 'some data',
+            dataset: {
+                this: 'should',
+                be: 'a dataset',
+            },
+            '@context': {
+                dataset: [1, 2],
+            },
+        };
+        from([data])
+            .pipe(ezs('linkDataset', options))
+            .pipe(ezs((output) => {
+                try {
+                    expect(output).toEqual({
+                        '@context': {
+                            dataset: {
+                                0: 1,
+                                1: 2,
+                                '@id': options.scheme,
+                            },
+                        },
+                        dataset: {
+                            '@id': options.uri,
+                            '@type': '',
+                            this: 'should',
+                            be: 'a dataset',
+                        },
+                        someData: data.someData,
+                    });
+                    done();
+                } catch (e) {
+                    done(e);
+                }
+            }));
+    });
+});

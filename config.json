@@ -68,12 +68,12 @@
     },
     "istexQuery" : {
        "labels": "",
-       "linked": "link",
+       "linked": "host.genre.raw",
        "context": {
+          "host.genre.raw": "istex:publicationType",
           "link": "dcterms:ispartOf",
-          "language": "dcterms:language",
           "doi": "bibo:doi",
-          "fulltext[0].uri": "dcterms:hasFormat"
+          "fulltext[0].uri": "istex:accessURL"
        }
     }
 }

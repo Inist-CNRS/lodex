@@ -40,7 +40,7 @@ describe('Home page with published data when logged as Julia', function homePubl
         await driver.wait(until.elementLocated(By.css('.dataset-characteristics')), DEFAULT_WAIT_TIMEOUT);
         await driver.wait(
             elementTextIs('.dataset-characteristics .property.movie .property_value', 'LOTR updated',
-            DEFAULT_WAIT_TIMEOUT),
+                DEFAULT_WAIT_TIMEOUT),
         );
     });
 
@@ -58,7 +58,7 @@ describe('Home page with published data when logged as Julia', function homePubl
         );
         await driver.wait(
             elementTextIs('.detail .property.full_name .property_scheme.full_name', 'http://www.w3.org/ns/person',
-            DEFAULT_WAIT_TIMEOUT),
+                DEFAULT_WAIT_TIMEOUT),
         );
 
         await driver.wait(
@@ -80,11 +80,11 @@ describe('Home page with published data when logged as Julia', function homePubl
         );
         await driver.wait(
             elementTextIs('.detail .property.email.completes_fullname .property_scheme.email', 'http://uri4uri.net/vocab',
-            DEFAULT_WAIT_TIMEOUT),
+                DEFAULT_WAIT_TIMEOUT),
         );
         await driver.wait(
             elementTextIs('.detail .property.email.completes_fullname .property_value.email', 'peregrin.took@shire.net',
-            DEFAULT_WAIT_TIMEOUT),
+                DEFAULT_WAIT_TIMEOUT),
         );
 
         await driver.wait(
@@ -92,7 +92,7 @@ describe('Home page with published data when logged as Julia', function homePubl
         );
         await driver.wait(
             elementTextIs('.detail .property.best_friend_of .property_scheme', 'http://www.w3.org/ns/person',
-            DEFAULT_WAIT_TIMEOUT),
+                DEFAULT_WAIT_TIMEOUT),
         );
         await driver.wait(
             elementTextIs('.detail .property.best_friend_of .property_value', 'MERIADOC', DEFAULT_WAIT_TIMEOUT));
@@ -127,7 +127,7 @@ describe('Home page with published data when logged as Julia', function homePubl
 
         await driver.wait(
             elementTextIs('.detail .property.full_name .compose_full_name.property.name .property_value', 'TOOK',
-            DEFAULT_WAIT_TIMEOUT),
+                DEFAULT_WAIT_TIMEOUT),
         );
         await driver.wait(
             elementTextIs(

@@ -75,8 +75,8 @@ const mapStateToProps = (state) => {
 
     const valueTransformer =
         transformers && transformers[0] && transformers[0].operation === 'LINK'
-        ? transformers[0]
-        : null;
+            ? transformers[0]
+            : null;
 
     if (valueTransformer) {
         const id = valueTransformer.args && valueTransformer.args.find(a => a.name === 'identifier');

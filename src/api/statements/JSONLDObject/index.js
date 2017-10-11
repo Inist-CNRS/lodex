@@ -46,21 +46,21 @@ module.exports = async function JSONLDObject(data, feed) {
     const exportDataset = this.getParam('exportDataset', false) === 'true';
 
     const output = await fields
-    .filter(f => f.cover === 'collection')
-    .reduce((currentOutputPromise, field) =>
-        currentOutputPromise.then((currentOutput) => {
-            currentOutput['@type'] = collectionClass;
-            return merge(field, fields, currentOutput, data);
-        }), Promise.resolve({
+        .filter(f => f.cover === 'collection')
+        .reduce((currentOutputPromise, field) =>
+            currentOutputPromise.then((currentOutput) => {
+                currentOutput['@type'] = collectionClass;
+                return merge(field, fields, currentOutput, data);
+            }), Promise.resolve({
             '@id': getUri(data.uri),
         }));
 
     if (this.isFirst() && exportDataset) {
         output.dataset = await fields
-        .filter(f => f.cover === 'dataset')
-        .reduce((currentOutputPromise, field) =>
-        currentOutputPromise.then(currentOutput =>
-            merge(field, fields, currentOutput, characteristics[0])), Promise.resolve({}));
+            .filter(f => f.cover === 'dataset')
+            .reduce((currentOutputPromise, field) =>
+                currentOutputPromise.then(currentOutput =>
+                    merge(field, fields, currentOutput, characteristics[0])), Promise.resolve({}));
     }
 
     feed.send(output);
