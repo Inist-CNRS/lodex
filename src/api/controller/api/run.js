@@ -35,12 +35,8 @@ export const runRoutine = async (ctx, routineCalled) => {
     const routineLocal = routinesLocal.filter(r => r[2] === routineCalled)[0];
     const routineDistant = routinesDistant.filter(r => r[2] === routineCalled)[0];
     if (!routineLocal && routineDistant) {
-        const routineScript = await fetch(routineDistant[0]).then((response) => {
-            if (response.status >= 400) {
-                throw new Error(`Unable to load distant routine. Server send error ${response.status}`);
-            }
-            return response.text();
-        });
+        const response = await fetch(routineDistant[0]);
+        const routineScript = await response.text();
         if (routineScript) {
             routineDistant[1] = ezs.metaString(routineScript);
             routineDistant[3] = routineScript;

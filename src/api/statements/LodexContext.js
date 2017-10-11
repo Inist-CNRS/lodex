@@ -4,7 +4,7 @@ import set from 'lodash.set';
 import field from '../models/field';
 import publishedCharacteristic from '../models/publishedCharacteristic';
 
-export const LodexContext = MongoClientImpl => async function (data, feed) {
+export const LodexContext = MongoClientImpl => async function LodexContextImpl(data, feed) {
     if (this.isLast()) {
         feed.close();
         return;
