@@ -15,7 +15,7 @@ cache:
 
 before_script:
     - cp ./config/test-dist.js ./config/test.js
-    - docker-compose -f docker-compose.unit.yml up -d mongo api
+    - docker-compose up -d mongo api
     - sleep 10
 
 install:
