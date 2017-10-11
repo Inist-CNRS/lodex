@@ -2,24 +2,29 @@
   "engines": {
     "node": ">= 7.8.0"
   },
-  "name": "lodex-v2",
+  "name": "lodex",
   "version": "7.21.0",
   "description": "",
   "main": "src/api/index.js",
   "scripts": {
-    "test": "make test",
+    "start": "node --harmony-async-await --require babel-register src/api",
+    "test": "npm run test:api && npm run test:app",
+    "test:api": "mocha --require babel-polyfill --compilers='js:babel-core/register' src/api/**/*.spec.js src/common/**/*.spec.js",
+    "test:app": "mocha --require babel-polyfill --require='./src/app/js/test.spec.js' --compilers='css:./src/common/tests/webpack-null-compiler,js:babel-core/register' src/app/js/**/*.spec.js",
+    "build": "BABEL_ENV=browser webpack --config=./src/app/webpack.config.babel.js",
+    "devel": "BABEL_ENV=browser webpack-dev-server --config=./src/app/webpack.config.babel.js --port=8080",
     "lint": "./pre-commit"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Inist-CNRS/lodex-v2.git"
+    "url": "git+https://github.com/Inist-CNRS/lodex.git"
   },
   "author": "",
-  "license": "ISC",
+  "license": "CeCILL",
   "bugs": {
-    "url": "https://github.com/Inist-CNRS/lodex-v2/issues"
+    "url": "https://github.com/Inist-CNRS/lodex/issues"
   },
-  "homepage": "https://github.com/Inist-CNRS/lodex-v2#readme",
+  "homepage": "https://github.com/Inist-CNRS/lodex#readme",
   "dependencies": {
     "async-busboy": "0.6.2",
     "babel-cli": "6.24.1",

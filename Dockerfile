@@ -25,5 +25,4 @@ RUN echo '{ \
 
 EXPOSE 3000
 
-ENTRYPOINT ["node", "--harmony-async-await", "--require" ,"babel-register"]
-CMD ["src/api/index.js"]
+CMD ["npm", "start"]

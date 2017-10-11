@@ -32,7 +32,7 @@ install: copy-conf install-npm-dependencies ## Install npm dependencies for the 
 # Development ==================================================================
 
 run-frontend: ## Run the frontend application
-	NODE_ENV=${NODE_ENV} BABEL_ENV=browser ./node_modules/.bin/webpack-dev-server --config=./src/app/webpack.config.babel.js --port=8080
+	NODE_ENV=${NODE_ENV} npm run devel
 
 docker-run-dev: ## run node server with pm2 for development and webpack-dev-server
 	docker-compose up --force-recreate mongo server
@@ -46,9 +46,7 @@ mongo-shell-test: ## Start the mongo shell for the test database
 # Build ==================================================================
 
 build-frontend: ## Build the frontend application
-	NODE_ENV=${NODE_ENV} BABEL_ENV=browser ./node_modules/.bin/webpack \
-	    --config=./src/app/webpack.config.babel.js \
-	    $(if $(filter test,$(NODE_ENV)),,--progress)
+	NODE_ENV=${NODE_ENV} npm build 
 
 npm: ## allow to run dockerized npm command eg make npm 'install koa --save'
 	docker-compose run --rm npm $(COMMAND_ARGS)
