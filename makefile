@@ -59,7 +59,7 @@ test-api-unit: ## Run the API unit tests
 test-frontend-unit: ## Run the frontend application unit tests
 	docker-compose -f docker-compose.unit.yml run --rm frontend-unit
 
-test: test-frontend-unit test-api-unit test-frontend-functional
+test: test-frontend-unit test-api-unit
 
 clear-database: ## Clear the whole database
 	docker-compose exec mongo mongo lodex --eval " \
