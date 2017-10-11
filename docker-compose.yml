@@ -69,5 +69,4 @@ services:
         working_dir: /app
         environment:
             NODE_ENV: test
-            BABEL_ENV: browser
         command: npm run test:app
