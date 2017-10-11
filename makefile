@@ -26,15 +26,8 @@ endif
 install-npm-dependencies:
 	echo "Installing Node dependencies for environment $(NODE_ENV)"
 	npm install $(if $(filter production staging,$(NODE_ENV)),--production,)
-ifeq ($(NODE_ENV), development)
-	make install-selenium
-endif
 
-install-selenium:
-	echo "Installing Selenium server"
-	./node_modules/.bin/selenium-standalone install --version=3.3.0 --drivers.chrome.version=2.29
-
-install: copy-conf install-npm-dependencies install-selenium ## Install npm dependencies for the api, admin, and frontend apps
+install: copy-conf install-npm-dependencies ## Install npm dependencies for the api, admin, and frontend apps
 
 # Development ==================================================================
 
