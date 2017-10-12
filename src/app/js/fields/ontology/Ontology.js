@@ -92,18 +92,13 @@ export class OntologyComponent extends Component {
     }
 
     componentDidMount() {
-        const fieldsToCount = this.props.fields
-            .filter(field => field.cover !== 'dataset')
-            .map(field => 'field='.concat(field.name))
-            .join('&');
-        const apiURL = '/api/reduce/count?'.concat(fieldsToCount);
-        fetch(apiURL)
+        fetch('/api/run/count-by-fields')
             .then((response) => {
                 if (response.status >= 400) {
                     throw new Error('Bad response from server');
                 }
                 return response.json().then((json) => {
-                    const data = json.data.reduce((o, c) => {
+                    const data = json.reduce((o, c) => {
                         const { _id, value } = c;
                         return { ...o, [_id]: value };
                     }, {});
