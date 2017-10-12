@@ -52,7 +52,7 @@ const styles = {
 };
 
 const DragHandle = SortableHandle(({ cover }) =>
-    <AppBar
+    (<AppBar
         style={styles.handle}
         iconElementLeft={
             <Reorder
@@ -61,7 +61,7 @@ const DragHandle = SortableHandle(({ cover }) =>
         }
         title={cover}
         titleStyle={styles.handleTitle}
-    />);
+    />));
 
 const SortableItem = SortableElement(({ value, sortIndex }) => (
     <div>

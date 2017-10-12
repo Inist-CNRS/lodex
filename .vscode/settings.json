@@ -1,0 +1,10 @@
+{
+  "eslint.workingDirectories": [
+    "./src/app",
+    "./src/api",
+    "./src/common",
+    "./config/"
+  ],
+  "eslint.trace.server": "messages",
+  "eslint.enable": true
+}

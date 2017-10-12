@@ -1,22 +1,10 @@
-let count = 0;
-
 module.exports = function convertToAtom(data, feed) {
     const fields = this.getParam('fields', {});
+    // TODO: create the feed in this function (see exportAtom)
     const atomFeed = this.getParam('atomFeed', {});
     const config = this.getParam('config', {});
 
-    if (this.getIndex() < config.perPage && count !== 0) {
-        count = 0;
-    }
-
     if (this.isLast() || this.getIndex() > config.perPage) {
-        // Export lodex might be pass twin instead one time for an unknow reason,
-        // the count resolve this problem.
-        if (count !== 0) {
-            return null;
-        }
-        count += 1;
-
         feed.write(atomFeed.atom1());
         return feed.close();
     }

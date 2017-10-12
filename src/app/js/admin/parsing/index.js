@@ -61,8 +61,8 @@ export const cancelReload = createAction(CANCEL_RELOAD);
 
 export const getExcerptLines = ({ excerptLines }) => (
     (!excerptLines || !excerptLines.length)
-    ? []
-    : excerptLines
+        ? []
+        : excerptLines
 );
 
 export const getParsedExcerptColumns = createSelector(

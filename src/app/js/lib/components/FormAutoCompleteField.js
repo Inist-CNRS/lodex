@@ -41,7 +41,7 @@ const mapDispatchToProps = (dispatch, { input: { name }, getFetchRequest }) => b
         searchText
             ? fetchAction({ config: getFetchRequest(searchText), name })
             : { type: '@@NULL' } // We must return an action so return an action which will not be handled
-        ),
+    ),
 }, dispatch);
 
 const handleValueChosen = ({ allowNewItem, input: { onChange } }) => (value, index) => {

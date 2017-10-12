@@ -12,16 +12,16 @@ import extendednquads from './exportExtendedNquads';
 import extendednquadscompressed from './exportExtendedNquadsCompressed';
 
 export default {
+    atom,
     csv,
     extendednquads,
     extendednquadscompressed,
-    raw,
-    tsv,
-    min,
     jsonld,
     jsonldcompacted,
+    min,
     nquads,
+    raw,
+    tsv,
     turtle,
-    atom,
     widget,
 };

@@ -96,8 +96,8 @@ const mapStateToProps = (state) => {
     const transformers = formValueSelector(FIELD_FORM_NAME)(state, 'transformers');
     const valueTransformer =
         get(transformers, '[0].operation') === 'CONCAT_URI'
-        ? transformers[0]
-        : null;
+            ? transformers[0]
+            : null;
     if (valueTransformer) {
         return {
             selected: true,

@@ -13,9 +13,9 @@ export const countUniqueConcatenation = collection => async (fieldNames) => {
 const countNotUnique = collection => async (fieldName) => {
     const count = await collection.count();
     const distinct = Array.isArray(fieldName) ?
-            await countUniqueConcatenation(collection)(fieldName)
+        await countUniqueConcatenation(collection)(fieldName)
         :
-            (await collection.distinct(fieldName)).length;
+        (await collection.distinct(fieldName)).length;
     return count - distinct;
 };
 

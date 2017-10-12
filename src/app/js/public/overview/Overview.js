@@ -38,7 +38,6 @@ const styles = {
 };
 
 export class OverviewComponent extends Component {
-
     componentWillMount() {
         const { loadDatasetPage, currentPage, perPage } = this.props;
         loadDatasetPage({ page: currentPage, perPage });
@@ -59,8 +58,9 @@ export class OverviewComponent extends Component {
                 >
                     { dataset.map((data, index) => (<Card
                         style={styles.item}
-                            // eslint-disable-next-line
-                            key={`overview-${index}`}>
+                        // eslint-disable-next-line react/no-array-index-key
+                        key={`overview-${index}`}
+                    >
                         <CardHeader
                             avatar={
                                 <Avatar
@@ -73,20 +73,20 @@ export class OverviewComponent extends Component {
                                 <a
                                     href={getResourceUri(data)}
                                     title={
-                                    (columns.filter(e => e.overview === 1).length) ?
-                                    data[columns.filter(e => e.overview === 1)[0].name] :
-                                    data.uri}
+                                        (columns.filter(e => e.overview === 1).length) ?
+                                            data[columns.filter(e => e.overview === 1)[0].name] :
+                                            data.uri}
                                 >
                                     {
-                                (columns.filter(e => e.overview === 1).length) ?
-                                    data[columns.filter(e => e.overview === 1)[0].name] :
-                                    data.uri
-                                }</a>}
+                                        (columns.filter(e => e.overview === 1).length) ?
+                                            data[columns.filter(e => e.overview === 1)[0].name] :
+                                            data.uri
+                                    }</a>}
                             subtitle={
                                 (columns.filter(e => e.overview === 2).length) ?
                                     data[columns.filter(e => e.overview === 2)[0].name] :
                                     ''
-                                }
+                            }
                             titleStyle={styles.title}
                             subtitleStyle={styles.title}
                         />

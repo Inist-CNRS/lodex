@@ -5,7 +5,7 @@ module.exports = function linkDataset(data, feed) {
     const datasetClass = this.getParam('datasetClass', '');
 
     if (uri && data && data['@context']) {
-        feed.send({
+        return feed.send({
             ...data,
             '@context': {
                 ...data['@context'],
@@ -19,9 +19,7 @@ module.exports = function linkDataset(data, feed) {
                 '@id': uri,
                 '@type': datasetClass },
         });
-
-        return;
     }
 
-    feed.send(data);
+    return feed.send(data);
 };

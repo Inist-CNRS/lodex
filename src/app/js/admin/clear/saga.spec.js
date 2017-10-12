@@ -1,8 +1,10 @@
 import expect from 'expect';
 import { call, select } from 'redux-saga/effects';
 
-import { handleClearDatasetRequest,
-         handleClearPublishedRequest } from './sagas';
+import {
+    handleClearDatasetRequest,
+    handleClearPublishedRequest,
+} from './sagas';
 
 import fetchSaga from '../../lib/sagas/fetchSaga';
 import { fromUser } from '../../sharedSelectors';

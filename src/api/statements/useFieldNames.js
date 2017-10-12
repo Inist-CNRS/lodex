@@ -1,14 +1,15 @@
 module.exports = function useFieldNames(data, feed) {
-    const fields = this.getParam('fields', {});
+    const fields = this.getParam('fields', []);
 
     if (this.isLast()) {
-        feed.close();
-        return;
+        return feed.close();
     }
-    const output = fields.filter(field => field.cover === 'collection').map((currentOutput, field) => ({
-        ...currentOutput,
-        [field.label || field.name]: data[field.name],
-    }), {});
+    const output = fields
+        .filter(field => field.cover === 'collection')
+        .reduce((prev, field) => ({
+            ...prev,
+            [field.label || field.name]: data[field.name],
+        }), {});
 
-    feed.send(output);
+    return feed.send(output);
 };

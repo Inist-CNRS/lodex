@@ -46,10 +46,10 @@ export const putField = async (ctx, id) => {
     await Promise.all(
         fields.filter(field => field.overview === newField.overview
                         && String(field._id) !== id)
-              .map((e) => {
-                  delete e.overview;
-                  return ctx.field.updateOneById(e._id, e);
-              }));
+            .map((e) => {
+                delete e.overview;
+                return ctx.field.updateOneById(e._id, e);
+            }));
     await ctx.publishFacets(ctx, fields);
 };
 

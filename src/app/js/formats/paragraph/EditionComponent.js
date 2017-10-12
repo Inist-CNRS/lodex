@@ -6,7 +6,7 @@ const FormTextField = ({ input, label, meta: { touched, error }, ...custom }) =>
     <TextField
         hintText={label}
         floatingLabelText={label}
-        multiLine={true}
+        multiLine
         rows={4}
         errorText={touched && error}
         {...input}

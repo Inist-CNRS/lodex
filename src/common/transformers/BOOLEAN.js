@@ -15,7 +15,7 @@ export const toBoolean = (value) => {
             || val === 'ok'
             || val === 'oui'
             || val === 'yes'
-    ) {
+        ) {
             return true;
         }
         return false;

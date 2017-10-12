@@ -114,7 +114,8 @@ class FieldEditionWizardComponent extends Component {
                 />,
                 <StepValue
                     key={'value'}
-                    index={1} active={step === 1}
+                    index={1}
+                    active={step === 1}
                     field={field}
                     fields={fields}
                     onSelectStep={this.handleSelectStep}

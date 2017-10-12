@@ -111,31 +111,31 @@ const getCharacteristics = createSelector(
     getCharacteristicsAsResource,
     getParams,
     (characteristics, fields) => fields
-            .map(field => ({
-                ...field,
-                value: characteristics[field.name],
-            })),
+        .map(field => ({
+            ...field,
+            value: characteristics[field.name],
+        })),
 );
 
 const getNewCharacteristics = createSelector(
     getNewCharacteristicsAsResource,
     getParams,
     (characteristics, fields) => fields
-            .map(field => ({
-                ...field,
-                value: characteristics[field.name],
-            })),
+        .map(field => ({
+            ...field,
+            value: characteristics[field.name],
+        })),
 );
 
 const getRootCharacteristics = createSelector(
     getCharacteristicsAsResource,
     getParams,
     (characteristics, fields) => fields
-            .map(field => ({
-                ...field,
-                value: characteristics[field.name],
-            }))
-            .filter(field => !field.completes),
+        .map(field => ({
+            ...field,
+            value: characteristics[field.name],
+        }))
+        .filter(field => !field.completes),
 );
 
 const isSaving = state => state.isSaving;
