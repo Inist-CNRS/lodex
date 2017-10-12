@@ -32,8 +32,8 @@ const routinesDistant = config.routines
 
 
 export const runRoutine = async (ctx, routineCalled) => {
-    const routineLocal = routinesLocal.filter(r => r[2] === routineCalled)[0];
-    const routineDistant = routinesDistant.filter(r => r[2] === routineCalled)[0];
+    const routineLocal = routinesLocal.find(r => r[2] === routineCalled);
+    const routineDistant = routinesDistant.find(r => r[2] === routineCalled);
     if (!routineLocal && routineDistant) {
         const response = await fetch(routineDistant[0]);
         const routineScript = await response.text();
