@@ -37,3 +37,36 @@ services:
         command: "--smallfiles"
         ports:
             - 27017:27017
+
+    api:
+        image: node:7.8.0
+        volumes:
+            - .:/app
+        working_dir: /app
+        environment:
+            NODE_APP_INSTANCE: test
+            NODE_ENV: test
+            http_proxy:  ${http_proxy}
+            https_proxy: ${https_proxy}
+            no_proxy: "localhost,127.0.0.1,api,hub,chrome,mongo"
+        links:
+            - mongo
+        command: npm start
+
+    api-unit:
+        image: node:7.8.0
+        volumes:
+            - .:/app
+        working_dir: /app
+        environment:
+            NODE_ENV: test
+        command: npm run test:api
+
+    frontend-unit:
+        image: node:7.8.0
+        volumes:
+            - .:/app
+        working_dir: /app
+        environment:
+            NODE_ENV: test
+        command: npm run test:app
