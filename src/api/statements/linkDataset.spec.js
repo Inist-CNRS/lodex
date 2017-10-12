@@ -2,58 +2,50 @@ import expect from 'expect';
 import ezs from 'ezs';
 import from from 'from';
 import statements from './index';
+import testOne from './testOne';
 
 ezs.use(statements);
 
 describe('linkDataset', () => {
     it('should return when no uri', (done) => {
-        from([{}])
+        const stream = from([{}])
             .pipe(ezs('linkDataset', {
                 scheme: 'http://scheme',
                 datasetClass: 'DataSet',
-            }))
-            .pipe(ezs((output) => {
-                try {
-                    expect(output).toEqual({});
-                    done();
-                } catch (e) {
-                    done(e);
-                }
             }));
+        testOne(
+            stream,
+            (output) => { expect(output).toEqual({}); },
+            done,
+        );
     });
 
     it('should return null when no data', (done) => {
-        from([])
+        const stream = from([])
             .pipe(ezs('linkDataset', {
                 uri: 'http://uri',
                 scheme: 'http://scheme',
                 datasetClass: 'DataSet',
-            }))
-            .pipe(ezs((output) => {
-                try {
-                    expect(output).toBe(null);
-                    done();
-                } catch (e) {
-                    done(e);
-                }
             }));
+        testOne(
+            stream,
+            (output) => { expect(output).toBe(null); },
+            done,
+        );
     });
 
     it('should return when no data[@context]', (done) => {
-        from([{}])
+        const stream = from([{}])
             .pipe(ezs('linkDataset', {
                 uri: 'http://uri',
                 scheme: 'http://scheme',
                 datasetClass: 'DataSet',
-            }))
-            .pipe(ezs((output) => {
-                try {
-                    expect(output).toEqual({});
-                    done();
-                } catch (e) {
-                    done(e);
-                }
             }));
+        testOne(
+            stream,
+            (output) => { expect(output).toEqual({}); },
+            done,
+        );
     });
 
     it('should return restructured data', (done) => {
@@ -72,31 +64,30 @@ describe('linkDataset', () => {
                 dataset: [1, 2],
             },
         };
-        from([data])
-            .pipe(ezs('linkDataset', options))
-            .pipe(ezs((output) => {
-                try {
-                    expect(output).toEqual({
-                        '@context': {
-                            dataset: {
-                                0: 1,
-                                1: 2,
-                                '@id': options.scheme,
-                            },
-                        },
+        const stream = from([data])
+            .pipe(ezs('linkDataset', options));
+        testOne(
+            stream,
+            (output) => {
+                expect(output).toEqual({
+                    '@context': {
                         dataset: {
-                            '@id': options.uri,
-                            '@type': options.datasetClass,
-                            this: 'should',
-                            be: 'a dataset',
+                            0: 1,
+                            1: 2,
+                            '@id': options.scheme,
                         },
-                        someData: data.someData,
-                    });
-                    done();
-                } catch (e) {
-                    done(e);
-                }
-            }));
+                    },
+                    dataset: {
+                        '@id': options.uri,
+                        '@type': options.datasetClass,
+                        this: 'should',
+                        be: 'a dataset',
+                    },
+                    someData: data.someData,
+                });
+            },
+            done,
+        );
     });
 
     it('should return restructured data when no scheme', (done) => {
@@ -114,31 +105,30 @@ describe('linkDataset', () => {
                 dataset: [1, 2],
             },
         };
-        from([data])
-            .pipe(ezs('linkDataset', options))
-            .pipe(ezs((output) => {
-                try {
-                    expect(output).toEqual({
-                        '@context': {
-                            dataset: {
-                                0: 1,
-                                1: 2,
-                                '@id': 'http://purl.org/dc/terms/isPartOf',
-                            },
-                        },
+        const stream = from([data])
+            .pipe(ezs('linkDataset', options));
+        testOne(
+            stream,
+            (output) => {
+                expect(output).toEqual({
+                    '@context': {
                         dataset: {
-                            '@id': options.uri,
-                            '@type': options.datasetClass,
-                            this: 'should',
-                            be: 'a dataset',
+                            0: 1,
+                            1: 2,
+                            '@id': 'http://purl.org/dc/terms/isPartOf',
                         },
-                        someData: data.someData,
-                    });
-                    done();
-                } catch (e) {
-                    done(e);
-                }
-            }));
+                    },
+                    dataset: {
+                        '@id': options.uri,
+                        '@type': options.datasetClass,
+                        this: 'should',
+                        be: 'a dataset',
+                    },
+                    someData: data.someData,
+                });
+            },
+            done,
+        );
     });
 
     it('should return restructured data when no datasetClass', (done) => {
@@ -156,30 +146,29 @@ describe('linkDataset', () => {
                 dataset: [1, 2],
             },
         };
-        from([data])
-            .pipe(ezs('linkDataset', options))
-            .pipe(ezs((output) => {
-                try {
-                    expect(output).toEqual({
-                        '@context': {
-                            dataset: {
-                                0: 1,
-                                1: 2,
-                                '@id': options.scheme,
-                            },
-                        },
+        const stream = from([data])
+            .pipe(ezs('linkDataset', options));
+        testOne(
+            stream,
+            (output) => {
+                expect(output).toEqual({
+                    '@context': {
                         dataset: {
-                            '@id': options.uri,
-                            '@type': '',
-                            this: 'should',
-                            be: 'a dataset',
+                            0: 1,
+                            1: 2,
+                            '@id': options.scheme,
                         },
-                        someData: data.someData,
-                    });
-                    done();
-                } catch (e) {
-                    done(e);
-                }
-            }));
+                    },
+                    dataset: {
+                        '@id': options.uri,
+                        '@type': '',
+                        this: 'should',
+                        be: 'a dataset',
+                    },
+                    someData: data.someData,
+                });
+            },
+            done,
+        );
     });
 });

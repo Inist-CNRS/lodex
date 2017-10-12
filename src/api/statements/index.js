@@ -17,7 +17,7 @@ import LodexRunQuery from './LodexRunQuery.js'
 import LodexSetField from './LodexSetField.js'
 import LodexParseQuery from './LodexParseQuery.js'
 import LodexReduceQuery from './LodexReduceQuery.js'
-import DataObject from './DataObject.js'
+import LodexOutput from './LodexOutput.js'
 
 module.exports = {
     filterVersions,
@@ -38,5 +38,5 @@ module.exports = {
     LodexRunQuery,
     LodexReduceQuery,
     LodexSetField,
-    DataObject,
+    LodexOutput,
 };

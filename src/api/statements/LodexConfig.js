@@ -1,4 +1,5 @@
 import { host, cleanHost } from 'config';
+import set from 'lodash.set';
 import config from '../../../config.json';
 
 export default function LodexConfig(data, feed) {
@@ -7,10 +8,10 @@ export default function LodexConfig(data, feed) {
         return;
     }
     const target = this.getParam('target', '$config');
-    data[target] = {
+    set(data, `${target || '$context'}`, {
         ...config,
         host,
         cleanHost,
-    };
+    });
     feed.send(data);
 }

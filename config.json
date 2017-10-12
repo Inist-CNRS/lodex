@@ -20,8 +20,10 @@
     "routines": [
         "hello-world",
         "query-minimal",
+        "query-all",
         "export-minimal",
-        "reduce-distinct",
+        "count-by-fields",
+        "distinct-by",
         "distinct-by-date"
     ],
     "exporters": [

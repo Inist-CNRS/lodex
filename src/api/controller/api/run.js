@@ -11,36 +11,32 @@ import config from '../../../../config.json';
 
 const routineLocalDirectory = Path.resolve(__dirname, '../../routines/');
 const routinesLocal = config.routines
-    .map(routineName => Path.resolve(routineLocalDirectory, routineName.concat('.ezs')))
+    .map(routineName => Path.resolve(routineLocalDirectory, routineName.concat('.ini')))
     .filter(fileName => fs.existsSync(fileName))
     .map(fileName => [
         fileName,
         ezs.metaFile(fileName),
-        Path.basename(fileName, '.ezs'),
+        Path.basename(fileName, '.ini'),
         fs.readFileSync(fileName).toString(),
     ]);
 
 const routineRepository = config.routinesRepository;
 const routinesDistant = config.routines
-    .map(routineName => URL.resolve(routineRepository, routineName.concat('.ezs')))
+    .map(routineName => URL.resolve(routineRepository, routineName.concat('.ini')))
     .map(fileName => [
         fileName,
         null,
-        Path.basename(fileName, '.ezs'),
+        Path.basename(fileName, '.ini'),
         null,
     ]);
 
 
-export const runRoutine = async (ctx, local) => {
-    const routineLocal = routinesLocal.filter(r => r[2] === local)[0];
-    const routineDistant = routinesDistant.filter(r => r[2] === local)[0];
+export const runRoutine = async (ctx, routineCalled) => {
+    const routineLocal = routinesLocal.find(r => r[2] === routineCalled);
+    const routineDistant = routinesDistant.find(r => r[2] === routineCalled);
     if (!routineLocal && routineDistant) {
-        const routineScript = await fetch(routineDistant[0]).then((response) => {
-            if (response.status >= 400) {
-                throw new Error('Bad response from server');
-            }
-            return response.text();
-        });
+        const response = await fetch(routineDistant[0]);
+        const routineScript = await response.text();
         if (routineScript) {
             routineDistant[1] = ezs.metaString(routineScript);
             routineDistant[3] = routineScript;
@@ -48,10 +44,22 @@ export const runRoutine = async (ctx, local) => {
     }
     const routine = routineLocal || routineDistant;
     if (!routine) {
-        throw new Error(`Unknown routine '${local}'`);
+        throw new Error(`Unknown routine '${routineCalled}'`);
     }
     const [, metaData, , script] = routine;
-    const query = ctx.request.querystring || 'XX';
+    const request = {
+        headers: ctx.headers,
+        method: ctx.method,
+        url: ctx.url,
+        originalUrl: ctx.originalUrl,
+        origin: ctx.origin,
+        href: ctx.href,
+        path: ctx.path,
+        query: ctx.query,
+        querystring: ctx.querystring,
+        host: ctx.host,
+        hostname: ctx.hostname,
+    };
     const input = new PassThrough({ objectMode: true });
     const output = input
         .pipe(ezs.fromString(script))
@@ -72,12 +80,13 @@ export const runRoutine = async (ctx, local) => {
     ctx.status = 200;
     ctx.body = output;
 
-    input.write(query);
+    input.write(request);
     input.end();
 };
 
 const app = new Koa();
 
-app.use(route.get('/:routineName', runRoutine));
+app.use(route.get('/:routineCalled', runRoutine));
+app.use(route.get('/:routineCalled/:fieldCalled/', runRoutine));
 
 export default app;
