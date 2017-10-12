@@ -4,6 +4,7 @@ import from from 'from';
 import sinon from 'sinon';
 import btoa from 'btoa';
 import { expect } from 'chai';
+import testAll from './testAll';
 
 const dataTest = require('./fixture.data.json');
 const dataNquads = require('./fixture.data.nq.json');
@@ -37,20 +38,14 @@ describe('conversion to extended Nquads', () => {
     it('should return nquads from the dataset', (done) => {
     /* should result of the nquads conversion */
         /* Fake URL */
-        from([{ lodex: { uri: 'https://lodex-uri.fr/URI' }, content: 'https://api-v5.istex.fr/document/?q=language:test' }])
+        const stream = from([{ lodex: { uri: 'https://lodex-uri.fr/URI' }, content: 'https://api-v5.istex.fr/document/?q=language:test' }])
             .pipe(ezs('scroll'))
-            .pipe(ezs('convertToExtendedNquads', { config }))
-            .pipe(ezs((data, feed) => {
-                if (data !== null) {
-                    try {
-                        expect(dataNquads).to.contain(btoa(data));
-                    } catch (e) {
-                        return done(e);
-                    }
-                } else {
-                    return done();
-                }
-                return feed.end();
-            }));
+            .pipe(ezs('convertToExtendedNquads', { config }));
+        testAll(
+            stream,
+            (data) => {
+                expect(dataNquads).to.contain(btoa(data));
+            },
+            done);
     });
 });

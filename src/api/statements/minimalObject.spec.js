@@ -2,6 +2,7 @@ import expect from 'expect';
 import ezs from 'ezs';
 import from from 'from';
 import statements from './index';
+import testOne from './testOne';
 
 ezs.use(statements);
 
@@ -29,7 +30,7 @@ describe('minimalObject', () => {
     });
 
     it('should return the correct feed', (done) => {
-        from([{
+        const stream = from([{
             uri: 'http://uri',
             title: 'Title',
         }])
@@ -40,14 +41,12 @@ describe('minimalObject', () => {
                     name: 'title',
                     scheme: 'http://purl.org/dc/terms/title',
                 }],
-            }))
-            .pipe(ezs((input) => {
-                try {
-                    expect(input).toEqual({ _id: 'http://uri', value: 'Title' });
-                    done();
-                } catch (e) {
-                    done(e);
-                }
             }));
+        testOne(
+            stream,
+            (input) => {
+                expect(input).toEqual({ _id: 'http://uri', value: 'Title' });
+            },
+            done);
     });
 });
