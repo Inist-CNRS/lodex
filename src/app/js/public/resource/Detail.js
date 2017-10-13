@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
-import { CardActions, CardText } from 'material-ui/Card';
+import { CardActions } from 'material-ui/Card';
 import { Tabs, Tab } from 'material-ui/Tabs';
 import Divider from 'material-ui/Divider';
 import { grey500 } from 'material-ui/styles/colors';
@@ -39,7 +39,7 @@ const styles = {
     item: {
         display: 'flex',
         flexDirection: 'column',
-        borderTop: '1px solid rgb(224, 224, 224)',
+        //        borderTop: '1px solid rgb(224, 224, 224)',
         paddingTop: '2rem',
         paddingBottom: '1rem',
         paddingLeft: '0.5rem',
@@ -139,8 +139,8 @@ export const DetailComponent = ({
 
     return (
         <div className="detail">
-            <Card>
-                <CardText style={styles.container}>
+            <div>
+                <div style={styles.container}>
                     <div style={styles.firstItem}>
                         <div className="property schemeForDatasetLink" style={styles.container}>
                             <div>
@@ -177,9 +177,9 @@ export const DetailComponent = ({
                             />
                         </div>
                     ))}
-                </CardText>
-            </Card>
-            <Card style={styles.container}>
+                </div>
+            </div>
+            <div style={styles.container}>
                 <Tabs
                     tabItemContainerStyle={styles.tab}
                     inkBarStyle={styles.inkBarStyle}
@@ -256,7 +256,7 @@ export const DetailComponent = ({
                 <div style={styles.version}>
                     <Version />
                 </div>
-            </Card>
+            </div>
         </div>
     );
 };

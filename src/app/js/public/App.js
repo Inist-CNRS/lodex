@@ -2,9 +2,6 @@ import React, { PropTypes } from 'react';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 const styles = {
-    body: {
-        backgroundColor: '#edecec',
-    },
     linkToHome: {
         color: 'white',
         textDecoration: 'none',
@@ -16,7 +13,7 @@ const styles = {
 
 export const AppComponent = ({ children }) => (
     <MuiThemeProvider>
-        <div className="body" style={styles.body}>
+        <div className="body">
             {children}
         </div>
     </MuiThemeProvider>
