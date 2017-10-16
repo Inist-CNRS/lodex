@@ -25,13 +25,13 @@ const styles = {
         display: 'flex',
         flexDirection: 'column',
     }, style)),
-    label: memoize(status => Object.assign({
+    label: (status, isSub) => ({
         color: grey500,
         flexGrow: 2,
         fontWeight: 'bold',
-        fontSize: '2rem',
+        fontSize: isSub === true ? 'initial' : '2rem',
         textDecoration: status === REJECTED ? 'line-through' : 'none',
-    })),
+    }),
     language: memoize(hide => ({
         //        marginRight: '1rem',
         fontSize: '0.6em',
@@ -73,6 +73,7 @@ const PropertyComponent = ({
     className,
     field,
     isSaving,
+    isSub,
     resource,
     fieldStatus,
     loggedIn,
@@ -92,7 +93,7 @@ const PropertyComponent = ({
         >
             <div>
                 <div style={styles.labelContainer}>
-                    <span className={classnames('property_label', fieldClassName)} style={styles.label(fieldStatus)}>
+                    <span className={classnames('property_label', fieldClassName)} style={styles.label(fieldStatus, isSub)}>
                         {field.label}
                     </span>
 
@@ -153,6 +154,7 @@ PropertyComponent.propTypes = {
     field: fieldPropTypes.isRequired,
     fieldStatus: PropTypes.oneOf(propositionStatus),
     isSaving: PropTypes.bool.isRequired,
+    isSub: PropTypes.bool,
     loggedIn: PropTypes.bool.isRequired,
     onSaveProperty: PropTypes.func.isRequired,
     resource: PropTypes.shape({}).isRequired,
@@ -163,6 +165,7 @@ PropertyComponent.propTypes = {
 PropertyComponent.defaultProps = {
     className: null,
     fieldStatus: null,
+    isSub: false,
 };
 
 const mapStateToProps = (state, { field }) => ({

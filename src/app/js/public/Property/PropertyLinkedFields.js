@@ -42,6 +42,7 @@ const PropertyLinkedFieldsComponent = ({
                     className={classnames('completes', `completes_${fieldName}`)}
                     field={linkedField}
                     isSaving={isSaving}
+                    isSub
                     resource={resource}
                     parents={parents}
                     onSaveProperty={onSaveProperty}

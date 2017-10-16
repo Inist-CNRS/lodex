@@ -41,6 +41,7 @@ export const CompositePropertyComponent = ({
                     key={f.name}
                     field={f}
                     isSaving={isSaving}
+                    isSub
                     onSaveProperty={onSaveProperty}
                     parents={parents}
                     resource={resource}
