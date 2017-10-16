@@ -33,7 +33,7 @@ const styles = {
         textDecoration: status === REJECTED ? 'line-through' : 'none',
     })),
     language: memoize(hide => ({
-        marginRight: '1rem',
+        //        marginRight: '1rem',
         fontSize: '0.6em',
         color: 'grey',
         textTransform: 'uppercase',
@@ -48,7 +48,7 @@ const styles = {
         color: 'grey',
     },
     editButton: {
-        alignSelf: 'flex-end',
+        marginRight: '-2rem',
     },
     labelContainer: {
         display: 'flex',
@@ -63,7 +63,7 @@ const styles = {
         flexGrow: 2,
         width: '100%',
         padding: '0.75rem',
-        paddingRight: '3rem',
+        paddingLeft: '0px',
         textAlign: 'justify',
     },
 };
@@ -102,9 +102,6 @@ const PropertyComponent = ({
                 <PropertyContributor fieldName={field.name} fieldStatus={fieldStatus} />
             </div>
             <div style={styles.valueContainer}>
-                <span className={classnames('property_language', fieldClassName)} style={styles.language(!field.language)}>
-                    {field.language || 'XX'}
-                </span>
                 <div style={styles.value}>
                     <Format
                         className={classnames('property_value', fieldClassName)}
@@ -113,13 +110,17 @@ const PropertyComponent = ({
                         fieldStatus={fieldStatus}
                     />
                 </div>
-
-                <EditField
-                    field={field}
-                    isSaving={isSaving}
-                    resource={resource}
-                    onSaveProperty={onSaveProperty}
-                />
+                <span className={classnames('property_language', fieldClassName)} style={styles.language(!field.language)}>
+                    {field.language || 'XX'}
+                </span>
+                <div style={styles.editButton}>
+                    <EditField
+                        field={field}
+                        isSaving={isSaving}
+                        resource={resource}
+                        onSaveProperty={onSaveProperty}
+                    />
+                </div>
             </div>
             <CompositeProperty
                 field={field}

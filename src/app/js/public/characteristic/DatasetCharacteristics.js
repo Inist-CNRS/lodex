@@ -22,15 +22,14 @@ const styles = {
     item: memoize((index, total) => ({
         display: 'flex',
         flexDirection: 'column',
-        borderBottom: index < total - 1 ? '1px solid rgb(224, 224, 224)' : 'none',
         paddingTop: index > 0 ? '2rem' : 0,
         paddingBottom: index < total - 1 ? '1rem' : 0,
     })),
 };
 
 const DatasetCharacteristicsView = ({ characteristics }) => (
-    <Card className="dataset-characteristics">
-        <CardText style={styles.container}>
+    <div className="dataset-characteristics">
+        <div style={styles.container}>
             {characteristics
                 .map((characteristicField, index) => (
                     <div key={characteristicField.name} style={styles.item(index, characteristics.length)}>
@@ -38,8 +37,8 @@ const DatasetCharacteristicsView = ({ characteristics }) => (
                     </div>
                 ))
             }
-        </CardText>
-    </Card>
+        </div>
+    </div>
 );
 
 DatasetCharacteristicsView.propTypes = {
