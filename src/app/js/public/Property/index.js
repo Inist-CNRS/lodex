@@ -47,9 +47,10 @@ const styles = {
     schemeLink: {
         color: 'grey',
     },
-    editButton: {
+    editButton: memoize(hide => ({
         marginRight: '-2rem',
-    },
+        display: hide ? 'none' : 'block',
+    })),
     labelContainer: {
         display: 'flex',
         justifyContent: 'flex-end',
@@ -113,7 +114,7 @@ const PropertyComponent = ({
                 <span className={classnames('property_language', fieldClassName)} style={styles.language(!field.language)}>
                     {field.language || 'XX'}
                 </span>
-                <div style={styles.editButton}>
+                <div style={styles.editButton(!loggedIn)}>
                     <EditField
                         field={field}
                         isSaving={isSaving}
