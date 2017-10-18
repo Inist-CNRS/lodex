@@ -23,6 +23,7 @@
         "query-all",
         "export-minimal",
         "count-by-fields",
+        "count-all",
         "distinct-by",
         "distinct-by-date"
     ],
