@@ -1,6 +1,7 @@
 import contextualBarchart from './contextual-bar-chart';
 import globalPiechart from './global-pie-chart/';
 import globalRadarchart from './global-radar-chart/';
+import emphasedNumber from './emphased-number/';
 import email from './email';
 import html from './html';
 import image from './image';
@@ -19,6 +20,7 @@ const components = {
     contextualBarchart,
     globalPiechart,
     globalRadarchart,
+    emphasedNumber,
     email,
     html,
     image,
