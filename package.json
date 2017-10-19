@@ -44,6 +44,7 @@
     "babel-register": "6.26.0",
     "babel-runtime": "6.26.0",
     "classnames": "2.2.5",
+    "comma-number": "2.0.0",
     "common-tags": "1.4.0",
     "compression-webpack-plugin": "1.0.0",
     "config": "1.26.2",
