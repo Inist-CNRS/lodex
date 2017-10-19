@@ -2,9 +2,9 @@ import React, { PropTypes } from 'react';
 import { StyleSheet, css } from 'aphrodite';
 
 const Circle = ({ value, colorsSet }) => {
-    const firstColor = colorsSet.shift() || '#1eb2df';
-    const middleColor = colorsSet.shift() || '#0675b3';
-    const lastColor = colorsSet.pop() || '#17a7d2';
+    const firstColor = colorsSet.shift() || '#8B8B8B'; // #1eb2df
+    const middleColor = colorsSet.shift() || '#5B5B5B'; // #0675b3
+    const lastColor = colorsSet.pop() || '#818181'; // #17a7d2
     const styles = StyleSheet.create({
         ribbon: {
             padding: '.34rem 1rem',

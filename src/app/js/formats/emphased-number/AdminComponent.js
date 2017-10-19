@@ -31,7 +31,7 @@ class ChartEdition extends Component {
 
     static defaultProps = {
         look: 'ribbon',
-        colors: '#9A4C95 #F08CAE #C1A5A9',
+        colors: '#8B8B8B #5B5B5B #818181',
     }
     constructor(props) {
         super(props);
