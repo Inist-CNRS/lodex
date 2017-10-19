@@ -37,6 +37,9 @@ run-frontend: ## Run the frontend application
 docker-run-dev: ## run node server with pm2 for development and webpack-dev-server
 	docker-compose up --force-recreate mongo server
 
+mongo: ## Start the mongo database
+	docker-compose up -d mongo
+
 mongo-shell: ## Start the mongo shell
 	docker-compose exec mongo mongo lodex
 
