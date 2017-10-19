@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import { StyleSheet, css } from 'aphrodite';
 
-const Circle = ({ value, colorsSet }) => {
+const Badge = ({ value, colorsSet }) => {
     const firstColor = colorsSet.shift() || '#E7711B';
     const lastColor = colorsSet.pop() || '#F7981D';
     const styles = StyleSheet.create({
@@ -50,9 +50,9 @@ const Circle = ({ value, colorsSet }) => {
     );
 };
 
-Circle.propTypes = {
+Badge.propTypes = {
     value: PropTypes.string.isRequired, // eslint-disable-line
     colorsSet: PropTypes.array.isRequired, // eslint-disable-line
 };
 
-export default Circle;
+export default Badge;

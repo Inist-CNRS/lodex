@@ -30,7 +30,7 @@ class ChartEdition extends Component {
     }
 
     static defaultProps = {
-        look: 'ribbon',
+        look: 'bigbold',
         colors: '#8B8B8B #5B5B5B #818181',
     }
     constructor(props) {
@@ -71,6 +71,7 @@ class ChartEdition extends Component {
                 >
                     <MenuItem value="ribbon" primaryText={polyglot.t('ribbon')} />
                     <MenuItem value="badge" primaryText={polyglot.t('badge')} />
+                    <MenuItem value="bigbold" primaryText={polyglot.t('bigbold')} />
                 </SelectField>
                 <TextField
                     floatingLabelText={polyglot.t('colors_set')}
