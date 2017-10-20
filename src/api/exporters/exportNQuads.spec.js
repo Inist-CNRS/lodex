@@ -27,10 +27,37 @@ const fields = [{
     searchable: true,
     position: 3,
     name: 'Q98n',
+}, {
+    cover: 'collection',
+    label: 'Localisation de la ressource pédagogique',
+    display_in_list: true,
+    display_in_resource: true,
+    searchable: true,
+    transformers: [
+        {
+            operation: 'COLUMN',
+            args: [
+                {
+                    name: 'column',
+                    type: 'column',
+                    value: 'Localisation de la ressource pédagogique',
+                },
+            ],
+        },
+    ],
+    position: 2,
+    scheme: 'http://data.opendiscoveryspace.eu/lom_ontology_ods.owl#technicalLocation',
+    format: {
+        name: 'link',
+    },
+    classes: [
+        'http://data.opendiscoveryspace.eu/lom_ontology_ods.owl#LearningObject',
+    ],
+    name: 'ZI8w',
 }];
 
 describe('export Nquads', () => {
-    it('should export simple property', (done) => {
+    it('should export a single data property', (done) => {
         let outputString = '';
         exportNQuads(
             {
@@ -46,6 +73,31 @@ describe('export Nquads', () => {
             } else {
                 try {
                     expect(outputString).toEqual('<http://data.istex.fr> <http://purl.org/dc/terms/title> "Terminator" .\n');
+                } catch (e) {
+                    return done(e);
+                }
+                return done();
+            }
+            return feed.end();
+        }));
+    });
+
+    it('should export an object property (with a class)', (done) => {
+        let outputString = '';
+        exportNQuads(
+            {
+                cleanHost: '',
+                schemeForDatasetLink: '',
+            },
+            fields.slice(1, 1),
+            null,
+            from([{ uri: 'http://data.istex.fr', ZI8w: 'A New Hope' }]),
+        ).pipe(ezs((data, feed) => {
+            if (data !== null) {
+                outputString += data;
+            } else {
+                try {
+                    expect(outputString).toEqual('<http://data.istex.fr> <http://purl.org/dc/terms/title> "A New Hope" .\n');
                 } catch (e) {
                     return done(e);
                 }
