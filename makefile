@@ -31,13 +31,10 @@ install: copy-conf install-npm-dependencies ## Install npm dependencies for the 
 
 # Development ==================================================================
 
-run-frontend: ## Run the frontend application
-	NODE_ENV=${NODE_ENV} npm run devel
-
 docker-run-dev: ## run node server with pm2 for development and webpack-dev-server
 	docker-compose up --force-recreate mongo server
 
-mongo: ## Start the mongo database
+mongo-run: ## Start the mongo database
 	docker-compose up -d mongo
 
 mongo-shell: ## Start the mongo shell
