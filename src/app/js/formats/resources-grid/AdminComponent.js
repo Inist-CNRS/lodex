@@ -21,7 +21,7 @@ const styles = {
     },
 };
 
-class ChartEdition extends Component {
+class RessourcesGrid extends Component {
     static propTypes = {
         maxSize: PropTypes.string,
         spaceWidth: PropTypes.string,
@@ -68,7 +68,6 @@ class ChartEdition extends Component {
         this.props.onChange({ spaceWidth });
     }
 
-
     render() {
         const { p: polyglot } = this.props;
         const { maxSize, orderBy, spaceWidth } = this.state;
@@ -109,4 +108,4 @@ class ChartEdition extends Component {
     }
 }
 
-export default translate(ChartEdition);
+export default translate(RessourcesGrid);

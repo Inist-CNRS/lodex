@@ -3,20 +3,33 @@ import fetch from 'isomorphic-fetch';
 import MQS from 'mongodb-querystring';
 import url from 'url';
 import querystring from 'querystring';
+import RaisedButton from 'material-ui/RaisedButton';
 import translate from 'redux-polyglot/translate';
 import { StyleSheet, css } from 'aphrodite';
 import { field as fieldPropTypes } from '../../propTypes';
 
 
 class ResourcesGrid extends Component {
+    static propTypes = {
+        field: fieldPropTypes.isRequired,
+        linkedResource: PropTypes.object, // eslint-disable-line
+        resource: PropTypes.object.isRequired, // eslint-disable-line
+    }
+
     constructor(props) {
         super(props);
         this.state = {
+            more: 0,
             data: [],
         };
+        this.handleMore = this.handleMore.bind(this);
     }
 
     componentDidMount() {
+        this.fetchData();
+    }
+
+    async fetchData() {
         const { field, resource } = this.props;
         const orderBy = field.format && field.format.args && field.format.args.orderBy ? field.format.args.orderBy : 'value/asc';
         const maxSize = field.format && field.format.args && field.format.args.maxSize ? field.format.args.maxSize : '5';
@@ -31,7 +44,7 @@ class ResourcesGrid extends Component {
         const mongoQuery = {
             $query: query,
             $skip: 0,
-            $limit: maxSize,
+            $limit: maxSize + this.state.more,
             $orderby: sort,
         };
         const uriNew = {
@@ -43,24 +56,25 @@ class ResourcesGrid extends Component {
             uriNew.protocol = window.location.protocol;
         }
         const apiurl = url.format(uriNew);
-        fetch(apiurl)
-            .then((response) => {
-                if (response.status >= 400) {
-                    throw new Error('Bad response from server');
-                }
-                return response.json().then((json) => {
-                    if (json.data) {
-                        this.setState({ data: json.data });
-                    }
-                    if (json.aggregations) {
-                        const firstKey = Object.keys(json.aggregations).shift();
-                        const data = json.aggregations[firstKey].buckets
-                            .map(item => ({ name: item.keyAsString || item.key, value: item.docCount }));
-                        this.setState({ data });
-                    }
-                });
-            });
+        const response = await fetch(apiurl);
+        const result = await response.json();
+        if (result.data) {
+            this.setState({ data: result.data });
+        }
+        if (result.aggregations) {
+            const firstKey = Object.keys(result.aggregations).shift();
+            const data = result.aggregations[firstKey].buckets
+                .map(item => ({ name: item.keyAsString || item.key, value: item.docCount }));
+            this.setState({ data });
+        }
     }
+
+    handleMore(event) {
+        this.setState(prevState => ({ more: prevState.more + 10 }));
+        this.fetchData();
+        event.preventDefault();
+    }
+
 
     render() {
         const { field } = this.props;
@@ -128,41 +142,38 @@ class ResourcesGrid extends Component {
         });
         const { data } = this.state;
         return (
-            <ul className={css(styles.list)}>
-                {
-                    data.map((entry) => {
-                        const link = `/${entry._id}`;
-                        const title = entry.value[0];
-                        const description = entry.value[1];
-                        return (<li className={css(styles.item)}>
-                            <div className={css(styles.content)}>
-                                <a className={css(styles.contentLink)} href={link}>
-                                    <div className={css(styles.contentTitle)}>
-                                        {title}
-                                    </div>
-                                    <div className={css(styles.contentParagraph)}>
-                                        {description}
-                                    </div>
-                                </a>
-                            </div>
-                        </li>);
-                    })
-                }
-            </ul>
+            <div>
+                <ul className={css(styles.list)}>
+                    {
+                        data.map((entry, index) => {
+                            const key = String(index).concat('ResourcesGrid');
+                            const link = `/${entry._id}`;
+                            const title = entry.value[0];
+                            const description = entry.value[1];
+                            return (<li key={key} className={css(styles.item)}>
+                                <div className={css(styles.content)}>
+                                    <a className={css(styles.contentLink)} href={link}>
+                                        <div className={css(styles.contentTitle)}>
+                                            {title}
+                                        </div>
+                                        <div className={css(styles.contentParagraph)}>
+                                            {description}
+                                        </div>
+                                    </a>
+                                </div>
+                            </li>);
+                        })
+                    }
+                </ul>
+                <div className={css(styles.button)}>
+                    <RaisedButton label="MORE" onClick={this.handleMore} />
+                </div>
+            </div>
 
         );
     }
 }
 
-ResourcesGrid.propTypes = {
-    field: fieldPropTypes.isRequired,
-    linkedResource: PropTypes.object, // eslint-disable-line
-    resource: PropTypes.object.isRequired, // eslint-disable-line
-};
-
-ResourcesGrid.defaultProps = {
-    className: null,
-};
 
 export default translate(ResourcesGrid);
 
