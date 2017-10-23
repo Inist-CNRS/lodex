@@ -5,27 +5,10 @@ import exportNQuads from './exportNQuads';
 
 const fields = [{
     cover: 'collection',
-    label: 'title',
-    transformers: [
-        {
-            operation: 'COLUMN',
-            args: [
-                {
-                    name: 'column',
-                    type: 'column',
-                    value: 'title',
-                },
-            ],
-        },
-    ],
     scheme: 'http://purl.org/dc/terms/title',
     format: {
         name: 'None',
     },
-    display_in_list: true,
-    display_in_resource: true,
-    searchable: true,
-    position: 3,
     name: 'Q98n',
 }, {
     cover: 'collection',
@@ -37,7 +20,7 @@ const fields = [{
     ],
 }];
 
-describe.only('export Nquads', () => {
+describe('export Nquads', () => {
     it('should export a single data property', (done) => {
         let outputString = '';
         exportNQuads(
