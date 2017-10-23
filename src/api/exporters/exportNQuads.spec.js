@@ -82,16 +82,21 @@ describe('export Nquads', () => {
         }));
     });
 
-    it('should export an object property (with a class)', (done) => {
+    it.only('should export an object property (with a class)', (done) => {
         let outputString = '';
         exportNQuads(
             {
-                cleanHost: '',
+                cleanHost: 'https://lodex.data.istex.fr',
                 schemeForDatasetLink: '',
+                '@context': {
+                    ZI8w: { '@id': 'http://data.opendiscoveryspace.eu/lom_ontology_ods.owl#technicalLocation' },
+                },
             },
-            fields.slice(1, 1),
+            fields.slice(1, 2),
             null,
-            from([{ uri: 'http://data.istex.fr', ZI8w: 'A New Hope' }]),
+            from([{
+                uri: 'http://data.istex.fr',
+                ZI8w: 'A New Hope' }]),
         ).pipe(ezs((data, feed) => {
             if (data !== null) {
                 outputString += data;
