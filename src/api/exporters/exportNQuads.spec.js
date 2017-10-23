@@ -29,34 +29,15 @@ const fields = [{
     name: 'Q98n',
 }, {
     cover: 'collection',
-    label: 'Localisation de la ressource pédagogique',
-    display_in_list: true,
-    display_in_resource: true,
-    searchable: true,
-    transformers: [
-        {
-            operation: 'COLUMN',
-            args: [
-                {
-                    name: 'column',
-                    type: 'column',
-                    value: 'Localisation de la ressource pédagogique',
-                },
-            ],
-        },
-    ],
-    position: 2,
-    scheme: 'http://data.opendiscoveryspace.eu/lom_ontology_ods.owl#technicalLocation',
-    format: {
-        name: 'link',
-    },
+    label: 'est une sous-partie de',
+    scheme: 'http://purl.org/dc/terms/isPartOf',
+    name: 'vlM0',
     classes: [
-        'http://data.opendiscoveryspace.eu/lom_ontology_ods.owl#LearningObject',
+        'https://data.istex.fr/ontology/istex#PublicationTypeConcept',
     ],
-    name: 'ZI8w',
 }];
 
-describe('export Nquads', () => {
+describe.only('export Nquads', () => {
     it('should export a single data property', (done) => {
         let outputString = '';
         exportNQuads(
@@ -82,27 +63,30 @@ describe('export Nquads', () => {
         }));
     });
 
-    it.only('should export an object property (with a class)', (done) => {
+    it('should export an object property (with a class)', (done) => {
         let outputString = '';
         exportNQuads(
             {
                 cleanHost: 'https://lodex.data.istex.fr',
                 schemeForDatasetLink: '',
                 '@context': {
-                    ZI8w: { '@id': 'http://data.opendiscoveryspace.eu/lom_ontology_ods.owl#technicalLocation' },
+                    vlM0: { '@id': 'http://purl.org/dc/terms/isPartOf' },
                 },
             },
             fields.slice(1, 2),
             null,
             from([{
-                uri: 'http://data.istex.fr',
-                ZI8w: 'A New Hope' }]),
+                uri: 'http://data.istex.fr/1',
+                D0n9: 'https://publication-type.data.istex.fr/ark:/67375/JMC-0GLKJH51-B' }]),
         ).pipe(ezs((data, feed) => {
             if (data !== null) {
                 outputString += data;
             } else {
                 try {
-                    expect(outputString).toEqual('<http://data.istex.fr> <http://purl.org/dc/terms/title> "A New Hope" .\n');
+                    expect(outputString).toEqual(`<http://data.istex.fr/1/classes/vlM0> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://data.istex.fr/ontology/istex#PublicationTypeConcept> .
+<http://data.istex.fr/1> <http://purl.org/dc/terms/isPartOf> <http://data.istex.fr/1/classes/vlM0> .
+<http://data.istex.fr/1> <http://purl.org/dc/terms/isPartOf> <https://lodex.data.istex.fr> .
+`);
                 } catch (e) {
                     return done(e);
                 }
