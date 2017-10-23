@@ -9,6 +9,16 @@ import Bigbold from './Bigbold';
 
 
 const isURL = v => ((typeof v === 'string' && (v.startsWith('http://') || v.startsWith('https://') || v.startsWith('/api/'))) || false);
+const getNumber = (v) => {
+    if (!v || typeof v === 'number' || typeof v === 'string') {
+        return v;
+    }
+    if (v.total) {
+        return v.total;
+    }
+    return null;
+};
+
 
 async function fetchURL(url) {
     const response = await fetch(url);
@@ -37,7 +47,7 @@ class EmphasedNumber extends Component {
         const literals = values.filter(v => !isURL(v));
         const URLsValues = await fetchURLs(URLs);
         const literalsValues = literals.filter(x => x);
-        const data = literalsValues.concat(URLsValues);
+        const data = literalsValues.concat(URLsValues.map(getNumber).filter(x => x));
         this.setData(data);
     }
 
