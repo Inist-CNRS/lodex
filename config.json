@@ -19,13 +19,10 @@
     "routinesRepository" : "https://raw.githubusercontent.com/Inist-CNRS/lodex-routines/master/",
     "routines": [
         "hello-world",
-        "query-minimal",
         "query-all",
-        "export-minimal",
         "count-by-fields",
         "count-all",
-        "distinct-by",
-        "distinct-by-date"
+        "distinct-by"
     ],
     "exporters": [
         "nquads",
