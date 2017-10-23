@@ -6,6 +6,7 @@ import querystring from 'querystring';
 import RaisedButton from 'material-ui/RaisedButton';
 import translate from 'redux-polyglot/translate';
 import { StyleSheet, css } from 'aphrodite';
+import LodexResource from '../shared/LodexResource';
 import { field as fieldPropTypes } from '../../propTypes';
 
 
@@ -112,54 +113,21 @@ class ResourcesGrid extends Component {
                 padding: '1em',
                 width: '100%',
             },
-            contentTitle: {
-                fontSize: '16px',
-                lineHeight: '20px',
-                fontWeight: '400',
-            },
-            contentParagraph: {
-                flex: '1 0 auto',
-                color: '#A1A1A4',
-                lineHeight: '16px',
-                textTransform: 'uppercase',
-            },
-            contentLink: {
-                cursor: 'pointer',
-                textDecoration: 'inherit',
-                color: 'inherit',
-                fill: 'inherit',
-                ':hover': {
-                    textDecoration: 'inherit',
-                    color: 'inherit',
-                    fill: 'inherit',
-                },
-                ':active': {
-                    textDecoration: 'inherit',
-                    color: 'inherit',
-                    fill: 'inherit',
-                },
-            },
         });
-        const { data } = this.state;
         return (
             <div>
                 <ul className={css(styles.list)}>
                     {
-                        data.map((entry, index) => {
+                        this.state.data.map((entry, index) => {
                             const key = String(index).concat('ResourcesGrid');
-                            const link = `/${entry._id}`;
-                            const title = entry.value[0];
-                            const description = entry.value[1];
+                            const props = {
+                                link: `/${entry._id}`,
+                                title: entry.value[0],
+                                description: entry.value[1],
+                            };
                             return (<li key={key} className={css(styles.item)}>
                                 <div className={css(styles.content)}>
-                                    <a className={css(styles.contentLink)} href={link}>
-                                        <div className={css(styles.contentTitle)}>
-                                            {title}
-                                        </div>
-                                        <div className={css(styles.contentParagraph)}>
-                                            {description}
-                                        </div>
-                                    </a>
+                                    <LodexResource {...props} />
                                 </div>
                             </li>);
                         })
