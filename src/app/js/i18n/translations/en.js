@@ -275,6 +275,7 @@ export default {
     resource: 'Resource',
     globalPiechart: 'Pie Chart',
     globalRadarchart: 'Radar Chart',
+    globalBarchart: 'Bar Chart',
     max_fields: 'Maximum fields number',
     colors_set: 'Colors set',
     order_by: 'Order by',

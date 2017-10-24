@@ -1,3 +1,4 @@
+import globalBarchart from './global-bar-chart/';
 import globalPiechart from './global-pie-chart/';
 import globalRadarchart from './global-radar-chart/';
 import emphasedNumber from './emphased-number/';
@@ -16,6 +17,7 @@ import resource from './lodex-resource';
 import DefaultFormat from './DefaultFormat';
 
 const components = {
+    globalBarchart,
     globalPiechart,
     globalRadarchart,
     emphasedNumber,
