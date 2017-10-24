@@ -2,6 +2,7 @@ import globalBarchart from './global-bar-chart/';
 import globalPiechart from './global-pie-chart/';
 import globalRadarchart from './global-radar-chart/';
 import emphasedNumber from './emphased-number/';
+import resourcesGrid from './resources-grid/';
 import email from './email';
 import html from './html';
 import image from './image';
@@ -33,6 +34,7 @@ const components = {
     title,
     paragraph,
     resource,
+    resourcesGrid,
 };
 
 export const FORMATS = Object.keys(components).sort();
