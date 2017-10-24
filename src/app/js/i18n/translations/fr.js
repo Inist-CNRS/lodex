@@ -276,6 +276,7 @@ export default {
     resource: 'Ressource',
     globalPiechart: 'Diagramme circulaire',
     globalRadarchart: 'Diagramme radar',
+    globalBarchart: 'Diagramme en barres',
     max_fields: 'Nombre max de champs',
     colors_set: 'Jeu de couleurs',
     order_by: 'Trier par',

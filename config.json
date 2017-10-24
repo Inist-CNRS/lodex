@@ -23,8 +23,7 @@
         "query-all",
         "count-by-fields",
         "count-all",
-        "distinct-by",
-        "distinct-by-date"
+        "distinct-by"
     ],
     "exporters": [
         "nquads",
