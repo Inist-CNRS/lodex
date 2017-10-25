@@ -42,11 +42,11 @@ describe('JSONLDObject / mergeCompose', () => {
                 label: { '@id': 'https://www.w3.org/2000/01/rdf-schema#label' },
             },
             composed: [{
-                '@id': 'http://uri/compose/composed',
+                '@id': 'http://uri#compose/composed',
                 '@type': ['composedClass'],
                 component1: 'component1 value',
             }, {
-                '@id': 'http://uri/compose/composed',
+                '@id': 'http://uri#compose/composed',
                 '@type': ['composedClass'],
                 component2: 'component2 value',
             }],

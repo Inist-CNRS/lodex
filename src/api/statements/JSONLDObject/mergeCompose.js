@@ -29,7 +29,7 @@ export default function mergeCompose(output, field, data, fields) {
 
             if (composeHaveClasses) {
                 resultData = {
-                    '@id': `${getUri(data.uri)}/classes/${propertyName}/${e}`,
+                    '@id': `${getUri(data.uri)}#classes/${propertyName}/${e}`,
                     '@type': composeField.classes,
                     label: formatData(data, e),
                 };
@@ -37,7 +37,7 @@ export default function mergeCompose(output, field, data, fields) {
 
             if (composeField.scheme) {
                 return {
-                    '@id': `${getUri(data.uri)}/compose/${propertyName}`,
+                    '@id': `${getUri(data.uri)}#compose/${propertyName}`,
                     '@type': field.classes || [],
                     [e]: resultData };
             }
