@@ -220,7 +220,7 @@ describe('JSONLDObject / mergeCompleteField', () => {
                 },
             },
             [name]: {
-                '@id': `http://uri/complete/${name}`,
+                '@id': `http://uri#complete/${name}`,
                 completed: 'completed value',
                 completing: 'completing value',
             },

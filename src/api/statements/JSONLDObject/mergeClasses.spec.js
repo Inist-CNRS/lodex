@@ -75,7 +75,7 @@ describe('JSONLDObject / mergeClasses', () => {
                 },
             },
             uri: {
-                '@id': 'http://data.istex.fr/a/classes/uri',
+                '@id': 'http://data.istex.fr/a#classes/uri',
                 '@type': ['class'],
                 label: 'a',
             },
@@ -98,7 +98,7 @@ describe('JSONLDObject / mergeClasses', () => {
                 },
             },
             uri: {
-                '@id': 'http://data.istex.fr/a/classes/uri',
+                '@id': 'http://data.istex.fr/a#classes/uri',
                 '@type': ['class1', 'class2'],
                 label: 'a',
             },
