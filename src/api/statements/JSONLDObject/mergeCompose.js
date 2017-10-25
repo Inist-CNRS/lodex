@@ -20,6 +20,9 @@ export default function mergeCompose(output, field, data, fields) {
         ...output,
         [propertyName]: composeFields.map((e) => {
             const composeField = fields.find(f => f.name === e);
+            if (!composeField) {
+                return null;
+            }
             const composeHaveClasses = Boolean(composeField.classes) && Boolean(composeField.classes.length);
 
             let resultData = formatData(data, e);

@@ -85,4 +85,59 @@ describe('export Nquads', () => {
             return feed.end();
         }));
     });
+
+    it('should export a composed object property (with a class)', (done) => {
+        let outputString = '';
+        exportNQuads(
+            {
+                cleanHost: '',
+                schemeForDatasetLink: '',
+            },
+            [{
+                cover: 'collection',
+                scheme: 'http://property/composed',
+                name: 'propcomposed',
+                classes: [
+                    'http://class/composed',
+                ],
+                composedOf: {
+                    fields: [
+                        'propb',
+                        'propc',
+                    ],
+                },
+            }, {
+                cover: 'collection',
+                scheme: 'http://property/b',
+                name: 'propb',
+            }, {
+                cover: 'collection',
+                scheme: 'http://property/c',
+                name: 'propc',
+            }],
+            null,
+            from([{
+                uri: 'http://uri/1',
+                propcomposed: 'label a',
+                propb: 'value 1',
+                propc: 'value 2',
+            }]),
+        ).pipe(ezs((data, feed) => {
+            if (data !== null) {
+                outputString += data;
+            } else {
+                try {
+                    expect(outputString).toEqual(`<http://uri/1/compose/propcomposed> <http://property/b> "value 1" .
+<http://uri/1/compose/propcomposed> <http://property/c> "value 2" .
+<http://uri/1/compose/propcomposed> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://class/composed> .
+<http://uri/1> <http://property/composed> <http://uri/1/compose/propcomposed> .
+`);
+                } catch (e) {
+                    return done(e);
+                }
+                return done();
+            }
+            return feed.end();
+        }));
+    });
 });
