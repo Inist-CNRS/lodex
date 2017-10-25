@@ -15,6 +15,7 @@
     "dev": "pm2-docker process.yml",
     "development:api": "NODE_ENV=development node --harmony-async-await --require babel-register src/api",
     "development:app": "NODE_ENV=development BABEL_ENV=browser webpack-dev-server --config=./src/app/webpack.config.babel.js --port=8080",
+    "postversion": "git push && git push --tags",
     "lint": "./pre-commit"
   },
   "repository": {
