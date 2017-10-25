@@ -29,12 +29,16 @@ install-npm-dependencies:
 
 install: copy-conf install-npm-dependencies ## Install npm dependencies for the api, admin, and frontend apps
 
-# Development ==================================================================
+build: ## build the docker image localy
+	docker build -t inistcnrs/lodex --build-arg http_proxy --build-arg https_proxy .
+
+run-dev: ## run node server with pm2 for development and webpack-dev-server
+	docker-compose up --force-recreate mongo server
 
 docker-run-dev: ## run node server with pm2 for development and webpack-dev-server
 	docker-compose up --force-recreate mongo server
 
-mongo-run: ## Start the mongo database
+mongo: ## Start the mongo database
 	docker-compose up -d mongo
 
 mongo-shell: ## Start the mongo shell
@@ -42,11 +46,6 @@ mongo-shell: ## Start the mongo shell
 
 mongo-shell-test: ## Start the mongo shell for the test database
 	docker-compose exec mongo mongo lodex_test
-
-# Build ==================================================================
-
-build-frontend: ## Build the frontend application
-	NODE_ENV=${NODE_ENV} npm build 
 
 npm: ## allow to run dockerized npm command eg make npm 'install koa --save'
 	docker-compose run --rm npm $(COMMAND_ARGS)
