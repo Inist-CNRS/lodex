@@ -2,7 +2,7 @@ import getFieldContext from './getFieldContext';
 import getUri from './getUri';
 import formatData from './formatData';
 
-export default function mergeCompose(output, field, data, fields, haveClasses) {
+export default function mergeCompose(output, field, data, fields) {
     const propertyName = field.name;
     const composeFields = field.composedOf.fields;
     const fieldContext = getFieldContext(field);
@@ -35,7 +35,7 @@ export default function mergeCompose(output, field, data, fields, haveClasses) {
             if (composeField.scheme) {
                 return {
                     '@id': `${getUri(data.uri)}/compose/${propertyName}`,
-                    '@type': haveClasses ? field.classes : [],
+                    '@type': field.classes || [],
                     [e]: resultData };
             }
 
