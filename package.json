@@ -7,7 +7,6 @@
   "description": "",
   "main": "src/api/index.js",
   "scripts": {
-    "prestart": "npm run build",
     "start": "NODE_ENV=production node --harmony-async-await --require babel-register src/api",
     "test": "npm run test:api && npm run test:app",
     "test:api": "mocha --require babel-polyfill --compilers='js:babel-core/register' 'src/api/**/*.spec.js' 'src/common/**/*.spec.js'",
