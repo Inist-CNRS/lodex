@@ -15,7 +15,7 @@ const fields = [{
     scheme: 'http://property/a',
     name: 'propa',
     classes: [
-        'http//class/2',
+        'http://class/2',
     ],
     composedOf: {
         fields: [
@@ -54,22 +54,18 @@ describe('export Nquads', () => {
         }));
     });
 
-    it.only('should export an object property (with a class)', (done) => {
+    it('should export an object property (with a class)', (done) => {
         let outputString = '';
         exportNQuads(
             {
                 cleanHost: '',
                 schemeForDatasetLink: '',
-                // '@context': {
-                //     propa: { '@id': 'http://property/a', '@type': 'http://class/2' },
-                //     propb: { '@id': 'http://property/b' },
-                // },
             },
             fields.slice(1, 3),
             null,
             from([{
                 uri: 'http://uri/1',
-                propa: 'http://uri/2',
+                propa: 'label a',
                 propb: 'value 2',
             }]),
         ).pipe(ezs((data, feed) => {
@@ -77,8 +73,8 @@ describe('export Nquads', () => {
                 outputString += data;
             } else {
                 try {
-                    expect(outputString).toEqual(`<http://uri/1/compose/propa> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://class/2> .
-<http://uri/1/compose/propa> <http://property/b> "value 2" .
+                    expect(outputString).toEqual(`<http://uri/1/compose/propa> <http://property/b> "value 2" .
+<http://uri/1/compose/propa> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://class/2> .
 <http://uri/1> <http://property/a> <http://uri/1/compose/propa> .
 `);
                 } catch (e) {
