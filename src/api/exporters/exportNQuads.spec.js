@@ -144,4 +144,29 @@ describe('export Nquads', () => {
             return feed.end();
         }));
     });
+
+    it('should not export a single data property without value', (done) => {
+        let outputString = '';
+        exportNQuads(
+            {
+                cleanHost: '',
+                schemeForDatasetLink: '',
+            },
+            fields.slice(0, 1),
+            null,
+            from([{ uri: 'http://data.istex.fr', Q98n: null }]),
+        ).pipe(ezs((data, feed) => {
+            if (data !== null) {
+                outputString += data;
+            } else {
+                try {
+                    expect(outputString).toEqual('');
+                } catch (e) {
+                    return done(e);
+                }
+                return done();
+            }
+            return feed.end();
+        }));
+    });
 });
