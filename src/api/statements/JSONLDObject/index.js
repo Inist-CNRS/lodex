@@ -17,7 +17,7 @@ const merge = (field, fields, currentOutput, data) => {
         return Promise.resolve(mergeCompose(currentOutput, field, data, fields, haveClasses));
     }
 
-    if (haveClasses && !isComposedOf) {
+    if (haveClasses) {
         return Promise.resolve(mergeClasses(currentOutput, field, data));
     }
 
@@ -49,7 +49,7 @@ module.exports = async function JSONLDObject(data, feed) {
         .filter(f => f.cover === 'collection')
         .reduce((currentOutputPromise, field) =>
             currentOutputPromise.then((currentOutput) => {
-                currentOutput['@type'] = collectionClass;
+                if (collectionClass) currentOutput['@type'] = collectionClass;
                 return merge(field, fields, currentOutput, data);
             }), Promise.resolve({
             '@id': getUri(data.uri),

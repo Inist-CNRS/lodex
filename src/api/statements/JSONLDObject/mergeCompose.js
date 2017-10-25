@@ -2,7 +2,7 @@ import getFieldContext from './getFieldContext';
 import getUri from './getUri';
 import formatData from './formatData';
 
-export default function mergeCompose(output, field, data, fields, haveClasses) {
+export default function mergeCompose(output, field, data, fields) {
     const propertyName = field.name;
     const composeFields = field.composedOf.fields;
     const fieldContext = getFieldContext(field);
@@ -20,6 +20,9 @@ export default function mergeCompose(output, field, data, fields, haveClasses) {
         ...output,
         [propertyName]: composeFields.map((e) => {
             const composeField = fields.find(f => f.name === e);
+            if (!composeField) {
+                return null;
+            }
             const composeHaveClasses = Boolean(composeField.classes) && Boolean(composeField.classes.length);
 
             let resultData = formatData(data, e);
@@ -35,7 +38,7 @@ export default function mergeCompose(output, field, data, fields, haveClasses) {
             if (composeField.scheme) {
                 return {
                     '@id': `${getUri(data.uri)}/compose/${propertyName}`,
-                    '@type': haveClasses ? field.classes : [],
+                    '@type': field.classes || [],
                     [e]: resultData };
             }
 
