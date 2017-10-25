@@ -73,10 +73,12 @@ describe('export Nquads', () => {
                 outputString += data;
             } else {
                 try {
-                    expect(outputString).toEqual(`<http://uri/1/compose/propa> <http://property/b> "value 2" .
-<http://uri/1/compose/propa> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://class/2> .
-<http://uri/1> <http://property/a> <http://uri/1/compose/propa> .
-`);
+                    expect(outputString).toEqual([
+                        '<http://uri/1/compose/propa> <http://property/b> "value 2" .',
+                        '<http://uri/1/compose/propa> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://class/2> .',
+                        '<http://uri/1> <http://property/a> <http://uri/1/compose/propa> .',
+                        '',
+                    ].join('\n'));
                 } catch (e) {
                     return done(e);
                 }
@@ -127,11 +129,13 @@ describe('export Nquads', () => {
                 outputString += data;
             } else {
                 try {
-                    expect(outputString).toEqual(`<http://uri/1/compose/propcomposed> <http://property/b> "value 1" .
-<http://uri/1/compose/propcomposed> <http://property/c> "value 2" .
-<http://uri/1/compose/propcomposed> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://class/composed> .
-<http://uri/1> <http://property/composed> <http://uri/1/compose/propcomposed> .
-`);
+                    expect(outputString).toEqual([
+                        '<http://uri/1/compose/propcomposed> <http://property/b> "value 1" .',
+                        '<http://uri/1/compose/propcomposed> <http://property/c> "value 2" .',
+                        '<http://uri/1/compose/propcomposed> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://class/composed> .',
+                        '<http://uri/1> <http://property/composed> <http://uri/1/compose/propcomposed> .',
+                        '',
+                    ].join('\n'));
                 } catch (e) {
                     return done(e);
                 }
