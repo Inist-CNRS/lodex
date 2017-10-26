@@ -8,7 +8,22 @@ To see what Lodex can do, check out https://data.istex.fr/ or the user documenta
 
 ## Install
 
-...
+### with docker 
+__prerequisites__ : docker
+```
+make install 
+make run-debug
+```
+
+### with npm
+__prerequisites__ : mongo, node
+```
+npm install
+npm run build
+npm start
+```
+NB : MongoDB should be started and listening on port 27017
+
 
 ## Licence
 
