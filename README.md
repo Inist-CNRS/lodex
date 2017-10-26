@@ -9,14 +9,14 @@ To see what Lodex can do, check out https://data.istex.fr/ or the user documenta
 ## Install
 
 ### with docker 
-__prerequisites__ : docker
+_prerequisites_ : docker
 ```
 make install 
 make run-debug
 ```
 
 ### with npm
-__prerequisites__ : mongo, node
+_prerequisites_ : mongo, node
 ```
 npm install
 npm run build
