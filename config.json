@@ -31,8 +31,6 @@
         "extendednquadscompressed",
         "csv",
         "tsv",
-        "raw",
-        "min",
         "turtle",
         "atom",
         "jsonld",
