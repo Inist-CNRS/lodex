@@ -56,6 +56,7 @@
         "foaf": "http://xmlns.com/foaf/0.1/",
         "geo": "http://www.w3.org/2003/01/geo/wgs84_pos#",
         "gn": "http://www.geonames.org/ontology/ontology_v3.1.rdf/",
+        "istex": "https://data.istex.fr/ontology/istex#",
         "owl": "http://www.w3.org/2002/07/owl#",
         "prov": "http://www.w3.org/ns/prov#",
         "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
