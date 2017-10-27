@@ -2,7 +2,6 @@ import request from 'request';
 import url from 'url';
 import config from 'config';
 import { httpLogger } from '../services/logger';
-import util from 'util';
 
 /**
  * Recursive scroll
@@ -12,15 +11,12 @@ import util from 'util';
  * @param feed  Stream  stream managed with ezs
  */
 function scrollR(uri, data, feed) {
-    console.log(`scrollR: uri: ${util.inspect(uri)}`)
     const options = {
         uri,
         json: true,
     };
 
     request.get(options, (error, response, body) => {
-        console.log(`scrollR: error: ${util.inspect(error)}`)
-        console.log(`scrollR: response: ${util.inspect(response)}`)
         // console.log(`scrollR: body: ${util.inspect(body)}`)
         const errorObj = {
             options,
