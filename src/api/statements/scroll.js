@@ -17,7 +17,6 @@ function scrollR(uri, data, feed) {
     };
 
     request.get(options, (error, response, body) => {
-        // console.log(`scrollR: body: ${util.inspect(body)}`)
         const errorObj = {
             options,
             error,
