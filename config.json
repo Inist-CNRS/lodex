@@ -69,13 +69,13 @@
         "xsd": "http://www.w3.org/2001/XMLSchema#"
     },
     "istexQuery" : {
-       "labels": "",
-       "linked": "host.genre.raw",
-       "context": {
-          "host.genre.raw": "istex:publicationType",
-          "link": "dcterms:ispartOf",
-          "doi": "bibo:doi",
-          "fulltext[0].uri": "istex:accessURL"
-       }
+        "labels": "",
+        "linked": "host.genre.raw",
+        "context": {
+            "host.genre.raw": "istex:publicationType",
+            "link": "dcterms:isPartOf",
+            "doi": "bibo:doi",
+            "fulltext[0].uri": "istex:accessURL"
+        }
     }
 }
