@@ -2,74 +2,85 @@ import React, { Component, PropTypes } from 'react';
 import fetch from 'isomorphic-fetch';
 import translate from 'redux-polyglot/translate';
 import url from 'url';
+import MQS from 'mongodb-querystring';
+import { StyleSheet, css } from 'aphrodite';
+import LodexResource from '../shared/LodexResource';
 import { field as fieldPropTypes } from '../../propTypes';
 
 
-class LodexResource extends Component {
+class Resource extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            link: '',
             title: '',
-            uri: '',
-
+            description: '',
         };
     }
 
     componentDidMount() {
-        const { field, resource } = this.props;
-        const targetURI = url.parse(resource[field.name]);
-        const originalURI = url.parse(resource[field.name]);
-        targetURI.query = {
-            uri: targetURI.path.slice(1),
-        };
-        if (!targetURI.host) {
-            targetURI.host = window.location.host;
-            targetURI.protocol = window.location.protocol;
-            targetURI.query.uri = resource[field.name];
-        }
-        targetURI.pathname = '/api/export/min';
+        this.fetchData();
+    }
 
-        let originalURL = url.format(originalURI);
-        if (!originalURI.host) {
-            originalURL = '//'.concat(window.location.host).concat('/').concat(resource[field.name]);
+
+    async fetchData() {
+        const { field, resource } = this.props;
+        const targetOBJ = url.parse(resource[field.name]);
+        const uri = targetOBJ.path.slice(1);
+        if (!targetOBJ.host) {
+            targetOBJ.host = window.location.host;
+            targetOBJ.protocol = window.location.protocol;
+            targetOBJ.query.uri = resource[field.name];
         }
-        const targetURL = url.format(targetURI);
-        console.log('targetURI', targetURI);
-        console.log('originalURL', originalURL);
-        fetch(targetURL)
-            .then((response) => {
-                if (response.status >= 400) {
-                    throw new Error('Bad response from server');
-                }
-                return response.json().then((json) => {
-                    const { value } = json.shift();
-                    const title = value || originalURL;
-                    this.setState({
-                        title,
-                        uri: originalURL,
-                    });
-                });
+        targetOBJ.pathname = '/api/run/all-resources/';
+        const mongoQuery = {
+            $query: {
+                uri,
+            },
+        };
+        targetOBJ.search = MQS.stringify(mongoQuery);
+
+        const targetURL = url.format(targetOBJ);
+        const response = await fetch(targetURL);
+        const result = await response.json();
+        if (result.data) {
+            const entry = result.data.shift();
+            this.setState({
+                link: `/${entry._id}`,
+                title: entry.value[0],
+                description: entry.value[1],
             });
+        }
     }
 
     render() {
-        const { uri, title } = this.state;
+        const styles = StyleSheet.create({
+            wrapper: {
+                padding: '1.1em',
+                borderRadius: '3px',
+                background: 'white',
+                boxShadow: '0px 6px 6px rgba(170, 170, 170, 0.25)',
+            },
+        });
+
         return (
-            <a href={uri}>{title}</a>
+            <div className={css(styles.wrapper)}>
+                <LodexResource {...this.state} />
+            </div>
         );
     }
 }
 
 
-LodexResource.propTypes = {
+Resource.propTypes = {
     field: fieldPropTypes.isRequired,
     linkedResource: PropTypes.object, // eslint-disable-line
     resource: PropTypes.object.isRequired, // eslint-disable-line
 };
 
-LodexResource.defaultProps = {
+Resource.defaultProps = {
     className: null,
 };
 
-export default translate(LodexResource);
+export default translate(Resource);
 
