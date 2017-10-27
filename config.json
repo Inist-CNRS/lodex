@@ -20,7 +20,7 @@
     "routines": [
         "hello-world",
         "all-resources",
-        "query-all",
+        "all-documents",
         "count-by-fields",
         "count-all",
         "distinct-by"
