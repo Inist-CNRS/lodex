@@ -75,7 +75,10 @@
             "host.genre.raw": "istex:publicationType",
             "link": "dcterms:isPartOf",
             "doi": "bibo:doi",
-            "fulltext[0].uri": "istex:accessURL"
+            "fulltext[0].uri": "istex:accessURL",
+            "fulltext[1].uri": "istex:accessURL",
+            "fulltext[2].uri": "istex:accessURL",
+            "fulltext[3].uri": "istex:accessURL"
         }
     }
 }
