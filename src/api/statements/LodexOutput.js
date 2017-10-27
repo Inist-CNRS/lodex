@@ -9,7 +9,7 @@ export default function LodexOutput(data, feed) {
 
     const json = d => JSON.stringify(d, null, indent ? '    ' : null);
 
-    if (this.isFirst()) {
+    if (this.isFirst() && !this.isLast()) {
         const values = keys.map(p => get(data, p));
         feed.write('{');
         if (keys.length > 0) {
