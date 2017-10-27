@@ -26,6 +26,15 @@ npm start
 ```
 NB : MongoDB should be started and listening on port 27017
 
+## Usage
+To see what Lodex can do, check out
+
+ - Data and Model ready to use : https://github.com/Inist-CNRS/lodex-use-cases
+ - Videos : https://www.youtube.com/channel/UCXJjwCr-sfTZsFomFejEkEw/videos
+ - Real life example : https://data.istex.fr/
+ - user documentation : https://lodex.gitbooks.io/lodex-user-documentation/ 
+ - actuality & news : http://lodex.inist.fr/
+ - Twitter : https://twitter.com/lodex_team
 
 ## Licence
 
