@@ -35,6 +35,7 @@ To see what Lodex can do, check out
  - user documentation : https://lodex.gitbooks.io/lodex-user-documentation/ 
  - actuality & news : http://lodex.inist.fr/
  - Twitter : https://twitter.com/lodex_team
+ - Contribute (for developer) : https://github.com/Inist-CNRS/lodex/wiki
 
 ## Licence
 
