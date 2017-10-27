@@ -24,6 +24,7 @@ function getContext(config) {
         if (!config.prefixes[istexProperty[0]]) {
             // eslint-disable-next-line
             return console.error(
+                'convertToExtendedNquads',
                 `property "${istexProperty[0]}" in istexQuery is not found in prefixes`,
             );
         }
@@ -34,7 +35,7 @@ function getContext(config) {
 
     if (context[config.istexQuery.linked] === undefined) {
         // eslint-disable-next-line
-        return console.error('ConvertToExtendedNquads', `${config.istexQuery.linked} not found in context`);
+        return console.error('convertToExtendedNquads', `${config.istexQuery.linked} not found in context`);
     }
 
     context[config.istexQuery.linked] = {
