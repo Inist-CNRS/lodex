@@ -2,6 +2,7 @@ import request from 'request';
 import url from 'url';
 import config from 'config';
 import { httpLogger } from '../services/logger';
+import util from 'util';
 
 /**
  * Recursive scroll
@@ -11,12 +12,16 @@ import { httpLogger } from '../services/logger';
  * @param feed  Stream  stream managed with ezs
  */
 function scrollR(uri, data, feed) {
+    console.log(`scrollR: uri: ${util.inspect(uri)}`)
     const options = {
         uri,
         json: true,
     };
 
     request.get(options, (error, response, body) => {
+        console.log(`scrollR: error: ${util.inspect(error)}`)
+        console.log(`scrollR: response: ${util.inspect(response)}`)
+        // console.log(`scrollR: body: ${util.inspect(body)}`)
         const errorObj = {
             options,
             error,
@@ -34,6 +39,18 @@ function scrollR(uri, data, feed) {
             statusMessage: response.statusMessage,
             headers: response.headers,
         };
+
+        // Case(s) when API replied, but we got no data (we lose data)
+        if (response.statusCode === 502) {
+            logLevel = 'error';
+            errorObj.lodexMessage = 'Some data lost beyond proxy';
+        }
+
+        // We got an error, let's try again
+        if ([500, 502, 503, 504].includes(response.statusCode)) {
+            httpLogger.log(logLevel, errorObj);
+            return setTimeout(scrollR, 500, uri, data, feed);
+        }
 
         if (!body.total) {
             errorObj.lodexMessage = 'No results';
