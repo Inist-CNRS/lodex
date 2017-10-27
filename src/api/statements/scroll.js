@@ -35,18 +35,6 @@ function scrollR(uri, data, feed) {
             headers: response.headers,
         };
 
-        // // Case(s) when API replied, but we got no data (we lose data)
-        // if (response.statusCode === 502) {
-        //     logLevel = 'error';
-        //     errorObj.lodexMessage = 'Some data lost beyond proxy';
-        // }
-
-        // // We got an error, let's try again
-        // if ([500, 502, 503, 504].includes(response.statusCode)) {
-        //     httpLogger.log(logLevel, errorObj);
-        //     return setTimeout(scrollR, 500, uri, data, feed);
-        // }
-
         if (!body.total) {
             errorObj.lodexMessage = 'No results';
             httpLogger.log(logLevel, errorObj);
