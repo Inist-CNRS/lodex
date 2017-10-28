@@ -20,7 +20,7 @@
     "routines": [
         "hello-world",
         "all-resources",
-        "query-all",
+        "all-documents",
         "count-by-fields",
         "count-all",
         "distinct-by"
@@ -31,8 +31,6 @@
         "extendednquadscompressed",
         "csv",
         "tsv",
-        "raw",
-        "min",
         "turtle",
         "atom",
         "jsonld",
