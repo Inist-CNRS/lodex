@@ -26,11 +26,12 @@ class Resource extends Component {
     async fetchData() {
         const { field, resource } = this.props;
         const targetOBJ = url.parse(resource[field.name]);
-        const uri = targetOBJ.path.slice(1);
+        let uri = targetOBJ.path.slice(1);
         if (!targetOBJ.host) {
             targetOBJ.host = window.location.host;
             targetOBJ.protocol = window.location.protocol;
-            targetOBJ.query.uri = resource[field.name];
+            targetOBJ.query = {};
+            uri = resource[field.name];
         }
         targetOBJ.pathname = '/api/run/all-resources/';
         const mongoQuery = {
@@ -47,8 +48,8 @@ class Resource extends Component {
             const entry = result.data.shift();
             this.setState({
                 link: `/${entry._id}`,
-                title: entry.value[0],
-                description: entry.value[1],
+                title: entry.value[0] || 'Undefined.',
+                description: entry.value[1] || '',
             });
         }
     }
