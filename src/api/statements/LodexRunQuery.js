@@ -3,11 +3,14 @@ import config from 'config';
 import ezs from 'ezs';
 import set from 'lodash.set';
 import publishedDataset from '../models/publishedDataset';
+import field from '../models/field';
+
 
 export const createFunction = MongoClientImpl => async function LodexRunQuery(data, feed) {
     if (this.isLast()) {
         return feed.close();
     }
+    const from = this.getParam('from', data.$from || 'dataset');
     const query = this.getParam('query', data.$query || {});
     const limit = this.getParam('limit', data.$limit || 10);
     const skip = this.getParam('skip', data.$skip || 0);
@@ -16,9 +19,14 @@ export const createFunction = MongoClientImpl => async function LodexRunQuery(da
 
 
     const handleDb = await MongoClientImpl.connect(`mongodb://${config.mongo.host}/${config.mongo.dbName}`);
-    const handlePublishedDataset = await publishedDataset(handleDb);
+    let handle;
+    if (from === 'fields' || from === 'field') {
+        handle = await field(handleDb);
+    } else {
+        handle = await publishedDataset(handleDb);
+    }
 
-    const cursor = handlePublishedDataset.find(query);
+    const cursor = handle.find(query);
     const total = await cursor.count();
     const stream = cursor
         .skip(Number(skip))
