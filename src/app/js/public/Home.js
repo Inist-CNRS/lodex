@@ -99,9 +99,10 @@ export class HomeComponent extends Component {
         if (hasPublishedDataset) {
             return (
                 <div>
-                    <DatasetCharacteristics />
-                    <Card>
-
+                    <div className="header-dataset-section">
+                        <DatasetCharacteristics />
+                    </div>
+                    <div className="main-dataset-section">
                         <Tabs
                             inkBarStyle={styles.inkBarStyle}
                             value={selectedTab}
@@ -155,7 +156,7 @@ export class HomeComponent extends Component {
                                 <Version />
                             </Tab>
                         </Tabs>
-                    </Card>
+                    </div>
                 </div>
             );
         }

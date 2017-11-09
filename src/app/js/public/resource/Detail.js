@@ -139,7 +139,7 @@ export const DetailComponent = ({
 
     return (
         <div className="detail">
-            <div>
+            <div className="header-resource-section">
                 <div style={styles.container}>
                     <div style={styles.firstItem}>
                         <div className="property schemeForDatasetLink" style={styles.container}>
@@ -179,7 +179,7 @@ export const DetailComponent = ({
                     ))}
                 </div>
             </div>
-            <div style={styles.container}>
+            <div className="main-resource-section" style={styles.container}>
                 <Tabs
                     tabItemContainerStyle={styles.tab}
                     inkBarStyle={styles.inkBarStyle}
