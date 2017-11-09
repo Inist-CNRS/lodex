@@ -15,7 +15,7 @@ module.exports.map = function () {
             return dta[key] || doc[key];
         })
         .forEach(function(field) {
-            if (field instanceof Array) {
+            if (Array.isArray(field)) {
                 field.forEach(function (fld) {
                     emit(fld, 1);
                 });

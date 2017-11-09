@@ -2,6 +2,7 @@ import { MongoClient } from 'mongodb';
 import config from 'config';
 import ezs from 'ezs';
 import hasher from 'node-object-hash';
+import set from 'lodash.set';
 import reducers from '../reducers/';
 import publishedDataset from '../models/publishedDataset';
 
@@ -12,10 +13,11 @@ export const createFunction = MongoClientImpl => async function LodexRunQuery(da
         return feed.close();
     }
     const query = this.getParam('query', data.$query || {});
-    const limit = this.getParam('limit', data.$limit || 10);
+    const limit = this.getParam('limit', data.$limit || 1000000);
     const skip = this.getParam('skip', data.$skip || 0);
     const sort = this.getParam('sort', data.$sort || {});
     const field = this.getParam('field', data.$field || 'uri');
+    const target = this.getParam('total');
 
     const reducer = this.getParam('reducer');
 
@@ -43,14 +45,16 @@ export const createFunction = MongoClientImpl => async function LodexRunQuery(da
         throw new Error(`Unknown reducer '${reducer}'`);
     }
 
-    const result = await handlePublishedDataset.mapReduce(map, reduce, options);
-    const stream = result
+    const cursor = await handlePublishedDataset.mapReduce(map, reduce, options);
+    const total = await cursor.count();
+    const stream = cursor
         .find({})
         .skip(Number(skip))
         .limit(Number(limit))
         .sort(sort)
         .pipe(ezs((data1, feed1) => {
             if (typeof data1 === 'object') {
+                set(data1, `${target || 'total'}`, total);
                 feed.write(data1);
             }
             feed1.close();

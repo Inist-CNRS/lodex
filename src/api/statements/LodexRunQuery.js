@@ -12,7 +12,7 @@ export const createFunction = MongoClientImpl => async function LodexRunQuery(da
     const limit = this.getParam('limit', data.$limit || 10);
     const skip = this.getParam('skip', data.$skip || 0);
     const sort = this.getParam('sort', data.$sort || {});
-    const target = this.getParam('$total');
+    const target = this.getParam('total');
 
 
     const handleDb = await MongoClientImpl.connect(`mongodb://${config.mongo.host}/${config.mongo.dbName}`);
@@ -27,7 +27,7 @@ export const createFunction = MongoClientImpl => async function LodexRunQuery(da
         .pipe(ezs((data1, feed1) => {
             if (typeof data1 === 'object') {
                 if (data1) {
-                    set(data1, `${target || '$total'}`, total);
+                    set(data1, `${target || 'total'}`, total);
                 }
                 feed.write(data1);
             }
