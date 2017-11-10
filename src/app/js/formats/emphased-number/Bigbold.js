@@ -1,15 +1,18 @@
 import React, { PropTypes } from 'react';
 import { StyleSheet, css } from 'aphrodite';
 
-const Bigbold = ({ value, colorsSet }) => {
+
+const sizes = ['8rem', '6rem', '3rem'];
+
+const Bigbold = ({ value, colorsSet, size }) => {
     const firstColor = colorsSet.shift() || '#8B8B8B';
-    const lastColor = colorsSet.pop() || '#818181';
+    const siz = sizes[size - 1] || '8rem';
     const styles = StyleSheet.create({
         ribbon: {
-            height: '8rem',
+            height: sizes[size],
         },
         content: {
-            fontSize: '8rem',
+            fontSize: siz,
             textTransform: 'uppercase',
             fontWeight: 'bold',
             letterSpacing: '-.5rem',
@@ -28,6 +31,7 @@ const Bigbold = ({ value, colorsSet }) => {
 Bigbold.propTypes = {
     value: PropTypes.string.isRequired, // eslint-disable-line
     colorsSet: PropTypes.array.isRequired, // eslint-disable-line
+    size: PropTypes.number.isRequired, // eslint-disable-line
 };
 
 export default Bigbold;

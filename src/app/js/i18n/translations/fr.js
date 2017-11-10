@@ -284,4 +284,8 @@ export default {
     label_desc: 'Label ↘',
     value_desc: 'Valeur ↘',
     value_asc: 'Valeur ↗',
+    size1: 'Très grand',
+    size2: 'Grand',
+    size3: 'Gras',
+    list_format_select_size: 'Taille',
 };

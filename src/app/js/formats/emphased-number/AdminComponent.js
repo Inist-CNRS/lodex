@@ -23,55 +23,55 @@ const styles = {
 
 class ChartEdition extends Component {
     static propTypes = {
-        look: PropTypes.string,
+        size: PropTypes.string,
         colors: PropTypes.string,
         onChange: PropTypes.func.isRequired,
         p: polyglotPropTypes.isRequired,
     }
 
     static defaultProps = {
-        look: 'bigbold',
+        size: 1,
         colors: '#8B8B8B #5B5B5B #818181',
     }
     constructor(props) {
         super(props);
 
         this.state = {
-            look: this.props.look,
+            size: this.props.size,
             colors: this.props.colors,
         };
     }
 
-    setLook = (look) => {
-        this.setState({ look });
+    setSize = (size) => {
+        this.setState({ size });
         this.props.onChange({
             colors: this.state.colors,
-            look,
+            size,
         });
     }
 
     setColors = (colors) => {
         this.setState({ colors });
         this.props.onChange({
-            look: this.state.look,
+            size: this.state.size,
             colors,
         });
     }
 
     render() {
         const { p: polyglot } = this.props;
-        const { colors, look } = this.state;
+        const { colors, size } = this.state;
         return (
             <div style={styles.container}>
                 <SelectField
-                    floatingLabelText={polyglot.t('order_by')}
-                    onChange={(event, index, newValue) => this.setLook(newValue)}
+                    floatingLabelText={polyglot.t('list_format_select_size')}
+                    onChange={(event, index, newValue) => this.setSize(newValue)}
                     style={styles.input}
-                    value={look}
+                    value={size}
                 >
-                    <MenuItem value="ribbon" primaryText={polyglot.t('ribbon')} />
-                    <MenuItem value="badge" primaryText={polyglot.t('badge')} />
-                    <MenuItem value="bigbold" primaryText={polyglot.t('bigbold')} />
+                    <MenuItem value={1} primaryText={polyglot.t('size1')} />
+                    <MenuItem value={2} primaryText={polyglot.t('size2')} />
+                    <MenuItem value={3} primaryText={polyglot.t('size3')} />
                 </SelectField>
                 <TextField
                     floatingLabelText={polyglot.t('colors_set')}

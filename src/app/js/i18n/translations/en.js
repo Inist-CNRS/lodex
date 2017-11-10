@@ -283,4 +283,8 @@ export default {
     label_desc: 'Label ↘',
     value_desc: 'Value ↘',
     value_asc: 'Value ↗',
+    size1: 'Very big',
+    size2: 'Big',
+    size3: 'Bold',
+    list_format_select_size: 'Choose size',
 };

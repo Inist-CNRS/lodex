@@ -3,8 +3,6 @@ import fetch from 'isomorphic-fetch';
 import translate from 'redux-polyglot/translate';
 import commaNumber from 'comma-number';
 import { field as fieldPropTypes } from '../../propTypes';
-import Badge from './Badge';
-import Ribbon from './Ribbon';
 import Bigbold from './Bigbold';
 
 
@@ -58,7 +56,7 @@ class EmphasedNumber extends Component {
     render() {
         const { data } = this.state;
         const { field, className } = this.props;
-        const look = field.format && field.format.args && field.format.args.look ? field.format.args.look : 'badge';
+        const size = field.format && field.format.args && field.format.args.size ? field.format.args.size : 1;
         const { colors } = field.format.args || { colors: '' };
         const colorsSet = String(colors).split(/[^\w]/).filter(x => x.length > 0).map(x => String('#').concat(x));
         return (
@@ -67,13 +65,7 @@ class EmphasedNumber extends Component {
                     data.map((entry, index) => {
                         const key = String(index).concat('EmphasedNumber');
                         const val = commaNumber(entry, ' ');
-                        if (look === 'badge') {
-                            return (<Badge key={key} value={val} colorsSet={colorsSet} />);
-                        }
-                        if (look === 'ribbon') {
-                            return (<Ribbon key={key} value={val} colorsSet={colorsSet} />);
-                        }
-                        return (<Bigbold key={key} value={val} colorsSet={colorsSet} />);
+                        return (<Bigbold key={key} value={val} colorsSet={colorsSet} size={size} />);
                     })
                 }
             </div>
