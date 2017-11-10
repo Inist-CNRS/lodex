@@ -288,4 +288,6 @@ export default {
     size2: 'Grand',
     size3: 'Gras',
     list_format_select_size: 'Taille',
+    identifierBadge: 'Badge pour identifiant',
+    list_format_select_identifier: 'Service de résolution',
 };

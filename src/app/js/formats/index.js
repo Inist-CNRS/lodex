@@ -2,6 +2,7 @@ import globalBarchart from './global-bar-chart/';
 import globalPiechart from './global-pie-chart/';
 import globalRadarchart from './global-radar-chart/';
 import emphasedNumber from './emphased-number/';
+import identifierBadge from './identifier-badge/';
 import resourcesGrid from './resources-grid/';
 import email from './email';
 import html from './html';
@@ -22,6 +23,7 @@ const components = {
     globalPiechart,
     globalRadarchart,
     emphasedNumber,
+    identifierBadge,
     email,
     html,
     image,

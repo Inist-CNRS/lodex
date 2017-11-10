@@ -287,4 +287,6 @@ export default {
     size2: 'Big',
     size3: 'Bold',
     list_format_select_size: 'Choose size',
+    identifierBadge: 'Identifier badge',
+    list_format_select_identifier: 'Choose the resolver',
 };
