@@ -226,4 +226,43 @@ describe('JSONLDObject / mergeCompleteField', () => {
             },
         });
     });
+
+    it.only('should return the formatted completing value', async () => {
+        const output = {};
+        const field = { name: 'completing', completes: 'completed' };
+        const fields = [{
+            name: 'completed',
+            scheme: 'scheme1',
+        }, {
+            name: 'completing',
+            scheme: 'scheme2',
+        }];
+        const data = {
+            uri: 'http://uri',
+            completing: 'http://completing/value',
+            completed: 'completed value',
+        };
+        const res = await mergeCompleteField(output, field, fields, data);
+        expect(res).toExist();
+        const name = Object.keys(res).find(n => n !== '@context');
+        expect(name).toExist();
+        expect(res).toEqual({
+            '@context': {
+                completed: {
+                    '@id': 'http://www.w3.org/2000/01/rdf-schema#label',
+                },
+                completing: {
+                    '@id': 'scheme2',
+                },
+                [name]: {
+                    '@id': 'scheme1',
+                },
+            },
+            [name]: {
+                '@id': `http://uri#complete/${name}`,
+                completed: 'completed value',
+                completing: { '@id': 'http://completing/value' },
+            },
+        });
+    });
 });
