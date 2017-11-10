@@ -1,5 +1,6 @@
 import getFieldContext from './getFieldContext';
 import transformCompleteFields from './transformCompleteFields';
+import formatData from './formatData';
 
 export default async function mergeCompleteField(output, field, fields, data) {
     const { name, complete, completed } = await transformCompleteFields(field);
@@ -14,8 +15,8 @@ export default async function mergeCompleteField(output, field, fields, data) {
         ...output,
         [name]: {
             '@id': `${data.uri}#complete/${name}`,
-            [complete]: data[complete],
-            [completed]: data[completed],
+            [complete]: formatData(data, complete),
+            [completed]: formatData(data, completed),
         },
         '@context': {
             ...output['@context'],
