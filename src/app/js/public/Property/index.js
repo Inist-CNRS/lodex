@@ -18,6 +18,7 @@ import PropertyLinkedFields from './PropertyLinkedFields';
 import { fromUser } from '../../sharedSelectors';
 import EditField from '../../fields/editFieldValue/EditField';
 import getFieldClassName from '../../lib/getFieldClassName';
+import addSchemePrefix from '../../lib/addSchemePrefix';
 import Format from '../Format';
 
 const styles = {
@@ -98,7 +99,7 @@ const PropertyComponent = ({
                     </span>
 
                     <span className={classnames('property_scheme', fieldClassName)} style={styles.scheme}>
-                        <a style={styles.schemeLink} href={field.scheme}>{field.scheme}</a>
+                        <a style={styles.schemeLink} href={field.scheme}>{addSchemePrefix(field.scheme)}</a>
                     </span>
                 </div>
                 <PropertyContributor fieldName={field.name} fieldStatus={fieldStatus} />

@@ -24,6 +24,7 @@ import Share from '../Share';
 import ShareLink from '../ShareLink';
 import SelectVersion from './SelectVersion';
 import Version from '../Version';
+import addSchemePrefix from '../../lib/addSchemePrefix';
 import { getFullResourceUri } from '../../../../common/uris';
 import { schemeForDatasetLink, topFieldsCount } from '../../../../../config.json';
 
@@ -150,7 +151,7 @@ export const DetailComponent = ({
                                     </span>
                                     <span className="property_scheme in_scheme" style={styles.scheme}>
                                         <a style={styles.schemeLink} href={schemeForDatasetLink}>
-                                            {schemeForDatasetLink}
+                                            {addSchemePrefix(schemeForDatasetLink)}
                                         </a>
                                     </span>
                                 </div>
@@ -210,7 +211,7 @@ export const DetailComponent = ({
                                             </span>
                                             <span className="property_scheme resource_uri_scheme" style={styles.scheme}>
                                                 <a style={styles.schemeLink} href="https://www.w3.org/TR/xmlschema-2/#anyURI">
-                                                    https://www.w3.org/TR/xmlschema-2/#anyURI
+                                                    {addSchemePrefix('https://www.w3.org/TR/xmlschema-2/#anyURI')}
                                                 </a>
                                             </span>
                                         </div>
