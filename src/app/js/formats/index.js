@@ -15,6 +15,7 @@ import markdown from './markdown';
 import uri from './uri';
 import title from './title';
 import paragraph from './paragraph';
+import sentence from './sentence';
 import resource from './lodex-resource';
 import DefaultFormat from './DefaultFormat';
 
@@ -35,6 +36,7 @@ const components = {
     uri,
     title,
     paragraph,
+    sentence,
     resource,
     resourcesGrid,
 };

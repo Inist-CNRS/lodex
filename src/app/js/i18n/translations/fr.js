@@ -290,4 +290,8 @@ export default {
     list_format_select_size: 'Taille',
     identifierBadge: 'Badge pour identifiant',
     list_format_select_identifier: 'Service de résolution',
+    sentence: 'Phrase',
+    prefix: 'prefix',
+    suffix: 'suffix',
+
 };

@@ -289,4 +289,7 @@ export default {
     list_format_select_size: 'Choose size',
     identifierBadge: 'Identifier badge',
     list_format_select_identifier: 'Choose the resolver',
+    sentence: 'Sentence',
+    prefix: 'prefix',
+    suffix: 'suffix',
 };
