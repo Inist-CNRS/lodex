@@ -103,7 +103,7 @@
     "lodash.unset": "4.5.2",
     "markdown-it": "8.4.0",
     "material-ui": "0.17.2",
-    "material-ui-superselectfield": "Sharlaan/material-ui-superselectfield",
+    "material-ui-superselectfield": "1.7.0",
     "moment": "2.18.1",
     "mongodb": "2.2.31",
     "mongodb-querystring": "1.0.3",
