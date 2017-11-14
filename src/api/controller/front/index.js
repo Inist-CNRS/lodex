@@ -1,6 +1,9 @@
+import path from 'path';
 import { renderToString } from 'react-dom/server';
 import React from 'react';
 import Koa from 'koa';
+import serve from 'koa-static';
+import mount from 'koa-mount';
 import { Provider } from 'react-redux';
 import { createMemoryHistory, match, RouterContext } from 'react-router';
 import { syncHistoryWithStore } from 'react-router-redux';
@@ -31,7 +34,7 @@ const renderFullPage = (html, preloadedState) => (
     // http://redux.js.org/docs/recipes/ServerRendering.html#security-considerations
     window.__PRELOADED_STATE__ = ${JSON.stringify(preloadedState).replace(/</g, '\\u003c')}
     </script>
-    <script src="/static/bundle.js"></script>
+    <script src="/static/index.js"></script>
     </body>
     </html>`
 );
@@ -54,6 +57,7 @@ const handleRender = async (ctx) => {
 };
 
 const app = new Koa();
+app.use(mount('/static', serve(path.resolve(__dirname, '../../../build'))));
 app.use(handleRender);
 
 export default app;
