@@ -165,6 +165,14 @@ export class HomeComponent extends Component {
     }
 }
 
+const getSharingUrl = () => {
+    if (typeof window === 'undefined') {
+        return '';
+    }
+
+    return window.location.toString();
+};
+
 const mapStateToProps = (state, { params: { tab = 'overview' } }) => {
     const titleFieldName = fromFields.getDatasetTitleFieldName(state);
     const fields = fromFields.getDatasetFields(state);
@@ -177,7 +185,7 @@ const mapStateToProps = (state, { params: { tab = 'overview' } }) => {
     return ({
         selectedTab: tab,
         sharingTitle,
-        sharingUri: window.location.toString(),
+        sharingUri: getSharingUrl(),
         error: fromFields.getError(state),
         loading: fromFields.isLoading(state),
         hasPublishedDataset: fromFields.hasPublishedDataset(state),
