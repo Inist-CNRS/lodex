@@ -1,17 +1,14 @@
 import React, { PropTypes } from 'react';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import AppBar from './Appbar';
 
 export const AppComponent = ({ children }) => (
-    <MuiThemeProvider>
-        <div>
-            <AppBar />
+    <div>
+        <AppBar />
 
-            <div className="body">
-                {children}
-            </div>
+        <div className="body">
+            {children}
         </div>
-    </MuiThemeProvider>
+    </div>
 );
 
 AppComponent.propTypes = {

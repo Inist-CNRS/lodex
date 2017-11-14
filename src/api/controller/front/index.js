@@ -1,4 +1,5 @@
 import path from 'path';
+import config from 'config';
 import { renderToString } from 'react-dom/server';
 import React from 'react';
 import Koa from 'koa';
@@ -7,6 +8,9 @@ import mount from 'koa-mount';
 import { Provider } from 'react-redux';
 import { createMemoryHistory, match, RouterContext } from 'react-router';
 import { syncHistoryWithStore } from 'react-router-redux';
+import DocumentTitle from 'react-document-title';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
 
 import rootReducer from '../../../app/js/public/reducers';
 import sagas from '../../../app/js/public/sagas';
@@ -40,16 +44,27 @@ const renderFullPage = (html, preloadedState) => (
 );
 
 const handleRender = async (ctx) => {
-    const { url } = ctx.request;
+    const { url, headers } = ctx.request;
+
+
+    const muiTheme = getMuiTheme({}, {
+        userAgent: headers['user-agent'],
+    });
     const memoryHistory = createMemoryHistory(url);
     const store = configureStoreServer(rootReducer, sagas, initialState, memoryHistory);
     const history = syncHistoryWithStore(memoryHistory, store);
     const routes = routesFactory(store);
+    const pageTitle = /https?:\/\/([\w-]+)/.exec(config.host)[1];
+
     match({ history, routes, location: url }, (err, redirect, props) => {
         const html = renderToString(
-            <Provider store={store}>
-                <RouterContext {...props} />
-            </Provider>
+            <DocumentTitle title={pageTitle}>
+                <Provider {...{ store }}>
+                    <MuiThemeProvider muiTheme={muiTheme}>
+                        <RouterContext {...props} />
+                    </MuiThemeProvider>
+                </Provider>
+            </DocumentTitle>
         );
         const preloadedState = store.getState();
         ctx.body = renderFullPage(html, preloadedState);
