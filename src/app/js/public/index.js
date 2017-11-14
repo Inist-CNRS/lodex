@@ -5,6 +5,8 @@ import 'url-api-polyfill';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import React from 'react';
 import { render } from 'react-dom';
+import { syncHistoryWithStore } from 'react-router-redux';
+import { browserHistory } from 'react-router';
 
 import Root from '../Root';
 import rootReducer from './reducers';
@@ -20,7 +22,8 @@ const initialState = {
     },
 };
 
-const store = configureStore(rootReducer, sagas, initialState);
+const store = configureStore(rootReducer, sagas, window.__initialState__ || initialState, browserHistory);
+syncHistoryWithStore(browserHistory, store);
 const routes = routesFactory(store);
 
 injectTapEventPlugin();

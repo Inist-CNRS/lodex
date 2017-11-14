@@ -4,7 +4,7 @@ import { LOCATION_CHANGE } from 'react-router-redux';
 import { setLanguage } from '../';
 
 
-export function* handleInitializeLanguage({ payload: { query: { language = navigator.language } } }) {
+export function* handleInitializeLanguage({ payload: { query: { language } } }) {
     yield put(setLanguage(language));
 }
 
