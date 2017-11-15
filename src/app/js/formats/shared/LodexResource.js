@@ -11,7 +11,6 @@ const styles = StyleSheet.create({
         flex: '1 0 auto',
         color: '#A1A1A4',
         lineHeight: '16px',
-        textTransform: 'uppercase',
     },
     contentLink: {
         cursor: 'pointer',
