@@ -7,6 +7,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import translate from 'redux-polyglot/translate';
 import { StyleSheet, css } from 'aphrodite';
 import LodexResource from '../shared/LodexResource';
+import normalizeLodexURL from '../../lib/normalizeLodexURL';
 import { field as fieldPropTypes } from '../../propTypes';
 
 
@@ -40,23 +41,20 @@ class ResourcesGrid extends Component {
         const sort = {};
         sort[by] = dir;
 
-        const uri = url.parse(resource[field.name]);
-        const query = querystring.parse(uri.query || '');
+        const { url: forHTML } = normalizeLodexURL(resource[field.name]);
         const mongoQuery = {
-            $query: query,
+            $query: {},
             $skip: 0,
             $limit: maxSize + this.state.more,
             $orderby: sort,
         };
-        const uriNew = {
-            ...uri,
+        const forJSON = {
+            ...forHTML,
+            pathname: '/api/run/all-resources/',
             search: MQS.stringify(mongoQuery),
         };
-        if (uri.pathname.indexOf('/api/') === 0) {
-            uriNew.host = window.location.host;
-            uriNew.protocol = window.location.protocol;
-        }
-        const apiurl = url.format(uriNew);
+
+        const apiurl = url.format(url.format(forJSON));
         const response = await fetch(apiurl);
         const result = await response.json();
         if (result.data) {
