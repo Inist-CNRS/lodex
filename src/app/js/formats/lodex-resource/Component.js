@@ -5,8 +5,8 @@ import url from 'url';
 import MQS from 'mongodb-querystring';
 import { StyleSheet, css } from 'aphrodite';
 import LodexResource from '../shared/LodexResource';
+import normalizeLodexURL from '../../lib/normalizeLodexURL';
 import { field as fieldPropTypes } from '../../propTypes';
-
 
 class Resource extends Component {
     constructor(props) {
@@ -25,29 +25,23 @@ class Resource extends Component {
 
     async fetchData() {
         const { field, resource } = this.props;
-        const targetOBJ = url.parse(resource[field.name]);
-        let uri = targetOBJ.path.slice(1);
-        if (!targetOBJ.host) {
-            targetOBJ.host = window.location.host;
-            targetOBJ.protocol = window.location.protocol;
-            targetOBJ.query = {};
-            uri = resource[field.name];
-        }
-        targetOBJ.pathname = '/api/run/all-resources/';
+        const { url: forHTML, uri } = normalizeLodexURL(resource[field.name]);
         const mongoQuery = {
             $query: {
                 uri,
             },
         };
-        targetOBJ.search = MQS.stringify(mongoQuery);
-
-        const targetURL = url.format(targetOBJ);
-        const response = await fetch(targetURL);
+        const forJSON = {
+            ...forHTML,
+            pathname: '/api/run/all-resources/',
+            search: MQS.stringify(mongoQuery),
+        };
+        const response = await fetch(url.format(forJSON));
         const result = await response.json();
         if (result.data) {
             const entry = result.data.shift();
             this.setState({
-                link: `/${entry._id}`,
+                link: url.format(forHTML),
                 title: entry.value[0] || 'Undefined.',
                 description: entry.value[1] || '',
             });
