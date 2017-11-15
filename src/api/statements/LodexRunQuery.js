@@ -25,6 +25,8 @@ export const createFunction = MongoClientImpl => async function LodexRunQuery(da
     } else {
         handle = await publishedDataset(handleDb);
     }
+    // Hide removed resources & prevent a public view
+    query.removedAt = { $exists: false };
 
     const cursor = handle.find(query);
     const total = await cursor.count();
