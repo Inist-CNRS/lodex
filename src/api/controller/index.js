@@ -1,3 +1,5 @@
+import path from 'path';
+import serve from 'koa-static';
 import Koa from 'koa';
 import mount from 'koa-mount';
 
@@ -15,6 +17,7 @@ const simulateLatency = ms => async (ctx, next) => {
 if (simulatedLatency) {
     app.use(simulateLatency(simulatedLatency));
 }
+app.use(mount('/admin', serve(path.resolve(__dirname, '../../build/admin'))));
 app.use(mount('/api', api));
 app.use(mount('/', front));
 

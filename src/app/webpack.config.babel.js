@@ -23,7 +23,7 @@ export default {
         ] : []).concat([
             resolve(__dirname, './js/public/index.js'),
         ]),
-        admin: [].concat(process.env.NODE_ENV === 'development' ? [
+        'admin/index': [].concat(process.env.NODE_ENV === 'development' ? [
             'react-hot-loader/patch',
             'webpack-hot-middleware/client?path=/__webpack_hmr&reload=true',
         ] : []).concat([
@@ -128,7 +128,7 @@ export default {
         new HtmlWebpackPlugin({
             filename: 'admin/index.html',
             template: resolve(__dirname, './admin.html'),
-            chunks: ['admin'],
+            chunks: ['admin/index'],
             inject: 'body',
         }),
         new CopyWebpackPlugin([{
