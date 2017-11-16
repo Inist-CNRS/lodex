@@ -81,6 +81,11 @@ const renderFullPage = (html, preloadedState) => (
 
 const handleRender = async (ctx) => {
     const { url, headers } = ctx.request;
+    console.log({url});
+    if (url === '/') {
+        ctx.redirect('/home');
+        return;
+    }
 
     const muiTheme = getMuiTheme({}, {
         userAgent: headers['user-agent'],
