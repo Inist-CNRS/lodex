@@ -1,25 +1,31 @@
 import { call, put, select, takeLatest } from 'redux-saga/effects';
 
 import {
-    LOAD_PUBLICATION,
+    PRE_LOAD_PUBLICATION,
+    loadPublication,
     loadPublicationSuccess,
     loadPublicationError,
 } from '../';
-import { fromUser } from '../../sharedSelectors';
+import { fromUser, fromFields } from '../../sharedSelectors';
 import fetchSaga from '../../lib/sagas/fetchSaga';
 
 export function* handleLoadPublicationRequest() {
+    if ((yield select(fromFields.getNbFields)) > 0) {
+        return;
+    }
+    yield put(loadPublication());
     const request = yield select(fromUser.getLoadPublicationRequest);
 
     const { error, response: publication } = yield call(fetchSaga, request);
 
     if (error) {
-        return yield put(loadPublicationError(error));
+        yield put(loadPublicationError(error));
+        return;
     }
 
-    return yield put(loadPublicationSuccess(publication));
+    yield put(loadPublicationSuccess(publication));
 }
 
 export default function* watchLoadPublicationRequest() {
-    yield takeLatest([LOAD_PUBLICATION], handleLoadPublicationRequest);
+    yield takeLatest([PRE_LOAD_PUBLICATION], handleLoadPublicationRequest);
 }

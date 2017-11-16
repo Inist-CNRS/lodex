@@ -21,6 +21,7 @@ export default function configureStoreServer(reducer, sagas, initialState, histo
     );
 
     sagaMiddleware.run(sagas);
+    store.runSaga = sagaMiddleware.run;
 
     return store;
 }

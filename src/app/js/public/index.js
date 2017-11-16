@@ -22,7 +22,7 @@ const initialState = {
     },
 };
 
-const store = configureStore(rootReducer, sagas, window.__initialState__ || initialState, browserHistory);
+const store = configureStore(rootReducer, sagas, window.__PRELOADED_STATE__ || initialState, browserHistory);
 syncHistoryWithStore(browserHistory, store);
 const routes = routesFactory(store);
 

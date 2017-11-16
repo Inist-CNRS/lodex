@@ -17,6 +17,7 @@ import sagas from '../../../app/js/public/sagas';
 import configureStoreServer from '../../../app/js/configureStoreServer';
 import routesFactory from '../../../app/js/public/routes';
 import phrasesForEn from '../../../app/js/i18n/translations/en';
+import waitAllSagas from './waitAllSagas';
 
 const initialState = {
     polyglot: {
@@ -54,7 +55,7 @@ const renderFullPage = (html, preloadedState) => (
             </div>
         </nav>
         <div class="container">
-            <div id="root"></div>
+            <div id="root"><div>${html}</div></div>
         </div>
         <script>
         // WARNING: See the following for security issues around embedding JSON in HTML:
@@ -69,7 +70,6 @@ const renderFullPage = (html, preloadedState) => (
 const handleRender = async (ctx) => {
     const { url, headers } = ctx.request;
 
-
     const muiTheme = getMuiTheme({}, {
         userAgent: headers['user-agent'],
     });
@@ -79,19 +79,40 @@ const handleRender = async (ctx) => {
     const routes = routesFactory(store);
     const pageTitle = /https?:\/\/([\w-]+)/.exec(config.host)[1];
 
-    match({ history, routes, location: url }, (err, redirect, props) => {
-        const html = renderToString(
-            <DocumentTitle title={pageTitle}>
-                <Provider {...{ store }}>
-                    <MuiThemeProvider muiTheme={muiTheme}>
-                        <RouterContext {...props} />
-                    </MuiThemeProvider>
-                </Provider>
-            </DocumentTitle>
-        );
-        const preloadedState = store.getState();
-        ctx.body = renderFullPage(html, preloadedState);
+    const { redirect, renderProps } = await new Promise((resolve, reject) => {
+        match({ history, routes, location: url }, (error, redirect, renderProps) => {
+            if (error) {
+                reject(error);
+            }
+            resolve({ redirect, renderProps });
+        });
     });
+
+    if (redirect) {
+        ctx.redirect(redirect.pathname + redirect.search);
+        return;
+    }
+
+    const preloaders = renderProps.components
+        .filter(component => component && component.preload)
+        .map(component => component.preload(renderProps.params, ctx.request))
+        .reduce((result, preloader) => result.concat(preloader), []);
+
+    const runTasks = store.runSaga(waitAllSagas(preloaders));
+
+    await runTasks.done;
+    const html = renderToString(
+        <DocumentTitle title={pageTitle}>
+            <Provider {...{ store }}>
+                <MuiThemeProvider muiTheme={muiTheme}>
+                    <RouterContext {...renderProps} />
+                </MuiThemeProvider>
+            </Provider>
+        </DocumentTitle>,
+    );
+    const preloadedState = store.getState();
+
+    ctx.body = renderFullPage(html, preloadedState);
 };
 
 const app = new Koa();

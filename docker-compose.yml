@@ -27,6 +27,7 @@ services:
             http_proxy: ${http_proxy}
             https_proxy: ${https_proxy}
             no_proxy: "localhost,127.0.0.1,"
+            EZMASTER_PUBLIC_URL: ${EZMASTER_PUBLIC_URL}
         links:
             - mongo
         ports:

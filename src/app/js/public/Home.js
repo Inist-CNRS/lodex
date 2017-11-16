@@ -7,7 +7,7 @@ import { push } from 'react-router-redux';
 import Divider from 'material-ui/Divider';
 
 import { polyglot as polyglotPropTypes } from '../propTypes';
-import { loadPublication as loadPublicationAction } from '../fields';
+import { preLoadPublication as preLoadPublicationAction } from '../fields';
 import { fromCharacteristic } from './selectors';
 import { fromFields } from '../sharedSelectors';
 
@@ -26,6 +26,7 @@ import Share from './Share';
 import ShareLink from './ShareLink';
 import Widgets from './Widgets';
 import Version from './Version';
+import { handleLoadPublicationRequest } from '../fields/sagas/loadPublication';
 
 const styles = {
     container: {
@@ -54,7 +55,7 @@ export class HomeComponent extends Component {
     static propTypes = {
         error: PropTypes.string,
         loading: PropTypes.bool.isRequired,
-        loadPublication: PropTypes.func.isRequired,
+        preLoadPublication: PropTypes.func.isRequired,
         hasPublishedDataset: PropTypes.bool.isRequired,
         navigateTo: PropTypes.func.isRequired,
         p: polyglotPropTypes.isRequired,
@@ -64,7 +65,7 @@ export class HomeComponent extends Component {
     }
 
     componentWillMount() {
-        this.props.loadPublication();
+        this.props.preLoadPublication();
     }
 
     handleTabChange = (value) => {
@@ -193,9 +194,13 @@ const mapStateToProps = (state, { params: { tab = 'overview' } }) => {
 };
 
 const mapDispatchToProps = ({
-    loadPublication: loadPublicationAction,
+    preLoadPublication: preLoadPublicationAction,
     navigateTo: push,
 });
+
+HomeComponent.preload = () => [
+    [handleLoadPublicationRequest],
+];
 
 export default compose(
     connect(mapStateToProps, mapDispatchToProps),

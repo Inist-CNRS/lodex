@@ -19,7 +19,7 @@ export const getResourceUri = (resource) => {
 };
 
 export const getFullResourceUri = (resource, defaultBaseUri) => {
-    const baseUri = process.env.PUBLIC_URL || defaultBaseUri;
+    const baseUri = process.env.EZMASTER_PUBLIC_URL || defaultBaseUri;
     const uri = getResourceUri(resource);
 
     return `${baseUri}${uri}`;

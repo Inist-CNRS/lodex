@@ -7,7 +7,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 const Root = ({ store, routes }) => {
     const history = syncHistoryWithStore(browserHistory, store);
-    const pageTitle = /https?:\/\/([\w-]+)/.exec(process.env.PUBLIC_URL)[1];
+    const pageTitle = /https?:\/\/([\w-]+)/.exec(process.env.EZMASTER_PUBLIC_URL)[1];
     return (
         <DocumentTitle title={pageTitle}>
             <Provider {...{ store }}>

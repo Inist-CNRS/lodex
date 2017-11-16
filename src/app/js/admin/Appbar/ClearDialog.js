@@ -23,7 +23,7 @@ const styles = {
     },
 };
 
-const baseUrl = process.env.PUBLIC_URL;
+const baseUrl = process.env.EZMASTER_PUBLIC_URL;
 
 class ClearDialogComponent extends Component {
     constructor(props) {

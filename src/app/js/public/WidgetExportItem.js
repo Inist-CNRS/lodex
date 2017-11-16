@@ -20,7 +20,7 @@ const styles = {
 };
 
 export function generateWidget(uri, fields, type) {
-    const baseUrl = process.env.PUBLIC_URL.replace(/https?:/, '');
+    const baseUrl = process.env.EZMASTER_PUBLIC_URL.replace(/https?:/, '');
     const strFields = JSON.stringify(fields);
 
     return `<iframe src="${baseUrl}/api/widget?type=${type}${uri ? `&uri=${uri}` : ''}&fields=${strFields}"></iframe>`;

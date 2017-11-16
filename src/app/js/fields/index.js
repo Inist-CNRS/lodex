@@ -41,6 +41,7 @@ export const CONFIGURE_FIELD_ERROR = 'CONFIGURE_FIELD_ERROR';
 export const OPEN_EDIT_FIELD_VALUE = 'OPEN_EDIT_FIELD_VALUE';
 export const CLOSE_EDIT_FIELD_VALUE = 'CLOSE_EDIT_FIELD_VALUE';
 
+export const PRE_LOAD_PUBLICATION = 'PRE_LOAD_PUBLICATION';
 export const LOAD_PUBLICATION = 'LOAD_PUBLICATION';
 export const LOAD_PUBLICATION_SUCCESS = 'LOAD_PUBLICATION_SUCCESS';
 export const LOAD_PUBLICATION_ERROR = 'LOAD_PUBLICATION_ERROR';
@@ -71,6 +72,7 @@ export const configureFieldSuccess = createAction(CONFIGURE_FIELD_SUCCESS);
 export const configureFieldError = createAction(CONFIGURE_FIELD_ERROR);
 export const openEditFieldValue = createAction(OPEN_EDIT_FIELD_VALUE);
 export const closeEditFieldValue = createAction(CLOSE_EDIT_FIELD_VALUE);
+export const preLoadPublication = createAction(PRE_LOAD_PUBLICATION);
 export const loadPublication = createAction(LOAD_PUBLICATION);
 export const loadPublicationSuccess = createAction(LOAD_PUBLICATION_SUCCESS);
 export const loadPublicationError = createAction(LOAD_PUBLICATION_ERROR);

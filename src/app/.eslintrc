@@ -15,12 +15,7 @@
         "react/jsx-indent-props": ["error", 4],
         "import/no-extraneous-dependencies": "off",
         "import/extensions": "off",
-        "import/no-unresolved": "off",
-        "import/resolver": {
-            "node": {
-                "paths": ["."]
-            }
-        }
+        "import/no-unresolved": "off"
     },
     "globals": {
         "__DEBUG__": true,
