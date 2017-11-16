@@ -2,9 +2,10 @@ import { call, put, select, takeLatest } from 'redux-saga/effects';
 import { delay } from 'redux-saga';
 
 import {
-    LOAD_DATASET_PAGE,
+    PRE_LOAD_DATASET_PAGE,
     APPLY_FILTER,
     SORT_DATASET,
+    loadDatasetPage,
     loadDatasetPageSuccess,
     loadDatasetPageError,
 } from './';
@@ -14,7 +15,11 @@ import { fromUser } from '../../sharedSelectors';
 import fetchSaga from '../../lib/sagas/fetchSaga';
 import { fromDataset, fromFacet } from '../selectors';
 
-export function* handleLoadDatasetPageRequest({ payload }) {
+export function* handleLoadDatasetPageRequest({ type, payload }) {
+    if(type === PRE_LOAD_DATASET_PAGE && (yield select(fromDataset.isDatasetLoaded))) {
+        return;
+    }
+
     const facets = yield select(fromFacet.getAppliedFacets);
     const match = yield select(fromDataset.getFilter);
     const sort = yield select(fromDataset.getSort);
@@ -30,6 +35,7 @@ export function* handleLoadDatasetPageRequest({ payload }) {
         perPage = yield select(fromDataset.getDatasetPerPage);
     }
 
+    yield put(loadDatasetPage());
     const request = yield select(fromUser.getLoadDatasetPageRequest, { match, facets, sort, page, perPage });
     const { error, response } = yield call(fetchSaga, request);
 
@@ -47,7 +53,7 @@ export function* handleLoadDatasetPageRequest({ payload }) {
 
 export default function* () {
     yield takeLatest([
-        LOAD_DATASET_PAGE,
+        PRE_LOAD_DATASET_PAGE,
         APPLY_FILTER,
         APPLY_FACET,
         REMOVE_FACET,

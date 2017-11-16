@@ -8,7 +8,7 @@ import Subheader from 'material-ui/Subheader';
 
 import { fromExport } from './selectors';
 import { fromFields } from '../sharedSelectors';
-import { loadExporters as loadExportersAction } from '../public/export';
+import { preLoadExporters } from '../public/export';
 import WidgetExportItem from './WidgetExportItem';
 import WidgetsSelectFields from './WidgetsSelectFields';
 import { polyglot as polyglotPropTypes } from '../propTypes';
@@ -20,7 +20,7 @@ export class WidgetsComponent extends Component {
     }
 
     componentDidMount() {
-        this.props.loadExporters();
+        this.props.preLoadExporters();
     }
 
     handleSelectedFieldsChange = (exportedFields) => {
@@ -61,7 +61,7 @@ export class WidgetsComponent extends Component {
 WidgetsComponent.propTypes = {
     fields: PropTypes.arrayOf(PropTypes.object).isRequired,
     widgets: PropTypes.arrayOf(PropTypes.object),
-    loadExporters: PropTypes.func.isRequired,
+    preLoadExporters: PropTypes.func.isRequired,
     uri: PropTypes.string,
     p: polyglotPropTypes.isRequired,
 };
@@ -77,7 +77,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-    loadExporters: loadExportersAction,
+    preLoadExporters,
 }, dispatch);
 
 export default compose(

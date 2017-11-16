@@ -8,7 +8,7 @@ import Subheader from 'material-ui/Subheader';
 
 import { fromExport } from '../selectors';
 import {
-    loadExporters as loadExportersAction,
+    preLoadExporters,
     exportPublishedDataset as exportPublishedDatasetAction,
 } from './';
 import ExportItem from './ExportItem';
@@ -21,7 +21,7 @@ export class ExportComponent extends Component {
     }
 
     componentDidMount() {
-        this.props.loadExporters();
+        this.props.preLoadExporters();
     }
 
     handleSelectedFieldsChange = (exportedFields) => {
@@ -59,7 +59,7 @@ export class ExportComponent extends Component {
 ExportComponent.propTypes = {
     exporters: PropTypes.arrayOf(PropTypes.object),
     handleExportClick: PropTypes.func.isRequired,
-    loadExporters: PropTypes.func.isRequired,
+    preLoadExporters: PropTypes.func.isRequired,
     p: polyglotPropTypes.isRequired,
     uri: PropTypes.string,
 };
@@ -74,7 +74,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-    loadExporters: loadExportersAction,
+    preLoadExporters,
     handleExportClick: exportPublishedDatasetAction,
 }, dispatch);
 

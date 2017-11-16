@@ -3,6 +3,7 @@ import { APPLY_FACET } from '../facet';
 
 export const NEW_CHARACTERISTIC_FORM_NAME = 'NEW_CHARACTERISTIC_FORM_NAME';
 
+export const PRE_LOAD_DATASET_PAGE = 'PRE_LOAD_DATASET_PAGE';
 export const LOAD_DATASET_PAGE = 'LOAD_DATASET_PAGE';
 export const LOAD_DATASET_PAGE_SUCCESS = 'LOAD_DATASET_PAGE_SUCCESS';
 export const LOAD_DATASET_PAGE_ERROR = 'LOAD_DATASET_PAGE_ERROR';
@@ -11,6 +12,7 @@ export const APPLY_FILTER = 'APPLY_FILTER';
 
 export const SORT_DATASET = 'SORT_DATASET';
 
+export const preLoadDatasetPage = createAction(PRE_LOAD_DATASET_PAGE);
 export const loadDatasetPage = createAction(LOAD_DATASET_PAGE);
 export const loadDatasetPageSuccess = createAction(LOAD_DATASET_PAGE_SUCCESS);
 export const loadDatasetPageError = createAction(LOAD_DATASET_PAGE_ERROR);
@@ -79,6 +81,7 @@ const getDatasetCurrentPage = state => state.currentPage;
 const getDatasetPerPage = state => state.perPage;
 const getDataset = state => state.dataset;
 const getDatasetTotal = state => state.total;
+const isDatasetLoaded = state => state.total > 0;
 const getFilter = state => state.match;
 const getSort = state => state.sort;
 const isSaving = state => state.isSaving;
@@ -89,6 +92,7 @@ export const fromDataset = {
     getDatasetPerPage,
     getDataset,
     getDatasetTotal,
+    isDatasetLoaded,
     getFilter,
     getSort,
     isSaving,

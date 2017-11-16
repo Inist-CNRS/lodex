@@ -8,7 +8,7 @@ import {
     loadResourceSuccess,
     loadResourceError,
 } from '../';
-import { loadPublication } from '../../../fields';
+import { preLoadPublication } from '../../../fields';
 import { fromUser } from '../../../sharedSelectors';
 import fetchSaga from '../../../lib/sagas/fetchSaga';
 
@@ -50,7 +50,7 @@ export function* handleLoadResource({ payload, type }) {
     }
 
     yield put(loadResourceSuccess(response));
-    yield put(loadPublication());
+    yield put(preLoadPublication());
 }
 
 export default function* watchLocationChangeToResource() {
