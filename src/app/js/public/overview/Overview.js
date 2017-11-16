@@ -81,7 +81,8 @@ export class OverviewComponent extends Component {
                                         (columns.filter(e => e.overview === 1).length) ?
                                             data[columns.filter(e => e.overview === 1)[0].name] :
                                             data.uri
-                                    }</a>}
+                                    }
+                                </a>}
                             subtitle={
                                 (columns.filter(e => e.overview === 2).length) ?
                                     data[columns.filter(e => e.overview === 2)[0].name] :

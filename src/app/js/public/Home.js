@@ -26,7 +26,6 @@ import Share from './Share';
 import ShareLink from './ShareLink';
 import Widgets from './Widgets';
 import Version from './Version';
-import { handleLoadPublicationRequest } from '../fields/sagas/loadPublication';
 
 const styles = {
     container: {
@@ -197,10 +196,6 @@ const mapDispatchToProps = ({
     preLoadPublication: preLoadPublicationAction,
     navigateTo: push,
 });
-
-HomeComponent.preload = () => [
-    [handleLoadPublicationRequest],
-];
 
 export default compose(
     connect(mapStateToProps, mapDispatchToProps),

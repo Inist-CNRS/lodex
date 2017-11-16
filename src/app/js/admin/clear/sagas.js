@@ -42,7 +42,7 @@ export function* watchClearPublishedRequest() {
     yield takeLatest(CLEAR_PUBLISHED, handleClearPublishedRequest);
 }
 
-export default function* () {
-    yield fork(watchClearDatasetRequest);
-    yield fork(watchClearPublishedRequest);
-}
+export default [
+    watchClearDatasetRequest,
+    watchClearPublishedRequest,
+];

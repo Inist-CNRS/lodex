@@ -1,4 +1,4 @@
-import { fork } from 'redux-saga/effects';
+import { fork, all } from 'redux-saga/effects';
 
 import exportSaga from '../exportFields/sagas';
 import importSaga from './import/sagas';
@@ -18,16 +18,16 @@ import clearSaga from './clear/sagas';
 export default function* () {
     yield fork(exportSaga);
     yield fork(fetchSaga);
-    yield fork(fieldsSaga);
+    yield all(fieldsSaga.map(fork));
     yield fork(importSaga);
     yield fork(parsingSaga);
     yield fork(publicationSaga);
     yield fork(previewSaga);
     yield fork(publishSaga);
-    yield fork(removedResourcesSagas);
+    yield all(removedResourcesSagas.map(fork));
     yield fork(contributedResourcesSagas);
-    yield fork(uploadFileSaga);
+    yield all(uploadFileSaga.map(fork));
     yield fork(userSagas);
-    yield fork(i18nSagas);
+    yield all(i18nSagas.map(fork));
     yield fork(clearSaga);
 }

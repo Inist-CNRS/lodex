@@ -10,7 +10,7 @@ import { browserHistory } from 'react-router';
 
 import Root from '../Root';
 import rootReducer from './reducers';
-import routesFactory from './routes';
+import routes from './routes';
 import sagas from './sagas';
 import configureStore from '../configureStore';
 import phrasesForEn from '../i18n/translations/en';
@@ -24,7 +24,6 @@ const initialState = {
 
 const store = configureStore(rootReducer, sagas, window.__PRELOADED_STATE__ || initialState, browserHistory);
 syncHistoryWithStore(browserHistory, store);
-const routes = routesFactory(store);
 
 injectTapEventPlugin();
 

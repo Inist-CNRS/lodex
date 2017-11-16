@@ -11,15 +11,27 @@ import { syncHistoryWithStore } from 'react-router-redux';
 import DocumentTitle from 'react-document-title';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import { END } from 'redux-saga';
 
 import rootReducer from '../../../app/js/public/reducers';
 import sagas from '../../../app/js/public/sagas';
 import configureStoreServer from '../../../app/js/configureStoreServer';
-import routesFactory from '../../../app/js/public/routes';
+import routes from '../../../app/js/public/routes';
 import phrasesForEn from '../../../app/js/i18n/translations/en';
-import waitAllSagas from './waitAllSagas';
 
 const initialState = {
+    fields: {
+        loading: false,
+        isSaving: false,
+        byName: {},
+        allValid: true,
+        list: [],
+        invalidFields: [],
+        editedFieldName: undefined,
+        editedValueFieldName: null,
+        configuredFieldName: null,
+        published: true,
+    },
     polyglot: {
         locale: 'en',
         phrases: phrasesForEn,
@@ -73,46 +85,50 @@ const handleRender = async (ctx) => {
     const muiTheme = getMuiTheme({}, {
         userAgent: headers['user-agent'],
     });
-    const memoryHistory = createMemoryHistory(url);
-    const store = configureStoreServer(rootReducer, sagas, initialState, memoryHistory);
-    const history = syncHistoryWithStore(memoryHistory, store);
-    const routes = routesFactory(store);
+    const history = createMemoryHistory(url);
     const pageTitle = /https?:\/\/([\w-]+)/.exec(config.host)[1];
 
-    const { redirect, renderProps } = await new Promise((resolve, reject) => {
+    ctx.body = await new Promise((resolve, reject) => {
         match({ history, routes, location: url }, (error, redirect, renderProps) => {
+            const store = configureStoreServer(rootReducer, sagas, initialState, history);
             if (error) {
                 reject(error);
             }
-            resolve({ redirect, renderProps });
+            if (redirect) {
+                ctx.redirect(redirect.pathname + redirect.search);
+                return;
+            }
+            store.runSaga(sagas).done
+                .then(() => {
+                    const html = renderToString(
+                        <DocumentTitle title={pageTitle}>
+                            <Provider {...{ store }}>
+                                <MuiThemeProvider muiTheme={muiTheme}>
+                                    <RouterContext {...renderProps} />
+                                </MuiThemeProvider>
+                            </Provider>
+                        </DocumentTitle>,
+                    );
+                    const preloadedState = store.getState();
+
+                    resolve(renderFullPage(html, preloadedState));
+                })
+                .catch(error => reject);
+
+            renderToString(
+                <DocumentTitle title={pageTitle}>
+                    <Provider {...{ store }}>
+                        <MuiThemeProvider muiTheme={muiTheme}>
+                            <RouterContext {...renderProps} />
+                        </MuiThemeProvider>
+                    </Provider>
+                </DocumentTitle>,
+            );
+
+            syncHistoryWithStore(history, store);
+            store.dispatch(END);
         });
     });
-
-    if (redirect) {
-        ctx.redirect(redirect.pathname + redirect.search);
-        return;
-    }
-
-    const preloaders = renderProps.components
-        .filter(component => component && component.preload)
-        .map(component => component.preload(renderProps.params, ctx.request))
-        .reduce((result, preloader) => result.concat(preloader), []);
-
-    const runTasks = store.runSaga(waitAllSagas(preloaders));
-
-    await runTasks.done;
-    const html = renderToString(
-        <DocumentTitle title={pageTitle}>
-            <Provider {...{ store }}>
-                <MuiThemeProvider muiTheme={muiTheme}>
-                    <RouterContext {...renderProps} />
-                </MuiThemeProvider>
-            </Provider>
-        </DocumentTitle>,
-    );
-    const preloadedState = store.getState();
-
-    ctx.body = renderFullPage(html, preloadedState);
 };
 
 const app = new Koa();

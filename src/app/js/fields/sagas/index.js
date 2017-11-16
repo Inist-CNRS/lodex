@@ -8,13 +8,13 @@ import changePosition from './changePosition';
 import loadPublication from './loadPublication';
 import configureField from './configureField';
 
-export default function* () {
-    yield fork(loadFields);
-    yield fork(removeField);
-    yield fork(saveField);
-    yield fork(validation);
-    yield fork(changeOperation);
-    yield fork(changePosition);
-    yield fork(loadPublication);
-    yield fork(configureField);
-}
+export default [
+    loadFields,
+    removeField,
+    saveField,
+    validation,
+    changeOperation,
+    changePosition,
+    loadPublication,
+    configureField,
+];

@@ -39,6 +39,7 @@ export function* handleLoadDatasetPageRequest({ payload }) {
     }
 
     const { data: dataset, total } = response;
+
     yield put(loadDatasetPageSuccess({ dataset, page, total }));
 
     yield delay(500);

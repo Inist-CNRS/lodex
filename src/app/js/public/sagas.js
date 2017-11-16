@@ -1,4 +1,4 @@
-import { fork } from 'redux-saga/effects';
+import { fork, all } from 'redux-saga/effects';
 
 import characteristicSaga from './characteristic/sagas';
 import datasetSaga from './dataset/sagas';
@@ -12,14 +12,14 @@ import resourceSagas from './resource/sagas';
 import userSagas from '../user/sagas';
 
 export default function* () {
-    yield fork(characteristicSaga);
-    yield fork(datasetSaga);
+    yield all(characteristicSaga.map(fork));
+    yield fork(function* () { yield fork(datasetSaga); });
     yield fork(exportSaga);
     yield fork(exportFieldsSaga);
     yield fork(facetSaga);
     yield fork(fetchSaga);
-    yield fork(i18nSaga);
-    yield fork(fieldsSagas);
-    yield fork(resourceSagas);
+    yield all(i18nSaga.map(fork));
+    yield all(fieldsSagas.map(fork));
+    yield all(resourceSagas.map(fork));
     yield fork(userSagas);
 }
