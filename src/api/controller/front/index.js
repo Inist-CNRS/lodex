@@ -20,6 +20,9 @@ import configureStoreServer from '../../../app/js/configureStoreServer';
 import routes from '../../../app/js/public/routes';
 import phrasesForEn from '../../../app/js/i18n/translations/en';
 import webpackConfig from '../../../app/webpack.config.babel';
+import fs from 'fs';
+
+const indexHtml = fs.readFileSync(path.resolve(__dirname, '../../../app/custom/index.html')).toString();
 
 const initialState = {
     fields: {
@@ -40,46 +43,14 @@ const initialState = {
     },
 };
 
-const renderFullPage = (html, preloadedState) => (
-    `<!doctype html>
-    <html>
-    <head>
-        <title>Lodex</title>
-        <meta charset="utf-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
-
-        <style>
-            body { padding-top: 70px; }
-        </style>
-    </head>
-
-    <body>
-        <nav class="navbar navbar-default navbar-fixed-top">
-            <div class="container-fluid">
-                <div class="navbar-header">
-                    <a class="navbar-brand" href="/">Lodex</a>
-                </div>
-                <ul class="nav navbar-nav">
-                    <li><a class="btn-admin" href="/admin">Administration</a></li>
-                    <li><a class="btn-sign-in" href="/login">Connection</a></li>
-                </ul>
-            </div>
-        </nav>
-        <div class="container">
-            <div id="root"><div>${html}</div></div>
-        </div>
-        <script>
-        // WARNING: See the following for security issues around embedding JSON in HTML:
-        // http://redux.js.org/docs/recipes/ServerRendering.html#security-considerations
-        window.__PRELOADED_STATE__ = ${JSON.stringify(preloadedState).replace(/</g, '\\u003c')}
-        </script>
-        <script src="/static/index.js"></script>
-    </body>
-    </html>`
-);
+const renderFullPage = (html, preloadedState) =>
+    indexHtml
+        .replace('<div id="root"></div>', `<div id="root"><div>${html}</div></div>`)
+        .replace('</body>',
+            `<script>window.__PRELOADED_STATE__ = ${JSON.stringify(preloadedState).replace(/</g, '\\u003c')}</script>
+            <script src="/static/index.js"></script>
+            </body>`
+        );
 
 const handleRender = async (ctx, next) => {
     const { url, headers } = ctx.request;

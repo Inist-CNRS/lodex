@@ -32,11 +32,8 @@ install: copy-conf install-npm-dependencies ## Install npm dependencies for the 
 build: ## build the docker image localy
 	docker build -t inistcnrs/lodex --build-arg http_proxy --build-arg https_proxy .
 
-run-debug: ## run node server with pm2 for development and webpack-dev-server
-	docker-compose up --force-recreate mongo server
-
-docker-run-dev: ## run node server with pm2 for development and webpack-dev-server
-	docker-compose up --force-recreate mongo server
+run-dev: ## run node server
+	docker-compose up --force-recreate mongo api
 
 mongo: ## Start the mongo database
 	docker-compose up -d mongo

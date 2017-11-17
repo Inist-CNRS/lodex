@@ -20,7 +20,7 @@ services:
             - .:/app
         working_dir: /app
         environment:
-            NODE_ENV: ${NODE_ENV}
+            NODE_ENV: development
             http_proxy: ${http_proxy}
             https_proxy: ${https_proxy}
             no_proxy: "localhost,127.0.0.1,"
