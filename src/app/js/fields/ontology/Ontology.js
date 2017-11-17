@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import withHandlers from 'recompose/withHandlers';
 import translate from 'redux-polyglot/translate';
-import fetch from 'isomorphic-fetch';
 import Reorder from 'material-ui/svg-icons/editor/format-line-spacing';
 import AppBar from 'material-ui/AppBar';
 import { grey300, grey800, grey900 } from 'material-ui/styles/colors';
@@ -86,34 +85,12 @@ const SortableList = SortableContainer(({ items }) => (
 ));
 
 export class OntologyComponent extends Component {
-    constructor(props) {
-        super(props);
-        this.state = { fieldsToCount: [] };
-    }
-
-    componentWillMount() {
-        fetch('/api/run/count-by-fields')
-            .then((response) => {
-                if (response.status >= 400) {
-                    throw new Error('Bad response from server');
-                }
-                return response.json().then((json) => {
-                    const data = json.reduce((o, c) => {
-                        const { _id, value } = c;
-                        return { ...o, [_id]: value };
-                    }, {});
-                    this.setState({ fieldsToCount: data });
-                });
-            });
-    }
-
     onSortEnd = ({ oldIndex, newIndex }, _, fields, handleChangePosition) => {
         handleChangePosition({ newPosition: newIndex, oldPosition: oldIndex });
     };
 
     render() {
         const { fields, isLoggedIn, handleChangePosition } = this.props;
-        const { fieldsToCount } = this.state;
         return (
             <div className="ontology" style={styles.container}>
                 {isLoggedIn &&
@@ -129,7 +106,6 @@ export class OntologyComponent extends Component {
                                     <OntologyField
                                         field={field}
                                         index={index + 1}
-                                        fieldsToCount={Array.isArray(fieldsToCount) ? {} : fieldsToCount}
                                     />
                                 ))}
                             onSortEnd={(oldIndex, newIndex) =>
@@ -141,7 +117,6 @@ export class OntologyComponent extends Component {
                             <OntologyField
                                 field={field}
                                 index={index}
-                                fieldsToCount={Array.isArray(fieldsToCount) ? {} : fieldsToCount}
                             />))}
             </div>
         );

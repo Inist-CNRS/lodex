@@ -231,7 +231,8 @@ export default async (db) => {
 
     collection.findDistinctValuesForField = field => collection.distinct(`versions.${field}`);
 
-    collection.countByFacet = (field, value) => collection.count({ [`versions.${field}`]: value });
+    collection.countByFacet = (field, value) =>
+        collection.count({ [field === 'uri' ? 'uri' : `versions.${field}`]: value });
 
     collection.create = async (resource, publicationDate = new Date()) => {
         const { uri, ...version } = resource;

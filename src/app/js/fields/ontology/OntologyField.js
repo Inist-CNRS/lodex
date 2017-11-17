@@ -51,7 +51,7 @@ const styles = {
     },
 };
 
-const OntologyFieldComponent = ({ field, fields, index, fieldsToCount, p: polyglot }) => (
+const OntologyFieldComponent = ({ field, fields, index, p: polyglot }) => (
     <div key={field.name} style={styles.field(index < fields.length - 1)}>
         <div>
             <h4
@@ -71,7 +71,7 @@ const OntologyFieldComponent = ({ field, fields, index, fieldsToCount, p: polygl
                 <dd
                     className={classnames('field-count', getFieldClassName(field))}
                 >
-                    {fieldsToCount[field.name] || 1}
+                    {field.count || 1}
                 </dd>
             </dl>
             {field.scheme &&
@@ -118,14 +118,12 @@ const OntologyFieldComponent = ({ field, fields, index, fieldsToCount, p: polygl
 OntologyFieldComponent.propTypes = {
     field: React.PropTypes.shape({}),
     fields: PropTypes.arrayOf(fieldPropTypes).isRequired,
-    fieldsToCount: React.PropTypes.shape({}),
     p: polyglotPropTypes.isRequired,
     index: PropTypes.number.isRequired,
 };
 
 OntologyFieldComponent.defaultProps = {
     field: {},
-    fieldsToCount: {},
 };
 
 const mapStateToProps = state => ({
