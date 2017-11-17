@@ -9,7 +9,6 @@ import Divider from 'material-ui/Divider';
 import { grey500 } from 'material-ui/styles/colors';
 import memoize from 'lodash.memoize';
 
-import Card from '../../lib/components/Card';
 import { saveResource as saveResourceAction } from './';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { fromResource } from '../selectors';
@@ -221,7 +220,7 @@ export const DetailComponent = ({
                                            XX
                                         </span>
                                         <div style={styles.value}>
-                                            <a href={`/${resource.uri}`}>{`${window.location.protocol}//${window.location.host}/${resource.uri}`}</a>
+                                            <a href={`/${resource.uri}`}>{`${process.env.EZMASTER_PUBLIC_URL}/${resource.uri}`}</a>
                                         </div>
                                     </div>
                                 </div>
@@ -292,7 +291,7 @@ const mapStateToProps = (state) => {
         resource,
         isSaving: fromResource.isSaving(state),
         fields: fromFields.getResourceFields(state, resource),
-        sharingUri: getFullResourceUri(resource, `${window.location.protocol}//${window.location.host}`),
+        sharingUri: getFullResourceUri(resource, process.env.EZMASTER_PUBLIC_URL),
         sharingTitle,
     });
 };

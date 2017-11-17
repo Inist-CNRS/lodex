@@ -20,7 +20,7 @@ export class ExportComponent extends Component {
         this.state = { exportedFields: [] };
     }
 
-    componentDidMount() {
+    componentWillMount() {
         this.props.preLoadExporters();
     }
 

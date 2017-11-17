@@ -91,7 +91,7 @@ export class OntologyComponent extends Component {
         this.state = { fieldsToCount: [] };
     }
 
-    componentDidMount() {
+    componentWillMount() {
         fetch('/api/run/count-by-fields')
             .then((response) => {
                 if (response.status >= 400) {

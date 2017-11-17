@@ -19,7 +19,7 @@ export class WidgetsComponent extends Component {
         this.state = { exportedFields: [] };
     }
 
-    componentDidMount() {
+    componentWillMount() {
         this.props.preLoadExporters();
     }
 

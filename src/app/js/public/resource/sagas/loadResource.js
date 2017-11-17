@@ -17,6 +17,7 @@ import { fromResource } from '../../selectors';
 export const parsePathName = pathname => pathname.match(/^\/((?:ark|uid):\/.*$)/) || [];
 
 export function* handleLoadResource({ payload, type }) {
+    yield put(preLoadPublication());
     let ark;
     let uri;
 
@@ -40,6 +41,10 @@ export function* handleLoadResource({ payload, type }) {
         uri = resource.uri;
     }
 
+    if (yield select(fromResource.isResourceLoaded, uri)) {
+        return;
+    }
+
     yield put(loadResource());
     const request = yield select(fromUser.getLoadResourceRequest, uri);
     const { error, response } = yield call(fetchSaga, request);
@@ -50,7 +55,6 @@ export function* handleLoadResource({ payload, type }) {
     }
 
     yield put(loadResourceSuccess(response));
-    yield put(preLoadPublication());
 }
 
 export default function* watchLocationChangeToResource() {

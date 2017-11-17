@@ -81,7 +81,6 @@ const renderFullPage = (html, preloadedState) => (
 
 const handleRender = async (ctx) => {
     const { url, headers } = ctx.request;
-    console.log({url});
     if (url === '/') {
         ctx.redirect('/home');
         return;
@@ -118,7 +117,7 @@ const handleRender = async (ctx) => {
 
                     resolve(renderFullPage(html, preloadedState));
                 })
-                .catch(error => reject);
+                .catch(error => reject(error));
 
             renderToString(
                 <DocumentTitle title={pageTitle}>
