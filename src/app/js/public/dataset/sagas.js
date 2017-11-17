@@ -5,6 +5,7 @@ import {
     PRE_LOAD_DATASET_PAGE,
     APPLY_FILTER,
     SORT_DATASET,
+    CHANGE_PAGE,
     loadDatasetPage,
     loadDatasetPageSuccess,
     loadDatasetPageError,
@@ -16,7 +17,7 @@ import fetchSaga from '../../lib/sagas/fetchSaga';
 import { fromDataset, fromFacet } from '../selectors';
 
 export function* handleLoadDatasetPageRequest({ type, payload }) {
-    if(type === PRE_LOAD_DATASET_PAGE && (yield select(fromDataset.isDatasetLoaded))) {
+    if (type === PRE_LOAD_DATASET_PAGE && (yield select(fromDataset.isDatasetLoaded))) {
         return;
     }
 
@@ -58,5 +59,6 @@ export default function* () {
         APPLY_FACET,
         REMOVE_FACET,
         SORT_DATASET,
+        CHANGE_PAGE,
     ], handleLoadDatasetPageRequest);
 }

@@ -17,7 +17,7 @@ import DatasetColumnHeader from './DatasetColumnHeader';
 import Pagination from '../../lib/components/Pagination';
 import Loading from '../../lib/components/Loading';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
-import { preLoadDatasetPage } from './';
+import { preLoadDatasetPage, changePage } from './';
 import { fromDataset } from '../selectors';
 import { fromFields } from '../../sharedSelectors';
 import AddCharacteristic from '../characteristic/AddCharacteristic';
@@ -56,12 +56,12 @@ const styles = {
 
 export class DatasetComponent extends Component {
     componentWillMount() {
-        const { loadDatasetPage, currentPage, perPage } = this.props;
+        const { currentPage, perPage } = this.props;
         this.props.preLoadDatasetPage({ page: currentPage, perPage });
     }
 
     handlePageChange = (page, perPage) => {
-        this.props.preLoadDatasetPage({ page, perPage });
+        this.props.changePage({ page, perPage });
     }
 
     render() {
@@ -135,6 +135,7 @@ DatasetComponent.propTypes = {
     perPage: PropTypes.number.isRequired,
     dataset: PropTypes.arrayOf(PropTypes.object),
     preLoadDatasetPage: PropTypes.func.isRequired,
+    changePage: PropTypes.func.isRequired,
     loading: PropTypes.bool.isRequired,
     p: polyglotPropTypes.isRequired,
     total: PropTypes.number.isRequired,
@@ -156,6 +157,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = ({
     preLoadDatasetPage,
+    changePage,
 });
 
 export default compose(

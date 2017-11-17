@@ -8,6 +8,8 @@ export const LOAD_DATASET_PAGE = 'LOAD_DATASET_PAGE';
 export const LOAD_DATASET_PAGE_SUCCESS = 'LOAD_DATASET_PAGE_SUCCESS';
 export const LOAD_DATASET_PAGE_ERROR = 'LOAD_DATASET_PAGE_ERROR';
 
+export const CHANGE_PAGE = 'CHANGE_PAGE';
+
 export const APPLY_FILTER = 'APPLY_FILTER';
 
 export const SORT_DATASET = 'SORT_DATASET';
@@ -16,6 +18,8 @@ export const preLoadDatasetPage = createAction(PRE_LOAD_DATASET_PAGE);
 export const loadDatasetPage = createAction(LOAD_DATASET_PAGE);
 export const loadDatasetPageSuccess = createAction(LOAD_DATASET_PAGE_SUCCESS);
 export const loadDatasetPageError = createAction(LOAD_DATASET_PAGE_ERROR);
+
+export const changePage = createAction(CHANGE_PAGE);
 
 export const applyFilter = createAction(APPLY_FILTER);
 
@@ -34,7 +38,11 @@ export const defaultState = {
 };
 
 export default handleActions({
-    [combineActions(LOAD_DATASET_PAGE, APPLY_FACET, APPLY_FILTER)]: (state, { payload }) => ({
+    PRE_LOAD_DATASET_PAGE: (state, { payload }) => ({
+        ...state,
+        perPage: (payload && payload.perPage) || state.perPage,
+    }),
+    [combineActions(LOAD_DATASET_PAGE, APPLY_FACET, APPLY_FILTER, CHANGE_PAGE)]: (state, { payload }) => ({
         ...state,
         error: null,
         loading: true,
