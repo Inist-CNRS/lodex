@@ -34,6 +34,21 @@ const styles = {
         minWidth: '10rem',
         textAlign: 'right',
     },
+    badge: {
+        fontFamily: '"Lato", "Lucida Grande", "Lucida Sans Unicode", Tahoma, Sans-Serif',
+        fontSize: '70%',
+        fontWeight: '700',
+        textTransform: 'uppercase',
+        padding: '2px 3px 1px 3px',
+        marginLeft: '4px',
+        color: '#FFFFFF',
+        borderRadius: '3px',
+        position: 'relative',
+        top: '-4px',
+        textShadow: 'none !important',
+        whiteSpace: 'nowrap',
+        backgroundColor: '#8B8B8B',
+    },
 };
 
 const OntologyFieldComponent = ({ field, fields, index, fieldsToCount, p: polyglot }) => (
@@ -44,6 +59,12 @@ const OntologyFieldComponent = ({ field, fields, index, fieldsToCount, p: polygl
                 style={styles.name}
             >
                 {field.label}
+                {field.overview === 1 &&
+                <span style={styles.badge}>title</span>
+                }
+                {field.overview === 2 &&
+                <span style={styles.badge}>description</span>
+                }
             </h4>
             <dl style={styles.property}>
                 <dt style={styles.label}>{polyglot.t('count_of_field')}</dt>
