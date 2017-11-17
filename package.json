@@ -7,14 +7,14 @@
   "description": "",
   "main": "src/api/index.js",
   "scripts": {
-    "start": "NODE_ENV=production node --harmony-async-await --require babel-register src/api",
+    "start": "NODE_ENV=production node --require babel-register src/api",
     "test": "npm run test:api && npm run test:app",
     "test:api": "mocha --require babel-polyfill --compilers='js:babel-core/register' 'src/api/**/*.spec.js' 'src/common/**/*.spec.js'",
     "test:app": "BABEL_ENV=browser mocha --require babel-polyfill --require='./src/app/js/test.js' --compilers='css:./src/common/tests/webpack-null-compiler,js:babel-core/register' 'src/app/js/**/*.spec.js'",
     "build": "BABEL_ENV=browser webpack --config=./src/app/webpack.config.babel.js",
     "dev": "pm2-docker process.yml",
-    "development:api": "NODE_ENV=development node --harmony-async-await --require babel-register src/api",
-    "development:app": "NODE_ENV=development BABEL_ENV=browser webpack-dev-server --config=./src/app/webpack.config.babel.js --port=8080",
+    "development:api": "node --require babel-register src/api",
+    "development:app": "BABEL_ENV=browser node_modules/.bin/webpack-dev-server --config=./src/app/webpack.config.babel.js --port=8080 --host=0.0.0.0",
     "postversion": "git push && git push --tags",
     "lint": "./pre-commit"
   },
@@ -87,6 +87,7 @@
     "koa-route": "3.2.0",
     "koa-static": "3.0.0",
     "koa-webpack": "1.0.0",
+    "koa-webpack-middleware": "1.0.7",
     "lodash.capitalize": "4.2.1",
     "lodash.chunk": "4.2.0",
     "lodash.compose": "2.4.1",
@@ -167,7 +168,8 @@
     "react-addons-test-utils": "15.6.2",
     "react-hot-loader": "3.1.2",
     "sinon": "4.1.2",
-    "uglifyjs-webpack-plugin": "1.0.1"
+    "uglifyjs-webpack-plugin": "1.0.1",
+    "webpack-dev-server": "2.9.4"
   },
   "pre-commit": [
     "lint"

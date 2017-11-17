@@ -12,12 +12,14 @@ import DocumentTitle from 'react-document-title';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import { END } from 'redux-saga';
+import koaWebpack from 'koa-webpack';
 
 import rootReducer from '../../../app/js/public/reducers';
 import sagas from '../../../app/js/public/sagas';
 import configureStoreServer from '../../../app/js/configureStoreServer';
 import routes from '../../../app/js/public/routes';
 import phrasesForEn from '../../../app/js/i18n/translations/en';
+import webpackConfig from '../../../app/webpack.config.babel';
 
 const initialState = {
     fields: {
@@ -79,8 +81,12 @@ const renderFullPage = (html, preloadedState) => (
     </html>`
 );
 
-const handleRender = async (ctx) => {
+const handleRender = async (ctx, next) => {
     const { url, headers } = ctx.request;
+    if (url === '/__webpack_hmr') {
+        await next();
+        return;
+    }
     if (url === '/') {
         ctx.redirect('/home');
         return;
@@ -136,7 +142,28 @@ const handleRender = async (ctx) => {
 };
 
 const app = new Koa();
-app.use(mount('/static', serve(path.resolve(__dirname, '../../../build'))));
+
+if (process.env.NODE_ENV === 'development') {
+    app.use(koaWebpack({
+        config: webpackConfig,
+        dev: {
+            publicPath: '/static/',
+            stats: {
+                colors: true,
+            },
+            quiet: false,
+            noInfo: true,
+        },
+        hot: {
+            log: console.log,
+            path: '/__webpack_hmr',
+            heartbeat: 10 * 1000,
+        },
+    }));
+} else {
+    app.use(mount('/static', serve(path.resolve(__dirname, '../../../build'))));
+}
+
 app.use(handleRender);
 
 export default app;

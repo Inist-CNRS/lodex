@@ -148,15 +148,12 @@ export default {
         ]
         : [
             new UglifyJsPlugin({
-                beautify: false,
-                mangle: {
-                    screw_ie8: true,
+                uglifyOptions: {
+                    ie8: false,
+                    beautify: false,
+                    comments: false,
+                    sourceMap: false,
                 },
-                compress: {
-                    screw_ie8: true,
-                },
-                comments: false,
-                sourceMap: false,
             }),
             new CompressionPlugin(),
         ]),
