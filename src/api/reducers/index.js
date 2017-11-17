@@ -8,6 +8,7 @@ import merge from './merge';
 import stats from './stats';
 import ventilate from './ventilate';
 import graph from './graph';
+import total from './total';
 
 const reducers = {
     count,
@@ -20,6 +21,7 @@ const reducers = {
     stats,
     ventilate,
     graph,
+    total,
 };
 
 export default reducers;
