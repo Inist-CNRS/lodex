@@ -266,7 +266,7 @@ describe('JSONLDObject / mergeCompleteField', () => {
         });
     });
 
-    it.only('should return the formatted completed field', async () => {
+    it('should return the formatted completed field', async () => {
         const output = {};
         const field = { name: 'completing', completes: 'completed' };
         const fields = [{
