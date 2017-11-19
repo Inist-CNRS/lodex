@@ -64,7 +64,7 @@ export class OverviewComponent extends Component {
                         <CardHeader
                             avatar={
                                 <Avatar
-                                    icon={<img alt="lodex_logo" src="/static/lodex.png" />}
+                                    icon={<img alt="lodex_logo" src="/lodex.png" />}
                                     backgroundColor={grey50}
                                     size={60}
                                 />

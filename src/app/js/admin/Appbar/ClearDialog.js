@@ -46,7 +46,7 @@ class ClearDialogComponent extends Component {
             case 'published':
                 // this.props.reloadPublication();
                 // must be change
-                window.location.href = '/admin/dashboard';
+                window.location.href = '/admin/#/dashboard';
                 break;
             default:
                 break;

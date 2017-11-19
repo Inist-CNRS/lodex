@@ -48,7 +48,7 @@ const renderFullPage = (html, preloadedState) =>
         .replace('<div id="root"></div>', `<div id="root"><div>${html}</div></div>`)
         .replace('</body>',
             `<script>window.__PRELOADED_STATE__ = ${JSON.stringify(preloadedState).replace(/</g, '\\u003c')}</script>
-            <script src="/static/index.js"></script>
+            <script src="/index.js"></script>
             </body>`
         );
 
@@ -118,7 +118,7 @@ if (process.env.NODE_ENV === 'development') {
     app.use(koaWebpack({
         config: webpackConfig,
         dev: {
-            publicPath: '/static/',
+            publicPath: '/',
             stats: {
                 colors: true,
             },
@@ -132,7 +132,7 @@ if (process.env.NODE_ENV === 'development') {
         },
     }));
 } else {
-    app.use(mount('/static', serve(path.resolve(__dirname, '../../../build'))));
+    app.use(mount('/', serve(path.resolve(__dirname, '../../../build'))));
 }
 
 app.use(handleRender);

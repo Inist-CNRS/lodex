@@ -29,6 +29,9 @@ install-npm-dependencies:
 
 install: copy-conf install-npm-dependencies ## Install npm dependencies for the api, admin, and frontend apps
 
+build-app:
+	docker-compose run node npm run build
+
 build: ## build the docker image localy
 	docker build -t inistcnrs/lodex --build-arg http_proxy --build-arg https_proxy .
 

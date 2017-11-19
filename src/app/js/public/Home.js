@@ -99,7 +99,6 @@ export class HomeComponent extends Component {
         if (hasPublishedDataset) {
             return (
                 <div>
-                    <h1>HOT</h1>
                     <div className="header-dataset-section">
                         <DatasetCharacteristics />
                     </div>

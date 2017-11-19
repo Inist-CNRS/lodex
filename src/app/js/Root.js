@@ -4,9 +4,10 @@ import { Router, browserHistory } from 'react-router';
 import { syncHistoryWithStore } from 'react-router-redux';
 import DocumentTitle from 'react-document-title';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import { createHashHistory } from 'history';
 
-const Root = ({ store, routes }) => {
-    const history = syncHistoryWithStore(browserHistory, store);
+const Root = ({ store, routes, admin = false }) => {
+    const history = syncHistoryWithStore(admin ? createHashHistory() : browserHistory, store);
     const pageTitle = /https?:\/\/([\w-]+)/.exec(process.env.EZMASTER_PUBLIC_URL)[1];
     return (
         <DocumentTitle title={pageTitle}>
