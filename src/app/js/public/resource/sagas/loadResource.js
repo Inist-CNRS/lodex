@@ -13,35 +13,52 @@ import { fromUser } from '../../../sharedSelectors';
 import fetchSaga from '../../../lib/sagas/fetchSaga';
 
 import { fromResource } from '../../selectors';
+import queryStringToLiteral from '../../../lib/queryStringToLiteral';
 
-export const parsePathName = pathname => pathname.match(/^\/((?:ark|uid):\/.*$)/) || [];
+export const getUriFromQueryString = queryString => queryStringToLiteral(queryString).uri;
+
+export const parsePathName = (pathname) => {
+    const match = pathname.match(/^\/((?:ark|uid):\/.*$)/);
+
+    return match && match[1];
+};
+
+export const getUriFromPayload = (payload) => {
+    const ark = parsePathName(payload.pathname);
+
+    if (ark) {
+        return ark;
+    }
+
+    if (payload && payload.state && payload.state.uri) {
+        return payload.state.uri;
+    }
+
+    return getUriFromQueryString(payload.search);
+};
+
+export function* getUri(type, payload) {
+    if (type === LOCATION_CHANGE) {
+        return yield call(getUriFromPayload, payload);
+    }
+    const resource = yield select(fromResource.getResourceLastVersion);
+
+    if (!resource) {
+        return null;
+    }
+
+    return resource.uri;
+}
 
 export function* handleLoadResource({ payload, type }) {
     yield put(preLoadPublication());
-    let ark;
-    let uri;
+    const uri = yield call(getUri, type, payload);
 
-    if (type === LOCATION_CHANGE) {
-        [, ark] = yield call(parsePathName, payload.pathname);
-        if (!ark && (!payload.state || !payload.state.uri) && !payload.query.uri) {
-            return;
-        }
-        if (payload && payload.state && payload.state.uri) {
-            uri = payload.state.uri;
-        } else {
-            uri = ark || payload.query.uri;
-        }
-    } else {
-        const resource = yield select(fromResource.getResourceLastVersion);
-
-        if (!resource) {
-            return;
-        }
-
-        uri = resource.uri;
+    if (!uri) {
+        return;
     }
 
-    if (yield select(fromResource.isResourceLoaded, uri)) {
+    if ((yield select(fromResource.isResourceLoaded, uri))) {
         return;
     }
 

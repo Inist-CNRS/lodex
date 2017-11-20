@@ -2,16 +2,7 @@ import { put, call, takeEvery } from 'redux-saga/effects';
 import { LOCATION_CHANGE } from 'react-router-redux';
 
 import { setLanguage } from '../';
-
-const queryStringToLiteral = (queryString = '') =>
-    queryString
-        .slice(1)
-        .split('&')
-        .map(v => v.split('='))
-        .reduce((acc, [key, value]) => ({
-            ...acc,
-            [key]: value,
-        }), {});
+import queryStringToLiteral from '../../lib/quertStringToLiteral';
 
 const getLanguage = queryString => queryStringToLiteral(queryString).language;
 
