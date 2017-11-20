@@ -1,4 +1,4 @@
-import { call, put, select, takeLatest } from 'redux-saga/effects';
+import { call, all, put, select, takeLatest } from 'redux-saga/effects';
 import {
     CHANGE as REDUX_FORM_CHANGE,
     ARRAY_REMOVE as REDUX_FORM_ARRAY_REMOVE,
@@ -28,7 +28,7 @@ export function* handleComputeFieldPreview() {
         const token = yield select(fromUser.getToken);
         const transformDocument = yield call(getDocumentTransformer, fields, token);
 
-        const preview = yield lines.map(line => call(transformDocument, line));
+        const preview = yield all(lines.map(line => call(transformDocument, line)));
         yield put(computeFieldPreviewSuccess(preview));
     } catch (error) {
         yield put(computeFieldPreviewError(error));
