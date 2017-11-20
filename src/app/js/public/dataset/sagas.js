@@ -46,7 +46,7 @@ export function* handleLoadDatasetPageRequest({ payload }) {
         facets,
         sort,
         page,
-        perPage
+        perPage,
     });
     const { error, response } = yield call(fetchSaga, request);
 
@@ -62,16 +62,19 @@ export function* handleLoadDatasetPageRequest({ payload }) {
     yield delay(500);
 }
 
-export default function* () {
+export default function*() {
     yield all([
-        takeLatest([
-            LOAD_DATASET_PAGE,
-            APPLY_FILTER,
-            APPLY_FACET,
-            REMOVE_FACET,
-            SORT_DATASET,
-            CHANGE_PAGE,
-        ], handleLoadDatasetPageRequest),
+        takeLatest(
+            [
+                LOAD_DATASET_PAGE,
+                APPLY_FILTER,
+                APPLY_FACET,
+                REMOVE_FACET,
+                SORT_DATASET,
+                CHANGE_PAGE,
+            ],
+            handleLoadDatasetPageRequest,
+        ),
         takeLatest(PRE_LOAD_DATASET_PAGE, handlePreLoadDatasetPage),
     ]);
 }

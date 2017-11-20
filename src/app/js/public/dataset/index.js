@@ -37,52 +37,66 @@ export const defaultState = {
     total: 0,
 };
 
-export default handleActions({
-    PRE_LOAD_DATASET_PAGE: (state, { payload }) => ({
-        ...state,
-        perPage: (payload && payload.perPage) || state.perPage,
-    }),
-    [combineActions(LOAD_DATASET_PAGE, APPLY_FACET, APPLY_FILTER, CHANGE_PAGE)]: (state, { payload }) => ({
-        ...state,
-        error: null,
-        loading: true,
-        perPage: (payload && payload.perPage) || state.perPage,
-    }),
-    LOAD_DATASET_PAGE_SUCCESS: (state, { payload: { dataset, page: currentPage, total } }) => ({
-        ...state,
-        currentPage,
-        dataset,
-        error: null,
-        loading: false,
-        total,
-    }),
-
-    LOAD_DATASET_PAGE_ERROR: (state, { payload: error }) => ({
-        ...state,
-        error: error.message,
-        loading: false,
-    }),
-    APPLY_FILTER: (state, { payload: match }) => ({
-        ...state,
-        currentPage: 0,
-        match,
-    }),
-    APPLY_FACET: state => ({
-        ...state,
-        currentPage: 0,
-    }),
-    SORT_DATASET: (state, { payload: sortBy }) => {
-        const sortDir = (sortBy === state.sort.sortBy && state.sort.sortDir === 'ASC') ? 'DESC' : 'ASC';
-
-        return {
+export default handleActions(
+    {
+        PRE_LOAD_DATASET_PAGE: (state, { payload }) => ({
             ...state,
-            sort: {
-                sortBy,
-                sortDir,
-            },
-        };
+            perPage: (payload && payload.perPage) || state.perPage,
+        }),
+        [combineActions(
+            LOAD_DATASET_PAGE,
+            APPLY_FACET,
+            APPLY_FILTER,
+            CHANGE_PAGE,
+        )]: (state, { payload }) => ({
+            ...state,
+            error: null,
+            loading: true,
+            perPage: (payload && payload.perPage) || state.perPage,
+        }),
+        LOAD_DATASET_PAGE_SUCCESS: (
+            state,
+            { payload: { dataset, page: currentPage, total } },
+        ) => ({
+            ...state,
+            currentPage,
+            dataset,
+            error: null,
+            loading: false,
+            total,
+        }),
+
+        LOAD_DATASET_PAGE_ERROR: (state, { payload: error }) => ({
+            ...state,
+            error: error.message,
+            loading: false,
+        }),
+        APPLY_FILTER: (state, { payload: match }) => ({
+            ...state,
+            currentPage: 0,
+            match,
+        }),
+        APPLY_FACET: state => ({
+            ...state,
+            currentPage: 0,
+        }),
+        SORT_DATASET: (state, { payload: sortBy }) => {
+            const sortDir =
+                sortBy === state.sort.sortBy && state.sort.sortDir === 'ASC'
+                    ? 'DESC'
+                    : 'ASC';
+
+            return {
+                ...state,
+                sort: {
+                    sortBy,
+                    sortDir,
+                },
+            };
+        },
     },
-}, defaultState);
+    defaultState,
+);
 
 const isDatasetLoading = state => state.loading;
 const getDatasetCurrentPage = state => state.currentPage;
