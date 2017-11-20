@@ -8,6 +8,7 @@ import { Tabs, Tab } from 'material-ui/Tabs';
 import Divider from 'material-ui/Divider';
 import { grey500 } from 'material-ui/styles/colors';
 import memoize from 'lodash.memoize';
+import { Helmet } from 'react-helmet';
 
 import { saveResource as saveResourceAction } from './';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
@@ -139,6 +140,9 @@ export const DetailComponent = ({
 
     return (
         <div className="detail">
+            <Helmet>
+                <title>{/https?:\/\/([\w-]+)/.exec(process.env.EZMASTER_PUBLIC_URL)[1]} - {sharingTitle || resource.uri}</title>
+            </Helmet>
             <div className="header-resource-section">
                 <div style={styles.container}>
                     <div style={styles.firstItem}>

@@ -48,7 +48,7 @@ mongo-shell-test: ## Start the mongo shell for the test database
 	docker-compose exec mongo mongo lodex_test
 
 npm: ## allow to run dockerized npm command eg make npm 'install koa --save'
-	docker-compose run --rm npm $(COMMAND_ARGS)
+	docker-compose run --rm node npm $(COMMAND_ARGS)
 
 test-api-unit: ## Run the API unit tests
 	NODE_ENV=test docker-compose run --rm node npm run test:api

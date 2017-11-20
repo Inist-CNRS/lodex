@@ -1,5 +1,4 @@
 import path from 'path';
-import config from 'config';
 import { renderToString } from 'react-dom/server';
 import React from 'react';
 import Koa from 'koa';
@@ -8,11 +7,12 @@ import mount from 'koa-mount';
 import { Provider } from 'react-redux';
 import { createMemoryHistory, match, RouterContext } from 'react-router';
 import { syncHistoryWithStore } from 'react-router-redux';
-import DocumentTitle from 'react-document-title';
+import { Helmet } from 'react-helmet';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import { END } from 'redux-saga';
 import koaWebpack from 'koa-webpack';
+import fs from 'fs';
 
 import rootReducer from '../../../app/js/public/reducers';
 import sagas from '../../../app/js/public/sagas';
@@ -20,7 +20,6 @@ import configureStoreServer from '../../../app/js/configureStoreServer';
 import routes from '../../../app/js/public/routes';
 import phrasesForEn from '../../../app/js/i18n/translations/en';
 import webpackConfig from '../../../app/webpack.config.babel';
-import fs from 'fs';
 
 const indexHtml = fs.readFileSync(path.resolve(__dirname, '../../../app/custom/index.html')).toString();
 
@@ -43,13 +42,18 @@ const initialState = {
     },
 };
 
-const renderFullPage = (html, preloadedState) =>
+const renderFullPage = (html, preloadedState, helmet) =>
     indexHtml
         .replace('<div id="root"></div>', `<div id="root"><div>${html}</div></div>`)
-        .replace('</body>',
+        .replace(/<title>.*?<\/title>/, helmet.title.toString())
+        .replace('</head>', `${helmet.meta.toString()}
+            ${helmet.link.toString()}
+            </head>`)
+        .replace(
+            '</body>',
             `<script>window.__PRELOADED_STATE__ = ${JSON.stringify(preloadedState).replace(/</g, '\\u003c')}</script>
             <script src="/index.js"></script>
-            </body>`
+            </body>`,
         );
 
 const handleRender = async (ctx, next) => {
@@ -67,7 +71,6 @@ const handleRender = async (ctx, next) => {
         userAgent: headers['user-agent'],
     });
     const history = createMemoryHistory(url);
-    const pageTitle = /https?:\/\/([\w-]+)/.exec(config.host)[1];
 
     ctx.body = await new Promise((resolve, reject) => {
         match({ history, routes, location: url }, (error, redirect, renderProps) => {
@@ -82,28 +85,26 @@ const handleRender = async (ctx, next) => {
             store.runSaga(sagas).done
                 .then(() => {
                     const html = renderToString(
-                        <DocumentTitle title={pageTitle}>
-                            <Provider {...{ store }}>
-                                <MuiThemeProvider muiTheme={muiTheme}>
-                                    <RouterContext {...renderProps} />
-                                </MuiThemeProvider>
-                            </Provider>
-                        </DocumentTitle>,
+                        <Provider {...{ store }}>
+                            <MuiThemeProvider muiTheme={muiTheme}>
+                                <RouterContext {...renderProps} />
+                            </MuiThemeProvider>
+                        </Provider>
                     );
+                    const helmet = Helmet.renderStatic();
+                    console.log(process.env.EZMASTER_PUBLIC_URL, helmet.title.toString());
                     const preloadedState = store.getState();
 
-                    resolve(renderFullPage(html, preloadedState));
+                    resolve(renderFullPage(html, preloadedState, helmet));
                 })
                 .catch(error => reject(error));
 
             renderToString(
-                <DocumentTitle title={pageTitle}>
-                    <Provider {...{ store }}>
-                        <MuiThemeProvider muiTheme={muiTheme}>
-                            <RouterContext {...renderProps} />
-                        </MuiThemeProvider>
-                    </Provider>
-                </DocumentTitle>,
+                <Provider {...{ store }}>
+                    <MuiThemeProvider muiTheme={muiTheme}>
+                        <RouterContext {...renderProps} />
+                    </MuiThemeProvider>
+                </Provider>,
             );
 
             syncHistoryWithStore(history, store);

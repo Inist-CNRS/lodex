@@ -5,6 +5,7 @@ import translate from 'redux-polyglot/translate';
 import { Tabs, Tab } from 'material-ui/Tabs';
 import { push } from 'react-router-redux';
 import Divider from 'material-ui/Divider';
+import { Helmet } from 'react-helmet';
 
 import { polyglot as polyglotPropTypes } from '../propTypes';
 import { preLoadPublication as preLoadPublicationAction } from '../fields';
@@ -99,6 +100,9 @@ export class HomeComponent extends Component {
         if (hasPublishedDataset) {
             return (
                 <div>
+                    <Helmet>
+                        <title>{/https?:\/\/([\w-]+)/.exec(process.env.EZMASTER_PUBLIC_URL)[1]}</title>
+                    </Helmet>
                     <div className="header-dataset-section">
                         <DatasetCharacteristics />
                     </div>
