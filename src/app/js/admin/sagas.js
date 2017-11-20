@@ -22,7 +22,7 @@ export default function* () {
     yield fork(importSaga);
     yield fork(parsingSaga);
     yield fork(publicationSaga);
-    yield fork(previewSaga);
+    yield all(previewSaga.map(fork));
     yield fork(publishSaga);
     yield all(removedResourcesSagas.map(fork));
     yield fork(contributedResourcesSagas);

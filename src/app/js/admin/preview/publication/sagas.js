@@ -3,7 +3,6 @@ import { call, put, select, takeLatest } from 'redux-saga/effects';
 import getDocumentTransformer from '../../../lib/getDocumentTransformer';
 import { fromUser, fromFields } from '../../../sharedSelectors';
 import {
-    COMPUTE_PUBLICATION_PREVIEW,
     computePublicationPreviewSuccess,
     computePublicationPreviewError,
 } from './';
@@ -36,7 +35,6 @@ export function* handleComputePublicationPreview() {
 
 export default function* watchComputePreview() {
     yield takeLatest([
-        COMPUTE_PUBLICATION_PREVIEW,
         LOAD_PARSING_RESULT_SUCCESS,
         LOAD_FIELD_SUCCESS,
         REMOVE_FIELD_SUCCESS,

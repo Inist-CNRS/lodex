@@ -7,6 +7,7 @@ import {
     loadField,
     getFieldFormData,
     saveFieldError,
+    saveFieldSuccess,
     FIELD_FORM_NAME,
     SAVE_FIELD,
 } from '../';
@@ -42,6 +43,7 @@ export function* handleSaveField() {
         yield put(saveFieldError(error));
         return;
     }
+    yield put(saveFieldSuccess());
 
     yield put(loadField());
     yield put(destroy(FIELD_FORM_NAME));
