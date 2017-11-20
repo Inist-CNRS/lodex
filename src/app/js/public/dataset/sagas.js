@@ -2,6 +2,7 @@ import { call, put, select, takeLatest } from 'redux-saga/effects';
 import { delay } from 'redux-saga';
 
 import {
+    LOAD_DATASET_PAGE,
     PRE_LOAD_DATASET_PAGE,
     APPLY_FILTER,
     SORT_DATASET,
@@ -16,11 +17,15 @@ import { fromUser } from '../../sharedSelectors';
 import fetchSaga from '../../lib/sagas/fetchSaga';
 import { fromDataset, fromFacet } from '../selectors';
 
-export function* handleLoadDatasetPageRequest({ type, payload }) {
-    if (type === PRE_LOAD_DATASET_PAGE && (yield select(fromDataset.isDatasetLoaded))) {
+export function* handlePreLoadDatasetPage() {
+    if (yield select(fromDataset.isDatasetLoaded)) {
         return;
     }
 
+    yield put(loadDatasetPage());
+}
+
+export function* handleLoadDatasetPageRequest({ payload }) {
     const facets = yield select(fromFacet.getAppliedFacets);
     const match = yield select(fromDataset.getFilter);
     const sort = yield select(fromDataset.getSort);
@@ -36,8 +41,13 @@ export function* handleLoadDatasetPageRequest({ type, payload }) {
         perPage = yield select(fromDataset.getDatasetPerPage);
     }
 
-    yield put(loadDatasetPage());
-    const request = yield select(fromUser.getLoadDatasetPageRequest, { match, facets, sort, page, perPage });
+    const request = yield select(fromUser.getLoadDatasetPageRequest, {
+        match,
+        facets,
+        sort,
+        page,
+        perPage
+    });
     const { error, response } = yield call(fetchSaga, request);
 
     if (error) {
@@ -53,12 +63,15 @@ export function* handleLoadDatasetPageRequest({ type, payload }) {
 }
 
 export default function* () {
-    yield takeLatest([
-        PRE_LOAD_DATASET_PAGE,
-        APPLY_FILTER,
-        APPLY_FACET,
-        REMOVE_FACET,
-        SORT_DATASET,
-        CHANGE_PAGE,
-    ], handleLoadDatasetPageRequest);
+    yield all([
+        takeLatest([
+            LOAD_DATASET_PAGE,
+            APPLY_FILTER,
+            APPLY_FACET,
+            REMOVE_FACET,
+            SORT_DATASET,
+            CHANGE_PAGE,
+        ], handleLoadDatasetPageRequest),
+        takeLatest(PRE_LOAD_DATASET_PAGE, handlePreLoadDatasetPage),
+    ]);
 }
