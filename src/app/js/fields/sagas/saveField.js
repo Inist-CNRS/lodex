@@ -15,19 +15,15 @@ import { fromUser } from '../../sharedSelectors';
 
 import fetchSaga from '../../lib/sagas/fetchSaga';
 
-export const sanitizeField = (fieldData) => {
+export const sanitizeField = fieldData => {
     const valueOperation = get(fieldData, 'transformers[0].operation');
     if (valueOperation === 'CONCAT') {
         const values = get(fieldData, 'transformers[0].args');
 
-        return set(
-            { ...fieldData },
-            'transformers[0].args',
-            [
-                ...values.slice(0, 2),
-                ...values.slice(2).filter(({ value }) => !!value),
-            ],
-        );
+        return set({ ...fieldData }, 'transformers[0].args', [
+            ...values.slice(0, 2),
+            ...values.slice(2).filter(({ value }) => !!value),
+        ]);
     }
 
     return fieldData;
@@ -36,7 +32,10 @@ export const sanitizeField = (fieldData) => {
 export function* handleSaveField() {
     const fieldData = yield select(getFieldFormData);
     const sanitizedFieldData = yield call(sanitizeField, fieldData);
-    const request = yield select(fromUser.getSaveFieldRequest, sanitizedFieldData);
+    const request = yield select(
+        fromUser.getSaveFieldRequest,
+        sanitizedFieldData,
+    );
     const { error } = yield call(fetchSaga, request);
 
     if (error) {
@@ -50,7 +49,5 @@ export function* handleSaveField() {
 }
 
 export default function* watchSaveField() {
-    yield takeLatest([
-        SAVE_FIELD,
-    ], handleSaveField);
+    yield takeLatest([SAVE_FIELD], handleSaveField);
 }
