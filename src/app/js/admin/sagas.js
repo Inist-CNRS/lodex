@@ -15,7 +15,7 @@ import fetchSaga from '../fetch/sagas';
 import i18nSagas from '../i18n/sagas';
 import clearSaga from './clear/sagas';
 
-export default function* () {
+export default function*() {
     yield fork(exportSaga);
     yield fork(fetchSaga);
     yield all(fieldsSaga.map(fork));
@@ -29,5 +29,5 @@ export default function* () {
     yield all(uploadFileSaga.map(fork));
     yield fork(userSagas);
     yield all(i18nSagas.map(fork));
-    yield fork(clearSaga);
+    yield all(clearSaga.map(fork));
 }

@@ -11,10 +11,10 @@ import fieldsSagas from '../fields/sagas';
 import resourceSagas from './resource/sagas';
 import userSagas from '../user/sagas';
 
-export default function* () {
+export default function*() {
     yield all(characteristicSaga.map(fork));
-    yield fork(function* () { yield fork(datasetSaga); });
-    yield fork(exportSaga);
+    yield fork(datasetSaga);
+    yield all(exportSaga.map(fork));
     yield fork(exportFieldsSaga);
     yield fork(facetSaga);
     yield fork(fetchSaga);
