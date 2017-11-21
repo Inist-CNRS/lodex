@@ -1,7 +1,7 @@
 version: "2"
 services:
     npm:
-        image: node:7.8.0
+        image: node:8.9.1
         volumes:
             - .:/app
         working_dir: /app
@@ -39,7 +39,7 @@ services:
             - 27017:27017
 
     api:
-        image: node:7.8.0
+        image: node:8.9.1
         volumes:
             - .:/app
         working_dir: /app
@@ -54,7 +54,7 @@ services:
         command: npm start
 
     api-unit:
-        image: node:7.8.0
+        image: node:8.9.1
         volumes:
             - .:/app
         working_dir: /app
@@ -63,7 +63,7 @@ services:
         command: npm run test:api
 
     frontend-unit:
-        image: node:7.8.0
+        image: node:8.9.1
         volumes:
             - .:/app
         working_dir: /app
