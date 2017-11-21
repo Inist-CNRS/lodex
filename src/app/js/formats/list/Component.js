@@ -4,24 +4,23 @@ import get from 'lodash.get';
 
 import { field as fieldPropTypes } from '../../propTypes';
 import { getViewComponent } from '../';
-import { PropType } from 'redux-polyglot';
 
-const UL = ({ className, children }) => (
+export const UL = ({ className, children }) => (
     <ul className={className}>{children}</ul>
 );
 
 UL.propTypes = {
     className: PropTypes.string,
-    children: PropType.any.isRequired,
+    children: PropTypes.any.isRequired,
 };
 
-const OL = ({ className, children }) => (
+export const OL = ({ className, children }) => (
     <ol className={className}>{children}</ol>
 );
 
 OL.propTypes = {
     className: PropTypes.string,
-    children: PropType.any.isRequired,
+    children: PropTypes.any.isRequired,
 };
 
 const ListView = ({ className, resource, field }) => {
@@ -37,7 +36,7 @@ const ListView = ({ className, resource, field }) => {
         <List className={className}>
             {values.map((value, index) => (
                 <li key={value}>
-                    {SubViewComponent ? (
+                    {subFormat ? (
                         <SubViewComponent
                             resource={values}
                             field={{
