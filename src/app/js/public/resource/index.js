@@ -55,12 +55,20 @@ export const hideResourceError = createAction(HIDE_RESOURCE_ERROR);
 
 export const addFieldToResource = createAction(ADD_FIELD_TO_RESOURCE);
 export const addFieldToResourceOpen = createAction(ADD_FIELD_TO_RESOURCE_OPEN);
-export const addFieldToResourceCancel = createAction(ADD_FIELD_TO_RESOURCE_CANCEL);
-export const addFieldToResourceSuccess = createAction(ADD_FIELD_TO_RESOURCE_SUCCESS);
-export const addFieldToResourceError = createAction(ADD_FIELD_TO_RESOURCE_ERROR);
+export const addFieldToResourceCancel = createAction(
+    ADD_FIELD_TO_RESOURCE_CANCEL,
+);
+export const addFieldToResourceSuccess = createAction(
+    ADD_FIELD_TO_RESOURCE_SUCCESS,
+);
+export const addFieldToResourceError = createAction(
+    ADD_FIELD_TO_RESOURCE_ERROR,
+);
 
 export const changeFieldStatus = createAction(CHANGE_FIELD_STATUS);
-export const changeFieldStatusSuccess = createAction(CHANGE_FIELD_STATUS_SUCCESS);
+export const changeFieldStatusSuccess = createAction(
+    CHANGE_FIELD_STATUS_SUCCESS,
+);
 export const changeFieldStatusError = createAction(CHANGE_FIELD_STATUS_ERROR);
 export const selectVersion = createAction(SELECT_VERSION);
 
@@ -80,147 +88,162 @@ export const defaultState = {
     selectedVersion: 0,
 };
 
-export default handleActions({
-    LOAD_RESOURCE: state => ({
-        ...state,
-        error: null,
-        loading: true,
-        saving: false,
-    }),
-    LOAD_RESOURCE_SUCCESS: (state, { payload }) => ({
-        ...state,
-        resource: payload,
-        error: null,
-        loading: false,
-        saving: false,
-    }),
-    LOAD_RESOURCE_ERROR: (state, { payload: error }) => ({
-        ...state,
-        error: error.message,
-        loading: false,
-        saving: false,
-    }),
-    [combineActions(
-        SAVE_RESOURCE,
-        HIDE_RESOURCE,
-        ADD_FIELD_TO_RESOURCE,
-    )]: state => ({
-        ...state,
-        error: null,
-        saving: true,
-    }),
-    SAVE_RESOURCE_SUCCESS: (state, { payload: resource }) => ({
-        ...state,
-        resource: resource || state.resource,
-        error: null,
-        saving: false,
-    }),
-    [combineActions(
-        HIDE_RESOURCE_SUCCESS,
-        ADD_FIELD_TO_RESOURCE_SUCCESS,
-    )]: state => ({
-        ...state,
-        error: null,
-        saving: false,
-        addingField: null,
-    }),
-    [combineActions(
-        SAVE_RESOURCE_ERROR,
-        HIDE_RESOURCE_ERROR,
-        ADD_FIELD_TO_RESOURCE_ERROR,
-        CREATE_RESOURCE_ERROR,
-    )]: (state, { payload: error }) => ({
-        ...state,
-        error: error.message,
-        saving: false,
-    }),
-    CHANGE_FIELD_STATUS: (state, { payload: { field, status } }) => {
-        const { contributions } = state.resource;
-        const index = contributions.findIndex(({ fieldName }) => fieldName === field);
-
-        return {
+export default handleActions(
+    {
+        LOAD_RESOURCE: state => ({
             ...state,
-            moderating: true,
-            resource: {
-                ...state.resource,
-                contributions: [
-                    ...contributions.slice(0, index),
-                    {
-                        ...contributions[index],
-                        status,
-                    },
-                    ...contributions.slice(index + 1),
-                ],
-            },
-        };
-    },
-    CHANGE_FIELD_STATUS_ERROR: (state, { payload: { error, field, prevStatus } }) => {
-        const { contributions } = state.resource;
-        const index = contributions.findIndex(({ fieldName }) => fieldName === field);
-
-        return {
+            error: null,
+            loading: true,
+            saving: false,
+        }),
+        LOAD_RESOURCE_SUCCESS: (state, { payload }) => ({
             ...state,
-            error,
+            resource: payload,
+            selectedVersion: payload.versions.length - 1,
+            error: null,
+            loading: false,
+            saving: false,
+        }),
+        LOAD_RESOURCE_ERROR: (state, { payload: error }) => ({
+            ...state,
+            error: error.message,
+            loading: false,
+            saving: false,
+        }),
+        [combineActions(
+            SAVE_RESOURCE,
+            HIDE_RESOURCE,
+            ADD_FIELD_TO_RESOURCE,
+        )]: state => ({
+            ...state,
+            error: null,
+            saving: true,
+        }),
+        SAVE_RESOURCE_SUCCESS: (state, { payload }) => {
+            const resource = payload || state.resource;
+            return {
+                ...state,
+                resource,
+                selectedVersion: resource.versions.length - 1,
+                error: null,
+                saving: false,
+            };
+        },
+        [combineActions(
+            HIDE_RESOURCE_SUCCESS,
+            ADD_FIELD_TO_RESOURCE_SUCCESS,
+        )]: state => ({
+            ...state,
+            error: null,
+            saving: false,
+            addingField: null,
+        }),
+        [combineActions(
+            SAVE_RESOURCE_ERROR,
+            HIDE_RESOURCE_ERROR,
+            ADD_FIELD_TO_RESOURCE_ERROR,
+            CREATE_RESOURCE_ERROR,
+        )]: (state, { payload: error }) => ({
+            ...state,
+            error: error.message,
+            saving: false,
+        }),
+        CHANGE_FIELD_STATUS: (state, { payload: { field, status } }) => {
+            const { contributions } = state.resource;
+            const index = contributions.findIndex(
+                ({ fieldName }) => fieldName === field,
+            );
+
+            return {
+                ...state,
+                moderating: true,
+                resource: {
+                    ...state.resource,
+                    contributions: [
+                        ...contributions.slice(0, index),
+                        {
+                            ...contributions[index],
+                            status,
+                        },
+                        ...contributions.slice(index + 1),
+                    ],
+                },
+            };
+        },
+        CHANGE_FIELD_STATUS_ERROR: (
+            state,
+            { payload: { error, field, prevStatus } },
+        ) => {
+            const { contributions } = state.resource;
+            const index = contributions.findIndex(
+                ({ fieldName }) => fieldName === field,
+            );
+
+            return {
+                ...state,
+                error,
+                moderating: false,
+                resource: {
+                    ...state.resource,
+                    contributions: [
+                        ...contributions.slice(0, index),
+                        {
+                            ...contributions[index],
+                            status: prevStatus,
+                        },
+                        ...contributions.slice(index + 1),
+                    ],
+                },
+            };
+        },
+        CHANGE_FIELD_STATUS_SUCCESS: state => ({
+            ...state,
+            error: null,
             moderating: false,
-            resource: {
-                ...state.resource,
-                contributions: [
-                    ...contributions.slice(0, index),
-                    {
-                        ...contributions[index],
-                        status: prevStatus,
-                    },
-                    ...contributions.slice(index + 1),
-                ],
-            },
-        };
+        }),
+        SELECT_VERSION: (state, { payload: selectedVersion }) => ({
+            ...state,
+            selectedVersion,
+        }),
+        ADD_FIELD_TO_RESOURCE_OPEN: state => ({
+            ...state,
+            addingField: true,
+            error: null,
+        }),
+        ADD_FIELD_TO_RESOURCE_CANCEL: state => ({
+            ...state,
+            addingField: false,
+            error: null,
+        }),
+        HIDE_RESOURCE_OPEN: state => ({
+            ...state,
+            hiding: true,
+            error: null,
+        }),
+        HIDE_RESOURCE_CANCEL: state => ({
+            ...state,
+            hiding: false,
+            error: null,
+        }),
+        CREATE_RESOURCE_OPEN: state => ({
+            ...state,
+            isCreating: true,
+            error: null,
+        }),
+        CREATE_RESOURCE_CANCEL: state => ({
+            ...state,
+            isCreating: false,
+            error: null,
+        }),
+        CREATE_RESOURCE_SUCCESS: state => ({
+            ...state,
+            isCreating: false,
+            saving: false,
+            error: null,
+        }),
     },
-    CHANGE_FIELD_STATUS_SUCCESS: state => ({
-        ...state,
-        error: null,
-        moderating: false,
-    }),
-    SELECT_VERSION: (state, { payload: selectedVersion }) => ({
-        ...state,
-        selectedVersion,
-    }),
-    ADD_FIELD_TO_RESOURCE_OPEN: state => ({
-        ...state,
-        addingField: true,
-        error: null,
-    }),
-    ADD_FIELD_TO_RESOURCE_CANCEL: state => ({
-        ...state,
-        addingField: false,
-        error: null,
-    }),
-    HIDE_RESOURCE_OPEN: state => ({
-        ...state,
-        hiding: true,
-        error: null,
-    }),
-    HIDE_RESOURCE_CANCEL: state => ({
-        ...state,
-        hiding: false,
-        error: null,
-    }),
-    CREATE_RESOURCE_OPEN: state => ({
-        ...state,
-        isCreating: true,
-        error: null,
-    }),
-    CREATE_RESOURCE_CANCEL: state => ({
-        ...state,
-        isCreating: false,
-        error: null,
-    }),
-    CREATE_RESOURCE_SUCCESS: state => ({
-        ...state,
-        isCreating: false,
-        saving: false,
-        error: null,
-    }),
-}, defaultState);
+    defaultState,
+);
 
 const getResourceLastVersion = (state, resource = state.resource) => {
     if (!resource) {
@@ -244,7 +267,7 @@ const hasBeenRemoved = (state, resource = state.resource) => {
     return !!resource.removedAt;
 };
 
-const getResourceProposedFields = (state) => {
+const getResourceProposedFields = state => {
     const { contributions } = state.resource;
     if (!contributions) {
         return [];
@@ -254,17 +277,19 @@ const getResourceProposedFields = (state) => {
         .map(({ fieldName }) => fieldName);
 };
 
-const getProposedFieldStatus = (state) => {
+const getProposedFieldStatus = state => {
     const { contributions } = state.resource;
     if (!contributions) {
         return {};
     }
 
-    return contributions
-        .reduce((acc, { fieldName, status }) => ({
+    return contributions.reduce(
+        (acc, { fieldName, status }) => ({
             ...acc,
             [fieldName]: status,
-        }), {});
+        }),
+        {},
+    );
 };
 
 const getFieldStatus = createSelector(
@@ -273,28 +298,27 @@ const getFieldStatus = createSelector(
     (fieldStatusByName, name) => fieldStatusByName[name],
 );
 
-const getResourceContributions = state =>
-    state.resource.contributions || [];
+const getResourceContributions = state => state.resource.contributions || [];
 
-const getResourceContributorsCatalog =
-    createSelector(
-        getResourceContributions,
-        contributions => contributions
-            .filter(({ contributor }) => !!contributor)
-            .reduce((acc, { fieldName, contributor: { name } }) => ({
+const getResourceContributorsCatalog = createSelector(
+    getResourceContributions,
+    contributions =>
+        contributions.filter(({ contributor }) => !!contributor).reduce(
+            (acc, { fieldName, contributor: { name } }) => ({
                 ...acc,
                 [fieldName]: name,
-            }), {}),
-    );
+            }),
+            {},
+        ),
+);
 
-const getResourceContributorForField =
-    createSelector(
-        getResourceContributorsCatalog,
-        (_, fieldName) => fieldName,
-        (contributorsCatalog, fieldName) => contributorsCatalog[fieldName],
-    );
+const getResourceContributorForField = createSelector(
+    getResourceContributorsCatalog,
+    (_, fieldName) => fieldName,
+    (contributorsCatalog, fieldName) => contributorsCatalog[fieldName],
+);
 
-const getRemovedData = (state) => {
+const getRemovedData = state => {
     const resource = state.resource;
     const { uri, removedAt, reason } = resource;
     return {
@@ -312,13 +336,16 @@ const getVersions = state =>
     state.resource.versions.map(({ publicationDate }) => publicationDate);
 
 const getNbVersions = state =>
-    (state.resource && state.resource.versions && state.resource.versions.length) || 0;
+    (state.resource &&
+        state.resource.versions &&
+        state.resource.versions.length) ||
+    0;
 
 const getSelectedVersion = createSelector(
     state => state.selectedVersion,
     getNbVersions,
     (selectedVersion, nbVersions) =>
-        (selectedVersion !== null ? selectedVersion : (nbVersions - 1)),
+        selectedVersion !== null ? selectedVersion : nbVersions - 1,
 );
 
 const getResourceSelectedVersion = createSelector(
@@ -353,7 +380,8 @@ const getError = ({ error }) => error;
 
 const isCreating = state => state.isCreating;
 
-const isResourceLoaded = (state, uri) => state.resource && state.resource.uri === uri;
+const isResourceLoaded = (state, uri) =>
+    state.resource && state.resource.uri === uri;
 
 export const fromResource = {
     getResourceContributorsCatalog,
@@ -380,6 +408,8 @@ export const fromResource = {
 
 export const getResourceFormData = state => state.form.resource.values;
 export const getHideResourceFormData = state => state.form.hideResource.values;
-export const getNewResourceFieldFormData = state => state.form.newResourceField && state.form.newResourceField.values;
+export const getNewResourceFieldFormData = state =>
+    state.form.newResourceField && state.form.newResourceField.values;
 export const getNewResourceFormData = state =>
-    state.form[CREATE_RESOURCE_FORM_NAME] && state.form[CREATE_RESOURCE_FORM_NAME].values;
+    state.form[CREATE_RESOURCE_FORM_NAME] &&
+    state.form[CREATE_RESOURCE_FORM_NAME].values;
