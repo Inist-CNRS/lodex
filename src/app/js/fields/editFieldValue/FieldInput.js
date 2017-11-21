@@ -31,11 +31,27 @@ export const FieldInputComponent = ({
         return <CompositeFieldInput label={label} field={field} />;
     }
 
+    const Component = getEditionComponent(field);
+
+    if (Component.isReduxFormReady) {
+        return (
+            <Component
+                key={field.name}
+                name={field.name}
+                component={Component}
+                disabled={field.name === 'uri'}
+                label={label}
+                fullWidth
+                {...input}
+            />
+        );
+    }
+
     return (
         <Field
             key={field.name}
             name={field.name}
-            component={getEditionComponent(field)}
+            component={Component}
             disabled={field.name === 'uri'}
             label={label}
             fullWidth
