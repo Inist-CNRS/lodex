@@ -18,19 +18,19 @@ describe('<Dataset />', () => {
         { col1: 'value31', col2: 'value32' },
     ];
 
-    it('should call loadDatasetPage on mount', () => {
-        const loadDatasetPage = createSpy();
+    it('should call preLoadDatasetPage on mount', () => {
+        const preLoadDatasetPage = createSpy();
 
         shallow(<Dataset
             currentPage={1}
             perPage={10}
-            loadDatasetPage={loadDatasetPage}
+            preLoadDatasetPage={preLoadDatasetPage}
             loading
             p={{ t: key => key }}
             total={0}
         />);
 
-        expect(loadDatasetPage).toHaveBeenCalledWith({
+        expect(preLoadDatasetPage).toHaveBeenCalledWith({
             page: 1,
             perPage: 10,
         });
@@ -43,7 +43,7 @@ describe('<Dataset />', () => {
             perPage={10}
             columns={columns}
             dataset={dataset}
-            loadDatasetPage={() => {}}
+            preLoadDatasetPage={() => {}}
             loading={false}
             p={{ t: key => key }}
             total={3}
@@ -66,7 +66,8 @@ describe('<Dataset />', () => {
             perPage={10}
             columns={columns}
             dataset={dataset}
-            loadDatasetPage={() => {}}
+            changePage={() => {}}
+            preLoadDatasetPage={() => {}}
             loading={false}
             p={{ t: key => key }}
             total={3}
@@ -112,7 +113,7 @@ describe('<Dataset />', () => {
             currentPage={1}
             perPage={10}
             dataset={dataset}
-            loadDatasetPage={() => {}}
+            preLoadDatasetPage={() => {}}
             loading={false}
             total={3}
         />);
@@ -122,19 +123,21 @@ describe('<Dataset />', () => {
         expect(pagination.prop('perPage')).toEqual(10);
     });
 
-    it('should call loadDatasetPage on pagination change', () => {
-        const loadDatasetPage = createSpy();
+    it('should call preLoadDatasetPage on pagination change', () => {
+        const preLoadDatasetPage = createSpy();
+        const changePage = createSpy();
         const wrapper = shallow(<Dataset
             p={{ t: key => key }}
             currentPage={1}
             perPage={10}
-            loadDatasetPage={loadDatasetPage}
+            preLoadDatasetPage={preLoadDatasetPage}
+            changePage={changePage}
             loading={false}
             total={3}
         />);
 
         wrapper.find(Pagination).simulate('change', 5, 40);
-        expect(loadDatasetPage).toHaveBeenCalledWith({
+        expect(changePage).toHaveBeenCalledWith({
             page: 5,
             perPage: 40,
         });

@@ -1,7 +1,7 @@
 import fetch from 'isomorphic-fetch';
 
 export default ({ url, ...config }, mode = 'json') =>
-    fetch(url, config)
+    fetch(process.env.EZMASTER_PUBLIC_URL + url, config)
         .then((response) => {
             if (response.status === 204) {
                 return { response: null };

@@ -5,9 +5,13 @@
                 "node": "current"
             },
             "useBuiltIns": true
-        }]
+        }],
+        "react"
     ],
-    "plugins": ["transform-object-rest-spread"],
+    "plugins": [
+        "transform-class-properties",
+        "transform-object-rest-spread"
+    ],
     "env": {
         "browser": {
             "presets": [

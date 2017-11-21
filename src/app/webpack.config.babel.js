@@ -23,7 +23,7 @@ export default {
         ] : []).concat([
             resolve(__dirname, './js/public/index.js'),
         ]),
-        admin: [].concat(process.env.NODE_ENV === 'development' ? [
+        'admin/index': [].concat(process.env.NODE_ENV === 'development' ? [
             'react-hot-loader/patch',
             'webpack-hot-middleware/client?path=/__webpack_hmr&reload=true',
         ] : []).concat([
@@ -106,7 +106,7 @@ export default {
                 NODE_ENV: process.env.NODE_ENV === 'development'
                     ? JSON.stringify(process.env.NODE_ENV)
                     : JSON.stringify('production'), // eslint-disable-line max-len
-                PUBLIC_URL: JSON.stringify(config.host),
+                EZMASTER_PUBLIC_URL: JSON.stringify(config.host),
                 ISTEX_API_URL: JSON.stringify(config.istexApiUrl),
                 PER_PAGE: JSON.stringify(jsonConfig.perPage),
             },
@@ -128,7 +128,7 @@ export default {
         new HtmlWebpackPlugin({
             filename: 'admin/index.html',
             template: resolve(__dirname, './admin.html'),
-            chunks: ['admin'],
+            chunks: ['admin/index'],
             inject: 'body',
         }),
         new CopyWebpackPlugin([{
@@ -148,15 +148,12 @@ export default {
         ]
         : [
             new UglifyJsPlugin({
-                beautify: false,
-                mangle: {
-                    screw_ie8: true,
+                uglifyOptions: {
+                    ie8: false,
+                    beautify: false,
+                    comments: false,
+                    sourceMap: false,
                 },
-                compress: {
-                    screw_ie8: true,
-                },
-                comments: false,
-                sourceMap: false,
             }),
             new CompressionPlugin(),
         ]),

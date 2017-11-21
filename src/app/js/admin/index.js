@@ -26,7 +26,7 @@ const routes = routesFactory(store);
 injectTapEventPlugin();
 
 render(
-    <Root {...{ store, routes }} />,
+    <Root {...{ store, routes, admin: true }} />,
     document.getElementById('root'),
 );
 
@@ -34,6 +34,6 @@ render(
 if (module.hot) {
     module.hot.accept('../Root', () => {
         const NewRoot = require('../Root').default; // eslint-disable-line
-        render(<NewRoot {...{ store, routes }} />, document.getElementById('root'));
+        render(<NewRoot {...{ store, routes, admin: true }} />, document.getElementById('root'));
     });
 }

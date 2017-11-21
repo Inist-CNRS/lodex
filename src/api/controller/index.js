@@ -17,6 +17,7 @@ if (simulatedLatency) {
 }
 
 app.use(mount('/api', api));
+
 app.use(mount('/', front));
 
 export default app;

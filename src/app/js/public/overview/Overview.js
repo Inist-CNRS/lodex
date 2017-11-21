@@ -1,15 +1,16 @@
 /* eslint react/prop-types: 0 */
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 import { Card, CardHeader, Avatar } from 'material-ui';
+import PropTypes from 'prop-types';
 
 import { grey50 } from 'material-ui/styles/colors';
 
 import Pagination from '../../lib/components/Pagination';
 import Loading from '../../lib/components/Loading';
-import { loadDatasetPage as loadDatasetPageAction } from '../dataset';
+import { preLoadDatasetPage, changePage } from '../dataset';
 import { fromDataset } from '../selectors';
 import { fromFields } from '../../sharedSelectors';
 import { getResourceUri } from '../../../../common/uris';
@@ -39,58 +40,63 @@ const styles = {
 
 export class OverviewComponent extends Component {
     componentWillMount() {
-        const { loadDatasetPage, currentPage, perPage } = this.props;
-        loadDatasetPage({ page: currentPage, perPage });
+        const { currentPage, perPage } = this.props;
+        this.props.preLoadDatasetPage({ page: currentPage, perPage });
     }
 
     handlePageChange = (page, perPage) => {
-        this.props.loadDatasetPage({ page, perPage });
-    }
+        this.props.changePage({ page, perPage });
+    };
 
     render() {
-        const { loading, p: polyglot, dataset, columns, total, perPage, currentPage } = this.props;
+        const {
+            loading,
+            p: polyglot,
+            dataset,
+            titleCol,
+            subTitleCol,
+            total,
+            perPage,
+            currentPage,
+        } = this.props;
 
         if (loading) return <Loading>{polyglot.t('loading')}</Loading>;
         return (
             <div className="overview" style={styles.wrapper}>
-                <div
-                    style={styles.container}
-                >
-                    { dataset.map((data, index) => (<Card
-                        style={styles.item}
-                        // eslint-disable-next-line react/no-array-index-key
-                        key={`overview-${index}`}
-                    >
-                        <CardHeader
-                            avatar={
-                                <Avatar
-                                    icon={<img alt="lodex_logo" src="/lodex.png" />}
-                                    backgroundColor={grey50}
-                                    size={60}
-                                />
-                            }
-                            title={
-                                <a
-                                    href={getResourceUri(data)}
-                                    title={
-                                        (columns.filter(e => e.overview === 1).length) ?
-                                            data[columns.filter(e => e.overview === 1)[0].name] :
-                                            data.uri}
-                                >
-                                    {
-                                        (columns.filter(e => e.overview === 1).length) ?
-                                            data[columns.filter(e => e.overview === 1)[0].name] :
-                                            data.uri
-                                    }</a>}
-                            subtitle={
-                                (columns.filter(e => e.overview === 2).length) ?
-                                    data[columns.filter(e => e.overview === 2)[0].name] :
-                                    ''
-                            }
-                            titleStyle={styles.title}
-                            subtitleStyle={styles.title}
-                        />
-                    </Card>)) }
+                <div style={styles.container}>
+                    {dataset.map((data, index) => (
+                        <Card
+                            style={styles.item}
+                            // eslint-disable-next-line react/no-array-index-key
+                            key={`overview-${index}`}
+                        >
+                            <CardHeader
+                                avatar={
+                                    <Avatar
+                                        icon={
+                                            <img
+                                                alt="lodex_logo"
+                                                src="/lodex.png"
+                                            />
+                                        }
+                                        backgroundColor={grey50}
+                                        size={60}
+                                    />
+                                }
+                                title={
+                                    <a
+                                        href={getResourceUri(data)}
+                                        title={data[titleCol] || data.uri}
+                                    >
+                                        {data[titleCol] || data.uri}
+                                    </a>
+                                }
+                                subtitle={data[subTitleCol] || ''}
+                                titleStyle={styles.title}
+                                subtitleStyle={styles.title}
+                            />
+                        </Card>
+                    ))}
                 </div>
                 <Pagination
                     onChange={this.handlePageChange}
@@ -103,18 +109,18 @@ export class OverviewComponent extends Component {
                         showing: polyglot.t('showing'),
                     }}
                 />
-
             </div>
         );
     }
 }
 
 OverviewComponent.PropTypes = {
-    columns: PropTypes.arrayOf(PropTypes.object),
+    subTitleCol: PropTypes.string,
+    titleCol: PropTypes.string,
     currentPage: PropTypes.number.isRequired,
     perPage: PropTypes.number.isRequired,
     dataset: PropTypes.arrayOf(PropTypes.object),
-    loadDatasetPage: PropTypes.func.isRequired,
+    preLoadDatasetPage: PropTypes.func.isRequired,
     loading: PropTypes.bool.isRequired,
     p: polyglotPropTypes.isRequired,
     total: PropTypes.number.isRequired,
@@ -127,17 +133,18 @@ OverviewComponent.defaultProps = {
 
 const mapStateToProps = state => ({
     loading: fromDataset.isDatasetLoading(state),
-    columns: fromFields.getAllListFields(state),
+    titleCol: fromFields.getOverviewTitleCol(state),
+    subTitleCol: fromFields.getOverviewSubTitleCol(state),
     currentPage: fromDataset.getDatasetCurrentPage(state),
     perPage: fromDataset.getDatasetPerPage(state),
     dataset: fromDataset.getDataset(state),
     total: fromDataset.getDatasetTotal(state),
 });
-const mapDispatchToProps = ({
-    loadDatasetPage: loadDatasetPageAction,
-});
+const mapDispatchToProps = {
+    preLoadDatasetPage,
+    changePage,
+};
 
-export default compose(
-    connect(mapStateToProps, mapDispatchToProps),
-    translate,
-)(OverviewComponent);
+export default compose(connect(mapStateToProps, mapDispatchToProps), translate)(
+    OverviewComponent,
+);

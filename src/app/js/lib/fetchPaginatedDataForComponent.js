@@ -18,7 +18,7 @@ export default fetchProps => Component =>
             perPage: 10,
         };
 
-        componentDidMount() {
+        componentWillMount() {
             this.fetchData();
         }
 

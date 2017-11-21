@@ -11,7 +11,7 @@ import fieldsSagas from '../fields/sagas';
 import resourceSagas from './resource/sagas';
 import userSagas from '../user/sagas';
 
-export default function* () {
+export default function*() {
     yield fork(characteristicSaga);
     yield fork(datasetSaga);
     yield fork(exportSaga);

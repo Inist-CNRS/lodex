@@ -8,23 +8,23 @@ import Dataset from './dataset/Dataset';
 import NoDataset from './NoDataset';
 
 describe('<Home />', () => {
-    it('should call loadPublication on mount', () => {
-        const loadPublication = createSpy();
+    it('should call preLoadPublication on mount', () => {
+        const preLoadPublication = createSpy();
 
         shallow(<Home
             p={{ t: key => key }}
             loading
-            loadPublication={loadPublication}
+            preLoadPublication={preLoadPublication}
         />);
 
-        expect(loadPublication).toHaveBeenCalled();
+        expect(preLoadPublication).toHaveBeenCalled();
     });
 
     it('should render Loading if loading', () => {
         const wrapper = shallow(<Home
             p={{ t: key => key }}
             loading
-            loadPublication={() => {}}
+            preLoadPublication={() => {}}
         />);
 
         const loading = wrapper.find(Loading);
@@ -35,7 +35,7 @@ describe('<Home />', () => {
         const wrapper = shallow(<Home
             p={{ t: key => key }}
             hasPublishedDataset
-            loadPublication={() => {}}
+            preLoadPublication={() => {}}
         />);
 
         const component = wrapper.find(Dataset);
@@ -46,7 +46,7 @@ describe('<Home />', () => {
         const wrapper = shallow(<Home
             p={{ t: key => key }}
             hasPublishedDataset={false}
-            loadPublication={() => {}}
+            preLoadPublication={() => {}}
         />);
 
         const component = wrapper.find(NoDataset);

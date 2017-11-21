@@ -23,7 +23,7 @@ const styles = {
     },
 };
 
-const baseUrl = process.env.PUBLIC_URL;
+const baseUrl = process.env.EZMASTER_PUBLIC_URL;
 
 class ClearDialogComponent extends Component {
     constructor(props) {
@@ -46,7 +46,7 @@ class ClearDialogComponent extends Component {
             case 'published':
                 // this.props.reloadPublication();
                 // must be change
-                window.location.href = '/admin/dashboard';
+                window.location.href = '/admin/#/dashboard';
                 break;
             default:
                 break;

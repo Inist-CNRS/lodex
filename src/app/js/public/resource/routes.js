@@ -13,7 +13,7 @@ export const onEnterWithAuthenticationCheck = store => (nextState, replaceState)
     }
 };
 
-export default () => [
+export default [
     {
         path: '/resource',
         component: Resource,

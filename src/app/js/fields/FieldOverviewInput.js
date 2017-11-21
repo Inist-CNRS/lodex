@@ -7,7 +7,7 @@ import MenuItem from 'material-ui/MenuItem';
 import { polyglot as polyglotPropTypes } from '../propTypes';
 import FormSelectField from '../lib/components/FormSelectField';
 
-export const OverviewFieldComponent = ({ ...props, p: polyglot }) => {
+export const OverviewFieldComponent = ({ p: polyglot }) => {
     const fieldsName = ['none', 'title', 'description'];
     const fieldItems = fieldsName.map((field, index) => (
         <MenuItem
@@ -25,7 +25,6 @@ export const OverviewFieldComponent = ({ ...props, p: polyglot }) => {
             label={polyglot.t('overview')}
             className="field-overview"
             fullWidth
-            {...props}
         >
             {fieldItems}
         </Field>

@@ -77,7 +77,7 @@ export const defaultState = {
     saving: false,
     addingField: false,
     hiding: false,
-    selectedVersion: null,
+    selectedVersion: 0,
 };
 
 export default handleActions({
@@ -353,6 +353,8 @@ const getError = ({ error }) => error;
 
 const isCreating = state => state.isCreating;
 
+const isResourceLoaded = (state, uri) => state.resource && state.resource.uri === uri;
+
 export const fromResource = {
     getResourceContributorsCatalog,
     getResourceSelectedVersion,
@@ -373,6 +375,7 @@ export const fromResource = {
     getError,
     hasBeenRemoved,
     isCreating,
+    isResourceLoaded,
 };
 
 export const getResourceFormData = state => state.form.resource.values;
