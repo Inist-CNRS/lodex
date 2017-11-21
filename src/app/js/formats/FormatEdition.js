@@ -31,21 +31,21 @@ class FormatEdition extends Component {
         }
     }
 
-    setArguments = (args) => {
+    setArguments = args => {
         this.setState({ args });
         this.props.input.onChange({
             args,
             name: this.state.name,
         });
-    }
+    };
 
-    setFormat = (name) => {
+    setFormat = name => {
         this.setState({ name });
         this.props.input.onChange({
             args: this.state.args,
             name,
         });
-    }
+    };
 
     render() {
         const { name, args } = this.state;
@@ -59,7 +59,10 @@ class FormatEdition extends Component {
                     value={name}
                     onChange={this.setFormat}
                 />
-                <AdminComponent onChange={this.setArguments} {...{ ...this.props, ...args }} />
+                <AdminComponent
+                    onChange={this.setArguments}
+                    {...{ ...this.props, ...args }}
+                />
             </div>
         );
     }
