@@ -1,15 +1,14 @@
 import compose from 'lodash.compose';
-
-export const literalToQueryString = params => Object
-    .keys(params)
-    .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`)
-    .join('&');
+import qs from 'qs';
 
 export const addFacetListToLiteral = facetList => (literal = {}) =>
-    facetList.reduce((acc, facet) => ({
-        ...acc,
-        [facet.field.name]: facet.value,
-    }), literal);
+    facetList.reduce(
+        (acc, facet) => ({
+            ...acc,
+            [facet.field.name]: facet.value,
+        }),
+        literal,
+    );
 
 export const addKeyToLiteral = (key, value) => (literal = {}) => {
     if (!value) {
@@ -22,9 +21,9 @@ export const addKeyToLiteral = (key, value) => (literal = {}) => {
     };
 };
 
-export default({ match, facets, sort, page, perPage, uri } = {}) =>
+export default ({ match, facets, sort, page, perPage, uri } = {}) =>
     compose(
-        literalToQueryString,
+        qs.stringify,
         addFacetListToLiteral(facets),
         addKeyToLiteral('match', match),
         addKeyToLiteral('sortBy', sort.sortBy),

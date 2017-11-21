@@ -1,5 +1,6 @@
 import { call, put, select, takeLatest } from 'redux-saga/effects';
 import { LOCATION_CHANGE } from 'react-router-redux';
+import qs from 'qs';
 
 import {
     ADD_FIELD_TO_RESOURCE_SUCCESS,
@@ -13,17 +14,17 @@ import { fromUser } from '../../../sharedSelectors';
 import fetchSaga from '../../../lib/sagas/fetchSaga';
 
 import { fromResource } from '../../selectors';
-import queryStringToLiteral from '../../../lib/queryStringToLiteral';
 
-export const getUriFromQueryString = queryString => queryStringToLiteral(queryString).uri;
+export const getUriFromQueryString = queryString =>
+    qs.parse(queryString, { ignoreQueryPrefix: true }).uri;
 
-export const parsePathName = (pathname) => {
+export const parsePathName = pathname => {
     const match = pathname.match(/^\/((?:ark|uid):\/.*$)/);
 
     return match && match[1];
 };
 
-export const getUriFromPayload = (payload) => {
+export const getUriFromPayload = payload => {
     const ark = parsePathName(payload.pathname);
 
     if (ark) {
@@ -58,7 +59,7 @@ export function* handleLoadResource({ payload, type }) {
         return;
     }
 
-    if ((yield select(fromResource.isResourceLoaded, uri))) {
+    if (yield select(fromResource.isResourceLoaded, uri)) {
         return;
     }
 
@@ -75,9 +76,8 @@ export function* handleLoadResource({ payload, type }) {
 }
 
 export default function* watchLocationChangeToResource() {
-    yield takeLatest([
-        LOCATION_CHANGE,
-        ADD_FIELD_TO_RESOURCE_SUCCESS,
-        HIDE_RESOURCE_SUCCESS,
-    ], handleLoadResource);
+    yield takeLatest(
+        [LOCATION_CHANGE, ADD_FIELD_TO_RESOURCE_SUCCESS, HIDE_RESOURCE_SUCCESS],
+        handleLoadResource,
+    );
 }
