@@ -5,7 +5,7 @@ import { formField as formFieldPropTypes } from '../../propTypes';
 import FormTextField from '../../lib/components/FormTextField';
 
 class DefaultEditon extends Component {
-    onchangeArray = (_, value) =>
+    onChangeArray = (_, value) =>
         this.props.input.onChange(_, value.split(','));
 
     render() {
