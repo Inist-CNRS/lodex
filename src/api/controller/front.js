@@ -14,15 +14,15 @@ import { END } from 'redux-saga';
 import koaWebpack from 'koa-webpack';
 import fs from 'fs';
 
-import rootReducer from '../../../app/js/public/reducers';
-import sagas from '../../../app/js/public/sagas';
-import configureStoreServer from '../../../app/js/configureStoreServer';
-import routes from '../../../app/js/public/routes';
-import phrasesForEn from '../../../app/js/i18n/translations/en';
-import webpackConfig from '../../../app/webpack.config.babel';
+import rootReducer from '../../app/js/public/reducers';
+import sagas from '../../app/js/public/sagas';
+import configureStoreServer from '../../app/js/configureStoreServer';
+import routes from '../../app/js/public/routes';
+import phrasesForEn from '../../app/js/i18n/translations/en';
+import webpackConfig from '../../app/webpack.config.babel';
 
 const indexHtml = fs
-    .readFileSync(path.resolve(__dirname, '../../../app/custom/index.html'))
+    .readFileSync(path.resolve(__dirname, '../../app/custom/index.html'))
     .toString();
 
 const initialState = {
@@ -66,12 +66,31 @@ const renderFullPage = (html, preloadedState, helmet) =>
             </body>`,
         );
 
-const handleRender = async (ctx, next) => {
+const renderHtml = (store, renderProps, muiTheme) =>
+    renderToString(
+        <Provider {...{ store }}>
+            <MuiThemeProvider muiTheme={muiTheme}>
+                <RouterContext {...renderProps} />
+            </MuiThemeProvider>
+        </Provider>,
+    );
+
+const getPropsFromUrl = async ({ history, routes, location: url }) =>
+    await new Promise((resolve, reject) => {
+        match(
+            { history, routes, location: url },
+            (error, redirect, renderProps) => {
+                if (error) {
+                    return reject(error);
+                }
+
+                resolve({ redirect, renderProps });
+            },
+        );
+    });
+
+const handleRender = async ctx => {
     const { url, headers } = ctx.request;
-    if (url === '/__webpack_hmr') {
-        await next();
-        return;
-    }
     if (url === '/') {
         ctx.redirect('/home');
         return;
@@ -85,53 +104,38 @@ const handleRender = async (ctx, next) => {
     );
     const history = createMemoryHistory(url);
 
-    ctx.body = await new Promise((resolve, reject) => {
-        match(
-            { history, routes, location: url },
-            (error, redirect, renderProps) => {
-                const store = configureStoreServer(
-                    rootReducer,
-                    sagas,
-                    initialState,
-                    history,
-                );
-                if (error) {
-                    reject(error);
-                }
-                if (redirect) {
-                    ctx.redirect(redirect.pathname + redirect.search);
-                    return;
-                }
-                store
-                    .runSaga(sagas)
-                    .done.then(() => {
-                        const html = renderToString(
-                            <Provider {...{ store }}>
-                                <MuiThemeProvider muiTheme={muiTheme}>
-                                    <RouterContext {...renderProps} />
-                                </MuiThemeProvider>
-                            </Provider>,
-                        );
-                        const helmet = Helmet.renderStatic();
-                        const preloadedState = store.getState();
-
-                        resolve(renderFullPage(html, preloadedState, helmet));
-                    })
-                    .catch(error => reject(error));
-
-                renderToString(
-                    <Provider {...{ store }}>
-                        <MuiThemeProvider muiTheme={muiTheme}>
-                            <RouterContext {...renderProps} />
-                        </MuiThemeProvider>
-                    </Provider>,
-                );
-
-                syncHistoryWithStore(history, store);
-                store.dispatch(END);
-            },
-        );
+    const { redirect, renderProps } = getPropsFromUrl({
+        history,
+        routes,
+        location: url,
     });
+
+    if (redirect) {
+        ctx.redirect(redirect.pathname + redirect.search);
+        return;
+    }
+
+    const store = configureStoreServer(
+        rootReducer,
+        sagas,
+        initialState,
+        history,
+    );
+
+    const sagaPromise = store.runSaga(sagas).done;
+
+    renderHtml(store, renderProps, muiTheme);
+
+    syncHistoryWithStore(history, store);
+    store.dispatch(END);
+
+    await sagaPromise;
+
+    const html = renderHtml(store, renderProps, muiTheme);
+    const helmet = Helmet.renderStatic();
+    const preloadedState = store.getState();
+
+    ctx.body = renderFullPage(html, preloadedState, helmet);
 };
 
 const app = new Koa();
@@ -156,7 +160,7 @@ if (process.env.NODE_ENV === 'development') {
         }),
     );
 } else {
-    app.use(mount('/', serve(path.resolve(__dirname, '../../../build'))));
+    app.use(mount('/', serve(path.resolve(__dirname, '../../build'))));
 }
 
 app.use(handleRender);
