@@ -1,24 +1,60 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import get from 'lodash.get';
+
 import { field as fieldPropTypes } from '../../propTypes';
+import { getViewComponent } from '../';
+import { PropType } from 'redux-polyglot';
+
+const UL = ({ className, children }) => (
+    <ul className={className}>{children}</ul>
+);
+
+UL.propTypes = {
+    className: PropTypes.string,
+    children: PropType.any.isRequired,
+};
+
+const OL = ({ className, children }) => (
+    <ol className={className}>{children}</ol>
+);
+
+OL.propTypes = {
+    className: PropTypes.string,
+    children: PropType.any.isRequired,
+};
 
 const ListView = ({ className, resource, field }) => {
     const values = resource[field.name];
-    const type =
-        (field.format && field.format.args && field.format.args.type) ||
-        'unordered';
+    const type = get(field, 'format.args.type', 'unordered');
+    const subFormat = get(field, 'format.args.subFormat');
+    const subFormatOptions = get(field, 'format.args.subFormatOptions');
+    const SubViewComponent = getViewComponent(subFormat, true);
 
-    if (type === 'ordered') {
-        return (
-            <ol className={className}>
-                {values.map(value => <li key={value}>{value}</li>)}
-            </ol>
-        );
-    }
+    const List = type === 'ordered' ? OL : UL;
+
     return (
-        <ul className={className}>
-            {values.map(value => <li key={value}>{value}</li>)}
-        </ul>
+        <List className={className}>
+            {values.map((value, index) => (
+                <li key={value}>
+                    {SubViewComponent ? (
+                        <SubViewComponent
+                            resource={values}
+                            field={{
+                                ...field,
+                                name: index,
+                                format: {
+                                    name: subFormat,
+                                    args: subFormatOptions,
+                                },
+                            }}
+                        />
+                    ) : (
+                        value
+                    )}
+                </li>
+            ))}
+        </List>
     );
 };
 
