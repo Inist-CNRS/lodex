@@ -53,7 +53,8 @@ export class OverviewComponent extends Component {
             loading,
             p: polyglot,
             dataset,
-            columns,
+            titleCol,
+            subTitleCol,
             total,
             perPage,
             currentPage,
@@ -85,37 +86,12 @@ export class OverviewComponent extends Component {
                                 title={
                                     <a
                                         href={getResourceUri(data)}
-                                        title={
-                                            columns.filter(
-                                                e => e.overview === 1,
-                                            ).length
-                                                ? data[
-                                                      columns.filter(
-                                                          e => e.overview === 1,
-                                                      )[0].name
-                                                  ]
-                                                : data.uri
-                                        }
+                                        title={data[titleCol] || data.uri}
                                     >
-                                        {columns.filter(e => e.overview === 1)
-                                            .length
-                                            ? data[
-                                                  columns.filter(
-                                                      e => e.overview === 1,
-                                                  )[0].name
-                                              ]
-                                            : data.uri}
+                                        {data[titleCol] || data.uri}
                                     </a>
                                 }
-                                subtitle={
-                                    columns.filter(e => e.overview === 2).length
-                                        ? data[
-                                              columns.filter(
-                                                  e => e.overview === 2,
-                                              )[0].name
-                                          ]
-                                        : ''
-                                }
+                                subtitle={data[subTitleCol] || ''}
                                 titleStyle={styles.title}
                                 subtitleStyle={styles.title}
                             />
@@ -139,7 +115,8 @@ export class OverviewComponent extends Component {
 }
 
 OverviewComponent.PropTypes = {
-    columns: PropTypes.arrayOf(PropTypes.object),
+    subTitleCol: PropTypes.string,
+    titleCol: PropTypes.string,
     currentPage: PropTypes.number.isRequired,
     perPage: PropTypes.number.isRequired,
     dataset: PropTypes.arrayOf(PropTypes.object),
@@ -156,7 +133,8 @@ OverviewComponent.defaultProps = {
 
 const mapStateToProps = state => ({
     loading: fromDataset.isDatasetLoading(state),
-    columns: fromFields.getAllListFields(state),
+    titleCol: fromFields.getOverviewTitleCol(state),
+    subTitleCol: fromFields.getOverviewSubTitleCol(state),
     currentPage: fromDataset.getDatasetCurrentPage(state),
     perPage: fromDataset.getDatasetPerPage(state),
     dataset: fromDataset.getDataset(state),
