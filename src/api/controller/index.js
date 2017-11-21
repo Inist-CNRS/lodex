@@ -1,4 +1,3 @@
-import path from 'path';
 import Koa from 'koa';
 import mount from 'koa-mount';
 

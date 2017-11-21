@@ -1,10 +1,13 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
 import { Helmet } from 'react-helmet';
+import PropTypes from 'prop-types';
+
+import getTitle from '../lib/getTitle';
 
 export const AppComponent = ({ children }) => (
     <div className="body">
         <Helmet>
-            <title>{/https?:\/\/([\w-]+)/.exec(process.env.EZMASTER_PUBLIC_URL)[1]}</title>
+            <title>{getTitle()}</title>
         </Helmet>
         {children}
     </div>
