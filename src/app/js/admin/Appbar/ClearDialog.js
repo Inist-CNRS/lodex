@@ -17,7 +17,6 @@ import {
 } from '../clear';
 
 import { reloadParsingResult } from '../parsing';
-// import { reloadPublication as reloadPublicationAction } from '../publication';
 import { fromClear } from '../selectors';
 
 const styles = {
@@ -111,12 +110,14 @@ class ClearDialogComponent extends Component {
 
         const actions = [
             <FlatButton
+                key="cancel"
                 className="btn-cancel"
                 label={polyglot.t('cancel')}
                 onTouchTap={onClose}
                 primary
             />,
             <ButtonWithStatus
+                key="submit"
                 raised
                 className="btn-submit"
                 label={polyglot.t('valid')}

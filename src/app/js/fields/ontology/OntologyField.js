@@ -136,7 +136,7 @@ const OntologyFieldComponent = ({ field, fields, index, p: polyglot }) => (
 );
 
 OntologyFieldComponent.propTypes = {
-    field: React.PropTypes.shape({}),
+    field: PropTypes.shape({}),
     fields: PropTypes.arrayOf(fieldPropTypes).isRequired,
     p: polyglotPropTypes.isRequired,
     index: PropTypes.number.isRequired,

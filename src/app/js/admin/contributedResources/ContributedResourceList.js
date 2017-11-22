@@ -21,7 +21,6 @@ import Pagination from '../../lib/components/Pagination';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import {
     loadContributedResourcePage as loadContributedResourcePageAction,
-    restoreRessource as restoreRessourceAction,
     changeContributedResourceFilter,
 } from './';
 import { fromContributedResources } from '../selectors';
@@ -181,7 +180,6 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
     loadContributedResourcePage: loadContributedResourcePageAction,
-    restoreRessource: restoreRessourceAction,
     onChangeFilter: changeContributedResourceFilter,
 };
 

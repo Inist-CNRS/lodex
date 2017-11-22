@@ -33,8 +33,8 @@ const LinkView = ({ className, linkedResource, resource, field, fields }) => {
 
         return (
             <ul>
-                {links.map(link => (
-                    <li>
+                {links.map((link, index) => (
+                    <li key={index}>
                         <a className={className} href={`${link}`}>
                             {link}
                         </a>

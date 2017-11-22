@@ -34,13 +34,18 @@ export const ButtonWithDialogComponent = ({
     }
     const actions = [
         <ButtonWithStatus
+            key="save"
             className={classnames(className, 'save')}
             label={polyglot.t('save')}
             primary
             loading={saving}
             onTouchTap={handleSubmit}
         />,
-        <FlatButton label={polyglot.t('cancel')} onClick={handleClose} />,
+        <FlatButton
+            key="cancel"
+            label={polyglot.t('cancel')}
+            onClick={handleClose}
+        />,
     ];
 
     const openButton = icon ? (

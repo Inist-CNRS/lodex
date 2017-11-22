@@ -50,6 +50,7 @@ class ImportFieldsDialogComponent extends Component {
 
         const actions = [
             <FlatButton
+                key="confirm"
                 className="btn-confirm"
                 containerElement="label"
                 label={polyglot.t('import_fields')}
@@ -64,6 +65,7 @@ class ImportFieldsDialogComponent extends Component {
                 />
             </FlatButton>,
             <FlatButton
+                key="cancel"
                 className="btn-cancel"
                 label={polyglot.t('no')}
                 onTouchTap={onClose}

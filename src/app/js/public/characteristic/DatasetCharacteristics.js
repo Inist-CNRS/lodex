@@ -2,10 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
-import { CardText } from 'material-ui/Card';
 import memoize from 'lodash.memoize';
-
-import Card from '../../lib/components/Card';
 
 import { field as fieldProptypes } from '../../propTypes';
 

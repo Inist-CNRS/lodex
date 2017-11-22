@@ -107,6 +107,7 @@ export class OntologyComponent extends Component {
                             useDragHandle
                             items={fields.map((field, index) => (
                                 <OntologyField
+                                    key={field.name}
                                     field={field}
                                     index={index + 1}
                                 />
@@ -124,7 +125,11 @@ export class OntologyComponent extends Component {
                 )}
                 {!isLoggedIn &&
                     fields.map((field, index) => (
-                        <OntologyField field={field} index={index} />
+                        <OntologyField
+                            key={field.name}
+                            field={field}
+                            index={index}
+                        />
                     ))}
             </div>
         );

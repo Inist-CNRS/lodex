@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import fetch from 'isomorphic-fetch';
 import MQS from 'mongodb-querystring';
 import url from 'url';
-import querystring from 'querystring';
 import RaisedButton from 'material-ui/RaisedButton';
 import translate from 'redux-polyglot/translate';
 import { StyleSheet, css } from 'aphrodite';

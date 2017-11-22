@@ -58,8 +58,9 @@ export default class Roadmap extends Component {
         };
         return (
             <Timeline>
-                {this.state.milestones.map(milestone => (
+                {this.state.milestones.map((milestone, index) => (
                     <TimelineEvent
+                        key={index}
                         title=""
                         createdAt={milestone.rangeLabel}
                         icon={getIconFromLabel(milestone.labels)}

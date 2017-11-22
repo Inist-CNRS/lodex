@@ -10,7 +10,7 @@ const styles = {
 };
 
 export default fetchProps => Component =>
-    class extends React.Component {
+    class FetchPaginatedDataForComponent extends React.Component {
         state = {
             isLoading: true,
             data: null,
