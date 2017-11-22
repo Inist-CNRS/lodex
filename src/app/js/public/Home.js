@@ -56,7 +56,6 @@ export class HomeComponent extends Component {
         p: polyglotPropTypes.isRequired,
         selectedTab: PropTypes.string.isRequired,
         sharingTitle: PropTypes.string,
-        sharingUri: PropTypes.string.isRequired,
     };
 
     componentWillMount() {

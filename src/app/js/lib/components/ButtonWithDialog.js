@@ -19,17 +19,12 @@ export const ButtonWithDialogComponent = ({
     actions = [
         <FlatButton
             key="cancel"
-            label={polyglot.t('cancel')}
+            label={polyglot.t('close')}
             onClick={handleClose}
         />,
     ],
     openButton = (
-        <FlatButton
-            className={className}
-            label={label}
-            primary
-            onClick={handleOpen}
-        />
+        <FlatButton className={className} label={label} onClick={handleOpen} />
     ),
 }) => {
     if (!show) {

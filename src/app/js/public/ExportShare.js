@@ -66,8 +66,6 @@ const mapStateToProps = state => {
     };
 };
 
-const mapDispatchToProps = {};
-
-export default compose(connect(mapStateToProps, mapDispatchToProps), translate)(
+export default compose(connect(mapStateToProps), translate)(
     ExportShareComponent,
 );
