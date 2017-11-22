@@ -107,7 +107,7 @@ const AppbarComponent = ({
             className="appbar"
             title={
                 <div style={styles.title}>
-                    <Link to="/admin" style={styles.linkToHome}>
+                    <Link to="/" style={styles.linkToHome}>
                         Lodex
                     </Link>
                     <small>
