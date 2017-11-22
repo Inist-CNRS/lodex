@@ -23,7 +23,6 @@ import DatasetCharacteristics from './characteristic/DatasetCharacteristics';
 import NoDataset from './NoDataset';
 import Toolbar from './Toolbar';
 import AppliedFacetList from './facet/AppliedFacetList';
-import Ontology from '../fields/ontology/Ontology';
 import Export from './export/Export';
 import Share from './Share';
 import ShareLink from './ShareLink';
@@ -151,15 +150,6 @@ export class HomeComponent extends Component {
                                     uri={sharingUri}
                                 />
                                 <Share uri={sharingUri} title={sharingTitle} />
-                                <Version />
-                            </Tab>
-                            <Tab
-                                className="tab-dataset-ontology"
-                                buttonStyle={styles.tabButton}
-                                label={polyglot.t('ontology')}
-                                value="ontology"
-                            >
-                                <Ontology />
                                 <Version />
                             </Tab>
                         </Tabs>

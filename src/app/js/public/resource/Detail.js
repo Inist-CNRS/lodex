@@ -18,7 +18,6 @@ import { fromFields } from '../../sharedSelectors';
 import Property from '../Property';
 import AddField from '../../fields/addField/AddField';
 import HideResource from './HideResource';
-import Ontology from '../../fields/ontology/Ontology';
 import Export from '../export/Export';
 import Widgets from '../Widgets';
 import Share from '../Share';
@@ -293,13 +292,6 @@ export const DetailComponent = ({
                         />
                         <Divider />
                         <Share uri={sharingUri} title={sharingTitle} />
-                    </Tab>
-                    <Tab
-                        className="tab-resource-ontology"
-                        buttonStyle={styles.tabButton}
-                        label={polyglot.t('ontology')}
-                    >
-                        <Ontology />
                     </Tab>
                 </Tabs>
                 <CardActions style={styles.actions}>
