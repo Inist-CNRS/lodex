@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
-import { Tabs, Tab } from 'material-ui/Tabs';
 import { push } from 'react-router-redux';
 import { Helmet } from 'react-helmet';
 
@@ -15,31 +14,12 @@ import getTitle from '../lib/getTitle';
 import Alert from '../lib/components/Alert';
 import Card from '../lib/components/Card';
 import Loading from '../lib/components/Loading';
-import Overview from './overview/Overview';
 import Dataset from './dataset/Dataset';
 import DatasetCharacteristics from './characteristic/DatasetCharacteristics';
 import NoDataset from './NoDataset';
 import Toolbar from './Toolbar';
 import AppliedFacetList from './facet/AppliedFacetList';
 import Version from './Version';
-
-const styles = {
-    container: {
-        display: 'flex',
-        flexDirection: 'column',
-    },
-    tab: {
-        backgroundColor: 'transparent',
-        borderBottom: '1px solid rgb(224, 224, 224)',
-        color: 'black',
-    },
-    tabButton: {
-        color: 'black',
-    },
-    inkBarStyle: {
-        backgroundColor: 'black',
-    },
-};
 
 export class HomeComponent extends Component {
     static defaultProps = {
@@ -67,13 +47,7 @@ export class HomeComponent extends Component {
     };
 
     render() {
-        const {
-            error,
-            hasPublishedDataset,
-            loading,
-            p: polyglot,
-            selectedTab,
-        } = this.props;
+        const { error, hasPublishedDataset, loading, p: polyglot } = this.props;
 
         if (loading) {
             return <Loading>{polyglot.t('loading')}</Loading>;
@@ -97,35 +71,10 @@ export class HomeComponent extends Component {
                         <DatasetCharacteristics />
                     </div>
                     <div className="main-dataset-section">
-                        <Tabs
-                            inkBarStyle={styles.inkBarStyle}
-                            value={selectedTab}
-                            onChange={this.handleTabChange}
-                            tabItemContainerStyle={styles.tab}
-                        >
-                            <Tab
-                                className="tab-dataset-overview"
-                                label={polyglot.t('overview')}
-                                style={styles.tabButton}
-                                value="overview"
-                            >
-                                <Toolbar />
-                                <AppliedFacetList />
-                                <Overview />
-                                <Version />
-                            </Tab>
-                            <Tab
-                                className="tab-dataset-resources"
-                                label={polyglot.t('details')}
-                                style={styles.tabButton}
-                                value="dataset"
-                            >
-                                <Toolbar />
-                                <AppliedFacetList />
-                                <Dataset />
-                                <Version />
-                            </Tab>
-                        </Tabs>
+                        <Toolbar />
+                        <AppliedFacetList />
+                        <Dataset />
+                        <Version />
                     </div>
                 </div>
             );
@@ -135,8 +84,7 @@ export class HomeComponent extends Component {
     }
 }
 
-const mapStateToProps = (state, { params: { tab = 'overview' } }) => ({
-    selectedTab: tab,
+const mapStateToProps = state => ({
     error: fromFields.getError(state),
     loading: fromFields.isLoading(state),
     hasPublishedDataset: fromFields.hasPublishedDataset(state),

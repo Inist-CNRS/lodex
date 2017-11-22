@@ -7,9 +7,9 @@ import userRoutes from '../user/routes';
 export default {
     path: '/',
     component: App,
-    indexRoute: { onEnter: (nextState, replace) => replace('/home/overview') },
+    indexRoute: { onEnter: (nextState, replace) => replace('/home') },
     childRoutes: [
-        { path: '/home(/:tab)', component: Home },
+        { path: '/home', component: Home },
         ...userRoutes,
         ...resourceRoutes,
     ],
