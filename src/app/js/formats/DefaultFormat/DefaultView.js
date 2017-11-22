@@ -1,22 +1,31 @@
 import React from 'react';
-import memoize from 'lodash.memoize';
 import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
 
 import {
     field as fieldPropTypes,
     polyglot as polyglotPropTypes,
-} from '..//../propTypes';
+} from '../../propTypes';
 import { isLongText, getShortText } from '../../lib/longTexts';
-import { REJECTED } from '../../../../common/propositionStatus';
+import {
+    REJECTED,
+    PROPOSED,
+    VALIDATED,
+} from '../../../../common/propositionStatus';
 
 const styles = {
-    text: memoize(status =>
-        Object.assign({
-            fontSize: '1.5rem',
-            textDecoration: status === REJECTED ? 'line-through' : 'none',
-        }),
-    ),
+    [REJECTED]: {
+        fontSize: '1.5rem',
+        textDecoration: 'line-through',
+    },
+    [PROPOSED]: {
+        fontSize: '1.5rem',
+        textDecoration: 'none',
+    },
+    [VALIDATED]: {
+        fontSize: '1.5rem',
+        textDecoration: 'none',
+    },
 };
 
 const DefaultView = ({
@@ -33,7 +42,7 @@ const DefaultView = ({
     }
 
     return (
-        <span style={styles.text(fieldStatus)}>
+        <span style={styles[fieldStatus]}>
             {shrink && isLongText(value) ? (
                 <span className={className}>{getShortText(value)}</span>
             ) : (

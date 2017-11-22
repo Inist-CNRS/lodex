@@ -4,6 +4,9 @@ import { Field } from 'redux-form';
 
 import FormTextField from '../../lib/components/FormTextField';
 
+const format = v => v && v.join(';');
+const normalize = v => v && v.split(';');
+
 const EditionComponent = ({ name, disabled, label, fullWidth, ...input }) => (
     <Field
         key={name}
@@ -13,8 +16,8 @@ const EditionComponent = ({ name, disabled, label, fullWidth, ...input }) => (
         label={label}
         fullWidth
         {...input}
-        format={v => v && v.join(';')}
-        normalize={v => v && v.split(';')}
+        format={format}
+        normalize={normalize}
     />
 );
 
