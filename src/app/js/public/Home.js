@@ -1,15 +1,18 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 import { Tabs, Tab } from 'material-ui/Tabs';
 import { push } from 'react-router-redux';
 import Divider from 'material-ui/Divider';
+import { Helmet } from 'react-helmet';
 
 import { polyglot as polyglotPropTypes } from '../propTypes';
-import { loadPublication as loadPublicationAction } from '../fields';
+import { preLoadPublication as preLoadPublicationAction } from '../fields';
 import { fromCharacteristic } from './selectors';
 import { fromFields } from '../sharedSelectors';
+import getTitle from '../lib/getTitle';
 
 import Alert from '../lib/components/Alert';
 import Card from '../lib/components/Card';
@@ -49,27 +52,27 @@ export class HomeComponent extends Component {
     static defaultProps = {
         error: null,
         sharingTitle: null,
-    }
+    };
 
     static propTypes = {
         error: PropTypes.string,
         loading: PropTypes.bool.isRequired,
-        loadPublication: PropTypes.func.isRequired,
+        preLoadPublication: PropTypes.func.isRequired,
         hasPublishedDataset: PropTypes.bool.isRequired,
         navigateTo: PropTypes.func.isRequired,
         p: polyglotPropTypes.isRequired,
         selectedTab: PropTypes.string.isRequired,
         sharingTitle: PropTypes.string,
         sharingUri: PropTypes.string.isRequired,
-    }
+    };
 
     componentWillMount() {
-        this.props.loadPublication();
+        this.props.preLoadPublication();
     }
 
-    handleTabChange = (value) => {
+    handleTabChange = value => {
         this.props.navigateTo(`/home/${value}`);
-    }
+    };
 
     render() {
         const {
@@ -83,9 +86,7 @@ export class HomeComponent extends Component {
         } = this.props;
 
         if (loading) {
-            return (
-                <Loading>{polyglot.t('loading')}</Loading>
-            );
+            return <Loading>{polyglot.t('loading')}</Loading>;
         }
 
         if (error) {
@@ -99,6 +100,9 @@ export class HomeComponent extends Component {
         if (hasPublishedDataset) {
             return (
                 <div>
+                    <Helmet>
+                        <title>{getTitle()}</title>
+                    </Helmet>
                     <div className="header-dataset-section">
                         <DatasetCharacteristics />
                     </div>
@@ -142,7 +146,10 @@ export class HomeComponent extends Component {
                                 <Export />
                                 <Divider />
                                 <Widgets />
-                                <ShareLink title={polyglot.t('dataset_share_link')} uri={sharingUri} />
+                                <ShareLink
+                                    title={polyglot.t('dataset_share_link')}
+                                    uri={sharingUri}
+                                />
                                 <Share uri={sharingUri} title={sharingTitle} />
                                 <Version />
                             </Tab>
@@ -165,31 +172,42 @@ export class HomeComponent extends Component {
     }
 }
 
+const getSharingUrl = () => {
+    if (typeof window === 'undefined') {
+        return '';
+    }
+
+    return window.location.toString();
+};
+
 const mapStateToProps = (state, { params: { tab = 'overview' } }) => {
     const titleFieldName = fromFields.getDatasetTitleFieldName(state);
     const fields = fromFields.getDatasetFields(state);
-    const characteristics = fromCharacteristic.getCharacteristics(state, fields);
+    const characteristics = fromCharacteristic.getCharacteristics(
+        state,
+        fields,
+    );
     let sharingTitle;
 
     if (titleFieldName) {
-        sharingTitle = characteristics.find(f => f.name === titleFieldName).value;
+        sharingTitle = characteristics.find(f => f.name === titleFieldName)
+            .value;
     }
-    return ({
+    return {
         selectedTab: tab,
         sharingTitle,
-        sharingUri: window.location.toString(),
+        sharingUri: getSharingUrl(),
         error: fromFields.getError(state),
         loading: fromFields.isLoading(state),
         hasPublishedDataset: fromFields.hasPublishedDataset(state),
-    });
+    };
 };
 
-const mapDispatchToProps = ({
-    loadPublication: loadPublicationAction,
+const mapDispatchToProps = {
+    preLoadPublication: preLoadPublicationAction,
     navigateTo: push,
-});
+};
 
-export default compose(
-    connect(mapStateToProps, mapDispatchToProps),
-    translate,
-)(HomeComponent);
+export default compose(connect(mapStateToProps, mapDispatchToProps), translate)(
+    HomeComponent,
+);

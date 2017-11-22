@@ -2,11 +2,19 @@ import omit from 'lodash.omit';
 import { createAction, handleActions, combineActions } from 'redux-actions';
 import { createSelector } from 'reselect';
 
-import { getTransformersMetas, getTransformerMetas } from '../../../common/transformers';
-import { COVER_COLLECTION, COVER_DOCUMENT, COVER_DATASET } from '../../../common/cover';
+import {
+    getTransformersMetas,
+    getTransformerMetas,
+} from '../../../common/transformers';
+import {
+    COVER_COLLECTION,
+    COVER_DOCUMENT,
+    COVER_DATASET,
+} from '../../../common/cover';
 import { getProps } from '../lib/selectors';
 import TITLE_SCHEME from '../../../common/titleScheme';
-import getCatalogFromArray from '../lib/getCatalogFromArray'; import {
+import getCatalogFromArray from '../lib/getCatalogFromArray';
+import {
     UPDATE_CHARACTERISTICS_SUCCESS,
     ADD_CHARACTERISTIC_SUCCESS,
 } from '../public/characteristic';
@@ -41,6 +49,7 @@ export const CONFIGURE_FIELD_ERROR = 'CONFIGURE_FIELD_ERROR';
 export const OPEN_EDIT_FIELD_VALUE = 'OPEN_EDIT_FIELD_VALUE';
 export const CLOSE_EDIT_FIELD_VALUE = 'CLOSE_EDIT_FIELD_VALUE';
 
+export const PRE_LOAD_PUBLICATION = 'PRE_LOAD_PUBLICATION';
 export const LOAD_PUBLICATION = 'LOAD_PUBLICATION';
 export const LOAD_PUBLICATION_SUCCESS = 'LOAD_PUBLICATION_SUCCESS';
 export const LOAD_PUBLICATION_ERROR = 'LOAD_PUBLICATION_ERROR';
@@ -71,6 +80,7 @@ export const configureFieldSuccess = createAction(CONFIGURE_FIELD_SUCCESS);
 export const configureFieldError = createAction(CONFIGURE_FIELD_ERROR);
 export const openEditFieldValue = createAction(OPEN_EDIT_FIELD_VALUE);
 export const closeEditFieldValue = createAction(CLOSE_EDIT_FIELD_VALUE);
+export const preLoadPublication = createAction(PRE_LOAD_PUBLICATION);
 export const loadPublication = createAction(LOAD_PUBLICATION);
 export const loadPublicationSuccess = createAction(LOAD_PUBLICATION_SUCCESS);
 export const loadPublicationError = createAction(LOAD_PUBLICATION_ERROR);
@@ -95,171 +105,183 @@ const getDefaultField = (name, index) => ({
     display_in_list: true,
     display_in_resource: true,
     searchable: true,
-    transformers: name ? [{
-        operation: 'COLUMN',
-        args: [{
-            name: 'column',
-            type: 'column',
-            value: name,
-        }],
-    }] : [],
+    transformers: name
+        ? [
+              {
+                  operation: 'COLUMN',
+                  args: [
+                      {
+                          name: 'column',
+                          type: 'column',
+                          value: name,
+                      },
+                  ],
+              },
+          ]
+        : [],
     classes: [],
     position: index,
     overview: 0,
 });
 
-export default handleActions({
-    ADD_FIELD: (state, { payload: name }) => ({
-        ...state,
-        editedFieldName: 'new',
-        list: [...state.list, 'new'],
-        byName: {
-            ...state.byName,
-            new: getDefaultField(name, state.list.length),
-        },
-    }),
-    LOAD_FIELD: state => ({ ...state, loading: true }),
-    LOAD_FIELD_SUCCESS: (state, { payload: fields }) => {
-        const { catalog, list } = getCatalogFromArray(fields, 'name');
-
-        return {
+export default handleActions(
+    {
+        ADD_FIELD: (state, { payload: name }) => ({
             ...state,
-            editedFieldName: undefined,
-            list,
-            byName: catalog,
-            loading: false,
-        };
-    },
-    LOAD_FIELD_ERROR: () => defaultState,
-    EDIT_FIELD: (state, { payload }) => {
-        if (!payload && state.editedFieldName === 'new') {
+            editedFieldName: 'new',
+            list: [...state.list, 'new'],
+            byName: {
+                ...state.byName,
+                new: getDefaultField(name, state.list.length),
+            },
+        }),
+        LOAD_FIELD: state => ({ ...state, loading: true }),
+        LOAD_FIELD_SUCCESS: (state, { payload: fields }) => {
+            const { catalog, list } = getCatalogFromArray(fields, 'name');
+
             return {
                 ...state,
                 editedFieldName: undefined,
-                byName: omit(state.byName, ['new']),
-                list: [...state.list.slice(0, -1)],
+                list,
+                byName: catalog,
+                loading: false,
             };
-        }
-        return {
-            ...state,
-            editedFieldName: typeof payload === 'number' ? state.list[payload] : payload,
-        };
-    },
-    REMOVE_FIELD_SUCCESS: (state, { payload: { name: nameToRemove } }) => ({
-        ...state,
-        list: state.list.filter(name => name !== nameToRemove),
-        byName: omit(state.byName, [nameToRemove]),
-    }),
-    SET_VALIDATION: (state, { payload: { isValid: allValid, fields: invalidFields } }) => ({
-        ...state,
-        allValid,
-        invalidFields,
-    }),
-    SELECT_FIELD: (state, { payload: name }) => ({
-        ...state,
-        selectedField: name,
-    }),
-    CONFIGURE_FIELD: state => ({
-        ...state,
-        error: null,
-        isSaving: true,
-    }),
-    CONFIGURE_FIELD_SUCCESS: (state, { payload: field }) => ({
-        ...state,
-        isSaving: false,
-        error: null,
-        configuredFieldName: null,
-        byName: {
-            ...state.byName,
-            [field.name]: field,
         },
-    }),
-    CONFIGURE_FIELD_ERROR: (state, { payload: error }) => ({
-        ...state,
-        isSaving: false,
-        error: error.message,
-    }),
-    CONFIGURE_FIELD_OPEN: (state, { payload: configuredFieldName }) => ({
-        ...state,
-        configuredFieldName,
-        error: null,
-    }),
-    CONFIGURE_FIELD_CANCEL: state => ({
-        ...state,
-        configuredFieldName: null,
-        error: null,
-    }),
-    OPEN_EDIT_FIELD_VALUE: (state, { payload: editedValueFieldName }) => ({
-        ...state,
-        editedValueFieldName,
-        error: null,
-    }),
-    [combineActions(
-        CLOSE_EDIT_FIELD_VALUE,
-        UPDATE_CHARACTERISTICS_SUCCESS,
-        SAVE_RESOURCE_SUCCESS,
-    )]: state => ({
-        ...state,
-        editedValueFieldName: null,
-    }),
-    [ADD_CHARACTERISTIC_SUCCESS]: (state, { payload: { field } }) => ({
-        ...state,
-        list: [
-            ...state.list,
-            field.name,
-        ],
-        byName: {
-            ...state.byName,
-            [field.name]: field,
+        LOAD_FIELD_ERROR: () => defaultState,
+        EDIT_FIELD: (state, { payload }) => {
+            if (!payload && state.editedFieldName === 'new') {
+                return {
+                    ...state,
+                    editedFieldName: undefined,
+                    byName: omit(state.byName, ['new']),
+                    list: [...state.list.slice(0, -1)],
+                };
+            }
+            return {
+                ...state,
+                editedFieldName:
+                    typeof payload === 'number' ? state.list[payload] : payload,
+            };
         },
-    }),
-    CHANGE_POSITION_VALUE: (state, { payload: { fields } }) => {
-        const result = state.byName;
-        fields.forEach((e) => {
-            result[e.name].position = e.position;
-        });
-        return {
+        REMOVE_FIELD_SUCCESS: (state, { payload: { name: nameToRemove } }) => ({
             ...state,
-            byName: {
-                ...result,
-            },
-        };
-    },
-    LOAD_PUBLICATION: state => ({
-        ...state,
-        error: null,
-        loading: true,
-    }),
-    LOAD_PUBLICATION_SUCCESS: (state, { payload: { fields, published } }) => {
-        const { catalog, list } = getCatalogFromArray(fields, 'name');
-
-        return {
+            list: state.list.filter(name => name !== nameToRemove),
+            byName: omit(state.byName, [nameToRemove]),
+        }),
+        SET_VALIDATION: (
+            state,
+            { payload: { isValid: allValid, fields: invalidFields } },
+        ) => ({
+            ...state,
+            allValid,
+            invalidFields,
+        }),
+        SELECT_FIELD: (state, { payload: name }) => ({
+            ...state,
+            selectedField: name,
+        }),
+        CONFIGURE_FIELD: state => ({
             ...state,
             error: null,
-            loading: false,
-            byName: catalog,
-            list,
-            published,
+            isSaving: true,
+        }),
+        CONFIGURE_FIELD_SUCCESS: (state, { payload: field }) => ({
+            ...state,
+            isSaving: false,
+            error: null,
+            configuredFieldName: null,
+            byName: {
+                ...state.byName,
+                [field.name]: field,
+            },
+        }),
+        CONFIGURE_FIELD_ERROR: (state, { payload: error }) => ({
+            ...state,
+            isSaving: false,
+            error: error.message,
+        }),
+        CONFIGURE_FIELD_OPEN: (state, { payload: configuredFieldName }) => ({
+            ...state,
+            configuredFieldName,
+            error: null,
+        }),
+        CONFIGURE_FIELD_CANCEL: state => ({
+            ...state,
+            configuredFieldName: null,
+            error: null,
+        }),
+        OPEN_EDIT_FIELD_VALUE: (state, { payload: editedValueFieldName }) => ({
+            ...state,
+            editedValueFieldName,
+            error: null,
+        }),
+        [combineActions(
+            CLOSE_EDIT_FIELD_VALUE,
+            UPDATE_CHARACTERISTICS_SUCCESS,
+            SAVE_RESOURCE_SUCCESS,
+        )]: state => ({
+            ...state,
             editedValueFieldName: null,
-        };
-    },
-    LOAD_PUBLICATION_ERROR: (state, { payload: error }) => ({
-        ...state,
-        error: error.message,
-        loading: false,
-    }),
-}, defaultState);
+        }),
+        [ADD_CHARACTERISTIC_SUCCESS]: (state, { payload: { field } }) => ({
+            ...state,
+            list: [...state.list, field.name],
+            byName: {
+                ...state.byName,
+                [field.name]: field,
+            },
+        }),
+        CHANGE_POSITION_VALUE: (state, { payload: { fields } }) => {
+            const result = state.byName;
+            fields.forEach(e => {
+                result[e.name].position = e.position;
+            });
+            return {
+                ...state,
+                byName: {
+                    ...result,
+                },
+            };
+        },
+        LOAD_PUBLICATION: state => ({
+            ...state,
+            error: null,
+            loading: true,
+        }),
+        LOAD_PUBLICATION_SUCCESS: (
+            state,
+            { payload: { fields, published } },
+        ) => {
+            const { catalog, list } = getCatalogFromArray(fields, 'name');
 
-const getFields = ({ byName, list }) => list
-    .map(name => byName[name])
-    .sort((f1, f2) => f1.position - f2.position);
+            return {
+                ...state,
+                error: null,
+                loading: false,
+                byName: catalog,
+                list,
+                published,
+                editedValueFieldName: null,
+            };
+        },
+        LOAD_PUBLICATION_ERROR: (state, { payload: error }) => ({
+            ...state,
+            error: error.message,
+            loading: false,
+        }),
+    },
+    defaultState,
+);
+
+const getFields = ({ byName, list }) =>
+    list.map(name => byName[name]).sort((f1, f2) => f1.position - f2.position);
 
 const getState = state => state.list;
 const getByName = ({ byName }) => byName;
 
 const getNbFields = ({ list }) => list.length;
 
-const getEditedFieldIndex = (state) => {
+const getEditedFieldIndex = state => {
     const index = state.list.indexOf(state.editedFieldName);
     return index === -1 ? null : index;
 };
@@ -285,26 +307,22 @@ const getParams = (_, params) => params;
 
 const getEditedField = state => state.byName[state.editedFieldName];
 
-export const getCollectionFields = createSelector(
-    getFields,
-    fields => fields.filter(f => f.cover === COVER_COLLECTION),
+export const getCollectionFields = createSelector(getFields, fields =>
+    fields.filter(f => f.cover === COVER_COLLECTION),
 );
 
-const getDocumentFields = createSelector(
-    getFields,
-    fields => fields
+const getDocumentFields = createSelector(getFields, fields =>
+    fields
         .filter(f => f.display_in_resource || f.contribution)
         .filter(f => f.cover === COVER_DOCUMENT),
 );
 
-const getDatasetFields = createSelector(
-    getFields,
-    fields => fields.filter(f => f.cover === COVER_DATASET),
+const getDatasetFields = createSelector(getFields, fields =>
+    fields.filter(f => f.cover === COVER_DATASET),
 );
 
-const getComposedFields = createSelector(
-    getFields,
-    fields => fields.filter(({ composedOf }) => !!composedOf),
+const getComposedFields = createSelector(getFields, fields =>
+    fields.filter(({ composedOf }) => !!composedOf),
 );
 
 export const isACompositeFields = (name, composedFields) =>
@@ -313,15 +331,18 @@ export const isACompositeFields = (name, composedFields) =>
 const getCollectionFieldsExceptComposite = createSelector(
     getCollectionFields,
     getComposedFields,
-    (allFields, composedFields) => allFields
-        .filter(({ name }) => !isACompositeFields(name, composedFields)),
+    (allFields, composedFields) =>
+        allFields.filter(
+            ({ name }) => !isACompositeFields(name, composedFields),
+        ),
 );
 
 const getRootCollectionFields = createSelector(
     getCollectionFieldsExceptComposite,
-    allFields => allFields
-        .filter(f => f.display_in_resource || f.contribution)
-        .filter(f => f.cover === COVER_COLLECTION && !f.completes),
+    allFields =>
+        allFields
+            .filter(f => f.display_in_resource || f.contribution)
+            .filter(f => f.cover === COVER_COLLECTION && !f.completes),
 );
 
 const getResourceFields = createSelector(
@@ -334,17 +355,26 @@ const getResourceFields = createSelector(
     ],
 );
 
-const getListFields = createSelector(
-    getCollectionFields,
-    fields => fields
+const getListFields = createSelector(getCollectionFields, fields =>
+    fields
         .filter(f => f.display_in_list || f.name === 'uri')
         .filter(f => !f.composedOf),
 );
 
-const getAllListFields = createSelector(
-    getCollectionFields,
-    fields => fields
-        .filter(f => !f.composedOf),
+const getAllListFields = createSelector(getCollectionFields, fields =>
+    fields.filter(f => !f.composedOf),
+);
+
+const getOverViewCol = type => fields => {
+    const result = fields.filter(f => f.overview === type);
+    return result[0] ? result[0].name : null;
+};
+
+const getOverviewTitleCol = createSelector(getAllListFields, getOverViewCol(1));
+
+const getOverviewSubTitleCol = createSelector(
+    getAllListFields,
+    getOverViewCol(2),
 );
 
 export const getFieldByName = createSelector(
@@ -359,7 +389,6 @@ export const getFieldsExceptEdited = createSelector(
     (fields, editedField) => fields.filter(f => f._id !== editedField._id),
 );
 
-
 export const getCompletedField = createSelector(
     getProps,
     getFields,
@@ -370,13 +399,13 @@ export const hasPublicationFields = ({ list }) => list.length > 0;
 
 export const getTransformers = (state, type) => getTransformersMetas(type);
 
-export const getTransformerArgs = (state, operation) => getTransformerMetas(operation).args;
+export const getTransformerArgs = (state, operation) =>
+    getTransformerMetas(operation).args;
 
 export const getFieldOntologyFormData = state =>
     state.form.ONTOLOGY_FIELD_FORM && state.form.ONTOLOGY_FIELD_FORM.values;
 
-
-export const getFieldFormData = (state) => {
+export const getFieldFormData = state => {
     try {
         return state.form.field.values;
     } catch (error) {
@@ -389,9 +418,8 @@ const getValidationFields = state => state.invalidFields;
 export const getInvalidFields = createSelector(
     getByName,
     getValidationFields,
-    (byName = {}, validationFields = []) => validationFields
-        .filter(({ isValid }) => !isValid)
-        .map(field => ({
+    (byName = {}, validationFields = []) =>
+        validationFields.filter(({ isValid }) => !isValid).map(field => ({
             ...byName[field.name],
             ...field,
         })),
@@ -404,7 +432,7 @@ export const getLineColGetterFromAllFields = (fieldByName, field) => {
         return () => null;
     }
 
-    return (line) => {
+    return line => {
         const lineValue = line[field.name];
         return Array.isArray(lineValue) ? JSON.stringify(lineValue) : lineValue;
     };
@@ -415,7 +443,7 @@ export const getLineColGetter = createSelector(
     (_, field) => field,
     (fieldByName, field) => {
         const getLineCol = getLineColGetterFromAllFields(fieldByName, field);
-        return (line) => {
+        return line => {
             try {
                 return getLineCol(line);
             } catch (error) {
@@ -450,9 +478,8 @@ const getCompositeFieldsNamesByField = createSelector(
 
 const hasPublishedDataset = ({ published }) => published;
 
-const getContributionFields = createSelector(
-    getFields,
-    fields => fields.filter(f => f.contribution),
+const getContributionFields = createSelector(getFields, fields =>
+    fields.filter(f => f.contribution),
 );
 
 const getSelectedField = ({ selectedField }) => selectedField;
@@ -470,26 +497,22 @@ const getFieldToAdd = ({ byName, selectedField }) => {
 
 const getLinkedFields = createSelector(
     getFields,
-    (getParams),
-    (fields, fieldName) => fields.filter(f => f.completes && f.completes === fieldName),
+    getParams,
+    (fields, fieldName) =>
+        fields.filter(f => f.completes && f.completes === fieldName),
 );
 
-const findTitleField = (fields) => {
-    let titleField = fields
-        .find(({ scheme }) => scheme === TITLE_SCHEME);
+const findTitleField = fields => {
+    let titleField = fields.find(({ scheme }) => scheme === TITLE_SCHEME);
 
     if (!titleField) {
-        titleField = fields
-            .find(({ label }) => label.match(/^title$/));
+        titleField = fields.find(({ label }) => label.match(/^title$/));
     }
 
     return titleField ? titleField.name : null;
 };
 
-const getTitleFieldName = createSelector(
-    getCollectionFields,
-    findTitleField,
-);
+const getTitleFieldName = createSelector(getCollectionFields, findTitleField);
 
 const getDatasetTitleFieldName = createSelector(
     getDatasetFields,
@@ -507,9 +530,8 @@ const isLoading = state => state.loading;
 const isSaving = state => state.isSaving;
 const getError = state => state.error;
 
-const getFacetFields = createSelector(
-    getFields,
-    allFields => allFields.filter(f => f.isFacet),
+const getFacetFields = createSelector(getFields, allFields =>
+    allFields.filter(f => f.isFacet),
 );
 
 const hasFacetFields = createSelector(
@@ -524,7 +546,8 @@ const hasSearchableFields = createSelector(
 
 const getNbColumns = state => state.list.length;
 
-const getEditedValueFieldName = ({ editedValueFieldName }) => editedValueFieldName;
+const getEditedValueFieldName = ({ editedValueFieldName }) =>
+    editedValueFieldName;
 
 const isFieldEdited = createSelector(
     getEditedValueFieldName,
@@ -583,4 +606,6 @@ export const selectors = {
     getEditedValueFieldName,
     isFieldEdited,
     isFieldConfigured,
+    getOverviewTitleCol,
+    getOverviewSubTitleCol,
 };

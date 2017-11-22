@@ -3,11 +3,12 @@ import { call, put, select } from 'redux-saga/effects';
 import { delay } from 'redux-saga';
 
 import {
+    loadDatasetPage,
     loadDatasetPageError,
     loadDatasetPageSuccess,
 } from './';
 
-import { handleLoadDatasetPageRequest } from './sagas';
+import { handleLoadDatasetPageRequest, handlePreLoadDatasetPage } from './sagas';
 import { fromUser } from '../../sharedSelectors';
 import fetchSaga from '../../lib/sagas/fetchSaga';
 import { fromDataset, fromFacet } from '../selectors';
@@ -80,6 +81,31 @@ describe('dataset saga', () => {
             failedSaga.next();
             expect(failedSaga.next({ error: 'foo' }).value)
                 .toEqual(put(loadDatasetPageError('foo')));
+        });
+    });
+
+    describe('handlePreLoadDatasetPage', () => {
+        it('should select fromDataset.isDatasetLoaded', () => {
+            const saga = handlePreLoadDatasetPage();
+            const next = saga.next();
+
+            expect(next.value).toEqual(select(fromDataset.isDatasetLoaded));
+        });
+
+        it('should end if dataset is loaded', () => {
+            const saga = handlePreLoadDatasetPage();
+            saga.next();
+            const next = saga.next(true);
+
+            expect(next.done).toBe(true);
+        });
+
+        it('should put loadDatasetPage if dataset is not loaded', () => {
+            const saga = handlePreLoadDatasetPage();
+            saga.next();
+            const next = saga.next(false);
+
+            expect(next.value).toEqual(put(loadDatasetPage()));
         });
     });
 });

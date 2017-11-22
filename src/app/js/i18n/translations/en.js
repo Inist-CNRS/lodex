@@ -18,8 +18,10 @@ export default {
     atom: 'atom',
     publish: 'Publish',
     publication: 'Publication',
-    publication_explanations: 'Publishing will make your transformed data public. Once it has been published, you will not be able to modify it.',
-    published: 'Your data has been published online. You can further configure its display and/or update it by using the public interface.',
+    publication_explanations:
+        'Publishing will make your transformed data public. Once it has been published, you will not be able to modify it.',
+    published:
+        'Your data has been published online. You can further configure its display and/or update it by using the public interface.',
     showing: 'Showing {from} to {to} of {total}',
     page: 'Page',
     perPage: 'per page',
@@ -62,19 +64,26 @@ export default {
     error_position_invalid: 'Position is invalid (must be greater than zero)',
     error_position_required: 'Position is required',
     error_position_uri_must_come_first: 'URI field must be the first',
-    error_transformers_contributions_no_transformers: 'A contribution cannot have an operation',
-    error_composedOf_contribution_no_composed_of: 'A contribution cannot have a composedOf attribute',
+    error_transformers_contributions_no_transformers:
+        'A contribution cannot have an operation',
+    error_composedOf_contribution_no_composed_of:
+        'A contribution cannot have a composedOf attribute',
     'error_composedOf.separator_required': 'ComposedOf separator is required',
-    'error_composedOf.separator_invalid': 'ComposedOf separator must be a string',
-    'error_composedOf.fields_required': 'ComposedOf must have at least two fields',
+    'error_composedOf.separator_invalid':
+        'ComposedOf separator must be a string',
+    'error_composedOf.fields_required':
+        'ComposedOf must have at least two fields',
     'error_composedOf.fields_invalid': 'ComposedOf fields must exists',
     error_completes_inexisting_target_field: 'Completed field must exists',
     error_label_invalid_label: 'Label must be at least 2 characters long',
-    error_cover_invalid_contribution_cover: 'A contribution must have a cover document',
+    error_cover_invalid_contribution_cover:
+        'A contribution must have a cover document',
     error_cover_invalid_cover: 'Cover must be either dataset or collection',
     error_language_invalid: 'Language is invalid',
-    'error_transformer.operation_invalid': 'Operation %{operation} does not exists',
-    'error_transformer.args_invalid': 'Operation %{operation} is invalid : it requires %{args} args',
+    'error_transformer.operation_invalid':
+        'Operation %{operation} does not exists',
+    'error_transformer.args_invalid':
+        'Operation %{operation} is invalid : it requires %{args} args',
     remove_resource: 'Remove the resource',
     enter_reason: 'Enter your reason',
     reason: 'Reason',
@@ -115,7 +124,8 @@ export default {
     remove_from_publication: 'Remove',
     separator: 'separator',
     composed_of: 'Composed of',
-    wizard_composed_of: 'Compose this field - the following fields will be displayed under it',
+    wizard_composed_of:
+        'Compose this field - the following fields will be displayed under it',
     transformers: 'Operations',
     add: 'add',
     remove: 'remove',
@@ -126,8 +136,10 @@ export default {
     export_data: 'Export',
     export_fields: 'Export model',
     import_fields: 'Import model',
-    confirm_import_fields: 'Importing a saved model will override your current work. Are you sure ?',
-    import_fields_failed: 'Your model couldn\'t be imported. Please ensure you selected the correct file.',
+    confirm_import_fields:
+        'Importing a saved model will override your current work. Are you sure ?',
+    import_fields_failed:
+        "Your model couldn't be imported. Please ensure you selected the correct file.",
     no: 'No',
     contributed_resources: 'Contributed resources',
     review: 'review',
@@ -137,7 +149,8 @@ export default {
     REJECTED: 'rejected',
     field_display_in_list: 'Display on list page',
     field_display_in_resource: 'Display on resource page',
-    field_searchable: 'Searchable - global full text search will target this field',
+    field_searchable:
+        'Searchable - global full text search will target this field',
     filter: 'enter your search term here',
     no_result: 'No matching resource found',
     field_is_facet: 'Is a facet',
@@ -189,18 +202,23 @@ export default {
     label: 'label',
     value: 'value',
     valid: 'valid',
-    instance_name: 'Enter instance\'s name',
+    instance_name: "Enter instance's name",
     'add-field-to-resource': 'add field',
     'semantic-publication-system': 'Semantic publication system',
     'modelize-your-data': 'Model and publish your data to the semantic web!',
-    'easy-creation': 'Easily create your custom website from your CSV, XML, etc.',
-    'semantic-web-compatibility': 'Your repositories, thesauri, experiment results will be compatible with the semantic web!',
-    'easy-update': 'You can easily modify them and enrich them with a guarantee of traceability.',
+    'easy-creation':
+        'Easily create your custom website from your CSV, XML, etc.',
+    'semantic-web-compatibility':
+        'Your repositories, thesauri, experiment results will be compatible with the semantic web!',
+    'easy-update':
+        'You can easily modify them and enrich them with a guarantee of traceability.',
     'first-upload': 'Start by loading a data file.',
-    'publish-punchline': 'Publish your data, you can always easily modify and enrich them later with a guarantee of traceability.',
+    'publish-punchline':
+        'Publish your data, you can always easily modify and enrich them later with a guarantee of traceability.',
     remove_column: 'Remove this column',
     multi_field_concat: 'A list of values from several existing columns',
-    duplicated_uri: '%{nbInvalidUri} documents have duplicated uri and will not be published',
+    duplicated_uri:
+        '%{nbInvalidUri} documents have duplicated uri and will not be published',
     warn_publication: 'Warning: uri is not unique for every document',
     force_publish: 'Publish anyway',
     embed_widget: 'Embed this resource in your website',
@@ -296,4 +314,7 @@ export default {
     parser_name: 'Parser name',
     select_file: 'Select which file you want to load',
     select_parser: 'Select which parser you want to apply',
+    bad_format:
+        'Inappropriate format for %{label}, expected simple value but got array, please use list format',
+
 };

@@ -1,4 +1,5 @@
-import React, { PropTypes, Component } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
 import FlatButton from 'material-ui/FlatButton';
@@ -14,7 +15,9 @@ import { selectVersion } from '../resource';
 import { fromResource } from '../selectors';
 
 const getFormat = (latest, length) => (dateString, index) =>
-    `${moment(dateString).format('L HH:mm:ss')}${index === length - 1 ? ` (${latest})` : ''}`;
+    `${moment(dateString).format('L HH:mm:ss')}${
+        index === length - 1 ? ` (${latest})` : ''
+    }`;
 
 const staticProps = {
     anchorOrigin: { horizontal: 'left', vertical: 'bottom' },
@@ -30,37 +33,34 @@ export class SelectVersionComponent extends Component {
         };
     }
 
-    getMenuItems = (versions, format) => versions.map((date, index) => (
-        <MenuItem
-            key={date}
-            className={`version version_${index}`}
-            value={index}
-            primaryText={format(date, index)}
-        />
-    ))
+    getMenuItems = (versions, format) =>
+        versions.map((date, index) => (
+            <MenuItem
+                key={date}
+                className={`version version_${index}`}
+                value={index}
+                primaryText={format(date, index)}
+            />
+        ));
 
-    handleClick = (event) => {
+    handleClick = event => {
         this.setState({
             anchorEl: event.currentTarget,
             showMenu: true,
         });
-    }
+    };
 
     handleVersionClick = (event, value) => {
         this.setState({ showMenu: false });
         this.props.onSelectVersion(value);
-    }
+    };
 
     handleRequestClose = () => {
         this.setState({ showMenu: false });
-    }
+    };
 
     render() {
-        const {
-            versions,
-            selectedVersion,
-            p: polyglot,
-        } = this.props;
+        const { versions, selectedVersion, p: polyglot } = this.props;
 
         const { showMenu, anchorEl } = this.state;
 
@@ -107,7 +107,6 @@ const mapDispatchToProps = {
     onSelectVersion: selectVersion,
 };
 
-export default compose(
-    connect(mapStateToProps, mapDispatchToProps),
-    translate,
-)(SelectVersionComponent);
+export default compose(connect(mapStateToProps, mapDispatchToProps), translate)(
+    SelectVersionComponent,
+);

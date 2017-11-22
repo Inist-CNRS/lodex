@@ -1,7 +1,7 @@
 version: "2"
 services:
-    npm:
-        image: node:7.8.0
+    node:
+        image: node:8.9.1
         volumes:
             - .:/app
         working_dir: /app
@@ -9,64 +9,30 @@ services:
             http_proxy: ${http_proxy}
             https_proxy: ${https_proxy}
             no_proxy: "localhost,127.0.0.1,"
-        entrypoint: ['npm']
+            NODE_ENV: ${NODE_ENV}
+            EZMASTER_PUBLIC_URL: ${EZMASTER_PUBLIC_URL}
+        links:
+            - mongo
 
-    server:
-        build:
-            context: ./dockerfile/dev
-            args:
-                http_proxy: ${http_proxy}
-                https_proxy: ${https_proxy}
-                no_proxy: "localhost,127.0.0.1,"
+    api:
+        image: node:8.9.1
         volumes:
             - .:/app
         working_dir: /app
         environment:
-            NODE_APP_INSTANCE: development
             NODE_ENV: development
             http_proxy: ${http_proxy}
             https_proxy: ${https_proxy}
             no_proxy: "localhost,127.0.0.1,"
+            EZMASTER_PUBLIC_URL: ${EZMASTER_PUBLIC_URL}
         links:
             - mongo
         ports:
             - 3000:3000
+        command: npm run development:api
 
     mongo:
         image: mongo:3.0.14
         command: "--smallfiles"
         ports:
             - 27017:27017
-
-    api:
-        image: node:7.8.0
-        volumes:
-            - .:/app
-        working_dir: /app
-        environment:
-            NODE_APP_INSTANCE: test
-            NODE_ENV: test
-            http_proxy:  ${http_proxy}
-            https_proxy: ${https_proxy}
-            no_proxy: "localhost,127.0.0.1,api,hub,chrome,mongo"
-        links:
-            - mongo
-        command: npm start
-
-    api-unit:
-        image: node:7.8.0
-        volumes:
-            - .:/app
-        working_dir: /app
-        environment:
-            NODE_ENV: test
-        command: npm run test:api
-
-    frontend-unit:
-        image: node:7.8.0
-        volumes:
-            - .:/app
-        working_dir: /app
-        environment:
-            NODE_ENV: test
-        command: npm run test:app

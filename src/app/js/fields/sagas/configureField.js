@@ -5,7 +5,7 @@ import {
     configureFieldSuccess,
     configureFieldError,
     getFieldOntologyFormData,
-    loadPublication,
+    preLoadPublication,
 } from '../';
 import { fromUser } from '../../sharedSelectors';
 import fetchSaga from '../../lib/sagas/fetchSaga';
@@ -22,7 +22,7 @@ export function* handleSaveFieldRequest() {
     }
 
     yield put(configureFieldSuccess(field));
-    yield put(loadPublication());
+    yield put(preLoadPublication());
 }
 
 export default function* watchsaveFieldRequest() {

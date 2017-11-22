@@ -4,11 +4,14 @@
             "targets": {
                 "node": "current"
             },
-            "include": ["transform-es2015-spread"],
             "useBuiltIns": true
-        }]
+        }],
+        "react"
     ],
-    "plugins": ["transform-object-rest-spread"],
+    "plugins": [
+        "transform-class-properties",
+        "transform-object-rest-spread"
+    ],
     "env": {
         "browser": {
             "presets": [
@@ -19,12 +22,12 @@
                     "modules": false,
                     "useBuiltIns": true
                 }],
-                "react",
+                "react"
             ],
             "plugins": [
                 "transform-class-properties",
                 "transform-object-rest-spread"
-            ],
-        },
+            ]
+        }
     }
 }

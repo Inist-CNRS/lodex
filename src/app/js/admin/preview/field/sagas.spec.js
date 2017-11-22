@@ -1,5 +1,5 @@
 import expect from 'expect';
-import { call, put, select } from 'redux-saga/effects';
+import { all, call, put, select } from 'redux-saga/effects';
 
 import getDocumentTransformer from '../../../lib/getDocumentTransformer';
 import { getFieldFormData } from '../../../fields';
@@ -35,7 +35,7 @@ describe('field saga', () => {
         });
 
         it('should call transformDocument for each lines', () => {
-            expect(saga.next(transformDocument).value).toEqual(lines.map(line => call(transformDocument, line)));
+            expect(saga.next(transformDocument).value).toEqual(all(lines.map(line => call(transformDocument, line))));
         });
 
         it('should put computePreviewSuccess action', () => {

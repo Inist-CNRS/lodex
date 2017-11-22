@@ -1,4 +1,4 @@
-import { call, put, select, fork, takeLatest } from 'redux-saga/effects';
+import { call, put, select, takeLatest, fork } from 'redux-saga/effects';
 
 import {
     CLEAR_DATASET,
@@ -42,7 +42,7 @@ export function* watchClearPublishedRequest() {
     yield takeLatest(CLEAR_PUBLISHED, handleClearPublishedRequest);
 }
 
-export default function* () {
+export default function*() {
     yield fork(watchClearDatasetRequest);
     yield fork(watchClearPublishedRequest);
 }

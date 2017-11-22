@@ -18,7 +18,7 @@ import LodexParseQuery from './LodexParseQuery.js'
 import LodexReduceQuery from './LodexReduceQuery.js'
 import LodexOutput from './LodexOutput.js'
 
-module.exports = {
+export default {
     filterVersions,
     filterContributions,
     useFieldNames,

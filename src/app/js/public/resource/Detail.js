@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import translate from 'redux-polyglot/translate';
@@ -8,8 +9,8 @@ import { Tabs, Tab } from 'material-ui/Tabs';
 import Divider from 'material-ui/Divider';
 import { grey500 } from 'material-ui/styles/colors';
 import memoize from 'lodash.memoize';
+import { Helmet } from 'react-helmet';
 
-import Card from '../../lib/components/Card';
 import { saveResource as saveResourceAction } from './';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { fromResource } from '../selectors';
@@ -26,7 +27,11 @@ import SelectVersion from './SelectVersion';
 import Version from '../Version';
 import addSchemePrefix from '../../lib/addSchemePrefix';
 import { getFullResourceUri } from '../../../../common/uris';
-import { schemeForDatasetLink, topFieldsCount } from '../../../../../config.json';
+import {
+    schemeForDatasetLink,
+    topFieldsCount,
+} from '../../../../../config.json';
+import getTitle from '../../lib/getTitle';
 
 const styles = {
     container: {
@@ -135,30 +140,56 @@ export const DetailComponent = ({
     backToListLabel,
 }) => {
     const topFieldsLimit = Number(topFieldsCount) || 2;
-    const topFields = fields.filter(field => resource[field.name] || field.composedOf).slice(0, topFieldsLimit);
-    const otherFields = fields.filter(field => resource[field.name] || field.composedOf).slice(topFieldsLimit);
+    const topFields = fields
+        .filter(field => resource[field.name] || field.composedOf)
+        .slice(0, topFieldsLimit);
+    const otherFields = fields
+        .filter(field => resource[field.name] || field.composedOf)
+        .slice(topFieldsLimit);
 
     return (
         <div className="detail">
+            <Helmet>
+                <title>
+                    {getTitle()} - {sharingTitle || resource.uri}
+                </title>
+            </Helmet>
             <div className="header-resource-section">
                 <div style={styles.container}>
                     <div style={styles.firstItem}>
-                        <div className="property schemeForDatasetLink" style={styles.container}>
+                        <div
+                            className="property schemeForDatasetLink"
+                            style={styles.container}
+                        >
                             <div>
                                 <div style={styles.labelContainer}>
-                                    <span className="property_label back_to_list" style={styles.label}>
+                                    <span
+                                        className="property_label back_to_list"
+                                        style={styles.label}
+                                    >
                                         {polyglot.t('dataset')}
                                     </span>
-                                    <span className="property_scheme in_scheme" style={styles.scheme}>
-                                        <a style={styles.schemeLink} href={schemeForDatasetLink}>
-                                            {addSchemePrefix(schemeForDatasetLink)}
+                                    <span
+                                        className="property_scheme in_scheme"
+                                        style={styles.scheme}
+                                    >
+                                        <a
+                                            style={styles.schemeLink}
+                                            href={schemeForDatasetLink}
+                                        >
+                                            {addSchemePrefix(
+                                                schemeForDatasetLink,
+                                            )}
                                         </a>
                                     </span>
                                 </div>
                             </div>
                             <div style={styles.valueContainer}>
-                                <span className="property_language" style={styles.language(true)}>
-                                   XX
+                                <span
+                                    className="property_language"
+                                    style={styles.language(true)}
+                                >
+                                    XX
                                 </span>
                                 <div style={styles.value}>
                                     <Link to="/home">{backToListLabel}</Link>
@@ -203,25 +234,44 @@ export const DetailComponent = ({
                                 </div>
                             ))}
                             <div style={styles.item}>
-                                <div className="property resourceURI" style={styles.container}>
+                                <div
+                                    className="property resourceURI"
+                                    style={styles.container}
+                                >
                                     <div>
                                         <div style={styles.labelContainer}>
-                                            <span className="property_label resource_uri" style={styles.label}>
+                                            <span
+                                                className="property_label resource_uri"
+                                                style={styles.label}
+                                            >
                                                 URI
                                             </span>
-                                            <span className="property_scheme resource_uri_scheme" style={styles.scheme}>
-                                                <a style={styles.schemeLink} href="https://www.w3.org/TR/xmlschema-2/#anyURI">
-                                                    {addSchemePrefix('https://www.w3.org/TR/xmlschema-2/#anyURI')}
+                                            <span
+                                                className="property_scheme resource_uri_scheme"
+                                                style={styles.scheme}
+                                            >
+                                                <a
+                                                    style={styles.schemeLink}
+                                                    href="https://www.w3.org/TR/xmlschema-2/#anyURI"
+                                                >
+                                                    {addSchemePrefix(
+                                                        'https://www.w3.org/TR/xmlschema-2/#anyURI',
+                                                    )}
                                                 </a>
                                             </span>
                                         </div>
                                     </div>
                                     <div style={styles.valueContainer}>
-                                        <span className="property_language" style={styles.language(true)}>
-                                           XX
+                                        <span
+                                            className="property_language"
+                                            style={styles.language(true)}
+                                        >
+                                            XX
                                         </span>
                                         <div style={styles.value}>
-                                            <a href={`/${resource.uri}`}>{`${window.location.protocol}//${window.location.host}/${resource.uri}`}</a>
+                                            <a href={`/${resource.uri}`}>{`${
+                                                process.env.EZMASTER_PUBLIC_URL
+                                            }/${resource.uri}`}</a>
                                         </div>
                                     </div>
                                 </div>
@@ -237,7 +287,10 @@ export const DetailComponent = ({
                         <Divider />
                         <Widgets uri={resource.uri} />
                         <Divider />
-                        <ShareLink title={polyglot.t('resource_share_link')} uri={sharingUri} />
+                        <ShareLink
+                            title={polyglot.t('resource_share_link')}
+                            uri={sharingUri}
+                        />
                         <Divider />
                         <Share uri={sharingUri} title={sharingTitle} />
                     </Tab>
@@ -279,7 +332,7 @@ DetailComponent.propTypes = {
     backToListLabel: PropTypes.string,
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
     const resource = fromResource.getResourceSelectedVersion(state);
     let sharingTitle;
     const titleFieldName = fromFields.getTitleFieldName(state);
@@ -288,18 +341,20 @@ const mapStateToProps = (state) => {
         sharingTitle = resource[titleFieldName];
     }
 
-    return ({
+    return {
         resource,
         isSaving: fromResource.isSaving(state),
         fields: fromFields.getResourceFields(state, resource),
-        sharingUri: getFullResourceUri(resource, `${window.location.protocol}//${window.location.host}`),
+        sharingUri: getFullResourceUri(
+            resource,
+            process.env.EZMASTER_PUBLIC_URL,
+        ),
         sharingTitle,
-    });
+    };
 };
 
 const mapDispatchToProps = { handleSaveResource: saveResourceAction };
 
-export default compose(
-    connect(mapStateToProps, mapDispatchToProps),
-    translate,
-)(DetailComponent);
+export default compose(connect(mapStateToProps, mapDispatchToProps), translate)(
+    DetailComponent,
+);

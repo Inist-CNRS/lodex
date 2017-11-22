@@ -1,11 +1,12 @@
 language: node_js
 
 node_js:
-    - "7.8.0"
+    - "8.9.1"
 
 env:
     global:
         - NODE_ENV=test
+        - EZMASTER_PUBLIC_URL=http://localhost:3000
 
 dist: trusty
 

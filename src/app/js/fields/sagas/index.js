@@ -1,4 +1,5 @@
 import { fork } from 'redux-saga/effects';
+
 import loadFields from './loadFields';
 import removeField from './removeField';
 import saveField from './saveField';
@@ -8,7 +9,7 @@ import changePosition from './changePosition';
 import loadPublication from './loadPublication';
 import configureField from './configureField';
 
-export default function* () {
+export default function*() {
     yield fork(loadFields);
     yield fork(removeField);
     yield fork(saveField);

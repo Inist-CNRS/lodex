@@ -1,5 +1,6 @@
 import { call, put, select, takeLatest } from 'redux-saga/effects';
 import { LOCATION_CHANGE } from 'react-router-redux';
+import qs from 'qs';
 
 import {
     ADD_FIELD_TO_RESOURCE_SUCCESS,
@@ -8,36 +9,58 @@ import {
     loadResourceSuccess,
     loadResourceError,
 } from '../';
-import { loadPublication } from '../../../fields';
+import { preLoadPublication } from '../../../fields';
 import { fromUser } from '../../../sharedSelectors';
 import fetchSaga from '../../../lib/sagas/fetchSaga';
 
 import { fromResource } from '../../selectors';
 
-export const parsePathName = pathname => pathname.match(/^\/((?:ark|uid):\/.*$)/) || [];
+export const getUriFromQueryString = queryString =>
+    qs.parse(queryString, { ignoreQueryPrefix: true }).uri;
+
+export const parsePathName = pathname => {
+    const match = pathname.match(/^\/((?:ark|uid):\/.*$)/);
+
+    return match && match[1];
+};
+
+export const getUriFromPayload = payload => {
+    const ark = parsePathName(payload.pathname);
+
+    if (ark) {
+        return ark;
+    }
+
+    if (payload && payload.state && payload.state.uri) {
+        return payload.state.uri;
+    }
+
+    return getUriFromQueryString(payload.search);
+};
+
+export function* getUri(type, payload) {
+    if (type === LOCATION_CHANGE) {
+        return yield call(getUriFromPayload, payload);
+    }
+    const resource = yield select(fromResource.getResourceLastVersion);
+
+    if (!resource) {
+        return null;
+    }
+
+    return resource.uri;
+}
 
 export function* handleLoadResource({ payload, type }) {
-    let ark;
-    let uri;
+    yield put(preLoadPublication());
+    const uri = yield call(getUri, type, payload);
 
-    if (type === LOCATION_CHANGE) {
-        [, ark] = yield call(parsePathName, payload.pathname);
-        if (!ark && (!payload.state || !payload.state.uri) && !payload.query.uri) {
-            return;
-        }
-        if (payload && payload.state && payload.state.uri) {
-            uri = payload.state.uri;
-        } else {
-            uri = ark || payload.query.uri;
-        }
-    } else {
-        const resource = yield select(fromResource.getResourceLastVersion);
+    if (!uri) {
+        return;
+    }
 
-        if (!resource) {
-            return;
-        }
-
-        uri = resource.uri;
+    if (yield select(fromResource.isResourceLoaded, uri)) {
+        return;
     }
 
     yield put(loadResource());
@@ -50,13 +73,11 @@ export function* handleLoadResource({ payload, type }) {
     }
 
     yield put(loadResourceSuccess(response));
-    yield put(loadPublication());
 }
 
 export default function* watchLocationChangeToResource() {
-    yield takeLatest([
-        LOCATION_CHANGE,
-        ADD_FIELD_TO_RESOURCE_SUCCESS,
-        HIDE_RESOURCE_SUCCESS,
-    ], handleLoadResource);
+    yield takeLatest(
+        [LOCATION_CHANGE, ADD_FIELD_TO_RESOURCE_SUCCESS, HIDE_RESOURCE_SUCCESS],
+        handleLoadResource,
+    );
 }

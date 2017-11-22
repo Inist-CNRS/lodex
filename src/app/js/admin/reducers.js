@@ -14,7 +14,6 @@ import publishReducer from './publish';
 import removedResources from './removedResources';
 import upload from './upload';
 import user from '../user';
-import debugReducer from '../lib/debugReducer';
 import contributedResources from './contributedResources';
 import clear from './clear';
 
@@ -37,7 +36,4 @@ const reducer = combineReducers({
     contributedResources,
 });
 
-export default __DEBUG__ ?
-    debugReducer(reducer)
-    :
-    reducer;
+export default reducer;

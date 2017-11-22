@@ -11,16 +11,18 @@ export default {
     'with errors': 'with errors',
     upload_another_file: 'Importer un jeu de donnée',
     Cancel: 'Annuler',
-    Username: 'Nom d\'utilisateur',
+    Username: "Nom d'utilisateur",
     Password: 'Mot de passe',
     line: 'ligne',
     error: 'erreur',
     atom: 'atom',
     publish: 'Publier',
     publication: 'Publication',
-    publication_explanations: 'Publishing will make your transformed data public. Once it has been published, y' +
+    publication_explanations:
+        'Publishing will make your transformed data public. Once it has been published, y' +
         'ou will not be able to modify it.',
-    published: 'Vos données ont été publiées en ligne. Vous pouvez configurer davantage l\'affichage de ces dernières ou les mettre à jour en utilisant l\'interface publique',
+    published:
+        "Vos données ont été publiées en ligne. Vous pouvez configurer davantage l'affichage de ces dernières ou les mettre à jour en utilisant l'interface publique",
     showing: 'Showing {from} to {to} of {total}',
     page: 'Page',
     perPage: 'par page',
@@ -51,7 +53,7 @@ export default {
     back_to_list: 'Retourner à la liste',
     settings: 'Settings',
     listen_up: 'Attention ! Cette action est destructive !',
-    enter_name: 'Entrez ci-dessous le nom de l\'instance Lodex',
+    enter_name: "Entrez ci-dessous le nom de l'instance Lodex",
     danger_zone: 'Danger zone',
     clear: 'Nettoyer',
     clear_publish: 'Clear published',
@@ -65,19 +67,26 @@ export default {
     error_position_invalid: 'Position is invalid (must be greater than zero)',
     error_position_required: 'Position is required',
     error_position_uri_must_come_first: 'URI field must be the first',
-    error_transformers_contributions_no_transformers: 'A contribution cannot have an operation',
-    error_composedOf_contribution_no_composed_of: 'A contribution cannot have a composedOf attribute',
+    error_transformers_contributions_no_transformers:
+        'A contribution cannot have an operation',
+    error_composedOf_contribution_no_composed_of:
+        'A contribution cannot have a composedOf attribute',
     'error_composedOf.separator_required': 'ComposedOf separator is required',
-    'error_composedOf.separator_invalid': 'ComposedOf separator must be a string',
-    'error_composedOf.fields_required': 'ComposedOf must have at least two fields',
+    'error_composedOf.separator_invalid':
+        'ComposedOf separator must be a string',
+    'error_composedOf.fields_required':
+        'ComposedOf must have at least two fields',
     'error_composedOf.fields_invalid': 'Fields of composition must exists',
     error_completes_inexisting_target_field: 'Annotated field must exists',
     error_label_invalid_label: 'Label must be at least 2 characters long',
-    error_cover_invalid_contribution_cover: 'A contribution must have a cover document',
+    error_cover_invalid_contribution_cover:
+        'A contribution must have a cover document',
     error_cover_invalid_cover: 'Cover must be either dataset or collection',
     error_language_invalid: 'Langue invalide',
-    'error_transformer.operation_invalid': 'L\'opération %{operation} n\'existe pas',
-    'error_transformer.args_invalid': 'L\'opération %{operation} est invalide : arguments %{args} requis',
+    'error_transformer.operation_invalid':
+        "L'opération %{operation} n'existe pas",
+    'error_transformer.args_invalid':
+        "L'opération %{operation} est invalide : arguments %{args} requis",
     remove_resource: 'Retirez la ressource',
     enter_reason: 'Écrivez votre raison',
     reason: 'La raison',
@@ -108,7 +117,7 @@ export default {
     no_dataset: 'Aucun jeu de données',
     scheme: 'scheme',
     format: 'format',
-    exit_column_edition: 'Retour à l\'aperçu',
+    exit_column_edition: "Retour à l'aperçu",
     upload_file: 'Importer un fichier',
     annotate_field: 'Annotate another field',
     completes_field_none: 'None',
@@ -116,7 +125,8 @@ export default {
     remove_from_publication: 'Supprimer',
     separator: 'séparateur',
     composed_of: 'Composé de',
-    wizard_composed_of: 'Compose this field - the following fields will be displayed under it',
+    wizard_composed_of:
+        'Compose this field - the following fields will be displayed under it',
     transformers: 'Opérations',
     add: 'ajout',
     remove: 'enlever',
@@ -127,8 +137,10 @@ export default {
     export_data: 'Exporter',
     export_fields: 'Exporter le modèle',
     import_fields: 'Importer le modèle',
-    confirm_import_fields: 'Importing a saved model will override your current work. Are you sure ?',
-    import_fields_failed: 'Your model couldn\'t be imported. Please ensure you selected the correct file.',
+    confirm_import_fields:
+        'Importing a saved model will override your current work. Are you sure ?',
+    import_fields_failed:
+        "Your model couldn't be imported. Please ensure you selected the correct file.",
     no: 'Non',
     contributed_resources: 'Contributed resources',
     review: 'revue',
@@ -144,7 +156,8 @@ export default {
     field_is_facet: 'est une facette',
     add_facet: 'Ajouter une facette',
     select_facet_value: 'Sélectionner une valeur pour: %{facet}',
-    add_column_from_original_dataset: 'Ajouter une colonne depuis le jeu de données original',
+    add_column_from_original_dataset:
+        'Ajouter une colonne depuis le jeu de données original',
     Login: 'Se connecter',
     show_publication_errors: 'Erreurs',
     model: 'Modèle',
@@ -190,18 +203,25 @@ export default {
     value: 'valeur',
     'add-field-to-resource': 'Ajoutez un champ',
     valid: 'validez',
-    instance_name: 'Entrez le nom de l\'instance',
+    instance_name: "Entrez le nom de l'instance",
     'semantic-publication-system': 'Système de publication sémantique',
-    'modelize-your-data': 'Modélisez et publiez vos données vers le web sémantique !',
-    'easy-creation': 'Créez facilement votre site web personnalisé à partir de vos fichiers CSV, XML, etc.',
-    'semantic-web-compatibility': 'Vos référentiels, thésaurus, résultats d\'expérimentation seront compatibles avec le Web Sémantique !',
-    'easy-update': 'Vous pourrez toujours facilement les modifier et les enrichir avec une garantie de traçabilité.',
+    'modelize-your-data':
+        'Modélisez et publiez vos données vers le web sémantique !',
+    'easy-creation':
+        'Créez facilement votre site web personnalisé à partir de vos fichiers CSV, XML, etc.',
+    'semantic-web-compatibility':
+        "Vos référentiels, thésaurus, résultats d'expérimentation seront compatibles avec le Web Sémantique !",
+    'easy-update':
+        'Vous pourrez toujours facilement les modifier et les enrichir avec une garantie de traçabilité.',
     'first-upload': 'Commencez en chargeant un fichier de données.',
-    'publish-punchline': 'Publiez vos données, vous pourrez toujours facilement les modifier et les enrichir à posteriori avec une garantie de traçabilité.',
+    'publish-punchline':
+        'Publiez vos données, vous pourrez toujours facilement les modifier et les enrichir à posteriori avec une garantie de traçabilité.',
     remove_column: 'Remove this column(FR)',
     multi_field_concat: 'A list of values from several existing columns(FR)',
-    duplicated_uri: '%{nbInvalidUri} documents have duplicated uri and will not be published',
-    warn_publication: 'Attention: l\'uri n\'est pas unique sur tous les documents',
+    duplicated_uri:
+        '%{nbInvalidUri} documents have duplicated uri and will not be published',
+    warn_publication:
+        "Attention: l'uri n'est pas unique sur tous les documents",
     force_publish: 'Publish anyway',
     embed_widget: 'Intégrer cette ressource sur votre site',
     select_exported_fields_all: 'Tous les champs',
@@ -217,7 +237,7 @@ export default {
     uri_format_another_column: 'Label is the content of another column',
     uri_format_custom_value: 'The custom text',
     uri_format_another_column_value: 'La colonne',
-    'TypeError: Failed to fetch': 'Impossible d\'accéder à l\'API',
+    'TypeError: Failed to fetch': "Impossible d'accéder à l'API",
     istex_results: 'Résultats de la recherche ISTEX pour %{searchTerm}:',
     istex_total: '%{total} résultats',
     none: 'Aucun',
@@ -228,7 +248,8 @@ export default {
     details: 'Détails',
     auto_generate_uri: 'Leave empty to autogenerate uri',
     required: 'Requis',
-    invalid_uri: 'Une Uri doit toujours commencer par /:uid ou /:ark ou doit être une URL valide',
+    invalid_uri:
+        'Une Uri doit toujours commencer par /:uid ou /:ark ou doit être une URL valide',
     create_resource: 'Créer une nouvelle ressource',
     uri_conflict: 'Un document existe déjà avec la même URI',
     supported_format_list: 'Liste des formats de fichier supportés:',
@@ -251,7 +272,7 @@ export default {
     list: 'Liste de valeurs',
     uri: 'Lien interne',
     email: 'Lien courriel',
-    image: 'URL d\'une image',
+    image: "URL d'une image",
     link: 'URL externe',
     contextualBarchart: 'Graphique contextuel',
     istex: 'Requête ISTEX',
@@ -297,4 +318,6 @@ export default {
     parser_name: 'Nom du parser',
     select_file: 'Choix de fichier à charger',
     select_parser: 'Choix du parser à appliquer',
+    bad_format:
+        'Format inapproprié pour %{label}, simple valeur attendue mais tableau reçut, utilisez le format liste',
 };

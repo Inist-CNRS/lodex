@@ -5,7 +5,7 @@ import { Field } from 'redux-form';
 
 import { FieldInputComponent as FieldInput } from './FieldInput';
 import CompositeFieldInput from './CompositeFieldInput';
-import FormTextField from '../../lib/components/FormTextField';
+import DefaultEdition from '../../formats/DefaultFormat/DefaultEdition';
 
 describe('EditFieldInput', () => {
     it('should render CompositeEditDetailsField if field.composedOf is set', () => {
@@ -19,7 +19,10 @@ describe('EditFieldInput', () => {
         const wrapper = shallow(<FieldInput {...props} />);
         const compositeEditField = wrapper.find(CompositeFieldInput);
         expect(compositeEditField.length).toBe(1);
-        expect(compositeEditField.at(0).props()).toEqual({ field: props.field, label: 'Field' });
+        expect(compositeEditField.at(0).props()).toEqual({
+            field: props.field,
+            label: 'Field',
+        });
     });
 
     it('should render Field if field.composedOf is not set', () => {
@@ -40,7 +43,7 @@ describe('EditFieldInput', () => {
             label: 'Field',
             disabled: false,
             fullWidth: true,
-            component: FormTextField,
+            component: DefaultEdition,
         });
     });
 });

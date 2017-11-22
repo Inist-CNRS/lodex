@@ -2,7 +2,7 @@ import expect from 'expect';
 import publication from './publication';
 
 describe('publication', () => {
-    const fields = [{ foo: 'foo' }];
+    const fields = [{ foo: 'foo', count: 0 }];
     const characteristics = [{ characteristic1: 'characteristic1_value' }];
 
     it('should return the correct status if no dataset has been published', async () => {
@@ -15,6 +15,7 @@ describe('publication', () => {
             },
             publishedDataset: {
                 count: () => Promise.resolve(0),
+                countByFacet: () => 0,
             },
         };
 
@@ -37,6 +38,7 @@ describe('publication', () => {
             },
             publishedDataset: {
                 count: () => Promise.resolve(100),
+                countByFacet: () => 100,
             },
         };
 
@@ -44,7 +46,7 @@ describe('publication', () => {
 
         expect(ctx.body).toEqual({
             characteristics,
-            fields,
+            fields: [{ foo: 'foo', count: 100 }],
             published: true,
         });
     });

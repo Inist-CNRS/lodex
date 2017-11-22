@@ -10,5 +10,5 @@ module.exports = {
         host: 'mongo:27017',
         dbName: 'lodex',
     },
-    host: 'http://localhost:3000',
+    host: process.env.EZMASTER_PUBLIC_URL,
 };

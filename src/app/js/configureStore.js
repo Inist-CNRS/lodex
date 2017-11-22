@@ -1,4 +1,3 @@
-import { browserHistory } from 'react-router';
 import { routerMiddleware } from 'react-router-redux';
 import { applyMiddleware, compose, createStore } from 'redux';
 import createSagaMiddleware from 'redux-saga';
@@ -8,7 +7,7 @@ import filter from 'redux-localstorage-filter';
 
 const sagaMiddleware = createSagaMiddleware();
 
-export default function configureStore(pureReducer, sagas, initialState) {
+export default function configureStore(pureReducer, sagas, initialState, history) {
     const rootReducer = __DEBUG__
         ? (state, action) => {
             switch (action.type) {
@@ -19,17 +18,13 @@ export default function configureStore(pureReducer, sagas, initialState) {
             }
         } : pureReducer;
 
-    const reducer = compose(
-        mergePersistedState(),
-    )(rootReducer);
+    const reducer = compose(mergePersistedState())(rootReducer);
 
-    const storage = compose(
-        filter('user'),
-    )(adapter(window.sessionStorage));
+    const storage = compose(filter('user'))(adapter(window.sessionStorage));
 
     const middlewares = applyMiddleware(
         sagaMiddleware,
-        routerMiddleware(browserHistory),
+        routerMiddleware(history),
     );
 
     const devtools = (typeof window !== 'undefined' && window.devToolsExtension)

@@ -7,7 +7,7 @@ import addFieldToResource from './addFieldToResource';
 import changeFieldStatus from './changeFieldStatus';
 import createResource from './createResource';
 
-export default function* () {
+export default function*() {
     yield fork(loadResource);
     yield fork(saveResource);
     yield fork(hideResource);

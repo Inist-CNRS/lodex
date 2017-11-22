@@ -36,7 +36,7 @@ export default async (db) => {
 
     await collection.createIndex({ name: 1 }, { unique: true });
 
-    collection.findAll = () => collection.find({}).sort({ position: 1 }).toArray();
+    collection.findAll = async () => collection.find({}).sort({ position: 1 }).toArray();
 
     collection.findSearchableNames = async () => {
         const searchableFields = await collection.find({ searchable: true }).toArray();

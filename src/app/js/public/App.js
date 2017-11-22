@@ -1,22 +1,16 @@
-import React, { PropTypes } from 'react';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import React from 'react';
+import { Helmet } from 'react-helmet';
+import PropTypes from 'prop-types';
 
-const styles = {
-    linkToHome: {
-        color: 'white',
-        textDecoration: 'none',
-    },
-    loading: {
-        margin: 8,
-    },
-};
+import getTitle from '../lib/getTitle';
 
 export const AppComponent = ({ children }) => (
-    <MuiThemeProvider>
-        <div className="body">
-            {children}
-        </div>
-    </MuiThemeProvider>
+    <div className="body">
+        <Helmet>
+            <title>{getTitle()}</title>
+        </Helmet>
+        {children}
+    </div>
 );
 
 AppComponent.propTypes = {

@@ -24,10 +24,6 @@ export function* handleLoginRequest({ payload: { previousState, ...credentials }
     return yield put(stopSubmit(LOGIN_FORM_NAME));
 }
 
-export function* watchLoginRequest() {
+export default function* watchLoginRequest() {
     yield takeEvery(LOGIN, handleLoginRequest);
-}
-
-export default function* () {
-    yield fork(watchLoginRequest);
 }

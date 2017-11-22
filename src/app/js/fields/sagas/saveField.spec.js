@@ -7,13 +7,11 @@ import {
     getFieldFormData,
     saveFieldError,
     loadField,
+    saveFieldSuccess,
 } from '../';
 import { fromUser } from '../../sharedSelectors';
 
-import {
-    handleSaveField,
-    sanitizeField,
-} from './saveField';
+import { handleSaveField, sanitizeField } from './saveField';
 
 describe('fields saga', () => {
     describe('handleSaveField', () => {
@@ -24,20 +22,36 @@ describe('fields saga', () => {
         });
 
         it('should call sanitizeField with field form data', () => {
-            expect(saga.next('field form data').value).toEqual(call(sanitizeField, 'field form data'));
+            expect(saga.next('field form data').value).toEqual(
+                call(sanitizeField, 'field form data'),
+            );
         });
 
         it('should select getSaveFieldRequest', () => {
-            expect(saga.next('sanitized field form data').value)
-                .toEqual(select(fromUser.getSaveFieldRequest, 'sanitized field form data'));
+            expect(saga.next('sanitized field form data').value).toEqual(
+                select(
+                    fromUser.getSaveFieldRequest,
+                    'sanitized field form data',
+                ),
+            );
         });
 
         it('should call fetchSaga with the request', () => {
-            expect(saga.next('request').value).toEqual(call(fetchSaga, 'request'));
+            expect(saga.next('request').value).toEqual(
+                call(fetchSaga, 'request'),
+            );
         });
 
         it('should put saveFieldSuccess action', () => {
-            expect(saga.next({ response: 'foo' }).value).toEqual(put(loadField()));
+            expect(saga.next({ response: 'foo' }).value).toEqual(
+                put(saveFieldSuccess()),
+            );
+        });
+
+        it('should put loadField action', () => {
+            expect(saga.next({ response: 'foo' }).value).toEqual(
+                put(loadField()),
+            );
         });
 
         it('should put saveFieldError action with error if any', () => {
@@ -46,8 +60,9 @@ describe('fields saga', () => {
             failedSaga.next();
             failedSaga.next();
             failedSaga.next();
-            expect(failedSaga.next({ error: 'foo' }).value)
-                .toEqual(put(saveFieldError('foo')));
+            expect(failedSaga.next({ error: 'foo' }).value).toEqual(
+                put(saveFieldError('foo')),
+            );
         });
     });
 });
