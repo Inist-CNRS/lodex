@@ -5,12 +5,10 @@ import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 import { Tabs, Tab } from 'material-ui/Tabs';
 import { push } from 'react-router-redux';
-import Divider from 'material-ui/Divider';
 import { Helmet } from 'react-helmet';
 
 import { polyglot as polyglotPropTypes } from '../propTypes';
 import { preLoadPublication as preLoadPublicationAction } from '../fields';
-import { fromCharacteristic } from './selectors';
 import { fromFields } from '../sharedSelectors';
 import getTitle from '../lib/getTitle';
 
@@ -23,10 +21,6 @@ import DatasetCharacteristics from './characteristic/DatasetCharacteristics';
 import NoDataset from './NoDataset';
 import Toolbar from './Toolbar';
 import AppliedFacetList from './facet/AppliedFacetList';
-import Export from './export/Export';
-import Share from './Share';
-import ShareLink from './ShareLink';
-import Widgets from './Widgets';
 import Version from './Version';
 
 const styles = {
@@ -80,8 +74,6 @@ export class HomeComponent extends Component {
             loading,
             p: polyglot,
             selectedTab,
-            sharingTitle,
-            sharingUri,
         } = this.props;
 
         if (loading) {
@@ -134,24 +126,6 @@ export class HomeComponent extends Component {
                                 <Dataset />
                                 <Version />
                             </Tab>
-                            <Tab
-                                className="tab-dataset-export"
-                                buttonStyle={styles.tabButton}
-                                label={polyglot.t('share_export')}
-                                value="export"
-                            >
-                                <Toolbar />
-                                <AppliedFacetList />
-                                <Export />
-                                <Divider />
-                                <Widgets />
-                                <ShareLink
-                                    title={polyglot.t('dataset_share_link')}
-                                    uri={sharingUri}
-                                />
-                                <Share uri={sharingUri} title={sharingTitle} />
-                                <Version />
-                            </Tab>
                         </Tabs>
                     </div>
                 </div>
@@ -162,36 +136,12 @@ export class HomeComponent extends Component {
     }
 }
 
-const getSharingUrl = () => {
-    if (typeof window === 'undefined') {
-        return '';
-    }
-
-    return window.location.toString();
-};
-
-const mapStateToProps = (state, { params: { tab = 'overview' } }) => {
-    const titleFieldName = fromFields.getDatasetTitleFieldName(state);
-    const fields = fromFields.getDatasetFields(state);
-    const characteristics = fromCharacteristic.getCharacteristics(
-        state,
-        fields,
-    );
-    let sharingTitle;
-
-    if (titleFieldName) {
-        sharingTitle = characteristics.find(f => f.name === titleFieldName)
-            .value;
-    }
-    return {
-        selectedTab: tab,
-        sharingTitle,
-        sharingUri: getSharingUrl(),
-        error: fromFields.getError(state),
-        loading: fromFields.isLoading(state),
-        hasPublishedDataset: fromFields.hasPublishedDataset(state),
-    };
-};
+const mapStateToProps = (state, { params: { tab = 'overview' } }) => ({
+    selectedTab: tab,
+    error: fromFields.getError(state),
+    loading: fromFields.isLoading(state),
+    hasPublishedDataset: fromFields.hasPublishedDataset(state),
+});
 
 const mapDispatchToProps = {
     preLoadPublication: preLoadPublicationAction,

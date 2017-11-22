@@ -6,7 +6,6 @@ import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
 import { CardActions } from 'material-ui/Card';
 import { Tabs, Tab } from 'material-ui/Tabs';
-import Divider from 'material-ui/Divider';
 import { grey500 } from 'material-ui/styles/colors';
 import memoize from 'lodash.memoize';
 import { Helmet } from 'react-helmet';
@@ -18,14 +17,9 @@ import { fromFields } from '../../sharedSelectors';
 import Property from '../Property';
 import AddField from '../../fields/addField/AddField';
 import HideResource from './HideResource';
-import Export from '../export/Export';
-import Widgets from '../Widgets';
-import Share from '../Share';
-import ShareLink from '../ShareLink';
 import SelectVersion from './SelectVersion';
 import Version from '../Version';
 import addSchemePrefix from '../../lib/addSchemePrefix';
-import { getFullResourceUri } from '../../../../common/uris';
 import {
     schemeForDatasetLink,
     topFieldsCount,
@@ -44,7 +38,6 @@ const styles = {
     item: {
         display: 'flex',
         flexDirection: 'column',
-        //        borderTop: '1px solid rgb(224, 224, 224)',
         paddingTop: '2rem',
         paddingBottom: '1rem',
         paddingLeft: '0.5rem',
@@ -135,7 +128,6 @@ export const DetailComponent = ({
     p: polyglot,
     resource,
     sharingTitle,
-    sharingUri,
     backToListLabel,
 }) => {
     const topFieldsLimit = Number(topFieldsCount) || 2;
@@ -277,22 +269,6 @@ export const DetailComponent = ({
                             </div>
                         </div>
                     </Tab>
-                    <Tab
-                        className="tab-resource-export"
-                        buttonStyle={styles.tabButton}
-                        label={polyglot.t('share_export')}
-                    >
-                        <Export uri={resource.uri} />
-                        <Divider />
-                        <Widgets uri={resource.uri} />
-                        <Divider />
-                        <ShareLink
-                            title={polyglot.t('resource_share_link')}
-                            uri={sharingUri}
-                        />
-                        <Divider />
-                        <Share uri={sharingUri} title={sharingTitle} />
-                    </Tab>
                 </Tabs>
                 <CardActions style={styles.actions}>
                     <SelectVersion />
@@ -319,7 +295,6 @@ DetailComponent.propTypes = {
     handleSaveResource: PropTypes.func.isRequired,
     p: polyglotPropTypes.isRequired,
     resource: PropTypes.shape({}),
-    sharingUri: PropTypes.string.isRequired,
     sharingTitle: PropTypes.string,
     backToListLabel: PropTypes.string,
 };
@@ -337,10 +312,6 @@ const mapStateToProps = state => {
         resource,
         isSaving: fromResource.isSaving(state),
         fields: fromFields.getResourceFields(state, resource),
-        sharingUri: getFullResourceUri(
-            resource,
-            process.env.EZMASTER_PUBLIC_URL,
-        ),
         sharingTitle,
     };
 };
