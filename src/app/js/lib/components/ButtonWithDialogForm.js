@@ -6,13 +6,13 @@ import compose from 'recompose/compose';
 import withHandlers from 'recompose/withHandlers';
 import { submit as submitAction } from 'redux-form';
 import FlatButton from 'material-ui/FlatButton';
-import Dialog from 'material-ui/Dialog';
 import IconButton from 'material-ui/IconButton';
 import classnames from 'classnames';
 import CircularProgress from 'material-ui/CircularProgress';
 
 import ButtonWithStatus from './ButtonWithStatus';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
+import ButtonWithDialog from './ButtonWithDialog';
 
 export const ButtonWithDialogFormComponent = ({
     buttonStyle,
@@ -68,19 +68,13 @@ export const ButtonWithDialogFormComponent = ({
     );
 
     return (
-        <span style={style}>
-            {openButton}
-            <Dialog
-                title={label}
-                actions={actions}
-                modal={false}
-                open={open}
-                onRequestClose={handleClose}
-                autoScrollBodyContent
-            >
-                {form}
-            </Dialog>
-        </span>
+        <ButtonWithDialog
+            style={style}
+            openButton={openButton}
+            actions={actions}
+            dialog={form}
+            open={open}
+        />
     );
 };
 
