@@ -1,7 +1,6 @@
 import expect from 'expect';
 import composeAsync from './composeAsync';
 
-
 describe('composeAsync', () => {
     it('should compose given funcs into a single func returning a promise', async () => {
         const fn = composeAsync(
@@ -11,7 +10,7 @@ describe('composeAsync', () => {
 
         expect(fn).toBeA('function');
 
-        expect(await (fn([1, 2, 3]))).toBe('previous result is 1/2/3');
+        expect(await fn([1, 2, 3])).toBe('previous result is 1/2/3');
     });
 
     it('should work with async func', async () => {
@@ -22,7 +21,7 @@ describe('composeAsync', () => {
 
         expect(fn).toBeA('function');
 
-        expect(await (fn([1, 2, 3]))).toBe('previous result is 1/2/3');
+        expect(await fn([1, 2, 3])).toBe('previous result is 1/2/3');
     });
 
     it('should work function returning promise', async () => {
@@ -33,7 +32,7 @@ describe('composeAsync', () => {
 
         expect(fn).toBeA('function');
 
-        expect(await (fn([1, 2, 3]))).toBe('previous result is 1/2/3');
+        expect(await fn([1, 2, 3])).toBe('previous result is 1/2/3');
     });
 
     it('should execute function serially', async () => {
@@ -44,6 +43,6 @@ describe('composeAsync', () => {
 
         expect(fn).toBeA('function');
 
-        expect(await (fn('hello'))).toEqual(['H', 'E', 'L', 'L', 'O']);
+        expect(await fn('hello')).toEqual(['H', 'E', 'L', 'L', 'O']);
     });
 });

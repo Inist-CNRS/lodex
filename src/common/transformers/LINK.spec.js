@@ -35,7 +35,10 @@ describe('LINK', () => {
             },
         ];
 
-        const newDoc = await getDocumentTransformer({ env: 'browser', fetchLineBy }, fields)(doc);
+        const newDoc = await getDocumentTransformer(
+            { env: 'browser', fetchLineBy },
+            fields,
+        )(doc);
         expect(fetchLineBy).toHaveBeenCalledWith('id', 'id2');
         expect(newDoc).toEqual({
             link: 'uri2',

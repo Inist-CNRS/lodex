@@ -1,4 +1,4 @@
-export const toBoolean = (value) => {
+export const toBoolean = value => {
     if (!value) {
         return false;
     }
@@ -9,12 +9,13 @@ export const toBoolean = (value) => {
 
     if (typeof value === 'string') {
         const val = value.trim().toLocaleLowerCase();
-        if (val === '1'
-            || val === 'true'
-            || val === 'on'
-            || val === 'ok'
-            || val === 'oui'
-            || val === 'yes'
+        if (
+            val === '1' ||
+            val === 'true' ||
+            val === 'on' ||
+            val === 'ok' ||
+            val === 'oui' ||
+            val === 'yes'
         ) {
             return true;
         }

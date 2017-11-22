@@ -8,13 +8,21 @@ describe('NUMBER', () => {
     });
 
     it('should return integer values for each item in array', () => {
-        expect(toNumber([' 1234 ', '1', true, '', 'dddf'])).toEqual([1234, 1, 1, 0, 0]);
+        expect(toNumber([' 1234 ', '1', true, '', 'dddf'])).toEqual([
+            1234,
+            1,
+            1,
+            0,
+            0,
+        ]);
     });
 
     it('should return zero if value is any non-number string', () => {
-        expect(toNumber({
-            a: 'hello',
-            b: 'world',
-        })).toEqual(0);
+        expect(
+            toNumber({
+                a: 'hello',
+                b: 'world',
+            }),
+        ).toEqual(0);
     });
 });

@@ -14,7 +14,7 @@ export const suffix = (value, str) => {
     return String(value).concat(value);
 };
 
-const transformation = (_, args) => (value) => {
+const transformation = (_, args) => value => {
     const arg = args.find(a => a.name === 'with');
 
     if (!arg) {
@@ -33,9 +33,7 @@ const transformation = (_, args) => (value) => {
 transformation.getMetas = () => ({
     name: 'SUFFIX',
     type: 'transform',
-    args: [
-        { name: 'with', type: 'string' },
-    ],
+    args: [{ name: 'with', type: 'string' }],
 });
 
 export default transformation;

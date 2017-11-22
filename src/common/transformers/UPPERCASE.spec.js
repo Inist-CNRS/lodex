@@ -12,9 +12,11 @@ describe('UPPERCASE', () => {
     });
 
     it('should return null if value is literal', () => {
-        expect(upperCase({
-            a: 'hello',
-            b: 'world',
-        })).toEqual(null);
+        expect(
+            upperCase({
+                a: 'hello',
+                b: 'world',
+            }),
+        ).toEqual(null);
     });
 });

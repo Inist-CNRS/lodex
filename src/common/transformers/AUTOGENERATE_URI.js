@@ -3,7 +3,6 @@ import config from '../../../config.json';
 
 const ARBITRARY_SUBPUBLISHER = '39D';
 
-
 export const autoGenerateUri = ({ naan, subpublisher }) => () => () =>
     new Promise((resolve, reject) => {
         try {
