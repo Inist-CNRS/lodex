@@ -25,13 +25,16 @@ describe('JSONLDObject / mergeCompose', () => {
             component1: 'component1 value',
             component2: 'component2 value',
         };
-        const fields = [{
-            name: 'component1',
-            scheme: 'http://component1.scheme',
-        }, {
-            name: 'component2',
-            scheme: 'http://component2.scheme',
-        }];
+        const fields = [
+            {
+                name: 'component1',
+                scheme: 'http://component1.scheme',
+            },
+            {
+                name: 'component2',
+                scheme: 'http://component2.scheme',
+            },
+        ];
         const res = mergeCompose(output, field, data, fields);
         expect(res).toExist();
         expect(res).toEqual({
@@ -41,15 +44,18 @@ describe('JSONLDObject / mergeCompose', () => {
                 composed: { '@id': 'http://composed.scheme' },
                 label: { '@id': 'https://www.w3.org/2000/01/rdf-schema#label' },
             },
-            composed: [{
-                '@id': 'http://uri#compose/composed',
-                '@type': ['composedClass'],
-                component1: 'component1 value',
-            }, {
-                '@id': 'http://uri#compose/composed',
-                '@type': ['composedClass'],
-                component2: 'component2 value',
-            }],
+            composed: [
+                {
+                    '@id': 'http://uri#compose/composed',
+                    '@type': ['composedClass'],
+                    component1: 'component1 value',
+                },
+                {
+                    '@id': 'http://uri#compose/composed',
+                    '@type': ['composedClass'],
+                    component2: 'component2 value',
+                },
+            ],
         });
         // Expected triples:
         // <http://uri/compose/composed> <http://component1.scheme> "component1 value" .

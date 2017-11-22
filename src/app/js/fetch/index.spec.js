@@ -1,11 +1,6 @@
 import expect from 'expect';
 
-import reducer, {
-    defaultState,
-    fetch,
-    fetchSuccess,
-    fetchError,
-} from './';
+import reducer, { defaultState, fetch, fetchSuccess, fetchError } from './';
 
 describe('fetch', () => {
     describe('reducer', () => {
@@ -15,7 +10,10 @@ describe('fetch', () => {
         });
 
         it('should handle the FETCH action', () => {
-            const state = reducer({}, fetch({ config: { url: 'url' }, name: 'foo' }));
+            const state = reducer(
+                {},
+                fetch({ config: { url: 'url' }, name: 'foo' }),
+            );
             expect(state).toEqual({
                 foo: {
                     url: 'url',
@@ -27,14 +25,17 @@ describe('fetch', () => {
         });
 
         it('should handle the FETCH_SUCCESS action', () => {
-            const state = reducer({
-                foo: {
-                    url: 'url',
-                    error: null,
-                    loading: true,
-                    response: null,
+            const state = reducer(
+                {
+                    foo: {
+                        url: 'url',
+                        error: null,
+                        loading: true,
+                        response: null,
+                    },
                 },
-            }, fetchSuccess({ response: [], name: 'foo' }));
+                fetchSuccess({ response: [], name: 'foo' }),
+            );
             expect(state).toEqual({
                 foo: {
                     url: 'url',
@@ -46,14 +47,17 @@ describe('fetch', () => {
         });
 
         it('should handle the FETCH_ERROR action', () => {
-            const state = reducer({
-                foo: {
-                    url: 'url',
-                    error: null,
-                    loading: true,
-                    response: null,
+            const state = reducer(
+                {
+                    foo: {
+                        url: 'url',
+                        error: null,
+                        loading: true,
+                        response: null,
+                    },
                 },
-            }, fetchError({ error: 'error', name: 'foo' }));
+                fetchError({ error: 'error', name: 'foo' }),
+            );
             expect(state).toEqual({
                 foo: {
                     url: 'url',

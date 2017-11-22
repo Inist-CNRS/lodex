@@ -1,7 +1,7 @@
 import omit from 'lodash.omit';
 import { VALIDATED } from '../../common/propositionStatus';
 
-module.exports = function filterContributions(data, feed) {
+export default function filterContributions(data, feed) {
     if (data && data.contributions) {
         const fieldsToIgnore = data.contributions
             .filter(({ status }) => status !== VALIDATED)
@@ -12,4 +12,4 @@ module.exports = function filterContributions(data, feed) {
     }
 
     feed.send(data);
-};
+}

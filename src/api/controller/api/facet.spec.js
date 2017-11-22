@@ -6,7 +6,9 @@ describe('facets routes', () => {
         const ctx = {
             publishedFacet: {
                 findValuesForField: createSpy().andReturn(Promise.resolve([])),
-                countValuesForField: createSpy().andReturn(Promise.resolve(100)),
+                countValuesForField: createSpy().andReturn(
+                    Promise.resolve(100),
+                ),
             },
         };
 
@@ -16,13 +18,17 @@ describe('facets routes', () => {
             it('calls ctx.publishedFacet.findValuesForField with correct parameters', async () => {
                 await getFacetFilteredValues(ctx, 'foo', next);
 
-                expect(ctx.publishedFacet.findValuesForField).toHaveBeenCalledWith('foo', undefined);
+                expect(
+                    ctx.publishedFacet.findValuesForField,
+                ).toHaveBeenCalledWith('foo', undefined);
             });
 
             it('calls ctx.publishedFacet.countValuesForField with correct parameters', async () => {
                 await getFacetFilteredValues(ctx, 'foo', next);
 
-                expect(ctx.publishedFacet.countValuesForField).toHaveBeenCalledWith('foo', undefined);
+                expect(
+                    ctx.publishedFacet.countValuesForField,
+                ).toHaveBeenCalledWith('foo', undefined);
             });
         });
 
@@ -30,13 +36,17 @@ describe('facets routes', () => {
             it('calls ctx.publishedFacet.findValuesForField with correct parameters', async () => {
                 await getFacetFilteredValues(ctx, 'foo', 'filter');
 
-                expect(ctx.publishedFacet.findValuesForField).toHaveBeenCalledWith('foo', 'filter');
+                expect(
+                    ctx.publishedFacet.findValuesForField,
+                ).toHaveBeenCalledWith('foo', 'filter');
             });
 
             it('calls ctx.publishedFacet.countValuesForField with correct parameters', async () => {
                 await getFacetFilteredValues(ctx, 'foo', 'filter');
 
-                expect(ctx.publishedFacet.countValuesForField).toHaveBeenCalledWith('foo', 'filter');
+                expect(
+                    ctx.publishedFacet.countValuesForField,
+                ).toHaveBeenCalledWith('foo', 'filter');
             });
         });
     });

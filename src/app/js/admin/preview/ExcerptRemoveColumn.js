@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import compose from 'recompose/compose';
@@ -8,21 +9,28 @@ import { TableRowColumn } from 'material-ui/Table';
 import FlatButton from 'material-ui/FlatButton';
 
 import { removeField } from '../../fields';
-import { polyglot as polyglotPropTypes, field as fieldPropTypes } from '../../propTypes';
+import {
+    polyglot as polyglotPropTypes,
+    field as fieldPropTypes,
+} from '../../propTypes';
 import getFieldClassName from '../../lib/getFieldClassName';
 
-export const ExcerptRemoveColumnComponent = ({ removeColumn, field: { label = '', name }, p: polyglot }) => (
+export const ExcerptRemoveColumnComponent = ({
+    removeColumn,
+    field: { label = '', name },
+    p: polyglot,
+}) => (
     <TableRowColumn>
-        {name !== 'uri'
-            ? (
-                <FlatButton
-                    className={`btn-excerpt-remove-column btn-excerpt-remove-column-${getFieldClassName({ label })}`}
-                    label={polyglot.t('remove_from_publication')}
-                    onClick={removeColumn}
-                    primary
-                />
-            )
-            : null}
+        {name !== 'uri' ? (
+            <FlatButton
+                className={`btn-excerpt-remove-column btn-excerpt-remove-column-${getFieldClassName(
+                    { label },
+                )}`}
+                label={polyglot.t('remove_from_publication')}
+                onClick={removeColumn}
+                primary
+            />
+        ) : null}
     </TableRowColumn>
 );
 
@@ -32,11 +40,14 @@ ExcerptRemoveColumnComponent.propTypes = {
     p: polyglotPropTypes.isRequired,
 };
 
-const mapDispatchtoProps = (dispatch, { field: { name } }) => bindActionCreators({
-    removeColumn: () => removeField(name),
-}, dispatch);
+const mapDispatchtoProps = (dispatch, { field: { name } }) =>
+    bindActionCreators(
+        {
+            removeColumn: () => removeField(name),
+        },
+        dispatch,
+    );
 
-export default compose(
-    connect(undefined, mapDispatchtoProps),
-    translate,
-)(ExcerptRemoveColumnComponent);
+export default compose(connect(undefined, mapDispatchtoProps), translate)(
+    ExcerptRemoveColumnComponent,
+);

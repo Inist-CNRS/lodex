@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import withHandlers from 'recompose/withHandlers';
 import { connect } from 'react-redux';
@@ -11,9 +12,7 @@ import {
 } from './';
 import Alert from '../../lib/components/Alert';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
-import {
-    fromCharacteristic,
-} from '../selectors';
+import { fromCharacteristic } from '../selectors';
 import FormTextField from '../../lib/components/FormTextField';
 import FieldSchemeInput from '../../fields/FieldSchemeInput';
 import FieldFormatInput from '../../fields/FieldFormatInput';
@@ -38,7 +37,11 @@ export const AddFieldFormComponent = ({
     p: polyglot,
 }) => (
     <form id="add_characteristic_form" onSubmit={onSubmit}>
-        {addCharacteristicError && <Alert><p>{addCharacteristicError}</p></Alert>}
+        {addCharacteristicError && (
+            <Alert>
+                <p>{addCharacteristicError}</p>
+            </Alert>
+        )}
         <Field
             name="label"
             fullWidth

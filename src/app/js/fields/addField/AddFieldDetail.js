@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
 import { Field, FormSection } from 'redux-form';
 
@@ -18,9 +19,7 @@ export const AddFieldDetailComponent = ({
     p: polyglot,
 }) => (
     <FormSection name="field">
-        <FieldLabelInput
-            disabled={!isLoggedIn && !isNewField}
-        />
+        <FieldLabelInput disabled={!isLoggedIn && !isNewField} />
         <Field
             className="field-value"
             name="value"
@@ -47,6 +46,5 @@ AddFieldDetailComponent.propTypes = {
     p: polyglotPropTypes.isRequired,
     isLoggedIn: PropTypes.bool.isRequired,
 };
-
 
 export default translate(AddFieldDetailComponent);

@@ -1,6 +1,7 @@
 /* eslint react/no-array-index-key: off */
 
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import IconButton from 'material-ui/IconButton';
 import ActionDeleteIcon from 'material-ui/svg-icons/action/delete';
 import translate from 'redux-polyglot/translate';
@@ -37,12 +38,14 @@ export const ConcatFieldComponent = ({
             column={column}
             handleChange={handleChange}
         />
-        {removable && <IconButton
-            tooltip={polyglot.t('remove_column')}
-            onClick={handleRemoveColumn}
-        >
-            <ActionDeleteIcon />
-        </IconButton>}
+        {removable && (
+            <IconButton
+                tooltip={polyglot.t('remove_column')}
+                onClick={handleRemoveColumn}
+            >
+                <ActionDeleteIcon />
+            </IconButton>
+        )}
     </div>
 );
 
@@ -66,8 +69,10 @@ const mapStateToProps = state => ({
 export default compose(
     connect(mapStateToProps),
     withHandlers({
-        handleChange: ({ handleChange, index }) => (event, key, value) => handleChange(event, key, value, index),
-        handleRemoveColumn: ({ handleRemoveColumn, index }) => handleRemoveColumn(index),
+        handleChange: ({ handleChange, index }) => (event, key, value) =>
+            handleChange(event, key, value, index),
+        handleRemoveColumn: ({ handleRemoveColumn, index }) =>
+            handleRemoveColumn(index),
     }),
     translate,
 )(ConcatFieldComponent);

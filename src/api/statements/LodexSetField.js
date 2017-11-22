@@ -3,7 +3,6 @@ export default function LodexSetField(data, feed) {
     const fromScheme = this.getParam('fromScheme');
     const schemes = Array.isArray(fromScheme) ? fromScheme : [fromScheme];
 
-
     if (this.isLast()) {
         feed.close();
         return;
@@ -12,13 +11,19 @@ export default function LodexSetField(data, feed) {
         throw new Error('fromScheme= must be defined as parameter.');
     }
     if (!data.$context) {
-        throw new Error('[LodexContext] should be definied before this statement.');
+        throw new Error(
+            '[LodexContext] should be definied before this statement.',
+        );
     }
 
-    const collectionFields = data.$context.fields.filter(field => field.cover === 'collection');
+    const collectionFields = data.$context.fields.filter(
+        field => field.cover === 'collection',
+    );
 
     const selectedField = schemes
-        .map(localScheme => collectionFields.find(({ scheme }) => scheme === localScheme))
+        .map(localScheme =>
+            collectionFields.find(({ scheme }) => scheme === localScheme),
+        )
         .filter(item => item)
         .shift();
 

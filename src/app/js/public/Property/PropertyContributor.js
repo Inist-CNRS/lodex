@@ -1,17 +1,22 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 
 import { fromResource } from '../selectors';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
-import propositionStatus, { PROPOSED, VALIDATED, REJECTED } from '../../../../common/propositionStatus';
+import propositionStatus, {
+    PROPOSED,
+    VALIDATED,
+    REJECTED,
+} from '../../../../common/propositionStatus';
 
 const styles = {
     container: status => ({
         display: 'flex',
         marginRight: '1rem',
-        color: (status && status !== VALIDATED) ? 'grey' : 'black',
+        color: status && status !== VALIDATED ? 'grey' : 'black',
         textDecoration: status === REJECTED ? 'line-through' : 'none',
     }),
     name: {
@@ -40,14 +45,10 @@ const PropertyContributorComponent = ({
 
     return (
         <div className="property_contributor" style={styles.scheme}>
-            {
-                fieldStatus === PROPOSED ?
-                    polyglot.t('contributed_by', { name: contributor })
-                    :
-                    polyglot.t('added_by', { name: contributor })
-            }
+            {fieldStatus === PROPOSED
+                ? polyglot.t('contributed_by', { name: contributor })
+                : polyglot.t('added_by', { name: contributor })}
         </div>
-
     );
 };
 
@@ -66,7 +67,6 @@ const mapStateToProps = (state, { fieldName }) => ({
     contributor: fromResource.getResourceContributorForField(state, fieldName),
 });
 
-export default compose(
-    translate,
-    connect(mapStateToProps),
-)(PropertyContributorComponent);
+export default compose(translate, connect(mapStateToProps))(
+    PropertyContributorComponent,
+);

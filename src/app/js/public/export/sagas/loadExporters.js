@@ -1,6 +1,11 @@
 import { call, takeEvery, select, put } from 'redux-saga/effects';
 
-import { PRE_LOAD_EXPORTERS, loadExporters, loadExportersError, loadExportersSuccess } from '../';
+import {
+    PRE_LOAD_EXPORTERS,
+    loadExporters,
+    loadExportersError,
+    loadExportersSuccess,
+} from '../';
 import { fromUser } from '../../../sharedSelectors';
 import { fromExport } from '../../selectors';
 import fetchSaga from '../../../lib/sagas/fetchSaga';
@@ -21,6 +26,6 @@ export function* handleLoadExporters() {
     yield put(loadExportersSuccess(response));
 }
 
-export default function* () {
+export default function*() {
     yield takeEvery(PRE_LOAD_EXPORTERS, handleLoadExporters);
 }

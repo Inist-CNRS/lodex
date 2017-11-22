@@ -22,7 +22,9 @@ function scrollR(uri, data, feed) {
             error,
         };
         let logLevel = 'warn';
-        const responseError = response && ![200, 500, 502, 503, 504].includes(response.statusCode);
+        const responseError =
+            response &&
+            ![200, 500, 502, 503, 504].includes(response.statusCode);
         if (error || responseError) {
             logLevel = 'error';
             httpLogger.log(logLevel, errorObj);
@@ -88,7 +90,9 @@ module.exports = function scroll(data, feed) {
         pathname: 'document',
         // Change '&' to validate the query as an URI component (and not the '?'
         // at the beginning)
-        search: `q=${query.search.replace(/&/g, '%26')}&scroll=30s&output=${cleanOutput}&size=${size}&sid=${sid}`,
+        search: `q=${query.search.replace(/&/g, '%26')}&scroll=30s&output=${
+            cleanOutput
+        }&size=${size}&sid=${sid}`,
     };
     const uri = url.format(urlObj);
 

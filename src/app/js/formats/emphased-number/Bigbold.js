@@ -1,6 +1,6 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { StyleSheet, css } from 'aphrodite';
-
 
 const sizes = ['8rem', '6rem', '3rem'];
 
@@ -21,9 +21,7 @@ const Bigbold = ({ value, colorsSet, size }) => {
     });
     return (
         <div className={css(styles.ribbon)}>
-            <div className={css(styles.content)}>
-                { value }
-            </div>
+            <div className={css(styles.content)}>{value}</div>
         </div>
     );
 };

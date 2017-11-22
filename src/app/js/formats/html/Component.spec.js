@@ -10,6 +10,8 @@ describe('<HtmlView />', () => {
         const field = { name: 'foo' };
         const wrapper = shallow(<HtmlView resource={resource} field={field} />);
         expect(wrapper.find('div').length).toEqual(1);
-        expect(wrapper.prop('dangerouslySetInnerHTML')).toEqual({ __html: '<b>Run you fools!</b>' });
+        expect(wrapper.prop('dangerouslySetInnerHTML')).toEqual({
+            __html: '<b>Run you fools!</b>',
+        });
     });
 });

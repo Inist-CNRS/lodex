@@ -7,4 +7,3 @@ export default function LodexParseQuery(data, feed) {
     const query = mqs.parse(data.querystring);
     feed.send({ ...data, ...query });
 }
-

@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
@@ -24,9 +25,9 @@ export class ExportComponent extends Component {
         this.props.preLoadExporters();
     }
 
-    handleSelectedFieldsChange = (exportedFields) => {
+    handleSelectedFieldsChange = exportedFields => {
         this.setState({ exportedFields });
-    }
+    };
 
     render() {
         const { exporters, handleExportClick, uri, p: polyglot } = this.props;
@@ -40,16 +41,14 @@ export class ExportComponent extends Component {
                 <Subheader>{polyglot.t('export_data')}</Subheader>
 
                 <List className="export">
-                    {
-                        exporters.map(({ name }) => (
-                            <ExportItem
-                                key={name}
-                                type={name}
-                                uri={uri}
-                                onClick={handleExportClick}
-                            />
-                        ))
-                    }
+                    {exporters.map(({ name }) => (
+                        <ExportItem
+                            key={name}
+                            type={name}
+                            uri={uri}
+                            onClick={handleExportClick}
+                        />
+                    ))}
                 </List>
             </div>
         );
@@ -73,12 +72,15 @@ const mapStateToProps = state => ({
     exporters: fromExport.getExporters(state),
 });
 
-const mapDispatchToProps = dispatch => bindActionCreators({
-    preLoadExporters,
-    handleExportClick: exportPublishedDatasetAction,
-}, dispatch);
+const mapDispatchToProps = dispatch =>
+    bindActionCreators(
+        {
+            preLoadExporters,
+            handleExportClick: exportPublishedDatasetAction,
+        },
+        dispatch,
+    );
 
-export default compose(
-    connect(mapStateToProps, mapDispatchToProps),
-    translate,
-)(ExportComponent);
+export default compose(connect(mapStateToProps, mapDispatchToProps), translate)(
+    ExportComponent,
+);

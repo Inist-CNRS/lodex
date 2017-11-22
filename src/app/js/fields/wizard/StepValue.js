@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import { change } from 'redux-form';
@@ -13,28 +14,12 @@ import StepValueColumn from './StepValueColumn';
 import StepValueLink from './StepValueLink';
 import StepValueConcat from './StepValueConcat';
 
-export const StepValueComponent = ({
-    field,
-    handleChange,
-    ...props
-}) => (
+export const StepValueComponent = ({ field, handleChange, ...props }) => (
     <Step label="field_wizard_step_value" {...props}>
-        <StepValueValue
-            field={field}
-            onChange={handleChange}
-        />
-        <StepValueColumn
-            field={field}
-            onChange={handleChange}
-        />
-        <StepValueLink
-            field={field}
-            onChange={handleChange}
-        />
-        <StepValueConcat
-            field={field}
-            onChange={handleChange}
-        />
+        <StepValueValue field={field} onChange={handleChange} />
+        <StepValueColumn field={field} onChange={handleChange} />
+        <StepValueLink field={field} onChange={handleChange} />
+        <StepValueConcat field={field} onChange={handleChange} />
     </Step>
 );
 
@@ -44,13 +29,13 @@ StepValueComponent.propTypes = {
 };
 
 const mapDispatchToProps = (dispatch, { field: { transformers } }) => ({
-    handleChange: (valueTransformer) => {
+    handleChange: valueTransformer => {
         let newTransformers = [];
         const firstTransformerIsValueTransformer =
-            transformers
-            && transformers[0]
-            && transformers[0].operation
-            && getTransformerMetas(transformers[0].operation).type === 'value';
+            transformers &&
+            transformers[0] &&
+            transformers[0].operation &&
+            getTransformerMetas(transformers[0].operation).type === 'value';
 
         newTransformers = [
             valueTransformer,
@@ -61,6 +46,4 @@ const mapDispatchToProps = (dispatch, { field: { transformers } }) => ({
     },
 });
 
-export default compose(
-    connect(null, mapDispatchToProps),
-)(StepValueComponent);
+export default compose(connect(null, mapDispatchToProps))(StepValueComponent);

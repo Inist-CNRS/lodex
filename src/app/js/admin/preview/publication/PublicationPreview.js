@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
@@ -33,11 +34,11 @@ const styles = {
 };
 
 export class PublicationPreviewComponent extends Component {
-    handleExitColumEdition = (event) => {
+    handleExitColumEdition = event => {
         event.preventDefault();
         event.stopPropagation();
         this.props.editColumn(null);
-    }
+    };
 
     render() {
         const { editColumn, p: polyglot } = this.props;
@@ -50,9 +51,7 @@ export class PublicationPreviewComponent extends Component {
                     </div>
                 </div>
 
-                <PublicationExcerpt
-                    onHeaderClick={editColumn}
-                />
+                <PublicationExcerpt onHeaderClick={editColumn} />
 
                 <PublicationEditionModal
                     onExitEdition={this.handleExitColumEdition}
@@ -71,7 +70,6 @@ const mapDispatchToProps = {
     editColumn: editField,
 };
 
-export default compose(
-    connect(null, mapDispatchToProps),
-    translate,
-)(PublicationPreviewComponent);
+export default compose(connect(null, mapDispatchToProps), translate)(
+    PublicationPreviewComponent,
+);

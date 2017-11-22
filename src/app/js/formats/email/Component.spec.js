@@ -9,8 +9,12 @@ describe('<EmailView />', () => {
         const resource = { foo: 'firstname.lastname@example.com' };
         const field = { name: 'foo', label: 'label' };
         const fields = [];
-        const wrapper = shallow(<EmailView resource={resource} field={field} fields={fields} />);
+        const wrapper = shallow(
+            <EmailView resource={resource} field={field} fields={fields} />,
+        );
         expect(wrapper.find('Link').length).toEqual(1);
-        expect(wrapper.prop('to')).toEqual('mailto:firstname.lastname@example.com');
+        expect(wrapper.prop('to')).toEqual(
+            'mailto:firstname.lastname@example.com',
+        );
     });
 });

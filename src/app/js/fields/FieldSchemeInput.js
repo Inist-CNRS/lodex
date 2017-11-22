@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
@@ -47,15 +48,21 @@ export const FieldSchemeInputComponent = ({
         fullWidth
         targetOrigin={styles.targetOrigin}
         getFetchRequest={getSchemeSearchRequest}
-        parseResponse={response => getSchemeMenuItemsDataFromResponse(response).map(({ label, uri }) => ({
-            text: uri,
-            value: (
-                <MenuItem style={styles.menuItem} value={uri}>
-                    <div style={styles.schemeLabel}><b>{label}</b></div>
-                    <small style={styles.schemeUri}>{uri}</small>
-                </MenuItem>
-            ),
-        }))}
+        parseResponse={response =>
+            getSchemeMenuItemsDataFromResponse(response).map(
+                ({ label, uri }) => ({
+                    text: uri,
+                    value: (
+                        <MenuItem style={styles.menuItem} value={uri}>
+                            <div style={styles.schemeLabel}>
+                                <b>{label}</b>
+                            </div>
+                            <small style={styles.schemeUri}>{uri}</small>
+                        </MenuItem>
+                    ),
+                }),
+            )
+        }
     />
 );
 
@@ -75,15 +82,18 @@ FieldSchemeInputComponent.propTypes = {
 };
 
 const mapStateToProps = () => ({
-    getSchemeSearchRequest: query => ({ url: `https://lov.okfn.org/dataset/lov/api/v2/term/search?q=${query}` }),
-    getSchemeMenuItemsDataFromResponse: response => (
+    getSchemeSearchRequest: query => ({
+        url: `https://lov.okfn.org/dataset/lov/api/v2/term/search?q=${query}`,
+    }),
+    getSchemeMenuItemsDataFromResponse: response =>
         response && response.results
-            ? response.results.map(r => ({ label: r.prefixedName[0], uri: r.uri[0] }))
-            : []
-    ),
+            ? response.results.map(r => ({
+                  label: r.prefixedName[0],
+                  uri: r.uri[0],
+              }))
+            : [],
 });
 
-export default compose(
-    connect(mapStateToProps),
-    translate,
-)(FieldSchemeInputComponent);
+export default compose(connect(mapStateToProps), translate)(
+    FieldSchemeInputComponent,
+);

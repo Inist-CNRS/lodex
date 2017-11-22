@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 import pure from 'recompose/pure';
@@ -10,7 +11,6 @@ import { polyglot as polyglotPropTypes } from '../propTypes';
 import TransformerListItem from './TransformerListItem';
 import { getTransformerMetas } from '../../../common/transformers';
 
-
 const styles = {
     header: {
         fontSize: '16px',
@@ -19,11 +19,17 @@ const styles = {
 };
 
 const showTransformer = memoize(
-    (operation, type) => !type || !operation || getTransformerMetas(operation).type === type,
+    (operation, type) =>
+        !type || !operation || getTransformerMetas(operation).type === type,
     (operation, type) => `${operation}_${type}`,
 );
 
-const TransformerList = ({ fields, meta: { touched, error }, type, p: polyglot }) => (
+const TransformerList = ({
+    fields,
+    meta: { touched, error },
+    type,
+    p: polyglot,
+}) => (
     <div>
         <Subheader style={styles.header}>
             {polyglot.t('transformers')}
@@ -66,7 +72,4 @@ TransformerList.defaultProps = {
     type: null,
 };
 
-export default compose(
-    translate,
-    pure,
-)(TransformerList);
+export default compose(translate, pure)(TransformerList);

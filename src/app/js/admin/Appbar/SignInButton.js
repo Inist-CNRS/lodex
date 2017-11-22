@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
@@ -20,17 +21,19 @@ export const SignInButtonComponent = ({ onToggleLogin, p: polyglot }) => (
     </IconButton>
 );
 
-
 SignInButtonComponent.propTypes = {
     onToggleLogin: PropTypes.func.isRequired,
     p: polyglotPropTypes.isRequired,
 };
 
-const mapDispatchToProps = dispatch => bindActionCreators({
-    onToggleLogin: toggleLoginAction,
-}, dispatch);
+const mapDispatchToProps = dispatch =>
+    bindActionCreators(
+        {
+            onToggleLogin: toggleLoginAction,
+        },
+        dispatch,
+    );
 
-export default compose(
-    connect(undefined, mapDispatchToProps),
-    translate,
-)(SignInButtonComponent);
+export default compose(connect(undefined, mapDispatchToProps), translate)(
+    SignInButtonComponent,
+);

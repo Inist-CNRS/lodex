@@ -28,7 +28,6 @@ const mapDispatchToProps = {
     handleClose: () => createResourceCancel(),
 };
 
-export default compose(
-    translate,
-    connect(mapStateToProps, mapDispatchToProps),
-)(ButtonWithDialog);
+export default compose(translate, connect(mapStateToProps, mapDispatchToProps))(
+    ButtonWithDialog,
+);

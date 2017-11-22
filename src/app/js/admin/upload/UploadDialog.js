@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
 import RaisedButton from 'material-ui/RaisedButton';
 import { connect } from 'react-redux';
@@ -6,11 +7,7 @@ import compose from 'recompose/compose';
 import TextField from 'material-ui/TextField';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
-import {
-    uploadFile,
-    changeUploadUrl,
-    uploadUrl,
-} from './';
+import { uploadFile, changeUploadUrl, uploadUrl } from './';
 import { fromUpload } from '../selectors';
 
 const styles = {
@@ -119,7 +116,6 @@ const mapDispatchToProps = {
     onChangeUrl: (_, value) => changeUploadUrl(value),
 };
 
-export default compose(
-    translate,
-    connect(mapStateToProps, mapDispatchToProps),
-)(UploadDialogComponent);
+export default compose(translate, connect(mapStateToProps, mapDispatchToProps))(
+    UploadDialogComponent,
+);

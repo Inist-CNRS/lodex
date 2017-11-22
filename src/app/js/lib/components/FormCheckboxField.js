@@ -3,7 +3,7 @@ import Checkbox from 'material-ui/Checkbox';
 import memoize from 'lodash.memoize';
 import { formField as formFieldPropTypes } from '../../propTypes';
 
-const isChecked = memoize((value) => {
+const isChecked = memoize(value => {
     if (typeof value === 'boolean') {
         return value;
     }

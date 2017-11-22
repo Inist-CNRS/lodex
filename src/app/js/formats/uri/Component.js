@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import { field as fieldPropTypes } from '../../propTypes';
 import { getResourceUri } from '../../../../common/uris';
@@ -9,25 +10,31 @@ const UriView = ({ className, linkedResource, resource, field, fields }) => {
 
     if (field.format && field.format.args && field.format.args.type) {
         switch (field.format.args.type) {
-        case 'text':
-            label = field.format.args.value;
-            break;
+            case 'text':
+                label = field.format.args.value;
+                break;
 
-        case 'column': {
-            if (linkedResource) {
-                const fieldForLabel = fields.find(f => f.label === field.format.args.value);
-                label = linkedResource[fieldForLabel.name];
+            case 'column': {
+                if (linkedResource) {
+                    const fieldForLabel = fields.find(
+                        f => f.label === field.format.args.value,
+                    );
+                    label = linkedResource[fieldForLabel.name];
+                }
+                break;
             }
-            break;
-        }
 
-        default:
-            label = uri;
-            break;
+            default:
+                label = uri;
+                break;
         }
     }
 
-    return <Link className={className} to={getResourceUri({ uri })}>{label}</Link>;
+    return (
+        <Link className={className} to={getResourceUri({ uri })}>
+            {label}
+        </Link>
+    );
 };
 
 UriView.propTypes = {

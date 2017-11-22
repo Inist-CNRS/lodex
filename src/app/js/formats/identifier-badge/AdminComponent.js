@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import TextField from 'material-ui/TextField';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
@@ -27,12 +28,12 @@ class IdentifierBadgeEdition extends Component {
         colors: PropTypes.string,
         onChange: PropTypes.func.isRequired,
         p: polyglotPropTypes.isRequired,
-    }
+    };
 
     static defaultProps = {
         typid: 1,
         colors: '#8B8B8B #5B5B5B #818181',
-    }
+    };
     constructor(props) {
         super(props);
 
@@ -42,21 +43,21 @@ class IdentifierBadgeEdition extends Component {
         };
     }
 
-    setTypid = (typid) => {
+    setTypid = typid => {
         this.setState({ typid });
         this.props.onChange({
             colors: this.state.colors,
             typid,
         });
-    }
+    };
 
-    setColors = (colors) => {
+    setColors = colors => {
         this.setState({ colors });
         this.props.onChange({
             typid: this.state.typid,
             colors,
         });
-    }
+    };
 
     render() {
         const { p: polyglot } = this.props;
@@ -64,8 +65,12 @@ class IdentifierBadgeEdition extends Component {
         return (
             <div style={styles.container}>
                 <SelectField
-                    floatingLabelText={polyglot.t('list_format_select_identifier')}
-                    onChange={(event, index, newValue) => this.setTypid(newValue)}
+                    floatingLabelText={polyglot.t(
+                        'list_format_select_identifier',
+                    )}
+                    onChange={(event, index, newValue) =>
+                        this.setTypid(newValue)
+                    }
                     style={styles.input}
                     value={typid}
                 >

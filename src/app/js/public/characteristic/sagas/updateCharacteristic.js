@@ -9,7 +9,10 @@ import { fromUser } from '../../../sharedSelectors';
 import fetchSaga from '../../../lib/sagas/fetchSaga';
 
 export function* handleUpdateCharacteristics({ payload }) {
-    const request = yield select(fromUser.getUpdateCharacteristicsRequest, payload);
+    const request = yield select(
+        fromUser.getUpdateCharacteristicsRequest,
+        payload,
+    );
     const { error, response } = yield call(fetchSaga, request);
 
     if (error) {
@@ -19,6 +22,6 @@ export function* handleUpdateCharacteristics({ payload }) {
     return yield put(updateCharacteristicsSuccess(response));
 }
 
-export default function* () {
+export default function*() {
     yield takeLatest(UPDATE_CHARACTERISTICS, handleUpdateCharacteristics);
 }

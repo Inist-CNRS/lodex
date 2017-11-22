@@ -23,7 +23,10 @@ describe('JSONLDObject / getFieldContext', () => {
     });
 
     it('should take language into account', () => {
-        const output = getFieldContext({ scheme: 'scheme', language: 'language' });
+        const output = getFieldContext({
+            scheme: 'scheme',
+            language: 'language',
+        });
         expect(output).toEqual({ '@id': 'scheme', '@language': 'language' });
     });
 

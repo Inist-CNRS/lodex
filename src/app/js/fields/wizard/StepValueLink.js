@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import RadioButton from 'material-ui/RadioButton';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
@@ -37,7 +38,7 @@ export const StepValueLinkComponent = ({
             checked={selected}
             style={styles.radio}
         />
-        {selected &&
+        {selected && (
             <div style={styles.inset}>
                 <SelectDatasetField
                     id="select_id_column"
@@ -52,7 +53,7 @@ export const StepValueLinkComponent = ({
                     column={refColumn}
                 />
             </div>
-        }
+        )}
     </div>
 );
 
@@ -70,8 +71,11 @@ StepValueLinkComponent.defaultProps = {
     refColumn: undefined,
 };
 
-const mapStateToProps = (state) => {
-    const transformers = formValueSelector(FIELD_FORM_NAME)(state, 'transformers');
+const mapStateToProps = state => {
+    const transformers = formValueSelector(FIELD_FORM_NAME)(
+        state,
+        'transformers',
+    );
 
     const valueTransformer =
         transformers && transformers[0] && transformers[0].operation === 'LINK'
@@ -79,13 +83,17 @@ const mapStateToProps = (state) => {
             : null;
 
     if (valueTransformer) {
-        const id = valueTransformer.args && valueTransformer.args.find(a => a.name === 'identifier');
-        const ref = valueTransformer.args && valueTransformer.args.find(a => a.name === 'reference');
+        const id =
+            valueTransformer.args &&
+            valueTransformer.args.find(a => a.name === 'identifier');
+        const ref =
+            valueTransformer.args &&
+            valueTransformer.args.find(a => a.name === 'reference');
 
         return {
             selected: true,
-            idColumn: (id ? id.value : null),
-            refColumn: (ref ? ref.value : null),
+            idColumn: id ? id.value : null,
+            refColumn: ref ? ref.value : null,
         };
     }
 
@@ -98,43 +106,52 @@ export default compose(
         handleSelect: ({ onChange, idColumn, refColumn }) => () => {
             onChange({
                 operation: 'LINK',
-                args: [{
-                    name: 'identifier',
-                    type: 'column',
-                    value: idColumn,
-                }, {
-                    name: 'reference',
-                    type: 'column',
-                    value: refColumn,
-                }],
+                args: [
+                    {
+                        name: 'identifier',
+                        type: 'column',
+                        value: idColumn,
+                    },
+                    {
+                        name: 'reference',
+                        type: 'column',
+                        value: refColumn,
+                    },
+                ],
             });
         },
         handleChangeId: ({ onChange, refColumn }) => (event, key, value) => {
             onChange({
                 operation: 'LINK',
-                args: [{
-                    name: 'identifier',
-                    type: 'column',
-                    value,
-                }, {
-                    name: 'reference',
-                    type: 'column',
-                    value: refColumn,
-                }],
+                args: [
+                    {
+                        name: 'identifier',
+                        type: 'column',
+                        value,
+                    },
+                    {
+                        name: 'reference',
+                        type: 'column',
+                        value: refColumn,
+                    },
+                ],
             });
         },
         handleChangeRef: ({ onChange, idColumn }) => (event, key, value) => {
             onChange({
                 operation: 'LINK',
-                args: [{
-                    name: 'identifier',
-                    type: 'column',
-                    value: idColumn,
-                }, {
-                    name: 'reference',
-                    type: 'column',
-                    value,
-                }],
+                args: [
+                    {
+                        name: 'identifier',
+                        type: 'column',
+                        value: idColumn,
+                    },
+                    {
+                        name: 'reference',
+                        type: 'column',
+                        value,
+                    },
+                ],
             });
         },
     }),

@@ -9,20 +9,21 @@ const waitForStreamToComplete = stream =>
         stream.on('error', reject);
     });
 
-export const append = (writeStream) => {
+export const append = writeStream => {
     const pipeToWriteStream = pipeTo(writeStream, { end: false });
 
-    return async (readStream) => {
+    return async readStream => {
         pipeToWriteStream(readStream);
         return waitForStreamToComplete(readStream);
     };
 };
 
-export const concatStreamsFactory = appendImpl => (sourceStreams, resultStream) => {
+export const concatStreamsFactory = appendImpl => (
+    sourceStreams,
+    resultStream,
+) => {
     const appendToResult = appendImpl(resultStream);
-    return composeAsync(
-        sourceStreams.map(appendToResult),
-    )();
+    return composeAsync(sourceStreams.map(appendToResult))();
 };
 
 export const concatStreams = concatStreamsFactory(append);

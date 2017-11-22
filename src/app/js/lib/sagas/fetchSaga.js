@@ -4,11 +4,12 @@ import fetch from '../fetch';
 import { logout } from '../../user';
 import { getCurrentLocation } from '../../sharedSelectors';
 
-export default function* fetchSaga(request, interruptingActions = [], mode = 'json') {
-    const {
-        fetchResult,
-        cancel,
-    } = yield race({
+export default function* fetchSaga(
+    request,
+    interruptingActions = [],
+    mode = 'json',
+) {
+    const { fetchResult, cancel } = yield race({
         fetchResult: call(fetch, request, mode),
         cancel: take([].concat(interruptingActions)),
     });
@@ -20,10 +21,12 @@ export default function* fetchSaga(request, interruptingActions = [], mode = 'js
     if (fetchResult.error && fetchResult.error.code === 401) {
         const { locationBeforeTransitions } = yield select(getCurrentLocation);
 
-        yield put(replace({
-            pathname: '/login',
-            state: { nextPathname: locationBeforeTransitions.pathname },
-        }));
+        yield put(
+            replace({
+                pathname: '/login',
+                state: { nextPathname: locationBeforeTransitions.pathname },
+            }),
+        );
 
         yield put(logout());
     }

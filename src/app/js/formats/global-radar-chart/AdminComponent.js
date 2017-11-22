@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import TextField from 'material-ui/TextField';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
@@ -28,13 +29,13 @@ class RadarChartEdition extends Component {
         colors: PropTypes.string,
         onChange: PropTypes.func.isRequired,
         p: polyglotPropTypes.isRequired,
-    }
+    };
 
     static defaultProps = {
         maxSize: '5',
         orderBy: 'value/asc',
         colors: '#1D1A31 #4D2D52 #9A4C95 #F08CAE #C1A5A9',
-    }
+    };
     constructor(props) {
         super(props);
 
@@ -45,32 +46,32 @@ class RadarChartEdition extends Component {
         };
     }
 
-    setMaxSize = (maxSize) => {
+    setMaxSize = maxSize => {
         this.setState({ maxSize });
         this.props.onChange({
             maxSize,
             orderBy: this.state.orderBy,
             colors: this.state.colors,
         });
-    }
+    };
 
-    setOrderBy = (orderBy) => {
+    setOrderBy = orderBy => {
         this.setState({ orderBy });
         this.props.onChange({
             maxSize: this.state.maxSize,
             colors: this.state.colors,
             orderBy,
         });
-    }
+    };
 
-    setColors = (colors) => {
+    setColors = colors => {
         this.setState({ colors });
         this.props.onChange({
             maxSize: this.state.maxSize,
             orderBy: this.state.orderBy,
             colors,
         });
-    }
+    };
 
     render() {
         const { p: polyglot } = this.props;
@@ -85,14 +86,28 @@ class RadarChartEdition extends Component {
                 />
                 <SelectField
                     floatingLabelText={polyglot.t('order_by')}
-                    onChange={(event, index, newValue) => this.setOrderBy(newValue)}
+                    onChange={(event, index, newValue) =>
+                        this.setOrderBy(newValue)
+                    }
                     style={styles.input}
                     value={orderBy}
                 >
-                    <MenuItem value="label/asc" primaryText={polyglot.t('label_asc')} />
-                    <MenuItem value="label/desc" primaryText={polyglot.t('label_desc')} />
-                    <MenuItem value="value/asc" primaryText={polyglot.t('value_asc')} />
-                    <MenuItem value="value/desc" primaryText={polyglot.t('value_desc')} />
+                    <MenuItem
+                        value="label/asc"
+                        primaryText={polyglot.t('label_asc')}
+                    />
+                    <MenuItem
+                        value="label/desc"
+                        primaryText={polyglot.t('label_desc')}
+                    />
+                    <MenuItem
+                        value="value/asc"
+                        primaryText={polyglot.t('value_asc')}
+                    />
+                    <MenuItem
+                        value="value/desc"
+                        primaryText={polyglot.t('value_desc')}
+                    />
                 </SelectField>
                 <TextField
                     floatingLabelText={polyglot.t('colors_set')}

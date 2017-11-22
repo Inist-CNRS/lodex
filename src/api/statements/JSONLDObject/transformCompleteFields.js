@@ -5,4 +5,4 @@ export default async function transformCompleteFields(field) {
     const complete = field.name;
     const completed = field.completes;
     return { name, complete, completed };
-};
+}

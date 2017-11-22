@@ -18,9 +18,8 @@ export function* handleNeedValidation() {
 }
 
 export default function* watch() {
-    yield takeLatest([
-        LOAD_FIELD_SUCCESS,
-        REMOVE_FIELD_SUCCESS,
-        SAVE_FIELD_SUCCESS,
-    ], handleNeedValidation);
+    yield takeLatest(
+        [LOAD_FIELD_SUCCESS, REMOVE_FIELD_SUCCESS, SAVE_FIELD_SUCCESS],
+        handleNeedValidation,
+    );
 }

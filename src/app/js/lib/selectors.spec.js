@@ -7,7 +7,10 @@ describe('selectors', () => {
             const getLocalState = state => state.local;
             const localSelector = state => state.foo === 'bar';
 
-            const globalSelector = createGlobalSelector(getLocalState, localSelector);
+            const globalSelector = createGlobalSelector(
+                getLocalState,
+                localSelector,
+            );
 
             expect(globalSelector({ local: { foo: 'bar' } })).toEqual(true);
         });
@@ -16,9 +19,14 @@ describe('selectors', () => {
             const getLocalState = state => state.local;
             const localSelector = (state, props) => state.foo === props;
 
-            const globalSelector = createGlobalSelector(getLocalState, localSelector);
+            const globalSelector = createGlobalSelector(
+                getLocalState,
+                localSelector,
+            );
 
-            expect(globalSelector({ local: { foo: 'bar' } }, 'bar')).toEqual(true);
+            expect(globalSelector({ local: { foo: 'bar' } }, 'bar')).toEqual(
+                true,
+            );
         });
     });
 
@@ -33,8 +41,12 @@ describe('selectors', () => {
                 local2: localSelector2,
             });
 
-            expect(globalSelectors.local({ local: { foo: 'bar' } })).toEqual(true);
-            expect(globalSelectors.local2({ local: { foo: 'bar' } })).toEqual(false);
+            expect(globalSelectors.local({ local: { foo: 'bar' } })).toEqual(
+                true,
+            );
+            expect(globalSelectors.local2({ local: { foo: 'bar' } })).toEqual(
+                false,
+            );
         });
 
         it('passes props to the local selectors', () => {
@@ -47,9 +59,12 @@ describe('selectors', () => {
                 local2: localSelector2,
             });
 
-            expect(globalSelectors.local({ local: { foo: 'bar' } }, 'bar')).toEqual(true);
-            expect(globalSelectors.local2({ local: { foo: 'bar' } }, 'bar')).toEqual(false);
+            expect(
+                globalSelectors.local({ local: { foo: 'bar' } }, 'bar'),
+            ).toEqual(true);
+            expect(
+                globalSelectors.local2({ local: { foo: 'bar' } }, 'bar'),
+            ).toEqual(false);
         });
     });
 });
-

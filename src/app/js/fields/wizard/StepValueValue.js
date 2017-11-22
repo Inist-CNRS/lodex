@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import RadioButton from 'material-ui/RadioButton';
 import TextField from 'material-ui/TextField';
 import translate from 'redux-polyglot/translate';
@@ -35,7 +36,7 @@ export const StepValueValueComponent = ({
             checked={selected}
             style={styles.radio}
         />
-        {selected &&
+        {selected && (
             <div style={styles.inset}>
                 <TextField
                     id="textbox_value"
@@ -45,7 +46,7 @@ export const StepValueValueComponent = ({
                     value={value}
                 />
             </div>
-        }
+        )}
     </div>
 );
 
@@ -60,8 +61,11 @@ StepValueValueComponent.defaultProps = {
     value: undefined,
 };
 
-const mapStateToProps = (state) => {
-    const transformers = formValueSelector(FIELD_FORM_NAME)(state, 'transformers');
+const mapStateToProps = state => {
+    const transformers = formValueSelector(FIELD_FORM_NAME)(
+        state,
+        'transformers',
+    );
 
     const valueTransformer =
         transformers && transformers[0] && transformers[0].operation === 'VALUE'
@@ -71,7 +75,11 @@ const mapStateToProps = (state) => {
     if (valueTransformer) {
         return {
             selected: true,
-            value: (valueTransformer.args && valueTransformer.args[0] && valueTransformer.args[0].value) || '',
+            value:
+                (valueTransformer.args &&
+                    valueTransformer.args[0] &&
+                    valueTransformer.args[0].value) ||
+                '',
         };
     }
 
@@ -84,21 +92,25 @@ export default compose(
         handleSelect: ({ onChange, value }) => () => {
             onChange({
                 operation: 'VALUE',
-                args: [{
-                    name: 'value',
-                    type: 'string',
-                    value,
-                }],
+                args: [
+                    {
+                        name: 'value',
+                        type: 'string',
+                        value,
+                    },
+                ],
             });
         },
-        handleChange: ({ onChange }) => (event) => {
+        handleChange: ({ onChange }) => event => {
             onChange({
                 operation: 'VALUE',
-                args: [{
-                    name: 'value',
-                    type: 'string',
-                    value: event.target.value,
-                }],
+                args: [
+                    {
+                        name: 'value',
+                        type: 'string',
+                        value: event.target.value,
+                    },
+                ],
             });
         },
     }),

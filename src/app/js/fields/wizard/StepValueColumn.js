@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import RadioButton from 'material-ui/RadioButton';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
@@ -35,7 +36,7 @@ export const StepValueColumnComponent = ({
             checked={selected}
             style={styles.radio}
         />
-        {selected &&
+        {selected && (
             <div style={styles.inset}>
                 <SelectDatasetField
                     handleChange={handleChange}
@@ -43,7 +44,7 @@ export const StepValueColumnComponent = ({
                     column={column}
                 />
             </div>
-        }
+        )}
     </div>
 );
 
@@ -59,18 +60,27 @@ StepValueColumnComponent.defaultProps = {
     column: undefined,
 };
 
-const mapStateToProps = (state) => {
-    const transformers = formValueSelector(FIELD_FORM_NAME)(state, 'transformers');
+const mapStateToProps = state => {
+    const transformers = formValueSelector(FIELD_FORM_NAME)(
+        state,
+        'transformers',
+    );
 
     const valueTransformer =
-        transformers && transformers[0] && transformers[0].operation === 'COLUMN'
+        transformers &&
+        transformers[0] &&
+        transformers[0].operation === 'COLUMN'
             ? transformers[0]
             : null;
 
     if (valueTransformer) {
         return {
             selected: true,
-            column: (valueTransformer.args && valueTransformer.args[0] && valueTransformer.args[0].value) || null,
+            column:
+                (valueTransformer.args &&
+                    valueTransformer.args[0] &&
+                    valueTransformer.args[0].value) ||
+                null,
         };
     }
 
@@ -84,22 +94,26 @@ export default compose(
         handleSelect: ({ onChange, column }) => () => {
             onChange({
                 operation: 'COLUMN',
-                args: [{
-                    name: 'column',
-                    type: 'column',
-                    value: column,
-                }],
+                args: [
+                    {
+                        name: 'column',
+                        type: 'column',
+                        value: column,
+                    },
+                ],
             });
         },
         handleChange: ({ onChange, setColumn }) => (event, key, value) => {
             setColumn(value);
             onChange({
                 operation: 'COLUMN',
-                args: [{
-                    name: 'column',
-                    type: 'column',
-                    value,
-                }],
+                args: [
+                    {
+                        name: 'column',
+                        type: 'column',
+                        value,
+                    },
+                ],
             });
         },
     }),

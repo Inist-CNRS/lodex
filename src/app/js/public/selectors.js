@@ -6,16 +6,28 @@ import { fromFacet as localFromFacet } from './facet';
 import { fromResource as localFromResource } from './resource';
 
 const getCharacteristicState = state => state.characteristic;
-export const fromCharacteristic = createGlobalSelectors(getCharacteristicState, localFromCharacteristic);
+export const fromCharacteristic = createGlobalSelectors(
+    getCharacteristicState,
+    localFromCharacteristic,
+);
 
 const getDatasetState = state => state.dataset;
-export const fromDataset = createGlobalSelectors(getDatasetState, localFromDataset);
+export const fromDataset = createGlobalSelectors(
+    getDatasetState,
+    localFromDataset,
+);
 
 const getExportState = state => state.export;
-export const fromExport = createGlobalSelectors(getExportState, localFromExport);
+export const fromExport = createGlobalSelectors(
+    getExportState,
+    localFromExport,
+);
 
 const getFacetState = state => state.facet;
 export const fromFacet = createGlobalSelectors(getFacetState, localFromFacet);
 
 const getResourceState = state => state.resource;
-export const fromResource = createGlobalSelectors(getResourceState, localFromResource);
+export const fromResource = createGlobalSelectors(
+    getResourceState,
+    localFromResource,
+);

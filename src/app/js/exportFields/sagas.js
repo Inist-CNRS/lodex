@@ -3,12 +3,9 @@ import FileSaver from 'file-saver';
 import fetchSaga from '../lib/sagas/fetchSaga';
 import { fromUser } from '../sharedSelectors';
 
-import {
-    EXPORT_FIELDS,
-    exportFieldsError,
-} from './';
+import { EXPORT_FIELDS, exportFieldsError } from './';
 
-export const downloadFile = (blob) => {
+export const downloadFile = blob => {
     FileSaver.saveAs(blob, 'lodex_export.json');
 };
 
@@ -24,6 +21,6 @@ export function* handleExportPublishedDatasetSuccess() {
     yield call(downloadFile, response);
 }
 
-export default function* () {
+export default function*() {
     yield takeEvery(EXPORT_FIELDS, handleExportPublishedDatasetSuccess);
 }

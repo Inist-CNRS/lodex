@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
@@ -47,7 +48,4 @@ const mapStateToProps = state => ({
     nbResources: fromDataset.getDatasetTotal(state),
 });
 
-export default compose(
-    connect(mapStateToProps),
-    translate,
-)(StatsComponent);
+export default compose(connect(mapStateToProps), translate)(StatsComponent);

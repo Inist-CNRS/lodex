@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import { CardText } from 'material-ui/Card';
@@ -7,7 +8,6 @@ import memoize from 'lodash.memoize';
 import Card from '../../lib/components/Card';
 
 import { field as fieldProptypes } from '../../propTypes';
-
 
 import { fromCharacteristic } from '../selectors';
 import { fromFields } from '../../sharedSelectors';
@@ -30,13 +30,16 @@ const styles = {
 const DatasetCharacteristicsView = ({ characteristics }) => (
     <div className="dataset-characteristics">
         <div style={styles.container}>
-            {characteristics
-                .map((characteristicField, index) => (
-                    <div key={characteristicField.name} style={styles.item(index, characteristics.length)}>
-                        <DatasetCharacteristicItem characteristic={characteristicField} />
-                    </div>
-                ))
-            }
+            {characteristics.map((characteristicField, index) => (
+                <div
+                    key={characteristicField.name}
+                    style={styles.item(index, characteristics.length)}
+                >
+                    <DatasetCharacteristicItem
+                        characteristic={characteristicField}
+                    />
+                </div>
+            ))}
         </div>
     </div>
 );
@@ -50,15 +53,16 @@ DatasetCharacteristicsView.defaultProps = {
     newCharacteristics: [],
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
     const fields = fromFields.getDatasetFields(state);
 
     return {
-        characteristics: fromCharacteristic.getRootCharacteristics(state, fields),
+        characteristics: fromCharacteristic.getRootCharacteristics(
+            state,
+            fields,
+        ),
         fields,
     };
 };
 
-export default compose(
-    connect(mapStateToProps),
-)(DatasetCharacteristicsView);
+export default compose(connect(mapStateToProps))(DatasetCharacteristicsView);

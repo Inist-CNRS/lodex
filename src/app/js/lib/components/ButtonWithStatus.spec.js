@@ -41,7 +41,9 @@ describe('<ButtonWithStatus />', () => {
             const wrapper = shallow(<ButtonWithStatus label="Foo" success />);
             const button = wrapper.find(FlatButton);
 
-            expect(button.prop('icon')).toEqual(<Success color={lightGreenA400} />);
+            expect(button.prop('icon')).toEqual(
+                <Success color={lightGreenA400} />,
+            );
         });
     });
     describe('<ButtonWithStatus raised={true} />', () => {
@@ -56,7 +58,9 @@ describe('<ButtonWithStatus />', () => {
         });
 
         it('should render a RaisedButton with a CircularProgress icon when loading', () => {
-            const wrapper = shallow(<ButtonWithStatus raised label="Foo" loading />);
+            const wrapper = shallow(
+                <ButtonWithStatus raised label="Foo" loading />,
+            );
             const button = wrapper.find(RaisedButton);
 
             expect(button.prop('disabled')).toEqual(true);
@@ -64,17 +68,23 @@ describe('<ButtonWithStatus />', () => {
         });
 
         it('should render a RaisedButton with a Warning icon when it has error', () => {
-            const wrapper = shallow(<ButtonWithStatus raised label="Foo" error />);
+            const wrapper = shallow(
+                <ButtonWithStatus raised label="Foo" error />,
+            );
             const button = wrapper.find(RaisedButton);
 
             expect(button.prop('icon')).toEqual(<Warning color={red400} />);
         });
 
         it('should render a RaisedButton with a Success icon when it has success', () => {
-            const wrapper = shallow(<ButtonWithStatus raised label="Foo" success />);
+            const wrapper = shallow(
+                <ButtonWithStatus raised label="Foo" success />,
+            );
             const button = wrapper.find(RaisedButton);
 
-            expect(button.prop('icon')).toEqual(<Success color={lightGreenA400} />);
+            expect(button.prop('icon')).toEqual(
+                <Success color={lightGreenA400} />,
+            );
         });
     });
 });

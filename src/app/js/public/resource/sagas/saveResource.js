@@ -1,11 +1,7 @@
 import { call, put, select, takeLatest } from 'redux-saga/effects';
 import isEqual from 'lodash.isequal';
 
-import {
-    saveResourceSuccess,
-    saveResourceError,
-    SAVE_RESOURCE,
-} from '../';
+import { saveResourceSuccess, saveResourceError, SAVE_RESOURCE } from '../';
 
 import { fromUser } from '../../../sharedSelectors';
 import fetchSaga from '../../../lib/sagas/fetchSaga';

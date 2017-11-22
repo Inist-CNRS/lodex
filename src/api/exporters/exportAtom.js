@@ -14,7 +14,8 @@ const exporter = (config, fields, characteristics, stream) => {
         generator: 'Lodex',
         id: config.cleanHost,
         link: config.cleanHost,
-        image: 'https://user-images.githubusercontent.com/7420853/30152932-1794db3c-93b5-11e7-98ab-a7f28d0061cb.png',
+        image:
+            'https://user-images.githubusercontent.com/7420853/30152932-1794db3c-93b5-11e7-98ab-a7f28d0061cb.png',
     });
     return stream
         .pipe(ezs('filterVersions'))
@@ -28,4 +29,3 @@ exporter.type = 'file';
 exporter.label = 'atom';
 
 export default exporter;
-

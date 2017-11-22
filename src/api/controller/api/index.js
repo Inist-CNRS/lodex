@@ -33,7 +33,14 @@ app.use(mount('/widget', widget));
 app.use(mount('/run', run));
 app.use(route.get('/publication', publication));
 
-app.use(jwt({ secret: auth.cookieSecret, cookie: 'lodex_token', key: 'cookie', passthrough: true }));
+app.use(
+    jwt({
+        secret: auth.cookieSecret,
+        cookie: 'lodex_token',
+        key: 'cookie',
+        passthrough: true,
+    }),
+);
 app.use(jwt({ secret: auth.headerSecret, key: 'header', passthrough: true }));
 
 app.use(mount('/publishedDataset', publishedDataset));
@@ -55,7 +62,7 @@ app.use(mount('/publish', publish));
 app.use(mount('/upload', upload));
 app.use(mount('/dataset', dataset));
 
-app.use(async (ctx) => {
+app.use(async ctx => {
     ctx.status = 404;
 });
 

@@ -10,7 +10,10 @@ import { fromUser } from '../../sharedSelectors';
 import fetchSaga from '../../lib/sagas/fetchSaga';
 
 export function* handleLoadFacetValuesRequest({ payload: { field, filter } }) {
-    const request = yield select(fromUser.getLoadFacetValuesRequest, { field: field.name, filter });
+    const request = yield select(fromUser.getLoadFacetValuesRequest, {
+        field: field.name,
+        filter,
+    });
 
     const { error, response: publication } = yield call(fetchSaga, request);
 
@@ -22,5 +25,8 @@ export function* handleLoadFacetValuesRequest({ payload: { field, filter } }) {
 }
 
 export default function* watchLoadPublicationRequest() {
-    yield takeLatest([SELECT_FACET, LOAD_FACET_VALUES], handleLoadFacetValuesRequest);
+    yield takeLatest(
+        [SELECT_FACET, LOAD_FACET_VALUES],
+        handleLoadFacetValuesRequest,
+    );
 }

@@ -1,9 +1,15 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Timeline, TimelineEvent } from 'react-event-timeline/dist';
-import { ActionDateRange, ActionAlarm, ActionBookmark, ActionRecordVoiceOver, ActionTrendingUp } from 'material-ui/svg-icons';
+import {
+    ActionDateRange,
+    ActionAlarm,
+    ActionBookmark,
+    ActionRecordVoiceOver,
+    ActionTrendingUp,
+} from 'material-ui/svg-icons';
 import { milestones } from 'inist-roadmap';
 import { field as fieldPropTypes } from '../../propTypes';
-
 
 function getIconFromLabel(labels) {
     const smallIcon = {
@@ -13,7 +19,9 @@ function getIconFromLabel(labels) {
     if (labels.indexOf('sprint-review') !== -1) {
         return <ActionAlarm iconStyle={smallIcon} style={smallIcon} />;
     } else if (labels.indexOf('communication') !== -1) {
-        return <ActionRecordVoiceOver iconStyle={smallIcon} style={smallIcon} />;
+        return (
+            <ActionRecordVoiceOver iconStyle={smallIcon} style={smallIcon} />
+        );
     } else if (labels.indexOf('objectif') !== -1) {
         return <ActionTrendingUp iconStyle={smallIcon} style={smallIcon} />;
     } else if (labels.indexOf('reunion') !== -1) {
@@ -35,11 +43,13 @@ export default class Roadmap extends Component {
             token: field.format.args.trelloToken,
             key: field.format.args.trelloKey,
         };
-        milestones(trelloURL, options).then((values) => {
-            this.setState({ milestones: values });
-        }).catch((error) => {
-            console.error(error); // eslint-disable-line no-console
-        });
+        milestones(trelloURL, options)
+            .then(values => {
+                this.setState({ milestones: values });
+            })
+            .catch(error => {
+                console.error(error); // eslint-disable-line no-console
+            });
     }
 
     render() {
@@ -48,25 +58,22 @@ export default class Roadmap extends Component {
         };
         return (
             <Timeline>
-                {
-                    this.state.milestones.map(milestone => (
-                        <TimelineEvent
-                            title=""
-                            createdAt={milestone.rangeLabel}
-                            icon={getIconFromLabel(milestone.labels)}
-                        >
-                            <div style={SeeMoreStyle}>
-                                <a href={milestone.trelloLink}>See more</a>
-                            </div>
-                            {milestone.title}
-                        </TimelineEvent>
-                    ))
-                }
+                {this.state.milestones.map(milestone => (
+                    <TimelineEvent
+                        title=""
+                        createdAt={milestone.rangeLabel}
+                        icon={getIconFromLabel(milestone.labels)}
+                    >
+                        <div style={SeeMoreStyle}>
+                            <a href={milestone.trelloLink}>See more</a>
+                        </div>
+                        {milestone.title}
+                    </TimelineEvent>
+                ))}
             </Timeline>
         );
     }
 }
-
 
 Roadmap.propTypes = {
     field: fieldPropTypes.isRequired,

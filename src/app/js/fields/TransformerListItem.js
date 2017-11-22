@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
@@ -21,26 +22,33 @@ const styles = {
     })),
 };
 
-const TransformerListItem = ({ availableTransformers, fieldName, onRemove, p: polyglot, onChangeOperation, show }) => (
+const TransformerListItem = ({
+    availableTransformers,
+    fieldName,
+    onRemove,
+    p: polyglot,
+    onChangeOperation,
+    show,
+}) => (
     <div style={styles.container(show)}>
         <Field
             className="operation"
             name={`${fieldName}.operation`}
             type="text"
-            onChange={(_, operation) => onChangeOperation({ operation, fieldName })}
+            onChange={(_, operation) =>
+                onChangeOperation({ operation, fieldName })
+            }
             component={FormSelectField}
             label={polyglot.t('select_an_operation')}
         >
-            {availableTransformers.map(
-                t => (
-                    <MenuItem
-                        key={t.name}
-                        className={`transformer_${t.name}`}
-                        value={t.name}
-                        primaryText={t.name}
-                    />
-                ),
-            )}
+            {availableTransformers.map(t => (
+                <MenuItem
+                    key={t.name}
+                    className={`transformer_${t.name}`}
+                    value={t.name}
+                    primaryText={t.name}
+                />
+            ))}
         </Field>
         <FieldArray name={`${fieldName}.args`} component={TransformerArgList} />
         <IconButton
@@ -53,10 +61,12 @@ const TransformerListItem = ({ availableTransformers, fieldName, onRemove, p: po
 );
 
 TransformerListItem.propTypes = {
-    availableTransformers: PropTypes.arrayOf(PropTypes.shape({
-        name: PropTypes.string.isRequired,
-        args: PropTypes.arrayOf(PropTypes.any).isRequired,
-    })).isRequired,
+    availableTransformers: PropTypes.arrayOf(
+        PropTypes.shape({
+            name: PropTypes.string.isRequired,
+            args: PropTypes.arrayOf(PropTypes.any).isRequired,
+        }),
+    ).isRequired,
     onChangeOperation: PropTypes.func.isRequired,
     fieldName: PropTypes.string.isRequired,
     onRemove: PropTypes.func.isRequired,
@@ -73,7 +83,6 @@ const mapDispatchToProps = {
     onChangeOperation: changeOperation,
 };
 
-export default compose(
-    connect(mapStateToProps, mapDispatchToProps),
-    translate,
-)(TransformerListItem);
+export default compose(connect(mapStateToProps, mapDispatchToProps), translate)(
+    TransformerListItem,
+);

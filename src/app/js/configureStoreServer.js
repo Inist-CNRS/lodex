@@ -4,15 +4,21 @@ import createSagaMiddleware from 'redux-saga';
 
 const sagaMiddleware = createSagaMiddleware();
 
-export default function configureStoreServer(reducer, sagas, initialState, history) {
+export default function configureStoreServer(
+    reducer,
+    sagas,
+    initialState,
+    history,
+) {
     const middlewares = applyMiddleware(
         sagaMiddleware,
         routerMiddleware(history),
     );
 
-    const devtools = (typeof window !== 'undefined' && window.devToolsExtension)
-        ? window.devToolsExtension()
-        : f => f;
+    const devtools =
+        typeof window !== 'undefined' && window.devToolsExtension
+            ? window.devToolsExtension()
+            : f => f;
 
     const store = createStore(
         reducer,

@@ -3,7 +3,7 @@ import route from 'koa-route';
 
 const app = new Koa();
 
-export const clearDataset = async (ctx) => {
+export const clearDataset = async ctx => {
     try {
         await ctx.publishedDataset.remove({});
         await ctx.publishedCharacteristic.remove({});

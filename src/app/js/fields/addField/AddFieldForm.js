@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import withHandlers from 'recompose/withHandlers';
 import { connect } from 'react-redux';
@@ -24,15 +25,24 @@ export const AddFieldFormComponent = ({
     isLoggedIn,
     onSubmit,
 }) => (
-    <form id="add_field_resource_form" className="hide-detail" onSubmit={onSubmit}>
-        {resourceError && <Alert><p>{resourceError}</p></Alert>}
+    <form
+        id="add_field_resource_form"
+        className="hide-detail"
+        onSubmit={onSubmit}
+    >
+        {resourceError && (
+            <Alert>
+                <p>{resourceError}</p>
+            </Alert>
+        )}
         {isLoggedIn ? null : <Contributor />}
         <SelectFieldToAdd />
-        {
-            fieldToAdd
-                ? <AddFieldDetail isNewField={!fieldToAdd.name} isLoggedIn={isLoggedIn} />
-                : null
-        }
+        {fieldToAdd ? (
+            <AddFieldDetail
+                isNewField={!fieldToAdd.name}
+                isLoggedIn={isLoggedIn}
+            />
+        ) : null}
     </form>
 );
 

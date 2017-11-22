@@ -18,12 +18,14 @@ export default function mergeCompose(output, field, data, fields) {
 
     const result = {
         ...output,
-        [propertyName]: composeFields.map((e) => {
+        [propertyName]: composeFields.map(e => {
             const composeField = fields.find(f => f.name === e);
             if (!composeField) {
                 return null;
             }
-            const composeHaveClasses = Boolean(composeField.classes) && Boolean(composeField.classes.length);
+            const composeHaveClasses =
+                Boolean(composeField.classes) &&
+                Boolean(composeField.classes.length);
 
             let resultData = formatData(data, e);
 
@@ -39,7 +41,8 @@ export default function mergeCompose(output, field, data, fields) {
                 return {
                     '@id': `${getUri(data.uri)}#compose/${propertyName}`,
                     '@type': field.classes || [],
-                    [e]: resultData };
+                    [e]: resultData,
+                };
             }
 
             return null;

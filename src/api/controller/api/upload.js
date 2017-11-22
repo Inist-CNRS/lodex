@@ -18,7 +18,7 @@ import {
     createReadStream,
 } from '../../services/fsHelpers';
 
-export const getParser = (type) => {
+export const getParser = type => {
     if (!loaders[type]) {
         throw new Error(`Unsupported document type: ${type}`);
     }
@@ -26,22 +26,18 @@ export const getParser = (type) => {
     return loaders[type](jsonConfig.loader[type]);
 };
 
-export const requestToStream = asyncBusboyImpl => async (req) => {
-    const {
-        files,
-        fields,
-    } = await asyncBusboyImpl(req);
+export const requestToStream = asyncBusboyImpl => async req => {
+    const { files, fields } = await asyncBusboyImpl(req);
 
     return { stream: files[0], fields };
 };
 
-export const clearUpload = async (ctx) => {
+export const clearUpload = async ctx => {
     await ctx.dataset.remove({});
     ctx.body = true;
 };
 
-export const getStreamFromUrl = url =>
-    request.get(url);
+export const getStreamFromUrl = url => request.get(url);
 
 export const prepareUpload = async (ctx, next) => {
     ctx.getParser = getParser;
@@ -111,10 +107,7 @@ export async function uploadChunkMiddleware(ctx, type, next) {
 }
 
 export async function uploadFileMiddleware(ctx, type) {
-    const {
-        filename,
-        totalChunks,
-    } = ctx.resumable;
+    const { filename, totalChunks } = ctx.resumable;
     await ctx.mergeChunks(filename, totalChunks);
     await ctx.clearChunks(filename, totalChunks);
     const fileStream = ctx.createReadStream(filename);
@@ -132,18 +125,20 @@ export async function uploadFileMiddleware(ctx, type) {
     };
 }
 
-export const checkChunkMiddleware = async (ctx) => {
+export const checkChunkMiddleware = async ctx => {
     const {
         resumableChunkNumber,
         resumableIdentifier,
         resumableCurrentChunkSize,
     } = ctx.request.query;
-    const chunkname = `${config.uploadDir}/${resumableIdentifier}.${resumableChunkNumber}`;
+    const chunkname = `${config.uploadDir}/${resumableIdentifier}.${
+        resumableChunkNumber
+    }`;
     const exists = await checkFileExists(chunkname, resumableCurrentChunkSize);
     ctx.status = exists ? 200 : 204;
 };
 
-export const uploadUrl = async (ctx) => {
+export const uploadUrl = async ctx => {
     const { url } = ctx.request.body;
     const [type] = url.match(/[^.]*$/);
 

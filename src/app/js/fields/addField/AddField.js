@@ -10,7 +10,6 @@ import {
     addFieldToResourceOpen,
     addFieldToResourceCancel,
     NEW_RESOURCE_FIELD_FORM_NAME,
-
 } from '../../public/resource';
 
 const mapStateToProps = (state, { p }) => ({
@@ -27,7 +26,6 @@ const mapDispatchToProps = {
     handleClose: () => addFieldToResourceCancel(),
 };
 
-export default compose(
-    translate,
-    connect(mapStateToProps, mapDispatchToProps),
-)(ButtonWithDialog);
+export default compose(translate, connect(mapStateToProps, mapDispatchToProps))(
+    ButtonWithDialog,
+);

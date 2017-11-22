@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import TextField from 'material-ui/TextField';
 import translate from 'redux-polyglot/translate';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
@@ -18,12 +19,12 @@ class SentenceEdition extends Component {
         suffix: PropTypes.string,
         onChange: PropTypes.func.isRequired,
         p: polyglotPropTypes.isRequired,
-    }
+    };
 
     static defaultProps = {
         prefix: '',
         suffix: '',
-    }
+    };
     constructor(props) {
         super(props);
 
@@ -34,21 +35,21 @@ class SentenceEdition extends Component {
         };
     }
 
-    setPrefix = (prefix) => {
+    setPrefix = prefix => {
         this.setState({ prefix });
         this.props.onChange({
             prefix,
             suffix: this.state.suffix,
         });
-    }
+    };
 
-    setSuffix = (suffix) => {
+    setSuffix = suffix => {
         this.setState({ suffix });
         this.props.onChange({
             suffix,
             prefix: this.state.prefix,
         });
-    }
+    };
 
     render() {
         const { prefix, suffix } = this.state;

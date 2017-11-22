@@ -3,7 +3,6 @@ import ezsBasics from 'ezs-basics';
 import zlib from 'zlib';
 import ezsLocals from '../statements';
 
-
 ezs.use(ezsBasics);
 ezs.use(ezsLocals);
 
@@ -12,8 +11,13 @@ const exporter = (config, fields, characteristics, stream) =>
         .pipe(ezs('filterVersions'))
         .pipe(ezs('filterContributions', { fields }))
         .pipe(ezs('extractIstexQuery', { fields, config }))
-        .pipe(ezs('scroll', { output: Object.keys(config.istexQuery.context)
-            .filter(e => e !== config.istexQuery.linked) }))
+        .pipe(
+            ezs('scroll', {
+                output: Object.keys(config.istexQuery.context).filter(
+                    e => e !== config.istexQuery.linked,
+                ),
+            }),
+        )
         .pipe(ezs('convertToExtendedNquads', { config }))
         .pipe(zlib.createGzip());
 

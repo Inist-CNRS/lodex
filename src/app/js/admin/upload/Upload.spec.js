@@ -22,10 +22,14 @@ describe('<Upload />', () => {
         const raisedButton = wrapper.find(RaisedButton).at(0);
         expect(raisedButton).toNotBe(undefined);
 
-        expect(wrapper.contains(<Alert>
-            <p>Error uploading given file: </p>
-            <p>{props.error}</p>
-        </Alert>)).toBe(false);
+        expect(
+            wrapper.contains(
+                <Alert>
+                    <p>Error uploading given file: </p>
+                    <p>{props.error}</p>
+                </Alert>,
+            ),
+        ).toBe(false);
     });
 
     it('should render the Upload button with Alert if error', () => {
@@ -36,10 +40,14 @@ describe('<Upload />', () => {
         };
         const wrapper = shallow(<Upload {...props} />);
 
-        expect(wrapper.contains(<Alert>
-            <p>Error uploading given file: </p>
-            <p>{props.error}</p>
-        </Alert>)).toBe(true);
+        expect(
+            wrapper.contains(
+                <Alert>
+                    <p>Error uploading given file: </p>
+                    <p>{props.error}</p>
+                </Alert>,
+            ),
+        ).toBe(true);
     });
 
     after(() => {

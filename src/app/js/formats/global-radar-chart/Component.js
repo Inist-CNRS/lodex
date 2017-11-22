@@ -1,14 +1,21 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import fetch from 'isomorphic-fetch';
 import MQS from 'mongodb-querystring';
 import url from 'url';
 import querystring from 'querystring';
 import translate from 'redux-polyglot/translate';
-import { ResponsiveContainer, RadarChart, Radar, PolarAngleAxis, PolarRadiusAxis, PolarGrid } from 'recharts';
+import {
+    ResponsiveContainer,
+    RadarChart,
+    Radar,
+    PolarAngleAxis,
+    PolarRadiusAxis,
+    PolarGrid,
+} from 'recharts';
 import { field as fieldPropTypes } from '../../propTypes';
 
-
-const valueMoreThan = level => item => (item.value > level);
+const valueMoreThan = level => item => item.value > level;
 
 class RadarChartView extends Component {
     constructor(props) {
@@ -20,8 +27,14 @@ class RadarChartView extends Component {
 
     componentDidMount() {
         const { field, resource } = this.props;
-        const orderBy = field.format && field.format.args && field.format.args.orderBy ? field.format.args.orderBy : 'value/asc';
-        const maxSize = field.format && field.format.args && field.format.args.maxSize ? field.format.args.maxSize : '5';
+        const orderBy =
+            field.format && field.format.args && field.format.args.orderBy
+                ? field.format.args.orderBy
+                : 'value/asc';
+        const maxSize =
+            field.format && field.format.args && field.format.args.maxSize
+                ? field.format.args.maxSize
+                : '5';
         const [sortBy, sortDir] = String(orderBy || 'value/asc').split('/');
         const by = sortBy === 'value' ? 'value' : '_id';
         const dir = sortDir === 'asc' ? 1 : -1;
@@ -45,40 +58,44 @@ class RadarChartView extends Component {
             uriNew.protocol = window.location.protocol;
         }
         const apiurl = url.format(uriNew);
-        fetch(apiurl)
-            .then((response) => {
-                if (response.status >= 400) {
-                    throw new Error('Bad response from server');
+        fetch(apiurl).then(response => {
+            if (response.status >= 400) {
+                throw new Error('Bad response from server');
+            }
+            return response.json().then(json => {
+                if (json.data) {
+                    const data = json.data
+                        .filter(valueMoreThan(0))
+                        .map(item => ({ name: item._id, value: item.value }));
+                    this.setState({ data });
                 }
-                return response.json().then((json) => {
-                    if (json.data) {
-                        const data = json.data
-                            .filter(valueMoreThan(0))
-                            .map(item => ({ name: item._id, value: item.value }));
-                        this.setState({ data });
-                    }
-                    if (json.aggregations) {
-                        const firstKey = Object.keys(json.aggregations).shift();
-                        const data = json.aggregations[firstKey].buckets
-                            .map(item => ({ name: item.keyAsString || item.key, value: item.docCount }));
-                        this.setState({ data });
-                    }
-                });
+                if (json.aggregations) {
+                    const firstKey = Object.keys(json.aggregations).shift();
+                    const data = json.aggregations[firstKey].buckets.map(
+                        item => ({
+                            name: item.keyAsString || item.key,
+                            value: item.docCount,
+                        }),
+                    );
+                    this.setState({ data });
+                }
             });
+        });
     }
 
     render() {
         const { data } = this.state;
         const { field } = this.props;
         const { colors } = field.format.args || { colors: '' };
-        const colorsSet = String(colors).split(/[^\w]/).filter(x => x.length > 0).map(x => String('#').concat(x));
+        const colorsSet = String(colors)
+            .split(/[^\w]/)
+            .filter(x => x.length > 0)
+            .map(x => String('#').concat(x));
         const color = colorsSet[0];
 
         return (
             <ResponsiveContainer width={600} height={300}>
-                <RadarChart
-                    data={data}
-                >
+                <RadarChart data={data}>
                     <Radar
                         dataKey="value"
                         stroke={color}
@@ -105,4 +122,3 @@ RadarChartView.defaultProps = {
 };
 
 export default translate(RadarChartView);
-

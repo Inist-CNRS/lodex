@@ -4,7 +4,11 @@ const ARK_URI = new RegExp(/ark:\/(\d{5,})/, 'i');
 
 export default async (ctx, next) => {
     const uri = ctx.path;
-    if (!uri.startsWith('ark:/') && !uri.startsWith('uid:/') && !ctx.query.uri) {
+    if (
+        !uri.startsWith('ark:/') &&
+        !uri.startsWith('uid:/') &&
+        !ctx.query.uri
+    ) {
         await next();
         return;
     }
@@ -12,7 +16,9 @@ export default async (ctx, next) => {
     const arkMatches = ARK_URI.exec(uri);
 
     if (ctx.query.uri) {
-        ctx.body = await ctx.publishedDataset.findByUri(decodeURIComponent(ctx.query.uri));
+        ctx.body = await ctx.publishedDataset.findByUri(
+            decodeURIComponent(ctx.query.uri),
+        );
         return;
     }
 

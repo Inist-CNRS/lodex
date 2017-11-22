@@ -13,11 +13,22 @@ export const initialState = {
     loading: false,
 };
 
-export default handleActions({
-    IMPORT_FIELDS: state => ({ ...state, loading: true }),
-    IMPORT_FIELDS_ERROR: state => ({ ...state, status: 'error', loading: false }),
-    IMPORT_FIELDS_SUCCESS: state => ({ ...state, status: 'success', loading: false }),
-}, initialState);
+export default handleActions(
+    {
+        IMPORT_FIELDS: state => ({ ...state, loading: true }),
+        IMPORT_FIELDS_ERROR: state => ({
+            ...state,
+            status: 'error',
+            loading: false,
+        }),
+        IMPORT_FIELDS_SUCCESS: state => ({
+            ...state,
+            status: 'success',
+            loading: false,
+        }),
+    },
+    initialState,
+);
 
 export const hasImportFailed = state => state.status === 'error';
 export const hasImportSucceeded = state => state.status === 'success';

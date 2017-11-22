@@ -10,10 +10,12 @@ const exporter = (config, fields, characteristics, stream) =>
         .pipe(ezs('filterVersions'))
         .pipe(ezs('filterContributions', { fields }))
         .pipe(ezs('JSONLDObject', { fields }))
-        .pipe(ezs('linkDataset', {
-            uri: config.cleanHost,
-            scheme: config.schemeForDatasetLink,
-        }))
+        .pipe(
+            ezs('linkDataset', {
+                uri: config.cleanHost,
+                scheme: config.schemeForDatasetLink,
+            }),
+        )
         .pipe(ezs('JSONLDCompacter'))
         .pipe(ezs('jsonify'));
 
@@ -23,4 +25,3 @@ exporter.type = 'file';
 exporter.label = 'jsonldcompacted';
 
 export default exporter;
-

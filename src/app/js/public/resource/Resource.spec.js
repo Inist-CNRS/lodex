@@ -14,9 +14,7 @@ describe('<Resource />', () => {
             p: { t: () => {} },
         };
 
-        const wrapper = shallow(<ResourceComponent
-            {...props}
-        />);
+        const wrapper = shallow(<ResourceComponent {...props} />);
         expect(wrapper.find(Loading).length).toEqual(1);
     });
 
@@ -26,9 +24,7 @@ describe('<Resource />', () => {
             p: { t: () => {} },
         };
 
-        const wrapper = shallow(<ResourceComponent
-            {...props}
-        />);
+        const wrapper = shallow(<ResourceComponent {...props} />);
         expect(wrapper.find(Loading).length).toEqual(0);
         expect(wrapper.find('.not-found').length).toEqual(1);
     });
@@ -40,9 +36,7 @@ describe('<Resource />', () => {
             p: { t: () => {} },
         };
 
-        const wrapper = shallow(<ResourceComponent
-            {...props}
-        />);
+        const wrapper = shallow(<ResourceComponent {...props} />);
         expect(wrapper.find(Loading).length).toEqual(0);
         expect(wrapper.find('.not-found').length).toEqual(0);
         expect(wrapper.find(Detail).length).toEqual(1);
@@ -56,9 +50,7 @@ describe('<Resource />', () => {
             p: { t: () => {} },
         };
 
-        const wrapper = shallow(<ResourceComponent
-            {...props}
-        />);
+        const wrapper = shallow(<ResourceComponent {...props} />);
         expect(wrapper.find(RemovedDetail).length).toEqual(1);
         expect(wrapper.find(Detail).length).toEqual(0);
     });
@@ -71,10 +63,10 @@ describe('<Resource />', () => {
             p: { t: v => v },
         };
 
-        const wrapper = shallow(<ResourceComponent
-            {...props}
-        />);
-        expect(wrapper.find(Detail).prop('backToListLabel')).toEqual('back_to_list');
+        const wrapper = shallow(<ResourceComponent {...props} />);
+        expect(wrapper.find(Detail).prop('backToListLabel')).toEqual(
+            'back_to_list',
+        );
     });
 
     it('should display datasetTitle in link', () => {
@@ -86,9 +78,9 @@ describe('<Resource />', () => {
             p: { t: v => v },
         };
 
-        const wrapper = shallow(<ResourceComponent
-            {...props}
-        />);
-        expect(wrapper.find(Detail).prop('backToListLabel')).toEqual('dataset title');
+        const wrapper = shallow(<ResourceComponent {...props} />);
+        expect(wrapper.find(Detail).prop('backToListLabel')).toEqual(
+            'dataset title',
+        );
     });
 });

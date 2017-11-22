@@ -22,20 +22,25 @@ const initialState = {
     },
 };
 
-const store = configureStore(rootReducer, sagas, window.__PRELOADED_STATE__ || initialState, browserHistory);
+const store = configureStore(
+    rootReducer,
+    sagas,
+    window.__PRELOADED_STATE__ || initialState,
+    browserHistory,
+);
 syncHistoryWithStore(browserHistory, store);
 
 injectTapEventPlugin();
 
-render(
-    <Root {...{ store, routes }} />,
-    document.getElementById('root'),
-);
+render(<Root {...{ store, routes }} />, document.getElementById('root'));
 
 // Hot Module Replacement API
 if (module.hot) {
     module.hot.accept('../Root', () => {
         const NewRoot = require('../Root').default; // eslint-disable-line
-        render(<NewRoot {...{ store, routes }} />, document.getElementById('root'));
+        render(
+            <NewRoot {...{ store, routes }} />,
+            document.getElementById('root'),
+        );
     });
 }

@@ -7,7 +7,7 @@ import applyJbjStylesheet from '../../services/applyJbjStylesheet';
 
 const app = new Koa();
 
-export const getExcerpt = async (ctx) => {
+export const getExcerpt = async ctx => {
     const excerptLines = await ctx.dataset.getExcerpt();
     const totalLoadedLines = await ctx.dataset.count();
 
@@ -21,7 +21,7 @@ export const findBy = async (ctx, fieldName, value) => {
     ctx.body = await fetchLineBy(ctx)(fieldName, value);
 };
 
-export const postApplyJbjStylesheet = async (ctx) => {
+export const postApplyJbjStylesheet = async ctx => {
     const { value, stylesheet } = ctx.request.body;
     const result = await applyJbjStylesheet(value, stylesheet);
     ctx.body = { result };

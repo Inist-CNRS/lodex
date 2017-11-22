@@ -1,9 +1,13 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import withHandlers from 'recompose/withHandlers';
 import translate from 'redux-polyglot/translate';
 import { ListItem } from 'material-ui/List';
-import { polyglot as polyglotPropTypes, validationField as validationFieldPropType } from '../../propTypes';
+import {
+    polyglot as polyglotPropTypes,
+    validationField as validationFieldPropType,
+} from '../../propTypes';
 
 const styles = {
     label: {
@@ -17,13 +21,21 @@ const styles = {
     },
 };
 
-const ValidationFieldComponent = ({ onEditField, field: { label, properties }, p: polyglot }) => (
+const ValidationFieldComponent = ({
+    onEditField,
+    field: { label, properties },
+    p: polyglot,
+}) => (
     <ListItem onClick={onEditField}>
         <div style={styles.label}>{label}:</div>
         <ul>
-            {properties.filter(p => !p.isValid).map(p => (
-                <li key={`${p.name}_${p.error}`}>{polyglot.t(`error_${p.name}_${p.error}`, p.meta)}</li>
-            ))}
+            {properties
+                .filter(p => !p.isValid)
+                .map(p => (
+                    <li key={`${p.name}_${p.error}`}>
+                        {polyglot.t(`error_${p.name}_${p.error}`, p.meta)}
+                    </li>
+                ))}
         </ul>
     </ListItem>
 );
@@ -36,7 +48,7 @@ ValidationFieldComponent.propTypes = {
 
 export default compose(
     withHandlers({
-        onEditField: props => (event) => {
+        onEditField: props => event => {
             event.preventDefault();
             props.onEditField(props.field.name);
         },

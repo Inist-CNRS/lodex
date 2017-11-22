@@ -21,7 +21,7 @@ const FormAutoCompleteField = ({
     ...props
 }) => (
     <AutoComplete
-        floatingLabelText={error ? (error.message || error) : label}
+        floatingLabelText={error ? error.message || error : label}
         onUpdateInput={debounce(handleComplete, 500)}
         onNewRequest={handleValueChosen}
         dataSource={dataSource}
@@ -36,15 +36,21 @@ const mapStateToProps = ({ fetch }, { input: { name }, parseResponse }) => ({
     dataSource: parseResponse(fetch[name] && fetch[name].response),
 });
 
-const mapDispatchToProps = (dispatch, { input: { name }, getFetchRequest }) => bindActionCreators({
-    handleSearch: searchText => (
-        searchText
-            ? fetchAction({ config: getFetchRequest(searchText), name })
-            : { type: '@@NULL' } // We must return an action so return an action which will not be handled
-    ),
-}, dispatch);
+const mapDispatchToProps = (dispatch, { input: { name }, getFetchRequest }) =>
+    bindActionCreators(
+        {
+            handleSearch: searchText =>
+                searchText
+                    ? fetchAction({ config: getFetchRequest(searchText), name })
+                    : { type: '@@NULL' }, // We must return an action so return an action which will not be handled
+        },
+        dispatch,
+    );
 
-const handleValueChosen = ({ allowNewItem, input: { onChange } }) => (value, index) => {
+const handleValueChosen = ({ allowNewItem, input: { onChange } }) => (
+    value,
+    index,
+) => {
     // Material UI doc: index is the index in dataSource of the list item selected,
     // or -1 if enter is pressed in the TextField
     if (!allowNewItem && index === -1) {
@@ -54,7 +60,11 @@ const handleValueChosen = ({ allowNewItem, input: { onChange } }) => (value, ind
     return value.text ? onChange(value.text) : onChange(value);
 };
 
-const handleComplete = ({ allowNewItem, input: { onChange }, handleSearch }) => (searchText) => {
+const handleComplete = ({
+    allowNewItem,
+    input: { onChange },
+    handleSearch,
+}) => searchText => {
     if (allowNewItem) {
         onChange(searchText);
         handleSearch(searchText);

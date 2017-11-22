@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
@@ -52,7 +53,7 @@ export class ParsingResultComponent extends Component {
         event.preventDefault();
         event.stopPropagation();
         this.props.handleClearParsing();
-    }
+    };
 
     render() {
         const {
@@ -65,9 +66,7 @@ export class ParsingResultComponent extends Component {
         return (
             <div className="parsingResult" style={styles.container}>
                 <div style={styles.titleContainer}>
-                    <div style={styles.title}>
-                        {polyglot.t('parsing')}
-                    </div>
+                    <div style={styles.title}>{polyglot.t('parsing')}</div>
                 </div>
 
                 <ParsingExcerpt
@@ -99,7 +98,6 @@ const mapDispatchToProps = {
     handleClearParsing: reloadParsingResult,
 };
 
-export default compose(
-    connect(mapStateToProps, mapDispatchToProps),
-    translate,
-)(ParsingResultComponent);
+export default compose(connect(mapStateToProps, mapDispatchToProps), translate)(
+    ParsingResultComponent,
+);

@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
@@ -100,7 +101,7 @@ ButtonWithDialogComponent.propTypes = {
     className: PropTypes.string.isRequired,
 };
 
-const mapDispatchToProps = ({ submit: submitAction });
+const mapDispatchToProps = { submit: submitAction };
 
 export default compose(
     connect(null, mapDispatchToProps),

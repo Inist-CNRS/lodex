@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
 import { TableRowColumn } from 'material-ui/Table';
@@ -8,7 +9,10 @@ import getFieldClassName from '../../lib/getFieldClassName';
 
 const DatasetColumn = ({ column, columns, resource }) => (
     <TableRowColumn
-        className={classnames('dataset-column', `dataset-${getFieldClassName(column)}`)}
+        className={classnames(
+            'dataset-column',
+            `dataset-${getFieldClassName(column)}`,
+        )}
     >
         <Format
             isList

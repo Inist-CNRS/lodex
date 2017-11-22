@@ -35,6 +35,4 @@ OverviewFieldComponent.propTypes = {
     p: polyglotPropTypes.isRequired,
 };
 
-export default compose(
-    translate,
-)(OverviewFieldComponent);
+export default compose(translate)(OverviewFieldComponent);

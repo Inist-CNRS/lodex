@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import withHandlers from 'recompose/withHandlers';
@@ -32,13 +33,16 @@ export const FilterComponent = ({
     handleFilterChange,
     hasSearchableFields,
     isDatasetLoading,
-    p: polyglot }) =>
-    (hasSearchableFields
-        ? <ToolbarGroup>
+    p: polyglot,
+}) =>
+    hasSearchableFields ? (
+        <ToolbarGroup>
             <div style={styles.icon}>
-                {isDatasetLoading
-                    ? <CircularProgress className="dataset-loading" size={20} />
-                    : <ActionSearch />}
+                {isDatasetLoading ? (
+                    <CircularProgress className="dataset-loading" size={20} />
+                ) : (
+                    <ActionSearch />
+                )}
             </div>
             <TextField
                 className="filter"
@@ -48,7 +52,7 @@ export const FilterComponent = ({
                 style={styles.textbox}
             />
         </ToolbarGroup>
-        : null);
+    ) : null;
 
 FilterComponent.propTypes = {
     handleFilterChange: PropTypes.func.isRequired,
@@ -64,14 +68,14 @@ const mapStateToProps = state => ({
     getFilter: fromDataset.getFilter(state),
 });
 
-const mapDispatchToProps = ({
+const mapDispatchToProps = {
     applyFilter: applyFilterAction,
-});
+};
 
 export default compose(
     connect(mapStateToProps, mapDispatchToProps),
     withHandlers({
-        handleFilterChange: ({ applyFilter }) => (match) => {
+        handleFilterChange: ({ applyFilter }) => match => {
             applyFilter(match);
         },
     }),

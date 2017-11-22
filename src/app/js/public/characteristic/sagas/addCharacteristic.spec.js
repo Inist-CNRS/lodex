@@ -16,25 +16,29 @@ describe('characteristic saga', () => {
         const saga = handleAddCharacteristic();
 
         it('should select getNewCharacteristicFormData', () => {
-            expect(saga.next().value).toEqual(select(getNewCharacteristicFormData));
+            expect(saga.next().value).toEqual(
+                select(getNewCharacteristicFormData),
+            );
         });
 
         it('should select getAddCharacteristicsRequest', () => {
-            expect(saga.next('form data').value).toEqual(select(fromUser.getAddCharacteristicRequest, 'form data'));
+            expect(saga.next('form data').value).toEqual(
+                select(fromUser.getAddCharacteristicRequest, 'form data'),
+            );
         });
 
         it('should call fetchPublication with the request', () => {
-            expect(saga.next('request').value).toEqual(call(fetchSaga, 'request'));
+            expect(saga.next('request').value).toEqual(
+                call(fetchSaga, 'request'),
+            );
         });
 
         it('should put addCharacteristicSuccess action', () => {
-            expect(saga.next({ response: [
-                'value1',
-                'value2',
-            ] }).value).toEqual(put(addCharacteristicSuccess([
-                'value1',
-                'value2',
-            ])));
+            expect(
+                saga.next({
+                    response: ['value1', 'value2'],
+                }).value,
+            ).toEqual(put(addCharacteristicSuccess(['value1', 'value2'])));
         });
 
         it('should put addCharacteristicError action with error if any', () => {
@@ -42,8 +46,9 @@ describe('characteristic saga', () => {
             failedSaga.next();
             failedSaga.next();
             failedSaga.next();
-            expect(failedSaga.next({ error: { message: 'foo' } }).value)
-                .toEqual(put(addCharacteristicError('foo')));
+            expect(
+                failedSaga.next({ error: { message: 'foo' } }).value,
+            ).toEqual(put(addCharacteristicError('foo')));
         });
     });
 });
