@@ -46,12 +46,13 @@ describe('resourceReducer', () => {
             },
             {
                 type: LOAD_RESOURCE_SUCCESS,
-                payload: 'resource',
+                payload: { data: 'resource', versions: [1, 2] },
             },
         );
         expect(state).toEqual({
             key: 'value',
-            resource: 'resource',
+            resource: { data: 'resource', versions: [1, 2] },
+            selectedVersion: 1,
             error: null,
             loading: false,
             saving: false,
@@ -108,20 +109,39 @@ describe('resourceReducer', () => {
     });
 
     it('should handle SAVE_RESOURCE_SUCCESS', () => {
-        const state = { data: 'value', resource: 'resource' };
-        expect(reducer(state, saveResourceSuccess('new resource'))).toEqual({
+        const state = {
             data: 'value',
-            resource: 'new resource',
+            resource: {
+                data: 'new resource',
+                versions: [1, 2],
+            },
+        };
+        expect(
+            reducer(
+                state,
+                saveResourceSuccess({
+                    data: 'new resource',
+                    versions: [1, 2, 3],
+                }),
+            ),
+        ).toEqual({
+            data: 'value',
+            resource: { data: 'new resource', versions: [1, 2, 3] },
+            selectedVersion: 2,
             error: null,
             saving: false,
         });
     });
 
     it('should handle SAVE_RESOURCE_SUCCESS with no resource change', () => {
-        const state = { data: 'value', resource: 'resource' };
+        const state = {
+            data: 'value',
+            resource: { data: 'resource', versions: [1] },
+        };
         expect(reducer(state, saveResourceSuccess())).toEqual({
             data: 'value',
-            resource: 'resource',
+            resource: { data: 'resource', versions: [1] },
+            selectedVersion: 0,
             error: null,
             saving: false,
         });
