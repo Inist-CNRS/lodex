@@ -293,5 +293,8 @@ export default {
     sentence: 'Phrase',
     prefix: 'prefix',
     suffix: 'suffix',
-
+    automatic: 'Automatique',
+    parser_name: 'Nom du parser',
+    select_file: 'Choix de fichier à charger',
+    select_parser: 'Choix du parser à appliquer',
 };

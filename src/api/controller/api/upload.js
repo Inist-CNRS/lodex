@@ -18,12 +18,12 @@ import {
     createReadStream,
 } from '../../services/fsHelpers';
 
-export const getParser = (type) => {
-    if (!loaders[type]) {
-        throw new Error(`Unsupported document type: ${type}`);
+export const getParser = (parserName) => {
+    console.log('parserName', parserName);
+    if (!loaders[parserName]) {
+        throw new Error(`Unknow parser: ${parserName}`);
     }
-
-    return loaders[type](jsonConfig.loader[type]);
+    return loaders[parserName](jsonConfig.loader[parserName]);
 };
 
 export const requestToStream = asyncBusboyImpl => async (req) => {
@@ -59,7 +59,7 @@ export const prepareUpload = async (ctx, next) => {
     await next();
 };
 
-export const parseRequest = async (ctx, type, next) => {
+export const parseRequest = async (ctx, parserName, next) => {
     const { stream, fields } = await ctx.requestToStream(ctx.req);
 
     const {
@@ -83,7 +83,7 @@ export const parseRequest = async (ctx, type, next) => {
     await next();
 };
 
-export async function uploadChunkMiddleware(ctx, type, next) {
+export async function uploadChunkMiddleware(ctx, parserName, next) {
     try {
         const {
             chunkname,
@@ -110,7 +110,7 @@ export async function uploadChunkMiddleware(ctx, type, next) {
     }
 }
 
-export async function uploadFileMiddleware(ctx, type) {
+export async function uploadFileMiddleware(ctx, parserName) {
     const {
         filename,
         totalChunks,
@@ -119,7 +119,7 @@ export async function uploadFileMiddleware(ctx, type) {
     await ctx.clearChunks(filename, totalChunks);
     const fileStream = ctx.createReadStream(filename);
 
-    const parseStream = ctx.getParser(type);
+    const parseStream = ctx.getParser(parserName);
     const parsedStream = await parseStream(fileStream);
 
     await ctx.saveStream(parsedStream);
@@ -144,10 +144,10 @@ export const checkChunkMiddleware = async (ctx) => {
 };
 
 export const uploadUrl = async (ctx) => {
-    const { url } = ctx.request.body;
-    const [type] = url.match(/[^.]*$/);
+    const { url, parserName } = ctx.request.body;
+    const [extension] = url.match(/[^.]*$/);
 
-    const parseStream = ctx.getParser(type);
+    const parseStream = ctx.getParser(parserName || extension);
 
     await ctx.dataset.remove({});
 
@@ -169,11 +169,11 @@ app.use(prepareUpload);
 app.use(koaBodyParser());
 app.use(route.post('/url', uploadUrl));
 
-app.use(route.post('/:type', parseRequest));
-app.use(route.post('/:type', uploadChunkMiddleware));
-app.use(route.post('/:type', uploadFileMiddleware));
+app.use(route.post('/:parserName', parseRequest));
+app.use(route.post('/:parserName', uploadChunkMiddleware));
+app.use(route.post('/:parserName', uploadFileMiddleware));
 
-app.use(route.get('/:type', checkChunkMiddleware));
+app.use(route.get('/:parserName', checkChunkMiddleware));
 
 app.use(route.del('/clear', clearUpload));
 

@@ -7,6 +7,7 @@ export const UPLOAD_SUCCESS = 'UPLOAD_SUCCESS';
 export const OPEN_UPLOAD = 'OPEN_UPLOAD';
 export const CLOSE_UPLOAD = 'CLOSE_UPLOAD';
 export const CHANGE_UPLOAD_URL = 'CHANGE_UPLOAD_URL';
+export const CHANGE_PARSER_NAME = 'CHANGE_PARSER_NAME';
 
 export const uploadFile = createAction(UPLOAD_FILE);
 export const uploadUrl = createAction(UPLOAD_URL);
@@ -15,6 +16,7 @@ export const uploadError = createAction(UPLOAD_ERROR);
 export const openUpload = createAction(OPEN_UPLOAD);
 export const closeUpload = createAction(CLOSE_UPLOAD);
 export const changeUploadUrl = createAction(CHANGE_UPLOAD_URL);
+export const changeParserName = createAction(CHANGE_PARSER_NAME);
 
 const validateUrl = url => url.startsWith('http://') || url.startsWith('https://');
 
@@ -24,6 +26,7 @@ export const defaultState = {
     open: false,
     isUrlValid: false,
     url: '',
+    parserName: 'automatic',
 };
 
 export default handleActions({
@@ -56,12 +59,17 @@ export default handleActions({
         url,
         validUrl: validateUrl(url),
     }),
+    CHANGE_PARSER_NAME: (state, { payload: parserName }) => ({
+        ...state,
+        parserName,
+    }),
 }, defaultState);
 
 export const getUpload = state => state;
 export const isUploadPending = state => state.status === 'PENDING';
 export const isOpen = state => state.open;
 export const getUrl = ({ url }) => url;
+export const getParserName = ({ parserName }) => parserName;
 export const isUrlValid = ({ validUrl }) => validUrl;
 
 export const selectors = {
@@ -69,5 +77,6 @@ export const selectors = {
     isUploadPending,
     isOpen,
     getUrl,
+    getParserName,
     isUrlValid,
 };

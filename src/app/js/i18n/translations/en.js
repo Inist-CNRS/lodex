@@ -292,4 +292,8 @@ export default {
     sentence: 'Sentence',
     prefix: 'prefix',
     suffix: 'suffix',
+    automatic: 'Automatic',
+    parser_name: 'Parser name',
+    select_file: 'Select which file you want to load',
+    select_parser: 'Select which parser you want to apply',
 };
