@@ -19,7 +19,10 @@ describe('EditFieldInput', () => {
         const wrapper = shallow(<FieldInput {...props} />);
         const compositeEditField = wrapper.find(CompositeFieldInput);
         expect(compositeEditField.length).toBe(1);
-        expect(compositeEditField.at(0).props()).toEqual({ field: props.field, label: 'Field' });
+        expect(compositeEditField.at(0).props()).toEqual({
+            field: props.field,
+            label: 'Field',
+        });
     });
 
     it('should render Field if field.composedOf is not set', () => {
