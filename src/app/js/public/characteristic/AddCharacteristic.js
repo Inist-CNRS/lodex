@@ -10,7 +10,7 @@ import {
     addCharacteristicOpen,
     addCharacteristicCancel,
 } from './';
-import ButtonWithDialog from '../../lib/components/ButtonWithDialog';
+import ButtonWithDialogForm from '../../lib/components/ButtonWithDialogForm';
 import { fromUser } from '../../sharedSelectors';
 
 const mapStateToProps = (state, { p }) => ({
@@ -29,5 +29,5 @@ const mapDispatchToProps = {
 };
 
 export default compose(translate, connect(mapStateToProps, mapDispatchToProps))(
-    ButtonWithDialog,
+    ButtonWithDialogForm,
 );
