@@ -1,10 +1,9 @@
 import Component from './Component';
 import AdminComponent from './AdminComponent';
-
-import DefaultFormat from '../DefaultFormat';
+import EditionComponent from './EditionComponent';
 
 export default {
     Component,
     AdminComponent,
-    EditionComponent: DefaultFormat.EditionComponent,
+    EditionComponent,
 };

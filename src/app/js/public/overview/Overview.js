@@ -5,6 +5,7 @@ import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 import { Card, CardHeader, Avatar } from 'material-ui';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router';
 
 import { grey50 } from 'material-ui/styles/colors';
 
@@ -84,12 +85,9 @@ export class OverviewComponent extends Component {
                                     />
                                 }
                                 title={
-                                    <a
-                                        href={getResourceUri(data)}
-                                        title={data[titleCol] || data.uri}
-                                    >
+                                    <Link to={getResourceUri(data)}>
                                         {data[titleCol] || data.uri}
-                                    </a>
+                                    </Link>
                                 }
                                 subtitle={data[subTitleCol] || ''}
                                 titleStyle={styles.title}

@@ -1,9 +1,12 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { field as fieldPropTypes } from '../../propTypes';
 
 const ListView = ({ className, resource, field }) => {
     const values = resource[field.name];
-    const type = (field.format && field.format.args && field.format.args.type) || 'unordered';
+    const type =
+        (field.format && field.format.args && field.format.args.type) ||
+        'unordered';
 
     if (type === 'ordered') {
         return (
