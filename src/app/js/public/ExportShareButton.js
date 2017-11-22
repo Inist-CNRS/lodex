@@ -8,12 +8,13 @@ import ButtonWithDialog from '../lib/components/ButtonWithDialog';
 import { openExport, closeExport } from './export';
 import ExportShare from './ExportShare';
 
-const mapStateToProps = (state, { p, uri }) => ({
+const mapStateToProps = (state, { p, uri, style }) => ({
     show: true,
     open: fromExport.isOpen(state),
     dialog: <ExportShare uri={uri} />,
     label: p.t('share_export'),
     className: 'share-export',
+    style,
 });
 
 const mapDispatchToProps = {

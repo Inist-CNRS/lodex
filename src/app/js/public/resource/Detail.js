@@ -25,6 +25,7 @@ import {
     topFieldsCount,
 } from '../../../../../config.json';
 import getTitle from '../../lib/getTitle';
+import ExportShareButton from '../ExportShareButton';
 
 const styles = {
     container: {
@@ -184,6 +185,10 @@ export const DetailComponent = ({
                                 </span>
                                 <div style={styles.value}>
                                     <Link to="/home">{backToListLabel}</Link>
+                                    <ExportShareButton
+                                        style={{ float: 'right' }}
+                                        uri={resource.uri}
+                                    />
                                 </div>
                             </div>
                         </div>
