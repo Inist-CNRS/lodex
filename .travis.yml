@@ -1,5 +1,8 @@
 language: node_js
 
+services:
+    - docker
+
 node_js:
     - "8.9.1"
 
@@ -14,11 +17,8 @@ cache:
     directories:
         - node_modules
 
-before_script:
-    - cp ./config/test-dist.js ./config/test.js
-    - docker-compose up -d mongo api
-    - sleep 10
-
 install:
-    - "make copy-conf"
-    - "npm install"
+    - "make install"
+
+script:
+    - make test
