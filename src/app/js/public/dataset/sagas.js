@@ -1,4 +1,4 @@
-import { all, call, put, select, takeLatest } from 'redux-saga/effects';
+import { fork, call, put, select, takeLatest } from 'redux-saga/effects';
 import { delay } from 'redux-saga';
 
 import {
@@ -63,8 +63,8 @@ export function* handleLoadDatasetPageRequest({ payload }) {
 }
 
 export default function*() {
-    yield all([
-        takeLatest(
+    yield fork(function*() {
+        yield takeLatest(
             [
                 LOAD_DATASET_PAGE,
                 APPLY_FILTER,
@@ -74,7 +74,9 @@ export default function*() {
                 CHANGE_PAGE,
             ],
             handleLoadDatasetPageRequest,
-        ),
-        takeLatest(PRE_LOAD_DATASET_PAGE, handlePreLoadDatasetPage),
-    ]);
+        );
+    });
+    yield fork(function*() {
+        yield takeLatest(PRE_LOAD_DATASET_PAGE, handlePreLoadDatasetPage);
+    });
 }

@@ -20,6 +20,8 @@ import NoDataset from './NoDataset';
 import Toolbar from './Toolbar';
 import AppliedFacetList from './facet/AppliedFacetList';
 import Version from './Version';
+import { preLoadDatasetPage } from './dataset';
+import { preLoadExporters } from './export';
 
 export class HomeComponent extends Component {
     static defaultProps = {
@@ -31,6 +33,8 @@ export class HomeComponent extends Component {
         error: PropTypes.string,
         loading: PropTypes.bool.isRequired,
         preLoadPublication: PropTypes.func.isRequired,
+        preLoadDatasetPage: PropTypes.func.isRequired,
+        preLoadExporters: PropTypes.func.isRequired,
         hasPublishedDataset: PropTypes.bool.isRequired,
         navigateTo: PropTypes.func.isRequired,
         p: polyglotPropTypes.isRequired,
@@ -40,6 +44,8 @@ export class HomeComponent extends Component {
 
     componentWillMount() {
         this.props.preLoadPublication();
+        this.props.preLoadDatasetPage();
+        this.props.preLoadExporters();
     }
 
     handleTabChange = value => {
@@ -92,6 +98,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
     preLoadPublication: preLoadPublicationAction,
+    preLoadDatasetPage,
+    preLoadExporters,
     navigateTo: push,
 };
 
