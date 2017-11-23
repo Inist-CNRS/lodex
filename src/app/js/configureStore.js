@@ -1,4 +1,4 @@
-import { routerMiddleware } from 'react-router-redux';
+import { routerMiddleware, syncHistoryWithStore } from 'react-router-redux';
 import { applyMiddleware, compose, createStore } from 'redux';
 import createSagaMiddleware from 'redux-saga';
 import persistState, { mergePersistedState } from 'redux-localstorage';
@@ -50,6 +50,8 @@ export default function configureStore(
     if (__DEBUG__) {
         window.store = store;
     }
+
+    syncHistoryWithStore(history, store);
 
     return store;
 }

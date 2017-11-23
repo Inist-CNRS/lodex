@@ -5,7 +5,6 @@ import 'url-api-polyfill';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import React from 'react';
 import { render } from 'react-dom';
-import { syncHistoryWithStore } from 'react-router-redux';
 import { browserHistory } from 'react-router';
 
 import Root from '../Root';
@@ -28,18 +27,20 @@ const store = configureStore(
     window.__PRELOADED_STATE__ || initialState,
     browserHistory,
 );
-syncHistoryWithStore(browserHistory, store);
 
 injectTapEventPlugin();
 
-render(<Root {...{ store, routes }} />, document.getElementById('root'));
+render(
+    <Root {...{ store, routes, history: browserHistory }} />,
+    document.getElementById('root'),
+);
 
 // Hot Module Replacement API
 if (module.hot) {
     module.hot.accept('../Root', () => {
         const NewRoot = require('../Root').default; // eslint-disable-line
         render(
-            <NewRoot {...{ store, routes }} />,
+            <NewRoot {...{ store, routes, history: browserHistory }} />,
             document.getElementById('root'),
         );
     });

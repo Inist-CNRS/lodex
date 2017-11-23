@@ -6,7 +6,6 @@ import serve from 'koa-static';
 import mount from 'koa-mount';
 import { Provider } from 'react-redux';
 import { createMemoryHistory, match, RouterContext } from 'react-router';
-import { syncHistoryWithStore } from 'react-router-redux';
 import { Helmet } from 'react-helmet';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
@@ -126,7 +125,6 @@ const handleRender = async ctx => {
 
     renderHtml(store, renderProps, muiTheme);
 
-    syncHistoryWithStore(history, store);
     store.dispatch(END);
 
     await sagaPromise;
