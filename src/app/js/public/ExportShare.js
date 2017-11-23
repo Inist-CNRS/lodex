@@ -10,7 +10,7 @@ import { fromCharacteristic } from './selectors';
 import { fromFields } from '../sharedSelectors';
 import AppliedFacetList from './facet/AppliedFacetList';
 import ExportSection from './export/ExportSection';
-import Share from './Share';
+import ShareSection from './ShareSection';
 import ShareLink from './ShareLink';
 import Widgets from './Widgets';
 import Version from './Version';
@@ -27,7 +27,7 @@ export const PureExportShare = ({
         <Divider />
         <Widgets uri={uri} />
         <ShareLink title={polyglot.t('dataset_share_link')} uri={sharingUri} />
-        <Share uri={sharingUri} title={sharingTitle} />
+        <ShareSection uri={sharingUri} title={sharingTitle} />
         <Version />
     </div>
 );

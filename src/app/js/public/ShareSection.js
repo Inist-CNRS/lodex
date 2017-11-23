@@ -36,7 +36,7 @@ const styles = {
     },
 };
 
-export const ShareComponent = ({ uri, title, p: polyglot }) => (
+export const PureShareSection = ({ uri, title, p: polyglot }) => (
     <div className="share">
         <Subheader>{polyglot.t('share')}</Subheader>
 
@@ -101,14 +101,14 @@ export const ShareComponent = ({ uri, title, p: polyglot }) => (
     </div>
 );
 
-ShareComponent.propTypes = {
+PureShareSection.propTypes = {
     uri: PropTypes.string.isRequired,
     title: PropTypes.string,
     p: polyglotPropTypes.isRequired,
 };
 
-ShareComponent.defaultProps = {
+PureShareSection.defaultProps = {
     title: null,
 };
 
-export default translate(ShareComponent);
+export default translate(PureShareSection);
