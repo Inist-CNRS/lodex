@@ -103,7 +103,7 @@ export default {
     restore: 'Restaurer',
     removed_at: 'Removed at',
     removed_reason: 'La raison',
-    add_field_to_resource: 'Ajouter un champs à cette ressource',
+    add_field_to_resource: 'Ajouter un champ à cette ressource',
     about_you: 'Rédiger votre "À propos":',
     contributorName: 'Entrez votre nom',
     contributorMail: 'Entrez votre e-mail',
