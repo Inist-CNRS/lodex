@@ -20,4 +20,5 @@ before_script:
     - sleep 10
 
 install:
-    - "make --silent install"
+    - "make copy-conf"
+    - "npm install"
