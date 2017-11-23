@@ -3,20 +3,19 @@ import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
 
-import { fromCharacteristic } from '../selectors';
+import { fromFields, fromUser } from '../../sharedSelectors';
 import AddCharacteristicForm from './AddCharacteristicForm';
 import {
     NEW_CHARACTERISTIC_FORM_NAME,
     addCharacteristicOpen,
     addCharacteristicCancel,
-} from './';
+} from '../';
 import ButtonWithDialogForm from '../../lib/components/ButtonWithDialogForm';
-import { fromUser } from '../../sharedSelectors';
 
 const mapStateToProps = (state, { p }) => ({
     show: fromUser.isLoggedIn(state),
-    open: fromCharacteristic.isAdding(state),
-    saving: fromCharacteristic.isSaving(state),
+    open: fromFields.isAdding(state),
+    saving: fromFields.isSaving(state),
     form: <AddCharacteristicForm />,
     formName: NEW_CHARACTERISTIC_FORM_NAME,
     label: p.t('add_characteristic'),

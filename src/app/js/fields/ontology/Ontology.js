@@ -17,6 +17,7 @@ import { field as fieldPropTypes } from '../../propTypes';
 import { fromUser, fromFields } from '../../sharedSelectors';
 import OntologyField from './OntologyField';
 import { changePosition, preLoadPublication } from '../';
+import AddCharacteristic from '../addCharacteristic/AddCharacteristic';
 
 const styles = {
     container: {
@@ -28,7 +29,6 @@ const styles = {
     exportContainer: {
         display: 'flex',
         justifyContent: 'flex-end',
-        // marginTop: '3rem',
         marginBottom: '1rem',
     },
     handle: {
@@ -127,6 +127,7 @@ export class OntologyComponent extends Component {
                             index={index}
                         />
                     ))}
+                <AddCharacteristic />
             </div>
         );
     }

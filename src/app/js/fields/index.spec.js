@@ -22,6 +22,11 @@ import reducer, {
     openEditFieldValue,
     closeEditFieldValue,
     isACompositeFields,
+    addCharacteristic,
+    addCharacteristicCancel,
+    addCharacteristicOpen,
+    addCharacteristicError,
+    addCharacteristicSuccess,
 } from './';
 
 describe('field reducer', () => {
@@ -750,6 +755,84 @@ describe('field reducer', () => {
             };
 
             expect(selectors.getFieldToAdd(state)).toBe(null);
+        });
+
+        it('should handle addCharacteristic', () => {
+            const action = addCharacteristic();
+            const state = {
+                data: 'value',
+            };
+
+            expect(reducer(state, action)).toEqual({
+                data: 'value',
+                error: null,
+                isSaving: true,
+            });
+        });
+
+        it('should handle addCharacteristicOpen', () => {
+            const action = addCharacteristicOpen();
+            const state = {
+                data: 'value',
+            };
+
+            expect(reducer(state, action)).toEqual({
+                data: 'value',
+                error: null,
+                isAdding: true,
+            });
+        });
+
+        it('should handle addCharacteristicCancel', () => {
+            const action = addCharacteristicCancel();
+            const state = {
+                data: 'value',
+            };
+
+            expect(reducer(state, action)).toEqual({
+                data: 'value',
+                error: null,
+                isAdding: false,
+            });
+        });
+
+        it('should handle addCharacteristicSuccess', () => {
+            const action = addCharacteristicSuccess({
+                field: { name: 'charac1', value: 'charac data' },
+            });
+
+            const state = {
+                data: 'value',
+                byName: {
+                    field: 'value',
+                },
+                list: ['field'],
+            };
+
+            expect(reducer(state, action)).toEqual({
+                data: 'value',
+                error: null,
+                isAdding: false,
+                isSaving: false,
+                byName: {
+                    field: 'value',
+                    charac1: { name: 'charac1', value: 'charac data' },
+                },
+                list: ['field', 'charac1'],
+            });
+        });
+
+        it('should handle addCharacteristicError', () => {
+            const action = addCharacteristicError('error');
+            const state = {
+                data: 'value',
+            };
+
+            expect(reducer(state, action)).toEqual({
+                data: 'value',
+                error: 'error',
+                isSaving: false,
+            });
         });
     });
 });

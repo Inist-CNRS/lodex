@@ -6,8 +6,8 @@ import {
     addCharacteristicSuccess,
     getNewCharacteristicFormData,
 } from '../';
-import { fromUser } from '../../../sharedSelectors';
-import fetchSaga from '../../../lib/sagas/fetchSaga';
+import { fromUser } from '../../sharedSelectors';
+import fetchSaga from '../../lib/sagas/fetchSaga';
 
 export function* handleAddCharacteristic() {
     const formData = yield select(getNewCharacteristicFormData);

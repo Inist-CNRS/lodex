@@ -21,7 +21,6 @@ import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { preLoadDatasetPage, changePage } from './';
 import { fromDataset } from '../selectors';
 import { fromFields } from '../../sharedSelectors';
-import AddCharacteristic from '../characteristic/AddCharacteristic';
 import CreateResource from '../resource/CreateResource';
 
 const styles = {
@@ -144,7 +143,6 @@ export class DatasetComponent extends Component {
                     }}
                 />
                 <CardActions style={styles.actions}>
-                    <AddCharacteristic />
                     <CreateResource />
                 </CardActions>
             </div>

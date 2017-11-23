@@ -14,11 +14,10 @@ import {
 import { getProps } from '../lib/selectors';
 import TITLE_SCHEME from '../../../common/titleScheme';
 import getCatalogFromArray from '../lib/getCatalogFromArray';
-import {
-    UPDATE_CHARACTERISTICS_SUCCESS,
-    ADD_CHARACTERISTIC_SUCCESS,
-} from '../public/characteristic';
+import { UPDATE_CHARACTERISTICS_SUCCESS } from '../public/characteristic';
 import { SAVE_RESOURCE_SUCCESS } from '../public/resource';
+
+export const NEW_CHARACTERISTIC_FORM_NAME = 'NEW_CHARACTERISTIC_FORM_NAME';
 
 export const FIELD_FORM_NAME = 'field';
 
@@ -54,6 +53,12 @@ export const LOAD_PUBLICATION = 'LOAD_PUBLICATION';
 export const LOAD_PUBLICATION_SUCCESS = 'LOAD_PUBLICATION_SUCCESS';
 export const LOAD_PUBLICATION_ERROR = 'LOAD_PUBLICATION_ERROR';
 
+export const ADD_CHARACTERISTIC = 'ADD_CHARACTERISTIC';
+export const ADD_CHARACTERISTIC_OPEN = 'ADD_CHARACTERISTIC_OPEN';
+export const ADD_CHARACTERISTIC_SUCCESS = 'ADD_CHARACTERISTIC_SUCCESS';
+export const ADD_CHARACTERISTIC_ERROR = 'ADD_CHARACTERISTIC_ERROR';
+export const ADD_CHARACTERISTIC_CANCEL = 'ADD_CHARACTERISTIC_CANCEL';
+
 export const addField = createAction(ADD_FIELD);
 export const editField = createAction(EDIT_FIELD);
 export const loadField = createAction(LOAD_FIELD);
@@ -85,9 +90,18 @@ export const loadPublication = createAction(LOAD_PUBLICATION);
 export const loadPublicationSuccess = createAction(LOAD_PUBLICATION_SUCCESS);
 export const loadPublicationError = createAction(LOAD_PUBLICATION_ERROR);
 
+export const addCharacteristic = createAction(ADD_CHARACTERISTIC);
+export const addCharacteristicOpen = createAction(ADD_CHARACTERISTIC_OPEN);
+export const addCharacteristicSuccess = createAction(
+    ADD_CHARACTERISTIC_SUCCESS,
+);
+export const addCharacteristicError = createAction(ADD_CHARACTERISTIC_ERROR);
+export const addCharacteristicCancel = createAction(ADD_CHARACTERISTIC_CANCEL);
+
 export const defaultState = {
     loading: false,
     isSaving: false,
+    isAdding: false,
     byName: {},
     allValid: true,
     list: [],
@@ -230,6 +244,9 @@ export default handleActions(
                 ...state.byName,
                 [field.name]: field,
             },
+            isAdding: false,
+            isSaving: false,
+            error: null,
         }),
         CHANGE_POSITION_VALUE: (state, { payload: { fields } }) => {
             const result = state.byName;
@@ -268,6 +285,26 @@ export default handleActions(
             ...state,
             error: error.message,
             loading: false,
+        }),
+        [ADD_CHARACTERISTIC]: state => ({
+            ...state,
+            error: null,
+            isSaving: true,
+        }),
+        [ADD_CHARACTERISTIC_OPEN]: state => ({
+            ...state,
+            isAdding: true,
+            error: null,
+        }),
+        [ADD_CHARACTERISTIC_ERROR]: (state, { payload: error }) => ({
+            ...state,
+            isSaving: false,
+            error,
+        }),
+        [ADD_CHARACTERISTIC_CANCEL]: state => ({
+            ...state,
+            isAdding: false,
+            error: null,
         }),
     },
     defaultState,
@@ -528,6 +565,7 @@ const getPublishData = ({ error, published, editedFieldIndex, loading }) => ({
 
 const isLoading = state => state.loading;
 const isSaving = state => state.isSaving;
+const isAdding = state => state.isAdding;
 const getError = state => state.error;
 
 const getFacetFields = createSelector(getFields, allFields =>
@@ -562,6 +600,9 @@ const isFieldConfigured = createSelector(
     (_, fieldName) => fieldName,
     (editedFieldName, fieldName) => editedFieldName === fieldName,
 );
+
+export const getNewCharacteristicFormData = state =>
+    state.form[NEW_CHARACTERISTIC_FORM_NAME].values;
 
 export const selectors = {
     areAllFieldsValid,
@@ -598,6 +639,7 @@ export const selectors = {
     getPublishData,
     isLoading,
     isSaving,
+    isAdding,
     getError,
     getFacetFields,
     hasFacetFields,
