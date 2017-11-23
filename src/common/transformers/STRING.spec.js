@@ -12,9 +12,11 @@ describe('STRING', () => {
     });
 
     it('should return an empty string when value is an object', () => {
-        expect(toString({
-            a: 'hello',
-            b: 'world',
-        })).toEqual('');
+        expect(
+            toString({
+                a: 'hello',
+                b: 'world',
+            }),
+        ).toEqual('');
     });
 });

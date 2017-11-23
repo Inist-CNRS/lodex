@@ -7,12 +7,14 @@ import { ParsingResultComponent as ParsingResult } from './ParsingResult';
 
 describe('<ParsingResult />', () => {
     it('should render the ParsingExcerpt', () => {
-        const wrapper = shallow(<ParsingResult
-            excerptColumns={['foo']}
-            excerptLines={['bar']}
-            p={{ t: () => {} }}
-            totalLoadedLines={24}
-        />);
+        const wrapper = shallow(
+            <ParsingResult
+                excerptColumns={['foo']}
+                excerptLines={['bar']}
+                p={{ t: () => {} }}
+                totalLoadedLines={24}
+            />,
+        );
 
         const parsingExcerpt = wrapper.find(ParsingExcerpt).at(0);
 

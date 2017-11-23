@@ -5,8 +5,9 @@ export const getFieldTransformation = (context, field) => {
     if (!field.transformers.length) {
         return () => Promise.resolve({});
     }
-    const documentTransformers = field.transformers
-        .map(({ operation, args = [] }) => transformers[operation](context, args));
+    const documentTransformers = field.transformers.map(
+        ({ operation, args = [] }) => transformers[operation](context, args),
+    );
 
     const transformDocument = composeTransformers(documentTransformers);
 
@@ -18,7 +19,7 @@ export const getFieldTransformation = (context, field) => {
 export const getDocumentTransformations = (context, fields) =>
     fields.map(field => getFieldTransformation(context, field));
 
-export const sanitizeUris = (doc) => {
+export const sanitizeUris = doc => {
     if (!doc.uri) {
         return doc;
     }
@@ -33,16 +34,20 @@ export const sanitizeUris = (doc) => {
     };
 };
 
-export const applyTransformation = documentTransformers => async (doc) => {
-    const partialDocsPromises = documentTransformers
-        .map(transformer => transformer(doc));
+export const applyTransformation = documentTransformers => async doc => {
+    const partialDocsPromises = documentTransformers.map(transformer =>
+        transformer(doc),
+    );
 
     const partialDocs = await Promise.all(partialDocsPromises);
 
-    const result = partialDocs.reduce((newDoc, partialDoc) => ({
-        ...newDoc,
-        ...partialDoc,
-    }), {});
+    const result = partialDocs.reduce(
+        (newDoc, partialDoc) => ({
+            ...newDoc,
+            ...partialDoc,
+        }),
+        {},
+    );
 
     const resultWithSanitizedUri = sanitizeUris(result);
     return resultWithSanitizedUri;

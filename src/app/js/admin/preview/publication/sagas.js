@@ -12,9 +12,7 @@ import {
     SAVE_FIELD_SUCCESS,
 } from '../../../fields';
 import { fromParsing } from '../../selectors';
-import {
-    LOAD_PARSING_RESULT_SUCCESS,
-} from '../../parsing';
+import { LOAD_PARSING_RESULT_SUCCESS } from '../../parsing';
 
 export function* handleComputePublicationPreview() {
     try {
@@ -24,7 +22,11 @@ export function* handleComputePublicationPreview() {
             return;
         }
         const token = yield select(fromUser.getToken);
-        const transformDocument = yield call(getDocumentTransformer, fields, token);
+        const transformDocument = yield call(
+            getDocumentTransformer,
+            fields,
+            token,
+        );
 
         const preview = yield lines.map(line => call(transformDocument, line));
         yield put(computePublicationPreviewSuccess(preview));
@@ -34,10 +36,13 @@ export function* handleComputePublicationPreview() {
 }
 
 export default function* watchComputePreview() {
-    yield takeLatest([
-        LOAD_PARSING_RESULT_SUCCESS,
-        LOAD_FIELD_SUCCESS,
-        REMOVE_FIELD_SUCCESS,
-        SAVE_FIELD_SUCCESS,
-    ], handleComputePublicationPreview);
+    yield takeLatest(
+        [
+            LOAD_PARSING_RESULT_SUCCESS,
+            LOAD_FIELD_SUCCESS,
+            REMOVE_FIELD_SUCCESS,
+            SAVE_FIELD_SUCCESS,
+        ],
+        handleComputePublicationPreview,
+    );
 }

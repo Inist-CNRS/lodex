@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { Card } from 'material-ui/Card';
 
 const getStyles = style => ({
@@ -7,10 +8,7 @@ const getStyles = style => ({
 });
 
 const CardComponent = ({ children, style, ...props }) => (
-    <Card
-        style={getStyles(style)}
-        {...props}
-    >
+    <Card style={getStyles(style)} {...props}>
         {children}
     </Card>
 );
@@ -21,4 +19,3 @@ CardComponent.propTypes = {
 };
 
 export default CardComponent;
-

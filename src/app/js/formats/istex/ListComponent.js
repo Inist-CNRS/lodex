@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import memoize from 'lodash.memoize';
 
 import { REJECTED } from '../../../../common/propositionStatus';
@@ -7,10 +8,12 @@ import { field as fieldPropTypes } from '../../propTypes';
 const istexApiUrl = process.env.ISTEX_API_URL;
 
 const styles = {
-    text: memoize(status => Object.assign({
-        fontSize: '1.5rem',
-        textDecoration: status === REJECTED ? 'line-through' : 'none',
-    })),
+    text: memoize(status =>
+        Object.assign({
+            fontSize: '1.5rem',
+            textDecoration: status === REJECTED ? 'line-through' : 'none',
+        }),
+    ),
 };
 
 const IstexView = ({ fieldStatus, field, resource }) => (

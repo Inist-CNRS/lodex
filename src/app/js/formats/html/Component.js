@@ -1,9 +1,13 @@
 /* eslint react/no-danger: off */
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { field as fieldPropTypes } from '../../propTypes';
 
 const HtmlView = ({ className, resource, field }) => (
-    <div className={className} dangerouslySetInnerHTML={{ __html: resource[field.name] }} />
+    <div
+        className={className}
+        dangerouslySetInnerHTML={{ __html: resource[field.name] }}
+    />
 );
 
 HtmlView.propTypes = {

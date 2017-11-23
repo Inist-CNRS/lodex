@@ -1,6 +1,6 @@
 import url from 'url';
 
-export default (value) => {
+export default value => {
     const target = url.parse(value);
     let uri = target.path.slice(1);
     if (!target.host) {

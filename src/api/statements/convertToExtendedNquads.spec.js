@@ -35,17 +35,23 @@ describe('conversion to extended Nquads', () => {
         sandbox.restore();
     });
 
-    it('should return nquads from the dataset', (done) => {
-    /* should result of the nquads conversion */
+    it('should return nquads from the dataset', done => {
+        /* should result of the nquads conversion */
         /* Fake URL */
-        const stream = from([{ lodex: { uri: 'https://lodex-uri.fr/URI' }, content: 'https://api-v5.istex.fr/document/?q=language:test' }])
+        const stream = from([
+            {
+                lodex: { uri: 'https://lodex-uri.fr/URI' },
+                content: 'https://api-v5.istex.fr/document/?q=language:test',
+            },
+        ])
             .pipe(ezs('scroll'))
             .pipe(ezs('convertToExtendedNquads', { config }));
         testAll(
             stream,
-            (data) => {
+            data => {
                 expect(dataNquads).to.contain(btoa(data));
             },
-            done);
+            done,
+        );
     });
 });

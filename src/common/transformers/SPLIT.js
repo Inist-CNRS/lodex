@@ -10,7 +10,7 @@ export const split = (value, separator) => {
     return value.split(separator).map(x => x.trim());
 };
 
-const transformation = (_, args) => (value) => {
+const transformation = (_, args) => value => {
     const separator = args.find(a => a.name === 'separator');
 
     if (!separator) {
@@ -29,9 +29,7 @@ const transformation = (_, args) => (value) => {
 transformation.getMetas = () => ({
     name: 'SPLIT',
     type: 'transform',
-    args: [
-        { name: 'separator', type: 'string' },
-    ],
+    args: [{ name: 'separator', type: 'string' }],
 });
 
 export default transformation;

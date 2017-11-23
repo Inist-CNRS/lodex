@@ -64,7 +64,9 @@ describe('ark routes', () => {
             await getFromArkUri(ctx);
             expect(ctx.status).toEqual(200);
             expect(ctx.body).toEqual({ id: 'foo' });
-            expect(ctx.publishedDataset.findByUri).toHaveBeenCalledWith('ark_custom_uri');
+            expect(ctx.publishedDataset.findByUri).toHaveBeenCalledWith(
+                'ark_custom_uri',
+            );
         });
     });
 });

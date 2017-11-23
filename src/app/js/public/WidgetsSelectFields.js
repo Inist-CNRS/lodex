@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 import SuperSelectField from 'material-ui-superselectfield';
@@ -32,37 +33,42 @@ const styles = {
 };
 
 export class WidgetsSelectFieldsComponent extends Component {
-    handleChange = (values) => {
+    handleChange = values => {
         this.props.onChange(values);
-    }
+    };
 
-    handleRemove = (value) => {
+    handleRemove = value => {
         this.handleChange([
-            ...this.props.value.slice(0, this.props.value.findIndex(f => f.value === value)),
-            ...this.props.value.slice(this.props.value.findIndex(f => f.value === value) + 1),
+            ...this.props.value.slice(
+                0,
+                this.props.value.findIndex(f => f.value === value),
+            ),
+            ...this.props.value.slice(
+                this.props.value.findIndex(f => f.value === value) + 1,
+            ),
         ]);
-    }
+    };
 
-    renderSelected = (values) => {
+    renderSelected = values => {
         const { p: polyglot } = this.props;
 
-        return (
-            values.length
-                ? (
-                    <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-                        {values.map(({ label, value }) => (
-                            <WidgetsSelectFieldItem
-                                key={value}
-                                value={value}
-                                label={label}
-                                onRemove={this.handleRemove}
-                            />
-                        ))}
-                    </div>
-                )
-                : <div style={styles.empty}>{polyglot.t('select_exported_fields_all')}</div>
+        return values.length ? (
+            <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+                {values.map(({ label, value }) => (
+                    <WidgetsSelectFieldItem
+                        key={value}
+                        value={value}
+                        label={label}
+                        onRemove={this.handleRemove}
+                    />
+                ))}
+            </div>
+        ) : (
+            <div style={styles.empty}>
+                {polyglot.t('select_exported_fields_all')}
+            </div>
         );
-    }
+    };
 
     render() {
         const { fields, value, p: polyglot } = this.props;
@@ -77,17 +83,24 @@ export class WidgetsSelectFieldsComponent extends Component {
                     style={styles.select}
                     value={value}
                     floatingLabel={polyglot.t('select_exported_fields')}
-                    hintTextAutocomplete={polyglot.t('filter_fields_for_widgets')}
-                    menuCloseButton={<FlatButton
-                        className="btn-apply-widget-select"
-                        label={polyglot.t('apply')}
-                    />}
+                    hintTextAutocomplete={polyglot.t(
+                        'filter_fields_for_widgets',
+                    )}
+                    menuCloseButton={
+                        <FlatButton
+                            className="btn-apply-widget-select"
+                            label={polyglot.t('apply')}
+                        />
+                    }
                     menuFooterStyle={styles.menuFooter}
                 >
                     {fields.map(field => (
                         <div
                             key={field.name}
-                            className={classnames('widget-select-field-item', getFieldClassName(field))}
+                            className={classnames(
+                                'widget-select-field-item',
+                                getFieldClassName(field),
+                            )}
                             value={field.name}
                             label={field.label}
                         >
@@ -111,6 +124,4 @@ WidgetsSelectFieldsComponent.defaultProps = {
     value: [],
 };
 
-export default compose(
-    translate,
-)(WidgetsSelectFieldsComponent);
+export default compose(translate)(WidgetsSelectFieldsComponent);

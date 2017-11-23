@@ -2,7 +2,7 @@ import { COVERS, COVER_DOCUMENT } from './cover';
 import knownTransformers from './transformers';
 import { languages as languagesFromConfig } from '../../config.json';
 
-export const validateLabel = (field) => {
+export const validateLabel = field => {
     const result = {
         name: 'label',
         isValid: true,
@@ -60,7 +60,7 @@ export const validateCover = (field, isContribution) => {
     return result;
 };
 
-export const validatePosition = (field) => {
+export const validatePosition = field => {
     const result = {
         name: 'position',
         isValid: true,
@@ -119,7 +119,7 @@ export const validateTransformers = (field, isContribution) => {
         };
     }
 
-    if ((!field.transformers || !field.transformers.length)) {
+    if (!field.transformers || !field.transformers.length) {
         return {
             ...result,
             isValid: false,
@@ -151,7 +151,7 @@ export const validateComposedOf = (field, isContribution) => {
     return result;
 };
 
-export const validateComposedOfFields = (field) => {
+export const validateComposedOfFields = field => {
     if (!field.composedOf) {
         return null;
     }
@@ -195,7 +195,9 @@ export const validateEachComposedOfFields = (fields, allFields) => {
 export const validateCompletesField = (field, allFields) => {
     let isValid = true;
     if (field.completes) {
-        isValid = !!allFields.find(otherfield => otherfield.name === field.completes);
+        isValid = !!allFields.find(
+            otherfield => otherfield.name === field.completes,
+        );
     }
 
     return {
@@ -205,7 +207,7 @@ export const validateCompletesField = (field, allFields) => {
     };
 };
 
-export const validateScheme = (field) => {
+export const validateScheme = field => {
     const result = {
         name: 'scheme',
         isValid: true,
@@ -215,7 +217,10 @@ export const validateScheme = (field) => {
         return result;
     }
 
-    if (!field.scheme.startsWith('http://') && !field.scheme.startsWith('https://')) {
+    if (
+        !field.scheme.startsWith('http://') &&
+        !field.scheme.startsWith('https://')
+    ) {
         return {
             ...result,
             isValid: false,
@@ -226,7 +231,7 @@ export const validateScheme = (field) => {
     return result;
 };
 
-export const validateTransformer = (transformer) => {
+export const validateTransformer = transformer => {
     const transformerOperation = knownTransformers[transformer.operation];
     const transformerArgs = transformer.args || [];
 
@@ -239,11 +244,17 @@ export const validateTransformer = (transformer) => {
         };
     }
     const transformerMeta = transformerOperation.getMetas();
-    if (transformerMeta.args.length > transformerArgs.filter(({ value }) => !!value).length) {
+    if (
+        transformerMeta.args.length >
+        transformerArgs.filter(({ value }) => !!value).length
+    ) {
         return {
             name: 'transformer.args',
             isValid: false,
-            meta: { operation: transformer.operation, args: transformerMeta.args.length },
+            meta: {
+                operation: transformer.operation,
+                args: transformerMeta.args.length,
+            },
             error: 'invalid',
         };
     }
@@ -263,7 +274,12 @@ export const validateLanguage = (field, languages = languagesFromConfig) => {
         isValid: true,
     };
 
-    if (!field.language || !languages || !languages.length || languages.some(f => f.code === field.language)) {
+    if (
+        !field.language ||
+        !languages ||
+        !languages.length ||
+        languages.some(f => f.code === field.language)
+    ) {
         return result;
     }
 
@@ -273,7 +289,8 @@ export const validateLanguage = (field, languages = languagesFromConfig) => {
         error: 'invalid',
     };
 };
-export const isListValid = list => list.reduce((areValid, { isValid }) => areValid && isValid, true);
+export const isListValid = list =>
+    list.reduce((areValid, { isValid }) => areValid && isValid, true);
 
 export const validateField = (field, isContribution = false, fields = []) => {
     const properties = [
@@ -292,17 +309,19 @@ export const validateField = (field, isContribution = false, fields = []) => {
 
     const transformers = validateEachTransformer(field.transformers);
     const transformersAreValid = isListValid(transformers);
-    const composedOfFields = validateEachComposedOfFields(field.composedOf && field.composedOf.fields, fields);
+    const composedOfFields = validateEachComposedOfFields(
+        field.composedOf && field.composedOf.fields,
+        fields,
+    );
     const composedOfFieldsAreValid = isListValid(composedOfFields);
 
     return {
         name: field.name,
-        isValid: propertiesAreValid && transformersAreValid && composedOfFieldsAreValid,
-        properties: [
-            ...properties,
-            ...transformers,
-            ...composedOfFields,
-        ],
+        isValid:
+            propertiesAreValid &&
+            transformersAreValid &&
+            composedOfFieldsAreValid,
+        properties: [...properties, ...transformers, ...composedOfFields],
         propertiesAreValid,
         transformers,
         transformersAreValid,
@@ -311,11 +330,16 @@ export const validateField = (field, isContribution = false, fields = []) => {
     };
 };
 
-export default (allFields) => {
-    const fields = allFields.map(field => validateField(field, false, allFields));
+export default allFields => {
+    const fields = allFields.map(field =>
+        validateField(field, false, allFields),
+    );
 
     return {
-        isValid: fields.reduce((isValid, field) => isValid && field.isValid, true),
+        isValid: fields.reduce(
+            (isValid, field) => isValid && field.isValid,
+            true,
+        ),
         fields,
     };
 };

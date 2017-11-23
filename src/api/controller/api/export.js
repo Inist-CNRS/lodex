@@ -5,7 +5,7 @@ import config from '../../../../config.json';
 
 import exporters from '../../exporters';
 
-export const getExporter = (type) => {
+export const getExporter = type => {
     const exporter = exporters[type];
 
     if (!exporter) {
@@ -21,7 +21,12 @@ export const getExporterConfig = () => ({
     cleanHost,
 });
 
-export async function exportFileMiddleware(ctx, type, exportStreamFactory, exporterConfig) {
+export async function exportFileMiddleware(
+    ctx,
+    type,
+    exportStreamFactory,
+    exporterConfig,
+) {
     ctx.keepDbOpened = true;
 
     const characteristics = await ctx.publishedCharacteristic.findAllVersions();
@@ -52,12 +57,18 @@ export async function exportFileMiddleware(ctx, type, exportStreamFactory, expor
     exportStream.on('end', () => {
         ctx.db.close();
     });
-    exportStream.on('error', (error) => {
-        global.console.error(`Error while exporting published dataset into ${type}`, error);
+    exportStream.on('error', error => {
+        global.console.error(
+            `Error while exporting published dataset into ${type}`,
+            error,
+        );
         ctx.db.close();
     });
 
-    ctx.set('Content-disposition', `attachment; filename=export.${exportStreamFactory.extension}`);
+    ctx.set(
+        'Content-disposition',
+        `attachment; filename=export.${exportStreamFactory.extension}`,
+    );
     ctx.type = exportStreamFactory.mimeType;
     ctx.status = 200;
     ctx.body = exportStream;
@@ -66,7 +77,9 @@ export async function exportFileMiddleware(ctx, type, exportStreamFactory, expor
 export async function exportWidgetMiddleware(ctx, type) {
     const fields = encodeURIComponent(JSON.stringify(ctx.query.fields));
     const uri = encodeURIComponent(ctx.query.uri);
-    const widgetUrl = `${config.host}/api/widget?type=${type}&fields=${fields}&uri=${uri}`;
+    const widgetUrl = `${config.host}/api/widget?type=${type}&fields=${
+        fields
+    }&uri=${uri}`;
 
     ctx.body = widgetUrl;
 }
@@ -86,7 +99,12 @@ export async function exportMiddleware(ctx, type) {
         const exportStreamFactory = ctx.getExporter(type);
 
         if (exportStreamFactory.type === 'file') {
-            await ctx.exportFileMiddleware(ctx, type, exportStreamFactory, exporterConfig);
+            await ctx.exportFileMiddleware(
+                ctx,
+                type,
+                exportStreamFactory,
+                exporterConfig,
+            );
             return;
         }
 
@@ -100,7 +118,7 @@ export async function exportMiddleware(ctx, type) {
 export async function getExporters(ctx) {
     const configuredExporters = config.exporters || [];
 
-    const availableExporters = configuredExporters.map((exporter) => {
+    const availableExporters = configuredExporters.map(exporter => {
         const exportStreamFactory = ctx.getExporter(exporter);
 
         return {

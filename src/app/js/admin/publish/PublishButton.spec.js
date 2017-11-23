@@ -7,13 +7,15 @@ import ButtonWithStatus from '../../lib/components/ButtonWithStatus';
 
 describe('<Publish />', () => {
     it('should render a publish button', () => {
-        const wrapper = shallow(<PublishButton
-            p={{ t: key => key }}
-            loadField={() => {}}
-            isPublishing
-            error
-            published
-        />);
+        const wrapper = shallow(
+            <PublishButton
+                p={{ t: key => key }}
+                loadField={() => {}}
+                isPublishing
+                error
+                published
+            />,
+        );
 
         const button = wrapper.find(ButtonWithStatus).at(0);
         expect(button.prop('label')).toEqual('publish');
@@ -25,12 +27,14 @@ describe('<Publish />', () => {
     it('should trigger the onPublish action on click', () => {
         const onPublish = createSpy();
 
-        const wrapper = shallow(<PublishButton
-            p={{ t: key => key }}
-            loadField={() => {}}
-            isPublishing={false}
-            onPublish={onPublish}
-        />);
+        const wrapper = shallow(
+            <PublishButton
+                p={{ t: key => key }}
+                loadField={() => {}}
+                isPublishing={false}
+                onPublish={onPublish}
+            />,
+        );
 
         wrapper.find(ButtonWithStatus).simulate('click');
         expect(onPublish).toHaveBeenCalled();

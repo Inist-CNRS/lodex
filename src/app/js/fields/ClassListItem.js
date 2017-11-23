@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
@@ -57,28 +58,36 @@ export const ClassListItem = ({
                 allowNewItem
                 fullWidth
                 hintText={polyglot.t('enter_class')}
-                label={`${polyglot.t('class')} ${parseInt(/\d+/.exec(fieldName)[0], 10) + 1}`}
+                label={`${polyglot.t('class')} ${parseInt(
+                    /\d+/.exec(fieldName)[0],
+                    10,
+                ) + 1}`}
                 name={`${fieldName}`}
                 component={FormAutoCompleteField}
                 disabled={disabled}
                 onChange={(_, value) => onChangeClass({ value, fieldName })}
                 getFetchRequest={getSchemeSearchRequest}
-                parseResponse={response => getSchemeMenuItemsDataFromResponse(response).map(({ label, uri }) => ({
-                    text: uri,
-                    value: (
-                        <MenuItem style={styles.menuItem} value={uri}>
-                            <div style={styles.schemeLabel}><b>{label}</b></div>
-                            <small style={styles.schemeUri}>{uri}</small>
-                        </MenuItem>
-                    ),
-                }))}
+                parseResponse={response =>
+                    getSchemeMenuItemsDataFromResponse(response).map(
+                        ({ label, uri }) => ({
+                            text: uri,
+                            value: (
+                                <MenuItem style={styles.menuItem} value={uri}>
+                                    <div style={styles.schemeLabel}>
+                                        <b>{label}</b>
+                                    </div>
+                                    <small style={styles.schemeUri}>
+                                        {uri}
+                                    </small>
+                                </MenuItem>
+                            ),
+                        }),
+                    )
+                }
             />
         </div>
         <span>
-            <IconButton
-                tooltip={polyglot.t('remove_class')}
-                onClick={onRemove}
-            >
+            <IconButton tooltip={polyglot.t('remove_class')} onClick={onRemove}>
                 <ActionDeleteIcon />
             </IconButton>
         </span>
@@ -103,19 +112,22 @@ ClassListItem.defaultProps = {
 
 const mapStateToProps = state => ({
     fields: fromFields.getFields(state),
-    getSchemeSearchRequest: query => ({ url: `https://lov.okfn.org/dataset/lov/api/v2/term/search?q=${query}` }),
-    getSchemeMenuItemsDataFromResponse: response => (
+    getSchemeSearchRequest: query => ({
+        url: `https://lov.okfn.org/dataset/lov/api/v2/term/search?q=${query}`,
+    }),
+    getSchemeMenuItemsDataFromResponse: response =>
         response && response.results
-            ? response.results.map(r => ({ label: r.prefixedName[0], uri: r.uri[0] }))
-            : []
-    ),
+            ? response.results.map(r => ({
+                  label: r.prefixedName[0],
+                  uri: r.uri[0],
+              }))
+            : [],
 });
 
 const mapDispatchToProps = {
     onChangeClass: changeClass,
 };
 
-export default compose(
-    connect(mapStateToProps, mapDispatchToProps),
-    translate,
-)(ClassListItem);
+export default compose(connect(mapStateToProps, mapDispatchToProps), translate)(
+    ClassListItem,
+);

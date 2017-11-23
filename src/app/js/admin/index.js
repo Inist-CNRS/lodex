@@ -34,6 +34,9 @@ render(
 if (module.hot) {
     module.hot.accept('../Root', () => {
         const NewRoot = require('../Root').default; // eslint-disable-line
-        render(<NewRoot {...{ store, routes, admin: true }} />, document.getElementById('root'));
+        render(
+            <NewRoot {...{ store, routes, admin: true }} />,
+            document.getElementById('root'),
+        );
     });
 }

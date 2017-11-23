@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
@@ -8,7 +9,6 @@ import FlatButton from 'material-ui/FlatButton';
 import { publishConfirm, publishCancel } from './';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { fromPublish } from '../selectors';
-
 
 const styles = {
     container: {
@@ -20,10 +20,27 @@ const styles = {
     },
 };
 
-export const ConfirmPublicationComponent = ({ nbInvalidUri, confirmPublication, cancelPublication, p: polyglot }) => {
+export const ConfirmPublicationComponent = ({
+    nbInvalidUri,
+    confirmPublication,
+    cancelPublication,
+    p: polyglot,
+}) => {
     const actions = [
-        <FlatButton primary className="confirm" label={polyglot.t('force_publish')} onClick={confirmPublication} />,
-        <FlatButton secondary className="cancel" label={polyglot.t('cancel')} onClick={cancelPublication} />,
+        <FlatButton
+            primary
+            key="confirm"
+            className="confirm"
+            label={polyglot.t('force_publish')}
+            onClick={confirmPublication}
+        />,
+        <FlatButton
+            secondary
+            key="cancel"
+            className="cancel"
+            label={polyglot.t('cancel')}
+            onClick={cancelPublication}
+        />,
     ];
     return (
         <Dialog
@@ -55,7 +72,6 @@ const mapDispatchToProps = {
     cancelPublication: publishCancel,
 };
 
-export default compose(
-    translate,
-    connect(mapStateToProps, mapDispatchToProps),
-)(ConfirmPublicationComponent);
+export default compose(translate, connect(mapStateToProps, mapDispatchToProps))(
+    ConfirmPublicationComponent,
+);

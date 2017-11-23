@@ -5,7 +5,7 @@ import koaBodyParser from 'koa-bodyparser';
 import { auth } from 'config';
 import jwt from 'jsonwebtoken';
 
-export const postLogin = date => (ctx) => {
+export const postLogin = date => ctx => {
     if (!ctx.ezMasterConfig) {
         throw new Error('Invalid EzMaster configuration.');
     }
@@ -19,7 +19,10 @@ export const postLogin = date => (ctx) => {
     }
 
     const { username, password } = ctx.request.body;
-    if (username !== ctx.ezMasterConfig.username || password !== ctx.ezMasterConfig.password) {
+    if (
+        username !== ctx.ezMasterConfig.username ||
+        password !== ctx.ezMasterConfig.password
+    ) {
         ctx.status = 401;
         return;
     }

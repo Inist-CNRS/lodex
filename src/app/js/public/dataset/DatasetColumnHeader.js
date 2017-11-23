@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { TableHeaderColumn } from 'material-ui/Table';
 import FlatButton from 'material-ui/FlatButton';
 import ContentSort from 'material-ui/svg-icons/content/sort';
@@ -6,9 +7,7 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import withHandlers from 'recompose/withHandlers';
 
-import {
-    sortDataset as sortDatasetAction,
-} from './';
+import { sortDataset as sortDatasetAction } from './';
 import { fromDataset } from '../selectors';
 
 const styles = {
@@ -24,8 +23,18 @@ const DatasetColumnHeader = ({ name, label, sortBy, sortDir, sortDataset }) => (
             labelPosition="before"
             onClick={sortDataset}
             label={label}
-            icon={sortBy === name ?
-                <ContentSort style={sortDir === 'ASC' ? { transform: 'rotate(180deg)' } : {}} /> : false
+            icon={
+                sortBy === name ? (
+                    <ContentSort
+                        style={
+                            sortDir === 'ASC'
+                                ? { transform: 'rotate(180deg)' }
+                                : {}
+                        }
+                    />
+                ) : (
+                    false
+                )
             }
             style={styles.sortButton}
         />
@@ -49,9 +58,9 @@ const mapStateToProps = state => ({
     ...fromDataset.getSort(state),
 });
 
-const mapDispatchToProps = ({
+const mapDispatchToProps = {
     sortDataset: sortDatasetAction,
-});
+};
 
 export default compose(
     connect(mapStateToProps, mapDispatchToProps),

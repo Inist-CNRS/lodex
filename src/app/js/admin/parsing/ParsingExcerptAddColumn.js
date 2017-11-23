@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import withHandlers from 'recompose/withHandlers';
 import translate from 'redux-polyglot/translate';
@@ -17,7 +18,12 @@ const styles = {
     })),
 };
 
-export const ParsingExcerptAddColumnComponent = ({ handleAddColumn, name, p: polyglot, atTop }) => (
+export const ParsingExcerptAddColumnComponent = ({
+    handleAddColumn,
+    name,
+    p: polyglot,
+    atTop,
+}) => (
     <RaisedButton
         className={`btn-excerpt-add-column btn-excerpt-add-column-${name}`}
         label={polyglot.t('add_to_publication')}

@@ -5,10 +5,10 @@ import ezsISTEX from 'ezs-istex';
 ezs.use(ezsBasics);
 ezs.use(ezsISTEX);
 
-const output = 'corpusName,author,language,abstract,title,pmid,'
-             + 'genre,host,publicationDate,copyrightDate,id,'
-             + 'score,serie,fulltext';
-
+const output =
+    'corpusName,author,language,abstract,title,pmid,' +
+    'genre,host,publicationDate,copyrightDate,id,' +
+    'score,serie,fulltext';
 
 export default config => stream =>
     stream

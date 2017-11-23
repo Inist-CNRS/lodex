@@ -6,15 +6,20 @@ import getUri from './getUri';
 
 const merge = (field, fields, currentOutput, data) => {
     const propertyName = field.name;
-    const isCompletedByAnotherField = fields.some(f => f.completes === field.name);
-    const isComposedOfByAnotherField = fields.some(f => f.composedOf &&
-                                                        f.composedOf.fields.includes(propertyName));
+    const isCompletedByAnotherField = fields.some(
+        f => f.completes === field.name,
+    );
+    const isComposedOfByAnotherField = fields.some(
+        f => f.composedOf && f.composedOf.fields.includes(propertyName),
+    );
     const isComposedOf = Boolean(field.composedOf);
     const haveClasses = Boolean(field.classes) && Boolean(field.classes.length);
     const completesAnotherField = field.completes;
 
     if (isComposedOf) {
-        return Promise.resolve(mergeCompose(currentOutput, field, data, fields, haveClasses));
+        return Promise.resolve(
+            mergeCompose(currentOutput, field, data, fields, haveClasses),
+        );
     }
 
     if (haveClasses) {
@@ -22,13 +27,17 @@ const merge = (field, fields, currentOutput, data) => {
     }
 
     if (completesAnotherField) {
-        return Promise.resolve(mergeCompleteField(currentOutput, field, fields, data));
+        return Promise.resolve(
+            mergeCompleteField(currentOutput, field, fields, data),
+        );
     }
 
-    if (field.scheme &&
+    if (
+        field.scheme &&
         data[propertyName] &&
         !isCompletedByAnotherField &&
-        !isComposedOfByAnotherField) {
+        !isComposedOfByAnotherField
+    ) {
         return Promise.resolve(mergeSimpleField(currentOutput, field, data));
     }
 
@@ -45,22 +54,27 @@ module.exports = async function JSONLDObject(data, feed) {
     const characteristics = this.getParam('characteristics', {});
     const exportDataset = this.getParam('exportDataset', false) === 'true';
 
-    const output = await fields
-        .filter(f => f.cover === 'collection')
-        .reduce((currentOutputPromise, field) =>
-            currentOutputPromise.then((currentOutput) => {
+    const output = await fields.filter(f => f.cover === 'collection').reduce(
+        (currentOutputPromise, field) =>
+            currentOutputPromise.then(currentOutput => {
                 if (collectionClass) currentOutput['@type'] = collectionClass;
                 return merge(field, fields, currentOutput, data);
-            }), Promise.resolve({
+            }),
+        Promise.resolve({
             '@id': getUri(data.uri),
-        }));
+        }),
+    );
 
     if (this.isFirst() && exportDataset) {
         output.dataset = await fields
             .filter(f => f.cover === 'dataset')
-            .reduce((currentOutputPromise, field) =>
-                currentOutputPromise.then(currentOutput =>
-                    merge(field, fields, currentOutput, characteristics[0])), Promise.resolve({}));
+            .reduce(
+                (currentOutputPromise, field) =>
+                    currentOutputPromise.then(currentOutput =>
+                        merge(field, fields, currentOutput, characteristics[0]),
+                    ),
+                Promise.resolve({}),
+            );
     }
 
     feed.send(output);

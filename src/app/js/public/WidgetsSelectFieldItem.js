@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import withHandlers from 'recompose/withHandlers';
 import Chip from 'material-ui/Chip/Chip';
 import classnames from 'classnames';
@@ -11,7 +12,10 @@ const styles = {
 
 export const WidgetsSelectFieldItemComponent = ({ value, label, onRemove }) => (
     <Chip
-        className={classnames('widget-selected-field-item', getFieldClassName({ label }))}
+        className={classnames(
+            'widget-selected-field-item',
+            getFieldClassName({ label }),
+        )}
         key={value}
         style={styles.chip}
         onRequestDelete={onRemove}

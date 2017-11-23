@@ -20,14 +20,35 @@ export const initialState = {
     loading: false,
 };
 
-export default handleActions({
-    CLEAR_DATASET: state => ({ ...state, loading: true }),
-    CLEAR_PUBLISHED: state => ({ ...state, loading: true }),
-    CLEAR_DATASET_ERROR: (state, { payload: error }) => ({ ...state, status: 'error', error, loading: false }),
-    CLEAR_DATASET_SUCCESS: state => ({ ...state, status: 'success', loading: false }),
-    CLEAR_PUBLISHED_ERROR: (state, { payload: error }) => ({ ...state, status: 'error', error, loading: false }),
-    CLEAR_PUBLISHED_SUCCESS: state => ({ ...state, status: 'success', loading: false }),
-}, initialState);
+export default handleActions(
+    {
+        CLEAR_DATASET: state => ({ ...state, loading: true }),
+        CLEAR_PUBLISHED: state => ({ ...state, loading: true }),
+        CLEAR_DATASET_ERROR: (state, { payload: error }) => ({
+            ...state,
+            status: 'error',
+            error,
+            loading: false,
+        }),
+        CLEAR_DATASET_SUCCESS: state => ({
+            ...state,
+            status: 'success',
+            loading: false,
+        }),
+        CLEAR_PUBLISHED_ERROR: (state, { payload: error }) => ({
+            ...state,
+            status: 'error',
+            error,
+            loading: false,
+        }),
+        CLEAR_PUBLISHED_SUCCESS: state => ({
+            ...state,
+            status: 'success',
+            loading: false,
+        }),
+    },
+    initialState,
+);
 
 export const getIsClearing = state => state.loading;
 export const hasClearSucceeded = state => state.status === 'success';

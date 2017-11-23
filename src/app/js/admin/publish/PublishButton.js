@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
@@ -24,10 +25,16 @@ const styles = {
 export class PublishButtonComponent extends Component {
     handleClick = () => {
         this.props.onPublish();
-    }
+    };
 
     render() {
-        const { canPublish, error, isPublishing, p: polyglot, published } = this.props;
+        const {
+            canPublish,
+            error,
+            isPublishing,
+            p: polyglot,
+            published,
+        } = this.props;
         return (
             <div>
                 <ButtonWithStatus
@@ -68,11 +75,10 @@ const mapStateToProps = state => ({
     published: fromPublication.hasPublishedDataset(state),
 });
 
-const mapDispatchToProps = ({
+const mapDispatchToProps = {
     onPublish: publishAction,
-});
+};
 
-export default compose(
-    connect(mapStateToProps, mapDispatchToProps),
-    translate,
-)(PublishButtonComponent);
+export default compose(connect(mapStateToProps, mapDispatchToProps), translate)(
+    PublishButtonComponent,
+);

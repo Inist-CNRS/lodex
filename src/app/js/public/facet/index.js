@@ -22,26 +22,35 @@ export const initialState = {
     facets: [],
 };
 
-export default handleActions({
-    SELECT_FACET: (state, { payload: { field: selectedFacet } }) => ({ ...state, selectedFacet }),
-    LOAD_FACET_VALUES_ERROR: (state, { payload: error }) => ({ ...state, error: error.message || error }),
-    LOAD_FACET_VALUES_SUCCESS: (state, { payload: { data, total } }) => ({
-        ...state,
-        selectedFacetValues: data,
-        selectedFacetValuesTotal: total,
-    }),
-    APPLY_FACET: ({ facets, ...state }, { payload: facet }) => ({
-        ...state,
-        facets: [...facets, facet],
-        selectedFacet: null,
-        selectedFacetValues: [],
-        selectedFacetValuesTotal: 0,
-    }),
-    REMOVE_FACET: ({ facets, ...state }, { payload: field }) => ({
-        ...state,
-        facets: facets.filter(f => f.field.name !== field.name),
-    }),
-}, initialState);
+export default handleActions(
+    {
+        SELECT_FACET: (state, { payload: { field: selectedFacet } }) => ({
+            ...state,
+            selectedFacet,
+        }),
+        LOAD_FACET_VALUES_ERROR: (state, { payload: error }) => ({
+            ...state,
+            error: error.message || error,
+        }),
+        LOAD_FACET_VALUES_SUCCESS: (state, { payload: { data, total } }) => ({
+            ...state,
+            selectedFacetValues: data,
+            selectedFacetValuesTotal: total,
+        }),
+        APPLY_FACET: ({ facets, ...state }, { payload: facet }) => ({
+            ...state,
+            facets: [...facets, facet],
+            selectedFacet: null,
+            selectedFacetValues: [],
+            selectedFacetValuesTotal: 0,
+        }),
+        REMOVE_FACET: ({ facets, ...state }, { payload: field }) => ({
+            ...state,
+            facets: facets.filter(f => f.field.name !== field.name),
+        }),
+    },
+    initialState,
+);
 
 export const getSelectedFacet = state => state.selectedFacet;
 
@@ -52,4 +61,8 @@ export const getSelectedFacetValues = state => ({
 
 export const getAppliedFacets = state => state.facets;
 
-export const fromFacet = { getAppliedFacets, getSelectedFacet, getSelectedFacetValues };
+export const fromFacet = {
+    getAppliedFacets,
+    getSelectedFacet,
+    getSelectedFacetValues,
+};

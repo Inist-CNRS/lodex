@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 import { Field } from 'redux-form';
@@ -6,7 +7,10 @@ import MenuItem from 'material-ui/MenuItem';
 
 import Step from './Step';
 import FormSelectField from '../../lib/components/FormSelectField';
-import { polyglot as polyglotPropTypes, field as fieldPropTypes } from '../../propTypes';
+import {
+    polyglot as polyglotPropTypes,
+    field as fieldPropTypes,
+} from '../../propTypes';
 import StepSemanticsComposition from './StepSemanticsComposition';
 
 const styles = {
@@ -45,7 +49,10 @@ export const StepIdentityComponent = ({
                 hint={polyglot.t('select_a_column')}
                 fullWidth
             >
-                <MenuItem value={null} primaryText={polyglot.t('completes_field_none')} />
+                <MenuItem
+                    value={null}
+                    primaryText={polyglot.t('completes_field_none')}
+                />
                 {otherFieldsMenuItems}
             </Field>
             <StepSemanticsComposition field={field} fields={fields} />
@@ -59,6 +66,4 @@ StepIdentityComponent.propTypes = {
     p: polyglotPropTypes.isRequired,
 };
 
-export default compose(
-    translate,
-)(StepIdentityComponent);
+export default compose(translate)(StepIdentityComponent);

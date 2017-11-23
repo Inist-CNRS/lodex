@@ -8,14 +8,8 @@ import {
 
 import getDocumentTransformer from '../../../lib/getDocumentTransformer';
 import { fromUser } from '../../../sharedSelectors';
-import {
-    COMPUTE_FIELD_PREVIEW,
-    computeFieldPreviewSuccess,
-    computeFieldPreviewError,
-} from './';
-import {
-    getFieldFormData,
-} from '../../../fields';
+import { computeFieldPreviewSuccess, computeFieldPreviewError } from './';
+import { getFieldFormData } from '../../../fields';
 import { fromParsing } from '../../selectors';
 
 export function* handleComputeFieldPreview() {
@@ -26,9 +20,15 @@ export function* handleComputeFieldPreview() {
         const lines = yield select(fromParsing.getExcerptLines);
 
         const token = yield select(fromUser.getToken);
-        const transformDocument = yield call(getDocumentTransformer, fields, token);
+        const transformDocument = yield call(
+            getDocumentTransformer,
+            fields,
+            token,
+        );
 
-        const preview = yield all(lines.map(line => call(transformDocument, line)));
+        const preview = yield all(
+            lines.map(line => call(transformDocument, line)),
+        );
         yield put(computeFieldPreviewSuccess(preview));
     } catch (error) {
         yield put(computeFieldPreviewError(error));
@@ -36,11 +36,13 @@ export function* handleComputeFieldPreview() {
 }
 
 export default function* watchComputePreview() {
-    yield takeLatest([
-        COMPUTE_FIELD_PREVIEW,
-        REDUX_FORM_CHANGE,
-        REDUX_FORM_ARRAY_REMOVE,
-        REDUX_FORM_INITIALIZE,
-        REDUX_FORM_DESTROY,
-    ], handleComputeFieldPreview);
+    yield takeLatest(
+        [
+            REDUX_FORM_CHANGE,
+            REDUX_FORM_ARRAY_REMOVE,
+            REDUX_FORM_INITIALIZE,
+            REDUX_FORM_DESTROY,
+        ],
+        handleComputeFieldPreview,
+    );
 }

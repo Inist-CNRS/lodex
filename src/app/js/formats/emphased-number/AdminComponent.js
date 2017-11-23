@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import TextField from 'material-ui/TextField';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
@@ -27,12 +28,12 @@ class ChartEdition extends Component {
         colors: PropTypes.string,
         onChange: PropTypes.func.isRequired,
         p: polyglotPropTypes.isRequired,
-    }
+    };
 
     static defaultProps = {
         size: 1,
         colors: '#8B8B8B #5B5B5B #818181',
-    }
+    };
     constructor(props) {
         super(props);
 
@@ -42,21 +43,21 @@ class ChartEdition extends Component {
         };
     }
 
-    setSize = (size) => {
+    setSize = size => {
         this.setState({ size });
         this.props.onChange({
             colors: this.state.colors,
             size,
         });
-    }
+    };
 
-    setColors = (colors) => {
+    setColors = colors => {
         this.setState({ colors });
         this.props.onChange({
             size: this.state.size,
             colors,
         });
-    }
+    };
 
     render() {
         const { p: polyglot } = this.props;
@@ -65,7 +66,9 @@ class ChartEdition extends Component {
             <div style={styles.container}>
                 <SelectField
                     floatingLabelText={polyglot.t('list_format_select_size')}
-                    onChange={(event, index, newValue) => this.setSize(newValue)}
+                    onChange={(event, index, newValue) =>
+                        this.setSize(newValue)
+                    }
                     style={styles.input}
                     value={size}
                 >

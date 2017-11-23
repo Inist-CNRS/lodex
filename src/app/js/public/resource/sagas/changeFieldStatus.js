@@ -8,7 +8,9 @@ import {
 import { fromUser } from '../../../sharedSelectors';
 import fetchSaga from '../../../lib/sagas/fetchSaga';
 
-export function* handleChangeFieldStatus({ payload: { uri, field, status, prevStatus } }) {
+export function* handleChangeFieldStatus({
+    payload: { uri, field, status, prevStatus },
+}) {
     const request = yield select(fromUser.getChangeFieldStatusRequest, {
         uri,
         field,

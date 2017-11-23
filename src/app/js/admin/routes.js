@@ -5,15 +5,20 @@ import RemovedResourcePage from './removedResources/RemovedResourcePage';
 import { fromUser } from '../sharedSelectors';
 import userRoutes from '../user/routes';
 
-export const onEnterWithAuthenticationCheck = store => (nextState, replaceState) => {
+export const onEnterWithAuthenticationCheck = store => (
+    nextState,
+    replaceState,
+) => {
     const state = store.getState();
     const isLoggedIn = fromUser.isLoggedIn(state);
 
     if (!isLoggedIn) {
-        replaceState({ pathname: '/login', state: { nextPathname: nextState.location.pathname } });
+        replaceState({
+            pathname: '/login',
+            state: { nextPathname: nextState.location.pathname },
+        });
     }
 };
-
 
 export default store => ({
     path: '/',

@@ -5,7 +5,7 @@ export const defval = (value, alternative) => {
     return value;
 };
 
-const transformation = (_, args) => (value) => {
+const transformation = (_, args) => value => {
     const alternative = args.find(a => a.name === 'alternative');
 
     if (!alternative) {
@@ -24,9 +24,7 @@ const transformation = (_, args) => (value) => {
 transformation.getMetas = () => ({
     name: 'DEFAULT',
     type: 'transform',
-    args: [
-        { name: 'alternative', type: 'string' },
-    ],
+    args: [{ name: 'alternative', type: 'string' }],
 });
 
 export default transformation;

@@ -16,7 +16,8 @@ export const openUpload = createAction(OPEN_UPLOAD);
 export const closeUpload = createAction(CLOSE_UPLOAD);
 export const changeUploadUrl = createAction(CHANGE_UPLOAD_URL);
 
-const validateUrl = url => url.startsWith('http://') || url.startsWith('https://');
+const validateUrl = url =>
+    url.startsWith('http://') || url.startsWith('https://');
 
 export const defaultState = {
     error: false,
@@ -26,37 +27,42 @@ export const defaultState = {
     url: '',
 };
 
-export default handleActions({
-    [combineActions(UPLOAD_FILE, UPLOAD_URL)]: (state, { payload }) => (payload
-        ? ({
+export default handleActions(
+    {
+        [combineActions(UPLOAD_FILE, UPLOAD_URL)]: (state, { payload }) =>
+            payload
+                ? {
+                      ...state,
+                      error: false,
+                      open: false,
+                      status: 'PENDING',
+                  }
+                : state,
+        UPLOAD_SUCCESS: state => ({
             ...state,
-            error: false,
+            status: 'SUCCESS',
+        }),
+        UPLOAD_ERROR: (state, { payload }) => ({
+            ...state,
+            status: 'ERROR',
+            error: payload.message,
+        }),
+        OPEN_UPLOAD: state => ({
+            ...state,
+            open: true,
+        }),
+        CLOSE_UPLOAD: state => ({
+            ...state,
             open: false,
-            status: 'PENDING',
-        }) : state),
-    UPLOAD_SUCCESS: state => ({
-        ...state,
-        status: 'SUCCESS',
-    }),
-    UPLOAD_ERROR: (state, { payload }) => ({
-        ...state,
-        status: 'ERROR',
-        error: payload.message,
-    }),
-    OPEN_UPLOAD: state => ({
-        ...state,
-        open: true,
-    }),
-    CLOSE_UPLOAD: state => ({
-        ...state,
-        open: false,
-    }),
-    CHANGE_UPLOAD_URL: (state, { payload: url }) => ({
-        ...state,
-        url,
-        validUrl: validateUrl(url),
-    }),
-}, defaultState);
+        }),
+        CHANGE_UPLOAD_URL: (state, { payload: url }) => ({
+            ...state,
+            url,
+            validUrl: validateUrl(url),
+        }),
+    },
+    defaultState,
+);
 
 export const getUpload = state => state;
 export const isUploadPending = state => state.status === 'PENDING';

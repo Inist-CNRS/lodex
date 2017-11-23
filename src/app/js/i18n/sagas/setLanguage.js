@@ -9,7 +9,9 @@ import {
 } from '../';
 
 export function loadPhrases(locale) {
-    return System.import(`../translations/${locale}`).then(module => module.default);
+    return System.import(`../translations/${locale}`).then(
+        module => module.default,
+    );
 }
 
 export function* handleSetLanguage({ payload: language }) {
@@ -28,6 +30,6 @@ export function* watchSetLanguage() {
     yield takeLatest(SET_LANGUAGE_REQUEST, handleSetLanguage);
 }
 
-export default function* () {
+export default function*() {
     yield fork(watchSetLanguage);
 }

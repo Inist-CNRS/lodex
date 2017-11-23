@@ -1,11 +1,18 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { StyleSheet, css } from 'aphrodite';
 import { field as fieldPropTypes } from '../../propTypes';
 
 const IdentifierBadgeView = ({ resource, field }) => {
-    const typid = field.format && field.format.args && field.format.args.typid ? field.format.args.typid : 'ID';
+    const typid =
+        field.format && field.format.args && field.format.args.typid
+            ? field.format.args.typid
+            : 'ID';
     const { colors } = field.format.args || { colors: '' };
-    const colorsSet = String(colors).split(/[^\w]/).filter(x => x.length > 0).map(x => String('#').concat(x));
+    const colorsSet = String(colors)
+        .split(/[^\w]/)
+        .filter(x => x.length > 0)
+        .map(x => String('#').concat(x));
     const firstColor = colorsSet.shift() || '#8B8B8B';
     const resolvers = {
         DOI: 'http://dx.doi.org/',
@@ -15,8 +22,7 @@ const IdentifierBadgeView = ({ resource, field }) => {
     const target = resolver + resource[field.name];
 
     const styles = StyleSheet.create({
-        label: {
-        },
+        label: {},
         key: {
             float: 'left',
             margin: '0',
@@ -26,7 +32,8 @@ const IdentifierBadgeView = ({ resource, field }) => {
             fontWeight: '300',
             fontSize: '14px',
             textShadow: '0.5px 0.5px rgba(10, 10, 10, 0.4)',
-            background: 'linear-gradient(to bottom, rgba(63, 76, 107, 0.01) 0%, rgba(18, 19, 30, 0.5) 100%)',
+            background:
+                'linear-gradient(to bottom, rgba(63, 76, 107, 0.01) 0%, rgba(18, 19, 30, 0.5) 100%)',
             backgroundColor: '#555',
             borderRadius: '5px 0 0 5px',
         },
@@ -38,7 +45,8 @@ const IdentifierBadgeView = ({ resource, field }) => {
             fontFamily: 'sans-serif',
             fontWeight: '300',
             fontSize: '14px',
-            background: 'linear-gradient(to bottom, rgba(63, 76, 107, 0.01) 50%, rgba(18, 19, 30, 0.2) 100%)',
+            background:
+                'linear-gradient(to bottom, rgba(63, 76, 107, 0.01) 50%, rgba(18, 19, 30, 0.2) 100%)',
             textShadow: '0.5px 0.5px rgba(10, 10, 10, 0.4)',
             backgroundColor: firstColor,
             borderRadius: '0 5px 5px 0',

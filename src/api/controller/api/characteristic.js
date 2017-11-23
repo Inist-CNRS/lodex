@@ -6,12 +6,11 @@ import { COVER_DATASET } from '../../../common/cover';
 
 const app = new Koa();
 
-export const updateCharacteristics = async (ctx) => {
+export const updateCharacteristics = async ctx => {
     const requestedNewCharacteristics = ctx.request.body;
     const characteristics = await ctx.publishedCharacteristic.findLastVersion();
 
-    const newCharacteristics = Object
-        .keys(characteristics)
+    const newCharacteristics = Object.keys(characteristics)
         .filter(key => key !== 'publicationDate')
         .reduce((result, name) => {
             const newCharacteristic = requestedNewCharacteristics[name];
@@ -22,10 +21,12 @@ export const updateCharacteristics = async (ctx) => {
             };
         }, {});
 
-    ctx.body = await ctx.publishedCharacteristic.addNewVersion(newCharacteristics);
+    ctx.body = await ctx.publishedCharacteristic.addNewVersion(
+        newCharacteristics,
+    );
 };
 
-export const createCharacteristic = async (ctx) => {
+export const createCharacteristic = async ctx => {
     const { value, ...fieldData } = ctx.request.body;
 
     const field = await ctx.field.create({

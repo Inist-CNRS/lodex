@@ -12,7 +12,10 @@ import { fromContributedResources } from '../selectors';
 
 export function* handleLoadContributedResourcePageRequest() {
     const data = yield select(fromContributedResources.getRequestData);
-    const request = yield select(fromUser.getLoadContributedResourcePageRequest, data);
+    const request = yield select(
+        fromUser.getLoadContributedResourcePageRequest,
+        data,
+    );
     const { error, response } = yield call(fetchSaga, request);
 
     if (error) {
@@ -20,12 +23,18 @@ export function* handleLoadContributedResourcePageRequest() {
     }
 
     const { data: resources, total } = response;
-    return yield put(loadContributedResourcePageSuccess({ resources, page: data.page, total }));
+    return yield put(
+        loadContributedResourcePageSuccess({
+            resources,
+            page: data.page,
+            total,
+        }),
+    );
 }
 
-export default function* () {
-    yield takeLatest([
-        LOAD_CONTRIBUTED_RESOURCE_PAGE,
-        CHANGE_CONTRIBUTED_RESOURCE_FILTER,
-    ], handleLoadContributedResourcePageRequest);
+export default function*() {
+    yield takeLatest(
+        [LOAD_CONTRIBUTED_RESOURCE_PAGE, CHANGE_CONTRIBUTED_RESOURCE_FILTER],
+        handleLoadContributedResourcePageRequest,
+    );
 }

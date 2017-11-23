@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
@@ -26,17 +27,19 @@ export const SignOutButtonComponent = ({ onSignOut, p: polyglot }) => (
     />
 );
 
-
 SignOutButtonComponent.propTypes = {
     onSignOut: PropTypes.func.isRequired,
     p: polyglotPropTypes.isRequired,
 };
 
-const mapDispatchToProps = dispatch => bindActionCreators({
-    onSignOut: signOut,
-}, dispatch);
+const mapDispatchToProps = dispatch =>
+    bindActionCreators(
+        {
+            onSignOut: signOut,
+        },
+        dispatch,
+    );
 
-export default compose(
-    connect(undefined, mapDispatchToProps),
-    translate,
-)(SignOutButtonComponent);
+export default compose(connect(undefined, mapDispatchToProps), translate)(
+    SignOutButtonComponent,
+);

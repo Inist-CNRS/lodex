@@ -7,7 +7,6 @@ import {
     removeContributions,
 } from './convertToCSV';
 
-
 describe('convertToCSV', () => {
     describe('removeContributions', () => {
         it('should remove PROPOSED contributions', () => {
@@ -15,10 +14,12 @@ describe('convertToCSV', () => {
                 field: 'value',
                 contribution: 'contribution value',
             };
-            const contributions = [{
-                fieldName: 'contribution',
-                status: PROPOSED,
-            }];
+            const contributions = [
+                {
+                    fieldName: 'contribution',
+                    status: PROPOSED,
+                },
+            ];
             expect(removeContributions(doc, contributions)).toEqual({
                 field: 'value',
             });
@@ -29,10 +30,12 @@ describe('convertToCSV', () => {
                 field: 'value',
                 contribution: 'contribution value',
             };
-            const contributions = [{
-                fieldName: 'contribution',
-                status: REJECTED,
-            }];
+            const contributions = [
+                {
+                    fieldName: 'contribution',
+                    status: REJECTED,
+                },
+            ];
             expect(removeContributions(doc, contributions)).toEqual({
                 field: 'value',
             });
@@ -43,10 +46,12 @@ describe('convertToCSV', () => {
                 field: 'value',
                 contribution: 'contribution value',
             };
-            const contributions = [{
-                fieldName: 'contribution',
-                status: VALIDATED,
-            }];
+            const contributions = [
+                {
+                    fieldName: 'contribution',
+                    status: VALIDATED,
+                },
+            ];
             expect(removeContributions(doc, contributions)).toEqual({
                 field: 'value',
                 contribution: 'contribution value',
@@ -101,7 +106,9 @@ describe('convertToCSV', () => {
     describe('getLastVersion', () => {
         it('should call this.queue with resource uri + last version', () => {
             const queue = createSpy();
-            const bindedGetLastVersion = getLastVersionFactory({}).bind({ queue });
+            const bindedGetLastVersion = getLastVersionFactory({}).bind({
+                queue,
+            });
 
             bindedGetLastVersion({
                 uri: 'uri',
@@ -120,7 +127,9 @@ describe('convertToCSV', () => {
 
         it('should remove non validated contribution', () => {
             const queue = createSpy();
-            const bindedGetLastVersion = getLastVersionFactory({}).bind({ queue });
+            const bindedGetLastVersion = getLastVersionFactory({}).bind({
+                queue,
+            });
 
             bindedGetLastVersion({
                 uri: 'uri',
@@ -163,7 +172,9 @@ describe('convertToCSV', () => {
             const defaultDocument = {
                 data: 'defaultValue',
             };
-            const bindedGetLastVersion = getLastVersionFactory(defaultDocument).bind({ queue });
+            const bindedGetLastVersion = getLastVersionFactory(
+                defaultDocument,
+            ).bind({ queue });
 
             bindedGetLastVersion({
                 uri: 'uri',
@@ -186,7 +197,9 @@ describe('convertToCSV', () => {
             const defaultDocument = {
                 data: 'defaultValue',
             };
-            const bindedGetLastVersion = getLastVersionFactory(defaultDocument).bind({ queue });
+            const bindedGetLastVersion = getLastVersionFactory(
+                defaultDocument,
+            ).bind({ queue });
 
             bindedGetLastVersion({
                 uri: 'uri',

@@ -8,11 +8,12 @@ export const getUrl = ({ props: { resource, field }, page, perPage }) => {
     const output = 'id,title,publicationDate,fulltext,abstract';
 
     return {
-        url: `${istexApiUrl}/?q=${encodeURIComponent(value)}&from=${page * perPage}&size=${perPage}&output=${output}`,
+        url: `${istexApiUrl}/?q=${encodeURIComponent(value)}&from=${page *
+            perPage}&size=${perPage}&output=${output}`,
     };
 };
 
-export const parseFetchResult = (fetchResult) => {
+export const parseFetchResult = fetchResult => {
     if (fetchResult.error) {
         throw new Error(fetchResult.error);
     }
@@ -21,14 +22,11 @@ export const parseFetchResult = (fetchResult) => {
     return {
         hits: hits.map(hit => ({
             ...hit,
-            fulltext: hit.fulltext.find(({ extension }) => extension === 'pdf').uri,
+            fulltext: hit.fulltext.find(({ extension }) => extension === 'pdf')
+                .uri,
         })),
         total,
     };
 };
 
-export default composeAsync(
-    getUrl,
-    fetch,
-    parseFetchResult,
-);
+export default composeAsync(getUrl, fetch, parseFetchResult);

@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import fetch from 'isomorphic-fetch';
 import MQS from 'mongodb-querystring';
 import url from 'url';
@@ -8,7 +9,7 @@ import { ResponsiveContainer, PieChart, Pie, Cell, Legend } from 'recharts';
 import { field as fieldPropTypes } from '../../propTypes';
 import CustomizedLabel from './CustomizedLabel';
 
-const valueMoreThan = level => item => (item.value > level);
+const valueMoreThan = level => item => item.value > level;
 
 class PieChartView extends Component {
     constructor(props) {
@@ -20,8 +21,14 @@ class PieChartView extends Component {
 
     componentDidMount() {
         const { field, resource } = this.props;
-        const orderBy = field.format && field.format.args && field.format.args.orderBy ? field.format.args.orderBy : 'value/asc';
-        const maxSize = field.format && field.format.args && field.format.args.maxSize ? field.format.args.maxSize : '5';
+        const orderBy =
+            field.format && field.format.args && field.format.args.orderBy
+                ? field.format.args.orderBy
+                : 'value/asc';
+        const maxSize =
+            field.format && field.format.args && field.format.args.maxSize
+                ? field.format.args.maxSize
+                : '5';
         const [sortBy, sortDir] = String(orderBy || 'value/asc').split('/');
         const by = sortBy === 'value' ? 'value' : '_id';
         const dir = sortDir === 'asc' ? 1 : -1;
@@ -45,33 +52,39 @@ class PieChartView extends Component {
             uriNew.protocol = window.location.protocol;
         }
         const apiurl = url.format(uriNew);
-        fetch(apiurl)
-            .then((response) => {
-                if (response.status >= 400) {
-                    throw new Error('Bad response from server');
+        fetch(apiurl).then(response => {
+            if (response.status >= 400) {
+                throw new Error('Bad response from server');
+            }
+            return response.json().then(json => {
+                if (json.data) {
+                    const data = json.data
+                        .filter(valueMoreThan(0))
+                        .map(item => ({ name: item._id, value: item.value }));
+                    this.setState({ data });
                 }
-                return response.json().then((json) => {
-                    if (json.data) {
-                        const data = json.data
-                            .filter(valueMoreThan(0))
-                            .map(item => ({ name: item._id, value: item.value }));
-                        this.setState({ data });
-                    }
-                    if (json.aggregations) {
-                        const firstKey = Object.keys(json.aggregations).shift();
-                        const data = json.aggregations[firstKey].buckets
-                            .map(item => ({ name: item.keyAsString || item.key, value: item.docCount }));
-                        this.setState({ data });
-                    }
-                });
+                if (json.aggregations) {
+                    const firstKey = Object.keys(json.aggregations).shift();
+                    const data = json.aggregations[firstKey].buckets.map(
+                        item => ({
+                            name: item.keyAsString || item.key,
+                            value: item.docCount,
+                        }),
+                    );
+                    this.setState({ data });
+                }
             });
+        });
     }
 
     render() {
         const { data } = this.state;
         const { field } = this.props;
         const { colors } = field.format.args || { colors: '' };
-        const colorsSet = String(colors).split(/[^\w]/).filter(x => x.length > 0).map(x => String('#').concat(x));
+        const colorsSet = String(colors)
+            .split(/[^\w]/)
+            .filter(x => x.length > 0)
+            .map(x => String('#').concat(x));
         return (
             <ResponsiveContainer width={600} height={300}>
                 <PieChart>
@@ -88,9 +101,12 @@ class PieChartView extends Component {
                         labelLine
                         label={CustomizedLabel}
                     >
-                        {
-                            data.map((entry, index) => <Cell key={String(index).concat('_cell_pie')} fill={colorsSet[index % colorsSet.length]} />)
-                        }
+                        {data.map((entry, index) => (
+                            <Cell
+                                key={String(index).concat('_cell_pie')}
+                                fill={colorsSet[index % colorsSet.length]}
+                            />
+                        ))}
                     </Pie>
                 </PieChart>
             </ResponsiveContainer>
@@ -109,4 +125,3 @@ PieChartView.defaultProps = {
 };
 
 export default translate(PieChartView);
-

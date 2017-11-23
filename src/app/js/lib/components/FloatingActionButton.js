@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import compose from 'recompose/compose';
 import withState from 'recompose/withState';
@@ -10,9 +11,7 @@ const styles = {
     container: {
         position: 'relative',
     },
-    tooltip: {
-
-    },
+    tooltip: {},
 };
 
 export const FloatingActionButtonComponent = ({
@@ -33,7 +32,7 @@ export const FloatingActionButtonComponent = ({
         >
             {children}
         </FloatingActionButton>
-        {tooltip &&
+        {tooltip && (
             <Tooltip
                 show={showTooltip}
                 label={tooltip}
@@ -42,7 +41,7 @@ export const FloatingActionButtonComponent = ({
                 verticalPosition="middle"
                 touch
             />
-        }
+        )}
     </div>
 );
 

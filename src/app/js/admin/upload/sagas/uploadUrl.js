@@ -1,9 +1,4 @@
-import {
-    call,
-    put,
-    select,
-    takeEvery,
-} from 'redux-saga/effects';
+import { call, put, select, takeEvery } from 'redux-saga/effects';
 
 import { fromUser } from '../../../sharedSelectors';
 import { fromUpload } from '../../selectors';

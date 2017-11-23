@@ -14,18 +14,26 @@ describe('publishedDataset', () => {
     describe('getPage', () => {
         const ctx = {
             publishedDataset: {
-                findPage: createSpy().andReturn(Promise.resolve({
-                    data: [
-                        { uri: 1, versions: [{ v: 1 }, { v: 2 }] },
-                        { uri: 2, versions: [{ v: 1 }, { v: 2 }, { v: 3 }] },
-                        { uri: 3, versions: [{ v: 1 }] },
-                    ],
-                    total: 42 },
-                )),
+                findPage: createSpy().andReturn(
+                    Promise.resolve({
+                        data: [
+                            { uri: 1, versions: [{ v: 1 }, { v: 2 }] },
+                            {
+                                uri: 2,
+                                versions: [{ v: 1 }, { v: 2 }, { v: 3 }],
+                            },
+                            { uri: 3, versions: [{ v: 1 }] },
+                        ],
+                        total: 42,
+                    }),
+                ),
             },
             field: {
                 findFacetNames: createSpy().andReturn(['facet1', 'facet2']),
-                findSearchableNames: createSpy().andReturn(['searchable1', 'searchable2']),
+                findSearchableNames: createSpy().andReturn([
+                    'searchable1',
+                    'searchable2',
+                ]),
             },
             request: {
                 query: {
@@ -56,11 +64,7 @@ describe('publishedDataset', () => {
             await getPage(ctx);
 
             expect(ctx.body).toEqual({
-                data: [
-                    { uri: 1, v: 2 },
-                    { uri: 2, v: 3 },
-                    { uri: 3, v: 1 },
-                ],
+                data: [{ uri: 1, v: 2 }, { uri: 2, v: 3 }, { uri: 3, v: 1 }],
                 total: 42,
             });
         });
@@ -69,14 +73,31 @@ describe('publishedDataset', () => {
     describe('getRemovedPage', () => {
         const ctx = {
             publishedDataset: {
-                findRemovedPage: createSpy().andReturn(Promise.resolve({
-                    data: [
-                        { uri: 1, versions: [{ v: 1 }, { v: 2 }], reason: 'reason1', removed_at: 'removed_at1' },
-                        { uri: 2, versions: [{ v: 1 }, { v: 2 }, { v: 3 }], reason: 'reason2', removed_at: 'removed_at2' },
-                        { uri: 3, versions: [{ v: 1 }], reason: 'reason3', removed_at: 'removed_at3' },
-                    ],
-                    total: 42,
-                })),
+                findRemovedPage: createSpy().andReturn(
+                    Promise.resolve({
+                        data: [
+                            {
+                                uri: 1,
+                                versions: [{ v: 1 }, { v: 2 }],
+                                reason: 'reason1',
+                                removed_at: 'removed_at1',
+                            },
+                            {
+                                uri: 2,
+                                versions: [{ v: 1 }, { v: 2 }, { v: 3 }],
+                                reason: 'reason2',
+                                removed_at: 'removed_at2',
+                            },
+                            {
+                                uri: 3,
+                                versions: [{ v: 1 }],
+                                reason: 'reason3',
+                                removed_at: 'removed_at3',
+                            },
+                        ],
+                        total: 42,
+                    }),
+                ),
             },
             request: {
                 query: {
@@ -89,7 +110,10 @@ describe('publishedDataset', () => {
         it('should call ctx.publishedDataset.findRemovedPage', async () => {
             await getRemovedPage(ctx);
 
-            expect(ctx.publishedDataset.findRemovedPage).toHaveBeenCalledWith(1, 100);
+            expect(ctx.publishedDataset.findRemovedPage).toHaveBeenCalledWith(
+                1,
+                100,
+            );
         });
 
         it('should return only the last version of each doc', async () => {
@@ -97,9 +121,24 @@ describe('publishedDataset', () => {
 
             expect(ctx.body).toEqual({
                 data: [
-                    { uri: 1, v: 2, reason: 'reason1', removed_at: 'removed_at1' },
-                    { uri: 2, v: 3, reason: 'reason2', removed_at: 'removed_at2' },
-                    { uri: 3, v: 1, reason: 'reason3', removed_at: 'removed_at3' },
+                    {
+                        uri: 1,
+                        v: 2,
+                        reason: 'reason1',
+                        removed_at: 'removed_at1',
+                    },
+                    {
+                        uri: 2,
+                        v: 3,
+                        reason: 'reason2',
+                        removed_at: 'removed_at2',
+                    },
+                    {
+                        uri: 3,
+                        v: 1,
+                        reason: 'reason3',
+                        removed_at: 'removed_at3',
+                    },
                 ],
                 total: 42,
             });
@@ -109,7 +148,9 @@ describe('publishedDataset', () => {
     describe('editResource', () => {
         const ctx = {
             publishedDataset: {
-                findByUri: createSpy().andReturn(Promise.resolve('found resource')),
+                findByUri: createSpy().andReturn(
+                    Promise.resolve('found resource'),
+                ),
                 addVersion: createSpy().andReturn(Promise.resolve('foo')),
             },
             request: {
@@ -122,13 +163,18 @@ describe('publishedDataset', () => {
         it('should find the resource by its uri', async () => {
             await editResource(ctx);
 
-            expect(ctx.publishedDataset.findByUri).toHaveBeenCalledWith('the uri');
+            expect(ctx.publishedDataset.findByUri).toHaveBeenCalledWith(
+                'the uri',
+            );
         });
 
         it('should add the new version', async () => {
             await editResource(ctx);
 
-            expect(ctx.publishedDataset.addVersion).toHaveBeenCalledWith('found resource', { uri: 'the uri' });
+            expect(ctx.publishedDataset.addVersion).toHaveBeenCalledWith(
+                'found resource',
+                { uri: 'the uri' },
+            );
         });
 
         it('should return the new version', async () => {
@@ -154,9 +200,11 @@ describe('publishedDataset', () => {
         it('should hide the resource', async () => {
             await removeResource(ctx);
 
-            expect(ctx.publishedDataset.hide).toHaveBeenCalledWith('the uri', 'the reason');
+            expect(ctx.publishedDataset.hide).toHaveBeenCalledWith(
+                'the uri',
+                'the reason',
+            );
         });
-
 
         it('should return the result', async () => {
             await removeResource(ctx);
@@ -180,9 +228,10 @@ describe('publishedDataset', () => {
         it('should restore the resource', async () => {
             await restoreResource(ctx);
 
-            expect(ctx.publishedDataset.restore).toHaveBeenCalledWith('the uri');
+            expect(ctx.publishedDataset.restore).toHaveBeenCalledWith(
+                'the uri',
+            );
         });
-
 
         it('should return the result', async () => {
             await restoreResource(ctx);
@@ -209,7 +258,9 @@ describe('publishedDataset', () => {
             await createResource(ctx);
 
             expect(ctx.body).toEqual({ uri: 'the uri' });
-            expect(ctx.publishedDataset.findByUri).toHaveBeenCalledWith('the uri');
+            expect(ctx.publishedDataset.findByUri).toHaveBeenCalledWith(
+                'the uri',
+            );
             expect(ctx.publishedDataset.create).toHaveBeenCalledWith({
                 uri: 'the uri',
                 data: 'value',
@@ -234,7 +285,9 @@ describe('publishedDataset', () => {
 
             expect(ctx.body).toBe('uri_conflict');
             expect(ctx.status).toBe(400);
-            expect(ctx.publishedDataset.findByUri).toHaveBeenCalledWith('the uri');
+            expect(ctx.publishedDataset.findByUri).toHaveBeenCalledWith(
+                'the uri',
+            );
             expect(ctx.publishedDataset.create).toNotHaveBeenCalled();
         });
     });

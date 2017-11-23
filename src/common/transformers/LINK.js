@@ -2,7 +2,10 @@ import COLUMN from './COLUMN';
 import getOtherLine from './getOtherLine';
 import composeTransformers from '../lib/composeTransformers';
 
-const transformation = (context, [ref, idCol, uriField = { name: 'column', value: 'uri' }]) =>
+const transformation = (
+    context,
+    [ref, idCol, uriField = { name: 'column', value: 'uri' }],
+) =>
     composeTransformers([
         COLUMN(context, [{ name: 'column', value: ref.value }]),
         getOtherLine(context, idCol.value),

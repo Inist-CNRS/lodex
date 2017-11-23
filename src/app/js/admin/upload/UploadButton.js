@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
@@ -20,14 +21,25 @@ const styles = {
     },
 };
 
-const UploadButtonComponent = ({ open, label, raised, handleOpen, handleClose, p: polyglot }) => {
+const UploadButtonComponent = ({
+    open,
+    label,
+    raised,
+    handleOpen,
+    handleClose,
+    p: polyglot,
+}) => {
     const actions = [
-        <FlatButton label={polyglot.t('cancel')} onClick={handleClose} />,
+        <FlatButton
+            key="cancel"
+            label={polyglot.t('cancel')}
+            onClick={handleClose}
+        />,
     ];
 
     return (
         <span>
-            { raised ?
+            {raised ? (
                 <RaisedButton
                     style={styles.button}
                     className="open-upload"
@@ -36,7 +48,7 @@ const UploadButtonComponent = ({ open, label, raised, handleOpen, handleClose, p
                     primary
                     onClick={handleOpen}
                 />
-                :
+            ) : (
                 <FlatButton
                     style={styles.button}
                     className="open-upload"
@@ -44,7 +56,7 @@ const UploadButtonComponent = ({ open, label, raised, handleOpen, handleClose, p
                     primary
                     onClick={handleOpen}
                 />
-            }
+            )}
             <Dialog
                 actions={actions}
                 modal={false}
@@ -81,7 +93,6 @@ const mapDispatchToProps = {
     handleClose: closeUpload,
 };
 
-export default compose(
-    translate,
-    connect(mapStateToProps, mapDispatchToProps),
-)(UploadButtonComponent);
+export default compose(translate, connect(mapStateToProps, mapDispatchToProps))(
+    UploadButtonComponent,
+);

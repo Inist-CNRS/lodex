@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import translate from 'redux-polyglot/translate';
@@ -18,11 +19,11 @@ class TitleEdition extends Component {
         level: PropTypes.number,
         onChange: PropTypes.func.isRequired,
         p: polyglotPropTypes.isRequired,
-    }
+    };
 
     static defaultProps = {
         level: 1,
-    }
+    };
     constructor(props) {
         super(props);
 
@@ -31,10 +32,10 @@ class TitleEdition extends Component {
         };
     }
 
-    setLevel= (level) => {
+    setLevel = level => {
         this.setState({ level });
         this.props.onChange({ level });
-    }
+    };
 
     render() {
         const { level } = this.state;
@@ -43,7 +44,9 @@ class TitleEdition extends Component {
             <div style={styles.container}>
                 <SelectField
                     floatingLabelText={polyglot.t('list_format_select_level')}
-                    onChange={(event, index, newValue) => this.setLevel(newValue)}
+                    onChange={(event, index, newValue) =>
+                        this.setLevel(newValue)
+                    }
                     style={styles.input}
                     value={level}
                 >

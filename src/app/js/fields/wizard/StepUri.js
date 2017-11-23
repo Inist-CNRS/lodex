@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import { reduxForm, change } from 'redux-form';
@@ -18,19 +19,13 @@ export const StepValueComponent = ({
     handleTransformerChange,
 }) => (
     <div>
-        <StepUriAutogenerate
-            field={field}
-            onChange={handleTransformerChange}
-        />
+        <StepUriAutogenerate field={field} onChange={handleTransformerChange} />
         <StepValueColumn
             datasetFields={datasetFields}
             field={field}
             onChange={handleTransformerChange}
         />
-        <StepUriConcat
-            field={field}
-            onChange={handleTransformerChange}
-        />
+        <StepUriConcat field={field} onChange={handleTransformerChange} />
     </div>
 );
 
@@ -46,13 +41,13 @@ const mapStateToProps = (state, { field }) => ({
 });
 
 const mapDispatchToProps = (dispatch, { field: { transformers } }) => ({
-    handleTransformerChange: (valueTransformer) => {
+    handleTransformerChange: valueTransformer => {
         let newTransformers = [];
         const firstTransformerIsValueTransformer =
-            transformers
-            && transformers[0]
-            && transformers[0].operation
-            && getTransformerMetas(transformers[0].operation).type === 'value';
+            transformers &&
+            transformers[0] &&
+            transformers[0].operation &&
+            getTransformerMetas(transformers[0].operation).type === 'value';
 
         newTransformers = [
             valueTransformer,

@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import compose from 'recompose/compose';
@@ -9,7 +10,11 @@ import { selectField } from '../../fields';
 import { fromResource } from '../../public/selectors';
 import { fromFields } from '../../sharedSelectors';
 
-import { resource as resourcePropTypes, field as fieldPropTypes, polyglot as polyglotPropTypes } from '../../propTypes';
+import {
+    resource as resourcePropTypes,
+    field as fieldPropTypes,
+    polyglot as polyglotPropTypes,
+} from '../../propTypes';
 
 export const SelectFieldToAddComponent = ({
     contributionFields,
@@ -25,10 +30,21 @@ export const SelectFieldToAddComponent = ({
         value={selectedField}
         onChange={(_, __, value) => onSelectField(value)}
     >
-        <MenuItem value="new" className="new" primaryText={polyglot.t('new_contribution_field')} />
-        {contributionFields.filter(({ name }) => !resource[name]).map(({ name, label }) => (
-            <MenuItem key={name} className={name} value={name} primaryText={label} />
-        ))}
+        <MenuItem
+            value="new"
+            className="new"
+            primaryText={polyglot.t('new_contribution_field')}
+        />
+        {contributionFields
+            .filter(({ name }) => !resource[name])
+            .map(({ name, label }) => (
+                <MenuItem
+                    key={name}
+                    className={name}
+                    value={name}
+                    primaryText={label}
+                />
+            ))}
     </SelectField>
 );
 
@@ -54,7 +70,6 @@ const mapDispatchToProps = {
     onSelectField: selectField,
 };
 
-export default compose(
-    connect(mapStateToProps, mapDispatchToProps),
-    translate,
-)(SelectFieldToAddComponent);
+export default compose(connect(mapStateToProps, mapDispatchToProps), translate)(
+    SelectFieldToAddComponent,
+);

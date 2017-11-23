@@ -1,12 +1,11 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Subheader from 'material-ui/Subheader';
 
 import FieldInput from './FieldInput';
 import { fromFields } from '../../sharedSelectors';
-import {
-    field as fieldPropTypes,
-} from '../../propTypes';
+import { field as fieldPropTypes } from '../../propTypes';
 
 const style = {
     list: {
@@ -18,14 +17,7 @@ export const CompositeFieldInputComponent = ({ label, compositeFields }) => (
     <div>
         <Subheader>{label}</Subheader>
         <div style={style.list}>
-            {
-                compositeFields.map(f => (
-                    <FieldInput
-                        key={f.name}
-                        field={f}
-                    />
-                ))
-            }
+            {compositeFields.map(f => <FieldInput key={f.name} field={f} />)}
         </div>
     </div>
 );
@@ -43,6 +35,8 @@ const mapStateToProps = (state, { field }) => ({
     compositeFields: fromFields.getCompositeFieldsByField(state, field),
 });
 
-const CompositeEditDetailsField = connect(mapStateToProps)(CompositeFieldInputComponent);
+const CompositeEditDetailsField = connect(mapStateToProps)(
+    CompositeFieldInputComponent,
+);
 
 export default CompositeEditDetailsField;

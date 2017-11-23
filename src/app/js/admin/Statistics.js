@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
@@ -52,9 +53,19 @@ export const StatisticsComponent = ({
             style={styles.progress(isComputing)}
             size={20}
         />
-        <div style={styles.item}>{polyglot.t('parsing_summary', { count: totalLoadedLines })}</div>
-        <div style={styles.item}>{polyglot.t('parsing_summary_columns', { count: totalLoadedColumns })}</div>
-        <div style={styles.item}>{polyglot.t('publication_summary_columns', { count: totalPublishedColumns })}</div>
+        <div style={styles.item}>
+            {polyglot.t('parsing_summary', { count: totalLoadedLines })}
+        </div>
+        <div style={styles.item}>
+            {polyglot.t('parsing_summary_columns', {
+                count: totalLoadedColumns,
+            })}
+        </div>
+        <div style={styles.item}>
+            {polyglot.t('publication_summary_columns', {
+                count: totalPublishedColumns,
+            })}
+        </div>
         <hr style={styles.line} />
 
         <ActionButton
@@ -83,14 +94,12 @@ const mapStateToProps = state => ({
     totalPublishedColumns: fromFields.getFields(state).length,
 });
 
-const mapDispatchToProps = ({
+const mapDispatchToProps = {
     handleAddColumn: addField,
     handleShowExistingColumns: showAddColumns,
     handleHideExistingColumns: hideAddColumns,
-});
+};
 
-
-export default compose(
-    connect(mapStateToProps, mapDispatchToProps),
-    translate,
-)(StatisticsComponent);
+export default compose(connect(mapStateToProps, mapDispatchToProps), translate)(
+    StatisticsComponent,
+);

@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
@@ -13,7 +14,7 @@ export const withInitialDataHoc = BaseComponent =>
             loadParsingResult: PropTypes.func.isRequired,
             loadPublication: PropTypes.func.isRequired,
             loadField: PropTypes.func.isRequired,
-        }
+        };
 
         componentWillMount() {
             this.props.loadPublication();
@@ -24,21 +25,18 @@ export const withInitialDataHoc = BaseComponent =>
         render() {
             const { loadPublication, loadParsingResult, ...props } = this.props;
 
-            return (
-                <BaseComponent {...props} />
-            );
+            return <BaseComponent {...props} />;
         }
     };
 
-export default (BaseComponent) => {
-    const mapDispatchToProps = ({
+export default BaseComponent => {
+    const mapDispatchToProps = {
         loadParsingResult: loadParsingResultAction,
         loadPublication: loadPublicationAction,
         loadField: loadFieldAction,
-    });
+    };
 
-    return compose(
-        connect(undefined, mapDispatchToProps),
-        translate,
-    )(withInitialDataHoc(BaseComponent));
+    return compose(connect(undefined, mapDispatchToProps), translate)(
+        withInitialDataHoc(BaseComponent),
+    );
 };

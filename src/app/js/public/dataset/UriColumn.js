@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { Link } from 'react-router';
 import { TableRowColumn } from 'material-ui/Table';
@@ -6,7 +7,7 @@ import { TableRowColumn } from 'material-ui/Table';
 import { field as fieldPropTypes } from '../../propTypes';
 import { getResourceUri } from '../../../../common/uris';
 
-const getHumanUri = (uri) => {
+const getHumanUri = uri => {
     if (uri.startsWith('uid:/')) {
         return uri.substr(5);
     }
@@ -15,7 +16,9 @@ const getHumanUri = (uri) => {
 };
 
 const UriColumn = ({ column, resource }) => (
-    <TableRowColumn className={classnames('dataset-column', `dataset-${column.name}`)}>
+    <TableRowColumn
+        className={classnames('dataset-column', `dataset-${column.name}`)}
+    >
         <Link to={getResourceUri(resource)}>
             {getHumanUri(resource[column.name])}
         </Link>

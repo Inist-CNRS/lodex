@@ -28,13 +28,17 @@ describe('characteristic routes', () => {
         it('should call ctx.publishedCharacteristic.findLastVersion', async () => {
             await updateCharacteristics(ctx);
 
-            expect(ctx.publishedCharacteristic.findLastVersion).toHaveBeenCalled();
+            expect(
+                ctx.publishedCharacteristic.findLastVersion,
+            ).toHaveBeenCalled();
         });
 
         it('should call ctx.publishedCharacteristic.addNewVersion with a new version', async () => {
             await updateCharacteristics(ctx);
 
-            expect(ctx.publishedCharacteristic.addNewVersion).toHaveBeenCalledWith({
+            expect(
+                ctx.publishedCharacteristic.addNewVersion,
+            ).toHaveBeenCalledWith({
                 foo: 'new foo',
                 bar: 'new bar',
                 doNotUpdateMe: 'doNotUpdateMe value',

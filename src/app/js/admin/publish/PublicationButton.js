@@ -9,7 +9,9 @@ const mapStateToProps = state => ({
     fields: fromFields.getInvalidFields(state),
 });
 
-export default connect(mapStateToProps)(branch(
-    ({ fields }) => fields.length > 0,
-    renderComponent(ValidationButton),
-)(PublishButton));
+export default connect(mapStateToProps)(
+    branch(
+        ({ fields }) => fields.length > 0,
+        renderComponent(ValidationButton),
+    )(PublishButton),
+);

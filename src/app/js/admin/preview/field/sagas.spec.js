@@ -4,10 +4,7 @@ import { all, call, put, select } from 'redux-saga/effects';
 import getDocumentTransformer from '../../../lib/getDocumentTransformer';
 import { getFieldFormData } from '../../../fields';
 import { fromUser } from '../../../sharedSelectors';
-import {
-    computeFieldPreviewSuccess,
-    computeFieldPreviewError,
-} from './';
+import { computeFieldPreviewSuccess, computeFieldPreviewError } from './';
 import { fromParsing } from '../../selectors';
 import { handleComputeFieldPreview } from './sagas';
 
@@ -23,7 +20,9 @@ describe('field saga', () => {
         });
 
         it('should select fromParsing.getExcerptLines', () => {
-            expect(saga.next('fieldFormData').value).toEqual(select(fromParsing.getExcerptLines));
+            expect(saga.next('fieldFormData').value).toEqual(
+                select(fromParsing.getExcerptLines),
+            );
         });
 
         it('should select getToken', () => {
@@ -31,15 +30,21 @@ describe('field saga', () => {
         });
 
         it('should call getDocumentTransformer with correct context and field', () => {
-            expect(saga.next(token).value).toEqual(call(getDocumentTransformer, ['fieldFormData'], token));
+            expect(saga.next(token).value).toEqual(
+                call(getDocumentTransformer, ['fieldFormData'], token),
+            );
         });
 
         it('should call transformDocument for each lines', () => {
-            expect(saga.next(transformDocument).value).toEqual(all(lines.map(line => call(transformDocument, line))));
+            expect(saga.next(transformDocument).value).toEqual(
+                all(lines.map(line => call(transformDocument, line))),
+            );
         });
 
         it('should put computePreviewSuccess action', () => {
-            expect(saga.next('preview').value).toEqual(put(computeFieldPreviewSuccess('preview')));
+            expect(saga.next('preview').value).toEqual(
+                put(computeFieldPreviewSuccess('preview')),
+            );
         });
 
         it('should put computePreviewError action with error if any', () => {
@@ -47,8 +52,9 @@ describe('field saga', () => {
             const error = { message: 'foo' };
             failedSaga.next();
             failedSaga.next();
-            expect(failedSaga.throw(error).value)
-                .toEqual(put(computeFieldPreviewError(error)));
+            expect(failedSaga.throw(error).value).toEqual(
+                put(computeFieldPreviewError(error)),
+            );
         });
     });
 });

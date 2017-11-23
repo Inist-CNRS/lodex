@@ -14,7 +14,10 @@ import fetchSaga from '../../lib/sagas/fetchSaga';
 export function* handlePublishRequest() {
     const verifyUriRequest = yield select(fromUser.getVerifyUriRequest);
 
-    const { error: verifyError, response: { nbInvalidUri } } = yield call(fetchSaga, verifyUriRequest);
+    const { error: verifyError, response: { nbInvalidUri } } = yield call(
+        fetchSaga,
+        verifyUriRequest,
+    );
 
     if (verifyError) {
         yield put(publishError(verifyError));
@@ -44,6 +47,6 @@ export function* handlePublishRequest() {
     yield put(publishSuccess());
 }
 
-export default function* () {
+export default function*() {
     yield takeLatest(PUBLISH, handlePublishRequest);
 }

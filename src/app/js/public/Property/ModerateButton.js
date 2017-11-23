@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import IconButton from 'material-ui/IconButton';
 import RejectedIcon from 'material-ui/svg-icons/content/clear';
 import ProposedIcon from 'material-ui/svg-icons/content/remove';
@@ -6,7 +7,12 @@ import ValidatedIcon from 'material-ui/svg-icons/action/done';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
-import { red500, yellow500, green500, grey500 } from 'material-ui/styles/colors';
+import {
+    red500,
+    yellow500,
+    green500,
+    grey500,
+} from 'material-ui/styles/colors';
 import classnames from 'classnames';
 
 import propositionStatus from '../../../../common/propositionStatus';
@@ -30,7 +36,10 @@ const getIcons = (status, active) => {
     const Icon = icons[status];
 
     return (
-        <Icon color={active ? colors[status] : grey500} hoverColor={colors[status]} />
+        <Icon
+            color={active ? colors[status] : grey500}
+            hoverColor={colors[status]}
+        />
     );
 };
 
@@ -41,29 +50,35 @@ const styles = {
     },
 };
 
-export const ModerateButtonComponent = ({ contributor, status, changeStatus, loggedIn, p: polyglot }) => {
+export const ModerateButtonComponent = ({
+    contributor,
+    status,
+    changeStatus,
+    loggedIn,
+    p: polyglot,
+}) => {
     if (!loggedIn || !status || !contributor) {
         return null;
     }
     return (
         <div className="moderate">
-            {
-                propositionStatus.map(availableStatus => (
-                    <IconButton
-                        className={classnames(availableStatus, { active: availableStatus === status })}
-                        style={styles.iconButton}
-                        key={availableStatus}
-                        tooltip={polyglot.t(availableStatus)}
-                        onClick={(e) => {
-                            e.preventDefault();
-                            changeStatus(status, availableStatus);
-                            return false;
-                        }}
-                    >
-                        { getIcons(availableStatus, status === availableStatus) }
-                    </IconButton>
-                ))
-            }
+            {propositionStatus.map(availableStatus => (
+                <IconButton
+                    className={classnames(availableStatus, {
+                        active: availableStatus === status,
+                    })}
+                    style={styles.iconButton}
+                    key={availableStatus}
+                    tooltip={polyglot.t(availableStatus)}
+                    onClick={e => {
+                        e.preventDefault();
+                        changeStatus(status, availableStatus);
+                        return false;
+                    }}
+                >
+                    {getIcons(availableStatus, status === availableStatus)}
+                </IconButton>
+            ))}
         </div>
     );
 };
@@ -86,7 +101,6 @@ const mapStateToProps = (state, { fieldName }) => ({
     loggedIn: fromUser.isLoggedIn(state),
 });
 
-export default compose(
-    translate,
-    connect(mapStateToProps),
-)(ModerateButtonComponent);
+export default compose(translate, connect(mapStateToProps))(
+    ModerateButtonComponent,
+);

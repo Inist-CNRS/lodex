@@ -21,13 +21,17 @@ const styles = {
 };
 
 export const VersionComponent = ({ p: polyglot }) => (
-    <div style={styles.version}>{polyglot.t('powered')}<b> Lodex <a href={link}>{version}</a></b></div>
+    <div style={styles.version}>
+        {polyglot.t('powered')}
+        <b>
+            {' '}
+            Lodex <a href={link}>{version}</a>
+        </b>
+    </div>
 );
 
 VersionComponent.propTypes = {
     p: polyglotPropTypes.isRequired,
 };
 
-export default compose(
-    translate,
-)(VersionComponent);
+export default compose(translate)(VersionComponent);

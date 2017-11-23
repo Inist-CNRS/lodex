@@ -23,7 +23,9 @@ describe('handleAddFieldToResource', () => {
     });
 
     it('should put addFieldToResourceError if formData has no field', () => {
-        const error = new Error('You need to select a field or create a new one');
+        const error = new Error(
+            'You need to select a field or create a new one',
+        );
         saga.next();
         const next = saga.next({});
         expect(next.value).toEqual(put(addFieldToResourceError(error)));
@@ -32,10 +34,12 @@ describe('handleAddFieldToResource', () => {
     it('should select getAddFieldToResourceRequest with resource', () => {
         saga.next();
         const next = saga.next({ field: 'field data' });
-        expect(next.value).toEqual(select(fromUser.getAddFieldToResourceRequest, {
-            uri: 'uri',
-            field: 'field data',
-        }));
+        expect(next.value).toEqual(
+            select(fromUser.getAddFieldToResourceRequest, {
+                uri: 'uri',
+                field: 'field data',
+            }),
+        );
     });
 
     it('should call fetchSaga with returned request', () => {

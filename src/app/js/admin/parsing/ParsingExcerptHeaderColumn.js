@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import pure from 'recompose/pure';
 import { TableHeaderColumn } from 'material-ui/Table';
 import { isLongText, getShortText } from '../../lib/longTexts';
@@ -12,18 +13,17 @@ const styles = {
     },
 };
 
-export const ParsingExcerptHeaderColumnComponent = ({ style, column }) => (
-    isLongText(column)
-        ? (
-            <TableHeaderColumn style={Object.assign(styles.col, style)} title={column}>
-                {getShortText(column)}
-            </TableHeaderColumn>
-        )
-        : (
-            <TableHeaderColumn style={styles.col}>
-                {column}
-            </TableHeaderColumn>)
-);
+export const ParsingExcerptHeaderColumnComponent = ({ style, column }) =>
+    isLongText(column) ? (
+        <TableHeaderColumn
+            style={Object.assign(styles.col, style)}
+            title={column}
+        >
+            {getShortText(column)}
+        </TableHeaderColumn>
+    ) : (
+        <TableHeaderColumn style={styles.col}>{column}</TableHeaderColumn>
+    );
 
 ParsingExcerptHeaderColumnComponent.propTypes = {
     style: PropTypes.object, // eslint-disable-line

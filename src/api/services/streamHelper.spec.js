@@ -15,7 +15,9 @@ describe('streamHepler', () => {
             };
             await append('writeStream')(readStream);
 
-            expect(readStream.pipe).toHaveBeenCalledWith('writeStream', { end: false });
+            expect(readStream.pipe).toHaveBeenCalledWith('writeStream', {
+                end: false,
+            });
             expect(readStream.on).toHaveBeenCalled();
         });
 
@@ -43,7 +45,9 @@ describe('streamHepler', () => {
                     }
                 }).andCallThrough(),
             };
-            const result = await append('writeStream')(readStream).catch(e => e);
+            const result = await append('writeStream')(readStream).catch(
+                e => e,
+            );
 
             expect(result).toBe(error);
         });
@@ -54,11 +58,26 @@ describe('streamHepler', () => {
             const appendTo = createSpy();
             const appendImpl = createSpy().andReturn(appendTo);
 
-            await concatStreamsFactory(appendImpl)(['source1', 'source2', 'source3'], 'resultStream');
+            await concatStreamsFactory(appendImpl)(
+                ['source1', 'source2', 'source3'],
+                'resultStream',
+            );
             expect(appendImpl).toHaveBeenCalledWith('resultStream');
-            expect(appendTo).toHaveBeenCalledWith('source1', 0, ['source1', 'source2', 'source3']);
-            expect(appendTo).toHaveBeenCalledWith('source2', 1, ['source1', 'source2', 'source3']);
-            expect(appendTo).toHaveBeenCalledWith('source3', 2, ['source1', 'source2', 'source3']);
+            expect(appendTo).toHaveBeenCalledWith('source1', 0, [
+                'source1',
+                'source2',
+                'source3',
+            ]);
+            expect(appendTo).toHaveBeenCalledWith('source2', 1, [
+                'source1',
+                'source2',
+                'source3',
+            ]);
+            expect(appendTo).toHaveBeenCalledWith('source3', 2, [
+                'source1',
+                'source2',
+                'source3',
+            ]);
         });
     });
 });

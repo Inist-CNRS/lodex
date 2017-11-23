@@ -16,27 +16,30 @@ export const defaultState = {
     token: null,
 };
 
-export default handleActions({
-    TOGGLE_LOGIN: state => ({
-        ...state,
-        showModal: !state.showModal,
-    }),
-    LOGIN_SUCCESS: (state, { payload }) => ({
-        ...state,
-        showModal: false,
-        token: payload,
-    }),
-    LOGOUT: state => ({
-        ...state,
-        showModal: true,
-        token: null,
-    }),
-    SIGNOUT: state => ({
-        ...state,
-        showModal: false,
-        token: null,
-    }),
-}, defaultState);
+export default handleActions(
+    {
+        TOGGLE_LOGIN: state => ({
+            ...state,
+            showModal: !state.showModal,
+        }),
+        LOGIN_SUCCESS: (state, { payload }) => ({
+            ...state,
+            showModal: false,
+            token: payload,
+        }),
+        LOGOUT: state => ({
+            ...state,
+            showModal: true,
+            token: null,
+        }),
+        SIGNOUT: state => ({
+            ...state,
+            showModal: false,
+            token: null,
+        }),
+    },
+    defaultState,
+);
 
 export const toggleLogin = createAction(TOGGLE_LOGIN);
 export const login = createAction(LOGIN);
@@ -115,19 +118,23 @@ export const getPublishRequest = state =>
         method: 'POST',
     });
 
-export const getVerifyUriRequest = state => getRequest(state, {
-    url: '/api/publish/verifyUri',
-    method: 'GET',
-});
+export const getVerifyUriRequest = state =>
+    getRequest(state, {
+        url: '/api/publish/verifyUri',
+        method: 'GET',
+    });
 
-export const getClearPublishedRequest = state => getRequest(state, {
-    url: '/api/publish',
-    method: 'DELETE',
-});
+export const getClearPublishedRequest = state =>
+    getRequest(state, {
+        url: '/api/publish',
+        method: 'DELETE',
+    });
 
 export const getLoadRemovedResourcePageRequest = (state, { page, perPage }) =>
     getRequest(state, {
-        url: `/api/publishedDataset/removed?page=${encodeURIComponent(page)}&perPage=${encodeURIComponent(perPage)}`,
+        url: `/api/publishedDataset/removed?page=${encodeURIComponent(
+            page,
+        )}&perPage=${encodeURIComponent(perPage)}`,
     });
 
 export const getRestoreResourceRequest = (state, uri) =>
@@ -181,13 +188,13 @@ export const getHideResourceRequest = (state, data) =>
         url: '/api/publishedDataset',
         method: 'DELETE',
         body: data,
-
     });
 
-export const getClearDatasetRequest = state => getRequest(state, {
-    url: '/api/dataset',
-    method: 'DELETE',
-});
+export const getClearDatasetRequest = state =>
+    getRequest(state, {
+        url: '/api/dataset',
+        method: 'DELETE',
+    });
 
 export const getAddFieldToResourceRequest = (state, data) =>
     getRequest(state, {
@@ -213,19 +220,26 @@ export const getLoadFacetValuesRequest = (state, { field, filter }) =>
         url: `/api/facet/${field}/${filter || ''}`,
     });
 
-export const getLoadContributedResourcePageRequest = (state, { page, perPage, filter }) => {
+export const getLoadContributedResourcePageRequest = (
+    state,
+    { page, perPage, filter },
+) => {
     const encodedPage = encodeURIComponent(page);
     const encodedPerPage = encodeURIComponent(perPage);
 
     return getRequest(state, {
-        url: `/api/publishedDataset/${filter}?page=${encodedPage}&perPage=${encodedPerPage}`,
+        url: `/api/publishedDataset/${filter}?page=${encodedPage}&perPage=${
+            encodedPerPage
+        }`,
     });
 };
 
 export const getChangeFieldStatusRequest = (state, { uri, field, status }) =>
     getRequest(state, {
         method: 'PUT',
-        url: `/api/publishedDataset/${encodeURIComponent(uri)}/change_contribution_status/${field}/${status}`,
+        url: `/api/publishedDataset/${encodeURIComponent(
+            uri,
+        )}/change_contribution_status/${field}/${status}`,
     });
 
 export const getLoadExportersRequest = state =>

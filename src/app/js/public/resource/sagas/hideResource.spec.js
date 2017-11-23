@@ -25,10 +25,12 @@ describe('handleHideResource', () => {
     it('should select getHideResourceRequest with resource', () => {
         saga.next();
         const next = saga.next({ reason: 'reason' });
-        expect(next.value).toEqual(select(fromUser.getHideResourceRequest, {
-            uri: 'uri',
-            reason: 'reason',
-        }));
+        expect(next.value).toEqual(
+            select(fromUser.getHideResourceRequest, {
+                uri: 'uri',
+                reason: 'reason',
+            }),
+        );
     });
 
     it('should call fetchSaga with returned request', () => {

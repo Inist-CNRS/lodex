@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import withHandlers from 'recompose/withHandlers';
@@ -11,7 +12,10 @@ import Popover from 'material-ui/Popover';
 import { fromFields } from '../../sharedSelectors';
 import ValidationField from './ValidationField';
 import { editField as editFieldAction } from '../../fields';
-import { polyglot as polyglotPropTypes, validationField as validationFieldPropType } from '../../propTypes';
+import {
+    polyglot as polyglotPropTypes,
+    validationField as validationFieldPropType,
+} from '../../propTypes';
 
 const anchorOrigin = { horizontal: 'right', vertical: 'top' };
 const targetOrigin = { horizontal: 'right', vertical: 'bottom' };
@@ -45,12 +49,17 @@ const ValidationButtonComponent = ({
             onRequestClose={handleHideErrors}
         >
             <List className="validation">
-                {fields.map(field => <ValidationField key={field.name} field={field} onEditField={handleEditField} />)}
+                {fields.map(field => (
+                    <ValidationField
+                        key={field.name}
+                        field={field}
+                        onEditField={handleEditField}
+                    />
+                ))}
             </List>
         </Popover>
     </div>
 );
-
 
 ValidationButtonComponent.propTypes = {
     popover: PropTypes.object, // eslint-disable-line
@@ -74,14 +83,14 @@ export default compose(
     connect(mapStateToProps, mapDispatchToProps),
     withState('popover', 'setShowPopover', { show: false }),
     withHandlers({
-        handleShowErrorsClick: ({ setShowPopover }) => (event) => {
+        handleShowErrorsClick: ({ setShowPopover }) => event => {
             event.preventDefault();
             setShowPopover({ anchorEl: event.currentTarget, show: true });
         },
         handleHideErrors: ({ setShowPopover }) => () => {
             setShowPopover({ show: false });
         },
-        handleEditField: ({ editField, setShowPopover }) => (field) => {
+        handleEditField: ({ editField, setShowPopover }) => field => {
             setShowPopover({ show: false });
             editField(field);
         },

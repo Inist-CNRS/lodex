@@ -1,6 +1,7 @@
 /* eslint react/no-array-index-key: off */
 
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import RadioButton from 'material-ui/RadioButton';
 import FlatButton from 'material-ui/FlatButton';
 import translate from 'redux-polyglot/translate';
@@ -47,7 +48,7 @@ export const StepValueConcatComponent = ({
             checked={selected}
             style={styles.radio}
         />
-        {selected &&
+        {selected && (
             <div style={styles.inset}>
                 <TextField
                     id="separator"
@@ -65,14 +66,13 @@ export const StepValueConcatComponent = ({
                         handleChange={handleChange}
                         handleRemoveColumn={handleRemoveColumn}
                     />
-
                 ))}
                 <FlatButton
                     label={polyglot.t('add_column')}
                     onClick={handleAddColumn}
                 />
             </div>
-        }
+        )}
     </div>
 );
 
@@ -92,8 +92,11 @@ StepValueConcatComponent.defaultProps = {
     columns: [null, null],
 };
 
-const mapStateToProps = (state) => {
-    const transformers = formValueSelector(FIELD_FORM_NAME)(state, 'transformers');
+const mapStateToProps = state => {
+    const transformers = formValueSelector(FIELD_FORM_NAME)(
+        state,
+        'transformers',
+    );
     const valueTransformer =
         get(transformers, '[0].operation') === 'CONCAT_URI'
             ? transformers[0]
@@ -102,7 +105,10 @@ const mapStateToProps = (state) => {
         return {
             selected: true,
             separator: get(valueTransformer, 'args[0].value', ''),
-            columns: get(valueTransformer, 'args', []).slice(1).map(({ value }) => value) || [],
+            columns:
+                get(valueTransformer, 'args', [])
+                    .slice(1)
+                    .map(({ value }) => value) || [],
             args: valueTransformer.args || [],
         };
     }
@@ -116,19 +122,23 @@ export default compose(
         handleSelect: ({ onChange }) => () => {
             onChange({
                 operation: 'CONCAT_URI',
-                args: [{
-                    name: 'separator',
-                    type: 'string',
-                    value: '',
-                }, {
-                    name: 'column',
-                    type: 'column',
-                    value: null,
-                }, {
-                    name: 'column',
-                    type: 'column',
-                    value: null,
-                }],
+                args: [
+                    {
+                        name: 'separator',
+                        type: 'string',
+                        value: '',
+                    },
+                    {
+                        name: 'column',
+                        type: 'column',
+                        value: null,
+                    },
+                    {
+                        name: 'column',
+                        type: 'column',
+                        value: null,
+                    },
+                ],
             });
         },
         handleChange: ({ onChange, args }) => (event, key, value, index) => {
@@ -167,13 +177,10 @@ export default compose(
                 ],
             });
         },
-        handleRemoveColumn: ({ onChange, args }) => (index) => {
+        handleRemoveColumn: ({ onChange, args }) => index => {
             onChange({
                 operation: 'CONCAT_URI',
-                args: [
-                    ...args.slice(0, index + 1),
-                    ...args.slice(index + 2),
-                ],
+                args: [...args.slice(0, index + 1), ...args.slice(index + 2)],
             });
         },
     }),

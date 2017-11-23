@@ -3,10 +3,7 @@ import { call, take, put, select, race } from 'redux-saga/effects';
 import { LOCATION_CHANGE } from 'react-router-redux';
 
 import { fromUser } from '../../sharedSelectors';
-import {
-    importFieldsSuccess,
-    importFieldsError,
-} from './';
+import { importFieldsSuccess, importFieldsError } from './';
 
 import { loadModelFile } from '../../lib/loadFile';
 
@@ -35,10 +32,12 @@ describe('import model saga', () => {
             saga.next();
             const { value } = saga.next('token');
 
-            expect(value).toEqual(race({
-                file: call(loadModelFile, 'payload', 'token'),
-                cancel: take([LOCATION_CHANGE]),
-            }));
+            expect(value).toEqual(
+                race({
+                    file: call(loadModelFile, 'payload', 'token'),
+                    cancel: take([LOCATION_CHANGE]),
+                }),
+            );
         });
 
         it('should end if receiving cancel', () => {

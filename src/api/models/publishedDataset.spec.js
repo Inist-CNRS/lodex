@@ -24,12 +24,16 @@ describe('publishedDataset', () => {
 
         it('should call update', async () => {
             const date = new Date();
-            await publishedDatasetCollection.addVersion({
-                uri: 'uri',
-            }, {
-                new: 'version',
-                uri: 'uri',
-            }, date);
+            await publishedDatasetCollection.addVersion(
+                {
+                    uri: 'uri',
+                },
+                {
+                    new: 'version',
+                    uri: 'uri',
+                },
+                date,
+            );
             expect(collection.findOneAndUpdate).toHaveBeenCalledWith(
                 { uri: 'uri' },
                 {
@@ -50,9 +54,11 @@ describe('publishedDataset', () => {
     describe('addFieldToResource', () => {
         const previousResource = {
             uri: 'uri',
-            versions: [{
-                field: 'value',
-            }],
+            versions: [
+                {
+                    field: 'value',
+                },
+            ],
         };
         const collection = {
             findOne: createSpy().andReturn(previousResource),
@@ -81,7 +87,13 @@ describe('publishedDataset', () => {
                     value: 'newValue',
                 };
                 const date = new Date();
-                await publishedDatasetCollection.addFieldToResource('uri', contributor, field, true, date);
+                await publishedDatasetCollection.addFieldToResource(
+                    'uri',
+                    contributor,
+                    field,
+                    true,
+                    date,
+                );
 
                 expect(collection.findOne).toHaveBeenCalledWith({ uri: 'uri' });
                 expect(collection.update).toHaveBeenCalledWith(
@@ -121,7 +133,13 @@ describe('publishedDataset', () => {
                     value: 'newValue',
                 };
                 const date = new Date();
-                await publishedDatasetCollection.addFieldToResource('uri', contributor, field, false, date);
+                await publishedDatasetCollection.addFieldToResource(
+                    'uri',
+                    contributor,
+                    field,
+                    false,
+                    date,
+                );
 
                 expect(collection.findOne).toHaveBeenCalledWith({ uri: 'uri' });
                 expect(collection.update).toHaveBeenCalledWith(
@@ -171,7 +189,11 @@ describe('publishedDataset', () => {
         });
 
         it('should call aggregate incorporating uri and name', async () => {
-            await publishedDatasetCollection.changePropositionStatus('uri', 'name', 'status');
+            await publishedDatasetCollection.changePropositionStatus(
+                'uri',
+                'name',
+                'status',
+            );
             expect(collection.aggregate).toHaveBeenCalledWith([
                 { $match: { uri: 'uri' } },
                 { $unwind: '$contributions' },
@@ -180,9 +202,12 @@ describe('publishedDataset', () => {
             ]);
         });
 
-
         it('should call update to increment received status and decrement previous status', async () => {
-            await publishedDatasetCollection.changePropositionStatus('uri', 'name', 'status');
+            await publishedDatasetCollection.changePropositionStatus(
+                'uri',
+                'name',
+                'status',
+            );
             expect(collection.update).toHaveBeenCalledWith(
                 { uri: 'uri', 'contributions.fieldName': 'name' },
                 {
@@ -217,7 +242,10 @@ describe('publishedDataset', () => {
         });
 
         it('should return total and data', async () => {
-            const result = await publishedDatasetCollection.findPage('perPage', 'page');
+            const result = await publishedDatasetCollection.findPage(
+                'perPage',
+                'page',
+            );
             expect(result).toEqual({
                 data: 'result',
                 total: 'count',
@@ -226,11 +254,21 @@ describe('publishedDataset', () => {
 
         it('should call find with removedAt false', async () => {
             await publishedDatasetCollection.findPage('perPage', 'page');
-            expect(find).toHaveBeenCalledWith({ removedAt: { $exists: false } });
+            expect(find).toHaveBeenCalledWith({
+                removedAt: { $exists: false },
+            });
         });
 
         it('should call find with removedAt false and $regex on each fields if provided', async () => {
-            await publishedDatasetCollection.findPage('perPage', 'page', null, null, 'match', {}, ['field1', 'field2']);
+            await publishedDatasetCollection.findPage(
+                'perPage',
+                'page',
+                null,
+                null,
+                'match',
+                {},
+                ['field1', 'field2'],
+            );
             expect(find).toHaveBeenCalledWith({
                 removedAt: { $exists: false },
                 $or: [
@@ -239,7 +277,6 @@ describe('publishedDataset', () => {
                 ],
             });
         });
-
 
         it('should call find with removedAt false and facets if provided', async () => {
             await publishedDatasetCollection.findPage(
@@ -254,36 +291,75 @@ describe('publishedDataset', () => {
             );
             expect(find).toHaveBeenCalledWith({
                 removedAt: { $exists: false },
-                $and: [
-                    { 'versions.field1': 'field1value' },
-                ],
+                $and: [{ 'versions.field1': 'field1value' }],
             });
         });
 
         it('should ignore match if no fields provided', async () => {
-            await publishedDatasetCollection.findPage('page', 'perPage', null, null, 'match', {}, []);
+            await publishedDatasetCollection.findPage(
+                'page',
+                'perPage',
+                null,
+                null,
+                'match',
+                {},
+                [],
+            );
             expect(find).toHaveBeenCalledWith({
                 removedAt: { $exists: false },
             });
         });
 
         it('should call sort with sortBy: 1 if sortDir is ASC', async () => {
-            await publishedDatasetCollection.findPage(5, 2, 'field', 'ASC', 'match', {}, []);
+            await publishedDatasetCollection.findPage(
+                5,
+                2,
+                'field',
+                'ASC',
+                'match',
+                {},
+                [],
+            );
             expect(sort).toHaveBeenCalledWith({ 'versions.field': 1 });
         });
 
         it('should call sort with sortBy: -1 if sortDir is DESC', async () => {
-            await publishedDatasetCollection.findPage(5, 2, 'field', 'DESC', 'match', {}, [], []);
+            await publishedDatasetCollection.findPage(
+                5,
+                2,
+                'field',
+                'DESC',
+                'match',
+                {},
+                [],
+                [],
+            );
             expect(sort).toHaveBeenCalledWith({ 'versions.field': -1 });
         });
 
         it('should call skip with page * perPage', async () => {
-            await publishedDatasetCollection.findPage(5, 2, null, null, 'match', {}, []);
+            await publishedDatasetCollection.findPage(
+                5,
+                2,
+                null,
+                null,
+                'match',
+                {},
+                [],
+            );
             expect(skip).toHaveBeenCalledWith(10);
         });
 
         it('should call limit with perPage', async () => {
-            await publishedDatasetCollection.findPage('page', 'perPage', null, null, 'match', {}, []);
+            await publishedDatasetCollection.findPage(
+                'page',
+                'perPage',
+                null,
+                null,
+                'match',
+                {},
+                [],
+            );
             expect(limit).toHaveBeenCalledWith('perPage');
         });
 
@@ -299,16 +375,17 @@ describe('publishedDataset', () => {
                 otherFacet: 'other value',
             };
             const facetNames = ['facet', 'otherFacet'];
-            expect(addFacetToFilters(facets, facetNames)({
-                filter: 'data',
-            }))
-                .toEqual({
+            expect(
+                addFacetToFilters(facets, facetNames)({
                     filter: 'data',
-                    $and: [
-                        { 'versions.facet': 'value' },
-                        { 'versions.otherFacet': 'other value' },
-                    ],
-                });
+                }),
+            ).toEqual({
+                filter: 'data',
+                $and: [
+                    { 'versions.facet': 'value' },
+                    { 'versions.otherFacet': 'other value' },
+                ],
+            });
         });
 
         it('should ignore facet not in facetNames', () => {
@@ -317,26 +394,26 @@ describe('publishedDataset', () => {
                 otherFacet: 'other value',
             };
             const facetNames = ['otherFacet'];
-            expect(addFacetToFilters(facets, facetNames)({
-                filter: 'data',
-            }))
-                .toEqual({
+            expect(
+                addFacetToFilters(facets, facetNames)({
                     filter: 'data',
-                    $and: [
-                        { 'versions.otherFacet': 'other value' },
-                    ],
-                });
+                }),
+            ).toEqual({
+                filter: 'data',
+                $and: [{ 'versions.otherFacet': 'other value' }],
+            });
         });
 
         it('should return filters if no facets', () => {
             const facets = null;
             const facetNames = ['facet', 'otherFacet'];
-            expect(addFacetToFilters(facets, facetNames)({
-                filter: 'data',
-            }))
-                .toEqual({
+            expect(
+                addFacetToFilters(facets, facetNames)({
                     filter: 'data',
-                });
+                }),
+            ).toEqual({
+                filter: 'data',
+            });
         });
 
         it('should return filters if no facets names', () => {
@@ -345,12 +422,13 @@ describe('publishedDataset', () => {
                 otherFacet: 'other value',
             };
             const facetNames = null;
-            expect(addFacetToFilters(facets, facetNames)({
-                filter: 'data',
-            }))
-                .toEqual({
+            expect(
+                addFacetToFilters(facets, facetNames)({
                     filter: 'data',
-                });
+                }),
+            ).toEqual({
+                filter: 'data',
+            });
         });
     });
 
@@ -358,52 +436,57 @@ describe('publishedDataset', () => {
         it('should add match for each searchablefields to filters', () => {
             const match = 'match';
             const searchableFields = ['field1', 'field2'];
-            expect(addMatchToFilters(match, searchableFields)({ filter: 'data' }))
-                .toEqual({
-                    filter: 'data',
-                    $or: [
-                        { 'versions.field1': { $regex: /match/, $options: 'i' } },
-                        { 'versions.field2': { $regex: /match/, $options: 'i' } },
-                    ],
-                });
+            expect(
+                addMatchToFilters(match, searchableFields)({ filter: 'data' }),
+            ).toEqual({
+                filter: 'data',
+                $or: [
+                    { 'versions.field1': { $regex: /match/, $options: 'i' } },
+                    { 'versions.field2': { $regex: /match/, $options: 'i' } },
+                ],
+            });
         });
 
         it('should return filters if no match', () => {
             const match = null;
             const searchableFields = ['field1', 'field2'];
-            expect(addMatchToFilters(match, searchableFields)({ filter: 'data' }))
-                .toEqual({
-                    filter: 'data',
-                });
+            expect(
+                addMatchToFilters(match, searchableFields)({ filter: 'data' }),
+            ).toEqual({
+                filter: 'data',
+            });
         });
 
         it('should return filters if no searchableFields', () => {
             const match = 'match';
             const searchableFields = null;
-            expect(addMatchToFilters(match, searchableFields)({ filter: 'data' }))
-                .toEqual({
-                    filter: 'data',
-                });
+            expect(
+                addMatchToFilters(match, searchableFields)({ filter: 'data' }),
+            ).toEqual({
+                filter: 'data',
+            });
         });
     });
 
     describe('addKeyToFilters', () => {
         it('should add value at key to filters', () => {
-            expect(addKeyToFilters('key', 'value')({
-                filter: 'data',
-            }))
-                .toEqual({
+            expect(
+                addKeyToFilters('key', 'value')({
                     filter: 'data',
-                    key: 'value',
-                });
+                }),
+            ).toEqual({
+                filter: 'data',
+                key: 'value',
+            });
         });
         it('should return filters if no values', () => {
-            expect(addKeyToFilters('key', null)({
-                filter: 'data',
-            }))
-                .toEqual({
+            expect(
+                addKeyToFilters('key', null)({
                     filter: 'data',
-                });
+                }),
+            ).toEqual({
+                filter: 'data',
+            });
         });
     });
 
@@ -424,15 +507,20 @@ describe('publishedDataset', () => {
 
         it('should call connection.insertOne with { uri, versions: [rest] }', async () => {
             const date = new Date();
-            const result = await publishedDatasetCollection.create({ uri: 'uri', data: 'value' }, date);
+            const result = await publishedDatasetCollection.create(
+                { uri: 'uri', data: 'value' },
+                date,
+            );
             expect(result).toBe('inserted');
 
             expect(insertOne).toHaveBeenCalledWith({
                 uri: 'uri',
-                versions: [{
-                    data: 'value',
-                    publicationDate: date,
-                }],
+                versions: [
+                    {
+                        data: 'value',
+                        publicationDate: date,
+                    },
+                ],
             });
         });
     });

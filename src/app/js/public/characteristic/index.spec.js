@@ -13,9 +13,7 @@ import reducer, {
     addCharacteristicSuccess,
 } from './';
 
-import {
-    loadPublicationSuccess,
-} from '../../fields';
+import { loadPublicationSuccess } from '../../fields';
 
 describe('characteristic reducer', () => {
     it('should initialize with correct state', () => {
@@ -90,17 +88,12 @@ describe('characteristic reducer', () => {
         const action = updateCharacteristicsSuccess('new');
         const state = {
             data: 'value',
-            characteristics: [
-                'charac',
-            ],
+            characteristics: ['charac'],
         };
 
         expect(reducer(state, action)).toEqual({
             data: 'value',
-            characteristics: [
-                'new',
-                'charac',
-            ],
+            characteristics: ['new', 'charac'],
             newCharacteristics: 'new',
             error: null,
             isSaving: false,
@@ -147,13 +140,12 @@ describe('characteristic reducer', () => {
     });
 
     it('should handle addCharacteristicSuccess', () => {
-        const action = addCharacteristicSuccess({ characteristics: 'updated characteristics' });
+        const action = addCharacteristicSuccess({
+            characteristics: 'updated characteristics',
+        });
         const state = {
             data: 'value',
-            characteristics: [
-                'charac1',
-                'charac2',
-            ],
+            characteristics: ['charac1', 'charac2'],
         };
 
         expect(reducer(state, action)).toEqual({
@@ -162,11 +154,7 @@ describe('characteristic reducer', () => {
             isAdding: false,
             isSaving: false,
             newCharacteristics: 'updated characteristics',
-            characteristics: [
-                'updated characteristics',
-                'charac1',
-                'charac2',
-            ],
+            characteristics: ['updated characteristics', 'charac1', 'charac2'],
         });
     });
 

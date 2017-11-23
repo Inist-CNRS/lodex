@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
@@ -33,13 +34,18 @@ export const ButtonWithDialogComponent = ({
     }
     const actions = [
         <ButtonWithStatus
+            key="save"
             className={classnames(className, 'save')}
             label={polyglot.t('save')}
             primary
             loading={saving}
             onTouchTap={handleSubmit}
         />,
-        <FlatButton label={polyglot.t('cancel')} onClick={handleClose} />,
+        <FlatButton
+            key="cancel"
+            label={polyglot.t('cancel')}
+            onClick={handleClose}
+        />,
     ];
 
     const openButton = icon ? (
@@ -100,7 +106,7 @@ ButtonWithDialogComponent.propTypes = {
     className: PropTypes.string.isRequired,
 };
 
-const mapDispatchToProps = ({ submit: submitAction });
+const mapDispatchToProps = { submit: submitAction };
 
 export default compose(
     connect(null, mapDispatchToProps),

@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
@@ -19,9 +20,7 @@ import Loading from '../../lib/components/Loading';
 import Pagination from '../../lib/components/Pagination';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import {
-    loadContributedResourcePage as
-    loadContributedResourcePageAction,
-    restoreRessource as restoreRessourceAction,
+    loadContributedResourcePage as loadContributedResourcePageAction,
     changeContributedResourceFilter,
 } from './';
 import { fromContributedResources } from '../selectors';
@@ -46,17 +45,19 @@ export class ContributedResourceListComponent extends Component {
     }
 
     handlePageChange = (currentPage, perPage) => {
-        this
-            .props
-            .loadContributedResourcePage({ page: currentPage, perPage, filter: this.props.filter });
-    }
+        this.props.loadContributedResourcePage({
+            page: currentPage,
+            perPage,
+            filter: this.props.filter,
+        });
+    };
 
     render() {
         const {
             columns,
             resources,
-            loading, p:
-            polyglot,
+            loading,
+            p: polyglot,
             total,
             filter,
             onChangeFilter,
@@ -84,19 +85,31 @@ export class ContributedResourceListComponent extends Component {
                                 key={status}
                                 className={`filter_${status}`}
                                 value={status}
-                                primaryText={polyglot.t('contribution_filter', { status: polyglot.t(status) })}
+                                primaryText={polyglot.t('contribution_filter', {
+                                    status: polyglot.t(status),
+                                })}
                             />
                         ))}
                     </SelectField>
                 </CardText>
 
                 <CardText>
-                    <Table selectable={false} fixedHeader={false} style={styles.table}>
-                        <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
+                    <Table
+                        selectable={false}
+                        fixedHeader={false}
+                        style={styles.table}
+                    >
+                        <TableHeader
+                            displaySelectAll={false}
+                            adjustForCheckbox={false}
+                        >
                             <TableRow>
                                 <TableHeaderColumn />
-                                {columns.map(({ name, label }) =>
-                                    <TableHeaderColumn key={name}>{label}</TableHeaderColumn>)}
+                                {columns.map(({ name, label }) => (
+                                    <TableHeaderColumn key={name}>
+                                        {label}
+                                    </TableHeaderColumn>
+                                ))}
                             </TableRow>
                         </TableHeader>
                         <TableBody displayRowCheckbox={false}>
@@ -104,7 +117,10 @@ export class ContributedResourceListComponent extends Component {
                                 <TableRow key={data.uri}>
                                     <TableRowColumn key="review">
                                         <a
-                                            href={getFullResourceUri(data, baseUri)}
+                                            href={getFullResourceUri(
+                                                data,
+                                                baseUri,
+                                            )}
                                         >
                                             <FlatButton
                                                 className="btn-review-resource"
@@ -114,7 +130,9 @@ export class ContributedResourceListComponent extends Component {
                                         </a>
                                     </TableRowColumn>
                                     {columns.map(({ name }) => (
-                                        <TableRowColumn key={name}>{data[name]}</TableRowColumn>
+                                        <TableRowColumn key={name}>
+                                            {data[name]}
+                                        </TableRowColumn>
                                     ))}
                                 </TableRow>
                             ))}
@@ -138,13 +156,9 @@ export class ContributedResourceListComponent extends Component {
 }
 
 ContributedResourceListComponent.propTypes = {
-    columns: PropTypes
-        .arrayOf(PropTypes.object)
-        .isRequired,
+    columns: PropTypes.arrayOf(PropTypes.object).isRequired,
     currentPage: PropTypes.number.isRequired,
-    resources: PropTypes
-        .arrayOf(PropTypes.object)
-        .isRequired,
+    resources: PropTypes.arrayOf(PropTypes.object).isRequired,
     loading: PropTypes.bool.isRequired,
     loadContributedResourcePage: PropTypes.func.isRequired,
     p: polyglotPropTypes.isRequired,
@@ -156,16 +170,19 @@ ContributedResourceListComponent.propTypes = {
 const mapStateToProps = state => ({
     loading: fromContributedResources.isContributedResourceLoading(state),
     columns: fromFields.getCollectionFields(state),
-    currentPage: fromContributedResources.getContributedResourceCurrentPage(state),
+    currentPage: fromContributedResources.getContributedResourceCurrentPage(
+        state,
+    ),
     resources: fromContributedResources.getContributedResourceItems(state),
     total: fromContributedResources.getContributedResourceTotal(state),
     filter: fromContributedResources.getContributedResourceFilter(state),
 });
 
-const mapDispatchToProps = ({
+const mapDispatchToProps = {
     loadContributedResourcePage: loadContributedResourcePageAction,
-    restoreRessource: restoreRessourceAction,
     onChangeFilter: changeContributedResourceFilter,
-});
+};
 
-export default compose(connect(mapStateToProps, mapDispatchToProps), translate)(ContributedResourceListComponent);
+export default compose(connect(mapStateToProps, mapDispatchToProps), translate)(
+    ContributedResourceListComponent,
+);

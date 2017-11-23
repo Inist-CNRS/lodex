@@ -3,7 +3,6 @@ import config from 'config';
 import mount from 'koa-mount';
 import cors from 'kcors';
 
-
 import { httpLogger } from './services/logger';
 import controller from './controller';
 

@@ -10,7 +10,7 @@ export const join = (value, separator) => {
     return value.join(separator);
 };
 
-const transformation = (_, args) => (value) => {
+const transformation = (_, args) => value => {
     const separator = args.find(a => a.name === 'separator');
 
     if (!separator) {
@@ -29,9 +29,7 @@ const transformation = (_, args) => (value) => {
 transformation.getMetas = () => ({
     name: 'JOIN',
     type: 'transform',
-    args: [
-        { name: 'separator', type: 'string' },
-    ],
+    args: [{ name: 'separator', type: 'string' }],
 });
 
 export default transformation;

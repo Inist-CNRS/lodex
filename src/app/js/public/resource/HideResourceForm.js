@@ -25,9 +25,18 @@ const validate = (values, { p: polyglot }) => {
     return {};
 };
 
-export const HideResourceFormComponent = ({ resource, resourceError, handleSubmit, p: polyglot }) => (
+export const HideResourceFormComponent = ({
+    resource,
+    resourceError,
+    handleSubmit,
+    p: polyglot,
+}) => (
     <form id="hide_resource_form" onSubmit={() => handleSubmit(resource.uri)}>
-        {resourceError && <Alert><p>{resourceError}</p></Alert>}
+        {resourceError && (
+            <Alert>
+                <p>{resourceError}</p>
+            </Alert>
+        )}
         <Field
             name="reason"
             component={FormTextField}

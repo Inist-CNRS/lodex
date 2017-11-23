@@ -29,13 +29,14 @@ module.exports = function extractIstexQuery(data, feed) {
     }
 
     return fields
-        .filter(field => field.format
-                && field.format.name === 'istex')
-        .forEach((field) => {
+        .filter(field => field.format && field.format.name === 'istex')
+        .forEach(field => {
             const propertyName = field.name;
 
-            if (!labels.includes(field.label) &&
-                !(labels.length === 1 && labels[0] === '')) {
+            if (
+                !labels.includes(field.label) &&
+                !(labels.length === 1 && labels[0] === '')
+            ) {
                 return feed.close();
             }
 
@@ -50,13 +51,14 @@ module.exports = function extractIstexQuery(data, feed) {
                 });
             }
 
-
             /* the hostname will be replace in scroll */
             return feed.send({
                 lodex: {
                     uri: formatedUri,
                 },
-                content: `http://replace-api.fr/document/?q=${data[propertyName]}`,
+                content: `http://replace-api.fr/document/?q=${
+                    data[propertyName]
+                }`,
             });
         });
 };

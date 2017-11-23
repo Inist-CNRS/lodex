@@ -20,9 +20,17 @@ import FieldIsFacetInput from '../FieldIsFacetInput';
 
 export const FORM_NAME = 'ONTOLOGY_FIELD_FORM';
 
-export const EditOntologyFieldFormComponent = ({ field, publicationError, handleSubmit }) => (
+export const EditOntologyFieldFormComponent = ({
+    field,
+    publicationError,
+    handleSubmit,
+}) => (
     <form id="field_form" onSubmit={() => handleSubmit()}>
-        {publicationError && <Alert><p>{publicationError}</p></Alert>}
+        {publicationError && (
+            <Alert>
+                <p>{publicationError}</p>
+            </Alert>
+        )}
         <FieldLabelInput />
         <FieldSchemeInput />
         <FieldLanguageInput field={field} />
@@ -56,7 +64,7 @@ const mapDispatchToProps = {
 export default compose(
     connect(mapStateToProps, mapDispatchToProps),
     withHandlers({
-        onSubmit: ({ onSaveField }) => (values) => {
+        onSubmit: ({ onSaveField }) => values => {
             onSaveField(values);
         },
     }),

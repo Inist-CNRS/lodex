@@ -1,5 +1,6 @@
 /* globals URL */
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import translate from 'redux-polyglot/translate';
 import FlatButton from 'material-ui/FlatButton';
@@ -23,7 +24,9 @@ export function generateWidget(uri, fields, type) {
     const baseUrl = process.env.EZMASTER_PUBLIC_URL.replace(/https?:/, '');
     const strFields = JSON.stringify(fields);
 
-    return `<iframe src="${baseUrl}/api/widget?type=${type}${uri ? `&uri=${uri}` : ''}&fields=${strFields}"></iframe>`;
+    return `<iframe src="${baseUrl}/api/widget?type=${type}${
+        uri ? `&uri=${uri}` : ''
+    }&fields=${strFields}"></iframe>`;
 }
 
 export class WidgetExportItemComponent extends Component {
@@ -41,13 +44,13 @@ export class WidgetExportItemComponent extends Component {
         this.setState({ value: generateWidget(uri, fields, type) });
     }
 
-    saveRef = (ref) => {
+    saveRef = ref => {
         this.input = ref;
-    }
+    };
 
     handleClick = () => {
         this.input.select();
-    }
+    };
 
     render() {
         const { label, p: polyglot } = this.props;
@@ -86,6 +89,5 @@ WidgetExportItemComponent.propTypes = {
 WidgetExportItemComponent.defaultProps = {
     uri: null,
 };
-
 
 export default translate(WidgetExportItemComponent);

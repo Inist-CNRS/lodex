@@ -13,22 +13,30 @@ describe('load clear saga', () => {
     describe('handleClearDatasetRequest', () => {
         const saga = handleClearDatasetRequest();
         it('should select getClearDatasetRequest', () => {
-            expect(saga.next().value).toEqual(select(fromUser.getClearDatasetRequest));
+            expect(saga.next().value).toEqual(
+                select(fromUser.getClearDatasetRequest),
+            );
         });
 
         it('should call handleClearDatasetRequest', () => {
-            expect(saga.next('request').value).toEqual(call(fetchSaga, 'request'));
+            expect(saga.next('request').value).toEqual(
+                call(fetchSaga, 'request'),
+            );
         });
     });
 
     describe('handleClearPublishedRequest', () => {
         const saga = handleClearPublishedRequest();
         it('should select getClearPublishedRequest', () => {
-            expect(saga.next().value).toEqual(select(fromUser.getClearPublishedRequest));
+            expect(saga.next().value).toEqual(
+                select(fromUser.getClearPublishedRequest),
+            );
         });
 
         it('should call handleClearPublishedRequest', () => {
-            expect(saga.next('request').value).toEqual(call(fetchSaga, 'request'));
+            expect(saga.next('request').value).toEqual(
+                call(fetchSaga, 'request'),
+            );
         });
     });
 });

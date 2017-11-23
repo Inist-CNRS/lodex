@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 import pure from 'recompose/pure';
@@ -62,7 +63,4 @@ ClassList.PropTypes = {
     onChangeClass: PropTypes.func.isRequired,
 };
 
-export default compose(
-    translate,
-    pure,
-)(ClassList);
+export default compose(translate, pure)(ClassList);

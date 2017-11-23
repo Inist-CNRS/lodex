@@ -10,7 +10,7 @@ const styles = {
 };
 
 export default fetchProps => Component =>
-    class extends React.Component {
+    class FetchPaginatedDataForComponent extends React.Component {
         state = {
             isLoading: true,
             data: null,
@@ -27,28 +27,38 @@ export default fetchProps => Component =>
         }
 
         onPaginationChange = (page, perPage) => {
-            this.setState({
-                ...this.state,
-                page,
-                perPage,
-            }, () => this.fetchData());
-        }
+            this.setState(
+                {
+                    ...this.state,
+                    page,
+                    perPage,
+                },
+                () => this.fetchData(),
+            );
+        };
 
         fetchData() {
             const { page, perPage } = this.state;
             const props = this.props;
-            this.setState({
-                ...this.state,
-                isLoading: true,
-            }, () => fetchProps({ props, page, perPage })
-                .then(data => this.setState({
-                    data,
-                    isLoading: false,
-                }))
-                .catch(error => this.setState({
-                    error: error.message,
-                    isLoading: false,
-                })),
+            this.setState(
+                {
+                    ...this.state,
+                    isLoading: true,
+                },
+                () =>
+                    fetchProps({ props, page, perPage })
+                        .then(data =>
+                            this.setState({
+                                data,
+                                isLoading: false,
+                            }),
+                        )
+                        .catch(error =>
+                            this.setState({
+                                error: error.message,
+                                isLoading: false,
+                            }),
+                        ),
             );
         }
 
@@ -57,23 +67,19 @@ export default fetchProps => Component =>
 
             return (
                 <div style={styles.container}>
-                    {
-                        isLoading ? (
-                            <CircularProgress />
-                        ) : (
-                            <Component
-                                {...this.props}
-                                data={data}
-                                error={error}
-                            />
-                        )
-                    }
-                    {data && <Pagination
-                        onChange={this.onPaginationChange}
-                        currentPage={page}
-                        perPage={perPage}
-                        total={data.total}
-                    />}
+                    {isLoading ? (
+                        <CircularProgress />
+                    ) : (
+                        <Component {...this.props} data={data} error={error} />
+                    )}
+                    {data && (
+                        <Pagination
+                            onChange={this.onPaginationChange}
+                            currentPage={page}
+                            perPage={perPage}
+                            total={data.total}
+                        />
+                    )}
                 </div>
             );
         }

@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import fetch from 'isomorphic-fetch';
 import translate from 'redux-polyglot/translate';
 import url from 'url';
@@ -21,7 +22,6 @@ class Resource extends Component {
     componentDidMount() {
         this.fetchData();
     }
-
 
     async fetchData() {
         const { field, resource } = this.props;
@@ -66,7 +66,6 @@ class Resource extends Component {
     }
 }
 
-
 Resource.propTypes = {
     field: fieldPropTypes.isRequired,
     linkedResource: PropTypes.object, // eslint-disable-line
@@ -78,4 +77,3 @@ Resource.defaultProps = {
 };
 
 export default translate(Resource);
-

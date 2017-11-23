@@ -1,4 +1,4 @@
-const transformation = ({ applyJbjStylesheet }, args) => (value) => {
+const transformation = ({ applyJbjStylesheet }, args) => value => {
     const stylesheetArg = args.find(a => a.name === 'stylesheet');
 
     if (!stylesheetArg || !stylesheetArg.value) {
@@ -11,9 +11,7 @@ const transformation = ({ applyJbjStylesheet }, args) => (value) => {
 transformation.getMetas = () => ({
     name: 'JBJ',
     type: 'transform',
-    args: [
-        { name: 'stylesheet', type: 'text' },
-    ],
+    args: [{ name: 'stylesheet', type: 'text' }],
 });
 
 export default transformation;

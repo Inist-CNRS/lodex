@@ -8,22 +8,24 @@ import request from 'request';
 import { PassThrough } from 'stream';
 import config from '../../../../config.json';
 
-
-export const fetch = url => new Promise((resolve, reject) => {
-    request(url, (error, response, body) => {
-        if (error) {
-            reject(error);
-            return;
-        }
-        // simulate window.fetch polyfill
-        const text = () => body;
-        resolve({ text });
+export const fetch = url =>
+    new Promise((resolve, reject) => {
+        request(url, (error, response, body) => {
+            if (error) {
+                reject(error);
+                return;
+            }
+            // simulate window.fetch polyfill
+            const text = () => body;
+            resolve({ text });
+        });
     });
-});
 
 const routineLocalDirectory = Path.resolve(__dirname, '../../routines/');
 const routinesLocal = config.routines
-    .map(routineName => Path.resolve(routineLocalDirectory, routineName.concat('.ini')))
+    .map(routineName =>
+        Path.resolve(routineLocalDirectory, routineName.concat('.ini')),
+    )
     .filter(fileName => fs.existsSync(fileName))
     .map(fileName => [
         fileName,
@@ -34,14 +36,10 @@ const routinesLocal = config.routines
 
 const routineRepository = config.routinesRepository;
 const routinesDistant = config.routines
-    .map(routineName => URL.resolve(routineRepository, routineName.concat('.ini')))
-    .map(fileName => [
-        fileName,
-        null,
-        Path.basename(fileName, '.ini'),
-        null,
-    ]);
-
+    .map(routineName =>
+        URL.resolve(routineRepository, routineName.concat('.ini')),
+    )
+    .map(fileName => [fileName, null, Path.basename(fileName, '.ini'), null]);
 
 export const runRoutine = async (ctx, routineCalled) => {
     const routineLocal = routinesLocal.find(r => r[2] === routineCalled);
@@ -75,18 +73,22 @@ export const runRoutine = async (ctx, routineCalled) => {
     const input = new PassThrough({ objectMode: true });
     const output = input
         .pipe(ezs.fromString(script))
-        .pipe(ezs((data, feed) => {
-            if (data instanceof Error) {
-                global.console.error('Error in pipeline.', data);
-                feed.end();
-            } else {
-                feed.send(data);
-            }
-        }))
-        .pipe(ezs.toBuffer())
-    ;
+        .pipe(
+            ezs((data, feed) => {
+                if (data instanceof Error) {
+                    global.console.error('Error in pipeline.', data);
+                    feed.end();
+                } else {
+                    feed.send(data);
+                }
+            }),
+        )
+        .pipe(ezs.toBuffer());
     if (metaData.fileName) {
-        ctx.set('Content-disposition', `attachment; filename=${metaData.fileName}`);
+        ctx.set(
+            'Content-disposition',
+            `attachment; filename=${metaData.fileName}`,
+        );
     }
     ctx.type = metaData.mimeType;
     ctx.status = 200;

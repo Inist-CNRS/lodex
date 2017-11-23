@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
@@ -42,7 +43,7 @@ export class ActionButtonComponent extends Component {
         onHideExistingColumns: PropTypes.func.isRequired,
         onShowExistingColumns: PropTypes.func.isRequired,
         p: polyglotPropTypes.isRequired,
-    }
+    };
 
     constructor(props) {
         super(props);
@@ -56,54 +57,72 @@ export class ActionButtonComponent extends Component {
 
     componentWillReceiveProps(nextProps) {
         if (nextProps.editedColumn) {
-            const currentEditedColumnName = this.props.editedColumn ? this.props.editedColumn.name : undefined;
+            const currentEditedColumnName = this.props.editedColumn
+                ? this.props.editedColumn.name
+                : undefined;
             if (nextProps.editedColumn.name !== currentEditedColumnName) {
-                this.setState({
-                    showPopover: false,
-                    showCancel: false,
-                    showExistingColumns: false,
-                }, () => {
-                    this.props.onHideExistingColumns();
-                });
+                this.setState(
+                    {
+                        showPopover: false,
+                        showCancel: false,
+                        showExistingColumns: false,
+                    },
+                    () => {
+                        this.props.onHideExistingColumns();
+                    },
+                );
             }
         }
     }
 
-    storeAnchorRef = (node) => {
+    storeAnchorRef = node => {
         this.anchor = node;
-    }
+    };
 
     handleAddNewColumn = () => {
-        this.setState({
-            showPopover: false,
-            showCancel: false,
-        }, () => {
-            this.props.onHideExistingColumns();
-            this.props.onAddNewColumn();
-        });
-    }
+        this.setState(
+            {
+                showPopover: false,
+                showCancel: false,
+            },
+            () => {
+                this.props.onHideExistingColumns();
+                this.props.onAddNewColumn();
+            },
+        );
+    };
 
     handleShowExistingColumns = () => {
-        this.setState({
-            showPopover: !this.state.showPopover,
-            showCancel: true,
-            showExistingColumns: true,
-        }, () => {
-            this.props.onShowExistingColumns();
-        });
-    }
+        this.setState(
+            {
+                showPopover: !this.state.showPopover,
+                showCancel: true,
+                showExistingColumns: true,
+            },
+            () => {
+                this.props.onShowExistingColumns();
+            },
+        );
+    };
 
     handleClick = () => {
-        this.setState({
-            showPopover: this.state.showExistingColumns ? false : !this.state.showPopover,
-            showCancel: this.state.showExistingColumns ? false : !this.state.showCancel,
-        }, () => {
-            if (!this.state.showPopover) {
-                this.setState({ showExistingColumns: false });
-                this.props.onHideExistingColumns();
-            }
-        });
-    }
+        this.setState(
+            {
+                showPopover: this.state.showExistingColumns
+                    ? false
+                    : !this.state.showPopover,
+                showCancel: this.state.showExistingColumns
+                    ? false
+                    : !this.state.showCancel,
+            },
+            () => {
+                if (!this.state.showPopover) {
+                    this.setState({ showExistingColumns: false });
+                    this.props.onHideExistingColumns();
+                }
+            },
+        );
+    };
 
     render() {
         const { p: polyglot } = this.props;
@@ -159,8 +178,6 @@ const mapStateToProps = state => ({
     editedColumn: fromFields.getEditedField(state),
 });
 
-
-export default compose(
-    connect(mapStateToProps),
-    translate,
-)(ActionButtonComponent);
+export default compose(connect(mapStateToProps), translate)(
+    ActionButtonComponent,
+);

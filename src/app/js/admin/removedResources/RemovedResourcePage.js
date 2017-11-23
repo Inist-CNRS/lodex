@@ -20,7 +20,6 @@ RemovedResourcePageComponent.propTypes = {
     p: polyglotPropTypes.isRequired,
 };
 
-export default compose(
-    withInitialData,
-    translate,
-)(RemovedResourcePageComponent);
+export default compose(withInitialData, translate)(
+    RemovedResourcePageComponent,
+);

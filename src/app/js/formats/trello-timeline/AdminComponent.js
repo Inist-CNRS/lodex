@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import TextField from 'material-ui/TextField';
 import translate from 'redux-polyglot/translate';
 
@@ -16,12 +17,12 @@ class ListEdition extends Component {
         trelloKey: PropTypes.string,
         trelloToken: PropTypes.string,
         onChange: PropTypes.func.isRequired,
-    }
+    };
 
     static defaultProps = {
         trelloKey: '',
         trelloToken: '',
-    }
+    };
     constructor(props) {
         super(props);
 
@@ -31,21 +32,21 @@ class ListEdition extends Component {
         };
     }
 
-    setToken = (trelloToken) => {
+    setToken = trelloToken => {
         this.setState({ trelloToken });
         this.props.onChange({
             trelloToken,
             trelloKey: this.state.trelloKey,
         });
-    }
+    };
 
-    setKey = (trelloKey) => {
+    setKey = trelloKey => {
         this.setState({ trelloKey });
         this.props.onChange({
             trelloKey,
             trelloToken: this.state.trelloToken,
         });
-    }
+    };
 
     render() {
         const { trelloToken, trelloKey } = this.state;

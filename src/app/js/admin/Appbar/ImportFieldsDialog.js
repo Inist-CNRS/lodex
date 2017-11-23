@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
@@ -36,19 +37,20 @@ class ImportFieldsDialogComponent extends Component {
         }
     }
 
-    storeFieldsInputRef = (input) => {
+    storeFieldsInputRef = input => {
         this.fieldsImportInput = input;
-    }
+    };
 
-    handleFileUpload = (event) => {
+    handleFileUpload = event => {
         this.props.importFields(event.target.files[0]);
-    }
+    };
 
     render() {
         const { failed, onClose, p: polyglot } = this.props;
 
         const actions = [
             <FlatButton
+                key="confirm"
                 className="btn-confirm"
                 containerElement="label"
                 label={polyglot.t('import_fields')}
@@ -63,6 +65,7 @@ class ImportFieldsDialogComponent extends Component {
                 />
             </FlatButton>,
             <FlatButton
+                key="cancel"
                 className="btn-cancel"
                 label={polyglot.t('no')}
                 onTouchTap={onClose}
@@ -70,13 +73,13 @@ class ImportFieldsDialogComponent extends Component {
         ];
 
         return (
-            <Dialog
-                actions={actions}
-                className="dialog-import-fields"
-                open
-            >
+            <Dialog actions={actions} className="dialog-import-fields" open>
                 {!failed && polyglot.t('confirm_import_fields')}
-                {failed && <span style={styles.error}>{polyglot.t('import_fields_failed')}</span>}
+                {failed && (
+                    <span style={styles.error}>
+                        {polyglot.t('import_fields_failed')}
+                    </span>
+                )}
             </Dialog>
         );
     }
@@ -94,11 +97,10 @@ const mapStateToProps = state => ({
     failed: fromImport.hasImportFailed(state),
 });
 
-const mapDispatchToProps = ({
+const mapDispatchToProps = {
     importFields: importFieldsAction,
-});
+};
 
-export default compose(
-    translate,
-    connect(mapStateToProps, mapDispatchToProps),
-)(ImportFieldsDialogComponent);
+export default compose(translate, connect(mapStateToProps, mapDispatchToProps))(
+    ImportFieldsDialogComponent,
+);

@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 import { connect } from 'react-redux';
@@ -9,23 +10,28 @@ import FieldFormatInput from '../FieldFormatInput';
 import FieldOverviewInput from '../FieldOverviewInput';
 import FieldDisplayInListInput from '../FieldDisplayInListInput';
 import FieldDisplayInResourceInput from '../FieldDisplayInResourceInput';
-import { polyglot as polyglotPropTypes, field as fieldPropTypes } from '../../propTypes';
+import {
+    polyglot as polyglotPropTypes,
+    field as fieldPropTypes,
+} from '../../propTypes';
 import { FIELD_FORM_NAME } from '../';
 import { fromFields } from '../../sharedSelectors';
 
 export class StepDisplayComponent extends Component {
     componentWillReceiveProps(nextProps) {
-        if (nextProps.transformers.find(t => t.operation === 'LINK') && !nextProps.format) {
-            this.props.updateField(FIELD_FORM_NAME, 'format', { name: 'uri', args: { type: 'value' } });
+        if (
+            nextProps.transformers.find(t => t.operation === 'LINK') &&
+            !nextProps.format
+        ) {
+            this.props.updateField(FIELD_FORM_NAME, 'format', {
+                name: 'uri',
+                args: { type: 'value' },
+            });
         }
     }
 
     render() {
-        const {
-            field,
-            p: polyglot,
-            ...props
-        } = this.props;
+        const { field, p: polyglot, ...props } = this.props;
 
         return (
             <Step label="field_wizard_step_display" {...props}>
@@ -46,7 +52,7 @@ StepDisplayComponent.propTypes = {
     updateField: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
     const values = getFormValues(FIELD_FORM_NAME)(state);
 
     return {
@@ -58,7 +64,6 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = { updateField: change };
 
-export default compose(
-    connect(mapStateToProps, mapDispatchToProps),
-    translate,
-)(StepDisplayComponent);
+export default compose(connect(mapStateToProps, mapDispatchToProps), translate)(
+    StepDisplayComponent,
+);

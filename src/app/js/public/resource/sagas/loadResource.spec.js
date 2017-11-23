@@ -2,11 +2,7 @@ import expect from 'expect';
 import { call, put, select } from 'redux-saga/effects';
 import { LOCATION_CHANGE } from 'react-router-redux';
 
-import {
-    loadResource,
-    loadResourceSuccess,
-    loadResourceError,
-} from '../';
+import { loadResource, loadResourceSuccess, loadResourceError } from '../';
 import { preLoadPublication } from '../../../fields';
 import fetchSaga from '../../../lib/sagas/fetchSaga';
 import { fromUser } from '../../../sharedSelectors';
@@ -33,12 +29,14 @@ describe('resource saga', () => {
         it('should call getUri', () => {
             const saga = handleLoadResource(action);
             saga.next();
-            expect(saga.next().value).toEqual(call(getUri, LOCATION_CHANGE, {
-                pathname: '/ark:/naan/publisher-id',
-                query: {
-                    uri: 'uri',
-                },
-            }));
+            expect(saga.next().value).toEqual(
+                call(getUri, LOCATION_CHANGE, {
+                    pathname: '/ark:/naan/publisher-id',
+                    query: {
+                        uri: 'uri',
+                    },
+                }),
+            );
         });
 
         it('should end if receiving no uri', () => {
@@ -54,7 +52,9 @@ describe('resource saga', () => {
             saga.next();
             saga.next();
             const next = saga.next('uri');
-            expect(next.value).toEqual(select(fromResource.isResourceLoaded, 'uri'));
+            expect(next.value).toEqual(
+                select(fromResource.isResourceLoaded, 'uri'),
+            );
         });
 
         it('should end if resource is loaded', () => {
@@ -82,7 +82,9 @@ describe('resource saga', () => {
             saga.next('uri');
             saga.next(false);
             const next = saga.next();
-            expect(next.value).toEqual(select(fromUser.getLoadResourceRequest, 'uri'));
+            expect(next.value).toEqual(
+                select(fromUser.getLoadResourceRequest, 'uri'),
+            );
         });
 
         it('should call fetchSaga with returned request', () => {
@@ -134,7 +136,9 @@ describe('resource saga', () => {
         it('should select getResourceLastVersion if type is no LOCATION_CHANGE', () => {
             const saga = getUri('not LOCATION_CHANGE', 'payload');
             const next = saga.next();
-            expect(next.value).toEqual(select(fromResource.getResourceLastVersion));
+            expect(next.value).toEqual(
+                select(fromResource.getResourceLastVersion),
+            );
         });
 
         it('should return null if no resource', () => {
@@ -156,15 +160,27 @@ describe('resource saga', () => {
 
     describe('getUriFromPayload', () => {
         it('should return payload.pathname if it match ark pattern', () => {
-            expect(getUriFromPayload({ pathname: '/ark:/naan/publis-id' })).toEqual('ark:/naan/publis-id');
+            expect(
+                getUriFromPayload({ pathname: '/ark:/naan/publis-id' }),
+            ).toEqual('ark:/naan/publis-id');
         });
 
         it('should return state.uri if pathname does not match ark', () => {
-            expect(getUriFromPayload({ pathname: 'not an ark', state: { uri: 'state uri' } })).toEqual('state uri');
+            expect(
+                getUriFromPayload({
+                    pathname: 'not an ark',
+                    state: { uri: 'state uri' },
+                }),
+            ).toEqual('state uri');
         });
 
         it('should return uri from queryString if no ark and no state uri', () => {
-            expect(getUriFromPayload({ pathname: '/resource', search: '?uri=queryStringUri' })).toEqual('queryStringUri');
+            expect(
+                getUriFromPayload({
+                    pathname: '/resource',
+                    search: '?uri=queryStringUri',
+                }),
+            ).toEqual('queryStringUri');
         });
 
         it('should return null if none of the above match', () => {

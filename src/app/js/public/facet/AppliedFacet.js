@@ -1,15 +1,19 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import withHandlers from 'recompose/withHandlers';
 import Chip from 'material-ui/Chip';
 import { facet as facetPropTypes } from '../../propTypes';
 import getFieldClassName from '../../lib/getFieldClassName';
 
-export const AppliedFacetComponent = ({ facet: { field, value }, handleRequestDelete }) => (
+export const AppliedFacetComponent = ({
+    facet: { field, value },
+    handleRequestDelete,
+}) => (
     <Chip
         className={`applied-facet-${getFieldClassName(field)}`}
         onRequestDelete={handleRequestDelete}
     >
-        <b>{field.label}</b>{' '}{value}
+        <b>{field.label}</b> {value}
     </Chip>
 );
 
@@ -19,5 +23,6 @@ AppliedFacetComponent.propTypes = {
 };
 
 export default withHandlers({
-    handleRequestDelete: ({ facet: { field }, onRemove }) => () => onRemove(field),
+    handleRequestDelete: ({ facet: { field }, onRemove }) => () =>
+        onRemove(field),
 })(AppliedFacetComponent);

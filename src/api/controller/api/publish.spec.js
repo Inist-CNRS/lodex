@@ -22,11 +22,17 @@ describe('publish', () => {
         ];
 
         const publishedDataset = [
-            { field1: 'field1_value', field2: 'field2_value', field3: 'field3_value' },
+            {
+                field1: 'field1_value',
+                field2: 'field2_value',
+                field3: 'field3_value',
+            },
         ];
 
         const ctx = {
-            versionTransformResult: createSpy().andReturn('transformDocumentAndKeepUri()'),
+            versionTransformResult: createSpy().andReturn(
+                'transformDocumentAndKeepUri()',
+            ),
             addTransformResultToDoc: createSpy().andReturn('addUri()'),
             dataset: {
                 count: createSpy().andReturn(Promise.resolve('count')),
@@ -35,7 +41,9 @@ describe('publish', () => {
             field: {
                 findAll: createSpy().andReturn(fields),
             },
-            getDocumentTransformer: createSpy().andReturn('transformDocument()'),
+            getDocumentTransformer: createSpy().andReturn(
+                'transformDocument()',
+            ),
             publishedCharacteristic: {
                 addNewVersion: createSpy(),
             },
@@ -68,34 +76,58 @@ describe('publish', () => {
         });
 
         it('should call getDocumentTransformer to get the uri transformers', () => {
-            expect(ctx.getDocumentTransformer).toHaveBeenCalledWith([fields[0]]);
+            expect(ctx.getDocumentTransformer).toHaveBeenCalledWith([
+                fields[0],
+            ]);
         });
 
         it('should call ctx.addTransformResultToDoc with transformDocument', () => {
-            expect(ctx.addTransformResultToDoc).toHaveBeenCalledWith('transformDocument()');
+            expect(ctx.addTransformResultToDoc).toHaveBeenCalledWith(
+                'transformDocument()',
+            );
         });
 
         it('should call ctx.tranformAllDocuments', () => {
-            expect(ctx.tranformAllDocuments).toHaveBeenCalledWith('count', 'dataset.findLimitFromSkip()', 'uriDataset.insertBatch()', 'addUri()');
+            expect(ctx.tranformAllDocuments).toHaveBeenCalledWith(
+                'count',
+                'dataset.findLimitFromSkip()',
+                'uriDataset.insertBatch()',
+                'addUri()',
+            );
         });
 
         it('should call getDocumentTransformer with all other fields', () => {
-            expect(ctx.getDocumentTransformer).toHaveBeenCalledWith([fields[1]]);
+            expect(ctx.getDocumentTransformer).toHaveBeenCalledWith([
+                fields[1],
+            ]);
         });
 
         it('should call ctx.versionTransformResult with transformDocument', () => {
-            expect(ctx.versionTransformResult).toHaveBeenCalledWith('transformDocument()');
+            expect(ctx.versionTransformResult).toHaveBeenCalledWith(
+                'transformDocument()',
+            );
         });
 
         it('should call ctx.tranformAllDocuments', () => {
-            expect(ctx.tranformAllDocuments).toHaveBeenCalledWith('count', 'uriDataset.findLimitFromSkip()', 'publishedDataset.insertBatch()', 'transformDocumentAndKeepUri()');
+            expect(ctx.tranformAllDocuments).toHaveBeenCalledWith(
+                'count',
+                'uriDataset.findLimitFromSkip()',
+                'publishedDataset.insertBatch()',
+                'transformDocumentAndKeepUri()',
+            );
         });
 
         it('should call publishCharacteristics', () => {
-            expect(ctx.publishCharacteristics).toHaveBeenCalledWith(ctx, [{
-                name: 'field3',
-                cover: 'dataset',
-            }], 'count');
+            expect(ctx.publishCharacteristics).toHaveBeenCalledWith(
+                ctx,
+                [
+                    {
+                        name: 'field3',
+                        cover: 'dataset',
+                    },
+                ],
+                'count',
+            );
         });
 
         it('should redirect to the publication route', () => {
@@ -104,7 +136,9 @@ describe('publish', () => {
     });
 
     describe('publishCharacteristics', () => {
-        const transformDocument = createSpy().andReturn({ transformed: 'document' });
+        const transformDocument = createSpy().andReturn({
+            transformed: 'document',
+        });
         const count = 5;
         const ctx = {
             getDocumentTransformer: createSpy().andReturn(transformDocument),
@@ -115,23 +149,28 @@ describe('publish', () => {
                 addNewVersion: createSpy(),
             },
         };
-        const datasetFields = [{
-            name: 'transformed',
-            scheme: 'scheme',
-        }];
+        const datasetFields = [
+            {
+                name: 'transformed',
+                scheme: 'scheme',
+            },
+        ];
 
         before(async () => {
             await publishCharacteristics(ctx, datasetFields, count);
         });
 
         it('should call getDocumentTransformer', () => {
-            expect(ctx.getDocumentTransformer)
-                .toHaveBeenCalledWith(datasetFields);
+            expect(ctx.getDocumentTransformer).toHaveBeenCalledWith(
+                datasetFields,
+            );
         });
 
         it('should call ctx.uriDataset.findLimitFromSkip', () => {
-            expect(ctx.uriDataset.findLimitFromSkip)
-                .toHaveBeenCalledWith(1, count - 1);
+            expect(ctx.uriDataset.findLimitFromSkip).toHaveBeenCalledWith(
+                1,
+                count - 1,
+            );
         });
 
         it('should call transformDocument returned by getDocumentTransformer', () => {
@@ -139,7 +178,9 @@ describe('publish', () => {
         });
 
         it('should call ctx.publishedCharacteristic.addNewVersion', () => {
-            expect(ctx.publishedCharacteristic.addNewVersion).toHaveBeenCalledWith({
+            expect(
+                ctx.publishedCharacteristic.addNewVersion,
+            ).toHaveBeenCalledWith({
                 transformed: 'document',
             });
         });
@@ -163,7 +204,7 @@ describe('publish', () => {
     });
 
     describe('handlePublishError', () => {
-        it('should remove uriDataset and publishedDataset if next fail', (done) => {
+        it('should remove uriDataset and publishedDataset if next fail', done => {
             const ctx = {
                 uriDataset: {
                     remove: createSpy(),
@@ -179,13 +220,17 @@ describe('publish', () => {
             const next = createSpy().andReturn(Promise.reject(error));
             handlePublishError(ctx, next)
                 .then(() => {
-                    throw new Error('tryPublish promise should have been rejected');
+                    throw new Error(
+                        'tryPublish promise should have been rejected',
+                    );
                 })
-                .catch((e) => {
+                .catch(e => {
                     expect(e).toEqual(error);
                     expect(ctx.uriDataset.remove).toHaveBeenCalled();
                     expect(ctx.publishedDataset.remove).toHaveBeenCalled();
-                    expect(ctx.publishedCharacteristic.remove).toHaveBeenCalled();
+                    expect(
+                        ctx.publishedCharacteristic.remove,
+                    ).toHaveBeenCalled();
                     done();
                 })
                 .catch(done);
@@ -200,10 +245,17 @@ describe('publish', () => {
         const count = 2001;
         const findLimitFromSkip = createSpy().andReturn(dataset);
         const insertBatch = createSpy();
-        const transformDocument = createSpy().andReturn(Promise.resolve('transformedDocument'));
+        const transformDocument = createSpy().andReturn(
+            Promise.resolve('transformedDocument'),
+        );
 
         before(async () => {
-            await tranformAllDocuments(count, findLimitFromSkip, insertBatch, transformDocument);
+            await tranformAllDocuments(
+                count,
+                findLimitFromSkip,
+                insertBatch,
+                transformDocument,
+            );
         });
         it('should load items from the original dataset and insert them in the publishedDataset by page of 100', () => {
             expect(findLimitFromSkip).toHaveBeenCalledWith(1000, 0);
@@ -246,12 +298,16 @@ describe('publish', () => {
                 data: 'value',
             };
             const date = new Date();
-            expect(await versionTransformResult(transform)(doc, null, null, date)).toEqual({
+            expect(
+                await versionTransformResult(transform)(doc, null, null, date),
+            ).toEqual({
                 uri: 'uri',
-                versions: [{
-                    transformed: 'data',
-                    publicationDate: date,
-                }],
+                versions: [
+                    {
+                        transformed: 'data',
+                        publicationDate: date,
+                    },
+                ],
             });
 
             expect(transform).toHaveBeenCalledWith(doc);

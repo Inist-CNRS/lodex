@@ -32,13 +32,16 @@ describe('field reducer', () => {
 
     describe('addField', () => {
         it('should handle the ADD_FIELD action with no name', () => {
-            const state = reducer({
-                byName: {
-                    name1: { name: 'name1', label: 'foo' },
-                    name2: { name: 'name2', label: 'bar' },
+            const state = reducer(
+                {
+                    byName: {
+                        name1: { name: 'name1', label: 'foo' },
+                        name2: { name: 'name2', label: 'bar' },
+                    },
+                    list: ['name1', 'name2'],
                 },
-                list: ['name1', 'name2'],
-            }, addField());
+                addField(),
+            );
 
             expect(state).toEqual({
                 ...state,
@@ -63,13 +66,16 @@ describe('field reducer', () => {
             });
         });
         it('should handle the ADD_FIELD action with name', () => {
-            const state = reducer({
-                byName: {
-                    name1: { name: 'name1', label: 'foo' },
-                    name2: { name: 'name2', label: 'bar' },
+            const state = reducer(
+                {
+                    byName: {
+                        name1: { name: 'name1', label: 'foo' },
+                        name2: { name: 'name2', label: 'bar' },
+                    },
+                    list: ['name1', 'name2'],
                 },
-                list: ['name1', 'name2'],
-            }, addField('target_col'));
+                addField('target_col'),
+            );
 
             expect(state).toEqual({
                 ...state,
@@ -85,21 +91,26 @@ describe('field reducer', () => {
                         display_in_list: true,
                         display_in_resource: true,
                         searchable: true,
-                        transformers: [{
-                            operation: 'COLUMN',
-                            args: [{
-                                name: 'column',
-                                type: 'column',
-                                value: 'target_col',
-                            }],
-                        }],
+                        transformers: [
+                            {
+                                operation: 'COLUMN',
+                                args: [
+                                    {
+                                        name: 'column',
+                                        type: 'column',
+                                        value: 'target_col',
+                                    },
+                                ],
+                            },
+                        ],
                         position: 2,
                         overview: 0,
                         classes: [],
                     },
                 },
             });
-        }); it('should handle the LOAD_PUBLICATION action', () => {
+        });
+        it('should handle the LOAD_PUBLICATION action', () => {
             const state = reducer(undefined, loadPublication());
             expect(state).toEqual({
                 ...state,
@@ -113,14 +124,18 @@ describe('field reducer', () => {
                 fields: [{ name: 'bar', value: 'data' }],
                 published: true,
             });
-            const state = reducer({ loading: true, error: true, published: false }, action);
+            const state = reducer(
+                { loading: true, error: true, published: false },
+                action,
+            );
 
             expect(state).toEqual({
                 error: null,
                 list: ['bar'],
                 byName: {
                     bar: {
-                        name: 'bar', value: 'data',
+                        name: 'bar',
+                        value: 'data',
                     },
                 },
                 loading: false,
@@ -130,7 +145,10 @@ describe('field reducer', () => {
         });
 
         it('should handle the LOAD_PUBLICATION_ERROR action', () => {
-            const state = reducer({ loading: true }, loadPublicationError(new Error('foo')));
+            const state = reducer(
+                { loading: true },
+                loadPublicationError(new Error('foo')),
+            );
             expect(state).toEqual({
                 loading: false,
                 error: 'foo',
@@ -138,7 +156,10 @@ describe('field reducer', () => {
         });
 
         it('should handle the SELECT_FIELD action', () => {
-            const state = reducer({ data: 'value' }, selectField('selectedFieldName'));
+            const state = reducer(
+                { data: 'value' },
+                selectField('selectedFieldName'),
+            );
             expect(state).toEqual({
                 data: 'value',
                 selectedField: 'selectedFieldName',
@@ -155,7 +176,10 @@ describe('field reducer', () => {
         });
 
         it('should handle the CONFIGURE_FIELD_SUCCESS action', () => {
-            const state = reducer({ data: 'value', byName: {} }, configureFieldSuccess({ name: 'name', data: 'updated' }));
+            const state = reducer(
+                { data: 'value', byName: {} },
+                configureFieldSuccess({ name: 'name', data: 'updated' }),
+            );
             expect(state).toEqual({
                 data: 'value',
                 byName: {
@@ -168,7 +192,10 @@ describe('field reducer', () => {
         });
 
         it('should handle the CONFIGURE_FIELD_ERROR action', () => {
-            const state = reducer({ data: 'value' }, configureFieldError({ message: 'Boom' }));
+            const state = reducer(
+                { data: 'value' },
+                configureFieldError({ message: 'Boom' }),
+            );
             expect(state).toEqual({
                 data: 'value',
                 error: 'Boom',
@@ -177,7 +204,10 @@ describe('field reducer', () => {
         });
 
         it('should handle the CONFIGURE_FIELD_OPEN action', () => {
-            const state = reducer({ data: 'value' }, configureFieldOpen('fieldName'));
+            const state = reducer(
+                { data: 'value' },
+                configureFieldOpen('fieldName'),
+            );
             expect(state).toEqual({
                 data: 'value',
                 configuredFieldName: 'fieldName',
@@ -195,7 +225,10 @@ describe('field reducer', () => {
         });
 
         it('should handle the OPEN_FIELD_VALUE action', () => {
-            const state = reducer({ data: 'value' }, openEditFieldValue('fieldName'));
+            const state = reducer(
+                { data: 'value' },
+                openEditFieldValue('fieldName'),
+            );
             expect(state).toEqual({
                 data: 'value',
                 editedValueFieldName: 'fieldName',
@@ -203,9 +236,11 @@ describe('field reducer', () => {
             });
         });
 
-
         it('should handle the CLOSE_EDIT_FIELD_VALUE action', () => {
-            const state = reducer({ data: 'value' }, closeEditFieldValue('fieldName'));
+            const state = reducer(
+                { data: 'value' },
+                closeEditFieldValue('fieldName'),
+            );
             expect(state).toEqual({
                 data: 'value',
                 editedValueFieldName: null,
@@ -220,10 +255,13 @@ describe('field reducer', () => {
         });
 
         it('should handle the LOAD_FIELD_SUCCESS action', () => {
-            const state = reducer({ ...defaultState, list: ['foo'] }, loadFieldSuccess([
-                { name: 'bar_name', foo: 'bar' },
-                { name: 'foo_name', foo: 'foo' },
-            ]));
+            const state = reducer(
+                { ...defaultState, list: ['foo'] },
+                loadFieldSuccess([
+                    { name: 'bar_name', foo: 'bar' },
+                    { name: 'foo_name', foo: 'foo' },
+                ]),
+            );
             expect(state).toEqual({
                 ...defaultState,
                 list: ['bar_name', 'foo_name'],
@@ -237,9 +275,12 @@ describe('field reducer', () => {
 
     describe('editField', () => {
         it('should handle the EDIT_FIELD action', () => {
-            const state = reducer({
-                list: ['name1', 'name2', 'name3'],
-            }, editField(1));
+            const state = reducer(
+                {
+                    list: ['name1', 'name2', 'name3'],
+                },
+                editField(1),
+            );
             expect(state).toEqual({
                 list: ['name1', 'name2', 'name3'],
                 editedFieldName: 'name2',
@@ -249,13 +290,16 @@ describe('field reducer', () => {
 
     describe('removeFieldSuccess', () => {
         it('should handle the REMOVE_FIELD_SUCCESS action', () => {
-            const state = reducer({
-                list: ['bar', 'foo'],
-                byName: {
-                    bar: { name: 'bar' },
-                    foo: { name: 'foo' },
+            const state = reducer(
+                {
+                    list: ['bar', 'foo'],
+                    byName: {
+                        bar: { name: 'bar' },
+                        foo: { name: 'foo' },
+                    },
                 },
-            }, removeFieldSuccess({ name: 'foo' }));
+                removeFieldSuccess({ name: 'foo' }),
+            );
             expect(state).toEqual({
                 list: ['bar'],
                 byName: {
@@ -277,28 +321,32 @@ describe('field reducer', () => {
                         name4: 'field4',
                     },
                 };
-                expect(selectors.getFields(state))
-                    .toEqual(['field1', 'field2', 'field3']);
+                expect(selectors.getFields(state)).toEqual([
+                    'field1',
+                    'field2',
+                    'field3',
+                ]);
             });
         });
 
         describe('getNbFields', () => {
             it('should return list length', () => {
-                expect(selectors.getNbFields({ list: [1, 2, 3] }))
-                    .toBe(3);
+                expect(selectors.getNbFields({ list: [1, 2, 3] })).toBe(3);
             });
         });
 
         describe('getEditedField', () => {
             it('should return editedField', () => {
-                expect(selectors.getEditedField({
-                    editedFieldName: 'name2',
-                    byName: {
-                        name1: 'field1',
-                        name2: 'field2',
-                        name3: 'field3',
-                    },
-                })).toBe('field2');
+                expect(
+                    selectors.getEditedField({
+                        editedFieldName: 'name2',
+                        byName: {
+                            name1: 'field1',
+                            name2: 'field2',
+                            name3: 'field3',
+                        },
+                    }),
+                ).toBe('field2');
             });
         });
 
@@ -307,17 +355,25 @@ describe('field reducer', () => {
                 const field = {
                     name: 'field',
                 };
-                const getLineCol = getLineColGetterFromAllFields({ field }, field);
-                expect(getLineCol({ field: 'value', other: 'data' }))
-                    .toEqual('value');
+                const getLineCol = getLineColGetterFromAllFields(
+                    { field },
+                    field,
+                );
+                expect(getLineCol({ field: 'value', other: 'data' })).toEqual(
+                    'value',
+                );
             });
             it('should stringify result if it is an array', () => {
                 const field = {
                     name: 'field',
                 };
-                const getLineCol = getLineColGetterFromAllFields({ field }, field);
-                expect(getLineCol({ field: ['value1', 'value2'], other: 'data' }))
-                    .toEqual('["value1","value2"]');
+                const getLineCol = getLineColGetterFromAllFields(
+                    { field },
+                    field,
+                );
+                expect(
+                    getLineCol({ field: ['value1', 'value2'], other: 'data' }),
+                ).toEqual('["value1","value2"]');
             });
         });
 
@@ -333,7 +389,11 @@ describe('field reducer', () => {
                     },
                 };
 
-                expect(selectors.getFieldsForPreview(state)).toEqual(['value1', 'value2', 'value3']);
+                expect(selectors.getFieldsForPreview(state)).toEqual([
+                    'value1',
+                    'value2',
+                    'value3',
+                ]);
             });
 
             it('should return all fields if no editedFieldName', () => {
@@ -346,7 +406,9 @@ describe('field reducer', () => {
                     },
                 };
 
-                expect(selectors.getFieldsForPreview(state, 'form data')).toEqual(['value1', 'value2', 'value3']);
+                expect(
+                    selectors.getFieldsForPreview(state, 'form data'),
+                ).toEqual(['value1', 'value2', 'value3']);
             });
 
             it('should return all fields replacing editedFieldName by formData', () => {
@@ -359,45 +421,82 @@ describe('field reducer', () => {
                     },
                 };
 
-                expect(selectors.getFieldsForPreview({ ...state, editedFieldName: 'field1' }, 'form data'))
-                    .toEqual(['form data', 'value2', 'value3']);
+                expect(
+                    selectors.getFieldsForPreview(
+                        { ...state, editedFieldName: 'field1' },
+                        'form data',
+                    ),
+                ).toEqual(['form data', 'value2', 'value3']);
 
-                expect(selectors.getFieldsForPreview({ ...state, editedFieldName: 'field2' }, 'form data'))
-                    .toEqual(['value1', 'form data', 'value3']);
+                expect(
+                    selectors.getFieldsForPreview(
+                        { ...state, editedFieldName: 'field2' },
+                        'form data',
+                    ),
+                ).toEqual(['value1', 'form data', 'value3']);
 
-                expect(selectors.getFieldsForPreview({ ...state, editedFieldName: 'field3' }, 'form data'))
-                    .toEqual(['value1', 'value2', 'form data']);
+                expect(
+                    selectors.getFieldsForPreview(
+                        { ...state, editedFieldName: 'field3' },
+                        'form data',
+                    ),
+                ).toEqual(['value1', 'value2', 'form data']);
             });
-        }); describe('getCollectionFields', () => {
+        });
+        describe('getCollectionFields', () => {
             it('should return the model', () => {
-                expect(selectors.getCollectionFields({
-                    list: ['first', 'second'],
-                    byName: {
-                        first: { name: 'first', foo: 'bar', cover: 'collection' },
-                        second: { name: 'second', foo: 'bar2', cover: 'dataset' },
-                    },
-                })).toEqual([{ name: 'first', foo: 'bar', cover: 'collection' }]);
+                expect(
+                    selectors.getCollectionFields({
+                        list: ['first', 'second'],
+                        byName: {
+                            first: {
+                                name: 'first',
+                                foo: 'bar',
+                                cover: 'collection',
+                            },
+                            second: {
+                                name: 'second',
+                                foo: 'bar2',
+                                cover: 'dataset',
+                            },
+                        },
+                    }),
+                ).toEqual([{ name: 'first', foo: 'bar', cover: 'collection' }]);
             });
         });
 
         describe('getDatasetFields', () => {
             it('should return the model', () => {
-                expect(selectors.getDatasetFields({
-                    list: ['first', 'second'],
-                    byName: {
-                        first: { name: 'first', foo: 'bar', cover: 'collection' },
-                        second: { name: 'second', foo: 'bar2', cover: 'dataset' },
-                    },
-                })).toEqual([{ name: 'second', foo: 'bar2', cover: 'dataset' }]);
+                expect(
+                    selectors.getDatasetFields({
+                        list: ['first', 'second'],
+                        byName: {
+                            first: {
+                                name: 'first',
+                                foo: 'bar',
+                                cover: 'collection',
+                            },
+                            second: {
+                                name: 'second',
+                                foo: 'bar2',
+                                cover: 'dataset',
+                            },
+                        },
+                    }),
+                ).toEqual([{ name: 'second', foo: 'bar2', cover: 'dataset' }]);
             });
         });
 
         describe('hasPublishedDataset', () => {
             it('should return true if published', () => {
-                expect(selectors.hasPublishedDataset({ published: true })).toEqual(true);
+                expect(
+                    selectors.hasPublishedDataset({ published: true }),
+                ).toEqual(true);
             });
             it('should return false if published', () => {
-                expect(selectors.hasPublishedDataset({ published: false })).toEqual(false);
+                expect(
+                    selectors.hasPublishedDataset({ published: false }),
+                ).toEqual(false);
             });
         });
 
@@ -406,9 +505,21 @@ describe('field reducer', () => {
                 const state = {
                     list: ['dataset title', 'title', 'other'],
                     byName: {
-                        'dataset title': { cover: 'dataset', scheme: TITLE_SCHEME, name: 'dataset title' },
-                        title: { cover: 'collection', scheme: TITLE_SCHEME, name: 'title' },
-                        other: { cover: 'collection', scheme: 'other scheme', name: 'other' },
+                        'dataset title': {
+                            cover: 'dataset',
+                            scheme: TITLE_SCHEME,
+                            name: 'dataset title',
+                        },
+                        title: {
+                            cover: 'collection',
+                            scheme: TITLE_SCHEME,
+                            name: 'title',
+                        },
+                        other: {
+                            cover: 'collection',
+                            scheme: 'other scheme',
+                            name: 'other',
+                        },
                     },
                 };
                 expect(selectors.getTitleFieldName(state)).toBe('title');
@@ -490,43 +601,47 @@ describe('field reducer', () => {
 
         describe('isAcompositeFields', () => {
             it('should return true if field name is part of composedOf of one of the composedOf Field', () => {
-                expect(isACompositeFields('composite', [
-                    {
-                        composedOf: {
-                            fields: ['field1', 'field1'],
+                expect(
+                    isACompositeFields('composite', [
+                        {
+                            composedOf: {
+                                fields: ['field1', 'field1'],
+                            },
                         },
-                    },
-                    {
-                        composedOf: {
-                            fields: ['field3', 'composite'],
+                        {
+                            composedOf: {
+                                fields: ['field3', 'composite'],
+                            },
                         },
-                    },
-                    {
-                        composedOf: {
-                            fields: ['field4', 'field5'],
+                        {
+                            composedOf: {
+                                fields: ['field4', 'field5'],
+                            },
                         },
-                    },
-                ])).toBe(true);
+                    ]),
+                ).toBe(true);
             });
 
             it('should return true if field name is part of composedOf of one of the composedOf Field', () => {
-                expect(isACompositeFields('composite', [
-                    {
-                        composedOf: {
-                            fields: ['field1', 'field1'],
+                expect(
+                    isACompositeFields('composite', [
+                        {
+                            composedOf: {
+                                fields: ['field1', 'field1'],
+                            },
                         },
-                    },
-                    {
-                        composedOf: {
-                            fields: ['field3', 'field6'],
+                        {
+                            composedOf: {
+                                fields: ['field3', 'field6'],
+                            },
                         },
-                    },
-                    {
-                        composedOf: {
-                            fields: ['field4', 'field5'],
+                        {
+                            composedOf: {
+                                fields: ['field4', 'field5'],
+                            },
                         },
-                    },
-                ])).toBe(false);
+                    ]),
+                ).toBe(false);
             });
 
             it('should return false if no composedOf Field', () => {
@@ -536,25 +651,41 @@ describe('field reducer', () => {
 
         describe('isFieldEdited', () => {
             it('should return true if given fieldname is equal to editedValueFieldName', () => {
-                expect(selectors.isFieldEdited({ editedValueFieldName: 'name' }, 'name'))
-                    .toBe(true);
+                expect(
+                    selectors.isFieldEdited(
+                        { editedValueFieldName: 'name' },
+                        'name',
+                    ),
+                ).toBe(true);
             });
 
             it('should return false if given fieldname is different from editedValueFieldName', () => {
-                expect(selectors.isFieldEdited({ editedValueFieldName: 'name' }, 'no name'))
-                    .toBe(false);
+                expect(
+                    selectors.isFieldEdited(
+                        { editedValueFieldName: 'name' },
+                        'no name',
+                    ),
+                ).toBe(false);
             });
         });
 
         describe('isFieldConfigured', () => {
             it('should return true if given fieldname is equal to configuredFieldName', () => {
-                expect(selectors.isFieldConfigured({ configuredFieldName: 'name' }, 'name'))
-                    .toBe(true);
+                expect(
+                    selectors.isFieldConfigured(
+                        { configuredFieldName: 'name' },
+                        'name',
+                    ),
+                ).toBe(true);
             });
 
             it('should return false if given fieldname is different from configuredFieldName', () => {
-                expect(selectors.isFieldConfigured({ configuredFieldName: 'name' }, 'no name'))
-                    .toBe(false);
+                expect(
+                    selectors.isFieldConfigured(
+                        { configuredFieldName: 'name' },
+                        'no name',
+                    ),
+                ).toBe(false);
             });
         });
     });
@@ -603,9 +734,10 @@ describe('field reducer', () => {
                 selectedField: 'new',
             };
 
-            expect(selectors.getFieldToAdd(state)).toEqual({ cover: 'document' });
+            expect(selectors.getFieldToAdd(state)).toEqual({
+                cover: 'document',
+            });
         });
-
 
         it('should return null if selectedField is not in byName', () => {
             const state = {

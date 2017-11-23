@@ -3,10 +3,7 @@ import { call, take, put, select, race } from 'redux-saga/effects';
 import { LOCATION_CHANGE } from 'react-router-redux';
 
 import { fromUser } from '../../../sharedSelectors';
-import {
-    uploadSuccess,
-    uploadError,
-} from '../';
+import { uploadSuccess, uploadError } from '../';
 import { loadDatasetFile } from '../../../lib/loadFile';
 import fetch from '../../../lib/fetch';
 import { handleUploadFile as uploadFileSaga } from './uploadFile';
@@ -51,10 +48,12 @@ describe('parsing saga', () => {
             saga.next({});
             const { value } = saga.next('token');
 
-            expect(value).toEqual(race({
-                file: call(loadDatasetFile, 'payload', 'token'),
-                cancel: take([LOCATION_CHANGE]),
-            }));
+            expect(value).toEqual(
+                race({
+                    file: call(loadDatasetFile, 'payload', 'token'),
+                    cancel: take([LOCATION_CHANGE]),
+                }),
+            );
         });
 
         it('should end if receiving cancel', () => {

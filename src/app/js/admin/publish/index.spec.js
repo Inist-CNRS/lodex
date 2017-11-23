@@ -21,7 +21,10 @@ describe('publish reducer', () => {
     });
 
     it('should handle the PUBLISH_SUCCESS action', () => {
-        const state = reducer({ loading: true, error: true }, publishSuccess('foo'));
+        const state = reducer(
+            { loading: true, error: true },
+            publishSuccess('foo'),
+        );
         expect(state).toEqual({
             error: null,
             loading: false,

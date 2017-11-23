@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import RadioButton from 'material-ui/RadioButton';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
@@ -41,11 +42,16 @@ StepUriAutogenerateComponent.propTypes = {
     selected: PropTypes.bool.isRequired,
 };
 
-const mapStateToProps = (state) => {
-    const transformers = formValueSelector(FIELD_FORM_NAME)(state, 'transformers');
+const mapStateToProps = state => {
+    const transformers = formValueSelector(FIELD_FORM_NAME)(
+        state,
+        'transformers',
+    );
 
     const valueTransformer =
-        transformers && transformers[0] && transformers[0].operation === 'AUTOGENERATE_URI'
+        transformers &&
+        transformers[0] &&
+        transformers[0].operation === 'AUTOGENERATE_URI'
             ? transformers[0]
             : null;
 

@@ -1,15 +1,18 @@
 import chunk from 'lodash.chunk';
 
-export default (db) => {
+export default db => {
     const collection = db.collection('publishedFacet');
 
-    collection.insertBatch = documents => chunk(documents, 100).map(data => collection.insertMany(data));
+    collection.insertBatch = documents =>
+        chunk(documents, 100).map(data => collection.insertMany(data));
 
     collection.insertFacet = (field, values) =>
-        collection.insertBatch(values.map(value => ({
-            field,
-            ...value,
-        })));
+        collection.insertBatch(
+            values.map(value => ({
+                field,
+                ...value,
+            })),
+        );
 
     collection.findLimitFromSkip = (limit, skip, filter) =>
         collection

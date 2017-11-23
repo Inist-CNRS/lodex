@@ -7,7 +7,6 @@ import fetch from '../fetch';
 import { logout } from '../../user';
 import { getCurrentLocation } from '../../sharedSelectors';
 
-
 describe('sagas fetch', () => {
     let iterator;
     const request = { url: 'bibcnrs.fr', config: 'data' };
@@ -17,15 +16,20 @@ describe('sagas fetch', () => {
 
     it('should race call(fetch) with take(STOP)', () => {
         const next = iterator.next();
-        expect(next.value).toEqual(race({
-            fetchResult: call(fetch, request, 'json'),
-            cancel: take(['STOP']),
-        }));
+        expect(next.value).toEqual(
+            race({
+                fetchResult: call(fetch, request, 'json'),
+                cancel: take(['STOP']),
+            }),
+        );
     });
 
     it('should return cancel result if it is present', () => {
         iterator.next();
-        const next = iterator.next({ cancel: 'cancel', fetchResult: 'fetchResult' });
+        const next = iterator.next({
+            cancel: 'cancel',
+            fetchResult: 'fetchResult',
+        });
 
         expect(next.value).toEqual({ cancel: 'cancel' });
         expect(next.done).toBe(true);
@@ -40,10 +44,14 @@ describe('sagas fetch', () => {
             locationBeforeTransitions: { pathname: 'currentLocation.pathname' },
         });
 
-        expect(next.value).toEqual(put(replace({
-            pathname: '/login',
-            state: { nextPathname: 'currentLocation.pathname' },
-        })));
+        expect(next.value).toEqual(
+            put(
+                replace({
+                    pathname: '/login',
+                    state: { nextPathname: 'currentLocation.pathname' },
+                }),
+            ),
+        );
         next = iterator.next();
         expect(next.value).toEqual(put(logout()));
         next = iterator.next();

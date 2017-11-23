@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { ListItem } from 'material-ui/List';
 import PdfIcon from 'material-ui/svg-icons/image/picture-as-pdf';
 
@@ -6,7 +7,12 @@ const styles = {
     link: { textDecoration: 'none' },
 };
 
-export const IstexItemComponent = ({ title, publicationDate, abstract, fulltext }) => (
+export const IstexItemComponent = ({
+    title,
+    publicationDate,
+    abstract,
+    fulltext,
+}) => (
     <a
         href={fulltext}
         rel="noopener noreferrer"

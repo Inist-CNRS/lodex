@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import FlatButton from 'material-ui/FlatButton';
@@ -11,7 +12,10 @@ import { connect } from 'react-redux';
 import { change, formValueSelector } from 'redux-form';
 import { FIELD_FORM_NAME } from '../';
 
-import { polyglot as polyglotPropTypes, field as fieldPropTypes } from '../../propTypes';
+import {
+    polyglot as polyglotPropTypes,
+    field as fieldPropTypes,
+} from '../../propTypes';
 
 const styles = {
     inset: {
@@ -65,15 +69,17 @@ export const StepSemanticsCompositionComponent = ({
                             />
                         ))}
                     </SelectField>
-                    {index > 1 &&
+                    {index > 1 && (
                         <IconButton
-                            className={`btn-remove-composite-field btn-remove-composite-field-${index}`}
+                            className={`btn-remove-composite-field btn-remove-composite-field-${
+                                index
+                            }`}
                             onClick={handleRemoveColumn(index)}
                             title={polyglot.t('remove_composition_column')}
                         >
                             <IconDelete />
                         </IconButton>
-                    }
+                    )}
                 </div>
             ))}
             <FlatButton
@@ -98,7 +104,7 @@ StepSemanticsCompositionComponent.defaultProps = {
     columns: ['', ''],
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
     const composedOf = formValueSelector(FIELD_FORM_NAME)(state, 'composedOf');
 
     if (composedOf && composedOf.fields.length > 1) {
@@ -112,7 +118,7 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = dispatch => ({
-    onChange: (composedOf) => {
+    onChange: composedOf => {
         dispatch(change(FIELD_FORM_NAME, 'composedOf', composedOf));
     },
 });
@@ -125,7 +131,11 @@ export default compose(
                 fields: columns,
             });
         },
-        handleSelectColumn: ({ columns, onChange }) => index => (event, key, column) => {
+        handleSelectColumn: ({ columns, onChange }) => index => (
+            event,
+            key,
+            column,
+        ) => {
             onChange({
                 fields: [
                     ...columns.slice(0, index),
@@ -136,10 +146,7 @@ export default compose(
         },
         handleAddColumn: ({ columns, onChange }) => () => {
             onChange({
-                fields: [
-                    ...columns,
-                    '',
-                ],
+                fields: [...columns, ''],
             });
         },
         handleRemoveColumn: ({ columns, onChange }) => index => () => {

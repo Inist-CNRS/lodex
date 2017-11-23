@@ -4,21 +4,22 @@ import { logs } from 'config';
 
 export default function logger(filename) {
     const transports = [
-        new (winston.transports.File)({
+        new winston.transports.File({
             filename: path.join(__dirname, `/../../../logs/${filename}`),
         }),
     ];
 
     if (logs) {
-        transports.push(new (winston.transports.Console)({
-            name: 'info',
-            level: 'info',
-            timestamp: true,
-        }));
+        transports.push(
+            new winston.transports.Console({
+                name: 'info',
+                level: 'info',
+                timestamp: true,
+            }),
+        );
     }
 
-
-    return new (winston.Logger)({
+    return new winston.Logger({
         transports,
     });
 }

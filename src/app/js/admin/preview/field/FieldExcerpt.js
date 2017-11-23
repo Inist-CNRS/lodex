@@ -5,7 +5,7 @@ import Excerpt from '../Excerpt';
 import { fromFieldPreview } from '../../selectors';
 import { getFieldFormData } from '../../../fields';
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
     const editedField = getFieldFormData(state);
     return {
         lines: fromFieldPreview.getFieldPreview(state),

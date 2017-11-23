@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { field as fieldPropTypes } from '../../propTypes';
 
 const TitleView = ({ resource, field }) => {
@@ -7,31 +8,15 @@ const TitleView = ({ resource, field }) => {
         level = field.format.args.level;
     }
     if (level === 1) {
-        return (
-            <h1>
-                {resource[field.name]}
-            </h1>
-        );
+        return <h1>{resource[field.name]}</h1>;
     }
     if (level === 2) {
-        return (
-            <h2>
-                {resource[field.name]}
-            </h2>
-        );
+        return <h2>{resource[field.name]}</h2>;
     }
     if (level === 3) {
-        return (
-            <h3>
-                {resource[field.name]}
-            </h3>
-        );
+        return <h3>{resource[field.name]}</h3>;
     }
-    return (
-        <h4>
-            {resource[field.name]}
-        </h4>
-    );
+    return <h4>{resource[field.name]}</h4>;
 };
 
 TitleView.propTypes = {
