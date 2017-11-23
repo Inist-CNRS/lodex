@@ -9,7 +9,7 @@ import {
 import getDocumentTransformer from '../../../lib/getDocumentTransformer';
 import { fromUser } from '../../../sharedSelectors';
 import { computeFieldPreviewSuccess, computeFieldPreviewError } from './';
-import { getFieldFormData } from '../../../fields';
+import { getFieldFormData } from '../../../fields/selectors';
 import { fromParsing } from '../../selectors';
 
 export function* handleComputeFieldPreview() {

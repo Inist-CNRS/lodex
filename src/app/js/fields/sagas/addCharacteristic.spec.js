@@ -1,11 +1,10 @@
 import expect from 'expect';
 import { call, put, select } from 'redux-saga/effects';
 
-import {
-    addCharacteristicError,
-    addCharacteristicSuccess,
-    getNewCharacteristicFormData,
-} from '../';
+import { addCharacteristicError, addCharacteristicSuccess } from '../';
+
+import { getNewCharacteristicFormData } from '../selectors';
+
 import { fromUser } from '../../sharedSelectors';
 import fetchSaga from '../../lib/sagas/fetchSaga';
 
