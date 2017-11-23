@@ -66,7 +66,7 @@ export default async db => {
             ),
         );
 
-    collection.getFindCursor = (filter, sortBy, sortDir = 'ASC') => {
+    collection.getFindCursor = (filter, sortBy = 'uri', sortDir = 'ASC') => {
         let cursor = collection.find(filter);
         if (sortBy) {
             cursor = cursor.sort({
@@ -98,7 +98,7 @@ export default async db => {
     collection.findPage = async (
         page = 0,
         perPage = 10,
-        sortBy,
+        sortBy = 'uri',
         sortDir,
         match,
         facets,
