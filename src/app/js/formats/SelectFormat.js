@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import MenuItem from 'material-ui/MenuItem';
 import SelectField from 'material-ui/SelectField';
 import translate from 'redux-polyglot/translate';
@@ -19,9 +20,9 @@ const SelectFormat = ({ formats, value, onChange, p: polyglot }) => (
     >
         <MenuItem value="None" primaryText="None" />
 
-        {formats.map(f =>
-            <MenuItem key={f} value={f} primaryText={polyglot.t(f)} />,
-        )}
+        {formats.map(f => (
+            <MenuItem key={f} value={f} primaryText={polyglot.t(f)} />
+        ))}
     </SelectField>
 );
 
