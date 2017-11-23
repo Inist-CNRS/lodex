@@ -24,8 +24,8 @@ ifeq ($(NODE_ENV), development)
 endif
 
 install-npm-dependencies:
-	echo "Installing Node dependencies for environment $(NODE_ENV)"
-	npm install $(if $(filter production staging,$(NODE_ENV)),--production,)
+	echo "Installing Node dependencies"
+	docker-compose run --rm node npm install
 
 install: copy-conf install-npm-dependencies ## Install npm dependencies for the api, admin, and frontend apps
 
