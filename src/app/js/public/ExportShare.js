@@ -9,7 +9,7 @@ import { polyglot as polyglotPropTypes } from '../propTypes';
 import { fromCharacteristic } from './selectors';
 import { fromFields } from '../sharedSelectors';
 import AppliedFacetList from './facet/AppliedFacetList';
-import Export from './export/Export';
+import ExportSection from './export/ExportSection';
 import Share from './Share';
 import ShareLink from './ShareLink';
 import Widgets from './Widgets';
@@ -23,7 +23,7 @@ export const PureExportShare = ({
 }) => (
     <div>
         <AppliedFacetList />
-        <Export uri={uri} />
+        <ExportSection uri={uri} />
         <Divider />
         <Widgets uri={uri} />
         <ShareLink title={polyglot.t('dataset_share_link')} uri={sharingUri} />
