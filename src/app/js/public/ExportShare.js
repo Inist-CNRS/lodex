@@ -15,7 +15,7 @@ import ShareLink from './ShareLink';
 import Widgets from './Widgets';
 import Version from './Version';
 
-export const ExportShareComponent = ({
+export const PureExportShare = ({
     sharingUri,
     uri,
     sharingTitle,
@@ -32,7 +32,7 @@ export const ExportShareComponent = ({
     </div>
 );
 
-ExportShareComponent.propTypes = {
+PureExportShare.propTypes = {
     p: polyglotPropTypes.isRequired,
     sharingTitle: PropTypes.string,
     sharingUri: PropTypes.string,
@@ -66,6 +66,4 @@ const mapStateToProps = state => {
     };
 };
 
-export default compose(connect(mapStateToProps), translate)(
-    ExportShareComponent,
-);
+export default compose(connect(mapStateToProps), translate)(PureExportShare);

@@ -6,7 +6,7 @@ import Dialog from 'material-ui/Dialog';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 
-export const ButtonWithDialogComponent = ({
+export const PureButtonWithDialog = ({
     handleClose,
     handleOpen,
     open,
@@ -48,12 +48,12 @@ export const ButtonWithDialogComponent = ({
     );
 };
 
-ButtonWithDialogComponent.defaultProps = {
+PureButtonWithDialog.defaultProps = {
     show: true,
     open: false,
 };
 
-ButtonWithDialogComponent.propTypes = {
+PureButtonWithDialog.propTypes = {
     handleClose: PropTypes.func.isRequired,
     handleOpen: PropTypes.func.isRequired,
     p: polyglotPropTypes.isRequired,
@@ -67,4 +67,4 @@ ButtonWithDialogComponent.propTypes = {
     openButton: PropTypes.node,
 };
 
-export default translate(ButtonWithDialogComponent);
+export default translate(PureButtonWithDialog);

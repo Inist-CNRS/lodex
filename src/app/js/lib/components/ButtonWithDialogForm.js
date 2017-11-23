@@ -14,7 +14,7 @@ import ButtonWithStatus from './ButtonWithStatus';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import ButtonWithDialog from './ButtonWithDialog';
 
-export const ButtonWithDialogFormComponent = ({
+export const PureButtonWithDialogForm = ({
     buttonStyle,
     handleClose,
     handleOpen,
@@ -78,13 +78,13 @@ export const ButtonWithDialogFormComponent = ({
     );
 };
 
-ButtonWithDialogFormComponent.defaultProps = {
+PureButtonWithDialogForm.defaultProps = {
     icon: null,
     show: true,
     open: false,
 };
 
-ButtonWithDialogFormComponent.propTypes = {
+PureButtonWithDialogForm.propTypes = {
     handleClose: PropTypes.func.isRequired,
     handleOpen: PropTypes.func.isRequired,
     handleSubmit: PropTypes.func.isRequired,
@@ -110,4 +110,4 @@ export default compose(
         },
     }),
     translate,
-)(ButtonWithDialogFormComponent);
+)(PureButtonWithDialogForm);
