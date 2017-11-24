@@ -1,10 +1,17 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
 import { Field } from 'redux-form';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 
-export const FieldInputComponent = ({ component, labelKey, name, p: polyglot, ...props }) => (
+export const FieldInputComponent = ({
+    component,
+    labelKey,
+    name,
+    p: polyglot,
+    ...props
+}) => (
     <Field
         name={name}
         component={component}
@@ -14,7 +21,8 @@ export const FieldInputComponent = ({ component, labelKey, name, p: polyglot, ..
 );
 
 FieldInputComponent.propTypes = {
-    component: PropTypes.oneOfType([PropTypes.func, PropTypes.string]).isRequired,
+    component: PropTypes.oneOfType([PropTypes.func, PropTypes.string])
+        .isRequired,
     labelKey: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     p: polyglotPropTypes.isRequired,

@@ -7,16 +7,22 @@ import filter from 'redux-localstorage-filter';
 
 const sagaMiddleware = createSagaMiddleware();
 
-export default function configureStore(pureReducer, sagas, initialState, history) {
+export default function configureStore(
+    pureReducer,
+    sagas,
+    initialState,
+    history,
+) {
     const rootReducer = __DEBUG__
         ? (state, action) => {
-            switch (action.type) {
-            case 'SET_STATE':
-                return action.state || pureReducer({}, action);
-            default:
-                return pureReducer(state, action);
-            }
-        } : pureReducer;
+              switch (action.type) {
+                  case 'SET_STATE':
+                      return action.state || pureReducer({}, action);
+                  default:
+                      return pureReducer(state, action);
+              }
+          }
+        : pureReducer;
 
     const reducer = compose(mergePersistedState())(rootReducer);
 
@@ -27,9 +33,10 @@ export default function configureStore(pureReducer, sagas, initialState, history
         routerMiddleware(history),
     );
 
-    const devtools = (typeof window !== 'undefined' && window.devToolsExtension)
-        ? window.devToolsExtension()
-        : f => f;
+    const devtools =
+        typeof window !== 'undefined' && window.devToolsExtension
+            ? window.devToolsExtension()
+            : f => f;
 
     const persistStateEnhancer = persistState(storage);
 

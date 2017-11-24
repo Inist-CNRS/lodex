@@ -1,5 +1,6 @@
 /* globals URL */
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import translate from 'redux-polyglot/translate';
 import FlatButton from 'material-ui/FlatButton';
@@ -23,13 +24,13 @@ const styles = {
 };
 
 export class ShareLinkComponent extends Component {
-    saveRef = (ref) => {
+    saveRef = ref => {
         this.input = ref;
-    }
+    };
 
     handleClick = () => {
         this.input.select();
-    }
+    };
 
     render() {
         const { uri, title, p: polyglot } = this.props;

@@ -7,12 +7,11 @@ import testOne from './testOne';
 ezs.use(statements);
 
 describe('LodexConfig', () => {
-    it('should return when no uri', (done) => {
-        const stream = from([{}])
-            .pipe(ezs('LodexConfig'));
+    it('should return when no uri', done => {
+        const stream = from([{}]).pipe(ezs('LodexConfig'));
         testOne(
             stream,
-            (output) => {
+            output => {
                 expect(output.$config.host).toExist();
             },
             done,

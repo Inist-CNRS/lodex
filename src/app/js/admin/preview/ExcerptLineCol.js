@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
@@ -26,26 +27,29 @@ const styles = {
     },
 };
 
-export const ExcerptLineColComponent = ({ field, value = '' }) => (
-    isLongText(value)
-        ? (
-            <TableRowColumn
-                title={value}
-                style={styles.cell}
-                className={classnames('publication-preview-column', getFieldClassName(field))}
-            >
-                {getShortText(value)}
-            </TableRowColumn>
-        )
-        : (
-            <TableRowColumn
-                style={styles.cell}
-                className={classnames('publication-preview-column', getFieldClassName(field))}
-            >
-                {value}
-            </TableRowColumn>
-        )
-);
+export const ExcerptLineColComponent = ({ field, value = '' }) =>
+    isLongText(value) ? (
+        <TableRowColumn
+            title={value}
+            style={styles.cell}
+            className={classnames(
+                'publication-preview-column',
+                getFieldClassName(field),
+            )}
+        >
+            {getShortText(value)}
+        </TableRowColumn>
+    ) : (
+        <TableRowColumn
+            style={styles.cell}
+            className={classnames(
+                'publication-preview-column',
+                getFieldClassName(field),
+            )}
+        >
+            {value}
+        </TableRowColumn>
+    );
 
 ExcerptLineColComponent.propTypes = {
     field: fieldPropTypes.isRequired,
@@ -65,7 +69,6 @@ const mapStateToProps = (state, { field, line }) => {
     };
 };
 
-export default compose(
-    translate,
-    connect(mapStateToProps),
-)(ExcerptLineColComponent);
+export default compose(translate, connect(mapStateToProps))(
+    ExcerptLineColComponent,
+);

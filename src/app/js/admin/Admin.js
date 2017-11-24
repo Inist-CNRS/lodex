@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
@@ -31,7 +32,9 @@ export const AdminComponent = ({
 }) => {
     if (loadingParsingResult) {
         return (
-            <Loading className="admin">{polyglot.t('loading_parsing_results')}</Loading>
+            <Loading className="admin">
+                {polyglot.t('loading_parsing_results')}
+            </Loading>
         );
     }
 
@@ -46,9 +49,7 @@ export const AdminComponent = ({
     }
 
     if (canUploadFile) {
-        return (
-            <Upload className="admin" />
-        );
+        return <Upload className="admin" />;
     }
 
     return (
@@ -56,7 +57,9 @@ export const AdminComponent = ({
             <ParsingResult />
             <Statistics />
             <PublicationPreview />
-            <div style={styles.punchLine}>{polyglot.t('publish-punchline')}</div>
+            <div style={styles.punchLine}>
+                {polyglot.t('publish-punchline')}
+            </div>
         </Card>
     );
 };
@@ -69,13 +72,13 @@ AdminComponent.propTypes = {
 };
 
 const mapStateToProps = state => ({
-    loadingParsingResult: fromParsing.isParsingLoading(state) || fromUpload.isUploadPending(state),
+    loadingParsingResult:
+        fromParsing.isParsingLoading(state) ||
+        fromUpload.isUploadPending(state),
     canUploadFile: fromParsing.canUpload(state),
     hasPublishedDataset: fromPublication.hasPublishedDataset(state),
 });
 
-export default compose(
-    withInitialData,
-    connect(mapStateToProps),
-    translate,
-)(AdminComponent);
+export default compose(withInitialData, connect(mapStateToProps), translate)(
+    AdminComponent,
+);

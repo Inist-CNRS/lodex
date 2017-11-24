@@ -20,15 +20,14 @@ describe('<UriColumn />', () => {
         a_name: 'a_value',
     };
 
-    const wrapper = shallow(<UriColumn
-        column={column}
-        resource={resource}
-    />);
+    const wrapper = shallow(<UriColumn column={column} resource={resource} />);
 
     it('renders a TableRowColumn with correct class', () => {
         const element = wrapper.find(TableRowColumn);
 
-        expect(element.prop('className')).toEqual('dataset-column dataset-a_name');
+        expect(element.prop('className')).toEqual(
+            'dataset-column dataset-a_name',
+        );
     });
 
     const link = wrapper.find(Link);

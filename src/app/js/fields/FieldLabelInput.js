@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
@@ -8,11 +9,18 @@ import get from 'lodash.get';
 import FormTextField from '../lib/components/FormTextField';
 import FieldInput from '../lib/components/FieldInput';
 import { fromFields } from '../sharedSelectors';
-import { field as fieldPropTypes, polyglot as polyglotPropTypes } from '../propTypes';
+import {
+    field as fieldPropTypes,
+    polyglot as polyglotPropTypes,
+} from '../propTypes';
 
-const required = polyglot => value => (value ? undefined : polyglot.t('required'));
+const required = polyglot => value =>
+    value ? undefined : polyglot.t('required');
 const uniqueField = (fields, polyglot) => (value, _, props) =>
-    (get(props, 'field.label') !== value && fields.find(({ label }) => label === value) ? polyglot.t('field_label_exists') : undefined);
+    get(props, 'field.label') !== value &&
+    fields.find(({ label }) => label === value)
+        ? polyglot.t('field_label_exists')
+        : undefined;
 
 const getValidation = memoize((fields, polyglot) => [
     required(polyglot),
@@ -46,7 +54,6 @@ const mapStateToProps = state => ({
     fields: fromFields.getFields(state),
 });
 
-export default compose(
-    connect(mapStateToProps),
-    translate,
-)(FieldLabelInputComponent);
+export default compose(connect(mapStateToProps), translate)(
+    FieldLabelInputComponent,
+);

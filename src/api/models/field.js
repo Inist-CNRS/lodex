@@ -31,42 +31,54 @@ export const validateField = (data, isContribution) => {
     return data;
 };
 
-export default async (db) => {
+export default async db => {
     const collection = db.collection('field');
 
     await collection.createIndex({ name: 1 }, { unique: true });
 
-    collection.findAll = async () => collection.find({}).sort({ position: 1 }).toArray();
+    collection.findAll = async () =>
+        collection
+            .find({})
+            .sort({ position: 1 })
+            .toArray();
 
     collection.findSearchableNames = async () => {
-        const searchableFields = await collection.find({ searchable: true }).toArray();
+        const searchableFields = await collection
+            .find({ searchable: true })
+            .toArray();
 
         return searchableFields.map(({ name }) => name);
     };
 
     collection.findFacetNames = async () => {
-        const searchableFields = await collection.find({ isFacet: true }).toArray();
+        const searchableFields = await collection
+            .find({ isFacet: true })
+            .toArray();
 
         return searchableFields.map(({ name }) => name);
     };
 
-    collection.findOneById = id => collection.findOne({ _id: new ObjectID(id) });
+    collection.findOneById = id =>
+        collection.findOne({ _id: new ObjectID(id) });
 
     collection.findOneByName = name => collection.findOne({ name });
 
     collection.create = async (fieldData, nameArg) => {
-        const name = nameArg || await generateUid();
+        const name = nameArg || (await generateUid());
         let position = fieldData.position;
 
         if (!position) {
             position = await collection.count({});
         }
 
-        await collection.updateMany({
-            position: { $gte: fieldData.position },
-        }, {
-            $inc: { position: 1 },
-        });
+        await collection.updateMany(
+            {
+                position: { $gte: fieldData.position },
+            },
+            {
+                $inc: { position: 1 },
+            },
+        );
 
         const { insertedId } = await collection.insertOne({
             ...omit({ ...fieldData, position }, ['_id']),
@@ -81,41 +93,68 @@ export default async (db) => {
         const previousFieldVersion = await collection.findOneById(id);
 
         if (previousFieldVersion.position > field.position) {
-            await collection.updateMany({
-                _id: { $ne: objectId },
-                position: { $gte: field.position, $lt: previousFieldVersion.position },
-            }, {
-                $inc: { position: 1 },
-            });
+            await collection.updateMany(
+                {
+                    _id: { $ne: objectId },
+                    position: {
+                        $gte: field.position,
+                        $lt: previousFieldVersion.position,
+                    },
+                },
+                {
+                    $inc: { position: 1 },
+                },
+            );
         }
 
         if (previousFieldVersion.position < field.position) {
-            await collection.updateMany({
-                _id: { $ne: objectId },
-                position: { $gt: previousFieldVersion.position, $lte: field.position },
-            }, {
-                $inc: { position: -1 },
-            });
+            await collection.updateMany(
+                {
+                    _id: { $ne: objectId },
+                    position: {
+                        $gt: previousFieldVersion.position,
+                        $lte: field.position,
+                    },
+                },
+                {
+                    $inc: { position: -1 },
+                },
+            );
         }
 
-        return collection.findOneAndUpdate({
-            _id: objectId,
-        }, omit(field, ['_id']), {
-            returnOriginal: false,
-        }).then(result => result.value);
+        return collection
+            .findOneAndUpdate(
+                {
+                    _id: objectId,
+                },
+                omit(field, ['_id']),
+                {
+                    returnOriginal: false,
+                },
+            )
+            .then(result => result.value);
     };
 
-    collection.removeById = id => collection.remove({ _id: new ObjectID(id), name: { $ne: 'uri' } });
+    collection.removeById = id =>
+        collection.remove({ _id: new ObjectID(id), name: { $ne: 'uri' } });
 
-    collection.addContributionField = async (field, contributor, isLogged, nameArg) => {
-        const name = field.name || nameArg || await generateUid();
+    collection.addContributionField = async (
+        field,
+        contributor,
+        isLogged,
+        nameArg,
+    ) => {
+        const name = field.name || nameArg || (await generateUid());
         const position = await collection.count();
-        await validateField({
-            ...field,
-            cover: COVER_DOCUMENT,
-            name,
-            position,
-        }, true);
+        await validateField(
+            {
+                ...field,
+                cover: COVER_DOCUMENT,
+                name,
+                position,
+            },
+            true,
+        );
 
         if (!field.name) {
             const fieldData = {
@@ -135,33 +174,39 @@ export default async (db) => {
         }
 
         if (isLogged) {
-            await collection.update({
+            await collection.update(
+                {
+                    name,
+                    contribution: true,
+                },
+                {
+                    $set: {
+                        ...pick(field, ['label', 'scheme']),
+                        cover: COVER_DOCUMENT,
+                        contribution: true,
+                    },
+                },
+            );
+
+            return name;
+        }
+
+        await collection.update(
+            {
                 name,
                 contribution: true,
-            }, {
+            },
+            {
                 $set: {
                     ...pick(field, ['label', 'scheme']),
                     cover: COVER_DOCUMENT,
                     contribution: true,
                 },
-            });
-
-            return name;
-        }
-
-        await collection.update({
-            name,
-            contribution: true,
-        }, {
-            $set: {
-                ...pick(field, ['label', 'scheme']),
-                cover: COVER_DOCUMENT,
-                contribution: true,
+                $addToSet: {
+                    contributors: contributor,
+                },
             },
-            $addToSet: {
-                contributors: contributor,
-            },
-        });
+        );
 
         return name;
     };

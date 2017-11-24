@@ -60,12 +60,14 @@ const transformersMetas = [
     BOOLEAN,
     TRUNCATE,
     SHIFT,
-].map(transformation => transformation.getMetas())
+]
+    .map(transformation => transformation.getMetas())
     .sort((x, y) => x.name.localeCompare(y.name));
 
-export const getTransformersMetas = type => (type ? transformersMetas.filter(m => m.type === type) : transformersMetas);
+export const getTransformersMetas = type =>
+    type ? transformersMetas.filter(m => m.type === type) : transformersMetas;
 
-export const getTransformerMetas = (operation) => {
+export const getTransformerMetas = operation => {
     const transformer = transformers[operation];
 
     if (!transformer) return [];

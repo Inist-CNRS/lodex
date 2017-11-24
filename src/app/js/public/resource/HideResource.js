@@ -11,7 +11,7 @@ import {
 } from './';
 import HideResourceForm from './HideResourceForm';
 import { fromUser } from '../../sharedSelectors';
-import ButtonWithDialog from '../../lib/components/ButtonWithDialog';
+import ButtonWithDialogForm from '../../lib/components/ButtonWithDialogForm';
 
 const mapStateToProps = (state, { p }) => ({
     open: fromResource.isHiding(state),
@@ -28,7 +28,6 @@ const mapDispatchToProps = {
     handleClose: () => hideResourceCancel(),
 };
 
-export default compose(
-    translate,
-    connect(mapStateToProps, mapDispatchToProps),
-)(ButtonWithDialog);
+export default compose(translate, connect(mapStateToProps, mapDispatchToProps))(
+    ButtonWithDialogForm,
+);

@@ -63,17 +63,23 @@ describe('login', () => {
 
         login(expDate)(ctx);
         expect(ctx.body).toEqual({
-            token: jwt.sign({
-                username: 'user',
-                exp: Math.ceil(expDate / 1000) + auth.expiresIn,
-            }, auth.headerSecret),
+            token: jwt.sign(
+                {
+                    username: 'user',
+                    exp: Math.ceil(expDate / 1000) + auth.expiresIn,
+                },
+                auth.headerSecret,
+            ),
         });
         expect(setCall).toEqual([
             'lodex_token',
-            jwt.sign({
-                username: 'user',
-                exp: Math.ceil(expDate / 1000) + auth.expiresIn,
-            }, auth.cookieSecret),
+            jwt.sign(
+                {
+                    username: 'user',
+                    exp: Math.ceil(expDate / 1000) + auth.expiresIn,
+                },
+                auth.cookieSecret,
+            ),
             { httpOnly: true },
         ]);
     });

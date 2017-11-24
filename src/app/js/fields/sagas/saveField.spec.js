@@ -3,12 +3,9 @@ import { call, put, select } from 'redux-saga/effects';
 
 import fetchSaga from '../../lib/sagas/fetchSaga';
 
-import {
-    getFieldFormData,
-    saveFieldError,
-    loadField,
-    saveFieldSuccess,
-} from '../';
+import { saveFieldError, loadField, saveFieldSuccess } from '../';
+
+import { getFieldFormData } from '../selectors';
 import { fromUser } from '../../sharedSelectors';
 
 import { handleSaveField, sanitizeField } from './saveField';

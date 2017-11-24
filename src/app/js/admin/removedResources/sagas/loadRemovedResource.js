@@ -9,7 +9,10 @@ import fetchSaga from '../../../lib/sagas/fetchSaga';
 import { fromUser } from '../../../sharedSelectors';
 
 export function* handleLoadRemovedResourcePageRequest({ payload }) {
-    const request = yield select(fromUser.getLoadRemovedResourcePageRequest, payload);
+    const request = yield select(
+        fromUser.getLoadRemovedResourcePageRequest,
+        payload,
+    );
     const { error, response } = yield call(fetchSaga, request);
 
     if (error) {
@@ -17,9 +20,18 @@ export function* handleLoadRemovedResourcePageRequest({ payload }) {
     }
 
     const { data: resources, total } = response;
-    return yield put(loadRemovedResourcePageSuccess({ resources, page: payload.page, total }));
+    return yield put(
+        loadRemovedResourcePageSuccess({
+            resources,
+            page: payload.page,
+            total,
+        }),
+    );
 }
 
-export default function* () {
-    yield takeLatest(LOAD_REMOVED_RESOURCE_PAGE, handleLoadRemovedResourcePageRequest);
+export default function*() {
+    yield takeLatest(
+        LOAD_REMOVED_RESOURCE_PAGE,
+        handleLoadRemovedResourcePageRequest,
+    );
 }

@@ -1,10 +1,14 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import Dialog from 'material-ui/Dialog';
 import { Stepper } from 'material-ui/Stepper';
 
-import { editField as editFieldAction, saveField as saveFieldAction } from '../';
+import {
+    editField as editFieldAction,
+    saveField as saveFieldAction,
+} from '../';
 import { field as fieldPropTypes } from '../../propTypes';
 import { fromFields } from '../../sharedSelectors';
 import StepValue from './StepValue';
@@ -40,8 +44,7 @@ const styles = {
     title: {
         display: 'flex',
     },
-    titleLabel: {
-    },
+    titleLabel: {},
 };
 
 class FieldEditionWizardComponent extends Component {
@@ -50,13 +53,13 @@ class FieldEditionWizardComponent extends Component {
         field: fieldPropTypes,
         fields: PropTypes.arrayOf(fieldPropTypes),
         saveField: PropTypes.func.isRequired,
-    }
+    };
 
     static defaultProps = {
         field: null,
         fields: null,
         editedField: null,
-    }
+    };
 
     constructor(props) {
         super(props);
@@ -65,36 +68,37 @@ class FieldEditionWizardComponent extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (!nextProps.field || !this.props.field || nextProps.field.name !== this.props.field.name) {
+        if (
+            !nextProps.field ||
+            !this.props.field ||
+            nextProps.field.name !== this.props.field.name
+        ) {
             this.setState({ step: 0 });
         }
     }
 
     handleNextStep = () => {
         this.setState({ step: this.state.step + 1 });
-    }
+    };
 
     handlePreviousStep = () => {
         this.setState({ step: this.state.step - 1 });
-    }
+    };
 
-    handleSelectStep = (step) => {
+    handleSelectStep = step => {
         this.setState({ step });
-    }
+    };
 
     handleCancel = () => {
         this.props.editField(undefined);
-    }
+    };
 
     handleSave = () => {
         this.props.saveField();
-    }
+    };
 
     render() {
-        const {
-            field,
-            fields,
-        } = this.props;
+        const { field, fields } = this.props;
 
         const { step } = this.state;
 
@@ -183,17 +187,20 @@ class FieldEditionWizardComponent extends Component {
                 autoScrollBodyContent
                 repositionOnUpdate={false}
             >
-                {field &&
+                {field && (
                     <div style={styles.container}>
                         <div id="field_form" style={styles.form}>
-                            {field.name !== 'uri'
-                                ? (
-                                    <Stepper linear={false} activeStep={step} orientation="vertical">
-                                        {steps}
-                                    </Stepper>
-                                )
-                                : <StepUri field={field} fields={fields} />
-                            }
+                            {field.name !== 'uri' ? (
+                                <Stepper
+                                    linear={false}
+                                    activeStep={step}
+                                    orientation="vertical"
+                                >
+                                    {steps}
+                                </Stepper>
+                            ) : (
+                                <StepUri field={field} fields={fields} />
+                            )}
                         </div>
                         <FieldExcerpt
                             className="publication-excerpt-for-edition"
@@ -202,13 +209,13 @@ class FieldEditionWizardComponent extends Component {
                             isPreview
                         />
                     </div>
-                }
+                )}
             </Dialog>
         );
     }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
     const field = fromFields.getEditedField(state);
 
     return {
@@ -223,6 +230,6 @@ const mapDispatchToProps = {
     saveField: saveFieldAction,
 };
 
-export default compose(
-    connect(mapStateToProps, mapDispatchToProps),
-)(FieldEditionWizardComponent);
+export default compose(connect(mapStateToProps, mapDispatchToProps))(
+    FieldEditionWizardComponent,
+);

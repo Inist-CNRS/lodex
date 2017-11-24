@@ -9,15 +9,14 @@ import FormSelectField from '../../lib/components/FormSelectField';
 import FieldSchemeInput from '../FieldSchemeInput';
 import FieldLanguageInput from '../FieldLanguageInput';
 import FieldLabelInput from '../FieldLabelInput';
-import { polyglot as polyglotPropTypes, field as fieldPropTypes } from '../../propTypes';
+import {
+    polyglot as polyglotPropTypes,
+    field as fieldPropTypes,
+} from '../../propTypes';
 
 import ClassList from '../ClassList';
 
-export const StepIdentityComponent = ({
-    field,
-    p: polyglot,
-    ...props
-}) => (
+export const StepIdentityComponent = ({ field, p: polyglot, ...props }) => (
     <Step label="field_wizard_step_identity" {...props}>
         <FieldLabelInput />
         <Field
@@ -26,8 +25,14 @@ export const StepIdentityComponent = ({
             label={polyglot.t('select_cover')}
             fullWidth
         >
-            <MenuItem value="dataset" primaryText={polyglot.t('cover_dataset')} />
-            <MenuItem value="collection" primaryText={polyglot.t('cover_collection')} />
+            <MenuItem
+                value="dataset"
+                primaryText={polyglot.t('cover_dataset')}
+            />
+            <MenuItem
+                value="collection"
+                primaryText={polyglot.t('cover_collection')}
+            />
         </Field>
         <FieldSchemeInput />
         <FieldArray name="classes" component={ClassList} type="classes" />
@@ -40,6 +45,4 @@ StepIdentityComponent.propTypes = {
     p: polyglotPropTypes.isRequired,
 };
 
-export default compose(
-    translate,
-)(StepIdentityComponent);
+export default compose(translate)(StepIdentityComponent);

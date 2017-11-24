@@ -1,6 +1,5 @@
 import { html } from 'common-tags';
 
-
 const renderField = (field, value) => html`
     <dl class="dl-horizontal">
         <dt class="title">
@@ -29,10 +28,16 @@ const renderOneResource = (fieldsByName, requestedFields) => resource =>
 const renderResourceInTable = displayedFields => resource =>
     html`<tr>${displayedFields.map(name => `<td>${resource[name]}</td>`)}</tr>`;
 
-const renderResources = (fieldsByName, displayedFields, resources) => html `<table class="table">
+const renderResources = (
+    fieldsByName,
+    displayedFields,
+    resources,
+) => html`<table class="table">
         <thead>
             <tr>
-                ${displayedFields.map(name => fieldsByName[name].label).map(label => `<th>${label}</th>`)}
+                ${displayedFields
+                    .map(name => fieldsByName[name].label)
+                    .map(label => `<th>${label}</th>`)}
             </tr>
         </thead>
         <tbody>
@@ -46,25 +51,38 @@ const getLastVersion = resource => ({
 });
 
 const getResourcesHtml = (fieldsByName, requestedFields, resources) =>
-    (Array.isArray(resources) ?
-        renderResources(fieldsByName, requestedFields, resources.map(getLastVersion))
-        :
-        renderOneResource(fieldsByName, requestedFields)(getLastVersion(resources)));
+    Array.isArray(resources)
+        ? renderResources(
+              fieldsByName,
+              requestedFields,
+              resources.map(getLastVersion),
+          )
+        : renderOneResource(fieldsByName, requestedFields)(
+              getLastVersion(resources),
+          );
 
 const getPaginationHtml = (page, perPage, total, displayedFields) => {
     if (!total || perPage >= total) {
         return '';
     }
 
-    const encDisplayedFields = encodeURIComponent(JSON.stringify(displayedFields));
+    const encDisplayedFields = encodeURIComponent(
+        JSON.stringify(displayedFields),
+    );
 
-    const previousLink = page > 0 ?
-        `/api/widget?type=widget&fields=${encDisplayedFields}&page=${page - 1}`
-        : '';
+    const previousLink =
+        page > 0
+            ? `/api/widget?type=widget&fields=${
+                  encDisplayedFields
+              }&page=${page - 1}`
+            : '';
 
-    const nextLink = (page + 1) * perPage < total ?
-        `/api/widget?type=widget&fields=${encDisplayedFields}&page=${page + 1}`
-        : '';
+    const nextLink =
+        (page + 1) * perPage < total
+            ? `/api/widget?type=widget&fields=${
+                  encDisplayedFields
+              }&page=${page + 1}`
+            : '';
 
     return html`<nav aria-label="Page navigation">
         <ul class="pagination">
@@ -73,7 +91,9 @@ const getPaginationHtml = (page, perPage, total, displayedFields) => {
                     <span aria-hidden="true">&laquo;</span>
                 </a>
             </li>
-            <li><a>${(page * perPage) + 1} - ${(page + 1) * perPage} / ${total}</a></li>
+            <li><a>${page * perPage + 1} - ${(page + 1) * perPage} / ${
+        total
+    }</a></li>
             <li class=${!nextLink && 'disabled'}>
                 <a href="${nextLink}" aria-label="Next">
                     <span aria-hidden="true">&raquo;</span>
@@ -83,13 +103,30 @@ const getPaginationHtml = (page, perPage, total, displayedFields) => {
     </nav>`;
 };
 
-function exporter(config, fields, resources, requestedFields, page, perPage, total) {
-    const fieldsByName = fields.reduce((acc, field) => ({
-        ...acc,
-        [field.name]: field,
-    }), {});
-    const displayedFields = requestedFields.length ? requestedFields : fields.map(({ name }) => name);
-    const resourcesHtml = getResourcesHtml(fieldsByName, displayedFields, resources);
+function exporter(
+    config,
+    fields,
+    resources,
+    requestedFields,
+    page,
+    perPage,
+    total,
+) {
+    const fieldsByName = fields.reduce(
+        (acc, field) => ({
+            ...acc,
+            [field.name]: field,
+        }),
+        {},
+    );
+    const displayedFields = requestedFields.length
+        ? requestedFields
+        : fields.map(({ name }) => name);
+    const resourcesHtml = getResourcesHtml(
+        fieldsByName,
+        displayedFields,
+        resources,
+    );
 
     return html`
         <!DOCTYPE html>
@@ -112,7 +149,12 @@ function exporter(config, fields, resources, requestedFields, page, perPage, tot
                 <div class="container-fluid">
                     <div class="row">
                         ${resourcesHtml}
-                        ${getPaginationHtml(page, perPage, total, displayedFields)}
+                        ${getPaginationHtml(
+                            page,
+                            perPage,
+                            total,
+                            displayedFields,
+                        )}
                     </div>
                 </div>
             </body>

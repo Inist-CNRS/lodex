@@ -16,7 +16,8 @@ describe('<ParsingExcerptColumn />', () => {
     });
 
     it('should render the value truncated when it is long', () => {
-        const value = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.';
+        const value =
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit.';
         const wrapper = shallow(<ParsingExcerptColumn value={value} />);
         const row = wrapper.find(TableRowColumn);
         expect(row.prop('title')).toEqual(value);

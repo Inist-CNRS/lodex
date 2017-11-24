@@ -18,7 +18,8 @@ export const closeUpload = createAction(CLOSE_UPLOAD);
 export const changeUploadUrl = createAction(CHANGE_UPLOAD_URL);
 export const changeParserName = createAction(CHANGE_PARSER_NAME);
 
-const validateUrl = url => url.startsWith('http://') || url.startsWith('https://');
+const validateUrl = url =>
+    url.startsWith('http://') || url.startsWith('https://');
 
 export const defaultState = {
     error: false,
@@ -29,11 +30,32 @@ export const defaultState = {
     parserName: 'automatic',
 };
 
-export default handleActions({
-    [combineActions(UPLOAD_FILE, UPLOAD_URL)]: (state, { payload }) => (payload
-        ? ({
+export default handleActions(
+    {
+        [combineActions(UPLOAD_FILE, UPLOAD_URL)]: (state, { payload }) =>
+            payload
+                ? {
+                      ...state,
+                      error: false,
+                      open: false,
+                      status: 'PENDING',
+                  }
+                : state,
+        UPLOAD_SUCCESS: state => ({
             ...state,
-            error: false,
+            status: 'SUCCESS',
+        }),
+        UPLOAD_ERROR: (state, { payload }) => ({
+            ...state,
+            status: 'ERROR',
+            error: payload.message,
+        }),
+        OPEN_UPLOAD: state => ({
+            ...state,
+            open: true,
+        }),
+        CLOSE_UPLOAD: state => ({
+            ...state,
             open: false,
             status: 'PENDING',
         }) : state),

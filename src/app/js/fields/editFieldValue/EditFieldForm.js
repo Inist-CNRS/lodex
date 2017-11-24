@@ -28,7 +28,11 @@ const validate = (values, { p: polyglot }) => {
 
 export const EditFieldFormComponent = ({ field, error, handleSubmit }) => (
     <form id="field_form" onSubmit={handleSubmit}>
-        {error && <Alert><p>{error}</p></Alert>}
+        {error && (
+            <Alert>
+                <p>{error}</p>
+            </Alert>
+        )}
         <FieldInput field={field} />
     </form>
 );
@@ -44,11 +48,10 @@ EditFieldFormComponent.propTypes = {
     p: polyglotPropTypes.isRequired,
 };
 
-
 export default compose(
     translate,
     withHandlers({
-        onSubmit: ({ onSaveProperty }) => (values) => {
+        onSubmit: ({ onSaveProperty }) => values => {
             onSaveProperty(values);
         },
     }),

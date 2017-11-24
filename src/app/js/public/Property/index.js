@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import withProps from 'recompose/withProps';
@@ -10,7 +11,9 @@ import memoize from 'lodash.memoize';
 import { fromResource } from '../selectors';
 import { field as fieldPropTypes } from '../../propTypes';
 import CompositeProperty from './CompositeProperty';
-import propositionStatus, { REJECTED } from '../../../../common/propositionStatus';
+import propositionStatus, {
+    REJECTED,
+} from '../../../../common/propositionStatus';
 import ModerateButton from './ModerateButton';
 import { changeFieldStatus } from '../resource';
 import PropertyContributor from './PropertyContributor';
@@ -22,10 +25,15 @@ import addSchemePrefix from '../../lib/addSchemePrefix';
 import Format from '../Format';
 
 const styles = {
-    container: memoize(style => Object.assign({
-        display: 'flex',
-        flexDirection: 'column',
-    }, style)),
+    container: memoize(style =>
+        Object.assign(
+            {
+                display: 'flex',
+                flexDirection: 'column',
+            },
+            style,
+        ),
+    ),
     label: (status, isSub) => ({
         color: grey500,
         flexGrow: 2,
@@ -94,15 +102,29 @@ const PropertyComponent = ({
         >
             <div>
                 <div style={styles.labelContainer}>
-                    <span className={classnames('property_label', fieldClassName)} style={styles.label(fieldStatus, isSub)}>
+                    <span
+                        className={classnames('property_label', fieldClassName)}
+                        style={styles.label(fieldStatus, isSub)}
+                    >
                         {field.label}
                     </span>
 
-                    <span className={classnames('property_scheme', fieldClassName)} style={styles.scheme}>
-                        <a style={styles.schemeLink} href={field.scheme}>{addSchemePrefix(field.scheme)}</a>
+                    <span
+                        className={classnames(
+                            'property_scheme',
+                            fieldClassName,
+                        )}
+                        style={styles.scheme}
+                    >
+                        <a style={styles.schemeLink} href={field.scheme}>
+                            {addSchemePrefix(field.scheme)}
+                        </a>
                     </span>
                 </div>
-                <PropertyContributor fieldName={field.name} fieldStatus={fieldStatus} />
+                <PropertyContributor
+                    fieldName={field.name}
+                    fieldStatus={fieldStatus}
+                />
             </div>
             <div style={styles.valueContainer}>
                 <div style={styles.value}>
@@ -113,7 +135,10 @@ const PropertyComponent = ({
                         fieldStatus={fieldStatus}
                     />
                 </div>
-                <span className={classnames('property_language', fieldClassName)} style={styles.language(!field.language)}>
+                <span
+                    className={classnames('property_language', fieldClassName)}
+                    style={styles.language(!field.language)}
+                >
                     {field.language || 'XX'}
                 </span>
                 <div style={styles.editButton(!loggedIn)}>
@@ -174,18 +199,25 @@ const mapStateToProps = (state, { field }) => ({
     fieldStatus: fromResource.getFieldStatus(state, field),
 });
 
-const mapDispatchToProps = (dispatch, { field, resource: { uri } }) => bindActionCreators({
-    changeStatus: (prevStatus, status) => changeFieldStatus({
-        uri,
-        field: field.name,
-        status,
-        prevStatus,
-    }),
-}, dispatch);
+const mapDispatchToProps = (dispatch, { field, resource: { uri } }) =>
+    bindActionCreators(
+        {
+            changeStatus: (prevStatus, status) =>
+                changeFieldStatus({
+                    uri,
+                    field: field.name,
+                    status,
+                    prevStatus,
+                }),
+        },
+        dispatch,
+    );
 
 const Property = compose(
     connect(mapStateToProps, mapDispatchToProps),
-    withProps(({ field, parents = [] }) => ({ parents: [field.name, ...parents] })),
+    withProps(({ field, parents = [] }) => ({
+        parents: [field.name, ...parents],
+    })),
 )(PropertyComponent);
 
 export default Property;

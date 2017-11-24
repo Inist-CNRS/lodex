@@ -1,6 +1,7 @@
 /* eslint react/no-array-index-key: off */
 
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import RadioButton from 'material-ui/RadioButton';
 import FlatButton from 'material-ui/FlatButton';
 import translate from 'redux-polyglot/translate';
@@ -43,7 +44,7 @@ export const StepValueConcatComponent = ({
             checked={selected}
             style={styles.radio}
         />
-        {selected &&
+        {selected && (
             <div style={styles.inset}>
                 {columns.map((column, index) => (
                     <ConcatField
@@ -54,14 +55,13 @@ export const StepValueConcatComponent = ({
                         handleChange={handleChange}
                         handleRemoveColumn={handleRemoveColumn}
                     />
-
                 ))}
                 <FlatButton
                     label={polyglot.t('add_column')}
                     onClick={handleAddColumn}
                 />
             </div>
-        }
+        )}
     </div>
 );
 
@@ -79,8 +79,11 @@ StepValueConcatComponent.defaultProps = {
     columns: [null, null],
 };
 
-const mapStateToProps = (state) => {
-    const transformers = formValueSelector(FIELD_FORM_NAME)(state, 'transformers');
+const mapStateToProps = state => {
+    const transformers = formValueSelector(FIELD_FORM_NAME)(
+        state,
+        'transformers',
+    );
     const valueTransformer =
         get(transformers, '[0].operation') === 'CONCAT'
             ? transformers[0]
@@ -103,15 +106,18 @@ export default compose(
         handleSelect: ({ onChange }) => () => {
             onChange({
                 operation: 'CONCAT',
-                args: [{
-                    name: 'column',
-                    type: 'column',
-                    value: null,
-                }, {
-                    name: 'column',
-                    type: 'column',
-                    value: null,
-                }],
+                args: [
+                    {
+                        name: 'column',
+                        type: 'column',
+                        value: null,
+                    },
+                    {
+                        name: 'column',
+                        type: 'column',
+                        value: null,
+                    },
+                ],
             });
         },
         handleChange: ({ onChange, args }) => (event, key, value, index) => {
@@ -141,13 +147,10 @@ export default compose(
                 ],
             });
         },
-        handleRemoveColumn: ({ onChange, args }) => (index) => {
+        handleRemoveColumn: ({ onChange, args }) => index => {
             onChange({
                 operation: 'CONCAT',
-                args: [
-                    ...args.slice(0, index),
-                    ...args.slice(index + 1),
-                ],
+                args: [...args.slice(0, index), ...args.slice(index + 1)],
             });
         },
     }),

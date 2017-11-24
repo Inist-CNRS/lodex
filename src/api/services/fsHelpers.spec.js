@@ -21,22 +21,31 @@ describe('fsHelpers', () => {
 
     describe('areFileChunksCompleteFactory', () => {
         describe('no error', () => {
-            const reallyAddFileSize = createSpy((size = 0) => size + 1)
-                .andCallThrough(); // as if file had a size of 1
+            const reallyAddFileSize = createSpy(
+                (size = 0) => size + 1,
+            ).andCallThrough(); // as if file had a size of 1
             const addFileSizeImpl = createSpy().andReturn(reallyAddFileSize);
 
             it('should return true if resulting size is equal to total size', async () => {
-                const result = await areFileChunksCompleteFactory(addFileSizeImpl)('filename', 3, 3);
+                const result = await areFileChunksCompleteFactory(
+                    addFileSizeImpl,
+                )('filename', 3, 3);
                 expect(result).toBe(true);
             });
 
             it('should return false if resulting size is less than total size', async () => {
-                const result = await areFileChunksCompleteFactory(addFileSizeImpl)('filename', 3, 2);
+                const result = await areFileChunksCompleteFactory(
+                    addFileSizeImpl,
+                )('filename', 3, 2);
                 expect(result).toBe(false);
             });
 
             it('should call addFileSizeImpl with each (chunkname)(size)', async () => {
-                await areFileChunksCompleteFactory(addFileSizeImpl)('filename', 3, 3);
+                await areFileChunksCompleteFactory(addFileSizeImpl)(
+                    'filename',
+                    3,
+                    3,
+                );
 
                 expect(addFileSizeImpl).toHaveBeenCalledWith('filename.1');
                 expect(addFileSizeImpl).toHaveBeenCalledWith('filename.2');
@@ -59,12 +68,18 @@ describe('fsHelpers', () => {
             const addFileSizeImpl = createSpy().andReturn(reallyAddFileSize);
 
             it('should return false when addFileSize throw empty chunk error', async () => {
-                const result = await areFileChunksCompleteFactory(addFileSizeImpl)('filename', 3, 3);
+                const result = await areFileChunksCompleteFactory(
+                    addFileSizeImpl,
+                )('filename', 3, 3);
                 expect(result).toBe(false);
             });
 
             it('should call addFileSizeImpl with (chunkname)(size) up to error', async () => {
-                await areFileChunksCompleteFactory(addFileSizeImpl)('filename', 3, 3);
+                await areFileChunksCompleteFactory(addFileSizeImpl)(
+                    'filename',
+                    3,
+                    3,
+                );
 
                 expect(addFileSizeImpl).toHaveBeenCalledWith('filename.1');
                 expect(addFileSizeImpl).toHaveBeenCalledWith('filename.2');
@@ -84,7 +99,6 @@ describe('fsHelpers', () => {
             });
         });
 
-
         describe('with other error', () => {
             const reallyAddFileSize = createSpy((size = 0) => {
                 if (size === 1) {
@@ -96,16 +110,21 @@ describe('fsHelpers', () => {
             const addFileSizeImpl = createSpy().andReturn(reallyAddFileSize);
 
             it('should return throw other error', async () => {
-                const errorMessage = await areFileChunksCompleteFactory(addFileSizeImpl)('filename', 3, 3)
-                    .catch(({ message }) => message);
+                const errorMessage = await areFileChunksCompleteFactory(
+                    addFileSizeImpl,
+                )('filename', 3, 3).catch(({ message }) => message);
                 expect(errorMessage).toBe('Boom');
             });
         });
     });
 
     describe('mergeChunksFactory', () => {
-        const createWriteStreamImpl = createSpy(v => `write stream for ${v}`).andCallThrough();
-        const createReadStreamImpl = createSpy(v => `read stream for ${v}`).andCallThrough();
+        const createWriteStreamImpl = createSpy(
+            v => `write stream for ${v}`,
+        ).andCallThrough();
+        const createReadStreamImpl = createSpy(
+            v => `read stream for ${v}`,
+        ).andCallThrough();
         const concatStreamsImpl = createSpy();
         before(async () => {
             await mergeChunksFactory(
@@ -126,11 +145,14 @@ describe('fsHelpers', () => {
         });
 
         it('should have called concatStreamImpl with created array of readStream and write stream', () => {
-            expect(concatStreamsImpl).toHaveBeenCalledWith([
-                'read stream for filename.1',
-                'read stream for filename.2',
-                'read stream for filename.3',
-            ], 'write stream for filename');
+            expect(concatStreamsImpl).toHaveBeenCalledWith(
+                [
+                    'read stream for filename.1',
+                    'read stream for filename.2',
+                    'read stream for filename.3',
+                ],
+                'write stream for filename',
+            );
         });
     });
 });

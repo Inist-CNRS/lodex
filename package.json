@@ -106,7 +106,7 @@
     "lodash.set": "4.3.2",
     "lodash.unset": "4.5.2",
     "markdown-it": "8.4.0",
-    "material-ui-superselectfield": "1.7.0",
+    "material-ui-superselectfield": "1.7.2",
     "material-ui": "0.19.4",
     "moment": "2.18.1",
     "mongodb": "2.2.33",

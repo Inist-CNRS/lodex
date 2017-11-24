@@ -16,19 +16,22 @@ export const defaultState = {
     loading: false,
 };
 
-export default handleActions({
-    SET_LANGUAGE_REQUEST: state => ({
-        ...state,
-        loading: true,
-    }),
-    SET_LANGUAGE_REQUEST_SUCCESS: (state, { payload: language }) => ({
-        ...state,
-        language,
-        loading: false,
-    }),
-    SET_LANGUAGE_REQUEST_ERROR: (state, { payload: error }) => ({
-        ...state,
-        error,
-        loading: false,
-    }),
-}, defaultState);
+export default handleActions(
+    {
+        SET_LANGUAGE_REQUEST: state => ({
+            ...state,
+            loading: true,
+        }),
+        SET_LANGUAGE_REQUEST_SUCCESS: (state, { payload: language }) => ({
+            ...state,
+            language,
+            loading: false,
+        }),
+        SET_LANGUAGE_REQUEST_ERROR: (state, { payload: error }) => ({
+            ...state,
+            error,
+            loading: false,
+        }),
+    },
+    defaultState,
+);

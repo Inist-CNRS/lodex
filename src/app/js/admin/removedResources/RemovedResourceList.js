@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
@@ -42,11 +43,11 @@ export class RemovedResourceListComponent extends Component {
 
     handlePageChange = (currentPage, perPage) => {
         this.props.loadRemovedResourcePage({ page: currentPage, perPage });
-    }
+    };
 
     handleRestoreResourceClick = id => () => {
         this.props.restoreRessource(id);
-    }
+    };
 
     render() {
         const {
@@ -62,30 +63,50 @@ export class RemovedResourceListComponent extends Component {
 
         return (
             <CardText className="removed_resources">
-                <Table selectable={false} fixedHeader={false} style={styles.table}>
-                    <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
+                <Table
+                    selectable={false}
+                    fixedHeader={false}
+                    style={styles.table}
+                >
+                    <TableHeader
+                        displaySelectAll={false}
+                        adjustForCheckbox={false}
+                    >
                         <TableRow>
-                            <TableHeaderColumn>{polyglot.t('removed_at')}</TableHeaderColumn>
-                            <TableHeaderColumn>{polyglot.t('removed_reason')}</TableHeaderColumn>
-                            {columns.map(({ name, label }) =>
-                                <TableHeaderColumn key={name}>{label}</TableHeaderColumn>)}
+                            <TableHeaderColumn>
+                                {polyglot.t('removed_at')}
+                            </TableHeaderColumn>
+                            <TableHeaderColumn>
+                                {polyglot.t('removed_reason')}
+                            </TableHeaderColumn>
+                            {columns.map(({ name, label }) => (
+                                <TableHeaderColumn key={name}>
+                                    {label}
+                                </TableHeaderColumn>
+                            ))}
                             <TableHeaderColumn />
                         </TableRow>
                     </TableHeader>
                     <TableBody displayRowCheckbox={false}>
                         {resources.map(data => (
                             <TableRow key={data.uri}>
-                                <TableRowColumn>{moment(data.removedAt).format('L')}</TableRowColumn>
+                                <TableRowColumn>
+                                    {moment(data.removedAt).format('L')}
+                                </TableRowColumn>
                                 <TableRowColumn>{data.reason}</TableRowColumn>
                                 {columns.map(({ name }) => (
-                                    <TableRowColumn key={data[name]}>{data[name]}</TableRowColumn>
+                                    <TableRowColumn key={data[name]}>
+                                        {data[name]}
+                                    </TableRowColumn>
                                 ))}
                                 <TableRowColumn>
                                     <ButtonWithStatus
                                         className="btn-restore-resource"
                                         loading={loading}
                                         label={polyglot.t('restore')}
-                                        onClick={this.handleRestoreResourceClick(data.uri)}
+                                        onClick={this.handleRestoreResourceClick(
+                                            data.uri,
+                                        )}
                                         primary
                                         data={data.uri}
                                     />
@@ -129,12 +150,11 @@ const mapStateToProps = state => ({
     total: fromRemovedResources.getRemovedResourceTotal(state),
 });
 
-const mapDispatchToProps = ({
+const mapDispatchToProps = {
     loadRemovedResourcePage: loadRemovedResourcePageAction,
     restoreRessource: restoreRessourceAction,
-});
+};
 
-export default compose(
-    connect(mapStateToProps, mapDispatchToProps),
-    translate,
-)(RemovedResourceListComponent);
+export default compose(connect(mapStateToProps, mapDispatchToProps), translate)(
+    RemovedResourceListComponent,
+);

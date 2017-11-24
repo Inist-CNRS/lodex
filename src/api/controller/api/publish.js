@@ -9,7 +9,12 @@ import publishFacets from './publishFacets';
 
 const app = new Koa();
 
-export const tranformAllDocuments = async (count, findLimitFromSkip, insertBatch, transformer) => {
+export const tranformAllDocuments = async (
+    count,
+    findLimitFromSkip,
+    insertBatch,
+    transformer,
+) => {
     let handled = 0;
     while (handled < count) {
         const dataset = await findLimitFromSkip(1000, handled);
@@ -21,23 +26,35 @@ export const tranformAllDocuments = async (count, findLimitFromSkip, insertBatch
 
 export const addTransformResultToDoc = transform => async doc => ({
     ...omit(doc, ['_id']),
-    ...await transform(doc),
+    ...(await transform(doc)),
 });
 
-export const versionTransformResult = transformDocument => async (doc, _, __, publicationDate = new Date()) => ({
+export const versionTransformResult = transformDocument => async (
+    doc,
+    _,
+    __,
+    publicationDate = new Date(),
+) => ({
     uri: doc.uri,
-    versions: [{
-        ...await transformDocument(doc),
-        publicationDate,
-    }],
+    versions: [
+        {
+            ...(await transformDocument(doc)),
+            publicationDate,
+        },
+    ],
 });
 
-export const publishCharacteristics = async (ctx, datasetCoverFields, count) => {
+export const publishCharacteristics = async (
+    ctx,
+    datasetCoverFields,
+    count,
+) => {
     if (!datasetCoverFields.length) {
         return;
     }
-    const getPublishedCharacteristics = ctx
-        .getDocumentTransformer(datasetCoverFields);
+    const getPublishedCharacteristics = ctx.getDocumentTransformer(
+        datasetCoverFields,
+    );
 
     const [lastResource] = await ctx.uriDataset.findLimitFromSkip(1, count - 1);
     const characteristics = await getPublishedCharacteristics(lastResource);
@@ -45,16 +62,19 @@ export const publishCharacteristics = async (ctx, datasetCoverFields, count) => 
     const characteristicsKeys = Object.keys(characteristics);
 
     if (characteristicsKeys.length) {
-        const publishedCharacteristics = characteristicsKeys
-            .reduce((result, name) => ({
+        const publishedCharacteristics = characteristicsKeys.reduce(
+            (result, name) => ({
                 ...result,
                 [name]: characteristics[name],
-            }), {});
+            }),
+            {},
+        );
 
-        await ctx.publishedCharacteristic.addNewVersion(publishedCharacteristics);
+        await ctx.publishedCharacteristic.addNewVersion(
+            publishedCharacteristics,
+        );
     }
 };
-
 
 export const preparePublish = async (ctx, next) => {
     ctx.tranformAllDocuments = tranformAllDocuments;
@@ -77,7 +97,7 @@ export const handlePublishError = async (ctx, next) => {
     }
 };
 
-export const doPublish = async (ctx) => {
+export const doPublish = async ctx => {
     const count = await ctx.dataset.count({});
 
     const fields = await ctx.field.findAll();
@@ -95,10 +115,13 @@ export const doPublish = async (ctx) => {
         addUri,
     );
 
-    const transformDocument = ctx
-        .getDocumentTransformer(collectionCoverFields.filter(col => col.name !== 'uri'));
+    const transformDocument = ctx.getDocumentTransformer(
+        collectionCoverFields.filter(col => col.name !== 'uri'),
+    );
 
-    const transformDocumentAndKeepUri = ctx.versionTransformResult(transformDocument);
+    const transformDocumentAndKeepUri = ctx.versionTransformResult(
+        transformDocument,
+    );
 
     const countUnique = (await ctx.uriDataset.distinct('uri')).length;
     await ctx.tranformAllDocuments(
@@ -113,7 +136,7 @@ export const doPublish = async (ctx) => {
     ctx.redirect('/api/publication');
 };
 
-export const verifyUri = async (ctx) => {
+export const verifyUri = async ctx => {
     const uriField = await ctx.field.findOneByName('uri');
     if (get(uriField, 'transformers[0].operation') === 'AUTOGENERATE_URI') {
         ctx.body = { valid: true };
@@ -129,7 +152,7 @@ export const verifyUri = async (ctx) => {
     };
 };
 
-export const clearPublished = async (ctx) => {
+export const clearPublished = async ctx => {
     try {
         await ctx.publishedDataset.remove({});
         await ctx.publishedCharacteristic.remove({});

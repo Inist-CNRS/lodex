@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { red400 } from 'material-ui/styles/colors';
 import memoize from 'lodash.memoize';
 

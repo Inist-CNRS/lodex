@@ -4,14 +4,17 @@ import {
     ADD_CHARACTERISTIC,
     addCharacteristicError,
     addCharacteristicSuccess,
-    getNewCharacteristicFormData,
 } from '../';
-import { fromUser } from '../../../sharedSelectors';
-import fetchSaga from '../../../lib/sagas/fetchSaga';
+import { getNewCharacteristicFormData } from '../selectors';
+import { fromUser } from '../../sharedSelectors';
+import fetchSaga from '../../lib/sagas/fetchSaga';
 
 export function* handleAddCharacteristic() {
     const formData = yield select(getNewCharacteristicFormData);
-    const request = yield select(fromUser.getAddCharacteristicRequest, formData);
+    const request = yield select(
+        fromUser.getAddCharacteristicRequest,
+        formData,
+    );
     const { error, response } = yield call(fetchSaga, request);
 
     if (error) {
@@ -22,6 +25,6 @@ export function* handleAddCharacteristic() {
     yield put(addCharacteristicSuccess(response));
 }
 
-export default function* () {
+export default function*() {
     yield takeLatest(ADD_CHARACTERISTIC, handleAddCharacteristic);
 }

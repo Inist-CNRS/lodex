@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
@@ -56,10 +57,12 @@ export const mapStateToProps = state => ({
 });
 
 export const getPreviousState = (ownProps, location) => {
-    if (ownProps.location
-        && ownProps.location.state
-        && ownProps.location.state.nextPathname
-        && ownProps.location.state.nextPathname !== '/login') {
+    if (
+        ownProps.location &&
+        ownProps.location.state &&
+        ownProps.location.state.nextPathname &&
+        ownProps.location.state.nextPathname !== '/login'
+    ) {
         return ownProps.location.state.nextPathname;
     }
 
@@ -74,16 +77,20 @@ export const getPreviousState = (ownProps, location) => {
     return 'home';
 };
 
-export const mapDispatchToProps = (dispatch, ownProps) => bindActionCreators({
-    login: values => loginAction({
-        ...values,
-        previousState: getPreviousState(ownProps, window.location),
-    }),
-    submit: () => submitAction(LOGIN_FORM_NAME),
-    toggleLogin: toggleLoginAction,
-}, dispatch);
+export const mapDispatchToProps = (dispatch, ownProps) =>
+    bindActionCreators(
+        {
+            login: values =>
+                loginAction({
+                    ...values,
+                    previousState: getPreviousState(ownProps, window.location),
+                }),
+            submit: () => submitAction(LOGIN_FORM_NAME),
+            toggleLogin: toggleLoginAction,
+        },
+        dispatch,
+    );
 
-export default compose(
-    connect(mapStateToProps, mapDispatchToProps),
-    translate,
-)(LoginComponent);
+export default compose(connect(mapStateToProps, mapDispatchToProps), translate)(
+    LoginComponent,
+);

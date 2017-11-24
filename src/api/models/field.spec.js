@@ -36,7 +36,10 @@ describe('field', () => {
         });
 
         it('should call fieldCollection.createIndex', () => {
-            expect(fieldCollection.createIndex).toHaveBeenCalledWith({ name: 1 }, { unique: true });
+            expect(fieldCollection.createIndex).toHaveBeenCalledWith(
+                { name: 1 },
+                { unique: true },
+            );
         });
 
         describe('field.create', () => {
@@ -44,32 +47,39 @@ describe('field', () => {
                 await field.create({ field: 'data' });
 
                 expect(fieldCollection.insertOne.calls.length).toBe(1);
-                expect(fieldCollection.insertOne.calls[0].arguments).toMatch([{
-                    name: /^[A-Za-z0-9+/]{4}$/,
-                    field: 'data',
-                    position: 10,
-                }]);
+                expect(fieldCollection.insertOne.calls[0].arguments).toMatch([
+                    {
+                        name: /^[A-Za-z0-9+/]{4}$/,
+                        field: 'data',
+                        position: 10,
+                    },
+                ]);
             });
 
             it('should call collection.inserOne with given data and random uid when given position', async () => {
                 await field.create({ field: 'data', position: 15 });
 
                 expect(fieldCollection.insertOne.calls.length).toBe(1);
-                expect(fieldCollection.insertOne.calls[0].arguments).toMatch([{
-                    name: /^[A-Za-z0-9+/]{4}$/,
-                    field: 'data',
-                    position: 15,
-                }]);
+                expect(fieldCollection.insertOne.calls[0].arguments).toMatch([
+                    {
+                        name: /^[A-Za-z0-9+/]{4}$/,
+                        field: 'data',
+                        position: 15,
+                    },
+                ]);
             });
 
             it('should call collection.updateMany to update existing columns indexes', async () => {
                 await field.create({ field: 'data', position: 15 });
 
-                expect(fieldCollection.updateMany).toHaveBeenCalledWith({
-                    position: { $gte: 15 },
-                }, {
-                    $inc: { position: 1 },
-                });
+                expect(fieldCollection.updateMany).toHaveBeenCalledWith(
+                    {
+                        position: { $gte: 15 },
+                    },
+                    {
+                        $inc: { position: 1 },
+                    },
+                );
             });
 
             it('should call collection.findOne with insertedId', async () => {
@@ -87,7 +97,12 @@ describe('field', () => {
                     label: 'label',
                 };
                 const contributor = { contributor: 'data' };
-                await field.addContributionField(fieldData, contributor, true, 'nameArg');
+                await field.addContributionField(
+                    fieldData,
+                    contributor,
+                    true,
+                    'nameArg',
+                );
                 expect(fieldCollection.insertOne).toHaveBeenCalledWith({
                     label: 'label',
                     name: 'nameArg',
@@ -103,7 +118,12 @@ describe('field', () => {
                     value: 'field value',
                 };
                 const contributor = { contributor: 'data' };
-                await field.addContributionField(fieldData, contributor, false, 'nameArg');
+                await field.addContributionField(
+                    fieldData,
+                    contributor,
+                    false,
+                    'nameArg',
+                );
                 expect(fieldCollection.insertOne).toHaveBeenCalledWith({
                     label: 'label',
                     name: 'nameArg',
@@ -121,17 +141,25 @@ describe('field', () => {
                     name: 'this field name',
                 };
                 const contributor = { contributor: 'data' };
-                await field.addContributionField(fieldData, contributor, true, 'nameArg');
-                expect(fieldCollection.update).toHaveBeenCalledWith({
-                    name: 'this field name',
-                    contribution: true,
-                }, {
-                    $set: {
-                        label: 'label',
-                        cover: COVER_DOCUMENT,
+                await field.addContributionField(
+                    fieldData,
+                    contributor,
+                    true,
+                    'nameArg',
+                );
+                expect(fieldCollection.update).toHaveBeenCalledWith(
+                    {
+                        name: 'this field name',
                         contribution: true,
                     },
-                });
+                    {
+                        $set: {
+                            label: 'label',
+                            cover: COVER_DOCUMENT,
+                            contribution: true,
+                        },
+                    },
+                );
             });
 
             it('should call upadte if field has a name and adding contributor when not logged', async () => {
@@ -141,20 +169,28 @@ describe('field', () => {
                     name: 'this field name',
                 };
                 const contributor = { contributor: 'data' };
-                await field.addContributionField(fieldData, contributor, false, 'nameArg');
-                expect(fieldCollection.update).toHaveBeenCalledWith({
-                    name: 'this field name',
-                    contribution: true,
-                }, {
-                    $set: {
-                        label: 'label',
-                        cover: COVER_DOCUMENT,
+                await field.addContributionField(
+                    fieldData,
+                    contributor,
+                    false,
+                    'nameArg',
+                );
+                expect(fieldCollection.update).toHaveBeenCalledWith(
+                    {
+                        name: 'this field name',
                         contribution: true,
                     },
-                    $addToSet: {
-                        contributors: contributor,
+                    {
+                        $set: {
+                            label: 'label',
+                            cover: COVER_DOCUMENT,
+                            contribution: true,
+                        },
+                        $addToSet: {
+                            contributors: contributor,
+                        },
                     },
-                });
+                );
             });
         });
 
@@ -162,7 +198,9 @@ describe('field', () => {
             it('should try to find an existing uri field', async () => {
                 await field.initializeModel();
 
-                expect(fieldCollection.findOne).toHaveBeenCalledWith({ name: URI_FIELD_NAME });
+                expect(fieldCollection.findOne).toHaveBeenCalledWith({
+                    name: URI_FIELD_NAME,
+                });
             });
 
             it('should create a new uri field if not present', async () => {
@@ -205,9 +243,7 @@ describe('field', () => {
                 name: 'name',
                 scheme: 'http://purl.org/dc/terms/title',
                 position: 1,
-                transformers: [
-                    { operation: 'COLUMN', args: [{ value: 'a' }] },
-                ],
+                transformers: [{ operation: 'COLUMN', args: [{ value: 'a' }] }],
             };
             expect(validateField(field)).toEqual(field);
         });
@@ -221,8 +257,9 @@ describe('field', () => {
                 position: 1,
                 transformers: [],
             };
-            expect(() => validateField(field))
-                .toThrow(buildInvalidPropertiesMessage('label'));
+            expect(() => validateField(field)).toThrow(
+                buildInvalidPropertiesMessage('label'),
+            );
         });
 
         it('should throw an error if no cover', () => {
@@ -232,12 +269,12 @@ describe('field', () => {
                 name: 'name',
                 scheme: 'http://purl.org/dc/terms/title',
                 position: 1,
-                transformers: [
-                    { operation: 'COLUMN', args: ['a'] },
-                ],
+                transformers: [{ operation: 'COLUMN', args: ['a'] }],
             };
 
-            expect(() => validateField(field)).toThrow(buildInvalidPropertiesMessage('label'));
+            expect(() => validateField(field)).toThrow(
+                buildInvalidPropertiesMessage('label'),
+            );
         });
 
         it('should throw an error if cover is unknown', () => {
@@ -247,12 +284,12 @@ describe('field', () => {
                 name: 'name',
                 scheme: 'http://purl.org/dc/terms/title',
                 position: 1,
-                transformers: [
-                    { operation: 'COLUMN', args: ['a'] },
-                ],
+                transformers: [{ operation: 'COLUMN', args: ['a'] }],
             };
 
-            expect(() => validateField(field)).toThrow(buildInvalidPropertiesMessage('label'));
+            expect(() => validateField(field)).toThrow(
+                buildInvalidPropertiesMessage('label'),
+            );
         });
 
         it('should throw an error if no label', () => {
@@ -262,12 +299,12 @@ describe('field', () => {
                 label: undefined,
                 scheme: 'http://purl.org/dc/terms/title',
                 position: 1,
-                transformers: [
-                    { operation: 'COLUMN', args: ['a'] },
-                ],
+                transformers: [{ operation: 'COLUMN', args: ['a'] }],
             };
 
-            expect(() => validateField(field)).toThrow(buildInvalidPropertiesMessage());
+            expect(() => validateField(field)).toThrow(
+                buildInvalidPropertiesMessage(),
+            );
         });
 
         it('should throw an error if label less than 2', () => {
@@ -277,12 +314,12 @@ describe('field', () => {
                 name: 'name',
                 scheme: 'http://purl.org/dc/terms/title',
                 position: 1,
-                transformers: [
-                    { operation: 'COLUMN', args: ['a'] },
-                ],
+                transformers: [{ operation: 'COLUMN', args: ['a'] }],
             };
 
-            expect(() => validateField(field)).toThrow(buildInvalidPropertiesMessage('la'));
+            expect(() => validateField(field)).toThrow(
+                buildInvalidPropertiesMessage('la'),
+            );
         });
 
         it('should throw an error if scheme is not a valid url', () => {
@@ -292,12 +329,12 @@ describe('field', () => {
                 name: 'name',
                 scheme: 'ftp://purl.org/dc/terms/title',
                 position: 1,
-                transformers: [
-                    { operation: 'COLUMN', args: ['a'] },
-                ],
+                transformers: [{ operation: 'COLUMN', args: ['a'] }],
             };
 
-            expect(() => validateField(field)).toThrow(buildInvalidPropertiesMessage('label'));
+            expect(() => validateField(field)).toThrow(
+                buildInvalidPropertiesMessage('label'),
+            );
         });
 
         it('should throw an error if transformer has no args', () => {
@@ -307,12 +344,12 @@ describe('field', () => {
                 name: 'name',
                 scheme: 'http://purl.org/dc/terms/title',
                 position: 1,
-                transformers: [
-                    { operation: 'COLUMN' },
-                ],
+                transformers: [{ operation: 'COLUMN' }],
             };
 
-            expect(() => validateField(field)).toThrow(buildInvalidTransformersMessage('label'));
+            expect(() => validateField(field)).toThrow(
+                buildInvalidTransformersMessage('label'),
+            );
         });
 
         it('should throw an error if transformer operation has unknow operation', () => {
@@ -328,7 +365,9 @@ describe('field', () => {
                 ],
             };
 
-            expect(() => validateField(field)).toThrow(buildInvalidTransformersMessage('label'));
+            expect(() => validateField(field)).toThrow(
+                buildInvalidTransformersMessage('label'),
+            );
         });
 
         it('should return field even if no transformers if isContribution is true', async () => {
@@ -349,11 +388,11 @@ describe('field', () => {
                 name: 'name',
                 scheme: 'http://purl.org/dc/terms/title',
                 position: 1,
-                transformers: [
-                    { operation: 'COLUMN', args: [] },
-                ],
+                transformers: [{ operation: 'COLUMN', args: [] }],
             };
-            expect(() => validateField(field, true)).toThrow(buildInvalidPropertiesMessage('label'));
+            expect(() => validateField(field, true)).toThrow(
+                buildInvalidPropertiesMessage('label'),
+            );
         });
     });
 });

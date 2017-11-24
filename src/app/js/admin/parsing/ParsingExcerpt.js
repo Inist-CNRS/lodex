@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import pure from 'recompose/pure';
@@ -27,11 +28,11 @@ const styles = {
 export const getRowStyle = (index, total) => {
     let opacity = 1;
 
-    if (total > 2 && index === (total - 2)) {
+    if (total > 2 && index === total - 2) {
         opacity = 0.45;
     }
 
-    if (total > 2 && index === (total - 1)) {
+    if (total > 2 && index === total - 1) {
         opacity = 0.25;
     }
 
@@ -65,11 +66,12 @@ export const ParsingExcerptComponent = ({
                         key={`${line._id}_data_row`}
                         style={getRowStyle(index, total)}
                     >
-                        {columns.map((column) => {
+                        {columns.map(column => {
                             const showAddColumnButton =
-                                showAddColumns
-                                && showAddColumns
-                                && (index === total - 3 || (total < 3 && index === 0));
+                                showAddColumns &&
+                                showAddColumns &&
+                                (index === total - 3 ||
+                                    (total < 3 && index === 0));
 
                             return (
                                 <ParsingExcerptColumn
@@ -86,14 +88,14 @@ export const ParsingExcerptComponent = ({
                                         }}
                                         runOnMount
                                     >
-                                        {showAddColumnButton &&
+                                        {showAddColumnButton && (
                                             <ParsingExcerptAddColumn
                                                 key={`add_column_${column}`}
                                                 name={column}
                                                 onAddColumn={handleAddColumn}
                                                 atTop={total < 3}
                                             />
-                                        }
+                                        )}
                                     </Transition>
                                 </ParsingExcerptColumn>
                             );
@@ -112,11 +114,10 @@ ParsingExcerptComponent.propTypes = {
     showAddColumns: PropTypes.bool.isRequired,
 };
 
-const mapDispatchToProps = ({
+const mapDispatchToProps = {
     handleAddColumn: addField,
-});
+};
 
-export default compose(
-    connect(undefined, mapDispatchToProps),
-    pure,
-)(ParsingExcerptComponent);
+export default compose(connect(undefined, mapDispatchToProps), pure)(
+    ParsingExcerptComponent,
+);

@@ -4,13 +4,14 @@ import {
     CONFIGURE_FIELD,
     configureFieldSuccess,
     configureFieldError,
-    getFieldOntologyFormData,
     preLoadPublication,
 } from '../';
+
+import { getFieldOntologyFormData } from '../selectors';
 import { fromUser } from '../../sharedSelectors';
 import fetchSaga from '../../lib/sagas/fetchSaga';
 
-export function* handleSaveFieldRequest() {
+export function* handleConfigureField() {
     const formData = yield select(getFieldOntologyFormData);
     const request = yield select(fromUser.getUpdateFieldRequest, formData);
 
@@ -26,5 +27,5 @@ export function* handleSaveFieldRequest() {
 }
 
 export default function* watchsaveFieldRequest() {
-    yield takeLatest(CONFIGURE_FIELD, handleSaveFieldRequest);
+    yield takeLatest(CONFIGURE_FIELD, handleConfigureField);
 }

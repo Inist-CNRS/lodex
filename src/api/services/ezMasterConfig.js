@@ -1,6 +1,6 @@
 import expect from 'expect';
 
-export const validateConfig = (config) => {
+export const validateConfig = config => {
     expect(config).toMatch({
         username: /.+/,
         password: /.+/,
@@ -11,7 +11,9 @@ export const validateConfig = (config) => {
     }
 
     if (config.subpublisher) {
-        expect(config.subpublisher).toMatch(/[0123456789BCDFGHJKLMNPQRSTVWXZ]{3}/);
+        expect(config.subpublisher).toMatch(
+            /[0123456789BCDFGHJKLMNPQRSTVWXZ]{3}/,
+        );
     }
 };
 
@@ -26,7 +28,6 @@ export default async (ctx, next) => {
         const error = new Error(`Invalid configuration from EzMaster: ${err.message}`); // eslint-disable-line
         throw error;
     }
-
 
     await next();
 };

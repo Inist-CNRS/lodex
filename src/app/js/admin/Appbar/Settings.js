@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import FlatButton from 'material-ui/FlatButton';
 import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
@@ -29,7 +30,7 @@ class SettingsComponent extends Component {
         p: polyglotPropTypes.isRequired,
         hasPublishedDataset: PropTypes.bool.isRequired,
         hasLoadedDataset: PropTypes.bool.isRequired,
-    }
+    };
 
     constructor(props) {
         super(props);
@@ -41,14 +42,14 @@ class SettingsComponent extends Component {
         };
     }
 
-    handleTouchTap = (event) => {
+    handleTouchTap = event => {
         event.preventDefault();
 
         this.setState({
             open: true,
             anchorEl: event.currentTarget,
         });
-    }
+    };
 
     handleRequestClose = () => {
         this.setState({
@@ -61,30 +62,39 @@ class SettingsComponent extends Component {
             open: false,
             showClearDataset: true,
         });
-    }
+    };
 
     handleClearPublished = () => {
         this.setState({
             open: false,
             showClearPublished: true,
         });
-    }
+    };
 
     handleCloseDataset = () => {
         this.setState({
             showClearDataset: false,
         });
-    }
+    };
 
     handleClosePublished = () => {
         this.setState({
             showClearPublished: false,
         });
-    }
+    };
 
     render() {
-        const { p: polyglot, hasLoadedDataset, hasPublishedDataset } = this.props;
-        const { open, anchorEl, showClearPublished, showClearDataset } = this.state;
+        const {
+            p: polyglot,
+            hasLoadedDataset,
+            hasPublishedDataset,
+        } = this.props;
+        const {
+            open,
+            anchorEl,
+            showClearPublished,
+            showClearDataset,
+        } = this.state;
         return (
             <div style={styles.container}>
                 <FlatButton
@@ -118,8 +128,18 @@ class SettingsComponent extends Component {
                         />
                     </Menu>
                 </Popover>
-                {showClearPublished && <ClearDialog type="published" onClose={this.handleClosePublished} /> }
-                {showClearDataset && <ClearDialog type="dataset" onClose={this.handleCloseDataset} /> }
+                {showClearPublished && (
+                    <ClearDialog
+                        type="published"
+                        onClose={this.handleClosePublished}
+                    />
+                )}
+                {showClearDataset && (
+                    <ClearDialog
+                        type="dataset"
+                        onClose={this.handleCloseDataset}
+                    />
+                )}
             </div>
         );
     }
@@ -130,8 +150,4 @@ const mapStateToProps = state => ({
     hasLoadedDataset: fromParsing.hasUploadedFile(state),
 });
 
-
-export default compose(
-    translate,
-    connect(mapStateToProps),
-)(SettingsComponent);
+export default compose(translate, connect(mapStateToProps))(SettingsComponent);

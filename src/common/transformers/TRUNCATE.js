@@ -3,12 +3,12 @@ export const truncate = (value, arg) => {
         return value;
     }
     const gap = Number(arg);
-    return Array.isArray(value) || typeof value === 'string' ?
-        value.slice(0, gap) :
-        gap + value;
+    return Array.isArray(value) || typeof value === 'string'
+        ? value.slice(0, gap)
+        : gap + value;
 };
 
-const transformation = (_, args) => (value) => {
+const transformation = (_, args) => value => {
     const arg = args.find(a => a.name === 'gap');
 
     if (!arg) {
@@ -27,9 +27,7 @@ const transformation = (_, args) => (value) => {
 transformation.getMetas = () => ({
     name: 'TRUNCATE',
     type: 'transform',
-    args: [
-        { name: 'gap', type: 'number' },
-    ],
+    args: [{ name: 'gap', type: 'number' }],
 });
 
 export default transformation;

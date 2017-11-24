@@ -11,25 +11,35 @@ import {
 export const COMPUTE_FIELD_PREVIEW_SUCCESS = 'COMPUTE_FIELD_PREVIEW_SUCCESS';
 export const COMPUTE_FIELD_PREVIEW_ERROR = 'COMPUTE_FIELD_PREVIEW_ERROR';
 
-export const computeFieldPreviewSuccess = createAction(COMPUTE_FIELD_PREVIEW_SUCCESS);
-export const computeFieldPreviewError = createAction(COMPUTE_FIELD_PREVIEW_ERROR);
+export const computeFieldPreviewSuccess = createAction(
+    COMPUTE_FIELD_PREVIEW_SUCCESS,
+);
+export const computeFieldPreviewError = createAction(
+    COMPUTE_FIELD_PREVIEW_ERROR,
+);
 
 export const defaultState = {
     isComputing: false,
     resources: [],
 };
 
-export default handleActions({
-    [combineActions(
-        REDUX_FORM_CHANGE,
-        REDUX_FORM_ARRAY_INSERT,
-        REDUX_FORM_ARRAY_REMOVE,
-        REDUX_FORM_REGISTER_FIELD,
-        REDUX_FORM_UNREGISTER_FIELD,
-    )]: state => ({ ...state, isComputing: true }),
-    COMPUTE_FIELD_PREVIEW_SUCCESS: (state, { payload: resources }) => ({ isComputing: false, resources }),
-    COMPUTE_FIELD_PREVIEW_ERROR: () => defaultState,
-}, defaultState);
+export default handleActions(
+    {
+        [combineActions(
+            REDUX_FORM_CHANGE,
+            REDUX_FORM_ARRAY_INSERT,
+            REDUX_FORM_ARRAY_REMOVE,
+            REDUX_FORM_REGISTER_FIELD,
+            REDUX_FORM_UNREGISTER_FIELD,
+        )]: state => ({ ...state, isComputing: true }),
+        COMPUTE_FIELD_PREVIEW_SUCCESS: (state, { payload: resources }) => ({
+            isComputing: false,
+            resources,
+        }),
+        COMPUTE_FIELD_PREVIEW_ERROR: () => defaultState,
+    },
+    defaultState,
+);
 
 export const isComputing = state => state.isComputing;
 export const getFieldPreview = state => state.resources;

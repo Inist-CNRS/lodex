@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { CardHeader, CardText } from 'material-ui/Card';
 import moment from 'moment';
@@ -22,12 +23,18 @@ const styles = {
 
 export const RemovedDetailComponent = ({ reason, removedAt, p: polyglot }) => (
     <Card className="removed-detail">
-        <CardHeader title={polyglot.t('removed_resource_at', { date: moment(removedAt).format('ll') })} />
+        <CardHeader
+            title={polyglot.t('removed_resource_at', {
+                date: moment(removedAt).format('ll'),
+            })}
+        />
         <CardText>
             <dl style={styles.container}>
                 <dt style={styles.reason}>{polyglot.t('reason')}</dt>
                 <dd className="reason">
-                    {reason.split('\n').map(line => <p>{line}</p>)}
+                    {reason
+                        .split('\n')
+                        .map((line, index) => <p key={index}>{line}</p>)}
                 </dd>
             </dl>
         </CardText>
@@ -49,7 +56,6 @@ const mapStateToProps = fromResource.getRemovedData;
 
 const mapDispatchToProps = {};
 
-export default compose(
-    translate,
-    connect(mapStateToProps, mapDispatchToProps),
-)(RemovedDetailComponent);
+export default compose(translate, connect(mapStateToProps, mapDispatchToProps))(
+    RemovedDetailComponent,
+);

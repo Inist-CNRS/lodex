@@ -5,7 +5,7 @@ import compose from 'recompose/compose';
 
 import { fromResource } from '../selectors';
 import CreateResourceForm from './CreateResourceForm';
-import ButtonWithDialog from '../../lib/components/ButtonWithDialog';
+import ButtonWithDialogForm from '../../lib/components/ButtonWithDialogForm';
 import {
     createResourceOpen,
     createResourceCancel,
@@ -28,7 +28,6 @@ const mapDispatchToProps = {
     handleClose: () => createResourceCancel(),
 };
 
-export default compose(
-    translate,
-    connect(mapStateToProps, mapDispatchToProps),
-)(ButtonWithDialog);
+export default compose(translate, connect(mapStateToProps, mapDispatchToProps))(
+    ButtonWithDialogForm,
+);

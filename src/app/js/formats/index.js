@@ -43,7 +43,7 @@ const components = {
 
 export const FORMATS = Object.keys(components).sort();
 
-export const getComponent = (field) => {
+export const getComponent = field => {
     if (!field) {
         return DefaultFormat;
     }

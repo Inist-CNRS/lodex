@@ -1,13 +1,18 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import fetch from 'isomorphic-fetch';
 import translate from 'redux-polyglot/translate';
 import commaNumber from 'comma-number';
 import { field as fieldPropTypes } from '../../propTypes';
 import Bigbold from './Bigbold';
 
-
-const isURL = v => ((typeof v === 'string' && (v.startsWith('http://') || v.startsWith('https://') || v.startsWith('/api/'))) || false);
-const getNumber = (v) => {
+const isURL = v =>
+    (typeof v === 'string' &&
+        (v.startsWith('http://') ||
+            v.startsWith('https://') ||
+            v.startsWith('/api/'))) ||
+    false;
+const getNumber = v => {
     if (!v || typeof v === 'number' || typeof v === 'string') {
         return v;
     }
@@ -16,7 +21,6 @@ const getNumber = (v) => {
     }
     return null;
 };
-
 
 async function fetchURL(url) {
     const response = await fetch(url);
@@ -45,7 +49,9 @@ class EmphasedNumber extends Component {
         const literals = values.filter(v => !isURL(v));
         const URLsValues = await fetchURLs(URLs);
         const literalsValues = literals.filter(x => x);
-        const data = literalsValues.concat(URLsValues.map(getNumber).filter(x => x));
+        const data = literalsValues.concat(
+            URLsValues.map(getNumber).filter(x => x),
+        );
         this.setData(data);
     }
 
@@ -56,18 +62,29 @@ class EmphasedNumber extends Component {
     render() {
         const { data } = this.state;
         const { field, className } = this.props;
-        const size = field.format && field.format.args && field.format.args.size ? field.format.args.size : 1;
+        const size =
+            field.format && field.format.args && field.format.args.size
+                ? field.format.args.size
+                : 1;
         const { colors } = field.format.args || { colors: '' };
-        const colorsSet = String(colors).split(/[^\w]/).filter(x => x.length > 0).map(x => String('#').concat(x));
+        const colorsSet = String(colors)
+            .split(/[^\w]/)
+            .filter(x => x.length > 0)
+            .map(x => String('#').concat(x));
         return (
             <div className={className}>
-                {
-                    data.map((entry, index) => {
-                        const key = String(index).concat('EmphasedNumber');
-                        const val = commaNumber(entry, ' ');
-                        return (<Bigbold key={key} value={val} colorsSet={colorsSet} size={size} />);
-                    })
-                }
+                {data.map((entry, index) => {
+                    const key = String(index).concat('EmphasedNumber');
+                    const val = commaNumber(entry, ' ');
+                    return (
+                        <Bigbold
+                            key={key}
+                            value={val}
+                            colorsSet={colorsSet}
+                            size={size}
+                        />
+                    );
+                })}
             </div>
         );
     }
@@ -85,4 +102,3 @@ EmphasedNumber.defaultProps = {
 };
 
 export default translate(EmphasedNumber);
-

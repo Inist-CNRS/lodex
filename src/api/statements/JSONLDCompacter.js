@@ -5,11 +5,12 @@ module.exports = function JSONLDCompacter(data, feed) {
         return feed.close();
     }
 
-    jsonld.compact(data, {})
-        .then((out) => {
+    jsonld.compact(data, {}).then(
+        out => {
             feed.send(out);
         },
-        (err) => {
+        err => {
             throw err;
-        });
+        },
+    );
 };

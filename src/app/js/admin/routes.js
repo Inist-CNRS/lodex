@@ -4,16 +4,22 @@ import ContributedResourcePage from './contributedResources/ContributedResourceP
 import RemovedResourcePage from './removedResources/RemovedResourcePage';
 import { fromUser } from '../sharedSelectors';
 import userRoutes from '../user/routes';
+import Ontology from '../fields/ontology/Ontology';
 
-export const onEnterWithAuthenticationCheck = store => (nextState, replaceState) => {
+export const onEnterWithAuthenticationCheck = store => (
+    nextState,
+    replaceState,
+) => {
     const state = store.getState();
     const isLoggedIn = fromUser.isLoggedIn(state);
 
     if (!isLoggedIn) {
-        replaceState({ pathname: '/login', state: { nextPathname: nextState.location.pathname } });
+        replaceState({
+            pathname: '/login',
+            state: { nextPathname: nextState.location.pathname },
+        });
     }
 };
-
 
 export default store => ({
     path: '/',
@@ -33,6 +39,11 @@ export default store => ({
         {
             path: '/removed',
             component: RemovedResourcePage,
+            onEnter: onEnterWithAuthenticationCheck(store),
+        },
+        {
+            path: '/ontology',
+            component: Ontology,
             onEnter: onEnterWithAuthenticationCheck(store),
         },
         ...userRoutes,

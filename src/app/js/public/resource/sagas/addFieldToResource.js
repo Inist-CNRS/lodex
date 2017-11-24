@@ -12,7 +12,11 @@ import fetchSaga from '../../../lib/sagas/fetchSaga';
 export function* handleAddFieldToResource({ payload: uri }) {
     const formData = yield select(getNewResourceFieldFormData);
     if (!formData.field) {
-        yield put(addFieldToResourceError(new Error('You need to select a field or create a new one')));
+        yield put(
+            addFieldToResourceError(
+                new Error('You need to select a field or create a new one'),
+            ),
+        );
         return;
     }
     const request = yield select(fromUser.getAddFieldToResourceRequest, {

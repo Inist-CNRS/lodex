@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import FlatButton from 'material-ui/FlatButton';
 import Popover, { PopoverAnimationVertical } from 'material-ui/Popover';
 import Menu from 'material-ui/Menu';
@@ -28,7 +29,7 @@ export class ModelMenuComponent extends Component {
         canImport: PropTypes.bool.isRequired,
         exportFields: PropTypes.func.isRequired,
         p: polyglotPropTypes.isRequired,
-    }
+    };
 
     constructor(props) {
         super(props);
@@ -39,7 +40,7 @@ export class ModelMenuComponent extends Component {
         };
     }
 
-    handleTouchTap = (event) => {
+    handleTouchTap = event => {
         // This prevents ghost click.
         event.preventDefault();
 
@@ -59,14 +60,14 @@ export class ModelMenuComponent extends Component {
         this.setState({
             showImportFieldsConfirmation: false,
         });
-    }
+    };
 
     handleImportFields = () => {
         this.setState({
             open: false,
             showImportFieldsConfirmation: true,
         });
-    }
+    };
 
     handleExportFields = () => {
         this.setState({
@@ -74,7 +75,7 @@ export class ModelMenuComponent extends Component {
         });
 
         this.props.exportFields();
-    }
+    };
 
     render() {
         const { canImport, p: polyglot } = this.props;
@@ -94,7 +95,10 @@ export class ModelMenuComponent extends Component {
                     <Popover
                         open={open}
                         anchorEl={anchorEl}
-                        anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
+                        anchorOrigin={{
+                            horizontal: 'left',
+                            vertical: 'bottom',
+                        }}
                         targetOrigin={{ horizontal: 'left', vertical: 'top' }}
                         onRequestClose={this.handleRequestClose}
                         animation={PopoverAnimationVertical}
@@ -112,11 +116,11 @@ export class ModelMenuComponent extends Component {
                         </Menu>
                     </Popover>
 
-                    {showImportFieldsConfirmation &&
+                    {showImportFieldsConfirmation && (
                         <ImportFieldsDialog
                             onClose={this.handleImportFieldsClose}
                         />
-                    }
+                    )}
                 </div>
             );
         }
@@ -133,11 +137,10 @@ export class ModelMenuComponent extends Component {
     }
 }
 
-const mapDispatchToProps = ({
+const mapDispatchToProps = {
     exportFields: exportFieldsAction,
-});
+};
 
-export default compose(
-    connect(undefined, mapDispatchToProps),
-    translate,
-)(ModelMenuComponent);
+export default compose(connect(undefined, mapDispatchToProps), translate)(
+    ModelMenuComponent,
+);

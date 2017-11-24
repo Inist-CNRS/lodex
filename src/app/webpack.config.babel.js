@@ -17,18 +17,26 @@ import jsonConfig from '../../config.json';
 
 export default {
     entry: {
-        index: [].concat(process.env.NODE_ENV === 'development' ? [
-            'react-hot-loader/patch',
-            'webpack-hot-middleware/client?path=/__webpack_hmr&reload=true',
-        ] : []).concat([
-            resolve(__dirname, './js/public/index.js'),
-        ]),
-        'admin/index': [].concat(process.env.NODE_ENV === 'development' ? [
-            'react-hot-loader/patch',
-            'webpack-hot-middleware/client?path=/__webpack_hmr&reload=true',
-        ] : []).concat([
-            resolve(__dirname, './js/admin/index.js'),
-        ]),
+        index: []
+            .concat(
+                process.env.NODE_ENV === 'development'
+                    ? [
+                          'react-hot-loader/patch',
+                          'webpack-hot-middleware/client?path=/__webpack_hmr&reload=true',
+                      ]
+                    : [],
+            )
+            .concat([resolve(__dirname, './js/public/index.js')]),
+        'admin/index': []
+            .concat(
+                process.env.NODE_ENV === 'development'
+                    ? [
+                          'react-hot-loader/patch',
+                          'webpack-hot-middleware/client?path=/__webpack_hmr&reload=true',
+                      ]
+                    : [],
+            )
+            .concat([resolve(__dirname, './js/admin/index.js')]),
     },
     module: {
         rules: [
@@ -43,44 +51,51 @@ export default {
                     cacheDirectory: true,
                     forceEnv: 'browser',
                 },
-            }, {
+            },
+            {
                 test: /\.json$/,
                 loader: 'json-loader',
-            }, {
+            },
+            {
                 test: /\.jpe?g$|\.gif$|\.png$/,
                 loader: 'url-loader',
                 options: {
                     limit: 10000,
                     name: '[hash].[ext]',
                 },
-            }, {
+            },
+            {
                 test: /\.(otf|svg)(\?.+)?$/,
                 loader: 'url-loader',
                 options: {
                     limit: 8192,
                 },
-            }, {
+            },
+            {
                 test: /\.eot(\?\S*)?$/,
                 loader: 'url-loader',
                 options: {
                     limit: 10000,
                     mimetype: 'application/vnd.ms-fontobject',
                 },
-            }, {
+            },
+            {
                 test: /\.woff2(\?\S*)?$/,
                 loader: 'url-loader',
                 options: {
                     limit: 10000,
                     mimetype: 'application/font-woff2',
                 },
-            }, {
+            },
+            {
                 test: /\.woff(\?\S*)?$/,
                 loader: 'url-loader',
                 options: {
                     limit: 10000,
                     mimetype: 'application/font-woff',
                 },
-            }, {
+            },
+            {
                 test: /\.ttf(\?\S*)?$/,
                 loader: 'url-loader',
                 options: {
@@ -103,9 +118,10 @@ export default {
             API_URL: JSON.stringify(config.api_url),
             __DEBUG__: config.debug,
             'process.env': {
-                NODE_ENV: process.env.NODE_ENV === 'development'
-                    ? JSON.stringify(process.env.NODE_ENV)
-                    : JSON.stringify('production'), // eslint-disable-line max-len
+                NODE_ENV:
+                    process.env.NODE_ENV === 'development'
+                        ? JSON.stringify(process.env.NODE_ENV)
+                        : JSON.stringify('production'), // eslint-disable-line max-len
                 EZMASTER_PUBLIC_URL: JSON.stringify(config.host),
                 ISTEX_API_URL: JSON.stringify(config.istexApiUrl),
                 PER_PAGE: JSON.stringify(jsonConfig.perPage),
@@ -131,32 +147,41 @@ export default {
             chunks: ['admin/index'],
             inject: 'body',
         }),
-        new CopyWebpackPlugin([{
-            from: resolve(__dirname, './custom'),
-            to: resolve(__dirname, '../build'),
-        }], {
-            ignore: ['index.html', 'admin/index.js', 'index.js', '0.js'],
-        }),
-        new CopyWebpackPlugin([{
-            from: resolve(__dirname, './lodex.png'),
-            to: resolve(__dirname, '../build'),
-        }]),
-    ].concat(process.env.NODE_ENV === 'development'
-        ? [
-            new HotModuleReplacementPlugin(),
-            new SourceMapDevToolPlugin({ filename: '[file].map' }),
-        ]
-        : [
-            new UglifyJsPlugin({
-                uglifyOptions: {
-                    ie8: false,
-                    beautify: false,
-                    comments: false,
-                    sourceMap: false,
+        new CopyWebpackPlugin(
+            [
+                {
+                    from: resolve(__dirname, './custom'),
+                    to: resolve(__dirname, '../build'),
                 },
-            }),
-            new CompressionPlugin(),
+            ],
+            {
+                ignore: ['index.html', 'admin/index.js', 'index.js', '0.js'],
+            },
+        ),
+        new CopyWebpackPlugin([
+            {
+                from: resolve(__dirname, './lodex.png'),
+                to: resolve(__dirname, '../build'),
+            },
         ]),
+    ].concat(
+        process.env.NODE_ENV === 'development'
+            ? [
+                  new HotModuleReplacementPlugin(),
+                  new SourceMapDevToolPlugin({ filename: '[file].map' }),
+              ]
+            : [
+                  new UglifyJsPlugin({
+                      uglifyOptions: {
+                          ie8: false,
+                          beautify: false,
+                          comments: false,
+                          sourceMap: false,
+                      },
+                  }),
+                  new CompressionPlugin(),
+              ],
+    ),
     resolve: {
         modules: [
             resolve(__dirname, '../'),

@@ -1,4 +1,4 @@
-export const upperCase = (value) => {
+export const upperCase = value => {
     if (!value) {
         return null;
     }

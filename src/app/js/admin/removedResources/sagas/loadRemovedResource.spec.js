@@ -12,32 +12,49 @@ import { fromUser } from '../../../sharedSelectors';
 
 describe('load removed resources saga', () => {
     describe('handleLoadRemovedResourcePageRequest', () => {
-        const saga = handleLoadRemovedResourcePageRequest({ payload: { page: 10, perPage: 42 } });
+        const saga = handleLoadRemovedResourcePageRequest({
+            payload: { page: 10, perPage: 42 },
+        });
 
         it('should select getLoadRemovedResourcePageRequest', () => {
-            expect(saga.next().value)
-                .toEqual(select(fromUser.getLoadRemovedResourcePageRequest, { page: 10, perPage: 42 }));
+            expect(saga.next().value).toEqual(
+                select(fromUser.getLoadRemovedResourcePageRequest, {
+                    page: 10,
+                    perPage: 42,
+                }),
+            );
         });
 
         it('should call fetchDafetchSagataset with the request', () => {
-            expect(saga.next('request').value).toEqual(call(fetchSaga, 'request'));
+            expect(saga.next('request').value).toEqual(
+                call(fetchSaga, 'request'),
+            );
         });
 
         it('should put loadRemovedResourcePageSuccess action', () => {
-            expect(saga.next({ response: { data: [{ foo: 42 }], total: 100 } }).value)
-                .toEqual(put(loadRemovedResourcePageSuccess({
-                    resources: [{ foo: 42 }],
-                    page: 10,
-                    total: 100,
-                })));
+            expect(
+                saga.next({ response: { data: [{ foo: 42 }], total: 100 } })
+                    .value,
+            ).toEqual(
+                put(
+                    loadRemovedResourcePageSuccess({
+                        resources: [{ foo: 42 }],
+                        page: 10,
+                        total: 100,
+                    }),
+                ),
+            );
         });
 
         it('should put loadRemovedResourcePageError action with error if any', () => {
-            const failedSaga = handleLoadRemovedResourcePageRequest({ payload: { page: 0, perPage: 20 } });
+            const failedSaga = handleLoadRemovedResourcePageRequest({
+                payload: { page: 0, perPage: 20 },
+            });
             failedSaga.next();
             failedSaga.next();
-            expect(failedSaga.next({ error: 'foo' }).value)
-                .toEqual(put(loadRemovedResourcePageError('foo')));
+            expect(failedSaga.next({ error: 'foo' }).value).toEqual(
+                put(loadRemovedResourcePageError('foo')),
+            );
         });
     });
 });

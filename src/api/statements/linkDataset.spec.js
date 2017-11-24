@@ -7,48 +7,57 @@ import testOne from './testOne';
 ezs.use(statements);
 
 describe('linkDataset', () => {
-    it('should return when no uri', (done) => {
-        const stream = from([{}])
-            .pipe(ezs('linkDataset', {
+    it('should return when no uri', done => {
+        const stream = from([{}]).pipe(
+            ezs('linkDataset', {
                 scheme: 'http://scheme',
                 datasetClass: 'DataSet',
-            }));
+            }),
+        );
         testOne(
             stream,
-            (output) => { expect(output).toEqual({}); },
+            output => {
+                expect(output).toEqual({});
+            },
             done,
         );
     });
 
-    it('should return null when no data', (done) => {
-        const stream = from([])
-            .pipe(ezs('linkDataset', {
+    it('should return null when no data', done => {
+        const stream = from([]).pipe(
+            ezs('linkDataset', {
                 uri: 'http://uri',
                 scheme: 'http://scheme',
                 datasetClass: 'DataSet',
-            }));
+            }),
+        );
         testOne(
             stream,
-            (output) => { expect(output).toBe(null); },
+            output => {
+                expect(output).toBe(null);
+            },
             done,
         );
     });
 
-    it('should return when no data[@context]', (done) => {
-        const stream = from([{}])
-            .pipe(ezs('linkDataset', {
+    it('should return when no data[@context]', done => {
+        const stream = from([{}]).pipe(
+            ezs('linkDataset', {
                 uri: 'http://uri',
                 scheme: 'http://scheme',
                 datasetClass: 'DataSet',
-            }));
+            }),
+        );
         testOne(
             stream,
-            (output) => { expect(output).toEqual({}); },
+            output => {
+                expect(output).toEqual({});
+            },
             done,
         );
     });
 
-    it('should return restructured data', (done) => {
+    it('should return restructured data', done => {
         const options = {
             uri: 'http://uri',
             scheme: 'http://scheme',
@@ -64,11 +73,10 @@ describe('linkDataset', () => {
                 dataset: [1, 2],
             },
         };
-        const stream = from([data])
-            .pipe(ezs('linkDataset', options));
+        const stream = from([data]).pipe(ezs('linkDataset', options));
         testOne(
             stream,
-            (output) => {
+            output => {
                 expect(output).toEqual({
                     '@context': {
                         dataset: {
@@ -90,7 +98,7 @@ describe('linkDataset', () => {
         );
     });
 
-    it('should return restructured data when no scheme', (done) => {
+    it('should return restructured data when no scheme', done => {
         const options = {
             uri: 'http://uri',
             datasetClass: 'DataSet',
@@ -105,11 +113,10 @@ describe('linkDataset', () => {
                 dataset: [1, 2],
             },
         };
-        const stream = from([data])
-            .pipe(ezs('linkDataset', options));
+        const stream = from([data]).pipe(ezs('linkDataset', options));
         testOne(
             stream,
-            (output) => {
+            output => {
                 expect(output).toEqual({
                     '@context': {
                         dataset: {
@@ -131,7 +138,7 @@ describe('linkDataset', () => {
         );
     });
 
-    it('should return restructured data when no datasetClass', (done) => {
+    it('should return restructured data when no datasetClass', done => {
         const options = {
             uri: 'http://uri',
             scheme: 'http://scheme',
@@ -146,11 +153,10 @@ describe('linkDataset', () => {
                 dataset: [1, 2],
             },
         };
-        const stream = from([data])
-            .pipe(ezs('linkDataset', options));
+        const stream = from([data]).pipe(ezs('linkDataset', options));
         testOne(
             stream,
-            (output) => {
+            output => {
                 expect(output).toEqual({
                     '@context': {
                         dataset: {

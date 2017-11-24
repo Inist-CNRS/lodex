@@ -8,7 +8,9 @@ import publishedFacet from '../models/publishedFacet';
 import uriDataset from '../models/uriDataset';
 
 export const mongoClientFactory = MongoClientImpl => async (ctx, next) => {
-    ctx.db = await MongoClientImpl.connect(`mongodb://${config.mongo.host}/${config.mongo.dbName}`);
+    ctx.db = await MongoClientImpl.connect(
+        `mongodb://${config.mongo.host}/${config.mongo.dbName}`,
+    );
     ctx.dataset = await dataset(ctx.db);
     ctx.field = await field(ctx.db);
     ctx.publishedCharacteristic = await publishedCharacteristic(ctx.db);

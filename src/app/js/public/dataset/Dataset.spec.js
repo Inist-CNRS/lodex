@@ -21,14 +21,16 @@ describe('<Dataset />', () => {
     it('should call preLoadDatasetPage on mount', () => {
         const preLoadDatasetPage = createSpy();
 
-        shallow(<Dataset
-            currentPage={1}
-            perPage={10}
-            preLoadDatasetPage={preLoadDatasetPage}
-            loading
-            p={{ t: key => key }}
-            total={0}
-        />);
+        shallow(
+            <Dataset
+                currentPage={1}
+                perPage={10}
+                preLoadDatasetPage={preLoadDatasetPage}
+                loading
+                p={{ t: key => key }}
+                total={0}
+            />,
+        );
 
         expect(preLoadDatasetPage).toHaveBeenCalledWith({
             page: 1,
@@ -36,18 +38,19 @@ describe('<Dataset />', () => {
         });
     });
 
-
     it('should render the TableHeaderColumn for each column', () => {
-        const wrapper = shallow(<Dataset
-            currentPage={1}
-            perPage={10}
-            columns={columns}
-            dataset={dataset}
-            preLoadDatasetPage={() => {}}
-            loading={false}
-            p={{ t: key => key }}
-            total={3}
-        />);
+        const wrapper = shallow(
+            <Dataset
+                currentPage={1}
+                perPage={10}
+                columns={columns}
+                dataset={dataset}
+                preLoadDatasetPage={() => {}}
+                loading={false}
+                p={{ t: key => key }}
+                total={3}
+            />,
+        );
 
         const headers = wrapper.find(DatasetColumnHeader);
         expect(headers.at(0).props()).toEqual({
@@ -61,17 +64,19 @@ describe('<Dataset />', () => {
     });
 
     it('should render the TableRowColumn for each value for each column', () => {
-        const wrapper = shallow(<Dataset
-            currentPage={1}
-            perPage={10}
-            columns={columns}
-            dataset={dataset}
-            changePage={() => {}}
-            preLoadDatasetPage={() => {}}
-            loading={false}
-            p={{ t: key => key }}
-            total={3}
-        />);
+        const wrapper = shallow(
+            <Dataset
+                currentPage={1}
+                perPage={10}
+                columns={columns}
+                dataset={dataset}
+                changePage={() => {}}
+                preLoadDatasetPage={() => {}}
+                loading={false}
+                p={{ t: key => key }}
+                total={3}
+            />,
+        );
 
         const cells = wrapper.find(DatasetColumn);
         expect(cells.at(0).props()).toEqual({
@@ -107,16 +112,18 @@ describe('<Dataset />', () => {
     });
 
     it('should render the Pagination', () => {
-        const wrapper = shallow(<Dataset
-            p={{ t: key => key }}
-            columns={columns}
-            currentPage={1}
-            perPage={10}
-            dataset={dataset}
-            preLoadDatasetPage={() => {}}
-            loading={false}
-            total={3}
-        />);
+        const wrapper = shallow(
+            <Dataset
+                p={{ t: key => key }}
+                columns={columns}
+                currentPage={1}
+                perPage={10}
+                dataset={dataset}
+                preLoadDatasetPage={() => {}}
+                loading={false}
+                total={3}
+            />,
+        );
 
         const pagination = wrapper.find(Pagination).at(0);
         expect(pagination.prop('total')).toEqual(3);
@@ -126,15 +133,17 @@ describe('<Dataset />', () => {
     it('should call preLoadDatasetPage on pagination change', () => {
         const preLoadDatasetPage = createSpy();
         const changePage = createSpy();
-        const wrapper = shallow(<Dataset
-            p={{ t: key => key }}
-            currentPage={1}
-            perPage={10}
-            preLoadDatasetPage={preLoadDatasetPage}
-            changePage={changePage}
-            loading={false}
-            total={3}
-        />);
+        const wrapper = shallow(
+            <Dataset
+                p={{ t: key => key }}
+                currentPage={1}
+                perPage={10}
+                preLoadDatasetPage={preLoadDatasetPage}
+                changePage={changePage}
+                loading={false}
+                total={3}
+            />,
+        );
 
         wrapper.find(Pagination).simulate('change', 5, 40);
         expect(changePage).toHaveBeenCalledWith({

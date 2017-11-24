@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
@@ -42,32 +43,62 @@ const styles = {
     },
 };
 
-const AppbarComponent = ({ hasPublishedDataset, hasLoadedDataset, isLoading, isLoggedIn, p: polyglot }) => {
-    const LeftElement = isLoading
-        ? <CircularProgress color="#fff" size={30} thickness={2} style={styles.loading} />
-        : <span />;
+const AppbarComponent = ({
+    hasPublishedDataset,
+    hasLoadedDataset,
+    isLoading,
+    isLoggedIn,
+    p: polyglot,
+}) => {
+    const LeftElement = isLoading ? (
+        <CircularProgress
+            color="#fff"
+            size={30}
+            thickness={2}
+            style={styles.loading}
+        />
+    ) : (
+        <span />
+    );
 
     const RightElement = (
         <div style={styles.buttons}>
-            {isLoggedIn && !hasPublishedDataset && <UploadButton label={polyglot.t('upload_another_file')} />}
-            {isLoggedIn && hasPublishedDataset &&
-                <FlatButton
-                    label={polyglot.t('moderation')}
-                    containerElement={<Link to="/admin/contributions" />}
-                    style={styles.button}
-                />
-            }
-            {isLoggedIn && hasPublishedDataset &&
-                <FlatButton
-                    label={polyglot.t('removed_resources')}
-                    containerElement={<Link to="/admin/removed" />}
-                    style={styles.button}
-                />
-            }
-            {isLoggedIn ? <ModelMenu canImport={!hasPublishedDataset} /> : <SignInButton />}
+            {isLoggedIn &&
+                !hasPublishedDataset && (
+                    <UploadButton label={polyglot.t('upload_another_file')} />
+                )}
+            {isLoggedIn &&
+                hasPublishedDataset && (
+                    <FlatButton
+                        label={polyglot.t('moderation')}
+                        containerElement={<Link to="/contributions" />}
+                        style={styles.button}
+                    />
+                )}
+            {isLoggedIn &&
+                hasPublishedDataset && (
+                    <FlatButton
+                        label={polyglot.t('removed_resources')}
+                        containerElement={<Link to="/removed" />}
+                        style={styles.button}
+                    />
+                )}
+            {isLoggedIn &&
+                hasPublishedDataset && (
+                    <FlatButton
+                        label={polyglot.t('ontology')}
+                        containerElement={<Link to="/ontology" />}
+                        style={styles.button}
+                    />
+                )}
+            {isLoggedIn ? (
+                <ModelMenu canImport={!hasPublishedDataset} />
+            ) : (
+                <SignInButton />
+            )}
             {isLoggedIn && <Settings />}
             {isLoggedIn && <SignOutButton />}
-            {isLoggedIn && !hasPublishedDataset && <PublicationButton /> }
+            {isLoggedIn && !hasPublishedDataset && <PublicationButton />}
         </div>
     );
 
@@ -76,14 +107,14 @@ const AppbarComponent = ({ hasPublishedDataset, hasLoadedDataset, isLoading, isL
             className="appbar"
             title={
                 <div style={styles.title}>
-                    <Link to="/admin" style={styles.linkToHome}>Lodex</Link>
+                    <Link to="/" style={styles.linkToHome}>
+                        Lodex
+                    </Link>
                     <small>
                         -{' '}
-                        {
-                            hasLoadedDataset
-                                ? polyglot.t('modelize-your-data')
-                                : polyglot.t('semantic-publication-system')
-                        }
+                        {hasLoadedDataset
+                            ? polyglot.t('modelize-your-data')
+                            : polyglot.t('semantic-publication-system')}
                     </small>
                 </div>
             }
@@ -113,7 +144,4 @@ const mapStateToProps = state => ({
     isLoggedIn: fromUser.isLoggedIn(state),
 });
 
-export default compose(
-    translate,
-    connect(mapStateToProps),
-)(AppbarComponent);
+export default compose(translate, connect(mapStateToProps))(AppbarComponent);

@@ -1,10 +1,7 @@
 import expect from 'expect';
 import { call, put, select } from 'redux-saga/effects';
 
-import {
-    saveResourceSuccess,
-    saveResourceError,
-} from '../';
+import { saveResourceSuccess, saveResourceError } from '../';
 import fetchSaga from '../../../lib/sagas/fetchSaga';
 import { fromUser } from '../../../sharedSelectors';
 import { handleSaveResource } from './saveResource';
@@ -26,9 +23,11 @@ describe('resource saga', () => {
     it('should select getSaveResourceRequest with resource', () => {
         saga.next();
         const next = saga.next({ field: 'oldValue', uri: 'uri' });
-        expect(next.value).toEqual(select(fromUser.getSaveResourceRequest, {
-            field: 'value',
-        }));
+        expect(next.value).toEqual(
+            select(fromUser.getSaveResourceRequest, {
+                field: 'value',
+            }),
+        );
     });
 
     it('should call fetchSaga with returned request', () => {

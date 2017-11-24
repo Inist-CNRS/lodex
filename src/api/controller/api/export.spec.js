@@ -5,7 +5,9 @@ import config from '../../../../config.json';
 
 describe('export routes', () => {
     describe('exportMiddleware', () => {
-        const characteristics = [{ name: 'characteristic1', value: 'characteristic1_value' }];
+        const characteristics = [
+            { name: 'characteristic1', value: 'characteristic1_value' },
+        ];
         const resultStream = new EventEmitter();
         const exporterStreamFactory = createSpy().andReturn(resultStream);
         exporterStreamFactory.mimeType = 'a_mime_type';
@@ -32,7 +34,9 @@ describe('export routes', () => {
             },
             getExporter: createSpy().andReturn(exporterStreamFactory),
             publishedCharacteristic: {
-                findAllVersions: createSpy().andReturn(Promise.resolve(characteristics)),
+                findAllVersions: createSpy().andReturn(
+                    Promise.resolve(characteristics),
+                ),
             },
             publishedDataset: {
                 getFindAllStream: createSpy().andReturn(mongoStream),
@@ -41,13 +45,20 @@ describe('export routes', () => {
         };
 
         it('it should set keepDbOpened to true', async () => {
-            await exportFileMiddleware(ctx, 'accepted-type', exporterStreamFactory, config);
+            await exportFileMiddleware(
+                ctx,
+                'accepted-type',
+                exporterStreamFactory,
+                config,
+            );
 
             expect(ctx.keepDbOpened).toEqual(true);
         });
 
         it('it should get the characteristics', () => {
-            expect(ctx.publishedCharacteristic.findAllVersions).toHaveBeenCalled();
+            expect(
+                ctx.publishedCharacteristic.findAllVersions,
+            ).toHaveBeenCalled();
         });
 
         it('it should get the publishedDataset', () => {
@@ -55,7 +66,10 @@ describe('export routes', () => {
         });
 
         it('it set the Content-disposition header', () => {
-            expect(ctx.set).toHaveBeenCalledWith('Content-disposition', 'attachment; filename=export.foo');
+            expect(ctx.set).toHaveBeenCalledWith(
+                'Content-disposition',
+                'attachment; filename=export.foo',
+            );
         });
 
         it('it set the Content-type header', () => {
@@ -67,7 +81,13 @@ describe('export routes', () => {
         });
 
         it('it call the exporterStreamFactory', () => {
-            expect(exporterStreamFactory).toHaveBeenCalledWith(config, fields, characteristics, mongoStream, {});
+            expect(exporterStreamFactory).toHaveBeenCalledWith(
+                config,
+                fields,
+                characteristics,
+                mongoStream,
+                {},
+            );
         });
 
         it('it set the body to the exported stream', () => {

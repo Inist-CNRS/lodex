@@ -1,9 +1,6 @@
 import expect from 'expect';
 
-import {
-    COVER_DOCUMENT,
-    COVER_COLLECTION,
-} from './cover';
+import { COVER_DOCUMENT, COVER_COLLECTION } from './cover';
 import {
     validateCompletesField,
     validateComposedOf,
@@ -79,9 +76,7 @@ describe('validateField', () => {
             label: 'field label',
             cover: 'collection',
             position: 1,
-            transformers: [
-                { operation: 'COLUMN', args: [{ value: 'a' }] },
-            ],
+            transformers: [{ operation: 'COLUMN', args: [{ value: 'a' }] }],
         };
         const result = validateField(field);
 
@@ -121,7 +116,8 @@ describe('validateField', () => {
                 {
                     name: 'language',
                     isValid: true,
-                }, {
+                },
+                {
                     name: 'transformer.operation',
                     isValid: true,
                 },
@@ -129,10 +125,12 @@ describe('validateField', () => {
             propertiesAreValid: true,
             composedOfFields: [],
             composedOfFieldsAreValid: true,
-            transformers: [{
-                name: 'transformer.operation',
-                isValid: true,
-            }],
+            transformers: [
+                {
+                    name: 'transformer.operation',
+                    isValid: true,
+                },
+            ],
             transformersAreValid: true,
         });
     });
@@ -218,7 +216,9 @@ describe('validateField', () => {
         });
 
         it('should return invalid result if position is 0 and field is not uri', () => {
-            expect(validatePosition({ position: 0, name: 'foo' }, true)).toEqual({
+            expect(
+                validatePosition({ position: 0, name: 'foo' }, true),
+            ).toEqual({
                 name: 'position',
                 isValid: false,
                 error: 'uri_must_come_first',
@@ -283,7 +283,9 @@ describe('validateField', () => {
 
     describe('validateLanguage', () => {
         it('returns valid result if language is known', () => {
-            expect(validateLanguage({ language: 'en' }, [{ code: 'en' }])).toEqual({
+            expect(
+                validateLanguage({ language: 'en' }, [{ code: 'en' }]),
+            ).toEqual({
                 name: 'language',
                 isValid: true,
             });
@@ -304,7 +306,9 @@ describe('validateField', () => {
         });
 
         it('returns invalid error if language is unknown', () => {
-            expect(validateLanguage({ language: 'foo' }, [{ code: 'en' }])).toEqual({
+            expect(
+                validateLanguage({ language: 'foo' }, [{ code: 'en' }]),
+            ).toEqual({
                 name: 'language',
                 isValid: false,
                 error: 'invalid',
@@ -314,7 +318,9 @@ describe('validateField', () => {
 
     describe('validateTransformers', () => {
         it('should return valid result if transformers is present with at least an item', () => {
-            expect(validateTransformers({ transformers: ['transformer'] })).toEqual({
+            expect(
+                validateTransformers({ transformers: ['transformer'] }),
+            ).toEqual({
                 name: 'transformers',
                 isValid: true,
             });
@@ -339,7 +345,9 @@ describe('validateField', () => {
 
     describe('validateComposedOf', () => {
         it('should return valid result if composedOf is present', () => {
-            expect(validateComposedOf({ composedOf: 'composedOf data' })).toEqual({
+            expect(
+                validateComposedOf({ composedOf: 'composedOf data' }),
+            ).toEqual({
                 name: 'composedOf',
                 isValid: true,
             });
@@ -360,9 +368,14 @@ describe('validateField', () => {
         });
 
         it('should return invalid result if composedOf is present and contribution is true', () => {
-            expect(validateComposedOf({
-                composedOf: 'composedOf data',
-            }, true)).toEqual({
+            expect(
+                validateComposedOf(
+                    {
+                        composedOf: 'composedOf data',
+                    },
+                    true,
+                ),
+            ).toEqual({
                 name: 'composedOf',
                 isValid: false,
                 error: 'contribution_no_composed_of',
@@ -372,22 +385,26 @@ describe('validateField', () => {
 
     describe('validateComposedOfFields', () => {
         it('should return valid result if there is at least 2 composedOf.fields', () => {
-            expect(validateComposedOfFields({
-                composedOf: {
-                    fields: ['field1', 'field2'],
-                },
-            })).toEqual({
+            expect(
+                validateComposedOfFields({
+                    composedOf: {
+                        fields: ['field1', 'field2'],
+                    },
+                }),
+            ).toEqual({
                 name: 'composedOf.fields',
                 isValid: true,
             });
         });
 
         it('should return invalid error if there is less than 2 composedOf.fields', () => {
-            expect(validateComposedOfFields({
-                composedOf: {
-                    fields: ['field1'],
-                },
-            })).toEqual({
+            expect(
+                validateComposedOfFields({
+                    composedOf: {
+                        fields: ['field1'],
+                    },
+                }),
+            ).toEqual({
                 name: 'composedOf.fields',
                 isValid: false,
                 error: 'required',
@@ -395,9 +412,11 @@ describe('validateField', () => {
         });
 
         it('should return invalid error if there is no composedOf.fields', () => {
-            expect(validateComposedOfFields({
-                composedOf: {},
-            })).toEqual({
+            expect(
+                validateComposedOfFields({
+                    composedOf: {},
+                }),
+            ).toEqual({
                 name: 'composedOf.fields',
                 isValid: false,
                 error: 'required',
@@ -411,7 +430,9 @@ describe('validateField', () => {
 
     describe('validateComposedOfField', () => {
         it('should return valid result if field is in allFields', () => {
-            expect(validateComposedOfField('field1', [{ name: 'field1' }])).toEqual({
+            expect(
+                validateComposedOfField('field1', [{ name: 'field1' }]),
+            ).toEqual({
                 name: 'composedOf.fields',
                 isValid: true,
                 error: undefined,
@@ -419,7 +440,9 @@ describe('validateField', () => {
         });
 
         it('should return invalid error if field is not in allFields', () => {
-            expect(validateComposedOfField('field2', [{ name: 'field1' }])).toEqual({
+            expect(
+                validateComposedOfField('field2', [{ name: 'field1' }]),
+            ).toEqual({
                 name: 'composedOf.fields',
                 isValid: false,
                 error: 'invalid',
@@ -429,7 +452,11 @@ describe('validateField', () => {
 
     describe('validateCompletesField', () => {
         it('should return valid result if field.completes is in allFields', () => {
-            expect(validateCompletesField({ completes: 'field1' }, [{ name: 'field1' }])).toEqual({
+            expect(
+                validateCompletesField({ completes: 'field1' }, [
+                    { name: 'field1' },
+                ]),
+            ).toEqual({
                 name: 'completes',
                 isValid: true,
                 error: undefined,
@@ -437,7 +464,11 @@ describe('validateField', () => {
         });
 
         it('should return invalid error if field.completes is not in allFields', () => {
-            expect(validateCompletesField({ completes: 'field2' }, [{ name: 'field1' }])).toEqual({
+            expect(
+                validateCompletesField({ completes: 'field2' }, [
+                    { name: 'field1' },
+                ]),
+            ).toEqual({
                 name: 'completes',
                 isValid: false,
                 error: 'inexisting_target_field',

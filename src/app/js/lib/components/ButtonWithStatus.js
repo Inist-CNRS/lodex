@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { lightGreenA400, red400 } from 'material-ui/styles/colors';
 import CircularProgress from 'material-ui/CircularProgress';
 import FlatButton from 'material-ui/FlatButton';
@@ -14,25 +15,29 @@ const getIcon = (error, loading, success) => {
     return null;
 };
 
-const ButtonWithStatus = ({ raised, error, loading, disabled, success, ...props }) => (
-    raised
-        ? (
-            <RaisedButton
-                disabled={disabled || loading}
-                icon={getIcon(error, loading, success)}
-                labelPosition="before"
-                {...props}
-            />
-        )
-        : (
-            <FlatButton
-                disabled={disabled || loading}
-                icon={getIcon(error, loading, success)}
-                labelPosition="before"
-                {...props}
-            />
-        )
-);
+const ButtonWithStatus = ({
+    raised,
+    error,
+    loading,
+    disabled,
+    success,
+    ...props
+}) =>
+    raised ? (
+        <RaisedButton
+            disabled={disabled || loading}
+            icon={getIcon(error, loading, success)}
+            labelPosition="before"
+            {...props}
+        />
+    ) : (
+        <FlatButton
+            disabled={disabled || loading}
+            icon={getIcon(error, loading, success)}
+            labelPosition="before"
+            {...props}
+        />
+    );
 
 ButtonWithStatus.propTypes = {
     raised: PropTypes.bool,

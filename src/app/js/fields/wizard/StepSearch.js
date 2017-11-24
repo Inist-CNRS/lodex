@@ -18,6 +18,4 @@ StepSearchComponent.propTypes = {
     p: polyglotPropTypes.isRequired,
 };
 
-export default compose(
-    translate,
-)(StepSearchComponent);
+export default compose(translate)(StepSearchComponent);

@@ -34,7 +34,9 @@ describe('publication saga', () => {
             const saga = handleLoadPublicationRequest();
             saga.next();
             saga.next(0);
-            expect(saga.next().value).toEqual(select(fromUser.getLoadPublicationRequest));
+            expect(saga.next().value).toEqual(
+                select(fromUser.getLoadPublicationRequest),
+            );
         });
 
         it('should call fetchPublication with the request', () => {
@@ -42,7 +44,9 @@ describe('publication saga', () => {
             saga.next();
             saga.next(0);
             saga.next();
-            expect(saga.next('request').value).toEqual(call(fetchSaga, 'request'));
+            expect(saga.next('request').value).toEqual(
+                call(fetchSaga, 'request'),
+            );
         });
 
         it('should put loadPublicationSuccess action', () => {
@@ -51,7 +55,9 @@ describe('publication saga', () => {
             saga.next(0);
             saga.next();
             saga.next('request');
-            expect(saga.next({ response: 'foo' }).value).toEqual(put(loadPublicationSuccess('foo')));
+            expect(saga.next({ response: 'foo' }).value).toEqual(
+                put(loadPublicationSuccess('foo')),
+            );
         });
 
         it('should put loadPublicationError action with error if any', () => {
@@ -60,8 +66,9 @@ describe('publication saga', () => {
             saga.next(0);
             saga.next();
             saga.next();
-            expect(saga.next({ error: 'foo' }).value)
-                .toEqual(put(loadPublicationError('foo')));
+            expect(saga.next({ error: 'foo' }).value).toEqual(
+                put(loadPublicationError('foo')),
+            );
         });
     });
 });

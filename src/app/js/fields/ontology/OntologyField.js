@@ -1,11 +1,15 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 import memoize from 'lodash.memoize';
 
-import { field as fieldPropTypes, polyglot as polyglotPropTypes } from '../../propTypes';
+import {
+    field as fieldPropTypes,
+    polyglot as polyglotPropTypes,
+} from '../../propTypes';
 import EditOntologyField from './EditOntologyField';
 import { fromFields } from '../../sharedSelectors';
 import { languages } from '../../../../../config.json';
@@ -35,7 +39,8 @@ const styles = {
         textAlign: 'right',
     },
     badge: {
-        fontFamily: '"Lato", "Lucida Grande", "Lucida Sans Unicode", Tahoma, Sans-Serif',
+        fontFamily:
+            '"Lato", "Lucida Grande", "Lucida Sans Unicode", Tahoma, Sans-Serif',
         fontSize: '70%',
         fontWeight: '700',
         textTransform: 'uppercase',
@@ -59,53 +64,68 @@ const OntologyFieldComponent = ({ field, fields, index, p: polyglot }) => (
                 style={styles.name}
             >
                 {field.label}
-                {field.overview === 1 &&
-                <span style={styles.badge}>title</span>
-                }
-                {field.overview === 2 &&
-                <span style={styles.badge}>description</span>
-                }
+                {field.overview === 1 && (
+                    <span style={styles.badge}>title</span>
+                )}
+                {field.overview === 2 && (
+                    <span style={styles.badge}>description</span>
+                )}
             </h4>
             <dl style={styles.property}>
                 <dt style={styles.label}>{polyglot.t('count_of_field')}</dt>
                 <dd
-                    className={classnames('field-count', getFieldClassName(field))}
+                    className={classnames(
+                        'field-count',
+                        getFieldClassName(field),
+                    )}
                 >
                     {field.count || 1}
                 </dd>
             </dl>
-            {field.scheme &&
+            {field.scheme && (
                 <dl style={styles.property}>
                     <dt style={styles.label}>{polyglot.t('scheme')}</dt>
                     <dd
-                        className={classnames('field-scheme', getFieldClassName(field))}
+                        className={classnames(
+                            'field-scheme',
+                            getFieldClassName(field),
+                        )}
                     >
                         <a href={field.scheme}>{field.scheme}</a>
                     </dd>
                 </dl>
-            }
+            )}
             <dl style={styles.property}>
                 <dt style={styles.label}>{polyglot.t('cover')}</dt>
                 <dd
-                    className={classnames('field-cover', getFieldClassName(field))}
+                    className={classnames(
+                        'field-cover',
+                        getFieldClassName(field),
+                    )}
                 >
                     {polyglot.t(`cover_${field.cover}`)}
                 </dd>
             </dl>
-            {field.language &&
+            {field.language && (
                 <dl style={styles.property}>
                     <dt style={styles.label}>{polyglot.t('language')}</dt>
                     <dd
-                        className={classnames('field-language', getFieldClassName(field))}
+                        className={classnames(
+                            'field-language',
+                            getFieldClassName(field),
+                        )}
                     >
                         {languages.find(l => l.code === field.language).label}
                     </dd>
                 </dl>
-            }
+            )}
             <dl style={styles.property}>
                 <dt style={styles.label}>{polyglot.t('identifier')}</dt>
                 <dd
-                    className={classnames('field-identifier', getFieldClassName(field))}
+                    className={classnames(
+                        'field-identifier',
+                        getFieldClassName(field),
+                    )}
                 >
                     {field.name}
                 </dd>
@@ -116,7 +136,7 @@ const OntologyFieldComponent = ({ field, fields, index, p: polyglot }) => (
 );
 
 OntologyFieldComponent.propTypes = {
-    field: React.PropTypes.shape({}),
+    field: PropTypes.shape({}),
     fields: PropTypes.arrayOf(fieldPropTypes).isRequired,
     p: polyglotPropTypes.isRequired,
     index: PropTypes.number.isRequired,
@@ -130,7 +150,6 @@ const mapStateToProps = state => ({
     fields: fromFields.getFields(state),
 });
 
-export default compose(
-    connect(mapStateToProps, undefined),
-    translate,
-)(OntologyFieldComponent);
+export default compose(connect(mapStateToProps, undefined), translate)(
+    OntologyFieldComponent,
+);

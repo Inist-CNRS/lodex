@@ -1,10 +1,6 @@
 import { call, put, select, takeLatest } from 'redux-saga/effects';
 
-import {
-    REMOVE_FIELD,
-    removeFieldError,
-    removeFieldSuccess,
-} from '../';
+import { REMOVE_FIELD, removeFieldError, removeFieldSuccess } from '../';
 
 import { fromFields, fromUser } from '../../sharedSelectors';
 import fetchSaga from '../../lib/sagas/fetchSaga';

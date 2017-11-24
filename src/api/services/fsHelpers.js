@@ -6,16 +6,17 @@ import composeAsync from '../../common/lib/composeAsync';
 
 import { concatStreams } from './streamHelper';
 
-export const unlinkFile = filename => new Promise((resolve, reject) => {
-    fs.unlink(filename, (error, result) => {
-        if (error) {
-            reject(error);
-            return;
-        }
+export const unlinkFile = filename =>
+    new Promise((resolve, reject) => {
+        fs.unlink(filename, (error, result) => {
+            if (error) {
+                reject(error);
+                return;
+            }
 
-        resolve(result);
+            resolve(result);
+        });
     });
-});
 
 export const saveStreamInFile = (stream, filename) =>
     new Promise((resolve, reject) => {
@@ -27,46 +28,46 @@ export const saveStreamInFile = (stream, filename) =>
         stream.on('error', reject);
     });
 
-export const createWriteStream = chunkname =>
-    fs.createWriteStream(chunkname);
+export const createWriteStream = chunkname => fs.createWriteStream(chunkname);
 
-export const createReadStream = chunkname =>
-    fs.createReadStream(chunkname);
+export const createReadStream = chunkname => fs.createReadStream(chunkname);
 
-export const mergeChunksFactory = (createWriteStreamImpl, createReadStreamImpl, concatStreamsImpl) =>
-    async (filename, nbChunks) => {
-        const stream = createWriteStreamImpl(filename);
-        const sourceStreams = range(1, nbChunks + 1)
-            .map(nb => `${filename}.${nb}`)
-            .map(chunkname => createReadStreamImpl(chunkname));
+export const mergeChunksFactory = (
+    createWriteStreamImpl,
+    createReadStreamImpl,
+    concatStreamsImpl,
+) => async (filename, nbChunks) => {
+    const stream = createWriteStreamImpl(filename);
+    const sourceStreams = range(1, nbChunks + 1)
+        .map(nb => `${filename}.${nb}`)
+        .map(chunkname => createReadStreamImpl(chunkname));
 
-        await concatStreamsImpl(sourceStreams, stream);
-    };
+    await concatStreamsImpl(sourceStreams, stream);
+};
 
-export const mergeChunks = mergeChunksFactory(createWriteStream, createReadStream, concatStreams);
+export const mergeChunks = mergeChunksFactory(
+    createWriteStream,
+    createReadStream,
+    concatStreams,
+);
 
-export const getFileStats = filename => new Promise((resolve, reject) => {
-    fs.stat(filename, (error, result) => {
-        if (error) {
-            reject(error);
-            return;
-        }
+export const getFileStats = filename =>
+    new Promise((resolve, reject) => {
+        fs.stat(filename, (error, result) => {
+            if (error) {
+                reject(error);
+                return;
+            }
 
-        resolve(result);
+            resolve(result);
+        });
     });
-});
 
 export const getFileSize = filename =>
-    composeAsync(
-        getFileStats,
-        ({ size }) => size,
-    )(filename).catch(() => 0);
+    composeAsync(getFileStats, ({ size }) => size)(filename).catch(() => 0);
 
 export const checkFileExists = (filename, expectedSize) =>
-    composeAsync(
-        getFileSize,
-        size => size === expectedSize,
-    )(filename);
+    composeAsync(getFileSize, size => size === expectedSize)(filename);
 
 const addFileSize = chunkFilename => async (totalSize = 0) => {
     const size = await getFileSize(chunkFilename);
@@ -78,7 +79,11 @@ const addFileSize = chunkFilename => async (totalSize = 0) => {
     return size + totalSize;
 };
 
-export const areFileChunksCompleteFactory = addFileSizeImpl => async (filename, totalChunk, totalSize) => {
+export const areFileChunksCompleteFactory = addFileSizeImpl => async (
+    filename,
+    totalChunk,
+    totalSize,
+) => {
     const sizeComputation = rangeRight(1, totalChunk + 1)
         .map(nb => `${filename}.${nb}`)
         .map(name => addFileSizeImpl(name));
@@ -98,7 +103,10 @@ export const areFileChunksCompleteFactory = addFileSizeImpl => async (filename, 
 
 export const areFileChunksComplete = areFileChunksCompleteFactory(addFileSize);
 
-export const clearChunksFactory = unlinkFileImpl => async (filename, nbChunks) =>
+export const clearChunksFactory = unlinkFileImpl => async (
+    filename,
+    nbChunks,
+) =>
     Promise.all(
         range(1, nbChunks + 1).map(nb => unlinkFileImpl(`${filename}.${nb}`)),
     );

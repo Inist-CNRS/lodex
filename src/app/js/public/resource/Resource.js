@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
@@ -25,11 +26,15 @@ export const ResourceComponent = ({
 }) => {
     if (loading) {
         return (
-            <Loading className="resource">{polyglot.t('loading_resource')}</Loading>
+            <Loading className="resource">
+                {polyglot.t('loading_resource')}
+            </Loading>
         );
     }
 
-    const backToListLabel = (datasetTitleKey && characteristics[datasetTitleKey]) || polyglot.t('back_to_list');
+    const backToListLabel =
+        (datasetTitleKey && characteristics[datasetTitleKey]) ||
+        polyglot.t('back_to_list');
     const backToListButton = (
         <FlatButton
             className="btn-back-to-list"
@@ -43,15 +48,11 @@ export const ResourceComponent = ({
         return (
             <div className="not-found">
                 <Card>
-                    <CardActions>
-                        {backToListButton}
-                    </CardActions>
+                    <CardActions>{backToListButton}</CardActions>
                 </Card>
                 <Card>
                     <CardText>
-                        <h1>
-                            {polyglot.t('not_found')}
-                        </h1>
+                        <h1>{polyglot.t('not_found')}</h1>
                     </CardText>
                 </Card>
             </div>
@@ -59,12 +60,8 @@ export const ResourceComponent = ({
     }
     return (
         <div className="resource">
-            {removed &&
-                <RemovedDetail />
-            }
-            {!removed &&
-                <Detail backToListLabel={backToListLabel} />
-            }
+            {removed && <RemovedDetail />}
+            {!removed && <Detail backToListLabel={backToListLabel} />}
         </div>
     );
 };
@@ -97,7 +94,6 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {};
 
-export default compose(
-    connect(mapStateToProps, mapDispatchToProps),
-    translate,
-)(ResourceComponent);
+export default compose(connect(mapStateToProps, mapDispatchToProps), translate)(
+    ResourceComponent,
+);

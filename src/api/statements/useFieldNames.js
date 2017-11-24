@@ -4,12 +4,13 @@ module.exports = function useFieldNames(data, feed) {
     if (this.isLast()) {
         return feed.close();
     }
-    const output = fields
-        .filter(field => field.cover === 'collection')
-        .reduce((prev, field) => ({
+    const output = fields.filter(field => field.cover === 'collection').reduce(
+        (prev, field) => ({
             ...prev,
             [field.label || field.name]: data[field.name],
-        }), {});
+        }),
+        {},
+    );
 
     return feed.send(output);
 };

@@ -1,8 +1,8 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import fetch from 'isomorphic-fetch';
 import MQS from 'mongodb-querystring';
 import url from 'url';
-import querystring from 'querystring';
 import RaisedButton from 'material-ui/RaisedButton';
 import translate from 'redux-polyglot/translate';
 import { StyleSheet, css } from 'aphrodite';
@@ -10,13 +10,12 @@ import LodexResource from '../shared/LodexResource';
 import normalizeLodexURL from '../../lib/normalizeLodexURL';
 import { field as fieldPropTypes } from '../../propTypes';
 
-
 class ResourcesGrid extends Component {
     static propTypes = {
         field: fieldPropTypes.isRequired,
         linkedResource: PropTypes.object, // eslint-disable-line
         resource: PropTypes.object.isRequired, // eslint-disable-line
-    }
+    };
 
     constructor(props) {
         super(props);
@@ -33,8 +32,14 @@ class ResourcesGrid extends Component {
 
     async fetchData() {
         const { field, resource } = this.props;
-        const orderBy = field.format && field.format.args && field.format.args.orderBy ? field.format.args.orderBy : 'value/asc';
-        const maxSize = field.format && field.format.args && field.format.args.maxSize ? field.format.args.maxSize : '5';
+        const orderBy =
+            field.format && field.format.args && field.format.args.orderBy
+                ? field.format.args.orderBy
+                : 'value/asc';
+        const maxSize =
+            field.format && field.format.args && field.format.args.maxSize
+                ? field.format.args.maxSize
+                : '5';
         const [sortBy, sortDir] = String(orderBy || 'value/asc').split('/');
         const by = sortBy === 'value' ? 'value' : '_id';
         const dir = sortDir === 'asc' ? 1 : -1;
@@ -62,8 +67,10 @@ class ResourcesGrid extends Component {
         }
         if (result.aggregations) {
             const firstKey = Object.keys(result.aggregations).shift();
-            const data = result.aggregations[firstKey].buckets
-                .map(item => ({ name: item.keyAsString || item.key, value: item.docCount }));
+            const data = result.aggregations[firstKey].buckets.map(item => ({
+                name: item.keyAsString || item.key,
+                value: item.docCount,
+            }));
             this.setState({ data });
         }
     }
@@ -74,10 +81,12 @@ class ResourcesGrid extends Component {
         event.preventDefault();
     }
 
-
     render() {
         const { field } = this.props;
-        const spaceWidth = field.format && field.format.args && field.format.args.spaceWidth ? field.format.args.spaceWidth : '30%';
+        const spaceWidth =
+            field.format && field.format.args && field.format.args.spaceWidth
+                ? field.format.args.spaceWidth
+                : '30%';
         const styles = StyleSheet.create({
             list: {
                 display: 'flex',
@@ -85,7 +94,6 @@ class ResourcesGrid extends Component {
                 margin: '0',
                 padding: '0',
                 listStyle: 'none',
-
             },
             item: {
                 listStyle: 'none',
@@ -115,31 +123,28 @@ class ResourcesGrid extends Component {
         return (
             <div>
                 <ul className={css(styles.list)}>
-                    {
-                        this.state.data.map((entry, index) => {
-                            const key = String(index).concat('ResourcesGrid');
-                            const props = {
-                                link: `/${entry._id}`,
-                                title: entry.value[0],
-                                description: entry.value[1],
-                            };
-                            return (<li key={key} className={css(styles.item)}>
+                    {this.state.data.map((entry, index) => {
+                        const key = String(index).concat('ResourcesGrid');
+                        const props = {
+                            link: `/${entry._id}`,
+                            title: entry.value[0],
+                            description: entry.value[1],
+                        };
+                        return (
+                            <li key={key} className={css(styles.item)}>
                                 <div className={css(styles.content)}>
                                     <LodexResource {...props} />
                                 </div>
-                            </li>);
-                        })
-                    }
+                            </li>
+                        );
+                    })}
                 </ul>
                 <div className={css(styles.button)}>
                     <RaisedButton label="MORE" onClick={this.handleMore} />
                 </div>
             </div>
-
         );
     }
 }
 
-
 export default translate(ResourcesGrid);
-

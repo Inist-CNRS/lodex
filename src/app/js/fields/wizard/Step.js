@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import withProps from 'recompose/withProps';
 import withHandlers from 'recompose/withHandlers';
@@ -22,11 +23,19 @@ export const StepComponent = ({
     children,
     p: polyglot,
 }) => (
-    <Step active={active} completed={completed} disabled={disabled} icon={icon} index={index} last={last} style={style}>
-        <StepButton onTouchTap={handleSelectStep}>{polyglot.t(label)}</StepButton>
-        <StepContent>
-            {children}
-        </StepContent>
+    <Step
+        active={active}
+        completed={completed}
+        disabled={disabled}
+        icon={icon}
+        index={index}
+        last={last}
+        style={style}
+    >
+        <StepButton onTouchTap={handleSelectStep}>
+            {polyglot.t(label)}
+        </StepButton>
+        <StepContent>{children}</StepContent>
     </Step>
 );
 

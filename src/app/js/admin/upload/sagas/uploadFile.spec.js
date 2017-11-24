@@ -3,10 +3,7 @@ import { call, take, put, select, race } from 'redux-saga/effects';
 import { LOCATION_CHANGE } from 'react-router-redux';
 
 import { fromUser } from '../../../sharedSelectors';
-import {
-    uploadSuccess,
-    uploadError,
-} from '../';
+import { uploadSuccess, uploadError } from '../';
 import { loadDatasetFile } from '../../../lib/loadFile';
 import fetch from '../../../lib/fetch';
 import { handleUploadFile as uploadFileSaga } from './uploadFile';

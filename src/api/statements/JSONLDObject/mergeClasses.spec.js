@@ -26,11 +26,7 @@ describe('JSONLDObject / mergeClasses', () => {
 
     it('should throw when no "field" given', () => {
         try {
-            const output = mergeClasses(
-                {},
-                undefined,
-                { uri: 'a' },
-            );
+            const output = mergeClasses({}, undefined, { uri: 'a' });
             expect(output).toNotExist();
         } catch (e) {
             expect(e).toExist();
@@ -61,7 +57,7 @@ describe('JSONLDObject / mergeClasses', () => {
 
     it('should return JSON-LD', () => {
         const output = mergeClasses(
-            { },
+            {},
             { name: 'uri', classes: ['class'], scheme: 'http://scheme' },
             { uri: 'a' },
         );
@@ -84,8 +80,12 @@ describe('JSONLDObject / mergeClasses', () => {
 
     it('should return JSON-LD for multiple classes', () => {
         const output = mergeClasses(
-            { },
-            { name: 'uri', classes: ['class1', 'class2'], scheme: 'http://scheme' },
+            {},
+            {
+                name: 'uri',
+                classes: ['class1', 'class2'],
+                scheme: 'http://scheme',
+            },
             { uri: 'a' },
         );
         expect(output).toEqual({

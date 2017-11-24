@@ -22,9 +22,14 @@ describe('scrollISTEX request', () => {
         sandbox.restore();
     });
 
-    it('should return dataset of the API', (done) => {
-    /* Fake URL */
-        from([{ lodex: {}, content: 'https://api-v5.istex.fr/document/?q=language:test' }])
+    it('should return dataset of the API', done => {
+        /* Fake URL */
+        from([
+            {
+                lodex: {},
+                content: 'https://api-v5.istex.fr/document/?q=language:test',
+            },
+        ])
             .pipe(ezs('scroll'))
             .pipe(
                 ezs((data, feed) => {

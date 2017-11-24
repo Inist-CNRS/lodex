@@ -27,6 +27,11 @@ describe('CompositeEditDetailsField', () => {
         const wrapper = shallow(<CompositeFieldInput {...props} />);
         const subheader = wrapper.find(Subheader);
         expect(subheader.length).toBe(1);
-        expect(subheader.at(0).children().text()).toBe('Field');
+        expect(
+            subheader
+                .at(0)
+                .children()
+                .text(),
+        ).toBe('Field');
     });
 });

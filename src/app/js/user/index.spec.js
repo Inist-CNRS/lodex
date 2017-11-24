@@ -32,7 +32,10 @@ describe('user reducer', () => {
     });
 
     it('should handle the LOGOUT action', () => {
-        const state = reducer({ showModal: false, token: 'C3PO&R2D2' }, logout());
+        const state = reducer(
+            { showModal: false, token: 'C3PO&R2D2' },
+            logout(),
+        );
         expect(state).toEqual({
             showModal: true,
             token: null,
@@ -60,7 +63,10 @@ describe('user reducer', () => {
 
     describe('getRequest selector', () => {
         it('should select config request with given token, url, body and method', () => {
-            const result = getRequest({ token: 'token' }, { url: 'url', method: 'method', body: { data: 'value' } });
+            const result = getRequest(
+                { token: 'token' },
+                { url: 'url', method: 'method', body: { data: 'value' } },
+            );
             expect(result).toEqual({
                 url: 'url',
                 body: '{"data":"value"}',

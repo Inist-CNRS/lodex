@@ -22,7 +22,11 @@ describe('removed resource reducer', () => {
     });
 
     it('should handle the LOAD_REMOVED_RESOURCE_PAGE_SUCCESS action', () => {
-        const action = loadRemovedResourcePageSuccess({ resources: [{ foo: 'bar' }], page: 42, total: 1000 });
+        const action = loadRemovedResourcePageSuccess({
+            resources: [{ foo: 'bar' }],
+            page: 42,
+            total: 1000,
+        });
         const state = reducer({ loading: true, error: true }, action);
         expect(state).toEqual({
             error: false,
@@ -34,7 +38,10 @@ describe('removed resource reducer', () => {
     });
 
     it('should handle the LOAD_REMOVED_RESOURCE_PAGE_ERROR action', () => {
-        const state = reducer({ loading: true }, loadRemovedResourcePageError(new Error('foo')));
+        const state = reducer(
+            { loading: true },
+            loadRemovedResourcePageError(new Error('foo')),
+        );
         expect(state).toEqual({
             loading: false,
             error: 'foo',

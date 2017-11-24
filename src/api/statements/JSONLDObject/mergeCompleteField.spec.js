@@ -60,12 +60,7 @@ describe('JSONLDObject / mergeCompleteField', () => {
 
     it('should throw when no fields', async () => {
         try {
-            await mergeCompleteField(
-                {},
-                { completes: 'completed' },
-                [],
-                {},
-            );
+            await mergeCompleteField({}, { completes: 'completed' }, [], {});
         } catch (e) {
             expect(e).toExist();
         }
@@ -76,10 +71,12 @@ describe('JSONLDObject / mergeCompleteField', () => {
             await mergeCompleteField(
                 {},
                 { completes: 'completed' },
-                [{
-                    name: 'completed',
-                    scheme: 'scheme1',
-                }],
+                [
+                    {
+                        name: 'completed',
+                        scheme: 'scheme1',
+                    },
+                ],
                 {},
             );
         } catch (e) {
@@ -92,10 +89,12 @@ describe('JSONLDObject / mergeCompleteField', () => {
             await mergeCompleteField(
                 {},
                 { completes: 'completed' },
-                [{
-                    name: 'completing',
-                    scheme: 'scheme2',
-                }],
+                [
+                    {
+                        name: 'completing',
+                        scheme: 'scheme2',
+                    },
+                ],
                 {},
             );
         } catch (e) {
@@ -108,13 +107,16 @@ describe('JSONLDObject / mergeCompleteField', () => {
             await mergeCompleteField(
                 {},
                 { completes: 'completed' },
-                [{
-                    name: 'completing',
-                    scheme: 'scheme2',
-                }, {
-                    name: 'completing',
-                    scheme: 'scheme2',
-                }],
+                [
+                    {
+                        name: 'completing',
+                        scheme: 'scheme2',
+                    },
+                    {
+                        name: 'completing',
+                        scheme: 'scheme2',
+                    },
+                ],
                 {},
             );
         } catch (e) {
@@ -127,13 +129,16 @@ describe('JSONLDObject / mergeCompleteField', () => {
             await mergeCompleteField(
                 {},
                 { completes: 'completed' },
-                [{
-                    name: 'completing',
-                    scheme: 'scheme2',
-                }, {
-                    name: 'completing',
-                    scheme: 'scheme2',
-                }],
+                [
+                    {
+                        name: 'completing',
+                        scheme: 'scheme2',
+                    },
+                    {
+                        name: 'completing',
+                        scheme: 'scheme2',
+                    },
+                ],
                 {
                     completing: 'completing value',
                     completed: 'completed value',
@@ -149,13 +154,16 @@ describe('JSONLDObject / mergeCompleteField', () => {
             await mergeCompleteField(
                 {},
                 { completes: 'completed' },
-                [{
-                    name: 'completing',
-                    scheme: 'scheme2',
-                }, {
-                    name: 'completing',
-                    scheme: 'scheme2',
-                }],
+                [
+                    {
+                        name: 'completing',
+                        scheme: 'scheme2',
+                    },
+                    {
+                        name: 'completing',
+                        scheme: 'scheme2',
+                    },
+                ],
                 {
                     uri: 'http://uri',
                     completed: 'completed value',
@@ -171,13 +179,16 @@ describe('JSONLDObject / mergeCompleteField', () => {
             await mergeCompleteField(
                 {},
                 { completes: 'completed' },
-                [{
-                    name: 'completing',
-                    scheme: 'scheme2',
-                }, {
-                    name: 'completing',
-                    scheme: 'scheme2',
-                }],
+                [
+                    {
+                        name: 'completing',
+                        scheme: 'scheme2',
+                    },
+                    {
+                        name: 'completing',
+                        scheme: 'scheme2',
+                    },
+                ],
                 {
                     uri: 'http://uri',
                     completing: 'completing value',
@@ -191,13 +202,16 @@ describe('JSONLDObject / mergeCompleteField', () => {
     it('should return the merged fields', async () => {
         const output = {};
         const field = { name: 'completing', completes: 'completed' };
-        const fields = [{
-            name: 'completed',
-            scheme: 'scheme1',
-        }, {
-            name: 'completing',
-            scheme: 'scheme2',
-        }];
+        const fields = [
+            {
+                name: 'completed',
+                scheme: 'scheme1',
+            },
+            {
+                name: 'completing',
+                scheme: 'scheme2',
+            },
+        ];
         const data = {
             uri: 'http://uri',
             completing: 'completing value',
@@ -230,13 +244,16 @@ describe('JSONLDObject / mergeCompleteField', () => {
     it('should return the formatted completing value', async () => {
         const output = {};
         const field = { name: 'completing', completes: 'completed' };
-        const fields = [{
-            name: 'completed',
-            scheme: 'scheme1',
-        }, {
-            name: 'completing',
-            scheme: 'scheme2',
-        }];
+        const fields = [
+            {
+                name: 'completed',
+                scheme: 'scheme1',
+            },
+            {
+                name: 'completing',
+                scheme: 'scheme2',
+            },
+        ];
         const data = {
             uri: 'http://uri',
             completing: 'http://completing/value',
@@ -269,13 +286,16 @@ describe('JSONLDObject / mergeCompleteField', () => {
     it('should return the formatted completed field', async () => {
         const output = {};
         const field = { name: 'completing', completes: 'completed' };
-        const fields = [{
-            name: 'completed',
-            scheme: 'scheme1',
-        }, {
-            name: 'completing',
-            scheme: 'scheme2',
-        }];
+        const fields = [
+            {
+                name: 'completed',
+                scheme: 'scheme1',
+            },
+            {
+                name: 'completing',
+                scheme: 'scheme2',
+            },
+        ];
         const data = {
             uri: 'http://uri',
             completing: 'completing value',

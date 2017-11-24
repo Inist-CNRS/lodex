@@ -1,9 +1,8 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { fromFields } from '../../sharedSelectors';
-import {
-    field as fieldPropTypes,
-} from '../../propTypes';
+import { field as fieldPropTypes } from '../../propTypes';
 import Property from './';
 import getFieldClassName from '../../lib/getFieldClassName';
 
@@ -66,8 +65,13 @@ CompositePropertyComponent.defaultProps = {
 };
 
 const mapStateToProps = (state, { field, resource, parents }) => {
-    const allCompositeFields = fromFields.getCompositeFieldsByField(state, field);
-    const compositeFields = allCompositeFields.filter(f => !parents.includes(f.name));
+    const allCompositeFields = fromFields.getCompositeFieldsByField(
+        state,
+        field,
+    );
+    const compositeFields = allCompositeFields.filter(
+        f => !parents.includes(f.name),
+    );
 
     return {
         resource,

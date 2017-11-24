@@ -31,10 +31,13 @@ describe('contributed resource reducer', () => {
             page: 42,
             total: 1000,
         });
-        const state = reducer({
-            loading: true,
-            error: true,
-        }, action);
+        const state = reducer(
+            {
+                loading: true,
+                error: true,
+            },
+            action,
+        );
         expect(state).toEqual({
             error: false,
             loading: false,
@@ -49,9 +52,12 @@ describe('contributed resource reducer', () => {
     });
 
     it('should handle the LOAD_CONTRIBUTED_RESOURCE_PAGE_ERROR action', () => {
-        const state = reducer({
-            loading: true,
-        }, loadContributedResourcePageError(new Error('foo')));
+        const state = reducer(
+            {
+                loading: true,
+            },
+            loadContributedResourcePageError(new Error('foo')),
+        );
         expect(state).toEqual({ loading: false, error: 'foo' });
     });
 });

@@ -6,9 +6,7 @@ import Card from '../lib/components/Card';
 
 const NoDatasetComponent = ({ p: polyglot }) => (
     <Card>
-        <CardText>
-            {polyglot.t('no_dataset')}
-        </CardText>
+        <CardText>{polyglot.t('no_dataset')}</CardText>
     </Card>
 );
 
@@ -17,4 +15,3 @@ NoDatasetComponent.propTypes = {
 };
 
 export default translate(NoDatasetComponent);
-

@@ -20,8 +20,6 @@ ContributedResourcePageComponent.propTypes = {
     p: polyglotPropTypes.isRequired,
 };
 
-export default compose(
-    withInitialData,
-    translate,
-)(ContributedResourcePageComponent);
-
+export default compose(withInitialData, translate)(
+    ContributedResourcePageComponent,
+);

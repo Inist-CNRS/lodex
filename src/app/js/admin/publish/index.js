@@ -22,40 +22,43 @@ export const defaultState = {
     nbInvalidUri: 0,
 };
 
-export default handleActions({
-    PUBLISH: state => ({
-        ...state,
-        error: null,
-        loading: true,
-    }),
-    PUBLISH_SUCCESS: state => ({
-        ...state,
-        error: null,
-        loading: false,
-    }),
-    PUBLISH_ERROR: (state, { payload: error }) => ({
-        ...state,
-        error: error.message || error,
-        loading: false,
-    }),
-    PUBLISH_WARN: (state, { payload: nbInvalidUri }) => ({
-        ...state,
-        nbInvalidUri,
-    }),
-    PUBLISH_CONFIRM: state => ({
-        ...state,
-        nbInvalidUri: 0,
-    }),
-    PUBLISH_CANCEL: state => ({
-        ...state,
-        loading: false,
-        nbInvalidUri: 0,
-    }),
-    [combineActions(SAVE_FIELD_ERROR, SAVE_FIELD_SUCCESS)]: state => ({
-        ...state,
-        loading: false,
-    }),
-}, defaultState);
+export default handleActions(
+    {
+        PUBLISH: state => ({
+            ...state,
+            error: null,
+            loading: true,
+        }),
+        PUBLISH_SUCCESS: state => ({
+            ...state,
+            error: null,
+            loading: false,
+        }),
+        PUBLISH_ERROR: (state, { payload: error }) => ({
+            ...state,
+            error: error.message || error,
+            loading: false,
+        }),
+        PUBLISH_WARN: (state, { payload: nbInvalidUri }) => ({
+            ...state,
+            nbInvalidUri,
+        }),
+        PUBLISH_CONFIRM: state => ({
+            ...state,
+            nbInvalidUri: 0,
+        }),
+        PUBLISH_CANCEL: state => ({
+            ...state,
+            loading: false,
+            nbInvalidUri: 0,
+        }),
+        [combineActions(SAVE_FIELD_ERROR, SAVE_FIELD_SUCCESS)]: state => ({
+            ...state,
+            loading: false,
+        }),
+    },
+    defaultState,
+);
 
 export const getIsPublishing = state => state.loading;
 export const getPublishingError = state => state.error;

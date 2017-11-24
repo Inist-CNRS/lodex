@@ -4,21 +4,23 @@
 
 Lodex is a tool to enable publishing a set of data `csv, tsv, xml, json ...` in semantic web formats `JSON-LD, N-Quads, ...` and propose to manipulate them in a backoffice.
 
-To see what Lodex can do, check out https://data.istex.fr/ or the user documentation at https://lodex.gitbooks.io/lodex-user-documentation/ 
+To see what Lodex can do, check out https://data.istex.fr/ or the user documentation at https://lodex.gitbooks.io/lodex-user-documentation/
 
 ![preview](https://docs.google.com/drawings/d/e/2PACX-1vQA8ze2ktkRLXZB9sNWkft0cUpf_jOJbTfQA7AtzvwsRfswBCuiWwEsI3kvHzAzmZNhz4CxcePQ02cA/pub?w=904&h=581)
 
 ## Install
 
-### with docker 
+You need to set the EZMASTER_PUBLIC_URL environment variable based on your machine, default to `http://localhost:3000`
+
+### with docker
 _prerequisites_ : docker
 ```
-make install 
-make run-debug
+make install
+make run-dev
 ```
 
 ### with npm
-_prerequisites_ : mongo, node
+_prerequisites_ : mongo, node 8
 ```
 npm install
 npm run build
@@ -32,7 +34,7 @@ To see what Lodex can do, check out
  - Data and Model ready to use : https://github.com/Inist-CNRS/lodex-use-cases
  - Videos : https://www.youtube.com/channel/UCXJjwCr-sfTZsFomFejEkEw/videos
  - Real life example : https://data.istex.fr/
- - user documentation : https://lodex.gitbooks.io/lodex-user-documentation/ 
+ - user documentation : https://lodex.gitbooks.io/lodex-user-documentation/
  - actuality & news : http://lodex.inist.fr/
  - Twitter : https://twitter.com/lodex_team
  - Contribute (for developer) : https://github.com/Inist-CNRS/lodex/wiki

@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
@@ -10,11 +11,12 @@ import { red600 } from 'material-ui/styles/colors';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import ButtonWithStatus from '../../lib/components/ButtonWithStatus';
 
-import { clearDataset as clearDatasetAction,
-    clearPublished as clearPublishedAction } from '../clear';
+import {
+    clearDataset as clearDatasetAction,
+    clearPublished as clearPublishedAction,
+} from '../clear';
 
 import { reloadParsingResult } from '../parsing';
-// import { reloadPublication as reloadPublicationAction } from '../publication';
 import { fromClear } from '../selectors';
 
 const styles = {
@@ -40,16 +42,16 @@ class ClearDialogComponent extends Component {
             this.props.onClose();
 
             switch (this.props.type) {
-            case 'dataset':
-                this.props.reloadParsing();
-                break;
-            case 'published':
-                // this.props.reloadPublication();
-                // must be change
-                window.location.href = '/admin/#/dashboard';
-                break;
-            default:
-                break;
+                case 'dataset':
+                    this.props.reloadParsing();
+                    break;
+                case 'published':
+                    // this.props.reloadPublication();
+                    // must be change
+                    window.location.href = '/admin/#/dashboard';
+                    break;
+                default:
+                    break;
             }
         }
     }
@@ -68,17 +70,19 @@ class ClearDialogComponent extends Component {
         return this.setState({
             validName: true,
         });
-    }
+    };
 
-    handleClear = type => (type === 'dataset' && this.handleClearDataset) || (type === 'published' && this.handleClearPublished);
+    handleClear = type =>
+        (type === 'dataset' && this.handleClearDataset) ||
+        (type === 'published' && this.handleClearPublished);
 
     handleClearDataset = () => {
         this.props.clearDataset();
-    }
+    };
 
     handleClearPublished = () => {
         this.props.clearPublished();
-    }
+    };
 
     handleKeyPress = (e, type) => {
         if (e.key !== 'Enter' || !this.state.validName) {
@@ -92,20 +96,28 @@ class ClearDialogComponent extends Component {
         }
 
         return null;
-    }
+    };
 
     render() {
-        const { type, p: polyglot, onClose, isClearing, hasFailed } = this.props;
+        const {
+            type,
+            p: polyglot,
+            onClose,
+            isClearing,
+            hasFailed,
+        } = this.props;
         const { validName } = this.state;
 
         const actions = [
             <FlatButton
+                key="cancel"
                 className="btn-cancel"
                 label={polyglot.t('cancel')}
                 onTouchTap={onClose}
                 primary
             />,
             <ButtonWithStatus
+                key="submit"
                 raised
                 className="btn-submit"
                 label={polyglot.t('valid')}
@@ -161,14 +173,13 @@ const mapStateToProps = state => ({
     isClearing: fromClear.getIsClearing(state),
 });
 
-const mapDispatchToProps = ({
+const mapDispatchToProps = {
     clearDataset: clearDatasetAction,
     clearPublished: clearPublishedAction,
     reloadParsing: reloadParsingResult,
     // reloadPublication: reloadPublicationAction,
-});
+};
 
-export default compose(
-    translate,
-    connect(mapStateToProps, mapDispatchToProps),
-)(ClearDialogComponent);
+export default compose(translate, connect(mapStateToProps, mapDispatchToProps))(
+    ClearDialogComponent,
+);

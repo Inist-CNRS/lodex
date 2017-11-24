@@ -11,7 +11,9 @@ let db;
 
 export async function connect() {
     if (!db) {
-        db = await MongoClient.connect(`mongodb://${config.mongo.host}/${config.mongo.dbName}`);
+        db = await MongoClient.connect(
+            `mongodb://${config.mongo.host}/${config.mongo.dbName}`,
+        );
         db.dataset = await datasetFactory(db);
         db.publishedDataset = await publishedDatasetFactory(db);
         db.publishedCharacteristic = await publishedCharacteristicFactory(db);
@@ -33,10 +35,16 @@ export function loadFixtures(fixtures) {
         promises.push(db.dataset.insertMany(fixtures.dataset));
     }
     if (fixtures.publishedDataset) {
-        promises.push(db.publishedDataset.insertMany(fixtures.publishedDataset));
+        promises.push(
+            db.publishedDataset.insertMany(fixtures.publishedDataset),
+        );
     }
     if (fixtures.publishedCharacteristic) {
-        promises.push(db.publishedCharacteristic.insertMany(fixtures.publishedCharacteristic));
+        promises.push(
+            db.publishedCharacteristic.insertMany(
+                fixtures.publishedCharacteristic,
+            ),
+        );
     }
     if (fixtures.publishedFacet) {
         promises.push(db.publishedFacet.insertMany(fixtures.publishedFacet));

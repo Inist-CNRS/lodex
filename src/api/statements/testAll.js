@@ -1,8 +1,8 @@
 import ezs from 'ezs';
 
 const testAll = (stream, expectation, done) => {
-    stream
-        .pipe(ezs((data, feed) => {
+    stream.pipe(
+        ezs((data, feed) => {
             if (data !== null) {
                 try {
                     expectation(data);
@@ -13,7 +13,8 @@ const testAll = (stream, expectation, done) => {
                 return done();
             }
             return feed.end();
-        }));
+        }),
+    );
 };
 
 export default testAll;

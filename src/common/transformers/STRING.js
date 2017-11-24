@@ -1,4 +1,4 @@
-export const toString = (value) => {
+export const toString = value => {
     if (!value) {
         return '';
     }

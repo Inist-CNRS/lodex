@@ -5,12 +5,13 @@ import get from 'lodash.get';
 
 import {
     loadField,
-    getFieldFormData,
     saveFieldError,
     saveFieldSuccess,
     FIELD_FORM_NAME,
     SAVE_FIELD,
 } from '../';
+
+import { getFieldFormData } from '../selectors';
 import { fromUser } from '../../sharedSelectors';
 
 import fetchSaga from '../../lib/sagas/fetchSaga';

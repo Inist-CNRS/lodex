@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import withHandlers from 'recompose/withHandlers';
@@ -15,7 +16,9 @@ import { getViewComponent } from '../formats';
 export class FormatComponent extends Component {
     componentWillMount() {
         const { field, resource } = this.props;
-        const linkTransformer = field.transformers && field.transformers.find(t => t.operation === 'LINK');
+        const linkTransformer =
+            field.transformers &&
+            field.transformers.find(t => t.operation === 'LINK');
 
         if (linkTransformer) {
             const uri = resource[field.name];
@@ -78,7 +81,9 @@ const preMapStateToProps = state => ({
 });
 
 const postMapStateToProps = (state, { linkedResource }) => ({
-    linkedResource: linkedResource ? fromResource.getResourceLastVersion(state, linkedResource) : null,
+    linkedResource: linkedResource
+        ? fromResource.getResourceLastVersion(state, linkedResource)
+        : null,
     rawLinkedResource: linkedResource,
 });
 
@@ -87,10 +92,9 @@ export default compose(
     withState('linkedResource', 'setLinkedResource', null),
     withHandlers({
         fetchLinkedResource: ({ setLinkedResource, token }) => uri =>
-            fetchByUri(uri, token)
-                .then((linkedResource) => {
-                    setLinkedResource(linkedResource);
-                }),
+            fetchByUri(uri, token).then(linkedResource => {
+                setLinkedResource(linkedResource);
+            }),
     }),
     connect(postMapStateToProps),
 )(FormatComponent);

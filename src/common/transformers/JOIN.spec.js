@@ -12,6 +12,8 @@ describe('JOIN', () => {
     });
 
     it('should throw an error if value is not an array', () => {
-        expect(() => join('hello', ' ')).toThrow('Invalid value: need an array');
+        expect(() => join('hello', ' ')).toThrow(
+            'Invalid value: need an array',
+        );
     });
 });

@@ -28,9 +28,18 @@ const styles = {
         width: '100%',
     },
 };
-export const LoginFormComponent = ({ error, handleKeyPress, handleSubmit, p: polyglot }) => (
+export const LoginFormComponent = ({
+    error,
+    handleKeyPress,
+    handleSubmit,
+    p: polyglot,
+}) => (
     <form id="login_form" onSubmit={handleSubmit}>
-        {error && <Alert style={styles.alert}><p>{error}</p></Alert>}
+        {error && (
+            <Alert style={styles.alert}>
+                <p>{error}</p>
+            </Alert>
+        )}
 
         <Field
             name="username"
@@ -64,7 +73,7 @@ export default compose(
         validate,
     }),
     withHandlers({
-        handleKeyPress: ({ handleSubmit }) => (event) => {
+        handleKeyPress: ({ handleSubmit }) => event => {
             if (event.key === 'Enter') {
                 handleSubmit();
             }

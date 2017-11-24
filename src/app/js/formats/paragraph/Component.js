@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { field as fieldPropTypes } from '../../propTypes';
 
 const Paragraph = ({ resource, field }) => {
@@ -12,11 +13,7 @@ const Paragraph = ({ resource, field }) => {
         textAlign: 'justify',
     };
 
-    return (
-        <p style={style}>
-            {resource[field.name]}
-        </p>
-    );
+    return <p style={style}>{resource[field.name]}</p>;
 };
 
 Paragraph.propTypes = {

@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
@@ -41,15 +42,21 @@ const styles = {
     },
 };
 
-export const UploadComponent = ({ onFileLoad, error, p: polyglot, ...props }) => (
-    <div
-        className={classnames('upload', props.className)}
-        style={styles.div}
-    >
-        { error ? <Alert>
-            <p>Error uploading given file: </p>
-            <p>{error}</p>
-        </Alert> : <span />}
+export const UploadComponent = ({
+    onFileLoad,
+    error,
+    p: polyglot,
+    ...props
+}) => (
+    <div className={classnames('upload', props.className)} style={styles.div}>
+        {error ? (
+            <Alert>
+                <p>Error uploading given file: </p>
+                <p>{error}</p>
+            </Alert>
+        ) : (
+            <span />
+        )}
         <div style={styles.punchLine}>
             <p>{polyglot.t('easy-creation')}</p>
             <p>{polyglot.t('semantic-web-compatibility')}</p>
@@ -59,7 +66,9 @@ export const UploadComponent = ({ onFileLoad, error, p: polyglot, ...props }) =>
                 icon={<ArchiveIcon />}
                 label={polyglot.t('first-upload')}
             />
-            <p>{polyglot.t('supported_format_list')} {LOADERS.join(', ')}</p>
+            <p>
+                {polyglot.t('supported_format_list')} {LOADERS.join(', ')}
+            </p>
         </div>
     </div>
 );

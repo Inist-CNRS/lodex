@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
@@ -23,9 +24,9 @@ export class WidgetsComponent extends Component {
         this.props.preLoadExporters();
     }
 
-    handleSelectedFieldsChange = (exportedFields) => {
+    handleSelectedFieldsChange = exportedFields => {
         this.setState({ exportedFields });
-    }
+    };
 
     render() {
         const { fields, uri, widgets, p: polyglot } = this.props;
@@ -41,17 +42,15 @@ export class WidgetsComponent extends Component {
                         value={exportedFields}
                         onChange={this.handleSelectedFieldsChange}
                     />
-                    {
-                        widgets.map(({ name, type }) => (
-                            <WidgetExportItem
-                                key={name}
-                                type={type}
-                                label={name}
-                                uri={uri}
-                                fields={exportedFields.map(field => field.value)}
-                            />
-                        ))
-                    }
+                    {widgets.map(({ name, type }) => (
+                        <WidgetExportItem
+                            key={name}
+                            type={type}
+                            label={name}
+                            uri={uri}
+                            fields={exportedFields.map(field => field.value)}
+                        />
+                    ))}
                 </CardText>
             </div>
         );
@@ -76,11 +75,14 @@ const mapStateToProps = state => ({
     widgets: fromExport.getWidgets(state),
 });
 
-const mapDispatchToProps = dispatch => bindActionCreators({
-    preLoadExporters,
-}, dispatch);
+const mapDispatchToProps = dispatch =>
+    bindActionCreators(
+        {
+            preLoadExporters,
+        },
+        dispatch,
+    );
 
-export default compose(
-    connect(mapStateToProps, mapDispatchToProps),
-    translate,
-)(WidgetsComponent);
+export default compose(connect(mapStateToProps, mapDispatchToProps), translate)(
+    WidgetsComponent,
+);

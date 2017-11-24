@@ -3,7 +3,8 @@
  * Duplicated from original Material-ui tooltip and modified to suit our needs until
  * v7 is out
  */
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import transitions from 'material-ui/styles/transitions';
 
 function getStyles(props, context, state) {

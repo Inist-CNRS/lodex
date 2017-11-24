@@ -1,5 +1,5 @@
 /* eslint import/prefer-default-export: off */
-import { PropTypes } from 'react';
+import PropTypes from 'prop-types';
 
 import { PROPOSED, VALIDATED, REJECTED } from '../../common/propositionStatus';
 

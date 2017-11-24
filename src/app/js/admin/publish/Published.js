@@ -23,9 +23,7 @@ const styles = {
 const PublishedComponent = ({ p: polyglot }) => (
     <Card className="data-published">
         <CardText style={styles.container}>
-            <div style={styles.text}>
-                {polyglot.t('published')}
-            </div>
+            <div style={styles.text}>{polyglot.t('published')}</div>
         </CardText>
         <CardText style={styles.container}>
             <RaisedButton
@@ -43,4 +41,3 @@ PublishedComponent.propTypes = {
 };
 
 export default translate(PublishedComponent);
-

@@ -12,9 +12,11 @@ describe('BOOLEAN', () => {
     });
 
     it('should return false if value is any string (except 1, true, on)', () => {
-        expect(toBoolean({
-            a: 'hello',
-            b: 'world',
-        })).toEqual(false);
+        expect(
+            toBoolean({
+                a: 'hello',
+                b: 'world',
+            }),
+        ).toEqual(false);
     });
 });

@@ -23,9 +23,12 @@ export function* handleLoadParsingResult() {
 }
 
 export function* watchLoadParsingResult() {
-    yield takeLatest([LOAD_PARSING_RESULT, UPLOAD_SUCCESS], handleLoadParsingResult);
+    yield takeLatest(
+        [LOAD_PARSING_RESULT, UPLOAD_SUCCESS],
+        handleLoadParsingResult,
+    );
 }
 
-export default function* () {
+export default function*() {
     yield fork(watchLoadParsingResult);
 }

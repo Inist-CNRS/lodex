@@ -1,14 +1,11 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
 import { bindActionCreators } from 'redux';
 
-import {
-    fromFields,
-} from '../../sharedSelectors';
-import {
-    field as fieldPropTypes,
-} from '../../propTypes';
+import { fromFields } from '../../sharedSelectors';
+import { field as fieldPropTypes } from '../../propTypes';
 import { changeFieldStatus } from '../resource';
 import Property from './';
 
@@ -32,14 +29,14 @@ const PropertyLinkedFieldsComponent = ({
         return null;
     }
     return (
-        <div
-            className="linked_fields"
-            style={styles.container}
-        >
+        <div className="linked_fields" style={styles.container}>
             {linkedFields.map(linkedField => (
                 <Property
                     key={linkedField._id}
-                    className={classnames('completes', `completes_${fieldName}`)}
+                    className={classnames(
+                        'completes',
+                        `completes_${fieldName}`,
+                    )}
                     field={linkedField}
                     isSaving={isSaving}
                     isSub
@@ -72,15 +69,22 @@ const mapStateToProps = (state, { fieldName, parents }) => {
     return { linkedFields };
 };
 
-const mapDispatchToProps = (dispatch, { field, resource: { uri } }) => bindActionCreators({
-    changeStatus: (prevStatus, status) => changeFieldStatus({
-        uri,
-        field: field.name,
-        status,
-        prevStatus,
-    }),
-}, dispatch);
+const mapDispatchToProps = (dispatch, { field, resource: { uri } }) =>
+    bindActionCreators(
+        {
+            changeStatus: (prevStatus, status) =>
+                changeFieldStatus({
+                    uri,
+                    field: field.name,
+                    status,
+                    prevStatus,
+                }),
+        },
+        dispatch,
+    );
 
-const PropertyLinkedFields = connect(mapStateToProps, mapDispatchToProps)(PropertyLinkedFieldsComponent);
+const PropertyLinkedFields = connect(mapStateToProps, mapDispatchToProps)(
+    PropertyLinkedFieldsComponent,
+);
 
 export default PropertyLinkedFields;

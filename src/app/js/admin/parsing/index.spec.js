@@ -25,7 +25,10 @@ describe('parsing reducer', () => {
     });
 
     it('should handle the LOAD_PARSING_RESULT_ERROR action', () => {
-        const state = reducer({ ...defaultState, loading: true }, loadParsingResultError('foo'));
+        const state = reducer(
+            { ...defaultState, loading: true },
+            loadParsingResultError('foo'),
+        );
         expect(state).toEqual({
             ...defaultState,
             loading: false,
@@ -35,7 +38,10 @@ describe('parsing reducer', () => {
     });
 
     it('should handle the LOAD_PARSING_RESULT_SUCCESS action', () => {
-        const state = reducer({ ...defaultState, loading: true }, loadParsingResultSuccess({ parsing: true }));
+        const state = reducer(
+            { ...defaultState, loading: true },
+            loadParsingResultSuccess({ parsing: true }),
+        );
         expect(state).toEqual({
             ...defaultState,
             allowUpload: false,
@@ -45,7 +51,10 @@ describe('parsing reducer', () => {
     });
 
     it('should handle the RELOAD_PARSING_RESULT action', () => {
-        const state = reducer({ ...defaultState, allowUpload: false }, reloadParsingResult());
+        const state = reducer(
+            { ...defaultState, allowUpload: false },
+            reloadParsingResult(),
+        );
         expect(state).toEqual({
             ...defaultState,
             allowUpload: true,
@@ -53,7 +62,10 @@ describe('parsing reducer', () => {
     });
 
     it('should handle the CANCEL_RELOAD action', () => {
-        const state = reducer({ ...defaultState, allowUpload: true }, cancelReload());
+        const state = reducer(
+            { ...defaultState, allowUpload: true },
+            cancelReload(),
+        );
         expect(state).toEqual({
             ...defaultState,
             allowUpload: false,
@@ -66,11 +78,17 @@ describe('parsing reducer', () => {
         });
 
         it('should return a list of columns from excerptLines', () => {
-            expect(getParsedExcerptColumns({ excerptLines: [{
-                key1: 'key1_value',
-                key2: 'key2_value',
-                key3: 'key3_value',
-            }] })).toEqual(['key1', 'key2', 'key3']);
+            expect(
+                getParsedExcerptColumns({
+                    excerptLines: [
+                        {
+                            key1: 'key1_value',
+                            key2: 'key2_value',
+                            key3: 'key3_value',
+                        },
+                    ],
+                }),
+            ).toEqual(['key1', 'key2', 'key3']);
         });
     });
 

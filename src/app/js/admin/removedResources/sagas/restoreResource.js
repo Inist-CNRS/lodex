@@ -19,6 +19,6 @@ export function* handleRestoreResourceRequest({ payload: uri }) {
     return yield put(restoreRessourceSuccess(uri));
 }
 
-export default function* () {
+export default function*() {
     yield takeEvery(RESTORE_RESOURCE, handleRestoreResourceRequest);
 }

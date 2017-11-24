@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
 import RaisedButton from 'material-ui/RaisedButton';
 import { connect } from 'react-redux';
@@ -170,7 +171,6 @@ const mapDispatchToProps = {
     onChangeParserName: (_, idx, val) => changeParserName(val),
 };
 
-export default compose(
-    translate,
-    connect(mapStateToProps, mapDispatchToProps),
-)(UploadDialogComponent);
+export default compose(translate, connect(mapStateToProps, mapDispatchToProps))(
+    UploadDialogComponent,
+);

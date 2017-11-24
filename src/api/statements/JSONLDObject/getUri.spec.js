@@ -25,6 +25,8 @@ describe('JSONLDObject / getUri', () => {
     });
 
     it('should remove the instance numbers', () => {
-        expect(getUri('http://a-b-5.data.istex.fr')).toBe('http://a-b.data.istex.fr');
+        expect(getUri('http://a-b-5.data.istex.fr')).toBe(
+            'http://a-b.data.istex.fr',
+        );
     });
 });

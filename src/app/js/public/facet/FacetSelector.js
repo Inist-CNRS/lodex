@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
@@ -8,7 +9,10 @@ import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
 import { ToolbarGroup } from 'material-ui/Toolbar';
 
-import { field as fieldPropTypes, polyglot as polyglotPropTypes } from '../../propTypes';
+import {
+    field as fieldPropTypes,
+    polyglot as polyglotPropTypes,
+} from '../../propTypes';
 import { fromFacet } from '../selectors';
 import { fromFields } from '../../sharedSelectors';
 import { selectFacet } from './index';
@@ -27,24 +31,29 @@ export class FacetSelectorComponent extends Component {
         };
     }
 
-    handleClick = (event) => {
+    handleClick = event => {
         this.setState({
             anchorEl: event.target,
             showMenu: true,
         });
-    }
+    };
 
     handleFacetClick = (event, value) => {
         this.setState({ showMenu: false });
         this.props.handleFacetSelected({ field: value });
-    }
+    };
 
     handleRequestClose = () => {
         this.setState({ showMenu: false });
-    }
+    };
 
     render() {
-        const { fields, hasFacetFields, p: polyglot, selectedFacet } = this.props;
+        const {
+            fields,
+            hasFacetFields,
+            p: polyglot,
+            selectedFacet,
+        } = this.props;
         const { anchorEl, showMenu } = this.state;
 
         if (!hasFacetFields) return null;
@@ -53,7 +62,11 @@ export class FacetSelectorComponent extends Component {
             <ToolbarGroup>
                 <RaisedButton
                     className="facet-selector"
-                    label={selectedFacet ? selectedFacet.label : polyglot.t('add_facet')}
+                    label={
+                        selectedFacet
+                            ? selectedFacet.label
+                            : polyglot.t('add_facet')
+                    }
                     onClick={this.handleClick}
                 />
                 <Popover
@@ -75,9 +88,7 @@ export class FacetSelectorComponent extends Component {
                         ))}
                     </Menu>
                 </Popover>
-                {selectedFacet &&
-                    <FacetValueSelector />
-                }
+                {selectedFacet && <FacetValueSelector />}
             </ToolbarGroup>
         );
     }
@@ -101,11 +112,10 @@ const mapStateToProps = state => ({
     fields: fromFields.getFacetFields(state),
 });
 
-const mapDispatchToProps = ({
+const mapDispatchToProps = {
     handleFacetSelected: selectFacet,
-});
+};
 
-export default compose(
-    connect(mapStateToProps, mapDispatchToProps),
-    translate,
-)(FacetSelectorComponent);
+export default compose(connect(mapStateToProps, mapDispatchToProps), translate)(
+    FacetSelectorComponent,
+);

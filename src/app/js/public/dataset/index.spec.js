@@ -17,7 +17,10 @@ describe('dataset reducer', () => {
     });
 
     it('should handle the LOAD_DATASET_PAGE action', () => {
-        const state = reducer(undefined, loadDatasetPage({ perPage: 'perPage' }));
+        const state = reducer(
+            undefined,
+            loadDatasetPage({ perPage: 'perPage' }),
+        );
         expect(state).toEqual({
             ...state,
             loading: true,
@@ -26,7 +29,11 @@ describe('dataset reducer', () => {
     });
 
     it('should handle the LOAD_DATASET_PAGE_SUCCESS action', () => {
-        const action = loadDatasetPageSuccess({ dataset: [{ foo: 'bar' }], page: 42, total: 1000 });
+        const action = loadDatasetPageSuccess({
+            dataset: [{ foo: 'bar' }],
+            page: 42,
+            total: 1000,
+        });
         const state = reducer({ loading: true, error: true }, action);
         expect(state).toEqual({
             error: null,
@@ -38,7 +45,10 @@ describe('dataset reducer', () => {
     });
 
     it('should handle the LOAD_DATASET_PAGE_ERROR action', () => {
-        const state = reducer({ loading: true }, loadDatasetPageError(new Error('foo')));
+        const state = reducer(
+            { loading: true },
+            loadDatasetPageError(new Error('foo')),
+        );
         expect(state).toEqual({
             loading: false,
             error: 'foo',
@@ -77,7 +87,10 @@ describe('dataset reducer', () => {
     });
 
     it('should handle SORT_DATASET action and invert sortDir when sortBy do not change', () => {
-        const state = reducer({ sort: { sortBy: 'field', sortDir: 'ASC' } }, sortDataset('field'));
+        const state = reducer(
+            { sort: { sortBy: 'field', sortDir: 'ASC' } },
+            sortDataset('field'),
+        );
         expect(state).toEqual({
             sort: {
                 sortBy: 'field',
@@ -87,7 +100,10 @@ describe('dataset reducer', () => {
     });
 
     it('should handle SORT_DATASET action and invert sortDir when sortBy do not change', () => {
-        const state = reducer({ sort: { sortBy: 'field', sortDir: 'DESC' } }, sortDataset('field'));
+        const state = reducer(
+            { sort: { sortBy: 'field', sortDir: 'DESC' } },
+            sortDataset('field'),
+        );
         expect(state).toEqual({
             sort: {
                 sortBy: 'field',

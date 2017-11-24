@@ -17,30 +17,35 @@ export const defaultState = {
     published: false,
 };
 
-export default handleActions({
-    LOAD_PUBLICATION: state => ({
-        ...state,
-        error: null,
-        loading: true,
-    }),
-    LOAD_PUBLICATION_SUCCESS: (state, { payload: { fields, published } }) => ({
-        ...state,
-        error: null,
-        loading: false,
-        fields,
-        published,
-    }),
-    LOAD_PUBLICATION_ERROR: (state, { payload: error }) => ({
-        ...state,
-        error: error.message,
-        loading: false,
-    }),
-    SELECT_FIELD: (state, { payload: name }) => ({
-        ...state,
-        selectedField: name,
-    }),
-}, defaultState);
-
+export default handleActions(
+    {
+        LOAD_PUBLICATION: state => ({
+            ...state,
+            error: null,
+            loading: true,
+        }),
+        LOAD_PUBLICATION_SUCCESS: (
+            state,
+            { payload: { fields, published } },
+        ) => ({
+            ...state,
+            error: null,
+            loading: false,
+            fields,
+            published,
+        }),
+        LOAD_PUBLICATION_ERROR: (state, { payload: error }) => ({
+            ...state,
+            error: error.message,
+            loading: false,
+        }),
+        SELECT_FIELD: (state, { payload: name }) => ({
+            ...state,
+            selectedField: name,
+        }),
+    },
+    defaultState,
+);
 
 export const hasPublishedDataset = ({ published }) => published;
 

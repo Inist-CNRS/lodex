@@ -1,6 +1,6 @@
 export const URI_FIELD_NAME = 'uri';
 
-export const getResourceUri = (resource) => {
+export const getResourceUri = resource => {
     const uri = resource.uri;
     if (!uri) {
         return null;

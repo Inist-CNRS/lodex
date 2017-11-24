@@ -1,4 +1,4 @@
-export const toNumber = (value) => {
+export const toNumber = value => {
     if (!value) {
         return 0;
     }

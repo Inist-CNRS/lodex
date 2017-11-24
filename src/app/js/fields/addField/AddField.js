@@ -5,12 +5,11 @@ import compose from 'recompose/compose';
 
 import { fromResource } from '../../public/selectors';
 import AddFieldForm from './AddFieldForm';
-import ButtonWithDialog from '../../lib/components/ButtonWithDialog';
+import ButtonWithDialogForm from '../../lib/components/ButtonWithDialogForm';
 import {
     addFieldToResourceOpen,
     addFieldToResourceCancel,
     NEW_RESOURCE_FIELD_FORM_NAME,
-
 } from '../../public/resource';
 
 const mapStateToProps = (state, { p }) => ({
@@ -27,7 +26,6 @@ const mapDispatchToProps = {
     handleClose: () => addFieldToResourceCancel(),
 };
 
-export default compose(
-    translate,
-    connect(mapStateToProps, mapDispatchToProps),
-)(ButtonWithDialog);
+export default compose(translate, connect(mapStateToProps, mapDispatchToProps))(
+    ButtonWithDialogForm,
+);

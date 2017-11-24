@@ -9,21 +9,24 @@ import EditFieldForm, { FORM_NAME } from './EditFieldForm';
 import { fromResource } from '../../public/selectors';
 import { fromUser, fromFields } from '../../sharedSelectors';
 import getFieldClassName from '../../lib/getFieldClassName';
-import ButtonWithDialog from '../../lib/components/ButtonWithDialog';
-import {
-    openEditFieldValue,
-    closeEditFieldValue,
-} from '../';
+import ButtonWithDialogForm from '../../lib/components/ButtonWithDialogForm';
+import { openEditFieldValue, closeEditFieldValue } from '../';
 
-const mapStateToProps = (state, { field, resource, onSaveProperty, style, p }) => ({
+const mapStateToProps = (
+    state,
+    { field, resource, onSaveProperty, style, p },
+) => ({
     open: fromFields.isFieldEdited(state, field.name),
-    show: fromUser.isLoggedIn(state) && fromResource.isLastVersionSelected(state),
+    show:
+        fromUser.isLoggedIn(state) && fromResource.isLastVersionSelected(state),
     saving: fromResource.isSaving(state),
-    form: <EditFieldForm
-        field={field}
-        onSaveProperty={onSaveProperty}
-        resource={resource}
-    />,
+    form: (
+        <EditFieldForm
+            field={field}
+            onSaveProperty={onSaveProperty}
+            resource={resource}
+        />
+    ),
     formName: FORM_NAME,
     className: classnames('edit-field', getFieldClassName(field)),
     label: p.t('edit_field', { field: field.label }),
@@ -37,7 +40,6 @@ const mapDispatchToProps = (dispatch, { field: { name } }) => ({
     handleClose: () => dispatch(closeEditFieldValue()),
 });
 
-export default compose(
-    translate,
-    connect(mapStateToProps, mapDispatchToProps),
-)(ButtonWithDialog);
+export default compose(translate, connect(mapStateToProps, mapDispatchToProps))(
+    ButtonWithDialogForm,
+);

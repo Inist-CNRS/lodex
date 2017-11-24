@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
@@ -20,7 +21,6 @@ import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { preLoadDatasetPage, changePage } from './';
 import { fromDataset } from '../selectors';
 import { fromFields } from '../../sharedSelectors';
-import AddCharacteristic from '../characteristic/AddCharacteristic';
 import CreateResource from '../resource/CreateResource';
 
 const styles = {
@@ -62,36 +62,58 @@ export class DatasetComponent extends Component {
 
     handlePageChange = (page, perPage) => {
         this.props.changePage({ page, perPage });
-    }
+    };
 
     render() {
-        const { columns, dataset, loading, p: polyglot, total, perPage, currentPage } = this.props;
+        const {
+            columns,
+            dataset,
+            loading,
+            p: polyglot,
+            total,
+            perPage,
+            currentPage,
+        } = this.props;
         if (loading) return <Loading>{polyglot.t('loading')}</Loading>;
         return (
             <div className="dataset" style={styles.wrapper}>
                 <div className="dataset" style={styles.wrapper}>
                     <div style={styles.propertiesContainer}>
                         <div style={styles.labelContainer}>
-                            <span className="property_label resources" style={styles.label}>
+                            <span
+                                className="property_label resources"
+                                style={styles.label}
+                            >
                                 {polyglot.t('resources')}
                             </span>
                         </div>
                     </div>
                 </div>
-                <Table selectable={false} fixedHeader={false} style={styles.table}>
-                    <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
+                <Table
+                    selectable={false}
+                    fixedHeader={false}
+                    style={styles.table}
+                >
+                    <TableHeader
+                        displaySelectAll={false}
+                        adjustForCheckbox={false}
+                    >
                         <TableRow>
-                            {columns.map(c => (<DatasetColumnHeader
-                                key={c.name}
-                                name={c.name}
-                                label={c.label}
-                            />))}
+                            {columns.map(c => (
+                                <DatasetColumnHeader
+                                    key={c.name}
+                                    name={c.name}
+                                    label={c.label}
+                                />
+                            ))}
                         </TableRow>
                     </TableHeader>
                     <TableBody displayRowCheckbox={false}>
                         {!dataset.length ? (
                             <TableRow>
-                                <TableRowColumn>{polyglot.t('no_result')}</TableRowColumn>
+                                <TableRowColumn>
+                                    {polyglot.t('no_result')}
+                                </TableRowColumn>
                             </TableRow>
                         ) : (
                             dataset.map(data => (
@@ -121,7 +143,6 @@ export class DatasetComponent extends Component {
                     }}
                 />
                 <CardActions style={styles.actions}>
-                    <AddCharacteristic />
                     <CreateResource />
                 </CardActions>
             </div>
@@ -155,12 +176,11 @@ const mapStateToProps = state => ({
     total: fromDataset.getDatasetTotal(state),
 });
 
-const mapDispatchToProps = ({
+const mapDispatchToProps = {
     preLoadDatasetPage,
     changePage,
-});
+};
 
-export default compose(
-    connect(mapStateToProps, mapDispatchToProps),
-    translate,
-)(DatasetComponent);
+export default compose(connect(mapStateToProps, mapDispatchToProps), translate)(
+    DatasetComponent,
+);

@@ -1,11 +1,11 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Field, FieldArray, change } from 'redux-form';
 import translate from 'redux-polyglot/translate';
 import Subheader from 'material-ui/Subheader';
 import FlatButton from 'material-ui/FlatButton';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
-
 
 import FormTextField from '../lib/components/FormTextField';
 import ComposedOfFieldList from './ComposedOfFieldList';
@@ -78,7 +78,10 @@ export class ComposedOfComponent extends Component {
                     component={FormTextField}
                     label={polyglot.t('separator')}
                 />
-                <FieldArray name={`${name}.fields`} component={ComposedOfFieldList} />
+                <FieldArray
+                    name={`${name}.fields`}
+                    component={ComposedOfFieldList}
+                />
             </div>
         );
     }
@@ -97,14 +100,14 @@ ComposedOfComponent.propTypes = {
 };
 
 const mapDispatchToProps = {
-    addComposedOf: () => change('field', 'composedOf', {
-        separator: ' ',
-        fields: ['', ''],
-    }),
+    addComposedOf: () =>
+        change('field', 'composedOf', {
+            separator: ' ',
+            fields: ['', ''],
+        }),
     removeComposedOf: () => change('field', 'composedOf', undefined),
 };
 
-export default compose(
-    translate,
-    connect(null, mapDispatchToProps),
-)(ComposedOfComponent);
+export default compose(translate, connect(null, mapDispatchToProps))(
+    ComposedOfComponent,
+);

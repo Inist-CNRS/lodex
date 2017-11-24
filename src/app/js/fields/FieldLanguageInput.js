@@ -4,11 +4,18 @@ import { Field } from 'redux-form';
 import MenuItem from 'material-ui/MenuItem';
 
 import { languages } from '../../../../config.json';
-import { field as fieldPropTypes, polyglot as polyglotPropTypes } from '../propTypes';
+import {
+    field as fieldPropTypes,
+    polyglot as polyglotPropTypes,
+} from '../propTypes';
 import FormSelectField from '../lib/components/FormSelectField';
 import getFieldClassName from '../lib/getFieldClassName';
 
-export const FieldLanguageInputComponent = ({ field, p: polyglot, ...props }) => {
+export const FieldLanguageInputComponent = ({
+    field,
+    p: polyglot,
+    ...props
+}) => {
     const languagesItems = languages.map(language => (
         <MenuItem
             className={`language_${getFieldClassName(field)}`}

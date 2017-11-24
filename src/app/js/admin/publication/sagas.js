@@ -22,9 +22,12 @@ export function* handleLoadPublicationRequest() {
 }
 
 export function* watchLoadPublicationRequest() {
-    yield takeLatest([LOAD_PUBLICATION, PUBLISH_SUCCESS], handleLoadPublicationRequest);
+    yield takeLatest(
+        [LOAD_PUBLICATION, PUBLISH_SUCCESS],
+        handleLoadPublicationRequest,
+    );
 }
 
-export default function* () {
+export default function*() {
     yield fork(watchLoadPublicationRequest);
 }

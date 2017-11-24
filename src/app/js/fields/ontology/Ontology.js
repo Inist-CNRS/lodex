@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import withHandlers from 'recompose/withHandlers';
@@ -6,26 +7,28 @@ import translate from 'redux-polyglot/translate';
 import Reorder from 'material-ui/svg-icons/editor/format-line-spacing';
 import AppBar from 'material-ui/AppBar';
 import { grey300, grey800, grey900 } from 'material-ui/styles/colors';
-import { SortableContainer, SortableElement, SortableHandle } from 'react-sortable-hoc';
+import {
+    SortableContainer,
+    SortableElement,
+    SortableHandle,
+} from 'react-sortable-hoc';
 
 import { field as fieldPropTypes } from '../../propTypes';
 import { fromUser, fromFields } from '../../sharedSelectors';
 import OntologyField from './OntologyField';
-import ExportFieldsButton from '../../public/export/ExportFieldsButton';
-import { changePosition } from '../';
+import { changePosition, preLoadPublication } from '../';
+import AddCharacteristic from '../addCharacteristic/AddCharacteristic';
 
 const styles = {
     container: {
         display: 'flex',
         flexDirection: 'column',
-        marginTop: '3rem',
         paddingLeft: '1rem',
         paddingRight: '1rem',
     },
     exportContainer: {
         display: 'flex',
         justifyContent: 'flex-end',
-        marginTop: '3rem',
         marginBottom: '1rem',
     },
     handle: {
@@ -41,7 +44,6 @@ const styles = {
         fontStyle: 'italic',
         color: grey800,
         fontSize: 'large',
-        // backgroundColor: 'black',
     },
     handleIcon: {
         color: grey900,
@@ -50,23 +52,21 @@ const styles = {
     icon: { color: 'black' },
 };
 
-const DragHandle = SortableHandle(({ cover }) =>
-    (<AppBar
+const DragHandle = SortableHandle(({ cover }) => (
+    <AppBar
         style={styles.handle}
-        iconElementLeft={
-            <Reorder
-                style={styles.handleIcon}
-            />
-        }
+        iconElementLeft={<Reorder style={styles.handleIcon} />}
         title={cover}
         titleStyle={styles.handleTitle}
-    />));
+    />
+));
 
 const SortableItem = SortableElement(({ value, sortIndex }) => (
     <div>
-        { Boolean(sortIndex) && <DragHandle cover={value.props.field.cover} /> }
+        {Boolean(sortIndex) && <DragHandle cover={value.props.field.cover} />}
         {value}
-    </div>));
+    </div>
+));
 
 const SortableList = SortableContainer(({ items }) => (
     <div>
@@ -74,17 +74,20 @@ const SortableList = SortableContainer(({ items }) => (
             <SortableItem
                 collection={value.props.field.cover}
                 disabled={index === 0}
-                key={
-                // eslint-disable-next-line
-                `item-${index}`}
+                key={`item-${index}`}
                 sortIndex={index}
                 index={index}
                 value={value}
-            />))}
+            />
+        ))}
     </div>
 ));
 
 export class OntologyComponent extends Component {
+    componentWillMount() {
+        this.props.preLoadPublication();
+    }
+
     onSortEnd = ({ oldIndex, newIndex }, _, fields, handleChangePosition) => {
         handleChangePosition({ newPosition: newIndex, oldPosition: oldIndex });
     };
@@ -93,31 +96,38 @@ export class OntologyComponent extends Component {
         const { fields, isLoggedIn, handleChangePosition } = this.props;
         return (
             <div className="ontology" style={styles.container}>
-                {isLoggedIn &&
+                {isLoggedIn && (
                     <div>
-                        <div style={styles.exportContainer}>
-                            <ExportFieldsButton iconStyle={styles.icon} />
-                        </div>
                         <SortableList
                             lockAxis="y"
                             useDragHandle
-                            items={
-                                fields.map((field, index) => (
-                                    <OntologyField
-                                        field={field}
-                                        index={index + 1}
-                                    />
-                                ))}
+                            items={fields.map((field, index) => (
+                                <OntologyField
+                                    key={field.name}
+                                    field={field}
+                                    index={index + 1}
+                                />
+                            ))}
                             onSortEnd={(oldIndex, newIndex) =>
-                                this.onSortEnd(oldIndex, newIndex, fields, handleChangePosition)}
+                                this.onSortEnd(
+                                    oldIndex,
+                                    newIndex,
+                                    fields,
+                                    handleChangePosition,
+                                )
+                            }
                         />
-                    </div>}
+                    </div>
+                )}
                 {!isLoggedIn &&
-                        fields.map((field, index) => (
-                            <OntologyField
-                                field={field}
-                                index={index}
-                            />))}
+                    fields.map((field, index) => (
+                        <OntologyField
+                            key={field.name}
+                            field={field}
+                            index={index}
+                        />
+                    ))}
+                <AddCharacteristic />
             </div>
         );
     }
@@ -127,6 +137,7 @@ OntologyComponent.propTypes = {
     fields: PropTypes.arrayOf(fieldPropTypes).isRequired,
     isLoggedIn: PropTypes.bool.isRequired,
     handleChangePosition: PropTypes.func.isRequired,
+    preLoadPublication: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
@@ -136,12 +147,13 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
     changePositionAction: changePosition,
+    preLoadPublication,
 };
 
 export default compose(
     connect(mapStateToProps, mapDispatchToProps),
     withHandlers({
-        handleChangePosition: ({ changePositionAction }) => (field) => {
+        handleChangePosition: ({ changePositionAction }) => field => {
             changePositionAction(field);
         },
     }),
