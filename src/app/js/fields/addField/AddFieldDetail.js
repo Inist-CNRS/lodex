@@ -6,6 +6,7 @@ import { Field, FormSection } from 'redux-form';
 import FieldSchemeInput from '../FieldSchemeInput';
 import FieldLabelInput from '../FieldLabelInput';
 import FieldFormatInput from '../FieldFormatInput';
+import FieldWidthInput from '../FieldWidthInput';
 import FieldIsSearchableInput from '../FieldIsSearchableInput';
 import FieldIsFacetInput from '../FieldIsFacetInput';
 import FormTextField from '../../lib/components/FormTextField';
@@ -35,6 +36,7 @@ export const AddFieldDetailComponent = ({
         />
         {isLoggedIn && [
             <FieldFormatInput key="field_format" />,
+            <FieldWidthInput key="field_width" />,
             <FieldIsSearchableInput key="field_searchable" />,
             <FieldIsFacetInput key="field_facet" />,
         ]}
