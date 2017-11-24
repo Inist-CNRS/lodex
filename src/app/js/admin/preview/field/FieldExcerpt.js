@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import Excerpt from '../Excerpt';
 
 import { fromFieldPreview } from '../../selectors';
-import { getFieldFormData } from '../../../fields';
+import { getFieldFormData } from '../../../fields/selectors';
 
 const mapStateToProps = state => {
     const editedField = getFieldFormData(state);
