@@ -35,12 +35,11 @@ const styles = {
         display: 'flex',
         flexDirection: 'column',
     },
-    item: memoize(width => ({
-        width: `${width || 100}%`,
+    property: {
         display: 'flex',
         flexDirection: 'column',
         padding: '2rem 1rem 1rem',
-    })),
+    },
     firstItem: {
         display: 'flex',
         flexDirection: 'column',
@@ -49,9 +48,6 @@ const styles = {
         paddingBottom: '1rem',
         paddingLeft: '0.5rem',
         paddingRight: '0.5rem',
-    },
-    property: {
-        flexGrow: 2,
     },
     tab: {
         backgroundColor: 'transparent',
@@ -194,18 +190,14 @@ export const DetailComponent = ({
                     </div>
                     <div style={styles.propertiesContainer}>
                         {topFields.map(field => (
-                            <div
+                            <Property
                                 key={field.name}
-                                style={styles.item(field.width)}
-                            >
-                                <Property
-                                    field={field}
-                                    isSaving={isSaving}
-                                    onSaveProperty={handleSaveResource}
-                                    resource={resource}
-                                    style={styles.property}
-                                />
-                            </div>
+                                field={field}
+                                isSaving={isSaving}
+                                onSaveProperty={handleSaveResource}
+                                resource={resource}
+                                style={styles.property}
+                            />
                         ))}
                     </div>
                 </div>
@@ -213,17 +205,16 @@ export const DetailComponent = ({
             <div className="main-resource-section" style={styles.container}>
                 <div style={styles.propertiesContainer}>
                     {otherFields.map(field => (
-                        <div key={field.name} style={styles.item(field.width)}>
-                            <Property
-                                field={field}
-                                isSaving={isSaving}
-                                onSaveProperty={handleSaveResource}
-                                resource={resource}
-                                style={styles.property}
-                            />
-                        </div>
+                        <Property
+                            key={field.name}
+                            field={field}
+                            isSaving={isSaving}
+                            onSaveProperty={handleSaveResource}
+                            resource={resource}
+                            style={styles.property}
+                        />
                     ))}
-                    <div style={styles.item()}>
+                    <div style={styles.property}>
                         <div
                             className="property resourceURI"
                             style={styles.container}

@@ -25,14 +25,17 @@ import addSchemePrefix from '../../lib/addSchemePrefix';
 import Format from '../Format';
 
 const styles = {
-    container: memoize(style =>
-        Object.assign(
-            {
-                display: 'flex',
-                flexDirection: 'column',
-            },
-            style,
-        ),
+    container: memoize(
+        (style, width) =>
+            Object.assign(
+                {
+                    display: 'flex',
+                    flexDirection: 'column',
+                    width: `${width || 100}%`,
+                },
+                style,
+            ),
+        (_, value) => value,
     ),
     label: (status, isSub) => ({
         color: grey500,
@@ -97,7 +100,7 @@ const PropertyComponent = ({
     return (
         <div
             className={classnames('property', fieldClassName, className)}
-            style={styles.container(style, fieldStatus)}
+            style={styles.container(style, field.width)}
         >
             <div>
                 <div style={styles.labelContainer}>
