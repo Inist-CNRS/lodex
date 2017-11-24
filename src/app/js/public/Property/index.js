@@ -57,7 +57,7 @@ const styles = {
         color: 'grey',
     },
     editButton: memoize(hide => ({
-        marginRight: '-2rem',
+        // marginRight: '-2rem',
         display: hide ? 'none' : 'block',
     })),
     labelContainer: {
@@ -120,6 +120,14 @@ const PropertyComponent = ({
                             {addSchemePrefix(field.scheme)}
                         </a>
                     </span>
+                    <div style={styles.editButton(!loggedIn)}>
+                        <EditField
+                            field={field}
+                            isSaving={isSaving}
+                            resource={resource}
+                            onSaveProperty={onSaveProperty}
+                        />
+                    </div>
                 </div>
                 <PropertyContributor
                     fieldName={field.name}
@@ -141,14 +149,6 @@ const PropertyComponent = ({
                 >
                     {field.language || 'XX'}
                 </span>
-                <div style={styles.editButton(!loggedIn)}>
-                    <EditField
-                        field={field}
-                        isSaving={isSaving}
-                        resource={resource}
-                        onSaveProperty={onSaveProperty}
-                    />
-                </div>
             </div>
             <CompositeProperty
                 field={field}
