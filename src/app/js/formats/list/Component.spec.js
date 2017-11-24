@@ -5,7 +5,7 @@ import { shallow } from 'enzyme';
 import Component, { UL, OL } from './Component';
 import Title from '../title/Component';
 
-describe.only('list format view Component', () => {
+describe('list format view Component', () => {
     it('should render list of value', () => {
         const props = {
             className: 'class',
