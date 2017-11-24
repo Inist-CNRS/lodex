@@ -39,10 +39,7 @@ const styles = {
         width: `${width || 100}%`,
         display: 'flex',
         flexDirection: 'column',
-        paddingTop: '2rem',
-        paddingBottom: '1rem',
-        paddingLeft: '0.5rem',
-        paddingRight: '0.5rem',
+        padding: '2rem 1rem 1rem',
     })),
     firstItem: {
         display: 'flex',
