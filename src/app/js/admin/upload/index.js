@@ -57,35 +57,19 @@ export default handleActions(
         CLOSE_UPLOAD: state => ({
             ...state,
             open: false,
-            status: 'PENDING',
-        }) : state),
-    UPLOAD_SUCCESS: state => ({
-        ...state,
-        status: 'SUCCESS',
-    }),
-    UPLOAD_ERROR: (state, { payload }) => ({
-        ...state,
-        status: 'ERROR',
-        error: payload.message,
-    }),
-    OPEN_UPLOAD: state => ({
-        ...state,
-        open: true,
-    }),
-    CLOSE_UPLOAD: state => ({
-        ...state,
-        open: false,
-    }),
-    CHANGE_UPLOAD_URL: (state, { payload: url }) => ({
-        ...state,
-        url,
-        validUrl: validateUrl(url),
-    }),
-    CHANGE_PARSER_NAME: (state, { payload: parserName }) => ({
-        ...state,
-        parserName,
-    }),
-}, defaultState);
+        }),
+        CHANGE_UPLOAD_URL: (state, { payload: url }) => ({
+            ...state,
+            url,
+            validUrl: validateUrl(url),
+        }),
+        CHANGE_PARSER_NAME: (state, { payload: parserName }) => ({
+            ...state,
+            parserName,
+        }),
+    },
+    defaultState,
+);
 
 export const getUpload = state => state;
 export const isUploadPending = state => state.status === 'PENDING';
