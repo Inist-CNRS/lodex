@@ -10,16 +10,22 @@ import NoDataset from './NoDataset';
 describe('<Home />', () => {
     it('should call preLoadPublication on mount', () => {
         const preLoadPublication = createSpy();
+        const preLoadDatasetPage = createSpy();
+        const preLoadExporters = createSpy();
 
         shallow(
             <Home
                 p={{ t: key => key }}
                 loading
                 preLoadPublication={preLoadPublication}
+                preLoadDatasetPage={preLoadDatasetPage}
+                preLoadExporters={preLoadExporters}
             />,
         );
 
         expect(preLoadPublication).toHaveBeenCalled();
+        expect(preLoadDatasetPage).toHaveBeenCalled();
+        expect(preLoadExporters).toHaveBeenCalled();
     });
 
     it('should render Loading if loading', () => {
@@ -28,6 +34,8 @@ describe('<Home />', () => {
                 p={{ t: key => key }}
                 loading
                 preLoadPublication={() => {}}
+                preLoadDatasetPage={() => {}}
+                preLoadExporters={() => {}}
             />,
         );
 
@@ -41,6 +49,8 @@ describe('<Home />', () => {
                 p={{ t: key => key }}
                 hasPublishedDataset
                 preLoadPublication={() => {}}
+                preLoadDatasetPage={() => {}}
+                preLoadExporters={() => {}}
             />,
         );
 
@@ -54,6 +64,8 @@ describe('<Home />', () => {
                 p={{ t: key => key }}
                 hasPublishedDataset={false}
                 preLoadPublication={() => {}}
+                preLoadDatasetPage={() => {}}
+                preLoadExporters={() => {}}
             />,
         );
 

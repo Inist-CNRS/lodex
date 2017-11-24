@@ -42,6 +42,8 @@ services:
             https_proxy: ${https_proxy}
             no_proxy: "localhost,127.0.0.1,"
             EZMASTER_PUBLIC_URL: http://localhost:3010
+        depends_on:
+            - mongo
         links:
             - mongo
         ports:
