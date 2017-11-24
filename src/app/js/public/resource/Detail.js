@@ -5,8 +5,6 @@ import { Link } from 'react-router';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
 import { CardActions } from 'material-ui/Card';
-import { Tabs, Tab } from 'material-ui/Tabs';
-import Divider from 'material-ui/Divider';
 import { grey500 } from 'material-ui/styles/colors';
 import memoize from 'lodash.memoize';
 import { Helmet } from 'react-helmet';
@@ -18,20 +16,15 @@ import { fromFields } from '../../sharedSelectors';
 import Property from '../Property';
 import AddField from '../../fields/addField/AddField';
 import HideResource from './HideResource';
-import Ontology from '../../fields/ontology/Ontology';
-import Export from '../export/Export';
-import Widgets from '../Widgets';
-import Share from '../Share';
-import ShareLink from '../ShareLink';
 import SelectVersion from './SelectVersion';
 import Version from '../Version';
 import addSchemePrefix from '../../lib/addSchemePrefix';
-import { getFullResourceUri } from '../../../../common/uris';
 import {
     schemeForDatasetLink,
     topFieldsCount,
 } from '../../../../../config.json';
 import getTitle from '../../lib/getTitle';
+import ExportShareButton from '../ExportShareButton';
 
 const styles = {
     container: {
@@ -45,7 +38,6 @@ const styles = {
     item: {
         display: 'flex',
         flexDirection: 'column',
-        //        borderTop: '1px solid rgb(224, 224, 224)',
         paddingTop: '2rem',
         paddingBottom: '1rem',
         paddingLeft: '0.5rem',
@@ -136,7 +128,6 @@ export const DetailComponent = ({
     p: polyglot,
     resource,
     sharingTitle,
-    sharingUri,
     backToListLabel,
 }) => {
     const topFieldsLimit = Number(topFieldsCount) || 2;
@@ -193,6 +184,10 @@ export const DetailComponent = ({
                                 </span>
                                 <div style={styles.value}>
                                     <Link to="/home">{backToListLabel}</Link>
+                                    <ExportShareButton
+                                        style={{ float: 'right' }}
+                                        uri={resource.uri}
+                                    />
                                 </div>
                             </div>
                         </div>
@@ -212,96 +207,62 @@ export const DetailComponent = ({
                 </div>
             </div>
             <div className="main-resource-section" style={styles.container}>
-                <Tabs
-                    tabItemContainerStyle={styles.tab}
-                    inkBarStyle={styles.inkBarStyle}
-                >
-                    <Tab
-                        className="tab-resource-details"
-                        buttonStyle={styles.tabButton}
-                        label={polyglot.t('resource_details')}
-                    >
-                        <div style={styles.propertiesContainer}>
-                            {otherFields.map(field => (
-                                <div key={field.name} style={styles.item}>
-                                    <Property
-                                        field={field}
-                                        isSaving={isSaving}
-                                        onSaveProperty={handleSaveResource}
-                                        resource={resource}
-                                        style={styles.property}
-                                    />
-                                </div>
-                            ))}
-                            <div style={styles.item}>
-                                <div
-                                    className="property resourceURI"
-                                    style={styles.container}
-                                >
-                                    <div>
-                                        <div style={styles.labelContainer}>
-                                            <span
-                                                className="property_label resource_uri"
-                                                style={styles.label}
-                                            >
-                                                URI
-                                            </span>
-                                            <span
-                                                className="property_scheme resource_uri_scheme"
-                                                style={styles.scheme}
-                                            >
-                                                <a
-                                                    style={styles.schemeLink}
-                                                    href="https://www.w3.org/TR/xmlschema-2/#anyURI"
-                                                >
-                                                    {addSchemePrefix(
-                                                        'https://www.w3.org/TR/xmlschema-2/#anyURI',
-                                                    )}
-                                                </a>
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div style={styles.valueContainer}>
-                                        <span
-                                            className="property_language"
-                                            style={styles.language(true)}
+                <div style={styles.propertiesContainer}>
+                    {otherFields.map(field => (
+                        <div key={field.name} style={styles.item}>
+                            <Property
+                                field={field}
+                                isSaving={isSaving}
+                                onSaveProperty={handleSaveResource}
+                                resource={resource}
+                                style={styles.property}
+                            />
+                        </div>
+                    ))}
+                    <div style={styles.item}>
+                        <div
+                            className="property resourceURI"
+                            style={styles.container}
+                        >
+                            <div>
+                                <div style={styles.labelContainer}>
+                                    <span
+                                        className="property_label resource_uri"
+                                        style={styles.label}
+                                    >
+                                        URI
+                                    </span>
+                                    <span
+                                        className="property_scheme resource_uri_scheme"
+                                        style={styles.scheme}
+                                    >
+                                        <a
+                                            style={styles.schemeLink}
+                                            href="https://www.w3.org/TR/xmlschema-2/#anyURI"
                                         >
-                                            XX
-                                        </span>
-                                        <div style={styles.value}>
-                                            <a href={`/${resource.uri}`}>{`${
-                                                process.env.EZMASTER_PUBLIC_URL
-                                            }/${resource.uri}`}</a>
-                                        </div>
-                                    </div>
+                                            {addSchemePrefix(
+                                                'https://www.w3.org/TR/xmlschema-2/#anyURI',
+                                            )}
+                                        </a>
+                                    </span>
+                                </div>
+                            </div>
+                            <div style={styles.valueContainer}>
+                                <span
+                                    className="property_language"
+                                    style={styles.language(true)}
+                                >
+                                    XX
+                                </span>
+                                <div style={styles.value}>
+                                    <a href={`/${resource.uri}`}>{`${
+                                        process.env.EZMASTER_PUBLIC_URL
+                                    }/${resource.uri}`}</a>
                                 </div>
                             </div>
                         </div>
-                    </Tab>
-                    <Tab
-                        className="tab-resource-export"
-                        buttonStyle={styles.tabButton}
-                        label={polyglot.t('share_export')}
-                    >
-                        <Export uri={resource.uri} />
-                        <Divider />
-                        <Widgets uri={resource.uri} />
-                        <Divider />
-                        <ShareLink
-                            title={polyglot.t('resource_share_link')}
-                            uri={sharingUri}
-                        />
-                        <Divider />
-                        <Share uri={sharingUri} title={sharingTitle} />
-                    </Tab>
-                    <Tab
-                        className="tab-resource-ontology"
-                        buttonStyle={styles.tabButton}
-                        label={polyglot.t('ontology')}
-                    >
-                        <Ontology />
-                    </Tab>
-                </Tabs>
+                    </div>
+                </div>
                 <CardActions style={styles.actions}>
                     <SelectVersion />
                     <AddField style={{ marginLeft: 'auto' }} />
@@ -327,7 +288,6 @@ DetailComponent.propTypes = {
     handleSaveResource: PropTypes.func.isRequired,
     p: polyglotPropTypes.isRequired,
     resource: PropTypes.shape({}),
-    sharingUri: PropTypes.string.isRequired,
     sharingTitle: PropTypes.string,
     backToListLabel: PropTypes.string,
 };
@@ -345,10 +305,6 @@ const mapStateToProps = state => {
         resource,
         isSaving: fromResource.isSaving(state),
         fields: fromFields.getResourceFields(state, resource),
-        sharingUri: getFullResourceUri(
-            resource,
-            process.env.EZMASTER_PUBLIC_URL,
-        ),
         sharingTitle,
     };
 };

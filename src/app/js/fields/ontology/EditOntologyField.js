@@ -8,7 +8,7 @@ import SettingsIcon from 'material-ui/svg-icons/action/settings';
 import getFieldClassName from '../../lib/getFieldClassName';
 import EditOntologyFieldForm, { FORM_NAME } from './EditOntologyFieldForm';
 import { fromUser, fromFields } from '../../sharedSelectors';
-import ButtonWithDialog from '../../lib/components/ButtonWithDialog';
+import ButtonWithDialogForm from '../../lib/components/ButtonWithDialogForm';
 import { configureFieldOpen, configureFieldCancel } from '../';
 
 const mapStateToProps = (state, { field, p }) => ({
@@ -31,5 +31,5 @@ const mapDispatchToProps = (dispatch, { field: { name } }) => ({
 });
 
 export default compose(translate, connect(mapStateToProps, mapDispatchToProps))(
-    ButtonWithDialog,
+    ButtonWithDialogForm,
 );

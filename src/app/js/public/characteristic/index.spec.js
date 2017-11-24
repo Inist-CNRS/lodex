@@ -6,11 +6,6 @@ import reducer, {
     updateCharacteristics,
     updateCharacteristicsError,
     updateCharacteristicsSuccess,
-    addCharacteristic,
-    addCharacteristicCancel,
-    addCharacteristicOpen,
-    addCharacteristicError,
-    addCharacteristicSuccess,
 } from './';
 
 import { loadPublicationSuccess } from '../../fields';
@@ -96,77 +91,6 @@ describe('characteristic reducer', () => {
             characteristics: ['new', 'charac'],
             newCharacteristics: 'new',
             error: null,
-            isSaving: false,
-        });
-    });
-
-    it('should handle addCharacteristic', () => {
-        const action = addCharacteristic();
-        const state = {
-            data: 'value',
-        };
-
-        expect(reducer(state, action)).toEqual({
-            data: 'value',
-            error: null,
-            isSaving: true,
-        });
-    });
-
-    it('should handle addCharacteristicOpen', () => {
-        const action = addCharacteristicOpen();
-        const state = {
-            data: 'value',
-        };
-
-        expect(reducer(state, action)).toEqual({
-            data: 'value',
-            error: null,
-            isAdding: true,
-        });
-    });
-
-    it('should handle addCharacteristicCancel', () => {
-        const action = addCharacteristicCancel();
-        const state = {
-            data: 'value',
-        };
-
-        expect(reducer(state, action)).toEqual({
-            data: 'value',
-            error: null,
-            isAdding: false,
-        });
-    });
-
-    it('should handle addCharacteristicSuccess', () => {
-        const action = addCharacteristicSuccess({
-            characteristics: 'updated characteristics',
-        });
-        const state = {
-            data: 'value',
-            characteristics: ['charac1', 'charac2'],
-        };
-
-        expect(reducer(state, action)).toEqual({
-            data: 'value',
-            error: null,
-            isAdding: false,
-            isSaving: false,
-            newCharacteristics: 'updated characteristics',
-            characteristics: ['updated characteristics', 'charac1', 'charac2'],
-        });
-    });
-
-    it('should handle addCharacteristicError', () => {
-        const action = addCharacteristicError('error');
-        const state = {
-            data: 'value',
-        };
-
-        expect(reducer(state, action)).toEqual({
-            data: 'value',
-            error: 'error',
             isSaving: false,
         });
     });

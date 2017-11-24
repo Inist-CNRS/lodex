@@ -71,7 +71,7 @@ const AppbarComponent = ({
                 hasPublishedDataset && (
                     <FlatButton
                         label={polyglot.t('moderation')}
-                        containerElement={<Link to="/admin/contributions" />}
+                        containerElement={<Link to="/contributions" />}
                         style={styles.button}
                     />
                 )}
@@ -79,7 +79,15 @@ const AppbarComponent = ({
                 hasPublishedDataset && (
                     <FlatButton
                         label={polyglot.t('removed_resources')}
-                        containerElement={<Link to="/admin/removed" />}
+                        containerElement={<Link to="/removed" />}
+                        style={styles.button}
+                    />
+                )}
+            {isLoggedIn &&
+                hasPublishedDataset && (
+                    <FlatButton
+                        label={polyglot.t('ontology')}
+                        containerElement={<Link to="/ontology" />}
                         style={styles.button}
                     />
                 )}
@@ -99,7 +107,7 @@ const AppbarComponent = ({
             className="appbar"
             title={
                 <div style={styles.title}>
-                    <Link to="/admin" style={styles.linkToHome}>
+                    <Link to="/" style={styles.linkToHome}>
                         Lodex
                     </Link>
                     <small>

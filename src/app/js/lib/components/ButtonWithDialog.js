@@ -1,71 +1,35 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
-import compose from 'recompose/compose';
-import withHandlers from 'recompose/withHandlers';
-import { submit as submitAction } from 'redux-form';
 import FlatButton from 'material-ui/FlatButton';
 import Dialog from 'material-ui/Dialog';
-import IconButton from 'material-ui/IconButton';
-import classnames from 'classnames';
-import CircularProgress from 'material-ui/CircularProgress';
 
-import ButtonWithStatus from './ButtonWithStatus';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 
-export const ButtonWithDialogComponent = ({
-    buttonStyle,
+export const PureButtonWithDialog = ({
     handleClose,
     handleOpen,
-    handleSubmit,
-    saving,
     open,
     show,
     style,
-    icon,
-    form,
+    dialog,
     className,
     label,
     p: polyglot,
+    actions = [
+        <FlatButton
+            key="cancel"
+            label={polyglot.t('close')}
+            onClick={handleClose}
+        />,
+    ],
+    openButton = (
+        <FlatButton className={className} label={label} onClick={handleOpen} />
+    ),
 }) => {
     if (!show) {
         return null;
     }
-    const actions = [
-        <ButtonWithStatus
-            key="save"
-            className={classnames(className, 'save')}
-            label={polyglot.t('save')}
-            primary
-            loading={saving}
-            onTouchTap={handleSubmit}
-        />,
-        <FlatButton
-            key="cancel"
-            label={polyglot.t('cancel')}
-            onClick={handleClose}
-        />,
-    ];
-
-    const openButton = icon ? (
-        <IconButton
-            className={classnames('open', className)}
-            tooltip={label}
-            onClick={handleOpen}
-            style={buttonStyle}
-        >
-            {saving ? <CircularProgress /> : icon}
-        </IconButton>
-    ) : (
-        <FlatButton
-            className={className}
-            label={label}
-            primary
-            onClick={handleOpen}
-            style={buttonStyle}
-        />
-    );
 
     return (
         <span style={style}>
@@ -78,42 +42,29 @@ export const ButtonWithDialogComponent = ({
                 onRequestClose={handleClose}
                 autoScrollBodyContent
             >
-                {form}
+                {dialog}
             </Dialog>
         </span>
     );
 };
 
-ButtonWithDialogComponent.defaultProps = {
-    icon: null,
+PureButtonWithDialog.defaultProps = {
     show: true,
     open: false,
 };
 
-ButtonWithDialogComponent.propTypes = {
+PureButtonWithDialog.propTypes = {
     handleClose: PropTypes.func.isRequired,
     handleOpen: PropTypes.func.isRequired,
-    handleSubmit: PropTypes.func.isRequired,
     p: polyglotPropTypes.isRequired,
-    saving: PropTypes.bool.isRequired,
     open: PropTypes.bool,
     show: PropTypes.bool,
-    buttonStyle: PropTypes.object, // eslint-disable-line
-    style: PropTypes.object, // eslint-disable-line
-    form: PropTypes.node.isRequired,
-    icon: PropTypes.node,
+    style: PropTypes.object,
+    dialog: PropTypes.node.isRequired,
     label: PropTypes.string.isRequired,
     className: PropTypes.string.isRequired,
+    actions: PropTypes.arrayOf(PropTypes.node),
+    openButton: PropTypes.node,
 };
 
-const mapDispatchToProps = { submit: submitAction };
-
-export default compose(
-    connect(null, mapDispatchToProps),
-    withHandlers({
-        handleSubmit: ({ submit, formName }) => () => {
-            submit(formName);
-        },
-    }),
-    translate,
-)(ButtonWithDialogComponent);
+export default translate(PureButtonWithDialog);

@@ -15,7 +15,7 @@ import {
 import ExportItem from './ExportItem';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 
-export class ExportComponent extends Component {
+export class PureExportSection extends Component {
     constructor(props) {
         super(props);
         this.state = { exportedFields: [] };
@@ -55,7 +55,7 @@ export class ExportComponent extends Component {
     }
 }
 
-ExportComponent.propTypes = {
+PureExportSection.propTypes = {
     exporters: PropTypes.arrayOf(PropTypes.object),
     handleExportClick: PropTypes.func.isRequired,
     preLoadExporters: PropTypes.func.isRequired,
@@ -63,7 +63,7 @@ ExportComponent.propTypes = {
     uri: PropTypes.string,
 };
 
-ExportComponent.defaultProps = {
+PureExportSection.defaultProps = {
     exporters: [],
     uri: null,
 };
@@ -82,5 +82,5 @@ const mapDispatchToProps = dispatch =>
     );
 
 export default compose(connect(mapStateToProps, mapDispatchToProps), translate)(
-    ExportComponent,
+    PureExportSection,
 );

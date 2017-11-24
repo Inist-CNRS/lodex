@@ -9,10 +9,10 @@ import { reduxForm, Field, propTypes as reduxFormPropTypes } from 'redux-form';
 import {
     addCharacteristic as addCharacteristicAction,
     NEW_CHARACTERISTIC_FORM_NAME,
-} from './';
+} from '../';
 import Alert from '../../lib/components/Alert';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
-import { fromCharacteristic } from '../selectors';
+import { fromFields } from '../../sharedSelectors';
 import FormTextField from '../../lib/components/FormTextField';
 import FieldSchemeInput from '../../fields/FieldSchemeInput';
 import FieldFormatInput from '../../fields/FieldFormatInput';
@@ -71,8 +71,8 @@ AddFieldFormComponent.propTypes = {
 };
 
 const mapStateToProps = state => ({
-    addCharacteristicError: fromCharacteristic.getError(state),
-    saving: fromCharacteristic.isSaving(state),
+    addCharacteristicError: fromFields.getError(state),
+    saving: fromFields.isSaving(state),
 });
 
 const mapDispatchToProps = {

@@ -16,21 +16,19 @@ import {
 import { field as fieldPropTypes } from '../../propTypes';
 import { fromUser, fromFields } from '../../sharedSelectors';
 import OntologyField from './OntologyField';
-import ExportFieldsButton from '../../public/export/ExportFieldsButton';
-import { changePosition } from '../';
+import { changePosition, preLoadPublication } from '../';
+import AddCharacteristic from '../addCharacteristic/AddCharacteristic';
 
 const styles = {
     container: {
         display: 'flex',
         flexDirection: 'column',
-        marginTop: '3rem',
         paddingLeft: '1rem',
         paddingRight: '1rem',
     },
     exportContainer: {
         display: 'flex',
         justifyContent: 'flex-end',
-        marginTop: '3rem',
         marginBottom: '1rem',
     },
     handle: {
@@ -46,7 +44,6 @@ const styles = {
         fontStyle: 'italic',
         color: grey800,
         fontSize: 'large',
-        // backgroundColor: 'black',
     },
     handleIcon: {
         color: grey900,
@@ -77,9 +74,7 @@ const SortableList = SortableContainer(({ items }) => (
             <SortableItem
                 collection={value.props.field.cover}
                 disabled={index === 0}
-                key={
-                    // eslint-disable-next-line
-                `item-${index}`}
+                key={`item-${index}`}
                 sortIndex={index}
                 index={index}
                 value={value}
@@ -89,6 +84,10 @@ const SortableList = SortableContainer(({ items }) => (
 ));
 
 export class OntologyComponent extends Component {
+    componentWillMount() {
+        this.props.preLoadPublication();
+    }
+
     onSortEnd = ({ oldIndex, newIndex }, _, fields, handleChangePosition) => {
         handleChangePosition({ newPosition: newIndex, oldPosition: oldIndex });
     };
@@ -99,9 +98,6 @@ export class OntologyComponent extends Component {
             <div className="ontology" style={styles.container}>
                 {isLoggedIn && (
                     <div>
-                        <div style={styles.exportContainer}>
-                            <ExportFieldsButton iconStyle={styles.icon} />
-                        </div>
                         <SortableList
                             lockAxis="y"
                             useDragHandle
@@ -131,6 +127,7 @@ export class OntologyComponent extends Component {
                             index={index}
                         />
                     ))}
+                <AddCharacteristic />
             </div>
         );
     }
@@ -140,6 +137,7 @@ OntologyComponent.propTypes = {
     fields: PropTypes.arrayOf(fieldPropTypes).isRequired,
     isLoggedIn: PropTypes.bool.isRequired,
     handleChangePosition: PropTypes.func.isRequired,
+    preLoadPublication: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
@@ -149,6 +147,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
     changePositionAction: changePosition,
+    preLoadPublication,
 };
 
 export default compose(

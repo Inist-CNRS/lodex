@@ -4,6 +4,7 @@ import ContributedResourcePage from './contributedResources/ContributedResourceP
 import RemovedResourcePage from './removedResources/RemovedResourcePage';
 import { fromUser } from '../sharedSelectors';
 import userRoutes from '../user/routes';
+import Ontology from '../fields/ontology/Ontology';
 
 export const onEnterWithAuthenticationCheck = store => (
     nextState,
@@ -38,6 +39,11 @@ export default store => ({
         {
             path: '/removed',
             component: RemovedResourcePage,
+            onEnter: onEnterWithAuthenticationCheck(store),
+        },
+        {
+            path: '/ontology',
+            component: Ontology,
             onEnter: onEnterWithAuthenticationCheck(store),
         },
         ...userRoutes,

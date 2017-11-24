@@ -9,7 +9,7 @@ import EditFieldForm, { FORM_NAME } from './EditFieldForm';
 import { fromResource } from '../../public/selectors';
 import { fromUser, fromFields } from '../../sharedSelectors';
 import getFieldClassName from '../../lib/getFieldClassName';
-import ButtonWithDialog from '../../lib/components/ButtonWithDialog';
+import ButtonWithDialogForm from '../../lib/components/ButtonWithDialogForm';
 import { openEditFieldValue, closeEditFieldValue } from '../';
 
 const mapStateToProps = (
@@ -41,5 +41,5 @@ const mapDispatchToProps = (dispatch, { field: { name } }) => ({
 });
 
 export default compose(translate, connect(mapStateToProps, mapDispatchToProps))(
-    ButtonWithDialog,
+    ButtonWithDialogForm,
 );

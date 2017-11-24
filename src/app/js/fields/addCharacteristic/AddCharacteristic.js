@@ -3,20 +3,19 @@ import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
 
-import { fromCharacteristic } from '../selectors';
+import { fromFields, fromUser } from '../../sharedSelectors';
 import AddCharacteristicForm from './AddCharacteristicForm';
 import {
     NEW_CHARACTERISTIC_FORM_NAME,
     addCharacteristicOpen,
     addCharacteristicCancel,
-} from './';
-import ButtonWithDialog from '../../lib/components/ButtonWithDialog';
-import { fromUser } from '../../sharedSelectors';
+} from '../';
+import ButtonWithDialogForm from '../../lib/components/ButtonWithDialogForm';
 
 const mapStateToProps = (state, { p }) => ({
     show: fromUser.isLoggedIn(state),
-    open: fromCharacteristic.isAdding(state),
-    saving: fromCharacteristic.isSaving(state),
+    open: fromFields.isAdding(state),
+    saving: fromFields.isSaving(state),
     form: <AddCharacteristicForm />,
     formName: NEW_CHARACTERISTIC_FORM_NAME,
     label: p.t('add_characteristic'),
@@ -29,5 +28,5 @@ const mapDispatchToProps = {
 };
 
 export default compose(translate, connect(mapStateToProps, mapDispatchToProps))(
-    ButtonWithDialog,
+    ButtonWithDialogForm,
 );
