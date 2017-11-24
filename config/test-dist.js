@@ -16,5 +16,5 @@ module.exports = {
         delimiter: ';',
     },
     buildFrontend: false,
-    host: `http://api:${PORT}`,
+    host: 'http://localhost:3010',
 };
