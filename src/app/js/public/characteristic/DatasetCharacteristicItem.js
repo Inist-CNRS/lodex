@@ -13,12 +13,14 @@ const DatasetCharacteristicItemComponent = ({
     field,
     handleSaveProperty,
     isSaving,
+    style,
 }) => (
     <Property
         resource={resource}
         field={field}
         isSaving={isSaving}
         onSaveProperty={handleSaveProperty}
+        style={style}
     />
 );
 
@@ -27,6 +29,7 @@ DatasetCharacteristicItemComponent.propTypes = {
     isSaving: PropTypes.bool.isRequired,
     handleSaveProperty: PropTypes.func.isRequired,
     resource: PropTypes.shape({}).isRequired,
+    style: PropTypes.shape({}).isRequired,
 };
 
 const mapStateToProps = (state, { characteristic: { name } }) => ({

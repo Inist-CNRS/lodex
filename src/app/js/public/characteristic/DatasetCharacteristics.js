@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
-import memoize from 'lodash.memoize';
 
 import { field as fieldProptypes } from '../../propTypes';
 
@@ -14,28 +13,25 @@ import DatasetCharacteristicItem from './DatasetCharacteristicItem';
 const styles = {
     container: {
         display: 'flex',
-        flexDirection: 'column',
+        flexFlow: 'row wrap',
+        paddingTop: '2rem',
+        paddingBottom: '1rem',
     },
-    item: memoize((index, total) => ({
+    item: {
         display: 'flex',
         flexDirection: 'column',
-        paddingTop: index > 0 ? '2rem' : 0,
-        paddingBottom: index < total - 1 ? '1rem' : 0,
-    })),
+    },
 };
 
 const DatasetCharacteristicsView = ({ characteristics }) => (
     <div className="dataset-characteristics">
         <div style={styles.container}>
-            {characteristics.map((characteristicField, index) => (
-                <div
+            {characteristics.map(characteristicField => (
+                <DatasetCharacteristicItem
                     key={characteristicField.name}
-                    style={styles.item(index, characteristics.length)}
-                >
-                    <DatasetCharacteristicItem
-                        characteristic={characteristicField}
-                    />
-                </div>
+                    characteristic={characteristicField}
+                    style={styles.item}
+                />
             ))}
         </div>
     </div>

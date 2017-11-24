@@ -35,7 +35,7 @@ const styles = {
                 },
                 style,
             ),
-        (_, value) => value,
+        (style, value) => ({ style, value }),
     ),
     label: (status, isSub) => ({
         color: grey500,
