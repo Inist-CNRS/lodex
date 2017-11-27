@@ -24,10 +24,7 @@ const PureGraphList = ({ graphList, loading, p: polyglot }) => {
             {graphList.map(field => (
                 <GraphItem key={field.name} field={field} />
             ))}
-            <GraphItemContainer
-                link="/graph/dataset"
-                label={polyglot.t('dataset')}
-            >
+            <GraphItemContainer link="/graph" label={polyglot.t('dataset')}>
                 <DatasetPreview />
             </GraphItemContainer>
         </div>

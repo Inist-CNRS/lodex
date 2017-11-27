@@ -12,16 +12,24 @@ const styles = {
         display: 'flex',
         flexDirection: 'column',
     },
+    link: {
+        textDecoration: 'none',
+        color: 'unset',
+    },
 };
 
 const PureGraphSummary = ({ graphFields }) => (
     <List style={styles.container}>
         <ListItem>
-            <Link to="/graph/dataset">dataset</Link>
+            <Link style={styles.link} to="/graph">
+                dataset
+            </Link>
         </ListItem>
         {graphFields.map(field => (
             <ListItem key={field.name}>
-                <Link to={`/graph/${field.name}`}>{field.label}</Link>
+                <Link style={styles.link} to={`/graph/${field.name}`}>
+                    {field.label}
+                </Link>
             </ListItem>
         ))}
     </List>

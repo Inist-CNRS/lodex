@@ -1,6 +1,8 @@
 import React from 'react';
 
 import GraphSummary from './GraphSummary';
+import Dataset from '../dataset/Dataset';
+import Toolbar from '../Toolbar';
 
 const styles = {
     container: {
@@ -8,12 +10,14 @@ const styles = {
         flexDirection: 'row',
     },
     sideColumn: {
-        width: '25%',
+        padding: 5,
+        width: '20%',
         flexGrow: 1,
     },
     centerColumn: {
-        width: '50%',
-        flexGrow: 2,
+        padding: 5,
+        width: '60%',
+        flexGrow: 3,
     },
 };
 
@@ -22,8 +26,12 @@ const PureGraph = () => (
         <div style={styles.sideColumn}>
             <GraphSummary />
         </div>
-        <div style={styles.centerColumn}>graph placeholder</div>
-        <div style={styles.sideColumn}>facet placeholder</div>
+        <div style={styles.centerColumn}>
+            <Dataset />
+        </div>
+        <div style={styles.sideColumn}>
+            <Toolbar />
+        </div>
     </div>
 );
 

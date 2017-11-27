@@ -7,7 +7,6 @@ import RaisedButton from 'material-ui/RaisedButton';
 import Popover, { PopoverAnimationVertical } from 'material-ui/Popover';
 import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
-import { ToolbarGroup } from 'material-ui/Toolbar';
 
 import {
     field as fieldPropTypes,
@@ -59,7 +58,7 @@ export class FacetSelectorComponent extends Component {
         if (!hasFacetFields) return null;
 
         return (
-            <ToolbarGroup>
+            <div>
                 <RaisedButton
                     className="facet-selector"
                     label={
@@ -88,8 +87,12 @@ export class FacetSelectorComponent extends Component {
                         ))}
                     </Menu>
                 </Popover>
-                {selectedFacet && <FacetValueSelector />}
-            </ToolbarGroup>
+                {selectedFacet && (
+                    <div>
+                        <FacetValueSelector />
+                    </div>
+                )}
+            </div>
         );
     }
 }
