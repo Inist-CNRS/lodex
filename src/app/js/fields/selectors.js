@@ -103,6 +103,10 @@ const getListFields = createSelector(getCollectionFields, fields =>
         .filter(f => !f.composedOf),
 );
 
+const getGraphFields = createSelector(getDatasetFields, fields =>
+    fields.filter(f => f.display_in_graph).filter(f => !f.composedOf),
+);
+
 const getAllListFields = createSelector(getCollectionFields, fields =>
     fields.filter(f => !f.composedOf),
 );
@@ -328,6 +332,7 @@ export default {
     getCompositeFieldsByField,
     getCompositeFieldsNamesByField,
     getListFields,
+    getGraphFields,
     getAllListFields,
     getCollectionFieldsExceptComposite,
     getRootCollectionFields,
