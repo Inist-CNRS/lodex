@@ -3,13 +3,5 @@ import ezsBasics from 'ezs-basics';
 
 ezs.use(ezsBasics);
 
-export default config => stream =>
-    stream
-        .pipe(
-            ezs('CSVParse', {
-                separator: ';',
-                quote: '"',
-                ...config,
-            }),
-        )
-        .pipe(ezs('CSVObject'));
+export default () => stream =>
+    stream.pipe(ezs('CSVParse')).pipe(ezs('CSVObject'));
