@@ -2,17 +2,9 @@
     "username": "user",
     "password": "secret",
     "loader": {
-        "csv": {
-            "quote": "\"",
-            "delimiter": ";"
-        },
         "CSV": {
             "quote": "\"",
             "delimiter": ";"
-        },
-        "tsv": {
-            "quote": "\"",
-            "delimiter": "\t"
         }
     },
     "perPage": 10,
