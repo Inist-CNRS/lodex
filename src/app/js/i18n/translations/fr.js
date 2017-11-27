@@ -314,6 +314,10 @@ export default {
     sentence: 'Phrase',
     prefix: 'prefix',
     suffix: 'suffix',
+    automatic: 'Automatique',
+    parser_name: 'Nom du parser',
+    select_file: 'Choix de fichier à charger',
+    select_parser: 'Choix du parser à appliquer',
     bad_format:
         'Format inapproprié pour %{label}, simple valeur attendue mais tableau reçut, utilisez le format liste',
 };

@@ -46,20 +46,20 @@ describe('parsing saga', () => {
             saga.next();
             saga.next();
             saga.next({});
+            saga.next('parserName');
             const { value } = saga.next('token');
 
-            expect(value).toEqual(
-                race({
-                    file: call(loadDatasetFile, 'payload', 'token'),
-                    cancel: take([LOCATION_CHANGE]),
-                }),
-            );
+            expect(value).toEqual(race({
+                file: call(loadDatasetFile, 'payload', 'token', 'parserName'),
+                cancel: take([LOCATION_CHANGE]),
+            }));
         });
 
         it('should end if receiving cancel', () => {
             saga.next();
             saga.next();
             saga.next({});
+            saga.next('parserName');
             saga.next('token');
             const { done } = saga.next({ cancel: true });
             expect(done).toBe(true);
@@ -69,6 +69,7 @@ describe('parsing saga', () => {
             saga.next();
             saga.next();
             saga.next({});
+            saga.next('parserName');
             saga.next('token');
             const error = new Error('Boom');
             const { value } = saga.throw(error);
@@ -79,6 +80,7 @@ describe('parsing saga', () => {
             saga.next();
             saga.next();
             saga.next({});
+            saga.next('parserName');
             saga.next('token');
             const { value } = saga.next({ file: 'file' });
             expect(value).toEqual(put(uploadSuccess('file')));

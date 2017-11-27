@@ -15,8 +15,8 @@ export const loadFile = (url, file, token) =>
         resumable.addFile(file);
     });
 
-export const loadDatasetFile = (file, token) => {
-    const extension = file.name.split('.').pop();
+export const loadDatasetFile = (file, token, parserName) => {
+    const extension = parserName || file.name.split('.').pop();
     const url = `/api/upload/${extension}`;
 
     return loadFile(url, file, token);
