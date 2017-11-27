@@ -19,20 +19,23 @@ import { changeFieldStatus } from '../resource';
 import PropertyContributor from './PropertyContributor';
 import PropertyLinkedFields from './PropertyLinkedFields';
 import { fromUser } from '../../sharedSelectors';
-import EditField from '../../fields/editFieldValue/EditField';
+import EditButton from '../../fields/editFieldValue/EditButton';
 import getFieldClassName from '../../lib/getFieldClassName';
 import addSchemePrefix from '../../lib/addSchemePrefix';
 import Format from '../Format';
 
 const styles = {
-    container: memoize(style =>
-        Object.assign(
-            {
-                display: 'flex',
-                flexDirection: 'column',
-            },
-            style,
-        ),
+    container: memoize(
+        (style, width) =>
+            Object.assign(
+                {
+                    display: 'flex',
+                    flexDirection: 'column',
+                    width: `${width || 100}%`,
+                },
+                style,
+            ),
+        (style, value) => ({ style, value }),
     ),
     label: (status, isSub) => ({
         color: grey500,
@@ -42,7 +45,7 @@ const styles = {
         textDecoration: status === REJECTED ? 'line-through' : 'none',
     }),
     language: memoize(hide => ({
-        //        marginRight: '1rem',
+        marginRight: '1rem',
         fontSize: '0.6em',
         color: 'grey',
         textTransform: 'uppercase',
@@ -57,8 +60,7 @@ const styles = {
         color: 'grey',
     },
     editButton: memoize(hide => ({
-        marginRight: '-2rem',
-        display: hide ? 'none' : 'block',
+        display: hide ? 'none' : 'inline-block',
     })),
     labelContainer: {
         display: 'flex',
@@ -98,7 +100,7 @@ const PropertyComponent = ({
     return (
         <div
             className={classnames('property', fieldClassName, className)}
-            style={styles.container(style, fieldStatus)}
+            style={styles.container(style, field.width)}
         >
             <div>
                 <div style={styles.labelContainer}>
@@ -107,8 +109,15 @@ const PropertyComponent = ({
                         style={styles.label(fieldStatus, isSub)}
                     >
                         {field.label}
+                        <span style={styles.editButton(!loggedIn)}>
+                            <EditButton
+                                field={field}
+                                isSaving={isSaving}
+                                resource={resource}
+                                onSaveProperty={onSaveProperty}
+                            />
+                        </span>
                     </span>
-
                     <span
                         className={classnames(
                             'property_scheme',
@@ -141,14 +150,6 @@ const PropertyComponent = ({
                 >
                     {field.language || 'XX'}
                 </span>
-                <div style={styles.editButton(!loggedIn)}>
-                    <EditField
-                        field={field}
-                        isSaving={isSaving}
-                        resource={resource}
-                        onSaveProperty={onSaveProperty}
-                    />
-                </div>
             </div>
             <CompositeProperty
                 field={field}
@@ -185,7 +186,7 @@ PropertyComponent.propTypes = {
     onSaveProperty: PropTypes.func.isRequired,
     resource: PropTypes.shape({}).isRequired,
     parents: PropTypes.arrayOf(PropTypes.string).isRequired,
-    style: PropTypes.object, // eslint-disable-line
+    style: PropTypes.object,
 };
 
 PropertyComponent.defaultProps = {

@@ -320,4 +320,5 @@ export default {
     select_parser: 'Choix du parser à appliquer',
     bad_format:
         'Format inapproprié pour %{label}, simple valeur attendue mais tableau reçut, utilisez le format liste',
+    field_width: 'largeur',
 };

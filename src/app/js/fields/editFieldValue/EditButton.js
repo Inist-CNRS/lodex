@@ -12,10 +12,7 @@ import getFieldClassName from '../../lib/getFieldClassName';
 import ButtonWithDialogForm from '../../lib/components/ButtonWithDialogForm';
 import { openEditFieldValue, closeEditFieldValue } from '../';
 
-const mapStateToProps = (
-    state,
-    { field, resource, onSaveProperty, style, p },
-) => ({
+const mapStateToProps = (state, { field, resource, onSaveProperty, p }) => ({
     open: fromFields.isFieldEdited(state, field.name),
     show:
         fromUser.isLoggedIn(state) && fromResource.isLastVersionSelected(state),
@@ -31,7 +28,6 @@ const mapStateToProps = (
     className: classnames('edit-field', getFieldClassName(field)),
     label: p.t('edit_field', { field: field.label }),
     icon: <EditIcon viewBox="-10 0 32 32" />,
-    style,
     buttonStyle: { padding: 0, height: 'auto', width: 'auto' },
 });
 

@@ -35,13 +35,10 @@ const styles = {
         display: 'flex',
         flexDirection: 'column',
     },
-    item: {
+    property: {
         display: 'flex',
         flexDirection: 'column',
-        paddingTop: '2rem',
-        paddingBottom: '1rem',
-        paddingLeft: '0.5rem',
-        paddingRight: '0.5rem',
+        padding: '2rem 1rem 1rem',
     },
     firstItem: {
         display: 'flex',
@@ -51,9 +48,6 @@ const styles = {
         paddingBottom: '1rem',
         paddingLeft: '0.5rem',
         paddingRight: '0.5rem',
-    },
-    property: {
-        flexGrow: 2,
     },
     tab: {
         backgroundColor: 'transparent',
@@ -67,6 +61,8 @@ const styles = {
         backgroundColor: 'black',
     },
     propertiesContainer: {
+        display: 'flex',
+        flexFlow: 'row wrap',
         paddingTop: '1rem',
         paddingLeft: '1rem',
         paddingRight: '1rem',
@@ -192,34 +188,33 @@ export const DetailComponent = ({
                             </div>
                         </div>
                     </div>
-
-                    {topFields.map(field => (
-                        <div key={field.name} style={styles.item}>
+                    <div style={styles.propertiesContainer}>
+                        {topFields.map(field => (
                             <Property
+                                key={field.name}
                                 field={field}
                                 isSaving={isSaving}
                                 onSaveProperty={handleSaveResource}
                                 resource={resource}
                                 style={styles.property}
                             />
-                        </div>
-                    ))}
+                        ))}
+                    </div>
                 </div>
             </div>
             <div className="main-resource-section" style={styles.container}>
                 <div style={styles.propertiesContainer}>
                     {otherFields.map(field => (
-                        <div key={field.name} style={styles.item}>
-                            <Property
-                                field={field}
-                                isSaving={isSaving}
-                                onSaveProperty={handleSaveResource}
-                                resource={resource}
-                                style={styles.property}
-                            />
-                        </div>
+                        <Property
+                            key={field.name}
+                            field={field}
+                            isSaving={isSaving}
+                            onSaveProperty={handleSaveResource}
+                            resource={resource}
+                            style={styles.property}
+                        />
                     ))}
-                    <div style={styles.item}>
+                    <div style={styles.property}>
                         <div
                             className="property resourceURI"
                             style={styles.container}

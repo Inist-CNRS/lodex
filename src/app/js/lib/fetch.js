@@ -1,7 +1,10 @@
 import fetch from 'isomorphic-fetch';
 
-export default ({ url, ...config }, mode = 'json') =>
-    fetch(process.env.EZMASTER_PUBLIC_URL + url, config).then(
+export default ({ url, ...config }, mode = 'json') => {
+    const fullUrl = url.startsWith('http')
+        ? url
+        : process.env.EZMASTER_PUBLIC_URL + url;
+    return fetch(fullUrl, config).then(
         response => {
             if (response.status === 204) {
                 return { response: null };
@@ -31,3 +34,4 @@ export default ({ url, ...config }, mode = 'json') =>
         },
         error => ({ error }),
     );
+};

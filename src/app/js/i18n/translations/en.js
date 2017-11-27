@@ -316,5 +316,5 @@ export default {
     select_parser: 'Select which parser you want to apply',
     bad_format:
         'Inappropriate format for %{label}, expected simple value but got array, please use list format',
-
+    field_width: 'width',
 };

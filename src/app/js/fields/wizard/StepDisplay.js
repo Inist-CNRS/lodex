@@ -16,6 +16,7 @@ import {
 } from '../../propTypes';
 import { FIELD_FORM_NAME } from '../';
 import { fromFields } from '../../sharedSelectors';
+import FieldWidthInput from '../FieldWidthInput';
 
 export class StepDisplayComponent extends Component {
     componentWillReceiveProps(nextProps) {
@@ -39,6 +40,7 @@ export class StepDisplayComponent extends Component {
                 <FieldDisplayInResourceInput />
                 <FieldOverviewInput />
                 <FieldFormatInput />
+                <FieldWidthInput />
             </Step>
         );
     }
