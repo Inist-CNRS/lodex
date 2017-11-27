@@ -7,7 +7,7 @@ import translate from 'redux-polyglot/translate';
 import Loading from '../../lib/components/Loading';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { fromFields } from '../../sharedSelectors';
-import Graph from './Graph';
+import GraphItem from './GraphItem';
 import GraphItemContainer from './GraphItemContainer';
 import DatasetPreview from '../dataset/DatasetPreview';
 
@@ -21,7 +21,9 @@ const PureGraphList = ({ graphList, loading, p: polyglot }) => {
     if (loading) return <Loading>{polyglot.t('loading')}</Loading>;
     return (
         <div className="graph-list" style={styles.wrapper}>
-            {graphList.map(field => <Graph key={field.name} field={field} />)}
+            {graphList.map(field => (
+                <GraphItem key={field.name} field={field} />
+            ))}
             <GraphItemContainer
                 link="/graph/dataset"
                 label={polyglot.t('dataset')}

@@ -7,13 +7,13 @@ import Format from '../Format';
 import { fromCharacteristic } from '../selectors';
 import GraphItemContainer from './GraphItemContainer';
 
-const PureGraph = ({ field, resource }) => (
+const PureGraphItem = ({ field, resource }) => (
     <GraphItemContainer link={`/graph/${field.name}`} label={field.label}>
         <Format field={field} resource={resource} />
     </GraphItemContainer>
 );
 
-PureGraph.propTypes = {
+PureGraphItem.propTypes = {
     field: fieldPropTypes.isRequired,
     resource: PropTypes.object.isRequired,
 };
@@ -22,4 +22,4 @@ const mapStateToProps = state => ({
     resource: fromCharacteristic.getCharacteristicsAsResource(state),
 });
 
-export default connect(mapStateToProps)(PureGraph);
+export default connect(mapStateToProps)(PureGraphItem);
