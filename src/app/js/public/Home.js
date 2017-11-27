@@ -14,7 +14,6 @@ import getTitle from '../lib/getTitle';
 import Alert from '../lib/components/Alert';
 import Card from '../lib/components/Card';
 import Loading from '../lib/components/Loading';
-import Dataset from './dataset/Dataset';
 import DatasetCharacteristics from './characteristic/DatasetCharacteristics';
 import NoDataset from './NoDataset';
 import Version from './Version';
@@ -77,7 +76,6 @@ export class HomeComponent extends Component {
                     </div>
                     <div className="main-dataset-section">
                         <GraphList />
-                        <Dataset />
                         <Version />
                     </div>
                 </div>

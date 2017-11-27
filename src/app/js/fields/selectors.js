@@ -62,6 +62,9 @@ const getDocumentFields = createSelector(getFields, fields =>
 const getDatasetFields = createSelector(getFields, fields =>
     fields.filter(f => f.cover === COVER_DATASET),
 );
+const getCharacteristicFields = createSelector(getDatasetFields, fields =>
+    fields.filter(f => !f.display_in_graph),
+);
 
 const getComposedFields = createSelector(getFields, fields =>
     fields.filter(({ composedOf }) => !!composedOf),
@@ -344,6 +347,7 @@ export default {
     getDocumentFields,
     getLinkedFields,
     getDatasetFields,
+    getCharacteristicFields,
     getTitleFieldName,
     getDatasetTitleFieldName,
     getPublishData,
