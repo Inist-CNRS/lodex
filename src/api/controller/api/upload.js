@@ -63,6 +63,7 @@ export const parseRequest = async (ctx, parserName, next) => {
         resumableTotalChunks,
         resumableTotalSize,
         resumableCurrentChunkSize,
+        resumableFilename,
     } = fields;
 
     const chunkNumber = parseInt(resumableChunkNumber, 10);
@@ -71,10 +72,10 @@ export const parseRequest = async (ctx, parserName, next) => {
         totalSize: parseInt(resumableTotalSize, 10),
         currentChunkSize: parseInt(resumableCurrentChunkSize, 10),
         filename: `${config.uploadDir}/${resumableIdentifier}`,
+        extension: resumableFilename.match(/[^.]*$/).pop(),
         chunkname: `${config.uploadDir}/${resumableIdentifier}.${chunkNumber}`,
         stream,
     };
-
     await next();
 };
 
@@ -105,14 +106,15 @@ export async function uploadChunkMiddleware(ctx, parserName, next) {
     }
 }
 
-
 export async function uploadFileMiddleware(ctx, parserName) {
-    const { filename, totalChunks } = ctx.resumable;
+    const { filename, totalChunks, extension } = ctx.resumable;
     await ctx.mergeChunks(filename, totalChunks);
     await ctx.clearChunks(filename, totalChunks);
     const fileStream = ctx.createReadStream(filename);
 
-    const parseStream = ctx.getParser(parserName);
+    const parseStream = ctx.getParser(
+        !parserName || parserName === 'automatic' ? extension : parserName,
+    );
     const parsedStream = await parseStream(fileStream);
 
     await ctx.saveStream(parsedStream);
@@ -142,7 +144,9 @@ export const uploadUrl = async ctx => {
     const { url, parserName } = ctx.request.body;
     const [extension] = url.match(/[^.]*$/);
 
-    const parseStream = ctx.getParser(parserName || extension);
+    const parseStream = ctx.getParser(
+        !parserName || parserName === 'automatic' ? extension : parserName,
+    );
 
     await ctx.dataset.remove({});
 
