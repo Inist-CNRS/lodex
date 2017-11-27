@@ -39,7 +39,7 @@ export class StepDisplayComponent extends Component {
             <Step label="field_wizard_step_display" {...props}>
                 <FieldDisplayInListInput />
                 <FieldDisplayInResourceInput />
-                <FieldDisplayInGraphInput />
+                {field.cover === 'dataset' && <FieldDisplayInGraphInput />}
                 <FieldOverviewInput />
                 <FieldFormatInput />
                 <FieldWidthInput />

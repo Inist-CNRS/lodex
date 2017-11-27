@@ -150,6 +150,7 @@ export default {
     REJECTED: 'rejeté',
     field_display_in_list: 'Display on list page',
     field_display_in_resource: 'Display on resource page',
+    field_display_in_graph: 'Display in graph page',
     field_searchable: 'Searchable',
     filter: 'Tapez votre recherche ici',
     no_result: 'Aucune correspondance trouvée',
