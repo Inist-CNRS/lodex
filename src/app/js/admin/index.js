@@ -12,6 +12,7 @@ import routesFactory from './routes';
 import sagas from './sagas';
 import configureStore from '../configureStore';
 import phrasesForEn from '../i18n/translations/en';
+import { createHashHistory } from 'history';
 
 const initialState = {
     polyglot: {
@@ -20,13 +21,14 @@ const initialState = {
     },
 };
 
-const store = configureStore(rootReducer, sagas, initialState);
+const history = createHashHistory();
+const store = configureStore(rootReducer, sagas, initialState, history);
 const routes = routesFactory(store);
 
 injectTapEventPlugin();
 
 render(
-    <Root {...{ store, routes, admin: true }} />,
+    <Root {...{ store, routes, history }} />,
     document.getElementById('root'),
 );
 
@@ -35,7 +37,7 @@ if (module.hot) {
     module.hot.accept('../Root', () => {
         const NewRoot = require('../Root').default; // eslint-disable-line
         render(
-            <NewRoot {...{ store, routes, admin: true }} />,
+            <NewRoot {...{ store, routes, history }} />,
             document.getElementById('root'),
         );
     });

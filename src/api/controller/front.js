@@ -89,32 +89,7 @@ const getPropsFromUrl = async ({ history, routes, location: url }) =>
         );
     });
 
-const handleRender = async ctx => {
-    const { url, headers } = ctx.request;
-    if (url === '/') {
-        ctx.redirect('/home');
-        return;
-    }
-
-    const muiTheme = getMuiTheme(
-        {},
-        {
-            userAgent: headers['user-agent'],
-        },
-    );
-    const history = createMemoryHistory(url);
-
-    const { redirect, renderProps } = getPropsFromUrl({
-        history,
-        routes,
-        location: url,
-    });
-
-    if (redirect) {
-        ctx.redirect(redirect.pathname + redirect.search);
-        return;
-    }
-
+export const getRenderingData = async (renderProps, history, muiTheme) => {
     const store = configureStoreServer(
         rootReducer,
         sagas,
@@ -134,6 +109,49 @@ const handleRender = async ctx => {
     const html = renderHtml(store, renderProps, muiTheme);
     const helmet = Helmet.renderStatic();
     const preloadedState = store.getState();
+
+    return {
+        html,
+        helmet,
+        preloadedState,
+    };
+};
+
+const handleRender = async ctx => {
+    const { url, headers } = ctx.request;
+    if (url.startsWith('/api') || url === '/favicon.ico') {
+        return;
+    }
+    if (url === '/') {
+        ctx.redirect('/home');
+        return;
+    }
+
+    const history = createMemoryHistory(url);
+
+    const { redirect, renderProps } = await getPropsFromUrl({
+        history,
+        routes,
+        location: url,
+    });
+
+    if (redirect) {
+        ctx.redirect(redirect.pathname + redirect.search);
+        return;
+    }
+
+    const muiTheme = getMuiTheme(
+        {},
+        {
+            userAgent: headers['user-agent'],
+        },
+    );
+
+    const { html, preloadedState, helmet } = await getRenderingData(
+        renderProps,
+        history,
+        muiTheme,
+    );
 
     ctx.body = renderFullPage(html, preloadedState, helmet);
 };

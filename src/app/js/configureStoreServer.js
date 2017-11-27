@@ -1,4 +1,4 @@
-import { routerMiddleware } from 'react-router-redux';
+import { routerMiddleware, syncHistoryWithStore } from 'react-router-redux';
 import { applyMiddleware, compose, createStore } from 'redux';
 import createSagaMiddleware from 'redux-saga';
 
@@ -28,6 +28,7 @@ export default function configureStoreServer(
 
     sagaMiddleware.run(sagas);
     store.runSaga = sagaMiddleware.run;
+    syncHistoryWithStore(history, store);
 
     return store;
 }

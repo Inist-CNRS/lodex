@@ -59,7 +59,7 @@ export function loadFixtures(fixtures) {
 export async function clear() {
     await connect();
 
-    return Promise.all([
+    await Promise.all([
         db.dataset.remove({}),
         db.field.remove({}),
         db.publishedCharacteristic.remove({}),
@@ -67,4 +67,8 @@ export async function clear() {
         db.publishedFacet.remove({}),
         db.uriDataset.remove({}),
     ]);
+
+    return db;
 }
+
+export const close = async () => await db.close();
