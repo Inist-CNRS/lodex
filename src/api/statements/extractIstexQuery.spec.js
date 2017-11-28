@@ -93,7 +93,7 @@ describe('extractIstexQuery', () => {
                 ezs(output => {
                     try {
                         expect(output).toEqual({
-                            content: 'http://replace-api.fr/document/?q=dumb',
+                            content: 'dumb',
                             lodex: {
                                 uri: 'http://uri',
                             },
