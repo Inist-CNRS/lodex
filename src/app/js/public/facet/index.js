@@ -1,13 +1,13 @@
 import { createAction, handleActions } from 'redux-actions';
 
-export const SELECT_FACET = 'SELECT_FACET';
+export const OPEN_FACET = 'OPEN_FACET';
 export const APPLY_FACET = 'APPLY_FACET';
 export const REMOVE_FACET = 'REMOVE_FACET';
 export const LOAD_FACET_VALUES = 'LOAD_FACET_VALUES';
 export const LOAD_FACET_VALUES_ERROR = 'LOAD_FACET_VALUES_ERROR';
 export const LOAD_FACET_VALUES_SUCCESS = 'LOAD_FACET_VALUES_SUCCESS';
 
-export const selectFacet = createAction(SELECT_FACET);
+export const openFacet = createAction(OPEN_FACET);
 export const applyFacet = createAction(APPLY_FACET);
 export const removeFacet = createAction(REMOVE_FACET);
 export const loadFacetValues = createAction(LOAD_FACET_VALUES);
@@ -19,34 +19,40 @@ export const initialState = {
     selectedFacet: null,
     selectedFacetValues: [],
     selectedFacetValuesTotal: 0,
-    facets: [],
+    appliedFacets: [],
+    facetsValues: {},
+    openedFacets: {},
 };
 
 export default handleActions(
     {
-        SELECT_FACET: (state, { payload: { field: selectedFacet } }) => ({
+        OPEN_FACET: (state, { payload: { field } }) => ({
             ...state,
-            selectedFacet,
+            openedFacets: {
+                ...state.openedFacets,
+                [field.name]: !state.openedFacets[field.name],
+            },
         }),
         LOAD_FACET_VALUES_ERROR: (state, { payload: error }) => ({
             ...state,
             error: error.message || error,
         }),
-        LOAD_FACET_VALUES_SUCCESS: (state, { payload: { data, total } }) => ({
+        LOAD_FACET_VALUES_SUCCESS: (state, { payload: { field, values } }) => ({
             ...state,
-            selectedFacetValues: data,
-            selectedFacetValuesTotal: total,
+            facetsValues: {
+                ...state.facetsValues,
+                [field.name]: values,
+            },
         }),
-        APPLY_FACET: ({ facets, ...state }, { payload: facet }) => ({
+        APPLY_FACET: ({ appliedFacets, ...state }, { payload: facet }) => ({
             ...state,
-            facets: [...facets, facet],
-            selectedFacet: null,
-            selectedFacetValues: [],
-            selectedFacetValuesTotal: 0,
+            appliedFacets: [...appliedFacets, facet],
         }),
-        REMOVE_FACET: ({ facets, ...state }, { payload: field }) => ({
+        REMOVE_FACET: ({ appliedFacets, ...state }, { payload: field }) => ({
             ...state,
-            facets: facets.filter(f => f.field.name !== field.name),
+            appliedFacets: appliedFacets.filter(
+                f => f.field.name !== field.name,
+            ),
         }),
     },
     initialState,

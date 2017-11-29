@@ -3,8 +3,6 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
-import RaisedButton from 'material-ui/RaisedButton';
-import Popover, { PopoverAnimationVertical } from 'material-ui/Popover';
 import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
 
@@ -14,12 +12,9 @@ import {
 } from '../../propTypes';
 import { fromFacet } from '../selectors';
 import { fromFields } from '../../sharedSelectors';
-import { selectFacet } from './index';
+import { openFacet } from './index';
 import FacetValueSelector from './FacetValueSelector';
 import getFieldClassName from '../../lib/getFieldClassName';
-
-const anchorOrigin = { horizontal: 'left', vertical: 'bottom' };
-const targetOrigin = { horizontal: 'left', vertical: 'top' };
 
 export class FacetSelectorComponent extends Component {
     constructor(props) {
@@ -30,15 +25,7 @@ export class FacetSelectorComponent extends Component {
         };
     }
 
-    handleClick = event => {
-        this.setState({
-            anchorEl: event.target,
-            showMenu: true,
-        });
-    };
-
     handleFacetClick = (event, value) => {
-        this.setState({ showMenu: false });
         this.props.handleFacetSelected({ field: value });
     };
 
@@ -47,46 +34,22 @@ export class FacetSelectorComponent extends Component {
     };
 
     render() {
-        const {
-            fields,
-            hasFacetFields,
-            p: polyglot,
-            selectedFacet,
-        } = this.props;
-        const { anchorEl, showMenu } = this.state;
+        const { fields, hasFacetFields, selectedFacet } = this.props;
 
         if (!hasFacetFields) return null;
 
         return (
             <div>
-                <RaisedButton
-                    className="facet-selector"
-                    label={
-                        selectedFacet
-                            ? selectedFacet.label
-                            : polyglot.t('add_facet')
-                    }
-                    onClick={this.handleClick}
-                />
-                <Popover
-                    open={showMenu}
-                    anchorEl={anchorEl}
-                    anchorOrigin={anchorOrigin}
-                    animation={PopoverAnimationVertical}
-                    targetOrigin={targetOrigin}
-                    onRequestClose={this.handleRequestClose}
-                >
-                    <Menu onChange={this.handleFacetClick}>
-                        {fields.map(field => (
-                            <MenuItem
-                                className={`facet-${getFieldClassName(field)}`}
-                                key={field.name}
-                                primaryText={field.label}
-                                value={field}
-                            />
-                        ))}
-                    </Menu>
-                </Popover>
+                <Menu onChange={this.handleFacetClick}>
+                    {fields.map(field => (
+                        <MenuItem
+                            className={`facet-${getFieldClassName(field)}`}
+                            key={field.name}
+                            primaryText={field.label}
+                            value={field}
+                        />
+                    ))}
+                </Menu>
                 {selectedFacet && (
                     <div>
                         <FacetValueSelector />
@@ -116,7 +79,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = {
-    handleFacetSelected: selectFacet,
+    handleFacetSelected: openFacet,
 };
 
 export default compose(connect(mapStateToProps, mapDispatchToProps), translate)(
