@@ -108,17 +108,15 @@ export async function uploadChunkMiddleware(ctx, parserName, next) {
 
 export async function uploadFileMiddleware(ctx, parserName) {
     const { filename, totalChunks, extension } = ctx.resumable;
-    await ctx.mergeChunks(filename, totalChunks);
-    await ctx.clearChunks(filename, totalChunks);
-    const fileStream = ctx.createReadStream(filename);
+    const mergedStream = await ctx.mergeChunks(filename, totalChunks);
 
     const parseStream = ctx.getParser(
         !parserName || parserName === 'automatic' ? extension : parserName,
     );
-    const parsedStream = await parseStream(fileStream);
+    const parsedStream = await parseStream(mergedStream);
 
     await ctx.saveStream(parsedStream);
-    await ctx.unlinkFile(filename);
+    await ctx.clearChunks(filename, totalChunks);
     await ctx.field.initializeModel();
 
     ctx.status = 200;
