@@ -35,6 +35,9 @@ const styles = {
         height: 56,
         marginLeft: 0,
     },
+    select: {
+        width: 50,
+    },
     label: {
 		display: 'inline-block',
         color: '#999',

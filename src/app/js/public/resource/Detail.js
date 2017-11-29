@@ -179,7 +179,7 @@ export const DetailComponent = ({
                                     XX
                                 </span>
                                 <div style={styles.value}>
-                                    <Link to="/home">{backToListLabel}</Link>
+                                    <Link to="/graph">{backToListLabel}</Link>
                                     <ExportShareButton
                                         style={{ float: 'right' }}
                                         uri={resource.uri}

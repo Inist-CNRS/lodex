@@ -149,6 +149,7 @@ export default {
     REJECTED: 'rejected',
     field_display_in_list: 'Display on list page',
     field_display_in_resource: 'Display on resource page',
+    field_display_in_graph: 'Display in graph page',
     field_searchable:
         'Searchable - global full text search will target this field',
     filter: 'enter your search term here',
@@ -317,4 +318,5 @@ export default {
     bad_format:
         'Inappropriate format for %{label}, expected simple value but got array, please use list format',
     field_width: 'width',
+    graph_list: 'graph list',
 };

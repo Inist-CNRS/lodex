@@ -1,26 +1,31 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Toolbar, ToolbarGroup } from 'material-ui/Toolbar';
 
 import { removeFacet as removeFacetAction } from './index';
 import { facet as facetPropTypes } from '../../propTypes';
 import { fromFacet } from '../selectors';
 import AppliedFacet from './AppliedFacet';
 
+const styles = {
+    container: {
+        margin: '10px 0',
+        display: 'flex',
+        flexFlow: 'row wrap',
+    },
+};
+
 export const AppliedFacetListComponent = ({ facets, removeFacet }) =>
     facets.length ? (
-        <Toolbar>
-            <ToolbarGroup firstChild>
-                {facets.map(facet => (
-                    <AppliedFacet
-                        key={`${facet.field.name}-${facet.value}`}
-                        facet={facet}
-                        onRemove={removeFacet}
-                    />
-                ))}
-            </ToolbarGroup>
-        </Toolbar>
+        <div style={styles.container}>
+            {facets.map(facet => (
+                <AppliedFacet
+                    key={`${facet.field.name}-${facet.value}`}
+                    facet={facet}
+                    onRemove={removeFacet}
+                />
+            ))}
+        </div>
     ) : null;
 
 AppliedFacetListComponent.propTypes = {

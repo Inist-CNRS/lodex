@@ -3,6 +3,7 @@ import Home from './Home';
 
 import resourceRoutes from './resource/routes';
 import userRoutes from '../user/routes';
+import graphRoutes from './graph/routes';
 
 export default {
     path: '/',
@@ -12,5 +13,6 @@ export default {
         { path: '/home', component: Home },
         ...userRoutes,
         ...resourceRoutes,
+        ...graphRoutes,
     ],
 };
