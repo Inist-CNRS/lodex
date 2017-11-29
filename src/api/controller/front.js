@@ -13,6 +13,7 @@ import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import { END } from 'redux-saga';
 import koaWebpack from 'koa-webpack';
 import fs from 'fs';
+import { StyleSheetServer } from 'aphrodite';
 
 import rootReducer from '../../app/js/public/reducers';
 import sagas from '../../app/js/public/sagas';
@@ -44,7 +45,7 @@ const initialState = {
     },
 };
 
-const renderFullPage = (html, preloadedState, helmet) =>
+const renderFullPage = (html, css, preloadedState, helmet) =>
     indexHtml
         .replace(
             '<div id="root"></div>',
@@ -55,6 +56,7 @@ const renderFullPage = (html, preloadedState, helmet) =>
             '</head>',
             `${helmet.meta.toString()}
             ${helmet.link.toString()}
+            <style data-aphrodite>${css.content}</style>
             </head>`,
         )
         .replace(
@@ -67,12 +69,14 @@ const renderFullPage = (html, preloadedState, helmet) =>
         );
 
 const renderHtml = (store, renderProps, muiTheme) =>
-    renderToString(
-        <Provider {...{ store }}>
-            <MuiThemeProvider muiTheme={muiTheme}>
-                <RouterContext {...renderProps} />
-            </MuiThemeProvider>
-        </Provider>,
+    StyleSheetServer.renderStatic(() =>
+        renderToString(
+            <Provider {...{ store }}>
+                <MuiThemeProvider muiTheme={muiTheme}>
+                    <RouterContext {...renderProps} />
+                </MuiThemeProvider>
+            </Provider>,
+        ),
     );
 
 const getPropsFromUrl = async ({ history, routes, location: url }) =>
@@ -106,12 +110,13 @@ export const getRenderingData = async (renderProps, history, muiTheme) => {
 
     await sagaPromise;
 
-    const html = renderHtml(store, renderProps, muiTheme);
+    const { html, css } = renderHtml(store, renderProps, muiTheme);
     const helmet = Helmet.renderStatic();
     const preloadedState = store.getState();
 
     return {
         html,
+        css,
         helmet,
         preloadedState,
     };
@@ -147,13 +152,13 @@ const handleRender = async ctx => {
         },
     );
 
-    const { html, preloadedState, helmet } = await getRenderingData(
+    const { html, css, preloadedState, helmet } = await getRenderingData(
         renderProps,
         history,
         muiTheme,
     );
 
-    ctx.body = renderFullPage(html, preloadedState, helmet);
+    ctx.body = renderFullPage(html, css, preloadedState, helmet);
 };
 
 const app = new Koa();
