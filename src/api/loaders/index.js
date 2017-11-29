@@ -1,12 +1,13 @@
-import CSV from './parseCsv'; // eslint-disable-line
-import csv from './csv'; // eslint-disable-line
-import csvSemicolon from './csv-semicolon'; // eslint-disable-line
-import csvComma from './csv-comma'; // eslint-disable-line
-import tsv from './tsv'; // eslint-disable-line
-import skos from './skos'; // eslint-disable-line
-import json from './json'; // eslint-disable-line
-import xml from './xml'; // eslint-disable-line
-import corpus from './corpus'; // eslint-disable-line
+import CSV from './parseCsv';
+import csv from './csv';
+import csvSemicolon from './csv-semicolon';
+import csvComma from './csv-comma';
+import tsv from './tsv';
+import skos from './skos';
+import json from './json';
+import xml from './xml';
+import corpus from './corpus';
+import tsvDoubleQuotes from './tsv-double-quotes';
 
 const loaders = {
     CSV,
@@ -14,6 +15,7 @@ const loaders = {
     'csv-semicolon': csvSemicolon,
     'csv-comma': csvComma,
     tsv,
+    'tsv-double-quotes': tsvDoubleQuotes,
     rdf: xml,
     skos,
     json,
