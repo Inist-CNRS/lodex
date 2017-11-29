@@ -51,14 +51,11 @@ module.exports = function extractIstexQuery(data, feed) {
                 });
             }
 
-            /* the hostname will be replace in scroll */
             return feed.send({
                 lodex: {
                     uri: formatedUri,
                 },
-                content: `http://replace-api.fr/document/?q=${
-                    data[propertyName]
-                }`,
+                content: data[propertyName],
             });
         });
 };

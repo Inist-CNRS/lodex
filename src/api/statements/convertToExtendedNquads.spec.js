@@ -1,13 +1,17 @@
+import path from 'path';
+import fs from 'fs';
 import request from 'request';
 import ezs from 'ezs';
 import from from 'from';
 import sinon from 'sinon';
-import btoa from 'btoa';
 import { expect } from 'chai';
 import testAll from './testAll';
 
 const dataTest = require('./fixture.data.json');
-const dataNquads = require('./fixture.data.nq.json');
+const dataNquads = fs.readFileSync(
+    path.resolve(__dirname, './fixture.data.nq'),
+    'utf8',
+);
 const ezsLocals = require('.');
 
 const config = {
@@ -36,7 +40,6 @@ describe('conversion to extended Nquads', () => {
     });
 
     it('should return nquads from the dataset', done => {
-        /* should result of the nquads conversion */
         /* Fake URL */
         const stream = from([
             {
@@ -49,7 +52,14 @@ describe('conversion to extended Nquads', () => {
         testAll(
             stream,
             data => {
-                expect(dataNquads).to.contain(btoa(data));
+                const lines = data.split('\n');
+                expect(dataNquads.includes(lines[0]));
+                expect(dataNquads.includes(lines[1]));
+                expect(dataNquads.includes(lines[2]));
+                expect(dataNquads.includes(lines[3]));
+                expect(dataNquads.includes(lines[4]));
+                expect(dataNquads.includes(lines[5]));
+                expect(dataNquads.includes(lines[6]));
             },
             done,
         );

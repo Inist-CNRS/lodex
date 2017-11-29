@@ -81,7 +81,7 @@ module.exports = function scroll(data, feed) {
     const output = this.getParam('output', ['doi']);
     const sid = this.getParam('sid', 'lodex');
     const size = this.getParam('size', 5000);
-    const query = { search: data.content };
+    const search = data.content;
     const cleanOutput = output.map(e => /\w+/.exec(e)[0]).join();
 
     const urlObj = {
@@ -90,7 +90,7 @@ module.exports = function scroll(data, feed) {
         pathname: 'document',
         // Change '&' to validate the query as an URI component (and not the '?'
         // at the beginning)
-        search: `q=${query.search.replace(/&/g, '%26')}&scroll=30s&output=${
+        search: `q=${search.replace(/&/g, '%26')}&scroll=30s&output=arkIstex,${
             cleanOutput
         }&size=${size}&sid=${sid}`,
     };

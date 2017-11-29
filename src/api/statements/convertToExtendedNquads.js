@@ -75,7 +75,7 @@ module.exports = function convertToExtendedNquads(data, feed) {
     );
 
     hits.forEach(hit => {
-        hit['@id'] = `https://api.istex.fr/document/${hit.id}`;
+        hit['@id'] = `https://api.istex.fr/${hit.arkIstex}`;
         hit['@type'] = 'http://purl.org/ontology/bibo/Document';
         hit[config.istexQuery.linked] = data.uri;
 
