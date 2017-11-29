@@ -1,10 +1,9 @@
 import fs from 'fs';
 import range from 'lodash.range';
 import rangeRight from 'lodash.rangeright';
+import multiStream from 'multistream';
 
 import composeAsync from '../../common/lib/composeAsync';
-
-import { concatStreams } from './streamHelper';
 
 export const unlinkFile = filename =>
     new Promise((resolve, reject) => {
@@ -33,22 +32,22 @@ export const createWriteStream = chunkname => fs.createWriteStream(chunkname);
 export const createReadStream = chunkname => fs.createReadStream(chunkname);
 
 export const mergeChunksFactory = (
-    createWriteStreamImpl,
     createReadStreamImpl,
-    concatStreamsImpl,
+    multiStreamImpl,
+    saveStreamInFileImpl,
 ) => async (filename, nbChunks) => {
-    const stream = createWriteStreamImpl(filename);
     const sourceStreams = range(1, nbChunks + 1)
         .map(nb => `${filename}.${nb}`)
         .map(chunkname => createReadStreamImpl(chunkname));
+    const mergedStream = multiStreamImpl(sourceStreams);
 
-    await concatStreamsImpl(sourceStreams, stream);
+    await saveStreamInFileImpl(mergedStream, filename);
 };
 
 export const mergeChunks = mergeChunksFactory(
-    createWriteStream,
     createReadStream,
-    concatStreams,
+    multiStream,
+    saveStreamInFile,
 );
 
 export const getFileStats = filename =>

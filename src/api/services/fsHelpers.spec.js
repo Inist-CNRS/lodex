@@ -119,23 +119,19 @@ describe('fsHelpers', () => {
     });
 
     describe('mergeChunksFactory', () => {
-        const createWriteStreamImpl = createSpy(
-            v => `write stream for ${v}`,
-        ).andCallThrough();
         const createReadStreamImpl = createSpy(
             v => `read stream for ${v}`,
         ).andCallThrough();
-        const concatStreamsImpl = createSpy();
+        const multiStreamImpl = createSpy(
+            () => 'merged stream',
+        ).andCallThrough();
+        const saveStreamInFile = createSpy();
         before(async () => {
             await mergeChunksFactory(
-                createWriteStreamImpl,
                 createReadStreamImpl,
-                concatStreamsImpl,
+                multiStreamImpl,
+                saveStreamInFile,
             )('filename', 3);
-        });
-
-        it('should have called createWriteStreamImpl with filename', () => {
-            expect(createWriteStreamImpl).toHaveBeenCalledWith('filename');
         });
 
         it('should have called createReadStreamImpl with each generated chunkname', () => {
@@ -144,14 +140,18 @@ describe('fsHelpers', () => {
             expect(createReadStreamImpl).toHaveBeenCalledWith('filename.3');
         });
 
-        it('should have called concatStreamImpl with created array of readStream and write stream', () => {
-            expect(concatStreamsImpl).toHaveBeenCalledWith(
-                [
-                    'read stream for filename.1',
-                    'read stream for filename.2',
-                    'read stream for filename.3',
-                ],
-                'write stream for filename',
+        it('should have called multiStreamImpl with created array of readStream and write stream', () => {
+            expect(multiStreamImpl).toHaveBeenCalledWith([
+                'read stream for filename.1',
+                'read stream for filename.2',
+                'read stream for filename.3',
+            ]);
+        });
+
+        it('should have called saveStreamInFile with mergedStream and filename', () => {
+            expect(saveStreamInFile).toHaveBeenCalledWith(
+                'merged stream',
+                'filename',
             );
         });
     });
