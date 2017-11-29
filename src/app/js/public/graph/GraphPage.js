@@ -1,6 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { compose } from 'recompose';
+import translate from 'redux-polyglot/translate';
+import { Card, CardTitle } from 'material-ui/Card';
+import { grey500 } from 'material-ui/styles/colors';
 
 import GraphSummary from './GraphSummary';
 import Dataset from '../dataset/Dataset';
@@ -8,7 +12,12 @@ import Toolbar from '../Toolbar';
 import { fromFields } from '../../sharedSelectors';
 import { fromCharacteristic } from '../selectors';
 import Format from '../Format';
-import { field as fieldPropTypes } from '../../propTypes';
+import AppliedFacetList from '../facet/AppliedFacetList';
+import Drawer from '../../lib/components/Drawer';
+import {
+    field as fieldPropTypes,
+    polyglot as polyglotPropTypes,
+} from '../../propTypes';
 
 const styles = {
     container: {
@@ -16,25 +25,50 @@ const styles = {
         flexDirection: 'row',
     },
     sideColumn: {
-        padding: 5,
-        width: '20%',
+        padding: '10px',
+        width: '25%',
         flexGrow: 1,
+        margin: '20px 0',
     },
     centerColumn: {
-        padding: 5,
-        width: '60%',
-        flexGrow: 3,
+        padding: '10px',
+        width: '75%',
+        flexGrow: 4,
+    },
+    section: {
+        margin: '20px 0',
+    },
+    label: {
+        color: grey500,
+        flexGrow: 2,
+        fontWeight: 'bold',
+        fontSize: '2rem',
+        textDecoration: 'none',
     },
 };
 
-const PureGraph = ({ graphField, resource }) => (
+const PureGraph = ({ graphField, resource, p: polyglot }) => (
     <div style={styles.container}>
-        <div style={styles.sideColumn}>
-            <GraphSummary />
-        </div>
         <div style={styles.centerColumn}>
-            {graphField && <Format field={graphField} resource={resource} />}
-            <Dataset />
+            <Drawer label={polyglot.t('graph_list')}>
+                <GraphSummary />
+            </Drawer>
+            {graphField && (
+                <Card style={styles.section}>
+                    <CardTitle
+                        title={
+                            <span style={styles.label}>{graphField.label}</span>
+                        }
+                    />
+                    <Format field={graphField} resource={resource} />
+                </Card>
+            )}
+            <Card style={styles.section}>
+                <AppliedFacetList />
+            </Card>
+            <Card style={styles.section}>
+                <Dataset />
+            </Card>
         </div>
         <div style={styles.sideColumn}>
             <Toolbar />
@@ -45,6 +79,7 @@ const PureGraph = ({ graphField, resource }) => (
 PureGraph.propTypes = {
     graphField: fieldPropTypes,
     resource: PropTypes.object.isRequired,
+    p: polyglotPropTypes.isRequired,
 };
 
 const mapStateToProps = (state, { params: { name } }) => ({
@@ -52,4 +87,4 @@ const mapStateToProps = (state, { params: { name } }) => ({
     resource: fromCharacteristic.getCharacteristicsAsResource(state),
 });
 
-export default connect(mapStateToProps)(PureGraph);
+export default compose(connect(mapStateToProps), translate)(PureGraph);

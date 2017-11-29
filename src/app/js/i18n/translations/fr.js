@@ -322,4 +322,5 @@ export default {
     bad_format:
         'Format inapproprié pour %{label}, simple valeur attendue mais tableau reçut, utilisez le format liste',
     field_width: 'largeur',
+    graph_list: 'graph list',
 };

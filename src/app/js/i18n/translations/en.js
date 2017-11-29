@@ -318,4 +318,5 @@ export default {
     bad_format:
         'Inappropriate format for %{label}, expected simple value but got array, please use list format',
     field_width: 'width',
+    graph_list: 'graph list',
 };

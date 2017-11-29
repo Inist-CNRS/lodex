@@ -10,6 +10,8 @@ import AppliedFacet from './AppliedFacet';
 const styles = {
     container: {
         margin: '10px 0',
+        display: 'flex',
+        flexFlow: 'row wrap',
     },
 };
 

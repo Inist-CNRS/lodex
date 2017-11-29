@@ -3,15 +3,12 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { List, ListItem } from 'material-ui/List';
+import Divider from 'material-ui/Divider';
 
 import { fromFields } from '../../sharedSelectors';
 import { field as fieldPropTypes } from '../../propTypes';
 
 const styles = {
-    container: {
-        display: 'flex',
-        flexDirection: 'column',
-    },
     link: {
         textDecoration: 'none',
         color: 'unset',
@@ -20,17 +17,17 @@ const styles = {
 
 const PureGraphSummary = ({ graphFields }) => (
     <List style={styles.container}>
-        <ListItem>
-            <Link style={styles.link} to="/graph">
-                dataset
-            </Link>
-        </ListItem>
+        <Link style={styles.link} to="/graph">
+            <ListItem>dataset</ListItem>
+        </Link>
+        <Divider />
         {graphFields.map(field => (
-            <ListItem key={field.name}>
+            <div key={field.name}>
                 <Link style={styles.link} to={`/graph/${field.name}`}>
-                    {field.label}
+                    <ListItem>{field.label}</ListItem>
                 </Link>
-            </ListItem>
+                <Divider />
+            </div>
         ))}
     </List>
 );
