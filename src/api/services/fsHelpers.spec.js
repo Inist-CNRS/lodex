@@ -125,13 +125,11 @@ describe('fsHelpers', () => {
         const multiStreamImpl = createSpy(
             () => 'merged stream',
         ).andCallThrough();
-        const saveStreamInFile = createSpy();
         before(async () => {
-            await mergeChunksFactory(
-                createReadStreamImpl,
-                multiStreamImpl,
-                saveStreamInFile,
-            )('filename', 3);
+            await mergeChunksFactory(createReadStreamImpl, multiStreamImpl)(
+                'filename',
+                3,
+            );
         });
 
         it('should have called createReadStreamImpl with each generated chunkname', () => {
@@ -146,13 +144,6 @@ describe('fsHelpers', () => {
                 'read stream for filename.2',
                 'read stream for filename.3',
             ]);
-        });
-
-        it('should have called saveStreamInFile with mergedStream and filename', () => {
-            expect(saveStreamInFile).toHaveBeenCalledWith(
-                'merged stream',
-                'filename',
-            );
         });
     });
 });

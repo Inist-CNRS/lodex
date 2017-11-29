@@ -31,24 +31,18 @@ export const createWriteStream = chunkname => fs.createWriteStream(chunkname);
 
 export const createReadStream = chunkname => fs.createReadStream(chunkname);
 
-export const mergeChunksFactory = (
-    createReadStreamImpl,
-    multiStreamImpl,
-    saveStreamInFileImpl,
-) => async (filename, nbChunks) => {
+export const mergeChunksFactory = (createReadStreamImpl, multiStreamImpl) => (
+    filename,
+    nbChunks,
+) => {
     const sourceStreams = range(1, nbChunks + 1)
         .map(nb => `${filename}.${nb}`)
         .map(chunkname => createReadStreamImpl(chunkname));
-    const mergedStream = multiStreamImpl(sourceStreams);
 
-    await saveStreamInFileImpl(mergedStream, filename);
+    return multiStreamImpl(sourceStreams);
 };
 
-export const mergeChunks = mergeChunksFactory(
-    createReadStream,
-    multiStream,
-    saveStreamInFile,
-);
+export const mergeChunks = mergeChunksFactory(createReadStream, multiStream);
 
 export const getFileStats = filename =>
     new Promise((resolve, reject) => {
