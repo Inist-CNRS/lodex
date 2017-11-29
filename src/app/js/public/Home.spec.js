@@ -4,7 +4,7 @@ import { shallow } from 'enzyme';
 
 import { HomeComponent as Home } from './Home';
 import Loading from '../lib/components/Loading';
-import Dataset from './dataset/Dataset';
+import GraphList from './graph/GraphList';
 import NoDataset from './NoDataset';
 
 describe('<Home />', () => {
@@ -43,7 +43,7 @@ describe('<Home />', () => {
         expect(loading.length).toEqual(1);
     });
 
-    it('should render a Dataset component if one is present', () => {
+    it('should render a GraphList component if dataset is present', () => {
         const wrapper = shallow(
             <Home
                 p={{ t: key => key }}
@@ -54,7 +54,7 @@ describe('<Home />', () => {
             />,
         );
 
-        const component = wrapper.find(Dataset);
+        const component = wrapper.find(GraphList);
         expect(component.length).toEqual(1);
     });
 
