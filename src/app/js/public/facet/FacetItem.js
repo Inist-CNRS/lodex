@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { List, ListItem } from 'material-ui/List';
+import { ListItem } from 'material-ui/List';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import withHandlers from 'recompose/withHandlers';
@@ -12,6 +12,7 @@ import {
     field as fieldPropType,
     facetValue as facetValuePropType,
 } from '../../propTypes';
+import FacetValueList from './FacetValueList';
 
 const PureFacetItem = ({ onClick, isOpen, field, facetValues }) => (
     <ListItem
@@ -20,17 +21,7 @@ const PureFacetItem = ({ onClick, isOpen, field, facetValues }) => (
         primaryText={field.label}
         onClick={onClick}
         open={isOpen}
-        nestedItems={[
-            <List key="list">
-                {facetValues.map(({ value, count }) => (
-                    <ListItem
-                        key={value}
-                        primaryText={value}
-                        secondaryText={count}
-                    />
-                ))}
-            </List>,
-        ]}
+        nestedItems={[<FacetValueList key="list" facetValues={facetValues} />]}
         value={field}
     />
 );
