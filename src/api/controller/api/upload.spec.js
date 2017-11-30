@@ -28,6 +28,7 @@ describe('upload', () => {
             expect(ctx.resumable).toEqual({
                 stream: 'stream',
                 filename: `${config.uploadDir}/identifier`,
+                extension: '',
                 chunkname: `${config.uploadDir}/identifier.10`,
                 totalChunks: 100,
                 totalSize: 500,
