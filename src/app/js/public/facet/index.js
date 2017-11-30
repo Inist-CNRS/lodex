@@ -20,7 +20,7 @@ export const initialState = {
     selectedFacet: null,
     selectedFacetValues: [],
     selectedFacetValuesTotal: 0,
-    appliedFacets: [],
+    appliedFacets: {},
     facetsValues: {},
     openedFacets: {},
 };
@@ -45,15 +45,22 @@ export default handleActions(
                 [name]: values,
             },
         }),
-        APPLY_FACET: ({ appliedFacets, ...state }, { payload: facet }) => ({
+        APPLY_FACET: (
+            { appliedFacets, ...state },
+            { payload: { name, value } },
+        ) => ({
             ...state,
-            appliedFacets: [...appliedFacets, facet],
+            appliedFacets: {
+                ...appliedFacets,
+                [name]: value,
+            },
         }),
-        REMOVE_FACET: ({ appliedFacets, ...state }, { payload: field }) => ({
+        REMOVE_FACET: ({ appliedFacets, ...state }, { payload: name }) => ({
             ...state,
-            appliedFacets: appliedFacets.filter(
-                f => f.field.name !== field.name,
-            ),
+            appliedFacets: {
+                ...appliedFacets,
+                [name]: undefined,
+            },
         }),
     },
     initialState,
@@ -73,10 +80,14 @@ export const isFacetOpen = (state, name) => state.openedFacets[name];
 export const getFacetValues = (state, name) =>
     get(state, ['facetsValues', name, 'data'], []);
 
+export const isFacetValuesChecked = (state, { name, value }) =>
+    state.appliedFacets[name] === value;
+
 export const fromFacet = {
     getAppliedFacets,
     getSelectedFacet,
     getSelectedFacetValues,
     isFacetOpen,
     getFacetValues,
+    isFacetValuesChecked,
 };

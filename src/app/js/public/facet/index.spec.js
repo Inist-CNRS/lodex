@@ -10,7 +10,7 @@ import facetReducer, {
 
 describe('facet reducer', () => {
     describe('OPEN_FACET', () => {
-        it('should set field.name to true in openedFacets', () => {
+        it('should set name to true in openedFacets', () => {
             const state = {
                 foo: 'bar',
                 openedFacets: {
@@ -21,7 +21,7 @@ describe('facet reducer', () => {
 
             const action = {
                 type: OPEN_FACET,
-                payload: { field: { name: 'target' } },
+                payload: { name: 'target' },
             };
 
             expect(facetReducer(state, action)).toEqual({
@@ -45,7 +45,7 @@ describe('facet reducer', () => {
 
             const action = {
                 type: OPEN_FACET,
-                payload: { field: { name: 'target' } },
+                payload: { name: 'target' },
             };
 
             expect(facetReducer(state, action)).toEqual({
@@ -69,7 +69,7 @@ describe('facet reducer', () => {
 
             const action = {
                 type: OPEN_FACET,
-                payload: { field: { name: 'target' } },
+                payload: { name: 'target' },
             };
 
             expect(facetReducer(state, action)).toEqual({
@@ -112,7 +112,7 @@ describe('facet reducer', () => {
 
             const action = {
                 type: LOAD_FACET_VALUES_SUCCESS,
-                payload: { field: { name: 'fieldName' }, values: 'values' },
+                payload: { name: 'fieldName', values: 'values' },
             };
 
             expect(facetReducer(state, action)).toEqual({
@@ -129,26 +129,26 @@ describe('facet reducer', () => {
         it('should add payload to appliedFacets', () => {
             const state = {
                 foo: 'bar',
-                appliedFacets: [
-                    { field: { name: 1 } },
-                    { field: { name: 2 } },
-                    { field: { name: 3 } },
-                ],
+                appliedFacets: {
+                    name1: 'value1',
+                    name2: 'value2',
+                    name3: 'value3',
+                },
             };
 
             const action = {
                 type: APPLY_FACET,
-                payload: { name: 'fieldName' },
+                payload: { name: 'fieldName', value: 'new value' },
             };
 
             expect(facetReducer(state, action)).toEqual({
                 foo: 'bar',
-                appliedFacets: [
-                    { field: { name: 1 } },
-                    { field: { name: 2 } },
-                    { field: { name: 3 } },
-                    { name: 'fieldName' },
-                ],
+                appliedFacets: {
+                    name1: 'value1',
+                    name2: 'value2',
+                    name3: 'value3',
+                    fieldName: 'new value',
+                },
             });
         });
     });
@@ -157,21 +157,25 @@ describe('facet reducer', () => {
         it('should remove appliedFacets with field.name equal to payload.name', () => {
             const state = {
                 foo: 'bar',
-                appliedFacets: [
-                    { field: { name: 1 } },
-                    { field: { name: 2 } },
-                    { field: { name: 3 } },
-                ],
+                appliedFacets: {
+                    name1: 'value1',
+                    name2: 'value2',
+                    name3: 'value3',
+                },
             };
 
             const action = {
                 type: REMOVE_FACET,
-                payload: { name: 2 },
+                payload: 'name2',
             };
 
             expect(facetReducer(state, action)).toEqual({
                 foo: 'bar',
-                appliedFacets: [{ field: { name: 1 } }, { field: { name: 3 } }],
+                appliedFacets: {
+                    name1: 'value1',
+                    name2: undefined,
+                    name3: 'value3',
+                },
             });
         });
     });
