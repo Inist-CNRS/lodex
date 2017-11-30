@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
-import { ToolbarGroup, ToolbarSeparator } from 'material-ui/Toolbar';
 
 import { fromDataset } from './selectors';
 import { fromFields } from '../sharedSelectors';
@@ -24,17 +23,17 @@ const styles = {
 };
 
 export const StatsComponent = ({ nbColumns, nbResources, p: polyglot }) => (
-    <ToolbarGroup>
+    <div>
         <div style={styles.col}>
             <div>{polyglot.t('columns')}</div>
             <div style={styles.nb}>{nbColumns}</div>
         </div>
-        <ToolbarSeparator style={styles.separator} />
+        <hr style={styles.separator} />
         <div style={styles.col}>
             <div>{polyglot.t('resources')}</div>
             <div style={styles.nb}>{nbResources}</div>
         </div>
-    </ToolbarGroup>
+    </div>
 );
 
 StatsComponent.propTypes = {

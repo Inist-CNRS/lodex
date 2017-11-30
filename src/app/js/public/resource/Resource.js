@@ -38,7 +38,7 @@ export const ResourceComponent = ({
     const backToListButton = (
         <FlatButton
             className="btn-back-to-list"
-            containerElement={<Link to="/home" />}
+            containerElement={<Link to="/graph" />}
             label={backToListLabel}
             icon={<HomeIcon />}
         />

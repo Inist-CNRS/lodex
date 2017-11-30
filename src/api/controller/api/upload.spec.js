@@ -15,6 +15,7 @@ describe('upload', () => {
                     resumableTotalChunks: '100',
                     resumableTotalSize: '500',
                     resumableCurrentChunkSize: '5',
+                    resumableFilename: 'data.csv',
                 },
             }),
         };
@@ -32,6 +33,7 @@ describe('upload', () => {
                 totalChunks: 100,
                 totalSize: 500,
                 currentChunkSize: 5,
+                extension: 'csv',
             });
         });
     });

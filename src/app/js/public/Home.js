@@ -14,14 +14,12 @@ import getTitle from '../lib/getTitle';
 import Alert from '../lib/components/Alert';
 import Card from '../lib/components/Card';
 import Loading from '../lib/components/Loading';
-import Dataset from './dataset/Dataset';
 import DatasetCharacteristics from './characteristic/DatasetCharacteristics';
 import NoDataset from './NoDataset';
-import Toolbar from './Toolbar';
-import AppliedFacetList from './facet/AppliedFacetList';
 import Version from './Version';
 import { preLoadDatasetPage } from './dataset';
 import { preLoadExporters } from './export';
+import GraphList from './graph/GraphList';
 
 export class HomeComponent extends Component {
     static defaultProps = {
@@ -77,9 +75,7 @@ export class HomeComponent extends Component {
                         <DatasetCharacteristics />
                     </div>
                     <div className="main-dataset-section">
-                        <Toolbar />
-                        <AppliedFacetList />
-                        <Dataset />
+                        <GraphList />
                         <Version />
                     </div>
                 </div>

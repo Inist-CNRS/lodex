@@ -62,6 +62,9 @@ const getDocumentFields = createSelector(getFields, fields =>
 const getDatasetFields = createSelector(getFields, fields =>
     fields.filter(f => f.cover === COVER_DATASET),
 );
+const getCharacteristicFields = createSelector(getDatasetFields, fields =>
+    fields.filter(f => !f.display_in_graph),
+);
 
 const getComposedFields = createSelector(getFields, fields =>
     fields.filter(({ composedOf }) => !!composedOf),
@@ -101,6 +104,10 @@ const getListFields = createSelector(getCollectionFields, fields =>
     fields
         .filter(f => f.display_in_list || f.name === 'uri')
         .filter(f => !f.composedOf),
+);
+
+const getGraphFields = createSelector(getDatasetFields, fields =>
+    fields.filter(f => f.display_in_graph).filter(f => !f.composedOf),
 );
 
 const getAllListFields = createSelector(getCollectionFields, fields =>
@@ -328,6 +335,7 @@ export default {
     getCompositeFieldsByField,
     getCompositeFieldsNamesByField,
     getListFields,
+    getGraphFields,
     getAllListFields,
     getCollectionFieldsExceptComposite,
     getRootCollectionFields,
@@ -339,6 +347,7 @@ export default {
     getDocumentFields,
     getLinkedFields,
     getDatasetFields,
+    getCharacteristicFields,
     getTitleFieldName,
     getDatasetTitleFieldName,
     getPublishData,

@@ -16,6 +16,7 @@ import FieldFormatInput from '../FieldFormatInput';
 import FieldWidthInput from '../FieldWidthInput';
 import FieldDisplayInListInput from '../FieldDisplayInListInput';
 import FieldDisplayInResourceInput from '../FieldDisplayInResourceInput';
+import FieldDisplayInGraphInput from '../FieldDisplayInGraphInput';
 import FieldIsSearchableInput from '../FieldIsSearchableInput';
 import FieldIsFacetInput from '../FieldIsFacetInput';
 
@@ -37,6 +38,7 @@ export const EditOntologyFieldFormComponent = ({
         <FieldLanguageInput field={field} />
         <FieldDisplayInListInput />
         <FieldDisplayInResourceInput />
+        <FieldDisplayInGraphInput />
         <FieldOverviewInput />
         <FieldFormatInput />
         <FieldWidthInput />

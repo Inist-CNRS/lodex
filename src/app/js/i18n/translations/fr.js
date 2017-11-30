@@ -150,6 +150,7 @@ export default {
     REJECTED: 'rejeté',
     field_display_in_list: 'Display on list page',
     field_display_in_resource: 'Display on resource page',
+    field_display_in_graph: 'Display in graph page',
     field_searchable: 'Searchable',
     filter: 'Vous pouvez saisir votre recherche ici',
     no_result: 'Aucune correspondance trouvée',
@@ -320,4 +321,6 @@ export default {
     select_parser: 'Choix du parser à appliquer',
     bad_format:
         'Format inapproprié pour %{label}, simple valeur attendue mais tableau reçu, essayer le format liste',
+    field_width: 'largeur',
+    graph_list: 'graph list',
 };
