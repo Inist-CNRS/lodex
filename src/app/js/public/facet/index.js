@@ -1,4 +1,5 @@
 import { createAction, handleActions } from 'redux-actions';
+import get from 'lodash.get';
 
 export const OPEN_FACET = 'OPEN_FACET';
 export const APPLY_FACET = 'APPLY_FACET';
@@ -26,22 +27,22 @@ export const initialState = {
 
 export default handleActions(
     {
-        OPEN_FACET: (state, { payload: { field } }) => ({
+        OPEN_FACET: (state, { payload: { name } }) => ({
             ...state,
             openedFacets: {
                 ...state.openedFacets,
-                [field.name]: !state.openedFacets[field.name],
+                [name]: !state.openedFacets[name],
             },
         }),
         LOAD_FACET_VALUES_ERROR: (state, { payload: error }) => ({
             ...state,
             error: error.message || error,
         }),
-        LOAD_FACET_VALUES_SUCCESS: (state, { payload: { field, values } }) => ({
+        LOAD_FACET_VALUES_SUCCESS: (state, { payload: { name, values } }) => ({
             ...state,
             facetsValues: {
                 ...state.facetsValues,
-                [field.name]: values,
+                [name]: values,
             },
         }),
         APPLY_FACET: ({ appliedFacets, ...state }, { payload: facet }) => ({
@@ -65,10 +66,17 @@ export const getSelectedFacetValues = state => ({
     total: state.selectedFacetValuesTotal,
 });
 
-export const getAppliedFacets = state => state.facets;
+export const getAppliedFacets = state => state.appliedFacets;
+
+export const isFacetOpen = (state, name) => state.openedFacets[name];
+
+export const getFacetValues = (state, name) =>
+    get(state, ['facetsValues', name, 'data'], []);
 
 export const fromFacet = {
     getAppliedFacets,
     getSelectedFacet,
     getSelectedFacetValues,
+    isFacetOpen,
+    getFacetValues,
 };

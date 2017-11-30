@@ -3,8 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
-import Menu from 'material-ui/Menu';
-import MenuItem from 'material-ui/MenuItem';
+import { List } from 'material-ui/List';
 
 import {
     field as fieldPropTypes,
@@ -13,10 +12,9 @@ import {
 import { fromFacet } from '../selectors';
 import { fromFields } from '../../sharedSelectors';
 import { openFacet } from './index';
-import FacetValueSelector from './FacetValueSelector';
-import getFieldClassName from '../../lib/getFieldClassName';
+import FacetItem from './FacetItem';
 
-export class FacetSelectorComponent extends Component {
+export class PureFacetList extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -25,42 +23,22 @@ export class FacetSelectorComponent extends Component {
         };
     }
 
-    handleFacetClick = (event, value) => {
-        this.props.handleFacetSelected({ field: value });
-    };
-
-    handleRequestClose = () => {
-        this.setState({ showMenu: false });
-    };
-
     render() {
-        const { fields, hasFacetFields, selectedFacet } = this.props;
+        const { fields, hasFacetFields } = this.props;
 
         if (!hasFacetFields) return null;
 
         return (
-            <div>
-                <Menu onChange={this.handleFacetClick}>
-                    {fields.map(field => (
-                        <MenuItem
-                            className={`facet-${getFieldClassName(field)}`}
-                            key={field.name}
-                            primaryText={field.label}
-                            value={field}
-                        />
-                    ))}
-                </Menu>
-                {selectedFacet && (
-                    <div>
-                        <FacetValueSelector />
-                    </div>
-                )}
-            </div>
+            <List>
+                {fields.map(field => (
+                    <FacetItem key={field.name} field={field} />
+                ))}
+            </List>
         );
     }
 }
 
-FacetSelectorComponent.propTypes = {
+PureFacetList.propTypes = {
     fields: PropTypes.arrayOf(fieldPropTypes).isRequired,
     handleFacetSelected: PropTypes.func.isRequired,
     hasFacetFields: PropTypes.bool.isRequired,
@@ -68,7 +46,7 @@ FacetSelectorComponent.propTypes = {
     selectedFacet: fieldPropTypes,
 };
 
-FacetSelectorComponent.defaultProps = {
+PureFacetList.defaultProps = {
     selectedFacet: null,
 };
 
@@ -83,5 +61,5 @@ const mapDispatchToProps = {
 };
 
 export default compose(connect(mapStateToProps, mapDispatchToProps), translate)(
-    FacetSelectorComponent,
+    PureFacetList,
 );
