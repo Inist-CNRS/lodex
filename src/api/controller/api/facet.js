@@ -2,9 +2,12 @@ import Koa from 'koa';
 import route from 'koa-route';
 
 export const getFacetFilteredValues = async (ctx, name, filter) => {
+    const { page = 0, perPage = 10 } = ctx.request.query;
     const data = await ctx.publishedFacet.findValuesForField(
         name,
         typeof filter === 'function' ? undefined : filter,
+        page,
+        perPage,
     );
     const total = await ctx.publishedFacet.countValuesForField(
         name,

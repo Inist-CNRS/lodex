@@ -112,14 +112,21 @@ describe('facet reducer', () => {
 
             const action = {
                 type: LOAD_FACET_VALUES_SUCCESS,
-                payload: { name: 'fieldName', values: 'values' },
+                payload: {
+                    name: 'fieldName',
+                    values: { data: 'values', total: 'total' },
+                },
             };
 
             expect(facetReducer(state, action)).toEqual({
                 foo: 'bar',
                 facetsValues: {
                     foo: 'bar',
-                    fieldName: 'values',
+                    fieldName: {
+                        page: 0,
+                        values: 'values',
+                        total: 'total',
+                    },
                 },
             });
         });

@@ -10,6 +10,12 @@ describe('facets routes', () => {
                     Promise.resolve(100),
                 ),
             },
+            request: {
+                query: {
+                    page: 7,
+                    perPage: 20,
+                },
+            },
         };
 
         const next = () => {};
@@ -20,7 +26,7 @@ describe('facets routes', () => {
 
                 expect(
                     ctx.publishedFacet.findValuesForField,
-                ).toHaveBeenCalledWith('foo', undefined);
+                ).toHaveBeenCalledWith('foo', undefined, 7, 20);
             });
 
             it('calls ctx.publishedFacet.countValuesForField with correct parameters', async () => {
@@ -38,7 +44,7 @@ describe('facets routes', () => {
 
                 expect(
                     ctx.publishedFacet.findValuesForField,
-                ).toHaveBeenCalledWith('foo', 'filter');
+                ).toHaveBeenCalledWith('foo', 'filter', 7, 20);
             });
 
             it('calls ctx.publishedFacet.countValuesForField with correct parameters', async () => {

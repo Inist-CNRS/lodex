@@ -8,26 +8,17 @@ import withHandlers from 'recompose/withHandlers';
 import getFieldClassName from '../../lib/getFieldClassName';
 import { fromFacet } from '../selectors';
 import { openFacet } from './index';
-import {
-    field as fieldPropType,
-    facetValue as facetValuePropType,
-} from '../../propTypes';
+import { field as fieldPropType } from '../../propTypes';
 import FacetValueList from './FacetValueList';
 
-const PureFacetItem = ({ onClick, isOpen, field, facetValues }) => (
+const PureFacetItem = ({ onClick, isOpen, field, total }) => (
     <ListItem
         className={`facet-${getFieldClassName(field)}`}
         key={field.name}
-        primaryText={field.label}
+        primaryText={`${field.label} ${total ? `(${total})` : ''}`}
         onClick={onClick}
         open={isOpen}
-        nestedItems={[
-            <FacetValueList
-                key="list"
-                name={field.name}
-                facetValues={facetValues}
-            />,
-        ]}
+        nestedItems={[<FacetValueList key="list" name={field.name} />]}
         value={field}
     />
 );
@@ -36,12 +27,12 @@ PureFacetItem.propTypes = {
     onClick: PropTypes.func.isRequired,
     isOpen: PropTypes.bool.isRequired,
     field: fieldPropType.isRequired,
-    facetValues: PropTypes.arrayOf(facetValuePropType).isRequired,
+    total: PropTypes.number,
 };
 
 const mapStateToProps = (state, { field }) => ({
     isOpen: fromFacet.isFacetOpen(state, field.name),
-    facetValues: fromFacet.getFacetValues(state, field.name),
+    total: fromFacet.getFacetValuesTotal(state, field.name),
 });
 
 const mapDispatchtoProps = {
