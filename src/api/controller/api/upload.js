@@ -63,16 +63,16 @@ export const parseRequest = async (ctx, parserName, next) => {
         resumableTotalChunks,
         resumableTotalSize,
         resumableCurrentChunkSize,
-        resumableFilename,
+        resumableFilename = '',
     } = fields;
-
+    const [extension] = resumableFilename.match(/[^.]*$/);
     const chunkNumber = parseInt(resumableChunkNumber, 10);
     ctx.resumable = {
         totalChunks: parseInt(resumableTotalChunks, 10),
         totalSize: parseInt(resumableTotalSize, 10),
         currentChunkSize: parseInt(resumableCurrentChunkSize, 10),
         filename: `${config.uploadDir}/${resumableIdentifier}`,
-        extension: resumableFilename.match(/[^.]*$/).pop(),
+        extension,
         chunkname: `${config.uploadDir}/${resumableIdentifier}.${chunkNumber}`,
         stream,
     };
