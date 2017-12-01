@@ -12,6 +12,7 @@ export const initialState = {
     currentPage: 0,
     perPage: 10,
     filter: '',
+    inverted: false,
 };
 
 export default handleActions(
@@ -26,12 +27,13 @@ export default handleActions(
         }),
         [FACET_VALUE_CHANGE]: (
             state,
-            { payload: { currentPage, perPage, filter } },
+            { payload: { currentPage, perPage, filter, inverted } },
         ) => ({
             ...state,
             currentPage,
             perPage,
             filter,
+            inverted,
         }),
     },
     initialState,

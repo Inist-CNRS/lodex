@@ -130,6 +130,7 @@ describe('facet reducer', () => {
                         filter: '',
                         values: 'values',
                         total: 'total',
+                        inverted: false,
                     },
                 },
             });
@@ -340,6 +341,7 @@ describe('facet reducer', () => {
                     filter: 'filter',
                     currentPage: 'currentPage',
                     perPage: 'perPage',
+                    inverted: 'inverted',
                 },
             };
 
@@ -352,6 +354,7 @@ describe('facet reducer', () => {
                         filter: 'filter',
                         currentPage: 'currentPage',
                         perPage: 'perPage',
+                        inverted: 'inverted',
                     },
                 },
             });

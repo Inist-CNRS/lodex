@@ -144,6 +144,9 @@ export const getFacetValuesPerPage = (state, name) =>
 export const getFacetValuesFilter = (state, name) =>
     get(state, ['facetsValues', name, 'filter']);
 
+export const isFacetValuesInverted = (state, name) =>
+    get(state, ['facetsValues', name, 'inverted']);
+
 export const isFacetValuesChecked = (state, { name, value }) =>
     get(state, ['appliedFacets', name], []).indexOf(value) !== -1;
 
@@ -159,4 +162,5 @@ export const fromFacet = {
     getFacetValuesPage,
     getFacetValuesPerPage,
     getFacetValuesFilter,
+    isFacetValuesInverted,
 };
