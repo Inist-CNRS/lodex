@@ -51,17 +51,40 @@ export default handleActions(
         [APPLY_FACET]: (
             { appliedFacets, ...state },
             { payload: { name, value } },
-        ) => ({
-            ...state,
-            appliedFacets: {
-                ...appliedFacets,
-                [name]: value,
-            },
-        }),
-        [REMOVE_FACET]: ({ appliedFacets, ...state }, { payload: name }) => ({
-            ...state,
-            appliedFacets: omit(appliedFacets, name),
-        }),
+        ) => {
+            const prevValues = appliedFacets[name] || [];
+            const newValues = prevValues.concat(value);
+
+            return {
+                ...state,
+                appliedFacets: {
+                    ...appliedFacets,
+                    [name]: newValues,
+                },
+            };
+        },
+        [REMOVE_FACET]: (
+            { appliedFacets, ...state },
+            { payload: { name, value } },
+        ) => {
+            const prevValues = appliedFacets[name] || [];
+            const newValues = prevValues.filter(v => v !== value);
+
+            if (!newValues.length) {
+                return {
+                    ...state,
+                    appliedFacets: omit(appliedFacets, name),
+                };
+            }
+
+            return {
+                ...state,
+                appliedFacets: {
+                    ...appliedFacets,
+                    [name]: newValues,
+                },
+            };
+        },
         [combineActions(LOAD_FACET_VALUES_SUCCESS, FACET_VALUE_CHANGE)]: (
             state,
             action,
@@ -113,7 +136,7 @@ export const getFacetValuesFilter = (state, name) =>
     get(state, ['facetsValues', name, 'filter']);
 
 export const isFacetValuesChecked = (state, { name, value }) =>
-    state.appliedFacets[name] === value;
+    get(state, ['appliedFacets', name], []).indexOf(value) !== -1;
 
 export const fromFacet = {
     getAppliedFacets,
