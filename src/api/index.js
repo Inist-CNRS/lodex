@@ -2,12 +2,13 @@ import Koa from 'koa';
 import config from 'config';
 import mount from 'koa-mount';
 import cors from 'kcors';
+import koaQs from 'koa-qs';
 
 import { httpLogger } from './services/logger';
 import controller from './controller';
 
 const env = process.env.NODE_ENV;
-const app = new Koa();
+const app = koaQs(new Koa());
 
 app.use(cors());
 
