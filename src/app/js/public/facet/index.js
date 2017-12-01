@@ -53,7 +53,10 @@ export default handleActions(
             { payload: { name, value } },
         ) => {
             const prevValues = appliedFacets[name] || [];
-            const newValues = prevValues.concat(value);
+            const newValues =
+                prevValues.indexOf(value) === -1
+                    ? prevValues.concat(value)
+                    : prevValues;
 
             return {
                 ...state,
