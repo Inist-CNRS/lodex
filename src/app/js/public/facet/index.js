@@ -1,5 +1,6 @@
 import { createAction, handleActions, combineActions } from 'redux-actions';
 import get from 'lodash.get';
+import omit from 'lodash.omit';
 
 import facetValueReducer, {
     LOAD_FACET_VALUES_SUCCESS as LOAD_FACET_VALUES_SUCCESS2,
@@ -61,10 +62,7 @@ export default handleActions(
         }),
         REMOVE_FACET: ({ appliedFacets, ...state }, { payload: name }) => ({
             ...state,
-            appliedFacets: {
-                ...appliedFacets,
-                [name]: undefined,
-            },
+            appliedFacets: omit(appliedFacets, name),
         }),
         [combineActions(
             LOAD_FACET_VALUES_SUCCESS,
@@ -92,7 +90,13 @@ export const getSelectedFacetValues = state => ({
     total: state.selectedFacetValuesTotal,
 });
 
-export const getAppliedFacets = state => state.appliedFacets;
+export const getAppliedFacets = ({ appliedFacets }) => appliedFacets;
+
+export const getAppliedFacetList = ({ appliedFacets }) =>
+    Object.keys(appliedFacets).map(name => ({
+        name,
+        value: appliedFacets[name],
+    }));
 
 export const isFacetOpen = (state, name) => !!state.openedFacets[name];
 
@@ -113,6 +117,7 @@ export const isFacetValuesChecked = (state, { name, value }) =>
 
 export const fromFacet = {
     getAppliedFacets,
+    getAppliedFacetList,
     getSelectedFacet,
     getSelectedFacetValues,
     isFacetOpen,

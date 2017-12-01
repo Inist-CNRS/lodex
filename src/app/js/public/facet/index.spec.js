@@ -123,7 +123,8 @@ describe('facet reducer', () => {
                 facetsValues: {
                     foo: 'bar',
                     fieldName: {
-                        page: 0,
+                        currentPage: 0,
+                        perPage: 10,
                         values: 'values',
                         total: 'total',
                     },
@@ -180,7 +181,6 @@ describe('facet reducer', () => {
                 foo: 'bar',
                 appliedFacets: {
                     name1: 'value1',
-                    name2: undefined,
                     name3: 'value3',
                 },
             });
