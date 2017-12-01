@@ -17,10 +17,13 @@ export const addKeyToLiteral = (key, value) => (literal = {}) => {
     };
 };
 
-export default ({ match, facets, sort, page, perPage, uri } = {}) =>
+export default (
+    { match, facets, invertedFacets, sort, page, perPage, uri } = {},
+) =>
     compose(
         qs.stringify,
         addFacetListToLiteral(facets),
+        addKeyToLiteral('invertedFacets', invertedFacets),
         addKeyToLiteral('match', match),
         addKeyToLiteral('sortBy', sort.sortBy),
         addKeyToLiteral('sortDir', sort.sortDir),

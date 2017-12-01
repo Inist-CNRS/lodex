@@ -26,11 +26,17 @@ describe('dataset saga', () => {
             );
         });
 
-        it('should select fromDataset.getFilter', () => {
+        it('should select fromFacet.getInvertedFacets', () => {
             expect(
                 saga.next([{ field: { name: 'aFacet' }, value: 'aFacetValue' }])
                     .value,
-            ).toEqual(select(fromDataset.getFilter));
+            ).toEqual(select(fromFacet.getInvertedFacets));
+        });
+
+        it('should select fromDataset.getFilter', () => {
+            expect(saga.next(['facet']).value).toEqual(
+                select(fromDataset.getFilter),
+            );
         });
 
         it('should select fromDataset.getSort', () => {
@@ -58,6 +64,7 @@ describe('dataset saga', () => {
                     facets: [
                         { field: { name: 'aFacet' }, value: 'aFacetValue' },
                     ],
+                    invertedFacets: ['facet'],
                     sort: {
                         sortBy: 'field',
                         sortDir: 'ASC',
@@ -99,6 +106,7 @@ describe('dataset saga', () => {
         it('should put loadDatasetPageError action with error if any', () => {
             const failedSaga = handleLoadDatasetPageRequest({});
             failedSaga.next();
+            failedSaga.next([]);
             failedSaga.next([]);
             failedSaga.next();
             failedSaga.next();

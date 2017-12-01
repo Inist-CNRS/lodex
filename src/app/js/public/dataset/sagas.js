@@ -27,6 +27,7 @@ export function* handlePreLoadDatasetPage() {
 
 export function* handleLoadDatasetPageRequest({ payload }) {
     const facets = yield select(fromFacet.getAppliedFacets);
+    const invertedFacets = yield select(fromFacet.getInvertedFacets);
     const match = yield select(fromDataset.getFilter);
     const sort = yield select(fromDataset.getSort);
 
@@ -44,6 +45,7 @@ export function* handleLoadDatasetPageRequest({ payload }) {
     const request = yield select(fromUser.getLoadDatasetPageRequest, {
         match,
         facets,
+        invertedFacets,
         sort,
         page,
         perPage,
