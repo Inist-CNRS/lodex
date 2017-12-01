@@ -3,7 +3,7 @@ import { call, put, select, takeLatest } from 'redux-saga/effects';
 import {
     LOAD_FACET_VALUES,
     OPEN_FACET,
-    FACET_VALUE_CHANGE_PAGE,
+    FACET_VALUE_CHANGE,
     loadFacetValuesError,
     loadFacetValuesSuccess,
 } from './';
@@ -31,7 +31,7 @@ export function* handleLoadFacetValuesRequest({
 
 export default function* watchLoadPublicationRequest() {
     yield takeLatest(
-        [OPEN_FACET, LOAD_FACET_VALUES, FACET_VALUE_CHANGE_PAGE],
+        [OPEN_FACET, LOAD_FACET_VALUES, FACET_VALUE_CHANGE],
         handleLoadFacetValuesRequest,
     );
 }

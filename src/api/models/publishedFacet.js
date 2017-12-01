@@ -26,7 +26,7 @@ export default db => {
         const filters = { field };
 
         if (filter) {
-            filters.value = { $regex: `.*${filter}.*` };
+            filters.value = { $regex: `.*${filter}.*`, $options: 'i' };
         }
 
         return collection.findLimitFromSkip(
@@ -40,7 +40,7 @@ export default db => {
         const filters = { field };
 
         if (filter) {
-            filters.value = { $regex: `.*${filter}.*` };
+            filters.value = { $regex: `.*${filter}.*`, $options: 'i' };
         }
 
         return collection.count(filters);
