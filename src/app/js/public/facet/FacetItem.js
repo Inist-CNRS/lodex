@@ -11,9 +11,16 @@ import { openFacet } from './index';
 import { field as fieldPropType } from '../../propTypes';
 import FacetValueList from './FacetValueList';
 
+const styles = {
+    nested: {
+        padding: '0px 0px 8px',
+    },
+};
+
 const PureFacetItem = ({ onClick, isOpen, field, total }) => (
     <ListItem
         className={`facet-${getFieldClassName(field)}`}
+        nestedListStyle={styles.nested}
         key={field.name}
         primaryText={`${field.label} ${total ? `(${total})` : ''}`}
         onClick={onClick}

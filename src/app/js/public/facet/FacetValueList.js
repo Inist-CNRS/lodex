@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { List } from 'material-ui/List';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
@@ -28,9 +27,9 @@ const PureFacetValueList = ({
     filter,
     p: polyglot,
 }) => (
-    <List>
+    <div>
         <TextField
-            floatingLabelText={polyglot.t('filter_value', { field: label })}
+            hintText={polyglot.t('filter_value', { field: label })}
             value={filter}
             onChange={onFilterChange}
         />
@@ -48,7 +47,7 @@ const PureFacetValueList = ({
             perPage={perPage}
             onChange={onPageChange}
         />
-    </List>
+    </div>
 );
 
 PureFacetValueList.propTypes = {
