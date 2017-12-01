@@ -2,9 +2,11 @@ import { createAction, handleActions } from 'redux-actions';
 
 export const LOAD_FACET_VALUES_SUCCESS = 'LOAD_FACET_VALUES_SUCCESS';
 export const FACET_VALUE_CHANGE = 'FACET_VALUE_CHANGE';
+export const INVERT_FACET = 'INVERT_FACET';
 
 export const loadFacetValuesSuccess = createAction(LOAD_FACET_VALUES_SUCCESS);
 export const changeFacetValue = createAction(FACET_VALUE_CHANGE);
+export const invertFacet = createAction(INVERT_FACET);
 
 export const initialState = {
     values: [],
@@ -33,6 +35,10 @@ export default handleActions(
             currentPage,
             perPage,
             filter,
+            inverted,
+        }),
+        [INVERT_FACET]: (state, { payload: { inverted } }) => ({
+            ...state,
             inverted,
         }),
     },

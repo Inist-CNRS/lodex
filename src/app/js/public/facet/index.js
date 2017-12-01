@@ -5,8 +5,10 @@ import omit from 'lodash.omit';
 import facetValueReducer, {
     LOAD_FACET_VALUES_SUCCESS as LOAD_FACET_VALUES_SUCCESS2,
     FACET_VALUE_CHANGE as FACET_VALUE_CHANGE2,
+    INVERT_FACET as INVERT_FACET2,
     loadFacetValuesSuccess as loadFacetValuesSuccess2,
     changeFacetValue as changeFacetValue2,
+    invertFacet as invertFacet2,
 } from './facetValueReducer';
 
 export const OPEN_FACET = 'OPEN_FACET';
@@ -17,6 +19,7 @@ export const LOAD_FACET_VALUES = 'LOAD_FACET_VALUES';
 export const LOAD_FACET_VALUES_ERROR = 'LOAD_FACET_VALUES_ERROR';
 export const LOAD_FACET_VALUES_SUCCESS = LOAD_FACET_VALUES_SUCCESS2;
 export const FACET_VALUE_CHANGE = FACET_VALUE_CHANGE2;
+export const INVERT_FACET = INVERT_FACET2;
 
 export const openFacet = createAction(OPEN_FACET);
 export const applyFacet = createAction(APPLY_FACET);
@@ -26,6 +29,7 @@ export const loadFacetValues = createAction(LOAD_FACET_VALUES);
 export const loadFacetValuesError = createAction(LOAD_FACET_VALUES_ERROR);
 export const loadFacetValuesSuccess = loadFacetValuesSuccess2;
 export const changeFacetValue = changeFacetValue2;
+export const invertFacet = invertFacet2;
 
 export const initialState = {
     error: null,

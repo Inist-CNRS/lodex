@@ -14,7 +14,7 @@ import {
 import FacetValueItem from './FacetValueItem';
 import Pagination from '../../lib/components/Pagination';
 import { fromFacet } from '../selectors';
-import { changeFacetValue } from './';
+import { changeFacetValue, invertFacet } from './';
 
 const PureFacetValueList = ({
     name,
@@ -84,6 +84,7 @@ const mapStateToProps = (state, { name }) => ({
 
 const mapDispatchtoProps = {
     changeFacetValue,
+    invertFacet,
 };
 
 export default compose(
@@ -108,19 +109,7 @@ export default compose(
                 inverted,
                 filter,
             }),
-        onInvertChange: ({
-            name,
-            currentPage,
-            perPage,
-            filter,
-            changeFacetValue,
-        }) => (_, inverted) =>
-            changeFacetValue({
-                name,
-                currentPage,
-                perPage,
-                inverted,
-                filter,
-            }),
+        onInvertChange: ({ name, invertFacet }) => (_, inverted) =>
+            invertFacet({ name, inverted }),
     }),
 )(PureFacetValueList);
