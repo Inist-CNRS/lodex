@@ -12,7 +12,7 @@ import {
     loadDatasetPageError,
 } from './';
 
-import { APPLY_FACET, REMOVE_FACET } from '../facet';
+import { APPLY_FACET, REMOVE_FACET, CLEAR_FACET } from '../facet';
 import { fromUser } from '../../sharedSelectors';
 import fetchSaga from '../../lib/sagas/fetchSaga';
 import { fromDataset, fromFacet } from '../selectors';
@@ -70,6 +70,7 @@ export default function*() {
                 APPLY_FILTER,
                 APPLY_FACET,
                 REMOVE_FACET,
+                CLEAR_FACET,
                 SORT_DATASET,
                 CHANGE_PAGE,
             ],

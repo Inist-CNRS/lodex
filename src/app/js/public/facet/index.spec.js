@@ -6,6 +6,7 @@ import facetReducer, {
     LOAD_FACET_VALUES_SUCCESS,
     APPLY_FACET,
     REMOVE_FACET,
+    CLEAR_FACET,
     FACET_VALUE_CHANGE,
 } from './';
 
@@ -285,6 +286,30 @@ describe('facet reducer', () => {
             const action = {
                 type: REMOVE_FACET,
                 payload: { name: 'name', value: 'value' },
+            };
+
+            expect(facetReducer(state, action)).toEqual({
+                foo: 'bar',
+                appliedFacets: {
+                    foo: 'bar',
+                },
+            });
+        });
+    });
+
+    describe('CLEAR_FACET', () => {
+        it('should clear appliedFacet[payload]', () => {
+            const state = {
+                foo: 'bar',
+                appliedFacets: {
+                    foo: 'bar',
+                    name: ['value1', 'value2'],
+                },
+            };
+
+            const action = {
+                type: CLEAR_FACET,
+                payload: 'name',
             };
 
             expect(facetReducer(state, action)).toEqual({
