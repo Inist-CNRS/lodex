@@ -36,6 +36,10 @@ export const addFacetToFilters = (facets, facetFieldNames) => filters => {
         $and: facetFieldNames.reduce((acc, name) => {
             if (!facets[name]) return acc;
 
+            if (!Array.isArray(facets[name])) {
+                return [...acc, { [`versions.${name}`]: facets[name] }];
+            }
+
             if (facets[name].length === 1) {
                 return [...acc, { [`versions.${name}`]: facets[name][0] }];
             }

@@ -388,6 +388,47 @@ describe('publishedDataset', () => {
             });
         });
 
+        it('should add single facet in array to filters', () => {
+            const facets = {
+                facet: ['value'],
+                otherFacet: ['other value'],
+            };
+            const facetNames = ['facet', 'otherFacet'];
+            expect(
+                addFacetToFilters(facets, facetNames)({
+                    filter: 'data',
+                }),
+            ).toEqual({
+                filter: 'data',
+                $and: [
+                    { 'versions.facet': 'value' },
+                    { 'versions.otherFacet': 'other value' },
+                ],
+            });
+        });
+
+        it('should add multiple facet to filters', () => {
+            const facets = {
+                facet: ['value', 'other value'],
+            };
+            const facetNames = ['facet', 'otherFacet'];
+            expect(
+                addFacetToFilters(facets, facetNames)({
+                    filter: 'data',
+                }),
+            ).toEqual({
+                filter: 'data',
+                $and: [
+                    {
+                        $or: [
+                            { 'versions.facet': 'value' },
+                            { 'versions.facet': 'other value' },
+                        ],
+                    },
+                ],
+            });
+        });
+
         it('should ignore facet not in facetNames', () => {
             const facets = {
                 facet: 'value',
