@@ -18,10 +18,11 @@ const styles = {
 export const AppliedFacetListComponent = ({ facets, removeFacet }) =>
     facets.length ? (
         <div style={styles.container}>
-            {facets.map(facet => (
+            {facets.map(({ name, value }) => (
                 <AppliedFacet
-                    key={`${facet.field.name}-${facet.value}`}
-                    facet={facet}
+                    key={`${name}-${value}`}
+                    name={name}
+                    value={value}
                     onRemove={removeFacet}
                 />
             ))}
@@ -34,7 +35,7 @@ AppliedFacetListComponent.propTypes = {
 };
 
 const mapStateToProps = state => ({
-    facets: fromFacet.getAppliedFacets(state),
+    facets: fromFacet.getAppliedFacetList(state),
 });
 
 const mapDispatchToProps = { removeFacet: removeFacetAction };

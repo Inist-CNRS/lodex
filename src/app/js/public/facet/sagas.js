@@ -2,31 +2,36 @@ import { call, put, select, takeLatest } from 'redux-saga/effects';
 
 import {
     LOAD_FACET_VALUES,
-    SELECT_FACET,
+    OPEN_FACET,
+    FACET_VALUE_CHANGE,
     loadFacetValuesError,
     loadFacetValuesSuccess,
 } from './';
 import { fromUser } from '../../sharedSelectors';
 import fetchSaga from '../../lib/sagas/fetchSaga';
 
-export function* handleLoadFacetValuesRequest({ payload: { field, filter } }) {
+export function* handleLoadFacetValuesRequest({
+    payload: { name, filter, currentPage, perPage },
+}) {
     const request = yield select(fromUser.getLoadFacetValuesRequest, {
-        field: field.name,
+        field: name,
         filter,
+        currentPage,
+        perPage,
     });
 
-    const { error, response: publication } = yield call(fetchSaga, request);
+    const { error, response: values } = yield call(fetchSaga, request);
 
     if (error) {
         return yield put(loadFacetValuesError(error));
     }
 
-    return yield put(loadFacetValuesSuccess(publication));
+    return yield put(loadFacetValuesSuccess({ name, values }));
 }
 
 export default function* watchLoadPublicationRequest() {
     yield takeLatest(
-        [SELECT_FACET, LOAD_FACET_VALUES],
+        [OPEN_FACET, LOAD_FACET_VALUES, FACET_VALUE_CHANGE],
         handleLoadFacetValuesRequest,
     );
 }

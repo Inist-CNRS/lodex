@@ -1,10 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import compose from 'recompose/compose';
 import withHandlers from 'recompose/withHandlers';
 import Chip from 'material-ui/Chip';
 
-import { facet as facetPropTypes } from '../../propTypes';
+import { field as fieldPropTypes } from '../../propTypes';
 import getFieldClassName from '../../lib/getFieldClassName';
+import { fromFields } from '../../sharedSelectors';
 
 const styles = {
     chip: {
@@ -13,7 +16,8 @@ const styles = {
 };
 
 export const AppliedFacetComponent = ({
-    facet: { field, value },
+    value,
+    field,
     handleRequestDelete,
 }) => (
     <Chip
@@ -26,11 +30,18 @@ export const AppliedFacetComponent = ({
 );
 
 AppliedFacetComponent.propTypes = {
-    facet: facetPropTypes.isRequired,
+    value: PropTypes.string.isRequired,
+    field: fieldPropTypes.isRequired,
     handleRequestDelete: PropTypes.func.isRequired,
 };
 
-export default withHandlers({
-    handleRequestDelete: ({ facet: { field }, onRemove }) => () =>
-        onRemove(field),
-})(AppliedFacetComponent);
+const mapStateToProps = (state, { name }) => ({
+    field: fromFields.getFieldByName(state, name),
+});
+
+export default compose(
+    connect(mapStateToProps),
+    withHandlers({
+        handleRequestDelete: ({ name, onRemove }) => () => onRemove(name),
+    }),
+)(AppliedFacetComponent);

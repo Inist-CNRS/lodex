@@ -21,6 +21,11 @@ export const facet = PropTypes.shape({
     value: PropTypes.string.isRequired,
 });
 
+export const facetValue = PropTypes.shape({
+    value: PropTypes.string.isRequired,
+    count: PropTypes.number.isRequired,
+});
+
 export const resource = PropTypes.shape({
     uri: PropTypes.string,
 });

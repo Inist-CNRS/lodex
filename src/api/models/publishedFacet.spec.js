@@ -34,7 +34,7 @@ describe('publishedFacet model', () => {
 
                 expect(collection.find).toHaveBeenCalledWith({
                     field: 'foo',
-                    value: { $regex: '.*filter.*' },
+                    value: { $regex: '.*filter.*', $options: 'i' },
                 });
             });
         });
@@ -54,7 +54,7 @@ describe('publishedFacet model', () => {
 
                 expect(collection.count).toHaveBeenCalledWith({
                     field: 'foo',
-                    value: { $regex: '.*filter.*' },
+                    value: { $regex: '.*filter.*', $options: 'i' },
                 });
             });
         });

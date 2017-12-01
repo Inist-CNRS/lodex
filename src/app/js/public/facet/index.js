@@ -1,53 +1,81 @@
-import { createAction, handleActions } from 'redux-actions';
+import { createAction, handleActions, combineActions } from 'redux-actions';
+import get from 'lodash.get';
+import omit from 'lodash.omit';
 
-export const SELECT_FACET = 'SELECT_FACET';
+import facetValueReducer, {
+    LOAD_FACET_VALUES_SUCCESS as LOAD_FACET_VALUES_SUCCESS2,
+    FACET_VALUE_CHANGE as FACET_VALUE_CHANGE2,
+    loadFacetValuesSuccess as loadFacetValuesSuccess2,
+    changeFacetValue as changeFacetValue2,
+} from './facetValueReducer';
+
+export const OPEN_FACET = 'OPEN_FACET';
 export const APPLY_FACET = 'APPLY_FACET';
 export const REMOVE_FACET = 'REMOVE_FACET';
 export const LOAD_FACET_VALUES = 'LOAD_FACET_VALUES';
 export const LOAD_FACET_VALUES_ERROR = 'LOAD_FACET_VALUES_ERROR';
-export const LOAD_FACET_VALUES_SUCCESS = 'LOAD_FACET_VALUES_SUCCESS';
+export const LOAD_FACET_VALUES_SUCCESS = LOAD_FACET_VALUES_SUCCESS2;
+export const FACET_VALUE_CHANGE = FACET_VALUE_CHANGE2;
 
-export const selectFacet = createAction(SELECT_FACET);
+export const openFacet = createAction(OPEN_FACET);
 export const applyFacet = createAction(APPLY_FACET);
 export const removeFacet = createAction(REMOVE_FACET);
 export const loadFacetValues = createAction(LOAD_FACET_VALUES);
 export const loadFacetValuesError = createAction(LOAD_FACET_VALUES_ERROR);
-export const loadFacetValuesSuccess = createAction(LOAD_FACET_VALUES_SUCCESS);
+export const loadFacetValuesSuccess = loadFacetValuesSuccess2;
+export const changeFacetValue = changeFacetValue2;
 
 export const initialState = {
     error: null,
     selectedFacet: null,
     selectedFacetValues: [],
     selectedFacetValuesTotal: 0,
-    facets: [],
+    appliedFacets: {},
+    facetsValues: {},
+    openedFacets: {},
 };
 
 export default handleActions(
     {
-        SELECT_FACET: (state, { payload: { field: selectedFacet } }) => ({
+        [OPEN_FACET]: (state, { payload: { name } }) => ({
             ...state,
-            selectedFacet,
+            openedFacets: {
+                ...state.openedFacets,
+                [name]: !state.openedFacets[name],
+            },
         }),
-        LOAD_FACET_VALUES_ERROR: (state, { payload: error }) => ({
+        [LOAD_FACET_VALUES_ERROR]: (state, { payload: error }) => ({
             ...state,
             error: error.message || error,
         }),
-        LOAD_FACET_VALUES_SUCCESS: (state, { payload: { data, total } }) => ({
+        [APPLY_FACET]: (
+            { appliedFacets, ...state },
+            { payload: { name, value } },
+        ) => ({
             ...state,
-            selectedFacetValues: data,
-            selectedFacetValuesTotal: total,
+            appliedFacets: {
+                ...appliedFacets,
+                [name]: value,
+            },
         }),
-        APPLY_FACET: ({ facets, ...state }, { payload: facet }) => ({
+        [REMOVE_FACET]: ({ appliedFacets, ...state }, { payload: name }) => ({
             ...state,
-            facets: [...facets, facet],
-            selectedFacet: null,
-            selectedFacetValues: [],
-            selectedFacetValuesTotal: 0,
+            appliedFacets: omit(appliedFacets, name),
         }),
-        REMOVE_FACET: ({ facets, ...state }, { payload: field }) => ({
-            ...state,
-            facets: facets.filter(f => f.field.name !== field.name),
-        }),
+        [combineActions(LOAD_FACET_VALUES_SUCCESS, FACET_VALUE_CHANGE)]: (
+            state,
+            action,
+        ) => {
+            const name = action.payload.name;
+
+            return {
+                ...state,
+                facetsValues: {
+                    ...state.facetsValues,
+                    [name]: facetValueReducer(state.facetsValues[name], action),
+                },
+            };
+        },
     },
     initialState,
 );
@@ -59,10 +87,44 @@ export const getSelectedFacetValues = state => ({
     total: state.selectedFacetValuesTotal,
 });
 
-export const getAppliedFacets = state => state.facets;
+export const getAppliedFacets = ({ appliedFacets }) => appliedFacets;
+
+export const getAppliedFacetList = ({ appliedFacets }) =>
+    Object.keys(appliedFacets).map(name => ({
+        name,
+        value: appliedFacets[name],
+    }));
+
+export const isFacetOpen = (state, name) => !!state.openedFacets[name];
+
+export const getFacetValues = (state, name) =>
+    get(state, ['facetsValues', name, 'values'], []);
+
+export const getFacetValuesTotal = (state, name) =>
+    get(state, ['facetsValues', name, 'total'], null);
+
+export const getFacetValuesPage = (state, name) =>
+    get(state, ['facetsValues', name, 'currentPage']);
+
+export const getFacetValuesPerPage = (state, name) =>
+    get(state, ['facetsValues', name, 'perPage']);
+
+export const getFacetValuesFilter = (state, name) =>
+    get(state, ['facetsValues', name, 'filter']);
+
+export const isFacetValuesChecked = (state, { name, value }) =>
+    state.appliedFacets[name] === value;
 
 export const fromFacet = {
     getAppliedFacets,
+    getAppliedFacetList,
     getSelectedFacet,
     getSelectedFacetValues,
+    isFacetOpen,
+    getFacetValues,
+    isFacetValuesChecked,
+    getFacetValuesTotal,
+    getFacetValuesPage,
+    getFacetValuesPerPage,
+    getFacetValuesFilter,
 };

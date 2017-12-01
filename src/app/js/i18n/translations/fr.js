@@ -323,4 +323,5 @@ export default {
         'Format inapproprié pour %{label}, simple valeur attendue mais tableau reçu, essayer le format liste',
     field_width: 'largeur',
     graph_list: 'graph list',
+    filter_value: 'filter %{field}',
 };

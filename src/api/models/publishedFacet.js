@@ -22,21 +22,25 @@ export default db => {
             .sort({ value: 1 })
             .toArray();
 
-    collection.findValuesForField = (field, filter, perPage = 10) => {
+    collection.findValuesForField = (field, filter, page = 0, perPage = 10) => {
         const filters = { field };
 
         if (filter) {
-            filters.value = { $regex: `.*${filter}.*` };
+            filters.value = { $regex: `.*${filter}.*`, $options: 'i' };
         }
 
-        return collection.findLimitFromSkip(perPage, 0 * perPage, filters);
+        return collection.findLimitFromSkip(
+            parseInt(perPage, 10),
+            page * perPage,
+            filters,
+        );
     };
 
     collection.countValuesForField = (field, filter) => {
         const filters = { field };
 
         if (filter) {
-            filters.value = { $regex: `.*${filter}.*` };
+            filters.value = { $regex: `.*${filter}.*`, $options: 'i' };
         }
 
         return collection.count(filters);

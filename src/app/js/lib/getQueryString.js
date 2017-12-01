@@ -1,14 +1,10 @@
 import compose from 'lodash.compose';
 import qs from 'qs';
 
-export const addFacetListToLiteral = facetList => (literal = {}) =>
-    facetList.reduce(
-        (acc, facet) => ({
-            ...acc,
-            [facet.field.name]: facet.value,
-        }),
-        literal,
-    );
+export const addFacetListToLiteral = facets => (literal = {}) => ({
+    ...literal,
+    ...facets,
+});
 
 export const addKeyToLiteral = (key, value) => (literal = {}) => {
     if (!value) {
