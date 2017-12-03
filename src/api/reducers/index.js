@@ -8,6 +8,7 @@ import merge from './merge';
 import stats from './stats';
 import ventilate from './ventilate';
 import graph from './graph';
+import pairing from './pairing';
 import total from './total';
 
 const reducers = {
@@ -21,6 +22,7 @@ const reducers = {
     stats,
     ventilate,
     graph,
+    pairing,
     total,
 };
 
