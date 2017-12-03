@@ -101,6 +101,7 @@ export const runRoutine = async (ctx, routineCalled) => {
 const app = new Koa();
 
 app.use(route.get('/:routineCalled', runRoutine));
-app.use(route.get('/:routineCalled/:fieldCalled/', runRoutine));
+app.use(route.get('/:routineCalled/:field1/', runRoutine));
+app.use(route.get('/:routineCalled/:field1/:field2/', runRoutine));
 
 export default app;
