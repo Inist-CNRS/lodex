@@ -17,7 +17,9 @@ const exporter = (config, fields, characteristics, stream) =>
                 ),
             }),
         )
-        .pipe(ezs('convertToExtendedNquads', { config }));
+        .pipe(ezs('convertToExtendedNquads', { config }))
+        .pipe(ezs('debug'))
+        .pipe(ezs('convertJsonLdToNQuads'));
 
 exporter.extension = 'nq';
 exporter.mimeType = 'application/n-quads';
