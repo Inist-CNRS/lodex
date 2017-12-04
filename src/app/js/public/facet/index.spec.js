@@ -134,8 +134,8 @@ describe('facet reducer', () => {
                         total: 'total',
                         inverted: false,
                         sort: {
-                            by: 'count',
-                            dir: 'DESC',
+                            sortBy: 'count',
+                            sortDir: 'DESC',
                         },
                     },
                 },
@@ -399,7 +399,7 @@ describe('facet reducer', () => {
     });
 
     describe('FACET_VALUE_SORT', () => {
-        it('should replace sortDir ASC by DESC if sortBy equal sort.by', () => {
+        it('should replace sortDir ASC by DESC if sortBy equal sort.sortBy', () => {
             const state = {
                 foo: 'bar',
                 facetsValues: {
@@ -407,8 +407,8 @@ describe('facet reducer', () => {
                     name: {
                         foo: 'bar',
                         sort: {
-                            by: 'sortBy',
-                            dir: 'DESC',
+                            sortBy: 'sortBy',
+                            sortDir: 'DESC',
                         },
                     },
                 },
@@ -418,7 +418,7 @@ describe('facet reducer', () => {
                 type: FACET_VALUE_SORT,
                 payload: {
                     name: 'name',
-                    sortBy: 'sortBy',
+                    nextSortBy: 'sortBy',
                 },
             };
 
@@ -429,15 +429,15 @@ describe('facet reducer', () => {
                     name: {
                         foo: 'bar',
                         sort: {
-                            by: 'sortBy',
-                            dir: 'ASC',
+                            sortBy: 'sortBy',
+                            sortDir: 'ASC',
                         },
                     },
                 },
             });
         });
 
-        it('should replace sortDir DESC by ASC if sortBy equal sort.by', () => {
+        it('should replace sortDir DESC by ASC if sortBy equal sort.sortBy', () => {
             const state = {
                 foo: 'bar',
                 facetsValues: {
@@ -445,8 +445,8 @@ describe('facet reducer', () => {
                     name: {
                         foo: 'bar',
                         sort: {
-                            by: 'sortBy',
-                            dir: 'ASC',
+                            sortBy: 'sortBy',
+                            sortDir: 'ASC',
                         },
                     },
                 },
@@ -456,7 +456,7 @@ describe('facet reducer', () => {
                 type: FACET_VALUE_SORT,
                 payload: {
                     name: 'name',
-                    sortBy: 'sortBy',
+                    nextSortBy: 'sortBy',
                 },
             };
 
@@ -467,15 +467,15 @@ describe('facet reducer', () => {
                     name: {
                         foo: 'bar',
                         sort: {
-                            by: 'sortBy',
-                            dir: 'DESC',
+                            sortBy: 'sortBy',
+                            sortDir: 'DESC',
                         },
                     },
                 },
             });
         });
 
-        it('should set sort.by to sortBy and sort.dir to DESC if sortDir different from sort.dir', () => {
+        it('should set sort.sortBy to nextSortBy and sort.dir to DESC if sortDir different from sort.sortDir', () => {
             const state = {
                 foo: 'bar',
                 facetsValues: {
@@ -483,8 +483,8 @@ describe('facet reducer', () => {
                     name: {
                         foo: 'bar',
                         sort: {
-                            by: 'other',
-                            dir: 'ASC',
+                            sortBy: 'other',
+                            sortDir: 'ASC',
                         },
                     },
                 },
@@ -494,7 +494,7 @@ describe('facet reducer', () => {
                 type: FACET_VALUE_SORT,
                 payload: {
                     name: 'name',
-                    sortBy: 'sortBy',
+                    nextSortBy: 'sortBy',
                 },
             };
 
@@ -505,8 +505,8 @@ describe('facet reducer', () => {
                     name: {
                         foo: 'bar',
                         sort: {
-                            by: 'sortBy',
-                            dir: 'DESC',
+                            sortBy: 'sortBy',
+                            sortDir: 'DESC',
                         },
                     },
                 },

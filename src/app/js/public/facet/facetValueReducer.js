@@ -18,8 +18,8 @@ export const initialState = {
     filter: '',
     inverted: false,
     sort: {
-        by: 'count',
-        dir: 'DESC',
+        sortBy: 'count',
+        sortDir: 'DESC',
     },
 };
 
@@ -43,13 +43,16 @@ export default handleActions(
             filter,
         }),
         [FACET_VALUE_SORT]: (
-            { sort: { by, dir }, ...state },
-            { payload: { sortBy } },
+            { sort: { sortBy, sortDir }, ...state },
+            { payload: { nextSortBy } },
         ) => ({
             ...state,
             sort: {
-                by: sortBy,
-                dir: by === sortBy && dir === 'DESC' ? 'ASC' : 'DESC',
+                sortBy: nextSortBy,
+                sortDir:
+                    sortBy === nextSortBy && sortDir === 'DESC'
+                        ? 'ASC'
+                        : 'DESC',
             },
         }),
         [INVERT_FACET]: (state, { payload: { inverted } }) => ({

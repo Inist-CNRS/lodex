@@ -47,7 +47,7 @@ const styles = {
     },
 };
 
-const PureGraph = ({ graphField, resource, p: polyglot }) => (
+const PureGraphPage = ({ graphField, resource, p: polyglot }) => (
     <div style={styles.container}>
         <div style={styles.centerColumn}>
             <Drawer label={polyglot.t('graph_list')}>
@@ -76,7 +76,7 @@ const PureGraph = ({ graphField, resource, p: polyglot }) => (
     </div>
 );
 
-PureGraph.propTypes = {
+PureGraphPage.propTypes = {
     graphField: fieldPropTypes,
     resource: PropTypes.object.isRequired,
     p: polyglotPropTypes.isRequired,
@@ -87,4 +87,4 @@ const mapStateToProps = (state, { params: { name } }) => ({
     resource: fromCharacteristic.getCharacteristicsAsResource(state),
 });
 
-export default compose(connect(mapStateToProps), translate)(PureGraph);
+export default compose(connect(mapStateToProps), translate)(PureGraphPage);

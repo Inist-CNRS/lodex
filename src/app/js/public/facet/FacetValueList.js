@@ -62,8 +62,8 @@ const PureFacetValueList = ({
                     <SortButton
                         name="value"
                         label={polyglot.t('value')}
-                        sortDir={sort.dir}
-                        sortBy={sort.by}
+                        sortDir={sort.sortDir}
+                        sortBy={sort.sortBy}
                         sort={onSortChange}
                     />
                 </div>
@@ -71,8 +71,8 @@ const PureFacetValueList = ({
                     <SortButton
                         name="count"
                         label={polyglot.t('count')}
-                        sortDir={sort.dir}
-                        sortBy={sort.by}
+                        sortDir={sort.sortDir}
+                        sortBy={sort.sortBy}
                         sort={onSortChange}
                     />
                 </div>
@@ -111,8 +111,8 @@ PureFacetValueList.propTypes = {
     onInvertChange: PropTypes.func.isRequired,
     onSortChange: PropTypes.func.isRequired,
     sort: PropTypes.shape({
-        by: PropTypes.string,
-        dir: PropTypes.oneOf(['ASC', 'DESC']),
+        sortBy: PropTypes.string,
+        sortDir: PropTypes.oneOf(['ASC', 'DESC']),
     }).isRequired,
     p: polyglotPropType,
 };
@@ -159,10 +159,10 @@ export default compose(
             }),
         onInvertChange: ({ name, invertFacet }) => (_, inverted) =>
             invertFacet({ name, inverted }),
-        onSortChange: ({ name, sortFacetValue }) => sortBy =>
+        onSortChange: ({ name, sortFacetValue }) => nextSortBy =>
             sortFacetValue({
                 name,
-                sortBy,
+                nextSortBy,
             }),
     }),
 )(PureFacetValueList);

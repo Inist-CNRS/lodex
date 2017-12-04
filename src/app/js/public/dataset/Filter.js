@@ -25,11 +25,8 @@ const styles = {
     },
 };
 
-// export class FilterComponent extends Component {
-//     handleFilterChange
-// }
 export const FilterComponent = ({
-    getFilter,
+    filter,
     handleFilterChange,
     hasSearchableFields,
     isDatasetLoading,
@@ -46,7 +43,7 @@ export const FilterComponent = ({
             </div>
             <TextField
                 className="filter"
-                value={getFilter}
+                value={filter}
                 hintText={polyglot.t('filter')}
                 onChange={(_, e) => handleFilterChange(e)}
                 style={styles.textbox}
@@ -54,18 +51,22 @@ export const FilterComponent = ({
         </ToolbarGroup>
     ) : null;
 
+FilterComponent.defaultProps = {
+    filter: '',
+};
+
 FilterComponent.propTypes = {
     handleFilterChange: PropTypes.func.isRequired,
     hasSearchableFields: PropTypes.bool.isRequired,
     isDatasetLoading: PropTypes.bool.isRequired,
-    getFilter: PropTypes.string.isRequired,
+    filter: PropTypes.string,
     p: polyglotPropTypes.isRequired,
 };
 
 const mapStateToProps = state => ({
     isDatasetLoading: fromDataset.isDatasetLoading(state),
     hasSearchableFields: fromFields.hasSearchableFields(state),
-    getFilter: fromDataset.getFilter(state),
+    filter: fromDataset.getFilter(state),
 });
 
 const mapDispatchToProps = {
