@@ -1,4 +1,3 @@
-import jsonld from 'jsonld';
 import validUrl from 'valid-url';
 import get from 'lodash.get';
 
@@ -65,42 +64,36 @@ module.exports = function convertToExtendedNquads(data, feed) {
     }
 
     const config = this.getParam('config', {});
-    const context = this.getParam('context', getContext(config));
 
-    const hits = data.content.hits;
+    if (!this.searchKeys) {
+        this.context = getContext(config);
+        this.searchKeys = Object.keys(this.context).filter(
+            v =>
+                !Object.keys(data.content.hits[0]).includes(v) &&
+                v !== config.istexQuery.linked,
+        );
+    }
 
-    const searchKeys = Object.keys(context).filter(
-        v =>
-            !Object.keys(hits[0]).includes(v) && v !== config.istexQuery.linked,
-    );
+    const hits = data.content.hits.map(hit => {
+        const newHit = {
+            ...hit,
+        };
+        newHit['@id'] = `https://api.istex.fr/${hit.arkIstex}`;
+        newHit['@type'] = 'http://purl.org/ontology/bibo/Document';
+        newHit[config.istexQuery.linked] = data.uri;
 
-    hits.forEach(hit => {
-        hit['@id'] = `https://api.istex.fr/${hit.arkIstex}`;
-        hit['@type'] = 'http://purl.org/ontology/bibo/Document';
-        hit[config.istexQuery.linked] = data.uri;
-
-        searchKeys.forEach(key => {
+        this.searchKeys.forEach(key => {
             const dataFromKey = get(hit, key);
-            hit[key] = formatData(dataFromKey);
+            newHit[key] = formatData(dataFromKey);
         });
-        delete hit.id;
+        //        delete newHit.id;
+        return newHit;
     });
 
     const doc = {
-        '@context': context,
+        '@context': this.context,
         '@graph': hits,
     };
 
-    return jsonld.toRDF(
-        doc,
-        { format: 'application/nquads' },
-        (err, nquads) => {
-            if (err) {
-                // eslint-disable-next-line
-            console.error('toRDF: ', err);
-                return feed.end();
-            }
-            return feed.send(nquads);
-        },
-    );
+    feed.send(doc);
 };
