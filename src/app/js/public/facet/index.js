@@ -6,9 +6,11 @@ import facetValueReducer, {
     LOAD_FACET_VALUES_SUCCESS as LOAD_FACET_VALUES_SUCCESS2,
     FACET_VALUE_CHANGE as FACET_VALUE_CHANGE2,
     INVERT_FACET as INVERT_FACET2,
+    FACET_VALUE_SORT as FACET_VALUE_SORT2,
     loadFacetValuesSuccess as loadFacetValuesSuccess2,
     changeFacetValue as changeFacetValue2,
     invertFacet as invertFacet2,
+    sortFacetValue as sortFacetValue2,
 } from './facetValueReducer';
 
 export const OPEN_FACET = 'OPEN_FACET';
@@ -20,6 +22,7 @@ export const LOAD_FACET_VALUES_ERROR = 'LOAD_FACET_VALUES_ERROR';
 export const LOAD_FACET_VALUES_SUCCESS = LOAD_FACET_VALUES_SUCCESS2;
 export const FACET_VALUE_CHANGE = FACET_VALUE_CHANGE2;
 export const INVERT_FACET = INVERT_FACET2;
+export const FACET_VALUE_SORT = FACET_VALUE_SORT2;
 
 export const openFacet = createAction(OPEN_FACET);
 export const applyFacet = createAction(APPLY_FACET);
@@ -30,6 +33,7 @@ export const loadFacetValuesError = createAction(LOAD_FACET_VALUES_ERROR);
 export const loadFacetValuesSuccess = loadFacetValuesSuccess2;
 export const changeFacetValue = changeFacetValue2;
 export const invertFacet = invertFacet2;
+export const sortFacetValue = sortFacetValue2;
 
 export const initialState = {
     error: null,
@@ -102,6 +106,7 @@ export default handleActions(
             LOAD_FACET_VALUES_SUCCESS,
             FACET_VALUE_CHANGE,
             INVERT_FACET,
+            FACET_VALUE_SORT,
         )]: (state, action) => {
             const name = action.payload.name;
 
@@ -149,6 +154,9 @@ export const getFacetValuesPerPage = (state, name) =>
 export const getFacetValuesFilter = (state, name) =>
     get(state, ['facetsValues', name, 'filter']);
 
+export const getFacetValuesSort = (state, name) =>
+    get(state, ['facetsValues', name, 'sort'], {});
+
 export const isFacetValuesInverted = (state, name) =>
     get(state, ['facetsValues', name, 'inverted']);
 
@@ -170,6 +178,7 @@ export const fromFacet = {
     getFacetValuesPage,
     getFacetValuesPerPage,
     getFacetValuesFilter,
+    getFacetValuesSort,
     isFacetValuesInverted,
     getInvertedFacets,
 };
