@@ -15,6 +15,7 @@ export const getPage = async ctx => {
         match,
         sortBy,
         sortDir,
+        invertedFacets = [],
         ...facets
     } = ctx.request.query;
 
@@ -24,16 +25,17 @@ export const getPage = async ctx => {
     const searchableFieldNames = await ctx.field.findSearchableNames();
     const facetFieldNames = await ctx.field.findFacetNames();
 
-    const { data, total } = await ctx.publishedDataset.findPage(
-        intPage,
-        intPerPage,
+    const { data, total } = await ctx.publishedDataset.findPage({
+        page: intPage,
+        perPage: intPerPage,
         sortBy,
         sortDir,
         match,
         facets,
+        invertedFacets,
         searchableFieldNames,
         facetFieldNames,
-    );
+    });
 
     ctx.body = {
         total,

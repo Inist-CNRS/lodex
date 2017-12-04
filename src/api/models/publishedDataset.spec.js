@@ -4,6 +4,7 @@ import publishedDataset, {
     addFacetToFilters,
     addMatchToFilters,
     addKeyToFilters,
+    getValueQueryFragment,
 } from './publishedDataset';
 import { VALIDATED, PROPOSED } from '../../common/propositionStatus';
 
@@ -221,7 +222,7 @@ describe('publishedDataset', () => {
         });
     });
 
-    describe('getPage', () => {
+    describe('findPage', () => {
         const count = createSpy().andReturn('count');
         const toArray = createSpy().andReturn('result');
         const limit = createSpy().andReturn({ toArray });
@@ -242,10 +243,10 @@ describe('publishedDataset', () => {
         });
 
         it('should return total and data', async () => {
-            const result = await publishedDatasetCollection.findPage(
-                'perPage',
-                'page',
-            );
+            const result = await publishedDatasetCollection.findPage({
+                perPage: 'perPage',
+                page: 'page',
+            });
             expect(result).toEqual({
                 data: 'result',
                 total: 'count',
@@ -253,22 +254,22 @@ describe('publishedDataset', () => {
         });
 
         it('should call find with removedAt false', async () => {
-            await publishedDatasetCollection.findPage('perPage', 'page');
+            await publishedDatasetCollection.findPage({
+                perPage: 'perPage',
+                page: 'page',
+            });
             expect(find).toHaveBeenCalledWith({
                 removedAt: { $exists: false },
             });
         });
 
         it('should call find with removedAt false and $regex on each fields if provided', async () => {
-            await publishedDatasetCollection.findPage(
-                'perPage',
-                'page',
-                null,
-                null,
-                'match',
-                {},
-                ['field1', 'field2'],
-            );
+            await publishedDatasetCollection.findPage({
+                perPage: 'perPage',
+                page: 'page',
+                match: 'match',
+                searchableFieldNames: ['field1', 'field2'],
+            });
             expect(find).toHaveBeenCalledWith({
                 removedAt: { $exists: false },
                 $or: [
@@ -279,16 +280,13 @@ describe('publishedDataset', () => {
         });
 
         it('should call find with removedAt false and facets if provided', async () => {
-            await publishedDatasetCollection.findPage(
-                'perPage',
-                'page',
-                null,
-                null,
-                'match',
-                { field1: 'field1value' },
-                [],
-                ['field1', 'field2'],
-            );
+            await publishedDatasetCollection.findPage({
+                perPage: 'perPage',
+                page: 'page',
+                match: 'match',
+                facets: { field1: 'field1value' },
+                facetFieldNames: ['field1', 'field2'],
+            });
             expect(find).toHaveBeenCalledWith({
                 removedAt: { $exists: false },
                 $and: [{ 'versions.field1': 'field1value' }],
@@ -296,70 +294,50 @@ describe('publishedDataset', () => {
         });
 
         it('should ignore match if no fields provided', async () => {
-            await publishedDatasetCollection.findPage(
-                'page',
-                'perPage',
-                null,
-                null,
-                'match',
-                {},
-                [],
-            );
+            await publishedDatasetCollection.findPage({
+                page: 'page',
+                perPage: 'perPage',
+                match: 'match',
+                facetFieldNames: [],
+            });
             expect(find).toHaveBeenCalledWith({
                 removedAt: { $exists: false },
             });
         });
 
         it('should call sort with sortBy: 1 if sortDir is ASC', async () => {
-            await publishedDatasetCollection.findPage(
-                5,
-                2,
-                'field',
-                'ASC',
-                'match',
-                {},
-                [],
-            );
+            await publishedDatasetCollection.findPage({
+                perPage: 5,
+                page: 2,
+                sortBy: 'field',
+                sortDir: 'ASC',
+            });
             expect(sort).toHaveBeenCalledWith({ 'versions.field': 1 });
         });
 
         it('should call sort with sortBy: -1 if sortDir is DESC', async () => {
-            await publishedDatasetCollection.findPage(
-                5,
-                2,
-                'field',
-                'DESC',
-                'match',
-                {},
-                [],
-                [],
-            );
+            await publishedDatasetCollection.findPage({
+                perPage: 5,
+                page: 2,
+                sortBy: 'field',
+                sortDir: 'DESC',
+            });
             expect(sort).toHaveBeenCalledWith({ 'versions.field': -1 });
         });
 
         it('should call skip with page * perPage', async () => {
-            await publishedDatasetCollection.findPage(
-                5,
-                2,
-                null,
-                null,
-                'match',
-                {},
-                [],
-            );
+            await publishedDatasetCollection.findPage({
+                perPage: 5,
+                page: 2,
+            });
             expect(skip).toHaveBeenCalledWith(10);
         });
 
         it('should call limit with perPage', async () => {
-            await publishedDatasetCollection.findPage(
-                'page',
-                'perPage',
-                null,
-                null,
-                'match',
-                {},
-                [],
-            );
+            await publishedDatasetCollection.findPage({
+                page: 'page',
+                perPage: 'perPage',
+            });
             expect(limit).toHaveBeenCalledWith('perPage');
         });
 
@@ -368,7 +346,7 @@ describe('publishedDataset', () => {
         });
     });
 
-    describe('addMatchToFilters', () => {
+    describe('addFacetToFilters', () => {
         it('should add facet to filters', () => {
             const facets = {
                 facet: 'value',
@@ -469,6 +447,58 @@ describe('publishedDataset', () => {
                 }),
             ).toEqual({
                 filter: 'data',
+            });
+        });
+    });
+
+    describe('getValueQueryFragment', () => {
+        it('should return query fragment for fieldName with value', () => {
+            expect(getValueQueryFragment('fieldName', 'value', false)).toEqual({
+                'versions.fieldName': 'value',
+            });
+        });
+
+        it('should return query fragment for filedName not with value if inverted is true', () => {
+            expect(getValueQueryFragment('fieldName', 'value', true)).toEqual({
+                'versions.fieldName': { $ne: 'value' },
+            });
+        });
+
+        it('should return query fragment for fieldName with [value]', () => {
+            expect(
+                getValueQueryFragment('fieldName', ['value'], false),
+            ).toEqual({
+                'versions.fieldName': 'value',
+            });
+        });
+
+        it('should return query fragment for filedName not with value if inverted is true', () => {
+            expect(getValueQueryFragment('fieldName', ['value'], true)).toEqual(
+                {
+                    'versions.fieldName': { $ne: 'value' },
+                },
+            );
+        });
+
+        it('should return query fragment for fieldName with value1 or value2', () => {
+            expect(
+                getValueQueryFragment('fieldName', ['value1', 'value2'], false),
+            ).toEqual({
+                $or: [
+                    { 'versions.fieldName': 'value1' },
+                    { 'versions.fieldName': 'value2' },
+                ],
+            });
+        });
+
+        it('should return query fragment for filedName not with value if inverted is true', () => {
+            expect(
+                getValueQueryFragment('fieldName', ['value1', 'value2'], true),
+            ).toEqual({
+                $nor: [
+                    { 'versions.fieldName': 'value1' },
+                    { 'versions.fieldName': 'value2' },
+                ],
             });
         });
     });
