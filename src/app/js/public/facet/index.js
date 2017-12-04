@@ -12,6 +12,7 @@ import facetValueReducer, {
 export const OPEN_FACET = 'OPEN_FACET';
 export const APPLY_FACET = 'APPLY_FACET';
 export const REMOVE_FACET = 'REMOVE_FACET';
+export const CLEAR_FACET = 'CLEAR_FACET';
 export const LOAD_FACET_VALUES = 'LOAD_FACET_VALUES';
 export const LOAD_FACET_VALUES_ERROR = 'LOAD_FACET_VALUES_ERROR';
 export const LOAD_FACET_VALUES_SUCCESS = LOAD_FACET_VALUES_SUCCESS2;
@@ -20,6 +21,7 @@ export const FACET_VALUE_CHANGE = FACET_VALUE_CHANGE2;
 export const openFacet = createAction(OPEN_FACET);
 export const applyFacet = createAction(APPLY_FACET);
 export const removeFacet = createAction(REMOVE_FACET);
+export const clearFacet = createAction(CLEAR_FACET);
 export const loadFacetValues = createAction(LOAD_FACET_VALUES);
 export const loadFacetValuesError = createAction(LOAD_FACET_VALUES_ERROR);
 export const loadFacetValuesSuccess = loadFacetValuesSuccess2;
@@ -51,14 +53,44 @@ export default handleActions(
         [APPLY_FACET]: (
             { appliedFacets, ...state },
             { payload: { name, value } },
-        ) => ({
-            ...state,
-            appliedFacets: {
-                ...appliedFacets,
-                [name]: value,
-            },
-        }),
-        [REMOVE_FACET]: ({ appliedFacets, ...state }, { payload: name }) => ({
+        ) => {
+            const prevValues = appliedFacets[name] || [];
+            const newValues =
+                prevValues.indexOf(value) === -1
+                    ? prevValues.concat(value)
+                    : prevValues;
+
+            return {
+                ...state,
+                appliedFacets: {
+                    ...appliedFacets,
+                    [name]: newValues,
+                },
+            };
+        },
+        [REMOVE_FACET]: (
+            { appliedFacets, ...state },
+            { payload: { name, value } },
+        ) => {
+            const prevValues = appliedFacets[name] || [];
+            const newValues = prevValues.filter(v => v !== value);
+
+            if (!newValues.length) {
+                return {
+                    ...state,
+                    appliedFacets: omit(appliedFacets, name),
+                };
+            }
+
+            return {
+                ...state,
+                appliedFacets: {
+                    ...appliedFacets,
+                    [name]: newValues,
+                },
+            };
+        },
+        [CLEAR_FACET]: ({ appliedFacets, ...state }, { payload: name }) => ({
             ...state,
             appliedFacets: omit(appliedFacets, name),
         }),
@@ -113,7 +145,7 @@ export const getFacetValuesFilter = (state, name) =>
     get(state, ['facetsValues', name, 'filter']);
 
 export const isFacetValuesChecked = (state, { name, value }) =>
-    state.appliedFacets[name] === value;
+    get(state, ['appliedFacets', name], []).indexOf(value) !== -1;
 
 export const fromFacet = {
     getAppliedFacets,

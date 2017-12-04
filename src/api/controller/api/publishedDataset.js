@@ -17,6 +17,7 @@ export const getPage = async ctx => {
         sortDir,
         ...facets
     } = ctx.request.query;
+
     const intPage = parseInt(page, 10);
     const intPerPage = parseInt(perPage, 10);
 

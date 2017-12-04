@@ -58,6 +58,8 @@ export default compose(
     connect(mapStateToProps, mapDispatchtoProps),
     withHandlers({
         onCheck: ({ name, value, applyFacet, removeFacet }) => (_, isChecked) =>
-            isChecked ? applyFacet({ name, value }) : removeFacet(name),
+            isChecked
+                ? applyFacet({ name, value })
+                : removeFacet({ name, value }),
     }),
 )(PureFacetValueItem);
