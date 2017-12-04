@@ -15,6 +15,19 @@ import FacetValueItem from './FacetValueItem';
 import Pagination from '../../lib/components/Pagination';
 import { fromFacet } from '../selectors';
 import { changeFacetValue, invertFacet } from './';
+import SortButton from '../../lib/components/SortButton';
+
+const styles = {
+    listHeader: {
+        display: 'flex',
+    },
+    valueHeader: {
+        marginLeft: '24px',
+    },
+    totalHeader: {
+        marginLeft: 'auto',
+    },
+};
 
 const PureFacetValueList = ({
     name,
@@ -41,14 +54,26 @@ const PureFacetValueList = ({
             value={filter}
             onChange={onFilterChange}
         />
-        {facetValues.map(({ value, count }) => (
-            <FacetValueItem
-                key={value}
-                name={name}
-                value={value}
-                count={count}
-            />
-        ))}
+        <div>
+            <div style={styles.listHeader}>
+                <div style={styles.valueHeader}>
+                    <SortButton label={polyglot.t('value')} sortDir="ASC" />
+                </div>
+                <div style={styles.totalHeader}>
+                    <SortButton label={polyglot.t('count')} sortDir="DESC" />
+                </div>
+            </div>
+            <div>
+                {facetValues.map(({ value, count }) => (
+                    <FacetValueItem
+                        key={value}
+                        name={name}
+                        value={value}
+                        count={count}
+                    />
+                ))}
+            </div>
+        </div>
         <Pagination
             total={total}
             currentPage={currentPage}
