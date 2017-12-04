@@ -19,7 +19,8 @@ const IdentifierBadgeView = ({ resource, field }) => {
         PMID: 'https://www.ncbi.nlm.nih.gov/pubmed/',
     };
     const resolver = resolvers[typid] || '';
-    const target = resolver + resource[field.name];
+    const identifier = resource[field.name].replace(resolver, '');
+    const target = resolver + identifier;
 
     const styles = StyleSheet.create({
         label: {},
@@ -56,7 +57,7 @@ const IdentifierBadgeView = ({ resource, field }) => {
     return (
         <a href={target} className={css(styles.label)}>
             <span className={css(styles.key)}>{typid}</span>
-            <span className={css(styles.value)}>{resource[field.name]}</span>
+            <span className={css(styles.value)}>{identifier}</span>
         </a>
     );
 };
@@ -66,7 +67,4 @@ IdentifierBadgeView.propTypes = {
     resource: PropTypes.object.isRequired, // eslint-disable-line
 };
 
-IdentifierBadgeView.defaultProps = {
-    className: null,
-};
 export default IdentifierBadgeView;
