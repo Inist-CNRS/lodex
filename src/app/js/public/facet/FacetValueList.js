@@ -5,6 +5,7 @@ import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
 import withHandlers from 'recompose/withHandlers';
 import TextField from 'material-ui/TextField';
+import CheckBox from 'material-ui/Checkbox';
 
 import {
     facetValue as facetValuePropType,
@@ -13,7 +14,7 @@ import {
 import FacetValueItem from './FacetValueItem';
 import Pagination from '../../lib/components/Pagination';
 import { fromFacet } from '../selectors';
-import { changeFacetValue } from './';
+import { changeFacetValue, invertFacet } from './';
 
 const PureFacetValueList = ({
     name,
@@ -24,10 +25,17 @@ const PureFacetValueList = ({
     perPage,
     onPageChange,
     onFilterChange,
+    onInvertChange,
     filter,
+    inverted,
     p: polyglot,
 }) => (
     <div>
+        <CheckBox
+            label={polyglot.t('exlude')}
+            checked={inverted}
+            onCheck={onInvertChange}
+        />
         <TextField
             hintText={polyglot.t('filter_value', { field: label })}
             value={filter}
@@ -55,11 +63,13 @@ PureFacetValueList.propTypes = {
     name: PropTypes.string.isRequired,
     label: PropTypes.string.isRequired,
     filter: PropTypes.string.isRequired,
+    inverted: PropTypes.bool.isRequired,
     total: PropTypes.number.isRequired,
     currentPage: PropTypes.number.isRequired,
     perPage: PropTypes.number.isRequired,
     onPageChange: PropTypes.func.isRequired,
     onFilterChange: PropTypes.func.isRequired,
+    onInvertChange: PropTypes.func.isRequired,
     p: polyglotPropType,
 };
 
@@ -69,27 +79,37 @@ const mapStateToProps = (state, { name }) => ({
     currentPage: fromFacet.getFacetValuesPage(state, name),
     perPage: fromFacet.getFacetValuesPerPage(state, name),
     filter: fromFacet.getFacetValuesFilter(state, name),
+    inverted: fromFacet.isFacetValuesInverted(state, name),
 });
 
 const mapDispatchtoProps = {
     changeFacetValue,
+    invertFacet,
 };
 
 export default compose(
     translate,
     connect(mapStateToProps, mapDispatchtoProps),
     withHandlers({
-        onPageChange: ({ name, changeFacetValue }) => (currentPage, perPage) =>
-            changeFacetValue({ name, currentPage, perPage }),
-        onFilterChange: ({ name, currentPage, perPage, changeFacetValue }) => (
-            _,
-            filter,
-        ) =>
+        onPageChange: ({ name, filter, inverted, changeFacetValue }) => (
+            currentPage,
+            perPage,
+        ) => changeFacetValue({ name, currentPage, perPage, filter, inverted }),
+        onFilterChange: ({
+            name,
+            currentPage,
+            perPage,
+            inverted,
+            changeFacetValue,
+        }) => (_, filter) =>
             changeFacetValue({
                 name,
                 currentPage,
                 perPage,
+                inverted,
                 filter,
             }),
+        onInvertChange: ({ name, invertFacet }) => (_, inverted) =>
+            invertFacet({ name, inverted }),
     }),
 )(PureFacetValueList);

@@ -21,7 +21,27 @@ export const addMatchToFilters = (match, searchableFieldNames) => filters => {
     };
 };
 
-export const addFacetToFilters = (facets, facetFieldNames) => filters => {
+export const getValueQueryFragment = (name, value, inverted) => {
+    if (Array.isArray(value) && value.length > 1) {
+        return {
+            [inverted ? '$nor' : '$or']: value.map(v => ({
+                [`versions.${name}`]: v,
+            })),
+        };
+    }
+
+    const queryValue = Array.isArray(value) ? value[0] : value;
+
+    return {
+        [`versions.${name}`]: inverted ? { $ne: queryValue } : queryValue,
+    };
+};
+
+export const addFacetToFilters = (
+    facets,
+    facetFieldNames,
+    invertedFacets = [],
+) => filters => {
     if (
         !facets ||
         !Object.keys(facets).length ||
@@ -30,12 +50,20 @@ export const addFacetToFilters = (facets, facetFieldNames) => filters => {
     ) {
         return filters;
     }
+
     return {
         ...filters,
         $and: facetFieldNames.reduce((acc, name) => {
             if (!facets[name]) return acc;
 
-            return [...acc, { [`versions.${name}`]: facets[name] }];
+            return [
+                ...acc,
+                getValueQueryFragment(
+                    name,
+                    facets[name],
+                    invertedFacets.indexOf(name) !== -1,
+                ),
+            ];
         }, []),
     };
 };
@@ -95,19 +123,20 @@ export default async db => {
         };
     };
 
-    collection.findPage = async (
+    collection.findPage = async ({
         page = 0,
         perPage = 10,
         sortBy = 'uri',
         sortDir,
         match,
         facets,
+        invertedFacets,
         searchableFieldNames,
         facetFieldNames,
-    ) => {
+    }) => {
         const filters = compose(
             addMatchToFilters(match, searchableFieldNames),
-            addFacetToFilters(facets, facetFieldNames),
+            addFacetToFilters(facets, facetFieldNames, invertedFacets),
         )({ removedAt: { $exists: false } });
 
         return collection.findLimitFromSkip(

@@ -48,16 +48,17 @@ describe('publishedDataset', () => {
         it('should call ctx.publishedDataset.findPage', async () => {
             await getPage(ctx);
 
-            expect(ctx.publishedDataset.findPage).toHaveBeenCalledWith(
-                1,
-                100,
-                undefined,
-                undefined,
-                'match',
-                { facet1: 'facet1value' },
-                ['searchable1', 'searchable2'],
-                ['facet1', 'facet2'],
-            );
+            expect(ctx.publishedDataset.findPage).toHaveBeenCalledWith({
+                page: 1,
+                perPage: 100,
+                sortBy: undefined,
+                sortDir: undefined,
+                match: 'match',
+                facets: { facet1: 'facet1value' },
+                invertedFacets: [],
+                searchableFieldNames: ['searchable1', 'searchable2'],
+                facetFieldNames: ['facet1', 'facet2'],
+            });
         });
 
         it('should return only the last version of each doc', async () => {

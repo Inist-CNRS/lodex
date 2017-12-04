@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import { removeFacet as removeFacetAction } from './index';
 import { facet as facetPropTypes } from '../../propTypes';
 import { fromFacet } from '../selectors';
 import AppliedFacet from './AppliedFacet';
@@ -38,8 +37,4 @@ const mapStateToProps = state => ({
     facets: fromFacet.getAppliedFacetList(state),
 });
 
-const mapDispatchToProps = { removeFacet: removeFacetAction };
-
-export default connect(mapStateToProps, mapDispatchToProps)(
-    AppliedFacetListComponent,
-);
+export default connect(mapStateToProps)(AppliedFacetListComponent);

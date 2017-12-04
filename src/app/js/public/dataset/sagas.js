@@ -12,7 +12,7 @@ import {
     loadDatasetPageError,
 } from './';
 
-import { APPLY_FACET, REMOVE_FACET } from '../facet';
+import { APPLY_FACET, REMOVE_FACET, CLEAR_FACET, INVERT_FACET } from '../facet';
 import { fromUser } from '../../sharedSelectors';
 import fetchSaga from '../../lib/sagas/fetchSaga';
 import { fromDataset, fromFacet } from '../selectors';
@@ -27,6 +27,7 @@ export function* handlePreLoadDatasetPage() {
 
 export function* handleLoadDatasetPageRequest({ payload }) {
     const facets = yield select(fromFacet.getAppliedFacets);
+    const invertedFacets = yield select(fromFacet.getInvertedFacets);
     const match = yield select(fromDataset.getFilter);
     const sort = yield select(fromDataset.getSort);
 
@@ -44,6 +45,7 @@ export function* handleLoadDatasetPageRequest({ payload }) {
     const request = yield select(fromUser.getLoadDatasetPageRequest, {
         match,
         facets,
+        invertedFacets,
         sort,
         page,
         perPage,
@@ -70,6 +72,8 @@ export default function*() {
                 APPLY_FILTER,
                 APPLY_FACET,
                 REMOVE_FACET,
+                CLEAR_FACET,
+                INVERT_FACET,
                 SORT_DATASET,
                 CHANGE_PAGE,
             ],

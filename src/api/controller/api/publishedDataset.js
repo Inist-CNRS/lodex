@@ -15,24 +15,27 @@ export const getPage = async ctx => {
         match,
         sortBy,
         sortDir,
+        invertedFacets = [],
         ...facets
     } = ctx.request.query;
+
     const intPage = parseInt(page, 10);
     const intPerPage = parseInt(perPage, 10);
 
     const searchableFieldNames = await ctx.field.findSearchableNames();
     const facetFieldNames = await ctx.field.findFacetNames();
 
-    const { data, total } = await ctx.publishedDataset.findPage(
-        intPage,
-        intPerPage,
+    const { data, total } = await ctx.publishedDataset.findPage({
+        page: intPage,
+        perPage: intPerPage,
         sortBy,
         sortDir,
         match,
         facets,
+        invertedFacets,
         searchableFieldNames,
         facetFieldNames,
-    );
+    });
 
     ctx.body = {
         total,

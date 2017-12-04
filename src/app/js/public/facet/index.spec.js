@@ -6,6 +6,7 @@ import facetReducer, {
     LOAD_FACET_VALUES_SUCCESS,
     APPLY_FACET,
     REMOVE_FACET,
+    CLEAR_FACET,
     FACET_VALUE_CHANGE,
 } from './';
 
@@ -129,6 +130,7 @@ describe('facet reducer', () => {
                         filter: '',
                         values: 'values',
                         total: 'total',
+                        inverted: false,
                     },
                 },
             });
@@ -136,13 +138,57 @@ describe('facet reducer', () => {
     });
 
     describe('APPLY_FACET', () => {
-        it('should add payload to appliedFacets', () => {
+        it('should add payload value to appliedFacets[name] array', () => {
             const state = {
                 foo: 'bar',
                 appliedFacets: {
-                    name1: 'value1',
-                    name2: 'value2',
-                    name3: 'value3',
+                    foo: 'bar',
+                    name: ['value'],
+                },
+            };
+
+            const action = {
+                type: APPLY_FACET,
+                payload: { name: 'name', value: 'new value' },
+            };
+
+            expect(facetReducer(state, action)).toEqual({
+                foo: 'bar',
+                appliedFacets: {
+                    foo: 'bar',
+                    name: ['value', 'new value'],
+                },
+            });
+        });
+
+        it('should do nothing if value is already in appliedFacets[name] array', () => {
+            const state = {
+                foo: 'bar',
+                appliedFacets: {
+                    foo: 'bar',
+                    name: ['value', 'new value'],
+                },
+            };
+
+            const action = {
+                type: APPLY_FACET,
+                payload: { name: 'name', value: 'new value' },
+            };
+
+            expect(facetReducer(state, action)).toEqual({
+                foo: 'bar',
+                appliedFacets: {
+                    foo: 'bar',
+                    name: ['value', 'new value'],
+                },
+            });
+        });
+
+        it('should add payload value to appliedFacets[name] and create an array if none here', () => {
+            const state = {
+                foo: 'bar',
+                appliedFacets: {
+                    foo: 'bar',
                 },
             };
 
@@ -154,36 +200,123 @@ describe('facet reducer', () => {
             expect(facetReducer(state, action)).toEqual({
                 foo: 'bar',
                 appliedFacets: {
-                    name1: 'value1',
-                    name2: 'value2',
-                    name3: 'value3',
-                    fieldName: 'new value',
+                    foo: 'bar',
+                    fieldName: ['new value'],
                 },
             });
         });
     });
 
     describe('REMOVE_FACET', () => {
-        it('should remove appliedFacets with field.name equal to payload.name', () => {
+        it('should remove value from appliedFacets[name]', () => {
             const state = {
                 foo: 'bar',
                 appliedFacets: {
-                    name1: 'value1',
-                    name2: 'value2',
-                    name3: 'value3',
+                    foo: 'bar',
+                    name: ['value1', 'value2', 'value3'],
                 },
             };
 
             const action = {
                 type: REMOVE_FACET,
-                payload: 'name2',
+                payload: { name: 'name', value: 'value2' },
             };
 
             expect(facetReducer(state, action)).toEqual({
                 foo: 'bar',
                 appliedFacets: {
-                    name1: 'value1',
-                    name3: 'value3',
+                    foo: 'bar',
+                    name: ['value1', 'value3'],
+                },
+            });
+        });
+
+        it('should remove value from appliedFacets[name] and remove the array if no more values', () => {
+            const state = {
+                foo: 'bar',
+                appliedFacets: {
+                    foo: 'bar',
+                    name: ['value'],
+                },
+            };
+
+            const action = {
+                type: REMOVE_FACET,
+                payload: { name: 'name', value: 'value' },
+            };
+
+            expect(facetReducer(state, action)).toEqual({
+                foo: 'bar',
+                appliedFacets: {
+                    foo: 'bar',
+                },
+            });
+        });
+
+        it('should do nothing if value is absent from appliedFacets[name]', () => {
+            const state = {
+                foo: 'bar',
+                appliedFacets: {
+                    foo: 'bar',
+                    name: ['value1', 'value2', 'value3'],
+                },
+            };
+
+            const action = {
+                type: REMOVE_FACET,
+                payload: { name: 'name', value: 'not found' },
+            };
+
+            expect(facetReducer(state, action)).toEqual({
+                foo: 'bar',
+                appliedFacets: {
+                    foo: 'bar',
+                    name: ['value1', 'value2', 'value3'],
+                },
+            });
+        });
+
+        it('should do nothing if appliedFacets[name] is not set', () => {
+            const state = {
+                foo: 'bar',
+                appliedFacets: {
+                    foo: 'bar',
+                },
+            };
+
+            const action = {
+                type: REMOVE_FACET,
+                payload: { name: 'name', value: 'value' },
+            };
+
+            expect(facetReducer(state, action)).toEqual({
+                foo: 'bar',
+                appliedFacets: {
+                    foo: 'bar',
+                },
+            });
+        });
+    });
+
+    describe('CLEAR_FACET', () => {
+        it('should clear appliedFacet[payload]', () => {
+            const state = {
+                foo: 'bar',
+                appliedFacets: {
+                    foo: 'bar',
+                    name: ['value1', 'value2'],
+                },
+            };
+
+            const action = {
+                type: CLEAR_FACET,
+                payload: 'name',
+            };
+
+            expect(facetReducer(state, action)).toEqual({
+                foo: 'bar',
+                appliedFacets: {
+                    foo: 'bar',
                 },
             });
         });
@@ -208,6 +341,7 @@ describe('facet reducer', () => {
                     filter: 'filter',
                     currentPage: 'currentPage',
                     perPage: 'perPage',
+                    inverted: 'inverted',
                 },
             };
 
@@ -220,6 +354,7 @@ describe('facet reducer', () => {
                         filter: 'filter',
                         currentPage: 'currentPage',
                         perPage: 'perPage',
+                        inverted: 'inverted',
                     },
                 },
             });
