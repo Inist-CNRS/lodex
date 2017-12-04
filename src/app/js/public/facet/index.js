@@ -98,10 +98,11 @@ export default handleActions(
             ...state,
             appliedFacets: omit(appliedFacets, name),
         }),
-        [combineActions(LOAD_FACET_VALUES_SUCCESS, FACET_VALUE_CHANGE)]: (
-            state,
-            action,
-        ) => {
+        [combineActions(
+            LOAD_FACET_VALUES_SUCCESS,
+            FACET_VALUE_CHANGE,
+            INVERT_FACET,
+        )]: (state, action) => {
             const name = action.payload.name;
 
             return {
