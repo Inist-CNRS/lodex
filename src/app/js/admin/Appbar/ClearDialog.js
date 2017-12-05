@@ -18,6 +18,7 @@ import {
 
 import { reloadParsingResult } from '../parsing';
 import { fromClear } from '../selectors';
+import { getHost } from '../../../../common/uris';
 
 const styles = {
     dialog: {
@@ -25,7 +26,7 @@ const styles = {
     },
 };
 
-const baseUrl = process.env.EZMASTER_PUBLIC_URL;
+const baseUrl = getHost();
 
 class ClearDialogComponent extends Component {
     constructor(props) {

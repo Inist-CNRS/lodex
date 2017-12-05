@@ -18,8 +18,16 @@ export const getResourceUri = resource => {
     return `/uid:/${encodeURIComponent(uri)}`;
 };
 
+export const getHost = () => {
+    if (typeof window !== 'undefined') {
+        return `${window.location.protocol}//${window.location.host}`;
+    }
+
+    return process.env.EZMASTER_PUBLIC_URL;
+};
+
 export const getFullResourceUri = (resource, defaultBaseUri) => {
-    const baseUri = process.env.EZMASTER_PUBLIC_URL || defaultBaseUri;
+    const baseUri = getHost() || defaultBaseUri;
     const uri = getResourceUri(resource);
 
     return `${baseUri}${uri}`;

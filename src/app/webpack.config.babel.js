@@ -122,7 +122,6 @@ export default {
                     process.env.NODE_ENV === 'development'
                         ? JSON.stringify(process.env.NODE_ENV)
                         : JSON.stringify('production'), // eslint-disable-line max-len
-                EZMASTER_PUBLIC_URL: JSON.stringify(config.host),
                 ISTEX_API_URL: JSON.stringify(config.istexApiUrl),
                 PER_PAGE: JSON.stringify(jsonConfig.perPage),
             },

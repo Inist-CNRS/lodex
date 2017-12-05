@@ -8,6 +8,7 @@ import TextField from 'material-ui/TextField';
 import Subheader from 'material-ui/Subheader';
 
 import { polyglot as polyglotPropTypes } from '../propTypes';
+import { getHost } from '../../../common/uris';
 
 const styles = {
     container: {
@@ -21,7 +22,7 @@ const styles = {
 };
 
 export function generateWidget(uri, fields, type) {
-    const baseUrl = process.env.EZMASTER_PUBLIC_URL.replace(/https?:/, '');
+    const baseUrl = getHost().replace(/https?:/, '');
     const strFields = JSON.stringify(fields);
 
     return `<iframe src="${baseUrl}/api/widget?type=${type}${
