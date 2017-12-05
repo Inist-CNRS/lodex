@@ -8,8 +8,6 @@ import Loading from '../../lib/components/Loading';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { fromFields } from '../../sharedSelectors';
 import GraphItem from './GraphItem';
-import GraphItemContainer from './GraphItemContainer';
-import DatasetPreview from '../dataset/DatasetPreview';
 
 const styles = {
     wrapper: {
@@ -24,9 +22,6 @@ const PureGraphList = ({ graphList, loading, p: polyglot }) => {
             {graphList.map(field => (
                 <GraphItem key={field.name} field={field} />
             ))}
-            <GraphItemContainer link="/graph" label={polyglot.t('dataset')}>
-                <DatasetPreview />
-            </GraphItemContainer>
         </div>
     );
 };
