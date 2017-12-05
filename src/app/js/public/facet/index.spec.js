@@ -8,6 +8,8 @@ import facetReducer, {
     REMOVE_FACET,
     CLEAR_FACET,
     FACET_VALUE_CHANGE,
+    INVERT_FACET,
+    FACET_VALUE_SORT,
 } from './';
 
 describe('facet reducer', () => {
@@ -131,6 +133,10 @@ describe('facet reducer', () => {
                         values: 'values',
                         total: 'total',
                         inverted: false,
+                        sort: {
+                            sortBy: 'count',
+                            sortDir: 'DESC',
+                        },
                     },
                 },
             });
@@ -341,7 +347,6 @@ describe('facet reducer', () => {
                     filter: 'filter',
                     currentPage: 'currentPage',
                     perPage: 'perPage',
-                    inverted: 'inverted',
                 },
             };
 
@@ -354,7 +359,155 @@ describe('facet reducer', () => {
                         filter: 'filter',
                         currentPage: 'currentPage',
                         perPage: 'perPage',
+                    },
+                },
+            });
+        });
+    });
+
+    describe('INVERT_FACET', () => {
+        it('should set inverted to inverted', () => {
+            const state = {
+                foo: 'bar',
+                facetsValues: {
+                    foo: 'bar',
+                    name: {
+                        foo: 'bar',
+                    },
+                },
+            };
+
+            const action = {
+                type: INVERT_FACET,
+                payload: {
+                    name: 'name',
+                    inverted: 'inverted',
+                },
+            };
+
+            expect(facetReducer(state, action)).toEqual({
+                foo: 'bar',
+                facetsValues: {
+                    foo: 'bar',
+                    name: {
+                        foo: 'bar',
                         inverted: 'inverted',
+                    },
+                },
+            });
+        });
+    });
+
+    describe('FACET_VALUE_SORT', () => {
+        it('should replace sortDir ASC by DESC if sortBy equal sort.sortBy', () => {
+            const state = {
+                foo: 'bar',
+                facetsValues: {
+                    foo: 'bar',
+                    name: {
+                        foo: 'bar',
+                        sort: {
+                            sortBy: 'sortBy',
+                            sortDir: 'DESC',
+                        },
+                    },
+                },
+            };
+
+            const action = {
+                type: FACET_VALUE_SORT,
+                payload: {
+                    name: 'name',
+                    nextSortBy: 'sortBy',
+                },
+            };
+
+            expect(facetReducer(state, action)).toEqual({
+                foo: 'bar',
+                facetsValues: {
+                    foo: 'bar',
+                    name: {
+                        foo: 'bar',
+                        sort: {
+                            sortBy: 'sortBy',
+                            sortDir: 'ASC',
+                        },
+                    },
+                },
+            });
+        });
+
+        it('should replace sortDir DESC by ASC if sortBy equal sort.sortBy', () => {
+            const state = {
+                foo: 'bar',
+                facetsValues: {
+                    foo: 'bar',
+                    name: {
+                        foo: 'bar',
+                        sort: {
+                            sortBy: 'sortBy',
+                            sortDir: 'ASC',
+                        },
+                    },
+                },
+            };
+
+            const action = {
+                type: FACET_VALUE_SORT,
+                payload: {
+                    name: 'name',
+                    nextSortBy: 'sortBy',
+                },
+            };
+
+            expect(facetReducer(state, action)).toEqual({
+                foo: 'bar',
+                facetsValues: {
+                    foo: 'bar',
+                    name: {
+                        foo: 'bar',
+                        sort: {
+                            sortBy: 'sortBy',
+                            sortDir: 'DESC',
+                        },
+                    },
+                },
+            });
+        });
+
+        it('should set sort.sortBy to nextSortBy and sort.dir to DESC if sortDir different from sort.sortDir', () => {
+            const state = {
+                foo: 'bar',
+                facetsValues: {
+                    foo: 'bar',
+                    name: {
+                        foo: 'bar',
+                        sort: {
+                            sortBy: 'other',
+                            sortDir: 'ASC',
+                        },
+                    },
+                },
+            };
+
+            const action = {
+                type: FACET_VALUE_SORT,
+                payload: {
+                    name: 'name',
+                    nextSortBy: 'sortBy',
+                },
+            };
+
+            expect(facetReducer(state, action)).toEqual({
+                foo: 'bar',
+                facetsValues: {
+                    foo: 'bar',
+                    name: {
+                        foo: 'bar',
+                        sort: {
+                            sortBy: 'sortBy',
+                            sortDir: 'DESC',
+                        },
                     },
                 },
             });

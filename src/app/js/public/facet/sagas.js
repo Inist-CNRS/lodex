@@ -4,20 +4,19 @@ import {
     LOAD_FACET_VALUES,
     OPEN_FACET,
     FACET_VALUE_CHANGE,
+    FACET_VALUE_SORT,
     loadFacetValuesError,
     loadFacetValuesSuccess,
 } from './';
 import { fromUser } from '../../sharedSelectors';
+import { fromFacet } from '../selectors';
 import fetchSaga from '../../lib/sagas/fetchSaga';
 
-export function* handleLoadFacetValuesRequest({
-    payload: { name, filter, currentPage, perPage },
-}) {
+export function* handleLoadFacetValuesRequest({ payload: { name } }) {
+    const data = yield select(fromFacet.getFacetValueRequestData, name);
     const request = yield select(fromUser.getLoadFacetValuesRequest, {
         field: name,
-        filter,
-        currentPage,
-        perPage,
+        ...data,
     });
 
     const { error, response: values } = yield call(fetchSaga, request);
@@ -31,7 +30,7 @@ export function* handleLoadFacetValuesRequest({
 
 export default function* watchLoadPublicationRequest() {
     yield takeLatest(
-        [OPEN_FACET, LOAD_FACET_VALUES, FACET_VALUE_CHANGE],
+        [OPEN_FACET, LOAD_FACET_VALUES, FACET_VALUE_CHANGE, FACET_VALUE_SORT],
         handleLoadFacetValuesRequest,
     );
 }

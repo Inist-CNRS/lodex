@@ -27,7 +27,7 @@ export const AppliedFacetComponent = ({ value, field, onRequestDelete }) => (
 );
 
 AppliedFacetComponent.propTypes = {
-    value: PropTypes.string.isRequired,
+    value: PropTypes.arrayOf(PropTypes.string).isRequired,
     field: fieldPropTypes.isRequired,
     onRequestDelete: PropTypes.func.isRequired,
 };

@@ -14,26 +14,41 @@ export default db => {
             })),
         );
 
-    collection.findLimitFromSkip = (limit, skip, filter) =>
+    collection.findLimitFromSkip = ({
+        limit,
+        skip,
+        filters,
+        sortBy = 'count',
+        sortDir = 'DESC',
+    }) =>
         collection
-            .find(filter)
+            .find(filters)
             .skip(skip)
             .limit(limit)
-            .sort({ value: 1 })
+            .sort({ [sortBy]: sortDir === 'ASC' ? 1 : -1 })
             .toArray();
 
-    collection.findValuesForField = (field, filter, page = 0, perPage = 10) => {
+    collection.findValuesForField = ({
+        field,
+        filter,
+        page = 0,
+        perPage = 10,
+        sortBy,
+        sortDir,
+    }) => {
         const filters = { field };
 
         if (filter) {
             filters.value = { $regex: `.*${filter}.*`, $options: 'i' };
         }
 
-        return collection.findLimitFromSkip(
-            parseInt(perPage, 10),
-            page * perPage,
+        return collection.findLimitFromSkip({
+            limit: parseInt(perPage, 10),
+            skip: page * perPage,
             filters,
-        );
+            sortBy,
+            sortDir,
+        });
     };
 
     collection.countValuesForField = (field, filter) => {

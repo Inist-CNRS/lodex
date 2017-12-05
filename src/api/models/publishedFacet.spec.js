@@ -23,14 +23,17 @@ describe('publishedFacet model', () => {
     describe('findValuesForField', () => {
         describe('without filter', () => {
             it('calls collection.find with correct parameters', async () => {
-                await publishedFacet.findValuesForField('foo');
+                await publishedFacet.findValuesForField({ field: 'foo' });
 
                 expect(collection.find).toHaveBeenCalledWith({ field: 'foo' });
             });
         });
         describe('with filter', () => {
             it('calls collection.find with correct parameters', async () => {
-                await publishedFacet.findValuesForField('foo', 'filter');
+                await publishedFacet.findValuesForField({
+                    field: 'foo',
+                    filter: 'filter',
+                });
 
                 expect(collection.find).toHaveBeenCalledWith({
                     field: 'foo',

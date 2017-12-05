@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import { facet as facetPropTypes } from '../../propTypes';
 import { fromFacet } from '../selectors';
 import AppliedFacet from './AppliedFacet';
 
@@ -14,7 +13,7 @@ const styles = {
     },
 };
 
-export const AppliedFacetListComponent = ({ facets, removeFacet }) =>
+export const AppliedFacetListComponent = ({ facets }) =>
     facets.length ? (
         <div style={styles.container}>
             {facets.map(({ name, value }) => (
@@ -22,15 +21,13 @@ export const AppliedFacetListComponent = ({ facets, removeFacet }) =>
                     key={`${name}-${value}`}
                     name={name}
                     value={value}
-                    onRemove={removeFacet}
                 />
             ))}
         </div>
     ) : null;
 
 AppliedFacetListComponent.propTypes = {
-    facets: PropTypes.arrayOf(facetPropTypes).isRequired,
-    removeFacet: PropTypes.func.isRequired,
+    facets: PropTypes.arrayOf(PropTypes.any).isRequired,
 };
 
 const mapStateToProps = state => ({
