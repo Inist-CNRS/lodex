@@ -10,7 +10,7 @@ import GraphSummary from './GraphSummary';
 import Dataset from '../dataset/Dataset';
 import Toolbar from '../Toolbar';
 import { fromFields } from '../../sharedSelectors';
-import { fromCharacteristic } from '../selectors';
+import { fromCharacteristic, fromDataset, fromFacet } from '../selectors';
 import Format from '../Format';
 import AppliedFacetList from '../facet/AppliedFacetList';
 import Drawer from '../../lib/components/Drawer';
@@ -47,7 +47,13 @@ const styles = {
     },
 };
 
-const PureGraphPage = ({ graphField, resource, p: polyglot }) => (
+const PureGraphPage = ({
+    graphField,
+    resource,
+    filter,
+    facets,
+    p: polyglot,
+}) => (
     <div style={styles.container}>
         <div style={styles.centerColumn}>
             <Drawer label={polyglot.t('graph_list')}>
@@ -60,7 +66,12 @@ const PureGraphPage = ({ graphField, resource, p: polyglot }) => (
                             <span style={styles.label}>{graphField.label}</span>
                         }
                     />
-                    <Format field={graphField} resource={resource} />
+                    <Format
+                        field={graphField}
+                        resource={resource}
+                        filter={filter}
+                        facets={facets}
+                    />
                 </Card>
             )}
             <Card style={styles.section}>
@@ -79,12 +90,16 @@ const PureGraphPage = ({ graphField, resource, p: polyglot }) => (
 PureGraphPage.propTypes = {
     graphField: fieldPropTypes,
     resource: PropTypes.object.isRequired,
+    filter: PropTypes.string.isRequired,
+    facets: PropTypes.array.isRequired,
     p: polyglotPropTypes.isRequired,
 };
 
 const mapStateToProps = (state, { params: { name } }) => ({
     graphField: name && fromFields.getFieldByName(state, name),
     resource: fromCharacteristic.getCharacteristicsAsResource(state),
+    filter: fromDataset.getFilter(state),
+    facets: fromFacet.getAppliedFacets(state),
 });
 
 export default compose(connect(mapStateToProps), translate)(PureGraphPage);

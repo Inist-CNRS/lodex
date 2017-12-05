@@ -4,22 +4,9 @@ import URL from 'url';
 import route from 'koa-route';
 import fs from 'fs';
 import ezs from 'ezs';
-import request from 'request';
+import fetch from 'isomorphic-fetch';
 import { PassThrough } from 'stream';
 import config from '../../../../config.json';
-
-export const fetch = url =>
-    new Promise((resolve, reject) => {
-        request(url, (error, response, body) => {
-            if (error) {
-                reject(error);
-                return;
-            }
-            // simulate window.fetch polyfill
-            const text = () => body;
-            resolve({ text });
-        });
-    });
 
 const routineLocalDirectory = Path.resolve(__dirname, '../../routines/');
 const routinesLocal = config.routines
@@ -56,6 +43,7 @@ export const runRoutine = async (ctx, routineCalled) => {
     if (!routine) {
         throw new Error(`Unknown routine '${routineCalled}'`);
     }
+
     const [, metaData, , script] = routine;
     const context = {
         headers: ctx.headers,
