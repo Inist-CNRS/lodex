@@ -54,8 +54,8 @@ PureButtonWithDialog.defaultProps = {
 };
 
 PureButtonWithDialog.propTypes = {
-    handleClose: PropTypes.func.isRequired,
-    handleOpen: PropTypes.func.isRequired,
+    handleClose: PropTypes.func,
+    handleOpen: PropTypes.func,
     p: polyglotPropTypes.isRequired,
     open: PropTypes.bool,
     show: PropTypes.bool,

@@ -71,6 +71,9 @@ describe('<Format />', () => {
             linkedResource,
             rawLinkedResource,
             shrink: false,
+            facets: undefined,
+            filter: undefined,
+            toggleFacetValue: undefined,
         });
     });
 });

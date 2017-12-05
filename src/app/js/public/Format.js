@@ -37,6 +37,9 @@ export class FormatComponent extends Component {
             resource,
             shrink,
             isList,
+            filter,
+            facets,
+            toggleFacetValue,
         } = this.props;
         const ViewComponent = getViewComponent(field, isList);
 
@@ -50,6 +53,9 @@ export class FormatComponent extends Component {
                 rawLinkedResource={rawLinkedResource}
                 resource={resource}
                 shrink={shrink}
+                filter={filter}
+                facets={facets}
+                toggleFacetValue={toggleFacetValue}
             />
         );
     }
@@ -61,11 +67,14 @@ FormatComponent.propTypes = {
     field: fieldPropTypes.isRequired,
     fieldStatus: PropTypes.string,
     fields: PropTypes.arrayOf(fieldPropTypes).isRequired,
-    linkedResource: PropTypes.object, // eslint-disable-line
-    rawLinkedResource: PropTypes.object, // eslint-disable-line
-    resource: PropTypes.object, // eslint-disable-line
+    linkedResource: PropTypes.object,
+    rawLinkedResource: PropTypes.object,
+    resource: PropTypes.object,
     shrink: PropTypes.bool,
     isList: PropTypes.bool,
+    filter: PropTypes.string,
+    facets: PropTypes.object,
+    toggleFacetValue: PropTypes.func,
 };
 
 FormatComponent.defaultProps = {

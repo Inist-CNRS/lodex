@@ -38,7 +38,6 @@ export const FieldInputComponent = ({
             <Component
                 key={field.name}
                 name={field.name}
-                component={Component}
                 disabled={field.name === 'uri'}
                 label={label}
                 fullWidth
