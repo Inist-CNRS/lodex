@@ -24,7 +24,12 @@ export const PureButtonWithDialog = ({
         />,
     ],
     openButton = (
-        <FlatButton className={className} label={label} onClick={handleOpen} />
+        <FlatButton
+            primary
+            className={className}
+            label={label}
+            onClick={handleOpen}
+        />
     ),
 }) => {
     if (!show) {

@@ -180,10 +180,6 @@ export const DetailComponent = ({
                                 </span>
                                 <div style={styles.value}>
                                     <Link to="/graph">{backToListLabel}</Link>
-                                    <ExportShareButton
-                                        style={{ float: 'right' }}
-                                        uri={resource.uri}
-                                    />
                                 </div>
                             </div>
                         </div>
@@ -262,6 +258,10 @@ export const DetailComponent = ({
                     <SelectVersion />
                     <AddField style={{ marginLeft: 'auto' }} />
                     <HideResource />
+                    <ExportShareButton
+                        style={{ float: 'right' }}
+                        uri={resource.uri}
+                    />
                 </CardActions>
                 <div style={styles.version}>
                     <Version />
