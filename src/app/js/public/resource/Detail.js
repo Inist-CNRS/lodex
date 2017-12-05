@@ -25,6 +25,7 @@ import {
 } from '../../../../../config.json';
 import getTitle from '../../lib/getTitle';
 import ExportShareButton from '../ExportShareButton';
+import { getHost } from '../../../../common/uris';
 
 const styles = {
     container: {
@@ -250,9 +251,9 @@ export const DetailComponent = ({
                                     XX
                                 </span>
                                 <div style={styles.value}>
-                                    <a href={`/${resource.uri}`}>{`${
-                                        process.env.EZMASTER_PUBLIC_URL
-                                    }/${resource.uri}`}</a>
+                                    <a
+                                        href={`/${resource.uri}`}
+                                    >{`${getHost()}/${resource.uri}`}</a>
                                 </div>
                             </div>
                         </div>

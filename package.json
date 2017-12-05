@@ -12,7 +12,6 @@
     "test:api": "mocha --require babel-polyfill --compilers='js:babel-core/register' 'src/api/**/*.spec.js' 'src/common/**/*.spec.js'",
     "test:app": "BABEL_ENV=browser mocha --require babel-polyfill --require='./src/app/js/test.js' --compilers='css:./src/common/tests/webpack-null-compiler,js:babel-core/register' 'src/app/js/**/*.spec.js'",
     "build": "BABEL_ENV=browser webpack --config=./src/app/webpack.config.babel.js",
-    "build:admin": "BABEL_ENV=browser webpack --config=./src/app/webpack.config.admin.babel.js",
     "dev": "pm2-docker process.yml",
     "development:api": "node --require babel-register src/api",
     "development:app": "BABEL_ENV=browser node_modules/.bin/webpack-dev-server --config=./src/app/webpack.config.babel.js --port=8080 --host=0.0.0.0",

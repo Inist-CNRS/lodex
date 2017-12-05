@@ -1,9 +1,9 @@
 import fetch from 'isomorphic-fetch';
 
+import { getHost } from '../../../common/uris';
+
 export default ({ url, ...config }, mode = 'json') => {
-    const fullUrl = url.startsWith('http')
-        ? url
-        : process.env.EZMASTER_PUBLIC_URL + url;
+    const fullUrl = url.startsWith('http') ? url : getHost() + url;
     return fetch(fullUrl, config).then(
         response => {
             if (response.status === 204) {
