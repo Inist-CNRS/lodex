@@ -7,7 +7,7 @@ module.exports.map = function () {
     var doc = this;
     var dta = doc.versions[doc.versions.length - 1];
     dta.uri = doc.uri;
-    var values;
+    var values = [];
     if (fields.length === 1) {
         values = dta[fields[0]];
         if (values !== undefined) {
@@ -55,4 +55,17 @@ module.exports.map = function () {
 
 module.exports.reduce = function (key, values) {
     return Array.sum(values);
+};
+
+
+module.exports.finalize = function finalize(key, value) {
+    var vector = JSON.parse(key);
+    var sourceKey = Object.keys(vector[0])[0];
+    var targetKey = Object.keys(vector[1])[0];
+    var obj = {
+        source: vector[0][sourceKey],
+        target: vector[1][targetKey],
+        weight: value,
+    }
+    return obj;
 };
