@@ -86,30 +86,36 @@ class PieChartView extends Component {
             .filter(x => x.length > 0)
             .map(x => String('#').concat(x));
         return (
-            <ResponsiveContainer width={600} height={300}>
-                <PieChart>
-                    <Legend
-                        verticalAlign="middle"
-                        layout="vertical"
-                        align="right"
-                    />
-                    <Pie
-                        cx={155}
-                        data={data}
-                        fill="#8884d8"
-                        outerRadius="63%"
-                        labelLine
-                        label={CustomizedLabel}
-                    >
-                        {data.map((entry, index) => (
-                            <Cell
-                                key={String(index).concat('_cell_pie')}
-                                fill={colorsSet[index % colorsSet.length]}
-                            />
-                        ))}
-                    </Pie>
-                </PieChart>
-            </ResponsiveContainer>
+            <div>
+                <ResponsiveContainer
+                    className="lodex-chart"
+                    width={600}
+                    height={300}
+                >
+                    <PieChart>
+                        <Legend
+                            verticalAlign="middle"
+                            layout="vertical"
+                            align="right"
+                        />
+                        <Pie
+                            cx={155}
+                            data={data}
+                            fill="#8884d8"
+                            outerRadius="63%"
+                            labelLine
+                            label={CustomizedLabel}
+                        >
+                            {data.map((entry, index) => (
+                                <Cell
+                                    key={String(index).concat('_cell_pie')}
+                                    fill={colorsSet[index % colorsSet.length]}
+                                />
+                            ))}
+                        </Pie>
+                    </PieChart>
+                </ResponsiveContainer>
+            </div>
         );
     }
 }

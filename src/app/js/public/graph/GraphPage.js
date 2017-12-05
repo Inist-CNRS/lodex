@@ -18,7 +18,11 @@ import {
     field as fieldPropTypes,
     polyglot as polyglotPropTypes,
 } from '../../propTypes';
+<<<<<<< c2b551e99cb0d181eac9134f476f17b14e9b74fc
 import { toggleFacetValue } from '../facet';
+=======
+import ExportableComponent from '../../lib/components/ExportableComponent';
+>>>>>>> add Exportable compoennt to allow to save chart as png
 
 const styles = {
     container: {
@@ -68,13 +72,15 @@ const PureGraphPage = ({
                             <span style={styles.label}>{graphField.label}</span>
                         }
                     />
-                    <Format
-                        field={graphField}
-                        resource={resource}
-                        filter={filter}
-                        facets={facets}
-                        toggleFacetValue={toggleFacetValue}
-                    />
+                    <ExportableComponent label={graphField.label}>
+                        <Format
+                            field={graphField}
+                            resource={resource}
+                            filter={filter}
+                            facets={facets}
+                            toggleFacetValue={toggleFacetValue}
+                        />
+                    </ExportableComponent>
                 </Card>
             )}
             <Card style={styles.section}>
