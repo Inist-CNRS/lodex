@@ -4,8 +4,7 @@ import facetReducer, {
     OPEN_FACET,
     LOAD_FACET_VALUES_ERROR,
     LOAD_FACET_VALUES_SUCCESS,
-    APPLY_FACET,
-    REMOVE_FACET,
+    TOGGLE_FACET_VALUE,
     CLEAR_FACET,
     FACET_VALUE_CHANGE,
     INVERT_FACET,
@@ -143,7 +142,7 @@ describe('facet reducer', () => {
         });
     });
 
-    describe('APPLY_FACET', () => {
+    describe('TOGGLE_FACET_VALUE', () => {
         it('should add payload value to appliedFacets[name] array', () => {
             const state = {
                 foo: 'bar',
@@ -154,30 +153,7 @@ describe('facet reducer', () => {
             };
 
             const action = {
-                type: APPLY_FACET,
-                payload: { name: 'name', value: 'new value' },
-            };
-
-            expect(facetReducer(state, action)).toEqual({
-                foo: 'bar',
-                appliedFacets: {
-                    foo: 'bar',
-                    name: ['value', 'new value'],
-                },
-            });
-        });
-
-        it('should do nothing if value is already in appliedFacets[name] array', () => {
-            const state = {
-                foo: 'bar',
-                appliedFacets: {
-                    foo: 'bar',
-                    name: ['value', 'new value'],
-                },
-            };
-
-            const action = {
-                type: APPLY_FACET,
+                type: TOGGLE_FACET_VALUE,
                 payload: { name: 'name', value: 'new value' },
             };
 
@@ -199,7 +175,7 @@ describe('facet reducer', () => {
             };
 
             const action = {
-                type: APPLY_FACET,
+                type: TOGGLE_FACET_VALUE,
                 payload: { name: 'fieldName', value: 'new value' },
             };
 
@@ -211,9 +187,7 @@ describe('facet reducer', () => {
                 },
             });
         });
-    });
 
-    describe('REMOVE_FACET', () => {
         it('should remove value from appliedFacets[name]', () => {
             const state = {
                 foo: 'bar',
@@ -224,7 +198,7 @@ describe('facet reducer', () => {
             };
 
             const action = {
-                type: REMOVE_FACET,
+                type: TOGGLE_FACET_VALUE,
                 payload: { name: 'name', value: 'value2' },
             };
 
@@ -247,51 +221,7 @@ describe('facet reducer', () => {
             };
 
             const action = {
-                type: REMOVE_FACET,
-                payload: { name: 'name', value: 'value' },
-            };
-
-            expect(facetReducer(state, action)).toEqual({
-                foo: 'bar',
-                appliedFacets: {
-                    foo: 'bar',
-                },
-            });
-        });
-
-        it('should do nothing if value is absent from appliedFacets[name]', () => {
-            const state = {
-                foo: 'bar',
-                appliedFacets: {
-                    foo: 'bar',
-                    name: ['value1', 'value2', 'value3'],
-                },
-            };
-
-            const action = {
-                type: REMOVE_FACET,
-                payload: { name: 'name', value: 'not found' },
-            };
-
-            expect(facetReducer(state, action)).toEqual({
-                foo: 'bar',
-                appliedFacets: {
-                    foo: 'bar',
-                    name: ['value1', 'value2', 'value3'],
-                },
-            });
-        });
-
-        it('should do nothing if appliedFacets[name] is not set', () => {
-            const state = {
-                foo: 'bar',
-                appliedFacets: {
-                    foo: 'bar',
-                },
-            };
-
-            const action = {
-                type: REMOVE_FACET,
+                type: TOGGLE_FACET_VALUE,
                 payload: { name: 'name', value: 'value' },
             };
 

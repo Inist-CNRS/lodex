@@ -15,8 +15,7 @@ import facetValueReducer, {
 } from './facetValueReducer';
 
 export const OPEN_FACET = 'OPEN_FACET';
-export const APPLY_FACET = 'APPLY_FACET';
-export const REMOVE_FACET = 'REMOVE_FACET';
+export const TOGGLE_FACET_VALUE = 'TOGGLE_FACET_VALUE';
 export const CLEAR_FACET = 'CLEAR_FACET';
 export const LOAD_FACET_VALUES = 'LOAD_FACET_VALUES';
 export const LOAD_FACET_VALUES_ERROR = 'LOAD_FACET_VALUES_ERROR';
@@ -26,8 +25,7 @@ export const INVERT_FACET = INVERT_FACET2;
 export const FACET_VALUE_SORT = FACET_VALUE_SORT2;
 
 export const openFacet = createAction(OPEN_FACET);
-export const applyFacet = createAction(APPLY_FACET);
-export const removeFacet = createAction(REMOVE_FACET);
+export const toggleFacetValue = createAction(TOGGLE_FACET_VALUE);
 export const clearFacet = createAction(CLEAR_FACET);
 export const loadFacetValues = createAction(LOAD_FACET_VALUES);
 export const loadFacetValuesError = createAction(LOAD_FACET_VALUES_ERROR);
@@ -59,30 +57,18 @@ export default handleActions(
             ...state,
             error: error.message || error,
         }),
-        [APPLY_FACET]: (
+        [TOGGLE_FACET_VALUE]: (
             { appliedFacets, ...state },
             { payload: { name, value } },
         ) => {
+            const isChecked = isFacetValuesChecked(
+                { appliedFacets },
+                { name, value },
+            );
             const prevValues = appliedFacets[name] || [];
-            const newValues =
-                prevValues.indexOf(value) === -1
-                    ? prevValues.concat(value)
-                    : prevValues;
-
-            return {
-                ...state,
-                appliedFacets: {
-                    ...appliedFacets,
-                    [name]: newValues,
-                },
-            };
-        },
-        [REMOVE_FACET]: (
-            { appliedFacets, ...state },
-            { payload: { name, value } },
-        ) => {
-            const prevValues = appliedFacets[name] || [];
-            const newValues = prevValues.filter(v => v !== value);
+            const newValues = isChecked
+                ? prevValues.filter(v => v !== value)
+                : prevValues.concat(value);
 
             if (!newValues.length) {
                 return {

@@ -1,5 +1,5 @@
 import { createAction, handleActions, combineActions } from 'redux-actions';
-import { APPLY_FACET } from '../facet';
+import { TOGGLE_FACET_VALUE } from '../facet';
 
 export const PRE_LOAD_DATASET_PAGE = 'PRE_LOAD_DATASET_PAGE';
 export const LOAD_DATASET_PAGE = 'LOAD_DATASET_PAGE';
@@ -43,7 +43,7 @@ export default handleActions(
         }),
         [combineActions(
             LOAD_DATASET_PAGE,
-            APPLY_FACET,
+            TOGGLE_FACET_VALUE,
             APPLY_FILTER,
             CHANGE_PAGE,
         )]: (state, { payload }) => ({
@@ -74,7 +74,7 @@ export default handleActions(
             currentPage: 0,
             match,
         }),
-        APPLY_FACET: state => ({
+        TOGGLE_FACET_VALUE: state => ({
             ...state,
             currentPage: 0,
         }),

@@ -91,7 +91,7 @@ PureGraphPage.propTypes = {
     graphField: fieldPropTypes,
     resource: PropTypes.object.isRequired,
     filter: PropTypes.string.isRequired,
-    facets: PropTypes.array.isRequired,
+    facets: PropTypes.object.isRequired,
     p: polyglotPropTypes.isRequired,
 };
 

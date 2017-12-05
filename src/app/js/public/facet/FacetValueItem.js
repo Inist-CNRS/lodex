@@ -6,7 +6,7 @@ import { ListItem } from 'material-ui/List';
 import withHandlers from 'recompose/withHandlers';
 import compose from 'recompose/compose';
 
-import { applyFacet, removeFacet } from './';
+import { toggleFacetValue } from './';
 import { fromFacet } from '../selectors';
 
 const styles = {
@@ -49,17 +49,14 @@ const mapStateToProps = (state, { name, value }) => ({
     isChecked: fromFacet.isFacetValuesChecked(state, { name, value }),
 });
 
-const mapDispatchtoProps = {
-    applyFacet,
-    removeFacet,
+const mapDispatchToProps = {
+    toggleFacetValue,
 };
 
 export default compose(
-    connect(mapStateToProps, mapDispatchtoProps),
+    connect(mapStateToProps, mapDispatchToProps),
     withHandlers({
-        onCheck: ({ name, value, applyFacet, removeFacet }) => (_, isChecked) =>
-            isChecked
-                ? applyFacet({ name, value })
-                : removeFacet({ name, value }),
+        onCheck: ({ name, value, toggleFacetValue }) => () =>
+            toggleFacetValue({ name, value }),
     }),
 )(PureFacetValueItem);
