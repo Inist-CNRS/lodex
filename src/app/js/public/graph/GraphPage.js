@@ -18,6 +18,7 @@ import {
     field as fieldPropTypes,
     polyglot as polyglotPropTypes,
 } from '../../propTypes';
+import { toggleFacetValue } from '../facet';
 
 const styles = {
     container: {
@@ -52,6 +53,7 @@ const PureGraphPage = ({
     resource,
     filter,
     facets,
+    toggleFacetValue,
     p: polyglot,
 }) => (
     <div style={styles.container}>
@@ -71,6 +73,7 @@ const PureGraphPage = ({
                         resource={resource}
                         filter={filter}
                         facets={facets}
+                        toggleFacetValue={toggleFacetValue}
                     />
                 </Card>
             )}
@@ -92,6 +95,7 @@ PureGraphPage.propTypes = {
     resource: PropTypes.object.isRequired,
     filter: PropTypes.string.isRequired,
     facets: PropTypes.object.isRequired,
+    toggleFacetValue: PropTypes.func,
     p: polyglotPropTypes.isRequired,
 };
 
@@ -102,4 +106,10 @@ const mapStateToProps = (state, { params: { name } }) => ({
     facets: fromFacet.getAppliedFacets(state),
 });
 
-export default compose(connect(mapStateToProps), translate)(PureGraphPage);
+const mapDispatchToProps = {
+    toggleFacetValue,
+};
+
+export default compose(connect(mapStateToProps, mapDispatchToProps), translate)(
+    PureGraphPage,
+);

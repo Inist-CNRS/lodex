@@ -73,6 +73,7 @@ describe('<Format />', () => {
             shrink: false,
             facets: undefined,
             filter: undefined,
+            toggleFacetValue: undefined,
         });
     });
 });
