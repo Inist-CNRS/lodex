@@ -79,13 +79,17 @@ describe.only('convertJSonLdToNquads', () => {
         // see https://json-ld.org/playground/ for the Person example
         const stream = from([
             {
-                '@id': 'http://uri/janedoe',
                 '@context': 'http://schema.org/',
-                '@type': 'Person',
-                name: 'Jane Doe',
-                jobTitle: 'Professor',
-                telephone: '(425) 123-4567',
-                url: 'http://www.janedoe.com',
+                '@graph': [
+                    {
+                        id: 'http://uri/janedoe',
+                        type: 'Person',
+                        jobTitle: 'Professor',
+                        name: 'Jane Doe',
+                        telephone: '(425) 123-4567',
+                        url: 'http://www.janedoe.com',
+                    },
+                ],
             },
         ]).pipe(ezs('convertJsonLdToNQuads'));
         const expectedNquads = [
