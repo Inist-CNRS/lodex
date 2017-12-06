@@ -1,43 +1,69 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import compose from 'recompose/compose';
+import translate from 'redux-polyglot/translate';
 import { Link } from 'react-router';
-import { List, ListItem } from 'material-ui/List';
 import Divider from 'material-ui/Divider';
+import IconMenu from 'material-ui/IconMenu';
+import MenuItem from 'material-ui/MenuItem';
+import FlatButton from 'material-ui/FlatButton';
 
 import { fromFields } from '../../sharedSelectors';
-import { field as fieldPropTypes } from '../../propTypes';
+import {
+    field as fieldPropTypes,
+    polyglot as polyglotPropType,
+} from '../../propTypes';
 
 const styles = {
     link: {
         textDecoration: 'none',
         color: 'unset',
+        display: 'block',
+        width: '100%',
     },
 };
 
-const PureGraphSummary = ({ graphFields }) => (
-    <List style={styles.container}>
-        <Link style={styles.link} to="/graph">
-            <ListItem>dataset</ListItem>
-        </Link>
+const PureGraphSummary = ({ graphFields, selected, p: polyglot }) => (
+    <IconMenu
+        value={selected}
+        iconButtonElement={
+            <FlatButton primary>
+                {polyglot.t('graph_list').toUpperCase()}
+            </FlatButton>
+        }
+    >
+        <MenuItem
+            value=""
+            primaryText={
+                <Link style={styles.link} to="/graph">
+                    dataset
+                </Link>
+            }
+        />
         <Divider />
         {graphFields.map(field => (
-            <div key={field.name}>
-                <Link style={styles.link} to={`/graph/${field.name}`}>
-                    <ListItem>{field.label}</ListItem>
-                </Link>
-                <Divider />
-            </div>
+            <MenuItem
+                key={field.name}
+                value={field.name}
+                primaryText={
+                    <Link style={styles.link} to={`/graph/${field.name}`}>
+                        {field.label}
+                    </Link>
+                }
+            />
         ))}
-    </List>
+    </IconMenu>
 );
 
 PureGraphSummary.propTypes = {
     graphFields: PropTypes.arrayOf(fieldPropTypes).isRequired,
+    selected: PropTypes.string.isRequired,
+    p: polyglotPropType,
 };
 
 const mapStateToProps = state => ({
     graphFields: fromFields.getGraphFields(state),
 });
 
-export default connect(mapStateToProps)(PureGraphSummary);
+export default compose(connect(mapStateToProps), translate)(PureGraphSummary);
