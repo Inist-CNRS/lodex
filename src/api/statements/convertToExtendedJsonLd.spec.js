@@ -1,17 +1,12 @@
-import path from 'path';
-import fs from 'fs';
 import request from 'request';
 import ezs from 'ezs';
 import from from 'from';
 import sinon from 'sinon';
-import { expect } from 'chai';
-import testAll from './testAll';
+import expect from 'expect';
+import testOne from './testOne';
 
 const dataTest = require('./fixture.data.json');
-const dataNquads = fs.readFileSync(
-    path.resolve(__dirname, './fixture.data.nq'),
-    'utf8',
-);
+const expectedJsonLd = require('./fixture.data.ld.json');
 const ezsLocals = require('.');
 
 const config = {
@@ -26,7 +21,7 @@ const config = {
 };
 
 ezs.use(ezsLocals);
-describe('conversion to extended Nquads', () => {
+describe('conversion to extended JSON-LD', () => {
     let sandbox;
     beforeEach(() => {
         sandbox = sinon.sandbox.create();
@@ -49,17 +44,10 @@ describe('conversion to extended Nquads', () => {
         ])
             .pipe(ezs('scroll'))
             .pipe(ezs('convertToExtendedJsonLd', { config }));
-        testAll(
+        testOne(
             stream,
             data => {
-                const lines = data.split('\n');
-                expect(dataNquads.includes(lines[0]));
-                expect(dataNquads.includes(lines[1]));
-                expect(dataNquads.includes(lines[2]));
-                expect(dataNquads.includes(lines[3]));
-                expect(dataNquads.includes(lines[4]));
-                expect(dataNquads.includes(lines[5]));
-                expect(dataNquads.includes(lines[6]));
+                expect(data).toEqual(expectedJsonLd);
             },
             done,
         );
