@@ -1,25 +1,30 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
-import FloatingActionButton from 'material-ui/FloatingActionButton';
-import FileDownLoad from 'material-ui/svg-icons/file/file-download';
+import FlatButton from 'material-ui/FlatButton';
+import { CardTitle, CardActions } from 'material-ui/Card';
+import { grey500 } from 'material-ui/styles/colors';
 
 import convertHtmlToPng from '../convertHtmlToPng';
 
 const styles = {
-    button: {
-        position: 'relative',
-        top: '5px',
-        right: '10px',
+    actions: {
+        display: 'flex',
+        justifyContent: 'flex-end',
     },
-    container: {
-        position: 'relative',
+    label: {
+        color: grey500,
+        flexGrow: 2,
+        fontWeight: 'bold',
+        fontSize: '2rem',
+        textDecoration: 'none',
     },
 };
 
 class ExportableComponent extends Component {
     exportElement = () => {
-        convertHtmlToPng(this.element).then(uri => {
+        const element = ReactDOM.findDOMNode(this).childNodes[1]; //eslint-disable-line
+        convertHtmlToPng(element).then(uri => {
             const link = document.createElement('a');
             link.download = this.props.label;
             link.href = uri;
@@ -29,22 +34,21 @@ class ExportableComponent extends Component {
         });
     };
 
-    componentDidMount() {
-        this.element = ReactDOM.findDOMNode(this).childNodes[0]; //eslint-disable-line
-    }
-
     render() {
-        const { children } = this.props;
+        const { children, label } = this.props;
         return (
-            <div style={styles.container}>
+            <div>
+                <CardTitle title={<span style={styles.label}>{label}</span>} />
                 {children}
-                <FloatingActionButton
-                    style={styles.button}
-                    onClick={this.exportElement}
-                    mini
-                >
-                    <FileDownLoad />
-                </FloatingActionButton>
+                <CardActions style={styles.actions}>
+                    <FlatButton
+                        primary
+                        style={styles.button}
+                        onClick={this.exportElement}
+                    >
+                        SAVE AS PNG
+                    </FlatButton>
+                </CardActions>
             </div>
         );
     }

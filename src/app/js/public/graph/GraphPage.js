@@ -3,8 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
 import translate from 'redux-polyglot/translate';
-import { Card, CardTitle } from 'material-ui/Card';
-import { grey500 } from 'material-ui/styles/colors';
+import { Card } from 'material-ui/Card';
 
 import GraphSummary from './GraphSummary';
 import Dataset from '../dataset/Dataset';
@@ -43,13 +42,6 @@ const styles = {
     section: {
         margin: '20px 0',
     },
-    label: {
-        color: grey500,
-        flexGrow: 2,
-        fontWeight: 'bold',
-        fontSize: '2rem',
-        textDecoration: 'none',
-    },
 };
 
 const PureGraphPage = ({
@@ -67,11 +59,6 @@ const PureGraphPage = ({
             </Drawer>
             {graphField && (
                 <Card style={styles.section}>
-                    <CardTitle
-                        title={
-                            <span style={styles.label}>{graphField.label}</span>
-                        }
-                    />
                     <ExportableComponent label={graphField.label}>
                         <Format
                             field={graphField}
