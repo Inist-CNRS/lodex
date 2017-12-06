@@ -132,6 +132,32 @@ export const getFieldByName = createSelector(
     (name, fields) => fields.find(f => f.name === name),
 );
 
+export const getGraphFieldOptionByName = createSelector(
+    getFieldByName,
+    field => {
+        const limit =
+            field.format && field.format.args && field.format.args.maxSize
+                ? field.format.args.maxSize
+                : '5';
+
+        const orderBy =
+            field.format && field.format.args && field.format.args.orderBy
+                ? field.format.args.orderBy
+                : 'value/asc';
+        const [by, dir] = String(orderBy || 'value/asc').split('/');
+        const sortBy = by === 'value' ? 'value' : '_id';
+        const sortDir = dir === 'asc' ? 1 : -1;
+
+        return {
+            limit,
+            sort: {
+                sortBy,
+                sortDir,
+            },
+        };
+    },
+);
+
 export const getFieldsExceptEdited = createSelector(
     getFields,
     getEditedField,
@@ -323,6 +349,7 @@ export default {
     getEditedField,
     getFieldsForPreview,
     getFieldByName,
+    getGraphFieldOptionByName,
     getFields,
     getState,
     getFieldsExceptEdited,

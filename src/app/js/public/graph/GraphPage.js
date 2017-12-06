@@ -44,12 +44,18 @@ const styles = {
 class PureGraphPage extends Component {
     componentDidMount() {
         const { graphField: field, resource, preLoadChartData } = this.props;
+        if (!field) {
+            return;
+        }
 
         preLoadChartData({ field, value: resource[field.name] });
     }
 
     componentDidUpdate() {
         const { graphField: field, resource, preLoadChartData } = this.props;
+        if (!field) {
+            return;
+        }
 
         preLoadChartData({ field, value: resource[field.name] });
     }

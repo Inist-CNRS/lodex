@@ -107,6 +107,12 @@ const getRootCharacteristics = createSelector(
             .filter(field => !field.completes),
 );
 
+const getCharacteristicByName = createSelector(
+    getCharacteristicsAsResource,
+    getParams,
+    (characteristics, name) => characteristics[name],
+);
+
 const isSaving = state => state.isSaving;
 
 const isAdding = state => state.isAdding;
@@ -119,6 +125,7 @@ export const fromCharacteristic = {
     getCharacteristics,
     getCharacteristicsAsResource,
     getRootCharacteristics,
+    getCharacteristicByName,
     isSaving,
     isAdding,
     getError,

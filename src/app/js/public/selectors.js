@@ -35,3 +35,12 @@ export const fromResource = createGlobalSelectors(
 
 const getGraphState = state => state.graph;
 export const fromGraph = createGlobalSelectors(getGraphState, localFromGraph);
+
+export const fromRouting = {
+    getGraphName: state => {
+        const route = state.routing.locationBeforeTransitions.pathname;
+        const match = route.match(/\/graph\/(.*?)$/);
+
+        return match ? match[1] : null;
+    },
+};

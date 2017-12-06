@@ -18,7 +18,17 @@ export const addKeyToLiteral = (key, value) => (literal = {}) => {
 };
 
 export default (
-    { match, facets, invertedFacets, sort, page, perPage, uri } = {},
+    {
+        match,
+        facets,
+        invertedFacets,
+        sort,
+        page,
+        perPage,
+        limit,
+        skip,
+        uri,
+    } = {},
 ) =>
     compose(
         qs.stringify,
@@ -29,6 +39,9 @@ export default (
         addKeyToLiteral('sortDir', sort.sortDir),
         addKeyToLiteral('page', page),
         addKeyToLiteral('perPage', perPage),
+        addKeyToLiteral('perPage', perPage),
+        addKeyToLiteral('limit', limit),
+        addKeyToLiteral('skip', skip),
         addKeyToLiteral('uri', uri),
     )({
         ...sort,
