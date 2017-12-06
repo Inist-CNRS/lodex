@@ -21,7 +21,8 @@ const routinesLocal = config.routines
         fs.readFileSync(fileName).toString(),
     ]);
 
-const routineRepository = config.routinesRepository;
+const pluginsURL = config.pluginsURL || '';
+const routineRepository = URL.resolve(pluginsURL, './routines/');
 const routinesDistant = config.routines
     .map(routineName =>
         URL.resolve(routineRepository, routineName.concat('.ini')),

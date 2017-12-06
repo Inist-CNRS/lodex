@@ -8,7 +8,7 @@
         }
     },
     "perPage": 10,
-    "routinesRepository" : "https://raw.githubusercontent.com/Inist-CNRS/lodex-extented/master/routines/",
+    "pluginsURL" : "https://raw.githubusercontent.com/Inist-CNRS/lodex-extented/master/",
     "routines": [
         "hello-world",
         "all-fields",
