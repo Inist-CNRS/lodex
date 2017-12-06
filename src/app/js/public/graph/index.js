@@ -5,7 +5,7 @@ export const LOAD_CHART_DATA = 'LOAD_CHART_DATA';
 export const LOAD_CHART_DATA_SUCCESS = 'LOAD_CHART_DATA_SUCCESS';
 export const LOAD_CHART_DATA_ERROR = 'LOAD_CHART_DATA_ERROR';
 
-export const preLoadChartData = createAction(LOAD_CHART_DATA);
+export const preLoadChartData = createAction(PRE_LOAD_CHART_DATA);
 export const loadChartData = createAction(LOAD_CHART_DATA);
 export const loadChartDataSuccess = createAction(LOAD_CHART_DATA_SUCCESS);
 export const loadChartDataError = createAction(LOAD_CHART_DATA_ERROR);
@@ -16,14 +16,11 @@ export default handleActions(
     {
         [LOAD_CHART_DATA]: (state, { payload: { name } }) => ({
             ...state,
-            [name]: 'loading',
+            [name]: undefined,
         }),
-        [LOAD_CHART_DATA_SUCCESS]: (
-            state,
-            { payload: { name, response } },
-        ) => ({
+        [LOAD_CHART_DATA_SUCCESS]: (state, { payload: { name, data } }) => ({
             ...state,
-            [name]: response,
+            [name]: data,
         }),
         [LOAD_CHART_DATA_ERROR]: (state, { error }) => ({
             ...state,
