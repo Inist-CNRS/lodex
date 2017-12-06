@@ -17,11 +17,8 @@ import {
     field as fieldPropTypes,
     polyglot as polyglotPropTypes,
 } from '../../propTypes';
-<<<<<<< c2b551e99cb0d181eac9134f476f17b14e9b74fc
 import { toggleFacetValue } from '../facet';
-=======
 import ExportableComponent from '../../lib/components/ExportableComponent';
->>>>>>> add Exportable compoennt to allow to save chart as png
 
 const styles = {
     container: {
