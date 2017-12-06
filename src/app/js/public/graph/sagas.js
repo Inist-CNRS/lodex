@@ -1,4 +1,4 @@
-import { fork, call, put, select, takeLatest } from 'redux-saga/effects';
+import { fork, call, put, select, takeEvery } from 'redux-saga/effects';
 import { delay } from 'redux-saga';
 
 import {
@@ -30,8 +30,8 @@ export function* handlePreLoadChartData({ payload: { field, value } }) {
 
 const valueMoreThan = level => item => item.value > level;
 
-export function* handleLoadChartDataRequest() {
-    const name = yield select(fromRouting.getGraphName);
+export function* handleLoadChartDataRequest({ payload: { field } }) {
+    const name = field.name || (yield select(fromRouting.getGraphName));
     if (!name) {
         return;
     }
@@ -85,12 +85,12 @@ export function* handleLoadChartDataRequest() {
 
 export default function*() {
     yield fork(function*() {
-        yield takeLatest(
+        yield takeEvery(
             [LOAD_CHART_DATA, TOGGLE_FACET_VALUE, CLEAR_FACET],
             handleLoadChartDataRequest,
         );
     });
     yield fork(function*() {
-        yield takeLatest(PRE_LOAD_CHART_DATA, handlePreLoadChartData);
+        yield takeEvery(PRE_LOAD_CHART_DATA, handlePreLoadChartData);
     });
 }
