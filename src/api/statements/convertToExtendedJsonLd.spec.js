@@ -48,7 +48,7 @@ describe('conversion to extended Nquads', () => {
             },
         ])
             .pipe(ezs('scroll'))
-            .pipe(ezs('convertToExtendedNquads', { config }));
+            .pipe(ezs('convertToExtendedJsonLd', { config }));
         testAll(
             stream,
             data => {
