@@ -2,6 +2,7 @@ import get from 'lodash.get';
 import unset from 'lodash.unset';
 
 export default function LodexOutput(data, feed) {
+    const keyName = this.getParam('keyName', 'data');
     const indent = this.getParam('indent', false);
     const extract = this.getParam('extract');
     const extracts = Array.isArray(extract) ? extract : [extract];
@@ -19,9 +20,9 @@ export default function LodexOutput(data, feed) {
                 feed.write(':');
                 feed.write(json(values[index] || null));
             });
-            feed.write(',"data":[');
+            feed.write(`,"${keyName}":[`);
         } else {
-            feed.write('"data":[');
+            feed.write(`"${keyName}":[`);
         }
     } else if (!this.isLast()) {
         feed.write(',\n');
