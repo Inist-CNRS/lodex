@@ -14,7 +14,6 @@ import { field as fieldPropTypes } from '../../propTypes';
 
 const RadarChartView = ({ chartData, colorSet }) => {
     const color = colorSet[0];
-
     return (
         <ResponsiveContainer width={600} height={300}>
             <RadarChart data={chartData}>

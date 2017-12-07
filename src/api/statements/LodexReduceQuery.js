@@ -3,6 +3,7 @@ import config from 'config';
 import ezs from 'ezs';
 import hasher from 'node-object-hash';
 import set from 'lodash.set';
+import difference from 'lodash.difference';
 
 import reducers from '../reducers/';
 import publishedDataset from '../models/publishedDataset';
@@ -39,10 +40,11 @@ export const createFunction = MongoClientImpl =>
 
         const searchableFieldNames = await fieldHandle.findSearchableNames();
         const facetFieldNames = await fieldHandle.findFacetNames();
+
         const filter = getPublishedDatasetFilter({
             ...query,
             searchableFieldNames,
-            facetFieldNames,
+            facetFieldNames: difference(facetFieldNames, fields), // ignore facet part of the aggregation
         });
         const options = {
             query: filter,

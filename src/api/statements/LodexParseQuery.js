@@ -12,7 +12,6 @@ export default function LodexParseQuery(data, feed) {
         invertedFacets = [],
         ...facets
     } = data.query;
-
     feed.send({
         ...data,
         limit,
