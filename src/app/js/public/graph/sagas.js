@@ -19,6 +19,7 @@ import {
 } from '../selectors';
 import { fromFields } from '../../sharedSelectors';
 import { TOGGLE_FACET_VALUE, CLEAR_FACET } from '../facet';
+import { APPLY_FILTER } from '../dataset';
 
 export function* handlePreLoadChartData({ payload: { field, value } }) {
     if (yield select(fromGraph.isChartDataLoaded, field.name)) {
@@ -88,7 +89,7 @@ export function* handleLoadChartDataRequest({ payload: { field } }) {
 export default function*() {
     yield fork(function*() {
         yield takeEvery(
-            [LOAD_CHART_DATA, TOGGLE_FACET_VALUE, CLEAR_FACET],
+            [LOAD_CHART_DATA, TOGGLE_FACET_VALUE, CLEAR_FACET, APPLY_FILTER],
             handleLoadChartDataRequest,
         );
     });
