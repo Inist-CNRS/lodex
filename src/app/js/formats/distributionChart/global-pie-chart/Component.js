@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
 import { ResponsiveContainer, PieChart, Pie, Cell, Legend } from 'recharts';
 
-import { field as fieldPropTypes } from '../../propTypes';
+import { field as fieldPropTypes } from '../../../propTypes';
 import CustomizedLabel from './CustomizedLabel';
 
 const PieChartView = ({ chartData, colorSet }) => (

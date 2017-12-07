@@ -10,7 +10,7 @@ import {
     PolarGrid,
 } from 'recharts';
 
-import { field as fieldPropTypes } from '../../propTypes';
+import { field as fieldPropTypes } from '../../../propTypes';
 
 const RadarChartView = ({ chartData, colorSet }) => {
     const color = colorSet[0];

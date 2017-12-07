@@ -11,7 +11,7 @@ import {
     YAxis,
 } from 'recharts';
 
-import { field as fieldPropTypes } from '../../propTypes';
+import { field as fieldPropTypes } from '../../../propTypes';
 
 class BarChartView extends Component {
     handleClickBar = ({ name: value }) => {
