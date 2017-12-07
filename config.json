@@ -13,6 +13,7 @@
         "hello-world",
         "all-fields",
         "all-resources",
+        "all-metadata",
         "all-documents",
         "count-by-fields",
         "count-all",
