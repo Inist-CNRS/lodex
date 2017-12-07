@@ -1,5 +1,6 @@
 import { MongoClient } from 'mongodb';
 import config from 'config';
+import { host, cleanHost } from 'config';
 import set from 'lodash.set';
 import field from '../models/field';
 import publishedCharacteristic from '../models/publishedCharacteristic';
@@ -23,6 +24,8 @@ export const LodexContext = MongoClientImpl =>
         set(data, `${target || '$context'}`, {
             fields,
             characteristics,
+            host,
+            cleanHost,
         });
         feed.send(data);
         await handleDb.close();
