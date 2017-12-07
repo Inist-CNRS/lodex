@@ -31,7 +31,9 @@ export function* handlePreLoadChartData({ payload: { field, value } }) {
 const valueMoreThan = level => item => item.value > level;
 
 export function* handleLoadChartDataRequest({ payload: { field } }) {
-    const name = field.name || (yield select(fromRouting.getGraphName));
+    const name =
+        (field && field.name) || (yield select(fromRouting.getGraphName));
+
     if (!name) {
         return;
     }
@@ -58,7 +60,7 @@ export function* handleLoadChartDataRequest({ payload: { field } }) {
     });
 
     const { error, response } = yield call(fetchSaga, {
-        url: `${value}${queryString}`,
+        url: `${value}?${queryString}`,
     });
 
     if (error) {

@@ -35,13 +35,21 @@ export async function exportFileMiddleware(
     const searchableFieldNames = await ctx.field.findSearchableNames();
     const facetFieldNames = await ctx.field.findFacetNames();
 
-    const { uri, match, sortBy, sortDir, ...facets } = ctx.request.query;
+    const {
+        uri,
+        match,
+        sortBy,
+        sortDir,
+        invertedFacets,
+        ...facets
+    } = ctx.request.query;
     const publishedDatasetStream = ctx.publishedDataset.getFindAllStream(
         uri,
         match,
         searchableFieldNames,
         facets,
         facetFieldNames,
+        invertedFacets,
         sortBy,
         sortDir,
     );
