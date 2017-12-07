@@ -1,6 +1,5 @@
 import { MongoClient } from 'mongodb';
 import config from 'config';
-import { host, cleanHost } from 'config';
 import set from 'lodash.set';
 import field from '../models/field';
 import publishedCharacteristic from '../models/publishedCharacteristic';
@@ -21,6 +20,8 @@ export const LodexContext = MongoClientImpl =>
         );
         const characteristics = await handlePublishedCharacteristic.findAllVersions();
         const fields = await handleField.findAll();
+        const host = config.host;
+        const cleanHost = config.cleanHost;
         set(data, `${target || '$context'}`, {
             fields,
             characteristics,
