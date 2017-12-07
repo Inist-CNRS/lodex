@@ -24,7 +24,9 @@ const styles = {
 
 class ChartEdition extends Component {
     static propTypes = {
-        maxSize: PropTypes.string,
+        maxSize: PropTypes.number,
+        maxValue: PropTypes.number,
+        minValue: PropTypes.number,
         orderBy: PropTypes.string,
         colors: PropTypes.string,
         onChange: PropTypes.func.isRequired,
@@ -32,34 +34,44 @@ class ChartEdition extends Component {
     };
 
     static defaultProps = {
-        maxSize: '5',
+        maxSize: 5,
         orderBy: 'value/asc',
         colors: '#1D1A31 #4D2D52 #9A4C95 #F08CAE #C1A5A9',
     };
     constructor(props) {
         super(props);
-
-        this.state = {
-            maxSize: this.props.maxSize,
-            orderBy: this.props.orderBy,
-            colors: this.props.colors,
-        };
+        const { maxSize, maxValue, minValue, orderBy, colors } = this.props;
+        this.state = { maxSize, maxValue, minValue, orderBy, colors };
     }
 
     setMaxSize = maxSize => {
         this.setState({ maxSize });
         this.props.onChange({
+            ...this.state,
             maxSize,
-            orderBy: this.state.orderBy,
-            colors: this.state.colors,
+        });
+    };
+
+    setMaxValue = maxValue => {
+        this.setState({ maxValue });
+        this.props.onChange({
+            ...this.state,
+            maxValue,
+        });
+    };
+
+    setMinValue = minValue => {
+        this.setState({ minValue });
+        this.props.onChange({
+            ...this.state,
+            minValue,
         });
     };
 
     setOrderBy = orderBy => {
         this.setState({ orderBy });
         this.props.onChange({
-            maxSize: this.state.maxSize,
-            colors: this.state.colors,
+            ...this.state,
             orderBy,
         });
     };
@@ -67,15 +79,14 @@ class ChartEdition extends Component {
     setColors = colors => {
         this.setState({ colors });
         this.props.onChange({
-            maxSize: this.state.maxSize,
-            orderBy: this.state.orderBy,
             colors,
+            ...this.state,
         });
     };
 
     render() {
         const { p: polyglot } = this.props;
-        const { maxSize, colors, orderBy } = this.state;
+        const { maxSize, maxValue, minValue, colors, orderBy } = this.state;
         return (
             <div style={styles.container}>
                 <TextField
@@ -83,6 +94,18 @@ class ChartEdition extends Component {
                     onChange={(event, newValue) => this.setMaxSize(newValue)}
                     style={styles.input}
                     value={maxSize}
+                />
+                <TextField
+                    floatingLabelText={polyglot.t('max_value')}
+                    onChange={(event, newValue) => this.setMaxValue(newValue)}
+                    style={styles.input}
+                    value={maxValue}
+                />
+                <TextField
+                    floatingLabelText={polyglot.t('min_value')}
+                    onChange={(event, newValue) => this.setMinValue(newValue)}
+                    style={styles.input}
+                    value={minValue}
                 />
                 <SelectField
                     floatingLabelText={polyglot.t('order_by')}
