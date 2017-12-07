@@ -12,13 +12,8 @@ import {
 
 import { field as fieldPropTypes } from '../../propTypes';
 
-const RadarChartView = ({ chartData, field }) => {
-    const { colors } = field.format.args || { colors: '' };
-    const colorsSet = String(colors)
-        .split(/[^\w]/)
-        .filter(x => x.length > 0)
-        .map(x => String('#').concat(x));
-    const color = colorsSet[0];
+const RadarChartView = ({ chartData, colorSet }) => {
+    const color = colorSet[0];
 
     return (
         <ResponsiveContainer width={600} height={300}>
@@ -42,6 +37,7 @@ RadarChartView.propTypes = {
     linkedResource: PropTypes.object,
     resource: PropTypes.object.isRequired,
     chartData: PropTypes.array.isRequired,
+    colorSet: PropTypes.arrayOf(PropTypes.string),
 };
 
 RadarChartView.defaultProps = {
