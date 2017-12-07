@@ -55,24 +55,15 @@ class ResourcesGrid extends Component {
         };
         const forJSON = {
             ...forHTML,
-            pathname: '/api/run/all-resources/',
+            pathname: '/api/run/all-metadata/',
             search: MQS.stringify(mongoQuery),
         };
 
         const apiurl = url.format(url.format(forJSON));
         const response = await fetch(apiurl);
         const result = await response.json();
-        if (result.data) {
-            this.setState({ data: result.data });
-        }
-        if (result.aggregations) {
-            const firstKey = Object.keys(result.aggregations).shift();
-            const data = result.aggregations[firstKey].buckets.map(item => ({
-                name: item.keyAsString || item.key,
-                value: item.docCount,
-            }));
-            this.setState({ data });
-        }
+        const data = result.data || result.items || [];
+        this.setState({ data });
     }
 
     handleMore(event) {
@@ -125,15 +116,10 @@ class ResourcesGrid extends Component {
                 <ul className={css(styles.list)}>
                     {this.state.data.map((entry, index) => {
                         const key = String(index).concat('ResourcesGrid');
-                        const props = {
-                            link: `/${entry._id}`,
-                            title: entry.value[0],
-                            description: entry.value[1],
-                        };
                         return (
                             <li key={key} className={css(styles.item)}>
                                 <div className={css(styles.content)}>
-                                    <LodexResource {...props} />
+                                    <LodexResource {...entry} />
                                 </div>
                             </li>
                         );
