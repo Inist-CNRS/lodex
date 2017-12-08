@@ -75,6 +75,7 @@ describe('<Format />', () => {
             filter: undefined,
             toggleFacetValue: undefined,
             chartData: undefined,
+            colorSet: undefined,
         });
     });
 });
