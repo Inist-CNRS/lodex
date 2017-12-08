@@ -1,8 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { compose } from 'recompose';
-import translate from 'redux-polyglot/translate';
 import { Card } from 'material-ui/Card';
 
 import GraphSummary from './GraphSummary';
@@ -12,11 +10,7 @@ import { fromFields } from '../../sharedSelectors';
 import { fromCharacteristic, fromDataset, fromFacet } from '../selectors';
 import Format from '../Format';
 import AppliedFacetList from '../facet/AppliedFacetList';
-import Drawer from '../../lib/components/Drawer';
-import {
-    field as fieldPropTypes,
-    polyglot as polyglotPropTypes,
-} from '../../propTypes';
+import { field as fieldPropTypes } from '../../propTypes';
 import { toggleFacetValue } from '../facet';
 import ExportableComponent from '../../lib/components/ExportableComponent';
 
@@ -47,13 +41,10 @@ const PureGraphPage = ({
     filter,
     facets,
     toggleFacetValue,
-    p: polyglot,
 }) => (
     <div style={styles.container}>
         <div style={styles.centerColumn}>
-            <Drawer label={polyglot.t('graph_list')}>
-                <GraphSummary />
-            </Drawer>
+            <GraphSummary selected={graphField ? graphField.name : ''} />
             {graphField && (
                 <Card style={styles.section}>
                     <ExportableComponent label={graphField.label}>
@@ -86,7 +77,6 @@ PureGraphPage.propTypes = {
     filter: PropTypes.string.isRequired,
     facets: PropTypes.object.isRequired,
     toggleFacetValue: PropTypes.func,
-    p: polyglotPropTypes.isRequired,
 };
 
 const mapStateToProps = (state, { params: { name } }) => ({
@@ -100,6 +90,4 @@ const mapDispatchToProps = {
     toggleFacetValue,
 };
 
-export default compose(connect(mapStateToProps, mapDispatchToProps), translate)(
-    PureGraphPage,
-);
+export default connect(mapStateToProps, mapDispatchToProps)(PureGraphPage);
