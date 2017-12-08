@@ -4,6 +4,7 @@ import fetch from 'isomorphic-fetch';
 import MQS from 'mongodb-querystring';
 import url from 'url';
 import RaisedButton from 'material-ui/RaisedButton';
+import CircularProgress from 'material-ui/CircularProgress';
 import translate from 'redux-polyglot/translate';
 import { StyleSheet, css } from 'aphrodite';
 import LodexResource from '../shared/LodexResource';
@@ -20,7 +21,10 @@ class ResourcesGrid extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            fetch: false,
+            limit: 0,
             more: 0,
+            total: 0,
             data: [],
         };
         this.handleMore = this.handleMore.bind(this);
@@ -31,6 +35,7 @@ class ResourcesGrid extends Component {
     }
 
     async fetchData() {
+        this.setState({ fetch: true });
         const { field, resource } = this.props;
         const orderBy =
             field.format && field.format.args && field.format.args.orderBy
@@ -47,10 +52,11 @@ class ResourcesGrid extends Component {
         sort[by] = dir;
 
         const { url: forHTML } = normalizeLodexURL(resource[field.name]);
+        const limit = Number(maxSize) + Number(this.state.more);
         const mongoQuery = {
             $query: {},
             $skip: 0,
-            $limit: maxSize + this.state.more,
+            $limit: limit,
             $orderby: sort,
         };
         const forJSON = {
@@ -62,8 +68,9 @@ class ResourcesGrid extends Component {
         const apiurl = url.format(url.format(forJSON));
         const response = await fetch(apiurl);
         const result = await response.json();
+        const total = result.total || 0;
         if (result.data) {
-            this.setState({ data: result.data });
+            this.setState({ data: result.data, total, limit, fetch: false });
         }
         if (result.aggregations) {
             const firstKey = Object.keys(result.aggregations).shift();
@@ -71,7 +78,7 @@ class ResourcesGrid extends Component {
                 name: item.keyAsString || item.key,
                 value: item.docCount,
             }));
-            this.setState({ data });
+            this.setState({ data, total, limit, fetch: false });
         }
     }
 
@@ -140,7 +147,17 @@ class ResourcesGrid extends Component {
                     })}
                 </ul>
                 <div className={css(styles.button)}>
-                    <RaisedButton label="MORE" onClick={this.handleMore} />
+                    {this.state.limit < this.state.total && (
+                        <RaisedButton
+                            label="MORE"
+                            onClick={this.handleMore}
+                            icon={
+                                this.state.fetch && (
+                                    <CircularProgress size={20} />
+                                )
+                            }
+                        />
+                    )}
                 </div>
             </div>
         );
