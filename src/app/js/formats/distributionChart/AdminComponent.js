@@ -24,64 +24,62 @@ const styles = {
 
 class ChartEdition extends Component {
     static propTypes = {
-        maxSize: PropTypes.number,
-        maxValue: PropTypes.number,
-        minValue: PropTypes.number,
-        orderBy: PropTypes.string,
+        params: PropTypes.shape({
+            maxSize: PropTypes.number,
+            maxValue: PropTypes.number,
+            minValue: PropTypes.number,
+            orderBy: PropTypes.string,
+        }),
         colors: PropTypes.string,
         onChange: PropTypes.func.isRequired,
         p: polyglotPropTypes.isRequired,
     };
 
     static defaultProps = {
-        maxSize: 5,
-        orderBy: 'value/asc',
+        params: {
+            maxSize: 5,
+            orderBy: 'value/asc',
+        },
         colors: '#1D1A31 #4D2D52 #9A4C95 #F08CAE #C1A5A9',
     };
     constructor(props) {
         super(props);
-        const { maxSize, maxValue, minValue, orderBy, colors } = this.props;
-        this.state = { maxSize, maxValue, minValue, orderBy, colors };
+        const { params, colors } = this.props;
+        this.state = { params, colors };
     }
 
     setMaxSize = maxSize => {
-        this.setState({ maxSize });
-        this.props.onChange({
-            ...this.state,
-            maxSize,
-        });
+        const { params, ...state } = this.state;
+        const newState = { ...state, params: { ...params, maxSize } };
+        this.setState(newState);
+        this.props.onChange(newState);
     };
 
     setMaxValue = maxValue => {
-        this.setState({ maxValue });
-        this.props.onChange({
-            ...this.state,
-            maxValue,
-        });
+        const { params, ...state } = this.state;
+        const newState = { ...state, params: { ...params, maxValue } };
+        this.setState(newState);
+        this.props.onChange(newState);
     };
 
     setMinValue = minValue => {
-        this.setState({ minValue });
-        this.props.onChange({
-            ...this.state,
-            minValue,
-        });
+        const { params, ...state } = this.state;
+        const newState = { ...state, params: { ...params, minValue } };
+        this.setState(newState);
+        this.props.onChange(newState);
     };
 
     setOrderBy = orderBy => {
-        this.setState({ orderBy });
-        this.props.onChange({
-            ...this.state,
-            orderBy,
-        });
+        const { params, ...state } = this.state;
+        const newState = { ...state, params: { ...params, orderBy } };
+        this.setState(newState);
+        this.props.onChange(newState);
     };
 
     setColors = colors => {
-        this.setState({ colors });
-        this.props.onChange({
-            colors,
-            ...this.state,
-        });
+        const newState = { ...this.state, colors };
+        this.setState(newState);
+        this.props.onChange(newState);
     };
 
     render() {

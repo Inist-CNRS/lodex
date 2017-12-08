@@ -1,7 +1,7 @@
 import compose from 'lodash.compose';
 import qs from 'qs';
 
-export const addFacetListToLiteral = facets => (literal = {}) => ({
+export const addLiteralToLiteral = (facets = {}) => (literal = {}) => ({
     ...literal,
     ...facets,
 });
@@ -21,6 +21,7 @@ export default (
     {
         match,
         facets,
+        params,
         invertedFacets,
         sort,
         page,
@@ -32,7 +33,8 @@ export default (
 ) =>
     compose(
         qs.stringify,
-        addFacetListToLiteral(facets),
+        addLiteralToLiteral(facets),
+        addLiteralToLiteral(params),
         addKeyToLiteral('invertedFacets', invertedFacets),
         addKeyToLiteral('match', match),
         addKeyToLiteral('sortBy', sort.sortBy),
@@ -43,6 +45,4 @@ export default (
         addKeyToLiteral('limit', limit),
         addKeyToLiteral('skip', skip),
         addKeyToLiteral('uri', uri),
-    )({
-        ...sort,
-    });
+    )({});

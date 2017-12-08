@@ -42,10 +42,7 @@ export function* handleLoadChartDataRequest({ payload: { field } }) {
         fromCharacteristic.getCharacteristicByName,
         name,
     );
-    const { limit, sort } = yield select(
-        fromFields.getGraphFieldOptionByName,
-        name,
-    );
+    const params = yield select(fromFields.getGraphFieldParamsByName, name);
 
     const facets = yield select(fromFacet.getAppliedFacets);
     const invertedFacets = yield select(fromFacet.getInvertedFacets);
@@ -55,9 +52,7 @@ export function* handleLoadChartDataRequest({ payload: { field } }) {
         facets,
         invertedFacets,
         match,
-        skip: 0,
-        limit,
-        sort,
+        params,
     });
 
     const { error, response } = yield call(fetchSaga, {

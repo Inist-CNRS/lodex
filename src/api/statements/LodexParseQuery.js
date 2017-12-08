@@ -6,6 +6,8 @@ export default function LodexParseQuery(data, feed) {
     const {
         limit,
         skip,
+        maxValue,
+        minValue,
         match,
         sortBy,
         sortDir,
@@ -16,6 +18,8 @@ export default function LodexParseQuery(data, feed) {
         ...data,
         limit,
         skip,
+        maxValue,
+        minValue,
         query: {
             match,
             invertedFacets,
