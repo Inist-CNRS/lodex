@@ -84,7 +84,10 @@ class ChartEdition extends Component {
 
     render() {
         const { p: polyglot } = this.props;
-        const { maxSize, maxValue, minValue, colors, orderBy } = this.state;
+        const {
+            params: { maxSize, maxValue, minValue, orderBy },
+            colors,
+        } = this.state;
         return (
             <div style={styles.container}>
                 <TextField

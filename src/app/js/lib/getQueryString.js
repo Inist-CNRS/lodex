@@ -23,7 +23,7 @@ export default (
         facets,
         params,
         invertedFacets,
-        sort,
+        sort = {},
         page,
         perPage,
         limit,

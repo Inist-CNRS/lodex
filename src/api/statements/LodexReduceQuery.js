@@ -24,6 +24,8 @@ export const createFunction = MongoClientImpl =>
         const sort = this.getParam('sort', data.sort || {});
         const field = this.getParam('field', data.$field || 'uri');
         const target = this.getParam('total');
+        const minValue = this.getParam('minValue', data.minValue);
+        const maxValue = this.getParam('maxValue', data.maxValue);
 
         const reducer = this.getParam('reducer');
 
@@ -70,9 +72,26 @@ export const createFunction = MongoClientImpl =>
             reduce,
             options,
         );
+
         const total = await cursor.count();
+
+        const findFilter = {};
+
+        if (minValue) {
+            findFilter.value = {
+                $gte: minValue,
+            };
+        }
+
+        if (maxValue) {
+            findFilter.value = {
+                ...(findFilter.value || {}),
+                $lte: maxValue,
+            };
+        }
+
         const stream = cursor
-            .find({})
+            .find(findFilter)
             .skip(Number(skip))
             .limit(Number(limit))
             .sort(sort)

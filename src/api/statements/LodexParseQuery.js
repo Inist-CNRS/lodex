@@ -4,29 +4,30 @@ export default function LodexParseQuery(data, feed) {
     }
 
     const {
-        limit,
+        maxSize,
         skip,
         maxValue,
         minValue,
         match,
-        sortBy,
-        sortDir,
+        orderBy = '_id',
+        sortDir = -1,
         invertedFacets = [],
         ...facets
     } = data.query;
+
     feed.send({
         ...data,
-        limit,
+        limit: maxSize,
         skip,
-        maxValue,
-        minValue,
+        maxValue: typeof maxValue !== 'undefined' && Number(maxValue),
+        minValue: typeof minValue !== 'undefined' && Number(minValue),
         query: {
             match,
             invertedFacets,
             facets,
         },
         sort: {
-            [sortBy]: parseInt(sortDir, 10),
+            [orderBy]: parseInt(sortDir, 10),
         },
     });
 }
