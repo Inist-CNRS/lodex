@@ -86,7 +86,11 @@ class PieChartView extends Component {
             .filter(x => x.length > 0)
             .map(x => String('#').concat(x));
         return (
-            <ResponsiveContainer width={600} height={300}>
+            <ResponsiveContainer
+                className="lodex-chart"
+                width={600}
+                height={300}
+            >
                 <PieChart>
                     <Legend
                         verticalAlign="middle"
