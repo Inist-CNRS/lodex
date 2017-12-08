@@ -56,8 +56,7 @@ class ResourcesGrid extends Component {
 
         const url = `/api/run/syndication/?${queryString}`;
 
-        const apiurl = url;
-        const response = await fetch(apiurl);
+        const response = await fetch(url);
         const result = await response.json();
         const data = result.data || result.items || [];
         const total = result.total || 0;

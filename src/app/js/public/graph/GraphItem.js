@@ -8,7 +8,7 @@ import { fromCharacteristic, fromGraph } from '../selectors';
 import GraphItemContainer from './GraphItemContainer';
 import { preLoadChartData } from '../graph';
 
-class PureGraphItem extends Component {
+class GraphItem extends Component {
     componentDidMount() {
         const { field, resource, preLoadChartData } = this.props;
         if (!field) {
@@ -39,7 +39,7 @@ class PureGraphItem extends Component {
     }
 }
 
-PureGraphItem.propTypes = {
+GraphItem.propTypes = {
     field: fieldPropTypes.isRequired,
     resource: PropTypes.object.isRequired,
     preLoadChartData: PropTypes.func.isRequired,
@@ -55,4 +55,4 @@ const mapDispatchToProps = {
     preLoadChartData,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(PureGraphItem);
+export default connect(mapStateToProps, mapDispatchToProps)(GraphItem);

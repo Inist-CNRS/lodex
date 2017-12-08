@@ -41,7 +41,7 @@ const styles = {
     },
 };
 
-class PureGraphPage extends Component {
+class GraphPage extends Component {
     componentDidMount() {
         const { graphField: field, resource, preLoadChartData } = this.props;
         if (!field) {
@@ -106,7 +106,7 @@ class PureGraphPage extends Component {
     }
 }
 
-PureGraphPage.propTypes = {
+GraphPage.propTypes = {
     graphField: fieldPropTypes,
     resource: PropTypes.object.isRequired,
     filter: PropTypes.string.isRequired,
@@ -129,4 +129,4 @@ const mapDispatchToProps = {
     preLoadChartData,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(PureGraphPage);
+export default connect(mapStateToProps, mapDispatchToProps)(GraphPage);
