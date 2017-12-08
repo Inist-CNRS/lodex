@@ -162,7 +162,7 @@ export default {
     Login: 'Se connecter',
     show_publication_errors: 'Erreurs',
     model: 'Modèle',
-    overview: 'Aperçu',
+    overview: 'Syndication',
     resource_details: 'Détails',
     share_export: 'Partager/Exporter',
     ontology: 'Ontologie',
