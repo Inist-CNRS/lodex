@@ -34,7 +34,7 @@ class Resource extends Component {
         };
         const forJSON = {
             ...forHTML,
-            pathname: '/api/run/all-metadata/',
+            pathname: '/api/run/syndication/',
             search: MQS.stringify(mongoQuery),
         };
         const response = await fetch(url.format(forJSON));

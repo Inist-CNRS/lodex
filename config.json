@@ -13,7 +13,7 @@
         "hello-world",
         "all-fields",
         "all-resources",
-        "all-metadata",
+        "syndication",
         "all-documents",
         "count-by-fields",
         "count-all",
