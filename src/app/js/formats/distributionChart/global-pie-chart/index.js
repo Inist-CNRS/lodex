@@ -1,4 +1,4 @@
-import Component from './Component';
+import Component from './PieChartView';
 import AdminComponent from '../AdminComponent';
 import DefaultFormat from '../../DefaultFormat';
 

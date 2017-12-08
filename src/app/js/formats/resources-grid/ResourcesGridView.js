@@ -9,7 +9,7 @@ import LodexResource from '../shared/LodexResource';
 import { field as fieldPropTypes } from '../../propTypes';
 import getQueryString from '../../lib/getQueryString';
 
-class ResourcesGrid extends Component {
+class ResourcesGridView extends Component {
     static propTypes = {
         field: fieldPropTypes.isRequired,
         linkedResource: PropTypes.object,
@@ -141,4 +141,4 @@ class ResourcesGrid extends Component {
     }
 }
 
-export default translate(ResourcesGrid);
+export default translate(ResourcesGridView);

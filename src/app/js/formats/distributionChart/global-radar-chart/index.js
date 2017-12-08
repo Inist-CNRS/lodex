@@ -1,4 +1,4 @@
-import Component from './Component';
+import Component from './RadarChartView';
 import AdminComponent from '../AdminComponent';
 import DefaultFormat from '../../DefaultFormat';
 

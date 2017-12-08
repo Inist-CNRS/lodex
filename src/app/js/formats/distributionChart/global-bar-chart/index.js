@@ -1,4 +1,4 @@
-import Component from './Component';
+import Component from './BarChartView';
 import AdminComponent from '../AdminComponent';
 import DefaultFormat from '../../DefaultFormat';
 
