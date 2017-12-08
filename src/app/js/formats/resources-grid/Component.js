@@ -55,7 +55,7 @@ class ResourcesGrid extends Component {
         };
         const forJSON = {
             ...forHTML,
-            pathname: '/api/run/all-metadata/',
+            pathname: '/api/run/syndication/',
             search: MQS.stringify(mongoQuery),
         };
 
