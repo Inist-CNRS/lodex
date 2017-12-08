@@ -13,6 +13,14 @@ import {
 
 import { field as fieldPropTypes } from '../../../propTypes';
 
+const margin = {
+    top: 15,
+    right: 50,
+    left: 0,
+    bottom: 0,
+};
+const padding = { top: 3, bottom: 3 };
+
 class BarChartView extends Component {
     handleClickBar = ({ name: value }) => {
         const { resource, field, toggleFacetValue } = this.props;
@@ -36,7 +44,7 @@ class BarChartView extends Component {
                 <BarChart
                     data={chartData}
                     layout="vertical"
-                    margin={{ top: 15, right: 50, left: 0, bottom: 0 }}
+                    margin={margin}
                     maxBarSize={10}
                 >
                     <XAxis type="number" dataKey="value" />
@@ -44,7 +52,7 @@ class BarChartView extends Component {
                         type="category"
                         dataKey="name"
                         interval={0}
-                        padding={{ top: 3, bottom: 3 }}
+                        padding={padding}
                     />
                     <CartesianGrid strokeDasharray="3 3" />
                     <Bar
