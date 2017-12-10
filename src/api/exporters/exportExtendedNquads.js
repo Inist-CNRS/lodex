@@ -11,14 +11,27 @@ const exporter = (config, fields, characteristics, stream) =>
         .pipe(ezs('filterContributions', { fields }))
         .pipe(ezs('extractIstexQuery', { fields, config }))
         .pipe(
-            ezs('scroll', {
-                output: Object.keys(config.istexQuery.context).filter(
+            ezs('ISTEXSearch', {
+                source: 'content',
+                target: 'content',
+                field: Object.keys(config.istexQuery.context).filter(
                     e => e !== config.istexQuery.linked,
                 ),
             }),
         )
+        .pipe(
+            ezs('ISTEXScroll', {
+                source: 'content',
+                target: 'content',
+            }),
+        )
+        .pipe(
+            ezs('ISTEXResult', {
+                source: 'content',
+                target: 'content',
+            }),
+        )
         .pipe(ezs('convertToExtendedJsonLd', { config }))
-        // .pipe(ezs('debug'))
         .pipe(ezs('convertJsonLdToNQuads'));
 
 exporter.extension = 'nq';
