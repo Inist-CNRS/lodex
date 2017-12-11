@@ -34,9 +34,6 @@ const styles = {
         height: 56,
         marginLeft: 16,
     },
-    select: {
-        width: '100%',
-    },
     label: {
 		display: 'inline-block',
         color: '#999',
@@ -47,7 +44,6 @@ const styles = {
     input: {
 		display: 'inline-block',
         width: '100%',
-        textAlign: 'right',
     },
     underline: {
         display: 'none'
@@ -188,7 +184,7 @@ class Pagination extends Component {
                     <SelectField
                         onChange={this.handleChangePerPage}
                         value={perPage}
-                        style={styles.select}
+                        style={styles.input}
                         underlineStyle={styles.underline}>
                         <MenuItem value={10} primaryText="10"/>
                         <MenuItem value={20} primaryText="20"/>
