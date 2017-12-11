@@ -10,7 +10,7 @@ import {
     field as fieldPropTypes,
     polyglot as polyglotPropTypes,
 } from '../../propTypes';
-import EditOntologyField from './EditOntologyField';
+import EditOntologyFieldButton from './EditOntologyFieldButton';
 import { fromFields } from '../../sharedSelectors';
 import { languages } from '../../../../../config.json';
 import getFieldClassName from '../../lib/getFieldClassName';
@@ -131,7 +131,7 @@ const OntologyFieldComponent = ({ field, fields, index, p: polyglot }) => (
                 </dd>
             </dl>
         </div>
-        <EditOntologyField field={field} />
+        <EditOntologyFieldButton field={field} />
     </div>
 );
 
