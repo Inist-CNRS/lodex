@@ -16,6 +16,7 @@ export const UriFieldInputComponent = ({ p: polyglot, input }) => (
         floatingLabelFixed
         fullWidth
         hintText={polyglot.t('auto_generate_uri')}
+        label="uri"
         {...input}
     />
 );

@@ -24,7 +24,12 @@ export const PureButtonWithDialog = ({
         />,
     ],
     openButton = (
-        <FlatButton className={className} label={label} onClick={handleOpen} />
+        <FlatButton
+            primary
+            className={className}
+            label={label}
+            onClick={handleOpen}
+        />
     ),
 }) => {
     if (!show) {
@@ -54,8 +59,8 @@ PureButtonWithDialog.defaultProps = {
 };
 
 PureButtonWithDialog.propTypes = {
-    handleClose: PropTypes.func.isRequired,
-    handleOpen: PropTypes.func.isRequired,
+    handleClose: PropTypes.func,
+    handleOpen: PropTypes.func,
     p: polyglotPropTypes.isRequired,
     open: PropTypes.bool,
     show: PropTypes.bool,

@@ -324,4 +324,6 @@ export default {
     field_width: 'largeur',
     graph_list: 'graph list',
     filter_value: 'filter %{field}',
+    exclude: 'exclude',
+    count: 'count',
 };

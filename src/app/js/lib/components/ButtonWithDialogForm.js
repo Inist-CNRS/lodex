@@ -74,6 +74,8 @@ export const PureButtonWithDialogForm = ({
             actions={actions}
             dialog={form}
             open={open}
+            label={label}
+            className={className}
         />
     );
 };

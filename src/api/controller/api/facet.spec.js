@@ -26,7 +26,14 @@ describe('facets routes', () => {
 
                 expect(
                     ctx.publishedFacet.findValuesForField,
-                ).toHaveBeenCalledWith('foo', undefined, 7, 20);
+                ).toHaveBeenCalledWith({
+                    field: 'foo',
+                    filter: undefined,
+                    page: 7,
+                    perPage: 20,
+                    sortDir: undefined,
+                    sortBy: undefined,
+                });
             });
 
             it('calls ctx.publishedFacet.countValuesForField with correct parameters', async () => {
@@ -44,7 +51,14 @@ describe('facets routes', () => {
 
                 expect(
                     ctx.publishedFacet.findValuesForField,
-                ).toHaveBeenCalledWith('foo', 'filter', 7, 20);
+                ).toHaveBeenCalledWith({
+                    field: 'foo',
+                    filter: 'filter',
+                    page: 7,
+                    perPage: 20,
+                    sortDir: undefined,
+                    sortBy: undefined,
+                });
             });
 
             it('calls ctx.publishedFacet.countValuesForField with correct parameters', async () => {

@@ -9,7 +9,8 @@ const Bigbold = ({ value, colorsSet, size }) => {
     const siz = sizes[size - 1] || '8rem';
     const styles = StyleSheet.create({
         ribbon: {
-            height: sizes[size],
+            marginTop: '-0.5rem',
+            marginBottom: '-0.5rem',
         },
         content: {
             fontSize: siz,

@@ -6,6 +6,8 @@ const FormTextField = ({
     input,
     label,
     meta: { touched, error },
+    p,
+    dispatch,
     ...custom
 }) => (
     <TextField
@@ -13,6 +15,7 @@ const FormTextField = ({
         floatingLabelText={label}
         errorText={touched && error}
         {...input}
+        value={input.value === null ? '' : input.value}
         {...custom}
     />
 );

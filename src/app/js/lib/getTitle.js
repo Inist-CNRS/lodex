@@ -1,4 +1,7 @@
-export default () =>
-    process.env.EZMASTER_PUBLIC_URL
-        ? /https?:\/\/([\w-]+)/.exec(process.env.EZMASTER_PUBLIC_URL)[1]
-        : 'example';
+import { getHost } from '../../../common/uris';
+
+export default () => {
+    const host = getHost();
+
+    return host ? /https?:\/\/([\w-]+)/.exec(host)[1] : 'example';
+};

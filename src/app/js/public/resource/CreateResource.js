@@ -24,8 +24,8 @@ const mapStateToProps = (state, { p }) => ({
 });
 
 const mapDispatchToProps = {
-    handleOpen: () => createResourceOpen(),
-    handleClose: () => createResourceCancel(),
+    handleOpen: createResourceOpen,
+    handleClose: createResourceCancel,
 };
 
 export default compose(translate, connect(mapStateToProps, mapDispatchToProps))(

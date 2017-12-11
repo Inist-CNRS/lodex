@@ -25,6 +25,7 @@ import {
 } from '../../../../../config.json';
 import getTitle from '../../lib/getTitle';
 import ExportShareButton from '../ExportShareButton';
+import { getHost } from '../../../../common/uris';
 
 const styles = {
     container: {
@@ -180,10 +181,6 @@ export const DetailComponent = ({
                                 </span>
                                 <div style={styles.value}>
                                     <Link to="/graph">{backToListLabel}</Link>
-                                    <ExportShareButton
-                                        style={{ float: 'right' }}
-                                        uri={resource.uri}
-                                    />
                                 </div>
                             </div>
                         </div>
@@ -250,9 +247,9 @@ export const DetailComponent = ({
                                     XX
                                 </span>
                                 <div style={styles.value}>
-                                    <a href={`/${resource.uri}`}>{`${
-                                        process.env.EZMASTER_PUBLIC_URL
-                                    }/${resource.uri}`}</a>
+                                    <a
+                                        href={`/${resource.uri}`}
+                                    >{`${getHost()}/${resource.uri}`}</a>
                                 </div>
                             </div>
                         </div>
@@ -262,6 +259,10 @@ export const DetailComponent = ({
                     <SelectVersion />
                     <AddField style={{ marginLeft: 'auto' }} />
                     <HideResource />
+                    <ExportShareButton
+                        style={{ float: 'right' }}
+                        uri={resource.uri}
+                    />
                 </CardActions>
                 <div style={styles.version}>
                     <Version />

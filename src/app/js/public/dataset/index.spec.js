@@ -8,7 +8,7 @@ import reducer, {
     sortDataset,
     applyFilter,
 } from './';
-import { APPLY_FACET } from '../facet';
+import { TOGGLE_FACET_VALUE } from '../facet';
 
 describe('dataset reducer', () => {
     it('should initialize with correct state', () => {
@@ -66,8 +66,8 @@ describe('dataset reducer', () => {
         });
     });
 
-    it('should handle APPLY_FACET action', () => {
-        const state = reducer({ perPage: 20 }, { type: APPLY_FACET });
+    it('should handle TOGGLE_FACET_VALUE action', () => {
+        const state = reducer({ perPage: 20 }, { type: TOGGLE_FACET_VALUE });
         expect(state).toEqual({
             currentPage: 0,
             error: null,

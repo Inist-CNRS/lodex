@@ -1,42 +1,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { TableHeaderColumn } from 'material-ui/Table';
-import FlatButton from 'material-ui/FlatButton';
-import ContentSort from 'material-ui/svg-icons/content/sort';
 import { connect } from 'react-redux';
-import compose from 'recompose/compose';
-import withHandlers from 'recompose/withHandlers';
 
 import { sortDataset as sortDatasetAction } from './';
 import { fromDataset } from '../selectors';
-
-const styles = {
-    sortButton: {
-        minWidth: 40,
-    },
-};
+import SortButton from '../../lib/components/SortButton';
 
 const DatasetColumnHeader = ({ name, label, sortBy, sortDir, sortDataset }) => (
     <TableHeaderColumn>
-        <FlatButton
+        <SortButton
             className={`sort_${name}`}
-            labelPosition="before"
-            onClick={sortDataset}
+            sort={sortDataset}
+            name={name}
             label={label}
-            icon={
-                sortBy === name ? (
-                    <ContentSort
-                        style={
-                            sortDir === 'ASC'
-                                ? { transform: 'rotate(180deg)' }
-                                : {}
-                        }
-                    />
-                ) : (
-                    false
-                )
-            }
-            style={styles.sortButton}
+            sortBy={sortBy}
+            sortDir={sortDir}
         />
     </TableHeaderColumn>
 );
@@ -62,9 +41,6 @@ const mapDispatchToProps = {
     sortDataset: sortDatasetAction,
 };
 
-export default compose(
-    connect(mapStateToProps, mapDispatchToProps),
-    withHandlers({
-        sortDataset: ({ sortDataset, name }) => () => sortDataset(name),
-    }),
-)(DatasetColumnHeader);
+export default connect(mapStateToProps, mapDispatchToProps)(
+    DatasetColumnHeader,
+);

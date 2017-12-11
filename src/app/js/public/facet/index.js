@@ -1,35 +1,38 @@
 import { createAction, handleActions, combineActions } from 'redux-actions';
 import get from 'lodash.get';
 import omit from 'lodash.omit';
+import pick from 'lodash.pick';
 
 import facetValueReducer, {
     LOAD_FACET_VALUES_SUCCESS as LOAD_FACET_VALUES_SUCCESS2,
     FACET_VALUE_CHANGE as FACET_VALUE_CHANGE2,
     INVERT_FACET as INVERT_FACET2,
+    FACET_VALUE_SORT as FACET_VALUE_SORT2,
     loadFacetValuesSuccess as loadFacetValuesSuccess2,
     changeFacetValue as changeFacetValue2,
     invertFacet as invertFacet2,
+    sortFacetValue as sortFacetValue2,
 } from './facetValueReducer';
 
 export const OPEN_FACET = 'OPEN_FACET';
-export const APPLY_FACET = 'APPLY_FACET';
-export const REMOVE_FACET = 'REMOVE_FACET';
+export const TOGGLE_FACET_VALUE = 'TOGGLE_FACET_VALUE';
 export const CLEAR_FACET = 'CLEAR_FACET';
 export const LOAD_FACET_VALUES = 'LOAD_FACET_VALUES';
 export const LOAD_FACET_VALUES_ERROR = 'LOAD_FACET_VALUES_ERROR';
 export const LOAD_FACET_VALUES_SUCCESS = LOAD_FACET_VALUES_SUCCESS2;
 export const FACET_VALUE_CHANGE = FACET_VALUE_CHANGE2;
 export const INVERT_FACET = INVERT_FACET2;
+export const FACET_VALUE_SORT = FACET_VALUE_SORT2;
 
 export const openFacet = createAction(OPEN_FACET);
-export const applyFacet = createAction(APPLY_FACET);
-export const removeFacet = createAction(REMOVE_FACET);
+export const toggleFacetValue = createAction(TOGGLE_FACET_VALUE);
 export const clearFacet = createAction(CLEAR_FACET);
 export const loadFacetValues = createAction(LOAD_FACET_VALUES);
 export const loadFacetValuesError = createAction(LOAD_FACET_VALUES_ERROR);
 export const loadFacetValuesSuccess = loadFacetValuesSuccess2;
 export const changeFacetValue = changeFacetValue2;
 export const invertFacet = invertFacet2;
+export const sortFacetValue = sortFacetValue2;
 
 export const initialState = {
     error: null,
@@ -54,30 +57,18 @@ export default handleActions(
             ...state,
             error: error.message || error,
         }),
-        [APPLY_FACET]: (
+        [TOGGLE_FACET_VALUE]: (
             { appliedFacets, ...state },
             { payload: { name, value } },
         ) => {
+            const isChecked = isFacetValuesChecked(
+                { appliedFacets },
+                { name, value },
+            );
             const prevValues = appliedFacets[name] || [];
-            const newValues =
-                prevValues.indexOf(value) === -1
-                    ? prevValues.concat(value)
-                    : prevValues;
-
-            return {
-                ...state,
-                appliedFacets: {
-                    ...appliedFacets,
-                    [name]: newValues,
-                },
-            };
-        },
-        [REMOVE_FACET]: (
-            { appliedFacets, ...state },
-            { payload: { name, value } },
-        ) => {
-            const prevValues = appliedFacets[name] || [];
-            const newValues = prevValues.filter(v => v !== value);
+            const newValues = isChecked
+                ? prevValues.filter(v => v !== value)
+                : prevValues.concat(value);
 
             if (!newValues.length) {
                 return {
@@ -102,6 +93,7 @@ export default handleActions(
             LOAD_FACET_VALUES_SUCCESS,
             FACET_VALUE_CHANGE,
             INVERT_FACET,
+            FACET_VALUE_SORT,
         )]: (state, action) => {
             const name = action.payload.name;
 
@@ -138,25 +130,36 @@ export const getFacetValues = (state, name) =>
     get(state, ['facetsValues', name, 'values'], []);
 
 export const getFacetValuesTotal = (state, name) =>
-    get(state, ['facetsValues', name, 'total'], null);
+    get(state, ['facetsValues', name, 'total'], 0);
 
 export const getFacetValuesPage = (state, name) =>
-    get(state, ['facetsValues', name, 'currentPage']);
+    get(state, ['facetsValues', name, 'currentPage'], 0);
 
 export const getFacetValuesPerPage = (state, name) =>
-    get(state, ['facetsValues', name, 'perPage']);
+    get(state, ['facetsValues', name, 'perPage'], 10);
 
 export const getFacetValuesFilter = (state, name) =>
-    get(state, ['facetsValues', name, 'filter']);
+    get(state, ['facetsValues', name, 'filter'], '');
+
+export const getFacetValuesSort = (state, name) =>
+    get(state, ['facetsValues', name, 'sort'], {});
 
 export const isFacetValuesInverted = (state, name) =>
-    get(state, ['facetsValues', name, 'inverted']);
+    get(state, ['facetsValues', name, 'inverted'], false);
 
 export const isFacetValuesChecked = (state, { name, value }) =>
     get(state, ['appliedFacets', name], []).indexOf(value) !== -1;
 
 export const getInvertedFacets = ({ facetsValues }) =>
     Object.keys(facetsValues).filter(key => facetsValues[key].inverted);
+
+export const getFacetValueRequestData = (state, name) =>
+    pick(get(state, ['facetsValues', name], {}), [
+        'sort',
+        'filter',
+        'currentPage',
+        'perPage',
+    ]);
 
 export const fromFacet = {
     getAppliedFacets,
@@ -170,6 +173,8 @@ export const fromFacet = {
     getFacetValuesPage,
     getFacetValuesPerPage,
     getFacetValuesFilter,
+    getFacetValuesSort,
     isFacetValuesInverted,
     getInvertedFacets,
+    getFacetValueRequestData,
 };

@@ -4,22 +4,9 @@ import URL from 'url';
 import route from 'koa-route';
 import fs from 'fs';
 import ezs from 'ezs';
-import request from 'request';
+import fetch from 'isomorphic-fetch';
 import { PassThrough } from 'stream';
 import config from '../../../../config.json';
-
-export const fetch = url =>
-    new Promise((resolve, reject) => {
-        request(url, (error, response, body) => {
-            if (error) {
-                reject(error);
-                return;
-            }
-            // simulate window.fetch polyfill
-            const text = () => body;
-            resolve({ text });
-        });
-    });
 
 const routineLocalDirectory = Path.resolve(__dirname, '../../routines/');
 const routinesLocal = config.routines
@@ -34,7 +21,8 @@ const routinesLocal = config.routines
         fs.readFileSync(fileName).toString(),
     ]);
 
-const routineRepository = config.routinesRepository;
+const pluginsURL = config.pluginsURL || '';
+const routineRepository = URL.resolve(pluginsURL, './routines/');
 const routinesDistant = config.routines
     .map(routineName =>
         URL.resolve(routineRepository, routineName.concat('.ini')),
@@ -56,6 +44,7 @@ export const runRoutine = async (ctx, routineCalled) => {
     if (!routine) {
         throw new Error(`Unknown routine '${routineCalled}'`);
     }
+
     const [, metaData, , script] = routine;
     const context = {
         headers: ctx.headers,
@@ -101,6 +90,7 @@ export const runRoutine = async (ctx, routineCalled) => {
 const app = new Koa();
 
 app.use(route.get('/:routineCalled', runRoutine));
-app.use(route.get('/:routineCalled/:fieldCalled/', runRoutine));
+app.use(route.get('/:routineCalled/:field1/', runRoutine));
+app.use(route.get('/:routineCalled/:field1/:field2/', runRoutine));
 
 export default app;
