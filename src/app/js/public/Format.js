@@ -7,11 +7,10 @@ import withState from 'recompose/withState';
 
 import { fromResource } from './selectors';
 import { fromUser, fromFields } from '../sharedSelectors';
-
 import fetchByUri from '../lib/fetchByUri';
 import { field as fieldPropTypes } from '../propTypes';
-
 import { getViewComponent } from '../formats';
+import getColorSetFromField from '../lib/getColorSetFromField';
 
 export class FormatComponent extends Component {
     componentWillMount() {
@@ -40,6 +39,8 @@ export class FormatComponent extends Component {
             filter,
             facets,
             toggleFacetValue,
+            chartData,
+            colorSet,
         } = this.props;
         const ViewComponent = getViewComponent(field, isList);
 
@@ -55,7 +56,9 @@ export class FormatComponent extends Component {
                 shrink={shrink}
                 filter={filter}
                 facets={facets}
+                chartData={chartData}
                 toggleFacetValue={toggleFacetValue}
+                colorSet={colorSet}
             />
         );
     }
@@ -75,6 +78,8 @@ FormatComponent.propTypes = {
     filter: PropTypes.string,
     facets: PropTypes.object,
     toggleFacetValue: PropTypes.func,
+    chartData: PropTypes.any,
+    colorSet: PropTypes.arrayOf(PropTypes.string),
 };
 
 FormatComponent.defaultProps = {
@@ -89,11 +94,12 @@ const preMapStateToProps = state => ({
     token: fromUser.getToken(state),
 });
 
-const postMapStateToProps = (state, { linkedResource }) => ({
+const postMapStateToProps = (state, { linkedResource, field }) => ({
     linkedResource: linkedResource
         ? fromResource.getResourceLastVersion(state, linkedResource)
         : null,
     rawLinkedResource: linkedResource,
+    colorSet: getColorSetFromField(field),
 });
 
 export default compose(

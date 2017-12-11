@@ -3,8 +3,12 @@ import config from 'config';
 import ezs from 'ezs';
 import hasher from 'node-object-hash';
 import set from 'lodash.set';
+import difference from 'lodash.difference';
+
 import reducers from '../reducers/';
 import publishedDataset from '../models/publishedDataset';
+import fieldModel from '../models/field';
+import getPublishedDatasetFilter from '../models/getPublishedDatasetFilter';
 
 const hashCoerce = hasher({ sort: false, coerce: true });
 
@@ -13,12 +17,15 @@ export const createFunction = MongoClientImpl =>
         if (this.isLast()) {
             return feed.close();
         }
-        const query = this.getParam('query', data.$query || {});
-        const limit = this.getParam('limit', data.$limit || 1000000);
-        const skip = this.getParam('skip', data.$skip || 0);
-        const sort = this.getParam('sort', data.$sort || {});
+
+        const query = this.getParam('query', data.query || {});
+        const limit = this.getParam('limit', data.limit || 1000000);
+        const skip = this.getParam('skip', data.skip || 0);
+        const sort = this.getParam('sort', data.sort || {});
         const field = this.getParam('field', data.$field || 'uri');
         const target = this.getParam('total');
+        const minValue = this.getParam('minValue', data.minValue);
+        const maxValue = this.getParam('maxValue', data.maxValue);
 
         const reducer = this.getParam('reducer');
 
@@ -27,8 +34,22 @@ export const createFunction = MongoClientImpl =>
         const collName = String('mp_').concat(
             hashCoerce.hash({ reducer, fields }),
         );
+
+        const handleDb = await MongoClientImpl.connect(
+            `mongodb://${config.mongo.host}/${config.mongo.dbName}`,
+        );
+        const fieldHandle = await fieldModel(handleDb);
+
+        const searchableFieldNames = await fieldHandle.findSearchableNames();
+        const facetFieldNames = await fieldHandle.findFacetNames();
+
+        const filter = getPublishedDatasetFilter({
+            ...query,
+            searchableFieldNames,
+            facetFieldNames: difference(facetFieldNames, fields), // ignore facet part of the aggregation
+        });
         const options = {
-            query,
+            query: filter,
             finalize,
             out: {
                 replace: collName,
@@ -37,10 +58,6 @@ export const createFunction = MongoClientImpl =>
                 fields,
             },
         };
-
-        const handleDb = await MongoClientImpl.connect(
-            `mongodb://${config.mongo.host}/${config.mongo.dbName}`,
-        );
         const handlePublishedDataset = await publishedDataset(handleDb);
 
         if (!reducer) {
@@ -55,9 +72,26 @@ export const createFunction = MongoClientImpl =>
             reduce,
             options,
         );
+
         const total = await cursor.count();
+
+        const findFilter = {};
+
+        if (minValue) {
+            findFilter.value = {
+                $gte: minValue,
+            };
+        }
+
+        if (maxValue) {
+            findFilter.value = {
+                ...(findFilter.value || {}),
+                $lte: maxValue,
+            };
+        }
+
         const stream = cursor
-            .find({})
+            .find(findFilter)
             .skip(Number(skip))
             .limit(Number(limit))
             .sort(sort)
@@ -77,6 +111,8 @@ export const createFunction = MongoClientImpl =>
             handleDb.close();
             feed.close();
         });
+
+        await handleDb.close();
     };
 
 export default createFunction(MongoClient);

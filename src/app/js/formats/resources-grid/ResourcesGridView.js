@@ -1,33 +1,29 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import fetch from 'isomorphic-fetch';
-import MQS from 'mongodb-querystring';
-import url from 'url';
 import RaisedButton from 'material-ui/RaisedButton';
 import CircularProgress from 'material-ui/CircularProgress';
 import translate from 'redux-polyglot/translate';
 import { StyleSheet, css } from 'aphrodite';
 import LodexResource from '../shared/LodexResource';
-import normalizeLodexURL from '../../lib/normalizeLodexURL';
 import { field as fieldPropTypes } from '../../propTypes';
+import getQueryString from '../../lib/getQueryString';
 
-class ResourcesGrid extends Component {
+class ResourcesGridView extends Component {
     static propTypes = {
         field: fieldPropTypes.isRequired,
-        linkedResource: PropTypes.object, // eslint-disable-line
-        resource: PropTypes.object.isRequired, // eslint-disable-line
+        linkedResource: PropTypes.object,
     };
 
     constructor(props) {
         super(props);
         this.state = {
             fetch: false,
-            limit: 0,
+            maxSize: 0,
             more: 0,
             total: 0,
             data: [],
         };
-        this.handleMore = this.handleMore.bind(this);
     }
 
     componentDidMount() {
@@ -36,47 +32,43 @@ class ResourcesGrid extends Component {
 
     async fetchData() {
         this.setState({ fetch: true });
-        const { field, resource } = this.props;
+        const { field } = this.props;
         const orderBy =
             field.format && field.format.args && field.format.args.orderBy
                 ? field.format.args.orderBy
                 : 'value/asc';
-        const maxSize =
+        const maxSize = Number(
             field.format && field.format.args && field.format.args.maxSize
                 ? field.format.args.maxSize
-                : '5';
+                : 5,
+        );
+
         const [sortBy, sortDir] = String(orderBy || 'value/asc').split('/');
         const by = sortBy === 'value' ? 'value' : '_id';
         const dir = sortDir === 'asc' ? 1 : -1;
         const sort = {};
         sort[by] = dir;
 
-        const { url: forHTML } = normalizeLodexURL(resource[field.name]);
-        const limit = Number(maxSize) + Number(this.state.more);
-        const mongoQuery = {
-            $query: {},
-            $skip: 0,
-            $limit: limit,
-            $orderby: sort,
-        };
-        const forJSON = {
-            ...forHTML,
-            pathname: '/api/run/syndication/',
-            search: MQS.stringify(mongoQuery),
-        };
-        const apiurl = url.format(url.format(forJSON));
-        const response = await fetch(apiurl);
+        const queryString = getQueryString({
+            sort,
+            params: { maxSize: maxSize + this.state.more },
+        });
+
+        const url = `/api/run/syndication/?${queryString}`;
+
+        const response = await fetch(url);
         const result = await response.json();
         const data = result.data || result.items || [];
         const total = result.total || 0;
-        this.setState({ data, total, limit, fetch: false });
+        this.setState({ data, total, maxSize, fetch: false });
     }
 
-    handleMore(event) {
-        this.setState(prevState => ({ more: prevState.more + 10 }));
-        this.fetchData();
-        event.preventDefault();
-    }
+    handleMore = () => {
+        this.setState(
+            prevState => ({ more: prevState.more + 10 }),
+            () => this.fetchData(),
+        );
+    };
 
     render() {
         const { field } = this.props;
@@ -132,7 +124,7 @@ class ResourcesGrid extends Component {
                     })}
                 </ul>
                 <div className={css(styles.button)}>
-                    {this.state.limit < this.state.total && (
+                    {this.state.maxSize < this.state.total && (
                         <RaisedButton
                             label="MORE"
                             onClick={this.handleMore}
@@ -149,4 +141,4 @@ class ResourcesGrid extends Component {
     }
 }
 
-export default translate(ResourcesGrid);
+export default translate(ResourcesGridView);

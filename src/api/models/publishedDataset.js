@@ -1,83 +1,11 @@
 import { ObjectID } from 'mongodb';
 import chunk from 'lodash.chunk';
 import omit from 'lodash.omit';
-import compose from 'lodash.compose';
 import config from 'config';
+
 import { getFullResourceUri } from '../../common/uris';
-
+import getPublishedDatasetFilter from './getPublishedDatasetFilter';
 import { VALIDATED, PROPOSED } from '../../common/propositionStatus';
-
-export const addMatchToFilters = (match, searchableFieldNames) => filters => {
-    if (!match || !searchableFieldNames || !searchableFieldNames.length) {
-        return filters;
-    }
-    const regexMatch = new RegExp(match);
-
-    return {
-        ...filters,
-        $or: searchableFieldNames.map(name => ({
-            [`versions.${name}`]: { $regex: regexMatch, $options: 'i' },
-        })),
-    };
-};
-
-export const getValueQueryFragment = (name, value, inverted) => {
-    if (Array.isArray(value) && value.length > 1) {
-        return {
-            [inverted ? '$nor' : '$or']: value.map(v => ({
-                [`versions.${name}`]: v,
-            })),
-        };
-    }
-
-    const queryValue = Array.isArray(value) ? value[0] : value;
-
-    return {
-        [`versions.${name}`]: inverted ? { $ne: queryValue } : queryValue,
-    };
-};
-
-export const addFacetToFilters = (
-    facets,
-    facetFieldNames,
-    invertedFacets = [],
-) => filters => {
-    if (
-        !facets ||
-        !Object.keys(facets).length ||
-        !facetFieldNames ||
-        !facetFieldNames.length
-    ) {
-        return filters;
-    }
-
-    return {
-        ...filters,
-        $and: facetFieldNames.reduce((acc, name) => {
-            if (!facets[name]) return acc;
-
-            return [
-                ...acc,
-                getValueQueryFragment(
-                    name,
-                    facets[name],
-                    invertedFacets.indexOf(name) !== -1,
-                ),
-            ];
-        }, []),
-    };
-};
-
-export const addKeyToFilters = (key, value) => filters => {
-    if (!value) {
-        return filters;
-    }
-
-    return {
-        ...filters,
-        [key]: value,
-    };
-};
 
 export default async db => {
     const collection = db.collection('publishedDataset');
@@ -134,10 +62,13 @@ export default async db => {
         searchableFieldNames,
         facetFieldNames,
     }) => {
-        const filters = compose(
-            addMatchToFilters(match, searchableFieldNames),
-            addFacetToFilters(facets, facetFieldNames, invertedFacets),
-        )({ removedAt: { $exists: false } });
+        const filters = getPublishedDatasetFilter({
+            match,
+            searchableFieldNames,
+            facets,
+            facetFieldNames,
+            invertedFacets,
+        });
 
         return collection.findLimitFromSkip(
             perPage,
@@ -165,14 +96,18 @@ export default async db => {
         searchableFieldNames,
         facets,
         facetFieldNames,
+        invertedFacets,
         sortBy,
         sortDir,
     ) => {
-        const filters = compose(
-            addKeyToFilters('uri', uri),
-            addMatchToFilters(match, searchableFieldNames),
-            addFacetToFilters(facets, facetFieldNames),
-        )({ removedAt: { $exists: false } });
+        const filters = getPublishedDatasetFilter({
+            uri,
+            match,
+            searchableFieldNames,
+            facets,
+            facetFieldNames,
+            invertedFacets,
+        });
         const cursor = collection.getFindCursor(filters, sortBy, sortDir);
 
         return cursor

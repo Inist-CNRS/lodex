@@ -4,6 +4,7 @@ import { fromDataset as localFromDataset } from './dataset';
 import { fromExport as localFromExport } from './export';
 import { fromFacet as localFromFacet } from './facet';
 import { fromResource as localFromResource } from './resource';
+import { fromGraph as localFromGraph } from './graph';
 
 const getCharacteristicState = state => state.characteristic;
 export const fromCharacteristic = createGlobalSelectors(
@@ -31,3 +32,15 @@ export const fromResource = createGlobalSelectors(
     getResourceState,
     localFromResource,
 );
+
+const getGraphState = state => state.graph;
+export const fromGraph = createGlobalSelectors(getGraphState, localFromGraph);
+
+export const fromRouting = {
+    getGraphName: state => {
+        const route = state.routing.locationBeforeTransitions.pathname;
+        const match = route.match(/\/graph\/(.*?)$/);
+
+        return match ? match[1] : null;
+    },
+};

@@ -1,6 +1,6 @@
-import Component from './Component';
-import AdminComponent from './AdminComponent';
-import DefaultFormat from '../DefaultFormat';
+import Component from './BarChartView';
+import AdminComponent from '../AdminComponent';
+import DefaultFormat from '../../DefaultFormat';
 
 export default {
     Component,

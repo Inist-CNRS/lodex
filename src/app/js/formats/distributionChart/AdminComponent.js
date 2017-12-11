@@ -22,60 +22,72 @@ const styles = {
     },
 };
 
-class RadarChartEdition extends Component {
+class ChartEdition extends Component {
     static propTypes = {
-        maxSize: PropTypes.string,
-        orderBy: PropTypes.string,
+        params: PropTypes.shape({
+            maxSize: PropTypes.number,
+            maxValue: PropTypes.number,
+            minValue: PropTypes.number,
+            orderBy: PropTypes.string,
+        }),
         colors: PropTypes.string,
         onChange: PropTypes.func.isRequired,
         p: polyglotPropTypes.isRequired,
     };
 
     static defaultProps = {
-        maxSize: '5',
-        orderBy: 'value/asc',
+        params: {
+            maxSize: 5,
+            orderBy: 'value/asc',
+        },
         colors: '#1D1A31 #4D2D52 #9A4C95 #F08CAE #C1A5A9',
     };
     constructor(props) {
         super(props);
-
-        this.state = {
-            maxSize: this.props.maxSize,
-            orderBy: this.props.orderBy,
-            colors: this.props.colors,
-        };
+        const { params, colors } = this.props;
+        this.state = { params, colors };
     }
 
     setMaxSize = maxSize => {
-        this.setState({ maxSize });
-        this.props.onChange({
-            maxSize,
-            orderBy: this.state.orderBy,
-            colors: this.state.colors,
-        });
+        const { params, ...state } = this.state;
+        const newState = { ...state, params: { ...params, maxSize } };
+        this.setState(newState);
+        this.props.onChange(newState);
+    };
+
+    setMaxValue = maxValue => {
+        const { params, ...state } = this.state;
+        const newState = { ...state, params: { ...params, maxValue } };
+        this.setState(newState);
+        this.props.onChange(newState);
+    };
+
+    setMinValue = minValue => {
+        const { params, ...state } = this.state;
+        const newState = { ...state, params: { ...params, minValue } };
+        this.setState(newState);
+        this.props.onChange(newState);
     };
 
     setOrderBy = orderBy => {
-        this.setState({ orderBy });
-        this.props.onChange({
-            maxSize: this.state.maxSize,
-            colors: this.state.colors,
-            orderBy,
-        });
+        const { params, ...state } = this.state;
+        const newState = { ...state, params: { ...params, orderBy } };
+        this.setState(newState);
+        this.props.onChange(newState);
     };
 
     setColors = colors => {
-        this.setState({ colors });
-        this.props.onChange({
-            maxSize: this.state.maxSize,
-            orderBy: this.state.orderBy,
-            colors,
-        });
+        const newState = { ...this.state, colors };
+        this.setState(newState);
+        this.props.onChange(newState);
     };
 
     render() {
         const { p: polyglot } = this.props;
-        const { maxSize, colors, orderBy } = this.state;
+        const {
+            params: { maxSize, maxValue, minValue, orderBy },
+            colors,
+        } = this.state;
         return (
             <div style={styles.container}>
                 <TextField
@@ -83,6 +95,18 @@ class RadarChartEdition extends Component {
                     onChange={(event, newValue) => this.setMaxSize(newValue)}
                     style={styles.input}
                     value={maxSize}
+                />
+                <TextField
+                    floatingLabelText={polyglot.t('max_value')}
+                    onChange={(event, newValue) => this.setMaxValue(newValue)}
+                    style={styles.input}
+                    value={maxValue}
+                />
+                <TextField
+                    floatingLabelText={polyglot.t('min_value')}
+                    onChange={(event, newValue) => this.setMinValue(newValue)}
+                    style={styles.input}
+                    value={minValue}
                 />
                 <SelectField
                     floatingLabelText={polyglot.t('order_by')}
@@ -120,4 +144,4 @@ class RadarChartEdition extends Component {
     }
 }
 
-export default translate(RadarChartEdition);
+export default translate(ChartEdition);

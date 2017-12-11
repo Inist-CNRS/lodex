@@ -76,6 +76,7 @@ class RessourcesGrid extends Component {
             <div style={styles.container}>
                 <TextField
                     floatingLabelText={polyglot.t('max_fields')}
+                    type="number"
                     onChange={(event, newValue) => this.setMaxSize(newValue)}
                     style={styles.input}
                     value={maxSize}

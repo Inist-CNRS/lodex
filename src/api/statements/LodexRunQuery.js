@@ -2,8 +2,10 @@ import { MongoClient } from 'mongodb';
 import config from 'config';
 import ezs from 'ezs';
 import set from 'lodash.set';
+
 import publishedDataset from '../models/publishedDataset';
 import field from '../models/field';
+import getPublishedDatasetFilter from '../models/getPublishedDatasetFilter';
 
 export const createFunction = MongoClientImpl =>
     async function LodexRunQuery(data, feed) {
@@ -11,25 +13,37 @@ export const createFunction = MongoClientImpl =>
             return feed.close();
         }
         const from = this.getParam('from', data.$from || 'dataset');
-        const query = this.getParam('query', data.$query || {});
-        const limit = this.getParam('limit', data.$limit || 10);
-        const skip = this.getParam('skip', data.$skip || 0);
-        const sort = this.getParam('sort', data.$sort || {});
+        const query = this.getParam('query', data.query || {});
+        const limit = this.getParam('limit', data.limit || 10);
+        const skip = this.getParam('skip', data.skip || 0);
+        const sort = this.getParam('sort', data.sort || {});
         const target = this.getParam('total');
 
         const handleDb = await MongoClientImpl.connect(
             `mongodb://${config.mongo.host}/${config.mongo.dbName}`,
         );
         let handle;
+        let filter;
+        const fieldHandle = await field(handleDb);
         if (from === 'fields' || from === 'field') {
-            handle = await field(handleDb);
+            handle = fieldHandle;
+            filter = {
+                ...query.facets,
+                removedAt: { $exists: false },
+            };
         } else {
             handle = await publishedDataset(handleDb);
-        }
-        // Hide removed resources & prevent a public view
-        query.removedAt = { $exists: false };
 
-        const cursor = handle.find(query);
+            const searchableFieldNames = await fieldHandle.findSearchableNames();
+            const facetFieldNames = await fieldHandle.findFacetNames();
+            filter = getPublishedDatasetFilter({
+                ...query,
+                searchableFieldNames,
+                facetFieldNames,
+            });
+        }
+
+        const cursor = handle.find(filter);
         const total = await cursor.count();
         const stream = cursor
             .skip(Number(skip))
@@ -53,6 +67,7 @@ export const createFunction = MongoClientImpl =>
             handleDb.close();
             feed.close();
         });
+        await handleDb.close();
     };
 
 export default createFunction(MongoClient);

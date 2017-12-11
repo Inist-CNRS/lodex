@@ -1,25 +1,58 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import { field as fieldPropTypes } from '../../propTypes.js';
 import Format from '../Format';
-import { fromCharacteristic } from '../selectors';
+import { fromCharacteristic, fromGraph } from '../selectors';
 import GraphItemContainer from './GraphItemContainer';
+import { preLoadChartData } from '../graph';
 
-const PureGraphItem = ({ field, resource }) => (
-    <GraphItemContainer link={`/graph/${field.name}`} label={field.label}>
-        <Format field={field} resource={resource} />
-    </GraphItemContainer>
-);
+class GraphItem extends Component {
+    componentDidMount() {
+        const { field, resource, preLoadChartData } = this.props;
+        if (!field) {
+            return;
+        }
 
-PureGraphItem.propTypes = {
+        preLoadChartData({ field, value: resource[field.name] });
+    }
+    render() {
+        const { field, resource, chartData } = this.props;
+
+        return (
+            <GraphItemContainer
+                link={`/graph/${field.name}`}
+                label={field.label}
+            >
+                {chartData ? (
+                    <Format
+                        field={field}
+                        resource={resource}
+                        chartData={chartData}
+                    />
+                ) : (
+                    <span />
+                )}
+            </GraphItemContainer>
+        );
+    }
+}
+
+GraphItem.propTypes = {
     field: fieldPropTypes.isRequired,
     resource: PropTypes.object.isRequired,
+    preLoadChartData: PropTypes.func.isRequired,
+    chartData: PropTypes.any,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state, { field }) => ({
     resource: fromCharacteristic.getCharacteristicsAsResource(state),
+    chartData: fromGraph.getChartData(state, field.name),
 });
 
-export default connect(mapStateToProps)(PureGraphItem);
+const mapDispatchToProps = {
+    preLoadChartData,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(GraphItem);

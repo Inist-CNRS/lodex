@@ -27,5 +27,5 @@ module.exports.map = function () {
 };
 
 module.exports.reduce = function (key, values) {
-  return Array.sum(values);
+    return Array.sum(values);
 };
