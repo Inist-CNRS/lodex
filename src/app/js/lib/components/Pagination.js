@@ -34,12 +34,6 @@ const styles = {
         height: 56,
         marginLeft: 16,
     },
-    pageSelect: {
-        display: 'flex',
-        alignItems: 'center',
-        height: 56,
-        marginLeft: 0,
-    },
     select: {
         width: '100%',
     },
@@ -161,7 +155,7 @@ class Pagination extends Component {
 
         return (
             <div style={column ? styles.column : styles.row}>
-                <div style={styles.pageSelect}>
+                <div style={styles.elements}>
                     <div style={styles.label}>{`${texts.page} `}</div>
 					{pages.length < 11 &&
 						<SelectField
