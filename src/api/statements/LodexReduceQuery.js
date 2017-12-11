@@ -111,8 +111,6 @@ export const createFunction = MongoClientImpl =>
             handleDb.close();
             feed.close();
         });
-
-        await handleDb.close();
     };
 
 export default createFunction(MongoClient);
