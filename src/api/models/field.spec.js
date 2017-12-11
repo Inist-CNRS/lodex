@@ -109,6 +109,18 @@ describe('field', () => {
                     cover: COVER_DOCUMENT,
                     contribution: true,
                     position: 10,
+                    transformers: [
+                        {
+                            operation: 'COLUMN',
+                            args: [
+                                {
+                                    name: 'column',
+                                    type: 'column',
+                                    value: 'label',
+                                },
+                            ],
+                        },
+                    ],
                 });
             });
 
@@ -131,6 +143,18 @@ describe('field', () => {
                     contribution: true,
                     contributors: [contributor],
                     position: 10,
+                    transformers: [
+                        {
+                            operation: 'COLUMN',
+                            args: [
+                                {
+                                    name: 'column',
+                                    type: 'column',
+                                    value: 'label',
+                                },
+                            ],
+                        },
+                    ],
                 });
             });
 
