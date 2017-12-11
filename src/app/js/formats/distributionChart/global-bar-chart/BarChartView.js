@@ -9,6 +9,7 @@ import {
     CartesianGrid,
     XAxis,
     YAxis,
+    Tooltip,
 } from 'recharts';
 
 import { field as fieldPropTypes } from '../../../propTypes';
@@ -40,7 +41,7 @@ class BarChartView extends Component {
         const { colorSet, chartData } = this.props;
 
         return (
-            <ResponsiveContainer width={600} height={300}>
+            <ResponsiveContainer width="100%" height={300}>
                 <BarChart
                     data={chartData}
                     layout="vertical"
@@ -53,7 +54,10 @@ class BarChartView extends Component {
                         dataKey="name"
                         interval={0}
                         padding={padding}
+                        width={120}
+                        tickFormatter={v => v.toLowerCase()}
                     />
+                    <Tooltip />
                     <CartesianGrid strokeDasharray="3 3" />
                     <Bar
                         dataKey="value"
