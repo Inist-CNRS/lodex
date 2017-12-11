@@ -54,12 +54,8 @@ class BarChartView extends Component {
                         dataKey="name"
                         interval={0}
                         padding={padding}
-                        width={100}
-                        tickFormatter={v =>
-                            v.length > 13
-                                ? `${v.toLowerCase().slice(0, 10)}...`
-                                : v.toLowerCase()
-                        }
+                        width={120}
+                        tickFormatter={v => v.toLowerCase()}
                     />
                     <Tooltip />
                     <CartesianGrid strokeDasharray="3 3" />
