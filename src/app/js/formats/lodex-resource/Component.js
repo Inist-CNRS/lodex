@@ -13,9 +13,10 @@ class Resource extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            link: '',
+            id: '',
+            url: '',
             title: '',
-            description: '',
+            summary: '',
         };
     }
 
@@ -33,19 +34,18 @@ class Resource extends Component {
         };
         const forJSON = {
             ...forHTML,
-            pathname: '/api/run/all-resources/',
+            pathname: '/api/run/syndication/',
             search: MQS.stringify(mongoQuery),
         };
         const response = await fetch(url.format(forJSON));
         const result = await response.json();
-        if (result.data) {
-            const entry = result.data.shift();
-            this.setState({
-                link: url.format(forHTML),
-                title: entry.value[0] || 'Undefined.',
-                description: entry.value[1] || '',
-            });
-        }
+        const data = result.data || result.items || [];
+        const entry = data.shift();
+        this.setState({
+            ...entry,
+            url: url.format(forHTML),
+            id: uri,
+        });
     }
 
     render() {

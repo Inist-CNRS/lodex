@@ -31,19 +31,26 @@ const styles = StyleSheet.create({
     },
 });
 
-const LodexResource = ({ link, title, description }) => (
+// see https://jsonfeed.org/version/1#items
+const LodexResource = ({ id, url, title, summary }) => (
     <div>
-        <a className={css(styles.contentLink)} href={link}>
+        <a id={id} className={css(styles.contentLink)} href={url}>
             <div className={css(styles.contentTitle)}>{title}</div>
-            <div className={css(styles.contentParagraph)}>{description}</div>
+            <div className={css(styles.contentParagraph)}>{summary}</div>
         </a>
     </div>
 );
 
 LodexResource.propTypes = {
-    link: PropTypes.string.isRequired, // eslint-disable-line
-    title: PropTypes.string.isRequired, // eslint-disable-line
-    description: PropTypes.string.isRequired, // eslint-disable-line
+    id: PropTypes.string.isRequired, // eslint-disable-line
+    url: PropTypes.string.isRequired, // eslint-disable-line
+    title: PropTypes.string, // eslint-disable-line
+    summary: PropTypes.string, // eslint-disable-line
+};
+
+LodexResource.defaultProps = {
+    title: 'n/a',
+    summary: '',
 };
 
 export default LodexResource;
