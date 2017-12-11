@@ -163,6 +163,18 @@ export default async db => {
                 cover: COVER_DOCUMENT,
                 contribution: true,
                 position,
+                transformers: [
+                    {
+                        operation: 'COLUMN',
+                        args: [
+                            {
+                                name: 'column',
+                                type: 'column',
+                                value: field.label,
+                            },
+                        ],
+                    },
+                ],
             };
             if (!isLogged) {
                 fieldData.contributors = [contributor];
