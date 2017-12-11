@@ -32,6 +32,18 @@ export const createCharacteristic = async ctx => {
     const field = await ctx.field.create({
         ...fieldData,
         cover: COVER_DATASET,
+        transformers: [
+            {
+                operation: 'VALUE',
+                args: [
+                    {
+                        name: 'value',
+                        type: 'string',
+                        value,
+                    },
+                ],
+            },
+        ],
     });
 
     const prevCharacteristics = await ctx.publishedCharacteristic.findLastVersion();
