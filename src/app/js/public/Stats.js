@@ -22,13 +22,8 @@ const styles = {
     },
 };
 
-export const StatsComponent = ({ nbColumns, nbResources, p: polyglot }) => (
+export const StatsComponent = ({ nbResources, p: polyglot }) => (
     <div>
-        <div style={styles.col}>
-            <div>{polyglot.t('columns')}</div>
-            <div style={styles.nb}>{nbColumns}</div>
-        </div>
-        <hr style={styles.separator} />
         <div style={styles.col}>
             <div>{polyglot.t('resources')}</div>
             <div style={styles.nb}>{nbResources}</div>

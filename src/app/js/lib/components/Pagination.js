@@ -17,7 +17,12 @@ import ChevronLeft from 'material-ui/svg-icons/navigation/chevron-left';
 import ChevronRight from 'material-ui/svg-icons/navigation/chevron-right';
 
 const styles = {
-    pagination: {
+    column: {
+        borderTop: '1px solid rgb(224, 224, 224)',
+        display: 'flex',
+        flexDirection: 'column',
+    },
+    row: {
         borderTop: '1px solid rgb(224, 224, 224)',
         display: 'flex',
         alignItems: 'center',
@@ -36,7 +41,7 @@ const styles = {
         marginLeft: 0,
     },
     select: {
-        width: 50,
+        width: '100%',
     },
     label: {
 		display: 'inline-block',
@@ -47,7 +52,7 @@ const styles = {
     },
     input: {
 		display: 'inline-block',
-        width: 100,
+        width: '100%',
         textAlign: 'right',
     },
     underline: {
@@ -139,7 +144,7 @@ class Pagination extends Component {
 	}
 
     render() {
-        const { perPage, currentPage, total, texts } = this.props;
+        const { perPage, currentPage, total, texts, column } = this.props;
         const { pages, count } = this.state;
 		const pageToDisplay = currentPage + 1;
 
@@ -155,7 +160,7 @@ class Pagination extends Component {
             .replace('{to}', to);
 
         return (
-            <div style={styles.pagination}>
+            <div style={column ? styles.column : styles.row}>
                 <div style={styles.pageSelect}>
                     <div style={styles.label}>{`${texts.page} `}</div>
 					{pages.length < 11 &&
@@ -180,7 +185,6 @@ class Pagination extends Component {
 							onChange={this.handleChangePageFromText}
 							style={styles.input}
 							value={pageToDisplay}
-							fullWidth
 							type="number"
 						/>
 					}
