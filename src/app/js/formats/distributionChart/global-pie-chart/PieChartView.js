@@ -7,7 +7,7 @@ import { field as fieldPropTypes } from '../../../propTypes';
 import CustomizedLabel from './CustomizedLabel';
 
 const PieChartView = ({ chartData, colorSet }) => (
-    <ResponsiveContainer className="lodex-chart" width={600} height={300}>
+    <ResponsiveContainer className="lodex-chart" width="100%" height={300}>
         <PieChart>
             <Legend verticalAlign="middle" layout="vertical" align="right" />
             <Pie
