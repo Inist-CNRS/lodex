@@ -20,6 +20,7 @@ import PropertyContributor from './PropertyContributor';
 import PropertyLinkedFields from './PropertyLinkedFields';
 import { fromUser } from '../../sharedSelectors';
 import EditButton from '../../fields/editFieldValue/EditButton';
+import EditOntologyField from '../../fields/ontology/EditOntologyField';
 import getFieldClassName from '../../lib/getFieldClassName';
 import addSchemePrefix from '../../lib/addSchemePrefix';
 import Format from '../Format';
@@ -116,6 +117,7 @@ const PropertyComponent = ({
                                 resource={resource}
                                 onSaveProperty={onSaveProperty}
                             />
+                            <EditOntologyField field={field} />
                         </span>
                     </span>
                     <span
