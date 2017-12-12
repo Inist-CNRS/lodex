@@ -89,6 +89,7 @@ const PureFacetValueList = ({
             </div>
         </div>
         <Pagination
+            column
             total={total}
             currentPage={currentPage}
             perPage={perPage}

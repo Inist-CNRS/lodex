@@ -17,7 +17,12 @@ import ChevronLeft from 'material-ui/svg-icons/navigation/chevron-left';
 import ChevronRight from 'material-ui/svg-icons/navigation/chevron-right';
 
 const styles = {
-    pagination: {
+    column: {
+        borderTop: '1px solid rgb(224, 224, 224)',
+        display: 'flex',
+        flexDirection: 'column',
+    },
+    row: {
         borderTop: '1px solid rgb(224, 224, 224)',
         display: 'flex',
         alignItems: 'center',
@@ -29,15 +34,6 @@ const styles = {
         height: 56,
         marginLeft: 16,
     },
-    pageSelect: {
-        display: 'flex',
-        alignItems: 'center',
-        height: 56,
-        marginLeft: 0,
-    },
-    select: {
-        width: 50,
-    },
     label: {
 		display: 'inline-block',
         color: '#999',
@@ -47,8 +43,7 @@ const styles = {
     },
     input: {
 		display: 'inline-block',
-        width: 100,
-        textAlign: 'right',
+        width: '100%',
     },
     underline: {
         display: 'none'
@@ -139,7 +134,7 @@ class Pagination extends Component {
 	}
 
     render() {
-        const { perPage, currentPage, total, texts } = this.props;
+        const { perPage, currentPage, total, texts, column } = this.props;
         const { pages, count } = this.state;
 		const pageToDisplay = currentPage + 1;
 
@@ -155,8 +150,8 @@ class Pagination extends Component {
             .replace('{to}', to);
 
         return (
-            <div style={styles.pagination}>
-                <div style={styles.pageSelect}>
+            <div style={column ? styles.column : styles.row}>
+                <div style={styles.elements}>
                     <div style={styles.label}>{`${texts.page} `}</div>
 					{pages.length < 11 &&
 						<SelectField
@@ -180,7 +175,6 @@ class Pagination extends Component {
 							onChange={this.handleChangePageFromText}
 							style={styles.input}
 							value={pageToDisplay}
-							fullWidth
 							type="number"
 						/>
 					}
@@ -190,7 +184,7 @@ class Pagination extends Component {
                     <SelectField
                         onChange={this.handleChangePerPage}
                         value={perPage}
-                        style={styles.select}
+                        style={styles.input}
                         underlineStyle={styles.underline}>
                         <MenuItem value={10} primaryText="10"/>
                         <MenuItem value={20} primaryText="20"/>

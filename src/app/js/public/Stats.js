@@ -10,29 +10,19 @@ import { polyglot as polyglotPropTypes } from '../propTypes';
 
 const styles = {
     col: {
-        flexDirection: 'column',
         display: 'flex',
+        flexDirection: 'column',
         alignItems: 'center',
-    },
-    separator: {
-        margin: '24px',
     },
     nb: {
         fontWeight: 'bold',
     },
 };
 
-export const StatsComponent = ({ nbColumns, nbResources, p: polyglot }) => (
-    <div>
-        <div style={styles.col}>
-            <div>{polyglot.t('columns')}</div>
-            <div style={styles.nb}>{nbColumns}</div>
-        </div>
-        <hr style={styles.separator} />
-        <div style={styles.col}>
-            <div>{polyglot.t('resources')}</div>
-            <div style={styles.nb}>{nbResources}</div>
-        </div>
+export const StatsComponent = ({ nbResources, p: polyglot }) => (
+    <div style={styles.col}>
+        <div>{polyglot.t('resources')}</div>
+        <div style={styles.nb}>{nbResources}</div>
     </div>
 );
 
