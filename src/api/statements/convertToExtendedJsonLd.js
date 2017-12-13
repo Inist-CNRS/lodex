@@ -69,30 +69,25 @@ module.exports = function convertToExtendedJsonLd(data, feed) {
         this.context = getContext(config);
         this.searchKeys = Object.keys(this.context).filter(
             v =>
-                !Object.keys(data.content.hits[0]).includes(v) &&
+                !Object.keys(data.content).includes(v) &&
                 v !== config.istexQuery.linked,
         );
     }
+    const newHit = {
+        ...data.content, //...hit,
+    };
+    newHit['@id'] = `https://api.istex.fr/${data.content.arkIstex}`;
+    newHit['@type'] = 'http://purl.org/ontology/bibo/Document';
+    newHit[config.istexQuery.linked] = data.uri;
 
-    const hits = data.content.hits.map(hit => {
-        const newHit = {
-            ...hit,
-        };
-        newHit['@id'] = `https://api.istex.fr/${hit.arkIstex}`;
-        newHit['@type'] = 'http://purl.org/ontology/bibo/Document';
-        newHit[config.istexQuery.linked] = data.uri;
-
-        this.searchKeys.forEach(key => {
-            const dataFromKey = get(hit, key);
-            newHit[key] = formatData(dataFromKey);
-        });
-        //        delete newHit.id;
-        return newHit;
+    this.searchKeys.forEach(key => {
+        const dataFromKey = get(data.content, key);
+        newHit[key] = formatData(dataFromKey);
     });
 
     const doc = {
         '@context': this.context,
-        '@graph': hits,
+        '@graph': [newHit], //hits,
     };
 
     feed.send(doc);
