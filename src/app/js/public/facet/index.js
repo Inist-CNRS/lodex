@@ -85,10 +85,18 @@ export default handleActions(
                 },
             };
         },
-        [CLEAR_FACET]: ({ appliedFacets, ...state }, { payload: name }) => ({
-            ...state,
-            appliedFacets: omit(appliedFacets, name),
-        }),
+        [CLEAR_FACET]: ({ appliedFacets, ...state }, { payload: name }) => {
+            if (!name) {
+                return {
+                    ...state,
+                    appliedFacets: {},
+                };
+            }
+            return {
+                ...state,
+                appliedFacets: omit(appliedFacets, name),
+            };
+        },
         [combineActions(
             LOAD_FACET_VALUES_SUCCESS,
             FACET_VALUE_CHANGE,

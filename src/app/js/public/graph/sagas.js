@@ -31,7 +31,7 @@ export function* handlePreLoadChartData({ payload: { field, value } }) {
 
 const valueMoreThan = level => item => item.value > level;
 
-export function* handleLoadChartDataRequest({ payload: { field } }) {
+export function* handleLoadChartDataRequest({ payload: { field } = {} }) {
     const name =
         (field && field.name) || (yield select(fromRouting.getGraphName));
 
