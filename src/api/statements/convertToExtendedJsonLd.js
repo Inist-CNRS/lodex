@@ -74,7 +74,7 @@ module.exports = function convertToExtendedJsonLd(data, feed) {
         );
     }
     const newHit = {
-        ...data.content, //...hit,
+        ...data.content,
     };
     newHit['@id'] = `https://api.istex.fr/${data.content.arkIstex}`;
     newHit['@type'] = 'http://purl.org/ontology/bibo/Document';
@@ -87,7 +87,7 @@ module.exports = function convertToExtendedJsonLd(data, feed) {
 
     const doc = {
         '@context': this.context,
-        '@graph': [newHit], //hits,
+        '@graph': [newHit],
     };
 
     feed.send(doc);
