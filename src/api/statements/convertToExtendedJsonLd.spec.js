@@ -1,49 +1,94 @@
-import request from 'request';
 import ezs from 'ezs';
 import from from 'from';
-import sinon from 'sinon';
 import expect from 'expect';
 import testOne from './testOne';
 
-const dataTest = require('./fixture.data.json');
-const expectedJsonLd = require('./fixture.data.ld.json');
+const dataTest = [
+    {
+        lodex: { uri: 'http://localhost:3000/ark:/67375/RZL-F4841DSB-1' },
+        content: {
+            arkIstex: 'ark:/67375/6H6-N49F7FRR-Q',
+            doi: ['10.1006/jmaa.2001.7542'],
+            fulltext: [
+                {
+                    extension: 'pdf',
+                    original: true,
+                    mimetype: 'application/pdf',
+                    uri:
+                        'https://api.istex.fr/document/9AA9EE9B75A6067C28F8119813504932FFD3D5A1/fulltext/pdf',
+                },
+                {
+                    extension: 'zip',
+                    original: false,
+                    mimetype: 'application/zip',
+                    uri:
+                        'https://api.istex.fr/document/9AA9EE9B75A6067C28F8119813504932FFD3D5A1/fulltext/zip',
+                },
+            ],
+        },
+    },
+];
+const expectedJsonLd = {
+    '@context': {
+        'categories.inist': {
+            '@id': 'https://data.istex.fr/ontology/istex#subjectInist',
+            '@type': '@id',
+        },
+        doi: 'http://purl.org/ontology/bibo/doi',
+        'fulltext[0].uri': 'https://data.istex.fr/ontology/istex#accessURL',
+    },
+    '@graph': [
+        {
+            arkIstex: 'ark:/67375/6H6-N49F7FRR-Q',
+            doi: ['10.1006/jmaa.2001.7542'],
+            fulltext: [
+                {
+                    extension: 'pdf',
+                    mimetype: 'application/pdf',
+                    original: true,
+                    uri:
+                        'https://api.istex.fr/document/9AA9EE9B75A6067C28F8119813504932FFD3D5A1/fulltext/pdf',
+                },
+                {
+                    extension: 'zip',
+                    mimetype: 'application/zip',
+                    original: false,
+                    uri:
+                        'https://api.istex.fr/document/9AA9EE9B75A6067C28F8119813504932FFD3D5A1/fulltext/zip',
+                },
+            ],
+            '@id': 'https://api.istex.fr/ark:/67375/6H6-N49F7FRR-Q',
+            '@type': 'http://purl.org/ontology/bibo/Document',
+            'categories.inist':
+                'http://localhost:3000/ark:/67375/RZL-F4841DSB-1',
+            'fulltext[0].uri': {
+                '@id':
+                    'https://api.istex.fr/document/9AA9EE9B75A6067C28F8119813504932FFD3D5A1/fulltext/pdf',
+            },
+        },
+    ],
+};
 const ezsLocals = require('.');
 
 const config = {
     istexQuery: {
         labels: '',
-        linked: 'language',
+        linked: 'categories.inist',
         context: {
-            language: 'http://purl.org/ontology/dc/language',
+            'categories.inist':
+                'https://data.istex.fr/ontology/istex#subjectInist',
             doi: 'http://purl.org/ontology/bibo/doi',
+            'fulltext[0].uri': 'https://data.istex.fr/ontology/istex#accessURL',
         },
     },
 };
 
 ezs.use(ezsLocals);
-describe('conversion to extended JSON-LD', () => {
-    let sandbox;
-    beforeEach(() => {
-        sandbox = sinon.sandbox.create();
-        const s = sandbox.stub(request, 'get');
-        s.onFirstCall().yields(null, { statusCode: 200 }, dataTest[0]);
-        s.onSecondCall().yields(null, { statusCode: 200 }, dataTest[1]);
-    });
-
-    afterEach(() => {
-        sandbox.restore();
-    });
-
+describe.only('conversion to extended JSON-LD', () => {
     it('should return nquads from the dataset', done => {
-        /* Fake URL */
-        const stream = from([
-            {
-                lodex: { uri: 'https://lodex-uri.fr/URI' },
-                content: 'https://api-v5.istex.fr/document/?q=language:test',
-            },
-        ])
-            .pipe(ezs('scroll'))
-            .pipe(ezs('convertToExtendedJsonLd', { config }));
+        const stream = from(dataTest).pipe(
+            ezs('convertToExtendedJsonLd', { config }),
+        );
         testOne(
             stream,
             data => {
