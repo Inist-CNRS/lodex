@@ -19,7 +19,6 @@ import NoDataset from './NoDataset';
 import Version from './Version';
 import { preLoadDatasetPage } from './dataset';
 import { preLoadExporters } from './export';
-import GraphList from './graph/GraphList';
 
 export class HomeComponent extends Component {
     static defaultProps = {
@@ -73,9 +72,6 @@ export class HomeComponent extends Component {
                     </Helmet>
                     <div className="header-dataset-section">
                         <DatasetCharacteristics />
-                    </div>
-                    <div className="main-dataset-section">
-                        <GraphList />
                         <Version />
                     </div>
                 </div>
