@@ -84,7 +84,7 @@ const config = {
 };
 
 ezs.use(ezsLocals);
-describe.only('conversion to extended JSON-LD', () => {
+describe('conversion to extended JSON-LD', () => {
     it('should return nquads from the dataset', done => {
         const stream = from(dataTest).pipe(
             ezs('convertToExtendedJsonLd', { config }),
