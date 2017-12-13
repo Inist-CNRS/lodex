@@ -18,7 +18,7 @@ import {
     fromRouting,
 } from '../selectors';
 import { fromFields } from '../../sharedSelectors';
-import { TOGGLE_FACET_VALUE, CLEAR_FACET } from '../facet';
+import { TOGGLE_FACET_VALUE, CLEAR_FACET, INVERT_FACET } from '../facet';
 import { APPLY_FILTER } from '../dataset';
 
 export function* handlePreLoadChartData({ payload: { field, value } }) {
@@ -84,7 +84,13 @@ export function* handleLoadChartDataRequest({ payload: { field } }) {
 export default function*() {
     yield fork(function*() {
         yield takeEvery(
-            [LOAD_CHART_DATA, TOGGLE_FACET_VALUE, CLEAR_FACET, APPLY_FILTER],
+            [
+                LOAD_CHART_DATA,
+                TOGGLE_FACET_VALUE,
+                CLEAR_FACET,
+                APPLY_FILTER,
+                INVERT_FACET,
+            ],
             handleLoadChartDataRequest,
         );
     });
