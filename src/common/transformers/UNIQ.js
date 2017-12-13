@@ -1,10 +1,11 @@
+import uniq from 'lodash.uniq';
 export const uniqArray = value => {
     if (!value) {
         return null;
     }
 
     if (Array.isArray(value)) {
-        return value.filter((v, i, a) => a.indexOf(v) === i);
+        return uniq(value);
     }
 
     if (typeof value === 'object') {

@@ -14,7 +14,7 @@ describe('UNIQ', () => {
         ]);
     });
 
-    it('should return null if value is literal', () => {
+    it('should return null if value is not an array nor primitive', () => {
         expect(
             uniqArray({
                 a: 'hello',
