@@ -14,6 +14,11 @@ describe('UNIQ', () => {
         ]);
     });
 
+    it('should return given value if it is a primitive', () => {
+        expect(uniqArray(0)).toEqual(0);
+        expect(uniqArray('hello')).toEqual('hello');
+    });
+
     it('should return null if value is not an array nor primitive', () => {
         expect(
             uniqArray({
