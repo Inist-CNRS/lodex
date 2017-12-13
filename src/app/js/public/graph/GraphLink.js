@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Card, CardTitle, CardMedia } from 'material-ui/Card';
+import { Card, CardMedia } from 'material-ui/Card';
+import { ListItem } from 'material-ui/List';
 import { Link } from 'react-router';
 import { grey200 } from 'material-ui/styles/colors';
 import Forward from 'material-ui/svg-icons/content/forward';
@@ -23,21 +24,14 @@ const styles = {
     icon: {
         float: 'right',
     },
-    container: {
-        width: '100%',
-    },
 };
 
-const GraphLink = ({ link, label, children }) => (
-    <Link to={link} style={styles.container}>
+const GraphLink = ({ link, children }) => (
+    <Link to={link}>
         <Card>
-            <CardTitle style={styles.title}>
-                <span style={styles.label}>
-                    {label}
-                    <Forward style={styles.icon} />
-                </span>
-            </CardTitle>
-            <CardMedia style={styles.media}>{children}</CardMedia>
+            <ListItem rightIcon={<Forward style={styles.icon} />}>
+                <CardMedia style={styles.media}>{children}</CardMedia>
+            </ListItem>
         </Card>
     </Link>
 );

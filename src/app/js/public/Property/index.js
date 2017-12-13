@@ -101,33 +101,24 @@ const PropertyComponent = ({
         return null;
     }
     const fieldClassName = getFieldClassName(field);
-    const label = (
-        <span>
-            {field.label}
-            <span style={styles.editButton(!loggedIn)}>
-                <EditButton
-                    field={field}
-                    isSaving={isSaving}
-                    resource={resource}
-                    onSaveProperty={onSaveProperty}
-                />
-                <EditOntologyFieldButton field={field} />
-            </span>
-        </span>
-    );
-    if (field.display_in_graph) {
-        return (
-            <GraphLink label={label} link={`/graph/${field.name}`}>
-                <Format
-                    className={classnames('property_value', fieldClassName)}
-                    field={field}
-                    resource={resource}
-                    fieldStatus={fieldStatus}
-                />
-            </GraphLink>
-        );
-    }
 
+    const format = field.display_in_graph ? (
+        <GraphLink link={`/graph/${field.name}`}>
+            <Format
+                className={classnames('property_value', fieldClassName)}
+                field={field}
+                resource={resource}
+                fieldStatus={fieldStatus}
+            />
+        </GraphLink>
+    ) : (
+        <Format
+            className={classnames('property_value', fieldClassName)}
+            field={field}
+            resource={resource}
+            fieldStatus={fieldStatus}
+        />
+    );
     return (
         <div
             className={classnames('property', fieldClassName, className)}
@@ -139,7 +130,16 @@ const PropertyComponent = ({
                         className={classnames('property_label', fieldClassName)}
                         style={styles.label(fieldStatus, isSub)}
                     >
-                        {label}
+                        {field.label}
+                        <span style={styles.editButton(!loggedIn)}>
+                            <EditButton
+                                field={field}
+                                isSaving={isSaving}
+                                resource={resource}
+                                onSaveProperty={onSaveProperty}
+                            />
+                            <EditOntologyFieldButton field={field} />
+                        </span>
                     </span>
                     <span
                         className={classnames(
@@ -159,14 +159,7 @@ const PropertyComponent = ({
                 />
             </div>
             <div style={styles.valueContainer}>
-                <div style={styles.value}>
-                    <Format
-                        className={classnames('property_value', fieldClassName)}
-                        field={field}
-                        resource={resource}
-                        fieldStatus={fieldStatus}
-                    />
-                </div>
+                <div style={styles.value}>{format}</div>
                 <span
                     className={classnames('property_language', fieldClassName)}
                     style={styles.language(!field.language)}
