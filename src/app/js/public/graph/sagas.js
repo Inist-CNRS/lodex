@@ -1,5 +1,11 @@
-import { fork, call, put, select, takeEvery } from 'redux-saga/effects';
-import { delay } from 'redux-saga';
+import {
+    fork,
+    call,
+    put,
+    select,
+    takeEvery,
+    throttle,
+} from 'redux-saga/effects';
 
 import {
     PRE_LOAD_CHART_DATA,
@@ -68,6 +74,7 @@ export function* handleLoadChartDataRequest({ payload: { field } = {} }) {
             .filter(valueMoreThan(0))
             .map(item => ({ name: item._id, value: item.value }));
         yield put(loadChartDataSuccess({ name, data }));
+        return;
     }
     if (response.aggregations) {
         const firstKey = Object.keys(response.aggregations).shift();
@@ -76,14 +83,15 @@ export function* handleLoadChartDataRequest({ payload: { field } = {} }) {
             value: item.docCount,
         }));
         yield put(loadChartDataSuccess({ name, data }));
+        return;
     }
-
-    yield delay(500);
+    yield put(loadChartDataSuccess({ name, data: null }));
 }
 
 export default function*() {
     yield fork(function*() {
-        yield takeEvery(
+        yield throttle(
+            500,
             [
                 LOAD_CHART_DATA,
                 TOGGLE_FACET_VALUE,
