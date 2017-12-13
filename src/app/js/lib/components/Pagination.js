@@ -17,12 +17,7 @@ import ChevronLeft from 'material-ui/svg-icons/navigation/chevron-left';
 import ChevronRight from 'material-ui/svg-icons/navigation/chevron-right';
 
 const styles = {
-    column: {
-        borderTop: '1px solid rgb(224, 224, 224)',
-        display: 'flex',
-        flexDirection: 'column',
-    },
-    row: {
+    container: {
         borderTop: '1px solid rgb(224, 224, 224)',
         display: 'flex',
         alignItems: 'center',
@@ -149,8 +144,32 @@ class Pagination extends Component {
             .replace('{from}', _from)
             .replace('{to}', to);
 
+        const navigationArrow = (
+            <div style={styles.elements}>
+                <div style={styles.label}>{`${showing}`}</div>
+                <IconButton
+                    disabled={currentPage === 0}
+                    onTouchTap={this.handlePreviousPageClick}>
+                    <ChevronLeft/>
+                </IconButton>
+                <IconButton
+                    disabled={currentPage === count - 1}
+                    onTouchTap={this.handleNextPageClick}>
+                    <ChevronRight/>
+                </IconButton>
+            </div>
+        );
+
+        if (column) {
+            return (
+                <div style={styles.container}>
+                    {navigationArrow}
+                </div>
+            );
+        }
+
         return (
-            <div style={column ? styles.column : styles.row}>
+            <div style={styles.container}>
                 <div style={styles.elements}>
                     <div style={styles.label}>{`${texts.page} `}</div>
 					{pages.length < 11 &&
@@ -192,19 +211,7 @@ class Pagination extends Component {
                         <MenuItem value={100} primaryText="100"/>
                     </SelectField>
                 </div>
-                <div style={styles.elements}>
-                    <div style={styles.label}>{`${showing}`}</div>
-                    <IconButton
-                        disabled={currentPage === 0}
-                        onTouchTap={this.handlePreviousPageClick}>
-                        <ChevronLeft/>
-                    </IconButton>
-                    <IconButton
-                        disabled={currentPage === count - 1}
-                        onTouchTap={this.handleNextPageClick}>
-                        <ChevronRight/>
-                    </IconButton>
-                </div>
+                {navigationArrow}
             </div>
         )
     }
