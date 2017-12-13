@@ -1,18 +1,18 @@
-export const upperCase = value => {
+import smartMap from './smartMap';
+
+export const valueToUpperCase = value => {
     if (!value) {
         return null;
-    }
-
-    if (Array.isArray(value)) {
-        return value.map(upperCase);
     }
 
     if (typeof value === 'object') {
         return null;
     }
 
-    return value.toUpperCase();
+    return String(value).toUpperCase();
 };
+
+const upperCase = smartMap(valueToUpperCase);
 
 const transformation = () => value =>
     new Promise((resolve, reject) => {

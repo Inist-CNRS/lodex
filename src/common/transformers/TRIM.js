@@ -1,23 +1,14 @@
-export const trimString = value => {
-    if (!value) {
-        return null;
-    }
+import smartMap from './smartMap';
 
-    if (Array.isArray(value)) {
-        return value.map(trimString);
-    }
+export const trimString = value =>
+    typeof value === 'string' ? value.trim() : value;
 
-    if (typeof value === 'object') {
-        return null;
-    }
-
-    return value.trim();
-};
+export const trim = smartMap(trimString);
 
 const transformation = () => value =>
     new Promise((resolve, reject) => {
         try {
-            resolve(trimString(value));
+            resolve(trim(value));
         } catch (error) {
             reject(error);
         }

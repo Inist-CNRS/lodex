@@ -1,10 +1,8 @@
-export const toString = value => {
-    if (!value) {
-        return '';
-    }
+import smartMap from './smartMap';
 
-    if (Array.isArray(value)) {
-        return value.map(toString);
+export const valueToString = value => {
+    if (value === null || typeof value === 'undefined') {
+        return '';
     }
 
     if (typeof value === 'string') {
@@ -17,6 +15,8 @@ export const toString = value => {
 
     return String(value).trim();
 };
+
+const toString = smartMap(valueToString);
 
 const transformation = () => value =>
     new Promise((resolve, reject) => {

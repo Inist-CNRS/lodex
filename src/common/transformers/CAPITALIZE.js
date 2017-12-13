@@ -1,22 +1,16 @@
-export const capitalizeString = value => {
-    if (!value) {
-        return null;
-    }
+import smartMap from './smartMap';
 
-    if (Array.isArray(value)) {
-        return value.map(capitalizeString);
-    }
+export const capitalizeString = value =>
+    typeof value === 'string'
+        ? value.charAt(0).toUpperCase() + value.slice(1).toLowerCase()
+        : value;
 
-    if (typeof value === 'object') {
-        return null;
-    }
-    return value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
-};
+export const capitalize = smartMap(capitalizeString);
 
 const transformation = () => value =>
     new Promise((resolve, reject) => {
         try {
-            resolve(capitalizeString(value));
+            resolve(capitalize(value));
         } catch (error) {
             reject(error);
         }

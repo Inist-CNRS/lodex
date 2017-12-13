@@ -1,22 +1,31 @@
 import expect from 'expect';
 
-import { toString } from './STRING';
+import { valueToString } from './STRING';
 
 describe('STRING', () => {
     it('should return "hello"', () => {
-        expect(toString(' hello ')).toBe('hello');
+        expect(valueToString(' hello ')).toBe('hello');
     });
 
-    it('should return a string value for each item in array', () => {
-        expect(toString([1, true])).toEqual(['1', 'true']);
+    it('should return `0` if receiving 0', () => {
+        expect(valueToString(0)).toBe('0');
+    });
+
+    it('should return `` if receiving null', () => {
+        expect(valueToString(null)).toBe('');
+    });
+
+    it('should return `` if receiving undefined', () => {
+        expect(valueToString(undefined)).toBe('');
     });
 
     it('should return an empty string when value is an object', () => {
         expect(
-            toString({
+            valueToString({
                 a: 'hello',
                 b: 'world',
             }),
         ).toEqual('');
+        expect(valueToString(new Date())).toEqual('');
     });
 });

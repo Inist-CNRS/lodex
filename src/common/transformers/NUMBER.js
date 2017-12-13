@@ -1,20 +1,12 @@
-export const toNumber = value => {
-    if (!value) {
-        return 0;
-    }
+import smartMap from './smartMap';
 
-    if (Array.isArray(value)) {
-        return value.map(toNumber);
-    }
+export const valueToNumber = value => {
+    const number = Number(value);
 
-    if (typeof value === 'string') {
-        const val = Number(value.trim());
-        return Number.isNaN(val) ? 0 : val;
-    }
-
-    const val = Number(value);
-    return Number.isNaN(val) ? 0 : val;
+    return isNaN(number) ? 0 : number;
 };
+
+const toNumber = smartMap(valueToNumber);
 
 const transformation = () => value =>
     new Promise((resolve, reject) => {
