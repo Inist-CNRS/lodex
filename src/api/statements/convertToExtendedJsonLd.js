@@ -33,7 +33,7 @@ function getContext(config) {
 
     if (context[config.istexQuery.linked] === undefined) {
         // eslint-disable-next-line
-        return console.error('ConvertToExtendedNquads', `${config.istexQuery.linked} not found in context`);
+        return console.error('convertToExtendedJsonLd', `${config.istexQuery.linked} not found in context`);
     }
 
     context[config.istexQuery.linked] = {
@@ -78,7 +78,7 @@ module.exports = function convertToExtendedJsonLd(data, feed) {
     };
     newHit['@id'] = `https://api.istex.fr/${data.content.arkIstex}`;
     newHit['@type'] = 'http://purl.org/ontology/bibo/Document';
-    newHit[config.istexQuery.linked] = data.uri;
+    newHit[config.istexQuery.linked] = data.lodex.uri;
 
     this.searchKeys.forEach(key => {
         const dataFromKey = get(data.content, key);
