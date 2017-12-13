@@ -58,7 +58,7 @@ const formatData = data => {
     return data.map(e => checkWeb(e));
 };
 
-module.exports = function convertToExtendedNquads(data, feed) {
+module.exports = function convertToExtendedJsonLd(data, feed) {
     if (this.isLast()) {
         return feed.close();
     }
