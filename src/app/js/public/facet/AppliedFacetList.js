@@ -5,7 +5,6 @@ import Chip from 'material-ui/Chip';
 
 import { fromFacet } from '../selectors';
 import AppliedFacet from './AppliedFacet';
-import Stats from '../Stats';
 import { clearFacet } from './index';
 
 const styles = {
@@ -38,7 +37,6 @@ export const AppliedFacetListComponent = ({ facets, clearAll }) => (
                 )}
             </div>
         ) : null}
-        <Stats />
     </div>
 );
 
