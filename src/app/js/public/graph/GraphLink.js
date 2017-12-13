@@ -12,10 +12,13 @@ const styles = {
         fontWeight: 'bold',
         textDecoration: 'none',
         fontSize: '2rem',
+        width: '100%',
     },
     title: {
         backgroundColor: grey200,
         textDecoration: 'none',
+        display: 'flex',
+        alignItems: 'center',
     },
     icon: {
         float: 'right',
@@ -28,15 +31,12 @@ const styles = {
 const GraphLink = ({ link, label, children }) => (
     <Link to={link} style={styles.container}>
         <Card>
-            <CardTitle
-                style={styles.title}
-                title={
-                    <span style={styles.label}>
-                        {label}
-                        <Forward style={styles.icon} />
-                    </span>
-                }
-            />
+            <CardTitle style={styles.title}>
+                <span style={styles.label}>
+                    {label}
+                    <Forward style={styles.icon} />
+                </span>
+            </CardTitle>
             <CardMedia style={styles.media}>{children}</CardMedia>
         </Card>
     </Link>

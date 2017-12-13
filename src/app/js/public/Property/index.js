@@ -101,9 +101,23 @@ const PropertyComponent = ({
         return null;
     }
     const fieldClassName = getFieldClassName(field);
+    const label = (
+        <span>
+            {field.label}
+            <span style={styles.editButton(!loggedIn)}>
+                <EditButton
+                    field={field}
+                    isSaving={isSaving}
+                    resource={resource}
+                    onSaveProperty={onSaveProperty}
+                />
+                <EditOntologyFieldButton field={field} />
+            </span>
+        </span>
+    );
     if (field.display_in_graph) {
         return (
-            <GraphLink label={field.label} link={`/graph/${field.name}`}>
+            <GraphLink label={label} link={`/graph/${field.name}`}>
                 <Format
                     className={classnames('property_value', fieldClassName)}
                     field={field}
@@ -125,16 +139,7 @@ const PropertyComponent = ({
                         className={classnames('property_label', fieldClassName)}
                         style={styles.label(fieldStatus, isSub)}
                     >
-                        {field.label}
-                        <span style={styles.editButton(!loggedIn)}>
-                            <EditButton
-                                field={field}
-                                isSaving={isSaving}
-                                resource={resource}
-                                onSaveProperty={onSaveProperty}
-                            />
-                            <EditOntologyFieldButton field={field} />
-                        </span>
+                        {label}
                     </span>
                     <span
                         className={classnames(
