@@ -20,10 +20,13 @@ const styles = {
     icon: {
         float: 'right',
     },
+    container: {
+        width: '100%',
+    },
 };
 
-const Graph = ({ link, label, children }) => (
-    <Link to={link}>
+const GraphLink = ({ link, label, children }) => (
+    <Link to={link} style={styles.container}>
         <Card>
             <CardTitle
                 style={styles.title}
@@ -39,10 +42,10 @@ const Graph = ({ link, label, children }) => (
     </Link>
 );
 
-Graph.propTypes = {
+GraphLink.propTypes = {
     link: PropTypes.string.isRequired,
     label: PropTypes.string.isRequired,
     children: PropTypes.element.isRequired,
 };
 
-export default Graph;
+export default GraphLink;
