@@ -90,6 +90,7 @@ export function* handleLoadChartDataRequest({ payload: { field } = {} }) {
 
 export default function*() {
     yield fork(function*() {
+        // see https://github.com/redux-saga/redux-saga/blob/master/docs/api/README.md#throttlems-pattern-saga-args
         yield throttle(
             500,
             [

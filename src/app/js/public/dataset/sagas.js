@@ -1,5 +1,11 @@
-import { fork, call, put, select, takeLatest } from 'redux-saga/effects';
-import { delay } from 'redux-saga';
+import {
+    fork,
+    call,
+    put,
+    select,
+    takeLatest,
+    throttle,
+} from 'redux-saga/effects';
 
 import {
     LOAD_DATASET_PAGE,
@@ -60,13 +66,13 @@ export function* handleLoadDatasetPageRequest({ payload }) {
     const { data: dataset, total, fullTotal } = response;
 
     yield put(loadDatasetPageSuccess({ dataset, page, total, fullTotal }));
-
-    yield delay(500);
 }
 
 export default function*() {
     yield fork(function*() {
-        yield takeLatest(
+        // see https://github.com/redux-saga/redux-saga/blob/master/docs/api/README.md#throttlems-pattern-saga-args
+        yield throttle(
+            500,
             [
                 LOAD_DATASET_PAGE,
                 APPLY_FILTER,
