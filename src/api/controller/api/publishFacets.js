@@ -1,6 +1,8 @@
 export default async (ctx, fields) => {
     const facetFields = fields.filter(c => c.isFacet);
 
+    await ctx.publishedFacet.remove({});
+
     return Promise.all(
         facetFields.map(field =>
             ctx.publishedDataset

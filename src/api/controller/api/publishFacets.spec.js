@@ -12,6 +12,7 @@ describe('publishFacets', () => {
         },
         publishedFacet: {
             insertFacet: createSpy().andReturn(Promise.resolve()),
+            remove: createSpy(),
         },
     };
     const facetFields = [
@@ -39,6 +40,10 @@ describe('publishFacets', () => {
         expect(
             ctx.publishedDataset.findDistinctValuesForField,
         ).toHaveBeenCalledWith('facet2');
+    });
+
+    it('should call publishedFacet.remove', () => {
+        expect(ctx.publishedFacet.remove).toHaveBeenCalled();
     });
 
     it('should call ctx.publishedFacet.insertFacet for each facet field with their distinct values', () => {
