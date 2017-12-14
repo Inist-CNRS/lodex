@@ -38,7 +38,6 @@ export class FormatComponent extends Component {
             isList,
             filter,
             facets,
-            toggleFacetValue,
             colorSet,
         } = this.props;
         const ViewComponent = getViewComponent(field, isList);
@@ -55,7 +54,6 @@ export class FormatComponent extends Component {
                 shrink={shrink}
                 filter={filter}
                 facets={facets}
-                toggleFacetValue={toggleFacetValue}
                 colorSet={colorSet}
             />
         );
@@ -75,7 +73,6 @@ FormatComponent.propTypes = {
     isList: PropTypes.bool,
     filter: PropTypes.string,
     facets: PropTypes.object,
-    toggleFacetValue: PropTypes.func,
     colorSet: PropTypes.arrayOf(PropTypes.string),
 };
 
