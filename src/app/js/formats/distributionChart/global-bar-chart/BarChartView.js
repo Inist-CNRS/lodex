@@ -31,6 +31,7 @@ const BarChartView = ({ colorSet, chartData, field, p: polyglot }) => {
         return <p>{polyglot.t('no_data')}</p>;
     }
     const axisRoundValue = get(field, 'format.args.axisRoundValue');
+    const scale = get(field, 'format.args.scale');
 
     return (
         <ResponsiveContainer width="100%" height={300}>
@@ -43,6 +44,8 @@ const BarChartView = ({ colorSet, chartData, field, p: polyglot }) => {
                 <XAxis
                     type="number"
                     allowDecimals={!axisRoundValue}
+                    scale={scale}
+                    domain={scale === 'log' ? ['auto', 'auto'] : [0, 'auto']} // log scale won't work with a domain starting at 0 (`auto` detect the boudaries and ensure it is readable)
                     dataKey="value"
                 />
                 <YAxis

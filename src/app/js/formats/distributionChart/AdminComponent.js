@@ -34,6 +34,7 @@ class ChartEdition extends Component {
         }),
         colors: PropTypes.string,
         axisRoundValue: PropTypes.bool,
+        scale: PropTypes.oneOf(['log', 'linear']),
         onChange: PropTypes.func.isRequired,
         p: polyglotPropTypes.isRequired,
     };
@@ -45,11 +46,12 @@ class ChartEdition extends Component {
         },
         colors: '#1D1A31 #4D2D52 #9A4C95 #F08CAE #C1A5A9',
         axisRoundValue: true,
+        scale: 'linear',
     };
     constructor(props) {
         super(props);
-        const { params, colors, axisRoundValue } = this.props;
-        this.state = { params, colors, axisRoundValue };
+        const { params, colors, axisRoundValue, scale } = this.props;
+        this.state = { params, colors, axisRoundValue, scale };
     }
 
     setMaxSize = (_, maxSize) => {
@@ -93,12 +95,19 @@ class ChartEdition extends Component {
         this.props.onChange(newState);
     };
 
+    setScale = (_, __, scale) => {
+        const newState = { ...this.state, scale };
+        this.setState(newState);
+        this.props.onChange(newState);
+    };
+
     render() {
         const { p: polyglot } = this.props;
         const {
             params: { maxSize, maxValue, minValue, orderBy },
             colors,
             axisRoundValue,
+            scale,
         } = this.state;
         return (
             <div style={styles.container}>
@@ -155,6 +164,18 @@ class ChartEdition extends Component {
                     style={styles.input}
                     checked={axisRoundValue}
                 />
+                <SelectField
+                    floatingLabelText={polyglot.t('scale')}
+                    onChange={this.setScale}
+                    style={styles.input}
+                    value={scale}
+                >
+                    <MenuItem
+                        value="linear"
+                        primaryText={polyglot.t('linear')}
+                    />
+                    <MenuItem value="log" primaryText={polyglot.t('log')} />
+                </SelectField>
             </div>
         );
     }
