@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Card, CardTitle, CardMedia } from 'material-ui/Card';
+import { Card, CardMedia } from 'material-ui/Card';
+import { ListItem } from 'material-ui/List';
 import { Link } from 'react-router';
 import { grey200 } from 'material-ui/styles/colors';
 import Forward from 'material-ui/svg-icons/content/forward';
@@ -12,37 +13,33 @@ const styles = {
         fontWeight: 'bold',
         textDecoration: 'none',
         fontSize: '2rem',
+        width: '100%',
     },
     title: {
         backgroundColor: grey200,
         textDecoration: 'none',
+        display: 'flex',
+        alignItems: 'center',
     },
     icon: {
         float: 'right',
     },
 };
 
-const Graph = ({ link, label, children }) => (
+const GraphLink = ({ link, children }) => (
     <Link to={link}>
         <Card>
-            <CardTitle
-                style={styles.title}
-                title={
-                    <span style={styles.label}>
-                        {label}
-                        <Forward style={styles.icon} />
-                    </span>
-                }
-            />
-            <CardMedia style={styles.media}>{children}</CardMedia>
+            <ListItem rightIcon={<Forward style={styles.icon} />}>
+                <CardMedia style={styles.media}>{children}</CardMedia>
+            </ListItem>
         </Card>
     </Link>
 );
 
-Graph.propTypes = {
+GraphLink.propTypes = {
     link: PropTypes.string.isRequired,
     label: PropTypes.string.isRequired,
     children: PropTypes.element.isRequired,
 };
 
-export default Graph;
+export default GraphLink;

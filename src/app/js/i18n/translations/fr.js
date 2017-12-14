@@ -326,4 +326,5 @@ export default {
     filter_value: 'filter %{field}',
     exclude: 'exclude',
     count: 'count',
+    no_data: 'no data',
 };

@@ -74,7 +74,6 @@ describe('<Format />', () => {
             facets: undefined,
             filter: undefined,
             toggleFacetValue: undefined,
-            chartData: undefined,
             colorSet: undefined,
         });
     });

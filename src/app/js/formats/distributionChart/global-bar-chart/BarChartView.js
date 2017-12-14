@@ -12,7 +12,10 @@ import {
     Tooltip,
 } from 'recharts';
 
-import { field as fieldPropTypes } from '../../../propTypes';
+import {
+    field as fieldPropTypes,
+    polyglot as polyglotPropTypes,
+} from '../../../propTypes';
 
 const margin = {
     top: 15,
@@ -38,7 +41,10 @@ class BarChartView extends Component {
     };
 
     render() {
-        const { colorSet, chartData } = this.props;
+        const { colorSet, chartData, p: polyglot } = this.props;
+        if (!chartData) {
+            return <p>{polyglot.t('no_data')}</p>;
+        }
 
         return (
             <ResponsiveContainer width="100%" height={300}>
@@ -84,6 +90,7 @@ BarChartView.propTypes = {
     chartData: PropTypes.array.isRequired,
     colorSet: PropTypes.arrayOf(PropTypes.string),
     toggleFacetValue: PropTypes.func.isRequired,
+    p: polyglotPropTypes,
 };
 
 BarChartView.defaultProps = {

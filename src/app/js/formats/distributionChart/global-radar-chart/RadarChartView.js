@@ -10,10 +10,17 @@ import {
     PolarGrid,
 } from 'recharts';
 
-import { field as fieldPropTypes } from '../../../propTypes';
+import {
+    field as fieldPropTypes,
+    polyglot as polyglotPropTypes,
+} from '../../../propTypes';
 
-const RadarChartView = ({ chartData, colorSet }) => {
+const RadarChartView = ({ chartData, colorSet, p: polyglot }) => {
     const color = colorSet[0];
+    if (!chartData) {
+        return <p>{polyglot.t('no_data')}</p>;
+    }
+
     return (
         <ResponsiveContainer width="100%" height={300}>
             <RadarChart data={chartData}>
@@ -37,6 +44,7 @@ RadarChartView.propTypes = {
     resource: PropTypes.object.isRequired,
     chartData: PropTypes.array.isRequired,
     colorSet: PropTypes.arrayOf(PropTypes.string),
+    p: polyglotPropTypes,
 };
 
 RadarChartView.defaultProps = {

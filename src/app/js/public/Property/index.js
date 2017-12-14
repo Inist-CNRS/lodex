@@ -24,6 +24,7 @@ import EditOntologyFieldButton from '../../fields/ontology/EditOntologyFieldButt
 import getFieldClassName from '../../lib/getFieldClassName';
 import addSchemePrefix from '../../lib/addSchemePrefix';
 import Format from '../Format';
+import GraphLink from '../graph/GraphLink';
 
 const styles = {
     container: memoize(
@@ -100,6 +101,24 @@ const PropertyComponent = ({
         return null;
     }
     const fieldClassName = getFieldClassName(field);
+
+    const format = field.display_in_graph ? (
+        <GraphLink link={`/graph/${field.name}`}>
+            <Format
+                className={classnames('property_value', fieldClassName)}
+                field={field}
+                resource={resource}
+                fieldStatus={fieldStatus}
+            />
+        </GraphLink>
+    ) : (
+        <Format
+            className={classnames('property_value', fieldClassName)}
+            field={field}
+            resource={resource}
+            fieldStatus={fieldStatus}
+        />
+    );
     return (
         <div
             className={classnames('property', fieldClassName, className)}
@@ -140,14 +159,7 @@ const PropertyComponent = ({
                 />
             </div>
             <div style={styles.valueContainer}>
-                <div style={styles.value}>
-                    <Format
-                        className={classnames('property_value', fieldClassName)}
-                        field={field}
-                        resource={resource}
-                        fieldStatus={fieldStatus}
-                    />
-                </div>
+                <div style={styles.value}>{format}</div>
                 <span
                     className={classnames('property_language', fieldClassName)}
                     style={styles.language(!field.language)}
