@@ -256,6 +256,26 @@ describe('facet reducer', () => {
                 },
             });
         });
+
+        it('should clear all appliedFacet if payload is null', () => {
+            const state = {
+                foo: 'bar',
+                appliedFacets: {
+                    foo: 'bar',
+                    name: ['value1', 'value2'],
+                },
+            };
+
+            const action = {
+                type: CLEAR_FACET,
+                payload: null,
+            };
+
+            expect(facetReducer(state, action)).toEqual({
+                foo: 'bar',
+                appliedFacets: {},
+            });
+        });
     });
 
     describe('FACET_VALUE_CHANGE', () => {

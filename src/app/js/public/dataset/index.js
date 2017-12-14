@@ -33,6 +33,7 @@ export const defaultState = {
     loading: false,
     sort: {},
     total: 0,
+    fullTotal: 0,
 };
 
 export default handleActions(
@@ -54,7 +55,7 @@ export default handleActions(
         }),
         LOAD_DATASET_PAGE_SUCCESS: (
             state,
-            { payload: { dataset, page: currentPage, total } },
+            { payload: { dataset, page: currentPage, total, fullTotal } },
         ) => ({
             ...state,
             currentPage,
@@ -62,6 +63,7 @@ export default handleActions(
             error: null,
             loading: false,
             total,
+            fullTotal,
         }),
 
         LOAD_DATASET_PAGE_ERROR: (state, { payload: error }) => ({
@@ -101,6 +103,7 @@ const getDatasetCurrentPage = state => state.currentPage;
 const getDatasetPerPage = state => state.perPage;
 const getDataset = state => state.dataset;
 const getDatasetTotal = state => state.total;
+const getDatasetFullTotal = state => state.fullTotal;
 const isDatasetLoaded = state => state.total > 0;
 const getFilter = state => state.match || '';
 const getSort = state => state.sort;
@@ -112,6 +115,7 @@ export const fromDataset = {
     getDatasetPerPage,
     getDataset,
     getDatasetTotal,
+    getDatasetFullTotal,
     isDatasetLoaded,
     getFilter,
     getSort,

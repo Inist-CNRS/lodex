@@ -1,5 +1,11 @@
-import { fork, call, put, select, takeEvery } from 'redux-saga/effects';
-import { delay } from 'redux-saga';
+import {
+    fork,
+    call,
+    put,
+    select,
+    takeEvery,
+    throttle,
+} from 'redux-saga/effects';
 
 import {
     PRE_LOAD_CHART_DATA,
@@ -18,7 +24,7 @@ import {
     fromRouting,
 } from '../selectors';
 import { fromFields } from '../../sharedSelectors';
-import { TOGGLE_FACET_VALUE, CLEAR_FACET } from '../facet';
+import { TOGGLE_FACET_VALUE, CLEAR_FACET, INVERT_FACET } from '../facet';
 import { APPLY_FILTER } from '../dataset';
 
 export function* handlePreLoadChartData({ payload: { field, value } }) {
@@ -31,7 +37,7 @@ export function* handlePreLoadChartData({ payload: { field, value } }) {
 
 const valueMoreThan = level => item => item.value > level;
 
-export function* handleLoadChartDataRequest({ payload: { field } }) {
+export function* handleLoadChartDataRequest({ payload: { field } = {} }) {
     const name =
         (field && field.name) || (yield select(fromRouting.getGraphName));
 
@@ -68,6 +74,7 @@ export function* handleLoadChartDataRequest({ payload: { field } }) {
             .filter(valueMoreThan(0))
             .map(item => ({ name: item._id, value: item.value }));
         yield put(loadChartDataSuccess({ name, data }));
+        return;
     }
     if (response.aggregations) {
         const firstKey = Object.keys(response.aggregations).shift();
@@ -76,15 +83,23 @@ export function* handleLoadChartDataRequest({ payload: { field } }) {
             value: item.docCount,
         }));
         yield put(loadChartDataSuccess({ name, data }));
+        return;
     }
-
-    yield delay(500);
+    yield put(loadChartDataSuccess({ name, data: null }));
 }
 
 export default function*() {
     yield fork(function*() {
-        yield takeEvery(
-            [LOAD_CHART_DATA, TOGGLE_FACET_VALUE, CLEAR_FACET, APPLY_FILTER],
+        // see https://github.com/redux-saga/redux-saga/blob/master/docs/api/README.md#throttlems-pattern-saga-args
+        yield throttle(
+            500,
+            [
+                LOAD_CHART_DATA,
+                TOGGLE_FACET_VALUE,
+                CLEAR_FACET,
+                APPLY_FILTER,
+                INVERT_FACET,
+            ],
             handleLoadChartDataRequest,
         );
     });

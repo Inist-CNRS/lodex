@@ -1,6 +1,5 @@
 import expect from 'expect';
 import { call, put, select } from 'redux-saga/effects';
-import { delay } from 'redux-saga';
 
 import {
     loadDatasetPage,
@@ -83,24 +82,23 @@ describe('dataset saga', () => {
 
         it('should put loadDatasetPageSuccess action', () => {
             expect(
-                saga.next({ response: { data: [{ foo: 42 }], total: 100 } })
-                    .value,
+                saga.next({
+                    response: {
+                        data: [{ foo: 42 }],
+                        total: 100,
+                        fullTotal: 1000,
+                    },
+                }).value,
             ).toEqual(
                 put(
                     loadDatasetPageSuccess({
                         dataset: [{ foo: 42 }],
                         page: 10,
                         total: 100,
+                        fullTotal: 1000,
                     }),
                 ),
             );
-        });
-
-        it('should delay 500', () => {
-            expect(
-                saga.next({ response: { data: [{ foo: 42 }], total: 100 } })
-                    .value,
-            ).toEqual(delay(500));
         });
 
         it('should put loadDatasetPageError action with error if any', () => {
