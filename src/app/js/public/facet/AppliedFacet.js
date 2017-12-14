@@ -14,10 +14,17 @@ import getFieldClassName from '../../lib/getFieldClassName';
 import { fromFields } from '../../sharedSelectors';
 import { fromFacet } from '../selectors';
 import { clearFacet } from './index';
+import interleave from '../../lib/interleave';
 
 const styles = {
     chip: {
         margin: 5,
+    },
+    chipLabel: {
+        whiteSpace: 'normal',
+    },
+    labelValue: {
+        whiteSpace: 'nowrap',
     },
 };
 
@@ -30,6 +37,7 @@ export const AppliedFacetComponent = ({
 }) => (
     <Chip
         style={styles.chip}
+        labelStyle={styles.chipLabel}
         className={`applied-facet-${getFieldClassName(field)}`}
         onRequestDelete={onRequestDelete}
         backgroundColor={inverted && 'rgba(0, 0, 0, 0.87)'}
@@ -40,7 +48,14 @@ export const AppliedFacetComponent = ({
             {inverted ? `${polyglot.t('excluding')} ` : ''}
             {field.label}
         </b>{' '}
-        {value.join(' | ')}
+        {interleave(
+            value.map(v => (
+                <span key={v} style={styles.labelValue}>
+                    {v}
+                </span>
+            )),
+            <span> | </span>,
+        )}
     </Chip>
 );
 
