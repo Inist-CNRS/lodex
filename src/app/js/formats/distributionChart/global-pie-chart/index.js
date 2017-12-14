@@ -1,5 +1,5 @@
 import Component from './PieChartView';
-import AdminComponent from '../AdminComponent';
+import AdminComponent from './AdminComponent';
 import DefaultFormat from '../../DefaultFormat';
 import injectData from '../../injectData';
 
