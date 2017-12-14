@@ -4,6 +4,8 @@ import TextField from 'material-ui/TextField';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import translate from 'redux-polyglot/translate';
+import Checkbox from 'material-ui/Checkbox';
+
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 
 const styles = {
@@ -31,6 +33,7 @@ class ChartEdition extends Component {
             orderBy: PropTypes.string,
         }),
         colors: PropTypes.string,
+        axisRoundValue: PropTypes.bool,
         onChange: PropTypes.func.isRequired,
         p: polyglotPropTypes.isRequired,
     };
@@ -41,43 +44,51 @@ class ChartEdition extends Component {
             orderBy: 'value/asc',
         },
         colors: '#1D1A31 #4D2D52 #9A4C95 #F08CAE #C1A5A9',
+        axisRoundValue: true,
     };
     constructor(props) {
         super(props);
-        const { params, colors } = this.props;
-        this.state = { params, colors };
+        const { params, colors, axisRoundValue } = this.props;
+        this.state = { params, colors, axisRoundValue };
     }
 
-    setMaxSize = maxSize => {
+    setMaxSize = (_, maxSize) => {
         const { params, ...state } = this.state;
         const newState = { ...state, params: { ...params, maxSize } };
         this.setState(newState);
         this.props.onChange(newState);
     };
 
-    setMaxValue = maxValue => {
+    setMaxValue = (_, maxValue) => {
         const { params, ...state } = this.state;
         const newState = { ...state, params: { ...params, maxValue } };
         this.setState(newState);
         this.props.onChange(newState);
     };
 
-    setMinValue = minValue => {
+    setMinValue = (_, minValue) => {
         const { params, ...state } = this.state;
         const newState = { ...state, params: { ...params, minValue } };
         this.setState(newState);
         this.props.onChange(newState);
     };
 
-    setOrderBy = orderBy => {
+    setOrderBy = (_, __, orderBy) => {
         const { params, ...state } = this.state;
         const newState = { ...state, params: { ...params, orderBy } };
         this.setState(newState);
         this.props.onChange(newState);
     };
 
-    setColors = colors => {
+    setColors = (_, colors) => {
         const newState = { ...this.state, colors };
+        this.setState(newState);
+        this.props.onChange(newState);
+    };
+
+    setAxisRoundValue = () => {
+        const { axisRoundValue, ...state } = this.state;
+        const newState = { ...state, axisRoundValue: !axisRoundValue };
         this.setState(newState);
         this.props.onChange(newState);
     };
@@ -87,32 +98,31 @@ class ChartEdition extends Component {
         const {
             params: { maxSize, maxValue, minValue, orderBy },
             colors,
+            axisRoundValue,
         } = this.state;
         return (
             <div style={styles.container}>
                 <TextField
                     floatingLabelText={polyglot.t('max_fields')}
-                    onChange={(event, newValue) => this.setMaxSize(newValue)}
+                    onChange={this.setMaxSize}
                     style={styles.input}
                     value={maxSize}
                 />
                 <TextField
                     floatingLabelText={polyglot.t('max_value')}
-                    onChange={(event, newValue) => this.setMaxValue(newValue)}
+                    onChange={this.setMaxValue}
                     style={styles.input}
                     value={maxValue}
                 />
                 <TextField
                     floatingLabelText={polyglot.t('min_value')}
-                    onChange={(event, newValue) => this.setMinValue(newValue)}
+                    onChange={this.setMinValue}
                     style={styles.input}
                     value={minValue}
                 />
                 <SelectField
                     floatingLabelText={polyglot.t('order_by')}
-                    onChange={(event, index, newValue) =>
-                        this.setOrderBy(newValue)
-                    }
+                    onChange={this.setOrderBy}
                     style={styles.input}
                     value={orderBy}
                 >
@@ -135,9 +145,15 @@ class ChartEdition extends Component {
                 </SelectField>
                 <TextField
                     floatingLabelText={polyglot.t('colors_set')}
-                    onChange={(event, newValue) => this.setColors(newValue)}
+                    onChange={this.setColors}
                     style={styles.input2}
                     value={colors}
+                />
+                <Checkbox
+                    label={polyglot.t('axis_round_value')}
+                    onCheck={this.setAxisRoundValue}
+                    style={styles.input}
+                    checked={axisRoundValue}
                 />
             </div>
         );

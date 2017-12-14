@@ -11,6 +11,7 @@ import {
     YAxis,
     Tooltip,
 } from 'recharts';
+import get from 'lodash.get';
 
 import {
     field as fieldPropTypes,
@@ -25,10 +26,11 @@ const margin = {
 };
 const padding = { top: 3, bottom: 3 };
 
-const BarChartView = ({ colorSet, chartData, p: polyglot }) => {
+const BarChartView = ({ colorSet, chartData, field, p: polyglot }) => {
     if (!chartData) {
         return <p>{polyglot.t('no_data')}</p>;
     }
+    const axisRoundValue = get(field, 'format.args.axisRoundValue');
 
     return (
         <ResponsiveContainer width="100%" height={300}>
@@ -38,7 +40,11 @@ const BarChartView = ({ colorSet, chartData, p: polyglot }) => {
                 margin={margin}
                 maxBarSize={10}
             >
-                <XAxis type="number" dataKey="value" />
+                <XAxis
+                    type="number"
+                    allowDecimals={!axisRoundValue}
+                    dataKey="value"
+                />
                 <YAxis
                     type="category"
                     dataKey="name"
@@ -69,6 +75,7 @@ BarChartView.propTypes = {
     chartData: PropTypes.array.isRequired,
     colorSet: PropTypes.arrayOf(PropTypes.string),
     p: polyglotPropTypes,
+    axisRoundValue: PropTypes.bool.isRequired,
 };
 
 BarChartView.defaultProps = {

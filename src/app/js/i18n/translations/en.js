@@ -324,4 +324,5 @@ export default {
     count: 'count',
     no_data: 'no data',
     excluding: 'excluding',
+    axis_round_value: 'force round value in axis',
 };
