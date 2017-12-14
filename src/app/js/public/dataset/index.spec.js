@@ -32,7 +32,8 @@ describe('dataset reducer', () => {
         const action = loadDatasetPageSuccess({
             dataset: [{ foo: 'bar' }],
             page: 42,
-            total: 1000,
+            total: 100,
+            fullTotal: 4200,
         });
         const state = reducer({ loading: true, error: true }, action);
         expect(state).toEqual({
@@ -40,7 +41,8 @@ describe('dataset reducer', () => {
             loading: false,
             dataset: [{ foo: 'bar' }],
             currentPage: 42,
-            total: 1000,
+            total: 100,
+            fullTotal: 4200,
         });
     });
 

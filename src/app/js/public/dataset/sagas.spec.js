@@ -83,14 +83,20 @@ describe('dataset saga', () => {
 
         it('should put loadDatasetPageSuccess action', () => {
             expect(
-                saga.next({ response: { data: [{ foo: 42 }], total: 100 } })
-                    .value,
+                saga.next({
+                    response: {
+                        data: [{ foo: 42 }],
+                        total: 100,
+                        fullTotal: 1000,
+                    },
+                }).value,
             ).toEqual(
                 put(
                     loadDatasetPageSuccess({
                         dataset: [{ foo: 42 }],
                         page: 10,
                         total: 100,
+                        fullTotal: 1000,
                     }),
                 ),
             );
