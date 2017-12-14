@@ -327,4 +327,5 @@ export default {
     exclude: 'exclude',
     count: 'count',
     no_data: 'no data',
+    excluding: 'excluding',
 };
