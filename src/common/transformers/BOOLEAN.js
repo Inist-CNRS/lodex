@@ -1,10 +1,8 @@
-export const toBoolean = value => {
+import smartMap from './smartMap';
+
+export const valueToBoolean = value => {
     if (!value) {
         return false;
-    }
-
-    if (Array.isArray(value)) {
-        return value.map(toBoolean);
     }
 
     if (typeof value === 'string') {
@@ -28,6 +26,8 @@ export const toBoolean = value => {
 
     return false;
 };
+
+const toBoolean = smartMap(valueToBoolean);
 
 const transformation = () => value =>
     new Promise((resolve, reject) => {

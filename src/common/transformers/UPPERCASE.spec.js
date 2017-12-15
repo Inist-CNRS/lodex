@@ -1,19 +1,19 @@
 import expect from 'expect';
 
-import { upperCase } from './UPPERCASE';
+import { valueToUpperCase } from './UPPERCASE';
 
 describe('UPPERCASE', () => {
     it('should return uppercase value', () => {
-        expect(upperCase('hello')).toBe('HELLO');
+        expect(valueToUpperCase('hello')).toBe('HELLO');
     });
 
-    it('should return uppercase value of each item in array', () => {
-        expect(upperCase(['hello', 'world'])).toEqual(['HELLO', 'WORLD']);
+    it('should work with number', () => {
+        expect(valueToUpperCase(5)).toBe('5');
     });
 
-    it('should return null if value is literal', () => {
+    it('should return `` if value is literal', () => {
         expect(
-            upperCase({
+            valueToUpperCase({
                 a: 'hello',
                 b: 'world',
             }),

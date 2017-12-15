@@ -1,30 +1,31 @@
-import smartMap from './smartMap';
-
-export const valueToUpperCase = value => {
-    if (!value) {
+import uniq from 'lodash.uniq';
+export const uniqArray = value => {
+    if (value === null || typeof value === 'undefined') {
         return null;
+    }
+
+    if (Array.isArray(value)) {
+        return uniq(value);
     }
 
     if (typeof value === 'object') {
         return null;
     }
 
-    return String(value).toUpperCase();
+    return value;
 };
-
-const upperCase = smartMap(valueToUpperCase);
 
 const transformation = () => value =>
     new Promise((resolve, reject) => {
         try {
-            resolve(upperCase(value));
+            resolve(uniqArray(value));
         } catch (error) {
             reject(error);
         }
     });
 
 transformation.getMetas = () => ({
-    name: 'UPPERCASE',
+    name: 'UNIQ',
     type: 'transform',
     args: [],
 });

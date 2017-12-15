@@ -1,24 +1,21 @@
 import smartMap from './smartMap';
 
-export const valueToNumber = value => {
-    const number = Number(value);
+export const trimString = value =>
+    typeof value === 'string' ? value.trim() : value;
 
-    return isNaN(number) ? 0 : number;
-};
-
-const toNumber = smartMap(valueToNumber);
+export const trim = smartMap(trimString);
 
 const transformation = () => value =>
     new Promise((resolve, reject) => {
         try {
-            resolve(toNumber(value));
+            resolve(trim(value));
         } catch (error) {
             reject(error);
         }
     });
 
 transformation.getMetas = () => ({
-    name: 'NUMBER',
+    name: 'TRIM',
     type: 'transform',
     args: [],
 });
