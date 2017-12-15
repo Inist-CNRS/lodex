@@ -137,6 +137,7 @@ export default {
     export_data: 'Exporter',
     export_fields: 'Exporter le modèle',
     import_fields: 'Importer le modèle',
+    view_fields: 'View model',
     confirm_import_fields:
         'Importing a saved model will override your current work. Are you sure ?',
     import_fields_failed:
