@@ -1,4 +1,4 @@
-import fetch from 'isomorphic-fetch';
+import fetch from 'omni-fetch';
 
 import { getHost } from '../../../common/uris';
 
