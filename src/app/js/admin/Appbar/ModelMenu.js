@@ -8,11 +8,12 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 import ArrowDown from 'material-ui/svg-icons/hardware/keyboard-arrow-down';
-import { Link } from 'react-router';
 
 import ImportFieldsDialog from './ImportFieldsDialog';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { exportFields as exportFieldsAction } from '../../exportFields';
+import { getCurrentLocation } from '../../sharedSelectors';
+import MenuItemLink from '../../lib/components/MenuItemLink';
 
 const styles = {
     container: {
@@ -23,18 +24,13 @@ const styles = {
     button: {
         color: 'white',
     },
-    link: {
-        display: 'block',
-        width: '100%',
-        textDecoration: 'none',
-        color: 'black',
-    },
 };
 
 export class ModelMenuComponent extends Component {
     static propTypes = {
         hasPublishedDataset: PropTypes.bool.isRequired,
         exportFields: PropTypes.func.isRequired,
+        location: PropTypes.string,
         p: polyglotPropTypes.isRequired,
     };
 
@@ -85,7 +81,7 @@ export class ModelMenuComponent extends Component {
     };
 
     render() {
-        const { hasPublishedDataset, p: polyglot } = this.props;
+        const { hasPublishedDataset, location, p: polyglot } = this.props;
         const { open, anchorEl, showImportFieldsConfirmation } = this.state;
 
         return (
@@ -122,13 +118,10 @@ export class ModelMenuComponent extends Component {
                             onClick={this.handleExportFields}
                         />
                         {hasPublishedDataset && (
-                            <MenuItem
-                                primaryText={
-                                    <Link style={styles.link} to="/ontology">
-                                        {polyglot.t('view_fields')}
-                                    </Link>
-                                }
-                                style={styles.button}
+                            <MenuItemLink
+                                disabled={location === '/ontology'}
+                                label={polyglot.t('view_fields')}
+                                link="/ontology"
                             />
                         )}
                     </Menu>
@@ -145,10 +138,14 @@ export class ModelMenuComponent extends Component {
     }
 }
 
+const mapStateToProps = state => ({
+    location: getCurrentLocation(state),
+});
+
 const mapDispatchToProps = {
     exportFields: exportFieldsAction,
 };
 
-export default compose(connect(undefined, mapDispatchToProps), translate)(
+export default compose(connect(mapStateToProps, mapDispatchToProps), translate)(
     ModelMenuComponent,
 );

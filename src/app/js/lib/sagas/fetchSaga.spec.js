@@ -40,15 +40,13 @@ describe('sagas fetch', () => {
         let next = iterator.next({ fetchResult: { error: { code: 401 } } });
         expect(next.value).toEqual(select(getCurrentLocation));
 
-        next = iterator.next({
-            locationBeforeTransitions: { pathname: 'currentLocation.pathname' },
-        });
+        next = iterator.next('currentLocation');
 
         expect(next.value).toEqual(
             put(
                 replace({
                     pathname: '/login',
-                    state: { nextPathname: 'currentLocation.pathname' },
+                    state: { nextPathname: 'currentLocation' },
                 }),
             ),
         );
