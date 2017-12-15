@@ -27,7 +27,7 @@ describe('publishedDataset', () => {
                         total: 42,
                     }),
                 ),
-                count: createSpy().andReturn('fullTotal'),
+                countAll: createSpy().andReturn('fullTotal'),
             },
             field: {
                 findFacetNames: createSpy().andReturn(['facet1', 'facet2']),
@@ -65,7 +65,7 @@ describe('publishedDataset', () => {
         it('should call ctx.publishedDataset.count', async () => {
             await getPage(ctx);
 
-            expect(ctx.publishedDataset.count).toHaveBeenCalledWith();
+            expect(ctx.publishedDataset.countAll).toHaveBeenCalledWith();
         });
 
         it('should return only the last version of each doc', async () => {

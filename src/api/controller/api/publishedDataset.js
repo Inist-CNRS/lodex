@@ -37,7 +37,7 @@ export const getPage = async ctx => {
         facetFieldNames,
     });
 
-    const fullTotal = await ctx.publishedDataset.count();
+    const fullTotal = await ctx.publishedDataset.countAll();
 
     ctx.body = {
         total,
