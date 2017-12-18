@@ -66,7 +66,6 @@
     "html-webpack-plugin": "2.28.0",
     "inist-ark": "2.0.0",
     "inist-roadmap": "1.2.0",
-    "isomorphic-fetch": "2.2.1",
     "jbj": "7.1.4",
     "jbj-array": "1.0.0",
     "jbj-jsonld": "1.0.0",
@@ -116,7 +115,7 @@
     "multistream": "2.1.0",
     "n3": "0.11.2",
     "node-object-hash": "1.2.0",
-    "omni-fetch": "0.2.2",
+    "omni-fetch": "0.2.3",
     "qs": "6.5.1",
     "react": "15.6.1",
     "react-copy-to-clipboard": "5.0.0",
@@ -152,7 +151,6 @@
     "url-loader": "0.5.8",
     "valid-url": "1.0.9",
     "webpack": "3.5.6",
-    "whatwg-fetch": "2.0.3",
     "winston": "2.3.1"
   },
   "devDependencies": {

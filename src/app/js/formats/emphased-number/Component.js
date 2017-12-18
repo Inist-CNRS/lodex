@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import fetch from 'isomorphic-fetch';
+import fetch from 'omni-fetch';
 import translate from 'redux-polyglot/translate';
 import commaNumber from 'comma-number';
 import { field as fieldPropTypes } from '../../propTypes';
