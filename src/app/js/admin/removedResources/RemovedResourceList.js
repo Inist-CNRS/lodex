@@ -32,6 +32,8 @@ const styles = {
     table: {
         width: 'auto',
         minWidth: '100%',
+        overflowX: 'auto',
+        display: 'block',
     },
 };
 
@@ -79,12 +81,12 @@ export class RemovedResourceListComponent extends Component {
                             <TableHeaderColumn>
                                 {polyglot.t('removed_reason')}
                             </TableHeaderColumn>
+                            <TableHeaderColumn />
                             {columns.map(({ name, label }) => (
                                 <TableHeaderColumn key={name}>
                                     {label}
                                 </TableHeaderColumn>
                             ))}
-                            <TableHeaderColumn />
                         </TableRow>
                     </TableHeader>
                     <TableBody displayRowCheckbox={false}>
@@ -94,11 +96,6 @@ export class RemovedResourceListComponent extends Component {
                                     {moment(data.removedAt).format('L')}
                                 </TableRowColumn>
                                 <TableRowColumn>{data.reason}</TableRowColumn>
-                                {columns.map(({ name }) => (
-                                    <TableRowColumn key={data[name]}>
-                                        {data[name]}
-                                    </TableRowColumn>
-                                ))}
                                 <TableRowColumn>
                                     <ButtonWithStatus
                                         className="btn-restore-resource"
@@ -111,6 +108,11 @@ export class RemovedResourceListComponent extends Component {
                                         data={data.uri}
                                     />
                                 </TableRowColumn>
+                                {columns.map(({ name }) => (
+                                    <TableRowColumn key={data[name]}>
+                                        {data[name]}
+                                    </TableRowColumn>
+                                ))}
                             </TableRow>
                         ))}
                     </TableBody>

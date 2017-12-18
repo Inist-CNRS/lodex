@@ -147,20 +147,44 @@ describe('resourceReducer', () => {
         });
     });
 
-    it('should handle HIDE_RESOURCE_SUCCESS, ADD_FIELD_TO_RESOURCE_SUCCESS', () => {
-        [HIDE_RESOURCE_SUCCESS, ADD_FIELD_TO_RESOURCE_SUCCESS].forEach(type => {
-            const state = reducer(
-                {
-                    key: 'value',
-                },
-                { type },
-            );
-            expect(state).toEqual({
+    it('should handle HIDE_RESOURCE_SUCCESS', () => {
+        const state = reducer(
+            {
                 key: 'value',
-                error: null,
-                saving: false,
-                addingField: null,
-            });
+                resource: {
+                    data: 'value',
+                },
+            },
+            {
+                type: HIDE_RESOURCE_SUCCESS,
+                payload: { reason: 'reason', removedAt: 'date' },
+            },
+        );
+        expect(state).toEqual({
+            key: 'value',
+            error: null,
+            saving: false,
+            hiding: false,
+            resource: {
+                data: 'value',
+                reason: 'reason',
+                removedAt: 'date',
+            },
+        });
+    });
+
+    it('should handle ADD_FIELD_TO_RESOURCE_SUCCESS', () => {
+        const state = reducer(
+            {
+                key: 'value',
+            },
+            { type: ADD_FIELD_TO_RESOURCE_SUCCESS },
+        );
+        expect(state).toEqual({
+            key: 'value',
+            error: null,
+            saving: false,
+            addingField: null,
         });
     });
 

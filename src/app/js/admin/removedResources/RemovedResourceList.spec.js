@@ -88,13 +88,13 @@ describe('<RemovedResourceList />', () => {
         ).toEqual('removed_reason');
         expect(
             headers
-                .at(2)
+                .at(3)
                 .children()
                 .text(),
         ).toEqual('Uri');
         expect(
             headers
-                .at(3)
+                .at(4)
                 .children()
                 .text(),
         ).toEqual('Col 2');
@@ -135,19 +135,19 @@ describe('<RemovedResourceList />', () => {
                 .at(2)
                 .children()
                 .text(),
-        ).toEqual('value11');
+        ).toEqual('<ButtonWithStatus />');
         expect(
             cells
                 .at(3)
                 .children()
                 .text(),
-        ).toEqual('value12');
+        ).toEqual('value11');
         expect(
             cells
                 .at(4)
                 .children()
                 .text(),
-        ).toEqual('<ButtonWithStatus />');
+        ).toEqual('value12');
 
         expect(
             cells
@@ -170,19 +170,19 @@ describe('<RemovedResourceList />', () => {
                 .at(7)
                 .children()
                 .text(),
-        ).toEqual('value21');
+        ).toEqual('<ButtonWithStatus />');
         expect(
             cells
                 .at(8)
                 .children()
                 .text(),
-        ).toEqual('value22');
+        ).toEqual('value21');
         expect(
             cells
                 .at(9)
                 .children()
                 .text(),
-        ).toEqual('<ButtonWithStatus />');
+        ).toEqual('value22');
 
         expect(
             cells
@@ -205,19 +205,19 @@ describe('<RemovedResourceList />', () => {
                 .at(12)
                 .children()
                 .text(),
-        ).toEqual('value31');
+        ).toEqual('<ButtonWithStatus />');
         expect(
             cells
                 .at(13)
                 .children()
                 .text(),
-        ).toEqual('value32');
+        ).toEqual('value31');
         expect(
             cells
                 .at(14)
                 .children()
                 .text(),
-        ).toEqual('<ButtonWithStatus />');
+        ).toEqual('value32');
     });
 
     it('should render the Pagination', () => {

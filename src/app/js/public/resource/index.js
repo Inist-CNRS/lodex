@@ -129,10 +129,21 @@ export default handleActions(
                 saving: false,
             };
         },
-        [combineActions(
-            HIDE_RESOURCE_SUCCESS,
-            ADD_FIELD_TO_RESOURCE_SUCCESS,
-        )]: state => ({
+        [HIDE_RESOURCE_SUCCESS]: (
+            { resource, ...state },
+            { payload: { reason, removedAt } },
+        ) => ({
+            ...state,
+            error: null,
+            hiding: false,
+            saving: false,
+            resource: {
+                ...resource,
+                reason,
+                removedAt,
+            },
+        }),
+        [ADD_FIELD_TO_RESOURCE_SUCCESS]: state => ({
             ...state,
             error: null,
             saving: false,

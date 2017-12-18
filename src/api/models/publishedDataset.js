@@ -150,8 +150,8 @@ export default async db => {
             },
         );
 
-    collection.hide = async (uri, reason, date = new Date()) =>
-        collection.update(
+    collection.hide = async (uri, reason, date = new Date()) => {
+        await collection.update(
             { uri },
             {
                 $set: {
@@ -160,6 +160,9 @@ export default async db => {
                 },
             },
         );
+
+        return { reason, removedAt: date };
+    };
 
     collection.restore = async uri =>
         collection.update(
@@ -259,6 +262,11 @@ export default async db => {
     collection.countByFacet = async (field, value) =>
         collection.count({
             [field === 'uri' ? 'uri' : `versions.${field}`]: value,
+        });
+
+    collection.countAll = async () =>
+        collection.count({
+            removedAt: { $exists: false },
         });
 
     collection.create = async (resource, publicationDate = new Date()) => {
