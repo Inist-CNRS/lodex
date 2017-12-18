@@ -8,11 +8,11 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 import ArrowDown from 'material-ui/svg-icons/hardware/keyboard-arrow-down';
+import { withRouter } from 'react-router';
 
 import ImportFieldsDialog from './ImportFieldsDialog';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { exportFields as exportFieldsAction } from '../../exportFields';
-import { getCurrentLocation } from '../../sharedSelectors';
 import MenuItemLink from '../../lib/components/MenuItemLink';
 
 const styles = {
@@ -119,7 +119,7 @@ export class ModelMenuComponent extends Component {
                         />
                         {hasPublishedDataset && (
                             <MenuItemLink
-                                disabled={location === '/ontology'}
+                                disabled={location.pathname === '/ontology'}
                                 label={polyglot.t('view_fields')}
                                 link="/ontology"
                             />
@@ -138,14 +138,12 @@ export class ModelMenuComponent extends Component {
     }
 }
 
-const mapStateToProps = state => ({
-    location: getCurrentLocation(state),
-});
-
 const mapDispatchToProps = {
     exportFields: exportFieldsAction,
 };
 
-export default compose(connect(mapStateToProps, mapDispatchToProps), translate)(
-    ModelMenuComponent,
-);
+export default compose(
+    withRouter,
+    connect(null, mapDispatchToProps),
+    translate,
+)(ModelMenuComponent);
