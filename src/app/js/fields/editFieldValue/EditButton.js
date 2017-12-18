@@ -11,11 +11,14 @@ import { fromUser, fromFields } from '../../sharedSelectors';
 import getFieldClassName from '../../lib/getFieldClassName';
 import ButtonWithDialogForm from '../../lib/components/ButtonWithDialogForm';
 import { openEditFieldValue, closeEditFieldValue } from '../';
+import { COVER_DATASET } from '../../../../common/cover';
 
 const mapStateToProps = (state, { field, resource, onSaveProperty, p }) => ({
     open: fromFields.isFieldEdited(state, field.name),
     show:
-        fromUser.isLoggedIn(state) && fromResource.isLastVersionSelected(state),
+        fromUser.isLoggedIn(state) &&
+        (field.cover === COVER_DATASET ||
+            fromResource.isLastVersionSelected(state)),
     saving: fromResource.isSaving(state),
     form: (
         <EditFieldForm
