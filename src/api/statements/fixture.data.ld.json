@@ -1,0 +1,161 @@
+{
+  "@context": {
+      "language": {
+          "@id": "http://purl.org/ontology/dc/language",
+          "@type": "@id"
+      },
+      "doi": "http://purl.org/ontology/bibo/doi"
+  },
+  "@graph": [
+      {
+          "arkIstex": "ark:/67375/QT4-D1G9PPBF-J",
+          "doi": [
+              "10.2478/v10227-011-0020-9"
+          ],
+          "id": "B23588AA1F6A4141455BC177B6838C19CF9804D3",
+          "@id": "https://api.istex.fr/ark:/67375/QT4-D1G9PPBF-J",
+          "@type": "http://purl.org/ontology/bibo/Document",
+          "language": "https://lodex-uri.fr/URI"
+      },
+      {
+          "arkIstex": "ark:/67375/QT4-55LF5CR2-V",
+          "doi": [
+              "10.2478/v10217-012-0007-x"
+          ],
+          "id": "09A65C9E1115F045067A6ABD34047025A23CFF18",
+          "@id": "https://api.istex.fr/ark:/67375/QT4-55LF5CR2-V",
+          "@type": "http://purl.org/ontology/bibo/Document",
+          "language": "https://lodex-uri.fr/URI"
+      },
+      {
+          "arkIstex": "ark:/67375/QT4-7QZ7BSTL-J",
+          "doi": [
+              "10.2478/v10227-011-0012-9"
+          ],
+          "id": "C563051BC4431B541DA34509B4CA55713BBE3F37",
+          "@id": "https://api.istex.fr/ark:/67375/QT4-7QZ7BSTL-J",
+          "@type": "http://purl.org/ontology/bibo/Document",
+          "language": "https://lodex-uri.fr/URI"
+      },
+      {
+          "arkIstex": "ark:/67375/QT4-9H8T5GLR-M",
+          "doi": [
+              "10.2478/v10227-011-0017-4"
+          ],
+          "id": "F731072411600E3E1A42239469D757A0F0214C32",
+          "@id": "https://api.istex.fr/ark:/67375/QT4-9H8T5GLR-M",
+          "@type": "http://purl.org/ontology/bibo/Document",
+          "language": "https://lodex-uri.fr/URI"
+      },
+      {
+          "arkIstex": "ark:/67375/QT4-8WXCK0J9-8",
+          "doi": [
+              "10.2478/v10227-011-0018-3"
+          ],
+          "id": "F51B6D3C3B02C64E472333F2692E4C080D45A23F",
+          "@id": "https://api.istex.fr/ark:/67375/QT4-8WXCK0J9-8",
+          "@type": "http://purl.org/ontology/bibo/Document",
+          "language": "https://lodex-uri.fr/URI"
+      },
+      {
+          "arkIstex": "ark:/67375/QT4-LT02JC3C-0",
+          "doi": [
+              "10.2478/v10227-011-0019-2"
+          ],
+          "id": "044951B634229DF92BB7414F512207976896E2C6",
+          "@id": "https://api.istex.fr/ark:/67375/QT4-LT02JC3C-0",
+          "@type": "http://purl.org/ontology/bibo/Document",
+          "language": "https://lodex-uri.fr/URI"
+      },
+      {
+          "arkIstex": "ark:/67375/QT4-HWK57TFP-5",
+          "doi": [
+              "10.2478/v10227-011-0016-5"
+          ],
+          "id": "D6EA40B974758C367E5E0E180FD0D67B540E6CC3",
+          "@id": "https://api.istex.fr/ark:/67375/QT4-HWK57TFP-5",
+          "@type": "http://purl.org/ontology/bibo/Document",
+          "language": "https://lodex-uri.fr/URI"
+      },
+      {
+          "arkIstex": "ark:/67375/QT4-HDZXKPT2-3",
+          "doi": [
+              "10.2478/v10227-011-0011-x"
+          ],
+          "id": "930767671A61AE837D238EB56E5CBFB0890C6E89",
+          "@id": "https://api.istex.fr/ark:/67375/QT4-HDZXKPT2-3",
+          "@type": "http://purl.org/ontology/bibo/Document",
+          "language": "https://lodex-uri.fr/URI"
+      },
+      {
+          "arkIstex": "ark:/67375/QT4-JDHJLTZ4-T",
+          "doi": [
+              "10.2478/v10227-011-0014-7"
+          ],
+          "id": "FE52751005483711DBBF3850F327718CADB7FCE7",
+          "@id": "https://api.istex.fr/ark:/67375/QT4-JDHJLTZ4-T",
+          "@type": "http://purl.org/ontology/bibo/Document",
+          "language": "https://lodex-uri.fr/URI"
+      },
+      {
+          "arkIstex": "ark:/67375/QT4-TTN7XS2C-6",
+          "doi": [
+              "10.2478/v10227-011-0015-6"
+          ],
+          "id": "0A532307A49AC644381B029FC55A217711E7F416",
+          "@id": "https://api.istex.fr/ark:/67375/QT4-TTN7XS2C-6",
+          "@type": "http://purl.org/ontology/bibo/Document",
+          "language": "https://lodex-uri.fr/URI"
+      },
+      {
+          "arkIstex": "ark:/67375/QT4-DKSL34R7-P",
+          "doi": [
+              "10.2478/v10217-012-0006-y"
+          ],
+          "id": "F7FF19ADDD49D885FE99C9CC0C9D10A5E0FBD65D",
+          "@id": "https://api.istex.fr/ark:/67375/QT4-DKSL34R7-P",
+          "@type": "http://purl.org/ontology/bibo/Document",
+          "language": "https://lodex-uri.fr/URI"
+      },
+      {
+          "arkIstex": "ark:/67375/QT4-MDWSC52R-L",
+          "doi": [
+              "10.2478/v10217-012-0008-9"
+          ],
+          "id": "E39C3BED1F40F263B2978035EBC8F35E17B9D7EF",
+          "@id": "https://api.istex.fr/ark:/67375/QT4-MDWSC52R-L",
+          "@type": "http://purl.org/ontology/bibo/Document",
+          "language": "https://lodex-uri.fr/URI"
+      },
+      {
+          "arkIstex": "ark:/67375/QT4-0JFR13D4-9",
+          "doi": [
+              "10.2478/v10217-012-0004-0"
+          ],
+          "id": "EC61B3691B05C4D2975F43713497FD26431CE746",
+          "@id": "https://api.istex.fr/ark:/67375/QT4-0JFR13D4-9",
+          "@type": "http://purl.org/ontology/bibo/Document",
+          "language": "https://lodex-uri.fr/URI"
+      },
+      {
+          "arkIstex": "ark:/67375/QT4-Z66GNC3D-7",
+          "doi": [
+              "10.2478/v10227-011-0013-8"
+          ],
+          "id": "4B48AABF4649239A822FE739E979D2DDDC37DAC7",
+          "@id": "https://api.istex.fr/ark:/67375/QT4-Z66GNC3D-7",
+          "@type": "http://purl.org/ontology/bibo/Document",
+          "language": "https://lodex-uri.fr/URI"
+      },
+      {
+          "arkIstex": "ark:/67375/QT4-CCLMHQJQ-P",
+          "doi": [
+              "10.2478/v10217-012-0005-z"
+          ],
+          "id": "02E913566DBAEB6479BC7680B4988F41C383F1EF",
+          "@id": "https://api.istex.fr/ark:/67375/QT4-CCLMHQJQ-P",
+          "@type": "http://purl.org/ontology/bibo/Document",
+          "language": "https://lodex-uri.fr/URI"
+      }
+  ]
+}

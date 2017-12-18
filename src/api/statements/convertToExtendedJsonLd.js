@@ -1,4 +1,3 @@
-import jsonld from 'jsonld';
 import validUrl from 'valid-url';
 import get from 'lodash.get';
 
@@ -34,7 +33,7 @@ function getContext(config) {
 
     if (context[config.istexQuery.linked] === undefined) {
         // eslint-disable-next-line
-        return console.error('ConvertToExtendedNquads', `${config.istexQuery.linked} not found in context`);
+        return console.error('convertToExtendedJsonLd', `${config.istexQuery.linked} not found in context`);
     }
 
     context[config.istexQuery.linked] = {
@@ -59,48 +58,37 @@ const formatData = data => {
     return data.map(e => checkWeb(e));
 };
 
-module.exports = function convertToExtendedNquads(data, feed) {
+module.exports = function convertToExtendedJsonLd(data, feed) {
     if (this.isLast()) {
         return feed.close();
     }
 
     const config = this.getParam('config', {});
-    const context = this.getParam('context', getContext(config));
 
-    const hits = data.content.hits;
+    if (!this.searchKeys) {
+        this.context = getContext(config);
+        this.searchKeys = Object.keys(this.context).filter(
+            v =>
+                !Object.keys(data.content).includes(v) &&
+                v !== config.istexQuery.linked,
+        );
+    }
+    const newHit = {
+        ...data.content,
+    };
+    newHit['@id'] = `https://api.istex.fr/${data.content.arkIstex}`;
+    newHit['@type'] = 'http://purl.org/ontology/bibo/Document';
+    newHit[config.istexQuery.linked] = data.lodex.uri;
 
-    const searchKeys = Object.keys(context).filter(
-        v =>
-            !Object.keys(hits[0]).includes(v) && v !== config.istexQuery.linked,
-    );
-
-    hits.forEach(hit => {
-        hit['@id'] = `https://api.istex.fr/${hit.arkIstex}`;
-        hit['@type'] = 'http://purl.org/ontology/bibo/Document';
-        hit[config.istexQuery.linked] = data.uri;
-
-        searchKeys.forEach(key => {
-            const dataFromKey = get(hit, key);
-            hit[key] = formatData(dataFromKey);
-        });
-        delete hit.id;
+    this.searchKeys.forEach(key => {
+        const dataFromKey = get(data.content, key);
+        newHit[key] = formatData(dataFromKey);
     });
 
     const doc = {
-        '@context': context,
-        '@graph': hits,
+        '@context': this.context,
+        '@graph': [newHit],
     };
 
-    return jsonld.toRDF(
-        doc,
-        { format: 'application/nquads' },
-        (err, nquads) => {
-            if (err) {
-                // eslint-disable-next-line
-            console.error('toRDF: ', err);
-                return feed.end();
-            }
-            return feed.send(nquads);
-        },
-    );
+    feed.send(doc);
 };

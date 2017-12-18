@@ -8,7 +8,8 @@ import JSONLDString from './JSONLDString.js';
 import JSONLDObject from './JSONLDObject';
 import extractIstexQuery from './extractIstexQuery.js';
 import scroll from './scroll.js';
-import convertToExtendedNquads from './convertToExtendedNquads.js';
+import convertJsonLdToNQuads from './convertJsonLdToNQuads.js';
+import convertToExtendedJsonLd from './convertToExtendedJsonLd.js';
 import convertToAtom from './convertToAtom.js'
 import LodexContext from './LodexContext.js'
 import LodexConfig from './LodexConfig.js'
@@ -28,7 +29,8 @@ export default {
     JSONLDObject,
     extractIstexQuery,
     scroll,
-    convertToExtendedNquads,
+    convertJsonLdToNQuads,
+    convertToExtendedJsonLd,
     convertToAtom,
     LodexContext,
     LodexConfig,
