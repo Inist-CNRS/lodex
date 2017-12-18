@@ -83,16 +83,8 @@ const AppbarComponent = ({
                         style={styles.button}
                     />
                 )}
-            {isLoggedIn &&
-                hasPublishedDataset && (
-                    <FlatButton
-                        label={polyglot.t('ontology')}
-                        containerElement={<Link to="/ontology" />}
-                        style={styles.button}
-                    />
-                )}
             {isLoggedIn ? (
-                <ModelMenu canImport={!hasPublishedDataset} />
+                <ModelMenu hasPublishedDataset={hasPublishedDataset} />
             ) : (
                 <SignInButton />
             )}

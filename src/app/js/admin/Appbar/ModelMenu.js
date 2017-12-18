@@ -8,10 +8,12 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 import ArrowDown from 'material-ui/svg-icons/hardware/keyboard-arrow-down';
+import { withRouter } from 'react-router';
 
 import ImportFieldsDialog from './ImportFieldsDialog';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { exportFields as exportFieldsAction } from '../../exportFields';
+import MenuItemLink from '../../lib/components/MenuItemLink';
 
 const styles = {
     container: {
@@ -26,8 +28,9 @@ const styles = {
 
 export class ModelMenuComponent extends Component {
     static propTypes = {
-        canImport: PropTypes.bool.isRequired,
+        hasPublishedDataset: PropTypes.bool.isRequired,
         exportFields: PropTypes.func.isRequired,
+        location: PropTypes.string,
         p: polyglotPropTypes.isRequired,
     };
 
@@ -78,61 +81,59 @@ export class ModelMenuComponent extends Component {
     };
 
     render() {
-        const { canImport, p: polyglot } = this.props;
+        const { hasPublishedDataset, location, p: polyglot } = this.props;
         const { open, anchorEl, showImportFieldsConfirmation } = this.state;
 
-        if (canImport) {
-            return (
-                <div style={styles.container}>
-                    <FlatButton
-                        className="btn-model-menu"
-                        onTouchTap={this.handleTouchTap}
-                        label={polyglot.t('model')}
-                        labelPosition="before"
-                        icon={<ArrowDown />}
-                        style={styles.button}
-                    />
-                    <Popover
-                        open={open}
-                        anchorEl={anchorEl}
-                        anchorOrigin={{
-                            horizontal: 'left',
-                            vertical: 'bottom',
-                        }}
-                        targetOrigin={{ horizontal: 'left', vertical: 'top' }}
-                        onRequestClose={this.handleRequestClose}
-                        animation={PopoverAnimationVertical}
-                    >
-                        <Menu>
+        return (
+            <div style={styles.container}>
+                <FlatButton
+                    className="btn-model-menu"
+                    onTouchTap={this.handleTouchTap}
+                    label={polyglot.t('model')}
+                    labelPosition="before"
+                    icon={<ArrowDown />}
+                    style={styles.button}
+                />
+                <Popover
+                    open={open}
+                    anchorEl={anchorEl}
+                    anchorOrigin={{
+                        horizontal: 'left',
+                        vertical: 'bottom',
+                    }}
+                    targetOrigin={{ horizontal: 'left', vertical: 'top' }}
+                    onRequestClose={this.handleRequestClose}
+                    animation={PopoverAnimationVertical}
+                >
+                    <Menu>
+                        {!hasPublishedDataset && (
                             <MenuItem
                                 className="btn-import-fields"
                                 primaryText={polyglot.t('import_fields')}
                                 onClick={this.handleImportFields}
                             />
-                            <MenuItem
-                                primaryText={polyglot.t('export_fields')}
-                                onClick={this.handleExportFields}
+                        )}
+                        <MenuItem
+                            primaryText={polyglot.t('export_fields')}
+                            onClick={this.handleExportFields}
+                        />
+                        {hasPublishedDataset && (
+                            <MenuItemLink
+                                disabled={location.pathname === '/ontology'}
+                                label={polyglot.t('view_fields')}
+                                link="/ontology"
                             />
-                        </Menu>
-                    </Popover>
+                        )}
+                    </Menu>
+                </Popover>
 
-                    {showImportFieldsConfirmation && (
+                {!hasPublishedDataset &&
+                    showImportFieldsConfirmation && (
                         <ImportFieldsDialog
                             onClose={this.handleImportFieldsClose}
                         />
                     )}
-                </div>
-            );
-        }
-
-        return (
-            <FlatButton
-                className="btn-model-menu"
-                label={polyglot.t('export_fields')}
-                onTouchTap={this.handleExportFields}
-                labelPosition="before"
-                style={styles.button}
-            />
+            </div>
         );
     }
 }
@@ -141,6 +142,8 @@ const mapDispatchToProps = {
     exportFields: exportFieldsAction,
 };
 
-export default compose(connect(undefined, mapDispatchToProps), translate)(
-    ModelMenuComponent,
-);
+export default compose(
+    withRouter,
+    connect(null, mapDispatchToProps),
+    translate,
+)(ModelMenuComponent);

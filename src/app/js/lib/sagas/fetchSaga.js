@@ -19,12 +19,12 @@ export default function* fetchSaga(
     }
 
     if (fetchResult.error && fetchResult.error.code === 401) {
-        const { locationBeforeTransitions } = yield select(getCurrentLocation);
+        const location = yield select(getCurrentLocation);
 
         yield put(
             replace({
                 pathname: '/login',
-                state: { nextPathname: locationBeforeTransitions.pathname },
+                state: { nextPathname: location },
             }),
         );
 
