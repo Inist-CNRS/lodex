@@ -53,6 +53,8 @@
     "config": "1.26.2",
     "copy-webpack-plugin": "4.0.1",
     "csv-parse": "1.2.0",
+    "d3-scale": "1.0.7",
+    "d3-scale-chromatic": "1.1.1",
     "diff": "3.3.1",
     "expect": "1.20.2",
     "ezs": "4.7.3",
