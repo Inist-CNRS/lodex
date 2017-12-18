@@ -2,6 +2,7 @@ import { combineReducers } from 'redux';
 import { routerReducer as routing } from 'react-router-redux';
 import { reducer as form } from 'redux-form';
 import { polyglotReducer as polyglot } from 'redux-polyglot';
+import { reducer as tooltip } from 'redux-tooltip';
 
 import characteristic from './characteristic';
 import dataset from './dataset';
@@ -28,6 +29,7 @@ const rootReducer = combineReducers({
     routing,
     graph,
     user,
+    tooltip,
 });
 
 export default rootReducer;

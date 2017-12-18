@@ -145,6 +145,7 @@
     "redux-localstorage-filter": "0.1.1",
     "redux-polyglot": "0.6.2",
     "redux-saga": "0.15.6",
+    "redux-tooltip": "0.7.2",
     "request": "2.81.0",
     "reselect": "3.0.1",
     "resumablejs": "1.0.2",

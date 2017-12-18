@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import {
     ComposableMap,
     ZoomableGroup,
@@ -12,6 +12,7 @@ import { schemeBlues, schemeOrRd } from 'd3-scale-chromatic';
 import { grey100 } from 'material-ui/styles/colors';
 import memoize from 'lodash.memoize';
 import PropTypes from 'prop-types';
+import { Tooltip, actions } from 'redux-tooltip';
 
 const color = scaleLinear()
     .domain([0, 21])
@@ -64,44 +65,77 @@ const projectionConfig = {
     rotation: [-11, 0, 0],
 };
 
-const CartographyView = ({ chartData, maxValue }) => (
-    <div style={styles.container}>
-        <ComposableMap
-            projectionConfig={projectionConfig}
-            width={980}
-            height={551}
-            style={styles.composableMap}
-        >
-            <ZoomableGroup center={[0, 20]} disablePanning>
-                <Geographies disableOptimization geography={mapJson}>
-                    {(geographies, projection) =>
-                        geographies.map(geography => (
-                            <Geography
-                                key={`geography-${geography.properties.ABBREV}`}
-                                cacheId={`geography-${
-                                    geography.properties.ABBREV
-                                }`}
-                                geography={geography}
-                                projection={projection}
-                                style={styles.geography({
-                                    value:
-                                        chartData[
-                                            geography.properties.ISO_A3
-                                        ] || 0,
-                                    maxValue,
-                                })}
-                            />
-                        ))
-                    }
-                </Geographies>
-            </ZoomableGroup>
-        </ComposableMap>
-    </div>
-);
+class CartographyView extends Component {
+    handleMove = (data, event) => {
+        const x = event.clientX;
+        const y = event.clientY + window.pageYOffset;
+        const value = this.props.chartData[data.properties.ISO_A3];
+        if (!value) {
+            return;
+        }
+        this.props.showTooltip({
+            origin: { x, y },
+            content: (
+                <dl>
+                    <dt>{data.properties.NAME}</dt>
+                    <dd>{value}</dd>
+                </dl>
+            ),
+        });
+    };
+    handleLeave = () => {
+        this.props.hideTooltip();
+    };
+    render() {
+        const { chartData, maxValue } = this.props;
+
+        return (
+            <div style={styles.container}>
+                <ComposableMap
+                    projectionConfig={projectionConfig}
+                    width={980}
+                    height={551}
+                    style={styles.composableMap}
+                >
+                    <ZoomableGroup disablePanning center={[0, 20]}>
+                        <Geographies disableOptimization geography={mapJson}>
+                            {(geographies, projection) =>
+                                geographies.map(
+                                    (geography, i) =>
+                                        geography.id !== 'ATA' && (
+                                            <Geography
+                                                key={`geography-${i}`}
+                                                onMouseMove={this.handleMove}
+                                                onMouseLeave={this.handleLeave}
+                                                cacheId={`geography-${i}`}
+                                                geography={geography}
+                                                projection={projection}
+                                                style={styles.geography({
+                                                    value:
+                                                        chartData[
+                                                            geography.properties
+                                                                .ISO_A3
+                                                        ] || 0,
+                                                    maxValue,
+                                                })}
+                                            />
+                                        ),
+                                )
+                            }
+                        </Geographies>
+                    </ZoomableGroup>
+                </ComposableMap>
+                <Tooltip />
+            </div>
+        );
+    }
+}
 
 CartographyView.propTypes = {
-    chartData: PropTypes.array.isRequired,
+    chartData: PropTypes.object.isRequired,
     maxValue: PropTypes.number.isRequired,
+    showTooltip: PropTypes.func.isRequired,
+    hideTooltip: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state, { chartData }) => {
@@ -128,4 +162,9 @@ const mapStateToProps = (state, { chartData }) => {
     };
 };
 
-export default connect(mapStateToProps)(CartographyView);
+const mapSispatchToProps = {
+    showTooltip: actions.show,
+    hideTooltip: actions.hide,
+};
+
+export default connect(mapStateToProps, mapSispatchToProps)(CartographyView);
