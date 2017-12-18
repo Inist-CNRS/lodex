@@ -7,20 +7,22 @@ import {
 } from 'react-simple-maps';
 import mapJson from 'react-simple-maps/topojson-maps/world-50m.json';
 import { connect } from 'react-redux';
-import { scaleLinear } from 'd3-scale';
+import { scaleQuantize } from 'd3-scale';
 import { schemeBlues, schemeOrRd } from 'd3-scale-chromatic';
 import { grey100 } from 'material-ui/styles/colors';
 import memoize from 'lodash.memoize';
 import PropTypes from 'prop-types';
 import { Tooltip, actions } from 'redux-tooltip';
 
-const color = scaleLinear()
+const color = scaleQuantize()
     .domain([0, 21])
-    .range(schemeOrRd[3]);
+    .range(schemeOrRd[9])
+    .nice();
 
-const hoverColor = scaleLinear()
+const hoverColor = scaleQuantize()
     .domain([0, 21])
-    .range(schemeBlues[3]);
+    .range(schemeBlues[9])
+    .nice();
 
 const styles = {
     container: {
@@ -28,36 +30,37 @@ const styles = {
         maxWidth: 980,
         margin: 0,
     },
-    geography: memoize(({ value, maxValue }) => {
-        color.domain([0, maxValue]);
-        hoverColor.domain([0, maxValue]);
-
-        return {
-            default: {
-                fill: value === 0 ? grey100 : color(value),
-                transition: 'fill 0.5s',
-                stroke: '#607D8B',
-                strokeWidth: 0.75,
-                outline: 'none',
-            },
-            hover: {
-                fill: value === 0 ? grey100 : hoverColor(value),
-                stroke: '#607D8B',
-                strokeWidth: 0.75,
-                outline: 'none',
-            },
-            pressed: {
-                fill: '#263238',
-                stroke: '#607D8B',
-                strokeWidth: 0.75,
-                outline: 'none',
-            },
-        };
-    }),
+    geography: memoize(({ value }) => ({
+        default: {
+            fill: value === 0 ? grey100 : color(value),
+            transition: 'fill 0.5s',
+            stroke: '#607D8B',
+            strokeWidth: 0.75,
+            outline: 'none',
+        },
+        hover: {
+            fill: value === 0 ? grey100 : hoverColor(value),
+            stroke: '#607D8B',
+            strokeWidth: 0.75,
+            outline: 'none',
+        },
+        pressed: {
+            fill: '#263238',
+            stroke: '#607D8B',
+            strokeWidth: 0.75,
+            outline: 'none',
+        },
+    })),
     composableMap: {
         width: '100%',
         height: 'auto',
     },
+    legendBox: color => ({
+        display: 'inline-block',
+        backgroundColor: color,
+        height: '1em',
+        width: '3em',
+    }),
 };
 
 const projectionConfig = {
@@ -73,6 +76,7 @@ class CartographyView extends Component {
         if (!value) {
             return;
         }
+
         this.props.showTooltip({
             origin: { x, y },
             content: (
@@ -88,9 +92,22 @@ class CartographyView extends Component {
     };
     render() {
         const { chartData, maxValue } = this.props;
+        color.domain([0, maxValue]);
+        hoverColor.domain([0, maxValue]);
 
         return (
             <div style={styles.container}>
+                <div>
+                    {color.range().map(value => {
+                        const [start, end] = color.invertExtent(value);
+                        return (
+                            <div key={value}>
+                                <div style={styles.legendBox(value)} />
+                                {Math.round(start)} to {Math.round(end)}
+                            </div>
+                        );
+                    })}
+                </div>
                 <ComposableMap
                     projectionConfig={projectionConfig}
                     width={980}
