@@ -56,7 +56,7 @@ export default handleActions(
         }),
         UPDATE_CHARACTERISTICS_SUCCESS: (
             state,
-            { payload: characteristics },
+            { payload: { characteristics } },
         ) => ({
             ...state,
             characteristics: [characteristics, ...state.characteristics],

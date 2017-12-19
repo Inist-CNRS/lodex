@@ -9,7 +9,7 @@ import { handleUpdateCharacteristics } from './updateCharacteristic';
 
 describe('characteristic saga', () => {
     describe('handleUpdateCharacteristics', () => {
-        const payload = 'characteristics';
+        const payload = { characteristics: 'characteristics', name: 'name' };
 
         const saga = handleUpdateCharacteristics({ payload });
 
@@ -30,7 +30,14 @@ describe('characteristic saga', () => {
                 saga.next({
                     response: ['value1', 'value2'],
                 }).value,
-            ).toEqual(put(updateCharacteristicsSuccess(['value1', 'value2'])));
+            ).toEqual(
+                put(
+                    updateCharacteristicsSuccess({
+                        characteristics: ['value1', 'value2'],
+                        field: { name: 'name' },
+                    }),
+                ),
+            );
         });
 
         it('should put loadPublicationError action with error if any', () => {

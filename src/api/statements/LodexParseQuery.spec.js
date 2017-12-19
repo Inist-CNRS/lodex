@@ -2,7 +2,7 @@ import expect from 'expect';
 
 import LodexParseQuery from './LodexParseQuery';
 
-describe.only('LodexParseQuery', () => {
+describe('LodexParseQuery', () => {
     it('should send default data', () => {
         const feed = {
             send: expect.createSpy(),

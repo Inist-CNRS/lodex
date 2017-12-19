@@ -80,7 +80,7 @@ describe('characteristic reducer', () => {
     });
 
     it('should handle updateCharacteristicsSuccess', () => {
-        const action = updateCharacteristicsSuccess('new');
+        const action = updateCharacteristicsSuccess({ characteristics: 'new' });
         const state = {
             data: 'value',
             characteristics: ['charac'],
