@@ -329,4 +329,5 @@ export default {
     scale: 'scale',
     linear: 'linear',
     log: 'logarithmic',
+    home: 'home',
 };
