@@ -7,7 +7,7 @@ import EditIcon from 'material-ui/svg-icons/editor/mode-edit';
 import withHandlers from 'recompose/withHandlers';
 
 import EditFieldForm, { FORM_NAME } from './EditFieldForm';
-import { fromResource } from '../../public/selectors';
+import { fromResource, fromCharacteristic } from '../../public/selectors';
 import { fromUser, fromFields } from '../../sharedSelectors';
 import getFieldClassName from '../../lib/getFieldClassName';
 import ButtonWithDialogForm from '../../lib/components/ButtonWithDialogForm';
@@ -22,7 +22,10 @@ const mapStateToProps = (state, { field, resource, onSaveProperty, p }) => ({
         fromUser.isLoggedIn(state) &&
         (field.cover === COVER_DATASET ||
             fromResource.isLastVersionSelected(state)),
-    saving: fromResource.isSaving(state),
+    saving:
+        field.cover === COVER_DATASET
+            ? fromCharacteristic.isSaving(state)
+            : fromResource.isSaving(state),
     form: (
         <EditFieldForm
             field={field}

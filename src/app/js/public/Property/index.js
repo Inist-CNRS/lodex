@@ -87,7 +87,6 @@ const styles = {
 const PropertyComponent = ({
     className,
     field,
-    isSaving,
     isSub,
     resource,
     fieldStatus,
@@ -131,11 +130,7 @@ const PropertyComponent = ({
                     >
                         {field.label}
                         <span style={styles.editButton(!loggedIn)}>
-                            <EditButton
-                                field={field}
-                                isSaving={isSaving}
-                                resource={resource}
-                            />
+                            <EditButton field={field} resource={resource} />
                             <EditOntologyFieldButton field={field} />
                         </span>
                     </span>
@@ -167,14 +162,12 @@ const PropertyComponent = ({
             </div>
             <CompositeProperty
                 field={field}
-                isSaving={isSaving}
                 resource={resource}
                 parents={parents}
             />
 
             <PropertyLinkedFields
                 fieldName={field.name}
-                isSaving={isSaving}
                 resource={resource}
                 parents={parents}
             />
@@ -192,7 +185,6 @@ PropertyComponent.propTypes = {
     className: PropTypes.string,
     field: fieldPropTypes.isRequired,
     fieldStatus: PropTypes.oneOf(propositionStatus),
-    isSaving: PropTypes.bool.isRequired,
     isSub: PropTypes.bool,
     loggedIn: PropTypes.bool.isRequired,
     resource: PropTypes.shape({}).isRequired,

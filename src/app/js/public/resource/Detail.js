@@ -119,7 +119,6 @@ const styles = {
 
 export const DetailComponent = ({
     fields,
-    isSaving,
     p: polyglot,
     resource,
     sharingTitle,
@@ -188,7 +187,6 @@ export const DetailComponent = ({
                             <Property
                                 key={field.name}
                                 field={field}
-                                isSaving={isSaving}
                                 resource={resource}
                                 style={styles.property}
                             />
@@ -202,7 +200,6 @@ export const DetailComponent = ({
                         <Property
                             key={field.name}
                             field={field}
-                            isSaving={isSaving}
                             resource={resource}
                             style={styles.property}
                         />
@@ -276,7 +273,6 @@ DetailComponent.defaultProps = {
 
 DetailComponent.propTypes = {
     fields: PropTypes.arrayOf(PropTypes.object).isRequired,
-    isSaving: PropTypes.bool.isRequired,
     p: polyglotPropTypes.isRequired,
     resource: PropTypes.shape({}),
     sharingTitle: PropTypes.string,
@@ -294,7 +290,6 @@ const mapStateToProps = state => {
 
     return {
         resource,
-        isSaving: fromResource.isSaving(state),
         fields: fromFields.getResourceFields(state, resource),
         sharingTitle,
     };
