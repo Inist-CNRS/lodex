@@ -45,8 +45,6 @@ const styles = {
         fontWeight: 'bold',
         fontSize: isSub === true ? 'initial' : '2rem',
         textDecoration: status === REJECTED ? 'line-through' : 'none',
-        display: 'flex',
-        alignItems: 'center',
     }),
     language: memoize(hide => ({
         marginRight: '1rem',
