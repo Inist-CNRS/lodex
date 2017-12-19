@@ -33,7 +33,7 @@ describe('fields saga', () => {
 
         it('should put configureFieldSuccess with response', () => {
             expect(saga.next({ response: 'response' }).value).toEqual(
-                put(configureFieldSuccess('response')),
+                put(configureFieldSuccess({ field: 'response' })),
             );
         });
 

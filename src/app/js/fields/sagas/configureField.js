@@ -22,7 +22,7 @@ export function* handleConfigureField() {
         return;
     }
 
-    yield put(configureFieldSuccess(field));
+    yield put(configureFieldSuccess({ field }));
     yield put(preLoadPublication());
 }
 

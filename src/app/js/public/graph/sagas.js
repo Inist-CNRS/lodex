@@ -26,6 +26,7 @@ import {
 import { fromFields } from '../../sharedSelectors';
 import { TOGGLE_FACET_VALUE, CLEAR_FACET, INVERT_FACET } from '../facet';
 import { APPLY_FILTER } from '../dataset';
+import { CONFIGURE_FIELD_SUCCESS } from '../../fields';
 
 export function* handlePreLoadChartData({ payload: { field, value } }) {
     if (yield select(fromGraph.isChartDataLoaded, field.name)) {
@@ -99,6 +100,7 @@ export default function*() {
                 CLEAR_FACET,
                 APPLY_FILTER,
                 INVERT_FACET,
+                CONFIGURE_FIELD_SUCCESS,
             ],
             handleLoadChartDataRequest,
         );

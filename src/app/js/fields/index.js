@@ -191,7 +191,7 @@ export default handleActions(
             error: null,
             isSaving: true,
         }),
-        CONFIGURE_FIELD_SUCCESS: (state, { payload: field }) => ({
+        CONFIGURE_FIELD_SUCCESS: (state, { payload: { field } }) => ({
             ...state,
             isSaving: false,
             error: null,

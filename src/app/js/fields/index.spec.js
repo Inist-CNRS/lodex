@@ -174,7 +174,9 @@ describe('field reducer', () => {
         it('should handle the CONFIGURE_FIELD_SUCCESS action', () => {
             const state = reducer(
                 { data: 'value', byName: {} },
-                configureFieldSuccess({ name: 'name', data: 'updated' }),
+                configureFieldSuccess({
+                    field: { name: 'name', data: 'updated' },
+                }),
             );
             expect(state).toEqual({
                 data: 'value',
