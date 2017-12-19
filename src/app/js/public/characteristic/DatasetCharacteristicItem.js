@@ -6,12 +6,9 @@ import { fromCharacteristic } from '../selectors';
 import { fromFields } from '../../sharedSelectors';
 import { field as fieldPropTypes } from '../../propTypes';
 
-import { updateCharacteristics as updateCharacteristicsAction } from './';
-
 const DatasetCharacteristicItemComponent = ({
     resource,
     field,
-    handleSaveProperty,
     isSaving,
     style,
 }) => (
@@ -19,7 +16,6 @@ const DatasetCharacteristicItemComponent = ({
         resource={resource}
         field={field}
         isSaving={isSaving}
-        onSaveProperty={handleSaveProperty}
         style={style}
     />
 );
@@ -27,7 +23,6 @@ const DatasetCharacteristicItemComponent = ({
 DatasetCharacteristicItemComponent.propTypes = {
     field: fieldPropTypes.isRequired,
     isSaving: PropTypes.bool.isRequired,
-    handleSaveProperty: PropTypes.func.isRequired,
     resource: PropTypes.shape({}).isRequired,
     style: PropTypes.shape({}).isRequired,
 };
@@ -41,10 +36,4 @@ const mapStateToProps = (state, { characteristic: { name } }) => ({
     isSaving: fromCharacteristic.isSaving(state),
 });
 
-const mapDispatchToProps = {
-    handleSaveProperty: updateCharacteristicsAction,
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(
-    DatasetCharacteristicItemComponent,
-);
+export default connect(mapStateToProps)(DatasetCharacteristicItemComponent);

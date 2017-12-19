@@ -93,7 +93,6 @@ const PropertyComponent = ({
     fieldStatus,
     loggedIn,
     changeStatus,
-    onSaveProperty,
     style,
     parents,
 }) => {
@@ -136,7 +135,6 @@ const PropertyComponent = ({
                                 field={field}
                                 isSaving={isSaving}
                                 resource={resource}
-                                onSaveProperty={onSaveProperty}
                             />
                             <EditOntologyFieldButton field={field} />
                         </span>
@@ -171,7 +169,6 @@ const PropertyComponent = ({
                 field={field}
                 isSaving={isSaving}
                 resource={resource}
-                onSaveProperty={onSaveProperty}
                 parents={parents}
             />
 
@@ -179,7 +176,6 @@ const PropertyComponent = ({
                 fieldName={field.name}
                 isSaving={isSaving}
                 resource={resource}
-                onSaveProperty={onSaveProperty}
                 parents={parents}
             />
             <ModerateButton
@@ -199,7 +195,6 @@ PropertyComponent.propTypes = {
     isSaving: PropTypes.bool.isRequired,
     isSub: PropTypes.bool,
     loggedIn: PropTypes.bool.isRequired,
-    onSaveProperty: PropTypes.func.isRequired,
     resource: PropTypes.shape({}).isRequired,
     parents: PropTypes.arrayOf(PropTypes.string).isRequired,
     style: PropTypes.object,

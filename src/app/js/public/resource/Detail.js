@@ -9,7 +9,6 @@ import { grey500 } from 'material-ui/styles/colors';
 import memoize from 'lodash.memoize';
 import { Helmet } from 'react-helmet';
 
-import { saveResource as saveResourceAction } from './';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { fromResource } from '../selectors';
 import { fromFields } from '../../sharedSelectors';
@@ -120,7 +119,6 @@ const styles = {
 
 export const DetailComponent = ({
     fields,
-    handleSaveResource,
     isSaving,
     p: polyglot,
     resource,
@@ -191,7 +189,6 @@ export const DetailComponent = ({
                                 key={field.name}
                                 field={field}
                                 isSaving={isSaving}
-                                onSaveProperty={handleSaveResource}
                                 resource={resource}
                                 style={styles.property}
                             />
@@ -206,7 +203,6 @@ export const DetailComponent = ({
                             key={field.name}
                             field={field}
                             isSaving={isSaving}
-                            onSaveProperty={handleSaveResource}
                             resource={resource}
                             style={styles.property}
                         />
@@ -281,7 +277,6 @@ DetailComponent.defaultProps = {
 DetailComponent.propTypes = {
     fields: PropTypes.arrayOf(PropTypes.object).isRequired,
     isSaving: PropTypes.bool.isRequired,
-    handleSaveResource: PropTypes.func.isRequired,
     p: polyglotPropTypes.isRequired,
     resource: PropTypes.shape({}),
     sharingTitle: PropTypes.string,
@@ -305,8 +300,4 @@ const mapStateToProps = state => {
     };
 };
 
-const mapDispatchToProps = { handleSaveResource: saveResourceAction };
-
-export default compose(connect(mapStateToProps, mapDispatchToProps), translate)(
-    DetailComponent,
-);
+export default compose(connect(mapStateToProps), translate)(DetailComponent);

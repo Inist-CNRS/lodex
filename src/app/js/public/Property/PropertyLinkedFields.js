@@ -21,7 +21,6 @@ const PropertyLinkedFieldsComponent = ({
     fieldName,
     isSaving,
     linkedFields,
-    onSaveProperty,
     parents,
     resource,
 }) => {
@@ -42,7 +41,6 @@ const PropertyLinkedFieldsComponent = ({
                     isSub
                     resource={resource}
                     parents={parents}
-                    onSaveProperty={onSaveProperty}
                 />
             ))}
         </div>
