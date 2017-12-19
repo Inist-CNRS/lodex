@@ -131,7 +131,6 @@ describe('facet reducer', () => {
                         filter: '',
                         values: 'values',
                         total: 'total',
-                        inverted: false,
                         sort: {
                             sortBy: 'count',
                             sortDir: 'DESC',
@@ -242,6 +241,10 @@ describe('facet reducer', () => {
                     foo: 'bar',
                     name: ['value1', 'value2'],
                 },
+                invertedFacets: {
+                    bar: true,
+                    name: true,
+                },
             };
 
             const action = {
@@ -254,15 +257,22 @@ describe('facet reducer', () => {
                 appliedFacets: {
                     foo: 'bar',
                 },
+                invertedFacets: {
+                    bar: true,
+                },
             });
         });
 
-        it('should clear all appliedFacet if payload is null', () => {
+        it('should clear all appliedFacet and invertedFacets if payload is null', () => {
             const state = {
                 foo: 'bar',
                 appliedFacets: {
                     foo: 'bar',
                     name: ['value1', 'value2'],
+                },
+                invertedFacets: {
+                    foo: true,
+                    name: true,
                 },
             };
 
@@ -274,6 +284,7 @@ describe('facet reducer', () => {
             expect(facetReducer(state, action)).toEqual({
                 foo: 'bar',
                 appliedFacets: {},
+                invertedFacets: {},
             });
         });
     });
@@ -316,14 +327,11 @@ describe('facet reducer', () => {
     });
 
     describe('INVERT_FACET', () => {
-        it('should set inverted to inverted', () => {
+        it('should add name to invertedFacets if inverted is true', () => {
             const state = {
                 foo: 'bar',
-                facetsValues: {
+                invertedFacets: {
                     foo: 'bar',
-                    name: {
-                        foo: 'bar',
-                    },
                 },
             };
 
@@ -331,18 +339,40 @@ describe('facet reducer', () => {
                 type: INVERT_FACET,
                 payload: {
                     name: 'name',
-                    inverted: 'inverted',
+                    inverted: true,
                 },
             };
 
             expect(facetReducer(state, action)).toEqual({
                 foo: 'bar',
-                facetsValues: {
+                invertedFacets: {
                     foo: 'bar',
-                    name: {
-                        foo: 'bar',
-                        inverted: 'inverted',
-                    },
+                    name: true,
+                },
+            });
+        });
+
+        it('should remove name from invertedFacets if inverted is false', () => {
+            const state = {
+                foo: 'bar',
+                invertedFacets: {
+                    foo: true,
+                    name: true,
+                },
+            };
+
+            const action = {
+                type: INVERT_FACET,
+                payload: {
+                    name: 'name',
+                    inverted: false,
+                },
+            };
+
+            expect(facetReducer(state, action)).toEqual({
+                foo: 'bar',
+                invertedFacets: {
+                    foo: true,
                 },
             });
         });
