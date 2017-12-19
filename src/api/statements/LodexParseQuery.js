@@ -20,15 +20,15 @@ export default function LodexParseQuery(data, feed) {
         ...data,
         limit: maxSize,
         skip,
-        maxValue: typeof maxValue !== 'undefined' && Number(maxValue),
-        minValue: typeof minValue !== 'undefined' && Number(minValue),
+        maxValue: typeof maxValue !== 'undefined' ? Number(maxValue) : null,
+        minValue: typeof minValue !== 'undefined' ? Number(minValue) : null,
         query: {
             match,
             invertedFacets,
             facets,
         },
         sort: {
-            [order]: dir === 'asc' ? -1 : 1,
+            [order]: dir === 'asc' ? 1 : -1,
         },
     });
 }
