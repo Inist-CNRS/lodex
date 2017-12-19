@@ -9,11 +9,12 @@ export default function LodexParseQuery(data, feed) {
         maxValue,
         minValue,
         match,
-        orderBy = '_id',
-        sortDir = -1,
+        orderBy = '_id/asc',
         invertedFacets = [],
         ...facets
     } = data.query;
+
+    const [order, dir] = orderBy.split('/');
 
     feed.send({
         ...data,
@@ -27,7 +28,7 @@ export default function LodexParseQuery(data, feed) {
             facets,
         },
         sort: {
-            [orderBy]: parseInt(sortDir, 10),
+            [order]: dir === 'asc' ? -1 : 1,
         },
     });
 }
