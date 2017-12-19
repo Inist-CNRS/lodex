@@ -14,6 +14,8 @@ import memoize from 'lodash.memoize';
 import PropTypes from 'prop-types';
 import { Tooltip, actions } from 'redux-tooltip';
 
+import ColorScaleLegend from './ColorScaleLegend';
+
 const color = scaleQuantize()
     .domain([0, 21])
     .range(schemeOrRd[9])
@@ -55,12 +57,20 @@ const styles = {
         width: '100%',
         height: 'auto',
     },
-    legendBox: color => ({
-        display: 'inline-block',
+    legendColor: color => ({
+        display: 'block',
         backgroundColor: color,
-        height: '1em',
-        width: '3em',
+        height: '2em',
+        width: '100%',
     }),
+    legend: {
+        display: 'flex',
+        width: '100%',
+        margin: '20px',
+    },
+    legendItem: {
+        flex: 1,
+    },
 };
 
 const projectionConfig = {
@@ -97,17 +107,7 @@ class CartographyView extends Component {
 
         return (
             <div style={styles.container}>
-                <div>
-                    {color.range().map(value => {
-                        const [start, end] = color.invertExtent(value);
-                        return (
-                            <div key={value}>
-                                <div style={styles.legendBox(value)} />
-                                {Math.round(start)} to {Math.round(end)}
-                            </div>
-                        );
-                    })}
-                </div>
+                <ColorScaleLegend colorScale={color} />
                 <ComposableMap
                     projectionConfig={projectionConfig}
                     width={980}
