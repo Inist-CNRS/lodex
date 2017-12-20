@@ -122,11 +122,8 @@ export const getRenderingData = async (renderProps, history, muiTheme) => {
     };
 };
 
-const handleRender = async ctx => {
+const handleRender = async (ctx, next) => {
     const { url, headers } = ctx.request;
-    if (url.startsWith('/api') || url === '/favicon.ico') {
-        return;
-    }
     if (url === '/') {
         ctx.redirect('/home');
         return;
@@ -143,6 +140,11 @@ const handleRender = async ctx => {
     if (redirect) {
         ctx.redirect(redirect.pathname + redirect.search);
         return;
+    }
+
+    // no route matched switch to static file
+    if (!renderProps) {
+        return next();
     }
 
     const muiTheme = getMuiTheme(
@@ -162,6 +164,8 @@ const handleRender = async ctx => {
 };
 
 const app = new Koa();
+
+app.use(handleRender);
 
 if (process.env.NODE_ENV === 'development') {
     app.use(
@@ -184,8 +188,7 @@ if (process.env.NODE_ENV === 'development') {
     );
 } else {
     app.use(mount('/', serve(path.resolve(__dirname, '../../build'))));
+    app.use(mount('/', serve(path.resolve(__dirname, '../../app/custom'))));
 }
-
-app.use(handleRender);
 
 export default app;

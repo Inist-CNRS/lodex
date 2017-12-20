@@ -154,7 +154,12 @@ export default {
                 },
             ],
             {
-                ignore: ['index.html', 'admin/index.js', 'index.js', '0.js'],
+                ignore: [
+                    '/index.html',
+                    '/admin/index.js',
+                    '/index.js',
+                    '/0.js',
+                ],
             },
         ),
         new CopyWebpackPlugin([
