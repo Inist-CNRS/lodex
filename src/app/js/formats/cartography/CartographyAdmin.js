@@ -61,18 +61,14 @@ const styles = {
     input2: {
         width: '100%',
     },
-    previewColor: color => ({
-        display: 'block',
+    previewDefaultColor: color => ({
+        display: 'inline-block',
         backgroundColor: color,
         height: '1em',
-        width: '100%',
-        flex: 1,
+        width: '1em',
+        marginLeft: 5,
+        border: 'solid 1px black',
     }),
-    preview: {
-        display: 'flex',
-        width: '100%',
-        padding: '1em',
-    },
 };
 
 class CartographyAdmin extends Component {
@@ -124,12 +120,20 @@ class CartographyAdmin extends Component {
         return (
             <div style={styles.container}>
                 <TextField
-                    floatingLabelText={polyglot.t('default_color')}
+                    floatingLabelText={
+                        <span>
+                            {polyglot.t('default_color')}
+                            <span
+                                style={styles.previewDefaultColor(defaultColor)}
+                            />
+                        </span>
+                    }
                     onChange={this.setDefaultColor}
                     style={styles.input}
+                    underlineStyle={{ borderColor: defaultColor }}
+                    underlineFocusStyle={{ borderColor: defaultColor }}
                     value={defaultColor}
                 />
-                <div style={styles.previewColor(defaultColor)} />
                 <SelectField
                     floatingLabelText={polyglot.t('color_scheme')}
                     onChange={this.setColorScheme}
