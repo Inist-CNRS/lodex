@@ -25,7 +25,7 @@ const ColorScalePreview = ({ colorScale }) => (
 );
 
 ColorScalePreview.propTypes = {
-    colorScale: PropTypes.object.isRequired,
+    colorScale: PropTypes.func.isRequired,
 };
 
 export default ColorScalePreview;

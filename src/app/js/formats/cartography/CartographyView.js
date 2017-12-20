@@ -95,9 +95,17 @@ class CartographyView extends Component {
         this.props.hideTooltip();
     };
     render() {
-        const { chartData, maxValue, colorScheme = [] } = this.props;
+        const {
+            chartData,
+            maxValue,
+            colorScheme,
+            hoverColorScheme,
+        } = this.props;
+        if (!chartData || !colorScheme) {
+            return null;
+        }
         color.range(colorScheme).domain([0, maxValue]);
-        hoverColor.domain([0, maxValue]);
+        hoverColor.range(hoverColorScheme).domain([0, maxValue]);
 
         return (
             <div style={styles.container}>
@@ -148,6 +156,7 @@ CartographyView.propTypes = {
     showTooltip: PropTypes.func.isRequired,
     hideTooltip: PropTypes.func.isRequired,
     colorScheme: PropTypes.arrayOf(PropTypes.string).isRequired,
+    hoverColorScheme: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 const mapStateToProps = (state, { chartData, field }) => {
@@ -155,6 +164,8 @@ const mapStateToProps = (state, { chartData, field }) => {
         return {
             chartData: {},
             maxValue: 0,
+            colorScheme: get(field, 'format.args.colorScheme'),
+            hoverColorScheme: get(field, 'format.args.hoverColorScheme'),
         };
     }
     return {
@@ -172,6 +183,7 @@ const mapStateToProps = (state, { chartData, field }) => {
             0,
         ),
         colorScheme: get(field, 'format.args.colorScheme'),
+        hoverColorScheme: get(field, 'format.args.hoverColorScheme'),
     };
 };
 

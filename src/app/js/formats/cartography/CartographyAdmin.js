@@ -76,41 +76,73 @@ const styles = {
 
 class CartographyAdmin extends Component {
     static propTypes = {
-        colorScheme: PropTypes.string,
+        colorScheme: PropTypes.arrayOf(PropTypes.string),
+        hoverColorScheme: PropTypes.arrayOf(PropTypes.string),
         onChange: PropTypes.func.isRequired,
         p: polyglotPropTypes.isRequired,
     };
 
     static defaultProps = {
-        colors: 'schemeOrRd',
+        colorScheme: schemeOrRd[9],
+        hoverColorScheme: schemeBlues[9],
     };
     constructor(props) {
         super(props);
-        const { colorScheme } = this.props;
-        this.state = { colorScheme };
+        const { colorScheme, hoverColorScheme } = this.props;
+        this.state = { colorScheme, hoverColorScheme };
     }
 
     setColorScheme = (_, __, colorScheme) => {
-        const newState = { ...this.state, colorScheme };
+        const newState = { ...this.state, colorScheme: colorScheme.split(',') };
+        this.setState(newState);
+        this.props.onChange(newState);
+    };
+
+    setHoverColorScheme = (_, __, hoverColorScheme) => {
+        const newState = {
+            ...this.state,
+            hoverColorScheme: hoverColorScheme.split(','),
+        };
         this.setState(newState);
         this.props.onChange(newState);
     };
 
     render() {
         const { p: polyglot } = this.props;
-        const { colorScheme } = this.state;
+        const { colorScheme, hoverColorScheme } = this.state;
+
         return (
             <div style={styles.container}>
                 <SelectField
-                    floatingLabelText={polyglot.t('color_set')}
+                    floatingLabelText={polyglot.t('color_scheme')}
                     onChange={this.setColorScheme}
                     style={styles.input}
-                    value={colorScheme}
+                    value={colorScheme.join(',')}
                 >
                     {schemes.map(value => (
                         <MenuItem
                             key={value}
-                            value={value}
+                            value={value.join(',')}
+                            primaryText={
+                                <ColorScalePreview
+                                    colorScale={scaleQuantize()
+                                        .domain([0, 100])
+                                        .range(value)}
+                                />
+                            }
+                        />
+                    ))}
+                </SelectField>
+                <SelectField
+                    floatingLabelText={polyglot.t('hover_color_scheme')}
+                    onChange={this.setHoverColorScheme}
+                    style={styles.input}
+                    value={hoverColorScheme.join(',')}
+                >
+                    {schemes.map(value => (
+                        <MenuItem
+                            key={value}
+                            value={value.join(',')}
                             primaryText={
                                 <ColorScalePreview
                                     colorScale={scaleQuantize()

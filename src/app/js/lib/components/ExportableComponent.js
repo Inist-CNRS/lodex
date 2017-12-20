@@ -81,7 +81,7 @@ class ExportableComponent extends Component {
 
 ExportableComponent.propTypes = {
     children: PropTypes.element.isRequired,
-    label: PropTypes.string.isRequired,
+    label: PropTypes.any.isRequired,
 };
 
 export default ExportableComponent;

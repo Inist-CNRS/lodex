@@ -21,7 +21,7 @@ const styles = {
     },
 };
 
-const Legend = ({ colorScale }) => (
+const ColorScaleLegend = ({ colorScale }) => (
     <div style={styles.legend}>
         {colorScale.range().map(value => {
             const [start, end] = colorScale.invertExtent(value);
@@ -42,8 +42,8 @@ const Legend = ({ colorScale }) => (
     </div>
 );
 
-Legend.propTypes = {
-    colorScale: PropTypes.object.isRequired,
+ColorScaleLegend.propTypes = {
+    colorScale: PropTypes.func.isRequired,
 };
 
-export default Legend;
+export default ColorScaleLegend;
