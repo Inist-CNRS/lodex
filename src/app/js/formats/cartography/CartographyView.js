@@ -12,6 +12,9 @@ import memoize from 'lodash.memoize';
 import PropTypes from 'prop-types';
 import { Tooltip, actions } from 'redux-tooltip';
 import get from 'lodash.get';
+import ZoomIn from 'material-ui/svg-icons/action/zoom-in';
+import ZoomOut from 'material-ui/svg-icons/action/zoom-out';
+import IconButton from 'material-ui/IconButton';
 
 import ColorScaleLegend from './ColorScaleLegend';
 
@@ -60,6 +63,15 @@ const styles = {
     legendItem: {
         flex: 1,
     },
+    zoom: {
+        display: 'flex',
+        flexDirection: 'column',
+        position: 'absolute',
+        right: 0,
+    },
+    subContainer: {
+        position: 'relative',
+    },
 };
 
 const projectionConfig = {
@@ -86,9 +98,32 @@ class CartographyView extends Component {
             ),
         });
     };
+
+    state = {
+        zoom: 1,
+        center: [0, 20],
+    };
+
     handleLeave = () => {
         this.props.hideTooltip();
     };
+
+    zoomIn = () => {
+        const { zoom, ...state } = this.state;
+        this.setState({
+            ...state,
+            zoom: zoom < 16 ? zoom * 2 : zoom,
+        });
+    };
+
+    zoomOut = () => {
+        const { zoom, ...state } = this.state;
+        this.setState({
+            ...state,
+            zoom: zoom > 1 ? zoom / 2 : zoom,
+        });
+    };
+
     render() {
         const {
             chartData,
@@ -101,6 +136,8 @@ class CartographyView extends Component {
             return null;
         }
 
+        const { zoom } = this.state;
+
         const color = scaleQuantize()
             .range(colorScheme)
             .domain([0, maxValue])
@@ -112,52 +149,60 @@ class CartographyView extends Component {
             .nice();
 
         return (
-            <div style={styles.container}>
+            <div style={styles.container} onClick={this.handleZoom}>
                 <ColorScaleLegend colorScale={color} />
-                <ComposableMap
-                    projectionConfig={projectionConfig}
-                    width={980}
-                    height={551}
-                    style={styles.composableMap}
-                >
-                    <ZoomableGroup disablePanning center={[0, 20]}>
-                        <Geographies disableOptimization geography={mapJson}>
-                            {(geographies, projection) =>
-                                geographies.map(
-                                    (geography, i) =>
-                                        geography.id !== 'ATA' && (
-                                            <Geography
-                                                key={`geography-${i}`}
-                                                onMouseMove={this.handleMove}
-                                                onMouseLeave={this.handleLeave}
-                                                cacheId={`geography-${i}`}
-                                                geography={geography}
-                                                projection={projection}
-                                                style={styles.geography({
-                                                    color:
-                                                        color(
-                                                            chartData[
-                                                                geography
-                                                                    .properties
-                                                                    .ISO_A3
-                                                            ],
-                                                        ) || defaultColor,
-                                                    hoverColor:
-                                                        hoverColor(
-                                                            chartData[
-                                                                geography
-                                                                    .properties
-                                                                    .ISO_A3
-                                                            ],
-                                                        ) || defaultColor,
-                                                })}
-                                            />
-                                        ),
-                                )
-                            }
-                        </Geographies>
-                    </ZoomableGroup>
-                </ComposableMap>
+                <div style={styles.subContainer}>
+                    <div style={styles.zoom}>
+                        <IconButton disabled={zoom >= 16} onClick={this.zoomIn}>
+                            <ZoomIn />
+                        </IconButton>
+                        <IconButton disabled={zoom <= 1} onClick={this.zoomOut}>
+                            <ZoomOut />
+                        </IconButton>
+                    </div>
+                    <ComposableMap
+                        projectionConfig={projectionConfig}
+                        width={980}
+                        height={551}
+                        style={styles.composableMap}
+                    >
+                        <ZoomableGroup center={[0, 20]} zoom={this.state.zoom}>
+                            <Geographies
+                                disableOptimization
+                                geography={mapJson}
+                            >
+                                {(geographies, projection) =>
+                                    geographies.map((geography, i) => (
+                                        <Geography
+                                            key={`geography-${i}`}
+                                            onMouseMove={this.handleMove}
+                                            onMouseLeave={this.handleLeave}
+                                            cacheId={`geography-${i}`}
+                                            geography={geography}
+                                            projection={projection}
+                                            style={styles.geography({
+                                                color:
+                                                    color(
+                                                        chartData[
+                                                            geography.properties
+                                                                .ISO_A3
+                                                        ],
+                                                    ) || defaultColor,
+                                                hoverColor:
+                                                    hoverColor(
+                                                        chartData[
+                                                            geography.properties
+                                                                .ISO_A3
+                                                        ],
+                                                    ) || defaultColor,
+                                            })}
+                                        />
+                                    ))
+                                }
+                            </Geographies>
+                        </ZoomableGroup>
+                    </ComposableMap>
+                </div>
                 <Tooltip />
             </div>
         );

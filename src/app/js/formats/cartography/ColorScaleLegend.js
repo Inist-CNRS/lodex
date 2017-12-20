@@ -11,7 +11,7 @@ const styles = {
     legend: {
         display: 'flex',
         width: '100%',
-        margin: '20px',
+        padding: '20px',
     },
     legendItem: {
         flex: 1,
