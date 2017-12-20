@@ -186,6 +186,9 @@ export default {
             resolve(__dirname, '../'),
             resolve(__dirname, '../../node_modules'),
         ],
+        alias: {
+            config: resolve(__dirname, './webpackConfig.js'),
+        },
     },
     resolveLoader: {
         modules: [resolve(__dirname, '../../node_modules')],
