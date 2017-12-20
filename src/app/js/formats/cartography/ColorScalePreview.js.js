@@ -18,9 +18,11 @@ const styles = {
 
 const ColorScalePreview = ({ colorScale }) => (
     <div style={styles.preview}>
-        {colorScale.range().map(value => {
-            return <div key={value} style={styles.previewColor(value)} />;
-        })}
+        {colorScale
+            .range()
+            .map(value => (
+                <div key={value} style={styles.previewColor(value)} />
+            ))}
     </div>
 );
 

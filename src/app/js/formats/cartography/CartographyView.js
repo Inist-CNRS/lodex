@@ -11,7 +11,6 @@ import { scaleQuantize } from 'd3-scale';
 import memoize from 'lodash.memoize';
 import PropTypes from 'prop-types';
 import { Tooltip, actions } from 'redux-tooltip';
-import get from 'lodash.get';
 import ZoomIn from 'material-ui/svg-icons/action/zoom-in';
 import ZoomOut from 'material-ui/svg-icons/action/zoom-out';
 import IconButton from 'material-ui/IconButton';
@@ -19,6 +18,7 @@ import compose from 'recompose/compose';
 
 import injectData from '../injectData';
 import ColorScaleLegend from './ColorScaleLegend';
+import { fromFields } from '../../sharedSelectors';
 
 const styles = {
     container: {
@@ -222,12 +222,19 @@ CartographyView.propTypes = {
 };
 
 const mapStateToProps = (state, { chartData, field }) => {
+    const {
+        colorScheme,
+        hoverColorScheme,
+        defaultColor,
+    } = fromFields.getFieldFormatArgs(state, field.name);
+
     if (!chartData) {
         return {
             chartData: {},
             maxValue: 0,
-            colorScheme: get(field, 'format.args.colorScheme'),
-            hoverColorScheme: get(field, 'format.args.hoverColorScheme'),
+            colorScheme,
+            hoverColorScheme,
+            defaultColor,
         };
     }
     return {
@@ -244,9 +251,9 @@ const mapStateToProps = (state, { chartData, field }) => {
             (acc, { value }) => (value > acc ? value : acc),
             0,
         ),
-        colorScheme: get(field, 'format.args.colorScheme'),
-        hoverColorScheme: get(field, 'format.args.hoverColorScheme'),
-        defaultColor: get(field, 'format.args.defaultColor'),
+        colorScheme,
+        hoverColorScheme,
+        defaultColor,
     };
 };
 
