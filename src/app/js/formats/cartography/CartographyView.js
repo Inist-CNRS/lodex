@@ -15,7 +15,9 @@ import get from 'lodash.get';
 import ZoomIn from 'material-ui/svg-icons/action/zoom-in';
 import ZoomOut from 'material-ui/svg-icons/action/zoom-out';
 import IconButton from 'material-ui/IconButton';
+import compose from 'recompose/compose';
 
+import injectData from '../injectData';
 import ColorScaleLegend from './ColorScaleLegend';
 
 const styles = {
@@ -253,4 +255,7 @@ const mapSispatchToProps = {
     hideTooltip: actions.hide,
 };
 
-export default connect(mapStateToProps, mapSispatchToProps)(CartographyView);
+export default compose(
+    injectData,
+    connect(mapStateToProps, mapSispatchToProps),
+)(CartographyView);

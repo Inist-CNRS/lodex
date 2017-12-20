@@ -10,11 +10,13 @@ import {
     PolarGrid,
 } from 'recharts';
 import get from 'lodash.get';
+import compose from 'recompose/compose';
 
 import {
     field as fieldPropTypes,
     polyglot as polyglotPropTypes,
 } from '../../../propTypes';
+import injectData from '../../injectData';
 
 const RadarChartView = ({ chartData, colorSet, field, p: polyglot }) => {
     const color = colorSet[0];
@@ -58,4 +60,4 @@ RadarChartView.defaultProps = {
     className: null,
 };
 
-export default translate(RadarChartView);
+export default compose(translate, injectData)(RadarChartView);

@@ -12,11 +12,13 @@ import {
     Tooltip,
 } from 'recharts';
 import get from 'lodash.get';
+import compose from 'recompose/compose';
 
 import {
     field as fieldPropTypes,
     polyglot as polyglotPropTypes,
 } from '../../../propTypes';
+import injectData from '../../injectData';
 
 const margin = {
     top: 15,
@@ -87,4 +89,4 @@ BarChartView.defaultProps = {
     className: null,
 };
 
-export default translate(BarChartView);
+export default compose(translate, injectData)(BarChartView);
