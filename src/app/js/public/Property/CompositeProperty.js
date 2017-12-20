@@ -23,8 +23,6 @@ const styles = {
 export const CompositePropertyComponent = ({
     compositeFields,
     field,
-    isSaving,
-    onSaveProperty,
     parents,
     resource,
 }) => {
@@ -39,9 +37,7 @@ export const CompositePropertyComponent = ({
                     className={`compose_${getFieldClassName(field)}`}
                     key={f.name}
                     field={f}
-                    isSaving={isSaving}
                     isSub
-                    onSaveProperty={onSaveProperty}
                     parents={parents}
                     resource={resource}
                     style={styles.property}
@@ -53,9 +49,7 @@ export const CompositePropertyComponent = ({
 
 CompositePropertyComponent.propTypes = {
     field: fieldPropTypes.isRequired,
-    isSaving: PropTypes.bool.isRequired,
     compositeFields: PropTypes.arrayOf(fieldPropTypes).isRequired,
-    onSaveProperty: PropTypes.func.isRequired,
     parents: PropTypes.arrayOf(PropTypes.string).isRequired,
     resource: PropTypes.shape({}).isRequired,
 };

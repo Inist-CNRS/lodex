@@ -10,6 +10,7 @@ const styles = {
     actions: {
         display: 'flex',
         justifyContent: 'flex-end',
+        alignItems: 'center',
     },
     label: {
         color: grey500,

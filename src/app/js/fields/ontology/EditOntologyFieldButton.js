@@ -20,9 +20,6 @@ const mapStateToProps = (state, { field, p }) => ({
     form: <EditOntologyFieldForm field={field} />,
     formName: FORM_NAME,
     icon: <SettingsIcon />,
-    style: {
-        marginLeft: 'auto',
-    },
 });
 
 const mapDispatchToProps = (dispatch, { field: { name } }) => ({

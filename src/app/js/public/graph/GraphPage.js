@@ -13,6 +13,8 @@ import AppliedFacetList from '../facet/AppliedFacetList';
 import { field as fieldPropTypes } from '../../propTypes';
 import ExportableComponent from '../../lib/components/ExportableComponent';
 import { preLoadChartData } from '../graph';
+import EditButton from '../../fields/editFieldValue/EditButton';
+import EditOntologyFieldButton from '../../fields/ontology/EditOntologyFieldButton';
 
 const styles = {
     container: {
@@ -33,6 +35,7 @@ const styles = {
     section: {
         margin: '20px 0',
     },
+    label: { display: 'flex', alignItems: 'center' },
 };
 
 const GraphPage = ({ graphField, resource, chartData }) => (
@@ -41,7 +44,21 @@ const GraphPage = ({ graphField, resource, chartData }) => (
             <GraphSummary selected={graphField ? graphField.name : ''} />
             {graphField && (
                 <Card style={styles.section}>
-                    <ExportableComponent label={graphField.label}>
+                    <ExportableComponent
+                        label={
+                            <span style={styles.label}>
+                                {graphField.label}
+                                <EditButton
+                                    field={graphField}
+                                    resource={resource}
+                                />
+                                <EditOntologyFieldButton
+                                    field={graphField}
+                                    resource={resource}
+                                />
+                            </span>
+                        }
+                    >
                         <Format
                             field={graphField}
                             resource={resource}

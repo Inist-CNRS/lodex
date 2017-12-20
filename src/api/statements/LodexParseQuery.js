@@ -9,25 +9,26 @@ export default function LodexParseQuery(data, feed) {
         maxValue,
         minValue,
         match,
-        orderBy = '_id',
-        sortDir = -1,
+        orderBy = '_id/asc',
         invertedFacets = [],
         ...facets
     } = data.query;
+
+    const [order, dir] = orderBy.split('/');
 
     feed.send({
         ...data,
         limit: maxSize,
         skip,
-        maxValue: typeof maxValue !== 'undefined' && Number(maxValue),
-        minValue: typeof minValue !== 'undefined' && Number(minValue),
+        maxValue: typeof maxValue !== 'undefined' ? Number(maxValue) : null,
+        minValue: typeof minValue !== 'undefined' ? Number(minValue) : null,
         query: {
             match,
             invertedFacets,
             facets,
         },
         sort: {
-            [orderBy]: parseInt(sortDir, 10),
+            [order]: dir === 'asc' ? 1 : -1,
         },
     });
 }

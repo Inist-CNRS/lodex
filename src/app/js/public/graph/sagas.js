@@ -1,11 +1,4 @@
-import {
-    fork,
-    call,
-    put,
-    select,
-    takeEvery,
-    throttle,
-} from 'redux-saga/effects';
+import { call, put, select, takeEvery, throttle } from 'redux-saga/effects';
 
 import {
     PRE_LOAD_CHART_DATA,
@@ -26,6 +19,8 @@ import {
 import { fromFields } from '../../sharedSelectors';
 import { TOGGLE_FACET_VALUE, CLEAR_FACET, INVERT_FACET } from '../facet';
 import { APPLY_FILTER } from '../dataset';
+import { CONFIGURE_FIELD_SUCCESS } from '../../fields';
+import { UPDATE_CHARACTERISTICS_SUCCESS } from '../characteristic';
 
 export function* handlePreLoadChartData({ payload: { field, value } }) {
     if (yield select(fromGraph.isChartDataLoaded, field.name)) {
@@ -89,21 +84,20 @@ export function* handleLoadChartDataRequest({ payload: { field } = {} }) {
 }
 
 export default function*() {
-    yield fork(function*() {
-        // see https://github.com/redux-saga/redux-saga/blob/master/docs/api/README.md#throttlems-pattern-saga-args
-        yield throttle(
-            500,
-            [
-                LOAD_CHART_DATA,
-                TOGGLE_FACET_VALUE,
-                CLEAR_FACET,
-                APPLY_FILTER,
-                INVERT_FACET,
-            ],
-            handleLoadChartDataRequest,
-        );
-    });
-    yield fork(function*() {
-        yield takeEvery(PRE_LOAD_CHART_DATA, handlePreLoadChartData);
-    });
+    // see https://github.com/redux-saga/redux-saga/blob/master/docs/api/README.md#throttlems-pattern-saga-args
+    yield throttle(
+        500,
+        [
+            LOAD_CHART_DATA,
+            TOGGLE_FACET_VALUE,
+            CLEAR_FACET,
+            APPLY_FILTER,
+            INVERT_FACET,
+            CONFIGURE_FIELD_SUCCESS,
+            UPDATE_CHARACTERISTICS_SUCCESS,
+        ],
+        handleLoadChartDataRequest,
+    );
+    yield takeEvery(LOAD_CHART_DATA, handleLoadChartDataRequest);
+    yield takeEvery(PRE_LOAD_CHART_DATA, handlePreLoadChartData);
 }

@@ -19,9 +19,7 @@ const styles = {
 
 const PropertyLinkedFieldsComponent = ({
     fieldName,
-    isSaving,
     linkedFields,
-    onSaveProperty,
     parents,
     resource,
 }) => {
@@ -38,11 +36,9 @@ const PropertyLinkedFieldsComponent = ({
                         `completes_${fieldName}`,
                     )}
                     field={linkedField}
-                    isSaving={isSaving}
                     isSub
                     resource={resource}
                     parents={parents}
-                    onSaveProperty={onSaveProperty}
                 />
             ))}
         </div>
@@ -51,7 +47,6 @@ const PropertyLinkedFieldsComponent = ({
 
 PropertyLinkedFieldsComponent.propTypes = {
     fieldName: PropTypes.string.isRequired,
-    isSaving: PropTypes.bool.isRequired,
     linkedFields: PropTypes.arrayOf(fieldPropTypes).isRequired,
     onSaveProperty: PropTypes.func.isRequired,
     parents: PropTypes.arrayOf(PropTypes.string).isRequired,

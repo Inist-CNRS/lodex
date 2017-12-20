@@ -45,8 +45,6 @@ const styles = {
         fontWeight: 'bold',
         fontSize: isSub === true ? 'initial' : '2rem',
         textDecoration: status === REJECTED ? 'line-through' : 'none',
-        display: 'flex',
-        alignItems: 'center',
     }),
     language: memoize(hide => ({
         marginRight: '1rem',
@@ -87,13 +85,11 @@ const styles = {
 const PropertyComponent = ({
     className,
     field,
-    isSaving,
     isSub,
     resource,
     fieldStatus,
     loggedIn,
     changeStatus,
-    onSaveProperty,
     style,
     parents,
 }) => {
@@ -132,12 +128,7 @@ const PropertyComponent = ({
                     >
                         {field.label}
                         <span style={styles.editButton(!loggedIn)}>
-                            <EditButton
-                                field={field}
-                                isSaving={isSaving}
-                                resource={resource}
-                                onSaveProperty={onSaveProperty}
-                            />
+                            <EditButton field={field} resource={resource} />
                             <EditOntologyFieldButton field={field} />
                         </span>
                     </span>
@@ -169,17 +160,13 @@ const PropertyComponent = ({
             </div>
             <CompositeProperty
                 field={field}
-                isSaving={isSaving}
                 resource={resource}
-                onSaveProperty={onSaveProperty}
                 parents={parents}
             />
 
             <PropertyLinkedFields
                 fieldName={field.name}
-                isSaving={isSaving}
                 resource={resource}
-                onSaveProperty={onSaveProperty}
                 parents={parents}
             />
             <ModerateButton
@@ -196,10 +183,8 @@ PropertyComponent.propTypes = {
     className: PropTypes.string,
     field: fieldPropTypes.isRequired,
     fieldStatus: PropTypes.oneOf(propositionStatus),
-    isSaving: PropTypes.bool.isRequired,
     isSub: PropTypes.bool,
     loggedIn: PropTypes.bool.isRequired,
-    onSaveProperty: PropTypes.func.isRequired,
     resource: PropTypes.shape({}).isRequired,
     parents: PropTypes.arrayOf(PropTypes.string).isRequired,
     style: PropTypes.object,
