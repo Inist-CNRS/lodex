@@ -32,6 +32,7 @@ const BarChartView = ({ colorSet, chartData, field, p: polyglot }) => {
     }
     const axisRoundValue = get(field, 'format.args.axisRoundValue');
     const scale = get(field, 'format.args.scale');
+    const max = Math.max(...chartData.map(({ value }) => value));
 
     return (
         <ResponsiveContainer width="100%" height={300}>
@@ -45,6 +46,7 @@ const BarChartView = ({ colorSet, chartData, field, p: polyglot }) => {
                     type="number"
                     allowDecimals={!axisRoundValue}
                     scale={scale}
+                    tickCount={max > 5 ? 5 : max + 1}
                     domain={scale === 'log' ? ['auto', 'auto'] : [0, 'auto']} // log scale won't work with a domain starting at 0 (`auto` detect the boudaries and ensure it is readable)
                     dataKey="value"
                 />
