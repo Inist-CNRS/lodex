@@ -3,12 +3,10 @@ import { createAction, handleActions } from 'redux-actions';
 export const LOAD_FACET_VALUES_SUCCESS = 'LOAD_FACET_VALUES_SUCCESS';
 export const FACET_VALUE_CHANGE = 'FACET_VALUE_CHANGE';
 export const FACET_VALUE_SORT = 'FACET_VALUE_SORT';
-export const INVERT_FACET = 'INVERT_FACET';
 
 export const loadFacetValuesSuccess = createAction(LOAD_FACET_VALUES_SUCCESS);
 export const changeFacetValue = createAction(FACET_VALUE_CHANGE);
 export const sortFacetValue = createAction(FACET_VALUE_SORT);
-export const invertFacet = createAction(INVERT_FACET);
 
 export const initialState = {
     values: [],
@@ -16,7 +14,6 @@ export const initialState = {
     currentPage: 0,
     perPage: 10,
     filter: '',
-    inverted: false,
     sort: {
         sortBy: 'count',
         sortDir: 'DESC',
@@ -54,10 +51,6 @@ export default handleActions(
                         ? 'ASC'
                         : 'DESC',
             },
-        }),
-        [INVERT_FACET]: (state, { payload: { inverted } }) => ({
-            ...state,
-            inverted,
         }),
     },
     initialState,
