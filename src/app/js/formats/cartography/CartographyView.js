@@ -8,23 +8,17 @@ import {
 import mapJson from 'react-simple-maps/topojson-maps/world-50m.json';
 import { connect } from 'react-redux';
 import { scaleQuantize } from 'd3-scale';
-import { schemeBlues, schemeOrRd } from 'd3-scale-chromatic';
 import { grey100 } from 'material-ui/styles/colors';
 import memoize from 'lodash.memoize';
 import PropTypes from 'prop-types';
 import { Tooltip, actions } from 'redux-tooltip';
+import get from 'lodash.get';
 
 import ColorScaleLegend from './ColorScaleLegend';
 
-const color = scaleQuantize()
-    .domain([0, 21])
-    .range(schemeOrRd[9])
-    .nice();
+const color = scaleQuantize().nice();
 
-const hoverColor = scaleQuantize()
-    .domain([0, 21])
-    .range(schemeBlues[9])
-    .nice();
+const hoverColor = scaleQuantize().nice();
 
 const styles = {
     container: {
@@ -101,8 +95,8 @@ class CartographyView extends Component {
         this.props.hideTooltip();
     };
     render() {
-        const { chartData, maxValue } = this.props;
-        color.domain([0, maxValue]);
+        const { chartData, maxValue, colorScheme = [] } = this.props;
+        color.range(colorScheme).domain([0, maxValue]);
         hoverColor.domain([0, maxValue]);
 
         return (
@@ -153,9 +147,10 @@ CartographyView.propTypes = {
     maxValue: PropTypes.number.isRequired,
     showTooltip: PropTypes.func.isRequired,
     hideTooltip: PropTypes.func.isRequired,
+    colorScheme: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
-const mapStateToProps = (state, { chartData }) => {
+const mapStateToProps = (state, { chartData, field }) => {
     if (!chartData) {
         return {
             chartData: {},
@@ -176,6 +171,7 @@ const mapStateToProps = (state, { chartData }) => {
             (acc, { value }) => (value > acc ? value : acc),
             0,
         ),
+        colorScheme: get(field, 'format.args.colorScheme'),
     };
 };
 

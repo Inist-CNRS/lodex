@@ -35,7 +35,6 @@ export class HomeComponent extends Component {
         hasPublishedDataset: PropTypes.bool.isRequired,
         navigateTo: PropTypes.func.isRequired,
         p: polyglotPropTypes.isRequired,
-        selectedTab: PropTypes.string.isRequired,
         sharingTitle: PropTypes.string,
     };
 

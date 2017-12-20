@@ -77,10 +77,10 @@ BarChartView.propTypes = {
     field: fieldPropTypes.isRequired,
     linkedResource: PropTypes.object,
     resource: PropTypes.object.isRequired,
-    chartData: PropTypes.array.isRequired,
+    chartData: PropTypes.array,
     colorSet: PropTypes.arrayOf(PropTypes.string),
     p: polyglotPropTypes,
-    axisRoundValue: PropTypes.bool.isRequired,
+    axisRoundValue: PropTypes.bool,
 };
 
 BarChartView.defaultProps = {

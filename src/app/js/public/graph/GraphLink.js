@@ -38,7 +38,6 @@ const GraphLink = ({ link, children }) => (
 
 GraphLink.propTypes = {
     link: PropTypes.string.isRequired,
-    label: PropTypes.string.isRequired,
     children: PropTypes.element.isRequired,
 };
 
