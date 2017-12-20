@@ -20,6 +20,9 @@ import injectData from '../injectData';
 import ColorScaleLegend from './ColorScaleLegend';
 import { fromFields } from '../../sharedSelectors';
 
+const maxZoom = 16;
+const minZoom = 1;
+
 const styles = {
     container: {
         width: '100%',
@@ -114,7 +117,7 @@ class CartographyView extends Component {
         const { zoom, ...state } = this.state;
         this.setState({
             ...state,
-            zoom: zoom < 16 ? zoom * 2 : zoom,
+            zoom: zoom < maxZoom ? zoom * 2 : zoom,
         });
     };
 
@@ -122,7 +125,7 @@ class CartographyView extends Component {
         const { zoom, ...state } = this.state;
         this.setState({
             ...state,
-            zoom: zoom > 1 ? zoom / 2 : zoom,
+            zoom: zoom > minZoom ? zoom / 2 : zoom,
         });
     };
 
@@ -155,10 +158,16 @@ class CartographyView extends Component {
                 <ColorScaleLegend colorScale={color} />
                 <div style={styles.subContainer}>
                     <div style={styles.zoom}>
-                        <IconButton disabled={zoom >= 16} onClick={this.zoomIn}>
+                        <IconButton
+                            disabled={zoom >= maxZoom}
+                            onClick={this.zoomIn}
+                        >
                             <ZoomIn />
                         </IconButton>
-                        <IconButton disabled={zoom <= 1} onClick={this.zoomOut}>
+                        <IconButton
+                            disabled={zoom <= minZoom}
+                            onClick={this.zoomOut}
+                        >
                             <ZoomOut />
                         </IconButton>
                     </div>
