@@ -8,7 +8,6 @@ import {
 import mapJson from 'react-simple-maps/topojson-maps/world-50m.json';
 import { connect } from 'react-redux';
 import { scaleQuantize } from 'd3-scale';
-import { grey100 } from 'material-ui/styles/colors';
 import memoize from 'lodash.memoize';
 import PropTypes from 'prop-types';
 import { Tooltip, actions } from 'redux-tooltip';
@@ -16,26 +15,22 @@ import get from 'lodash.get';
 
 import ColorScaleLegend from './ColorScaleLegend';
 
-const color = scaleQuantize().nice();
-
-const hoverColor = scaleQuantize().nice();
-
 const styles = {
     container: {
         width: '100%',
         maxWidth: 980,
         margin: 0,
     },
-    geography: memoize(({ value }) => ({
+    geography: memoize(({ color, hoverColor }) => ({
         default: {
-            fill: value === 0 ? grey100 : color(value),
+            fill: color,
             transition: 'fill 0.5s',
             stroke: '#607D8B',
             strokeWidth: 0.75,
             outline: 'none',
         },
         hover: {
-            fill: value === 0 ? grey100 : hoverColor(value),
+            fill: hoverColor,
             stroke: '#607D8B',
             strokeWidth: 0.75,
             outline: 'none',
@@ -100,12 +95,21 @@ class CartographyView extends Component {
             maxValue,
             colorScheme,
             hoverColorScheme,
+            defaultColor,
         } = this.props;
         if (!chartData || !colorScheme) {
             return null;
         }
-        color.range(colorScheme).domain([0, maxValue]);
-        hoverColor.range(hoverColorScheme).domain([0, maxValue]);
+
+        const color = scaleQuantize()
+            .range(colorScheme)
+            .domain([0, maxValue])
+            .nice();
+
+        const hoverColor = scaleQuantize()
+            .range(hoverColorScheme)
+            .domain([0, maxValue])
+            .nice();
 
         return (
             <div style={styles.container}>
@@ -130,12 +134,22 @@ class CartographyView extends Component {
                                                 geography={geography}
                                                 projection={projection}
                                                 style={styles.geography({
-                                                    value:
-                                                        chartData[
-                                                            geography.properties
-                                                                .ISO_A3
-                                                        ] || 0,
-                                                    maxValue,
+                                                    color:
+                                                        color(
+                                                            chartData[
+                                                                geography
+                                                                    .properties
+                                                                    .ISO_A3
+                                                            ],
+                                                        ) || defaultColor,
+                                                    hoverColor:
+                                                        hoverColor(
+                                                            chartData[
+                                                                geography
+                                                                    .properties
+                                                                    .ISO_A3
+                                                            ],
+                                                        ) || defaultColor,
                                                 })}
                                             />
                                         ),
@@ -157,6 +171,7 @@ CartographyView.propTypes = {
     hideTooltip: PropTypes.func.isRequired,
     colorScheme: PropTypes.arrayOf(PropTypes.string).isRequired,
     hoverColorScheme: PropTypes.arrayOf(PropTypes.string).isRequired,
+    defaultColor: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = (state, { chartData, field }) => {
@@ -184,6 +199,7 @@ const mapStateToProps = (state, { chartData, field }) => {
         ),
         colorScheme: get(field, 'format.args.colorScheme'),
         hoverColorScheme: get(field, 'format.args.hoverColorScheme'),
+        defaultColor: get(field, 'format.args.defaultColor'),
     };
 };
 

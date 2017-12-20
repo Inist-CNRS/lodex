@@ -22,6 +22,7 @@ import {
     schemeYlOrRd,
 } from 'd3-scale-chromatic';
 import { scaleQuantize } from 'd3-scale';
+import TextField from 'material-ui/TextField';
 
 import ColorScalePreview from './ColorScalePreview.js';
 
@@ -78,6 +79,7 @@ class CartographyAdmin extends Component {
     static propTypes = {
         colorScheme: PropTypes.arrayOf(PropTypes.string),
         hoverColorScheme: PropTypes.arrayOf(PropTypes.string),
+        defaultColor: PropTypes.string,
         onChange: PropTypes.func.isRequired,
         p: polyglotPropTypes.isRequired,
     };
@@ -85,12 +87,20 @@ class CartographyAdmin extends Component {
     static defaultProps = {
         colorScheme: schemeOrRd[9],
         hoverColorScheme: schemeBlues[9],
+        defaultColor: '#f5f5f5',
     };
     constructor(props) {
         super(props);
-        const { colorScheme, hoverColorScheme } = this.props;
-        this.state = { colorScheme, hoverColorScheme };
+        const { colorScheme, hoverColorScheme, defaultColor } = this.props;
+        this.state = { colorScheme, hoverColorScheme, defaultColor };
     }
+
+    setDefaultColor = (_, defaultColor) => {
+        const { params, ...state } = this.state;
+        const newState = { ...state, defaultColor };
+        this.setState(newState);
+        this.props.onChange(newState);
+    };
 
     setColorScheme = (_, __, colorScheme) => {
         const newState = { ...this.state, colorScheme: colorScheme.split(',') };
@@ -109,10 +119,17 @@ class CartographyAdmin extends Component {
 
     render() {
         const { p: polyglot } = this.props;
-        const { colorScheme, hoverColorScheme } = this.state;
+        const { colorScheme, hoverColorScheme, defaultColor } = this.state;
 
         return (
             <div style={styles.container}>
+                <TextField
+                    floatingLabelText={polyglot.t('default_color')}
+                    onChange={this.setDefaultColor}
+                    style={styles.input}
+                    value={defaultColor}
+                />
+                <div style={styles.previewColor(defaultColor)} />
                 <SelectField
                     floatingLabelText={polyglot.t('color_scheme')}
                     onChange={this.setColorScheme}
