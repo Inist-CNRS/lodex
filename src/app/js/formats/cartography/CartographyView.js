@@ -183,32 +183,31 @@ class CartographyView extends Component {
                                 geography={mapJson}
                             >
                                 {(geographies, projection) =>
-                                    geographies.map((geography, i) => (
-                                        <Geography
-                                            key={`geography-${i}`}
-                                            onMouseMove={this.handleMove}
-                                            onMouseLeave={this.handleLeave}
-                                            cacheId={`geography-${i}`}
-                                            geography={geography}
-                                            projection={projection}
-                                            style={styles.geography({
-                                                color:
-                                                    color(
-                                                        chartData[
-                                                            geography.properties
-                                                                .ISO_A3
-                                                        ],
-                                                    ) || defaultColor,
-                                                hoverColor:
-                                                    hoverColor(
-                                                        chartData[
-                                                            geography.properties
-                                                                .ISO_A3
-                                                        ],
-                                                    ) || defaultColor,
-                                            })}
-                                        />
-                                    ))
+                                    geographies.map((geography, i) => {
+                                        const value =
+                                            chartData[
+                                                geography.properties.ISO_A3
+                                            ];
+
+                                        return (
+                                            <Geography
+                                                key={`geography-${i}`}
+                                                onMouseMove={this.handleMove}
+                                                onMouseLeave={this.handleLeave}
+                                                cacheId={`geography-${i}`}
+                                                geography={geography}
+                                                projection={projection}
+                                                style={styles.geography({
+                                                    color:
+                                                        color(value) ||
+                                                        defaultColor,
+                                                    hoverColor:
+                                                        hoverColor(value) ||
+                                                        defaultColor,
+                                                })}
+                                            />
+                                        );
+                                    })
                                 }
                             </Geographies>
                         </ZoomableGroup>
