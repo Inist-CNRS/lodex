@@ -1,3 +1,5 @@
+import config from 'config';
+
 export const URI_FIELD_NAME = 'uri';
 
 export const getResourceUri = resource => {
@@ -23,7 +25,7 @@ export const getHost = () => {
         return `${window.location.protocol}//${window.location.host}`;
     }
 
-    return process.env.EZMASTER_PUBLIC_URL;
+    return config.host;
 };
 
 export const getFullResourceUri = (resource, defaultBaseUri) => {
