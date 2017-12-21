@@ -7,8 +7,8 @@ import injectData from '../../injectData';
 
 const PieChartView = ({ chartData, colorSet }) => {
     return (
-        <ResponsiveContainer className="lodex-chart" width="100%">
-            <PieChart width="100%" height="100%">
+        <ResponsiveContainer className="lodex-chart" width="100%" height={300}>
+            <PieChart>
                 <Legend
                     verticalAlign="middle"
                     layout="vertical"
@@ -39,10 +39,6 @@ PieChartView.propTypes = {
     resource: PropTypes.object.isRequired,
     chartData: PropTypes.array.isRequired,
     colorSet: PropTypes.arrayOf(PropTypes.string),
-};
-
-PieChartView.defaultProps = {
-    className: null,
 };
 
 export default injectData(PieChartView);
