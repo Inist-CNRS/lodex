@@ -37,7 +37,7 @@ const BarChartView = ({ colorSet, chartData, field, p: polyglot }) => {
     const max = Math.max(...chartData.map(({ value }) => value));
 
     return (
-        <ResponsiveContainer width="100%" height={300}>
+        <ResponsiveContainer width="100%" height={chartData.length * 75}>
             <BarChart
                 data={chartData}
                 layout="vertical"
