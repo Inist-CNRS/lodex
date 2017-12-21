@@ -3,13 +3,12 @@ import PropTypes from 'prop-types';
 import { ResponsiveContainer, PieChart, Pie, Cell, Legend } from 'recharts';
 
 import { field as fieldPropTypes } from '../../../propTypes';
-import CustomizedLabel from './CustomizedLabel';
 import injectData from '../../injectData';
 
 const PieChartView = ({ chartData, colorSet }) => {
     return (
-        <ResponsiveContainer className="lodex-chart" width="100%" height={300}>
-            <PieChart>
+        <ResponsiveContainer className="lodex-chart" width="100%">
+            <PieChart width="100%" height="100%">
                 <Legend
                     verticalAlign="middle"
                     layout="vertical"
@@ -21,7 +20,7 @@ const PieChartView = ({ chartData, colorSet }) => {
                     fill="#8884d8"
                     outerRadius="63%"
                     labelLine
-                    label={CustomizedLabel}
+                    label
                 >
                     {chartData.map((entry, index) => (
                         <Cell
