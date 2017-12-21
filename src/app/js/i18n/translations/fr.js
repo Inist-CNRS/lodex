@@ -327,7 +327,7 @@ export default {
     filter_value: 'filter %{field}',
     exclude: 'exclude',
     count: 'count',
-    no_data: 'no data',
+    no_chart_data: 'no data to visualize',
     excluding: 'excluding',
     axis_round_value: 'force round value in axis',
     scale: 'scale',

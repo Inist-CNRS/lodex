@@ -13,7 +13,7 @@ import injectData from '../../injectData';
 
 const PieChartView = ({ chartData, colorSet, p: polyglot }) => {
     if (!chartData) {
-        return <p>{polyglot.t('no_data')}</p>;
+        return <p>{polyglot.t('no_chart_data')}</p>;
     }
     return (
         <ResponsiveContainer className="lodex-chart" width="100%" height={300}>

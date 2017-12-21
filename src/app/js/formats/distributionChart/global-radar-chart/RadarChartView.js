@@ -23,7 +23,7 @@ const RadarChartView = ({ chartData, colorSet, field, p: polyglot }) => {
     const axisRoundValue = get(field, 'format.args.axisRoundValue');
     const scale = get(field, 'format.args.scale');
     if (!chartData) {
-        return <p>{polyglot.t('no_data')}</p>;
+        return <p>{polyglot.t('no_chart_data')}</p>;
     }
     const max = Math.max(...chartData.map(({ value }) => value));
     return (

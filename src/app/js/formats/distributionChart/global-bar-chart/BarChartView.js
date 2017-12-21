@@ -30,7 +30,7 @@ const padding = { top: 3, bottom: 3 };
 
 const BarChartView = ({ colorSet, chartData, field, p: polyglot }) => {
     if (!chartData) {
-        return <p>{polyglot.t('no_data')}</p>;
+        return <p>{polyglot.t('no_chart_data')}</p>;
     }
     const axisRoundValue = get(field, 'format.args.axisRoundValue');
     const scale = get(field, 'format.args.scale');
