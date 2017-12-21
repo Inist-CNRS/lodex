@@ -328,6 +328,7 @@ export default {
     exclude: 'exclude',
     count: 'count',
     no_chart_data: 'no data to visualize',
+    chart_error: 'Error while trying to retrieve chart data',
     excluding: 'excluding',
     axis_round_value: 'force round value in axis',
     scale: 'scale',
