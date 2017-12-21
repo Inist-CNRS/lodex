@@ -1,5 +1,5 @@
 import Component from './BarChartView';
-import AdminComponent from '../AdminComponent';
+import AdminComponent from './AdminComponent';
 import DefaultFormat from '../../DefaultFormat';
 
 export default {
