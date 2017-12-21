@@ -58,7 +58,6 @@ const BarChartView = ({ colorSet, chartData, field, p: polyglot }) => {
                     interval={0}
                     padding={padding}
                     width={120}
-                    tickFormatter={v => v.toLowerCase()}
                 />
                 <Tooltip />
                 <CartesianGrid strokeDasharray="3 3" />
