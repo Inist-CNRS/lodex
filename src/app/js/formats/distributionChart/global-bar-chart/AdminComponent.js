@@ -34,6 +34,7 @@ class ChartEdition extends Component {
         }),
         colors: PropTypes.string,
         axisRoundValue: PropTypes.bool,
+        rightMargin: PropTypes.number,
         scale: PropTypes.oneOf(['log', 'linear']),
         direction: PropTypes.oneOf(['horizontal', 'vertical']),
         onChange: PropTypes.func.isRequired,
@@ -49,11 +50,26 @@ class ChartEdition extends Component {
         axisRoundValue: true,
         direction: 'horizontal',
         scale: 'linear',
+        rightMargin: 120,
     };
     constructor(props) {
         super(props);
-        const { params, colors, axisRoundValue, scale, direction } = this.props;
-        this.state = { params, colors, axisRoundValue, scale, direction };
+        const {
+            params,
+            colors,
+            axisRoundValue,
+            scale,
+            direction,
+            rightMargin,
+        } = this.props;
+        this.state = {
+            params,
+            colors,
+            axisRoundValue,
+            scale,
+            direction,
+            rightMargin,
+        };
     }
 
     setMaxSize = (_, maxSize) => {
@@ -109,6 +125,12 @@ class ChartEdition extends Component {
         this.props.onChange(newState);
     };
 
+    setRightMargin = (_, rightMargin) => {
+        const newState = { ...this.state, rightMargin };
+        this.setState(newState);
+        this.props.onChange(newState);
+    };
+
     render() {
         const { p: polyglot } = this.props;
         const {
@@ -117,6 +139,7 @@ class ChartEdition extends Component {
             axisRoundValue,
             scale,
             direction,
+            rightMargin,
         } = this.state;
         return (
             <div style={styles.container}>
@@ -200,6 +223,13 @@ class ChartEdition extends Component {
                         primaryText={polyglot.t('vertical')}
                     />
                 </SelectField>
+                <TextField
+                    type="number"
+                    floatingLabelText={polyglot.t('right_margin')}
+                    onChange={this.setRightMargin}
+                    style={styles.input2}
+                    value={rightMargin}
+                />
             </div>
         );
     }

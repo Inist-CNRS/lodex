@@ -27,6 +27,7 @@ const BarChartView = ({ colorSet, chartData, field }) => {
     const axisRoundValue = get(field, 'format.args.axisRoundValue');
     const scale = get(field, 'format.args.scale');
     const direction = get(field, 'format.args.direction', 'horizontal');
+    const rightMargin = get(field, 'format.args.rightMargin', 120);
     const max = Math.max(...chartData.map(({ value }) => value));
 
     const valueAxisProps = {
@@ -43,7 +44,6 @@ const BarChartView = ({ colorSet, chartData, field }) => {
         dataKey: 'name',
         interval: 0,
         padding: padding,
-        width: 120,
     };
 
     return (
@@ -63,6 +63,7 @@ const BarChartView = ({ colorSet, chartData, field }) => {
                     {...(direction === 'horizontal'
                         ? categoryAxisProps
                         : valueAxisProps)}
+                    width={parseInt(rightMargin)}
                 />
                 <Tooltip />
                 <CartesianGrid strokeDasharray="3 3" />
