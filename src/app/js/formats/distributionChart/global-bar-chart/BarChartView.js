@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import translate from 'redux-polyglot/translate';
 import {
     ResponsiveContainer,
     BarChart,
@@ -12,12 +11,8 @@ import {
     Tooltip,
 } from 'recharts';
 import get from 'lodash.get';
-import compose from 'recompose/compose';
 
-import {
-    field as fieldPropTypes,
-    polyglot as polyglotPropTypes,
-} from '../../../propTypes';
+import { field as fieldPropTypes } from '../../../propTypes';
 import injectData from '../../injectData';
 
 const margin = {
@@ -28,16 +23,13 @@ const margin = {
 };
 const padding = { top: 3, bottom: 3 };
 
-const BarChartView = ({ colorSet, chartData, field, p: polyglot }) => {
-    if (!chartData) {
-        return <p>{polyglot.t('no_data')}</p>;
-    }
+const BarChartView = ({ colorSet, chartData, field }) => {
     const axisRoundValue = get(field, 'format.args.axisRoundValue');
     const scale = get(field, 'format.args.scale');
     const max = Math.max(...chartData.map(({ value }) => value));
 
     return (
-        <ResponsiveContainer width="100%" height={300}>
+        <ResponsiveContainer width="100%" height={chartData.length * 75}>
             <BarChart
                 data={chartData}
                 layout="vertical"
@@ -58,7 +50,6 @@ const BarChartView = ({ colorSet, chartData, field, p: polyglot }) => {
                     interval={0}
                     padding={padding}
                     width={120}
-                    tickFormatter={v => v.toLowerCase()}
                 />
                 <Tooltip />
                 <CartesianGrid strokeDasharray="3 3" />
@@ -79,9 +70,8 @@ BarChartView.propTypes = {
     field: fieldPropTypes.isRequired,
     linkedResource: PropTypes.object,
     resource: PropTypes.object.isRequired,
-    chartData: PropTypes.array,
+    chartData: PropTypes.array.isRequired,
     colorSet: PropTypes.arrayOf(PropTypes.string),
-    p: polyglotPropTypes,
     axisRoundValue: PropTypes.bool,
 };
 
@@ -89,4 +79,4 @@ BarChartView.defaultProps = {
     className: null,
 };
 
-export default compose(translate, injectData)(BarChartView);
+export default injectData(BarChartView);

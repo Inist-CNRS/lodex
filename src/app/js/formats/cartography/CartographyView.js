@@ -137,7 +137,7 @@ class CartographyView extends Component {
             hoverColorScheme,
             defaultColor,
         } = this.props;
-        if (!chartData || !colorScheme) {
+        if (!colorScheme) {
             return null;
         }
 

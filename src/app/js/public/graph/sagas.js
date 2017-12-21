@@ -61,7 +61,7 @@ export function* handleLoadChartDataRequest({ payload: { field } = {} }) {
     });
 
     if (error) {
-        yield put(loadChartDataError(error));
+        yield put(loadChartDataError({ name, error }));
         return;
     }
     if (response.data) {
@@ -80,7 +80,7 @@ export function* handleLoadChartDataRequest({ payload: { field } = {} }) {
         yield put(loadChartDataSuccess({ name, data }));
         return;
     }
-    yield put(loadChartDataSuccess({ name, data: null }));
+    yield put(loadChartDataSuccess({ name, data: 'no result' }));
 }
 
 export default function*() {
