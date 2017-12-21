@@ -30,8 +30,6 @@ export function* handlePreLoadChartData({ payload: { field, value } }) {
     yield put(loadChartData({ field, value }));
 }
 
-const valueMoreThan = level => item => item.value > level;
-
 export function* handleLoadChartDataRequest({ payload: { field } = {} }) {
     const name =
         (field && field.name) || (yield select(fromRouting.getGraphName));
@@ -65,10 +63,7 @@ export function* handleLoadChartDataRequest({ payload: { field } = {} }) {
         return;
     }
     if (response.data) {
-        const data = response.data
-            .filter(valueMoreThan(0))
-            .map(item => ({ name: item._id, value: item.value }));
-        yield put(loadChartDataSuccess({ name, data }));
+        yield put(loadChartDataSuccess({ name, data: response.data }));
         return;
     }
     if (response.aggregations) {
