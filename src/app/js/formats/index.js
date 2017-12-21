@@ -17,6 +17,7 @@ import title from './title';
 import paragraph from './paragraph';
 import sentence from './sentence';
 import resource from './lodex-resource';
+import cartography from './cartography';
 import DefaultFormat from './DefaultFormat';
 
 const components = {
@@ -39,6 +40,7 @@ const components = {
     sentence,
     resource,
     resourcesGrid,
+    cartography,
 };
 
 export const FORMATS = Object.keys(components).sort();

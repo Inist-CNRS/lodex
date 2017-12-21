@@ -12,11 +12,13 @@ import {
     Tooltip,
 } from 'recharts';
 import get from 'lodash.get';
+import compose from 'recompose/compose';
 
 import {
     field as fieldPropTypes,
     polyglot as polyglotPropTypes,
 } from '../../../propTypes';
+import injectData from '../../injectData';
 
 const margin = {
     top: 15,
@@ -77,14 +79,14 @@ BarChartView.propTypes = {
     field: fieldPropTypes.isRequired,
     linkedResource: PropTypes.object,
     resource: PropTypes.object.isRequired,
-    chartData: PropTypes.array.isRequired,
+    chartData: PropTypes.array,
     colorSet: PropTypes.arrayOf(PropTypes.string),
     p: polyglotPropTypes,
-    axisRoundValue: PropTypes.bool.isRequired,
+    axisRoundValue: PropTypes.bool,
 };
 
 BarChartView.defaultProps = {
     className: null,
 };
 
-export default translate(BarChartView);
+export default compose(translate, injectData)(BarChartView);

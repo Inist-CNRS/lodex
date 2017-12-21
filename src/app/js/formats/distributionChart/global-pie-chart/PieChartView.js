@@ -2,12 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
 import { ResponsiveContainer, PieChart, Pie, Cell, Legend } from 'recharts';
+import compose from 'recompose/compose';
 
 import {
     field as fieldPropTypes,
     polyglot as polyglotPropTypes,
 } from '../../../propTypes';
 import CustomizedLabel from './CustomizedLabel';
+import injectData from '../../injectData';
 
 const PieChartView = ({ chartData, colorSet, p: polyglot }) => {
     if (!chartData) {
@@ -53,4 +55,4 @@ PieChartView.defaultProps = {
     className: null,
 };
 
-export default translate(PieChartView);
+export default compose(translate, injectData)(PieChartView);

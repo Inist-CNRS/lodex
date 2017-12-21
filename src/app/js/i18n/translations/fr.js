@@ -334,4 +334,11 @@ export default {
     linear: 'linear',
     log: 'logarithmic',
     home: 'home',
+    color_scheme: 'color scheme',
+    hover_color_scheme: 'hover color scheme',
+    default_color: 'default color',
+    cartography: 'cartography',
+    emphasedNumber: 'emphasedNumber',
+    resourcesGrid: 'resourcesGrid',
+    trelloTimeline: 'trelloTimeline',
 };

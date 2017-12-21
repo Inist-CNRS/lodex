@@ -1,72 +1,88 @@
 {
-    "username": "user",
-    "password": "secret",
-    "loader": {
-        "CSV": {
-            "quote": "\"",
-            "delimiter": ";"
-        }
-    },
-    "perPage": 10,
-    "pluginsURL" : "https://raw.githubusercontent.com/Inist-CNRS/lodex-extented/master/",
-    "routines": [
-        "hello-world",
-        "all-fields",
-        "all-resources",
-        "syndication",
-        "all-documents",
-        "count-by-fields",
-        "count-all",
-        "distinct-by"
-    ],
-    "exporters": [
-        "nquads",
-        "extendednquads",
-        "extendednquadscompressed",
-        "csv",
-        "tsv",
-        "turtle",
-        "atom",
-        "jsonld",
-        "jsonldcompacted",
-        "widget"
-    ],
-    "languages": [
-        { "code": "fr", "label": "Français" },
-        { "code": "en", "label": "English" }
-    ],
-    "topFieldsCount": 2,
-    "schemeForDatasetLink": "http://www.w3.org/2004/02/skos/core#inScheme",
-    "datasetClass": "http://test.fr/datasetClass",
-    "exportDataset": "true",
-    "collectionClass": "",
-    "prefixes":  {
-        "bibo": "http://purl.org/ontology/bibo/",
-        "dcdoc": "http://dublincore.org/documents/",
-        "dcmitype": "http://purl.org/dc/dcmitype/",
-        "dcterms": "http://purl.org/dc/terms/",
-        "foaf": "http://xmlns.com/foaf/0.1/",
-        "geo": "http://www.w3.org/2003/01/geo/wgs84_pos#",
-        "gn": "http://www.geonames.org/ontology/ontology_v3.1.rdf/",
-        "istex": "https://data.istex.fr/ontology/istex#",
-        "owl": "http://www.w3.org/2002/07/owl#",
-        "prov": "http://www.w3.org/ns/prov#",
-        "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
-        "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
-        "schema": "http://schema.org/",
-        "skos": "http://www.w3.org/2004/02/skos/core#",
-        "time": "http://www.w3.org/TR/owl-time/",
-        "xfoaf": "http://www.foafrealm.org/xfoaf/0.1/",
-        "xml": "http://www.w3.org/XML/1998/namespace",
-        "xsd": "http://www.w3.org/2001/XMLSchema#"
-    },
-    "istexQuery" : {
-       "labels": "",
-       "linked": "categories.inist",
-       "context": {
-          "categories.inist": "istex:subjectInist",
-          "doi": "bibo:doi",
-          "fulltext[0].uri": "istex:accessURL"
-       }
+  "username": "user",
+  "password": "secret",
+  "loader": {
+    "CSV": {
+      "quote": "\"",
+      "delimiter": ";"
     }
+  },
+  "perPage": 10,
+  "pluginsURL" : "https://raw.githubusercontent.com/Inist-CNRS/lodex-extented/master/",
+  "routinesRepository-r": "https://raw.githubusercontent.com/Inist-CNRS/lodex-extented/master/routines/",
+  "routinesRepository": "http://lodex-routines-1.lodex-dev.inist.fr/",
+  "routines": [
+    "hello-world",
+    "all-fields",
+    "all-resources",
+    "all-documents",
+    "syndication",
+    "count-by-fields",
+    "count-all",
+    "distinct-by",
+    "pairing-with",
+    "graph-by",
+    "distinct-ISO3166-1-alpha3-from",
+    "distinct-ISO3166-1-alpha2-from"
+  ],
+  "exporters": [
+    "nquads",
+    "extendednquads",
+    "extendednquadscompressed",
+    "csv",
+    "tsv",
+    "turtle",
+    "atom",
+    "jsonld",
+    "jsonldcompacted",
+    "widget"
+  ],
+  "languages": [
+    {
+      "code": "fr",
+      "label": "Français"
+    },
+    {
+      "code": "en",
+      "label": "English"
+    }
+  ],
+  "topFieldsCount": 2,
+  "schemeForDatasetLink": "http://www.w3.org/2004/02/skos/core#inScheme",
+  "datasetClass": "http://test.fr/datasetClass",
+  "exportDataset": "true",
+  "collectionClass": "",
+  "prefixes": {
+    "bibo": "http://purl.org/ontology/bibo/",
+    "dcdoc": "http://dublincore.org/documents/",
+    "dcmitype": "http://purl.org/dc/dcmitype/",
+    "dcterms": "http://purl.org/dc/terms/",
+    "foaf": "http://xmlns.com/foaf/0.1/",
+    "geo": "http://www.w3.org/2003/01/geo/wgs84_pos#",
+    "gn": "http://www.geonames.org/ontology/ontology_v3.1.rdf/",
+    "istex": "https://data.istex.fr/ontology/istex#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "schema": "http://schema.org/",
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "time": "http://www.w3.org/TR/owl-time/",
+    "xfoaf": "http://www.foafrealm.org/xfoaf/0.1/",
+    "xml": "http://www.w3.org/XML/1998/namespace",
+    "xsd": "http://www.w3.org/2001/XMLSchema#"
+  },
+  "istexQuery": {
+    "labels": "",
+    "linked": "host.genre.raw",
+    "context": {
+      "categories.inist": "istex:subjectInist",
+      "host.genre.raw": "istex:publicationType",
+      "link": "dcterms:ispartOf",
+      "doi": "bibo:doi",
+      "fulltext[0].uri": "istex:accessURL",
+      "labels": "",
+      "linked": "categories.inist"
+    }
+  }
 }

@@ -1,5 +1,6 @@
 import omit from 'lodash.omit';
 import { createSelector } from 'reselect';
+import get from 'lodash.get';
 
 import {
     getTransformersMetas,
@@ -321,6 +322,10 @@ const isFieldConfigured = createSelector(
 export const getNewCharacteristicFormData = state =>
     state.form[NEW_CHARACTERISTIC_FORM_NAME].values;
 
+const getFieldFormatArgs = createSelector(getFieldByName, field =>
+    get(field, 'format.args', {}),
+);
+
 export default {
     areAllFieldsValid,
     getCollectionFields,
@@ -369,4 +374,5 @@ export default {
     isFieldConfigured,
     getOverviewTitleCol,
     getOverviewSubTitleCol,
+    getFieldFormatArgs,
 };
