@@ -15,9 +15,9 @@ export const defaultState = {};
 
 export default handleActions(
     {
-        [LOAD_CHART_DATA]: (state, { payload: { name } }) => ({
+        [LOAD_CHART_DATA]: (state, { payload: { field } }) => ({
             ...state,
-            [name]: undefined,
+            [field.name]: 'loading',
         }),
         [LOAD_CHART_DATA_SUCCESS]: (state, { payload: { name, data } }) => ({
             ...state,
@@ -31,7 +31,8 @@ export default handleActions(
     defaultState,
 );
 
-const isChartDataLoaded = (state, name) => state[name] && state[name].data;
+const isChartDataLoaded = (state, name) =>
+    !!(state[name] && state[name] !== 'loading');
 
 const getChartData = (state, name) => get(state, [name, 'data']);
 const getChartError = (state, name) => get(state, [name, 'error']);

@@ -37,6 +37,14 @@ export default FormatView => {
 
             preLoadChartData({ field, value: resource[field.name] });
         }
+        componentDidUpdate() {
+            const { field, resource, preLoadChartData } = this.props;
+            if (!field) {
+                return;
+            }
+
+            preLoadChartData({ field, value: resource[field.name] });
+        }
         render() {
             const {
                 preLoadChartData,
