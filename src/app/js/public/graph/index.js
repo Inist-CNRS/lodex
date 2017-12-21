@@ -31,8 +31,7 @@ export default handleActions(
     defaultState,
 );
 
-const isChartDataLoaded = (state, name) =>
-    state[name] && state[name] !== 'loading';
+const isChartDataLoaded = (state, name) => state[name] && state[name].data;
 
 const getChartData = (state, name) => get(state, [name, 'data']);
 const getChartError = (state, name) => get(state, [name, 'error']);
