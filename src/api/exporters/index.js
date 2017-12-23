@@ -8,6 +8,7 @@ import jsonldcompacted from './exportJsonldCompacted';
 import widget from './exportWidgetResource';
 import extendednquads from './exportExtendedNquads';
 import extendednquadscompressed from './exportExtendedNquadsCompressed';
+import sitemap from './exportSitemap';
 
 export default {
     atom,
@@ -17,6 +18,7 @@ export default {
     jsonld,
     jsonldcompacted,
     nquads,
+    sitemap,
     tsv,
     turtle,
     widget,
