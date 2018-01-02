@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { StyleSheet, css } from 'aphrodite';
 import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import { scaleQuantize } from 'd3-scale';
+import get from 'lodash.get';
+import { Tooltip, actions } from 'redux-tooltip';
 
 import injectData from '../injectData';
 import { fromFields } from '../../sharedSelectors';
@@ -92,59 +94,94 @@ const getColorStyle = color => ({
     backgroundColor: color,
 });
 
-const HeatMapView = ({ xAxis, yAxis, dictionary, maxValue, colorScheme }) => {
-    const getColor = scaleQuantize()
-        .range(colorScheme)
-        .domain([0, maxValue])
-        .nice();
+class HeatMapView extends Component {
+    handleMove = event => {
+        const x = event.clientX;
+        const y = event.clientY + window.pageYOffset;
+        const value = Number(get(event, ['target', 'dataset', 'value'], null));
 
-    return (
-        <div>
-            <table className={css(styles.table)}>
-                <thead className={css(styles.thead)}>
-                    <tr className={css(styles.tr)}>
-                        <th className={css(styles.th)} />
-                        {yAxis.map(yKey => (
-                            <th className={css(styles.th)} key={yKey}>
-                                {yKey}
-                            </th>
-                        ))}
-                    </tr>
-                </thead>
-                <tbody className={css(styles.tbody)}>
-                    {xAxis.map(xKey => (
-                        <tr key={xKey} className={css(styles.tr)}>
-                            <td className={css(styles.td)}>
-                                <div className={css(styles.rotate)}>
-                                    <span className={css(styles.rotateSpan)}>
-                                        {xKey}
-                                    </span>
-                                </div>
-                            </td>
+        if (!value) {
+            this.props.hideTooltip();
+            return;
+        }
+
+        this.props.showTooltip({
+            origin: { x, y },
+            content: <p>{value}</p>,
+        });
+    };
+
+    handleLeave = () => {
+        this.props.hideTooltip();
+    };
+    render() {
+        const { xAxis, yAxis, dictionary, maxValue, colorScheme } = this.props;
+        const getColor = scaleQuantize()
+            .range(colorScheme)
+            .domain([0, maxValue])
+            .nice();
+
+        return (
+            <div>
+                <table
+                    onMouseMove={this.handleMove}
+                    onMouseLeave={this.handleLeave}
+                    className={css(styles.table)}
+                >
+                    <thead className={css(styles.thead)}>
+                        <tr className={css(styles.tr)}>
+                            <th className={css(styles.th)} />
                             {yAxis.map(yKey => (
-                                <td
-                                    className={css(styles.td)}
-                                    key={yKey}
-                                    style={getColorStyle(
-                                        getColor(dictionary[xKey][yKey] || 0),
-                                    )}
-                                />
+                                <th className={css(styles.th)} key={yKey}>
+                                    {yKey}
+                                </th>
                             ))}
                         </tr>
-                    ))}
-                </tbody>
-            </table>
-            <ColorScaleLegend colorScale={getColor} />
-        </div>
-    );
-};
+                    </thead>
+                    <tbody className={css(styles.tbody)}>
+                        {xAxis.map(xKey => (
+                            <tr key={xKey} className={css(styles.tr)}>
+                                <td className={css(styles.td)}>
+                                    <div className={css(styles.rotate)}>
+                                        <span
+                                            className={css(styles.rotateSpan)}
+                                        >
+                                            {xKey}
+                                        </span>
+                                    </div>
+                                </td>
+                                {yAxis.map(yKey => (
+                                    <td
+                                        className={css(styles.td)}
+                                        key={yKey}
+                                        data-value={dictionary[xKey][yKey] || 0}
+                                        style={getColorStyle(
+                                            getColor(
+                                                dictionary[xKey][yKey] || 0,
+                                            ),
+                                        )}
+                                    />
+                                ))}
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+                <ColorScaleLegend colorScale={getColor} />
+                <Tooltip />
+            </div>
+        );
+    }
+}
 
 HeatMapView.propTypes = {
     xAxis: PropTypes.arrayOf(PropTypes.string).isRequired,
     yAxis: PropTypes.arrayOf(PropTypes.string).isRequired,
-    dictionary: PropTypes.objectOf(PropTypes.number).isRequired,
+    dictionary: PropTypes.objectOf(PropTypes.objectOf(PropTypes.number))
+        .isRequired,
     maxValue: PropTypes.number.isRequired,
     colorScheme: PropTypes.arrayOf(PropTypes.string).isRequired,
+    showTooltip: PropTypes.func.isRequired,
+    hideTooltip: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state, { chartData, field }) => {
@@ -176,4 +213,12 @@ const mapStateToProps = (state, { chartData, field }) => {
     };
 };
 
-export default compose(injectData, connect(mapStateToProps))(HeatMapView);
+const mapDispatchToProps = {
+    showTooltip: actions.show,
+    hideTooltip: actions.hide,
+};
+
+export default compose(
+    injectData,
+    connect(mapStateToProps, mapDispatchToProps),
+)(HeatMapView);
