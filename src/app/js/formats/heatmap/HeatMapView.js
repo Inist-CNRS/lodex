@@ -2,14 +2,18 @@ import React from 'react';
 import get from 'lodash.get';
 import { StyleSheet, css } from 'aphrodite';
 import PropTypes from 'prop-types';
+import compose from 'recompose/compose';
+import { connect } from 'react-redux';
+import { scaleQuantize } from 'd3-scale';
 
 import injectData from '../injectData';
+import { fromFields } from '../../sharedSelectors';
 
 const firstCell = {
-    height: '100px',
-    width: '50px',
-    minWidth: '50px',
-    maxWidth: '50px',
+    height: '60px',
+    width: '30px',
+    minWidth: '30px',
+    maxWidth: '30px',
     position: 'relative',
     verticalAlign: 'bottom',
     padding: 0,
@@ -51,6 +55,7 @@ const styles = StyleSheet.create({
         borderLeft: 0,
         width: '30px',
         height: '30px',
+        margin: '2px',
     },
     th: {
         ':first-child': firstCell,
@@ -59,50 +64,37 @@ const styles = StyleSheet.create({
         textTransform: 'uppercase',
         display: 'block',
         height: '30px',
+        margin: '2px',
+        lineHeight: '30px',
     },
     rotate: {
         position: 'relative',
         top: '0px',
-        left:
-            '50px' /* 100 * tan(45) / 2 = 50 where 100 is the height on the cell and 45 is the transform angle*/,
+        left: '0px',
         height: '100%',
         transform: 'skew(-45deg,0deg)',
-        // overflow: 'hidden',
     },
     rotateSpan: {
         transform: 'skew(45deg,0deg) rotate(315deg)',
         position: 'absolute',
-        bottom: '30px' /* 40 cos(45) = 28 with an additional 2px margin*/,
-        left: '-25px',
+        bottom: '30px',
+        left: '0px',
         display: 'inline-block',
-        width:
-            '85px' /* 80 / cos(45) - 40 cos (45) = 85 where 80 is the height of the cell, 40 the width of the cell and 45 the transform angle*/,
+        width: '85px',
         textAlign: 'left',
         whiteSpace: 'normal',
     },
 });
 
-const HeatMapView = ({ chartData }) => {
-    const { xAxis, yAxis, dictionary } = chartData.reduce(
-        (acc, { source, target, weight }) => ({
-            xAxis:
-                acc.xAxis.indexOf(target) === -1
-                    ? acc.xAxis.concat(target)
-                    : acc.xAxis,
-            yAxis:
-                acc.yAxis.indexOf(source) === -1
-                    ? acc.yAxis.concat(source)
-                    : acc.yAxis,
-            dictionary: {
-                ...acc.dictionary,
-                [target]: {
-                    ...get(acc, ['dictionary', target], {}),
-                    [source]: weight,
-                },
-            },
-        }),
-        { xAxis: [], yAxis: [] },
-    );
+const getColorStyle = color => ({
+    backgroundColor: color,
+});
+
+const HeatMapView = ({ xAxis, yAxis, dictionary, maxValue, colorScheme }) => {
+    const getColor = scaleQuantize()
+        .range(colorScheme)
+        .domain([0, maxValue])
+        .nice();
 
     return (
         <div>
@@ -110,27 +102,31 @@ const HeatMapView = ({ chartData }) => {
                 <thead className={css(styles.thead)}>
                     <tr className={css(styles.tr)}>
                         <th className={css(styles.th)} />
-                        {xAxis.map(xKey => (
-                            <th className={css(styles.th)} key={xKey}>
-                                {xKey}
+                        {yAxis.map(yKey => (
+                            <th className={css(styles.th)} key={yKey}>
+                                {yKey}
                             </th>
                         ))}
                     </tr>
                 </thead>
                 <tbody className={css(styles.tbody)}>
-                    {yAxis.map(yKey => (
-                        <tr key={yKey} className={css(styles.tr)}>
+                    {xAxis.map(xKey => (
+                        <tr key={xKey} className={css(styles.tr)}>
                             <td className={css(styles.td)}>
                                 <div className={css(styles.rotate)}>
                                     <span className={css(styles.rotateSpan)}>
-                                        {yKey}
+                                        {xKey}
                                     </span>
                                 </div>
                             </td>
-                            {xAxis.map(xKey => (
-                                <td className={css(styles.td)} key={xKey}>
-                                    {dictionary[xKey][yKey] || 0}
-                                </td>
+                            {yAxis.map(yKey => (
+                                <td
+                                    className={css(styles.td)}
+                                    key={yKey}
+                                    style={getColorStyle(
+                                        getColor(dictionary[xKey][yKey] || 0),
+                                    )}
+                                />
                             ))}
                         </tr>
                     ))}
@@ -141,7 +137,54 @@ const HeatMapView = ({ chartData }) => {
 };
 
 HeatMapView.propTypes = {
-    chartData: PropTypes.array.isRequired,
+    xAxis: PropTypes.arrayOf(PropTypes.string).isRequired,
+    yAxis: PropTypes.arrayOf(PropTypes.string).isRequired,
+    dictionary: PropTypes.objectOf(PropTypes.number).isRequired,
+    maxValue: PropTypes.number.isRequired,
+    colorScheme: PropTypes.string.isRequired,
 };
 
-export default injectData(HeatMapView);
+const mapStateToProps = (state, { chartData, field }) => {
+    const { colorScheme } = fromFields.getFieldFormatArgs(state, field.name);
+
+    if (!chartData) {
+        return {
+            xAxis: [],
+            yAxis: [],
+            dictionary: {},
+            colorScheme,
+        };
+    }
+
+    const { xAxis, yAxis, dictionary, maxValue } = chartData.reduce(
+        (acc, { source, target, weight }) => ({
+            xAxis:
+                acc.xAxis.indexOf(source) === -1
+                    ? acc.xAxis.concat(source)
+                    : acc.xAxis,
+            yAxis:
+                acc.yAxis.indexOf(target) === -1
+                    ? acc.yAxis.concat(target)
+                    : acc.yAxis,
+            dictionary: {
+                ...acc.dictionary,
+                [source]: {
+                    ...get(acc, ['dictionary', source], {}),
+                    [target]: weight,
+                },
+            },
+            maxValue: weight > acc.maxValue ? weight : acc.maxValue,
+        }),
+        { xAxis: [], yAxis: [], maxValue: 0 },
+    );
+
+    return {
+        xAxis,
+        yAxis,
+        dictionary,
+        maxValue,
+        colorScheme,
+    };
+};
+
+export default compose(injectData, connect(mapStateToProps))(HeatMapView);
