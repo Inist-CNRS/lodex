@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
 import { schemeOrRd } from 'd3-scale-chromatic';
+import Checkbox from 'material-ui/Checkbox';
 
 import ColorSchemeSelector from '../../lib/components/ColorSchemeSelector';
-
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 
 const styles = {
@@ -34,17 +34,19 @@ const styles = {
 class HeatMapAdmin extends Component {
     static propTypes = {
         colorScheme: PropTypes.arrayOf(PropTypes.string),
+        flipAxis: PropTypes.bool,
         onChange: PropTypes.func.isRequired,
         p: polyglotPropTypes.isRequired,
     };
 
     static defaultProps = {
         colorScheme: schemeOrRd[9],
+        flipAxis: false,
     };
     constructor(props) {
         super(props);
-        const { colorScheme } = this.props;
-        this.state = { colorScheme };
+        const { colorScheme, flipAxis } = this.props;
+        this.state = { colorScheme, flipAxis };
     }
 
     setColorScheme = (_, __, colorScheme) => {
@@ -53,9 +55,16 @@ class HeatMapAdmin extends Component {
         this.props.onChange(newState);
     };
 
+    setFlipAxis = () => {
+        const { flipAxis, ...state } = this.state;
+        const newState = { ...state, flipAxis: !flipAxis };
+        this.setState(newState);
+        this.props.onChange(newState);
+    };
+
     render() {
         const { p: polyglot } = this.props;
-        const { colorScheme } = this.state;
+        const { colorScheme, flipAxis } = this.state;
 
         return (
             <div style={styles.container}>
@@ -64,6 +73,12 @@ class HeatMapAdmin extends Component {
                     onChange={this.setColorScheme}
                     style={styles.input}
                     value={colorScheme}
+                />
+                <Checkbox
+                    label={polyglot.t('flip_axis')}
+                    onCheck={this.setFlipAxis}
+                    style={styles.input}
+                    checked={flipAxis}
                 />
             </div>
         );

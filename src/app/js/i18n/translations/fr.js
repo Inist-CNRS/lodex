@@ -348,4 +348,5 @@ export default {
     right_margin: 'right margin (px)',
     max_value: 'max value',
     min_value: 'min value',
+    flip_axis: 'flip axis',
 };

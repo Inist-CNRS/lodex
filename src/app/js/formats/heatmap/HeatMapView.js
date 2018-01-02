@@ -1,5 +1,4 @@
 import React from 'react';
-import get from 'lodash.get';
 import { StyleSheet, css } from 'aphrodite';
 import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
@@ -9,6 +8,7 @@ import { scaleQuantize } from 'd3-scale';
 import injectData from '../injectData';
 import { fromFields } from '../../sharedSelectors';
 import ColorScaleLegend from '../../lib/components/ColorScaleLegend';
+import { mapSourceToX, mapTargetToX } from './parseChartData';
 
 const firstCell = {
     height: '60px',
@@ -43,6 +43,7 @@ const styles = StyleSheet.create({
         position: 'relative',
         overflowX: 'auto',
         overflowY: 'hidden',
+        width: '100%',
     },
     tr: {
         display: 'flex',
@@ -143,11 +144,14 @@ HeatMapView.propTypes = {
     yAxis: PropTypes.arrayOf(PropTypes.string).isRequired,
     dictionary: PropTypes.objectOf(PropTypes.number).isRequired,
     maxValue: PropTypes.number.isRequired,
-    colorScheme: PropTypes.string.isRequired,
+    colorScheme: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 const mapStateToProps = (state, { chartData, field }) => {
-    const { colorScheme } = fromFields.getFieldFormatArgs(state, field.name);
+    const { colorScheme, flipAxis } = fromFields.getFieldFormatArgs(
+        state,
+        field.name,
+    );
 
     if (!chartData) {
         return {
@@ -159,25 +163,8 @@ const mapStateToProps = (state, { chartData, field }) => {
     }
 
     const { xAxis, yAxis, dictionary, maxValue } = chartData.reduce(
-        (acc, { source, target, weight }) => ({
-            xAxis:
-                acc.xAxis.indexOf(source) === -1
-                    ? acc.xAxis.concat(source)
-                    : acc.xAxis,
-            yAxis:
-                acc.yAxis.indexOf(target) === -1
-                    ? acc.yAxis.concat(target)
-                    : acc.yAxis,
-            dictionary: {
-                ...acc.dictionary,
-                [source]: {
-                    ...get(acc, ['dictionary', source], {}),
-                    [target]: weight,
-                },
-            },
-            maxValue: weight > acc.maxValue ? weight : acc.maxValue,
-        }),
-        { xAxis: [], yAxis: [], maxValue: 0 },
+        flipAxis ? mapTargetToX : mapSourceToX,
+        { xAxis: [], yAxis: [], dictionary: {}, maxValue: 0 },
     );
 
     return {
