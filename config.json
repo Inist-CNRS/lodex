@@ -35,6 +35,7 @@
     "atom",
     "jsonld",
     "jsonldcompacted",
+    "sitemap",
     "widget"
   ],
   "languages": [

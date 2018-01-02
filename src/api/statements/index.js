@@ -1,23 +1,24 @@
 /* eslint-disable  */
-import filterVersions from './filterVersions.js';
-import filterContributions from './filterContributions.js';
-import useFieldNames from './useFieldNames.js';
-import linkDataset from './linkDataset.js';
-import JSONLDCompacter from './JSONLDCompacter.js';
-import JSONLDString from './JSONLDString.js';
+import filterVersions from './filterVersions';
+import filterContributions from './filterContributions';
+import useFieldNames from './useFieldNames';
+import linkDataset from './linkDataset';
+import JSONLDCompacter from './JSONLDCompacter';
+import JSONLDString from './JSONLDString';
 import JSONLDObject from './JSONLDObject';
-import extractIstexQuery from './extractIstexQuery.js';
-import scroll from './scroll.js';
-import convertJsonLdToNQuads from './convertJsonLdToNQuads.js';
-import convertToExtendedJsonLd from './convertToExtendedJsonLd.js';
-import convertToAtom from './convertToAtom.js'
-import LodexContext from './LodexContext.js'
-import LodexConfig from './LodexConfig.js'
-import LodexRunQuery from './LodexRunQuery.js'
-import LodexSetField from './LodexSetField.js'
-import LodexParseQuery from './LodexParseQuery.js'
-import LodexReduceQuery from './LodexReduceQuery.js'
-import LodexOutput from './LodexOutput.js'
+import extractIstexQuery from './extractIstexQuery';
+import scroll from './scroll';
+import convertJsonLdToNQuads from './convertJsonLdToNQuads';
+import convertToExtendedJsonLd from './convertToExtendedJsonLd';
+import convertToAtom from './convertToAtom';
+import convertToSitemap from './convertToSitemap';
+import LodexContext from './LodexContext';
+import LodexConfig from './LodexConfig';
+import LodexRunQuery from './LodexRunQuery';
+import LodexSetField from './LodexSetField';
+import LodexParseQuery from './LodexParseQuery';
+import LodexReduceQuery from './LodexReduceQuery';
+import LodexOutput from './LodexOutput';
 
 export default {
     filterVersions,
@@ -32,6 +33,7 @@ export default {
     convertJsonLdToNQuads,
     convertToExtendedJsonLd,
     convertToAtom,
+    convertToSitemap,
     LodexContext,
     LodexConfig,
     LodexParseQuery,
