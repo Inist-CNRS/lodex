@@ -8,6 +8,7 @@ import { scaleQuantize } from 'd3-scale';
 
 import injectData from '../injectData';
 import { fromFields } from '../../sharedSelectors';
+import ColorScaleLegend from '../../lib/components/ColorScaleLegend';
 
 const firstCell = {
     height: '60px',
@@ -132,6 +133,7 @@ const HeatMapView = ({ xAxis, yAxis, dictionary, maxValue, colorScheme }) => {
                     ))}
                 </tbody>
             </table>
+            <ColorScaleLegend colorScale={getColor} />
         </div>
     );
 };

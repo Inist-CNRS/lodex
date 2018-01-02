@@ -17,7 +17,7 @@ import IconButton from 'material-ui/IconButton';
 import compose from 'recompose/compose';
 
 import injectData from '../injectData';
-import ColorScaleLegend from './ColorScaleLegend';
+import ColorScaleLegend from '../../lib/components/ColorScaleLegend';
 import { fromFields } from '../../sharedSelectors';
 
 const maxZoom = 16;
