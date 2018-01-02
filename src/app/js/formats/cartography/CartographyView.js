@@ -248,9 +248,9 @@ const mapStateToProps = (state, { chartData, field }) => {
     return {
         chartData: chartData
             ? chartData.reduce(
-                  (acc, { name, value }) => ({
+                  (acc, { _id, value }) => ({
                       ...acc,
-                      [name]: value,
+                      [_id]: value,
                   }),
                   {},
               )
