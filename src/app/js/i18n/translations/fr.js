@@ -342,4 +342,10 @@ export default {
     emphasedNumber: 'emphasedNumber',
     resourcesGrid: 'resourcesGrid',
     trelloTimeline: 'trelloTimeline',
+    direction: 'direction',
+    horizontal: 'horizontal',
+    vertical: 'vertical',
+    right_margin: 'right margin (px)',
+    max_value: 'max value',
+    min_value: 'min value',
 };

@@ -10,10 +10,11 @@ import {
     YAxis,
     Tooltip,
 } from 'recharts';
-import get from 'lodash.get';
+import { connect } from 'react-redux';
+import compose from 'recompose/compose';
 
-import { field as fieldPropTypes } from '../../../propTypes';
 import injectData from '../../injectData';
+import { fromFields } from '../../../sharedSelectors';
 
 const margin = {
     top: 15,
@@ -23,33 +24,49 @@ const margin = {
 };
 const padding = { top: 3, bottom: 3 };
 
-const BarChartView = ({ colorSet, chartData, field }) => {
-    const axisRoundValue = get(field, 'format.args.axisRoundValue');
-    const scale = get(field, 'format.args.scale');
-    const max = Math.max(...chartData.map(({ value }) => value));
+const BarChartView = ({
+    colorSet,
+    chartData,
+    axisRoundValue,
+    scale,
+    direction,
+    rightMargin,
+    max,
+}) => {
+    const valueAxisProps = {
+        type: 'number',
+        allowDecimals: !axisRoundValue,
+        scale,
+        tickCount: max > 5 ? 5 : max + 1,
+        domain: scale === 'log' ? ['auto', 'auto'] : [0, 'auto'], // log scale won't work with a domain starting at 0 (`auto` detect the boudaries and ensure it is readable)
+        dataKey: 'value',
+    };
+
+    const categoryAxisProps = {
+        type: 'category',
+        dataKey: 'name',
+        interval: 0,
+        padding: padding,
+    };
 
     return (
-        <ResponsiveContainer width="100%" height={chartData.length * 75}>
+        <ResponsiveContainer width="100%" height={300}>
             <BarChart
                 data={chartData}
-                layout="vertical"
+                layout={direction === 'horizontal' ? 'vertical' : 'horizontal'}
                 margin={margin}
                 maxBarSize={10}
             >
                 <XAxis
-                    type="number"
-                    allowDecimals={!axisRoundValue}
-                    scale={scale}
-                    tickCount={max > 5 ? 5 : max + 1}
-                    domain={scale === 'log' ? ['auto', 'auto'] : [0, 'auto']} // log scale won't work with a domain starting at 0 (`auto` detect the boudaries and ensure it is readable)
-                    dataKey="value"
+                    {...(direction === 'horizontal'
+                        ? valueAxisProps
+                        : categoryAxisProps)}
                 />
                 <YAxis
-                    type="category"
-                    dataKey="name"
-                    interval={0}
-                    padding={padding}
-                    width={120}
+                    {...(direction === 'horizontal'
+                        ? categoryAxisProps
+                        : valueAxisProps)}
+                    width={parseInt(rightMargin)}
                 />
                 <Tooltip />
                 <CartesianGrid strokeDasharray="3 3" />
@@ -67,16 +84,36 @@ const BarChartView = ({ colorSet, chartData, field }) => {
 };
 
 BarChartView.propTypes = {
-    field: fieldPropTypes.isRequired,
     linkedResource: PropTypes.object,
     resource: PropTypes.object.isRequired,
     chartData: PropTypes.array.isRequired,
     colorSet: PropTypes.arrayOf(PropTypes.string),
     axisRoundValue: PropTypes.bool,
+    scale: PropTypes.oneOf(['linear', 'log']),
+    direction: PropTypes.oneOf(['horizontal', 'vertical']),
+    rightMargin: PropTypes.number.isRequired,
+    max: PropTypes.number.isRequired,
 };
 
 BarChartView.defaultProps = {
     className: null,
 };
 
-export default injectData(BarChartView);
+const mapStateToProps = (state, { field, chartData }) => {
+    const {
+        axisRoundValue,
+        scale,
+        direction = 'horizontal',
+        rightMargin = 120,
+    } = fromFields.getFieldFormatArgs(state, field.name);
+
+    return {
+        axisRoundValue,
+        scale,
+        direction,
+        rightMargin: parseInt(rightMargin),
+        max: Math.max(...chartData.map(({ value }) => value)),
+    };
+};
+
+export default compose(injectData, connect(mapStateToProps))(BarChartView);
