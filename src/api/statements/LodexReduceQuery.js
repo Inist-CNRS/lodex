@@ -92,9 +92,9 @@ export const createFunction = MongoClientImpl =>
 
         const stream = cursor
             .find(findFilter)
+            .sort(sort)
             .skip(Number(skip))
             .limit(Number(limit))
-            .sort(sort)
             .pipe(
                 ezs((data1, feed1) => {
                     if (typeof data1 === 'object') {
