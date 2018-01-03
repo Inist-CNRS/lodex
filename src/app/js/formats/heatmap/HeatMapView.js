@@ -153,7 +153,7 @@ class HeatMapView extends Component {
                                 {yAxis.map(yKey => (
                                     <td
                                         className={css(styles.td)}
-                                        key={yKey}
+                                        key={`${xKey}-${yKey}`}
                                         data-value={dictionary[xKey][yKey] || 0}
                                         style={getColorStyle(
                                             getColor(

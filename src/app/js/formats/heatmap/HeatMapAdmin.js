@@ -49,13 +49,13 @@ class HeatMapAdmin extends Component {
         this.state = { colorScheme, flipAxis };
     }
 
-    setColorScheme = (_, __, colorScheme) => {
+    handleColorSchemeChange = (event, index, colorScheme) => {
         const newState = { ...this.state, colorScheme: colorScheme.split(',') };
         this.setState(newState);
         this.props.onChange(newState);
     };
 
-    setFlipAxis = () => {
+    toggleFlipAxis = () => {
         const { flipAxis, ...state } = this.state;
         const newState = { ...state, flipAxis: !flipAxis };
         this.setState(newState);
@@ -70,13 +70,13 @@ class HeatMapAdmin extends Component {
             <div style={styles.container}>
                 <ColorSchemeSelector
                     label={polyglot.t('color_scheme')}
-                    onChange={this.setColorScheme}
+                    onChange={this.handleColorSchemeChange}
                     style={styles.input}
                     value={colorScheme}
                 />
                 <Checkbox
                     label={polyglot.t('flip_axis')}
-                    onCheck={this.setFlipAxis}
+                    onCheck={this.toggleFlipAxis}
                     style={styles.input}
                     checked={flipAxis}
                 />

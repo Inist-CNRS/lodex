@@ -2,7 +2,7 @@ import expect from 'expect';
 
 import { mapSourceToX, mapTargetToX } from './parseChartData';
 
-describe.only('parseChartData', () => {
+describe('parseChartData', () => {
     const chartData = {
         source: 'source',
         target: 'target',
