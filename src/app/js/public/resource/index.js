@@ -143,12 +143,17 @@ export default handleActions(
                 removedAt,
             },
         }),
-        [ADD_FIELD_TO_RESOURCE_SUCCESS]: state => ({
+        [ADD_FIELD_TO_RESOURCE_SUCCESS]: (
+            state,
+            { payload: { resource } },
+        ) => ({
             ...state,
+            resource,
+            selectedVersion: resource.versions.length - 1,
             error: null,
-            saving: false,
+            loading: false,
             addingField: null,
-            loading: true,
+            saving: false,
         }),
         [combineActions(
             SAVE_RESOURCE_ERROR,

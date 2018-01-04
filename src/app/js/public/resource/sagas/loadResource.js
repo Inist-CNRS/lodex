@@ -3,7 +3,6 @@ import { LOCATION_CHANGE } from 'react-router-redux';
 import qs from 'qs';
 
 import {
-    ADD_FIELD_TO_RESOURCE_SUCCESS,
     HIDE_RESOURCE_SUCCESS,
     loadResource,
     loadResourceSuccess,
@@ -77,7 +76,7 @@ export function* handleLoadResource({ payload, type }) {
 
 export default function* watchLocationChangeToResource() {
     yield takeLatest(
-        [LOCATION_CHANGE, ADD_FIELD_TO_RESOURCE_SUCCESS, HIDE_RESOURCE_SUCCESS],
+        [LOCATION_CHANGE, HIDE_RESOURCE_SUCCESS],
         handleLoadResource,
     );
 }
