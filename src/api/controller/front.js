@@ -21,6 +21,7 @@ import configureStoreServer from '../../app/js/configureStoreServer';
 import routes from '../../app/js/public/routes';
 import phrasesForEn from '../../app/js/i18n/translations/en';
 import webpackConfig from '../../app/webpack.config.babel';
+import buildFrontend from './buildFrontEnd';
 
 const indexHtml = fs
     .readFileSync(path.resolve(__dirname, '../../app/custom/index.html'))
@@ -164,6 +165,10 @@ const handleRender = async (ctx, next) => {
 };
 
 const app = new Koa();
+
+if (process.env.NODE_ENV === 'production') {
+    app.use(buildFrontend);
+}
 
 app.use(handleRender);
 
