@@ -35,12 +35,16 @@ const BarChartView = ({
     colorSet,
     chartData,
     axisRoundValue,
+    diagonalValueAxis,
+    diagonalCategoryAxis,
     scale,
     direction,
     rightMargin,
     max,
 }) => {
     const valueAxisProps = {
+        angle: diagonalValueAxis && -45,
+        textAnchor: 'end',
         type: 'number',
         allowDecimals: !axisRoundValue,
         scale,
@@ -50,6 +54,8 @@ const BarChartView = ({
     };
 
     const categoryAxisProps = {
+        angle: diagonalCategoryAxis && -45,
+        textAnchor: 'end',
         type: 'category',
         dataKey: '_id',
         interval: 0,
@@ -106,6 +112,8 @@ BarChartView.propTypes = {
     chartData: PropTypes.array.isRequired,
     colorSet: PropTypes.arrayOf(PropTypes.string),
     axisRoundValue: PropTypes.bool,
+    diagonalValueAxis: PropTypes.bool,
+    diagonalCategoryAxis: PropTypes.bool,
     scale: PropTypes.oneOf(['linear', 'log']),
     direction: PropTypes.oneOf(['horizontal', 'vertical']),
     rightMargin: PropTypes.number.isRequired,
@@ -119,6 +127,8 @@ BarChartView.defaultProps = {
 const mapStateToProps = (state, { field, chartData }) => {
     const {
         axisRoundValue,
+        diagonalCategoryAxis,
+        diagonalValueAxis,
         scale,
         direction = 'horizontal',
         rightMargin = 120,
@@ -126,6 +136,8 @@ const mapStateToProps = (state, { field, chartData }) => {
 
     return {
         axisRoundValue,
+        diagonalCategoryAxis,
+        diagonalValueAxis,
         scale,
         direction,
         rightMargin: parseInt(rightMargin),

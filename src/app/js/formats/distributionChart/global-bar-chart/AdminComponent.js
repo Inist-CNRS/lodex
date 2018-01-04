@@ -34,6 +34,8 @@ class ChartEdition extends Component {
         }),
         colors: PropTypes.string,
         axisRoundValue: PropTypes.bool,
+        diagonalCategoryAxis: PropTypes.bool,
+        diagonalValueAxis: PropTypes.bool,
         rightMargin: PropTypes.number,
         scale: PropTypes.oneOf(['log', 'linear']),
         direction: PropTypes.oneOf(['horizontal', 'vertical']),
@@ -48,6 +50,8 @@ class ChartEdition extends Component {
         },
         colors: '#1D1A31 #4D2D52 #9A4C95 #F08CAE #C1A5A9',
         axisRoundValue: true,
+        diagonalCategoryAxis: false,
+        diagonalValueAxis: false,
         direction: 'horizontal',
         scale: 'linear',
         rightMargin: 120,
@@ -58,6 +62,8 @@ class ChartEdition extends Component {
             params,
             colors,
             axisRoundValue,
+            diagonalCategoryAxis,
+            diagonalValueAxis,
             scale,
             direction,
             rightMargin,
@@ -66,6 +72,8 @@ class ChartEdition extends Component {
             params,
             colors,
             axisRoundValue,
+            diagonalCategoryAxis,
+            diagonalValueAxis,
             scale,
             direction,
             rightMargin,
@@ -131,12 +139,31 @@ class ChartEdition extends Component {
         this.props.onChange(newState);
     };
 
+    toggleDiagonalValueAxis = () => {
+        const { diagonalValueAxis, ...state } = this.state;
+        const newState = { ...state, diagonalValueAxis: !diagonalValueAxis };
+        this.setState(newState);
+        this.props.onChange(newState);
+    };
+
+    toggleDiagonalCategoryAxis = () => {
+        const { diagonalCategoryAxis, ...state } = this.state;
+        const newState = {
+            ...state,
+            diagonalCategoryAxis: !diagonalCategoryAxis,
+        };
+        this.setState(newState);
+        this.props.onChange(newState);
+    };
+
     render() {
         const { p: polyglot } = this.props;
         const {
             params: { maxSize, maxValue, minValue, orderBy },
             colors,
             axisRoundValue,
+            diagonalValueAxis,
+            diagonalCategoryAxis,
             scale,
             direction,
             rightMargin,
@@ -195,6 +222,18 @@ class ChartEdition extends Component {
                     onCheck={this.setAxisRoundValue}
                     style={styles.input}
                     checked={axisRoundValue}
+                />
+                <Checkbox
+                    label={polyglot.t('diagonal_value_axis')}
+                    onCheck={this.toggleDiagonalValueAxis}
+                    style={styles.input}
+                    checked={diagonalValueAxis}
+                />
+                <Checkbox
+                    label={polyglot.t('diagonal_category_axis')}
+                    onCheck={this.toggleDiagonalCategoryAxis}
+                    style={styles.input}
+                    checked={diagonalCategoryAxis}
                 />
                 <SelectField
                     floatingLabelText={polyglot.t('scale')}
