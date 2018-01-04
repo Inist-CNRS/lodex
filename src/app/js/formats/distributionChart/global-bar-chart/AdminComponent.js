@@ -228,40 +228,10 @@ class ChartEdition extends Component {
                     style={styles.input2}
                     value={colors}
                 />
-                <Checkbox
-                    label={polyglot.t('axis_round_value')}
-                    onCheck={this.setAxisRoundValue}
-                    style={styles.input}
-                    checked={axisRoundValue}
-                />
-                <Checkbox
-                    label={polyglot.t('diagonal_value_axis')}
-                    onCheck={this.toggleDiagonalValueAxis}
-                    style={styles.input}
-                    checked={diagonalValueAxis}
-                />
-                <Checkbox
-                    label={polyglot.t('diagonal_category_axis')}
-                    onCheck={this.toggleDiagonalCategoryAxis}
-                    style={styles.input}
-                    checked={diagonalCategoryAxis}
-                />
-                <SelectField
-                    floatingLabelText={polyglot.t('scale')}
-                    onChange={this.setScale}
-                    style={styles.input}
-                    value={scale}
-                >
-                    <MenuItem
-                        value="linear"
-                        primaryText={polyglot.t('linear')}
-                    />
-                    <MenuItem value="log" primaryText={polyglot.t('log')} />
-                </SelectField>
                 <SelectField
                     floatingLabelText={polyglot.t('direction')}
                     onChange={this.setDirection}
-                    style={styles.input}
+                    style={styles.input2}
                     value={direction}
                 >
                     <MenuItem
@@ -277,16 +247,46 @@ class ChartEdition extends Component {
                     type="number"
                     floatingLabelText={polyglot.t('category_margin')}
                     onChange={this.setCategoryMargin}
-                    style={styles.input2}
+                    style={styles.input}
                     value={categoryMargin}
                 />
                 <TextField
                     type="number"
                     floatingLabelText={polyglot.t('value_margin')}
                     onChange={this.setValueMargin}
-                    style={styles.input2}
+                    style={styles.input}
                     value={valueMargin}
                 />
+                <Checkbox
+                    label={polyglot.t('diagonal_category_axis')}
+                    onCheck={this.toggleDiagonalCategoryAxis}
+                    style={styles.input}
+                    checked={diagonalCategoryAxis}
+                />
+                <Checkbox
+                    label={polyglot.t('diagonal_value_axis')}
+                    onCheck={this.toggleDiagonalValueAxis}
+                    style={styles.input}
+                    checked={diagonalValueAxis}
+                />
+                <Checkbox
+                    label={polyglot.t('axis_round_value')}
+                    onCheck={this.setAxisRoundValue}
+                    style={styles.input}
+                    checked={axisRoundValue}
+                />
+                <SelectField
+                    floatingLabelText={polyglot.t('scale')}
+                    onChange={this.setScale}
+                    style={styles.input}
+                    value={scale}
+                >
+                    <MenuItem
+                        value="linear"
+                        primaryText={polyglot.t('linear')}
+                    />
+                    <MenuItem value="log" primaryText={polyglot.t('log')} />
+                </SelectField>
             </div>
         );
     }

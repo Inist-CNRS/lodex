@@ -345,8 +345,11 @@ export default {
     direction: 'direction',
     horizontal: 'horizontal',
     vertical: 'vertical',
-    right_margin: 'right margin (px)',
     max_value: 'max value',
     min_value: 'min value',
     flip_axis: 'flip axis',
+    value_margin: 'margin for value axis (px)',
+    category_margin: 'margin for category axis (px)',
+    diagonal_value_axis: 'display value axis in diagonal',
+    diagonal_category_axis: 'display category axis in diagonal',
 };
