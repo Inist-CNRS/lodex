@@ -107,16 +107,8 @@ export const validateTransformers = (field, isContribution) => {
         isValid: true,
     };
 
-    if (isContribution && !field.transformers) {
+    if (isContribution) {
         return result;
-    }
-
-    if (isContribution && field.transformers) {
-        return {
-            ...result,
-            isValid: false,
-            error: 'contribution_no_transformers',
-        };
     }
 
     if (!field.transformers || !field.transformers.length) {

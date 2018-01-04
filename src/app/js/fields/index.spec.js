@@ -18,7 +18,10 @@ import reducer, {
     configureFieldCancel,
     openEditFieldValue,
     closeEditFieldValue,
+    addCharacteristicSuccess,
 } from './';
+
+import { addFieldToResourceSuccess } from '../public/resource';
 
 describe('field reducer', () => {
     it('should initialize with correct state', () => {
@@ -304,6 +307,67 @@ describe('field reducer', () => {
                     bar: { name: 'bar' },
                 },
             });
+        });
+    });
+
+    describe('addCharacteristicSuccess, addFieldToResourceSuccess', () => {
+        it('should add payload.field to byName and list', () => {
+            [addCharacteristicSuccess, addFieldToResourceSuccess].forEach(
+                action => {
+                    const state = reducer(
+                        {
+                            byName: {
+                                field: 'data',
+                            },
+                            list: ['field'],
+                        },
+                        action({ field: { name: 'newField', data: 'data' } }),
+                    );
+                    expect(state).toEqual({
+                        byName: {
+                            field: 'data',
+                            newField: {
+                                name: 'newField',
+                                data: 'data',
+                            },
+                        },
+                        list: ['field', 'newField'],
+                        isAdding: false,
+                        isSaving: false,
+                        error: null,
+                    });
+                },
+            );
+        });
+
+        it('should update payload.field in byName and not touch list if field was already present', () => {
+            [addCharacteristicSuccess, addFieldToResourceSuccess].forEach(
+                action => {
+                    const state = reducer(
+                        {
+                            byName: {
+                                field: { data: 'data' },
+                            },
+                            list: ['field'],
+                        },
+                        action({
+                            field: { name: 'field', data: 'updated data' },
+                        }),
+                    );
+                    expect(state).toEqual({
+                        byName: {
+                            field: {
+                                name: 'field',
+                                data: 'updated data',
+                            },
+                        },
+                        list: ['field'],
+                        isAdding: false,
+                        isSaving: false,
+                        error: null,
+                    });
+                },
+            );
         });
     });
 });

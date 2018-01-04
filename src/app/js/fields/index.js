@@ -1,9 +1,13 @@
 import omit from 'lodash.omit';
+import uniq from 'lodash.uniq';
 import { createAction, handleActions, combineActions } from 'redux-actions';
 
 import getCatalogFromArray from '../lib/getCatalogFromArray';
 import { UPDATE_CHARACTERISTICS_SUCCESS } from '../public/characteristic';
-import { SAVE_RESOURCE_SUCCESS } from '../public/resource';
+import {
+    SAVE_RESOURCE_SUCCESS,
+    ADD_FIELD_TO_RESOURCE_SUCCESS,
+} from '../public/resource';
 import fieldSelectors, {
     NEW_CHARACTERISTIC_FORM_NAME as formName,
 } from './selectors';
@@ -229,9 +233,12 @@ export default handleActions(
             ...state,
             editedValueFieldName: null,
         }),
-        [ADD_CHARACTERISTIC_SUCCESS]: (state, { payload: { field } }) => ({
+        [combineActions(
+            ADD_CHARACTERISTIC_SUCCESS,
+            ADD_FIELD_TO_RESOURCE_SUCCESS,
+        )]: (state, { payload: { field } }) => ({
             ...state,
-            list: [...state.list, field.name],
+            list: uniq([...state.list, field.name]),
             byName: {
                 ...state.byName,
                 [field.name]: field,

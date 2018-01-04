@@ -143,11 +143,17 @@ export default handleActions(
                 removedAt,
             },
         }),
-        [ADD_FIELD_TO_RESOURCE_SUCCESS]: state => ({
+        [ADD_FIELD_TO_RESOURCE_SUCCESS]: (
+            state,
+            { payload: { resource } },
+        ) => ({
             ...state,
+            resource,
+            selectedVersion: resource.versions.length - 1,
             error: null,
-            saving: false,
+            loading: false,
             addingField: null,
+            saving: false,
         }),
         [combineActions(
             SAVE_RESOURCE_ERROR,
@@ -392,7 +398,7 @@ const getError = ({ error }) => error;
 const isCreating = state => state.isCreating;
 
 const isResourceLoaded = (state, uri) =>
-    state.resource && state.resource.uri === uri;
+    !state.loading && state.resource && state.resource.uri === uri;
 
 export const fromResource = {
     getResourceContributorsCatalog,

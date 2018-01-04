@@ -404,19 +404,5 @@ describe('field', () => {
             };
             expect(validateField(field, true)).toEqual(field);
         });
-
-        it('should throw an error if there is transformers and isContribution is true', async () => {
-            const field = {
-                cover: 'dataset',
-                label: 'label',
-                name: 'name',
-                scheme: 'http://purl.org/dc/terms/title',
-                position: 1,
-                transformers: [{ operation: 'COLUMN', args: [] }],
-            };
-            expect(() => validateField(field, true)).toThrow(
-                buildInvalidPropertiesMessage('label'),
-            );
-        });
     });
 });

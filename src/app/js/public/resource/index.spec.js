@@ -178,13 +178,25 @@ describe('resourceReducer', () => {
             {
                 key: 'value',
             },
-            { type: ADD_FIELD_TO_RESOURCE_SUCCESS },
+            {
+                type: ADD_FIELD_TO_RESOURCE_SUCCESS,
+                payload: {
+                    resource: {
+                        versions: ['v1', 'v2'],
+                    },
+                },
+            },
         );
         expect(state).toEqual({
             key: 'value',
+            resource: {
+                versions: ['v1', 'v2'],
+            },
+            selectedVersion: 1,
             error: null,
             saving: false,
             addingField: null,
+            loading: false,
         });
     });
 

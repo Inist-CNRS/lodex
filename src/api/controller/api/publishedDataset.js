@@ -90,7 +90,7 @@ export const addFieldToResource = async ctx => {
         isLoggedIn,
     );
 
-    ctx.body = await ctx.publishedDataset.addFieldToResource(
+    await ctx.publishedDataset.addFieldToResource(
         uri,
         contributor,
         {
@@ -101,6 +101,11 @@ export const addFieldToResource = async ctx => {
         },
         isLoggedIn,
     );
+
+    ctx.body = {
+        field: await ctx.field.findOneByName(fieldName),
+        resource: await ctx.publishedDataset.findByUri(uri),
+    };
 };
 
 export const changePropositionStatus = async (ctx, uri, name, status) => {
