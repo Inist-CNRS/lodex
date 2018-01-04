@@ -6,6 +6,7 @@ import { field as fieldPropTypes } from '../../../propTypes';
 import injectData from '../../injectData';
 
 const PieChartView = ({ chartData, colorSet }) => {
+
     return (
         <ResponsiveContainer className="lodex-chart" width="100%" height={300}>
             <PieChart>
@@ -17,6 +18,7 @@ const PieChartView = ({ chartData, colorSet }) => {
                 <Pie
                     cx={155}
                     data={chartData}
+                    nameKey="_id"
                     fill="#8884d8"
                     outerRadius="63%"
                     labelLine

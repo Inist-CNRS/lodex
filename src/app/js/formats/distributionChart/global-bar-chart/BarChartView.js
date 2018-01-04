@@ -44,7 +44,7 @@ const BarChartView = ({
 
     const categoryAxisProps = {
         type: 'category',
-        dataKey: 'name',
+        dataKey: '_id',
         interval: 0,
         padding: padding,
     };

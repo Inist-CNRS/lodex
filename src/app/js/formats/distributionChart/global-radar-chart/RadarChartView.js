@@ -28,7 +28,7 @@ const RadarChartView = ({ chartData, colorSet, field }) => {
                     fillOpacity={0.6}
                 />
                 <PolarGrid />
-                <PolarAngleAxis dataKey="name" />
+                <PolarAngleAxis dataKey="_id" />
                 <PolarRadiusAxis
                     scale={scale}
                     domain={scale === 'log' ? ['auto', 'auto'] : [0, 'auto']} // log scale won't work with a domain starting at 0 (`auto` detect the boudaries and ensure it is readable)
