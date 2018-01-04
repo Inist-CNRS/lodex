@@ -1,4 +1,5 @@
 import omit from 'lodash.omit';
+import uniq from 'lodash.uniq';
 import { createAction, handleActions, combineActions } from 'redux-actions';
 
 import getCatalogFromArray from '../lib/getCatalogFromArray';
@@ -237,7 +238,7 @@ export default handleActions(
             ADD_FIELD_TO_RESOURCE_SUCCESS,
         )]: (state, { payload: { field } }) => ({
             ...state,
-            list: [...state.list, field.name],
+            list: uniq([...state.list, field.name]),
             byName: {
                 ...state.byName,
                 [field.name]: field,
