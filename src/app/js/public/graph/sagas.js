@@ -83,7 +83,6 @@ export default function*() {
     yield throttle(
         500,
         [
-            LOAD_CHART_DATA,
             TOGGLE_FACET_VALUE,
             CLEAR_FACET,
             APPLY_FILTER,

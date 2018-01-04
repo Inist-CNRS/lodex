@@ -1,4 +1,5 @@
 import { call, put, select, takeLatest } from 'redux-saga/effects';
+import { LOCATION_CHANGE } from 'react-router-redux';
 
 import {
     LOAD_FACET_VALUES,
@@ -7,6 +8,7 @@ import {
     FACET_VALUE_SORT,
     loadFacetValuesError,
     loadFacetValuesSuccess,
+    clearFacet,
 } from './';
 import { fromUser } from '../../sharedSelectors';
 import { fromFacet } from '../selectors';
@@ -28,9 +30,18 @@ export function* handleLoadFacetValuesRequest({ payload: { name } }) {
     return yield put(loadFacetValuesSuccess({ name, values }));
 }
 
+export function* clearFacetSaga({ payload: { action } }) {
+    if (action === 'POP') {
+        return;
+    }
+    yield put(clearFacet());
+}
+
 export default function* watchLoadPublicationRequest() {
     yield takeLatest(
         [OPEN_FACET, LOAD_FACET_VALUES, FACET_VALUE_CHANGE, FACET_VALUE_SORT],
         handleLoadFacetValuesRequest,
     );
+
+    yield takeLatest(LOCATION_CHANGE, clearFacetSaga);
 }
