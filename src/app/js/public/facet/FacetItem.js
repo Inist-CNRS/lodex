@@ -24,6 +24,7 @@ const PureFacetItem = ({ onClick, isOpen, field, total }) => (
         key={field.name}
         primaryText={`${field.label} ${total ? `(${total})` : ''}`}
         onClick={onClick}
+        onNestedListToggle={onClick}
         open={isOpen}
         nestedItems={[
             <FacetValueList key="list" name={field.name} label={field.label} />,
