@@ -27,6 +27,7 @@ const padding = { top: 3, bottom: 3 };
 const styles = {
     container: {
         fontSize: '1.5rem',
+        margin: '10px',
     },
 };
 
