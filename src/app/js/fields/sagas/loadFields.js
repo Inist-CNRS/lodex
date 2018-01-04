@@ -3,12 +3,10 @@ import { call, put, select, takeLatest } from 'redux-saga/effects';
 import fetchSaga from '../../lib/sagas/fetchSaga';
 
 import { LOAD_FIELD, loadFieldError, loadFieldSuccess } from '../';
-
 import { UPLOAD_SUCCESS } from '../../admin/upload';
-
 import { IMPORT_FIELDS_SUCCESS } from '../../admin/import';
-
 import { fromUser } from '../../sharedSelectors';
+import { ADD_FIELD_TO_RESOURCE_SUCCESS } from '../../public/resource';
 
 export function* handleLoadField() {
     const request = yield select(fromUser.getLoadFieldRequest);
@@ -24,7 +22,12 @@ export function* handleLoadField() {
 
 export default function* watchLoadField() {
     yield takeLatest(
-        [LOAD_FIELD, IMPORT_FIELDS_SUCCESS, UPLOAD_SUCCESS],
+        [
+            LOAD_FIELD,
+            IMPORT_FIELDS_SUCCESS,
+            UPLOAD_SUCCESS,
+            ADD_FIELD_TO_RESOURCE_SUCCESS,
+        ],
         handleLoadField,
     );
 }

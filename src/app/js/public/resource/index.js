@@ -148,6 +148,7 @@ export default handleActions(
             error: null,
             saving: false,
             addingField: null,
+            loading: true,
         }),
         [combineActions(
             SAVE_RESOURCE_ERROR,
@@ -392,7 +393,7 @@ const getError = ({ error }) => error;
 const isCreating = state => state.isCreating;
 
 const isResourceLoaded = (state, uri) =>
-    state.resource && state.resource.uri === uri;
+    !state.loading && state.resource && state.resource.uri === uri;
 
 export const fromResource = {
     getResourceContributorsCatalog,
