@@ -28,6 +28,7 @@ const styles = {
         width: '100%',
         maxWidth: 980,
         margin: 0,
+        fontSize: '1.5rem',
     },
     geography: memoize(({ color, hoverColor }) => ({
         default: {

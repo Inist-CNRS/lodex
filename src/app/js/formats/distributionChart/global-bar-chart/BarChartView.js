@@ -17,12 +17,19 @@ import injectData from '../../injectData';
 import { fromFields } from '../../../sharedSelectors';
 
 const margin = {
-    top: 15,
-    right: 50,
-    left: 0,
-    bottom: 0,
+    top: 10,
+    right: 10,
+    left: 10,
+    bottom: 10,
 };
 const padding = { top: 3, bottom: 3 };
+
+const styles = {
+    container: {
+        fontSize: '1.5rem',
+        margin: '10px',
+    },
+};
 
 const BarChartView = ({
     colorSet,
@@ -46,43 +53,50 @@ const BarChartView = ({
         type: 'category',
         dataKey: '_id',
         interval: 0,
-        padding: padding,
     };
 
     return (
-        <ResponsiveContainer
-            width="100%"
-            height={direction === 'horizontal' ? chartData.length * 40 : 300}
-        >
-            <BarChart
-                data={chartData}
-                layout={direction === 'horizontal' ? 'vertical' : 'horizontal'}
-                margin={margin}
-                maxBarSize={10}
+        <div style={styles.container}>
+            <ResponsiveContainer
+                width="100%"
+                height={
+                    direction === 'horizontal' ? chartData.length * 40 : 300
+                }
             >
-                <XAxis
-                    {...(direction === 'horizontal'
-                        ? valueAxisProps
-                        : categoryAxisProps)}
-                />
-                <YAxis
-                    {...(direction === 'horizontal'
-                        ? categoryAxisProps
-                        : valueAxisProps)}
-                    width={parseInt(rightMargin)}
-                />
-                <Tooltip />
-                <CartesianGrid strokeDasharray="3 3" />
-                <Bar dataKey="value" fill="#8884d8">
-                    {chartData.map((entry, index) => (
-                        <Cell
-                            key={String(index).concat('_cell_bar')}
-                            fill={colorSet[index % colorSet.length]}
-                        />
-                    ))}
-                </Bar>
-            </BarChart>
-        </ResponsiveContainer>
+                <BarChart
+                    data={chartData}
+                    layout={
+                        direction === 'horizontal' ? 'vertical' : 'horizontal'
+                    }
+                    margin={margin}
+                    maxBarSize={10}
+                >
+                    <XAxis
+                        {...(direction === 'horizontal'
+                            ? valueAxisProps
+                            : categoryAxisProps)}
+                        padding={padding}
+                    />
+                    <YAxis
+                        {...(direction === 'horizontal'
+                            ? categoryAxisProps
+                            : valueAxisProps)}
+                        width={parseInt(rightMargin)}
+                        padding={padding}
+                    />
+                    <Tooltip />
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <Bar dataKey="value" fill="#8884d8">
+                        {chartData.map((entry, index) => (
+                            <Cell
+                                key={String(index).concat('_cell_bar')}
+                                fill={colorSet[index % colorSet.length]}
+                            />
+                        ))}
+                    </Bar>
+                </BarChart>
+            </ResponsiveContainer>
+        </div>
     );
 };
 

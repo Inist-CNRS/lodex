@@ -5,9 +5,14 @@ import { ResponsiveContainer, PieChart, Pie, Cell, Legend } from 'recharts';
 import { field as fieldPropTypes } from '../../../propTypes';
 import injectData from '../../injectData';
 
-const PieChartView = ({ chartData, colorSet }) => {
+const styles = {
+    container: {
+        fontSize: '1.5rem',
+    },
+};
 
-    return (
+const PieChartView = ({ chartData, colorSet }) => (
+    <div style={styles.container}>
         <ResponsiveContainer className="lodex-chart" width="100%" height={300}>
             <PieChart>
                 <Legend
@@ -33,8 +38,8 @@ const PieChartView = ({ chartData, colorSet }) => {
                 </Pie>
             </PieChart>
         </ResponsiveContainer>
-    );
-};
+    </div>
+);
 
 PieChartView.propTypes = {
     field: fieldPropTypes.isRequired,

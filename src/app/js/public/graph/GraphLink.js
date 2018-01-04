@@ -22,14 +22,17 @@ const styles = {
         alignItems: 'center',
     },
     icon: {
-        float: 'right',
+        position: 'absolute',
+        right: '10px',
+        zIndex: 1,
     },
 };
 
 const GraphLink = ({ link, children }) => (
     <Link to={link}>
         <Card>
-            <ListItem rightIcon={<Forward style={styles.icon} />}>
+            <ListItem>
+                <Forward style={styles.icon} />
                 <CardMedia style={styles.media}>{children}</CardMedia>
             </ListItem>
         </Card>

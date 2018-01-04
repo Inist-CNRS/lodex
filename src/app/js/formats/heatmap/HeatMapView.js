@@ -63,8 +63,8 @@ const styles = StyleSheet.create({
     },
     th: {
         ':first-child': firstCell,
-        fontSize: '11px',
-        textAlign: 'left',
+        fontSize: '12px',
+        textAlign: 'right',
         textTransform: 'uppercase',
         display: 'block',
         height: '30px',
