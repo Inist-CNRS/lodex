@@ -39,12 +39,15 @@ const BarChartView = ({
     diagonalCategoryAxis,
     scale,
     direction,
-    rightMargin,
+    categoryMargin,
+    valueMargin,
     max,
 }) => {
     const valueAxisProps = {
         angle: diagonalValueAxis && -45,
-        textAnchor: 'end',
+        textAnchor: diagonalValueAxis
+            ? 'end'
+            : direction === 'horizontal' ? 'middle' : 'end',
         type: 'number',
         allowDecimals: !axisRoundValue,
         scale,
@@ -55,7 +58,9 @@ const BarChartView = ({
 
     const categoryAxisProps = {
         angle: diagonalCategoryAxis && -45,
-        textAnchor: 'end',
+        textAnchor: diagonalCategoryAxis
+            ? 'end'
+            : direction === 'horizontal' ? 'end' : 'middle',
         type: 'category',
         dataKey: '_id',
         interval: 0,
@@ -66,7 +71,9 @@ const BarChartView = ({
             <ResponsiveContainer
                 width="100%"
                 height={
-                    direction === 'horizontal' ? chartData.length * 40 : 300
+                    direction === 'horizontal'
+                        ? chartData.length * 40 + valueMargin
+                        : 300 + categoryMargin
                 }
             >
                 <BarChart
@@ -81,14 +88,21 @@ const BarChartView = ({
                         {...(direction === 'horizontal'
                             ? valueAxisProps
                             : categoryAxisProps)}
-                        padding={padding}
+                        height={
+                            direction === 'horizontal'
+                                ? valueMargin
+                                : categoryMargin
+                        }
                     />
                     <YAxis
                         {...(direction === 'horizontal'
                             ? categoryAxisProps
                             : valueAxisProps)}
-                        width={parseInt(rightMargin)}
-                        padding={padding}
+                        width={
+                            direction === 'horizontal'
+                                ? categoryMargin
+                                : valueMargin
+                        }
                     />
                     <Tooltip />
                     <CartesianGrid strokeDasharray="3 3" />
@@ -116,7 +130,8 @@ BarChartView.propTypes = {
     diagonalCategoryAxis: PropTypes.bool,
     scale: PropTypes.oneOf(['linear', 'log']),
     direction: PropTypes.oneOf(['horizontal', 'vertical']),
-    rightMargin: PropTypes.number.isRequired,
+    categoryMargin: PropTypes.number.isRequired,
+    valueMargin: PropTypes.number.isRequired,
     max: PropTypes.number.isRequired,
 };
 
@@ -131,7 +146,8 @@ const mapStateToProps = (state, { field, chartData }) => {
         diagonalValueAxis,
         scale,
         direction = 'horizontal',
-        rightMargin = 120,
+        valueMargin = 120,
+        categoryMargin = 120,
     } = fromFields.getFieldFormatArgs(state, field.name);
 
     return {
@@ -140,7 +156,8 @@ const mapStateToProps = (state, { field, chartData }) => {
         diagonalValueAxis,
         scale,
         direction,
-        rightMargin: parseInt(rightMargin),
+        valueMargin: parseInt(valueMargin),
+        categoryMargin: parseInt(categoryMargin),
         max: Math.max(...chartData.map(({ value }) => value)),
     };
 };

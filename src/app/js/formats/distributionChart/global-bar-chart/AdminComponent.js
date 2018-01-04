@@ -36,7 +36,8 @@ class ChartEdition extends Component {
         axisRoundValue: PropTypes.bool,
         diagonalCategoryAxis: PropTypes.bool,
         diagonalValueAxis: PropTypes.bool,
-        rightMargin: PropTypes.number,
+        categoryMargin: PropTypes.number,
+        valueMargin: PropTypes.number,
         scale: PropTypes.oneOf(['log', 'linear']),
         direction: PropTypes.oneOf(['horizontal', 'vertical']),
         onChange: PropTypes.func.isRequired,
@@ -54,7 +55,8 @@ class ChartEdition extends Component {
         diagonalValueAxis: false,
         direction: 'horizontal',
         scale: 'linear',
-        rightMargin: 120,
+        categoryMargin: 120,
+        valueMargin: 120,
     };
     constructor(props) {
         super(props);
@@ -66,7 +68,8 @@ class ChartEdition extends Component {
             diagonalValueAxis,
             scale,
             direction,
-            rightMargin,
+            categoryMargin,
+            valueMargin,
         } = this.props;
         this.state = {
             params,
@@ -76,7 +79,8 @@ class ChartEdition extends Component {
             diagonalValueAxis,
             scale,
             direction,
-            rightMargin,
+            categoryMargin,
+            valueMargin,
         };
     }
 
@@ -133,8 +137,14 @@ class ChartEdition extends Component {
         this.props.onChange(newState);
     };
 
-    setRightMargin = (_, rightMargin) => {
-        const newState = { ...this.state, rightMargin };
+    setCategoryMargin = (_, categoryMargin) => {
+        const newState = { ...this.state, categoryMargin };
+        this.setState(newState);
+        this.props.onChange(newState);
+    };
+
+    setValueMargin = (_, valueMargin) => {
+        const newState = { ...this.state, valueMargin };
         this.setState(newState);
         this.props.onChange(newState);
     };
@@ -166,7 +176,8 @@ class ChartEdition extends Component {
             diagonalCategoryAxis,
             scale,
             direction,
-            rightMargin,
+            categoryMargin,
+            valueMargin,
         } = this.state;
         return (
             <div style={styles.container}>
@@ -264,10 +275,17 @@ class ChartEdition extends Component {
                 </SelectField>
                 <TextField
                     type="number"
-                    floatingLabelText={polyglot.t('right_margin')}
-                    onChange={this.setRightMargin}
+                    floatingLabelText={polyglot.t('category_margin')}
+                    onChange={this.setCategoryMargin}
                     style={styles.input2}
-                    value={rightMargin}
+                    value={categoryMargin}
+                />
+                <TextField
+                    type="number"
+                    floatingLabelText={polyglot.t('value_margin')}
+                    onChange={this.setValueMargin}
+                    style={styles.input2}
+                    value={valueMargin}
                 />
             </div>
         );
