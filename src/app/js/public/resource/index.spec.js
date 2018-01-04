@@ -185,6 +185,7 @@ describe('resourceReducer', () => {
             error: null,
             saving: false,
             addingField: null,
+            loading: true,
         });
     });
 

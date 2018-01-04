@@ -101,11 +101,15 @@ export const validatePosition = field => {
     return result;
 };
 
-export const validateTransformers = field => {
+export const validateTransformers = (field, isContribution) => {
     const result = {
         name: 'transformers',
         isValid: true,
     };
+
+    if (isContribution) {
+        return result;
+    }
 
     if (!field.transformers || !field.transformers.length) {
         return {
@@ -286,7 +290,7 @@ export const validateField = (field, isContribution = false, fields = []) => {
         validateCover(field, isContribution),
         validateScheme(field),
         validatePosition(field),
-        validateTransformers(field),
+        validateTransformers(field, isContribution),
         validateCompletesField(field, fields),
         validateComposedOf(field, isContribution),
         validateComposedOfFields(field),
