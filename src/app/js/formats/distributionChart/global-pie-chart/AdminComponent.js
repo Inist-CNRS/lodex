@@ -118,11 +118,11 @@ class ChartEdition extends Component {
                     value={orderBy}
                 >
                     <MenuItem
-                        value="label/asc"
+                        value="_id/asc"
                         primaryText={polyglot.t('label_asc')}
                     />
                     <MenuItem
-                        value="label/desc"
+                        value="_id/desc"
                         primaryText={polyglot.t('label_desc')}
                     />
                     <MenuItem
