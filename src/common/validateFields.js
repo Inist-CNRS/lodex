@@ -101,23 +101,11 @@ export const validatePosition = field => {
     return result;
 };
 
-export const validateTransformers = (field, isContribution) => {
+export const validateTransformers = field => {
     const result = {
         name: 'transformers',
         isValid: true,
     };
-
-    if (isContribution && !field.transformers) {
-        return result;
-    }
-
-    if (isContribution && field.transformers) {
-        return {
-            ...result,
-            isValid: false,
-            error: 'contribution_no_transformers',
-        };
-    }
 
     if (!field.transformers || !field.transformers.length) {
         return {
@@ -298,7 +286,7 @@ export const validateField = (field, isContribution = false, fields = []) => {
         validateCover(field, isContribution),
         validateScheme(field),
         validatePosition(field),
-        validateTransformers(field, isContribution),
+        validateTransformers(field),
         validateCompletesField(field, fields),
         validateComposedOf(field, isContribution),
         validateComposedOfFields(field),
