@@ -24,6 +24,12 @@ const margin = {
 };
 const padding = { top: 3, bottom: 3 };
 
+const styles = {
+    container: {
+        fontSize: '1.5rem',
+    },
+};
+
 const BarChartView = ({
     colorSet,
     chartData,
@@ -50,39 +56,45 @@ const BarChartView = ({
     };
 
     return (
-        <ResponsiveContainer
-            width="100%"
-            height={direction === 'horizontal' ? chartData.length * 40 : 300}
-        >
-            <BarChart
-                data={chartData}
-                layout={direction === 'horizontal' ? 'vertical' : 'horizontal'}
-                margin={margin}
-                maxBarSize={10}
+        <div style={styles.container}>
+            <ResponsiveContainer
+                width="100%"
+                height={
+                    direction === 'horizontal' ? chartData.length * 40 : 300
+                }
             >
-                <XAxis
-                    {...(direction === 'horizontal'
-                        ? valueAxisProps
-                        : categoryAxisProps)}
-                />
-                <YAxis
-                    {...(direction === 'horizontal'
-                        ? categoryAxisProps
-                        : valueAxisProps)}
-                    width={parseInt(rightMargin)}
-                />
-                <Tooltip />
-                <CartesianGrid strokeDasharray="3 3" />
-                <Bar dataKey="value" fill="#8884d8">
-                    {chartData.map((entry, index) => (
-                        <Cell
-                            key={String(index).concat('_cell_bar')}
-                            fill={colorSet[index % colorSet.length]}
-                        />
-                    ))}
-                </Bar>
-            </BarChart>
-        </ResponsiveContainer>
+                <BarChart
+                    data={chartData}
+                    layout={
+                        direction === 'horizontal' ? 'vertical' : 'horizontal'
+                    }
+                    margin={margin}
+                    maxBarSize={10}
+                >
+                    <XAxis
+                        {...(direction === 'horizontal'
+                            ? valueAxisProps
+                            : categoryAxisProps)}
+                    />
+                    <YAxis
+                        {...(direction === 'horizontal'
+                            ? categoryAxisProps
+                            : valueAxisProps)}
+                        width={parseInt(rightMargin)}
+                    />
+                    <Tooltip />
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <Bar dataKey="value" fill="#8884d8">
+                        {chartData.map((entry, index) => (
+                            <Cell
+                                key={String(index).concat('_cell_bar')}
+                                fill={colorSet[index % colorSet.length]}
+                            />
+                        ))}
+                    </Bar>
+                </BarChart>
+            </ResponsiveContainer>
+        </div>
     );
 };
 
