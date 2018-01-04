@@ -17,10 +17,10 @@ import injectData from '../../injectData';
 import { fromFields } from '../../../sharedSelectors';
 
 const margin = {
-    top: 15,
-    right: 50,
-    left: 0,
-    bottom: 0,
+    top: 10,
+    right: 10,
+    left: 10,
+    bottom: 10,
 };
 const padding = { top: 3, bottom: 3 };
 
@@ -53,7 +53,6 @@ const BarChartView = ({
         type: 'category',
         dataKey: '_id',
         interval: 0,
-        padding: padding,
     };
 
     return (
@@ -76,12 +75,14 @@ const BarChartView = ({
                         {...(direction === 'horizontal'
                             ? valueAxisProps
                             : categoryAxisProps)}
+                        padding={padding}
                     />
                     <YAxis
                         {...(direction === 'horizontal'
                             ? categoryAxisProps
                             : valueAxisProps)}
                         width={parseInt(rightMargin)}
+                        padding={padding}
                     />
                     <Tooltip />
                     <CartesianGrid strokeDasharray="3 3" />
