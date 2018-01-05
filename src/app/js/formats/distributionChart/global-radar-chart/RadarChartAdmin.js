@@ -6,7 +6,7 @@ import MenuItem from 'material-ui/MenuItem';
 import translate from 'redux-polyglot/translate';
 import Checkbox from 'material-ui/Checkbox';
 
-import { polyglot as polyglotPropTypes } from '../../propTypes';
+import { polyglot as polyglotPropTypes } from '../../../propTypes';
 
 const styles = {
     container: {
@@ -24,7 +24,7 @@ const styles = {
     },
 };
 
-class ChartEdition extends Component {
+class RadarChartAdmin extends Component {
     static propTypes = {
         args: {
             params: PropTypes.shape({
@@ -173,4 +173,4 @@ class ChartEdition extends Component {
     }
 }
 
-export default translate(ChartEdition);
+export default translate(RadarChartAdmin);
