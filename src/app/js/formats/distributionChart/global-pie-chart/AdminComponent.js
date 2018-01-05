@@ -25,72 +25,63 @@ const styles = {
 
 class ChartEdition extends Component {
     static propTypes = {
-        params: PropTypes.shape({
-            maxSize: PropTypes.number,
-            maxValue: PropTypes.number,
-            minValue: PropTypes.number,
-            orderBy: PropTypes.string,
-        }),
-        colors: PropTypes.string,
+        args: {
+            params: PropTypes.shape({
+                maxSize: PropTypes.number,
+                maxValue: PropTypes.number,
+                minValue: PropTypes.number,
+                orderBy: PropTypes.string,
+            }),
+            colors: PropTypes.string,
+        },
         onChange: PropTypes.func.isRequired,
         p: polyglotPropTypes.isRequired,
     };
 
     static defaultProps = {
-        params: {
-            maxSize: 5,
-            orderBy: 'value/asc',
+        args: {
+            params: {
+                maxSize: 5,
+                orderBy: 'value/asc',
+            },
+            colors: '#1D1A31 #4D2D52 #9A4C95 #F08CAE #C1A5A9',
         },
-        colors: '#1D1A31 #4D2D52 #9A4C95 #F08CAE #C1A5A9',
-        axisRoundValue: true,
-        scale: 'linear',
     };
-    constructor(props) {
-        super(props);
-        const { params, colors } = this.props;
-        this.state = { params, colors };
-    }
 
     setMaxSize = (_, maxSize) => {
-        const { params, ...state } = this.state;
+        const { params, ...state } = this.props.args;
         const newState = { ...state, params: { ...params, maxSize } };
-        this.setState(newState);
         this.props.onChange(newState);
     };
 
     setMaxValue = (_, maxValue) => {
-        const { params, ...state } = this.state;
+        const { params, ...state } = this.props.args;
         const newState = { ...state, params: { ...params, maxValue } };
-        this.setState(newState);
         this.props.onChange(newState);
     };
 
     setMinValue = (_, minValue) => {
-        const { params, ...state } = this.state;
+        const { params, ...state } = this.props.args;
         const newState = { ...state, params: { ...params, minValue } };
-        this.setState(newState);
         this.props.onChange(newState);
     };
 
     setOrderBy = (_, __, orderBy) => {
-        const { params, ...state } = this.state;
+        const { params, ...state } = this.props.args;
         const newState = { ...state, params: { ...params, orderBy } };
-        this.setState(newState);
         this.props.onChange(newState);
     };
 
     setColors = (_, colors) => {
-        const newState = { ...this.state, colors };
-        this.setState(newState);
+        const newState = { ...this.props.args, colors };
         this.props.onChange(newState);
     };
 
     render() {
-        const { p: polyglot } = this.props;
         const {
-            params: { maxSize, maxValue, minValue, orderBy },
-            colors,
-        } = this.state;
+            p: polyglot,
+            args: { params: { maxSize, maxValue, minValue, orderBy }, colors },
+        } = this.props;
         return (
             <div style={styles.container}>
                 <TextField
