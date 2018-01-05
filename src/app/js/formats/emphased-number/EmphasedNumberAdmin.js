@@ -22,7 +22,7 @@ const styles = {
     },
 };
 
-class ChartEdition extends Component {
+class EmphasedNumberAdmin extends Component {
     static propTypes = {
         size: PropTypes.string,
         colors: PropTypes.string,
@@ -87,4 +87,4 @@ class ChartEdition extends Component {
     }
 }
 
-export default translate(ChartEdition);
+export default translate(EmphasedNumberAdmin);
