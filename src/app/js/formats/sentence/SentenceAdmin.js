@@ -13,7 +13,7 @@ const styles = {
     },
 };
 
-class SentenceEdition extends Component {
+class SentenceAdmin extends Component {
     static propTypes = {
         prefix: PropTypes.string,
         suffix: PropTypes.string,
@@ -75,4 +75,4 @@ class SentenceEdition extends Component {
     }
 }
 
-export default translate(SentenceEdition);
+export default translate(SentenceAdmin);
