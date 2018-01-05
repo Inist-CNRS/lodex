@@ -17,7 +17,7 @@ const styles = {
     },
 };
 
-class ListEdition extends Component {
+class ListAdmin extends Component {
     static propTypes = {
         type: PropTypes.string,
         subFormat: PropTypes.string,
@@ -109,4 +109,4 @@ class ListEdition extends Component {
     }
 }
 
-export default translate(ListEdition);
+export default translate(ListAdmin);
