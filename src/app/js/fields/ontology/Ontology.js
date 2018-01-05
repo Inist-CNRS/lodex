@@ -4,16 +4,19 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import withHandlers from 'recompose/withHandlers';
 import translate from 'redux-polyglot/translate';
-import Reorder from 'material-ui/svg-icons/editor/format-line-spacing';
-import AppBar from 'material-ui/AppBar';
-import { grey300, grey800, grey900 } from 'material-ui/styles/colors';
+import { SortableContainer } from 'react-sortable-hoc';
 import {
-    SortableContainer,
-    SortableElement,
-    SortableHandle,
-} from 'react-sortable-hoc';
+    Table,
+    TableBody,
+    TableHeader,
+    TableHeaderColumn,
+    TableRow,
+} from 'material-ui/Table';
 
-import { field as fieldPropTypes } from '../../propTypes';
+import {
+    field as fieldPropTypes,
+    polyglot as polyglotPropTypes,
+} from '../../propTypes';
 import { fromFields } from '../../sharedSelectors';
 import OntologyField from './OntologyField';
 import { changePosition, preLoadPublication } from '../';
@@ -26,62 +29,23 @@ const styles = {
         paddingLeft: '1rem',
         paddingRight: '1rem',
     },
-    exportContainer: {
-        display: 'flex',
-        justifyContent: 'flex-end',
-        marginBottom: '1rem',
-    },
-    handle: {
-        width: '100%',
-        height: '2.5em',
-        backgroundColor: grey300,
-        cursor: 'ns-resize',
-        textAlign: 'right',
-        zIndex: 0,
-    },
-    handleTitle: {
-        marginTop: '-14px',
-        fontStyle: 'italic',
-        color: grey800,
-        fontSize: 'large',
-    },
-    handleIcon: {
-        color: grey900,
-        marginTop: '-1px',
-    },
-    icon: { color: 'black' },
 };
 
-const DragHandle = SortableHandle(({ cover }) => (
-    <AppBar
-        style={styles.handle}
-        iconElementLeft={<Reorder style={styles.handleIcon} />}
-        title={cover}
-        titleStyle={styles.handleTitle}
-    />
-));
-
-const SortableItem = SortableElement(({ value, sortIndex }) => (
-    <div>
-        {Boolean(sortIndex) && <DragHandle cover={value.props.field.cover} />}
-        {value}
-    </div>
-));
-
 const SortableList = SortableContainer(({ items }) => (
-    <div>
-        {items.map((value, index) => (
-            <SortableItem
-                collection={value.props.field.cover}
-                disabled={index === 0}
-                key={`item-${index}`}
-                sortIndex={index}
+    <TableBody>
+        {items.map((field, index) => (
+            <OntologyField
+                key={field.name}
+                field={field}
                 index={index}
-                value={value}
+                disabled={index === 0}
+                sortIndex={index}
             />
         ))}
-    </div>
+    </TableBody>
 ));
+
+SortableList.muiName = 'TableBody'; // tell material-ui that this component is TableBody
 
 export class OntologyComponent extends Component {
     componentWillMount() {
@@ -93,20 +57,46 @@ export class OntologyComponent extends Component {
     };
 
     render() {
-        const { fields, handleChangePosition } = this.props;
+        const { fields, handleChangePosition, p: polyglot } = this.props;
         return (
             <div className="ontology" style={styles.container}>
-                <div>
+                <Table>
+                    <TableHeader
+                        displaySelectAll={false}
+                        adjustForCheckbox={false}
+                    >
+                        <TableRow>
+                            <TableHeaderColumn />
+                            <TableHeaderColumn>
+                                {polyglot.t('identifier')}
+                            </TableHeaderColumn>
+                            <TableHeaderColumn>
+                                {polyglot.t('label')}
+                            </TableHeaderColumn>
+                            <TableHeaderColumn>
+                                {polyglot.t('overview')}
+                            </TableHeaderColumn>
+                            <TableHeaderColumn>
+                                {polyglot.t('cover')}
+                            </TableHeaderColumn>
+                            <TableHeaderColumn>
+                                {polyglot.t('scheme')}
+                            </TableHeaderColumn>
+                            <TableHeaderColumn>
+                                {polyglot.t('count_of_field')}
+                            </TableHeaderColumn>
+                            <TableHeaderColumn>
+                                {polyglot.t('language')}
+                            </TableHeaderColumn>
+                            <TableHeaderColumn>
+                                {polyglot.t('edit')}
+                            </TableHeaderColumn>
+                        </TableRow>
+                    </TableHeader>
                     <SortableList
                         lockAxis="y"
                         useDragHandle
-                        items={fields.map((field, index) => (
-                            <OntologyField
-                                key={field.name}
-                                field={field}
-                                index={index + 1}
-                            />
-                        ))}
+                        items={fields}
                         onSortEnd={(oldIndex, newIndex) =>
                             this.onSortEnd(
                                 oldIndex,
@@ -116,7 +106,7 @@ export class OntologyComponent extends Component {
                             )
                         }
                     />
-                </div>
+                </Table>
                 <AddCharacteristic />
             </div>
         );
@@ -127,6 +117,7 @@ OntologyComponent.propTypes = {
     fields: PropTypes.arrayOf(fieldPropTypes).isRequired,
     handleChangePosition: PropTypes.func.isRequired,
     preLoadPublication: PropTypes.func.isRequired,
+    p: polyglotPropTypes.isRequired,
 };
 
 const mapStateToProps = state => ({
