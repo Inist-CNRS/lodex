@@ -1,8 +1,60 @@
+import React from 'react';
 import expect from 'expect';
+import { shallow } from 'enzyme';
+import { XAxis, YAxis } from 'recharts';
 
-import { getCategoryAxisProps, getValueAxisProps } from './BarChartView';
+import BarChartView, {
+    getCategoryAxisProps,
+    getValueAxisProps,
+} from './BarChartView';
 
-describe.only('BarChartView', () => {
+describe('BarChartView', () => {
+    it('should pass valueAxisProps to XAxis and categoryProps to YAxis if direction is horizontal', () => {
+        const props = {
+            chartData: [],
+            valueAxisProps: {
+                propsFor: 'value',
+            },
+            categoryAxisProps: {
+                propsFor: 'category',
+            },
+            direction: 'horizontal',
+        };
+        const barChart = shallow(
+            <BarChartView.WrappedComponent.WrappedComponent {...props} />,
+        );
+
+        const xAxis = barChart.find(XAxis);
+        const yAxis = barChart.find(YAxis);
+
+        expect(xAxis.props().propsFor).toBe('value');
+
+        expect(yAxis.props().propsFor).toBe('category');
+    });
+
+    it('should pass valueAxisProps to yAxis and categoryProps to XAxis if direction is vertical', () => {
+        const props = {
+            chartData: [],
+            valueAxisProps: {
+                propsFor: 'value',
+            },
+            categoryAxisProps: {
+                propsFor: 'category',
+            },
+            direction: 'vertical',
+        };
+        const barChart = shallow(
+            <BarChartView.WrappedComponent.WrappedComponent {...props} />,
+        );
+
+        const xAxis = barChart.find(XAxis);
+        const yAxis = barChart.find(YAxis);
+
+        expect(xAxis.props().propsFor).toBe('category');
+
+        expect(yAxis.props().propsFor).toBe('value');
+    });
+
     describe('getCategoryAxisProps', () => {
         it('should set props for categoryAxis', () => {
             expect(getCategoryAxisProps({})).toEqual({
