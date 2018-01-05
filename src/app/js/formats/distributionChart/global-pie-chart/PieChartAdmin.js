@@ -23,7 +23,7 @@ const styles = {
     },
 };
 
-class ChartEdition extends Component {
+class PieChartAdmin extends Component {
     static propTypes = {
         args: {
             params: PropTypes.shape({
@@ -136,4 +136,4 @@ class ChartEdition extends Component {
     }
 }
 
-export default translate(ChartEdition);
+export default translate(PieChartAdmin);

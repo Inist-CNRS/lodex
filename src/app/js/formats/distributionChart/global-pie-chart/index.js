@@ -1,5 +1,5 @@
 import Component from './PieChartView';
-import AdminComponent from './AdminComponent';
+import AdminComponent from './PieChartAdmin';
 import DefaultFormat from '../../DefaultFormat';
 
 export default {
