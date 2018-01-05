@@ -16,30 +16,25 @@ const styles = {
 
 class ImageAdmin extends Component {
     static propTypes = {
-        imageWidth: PropTypes.string,
+        args: {
+            imageWidth: PropTypes.string,
+        },
         onChange: PropTypes.func.isRequired,
         p: polyglotPropTypes.isRequired,
     };
 
     static defaultProps = {
-        imageWidth: '100%',
+        args: {
+            imageWidth: '100%',
+        },
     };
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            imageWidth: this.props.imageWidth,
-        };
-    }
 
     setWidth = imageWidth => {
-        this.setState({ imageWidth });
         this.props.onChange({ imageWidth });
     };
 
     render() {
-        const { imageWidth } = this.state;
-        const { p: polyglot } = this.props;
+        const { p: polyglot, args: imageWidth } = this.props;
         return (
             <div style={styles.container}>
                 <SelectField
