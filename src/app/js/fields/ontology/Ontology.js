@@ -10,6 +10,8 @@ import {
     TableHeaderColumn,
     TableRow,
 } from 'material-ui/Table';
+import { Card, CardHeader, CardText, CardActions } from 'material-ui/Card';
+import Divider from 'material-ui/Divider';
 
 import {
     field as fieldPropTypes,
@@ -19,15 +21,6 @@ import { fromFields } from '../../sharedSelectors';
 import { changePosition, preLoadPublication } from '../';
 import AddCharacteristic from '../addCharacteristic/AddCharacteristic';
 import OntologyFieldList from './OntologyFieldList';
-
-const styles = {
-    container: {
-        display: 'flex',
-        flexDirection: 'column',
-        paddingLeft: '1rem',
-        paddingRight: '1rem',
-    },
-};
 
 export class OntologyComponent extends Component {
     componentWillMount() {
@@ -41,56 +34,62 @@ export class OntologyComponent extends Component {
     render() {
         const { fields, handleChangePosition, p: polyglot } = this.props;
         return (
-            <div className="ontology" style={styles.container}>
-                <Table>
-                    <TableHeader
-                        displaySelectAll={false}
-                        adjustForCheckbox={false}
-                    >
-                        <TableRow>
-                            <TableHeaderColumn />
-                            <TableHeaderColumn>
-                                {polyglot.t('identifier')}
-                            </TableHeaderColumn>
-                            <TableHeaderColumn>
-                                {polyglot.t('label')}
-                            </TableHeaderColumn>
-                            <TableHeaderColumn>
-                                {polyglot.t('overview')}
-                            </TableHeaderColumn>
-                            <TableHeaderColumn>
-                                {polyglot.t('cover')}
-                            </TableHeaderColumn>
-                            <TableHeaderColumn>
-                                {polyglot.t('scheme')}
-                            </TableHeaderColumn>
-                            <TableHeaderColumn>
-                                {polyglot.t('count_of_field')}
-                            </TableHeaderColumn>
-                            <TableHeaderColumn>
-                                {polyglot.t('language')}
-                            </TableHeaderColumn>
-                            <TableHeaderColumn>
-                                {polyglot.t('edit')}
-                            </TableHeaderColumn>
-                        </TableRow>
-                    </TableHeader>
-                    <OntologyFieldList
-                        lockAxis="y"
-                        useDragHandle
-                        items={fields}
-                        onSortEnd={(oldIndex, newIndex) =>
-                            this.onSortEnd(
-                                oldIndex,
-                                newIndex,
-                                fields,
-                                handleChangePosition,
-                            )
-                        }
-                    />
-                </Table>
-                <AddCharacteristic />
-            </div>
+            <Card>
+                <CardHeader title={<h3>{polyglot.t('model')}</h3>} />
+                <Divider />
+                <CardText>
+                    <Table>
+                        <TableHeader
+                            displaySelectAll={false}
+                            adjustForCheckbox={false}
+                        >
+                            <TableRow>
+                                <TableHeaderColumn />
+                                <TableHeaderColumn>
+                                    {polyglot.t('identifier')}
+                                </TableHeaderColumn>
+                                <TableHeaderColumn>
+                                    {polyglot.t('label')}
+                                </TableHeaderColumn>
+                                <TableHeaderColumn>
+                                    {polyglot.t('overview')}
+                                </TableHeaderColumn>
+                                <TableHeaderColumn>
+                                    {polyglot.t('cover')}
+                                </TableHeaderColumn>
+                                <TableHeaderColumn>
+                                    {polyglot.t('scheme')}
+                                </TableHeaderColumn>
+                                <TableHeaderColumn>
+                                    {polyglot.t('count_of_field')}
+                                </TableHeaderColumn>
+                                <TableHeaderColumn>
+                                    {polyglot.t('language')}
+                                </TableHeaderColumn>
+                                <TableHeaderColumn>
+                                    {polyglot.t('edit')}
+                                </TableHeaderColumn>
+                            </TableRow>
+                        </TableHeader>
+                        <OntologyFieldList
+                            lockAxis="y"
+                            useDragHandle
+                            items={fields}
+                            onSortEnd={(oldIndex, newIndex) =>
+                                this.onSortEnd(
+                                    oldIndex,
+                                    newIndex,
+                                    fields,
+                                    handleChangePosition,
+                                )
+                            }
+                        />
+                    </Table>
+                </CardText>
+                <CardActions>
+                    <AddCharacteristic />
+                </CardActions>
+            </Card>
         );
     }
 }
