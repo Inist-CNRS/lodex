@@ -15,7 +15,7 @@ const styles = {
     },
 };
 
-class UriEdition extends Component {
+class UriAdmin extends Component {
     static propTypes = {
         type: PropTypes.string,
         value: PropTypes.string,
@@ -97,4 +97,4 @@ class UriEdition extends Component {
     }
 }
 
-export default translate(UriEdition);
+export default translate(UriAdmin);
