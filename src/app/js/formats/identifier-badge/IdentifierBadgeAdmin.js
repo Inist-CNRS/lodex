@@ -22,7 +22,7 @@ const styles = {
     },
 };
 
-class IdentifierBadgeEdition extends Component {
+class IdentifierBadgeAdmin extends Component {
     static propTypes = {
         typid: PropTypes.string,
         colors: PropTypes.string,
@@ -88,4 +88,4 @@ class IdentifierBadgeEdition extends Component {
     }
 }
 
-export default translate(IdentifierBadgeEdition);
+export default translate(IdentifierBadgeAdmin);
