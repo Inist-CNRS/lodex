@@ -26,159 +26,128 @@ const styles = {
 
 class ChartEdition extends Component {
     static propTypes = {
-        params: PropTypes.shape({
-            maxSize: PropTypes.number,
-            maxValue: PropTypes.number,
-            minValue: PropTypes.number,
-            orderBy: PropTypes.string,
+        args: PropTypes.shape({
+            params: PropTypes.shape({
+                maxSize: PropTypes.number,
+                maxValue: PropTypes.number,
+                minValue: PropTypes.number,
+                orderBy: PropTypes.string,
+            }),
+            colors: PropTypes.string,
+            axisRoundValue: PropTypes.bool,
+            diagonalCategoryAxis: PropTypes.bool,
+            diagonalValueAxis: PropTypes.bool,
+            categoryMargin: PropTypes.number,
+            valueMargin: PropTypes.number,
+            scale: PropTypes.oneOf(['log', 'linear']),
+            direction: PropTypes.oneOf(['horizontal', 'vertical']),
         }),
-        colors: PropTypes.string,
-        axisRoundValue: PropTypes.bool,
-        diagonalCategoryAxis: PropTypes.bool,
-        diagonalValueAxis: PropTypes.bool,
-        categoryMargin: PropTypes.number,
-        valueMargin: PropTypes.number,
-        scale: PropTypes.oneOf(['log', 'linear']),
-        direction: PropTypes.oneOf(['horizontal', 'vertical']),
         onChange: PropTypes.func.isRequired,
         p: polyglotPropTypes.isRequired,
     };
 
     static defaultProps = {
-        params: {
-            maxSize: 5,
-            orderBy: 'value/asc',
+        args: {
+            params: {
+                maxSize: 5,
+                orderBy: 'value/asc',
+            },
+            colors: '#1D1A31 #4D2D52 #9A4C95 #F08CAE #C1A5A9',
+            axisRoundValue: true,
+            diagonalCategoryAxis: false,
+            diagonalValueAxis: false,
+            direction: 'horizontal',
+            scale: 'linear',
+            categoryMargin: 120,
+            valueMargin: 120,
         },
-        colors: '#1D1A31 #4D2D52 #9A4C95 #F08CAE #C1A5A9',
-        axisRoundValue: true,
-        diagonalCategoryAxis: false,
-        diagonalValueAxis: false,
-        direction: 'horizontal',
-        scale: 'linear',
-        categoryMargin: 120,
-        valueMargin: 120,
     };
-    constructor(props) {
-        super(props);
-        const {
-            params,
-            colors,
-            axisRoundValue,
-            diagonalCategoryAxis,
-            diagonalValueAxis,
-            scale,
-            direction,
-            categoryMargin,
-            valueMargin,
-        } = this.props;
-        this.state = {
-            params,
-            colors,
-            axisRoundValue,
-            diagonalCategoryAxis,
-            diagonalValueAxis,
-            scale,
-            direction,
-            categoryMargin,
-            valueMargin,
-        };
-    }
 
     setMaxSize = (_, maxSize) => {
-        const { params, ...state } = this.state;
-        const newState = { ...state, params: { ...params, maxSize } };
-        this.setState(newState);
-        this.props.onChange(newState);
+        const { params, ...args } = this.props.args;
+        const newArgs = { ...args, params: { ...params, maxSize } };
+        this.props.onChange(newArgs);
     };
 
     setMaxValue = (_, maxValue) => {
-        const { params, ...state } = this.state;
-        const newState = { ...state, params: { ...params, maxValue } };
-        this.setState(newState);
-        this.props.onChange(newState);
+        const { params, ...args } = this.props.args;
+        const newArgs = { ...args, params: { ...params, maxValue } };
+        this.props.onChange(newArgs);
     };
 
     setMinValue = (_, minValue) => {
-        const { params, ...state } = this.state;
-        const newState = { ...state, params: { ...params, minValue } };
-        this.setState(newState);
-        this.props.onChange(newState);
+        const { params, ...args } = this.props.args;
+        const newArgs = { ...args, params: { ...params, minValue } };
+        this.props.onChange(newArgs);
     };
 
     setOrderBy = (_, __, orderBy) => {
-        const { params, ...state } = this.state;
-        const newState = { ...state, params: { ...params, orderBy } };
-        this.setState(newState);
-        this.props.onChange(newState);
+        const { params, ...args } = this.props.args;
+        const newArgs = { ...args, params: { ...params, orderBy } };
+        this.props.onChange(newArgs);
     };
 
     setColors = (_, colors) => {
-        const newState = { ...this.state, colors };
-        this.setState(newState);
-        this.props.onChange(newState);
+        const newArgs = { ...this.props.args, colors };
+        this.props.onChange(newArgs);
     };
 
     setAxisRoundValue = () => {
-        const { axisRoundValue, ...state } = this.state;
-        const newState = { ...state, axisRoundValue: !axisRoundValue };
-        this.setState(newState);
-        this.props.onChange(newState);
+        const { axisRoundValue, ...args } = this.props.args;
+        const newArgs = { ...args, axisRoundValue: !axisRoundValue };
+        this.props.onChange(newArgs);
     };
 
     setScale = (_, __, scale) => {
-        const newState = { ...this.state, scale };
-        this.setState(newState);
-        this.props.onChange(newState);
+        const newArgs = { ...this.props.args, scale };
+        this.props.onChange(newArgs);
     };
 
     setDirection = (_, __, direction) => {
-        const newState = { ...this.state, direction };
-        this.setState(newState);
-        this.props.onChange(newState);
+        const newArgs = { ...this.props.args, direction };
+        this.props.onChange(newArgs);
     };
 
     setCategoryMargin = (_, categoryMargin) => {
-        const newState = { ...this.state, categoryMargin };
-        this.setState(newState);
-        this.props.onChange(newState);
+        const newArgs = { ...this.props.args, categoryMargin };
+        this.props.onChange(newArgs);
     };
 
     setValueMargin = (_, valueMargin) => {
-        const newState = { ...this.state, valueMargin };
-        this.setState(newState);
-        this.props.onChange(newState);
+        const newArgs = { ...this.props.args, valueMargin };
+        this.props.onChange(newArgs);
     };
 
     toggleDiagonalValueAxis = () => {
-        const { diagonalValueAxis, ...state } = this.state;
-        const newState = { ...state, diagonalValueAxis: !diagonalValueAxis };
-        this.setState(newState);
-        this.props.onChange(newState);
+        const { diagonalValueAxis, ...args } = this.props.args;
+        const newArgs = { ...args, diagonalValueAxis: !diagonalValueAxis };
+        this.props.onChange(newArgs);
     };
 
     toggleDiagonalCategoryAxis = () => {
-        const { diagonalCategoryAxis, ...state } = this.state;
-        const newState = {
-            ...state,
+        const { diagonalCategoryAxis, ...args } = this.props.args;
+        const newArgs = {
+            ...args,
             diagonalCategoryAxis: !diagonalCategoryAxis,
         };
-        this.setState(newState);
-        this.props.onChange(newState);
+        this.props.onChange(newArgs);
     };
 
     render() {
-        const { p: polyglot } = this.props;
         const {
-            params: { maxSize, maxValue, minValue, orderBy },
-            colors,
-            axisRoundValue,
-            diagonalValueAxis,
-            diagonalCategoryAxis,
-            scale,
-            direction,
-            categoryMargin,
-            valueMargin,
-        } = this.state;
+            p: polyglot,
+            args: {
+                params: { maxSize, maxValue, minValue, orderBy },
+                colors,
+                axisRoundValue,
+                diagonalValueAxis,
+                diagonalCategoryAxis,
+                scale,
+                direction,
+                categoryMargin,
+                valueMargin,
+            },
+        } = this.props;
         return (
             <div style={styles.container}>
                 <TextField

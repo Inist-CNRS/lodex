@@ -61,7 +61,8 @@ class FormatEdition extends Component {
                 />
                 <AdminComponent
                     onChange={this.setArguments}
-                    {...{ ...this.props, ...args }}
+                    {...this.props}
+                    args={args}
                 />
             </div>
         );
