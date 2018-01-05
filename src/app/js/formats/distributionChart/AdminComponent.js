@@ -26,78 +26,70 @@ const styles = {
 
 class ChartEdition extends Component {
     static propTypes = {
-        params: PropTypes.shape({
-            maxSize: PropTypes.number,
-            maxValue: PropTypes.number,
-            minValue: PropTypes.number,
-            orderBy: PropTypes.string,
-        }),
-        colors: PropTypes.string,
-        axisRoundValue: PropTypes.bool,
-        scale: PropTypes.oneOf(['log', 'linear']),
+        args: {
+            params: PropTypes.shape({
+                maxSize: PropTypes.number,
+                maxValue: PropTypes.number,
+                minValue: PropTypes.number,
+                orderBy: PropTypes.string,
+            }),
+            colors: PropTypes.string,
+            axisRoundValue: PropTypes.bool,
+            scale: PropTypes.oneOf(['log', 'linear']),
+        },
         onChange: PropTypes.func.isRequired,
         p: polyglotPropTypes.isRequired,
     };
 
     static defaultProps = {
-        params: {
-            maxSize: 5,
-            orderBy: 'value/asc',
+        args: {
+            params: {
+                maxSize: 5,
+                orderBy: 'value/asc',
+            },
+            colors: '#1D1A31 #4D2D52 #9A4C95 #F08CAE #C1A5A9',
+            axisRoundValue: true,
+            scale: 'linear',
         },
-        colors: '#1D1A31 #4D2D52 #9A4C95 #F08CAE #C1A5A9',
-        axisRoundValue: true,
-        scale: 'linear',
     };
-    constructor(props) {
-        super(props);
-        const { params, colors, axisRoundValue, scale } = this.props;
-        this.state = { params, colors, axisRoundValue, scale };
-    }
 
     setMaxSize = (_, maxSize) => {
-        const { params, ...state } = this.state;
+        const { params, ...state } = this.props.args;
         const newState = { ...state, params: { ...params, maxSize } };
-        this.setState(newState);
         this.props.onChange(newState);
     };
 
     setMaxValue = (_, maxValue) => {
-        const { params, ...state } = this.state;
+        const { params, ...state } = this.props.args;
         const newState = { ...state, params: { ...params, maxValue } };
-        this.setState(newState);
         this.props.onChange(newState);
     };
 
     setMinValue = (_, minValue) => {
-        const { params, ...state } = this.state;
+        const { params, ...state } = this.props.args;
         const newState = { ...state, params: { ...params, minValue } };
-        this.setState(newState);
         this.props.onChange(newState);
     };
 
     setOrderBy = (_, __, orderBy) => {
-        const { params, ...state } = this.state;
+        const { params, ...state } = this.props.args;
         const newState = { ...state, params: { ...params, orderBy } };
-        this.setState(newState);
         this.props.onChange(newState);
     };
 
     setColors = (_, colors) => {
-        const newState = { ...this.state, colors };
-        this.setState(newState);
+        const newState = { ...this.props.args, colors };
         this.props.onChange(newState);
     };
 
     setAxisRoundValue = () => {
-        const { axisRoundValue, ...state } = this.state;
+        const { axisRoundValue, ...state } = this.props.args;
         const newState = { ...state, axisRoundValue: !axisRoundValue };
-        this.setState(newState);
         this.props.onChange(newState);
     };
 
     setScale = (_, __, scale) => {
-        const newState = { ...this.state, scale };
-        this.setState(newState);
+        const newState = { ...this.props.args, scale };
         this.props.onChange(newState);
     };
 
@@ -108,7 +100,7 @@ class ChartEdition extends Component {
             colors,
             axisRoundValue,
             scale,
-        } = this.state;
+        } = this.props.args;
         return (
             <div style={styles.container}>
                 <TextField
