@@ -12,7 +12,7 @@ const styles = {
     },
 };
 
-class ListEdition extends Component {
+class TrelloTimelineAdmin extends Component {
     static propTypes = {
         trelloKey: PropTypes.string,
         trelloToken: PropTypes.string,
@@ -69,4 +69,4 @@ class ListEdition extends Component {
     }
 }
 
-export default translate(ListEdition);
+export default translate(TrelloTimelineAdmin);
