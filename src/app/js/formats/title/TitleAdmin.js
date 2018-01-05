@@ -14,7 +14,7 @@ const styles = {
     },
 };
 
-class TitleEdition extends Component {
+class TitleAdmin extends Component {
     static propTypes = {
         level: PropTypes.number,
         onChange: PropTypes.func.isRequired,
@@ -60,4 +60,4 @@ class TitleEdition extends Component {
     }
 }
 
-export default translate(TitleEdition);
+export default translate(TitleAdmin);

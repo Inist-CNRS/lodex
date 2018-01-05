@@ -1,5 +1,5 @@
 import Component from './Component';
-import AdminComponent from './AdminComponent';
+import AdminComponent from './TitleAdmin';
 import DefaultFormat from '../DefaultFormat';
 
 export default {
