@@ -31,6 +31,43 @@ const styles = {
     },
 };
 
+export const getValueAxisProps = ({
+    diagonalValueAxis,
+    direction,
+    axisRoundValue,
+    scale,
+    max = 5,
+    valueMargin,
+}) => ({
+    angle: diagonalValueAxis ? -45 : null,
+    textAnchor: diagonalValueAxis
+        ? 'end'
+        : direction === 'horizontal' ? 'middle' : 'end',
+    type: 'number',
+    allowDecimals: !axisRoundValue,
+    scale,
+    tickCount: max > 5 ? 5 : max + 1,
+    domain: scale === 'log' ? ['auto', 'auto'] : [0, 'auto'], // log scale won't work with a domain starting at 0 (`auto` detect the boudaries and ensure it is readable)
+    dataKey: 'value',
+    [direction === 'horizontal' ? 'height' : 'width']: valueMargin,
+});
+
+export const getCategoryAxisProps = ({
+    direction,
+    diagonalCategoryAxis,
+    categoryMargin,
+}) => ({
+    angle: diagonalCategoryAxis ? -45 : null,
+    textAnchor: diagonalCategoryAxis
+        ? 'end'
+        : direction === 'horizontal' ? 'end' : 'middle',
+    type: 'category',
+    dataKey: '_id',
+    interval: 0,
+    padding: padding,
+    [direction === 'horizontal' ? 'width' : 'height']: categoryMargin,
+});
+
 const BarChartView = ({
     colorSet,
     chartData,
@@ -43,28 +80,20 @@ const BarChartView = ({
     valueMargin,
     max,
 }) => {
-    const valueAxisProps = {
-        angle: diagonalValueAxis && -45,
-        textAnchor: diagonalValueAxis
-            ? 'end'
-            : direction === 'horizontal' ? 'middle' : 'end',
-        type: 'number',
-        allowDecimals: !axisRoundValue,
+    const valueAxisProps = getValueAxisProps({
+        diagonalValueAxis,
+        direction,
+        axisRoundValue,
         scale,
-        tickCount: max > 5 ? 5 : max + 1,
-        domain: scale === 'log' ? ['auto', 'auto'] : [0, 'auto'], // log scale won't work with a domain starting at 0 (`auto` detect the boudaries and ensure it is readable)
-        dataKey: 'value',
-    };
+        max,
+        valueMargin,
+    });
 
-    const categoryAxisProps = {
-        angle: diagonalCategoryAxis && -45,
-        textAnchor: diagonalCategoryAxis
-            ? 'end'
-            : direction === 'horizontal' ? 'end' : 'middle',
-        type: 'category',
-        dataKey: '_id',
-        interval: 0,
-    };
+    const categoryAxisProps = getCategoryAxisProps({
+        direction,
+        diagonalCategoryAxis,
+        categoryMargin,
+    });
 
     return (
         <div style={styles.container}>
