@@ -16,30 +16,26 @@ const styles = {
 
 class ParagraphAdmin extends Component {
     static propTypes = {
-        paragraphWidth: PropTypes.string,
+        args: PropTypes.shape({
+            paragraphWidth: PropTypes.string,
+        }),
         onChange: PropTypes.func.isRequired,
         p: polyglotPropTypes.isRequired,
     };
 
     static defaultProps = {
-        paragraphWidth: '100%',
+        args: {
+            paragraphWidth: '100%',
+        },
     };
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            paragraphWidth: this.props.paragraphWidth,
-        };
-    }
 
     setWidth = paragraphWidth => {
-        this.setState({ paragraphWidth });
         this.props.onChange({ paragraphWidth });
     };
 
     render() {
-        const { paragraphWidth } = this.state;
-        const { p: polyglot } = this.props;
+        const { p: polyglot, args: { paragraphWidth } } = this.props;
+
         return (
             <div style={styles.container}>
                 <SelectField
