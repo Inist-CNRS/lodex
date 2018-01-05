@@ -33,38 +33,37 @@ const styles = {
 
 class HeatMapAdmin extends Component {
     static propTypes = {
-        colorScheme: PropTypes.arrayOf(PropTypes.string),
-        flipAxis: PropTypes.bool,
+        args: {
+            colorScheme: PropTypes.arrayOf(PropTypes.string),
+            flipAxis: PropTypes.bool,
+        },
         onChange: PropTypes.func.isRequired,
         p: polyglotPropTypes.isRequired,
     };
 
     static defaultProps = {
-        colorScheme: schemeOrRd[9],
-        flipAxis: false,
+        args: {
+            colorScheme: schemeOrRd[9],
+            flipAxis: false,
+        },
     };
-    constructor(props) {
-        super(props);
-        const { colorScheme, flipAxis } = this.props;
-        this.state = { colorScheme, flipAxis };
-    }
 
     handleColorSchemeChange = (event, index, colorScheme) => {
-        const newState = { ...this.state, colorScheme: colorScheme.split(',') };
-        this.setState(newState);
-        this.props.onChange(newState);
+        const newArgs = {
+            ...this.props.args,
+            colorScheme: colorScheme.split(','),
+        };
+        this.props.onChange(newArgs);
     };
 
     toggleFlipAxis = () => {
-        const { flipAxis, ...state } = this.state;
-        const newState = { ...state, flipAxis: !flipAxis };
-        this.setState(newState);
-        this.props.onChange(newState);
+        const { flipAxis, ...state } = this.props.args;
+        const newArgs = { ...state, flipAxis: !flipAxis };
+        this.props.onChange(newArgs);
     };
 
     render() {
-        const { p: polyglot } = this.props;
-        const { colorScheme, flipAxis } = this.state;
+        const { p: polyglot, args: { colorScheme, flipAxis } } = this.props;
 
         return (
             <div style={styles.container}>
