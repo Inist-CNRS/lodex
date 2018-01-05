@@ -17,52 +17,39 @@ const styles = {
 
 class UriAdmin extends Component {
     static propTypes = {
-        type: PropTypes.string,
-        value: PropTypes.string,
+        args: PropTypes.shape({
+            type: PropTypes.string,
+            value: PropTypes.string,
+        }),
         onChange: PropTypes.func.isRequired,
         p: polyglotPropTypes.isRequired,
     };
 
     static defaultProps = {
-        type: 'value',
-        value: '',
-    };
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            type: this.props.type,
-            value: this.props.value,
-        };
-    }
-
-    setType = type => {
-        this.setState({ type });
-        this.props.onChange({
-            type,
-            value: this.state.value,
-        });
+        args: {
+            type: 'value',
+            value: '',
+        },
     };
 
-    setValue = value => {
-        this.setState({ value });
-        this.props.onChange({
-            value,
-            type: this.state.type,
-        });
+    setType = (_, __, type) => {
+        const newArgs = { ...this.props.args, type };
+        this.props.onChange(newArgs);
+    };
+
+    setValue = (_, value) => {
+        const newArgs = { ...this.props.args, value };
+        this.props.onChange(newArgs);
     };
 
     render() {
-        const { type, value } = this.state;
-        const { p: polyglot } = this.props;
+        const { p: polyglot, args: { type, value } } = this.props;
 
         return (
             <div style={styles.container}>
                 <SelectField
                     floatingLabelText={polyglot.t('uri_format_select_type')}
-                    onChange={(event, index, newValue) =>
-                        this.setType(newValue)
-                    }
+                    onChange={this.setType}
                     style={styles.input}
                     value={type}
                 >
@@ -87,7 +74,7 @@ class UriAdmin extends Component {
                                 ? polyglot.t('uri_format_custom_value')
                                 : polyglot.t('uri_format_another_column_value')
                         }
-                        onChange={(event, newValue) => this.setValue(newValue)}
+                        onChange={this.setValue}
                         style={styles.input}
                         value={value}
                     />
