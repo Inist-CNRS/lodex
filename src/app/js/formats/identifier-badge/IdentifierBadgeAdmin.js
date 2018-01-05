@@ -24,44 +24,34 @@ const styles = {
 
 class IdentifierBadgeAdmin extends Component {
     static propTypes = {
-        typid: PropTypes.string,
-        colors: PropTypes.string,
+        args: PropTypes.shape({
+            typid: PropTypes.string,
+            colors: PropTypes.string,
+        }),
         onChange: PropTypes.func.isRequired,
         p: polyglotPropTypes.isRequired,
     };
 
     static defaultProps = {
-        typid: 1,
-        colors: '#8B8B8B #5B5B5B #818181',
+        args: {
+            typid: 1,
+            colors: '#8B8B8B #5B5B5B #818181',
+        },
     };
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            typid: this.props.typid,
-            colors: this.props.colors,
-        };
-    }
 
     setTypid = typid => {
-        this.setState({ typid });
-        this.props.onChange({
-            colors: this.state.colors,
-            typid,
-        });
+        const newArgs = { ...this.props.args, typid };
+        this.props.onChange(newArgs);
     };
 
     setColors = colors => {
-        this.setState({ colors });
-        this.props.onChange({
-            typid: this.state.typid,
-            colors,
-        });
+        const newArgs = { ...this.props.args, colors };
+        this.props.onChange(newArgs);
     };
 
     render() {
-        const { p: polyglot } = this.props;
-        const { colors, typid } = this.state;
+        const { p: polyglot, args: { colors, typid } } = this.props;
+
         return (
             <div style={styles.container}>
                 <SelectField
