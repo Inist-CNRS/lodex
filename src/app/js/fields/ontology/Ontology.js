@@ -4,10 +4,8 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import withHandlers from 'recompose/withHandlers';
 import translate from 'redux-polyglot/translate';
-import { SortableContainer } from 'react-sortable-hoc';
 import {
     Table,
-    TableBody,
     TableHeader,
     TableHeaderColumn,
     TableRow,
@@ -18,9 +16,9 @@ import {
     polyglot as polyglotPropTypes,
 } from '../../propTypes';
 import { fromFields } from '../../sharedSelectors';
-import OntologyField from './OntologyField';
 import { changePosition, preLoadPublication } from '../';
 import AddCharacteristic from '../addCharacteristic/AddCharacteristic';
+import OntologyFieldList from './OntologyFieldList';
 
 const styles = {
     container: {
@@ -30,22 +28,6 @@ const styles = {
         paddingRight: '1rem',
     },
 };
-
-const SortableList = SortableContainer(({ items }) => (
-    <TableBody>
-        {items.map((field, index) => (
-            <OntologyField
-                key={field.name}
-                field={field}
-                index={index}
-                disabled={index === 0}
-                sortIndex={index}
-            />
-        ))}
-    </TableBody>
-));
-
-SortableList.muiName = 'TableBody'; // tell material-ui that this component is TableBody
 
 export class OntologyComponent extends Component {
     componentWillMount() {
@@ -93,7 +75,7 @@ export class OntologyComponent extends Component {
                             </TableHeaderColumn>
                         </TableRow>
                     </TableHeader>
-                    <SortableList
+                    <OntologyFieldList
                         lockAxis="y"
                         useDragHandle
                         items={fields}
