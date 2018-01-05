@@ -26,7 +26,7 @@ const styles = {
 
 class RadarChartAdmin extends Component {
     static propTypes = {
-        args: {
+        args: PropTypes.shape({
             params: PropTypes.shape({
                 maxSize: PropTypes.number,
                 maxValue: PropTypes.number,
@@ -36,7 +36,7 @@ class RadarChartAdmin extends Component {
             colors: PropTypes.string,
             axisRoundValue: PropTypes.bool,
             scale: PropTypes.oneOf(['log', 'linear']),
-        },
+        }),
         onChange: PropTypes.func.isRequired,
         p: polyglotPropTypes.isRequired,
     };

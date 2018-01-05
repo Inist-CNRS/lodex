@@ -25,7 +25,7 @@ const styles = {
 
 class PieChartAdmin extends Component {
     static propTypes = {
-        args: {
+        args: PropTypes.shape({
             params: PropTypes.shape({
                 maxSize: PropTypes.number,
                 maxValue: PropTypes.number,
@@ -33,7 +33,7 @@ class PieChartAdmin extends Component {
                 orderBy: PropTypes.string,
             }),
             colors: PropTypes.string,
-        },
+        }),
         onChange: PropTypes.func.isRequired,
         p: polyglotPropTypes.isRequired,
     };
