@@ -22,7 +22,7 @@ const styles = {
     },
 };
 
-class RessourcesGrid extends Component {
+class RessourcesGridAdmin extends Component {
     static propTypes = {
         maxSize: PropTypes.string,
         spaceWidth: PropTypes.string,
@@ -146,4 +146,4 @@ class RessourcesGrid extends Component {
     }
 }
 
-export default translate(RessourcesGrid);
+export default translate(RessourcesGridAdmin);
