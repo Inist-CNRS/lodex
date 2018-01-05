@@ -24,44 +24,40 @@ const styles = {
 
 class EmphasedNumberAdmin extends Component {
     static propTypes = {
-        size: PropTypes.string,
-        colors: PropTypes.string,
+        args: PropTypes.shape({
+            size: PropTypes.string,
+            colors: PropTypes.string,
+        }),
         onChange: PropTypes.func.isRequired,
         p: polyglotPropTypes.isRequired,
     };
 
     static defaultProps = {
-        size: 1,
-        colors: '#8B8B8B #5B5B5B #818181',
+        args: {
+            size: 1,
+            colors: '#8B8B8B #5B5B5B #818181',
+        },
     };
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            size: this.props.size,
-            colors: this.props.colors,
-        };
-    }
 
     setSize = size => {
-        this.setState({ size });
-        this.props.onChange({
-            colors: this.state.colors,
+        const newArgs = {
+            ...this.props.args,
             size,
-        });
+        };
+        this.props.onChange(newArgs);
     };
 
     setColors = colors => {
-        this.setState({ colors });
-        this.props.onChange({
-            size: this.state.size,
+        const newArgs = {
+            ...this.props.args,
             colors,
-        });
+        };
+        this.props.onChange(newArgs);
     };
 
     render() {
-        const { p: polyglot } = this.props;
-        const { colors, size } = this.state;
+        const { p: polyglot, args: { colors, size } } = this.props;
+
         return (
             <div style={styles.container}>
                 <SelectField
