@@ -15,45 +15,34 @@ const styles = {
 
 class SentenceAdmin extends Component {
     static propTypes = {
-        prefix: PropTypes.string,
-        suffix: PropTypes.string,
+        args: PropTypes.shape({
+            prefix: PropTypes.string,
+            suffix: PropTypes.string,
+        }),
         onChange: PropTypes.func.isRequired,
         p: polyglotPropTypes.isRequired,
     };
 
     static defaultProps = {
-        prefix: '',
-        suffix: '',
+        args: {
+            prefix: '',
+            suffix: '',
+        },
     };
-    constructor(props) {
-        super(props);
-
-        const { prefix, suffix } = this.props;
-        this.state = {
-            prefix,
-            suffix,
-        };
-    }
 
     setPrefix = prefix => {
-        this.setState({ prefix });
-        this.props.onChange({
-            prefix,
-            suffix: this.state.suffix,
-        });
+        const newArgs = { ...this.props.args, prefix };
+        this.props.onChange(newArgs);
     };
 
     setSuffix = suffix => {
-        this.setState({ suffix });
-        this.props.onChange({
-            suffix,
-            prefix: this.state.prefix,
-        });
+        const newArgs = { ...this.props.args, suffix };
+        this.props.onChange(newArgs);
     };
 
     render() {
-        const { prefix, suffix } = this.state;
-        const { p: polyglot } = this.props;
+        const { p: polyglot, args: { prefix, suffix } } = this.props;
+
         return (
             <div style={styles.container}>
                 <TextField
