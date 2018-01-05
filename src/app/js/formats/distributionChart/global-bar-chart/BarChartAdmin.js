@@ -24,7 +24,7 @@ const styles = {
     },
 };
 
-class ChartEdition extends Component {
+class BarChartAdmin extends Component {
     static propTypes = {
         args: PropTypes.shape({
             params: PropTypes.shape({
@@ -261,4 +261,4 @@ class ChartEdition extends Component {
     }
 }
 
-export default translate(ChartEdition);
+export default translate(BarChartAdmin);
