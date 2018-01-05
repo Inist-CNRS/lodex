@@ -19,63 +19,49 @@ const styles = {
 
 class ListAdmin extends Component {
     static propTypes = {
-        type: PropTypes.string,
-        subFormat: PropTypes.string,
-        subFormatOptions: PropTypes.any,
+        args: PropTypes.shape({
+            type: PropTypes.string,
+            subFormat: PropTypes.string,
+            subFormatOptions: PropTypes.any,
+        }),
         onChange: PropTypes.func.isRequired,
         p: polyglotPropTypes.isRequired,
     };
 
     static defaultProps = {
-        type: 'unordered',
-        subFormat: 'none',
-        subFormatOptions: {},
+        args: {
+            type: 'unordered',
+            subFormat: 'none',
+            subFormatOptions: {},
+        },
     };
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            type: this.props.type,
-            subFormat: this.props.subFormat,
-        };
-    }
 
     setType = type => {
-        this.setState({
-            ...this.state,
-            type,
-        });
-        this.props.onChange({
-            ...this.state,
-            type,
-        });
+        const newArgs = { ...this.props.args, type };
+        this.props.onChange(newArgs);
     };
 
     setSubFormat = subFormat => {
-        this.setState({
-            ...this.state,
+        const newArgs = {
+            ...this.props.args,
             subFormat,
-        });
-        this.props.onChange({
-            ...this.state,
-            subFormat,
-        });
+        };
+        this.props.onChange(newArgs);
     };
 
     setSubFormatOptions = subFormatOptions => {
-        this.setState({
-            ...this.state,
+        const newArgs = {
+            ...this.props.args,
             subFormatOptions,
-        });
-        this.props.onChange({
-            subFormatOptions,
-            ...this.state,
-        });
+        };
+        this.props.onChange(newArgs);
     };
 
     render() {
-        const { type, subFormat } = this.state;
-        const { p: polyglot } = this.props;
+        const {
+            p: polyglot,
+            args: { type, subFormat, subFormatOptions },
+        } = this.props;
 
         const SubAdminComponent = getAdminComponent(subFormat);
 
@@ -86,7 +72,10 @@ class ListAdmin extends Component {
                     value={subFormat}
                     onChange={this.setSubFormat}
                 />
-                <SubAdminComponent onChange={this.setSubFormatOptions} />
+                <SubAdminComponent
+                    onChange={this.setSubFormatOptions}
+                    args={subFormatOptions}
+                />
                 <SelectField
                     floatingLabelText={polyglot.t('list_format_select_type')}
                     onChange={(event, index, newValue) =>
