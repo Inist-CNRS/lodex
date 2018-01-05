@@ -17,7 +17,7 @@ import {
 const required = polyglot => value =>
     value ? undefined : polyglot.t('required');
 const uniqueField = (fields, polyglot) => (value, _, props) =>
-    get(props, 'fieldToAdd.label') !== value &&
+    get(props, 'field.label', get(props, 'fieldToAdd.label')) !== value &&
     fields.find(({ label }) => label === value)
         ? polyglot.t('field_label_exists')
         : undefined;
