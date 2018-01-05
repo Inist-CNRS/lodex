@@ -14,7 +14,7 @@ const styles = {
     },
 };
 
-class ParagraphEdition extends Component {
+class ParagraphAdmin extends Component {
     static propTypes = {
         paragraphWidth: PropTypes.string,
         onChange: PropTypes.func.isRequired,
@@ -82,4 +82,4 @@ class ParagraphEdition extends Component {
     }
 }
 
-export default translate(ParagraphEdition);
+export default translate(ParagraphAdmin);
