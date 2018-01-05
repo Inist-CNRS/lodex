@@ -24,54 +24,44 @@ const styles = {
 
 class RessourcesGridAdmin extends Component {
     static propTypes = {
-        maxSize: PropTypes.string,
-        spaceWidth: PropTypes.string,
-        orderBy: PropTypes.string,
+        args: PropTypes.shape({
+            maxSize: PropTypes.string,
+            spaceWidth: PropTypes.string,
+            orderBy: PropTypes.string,
+        }),
         onChange: PropTypes.func.isRequired,
         p: polyglotPropTypes.isRequired,
     };
 
     static defaultProps = {
-        maxSize: '5',
-        spaceWidth: '30%',
-        orderBy: 'value/asc',
+        args: {
+            maxSize: '5',
+            spaceWidth: '30%',
+            orderBy: 'value/asc',
+        },
     };
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            maxSize: this.props.maxSize,
-            spaceWidth: this.props.spaceWidth,
-            orderBy: this.props.orderBy,
-        };
-    }
 
     setMaxSize = maxSize => {
-        this.setState({ maxSize });
-        this.props.onChange({
-            maxSize,
-            spaceWidth: this.props.spaceWidth,
-            orderBy: this.state.orderBy,
-        });
+        const newArgs = { ...this.props.args, maxSize };
+        this.props.onChange(newArgs);
     };
 
     setOrderBy = orderBy => {
-        this.setState({ orderBy });
-        this.props.onChange({
-            maxSize: this.state.maxSize,
-            spaceWidth: this.props.spaceWidth,
-            orderBy,
-        });
+        const newArgs = { ...this.props.args, orderBy };
+        this.props.onChange(newArgs);
     };
 
     setWidth = spaceWidth => {
-        this.setState({ spaceWidth });
-        this.props.onChange({ spaceWidth });
+        const newArgs = { ...this.props.args, spaceWidth };
+        this.props.onChange(newArgs);
     };
 
     render() {
-        const { p: polyglot } = this.props;
-        const { maxSize, orderBy, spaceWidth } = this.state;
+        const {
+            p: polyglot,
+            args: { maxSize, orderBy, spaceWidth },
+        } = this.props;
+
         return (
             <div style={styles.container}>
                 <TextField
