@@ -14,7 +14,7 @@ import {
 } from 'react-sortable-hoc';
 
 import { field as fieldPropTypes } from '../../propTypes';
-import { fromUser, fromFields } from '../../sharedSelectors';
+import { fromFields } from '../../sharedSelectors';
 import OntologyField from './OntologyField';
 import { changePosition, preLoadPublication } from '../';
 import AddCharacteristic from '../addCharacteristic/AddCharacteristic';
@@ -93,40 +93,30 @@ export class OntologyComponent extends Component {
     };
 
     render() {
-        const { fields, isLoggedIn, handleChangePosition } = this.props;
+        const { fields, handleChangePosition } = this.props;
         return (
             <div className="ontology" style={styles.container}>
-                {isLoggedIn && (
-                    <div>
-                        <SortableList
-                            lockAxis="y"
-                            useDragHandle
-                            items={fields.map((field, index) => (
-                                <OntologyField
-                                    key={field.name}
-                                    field={field}
-                                    index={index + 1}
-                                />
-                            ))}
-                            onSortEnd={(oldIndex, newIndex) =>
-                                this.onSortEnd(
-                                    oldIndex,
-                                    newIndex,
-                                    fields,
-                                    handleChangePosition,
-                                )
-                            }
-                        />
-                    </div>
-                )}
-                {!isLoggedIn &&
-                    fields.map((field, index) => (
-                        <OntologyField
-                            key={field.name}
-                            field={field}
-                            index={index}
-                        />
-                    ))}
+                <div>
+                    <SortableList
+                        lockAxis="y"
+                        useDragHandle
+                        items={fields.map((field, index) => (
+                            <OntologyField
+                                key={field.name}
+                                field={field}
+                                index={index + 1}
+                            />
+                        ))}
+                        onSortEnd={(oldIndex, newIndex) =>
+                            this.onSortEnd(
+                                oldIndex,
+                                newIndex,
+                                fields,
+                                handleChangePosition,
+                            )
+                        }
+                    />
+                </div>
                 <AddCharacteristic />
             </div>
         );
@@ -135,14 +125,12 @@ export class OntologyComponent extends Component {
 
 OntologyComponent.propTypes = {
     fields: PropTypes.arrayOf(fieldPropTypes).isRequired,
-    isLoggedIn: PropTypes.bool.isRequired,
     handleChangePosition: PropTypes.func.isRequired,
     preLoadPublication: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
     fields: fromFields.getFields(state),
-    isLoggedIn: fromUser.isLoggedIn(state),
 });
 
 const mapDispatchToProps = {
