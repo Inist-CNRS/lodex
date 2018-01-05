@@ -16,11 +16,20 @@ import {
 
 const required = polyglot => value =>
     value ? undefined : polyglot.t('required');
-const uniqueField = (fields, polyglot) => (value, _, props) =>
-    get(props, 'field.label', get(props, 'fieldToAdd.label')) !== value &&
-    fields.find(({ label }) => label === value)
+const uniqueField = (fields, polyglot) => (value, _, props) => {
+    // retrieve previous label of the edited field if any (either in props.field of props.fieldToAdd)
+    const label = get(props, 'field.label', get(props, 'fieldToAdd.label'));
+
+    // the value is the same as the label currently edited
+    if (label === value) {
+        return undefined;
+    }
+
+    // check if another field exist with the same label
+    return fields.find(({ label }) => label === value)
         ? polyglot.t('field_label_exists')
         : undefined;
+};
 
 const getValidation = memoize((fields, polyglot) => [
     required(polyglot),
