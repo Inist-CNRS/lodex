@@ -12,6 +12,8 @@ import {
 } from 'material-ui/Table';
 import { Card, CardHeader, CardText, CardActions } from 'material-ui/Card';
 import Divider from 'material-ui/Divider';
+import SelectField from 'material-ui/SelectField';
+import MenuItem from 'material-ui/MenuItem';
 
 import {
     field as fieldPropTypes,
@@ -31,13 +33,44 @@ export class OntologyComponent extends Component {
         handleChangePosition({ newPosition: newIndex, oldPosition: oldIndex });
     };
 
+    constructor(props) {
+        super(props);
+        this.state = { filter: 'all' };
+    }
+
+    handleFilterChange = (_, __, filter) =>
+        this.setState(state => ({
+            ...state,
+            filter,
+        }));
+
     render() {
         const { fields, handleChangePosition, p: polyglot } = this.props;
+        const { filter } = this.state;
+
         return (
             <Card>
                 <CardHeader title={<h3>{polyglot.t('model')}</h3>} />
                 <Divider />
                 <CardText>
+                    <SelectField
+                        autoWidth
+                        value={filter}
+                        onChange={this.handleFilterChange}
+                    >
+                        <MenuItem
+                            value={'all'}
+                            primaryText={polyglot.t('all')}
+                        />
+                        <MenuItem
+                            value={'document'}
+                            primaryText={polyglot.t('document')}
+                        />
+                        <MenuItem
+                            value={'dataset'}
+                            primaryText={polyglot.t('dataset')}
+                        />
+                    </SelectField>
                     <Table>
                         <TableHeader
                             displaySelectAll={false}
@@ -72,6 +105,7 @@ export class OntologyComponent extends Component {
                             </TableRow>
                         </TableHeader>
                         <OntologyFieldList
+                            filter={filter}
                             lockAxis="y"
                             useDragHandle
                             items={fields}
