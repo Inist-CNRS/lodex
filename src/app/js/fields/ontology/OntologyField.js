@@ -1,5 +1,4 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 import { TableRow, TableRowColumn } from 'material-ui/Table';
@@ -18,7 +17,6 @@ import {
     polyglot as polyglotPropTypes,
 } from '../../propTypes';
 import EditOntologyFieldButton from './EditOntologyFieldButton';
-import { fromFields } from '../../sharedSelectors';
 import { languages } from '../../../../../config.json';
 
 const styles = {
@@ -75,12 +73,4 @@ OntologyFieldComponent.defaultProps = {
     field: {},
 };
 
-const mapStateToProps = state => ({
-    fields: fromFields.getFields(state),
-});
-
-export default compose(
-    connect(mapStateToProps, undefined),
-    translate,
-    SortableElement,
-)(OntologyFieldComponent);
+export default compose(translate, SortableElement)(OntologyFieldComponent);
