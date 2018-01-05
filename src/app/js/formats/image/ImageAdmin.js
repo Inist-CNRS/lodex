@@ -14,7 +14,7 @@ const styles = {
     },
 };
 
-class TitleEdition extends Component {
+class ImageAdmin extends Component {
     static propTypes = {
         imageWidth: PropTypes.string,
         onChange: PropTypes.func.isRequired,
@@ -82,4 +82,4 @@ class TitleEdition extends Component {
     }
 }
 
-export default translate(TitleEdition);
+export default translate(ImageAdmin);
