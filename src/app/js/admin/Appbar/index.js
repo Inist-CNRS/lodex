@@ -63,10 +63,15 @@ const AppbarComponent = ({
 
     const RightElement = (
         <div style={styles.buttons}>
-            {isLoggedIn &&
-                !hasPublishedDataset && (
-                    <UploadButton label={polyglot.t('upload_another_file')} />
-                )}
+            {isLoggedIn && (
+                <UploadButton
+                    label={polyglot.t(
+                        hasPublishedDataset
+                            ? 'upload_additional_file'
+                            : 'upload_another_file',
+                    )}
+                />
+            )}
             {isLoggedIn &&
                 hasPublishedDataset && (
                     <FlatButton

@@ -146,11 +146,19 @@ export const uploadUrl = async ctx => {
         !parserName || parserName === 'automatic' ? extension : parserName,
     );
 
-    await ctx.dataset.remove({});
-
     const stream = ctx.getStreamFromUrl(url);
     const parsedStream = await parseStream(stream);
+    if ((await ctx.publishedDataset.count()) > 0) {
+        // COMING SOON: publish from stream
+        ctx.status = 200;
+        ctx.body = {
+            totalLines: 0,
+        };
 
+        return;
+    }
+
+    await ctx.dataset.remove({});
     await ctx.saveStream(parsedStream);
 
     ctx.status = 200;

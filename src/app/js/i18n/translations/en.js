@@ -10,6 +10,7 @@ export default {
     'successfully parsed': 'successfully parsed',
     'with errors': 'with errors',
     upload_another_file: 'Upload a dataset',
+    upload_additional_file: 'Upload More',
     Cancel: 'Cancel',
     Username: 'Username',
     Password: 'Password',

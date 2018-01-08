@@ -10,6 +10,7 @@ export default {
     'successfully parsed': 'successfully parsed',
     'with errors': 'with errors',
     upload_another_file: 'Importer un jeu de donnée',
+    upload_additional_file: 'Upload More',
     Cancel: 'Annuler',
     Username: "Nom d'utilisateur",
     Password: 'Mot de passe',
