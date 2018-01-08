@@ -12,44 +12,34 @@ const styles = {
     },
 };
 
-class ListEdition extends Component {
+class TrelloTimelineAdmin extends Component {
     static propTypes = {
-        trelloKey: PropTypes.string,
-        trelloToken: PropTypes.string,
+        args: PropTypes.shape({
+            trelloKey: PropTypes.string,
+            trelloToken: PropTypes.string,
+        }),
         onChange: PropTypes.func.isRequired,
     };
 
     static defaultProps = {
-        trelloKey: '',
-        trelloToken: '',
+        args: {
+            trelloKey: '',
+            trelloToken: '',
+        },
     };
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            trelloKey: this.props.trelloKey,
-            trelloToken: this.props.trelloToken,
-        };
-    }
 
     setToken = trelloToken => {
-        this.setState({ trelloToken });
-        this.props.onChange({
-            trelloToken,
-            trelloKey: this.state.trelloKey,
-        });
+        const newArgs = { ...this.props.args, trelloToken };
+        this.props.onChange(newArgs);
     };
 
     setKey = trelloKey => {
-        this.setState({ trelloKey });
-        this.props.onChange({
-            trelloKey,
-            trelloToken: this.state.trelloToken,
-        });
+        const newArgs = { ...this.props.args, trelloKey };
+        this.props.onChange(newArgs);
     };
 
     render() {
-        const { trelloToken, trelloKey } = this.state;
+        const { trelloToken, trelloKey } = this.props.args;
         return (
             <div style={styles.container}>
                 <TextField
@@ -69,4 +59,4 @@ class ListEdition extends Component {
     }
 }
 
-export default translate(ListEdition);
+export default translate(TrelloTimelineAdmin);

@@ -78,6 +78,8 @@ export default FormatView => {
         }
     }
 
+    GraphItem.WrappedComponent = FormatView;
+
     const mapStateToProps = (state, { field }) => ({
         resource: fromCharacteristic.getCharacteristicsAsResource(state),
         chartData: fromGraph.getChartData(state, field.name),

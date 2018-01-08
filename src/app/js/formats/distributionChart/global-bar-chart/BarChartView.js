@@ -34,102 +34,131 @@ const styles = {
 const BarChartView = ({
     colorSet,
     chartData,
-    axisRoundValue,
-    scale,
     direction,
-    rightMargin,
-    max,
-}) => {
-    const valueAxisProps = {
-        type: 'number',
-        allowDecimals: !axisRoundValue,
-        scale,
-        tickCount: max > 5 ? 5 : max + 1,
-        domain: scale === 'log' ? ['auto', 'auto'] : [0, 'auto'], // log scale won't work with a domain starting at 0 (`auto` detect the boudaries and ensure it is readable)
-        dataKey: 'value',
-    };
-
-    const categoryAxisProps = {
-        type: 'category',
-        dataKey: '_id',
-        interval: 0,
-    };
-
-    return (
-        <div style={styles.container}>
-            <ResponsiveContainer
-                width="100%"
-                height={
-                    direction === 'horizontal' ? chartData.length * 40 : 300
-                }
+    categoryMargin,
+    valueMargin,
+    valueAxisProps,
+    categoryAxisProps,
+}) => (
+    <div style={styles.container}>
+        <ResponsiveContainer
+            width="100%"
+            height={
+                direction === 'horizontal'
+                    ? chartData.length * 40 + valueMargin
+                    : 300 + categoryMargin
+            }
+        >
+            <BarChart
+                data={chartData}
+                layout={direction === 'horizontal' ? 'vertical' : 'horizontal'}
+                margin={margin}
+                maxBarSize={10}
             >
-                <BarChart
-                    data={chartData}
-                    layout={
-                        direction === 'horizontal' ? 'vertical' : 'horizontal'
-                    }
-                    margin={margin}
-                    maxBarSize={10}
-                >
-                    <XAxis
-                        {...(direction === 'horizontal'
-                            ? valueAxisProps
-                            : categoryAxisProps)}
-                        padding={padding}
-                    />
-                    <YAxis
-                        {...(direction === 'horizontal'
-                            ? categoryAxisProps
-                            : valueAxisProps)}
-                        width={parseInt(rightMargin)}
-                        padding={padding}
-                    />
-                    <Tooltip />
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <Bar dataKey="value" fill="#8884d8">
-                        {chartData.map((entry, index) => (
-                            <Cell
-                                key={String(index).concat('_cell_bar')}
-                                fill={colorSet[index % colorSet.length]}
-                            />
-                        ))}
-                    </Bar>
-                </BarChart>
-            </ResponsiveContainer>
-        </div>
-    );
-};
+                <XAxis
+                    {...(direction === 'horizontal'
+                        ? valueAxisProps
+                        : categoryAxisProps)}
+                />
+                <YAxis
+                    {...(direction === 'horizontal'
+                        ? categoryAxisProps
+                        : valueAxisProps)}
+                />
+                <Tooltip />
+                <CartesianGrid strokeDasharray="3 3" />
+                <Bar dataKey="value" fill="#8884d8">
+                    {chartData.map((entry, index) => (
+                        <Cell
+                            key={String(index).concat('_cell_bar')}
+                            fill={colorSet[index % colorSet.length]}
+                        />
+                    ))}
+                </Bar>
+            </BarChart>
+        </ResponsiveContainer>
+    </div>
+);
 
 BarChartView.propTypes = {
-    linkedResource: PropTypes.object,
-    resource: PropTypes.object.isRequired,
     chartData: PropTypes.array.isRequired,
     colorSet: PropTypes.arrayOf(PropTypes.string),
-    axisRoundValue: PropTypes.bool,
-    scale: PropTypes.oneOf(['linear', 'log']),
     direction: PropTypes.oneOf(['horizontal', 'vertical']),
-    rightMargin: PropTypes.number.isRequired,
-    max: PropTypes.number.isRequired,
+    categoryMargin: PropTypes.number.isRequired,
+    valueMargin: PropTypes.number.isRequired,
+    valueAxisProps: PropTypes.any,
+    categoryAxisProps: PropTypes.any,
 };
 
-BarChartView.defaultProps = {
-    className: null,
-};
+export const getValueAxisProps = ({
+    diagonalValueAxis,
+    direction,
+    axisRoundValue,
+    scale,
+    max = 5,
+    valueMargin,
+}) => ({
+    angle: diagonalValueAxis ? -45 : null,
+    textAnchor: diagonalValueAxis
+        ? 'end'
+        : direction === 'horizontal' ? 'middle' : 'end',
+    type: 'number',
+    allowDecimals: !axisRoundValue,
+    scale,
+    tickCount: max > 5 ? 5 : max + 1,
+    domain: scale === 'log' ? ['auto', 'auto'] : [0, 'auto'], // log scale won't work with a domain starting at 0 (`auto` detect the boudaries and ensure it is readable)
+    dataKey: 'value',
+    [direction === 'horizontal' ? 'height' : 'width']: valueMargin,
+});
+
+export const getCategoryAxisProps = ({
+    direction,
+    diagonalCategoryAxis,
+    categoryMargin,
+}) => ({
+    angle: diagonalCategoryAxis ? -45 : null,
+    textAnchor: diagonalCategoryAxis
+        ? 'end'
+        : direction === 'horizontal' ? 'end' : 'middle',
+    type: 'category',
+    dataKey: '_id',
+    interval: 0,
+    padding: padding,
+    [direction === 'horizontal' ? 'width' : 'height']: categoryMargin,
+});
 
 const mapStateToProps = (state, { field, chartData }) => {
     const {
         axisRoundValue,
+        diagonalCategoryAxis,
+        diagonalValueAxis,
         scale,
         direction = 'horizontal',
-        rightMargin = 120,
+        valueMargin = 120,
+        categoryMargin = 120,
     } = fromFields.getFieldFormatArgs(state, field.name);
 
-    return {
+    const valueAxisProps = getValueAxisProps({
+        diagonalValueAxis,
+        direction,
         axisRoundValue,
         scale,
-        direction,
-        rightMargin: parseInt(rightMargin),
         max: Math.max(...chartData.map(({ value }) => value)),
+        valueMargin: parseInt(valueMargin),
+    });
+
+    const categoryAxisProps = getCategoryAxisProps({
+        direction,
+        diagonalCategoryAxis,
+        categoryMargin: parseInt(categoryMargin),
+    });
+
+    return {
+        direction,
+        valueMargin: parseInt(valueMargin),
+        categoryMargin: parseInt(categoryMargin),
+        valueAxisProps,
+        categoryAxisProps,
     };
 };
 

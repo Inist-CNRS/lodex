@@ -22,59 +22,50 @@ const styles = {
     },
 };
 
-class ChartEdition extends Component {
+class IdentifierBadgeAdmin extends Component {
     static propTypes = {
-        size: PropTypes.string,
-        colors: PropTypes.string,
+        args: PropTypes.shape({
+            typid: PropTypes.string,
+            colors: PropTypes.string,
+        }),
         onChange: PropTypes.func.isRequired,
         p: polyglotPropTypes.isRequired,
     };
 
     static defaultProps = {
-        size: 1,
-        colors: '#8B8B8B #5B5B5B #818181',
+        args: {
+            typid: 1,
+            colors: '#8B8B8B #5B5B5B #818181',
+        },
     };
-    constructor(props) {
-        super(props);
 
-        this.state = {
-            size: this.props.size,
-            colors: this.props.colors,
-        };
-    }
-
-    setSize = size => {
-        this.setState({ size });
-        this.props.onChange({
-            colors: this.state.colors,
-            size,
-        });
+    setTypid = typid => {
+        const newArgs = { ...this.props.args, typid };
+        this.props.onChange(newArgs);
     };
 
     setColors = colors => {
-        this.setState({ colors });
-        this.props.onChange({
-            size: this.state.size,
-            colors,
-        });
+        const newArgs = { ...this.props.args, colors };
+        this.props.onChange(newArgs);
     };
 
     render() {
-        const { p: polyglot } = this.props;
-        const { colors, size } = this.state;
+        const { p: polyglot, args: { colors, typid } } = this.props;
+
         return (
             <div style={styles.container}>
                 <SelectField
-                    floatingLabelText={polyglot.t('list_format_select_size')}
+                    floatingLabelText={polyglot.t(
+                        'list_format_select_identifier',
+                    )}
                     onChange={(event, index, newValue) =>
-                        this.setSize(newValue)
+                        this.setTypid(newValue)
                     }
                     style={styles.input}
-                    value={size}
+                    value={typid}
                 >
-                    <MenuItem value={1} primaryText={polyglot.t('size1')} />
-                    <MenuItem value={2} primaryText={polyglot.t('size2')} />
-                    <MenuItem value={3} primaryText={polyglot.t('size3')} />
+                    <MenuItem value="DOI" primaryText={polyglot.t('DOI')} />
+                    <MenuItem value="PMID" primaryText={polyglot.t('PMID')} />
                 </SelectField>
                 <TextField
                     floatingLabelText={polyglot.t('colors_set')}
@@ -87,4 +78,4 @@ class ChartEdition extends Component {
     }
 }
 
-export default translate(ChartEdition);
+export default translate(IdentifierBadgeAdmin);

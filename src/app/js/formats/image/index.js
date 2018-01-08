@@ -1,6 +1,6 @@
 import Component from './Component';
 import DefaultFormat from '../DefaultFormat';
-import AdminComponent from './AdminComponent';
+import AdminComponent from './ImageAdmin';
 
 export default {
     Component,

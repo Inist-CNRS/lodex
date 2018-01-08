@@ -34,49 +34,48 @@ const styles = {
 
 class CartographyAdmin extends Component {
     static propTypes = {
-        colorScheme: PropTypes.arrayOf(PropTypes.string),
-        hoverColorScheme: PropTypes.arrayOf(PropTypes.string),
-        defaultColor: PropTypes.string,
+        args: PropTypes.shape({
+            colorScheme: PropTypes.arrayOf(PropTypes.string),
+            hoverColorScheme: PropTypes.arrayOf(PropTypes.string),
+            defaultColor: PropTypes.string,
+        }),
         onChange: PropTypes.func.isRequired,
         p: polyglotPropTypes.isRequired,
     };
 
     static defaultProps = {
-        colorScheme: schemeOrRd[9],
-        hoverColorScheme: schemeBlues[9],
-        defaultColor: '#f5f5f5',
+        args: {
+            colorScheme: schemeOrRd[9],
+            hoverColorScheme: schemeBlues[9],
+            defaultColor: '#f5f5f5',
+        },
     };
-    constructor(props) {
-        super(props);
-        const { colorScheme, hoverColorScheme, defaultColor } = this.props;
-        this.state = { colorScheme, hoverColorScheme, defaultColor };
-    }
 
     setDefaultColor = (_, defaultColor) => {
-        const { params, ...state } = this.state;
+        const { ...state } = this.props.args;
         const newState = { ...state, defaultColor };
-        this.setState(newState);
         this.props.onChange(newState);
     };
 
     setColorScheme = (_, __, colorScheme) => {
-        const newState = { ...this.state, colorScheme: colorScheme.split(',') };
-        this.setState(newState);
+        const newState = {
+            ...this.props.args,
+            colorScheme: colorScheme.split(','),
+        };
         this.props.onChange(newState);
     };
 
     setHoverColorScheme = (_, __, hoverColorScheme) => {
         const newState = {
-            ...this.state,
+            ...this.props.args,
             hoverColorScheme: hoverColorScheme.split(','),
         };
-        this.setState(newState);
         this.props.onChange(newState);
     };
 
     render() {
         const { p: polyglot } = this.props;
-        const { colorScheme, hoverColorScheme, defaultColor } = this.state;
+        const { colorScheme, hoverColorScheme, defaultColor } = this.props.args;
 
         return (
             <div style={styles.container}>

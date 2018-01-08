@@ -1,5 +1,5 @@
 import Component from './ResourcesGridView';
-import AdminComponent from './AdminComponent';
+import AdminComponent from './ResourcesGridAdmin';
 import DefaultFormat from '../DefaultFormat';
 
 export default {

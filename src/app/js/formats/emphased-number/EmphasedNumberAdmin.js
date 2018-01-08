@@ -22,60 +22,55 @@ const styles = {
     },
 };
 
-class IdentifierBadgeEdition extends Component {
+class EmphasedNumberAdmin extends Component {
     static propTypes = {
-        typid: PropTypes.string,
-        colors: PropTypes.string,
+        args: PropTypes.shape({
+            size: PropTypes.string,
+            colors: PropTypes.string,
+        }),
         onChange: PropTypes.func.isRequired,
         p: polyglotPropTypes.isRequired,
     };
 
     static defaultProps = {
-        typid: 1,
-        colors: '#8B8B8B #5B5B5B #818181',
+        args: {
+            size: 1,
+            colors: '#8B8B8B #5B5B5B #818181',
+        },
     };
-    constructor(props) {
-        super(props);
 
-        this.state = {
-            typid: this.props.typid,
-            colors: this.props.colors,
+    setSize = size => {
+        const newArgs = {
+            ...this.props.args,
+            size,
         };
-    }
-
-    setTypid = typid => {
-        this.setState({ typid });
-        this.props.onChange({
-            colors: this.state.colors,
-            typid,
-        });
+        this.props.onChange(newArgs);
     };
 
     setColors = colors => {
-        this.setState({ colors });
-        this.props.onChange({
-            typid: this.state.typid,
+        const newArgs = {
+            ...this.props.args,
             colors,
-        });
+        };
+        this.props.onChange(newArgs);
     };
 
     render() {
-        const { p: polyglot } = this.props;
-        const { colors, typid } = this.state;
+        const { p: polyglot, args: { colors, size } } = this.props;
+
         return (
             <div style={styles.container}>
                 <SelectField
-                    floatingLabelText={polyglot.t(
-                        'list_format_select_identifier',
-                    )}
+                    floatingLabelText={polyglot.t('list_format_select_size')}
                     onChange={(event, index, newValue) =>
-                        this.setTypid(newValue)
+                        this.setSize(newValue)
                     }
                     style={styles.input}
-                    value={typid}
+                    value={size}
                 >
-                    <MenuItem value="DOI" primaryText={polyglot.t('DOI')} />
-                    <MenuItem value="PMID" primaryText={polyglot.t('PMID')} />
+                    <MenuItem value={1} primaryText={polyglot.t('size1')} />
+                    <MenuItem value={2} primaryText={polyglot.t('size2')} />
+                    <MenuItem value={3} primaryText={polyglot.t('size3')} />
                 </SelectField>
                 <TextField
                     floatingLabelText={polyglot.t('colors_set')}
@@ -88,4 +83,4 @@ class IdentifierBadgeEdition extends Component {
     }
 }
 
-export default translate(IdentifierBadgeEdition);
+export default translate(EmphasedNumberAdmin);

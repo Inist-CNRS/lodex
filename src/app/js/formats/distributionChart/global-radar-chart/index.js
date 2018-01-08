@@ -1,5 +1,5 @@
 import Component from './RadarChartView';
-import AdminComponent from '../AdminComponent';
+import AdminComponent from './RadarChartAdmin';
 import DefaultFormat from '../../DefaultFormat';
 
 export default {

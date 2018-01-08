@@ -14,32 +14,27 @@ const styles = {
     },
 };
 
-class ParagraphEdition extends Component {
+class ImageAdmin extends Component {
     static propTypes = {
-        paragraphWidth: PropTypes.string,
+        args: {
+            imageWidth: PropTypes.string,
+        },
         onChange: PropTypes.func.isRequired,
         p: polyglotPropTypes.isRequired,
     };
 
     static defaultProps = {
-        paragraphWidth: '100%',
+        args: {
+            imageWidth: '100%',
+        },
     };
-    constructor(props) {
-        super(props);
 
-        this.state = {
-            paragraphWidth: this.props.paragraphWidth,
-        };
-    }
-
-    setWidth = paragraphWidth => {
-        this.setState({ paragraphWidth });
-        this.props.onChange({ paragraphWidth });
+    setWidth = imageWidth => {
+        this.props.onChange({ imageWidth });
     };
 
     render() {
-        const { paragraphWidth } = this.state;
-        const { p: polyglot } = this.props;
+        const { p: polyglot, args: imageWidth } = this.props;
         return (
             <div style={styles.container}>
                 <SelectField
@@ -50,7 +45,7 @@ class ParagraphEdition extends Component {
                         this.setWidth(newValue)
                     }
                     style={styles.input}
-                    value={paragraphWidth}
+                    value={imageWidth}
                 >
                     <MenuItem
                         value="10%"
@@ -82,4 +77,4 @@ class ParagraphEdition extends Component {
     }
 }
 
-export default translate(ParagraphEdition);
+export default translate(ImageAdmin);

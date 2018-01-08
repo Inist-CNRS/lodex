@@ -14,32 +14,28 @@ const styles = {
     },
 };
 
-class TitleEdition extends Component {
+class TitleAdmin extends Component {
     static propTypes = {
-        level: PropTypes.number,
+        args: {
+            level: PropTypes.number,
+        },
         onChange: PropTypes.func.isRequired,
         p: polyglotPropTypes.isRequired,
     };
 
     static defaultProps = {
-        level: 1,
+        args: {
+            level: 1,
+        },
     };
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            level: this.props.level,
-        };
-    }
 
     setLevel = level => {
-        this.setState({ level });
         this.props.onChange({ level });
     };
 
     render() {
-        const { level } = this.state;
-        const { p: polyglot } = this.props;
+        const { p: polyglot, args: { level } } = this.props;
+
         return (
             <div style={styles.container}>
                 <SelectField
@@ -60,4 +56,4 @@ class TitleEdition extends Component {
     }
 }
 
-export default translate(TitleEdition);
+export default translate(TitleAdmin);

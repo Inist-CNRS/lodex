@@ -1,5 +1,5 @@
 import Component from './Component';
-import AdminComponent from './AdminComponent';
+import AdminComponent from './ListAdmin';
 import EditionComponent from './EditionComponent';
 
 export default {
