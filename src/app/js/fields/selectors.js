@@ -139,12 +139,8 @@ export const getFieldByName = createSelector(
     (name, fields) => fields.find(f => f.name === name),
 );
 
-export const getGraphFieldParamsByName = createSelector(
-    getFieldByName,
-    field =>
-        field.format && field.format.args && field.format.args.params
-            ? field.format.args.params
-            : {},
+export const getGraphFieldParamsByName = createSelector(getFieldByName, field =>
+    get(field, 'format.args.params', {}),
 );
 
 export const getFieldsExceptEdited = createSelector(

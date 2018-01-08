@@ -7,24 +7,31 @@ import {
 } from '../';
 import { fromUser } from '../../../sharedSelectors';
 import fetchSaga from '../../../lib/sagas/fetchSaga';
+import { configureFieldSuccess } from '../../../fields/index';
 
 export function* handleUpdateCharacteristics({ payload }) {
     const request = yield select(
         fromUser.getUpdateCharacteristicsRequest,
         payload,
     );
-    const { error, response: characteristics } = yield call(fetchSaga, request);
+    const { error, response } = yield call(fetchSaga, request);
 
     if (error) {
         return yield put(updateCharacteristicsError(error));
     }
 
-    return yield put(
+    const { characteristics, field } = response;
+
+    yield put(
         updateCharacteristicsSuccess({
             characteristics,
-            field: { name: payload.name },
+            field: field || { name: payload.name },
         }),
     );
+
+    if (field) {
+        yield put(configureFieldSuccess({ field }));
+    }
 }
 
 export default function*() {
