@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import fetch from 'omni-fetch';
+import fetch from 'fetch-with-proxy';
 import translate from 'redux-polyglot/translate';
 import url from 'url';
 import MQS from 'mongodb-querystring';
