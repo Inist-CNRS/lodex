@@ -348,4 +348,6 @@ export default {
     category_margin: 'margin for category axis (px)',
     diagonal_value_axis: 'display value axis in diagonal',
     diagonal_category_axis: 'display category axis in diagonal',
+    all: 'All',
+    document: 'Document',
 };
