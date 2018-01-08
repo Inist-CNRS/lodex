@@ -29,11 +29,7 @@ export class OntologyComponent extends Component {
         this.state = { filter: ALL };
     }
 
-    handleFilterChange = (_, __, filter) =>
-        this.setState(state => ({
-            ...state,
-            filter,
-        }));
+    handleFilterChange = (_, __, filter) => this.setState({ filter });
 
     render() {
         const { p: polyglot } = this.props;
