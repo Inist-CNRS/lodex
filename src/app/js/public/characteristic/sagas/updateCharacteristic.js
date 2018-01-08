@@ -14,23 +14,24 @@ export function* handleUpdateCharacteristics({ payload }) {
         fromUser.getUpdateCharacteristicsRequest,
         payload,
     );
-    const { error, response: { characteristics, field } } = yield call(
-        fetchSaga,
-        request,
-    );
+    const { error, response } = yield call(fetchSaga, request);
 
     if (error) {
         return yield put(updateCharacteristicsError(error));
     }
 
+    const { characteristics, field } = response;
+
     yield put(
         updateCharacteristicsSuccess({
             characteristics,
-            field,
+            field: field || { name: payload.name },
         }),
     );
 
-    yield put(configureFieldSuccess({ field }));
+    if (field) {
+        yield put(configureFieldSuccess({ field }));
+    }
 }
 
 export default function*() {

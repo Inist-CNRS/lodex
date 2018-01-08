@@ -15,15 +15,20 @@ export const updateCharacteristics = async ctx => {
         ...requestedNewCharacteristics
     } = ctx.request.body;
 
-    const field = await ctx.field.findOneByName(name);
     ctx.body = {};
-    if (get(field, 'transformers[0].operation') === 'VALUE') {
-        const updatedField = set(
-            field,
-            'transformers[0].args[0].value',
-            requestedNewCharacteristics[name],
-        );
-        ctx.body.field = await ctx.field.updateOneById(field._id, updatedField);
+    if (name) {
+        const field = await ctx.field.findOneByName(name);
+        if (get(field, 'transformers[0].operation') === 'VALUE') {
+            const updatedField = set(
+                field,
+                'transformers[0].args[0].value',
+                requestedNewCharacteristics[name],
+            );
+            ctx.body.field = await ctx.field.updateOneById(
+                field._id,
+                updatedField,
+            );
+        }
     }
     const characteristics = await ctx.publishedCharacteristic.findLastVersion();
 
