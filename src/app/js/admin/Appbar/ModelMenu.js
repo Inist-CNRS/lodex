@@ -30,7 +30,7 @@ export class ModelMenuComponent extends Component {
     static propTypes = {
         hasPublishedDataset: PropTypes.bool.isRequired,
         exportFields: PropTypes.func.isRequired,
-        location: PropTypes.string,
+        location: PropTypes.shape({ pathname: PropTypes.string }),
         p: polyglotPropTypes.isRequired,
     };
 
