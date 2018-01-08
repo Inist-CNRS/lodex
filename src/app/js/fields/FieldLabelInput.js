@@ -16,7 +16,8 @@ import {
 
 const required = polyglot => value =>
     value ? undefined : polyglot.t('required');
-const uniqueField = (fields, polyglot) => (value, _, props) => {
+
+export const uniqueField = (fields, polyglot) => (value, _, props) => {
     // retrieve previous label of the edited field if any (either in props.field of props.fieldToAdd)
     const label = get(props, 'field.label', get(props, 'fieldToAdd.label'));
 
