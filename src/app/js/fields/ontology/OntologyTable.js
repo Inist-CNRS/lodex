@@ -17,6 +17,7 @@ import {
 } from '../../propTypes';
 import { changePosition } from '../';
 import OntologyFieldList from './OntologyFieldList';
+import { fromFields } from '../../sharedSelectors';
 
 const styles = {
     table: {
@@ -92,12 +93,16 @@ OntologyTable.propTypes = {
     p: polyglotPropTypes.isRequired,
 };
 
+const mapStateToProps = (state, { title }) => ({
+    fields: fromFields.getOntologyFields(state, title),
+});
+
 const mapDispatchToProps = {
     changePositionAction: changePosition,
 };
 
 export default compose(
-    connect(null, mapDispatchToProps),
+    connect(mapStateToProps, mapDispatchToProps),
     withHandlers({
         handleChangePosition: ({ changePositionAction }) => field => {
             changePositionAction(field);

@@ -12,7 +12,6 @@ import {
     field as fieldPropTypes,
     polyglot as polyglotPropTypes,
 } from '../../propTypes';
-import { fromFields } from '../../sharedSelectors';
 import { preLoadPublication } from '../';
 import AddCharacteristic from '../addCharacteristic/AddCharacteristic';
 import OntologyTable from './OntologyTable';
@@ -37,7 +36,7 @@ export class OntologyComponent extends Component {
         }));
 
     render() {
-        const { fields, p: polyglot } = this.props;
+        const { p: polyglot } = this.props;
         const { filter } = this.state;
 
         return (
@@ -61,20 +60,10 @@ export class OntologyComponent extends Component {
                         />
                     </SelectField>
                     {(filter === ALL || filter === COVER_DATASET) && (
-                        <OntologyTable
-                            title="dataset"
-                            fields={fields.filter(
-                                ({ cover }) => cover === COVER_DATASET,
-                            )}
-                        />
+                        <OntologyTable title="dataset" />
                     )}
                     {(filter === ALL || filter != COVER_DATASET) && (
-                        <OntologyTable
-                            title="document"
-                            fields={fields.filter(
-                                ({ cover }) => cover !== COVER_DATASET,
-                            )}
-                        />
+                        <OntologyTable title="document" />
                     )}
                 </CardText>
                 <CardActions>
@@ -91,14 +80,10 @@ OntologyComponent.propTypes = {
     p: polyglotPropTypes.isRequired,
 };
 
-const mapStateToProps = state => ({
-    fields: fromFields.getFields(state),
-});
-
 const mapDispatchToProps = {
     preLoadPublication,
 };
 
-export default compose(connect(mapStateToProps, mapDispatchToProps), translate)(
+export default compose(connect(null, mapDispatchToProps), translate)(
     OntologyComponent,
 );

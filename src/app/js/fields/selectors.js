@@ -19,6 +19,15 @@ export const NEW_CHARACTERISTIC_FORM_NAME = 'NEW_CHARACTERISTIC_FORM_NAME';
 const getFields = ({ byName, list }) =>
     list.map(name => byName[name]).sort((f1, f2) => f1.position - f2.position);
 
+const getOntologyFields = createSelector(
+    getFields,
+    (_, type) => type,
+    (fields, type) =>
+        type === COVER_DATASET
+            ? fields.filter(({ cover }) => cover === COVER_DATASET)
+            : fields.filter(({ cover }) => cover !== COVER_DATASET),
+);
+
 const getState = state => state.list;
 const getByName = ({ byName }) => byName;
 
@@ -375,4 +384,5 @@ export default {
     getOverviewTitleCol,
     getOverviewSubTitleCol,
     getFieldFormatArgs,
+    getOntologyFields,
 };
