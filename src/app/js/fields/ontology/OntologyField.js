@@ -2,15 +2,8 @@ import React from 'react';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 import { TableRow, TableRowColumn } from 'material-ui/Table';
-import { SortableElement, SortableHandle } from 'react-sortable-hoc';
-import Reorder from 'material-ui/svg-icons/editor/format-line-spacing';
-import IconButton from 'material-ui/IconButton';
-
-const DragHandle = SortableHandle(() => (
-    <IconButton>
-        <Reorder />
-    </IconButton>
-));
+import { SortableElement } from 'react-sortable-hoc';
+import DragButton from './DragButton';
 
 import {
     field as fieldPropTypes,
@@ -39,11 +32,12 @@ const styles = {
 const OntologyFieldComponent = ({ field, p: polyglot }) => (
     <TableRow>
         <TableRowColumn>
-            {field.name !== 'uri' && <DragHandle />}
+            <DragButton disabled={field.name === 'uri'} />
+            <EditOntologyFieldButton field={field} />
         </TableRowColumn>
         <TableRowColumn>{field.name}</TableRowColumn>
-        <TableRowColumn>{field.label}</TableRowColumn>
         <TableRowColumn>
+            {field.label}
             {field.overview === 1 && <span style={styles.badge}>title</span>}
             {field.overview === 2 && (
                 <span style={styles.badge}>description</span>
@@ -57,9 +51,6 @@ const OntologyFieldComponent = ({ field, p: polyglot }) => (
         <TableRowColumn>
             {field.language &&
                 languages.find(l => l.code === field.language).label}
-        </TableRowColumn>
-        <TableRowColumn>
-            <EditOntologyFieldButton field={field} />
         </TableRowColumn>
     </TableRow>
 );

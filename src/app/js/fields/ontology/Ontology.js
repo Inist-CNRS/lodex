@@ -24,6 +24,16 @@ import { changePosition, preLoadPublication } from '../';
 import AddCharacteristic from '../addCharacteristic/AddCharacteristic';
 import OntologyFieldList from './OntologyFieldList';
 
+const styles = {
+    table: {
+        tableLayout: 'auto',
+        width: 'auto',
+        minWidth: '100%',
+        overflowX: 'auto',
+        display: 'block',
+    },
+};
+
 export class OntologyComponent extends Component {
     componentWillMount() {
         this.props.preLoadPublication();
@@ -71,7 +81,7 @@ export class OntologyComponent extends Component {
                             primaryText={polyglot.t('dataset')}
                         />
                     </SelectField>
-                    <Table>
+                    <Table fixedHeader={false} style={styles.table}>
                         <TableHeader
                             displaySelectAll={false}
                             adjustForCheckbox={false}
@@ -85,9 +95,6 @@ export class OntologyComponent extends Component {
                                     {polyglot.t('label')}
                                 </TableHeaderColumn>
                                 <TableHeaderColumn>
-                                    {polyglot.t('overview')}
-                                </TableHeaderColumn>
-                                <TableHeaderColumn>
                                     {polyglot.t('cover')}
                                 </TableHeaderColumn>
                                 <TableHeaderColumn>
@@ -98,9 +105,6 @@ export class OntologyComponent extends Component {
                                 </TableHeaderColumn>
                                 <TableHeaderColumn>
                                     {polyglot.t('language')}
-                                </TableHeaderColumn>
-                                <TableHeaderColumn>
-                                    {polyglot.t('edit')}
                                 </TableHeaderColumn>
                             </TableRow>
                         </TableHeader>
