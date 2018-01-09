@@ -4,7 +4,7 @@ import URL from 'url';
 import route from 'koa-route';
 import fs from 'fs';
 import ezs from 'ezs';
-import fetch from 'omni-fetch';
+import fetch from 'fetch-with-proxy';
 import { PassThrough } from 'stream';
 import config from '../../../../config.json';
 

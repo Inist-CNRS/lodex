@@ -1,4 +1,4 @@
-import fetch from 'omni-fetch';
+import fetch from 'fetch-with-proxy';
 import config from 'config';
 
 import server from '../../';
