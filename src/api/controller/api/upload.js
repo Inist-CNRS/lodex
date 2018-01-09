@@ -8,6 +8,7 @@ import request from 'request';
 import jsonConfig from '../../../../config.json';
 import loaders from '../../loaders';
 import saveStream from '../../services/saveStream';
+import publishDocuments from '../../services/publishDocuments';
 import {
     unlinkFile,
     saveStreamInFile,
@@ -50,6 +51,7 @@ export const prepareUpload = async (ctx, next) => {
     ctx.createReadStream = createReadStream;
     ctx.unlinkFile = unlinkFile;
     ctx.getStreamFromUrl = getStreamFromUrl;
+    ctx.publishDocuments = publishDocuments;
 
     await next();
 };
@@ -115,7 +117,9 @@ export async function uploadFileMiddleware(ctx, parserName) {
     );
     const parsedStream = await parseStream(mergedStream);
     const publishedCount = await ctx.publishedDataset.count();
+
     if (publishedCount === 0) {
+        await ctx.dataset.remove({});
         await ctx.saveStream(parsedStream);
         await ctx.clearChunks(filename, totalChunks);
         await ctx.field.initializeModel();
@@ -126,8 +130,26 @@ export async function uploadFileMiddleware(ctx, parserName) {
         };
         return;
     }
+    await ctx.dataset.updateMany(
+        {},
+        { $set: { lodex_published: true } },
+        { multi: true },
+    );
+    await ctx.uriDataset.updateMany(
+        {},
+        { $set: { lodex_published: true } },
+        { multi: true },
+    );
+    await ctx.saveStream(parsedStream);
 
-    // COMING SOON: publish
+    const fields = await ctx.field.findAll();
+    const collectionCoverFields = fields.filter(c => c.cover === 'collection');
+    const count = await ctx.dataset.count({
+        lodex_published: { $exists: false },
+    });
+
+    await ctx.publishDocuments(ctx, count, collectionCoverFields);
+
     ctx.status = 200;
     ctx.body = {
         totalLines: 0,
