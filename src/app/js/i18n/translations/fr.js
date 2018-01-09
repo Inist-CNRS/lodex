@@ -310,6 +310,7 @@ export default {
     size1: 'Très grand',
     size2: 'Grand',
     size3: 'Gras',
+    size4: 'Normal',
     list_format_select_size: 'Taille',
     identifierBadge: 'Badge pour identifiant',
     list_format_select_identifier: 'Service de résolution',

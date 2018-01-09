@@ -306,6 +306,7 @@ export default {
     size1: 'Very big',
     size2: 'Big',
     size3: 'Bold',
+    size4: 'Normal',
     list_format_select_size: 'Choose size',
     identifierBadge: 'Identifier badge',
     list_format_select_identifier: 'Choose the resolver',
