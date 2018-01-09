@@ -7,6 +7,7 @@ import get from 'lodash.get';
 import getDocumentTransformer from '../../services/getDocumentTransformer';
 import getAddUriTransformer from '../../services/getAddUriTransformer';
 import transformAllDocuments from '../../services/transformAllDocuments';
+import publishCharacteristics from '../../services/publishCharacteristics';
 import publishFacets from './publishFacets';
 
 const app = new Koa();
@@ -30,38 +31,6 @@ export const versionTransformResult = transformDocument => async (
         },
     ],
 });
-
-export const publishCharacteristics = async (
-    ctx,
-    datasetCoverFields,
-    count,
-) => {
-    if (!datasetCoverFields.length) {
-        return;
-    }
-    const getPublishedCharacteristics = ctx.getDocumentTransformer(
-        datasetCoverFields,
-    );
-
-    const [lastResource] = await ctx.uriDataset.findLimitFromSkip(1, count - 1);
-    const characteristics = await getPublishedCharacteristics(lastResource);
-
-    const characteristicsKeys = Object.keys(characteristics);
-
-    if (characteristicsKeys.length) {
-        const publishedCharacteristics = characteristicsKeys.reduce(
-            (result, name) => ({
-                ...result,
-                [name]: characteristics[name],
-            }),
-            {},
-        );
-
-        await ctx.publishedCharacteristic.addNewVersion(
-            publishedCharacteristics,
-        );
-    }
-};
 
 export const preparePublish = async (ctx, next) => {
     ctx.transformAllDocuments = transformAllDocuments;
@@ -90,7 +59,6 @@ export const doPublish = async ctx => {
 
     const fields = await ctx.field.findAll();
     const collectionCoverFields = fields.filter(c => c.cover === 'collection');
-    const datasetCoverFields = fields.filter(c => c.cover === 'dataset');
 
     const uriCol = fields.find(col => col.name === 'uri');
     const addUri = ctx.getAddUriTransformer(uriCol);
@@ -117,6 +85,8 @@ export const doPublish = async ctx => {
         ctx.publishedDataset.insertBatch,
         transformDocumentAndKeepUri,
     );
+
+    const datasetCoverFields = fields.filter(c => c.cover === 'dataset');
     await ctx.publishCharacteristics(ctx, datasetCoverFields, count);
     await ctx.publishFacets(ctx, fields);
 
