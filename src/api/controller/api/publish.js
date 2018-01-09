@@ -1,11 +1,6 @@
 import Koa from 'koa';
 import route from 'koa-route';
 import get from 'lodash.get';
-
-/* eslint no-await-in-loop: off */
-import getDocumentTransformer from '../../services/getDocumentTransformer';
-import getAddUriTransformer from '../../services/getAddUriTransformer';
-import transformAllDocuments from '../../services/transformAllDocuments';
 import publishDocuments from '../../services/publishDocuments';
 import publishCharacteristics from '../../services/publishCharacteristics';
 import publishFacets from './publishFacets';
@@ -13,12 +8,9 @@ import publishFacets from './publishFacets';
 const app = new Koa();
 
 export const preparePublish = async (ctx, next) => {
-    ctx.transformAllDocuments = transformAllDocuments;
     ctx.publishDocuments = publishDocuments;
     ctx.publishCharacteristics = publishCharacteristics;
     ctx.publishFacets = publishFacets;
-    ctx.getDocumentTransformer = getDocumentTransformer(ctx);
-    ctx.getAddUriTransformer = getAddUriTransformer(ctx);
     await next();
 };
 

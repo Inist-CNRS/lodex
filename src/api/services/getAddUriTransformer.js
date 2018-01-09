@@ -7,11 +7,8 @@ export const addUriToDoc = getUriDoc => async doc => ({
     ...(await getUriDoc(doc)),
 });
 
-export default ctx => {
-    const documentTransformer = getDocumentTransformer(ctx);
-    return uriCol => {
-        const getUriDoc = documentTransformer([uriCol]);
+export default (fetchLineBy, uriCol) => {
+    const getUriDoc = getDocumentTransformer(fetchLineBy, [uriCol]);
 
-        return addUriToDoc(getUriDoc);
-    };
+    return addUriToDoc(getUriDoc);
 };

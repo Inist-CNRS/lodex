@@ -2,10 +2,7 @@
 import expect, { createSpy } from 'expect';
 
 import { doPublish, preparePublish, handlePublishError } from './publish';
-import transformAllDocuments from '../../services/transformAllDocuments';
-import getDocumentTransformer from '../../services/getDocumentTransformer';
 import publishCharacteristics from '../../services/publishCharacteristics';
-import getAddUriTransformer from '../../services/getAddUriTransformer';
 import publishDocuments from '../../services/publishDocuments';
 import publishFacets from './publishFacets';
 
@@ -99,9 +96,6 @@ describe('publish', () => {
             await preparePublish(ctx, next);
 
             expect(ctx).toEqual({
-                transformAllDocuments,
-                getDocumentTransformer: getDocumentTransformer(ctx),
-                getAddUriTransformer: getAddUriTransformer(ctx),
                 publishCharacteristics,
                 publishDocuments,
                 publishFacets,

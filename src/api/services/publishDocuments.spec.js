@@ -15,23 +15,26 @@ describe('publishDocuments', () => {
     const ctx = {
         dataset: {
             findLimitFromSkip: 'dataset.findLimitFromSkip()',
+            findBy: 'dataset.findBy()',
         },
         field: {
             findAll: createSpy().andReturn(fields),
         },
-        getDocumentTransformer: createSpy().andReturn('transformDocument()'),
-        getAddUriTransformer: createSpy().andReturn('addUriToDocument()'),
-        redirect: createSpy(),
-        transformAllDocuments: createSpy(),
         uriDataset: {
             insertBatch: 'uriDataset.insertBatch()',
             findLimitFromSkip: 'uriDataset.findLimitFromSkip()',
             count: createSpy().andReturn('count'),
+            findBy: 'uriDataset.findBy()',
         },
         publishedDataset: {
             insertBatch: 'publishedDataset.insertBatch()',
         },
     };
+
+    const getDocumentTransformer = createSpy().andReturn('transformDocument()');
+    const getAddUriTransformer = createSpy().andReturn('addUriToDocument()');
+    const transformAllDocuments = createSpy();
+
     const getVersionInitializerMock = createSpy().andReturn(
         'initializeVersion()',
     );
@@ -39,18 +42,21 @@ describe('publishDocuments', () => {
     before(async () => {
         await publishDocumentsFactory({
             getVersionInitializer: getVersionInitializerMock,
+            getDocumentTransformer,
+            getAddUriTransformer,
+            transformAllDocuments,
         })(ctx, 'count', fields);
     });
 
     it('should call getAddUriTransformer to get the uri transformers', () => {
-        expect(ctx.getAddUriTransformer).toHaveBeenCalledWith({
+        expect(getAddUriTransformer).toHaveBeenCalledWith('dataset.findBy()', {
             name: 'uri',
             cover: 'collection',
         });
     });
 
     it('should call ctx.transformAllDocuments', () => {
-        expect(ctx.transformAllDocuments).toHaveBeenCalledWith(
+        expect(transformAllDocuments).toHaveBeenCalledWith(
             'count',
             'dataset.findLimitFromSkip()',
             'uriDataset.insertBatch()',
@@ -59,7 +65,10 @@ describe('publishDocuments', () => {
     });
 
     it('should call getDocumentTransformer with all other fields', () => {
-        expect(ctx.getDocumentTransformer).toHaveBeenCalledWith([fields[1]]);
+        expect(getDocumentTransformer).toHaveBeenCalledWith(
+            'uriDataset.findBy()',
+            [fields[1]],
+        );
     });
 
     it('should call getVersionInitializer with transformDocument', () => {
@@ -69,7 +78,7 @@ describe('publishDocuments', () => {
     });
 
     it('should call ctx.transformAllDocuments', () => {
-        expect(ctx.transformAllDocuments).toHaveBeenCalledWith(
+        expect(transformAllDocuments).toHaveBeenCalledWith(
             'count',
             'uriDataset.findLimitFromSkip()',
             'publishedDataset.insertBatch()',

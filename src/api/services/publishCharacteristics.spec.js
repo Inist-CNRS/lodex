@@ -1,7 +1,7 @@
 /* eslint max-len: off */
 import expect, { createSpy } from 'expect';
 
-import publishCharacteristics from './publishCharacteristics';
+import { publishCharacteristicsFactory } from './publishCharacteristics';
 
 describe('publishCharacteristics', () => {
     const transformDocument = createSpy().andReturn({
@@ -9,14 +9,15 @@ describe('publishCharacteristics', () => {
     });
     const count = 5;
     const ctx = {
-        getDocumentTransformer: createSpy().andReturn(transformDocument),
         uriDataset: {
             findLimitFromSkip: createSpy().andReturn(['doc']),
+            findBy: 'ctx.uriDataset.findBy',
         },
         publishedCharacteristic: {
             addNewVersion: createSpy(),
         },
     };
+    const getDocumentTransformer = createSpy().andReturn(transformDocument);
     const datasetFields = [
         {
             name: 'transformed',
@@ -25,11 +26,18 @@ describe('publishCharacteristics', () => {
     ];
 
     before(async () => {
-        await publishCharacteristics(ctx, datasetFields, count);
+        await publishCharacteristicsFactory({ getDocumentTransformer })(
+            ctx,
+            datasetFields,
+            count,
+        );
     });
 
     it('should call getDocumentTransformer', () => {
-        expect(ctx.getDocumentTransformer).toHaveBeenCalledWith(datasetFields);
+        expect(getDocumentTransformer).toHaveBeenCalledWith(
+            'ctx.uriDataset.findBy',
+            datasetFields,
+        );
     });
 
     it('should call ctx.uriDataset.findLimitFromSkip', () => {

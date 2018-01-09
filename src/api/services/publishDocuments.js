@@ -1,3 +1,7 @@
+import getDocumentTransformer from './getDocumentTransformer';
+import getAddUriTransformer from './getAddUriTransformer';
+import transformAllDocuments from './transformAllDocuments';
+
 export const getVersionInitializer = transformDocument => async (
     doc,
     _,
@@ -13,30 +17,36 @@ export const getVersionInitializer = transformDocument => async (
     ],
 });
 
-export const publishDocumentsFactory = ({ getVersionInitializer }) =>
+export const publishDocumentsFactory = ({
+    getVersionInitializer,
+    getDocumentTransformer,
+    getAddUriTransformer,
+    transformAllDocuments,
+}) =>
     async function publishDocuments(ctx, count, fields) {
         const collectionCoverFields = fields.filter(
             c => c.cover === 'collection',
         );
 
         const uriCol = fields.find(col => col.name === 'uri');
-        const addUri = ctx.getAddUriTransformer(uriCol);
+        const addUri = getAddUriTransformer(ctx.dataset.findBy, uriCol);
 
-        await ctx.transformAllDocuments(
+        await transformAllDocuments(
             count,
             ctx.dataset.findLimitFromSkip,
             ctx.uriDataset.insertBatch,
             addUri,
         );
 
-        const transformDocument = ctx.getDocumentTransformer(
+        const transformDocument = getDocumentTransformer(
+            ctx.uriDataset.findBy,
             collectionCoverFields.filter(col => col.name !== 'uri'),
         );
 
         const initializeVersion = getVersionInitializer(transformDocument);
 
         const uriDocCount = await ctx.uriDataset.count({});
-        await ctx.transformAllDocuments(
+        await transformAllDocuments(
             uriDocCount,
             ctx.uriDataset.findLimitFromSkip,
             ctx.publishedDataset.insertBatch,
@@ -44,4 +54,9 @@ export const publishDocumentsFactory = ({ getVersionInitializer }) =>
         );
     };
 
-export default publishDocumentsFactory({ getVersionInitializer });
+export default publishDocumentsFactory({
+    getVersionInitializer,
+    getDocumentTransformer,
+    getAddUriTransformer,
+    transformAllDocuments,
+});
