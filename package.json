@@ -61,7 +61,7 @@
     "ezs-basics": "3.3.6",
     "ezs-istex": "4.0.1",
     "feed": "1.1.0",
-    "fetch-with-proxy": "1.0.1",
+    "fetch-with-proxy": "1.1.0",
     "file-loader": "0.11.2",
     "file-saver": "1.3.3",
     "history": "3.2.1",
