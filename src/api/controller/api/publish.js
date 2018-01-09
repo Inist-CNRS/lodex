@@ -110,9 +110,9 @@ export const doPublish = async ctx => {
         transformDocument,
     );
 
-    const countUnique = (await ctx.uriDataset.distinct('uri')).length;
+    const uriDocCount = await ctx.uriDataset.count({});
     await ctx.transformAllDocuments(
-        countUnique,
+        uriDocCount,
         ctx.uriDataset.findLimitFromSkip,
         ctx.publishedDataset.insertBatch,
         transformDocumentAndKeepUri,
