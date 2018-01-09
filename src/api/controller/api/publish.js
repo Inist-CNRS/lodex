@@ -1,4 +1,3 @@
-import omit from 'lodash.omit';
 import Koa from 'koa';
 import route from 'koa-route';
 import get from 'lodash.get';
@@ -7,35 +6,15 @@ import get from 'lodash.get';
 import getDocumentTransformer from '../../services/getDocumentTransformer';
 import getAddUriTransformer from '../../services/getAddUriTransformer';
 import transformAllDocuments from '../../services/transformAllDocuments';
+import publishDocuments from '../../services/publishDocuments';
 import publishCharacteristics from '../../services/publishCharacteristics';
 import publishFacets from './publishFacets';
 
 const app = new Koa();
 
-export const addTransformResultToDoc = transform => async doc => ({
-    ...omit(doc, ['_id']),
-    ...(await transform(doc)),
-});
-
-export const versionTransformResult = transformDocument => async (
-    doc,
-    _,
-    __,
-    publicationDate = new Date(),
-) => ({
-    uri: doc.uri,
-    versions: [
-        {
-            ...(await transformDocument(doc)),
-            publicationDate,
-        },
-    ],
-});
-
 export const preparePublish = async (ctx, next) => {
     ctx.transformAllDocuments = transformAllDocuments;
-    ctx.addTransformResultToDoc = addTransformResultToDoc;
-    ctx.versionTransformResult = versionTransformResult;
+    ctx.publishDocuments = publishDocuments;
     ctx.publishCharacteristics = publishCharacteristics;
     ctx.publishFacets = publishFacets;
     ctx.getDocumentTransformer = getDocumentTransformer(ctx);
@@ -60,31 +39,7 @@ export const doPublish = async ctx => {
     const fields = await ctx.field.findAll();
     const collectionCoverFields = fields.filter(c => c.cover === 'collection');
 
-    const uriCol = fields.find(col => col.name === 'uri');
-    const addUri = ctx.getAddUriTransformer(uriCol);
-
-    await ctx.transformAllDocuments(
-        count,
-        ctx.dataset.findLimitFromSkip,
-        ctx.uriDataset.insertBatch,
-        addUri,
-    );
-
-    const transformDocument = ctx.getDocumentTransformer(
-        collectionCoverFields.filter(col => col.name !== 'uri'),
-    );
-
-    const transformDocumentAndKeepUri = ctx.versionTransformResult(
-        transformDocument,
-    );
-
-    const uriDocCount = await ctx.uriDataset.count({});
-    await ctx.transformAllDocuments(
-        uriDocCount,
-        ctx.uriDataset.findLimitFromSkip,
-        ctx.publishedDataset.insertBatch,
-        transformDocumentAndKeepUri,
-    );
+    await ctx.publishDocuments(ctx, count, collectionCoverFields);
 
     const datasetCoverFields = fields.filter(c => c.cover === 'dataset');
     await ctx.publishCharacteristics(ctx, datasetCoverFields, count);
