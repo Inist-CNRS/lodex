@@ -2,7 +2,7 @@ import { call, race, take, put, select, takeEvery } from 'redux-saga/effects';
 import { LOCATION_CHANGE } from 'react-router-redux';
 
 import { fromUser } from '../../../sharedSelectors';
-import { fromUpload } from '../../selectors';
+import { fromUpload, fromPublication } from '../../selectors';
 import { loadDatasetFile } from '../../../lib/loadFile';
 import { UPLOAD_FILE, uploadError, uploadSuccess } from '../';
 import fetch from '../../../lib/fetch';
@@ -12,12 +12,17 @@ export function* handleUploadFile(action) {
         return;
     }
     try {
-        const clearUploadRequest = yield select(fromUser.getClearUploadRequest);
+        const isPublished = yield select(fromPublication.hasPublishedDataset);
+        if (!isPublished) {
+            const clearUploadRequest = yield select(
+                fromUser.getClearUploadRequest,
+            );
 
-        const { error } = yield call(fetch, clearUploadRequest);
-        if (error) {
-            yield put(uploadError(error));
-            return;
+            const { error } = yield call(fetch, clearUploadRequest);
+            if (error) {
+                yield put(uploadError(error));
+                return;
+            }
         }
         const parserName = yield select(fromUpload.getParserName);
         const token = yield select(fromUser.getToken);
