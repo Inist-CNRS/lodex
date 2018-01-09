@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
         ':first-child': firstCell,
         fontSize: '12px',
         textAlign: 'right',
-        textTransform: 'uppercase',
+        textTransform: 'none',
         display: 'block',
         height: '30px',
         margin: '2px',
@@ -79,6 +79,7 @@ const styles = StyleSheet.create({
         transform: 'skew(-45deg,0deg)',
     },
     rotateSpan: {
+        fontWeight: 'bold',
         transform: 'skew(45deg,0deg) rotate(315deg)',
         position: 'absolute',
         bottom: '30px',
@@ -184,6 +185,17 @@ HeatMapView.propTypes = {
     hideTooltip: PropTypes.func.isRequired,
 };
 
+const alphabeticalComparison = (a, b) => {
+    if (a < b) {
+        return -1;
+    }
+    if (a > b) {
+        return 1;
+    }
+
+    return 0;
+};
+
 const mapStateToProps = (state, { chartData, field }) => {
     const { colorScheme, flipAxis } = fromFields.getFieldFormatArgs(
         state,
@@ -205,8 +217,8 @@ const mapStateToProps = (state, { chartData, field }) => {
     );
 
     return {
-        xAxis,
-        yAxis,
+        xAxis: xAxis.sort(alphabeticalComparison),
+        yAxis: yAxis.sort(alphabeticalComparison),
         dictionary,
         maxValue,
         colorScheme,
