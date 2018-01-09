@@ -16,9 +16,9 @@ export default db => {
             .find()
             .limit(6)
             .toArray();
-    collection.findLimitFromSkip = (limit, skip) =>
+    collection.findLimitFromSkip = (limit, skip, query = {}) =>
         collection
-            .find()
+            .find(query)
             .skip(skip)
             .limit(limit)
             .toArray();

@@ -6,24 +6,10 @@ import get from 'lodash.get';
 /* eslint no-await-in-loop: off */
 import getDocumentTransformer from '../../services/getDocumentTransformer';
 import getAddUriTransformer from '../../services/getAddUriTransformer';
+import transformAllDocuments from '../../services/transformAllDocuments';
 import publishFacets from './publishFacets';
 
 const app = new Koa();
-
-export const tranformAllDocuments = async (
-    count,
-    findLimitFromSkip,
-    insertBatch,
-    transformer,
-) => {
-    let handled = 0;
-    while (handled < count) {
-        const dataset = await findLimitFromSkip(1000, handled);
-        const transformedDataset = await Promise.all(dataset.map(transformer));
-        await insertBatch(transformedDataset);
-        handled += dataset.length;
-    }
-};
 
 export const addTransformResultToDoc = transform => async doc => ({
     ...omit(doc, ['_id']),
@@ -78,7 +64,7 @@ export const publishCharacteristics = async (
 };
 
 export const preparePublish = async (ctx, next) => {
-    ctx.tranformAllDocuments = tranformAllDocuments;
+    ctx.transformAllDocuments = transformAllDocuments;
     ctx.addTransformResultToDoc = addTransformResultToDoc;
     ctx.versionTransformResult = versionTransformResult;
     ctx.publishCharacteristics = publishCharacteristics;
@@ -109,7 +95,7 @@ export const doPublish = async ctx => {
     const uriCol = fields.find(col => col.name === 'uri');
     const addUri = ctx.getAddUriTransformer(uriCol);
 
-    await ctx.tranformAllDocuments(
+    await ctx.transformAllDocuments(
         count,
         ctx.dataset.findLimitFromSkip,
         ctx.uriDataset.insertBatch,
@@ -125,7 +111,7 @@ export const doPublish = async ctx => {
     );
 
     const countUnique = (await ctx.uriDataset.distinct('uri')).length;
-    await ctx.tranformAllDocuments(
+    await ctx.transformAllDocuments(
         countUnique,
         ctx.uriDataset.findLimitFromSkip,
         ctx.publishedDataset.insertBatch,
