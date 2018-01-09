@@ -5,6 +5,7 @@ import get from 'lodash.get';
 
 /* eslint no-await-in-loop: off */
 import getDocumentTransformer from '../../services/getDocumentTransformer';
+import getAddUriTransformer from '../../services/getAddUriTransformer';
 import publishFacets from './publishFacets';
 
 const app = new Koa();
@@ -83,6 +84,7 @@ export const preparePublish = async (ctx, next) => {
     ctx.publishCharacteristics = publishCharacteristics;
     ctx.publishFacets = publishFacets;
     ctx.getDocumentTransformer = getDocumentTransformer(ctx);
+    ctx.getAddUriTransformer = getAddUriTransformer(ctx);
     await next();
 };
 
@@ -105,8 +107,7 @@ export const doPublish = async ctx => {
     const datasetCoverFields = fields.filter(c => c.cover === 'dataset');
 
     const uriCol = fields.find(col => col.name === 'uri');
-    const getUri = ctx.getDocumentTransformer([uriCol]);
-    const addUri = ctx.addTransformResultToDoc(getUri);
+    const addUri = ctx.getAddUriTransformer(uriCol);
 
     await ctx.tranformAllDocuments(
         count,
