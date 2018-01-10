@@ -118,21 +118,9 @@ export async function uploadFileMiddleware(ctx, parserName, next) {
         !parserName || parserName === 'automatic' ? extension : parserName,
     );
     ctx.parsedStream = await parseStream(mergedStream);
-    const publishedCount = await ctx.publishedDataset.count();
+    await ctx.clearChunks(filename, totalChunks);
 
-    if (publishedCount === 0) {
-        await ctx.dataset.remove({});
-        await ctx.saveStream(ctx.parsedStream);
-        await ctx.clearChunks(filename, totalChunks);
-        await ctx.field.initializeModel();
-
-        ctx.status = 200;
-        ctx.body = {
-            totalLines: await ctx.dataset.count(),
-        };
-        return;
-    }
-    await next(); // publishAdditionalDocuments
+    await next(); // saveParsedStream
 }
 
 export const uploadUrl = async (ctx, next) => {
@@ -144,10 +132,16 @@ export const uploadUrl = async (ctx, next) => {
     );
 
     const stream = ctx.getStreamFromUrl(url);
-    const parsedStream = await parseStream(stream);
-    if ((await ctx.publishedDataset.count()) === 0) {
+    ctx.parsedStream = await parseStream(stream);
+    await next(); // saveParsedStream
+};
+
+export const saveParsedStream = async ctx => {
+    const publishedCount = await ctx.publishedDataset.count();
+    if (publishedCount === 0) {
         await ctx.dataset.remove({});
-        await ctx.saveStream(parsedStream);
+        await ctx.saveStream(ctx.parsedStream);
+        await ctx.field.initializeModel();
 
         ctx.status = 200;
         ctx.body = {
@@ -155,11 +149,6 @@ export const uploadUrl = async (ctx, next) => {
         };
         return;
     }
-
-    await next(); // publishAdditionalDocuments
-};
-
-export const publishAdditionalDocuments = async ctx => {
     try {
         await ctx.dataset.updateMany(
             {},
@@ -226,12 +215,12 @@ app.use(prepareUpload);
 
 app.use(koaBodyParser());
 app.use(route.post('/url', uploadUrl));
-app.use(route.post('/url', publishAdditionalDocuments));
+app.use(route.post('/url', saveParsedStream));
 
 app.use(route.post('/:parserName', parseRequest));
 app.use(route.post('/:parserName', uploadChunkMiddleware));
 app.use(route.post('/:parserName', uploadFileMiddleware));
-app.use(route.post('/:parserName', publishAdditionalDocuments));
+app.use(route.post('/:parserName', saveParsedStream));
 
 app.use(route.get('/:parserName', checkChunkMiddleware));
 
