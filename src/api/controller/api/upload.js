@@ -152,7 +152,7 @@ export async function uploadFileMiddleware(ctx, parserName) {
 
     ctx.status = 200;
     ctx.body = {
-        totalLines: 0,
+        totalLines: await ctx.dataset.count(),
     };
 }
 

@@ -45,9 +45,8 @@ export const publishDocumentsFactory = ({
 
         const initializeVersion = getVersionInitializer(transformDocument);
 
-        const uriDocCount = await ctx.uriDataset.count({});
         await transformAllDocuments(
-            uriDocCount,
+            count,
             ctx.uriDataset.findLimitFromSkip,
             ctx.publishedDataset.insertBatch,
             initializeVersion,
