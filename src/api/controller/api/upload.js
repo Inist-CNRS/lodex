@@ -18,6 +18,7 @@ import {
     areFileChunksComplete,
     createReadStream,
 } from '../../services/fsHelpers';
+import publishFacets from './publishFacets';
 
 export const getParser = parserName => {
     if (!loaders[parserName]) {
@@ -52,6 +53,7 @@ export const prepareUpload = async (ctx, next) => {
     ctx.unlinkFile = unlinkFile;
     ctx.getStreamFromUrl = getStreamFromUrl;
     ctx.publishDocuments = publishDocuments;
+    ctx.publishFacets = publishFacets;
 
     await next();
 };
@@ -149,6 +151,7 @@ export async function uploadFileMiddleware(ctx, parserName) {
     });
 
     await ctx.publishDocuments(ctx, count, collectionCoverFields);
+    await ctx.publishFacets(ctx, fields);
 
     ctx.status = 200;
     ctx.body = {
