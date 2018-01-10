@@ -34,7 +34,7 @@ class EmphasedNumberAdmin extends Component {
 
     static defaultProps = {
         args: {
-            size: 1,
+            size: 4,
             colors: '#8B8B8B #5B5B5B #818181',
         },
     };
@@ -71,6 +71,7 @@ class EmphasedNumberAdmin extends Component {
                     <MenuItem value={1} primaryText={polyglot.t('size1')} />
                     <MenuItem value={2} primaryText={polyglot.t('size2')} />
                     <MenuItem value={3} primaryText={polyglot.t('size3')} />
+                    <MenuItem value={4} primaryText={polyglot.t('size4')} />
                 </SelectField>
                 <TextField
                     floatingLabelText={polyglot.t('colors_set')}

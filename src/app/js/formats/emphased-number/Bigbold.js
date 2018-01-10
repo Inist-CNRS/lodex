@@ -5,19 +5,21 @@ import { StyleSheet, css } from 'aphrodite';
 const sizes = ['8rem', '6rem', '3rem'];
 
 const Bigbold = ({ value, colorsSet, size }) => {
-    const firstColor = colorsSet.shift() || '#8B8B8B';
-    const siz = sizes[size - 1] || '8rem';
+    const color = colorsSet.shift() || '#8B8B8B';
+    const currentSize = sizes[size - 1];
+    const fontSize = currentSize || 'inherit';
+    const fontWeight = currentSize ? 'bold' : 'normal';
+    const letterSpacing = currentSize ? `-0.${5 - size}rem` : 'inherit';
     const styles = StyleSheet.create({
         ribbon: {
             marginTop: '-0.5rem',
             marginBottom: '-0.5rem',
         },
         content: {
-            fontSize: siz,
-            textTransform: 'uppercase',
-            fontWeight: 'bold',
-            letterSpacing: '-.5rem',
-            color: `${firstColor}`,
+            fontSize,
+            fontWeight,
+            letterSpacing,
+            color,
         },
     });
     return (
