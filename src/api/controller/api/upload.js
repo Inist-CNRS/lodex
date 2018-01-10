@@ -110,19 +110,19 @@ export async function uploadChunkMiddleware(ctx, parserName, next) {
     }
 }
 
-export async function uploadFileMiddleware(ctx, parserName) {
+export async function uploadFileMiddleware(ctx, parserName, next) {
     const { filename, totalChunks, extension } = ctx.resumable;
     const mergedStream = await ctx.mergeChunks(filename, totalChunks);
 
     const parseStream = ctx.getParser(
         !parserName || parserName === 'automatic' ? extension : parserName,
     );
-    const parsedStream = await parseStream(mergedStream);
+    ctx.parsedStream = await parseStream(mergedStream);
     const publishedCount = await ctx.publishedDataset.count();
 
     if (publishedCount === 0) {
         await ctx.dataset.remove({});
-        await ctx.saveStream(parsedStream);
+        await ctx.saveStream(ctx.parsedStream);
         await ctx.clearChunks(filename, totalChunks);
         await ctx.field.initializeModel();
 
@@ -132,6 +132,34 @@ export async function uploadFileMiddleware(ctx, parserName) {
         };
         return;
     }
+    await next(); // publishAdditionalDocuments
+}
+
+export const uploadUrl = async (ctx, next) => {
+    const { url, parserName } = ctx.request.body;
+    const [extension] = url.match(/[^.]*$/);
+
+    const parseStream = ctx.getParser(
+        !parserName || parserName === 'automatic' ? extension : parserName,
+    );
+
+    const stream = ctx.getStreamFromUrl(url);
+    const parsedStream = await parseStream(stream);
+    if ((await ctx.publishedDataset.count()) === 0) {
+        await ctx.dataset.remove({});
+        await ctx.saveStream(parsedStream);
+
+        ctx.status = 200;
+        ctx.body = {
+            totalLines: await ctx.dataset.count(),
+        };
+        return;
+    }
+
+    await next(); // publishAdditionalDocuments
+};
+
+export const publishAdditionalDocuments = async ctx => {
     await ctx.dataset.updateMany(
         {},
         { $set: { lodex_published: true } },
@@ -142,7 +170,7 @@ export async function uploadFileMiddleware(ctx, parserName) {
         { $set: { lodex_published: true } },
         { multi: true },
     );
-    await ctx.saveStream(parsedStream);
+    await ctx.saveStream(ctx.parsedStream);
 
     const fields = await ctx.field.findAll();
     const collectionCoverFields = fields.filter(c => c.cover === 'collection');
@@ -157,7 +185,7 @@ export async function uploadFileMiddleware(ctx, parserName) {
     ctx.body = {
         totalLines: await ctx.dataset.count(),
     };
-}
+};
 
 export const checkChunkMiddleware = async ctx => {
     const {
@@ -172,45 +200,18 @@ export const checkChunkMiddleware = async ctx => {
     ctx.status = exists ? 200 : 204;
 };
 
-export const uploadUrl = async ctx => {
-    const { url, parserName } = ctx.request.body;
-    const [extension] = url.match(/[^.]*$/);
-
-    const parseStream = ctx.getParser(
-        !parserName || parserName === 'automatic' ? extension : parserName,
-    );
-
-    const stream = ctx.getStreamFromUrl(url);
-    const parsedStream = await parseStream(stream);
-    if ((await ctx.publishedDataset.count()) > 0) {
-        // COMING SOON: publish
-        ctx.status = 200;
-        ctx.body = {
-            totalLines: 0,
-        };
-
-        return;
-    }
-
-    await ctx.dataset.remove({});
-    await ctx.saveStream(parsedStream);
-
-    ctx.status = 200;
-    ctx.body = {
-        totalLines: await ctx.dataset.count(),
-    };
-};
-
 const app = new Koa();
 
 app.use(prepareUpload);
 
 app.use(koaBodyParser());
 app.use(route.post('/url', uploadUrl));
+app.use(route.post('/url', publishAdditionalDocuments));
 
 app.use(route.post('/:parserName', parseRequest));
 app.use(route.post('/:parserName', uploadChunkMiddleware));
 app.use(route.post('/:parserName', uploadFileMiddleware));
+app.use(route.post('/:parserName', publishAdditionalDocuments));
 
 app.use(route.get('/:parserName', checkChunkMiddleware));
 
