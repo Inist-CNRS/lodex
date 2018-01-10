@@ -160,31 +160,51 @@ export const uploadUrl = async (ctx, next) => {
 };
 
 export const publishAdditionalDocuments = async ctx => {
-    await ctx.dataset.updateMany(
-        {},
-        { $set: { lodex_published: true } },
-        { multi: true },
-    );
-    await ctx.uriDataset.updateMany(
-        {},
-        { $set: { lodex_published: true } },
-        { multi: true },
-    );
-    await ctx.saveStream(ctx.parsedStream);
+    try {
+        await ctx.dataset.updateMany(
+            {},
+            { $set: { lodex_published: true } },
+            { multi: true },
+        );
+        await ctx.uriDataset.updateMany(
+            {},
+            { $set: { lodex_published: true } },
+            { multi: true },
+        );
+        await ctx.publishedDataset.updateMany(
+            {},
+            { $set: { lodex_published: true } },
+            { multi: true },
+        );
+        await ctx.saveStream(ctx.parsedStream);
 
-    const fields = await ctx.field.findAll();
-    const collectionCoverFields = fields.filter(c => c.cover === 'collection');
-    const count = await ctx.dataset.count({
-        lodex_published: { $exists: false },
-    });
+        const fields = await ctx.field.findAll();
+        const collectionCoverFields = fields.filter(
+            c => c.cover === 'collection',
+        );
+        const count = await ctx.dataset.count({
+            lodex_published: { $exists: false },
+        });
 
-    await ctx.publishDocuments(ctx, count, collectionCoverFields);
-    await ctx.publishFacets(ctx, fields);
+        await ctx.publishDocuments(ctx, count, collectionCoverFields);
+        await ctx.publishFacets(ctx, fields);
 
-    ctx.status = 200;
-    ctx.body = {
-        totalLines: await ctx.dataset.count(),
-    };
+        ctx.status = 200;
+        ctx.body = {
+            totalLines: await ctx.dataset.count(),
+        };
+    } catch (error) {
+        await ctx.dataset.remove({ lodex_published: { $exists: false } });
+        await ctx.uriDataset.remove({ lodex_published: { $exists: false } });
+        await ctx.publishedDataset.remove({
+            lodex_published: { $exists: false },
+        });
+
+        ctx.status = 500;
+        ctx.body = {
+            error,
+        };
+    }
 };
 
 export const checkChunkMiddleware = async ctx => {
