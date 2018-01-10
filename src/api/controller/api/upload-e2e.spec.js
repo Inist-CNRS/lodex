@@ -1,0 +1,240 @@
+import expect from 'expect';
+import Stream from 'stream';
+import omit from 'lodash.omit';
+import get from 'lodash.get';
+import set from 'lodash.set';
+
+import { saveParsedStream } from './upload';
+import {
+    connect,
+    loadFixtures,
+    clear,
+    close,
+} from '../../../common/tests/fixtures';
+import datasetFactory from '../../models/dataset';
+import uriDataset from '../../models/uriDataset';
+import publishedDataset from '../../models/publishedDataset';
+import publishedFacet from '../../models/publishedFacet';
+import field from '../../models/field';
+import saveStream from '../../services/saveStream';
+import publishDocuments from '../../services/publishDocuments';
+import publishFacets from './publishFacets';
+
+const fixtures = {
+    field: [
+        {
+            cover: 'collection',
+            label: 'uri',
+            name: 'uri',
+            transformers: [
+                {
+                    operation: 'COLUMN',
+                    args: [
+                        {
+                            name: 'column',
+                            type: 'column',
+                            value: 'name',
+                        },
+                    ],
+                },
+            ],
+        },
+        {
+            cover: 'collection',
+            label: 'Stronger than',
+            name: 'STRONGER',
+            isFacet: true,
+            transformers: [
+                {
+                    operation: 'LINK',
+                    args: [
+                        {
+                            name: 'reference',
+                            type: 'column',
+                            value: 'stronger_than',
+                        },
+                        {
+                            name: 'identifier',
+                            type: 'column',
+                            value: 'id',
+                        },
+                    ],
+                },
+            ],
+        },
+        {
+            cover: 'collection',
+            label: 'name',
+            name: 'NAME',
+            transformers: [
+                {
+                    operation: 'COLUMN',
+                    args: [
+                        {
+                            name: 'column',
+                            type: 'column',
+                            value: 'name',
+                        },
+                    ],
+                },
+            ],
+        },
+    ],
+    dataset: [
+        { id: 1, name: 'rock', stronger_than: 2 },
+        { id: 2, name: 'scissor', stronger_than: 3 },
+        { id: 3, name: 'paper', stronger_than: 1 },
+    ],
+    uriDataset: [
+        { uri: 'uid:/rock', id: 1, name: 'rock', stronger_than: 2 },
+        { uri: 'uid:/scissor', id: 2, name: 'scissor', stronger_than: 3 },
+        { uri: 'uid:/paper', id: 3, name: 'paper', stronger_than: 1 },
+    ],
+    publishedDataset: [
+        {
+            uri: 'uid:/rock',
+            versions: [{ NAME: 'rock', STRONGER: 'uid:/scissor' }],
+        },
+        {
+            uri: 'uid:/scissor',
+            versions: [{ NAME: 'scissor', STRONGER: 'uid:/paper' }],
+        },
+        {
+            uri: 'uid:/paper',
+            versions: [{ NAME: 'paper', STRONGER: 'uid:/rock' }],
+        },
+    ],
+    publishedFacet: [
+        { field: 'STRONGER', value: 1, count: 1 },
+        { field: 'STRONGER', value: 2, count: 1 },
+        { field: 'STRONGER', value: 3, count: 1 },
+    ],
+};
+
+describe.only('e2e upload saveparsedStream', () => {
+    let ctx, db;
+    const newDocuments = [
+        { id: 4, name: 'spock', stronger_than: 1 },
+        { id: 5, name: 'lizard', stronger_than: 3 },
+    ];
+    before(async () => {
+        db = await connect();
+        await loadFixtures(fixtures);
+
+        let parsedStream = new Stream.Transform({ objectMode: true });
+        newDocuments.forEach(doc => parsedStream.push(doc));
+        parsedStream.push(null);
+        const dataset = await datasetFactory(db);
+
+        ctx = {
+            dataset,
+            uriDataset: await uriDataset(db),
+            publishedDataset: await publishedDataset(db),
+            field: await field(db),
+            publishedFacet: await publishedFacet(db),
+            parsedStream, // newDocuments
+            saveStream: saveStream(dataset.insertMany.bind(dataset)),
+            publishDocuments,
+            publishFacets,
+        };
+    });
+
+    it('should add new document to publication', async () => {
+        await saveParsedStream(ctx);
+        expect(await ctx.dataset.count()).toEqual(5);
+        expect(await ctx.dataset.find({}, { _id: 0 }).toArray()).toEqual([
+            {
+                id: 1,
+                name: 'rock',
+                stronger_than: 2,
+                lodex_published: true,
+            },
+            {
+                id: 2,
+                name: 'scissor',
+                stronger_than: 3,
+                lodex_published: true,
+            },
+            {
+                id: 3,
+                name: 'paper',
+                stronger_than: 1,
+                lodex_published: true,
+            },
+            { id: 4, name: 'spock', stronger_than: 1 },
+            { id: 5, name: 'lizard', stronger_than: 3 },
+        ]);
+        expect(await ctx.uriDataset.count()).toEqual(5);
+        expect(await ctx.uriDataset.find({}, { _id: 0 }).toArray()).toEqual([
+            {
+                id: 1,
+                uri: 'uid:/rock',
+                name: 'rock',
+                stronger_than: 2,
+                lodex_published: true,
+            },
+            {
+                id: 2,
+                uri: 'uid:/scissor',
+                name: 'scissor',
+                stronger_than: 3,
+                lodex_published: true,
+            },
+            {
+                id: 3,
+                uri: 'uid:/paper',
+                name: 'paper',
+                stronger_than: 1,
+                lodex_published: true,
+            },
+            { id: 4, uri: 'uid:/spock', name: 'spock', stronger_than: 1 },
+            { id: 5, uri: 'uid:/lizard', name: 'lizard', stronger_than: 3 },
+        ]);
+        expect(await ctx.publishedDataset.count()).toEqual(5);
+
+        const publishedDataset = await ctx.publishedDataset
+            .find({}, { _id: 0 })
+            .toArray();
+
+        const cleanedPublishedDataset = publishedDataset.map(doc =>
+            // omit versions[0].publicationDate
+            set(
+                doc,
+                'versions[0]',
+                omit(get(doc, 'versions[0]'), ['publicationDate']),
+            ),
+        );
+        expect(cleanedPublishedDataset).toEqual([
+            {
+                uri: 'uid:/rock',
+                versions: [{ NAME: 'rock', STRONGER: 'uid:/scissor' }],
+                lodex_published: true,
+            },
+            {
+                uri: 'uid:/scissor',
+                versions: [{ NAME: 'scissor', STRONGER: 'uid:/paper' }],
+                lodex_published: true,
+            },
+            {
+                uri: 'uid:/paper',
+                versions: [{ NAME: 'paper', STRONGER: 'uid:/rock' }],
+                lodex_published: true,
+            },
+            {
+                uri: 'uid:/spock',
+                versions: [{ NAME: 'spock', STRONGER: 'uid:/rock' }],
+            },
+            {
+                uri: 'uid:/lizard',
+                versions: [{ NAME: 'lizard', STRONGER: 'uid:/paper' }],
+            },
+        ]);
+
+        expect(await ctx.publishedFacet.find({}, { _id: 0 }).toArray());
+    });
+
+    after(async () => {
+        await clear();
+        await close();
+    });
+});

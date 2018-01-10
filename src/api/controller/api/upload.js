@@ -171,6 +171,7 @@ export const saveParsedStream = async ctx => {
         const collectionCoverFields = fields.filter(
             c => c.cover === 'collection',
         );
+
         const count = await ctx.dataset.count({
             lodex_published: { $exists: false },
         });
