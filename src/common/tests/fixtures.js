@@ -71,4 +71,7 @@ export async function clear() {
     return db;
 }
 
-export const close = async () => await db.close();
+export const close = async () => {
+    await db.close();
+    db = undefined;
+};

@@ -105,136 +105,286 @@ const fixtures = {
         },
     ],
     publishedFacet: [
-        { field: 'STRONGER', value: 1, count: 1 },
-        { field: 'STRONGER', value: 2, count: 1 },
-        { field: 'STRONGER', value: 3, count: 1 },
+        { field: 'STRONGER', value: 'uid:/rock', count: 1 },
+        { field: 'STRONGER', value: 'uid:/scissor', count: 1 },
+        { field: 'STRONGER', value: 'uid:/paper', count: 1 },
     ],
 };
 
-describe.only('e2e upload saveparsedStream', () => {
-    let ctx, db;
-    const newDocuments = [
-        { id: 4, name: 'spock', stronger_than: 1 },
-        { id: 5, name: 'lizard', stronger_than: 3 },
-    ];
+describe('e2e upload saveparsedStream', () => {
+    let db;
     before(async () => {
         db = await connect();
-        await loadFixtures(fixtures);
-
-        let parsedStream = new Stream.Transform({ objectMode: true });
-        newDocuments.forEach(doc => parsedStream.push(doc));
-        parsedStream.push(null);
-        const dataset = await datasetFactory(db);
-
-        ctx = {
-            dataset,
-            uriDataset: await uriDataset(db),
-            publishedDataset: await publishedDataset(db),
-            field: await field(db),
-            publishedFacet: await publishedFacet(db),
-            parsedStream, // newDocuments
-            saveStream: saveStream(dataset.insertMany.bind(dataset)),
-            publishDocuments,
-            publishFacets,
-        };
     });
 
-    it('should add new document to publication', async () => {
-        await saveParsedStream(ctx);
-        expect(await ctx.dataset.count()).toEqual(5);
-        expect(await ctx.dataset.find({}, { _id: 0 }).toArray()).toEqual([
-            {
-                id: 1,
-                name: 'rock',
-                stronger_than: 2,
-                lodex_published: true,
-            },
-            {
-                id: 2,
-                name: 'scissor',
-                stronger_than: 3,
-                lodex_published: true,
-            },
-            {
-                id: 3,
-                name: 'paper',
-                stronger_than: 1,
-                lodex_published: true,
-            },
+    describe('optimal', () => {
+        let ctx;
+        const newDocuments = [
             { id: 4, name: 'spock', stronger_than: 1 },
             { id: 5, name: 'lizard', stronger_than: 3 },
-        ]);
-        expect(await ctx.uriDataset.count()).toEqual(5);
-        expect(await ctx.uriDataset.find({}, { _id: 0 }).toArray()).toEqual([
-            {
-                id: 1,
-                uri: 'uid:/rock',
-                name: 'rock',
-                stronger_than: 2,
-                lodex_published: true,
-            },
-            {
-                id: 2,
-                uri: 'uid:/scissor',
-                name: 'scissor',
-                stronger_than: 3,
-                lodex_published: true,
-            },
-            {
-                id: 3,
-                uri: 'uid:/paper',
-                name: 'paper',
-                stronger_than: 1,
-                lodex_published: true,
-            },
-            { id: 4, uri: 'uid:/spock', name: 'spock', stronger_than: 1 },
-            { id: 5, uri: 'uid:/lizard', name: 'lizard', stronger_than: 3 },
-        ]);
-        expect(await ctx.publishedDataset.count()).toEqual(5);
+        ];
+        before(async () => {
+            await loadFixtures(fixtures);
 
-        const publishedDataset = await ctx.publishedDataset
-            .find({}, { _id: 0 })
-            .toArray();
+            let parsedStream = new Stream.Transform({ objectMode: true });
+            newDocuments.forEach(doc => parsedStream.push(doc));
+            parsedStream.push(null);
+            const dataset = await datasetFactory(db);
 
-        const cleanedPublishedDataset = publishedDataset.map(doc =>
-            // omit versions[0].publicationDate
-            set(
-                doc,
-                'versions[0]',
-                omit(get(doc, 'versions[0]'), ['publicationDate']),
-            ),
-        );
-        expect(cleanedPublishedDataset).toEqual([
-            {
-                uri: 'uid:/rock',
-                versions: [{ NAME: 'rock', STRONGER: 'uid:/scissor' }],
-                lodex_published: true,
-            },
-            {
-                uri: 'uid:/scissor',
-                versions: [{ NAME: 'scissor', STRONGER: 'uid:/paper' }],
-                lodex_published: true,
-            },
-            {
-                uri: 'uid:/paper',
-                versions: [{ NAME: 'paper', STRONGER: 'uid:/rock' }],
-                lodex_published: true,
-            },
-            {
-                uri: 'uid:/spock',
-                versions: [{ NAME: 'spock', STRONGER: 'uid:/rock' }],
-            },
-            {
-                uri: 'uid:/lizard',
-                versions: [{ NAME: 'lizard', STRONGER: 'uid:/paper' }],
-            },
-        ]);
+            ctx = {
+                dataset,
+                uriDataset: await uriDataset(db),
+                publishedDataset: await publishedDataset(db),
+                field: await field(db),
+                publishedFacet: await publishedFacet(db),
+                parsedStream, // newDocuments
+                saveStream: saveStream(dataset.insertMany.bind(dataset)),
+                publishDocuments,
+                publishFacets,
+            };
+        });
 
-        expect(await ctx.publishedFacet.find({}, { _id: 0 }).toArray());
+        it('should add new document to publication', async () => {
+            await saveParsedStream(ctx);
+            expect(await ctx.dataset.count()).toEqual(5);
+            expect(await ctx.dataset.find({}, { _id: 0 }).toArray()).toEqual([
+                {
+                    id: 1,
+                    name: 'rock',
+                    stronger_than: 2,
+                    lodex_published: true,
+                },
+                {
+                    id: 2,
+                    name: 'scissor',
+                    stronger_than: 3,
+                    lodex_published: true,
+                },
+                {
+                    id: 3,
+                    name: 'paper',
+                    stronger_than: 1,
+                    lodex_published: true,
+                },
+                { id: 4, name: 'spock', stronger_than: 1 },
+                { id: 5, name: 'lizard', stronger_than: 3 },
+            ]);
+            expect(await ctx.uriDataset.count()).toEqual(5);
+            expect(await ctx.uriDataset.find({}, { _id: 0 }).toArray()).toEqual(
+                [
+                    {
+                        id: 1,
+                        uri: 'uid:/rock',
+                        name: 'rock',
+                        stronger_than: 2,
+                        lodex_published: true,
+                    },
+                    {
+                        id: 2,
+                        uri: 'uid:/scissor',
+                        name: 'scissor',
+                        stronger_than: 3,
+                        lodex_published: true,
+                    },
+                    {
+                        id: 3,
+                        uri: 'uid:/paper',
+                        name: 'paper',
+                        stronger_than: 1,
+                        lodex_published: true,
+                    },
+                    {
+                        id: 4,
+                        uri: 'uid:/spock',
+                        name: 'spock',
+                        stronger_than: 1,
+                    },
+                    {
+                        id: 5,
+                        uri: 'uid:/lizard',
+                        name: 'lizard',
+                        stronger_than: 3,
+                    },
+                ],
+            );
+            expect(await ctx.publishedDataset.count()).toEqual(5);
+
+            const publishedDataset = await ctx.publishedDataset
+                .find({}, { _id: 0 })
+                .toArray();
+
+            const cleanedPublishedDataset = publishedDataset.map(doc =>
+                // omit versions[0].publicationDate
+                set(
+                    doc,
+                    'versions[0]',
+                    omit(get(doc, 'versions[0]'), ['publicationDate']),
+                ),
+            );
+            expect(cleanedPublishedDataset).toEqual([
+                {
+                    uri: 'uid:/rock',
+                    versions: [{ NAME: 'rock', STRONGER: 'uid:/scissor' }],
+                    lodex_published: true,
+                },
+                {
+                    uri: 'uid:/scissor',
+                    versions: [{ NAME: 'scissor', STRONGER: 'uid:/paper' }],
+                    lodex_published: true,
+                },
+                {
+                    uri: 'uid:/paper',
+                    versions: [{ NAME: 'paper', STRONGER: 'uid:/rock' }],
+                    lodex_published: true,
+                },
+                {
+                    uri: 'uid:/spock',
+                    versions: [{ NAME: 'spock', STRONGER: 'uid:/rock' }],
+                },
+                {
+                    uri: 'uid:/lizard',
+                    versions: [{ NAME: 'lizard', STRONGER: 'uid:/paper' }],
+                },
+            ]);
+
+            expect(
+                await ctx.publishedFacet.find({}, { _id: 0 }).toArray(),
+            ).toEqual([
+                { field: 'STRONGER', value: 'uid:/scissor', count: 1 },
+                { field: 'STRONGER', value: 'uid:/paper', count: 2 },
+                { field: 'STRONGER', value: 'uid:/rock', count: 2 },
+            ]);
+        });
+
+        after(async () => {
+            await clear();
+        });
+    });
+
+    describe('uri duplicate error', () => {
+        let ctx;
+        const newDocuments = [
+            { id: 4, name: 'spock', stronger_than: 1 },
+            { id: 5, name: 'lizard', stronger_than: 3 },
+            { id: 1, name: 'rock', stronger_than: 2 }, // duplicate
+        ];
+        before(async () => {
+            await loadFixtures(fixtures);
+
+            let parsedStream = new Stream.Transform({ objectMode: true });
+            newDocuments.forEach(doc => parsedStream.push(doc));
+            parsedStream.push(null);
+            const dataset = await datasetFactory(db);
+
+            ctx = {
+                dataset,
+                uriDataset: await uriDataset(db),
+                publishedDataset: await publishedDataset(db),
+                field: await field(db),
+                publishedFacet: await publishedFacet(db),
+                parsedStream, // newDocuments
+                saveStream: saveStream(dataset.insertMany.bind(dataset)),
+                publishDocuments,
+                publishFacets,
+            };
+        });
+
+        it('should not add new document to publication', async () => {
+            await saveParsedStream(ctx);
+            expect(await ctx.dataset.count()).toEqual(3);
+            expect(await ctx.dataset.find({}, { _id: 0 }).toArray()).toEqual([
+                {
+                    id: 1,
+                    name: 'rock',
+                    stronger_than: 2,
+                    lodex_published: true,
+                },
+                {
+                    id: 2,
+                    name: 'scissor',
+                    stronger_than: 3,
+                    lodex_published: true,
+                },
+                {
+                    id: 3,
+                    name: 'paper',
+                    stronger_than: 1,
+                    lodex_published: true,
+                },
+            ]);
+            expect(await ctx.uriDataset.count()).toEqual(3);
+            expect(await ctx.uriDataset.find({}, { _id: 0 }).toArray()).toEqual(
+                [
+                    {
+                        id: 1,
+                        uri: 'uid:/rock',
+                        name: 'rock',
+                        stronger_than: 2,
+                        lodex_published: true,
+                    },
+                    {
+                        id: 2,
+                        uri: 'uid:/scissor',
+                        name: 'scissor',
+                        stronger_than: 3,
+                        lodex_published: true,
+                    },
+                    {
+                        id: 3,
+                        uri: 'uid:/paper',
+                        name: 'paper',
+                        stronger_than: 1,
+                        lodex_published: true,
+                    },
+                ],
+            );
+            expect(await ctx.publishedDataset.count()).toEqual(3);
+
+            const publishedDataset = await ctx.publishedDataset
+                .find({}, { _id: 0 })
+                .toArray();
+
+            const cleanedPublishedDataset = publishedDataset.map(doc =>
+                // omit versions[0].publicationDate
+                set(
+                    doc,
+                    'versions[0]',
+                    omit(get(doc, 'versions[0]'), ['publicationDate']),
+                ),
+            );
+            expect(cleanedPublishedDataset).toEqual([
+                {
+                    uri: 'uid:/rock',
+                    versions: [{ NAME: 'rock', STRONGER: 'uid:/scissor' }],
+                    lodex_published: true,
+                },
+                {
+                    uri: 'uid:/scissor',
+                    versions: [{ NAME: 'scissor', STRONGER: 'uid:/paper' }],
+                    lodex_published: true,
+                },
+                {
+                    uri: 'uid:/paper',
+                    versions: [{ NAME: 'paper', STRONGER: 'uid:/rock' }],
+                    lodex_published: true,
+                },
+            ]);
+
+            expect(
+                await ctx.publishedFacet.find({}, { _id: 0 }).toArray(),
+            ).toEqual([
+                { field: 'STRONGER', value: 'uid:/rock', count: 1 },
+                { field: 'STRONGER', value: 'uid:/scissor', count: 1 },
+                { field: 'STRONGER', value: 'uid:/paper', count: 1 },
+            ]);
+        });
+
+        after(async () => {
+            await clear();
+        });
     });
 
     after(async () => {
-        await clear();
         await close();
     });
 });

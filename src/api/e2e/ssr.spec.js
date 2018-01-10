@@ -3,7 +3,12 @@ import omit from 'lodash.omit';
 
 import requestServer from './utils/requestServer';
 import fixtures from './ssr.json';
-import { clear, loadFixtures, close } from '../../common/tests/fixtures';
+import {
+    connect,
+    clear,
+    loadFixtures,
+    close,
+} from '../../common/tests/fixtures';
 import exporters from '../exporters';
 import config from '../../../config.json';
 
@@ -12,6 +17,7 @@ describe('ssr', () => {
     before(async () => {
         server = requestServer();
         await clear();
+        await connect();
         await loadFixtures(fixtures);
     });
 
