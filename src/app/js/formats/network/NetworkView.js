@@ -8,6 +8,7 @@ import {
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import get from 'lodash.get';
+import { scaleLinear } from 'd3-scale';
 
 import injectData from '../injectData';
 
@@ -75,26 +76,36 @@ const mapStateToProps = (state, { chartData }) => {
     }
 
     const nodesDic = chartData.reduce(
-        (acc, { source, target }) => ({
+        (acc, { source, target, weight }) => ({
             ...acc,
             [source]: {
                 id: source,
                 label: source,
-                radius: get(acc, [source, 'radius'], 0) + 1,
+                radius: get(acc, [source, 'radius'], 0) + weight,
             },
             [target]: {
                 id: target,
                 label: target,
-                radius: get(acc, [target, 'radius'], 0) + 1,
+                radius: get(acc, [target, 'radius'], 0) + weight,
             },
         }),
         {},
     );
 
     const nodes = Object.values(nodesDic);
+    const radiusList = nodes.map(({ radius }) => radius);
+    const max = Math.max(...radiusList);
+    const min = Math.min(...radiusList);
+
+    const scale = scaleLinear()
+        .domain([min, max])
+        .range([1, 40]);
 
     return {
-        nodes,
+        nodes: nodes.map(node => ({
+            ...node,
+            radius: scale(node.radius),
+        })),
         links: chartData.map(({ source, target, weight: value }) => ({
             source,
             target,
