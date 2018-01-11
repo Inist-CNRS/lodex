@@ -351,4 +351,6 @@ export default {
     diagonal_category_axis: 'display category axis in diagonal',
     all: 'All',
     document: 'Document',
+    node_color: 'Node Color',
+    network: 'network',
 };

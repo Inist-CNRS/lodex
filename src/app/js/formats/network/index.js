@@ -1,8 +1,9 @@
 import DefaultFormat from '../DefaultFormat';
 import Component from './NetworkView';
+import AdminComponent from './NetworkAdmin';
 
 export default {
     Component: Component,
-    AdminComponent: DefaultFormat.AdminComponent,
+    AdminComponent,
     EditionComponent: DefaultFormat.EditionComponent,
 };
