@@ -9,5 +9,4 @@ export default () => stream =>
     stream
         .pipe(ezs('TXTConcat'))
         .pipe(ezs('ISTEXParseDotCorpus'))
-        .pipe(ezs('OBJFlatten'))
-        .pipe(ezs('debug'));
+        .pipe(ezs('OBJFlatten'));
