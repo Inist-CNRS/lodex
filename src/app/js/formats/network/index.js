@@ -1,5 +1,5 @@
 import DefaultFormat from '../DefaultFormat';
-import Component from './Network';
+import Component from './NetworkView';
 
 export default {
     Component: Component,
