@@ -164,12 +164,10 @@ app.use(prepareUpload);
 
 app.use(koaBodyParser());
 app.use(route.post('/url', uploadUrl));
-app.use(route.post('/url', saveParsedStream));
 
 app.use(route.post('/:parserName', parseRequest));
 app.use(route.post('/:parserName', uploadChunkMiddleware));
 app.use(route.post('/:parserName', uploadFileMiddleware));
-app.use(route.post('/:parserName', saveParsedStream));
 
 app.use(route.get('/:parserName', checkChunkMiddleware));
 
