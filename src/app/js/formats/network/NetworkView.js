@@ -11,6 +11,7 @@ import get from 'lodash.get';
 import { scaleLinear } from 'd3-scale';
 
 import injectData from '../injectData';
+import { fromFields } from '../../sharedSelectors';
 
 const simulationOptions = {
     strength: {
@@ -27,7 +28,7 @@ const styles = {
 
 const zoomOptions = { minScale: 0.25, maxScale: 16 };
 
-const Network = ({ nodes, links }) => (
+const Network = ({ nodes, links, nodeColor }) => (
     <div style={styles.container}>
         <InteractiveForceGraph
             simulationOptions={simulationOptions}
@@ -38,7 +39,7 @@ const Network = ({ nodes, links }) => (
             highlightDependencies
         >
             {nodes.map(node => (
-                <ForceGraphNode key={node.id} node={node} fill="red" />
+                <ForceGraphNode key={node.id} node={node} fill={nodeColor} />
             ))}
             {links.map(link => (
                 <ForceGraphLink
@@ -51,6 +52,7 @@ const Network = ({ nodes, links }) => (
 );
 
 Network.propTypes = {
+    nodeColor: PropTypes.string.isRequired,
     nodes: PropTypes.arrayOf(
         PropTypes.shape({
             id: PropTypes.string,
@@ -67,7 +69,8 @@ Network.propTypes = {
     ).isRequired,
 };
 
-const mapStateToProps = (state, { chartData }) => {
+const mapStateToProps = (state, { chartData, field }) => {
+    const { nodeColor } = fromFields.getFieldFormatArgs(state, field.name);
     if (!chartData) {
         return {
             nodes: [],
@@ -102,6 +105,7 @@ const mapStateToProps = (state, { chartData }) => {
         .range([1, 40]);
 
     return {
+        nodeColor,
         nodes: nodes.map(node => ({
             ...node,
             radius: scale(node.radius),
