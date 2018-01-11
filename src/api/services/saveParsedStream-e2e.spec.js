@@ -118,7 +118,7 @@ describe('e2e upload saveparsedStream', () => {
     });
 
     describe('optimal', () => {
-        let ctx;
+        let ctx, parsedStream;
         const newDocuments = [
             { id: 4, name: 'spock', stronger_than: 1 },
             { id: 5, name: 'lizard', stronger_than: 3 },
@@ -126,7 +126,7 @@ describe('e2e upload saveparsedStream', () => {
         before(async () => {
             await loadFixtures(fixtures);
 
-            let parsedStream = new Stream.Transform({ objectMode: true });
+            parsedStream = new Stream.Transform({ objectMode: true });
             newDocuments.forEach(doc => parsedStream.push(doc));
             parsedStream.push(null);
             const dataset = await datasetFactory(db);
@@ -137,7 +137,6 @@ describe('e2e upload saveparsedStream', () => {
                 publishedDataset: await publishedDataset(db),
                 field: await field(db),
                 publishedFacet: await publishedFacet(db),
-                parsedStream, // newDocuments
                 saveStream: saveStream(dataset.insertMany.bind(dataset)),
                 publishDocuments,
                 publishFacets,
@@ -145,7 +144,7 @@ describe('e2e upload saveparsedStream', () => {
         });
 
         it('should add new document to publication', async () => {
-            await saveParsedStream(ctx);
+            await saveParsedStream(ctx)(parsedStream);
             expect(await ctx.dataset.count()).toEqual(5);
             expect(await ctx.dataset.find({}, { _id: 0 }).toArray()).toEqual([
                 {
@@ -262,7 +261,7 @@ describe('e2e upload saveparsedStream', () => {
     });
 
     describe('uri duplicate error', () => {
-        let ctx;
+        let ctx, parsedStream;
         const newDocuments = [
             { id: 4, name: 'spock', stronger_than: 1 },
             { id: 5, name: 'lizard', stronger_than: 3 },
@@ -271,7 +270,7 @@ describe('e2e upload saveparsedStream', () => {
         before(async () => {
             await loadFixtures(fixtures);
 
-            let parsedStream = new Stream.Transform({ objectMode: true });
+            parsedStream = new Stream.Transform({ objectMode: true });
             newDocuments.forEach(doc => parsedStream.push(doc));
             parsedStream.push(null);
             const dataset = await datasetFactory(db);
@@ -282,7 +281,6 @@ describe('e2e upload saveparsedStream', () => {
                 publishedDataset: await publishedDataset(db),
                 field: await field(db),
                 publishedFacet: await publishedFacet(db),
-                parsedStream, // newDocuments
                 saveStream: saveStream(dataset.insertMany.bind(dataset)),
                 publishDocuments,
                 publishFacets,
@@ -290,7 +288,9 @@ describe('e2e upload saveparsedStream', () => {
         });
 
         it('should not add new document to publication', async () => {
-            const error = await saveParsedStream(ctx).catch(error => error);
+            const error = await saveParsedStream(ctx)(parsedStream).catch(
+                error => error,
+            );
             expect(error.message).toBe(
                 'E11000 duplicate key error index: lodex_test.uriDataset.$uri_1 dup key: { : "uid:/rock" }',
             );

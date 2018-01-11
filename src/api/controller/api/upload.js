@@ -55,7 +55,7 @@ export const prepareUpload = async (ctx, next) => {
     ctx.getStreamFromUrl = getStreamFromUrl;
     ctx.publishDocuments = publishDocuments;
     ctx.publishFacets = publishFacets;
-    ctx.saveParsedStream = saveParsedStream;
+    ctx.saveParsedStream = saveParsedStream(ctx);
 
     await next();
 };
@@ -119,11 +119,11 @@ export async function uploadFileMiddleware(ctx, parserName) {
     const parseStream = ctx.getParser(
         !parserName || parserName === 'automatic' ? extension : parserName,
     );
-    ctx.parsedStream = await parseStream(mergedStream);
+    const parsedStream = await parseStream(mergedStream);
     await ctx.clearChunks(filename, totalChunks);
 
     ctx.body = {
-        totalLines: await ctx.saveParsedStream(ctx),
+        totalLines: await ctx.saveParsedStream(parsedStream),
     };
     ctx.status = 200;
 }
@@ -137,10 +137,10 @@ export const uploadUrl = async ctx => {
     );
 
     const stream = ctx.getStreamFromUrl(url);
-    ctx.parsedStream = await parseStream(stream);
+    const parsedStream = await parseStream(stream);
 
     ctx.body = {
-        totalLines: await ctx.saveParsedStream(ctx),
+        totalLines: await ctx.saveParsedStream(parsedStream),
     };
     ctx.status = 200;
 };

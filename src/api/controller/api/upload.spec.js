@@ -272,8 +272,12 @@ describe('upload', () => {
             expect(parser).toHaveBeenCalledWith('streamUrl');
         });
 
-        it('should have called saveParsedStream', () => {
-            expect(ctx.saveParsedStream).toHaveBeenCalled();
+        it('should have called saveParsedStream with parsedStream', () => {
+            expect(ctx.saveParsedStream).toHaveBeenCalledWith('parsedStream');
+        });
+
+        it('should have set ctx.body.totalLines to `dataset count`', () => {
+            expect(ctx.body).toEqual({ totalLines: 'dataset count' });
         });
     });
 });

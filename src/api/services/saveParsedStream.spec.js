@@ -4,8 +4,8 @@ import saveParsedStream from './saveParsedStream';
 
 describe('saveParsedStream', () => {
     describe('no publication', () => {
+        const parsedStream = 'parsedStream';
         const ctx = {
-            parsedStream: 'parsedStream',
             dataset: {
                 remove: createSpy(),
                 count: createSpy().andReturn('count'),
@@ -26,7 +26,7 @@ describe('saveParsedStream', () => {
         let result;
 
         before(async () => {
-            result = await saveParsedStream(ctx);
+            result = await saveParsedStream(ctx)(parsedStream);
         });
 
         it('should return count', () => {
@@ -62,7 +62,6 @@ describe('saveParsedStream', () => {
 
     describe('with publication', () => {
         const ctx = {
-            parsedStream: 'parsedStream',
             dataset: {
                 remove: createSpy(),
                 count: createSpy().andReturn('count'),
@@ -86,9 +85,10 @@ describe('saveParsedStream', () => {
             publishFacets: createSpy(),
         };
         let result;
+        const parsedStream = 'parsedStream';
 
         before(async () => {
-            result = await saveParsedStream(ctx);
+            result = await saveParsedStream(ctx)(parsedStream);
         });
 
         it('should return count', () => {
@@ -154,8 +154,8 @@ describe('saveParsedStream', () => {
     });
 
     describe('with error during publication', () => {
+        const parsedStream = 'parsedStream';
         const ctx = {
-            parsedStream: 'parsedStream',
             dataset: {
                 remove: createSpy(),
                 count: createSpy().andReturn('count'),
@@ -186,7 +186,9 @@ describe('saveParsedStream', () => {
         let result;
 
         before(async () => {
-            result = await saveParsedStream(ctx).catch(error => error);
+            result = await saveParsedStream(ctx)(parsedStream).catch(
+                error => error,
+            );
         });
 
         it('should have thrown an error', () => {
