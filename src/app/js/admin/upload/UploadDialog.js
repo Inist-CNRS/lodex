@@ -10,12 +10,7 @@ import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
-import {
-    uploadFile,
-    changeUploadUrl,
-    changeParserName,
-    uploadUrl,
-} from './';
+import { uploadFile, changeUploadUrl, changeParserName, uploadUrl } from './';
 import { fromUpload } from '../selectors';
 
 const styles = {
@@ -60,23 +55,14 @@ export const UploadDialogComponent = ({
     p: polyglot,
 }) => {
     const parserNames = LOADERS.map(pn => (
-        <MenuItem
-            key={pn}
-            value={pn}
-            primaryText={pn}
-        />
+        <MenuItem key={pn} value={pn} primaryText={pn} />
     ));
 
     return (
         <div>
-            <Stepper
-                linear={false}
-                orientation="vertical"
-            >
+            <Stepper linear={false} orientation="vertical">
                 <Step active>
-                    <StepLabel>
-                        {polyglot.t('select_parser')}
-                    </StepLabel>
+                    <StepLabel>{polyglot.t('select_parser')}</StepLabel>
                     <StepContent>
                         <SelectField
                             floatingLabelText={polyglot.t('parser_name')}
@@ -93,9 +79,7 @@ export const UploadDialogComponent = ({
                     </StepContent>
                 </Step>
                 <Step active>
-                    <StepLabel>
-                        {polyglot.t('select_file')}
-                    </StepLabel>
+                    <StepLabel>{polyglot.t('select_file')}</StepLabel>
                     <StepContent>
                         <RaisedButton
                             className="btn-upload-dataset"
@@ -114,7 +98,9 @@ export const UploadDialogComponent = ({
                         </RaisedButton>
                         <div style={styles.divider}>
                             <hr style={styles.dividerHr} />
-                            <div style={styles.dividerLabel}>{polyglot.t('or')}</div>
+                            <div style={styles.dividerLabel}>
+                                {polyglot.t('or')}
+                            </div>
                             <hr style={styles.dividerHr} />
                         </div>
                         <div>
@@ -122,7 +108,11 @@ export const UploadDialogComponent = ({
                                 fullWidth
                                 value={url}
                                 onChange={onChangeUrl}
-                                errorText={url && !isUrlValid && polyglot.t('invalid_url')}
+                                errorText={
+                                    url &&
+                                    !isUrlValid &&
+                                    polyglot.t('invalid_url')
+                                }
                                 hintText="URL"
                             />
                             <RaisedButton

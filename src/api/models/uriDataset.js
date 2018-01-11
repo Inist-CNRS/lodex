@@ -2,8 +2,10 @@ import chunk from 'lodash.chunk';
 
 import countNotUnique from './countNotUnique';
 
-export default db => {
+export default async db => {
     const collection = db.collection('uriDataset');
+
+    await collection.createIndex({ uri: 1 }, { unique: true });
 
     collection.insertBatch = documents =>
         Promise.all(
@@ -15,30 +17,12 @@ export default db => {
             ),
         );
 
-    collection.findLimitFromSkip = async (limit, skip) => {
-        const fields = Object.keys(await collection.findOne()).filter(
-            name => name !== '_id',
-        );
-
-        return collection
-            .aggregate([
-                {
-                    $group: {
-                        _id: '$uri',
-                        ...fields.reduce(
-                            (acc, name) => ({
-                                ...acc,
-                                [name]: { $first: `$${name}` },
-                            }),
-                            {},
-                        ),
-                    },
-                },
-                { $skip: skip },
-                { $limit: limit },
-            ])
+    collection.findLimitFromSkip = (limit, skip, query = {}) =>
+        collection
+            .find(query)
+            .skip(skip)
+            .limit(limit)
             .toArray();
-    };
 
     collection.countNotUnique = countNotUnique(collection);
 

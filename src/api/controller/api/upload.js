@@ -8,6 +8,7 @@ import request from 'request';
 import jsonConfig from '../../../../config.json';
 import loaders from '../../loaders';
 import saveStream from '../../services/saveStream';
+import publishDocuments from '../../services/publishDocuments';
 import {
     unlinkFile,
     saveStreamInFile,
@@ -17,6 +18,8 @@ import {
     areFileChunksComplete,
     createReadStream,
 } from '../../services/fsHelpers';
+import publishFacets from './publishFacets';
+import saveParsedStream from '../../services/saveParsedStream';
 
 export const getParser = parserName => {
     if (!loaders[parserName]) {
@@ -50,6 +53,9 @@ export const prepareUpload = async (ctx, next) => {
     ctx.createReadStream = createReadStream;
     ctx.unlinkFile = unlinkFile;
     ctx.getStreamFromUrl = getStreamFromUrl;
+    ctx.publishDocuments = publishDocuments;
+    ctx.publishFacets = publishFacets;
+    ctx.saveParsedStream = saveParsedStream(ctx);
 
     await next();
 };
@@ -114,16 +120,30 @@ export async function uploadFileMiddleware(ctx, parserName) {
         !parserName || parserName === 'automatic' ? extension : parserName,
     );
     const parsedStream = await parseStream(mergedStream);
-
-    await ctx.saveStream(parsedStream);
     await ctx.clearChunks(filename, totalChunks);
-    await ctx.field.initializeModel();
 
-    ctx.status = 200;
     ctx.body = {
-        totalLines: await ctx.dataset.count(),
+        totalLines: await ctx.saveParsedStream(parsedStream),
     };
+    ctx.status = 200;
 }
+
+export const uploadUrl = async ctx => {
+    const { url, parserName } = ctx.request.body;
+    const [extension] = url.match(/[^.]*$/);
+
+    const parseStream = ctx.getParser(
+        !parserName || parserName === 'automatic' ? extension : parserName,
+    );
+
+    const stream = ctx.getStreamFromUrl(url);
+    const parsedStream = await parseStream(stream);
+
+    ctx.body = {
+        totalLines: await ctx.saveParsedStream(parsedStream),
+    };
+    ctx.status = 200;
+};
 
 export const checkChunkMiddleware = async ctx => {
     const {
@@ -136,27 +156,6 @@ export const checkChunkMiddleware = async ctx => {
     }`;
     const exists = await checkFileExists(chunkname, resumableCurrentChunkSize);
     ctx.status = exists ? 200 : 204;
-};
-
-export const uploadUrl = async ctx => {
-    const { url, parserName } = ctx.request.body;
-    const [extension] = url.match(/[^.]*$/);
-
-    const parseStream = ctx.getParser(
-        !parserName || parserName === 'automatic' ? extension : parserName,
-    );
-
-    await ctx.dataset.remove({});
-
-    const stream = ctx.getStreamFromUrl(url);
-    const parsedStream = await parseStream(stream);
-
-    await ctx.saveStream(parsedStream);
-
-    ctx.status = 200;
-    ctx.body = {
-        totalLines: await ctx.dataset.count(),
-    };
 };
 
 const app = new Koa();

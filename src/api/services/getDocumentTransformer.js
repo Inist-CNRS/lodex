@@ -1,11 +1,11 @@
 import getDocumentTransformer from '../../common/getDocumentTransformer';
 import applyJbjStylesheet from './applyJbjStylesheet';
 
-export default ctx => fields =>
+export default (fetchLineBy, fields) =>
     getDocumentTransformer(
         {
             env: 'node',
-            fetchLineBy: ctx.uriDataset.findBy,
+            fetchLineBy,
             applyJbjStylesheet,
         },
         fields,

@@ -19,7 +19,6 @@ describe('upload', () => {
                 },
             }),
         };
-
         const next = createSpy();
 
         it('should put info from resumable parsed request into ctx.resumable', async () => {
@@ -29,7 +28,6 @@ describe('upload', () => {
             expect(ctx.resumable).toEqual({
                 stream: 'stream',
                 filename: `${config.uploadDir}/identifier`,
-                extension: '',
                 chunkname: `${config.uploadDir}/identifier.10`,
                 totalChunks: 100,
                 totalSize: 500,
@@ -252,12 +250,8 @@ describe('upload', () => {
                 },
             },
             getParser: createSpy().andReturn(parser),
-            dataset: {
-                remove: createSpy(),
-                count: createSpy().andReturn('count'),
-            },
             getStreamFromUrl: createSpy().andReturn('streamUrl'),
-            saveStream: createSpy(),
+            saveParsedStream: createSpy().andReturn('dataset count'),
         };
 
         before(async () => {
@@ -266,10 +260,6 @@ describe('upload', () => {
 
         it('should have called getParser with url file extension', () => {
             expect(ctx.getParser).toHaveBeenCalledWith('type');
-        });
-
-        it('should have called dataset.remove', () => {
-            expect(ctx.dataset.remove).toHaveBeenCalled();
         });
 
         it('should have called getStreamForUrl with url', () => {
@@ -282,18 +272,12 @@ describe('upload', () => {
             expect(parser).toHaveBeenCalledWith('streamUrl');
         });
 
-        it('should have called saveStream with parsedStream', () => {
-            expect(ctx.saveStream).toHaveBeenCalledWith('parsedStream');
+        it('should have called saveParsedStream with parsedStream', () => {
+            expect(ctx.saveParsedStream).toHaveBeenCalledWith('parsedStream');
         });
 
-        it('should have called dataset.count', () => {
-            expect(ctx.dataset.count).toHaveBeenCalled();
-        });
-
-        it('should add body.totalLines: count', () => {
-            expect(ctx.body).toEqual({
-                totalLines: 'count',
-            });
+        it('should have set ctx.body.totalLines to `dataset count`', () => {
+            expect(ctx.body).toEqual({ totalLines: 'dataset count' });
         });
     });
 });

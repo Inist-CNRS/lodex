@@ -5,20 +5,12 @@ import { fromUser } from '../../../sharedSelectors';
 import { fromUpload } from '../../selectors';
 import { loadDatasetFile } from '../../../lib/loadFile';
 import { UPLOAD_FILE, uploadError, uploadSuccess } from '../';
-import fetch from '../../../lib/fetch';
 
 export function* handleUploadFile(action) {
     if (!action || !action.payload) {
         return;
     }
     try {
-        const clearUploadRequest = yield select(fromUser.getClearUploadRequest);
-
-        const { error } = yield call(fetch, clearUploadRequest);
-        if (error) {
-            yield put(uploadError(error));
-            return;
-        }
         const parserName = yield select(fromUpload.getParserName);
         const token = yield select(fromUser.getToken);
         const { file, cancel } = yield race({
