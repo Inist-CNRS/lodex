@@ -20,6 +20,11 @@ const simulationOptions = {
     alpha: 1,
 };
 
+const labelOffset = {
+    x: ({ radius }) => radius * Math.cos(Math.PI / 4),
+    y: ({ radius }) => radius * Math.sin(Math.PI / 4) + 6,
+};
+
 const styles = {
     container: {
         overflow: 'hidden',
@@ -36,6 +41,7 @@ const Network = ({ nodes, links, nodeColor }) => (
             showLabels
             zoomOptions={zoomOptions}
             labelAttr="label"
+            labelOffset={labelOffset}
             highlightDependencies
         >
             {nodes.map(node => (
