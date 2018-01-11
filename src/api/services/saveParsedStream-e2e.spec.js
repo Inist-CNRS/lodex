@@ -4,21 +4,21 @@ import omit from 'lodash.omit';
 import get from 'lodash.get';
 import set from 'lodash.set';
 
-import { saveParsedStream } from './upload';
+import saveParsedStream from './saveParsedStream';
 import {
     connect,
     loadFixtures,
     clear,
     close,
-} from '../../../common/tests/fixtures';
-import datasetFactory from '../../models/dataset';
-import uriDataset from '../../models/uriDataset';
-import publishedDataset from '../../models/publishedDataset';
-import publishedFacet from '../../models/publishedFacet';
-import field from '../../models/field';
-import saveStream from '../../services/saveStream';
-import publishDocuments from '../../services/publishDocuments';
-import publishFacets from './publishFacets';
+} from '../../common/tests/fixtures';
+import datasetFactory from '../models/dataset';
+import uriDataset from '../models/uriDataset';
+import publishedDataset from '../models/publishedDataset';
+import publishedFacet from '../models/publishedFacet';
+import field from '../models/field';
+import saveStream from './saveStream';
+import publishDocuments from './publishDocuments';
+import publishFacets from '../controller/api/publishFacets';
 
 const fixtures = {
     field: [
@@ -290,7 +290,10 @@ describe('e2e upload saveparsedStream', () => {
         });
 
         it('should not add new document to publication', async () => {
-            await saveParsedStream(ctx);
+            const error = await saveParsedStream(ctx).catch(error => error);
+            expect(error.message).toBe(
+                'E11000 duplicate key error index: lodex_test.uriDataset.$uri_1 dup key: { : "uid:/rock" }',
+            );
             expect(await ctx.dataset.count()).toEqual(3);
             expect(await ctx.dataset.find({}, { _id: 0 }).toArray()).toEqual([
                 {

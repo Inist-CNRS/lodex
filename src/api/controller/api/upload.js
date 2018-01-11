@@ -19,6 +19,7 @@ import {
     createReadStream,
 } from '../../services/fsHelpers';
 import publishFacets from './publishFacets';
+import saveParsedStream from '../../services/saveParsedStream';
 
 export const getParser = parserName => {
     if (!loaders[parserName]) {
@@ -54,6 +55,7 @@ export const prepareUpload = async (ctx, next) => {
     ctx.getStreamFromUrl = getStreamFromUrl;
     ctx.publishDocuments = publishDocuments;
     ctx.publishFacets = publishFacets;
+    ctx.saveParsedStream = saveParsedStream;
 
     await next();
 };
@@ -110,7 +112,7 @@ export async function uploadChunkMiddleware(ctx, parserName, next) {
     }
 }
 
-export async function uploadFileMiddleware(ctx, parserName, next) {
+export async function uploadFileMiddleware(ctx, parserName) {
     const { filename, totalChunks, extension } = ctx.resumable;
     const mergedStream = await ctx.mergeChunks(filename, totalChunks);
 
@@ -120,10 +122,13 @@ export async function uploadFileMiddleware(ctx, parserName, next) {
     ctx.parsedStream = await parseStream(mergedStream);
     await ctx.clearChunks(filename, totalChunks);
 
-    await next(); // saveParsedStream
+    ctx.body = {
+        totalLines: await ctx.saveParsedStream(ctx),
+    };
+    ctx.status = 200;
 }
 
-export const uploadUrl = async (ctx, next) => {
+export const uploadUrl = async ctx => {
     const { url, parserName } = ctx.request.body;
     const [extension] = url.match(/[^.]*$/);
 
@@ -133,68 +138,11 @@ export const uploadUrl = async (ctx, next) => {
 
     const stream = ctx.getStreamFromUrl(url);
     ctx.parsedStream = await parseStream(stream);
-    await next(); // saveParsedStream
-};
 
-export const saveParsedStream = async ctx => {
-    const publishedCount = await ctx.publishedDataset.count();
-    if (publishedCount === 0) {
-        await ctx.dataset.remove({});
-        await ctx.saveStream(ctx.parsedStream);
-        await ctx.field.initializeModel();
-
-        ctx.status = 200;
-        ctx.body = {
-            totalLines: await ctx.dataset.count(),
-        };
-        return;
-    }
-    try {
-        await ctx.dataset.updateMany(
-            {},
-            { $set: { lodex_published: true } },
-            { multi: true },
-        );
-        await ctx.uriDataset.updateMany(
-            {},
-            { $set: { lodex_published: true } },
-            { multi: true },
-        );
-        await ctx.publishedDataset.updateMany(
-            {},
-            { $set: { lodex_published: true } },
-            { multi: true },
-        );
-        await ctx.saveStream(ctx.parsedStream);
-
-        const fields = await ctx.field.findAll();
-        const collectionCoverFields = fields.filter(
-            c => c.cover === 'collection',
-        );
-
-        const count = await ctx.dataset.count({
-            lodex_published: { $exists: false },
-        });
-
-        await ctx.publishDocuments(ctx, count, collectionCoverFields);
-        await ctx.publishFacets(ctx, fields);
-
-        ctx.status = 200;
-        ctx.body = {
-            totalLines: await ctx.dataset.count(),
-        };
-    } catch (error) {
-        await ctx.dataset.remove({ lodex_published: { $exists: false } });
-        await ctx.uriDataset.remove({ lodex_published: { $exists: false } });
-        await ctx.publishedDataset.remove({
-            lodex_published: { $exists: false },
-        });
-
-        ctx.status = 500;
-        ctx.body = {
-            error,
-        };
-    }
+    ctx.body = {
+        totalLines: await ctx.saveParsedStream(ctx),
+    };
+    ctx.status = 200;
 };
 
 export const checkChunkMiddleware = async ctx => {
