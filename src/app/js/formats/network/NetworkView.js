@@ -1,23 +1,25 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
     InteractiveForceGraph,
     ForceGraphNode,
     ForceGraphLink,
+    createSimulation,
 } from 'react-vis-force';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import get from 'lodash.get';
+import isEqual from 'lodash.isequal';
 import { scaleLinear } from 'd3-scale';
 
 import injectData from '../injectData';
 import { fromFields } from '../../sharedSelectors';
 
 const simulationOptions = {
+    animate: true,
     strength: {
-        charge: -1000,
+        charge: ({ radius }) => -radius * 100,
     },
-    alpha: 1,
 };
 
 const labelOffset = {
@@ -33,29 +35,55 @@ const styles = {
 
 const zoomOptions = { minScale: 0.25, maxScale: 16 };
 
-const Network = ({ nodes, links, nodeColor }) => (
-    <div style={styles.container}>
-        <InteractiveForceGraph
-            simulationOptions={simulationOptions}
-            zoom
-            showLabels
-            zoomOptions={zoomOptions}
-            labelAttr="label"
-            labelOffset={labelOffset}
-            highlightDependencies
-        >
-            {nodes.map(node => (
-                <ForceGraphNode key={node.id} node={node} fill={nodeColor} />
-            ))}
-            {links.map(link => (
-                <ForceGraphLink
-                    key={`${link.source}_${link.target}`}
-                    link={link}
-                />
-            ))}
-        </InteractiveForceGraph>
-    </div>
-);
+class Network extends Component {
+    createSimulation = options => {
+        // extends react-vis-force createSimulation to get a reference on the simulation
+        this.simulation = createSimulation(options);
+
+        return this.simulation;
+    };
+
+    componentDidUpdate(prevProps) {
+        if (isEqual(prevProps, this.props)) {
+            return;
+        }
+
+        this.simulation.alpha(1).restart(); // reset simulation alpha and restart it to fix animation on node change
+    }
+
+    render() {
+        const { nodes, links, nodeColor } = this.props;
+
+        return (
+            <div style={styles.container}>
+                <InteractiveForceGraph
+                    simulationOptions={simulationOptions}
+                    zoom
+                    showLabels
+                    zoomOptions={zoomOptions}
+                    labelAttr="label"
+                    labelOffset={labelOffset}
+                    highlightDependencies
+                    createSimulation={this.createSimulation}
+                >
+                    {nodes.map(node => (
+                        <ForceGraphNode
+                            key={node.id}
+                            node={node}
+                            fill={nodeColor}
+                        />
+                    ))}
+                    {links.map(link => (
+                        <ForceGraphLink
+                            key={`${link.source}_${link.target}`}
+                            link={link}
+                        />
+                    ))}
+                </InteractiveForceGraph>
+            </div>
+        );
+    }
+}
 
 Network.propTypes = {
     nodeColor: PropTypes.string.isRequired,
