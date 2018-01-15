@@ -3,36 +3,41 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import { pack, hierarchy } from 'd3-hierarchy';
-import { scaleLinear } from 'd3-scale';
+import { scaleLinear, scaleOrdinal } from 'd3-scale';
+import { schemeAccent } from 'd3-scale-chromatic';
+import memoize from 'lodash.memoize';
+import { hsl } from 'd3-color';
 
 import injectData from '../injectData';
 
+const colorScale = scaleOrdinal(schemeAccent);
+
 const styles = {
-    container: ({ width, height }) => ({
+    container: memoize(({ width, height }) => ({
         position: 'relative',
         width,
         height,
-    }),
-    leaf: ({ x, y, r }) => ({
+    })),
+    leaf: memoize(({ x, y, r }, name) => ({
         position: 'absolute',
         top: x - r,
         left: y - r,
         width: r * 2,
         height: r * 2,
-        backgroundColor: 'red',
+        backgroundColor: colorScale(name),
+        color: hsl(colorScale(name)).l > 0.57 ? '#222' : '#fff',
         alignItems: 'center',
         borderRadius: '100%',
         display: 'flex',
         justifyContent: 'center',
-    }),
-    leafLabel: ({ r }) => ({
+    })),
+    leafLabel: memoize(({ r }) => ({
         overflow: 'hidden',
         padding: '10px',
         textOverflow: 'ellipsis',
         textAlign: 'center',
-        fontSize: r / 5,
-        whiteSpace: 'nowrap',
-    }),
+        fontSize: r / 3,
+    })),
 };
 
 class BubbleView extends React.Component {
@@ -41,8 +46,12 @@ class BubbleView extends React.Component {
         return (
             <div style={styles.container({ width, height })}>
                 {data.map(({ data, ...props }) => (
-                    <div key={data._id} style={styles.leaf(props)}>
-                        <div style={styles.leafLabel(props)}>{data._id}</div>
+                    <div key={data._id} style={styles.leaf(props, data._id)}>
+                        {props.r > 10 && (
+                            <div style={styles.leafLabel(props)}>
+                                {data._id}
+                            </div>
+                        )}
                     </div>
                 ))}
             </div>
