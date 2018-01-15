@@ -4,7 +4,7 @@ import translate from 'redux-polyglot/translate';
 import { schemeOrRd } from 'd3-scale-chromatic';
 import Checkbox from 'material-ui/Checkbox';
 
-import ColorSchemeSelector from '../../lib/components/ColorSchemeSelector';
+import { GradientSchemeSelector } from '../../lib/components/ColorSchemeSelector';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 
 const styles = {
@@ -67,7 +67,7 @@ class HeatMapAdmin extends Component {
 
         return (
             <div style={styles.container}>
-                <ColorSchemeSelector
+                <GradientSchemeSelector
                     label={polyglot.t('color_scheme')}
                     onChange={this.handleColorSchemeChange}
                     style={styles.input}

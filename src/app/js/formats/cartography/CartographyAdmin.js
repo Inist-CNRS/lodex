@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
-import { schemeBlues, schemeOrRd } from 'd3-scale-chromatic';
 import TextField from 'material-ui/TextField';
+import { schemeBlues, schemeOrRd } from 'd3-scale-chromatic';
 
-import ColorSchemeSelector from '../../lib/components/ColorSchemeSelector';
+import { GradientSchemeSelector } from '../../lib/components/ColorSchemeSelector';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 
@@ -94,13 +94,13 @@ class CartographyAdmin extends Component {
                     underlineFocusStyle={{ borderColor: defaultColor }}
                     value={defaultColor}
                 />
-                <ColorSchemeSelector
+                <GradientSchemeSelector
                     label={polyglot.t('color_scheme')}
                     onChange={this.setColorScheme}
                     style={styles.input}
                     value={colorScheme}
                 />
-                <ColorSchemeSelector
+                <GradientSchemeSelector
                     label={polyglot.t('hover_color_scheme')}
                     onChange={this.setHoverColorScheme}
                     style={styles.input}

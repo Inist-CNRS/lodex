@@ -3,10 +3,11 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import { pack, hierarchy } from 'd3-hierarchy';
-import { scaleLinear } from 'd3-scale';
+import { scaleLinear, scaleOrdinal } from 'd3-scale';
 import memoize from 'lodash.memoize';
 import { Tooltip, actions } from 'redux-tooltip';
 import get from 'lodash.get';
+import { schemeAccent } from 'd3-scale-chromatic';
 
 import injectData from '../injectData';
 import Bubble from './Bubble';
@@ -46,7 +47,7 @@ class BubbleView extends React.Component {
         this.props.hideTooltip();
     };
     render() {
-        const { data, width, height } = this.props;
+        const { data, width, height, colorScale } = this.props;
         return (
             <div>
                 <div
@@ -62,6 +63,7 @@ class BubbleView extends React.Component {
                             y={y}
                             name={key}
                             value={value}
+                            color={colorScale(key)}
                         />
                     ))}
                 </div>
@@ -77,6 +79,7 @@ BubbleView.propTypes = {
     height: PropTypes.number.isRequired,
     hideTooltip: PropTypes.func.isRequired,
     showTooltip: PropTypes.func.isRequired,
+    colorScale: PropTypes.func.isRequired,
 };
 
 BubbleView.displayName = 'BubbleView';
@@ -87,6 +90,7 @@ const mapStateToProps = (state, { chartData, field }) => {
         height = 500,
         minRadius = 5,
         maxRadius = 100,
+        colorScheme,
     } = fromFields.getFieldFormatArgs(state, field.name);
     if (!chartData) {
         return {
@@ -110,10 +114,13 @@ const mapStateToProps = (state, { chartData, field }) => {
         .sort((a, b) => b.value - a.value);
     const data = packingFunction(root).leaves();
 
+    const colorScale = scaleOrdinal(colorScheme || schemeAccent);
+
     return {
         data,
         width,
         height,
+        colorScale,
     };
 };
 

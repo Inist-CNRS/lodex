@@ -1,21 +1,17 @@
 import React from 'react';
 import memoize from 'lodash.memoize';
 import { hsl } from 'd3-color';
-import { scaleOrdinal } from 'd3-scale';
-import { schemeAccent } from 'd3-scale-chromatic';
 import PropTypes from 'prop-types';
 
-const colorScale = scaleOrdinal(schemeAccent);
-
 const styles = {
-    leaf: memoize(({ x, y, r }, name) => ({
+    leaf: memoize(({ x, y, r }, name, color) => ({
         position: 'absolute',
         top: x - r,
         left: y - r,
         width: r * 2,
         height: r * 2,
-        backgroundColor: colorScale(name),
-        color: hsl(colorScale(name)).l > 0.57 ? '#222' : '#fff',
+        backgroundColor: color,
+        color: hsl(color).l > 0.57 ? '#222' : '#fff',
         alignItems: 'center',
         borderRadius: '100%',
         display: 'flex',
@@ -30,15 +26,15 @@ const styles = {
     })),
 };
 
-const Bubble = ({ r, x, y, name, value }) => (
+const Bubble = ({ r, x, y, name, value, color }) => (
     <div
-        style={styles.leaf({ r, x, y }, name)}
+        style={styles.leaf({ r, x, y }, name, color)}
         data-value={value}
         data-name={name}
     >
         {r > 10 && (
             <div
-                style={styles.leafLabel({ r, x, y })}
+                style={styles.leafLabel({ r, x, y }, color)}
                 data-value={value}
                 data-name={name}
             >
@@ -53,6 +49,7 @@ Bubble.propTypes = {
     x: PropTypes.number.isRequired,
     y: PropTypes.number.isRequired,
     name: PropTypes.string.isRequired,
+    color: PropTypes.string.isRequired,
     value: PropTypes.number.isRequired,
 };
 
