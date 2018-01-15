@@ -3,14 +3,13 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import { pack, hierarchy } from 'd3-hierarchy';
-import { scaleLinear, scaleOrdinal } from 'd3-scale';
-import { schemeAccent } from 'd3-scale-chromatic';
+import { scaleLinear } from 'd3-scale';
 import memoize from 'lodash.memoize';
-import { hsl } from 'd3-color';
+import { Tooltip, actions } from 'redux-tooltip';
+import get from 'lodash.get';
 
 import injectData from '../injectData';
-
-const colorScale = scaleOrdinal(schemeAccent);
+import Bubble from './Bubble';
 
 const styles = {
     container: memoize(({ width, height }) => ({
@@ -18,42 +17,53 @@ const styles = {
         width,
         height,
     })),
-    leaf: memoize(({ x, y, r }, name) => ({
-        position: 'absolute',
-        top: x - r,
-        left: y - r,
-        width: r * 2,
-        height: r * 2,
-        backgroundColor: colorScale(name),
-        color: hsl(colorScale(name)).l > 0.57 ? '#222' : '#fff',
-        alignItems: 'center',
-        borderRadius: '100%',
-        display: 'flex',
-        justifyContent: 'center',
-    })),
-    leafLabel: memoize(({ r }) => ({
-        overflow: 'hidden',
-        padding: '10px',
-        textOverflow: 'ellipsis',
-        textAlign: 'center',
-        fontSize: r / 3,
-    })),
 };
 
 class BubbleView extends React.Component {
+    handleMove = event => {
+        const x = event.clientX;
+        const y = event.clientY + window.pageYOffset;
+        const { value, name } = get(event, ['target', 'dataset'], {});
+
+        if (!value && value !== 0) {
+            this.props.hideTooltip();
+            return;
+        }
+
+        this.props.showTooltip({
+            origin: { x, y },
+            content: (
+                <p>
+                    {name}: {value}
+                </p>
+            ),
+        });
+    };
+
+    handleLeave = () => {
+        this.props.hideTooltip();
+    };
     render() {
         const { data, width, height } = this.props;
         return (
-            <div style={styles.container({ width, height })}>
-                {data.map(({ data, ...props }) => (
-                    <div key={data._id} style={styles.leaf(props, data._id)}>
-                        {props.r > 10 && (
-                            <div style={styles.leafLabel(props)}>
-                                {data._id}
-                            </div>
-                        )}
-                    </div>
-                ))}
+            <div>
+                <div
+                    style={styles.container({ width, height })}
+                    onMouseMove={this.handleMove}
+                    onMouseLeave={this.handleLeave}
+                >
+                    {data.map(({ data: { _id: key }, r, x, y, value }) => (
+                        <Bubble
+                            key={key}
+                            r={r}
+                            x={x}
+                            y={y}
+                            name={key}
+                            value={value}
+                        />
+                    ))}
+                </div>
+                <Tooltip />
             </div>
         );
     }
@@ -63,6 +73,8 @@ BubbleView.propTypes = {
     data: PropTypes.array.isRequired,
     width: PropTypes.number.isRequired,
     height: PropTypes.number.isRequired,
+    hideTooltip: PropTypes.func.isRequired,
+    showTooltip: PropTypes.func.isRequired,
 };
 
 BubbleView.displayName = 'BubbleView';
@@ -98,4 +110,12 @@ const mapStateToProps = (state, { chartData, width = 500, height = 500 }) => {
     };
 };
 
-export default compose(injectData, connect(mapStateToProps))(BubbleView);
+const mapDispatchToProps = {
+    showTooltip: actions.show,
+    hideTooltip: actions.hide,
+};
+
+export default compose(
+    injectData,
+    connect(mapStateToProps, mapDispatchToProps),
+)(BubbleView);
