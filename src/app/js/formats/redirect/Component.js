@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import translate from 'redux-polyglot/translate';
 import { field as fieldPropTypes } from '../../propTypes';
 
 const isURL = v =>
@@ -11,9 +10,6 @@ const isURL = v =>
 class Redirect extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            url: '',
-        };
     }
 
     componentDidMount() {
@@ -24,24 +20,13 @@ class Redirect extends Component {
         const url = URLs.pop();
 
         if (url) {
-            this.setState({ url });
             window.location.href = url;
         }
     }
 
     render() {
-        const { url } = this.state;
-        const { className } = this.props;
-        if (url) {
-            return (
-                <div className={className}>Try to redirect to {url} ... </div>
-            );
-        } else {
-                return (
-                    <div/>
-            );
-
-        }
+        const { field, resource, className } = this.props;
+        return <span className={className}>{resource[field.name]}</span>;
     }
 }
 
@@ -56,4 +41,4 @@ Redirect.defaultProps = {
     className: null,
 };
 
-export default translate(Redirect);
+export default Redirect;
