@@ -1,8 +1,9 @@
 import Component from './BubbleView';
+import AdminComponent from './BubbleAdmin';
 import DefaultFormat from '../DefaultFormat';
 
 export default {
     Component,
-    AdminComponent: DefaultFormat.AdminComponent,
+    AdminComponent,
     EditionComponent: DefaultFormat.EditionComponent,
 };

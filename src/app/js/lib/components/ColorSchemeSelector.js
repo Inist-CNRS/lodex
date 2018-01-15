@@ -24,7 +24,7 @@ import { scaleQuantize } from 'd3-scale';
 
 import ColorScalePreview from '../../lib/components/ColorScalePreview';
 
-const schemes = [
+const defaultSchemes = [
     schemeBlues[9],
     schemeOrRd[9],
     schemeBuGn[9],
@@ -43,7 +43,7 @@ const schemes = [
     schemeYlOrRd[9],
 ];
 
-const ColorSchemeSelector = ({ value, style, label, onChange }) => (
+const ColorSchemeSelector = ({ value, schemes, style, label, onChange }) => (
     <SelectField
         floatingLabelText={label}
         onChange={onChange}
@@ -71,6 +71,11 @@ ColorSchemeSelector.propTypes = {
     onChange: PropTypes.func.isRequired,
     label: PropTypes.string.isRequired,
     style: PropTypes.any,
+    schemes: PropTypes.arrayOf(PropTypes.string),
+};
+
+ColorSchemeSelector.defaultProps = {
+    schemes: defaultSchemes,
 };
 
 export default ColorSchemeSelector;

@@ -10,12 +10,14 @@ import get from 'lodash.get';
 
 import injectData from '../injectData';
 import Bubble from './Bubble';
+import { fromFields } from '../../sharedSelectors';
 
 const styles = {
     container: memoize(({ width, height }) => ({
         position: 'relative',
         width,
         height,
+        overflow: 'hidden',
     })),
 };
 
@@ -79,7 +81,13 @@ BubbleView.propTypes = {
 
 BubbleView.displayName = 'BubbleView';
 
-const mapStateToProps = (state, { chartData, width = 500, height = 500 }) => {
+const mapStateToProps = (state, { chartData, field }) => {
+    const {
+        width = 500,
+        height = 500,
+        minRadius = 5,
+        maxRadius = 100,
+    } = fromFields.getFieldFormatArgs(state, field.name);
     if (!chartData) {
         return {
             data: [],
@@ -90,12 +98,12 @@ const mapStateToProps = (state, { chartData, width = 500, height = 500 }) => {
     const min = Math.min(...values);
     const max = Math.max(...values);
     const radiusScale = scaleLinear()
-        .range([5, 100])
+        .range([minRadius, maxRadius])
         .domain([min, max]);
     const packingFunction = pack()
-        .radius(node => radiusScale(node.value))
         .size([width, height])
-        .padding(5);
+        .padding(5)
+        .radius(node => radiusScale(node.value));
 
     const root = hierarchy({ name: 'root', children: chartData })
         .sum(d => d.value)
@@ -104,7 +112,6 @@ const mapStateToProps = (state, { chartData, width = 500, height = 500 }) => {
 
     return {
         data,
-        steps: 50,
         width,
         height,
     };
