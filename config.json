@@ -23,6 +23,7 @@
     "pairing-with",
     "graph-by",
     "distinct-ISO3166-1-alpha3-from",
+    "distinct-with-quote-rate",
     "distinct-ISO3166-1-alpha2-from"
   ],
   "exporters": [
