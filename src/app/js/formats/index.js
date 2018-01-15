@@ -19,6 +19,7 @@ import sentence from './sentence';
 import resource from './lodex-resource';
 import cartography from './cartography';
 import heatmap from './heatmap';
+import network from './network';
 import DefaultFormat from './DefaultFormat';
 
 const components = {
@@ -43,6 +44,7 @@ const components = {
     resourcesGrid,
     cartography,
     heatmap,
+    network,
 };
 
 export const FORMATS = Object.keys(components).sort();
