@@ -20,6 +20,7 @@ import resource from './lodex-resource';
 import cartography from './cartography';
 import heatmap from './heatmap';
 import network from './network';
+import redirect from './redirect';
 import DefaultFormat from './DefaultFormat';
 
 const components = {
@@ -45,6 +46,7 @@ const components = {
     cartography,
     heatmap,
     network,
+    redirect,
 };
 
 export const FORMATS = Object.keys(components).sort();

@@ -1,0 +1,16 @@
+import React from 'react';
+import expect from 'expect';
+import { shallow } from 'enzyme';
+
+import RedirectView from './Component';
+
+describe('<RedirectView />', () => {
+    it('should render', () => {
+        const resource = { foo: 'Run you fools!' };
+        const field = { name: 'foo' };
+        const wrapper = shallow(
+            <RedirectView resource={resource} field={field} />,
+        );
+        expect(wrapper.find('span').text()).toEqual('Run you fools!');
+    });
+});
