@@ -117,9 +117,10 @@ class HeatMapView extends Component {
     };
     render() {
         const { xAxis, yAxis, dictionary, maxValue, colorScheme } = this.props;
+        const nullColor = [colorScheme[0]];
         const getColor = scaleQuantize()
-            .range(colorScheme)
-            .domain([0, maxValue])
+            .range(colorScheme.slice(1))
+            .domain([1, maxValue])
             .nice();
 
         return (
@@ -157,9 +158,11 @@ class HeatMapView extends Component {
                                         key={`${xKey}-${yKey}`}
                                         data-value={dictionary[xKey][yKey] || 0}
                                         style={getColorStyle(
-                                            getColor(
-                                                dictionary[xKey][yKey] || 0,
-                                            ),
+                                            dictionary[xKey][yKey]
+                                                ? getColor(
+                                                      dictionary[xKey][yKey],
+                                                  )
+                                                : nullColor,
                                         )}
                                     />
                                 ))}
@@ -167,7 +170,7 @@ class HeatMapView extends Component {
                         ))}
                     </tbody>
                 </table>
-                <ColorScaleLegend colorScale={getColor} />
+                <ColorScaleLegend colorScale={getColor} nullColor={nullColor} />
                 <Tooltip />
             </div>
         );

@@ -21,8 +21,14 @@ const styles = {
     },
 };
 
-const ColorScaleLegend = ({ colorScale }) => (
+const ColorScaleLegend = ({ colorScale, nullColor }) => (
     <div style={styles.legend}>
+        {nullColor && (
+            <div style={styles.legendItem}>
+                <div style={styles.legendColor(nullColor)} title={0} />
+                <div>{0}</div>
+            </div>
+        )}
         {colorScale.range().map(value => {
             const [start, end] = colorScale.invertExtent(value);
             return (
@@ -44,6 +50,7 @@ const ColorScaleLegend = ({ colorScale }) => (
 
 ColorScaleLegend.propTypes = {
     colorScale: PropTypes.func.isRequired,
+    nullColor: PropTypes.string,
 };
 
 export default ColorScaleLegend;
