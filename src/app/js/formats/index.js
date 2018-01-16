@@ -47,11 +47,8 @@ const components = {
     cartography,
     heatmap,
     network,
-<<<<<<< 0335b3447e95ae72b7036557f130802fbee7b22e
     redirect,
-=======
     bubbleChart,
->>>>>>> display simple BubbleView
 };
 
 export const FORMATS = Object.keys(components).sort();
