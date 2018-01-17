@@ -113,17 +113,17 @@ const mapStateToProps = (state, { chartData, field }) => {
     }
 
     const nodesDic = chartData.reduce(
-        (acc, { source, target, weight }) => ({
+        (acc, { source, target }) => ({
             ...acc,
             [source]: {
                 id: source,
                 label: source,
-                radius: get(acc, [source, 'radius'], 0) + weight,
+                radius: get(acc, [source, 'radius'], 0) + 1,
             },
             [target]: {
                 id: target,
                 label: target,
-                radius: get(acc, [target, 'radius'], 0) + weight,
+                radius: get(acc, [target, 'radius'], 0) + 1,
             },
         }),
         {},
