@@ -354,9 +354,13 @@ export default {
     document: 'Document',
     node_color: 'Node Color',
     network: 'network',
+<<<<<<< 49257a75b48635dc6fe312c85485a64518c30efe
     bubbleChart: 'Bubble',
     width: 'Width',
     height: 'Height',
     min_radius: 'Min radius',
     max_radius: 'Max radius',
+=======
+    list_of_language: 'Choose the language',
+>>>>>>> new format to display code (xml)
 };
