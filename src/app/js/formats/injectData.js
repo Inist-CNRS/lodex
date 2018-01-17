@@ -20,7 +20,7 @@ const styles = {
 
 export default FormatView => {
     class GraphItem extends Component {
-        propTypes = {
+        static propTypes = {
             field: fieldPropTypes.isRequired,
             resource: PropTypes.object.isRequired,
             preLoadChartData: PropTypes.func.isRequired,

@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
+import { scaleQuantize } from 'd3-scale';
 import {
     schemeBlues,
     schemeOrRd,
@@ -19,12 +20,17 @@ import {
     schemeYlGnBu,
     schemeYlOrBr,
     schemeYlOrRd,
+    schemeAccent,
+    schemeDark2,
+    schemePaired,
+    schemePastel1,
+    schemePastel2,
+    schemeSet1,
+    schemeSet2,
+    schemeSet3,
 } from 'd3-scale-chromatic';
-import { scaleQuantize } from 'd3-scale';
 
-import ColorScalePreview from '../../lib/components/ColorScalePreview';
-
-const schemes = [
+const gradientSchemes = [
     schemeBlues[9],
     schemeOrRd[9],
     schemeBuGn[9],
@@ -42,35 +48,51 @@ const schemes = [
     schemeYlOrBr[9],
     schemeYlOrRd[9],
 ];
+const categorySchemes = [
+    schemeAccent,
+    schemeDark2,
+    schemePaired,
+    schemePastel1,
+    schemePastel2,
+    schemeSet1,
+    schemeSet2,
+    schemeSet3,
+];
 
-const ColorSchemeSelector = ({ value, style, label, onChange }) => (
-    <SelectField
-        floatingLabelText={label}
-        onChange={onChange}
-        style={style}
-        value={value.join(',')}
-    >
-        {schemes.map(scheme => (
-            <MenuItem
-                key={scheme}
-                value={scheme.join(',')}
-                primaryText={
-                    <ColorScalePreview
-                        colorScale={scaleQuantize()
-                            .domain([0, 100])
-                            .range(scheme)}
-                    />
-                }
-            />
-        ))}
-    </SelectField>
-);
+import ColorScalePreview from '../../lib/components/ColorScalePreview';
 
-ColorSchemeSelector.propTypes = {
-    value: PropTypes.arrayOf(PropTypes.string),
-    onChange: PropTypes.func.isRequired,
-    label: PropTypes.string.isRequired,
-    style: PropTypes.any,
+const getColorSchemeSelector = schemes => {
+    const ColorSchemeSelector = ({ value = [], style, label, onChange }) => (
+        <SelectField
+            floatingLabelText={label}
+            onChange={onChange}
+            style={style}
+            value={value.join(',')}
+        >
+            {schemes.map(scheme => (
+                <MenuItem
+                    key={scheme}
+                    value={scheme.join(',')}
+                    primaryText={
+                        <ColorScalePreview
+                            colorScale={scaleQuantize()
+                                .domain([0, 100])
+                                .range(scheme)}
+                        />
+                    }
+                />
+            ))}
+        </SelectField>
+    );
+    ColorSchemeSelector.propTypes = {
+        value: PropTypes.arrayOf(PropTypes.string),
+        onChange: PropTypes.func.isRequired,
+        label: PropTypes.string.isRequired,
+        style: PropTypes.any,
+    };
+
+    return ColorSchemeSelector;
 };
 
-export default ColorSchemeSelector;
+export const GradientSchemeSelector = getColorSchemeSelector(gradientSchemes);
+export const CategorySchemeSelector = getColorSchemeSelector(categorySchemes);

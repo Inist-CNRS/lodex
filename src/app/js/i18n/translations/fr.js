@@ -358,4 +358,9 @@ export default {
     document: 'Document',
     node_color: 'Node Color',
     network: 'network',
+    bubbleChart: 'Bubble',
+    width: 'Width',
+    height: 'Height',
+    min_radius: 'Min radius',
+    max_radius: 'Max radius',
 };

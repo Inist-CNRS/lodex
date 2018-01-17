@@ -21,6 +21,7 @@ import cartography from './cartography';
 import heatmap from './heatmap';
 import network from './network';
 import redirect from './redirect';
+import bubbleChart from './bubbleChart';
 import DefaultFormat from './DefaultFormat';
 
 const components = {
@@ -47,6 +48,7 @@ const components = {
     heatmap,
     network,
     redirect,
+    bubbleChart,
 };
 
 export const FORMATS = Object.keys(components).sort();
