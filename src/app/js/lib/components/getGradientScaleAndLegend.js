@@ -11,14 +11,12 @@ const getGradientScaleAndLegend = ({
     const nullColor = colorScheme[0];
     const colorScale = scaleQuantize()
         .range(colorScheme.slice(1))
-        .domain([1, maxValue])
-        .nice();
+        .domain([1, maxValue]);
 
     const hoverColorScale = hoverColorScheme
         ? scaleQuantize()
               .range(hoverColorScheme.slice(1))
               .domain([1, maxValue])
-              .nice()
         : () => {
               throw new Error('no hoverColorScheme specified');
           };

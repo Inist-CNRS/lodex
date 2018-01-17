@@ -5,19 +5,19 @@ const styles = {
     legendColor: color => ({
         display: 'block',
         backgroundColor: color,
-        height: '2em',
+        height: '1em',
         width: '100%',
     }),
     legend: {
         display: 'flex',
-        width: '100%',
+        width: '50%',
         padding: '20px',
     },
     legendItem: {
         flex: 1,
     },
     last: {
-        height: '2em',
+        height: '1em',
     },
 };
 
