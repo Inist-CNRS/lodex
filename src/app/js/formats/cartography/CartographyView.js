@@ -7,7 +7,6 @@ import {
 } from 'react-simple-maps';
 import mapJson from 'react-simple-maps/topojson-maps/world-50m.json';
 import { connect } from 'react-redux';
-import { scaleQuantize } from 'd3-scale';
 import memoize from 'lodash.memoize';
 import PropTypes from 'prop-types';
 import { Tooltip, actions } from 'redux-tooltip';
@@ -17,7 +16,7 @@ import IconButton from 'material-ui/IconButton';
 import compose from 'recompose/compose';
 
 import injectData from '../injectData';
-import ColorScaleLegend from '../../lib/components/ColorScaleLegend';
+import getGradientScaleAndLegend from '../../lib/components/getGradientScaleAndLegend';
 import { fromFields } from '../../sharedSelectors';
 
 const maxZoom = 16;
@@ -131,32 +130,16 @@ class CartographyView extends Component {
     };
 
     render() {
-        const {
-            chartData,
-            maxValue,
-            colorScheme,
-            hoverColorScheme,
-        } = this.props;
-        if (!colorScheme) {
+        const { chartData, legend, colorScale, hoverColorScale } = this.props;
+        if (!colorScale) {
             return null;
         }
 
         const { zoom } = this.state;
 
-        const nullColor = colorScheme[0];
-        const color = scaleQuantize()
-            .range(colorScheme.slice(1))
-            .domain([1, maxValue])
-            .nice();
-
-        const hoverColor = scaleQuantize()
-            .range(hoverColorScheme.slice(1))
-            .domain([1, maxValue])
-            .nice();
-
         return (
             <div style={styles.container} onClick={this.handleZoom}>
-                <ColorScaleLegend colorScale={color} nullColor={nullColor} />
+                {legend}
                 <div style={styles.subContainer}>
                     <div style={styles.zoom}>
                         <IconButton
@@ -199,12 +182,10 @@ class CartographyView extends Component {
                                                 geography={geography}
                                                 projection={projection}
                                                 style={styles.geography({
-                                                    color: value
-                                                        ? color(value)
-                                                        : nullColor,
-                                                    hoverColor: value
-                                                        ? hoverColor(value)
-                                                        : nullColor,
+                                                    color: colorScale(value),
+                                                    hoverColor: hoverColorScale(
+                                                        value,
+                                                    ),
                                                 })}
                                             />
                                         );
@@ -222,11 +203,11 @@ class CartographyView extends Component {
 
 CartographyView.propTypes = {
     chartData: PropTypes.object.isRequired,
-    maxValue: PropTypes.number.isRequired,
+    legend: PropTypes.element.isRequired,
     showTooltip: PropTypes.func.isRequired,
     hideTooltip: PropTypes.func.isRequired,
-    colorScheme: PropTypes.arrayOf(PropTypes.string).isRequired,
-    hoverColorScheme: PropTypes.arrayOf(PropTypes.string).isRequired,
+    colorScale: PropTypes.func.isRequired,
+    hoverColorScale: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state, { chartData, field }) => {
@@ -243,6 +224,18 @@ const mapStateToProps = (state, { chartData, field }) => {
             hoverColorScheme,
         };
     }
+
+    const maxValue = chartData.reduce(
+        (acc, { value }) => (value > acc ? value : acc),
+        0,
+    );
+
+    const { colorScale, hoverColorScale, legend } = getGradientScaleAndLegend({
+        colorScheme,
+        hoverColorScheme,
+        maxValue,
+    });
+
     return {
         chartData: chartData
             ? chartData.reduce(
@@ -257,8 +250,9 @@ const mapStateToProps = (state, { chartData, field }) => {
             (acc, { value }) => (value > acc ? value : acc),
             0,
         ),
-        colorScheme,
-        hoverColorScheme,
+        colorScale,
+        hoverColorScale,
+        legend,
     };
 };
 
