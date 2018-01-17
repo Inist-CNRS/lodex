@@ -45,6 +45,7 @@ const GraphPage = ({ graphField, resource, chartData }) => (
             {graphField && (
                 <Card style={styles.section}>
                     <ExportableComponent
+                        filename={graphField.label}
                         label={
                             <span style={styles.label}>
                                 {graphField.label}
