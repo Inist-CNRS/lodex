@@ -88,6 +88,9 @@ const styles = StyleSheet.create({
         textAlign: 'left',
         whiteSpace: 'normal',
     },
+    tooltip: {
+        textAlign: 'center',
+    },
 });
 
 const getColorStyle = color => ({
@@ -98,16 +101,21 @@ class HeatMapView extends Component {
     handleMove = event => {
         const x = event.clientX;
         const y = event.clientY + window.pageYOffset;
-        const value = Number(get(event, ['target', 'dataset', 'value'], null));
-
-        if (!value) {
+        const { value, source, target } = get(event, ['target', 'dataset'], {});
+        if (!Number(value)) {
             this.props.hideTooltip();
             return;
         }
 
         this.props.showTooltip({
             origin: { x, y },
-            content: <p>{value}</p>,
+            content: (
+                <div className={css(styles.tooltip)}>
+                    <p>{source}</p>
+                    <p>{target}</p>
+                    <p>{value}</p>
+                </div>
+            ),
         });
     };
 
@@ -151,6 +159,8 @@ class HeatMapView extends Component {
                                         className={css(styles.td)}
                                         key={`${xKey}-${yKey}`}
                                         data-value={dictionary[xKey][yKey] || 0}
+                                        data-source={xKey}
+                                        data-target={yKey}
                                         style={getColorStyle(
                                             colorScale(dictionary[xKey][yKey]),
                                         )}
