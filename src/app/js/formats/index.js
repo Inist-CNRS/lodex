@@ -21,11 +21,15 @@ import cartography from './cartography';
 import heatmap from './heatmap';
 import network from './network';
 import redirect from './redirect';
+<<<<<<< HEAD
 <<<<<<< 49257a75b48635dc6fe312c85485a64518c30efe
 import bubbleChart from './bubbleChart';
 =======
 import code from './code';
 >>>>>>> new format to display code (xml)
+=======
+import code from './code';
+>>>>>>> fc61b6757134a0f03fd8ee1ce62fdc3056fd9900
 import DefaultFormat from './DefaultFormat';
 
 const components = {
@@ -52,11 +56,15 @@ const components = {
     heatmap,
     network,
     redirect,
+<<<<<<< HEAD
 <<<<<<< 49257a75b48635dc6fe312c85485a64518c30efe
     bubbleChart,
 =======
     code,
 >>>>>>> new format to display code (xml)
+=======
+    code,
+>>>>>>> fc61b6757134a0f03fd8ee1ce62fdc3056fd9900
 };
 
 export const FORMATS = Object.keys(components).sort();

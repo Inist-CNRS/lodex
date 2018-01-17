@@ -358,6 +358,7 @@ export default {
     document: 'Document',
     node_color: 'Node Color',
     network: 'network',
+<<<<<<< HEAD
 <<<<<<< 49257a75b48635dc6fe312c85485a64518c30efe
     bubbleChart: 'Bubble',
     width: 'Width',
@@ -367,4 +368,7 @@ export default {
 =======
     list_of_language: 'Choix du langage',
 >>>>>>> new format to display code (xml)
+=======
+    list_of_language: 'Choix du langage',
+>>>>>>> fc61b6757134a0f03fd8ee1ce62fdc3056fd9900
 };
