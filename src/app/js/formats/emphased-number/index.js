@@ -1,10 +1,10 @@
 import Component from './Component';
-import AdminComponent from './EmphasedNumberAdmin';
+import AdminComponent, { defaultArgs } from './EmphasedNumberAdmin';
 import DefaultFormat from '../DefaultFormat';
 
 export default {
+    ...DefaultFormat,
     Component,
-    ListComponent: DefaultFormat.ListComponent,
     AdminComponent,
-    EditionComponent: DefaultFormat.EditionComponent,
+    defaultArgs,
 };

@@ -13,6 +13,11 @@ const styles = {
     },
 };
 
+export const defaultArgs = {
+    type: 'value',
+    value: '',
+};
+
 class DefaultAdminComponentWithLabel extends Component {
     static propTypes = {
         args: PropTypes.shape({
@@ -23,10 +28,7 @@ class DefaultAdminComponentWithLabel extends Component {
     };
 
     static defaultProps = {
-        args: {
-            type: 'value',
-            value: '',
-        },
+        args: defaultArgs,
     };
 
     setType = (event, index, type) => {

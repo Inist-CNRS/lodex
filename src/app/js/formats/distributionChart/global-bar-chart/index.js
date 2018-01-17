@@ -1,10 +1,10 @@
 import Component from './BarChartView';
-import AdminComponent from './BarChartAdmin';
+import AdminComponent, { defaultArgs } from './BarChartAdmin';
 import DefaultFormat from '../../DefaultFormat';
 
 export default {
+    ...DefaultFormat,
     Component,
-    ListComponent: DefaultFormat.ListComponent,
     AdminComponent,
-    EditionComponent: DefaultFormat.EditionComponent,
+    defaultArgs,
 };

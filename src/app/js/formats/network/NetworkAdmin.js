@@ -25,6 +25,10 @@ const styles = {
     }),
 };
 
+export const defaultArgs = {
+    nodeColor: 'red',
+};
+
 class CartographyAdmin extends Component {
     static propTypes = {
         args: PropTypes.shape({
@@ -35,9 +39,7 @@ class CartographyAdmin extends Component {
     };
 
     static defaultProps = {
-        args: {
-            nodeColor: 'red',
-        },
+        args: defaultArgs,
     };
 
     setNodeColor = (_, nodeColor) => {

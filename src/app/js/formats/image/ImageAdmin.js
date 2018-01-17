@@ -14,6 +14,10 @@ const styles = {
     },
 };
 
+export const defaultArgs = {
+    imageWidth: '100%',
+};
+
 class ImageAdmin extends Component {
     static propTypes = {
         args: PropTypes.shape({
@@ -24,9 +28,7 @@ class ImageAdmin extends Component {
     };
 
     static defaultProps = {
-        args: {
-            imageWidth: '100%',
-        },
+        args: defaultArgs,
     };
 
     setWidth = imageWidth => {

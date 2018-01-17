@@ -31,6 +31,11 @@ const styles = {
     }),
 };
 
+export const defaultArgs = {
+    colorScheme: schemeOrRd[9],
+    hoverColorScheme: schemeBlues[9],
+};
+
 class CartographyAdmin extends Component {
     static propTypes = {
         args: PropTypes.shape({
@@ -42,10 +47,7 @@ class CartographyAdmin extends Component {
     };
 
     static defaultProps = {
-        args: {
-            colorScheme: schemeOrRd[9],
-            hoverColorScheme: schemeBlues[9],
-        },
+        args: defaultArgs,
     };
 
     setColorScheme = (_, __, colorScheme) => {

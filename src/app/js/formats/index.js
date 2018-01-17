@@ -1,3 +1,5 @@
+import get from 'lodash.get';
+
 import globalBarchart from './distributionChart/global-bar-chart/';
 import globalPiechart from './distributionChart/global-pie-chart/';
 import globalRadarchart from './distributionChart/global-radar-chart/';
@@ -52,6 +54,9 @@ const components = {
 };
 
 export const FORMATS = Object.keys(components).sort();
+
+export const getFormatInitialArgs = name =>
+    get(components, [name, 'defaultArgs'], {});
 
 export const getComponent = field => {
     if (!field) {

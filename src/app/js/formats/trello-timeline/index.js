@@ -1,9 +1,10 @@
 import Component from './Component';
-import AdminComponent from './TrelloTimelineAdmin';
+import AdminComponent, { defaultArgs } from './TrelloTimelineAdmin';
 import DefaultFormat from '../DefaultFormat';
 
 export default {
+    ...DefaultFormat,
     Component,
     AdminComponent,
-    EditionComponent: DefaultFormat.EditionComponent,
+    defaultArgs,
 };

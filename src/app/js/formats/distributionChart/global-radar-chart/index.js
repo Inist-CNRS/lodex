@@ -1,10 +1,10 @@
 import Component from './RadarChartView';
-import AdminComponent from './RadarChartAdmin';
+import AdminComponent, { defaultArgs } from './RadarChartAdmin';
 import DefaultFormat from '../../DefaultFormat';
 
 export default {
+    ...DefaultFormat,
     Component,
-    ListComponent: DefaultFormat.ListComponent,
     AdminComponent,
-    EditionComponent: DefaultFormat.EditionComponent,
+    defaultArgs,
 };

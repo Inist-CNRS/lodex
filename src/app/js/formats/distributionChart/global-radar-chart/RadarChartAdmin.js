@@ -24,6 +24,16 @@ const styles = {
     },
 };
 
+export const defaultArgs = {
+    params: {
+        maxSize: 5,
+        orderBy: 'value/asc',
+    },
+    colors: '#1D1A31 #4D2D52 #9A4C95 #F08CAE #C1A5A9',
+    axisRoundValue: true,
+    scale: 'linear',
+};
+
 class RadarChartAdmin extends Component {
     static propTypes = {
         args: PropTypes.shape({
@@ -42,15 +52,7 @@ class RadarChartAdmin extends Component {
     };
 
     static defaultProps = {
-        args: {
-            params: {
-                maxSize: 5,
-                orderBy: 'value/asc',
-            },
-            colors: '#1D1A31 #4D2D52 #9A4C95 #F08CAE #C1A5A9',
-            axisRoundValue: true,
-            scale: 'linear',
-        },
+        args: defaultArgs,
     };
 
     setMaxSize = (_, maxSize) => {
@@ -96,7 +98,12 @@ class RadarChartAdmin extends Component {
     render() {
         const { p: polyglot } = this.props;
         const {
-            params: { maxSize, maxValue, minValue, orderBy },
+            params: {
+                maxSize = defaultArgs.params.maxSize,
+                maxValue = defaultArgs.params.maxValue,
+                minValue = defaultArgs.params.minValue,
+                orderBy = defaultArgs.params.orderBy,
+            },
             colors,
             axisRoundValue,
             scale,

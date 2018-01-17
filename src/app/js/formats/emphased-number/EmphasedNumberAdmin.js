@@ -22,6 +22,11 @@ const styles = {
     },
 };
 
+export const defaultArgs = {
+    size: 4,
+    colors: '#8B8B8B #5B5B5B #818181',
+};
+
 class EmphasedNumberAdmin extends Component {
     static propTypes = {
         args: PropTypes.shape({
@@ -33,10 +38,7 @@ class EmphasedNumberAdmin extends Component {
     };
 
     static defaultProps = {
-        args: {
-            size: 4,
-            colors: '#8B8B8B #5B5B5B #818181',
-        },
+        args: defaultArgs,
     };
 
     setSize = size => {

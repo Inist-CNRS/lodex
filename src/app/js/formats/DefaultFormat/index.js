@@ -10,4 +10,5 @@ export default {
     ListComponent: DefaultView,
     AdminComponent: Empty,
     EditionComponent: DefaultEdition,
+    defaultArgs: {},
 };

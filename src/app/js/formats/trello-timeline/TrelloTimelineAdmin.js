@@ -12,6 +12,11 @@ const styles = {
     },
 };
 
+export const defaultArgs = {
+    trelloKey: '',
+    trelloToken: '',
+};
+
 class TrelloTimelineAdmin extends Component {
     static propTypes = {
         args: PropTypes.shape({
@@ -22,10 +27,7 @@ class TrelloTimelineAdmin extends Component {
     };
 
     static defaultProps = {
-        args: {
-            trelloKey: '',
-            trelloToken: '',
-        },
+        args: defaultArgs,
     };
 
     setToken = trelloToken => {

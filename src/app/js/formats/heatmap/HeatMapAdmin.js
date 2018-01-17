@@ -31,21 +31,23 @@ const styles = {
     }),
 };
 
+export const defaultArgs = {
+    colorScheme: schemeOrRd[9],
+    flipAxis: false,
+};
+
 class HeatMapAdmin extends Component {
     static propTypes = {
-        args: {
+        args: PropTypes.shape({
             colorScheme: PropTypes.arrayOf(PropTypes.string),
             flipAxis: PropTypes.bool,
-        },
+        }),
         onChange: PropTypes.func.isRequired,
         p: polyglotPropTypes.isRequired,
     };
 
     static defaultProps = {
-        args: {
-            colorScheme: schemeOrRd[9],
-            flipAxis: false,
-        },
+        args: defaultArgs,
     };
 
     handleColorSchemeChange = (event, index, colorScheme) => {

@@ -14,6 +14,10 @@ const styles = {
     },
 };
 
+export const defaultArgs = {
+    level: 1,
+};
+
 class TitleAdmin extends Component {
     static propTypes = {
         args: {
@@ -24,9 +28,7 @@ class TitleAdmin extends Component {
     };
 
     static defaultProps = {
-        args: {
-            level: 1,
-        },
+        args: defaultArgs,
     };
 
     setLevel = level => {

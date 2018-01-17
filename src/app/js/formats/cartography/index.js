@@ -1,9 +1,10 @@
 import Component from './CartographyView';
-import AdminComponent from './CartographyAdmin';
+import AdminComponent, { defaultArgs } from './CartographyAdmin';
 import DefaultFormat from '../DefaultFormat';
 
 export default {
+    ...DefaultFormat,
     Component,
     AdminComponent,
-    EditionComponent: DefaultFormat.EditionComponent,
+    defaultArgs,
 };

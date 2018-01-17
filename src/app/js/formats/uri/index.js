@@ -1,9 +1,10 @@
 import Component from './Component';
-import AdminComponent from './UriAdmin';
+import AdminComponent, { defaultArgs } from './UriAdmin';
 import DefaultFormat from '../DefaultFormat';
 
 export default {
+    ...DefaultFormat,
     Component,
     AdminComponent,
-    EditionComponent: DefaultFormat.EditionComponent,
+    defaultArgs,
 };

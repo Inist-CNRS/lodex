@@ -1,10 +1,10 @@
 import Component from './ResourcesGridView';
-import AdminComponent from './ResourcesGridAdmin';
+import AdminComponent, { defaultArgs } from './ResourcesGridAdmin';
 import DefaultFormat from '../DefaultFormat';
 
 export default {
+    ...DefaultFormat,
     Component,
-    ListComponent: DefaultFormat.ListComponent,
     AdminComponent,
-    EditionComponent: DefaultFormat.EditionComponent,
+    defaultArgs,
 };

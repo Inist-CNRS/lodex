@@ -4,8 +4,7 @@ import ListComponent from './ListComponent';
 import DefaultFormat from '../DefaultFormat';
 
 export default {
+    ...DefaultFormat,
     Component,
     ListComponent,
-    AdminComponent: DefaultFormat.AdminComponent,
-    EditionComponent: DefaultFormat.EditionComponent,
 };

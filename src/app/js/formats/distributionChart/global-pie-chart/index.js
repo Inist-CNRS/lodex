@@ -1,10 +1,10 @@
 import Component from './PieChartView';
-import AdminComponent from './PieChartAdmin';
+import AdminComponent, { defaultArgs } from './PieChartAdmin';
 import DefaultFormat from '../../DefaultFormat';
 
 export default {
+    ...DefaultFormat,
     Component,
-    ListComponent: DefaultFormat.ListComponent,
     AdminComponent,
-    EditionComponent: DefaultFormat.EditionComponent,
+    defaultArgs,
 };

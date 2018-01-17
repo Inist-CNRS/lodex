@@ -14,6 +14,10 @@ const styles = {
         marginLeft: '1rem',
     },
 };
+export const defaultArgs = {
+    type: 'value',
+    value: '',
+};
 
 class UriAdmin extends Component {
     static propTypes = {
@@ -26,10 +30,7 @@ class UriAdmin extends Component {
     };
 
     static defaultProps = {
-        args: {
-            type: 'value',
-            value: '',
-        },
+        args: defaultArgs,
     };
 
     setType = (_, __, type) => {

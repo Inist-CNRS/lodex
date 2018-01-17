@@ -6,7 +6,7 @@ import translate from 'redux-polyglot/translate';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import SelectFormat from '../SelectFormat';
-import { getAdminComponent, FORMATS } from '../';
+import { getAdminComponent, FORMATS, getFormatInitialArgs } from '../';
 
 const styles = {
     container: {
@@ -15,6 +15,12 @@ const styles = {
     input: {
         marginLeft: '1rem',
     },
+};
+
+export const defaultArgs = {
+    type: 'unordered',
+    subFormat: 'none',
+    subFormatOptions: {},
 };
 
 class ListAdmin extends Component {
@@ -29,11 +35,7 @@ class ListAdmin extends Component {
     };
 
     static defaultProps = {
-        args: {
-            type: 'unordered',
-            subFormat: 'none',
-            subFormatOptions: {},
-        },
+        args: defaultArgs,
     };
 
     setType = type => {
@@ -45,6 +47,7 @@ class ListAdmin extends Component {
         const newArgs = {
             ...this.props.args,
             subFormat,
+            args: getFormatInitialArgs(subFormat),
         };
         this.props.onChange(newArgs);
     };
