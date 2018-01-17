@@ -351,6 +351,7 @@ export default {
     max_value: 'max value',
     min_value: 'min value',
     flip_axis: 'flip axis',
+    list_of_language: 'Choix du langage',
     value_margin: 'margin for value axis (px)',
     category_margin: 'margin for category axis (px)',
     diagonal_value_axis: 'display value axis in diagonal',

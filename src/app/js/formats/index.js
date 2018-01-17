@@ -1,5 +1,6 @@
 import get from 'lodash.get';
 
+import code from './code';
 import globalBarchart from './distributionChart/global-bar-chart/';
 import globalPiechart from './distributionChart/global-pie-chart/';
 import globalRadarchart from './distributionChart/global-radar-chart/';
@@ -27,6 +28,7 @@ import bubbleChart from './bubbleChart';
 import DefaultFormat from './DefaultFormat';
 
 const components = {
+    code,
     globalBarchart,
     globalPiechart,
     globalRadarchart,
