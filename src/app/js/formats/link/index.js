@@ -3,8 +3,9 @@ import AdminComponent, { defaultArgs } from '../DefaultAdminComponentWithLabel';
 import DefaultFormat from '../DefaultFormat';
 
 export default {
+    ...DefaultFormat,
     Component,
     AdminComponent,
-    EditionComponent: DefaultFormat.EditionComponent,
+    ListComponent: Component,
     defaultArgs,
 };

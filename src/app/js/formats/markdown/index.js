@@ -5,5 +5,6 @@ import DefaultFormat from '../DefaultFormat';
 export default {
     ...DefaultFormat,
     Component,
+    ListComponent: Component,
     EditionComponent,
 };

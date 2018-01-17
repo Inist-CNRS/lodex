@@ -4,6 +4,7 @@ import EditionComponent from './EditionComponent';
 
 export default {
     Component,
+    ListComponent: Component,
     AdminComponent,
     EditionComponent,
     defaultArgs,
