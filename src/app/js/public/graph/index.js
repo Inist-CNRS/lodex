@@ -2,11 +2,13 @@ import { createAction, handleActions } from 'redux-actions';
 import get from 'lodash.get';
 
 export const PRE_LOAD_CHART_DATA = 'PRE_LOAD_CHART_DATA';
+export const UN_LOAD_CHART_DATA = 'UN_LOAD_CHART_DATA';
 export const LOAD_CHART_DATA = 'LOAD_CHART_DATA';
 export const LOAD_CHART_DATA_SUCCESS = 'LOAD_CHART_DATA_SUCCESS';
 export const LOAD_CHART_DATA_ERROR = 'LOAD_CHART_DATA_ERROR';
 
 export const preLoadChartData = createAction(PRE_LOAD_CHART_DATA);
+export const unLoadChartData = createAction(UN_LOAD_CHART_DATA);
 export const loadChartData = createAction(LOAD_CHART_DATA);
 export const loadChartDataSuccess = createAction(LOAD_CHART_DATA_SUCCESS);
 export const loadChartDataError = createAction(LOAD_CHART_DATA_ERROR);
@@ -26,6 +28,10 @@ export default handleActions(
         [LOAD_CHART_DATA_ERROR]: (state, { payload: { name, error } }) => ({
             ...state,
             [name]: { error },
+        }),
+        [UN_LOAD_CHART_DATA]: (state, { payload: { name } }) => ({
+            ...state,
+            [name]: null,
         }),
     },
     defaultState,

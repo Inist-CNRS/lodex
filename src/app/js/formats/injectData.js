@@ -9,7 +9,7 @@ import {
     polyglot as polyglotPropTypes,
 } from '../propTypes.js';
 import { fromCharacteristic, fromGraph } from '../public/selectors';
-import { preLoadChartData } from '../public/graph';
+import { preLoadChartData, unLoadChartData } from '../public/graph';
 import Loading from '../lib/components/Loading';
 
 const styles = {
@@ -24,6 +24,7 @@ export default FormatView => {
             field: fieldPropTypes.isRequired,
             resource: PropTypes.object.isRequired,
             preLoadChartData: PropTypes.func.isRequired,
+            unLoadChartData: PropTypes.func.isRequired,
             chartData: PropTypes.any,
             isLoaded: PropTypes.bool.isRequired,
             error: PropTypes.bool.isRequired,
@@ -36,6 +37,14 @@ export default FormatView => {
             }
 
             preLoadChartData({ field, value: resource[field.name] });
+        }
+        componentWillUnmount() {
+            const { field, unLoadChartData } = this.props;
+            if (!field) {
+                return;
+            }
+
+            unLoadChartData(field);
         }
         componentDidUpdate() {
             const { field, resource, preLoadChartData } = this.props;
@@ -89,6 +98,7 @@ export default FormatView => {
 
     const mapDispatchToProps = {
         preLoadChartData,
+        unLoadChartData,
     };
 
     return compose(connect(mapStateToProps, mapDispatchToProps), translate)(
