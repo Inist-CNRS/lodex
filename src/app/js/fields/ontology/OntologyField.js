@@ -27,11 +27,14 @@ const styles = {
         whiteSpace: 'nowrap',
         backgroundColor: '#8B8B8B',
     },
+    actionCol: {
+        overflow: 'visible',
+    },
 };
 
 const OntologyFieldComponent = ({ field, p: polyglot }) => (
     <TableRow>
-        <TableRowColumn>
+        <TableRowColumn style={styles.actionCol}>
             <DragButton disabled={field.name === 'uri'} />
             <EditOntologyFieldButton field={field} />
         </TableRowColumn>
