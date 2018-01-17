@@ -8,10 +8,7 @@ import Divider from 'material-ui/Divider';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 
-import {
-    field as fieldPropTypes,
-    polyglot as polyglotPropTypes,
-} from '../../propTypes';
+import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { preLoadPublication } from '../';
 import AddCharacteristic from '../addCharacteristic/AddCharacteristic';
 import OntologyTable from './OntologyTable';
@@ -71,7 +68,6 @@ export class OntologyComponent extends Component {
 }
 
 OntologyComponent.propTypes = {
-    fields: PropTypes.arrayOf(fieldPropTypes).isRequired,
     preLoadPublication: PropTypes.func.isRequired,
     p: polyglotPropTypes.isRequired,
 };

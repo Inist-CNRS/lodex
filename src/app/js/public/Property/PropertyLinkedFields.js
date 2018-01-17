@@ -48,7 +48,6 @@ const PropertyLinkedFieldsComponent = ({
 PropertyLinkedFieldsComponent.propTypes = {
     fieldName: PropTypes.string.isRequired,
     linkedFields: PropTypes.arrayOf(fieldPropTypes).isRequired,
-    onSaveProperty: PropTypes.func.isRequired,
     parents: PropTypes.arrayOf(PropTypes.string).isRequired,
     resource: PropTypes.shape({}).isRequired,
 };

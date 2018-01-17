@@ -316,36 +316,6 @@ describe('field', () => {
             );
         });
 
-        it('should throw an error if no label', () => {
-            const field = {
-                cover: 'dataset',
-                name: 'name',
-                label: undefined,
-                scheme: 'http://purl.org/dc/terms/title',
-                position: 1,
-                transformers: [{ operation: 'COLUMN', args: ['a'] }],
-            };
-
-            expect(() => validateField(field)).toThrow(
-                buildInvalidPropertiesMessage(),
-            );
-        });
-
-        it('should throw an error if label less than 2', () => {
-            const field = {
-                cover: 'dataset',
-                label: 'la',
-                name: 'name',
-                scheme: 'http://purl.org/dc/terms/title',
-                position: 1,
-                transformers: [{ operation: 'COLUMN', args: ['a'] }],
-            };
-
-            expect(() => validateField(field)).toThrow(
-                buildInvalidPropertiesMessage('la'),
-            );
-        });
-
         it('should throw an error if scheme is not a valid url', () => {
             const field = {
                 cover: 'dataset',

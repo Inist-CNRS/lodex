@@ -8,7 +8,6 @@ import {
     validateComposedOfField,
     validateCover,
     validateField,
-    validateLabel,
     validateLanguage,
     validatePosition,
     validateScheme,
@@ -24,11 +23,6 @@ describe('validateField', () => {
             isValid: false,
             name: undefined,
             properties: [
-                {
-                    name: 'label',
-                    isValid: false,
-                    error: 'required',
-                },
                 {
                     name: 'cover',
                     isValid: false,
@@ -85,10 +79,6 @@ describe('validateField', () => {
             name: 'field name',
             properties: [
                 {
-                    name: 'label',
-                    isValid: true,
-                },
-                {
                     name: 'cover',
                     isValid: true,
                 },
@@ -132,31 +122,6 @@ describe('validateField', () => {
                 },
             ],
             transformersAreValid: true,
-        });
-    });
-
-    describe('validateLabel', () => {
-        it('should return valid result if label is at least 2 char long', () => {
-            expect(validateLabel({ label: 'my label' })).toEqual({
-                name: 'label',
-                isValid: true,
-            });
-        });
-
-        it('should return invalid error if label is at less than 2 char long', () => {
-            expect(validateLabel({ label: 'm' })).toEqual({
-                name: 'label',
-                isValid: false,
-                error: 'invalid_label',
-            });
-        });
-
-        it('should return required error if label is absent', () => {
-            expect(validateLabel({})).toEqual({
-                name: 'label',
-                isValid: false,
-                error: 'required',
-            });
         });
     });
 

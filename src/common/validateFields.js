@@ -2,31 +2,6 @@ import { COVERS, COVER_DOCUMENT } from './cover';
 import knownTransformers from './transformers';
 import { languages as languagesFromConfig } from '../../config.json';
 
-export const validateLabel = field => {
-    const result = {
-        name: 'label',
-        isValid: true,
-    };
-
-    if (!field.label) {
-        return {
-            ...result,
-            isValid: false,
-            error: 'required',
-        };
-    }
-
-    if (field.label.length <= 2) {
-        return {
-            ...result,
-            isValid: false,
-            error: 'invalid_label',
-        };
-    }
-
-    return result;
-};
-
 export const validateCover = (field, isContribution) => {
     const result = {
         name: 'cover',
@@ -286,7 +261,6 @@ export const isListValid = list =>
 
 export const validateField = (field, isContribution = false, fields = []) => {
     const properties = [
-        validateLabel(field),
         validateCover(field, isContribution),
         validateScheme(field),
         validatePosition(field),
