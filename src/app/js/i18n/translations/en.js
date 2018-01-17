@@ -354,4 +354,5 @@ export default {
     document: 'Document',
     node_color: 'Node Color',
     network: 'network',
+    list_of_language: 'Choose the language',
 };

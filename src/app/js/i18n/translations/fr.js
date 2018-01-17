@@ -358,4 +358,5 @@ export default {
     document: 'Document',
     node_color: 'Node Color',
     network: 'network',
+    list_of_language: 'Choix du langage',
 };
