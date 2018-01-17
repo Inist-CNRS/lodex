@@ -1,13 +1,21 @@
 import React from 'react';
-import IconButton from 'material-ui/IconButton';
 import PropTypes from 'prop-types';
 import Reorder from 'material-ui/svg-icons/editor/format-line-spacing';
 import { SortableHandle } from 'react-sortable-hoc';
+import { grey400 } from 'material-ui/styles/colors';
+
+const styles = {
+    iconDisabled: {
+        cursor: 'default',
+        color: grey400,
+    },
+    icon: {
+        cursor: 'pointer',
+    },
+};
 
 const DragIcon = ({ disabled }) => (
-    <IconButton disabled={disabled}>
-        <Reorder />
-    </IconButton>
+    <Reorder style={disabled ? styles.iconDisabled : styles.icon} />
 );
 
 DragIcon.propTypes = {
