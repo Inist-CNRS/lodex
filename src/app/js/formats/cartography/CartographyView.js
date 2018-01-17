@@ -136,7 +136,6 @@ class CartographyView extends Component {
             maxValue,
             colorScheme,
             hoverColorScheme,
-            defaultColor,
         } = this.props;
         if (!colorScheme) {
             return null;
@@ -144,19 +143,20 @@ class CartographyView extends Component {
 
         const { zoom } = this.state;
 
+        const nullColor = colorScheme[0];
         const color = scaleQuantize()
-            .range(colorScheme)
-            .domain([0, maxValue])
+            .range(colorScheme.slice(1))
+            .domain([1, maxValue])
             .nice();
 
         const hoverColor = scaleQuantize()
-            .range(hoverColorScheme)
-            .domain([0, maxValue])
+            .range(hoverColorScheme.slice(1))
+            .domain([1, maxValue])
             .nice();
 
         return (
             <div style={styles.container} onClick={this.handleZoom}>
-                <ColorScaleLegend colorScale={color} />
+                <ColorScaleLegend colorScale={color} nullColor={nullColor} />
                 <div style={styles.subContainer}>
                     <div style={styles.zoom}>
                         <IconButton
@@ -199,12 +199,12 @@ class CartographyView extends Component {
                                                 geography={geography}
                                                 projection={projection}
                                                 style={styles.geography({
-                                                    color:
-                                                        color(value) ||
-                                                        defaultColor,
-                                                    hoverColor:
-                                                        hoverColor(value) ||
-                                                        defaultColor,
+                                                    color: value
+                                                        ? color(value)
+                                                        : nullColor,
+                                                    hoverColor: value
+                                                        ? hoverColor(value)
+                                                        : nullColor,
                                                 })}
                                             />
                                         );
@@ -227,15 +227,13 @@ CartographyView.propTypes = {
     hideTooltip: PropTypes.func.isRequired,
     colorScheme: PropTypes.arrayOf(PropTypes.string).isRequired,
     hoverColorScheme: PropTypes.arrayOf(PropTypes.string).isRequired,
-    defaultColor: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = (state, { chartData, field }) => {
-    const {
-        colorScheme,
-        hoverColorScheme,
-        defaultColor,
-    } = fromFields.getFieldFormatArgs(state, field.name);
+    const { colorScheme, hoverColorScheme } = fromFields.getFieldFormatArgs(
+        state,
+        field.name,
+    );
 
     if (!chartData) {
         return {
@@ -243,7 +241,6 @@ const mapStateToProps = (state, { chartData, field }) => {
             maxValue: 0,
             colorScheme,
             hoverColorScheme,
-            defaultColor,
         };
     }
     return {
@@ -262,7 +259,6 @@ const mapStateToProps = (state, { chartData, field }) => {
         ),
         colorScheme,
         hoverColorScheme,
-        defaultColor,
     };
 };
 
