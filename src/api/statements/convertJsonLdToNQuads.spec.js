@@ -43,5 +43,5 @@ describe('convertJSonLdToNquads', () => {
             },
             done,
         );
-    }).timeout(4000);
+    }).timeout(8000);
 });
