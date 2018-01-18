@@ -7,7 +7,10 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 const Root = ({ store, routes, history }) => (
     <Provider {...{ store }}>
         <MuiThemeProvider>
-            <Router {...{ history, routes }} />
+            <Router
+                {...{ history, routes }}
+                onUpdate={() => window.scrollTo(0, 0)}
+            />
         </MuiThemeProvider>
     </Provider>
 );
