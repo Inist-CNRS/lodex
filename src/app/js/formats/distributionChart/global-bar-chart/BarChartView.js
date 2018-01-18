@@ -39,13 +39,14 @@ const BarChartView = ({
     valueMargin,
     valueAxisProps,
     categoryAxisProps,
+    barSize,
 }) => (
     <div style={styles.container}>
         <ResponsiveContainer
             width="100%"
             height={
                 direction === 'horizontal'
-                    ? chartData.length * 40 + valueMargin
+                    ? chartData.length * (barSize + 8) + valueMargin
                     : 300 + categoryMargin
             }
         >
@@ -53,7 +54,7 @@ const BarChartView = ({
                 data={chartData}
                 layout={direction === 'horizontal' ? 'vertical' : 'horizontal'}
                 margin={margin}
-                maxBarSize={10}
+                maxBarSize={barSize}
             >
                 <XAxis
                     {...(direction === 'horizontal'
@@ -88,6 +89,7 @@ BarChartView.propTypes = {
     valueMargin: PropTypes.number.isRequired,
     valueAxisProps: PropTypes.any,
     categoryAxisProps: PropTypes.any,
+    barSize: PropTypes.number.isRequired,
 };
 
 export const getValueAxisProps = ({
@@ -136,6 +138,7 @@ const mapStateToProps = (state, { field, chartData }) => {
         direction = 'horizontal',
         valueMargin = 120,
         categoryMargin = 120,
+        barSize = 20,
     } = fromFields.getFieldFormatArgs(state, field.name);
 
     const valueAxisProps = getValueAxisProps({
@@ -159,6 +162,7 @@ const mapStateToProps = (state, { field, chartData }) => {
         categoryMargin: parseInt(categoryMargin),
         valueAxisProps,
         categoryAxisProps,
+        barSize: parseInt(barSize),
     };
 };
 
