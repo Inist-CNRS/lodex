@@ -54,8 +54,11 @@ export default compose(
         onSaveProperty: ({
             updateCharacteristics,
             saveResource,
-            field: { cover },
-        }) => (cover === COVER_DATASET ? updateCharacteristics : saveResource),
+            field,
+        }) => resource =>
+            field.cover === COVER_DATASET
+                ? updateCharacteristics(resource)
+                : saveResource({ field, resource }),
         handleClose: ({ closeEditFieldValue }) => closeEditFieldValue,
         handleOpen: ({ openEditFieldValue, field: { name } }) => () =>
             openEditFieldValue(name),
