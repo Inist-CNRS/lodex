@@ -6,6 +6,7 @@ import {
     OPEN_FACET,
     FACET_VALUE_CHANGE,
     FACET_VALUE_SORT,
+    TOGGLE_FACET_VALUE,
     loadFacetValuesError,
     loadFacetValuesSuccess,
     clearFacet,
@@ -37,11 +38,20 @@ export function* clearFacetSaga({ payload: { action } }) {
     yield put(clearFacet());
 }
 
+const scrollToTop = () =>
+    window.scroll({ top: 0, left: 0, behavior: 'smooth' });
+
+export function* scrollToTopSaga() {
+    yield call(scrollToTop);
+}
+
 export default function* watchLoadPublicationRequest() {
     yield takeLatest(
         [OPEN_FACET, LOAD_FACET_VALUES, FACET_VALUE_CHANGE, FACET_VALUE_SORT],
         handleLoadFacetValuesRequest,
     );
+
+    yield takeLatest(TOGGLE_FACET_VALUE, scrollToTopSaga);
 
     yield takeLatest(LOCATION_CHANGE, clearFacetSaga);
 }
