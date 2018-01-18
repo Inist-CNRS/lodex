@@ -81,6 +81,7 @@ describe('dataset reducer', () => {
     it('should handle SORT_DATASET action', () => {
         const state = reducer({ sort: {} }, sortDataset('field'));
         expect(state).toEqual({
+            currentPage: 0,
             sort: {
                 sortBy: 'field',
                 sortDir: 'ASC',
@@ -94,6 +95,7 @@ describe('dataset reducer', () => {
             sortDataset('field'),
         );
         expect(state).toEqual({
+            currentPage: 0,
             sort: {
                 sortBy: 'field',
                 sortDir: 'DESC',
@@ -107,6 +109,7 @@ describe('dataset reducer', () => {
             sortDataset('field'),
         );
         expect(state).toEqual({
+            currentPage: 0,
             sort: {
                 sortBy: 'field',
                 sortDir: 'ASC',
