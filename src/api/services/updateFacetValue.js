@@ -1,0 +1,23 @@
+const updateFacetValue = publishedFacet => async (
+    field,
+    oldValue,
+    newValue,
+) => {
+    const updatedFacet = await publishedFacet.findOneAndUpdate(
+        { field, value: oldValue },
+        { $inc: { count: -1 } },
+        { returnOriginal: false },
+    );
+
+    if (updatedFacet.count <= 0) {
+        await publishedFacet.remove(updatedFacet);
+    }
+
+    await publishedFacet.update(
+        { field, newValue },
+        { $inc: { count: 1 } },
+        { upsert: true },
+    );
+};
+
+export default updateFacetValue;

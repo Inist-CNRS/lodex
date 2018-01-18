@@ -5,6 +5,7 @@ import koaBodyParser from 'koa-bodyparser';
 import { PROPOSED } from '../../../common/propositionStatus';
 import generateUri from '../../../common/transformers/AUTOGENERATE_URI';
 import ark from './ark';
+import updateFacetValue from '../../services/updateFacetValue';
 
 const app = new Koa();
 
@@ -136,8 +137,13 @@ export const getPropositionPage = async (ctx, status = PROPOSED) => {
     };
 };
 
+export const prepareEditResource = async (ctx, next) => {
+    ctx.updateFacetValue = updateFacetValue(ctx.publishedFacet);
+    await next();
+};
+
 export const editResource = async ctx => {
-    const newVersion = ctx.request.body;
+    const { resource: newVersion, field } = ctx.request.body;
     const resource = await ctx.publishedDataset.findByUri(newVersion.uri);
     if (!resource || resource.removed_at) {
         ctx.status = 404;
@@ -145,7 +151,19 @@ export const editResource = async ctx => {
         return;
     }
 
-    ctx.body = await ctx.publishedDataset.addVersion(resource, newVersion);
+    const result = await ctx.publishedDataset.addVersion(resource, newVersion);
+
+    if (field.isFacet) {
+        const latestVersion = resource.versions.slice(-1)[0];
+
+        await ctx.updateFacetValue(
+            field.name,
+            newVersion[field.name],
+            latestVersion[field.name],
+        );
+    }
+
+    ctx.body = result;
 };
 
 export const createResource = async ctx => {
@@ -183,6 +201,7 @@ app.use(async (ctx, next) => {
     await next();
 });
 app.use(route.post('/', createResource));
+app.use(route.put('/', prepareEditResource));
 app.use(route.put('/', editResource));
 app.use(route.put('/restore', restoreResource));
 app.use(route.del('/', removeResource));
