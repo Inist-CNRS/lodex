@@ -44,6 +44,7 @@ export default handleActions(
             { payload: { nextSortBy } },
         ) => ({
             ...state,
+            currentPage: 0,
             sort: {
                 sortBy: nextSortBy,
                 sortDir:
