@@ -42,6 +42,9 @@ const GraphPage = ({ graphField, resource, chartData }) => (
     <div style={styles.container}>
         <div style={styles.centerColumn}>
             <GraphSummary selected={graphField ? graphField.name : ''} />
+            <Card style={styles.section}>
+                <AppliedFacetList />
+            </Card>
             {graphField && (
                 <Card style={styles.section}>
                     <ExportableComponent
@@ -67,9 +70,6 @@ const GraphPage = ({ graphField, resource, chartData }) => (
                     </ExportableComponent>
                 </Card>
             )}
-            <Card style={styles.section}>
-                <AppliedFacetList />
-            </Card>
             <Card style={styles.section}>
                 <Dataset />
             </Card>
