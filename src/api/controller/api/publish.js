@@ -58,6 +58,11 @@ export const verifyUri = async ctx => {
 
 export const clearPublished = async ctx => {
     try {
+        await ctx.dataset.updateMany(
+            {},
+            { $unset: { lodex_published: '' } },
+            { multi: true },
+        );
         await ctx.publishedDataset.remove({});
         await ctx.publishedCharacteristic.remove({});
         await ctx.publishedFacet.remove({});
