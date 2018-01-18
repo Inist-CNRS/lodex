@@ -153,6 +153,7 @@ export default {
     field_display_in_list: 'Display on list page',
     field_display_in_resource: 'Display on resource page',
     field_display_in_graph: 'Display in graph page',
+    field_display_in_home: 'Display in home page',
     field_searchable: 'Searchable',
     filter: 'Vous pouvez saisir votre recherche ici',
     no_result: 'Aucune correspondance trouvée',
