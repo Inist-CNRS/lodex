@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import memoize from 'lodash.memoize';
-import { List } from 'material-ui/List';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
 
@@ -22,12 +21,14 @@ const styles = {
             textDecoration: status === REJECTED ? 'line-through' : 'none',
         }),
     ),
+    header: {
+        borderBottom: '1px solid lightgrey',
+        marginBottom: '1rem',
+    },
     total: {
         fontSize: '1.2rem',
         fontWeight: 'bold',
         color: 'rgba(0,0,0,0.54)',
-        position: 'absolute',
-        right: 15,
     },
 };
 
@@ -40,38 +41,31 @@ export const IstexView = ({
     p: polyglot,
 }) => (
     <span style={styles.text(fieldStatus)}>
-        <span>
-            {polyglot.t('istex_results', { searchTerm: resource[field.name] })}
-        </span>
-        <span style={styles.total}>
-            {polyglot.t('istex_total', { total: data.total })}
-        </span>
-        {error && (
-            <Alert>
-                <p>{polyglot.t(error)}</p>
-            </Alert>
-        )}
+        <div style={styles.header}>
+            <a
+                href={'https://dl.istex.fr/?q='.concat(
+                    encodeURIComponent(resource[field.name]),
+                )}
+            >
+                <span style={styles.total}>
+                    {polyglot.t('istex_total', {
+                        total: data ? data.total : 0,
+                    })}
+                </span>
+            </a>
+            {error && (
+                <Alert>
+                    <p>{polyglot.t(error)}</p>
+                </Alert>
+            )}
+        </div>
         {data &&
             data.hits && (
-                <List>
-                    {data.hits.map(
-                        ({
-                            id,
-                            title,
-                            publicationDate,
-                            fulltext,
-                            abstract,
-                        }) => (
-                            <IstexItem
-                                key={id}
-                                fulltext={fulltext}
-                                title={title}
-                                publicationDate={publicationDate}
-                                abstract={abstract}
-                            />
-                        ),
-                    )}
-                </List>
+                <div>
+                    {data.hits.map(item => (
+                        <IstexItem key={item.id} {...item} />
+                    ))}
+                </div>
             )}
     </span>
 );

@@ -1,41 +1,56 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { ListItem } from 'material-ui/List';
-import PdfIcon from 'material-ui/svg-icons/image/picture-as-pdf';
+import { StyleSheet, css } from 'aphrodite';
 
-const styles = {
-    link: { textDecoration: 'none' },
-};
+const styles = StyleSheet.create({
+    article: {
+        paddingBottom: '3rem',
+    },
+    title: {
+        lineHeight: '2rem',
+    },
+    link: {
+        fontSize: '2rem',
+    },
+    authors: {
+        fontStyle: 'oblique',
+    },
+    metadata: {
+        lineHeight: '1.5rem',
+        color: '#757575',
+    },
+});
 
 export const IstexItemComponent = ({
     title,
     publicationDate,
-    abstract,
-    fulltext,
+    url,
+    authors,
+    hostTitle,
+    hostGenre,
 }) => (
-    <a
-        href={fulltext}
-        rel="noopener noreferrer"
-        target="_blank"
-        style={styles.link}
-    >
-        <ListItem
-            leftIcon={<PdfIcon />}
-            primaryText={`${title} ${publicationDate}`}
-            secondaryText={abstract}
-        />
-    </a>
+    <article>
+        <div className={css(styles.article)}>
+            <div className={css(styles.title)}>
+                <a className={css(styles.link)} href={url} rel="noopener noreferrer">
+                    {title}
+                </a>
+            </div>
+            <div className={css(styles.authors)}> {authors} </div>
+            <div className={css(styles.metadata)}>
+                {publicationDate},&nbsp;{hostTitle} - {hostGenre}
+            </div>
+        </div>
+    </article>
 );
 
 IstexItemComponent.propTypes = {
     title: PropTypes.string.isRequired,
     publicationDate: PropTypes.string.isRequired,
-    fulltext: PropTypes.string.isRequired,
-    abstract: PropTypes.string,
-};
-
-IstexItemComponent.defaultProps = {
-    abstract: null,
+    url: PropTypes.string.isRequired,
+    authors: PropTypes.string.isRequired,
+    hostTitle: PropTypes.string.isRequired,
+    hostGenre: PropTypes.string.isRequired,
 };
 
 export default IstexItemComponent;
