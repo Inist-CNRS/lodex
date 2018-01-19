@@ -1,8 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { StyleSheet, css } from 'aphrodite';
 
-const styles = StyleSheet.create({
+const styles = {
     article: {
         paddingBottom: '3rem',
     },
@@ -19,7 +18,10 @@ const styles = StyleSheet.create({
         lineHeight: '1.5rem',
         color: '#757575',
     },
-});
+    genre: {
+        textTransform: 'capitalize',
+    },
+};
 
 export const IstexItemComponent = ({
     title,
@@ -30,15 +32,17 @@ export const IstexItemComponent = ({
     hostGenre,
 }) => (
     <article>
-        <div className={css(styles.article)}>
-            <div className={css(styles.title)}>
-                <a className={css(styles.link)} href={url} rel="noopener noreferrer">
+        <div style={styles.article}>
+            <div style={styles.title}>
+                <a style={styles.link} href={url} rel="noopener noreferrer">
                     {title}
                 </a>
             </div>
-            <div className={css(styles.authors)}> {authors} </div>
-            <div className={css(styles.metadata)}>
-                {publicationDate},&nbsp;{hostTitle} - {hostGenre}
+            <div style={styles.authors}> {authors} </div>
+            <div style={styles.metadata}>
+                {publicationDate},&nbsp;{hostTitle}
+                &nbsp;-&nbsp;
+                <span style={styles.genre}>{hostGenre}</span>
             </div>
         </div>
     </article>

@@ -21,6 +21,7 @@ export const parseFetchResult = fetchResult => {
     }
     const { response: { total, hits } } = fetchResult;
     const { protocol, host } = URL.parse(istexApiUrl);
+    console.log('>>>>>>>>>>>>>>>>>>>>>>>', hits);
     return {
         hits: hits.map(hit => ({
             id: hit.id,

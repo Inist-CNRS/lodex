@@ -25,6 +25,9 @@ const styles = {
         borderBottom: '1px solid lightgrey',
         marginBottom: '1rem',
     },
+    dl: {
+        float: 'right',
+    },
     total: {
         fontSize: '1.2rem',
         fontWeight: 'bold',
@@ -40,18 +43,20 @@ export const IstexView = ({
     resource,
     p: polyglot,
 }) => (
-    <span style={styles.text(fieldStatus)}>
+    <div className="istex-list" style={styles.text(fieldStatus)}>
         <div style={styles.header}>
+            <span style={styles.total}>
+                {polyglot.t('istex_total', {
+                    total: data ? data.total : 0,
+                })}
+            </span>
             <a
+                style={styles.dl}
                 href={'https://dl.istex.fr/?q='.concat(
                     encodeURIComponent(resource[field.name]),
                 )}
             >
-                <span style={styles.total}>
-                    {polyglot.t('istex_total', {
-                        total: data ? data.total : 0,
-                    })}
-                </span>
+                {polyglot.t('download')}
             </a>
             {error && (
                 <Alert>
@@ -67,7 +72,7 @@ export const IstexView = ({
                     ))}
                 </div>
             )}
-    </span>
+    </div>
 );
 
 IstexView.propTypes = {
