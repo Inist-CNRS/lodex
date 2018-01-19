@@ -149,6 +149,12 @@ export const getFieldsExceptEdited = createSelector(
     (fields, editedField) => fields.filter(f => f._id !== editedField._id),
 );
 
+export const getFieldsExceptField = createSelector(
+    getFields,
+    getProps,
+    (fields, field) => fields.filter(f => f._id !== field._id),
+);
+
 export const getCompletedField = createSelector(
     getProps,
     getFields,
@@ -342,6 +348,7 @@ export default {
     getFields,
     getState,
     getFieldsExceptEdited,
+    getFieldsExceptField,
     getInvalidFields,
     getNbFields,
     hasPublicationFields,

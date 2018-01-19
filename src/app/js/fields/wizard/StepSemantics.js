@@ -11,7 +11,7 @@ import {
     polyglot as polyglotPropTypes,
     field as fieldPropTypes,
 } from '../../propTypes';
-import StepSemanticsComposition from './StepSemanticsComposition';
+import FieldComposedOf from '../FieldComposedOf';
 
 const styles = {
     complete: {
@@ -55,7 +55,7 @@ export const StepIdentityComponent = ({
                 />
                 {otherFieldsMenuItems}
             </Field>
-            <StepSemanticsComposition field={field} fields={fields} />
+            <FieldComposedOf field={field} fields={fields} />
         </Step>
     );
 };

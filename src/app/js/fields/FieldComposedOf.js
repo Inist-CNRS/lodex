@@ -10,12 +10,13 @@ import compose from 'recompose/compose';
 import withHandlers from 'recompose/withHandlers';
 import { connect } from 'react-redux';
 import { change, formValueSelector } from 'redux-form';
-import { FIELD_FORM_NAME } from '../';
+
+import { FIELD_FORM_NAME } from './';
 
 import {
     polyglot as polyglotPropTypes,
     field as fieldPropTypes,
-} from '../../propTypes';
+} from '../propTypes';
 
 const styles = {
     inset: {
@@ -45,7 +46,7 @@ export const StepSemanticsCompositionComponent = ({
         <div style={styles.inset}>
             {columns.map((col, index) => (
                 <div
-                    key={`composition_${index}`} // eslint-disable-line
+                    key={`composition_${index}`}
                     style={styles.compositionContainer}
                 >
                     <SelectField
@@ -63,7 +64,7 @@ export const StepSemanticsCompositionComponent = ({
                         {fields.map(f => (
                             <MenuItem
                                 className={`composite-field-${index}-${f.name}`}
-                                key={`composite-field-${index}-${f.name}`} // eslint-disable-line
+                                key={`composite-field-${index}-${f.name}`}
                                 value={f.name}
                                 primaryText={f.label}
                             />
@@ -100,12 +101,11 @@ StepSemanticsCompositionComponent.propTypes = {
     p: polyglotPropTypes.isRequired,
 };
 
-StepSemanticsCompositionComponent.defaultProps = {
-    columns: ['', ''],
-};
-
-const mapStateToProps = state => {
-    const composedOf = formValueSelector(FIELD_FORM_NAME)(state, 'composedOf');
+const mapStateToProps = (state, { FORM_NAME }) => {
+    const composedOf = formValueSelector(FORM_NAME || FIELD_FORM_NAME)(
+        state,
+        'composedOf',
+    );
 
     if (composedOf && composedOf.fields.length > 1) {
         return {
@@ -114,12 +114,12 @@ const mapStateToProps = state => {
         };
     }
 
-    return { selected: false, columns: ['', ''], separator: '' };
+    return { selected: false, columns: ['', ''] };
 };
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch, { FORM_NAME = FIELD_FORM_NAME }) => ({
     onChange: composedOf => {
-        dispatch(change(FIELD_FORM_NAME, 'composedOf', composedOf));
+        dispatch(change(FORM_NAME, 'composedOf', composedOf));
     },
 });
 
