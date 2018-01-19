@@ -4,7 +4,6 @@ import withHandlers from 'recompose/withHandlers';
 import withProps from 'recompose/withProps';
 import { reduxForm, propTypes as reduxFormPropTypes } from 'redux-form';
 import { connect } from 'react-redux';
-import translate from 'redux-polyglot/translate';
 
 import Alert from '../../lib/components/Alert';
 import { configureField } from '../';
@@ -23,6 +22,7 @@ import FieldIsSearchableInput from '../FieldIsSearchableInput';
 import FieldIsFacetInput from '../FieldIsFacetInput';
 import FieldComposedOf from '../FieldComposedOf';
 import FieldCompletes from '../FieldCompletes';
+import InvalidFieldProperties from '../InvalidFieldProperties';
 
 export const FORM_NAME = 'ONTOLOGY_FIELD_FORM';
 
@@ -30,9 +30,7 @@ export const EditOntologyFieldFormComponent = ({
     field,
     fields,
     publicationError,
-    invalidProperties,
     handleSubmit,
-    p: polyglot,
 }) => (
     <form id="field_form" onSubmit={() => handleSubmit()}>
         {publicationError && (
@@ -40,17 +38,7 @@ export const EditOntologyFieldFormComponent = ({
                 <p>{publicationError}</p>
             </Alert>
         )}
-        {invalidProperties.length && (
-            <Alert>
-                <ul>
-                    {invalidProperties.map(({ name, error }, index) => (
-                        <li key={`${name}-${index}`}>
-                            {polyglot.t(`error_${name}_${error}`)}
-                        </li>
-                    ))}
-                </ul>
-            </Alert>
-        )}
+        <InvalidFieldProperties />
         <FieldLabelInput />
         <FieldSchemeInput />
         <FieldLanguageInput field={field} />
@@ -63,8 +51,8 @@ export const EditOntologyFieldFormComponent = ({
         <FieldWidthInput />
         <FieldIsSearchableInput />
         <FieldIsFacetInput />
-        <FieldComposedOf field={field} fields={fields} FORM_NAME={FORM_NAME} />
-        <FieldCompletes field={field} fields={fields} />
+        <FieldComposedOf fields={fields} FORM_NAME={FORM_NAME} />
+        <FieldCompletes fields={fields} />
     </form>
 );
 
@@ -80,7 +68,6 @@ EditOntologyFieldFormComponent.propTypes = {
 
 const mapStateToProps = (state, { field }) => ({
     publicationError: fromFields.getError(state),
-    invalidProperties: fromFields.getInvalidProperties(state),
     fields: fromFields.getFieldsExceptField(state, field),
 });
 
@@ -89,7 +76,6 @@ const mapDispatchToProps = {
 };
 
 export default compose(
-    translate,
     connect(mapStateToProps, mapDispatchToProps),
     withHandlers({
         onSubmit: ({ onSaveField }) => values => {

@@ -52,7 +52,6 @@ const FieldComplete = ({ fields, p: polyglot }) => {
 };
 
 FieldComplete.propTypes = {
-    field: fieldPropTypes.isRequired,
     fields: PropTypes.arrayOf(fieldPropTypes).isRequired,
     p: polyglotPropTypes.isRequired,
 };

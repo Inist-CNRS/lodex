@@ -4,7 +4,7 @@ import {
     CONFIGURE_FIELD,
     configureFieldSuccess,
     configureFieldError,
-    configureFieldInvalid,
+    fieldInvalid,
     preLoadPublication,
 } from '../';
 import { getFieldOntologyFormData } from '../selectors';
@@ -23,7 +23,7 @@ export function* handleConfigureField() {
     );
     if (!isValid) {
         yield put(
-            configureFieldInvalid({
+            fieldInvalid({
                 invalidProperties: properties.filter(({ isValid }) => !isValid),
             }),
         );
