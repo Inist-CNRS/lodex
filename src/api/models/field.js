@@ -89,7 +89,6 @@ export default async db => {
     };
 
     collection.updateOneById = async (id, field) => {
-        validateField(field);
         const objectId = new ObjectID(id);
         const previousFieldVersion = await collection.findOneById(id);
 
