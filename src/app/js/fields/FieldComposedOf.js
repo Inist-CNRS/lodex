@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import SelectField from 'material-ui/SelectField';
+import Toggle from 'material-ui/Toggle';
 import MenuItem from 'material-ui/MenuItem';
 import FlatButton from 'material-ui/FlatButton';
 import IconButton from 'material-ui/IconButton';
@@ -33,72 +34,93 @@ const styles = {
     },
 };
 
-export const StepSemanticsCompositionComponent = ({
+export const FieldComposedOf = ({
+    isComposedOf,
     columns,
     fields,
-    handleAddColumn,
+    handleToggle,
     handleSelectColumn,
+    handleAddColumn,
     handleRemoveColumn,
     p: polyglot,
 }) => (
     <div>
         <div style={styles.header}>{polyglot.t('wizard_composed_of')}</div>
         <div style={styles.inset}>
-            {columns.map((col, index) => (
-                <div
-                    key={`composition_${index}`}
-                    style={styles.compositionContainer}
-                >
-                    <SelectField
-                        className={`composite-field composite-field-${index}`}
-                        onChange={handleSelectColumn(index)}
-                        style={styles.select}
-                        hintText={polyglot.t('select_a_column')}
-                        value={col}
+            <Toggle
+                label="is_composite_field"
+                toggled={isComposedOf}
+                onToggle={handleToggle}
+            />
+            {isComposedOf &&
+                columns.map((col, index) => (
+                    <div
+                        key={`composition_${index}`}
+                        style={styles.compositionContainer}
                     >
-                        <MenuItem
-                            className={'composite-field-none'}
-                            value={null}
-                            primaryText={polyglot.t('completes_field_none')}
-                        />
-                        {fields.map(f => (
-                            <MenuItem
-                                className={`composite-field-${index}-${f.name}`}
-                                key={`composite-field-${index}-${f.name}`}
-                                value={f.name}
-                                primaryText={f.label}
-                            />
-                        ))}
-                    </SelectField>
-                    {index > 1 && (
-                        <IconButton
-                            className={`btn-remove-composite-field btn-remove-composite-field-${
+                        <SelectField
+                            className={`composite-field composite-field-${
                                 index
                             }`}
-                            onClick={handleRemoveColumn(index)}
-                            title={polyglot.t('remove_composition_column')}
+                            onChange={handleSelectColumn(index)}
+                            style={styles.select}
+                            hintText={polyglot.t('select_a_column')}
+                            value={col}
                         >
-                            <IconDelete />
-                        </IconButton>
-                    )}
-                </div>
-            ))}
-            <FlatButton
-                className="btn-add-composition-column"
-                label={polyglot.t('add_composition_column')}
-                onClick={handleAddColumn}
-            />
+                            <MenuItem
+                                className={'composite-field-none'}
+                                value={null}
+                                primaryText={polyglot.t('composite_field_none')}
+                            />
+                            {fields.map(f => (
+                                <MenuItem
+                                    className={`composite-field-${index}-${
+                                        f.name
+                                    }`}
+                                    key={`composite-field-${index}-${f.name}`}
+                                    value={f.name}
+                                    primaryText={f.label}
+                                />
+                            ))}
+                        </SelectField>
+                        {index > 1 && (
+                            <IconButton
+                                className={`btn-remove-composite-field btn-remove-composite-field-${
+                                    index
+                                }`}
+                                onClick={handleRemoveColumn(index)}
+                                title={polyglot.t('remove_composition_column')}
+                            >
+                                <IconDelete />
+                            </IconButton>
+                        )}
+                    </div>
+                ))}
+            {isComposedOf && (
+                <FlatButton
+                    className="btn-add-composition-column"
+                    label={polyglot.t('add_composition_column')}
+                    onClick={handleAddColumn}
+                />
+            )}
         </div>
     </div>
 );
 
-StepSemanticsCompositionComponent.propTypes = {
-    columns: PropTypes.arrayOf(PropTypes.string).isRequired,
+FieldComposedOf.propTypes = {
+    isComposedOf: PropTypes.bool,
+    columns: PropTypes.arrayOf(PropTypes.string),
     fields: PropTypes.arrayOf(fieldPropTypes).isRequired,
     handleAddColumn: PropTypes.func.isRequired,
     handleSelectColumn: PropTypes.func.isRequired,
     handleRemoveColumn: PropTypes.func.isRequired,
+    handleToggle: PropTypes.func.isRequired,
     p: polyglotPropTypes.isRequired,
+};
+
+FieldComposedOf.defaultProps = {
+    isComposedOf: false,
+    columns: [],
 };
 
 const mapStateToProps = (state, { FORM_NAME }) => {
@@ -107,14 +129,14 @@ const mapStateToProps = (state, { FORM_NAME }) => {
         'composedOf',
     );
 
-    if (composedOf && composedOf.fields.length > 1) {
+    if (composedOf && composedOf.fields && composedOf.fields.length > 1) {
         return {
-            selected: true,
-            columns: composedOf.fields || ['', ''],
+            isComposedOf: composedOf.isComposedOf,
+            columns: composedOf.fields,
         };
     }
 
-    return { selected: false, columns: ['', ''] };
+    return { isComposedOf: false, columns: [] };
 };
 
 const mapDispatchToProps = (dispatch, { FORM_NAME = FIELD_FORM_NAME }) => ({
@@ -126,17 +148,19 @@ const mapDispatchToProps = (dispatch, { FORM_NAME = FIELD_FORM_NAME }) => ({
 export default compose(
     connect(mapStateToProps, mapDispatchToProps),
     withHandlers({
-        handleSelect: ({ onChange, columns }) => () => {
+        handleToggle: ({ onChange, isComposedOf }) => () => {
             onChange({
-                fields: columns,
+                isComposedOf: !isComposedOf,
+                fields: !isComposedOf ? ['', ''] : [],
             });
         },
-        handleSelectColumn: ({ columns, onChange }) => index => (
+        handleSelectColumn: ({ columns, isComposedOf, onChange }) => index => (
             event,
             key,
             column,
         ) => {
             onChange({
+                isComposedOf,
                 fields: [
                     ...columns.slice(0, index),
                     column,
@@ -144,13 +168,19 @@ export default compose(
                 ],
             });
         },
-        handleAddColumn: ({ columns, onChange }) => () => {
+        handleAddColumn: ({ isComposedOf, columns, onChange }) => () => {
             onChange({
+                isComposedOf,
                 fields: [...columns, ''],
             });
         },
-        handleRemoveColumn: ({ columns, onChange }) => index => () => {
+        handleRemoveColumn: ({
+            isComposedOf,
+            columns,
+            onChange,
+        }) => index => () => {
             onChange({
+                isComposedOf,
                 fields: [
                     ...columns.slice(0, index),
                     ...columns.slice(index + 1),
@@ -159,4 +189,4 @@ export default compose(
         },
     }),
     translate,
-)(StepSemanticsCompositionComponent);
+)(FieldComposedOf);
