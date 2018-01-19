@@ -337,6 +337,8 @@ const getFieldFormatArgs = createSelector(getFieldByName, field =>
     get(field, 'format.args', {}),
 );
 
+const getInvalidProperties = state => state.invalidProperties || [];
+
 export default {
     areAllFieldsValid,
     getCollectionFields,
@@ -388,4 +390,5 @@ export default {
     getOverviewSubTitleCol,
     getFieldFormatArgs,
     getOntologyFields,
+    getInvalidProperties,
 };

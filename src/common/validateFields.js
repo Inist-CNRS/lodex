@@ -119,7 +119,7 @@ export const validateComposedOf = (field, isContribution) => {
 };
 
 export const validateComposedOfFields = field => {
-    if (!field.composedOf) {
+    if (!field.composedOf || !field.composedOf.isComposedOf) {
         return null;
     }
 

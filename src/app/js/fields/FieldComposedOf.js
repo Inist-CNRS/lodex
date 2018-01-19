@@ -34,7 +34,7 @@ const styles = {
     },
 };
 
-export const FieldComposedOf = ({
+const FieldComposedOf = ({
     isComposedOf,
     columns,
     fields,
@@ -66,12 +66,8 @@ export const FieldComposedOf = ({
                             style={styles.select}
                             hintText={polyglot.t('select_a_column')}
                             value={col}
+                            required
                         >
-                            <MenuItem
-                                className={'composite-field-none'}
-                                value={null}
-                                primaryText={polyglot.t('composite_field_none')}
-                            />
                             {fields.map(f => (
                                 <MenuItem
                                     className={`composite-field-${index}-${

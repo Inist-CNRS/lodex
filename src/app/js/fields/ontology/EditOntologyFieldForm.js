@@ -4,6 +4,7 @@ import withHandlers from 'recompose/withHandlers';
 import withProps from 'recompose/withProps';
 import { reduxForm, propTypes as reduxFormPropTypes } from 'redux-form';
 import { connect } from 'react-redux';
+import translate from 'redux-polyglot/translate';
 
 import Alert from '../../lib/components/Alert';
 import { configureField } from '../';
@@ -28,12 +29,25 @@ export const EditOntologyFieldFormComponent = ({
     field,
     fields,
     publicationError,
+    invalidProperties,
     handleSubmit,
+    p: polyglot,
 }) => (
     <form id="field_form" onSubmit={() => handleSubmit()}>
         {publicationError && (
             <Alert>
                 <p>{publicationError}</p>
+            </Alert>
+        )}
+        {invalidProperties.length && (
+            <Alert>
+                <ul>
+                    {invalidProperties.map(({ name, error }, index) => (
+                        <li key={`${name}-${index}`}>
+                            {polyglot.t(`error_${name}_${error}`)}
+                        </li>
+                    ))}
+                </ul>
             </Alert>
         )}
         <FieldLabelInput />
@@ -64,6 +78,7 @@ EditOntologyFieldFormComponent.propTypes = {
 
 const mapStateToProps = (state, { field }) => ({
     publicationError: fromFields.getError(state),
+    invalidProperties: fromFields.getInvalidProperties(state),
     fields: fromFields.getFieldsExceptField(state, field),
 });
 
@@ -72,6 +87,7 @@ const mapDispatchToProps = {
 };
 
 export default compose(
+    translate,
     connect(mapStateToProps, mapDispatchToProps),
     withHandlers({
         onSubmit: ({ onSaveField }) => values => {
