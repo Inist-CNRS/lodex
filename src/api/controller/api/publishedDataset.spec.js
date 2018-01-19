@@ -1,4 +1,3 @@
-/* eslint max-len: off */
 import expect, { createSpy } from 'expect';
 
 import {
@@ -158,13 +157,31 @@ describe('publishedDataset', () => {
         const ctx = {
             publishedDataset: {
                 findByUri: createSpy().andReturn(
-                    Promise.resolve('found resource'),
+                    Promise.resolve({
+                        uri: 'the uri',
+                        versions: [
+                            'version',
+                            {
+                                editedField: 'old value',
+                            },
+                        ],
+                    }),
                 ),
-                addVersion: createSpy().andReturn(Promise.resolve('foo')),
+                addVersion: createSpy().andReturn(
+                    Promise.resolve('the new version'),
+                ),
             },
+            updateFacetValue: createSpy(),
             request: {
                 body: {
-                    uri: 'the uri',
+                    resource: {
+                        uri: 'the uri',
+                        editedField: 'new value',
+                    },
+                    field: {
+                        name: 'editedField',
+                        isFacet: true,
+                    },
                 },
             },
         };
@@ -181,15 +198,73 @@ describe('publishedDataset', () => {
             await editResource(ctx);
 
             expect(ctx.publishedDataset.addVersion).toHaveBeenCalledWith(
-                'found resource',
-                { uri: 'the uri' },
+                {
+                    uri: 'the uri',
+                    versions: [
+                        'version',
+                        {
+                            editedField: 'old value',
+                        },
+                    ],
+                },
+                {
+                    uri: 'the uri',
+                    editedField: 'new value',
+                },
             );
+        });
+
+        it('should updateFacetValue if field is a facet', async () => {
+            await editResource(ctx);
+
+            expect(ctx.updateFacetValue).toHaveBeenCalledWith({
+                field: 'editedField',
+                oldValue: 'old value',
+                newValue: 'new value',
+            });
+        });
+
+        it('should not updateFacetValue if field is not a facet', async () => {
+            const noFacetCtx = {
+                publishedDataset: {
+                    findByUri: createSpy().andReturn(
+                        Promise.resolve({
+                            uri: 'the uri',
+                            versions: [
+                                'version',
+                                {
+                                    editedField: 'old value',
+                                },
+                            ],
+                        }),
+                    ),
+                    addVersion: createSpy().andReturn(
+                        Promise.resolve('the new version'),
+                    ),
+                },
+                updateFacetValue: createSpy(),
+                request: {
+                    body: {
+                        resource: {
+                            uri: 'the uri',
+                            editedField: 'new value',
+                        },
+                        field: {
+                            name: 'editedField',
+                            isFacet: false,
+                        },
+                    },
+                },
+            };
+            await editResource(noFacetCtx);
+
+            expect(noFacetCtx.updateFacetValue).toNotHaveBeenCalled();
         });
 
         it('should return the new version', async () => {
             await editResource(ctx);
 
-            expect(ctx.body).toEqual('foo');
+            expect(ctx.body).toEqual('the new version');
         });
     });
 

@@ -21,15 +21,14 @@ describe('resource saga', () => {
         expect(next.value).toEqual(select(fromResource.getResourceLastVersion));
     });
 
-    it('should select getSaveResourceRequest with resource', () => {
+    it('should select getSaveResourceRequest with resource and field', () => {
         saga.next();
         const next = saga.next({ field: 'oldValue', uri: 'uri' });
         expect(next.value).toEqual(
-            select(
-                fromUser.getSaveResourceRequest,
-                { field: 'value' },
-                { name: 'field' },
-            ),
+            select(fromUser.getSaveResourceRequest, {
+                resource: { field: 'value' },
+                field: { name: 'field' },
+            }),
         );
     });
 

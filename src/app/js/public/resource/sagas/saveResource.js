@@ -10,11 +10,10 @@ import { fromResource } from '../../selectors';
 export function* handleSaveResource({ payload: { resource, field } }) {
     const oldResource = yield select(fromResource.getResourceLastVersion);
     if (!isEqual(oldResource, resource)) {
-        const request = yield select(
-            fromUser.getSaveResourceRequest,
+        const request = yield select(fromUser.getSaveResourceRequest, {
             resource,
             field,
-        );
+        });
         const { error, response } = yield call(fetchSaga, request);
 
         if (error) {

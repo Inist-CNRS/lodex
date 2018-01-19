@@ -156,11 +156,11 @@ export const editResource = async ctx => {
     if (field.isFacet) {
         const latestVersion = resource.versions.slice(-1)[0];
 
-        await ctx.updateFacetValue(
-            field.name,
-            newVersion[field.name],
-            latestVersion[field.name],
-        );
+        await ctx.updateFacetValue({
+            field: field.name,
+            oldValue: latestVersion[field.name],
+            newValue: newVersion[field.name],
+        });
     }
 
     ctx.body = result;

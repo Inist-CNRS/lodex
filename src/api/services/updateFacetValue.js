@@ -1,8 +1,8 @@
-const updateFacetValue = publishedFacet => async (
+const updateFacetValue = publishedFacet => async ({
     field,
     oldValue,
     newValue,
-) => {
+}) => {
     const updatedFacet = await publishedFacet.findOneAndUpdate(
         { field, value: oldValue },
         { $inc: { count: -1 } },
@@ -14,7 +14,7 @@ const updateFacetValue = publishedFacet => async (
     }
 
     await publishedFacet.update(
-        { field, newValue },
+        { field, value: newValue },
         { $inc: { count: 1 } },
         { upsert: true },
     );
