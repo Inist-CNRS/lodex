@@ -359,4 +359,5 @@ export default {
     height: 'Height',
     min_radius: 'Min radius',
     max_radius: 'Max radius',
+    list_of_language: 'Choose the language',
 };
