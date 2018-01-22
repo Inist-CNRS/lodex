@@ -18,6 +18,7 @@ import compose from 'recompose/compose';
 import injectData from '../injectData';
 import getGradientScaleAndLegend from '../../lib/components/getGradientScaleAndLegend';
 import { fromFields } from '../../sharedSelectors';
+import exportableToPng from '../exportableToPng';
 
 const maxZoom = 16;
 const minZoom = 1;
@@ -264,4 +265,5 @@ const mapSispatchToProps = {
 export default compose(
     injectData,
     connect(mapStateToProps, mapSispatchToProps),
+    exportableToPng,
 )(CartographyView);

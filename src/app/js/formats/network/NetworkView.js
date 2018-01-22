@@ -14,6 +14,7 @@ import { scaleLinear } from 'd3-scale';
 
 import injectData from '../injectData';
 import { fromFields } from '../../sharedSelectors';
+import exportableToPng from '../exportableToPng';
 
 const simulationOptions = {
     animate: true,
@@ -152,4 +153,6 @@ const mapStateToProps = (state, { chartData, field }) => {
     };
 };
 
-export default compose(injectData, connect(mapStateToProps))(Network);
+export default compose(injectData, connect(mapStateToProps), exportableToPng)(
+    Network,
+);
