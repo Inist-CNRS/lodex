@@ -16,6 +16,7 @@ import { preLoadChartData } from '../graph';
 import EditButton from '../../fields/editFieldValue/EditButton';
 import EditOntologyFieldButton from '../../fields/ontology/EditOntologyFieldButton';
 import PropertyLinkedFields from '../Property/PropertyLinkedFields';
+import CompositeProperty from '../Property/CompositeProperty';
 
 const styles = {
     container: {
@@ -63,6 +64,12 @@ const GraphPage = ({ graphField, resource }) => (
                     >
                         <Format field={graphField} resource={resource} />
                     </ExportableComponent>
+                    <CompositeProperty
+                        key="composite"
+                        field={graphField}
+                        resource={resource}
+                        parents={[]}
+                    />
                     <PropertyLinkedFields
                         fieldName={graphField.name}
                         resource={resource}

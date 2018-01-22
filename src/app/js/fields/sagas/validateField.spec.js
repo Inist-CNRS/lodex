@@ -4,7 +4,7 @@ import validateFieldSaga from './validateField';
 import { select, call, put } from 'redux-saga/effects';
 import { fromFields } from '../../sharedSelectors';
 import { fieldInvalid } from '../index';
-import { validateField } from '../../../../common/validateFields';
+import { validateAddedField } from '../../../../common/validateFields';
 
 describe('fields saga', () => {
     describe('validateField', () => {
@@ -13,7 +13,7 @@ describe('fields saga', () => {
 
             expect(saga.next().value).toEqual(select(fromFields.getFields));
             expect(saga.next('fields').value).toEqual(
-                call(validateField, 'form data', false, 'fields'),
+                call(validateAddedField, 'form data', false, 'fields'),
             );
             expect(saga.next({ isValid: true }).done).toBe(true);
         });
@@ -23,7 +23,7 @@ describe('fields saga', () => {
 
             expect(saga.next().value).toEqual(select(fromFields.getFields));
             expect(saga.next('fields').value).toEqual(
-                call(validateField, 'form data', false, 'fields'),
+                call(validateAddedField, 'form data', false, 'fields'),
             );
             expect(
                 saga.next({

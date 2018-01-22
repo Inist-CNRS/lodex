@@ -296,6 +296,44 @@ export const validateField = (field, isContribution = false, fields = []) => {
     };
 };
 
+export const validateAddedField = (
+    field,
+    isContribution = false,
+    fields = [],
+) => {
+    const properties = [
+        validateScheme(field),
+        validateCompletesField(field, fields),
+        validateComposedOf(field, isContribution),
+        validateComposedOfFields(field),
+        validateLanguage(field),
+    ].filter(d => !!d);
+
+    const propertiesAreValid = isListValid(properties);
+
+    const transformers = validateEachTransformer(field.transformers);
+    const transformersAreValid = isListValid(transformers);
+    const composedOfFields = validateEachComposedOfFields(
+        field.composedOf && field.composedOf.fields,
+        fields,
+    );
+    const composedOfFieldsAreValid = isListValid(composedOfFields);
+
+    return {
+        name: field.name,
+        isValid:
+            propertiesAreValid &&
+            transformersAreValid &&
+            composedOfFieldsAreValid,
+        properties: [...properties, ...transformers, ...composedOfFields],
+        propertiesAreValid,
+        transformers,
+        transformersAreValid,
+        composedOfFields,
+        composedOfFieldsAreValid,
+    };
+};
+
 export default allFields => {
     const fields = allFields.map(field =>
         validateField(field, false, allFields),
