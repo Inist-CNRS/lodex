@@ -15,6 +15,7 @@ import ExportableComponent from '../../lib/components/ExportableComponent';
 import { preLoadChartData } from '../graph';
 import EditButton from '../../fields/editFieldValue/EditButton';
 import EditOntologyFieldButton from '../../fields/ontology/EditOntologyFieldButton';
+import PropertyLinkedFields from '../Property/PropertyLinkedFields';
 
 const styles = {
     container: {
@@ -62,6 +63,10 @@ const GraphPage = ({ graphField, resource }) => (
                     >
                         <Format field={graphField} resource={resource} />
                     </ExportableComponent>
+                    <PropertyLinkedFields
+                        fieldName={graphField.name}
+                        resource={resource}
+                    />
                 </Card>
             )}
             <Card style={styles.section}>
