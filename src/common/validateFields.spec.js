@@ -353,6 +353,7 @@ describe('validateField', () => {
             expect(
                 validateComposedOfFields({
                     composedOf: {
+                        isComposedOf: true,
                         fields: ['field1', 'field2'],
                     },
                 }),
@@ -366,6 +367,7 @@ describe('validateField', () => {
             expect(
                 validateComposedOfFields({
                     composedOf: {
+                        isComposedOf: true,
                         fields: ['field1'],
                     },
                 }),
@@ -379,7 +381,9 @@ describe('validateField', () => {
         it('should return invalid error if there is no composedOf.fields', () => {
             expect(
                 validateComposedOfFields({
-                    composedOf: {},
+                    composedOf: {
+                        isComposedOf: true,
+                    },
                 }),
             ).toEqual({
                 name: 'composedOf.fields',

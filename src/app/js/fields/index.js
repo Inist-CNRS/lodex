@@ -108,6 +108,7 @@ export const defaultState = {
     editedValueFieldName: null,
     configuredFieldName: null,
     published: false,
+    invalidProperties: [],
 };
 
 const getDefaultField = (name, index) => ({
@@ -134,7 +135,6 @@ const getDefaultField = (name, index) => ({
     classes: [],
     position: index,
     overview: 0,
-    invalidProperties: [],
 });
 
 export default handleActions(

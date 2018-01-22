@@ -19,6 +19,7 @@ import reducer, {
     openEditFieldValue,
     closeEditFieldValue,
     addCharacteristicSuccess,
+    fieldInvalid,
 } from './';
 
 import { addFieldToResourceSuccess } from '../public/resource';
@@ -171,6 +172,7 @@ describe('field reducer', () => {
                 data: 'value',
                 error: null,
                 isSaving: true,
+                invalidProperties: [],
             });
         });
 
@@ -186,6 +188,7 @@ describe('field reducer', () => {
                 byName: {
                     name: { name: 'name', data: 'updated' },
                 },
+                invalidProperties: [],
                 isSaving: false,
                 error: null,
                 configuredFieldName: null,
@@ -219,6 +222,7 @@ describe('field reducer', () => {
         it('should handle the CONFIGURE_FIELD_CANCEL action', () => {
             const state = reducer({ data: 'value' }, configureFieldCancel());
             expect(state).toEqual({
+                invalidProperties: [],
                 data: 'value',
                 configuredFieldName: null,
                 error: null,
@@ -324,6 +328,7 @@ describe('field reducer', () => {
                         action({ field: { name: 'newField', data: 'data' } }),
                     );
                     expect(state).toEqual({
+                        invalidProperties: [],
                         byName: {
                             field: 'data',
                             newField: {
@@ -355,6 +360,7 @@ describe('field reducer', () => {
                         }),
                     );
                     expect(state).toEqual({
+                        invalidProperties: [],
                         byName: {
                             field: {
                                 name: 'field',
@@ -368,6 +374,21 @@ describe('field reducer', () => {
                     });
                 },
             );
+        });
+    });
+
+    describe('fieldInvalid', () => {
+        it('should pass invalidProperties to state and set isSaving to false', () => {
+            const state = reducer(
+                { foo: 'bar' },
+                fieldInvalid({ invalidProperties: 'invalid properties' }),
+            );
+
+            expect(state).toEqual({
+                foo: 'bar',
+                isSaving: false,
+                invalidProperties: 'invalid properties',
+            });
         });
     });
 });

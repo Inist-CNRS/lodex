@@ -130,7 +130,7 @@ export const validateComposedOfFields = field => {
 
     const { fields } = field.composedOf;
 
-    if (!fields || fields.filter(f => !!f).length < 2) {
+    if (!fields || fields.length < 2) {
         return {
             ...result,
             isValid: false,
