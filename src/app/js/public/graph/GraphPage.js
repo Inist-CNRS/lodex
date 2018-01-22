@@ -7,7 +7,7 @@ import GraphSummary from './GraphSummary';
 import Dataset from '../dataset/Dataset';
 import Toolbar from '../Toolbar';
 import { fromFields } from '../../sharedSelectors';
-import { fromCharacteristic, fromGraph } from '../selectors';
+import { fromCharacteristic } from '../selectors';
 import Format from '../Format';
 import AppliedFacetList from '../facet/AppliedFacetList';
 import { field as fieldPropTypes } from '../../propTypes';
@@ -38,7 +38,7 @@ const styles = {
     label: { display: 'flex', alignItems: 'center' },
 };
 
-const GraphPage = ({ graphField, resource, chartData }) => (
+const GraphPage = ({ graphField, resource }) => (
     <div style={styles.container}>
         <div style={styles.centerColumn}>
             <GraphSummary selected={graphField ? graphField.name : ''} />
@@ -60,11 +60,7 @@ const GraphPage = ({ graphField, resource, chartData }) => (
                             </span>
                         }
                     >
-                        <Format
-                            field={graphField}
-                            resource={resource}
-                            chartData={chartData}
-                        />
+                        <Format field={graphField} resource={resource} />
                     </ExportableComponent>
                 </Card>
             )}
@@ -84,14 +80,12 @@ const GraphPage = ({ graphField, resource, chartData }) => (
 GraphPage.propTypes = {
     graphField: fieldPropTypes,
     resource: PropTypes.object.isRequired,
-    chartData: PropTypes.any,
     preLoadChartData: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state, { params: { name } }) => ({
     graphField: name && fromFields.getFieldByName(state, name),
     resource: fromCharacteristic.getCharacteristicsAsResource(state),
-    chartData: fromGraph.getChartData(state, name),
 });
 
 const mapDispatchToProps = {
