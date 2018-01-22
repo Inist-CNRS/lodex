@@ -160,7 +160,7 @@
     "url-loader": "0.5.8",
     "valid-url": "1.0.9",
     "webpack": "3.5.6",
-    "winston": "2.3.1",
+    "winston": "2.4.0",
     "xml-writer": "1.7.0"
   },
   "devDependencies": {

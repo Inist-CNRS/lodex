@@ -4,7 +4,7 @@ import mount from 'koa-mount';
 import cors from 'kcors';
 import koaQs from 'koa-qs';
 
-import { httpLogger } from './services/logger';
+import logger from './services/logger';
 import controller from './controller';
 
 const env = process.env.NODE_ENV;
@@ -25,7 +25,7 @@ app.use(async (ctx, next) => {
     }
     await next();
     ctx.httpLog.status = ctx.status;
-    httpLogger.info(ctx.request.url, ctx.httpLog);
+    logger.info(ctx.request.url, ctx.httpLog);
 });
 
 app.use(mount('/', controller));

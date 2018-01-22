@@ -1,7 +1,7 @@
 import request from 'request';
 import url from 'url';
 import config from 'config';
-import { httpLogger } from '../services/logger';
+import logger from '../services/logger';
 
 /**
  * Recursive scroll
@@ -27,7 +27,7 @@ function scrollR(uri, data, feed) {
             ![200, 500, 502, 503, 504].includes(response.statusCode);
         if (error || responseError) {
             logLevel = 'error';
-            httpLogger.log(logLevel, errorObj);
+            logger.log(logLevel, errorObj);
             return feed.end();
         }
 
@@ -39,12 +39,12 @@ function scrollR(uri, data, feed) {
 
         if (!body.total) {
             errorObj.lodexMessage = 'No results';
-            httpLogger.log(logLevel, errorObj);
+            logger.log(logLevel, errorObj);
             // Go to next query
             return feed.end();
         }
 
-        httpLogger.log('debug', `API query: ${url.parse(uri).query}`);
+        logger.log('debug', `API query: ${url.parse(uri).query}`);
 
         feed.write({
             ...data.lodex,
