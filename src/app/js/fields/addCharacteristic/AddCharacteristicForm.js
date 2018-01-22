@@ -20,7 +20,7 @@ import FormTextField from '../../lib/components/FormTextField';
 import FieldSchemeInput from '../../fields/FieldSchemeInput';
 import FieldFormatInput from '../../fields/FieldFormatInput';
 import FieldWidthInput from '../../fields/FieldWidthInput';
-import FieldCompletes from '../../fields/FieldCompletes';
+import FieldAnnotation from '../../fields/FieldAnnotation';
 import FieldComposedOf from '../../fields/FieldComposedOf';
 import InvalidFieldProperties from '../InvalidFieldProperties';
 
@@ -66,7 +66,7 @@ export const AddCharacteristicFormComponent = ({
         <FieldSchemeInput name="scheme" />
         <FieldFormatInput name="format" />
         <FieldWidthInput name="width" />
-        <FieldCompletes fields={fields} />
+        <FieldAnnotation fields={fields} />
         <FieldComposedOf
             fields={fields}
             FORM_NAME={NEW_CHARACTERISTIC_FORM_NAME}

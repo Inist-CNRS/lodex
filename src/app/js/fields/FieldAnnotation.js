@@ -20,7 +20,7 @@ const styles = {
     },
 };
 
-const FieldComplete = ({ fields, p: polyglot }) => {
+const FieldAnnotation = ({ fields, p: polyglot }) => {
     const otherFieldsMenuItems = fields.map(f => (
         <MenuItem
             className={`completes_${f.label.toLowerCase().replace(/\s/g, '_')}`}
@@ -51,9 +51,9 @@ const FieldComplete = ({ fields, p: polyglot }) => {
     );
 };
 
-FieldComplete.propTypes = {
+FieldAnnotation.propTypes = {
     fields: PropTypes.arrayOf(fieldPropTypes).isRequired,
     p: polyglotPropTypes.isRequired,
 };
 
-export default translate(FieldComplete);
+export default translate(FieldAnnotation);
