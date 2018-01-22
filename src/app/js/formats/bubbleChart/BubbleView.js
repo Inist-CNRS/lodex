@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import { pack, hierarchy } from 'd3-hierarchy';
-import { scaleLinear, scaleOrdinal } from 'd3-scale';
+import { scaleOrdinal } from 'd3-scale';
 import memoize from 'lodash.memoize';
 import { Tooltip, actions } from 'redux-tooltip';
 import get from 'lodash.get';
@@ -108,8 +108,6 @@ const mapStateToProps = (state, { chartData, field }) => {
     const {
         width = 500,
         height = 500,
-        minRadius = 5,
-        maxRadius = 100,
         colorScheme,
     } = fromFields.getFieldFormatArgs(state, field.name);
     if (!chartData) {
@@ -118,16 +116,9 @@ const mapStateToProps = (state, { chartData, field }) => {
         };
     }
 
-    const values = chartData.map(({ value }) => value);
-    const min = Math.min(...values);
-    const max = Math.max(...values);
-    const radiusScale = scaleLinear()
-        .range([minRadius, maxRadius])
-        .domain([min, max]);
     const packingFunction = pack()
         .size([width, height])
-        .padding(5)
-        .radius(node => radiusScale(node.value));
+        .padding(5);
 
     const root = hierarchy({ name: 'root', children: chartData })
         .sum(d => d.value)

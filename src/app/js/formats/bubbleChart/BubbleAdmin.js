@@ -29,8 +29,6 @@ class BubbleAdmin extends Component {
             colorScheme: PropTypes.arrayOf(PropTypes.string),
             width: PropTypes.number,
             height: PropTypes.number,
-            minRadius: PropTypes.number,
-            maxRadius: PropTypes.number,
         }),
         onChange: PropTypes.func.isRequired,
         p: polyglotPropTypes.isRequired,
@@ -41,8 +39,6 @@ class BubbleAdmin extends Component {
             colorScheme: schemeAccent,
             width: 500,
             height: 500,
-            minRadius: 5,
-            maxRadius: 100,
         },
     };
 
@@ -88,13 +84,7 @@ class BubbleAdmin extends Component {
 
     render() {
         const { p: polyglot } = this.props;
-        const {
-            width,
-            height,
-            minRadius,
-            maxRadius,
-            colorScheme,
-        } = this.props.args;
+        const { width, height, colorScheme } = this.props.args;
 
         return (
             <div style={styles.container}>
@@ -115,18 +105,6 @@ class BubbleAdmin extends Component {
                     onChange={this.setHeight}
                     style={styles.input}
                     value={height}
-                />
-                <TextField
-                    floatingLabelText={polyglot.t('min_radius')}
-                    onChange={this.setMinRadius}
-                    style={styles.input}
-                    value={minRadius}
-                />
-                <TextField
-                    floatingLabelText={polyglot.t('max_radius')}
-                    onChange={this.setMaxRadius}
-                    style={styles.input}
-                    value={maxRadius}
                 />
             </div>
         );
