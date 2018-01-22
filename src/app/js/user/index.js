@@ -176,11 +176,14 @@ export const getLoadResourceRequest = (state, uri) =>
         url: `/api/publishedDataset/ark?uri=${encodeURIComponent(uri)}`,
     });
 
-export const getSaveResourceRequest = (state, resource) =>
+export const getSaveResourceRequest = (state, { resource, field }) =>
     getRequest(state, {
         url: '/api/publishedDataset',
         method: 'PUT',
-        body: resource,
+        body: {
+            resource,
+            field,
+        },
     });
 
 export const getHideResourceRequest = (state, data) =>

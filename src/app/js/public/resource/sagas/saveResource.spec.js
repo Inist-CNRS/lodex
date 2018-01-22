@@ -10,9 +10,10 @@ import { fromResource } from '../../selectors';
 describe('resource saga', () => {
     let saga;
     const resource = { field: 'value' };
+    const field = { name: 'field' };
 
     beforeEach(() => {
-        saga = handleSaveResource({ payload: resource });
+        saga = handleSaveResource({ payload: { resource, field } });
     });
 
     it('should select fromResource.getResourceLastVersion', () => {
@@ -20,12 +21,13 @@ describe('resource saga', () => {
         expect(next.value).toEqual(select(fromResource.getResourceLastVersion));
     });
 
-    it('should select getSaveResourceRequest with resource', () => {
+    it('should select getSaveResourceRequest with resource and field', () => {
         saga.next();
         const next = saga.next({ field: 'oldValue', uri: 'uri' });
         expect(next.value).toEqual(
             select(fromUser.getSaveResourceRequest, {
-                field: 'value',
+                resource: { field: 'value' },
+                field: { name: 'field' },
             }),
         );
     });
