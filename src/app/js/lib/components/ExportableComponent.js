@@ -36,7 +36,7 @@ class ExportableComponent extends Component {
         convertHtmlToPng(this.element)
             .then(uri => {
                 const link = document.createElement('a');
-                link.download = this.props.label;
+                link.download = this.props.filename;
                 link.href = uri;
                 document.body.appendChild(link);
                 link.click();
@@ -82,6 +82,7 @@ class ExportableComponent extends Component {
 ExportableComponent.propTypes = {
     children: PropTypes.element.isRequired,
     label: PropTypes.any.isRequired,
+    filename: PropTypes.any.isRequired,
 };
 
 export default ExportableComponent;
