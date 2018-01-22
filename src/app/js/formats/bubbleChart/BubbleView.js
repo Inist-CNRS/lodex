@@ -8,6 +8,7 @@ import memoize from 'lodash.memoize';
 import { Tooltip, actions } from 'redux-tooltip';
 import get from 'lodash.get';
 import { schemeAccent } from 'd3-scale-chromatic';
+import Transition from 'react-inline-transition-group';
 
 import injectData from '../injectData';
 import Bubble from './Bubble';
@@ -20,6 +21,19 @@ const styles = {
         height,
         overflow: 'hidden',
     })),
+
+    base: {
+        opacity: 0,
+        transition: 'all 500ms',
+    },
+
+    appear: {
+        opacity: 1,
+    },
+
+    leave: {
+        opacity: 0,
+    },
 };
 
 class BubbleView extends React.Component {
@@ -50,10 +64,16 @@ class BubbleView extends React.Component {
         const { data, width, height, colorScale } = this.props;
         return (
             <div>
-                <div
+                <Transition
                     style={styles.container({ width, height })}
                     onMouseMove={this.handleMove}
                     onMouseLeave={this.handleLeave}
+                    childrenStyles={{
+                        base: styles.base,
+                        appear: styles.appear,
+                        enter: styles.appear,
+                        leave: styles.leave,
+                    }}
                 >
                     {data.map(({ data: { _id: key }, r, x, y, value }) => (
                         <Bubble
@@ -66,7 +86,7 @@ class BubbleView extends React.Component {
                             color={colorScale(key)}
                         />
                     ))}
-                </div>
+                </Transition>
                 <Tooltip />
             </div>
         );
