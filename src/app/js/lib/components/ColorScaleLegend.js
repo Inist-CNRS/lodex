@@ -5,24 +5,30 @@ const styles = {
     legendColor: color => ({
         display: 'block',
         backgroundColor: color,
-        height: '2em',
+        height: '1em',
         width: '100%',
     }),
     legend: {
         display: 'flex',
-        width: '100%',
+        width: '50%',
         padding: '20px',
     },
     legendItem: {
         flex: 1,
     },
     last: {
-        height: '2em',
+        height: '1em',
     },
 };
 
-const ColorScaleLegend = ({ colorScale }) => (
+const ColorScaleLegend = ({ colorScale, nullColor }) => (
     <div style={styles.legend}>
+        {nullColor && (
+            <div style={styles.legendItem}>
+                <div style={styles.legendColor(nullColor)} title={0} />
+                <div>{0}</div>
+            </div>
+        )}
         {colorScale.range().map(value => {
             const [start, end] = colorScale.invertExtent(value);
             return (
@@ -44,6 +50,7 @@ const ColorScaleLegend = ({ colorScale }) => (
 
 ColorScaleLegend.propTypes = {
     colorScale: PropTypes.func.isRequired,
+    nullColor: PropTypes.string,
 };
 
 export default ColorScaleLegend;

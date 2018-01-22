@@ -3,14 +3,13 @@ import { StyleSheet, css } from 'aphrodite';
 import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
-import { scaleQuantize } from 'd3-scale';
 import get from 'lodash.get';
 import { Tooltip, actions } from 'redux-tooltip';
 
 import injectData from '../injectData';
 import { fromFields } from '../../sharedSelectors';
-import ColorScaleLegend from '../../lib/components/ColorScaleLegend';
 import { mapSourceToX, mapTargetToX } from './parseChartData';
+import getGradientScaleAndLegend from '../../lib/components/getGradientScaleAndLegend';
 
 const firstCell = {
     height: '60px',
@@ -89,6 +88,9 @@ const styles = StyleSheet.create({
         textAlign: 'left',
         whiteSpace: 'normal',
     },
+    tooltip: {
+        textAlign: 'center',
+    },
 });
 
 const getColorStyle = color => ({
@@ -99,16 +101,21 @@ class HeatMapView extends Component {
     handleMove = event => {
         const x = event.clientX;
         const y = event.clientY + window.pageYOffset;
-        const value = Number(get(event, ['target', 'dataset', 'value'], null));
-
-        if (!value) {
+        const { value, source, target } = get(event, ['target', 'dataset'], {});
+        if (!Number(value)) {
             this.props.hideTooltip();
             return;
         }
 
         this.props.showTooltip({
             origin: { x, y },
-            content: <p>{value}</p>,
+            content: (
+                <div className={css(styles.tooltip)}>
+                    <p>{source}</p>
+                    <p>{target}</p>
+                    <p>{value}</p>
+                </div>
+            ),
         });
     };
 
@@ -116,11 +123,7 @@ class HeatMapView extends Component {
         this.props.hideTooltip();
     };
     render() {
-        const { xAxis, yAxis, dictionary, maxValue, colorScheme } = this.props;
-        const getColor = scaleQuantize()
-            .range(colorScheme)
-            .domain([0, maxValue])
-            .nice();
+        const { xAxis, yAxis, dictionary, colorScale, legend } = this.props;
 
         return (
             <div>
@@ -156,10 +159,10 @@ class HeatMapView extends Component {
                                         className={css(styles.td)}
                                         key={`${xKey}-${yKey}`}
                                         data-value={dictionary[xKey][yKey] || 0}
+                                        data-source={xKey}
+                                        data-target={yKey}
                                         style={getColorStyle(
-                                            getColor(
-                                                dictionary[xKey][yKey] || 0,
-                                            ),
+                                            colorScale(dictionary[xKey][yKey]),
                                         )}
                                     />
                                 ))}
@@ -167,7 +170,7 @@ class HeatMapView extends Component {
                         ))}
                     </tbody>
                 </table>
-                <ColorScaleLegend colorScale={getColor} />
+                {legend}
                 <Tooltip />
             </div>
         );
@@ -179,8 +182,8 @@ HeatMapView.propTypes = {
     yAxis: PropTypes.arrayOf(PropTypes.string).isRequired,
     dictionary: PropTypes.objectOf(PropTypes.objectOf(PropTypes.number))
         .isRequired,
-    maxValue: PropTypes.number.isRequired,
-    colorScheme: PropTypes.arrayOf(PropTypes.string).isRequired,
+    legend: PropTypes.element.isRequired,
+    colorScale: PropTypes.func.isRequired,
     showTooltip: PropTypes.func.isRequired,
     hideTooltip: PropTypes.func.isRequired,
 };
@@ -216,12 +219,17 @@ const mapStateToProps = (state, { chartData, field }) => {
         { xAxis: [], yAxis: [], dictionary: {}, maxValue: 0 },
     );
 
+    const { colorScale, legend } = getGradientScaleAndLegend({
+        colorScheme,
+        maxValue,
+    });
+
     return {
         xAxis: xAxis.sort(alphabeticalComparison),
         yAxis: yAxis.sort(alphabeticalComparison),
         dictionary,
-        maxValue,
-        colorScheme,
+        colorScale,
+        legend,
     };
 };
 

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
-import TextField from 'material-ui/TextField';
 import { schemeBlues, schemeOrRd } from 'd3-scale-chromatic';
 
 import { GradientSchemeSelector } from '../../lib/components/ColorSchemeSelector';
@@ -37,7 +36,6 @@ class CartographyAdmin extends Component {
         args: PropTypes.shape({
             colorScheme: PropTypes.arrayOf(PropTypes.string),
             hoverColorScheme: PropTypes.arrayOf(PropTypes.string),
-            defaultColor: PropTypes.string,
         }),
         onChange: PropTypes.func.isRequired,
         p: polyglotPropTypes.isRequired,
@@ -47,14 +45,7 @@ class CartographyAdmin extends Component {
         args: {
             colorScheme: schemeOrRd[9],
             hoverColorScheme: schemeBlues[9],
-            defaultColor: '#f5f5f5',
         },
-    };
-
-    setDefaultColor = (_, defaultColor) => {
-        const { ...state } = this.props.args;
-        const newState = { ...state, defaultColor };
-        this.props.onChange(newState);
     };
 
     setColorScheme = (_, __, colorScheme) => {
@@ -75,25 +66,10 @@ class CartographyAdmin extends Component {
 
     render() {
         const { p: polyglot } = this.props;
-        const { colorScheme, hoverColorScheme, defaultColor } = this.props.args;
+        const { colorScheme, hoverColorScheme } = this.props.args;
 
         return (
             <div style={styles.container}>
-                <TextField
-                    floatingLabelText={
-                        <span>
-                            {polyglot.t('default_color')}
-                            <span
-                                style={styles.previewDefaultColor(defaultColor)}
-                            />
-                        </span>
-                    }
-                    onChange={this.setDefaultColor}
-                    style={styles.input}
-                    underlineStyle={{ borderColor: defaultColor }}
-                    underlineFocusStyle={{ borderColor: defaultColor }}
-                    value={defaultColor}
-                />
                 <GradientSchemeSelector
                     label={polyglot.t('color_scheme')}
                     onChange={this.setColorScheme}
