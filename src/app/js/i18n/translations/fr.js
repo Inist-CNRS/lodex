@@ -363,4 +363,5 @@ export default {
     height: 'Height',
     min_radius: 'Min radius',
     max_radius: 'Max radius',
+    view_details: 'View Details',
 };

@@ -1,47 +1,51 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Card, CardMedia } from 'material-ui/Card';
-import { ListItem } from 'material-ui/List';
+import { Card, CardMedia, CardActions } from 'material-ui/Card';
+import FlatButton from 'material-ui/FlatButton';
 import { Link } from 'react-router';
-import { grey200 } from 'material-ui/styles/colors';
 import Forward from 'material-ui/svg-icons/content/forward';
+import translate from 'redux-polyglot/translate';
+
+import { polyglot as polyglotPropTypes } from '../../propTypes';
 
 const styles = {
     media: { minHeight: 200, margin: '10px 0px' },
-    label: {
-        flexGrow: 2,
-        fontWeight: 'bold',
-        textDecoration: 'none',
-        fontSize: '2rem',
-        width: '100%',
+    actions: {
+        padding: 0,
     },
-    title: {
-        backgroundColor: grey200,
-        textDecoration: 'none',
+    detailsButton: {
+        height: '36px',
+        lineHeight: 'unset',
         display: 'flex',
         alignItems: 'center',
     },
     icon: {
         position: 'absolute',
-        right: '10px',
-        zIndex: 1,
+        right: '0px',
     },
 };
 
-const GraphLink = ({ link, children }) => (
-    <Link to={link}>
-        <Card>
-            <ListItem>
-                <Forward style={styles.icon} />
-                <CardMedia style={styles.media}>{children}</CardMedia>
-            </ListItem>
-        </Card>
-    </Link>
+const GraphLink = ({ link, children, p: polyglot }) => (
+    <Card>
+        <CardMedia style={styles.media}>{children}</CardMedia>
+        <CardActions style={styles.actions}>
+            <FlatButton
+                fullWidth
+                style={styles.detailsButton}
+                containerElement={Link}
+                to={link}
+                label={polyglot.t('view_details')}
+                labelPosition="before"
+                icon={<Forward style={styles.icon} />}
+            />
+        </CardActions>
+    </Card>
 );
 
 GraphLink.propTypes = {
     link: PropTypes.string.isRequired,
     children: PropTypes.element.isRequired,
+    p: polyglotPropTypes,
 };
 
-export default GraphLink;
+export default translate(GraphLink);
