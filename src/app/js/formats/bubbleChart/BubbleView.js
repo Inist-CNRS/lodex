@@ -15,10 +15,10 @@ import Bubble from './Bubble';
 import { fromFields } from '../../sharedSelectors';
 
 const styles = {
-    container: memoize(({ width, height }) => ({
+    container: memoize(({ diameter }) => ({
         position: 'relative',
-        width,
-        height,
+        width: diameter,
+        height: diameter,
         overflow: 'hidden',
     })),
 
@@ -61,11 +61,11 @@ class BubbleView extends React.Component {
         this.props.hideTooltip();
     };
     render() {
-        const { data, width, height, colorScale } = this.props;
+        const { data, diameter, colorScale } = this.props;
         return (
             <div>
                 <Transition
-                    style={styles.container({ width, height })}
+                    style={styles.container({ diameter })}
                     onMouseMove={this.handleMove}
                     onMouseLeave={this.handleLeave}
                     childrenStyles={{
@@ -95,8 +95,7 @@ class BubbleView extends React.Component {
 
 BubbleView.propTypes = {
     data: PropTypes.array.isRequired,
-    width: PropTypes.number.isRequired,
-    height: PropTypes.number.isRequired,
+    diameter: PropTypes.number.isRequired,
     hideTooltip: PropTypes.func.isRequired,
     showTooltip: PropTypes.func.isRequired,
     colorScale: PropTypes.func.isRequired,
@@ -105,11 +104,10 @@ BubbleView.propTypes = {
 BubbleView.displayName = 'BubbleView';
 
 const mapStateToProps = (state, { chartData, field }) => {
-    const {
-        width = 500,
-        height = 500,
-        colorScheme,
-    } = fromFields.getFieldFormatArgs(state, field.name);
+    const { diameter = 500, colorScheme } = fromFields.getFieldFormatArgs(
+        state,
+        field.name,
+    );
     if (!chartData) {
         return {
             data: [],
@@ -117,7 +115,7 @@ const mapStateToProps = (state, { chartData, field }) => {
     }
 
     const packingFunction = pack()
-        .size([width, height])
+        .size([diameter, diameter])
         .padding(5);
 
     const root = hierarchy({ name: 'root', children: chartData })
@@ -129,8 +127,7 @@ const mapStateToProps = (state, { chartData, field }) => {
 
     return {
         data,
-        width,
-        height,
+        diameter,
         colorScale,
     };
 };

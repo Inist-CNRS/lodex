@@ -27,8 +27,7 @@ class BubbleAdmin extends Component {
     static propTypes = {
         args: PropTypes.shape({
             colorScheme: PropTypes.arrayOf(PropTypes.string),
-            width: PropTypes.number,
-            height: PropTypes.number,
+            diameter: PropTypes.number,
         }),
         onChange: PropTypes.func.isRequired,
         p: polyglotPropTypes.isRequired,
@@ -37,8 +36,7 @@ class BubbleAdmin extends Component {
     static defaultProps = {
         args: {
             colorScheme: schemeAccent,
-            width: 500,
-            height: 500,
+            diameter: 500,
         },
     };
 
@@ -84,7 +82,7 @@ class BubbleAdmin extends Component {
 
     render() {
         const { p: polyglot } = this.props;
-        const { width, height, colorScheme } = this.props.args;
+        const { diameter, colorScheme } = this.props.args;
 
         return (
             <div style={styles.container}>
@@ -95,16 +93,10 @@ class BubbleAdmin extends Component {
                     value={colorScheme}
                 />
                 <TextField
-                    floatingLabelText={polyglot.t('width')}
+                    floatingLabelText={polyglot.t('diameter')}
                     onChange={this.setWidth}
                     style={styles.input}
-                    value={width}
-                />
-                <TextField
-                    floatingLabelText={polyglot.t('height')}
-                    onChange={this.setHeight}
-                    style={styles.input}
-                    value={height}
+                    value={diameter}
                 />
             </div>
         );
