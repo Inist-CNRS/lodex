@@ -27,10 +27,12 @@ const InvalidFieldProperties = ({ invalidProperties, p: polyglot }) => {
 };
 
 InvalidFieldProperties.propTypes = {
-    invalidProperties: PropTypes.arrayOf({
-        name: PropTypes.string,
-        error: PropTypes.string,
-    }),
+    invalidProperties: PropTypes.arrayOf(
+        PropTypes.shape({
+            name: PropTypes.string,
+            error: PropTypes.string,
+        }),
+    ),
     p: fieldPropTypes,
 };
 

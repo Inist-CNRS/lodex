@@ -67,8 +67,6 @@ export default FormatView => {
     ExportableComponent.WrappedComponent = FormatView;
 
     ExportableComponent.propTypes = {
-        children: PropTypes.element.isRequired,
-        label: PropTypes.any.isRequired,
         field: PropTypes.shape({ label: PropTypes.string }),
     };
 
