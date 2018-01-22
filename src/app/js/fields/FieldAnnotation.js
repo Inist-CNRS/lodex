@@ -20,36 +20,34 @@ const styles = {
     },
 };
 
-const FieldAnnotation = ({ fields, p: polyglot }) => {
-    const otherFieldsMenuItems = fields.map(f => (
-        <MenuItem
-            className={`completes_${f.label.toLowerCase().replace(/\s/g, '_')}`}
-            key={f.name}
-            value={f.name}
-            primaryText={f.label}
-        />
-    ));
-
-    return (
-        <div>
-            <div style={styles.header}>{polyglot.t('annotate_field')}</div>
-            <Field
-                style={styles.complete}
-                className="completes"
-                name="completes"
-                component={FormSelectField}
-                hint={polyglot.t('select_a_column')}
-                fullWidth
-            >
+const FieldAnnotation = ({ fields, p: polyglot }) => (
+    <div>
+        <div style={styles.header}>{polyglot.t('annotate_field')}</div>
+        <Field
+            style={styles.complete}
+            className="completes"
+            name="completes"
+            component={FormSelectField}
+            hint={polyglot.t('select_a_column')}
+            fullWidth
+        >
+            <MenuItem
+                value={null}
+                primaryText={polyglot.t('completes_field_none')}
+            />
+            {fields.map(f => (
                 <MenuItem
-                    value={null}
-                    primaryText={polyglot.t('completes_field_none')}
+                    className={`completes_${f.label
+                        .toLowerCase()
+                        .replace(/\s/g, '_')}`}
+                    key={f.name}
+                    value={f.name}
+                    primaryText={f.label}
                 />
-                {otherFieldsMenuItems}
-            </Field>
-        </div>
-    );
-};
+            ))}
+        </Field>
+    </div>
+);
 
 FieldAnnotation.propTypes = {
     fields: PropTypes.arrayOf(fieldPropTypes).isRequired,
