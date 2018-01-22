@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Card } from 'material-ui/Card';
+import { Card, CardTitle } from 'material-ui/Card';
 
 import GraphSummary from './GraphSummary';
 import Dataset from '../dataset/Dataset';
@@ -11,12 +11,12 @@ import { fromCharacteristic } from '../selectors';
 import Format from '../Format';
 import AppliedFacetList from '../facet/AppliedFacetList';
 import { field as fieldPropTypes } from '../../propTypes';
-import ExportableComponent from '../../lib/components/ExportableComponent';
 import { preLoadChartData } from '../graph';
 import EditButton from '../../fields/editFieldValue/EditButton';
 import EditOntologyFieldButton from '../../fields/ontology/EditOntologyFieldButton';
 import PropertyLinkedFields from '../Property/PropertyLinkedFields';
 import CompositeProperty from '../Property/CompositeProperty';
+import { grey500 } from 'material-ui/styles/colors';
 
 const styles = {
     container: {
@@ -37,7 +37,13 @@ const styles = {
     section: {
         margin: '20px 0',
     },
-    label: { display: 'flex', alignItems: 'center' },
+    label: {
+        display: 'flex',
+        alignItems: 'center',
+        color: grey500,
+        fontWeight: 'bold',
+        fontSize: '2rem',
+    },
 };
 
 const GraphPage = ({ graphField, resource }) => (
@@ -46,24 +52,15 @@ const GraphPage = ({ graphField, resource }) => (
             <GraphSummary selected={graphField ? graphField.name : ''} />
             {graphField && (
                 <Card style={styles.section}>
-                    <ExportableComponent
-                        filename={graphField.label}
-                        label={
-                            <span style={styles.label}>
-                                {graphField.label}
-                                <EditButton
-                                    field={graphField}
-                                    resource={resource}
-                                />
-                                <EditOntologyFieldButton
-                                    field={graphField}
-                                    resource={resource}
-                                />
-                            </span>
-                        }
-                    >
-                        <Format field={graphField} resource={resource} />
-                    </ExportableComponent>
+                    <CardTitle style={styles.label}>
+                        {graphField.label}
+                        <EditButton field={graphField} resource={resource} />
+                        <EditOntologyFieldButton
+                            field={graphField}
+                            resource={resource}
+                        />
+                    </CardTitle>
+                    <Format field={graphField} resource={resource} />
                     <CompositeProperty
                         key="composite"
                         field={graphField}

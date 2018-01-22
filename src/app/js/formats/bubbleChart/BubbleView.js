@@ -10,6 +10,7 @@ import get from 'lodash.get';
 import { schemeAccent } from 'd3-scale-chromatic';
 
 import injectData from '../injectData';
+import exportableToPng from '../exportableToPng';
 import Bubble from './Bubble';
 import { fromFields } from '../../sharedSelectors';
 
@@ -132,4 +133,5 @@ const mapDispatchToProps = {
 export default compose(
     injectData,
     connect(mapStateToProps, mapDispatchToProps),
+    exportableToPng,
 )(BubbleView);
