@@ -9,6 +9,7 @@ import { fromUser } from '../../sharedSelectors';
 import fetchSaga from '../../lib/sagas/fetchSaga';
 
 import { handleAddCharacteristic } from './addCharacteristic';
+import validateField from './validateField';
 
 describe('characteristic saga', () => {
     describe('handleAddCharacteristic', () => {
@@ -20,8 +21,14 @@ describe('characteristic saga', () => {
             );
         });
 
-        it('should select getAddCharacteristicsRequest', () => {
+        it('should call validateField', () => {
             expect(saga.next('form data').value).toEqual(
+                call(validateField, 'form data'),
+            );
+        });
+
+        it('should select getAddCharacteristicsRequest if field is valid', () => {
+            expect(saga.next(true).value).toEqual(
                 select(fromUser.getAddCharacteristicRequest, 'form data'),
             );
         });
@@ -40,10 +47,18 @@ describe('characteristic saga', () => {
             ).toEqual(put(addCharacteristicSuccess(['value1', 'value2'])));
         });
 
+        it('should stop if form data is not valid', () => {
+            const invalidSaga = handleAddCharacteristic();
+            invalidSaga.next();
+            invalidSaga.next();
+            expect(invalidSaga.next(false).done).toBe(true);
+        });
+
         it('should put addCharacteristicError action with error if any', () => {
             const failedSaga = handleAddCharacteristic();
             failedSaga.next();
             failedSaga.next();
+            failedSaga.next(true);
             failedSaga.next();
             expect(
                 failedSaga.next({ error: { message: 'foo' } }).value,
