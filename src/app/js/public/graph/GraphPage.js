@@ -66,6 +66,7 @@ const GraphPage = ({ graphField, resource }) => (
                     <PropertyLinkedFields
                         fieldName={graphField.name}
                         resource={resource}
+                        parents={[]}
                     />
                 </Card>
             )}
