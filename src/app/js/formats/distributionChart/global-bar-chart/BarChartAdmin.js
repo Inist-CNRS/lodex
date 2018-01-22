@@ -37,6 +37,7 @@ export const defaultArgs = {
     scale: 'linear',
     categoryMargin: 120,
     valueMargin: 120,
+    barSize: 20,
 };
 
 class BarChartAdmin extends Component {
@@ -56,6 +57,7 @@ class BarChartAdmin extends Component {
             valueMargin: PropTypes.number,
             scale: PropTypes.oneOf(['log', 'linear']),
             direction: PropTypes.oneOf(['horizontal', 'vertical']),
+            barSize: PropTypes.number,
         }),
         onChange: PropTypes.func.isRequired,
         p: polyglotPropTypes.isRequired,
@@ -135,6 +137,11 @@ class BarChartAdmin extends Component {
         this.props.onChange(newArgs);
     };
 
+    setBarSize = (_, barSize) => {
+        const newArgs = { ...this.props.args, barSize };
+        this.props.onChange(newArgs);
+    };
+
     render() {
         const {
             p: polyglot,
@@ -153,6 +160,7 @@ class BarChartAdmin extends Component {
                 direction,
                 categoryMargin,
                 valueMargin,
+                barSize,
             },
         } = this.props;
         return (
@@ -263,6 +271,12 @@ class BarChartAdmin extends Component {
                     />
                     <MenuItem value="log" primaryText={polyglot.t('log')} />
                 </SelectField>
+                <TextField
+                    floatingLabelText={polyglot.t('bar_size')}
+                    onChange={this.setBarSize}
+                    style={styles.input}
+                    value={barSize}
+                />
             </div>
         );
     }
