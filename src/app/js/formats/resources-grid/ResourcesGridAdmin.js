@@ -22,6 +22,12 @@ const styles = {
     },
 };
 
+export const defaultArgs = {
+    maxSize: '5',
+    spaceWidth: '30%',
+    orderBy: 'value/asc',
+};
+
 class RessourcesGridAdmin extends Component {
     static propTypes = {
         args: PropTypes.shape({
@@ -34,11 +40,7 @@ class RessourcesGridAdmin extends Component {
     };
 
     static defaultProps = {
-        args: {
-            maxSize: '5',
-            spaceWidth: '30%',
-            orderBy: 'value/asc',
-        },
+        args: defaultArgs,
     };
 
     setMaxSize = maxSize => {

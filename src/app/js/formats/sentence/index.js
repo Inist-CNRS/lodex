@@ -1,9 +1,11 @@
 import Component from './Component';
-import AdminComponent from './SentenceAdmin';
+import AdminComponent, { defaultArgs } from './SentenceAdmin';
 import DefaultFormat from '../DefaultFormat';
 
 export default {
+    ...DefaultFormat,
     Component,
+    ListComponent: Component,
     AdminComponent,
-    EditionComponent: DefaultFormat.EditionComponent,
+    defaultArgs,
 };

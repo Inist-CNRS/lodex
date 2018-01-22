@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
+import merge from 'lodash.merge';
 
 import SelectFormat from './SelectFormat';
-import { getAdminComponent, FORMATS } from '../formats';
+import { getAdminComponent, FORMATS, getFormatInitialArgs } from '../formats';
 import { formField as formFieldPropTypes } from '../propTypes';
 
 const styles = {
@@ -17,7 +18,10 @@ class FormatEdition extends Component {
 
         this.state = {
             name: props.input.value.name,
-            args: props.input.value.args,
+            args: merge(
+                getFormatInitialArgs(props.input.value.name),
+                props.input.value.args,
+            ),
         };
     }
 
@@ -27,7 +31,12 @@ class FormatEdition extends Component {
         }
 
         if (nextProps.input.value.args !== this.state.args) {
-            this.setState({ args: nextProps.input.value.args });
+            const args = merge(
+                getFormatInitialArgs(nextProps.input.value.name),
+                nextProps.input.value.args,
+            );
+
+            this.setState({ args });
         }
     }
 
@@ -42,7 +51,7 @@ class FormatEdition extends Component {
     setFormat = name => {
         this.setState({ name });
         this.props.input.onChange({
-            args: this.state.args,
+            args: getFormatInitialArgs(name),
             name,
         });
     };

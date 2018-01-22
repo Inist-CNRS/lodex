@@ -1,9 +1,10 @@
 import Component from './HeatMapView';
-import AdminComponent from './HeatMapAdmin';
+import AdminComponent, { defaultArgs } from './HeatMapAdmin';
 import DefaultFormat from '../DefaultFormat';
 
 export default {
+    ...DefaultFormat,
     Component,
     AdminComponent,
-    EditionComponent: DefaultFormat.EditionComponent,
+    defaultArgs,
 };

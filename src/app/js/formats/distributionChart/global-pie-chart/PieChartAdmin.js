@@ -23,6 +23,14 @@ const styles = {
     },
 };
 
+export const defaultArgs = {
+    params: {
+        maxSize: 5,
+        orderBy: 'value/asc',
+    },
+    colors: '#1D1A31 #4D2D52 #9A4C95 #F08CAE #C1A5A9',
+};
+
 class PieChartAdmin extends Component {
     static propTypes = {
         args: PropTypes.shape({
@@ -39,13 +47,7 @@ class PieChartAdmin extends Component {
     };
 
     static defaultProps = {
-        args: {
-            params: {
-                maxSize: 5,
-                orderBy: 'value/asc',
-            },
-            colors: '#1D1A31 #4D2D52 #9A4C95 #F08CAE #C1A5A9',
-        },
+        args: defaultArgs,
     };
 
     setMaxSize = (_, maxSize) => {
@@ -82,6 +84,7 @@ class PieChartAdmin extends Component {
             p: polyglot,
             args: { params: { maxSize, maxValue, minValue, orderBy }, colors },
         } = this.props;
+
         return (
             <div style={styles.container}>
                 <TextField

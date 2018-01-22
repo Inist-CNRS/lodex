@@ -22,6 +22,11 @@ const styles = {
     },
 };
 
+export const defaultArgs = {
+    typid: 1,
+    colors: '#8B8B8B #5B5B5B #818181',
+};
+
 class IdentifierBadgeAdmin extends Component {
     static propTypes = {
         args: PropTypes.shape({
@@ -33,10 +38,7 @@ class IdentifierBadgeAdmin extends Component {
     };
 
     static defaultProps = {
-        args: {
-            typid: 1,
-            colors: '#8B8B8B #5B5B5B #818181',
-        },
+        args: defaultArgs,
     };
 
     setTypid = typid => {

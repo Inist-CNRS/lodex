@@ -24,6 +24,21 @@ const styles = {
     },
 };
 
+export const defaultArgs = {
+    params: {
+        maxSize: 5,
+        orderBy: 'value/asc',
+    },
+    colors: '#1D1A31 #4D2D52 #9A4C95 #F08CAE #C1A5A9',
+    axisRoundValue: true,
+    diagonalCategoryAxis: false,
+    diagonalValueAxis: false,
+    direction: 'horizontal',
+    scale: 'linear',
+    categoryMargin: 120,
+    valueMargin: 120,
+};
+
 class BarChartAdmin extends Component {
     static propTypes = {
         args: PropTypes.shape({
@@ -47,20 +62,7 @@ class BarChartAdmin extends Component {
     };
 
     static defaultProps = {
-        args: {
-            params: {
-                maxSize: 5,
-                orderBy: 'value/asc',
-            },
-            colors: '#1D1A31 #4D2D52 #9A4C95 #F08CAE #C1A5A9',
-            axisRoundValue: true,
-            diagonalCategoryAxis: false,
-            diagonalValueAxis: false,
-            direction: 'horizontal',
-            scale: 'linear',
-            categoryMargin: 120,
-            valueMargin: 120,
-        },
+        args: defaultArgs,
     };
 
     setMaxSize = (_, maxSize) => {
@@ -137,7 +139,12 @@ class BarChartAdmin extends Component {
         const {
             p: polyglot,
             args: {
-                params: { maxSize, maxValue, minValue, orderBy },
+                params: {
+                    maxSize = defaultArgs.params.maxSize,
+                    maxValue = defaultArgs.params.maxValue,
+                    minValue = defaultArgs.params.minValue,
+                    orderBy = defaultArgs.params.orderBy,
+                },
                 colors,
                 axisRoundValue,
                 diagonalValueAxis,

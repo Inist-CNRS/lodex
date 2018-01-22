@@ -1,9 +1,10 @@
 import DefaultFormat from '../DefaultFormat';
 import Component from './NetworkView';
-import AdminComponent from './NetworkAdmin';
+import AdminComponent, { defaultArgs } from './NetworkAdmin';
 
 export default {
+    ...DefaultFormat,
     Component: Component,
     AdminComponent,
-    EditionComponent: DefaultFormat.EditionComponent,
+    defaultArgs,
 };

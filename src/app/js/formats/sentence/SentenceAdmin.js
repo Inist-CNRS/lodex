@@ -12,6 +12,10 @@ const styles = {
         marginLeft: '1rem',
     },
 };
+export const defaultArgs = {
+    prefix: '',
+    suffix: '',
+};
 
 class SentenceAdmin extends Component {
     static propTypes = {
@@ -24,10 +28,7 @@ class SentenceAdmin extends Component {
     };
 
     static defaultProps = {
-        args: {
-            prefix: '',
-            suffix: '',
-        },
+        args: defaultArgs,
     };
 
     setPrefix = prefix => {

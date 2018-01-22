@@ -14,6 +14,10 @@ const styles = {
     },
 };
 
+export const defaultArgs = {
+    paragraphWidth: '100%',
+};
+
 class ParagraphAdmin extends Component {
     static propTypes = {
         args: PropTypes.shape({
@@ -24,9 +28,7 @@ class ParagraphAdmin extends Component {
     };
 
     static defaultProps = {
-        args: {
-            paragraphWidth: '100%',
-        },
+        args: defaultArgs,
     };
 
     setWidth = paragraphWidth => {

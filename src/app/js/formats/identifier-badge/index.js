@@ -1,10 +1,10 @@
 import Component from './Component';
-import AdminComponent from './IdentifierBadgeAdmin';
+import AdminComponent, { defaultArgs } from './IdentifierBadgeAdmin';
 import DefaultFormat from '../DefaultFormat';
 
 export default {
+    ...DefaultFormat,
     Component,
-    ListComponent: DefaultFormat.ListComponent,
     AdminComponent,
-    EditionComponent: DefaultFormat.EditionComponent,
+    defaultArgs,
 };
