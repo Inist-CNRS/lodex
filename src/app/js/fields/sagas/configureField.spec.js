@@ -3,15 +3,14 @@ import { call, select, put } from 'redux-saga/effects';
 
 import { handleConfigureField } from './configureField';
 import { getFieldOntologyFormData } from '../selectors';
-import { fromUser, fromFields } from '../../sharedSelectors';
+import { fromUser } from '../../sharedSelectors';
 import fetchSaga from '../../lib/sagas/fetchSaga';
 import {
     configureFieldSuccess,
     configureFieldError,
     preLoadPublication,
-    fieldInvalid,
 } from '../';
-import { validateField } from '../../../../common/validateFields';
+import validateField from './validateField';
 
 describe('fields saga', () => {
     describe('configureField', () => {
@@ -21,20 +20,14 @@ describe('fields saga', () => {
             expect(saga.next().value).toEqual(select(getFieldOntologyFormData));
         });
 
-        it('should select getFields', () => {
+        it('should call validateFields with form data', () => {
             expect(saga.next('form data').value).toEqual(
-                select(fromFields.getFields),
-            );
-        });
-
-        it('should call validateFields with form data and fields', () => {
-            expect(saga.next('fields').value).toEqual(
-                call(validateField, 'form data', false, 'fields'),
+                call(validateField, 'form data'),
             );
         });
 
         it('should select fromUser.getUpdateFieldRequest with form data if field is Valid', () => {
-            expect(saga.next({ isValid: true }).value).toEqual(
+            expect(saga.next(true).value).toEqual(
                 select(fromUser.getUpdateFieldRequest, 'form data'),
             );
         });
@@ -55,41 +48,15 @@ describe('fields saga', () => {
             expect(saga.next().value).toEqual(put(preLoadPublication()));
         });
 
-        it('should put fieldInvalid with validateField properties', () => {
+        it('should stop if validateField return false', () => {
             const invalidSaga = handleConfigureField();
             expect(invalidSaga.next().value).toEqual(
                 select(getFieldOntologyFormData),
             );
             expect(invalidSaga.next('form data').value).toEqual(
-                select(fromFields.getFields),
+                call(validateField, 'form data'),
             );
-            expect(invalidSaga.next('fields').value).toEqual(
-                call(validateField, 'form data', false, 'fields'),
-            );
-            expect(
-                invalidSaga.next({
-                    isValid: false,
-                    properties: [
-                        { isValid: false, name: 'field1', error: 'error' },
-                        { isValid: true, name: 'field2' },
-                        { isValid: false, name: 'field3', error: 'error 2' },
-                    ],
-                }).value,
-            ).toEqual(
-                put(
-                    fieldInvalid({
-                        invalidProperties: [
-                            { isValid: false, name: 'field1', error: 'error' },
-                            {
-                                isValid: false,
-                                name: 'field3',
-                                error: 'error 2',
-                            },
-                        ],
-                    }),
-                ),
-            );
-            expect(invalidSaga.next().done).toBe(true);
+            expect(invalidSaga.next(false).done).toBe(true);
         });
 
         it('should put configureFieldError with fetchSaga error and end', () => {
@@ -98,12 +65,9 @@ describe('fields saga', () => {
                 select(getFieldOntologyFormData),
             );
             expect(failedSaga.next('form data').value).toEqual(
-                select(fromFields.getFields),
+                call(validateField, 'form data'),
             );
-            expect(failedSaga.next('fields').value).toEqual(
-                call(validateField, 'form data', false, 'fields'),
-            );
-            expect(failedSaga.next({ isValid: true }).value).toEqual(
+            expect(failedSaga.next(true).value).toEqual(
                 select(fromUser.getUpdateFieldRequest, 'form data'),
             );
             expect(failedSaga.next('request').value).toEqual(

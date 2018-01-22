@@ -4,19 +4,16 @@ import {
     ADD_CHARACTERISTIC,
     addCharacteristicError,
     addCharacteristicSuccess,
-    fieldInvalid,
 } from '../';
 import { getNewCharacteristicFormData } from '../selectors';
-import { fromUser, fromFields } from '../../sharedSelectors';
+import { fromUser } from '../../sharedSelectors';
 import fetchSaga from '../../lib/sagas/fetchSaga';
-import { validateField } from '../../../../common/validateFields';
+import validateField from './validateField';
 
 export function* handleAddCharacteristic() {
     const formData = yield select(getNewCharacteristicFormData);
-    const fields = yield select(fromFields.getFields);
-    const { isValid, properties } = yield call(validateField, false, fields);
+    const isValid = yield call(validateField, formData);
     if (!isValid) {
-        yield put(fieldInvalid(properties.filter(({ isValid }) => !isValid)));
         return;
     }
     const request = yield select(

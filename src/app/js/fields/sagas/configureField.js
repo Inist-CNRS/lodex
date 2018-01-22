@@ -4,30 +4,17 @@ import {
     CONFIGURE_FIELD,
     configureFieldSuccess,
     configureFieldError,
-    fieldInvalid,
     preLoadPublication,
 } from '../';
 import { getFieldOntologyFormData } from '../selectors';
-import { fromUser, fromFields } from '../../sharedSelectors';
+import { fromUser } from '../../sharedSelectors';
 import fetchSaga from '../../lib/sagas/fetchSaga';
-import { validateField } from '../../../../common/validateFields';
+import validateField from './validateField';
 
 export function* handleConfigureField() {
     const formData = yield select(getFieldOntologyFormData);
-    const fields = yield select(fromFields.getFields);
-    const { isValid, properties } = yield call(
-        validateField,
-        formData,
-        false,
-        fields,
-    );
+    const isValid = yield call(validateField, formData);
     if (!isValid) {
-        yield put(
-            fieldInvalid({
-                invalidProperties: properties.filter(({ isValid }) => !isValid),
-            }),
-        );
-
         return;
     }
     const request = yield select(fromUser.getUpdateFieldRequest, formData);
