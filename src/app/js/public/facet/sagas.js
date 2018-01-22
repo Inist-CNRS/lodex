@@ -14,6 +14,7 @@ import {
 import { fromUser } from '../../sharedSelectors';
 import { fromFacet } from '../selectors';
 import fetchSaga from '../../lib/sagas/fetchSaga';
+import scrollToTop from '../../lib/scrollToTop';
 
 export function* handleLoadFacetValuesRequest({ payload: { name } }) {
     const data = yield select(fromFacet.getFacetValueRequestData, name);
@@ -38,11 +39,8 @@ export function* clearFacetSaga({ payload: { action } }) {
     yield put(clearFacet());
 }
 
-const scrollToTop = () =>
-    window.scroll({ top: 0, left: 0, behavior: 'smooth' });
-
 export function* scrollToTopSaga() {
-    yield call(scrollToTop);
+    yield call(scrollToTop, true);
 }
 
 export default function* watchLoadPublicationRequest() {
