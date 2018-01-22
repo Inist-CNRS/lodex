@@ -152,6 +152,7 @@ export default {
     field_display_in_list: 'Display on list page',
     field_display_in_resource: 'Display on resource page',
     field_display_in_graph: 'Display in graph page',
+    field_display_in_home: 'Display in home page',
     field_searchable:
         'Searchable - global full text search will target this field',
     filter: 'enter your search term here',

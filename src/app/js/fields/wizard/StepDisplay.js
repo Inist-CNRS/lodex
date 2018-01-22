@@ -11,6 +11,7 @@ import FieldOverviewInput from '../FieldOverviewInput';
 import FieldDisplayInListInput from '../FieldDisplayInListInput';
 import FieldDisplayInResourceInput from '../FieldDisplayInResourceInput';
 import FieldDisplayInGraphInput from '../FieldDisplayInGraphInput';
+import FieldDisplayInHomeInput from '../FieldDisplayInHomeInput';
 import {
     polyglot as polyglotPropTypes,
     field as fieldPropTypes,
@@ -40,6 +41,7 @@ export class StepDisplayComponent extends Component {
                 <FieldDisplayInListInput />
                 <FieldDisplayInResourceInput />
                 {field.cover === 'dataset' && <FieldDisplayInGraphInput />}
+                {field.cover === 'dataset' && <FieldDisplayInHomeInput />}
                 <FieldOverviewInput />
                 <FieldFormatInput />
                 <FieldWidthInput />
