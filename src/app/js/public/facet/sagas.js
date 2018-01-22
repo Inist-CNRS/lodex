@@ -6,6 +6,7 @@ import {
     OPEN_FACET,
     FACET_VALUE_CHANGE,
     FACET_VALUE_SORT,
+    TOGGLE_FACET_VALUE,
     loadFacetValuesError,
     loadFacetValuesSuccess,
     clearFacet,
@@ -13,6 +14,7 @@ import {
 import { fromUser } from '../../sharedSelectors';
 import { fromFacet } from '../selectors';
 import fetchSaga from '../../lib/sagas/fetchSaga';
+import scrollToTop from '../../lib/scrollToTop';
 
 export function* handleLoadFacetValuesRequest({ payload: { name } }) {
     const data = yield select(fromFacet.getFacetValueRequestData, name);
@@ -37,11 +39,17 @@ export function* clearFacetSaga({ payload: { action } }) {
     yield put(clearFacet());
 }
 
+export function* scrollToTopSaga() {
+    yield call(scrollToTop, true);
+}
+
 export default function* watchLoadPublicationRequest() {
     yield takeLatest(
         [OPEN_FACET, LOAD_FACET_VALUES, FACET_VALUE_CHANGE, FACET_VALUE_SORT],
         handleLoadFacetValuesRequest,
     );
+
+    yield takeLatest(TOGGLE_FACET_VALUE, scrollToTopSaga);
 
     yield takeLatest(LOCATION_CHANGE, clearFacetSaga);
 }
