@@ -408,6 +408,7 @@ describe('facet reducer', () => {
                     foo: 'bar',
                     name: {
                         foo: 'bar',
+                        currentPage: 0,
                         sort: {
                             sortBy: 'sortBy',
                             sortDir: 'ASC',
@@ -446,6 +447,7 @@ describe('facet reducer', () => {
                     foo: 'bar',
                     name: {
                         foo: 'bar',
+                        currentPage: 0,
                         sort: {
                             sortBy: 'sortBy',
                             sortDir: 'DESC',
@@ -483,6 +485,7 @@ describe('facet reducer', () => {
                 facetsValues: {
                     foo: 'bar',
                     name: {
+                        currentPage: 0,
                         foo: 'bar',
                         sort: {
                             sortBy: 'sortBy',

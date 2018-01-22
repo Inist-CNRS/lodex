@@ -88,6 +88,7 @@ export default handleActions(
 
             return {
                 ...state,
+                currentPage: 0,
                 sort: {
                     sortBy,
                     sortDir,
