@@ -26,9 +26,10 @@ const app = new Koa();
 app.use(ezMasterConfig);
 app.use(mongoClient);
 
+app.use(mount('/login', login));
+
 app.use(mount('/export', exportPublishedDataset));
 app.use(mount('/facet', facet));
-app.use(mount('/login', login));
 app.use(mount('/widget', widget));
 app.use(mount('/run', run));
 app.use(route.get('/publication', publication));

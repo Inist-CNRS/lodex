@@ -1,6 +1,10 @@
 {
   "username": "user",
   "password": "secret",
+  "publicAuthentication": {
+    "username": "login",
+    "password": "password"
+  },
   "loader": {
     "CSV": {
       "quote": "\"",

@@ -1,6 +1,7 @@
 import Koa from 'koa';
 import route from 'koa-route';
 import koaBodyParser from 'koa-bodyparser';
+import get from 'lodash.get';
 
 import { auth } from 'config';
 import jwt from 'jsonwebtoken';
@@ -19,13 +20,29 @@ export const postLogin = date => ctx => {
     }
 
     const { username, password } = ctx.request.body;
+    const userAuth = get(ctx, 'ezMasterConfig.userAuth', {});
+
+    let role;
     if (
-        username !== ctx.ezMasterConfig.username ||
-        password !== ctx.ezMasterConfig.password
+        username === ctx.ezMasterConfig.username &&
+        password === ctx.ezMasterConfig.password
     ) {
+        role = 'admin';
+    }
+
+    if (
+        userAuth &&
+        username === userAuth.username &&
+        password === userAuth.password
+    ) {
+        role = 'user';
+    }
+
+    if (!role) {
         ctx.status = 401;
         return;
     }
+
     let exp;
     if (!date) {
         exp = Math.ceil(Date.now() / 1000);
@@ -36,6 +53,7 @@ export const postLogin = date => ctx => {
 
     const tokenData = {
         username,
+        role,
         exp,
     };
 
@@ -45,6 +63,7 @@ export const postLogin = date => ctx => {
     ctx.cookies.set('lodex_token', cookieToken, { httpOnly: true });
     ctx.body = {
         token: headerToken,
+        role,
     };
 };
 
