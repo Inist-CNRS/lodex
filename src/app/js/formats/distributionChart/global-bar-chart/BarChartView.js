@@ -35,21 +35,13 @@ const BarChartView = ({
     colorSet,
     chartData,
     direction,
-    categoryMargin,
-    valueMargin,
     valueAxisProps,
     categoryAxisProps,
     barSize,
+    height,
 }) => (
     <div style={styles.container}>
-        <ResponsiveContainer
-            width="100%"
-            height={
-                direction === 'horizontal'
-                    ? chartData.length * (barSize + 8) + valueMargin
-                    : 300 + categoryMargin
-            }
-        >
+        <ResponsiveContainer width="100%" height={height}>
             <BarChart
                 data={chartData}
                 layout={direction === 'horizontal' ? 'vertical' : 'horizontal'}
@@ -90,6 +82,7 @@ BarChartView.propTypes = {
     valueAxisProps: PropTypes.any,
     categoryAxisProps: PropTypes.any,
     barSize: PropTypes.number.isRequired,
+    height: PropTypes.number.isRequired,
 };
 
 export const getValueAxisProps = ({
@@ -156,6 +149,11 @@ const mapStateToProps = (state, { field, chartData }) => {
         categoryMargin: parseInt(categoryMargin),
     });
 
+    const height =
+        direction === 'horizontal'
+            ? chartData.length * (parseInt(barSize) + 8) + 20 + valueMargin
+            : 300 + categoryMargin;
+
     return {
         direction,
         valueMargin: parseInt(valueMargin),
@@ -163,6 +161,7 @@ const mapStateToProps = (state, { field, chartData }) => {
         valueAxisProps,
         categoryAxisProps,
         barSize: parseInt(barSize),
+        height,
     };
 };
 
