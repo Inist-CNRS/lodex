@@ -24,10 +24,14 @@ describe('user reducer', () => {
     });
 
     it('should handle the LOGIN_SUCCESS action', () => {
-        const state = reducer({ showModal: true }, loginSuccess('foo'));
+        const state = reducer(
+            { showModal: true },
+            loginSuccess({ token: 'foo', role: 'admin' }),
+        );
         expect(state).toEqual({
             showModal: false,
             token: 'foo',
+            role: 'admin',
         });
     });
 

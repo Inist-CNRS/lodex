@@ -22,10 +22,11 @@ export default handleActions(
             ...state,
             showModal: !state.showModal,
         }),
-        LOGIN_SUCCESS: (state, { payload }) => ({
+        LOGIN_SUCCESS: (state, { payload: { token, role } }) => ({
             ...state,
             showModal: false,
-            token: payload,
+            token: token,
+            role,
         }),
         LOGOUT: state => ({
             ...state,

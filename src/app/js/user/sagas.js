@@ -19,7 +19,7 @@ export function* handleLoginRequest({
         );
     }
 
-    yield put(loginSuccess(response.token));
+    yield put(loginSuccess(response));
 
     if (previousState) {
         yield put(push(previousState));
