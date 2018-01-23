@@ -1,11 +1,10 @@
-import Component from './Component';
-import AdminComponent, { defaultArgs } from '../DefaultAdminComponentWithLabel';
+import Component from './LinkImageView';
+import AdminComponent, { defaultArgs } from './LinkImageAdmin';
 import DefaultFormat from '../DefaultFormat';
 
 export default {
     ...DefaultFormat,
     Component,
     AdminComponent,
-    ListComponent: Component,
     defaultArgs,
 };
