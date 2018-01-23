@@ -3,7 +3,7 @@ const updateFacetValue = publishedFacet => async ({
     oldValue,
     newValue,
 }) => {
-    const updatedFacet = await publishedFacet.findOneAndUpdate(
+    const { value: updatedFacet } = await publishedFacet.findOneAndUpdate(
         { field, value: oldValue },
         { $inc: { count: -1 } },
         { returnOriginal: false },
