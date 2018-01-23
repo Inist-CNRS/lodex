@@ -6,6 +6,13 @@ export const validateConfig = config => {
         password: /.+/,
     });
 
+    if (config.userAuth) {
+        expect(config.userAuth).toMatch({
+            username: /.+/,
+            password: /.+/,
+        });
+    }
+
     if (config.naan) {
         expect(config.naan).toMatch(/(\d{5,})/);
     }
