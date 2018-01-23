@@ -9,7 +9,11 @@ import translate from 'redux-polyglot/translate';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 
 const styles = {
-    media: { minHeight: 200, margin: '10px 0px' },
+    media: {
+        minHeight: 200,
+        margin: '10px 0px',
+        position: 'static', // CardMedia come with position relative per default that break tooltip absolute positioning
+    },
     actions: {
         padding: 0,
     },
