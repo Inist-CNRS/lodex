@@ -8,39 +8,16 @@ import pick from 'lodash.pick';
 import { IstexItemComponent } from './IstexItem';
 
 describe('<IstexItem />', () => {
-    it('should display one ListItem with correct props', () => {
-        const wrapper = shallow(
-            <IstexItemComponent
-                title="title"
-                publicationDate="publicationDate"
-                abstract="abstract"
-                leftIcon={<PdfIcon />}
-            />,
-        );
-        const listItem = wrapper.find(ListItem);
-        expect(listItem.length).toEqual(1);
-        expect(
-            pick(listItem.props(), [
-                'onClick',
-                'primaryText',
-                'secondaryText',
-                'leftIcon',
-            ]),
-        ).toEqual({
-            primaryText: 'title publicationDate',
-            secondaryText: 'abstract',
-            leftIcon: <PdfIcon />,
-        });
-    });
 
     it('should display one a with correct props', () => {
         const wrapper = shallow(
             <IstexItemComponent
                 title="title"
                 publicationDate="publicationDate"
-                abstract="abstract"
-                leftIcon={<PdfIcon />}
-                fulltext="url"
+                url="url"
+                authors="authors"
+                hostTitle="hostTitle"
+                hostGenre="hostGenre"
             />,
         );
         const a = wrapper.find('a');
