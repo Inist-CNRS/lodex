@@ -277,6 +277,12 @@ export const getUploadUrlRequest = (state, url, parserName) =>
         },
     });
 
+export const getUrlRequest = (state, { url, queryString }) =>
+    getRequest(state, {
+        method: 'GET',
+        url: `${url}${queryString ? `?${queryString}` : ''}`,
+    });
+
 export const selectors = {
     isLoggedIn,
     getToken,
@@ -312,4 +318,5 @@ export const selectors = {
     getCreateFieldRequest,
     getLoadFieldRequest,
     getUploadUrlRequest,
+    getUrlRequest,
 };

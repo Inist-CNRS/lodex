@@ -227,11 +227,7 @@ if (config.userAuth) {
     );
 
     app.use(async (ctx, next) => {
-        if (
-            !ctx.state.cookie &&
-            ctx.request.url !== '/login' &&
-            ctx.request.url !== '/index.js'
-        ) {
+        if (!ctx.state.cookie && ctx.request.url !== '/login') {
             ctx.redirect('/login');
             return;
         }

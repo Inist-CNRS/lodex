@@ -55,19 +55,12 @@ export function* handleLoadChartDataRequest({ payload: { field } = {} }) {
         params,
     });
 
-    const token = yield select(fromUser.getToken);
-    const cookie = yield select(fromUser.getCookie);
-
-    const { error, response } = yield call(fetchSaga, {
-        url: `${value}?${queryString}`,
-        credentials: 'include',
-        headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-            Cookie: cookie,
-        },
+    const request = yield select(fromUser.getUrlRequest, {
+        url: value,
+        queryString,
     });
+
+    const { error, response } = yield call(fetchSaga, request);
 
     if (error) {
         yield put(loadChartDataError({ name, error }));
