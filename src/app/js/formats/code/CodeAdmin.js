@@ -14,6 +14,10 @@ const styles = {
     },
 };
 
+export const defaultArgs = {
+    languageToHighlight: '',
+};
+
 class AdminComponent extends Component {
     static propTypes = {
         args: PropTypes.shape({
@@ -22,11 +26,8 @@ class AdminComponent extends Component {
         onChange: PropTypes.func.isRequired,
         p: polyglotPropTypes.isRequired,
     };
-
     static defaultProps = {
-        args: {
-            languageToHighlight: '',
-        },
+        args: defaultArgs,
     };
 
     setLanguageToHighlight = languageToHighlight => {

@@ -1,9 +1,12 @@
-import Component from './Component';
-import AdminComponent from './AdminComponent';
-import EditionComponent from './EditionComponent';
+import Component from './CodeView';
+import AdminComponent, { defaultArgs } from './CodeAdmin';
+import EditionComponent from './CodeEdit';
+import DefaultFormat from '../DefaultFormat';
 
 export default {
+    ...DefaultFormat,
     Component,
     AdminComponent,
     EditionComponent,
+    defaultArgs,
 };
