@@ -54,10 +54,10 @@ export const ModerateButtonComponent = ({
     contributor,
     status,
     changeStatus,
-    loggedIn,
+    isAdmin,
     p: polyglot,
 }) => {
-    if (!loggedIn || !status || !contributor) {
+    if (!isAdmin || !status || !contributor) {
         return null;
     }
     return (
@@ -92,13 +92,13 @@ ModerateButtonComponent.propTypes = {
     contributor: PropTypes.string,
     status: PropTypes.oneOf(propositionStatus),
     changeStatus: PropTypes.func.isRequired,
-    loggedIn: PropTypes.bool.isRequired,
+    isAdmin: PropTypes.bool.isRequired,
     p: polyglotPropTypes.isRequired,
 };
 
 const mapStateToProps = (state, { fieldName }) => ({
     contributor: fromResource.getResourceContributorForField(state, fieldName),
-    loggedIn: fromUser.isLoggedIn(state),
+    isAdmin: fromUser.isAdmin(state),
 });
 
 export default compose(translate, connect(mapStateToProps))(

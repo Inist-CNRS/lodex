@@ -16,7 +16,7 @@ import ButtonWithDialogForm from '../../lib/components/ButtonWithDialogForm';
 const mapStateToProps = (state, { p }) => ({
     open: fromResource.isHiding(state),
     saving: fromResource.isSaving(state),
-    show: fromUser.isLoggedIn(state),
+    show: fromUser.isAdmin(state),
     formName: HIDE_RESOURCE_FORM_NAME,
     form: <HideResourceForm />,
     label: p.t('hide'),

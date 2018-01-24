@@ -13,7 +13,7 @@ import { configureFieldOpen, configureFieldCancel } from '../';
 
 const mapStateToProps = (state, { field, p }) => ({
     open: fromFields.isFieldConfigured(state, field.name),
-    show: fromUser.isLoggedIn(state),
+    show: fromUser.isAdmin(state),
     saving: fromFields.isSaving(state),
     className: classnames('configure-field', getFieldClassName(field)),
     label: p.t('configure_field', { field: field.label }),

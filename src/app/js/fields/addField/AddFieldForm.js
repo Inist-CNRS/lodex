@@ -22,7 +22,7 @@ import { fromResource } from '../../public/selectors';
 export const AddFieldFormComponent = ({
     resourceError,
     fieldToAdd,
-    isLoggedIn,
+    isAdmin,
     onSubmit,
 }) => (
     <form
@@ -35,13 +35,10 @@ export const AddFieldFormComponent = ({
                 <p>{resourceError}</p>
             </Alert>
         )}
-        {isLoggedIn ? null : <Contributor />}
+        {isAdmin ? null : <Contributor />}
         <SelectFieldToAdd />
         {fieldToAdd ? (
-            <AddFieldDetail
-                isNewField={!fieldToAdd.name}
-                isLoggedIn={isLoggedIn}
-            />
+            <AddFieldDetail isNewField={!fieldToAdd.name} isAdmin={isAdmin} />
         ) : null}
     </form>
 );
@@ -66,7 +63,7 @@ const mapStateToProps = state => ({
         ...getNewResourceFieldFormData(state),
         field: fromFields.getFieldToAdd(state),
     },
-    isLoggedIn: fromUser.isLoggedIn(state),
+    isAdmin: fromUser.isAdmin(state),
 });
 
 const mapDispatchToProps = {

@@ -48,7 +48,7 @@ export const loginSuccess = createAction(LOGIN_SUCCESS);
 export const logout = createAction(LOGOUT);
 export const signOut = createAction(SIGNOUT);
 
-export const isLoggedIn = state => !!state.token;
+export const isAdmin = state => state.role === 'admin';
 export const getToken = state => state.token;
 export const getCookie = state => state.cookie;
 export const isUserModalShown = state => state.showModal;
@@ -284,7 +284,7 @@ export const getUrlRequest = (state, { url, queryString }) =>
     });
 
 export const selectors = {
-    isLoggedIn,
+    isAdmin,
     getToken,
     getCookie,
     getRequest,

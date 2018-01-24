@@ -47,7 +47,7 @@ const AppbarComponent = ({
     hasPublishedDataset,
     hasLoadedDataset,
     isLoading,
-    isLoggedIn,
+    isAdmin,
     p: polyglot,
 }) => {
     const LeftElement = isLoading ? (
@@ -63,7 +63,7 @@ const AppbarComponent = ({
 
     const RightElement = (
         <div style={styles.buttons}>
-            {isLoggedIn && (
+            {isAdmin && (
                 <UploadButton
                     label={polyglot.t(
                         hasPublishedDataset
@@ -72,7 +72,7 @@ const AppbarComponent = ({
                     )}
                 />
             )}
-            {isLoggedIn &&
+            {isAdmin &&
                 hasPublishedDataset && (
                     <FlatButton
                         label={polyglot.t('moderation')}
@@ -80,7 +80,7 @@ const AppbarComponent = ({
                         style={styles.button}
                     />
                 )}
-            {isLoggedIn &&
+            {isAdmin &&
                 hasPublishedDataset && (
                     <FlatButton
                         label={polyglot.t('removed_resources')}
@@ -88,14 +88,14 @@ const AppbarComponent = ({
                         style={styles.button}
                     />
                 )}
-            {isLoggedIn ? (
+            {isAdmin ? (
                 <ModelMenu hasPublishedDataset={hasPublishedDataset} />
             ) : (
                 <SignInButton />
             )}
-            {isLoggedIn && <Settings />}
-            {isLoggedIn && <SignOutButton />}
-            {isLoggedIn && !hasPublishedDataset && <PublicationButton />}
+            {isAdmin && <Settings />}
+            {isAdmin && <SignOutButton />}
+            {isAdmin && !hasPublishedDataset && <PublicationButton />}
         </div>
     );
 
@@ -126,7 +126,7 @@ AppbarComponent.propTypes = {
     hasPublishedDataset: PropTypes.bool.isRequired,
     hasLoadedDataset: PropTypes.bool.isRequired,
     isLoading: PropTypes.bool,
-    isLoggedIn: PropTypes.bool.isRequired,
+    isAdmin: PropTypes.bool.isRequired,
     p: polyglotPropTypes.isRequired,
 };
 
@@ -138,7 +138,7 @@ const mapStateToProps = state => ({
     hasPublishedDataset: fromPublication.hasPublishedDataset(state),
     hasLoadedDataset: fromParsing.hasUploadedFile(state),
     isLoading: state.loading, // @TODO fix by adding a loading reducer handling all loading state
-    isLoggedIn: fromUser.isLoggedIn(state),
+    isAdmin: fromUser.isAdmin(state),
 });
 
 export default compose(translate, connect(mapStateToProps))(AppbarComponent);

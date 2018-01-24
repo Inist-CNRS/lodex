@@ -2,7 +2,7 @@ import expect from 'expect';
 import reducer, {
     defaultState,
     getToken,
-    isLoggedIn,
+    isAdmin,
     loginSuccess,
     logout,
     toggleLogin,
@@ -46,14 +46,19 @@ describe('user reducer', () => {
         });
     });
 
-    describe('isLoggedIn selector', () => {
-        it('should return false if state has no token', () => {
-            const result = isLoggedIn({});
+    describe('isAdmin selector', () => {
+        it('should return false if state has no role', () => {
+            const result = isAdmin({});
             expect(result).toEqual(false);
         });
 
-        it('should return true if state has a token', () => {
-            const result = isLoggedIn({ token: 'foo' });
+        it('should return false if state role is not admin', () => {
+            const result = isAdmin({ role: 'user' });
+            expect(result).toEqual(false);
+        });
+
+        it('should return true if state role is admin', () => {
+            const result = isAdmin({ role: 'admin' });
             expect(result).toEqual(true);
         });
     });
