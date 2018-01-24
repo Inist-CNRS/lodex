@@ -4,7 +4,7 @@ import { fromDataset as localFromDataset } from './dataset';
 import { fromExport as localFromExport } from './export';
 import { fromFacet as localFromFacet } from './facet';
 import { fromResource as localFromResource } from './resource';
-import { fromGraph as localFromGraph } from './graph';
+import { fromFormat as localFromFormat } from '../formats/reducer';
 
 const getCharacteristicState = state => state.characteristic;
 export const fromCharacteristic = createGlobalSelectors(
@@ -33,8 +33,11 @@ export const fromResource = createGlobalSelectors(
     localFromResource,
 );
 
-const getGraphState = state => state.graph;
-export const fromGraph = createGlobalSelectors(getGraphState, localFromGraph);
+const getFormatState = state => state.format;
+export const fromFormat = createGlobalSelectors(
+    getFormatState,
+    localFromFormat,
+);
 
 export const fromRouting = {
     getGraphName: state => {

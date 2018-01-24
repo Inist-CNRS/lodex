@@ -8,8 +8,8 @@ import {
     field as fieldPropTypes,
     polyglot as polyglotPropTypes,
 } from '../propTypes.js';
-import { fromCharacteristic, fromGraph } from '../public/selectors';
-import { preLoadChartData, unLoadChartData } from '../public/graph';
+import { fromCharacteristic, fromFormat } from '../public/selectors';
+import { preLoadFormatData, unLoadFormatData } from '../formats/reducer';
 import Loading from '../lib/components/Loading';
 
 const styles = {
@@ -23,40 +23,40 @@ export default FormatView => {
         static propTypes = {
             field: fieldPropTypes.isRequired,
             resource: PropTypes.object.isRequired,
-            preLoadChartData: PropTypes.func.isRequired,
-            unLoadChartData: PropTypes.func.isRequired,
-            chartData: PropTypes.any,
+            preLoadFormatData: PropTypes.func.isRequired,
+            unLoadFormatData: PropTypes.func.isRequired,
+            formatData: PropTypes.any,
             isLoaded: PropTypes.bool.isRequired,
             error: PropTypes.bool,
             p: polyglotPropTypes.isRequired,
         };
         componentDidMount() {
-            const { field, resource, preLoadChartData } = this.props;
+            const { field, resource, preLoadFormatData } = this.props;
             if (!field) {
                 return;
             }
-            preLoadChartData({ field, value: resource[field.name] });
+            preLoadFormatData({ field, value: resource[field.name] });
         }
         componentWillUnmount() {
-            const { field, unLoadChartData } = this.props;
+            const { field, unLoadFormatData } = this.props;
             if (!field) {
                 return;
             }
 
-            unLoadChartData(field);
+            unLoadFormatData(field);
         }
         componentDidUpdate() {
-            const { field, resource, preLoadChartData } = this.props;
+            const { field, resource, preLoadFormatData } = this.props;
             if (!field) {
                 return;
             }
 
-            preLoadChartData({ field, value: resource[field.name] });
+            preLoadFormatData({ field, value: resource[field.name] });
         }
         render() {
             const {
-                preLoadChartData,
-                chartData,
+                preLoadFormatData,
+                formatData,
                 p: polyglot,
                 field,
                 isLoaded,
@@ -70,7 +70,7 @@ export default FormatView => {
                 );
             }
 
-            if (chartData === 'no result') {
+            if (formatData === 'no result') {
                 return (
                     <p style={styles.message}>{polyglot.t('no_chart_data')}</p>
                 );
@@ -81,7 +81,7 @@ export default FormatView => {
             }
 
             return (
-                <FormatView {...props} field={field} chartData={chartData} />
+                <FormatView {...props} field={field} formatData={formatData} />
             );
         }
     }
@@ -90,14 +90,14 @@ export default FormatView => {
 
     const mapStateToProps = (state, { field }) => ({
         resource: fromCharacteristic.getCharacteristicsAsResource(state),
-        chartData: fromGraph.getChartData(state, field.name),
-        isLoaded: field && fromGraph.isChartDataLoaded(state, field.name),
-        error: fromGraph.getChartError(state, field.name),
+        formatData: fromFormat.getFormatData(state, field.name),
+        isLoaded: field && fromFormat.isFormatDataLoaded(state, field.name),
+        error: fromFormat.getFormatError(state, field.name),
     });
 
     const mapDispatchToProps = {
-        preLoadChartData,
-        unLoadChartData,
+        preLoadFormatData,
+        unLoadFormatData,
     };
 
     return compose(connect(mapStateToProps, mapDispatchToProps), translate)(

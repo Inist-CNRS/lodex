@@ -11,7 +11,6 @@ import { fromCharacteristic } from '../selectors';
 import Format from '../Format';
 import AppliedFacetList from '../facet/AppliedFacetList';
 import { field as fieldPropTypes } from '../../propTypes';
-import { preLoadChartData } from '../graph';
 import EditButton from '../../fields/editFieldValue/EditButton';
 import EditOntologyFieldButton from '../../fields/ontology/EditOntologyFieldButton';
 import PropertyLinkedFields from '../Property/PropertyLinkedFields';
@@ -91,7 +90,6 @@ const GraphPage = ({ graphField, resource }) => (
 GraphPage.propTypes = {
     graphField: fieldPropTypes,
     resource: PropTypes.object.isRequired,
-    preLoadChartData: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state, { params: { name } }) => ({
@@ -99,8 +97,4 @@ const mapStateToProps = (state, { params: { name } }) => ({
     resource: fromCharacteristic.getCharacteristicsAsResource(state),
 });
 
-const mapDispatchToProps = {
-    preLoadChartData,
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(GraphPage);
+export default connect(mapStateToProps)(GraphPage);

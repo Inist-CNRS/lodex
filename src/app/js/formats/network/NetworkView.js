@@ -104,16 +104,16 @@ Network.propTypes = {
     ).isRequired,
 };
 
-const mapStateToProps = (state, { chartData, field }) => {
+const mapStateToProps = (state, { formatData, field }) => {
     const { nodeColor } = fromFields.getFieldFormatArgs(state, field.name);
-    if (!chartData) {
+    if (!formatData) {
         return {
             nodes: [],
             links: [],
         };
     }
 
-    const nodesDic = chartData.reduce(
+    const nodesDic = formatData.reduce(
         (acc, { source, target }) => ({
             ...acc,
             [source]: {
@@ -145,7 +145,7 @@ const mapStateToProps = (state, { chartData, field }) => {
             ...node,
             radius: scale(node.radius),
         })),
-        links: chartData.map(({ source, target, weight: value }) => ({
+        links: formatData.map(({ source, target, weight: value }) => ({
             source,
             target,
             value,

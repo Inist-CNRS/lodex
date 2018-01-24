@@ -110,6 +110,7 @@ class ResourcesGridView extends Component {
                 width: '100%',
             },
         });
+
         return (
             <div>
                 <ul className={css(styles.list)}>

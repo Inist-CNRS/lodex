@@ -1,36 +1,36 @@
 import { call, put, select, takeEvery, throttle } from 'redux-saga/effects';
 
 import {
-    PRE_LOAD_CHART_DATA,
-    LOAD_CHART_DATA,
-    loadChartData,
-    loadChartDataSuccess,
-    loadChartDataError,
-} from './';
-import getQueryString from '../../lib/getQueryString';
-import fetchSaga from '../../lib/sagas/fetchSaga';
+    PRE_LOAD_FORMAT_DATA,
+    LOAD_FORMAT_DATA,
+    loadFormatData,
+    loadFormatDataSuccess,
+    loadFormatDataError,
+} from './reducer';
+import getQueryString from '../lib/getQueryString';
+import fetchSaga from '../lib/sagas/fetchSaga';
 import {
-    fromGraph,
+    fromFormat,
     fromCharacteristic,
     fromDataset,
     fromFacet,
     fromRouting,
-} from '../selectors';
-import { fromFields, fromUser } from '../../sharedSelectors';
-import { TOGGLE_FACET_VALUE, CLEAR_FACET, INVERT_FACET } from '../facet';
-import { APPLY_FILTER } from '../dataset';
-import { CONFIGURE_FIELD_SUCCESS } from '../../fields';
-import { UPDATE_CHARACTERISTICS_SUCCESS } from '../characteristic';
+} from '../public/selectors';
+import { fromFields, fromUser } from '../sharedSelectors';
+import { TOGGLE_FACET_VALUE, CLEAR_FACET, INVERT_FACET } from '../public/facet';
+import { APPLY_FILTER } from '../public/dataset';
+import { CONFIGURE_FIELD_SUCCESS } from '../fields';
+import { UPDATE_CHARACTERISTICS_SUCCESS } from '../public/characteristic';
 
-export function* handlePreLoadChartData({ payload: { field, value } }) {
-    if (yield select(fromGraph.isChartDataLoaded, field.name)) {
+export function* handlePreLoadFormatData({ payload: { field, value } }) {
+    if (yield select(fromFormat.isFormatDataLoaded, field.name)) {
         return;
     }
 
-    yield put(loadChartData({ field, value }));
+    yield put(loadFormatData({ field, value }));
 }
 
-export function* handleLoadChartDataRequest({ payload: { field } = {} }) {
+export function* handleLoadFormatDataRequest({ payload: { field } = {} }) {
     const name =
         (field && field.name) || (yield select(fromRouting.getGraphName));
 
@@ -63,11 +63,11 @@ export function* handleLoadChartDataRequest({ payload: { field } = {} }) {
     const { error, response } = yield call(fetchSaga, request);
 
     if (error) {
-        yield put(loadChartDataError({ name, error }));
+        yield put(loadFormatDataError({ name, error }));
         return;
     }
     if (response.data) {
-        yield put(loadChartDataSuccess({ name, data: response.data }));
+        yield put(loadFormatDataSuccess({ name, data: response.data }));
         return;
     }
     if (response.aggregations) {
@@ -76,10 +76,10 @@ export function* handleLoadChartDataRequest({ payload: { field } = {} }) {
             name: item.keyAsString || item.key,
             value: item.docCount,
         }));
-        yield put(loadChartDataSuccess({ name, data }));
+        yield put(loadFormatDataSuccess({ name, data }));
         return;
     }
-    yield put(loadChartDataSuccess({ name, data: 'no result' }));
+    yield put(loadFormatDataSuccess({ name, data: 'no result' }));
 }
 
 export default function*() {
@@ -94,8 +94,8 @@ export default function*() {
             CONFIGURE_FIELD_SUCCESS,
             UPDATE_CHARACTERISTICS_SUCCESS,
         ],
-        handleLoadChartDataRequest,
+        handleLoadFormatDataRequest,
     );
-    yield takeEvery(LOAD_CHART_DATA, handleLoadChartDataRequest);
-    yield takeEvery(PRE_LOAD_CHART_DATA, handlePreLoadChartData);
+    yield takeEvery(LOAD_FORMAT_DATA, handleLoadFormatDataRequest);
+    yield takeEvery(PRE_LOAD_FORMAT_DATA, handlePreLoadFormatData);
 }

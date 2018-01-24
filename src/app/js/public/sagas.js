@@ -9,7 +9,7 @@ import fetchSaga from '../fetch/sagas';
 import i18nSaga from '../i18n/sagas';
 import fieldsSagas from '../fields/sagas';
 import resourceSagas from './resource/sagas';
-import graphSagas from './graph/sagas';
+import graphSagas from '../formats/sagas';
 import userSagas from '../user/sagas';
 
 export default function*() {
