@@ -3,11 +3,12 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import { pack, hierarchy } from 'd3-hierarchy';
-import { scaleLinear, scaleOrdinal } from 'd3-scale';
+import { scaleOrdinal } from 'd3-scale';
 import memoize from 'lodash.memoize';
 import { Tooltip, actions } from 'redux-tooltip';
 import get from 'lodash.get';
 import { schemeAccent } from 'd3-scale-chromatic';
+import Transition from 'react-inline-transition-group';
 
 import injectData from '../injectData';
 import exportableToPng from '../exportableToPng';
@@ -15,12 +16,25 @@ import Bubble from './Bubble';
 import { fromFields } from '../../sharedSelectors';
 
 const styles = {
-    container: memoize(({ width, height }) => ({
+    container: memoize(({ diameter }) => ({
         position: 'relative',
-        width,
-        height,
+        width: diameter,
+        height: diameter,
         overflow: 'hidden',
     })),
+
+    base: {
+        opacity: 0,
+        transition: 'all 500ms',
+    },
+
+    appear: {
+        opacity: 1,
+    },
+
+    leave: {
+        opacity: 0,
+    },
 };
 
 class BubbleView extends React.Component {
@@ -48,13 +62,19 @@ class BubbleView extends React.Component {
         this.props.hideTooltip();
     };
     render() {
-        const { data, width, height, colorScale } = this.props;
+        const { data, diameter, colorScale } = this.props;
         return (
             <div>
-                <div
-                    style={styles.container({ width, height })}
+                <Transition
+                    style={styles.container({ diameter })}
                     onMouseMove={this.handleMove}
                     onMouseLeave={this.handleLeave}
+                    childrenStyles={{
+                        base: styles.base,
+                        appear: styles.appear,
+                        enter: styles.appear,
+                        leave: styles.leave,
+                    }}
                 >
                     {data.map(({ data: { _id: key }, r, x, y, value }) => (
                         <Bubble
@@ -67,7 +87,7 @@ class BubbleView extends React.Component {
                             color={colorScale(key)}
                         />
                     ))}
-                </div>
+                </Transition>
                 <Tooltip />
             </div>
         );
@@ -76,8 +96,7 @@ class BubbleView extends React.Component {
 
 BubbleView.propTypes = {
     data: PropTypes.array.isRequired,
-    width: PropTypes.number.isRequired,
-    height: PropTypes.number.isRequired,
+    diameter: PropTypes.number.isRequired,
     hideTooltip: PropTypes.func.isRequired,
     showTooltip: PropTypes.func.isRequired,
     colorScale: PropTypes.func.isRequired,
@@ -86,29 +105,19 @@ BubbleView.propTypes = {
 BubbleView.displayName = 'BubbleView';
 
 const mapStateToProps = (state, { chartData, field }) => {
-    const {
-        width = 500,
-        height = 500,
-        minRadius = 5,
-        maxRadius = 100,
-        colorScheme,
-    } = fromFields.getFieldFormatArgs(state, field.name);
+    const { diameter = 500, colorScheme } = fromFields.getFieldFormatArgs(
+        state,
+        field.name,
+    );
     if (!chartData) {
         return {
             data: [],
         };
     }
 
-    const values = chartData.map(({ value }) => value);
-    const min = Math.min(...values);
-    const max = Math.max(...values);
-    const radiusScale = scaleLinear()
-        .range([minRadius, maxRadius])
-        .domain([min, max]);
     const packingFunction = pack()
-        .size([width, height])
-        .padding(5)
-        .radius(node => radiusScale(node.value));
+        .size([diameter, diameter])
+        .padding(5);
 
     const root = hierarchy({ name: 'root', children: chartData })
         .sum(d => d.value)
@@ -119,8 +128,7 @@ const mapStateToProps = (state, { chartData, field }) => {
 
     return {
         data,
-        width,
-        height,
+        diameter,
         colorScale,
     };
 };

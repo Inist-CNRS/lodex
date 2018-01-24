@@ -130,6 +130,7 @@
     "react-event-timeline": "1.3.2",
     "react-fa": "4.2.0",
     "react-helmet": "5.2.0",
+    "react-inline-transition-group": "2.2.0",
     "react-medium-image-zoom": "1.0.4",
     "react-motion": "0.5.1",
     "react-motion-ui-pack": "0.10.2",
