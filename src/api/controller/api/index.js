@@ -28,12 +28,6 @@ app.use(mongoClient);
 
 app.use(mount('/login', login));
 
-app.use(mount('/export', exportPublishedDataset));
-app.use(mount('/facet', facet));
-app.use(mount('/widget', widget));
-app.use(mount('/run', run));
-app.use(route.get('/publication', publication));
-
 app.use(
     jwt({
         secret: auth.cookieSecret,
@@ -44,15 +38,42 @@ app.use(
 );
 app.use(jwt({ secret: auth.headerSecret, key: 'header', passthrough: true }));
 
-app.use(mount('/publishedDataset', publishedDataset));
-
 app.use(async (ctx, next) => {
+    if (!ctx.ezMasterConfig.userAuth) {
+        return next();
+    }
     if (!ctx.state.cookie || !ctx.state.header) {
         ctx.status = 401;
         ctx.cookies.set('lodex_token', '', { expires: new Date() });
         ctx.body = 'No authentication token found';
         return;
     }
+
+    await next();
+});
+
+app.use(mount('/export', exportPublishedDataset));
+app.use(mount('/facet', facet));
+app.use(mount('/widget', widget));
+app.use(mount('/run', run));
+app.use(route.get('/publication', publication));
+
+app.use(mount('/publishedDataset', publishedDataset));
+
+app.use(async (ctx, next) => {
+    if (
+        !ctx.state.cookie ||
+        !ctx.state.header ||
+        ctx.state.cookie.role === 'user' ||
+        ctx.state.header.role === 'user'
+    ) {
+        ctx.status = 401;
+        ctx.cookies.set('lodex_token', '', { expires: new Date() });
+        ctx.body = 'No authentication token found';
+        return;
+    }
+
+    ctx.state.isAdmin = true;
 
     await next();
 });

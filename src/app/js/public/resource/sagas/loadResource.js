@@ -51,6 +51,9 @@ export function* getUri(type, payload) {
 }
 
 export function* handleLoadResource({ payload, type }) {
+    if (type === LOCATION_CHANGE && payload.pathname === '/login') {
+        return;
+    }
     yield put(preLoadPublication());
     const uri = yield call(getUri, type, payload);
 
