@@ -41,6 +41,7 @@ export function* handleLoadChartDataRequest({ payload: { field } = {} }) {
         fromCharacteristic.getCharacteristicByName,
         name,
     );
+
     const params = yield select(fromFields.getGraphFieldParamsByName, name);
 
     const facets = yield select(fromFacet.getAppliedFacets);
@@ -55,6 +56,7 @@ export function* handleLoadChartDataRequest({ payload: { field } = {} }) {
     });
 
     const token = yield select(fromUser.getToken);
+    const cookie = yield select(fromUser.getCookie);
 
     const { error, response } = yield call(fetchSaga, {
         url: `${value}?${queryString}`,
@@ -63,6 +65,7 @@ export function* handleLoadChartDataRequest({ payload: { field } = {} }) {
             Accept: 'application/json',
             'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,
+            Cookie: cookie,
         },
     });
 

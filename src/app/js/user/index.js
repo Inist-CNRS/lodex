@@ -50,12 +50,14 @@ export const signOut = createAction(SIGNOUT);
 
 export const isLoggedIn = state => !!state.token;
 export const getToken = state => state.token;
+export const getCookie = state => state.cookie;
 export const isUserModalShown = state => state.showModal;
 
 export const getRequest = createSelector(
     getToken,
+    getCookie,
     (_, props) => props,
-    (token, { body, method = 'GET', url }) => ({
+    (token, cookie, { body, method = 'GET', url }) => ({
         url,
         body: JSON.stringify(body),
         credentials: 'include',
@@ -63,6 +65,7 @@ export const getRequest = createSelector(
             Accept: 'application/json',
             'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,
+            Cookie: cookie,
         },
         method,
     }),
@@ -277,6 +280,7 @@ export const getUploadUrlRequest = (state, url, parserName) =>
 export const selectors = {
     isLoggedIn,
     getToken,
+    getCookie,
     getRequest,
     isUserModalShown,
     getLoginRequest,
