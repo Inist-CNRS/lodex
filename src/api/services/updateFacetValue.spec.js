@@ -5,7 +5,7 @@ import updateFacetValue from './updateFacetValue';
 describe('updatefacetValue', () => {
     it('should call findOneAndUpdate to decrement count of field facet with oldValue and update to increment count of new value', async () => {
         const publishedFacet = {
-            findOneAndUpdate: createSpy().andReturn({ count: 10 }),
+            findOneAndUpdate: createSpy().andReturn({ value: { count: 10 } }),
             update: createSpy(),
             remove: createSpy(),
         };
@@ -35,9 +35,11 @@ describe('updatefacetValue', () => {
     it('should call remove if findOneAndUpdate returned an updated facet with count at 0 or less', async () => {
         const publishedFacet = {
             findOneAndUpdate: createSpy().andReturn({
-                field: 'fieldName',
-                value: 'old',
-                count: 0,
+                value: {
+                    field: 'fieldName',
+                    value: 'old',
+                    count: 0,
+                },
             }),
             update: createSpy(),
             remove: createSpy(),

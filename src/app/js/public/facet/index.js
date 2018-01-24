@@ -11,6 +11,7 @@ import facetValueReducer, {
     changeFacetValue as changeFacetValue2,
     sortFacetValue as sortFacetValue2,
 } from './facetValueReducer';
+import { SAVE_RESOURCE_SUCCESS } from '../resource/index';
 
 export const OPEN_FACET = 'OPEN_FACET';
 export const TOGGLE_FACET_VALUE = 'TOGGLE_FACET_VALUE';
@@ -125,6 +126,10 @@ export default handleActions(
                 },
             };
         },
+        [SAVE_RESOURCE_SUCCESS]: state => ({
+            ...state,
+            openedFacets: {},
+        }),
     },
     initialState,
 );
