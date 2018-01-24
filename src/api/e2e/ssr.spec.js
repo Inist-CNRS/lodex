@@ -1,5 +1,7 @@
 import expect from 'expect';
 import omit from 'lodash.omit';
+import jwt from 'jsonwebtoken';
+import { auth } from 'config';
 
 import requestServer from './utils/requestServer';
 import fixtures from './ssr.json';
@@ -12,6 +14,16 @@ import {
 import exporters from '../exporters';
 import config from '../../../config.json';
 
+const authentifiedHeader = {
+    cookie: `lodex_token=${jwt.sign(
+        {
+            username: 'user',
+            role: 'user',
+        },
+        auth.cookieSecret,
+    )}`,
+};
+
 describe('ssr', () => {
     let server;
     before(async () => {
@@ -23,181 +35,330 @@ describe('ssr', () => {
 
     describe('/home', () => {
         let state;
-        before(async () => {
-            const response = await server.get('/home');
-            state = JSON.parse(
-                response.match(/__PRELOADED_STATE__ = ([\s\S]*?)<\/script>/)[1],
-            );
-        });
+        describe('authentified', () => {
+            before(async () => {
+                const response = await server.get('/home', authentifiedHeader);
+                state = JSON.parse(
+                    response.match(
+                        /__PRELOADED_STATE__ = ([\s\S]*?)<\/script>/,
+                    )[1],
+                );
+            });
 
-        it('should preload the dataset for home', async () => {
-            expect(state.dataset.dataset).toEqual([
-                {
-                    uri: '1',
-                    fullname: 'PEREGRIN.TOOK',
-                    email: 'peregrin.took@shire.net',
-                },
-                {
-                    uri: '2',
-                    fullname: 'SAMSAGET.GAMGIE',
-                    email: 'samsaget.gamgie@shire.net',
-                },
-                {
-                    uri: '3',
-                    fullname: 'BILBON.BAGGINS',
-                    email: 'bilbon.saquet@shire.net',
-                },
-                {
-                    uri: '4',
-                    fullname: 'FRODO.BAGGINS',
-                    email: 'frodo.saquet@shire.net',
-                },
-                {
-                    uri: '5',
-                    fullname: 'MERIADOC.BRANDYBUCK',
-                    email: 'meriadoc.brandybuck@shire.net',
-                },
-            ]);
-        });
+            it('should preload the dataset for home', async () => {
+                expect(state.dataset.dataset).toEqual([
+                    {
+                        uri: '1',
+                        fullname: 'PEREGRIN.TOOK',
+                        email: 'peregrin.took@shire.net',
+                    },
+                    {
+                        uri: '2',
+                        fullname: 'SAMSAGET.GAMGIE',
+                        email: 'samsaget.gamgie@shire.net',
+                    },
+                    {
+                        uri: '3',
+                        fullname: 'BILBON.BAGGINS',
+                        email: 'bilbon.saquet@shire.net',
+                    },
+                    {
+                        uri: '4',
+                        fullname: 'FRODO.BAGGINS',
+                        email: 'frodo.saquet@shire.net',
+                    },
+                    {
+                        uri: '5',
+                        fullname: 'MERIADOC.BRANDYBUCK',
+                        email: 'meriadoc.brandybuck@shire.net',
+                    },
+                ]);
+            });
 
-        it('should preload fields for /home', () => {
-            expect(state.fields.list).toEqual([
-                'uri',
-                'fullname',
-                'email',
-                'movie',
-                'author',
-            ]);
-            expect(Object.keys(state.fields.byName)).toEqual([
-                'uri',
-                'fullname',
-                'email',
-                'movie',
-                'author',
-            ]);
-        });
+            it('should preload fields for /home', () => {
+                expect(state.fields.list).toEqual([
+                    'uri',
+                    'fullname',
+                    'email',
+                    'movie',
+                    'author',
+                ]);
+                expect(Object.keys(state.fields.byName)).toEqual([
+                    'uri',
+                    'fullname',
+                    'email',
+                    'movie',
+                    'author',
+                ]);
+            });
 
-        it('should preload characteristics for /home', async () => {
-            expect(
-                state.characteristic.characteristics.map(d => omit(d, '_id')),
-            ).toEqual([{ movie: 'LOTR', author: 'Peter Jackson' }]);
-        });
+            it('should preload characteristics for /home', async () => {
+                expect(
+                    state.characteristic.characteristics.map(d =>
+                        omit(d, '_id'),
+                    ),
+                ).toEqual([{ movie: 'LOTR', author: 'Peter Jackson' }]);
+            });
 
-        it('should preload exporters for home', async () => {
-            expect(state.export.exporters).toEqual(
-                config.exporters.map(name => ({
-                    name,
-                    type: exporters[name].type,
-                })),
-            );
+            it('should preload exporters for home', async () => {
+                expect(state.export.exporters).toEqual(
+                    config.exporters.map(name => ({
+                        name,
+                        type: exporters[name].type,
+                    })),
+                );
+            });
+
+            it('should not include token in state', () => {
+                expect(state.user).toEqual({
+                    token: null,
+                });
+            });
+        });
+        describe('not authentified', () => {
+            before(async () => {
+                const response = await server.get('/home');
+                state = JSON.parse(
+                    response.match(
+                        /__PRELOADED_STATE__ = ([\s\S]*?)<\/script>/,
+                    )[1],
+                );
+            });
+
+            it('should redirect to login', () => {
+                expect(state.routing.locationBeforeTransitions.pathname).toBe(
+                    '/login',
+                );
+            });
+
+            it('should not preload the dataset for home', async () => {
+                expect(state.dataset.dataset).toEqual([]);
+            });
+
+            it('should not preload fields for /home', () => {
+                expect(state.fields.list).toEqual([]);
+                expect(Object.keys(state.fields.byName)).toEqual([]);
+            });
+
+            it('should not preload characteristics for /home', async () => {
+                expect(state.characteristic.characteristics).toEqual([]);
+            });
+
+            it('should not preload exporters for home', async () => {
+                expect(state.export.exporters).toEqual([]);
+            });
+
+            it('should not include token in state', () => {
+                expect(state.user).toEqual({
+                    token: null,
+                });
+            });
         });
     });
 
     describe('/resource', () => {
         let state;
-        before(async () => {
-            const response = await server.get('/resource?uri=1');
-            state = JSON.parse(
-                response.match(/__PRELOADED_STATE__ = ([\s\S]*?)<\/script>/)[1],
-            );
+
+        describe('authentified', () => {
+            before(async () => {
+                const response = await server.get(
+                    '/resource?uri=1',
+                    authentifiedHeader,
+                );
+                state = JSON.parse(
+                    response.match(
+                        /__PRELOADED_STATE__ = ([\s\S]*?)<\/script>/,
+                    )[1],
+                );
+            });
+
+            it('should preload fields', () => {
+                expect(state.fields.list).toEqual([
+                    'uri',
+                    'fullname',
+                    'email',
+                    'movie',
+                    'author',
+                ]);
+                expect(Object.keys(state.fields.byName)).toEqual([
+                    'uri',
+                    'fullname',
+                    'email',
+                    'movie',
+                    'author',
+                ]);
+            });
+
+            it('should preload characteristics', async () => {
+                expect(
+                    state.characteristic.characteristics.map(d =>
+                        omit(d, '_id'),
+                    ),
+                ).toEqual([{ movie: 'LOTR', author: 'Peter Jackson' }]);
+            });
+
+            it('should preload resource', async () => {
+                expect(omit(state.resource.resource, '_id')).toEqual({
+                    uri: '1',
+                    versions: [
+                        {
+                            fullname: 'PEREGRIN.TOOK',
+                            email: 'peregrin.took@shire.net',
+                        },
+                    ],
+                });
+            });
+
+            it('should not include token in state', () => {
+                expect(state.user).toEqual({
+                    token: null,
+                });
+            });
         });
 
-        it('should preload fields for /home', () => {
-            expect(state.fields.list).toEqual([
-                'uri',
-                'fullname',
-                'email',
-                'movie',
-                'author',
-            ]);
-            expect(Object.keys(state.fields.byName)).toEqual([
-                'uri',
-                'fullname',
-                'email',
-                'movie',
-                'author',
-            ]);
-        });
+        describe('not authentified', () => {
+            before(async () => {
+                const response = await server.get('/resource?uri=1');
+                state = JSON.parse(
+                    response.match(
+                        /__PRELOADED_STATE__ = ([\s\S]*?)<\/script>/,
+                    )[1],
+                );
+            });
 
-        it('should preload characteristics for /home', async () => {
-            expect(
-                state.characteristic.characteristics.map(d => omit(d, '_id')),
-            ).toEqual([{ movie: 'LOTR', author: 'Peter Jackson' }]);
-        });
+            it('should redirect to login', () => {
+                expect(state.routing.locationBeforeTransitions.pathname).toBe(
+                    '/login',
+                );
+            });
 
-        it('should preload resource', async () => {
-            expect(omit(state.resource.resource, '_id')).toEqual({
-                uri: '1',
-                versions: [
-                    {
-                        fullname: 'PEREGRIN.TOOK',
-                        email: 'peregrin.took@shire.net',
-                    },
-                ],
+            it('should not preload fields', () => {
+                expect(state.fields.list).toEqual([]);
+                expect(Object.keys(state.fields.byName)).toEqual([]);
+            });
+
+            it('should not preload characteristics', async () => {
+                expect(
+                    state.characteristic.characteristics.map(d =>
+                        omit(d, '_id'),
+                    ),
+                ).toEqual([]);
+            });
+
+            it('should not preload resource', async () => {
+                expect(omit(state.resource.resource, '_id')).toEqual({});
+            });
+
+            it('should not include token in state', () => {
+                expect(state.user).toEqual({
+                    token: null,
+                });
             });
         });
     });
 
     describe('/graph', () => {
         let state;
-        before(async () => {
-            const response = await server.get('/graph');
-            state = JSON.parse(
-                response.match(/__PRELOADED_STATE__ = ([\s\S]*?)<\/script>/)[1],
-            );
+        describe('authenticated', () => {
+            before(async () => {
+                const response = await server.get('/graph', authentifiedHeader);
+                state = JSON.parse(
+                    response.match(
+                        /__PRELOADED_STATE__ = ([\s\S]*?)<\/script>/,
+                    )[1],
+                );
+            });
+
+            it('should preload the dataset', async () => {
+                expect(state.dataset.dataset).toEqual([
+                    {
+                        uri: '1',
+                        fullname: 'PEREGRIN.TOOK',
+                        email: 'peregrin.took@shire.net',
+                    },
+                    {
+                        uri: '2',
+                        fullname: 'SAMSAGET.GAMGIE',
+                        email: 'samsaget.gamgie@shire.net',
+                    },
+                    {
+                        uri: '3',
+                        fullname: 'BILBON.BAGGINS',
+                        email: 'bilbon.saquet@shire.net',
+                    },
+                    {
+                        uri: '4',
+                        fullname: 'FRODO.BAGGINS',
+                        email: 'frodo.saquet@shire.net',
+                    },
+                    {
+                        uri: '5',
+                        fullname: 'MERIADOC.BRANDYBUCK',
+                        email: 'meriadoc.brandybuck@shire.net',
+                    },
+                ]);
+            });
+
+            it('should preload fields', () => {
+                expect(state.fields.list).toEqual([
+                    'uri',
+                    'fullname',
+                    'email',
+                    'movie',
+                    'author',
+                ]);
+                expect(Object.keys(state.fields.byName)).toEqual([
+                    'uri',
+                    'fullname',
+                    'email',
+                    'movie',
+                    'author',
+                ]);
+            });
+
+            it('should preload characteristics', async () => {
+                expect(
+                    state.characteristic.characteristics.map(d =>
+                        omit(d, '_id'),
+                    ),
+                ).toEqual([{ movie: 'LOTR', author: 'Peter Jackson' }]);
+            });
+
+            it('should not include token in state', () => {
+                expect(state.user).toEqual({
+                    token: null,
+                });
+            });
         });
 
-        it('should preload the dataset for home', async () => {
-            expect(state.dataset.dataset).toEqual([
-                {
-                    uri: '1',
-                    fullname: 'PEREGRIN.TOOK',
-                    email: 'peregrin.took@shire.net',
-                },
-                {
-                    uri: '2',
-                    fullname: 'SAMSAGET.GAMGIE',
-                    email: 'samsaget.gamgie@shire.net',
-                },
-                {
-                    uri: '3',
-                    fullname: 'BILBON.BAGGINS',
-                    email: 'bilbon.saquet@shire.net',
-                },
-                {
-                    uri: '4',
-                    fullname: 'FRODO.BAGGINS',
-                    email: 'frodo.saquet@shire.net',
-                },
-                {
-                    uri: '5',
-                    fullname: 'MERIADOC.BRANDYBUCK',
-                    email: 'meriadoc.brandybuck@shire.net',
-                },
-            ]);
-        });
+        describe('not authenticated', () => {
+            before(async () => {
+                const response = await server.get('/graph');
+                state = JSON.parse(
+                    response.match(
+                        /__PRELOADED_STATE__ = ([\s\S]*?)<\/script>/,
+                    )[1],
+                );
+            });
 
-        it('should preload fields for /home', () => {
-            expect(state.fields.list).toEqual([
-                'uri',
-                'fullname',
-                'email',
-                'movie',
-                'author',
-            ]);
-            expect(Object.keys(state.fields.byName)).toEqual([
-                'uri',
-                'fullname',
-                'email',
-                'movie',
-                'author',
-            ]);
-        });
+            it('should not preload the dataset', async () => {
+                expect(state.dataset.dataset).toEqual([]);
+            });
 
-        it('should preload characteristics for /home', async () => {
-            expect(
-                state.characteristic.characteristics.map(d => omit(d, '_id')),
-            ).toEqual([{ movie: 'LOTR', author: 'Peter Jackson' }]);
+            it('should not preload fields', () => {
+                expect(state.fields.list).toEqual([]);
+                expect(Object.keys(state.fields.byName)).toEqual([]);
+            });
+
+            it('should not preload characteristics', async () => {
+                expect(state.characteristic.characteristics).toEqual([]);
+            });
+
+            it('should not include token in state', () => {
+                expect(state.user).toEqual({
+                    token: null,
+                });
+            });
         });
     });
 

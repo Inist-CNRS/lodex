@@ -79,6 +79,7 @@ describe('user reducer', () => {
                     Accept: 'application/json',
                     'Content-Type': 'application/json',
                     Authorization: 'Bearer token',
+                    Cookie: undefined,
                 },
                 method: 'method',
             });
