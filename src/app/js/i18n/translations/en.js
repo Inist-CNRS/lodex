@@ -15,6 +15,7 @@ export default {
     Username: 'Username',
     Password: 'Password',
     line: 'line',
+    code: 'Code',
     error: 'error',
     atom: 'atom',
     publish: 'Publish',
