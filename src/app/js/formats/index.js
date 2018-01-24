@@ -11,6 +11,7 @@ import html from './html';
 import image from './image';
 import istex from './istex';
 import link from './link';
+import linkImage from './link-image';
 import list from './list';
 import trelloTimeline from './trello-timeline';
 import markdown from './markdown';
@@ -37,6 +38,7 @@ const components = {
     image,
     istex,
     link,
+    linkImage,
     list,
     trelloTimeline,
     markdown,
