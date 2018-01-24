@@ -10,6 +10,7 @@ import injectData from '../injectData';
 import { fromFields } from '../../sharedSelectors';
 import { mapSourceToX, mapTargetToX } from './parseChartData';
 import getGradientScaleAndLegend from '../../lib/components/getGradientScaleAndLegend';
+import exportableToPng from '../exportableToPng';
 
 const firstCell = {
     height: '60px',
@@ -241,4 +242,5 @@ const mapDispatchToProps = {
 export default compose(
     injectData,
     connect(mapStateToProps, mapDispatchToProps),
+    exportableToPng,
 )(HeatMapView);

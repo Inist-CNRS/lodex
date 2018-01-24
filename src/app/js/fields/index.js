@@ -40,6 +40,7 @@ export const CONFIGURE_FIELD = 'CONFIGURE_FIELD';
 export const CONFIGURE_FIELD_OPEN = 'CONFIGURE_FIELD_OPEN';
 export const CONFIGURE_FIELD_CANCEL = 'CONFIGURE_FIELD_CANCEL';
 export const CONFIGURE_FIELD_SUCCESS = 'CONFIGURE_FIELD_SUCCESS';
+export const FIELD_INVALID = 'FIELD_INVALID';
 export const CONFIGURE_FIELD_ERROR = 'CONFIGURE_FIELD_ERROR';
 export const OPEN_EDIT_FIELD_VALUE = 'OPEN_EDIT_FIELD_VALUE';
 export const CLOSE_EDIT_FIELD_VALUE = 'CLOSE_EDIT_FIELD_VALUE';
@@ -79,6 +80,7 @@ export const configureFieldOpen = createAction(CONFIGURE_FIELD_OPEN);
 export const configureFieldCancel = createAction(CONFIGURE_FIELD_CANCEL);
 export const configureFieldSuccess = createAction(CONFIGURE_FIELD_SUCCESS);
 export const configureFieldError = createAction(CONFIGURE_FIELD_ERROR);
+export const fieldInvalid = createAction(FIELD_INVALID);
 export const openEditFieldValue = createAction(OPEN_EDIT_FIELD_VALUE);
 export const closeEditFieldValue = createAction(CLOSE_EDIT_FIELD_VALUE);
 export const preLoadPublication = createAction(PRE_LOAD_PUBLICATION);
@@ -106,6 +108,7 @@ export const defaultState = {
     editedValueFieldName: null,
     configuredFieldName: null,
     published: false,
+    invalidProperties: [],
 };
 
 const getDefaultField = (name, index) => ({
@@ -194,6 +197,7 @@ export default handleActions(
             ...state,
             error: null,
             isSaving: true,
+            invalidProperties: [],
         }),
         CONFIGURE_FIELD_SUCCESS: (state, { payload: { field } }) => ({
             ...state,
@@ -204,11 +208,17 @@ export default handleActions(
                 ...state.byName,
                 [field.name]: field,
             },
+            invalidProperties: [],
         }),
         CONFIGURE_FIELD_ERROR: (state, { payload: error }) => ({
             ...state,
             isSaving: false,
             error: error.message,
+        }),
+        FIELD_INVALID: (state, { payload: { invalidProperties } }) => ({
+            ...state,
+            isSaving: false,
+            invalidProperties,
         }),
         CONFIGURE_FIELD_OPEN: (state, { payload: configuredFieldName }) => ({
             ...state,
@@ -217,6 +227,7 @@ export default handleActions(
         }),
         CONFIGURE_FIELD_CANCEL: state => ({
             ...state,
+            invalidProperties: [],
             configuredFieldName: null,
             error: null,
         }),
@@ -243,6 +254,7 @@ export default handleActions(
                 ...state.byName,
                 [field.name]: field,
             },
+            invalidProperties: [],
             isAdding: false,
             isSaving: false,
             error: null,
@@ -289,6 +301,7 @@ export default handleActions(
             ...state,
             error: null,
             isSaving: true,
+            invalidProperties: [],
         }),
         [ADD_CHARACTERISTIC_OPEN]: state => ({
             ...state,
@@ -304,6 +317,7 @@ export default handleActions(
             ...state,
             isAdding: false,
             error: null,
+            invalidProperties: [],
         }),
     },
     defaultState,

@@ -27,7 +27,7 @@ export default FormatView => {
             unLoadChartData: PropTypes.func.isRequired,
             chartData: PropTypes.any,
             isLoaded: PropTypes.bool.isRequired,
-            error: PropTypes.bool.isRequired,
+            error: PropTypes.bool,
             p: polyglotPropTypes.isRequired,
         };
         componentDidMount() {

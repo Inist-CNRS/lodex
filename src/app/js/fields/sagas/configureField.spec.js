@@ -10,6 +10,7 @@ import {
     configureFieldError,
     preLoadPublication,
 } from '../';
+import validateField from './validateField';
 
 describe('fields saga', () => {
     describe('configureField', () => {
@@ -19,8 +20,14 @@ describe('fields saga', () => {
             expect(saga.next().value).toEqual(select(getFieldOntologyFormData));
         });
 
-        it('should select fromUser.getUpdateFieldRequest with form data', () => {
+        it('should call validateFields with form data', () => {
             expect(saga.next('form data').value).toEqual(
+                call(validateField, 'form data'),
+            );
+        });
+
+        it('should select fromUser.getUpdateFieldRequest with form data if field is Valid', () => {
+            expect(saga.next(true).value).toEqual(
                 select(fromUser.getUpdateFieldRequest, 'form data'),
             );
         });
@@ -41,12 +48,26 @@ describe('fields saga', () => {
             expect(saga.next().value).toEqual(put(preLoadPublication()));
         });
 
+        it('should stop if validateField return false', () => {
+            const invalidSaga = handleConfigureField();
+            expect(invalidSaga.next().value).toEqual(
+                select(getFieldOntologyFormData),
+            );
+            expect(invalidSaga.next('form data').value).toEqual(
+                call(validateField, 'form data'),
+            );
+            expect(invalidSaga.next(false).done).toBe(true);
+        });
+
         it('should put configureFieldError with fetchSaga error and end', () => {
             const failedSaga = handleConfigureField();
             expect(failedSaga.next().value).toEqual(
                 select(getFieldOntologyFormData),
             );
             expect(failedSaga.next('form data').value).toEqual(
+                call(validateField, 'form data'),
+            );
+            expect(failedSaga.next(true).value).toEqual(
                 select(fromUser.getUpdateFieldRequest, 'form data'),
             );
             expect(failedSaga.next('request').value).toEqual(

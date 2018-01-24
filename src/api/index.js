@@ -52,7 +52,7 @@ app.context.onerror = function onError(err) {
         this.type = 'json';
     } else {
         // just send the error message
-        this.body = err.message;
+        this.body = { error: err.message };
     }
 
     this.res.end(this.body);

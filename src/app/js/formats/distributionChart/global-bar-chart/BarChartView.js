@@ -14,6 +14,7 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 
 import injectData from '../../injectData';
+import exportableToPng from '../../exportableToPng';
 import { fromFields } from '../../../sharedSelectors';
 
 const margin = {
@@ -166,4 +167,6 @@ const mapStateToProps = (state, { field, chartData }) => {
     };
 };
 
-export default compose(injectData, connect(mapStateToProps))(BarChartView);
+export default compose(injectData, connect(mapStateToProps), exportableToPng)(
+    BarChartView,
+);

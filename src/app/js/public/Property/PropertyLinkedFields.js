@@ -56,7 +56,7 @@ PropertyLinkedFieldsComponent.defaultProps = {
     fieldStatus: null,
 };
 
-const mapStateToProps = (state, { fieldName, parents }) => {
+const mapStateToProps = (state, { fieldName, parents = [] }) => {
     const allLinkedFields = fromFields.getLinkedFields(state, fieldName);
     const linkedFields = allLinkedFields.filter(f => !parents.includes(f.name));
 

@@ -15,7 +15,7 @@ export const setup = async (ctx, next) => {
         await next();
     } catch (error) {
         ctx.status = 500;
-        ctx.body = error.message;
+        ctx.body = { error: error.message };
     }
 };
 
@@ -39,7 +39,12 @@ export const postField = async ctx => {
 export const putField = async (ctx, id) => {
     const newField = ctx.request.body;
 
-    ctx.body = await ctx.field.updateOneById(id, newField);
+    try {
+        ctx.body = await ctx.field.updateOneById(id, newField);
+    } catch (error) {
+        ctx.status = 403;
+        ctx.body = { error: error.massage };
+    }
 
     const fields = await ctx.field.findAll();
 

@@ -98,22 +98,32 @@ const PropertyComponent = ({
     }
     const fieldClassName = getFieldClassName(field);
 
-    const format = field.display_in_graph ? (
-        <GraphLink link={`/graph/${field.name}`}>
-            <Format
-                className={classnames('property_value', fieldClassName)}
-                field={field}
-                resource={resource}
-                fieldStatus={fieldStatus}
-            />
-        </GraphLink>
-    ) : (
+    const formatChildren = [
         <Format
+            key="format"
             className={classnames('property_value', fieldClassName)}
             field={field}
             resource={resource}
             fieldStatus={fieldStatus}
-        />
+        />,
+        <CompositeProperty
+            key="composite"
+            field={field}
+            resource={resource}
+            parents={parents}
+        />,
+        <PropertyLinkedFields
+            key="linked-fields"
+            fieldName={field.name}
+            resource={resource}
+            parents={parents}
+        />,
+    ];
+
+    const format = field.display_in_graph ? (
+        <GraphLink link={`/graph/${field.name}`}>{formatChildren}</GraphLink>
+    ) : (
+        <div>{formatChildren}</div>
     );
     return (
         <div
@@ -158,17 +168,6 @@ const PropertyComponent = ({
                     {field.language || 'XX'}
                 </span>
             </div>
-            <CompositeProperty
-                field={field}
-                resource={resource}
-                parents={parents}
-            />
-
-            <PropertyLinkedFields
-                fieldName={field.name}
-                resource={resource}
-                parents={parents}
-            />
             <ModerateButton
                 fieldName={field.name}
                 status={fieldStatus}

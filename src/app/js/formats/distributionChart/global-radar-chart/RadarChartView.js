@@ -9,9 +9,11 @@ import {
     PolarGrid,
 } from 'recharts';
 import get from 'lodash.get';
+import compose from 'recompose/compose';
 
 import { field as fieldPropTypes } from '../../../propTypes';
 import injectData from '../../injectData';
+import exportableToPng from '../../exportableToPng';
 
 const styles = {
     container: {
@@ -63,4 +65,4 @@ RadarChartView.defaultProps = {
     className: null,
 };
 
-export default injectData(RadarChartView);
+export default compose(injectData, exportableToPng)(RadarChartView);

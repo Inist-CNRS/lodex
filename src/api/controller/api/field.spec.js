@@ -37,7 +37,7 @@ describe('field routes', () => {
             expect(ctx).toEqual({
                 publishFacets,
                 validateField,
-                body: 'Boom',
+                body: { error: 'Boom' },
                 status: 500,
             });
         });

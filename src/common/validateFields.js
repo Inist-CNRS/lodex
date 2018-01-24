@@ -119,7 +119,7 @@ export const validateComposedOf = (field, isContribution) => {
 };
 
 export const validateComposedOfFields = field => {
-    if (!field.composedOf) {
+    if (!field.composedOf || !field.composedOf.isComposedOf) {
         return null;
     }
 
@@ -130,7 +130,7 @@ export const validateComposedOfFields = field => {
 
     const { fields } = field.composedOf;
 
-    if (!fields || fields.filter(f => !!f).length < 2) {
+    if (!fields || fields.length < 2) {
         return {
             ...result,
             isValid: false,
@@ -265,6 +265,44 @@ export const validateField = (field, isContribution = false, fields = []) => {
         validateScheme(field),
         validatePosition(field),
         validateTransformers(field, isContribution),
+        validateCompletesField(field, fields),
+        validateComposedOf(field, isContribution),
+        validateComposedOfFields(field),
+        validateLanguage(field),
+    ].filter(d => !!d);
+
+    const propertiesAreValid = isListValid(properties);
+
+    const transformers = validateEachTransformer(field.transformers);
+    const transformersAreValid = isListValid(transformers);
+    const composedOfFields = validateEachComposedOfFields(
+        field.composedOf && field.composedOf.fields,
+        fields,
+    );
+    const composedOfFieldsAreValid = isListValid(composedOfFields);
+
+    return {
+        name: field.name,
+        isValid:
+            propertiesAreValid &&
+            transformersAreValid &&
+            composedOfFieldsAreValid,
+        properties: [...properties, ...transformers, ...composedOfFields],
+        propertiesAreValid,
+        transformers,
+        transformersAreValid,
+        composedOfFields,
+        composedOfFieldsAreValid,
+    };
+};
+
+export const validateAddedField = (
+    field,
+    isContribution = false,
+    fields = [],
+) => {
+    const properties = [
+        validateScheme(field),
         validateCompletesField(field, fields),
         validateComposedOf(field, isContribution),
         validateComposedOfFields(field),

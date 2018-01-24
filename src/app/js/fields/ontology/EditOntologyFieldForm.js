@@ -20,11 +20,15 @@ import FieldDisplayInGraphInput from '../FieldDisplayInGraphInput';
 import FieldDisplayInHomeInput from '../FieldDisplayInHomeInput';
 import FieldIsSearchableInput from '../FieldIsSearchableInput';
 import FieldIsFacetInput from '../FieldIsFacetInput';
+import FieldComposedOf from '../FieldComposedOf';
+import FieldAnnotation from '../FieldAnnotation';
+import InvalidFieldProperties from '../InvalidFieldProperties';
 
 export const FORM_NAME = 'ONTOLOGY_FIELD_FORM';
 
 export const EditOntologyFieldFormComponent = ({
     field,
+    fields,
     publicationError,
     handleSubmit,
 }) => (
@@ -34,6 +38,7 @@ export const EditOntologyFieldFormComponent = ({
                 <p>{publicationError}</p>
             </Alert>
         )}
+        <InvalidFieldProperties />
         <FieldLabelInput />
         <FieldSchemeInput />
         <FieldLanguageInput field={field} />
@@ -46,6 +51,8 @@ export const EditOntologyFieldFormComponent = ({
         <FieldWidthInput />
         <FieldIsSearchableInput />
         <FieldIsFacetInput />
+        <FieldComposedOf fields={fields} FORM_NAME={FORM_NAME} />
+        <FieldAnnotation fields={fields} />
     </form>
 );
 
@@ -59,8 +66,9 @@ EditOntologyFieldFormComponent.propTypes = {
     ...reduxFormPropTypes,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state, { field }) => ({
     publicationError: fromFields.getError(state),
+    fields: fromFields.getFieldsExceptField(state, field),
 });
 
 const mapDispatchToProps = {
