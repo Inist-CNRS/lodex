@@ -21,7 +21,7 @@ class ResourcesGridView extends Component {
         total: PropTypes.number.isRequired,
         maxSize: PropTypes.number.isRequired,
         spaceWidth: PropTypes.string.isRequired,
-        loadFormatData: PropTypes.func.isRequired,
+        filterFormatData: PropTypes.func.isRequired,
     };
 
     constructor(props) {
@@ -66,14 +66,10 @@ class ResourcesGridView extends Component {
     }
 
     handleMore = () => {
-        const { field, loadFormatData } = this.props;
+        const { filterFormatData } = this.props;
         this.setState(
             prevState => ({ more: prevState.more + 10 }),
-            () =>
-                loadFormatData({
-                    field,
-                    filter: { maxSize: this.state.more },
-                }),
+            () => filterFormatData({ maxSize: this.state.more }),
         );
     };
 

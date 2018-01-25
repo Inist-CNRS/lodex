@@ -84,6 +84,16 @@ export default url => FormatView => {
 
             loadFormatData({ field, value: createUrl(this.props) });
         }
+
+        filterFormatData = filter => {
+            const { field, loadFormatData } = this.props;
+            loadFormatData({
+                field,
+                value: createUrl(this.props),
+                filter,
+            });
+        };
+
         render() {
             const {
                 loadFormatData,
@@ -114,7 +124,7 @@ export default url => FormatView => {
                         {...props}
                         field={field}
                         formatData={formatData}
-                        loadFormatData={loadFormatData}
+                        filterFormatData={this.filterFormatData}
                     />
                 </div>
             );
