@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { StyleSheet, css } from 'aphrodite';
+import { Link } from 'react-router';
+import { getFullResourceUri } from '../../../../common/uris';
 
 const styles = StyleSheet.create({
     contentTitle: {
@@ -32,20 +34,23 @@ const styles = StyleSheet.create({
 });
 
 // see https://jsonfeed.org/version/1#items
-const LodexResource = ({ id, url, title, summary }) => (
-    <div>
-        <a id={id} className={css(styles.contentLink)} href={url}>
+const LodexResource = ({ id, title, summary }) => (
+    <div id={id}>
+        <Link
+            className={css(styles.contentLink)}
+            to={getFullResourceUri({ uri: id })}
+        >
             <div className={css(styles.contentTitle)}>{title}</div>
             <div className={css(styles.contentParagraph)}>{summary}</div>
-        </a>
+        </Link>
     </div>
 );
 
 LodexResource.propTypes = {
-    id: PropTypes.string.isRequired, // eslint-disable-line
-    url: PropTypes.string.isRequired, // eslint-disable-line
-    title: PropTypes.string, // eslint-disable-line
-    summary: PropTypes.string, // eslint-disable-line
+    id: PropTypes.string.isRequired,
+    url: PropTypes.string.isRequired,
+    title: PropTypes.string,
+    summary: PropTypes.string,
 };
 
 LodexResource.defaultProps = {

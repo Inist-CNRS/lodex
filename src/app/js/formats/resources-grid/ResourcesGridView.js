@@ -5,6 +5,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import CircularProgress from 'material-ui/CircularProgress';
 import translate from 'redux-polyglot/translate';
 import { StyleSheet, css } from 'aphrodite';
+
 import LodexResource from '../shared/LodexResource';
 import { field as fieldPropTypes } from '../../propTypes';
 import getQueryString from '../../lib/getQueryString';
