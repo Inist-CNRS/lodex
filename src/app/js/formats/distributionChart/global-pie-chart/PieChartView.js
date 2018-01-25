@@ -13,7 +13,7 @@ const styles = {
     },
 };
 
-const PieChartView = ({ formatData, colorSet }) => (
+const PieChartView = ({ formatData = [], colorSet }) => (
     <div style={styles.container}>
         <ResponsiveContainer className="lodex-chart" width="100%" height={300}>
             <PieChart>
@@ -46,7 +46,7 @@ const PieChartView = ({ formatData, colorSet }) => (
 PieChartView.propTypes = {
     field: fieldPropTypes.isRequired,
     resource: PropTypes.object.isRequired,
-    formatData: PropTypes.array.isRequired,
+    formatData: PropTypes.array,
     colorSet: PropTypes.arrayOf(PropTypes.string),
 };
 

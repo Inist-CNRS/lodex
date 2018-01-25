@@ -153,7 +153,7 @@ const mapStateToProps = (state, { field, formatData }) => {
 
     if (!formatData || !formatData.items) {
         return {
-            maxSize,
+            maxSize: parseInt(maxSize),
             spaceWidth,
             data: [],
             total: 0,

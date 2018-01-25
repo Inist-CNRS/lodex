@@ -11,6 +11,7 @@ export default function LodexParseQuery(data, feed) {
         match,
         orderBy = '_id/asc',
         invertedFacets = [],
+        $query,
         ...facets
     } = data.query;
 
@@ -26,6 +27,7 @@ export default function LodexParseQuery(data, feed) {
             match,
             invertedFacets,
             facets,
+            ...$query,
         },
         sort: {
             [order]: dir === 'asc' ? 1 : -1,

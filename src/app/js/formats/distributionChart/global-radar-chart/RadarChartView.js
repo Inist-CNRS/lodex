@@ -21,7 +21,7 @@ const styles = {
     },
 };
 
-const RadarChartView = ({ formatData, colorSet, field }) => {
+const RadarChartView = ({ formatData = [], colorSet, field }) => {
     const color = colorSet[0];
     const axisRoundValue = get(field, 'format.args.axisRoundValue');
     const scale = get(field, 'format.args.scale');
@@ -57,7 +57,7 @@ RadarChartView.propTypes = {
     field: fieldPropTypes.isRequired,
     linkedResource: PropTypes.object,
     resource: PropTypes.object.isRequired,
-    formatData: PropTypes.array.isRequired,
+    formatData: PropTypes.array,
     colorSet: PropTypes.arrayOf(PropTypes.string),
 };
 

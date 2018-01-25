@@ -1,16 +1,13 @@
 import { call, put, select, takeEvery, throttle } from 'redux-saga/effects';
 
 import {
-    PRE_LOAD_FORMAT_DATA,
     LOAD_FORMAT_DATA,
-    loadFormatData,
     loadFormatDataSuccess,
     loadFormatDataError,
 } from './reducer';
 import getQueryString from '../lib/getQueryString';
 import fetchSaga from '../lib/sagas/fetchSaga';
 import {
-    fromFormat,
     fromCharacteristic,
     fromDataset,
     fromFacet,
@@ -22,15 +19,46 @@ import { APPLY_FILTER } from '../public/dataset';
 import { CONFIGURE_FIELD_SUCCESS } from '../fields';
 import { UPDATE_CHARACTERISTICS_SUCCESS } from '../public/characteristic';
 
-export function* handlePreLoadFormatData({ payload: { field, value } }) {
-    if (yield select(fromFormat.isFormatDataLoaded, field.name)) {
+export function* loadFormatData(name, url, queryString) {
+    const request = yield select(fromUser.getUrlRequest, {
+        url,
+        queryString,
+    });
+
+    const { error, response } = yield call(fetchSaga, request);
+    if (error) {
+        yield put(loadFormatDataError({ name, error }));
         return;
     }
-
-    yield put(loadFormatData({ field, value }));
+    if (response.data) {
+        yield put(loadFormatDataSuccess({ name, data: response.data }));
+        return;
+    }
+    yield put(loadFormatDataSuccess({ name, data: response }));
 }
 
 export function* handleLoadFormatDataRequest({
+    payload: { field, filter, value } = {},
+}) {
+    const name = field && field.name;
+
+    if (!name) {
+        return;
+    }
+
+    const params = yield select(fromFields.getGraphFieldParamsByName, name);
+
+    const queryString = yield call(getQueryString, {
+        params: {
+            ...params,
+            ...(filter || {}),
+        },
+    });
+
+    yield call(loadFormatData, name, value, queryString);
+}
+
+export function* handleFilterFormatDataRequest({
     payload: { field, filter } = {},
 }) {
     const name =
@@ -39,10 +67,7 @@ export function* handleLoadFormatDataRequest({
     if (!name) {
         return;
     }
-    const value = yield select(
-        fromCharacteristic.getCharacteristicByName,
-        name,
-    );
+    const url = yield select(fromCharacteristic.getCharacteristicByName, name);
 
     const params = yield select(fromFields.getGraphFieldParamsByName, name);
 
@@ -60,22 +85,7 @@ export function* handleLoadFormatDataRequest({
         },
     });
 
-    const request = yield select(fromUser.getUrlRequest, {
-        url: value,
-        queryString,
-    });
-
-    const { error, response } = yield call(fetchSaga, request);
-
-    if (error) {
-        yield put(loadFormatDataError({ name, error }));
-        return;
-    }
-    if (response.data) {
-        yield put(loadFormatDataSuccess({ name, data: response.data }));
-        return;
-    }
-    yield put(loadFormatDataSuccess({ name, data: response }));
+    yield call(loadFormatData, name, url, queryString);
 }
 
 export default function*() {
@@ -90,8 +100,7 @@ export default function*() {
             CONFIGURE_FIELD_SUCCESS,
             UPDATE_CHARACTERISTICS_SUCCESS,
         ],
-        handleLoadFormatDataRequest,
+        handleFilterFormatDataRequest,
     );
     yield takeEvery(LOAD_FORMAT_DATA, handleLoadFormatDataRequest);
-    yield takeEvery(PRE_LOAD_FORMAT_DATA, handlePreLoadFormatData);
 }

@@ -9,7 +9,11 @@ import {
     field as fieldPropTypes,
     polyglot as polyglotPropTypes,
 } from '../propTypes.js';
-import { fromCharacteristic, fromFormat } from '../public/selectors';
+import {
+    fromCharacteristic,
+    fromFormat,
+    fromResource,
+} from '../public/selectors';
 import {
     preLoadFormatData,
     loadFormatData,
@@ -23,7 +27,20 @@ const styles = {
     },
 };
 
-export default uri => FormatView => {
+const getCreateUrl = url => {
+    if (typeof url === 'function') {
+        return url;
+    }
+    if (typeof url === 'string') {
+        return () => url;
+    }
+
+    return ({ field, resource }) => resource[field.name];
+};
+
+export default url => FormatView => {
+    const createUrl = getCreateUrl(url);
+
     class GraphItem extends Component {
         static propTypes = {
             field: fieldPropTypes.isRequired,
@@ -37,11 +54,14 @@ export default uri => FormatView => {
             p: polyglotPropTypes.isRequired,
         };
         componentDidMount() {
-            const { field, resource, preLoadFormatData } = this.props;
+            const { field, loadFormatData } = this.props;
             if (!field) {
                 return;
             }
-            preLoadFormatData({ field, value: uri || resource[field.name] });
+            loadFormatData({
+                field,
+                value: createUrl(this.props),
+            });
         }
         componentWillUnmount() {
             const { field, unLoadFormatData } = this.props;
@@ -52,7 +72,7 @@ export default uri => FormatView => {
             unLoadFormatData(field);
         }
         componentDidUpdate(prevProps) {
-            const { field, resource, preLoadFormatData } = this.props;
+            const { field, resource, loadFormatData } = this.props;
             if (
                 !field ||
                 (isEqual(field, prevProps.field) &&
@@ -62,11 +82,10 @@ export default uri => FormatView => {
                 return;
             }
 
-            preLoadFormatData({ field, value: uri || resource[field.name] });
+            loadFormatData({ field, value: createUrl(this.props) });
         }
         render() {
             const {
-                preLoadFormatData,
                 loadFormatData,
                 formatData,
                 p: polyglot,
@@ -94,7 +113,7 @@ export default uri => FormatView => {
                     <FormatView
                         {...props}
                         field={field}
-                        formatData={formatData || []}
+                        formatData={formatData}
                         loadFormatData={loadFormatData}
                     />
                 </div>
@@ -105,7 +124,10 @@ export default uri => FormatView => {
     GraphItem.WrappedComponent = FormatView;
 
     const mapStateToProps = (state, { field }) => ({
-        resource: fromCharacteristic.getCharacteristicsAsResource(state),
+        resource:
+            field.cover === 'dataset'
+                ? fromCharacteristic.getCharacteristicsAsResource(state)
+                : fromResource.getResourceLastVersion(state),
         formatData: fromFormat.getFormatData(state, field.name),
         isLoaded: field && fromFormat.isFormatDataLoaded(state, field.name),
         error: fromFormat.getFormatError(state, field.name),
