@@ -146,12 +146,7 @@ class BarChartAdmin extends Component {
         const {
             p: polyglot,
             args: {
-                params: {
-                    maxSize = defaultArgs.params.maxSize,
-                    maxValue = defaultArgs.params.maxValue,
-                    minValue = defaultArgs.params.minValue,
-                    orderBy = defaultArgs.params.orderBy,
-                },
+                params,
                 colors,
                 axisRoundValue,
                 diagonalValueAxis,
@@ -163,6 +158,9 @@ class BarChartAdmin extends Component {
                 barSize,
             },
         } = this.props;
+
+        const { maxSize, maxValue, minValue, orderBy } =
+            params || defaultArgs.params;
         return (
             <div style={styles.container}>
                 <TextField
