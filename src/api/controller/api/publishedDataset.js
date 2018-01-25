@@ -83,7 +83,7 @@ export const restoreResource = async ctx => {
 };
 
 export const addFieldToResource = async ctx => {
-    const isLoggedIn = !!ctx.state.header && !!ctx.state.cookie;
+    const isLoggedIn = ctx.state.isAdmin;
     const { uri, contributor, field } = ctx.request.body;
     const fieldName = await ctx.field.addContributionField(
         field,
@@ -192,7 +192,7 @@ app.use(route.get('/', getPage));
 app.use(route.put('/add_field', addFieldToResource));
 app.use(route.get('/ark', ark));
 app.use(async (ctx, next) => {
-    if (!ctx.state.cookie || !ctx.state.header) {
+    if (!ctx.state.isAdmin) {
         ctx.status = 401;
         ctx.body = 'No authentication token found';
         return;

@@ -13,7 +13,7 @@ import {
 import ButtonWithDialogForm from '../../lib/components/ButtonWithDialogForm';
 
 const mapStateToProps = (state, { p }) => ({
-    show: fromUser.isLoggedIn(state),
+    show: fromUser.isAdmin(state),
     open: fromFields.isAdding(state),
     saving: fromFields.isSaving(state),
     form: <AddCharacteristicForm />,

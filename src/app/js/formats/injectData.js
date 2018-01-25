@@ -35,7 +35,6 @@ export default FormatView => {
             if (!field) {
                 return;
             }
-
             preLoadChartData({ field, value: resource[field.name] });
         }
         componentWillUnmount() {

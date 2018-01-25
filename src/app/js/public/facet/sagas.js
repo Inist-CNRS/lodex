@@ -32,8 +32,8 @@ export function* handleLoadFacetValuesRequest({ payload: { name } }) {
     return yield put(loadFacetValuesSuccess({ name, values }));
 }
 
-export function* clearFacetSaga({ payload: { action } }) {
-    if (action === 'POP') {
+export function* clearFacetSaga({ payload: { action, pathname } }) {
+    if (pathname === '/login' || action === 'POP' || action === 'REPLACE') {
         return;
     }
     yield put(clearFacet());

@@ -16,7 +16,7 @@ import {
     fromFacet,
     fromRouting,
 } from '../selectors';
-import { fromFields } from '../../sharedSelectors';
+import { fromFields, fromUser } from '../../sharedSelectors';
 import { TOGGLE_FACET_VALUE, CLEAR_FACET, INVERT_FACET } from '../facet';
 import { APPLY_FILTER } from '../dataset';
 import { CONFIGURE_FIELD_SUCCESS } from '../../fields';
@@ -41,6 +41,7 @@ export function* handleLoadChartDataRequest({ payload: { field } = {} }) {
         fromCharacteristic.getCharacteristicByName,
         name,
     );
+
     const params = yield select(fromFields.getGraphFieldParamsByName, name);
 
     const facets = yield select(fromFacet.getAppliedFacets);
@@ -54,9 +55,12 @@ export function* handleLoadChartDataRequest({ payload: { field } = {} }) {
         params,
     });
 
-    const { error, response } = yield call(fetchSaga, {
-        url: `${value}?${queryString}`,
+    const request = yield select(fromUser.getUrlRequest, {
+        url: value,
+        queryString,
     });
+
+    const { error, response } = yield call(fetchSaga, request);
 
     if (error) {
         yield put(loadChartDataError({ name, error }));

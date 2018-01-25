@@ -16,11 +16,11 @@ const required = value => (value ? undefined : 'Required');
 
 export const AddFieldDetailComponent = ({
     isNewField,
-    isLoggedIn,
+    isAdmin,
     p: polyglot,
 }) => (
     <FormSection name="field">
-        <FieldLabelInput disabled={!isLoggedIn && !isNewField} />
+        <FieldLabelInput disabled={!isAdmin && !isNewField} />
         <Field
             className="field-value"
             name="value"
@@ -34,7 +34,7 @@ export const AddFieldDetailComponent = ({
             name="scheme"
             className="field-scheme"
         />
-        {isLoggedIn && [
+        {isAdmin && [
             <FieldFormatInput key="field_format" />,
             <FieldWidthInput key="field_width" />,
             <FieldIsSearchableInput key="field_searchable" />,
@@ -46,7 +46,7 @@ export const AddFieldDetailComponent = ({
 AddFieldDetailComponent.propTypes = {
     isNewField: PropTypes.bool.isRequired,
     p: polyglotPropTypes.isRequired,
-    isLoggedIn: PropTypes.bool.isRequired,
+    isAdmin: PropTypes.bool.isRequired,
 };
 
 export default translate(AddFieldDetailComponent);

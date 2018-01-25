@@ -14,6 +14,10 @@ import { END } from 'redux-saga';
 import koaWebpack from 'koa-webpack';
 import fs from 'fs';
 import { StyleSheetServer } from 'aphrodite';
+import jwt from 'koa-jwt';
+import jsonwebtoken from 'jsonwebtoken';
+import { auth } from 'config';
+import pick from 'lodash.pick';
 
 import rootReducer from '../../app/js/public/reducers';
 import sagas from '../../app/js/public/sagas';
@@ -22,12 +26,13 @@ import routes from '../../app/js/public/routes';
 import phrasesForEn from '../../app/js/i18n/translations/en';
 import webpackConfig from '../../app/webpack.config.babel';
 import buildFrontend from './buildFrontEnd';
+import config from '../../../config.json';
 
 const indexHtml = fs
     .readFileSync(path.resolve(__dirname, '../../app/custom/index.html'))
     .toString();
 
-const initialState = {
+const getInitialState = (token, cookie) => ({
     fields: {
         loading: false,
         isSaving: false,
@@ -44,7 +49,11 @@ const initialState = {
         locale: 'en',
         phrases: phrasesForEn,
     },
-};
+    user: {
+        token,
+        cookie,
+    },
+});
 
 const renderFullPage = (html, css, preloadedState, helmet) =>
     indexHtml
@@ -94,11 +103,17 @@ const getPropsFromUrl = async ({ history, routes, location: url }) =>
         );
     });
 
-export const getRenderingData = async (renderProps, history, muiTheme) => {
+export const getRenderingData = async (
+    renderProps,
+    history,
+    muiTheme,
+    token,
+    cookie,
+) => {
     const store = configureStoreServer(
         rootReducer,
         sagas,
-        initialState,
+        getInitialState(token, cookie),
         history,
     );
 
@@ -119,7 +134,12 @@ export const getRenderingData = async (renderProps, history, muiTheme) => {
         html,
         css,
         helmet,
-        preloadedState,
+        preloadedState: {
+            ...preloadedState,
+            user: {
+                token: null,
+            },
+        },
     };
 };
 
@@ -159,6 +179,8 @@ const handleRender = async (ctx, next) => {
         renderProps,
         history,
         muiTheme,
+        ctx.state.headerToken,
+        ctx.request.header.cookie,
     );
 
     ctx.body = renderFullPage(html, css, preloadedState, helmet);
@@ -169,8 +191,6 @@ const app = new Koa();
 if (process.env.NODE_ENV === 'production') {
     app.use(buildFrontend);
 }
-
-app.use(handleRender);
 
 if (process.env.NODE_ENV === 'development') {
     app.use(
@@ -195,5 +215,31 @@ if (process.env.NODE_ENV === 'development') {
     app.use(mount('/', serve(path.resolve(__dirname, '../../build'))));
     app.use(mount('/', serve(path.resolve(__dirname, '../../app/custom'))));
 }
+
+if (config.userAuth) {
+    app.use(
+        jwt({
+            secret: auth.cookieSecret,
+            cookie: 'lodex_token',
+            key: 'cookie',
+            passthrough: true,
+        }),
+    );
+
+    app.use(async (ctx, next) => {
+        if (!ctx.state.cookie && ctx.request.url !== '/login') {
+            ctx.redirect('/login');
+            return;
+        }
+        ctx.state.headerToken = jsonwebtoken.sign(
+            pick(ctx.state.cookie, ['username', 'role', 'exp']),
+            auth.headerSecret,
+        );
+
+        await next();
+    });
+}
+
+app.use(handleRender);
 
 export default app;

@@ -89,12 +89,12 @@ const PropertyComponent = ({
     isSub,
     resource,
     fieldStatus,
-    loggedIn,
+    isAdmin,
     changeStatus,
     style,
     parents,
 }) => {
-    if (!loggedIn && fieldStatus === REJECTED) {
+    if (!isAdmin && fieldStatus === REJECTED) {
         return null;
     }
     const fieldClassName = getFieldClassName(field);
@@ -138,7 +138,7 @@ const PropertyComponent = ({
                         style={styles.label(fieldStatus, isSub)}
                     >
                         {field.label}
-                        <span style={styles.editButton(!loggedIn)}>
+                        <span style={styles.editButton(!isAdmin)}>
                             <EditButton field={field} resource={resource} />
                             <EditOntologyFieldButton field={field} />
                         </span>
@@ -184,7 +184,7 @@ PropertyComponent.propTypes = {
     field: fieldPropTypes.isRequired,
     fieldStatus: PropTypes.oneOf(propositionStatus),
     isSub: PropTypes.bool,
-    loggedIn: PropTypes.bool.isRequired,
+    isAdmin: PropTypes.bool.isRequired,
     resource: PropTypes.shape({}).isRequired,
     parents: PropTypes.arrayOf(PropTypes.string).isRequired,
     style: PropTypes.object,
@@ -197,7 +197,7 @@ PropertyComponent.defaultProps = {
 };
 
 const mapStateToProps = (state, { field }) => ({
-    loggedIn: fromUser.isLoggedIn(state),
+    isAdmin: fromUser.isAdmin(state),
     fieldStatus: fromResource.getFieldStatus(state, field),
 });
 

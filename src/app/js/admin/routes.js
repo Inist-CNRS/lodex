@@ -11,9 +11,9 @@ export const onEnterWithAuthenticationCheck = store => (
     replaceState,
 ) => {
     const state = store.getState();
-    const isLoggedIn = fromUser.isLoggedIn(state);
+    const isAdmin = fromUser.isAdmin(state);
 
-    if (!isLoggedIn) {
+    if (!isAdmin) {
         replaceState({
             pathname: '/login',
             state: { nextPathname: nextState.location.pathname },

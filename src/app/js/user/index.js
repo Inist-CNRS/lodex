@@ -22,10 +22,11 @@ export default handleActions(
             ...state,
             showModal: !state.showModal,
         }),
-        LOGIN_SUCCESS: (state, { payload }) => ({
+        LOGIN_SUCCESS: (state, { payload: { token, role } }) => ({
             ...state,
             showModal: false,
-            token: payload,
+            token: token,
+            role,
         }),
         LOGOUT: state => ({
             ...state,
@@ -47,14 +48,16 @@ export const loginSuccess = createAction(LOGIN_SUCCESS);
 export const logout = createAction(LOGOUT);
 export const signOut = createAction(SIGNOUT);
 
-export const isLoggedIn = state => !!state.token;
+export const isAdmin = state => state.role === 'admin';
 export const getToken = state => state.token;
+export const getCookie = state => state.cookie;
 export const isUserModalShown = state => state.showModal;
 
 export const getRequest = createSelector(
     getToken,
+    getCookie,
     (_, props) => props,
-    (token, { body, method = 'GET', url }) => ({
+    (token, cookie, { body, method = 'GET', url }) => ({
         url,
         body: JSON.stringify(body),
         credentials: 'include',
@@ -62,6 +65,7 @@ export const getRequest = createSelector(
             Accept: 'application/json',
             'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,
+            Cookie: cookie,
         },
         method,
     }),
@@ -273,9 +277,16 @@ export const getUploadUrlRequest = (state, url, parserName) =>
         },
     });
 
+export const getUrlRequest = (state, { url, queryString }) =>
+    getRequest(state, {
+        method: 'GET',
+        url: `${url}${queryString ? `?${queryString}` : ''}`,
+    });
+
 export const selectors = {
-    isLoggedIn,
+    isAdmin,
     getToken,
+    getCookie,
     getRequest,
     isUserModalShown,
     getLoginRequest,
@@ -307,4 +318,5 @@ export const selectors = {
     getCreateFieldRequest,
     getLoadFieldRequest,
     getUploadUrlRequest,
+    getUrlRequest,
 };

@@ -2,7 +2,7 @@ import expect from 'expect';
 import reducer, {
     defaultState,
     getToken,
-    isLoggedIn,
+    isAdmin,
     loginSuccess,
     logout,
     toggleLogin,
@@ -24,10 +24,14 @@ describe('user reducer', () => {
     });
 
     it('should handle the LOGIN_SUCCESS action', () => {
-        const state = reducer({ showModal: true }, loginSuccess('foo'));
+        const state = reducer(
+            { showModal: true },
+            loginSuccess({ token: 'foo', role: 'admin' }),
+        );
         expect(state).toEqual({
             showModal: false,
             token: 'foo',
+            role: 'admin',
         });
     });
 
@@ -42,14 +46,19 @@ describe('user reducer', () => {
         });
     });
 
-    describe('isLoggedIn selector', () => {
-        it('should return false if state has no token', () => {
-            const result = isLoggedIn({});
+    describe('isAdmin selector', () => {
+        it('should return false if state has no role', () => {
+            const result = isAdmin({});
             expect(result).toEqual(false);
         });
 
-        it('should return true if state has a token', () => {
-            const result = isLoggedIn({ token: 'foo' });
+        it('should return false if state role is not admin', () => {
+            const result = isAdmin({ role: 'user' });
+            expect(result).toEqual(false);
+        });
+
+        it('should return true if state role is admin', () => {
+            const result = isAdmin({ role: 'admin' });
             expect(result).toEqual(true);
         });
     });
@@ -75,6 +84,7 @@ describe('user reducer', () => {
                     Accept: 'application/json',
                     'Content-Type': 'application/json',
                     Authorization: 'Bearer token',
+                    Cookie: undefined,
                 },
                 method: 'method',
             });

@@ -19,7 +19,7 @@ import { updateCharacteristics } from '../../public/characteristic';
 const mapStateToProps = (state, { field, resource, onSaveProperty, p }) => ({
     open: fromFields.isFieldEdited(state, field.name),
     show:
-        fromUser.isLoggedIn(state) &&
+        fromUser.isAdmin(state) &&
         (field.cover === COVER_DATASET ||
             fromResource.isLastVersionSelected(state)),
     saving:

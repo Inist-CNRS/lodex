@@ -14,7 +14,7 @@ import {
 import { fromUser } from '../../sharedSelectors';
 
 const mapStateToProps = (state, { p }) => ({
-    show: fromUser.isLoggedIn(state),
+    show: fromUser.isAdmin(state),
     open: fromResource.isCreating(state),
     saving: fromResource.isSaving(state),
     formName: CREATE_RESOURCE_FORM_NAME,
