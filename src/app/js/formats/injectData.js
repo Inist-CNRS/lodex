@@ -50,7 +50,7 @@ export default url => FormatView => {
             loadFormatData: PropTypes.func.isRequired,
             formatData: PropTypes.any,
             isLoaded: PropTypes.bool.isRequired,
-            error: PropTypes.bool,
+            error: PropTypes.object,
             p: polyglotPropTypes.isRequired,
         };
         componentDidMount() {

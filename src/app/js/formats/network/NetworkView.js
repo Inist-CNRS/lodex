@@ -108,6 +108,7 @@ const mapStateToProps = (state, { formatData, field }) => {
     const { nodeColor } = fromFields.getFieldFormatArgs(state, field.name);
     if (!formatData) {
         return {
+            nodeColor,
             nodes: [],
             links: [],
         };

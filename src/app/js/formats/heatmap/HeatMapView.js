@@ -183,8 +183,8 @@ HeatMapView.propTypes = {
     yAxis: PropTypes.arrayOf(PropTypes.string).isRequired,
     dictionary: PropTypes.objectOf(PropTypes.objectOf(PropTypes.number))
         .isRequired,
-    legend: PropTypes.element.isRequired,
-    colorScale: PropTypes.func.isRequired,
+    legend: PropTypes.element,
+    colorScale: PropTypes.func,
     showTooltip: PropTypes.func.isRequired,
     hideTooltip: PropTypes.func.isRequired,
 };
