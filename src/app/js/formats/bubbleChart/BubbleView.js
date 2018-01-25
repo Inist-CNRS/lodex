@@ -139,7 +139,7 @@ const mapDispatchToProps = {
 };
 
 export default compose(
-    injectData,
+    injectData(),
     connect(mapStateToProps, mapDispatchToProps),
     exportableToPng,
 )(BubbleView);

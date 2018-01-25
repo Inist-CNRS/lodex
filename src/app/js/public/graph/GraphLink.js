@@ -48,7 +48,10 @@ const GraphLink = ({ link, children, p: polyglot }) => (
 
 GraphLink.propTypes = {
     link: PropTypes.string.isRequired,
-    children: PropTypes.element.isRequired,
+    children: PropTypes.oneOfType([
+        PropTypes.element.isRequired,
+        PropTypes.arrayOf(PropTypes.element.isRequired),
+    ]),
     p: polyglotPropTypes,
 };
 

@@ -65,4 +65,4 @@ RadarChartView.defaultProps = {
     className: null,
 };
 
-export default compose(injectData, exportableToPng)(RadarChartView);
+export default compose(injectData(), exportableToPng)(RadarChartView);

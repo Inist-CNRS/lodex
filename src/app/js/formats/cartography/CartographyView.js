@@ -263,7 +263,7 @@ const mapSispatchToProps = {
 };
 
 export default compose(
-    injectData,
+    injectData(),
     connect(mapStateToProps, mapSispatchToProps),
     exportableToPng,
 )(CartographyView);

@@ -123,7 +123,7 @@ export const getCategoryAxisProps = ({
     [direction === 'horizontal' ? 'width' : 'height']: categoryMargin,
 });
 
-const mapStateToProps = (state, { field, formatData }) => {
+const mapStateToProps = (state, { field, formatData = [] }) => {
     const {
         axisRoundValue,
         diagonalCategoryAxis,
@@ -152,8 +152,10 @@ const mapStateToProps = (state, { field, formatData }) => {
 
     const height =
         direction === 'horizontal'
-            ? formatData.length * (parseInt(barSize) + 8) + 20 + valueMargin
-            : 300 + categoryMargin;
+            ? formatData.length * (parseInt(barSize) + 8) +
+              20 +
+              parseInt(valueMargin)
+            : 300 + parseInt(categoryMargin);
 
     return {
         direction,
@@ -163,9 +165,10 @@ const mapStateToProps = (state, { field, formatData }) => {
         categoryAxisProps,
         barSize: parseInt(barSize),
         height,
+        formatData,
     };
 };
 
-export default compose(injectData, connect(mapStateToProps), exportableToPng)(
+export default compose(injectData(), connect(mapStateToProps), exportableToPng)(
     BarChartView,
 );

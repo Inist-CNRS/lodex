@@ -5,30 +5,31 @@ import RaisedButton from 'material-ui/RaisedButton';
 import CircularProgress from 'material-ui/CircularProgress';
 import translate from 'redux-polyglot/translate';
 import { StyleSheet, css } from 'aphrodite';
+import compose from 'recompose/compose';
 
 import LodexResource from '../shared/LodexResource';
 import { field as fieldPropTypes } from '../../propTypes';
 import getQueryString from '../../lib/getQueryString';
+import injectData from '../injectData';
+import { connect } from 'react-redux';
+import { fromFields } from '../../sharedSelectors';
 
 class ResourcesGridView extends Component {
     static propTypes = {
         field: fieldPropTypes.isRequired,
-        linkedResource: PropTypes.object,
+        data: PropTypes.arrayOf(PropTypes.object).isRequired,
+        total: PropTypes.number.isRequired,
+        maxSize: PropTypes.number.isRequired,
+        spaceWidth: PropTypes.string.isRequired,
+        loadFormatData: PropTypes.func.isRequired,
     };
 
     constructor(props) {
         super(props);
         this.state = {
             fetch: false,
-            maxSize: 0,
-            more: 0,
-            total: 0,
-            data: [],
+            more: 10,
         };
-    }
-
-    componentDidMount() {
-        this.fetchData();
     }
 
     async fetchData() {
@@ -65,18 +66,19 @@ class ResourcesGridView extends Component {
     }
 
     handleMore = () => {
+        const { field, loadFormatData } = this.props;
         this.setState(
             prevState => ({ more: prevState.more + 10 }),
-            () => this.fetchData(),
+            () =>
+                loadFormatData({
+                    field,
+                    filter: { maxSize: this.state.more },
+                }),
         );
     };
 
     render() {
-        const { field } = this.props;
-        const spaceWidth =
-            field.format && field.format.args && field.format.args.spaceWidth
-                ? field.format.args.spaceWidth
-                : '30%';
+        const { data, total, maxSize, spaceWidth } = this.props;
         const styles = StyleSheet.create({
             list: {
                 display: 'flex',
@@ -114,7 +116,7 @@ class ResourcesGridView extends Component {
         return (
             <div>
                 <ul className={css(styles.list)}>
-                    {this.state.data.map((entry, index) => {
+                    {data.map((entry, index) => {
                         const key = String(index).concat('ResourcesGrid');
                         return (
                             <li key={key} className={css(styles.item)}>
@@ -126,7 +128,7 @@ class ResourcesGridView extends Component {
                     })}
                 </ul>
                 <div className={css(styles.button)}>
-                    {this.state.maxSize < this.state.total && (
+                    {maxSize < total && (
                         <RaisedButton
                             label="MORE"
                             onClick={this.handleMore}
@@ -143,4 +145,31 @@ class ResourcesGridView extends Component {
     }
 }
 
-export default translate(ResourcesGridView);
+const mapStateToProps = (state, { field, formatData }) => {
+    const {
+        params: { maxSize },
+        spaceWidth = '30%',
+    } = fromFields.getFieldFormatArgs(state, field.name);
+
+    if (!formatData || !formatData.items) {
+        return {
+            maxSize,
+            spaceWidth,
+            data: [],
+            total: 0,
+        };
+    }
+
+    return {
+        maxSize: parseInt(maxSize),
+        spaceWidth,
+        data: formatData.items,
+        total: formatData.total,
+    };
+};
+
+export default compose(
+    translate,
+    injectData('/api/run/syndication'),
+    connect(mapStateToProps),
+)(ResourcesGridView);

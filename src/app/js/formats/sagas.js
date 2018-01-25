@@ -30,7 +30,9 @@ export function* handlePreLoadFormatData({ payload: { field, value } }) {
     yield put(loadFormatData({ field, value }));
 }
 
-export function* handleLoadFormatDataRequest({ payload: { field } = {} }) {
+export function* handleLoadFormatDataRequest({
+    payload: { field, filter } = {},
+}) {
     const name =
         (field && field.name) || (yield select(fromRouting.getGraphName));
 
@@ -52,7 +54,10 @@ export function* handleLoadFormatDataRequest({ payload: { field } = {} }) {
         facets,
         invertedFacets,
         match,
-        params,
+        params: {
+            ...params,
+            ...(filter || {}),
+        },
     });
 
     const request = yield select(fromUser.getUrlRequest, {
@@ -70,16 +75,7 @@ export function* handleLoadFormatDataRequest({ payload: { field } = {} }) {
         yield put(loadFormatDataSuccess({ name, data: response.data }));
         return;
     }
-    if (response.aggregations) {
-        const firstKey = Object.keys(response.aggregations).shift();
-        const data = response.aggregations[firstKey].buckets.map(item => ({
-            name: item.keyAsString || item.key,
-            value: item.docCount,
-        }));
-        yield put(loadFormatDataSuccess({ name, data }));
-        return;
-    }
-    yield put(loadFormatDataSuccess({ name, data: 'no result' }));
+    yield put(loadFormatDataSuccess({ name, data: response }));
 }
 
 export default function*() {

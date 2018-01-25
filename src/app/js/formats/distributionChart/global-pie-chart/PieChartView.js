@@ -50,4 +50,4 @@ PieChartView.propTypes = {
     colorSet: PropTypes.arrayOf(PropTypes.string),
 };
 
-export default compose(injectData, exportableToPng)(PieChartView);
+export default compose(injectData(), exportableToPng)(PieChartView);

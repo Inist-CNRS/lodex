@@ -3,13 +3,18 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
+import isEqual from 'lodash.isequal';
 
 import {
     field as fieldPropTypes,
     polyglot as polyglotPropTypes,
 } from '../propTypes.js';
 import { fromCharacteristic, fromFormat } from '../public/selectors';
-import { preLoadFormatData, unLoadFormatData } from '../formats/reducer';
+import {
+    preLoadFormatData,
+    loadFormatData,
+    unLoadFormatData,
+} from '../formats/reducer';
 import Loading from '../lib/components/Loading';
 
 const styles = {
@@ -18,13 +23,14 @@ const styles = {
     },
 };
 
-export default FormatView => {
+export default uri => FormatView => {
     class GraphItem extends Component {
         static propTypes = {
             field: fieldPropTypes.isRequired,
             resource: PropTypes.object.isRequired,
             preLoadFormatData: PropTypes.func.isRequired,
             unLoadFormatData: PropTypes.func.isRequired,
+            loadFormatData: PropTypes.func.isRequired,
             formatData: PropTypes.any,
             isLoaded: PropTypes.bool.isRequired,
             error: PropTypes.bool,
@@ -35,7 +41,7 @@ export default FormatView => {
             if (!field) {
                 return;
             }
-            preLoadFormatData({ field, value: resource[field.name] });
+            preLoadFormatData({ field, value: uri || resource[field.name] });
         }
         componentWillUnmount() {
             const { field, unLoadFormatData } = this.props;
@@ -45,17 +51,23 @@ export default FormatView => {
 
             unLoadFormatData(field);
         }
-        componentDidUpdate() {
+        componentDidUpdate(prevProps) {
             const { field, resource, preLoadFormatData } = this.props;
-            if (!field) {
+            if (
+                !field ||
+                (isEqual(field, prevProps.field) &&
+                    resource[field.name] ===
+                        prevProps.resource[prevProps.field.name])
+            ) {
                 return;
             }
 
-            preLoadFormatData({ field, value: resource[field.name] });
+            preLoadFormatData({ field, value: uri || resource[field.name] });
         }
         render() {
             const {
                 preLoadFormatData,
+                loadFormatData,
                 formatData,
                 p: polyglot,
                 field,
@@ -76,12 +88,16 @@ export default FormatView => {
                 );
             }
 
-            if (!isLoaded) {
-                return <Loading>{polyglot.t('loading')}</Loading>;
-            }
-
             return (
-                <FormatView {...props} field={field} formatData={formatData} />
+                <div>
+                    {!isLoaded && <Loading>{polyglot.t('loading')}</Loading>}
+                    <FormatView
+                        {...props}
+                        field={field}
+                        formatData={formatData || []}
+                        loadFormatData={loadFormatData}
+                    />
+                </div>
             );
         }
     }
@@ -98,6 +114,7 @@ export default FormatView => {
     const mapDispatchToProps = {
         preLoadFormatData,
         unLoadFormatData,
+        loadFormatData,
     };
 
     return compose(connect(mapStateToProps, mapDispatchToProps), translate)(
