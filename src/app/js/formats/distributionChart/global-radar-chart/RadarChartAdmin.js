@@ -97,17 +97,9 @@ class RadarChartAdmin extends Component {
 
     render() {
         const { p: polyglot } = this.props;
-        const {
-            params: {
-                maxSize = defaultArgs.params.maxSize,
-                maxValue = defaultArgs.params.maxValue,
-                minValue = defaultArgs.params.minValue,
-                orderBy = defaultArgs.params.orderBy,
-            },
-            colors,
-            axisRoundValue,
-            scale,
-        } = this.props.args;
+        const { params, colors, axisRoundValue, scale } = this.props.args;
+        const { maxSize, maxValue, minValue, orderBy } = params || defaultArgs;
+
         return (
             <div style={styles.container}>
                 <TextField

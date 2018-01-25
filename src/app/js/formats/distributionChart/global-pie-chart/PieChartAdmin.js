@@ -80,10 +80,10 @@ class PieChartAdmin extends Component {
     };
 
     render() {
-        const {
-            p: polyglot,
-            args: { params: { maxSize, maxValue, minValue, orderBy }, colors },
-        } = this.props;
+        const { p: polyglot, args: { params, colors } } = this.props;
+
+        const { maxSize, maxValue, minValue, orderBy } =
+            params || defaultArgs.params;
 
         return (
             <div style={styles.container}>
