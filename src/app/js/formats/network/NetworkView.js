@@ -31,6 +31,7 @@ const labelOffset = {
 const styles = {
     container: {
         overflow: 'hidden',
+        userSelect: 'none',
     },
 };
 
@@ -136,20 +137,28 @@ const mapStateToProps = (state, { formatData, field }) => {
     const max = Math.max(...radiusList);
     const min = Math.min(...radiusList);
 
-    const scale = scaleLinear()
+    const nodeScale = scaleLinear()
         .domain([min, max])
-        .range([1, 40]);
+        .range([min === max ? 50 : 10, 50]);
+
+    const weightList = formatData.map(({ weight }) => weight);
+    const maxWeight = Math.max(...weightList);
+    const minWeight = Math.min(...weightList);
+
+    const linkScale = scaleLinear()
+        .domain([minWeight, maxWeight])
+        .range([1, 20]);
 
     return {
         nodeColor,
         nodes: nodes.map(node => ({
             ...node,
-            radius: scale(node.radius),
+            radius: nodeScale(node.radius),
         })),
-        links: formatData.map(({ source, target, weight: value }) => ({
+        links: formatData.map(({ source, target, weight }) => ({
             source,
             target,
-            value,
+            value: linkScale(weight),
         })),
     };
 };
