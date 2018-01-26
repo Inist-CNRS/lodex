@@ -53,15 +53,24 @@ export default url => FormatView => {
             error: PropTypes.object,
             p: polyglotPropTypes.isRequired,
         };
-        componentDidMount() {
+
+        loadFormatData = () => {
             const { field, loadFormatData } = this.props;
+
+            const value = createUrl(this.props);
+            if (!value) {
+                return;
+            }
+
+            loadFormatData({ field, value });
+        };
+
+        componentDidMount() {
+            const { field } = this.props;
             if (!field) {
                 return;
             }
-            loadFormatData({
-                field,
-                value: createUrl(this.props),
-            });
+            this.loadFormatData();
         }
         componentWillUnmount() {
             const { field, unLoadFormatData } = this.props;
@@ -72,7 +81,7 @@ export default url => FormatView => {
             unLoadFormatData(field);
         }
         componentDidUpdate(prevProps) {
-            const { field, resource, loadFormatData } = this.props;
+            const { field, resource } = this.props;
             if (
                 !field ||
                 (isEqual(field, prevProps.field) &&
@@ -82,7 +91,7 @@ export default url => FormatView => {
                 return;
             }
 
-            loadFormatData({ field, value: createUrl(this.props) });
+            this.loadFormatData();
         }
 
         filterFormatData = filter => {

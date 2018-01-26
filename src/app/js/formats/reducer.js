@@ -37,8 +37,7 @@ export default handleActions(
     defaultState,
 );
 
-const isFormatDataLoaded = (state, name) =>
-    !!(state[name] && state[name] !== 'loading');
+const isFormatDataLoaded = (state, name) => state[name] !== 'loading';
 
 const getFormatData = (state, name) => get(state, [name, 'data']);
 const getFormatError = (state, name) => get(state, [name, 'error']);
