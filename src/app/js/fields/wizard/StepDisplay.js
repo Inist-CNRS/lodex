@@ -12,13 +12,11 @@ import FieldDisplayInListInput from '../FieldDisplayInListInput';
 import FieldDisplayInResourceInput from '../FieldDisplayInResourceInput';
 import FieldDisplayInGraphInput from '../FieldDisplayInGraphInput';
 import FieldDisplayInHomeInput from '../FieldDisplayInHomeInput';
-import {
-    polyglot as polyglotPropTypes,
-    field as fieldPropTypes,
-} from '../../propTypes';
+import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { FIELD_FORM_NAME } from '../';
 import { fromFields } from '../../sharedSelectors';
 import FieldWidthInput from '../FieldWidthInput';
+import { COVERS, COVER_DATASET } from '../../../../common/cover';
 
 export class StepDisplayComponent extends Component {
     componentWillReceiveProps(nextProps) {
@@ -34,14 +32,14 @@ export class StepDisplayComponent extends Component {
     }
 
     render() {
-        const { field, p: polyglot, ...props } = this.props;
+        const { cover, p: polyglot, ...props } = this.props;
 
         return (
             <Step label="field_wizard_step_display" {...props}>
                 <FieldDisplayInListInput />
                 <FieldDisplayInResourceInput />
-                {field.cover === 'dataset' && <FieldDisplayInGraphInput />}
-                {field.cover === 'dataset' && <FieldDisplayInHomeInput />}
+                {cover === COVER_DATASET && <FieldDisplayInGraphInput />}
+                {cover === COVER_DATASET && <FieldDisplayInHomeInput />}
                 <FieldOverviewInput />
                 <FieldFormatInput />
                 <FieldWidthInput />
@@ -52,7 +50,7 @@ export class StepDisplayComponent extends Component {
 
 StepDisplayComponent.propTypes = {
     transformers: PropTypes.arrayOf(PropTypes.object).isRequired,
-    field: fieldPropTypes.isRequired,
+    cover: PropTypes.oneOf(COVERS),
     format: PropTypes.object, // eslint-disable-line
     p: polyglotPropTypes.isRequired,
     updateField: PropTypes.func.isRequired,
@@ -65,6 +63,7 @@ const mapStateToProps = state => {
         fields: fromFields.getFields(state),
         format: values && values.format,
         transformers: values ? values.transformers : [],
+        cover: values.cover,
     };
 };
 
