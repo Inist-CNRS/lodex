@@ -10,7 +10,7 @@ import LodexResource from '../shared/LodexResource';
 import { field as fieldPropTypes } from '../../propTypes';
 import injectData from '../injectData';
 
-const Resource = props => {
+const LodexResourceView = props => {
     const styles = StyleSheet.create({
         wrapper: {
             padding: '1.1em',
@@ -27,12 +27,12 @@ const Resource = props => {
     );
 };
 
-Resource.propTypes = {
+LodexResourceView.propTypes = {
     field: fieldPropTypes.isRequired,
     resource: PropTypes.object.isRequired,
 };
 
-Resource.defaultProps = {
+LodexResourceView.defaultProps = {
     className: null,
 };
 
@@ -56,4 +56,4 @@ export default compose(
             )}`,
     ),
     connect(mapStateToProps),
-)(Resource);
+)(LodexResourceView);
