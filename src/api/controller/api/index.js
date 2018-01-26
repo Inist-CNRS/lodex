@@ -3,10 +3,10 @@ import route from 'koa-route';
 import mount from 'koa-mount';
 import jwt from 'koa-jwt';
 import { auth } from 'config';
+import get from 'lodash.get';
 
 import ezMasterConfig from '../../services/ezMasterConfig';
 import mongoClient from '../../services/mongoClient';
-
 import characteristic from './characteristic';
 import exportPublishedDataset from './export';
 import facet from './facet';
@@ -39,6 +39,12 @@ app.use(
 app.use(jwt({ secret: auth.headerSecret, key: 'header', passthrough: true }));
 
 app.use(async (ctx, next) => {
+    if (
+        get(ctx, 'state.cookie.role') === 'admin' &&
+        get(ctx, 'state.header.role') === 'admin'
+    ) {
+        ctx.state.isAdmin = true;
+    }
     if (!ctx.ezMasterConfig.userAuth) {
         return next();
     }
@@ -72,8 +78,6 @@ app.use(async (ctx, next) => {
         ctx.body = 'No authentication token found';
         return;
     }
-
-    ctx.state.isAdmin = true;
 
     await next();
 });

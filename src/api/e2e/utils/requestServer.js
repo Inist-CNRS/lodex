@@ -13,7 +13,35 @@ export default () => {
                 headers: {
                     ...headers,
                 },
-            }).then(response => response.text()),
+            }),
+        post: (url, body, headers = {}) =>
+            fetch(`${config.host}${url}`, {
+                method: 'POST',
+                headers: {
+                    ...headers,
+                },
+                body: JSON.stringify(body),
+            }),
+        put: (url, body, headers = {}) =>
+            fetch(`${config.host}${url}`, {
+                method: 'PUT',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                    ...headers,
+                },
+                body: JSON.stringify(body),
+            }),
+        del: (url, body, headers = {}) =>
+            fetch(`${config.host}${url}`, {
+                method: 'DELETE',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                    ...headers,
+                },
+                body: JSON.stringify(body),
+            }),
         close: () => app.close(),
     };
 };

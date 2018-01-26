@@ -37,7 +37,9 @@ describe('ssr', () => {
         let state;
         describe('authentified', () => {
             before(async () => {
-                const response = await server.get('/home', authentifiedHeader);
+                const response = await server
+                    .get('/home', authentifiedHeader)
+                    .then(response => response.text());
                 state = JSON.parse(
                     response.match(
                         /__PRELOADED_STATE__ = ([\s\S]*?)<\/script>/,
@@ -117,7 +119,9 @@ describe('ssr', () => {
         });
         describe('not authentified', () => {
             before(async () => {
-                const response = await server.get('/home');
+                const response = await server
+                    .get('/home')
+                    .then(response => response.text());
                 state = JSON.parse(
                     response.match(
                         /__PRELOADED_STATE__ = ([\s\S]*?)<\/script>/,
@@ -161,10 +165,9 @@ describe('ssr', () => {
 
         describe('authentified', () => {
             before(async () => {
-                const response = await server.get(
-                    '/resource?uri=1',
-                    authentifiedHeader,
-                );
+                const response = await server
+                    .get('/resource?uri=1', authentifiedHeader)
+                    .then(response => response.text());
                 state = JSON.parse(
                     response.match(
                         /__PRELOADED_STATE__ = ([\s\S]*?)<\/script>/,
@@ -218,7 +221,9 @@ describe('ssr', () => {
 
         describe('not authentified', () => {
             before(async () => {
-                const response = await server.get('/resource?uri=1');
+                const response = await server
+                    .get('/resource?uri=1')
+                    .then(response => response.text());
                 state = JSON.parse(
                     response.match(
                         /__PRELOADED_STATE__ = ([\s\S]*?)<\/script>/,
@@ -261,7 +266,9 @@ describe('ssr', () => {
         let state;
         describe('authenticated', () => {
             before(async () => {
-                const response = await server.get('/graph', authentifiedHeader);
+                const response = await server
+                    .get('/graph', authentifiedHeader)
+                    .then(response => response.text());
                 state = JSON.parse(
                     response.match(
                         /__PRELOADED_STATE__ = ([\s\S]*?)<\/script>/,
@@ -333,7 +340,9 @@ describe('ssr', () => {
 
         describe('not authenticated', () => {
             before(async () => {
-                const response = await server.get('/graph');
+                const response = await server
+                    .get('/graph')
+                    .then(response => response.text());
                 state = JSON.parse(
                     response.match(
                         /__PRELOADED_STATE__ = ([\s\S]*?)<\/script>/,

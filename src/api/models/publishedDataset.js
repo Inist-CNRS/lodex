@@ -271,6 +271,7 @@ export default async db => {
 
     collection.create = async (resource, publicationDate = new Date()) => {
         const { uri, ...version } = resource;
+
         return collection.insertOne({
             uri,
             versions: [
