@@ -1,4 +1,6 @@
 import get from 'lodash.get';
+import { connect } from 'react-redux';
+import merge from 'lodash.merge';
 
 import code from './code';
 import globalBarchart from './distributionChart/global-bar-chart/';
@@ -83,7 +85,13 @@ export const getViewComponent = (field, isList) => {
         return component.ListComponent || component.Component;
     }
 
-    return component.Component;
+    const args = merge(get(field, 'format.args'), component.defaultArgs);
+
+    const mapStateToProps = () => ({
+        ...args,
+    });
+
+    return connect(mapStateToProps)(component.Component);
 };
 export const getAdminComponent = name => getComponent(name).AdminComponent;
 export const getEditionComponent = name => getComponent(name).EditionComponent;
