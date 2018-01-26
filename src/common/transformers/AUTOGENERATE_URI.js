@@ -3,7 +3,7 @@ import config from '../../../config.json';
 
 const ARBITRARY_SUBPUBLISHER = '39D';
 
-export const autoGenerateUri = ({ naan, subpublisher }) => () => () =>
+export const autoGenerateUri = ({ naan, subpublisher, uriSize }) => () => () =>
     new Promise((resolve, reject) => {
         try {
             if (naan && subpublisher) {
@@ -19,7 +19,11 @@ export const autoGenerateUri = ({ naan, subpublisher }) => () => () =>
                 subpublisher: ARBITRARY_SUBPUBLISHER,
             });
 
-            return resolve(`uid:/${ark.parse(ark.generate()).identifier}`);
+            const identifier = ark.parse(ark.generate()).identifier;
+            if (uriSize && Number.isInteger(uriSize)) {
+                return resolve('uid:/'.concat(identifier.slice(0, uriSize)));
+            }
+            return resolve('uid:/'.concat(identifier));
         } catch (error) {
             return reject(error);
         }
