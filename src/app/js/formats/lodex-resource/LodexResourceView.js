@@ -47,13 +47,22 @@ const mapStateToProps = (state, { formatData = {} }) => {
     };
 };
 
+const isUrl = v =>
+    (typeof v === 'string' &&
+        (v.startsWith('http://') || v.startsWith('https://'))) ||
+    false;
+
 export default compose(
     translate,
-    injectData(
-        ({ field, resource }) =>
-            `/api/run/syndication/?$query[uri]=${encodeURIComponent(
-                resource[field.name],
-            )}`,
-    ),
+    injectData(({ field, resource }) => {
+        const value = resource[field.name];
+
+        if (isUrl(value)) {
+            return value;
+        }
+        return `/api/run/syndication/?$query[uri]=${encodeURIComponent(
+            resource[field.name],
+        )}`;
+    }),
     connect(mapStateToProps),
 )(LodexResourceView);
