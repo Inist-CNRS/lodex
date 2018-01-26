@@ -17,7 +17,6 @@ import compose from 'recompose/compose';
 
 import injectData from '../injectData';
 import getGradientScaleAndLegend from '../../lib/components/getGradientScaleAndLegend';
-import { fromFields } from '../../sharedSelectors';
 import exportableToPng from '../exportableToPng';
 
 const maxZoom = 16;
@@ -211,18 +210,14 @@ CartographyView.propTypes = {
     hoverColorScale: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = (state, { formatData, field }) => {
-    const { colorScheme, hoverColorScheme } = fromFields.getFieldFormatArgs(
-        state,
-        field.name,
-    );
-
+const mapStateToProps = (
+    state,
+    { formatData, colorScheme, hoverColorScheme },
+) => {
     if (!formatData) {
         return {
             formatData: {},
             maxValue: 0,
-            colorScheme,
-            hoverColorScheme,
         };
     }
 

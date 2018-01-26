@@ -12,7 +12,6 @@ import { field as fieldPropTypes } from '../../propTypes';
 import getQueryString from '../../lib/getQueryString';
 import injectData from '../injectData';
 import { connect } from 'react-redux';
-import { fromFields } from '../../sharedSelectors';
 
 class ResourcesGridView extends Component {
     static propTypes = {
@@ -141,26 +140,18 @@ class ResourcesGridView extends Component {
     }
 }
 
-const mapStateToProps = (state, { field, formatData }) => {
-    const {
-        params: { maxSize },
-        spaceWidth = '30%',
-    } = fromFields.getFieldFormatArgs(state, field.name);
-
+const mapStateToProps = (state, { formatData, params }) => {
     if (!formatData || !formatData.items) {
         return {
-            maxSize: parseInt(maxSize),
-            spaceWidth,
             data: [],
             total: 0,
         };
     }
 
     return {
-        maxSize: parseInt(maxSize),
-        spaceWidth,
         data: formatData.items,
         total: formatData.total,
+        maxSize: params.maxSize,
     };
 };
 

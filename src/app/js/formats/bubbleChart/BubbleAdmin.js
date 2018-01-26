@@ -23,6 +23,11 @@ const styles = {
     },
 };
 
+export const defaultArgs = {
+    colorScheme: schemeAccent,
+    diameter: 500,
+};
+
 class BubbleAdmin extends Component {
     static propTypes = {
         args: PropTypes.shape({
@@ -34,10 +39,7 @@ class BubbleAdmin extends Component {
     };
 
     static defaultProps = {
-        args: {
-            colorScheme: schemeAccent,
-            diameter: 500,
-        },
+        args: defaultArgs,
     };
 
     setColorScheme = (_, __, colorScheme) => {

@@ -1,6 +1,6 @@
 import get from 'lodash.get';
-import { connect } from 'react-redux';
 import merge from 'lodash.merge';
+import memoize from 'lodash.memoize';
 
 import code from './code';
 import globalBarchart from './distributionChart/global-bar-chart/';
@@ -79,19 +79,22 @@ export const getComponent = field => {
     return components[field.format.name] || DefaultFormat;
 };
 
+const getArgs = memoize(
+    (field, defaultArgs) => merge(get(field, 'format.args'), defaultArgs),
+    field => JSON.stringify(field),
+);
+
 export const getViewComponent = (field, isList) => {
     const component = getComponent(field);
-    if (isList) {
-        return component.ListComponent || component.Component;
-    }
 
-    const args = merge(get(field, 'format.args'), component.defaultArgs);
+    const args = getArgs(field, component.defaultArgs);
 
-    const mapStateToProps = () => ({
-        ...args,
-    });
-
-    return connect(mapStateToProps)(component.Component);
+    return {
+        ViewComponent: isList
+            ? component.ListComponent || component.Component
+            : component.Component,
+        args,
+    };
 };
 export const getAdminComponent = name => getComponent(name).AdminComponent;
 export const getEditionComponent = name => getComponent(name).EditionComponent;

@@ -13,7 +13,6 @@ import Transition from 'react-inline-transition-group';
 import injectData from '../injectData';
 import exportableToPng from '../exportableToPng';
 import Bubble from './Bubble';
-import { fromFields } from '../../sharedSelectors';
 
 const styles = {
     container: memoize(({ diameter }) => ({
@@ -63,6 +62,7 @@ class BubbleView extends React.Component {
     };
     render() {
         const { data, diameter, colorScale } = this.props;
+
         return (
             <div>
                 <Transition
@@ -104,11 +104,7 @@ BubbleView.propTypes = {
 
 BubbleView.displayName = 'BubbleView';
 
-const mapStateToProps = (state, { formatData, field }) => {
-    const { diameter = 500, colorScheme } = fromFields.getFieldFormatArgs(
-        state,
-        field.name,
-    );
+const mapStateToProps = (state, { formatData, diameter, colorScheme }) => {
     if (!formatData) {
         return {
             data: [],

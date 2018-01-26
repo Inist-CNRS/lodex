@@ -28,7 +28,7 @@ const ListView = ({ className, resource, field }) => {
     const type = get(field, 'format.args.type', 'unordered');
     const subFormat = get(field, 'format.args.subFormat');
     const subFormatOptions = get(field, 'format.args.subFormatOptions');
-    const SubViewComponent = getViewComponent(subFormat, true);
+    const { ViewComponent, args } = getViewComponent(subFormat, true);
 
     const List = type === 'ordered' ? OL : UL;
 
@@ -37,7 +37,7 @@ const ListView = ({ className, resource, field }) => {
             {values.map((value, index) => (
                 <li key={value}>
                     {subFormat ? (
-                        <SubViewComponent
+                        <ViewComponent
                             resource={values}
                             field={{
                                 ...field,
@@ -47,6 +47,7 @@ const ListView = ({ className, resource, field }) => {
                                     args: subFormatOptions,
                                 },
                             }}
+                            {...args}
                         />
                     ) : (
                         value
