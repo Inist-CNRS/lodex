@@ -43,6 +43,10 @@ export const createFunction = MongoClientImpl =>
             });
         }
 
+        if (filter.$and && !filter.$and.length) {
+            delete filter.$and;
+        }
+
         const cursor = handle.find(filter);
         const total = await cursor.count();
         const stream = cursor

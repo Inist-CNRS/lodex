@@ -21,15 +21,15 @@ const styles = {
     },
 };
 
-const RadarChartView = ({ chartData, colorSet, field }) => {
+const RadarChartView = ({ formatData = [], colorSet, field }) => {
     const color = colorSet[0];
     const axisRoundValue = get(field, 'format.args.axisRoundValue');
     const scale = get(field, 'format.args.scale');
-    const max = Math.max(...chartData.map(({ value }) => value));
+    const max = Math.max(...formatData.map(({ value }) => value));
     return (
         <div style={styles.container}>
             <ResponsiveContainer width="100%" height={300}>
-                <RadarChart data={chartData}>
+                <RadarChart data={formatData}>
                     <Radar
                         dataKey="value"
                         stroke={color}
@@ -57,7 +57,7 @@ RadarChartView.propTypes = {
     field: fieldPropTypes.isRequired,
     linkedResource: PropTypes.object,
     resource: PropTypes.object.isRequired,
-    chartData: PropTypes.array.isRequired,
+    formatData: PropTypes.array,
     colorSet: PropTypes.arrayOf(PropTypes.string),
 };
 
@@ -65,4 +65,4 @@ RadarChartView.defaultProps = {
     className: null,
 };
 
-export default compose(injectData, exportableToPng)(RadarChartView);
+export default compose(injectData(), exportableToPng)(RadarChartView);

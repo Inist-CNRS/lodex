@@ -36,7 +36,7 @@ const GraphLink = ({ link, children, p: polyglot }) => (
             <FlatButton
                 fullWidth
                 style={styles.detailsButton}
-                containerElement={Link}
+                containerElement={<Link />}
                 to={link}
                 label={polyglot.t('view_details')}
                 labelPosition="before"
@@ -48,7 +48,10 @@ const GraphLink = ({ link, children, p: polyglot }) => (
 
 GraphLink.propTypes = {
     link: PropTypes.string.isRequired,
-    children: PropTypes.element.isRequired,
+    children: PropTypes.oneOfType([
+        PropTypes.element.isRequired,
+        PropTypes.arrayOf(PropTypes.element.isRequired),
+    ]),
     p: polyglotPropTypes,
 };
 

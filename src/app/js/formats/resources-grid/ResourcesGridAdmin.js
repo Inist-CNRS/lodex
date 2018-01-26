@@ -23,17 +23,21 @@ const styles = {
 };
 
 export const defaultArgs = {
-    maxSize: '5',
     spaceWidth: '30%',
-    orderBy: 'value/asc',
+    params: {
+        maxSize: 5,
+        orderBy: 'value/asc',
+    },
 };
 
 class RessourcesGridAdmin extends Component {
     static propTypes = {
         args: PropTypes.shape({
-            maxSize: PropTypes.string,
             spaceWidth: PropTypes.string,
-            orderBy: PropTypes.string,
+            params: PropTypes.shape({
+                orderBy: PropTypes.string,
+                maxSize: PropTypes.string,
+            }),
         }),
         onChange: PropTypes.func.isRequired,
         p: polyglotPropTypes.isRequired,
@@ -44,12 +48,14 @@ class RessourcesGridAdmin extends Component {
     };
 
     setMaxSize = maxSize => {
-        const newArgs = { ...this.props.args, maxSize };
+        const { params, ...args } = this.props.args;
+        const newArgs = { ...args, params: { ...params, maxSize } };
         this.props.onChange(newArgs);
     };
 
     setOrderBy = orderBy => {
-        const newArgs = { ...this.props.args, orderBy };
+        const { params, ...args } = this.props.args;
+        const newArgs = { ...args, params: { ...params, orderBy } };
         this.props.onChange(newArgs);
     };
 
@@ -61,7 +67,7 @@ class RessourcesGridAdmin extends Component {
     render() {
         const {
             p: polyglot,
-            args: { maxSize, orderBy, spaceWidth },
+            args: { params: { maxSize, orderBy }, spaceWidth },
         } = this.props;
 
         return (

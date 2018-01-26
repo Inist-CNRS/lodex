@@ -13,7 +13,7 @@ const styles = {
     },
 };
 
-const PieChartView = ({ chartData, colorSet }) => (
+const PieChartView = ({ formatData = [], colorSet }) => (
     <div style={styles.container}>
         <ResponsiveContainer className="lodex-chart" width="100%" height={300}>
             <PieChart>
@@ -24,14 +24,14 @@ const PieChartView = ({ chartData, colorSet }) => (
                 />
                 <Pie
                     cx={155}
-                    data={chartData}
+                    data={formatData}
                     nameKey="_id"
                     fill="#8884d8"
                     outerRadius="63%"
                     labelLine
                     label
                 >
-                    {chartData.map((entry, index) => (
+                    {formatData.map((entry, index) => (
                         <Cell
                             key={String(index).concat('_cell_pie')}
                             fill={colorSet[index % colorSet.length]}
@@ -46,8 +46,8 @@ const PieChartView = ({ chartData, colorSet }) => (
 PieChartView.propTypes = {
     field: fieldPropTypes.isRequired,
     resource: PropTypes.object.isRequired,
-    chartData: PropTypes.array.isRequired,
+    formatData: PropTypes.array,
     colorSet: PropTypes.arrayOf(PropTypes.string),
 };
 
-export default compose(injectData, exportableToPng)(PieChartView);
+export default compose(injectData(), exportableToPng)(PieChartView);

@@ -104,12 +104,12 @@ BubbleView.propTypes = {
 
 BubbleView.displayName = 'BubbleView';
 
-const mapStateToProps = (state, { chartData, field }) => {
+const mapStateToProps = (state, { formatData, field }) => {
     const { diameter = 500, colorScheme } = fromFields.getFieldFormatArgs(
         state,
         field.name,
     );
-    if (!chartData) {
+    if (!formatData) {
         return {
             data: [],
         };
@@ -119,7 +119,7 @@ const mapStateToProps = (state, { chartData, field }) => {
         .size([diameter, diameter])
         .padding(5);
 
-    const root = hierarchy({ name: 'root', children: chartData })
+    const root = hierarchy({ name: 'root', children: formatData })
         .sum(d => d.value)
         .sort((a, b) => b.value - a.value);
     const data = packingFunction(root).leaves();
@@ -139,7 +139,7 @@ const mapDispatchToProps = {
 };
 
 export default compose(
-    injectData,
+    injectData(),
     connect(mapStateToProps, mapDispatchToProps),
     exportableToPng,
 )(BubbleView);

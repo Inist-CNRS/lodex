@@ -11,7 +11,7 @@ import BarChartView, {
 describe('BarChartView', () => {
     it('should pass valueAxisProps to XAxis and categoryProps to YAxis if direction is horizontal', () => {
         const props = {
-            chartData: [],
+            formatData: [],
             valueAxisProps: {
                 propsFor: 'value',
             },
@@ -34,7 +34,7 @@ describe('BarChartView', () => {
 
     it('should pass valueAxisProps to yAxis and categoryProps to XAxis if direction is vertical', () => {
         const props = {
-            chartData: [],
+            formatData: [],
             valueAxisProps: {
                 propsFor: 'value',
             },

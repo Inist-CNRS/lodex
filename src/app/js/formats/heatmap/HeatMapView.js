@@ -183,8 +183,8 @@ HeatMapView.propTypes = {
     yAxis: PropTypes.arrayOf(PropTypes.string).isRequired,
     dictionary: PropTypes.objectOf(PropTypes.objectOf(PropTypes.number))
         .isRequired,
-    legend: PropTypes.element.isRequired,
-    colorScale: PropTypes.func.isRequired,
+    legend: PropTypes.element,
+    colorScale: PropTypes.func,
     showTooltip: PropTypes.func.isRequired,
     hideTooltip: PropTypes.func.isRequired,
 };
@@ -200,13 +200,13 @@ const alphabeticalComparison = (a, b) => {
     return 0;
 };
 
-const mapStateToProps = (state, { chartData, field }) => {
+const mapStateToProps = (state, { formatData, field }) => {
     const { colorScheme, flipAxis } = fromFields.getFieldFormatArgs(
         state,
         field.name,
     );
 
-    if (!chartData) {
+    if (!formatData) {
         return {
             xAxis: [],
             yAxis: [],
@@ -215,7 +215,7 @@ const mapStateToProps = (state, { chartData, field }) => {
         };
     }
 
-    const { xAxis, yAxis, dictionary, maxValue } = chartData.reduce(
+    const { xAxis, yAxis, dictionary, maxValue } = formatData.reduce(
         flipAxis ? mapTargetToX : mapSourceToX,
         { xAxis: [], yAxis: [], dictionary: {}, maxValue: 0 },
     );
@@ -240,7 +240,7 @@ const mapDispatchToProps = {
 };
 
 export default compose(
-    injectData,
+    injectData(),
     connect(mapStateToProps, mapDispatchToProps),
     exportableToPng,
 )(HeatMapView);

@@ -1,4 +1,4 @@
-import Component from './Component';
+import Component from './EmphasedNumberView';
 import AdminComponent, { defaultArgs } from './EmphasedNumberAdmin';
 import DefaultFormat from '../DefaultFormat';
 

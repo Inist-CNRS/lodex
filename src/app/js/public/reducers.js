@@ -12,7 +12,7 @@ import fetchReducer from '../fetch';
 import i18n from '../i18n';
 import fields from '../fields';
 import resource from './resource';
-import graph from './graph';
+import format from '../formats/reducer';
 import user from '../user';
 
 const rootReducer = combineReducers({
@@ -27,7 +27,7 @@ const rootReducer = combineReducers({
     fields,
     resource,
     routing,
-    graph,
+    format,
     user,
     tooltip,
 });

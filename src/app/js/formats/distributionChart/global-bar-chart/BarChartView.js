@@ -34,7 +34,7 @@ const styles = {
 
 const BarChartView = ({
     colorSet,
-    chartData,
+    formatData,
     direction,
     valueAxisProps,
     categoryAxisProps,
@@ -44,7 +44,7 @@ const BarChartView = ({
     <div style={styles.container}>
         <ResponsiveContainer width="100%" height={height}>
             <BarChart
-                data={chartData}
+                data={formatData}
                 layout={direction === 'horizontal' ? 'vertical' : 'horizontal'}
                 margin={margin}
                 maxBarSize={barSize}
@@ -62,7 +62,7 @@ const BarChartView = ({
                 <Tooltip />
                 <CartesianGrid strokeDasharray="3 3" />
                 <Bar dataKey="value" fill="#8884d8">
-                    {chartData.map((entry, index) => (
+                    {formatData.map((entry, index) => (
                         <Cell
                             key={String(index).concat('_cell_bar')}
                             fill={colorSet[index % colorSet.length]}
@@ -75,7 +75,7 @@ const BarChartView = ({
 );
 
 BarChartView.propTypes = {
-    chartData: PropTypes.array.isRequired,
+    formatData: PropTypes.array.isRequired,
     colorSet: PropTypes.arrayOf(PropTypes.string),
     direction: PropTypes.oneOf(['horizontal', 'vertical']),
     categoryMargin: PropTypes.number.isRequired,
@@ -123,7 +123,7 @@ export const getCategoryAxisProps = ({
     [direction === 'horizontal' ? 'width' : 'height']: categoryMargin,
 });
 
-const mapStateToProps = (state, { field, chartData }) => {
+const mapStateToProps = (state, { field, formatData = [] }) => {
     const {
         axisRoundValue,
         diagonalCategoryAxis,
@@ -140,7 +140,7 @@ const mapStateToProps = (state, { field, chartData }) => {
         direction,
         axisRoundValue,
         scale,
-        max: Math.max(...chartData.map(({ value }) => value)),
+        max: Math.max(...formatData.map(({ value }) => value)),
         valueMargin: parseInt(valueMargin),
     });
 
@@ -152,8 +152,10 @@ const mapStateToProps = (state, { field, chartData }) => {
 
     const height =
         direction === 'horizontal'
-            ? chartData.length * (parseInt(barSize) + 8) + 20 + valueMargin
-            : 300 + categoryMargin;
+            ? formatData.length * (parseInt(barSize) + 8) +
+              20 +
+              parseInt(valueMargin)
+            : 300 + parseInt(categoryMargin);
 
     return {
         direction,
@@ -163,9 +165,10 @@ const mapStateToProps = (state, { field, chartData }) => {
         categoryAxisProps,
         barSize: parseInt(barSize),
         height,
+        formatData,
     };
 };
 
-export default compose(injectData, connect(mapStateToProps), exportableToPng)(
+export default compose(injectData(), connect(mapStateToProps), exportableToPng)(
     BarChartView,
 );

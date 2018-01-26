@@ -89,7 +89,7 @@ class CartographyView extends Component {
     handleMove = (data, event) => {
         const x = event.clientX;
         const y = event.clientY + window.pageYOffset;
-        const value = this.props.chartData[data.properties.ISO_A3];
+        const value = this.props.formatData[data.properties.ISO_A3];
         if (!value) {
             return;
         }
@@ -131,7 +131,7 @@ class CartographyView extends Component {
     };
 
     render() {
-        const { chartData, legend, colorScale, hoverColorScale } = this.props;
+        const { formatData, legend, colorScale, hoverColorScale } = this.props;
         if (!colorScale) {
             return null;
         }
@@ -170,7 +170,7 @@ class CartographyView extends Component {
                                 {(geographies, projection) =>
                                     geographies.map((geography, i) => {
                                         const value =
-                                            chartData[
+                                            formatData[
                                                 geography.properties.ISO_A3
                                             ];
 
@@ -203,7 +203,7 @@ class CartographyView extends Component {
 }
 
 CartographyView.propTypes = {
-    chartData: PropTypes.object.isRequired,
+    formatData: PropTypes.object.isRequired,
     legend: PropTypes.element.isRequired,
     showTooltip: PropTypes.func.isRequired,
     hideTooltip: PropTypes.func.isRequired,
@@ -211,22 +211,22 @@ CartographyView.propTypes = {
     hoverColorScale: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = (state, { chartData, field }) => {
+const mapStateToProps = (state, { formatData, field }) => {
     const { colorScheme, hoverColorScheme } = fromFields.getFieldFormatArgs(
         state,
         field.name,
     );
 
-    if (!chartData) {
+    if (!formatData) {
         return {
-            chartData: {},
+            formatData: {},
             maxValue: 0,
             colorScheme,
             hoverColorScheme,
         };
     }
 
-    const maxValue = chartData.reduce(
+    const maxValue = formatData.reduce(
         (acc, { value }) => (value > acc ? value : acc),
         0,
     );
@@ -238,8 +238,8 @@ const mapStateToProps = (state, { chartData, field }) => {
     });
 
     return {
-        chartData: chartData
-            ? chartData.reduce(
+        formatData: formatData
+            ? formatData.reduce(
                   (acc, { _id, value }) => ({
                       ...acc,
                       [_id]: value,
@@ -247,7 +247,7 @@ const mapStateToProps = (state, { chartData, field }) => {
                   {},
               )
             : null,
-        maxValue: chartData.reduce(
+        maxValue: formatData.reduce(
             (acc, { value }) => (value > acc ? value : acc),
             0,
         ),
@@ -263,7 +263,7 @@ const mapSispatchToProps = {
 };
 
 export default compose(
-    injectData,
+    injectData(),
     connect(mapStateToProps, mapSispatchToProps),
     exportableToPng,
 )(CartographyView);
