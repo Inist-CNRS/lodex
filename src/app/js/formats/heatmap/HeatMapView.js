@@ -7,7 +7,6 @@ import get from 'lodash.get';
 import { Tooltip, actions } from 'redux-tooltip';
 
 import injectData from '../injectData';
-import { fromFields } from '../../sharedSelectors';
 import { mapSourceToX, mapTargetToX } from './parseChartData';
 import getGradientScaleAndLegend from '../../lib/components/getGradientScaleAndLegend';
 import exportableToPng from '../exportableToPng';
@@ -200,12 +199,7 @@ const alphabeticalComparison = (a, b) => {
     return 0;
 };
 
-const mapStateToProps = (state, { formatData, field }) => {
-    const { colorScheme, flipAxis } = fromFields.getFieldFormatArgs(
-        state,
-        field.name,
-    );
-
+const mapStateToProps = (state, { formatData, colorScheme, flipAxis }) => {
     if (!formatData) {
         return {
             xAxis: [],

@@ -10,12 +10,14 @@ import injectData from '../injectData';
 
 class EmphasedNumberView extends Component {
     render() {
-        const { field, className, resource, formatData } = this.props;
-        const size =
-            field.format && field.format.args && field.format.args.size
-                ? field.format.args.size
-                : 1;
-        const { colors } = field.format.args || { colors: '' };
+        const {
+            field,
+            className,
+            resource,
+            formatData,
+            size,
+            colors,
+        } = this.props;
         const colorsSet = String(colors)
             .split(/[^\w]/)
             .filter(x => x.length > 0)
@@ -39,6 +41,8 @@ EmphasedNumberView.propTypes = {
     resource: PropTypes.object,
     formatData: PropTypes.string,
     className: PropTypes.string,
+    size: PropTypes.number.isRequired,
+    colors: PropTypes.string.isRequired,
 };
 
 EmphasedNumberView.defaultProps = {

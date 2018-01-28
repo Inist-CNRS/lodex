@@ -4,30 +4,36 @@ import { Link } from 'react-router';
 import { field as fieldPropTypes } from '../../propTypes';
 import { getResourceUri } from '../../../../common/uris';
 
-const UriView = ({ className, linkedResource, resource, field, fields }) => {
+const UriView = ({
+    className,
+    linkedResource,
+    resource,
+    field,
+    fields,
+    type,
+    value,
+}) => {
     const uri = resource[field.name];
     let label;
 
-    if (field.format && field.format.args && field.format.args.type) {
-        switch (field.format.args.type) {
-            case 'text':
-                label = field.format.args.value;
-                break;
+    switch (type) {
+        case 'text':
+            label = value;
+            break;
 
-            case 'column': {
-                if (linkedResource) {
-                    const fieldForLabel = fields.find(
-                        f => f.label === field.format.args.value,
-                    );
-                    label = linkedResource[fieldForLabel.name];
-                }
-                break;
+        case 'column': {
+            if (linkedResource) {
+                const fieldForLabel = fields.find(
+                    f => f.label === field.format.args.value,
+                );
+                label = linkedResource[fieldForLabel.name];
             }
-
-            default:
-                label = uri;
-                break;
+            break;
         }
+        case 'value':
+        default:
+            label = uri;
+            break;
     }
 
     return (
@@ -41,8 +47,10 @@ UriView.propTypes = {
     className: PropTypes.string,
     field: fieldPropTypes.isRequired,
     fields: PropTypes.arrayOf(fieldPropTypes).isRequired,
-    linkedResource: PropTypes.object, // eslint-disable-line
-    resource: PropTypes.object.isRequired, // eslint-disable-line
+    linkedResource: PropTypes.object,
+    resource: PropTypes.object.isRequired,
+    type: PropTypes.oneOf(['value', 'text', 'column']),
+    value: PropTypes.string.isRequired,
 };
 
 UriView.defaultProps = {

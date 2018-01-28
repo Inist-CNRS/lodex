@@ -30,6 +30,10 @@ function getIconFromLabel(labels) {
     return <ActionBookmark iconStyle={smallIcon} style={smallIcon} />;
 }
 
+const SeeMoreStyle = {
+    float: 'right',
+};
+
 export default class Roadmap extends Component {
     constructor(props) {
         super(props);
@@ -37,25 +41,22 @@ export default class Roadmap extends Component {
     }
 
     componentDidMount() {
-        const { resource, field } = this.props;
+        const { resource, field, trelloToken, trelloKey } = this.props;
         const trelloURL = resource[field.name];
         const options = {
-            token: field.format.args.trelloToken,
-            key: field.format.args.trelloKey,
+            token: trelloToken,
+            key: trelloKey,
         };
         milestones(trelloURL, options)
             .then(values => {
                 this.setState({ milestones: values });
             })
             .catch(error => {
-                console.error(error); // eslint-disable-line no-console
+                console.error(error);
             });
     }
 
     render() {
-        const SeeMoreStyle = {
-            float: 'right',
-        };
         return (
             <Timeline>
                 {this.state.milestones.map((milestone, index) => (
@@ -78,8 +79,9 @@ export default class Roadmap extends Component {
 
 Roadmap.propTypes = {
     field: fieldPropTypes.isRequired,
-    linkedResource: PropTypes.object, // eslint-disable-line
-    resource: PropTypes.object.isRequired, // eslint-disable-line
+    resource: PropTypes.object.isRequired,
+    trelloToken: PropTypes.string.isRequired,
+    trelloKey: PropTypes.string.isRequired,
 };
 
 Roadmap.defaultProps = {

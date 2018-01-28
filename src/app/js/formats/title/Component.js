@@ -2,29 +2,33 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { field as fieldPropTypes } from '../../propTypes';
 
-const TitleView = ({ resource, field }) => {
-    let level = 1;
-    if (field.format && field.format.args && field.format.args.level) {
-        level = field.format.args.level;
+const TitleView = ({ resource, field, level }) => {
+    const value = resource[field.name];
+    switch (level) {
+        case 6:
+            return <h6>{value}</h6>;
+        case 5:
+            return <h5>{value}</h5>;
+        case 4:
+            return <h4>{value}</h4>;
+        case 3:
+            return <h3>{value}</h3>;
+        case 2:
+            return <h2>{value}</h2>;
+        case 1:
+        default:
+            return <h1>{value}</h1>;
     }
-    if (level === 1) {
-        return <h1>{resource[field.name]}</h1>;
-    }
-    if (level === 2) {
-        return <h2>{resource[field.name]}</h2>;
-    }
-    if (level === 3) {
-        return <h3>{resource[field.name]}</h3>;
-    }
-    return <h4>{resource[field.name]}</h4>;
 };
 
 TitleView.propTypes = {
     field: fieldPropTypes.isRequired,
-    resource: PropTypes.object.isRequired, // eslint-disable-line
+    resource: PropTypes.object.isRequired,
+    level: PropTypes.oneOf([1, 2, 3, 4, 5, 6]).isRequired,
 };
 
 TitleView.defaultProps = {
     className: null,
 };
+
 export default TitleView;

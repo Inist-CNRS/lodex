@@ -13,7 +13,6 @@ import isEqual from 'lodash.isequal';
 import { scaleLinear } from 'd3-scale';
 
 import injectData from '../injectData';
-import { fromFields } from '../../sharedSelectors';
 import exportableToPng from '../exportableToPng';
 
 const simulationOptions = {
@@ -104,11 +103,9 @@ Network.propTypes = {
     ).isRequired,
 };
 
-const mapStateToProps = (state, { formatData, field }) => {
-    const { nodeColor } = fromFields.getFieldFormatArgs(state, field.name);
+const mapStateToProps = (state, { formatData }) => {
     if (!formatData) {
         return {
-            nodeColor,
             nodes: [],
             links: [],
         };
@@ -141,7 +138,6 @@ const mapStateToProps = (state, { formatData, field }) => {
         .range([1, 40]);
 
     return {
-        nodeColor,
         nodes: nodes.map(node => ({
             ...node,
             radius: scale(node.radius),
