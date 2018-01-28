@@ -39,7 +39,7 @@ class EmphasedNumberView extends Component {
 EmphasedNumberView.propTypes = {
     field: fieldPropTypes.isRequired,
     resource: PropTypes.object,
-    formatData: PropTypes.string,
+    formatData: PropTypes.number,
     className: PropTypes.string,
     size: PropTypes.number.isRequired,
     colors: PropTypes.string.isRequired,

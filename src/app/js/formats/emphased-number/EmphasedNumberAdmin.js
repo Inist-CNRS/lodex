@@ -24,13 +24,13 @@ const styles = {
 
 export const defaultArgs = {
     size: 4,
-    colors: '#8B8B8B #5B5B5B #818181',
+    colors: '#818181 #8B8B8B #5B5B5B',
 };
 
 class EmphasedNumberAdmin extends Component {
     static propTypes = {
         args: PropTypes.shape({
-            size: PropTypes.string,
+            size: PropTypes.number,
             colors: PropTypes.string,
         }),
         onChange: PropTypes.func.isRequired,

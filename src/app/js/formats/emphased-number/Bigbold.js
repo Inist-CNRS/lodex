@@ -30,9 +30,9 @@ const Bigbold = ({ value, colorsSet, size }) => {
 };
 
 Bigbold.propTypes = {
-    value: PropTypes.string.isRequired, // eslint-disable-line
-    colorsSet: PropTypes.array.isRequired, // eslint-disable-line
-    size: PropTypes.number.isRequired, // eslint-disable-line
+    value: PropTypes.string.isRequired,
+    colorsSet: PropTypes.array.isRequired,
+    size: PropTypes.number.isRequired,
 };
 
 export default Bigbold;

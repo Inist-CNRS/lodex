@@ -1,24 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { field as fieldPropTypes } from '../../propTypes';
-
-const getLabel = (field, linkedResource, resource, fields, type, value) => {
-    switch (type) {
-        case 'text':
-            return value;
-
-        case 'column': {
-            if (linkedResource) {
-                const fieldForLabel = fields.find(f => f.label === value);
-                return linkedResource[fieldForLabel.name];
-            }
-            return resource[field.name];
-        }
-
-        default:
-            return resource[field.name];
-    }
-};
+import getLabel from '../shared/getLabel';
 
 const LinkView = ({
     className,

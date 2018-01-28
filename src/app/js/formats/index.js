@@ -80,7 +80,7 @@ export const getComponent = field => {
 };
 
 const getArgs = memoize(
-    (field, defaultArgs) => merge(get(field, 'format.args'), defaultArgs),
+    (field, defaultArgs) => merge(defaultArgs, get(field, 'format.args', {})),
     field => JSON.stringify(field),
 );
 
