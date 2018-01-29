@@ -20,9 +20,11 @@ const SelectFormat = ({ formats, value, onChange, p: polyglot }) => (
     >
         <MenuItem value="None" primaryText="None" />
 
-        {formats.map(f => (
-            <MenuItem key={f} value={f} primaryText={polyglot.t(f)} />
-        ))}
+        {formats
+            .sort((x, y) => polyglot.t(x).localeCompare(polyglot.t(y)))
+            .map(f => (
+                <MenuItem key={f} value={f} primaryText={polyglot.t(f)} />
+            ))}
     </SelectField>
 );
 
