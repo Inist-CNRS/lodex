@@ -4,7 +4,7 @@ import { reducer as form } from 'redux-form';
 import { polyglotReducer as polyglot } from 'redux-polyglot';
 import { reducer as tooltip } from 'redux-tooltip';
 
-import characteristic from './characteristic';
+import characteristic from '../characteristic';
 import dataset from './dataset';
 import exportReducer from './export';
 import facet from './facet';

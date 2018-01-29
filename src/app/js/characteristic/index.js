@@ -123,7 +123,7 @@ const isAdding = state => state.isAdding;
 
 const getError = state => state.error;
 
-export const fromCharacteristic = {
+export const selectors = {
     getNewCharacteristics,
     getCharacteristicError,
     getCharacteristics,

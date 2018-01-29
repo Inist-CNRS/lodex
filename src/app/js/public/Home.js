@@ -14,7 +14,7 @@ import getTitle from '../lib/getTitle';
 import Alert from '../lib/components/Alert';
 import Card from '../lib/components/Card';
 import Loading from '../lib/components/Loading';
-import DatasetCharacteristics from './characteristic/DatasetCharacteristics';
+import DatasetCharacteristics from '../characteristic/DatasetCharacteristics';
 import NoDataset from './NoDataset';
 import Version from './Version';
 import { preLoadDatasetPage } from './dataset';

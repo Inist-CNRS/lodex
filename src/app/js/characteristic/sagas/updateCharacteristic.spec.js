@@ -2,11 +2,11 @@ import expect from 'expect';
 import { call, put, select } from 'redux-saga/effects';
 
 import { updateCharacteristicsError, updateCharacteristicsSuccess } from '../';
-import { fromUser } from '../../../sharedSelectors';
-import fetchSaga from '../../../lib/sagas/fetchSaga';
+import { fromUser } from '../../sharedSelectors';
+import fetchSaga from '../../lib/sagas/fetchSaga';
 
 import { handleUpdateCharacteristics } from './updateCharacteristic';
-import { configureFieldSuccess } from '../../../fields/index';
+import { configureFieldSuccess } from '../../fields/index';
 
 describe('characteristic saga', () => {
     describe('handleUpdateCharacteristics', () => {

@@ -8,7 +8,7 @@ import reducer, {
     updateCharacteristicsSuccess,
 } from './';
 
-import { loadPublicationSuccess } from '../../fields';
+import { loadPublicationSuccess } from '../fields';
 
 describe('characteristic reducer', () => {
     it('should initialize with correct state', () => {
