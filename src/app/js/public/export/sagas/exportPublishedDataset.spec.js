@@ -1,12 +1,12 @@
 import expect from 'expect';
 import { call, select } from 'redux-saga/effects';
 
-import {
-    handleExportPublishedDatasetSuccess,
-    open,
-} from './exportPublishedDataset';
+import { handleExportPublishedDatasetSuccess } from './exportPublishedDataset';
 import getQueryString from '../../../lib/getQueryString';
 import { fromDataset, fromFacet } from '../../selectors';
+import { fromUser } from '../../../sharedSelectors';
+import fetchSaga from '../../../lib/sagas/fetchSaga';
+import downloadFile from '../../../lib/downloadFile';
 
 describe('export saga', () => {
     describe('handleExportPublishedDatasetSuccess', () => {
@@ -62,9 +62,24 @@ describe('export saga', () => {
             );
         });
 
-        it('should call window.open with type and queryString', () => {
+        it('should select fromUser.getExportPublishedDatasetRequest', () => {
             expect(saga.next('queryString').value).toEqual(
-                call(open, '/api/export/type?queryString'),
+                select(fromUser.getExportPublishedDatasetRequest, {
+                    type: 'type',
+                    queryString: 'queryString',
+                }),
+            );
+        });
+
+        it('should fetch request', () => {
+            expect(saga.next('request').value).toEqual(
+                call(fetchSaga, 'request', [], 'blob'),
+            );
+        });
+
+        it('should call downloadFile with response', () => {
+            expect(saga.next({ response: 'response' }).value).toEqual(
+                call(downloadFile, 'response', 'export.type'),
             );
         });
     });
