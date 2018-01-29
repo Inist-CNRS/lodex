@@ -40,6 +40,12 @@ export default FormatView => {
 
         render() {
             const { error } = this.state;
+            const { graphLink } = this.props;
+
+            if (graphLink) {
+                return <FormatView {...this.props} />;
+            }
+
             return (
                 <div>
                     <div
@@ -68,6 +74,7 @@ export default FormatView => {
 
     ExportableComponent.propTypes = {
         field: PropTypes.shape({ label: PropTypes.string }),
+        graphLink: PropTypes.bool,
     };
 
     return ExportableComponent;

@@ -39,6 +39,7 @@ export class FormatComponent extends Component {
             filter,
             facets,
             colorSet,
+            graphLink,
         } = this.props;
         const { ViewComponent, args } = getViewComponent(field, isList);
 
@@ -55,6 +56,7 @@ export class FormatComponent extends Component {
                 filter={filter}
                 facets={facets}
                 colorSet={colorSet}
+                graphLink={graphLink}
                 {...args}
             />
         );
@@ -75,6 +77,7 @@ FormatComponent.propTypes = {
     filter: PropTypes.string,
     facets: PropTypes.object,
     colorSet: PropTypes.arrayOf(PropTypes.string),
+    graphLink: PropTypes.bool,
 };
 
 FormatComponent.defaultProps = {
