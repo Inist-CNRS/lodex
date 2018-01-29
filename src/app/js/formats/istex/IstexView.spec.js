@@ -4,7 +4,7 @@ import { shallow } from 'enzyme';
 import { List } from 'material-ui/List';
 
 import Alert from '../../lib/components/Alert';
-import { IstexView } from './Component';
+import { IstexView } from './IstexView';
 import IstexItem from './IstexItem';
 
 describe('<IstexView />', () => {

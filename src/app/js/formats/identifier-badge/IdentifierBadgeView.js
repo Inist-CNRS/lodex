@@ -3,12 +3,7 @@ import PropTypes from 'prop-types';
 import { StyleSheet, css } from 'aphrodite';
 import { field as fieldPropTypes } from '../../propTypes';
 
-const IdentifierBadgeView = ({ resource, field }) => {
-    const typid =
-        field.format && field.format.args && field.format.args.typid
-            ? field.format.args.typid
-            : 'ID';
-    const { colors } = field.format.args || { colors: '' };
+const IdentifierBadgeView = ({ resource, field, typid, colors }) => {
     const colorsSet = String(colors)
         .split(/[^\w]/)
         .filter(x => x.length > 0)
@@ -64,6 +59,8 @@ const IdentifierBadgeView = ({ resource, field }) => {
 
 IdentifierBadgeView.propTypes = {
     field: fieldPropTypes.isRequired,
+    typid: PropTypes.string.isRequired,
+    colors: PropTypes.string.isRequired,
     resource: PropTypes.object.isRequired, // eslint-disable-line
 };
 

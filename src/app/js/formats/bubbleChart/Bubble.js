@@ -4,8 +4,7 @@ import { hsl } from 'd3-color';
 import PropTypes from 'prop-types';
 
 const styles = {
-    leaf: memoize(({ x, y, r }, name, color, style) => ({
-        ...style,
+    leaf: memoize(({ x, y, r }, name, color) => ({
         position: 'absolute',
         top: x - r,
         left: y - r,
@@ -27,9 +26,9 @@ const styles = {
     })),
 };
 
-const Bubble = ({ r, x, y, name, value, color, style }) => (
+const Bubble = ({ r, x, y, name, value, color }) => (
     <div
-        style={styles.leaf({ r, x, y }, name, color, style)}
+        style={styles.leaf({ r, x, y }, name, color)}
         data-value={value}
         data-name={name}
     >
@@ -52,7 +51,6 @@ Bubble.propTypes = {
     name: PropTypes.string.isRequired,
     color: PropTypes.string.isRequired,
     value: PropTypes.number.isRequired,
-    style: PropTypes.object.isRequired,
 };
 
 export default Bubble;

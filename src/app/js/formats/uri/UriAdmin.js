@@ -22,7 +22,7 @@ export const defaultArgs = {
 class UriAdmin extends Component {
     static propTypes = {
         args: PropTypes.shape({
-            type: PropTypes.string,
+            type: PropTypes.oneOf(['value', 'text', 'column']),
             value: PropTypes.string,
         }),
         onChange: PropTypes.func.isRequired,

@@ -1,7 +1,7 @@
 import React from 'react';
 import expect, { createSpy } from 'expect';
 import { shallow } from 'enzyme';
-import UriView from '../formats/uri/Component';
+import UriView from '../formats/uri/UriView';
 
 import { FormatComponent as Format } from './Format';
 
@@ -74,6 +74,8 @@ describe('<Format />', () => {
             facets: undefined,
             filter: undefined,
             colorSet: undefined,
+            type: 'value',
+            value: '',
         });
     });
 });

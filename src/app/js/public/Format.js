@@ -40,7 +40,7 @@ export class FormatComponent extends Component {
             facets,
             colorSet,
         } = this.props;
-        const ViewComponent = getViewComponent(field, isList);
+        const { ViewComponent, args } = getViewComponent(field, isList);
 
         return (
             <ViewComponent
@@ -55,6 +55,7 @@ export class FormatComponent extends Component {
                 filter={filter}
                 facets={facets}
                 colorSet={colorSet}
+                {...args}
             />
         );
     }

@@ -2,7 +2,7 @@ import React from 'react';
 import expect from 'expect';
 import { shallow } from 'enzyme';
 
-import RedirectView from './Component';
+import RedirectView from './RedirectView';
 
 describe('<RedirectView />', () => {
     it('should render', () => {

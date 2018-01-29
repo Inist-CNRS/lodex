@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import fetch from 'omni-fetch';
 import RaisedButton from 'material-ui/RaisedButton';
 import CircularProgress from 'material-ui/CircularProgress';
 import translate from 'redux-polyglot/translate';
@@ -9,10 +8,8 @@ import compose from 'recompose/compose';
 
 import LodexResource from '../shared/LodexResource';
 import { field as fieldPropTypes } from '../../propTypes';
-import getQueryString from '../../lib/getQueryString';
 import injectData from '../injectData';
 import { connect } from 'react-redux';
-import { fromFields } from '../../sharedSelectors';
 
 class ResourcesGridView extends Component {
     static propTypes = {
@@ -30,39 +27,6 @@ class ResourcesGridView extends Component {
             fetch: false,
             more: 10,
         };
-    }
-
-    async fetchData() {
-        this.setState({ fetch: true });
-        const { field } = this.props;
-        const orderBy =
-            field.format && field.format.args && field.format.args.orderBy
-                ? field.format.args.orderBy
-                : 'value/asc';
-        const maxSize = Number(
-            field.format && field.format.args && field.format.args.maxSize
-                ? field.format.args.maxSize
-                : 5,
-        );
-
-        const [sortBy, sortDir] = String(orderBy || 'value/asc').split('/');
-        const by = sortBy === 'value' ? 'value' : '_id';
-        const dir = sortDir === 'asc' ? 1 : -1;
-        const sort = {};
-        sort[by] = dir;
-
-        const queryString = getQueryString({
-            sort,
-            params: { maxSize: maxSize + this.state.more },
-        });
-
-        const url = `/api/run/syndication/?${queryString}`;
-
-        const response = await fetch(url);
-        const result = await response.json();
-        const data = result.data || result.items || [];
-        const total = result.total || 0;
-        this.setState({ data, total, maxSize, fetch: false });
     }
 
     handleMore = () => {
@@ -141,26 +105,18 @@ class ResourcesGridView extends Component {
     }
 }
 
-const mapStateToProps = (state, { field, formatData }) => {
-    const {
-        params: { maxSize },
-        spaceWidth = '30%',
-    } = fromFields.getFieldFormatArgs(state, field.name);
-
+const mapStateToProps = (state, { formatData, params }) => {
     if (!formatData || !formatData.items) {
         return {
-            maxSize: parseInt(maxSize),
-            spaceWidth,
             data: [],
             total: 0,
         };
     }
 
     return {
-        maxSize: parseInt(maxSize),
-        spaceWidth,
         data: formatData.items,
         total: formatData.total,
+        maxSize: params.maxSize,
     };
 };
 

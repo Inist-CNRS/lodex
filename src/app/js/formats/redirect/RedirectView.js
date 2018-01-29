@@ -7,7 +7,7 @@ const isURL = v =>
         (v.startsWith('http://') || v.startsWith('https://'))) ||
     false;
 
-class Redirect extends Component {
+class RedirectView extends Component {
     constructor(props) {
         super(props);
     }
@@ -30,15 +30,15 @@ class Redirect extends Component {
     }
 }
 
-Redirect.propTypes = {
+RedirectView.propTypes = {
     field: fieldPropTypes.isRequired,
     linkedResource: PropTypes.object, // eslint-disable-line
     resource: PropTypes.object.isRequired, // eslint-disable-line
     className: PropTypes.string,
 };
 
-Redirect.defaultProps = {
+RedirectView.defaultProps = {
     className: null,
 };
 
-export default Redirect;
+export default RedirectView;

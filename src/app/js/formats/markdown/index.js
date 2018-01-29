@@ -1,4 +1,4 @@
-import Component from './Component';
+import Component from './MarkdownView';
 import EditionComponent from './EditionComponent';
 import DefaultFormat from '../DefaultFormat';
 

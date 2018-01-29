@@ -1,4 +1,4 @@
-import Component from './Component';
+import Component from './TitleView';
 import AdminComponent, { defaultArgs } from './TitleAdmin';
 import DefaultFormat from '../DefaultFormat';
 

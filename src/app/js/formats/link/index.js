@@ -1,4 +1,4 @@
-import Component from './Component';
+import Component from './LinkView';
 import AdminComponent, { defaultArgs } from '../DefaultAdminComponentWithLabel';
 import DefaultFormat from '../DefaultFormat';
 

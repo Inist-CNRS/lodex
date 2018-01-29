@@ -1,9 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router';
 import { field as fieldPropTypes } from '../../propTypes';
+import { getResourceUri } from '../../../../common/uris';
 import getLabel from '../shared/getLabel';
 
-const LinkView = ({
+const UriView = ({
     className,
     linkedResource,
     resource,
@@ -12,7 +14,8 @@ const LinkView = ({
     type,
     value,
 }) => {
-    const imageURL = getLabel(
+    const uri = resource[field.name];
+    const label = getLabel(
         field,
         linkedResource,
         resource,
@@ -20,26 +23,26 @@ const LinkView = ({
         type,
         value,
     );
-    const link = resource[field.name];
+
     return (
-        <a className={className} href={`${link}`}>
-            <img src={imageURL} />
-        </a>
+        <Link className={className} to={getResourceUri({ uri })}>
+            {label}
+        </Link>
     );
 };
 
-LinkView.propTypes = {
+UriView.propTypes = {
     className: PropTypes.string,
     field: fieldPropTypes.isRequired,
     fields: PropTypes.arrayOf(fieldPropTypes).isRequired,
     linkedResource: PropTypes.object,
     resource: PropTypes.object.isRequired,
-    type: PropTypes.string.isRequired,
+    type: PropTypes.oneOf(['value', 'text', 'column']),
     value: PropTypes.string.isRequired,
 };
 
-LinkView.defaultProps = {
+UriView.defaultProps = {
     className: null,
 };
 
-export default LinkView;
+export default UriView;

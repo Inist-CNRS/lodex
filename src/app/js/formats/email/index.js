@@ -1,4 +1,4 @@
-import Component from './Component';
+import Component from './EmailView';
 import AdminComponent, { defaultArgs } from '../DefaultAdminComponentWithLabel';
 import DefaultFormat from '../DefaultFormat';
 

@@ -2,7 +2,7 @@ import React from 'react';
 import expect from 'expect';
 import { shallow } from 'enzyme';
 
-import HtmlView from './Component';
+import HtmlView from './HtmlView';
 
 describe('<HtmlView />', () => {
     it('should render', () => {

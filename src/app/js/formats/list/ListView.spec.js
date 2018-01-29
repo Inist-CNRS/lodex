@@ -2,8 +2,8 @@ import React from 'react';
 import expect from 'expect';
 import { shallow } from 'enzyme';
 
-import Component, { UL, OL } from './Component';
-import Title from '../title/Component';
+import Component, { UL, OL } from './ListView';
+import Title from '../title/TitleView';
 
 describe('list format view Component', () => {
     it('should render list of value', () => {
@@ -11,14 +11,9 @@ describe('list format view Component', () => {
             className: 'class',
             field: {
                 name: 'name',
-                format: {
-                    name: 'list',
-                    args: {
-                        subFormat: null,
-                        subFormatOptions: {},
-                    },
-                },
             },
+            subFormat: null,
+            subFormatOptions: {},
             resource: {
                 name: ['value1', 'value2', 'value3'],
             },
@@ -34,15 +29,10 @@ describe('list format view Component', () => {
             className: 'class',
             field: {
                 name: 'name',
-                format: {
-                    name: 'list',
-                    args: {
-                        subFormat: 'title',
-                        subFormatOptions: {
-                            level: 2,
-                        },
-                    },
-                },
+            },
+            subFormat: 'title',
+            subFormatOptions: {
+                level: 2,
             },
             resource: {
                 name: ['value1', 'value2', 'value3'],
@@ -63,14 +53,9 @@ describe('list format view Component', () => {
             className: 'class',
             field: {
                 name: 'name',
-                format: {
-                    name: 'list',
-                    args: {
-                        subFormat: null,
-                        subFormatOptions: {},
-                    },
-                },
             },
+            subFormat: null,
+            subFormatOptions: {},
             resource: {
                 name: ['value1', 'value2', 'value3'],
             },
@@ -87,15 +72,10 @@ describe('list format view Component', () => {
             className: 'class',
             field: {
                 name: 'name',
-                format: {
-                    name: 'list',
-                    args: {
-                        type: 'ordered',
-                        subFormat: null,
-                        subFormatOptions: {},
-                    },
-                },
             },
+            type: 'ordered',
+            subFormat: null,
+            subFormatOptions: {},
             resource: {
                 name: ['value1', 'value2', 'value3'],
             },

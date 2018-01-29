@@ -1,9 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router';
 import { field as fieldPropTypes } from '../../propTypes';
 import getLabel from '../shared/getLabel';
 
-const LinkView = ({
+const EmailView = ({
     className,
     linkedResource,
     resource,
@@ -12,7 +13,7 @@ const LinkView = ({
     type,
     value,
 }) => {
-    const imageURL = getLabel(
+    const label = getLabel(
         field,
         linkedResource,
         resource,
@@ -20,26 +21,27 @@ const LinkView = ({
         type,
         value,
     );
-    const link = resource[field.name];
+    const email = resource[field.name];
+
     return (
-        <a className={className} href={`${link}`}>
-            <img src={imageURL} />
-        </a>
+        <Link className={className} to={`mailto:${email}`}>
+            {label}
+        </Link>
     );
 };
 
-LinkView.propTypes = {
+EmailView.propTypes = {
     className: PropTypes.string,
     field: fieldPropTypes.isRequired,
     fields: PropTypes.arrayOf(fieldPropTypes).isRequired,
-    linkedResource: PropTypes.object,
     resource: PropTypes.object.isRequired,
+    linkedResource: PropTypes.object.isRequired,
     type: PropTypes.string.isRequired,
     value: PropTypes.string.isRequired,
 };
 
-LinkView.defaultProps = {
+EmailView.defaultProps = {
     className: null,
 };
 
-export default LinkView;
+export default EmailView;

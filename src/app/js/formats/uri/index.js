@@ -1,4 +1,4 @@
-import Component from './Component';
+import Component from './UriView';
 import AdminComponent, { defaultArgs } from './UriAdmin';
 import DefaultFormat from '../DefaultFormat';
 

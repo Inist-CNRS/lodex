@@ -15,7 +15,6 @@ import compose from 'recompose/compose';
 
 import injectData from '../../injectData';
 import exportableToPng from '../../exportableToPng';
-import { fromFields } from '../../../sharedSelectors';
 
 const margin = {
     top: 10,
@@ -123,8 +122,10 @@ export const getCategoryAxisProps = ({
     [direction === 'horizontal' ? 'width' : 'height']: categoryMargin,
 });
 
-const mapStateToProps = (state, { field, formatData = [] }) => {
-    const {
+const mapStateToProps = (
+    state,
+    {
+        formatData = [],
         axisRoundValue,
         diagonalCategoryAxis,
         diagonalValueAxis,
@@ -133,8 +134,8 @@ const mapStateToProps = (state, { field, formatData = [] }) => {
         valueMargin = 120,
         categoryMargin = 120,
         barSize = 20,
-    } = fromFields.getFieldFormatArgs(state, field.name);
-
+    },
+) => {
     const valueAxisProps = getValueAxisProps({
         diagonalValueAxis,
         direction,

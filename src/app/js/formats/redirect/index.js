@@ -1,4 +1,4 @@
-import Component from './Component';
+import Component from './RedirectView';
 import DefaultFormat from '../DefaultFormat';
 
 export default {

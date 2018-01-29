@@ -12,7 +12,7 @@ const LinkView = ({
     type,
     value,
 }) => {
-    const imageURL = getLabel(
+    const label = getLabel(
         field,
         linkedResource,
         resource,
@@ -20,10 +20,27 @@ const LinkView = ({
         type,
         value,
     );
+
+    if (Array.isArray(resource[field.name])) {
+        const links = resource[field.name];
+
+        return (
+            <ul>
+                {links.map((link, index) => (
+                    <li key={index}>
+                        <a className={className} href={`${link}`}>
+                            {link}
+                        </a>
+                    </li>
+                ))}
+            </ul>
+        );
+    }
+
     const link = resource[field.name];
     return (
         <a className={className} href={`${link}`}>
-            <img src={imageURL} />
+            {label}
         </a>
     );
 };

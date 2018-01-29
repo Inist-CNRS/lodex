@@ -1,4 +1,4 @@
-import Component from './Component';
+import Component from './SentenceView';
 import AdminComponent, { defaultArgs } from './SentenceAdmin';
 import DefaultFormat from '../DefaultFormat';
 

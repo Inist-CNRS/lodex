@@ -1,4 +1,4 @@
-import Component from './Component';
+import Component from './TrelloTimelineView';
 import AdminComponent, { defaultArgs } from './TrelloTimelineAdmin';
 import DefaultFormat from '../DefaultFormat';
 
