@@ -283,6 +283,15 @@ export const getUrlRequest = (state, { url, queryString }) =>
         url: `${url}${queryString ? `?${queryString}` : ''}`,
     });
 
+export const getExportPublishedDatasetRequest = (
+    state,
+    { type, queryString },
+) =>
+    getRequest(state, {
+        method: 'GET',
+        url: `/api/export/${type}?${queryString}`,
+    });
+
 export const selectors = {
     isAdmin,
     getToken,
@@ -319,4 +328,5 @@ export const selectors = {
     getLoadFieldRequest,
     getUploadUrlRequest,
     getUrlRequest,
+    getExportPublishedDatasetRequest,
 };
