@@ -81,7 +81,7 @@ export const getComponent = field => {
 
 const getArgs = memoize(
     (field, defaultArgs) => merge(defaultArgs, get(field, 'format.args', {})),
-    field => JSON.stringify(field),
+    (_, field) => JSON.stringify(field),
 );
 
 export const getViewComponent = (field, isList) => {
