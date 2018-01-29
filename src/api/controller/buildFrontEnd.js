@@ -1,21 +1,23 @@
 import webpack from 'webpack';
 
 import webpackConfig from '../../app/webpack.config.babel';
+import logger from '../services/logger';
 
-let frontendBuildStarted = false;
 let frontendBuilt = false;
 let frontendBuildError = false;
 
-export default async function buildFrontend(ctx, next) {
-    if (!frontendBuildStarted) {
-        frontendBuildStarted = true;
+export const buildFrontend = () => {
+    const start = new Date();
+    logger.info(`Starting webpack build.`);
+    webpack(webpackConfig, error => {
+        const end = new Date();
+        logger.info(`Webpack done. Took ${end.getTime() - start.getTime()} ms`);
+        frontendBuildError = error;
+        frontendBuilt = true;
+    });
+};
 
-        webpack(webpackConfig, error => {
-            frontendBuildError = error;
-            frontendBuilt = true;
-        });
-    }
-
+export async function buildFrontendMiddleware(ctx, next) {
     if (!frontendBuilt) {
         ctx.body = `
 The application is initializing.

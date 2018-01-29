@@ -1,7 +1,7 @@
+import 'babel-polyfill';
 import config from 'config';
 import {
     DefinePlugin,
-    LoaderOptionsPlugin,
     SourceMapDevToolPlugin,
     HotModuleReplacementPlugin,
     NamedModulesPlugin,
@@ -50,58 +50,13 @@ export default {
                 options: {
                     cacheDirectory: true,
                     forceEnv: 'browser',
+                    presets: ['react', 'stage-2'],
                 },
             },
             {
                 test: /\.json$/,
+                include: [resolve(__dirname, '../../config.json')],
                 loader: 'json-loader',
-            },
-            {
-                test: /\.jpe?g$|\.gif$|\.png$/,
-                loader: 'url-loader',
-                options: {
-                    limit: 10000,
-                    name: '[hash].[ext]',
-                },
-            },
-            {
-                test: /\.(otf|svg)(\?.+)?$/,
-                loader: 'url-loader',
-                options: {
-                    limit: 8192,
-                },
-            },
-            {
-                test: /\.eot(\?\S*)?$/,
-                loader: 'url-loader',
-                options: {
-                    limit: 10000,
-                    mimetype: 'application/vnd.ms-fontobject',
-                },
-            },
-            {
-                test: /\.woff2(\?\S*)?$/,
-                loader: 'url-loader',
-                options: {
-                    limit: 10000,
-                    mimetype: 'application/font-woff2',
-                },
-            },
-            {
-                test: /\.woff(\?\S*)?$/,
-                loader: 'url-loader',
-                options: {
-                    limit: 10000,
-                    mimetype: 'application/font-woff',
-                },
-            },
-            {
-                test: /\.ttf(\?\S*)?$/,
-                loader: 'url-loader',
-                options: {
-                    limit: 10000,
-                    mimetype: 'application/font-ttf',
-                },
             },
         ],
     },
@@ -111,9 +66,6 @@ export default {
         publicPath: '/',
     },
     plugins: [
-        // prints more readable module names in the browser console on HMR updates
-        new NamedModulesPlugin(),
-
         new DefinePlugin({
             API_URL: JSON.stringify(config.api_url),
             __DEBUG__: config.debug,
@@ -126,13 +78,6 @@ export default {
                 PER_PAGE: JSON.stringify(jsonConfig.perPage),
             },
             LOADERS: JSON.stringify(loaderKeys),
-        }),
-        new LoaderOptionsPlugin({
-            options: {
-                debug: process.env.NODE_ENV === 'development',
-                context: __dirname,
-                minimize: process.env.NODE_ENV !== 'development',
-            },
         }),
         new HtmlWebpackPlugin({
             filename: 'index.html',
@@ -171,6 +116,8 @@ export default {
     ].concat(
         process.env.NODE_ENV === 'development'
             ? [
+                  // prints more readable module names in the browser console on HMR updates
+                  new NamedModulesPlugin(),
                   new HotModuleReplacementPlugin(),
                   new SourceMapDevToolPlugin({ filename: '[file].map' }),
               ]
@@ -182,20 +129,17 @@ export default {
                           comments: false,
                           sourceMap: false,
                       },
+                      exclude: /node_modules/,
+                      parallel: true,
+                      cache: true,
                   }),
                   new CompressionPlugin(),
               ],
     ),
     resolve: {
-        modules: [
-            resolve(__dirname, '../'),
-            resolve(__dirname, '../../node_modules'),
-        ],
+        modules: [resolve(__dirname, '../../node_modules')],
         alias: {
             config: resolve(__dirname, './webpackConfig.js'),
         },
-    },
-    resolveLoader: {
-        modules: [resolve(__dirname, '../../node_modules')],
     },
 };

@@ -25,7 +25,7 @@ import configureStoreServer from '../../app/js/configureStoreServer';
 import routes from '../../app/js/public/routes';
 import phrasesForEn from '../../app/js/i18n/translations/en';
 import webpackConfig from '../../app/webpack.config.babel';
-import buildFrontend from './buildFrontEnd';
+import { buildFrontend, buildFrontendMiddleware } from './buildFrontEnd';
 import config from '../../../config.json';
 
 const indexHtml = fs
@@ -189,7 +189,8 @@ const handleRender = async (ctx, next) => {
 const app = new Koa();
 
 if (process.env.NODE_ENV === 'production') {
-    app.use(buildFrontend);
+    buildFrontend();
+    app.use(buildFrontendMiddleware);
 }
 
 if (process.env.NODE_ENV === 'development') {

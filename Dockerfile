@@ -24,5 +24,7 @@ RUN echo '{ \
   "#cleanupScript": "/app/src/common/mongoCleanup.sh" \
 }' > /etc/ezmaster.json
 
+RUN npm run build
+
 EXPOSE 3000
 CMD ["npm", "start"]
