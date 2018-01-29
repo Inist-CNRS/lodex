@@ -5,9 +5,9 @@ import {
     updateCharacteristicsError,
     updateCharacteristicsSuccess,
 } from '../';
-import { fromUser } from '../../../sharedSelectors';
-import fetchSaga from '../../../lib/sagas/fetchSaga';
-import { configureFieldSuccess } from '../../../fields/index';
+import { fromUser } from '../../sharedSelectors';
+import fetchSaga from '../../lib/sagas/fetchSaga';
+import { configureFieldSuccess } from '../../fields/index';
 
 export function* handleUpdateCharacteristics({ payload }) {
     const request = yield select(

@@ -8,8 +8,8 @@ import HomeIcon from 'material-ui/svg-icons/action/home';
 import { CardText, CardActions } from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
 
-import { fromResource, fromCharacteristic } from '../selectors';
-import { fromFields } from '../../sharedSelectors';
+import { fromResource } from '../selectors';
+import { fromFields, fromCharacteristic } from '../../sharedSelectors';
 import Card from '../../lib/components/Card';
 import Detail from './Detail';
 import RemovedDetail from './RemovedDetail';

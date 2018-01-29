@@ -3,10 +3,9 @@ import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 
-import { field as fieldProptypes } from '../../propTypes';
+import { field as fieldProptypes } from '../propTypes';
 
-import { fromCharacteristic } from '../selectors';
-import { fromFields } from '../../sharedSelectors';
+import { fromFields, fromCharacteristic } from '../sharedSelectors';
 
 import DatasetCharacteristicItem from './DatasetCharacteristicItem';
 

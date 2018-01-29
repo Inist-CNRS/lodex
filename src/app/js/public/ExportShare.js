@@ -6,8 +6,7 @@ import translate from 'redux-polyglot/translate';
 import Divider from 'material-ui/Divider';
 
 import { polyglot as polyglotPropTypes } from '../propTypes';
-import { fromCharacteristic } from './selectors';
-import { fromFields } from '../sharedSelectors';
+import { fromFields, fromCharacteristic } from '../sharedSelectors';
 import AppliedFacetList from './facet/AppliedFacetList';
 import ExportSection from './export/ExportSection';
 import ShareSection from './ShareSection';

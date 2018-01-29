@@ -9,11 +9,8 @@ import {
     field as fieldPropTypes,
     polyglot as polyglotPropTypes,
 } from '../propTypes.js';
-import {
-    fromCharacteristic,
-    fromFormat,
-    fromResource,
-} from '../public/selectors';
+import { fromFormat, fromResource } from '../public/selectors';
+import { fromCharacteristic } from '../sharedSelectors';
 import {
     preLoadFormatData,
     loadFormatData,

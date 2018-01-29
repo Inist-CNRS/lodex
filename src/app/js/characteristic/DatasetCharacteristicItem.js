@@ -1,10 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import Property from '../Property';
-import { fromCharacteristic } from '../selectors';
-import { fromFields } from '../../sharedSelectors';
-import { field as fieldPropTypes } from '../../propTypes';
+import Property from '../public/Property';
+import { fromFields, fromCharacteristic } from '../sharedSelectors';
+import { field as fieldPropTypes } from '../propTypes';
 
 const DatasetCharacteristicItemComponent = ({ resource, field, style }) => (
     <Property resource={resource} field={field} style={style} />

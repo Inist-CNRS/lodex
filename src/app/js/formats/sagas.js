@@ -7,17 +7,12 @@ import {
 } from './reducer';
 import getQueryString from '../lib/getQueryString';
 import fetchSaga from '../lib/sagas/fetchSaga';
-import {
-    fromCharacteristic,
-    fromDataset,
-    fromFacet,
-    fromRouting,
-} from '../public/selectors';
-import { fromFields, fromUser } from '../sharedSelectors';
+import { fromDataset, fromFacet, fromRouting } from '../public/selectors';
+import { fromFields, fromUser, fromCharacteristic } from '../sharedSelectors';
 import { TOGGLE_FACET_VALUE, CLEAR_FACET, INVERT_FACET } from '../public/facet';
 import { APPLY_FILTER } from '../public/dataset';
 import { CONFIGURE_FIELD_SUCCESS } from '../fields';
-import { UPDATE_CHARACTERISTICS_SUCCESS } from '../public/characteristic';
+import { UPDATE_CHARACTERISTICS_SUCCESS } from '../characteristic';
 
 export function* loadFormatData(name, url, queryString) {
     const request = yield select(fromUser.getUrlRequest, {

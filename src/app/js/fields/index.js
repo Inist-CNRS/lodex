@@ -3,7 +3,7 @@ import uniq from 'lodash.uniq';
 import { createAction, handleActions, combineActions } from 'redux-actions';
 
 import getCatalogFromArray from '../lib/getCatalogFromArray';
-import { UPDATE_CHARACTERISTICS_SUCCESS } from '../public/characteristic';
+import { UPDATE_CHARACTERISTICS_SUCCESS } from '../characteristic';
 import {
     SAVE_RESOURCE_SUCCESS,
     ADD_FIELD_TO_RESOURCE_SUCCESS,
