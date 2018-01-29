@@ -74,6 +74,8 @@ describe('<Format />', () => {
             facets: undefined,
             filter: undefined,
             colorSet: undefined,
+            type: 'value',
+            value: '',
         });
     });
 });
