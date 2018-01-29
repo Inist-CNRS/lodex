@@ -1,6 +1,5 @@
 import get from 'lodash.get';
 import merge from 'lodash.merge';
-import memoize from 'lodash.memoize';
 
 import code from './code';
 import globalBarchart from './distributionChart/global-bar-chart/';
@@ -79,15 +78,10 @@ export const getComponent = field => {
     return components[field.format.name] || DefaultFormat;
 };
 
-const getArgs = memoize(
-    (field, defaultArgs) => merge(defaultArgs, get(field, 'format.args', {})),
-    (_, field) => JSON.stringify(field),
-);
-
 export const getViewComponent = (field, isList) => {
     const component = getComponent(field);
 
-    const args = getArgs(field, component.defaultArgs);
+    const args = merge(component.defaultArgs, get(field, 'format.args', {}));
 
     return {
         ViewComponent: isList
