@@ -1,13 +1,9 @@
 import { call, select, put, takeEvery } from 'redux-saga/effects';
-import FileSaver from 'file-saver';
 import fetchSaga from '../lib/sagas/fetchSaga';
 import { fromUser } from '../sharedSelectors';
 
 import { EXPORT_FIELDS, exportFieldsError } from './';
-
-export const downloadFile = blob => {
-    FileSaver.saveAs(blob, 'lodex_export.json');
-};
+import downloadFile from '../lib/downloadFile';
 
 export function* handleExportPublishedDatasetSuccess() {
     const request = yield select(fromUser.getExportFieldsRequest);
@@ -18,7 +14,7 @@ export function* handleExportPublishedDatasetSuccess() {
         return;
     }
 
-    yield call(downloadFile, response);
+    yield call(downloadFile, response, 'lodex_export.json');
 }
 
 export default function*() {

@@ -1,8 +1,11 @@
-import { call, takeEvery, select } from 'redux-saga/effects';
+import { call, takeEvery, select, put } from 'redux-saga/effects';
 
-import { EXPORT_PUBLISHED_DATASET } from '../';
+import { EXPORT_PUBLISHED_DATASET, exportPublishedDatasetError } from '../';
 import { fromDataset, fromFacet } from '../../selectors';
 import getQueryString from '../../../lib/getQueryString';
+import fetchSaga from '../../../lib/sagas/fetchSaga';
+import downloadFile from '../../../lib/downloadFile';
+import { fromUser } from '../../../sharedSelectors';
 
 export const open = url => window.open(url);
 
@@ -20,7 +23,18 @@ export function* handleExportPublishedDatasetSuccess({
         uri,
     });
 
-    yield call(open, `/api/export/${type}?${queryString}`);
+    const request = yield select(fromUser.getExportPublishedDatasetRequest, {
+        type,
+        queryString,
+    });
+
+    const { error, response } = yield call(fetchSaga, request, [], 'blob');
+
+    if (error) {
+        yield put(exportPublishedDatasetError(error));
+    }
+
+    yield call(downloadFile, response, `export.${type}`);
 }
 
 export default function*() {
