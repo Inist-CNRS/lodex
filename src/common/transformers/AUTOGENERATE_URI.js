@@ -19,11 +19,11 @@ export const autoGenerateUri = ({ naan, subpublisher, uriSize }) => () => () =>
                 subpublisher: ARBITRARY_SUBPUBLISHER,
             });
 
-            const identifier = ark.parse(ark.generate()).identifier;
+            const { identifier } = ark.parse(ark.generate());
             if (uriSize && Number.isInteger(uriSize)) {
-                return resolve('uid:/'.concat(identifier.slice(0, uriSize)));
+                return resolve(`uid:/${identifier.slice(0, uriSize)}`);
             }
-            return resolve('uid:/'.concat(identifier));
+            return resolve(`uid:/${identifier}`);
         } catch (error) {
             return reject(error);
         }
