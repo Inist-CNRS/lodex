@@ -76,6 +76,7 @@ describe('<Format />', () => {
             colorSet: undefined,
             type: 'value',
             value: '',
+            graphLink: undefined,
         });
     });
 });
