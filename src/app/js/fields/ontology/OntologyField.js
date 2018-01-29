@@ -4,6 +4,8 @@ import translate from 'redux-polyglot/translate';
 import { TableRow, TableRowColumn } from 'material-ui/Table';
 import { SortableElement } from 'react-sortable-hoc';
 import DragButton from './DragButton';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 import {
     field as fieldPropTypes,
@@ -11,6 +13,9 @@ import {
 } from '../../propTypes';
 import EditOntologyFieldButton from './EditOntologyFieldButton';
 import { languages } from '../../../../../config.json';
+import { fromCharacteristic } from '../../sharedSelectors';
+import EditButton from '../editFieldValue/EditButton';
+import { COVER_DATASET } from '../../../../common/cover';
 
 const styles = {
     badge: {
@@ -32,10 +37,13 @@ const styles = {
     },
 };
 
-const OntologyFieldComponent = ({ field, p: polyglot }) => (
+const OntologyFieldComponent = ({ field, characteristics, p: polyglot }) => (
     <TableRow>
         <TableRowColumn style={styles.actionCol}>
             <DragButton disabled={field.name === 'uri'} />
+            {field.cover === COVER_DATASET && (
+                <EditButton field={field} resource={characteristics} />
+            )}
             <EditOntologyFieldButton field={field} />
         </TableRowColumn>
         <TableRowColumn>{field.name}</TableRowColumn>
@@ -60,6 +68,7 @@ const OntologyFieldComponent = ({ field, p: polyglot }) => (
 
 OntologyFieldComponent.propTypes = {
     field: fieldPropTypes,
+    characteristics: PropTypes.object.isRequired,
     p: polyglotPropTypes.isRequired,
 };
 
@@ -67,4 +76,10 @@ OntologyFieldComponent.defaultProps = {
     field: {},
 };
 
-export default compose(translate, SortableElement)(OntologyFieldComponent);
+const mapStateToProps = state => ({
+    characteristics: fromCharacteristic.getCharacteristicsAsResource(state),
+});
+
+export default compose(translate, SortableElement, connect(mapStateToProps))(
+    OntologyFieldComponent,
+);
