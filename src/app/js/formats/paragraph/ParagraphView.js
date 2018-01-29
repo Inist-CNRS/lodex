@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { field as fieldPropTypes } from '../../propTypes';
 
-const Paragraph = ({ resource, field, paragraphWidth }) => {
+const ParagraphView = ({ resource, field, paragraphWidth }) => {
     const style = {
         maxWidth: paragraphWidth,
         padding: 8,
@@ -12,14 +12,14 @@ const Paragraph = ({ resource, field, paragraphWidth }) => {
     return <p style={style}>{resource[field.name]}</p>;
 };
 
-Paragraph.propTypes = {
+ParagraphView.propTypes = {
     field: fieldPropTypes.isRequired,
     resource: PropTypes.object.isRequired,
     paragraphWidth: PropTypes.string.isRequired,
 };
 
-Paragraph.defaultProps = {
+ParagraphView.defaultProps = {
     className: null,
 };
 
-export default Paragraph;
+export default ParagraphView;

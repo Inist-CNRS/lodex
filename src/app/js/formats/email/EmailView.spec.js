@@ -2,7 +2,7 @@ import React from 'react';
 import expect from 'expect';
 import { shallow } from 'enzyme';
 
-import EmailView from './Component';
+import EmailView from './EmailView';
 
 describe('<EmailView />', () => {
     it('should render', () => {

@@ -2,8 +2,8 @@ import React from 'react';
 import expect from 'expect';
 import { shallow } from 'enzyme';
 
-import Component, { UL, OL } from './Component';
-import Title from '../title/Component';
+import Component, { UL, OL } from './ListView';
+import Title from '../title/TitleView';
 
 describe('list format view Component', () => {
     it('should render list of value', () => {

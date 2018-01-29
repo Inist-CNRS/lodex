@@ -1,4 +1,4 @@
-import Component from './Component';
+import Component from './IdentifierBadgeView';
 import AdminComponent, { defaultArgs } from './IdentifierBadgeAdmin';
 import DefaultFormat from '../DefaultFormat';
 

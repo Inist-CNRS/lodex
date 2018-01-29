@@ -2,7 +2,7 @@ import React from 'react';
 import expect from 'expect';
 import { shallow } from 'enzyme';
 
-import MarkdownView from './Component';
+import MarkdownView from './MarkdownView';
 
 describe('<MarkdownView />', () => {
     it('should render', () => {

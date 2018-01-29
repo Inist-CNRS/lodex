@@ -2,7 +2,7 @@ import React from 'react';
 import expect from 'expect';
 import { shallow } from 'enzyme';
 
-import LinkView from './Component';
+import LinkView from './LinkView';
 
 describe('<LinkView />', () => {
     it('should render', () => {

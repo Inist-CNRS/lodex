@@ -2,15 +2,15 @@ import React from 'react';
 import expect from 'expect';
 import { shallow } from 'enzyme';
 
-import RedirectView from './Component';
+import TitleView from './TitleView';
 
-describe('<RedirectView />', () => {
+describe('<TitleView />', () => {
     it('should render', () => {
         const resource = { foo: 'Run you fools!' };
         const field = { name: 'foo' };
         const wrapper = shallow(
-            <RedirectView resource={resource} field={field} />,
+            <TitleView resource={resource} field={field} level={1} />,
         );
-        expect(wrapper.find('span').text()).toEqual('Run you fools!');
+        expect(wrapper.find('h1').text()).toEqual('Run you fools!');
     });
 });

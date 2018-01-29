@@ -1,4 +1,4 @@
-import Component from './Component';
+import Component from './ImageView';
 import DefaultFormat from '../DefaultFormat';
 import AdminComponent, { defaultArgs } from './ImageAdmin';
 

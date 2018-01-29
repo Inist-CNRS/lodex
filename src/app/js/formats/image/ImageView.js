@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import ImageZoom from 'react-medium-image-zoom';
 import { field as fieldPropTypes } from '../../propTypes';
 
-const Image = ({ resource, field, imageWidth }) => {
+const ImageView = ({ resource, field, imageWidth }) => {
     const imageURL = resource[field.name];
     const image = {
         src: imageURL,
@@ -19,14 +19,14 @@ const Image = ({ resource, field, imageWidth }) => {
     return <ImageZoom image={image} zoomImage={zoomImage} />;
 };
 
-Image.propTypes = {
+ImageView.propTypes = {
     field: fieldPropTypes.isRequired,
     resource: PropTypes.object.isRequired, // eslint-disable-line
     imageWidth: PropTypes.string.isRequired,
 };
 
-Image.defaultProps = {
+ImageView.defaultProps = {
     className: null,
 };
 
-export default Image;
+export default ImageView;

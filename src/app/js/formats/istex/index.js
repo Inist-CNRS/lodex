@@ -1,4 +1,4 @@
-import Component from './Component';
+import Component from './IstexView';
 import ListComponent from './ListComponent';
 
 import DefaultFormat from '../DefaultFormat';
