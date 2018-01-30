@@ -20,6 +20,7 @@ import { TOGGLE_FACET_VALUE, CLEAR_FACET, INVERT_FACET } from '../public/facet';
 import { APPLY_FILTER } from '../public/dataset';
 import { CONFIGURE_FIELD_SUCCESS } from '../fields';
 import { UPDATE_CHARACTERISTICS_SUCCESS } from '../characteristic';
+import { COVER_DATASET } from '../../../common/cover';
 
 export function* loadFormatData(name, url, queryString) {
     const request = yield select(fromUser.getUrlRequest, {
@@ -67,6 +68,11 @@ export function* handleLoadFormatDataRequest({
 }
 
 export function* loadFormatDataForName(name, filter) {
+    const field = yield select(fromFields.getFieldByName, name);
+
+    if (field.cover !== COVER_DATASET) {
+        return;
+    }
     const url = yield select(fromCharacteristic.getCharacteristicByName, name);
 
     const params = yield select(fromFields.getGraphFieldParamsByName, name);
