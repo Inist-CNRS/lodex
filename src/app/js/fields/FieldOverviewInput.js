@@ -3,6 +3,7 @@ import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 import { Field } from 'redux-form';
 import MenuItem from 'material-ui/MenuItem';
+import capitalize from 'lodash.capitalize';
 
 import { polyglot as polyglotPropTypes } from '../propTypes';
 import FormSelectField from '../lib/components/FormSelectField';
@@ -14,7 +15,7 @@ export const OverviewFieldComponent = ({ p: polyglot }) => {
             className={field}
             key={field}
             value={index}
-            primaryText={polyglot.t(field)}
+            primaryText={polyglot.t(`overview${capitalize(field)}`)}
         />
     ));
 
