@@ -29,6 +29,12 @@ export function* loadFormatData(name, url, queryString) {
         yield put(loadFormatDataSuccess({ name, data: response.data }));
         return;
     }
+
+    if (response.total === 0) {
+        yield put(loadFormatDataSuccess({ name, data: [] }));
+        return;
+    }
+
     yield put(loadFormatDataSuccess({ name, data: response }));
 }
 
