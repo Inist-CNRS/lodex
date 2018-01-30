@@ -108,6 +108,8 @@ const mapStateToProps = (state, { formatData, diameter, colorScheme }) => {
     if (!formatData) {
         return {
             data: [],
+            diameter,
+            colorScale,
         };
     }
 
