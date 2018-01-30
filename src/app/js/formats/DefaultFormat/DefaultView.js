@@ -56,7 +56,7 @@ DefaultView.propTypes = {
     className: PropTypes.string,
     field: fieldPropTypes.isRequired,
     fieldStatus: PropTypes.string,
-    resource: PropTypes.object.isRequired, // eslint-disable-line
+    resource: PropTypes.any.isRequired,
     shrink: PropTypes.bool,
     p: polyglotPropTypes.isRequired,
 };

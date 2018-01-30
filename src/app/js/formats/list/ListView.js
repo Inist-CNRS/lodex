@@ -44,7 +44,7 @@ const ListView = ({
                             resource={values}
                             field={{
                                 ...field,
-                                name: index,
+                                name: index.toString(),
                                 format: {
                                     name: subFormat,
                                     args: subFormatOptions,

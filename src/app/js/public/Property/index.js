@@ -106,7 +106,7 @@ const PropertyComponent = ({
             field={field}
             resource={resource}
             fieldStatus={fieldStatus}
-            graphLink={field.display_in_graph}
+            graphLink={!!field.display_in_graph}
         />,
         <CompositeProperty
             key="composite"

@@ -203,11 +203,11 @@ class CartographyView extends Component {
 
 CartographyView.propTypes = {
     formatData: PropTypes.object.isRequired,
-    legend: PropTypes.element.isRequired,
+    legend: PropTypes.element,
     showTooltip: PropTypes.func.isRequired,
     hideTooltip: PropTypes.func.isRequired,
-    colorScale: PropTypes.func.isRequired,
-    hoverColorScale: PropTypes.func.isRequired,
+    colorScale: PropTypes.func,
+    hoverColorScale: PropTypes.func,
 };
 
 const mapStateToProps = (
