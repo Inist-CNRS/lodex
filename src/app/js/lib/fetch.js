@@ -14,7 +14,10 @@ export default ({ url, ...config }, mode = 'json') => {
                     return response.blob().then(blob => ({ response: blob }));
                 }
 
-                return response.json().then(json => ({ response: json }));
+                return response
+                    .json()
+                    .then(json => ({ response: json }))
+                    .catch(error => ({ error }));
             }
 
             return response.json().then(
