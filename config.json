@@ -1,9 +1,9 @@
 {
-  "username": "user",
+  "username": "admin",
   "password": "secret",
   "userAuth": {
-    "username": "login",
-    "password": "password"
+    "username": "user",
+    "password": "secret"
   },
   "loader": {
     "CSV": {
