@@ -1,19 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import FlatButton from 'material-ui/FlatButton';
-import Popover, { PopoverAnimationVertical } from 'material-ui/Popover';
-import Menu from 'material-ui/Menu';
-import MenuItem from 'material-ui/MenuItem';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
-import ArrowDown from 'material-ui/svg-icons/hardware/keyboard-arrow-down';
-import { withRouter } from 'react-router';
+import { withRouter, Link } from 'react-router';
 
 import ImportFieldsDialog from './ImportFieldsDialog';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { exportFields as exportFieldsAction } from '../../exportFields';
-import MenuItemLink from '../../lib/components/MenuItemLink';
 
 const styles = {
     container: {
@@ -82,51 +77,25 @@ export class ModelMenuComponent extends Component {
 
     render() {
         const { hasPublishedDataset, location, p: polyglot } = this.props;
-        const { open, anchorEl, showImportFieldsConfirmation } = this.state;
+        const { showImportFieldsConfirmation } = this.state;
 
         return (
             <div style={styles.container}>
-                <FlatButton
-                    className="btn-model-menu"
-                    onTouchTap={this.handleTouchTap}
-                    label={polyglot.t('model')}
-                    labelPosition="before"
-                    icon={<ArrowDown />}
-                    style={styles.button}
-                />
-                <Popover
-                    open={open}
-                    anchorEl={anchorEl}
-                    anchorOrigin={{
-                        horizontal: 'left',
-                        vertical: 'bottom',
-                    }}
-                    targetOrigin={{ horizontal: 'left', vertical: 'top' }}
-                    onRequestClose={this.handleRequestClose}
-                    animation={PopoverAnimationVertical}
-                >
-                    <Menu>
-                        {!hasPublishedDataset && (
-                            <MenuItem
-                                className="btn-import-fields"
-                                primaryText={polyglot.t('import_fields')}
-                                onClick={this.handleImportFields}
-                            />
-                        )}
-                        <MenuItem
-                            primaryText={polyglot.t('export_fields')}
-                            onClick={this.handleExportFields}
-                        />
-                        {hasPublishedDataset && (
-                            <MenuItemLink
-                                disabled={location.pathname === '/ontology'}
-                                label={polyglot.t('view_fields')}
-                                link="/ontology"
-                            />
-                        )}
-                    </Menu>
-                </Popover>
-
+                {hasPublishedDataset ? (
+                    <FlatButton
+                        label={polyglot.t('view_fields')}
+                        containerElement={<Link to="/ontology" />}
+                        disabled={location.pathname === '/ontology'}
+                        style={styles.button}
+                    />
+                ) : (
+                    <FlatButton
+                        className="btn-import-fields"
+                        label={polyglot.t('import_fields')}
+                        onClick={this.handleImportFields}
+                        style={styles.button}
+                    />
+                )}
                 {!hasPublishedDataset &&
                     showImportFieldsConfirmation && (
                         <ImportFieldsDialog

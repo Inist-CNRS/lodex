@@ -5,7 +5,7 @@ import compose from 'recompose/compose';
 import withHandlers from 'recompose/withHandlers';
 
 import translate from 'redux-polyglot/translate';
-import RaisedButton from 'material-ui/RaisedButton';
+import FlatButton from 'material-ui/FlatButton';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { exportFields as exportFieldsAction } from '../../exportFields';
@@ -19,7 +19,8 @@ const styles = {
 };
 
 export const ExportFieldsButtonComponent = ({ handleClick, p: polyglot }) => (
-    <RaisedButton
+    <FlatButton
+        primary
         onClick={handleClick}
         label={polyglot.t('export_fields')}
         style={styles.button}
