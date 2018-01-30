@@ -15,6 +15,7 @@ import EditOntologyFieldButton from '../../fields/ontology/EditOntologyFieldButt
 import PropertyLinkedFields from '../Property/PropertyLinkedFields';
 import CompositeProperty from '../Property/CompositeProperty';
 import { grey500 } from 'material-ui/styles/colors';
+import Stats from '../Stats';
 
 const styles = {
     container: {
@@ -49,6 +50,7 @@ const GraphPage = ({ graphField, resource }) => (
     <div style={styles.container}>
         <div style={styles.centerColumn}>
             <GraphSummary selected={graphField ? graphField.name : ''} />
+            <Stats />
             <Card style={styles.section}>
                 <AppliedFacetList />
             </Card>

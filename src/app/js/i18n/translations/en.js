@@ -362,4 +362,5 @@ export default {
     min_radius: 'Min radius',
     max_radius: 'Max radius',
     view_details: 'View Details',
+    resources_found: 'Found %{current} on %{total}',
 };
