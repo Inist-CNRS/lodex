@@ -5,7 +5,6 @@ import {
     Geographies,
     Geography,
 } from 'react-simple-maps';
-import mapJson from 'react-simple-maps/topojson-maps/world-50m.json';
 import { connect } from 'react-redux';
 import memoize from 'lodash.memoize';
 import PropTypes from 'prop-types';
@@ -18,6 +17,7 @@ import compose from 'recompose/compose';
 import injectData from '../injectData';
 import getGradientScaleAndLegend from '../../lib/components/getGradientScaleAndLegend';
 import exportableToPng from '../exportableToPng';
+import mapJson from './world-50m.json';
 
 const maxZoom = 16;
 const minZoom = 1;
