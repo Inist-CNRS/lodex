@@ -43,7 +43,7 @@ describe('list format view Component', () => {
         expect(title.length).toBe(3);
         title.forEach((t, index) => {
             expect(t.props().resource).toEqual(['value1', 'value2', 'value3']);
-            expect(t.props().field.name).toBe(index);
+            expect(t.props().field.name).toBe(index.toString());
             expect(t.props().field.format.args).toEqual({ level: 2 });
         });
     });
