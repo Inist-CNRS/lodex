@@ -99,7 +99,7 @@ BubbleView.propTypes = {
     diameter: PropTypes.number.isRequired,
     hideTooltip: PropTypes.func.isRequired,
     showTooltip: PropTypes.func.isRequired,
-    colorScale: PropTypes.func.isRequired,
+    colorScale: PropTypes.func,
 };
 
 BubbleView.displayName = 'BubbleView';

@@ -116,7 +116,7 @@ const mapStateToProps = (state, { formatData, params }) => {
     return {
         data: formatData.items,
         total: formatData.total,
-        maxSize: params.maxSize,
+        maxSize: parseInt(params.maxSize),
     };
 };
 

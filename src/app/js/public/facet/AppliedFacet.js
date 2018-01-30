@@ -40,9 +40,9 @@ export const AppliedFacetComponent = ({
         labelStyle={styles.chipLabel}
         className={`applied-facet-${getFieldClassName(field)}`}
         onRequestDelete={onRequestDelete}
-        backgroundColor={inverted && 'rgba(0, 0, 0, 0.87)'}
-        labelColor={inverted && 'rgb(224, 224, 224)'}
-        deleteIconStyle={inverted && { fill: 'rgb(224, 224, 224)' }}
+        backgroundColor={inverted ? 'rgba(0, 0, 0, 0.87)' : null}
+        labelColor={inverted ? 'rgb(224, 224, 224)' : null}
+        deleteIconStyle={inverted ? { fill: 'rgb(224, 224, 224)' } : null}
     >
         <b>
             {inverted ? `${polyglot.t('excluding')} ` : ''}

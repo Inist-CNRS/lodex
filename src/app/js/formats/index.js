@@ -1,5 +1,5 @@
 import get from 'lodash.get';
-import merge from 'lodash.merge';
+import merge from '../lib/merge';
 
 import code from './code';
 import globalBarchart from './distributionChart/global-bar-chart/';
