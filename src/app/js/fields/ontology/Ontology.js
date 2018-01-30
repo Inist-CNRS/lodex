@@ -13,6 +13,7 @@ import { preLoadPublication } from '../';
 import AddCharacteristic from '../addCharacteristic/AddCharacteristic';
 import OntologyTable from './OntologyTable';
 import { COVER_DATASET } from '../../../../common/cover';
+import ExportFieldsButton from '../../public/export/ExportFieldsButton';
 
 const ALL = 'all';
 
@@ -60,6 +61,7 @@ export class OntologyComponent extends Component {
                     )}
                 </CardText>
                 <CardActions>
+                    <ExportFieldsButton />
                     <AddCharacteristic />
                 </CardActions>
             </Card>
