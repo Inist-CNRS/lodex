@@ -9,10 +9,6 @@ import { fromFields } from '../sharedSelectors';
 import { polyglot as polyglotPropTypes } from '../propTypes';
 
 const styles = {
-    col: {
-        textAlign: 'center',
-        fontSize: '2em',
-    },
     nb: {
         fontWeight: 'bold',
     },
@@ -23,11 +19,11 @@ export const StatsComponent = ({
     currentNbResources,
     p: polyglot,
 }) => (
-    <div style={styles.col}>
-        <div>{polyglot.t('resources')}</div>
-        <div style={styles.nb}>
-            {currentNbResources} / {nbResources}
-        </div>
+    <div style={styles.nb}>
+        {polyglot.t('resources_found', {
+            current: currentNbResources,
+            total: nbResources,
+        })}
     </div>
 );
 
