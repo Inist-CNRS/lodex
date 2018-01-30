@@ -97,7 +97,7 @@ export function* loadFormatDataForName(name, filter) {
 export function* handleFilterFormatDataRequest({ payload: { filter } = {} }) {
     const names = yield select(fromFormat.getCurrentFieldNames);
 
-    if (!names.length) {
+    if (!names || !names.length) {
         return;
     }
 
