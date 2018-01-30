@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import merge from 'lodash.merge';
+import merge from '../lib/merge';
 
 import SelectFormat from './SelectFormat';
 import { getAdminComponent, FORMATS, getFormatInitialArgs } from '../formats';
