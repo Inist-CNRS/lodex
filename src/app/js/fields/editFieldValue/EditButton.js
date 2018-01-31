@@ -19,6 +19,15 @@ import { openEditFieldValue, closeEditFieldValue } from '../';
 import { COVER_DATASET } from '../../../../common/cover';
 import { saveResource } from '../../public/resource';
 import { updateCharacteristics } from '../../characteristic';
+import { grey400 } from 'material-ui/styles/colors';
+
+const styles = {
+    label: {
+        float: 'right',
+        color: grey400,
+        fontSize: '1.5rem',
+    },
+};
 
 const mapStateToProps = (state, { field, resource, onSaveProperty, p }) => ({
     open: fromFields.isFieldEdited(state, field.name),
@@ -39,7 +48,12 @@ const mapStateToProps = (state, { field, resource, onSaveProperty, p }) => ({
     ),
     formName: FORM_NAME,
     className: classnames('edit-field', getFieldClassName(field)),
-    label: p.t('edit_field', { field: field.label }),
+    label: (
+        <p>
+            {p.t('edit_field', { field: field.label })}{' '}
+            <span style={styles.label}>{field.name}</span>
+        </p>
+    ),
     icon: <EditIcon viewBox="-10 0 32 32" />,
     buttonStyle: { padding: 0, height: 'auto', width: 'auto' },
 });
