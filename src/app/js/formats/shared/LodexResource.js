@@ -34,17 +34,22 @@ const styles = StyleSheet.create({
 });
 
 // see https://jsonfeed.org/version/1#items
-const LodexResource = ({ id, title, summary }) => (
-    <div id={id}>
-        <Link
-            className={css(styles.contentLink)}
-            to={getFullResourceUri({ uri: id })}
-        >
-            <div className={css(styles.contentTitle)}>{title}</div>
-            <div className={css(styles.contentParagraph)}>{summary}</div>
-        </Link>
-    </div>
-);
+const LodexResource = ({ id, title, summary }) => {
+    if (!id) {
+        return null;
+    }
+    return (
+        <div id={id}>
+            <Link
+                className={css(styles.contentLink)}
+                to={getFullResourceUri({ uri: id })}
+            >
+                <div className={css(styles.contentTitle)}>{title}</div>
+                <div className={css(styles.contentParagraph)}>{summary}</div>
+            </Link>
+        </div>
+    );
+};
 
 LodexResource.propTypes = {
     id: PropTypes.string.isRequired,
