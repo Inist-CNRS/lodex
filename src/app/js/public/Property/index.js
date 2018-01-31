@@ -129,10 +129,15 @@ const PropertyComponent = ({
     );
     return (
         <div
-            className={classnames('property', fieldClassName, className)}
+            className={classnames(
+                'property',
+                fieldClassName,
+                className,
+                `format_${field.format.name}`,
+            )}
             style={styles.container(style, field.width)}
         >
-            <div>
+            <div className={classnames('property_label_container')}>
                 <div style={styles.labelContainer}>
                     <span
                         className={classnames('property_label', fieldClassName)}
@@ -161,7 +166,10 @@ const PropertyComponent = ({
                     fieldStatus={fieldStatus}
                 />
             </div>
-            <div style={styles.valueContainer}>
+            <div
+                className={classnames('property_value_container')}
+                style={styles.valueContainer}
+            >
                 <div style={styles.value}>{format}</div>
                 <span
                     className={classnames('property_language', fieldClassName)}
