@@ -7,10 +7,13 @@ import { fromUser } from '../../../sharedSelectors';
 import { computeFieldPreviewSuccess, computeFieldPreviewError } from './';
 import { fromParsing } from '../../selectors';
 import { handleComputeFieldPreview } from './sagas';
+import { FIELD_FORM_NAME } from '../../../fields/index';
 
 describe('field saga', () => {
     describe('handleComputeFieldPreview', () => {
-        const saga = handleComputeFieldPreview();
+        const saga = handleComputeFieldPreview({
+            meta: { form: FIELD_FORM_NAME },
+        });
         const token = 'token';
         const lines = ['line1', 'line2'];
         const transformDocument = () => {};
@@ -48,13 +51,25 @@ describe('field saga', () => {
         });
 
         it('should put computePreviewError action with error if any', () => {
-            const failedSaga = handleComputeFieldPreview();
+            const failedSaga = handleComputeFieldPreview({
+                meta: { form: FIELD_FORM_NAME },
+            });
             const error = { message: 'foo' };
             failedSaga.next();
             failedSaga.next();
             expect(failedSaga.throw(error).value).toEqual(
                 put(computeFieldPreviewError(error)),
             );
+        });
+
+        it('should do nothing if meta.form is not FIELD_FORM_NAME', () => {
+            const saga = handleComputeFieldPreview({
+                meta: { field: 'other form' },
+            });
+            expect(saga.next()).toEqual({
+                value: undefined,
+                done: true,
+            });
         });
     });
 });

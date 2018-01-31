@@ -13,7 +13,7 @@ import { fromDataset, fromFacet, fromFormat } from '../public/selectors';
 import { fromFields, fromUser, fromCharacteristic } from '../sharedSelectors';
 import { COVER_DATASET } from '../../../common/cover';
 
-describe.only('format sagas', () => {
+describe('format sagas', () => {
     describe('handleFilterFormatDataRequest', () => {
         it('should call loadFormatDataForName for every loaded field', () => {
             const it = handleFilterFormatDataRequest({
