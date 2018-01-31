@@ -8,11 +8,6 @@ import graphRoutes from './graph/routes';
 export default {
     path: '/',
     component: App,
-    indexRoute: { onEnter: (nextState, replace) => replace('/home') },
-    childRoutes: [
-        { path: '/home', component: Home },
-        ...userRoutes,
-        ...resourceRoutes,
-        ...graphRoutes,
-    ],
+    indexRoute: { component: Home },
+    childRoutes: [...userRoutes, ...resourceRoutes, ...graphRoutes],
 };

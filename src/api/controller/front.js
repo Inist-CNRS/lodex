@@ -145,10 +145,6 @@ export const getRenderingData = async (
 
 const handleRender = async (ctx, next) => {
     const { url, headers } = ctx.request;
-    if (url === '/') {
-        ctx.redirect('/home');
-        return;
-    }
 
     const history = createMemoryHistory(url);
 
@@ -193,30 +189,6 @@ if (process.env.NODE_ENV === 'production') {
     app.use(buildFrontendMiddleware);
 }
 
-if (process.env.NODE_ENV === 'development') {
-    app.use(
-        koaWebpack({
-            config: webpackConfig,
-            dev: {
-                publicPath: '/',
-                stats: {
-                    colors: true,
-                },
-                quiet: false,
-                noInfo: true,
-            },
-            hot: {
-                log: global.console.log,
-                path: '/__webpack_hmr',
-                heartbeat: 10 * 1000,
-            },
-        }),
-    );
-} else {
-    app.use(mount('/', serve(path.resolve(__dirname, '../../build'))));
-    app.use(mount('/', serve(path.resolve(__dirname, '../../app/custom'))));
-}
-
 if (config.userAuth) {
     app.use(
         jwt({
@@ -242,5 +214,29 @@ if (config.userAuth) {
 }
 
 app.use(handleRender);
+
+if (process.env.NODE_ENV === 'development') {
+    app.use(
+        koaWebpack({
+            config: webpackConfig,
+            dev: {
+                publicPath: '/',
+                stats: {
+                    colors: true,
+                },
+                quiet: false,
+                noInfo: true,
+            },
+            hot: {
+                log: global.console.log,
+                path: '/__webpack_hmr',
+                heartbeat: 10 * 1000,
+            },
+        }),
+    );
+} else {
+    app.use(mount('/', serve(path.resolve(__dirname, '../../build'))));
+    app.use(mount('/', serve(path.resolve(__dirname, '../../app/custom'))));
+}
 
 export default app;

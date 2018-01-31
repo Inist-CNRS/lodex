@@ -105,6 +105,7 @@ BubbleView.propTypes = {
 BubbleView.displayName = 'BubbleView';
 
 const mapStateToProps = (state, { formatData, diameter, colorScheme }) => {
+    const colorScale = scaleOrdinal(colorScheme || schemeAccent);
     if (!formatData) {
         return {
             data: [],
@@ -121,8 +122,6 @@ const mapStateToProps = (state, { formatData, diameter, colorScheme }) => {
         .sum(d => d.value)
         .sort((a, b) => b.value - a.value);
     const data = packingFunction(root).leaves();
-
-    const colorScale = scaleOrdinal(colorScheme || schemeAccent);
 
     return {
         data,
