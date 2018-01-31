@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
-import { StyleSheet, css } from 'aphrodite';
+import { StyleSheet, css } from 'aphrodite/no-important';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import get from 'lodash.get';
