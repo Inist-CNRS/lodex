@@ -42,8 +42,12 @@ const isFormatDataLoaded = (state, name) => state[name] !== 'loading';
 const getFormatData = (state, name) => get(state, [name, 'data']);
 const getFormatError = (state, name) => get(state, [name, 'error']);
 
+export const getCurrentFieldNames = state =>
+    Object.keys(state).filter(key => !!state[key]);
+
 export const fromFormat = {
     isFormatDataLoaded,
     getFormatData,
     getFormatError,
+    getCurrentFieldNames,
 };
