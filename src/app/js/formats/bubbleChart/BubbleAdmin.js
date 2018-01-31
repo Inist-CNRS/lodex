@@ -50,34 +50,10 @@ class BubbleAdmin extends Component {
         this.props.onChange(newState);
     };
 
-    setWidth = (_, width) => {
+    setDiameter = (_, diameter) => {
         const newState = {
             ...this.props.args,
-            width,
-        };
-        this.props.onChange(newState);
-    };
-
-    setHeight = (_, height) => {
-        const newState = {
-            ...this.props.args,
-            height,
-        };
-        this.props.onChange(newState);
-    };
-
-    setMinRadius = (_, minRadius) => {
-        const newState = {
-            ...this.props.args,
-            minRadius,
-        };
-        this.props.onChange(newState);
-    };
-
-    setMaxRadius = (_, maxRadius) => {
-        const newState = {
-            ...this.props.args,
-            maxRadius,
+            diameter,
         };
         this.props.onChange(newState);
     };
@@ -96,7 +72,7 @@ class BubbleAdmin extends Component {
                 />
                 <TextField
                     floatingLabelText={polyglot.t('diameter')}
-                    onChange={this.setWidth}
+                    onChange={this.setDiameter}
                     style={styles.input}
                     value={diameter}
                 />

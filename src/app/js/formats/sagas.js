@@ -1,4 +1,11 @@
-import { call, put, select, takeEvery, throttle } from 'redux-saga/effects';
+import {
+    call,
+    put,
+    select,
+    takeEvery,
+    throttle,
+    all,
+} from 'redux-saga/effects';
 
 import {
     LOAD_FORMAT_DATA,
@@ -7,12 +14,13 @@ import {
 } from './reducer';
 import getQueryString from '../lib/getQueryString';
 import fetchSaga from '../lib/sagas/fetchSaga';
-import { fromDataset, fromFacet, fromRouting } from '../public/selectors';
+import { fromDataset, fromFacet, fromFormat } from '../public/selectors';
 import { fromFields, fromUser, fromCharacteristic } from '../sharedSelectors';
 import { TOGGLE_FACET_VALUE, CLEAR_FACET, INVERT_FACET } from '../public/facet';
 import { APPLY_FILTER } from '../public/dataset';
 import { CONFIGURE_FIELD_SUCCESS } from '../fields';
 import { UPDATE_CHARACTERISTICS_SUCCESS } from '../characteristic';
+import { COVER_DATASET } from '../../../common/cover';
 
 export function* loadFormatData(name, url, queryString) {
     const request = yield select(fromUser.getUrlRequest, {
@@ -59,13 +67,10 @@ export function* handleLoadFormatDataRequest({
     yield call(loadFormatData, name, value, queryString);
 }
 
-export function* handleFilterFormatDataRequest({
-    payload: { field, filter } = {},
-}) {
-    const name =
-        (field && field.name) || (yield select(fromRouting.getGraphName));
+export function* loadFormatDataForName(name, filter) {
+    const field = yield select(fromFields.getFieldByName, name);
 
-    if (!name) {
+    if (field.cover !== COVER_DATASET) {
         return;
     }
     const url = yield select(fromCharacteristic.getCharacteristicByName, name);
@@ -87,6 +92,16 @@ export function* handleFilterFormatDataRequest({
     });
 
     yield call(loadFormatData, name, url, queryString);
+}
+
+export function* handleFilterFormatDataRequest({ payload: { filter } = {} }) {
+    const names = yield select(fromFormat.getCurrentFieldNames);
+
+    if (!names || !names.length) {
+        return;
+    }
+
+    yield all(names.map(name => call(loadFormatDataForName, name, filter)));
 }
 
 export default function*() {
