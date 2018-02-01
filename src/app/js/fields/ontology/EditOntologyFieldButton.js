@@ -28,7 +28,7 @@ const mapStateToProps = (state, { field, p }) => ({
     label: (
         <p>
             {p.t('configure_field', { field: field.label })}{' '}
-            <span style={styles.label}>{field.name}</span>
+            <span style={styles.label}>#{field.name}</span>
         </p>
     ),
     form: <EditOntologyFieldForm field={field} />,

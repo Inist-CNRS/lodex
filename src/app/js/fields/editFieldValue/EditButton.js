@@ -51,7 +51,7 @@ const mapStateToProps = (state, { field, resource, onSaveProperty, p }) => ({
     label: (
         <p>
             {p.t('edit_field', { field: field.label })}{' '}
-            <span style={styles.label}>{field.name}</span>
+            <span style={styles.label}>#{field.name}</span>
         </p>
     ),
     icon: <EditIcon viewBox="-10 0 32 32" />,
