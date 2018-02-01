@@ -9,6 +9,7 @@ describe('CompositeProperty', () => {
     it('should render all linked properties', () => {
         const props = {
             field: {
+                name: 'fieldname',
                 label: 'Field1',
                 composedOf: {
                     separator: 'separator',

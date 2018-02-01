@@ -14,7 +14,7 @@ export const WidgetsSelectFieldItemComponent = ({ value, label, onRemove }) => (
     <Chip
         className={classnames(
             'widget-selected-field-item',
-            getFieldClassName({ label }),
+            getFieldClassName({ name: value }),
         )}
         key={value}
         style={styles.chip}
