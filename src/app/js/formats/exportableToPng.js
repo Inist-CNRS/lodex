@@ -11,6 +11,11 @@ const styles = {
     },
 };
 
+const isFirefox = () =>
+    typeof navigator !== 'undefined'
+        ? navigator.userAgent.toLowerCase().indexOf('firefox') > -1
+        : false;
+
 export default FormatView => {
     class ExportableComponent extends Component {
         constructor(props) {
@@ -42,7 +47,7 @@ export default FormatView => {
             const { error } = this.state;
             const { graphLink } = this.props;
 
-            if (graphLink) {
+            if (graphLink || isFirefox()) {
                 return <FormatView {...this.props} />;
             }
 
