@@ -33,12 +33,12 @@ describe('ssr', () => {
         await loadFixtures(fixtures);
     });
 
-    describe('/home', () => {
+    describe('/', () => {
         let state;
         describe('authentified', () => {
             before(async () => {
                 const response = await server
-                    .get('/home', authentifiedHeader)
+                    .get('/', authentifiedHeader)
                     .then(response => response.text());
                 state = JSON.parse(
                     response.match(
@@ -77,7 +77,7 @@ describe('ssr', () => {
                 ]);
             });
 
-            it('should preload fields for /home', () => {
+            it('should preload fields for home', () => {
                 expect(state.fields.list).toEqual([
                     'uri',
                     'fullname',
@@ -94,7 +94,7 @@ describe('ssr', () => {
                 ]);
             });
 
-            it('should preload characteristics for /home', async () => {
+            it('should preload characteristics for home', async () => {
                 expect(
                     state.characteristic.characteristics.map(d =>
                         omit(d, '_id'),
@@ -120,7 +120,7 @@ describe('ssr', () => {
         describe('not authentified', () => {
             before(async () => {
                 const response = await server
-                    .get('/home')
+                    .get('/')
                     .then(response => response.text());
                 state = JSON.parse(
                     response.match(
@@ -139,12 +139,12 @@ describe('ssr', () => {
                 expect(state.dataset.dataset).toEqual([]);
             });
 
-            it('should not preload fields for /home', () => {
+            it('should not preload fields for home', () => {
                 expect(state.fields.list).toEqual([]);
                 expect(Object.keys(state.fields.byName)).toEqual([]);
             });
 
-            it('should not preload characteristics for /home', async () => {
+            it('should not preload characteristics for home', async () => {
                 expect(state.characteristic.characteristics).toEqual([]);
             });
 

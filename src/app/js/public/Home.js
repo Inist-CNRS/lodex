@@ -44,10 +44,6 @@ export class HomeComponent extends Component {
         this.props.preLoadExporters();
     }
 
-    handleTabChange = value => {
-        this.props.navigateTo(`/home/${value}`);
-    };
-
     render() {
         const { error, hasPublishedDataset, loading, p: polyglot } = this.props;
 

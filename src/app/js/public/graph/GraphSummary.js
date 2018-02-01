@@ -36,7 +36,7 @@ const PureGraphSummary = ({ graphFields, selected, p: polyglot }) => (
         <MenuItem
             value=""
             primaryText={
-                <Link style={styles.link} to="/home">
+                <Link style={styles.link} to="/">
                     {polyglot.t('home')}
                 </Link>
             }
