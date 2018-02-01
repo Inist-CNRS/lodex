@@ -57,6 +57,10 @@ export default compose(
     injectData(({ field, resource }) => {
         const value = resource[field.name];
 
+        if (!value) {
+            return null;
+        }
+
         if (isUrl(value)) {
             return value;
         }
