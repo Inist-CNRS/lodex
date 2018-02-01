@@ -11,8 +11,12 @@ import { fromUser } from '../../../sharedSelectors';
 import { computeFieldPreviewSuccess, computeFieldPreviewError } from './';
 import { getFieldFormData } from '../../../fields/selectors';
 import { fromParsing } from '../../selectors';
+import { FIELD_FORM_NAME } from '../../../fields/index';
 
-export function* handleComputeFieldPreview() {
+export function* handleComputeFieldPreview({ meta: { form } }) {
+    if (form !== FIELD_FORM_NAME) {
+        return;
+    }
     try {
         const formData = yield select(getFieldFormData);
 
