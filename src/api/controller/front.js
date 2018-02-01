@@ -13,7 +13,7 @@ import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import { END } from 'redux-saga';
 import koaWebpack from 'koa-webpack';
 import fs from 'fs';
-import { StyleSheetServer } from 'aphrodite';
+import { StyleSheetServer } from 'aphrodite/no-important';
 import jwt from 'koa-jwt';
 import jsonwebtoken from 'jsonwebtoken';
 import { auth } from 'config';

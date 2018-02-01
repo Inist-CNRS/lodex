@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { StyleSheet, css } from 'aphrodite';
+import { StyleSheet, css } from 'aphrodite/no-important';
 import { field as fieldPropTypes } from '../../propTypes';
 
 const IdentifierBadgeView = ({ resource, field, typid, colors }) => {

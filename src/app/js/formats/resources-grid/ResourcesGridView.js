@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import RaisedButton from 'material-ui/RaisedButton';
 import CircularProgress from 'material-ui/CircularProgress';
 import translate from 'redux-polyglot/translate';
-import { StyleSheet, css } from 'aphrodite';
+import { StyleSheet, css } from 'aphrodite/no-important';
 import compose from 'recompose/compose';
 
 import LodexResource from '../shared/LodexResource';
