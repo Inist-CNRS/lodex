@@ -1,1 +1,1 @@
-export default field => field.label.toLowerCase().replace(/\s/g, '_');
+export default field => field.name.toLowerCase();
