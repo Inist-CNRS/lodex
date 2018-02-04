@@ -36,7 +36,7 @@ class RessourcesGridAdmin extends Component {
             spaceWidth: PropTypes.string,
             params: PropTypes.shape({
                 orderBy: PropTypes.string,
-                maxSize: PropTypes.string,
+                maxSize: PropTypes.number,
             }),
         }),
         onChange: PropTypes.func.isRequired,
@@ -49,7 +49,13 @@ class RessourcesGridAdmin extends Component {
 
     setMaxSize = maxSize => {
         const { params, ...args } = this.props.args;
-        const newArgs = { ...args, params: { ...params, maxSize } };
+        const newArgs = {
+            ...args,
+            params: {
+                ...params,
+                maxSize: parseInt(maxSize),
+            },
+        };
         this.props.onChange(newArgs);
     };
 
