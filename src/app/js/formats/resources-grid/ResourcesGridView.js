@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import RaisedButton from 'material-ui/RaisedButton';
 import CircularProgress from 'material-ui/CircularProgress';
-import translate from 'redux-polyglot/translate';
 import { StyleSheet, css } from 'aphrodite/no-important';
 import compose from 'recompose/compose';
 
@@ -105,7 +104,10 @@ class ResourcesGridView extends Component {
     }
 }
 
-const mapStateToProps = (state, { formatData, params }) => {
+const mapStateToProps = (
+    state,
+    { formatData, maxSize, spaceWidth, orderBy },
+) => {
     if (!formatData || !formatData.items) {
         return {
             data: [],
@@ -116,12 +118,13 @@ const mapStateToProps = (state, { formatData, params }) => {
     return {
         data: formatData.items,
         total: formatData.total,
-        maxSize: parseInt(params.maxSize),
+        maxSize: parseInt(maxSize),
+        spaceWidth,
+        orderBy,
     };
 };
 
 export default compose(
-    translate,
     injectData('/api/run/syndication'),
     connect(mapStateToProps),
 )(ResourcesGridView);
