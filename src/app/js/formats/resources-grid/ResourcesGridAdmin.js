@@ -24,20 +24,16 @@ const styles = {
 
 export const defaultArgs = {
     spaceWidth: '30%',
-    params: {
-        maxSize: 5,
-        orderBy: 'value/asc',
-    },
+    maxSize: 5,
+    orderBy: 'value/asc',
 };
 
 class RessourcesGridAdmin extends Component {
     static propTypes = {
         args: PropTypes.shape({
             spaceWidth: PropTypes.string,
-            params: PropTypes.shape({
-                orderBy: PropTypes.string,
-                maxSize: PropTypes.number,
-            }),
+            orderBy: PropTypes.string,
+            maxSize: PropTypes.number,
         }),
         onChange: PropTypes.func.isRequired,
         p: polyglotPropTypes.isRequired,
@@ -47,43 +43,44 @@ class RessourcesGridAdmin extends Component {
         args: defaultArgs,
     };
 
-    setMaxSize = maxSize => {
-        const { params, ...args } = this.props.args;
+    setMaxSize = (_, maxSize) => {
         const newArgs = {
-            ...args,
-            params: {
-                ...params,
-                maxSize: parseInt(maxSize),
-            },
+            ...this.props.args,
+            maxSize,
         };
         this.props.onChange(newArgs);
     };
 
     setOrderBy = orderBy => {
-        const { params, ...args } = this.props.args;
-        const newArgs = { ...args, params: { ...params, orderBy } };
+        const newArgs = {
+            ...this.props.args,
+            orderBy,
+        };
         this.props.onChange(newArgs);
     };
 
     setWidth = spaceWidth => {
-        const newArgs = { ...this.props.args, spaceWidth };
+        const newArgs = {
+            ...this.props.args,
+            spaceWidth,
+        };
         this.props.onChange(newArgs);
     };
 
     render() {
         const {
             p: polyglot,
-            args: { params: { maxSize, orderBy }, spaceWidth },
+            args: { spaceWidth, orderBy, maxSize },
         } = this.props;
 
         return (
             <div style={styles.container}>
                 <TextField
                     floatingLabelText={polyglot.t('max_fields')}
-                    type="number"
-                    onChange={(event, newValue) => this.setMaxSize(newValue)}
+                    onChange={this.setMaxSize}
                     style={styles.input}
                     value={maxSize}
+                    type="number"
                 />
                 <SelectField
                     floatingLabelText={polyglot.t('order_by')}
