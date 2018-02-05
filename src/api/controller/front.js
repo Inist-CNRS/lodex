@@ -203,7 +203,8 @@ if (config.userAuth) {
         if (
             !ctx.state.cookie &&
             ctx.request.url !== '/login' &&
-            ctx.request.url !== '/index.js'
+            ctx.request.url !== '/index.js' &&
+            ctx.request.url !== '/index.js.map'
         ) {
             ctx.redirect('/login');
             return;
