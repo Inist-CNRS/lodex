@@ -7,7 +7,7 @@ import classnames from 'classnames';
 import { bindActionCreators } from 'redux';
 import { grey500 } from 'material-ui/styles/colors';
 import memoize from 'lodash.memoize';
-
+import get from 'lodash.get';
 import { fromResource } from '../selectors';
 import { field as fieldPropTypes } from '../../propTypes';
 import CompositeProperty from './CompositeProperty';
@@ -122,6 +122,7 @@ const PropertyComponent = ({
         />,
     ];
 
+    const formatName = get(field, 'format.name', 'none');
     const format = field.display_in_graph ? (
         <GraphLink link={`/graph/${field.name}`}>{formatChildren}</GraphLink>
     ) : (
@@ -133,7 +134,7 @@ const PropertyComponent = ({
                 'property',
                 fieldClassName,
                 className,
-                `format_${field.format.name}`,
+                `format_${formatName}`,
             )}
             style={styles.container(style, field.width)}
         >
