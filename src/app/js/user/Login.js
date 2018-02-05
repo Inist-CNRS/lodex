@@ -74,7 +74,7 @@ export const getPreviousState = (ownProps, location) => {
         }
     }
 
-    return 'home';
+    return '/';
 };
 
 export const mapDispatchToProps = (dispatch, ownProps) =>
