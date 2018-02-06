@@ -24,7 +24,7 @@ const styles = {
 
 export const defaultArgs = {
     spaceWidth: '30%',
-    maxSize: 5,
+    pageSize: 5,
     orderBy: 'value/asc',
 };
 
@@ -33,7 +33,7 @@ class RessourcesGridAdmin extends Component {
         args: PropTypes.shape({
             spaceWidth: PropTypes.string,
             orderBy: PropTypes.string,
-            maxSize: PropTypes.number,
+            pageSize: PropTypes.number,
         }),
         onChange: PropTypes.func.isRequired,
         p: polyglotPropTypes.isRequired,
@@ -43,10 +43,10 @@ class RessourcesGridAdmin extends Component {
         args: defaultArgs,
     };
 
-    setMaxSize = (_, maxSize) => {
+    setPageSize = (_, pageSize) => {
         const newArgs = {
             ...this.props.args,
-            maxSize,
+            pageSize: parseInt(pageSize),
         };
         this.props.onChange(newArgs);
     };
@@ -70,16 +70,16 @@ class RessourcesGridAdmin extends Component {
     render() {
         const {
             p: polyglot,
-            args: { spaceWidth, orderBy, maxSize },
+            args: { spaceWidth, orderBy, pageSize },
         } = this.props;
 
         return (
             <div style={styles.container}>
                 <TextField
                     floatingLabelText={polyglot.t('max_fields')}
-                    onChange={this.setMaxSize}
+                    onChange={this.setPageSize}
                     style={styles.input}
-                    value={maxSize}
+                    value={pageSize}
                     type="number"
                 />
                 <SelectField

@@ -15,7 +15,7 @@ class ResourcesGridView extends Component {
         field: fieldPropTypes.isRequired,
         data: PropTypes.arrayOf(PropTypes.object).isRequired,
         total: PropTypes.number.isRequired,
-        maxSize: PropTypes.number.isRequired,
+        pageSize: PropTypes.number.isRequired,
         spaceWidth: PropTypes.string.isRequired,
         filterFormatData: PropTypes.func.isRequired,
     };
@@ -24,20 +24,24 @@ class ResourcesGridView extends Component {
         super(props);
         this.state = {
             fetch: false,
-            more: 10,
+            more: 0,
         };
+    }
+
+    componentWillMount() {
+        this.handleMore();
     }
 
     handleMore = () => {
         const { filterFormatData } = this.props;
         this.setState(
-            prevState => ({ more: prevState.more + 10 }),
+            prevState => ({ more: prevState.more + this.props.pageSize }),
             () => filterFormatData({ maxSize: this.state.more }),
         );
     };
 
     render() {
-        const { data, total, maxSize, spaceWidth } = this.props;
+        const { data, total, spaceWidth } = this.props;
         const styles = StyleSheet.create({
             list: {
                 display: 'flex',
@@ -75,7 +79,7 @@ class ResourcesGridView extends Component {
         return (
             <div>
                 <ul className={css(styles.list)}>
-                    {data.map((entry, index) => {
+                    {data.slice(0, this.state.more).map((entry, index) => {
                         const key = String(index).concat('ResourcesGrid');
                         return (
                             <li key={key} className={css(styles.item)}>
@@ -87,7 +91,7 @@ class ResourcesGridView extends Component {
                     })}
                 </ul>
                 <div className={css(styles.button)}>
-                    {maxSize < total && (
+                    {this.state.more < total && (
                         <RaisedButton
                             label="MORE"
                             onClick={this.handleMore}
@@ -106,7 +110,7 @@ class ResourcesGridView extends Component {
 
 const mapStateToProps = (
     state,
-    { formatData, maxSize, spaceWidth, orderBy },
+    { formatData, pageSize, spaceWidth, orderBy },
 ) => {
     if (!formatData || !formatData.items) {
         return {
@@ -118,13 +122,12 @@ const mapStateToProps = (
     return {
         data: formatData.items,
         total: formatData.total,
-        maxSize: parseInt(maxSize),
+        pageSize,
         spaceWidth,
         orderBy,
     };
 };
 
-export default compose(
-    injectData('/api/run/syndication'),
-    connect(mapStateToProps),
-)(ResourcesGridView);
+export default compose(injectData(), connect(mapStateToProps))(
+    ResourcesGridView,
+);
