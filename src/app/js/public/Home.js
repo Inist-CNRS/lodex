@@ -8,8 +8,7 @@ import { Helmet } from 'react-helmet';
 
 import { polyglot as polyglotPropTypes } from '../propTypes';
 import { preLoadPublication as preLoadPublicationAction } from '../fields';
-import { fromFields } from '../sharedSelectors';
-import getTitle from '../lib/getTitle';
+import { fromFields, fromCharacteristic } from '../sharedSelectors';
 
 import Alert from '../lib/components/Alert';
 import Card from '../lib/components/Card';
@@ -36,6 +35,8 @@ export class HomeComponent extends Component {
         navigateTo: PropTypes.func.isRequired,
         p: polyglotPropTypes.isRequired,
         sharingTitle: PropTypes.string,
+        title: PropTypes.string.isRequired,
+        description: PropTypes.string.isRequired,
     };
 
     componentWillMount() {
@@ -45,7 +46,14 @@ export class HomeComponent extends Component {
     }
 
     render() {
-        const { error, hasPublishedDataset, loading, p: polyglot } = this.props;
+        const {
+            error,
+            hasPublishedDataset,
+            loading,
+            p: polyglot,
+            title,
+            description,
+        } = this.props;
 
         if (loading) {
             return <Loading>{polyglot.t('loading')}</Loading>;
@@ -63,7 +71,8 @@ export class HomeComponent extends Component {
             return (
                 <div>
                     <Helmet>
-                        <title>{getTitle()}</title>
+                        <title>{title}</title>
+                        <meta name="description" content={description} />
                     </Helmet>
                     <div className="header-dataset-section">
                         <DatasetCharacteristics />
@@ -77,11 +86,28 @@ export class HomeComponent extends Component {
     }
 }
 
-const mapStateToProps = state => ({
-    error: fromFields.getError(state),
-    loading: fromFields.isLoading(state),
-    hasPublishedDataset: fromFields.hasPublishedDataset(state),
-});
+const mapStateToProps = state => {
+    const characteristics = fromCharacteristic.getCharacteristicsAsResource(
+        state,
+    );
+    const datasetTitleKey = fromFields.getDatasetTitleFieldName(state);
+    const datasetDescriptionKey = fromFields.getDatasetDescriptionFieldName(
+        state,
+    );
+    const title =
+        (datasetTitleKey && characteristics[datasetTitleKey]) || 'Unknown';
+    const description =
+        (datasetDescriptionKey && characteristics[datasetDescriptionKey]) ||
+        'n/a';
+
+    return {
+        error: fromFields.getError(state),
+        loading: fromFields.isLoading(state),
+        hasPublishedDataset: fromFields.hasPublishedDataset(state),
+        title,
+        description,
+    };
+};
 
 const mapDispatchToProps = {
     preLoadPublication: preLoadPublicationAction,

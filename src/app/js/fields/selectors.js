@@ -12,7 +12,7 @@ import {
     COVER_DATASET,
 } from '../../../common/cover';
 import { getProps } from '../lib/selectors';
-import TITLE_SCHEME from '../../../common/titleScheme';
+import scheme from '../../../common/scheme.js';
 
 export const NEW_CHARACTERISTIC_FORM_NAME = 'NEW_CHARACTERISTIC_FORM_NAME';
 
@@ -268,14 +268,23 @@ const getLinkedFields = createSelector(
         fields.filter(f => f.completes && f.completes === fieldName),
 );
 
-const findTitleField = fields => {
-    let titleField = fields.find(({ scheme }) => scheme === TITLE_SCHEME);
+const findFieldWith = (fields, theScheme, theLabel) => {
+    let theField = fields.find(({ scheme }) => scheme === theScheme);
+    let theRegex = RegExp(`^${theLabel}$`, 'i');
 
-    if (!titleField) {
-        titleField = fields.find(({ label }) => label.match(/^title$/));
+    if (!theField) {
+        theField = fields.find(({ label }) => label.match(theRegex));
     }
 
-    return titleField ? titleField.name : null;
+    return theField ? theField.name : null;
+};
+
+const findTitleField = fields => {
+    return findFieldWith(fields, scheme.title, 'description');
+};
+
+const findDescriptionField = fields => {
+    return findFieldWith(fields, scheme.description, 'description');
 };
 
 const getTitleFieldName = createSelector(getCollectionFields, findTitleField);
@@ -283,6 +292,11 @@ const getTitleFieldName = createSelector(getCollectionFields, findTitleField);
 const getDatasetTitleFieldName = createSelector(
     getDatasetFields,
     findTitleField,
+);
+
+const getDatasetDescriptionFieldName = createSelector(
+    getDatasetFields,
+    findDescriptionField,
 );
 
 const getPublishData = ({ error, published, editedFieldIndex, loading }) => ({
@@ -374,6 +388,7 @@ export default {
     getDatasetFields,
     getTitleFieldName,
     getDatasetTitleFieldName,
+    getDatasetDescriptionFieldName,
     getPublishData,
     isLoading,
     isSaving,
