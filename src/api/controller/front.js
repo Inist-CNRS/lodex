@@ -202,9 +202,10 @@ if (config.userAuth) {
     app.use(async (ctx, next) => {
         if (
             !ctx.state.cookie &&
-            ctx.request.url !== '/login' &&
-            ctx.request.url !== '/index.js' &&
-            ctx.request.url !== '/index.js.map'
+            ctx.request.url === '/' &&
+            ctx.request.url === '/graph' &&
+            ctx.request.url.match(/^\/\w+:/) && // resource access for uid: ark: http:
+            ctx.request.url.startsWith('/api/')
         ) {
             ctx.redirect('/login');
             return;
