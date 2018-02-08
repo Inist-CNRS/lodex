@@ -16,13 +16,16 @@ import Loading from '../lib/components/Loading';
 import DatasetCharacteristics from '../characteristic/DatasetCharacteristics';
 import NoDataset from './NoDataset';
 import Version from './Version';
+import getTitle from '../lib/getTitle';
+
 import { preLoadDatasetPage } from './dataset';
 import { preLoadExporters } from './export';
 
 export class HomeComponent extends Component {
     static defaultProps = {
         error: null,
-        sharingTitle: null,
+        title: null,
+        description: null,
     };
 
     static propTypes = {
@@ -34,9 +37,8 @@ export class HomeComponent extends Component {
         hasPublishedDataset: PropTypes.bool.isRequired,
         navigateTo: PropTypes.func.isRequired,
         p: polyglotPropTypes.isRequired,
-        sharingTitle: PropTypes.string,
-        title: PropTypes.string.isRequired,
-        description: PropTypes.string.isRequired,
+        title: PropTypes.string,
+        description: PropTypes.string,
     };
 
     componentWillMount() {
@@ -71,7 +73,9 @@ export class HomeComponent extends Component {
             return (
                 <div>
                     <Helmet>
-                        <title>{title}</title>
+                        <title>
+                            {title} - {getTitle()}
+                        </title>
                         <meta name="description" content={description} />
                     </Helmet>
                     <div className="header-dataset-section">
@@ -90,15 +94,10 @@ const mapStateToProps = state => {
     const characteristics = fromCharacteristic.getCharacteristicsAsResource(
         state,
     );
-    const datasetTitleKey = fromFields.getDatasetTitleFieldName(state);
-    const datasetDescriptionKey = fromFields.getDatasetDescriptionFieldName(
-        state,
-    );
-    const title =
-        (datasetTitleKey && characteristics[datasetTitleKey]) || 'Unknown';
-    const description =
-        (datasetDescriptionKey && characteristics[datasetDescriptionKey]) ||
-        'n/a';
+    const titleKey = fromFields.getDatasetTitleFieldName(state);
+    const descriptionKey = fromFields.getDatasetDescriptionFieldName(state);
+    const title = titleKey && characteristics[titleKey];
+    const description = descriptionKey && characteristics[descriptionKey];
 
     return {
         error: fromFields.getError(state),

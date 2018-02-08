@@ -299,6 +299,16 @@ const getDatasetDescriptionFieldName = createSelector(
     findDescriptionField,
 );
 
+const getResourceTitleFieldName = createSelector(
+    getCollectionFields,
+    findTitleField,
+);
+
+const getResourceDescriptionFieldName = createSelector(
+    getCollectionFields,
+    findDescriptionField,
+);
+
 const getPublishData = ({ error, published, editedFieldIndex, loading }) => ({
     published,
     editedFieldIndex,
@@ -389,6 +399,8 @@ export default {
     getTitleFieldName,
     getDatasetTitleFieldName,
     getDatasetDescriptionFieldName,
+    getResourceTitleFieldName,
+    getResourceDescriptionFieldName,
     getPublishData,
     isLoading,
     isSaving,

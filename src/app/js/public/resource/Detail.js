@@ -121,8 +121,9 @@ export const DetailComponent = ({
     fields,
     p: polyglot,
     resource,
-    sharingTitle,
     backToListLabel,
+    title,
+    description,
 }) => {
     const topFieldsLimit = Number(topFieldsCount) || 2;
     const topFields = fields
@@ -136,8 +137,9 @@ export const DetailComponent = ({
         <div className="detail">
             <Helmet>
                 <title>
-                    {getTitle()} - {sharingTitle || resource.uri}
+                    {title || resource.uri} - {getTitle()}
                 </title>
+                <meta name="description" content={description} />
             </Helmet>
             <div className="header-resource-section">
                 <div style={styles.container}>
@@ -267,7 +269,8 @@ export const DetailComponent = ({
 
 DetailComponent.defaultProps = {
     resource: null,
-    sharingTitle: null,
+    title: null,
+    description: null,
     backToListLabel: null,
 };
 
@@ -275,23 +278,24 @@ DetailComponent.propTypes = {
     fields: PropTypes.arrayOf(PropTypes.object).isRequired,
     p: polyglotPropTypes.isRequired,
     resource: PropTypes.shape({}),
-    sharingTitle: PropTypes.string,
+    title: PropTypes.string,
+    description: PropTypes.string,
     backToListLabel: PropTypes.string,
 };
 
 const mapStateToProps = state => {
     const resource = fromResource.getResourceSelectedVersion(state);
-    let sharingTitle;
-    const titleFieldName = fromFields.getTitleFieldName(state);
 
-    if (titleFieldName) {
-        sharingTitle = resource[titleFieldName];
-    }
+    const titleKey = fromFields.getResourceTitleFieldName(state);
+    const descriptionKey = fromFields.getResourceDescriptionFieldName(state);
+    const title = titleKey && resource[titleKey];
+    const description = descriptionKey && resource[descriptionKey];
 
     return {
         resource,
         fields: fromFields.getResourceFields(state, resource),
-        sharingTitle,
+        title,
+        description,
     };
 };
 
