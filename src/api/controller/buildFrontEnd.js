@@ -19,6 +19,7 @@ export const buildFrontend = () => {
 
 export async function buildFrontendMiddleware(ctx, next) {
     if (!frontendBuilt) {
+        ctx.status = 503;
         ctx.body = `
 The application is initializing.
 Please refresh your page in a few seconds: this can take up to a minute.`;
@@ -26,6 +27,7 @@ Please refresh your page in a few seconds: this can take up to a minute.`;
     }
 
     if (frontendBuildError) {
+        ctx.status = 500;
         ctx.body = `
 Error while building the frontend:\r\n
 ${frontendBuildError.stack}`;
