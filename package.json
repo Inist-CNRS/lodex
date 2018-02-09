@@ -112,6 +112,7 @@
     "lodash.set": "4.3.2",
     "lodash.uniq": "4.5.0",
     "lodash.unset": "4.5.2",
+    "lodash.upperfirst": "4.3.1",
     "markdown-it": "8.4.0",
     "material-ui": "0.19.4",
     "material-ui-superselectfield": "1.7.2",

@@ -3,19 +3,40 @@ import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 import { Field } from 'redux-form';
 import MenuItem from 'material-ui/MenuItem';
-import capitalize from 'lodash.capitalize';
+import upperFirst from 'lodash.upperfirst';
 
 import { polyglot as polyglotPropTypes } from '../propTypes';
 import FormSelectField from '../lib/components/FormSelectField';
 
 export const OverviewFieldComponent = ({ p: polyglot }) => {
-    const fieldsName = ['none', 'title', 'description'];
-    const fieldItems = fieldsName.map((field, index) => (
+    const overviewItems = [
+        {
+            _id: 0,
+            value: 'none',
+        },
+        {
+            _id: 1,
+            value: 'title',
+        },
+        {
+            _id: 2,
+            value: 'description',
+        },
+        {
+            _id: 100,
+            value: 'datasetTitle',
+        },
+        {
+            _id: 200,
+            value: 'datasetDescription',
+        },
+    ];
+    const overviewMenuItems = overviewItems.map(({ _id, value }) => (
         <MenuItem
-            className={field}
-            key={field}
-            value={index}
-            primaryText={polyglot.t(`overview${capitalize(field)}`)}
+            className={value}
+            key={value}
+            value={_id}
+            primaryText={polyglot.t(`overview${upperFirst(value)}`)}
         />
     ));
 
@@ -27,7 +48,7 @@ export const OverviewFieldComponent = ({ p: polyglot }) => {
             className="field-overview"
             fullWidth
         >
-            {fieldItems}
+            {overviewMenuItems}
         </Field>
     );
 };

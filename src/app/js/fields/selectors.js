@@ -12,7 +12,6 @@ import {
     COVER_DATASET,
 } from '../../../common/cover';
 import { getProps } from '../lib/selectors';
-import scheme from '../../../common/scheme.js';
 
 export const NEW_CHARACTERISTIC_FORM_NAME = 'NEW_CHARACTERISTIC_FORM_NAME';
 
@@ -121,16 +120,19 @@ const getAllListFields = createSelector(getCollectionFields, fields =>
     fields.filter(f => !f.composedOf),
 );
 
-const getOverViewCol = type => fields => {
-    const result = fields.filter(f => f.overview === type);
+const findFieldWithOverviewID = id => fields => {
+    const result = fields.filter(f => f.overview === id);
     return result[0] ? result[0].name : null;
 };
 
-const getOverviewTitleCol = createSelector(getAllListFields, getOverViewCol(1));
+const getOverviewTitleCol = createSelector(
+    getAllListFields,
+    findFieldWithOverviewID(1),
+);
 
 const getOverviewSubTitleCol = createSelector(
     getAllListFields,
-    getOverViewCol(2),
+    findFieldWithOverviewID(2),
 );
 
 export const getFieldByName = createSelector(
@@ -268,45 +270,24 @@ const getLinkedFields = createSelector(
         fields.filter(f => f.completes && f.completes === fieldName),
 );
 
-const findFieldWith = (fields, theScheme, theLabel) => {
-    let theField = fields.find(({ scheme }) => scheme === theScheme);
-    let theRegex = RegExp(`^${theLabel}$`, 'i');
-
-    if (!theField) {
-        theField = fields.find(({ label }) => label.match(theRegex));
-    }
-
-    return theField ? theField.name : null;
-};
-
-const findTitleField = fields => {
-    return findFieldWith(fields, scheme.title, 'description');
-};
-
-const findDescriptionField = fields => {
-    return findFieldWith(fields, scheme.description, 'description');
-};
-
-const getTitleFieldName = createSelector(getCollectionFields, findTitleField);
-
 const getDatasetTitleFieldName = createSelector(
     getDatasetFields,
-    findTitleField,
+    findFieldWithOverviewID(100),
 );
 
 const getDatasetDescriptionFieldName = createSelector(
     getDatasetFields,
-    findDescriptionField,
+    findFieldWithOverviewID(200),
 );
 
 const getResourceTitleFieldName = createSelector(
     getCollectionFields,
-    findTitleField,
+    findFieldWithOverviewID(1),
 );
 
 const getResourceDescriptionFieldName = createSelector(
     getCollectionFields,
-    findDescriptionField,
+    findFieldWithOverviewID(2),
 );
 
 const getPublishData = ({ error, published, editedFieldIndex, loading }) => ({
@@ -396,7 +377,6 @@ export default {
     getDocumentFields,
     getLinkedFields,
     getDatasetFields,
-    getTitleFieldName,
     getDatasetTitleFieldName,
     getDatasetDescriptionFieldName,
     getResourceTitleFieldName,
