@@ -49,8 +49,10 @@ const OntologyFieldComponent = ({ field, characteristics, p: polyglot }) => (
         <TableRowColumn>{field.name}</TableRowColumn>
         <TableRowColumn>
             {field.label}
-            {field.overview === 1 && <span style={styles.badge}>title</span>}
-            {field.overview === 2 && (
+            {(field.overview === 1 || field.overview === 100) && (
+                <span style={styles.badge}>title</span>
+            )}
+            {(field.overview === 2 || field.overview === 200) && (
                 <span style={styles.badge}>description</span>
             )}
         </TableRowColumn>
