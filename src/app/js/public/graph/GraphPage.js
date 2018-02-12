@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Card, CardTitle } from 'material-ui/Card';
+import { Helmet } from 'react-helmet';
 
 import GraphSummary from './GraphSummary';
 import Dataset from '../dataset/Dataset';
@@ -16,6 +17,7 @@ import PropertyLinkedFields from '../Property/PropertyLinkedFields';
 import CompositeProperty from '../Property/CompositeProperty';
 import { grey500 } from 'material-ui/styles/colors';
 import Stats from '../Stats';
+import getTitle from '../../lib/getTitle';
 
 const styles = {
     container: {
@@ -48,6 +50,9 @@ const styles = {
 
 const GraphPage = ({ graphField, resource }) => (
     <div style={styles.container}>
+        <Helmet>
+            <title>Resources - {getTitle()}</title>
+        </Helmet>
         <div style={styles.centerColumn}>
             <GraphSummary selected={graphField ? graphField.name : ''} />
             <Stats />
