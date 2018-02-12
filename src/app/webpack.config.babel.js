@@ -10,6 +10,7 @@ import HtmlWebpackPlugin from 'html-webpack-plugin';
 import CopyWebpackPlugin from 'copy-webpack-plugin';
 import CompressionPlugin from 'compression-webpack-plugin';
 import UglifyJsPlugin from 'uglifyjs-webpack-plugin';
+import HardSourceWebpackPlugin from 'hard-source-webpack-plugin';
 import { resolve } from 'path';
 
 import { loaderKeys } from '../api/loaders';
@@ -122,6 +123,7 @@ export default {
                   new SourceMapDevToolPlugin({ filename: '[file].map' }),
               ]
             : [
+                  new HardSourceWebpackPlugin(),
                   new UglifyJsPlugin({
                       uglifyOptions: {
                           ie8: false,
