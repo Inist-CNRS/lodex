@@ -18,14 +18,12 @@ import HideResource from './HideResource';
 import SelectVersion from './SelectVersion';
 import Version from '../Version';
 import addSchemePrefix from '../../lib/addSchemePrefix';
-import {
-    schemeForDatasetLink,
-    topFieldsCount,
-} from '../../../../../config.json';
 import getTitle from '../../lib/getTitle';
 import ExportShareButton from '../ExportShareButton';
 import { getHost } from '../../../../common/uris';
 
+const schemeForDatasetLink = 'http://www.w3.org/2004/02/skos/core#inScheme';
+const topFieldsCount = 2;
 const styles = {
     container: {
         display: 'flex',

@@ -42,8 +42,6 @@
     "sitemap",
     "widget"
   ],
-  "topFieldsCount": 2,
-  "schemeForDatasetLink": "http://www.w3.org/2004/02/skos/core#inScheme",
   "datasetClass": "http://test.fr/datasetClass",
   "exportDataset": "true",
   "collectionClass": "",
