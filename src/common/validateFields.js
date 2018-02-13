@@ -1,6 +1,6 @@
 import { COVERS, COVER_DOCUMENT } from './cover';
 import knownTransformers from './transformers';
-import { languages as languagesFromConfig } from '../../config.json';
+import languagesList from './languages';
 
 export const validateCover = (field, isContribution) => {
     const result = {
@@ -235,7 +235,7 @@ export const validateTransformer = transformer => {
 export const validateEachTransformer = (transformers = []) =>
     transformers.map(validateTransformer);
 
-export const validateLanguage = (field, languages = languagesFromConfig) => {
+export const validateLanguage = (field, languages = languagesList) => {
     const result = {
         name: 'language',
         isValid: true,
