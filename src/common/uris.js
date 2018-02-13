@@ -18,12 +18,23 @@ export const getResourceUri = resource => {
     return `/uid:/${encodeURIComponent(uri)}`;
 };
 
-// Browser usage only, For api we must use directely config.host
+export const getCleanHost = () => {
+    const host = getHost();
+    const reg = new RegExp('(\\-\\d+)(\\.[a-z0-9]+)+');
+    const match = reg.exec(host);
+
+    if (match) {
+        return host.replace(match[1], '');
+    }
+    return host;
+};
+
 export const getHost = () => {
     if (typeof window !== 'undefined') {
         return `${window.location.protocol}//${window.location.host}`;
     }
-    return '';
+    const host = process.env.EZMASTER_PUBLIC_URL || `http://localhost:3000`;
+    return host;
 };
 
 export const getFullResourceUri = (resource, defaultBaseUri) => {

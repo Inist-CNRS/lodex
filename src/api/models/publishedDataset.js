@@ -1,7 +1,6 @@
 import { ObjectID } from 'mongodb';
 import chunk from 'lodash.chunk';
 import omit from 'lodash.omit';
-import config from 'config';
 
 import { getFullResourceUri } from '../../common/uris';
 import getPublishedDatasetFilter from './getPublishedDatasetFilter';
@@ -117,7 +116,7 @@ export default async db => {
                         ? resource
                         : {
                               ...resource,
-                              uri: getFullResourceUri(resource, config.host),
+                              uri: getFullResourceUri(resource),
                           },
             )
             .stream();

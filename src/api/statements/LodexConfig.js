@@ -1,4 +1,4 @@
-import { host, cleanHost } from 'config';
+import { getHost, getCleanHost } from '../../common/uris';
 import set from 'lodash.set';
 import config from '../../../config.json';
 
@@ -10,8 +10,8 @@ export default function LodexConfig(data, feed) {
     const target = this.getParam('target', '$config');
     set(data, `${target || '$context'}`, {
         ...config,
-        host,
-        cleanHost,
+        host: getHost(),
+        cleanHost: getCleanHost(),
     });
     feed.send(data);
 }

@@ -1,5 +1,6 @@
 import fetch from 'fetch-with-proxy';
 import config from 'config';
+import { getHost } from '../../../common/uris';
 
 import server from '../../';
 
@@ -8,14 +9,14 @@ export default () => {
 
     return {
         get: (url, headers = {}) =>
-            fetch(`${config.host}${url}`, {
+            fetch(`${getHost()}${url}`, {
                 method: 'GET',
                 headers: {
                     ...headers,
                 },
             }),
         post: (url, body, headers = {}) =>
-            fetch(`${config.host}${url}`, {
+            fetch(`${getHost()}${url}`, {
                 method: 'POST',
                 headers: {
                     ...headers,
@@ -23,7 +24,7 @@ export default () => {
                 body: JSON.stringify(body),
             }),
         put: (url, body, headers = {}) =>
-            fetch(`${config.host}${url}`, {
+            fetch(`${getHost()}${url}`, {
                 method: 'PUT',
                 headers: {
                     Accept: 'application/json',
@@ -33,7 +34,7 @@ export default () => {
                 body: JSON.stringify(body),
             }),
         del: (url, body, headers = {}) =>
-            fetch(`${config.host}${url}`, {
+            fetch(`${getHost()}${url}`, {
                 method: 'DELETE',
                 headers: {
                     Accept: 'application/json',
