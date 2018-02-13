@@ -1,5 +1,3 @@
-import config from 'config';
-
 export const URI_FIELD_NAME = 'uri';
 
 export const getResourceUri = resource => {
@@ -20,12 +18,12 @@ export const getResourceUri = resource => {
     return `/uid:/${encodeURIComponent(uri)}`;
 };
 
+// Browser usage only, For api we must use directely config.host
 export const getHost = () => {
     if (typeof window !== 'undefined') {
         return `${window.location.protocol}//${window.location.host}`;
     }
-
-    return config.host;
+    return '';
 };
 
 export const getFullResourceUri = (resource, defaultBaseUri) => {
