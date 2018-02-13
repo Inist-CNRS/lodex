@@ -28,7 +28,7 @@ export const defaultState = {
     isCreating: false,
     match: null,
     currentPage: 0,
-    perPage: process.env.PER_PAGE || 10,
+    perPage: 10,
     dataset: [],
     loading: false,
     sort: {},
