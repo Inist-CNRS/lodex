@@ -2,6 +2,7 @@ import ezs from 'ezs';
 import N3 from 'n3';
 import ezsBasics from 'ezs-basics';
 import ezsLocals from '../statements';
+import prefixes from '../../common/prefixes';
 
 ezs.use(ezsBasics);
 ezs.use(ezsLocals);
@@ -30,7 +31,7 @@ const exporter = (config, fields, characteristics, stream) =>
         .pipe(N3.StreamParser({ format: 'N-Quads' }))
         .pipe(
             new N3.StreamWriter({
-                prefixes: config.prefixes,
+                prefixes,
             }),
         );
 
