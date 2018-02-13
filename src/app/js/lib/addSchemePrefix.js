@@ -1,4 +1,4 @@
-import { prefixes } from '../../../../config.json';
+import prefixes from '../../../common/prefixes';
 
 export default input => {
     if (!input) {
