@@ -33,7 +33,6 @@ module.exports = {
         headerSecret: 'header',
         expiresIn: 10 * 3600, // 10 hours
     },
-    istexApiUrl: 'https://api.istex.fr/document',
     hostname: 'http://data.istex.fr/',
     host: getHost(),
     cleanHost: getCleanHost(),
