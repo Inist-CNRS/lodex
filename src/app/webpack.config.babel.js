@@ -8,8 +8,8 @@ import {
 } from 'webpack';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import CopyWebpackPlugin from 'copy-webpack-plugin';
-import CompressionPlugin from 'compression-webpack-plugin';
-import UglifyJsPlugin from 'uglifyjs-webpack-plugin';
+// import CompressionPlugin from 'compression-webpack-plugin';
+// import UglifyJsPlugin from 'uglifyjs-webpack-plugin';
 import HardSourceWebpackPlugin from 'hard-source-webpack-plugin';
 import { resolve } from 'path';
 
@@ -17,6 +17,8 @@ import { loaderKeys } from '../api/loaders';
 import jsonConfig from '../../config.json';
 
 export default {
+    cache: true,
+    devtool: process.env.NODE_ENV === 'development' ? 'eval' : false,
     entry: {
         index: []
             .concat(
@@ -124,6 +126,7 @@ export default {
               ]
             : [
                   new HardSourceWebpackPlugin(),
+                  /* disable to allow lodex to start on small server
                   new UglifyJsPlugin({
                       uglifyOptions: {
                           ie8: false,
@@ -136,6 +139,7 @@ export default {
                       cache: true,
                   }),
                   new CompressionPlugin(),
+                  */
               ],
     ),
     resolve: {
