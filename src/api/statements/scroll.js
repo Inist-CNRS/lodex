@@ -1,8 +1,7 @@
 import request from 'request';
 import url from 'url';
 import logger from '../services/logger';
-
-const istexApiUrl = 'https://api.istex.fr/document';
+import { ISTEX_API_URL as istexApiUrl } from '../../common/externals';
 
 /**
  * Recursive scroll

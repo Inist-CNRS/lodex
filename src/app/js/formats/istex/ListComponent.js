@@ -4,8 +4,7 @@ import memoize from 'lodash.memoize';
 
 import { REJECTED } from '../../../../common/propositionStatus';
 import { field as fieldPropTypes } from '../../propTypes';
-
-const istexApiUrl = 'https://api.istex.fr/document';
+import { ISTEX_API_URL as istexApiUrl } from '../../../../common/externals';
 
 const styles = {
     text: memoize(status =>
