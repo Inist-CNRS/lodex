@@ -1,8 +1,7 @@
 import fetch from '../../lib/fetch';
 import composeAsync from '../../../../common/lib/composeAsync';
 import URL from 'url';
-
-const istexApiUrl = 'https://api.istex.fr/document';
+import { ISTEX_API_URL as istexApiUrl } from '../../../../common/externals';
 
 export const getUrl = ({ props: { resource, field }, page, perPage }) => {
     const value = resource[field.name];
