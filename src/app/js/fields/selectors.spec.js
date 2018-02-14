@@ -1,6 +1,5 @@
 import expect from 'expect';
 
-import TITLE_SCHEME from '../../../common/titleScheme';
 import selectors, {
     isACompositeFields,
     getLineColGetterFromAllFields,
@@ -221,86 +220,6 @@ describe('field selectors', () => {
             expect(selectors.hasPublishedDataset({ published: false })).toEqual(
                 false,
             );
-        });
-    });
-
-    describe('getTitleFieldName', () => {
-        it('should return field name of field with title scheme and cover collection', () => {
-            const state = {
-                list: ['dataset title', 'title', 'other'],
-                byName: {
-                    'dataset title': {
-                        cover: 'dataset',
-                        scheme: TITLE_SCHEME,
-                        name: 'dataset title',
-                    },
-                    title: {
-                        cover: 'collection',
-                        scheme: TITLE_SCHEME,
-                        name: 'title',
-                    },
-                    other: {
-                        cover: 'collection',
-                        scheme: 'other scheme',
-                        name: 'other',
-                    },
-                },
-            };
-            expect(selectors.getTitleFieldName(state)).toBe('title');
-        });
-
-        it('should return field name of field with a label matching title', () => {
-            const state = {
-                list: ['dataset title', 'title', 'other'],
-                byName: {
-                    'dataset title': {
-                        cover: 'dataset',
-                        scheme: TITLE_SCHEME,
-                        name: 'dataset title',
-                        label: 'foo_dataset',
-                    },
-                    title: {
-                        cover: 'collection',
-                        scheme: 'other scheme',
-                        name: 'title',
-                        label: 'title',
-                    },
-                    other: {
-                        cover: 'collection',
-                        scheme: 'other scheme',
-                        name: 'other',
-                        label: 'foo2',
-                    },
-                },
-            };
-            expect(selectors.getTitleFieldName(state)).toBe('title');
-        });
-
-        it('should return null if no field found', () => {
-            const state = {
-                list: ['dataset title', 'title', 'other'],
-                byName: {
-                    'dataset title': {
-                        cover: 'dataset',
-                        scheme: TITLE_SCHEME,
-                        name: 'dataset title',
-                        label: 'foo_dataset',
-                    },
-                    title: {
-                        cover: 'collection',
-                        scheme: 'other scheme',
-                        name: 'title',
-                        label: 'foo',
-                    },
-                    other: {
-                        cover: 'collection',
-                        scheme: 'other scheme',
-                        name: 'other',
-                        label: 'foo2',
-                    },
-                },
-            };
-            expect(selectors.getTitleFieldName(state)).toBe(null);
         });
     });
 

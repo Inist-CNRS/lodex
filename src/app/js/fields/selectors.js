@@ -12,7 +12,6 @@ import {
     COVER_DATASET,
 } from '../../../common/cover';
 import { getProps } from '../lib/selectors';
-import TITLE_SCHEME from '../../../common/titleScheme';
 
 export const NEW_CHARACTERISTIC_FORM_NAME = 'NEW_CHARACTERISTIC_FORM_NAME';
 
@@ -121,16 +120,19 @@ const getAllListFields = createSelector(getCollectionFields, fields =>
     fields.filter(f => !f.composedOf),
 );
 
-const getOverViewCol = type => fields => {
-    const result = fields.filter(f => f.overview === type);
+const findFieldWithOverviewID = id => fields => {
+    const result = fields.filter(f => f.overview === id);
     return result[0] ? result[0].name : null;
 };
 
-const getOverviewTitleCol = createSelector(getAllListFields, getOverViewCol(1));
+const getOverviewTitleCol = createSelector(
+    getAllListFields,
+    findFieldWithOverviewID(1),
+);
 
 const getOverviewSubTitleCol = createSelector(
     getAllListFields,
-    getOverViewCol(2),
+    findFieldWithOverviewID(2),
 );
 
 export const getFieldByName = createSelector(
@@ -268,21 +270,24 @@ const getLinkedFields = createSelector(
         fields.filter(f => f.completes && f.completes === fieldName),
 );
 
-const findTitleField = fields => {
-    let titleField = fields.find(({ scheme }) => scheme === TITLE_SCHEME);
-
-    if (!titleField) {
-        titleField = fields.find(({ label }) => label.match(/^title$/));
-    }
-
-    return titleField ? titleField.name : null;
-};
-
-const getTitleFieldName = createSelector(getCollectionFields, findTitleField);
-
 const getDatasetTitleFieldName = createSelector(
     getDatasetFields,
-    findTitleField,
+    findFieldWithOverviewID(100),
+);
+
+const getDatasetDescriptionFieldName = createSelector(
+    getDatasetFields,
+    findFieldWithOverviewID(200),
+);
+
+const getResourceTitleFieldName = createSelector(
+    getCollectionFields,
+    findFieldWithOverviewID(1),
+);
+
+const getResourceDescriptionFieldName = createSelector(
+    getCollectionFields,
+    findFieldWithOverviewID(2),
 );
 
 const getPublishData = ({ error, published, editedFieldIndex, loading }) => ({
@@ -372,8 +377,10 @@ export default {
     getDocumentFields,
     getLinkedFields,
     getDatasetFields,
-    getTitleFieldName,
     getDatasetTitleFieldName,
+    getDatasetDescriptionFieldName,
+    getResourceTitleFieldName,
+    getResourceDescriptionFieldName,
     getPublishData,
     isLoading,
     isSaving,
