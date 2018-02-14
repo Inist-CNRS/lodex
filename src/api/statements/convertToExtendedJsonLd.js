@@ -1,5 +1,6 @@
 import validUrl from 'valid-url';
 import get from 'lodash.get';
+import prefixes from '../../common/prefixes';
 
 /**
  * Create a JSONLD context with prefixes and istexQuery informations in config.json
@@ -18,7 +19,7 @@ function getContext(config) {
 
         const istexProperty = propertyValue.split(':').map(e => e.trim());
 
-        if (!config.prefixes[istexProperty[0]]) {
+        if (!prefixes[istexProperty[0]]) {
             // eslint-disable-next-line
             return console.error(
                 `property "${
@@ -27,7 +28,7 @@ function getContext(config) {
             );
         }
 
-        context[v] = `${config.prefixes[istexProperty[0]]}${istexProperty[1]}`;
+        context[v] = `${prefixes[istexProperty[0]]}${istexProperty[1]}`;
         return context[v];
     });
 

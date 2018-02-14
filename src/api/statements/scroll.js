@@ -1,7 +1,8 @@
 import request from 'request';
 import url from 'url';
-import config from 'config';
 import logger from '../services/logger';
+
+const istexApiUrl = 'https://api.istex.fr/document';
 
 /**
  * Recursive scroll
@@ -86,7 +87,7 @@ module.exports = function scroll(data, feed) {
 
     const urlObj = {
         protocol: 'https',
-        hostname: url.parse(config.istexApiUrl).hostname,
+        hostname: url.parse(istexApiUrl).hostname,
         pathname: 'document',
         // Change '&' to validate the query as an URI component (and not the '?'
         // at the beginning)

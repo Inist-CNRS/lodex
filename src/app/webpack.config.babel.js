@@ -13,7 +13,6 @@ import UglifyJsPlugin from 'uglifyjs-webpack-plugin';
 import { resolve } from 'path';
 
 import { loaderKeys } from '../api/loaders';
-import jsonConfig from '../../config.json';
 
 export default {
     entry: {
@@ -53,11 +52,6 @@ export default {
                     presets: ['react', 'stage-2'],
                 },
             },
-            {
-                test: /\.json$/,
-                include: [resolve(__dirname, '../../config.json')],
-                loader: 'json-loader',
-            },
         ],
     },
     output: {
@@ -67,15 +61,12 @@ export default {
     },
     plugins: [
         new DefinePlugin({
-            API_URL: JSON.stringify(config.api_url),
             __DEBUG__: config.debug,
             'process.env': {
                 NODE_ENV:
                     process.env.NODE_ENV === 'development'
                         ? JSON.stringify(process.env.NODE_ENV)
                         : JSON.stringify('production'), // eslint-disable-line max-len
-                ISTEX_API_URL: JSON.stringify(config.istexApiUrl),
-                PER_PAGE: JSON.stringify(jsonConfig.perPage),
             },
             LOADERS: JSON.stringify(loaderKeys),
         }),
@@ -138,8 +129,5 @@ export default {
     ),
     resolve: {
         modules: [resolve(__dirname, '../../node_modules')],
-        alias: {
-            config: resolve(__dirname, './webpackConfig.js'),
-        },
     },
 };

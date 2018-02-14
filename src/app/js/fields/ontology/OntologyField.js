@@ -12,7 +12,7 @@ import {
     polyglot as polyglotPropTypes,
 } from '../../propTypes';
 import EditOntologyFieldButton from './EditOntologyFieldButton';
-import { languages } from '../../../../../config.json';
+import languages from '../../../../common/languages';
 import { fromCharacteristic } from '../../sharedSelectors';
 import EditButton from '../editFieldValue/EditButton';
 import { COVER_DATASET } from '../../../../common/cover';

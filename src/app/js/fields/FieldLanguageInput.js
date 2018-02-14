@@ -3,7 +3,7 @@ import translate from 'redux-polyglot/translate';
 import { Field } from 'redux-form';
 import MenuItem from 'material-ui/MenuItem';
 
-import { languages } from '../../../../config.json';
+import languages from '../../../common/languages';
 import {
     field as fieldPropTypes,
     polyglot as polyglotPropTypes,

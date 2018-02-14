@@ -1,5 +1,3 @@
-import config from 'config';
-
 export const URI_FIELD_NAME = 'uri';
 
 export const getResourceUri = resource => {
@@ -20,12 +18,22 @@ export const getResourceUri = resource => {
     return `/uid:/${encodeURIComponent(uri)}`;
 };
 
+export const getCleanHost = () => {
+    const host = getHost();
+    const reg = new RegExp('(\\-\\d+)(\\.[a-z0-9]+)+');
+    const match = reg.exec(host);
+    if (match) {
+        return host.replace(match[1], '');
+    }
+    return host;
+};
+
 export const getHost = () => {
     if (typeof window !== 'undefined') {
         return `${window.location.protocol}//${window.location.host}`;
     }
-
-    return config.host;
+    const host = process.env.EZMASTER_PUBLIC_URL || `http://localhost:3000`;
+    return host;
 };
 
 export const getFullResourceUri = (resource, defaultBaseUri) => {

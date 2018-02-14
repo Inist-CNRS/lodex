@@ -15,7 +15,8 @@ describe('fetchIstexData', () => {
                     perPage: 5,
                 }),
             ).toEqual({
-                url: 'https://istex/?q=value&from=35&size=5&output=id,arkIstex,title,publicationDate,author,host.genre,host.title'
+                url:
+                    'https://api.istex.fr/document/?q=value&from=35&size=5&output=id,arkIstex,title,publicationDate,author,host.genre,host.title',
             });
         });
     });
