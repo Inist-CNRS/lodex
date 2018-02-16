@@ -23,10 +23,10 @@ import rootReducer from '../../app/js/public/reducers';
 import sagas from '../../app/js/public/sagas';
 import configureStoreServer from '../../app/js/configureStoreServer';
 import routes from '../../app/js/public/routes';
-import phrasesForEn from '../../app/js/i18n/translations/en';
-import webpackConfig from '../../app/webpack.config.babel';
+import webpackConfig, { translations } from '../../app/webpack.config.babel';
 import config from '../../../config.json';
 
+const phrasesForEn = translations.english;
 const indexHtml = fs
     .readFileSync(path.resolve(__dirname, '../../app/custom/index.html'))
     .toString();

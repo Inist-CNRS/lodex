@@ -16,7 +16,7 @@ import phrasesForEn from '../i18n/translations/en';
 const initialState = {
     polyglot: {
         locale: 'en',
-        phrases: phrasesForEn,
+        phrases: phrasesForEn(),
     },
 };
 
