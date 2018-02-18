@@ -10,7 +10,7 @@ import controller from './controller';
 const env = process.env.NODE_ENV;
 const app = koaQs(new Koa());
 
-app.use(cors());
+app.use(cors({ credentials: true }));
 
 // server logs
 app.use(async (ctx, next) => {
