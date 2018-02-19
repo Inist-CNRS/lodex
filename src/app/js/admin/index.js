@@ -10,13 +10,14 @@ import rootReducer from './reducers';
 import routesFactory from './routes';
 import sagas from './sagas';
 import configureStore from '../configureStore';
-import phrasesForEn from '../i18n/translations/en';
+import phrasesFor from '../i18n/translations';
 import { createHashHistory } from 'history';
 
+const language = window.navigator.language || 'en';
 const initialState = {
     polyglot: {
-        locale: 'en',
-        phrases: phrasesForEn(),
+        locale: language,
+        phrases: phrasesFor(language),
     },
 };
 
