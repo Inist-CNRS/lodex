@@ -258,7 +258,7 @@
 "link"	"URL - Link"	"URL externe"
 "redirect"	"URL - Automatic redirect"	"URL - Redirection automatique"
 "contextualBarchart"	"Graph - Contextual chart"	"Graphique - Graphique contextuel"
-istex"	"Other - ISTEX Query"	"Autre - Requête ISTEX"
+"istex"	"Other - ISTEX Query"	"Autre - Requête ISTEX"
 "markdown"	"Text - Syntax markdown"	"Texte - Syntaxe Markdown"
 "overview"	"Syndication"	"Syndication"
 "overviewNone"	"None"	"Aucun"
