@@ -16,7 +16,7 @@ import { createHashHistory } from 'history';
 const initialState = {
     polyglot: {
         locale: 'en',
-        phrases: phrasesForEn,
+        phrases: phrasesForEn(),
     },
 };
 

@@ -1,4 +1,6 @@
 import 'babel-polyfill';
+import fs from 'fs';
+import CSV from 'csv-string';
 import config from 'config';
 import {
     DefinePlugin,
@@ -13,6 +15,20 @@ import UglifyJsPlugin from 'uglifyjs-webpack-plugin';
 import { resolve } from 'path';
 
 import { loaderKeys } from '../api/loaders';
+
+const translationsFile = resolve(__dirname, './translations.tsv');
+const translationsTSV = fs.readFileSync(translationsFile, 'utf8');
+const translationsRAW = CSV.parse(translationsTSV, `\t`, '"');
+export const translations = {
+    english: translationsRAW.reduce(
+        (acc, line) => ({ ...acc, [line[0]]: line[1] }),
+        {},
+    ),
+    french: translationsRAW.reduce(
+        (acc, line) => ({ ...acc, [line[0]]: line[2] }),
+        {},
+    ),
+};
 
 export default {
     entry: {
@@ -62,6 +78,8 @@ export default {
     plugins: [
         new DefinePlugin({
             __DEBUG__: config.debug,
+            __EN__: JSON.stringify(translations.english),
+            __FR__: JSON.stringify(translations.french),
             'process.env': {
                 NODE_ENV:
                     process.env.NODE_ENV === 'development'
