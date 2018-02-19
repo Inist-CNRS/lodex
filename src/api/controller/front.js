@@ -45,7 +45,7 @@ const getInitialState = (token, cookie) => ({
         published: true,
     },
     polyglot: {
-        locale: 'en',
+        locale: 'fr',
         phrases: phrasesForEn,
     },
     user: {
