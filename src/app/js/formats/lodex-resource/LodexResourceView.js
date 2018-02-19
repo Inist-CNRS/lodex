@@ -5,6 +5,7 @@ import { StyleSheet, css } from 'aphrodite/no-important';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import get from 'lodash.get';
+import URL from 'url';
 
 import LodexResource from '../shared/LodexResource';
 import { field as fieldPropTypes } from '../../propTypes';
@@ -37,8 +38,11 @@ LodexResourceView.defaultProps = {
 };
 
 const mapStateToProps = (state, { formatData = {} }) => {
-    const { id, url, title, summary } = get(formatData, 'items[0]', {});
-
+    const { id = '', url = '', title = 'n/a', summary = '' } = get(
+        formatData,
+        'items[0]',
+        {},
+    );
     return {
         id,
         url,
@@ -62,6 +66,18 @@ export default compose(
         }
 
         if (isUrl(value)) {
+            const source = URL.parse(value);
+            if (source.pathname.search(/^\/\w+:/) === 0) {
+                const uri = source.pathname.slice(1);
+                const target = {
+                    protocol: source.protocol,
+                    hostname: source.hostname,
+                    slashes: source.slashes,
+                    pathname: '/api/run/syndication/',
+                    search: `?$query[uri]=${encodeURIComponent(uri)}`,
+                };
+                return URL.format(target);
+            }
             return value;
         }
         return `/api/run/syndication/?$query[uri]=${encodeURIComponent(
