@@ -33,7 +33,7 @@
         "process": true,
         "__DEBUG__": true,
         "LOADERS": true,
-        "__EN__": true
+        "__EN__": true,
         "__FR__": true
     }
 }
