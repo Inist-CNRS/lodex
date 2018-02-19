@@ -25,7 +25,7 @@ export const translations = {
         {},
     ),
     french: translationsRAW.reduce(
-        (acc, line) => ({ ...acc, [line[0]]: line[1] }),
+        (acc, line) => ({ ...acc, [line[0]]: line[2] }),
         {},
     ),
 };
