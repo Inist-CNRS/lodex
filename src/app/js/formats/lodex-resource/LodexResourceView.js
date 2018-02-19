@@ -38,8 +38,11 @@ LodexResourceView.defaultProps = {
 };
 
 const mapStateToProps = (state, { formatData = {} }) => {
-    const { id, url, title, summary } = get(formatData, 'items[0]', {});
-
+    const { id = '', url = '', title = 'n/a', summary = '' } = get(
+        formatData,
+        'items[0]',
+        {},
+    );
     return {
         id,
         url,
