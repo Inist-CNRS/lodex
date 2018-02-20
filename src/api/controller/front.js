@@ -23,15 +23,14 @@ import rootReducer from '../../app/js/public/reducers';
 import sagas from '../../app/js/public/sagas';
 import configureStoreServer from '../../app/js/configureStoreServer';
 import routes from '../../app/js/public/routes';
-import webpackConfig, { translations } from '../../app/webpack.config.babel';
+import webpackConfig, { translations } from '../../app/webpack.config.babel';
 import config from '../../../config.json';
 
-const phrasesForEn = translations.english;
 const indexHtml = fs
     .readFileSync(path.resolve(__dirname, '../../app/custom/index.html'))
     .toString();
 
-const getInitialState = (token, cookie) => ({
+const getInitialState = (token, cookie, locale) => ({
     fields: {
         loading: false,
         isSaving: false,
@@ -45,8 +44,8 @@ const getInitialState = (token, cookie) => ({
         published: true,
     },
     polyglot: {
-        locale: 'en',
-        phrases: phrasesForEn,
+        locale: locale,
+        phrases: locale === 'fr' ? translations.french : translations.english,
     },
     user: {
         token,
@@ -108,11 +107,12 @@ export const getRenderingData = async (
     muiTheme,
     token,
     cookie,
+    locale,
 ) => {
     const store = configureStoreServer(
         rootReducer,
         sagas,
-        getInitialState(token, cookie),
+        getInitialState(token, cookie, locale),
         history,
     );
 
@@ -176,6 +176,7 @@ const handleRender = async (ctx, next) => {
         muiTheme,
         ctx.state.headerToken,
         ctx.request.header.cookie,
+        ctx.acceptsLanguages('en', 'fr'),
     );
 
     ctx.body = renderFullPage(html, css, preloadedState, helmet);
