@@ -15,11 +15,14 @@ const styles = {
     ),
 };
 
-const IstexView = ({ fieldStatus, field, resource }) => (
-    <span style={styles.text(fieldStatus)}>
-        {`${istexApiUrl}/?q=${resource[field.name]}`}
-    </span>
-);
+const IstexView = ({ fieldStatus, field, resource }) => {
+    const url = `${istexApiUrl}/?q=${resource[field.name]}`;
+    return (
+        <a style={styles.text(fieldStatus)} href={`${url}`}>
+            {url}
+        </a>
+    );
+};
 
 IstexView.propTypes = {
     fieldStatus: PropTypes.string,
