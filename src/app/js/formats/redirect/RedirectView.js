@@ -1,11 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { field as fieldPropTypes } from '../../propTypes';
-
-const isURL = v =>
-    (typeof v === 'string' &&
-        (v.startsWith('http://') || v.startsWith('https://'))) ||
-    false;
+import { isURL } from '../../../../common/uris.js';
 
 class RedirectView extends Component {
     constructor(props) {

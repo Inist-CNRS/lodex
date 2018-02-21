@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import get from 'lodash.get';
 import URL from 'url';
 
+import { isURL } from '../../../../common/uris.js';
 import LodexResource from '../shared/LodexResource';
 import { field as fieldPropTypes } from '../../propTypes';
 import injectData from '../injectData';
@@ -50,11 +51,6 @@ const mapStateToProps = (state, { formatData = {} }) => {
         summary,
     };
 };
-
-const isUrl = v =>
-    (typeof v === 'string' &&
-        (v.startsWith('http://') || v.startsWith('https://'))) ||
-    false;
 
 export default compose(
     translate,

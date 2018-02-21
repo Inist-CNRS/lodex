@@ -1,5 +1,27 @@
 export const URI_FIELD_NAME = 'uri';
 
+export const isURL = v =>
+    (typeof v === 'string' &&
+        (v.startsWith('http://') || v.startsWith('https://'))) ||
+    false;
+
+export const isLocalURL = v =>
+    (typeof v === 'string' &&
+        (v.startsWith('/api/') ||
+            v.startsWith('/uid:') ||
+            v.startsWith('/ark:'))) ||
+    false;
+
+export const canonicalURL = u => {
+    if (isURL(u)) {
+        return u;
+    } else if (isLocalURL(u)) {
+        const h = getHost();
+        return `${h}${u}`;
+    }
+    return '';
+};
+
 export const getResourceUri = resource => {
     const uri = resource.uri;
     if (!uri) {

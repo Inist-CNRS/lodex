@@ -7,6 +7,7 @@ import {
     polyglot as polyglotPropTypes,
 } from '../../propTypes';
 import { isLongText, getShortText } from '../../lib/longTexts';
+import { isURL, isLocalURL, canonicalURL } from '../../../../common/uris.js';
 import {
     REJECTED,
     PROPOSED,
@@ -39,17 +40,29 @@ const DefaultView = ({
     let value = resource[field.name];
     if (Array.isArray(value)) {
         return <p>{polyglot.t('bad_format', { label: field.label })}</p>;
+    } else if (isURL(value)) {
+        return (
+            <a style={styles[fieldStatus]} href={`${value}`}>
+                {value}
+            </a>
+        );
+    } else if (isLocalURL(value)) {
+        return (
+            <a style={styles[fieldStatus]} href={`${canonicalURL(value)}`}>
+                {value}
+            </a>
+        );
+    } else {
+        return (
+            <span style={styles[fieldStatus]}>
+                {shrink && isLongText(value) ? (
+                    <span className={className}>{getShortText(value)}</span>
+                ) : (
+                    <span className={className}>{value}</span>
+                )}
+            </span>
+        );
     }
-
-    return (
-        <span style={styles[fieldStatus]}>
-            {shrink && isLongText(value) ? (
-                <span className={className}>{getShortText(value)}</span>
-            ) : (
-                <span className={className}>{value}</span>
-            )}
-        </span>
-    );
 };
 
 DefaultView.propTypes = {
