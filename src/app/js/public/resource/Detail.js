@@ -5,6 +5,7 @@ import { Link } from 'react-router';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
 import { CardActions } from 'material-ui/Card';
+import FlatButton from 'material-ui/FlatButton';
 import { grey500 } from 'material-ui/styles/colors';
 import memoize from 'lodash.memoize';
 import { Helmet } from 'react-helmet';
@@ -204,51 +205,13 @@ export const DetailComponent = ({
                             style={styles.property}
                         />
                     ))}
-                    <div style={styles.property}>
-                        <div
-                            className="property resourceURI"
-                            style={styles.container}
-                        >
-                            <div>
-                                <div style={styles.labelContainer}>
-                                    <span
-                                        className="property_label resource_uri"
-                                        style={styles.label}
-                                    >
-                                        URI
-                                    </span>
-                                    <span
-                                        className="property_scheme resource_uri_scheme"
-                                        style={styles.scheme}
-                                    >
-                                        <a
-                                            style={styles.schemeLink}
-                                            href="https://www.w3.org/TR/xmlschema-2/#anyURI"
-                                        >
-                                            {addSchemePrefix(
-                                                'https://www.w3.org/TR/xmlschema-2/#anyURI',
-                                            )}
-                                        </a>
-                                    </span>
-                                </div>
-                            </div>
-                            <div style={styles.valueContainer}>
-                                <span
-                                    className="property_language"
-                                    style={styles.language(true)}
-                                >
-                                    XX
-                                </span>
-                                <div style={styles.value}>
-                                    <a
-                                        href={`/${resource.uri}`}
-                                    >{`${getHost()}/${resource.uri}`}</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
                 <CardActions style={styles.actions}>
+                    <FlatButton
+                        href={`${getHost()}/${resource.uri} `}
+                        label={resource.uri}
+                        primary={true}
+                    />
                     <SelectVersion />
                     <AddField style={{ marginLeft: 'auto' }} />
                     <HideResource />
