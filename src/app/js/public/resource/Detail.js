@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Link } from 'react-router';
+import GraphSummary from '../graph/GraphSummary';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
 import { CardActions } from 'material-ui/Card';
@@ -22,7 +22,6 @@ import getTitle from '../../lib/getTitle';
 import ExportShareButton from '../ExportShareButton';
 import { getHost } from '../../../../common/uris';
 
-const schemeForDatasetLink = 'http://www.w3.org/2004/02/skos/core#inScheme';
 const topFieldsCount = 2;
 const styles = {
     container: {
@@ -115,14 +114,7 @@ const styles = {
     },
 };
 
-export const DetailComponent = ({
-    fields,
-    p: polyglot,
-    resource,
-    backToListLabel,
-    title,
-    description,
-}) => {
+export const DetailComponent = ({ fields, resource, title, description }) => {
     const topFieldsLimit = Number(topFieldsCount) || 2;
     const topFields = fields
         .filter(field => resource[field.name] || field.composedOf)
@@ -140,48 +132,8 @@ export const DetailComponent = ({
                 <meta name="description" content={description} />
             </Helmet>
             <div className="header-resource-section">
+                <GraphSummary />
                 <div style={styles.container}>
-                    <div style={styles.firstItem}>
-                        <div
-                            className="property schemeForDatasetLink"
-                            style={styles.container}
-                        >
-                            <div>
-                                <div style={styles.labelContainer}>
-                                    <span
-                                        className="property_label back_to_list"
-                                        style={styles.label}
-                                    >
-                                        {polyglot.t('dataset')}
-                                    </span>
-                                    <span
-                                        className="property_scheme in_scheme"
-                                        style={styles.scheme}
-                                    >
-                                        <a
-                                            style={styles.schemeLink}
-                                            href={schemeForDatasetLink}
-                                        >
-                                            {addSchemePrefix(
-                                                schemeForDatasetLink,
-                                            )}
-                                        </a>
-                                    </span>
-                                </div>
-                            </div>
-                            <div style={styles.valueContainer}>
-                                <span
-                                    className="property_language"
-                                    style={styles.language(true)}
-                                >
-                                    XX
-                                </span>
-                                <div style={styles.value}>
-                                    <Link to="/graph">{backToListLabel}</Link>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                     <div style={styles.propertiesContainer}>
                         {topFields.map(field => (
                             <Property

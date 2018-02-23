@@ -7,8 +7,10 @@ import { Link } from 'react-router';
 import Divider from 'material-ui/Divider';
 import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
-import FlatButton from 'material-ui/FlatButton';
-
+import HomeIcon from 'material-ui/svg-icons/action/home';
+import SearchIcon from 'material-ui/svg-icons/action/search';
+import IconButton from 'material-ui/IconButton';
+import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import { fromFields } from '../../sharedSelectors';
 import {
     field as fieldPropTypes,
@@ -16,6 +18,11 @@ import {
 } from '../../propTypes';
 
 const styles = {
+    container: {
+        float: 'left',
+        marginLeft: '-5rem',
+        marginTop: '-1rem',
+    },
     link: {
         textDecoration: 'none',
         color: 'unset',
@@ -25,43 +32,43 @@ const styles = {
 };
 
 const PureGraphSummary = ({ graphFields, selected, p: polyglot }) => (
-    <IconMenu
-        value={selected}
-        iconButtonElement={
-            <FlatButton primary>
-                {polyglot.t('graph_list').toUpperCase()}
-            </FlatButton>
-        }
-    >
-        <MenuItem
-            value=""
-            primaryText={
-                <Link style={styles.link} to="/">
-                    {polyglot.t('home')}
-                </Link>
+    <div style={styles.container}>
+        <IconMenu
+            value={selected}
+            iconButtonElement={
+                <IconButton>
+                    <MoreVertIcon />
+                </IconButton>
             }
-        />
-        <MenuItem
-            value=""
-            primaryText={
-                <Link style={styles.link} to="/graph">
-                    {polyglot.t('dataset')}
-                </Link>
-            }
-        />
-        <Divider />
-        {graphFields.map(field => (
+            anchorOrigin={{ horizontal: 'left', vertical: 'top' }}
+            targetOrigin={{ horizontal: 'left', vertical: 'top' }}
+        >
             <MenuItem
-                key={field.name}
-                value={field.name}
-                primaryText={
-                    <Link style={styles.link} to={`/graph/${field.name}`}>
-                        {field.label}
-                    </Link>
-                }
+                value=""
+                containerElement={<Link style={styles.link} to="/" />}
+                primaryText={polyglot.t('home')}
+                leftIcon={<HomeIcon />}
             />
-        ))}
-    </IconMenu>
+            <MenuItem
+                value=""
+                containerElement={<Link style={styles.link} to="/graph" />}
+                primaryText={polyglot.t('dataset')}
+                leftIcon={<SearchIcon />}
+            />
+            <Divider />
+            {graphFields.map(field => (
+                <MenuItem
+                    key={field.name}
+                    value={field.name}
+                    primaryText={
+                        <Link style={styles.link} to={`/graph/${field.name}`}>
+                            {field.label}
+                        </Link>
+                    }
+                />
+            ))}
+        </IconMenu>
+    </div>
 );
 
 PureGraphSummary.propTypes = {
