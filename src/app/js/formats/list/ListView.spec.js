@@ -3,7 +3,7 @@ import expect from 'expect';
 import { shallow } from 'enzyme';
 
 import Component, { UL, OL } from './ListView';
-import Title from '../title/TitleView';
+import DefaultView from '../DefaultFormat/DefaultView.js';
 
 describe('list format view Component', () => {
     it('should render list of value', () => {
@@ -39,7 +39,7 @@ describe('list format view Component', () => {
             },
         };
         const component = shallow(<Component {...props} />);
-        const title = component.find(Title);
+        const title = component.find(DefaultView);
         expect(title.length).toBe(3);
         title.forEach((t, index) => {
             expect(t.props().resource).toEqual(['value1', 'value2', 'value3']);
