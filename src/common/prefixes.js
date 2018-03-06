@@ -1,5 +1,6 @@
 export default {
     bibo: 'http://purl.org/ontology/bibo/',
+    dbpedia: 'http://dbpedia.org/ontology/',
     dcdoc: 'http://dublincore.org/documents/',
     dcmitype: 'http://purl.org/dc/dcmitype/',
     dcterms: 'http://purl.org/dc/terms/',
