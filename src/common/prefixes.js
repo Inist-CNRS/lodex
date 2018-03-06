@@ -3,7 +3,7 @@ export default {
     dcdoc: 'http://dublincore.org/documents/',
     dcmitype: 'http://purl.org/dc/dcmitype/',
     dcterms: 'http://purl.org/dc/terms/',
-    foaf: 'http://xmlns.com/foaf/0.1/',
+    foaf: 'http://xmlns.com/foaf/0.1/#',
     geo: 'http://www.w3.org/2003/01/geo/wgs84_pos#',
     gn: 'http://www.geonames.org/ontology/ontology_v3.1.rdf/',
     istex: 'https://data.istex.fr/ontology/istex#',
