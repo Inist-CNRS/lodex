@@ -24,7 +24,7 @@ export class OntologyComponent extends Component {
 
     constructor(props) {
         super(props);
-        this.state = { filter: ALL };
+        this.state = { filter: COVER_DATASET };
     }
 
     handleFilterChange = (_, __, filter) => this.setState({ filter });
