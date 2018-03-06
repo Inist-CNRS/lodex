@@ -5,6 +5,7 @@ import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import translate from 'redux-polyglot/translate';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
+import { resolvers } from '.';
 
 const styles = {
     container: {
@@ -53,7 +54,13 @@ class IdentifierBadgeAdmin extends Component {
 
     render() {
         const { p: polyglot, args: { colors, typid } } = this.props;
-
+        const items = Object.keys(resolvers).map(resolverID => (
+            <MenuItem
+                key={`resolver_${resolverID}`}
+                value={resolverID}
+                primaryText={polyglot.t(resolverID)}
+            />
+        ));
         return (
             <div style={styles.container}>
                 <SelectField
@@ -66,8 +73,7 @@ class IdentifierBadgeAdmin extends Component {
                     style={styles.input}
                     value={typid}
                 >
-                    <MenuItem value="DOI" primaryText={polyglot.t('DOI')} />
-                    <MenuItem value="PMID" primaryText={polyglot.t('PMID')} />
+                    {items}
                 </SelectField>
                 <TextField
                     floatingLabelText={polyglot.t('colors_set')}
