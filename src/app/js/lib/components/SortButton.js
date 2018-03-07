@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import FlatButton from 'material-ui/FlatButton';
 import ContentSort from 'material-ui/svg-icons/content/sort';
 import withHandlers from 'recompose/withHandlers';
+import { isLongText, getShortText } from '../../lib/longTexts';
 
 const styles = {
     sortButton: {
@@ -17,7 +18,7 @@ const SortButton = ({ name, label, sortBy, sortDir, sort }) => (
         className={`sort_${name}`}
         labelPosition="before"
         onClick={sort}
-        label={label}
+        label={isLongText(label, 15) ? getShortText(label, 15) : label}
         icon={sortBy === name && <ContentSort style={styles[sortDir]} />}
         style={styles.sortButton}
     />

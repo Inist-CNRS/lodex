@@ -117,7 +117,7 @@ export class DatasetComponent extends Component {
                                 </TableRowColumn>
                             </TableRow>
                         ) : (
-                            dataset.map(data => (
+                            dataset.map((data, indice) => (
                                 <TableRow key={data.uri}>
                                     {columns.map(column => (
                                         <DatasetColumn
@@ -125,6 +125,11 @@ export class DatasetComponent extends Component {
                                             column={column}
                                             columns={columns}
                                             resource={data}
+                                            indice={
+                                                indice +
+                                                1 +
+                                                perPage * currentPage
+                                            }
                                         />
                                     ))}
                                 </TableRow>

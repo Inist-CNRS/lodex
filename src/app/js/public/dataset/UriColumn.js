@@ -7,27 +7,18 @@ import { TableRowColumn } from 'material-ui/Table';
 import { field as fieldPropTypes } from '../../propTypes';
 import { getResourceUri } from '../../../../common/uris';
 
-const getHumanUri = uri => {
-    if (uri.startsWith('uid:/')) {
-        return uri.substr(5);
-    }
-
-    return uri;
-};
-
-const UriColumn = ({ column, resource }) => (
+const UriColumn = ({ column, resource, indice }) => (
     <TableRowColumn
         className={classnames('dataset-column', `dataset-${column.name}`)}
     >
-        <Link to={getResourceUri(resource)}>
-            {getHumanUri(resource[column.name])}
-        </Link>
+        <Link to={getResourceUri(resource)}> #{indice} </Link>
     </TableRowColumn>
 );
 
 UriColumn.propTypes = {
     column: fieldPropTypes.isRequired,
     resource: PropTypes.object.isRequired, // eslint-disable-line
+    indice: PropTypes.number, // eslint-disable-line
 };
 
 export default UriColumn;
