@@ -81,7 +81,7 @@
 "reason"	"Reason"	"La raison"
 "removed_resource_at"	"This resource was removed %{date}"	"Cette ressource a été retirée - %{date}"
 "cancel"	"Cancel"	"Annuler"
-"listen_up"	"Warning! This is a potentially destructive action"	"Attention ! Cette action est destructive !"
+"listen_up"	"Warning! This is a potentially destructive action: you're going to lose all contributions and modifications since publication."	"Attention ! Cette action est destructive ! Vous perdrez toutes les contributions et modifications depuis la publication."
 "enter_name"	"Please type in the name of the Lodex site"	"Entrer ci-dessous le nom de l'instance Lodex"
 "edit"	"Edit"	"Éditer"
 "edit_field"	"Edit %{field}"	"Éditer %{field}"
