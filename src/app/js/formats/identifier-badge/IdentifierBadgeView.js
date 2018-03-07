@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { StyleSheet, css } from 'aphrodite/no-important';
 import { field as fieldPropTypes } from '../../propTypes';
+import { resolvers } from '.';
 
 const IdentifierBadgeView = ({ resource, field, typid, colors }) => {
     const colorsSet = String(colors)
@@ -9,10 +10,6 @@ const IdentifierBadgeView = ({ resource, field, typid, colors }) => {
         .filter(x => x.length > 0)
         .map(x => String('#').concat(x));
     const firstColor = colorsSet.shift() || '#8B8B8B';
-    const resolvers = {
-        DOI: 'http://dx.doi.org/',
-        PMID: 'https://www.ncbi.nlm.nih.gov/pubmed/',
-    };
     const resolver = resolvers[typid] || '';
     const identifier = resource[field.name].replace(resolver, '');
     const target = resolver + identifier;
