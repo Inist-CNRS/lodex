@@ -31,6 +31,7 @@ const styles = StyleSheet.create({
             fill: 'inherit',
         },
     },
+    contentCustomDiv: {},
 });
 
 // see https://jsonfeed.org/version/1#items
@@ -46,6 +47,7 @@ const LodexResource = ({ id, title, summary }) => {
             >
                 <div className={css(styles.contentTitle)}>{title}</div>
                 <div className={css(styles.contentParagraph)}>{summary}</div>
+                <div className={css(styles.contentCustomDiv)} />
             </Link>
         </div>
     );
