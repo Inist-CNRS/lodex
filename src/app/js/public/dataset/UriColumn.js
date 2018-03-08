@@ -3,31 +3,29 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { Link } from 'react-router';
 import { TableRowColumn } from 'material-ui/Table';
+import FlatButton from 'material-ui/FlatButton';
+import RightIcon from 'material-ui/svg-icons/hardware/keyboard-arrow-right';
 
 import { field as fieldPropTypes } from '../../propTypes';
 import { getResourceUri } from '../../../../common/uris';
 
-const getHumanUri = uri => {
-    if (uri.startsWith('uid:/')) {
-        return uri.substr(5);
-    }
-
-    return uri;
-};
-
-const UriColumn = ({ column, resource }) => (
+const UriColumn = ({ column, resource, indice }) => (
     <TableRowColumn
         className={classnames('dataset-column', `dataset-${column.name}`)}
     >
-        <Link to={getResourceUri(resource)}>
-            {getHumanUri(resource[column.name])}
-        </Link>
+        <FlatButton
+            labelPosition="after"
+            label={indice}
+            containerElement={<Link to={getResourceUri(resource)} />}
+            icon={<RightIcon />}
+        />
     </TableRowColumn>
 );
 
 UriColumn.propTypes = {
     column: fieldPropTypes.isRequired,
     resource: PropTypes.object.isRequired, // eslint-disable-line
+    indice: PropTypes.number, // eslint-disable-line
 };
 
 export default UriColumn;

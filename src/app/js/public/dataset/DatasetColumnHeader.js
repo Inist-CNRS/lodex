@@ -9,14 +9,18 @@ import SortButton from '../../lib/components/SortButton';
 
 const DatasetColumnHeader = ({ name, label, sortBy, sortDir, sortDataset }) => (
     <TableHeaderColumn>
-        <SortButton
-            className={`sort_${name}`}
-            sort={sortDataset}
-            name={name}
-            label={label}
-            sortBy={sortBy}
-            sortDir={sortDir}
-        />
+        {label === 'uri' ? (
+            <span>#</span>
+        ) : (
+            <SortButton
+                className={`sort_${name}`}
+                sort={sortDataset}
+                name={name}
+                label={label}
+                sortBy={sortBy}
+                sortDir={sortDir}
+            />
+        )}
     </TableHeaderColumn>
 );
 

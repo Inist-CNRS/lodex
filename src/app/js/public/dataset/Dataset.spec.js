@@ -82,31 +82,37 @@ describe('<Dataset />', () => {
         expect(cells.at(0).props()).toEqual({
             column: columns.find(c => c.name === 'col1'),
             columns,
+            indice: 11,
             resource: dataset[0],
         });
         expect(cells.at(1).props()).toEqual({
             column: columns.find(c => c.name === 'col2'),
             columns,
+            indice: 11,
             resource: dataset[0],
         });
         expect(cells.at(2).props()).toEqual({
             column: columns.find(c => c.name === 'col1'),
             columns,
+            indice: 12,
             resource: dataset[1],
         });
         expect(cells.at(3).props()).toEqual({
             column: columns.find(c => c.name === 'col2'),
             columns,
+            indice: 12,
             resource: dataset[1],
         });
         expect(cells.at(4).props()).toEqual({
             column: columns.find(c => c.name === 'col1'),
             columns,
+            indice: 13,
             resource: dataset[2],
         });
         expect(cells.at(5).props()).toEqual({
             column: columns.find(c => c.name === 'col2'),
             columns,
+            indice: 13,
             resource: dataset[2],
         });
     });
