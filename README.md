@@ -13,31 +13,37 @@ To see what Lodex can do, check out https://data.istex.fr/ or the user documenta
 You need to set the EZMASTER_PUBLIC_URL environment variable based on your machine, default to `http://localhost:3000`
 
 ### with docker
+
 _prerequisites_ : docker
-```
+
+```bash
 make install
 make run-dev
 ```
 
 ### with npm
+
 _prerequisites_ : mongo, node 8
-```
+
+```bash
 npm install
 npm run build
 npm start
 ```
+
 NB : MongoDB should be started and listening on port 27017
 
 ## Usage
+
 To see what Lodex can do, check out
 
- - Data and Model ready to use : https://github.com/Inist-CNRS/lodex-use-cases
- - Videos : https://www.youtube.com/channel/UCXJjwCr-sfTZsFomFejEkEw/videos
- - Real life example : https://data.istex.fr/
- - user documentation : https://lodex.gitbooks.io/lodex-user-documentation/
- - actuality & news : http://lodex.inist.fr/
- - Twitter : https://twitter.com/lodex_team
- - Contribute (for developer) : https://github.com/Inist-CNRS/lodex/wiki
+- Data and Model ready to use : https://github.com/Inist-CNRS/lodex-use-cases
+- Videos : https://www.youtube.com/channel/UCXJjwCr-sfTZsFomFejEkEw/videos
+- Real life example : https://data.istex.fr/
+- user documentation : https://lodex.gitbooks.io/lodex-user-documentation/
+- actuality & news : http://lodex.inist.fr/
+- Twitter : https://twitter.com/lodex_team
+- Contribute (for developer) : https://github.com/Inist-CNRS/lodex/wiki
 
 ## Licence
 
