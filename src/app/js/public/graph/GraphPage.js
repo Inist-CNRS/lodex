@@ -18,6 +18,7 @@ import CompositeProperty from '../Property/CompositeProperty';
 import { grey500 } from 'material-ui/styles/colors';
 import Stats from '../Stats';
 import getTitle from '../../lib/getTitle';
+import ExportShareButton from '../ExportShareButton';
 
 const styles = {
     container: {
@@ -55,6 +56,7 @@ const GraphPage = ({ graphField, resource }) => (
         </Helmet>
         <div style={styles.centerColumn}>
             <GraphSummary selected={graphField ? graphField.name : ''} />
+            <ExportShareButton style={{ float: 'right' }} />
             <Stats />
             <Card style={styles.section}>
                 <AppliedFacetList />

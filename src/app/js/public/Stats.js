@@ -11,6 +11,8 @@ import { polyglot as polyglotPropTypes } from '../propTypes';
 const styles = {
     nb: {
         fontWeight: 'bold',
+        height: '36px',
+        lineHeight: '36px',
     },
 };
 

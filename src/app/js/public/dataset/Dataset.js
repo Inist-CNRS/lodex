@@ -22,7 +22,6 @@ import { preLoadDatasetPage, changePage } from './';
 import { fromDataset } from '../selectors';
 import { fromFields } from '../../sharedSelectors';
 import CreateResource from '../resource/CreateResource';
-import ExportShareButton from '../ExportShareButton';
 
 const styles = {
     table: {
@@ -145,7 +144,6 @@ export class DatasetComponent extends Component {
                 />
                 <CardActions style={styles.actions}>
                     <CreateResource />
-                    <ExportShareButton />
                 </CardActions>
             </div>
         );
