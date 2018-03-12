@@ -7,7 +7,6 @@ import koaQs from 'koa-qs';
 import logger from './services/logger';
 import controller from './controller';
 
-const env = process.env.NODE_ENV;
 const app = koaQs(new Koa());
 
 app.use(cors({ credentials: true }));
@@ -29,34 +28,6 @@ app.use(async (ctx, next) => {
 });
 
 app.use(mount('/', controller));
-
-// Error catching - override koa's undocumented error handler
-app.context.onerror = function onError(err) {
-    if (!err) return;
-
-    this.status = err.status || 500;
-    this.app.emit('error', err, this);
-
-    if (this.headerSent || !this.writable) {
-        err.headerSent = true; // eslint-disable-line no-param-reassign
-        return;
-    }
-
-    if (env === 'development') {
-        // respond with the error details
-        this.body = JSON.stringify({
-            error: err.message,
-            stack: err.stack,
-            code: err.code,
-        });
-        this.type = 'json';
-    } else {
-        // just send the error message
-        this.body = { error: err.message };
-    }
-
-    this.res.end(this.body);
-};
 
 if (!module.parent) {
     global.console.log(`Server listening on port ${config.port}`);
