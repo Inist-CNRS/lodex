@@ -43,14 +43,14 @@ export class OntologyComponent extends Component {
                         value={filter}
                         onChange={this.handleFilterChange}
                     >
-                        <MenuItem value={ALL} primaryText={polyglot.t('all')} />
+                        <MenuItem value={ALL} primaryText={polyglot.t('model_filter_all')} />
                         <MenuItem
                             value={'document'}
-                            primaryText={polyglot.t('document')}
+                            primaryText={polyglot.t('model_filter_document')}
                         />
                         <MenuItem
                             value={'dataset'}
-                            primaryText={polyglot.t('dataset')}
+                            primaryText={polyglot.t('model_filter_dataset')}
                         />
                     </SelectField>
                     {(filter === ALL || filter === COVER_DATASET) && (
