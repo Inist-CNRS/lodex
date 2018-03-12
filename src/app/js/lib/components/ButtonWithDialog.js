@@ -15,6 +15,7 @@ export const PureButtonWithDialog = ({
     dialog,
     className,
     label,
+    icon,
     p: polyglot,
     actions = [
         <FlatButton
@@ -28,6 +29,7 @@ export const PureButtonWithDialog = ({
             primary
             className={className}
             label={label}
+            icon={icon}
             onClick={handleOpen}
         />
     ),
@@ -67,6 +69,7 @@ PureButtonWithDialog.propTypes = {
     style: PropTypes.object,
     dialog: PropTypes.node.isRequired,
     label: PropTypes.string.isRequired,
+    icon: PropTypes.node,
     className: PropTypes.string.isRequired,
     actions: PropTypes.arrayOf(PropTypes.node),
     openButton: PropTypes.node,
