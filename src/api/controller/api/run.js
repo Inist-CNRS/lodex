@@ -42,7 +42,7 @@ export const runRoutine = async (ctx, routineCalled) => {
     }
     const routine = routineLocal || routineDistant;
     if (!routine) {
-        throw new Error(`Unknown routine '${routineCalled}'`);
+        ctx.throw(404, `Unknown routine '${routineCalled}'`);
     }
 
     const [, metaData, , script] = routine;
