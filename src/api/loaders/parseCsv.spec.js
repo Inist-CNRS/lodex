@@ -11,10 +11,12 @@ describe('parseCsv', () => {
 
         parseCsvFactory(parseCsvImpl)({
             delimiter: ';',
+            quote: '"',
         })(stream);
 
         expect(parseCsvImpl).toHaveBeenCalledWith({
             delimiter: ';',
+            quote: '"',
             columns: true,
         });
 

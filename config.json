@@ -5,15 +5,7 @@
     "username": "user",
     "password": "secret"
   },
-  "loader": {
-    "CSV": {
-      "quote": "\"",
-      "delimiter": ";"
-    }
-  },
   "pluginsURL" : "https://raw.githubusercontent.com/Inist-CNRS/lodex-extented/master/",
-  "routinesRepository-r": "https://raw.githubusercontent.com/Inist-CNRS/lodex-extented/master/routines/",
-  "routinesRepository": "http://lodex-routines-1.lodex-dev.inist.fr/",
   "routines": [
     "hello-world",
     "all-fields",

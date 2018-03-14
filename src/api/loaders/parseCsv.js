@@ -1,10 +1,11 @@
 import parseCsv from 'csv-parse';
 
-export const parseCsvFactory = parseCsvImpl => config => stream =>
+export const parseCsvFactory = parseCsvImpl => () => stream =>
     stream.pipe(
         parseCsvImpl({
             columns: true,
-            ...config,
+            quote: '"',
+            delimiter: ';',
         }),
     );
 
