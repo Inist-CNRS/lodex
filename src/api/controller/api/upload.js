@@ -5,7 +5,6 @@ import config from 'config';
 import koaBodyParser from 'koa-bodyparser';
 import request from 'request';
 
-import jsonConfig from '../../../../config.json';
 import loaders from '../../loaders';
 import saveStream from '../../services/saveStream';
 import publishDocuments from '../../services/publishDocuments';
@@ -25,7 +24,9 @@ export const getParser = parserName => {
     if (!loaders[parserName]) {
         throw new Error(`Unknow parser: ${parserName}`);
     }
-    return loaders[parserName](jsonConfig.loader[parserName]);
+    const configKey = `loader.${parserName}`;
+    const configObj = config.has(configKey) ? config.get(configKey) : {};
+    return loaders[parserName](configObj);
 };
 
 export const requestToStream = asyncBusboyImpl => async req => {
