@@ -8,7 +8,10 @@ import fetch from '../../../lib/fetch';
 export function* handleUploadUrl() {
     const url = yield select(fromUpload.getUrl);
     const parserName = yield select(fromUpload.getParserName);
-    const request = yield select(fromUser.getUploadUrlRequest, url, parserName);
+    const request = yield select(fromUser.getUploadUrlRequest, {
+        url,
+        parserName,
+    });
     const { error } = yield call(fetch, request);
     if (error) {
         yield put(uploadError(error));
