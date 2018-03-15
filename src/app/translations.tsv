@@ -353,7 +353,7 @@
 "resources_found"	"Found %{current} on %{total}"	"%{current} ressources trouvées sur un total de %{total}"
 "extendednquads"	"N-Quads Extended"	"N-Quads étendus"
 "extendednquadscompressed"	"N-Quads Extended (Compressed)"	"N-Quads étendus (Compressé)"
-"csv"	"CSV - auto-detect separator"	"CSV - détéction automatique du séparateur"
+"csv"	"CSV - auto-detected separator"	"CSV - détection automatique du séparateur"
 "csv-semicolon"	"CSV - with semicolon"	"CSV - avec des points virgules"
 "csv-comma"	"CSV - with comma"	"CSV - avec des virgules"
 "csv-alternative"	"TXT - with comma separator"	"TXT - séparé par des virgules"
