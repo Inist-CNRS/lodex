@@ -54,9 +54,9 @@ export const UploadDialogComponent = ({
     onUrlUpload,
     p: polyglot,
 }) => {
-    const parserNames = LOADERS.map(pn => (
-        <MenuItem key={pn} value={pn} primaryText={pn} />
-    ));
+    const parserNames = LOADERS.sort((x, y) =>
+        polyglot.t(x).localeCompare(polyglot.t(y)),
+    ).map(pn => <MenuItem key={pn} value={pn} primaryText={polyglot.t(pn)} />);
 
     return (
         <div>
@@ -68,11 +68,12 @@ export const UploadDialogComponent = ({
                             floatingLabelText={polyglot.t('parser_name')}
                             value={parserName}
                             onChange={onChangeParserName}
+                            fullWidth
                         >
                             <MenuItem
                                 key={'automatic'}
                                 value={'automatic'}
-                                primaryText={polyglot.t('automatic')}
+                                primaryText={polyglot.t('automatic-parser')}
                             />
                             {parserNames}
                         </SelectField>
