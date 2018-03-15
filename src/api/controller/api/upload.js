@@ -96,37 +96,38 @@ export async function uploadChunkMiddleware(ctx, parserName, next) {
             totalChunks,
             totalSize,
         } = ctx.resumable;
-
         if (!await ctx.checkFileExists(chunkname, currentChunkSize)) {
             await ctx.saveStreamInFile(stream, chunkname);
         }
-
         if (await ctx.areFileChunksComplete(filename, totalChunks, totalSize)) {
             await next();
             return;
         }
-
         ctx.status = 200;
     } catch (error) {
-        ctx.status = 500;
-        ctx.body = error.message;
+        ctx.throw(500, error.message);
     }
 }
 
 export async function uploadFileMiddleware(ctx, parserName) {
-    const { filename, totalChunks, extension } = ctx.resumable;
-    const mergedStream = await ctx.mergeChunks(filename, totalChunks);
+    try {
+        const { filename, totalChunks, extension } = ctx.resumable;
 
-    const parseStream = ctx.getParser(
-        !parserName || parserName === 'automatic' ? extension : parserName,
-    );
-    const parsedStream = await parseStream(mergedStream);
-    await ctx.clearChunks(filename, totalChunks);
+        const mergedStream = await ctx.mergeChunks(filename, totalChunks);
 
-    ctx.body = {
-        totalLines: await ctx.saveParsedStream(parsedStream),
-    };
-    ctx.status = 200;
+        const parseStream = ctx.getParser(
+            !parserName || parserName === 'automatic' ? extension : parserName,
+        );
+        const parsedStream = await parseStream(mergedStream);
+        await ctx.clearChunks(filename, totalChunks);
+
+        ctx.body = {
+            totalLines: await ctx.saveParsedStream(parsedStream),
+        };
+        ctx.status = 200;
+    } catch (error) {
+        ctx.throw(500, error.message);
+    }
 }
 
 export const uploadUrl = async ctx => {

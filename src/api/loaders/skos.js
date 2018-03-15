@@ -9,4 +9,4 @@ export default config => stream =>
             ezs('XMLParse', { separator: ['/RDF/*', '/rdf:RDF/*'], ...config }),
         )
         .pipe(ezs('SKOSObject'))
-        .pipe(ezs('standardize'));
+        .pipe(ezs('OBJStandardize'));

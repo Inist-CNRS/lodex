@@ -1,14 +1,13 @@
 const saveParsedStreamFactory = ctx =>
     async function saveParsedStream(parsedStream) {
-        const publishedCount = await ctx.publishedDataset.count();
-        if (publishedCount === 0) {
-            await ctx.dataset.remove({});
-            await ctx.saveStream(parsedStream);
-            await ctx.field.initializeModel();
-
-            return ctx.dataset.count();
-        }
         try {
+            const publishedCount = await ctx.publishedDataset.count();
+            if (publishedCount === 0) {
+                await ctx.dataset.remove({});
+                await ctx.saveStream(parsedStream);
+                await ctx.field.initializeModel();
+                return ctx.dataset.count();
+            }
             await ctx.dataset.updateMany(
                 {},
                 { $set: { lodex_published: true } },
@@ -48,7 +47,7 @@ const saveParsedStreamFactory = ctx =>
                 lodex_published: { $exists: false },
             });
 
-            throw error;
+            ctx.throw(500, error.message);
         }
     };
 

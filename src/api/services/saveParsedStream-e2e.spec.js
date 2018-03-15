@@ -140,11 +140,19 @@ describe('e2e upload saveparsedStream', () => {
                 saveStream: saveStream(dataset.insertMany.bind(dataset)),
                 publishDocuments,
                 publishFacets,
+                throw: (errno, errmsg) => {
+                    throw new Error(errmsg);
+                },
             };
         });
 
         it('should add new document to publication', async () => {
-            await saveParsedStream(ctx)(parsedStream);
+            const error = await saveParsedStream(ctx)(parsedStream).catch(
+                error => error,
+            );
+            expect(error.message).toBe(
+                'E11000 duplicate key error index: lodex_test.uriDataset.$uri_1 dup key: { : "uid:/rock" }',
+            );
             expect(await ctx.dataset.count()).toEqual(5);
             expect(await ctx.dataset.find({}, { _id: 0 }).toArray()).toEqual([
                 {
@@ -288,12 +296,7 @@ describe('e2e upload saveparsedStream', () => {
         });
 
         it('should not add new document to publication', async () => {
-            const error = await saveParsedStream(ctx)(parsedStream).catch(
-                error => error,
-            );
-            expect(error.message).toBe(
-                'E11000 duplicate key error index: lodex_test.uriDataset.$uri_1 dup key: { : "uid:/rock" }',
-            );
+            await saveParsedStream(ctx)(parsedStream);
             expect(await ctx.dataset.count()).toEqual(3);
             expect(await ctx.dataset.find({}, { _id: 0 }).toArray()).toEqual([
                 {

@@ -181,6 +181,9 @@ describe('saveParsedStream', () => {
                 new Error('Error during publication'),
             ),
             publishFacets: createSpy(),
+            throw: (errno, errmsg) => {
+                throw new Error(errmsg);
+            },
         };
 
         let result;
