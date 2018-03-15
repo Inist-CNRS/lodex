@@ -61,7 +61,7 @@ export default compose(
             return null;
         }
 
-        if (isUrl(value)) {
+        if (isURL(value)) {
             const source = URL.parse(value);
             if (source.pathname.search(/^\/\w+:/) === 0) {
                 const uri = source.pathname.slice(1);
