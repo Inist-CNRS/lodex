@@ -12,5 +12,4 @@ export default config => stream =>
         .pipe(ezs('JSONParse', { separator: 'hits.*', ...config }))
         .pipe(ezs('flatten'))
         .pipe(ezs('fixFlatten'))
-        .pipe(ezs('debug'))
         .pipe(ezs('standardize'));
