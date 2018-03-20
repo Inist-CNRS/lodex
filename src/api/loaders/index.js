@@ -5,6 +5,8 @@ import csvComma from './csv-comma';
 import tsv from './tsv';
 import skos from './skos';
 import json from './json';
+import jsonIstex from './json-istex';
+import jsonLodex from './json-lodex';
 import xml from './xml';
 import corpus from './corpus';
 import tsvDoubleQuotes from './tsv-double-quotes';
@@ -19,6 +21,8 @@ const loaders = {
     rdf: xml,
     skos,
     json,
+    'json-istex': jsonIstex,
+    'json-lodex': jsonLodex,
     rss: xml,
     atom: xml,
     mods: xml,
