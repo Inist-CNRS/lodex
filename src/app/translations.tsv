@@ -326,6 +326,7 @@
 "scale"	"scale"	"échelle"
 "linear"	"linear"	"linéaire"
 "log"	"logarithmic"	"logarithmique"
+"bar_size"	"bars' width"	"largeur des barres"
 "home"	"home"	"accueil"
 "color_scheme"	"colour scheme"	"jeu de couleurs"
 "hover_color_scheme"	"hover colour scheme"	"jeu de couleurs au survol"
