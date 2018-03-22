@@ -322,7 +322,7 @@
 "no_chart_data"	"no data to visualize"	"aucune donnée à visualiser"
 "chart_error"	"Error while trying to retrieve chart data"	"Une erreur est survenue en essayant de récupérer les données du graphique"
 "excluding"	"excluding"	"exclus(e)"
-"axis_round_value"	"force rounded-up value in axis"	"forcer la valeur arrondi dans l'axe"
+"axis_round_value"	"force rounded-up value in axis"	"arrondir les valeurs sur l'axe"
 "scale"	"scale"	"échelle"
 "linear"	"linear"	"linéaire"
 "log"	"logarithmic"	"logarithmique"
