@@ -20,6 +20,7 @@ import SHIFT from './SHIFT';
 import TRIM from './TRIM';
 import CAPITALIZE from './CAPITALIZE';
 import UNIQ from './UNIQ';
+import FORMAT from './FORMAT';
 
 const transformers = {
     AUTOGENERATE_URI: memoizeTransformer(AUTOGENERATE_URI),
@@ -43,6 +44,7 @@ const transformers = {
     TRIM: memoizeTransformer(TRIM),
     CAPITALIZE: memoizeTransformer(CAPITALIZE),
     UNIQ: memoizeTransformer(UNIQ),
+    FORMAT: memoizeTransformer(FORMAT),
 };
 
 export default transformers;
@@ -69,6 +71,7 @@ const transformersMetas = [
     TRIM,
     CAPITALIZE,
     UNIQ,
+    FORMAT,
 ]
     .map(transformation => transformation.getMetas())
     .sort((x, y) => x.name.localeCompare(y.name));

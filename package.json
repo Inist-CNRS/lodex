@@ -157,6 +157,7 @@
     "request": "2.81.0",
     "reselect": "3.0.1",
     "resumablejs": "1.0.2",
+    "sprintf-js": "1.1.1",
     "stream-to-string": "1.1.0",
     "through": "2.3.8",
     "url-api-polyfill": "1.1.0",
