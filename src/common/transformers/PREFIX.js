@@ -1,34 +1,10 @@
-export const prefix = (value, str) => {
-    if (!value) {
-        return str;
-    }
+import { transformerWithArg } from './transformer';
 
-    if (typeof value === 'string') {
-        return str.concat(value);
-    }
+export const prefix = (value, str) =>
+    typeof value === 'string' ? str.concat(value) : value;
 
-    if (Array.isArray(value)) {
-        return [str, ...value];
-    }
-
-    return str.concat(String(value));
-};
-
-const transformation = (_, args) => value => {
-    const arg = args.find(a => a.name === 'with');
-
-    if (!arg) {
-        throw new Error('Invalid Argument for PREFIX transformation');
-    }
-
-    return new Promise((resolve, reject) => {
-        try {
-            resolve(prefix(value, arg.value));
-        } catch (error) {
-            reject(error);
-        }
-    });
-};
+const transformation = (_, args) => value =>
+    transformerWithArg(prefix, 'with', value, args);
 
 transformation.getMetas = () => ({
     name: 'PREFIX',

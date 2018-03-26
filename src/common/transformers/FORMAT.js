@@ -1,4 +1,5 @@
 import { vsprintf } from 'sprintf-js';
+import { rawTransformerWithArg } from './transformer';
 
 export const format = (value, tpl) => {
     if (!value) {
@@ -10,21 +11,8 @@ export const format = (value, tpl) => {
     return vsprintf(tpl, [value]);
 };
 
-const transformation = (_, args) => value => {
-    const arg = args.find(a => a.name === 'with');
-
-    if (!arg) {
-        throw new Error('Invalid Argument for FORMAT transformation');
-    }
-
-    return new Promise((resolve, reject) => {
-        try {
-            resolve(format(value, arg.value));
-        } catch (error) {
-            reject(error);
-        }
-    });
-};
+const transformation = (_, args) => value =>
+    rawTransformerWithArg(format, 'with', value, args);
 
 transformation.getMetas = () => ({
     name: 'FORMAT',

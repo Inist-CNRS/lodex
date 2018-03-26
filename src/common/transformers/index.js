@@ -2,6 +2,7 @@ import memoizeTransformer from './memoizeTransformer';
 import AUTOGENERATE_URI from './AUTOGENERATE_URI';
 import COLUMN from './COLUMN';
 import UPPERCASE from './UPPERCASE';
+import LOWERCASE from './LOWERCASE';
 import LINK from './LINK';
 import VALUE from './VALUE';
 import CONCAT from './CONCAT';
@@ -13,6 +14,8 @@ import PREFIX from './PREFIX';
 import SUFFIX from './SUFFIX';
 import DEFAULT from './DEFAULT';
 import STRING from './STRING';
+import REMOVE from './REMOVE';
+import REPLACE from './REPLACE';
 import NUMBER from './NUMBER';
 import BOOLEAN from './BOOLEAN';
 import TRUNCATE from './TRUNCATE';
@@ -26,6 +29,7 @@ const transformers = {
     AUTOGENERATE_URI: memoizeTransformer(AUTOGENERATE_URI),
     COLUMN: memoizeTransformer(COLUMN),
     UPPERCASE: memoizeTransformer(UPPERCASE),
+    LOWERCASE: memoizeTransformer(LOWERCASE),
     LINK: memoizeTransformer(LINK),
     VALUE: memoizeTransformer(VALUE),
     CONCAT: memoizeTransformer(CONCAT),
@@ -36,6 +40,8 @@ const transformers = {
     PREFIX: memoizeTransformer(PREFIX),
     SUFFIX: memoizeTransformer(SUFFIX),
     DEFAULT: memoizeTransformer(DEFAULT),
+    REMOVE: memoizeTransformer(REMOVE),
+    REPLACE: memoizeTransformer(REPLACE),
     STRING: memoizeTransformer(STRING),
     NUMBER: memoizeTransformer(NUMBER),
     BOOLEAN: memoizeTransformer(BOOLEAN),
@@ -54,6 +60,7 @@ const transformersMetas = [
     COLUMN,
     LINK,
     UPPERCASE,
+    LOWERCASE,
     VALUE,
     CONCAT,
     JBJ,
@@ -64,6 +71,8 @@ const transformersMetas = [
     SUFFIX,
     DEFAULT,
     STRING,
+    REMOVE,
+    REPLACE,
     NUMBER,
     BOOLEAN,
     TRUNCATE,

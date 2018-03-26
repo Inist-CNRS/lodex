@@ -1,4 +1,4 @@
-import smartMap from './smartMap';
+import { transformer } from './transformer';
 
 export const valueToBoolean = value => {
     if (!value) {
@@ -27,16 +27,7 @@ export const valueToBoolean = value => {
     return false;
 };
 
-const toBoolean = smartMap(valueToBoolean);
-
-const transformation = () => value =>
-    new Promise((resolve, reject) => {
-        try {
-            resolve(toBoolean(value));
-        } catch (error) {
-            reject(error);
-        }
-    });
+const transformation = () => value => transformer(valueToBoolean, value);
 
 transformation.getMetas = () => ({
     name: 'BOOLEAN',

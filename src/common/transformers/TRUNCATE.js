@@ -1,3 +1,5 @@
+import { rawTransformerWithArg } from './transformer';
+
 export const truncate = (value, arg) => {
     if (!value) {
         return value;
@@ -8,21 +10,8 @@ export const truncate = (value, arg) => {
         : gap + value;
 };
 
-const transformation = (_, args) => value => {
-    const arg = args.find(a => a.name === 'gap');
-
-    if (!arg) {
-        throw new Error('Invalid Argument for TRUNCATE transformation');
-    }
-
-    return new Promise((resolve, reject) => {
-        try {
-            resolve(truncate(value, arg.value));
-        } catch (error) {
-            reject(error);
-        }
-    });
-};
+const transformation = (_, args) => value =>
+    rawTransformerWithArg(truncate, 'gap', value, args);
 
 transformation.getMetas = () => ({
     name: 'TRUNCATE',
