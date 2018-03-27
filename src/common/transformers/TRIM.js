@@ -1,18 +1,9 @@
-import smartMap from './smartMap';
+import { transformer } from './transformer';
 
 export const trimString = value =>
     typeof value === 'string' ? value.trim() : value;
 
-export const trim = smartMap(trimString);
-
-const transformation = () => value =>
-    new Promise((resolve, reject) => {
-        try {
-            resolve(trim(value));
-        } catch (error) {
-            reject(error);
-        }
-    });
+const transformation = () => value => transformer(trimString, value);
 
 transformation.getMetas = () => ({
     name: 'TRIM',

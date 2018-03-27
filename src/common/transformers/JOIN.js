@@ -1,3 +1,5 @@
+import { rawTransformerWithArg } from './transformer';
+
 export const join = (value, separator) => {
     if (!value) {
         return '';
@@ -10,21 +12,8 @@ export const join = (value, separator) => {
     return value.join(separator);
 };
 
-const transformation = (_, args) => value => {
-    const separator = args.find(a => a.name === 'separator');
-
-    if (!separator) {
-        throw new Error('Invalid Argument for JOIN transformation');
-    }
-
-    return new Promise((resolve, reject) => {
-        try {
-            resolve(join(value, separator.value));
-        } catch (error) {
-            reject(error);
-        }
-    });
-};
+const transformation = (_, args) => value =>
+    rawTransformerWithArg(join, 'separator', value, args);
 
 transformation.getMetas = () => ({
     name: 'JOIN',

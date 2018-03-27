@@ -1,3 +1,5 @@
+import { rawTransformerWithArg } from './transformer';
+
 export const defval = (value, alternative) => {
     if (!value) {
         return alternative;
@@ -5,21 +7,8 @@ export const defval = (value, alternative) => {
     return value;
 };
 
-const transformation = (_, args) => value => {
-    const alternative = args.find(a => a.name === 'alternative');
-
-    if (!alternative) {
-        throw new Error('Invalid Argument for DEFAULT transformation');
-    }
-
-    return new Promise((resolve, reject) => {
-        try {
-            resolve(defval(value, alternative.value));
-        } catch (error) {
-            reject(error);
-        }
-    });
-};
+const transformation = (_, args) => value =>
+    rawTransformerWithArg(defval, 'alternative', value, args);
 
 transformation.getMetas = () => ({
     name: 'DEFAULT',

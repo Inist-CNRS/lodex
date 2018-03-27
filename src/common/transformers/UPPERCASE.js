@@ -1,27 +1,9 @@
-import smartMap from './smartMap';
+import { transformer } from './transformer';
 
-export const valueToUpperCase = value => {
-    if (!value) {
-        return null;
-    }
+export const valueToUpperCase = value =>
+    typeof value === 'string' ? value.toUpperCase() : value;
 
-    if (typeof value === 'object') {
-        return null;
-    }
-
-    return String(value).toUpperCase();
-};
-
-const upperCase = smartMap(valueToUpperCase);
-
-const transformation = () => value =>
-    new Promise((resolve, reject) => {
-        try {
-            resolve(upperCase(value));
-        } catch (error) {
-            reject(error);
-        }
-    });
+const transformation = () => value => transformer(valueToUpperCase, value);
 
 transformation.getMetas = () => ({
     name: 'UPPERCASE',

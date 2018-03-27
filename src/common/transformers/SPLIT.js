@@ -1,3 +1,5 @@
+import { rawTransformerWithArg } from './transformer';
+
 export const split = (value, separator) => {
     if (!value) {
         return [];
@@ -10,21 +12,8 @@ export const split = (value, separator) => {
     return value.split(separator).map(x => x.trim());
 };
 
-const transformation = (_, args) => value => {
-    const separator = args.find(a => a.name === 'separator');
-
-    if (!separator) {
-        throw new Error('Invalid Argument for SPLIT transformation');
-    }
-
-    return new Promise((resolve, reject) => {
-        try {
-            resolve(split(value, separator.value));
-        } catch (error) {
-            reject(error);
-        }
-    });
-};
+const transformation = (_, args) => value =>
+    rawTransformerWithArg(split, 'separator', value, args);
 
 transformation.getMetas = () => ({
     name: 'SPLIT',

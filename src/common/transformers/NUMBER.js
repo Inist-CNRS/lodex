@@ -1,4 +1,4 @@
-import smartMap from './smartMap';
+import { transformer } from './transformer';
 
 export const valueToNumber = value => {
     const number = Number(value);
@@ -6,16 +6,7 @@ export const valueToNumber = value => {
     return isNaN(number) ? 0 : number;
 };
 
-const toNumber = smartMap(valueToNumber);
-
-const transformation = () => value =>
-    new Promise((resolve, reject) => {
-        try {
-            resolve(toNumber(value));
-        } catch (error) {
-            reject(error);
-        }
-    });
+const transformation = () => value => transformer(valueToNumber, value);
 
 transformation.getMetas = () => ({
     name: 'NUMBER',

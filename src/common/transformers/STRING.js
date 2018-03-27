@@ -1,4 +1,4 @@
-import smartMap from './smartMap';
+import { transformer } from './transformer';
 
 export const valueToString = value => {
     if (value === null || typeof value === 'undefined') {
@@ -16,16 +16,7 @@ export const valueToString = value => {
     return String(value).trim();
 };
 
-const toString = smartMap(valueToString);
-
-const transformation = () => value =>
-    new Promise((resolve, reject) => {
-        try {
-            resolve(toString(value));
-        } catch (error) {
-            reject(error);
-        }
-    });
+const transformation = () => value => transformer(valueToString, value);
 
 transformation.getMetas = () => ({
     name: 'STRING',

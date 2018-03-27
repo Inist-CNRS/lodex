@@ -1,3 +1,5 @@
+import { rawTransformerWithArg } from './transformer';
+
 export const shift = (value, arg) => {
     if (!value) {
         return value;
@@ -8,21 +10,8 @@ export const shift = (value, arg) => {
         : gap - value;
 };
 
-const transformation = (_, args) => value => {
-    const arg = args.find(a => a.name === 'gap');
-
-    if (!arg) {
-        throw new Error('Invalid Argument for SHIFT transformation');
-    }
-
-    return new Promise((resolve, reject) => {
-        try {
-            resolve(shift(value, arg.value));
-        } catch (error) {
-            reject(error);
-        }
-    });
-};
+const transformation = (_, args) => value =>
+    rawTransformerWithArg(shift, 'gap', value, args);
 
 transformation.getMetas = () => ({
     name: 'SHIFT',
