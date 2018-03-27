@@ -1,21 +1,23 @@
 import { transformerWithTwoArgs } from './transformer';
 
-export const replace = (value, from, by) =>
-    typeof value === 'string' ? value.split(from).join(by) : value;
+export const replace = (value, searchValue, replaceValue) =>
+    typeof value === 'string'
+        ? value.split(searchValue).join(replaceValue)
+        : value;
 
 const transformation = (_, args) => value =>
-    transformerWithTwoArgs(replace, 'from', 'by', value, args);
+    transformerWithTwoArgs(replace, 'searchValue', 'replaceValue', value, args);
 
 transformation.getMetas = () => ({
     name: 'REPLACE',
     type: 'transform',
     args: [
         {
-            name: 'from',
+            name: 'searchValue',
             type: 'string',
         },
         {
-            name: 'by',
+            name: 'replaceValue',
             type: 'string',
         },
     ],
