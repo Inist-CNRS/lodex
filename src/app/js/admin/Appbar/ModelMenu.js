@@ -9,6 +9,7 @@ import { withRouter, Link } from 'react-router';
 import ImportFieldsDialog from './ImportFieldsDialog';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { exportFields as exportFieldsAction } from '../../exportFields';
+import { exportFieldsReady as exportFieldsReadyAction } from '../../exportFieldsReady';
 
 const styles = {
     container: {
@@ -25,6 +26,7 @@ export class ModelMenuComponent extends Component {
     static propTypes = {
         hasPublishedDataset: PropTypes.bool.isRequired,
         exportFields: PropTypes.func.isRequired,
+        exportFieldsReady: PropTypes.func.isRequired,
         location: PropTypes.shape({ pathname: PropTypes.string }),
         p: polyglotPropTypes.isRequired,
     };
@@ -75,6 +77,14 @@ export class ModelMenuComponent extends Component {
         this.props.exportFields();
     };
 
+    handleExportFieldsReady = () => {
+        this.setState({
+            open: false,
+        });
+
+        this.props.exportFieldsReady();
+    };
+
     render() {
         const { hasPublishedDataset, location, p: polyglot } = this.props;
         const { showImportFieldsConfirmation } = this.state;
@@ -109,6 +119,7 @@ export class ModelMenuComponent extends Component {
 
 const mapDispatchToProps = {
     exportFields: exportFieldsAction,
+    exportFieldsReady: exportFieldsReadyAction,
 };
 
 export default compose(

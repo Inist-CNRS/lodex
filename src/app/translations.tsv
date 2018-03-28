@@ -126,6 +126,7 @@
 "close"	"close"	"fermer"
 "export_data"	"Export"	"Exporter"
 "export_fields"	"Export model"	"Exporter le modèle"
+"export_fields_ready"	"Export ready model"	"Exporter le modèle prêt"
 "import_fields"	"Import model"	"Importer le modèle"
 "view_fields"	"View model"	"Voir le modèle"
 "confirm_import_fields"	"Importing a saved model will override your current work. Are you sure ?"	"Importer un modèle existant remplacera le modèle actuel. Êtes-vous sûr de vouloir continuer ?"

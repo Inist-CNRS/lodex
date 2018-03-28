@@ -76,6 +76,35 @@ export const exportFields = async ctx => {
     ctx.body = JSON.stringify(fields.map(f => omit(f, ['_id'])), null, 4);
 };
 
+const simplifyTransformers = field => {
+    field.transformers = [
+        {
+            operation: 'COLUMN',
+            args: [
+                {
+                    name: 'column',
+                    type: 'column',
+                    value: field.label,
+                },
+            ],
+        },
+    ];
+    return field;
+};
+
+export const exportFieldsReady = async ctx => {
+    const fields = await ctx.field.findAll();
+
+    ctx.attachment('lodex_model.json');
+    ctx.type = 'application/json';
+
+    ctx.body = JSON.stringify(
+        fields.map(f => omit(f, ['_id'])).map(simplifyTransformers),
+        null,
+        4,
+    );
+};
+
 export const getUploadedFields = (
     asyncBusboyImpl,
     streamToStringImpl,
@@ -102,6 +131,7 @@ app.use(setup);
 
 app.use(route.get('/', getAllField));
 app.use(route.get('/export', exportFields));
+app.use(route.get('/export/ready', exportFieldsReady));
 app.use(
     route.post(
         '/import',
