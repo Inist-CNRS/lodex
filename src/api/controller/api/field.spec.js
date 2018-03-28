@@ -4,6 +4,7 @@ import {
     setup,
     getAllField,
     exportFields,
+    exportFieldsReady,
     importFields,
     postField,
     putField,
@@ -56,6 +57,67 @@ describe('field routes', () => {
             await getAllField(ctx);
             expect(ctx.field.findAll).toHaveBeenCalled();
             expect(ctx.body).toBe('all fields');
+        });
+    });
+
+    describe('exportFieldsReady', () => {
+        it('should call ctx.field.findAll and pass the result with correct transformers', async () => {
+            const ctx = {
+                field: {
+                    findAll: createSpy().andReturn(
+                        Promise.resolve([
+                            { name: 'field1', label: 'column1', _id: 'id1' },
+                            { name: 'field2', label: 'column2', _id: 'id2' },
+                        ]),
+                    ),
+                },
+                attachment: createSpy(),
+            };
+
+            await exportFieldsReady(ctx);
+            expect(ctx.field.findAll).toHaveBeenCalled();
+            expect(ctx.body).toEqual(
+                JSON.stringify(
+                    [
+                        {
+                            name: 'field1',
+                            label: 'column1',
+                            transformers: [
+                                {
+                                    operation: 'COLUMN',
+                                    args: [
+                                        {
+                                            name: 'column',
+                                            type: 'column',
+                                            value: 'column1',
+                                        },
+                                    ],
+                                },
+                            ],
+                        },
+                        {
+                            name: 'field2',
+                            label: 'column2',
+                            transformers: [
+                                {
+                                    operation: 'COLUMN',
+                                    args: [
+                                        {
+                                            name: 'column',
+                                            type: 'column',
+                                            value: 'column2',
+                                        },
+                                    ],
+                                },
+                            ],
+                        },
+                    ],
+                    null,
+                    4,
+                ),
+            );
+            expect(ctx.attachment).toHaveBeenCalledWith('lodex_model.json');
+            expect(ctx.type).toBe('application/json');
         });
     });
 
