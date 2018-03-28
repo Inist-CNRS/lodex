@@ -14,6 +14,7 @@ import AddCharacteristic from '../addCharacteristic/AddCharacteristic';
 import OntologyTable from './OntologyTable';
 import { COVER_DATASET } from '../../../../common/cover';
 import ExportFieldsButton from '../../public/export/ExportFieldsButton';
+import ExportFieldsReadyButton from '../../public/export/ExportFieldsReadyButton';
 
 const ALL = 'all';
 
@@ -43,7 +44,10 @@ export class OntologyComponent extends Component {
                         value={filter}
                         onChange={this.handleFilterChange}
                     >
-                        <MenuItem value={ALL} primaryText={polyglot.t('model_filter_all')} />
+                        <MenuItem
+                            value={ALL}
+                            primaryText={polyglot.t('model_filter_all')}
+                        />
                         <MenuItem
                             value={'document'}
                             primaryText={polyglot.t('model_filter_document')}
@@ -62,6 +66,7 @@ export class OntologyComponent extends Component {
                 </CardText>
                 <CardActions>
                     <ExportFieldsButton />
+                    <ExportFieldsReadyButton />
                     <AddCharacteristic />
                 </CardActions>
             </Card>

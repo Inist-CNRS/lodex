@@ -222,6 +222,11 @@ export const getExportFieldsRequest = state =>
         url: '/api/field/export',
     });
 
+export const getExportFieldsReadyRequest = state =>
+    getRequest(state, {
+        url: '/api/field/export/ready',
+    });
+
 export const getLoadFacetValuesRequest = (
     state,
     { field, filter, currentPage = 0, perPage = 10, sort = {} },
@@ -307,6 +312,7 @@ export const selectors = {
     getLoadContributedResourcePageRequest,
     getLoadFacetValuesRequest,
     getExportFieldsRequest,
+    getExportFieldsReadyRequest,
     getCreateResourceRequest,
     getAddFieldToResourceRequest,
     getHideResourceRequest,
