@@ -43,7 +43,7 @@
     "context": {
       "categories.inist": "istex:subjectInist",
       "host.genre.raw": "istex:publicationType",
-      "link": "dcterms:ispartOf",
+      "link": "dcterms:isPartOf",
       "doi": "bibo:doi",
       "fulltext[0].uri": "istex:accessURL",
       "labels": "",
