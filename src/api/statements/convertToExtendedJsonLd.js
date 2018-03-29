@@ -22,9 +22,9 @@ function getContext(config) {
         if (!prefixes[istexProperty[0]]) {
             // eslint-disable-next-line
             return console.error(
-                `property "${
+                `property "${v}" in istexQuery ("${
                     istexProperty[0]
-                }" in istexQuery is not found in prefixes`,
+                }") is not found in prefixes`,
             );
         }
 
