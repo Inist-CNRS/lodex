@@ -20,11 +20,10 @@ function getContext(config) {
         const istexProperty = propertyValue.split(':').map(e => e.trim());
 
         if (!prefixes[istexProperty[0]]) {
-            // eslint-disable-next-line
             return console.error(
-                `property "${
+                `property "${v}" in istexQuery ("${
                     istexProperty[0]
-                }" in istexQuery is not found in prefixes`,
+                }") is not found in prefixes`,
             );
         }
 
@@ -33,8 +32,10 @@ function getContext(config) {
     });
 
     if (context[config.istexQuery.linked] === undefined) {
-        // eslint-disable-next-line
-        return console.error('convertToExtendedJsonLd', `${config.istexQuery.linked} not found in context`);
+        return console.error(
+            'convertToExtendedJsonLd',
+            `${config.istexQuery.linked} not found in context`,
+        );
     }
 
     context[config.istexQuery.linked] = {
