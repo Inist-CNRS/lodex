@@ -1,4 +1,5 @@
 import validUrl from 'valid-url';
+import { getCleanHost } from '../../../common/uris';
 
 const formatWeb = (data, uri) => {
     if (validUrl.isWebUri(data)) {
@@ -11,10 +12,10 @@ const formatWeb = (data, uri) => {
 
 const formatData = (data, propertyName) => {
     if (!Array.isArray(data[propertyName])) {
-        return formatWeb(data[propertyName]);
+        return formatWeb(data[propertyName], getCleanHost(data.uri));
     }
 
-    return data[propertyName].map(e => formatWeb(e, data.uri));
+    return data[propertyName].map(e => formatWeb(e, getCleanHost(data.uri)));
 };
 
 export default formatData;
