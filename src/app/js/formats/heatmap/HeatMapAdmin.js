@@ -43,6 +43,9 @@ export const defaultArgs = {
 class HeatMapAdmin extends Component {
     static propTypes = {
         args: PropTypes.shape({
+            params: PropTypes.shape({
+                maxSize: PropTypes.number,
+            }),
             colorScheme: PropTypes.arrayOf(PropTypes.string),
             flipAxis: PropTypes.bool,
         }),
@@ -55,7 +58,7 @@ class HeatMapAdmin extends Component {
     };
 
     setMaxSize = (_, maxSize) => {
-        const { params, ...args } = this.props.args; // eslint-disable-line
+        const { params, ...args } = this.props.args;
         const newArgs = { ...args, params: { ...params, maxSize } };
         this.props.onChange(newArgs);
     };

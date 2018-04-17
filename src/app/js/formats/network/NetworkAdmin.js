@@ -35,7 +35,9 @@ export const defaultArgs = {
 class CartographyAdmin extends Component {
     static propTypes = {
         args: PropTypes.shape({
-            maxSize: PropTypes.number,
+            params: PropTypes.shape({
+                maxSize: PropTypes.number,
+            }),
             nodeColor: PropTypes.string,
         }),
         onChange: PropTypes.func.isRequired,
@@ -47,7 +49,7 @@ class CartographyAdmin extends Component {
     };
 
     setMaxSize = (_, maxSize) => {
-        const { params, ...args } = this.props.args; // eslint-disable-line
+        const { params, ...args } = this.props.args;
         const newArgs = { ...args, params: { ...params, maxSize } };
         this.props.onChange(newArgs);
     };
@@ -59,8 +61,9 @@ class CartographyAdmin extends Component {
     };
 
     render() {
-        const { p: polyglot, args: { params } } = this.props; // eslint-disable-line
-        const { maxSize, nodeColor } = this.props.args;
+        const { p: polyglot, args: { params } } = this.props;
+        const { nodeColor } = this.props.args;
+        const { maxSize } = params || defaultArgs.params;
 
         return (
             <div style={styles.container}>
