@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import TextField from 'material-ui/TextField';
 import translate from 'redux-polyglot/translate';
 import { schemeOrRd } from 'd3-scale-chromatic';
 import Checkbox from 'material-ui/Checkbox';
@@ -32,6 +33,9 @@ const styles = {
 };
 
 export const defaultArgs = {
+    params: {
+        maxSize: 200,
+    },
     colorScheme: schemeOrRd[9],
     flipAxis: false,
 };
@@ -50,6 +54,12 @@ class HeatMapAdmin extends Component {
         args: defaultArgs,
     };
 
+    setMaxSize = (_, maxSize) => {
+        const { params, ...args } = this.props.args; // eslint-disable-line
+        const newArgs = { ...args, params: { ...params, maxSize } };
+        this.props.onChange(newArgs);
+    };
+
     handleColorSchemeChange = (event, index, colorScheme) => {
         const newArgs = {
             ...this.props.args,
@@ -65,10 +75,21 @@ class HeatMapAdmin extends Component {
     };
 
     render() {
-        const { p: polyglot, args: { colorScheme, flipAxis } } = this.props;
+        const {
+            p: polyglot,
+            args: { params, colorScheme, flipAxis },
+        } = this.props;
+
+        const { maxSize } = params || defaultArgs.params;
 
         return (
             <div style={styles.container}>
+                <TextField
+                    floatingLabelText={polyglot.t('max_fields')}
+                    onChange={this.setMaxSize}
+                    style={styles.input}
+                    value={maxSize}
+                />
                 <GradientSchemeSelector
                     label={polyglot.t('color_scheme')}
                     onChange={this.handleColorSchemeChange}
