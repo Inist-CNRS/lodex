@@ -27,7 +27,7 @@ const styles = {
 
 export const defaultArgs = {
     params: {
-        maxSize: 10000,
+        maxSize: 200,
     },
     nodeColor: 'red',
 };
