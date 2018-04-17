@@ -26,12 +26,16 @@ const styles = {
 };
 
 export const defaultArgs = {
+    params: {
+        maxSize: 10000,
+    },
     nodeColor: 'red',
 };
 
 class CartographyAdmin extends Component {
     static propTypes = {
         args: PropTypes.shape({
+            maxSize: PropTypes.number,
             nodeColor: PropTypes.string,
         }),
         onChange: PropTypes.func.isRequired,
@@ -42,6 +46,12 @@ class CartographyAdmin extends Component {
         args: defaultArgs,
     };
 
+    setMaxSize = (_, maxSize) => {
+        const { params, ...args } = this.props.args; // eslint-disable-line
+        const newArgs = { ...args, params: { ...params, maxSize } };
+        this.props.onChange(newArgs);
+    };
+
     setNodeColor = (_, nodeColor) => {
         const { ...state } = this.props.args;
         const newArgs = { ...state, nodeColor };
@@ -49,11 +59,17 @@ class CartographyAdmin extends Component {
     };
 
     render() {
-        const { p: polyglot } = this.props;
-        const { nodeColor } = this.props.args;
+        const { p: polyglot, args: { params } } = this.props; // eslint-disable-line
+        const { maxSize, nodeColor } = this.props.args;
 
         return (
             <div style={styles.container}>
+                <TextField
+                    floatingLabelText={polyglot.t('max_fields')}
+                    onChange={this.setMaxSize}
+                    style={styles.input}
+                    value={maxSize}
+                />
                 <TextField
                     floatingLabelText={
                         <span>
