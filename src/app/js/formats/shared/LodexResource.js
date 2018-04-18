@@ -35,22 +35,44 @@ const styles = StyleSheet.create({
 });
 
 // see https://jsonfeed.org/version/1#items
-const LodexResource = ({ id, title, summary }) => {
+const LodexResource = ({ id, url, title, summary }) => {
     if (!id) {
         return null;
     }
-    return (
-        <div id={id}>
-            <Link
-                className={css(styles.contentLink)}
-                to={getFullResourceUri({ uri: id })}
-            >
-                <div className={css(styles.contentTitle)}>{title}</div>
-                <div className={css(styles.contentParagraph)}>{summary}</div>
-                <div className={css(styles.contentCustomDiv)} />
-            </Link>
-        </div>
+    let urlDomain = url.replace(id, '');
+    let getFullResourceUriDomain = getFullResourceUri({ uri: id }).replace(
+        id,
+        '',
     );
+
+    if (urlDomain == getFullResourceUriDomain) {
+        return (
+            <div id={id}>
+                <Link
+                    className={css(styles.contentLink)}
+                    to={getFullResourceUri({ uri: id })}
+                >
+                    <div className={css(styles.contentTitle)}>{title}</div>
+                    <div className={css(styles.contentParagraph)}>
+                        {summary}
+                    </div>
+                    <div className={css(styles.contentCustomDiv)} />
+                </Link>
+            </div>
+        );
+    } else {
+        return (
+            <div id={id}>
+                <Link className={css(styles.contentLink)} href={url}>
+                    <div className={css(styles.contentTitle)}>{title}</div>
+                    <div className={css(styles.contentParagraph)}>
+                        {summary}
+                    </div>
+                    <div className={css(styles.contentCustomDiv)} />
+                </Link>
+            </div>
+        );
+    }
 };
 
 LodexResource.propTypes = {
