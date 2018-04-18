@@ -45,6 +45,16 @@ const LodexResource = ({ id, url, title, summary }) => {
         '',
     );
 
+    const content = () => {
+        return (
+            <div>
+                <div className={css(styles.contentTitle)}>{title}</div>
+                <div className={css(styles.contentParagraph)}>{summary}</div>
+                <div className={css(styles.contentCustomDiv)} />
+            </div>
+        );
+    };
+
     if (urlDomain == getFullResourceUriDomain) {
         return (
             <div id={id}>
@@ -52,11 +62,7 @@ const LodexResource = ({ id, url, title, summary }) => {
                     className={css(styles.contentLink)}
                     to={getFullResourceUri({ uri: id })}
                 >
-                    <div className={css(styles.contentTitle)}>{title}</div>
-                    <div className={css(styles.contentParagraph)}>
-                        {summary}
-                    </div>
-                    <div className={css(styles.contentCustomDiv)} />
+                    {content()}
                 </Link>
             </div>
         );
@@ -64,11 +70,7 @@ const LodexResource = ({ id, url, title, summary }) => {
         return (
             <div id={id}>
                 <Link className={css(styles.contentLink)} href={url}>
-                    <div className={css(styles.contentTitle)}>{title}</div>
-                    <div className={css(styles.contentParagraph)}>
-                        {summary}
-                    </div>
-                    <div className={css(styles.contentCustomDiv)} />
+                    {content()}
                 </Link>
             </div>
         );
