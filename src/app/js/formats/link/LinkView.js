@@ -39,15 +39,6 @@ const LinkView = ({
 
     const link = resource[field.name];
 
-    if (link && link.search('ark:') != null) {
-        const str = link.slice(link.search('ark:'));
-        return (
-            <a className={className} href={`${str}`}>
-                {`${str}`}
-            </a>
-        );
-    }
-
     return (
         <a className={className} href={`${link}`}>
             {label}
