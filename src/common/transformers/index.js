@@ -6,7 +6,6 @@ import LOWERCASE from './LOWERCASE';
 import LINK from './LINK';
 import VALUE from './VALUE';
 import CONCAT from './CONCAT';
-import SPARQL from './SPARQL';
 import JBJ from './JBJ';
 import JOIN from './JOIN';
 import CONCAT_URI from './CONCAT_URI';
@@ -34,7 +33,6 @@ const transformers = {
     LINK: memoizeTransformer(LINK),
     VALUE: memoizeTransformer(VALUE),
     CONCAT: memoizeTransformer(CONCAT),
-    SPARQL: memoizeTransformer(SPARQL),
     JBJ: memoizeTransformer(JBJ),
     JOIN: memoizeTransformer(JOIN),
     CONCAT_URI: memoizeTransformer(CONCAT_URI),
@@ -65,7 +63,6 @@ const transformersMetas = [
     LOWERCASE,
     VALUE,
     CONCAT,
-    SPARQL,
     JBJ,
     JOIN,
     CONCAT_URI,
