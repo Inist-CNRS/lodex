@@ -6,8 +6,11 @@ import fs from 'fs';
 import ezs from 'ezs';
 import fetch from 'fetch-with-proxy';
 import { PassThrough } from 'stream';
+import Cache from 'streaming-cache';
+import cacheControl from 'koa-cache-control';
 import config from '../../../../config.json';
 
+const memory = new Cache();
 const routineLocalDirectory = Path.resolve(__dirname, '../../routines/');
 const routinesLocal = config.routines
     .map(routineName =>
@@ -46,6 +49,16 @@ export const runRoutine = async (ctx, routineCalled) => {
     }
 
     const [, metaData, , script] = routine;
+
+    if (metaData.fileName) {
+        ctx.set(
+            'Content-disposition',
+            `attachment; filename=${metaData.fileName}`,
+        );
+    }
+    ctx.type = metaData.mimeType;
+    ctx.status = 200;
+
     const context = {
         headers: ctx.headers,
         method: ctx.method,
@@ -59,36 +72,42 @@ export const runRoutine = async (ctx, routineCalled) => {
         host: ctx.host,
         hostname: ctx.hostname,
     };
-    const input = new PassThrough({ objectMode: true });
-    const output = input
-        .pipe(ezs.fromString(script))
-        .pipe(
-            ezs((data, feed) => {
-                if (data instanceof Error) {
-                    global.console.error('Error in pipeline.', data);
-                    feed.end();
-                } else {
-                    feed.send(data);
-                }
-            }),
-        )
-        .pipe(ezs.toBuffer());
-    if (metaData.fileName) {
-        ctx.set(
-            'Content-disposition',
-            `attachment; filename=${metaData.fileName}`,
-        );
-    }
-    ctx.type = metaData.mimeType;
-    ctx.status = 200;
-    ctx.body = output;
+    const uniqkey = `${context.path}?${context.querystring}`;
 
-    input.write(context);
-    input.end();
+    const cached = memory.get(uniqkey);
+    if (cached) {
+        ctx.body = cached;
+    } else {
+        const input = new PassThrough({ objectMode: true });
+        const output = input
+            .pipe(ezs.fromString(script))
+            .pipe(
+                ezs((data, feed) => {
+                    if (data instanceof Error) {
+                        global.console.error('Error in pipeline.', data);
+                        feed.end();
+                    } else {
+                        feed.send(data);
+                    }
+                }),
+            )
+            .pipe(ezs.toBuffer())
+            .pipe(memory.set(uniqkey));
+
+        ctx.body = output;
+
+        input.write(context);
+        input.end();
+    }
 };
 
 const app = new Koa();
-
+app.use(
+    cacheControl({
+        public: true,
+        maxAge: 24 * 60 * 60,
+    }),
+);
 app.use(route.get('/:routineCalled', runRoutine));
 app.use(route.get('/:routineCalled/:field1/', runRoutine));
 app.use(route.get('/:routineCalled/:field1/:field2/', runRoutine));
