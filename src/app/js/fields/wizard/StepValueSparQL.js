@@ -96,7 +96,7 @@ export default compose(
                 operation: 'SPARQL',
                 args: [
                     {
-                        name: 'sparql', //ne sait pas encore comment c'est utiliser
+                        name: 'sparql',
                         type: 'string',
                         value,
                     },
@@ -108,7 +108,7 @@ export default compose(
                 operation: 'SPARQL',
                 args: [
                     {
-                        name: 'sparql', //ne sait pas encore comment c'est utiliser
+                        name: 'sparql',
                         type: 'string',
                         value: event.target.value,
                     },
