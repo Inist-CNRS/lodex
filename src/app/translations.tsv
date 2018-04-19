@@ -303,6 +303,7 @@
 "label_desc"	"Label ↘"	"Label ↘"
 "value_desc"	"Value ↘"	"Valeur ↘"
 "value_asc"	"Value ↗"	"Valeur ↗"
+"graphqlText" "GRAPHQL - raw" "GRAPHQL - source"
 "size1"	"Very big"	"Très grand"
 "size2"	"Big"	"Grand"
 "size3"	"Bold"	"Gras"
