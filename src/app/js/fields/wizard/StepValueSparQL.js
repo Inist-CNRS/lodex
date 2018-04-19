@@ -68,7 +68,9 @@ const mapStateToProps = state => {
     );
 
     const valueTransformer =
-        transformers && transformers[0] && transformers[0].operation === 'SPARQL'
+        transformers &&
+        transformers[0] &&
+        transformers[0].operation === 'SPARQL'
             ? transformers[0]
             : null;
 
