@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { StyleSheet, css } from 'aphrodite/no-important';
 import { Link } from 'react-router';
-import { getFullResourceUri } from '../../../../common/uris';
+import { getFullResourceUri, isLocalURL } from '../../../../common/uris';
 
 const styles = StyleSheet.create({
     contentTitle: {
@@ -39,30 +39,23 @@ const LodexResource = ({ id, url, title, summary }) => {
     if (!id) {
         return null;
     }
-    let urlDomain = url.replace(id, '');
-    let getFullResourceUriDomain = getFullResourceUri({ uri: id }).replace(
-        id,
-        '',
+
+    const content = (
+        <div>
+            <div className={css(styles.contentTitle)}>{title}</div>
+            <div className={css(styles.contentParagraph)}>{summary}</div>
+            <div className={css(styles.contentCustomDiv)} />
+        </div>
     );
 
-    const content = () => {
-        return (
-            <div>
-                <div className={css(styles.contentTitle)}>{title}</div>
-                <div className={css(styles.contentParagraph)}>{summary}</div>
-                <div className={css(styles.contentCustomDiv)} />
-            </div>
-        );
-    };
-
-    if (urlDomain == getFullResourceUriDomain) {
+    if (!isLocalURL(id)) {
         return (
             <div id={id}>
                 <Link
                     className={css(styles.contentLink)}
                     to={getFullResourceUri({ uri: id })}
                 >
-                    {content()}
+                    {content}
                 </Link>
             </div>
         );
@@ -70,7 +63,7 @@ const LodexResource = ({ id, url, title, summary }) => {
         return (
             <div id={id}>
                 <Link className={css(styles.contentLink)} href={url}>
-                    {content()}
+                    {content}
                 </Link>
             </div>
         );
