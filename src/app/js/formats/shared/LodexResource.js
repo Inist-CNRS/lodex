@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { StyleSheet, css } from 'aphrodite/no-important';
 import { Link } from 'react-router';
-import { getFullResourceUri } from '../../../../common/uris';
+import { getFullResourceUri, isLocalURL } from '../../../../common/uris';
 
 const styles = StyleSheet.create({
     contentTitle: {
@@ -35,22 +35,39 @@ const styles = StyleSheet.create({
 });
 
 // see https://jsonfeed.org/version/1#items
-const LodexResource = ({ id, title, summary }) => {
+const LodexResource = ({ id, url, title, summary }) => {
     if (!id) {
         return null;
     }
-    return (
-        <div id={id}>
-            <Link
-                className={css(styles.contentLink)}
-                to={getFullResourceUri({ uri: id })}
-            >
-                <div className={css(styles.contentTitle)}>{title}</div>
-                <div className={css(styles.contentParagraph)}>{summary}</div>
-                <div className={css(styles.contentCustomDiv)} />
-            </Link>
+
+    const content = (
+        <div>
+            <div className={css(styles.contentTitle)}>{title}</div>
+            <div className={css(styles.contentParagraph)}>{summary}</div>
+            <div className={css(styles.contentCustomDiv)} />
         </div>
     );
+
+    if (!isLocalURL(id)) {
+        return (
+            <div id={id}>
+                <Link
+                    className={css(styles.contentLink)}
+                    to={getFullResourceUri({ uri: id })}
+                >
+                    {content}
+                </Link>
+            </div>
+        );
+    } else {
+        return (
+            <div id={id}>
+                <Link className={css(styles.contentLink)} href={url}>
+                    {content}
+                </Link>
+            </div>
+        );
+    }
 };
 
 LodexResource.propTypes = {

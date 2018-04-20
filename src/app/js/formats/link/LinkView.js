@@ -38,6 +38,7 @@ const LinkView = ({
     }
 
     const link = resource[field.name];
+
     return (
         <a className={className} href={`${link}`}>
             {label}
