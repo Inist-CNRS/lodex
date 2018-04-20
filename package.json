@@ -31,6 +31,7 @@
   "dependencies": {
     "aphrodite": "1.2.5",
     "async-busboy": "0.6.2",
+    "axios": "0.18.0",
     "babel-cli": "6.26.0",
     "babel-core": "6.26.0",
     "babel-eslint": "8.0.2",
