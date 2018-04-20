@@ -25,15 +25,9 @@ const LinkView = ({
         const links = resource[field.name];
 
         return (
-            <ul>
-                {links.map((link, index) => (
-                    <li key={index}>
-                        <a className={className} href={`${link}`}>
-                            {link}
-                        </a>
-                    </li>
-                ))}
-            </ul>
+            <div>
+                <h1> {links} </h1>
+            </div>
         );
     }
 
