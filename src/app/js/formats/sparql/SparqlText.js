@@ -9,6 +9,7 @@ import {
     TableHeaderColumn,
     TableRowColumn,
 } from 'material-ui/Table';
+import topairs from 'lodash.topairs';
 import axios from 'axios';
 
 const sparqlText = ({ className, field, resource }) => { // eslint-disable-line
@@ -74,7 +75,6 @@ const sparqlText = ({ className, field, resource }) => { // eslint-disable-line
         },
     };
     //console.log(JSON.stringify(await getData(url))); // eslint-disable-line
-    //{rawData} <p> {rawData.head.vars[0]} </p>
     return (
         <div className={className}>
             <Table>
@@ -90,10 +90,11 @@ const sparqlText = ({ className, field, resource }) => { // eslint-disable-line
                 <TableBody displayRowCheckbox={false}>
                     {rawData.results.bindings.map((column, key) => (
                         <TableRow key={key}>
-                            <TableRowColumn>
-                                {column.subject.value}
-                            </TableRowColumn>
-                            <TableRowColumn>{column.doi.value}</TableRowColumn>
+                            {topairs(column).map((line, key) => (
+                                <TableRowColumn key={key}>
+                                    {line[1].value}
+                                </TableRowColumn>
+                            ))}
                         </TableRow>
                     ))}
                 </TableBody>
