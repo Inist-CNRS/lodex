@@ -77,16 +77,23 @@ const sparqlText = ({ className, field, resource }) => { // eslint-disable-line
     //{rawData} <p> {rawData.head.vars[0]} </p>
     return (
         <div className={className}>
-            tu m emmerde JSX
             <Table>
                 <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
                     <TableRow>
-                        <TableHeaderColumn>tata</TableHeaderColumn>
+                        {rawData.head.vars.map(data => (
+                            <TableHeaderColumn key={data}>
+                                {data}
+                            </TableHeaderColumn>
+                        ))}
                     </TableRow>
                 </TableHeader>
                 <TableBody displayRowCheckbox={false}>
                     <TableRow>
-                        <TableRowColumn>TTO</TableRowColumn>
+                        {rawData.results.bindings.map(column => (
+                            <TableRowColumn key={column}>
+                                {column.subject.value}
+                            </TableRowColumn>
+                        ))}
                     </TableRow>
                 </TableBody>
             </Table>
@@ -94,7 +101,7 @@ const sparqlText = ({ className, field, resource }) => { // eslint-disable-line
     );
 };
 
-const getData = async url => {// eslint-disable-line
+const getData = async url => { // eslint-disable-line
     let data;
     await axios
         .get(url)
