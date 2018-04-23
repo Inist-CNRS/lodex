@@ -34,7 +34,7 @@ const sparqlText = ({ className, field, resource }) => { // eslint-disable-line
                     doi: {
                         type: 'literal',
                         value:
-                            '10.1002/(SICI)1097-4628(19960425)60:4<579::AID-APP11>3.0.CO;2-V',
+                            '10.1002/(SICI)1097-4628(19960425)60:4<579::AID-APP11>3.0.CO;2-V-1',
                     },
                 },
                 {
@@ -45,7 +45,7 @@ const sparqlText = ({ className, field, resource }) => { // eslint-disable-line
                     doi: {
                         type: 'literal',
                         value:
-                            '10.1002/(SICI)1097-4628(19960425)60:4<579::AID-APP11>3.0.CO;2-V',
+                            '10.1002/(SICI)1097-4628(19960425)60:4<579::AID-APP11>3.0.CO;2-V-2',
                     },
                 },
                 {
@@ -56,7 +56,7 @@ const sparqlText = ({ className, field, resource }) => { // eslint-disable-line
                     doi: {
                         type: 'literal',
                         value:
-                            '10.1002/(SICI)1097-4628(19960425)60:4<579::AID-APP11>3.0.CO;2-V',
+                            '10.1002/(SICI)1097-4628(19960425)60:4<579::AID-APP11>3.0.CO;2-V-3',
                     },
                 },
                 {
@@ -67,7 +67,7 @@ const sparqlText = ({ className, field, resource }) => { // eslint-disable-line
                     doi: {
                         type: 'literal',
                         value:
-                            '10.1002/(SICI)1097-4628(19960425)60:4<579::AID-APP11>3.0.CO;2-V',
+                            '10.1002/(SICI)1097-4628(19960425)60:4<579::AID-APP11>3.0.CO;2-V-4',
                     },
                 },
             ],
@@ -88,13 +88,14 @@ const sparqlText = ({ className, field, resource }) => { // eslint-disable-line
                     </TableRow>
                 </TableHeader>
                 <TableBody displayRowCheckbox={false}>
-                    <TableRow>
-                        {rawData.results.bindings.map(column => (
-                            <TableRowColumn key={column}>
+                    {rawData.results.bindings.map((column, key) => (
+                        <TableRow key={key}>
+                            <TableRowColumn>
                                 {column.subject.value}
                             </TableRowColumn>
-                        ))}
-                    </TableRow>
+                            <TableRowColumn>{column.doi.value}</TableRowColumn>
+                        </TableRow>
+                    ))}
                 </TableBody>
             </Table>
         </div>
