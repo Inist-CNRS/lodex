@@ -4,6 +4,9 @@ import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
 import injectData from '../injectData';
 import { isURL } from '../../../../common/uris.js';
+import Loading from '../../lib/components/Loading';
+import { CardText } from 'material-ui/Card';
+import { polyglot as polyglotPropTypes } from '../../propTypes';
 import {
     Table,
     TableBody,
@@ -12,49 +15,54 @@ import {
     TableHeaderColumn,
     TableRowColumn,
 } from 'material-ui/Table';
+// import Pagination from '../../lib/components/Pagination';
 import topairs from 'lodash.topairs';
 import URL from 'url';
 
-const sparqlText = (props, { className }) => {
+const sparqlText = (props, className) => {
+    // const { total, currentPage, p: polyglot } = this.props;
     if (props.formatData != undefined) { //eslint-disable-line
         return (
             <div className={className}>
-                <Table>
-                    <TableHeader
-                        displaySelectAll={false}
-                        adjustForCheckbox={false}
-                    >
-                        <TableRow>
-                            {props.formatData.head.vars.map((data , key) => ( //eslint-disable-line
-                                <TableHeaderColumn key={key}>
-                                    {data}
-                                </TableHeaderColumn>
-                            ))}
-                        </TableRow>
-                    </TableHeader>
-                    <TableBody displayRowCheckbox={false}>
-                        {props.formatData.results.bindings.map( //eslint-disable-line
-                            (column, key) => (
-                                <TableRow key={key}>
-                                    {topairs(column).map((line, key) => (
-                                        <TableRowColumn key={key}>
-                                            {line[1].value}
-                                        </TableRowColumn>
-                                    ))}
-                                </TableRow>
-                            ),
-                        )}
-                    </TableBody>
-                </Table>
+                <CardText>
+                    <Table>
+                        <TableHeader
+                            displaySelectAll={false}
+                            adjustForCheckbox={false}
+                        >
+                            <TableRow>
+                                {props.formatData.head.vars.map((data , key) => ( //eslint-disable-line
+                                    <TableHeaderColumn key={key}>
+                                        {data}
+                                    </TableHeaderColumn>
+                                ))}
+                            </TableRow>
+                        </TableHeader>
+                        <TableBody displayRowCheckbox={false}>
+                            {props.formatData.results.bindings.map( //eslint-disable-line
+                                (column, key) => (
+                                    <TableRow key={key}>
+                                        {topairs(column).map((line, key) => (
+                                            <TableRowColumn key={key}>
+                                                {line[1].value}
+                                            </TableRowColumn>
+                                        ))}
+                                    </TableRow>
+                                ),
+                            )}
+                        </TableBody>
+                    </Table>
+                </CardText>
             </div>
         );
     } else {
-        return <div>loading</div>;
+        return <Loading>loading</Loading>;
     }
 };
 
 sparqlText.propTypes = {
     className: PropTypes.string,
+    p: polyglotPropTypes.isRequired,
 };
 
 sparqlText.defaultProps = {
