@@ -72,10 +72,7 @@ sparqlText.defaultProps = {
 export default compose(
     translate,
     injectData(({ field, resource }) => {
-        const TODOvalue = resource[field.name]; // eslint-disable-line
-        const value =
-            'PREFIX bibo: <http://purl.org/ontology/bibo/> SELECT count(?doi) FROM <https://inist-category.data.istex.fr/notice/graph> WHERE { ?subject bibo:doi ?doi }';
-
+        const value = resource[field.name];
         if (!value) {
             return null;
         }
