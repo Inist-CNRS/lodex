@@ -15,89 +15,42 @@ import {
 import topairs from 'lodash.topairs';
 import URL from 'url';
 
-const sparqlText = ({ className }) => {
-    const rawData = {
-        head: {
-            link: [],
-            vars: ['subject', 'doi'],
-        },
-        results: {
-            distinct: false,
-            ordered: true,
-            bindings: [
-                {
-                    subject: {
-                        type: 'uri',
-                        value: 'https://api.istex.fr/ark:/67375/WNG-QJ1T66J4-C',
-                    },
-                    doi: {
-                        type: 'literal',
-                        value:
-                            '10.1002/(SICI)1097-4628(19960425)60:4<579::AID-APP11>3.0.CO;2-V-1',
-                    },
-                },
-                {
-                    subject: {
-                        type: 'uri',
-                        value: 'https://api.istex.fr/ark:/67375/WNG-QJ1T66J4-C',
-                    },
-                    doi: {
-                        type: 'literal',
-                        value:
-                            '10.1002/(SICI)1097-4628(19960425)60:4<579::AID-APP11>3.0.CO;2-V-2',
-                    },
-                },
-                {
-                    subject: {
-                        type: 'uri',
-                        value: 'https://api.istex.fr/ark:/67375/WNG-QJ1T66J4-C',
-                    },
-                    doi: {
-                        type: 'literal',
-                        value:
-                            '10.1002/(SICI)1097-4628(19960425)60:4<579::AID-APP11>3.0.CO;2-V-3',
-                    },
-                },
-                {
-                    subject: {
-                        type: 'uri',
-                        value: 'https://api.istex.fr/ark:/67375/WNG-QJ1T66J4-C',
-                    },
-                    doi: {
-                        type: 'literal',
-                        value:
-                            '10.1002/(SICI)1097-4628(19960425)60:4<579::AID-APP11>3.0.CO;2-V-4',
-                    },
-                },
-            ],
-        },
-    };
-    return (
-        <div className={className}>
-            <Table>
-                <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
-                    <TableRow>
-                        {rawData.head.vars.map(data => (
-                            <TableHeaderColumn key={data}>
-                                {data}
-                            </TableHeaderColumn>
-                        ))}
-                    </TableRow>
-                </TableHeader>
-                <TableBody displayRowCheckbox={false}>
-                    {rawData.results.bindings.map((column, key) => (
-                        <TableRow key={key}>
-                            {topairs(column).map((line, key) => (
-                                <TableRowColumn key={key}>
-                                    {line[1].value}
-                                </TableRowColumn>
+const sparqlText = (props, { className }) => {
+    if (props.formatData != undefined) { //eslint-disable-line
+        return (
+            <div className={className}>
+                <Table>
+                    <TableHeader
+                        displaySelectAll={false}
+                        adjustForCheckbox={false}
+                    >
+                        <TableRow>
+                            {props.formatData.head.vars.map((data , key) => ( //eslint-disable-line
+                                <TableHeaderColumn key={key}>
+                                    {data}
+                                </TableHeaderColumn>
                             ))}
                         </TableRow>
-                    ))}
-                </TableBody>
-            </Table>
-        </div>
-    );
+                    </TableHeader>
+                    <TableBody displayRowCheckbox={false}>
+                        {props.formatData.results.bindings.map( //eslint-disable-line
+                            (column, key) => (
+                                <TableRow key={key}>
+                                    {topairs(column).map((line, key) => (
+                                        <TableRowColumn key={key}>
+                                            {line[1].value}
+                                        </TableRowColumn>
+                                    ))}
+                                </TableRow>
+                            ),
+                        )}
+                    </TableBody>
+                </Table>
+            </div>
+        );
+    } else {
+        return <div>loading</div>;
+    }
 };
 
 sparqlText.propTypes = {
