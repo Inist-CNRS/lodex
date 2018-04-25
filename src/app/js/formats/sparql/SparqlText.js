@@ -20,7 +20,7 @@ import topairs from 'lodash.topairs';
 import URL from 'url';
 
 const sparqlText = (props, className) => {
-    // const { total, currentPage, p: polyglot } = this.props;
+    const { total, currentPage, p: polyglot } = this.props; //eslint-disable-line
     if (props.formatData != undefined) { //eslint-disable-line
         return (
             <div className={className}>
@@ -56,7 +56,7 @@ const sparqlText = (props, className) => {
             </div>
         );
     } else {
-        return <Loading>loading</Loading>;
+        return <Loading>{polyglot.t('loading')}</Loading>;
     }
 };
 
