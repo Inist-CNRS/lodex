@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
-import injectData from '../injectData';
+import SparqlRequest from './SparqlRequest';
 import { isURL } from '../../../../common/uris.js';
 import Loading from '../../lib/components/Loading';
 import { CardText } from 'material-ui/Card';
@@ -32,9 +32,10 @@ export class sparqlText extends Component {
     };
 
     render() {
-        const { className, formatData } = this.props;
+        const { className, rawData } = this.props;
+        console.log(this.props); //eslint-disable-line
 
-        if (formatData != undefined) {
+        if (rawData != undefined) {
             return (
                 <div className={className}>
                     <CardText>
@@ -44,7 +45,7 @@ export class sparqlText extends Component {
                                 adjustForCheckbox={false}
                             >
                                 <TableRow>
-                                    {formatData.head.vars.map((data, key) => (
+                                    {rawData.head.vars.map((data, key) => (
                                         <TableHeaderColumn key={key}>
                                             {data}
                                         </TableHeaderColumn>
@@ -52,19 +53,15 @@ export class sparqlText extends Component {
                                 </TableRow>
                             </TableHeader>
                             <TableBody displayRowCheckbox={false}>
-                                {formatData.results.bindings.map(
-                                    (column, key) => (
-                                        <TableRow key={key}>
-                                            {topairs(column).map(
-                                                (line, key) => (
-                                                    <TableRowColumn key={key}>
-                                                        {line[1].value}
-                                                    </TableRowColumn>
-                                                ),
-                                            )}
-                                        </TableRow>
-                                    ),
-                                )}
+                                {rawData.results.bindings.map((column, key) => (
+                                    <TableRow key={key}>
+                                        {topairs(column).map((line, key) => (
+                                            <TableRowColumn key={key}>
+                                                {line[1].value}
+                                            </TableRowColumn>
+                                        ))}
+                                    </TableRow>
+                                ))}
                             </TableBody>
                         </Table>
                         <Pagination
@@ -88,7 +85,7 @@ export class sparqlText extends Component {
 
 sparqlText.propTypes = {
     className: PropTypes.string,
-    formatData: PropTypes.object,
+    rawData: PropTypes.object,
     // p: polyglotPropTypes.isRequired,
 };
 
@@ -98,12 +95,14 @@ sparqlText.defaultProps = {
 
 export default compose(
     translate,
-    injectData(({ field, resource }) => {
+    SparqlRequest(({ field, resource }) => {
+        //TODO refactoring this function
+        const hostname = 'https://data.istex.fr/sparql/?query=';
         const value = resource[field.name];
         if (!value) {
             return null;
         }
-        const request = 'https://data.istex.fr/sparql/?query=' + value.trim();
+        const request = hostname + value.trim();
         const removeLimit = request.replace(/LIMIT\s\d*/, ''); //remove LIMIT with her var
         const removeOffset = removeLimit.replace(/OFFSET\s\d*/, ''); //remove OFFSER with her var
         const requestPagination =
