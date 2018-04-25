@@ -3,19 +3,13 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
-import isEqual from 'lodash.isequal';
 
 import {
     field as fieldPropTypes,
     polyglot as polyglotPropTypes,
 } from '../../propTypes.js';
-import { fromFormat, fromResource } from '../../public/selectors';
-import { fromCharacteristic } from '../../sharedSelectors';
-import {
-    preLoadFormatData,
-    loadFormatData,
-    unLoadFormatData,
-} from '../../formats/reducer';
+import { fromFormat } from '../../public/selectors';
+import { loadFormatData } from '../../formats/reducer';
 import Loading from '../../lib/components/Loading';
 
 const styles = {
@@ -42,8 +36,6 @@ export default url => FormatView => {
         static propTypes = {
             field: fieldPropTypes.isRequired,
             resource: PropTypes.object.isRequired,
-            preLoadFormatData: PropTypes.func.isRequired,
-            unLoadFormatData: PropTypes.func.isRequired,
             loadFormatData: PropTypes.func.isRequired,
             formatData: PropTypes.any,
             isLoaded: PropTypes.bool.isRequired,
@@ -67,27 +59,6 @@ export default url => FormatView => {
             if (!field) {
                 return;
             }
-            this.loadFormatData();
-        }
-        componentWillUnmount() {
-            const { field, unLoadFormatData } = this.props;
-            if (!field) {
-                return;
-            }
-
-            unLoadFormatData(field);
-        }
-        componentDidUpdate(prevProps) {
-            const { field, resource } = this.props;
-            if (
-                !field ||
-                (isEqual(field, prevProps.field) &&
-                    resource[field.name] ===
-                        prevProps.resource[prevProps.field.name])
-            ) {
-                return;
-            }
-
             this.loadFormatData();
         }
 
@@ -142,18 +113,12 @@ export default url => FormatView => {
     GraphItem.WrappedComponent = FormatView;
 
     const mapStateToProps = (state, { field }) => ({
-        resource:
-            field.cover === 'dataset'
-                ? fromCharacteristic.getCharacteristicsAsResource(state)
-                : fromResource.getResourceLastVersion(state),
         formatData: fromFormat.getFormatData(state, field.name),
         isLoaded: field && fromFormat.isFormatDataLoaded(state, field.name),
         error: fromFormat.getFormatError(state, field.name),
     });
 
     const mapDispatchToProps = {
-        preLoadFormatData,
-        unLoadFormatData,
         loadFormatData,
     };
 
