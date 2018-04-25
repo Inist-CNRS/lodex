@@ -19,6 +19,9 @@ import Pagination from '../../lib/components/Pagination';
 import topairs from 'lodash.topairs';
 import URL from 'url';
 
+const perPage = 1;
+let currentPage = 1;
+
 export class sparqlText extends Component {
     handlePageChange = (currentPage, perPage) => { //eslint-disable-line
         //TODO make function to swith page
@@ -32,10 +35,6 @@ export class sparqlText extends Component {
         const { className, formatData } = this.props;
 
         if (formatData != undefined) {
-            let total = formatData.results.bindings.length;
-            let perPage = 2;
-            let currentPage = 0;
-
             return (
                 <div className={className}>
                     <CardText>
@@ -70,7 +69,6 @@ export class sparqlText extends Component {
                         </Table>
                         <Pagination
                             onChange={this.handlePageChange}
-                            total={total}
                             perPage={perPage}
                             currentPage={currentPage}
                             texts={{
@@ -107,8 +105,13 @@ export default compose(
         }
         const request = 'https://data.istex.fr/sparql/?query=' + value.trim();
         const removeLimit = request.replace(/LIMIT\s\d*/, ''); //remove LIMIT with her var
-        const removeOffset = removeLimit.replace(/OFFSET\s\d*/, ''); //remove LIMIT with her var
-        const requestPagination = removeOffset + ' OFFSET ' + 2 + ' LIMIT ' + 3;
+        const removeOffset = removeLimit.replace(/OFFSET\s\d*/, ''); //remove OFFSER with her var
+        const requestPagination =
+            removeOffset +
+            ' OFFSET ' +
+            perPage * currentPage +
+            ' LIMIT ' +
+            perPage;
         if (isURL(requestPagination)) {
             const source = URL.parse(requestPagination);
             const target = {
