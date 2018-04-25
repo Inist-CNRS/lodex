@@ -15,15 +15,27 @@ import {
     TableHeaderColumn,
     TableRowColumn,
 } from 'material-ui/Table';
-// import Pagination from '../../lib/components/Pagination';
+import Pagination from '../../lib/components/Pagination';
 import topairs from 'lodash.topairs';
 import URL from 'url';
 
 export class sparqlText extends Component {
+    handlePageChange = (currentPage, perPage) => { //eslint-disable-line
+        //TODO make function to swith page
+        // this.props.loadContributedResourcePage({
+        //     page: currentPage,
+        //     perPage,
+        // });
+    };
+
     render() {
         const { className, formatData } = this.props;
 
         if (formatData != undefined) {
+            let total = formatData.results.bindings.length;
+            let perPage = 2;
+            let currentPage = 0;
+
             return (
                 <div className={className}>
                     <CardText>
@@ -56,6 +68,17 @@ export class sparqlText extends Component {
                                 )}
                             </TableBody>
                         </Table>
+                        <Pagination
+                            onChange={this.handlePageChange}
+                            total={total}
+                            perPage={perPage}
+                            currentPage={currentPage}
+                            texts={{
+                                page: 'page',
+                                perPage: 'perPage',
+                                showing: 'showing',
+                            }}
+                        />
                     </CardText>
                 </div>
             );
@@ -68,6 +91,7 @@ export class sparqlText extends Component {
 sparqlText.propTypes = {
     className: PropTypes.string,
     formatData: PropTypes.object,
+    // p: polyglotPropTypes.isRequired,
 };
 
 sparqlText.defaultProps = {
@@ -82,9 +106,11 @@ export default compose(
             return null;
         }
         const request = 'https://data.istex.fr/sparql/?query=' + value.trim();
-
-        if (isURL(request)) {
-            const source = URL.parse(request);
+        const removeLimit = request.replace(/LIMIT\s\d*/, ''); //remove LIMIT with her var
+        const removeOffset = removeLimit.replace(/OFFSET\s\d*/, ''); //remove LIMIT with her var
+        const requestPagination = removeOffset + ' OFFSET ' + 2 + ' LIMIT ' + 3;
+        if (isURL(requestPagination)) {
+            const source = URL.parse(requestPagination);
             const target = {
                 protocol: source.protocol,
                 hostname: source.hostname,
