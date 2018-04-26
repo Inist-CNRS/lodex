@@ -20,9 +20,28 @@ import {
 import Pagination from '../../lib/components/Pagination';
 import topairs from 'lodash.topairs';
 import URL from 'url';
+import IconButton from 'material-ui/IconButton';
+import ActionSearch from 'material-ui/svg-icons/action/search';
+import TextField from 'material-ui/TextField';
 
 const perPage = 1;
 let currentPage = 1;
+
+const styles = {
+    icon: {
+        verticalAlign: 'bottom',
+    },
+    container: {
+        display: 'block',
+        width: '100%',
+        color: 'lightGrey',
+    },
+    input: {
+        fontSize: '0.7em',
+        width: '90%',
+        borderImage: 'none',
+    },
+};
 
 export class sparqlText extends Component {
     handlePageChange = (currentPage, perPage) => { //eslint-disable-line
@@ -41,7 +60,16 @@ export class sparqlText extends Component {
             const requestText = params.hostname + resource[field.name];
             return (
                 <div className={className}>
-                    <span>{requestText}</span>
+                    <div style={styles.container}>
+                        <IconButton style={styles.icon}>
+                            <ActionSearch color="lightGrey" />
+                        </IconButton>
+                        <TextField
+                            style={styles.input}
+                            name="sparqlRequest"
+                            value={requestText}
+                        />
+                    </div>
                     <CardText>
                         <Table>
                             <TableHeader
