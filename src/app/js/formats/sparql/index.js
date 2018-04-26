@@ -1,5 +1,5 @@
 import Component from './SparqlText';
-import AdminComponent, { defaultArgs } from '../DefaultAdminComponentWithLabel';
+import AdminComponent, { defaultArgs } from './SparqlAdmin';
 import DefaultFormat from '../DefaultFormat';
 
 export default {

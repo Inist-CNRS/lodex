@@ -32,7 +32,8 @@ export class sparqlText extends Component {
     };
 
     render() {
-        const { className, rawData } = this.props;
+        const { className, rawData /*params*/ } = this.props;
+        // const hostname = params.hostname
         console.log(this.props); //eslint-disable-line
 
         if (rawData != undefined) {
@@ -95,14 +96,12 @@ sparqlText.defaultProps = {
 
 export default compose(
     translate,
-    SparqlRequest(({ field, resource }) => {
-        //TODO refactoring this function
-        const hostname = 'https://data.istex.fr/sparql/?query=';
+    SparqlRequest(({ field, resource, params }) => {
         const value = resource[field.name];
         if (!value) {
             return null;
         }
-        const request = hostname + value.trim();
+        const request = params.hostname + value.trim();
         const removeLimit = request.replace(/LIMIT\s\d*/, ''); //remove LIMIT with her var
         const removeOffset = removeLimit.replace(/OFFSET\s\d*/, ''); //remove OFFSER with her var
         const requestPagination =
