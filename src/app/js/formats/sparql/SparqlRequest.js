@@ -104,6 +104,7 @@ export default url => FormatView => {
                     <FormatView
                         {...props}
                         rawData={formatData /*injection dans le props ici*/}
+                        field={field}
                     />
                 </div>
             );

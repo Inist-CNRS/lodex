@@ -6,7 +6,9 @@ import SparqlRequest from './SparqlRequest';
 import { isURL } from '../../../../common/uris.js';
 import Loading from '../../lib/components/Loading';
 import { CardText } from 'material-ui/Card';
-// import { polyglot as polyglotPropTypes } from '../../propTypes';
+import {
+    field as fieldPropTypes, //polyglot as polyglotPropTypes,
+} from '../../propTypes';
 import {
     Table,
     TableBody,
@@ -32,13 +34,14 @@ export class sparqlText extends Component {
     };
 
     render() {
-        const { className, rawData /*params*/ } = this.props;
-        // const hostname = params.hostname
+        const { className, rawData, params, resource, field } = this.props;
         console.log(this.props); //eslint-disable-line
 
         if (rawData != undefined) {
+            const requestText = params.hostname + resource[field.name];
             return (
                 <div className={className}>
+                    <span>{requestText}</span>
                     <CardText>
                         <Table>
                             <TableHeader
@@ -87,6 +90,9 @@ export class sparqlText extends Component {
 sparqlText.propTypes = {
     className: PropTypes.string,
     rawData: PropTypes.object,
+    params: PropTypes.object,
+    field: fieldPropTypes.isRequired,
+    resource: PropTypes.object.isRequired,
     // p: polyglotPropTypes.isRequired,
 };
 
