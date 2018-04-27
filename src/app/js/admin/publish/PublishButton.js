@@ -24,8 +24,6 @@ const styles = {
 
 export class PublishButtonComponent extends Component {
     handleClick = () => {
-        //HERE on click sur le bouton
-        //alert('echo')
         this.props.onPublish();
     };
 
