@@ -46,7 +46,7 @@ class SparqlTextAdmin extends Component {
         args: defaultArgs,
     };
 
-    setMaxSize = (_, hostnameSparql) => {
+    setHostname = (_, hostnameSparql) => {
         const { params, ...args } = this.props.args;
         const newArgs = { ...args, params: { ...params, hostnameSparql } };
         this.props.onChange(newArgs);
@@ -62,7 +62,7 @@ class SparqlTextAdmin extends Component {
                     floatingLabelText={
                         polyglot.t('hostname') /*TODO translate*/
                     }
-                    onChange={this.setMaxSize}
+                    onChange={this.setHostname}
                     style={styles.input}
                     value={hostnameSparql}
                 />
