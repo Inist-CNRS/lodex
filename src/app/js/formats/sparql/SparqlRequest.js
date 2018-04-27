@@ -32,7 +32,7 @@ const getCreateUrl = url => {
 export default url => FormatView => {
     const createUrl = getCreateUrl(url);
 
-    class GraphItem extends Component {
+    class SparqlRequest extends Component {
         static propTypes = {
             field: fieldPropTypes.isRequired,
             resource: PropTypes.object.isRequired,
@@ -81,11 +81,11 @@ export default url => FormatView => {
                 error,
                 ...props
             } = this.props;
-
+            console.log(error); //eslint-disable-line
             if (error) {
                 return (
                     <p style={styles.message}>
-                        {polyglot.t('sparql_error') /*TODO add translation */}
+                        sparql_error {/*TODO add translation */}
                     </p>
                 );
             }
@@ -93,7 +93,7 @@ export default url => FormatView => {
             if (formatData === 'no result') {
                 return (
                     <p style={styles.message}>
-                        {polyglot.t('sparql_data' /*TODO add translation */)}
+                        sparql_data {/*TODO add translation */}
                     </p>
                 );
             }
@@ -111,7 +111,7 @@ export default url => FormatView => {
         }
     }
 
-    GraphItem.WrappedComponent = FormatView;
+    SparqlRequest.WrappedComponent = FormatView;
 
     const mapStateToProps = (state, { field }) => ({
         formatData: fromFormat.getFormatData(state, field.name),
@@ -124,6 +124,6 @@ export default url => FormatView => {
     };
 
     return compose(connect(mapStateToProps, mapDispatchToProps), translate)(
-        GraphItem,
+        SparqlRequest,
     );
 };

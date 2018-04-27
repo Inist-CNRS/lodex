@@ -55,10 +55,10 @@ export class sparqlText extends Component {
 
     render() {
         const { className, rawData, params, resource, field } = this.props;
-        console.log(this.props); //eslint-disable-line
+        // console.log(this.props); //eslint-disable-line
 
         if (rawData != undefined) {
-            const requestText = params.hostname + resource[field.name];
+            const requestText = params.hostnameSparql + resource[field.name];
             return (
                 <div className={className}>
                     <div style={styles.container}>
@@ -136,7 +136,7 @@ export default compose(
         if (!value) {
             return null;
         }
-        const request = params.hostname + value.trim();
+        const request = params.hostnameSparql + value.trim();
         const removeLimit = request.replace(/LIMIT\s\d*/, ''); //remove LIMIT with her var
         const removeOffset = removeLimit.replace(/OFFSET\s\d*/, ''); //remove OFFSER with her var
         const requestPagination =
@@ -154,6 +154,7 @@ export default compose(
                 pathname: source.pathname,
                 search: source.search,
             };
+            console.log(target);  //eslint-disable-line
             return URL.format(target);
         }
         return null;
