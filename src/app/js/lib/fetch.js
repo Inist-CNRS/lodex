@@ -4,6 +4,7 @@ import { getHost } from '../../../common/uris';
 
 export default ({ url, ...config }, mode = 'json') => {
     const fullUrl = url.startsWith('http') ? url : getHost() + url;
+    console.log(url); //eslint-disable-line
     return fetch(fullUrl, config).then(
         response => {
             if (response.status === 204) {

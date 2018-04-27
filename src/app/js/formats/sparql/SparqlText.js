@@ -58,7 +58,7 @@ export class sparqlText extends Component {
         // console.log(this.props); //eslint-disable-line
 
         if (rawData != undefined) {
-            const requestText = params.hostnameSparql + resource[field.name];
+            const requestText = params.hostname + resource[field.name];
             return (
                 <div className={className}>
                     <div style={styles.container}>
@@ -136,7 +136,7 @@ export default compose(
         if (!value) {
             return null;
         }
-        const request = params.hostnameSparql + value.trim();
+        const request = params.hostname + value.trim();
         const removeLimit = request.replace(/LIMIT\s\d*/, ''); //remove LIMIT with her var
         const removeOffset = removeLimit.replace(/OFFSET\s\d*/, ''); //remove OFFSER with her var
         const requestPagination =
@@ -154,7 +154,7 @@ export default compose(
                 pathname: source.pathname,
                 search: source.search,
             };
-            console.log(target);  //eslint-disable-line
+            console.log(URL.format(target)); //eslint-disable-line
             return URL.format(target);
         }
         return null;

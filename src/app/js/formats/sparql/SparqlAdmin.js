@@ -27,7 +27,7 @@ const styles = {
 
 export const defaultArgs = {
     params: {
-        hostnameSparql: 'https://data.istex.fr/sparql/?query=',
+        hostname: 'https://data.istex.fr/sparql/?query=',
     },
 };
 
@@ -35,7 +35,7 @@ class SparqlTextAdmin extends Component {
     static propTypes = {
         args: PropTypes.shape({
             params: PropTypes.shape({
-                hostnameSparql: PropTypes.string,
+                hostname: PropTypes.string,
             }),
         }),
         onChange: PropTypes.func.isRequired,
@@ -46,15 +46,15 @@ class SparqlTextAdmin extends Component {
         args: defaultArgs,
     };
 
-    setHostname = (_, hostnameSparql) => {
+    setHostname = (_, hostname) => {
         const { params, ...args } = this.props.args;
-        const newArgs = { ...args, params: { ...params, hostnameSparql } };
+        const newArgs = { ...args, params: { ...params, hostname } };
         this.props.onChange(newArgs);
     };
 
     render() {
         const { p: polyglot, args: { params } } = this.props;
-        const { hostnameSparql } = params || defaultArgs.params;
+        const { hostname } = params || defaultArgs.params;
 
         return (
             <div style={styles.container}>
@@ -64,7 +64,7 @@ class SparqlTextAdmin extends Component {
                     }
                     onChange={this.setHostname}
                     style={styles.input}
-                    value={hostnameSparql}
+                    value={hostname}
                 />
             </div>
         );

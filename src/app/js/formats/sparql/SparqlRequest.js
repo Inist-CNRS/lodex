@@ -81,7 +81,6 @@ export default url => FormatView => {
                 error,
                 ...props
             } = this.props;
-            console.log(error); //eslint-disable-line
             if (error) {
                 return (
                     <p style={styles.message}>
