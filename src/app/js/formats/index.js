@@ -26,6 +26,7 @@ import cartography from './cartography';
 import heatmap from './heatmap';
 import network from './network';
 import redirect from './redirect';
+import sparqlPieChart from './sparql/sparqlPieChart';
 import bubbleChart from './bubbleChart';
 import DefaultFormat from './DefaultFormat';
 
@@ -55,6 +56,7 @@ const components = {
     heatmap,
     network,
     redirect,
+    sparqlPieChart,
     bubbleChart,
 };
 
