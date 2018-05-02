@@ -59,9 +59,7 @@ class SparqlTextAdmin extends Component {
         return (
             <div style={styles.container}>
                 <TextField
-                    floatingLabelText={
-                        polyglot.t('hostname') /*TODO translate*/
-                    }
+                    floatingLabelText={polyglot.t('sparql_hostname')}
                     onChange={this.setHostname}
                     style={styles.input}
                     value={hostname}
