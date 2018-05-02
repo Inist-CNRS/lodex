@@ -132,11 +132,21 @@ export default compose(
         if (!value) {
             return null;
         }
-        const request = sparql.hostname + '?query=' + value.trim();
-        const removeLimit = request.replace(/LIMIT\s\d*/, ''); //remove LIMIT with her var
-        const removeOffset = removeLimit.replace(/OFFSET\s\d*/, ''); //remove OFFSER with her var
+        let constructURL = sparql.hostname;
+        !constructURL.startsWith('http://') ||
+        !constructURL.startsWith('https://')
+            ? (constructURL = 'https://' + constructURL)
+            : null;
+
+        !constructURL.endsWith('?query=')
+            ? (constructURL = constructURL + '?query=')
+            : null;
+
+        constructURL = constructURL + value.trim();
+        constructURL = constructURL.replace(/LIMIT\s\d*/, ''); //remove LIMIT with her var
+        constructURL = constructURL.replace(/OFFSET\s\d*/, ''); //remove OFFSER with her var
         const requestPagination =
-            removeOffset +
+            constructURL +
             ' OFFSET ' +
             perPage * currentPage +
             ' LIMIT ' +
