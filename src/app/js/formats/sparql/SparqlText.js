@@ -24,8 +24,8 @@ import IconButton from 'material-ui/IconButton';
 import ActionSearch from 'material-ui/svg-icons/action/search';
 import TextField from 'material-ui/TextField';
 
-const perPage = 10;
-let currentPage = 0;
+const perPage = 3;
+let currentPage = 1;
 
 const styles = {
     icon: {
@@ -54,11 +54,11 @@ export class sparqlText extends Component {
     };
 
     render() {
-        const { className, rawData, params, resource, field } = this.props;
+        const { className, rawData, sparql, resource, field } = this.props;
         // console.log(this.props); //eslint-disable-line
 
         if (rawData != undefined) {
-            const requestText = params.hostname + resource[field.name];
+            const requestText = sparql.hostname + resource[field.name];
             return (
                 <div className={className}>
                     <div style={styles.container}>
@@ -119,7 +119,7 @@ export class sparqlText extends Component {
 sparqlText.propTypes = {
     className: PropTypes.string,
     rawData: PropTypes.object,
-    params: PropTypes.object,
+    sparql: PropTypes.object,
     field: fieldPropTypes.isRequired,
     resource: PropTypes.object.isRequired,
     // p: polyglotPropTypes.isRequired,
@@ -131,12 +131,12 @@ sparqlText.defaultProps = {
 
 export default compose(
     translate,
-    SparqlRequest(({ field, resource, params }) => {
+    SparqlRequest(({ field, resource, sparql }) => {
         const value = resource[field.name];
         if (!value) {
             return null;
         }
-        const request = params.hostname + value.trim();
+        const request = sparql.hostname + value.trim();
         const removeLimit = request.replace(/LIMIT\s\d*/, ''); //remove LIMIT with her var
         const removeOffset = removeLimit.replace(/OFFSET\s\d*/, ''); //remove OFFSER with her var
         const requestPagination =
