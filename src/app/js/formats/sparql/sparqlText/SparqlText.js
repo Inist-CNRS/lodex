@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
 import SparqlRequest from './SparqlRequest';
-import { isURL } from '../../../../common/uris.js';
+import { isURL } from '../../../../../common/uris.js';
 import { CardText } from 'material-ui/Card';
-import { field as fieldPropTypes } from '../../propTypes';
+import { field as fieldPropTypes } from '../../../propTypes';
 import {
     Table,
     TableBody,
@@ -14,7 +14,7 @@ import {
     TableHeaderColumn,
     TableRowColumn,
 } from 'material-ui/Table';
-import Pagination from '../../lib/components/Pagination';
+import Pagination from '../../../lib/components/Pagination';
 import topairs from 'lodash.topairs';
 import URL from 'url';
 import IconButton from 'material-ui/IconButton';
