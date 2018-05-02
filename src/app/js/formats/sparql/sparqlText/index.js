@@ -1,4 +1,4 @@
-import Component from './SparqlText';
+import Component from './SparqlView';
 import AdminComponent, { defaultArgs } from './SparqlAdmin';
 import DefaultFormat from '../../DefaultFormat';
 
