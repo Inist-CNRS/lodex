@@ -28,6 +28,7 @@ const styles = {
 export const defaultArgs = {
     sparql: {
         hostname: 'data.istex.fr/sparql/',
+        maxValue: 100,
     },
 };
 
@@ -36,6 +37,7 @@ class SparqlTextAdmin extends Component {
         args: PropTypes.shape({
             sparql: PropTypes.shape({
                 hostname: PropTypes.string,
+                maxValue: PropTypes.number,
             }),
         }),
         onChange: PropTypes.func.isRequired,
@@ -52,9 +54,15 @@ class SparqlTextAdmin extends Component {
         this.props.onChange(newArgs);
     };
 
+    setMaxValue = (_, maxValue) => {
+        const { sparql, ...state } = this.props.args;
+        const newState = { ...state, sparql: { ...sparql, maxValue } };
+        this.props.onChange(newState);
+    };
+
     render() {
         const { p: polyglot, args: { sparql } } = this.props;
-        const { hostname } = sparql || defaultArgs.sparql;
+        const { hostname, maxValue } = sparql || defaultArgs.sparql;
 
         return (
             <div style={styles.container}>
@@ -63,6 +71,12 @@ class SparqlTextAdmin extends Component {
                     onChange={this.setHostname}
                     style={styles.input}
                     value={hostname}
+                />
+                <TextField
+                    floatingLabelText={polyglot.t('max_value')}
+                    onChange={this.setMaxValue}
+                    style={styles.input}
+                    value={maxValue}
                 />
             </div>
         );

@@ -11,8 +11,6 @@ import IconButton from 'material-ui/IconButton';
 import ActionSearch from 'material-ui/svg-icons/action/search';
 import TextField from 'material-ui/TextField';
 
-const perPage = 10;
-
 const styles = {
     icon: {
         verticalAlign: 'bottom',
@@ -49,7 +47,7 @@ export class sparqlText extends Component {
                             value={requestText}
                         />
                     </div>
-                    <div>rawData</div>
+                    <div>{JSON.stringify(rawData)}</div>
                 </div>
             );
         } else {
@@ -89,7 +87,8 @@ export default compose(
 
         constructURL = constructURL + value.trim();
         constructURL = constructURL.replace(/LIMIT\s\d*/, ''); //remove LIMIT with her var
-        const requestPagination = constructURL + ' LIMIT ' + perPage;
+        const requestPagination = constructURL + ' LIMIT ' + sparql.maxValue;
+        console.log(requestPagination);
         if (isURL(requestPagination)) {
             const source = URL.parse(requestPagination);
             const target = {
