@@ -149,7 +149,6 @@ export default compose(
                 pathname: source.pathname,
                 search: source.search,
             };
-            console.log(URL.format(target)); //eslint-disable-line
             return URL.format(target);
         }
         return null;
