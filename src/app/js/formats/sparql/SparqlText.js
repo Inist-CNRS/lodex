@@ -4,11 +4,8 @@ import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
 import SparqlRequest from './SparqlRequest';
 import { isURL } from '../../../../common/uris.js';
-import Loading from '../../lib/components/Loading';
 import { CardText } from 'material-ui/Card';
-import {
-    field as fieldPropTypes, //polyglot as polyglotPropTypes,
-} from '../../propTypes';
+import { field as fieldPropTypes } from '../../propTypes';
 import {
     Table,
     TableBody,
@@ -55,7 +52,6 @@ export class sparqlText extends Component {
 
     render() {
         const { className, rawData, sparql, resource, field } = this.props;
-        // console.log(this.props); //eslint-disable-line
 
         if (rawData != undefined) {
             const requestText = sparql.hostname + resource[field.name];
@@ -111,7 +107,7 @@ export class sparqlText extends Component {
                 </div>
             );
         } else {
-            return <Loading>Loading</Loading>;
+            return <span> </span>;
         }
     }
 }
@@ -122,7 +118,6 @@ sparqlText.propTypes = {
     sparql: PropTypes.object,
     field: fieldPropTypes.isRequired,
     resource: PropTypes.object.isRequired,
-    // p: polyglotPropTypes.isRequired,
 };
 
 sparqlText.defaultProps = {
