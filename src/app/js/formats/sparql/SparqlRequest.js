@@ -83,17 +83,13 @@ export default url => FormatView => {
             } = this.props;
             if (error) {
                 return (
-                    <p style={styles.message}>
-                        sparql_error {/*TODO add translation */}
-                    </p>
+                    <p style={styles.message}>{polyglot.t('sparql_error')}</p>
                 );
             }
 
             if (formatData === 'no result') {
                 return (
-                    <p style={styles.message}>
-                        sparql_data {/*TODO add translation */}
-                    </p>
+                    <p style={styles.message}>{polyglot.t('sparql_data')}</p>
                 );
             }
 
