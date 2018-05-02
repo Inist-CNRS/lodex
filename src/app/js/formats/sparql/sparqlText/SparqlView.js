@@ -55,7 +55,7 @@ export class sparqlText extends Component {
 
         if (rawData != undefined) {
             const requestText =
-                sparql.hostname + '?query=' + resource[field.name];
+                sparql.hostname + '?query=' + resource[field.name]; //@TODO à voir pour le format
             return (
                 <div className={className}>
                     <div style={styles.container}>
@@ -133,7 +133,7 @@ export default compose(
             return null;
         }
         let constructURL = sparql.hostname;
-        !constructURL.startsWith('http://') ||
+        !constructURL.startsWith('http://') &&
         !constructURL.startsWith('https://')
             ? (constructURL = 'https://' + constructURL)
             : null;
