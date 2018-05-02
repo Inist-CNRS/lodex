@@ -88,7 +88,6 @@ export default compose(
         constructURL = constructURL + value.trim();
         constructURL = constructURL.replace(/LIMIT\s\d*/, ''); //remove LIMIT with her var
         const requestPagination = constructURL + ' LIMIT ' + sparql.maxValue;
-        console.log(requestPagination);
         if (isURL(requestPagination)) {
             const source = URL.parse(requestPagination);
             const target = {
