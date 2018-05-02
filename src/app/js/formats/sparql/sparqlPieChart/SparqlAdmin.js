@@ -15,6 +15,9 @@ const styles = {
     input: {
         width: '100%',
     },
+    input2: {
+        width: '100%',
+    },
     previewDefaultColor: color => ({
         display: 'inline-block',
         backgroundColor: color,
@@ -30,6 +33,7 @@ export const defaultArgs = {
         hostname: 'data.istex.fr/sparql/',
         maxValue: 100,
     },
+    colors: '#1D1A31 #4D2D52 #9A4C95 #F08CAE #C1A5A9',
 };
 
 class SparqlTextAdmin extends Component {
@@ -39,6 +43,7 @@ class SparqlTextAdmin extends Component {
                 hostname: PropTypes.string,
                 maxValue: PropTypes.number,
             }),
+            colors: PropTypes.string,
         }),
         onChange: PropTypes.func.isRequired,
         p: polyglotPropTypes.isRequired,
@@ -60,8 +65,13 @@ class SparqlTextAdmin extends Component {
         this.props.onChange(newState);
     };
 
+    setColors = (_, colors) => {
+        const newState = { ...this.props.args, colors };
+        this.props.onChange(newState);
+    };
+
     render() {
-        const { p: polyglot, args: { sparql } } = this.props;
+        const { p: polyglot, args: { sparql, colors } } = this.props;
         const { hostname, maxValue } = sparql || defaultArgs.sparql;
 
         return (
@@ -77,6 +87,12 @@ class SparqlTextAdmin extends Component {
                     onChange={this.setMaxValue}
                     style={styles.input}
                     value={maxValue}
+                />
+                <TextField
+                    floatingLabelText={polyglot.t('colors_set')}
+                    onChange={this.setColors}
+                    style={styles.input2}
+                    value={colors}
                 />
             </div>
         );
