@@ -21,8 +21,8 @@ import IconButton from 'material-ui/IconButton';
 import ActionSearch from 'material-ui/svg-icons/action/search';
 import TextField from 'material-ui/TextField';
 
-const perPage = 3;
-let currentPage = 1;
+const perPage = 10;
+let currentPage = 0;
 
 const styles = {
     icon: {
