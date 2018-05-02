@@ -27,7 +27,7 @@ const styles = {
 
 export const defaultArgs = {
     sparql: {
-        hostname: 'https://data.istex.fr/sparql/?query=',
+        hostname: 'https://data.istex.fr/sparql/',
     },
 };
 

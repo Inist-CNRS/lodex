@@ -54,7 +54,8 @@ export class sparqlText extends Component {
         const { className, rawData, sparql, resource, field } = this.props;
 
         if (rawData != undefined) {
-            const requestText = sparql.hostname + resource[field.name];
+            const requestText =
+                sparql.hostname + '?query=' + resource[field.name];
             return (
                 <div className={className}>
                     <div style={styles.container}>
@@ -131,7 +132,7 @@ export default compose(
         if (!value) {
             return null;
         }
-        const request = sparql.hostname + value.trim();
+        const request = sparql.hostname + '?query=' + value.trim();
         const removeLimit = request.replace(/LIMIT\s\d*/, ''); //remove LIMIT with her var
         const removeOffset = removeLimit.replace(/OFFSET\s\d*/, ''); //remove OFFSER with her var
         const requestPagination =
