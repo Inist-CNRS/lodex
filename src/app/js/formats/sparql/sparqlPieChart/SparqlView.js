@@ -47,8 +47,8 @@ export class sparqlText extends Component {
                 obj;
             for (let i of rawData.results.bindings) {
                 obj = {
-                    _id: i.p.value,
-                    value: i.count.value,
+                    _id: i.label.value,
+                    value: i.value.value,
                 };
                 data.push(obj);
             }
@@ -123,20 +123,20 @@ export default compose(
             return null;
         }
 
-        const deleteBeforeSelect = value
-            .substring(value.indexOf('SELECT'))
-            .replace('SELECT', '')
-            .trim();
-        let select = '';
-        for (let i of deleteBeforeSelect.split(' ')) {
-            if (i.match(/^[A-Z]+[^a-z]$/)) {
-                //search words written in capital letters
-                break;
-            } else {
-                select += ' ' + i; // get all string of SELECT
-            }
-        }
-        console.log(select); //eslint-disable-line
+        // const deleteBeforeSelect = value
+        //     .substring(value.indexOf('SELECT'))
+        //     .replace('SELECT', '')
+        //     .trim();
+        // let select = '';
+        // for (let i of deleteBeforeSelect.split(' ')) {
+        //     if (i.match(/^[A-Z]+[^a-z]$/)) {
+        //         //search words written in capital letters
+        //         break;
+        //     } else {
+        //         select += ' ' + i; // get all string of SELECT
+        //     }
+        // }
+        // console.log(select); //eslint-disable-line
 
         let constructURL = sparql.hostname;
         !constructURL.startsWith('http://') &&
@@ -150,19 +150,19 @@ export default compose(
         constructURL = constructURL.replace(/LIMIT\s\d*/, ''); //remove LIMIT with her var
         switch (sparql.orderBy) {
             case '_id/asc':
-                constructURL += ' ORDER BY ?p';
+                constructURL += ' ORDER BY ?label';
                 break;
             case '_id/desc':
-                constructURL += ' ORDER BY DESC(?p)';
+                constructURL += ' ORDER BY DESC(?label)';
                 break;
             case 'value/asc':
-                constructURL += ' ORDER BY ?count';
+                constructURL += ' ORDER BY ?value';
                 break;
             case 'value/desc':
-                constructURL += ' ORDER BY DESC(?count)';
+                constructURL += ' ORDER BY DESC(?value)';
                 break;
             default:
-                constructURL += ' ORDER BY DESC(?count)';
+                constructURL += ' ORDER BY DESC(?value)';
         }
         const requestPagination = constructURL + ' LIMIT ' + sparql.maxValue;
         if (isURL(requestPagination)) {

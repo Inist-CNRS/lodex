@@ -33,7 +33,7 @@ const styles = {
 export const defaultArgs = {
     sparql: {
         hostname: 'data.istex.fr/sparql/',
-        maxValue: 10,
+        maxValue: 5,
         orderBy: 'value/asc',
     },
     colors: '#1D1A31 #4D2D52 #9A4C95 #F08CAE #C1A5A9',
@@ -87,7 +87,7 @@ class SparqlTextAdmin extends Component {
         return (
             <div style={styles.container}>
                 <TextField
-                    floatingLabelText={polyglot.t('sparql_hostname')}
+                    floatingLabelText={polyglot.t('sparql_endpoint')}
                     onChange={this.setHostname}
                     style={styles.input}
                     value={hostname}
