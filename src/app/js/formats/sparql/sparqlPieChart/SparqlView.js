@@ -94,10 +94,6 @@ export class sparqlText extends Component {
                             </Pie>
                         </PieChart>
                     </ResponsiveContainer>
-                    <div>
-                        data brut : <br />
-                        {JSON.stringify(rawData)}
-                    </div>
                 </div>
             );
         } else {
@@ -132,12 +128,26 @@ export default compose(
             ? (constructURL = 'https://' + constructURL)
             : null;
 
-        !constructURL.endsWith('?query=')
-            ? (constructURL = constructURL + '?query=')
-            : null;
+        !constructURL.endsWith('?query=') ? (constructURL += '?query=') : null;
 
         constructURL = constructURL + value.trim();
         constructURL = constructURL.replace(/LIMIT\s\d*/, ''); //remove LIMIT with her var
+        switch (sparql.orderBy) {
+            case '_id/asc':
+                constructURL += ' ORDER BY ?p';
+                break;
+            case '_id/desc':
+                constructURL += ' ORDER BY DESC(?p)';
+                break;
+            case 'value/asc':
+                constructURL += ' ORDER BY ?count';
+                break;
+            case 'value/desc':
+                constructURL += ' ORDER BY DESC(?count)';
+                break;
+            default:
+                constructURL += ' ORDER BY DESC(?count)';
+        }
         const requestPagination = constructURL + ' LIMIT ' + sparql.maxValue;
         if (isURL(requestPagination)) {
             const source = URL.parse(requestPagination);
