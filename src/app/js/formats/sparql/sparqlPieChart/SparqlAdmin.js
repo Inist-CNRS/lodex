@@ -31,7 +31,7 @@ const styles = {
 export const defaultArgs = {
     sparql: {
         hostname: 'data.istex.fr/sparql/',
-        maxValue: 100,
+        maxValue: 10,
     },
     colors: '#1D1A31 #4D2D52 #9A4C95 #F08CAE #C1A5A9',
 };

@@ -43,6 +43,16 @@ export class sparqlText extends Component {
         if (rawData != undefined) {
             const requestText =
                 sparql.hostname + '?query=' + resource[field.name]; //@TODO à voir pour le format
+            let data = [],
+                obj;
+            for (let i of rawData.results.bindings) {
+                obj = {
+                    _id: i.p.value,
+                    value: i.count.value,
+                };
+                data.push(obj);
+            }
+
             return (
                 <div className={className}>
                     <div style={styles.container}>
@@ -58,7 +68,7 @@ export class sparqlText extends Component {
                     <ResponsiveContainer
                         className="lodex-chart"
                         width="100%"
-                        height={300}
+                        height={400}
                     >
                         <PieChart>
                             <Legend
@@ -68,17 +78,19 @@ export class sparqlText extends Component {
                             />
                             <Pie
                                 cx={155}
-                                data={rawData}
+                                data={data}
                                 nameKey="_id"
                                 fill="#8884d8"
                                 outerRadius="63%"
                                 labelLine
                                 label
                             >
-                                <Cell
-                                    key={String(0).concat('_cell_pie')}
-                                    fill={colorSet[0 % colorSet.length]}
-                                />
+                                {data.map((entry, index) => (
+                                    <Cell
+                                        key={String(index).concat('_cell_pie')}
+                                        fill={colorSet[index % colorSet.length]}
+                                    />
+                                ))}
                             </Pie>
                         </PieChart>
                     </ResponsiveContainer>
@@ -93,14 +105,7 @@ export class sparqlText extends Component {
         }
     }
 }
-/*
-{rawData.map((entry, index) => (
-    <Cell
-        key={String(index).concat('_cell_pie')}
-        fill={colorSet[index % colorSet.length]}
-    />
-))}
-*/
+
 sparqlText.propTypes = {
     className: PropTypes.string,
     rawData: PropTypes.object,
