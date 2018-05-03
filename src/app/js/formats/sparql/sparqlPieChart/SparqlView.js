@@ -122,6 +122,22 @@ export default compose(
         if (!value) {
             return null;
         }
+
+        const deleteBeforeSelect = value
+            .substring(value.indexOf('SELECT'))
+            .replace('SELECT', '')
+            .trim();
+        let select = '';
+        for (let i of deleteBeforeSelect.split(' ')) {
+            if (i.match(/^[A-Z]+[^a-z]$/)) {
+                //search words written in capital letters
+                break;
+            } else {
+                select += ' ' + i; // get all string of SELECT
+            }
+        }
+        console.log(select); //eslint-disable-line
+
         let constructURL = sparql.hostname;
         !constructURL.startsWith('http://') &&
         !constructURL.startsWith('https://')
