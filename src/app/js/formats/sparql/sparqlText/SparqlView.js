@@ -138,11 +138,9 @@ export default compose(
             ? (constructURL = 'https://' + constructURL)
             : null;
 
-        !constructURL.endsWith('?query=')
-            ? (constructURL = constructURL + '?query=')
-            : null;
+        !constructURL.endsWith('?query=') ? (constructURL += '?query=') : null;
 
-        constructURL = constructURL + value.trim();
+        constructURL += value.trim();
         constructURL = constructURL.replace(/LIMIT\s\d*/, ''); //remove LIMIT with her var
         constructURL = constructURL.replace(/OFFSET\s\d*/, ''); //remove OFFSER with her var
         const requestPagination =
