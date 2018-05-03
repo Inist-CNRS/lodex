@@ -59,7 +59,7 @@ class SparqlTextAdmin extends Component {
         return (
             <div style={styles.container}>
                 <TextField
-                    floatingLabelText={polyglot.t('sparql_hostname')}
+                    floatingLabelText={polyglot.t('sparql_endpoint')}
                     onChange={this.setHostname}
                     style={styles.input}
                     value={hostname}
