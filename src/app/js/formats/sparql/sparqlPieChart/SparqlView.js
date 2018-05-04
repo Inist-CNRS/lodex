@@ -103,7 +103,7 @@ export default compose(
         // }
         // console.log(select); //eslint-disable-line
 
-        let constructURL = sparql.hostname;
+        let constructURL = sparql.hostname.replace(/[\s\n\r\u200B]+/g, '');
         !constructURL.startsWith('http://') &&
         !constructURL.startsWith('https://')
             ? (constructURL = 'https://' + constructURL)
@@ -135,6 +135,7 @@ export default compose(
             const target = {
                 protocol: source.protocol,
                 hostname: source.hostname,
+                port: source.port, //for internal endpoint
                 slashes: source.slashes,
                 pathname: source.pathname,
                 search: source.search,
