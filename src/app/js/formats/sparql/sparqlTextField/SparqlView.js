@@ -27,16 +27,6 @@ const styles = {
     },
 };
 
-const SparqlToto = `PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-
-SELECT ?LibelleNomBnf ?LienCatalogueBnf ?uri
-WHERE
-{
-  ?uri <http://www.w3.org/2004/02/skos/core#exactMatch> <http://sws.geonames.org/3182997/>.
-  ?uri <http://www.w3.org/2004/02/skos/core#prefLabel> ?LibelleNomBnf.
-  ?uri rdfs:seeAlso ?LienCatalogueBnf.
-}`;
-
 export class SparqlText extends Component {
     render() {
         const { className, rawData, resource, field } = this.props;
@@ -83,7 +73,8 @@ export default compose(
         if (!value) {
             return null;
         }
-        let constructURL = sparql.hostname.replace(/[\s\n\r\u200B]+/, '');
+        let constructURL = sparql.hostname;
+        constructURL = constructURL.replace(/[\s\n\r\u200B]+/, '');
         !constructURL.startsWith('http://') &&
         !constructURL.startsWith('https://')
             ? (constructURL = 'https://' + constructURL)
@@ -91,7 +82,8 @@ export default compose(
 
         !constructURL.endsWith('?query=') ? (constructURL += '?query=') : null;
 
-        constructURL += SparqlToto.replace(/[\n\r\u200B]+/g, ' ').replace(/[#]/g,'%23'); //eslint-disable-line
+        constructURL += sparql.request.replace(/[\n\r\u200B]+/g, ' ').replace(/[#]/g,'%23'); //eslint-disable-line
+        constructURL = constructURL.replace(/[?]{2}/g, value);
         constructURL = constructURL.replace(/LIMIT\s\d*/, ''); //remove LIMIT with her var
         const requestPagination = constructURL; //+ ' LIMIT 1';
         if (isURL(requestPagination)) {

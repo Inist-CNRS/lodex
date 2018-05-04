@@ -28,7 +28,14 @@ const styles = {
 export const defaultArgs = {
     sparql: {
         hostname: 'data.istex.fr/sparql/',
-        request: 'toto',
+        request: `PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?LibelleNomBnf ?LienCatalogueBnf ?uri
+WHERE
+{
+  ?uri <http://www.w3.org/2004/02/skos/core#exactMatch> <??>.
+  ?uri <http://www.w3.org/2004/02/skos/core#prefLabel> ?LibelleNomBnf.
+  ?uri rdfs:seeAlso ?LienCatalogueBnf.
+}`,
     },
 };
 
