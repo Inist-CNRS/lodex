@@ -28,14 +28,16 @@ const styles = {
 export const defaultArgs = {
     sparql: {
         hostname: 'data.istex.fr/sparql/',
+        request: 'toto',
     },
 };
 
-class SparqlTextAdmin extends Component {
+class SparqlTextFieldAdmin extends Component {
     static propTypes = {
         args: PropTypes.shape({
             sparql: PropTypes.shape({
                 hostname: PropTypes.string,
+                request: PropTypes.string,
             }),
         }),
         onChange: PropTypes.func.isRequired,
@@ -52,9 +54,15 @@ class SparqlTextAdmin extends Component {
         this.props.onChange(newArgs);
     };
 
+    setRequest = (_, request) => {
+        const { sparql, ...args } = this.props.args;
+        const newArgs = { ...args, sparql: { ...sparql, request } };
+        this.props.onChange(newArgs);
+    };
+
     render() {
         const { p: polyglot, args: { sparql } } = this.props;
-        const { hostname } = sparql || defaultArgs.sparql;
+        const { hostname, request } = sparql || defaultArgs.sparql;
 
         return (
             <div style={styles.container}>
@@ -64,9 +72,16 @@ class SparqlTextAdmin extends Component {
                     style={styles.input}
                     value={hostname}
                 />
+                <TextField
+                    floatingLabelText={polyglot.t('sparql_request')}
+                    multiLine="true"
+                    onChange={this.setRequest}
+                    style={styles.input}
+                    value={request}
+                />
             </div>
         );
     }
 }
 
-export default translate(SparqlTextAdmin);
+export default translate(SparqlTextFieldAdmin);

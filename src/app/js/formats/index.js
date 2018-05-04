@@ -27,7 +27,7 @@ import heatmap from './heatmap';
 import network from './network';
 import redirect from './redirect';
 import bubbleChart from './bubbleChart';
-import sparqlText from './sparql/sparqlText/';
+import sparqlTextField from './sparql/sparqlTextField/';
 import DefaultFormat from './DefaultFormat';
 
 const components = {
@@ -57,7 +57,7 @@ const components = {
     network,
     redirect,
     bubbleChart,
-    sparqlText,
+    sparqlTextField,
 };
 
 export const FORMATS = Object.keys(components).sort();
