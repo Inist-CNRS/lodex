@@ -10,7 +10,7 @@ import URL from 'url';
 import IconButton from 'material-ui/IconButton';
 import ActionSearch from 'material-ui/svg-icons/action/search';
 import TextField from 'material-ui/TextField';
-import { ResponsiveContainer, PieChart, Pie, Cell, Legend } from 'recharts';
+import PieChartView from '../../distributionChart/global-pie-chart';
 
 const styles = {
     icon: {
@@ -31,21 +31,14 @@ const styles = {
 
 export class sparqlText extends Component {
     render() {
-        const {
-            className,
-            rawData,
-            sparql,
-            resource,
-            field,
-            colorSet,
-        } = this.props;
+        const { className, formatData, sparql, resource, field } = this.props;
 
-        if (rawData != undefined) {
+        if (formatData != undefined) {
             const requestText =
                 sparql.hostname + '?query=' + resource[field.name]; //@TODO à voir pour le format
             let data = [],
                 obj;
-            for (let i of rawData.results.bindings) {
+            for (let i of formatData.results.bindings) {
                 obj = {
                     _id: i.label.value,
                     value: i.value.value,
@@ -65,35 +58,7 @@ export class sparqlText extends Component {
                             value={requestText}
                         />
                     </div>
-                    <ResponsiveContainer
-                        className="lodex-chart"
-                        width="100%"
-                        height={400}
-                    >
-                        <PieChart>
-                            <Legend
-                                verticalAlign="middle"
-                                layout="vertical"
-                                align="right"
-                            />
-                            <Pie
-                                cx={155}
-                                data={data}
-                                nameKey="_id"
-                                fill="#8884d8"
-                                outerRadius="63%"
-                                labelLine
-                                label
-                            >
-                                {data.map((entry, index) => (
-                                    <Cell
-                                        key={String(index).concat('_cell_pie')}
-                                        fill={colorSet[index % colorSet.length]}
-                                    />
-                                ))}
-                            </Pie>
-                        </PieChart>
-                    </ResponsiveContainer>
+                    <PieChartView />
                 </div>
             );
         } else {
@@ -104,7 +69,7 @@ export class sparqlText extends Component {
 
 sparqlText.propTypes = {
     className: PropTypes.string,
-    rawData: PropTypes.object,
+    formatData: PropTypes.object,
     sparql: PropTypes.object,
     field: fieldPropTypes.isRequired,
     resource: PropTypes.object.isRequired,
