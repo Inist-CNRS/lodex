@@ -41,7 +41,7 @@ const styles = {
     },
 };
 
-export class SparqlText extends Component {
+export class SparqlTable extends Component {
     handlePageChange = (currentPage, perPage) => { //eslint-disable-line
         //TODO make function to swith page
         // this.props.loadContributedResourcePage({
@@ -112,7 +112,7 @@ export class SparqlText extends Component {
     }
 }
 
-SparqlText.propTypes = {
+SparqlTable.propTypes = {
     className: PropTypes.string,
     rawData: PropTypes.object,
     sparql: PropTypes.object,
@@ -120,7 +120,7 @@ SparqlText.propTypes = {
     resource: PropTypes.object.isRequired,
 };
 
-SparqlText.defaultProps = {
+SparqlTable.defaultProps = {
     className: null,
 };
 
@@ -162,4 +162,4 @@ export default compose(
         }
         return null;
     }),
-)(SparqlText);
+)(SparqlTable);

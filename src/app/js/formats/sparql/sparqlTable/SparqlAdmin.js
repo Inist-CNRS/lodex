@@ -31,7 +31,7 @@ export const defaultArgs = {
     },
 };
 
-class SparqlTextAdmin extends Component {
+class SparqlTableAdmin extends Component {
     static propTypes = {
         args: PropTypes.shape({
             sparql: PropTypes.shape({
@@ -69,4 +69,4 @@ class SparqlTextAdmin extends Component {
     }
 }
 
-export default translate(SparqlTextAdmin);
+export default translate(SparqlTableAdmin);
