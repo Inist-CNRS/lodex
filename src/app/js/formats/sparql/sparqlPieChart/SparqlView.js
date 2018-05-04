@@ -29,13 +29,12 @@ const styles = {
     },
 };
 
-export class sparqlText extends Component {
+export class SparqlText extends Component {
     render() {
-        const { className, formatData, sparql, resource, field } = this.props;
+        const { className, formatData, resource, field } = this.props;
 
         if (formatData != undefined) {
-            const requestText =
-                sparql.hostname + '?query=' + resource[field.name]; //@TODO à voir pour le format
+            const requestText = resource[field.name];
             let data = [],
                 obj;
             for (let i of formatData.results.bindings) {
@@ -67,7 +66,7 @@ export class sparqlText extends Component {
     }
 }
 
-sparqlText.propTypes = {
+SparqlText.propTypes = {
     className: PropTypes.string,
     formatData: PropTypes.object,
     sparql: PropTypes.object,
@@ -76,7 +75,7 @@ sparqlText.propTypes = {
     colorSet: PropTypes.arrayOf(PropTypes.string),
 };
 
-sparqlText.defaultProps = {
+SparqlText.defaultProps = {
     className: null,
 };
 
@@ -144,4 +143,4 @@ export default compose(
         }
         return null;
     }),
-)(sparqlText);
+)(SparqlText);
