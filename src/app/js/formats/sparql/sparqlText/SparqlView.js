@@ -41,7 +41,7 @@ const styles = {
     },
 };
 
-export class sparqlText extends Component {
+export class SparqlText extends Component {
     handlePageChange = (currentPage, perPage) => { //eslint-disable-line
         //TODO make function to swith page
         // this.props.loadContributedResourcePage({
@@ -51,11 +51,10 @@ export class sparqlText extends Component {
     };
 
     render() {
-        const { className, rawData, sparql, resource, field } = this.props;
+        const { className, rawData, resource, field } = this.props;
 
         if (rawData != undefined) {
-            const requestText =
-                sparql.hostname + '?query=' + resource[field.name]; //@TODO à voir pour le format
+            const requestText = resource[field.name];
             return (
                 <div className={className}>
                     <div style={styles.container}>
@@ -113,7 +112,7 @@ export class sparqlText extends Component {
     }
 }
 
-sparqlText.propTypes = {
+SparqlText.propTypes = {
     className: PropTypes.string,
     rawData: PropTypes.object,
     sparql: PropTypes.object,
@@ -121,7 +120,7 @@ sparqlText.propTypes = {
     resource: PropTypes.object.isRequired,
 };
 
-sparqlText.defaultProps = {
+SparqlText.defaultProps = {
     className: null,
 };
 
@@ -163,4 +162,4 @@ export default compose(
         }
         return null;
     }),
-)(sparqlText);
+)(SparqlText);
