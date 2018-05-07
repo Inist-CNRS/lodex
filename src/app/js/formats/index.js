@@ -27,7 +27,7 @@ import heatmap from './heatmap';
 import network from './network';
 import redirect from './redirect';
 import bubbleChart from './bubbleChart';
-import sparqlTable from './sparql/sparqlTable/';
+import sparqlTable from './sparql/SparqlTable/';
 import DefaultFormat from './DefaultFormat';
 
 const components = {
