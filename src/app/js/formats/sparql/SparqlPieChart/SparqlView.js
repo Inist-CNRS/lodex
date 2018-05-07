@@ -119,7 +119,7 @@ export default compose(
             const source = URL.parse(requestPagination);
             const target = {
                 protocol: source.protocol,
-                hostname: source.endpoint,
+                hostname: source.hostname,
                 port: source.port, //for internal endpoint
                 slashes: source.slashes,
                 pathname: source.pathname,
