@@ -131,13 +131,14 @@ export default compose(
         if (!value) {
             return null;
         }
-        let constructURL = sparql.hostname.replace(/[\s\n\r\u200B]+/g, '');
-        !constructURL.startsWith('http://') &&
-        !constructURL.startsWith('https://')
-            ? (constructURL = 'https://' + constructURL)
+        let constructURL = sparql.endpoint.replace(/[\s\n\r\u200B]+/g, '');
+        !constructURL.startsWith('http:') && !constructURL.startsWith('https:')
+            ? (constructURL = 'https:' + constructURL)
             : null;
 
-        !constructURL.endsWith('?query=') ? (constructURL += '?query=') : null;
+        if (!constructURL.endsWith('?query=')) {
+            constructURL += '?query=';
+        }
 
         constructURL += value.trim();
         constructURL = constructURL.replace(/LIMIT\s\d*/, ''); //remove LIMIT with her var
@@ -152,7 +153,7 @@ export default compose(
             const source = URL.parse(requestPagination);
             const target = {
                 protocol: source.protocol,
-                hostname: source.hostname,
+                endpoint: source.endpoint,
                 port: source.port, //for internal endpoint
                 slashes: source.slashes,
                 pathname: source.pathname,
