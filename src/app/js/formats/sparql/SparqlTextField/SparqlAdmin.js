@@ -81,7 +81,7 @@ class SparqlTextFieldAdmin extends Component {
                 />
                 <TextField
                     floatingLabelText={polyglot.t('sparql_request')}
-                    multiLine="true"
+                    multiLine={true}
                     onChange={this.setRequest}
                     style={styles.input}
                     value={request}
