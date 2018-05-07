@@ -32,7 +32,7 @@ const styles = {
 
 export const defaultArgs = {
     sparql: {
-        hostname: 'data.istex.fr/sparql/',
+        endpoint: 'data.istex.fr/sparql/',
         maxValue: 5,
         orderBy: 'value/asc',
     },
@@ -43,7 +43,7 @@ class SparqlTextAdmin extends Component {
     static propTypes = {
         args: PropTypes.shape({
             sparql: PropTypes.shape({
-                hostname: PropTypes.string,
+                endpoint: PropTypes.string,
                 maxValue: PropTypes.number,
                 orderBy: PropTypes.string,
             }),
@@ -57,9 +57,9 @@ class SparqlTextAdmin extends Component {
         args: defaultArgs,
     };
 
-    setHostname = (_, hostname) => {
+    setEndpoint = (_, endpoint) => {
         const { sparql, ...args } = this.props.args;
-        const newArgs = { ...args, sparql: { ...sparql, hostname } };
+        const newArgs = { ...args, sparql: { ...sparql, endpoint } };
         this.props.onChange(newArgs);
     };
 
@@ -82,15 +82,15 @@ class SparqlTextAdmin extends Component {
 
     render() {
         const { p: polyglot, args: { sparql, colors, orderBy } } = this.props;
-        const { hostname, maxValue } = sparql || defaultArgs.sparql;
+        const { endpoint, maxValue } = sparql || defaultArgs.sparql;
 
         return (
             <div style={styles.container}>
                 <TextField
                     floatingLabelText={polyglot.t('sparql_endpoint')}
-                    onChange={this.setHostname}
+                    onChange={this.setEndpoint}
                     style={styles.input}
-                    value={hostname}
+                    value={endpoint}
                 />
                 <TextField
                     floatingLabelText={polyglot.t('max_value')}

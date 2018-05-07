@@ -87,28 +87,14 @@ export default compose(
             return null;
         }
 
-        // const deleteBeforeSelect = value
-        //     .substring(value.indexOf('SELECT'))
-        //     .replace('SELECT', '')
-        //     .trim();
-        // let select = '';
-        // for (let i of deleteBeforeSelect.split(' ')) {
-        //     if (i.match(/^[A-Z]+[^a-z]$/)) {
-        //         //search words written in capital letters
-        //         break;
-        //     } else {
-        //         select += ' ' + i; // get all string of SELECT
-        //     }
-        // }
-        // console.log(select); //eslint-disable-line
+        let constructURL = sparql.endpoint.replace(/[\s\n\r\u200B]+/g, '');
+        if (!isURL(constructURL)) {
+            constructURL = 'https:' + constructURL;
+        }
 
-        let constructURL = sparql.hostname.replace(/[\s\n\r\u200B]+/g, '');
-        !constructURL.startsWith('http://') &&
-        !constructURL.startsWith('https://')
-            ? (constructURL = 'https://' + constructURL)
-            : null;
-
-        !constructURL.endsWith('?query=') ? (constructURL += '?query=') : null;
+        if (!constructURL.endsWith('?query=')) {
+            constructURL += '?query=';
+        }
 
         constructURL = constructURL + value.trim();
         constructURL = constructURL.replace(/LIMIT\s\d*/, ''); //remove LIMIT with her var
@@ -133,7 +119,7 @@ export default compose(
             const source = URL.parse(requestPagination);
             const target = {
                 protocol: source.protocol,
-                hostname: source.hostname,
+                hostname: source.endpoint,
                 port: source.port, //for internal endpoint
                 slashes: source.slashes,
                 pathname: source.pathname,

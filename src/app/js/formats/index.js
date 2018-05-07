@@ -26,7 +26,7 @@ import cartography from './cartography';
 import heatmap from './heatmap';
 import network from './network';
 import redirect from './redirect';
-import sparqlPieChart from './sparql/sparqlPieChart';
+import sparqlPieChart from './sparql/SparqlPieChart';
 import bubbleChart from './bubbleChart';
 import DefaultFormat from './DefaultFormat';
 
