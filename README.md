@@ -39,7 +39,11 @@ To see what Lodex can do, check out
 
 - Data and Model ready to use : https://github.com/Inist-CNRS/lodex-use-cases
 - Videos : https://www.youtube.com/channel/UCXJjwCr-sfTZsFomFejEkEw/videos
-- Real life example : https://data.istex.fr/
+- Real life example : 
+  - https://data.istex.fr/
+- Démo :
+  - http://lodex-cop21.dpi.inist.fr/ 
+  - http://lodex-istex.dpi.inist.fr/
 - user documentation : https://lodex.gitbooks.io/lodex-user-documentation/
 - actuality & news : http://lodex.inist.fr/
 - Twitter : https://twitter.com/lodex_team
