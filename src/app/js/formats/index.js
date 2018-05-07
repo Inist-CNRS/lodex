@@ -27,7 +27,7 @@ import heatmap from './heatmap';
 import network from './network';
 import redirect from './redirect';
 import bubbleChart from './bubbleChart';
-import sparqlTextField from './sparql/sparqlTextField/';
+import sparqlTextField from './sparql/SparqlTextField/';
 import DefaultFormat from './DefaultFormat';
 
 const components = {

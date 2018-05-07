@@ -73,14 +73,15 @@ export default compose(
         if (!value) {
             return null;
         }
-        let constructURL = sparql.hostname;
+        let constructURL = sparql.endpoint;
         constructURL = constructURL.replace(/[\s\n\r\u200B]+/, '');
-        !constructURL.startsWith('http://') &&
-        !constructURL.startsWith('https://')
-            ? (constructURL = 'https://' + constructURL)
-            : null;
+        if (!isURL(constructURL)) {
+            constructURL = 'https:' + constructURL;
+        }
 
-        !constructURL.endsWith('?query=') ? (constructURL += '?query=') : null;
+        if (!constructURL.endsWith('?query=')) {
+            constructURL += '?query=';
+        }
 
         constructURL += sparql.request.replace(/[\n\r\u200B]+/g, ' ').replace(/[#]/g,'%23'); //eslint-disable-line
         constructURL = constructURL.replace(/[?]{2}/g, value);

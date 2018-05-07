@@ -27,7 +27,7 @@ const styles = {
 
 export const defaultArgs = {
     sparql: {
-        hostname: 'data.istex.fr/sparql/',
+        endpoint: '//data.istex.fr/sparql/',
         request: `PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 SELECT ?LibelleNomBnf ?LienCatalogueBnf ?uri
 WHERE
@@ -43,7 +43,7 @@ class SparqlTextFieldAdmin extends Component {
     static propTypes = {
         args: PropTypes.shape({
             sparql: PropTypes.shape({
-                hostname: PropTypes.string,
+                endpoint: PropTypes.string,
                 request: PropTypes.string,
             }),
         }),
@@ -55,9 +55,9 @@ class SparqlTextFieldAdmin extends Component {
         args: defaultArgs,
     };
 
-    setHostname = (_, hostname) => {
+    setEndpoint = (_, endpoint) => {
         const { sparql, ...args } = this.props.args;
-        const newArgs = { ...args, sparql: { ...sparql, hostname } };
+        const newArgs = { ...args, sparql: { ...sparql, endpoint } };
         this.props.onChange(newArgs);
     };
 
@@ -69,15 +69,15 @@ class SparqlTextFieldAdmin extends Component {
 
     render() {
         const { p: polyglot, args: { sparql } } = this.props;
-        const { hostname, request } = sparql || defaultArgs.sparql;
+        const { endpoint, request } = sparql || defaultArgs.sparql;
 
         return (
             <div style={styles.container}>
                 <TextField
                     floatingLabelText={polyglot.t('sparql_endpoint')}
-                    onChange={this.setHostname}
+                    onChange={this.setEndpoint}
                     style={styles.input}
-                    value={hostname}
+                    value={endpoint}
                 />
                 <TextField
                     floatingLabelText={polyglot.t('sparql_request')}
