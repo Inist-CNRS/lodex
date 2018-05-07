@@ -133,7 +133,7 @@ export default compose(
         }
         let constructURL = sparql.endpoint.replace(/[\s\n\r\u200B]+/g, '');
         if (!isURL(constructURL)) {
-            constructURL = 'https:' + constructURL;
+            constructURL = 'https://' + constructURL;
         }
 
         if (!constructURL.endsWith('?query=')) {
@@ -153,7 +153,7 @@ export default compose(
             const source = URL.parse(requestPagination);
             const target = {
                 protocol: source.protocol,
-                endpoint: source.endpoint,
+                hostname: source.hostname,
                 port: source.port, //for internal endpoint
                 slashes: source.slashes,
                 pathname: source.pathname,
