@@ -9,6 +9,7 @@ import URL from 'url';
 import IconButton from 'material-ui/IconButton';
 import ActionSearch from 'material-ui/svg-icons/action/search';
 import TextField from 'material-ui/TextField';
+import topairs from 'lodash.topairs';
 
 const styles = {
     icon: {
@@ -25,12 +26,31 @@ const styles = {
         width: '95%',
         borderImage: 'none',
     },
+    container2: {
+        paddingLeft: '2rem',
+        marginBottom: '10px',
+        marginRight: '1em',
+        marginLeft: '2rem',
+        borderLeft: '1px dotted',
+        borderColor: '#9e9ea6',
+    },
+    label: {
+        color: 'rgb(158, 158, 158)',
+        flexGrow: '2',
+        fontSize: '1.5rem',
+        textDecoration: 'none',
+    },
+    id: {
+        display: 'inline-block',
+    },
+    value: {
+        display: 'inline-block',
+    },
 };
 
 export class SparqlText extends Component {
     render() {
         const { className, formatData, resource, field } = this.props;
-
         if (formatData != undefined) {
             const requestText = resource[field.name];
             return (
@@ -45,7 +65,27 @@ export class SparqlText extends Component {
                             value={requestText}
                         />
                     </div>
-                    {JSON.stringify(formatData)}
+                    {formatData.results.bindings.map((result, key) => (
+                        <div key={key} style={styles.container2}>
+                            {topairs(result).map((obj, index) => {
+                                return (
+                                    <div key={index}>
+                                        <div style={styles.id}>
+                                            <span
+                                                className="label_sparql"
+                                                style={styles.label}
+                                            >
+                                                {obj[0]} :
+                                            </span>
+                                        </div>
+                                        <div style={styles.value}>
+                                            {obj[1].value}
+                                        </div>
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    ))}
                 </div>
             );
         } else {
@@ -86,9 +126,9 @@ export default compose(
         constructURL += sparql.request.replace(/[\n\r\u200B]+/g, ' ').replace(/[#]/g,'%23'); //eslint-disable-line
         constructURL = constructURL.replace(/[?]{2}/g, value);
         constructURL = constructURL.replace(/LIMIT\s\d*/, ''); //remove LIMIT with her var
-        const requestPagination = constructURL; //+ ' LIMIT 1';
-        if (isURL(requestPagination)) {
-            const source = URL.parse(requestPagination);
+        const request = constructURL + ' LIMIT 10';
+        if (isURL(request)) {
+            const source = URL.parse(request);
 
             return URL.format(source);
         }
