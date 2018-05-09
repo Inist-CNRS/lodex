@@ -10,7 +10,7 @@ import URL from 'url';
 import IconButton from 'material-ui/IconButton';
 import ActionSearch from 'material-ui/svg-icons/action/search';
 import TextField from 'material-ui/TextField';
-import PieChartView from '../../distributionChart/global-pie-chart';
+import PieChartView from '../../distributionChart/global-pie-chart';//eslint-disable-line
 
 const styles = {
     icon: {
@@ -31,7 +31,14 @@ const styles = {
 
 export class SparqlText extends Component {
     render() {
-        const { className, formatData, resource, field } = this.props;
+        const {
+            className,
+            formatData,
+            resource,
+            field,
+            //colorSet,
+            //...props
+        } = this.props;
 
         if (formatData != undefined) {
             const requestText = resource[field.name];
@@ -44,7 +51,7 @@ export class SparqlText extends Component {
                 };
                 data.push(obj);
             }
-
+            console.log(data);//eslint-disable-line
             return (
                 <div className={className}>
                     <div style={styles.container}>
@@ -57,7 +64,7 @@ export class SparqlText extends Component {
                             value={requestText}
                         />
                     </div>
-                    <PieChartView />
+                    {data}
                 </div>
             );
         } else {
@@ -65,7 +72,13 @@ export class SparqlText extends Component {
         }
     }
 }
-
+/*
+<PieChartView
+    {...props}
+    formatData={data}
+    colorSet={colorSet}
+/>
+*/
 SparqlText.propTypes = {
     className: PropTypes.string,
     formatData: PropTypes.object,
