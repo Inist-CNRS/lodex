@@ -7,10 +7,10 @@ import compose from 'recompose/compose';
 import {
     field as fieldPropTypes,
     polyglot as polyglotPropTypes,
-} from '../../../propTypes.js';
-import { fromFormat } from '../../../public/selectors';
-import { loadFormatData } from '../../../formats/reducer';
-import Loading from '../../../lib/components/Loading';
+} from '../../propTypes.js';
+import { fromFormat } from '../../public/selectors';
+import { loadFormatData } from '../../formats/reducer';
+import Loading from '../../lib/components/Loading';
 
 const styles = {
     message: {
@@ -98,7 +98,7 @@ export default url => FormatView => {
                     {!isLoaded && <Loading>{polyglot.t('loading')}</Loading>}
                     <FormatView
                         {...props}
-                        rawData={formatData /*injection dans le props ici*/}
+                        formatData={formatData /*injection dans le props ici*/}
                         field={field}
                     />
                 </div>

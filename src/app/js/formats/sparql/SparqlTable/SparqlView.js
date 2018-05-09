@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
-import SparqlRequest from './SparqlRequest';
+import SparqlRequest from '../SparqlRequest';
 import { isURL } from '../../../../../common/uris.js';
 import { CardText } from 'material-ui/Card';
 import { field as fieldPropTypes } from '../../../propTypes';
@@ -51,9 +51,9 @@ export class SparqlTable extends Component {
     };
 
     render() {
-        const { className, rawData, resource, field } = this.props;
+        const { className, formatData, resource, field } = this.props;
 
-        if (rawData != undefined) {
+        if (formatData != undefined) {
             const requestText = resource[field.name];
             return (
                 <div className={className}>
@@ -74,7 +74,7 @@ export class SparqlTable extends Component {
                                 adjustForCheckbox={false}
                             >
                                 <TableRow>
-                                    {rawData.head.vars.map((data, key) => (
+                                    {formatData.head.vars.map((data, key) => (
                                         <TableHeaderColumn key={key}>
                                             {data}
                                         </TableHeaderColumn>
@@ -82,15 +82,19 @@ export class SparqlTable extends Component {
                                 </TableRow>
                             </TableHeader>
                             <TableBody displayRowCheckbox={false}>
-                                {rawData.results.bindings.map((column, key) => (
-                                    <TableRow key={key}>
-                                        {topairs(column).map((line, key) => (
-                                            <TableRowColumn key={key}>
-                                                {line[1].value}
-                                            </TableRowColumn>
-                                        ))}
-                                    </TableRow>
-                                ))}
+                                {formatData.results.bindings.map(
+                                    (column, key) => (
+                                        <TableRow key={key}>
+                                            {topairs(column).map(
+                                                (line, key) => (
+                                                    <TableRowColumn key={key}>
+                                                        {line[1].value}
+                                                    </TableRowColumn>
+                                                ),
+                                            )}
+                                        </TableRow>
+                                    ),
+                                )}
                             </TableBody>
                         </Table>
                         <Pagination
@@ -114,7 +118,7 @@ export class SparqlTable extends Component {
 
 SparqlTable.propTypes = {
     className: PropTypes.string,
-    rawData: PropTypes.object,
+    formatData: PropTypes.object,
     sparql: PropTypes.object,
     field: fieldPropTypes.isRequired,
     resource: PropTypes.object.isRequired,
