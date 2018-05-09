@@ -37,6 +37,7 @@ const styles = {
     label: {
         color: 'rgb(158, 158, 158)',
         flexGrow: '2',
+        fontWeight: 'bold',
         fontSize: '1.5rem',
         textDecoration: 'none',
     },
@@ -46,9 +47,29 @@ const styles = {
     value: {
         display: 'inline-block',
     },
+    show: {
+        display: 'inline-block',
+        color: 'rgb(158, 158, 158)',
+        flexGrow: '2',
+        fontWeight: 'bold',
+        fontSize: '2rem',
+        textDecoration: 'none',
+        cursor: 'pointer',
+    },
+    value_min: {
+        display: 'inline-block',
+        color: 'rgb(158, 158, 158)',
+        fontSize: '1.3rem',
+    },
 };
 
+let shrink_index = 0;
+
 export class SparqlText extends Component {
+    handleClick = () => {
+        alert('key');
+    };
+
     render() {
         const { className, formatData, resource, field } = this.props;
         if (formatData != undefined) {
@@ -65,27 +86,56 @@ export class SparqlText extends Component {
                             value={requestText}
                         />
                     </div>
-                    {formatData.results.bindings.map((result, key) => (
-                        <div key={key} style={styles.container2}>
-                            {topairs(result).map((obj, index) => {
-                                return (
-                                    <div key={index}>
-                                        <div style={styles.id}>
-                                            <span
-                                                className="label_sparql"
-                                                style={styles.label}
-                                            >
-                                                {obj[0]} :
-                                            </span>
-                                        </div>
-                                        <div style={styles.value}>
-                                            {obj[1].value}
-                                        </div>
+                    {formatData.results.bindings.map((result, key) => {
+                        if (key == shrink_index) {
+                            return (
+                                <div key={key} style={styles.container2}>
+                                    {topairs(result).map((obj, index) => {
+                                        return (
+                                            <div key={index}>
+                                                <div style={styles.id}>
+                                                    <span
+                                                        className="label_sparql"
+                                                        style={styles.label}
+                                                    >
+                                                        {obj[0]} : &#160;
+                                                    </span>
+                                                </div>
+                                                <div
+                                                    className="value_sparql"
+                                                    style={styles.value}
+                                                >
+                                                    {obj[1].value}
+                                                </div>
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+                            );
+                        } else {
+                            return (
+                                <div
+                                    className="showValue"
+                                    id={key}
+                                    style={styles.container2}
+                                >
+                                    <div
+                                        className="label_sparql"
+                                        style={styles.show}
+                                        onClick={this.handleClick}
+                                    >
+                                        + &#160;
                                     </div>
-                                );
-                            })}
-                        </div>
-                    ))}
+                                    <div
+                                        className="value_sparql_min"
+                                        style={styles.value_min}
+                                    >
+                                        {result[Object.keys(result)[0]].value}
+                                    </div>
+                                </div>
+                            );
+                        }
+                    })}
                 </div>
             );
         } else {
@@ -93,6 +143,23 @@ export class SparqlText extends Component {
         }
     }
 }
+
+/*
+if () {
+      return (
+          <div className="showValue" id={index}>
+              titi
+          </div>
+  );
+} else {
+    return (
+        <div className="showValue" id={index}>
+            toto
+        </div>
+    );
+}
+
+*/
 
 SparqlText.propTypes = {
     className: PropTypes.string,
