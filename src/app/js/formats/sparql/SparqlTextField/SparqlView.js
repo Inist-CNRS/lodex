@@ -29,9 +29,9 @@ const styles = {
 
 export class SparqlText extends Component {
     render() {
-        const { className, rawData, resource, field } = this.props;
+        const { className, formatData, resource, field } = this.props;
 
-        if (rawData != undefined) {
+        if (formatData != undefined) {
             const requestText = resource[field.name];
             return (
                 <div className={className}>
@@ -45,7 +45,7 @@ export class SparqlText extends Component {
                             value={requestText}
                         />
                     </div>
-                    {JSON.stringify(rawData)}
+                    {JSON.stringify(formatData)}
                 </div>
             );
         } else {
@@ -56,7 +56,7 @@ export class SparqlText extends Component {
 
 SparqlText.propTypes = {
     className: PropTypes.string,
-    rawData: PropTypes.object,
+    formatData: PropTypes.object,
     sparql: PropTypes.object,
     field: fieldPropTypes.isRequired,
     resource: PropTypes.object.isRequired,
