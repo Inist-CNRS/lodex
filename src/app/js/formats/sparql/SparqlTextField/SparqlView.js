@@ -163,7 +163,7 @@ export default compose(
         constructURL += sparql.request.replace(/[\n\r\u200B]+/g, ' ').replace(/[#]/g,'%23'); //eslint-disable-line
         constructURL = constructURL.replace(/[?]{2}/g, value);
         constructURL = constructURL.replace(/LIMIT\s\d*/, ''); //remove LIMIT with her var
-        const request = constructURL + ' LIMIT 10';
+        const request = constructURL + ' LIMIT ' + sparql.maxValue;
         if (isURL(request)) {
             const source = URL.parse(request);
 

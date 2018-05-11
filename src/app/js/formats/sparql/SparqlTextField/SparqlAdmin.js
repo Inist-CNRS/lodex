@@ -28,6 +28,7 @@ const styles = {
 export const defaultArgs = {
     sparql: {
         endpoint: '//data.istex.fr/sparql/',
+        maxValue: 1,
         request: `PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 SELECT ?LibelleNomBnf ?LienCatalogueBnf ?uri
 WHERE
@@ -44,6 +45,7 @@ class SparqlTextFieldAdmin extends Component {
         args: PropTypes.shape({
             sparql: PropTypes.shape({
                 endpoint: PropTypes.string,
+                maxValue: PropTypes.number,
                 request: PropTypes.string,
             }),
         }),
@@ -67,9 +69,15 @@ class SparqlTextFieldAdmin extends Component {
         this.props.onChange(newArgs);
     };
 
+    setMaxValue = (_, maxValue) => {
+        const { sparql, ...state } = this.props.args;
+        const newState = { ...state, sparql: { ...sparql, maxValue } };
+        this.props.onChange(newState);
+    };
+
     render() {
         const { p: polyglot, args: { sparql } } = this.props;
-        const { endpoint, request } = sparql || defaultArgs.sparql;
+        const { endpoint, request, maxValue } = sparql || defaultArgs.sparql;
 
         return (
             <div style={styles.container}>
@@ -85,6 +93,12 @@ class SparqlTextFieldAdmin extends Component {
                     onChange={this.setRequest}
                     style={styles.input}
                     value={request}
+                />
+                <TextField
+                    floatingLabelText={polyglot.t('max_value')}
+                    onChange={this.setMaxValue}
+                    style={styles.input}
+                    value={maxValue}
                 />
             </div>
         );
