@@ -79,7 +79,7 @@ describe('user reducer', () => {
             expect(result).toEqual({
                 url: 'url',
                 body: '{"data":"value"}',
-                credentials: 'same_origin',
+                credentials: 'same-origin',
                 headers: {
                     Accept: 'application/json',
                     'Content-Type': 'application/json',
