@@ -60,7 +60,7 @@ export const getRequest = createSelector(
     (token, cookie, { body, method = 'GET', url }) => ({
         url,
         body: JSON.stringify(body),
-        credentials: 'include',
+        credentials: 'same-origin', //auth with include (error 401)
         headers: {
             Accept: 'application/json',
             'Content-Type': 'application/json',
