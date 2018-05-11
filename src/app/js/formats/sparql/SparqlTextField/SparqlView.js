@@ -66,8 +66,14 @@ const styles = {
 let shrink_index = 0;
 
 export class SparqlText extends Component {
-    handleClick = () => {
-        alert('key');
+    constructor(props) {
+        super(props);
+        this.handleClick = this.handleClick.bind(this);
+    }
+
+    handleClick = e => {
+        shrink_index = e.target.id;
+        console.log(e.target.id);//eslint-disable-line
     };
 
     render() {
@@ -122,6 +128,7 @@ export class SparqlText extends Component {
                                     <div
                                         className="label_sparql"
                                         style={styles.show}
+                                        id={key}
                                         onClick={this.handleClick}
                                     >
                                         + &#160;
