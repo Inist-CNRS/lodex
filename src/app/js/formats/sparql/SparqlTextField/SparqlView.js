@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
-import SparqlRequest from './SparqlRequest';
+import SparqlRequest from '../SparqlRequest';
 import { isURL } from '../../../../../common/uris.js';
 import { field as fieldPropTypes } from '../../../propTypes';
 import URL from 'url';
