@@ -64,6 +64,14 @@ const styles = {
 };
 
 export class SparqlText extends Component {
+    showURL = result => {
+        if (isURL(result[1].value) && result[1].type == 'uri') {
+            return <a href={result[1].value}>{result[1].value}</a>;
+        } else {
+            return <span>{result[1].value}</span>;
+        }
+    };
+
     render() {
         const { className, formatData, resource, field } = this.props;
         if (formatData != undefined) {
@@ -98,7 +106,7 @@ export class SparqlText extends Component {
                                                 className="value_sparql"
                                                 style={styles.value}
                                             >
-                                                {obj[1].value}
+                                                {this.showURL(obj)}
                                             </div>
                                         </div>
                                     );
