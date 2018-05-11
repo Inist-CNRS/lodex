@@ -63,7 +63,7 @@ const styles = {
     },
 };
 
-export class SparqlText extends Component {
+export class SparqlTextField extends Component {
     showURL = result => {
         if (isURL(result[1].value) && result[1].type == 'uri') {
             return <a href={result[1].value}>{result[1].value}</a>;
@@ -139,7 +139,7 @@ if () {
 
 */
 
-SparqlText.propTypes = {
+SparqlTextField.propTypes = {
     className: PropTypes.string,
     formatData: PropTypes.object,
     sparql: PropTypes.object,
@@ -147,7 +147,7 @@ SparqlText.propTypes = {
     resource: PropTypes.object.isRequired,
 };
 
-SparqlText.defaultProps = {
+SparqlTextField.defaultProps = {
     className: null,
 };
 
@@ -179,4 +179,4 @@ export default compose(
         }
         return null;
     }),
-)(SparqlText);
+)(SparqlTextField);
