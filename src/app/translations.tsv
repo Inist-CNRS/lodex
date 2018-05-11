@@ -184,7 +184,7 @@
 "enter_a_value"	"Enter the value"	"Entrer une valeur"
 "sparql_value"	"A SPARQL value"	"Une valeur SPARQL"
 "enter_sparql"	"Enter a SPARQL request"	"Entrer une requête SPARQL"
-"sparql_error"	"SPARQL error"	"Erreur SPARQL"
+"sparql_error"	"can't connect to SPARQL"	"Impossible de se connecter au SPARQL"
 "sparql_data"	"No SPARQL data"	"Absence de donnée SPARQL"
 "sparql_endpoint"	"SPARQL endpoint"	"Endpoint SPARQL"
 "a_column"	"A value from an existing column"	"Une valeur en provenance d'une colonne existante"
