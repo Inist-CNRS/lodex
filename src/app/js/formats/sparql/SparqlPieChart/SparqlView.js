@@ -29,7 +29,7 @@ const styles = {
     },
 };
 
-export class SparqlText extends Component {
+export class SparqlPieChartField extends Component {
     render() {
         const {
             className,
@@ -78,7 +78,7 @@ export class SparqlText extends Component {
         }
     }
 }
-SparqlText.propTypes = {
+SparqlPieChartField.propTypes = {
     className: PropTypes.string,
     formatData: PropTypes.object,
     sparql: PropTypes.object,
@@ -87,7 +87,7 @@ SparqlText.propTypes = {
     colorSet: PropTypes.arrayOf(PropTypes.string),
 };
 
-SparqlText.defaultProps = {
+SparqlPieChartField.defaultProps = {
     className: null,
 };
 
@@ -141,4 +141,4 @@ export default compose(
         }
         return null;
     }),
-)(SparqlText);
+)(SparqlPieChartField);

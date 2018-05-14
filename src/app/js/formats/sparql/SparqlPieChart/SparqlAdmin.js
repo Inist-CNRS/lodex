@@ -39,7 +39,7 @@ export const defaultArgs = {
     colors: '#1D1A31 #4D2D52 #9A4C95 #F08CAE #C1A5A9',
 };
 
-class SparqlTextAdmin extends Component {
+class SparqlPieChartFieldAdmin extends Component {
     static propTypes = {
         args: PropTypes.shape({
             sparql: PropTypes.shape({
@@ -132,4 +132,4 @@ class SparqlTextAdmin extends Component {
     }
 }
 
-export default translate(SparqlTextAdmin);
+export default translate(SparqlPieChartFieldAdmin);
