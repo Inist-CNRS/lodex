@@ -102,7 +102,7 @@ export default compose(
 
         let constructURL = sparql.endpoint.replace(/[\s\n\r\u200B]+/g, '');
         if (!isURL(constructURL)) {
-            constructURL = 'https:' + constructURL;
+            constructURL = 'https://' + constructURL;
         }
 
         if (!constructURL.endsWith('?query=')) {
