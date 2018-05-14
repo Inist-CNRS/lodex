@@ -81,8 +81,8 @@ class SparqlTextAdmin extends Component {
     };
 
     render() {
-        const { p: polyglot, args: { sparql, colors, orderBy } } = this.props;
-        const { endpoint, maxValue } = sparql || defaultArgs.sparql;
+        const { p: polyglot, args: { sparql, colors } } = this.props;
+        const { endpoint, maxValue, orderBy } = sparql || defaultArgs.sparql;
 
         return (
             <div style={styles.container}>
@@ -124,7 +124,7 @@ class SparqlTextAdmin extends Component {
                 <TextField
                     floatingLabelText={polyglot.t('colors_set')}
                     onChange={this.setColors}
-                    style={styles.input}
+                    style={styles.input2}
                     value={colors}
                 />
             </div>
