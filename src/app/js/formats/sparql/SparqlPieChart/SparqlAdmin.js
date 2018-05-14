@@ -15,7 +15,7 @@ const styles = {
         justifyContent: 'space-between',
     },
     input: {
-        width: '100%',
+        width: '40%',
     },
     input2: {
         width: '100%',
@@ -89,7 +89,7 @@ class SparqlTextAdmin extends Component {
                 <TextField
                     floatingLabelText={polyglot.t('sparql_endpoint')}
                     onChange={this.setEndpoint}
-                    style={styles.input}
+                    style={styles.input2}
                     value={endpoint}
                 />
                 <TextField
@@ -124,7 +124,7 @@ class SparqlTextAdmin extends Component {
                 <TextField
                     floatingLabelText={polyglot.t('colors_set')}
                     onChange={this.setColors}
-                    style={styles.input2}
+                    style={styles.input}
                     value={colors}
                 />
             </div>
