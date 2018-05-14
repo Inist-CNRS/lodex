@@ -10,7 +10,10 @@ import Cache from 'streaming-cache';
 import cacheControl from 'koa-cache-control';
 import config from '../../../../config.json';
 
-const memory = new Cache();
+const memory = new Cache({
+    max: config.memoryCacheMaxSize || 5,
+    maxAge: config.memoryCacheMaxAge || 10000,
+});
 const routineLocalDirectory = Path.resolve(__dirname, '../../routines/');
 const routinesLocal = config.routines
     .map(routineName =>
