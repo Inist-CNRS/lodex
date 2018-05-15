@@ -32,7 +32,7 @@ const styles = {
 
 export const defaultArgs = {
     sparql: {
-        endpoint: 'data.istex.fr/sparql/',
+        endpoint: '//data.istex.fr/sparql/',
         maxValue: 5,
         orderBy: 'value/asc',
     },
