@@ -10,7 +10,7 @@ import URL from 'url';
 import IconButton from 'material-ui/IconButton';
 import ActionSearch from 'material-ui/svg-icons/action/search';
 import TextField from 'material-ui/TextField';
-import PieChartView from '../../distributionChart/global-pie-chart';
+import PieChartView from '../../distributionChart/global-pie-chart/PieChartView.js';
 
 const styles = {
     icon: {
@@ -67,6 +67,8 @@ export class SparqlPieChartField extends Component {
                     <div>
                         <PieChartView
                             {...props}
+                            resource={resource}
+                            field={field}
                             formatData={data}
                             colorSet={colorSet}
                         />

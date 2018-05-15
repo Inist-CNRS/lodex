@@ -12,36 +12,44 @@ const styles = {
         fontSize: '1.5rem',
     },
 };
-
-const PieChartView = ({ formatData = [], colorSet }) => (
-    <div style={styles.container}>
-        <ResponsiveContainer className="lodex-chart" width="100%" height={300}>
-            <PieChart>
-                <Legend
-                    verticalAlign="middle"
-                    layout="vertical"
-                    align="right"
-                />
-                <Pie
-                    cx={155}
-                    data={formatData}
-                    nameKey="_id"
-                    fill="#8884d8"
-                    outerRadius="63%"
-                    labelLine
-                    label
-                >
-                    {formatData.map((entry, index) => (
-                        <Cell
-                            key={String(index).concat('_cell_pie')}
-                            fill={colorSet[index % colorSet.length]}
-                        />
-                    ))}
-                </Pie>
-            </PieChart>
-        </ResponsiveContainer>
-    </div>
-);
+const PieChartView = ({ formatData = [], colorSet }) => {
+    if (formatData.length == 0) {
+        //call injectData()
+    }
+    return (
+        <div style={styles.container}>
+            <ResponsiveContainer
+                className="lodex-chart"
+                width="100%"
+                height={300}
+            >
+                <PieChart>
+                    <Legend
+                        verticalAlign="middle"
+                        layout="vertical"
+                        align="right"
+                    />
+                    <Pie
+                        cx={155}
+                        data={formatData}
+                        nameKey="_id"
+                        fill="#8884d8"
+                        outerRadius="63%"
+                        labelLine
+                        label
+                    >
+                        {formatData.map((entry, index) => (
+                            <Cell
+                                key={String(index).concat('_cell_pie')}
+                                fill={colorSet[index % colorSet.length]}
+                            />
+                        ))}
+                    </Pie>
+                </PieChart>
+            </ResponsiveContainer>
+        </div>
+    );
+};
 
 PieChartView.propTypes = {
     field: fieldPropTypes.isRequired,
@@ -50,4 +58,5 @@ PieChartView.propTypes = {
     colorSet: PropTypes.arrayOf(PropTypes.string),
 };
 
+// export default compose(exportableToPng)(PieChartView); //for sparql
 export default compose(injectData(), exportableToPng)(PieChartView);
