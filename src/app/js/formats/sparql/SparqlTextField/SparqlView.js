@@ -10,6 +10,7 @@ import IconButton from 'material-ui/IconButton';
 import ActionSearch from 'material-ui/svg-icons/action/search';
 import TextField from 'material-ui/TextField';
 import topairs from 'lodash.topairs';
+import toSentenceCase from 'js-sentencecase';
 
 const styles = {
     icon: {
@@ -130,7 +131,8 @@ export class SparqlTextField extends Component {
                                                     className="label_sparql"
                                                     style={styles.label}
                                                 >
-                                                    {obj[0]} : &#160;
+                                                    {toSentenceCase(obj[0])}
+                                                    &#160; : &#160;
                                                 </span>
                                             </div>
                                             <div
