@@ -1,4 +1,4 @@
-FROM node:7.8.0
+FROM node:8.9.1
 
 WORKDIR /app
 # Install the node modules only
