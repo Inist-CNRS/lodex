@@ -115,7 +115,7 @@ export class SparqlTextField extends Component {
                         />
                         <TextField
                             style={styles.input2}
-                            name="sparqlRequest"
+                            name="sparqlEnpoint"
                             value={endpoint}
                         />
                     </div>
