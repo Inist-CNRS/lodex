@@ -192,10 +192,10 @@ export default compose(
         builtURL += encodeURIComponent(
             sparql.request
                 .trim()
-                .replace(/[\u200B]+/g, ' ')
+                .replace(/[\n\r\u200B]+/g, ' ')
                 .replace(/[?]{2}/g, value.trim()),
         );
-        builtURL = builtURL.replace(/LIMIT\s\d*/, ''); //remove LIMIT with her var
+        builtURL = builtURL.replace(/LIMIT([%]20)+\d*/i, ''); //remove LIMIT with its var
         const request = builtURL + '%20LIMIT%20' + sparql.maxValue;
         if (isURL(request)) {
             const source = URL.parse(request);
