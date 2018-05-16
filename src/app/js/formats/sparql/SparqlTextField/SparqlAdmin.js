@@ -30,11 +30,12 @@ export const defaultArgs = {
         endpoint: '//data.istex.fr/sparql/',
         maxValue: 1,
         request: `PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
 SELECT ?LibelleNomBnf ?LienCatalogueBnf ?uri
 WHERE
 {
-  ?uri <http://www.w3.org/2004/02/skos/core#exactMatch> <??>.
-  ?uri <http://www.w3.org/2004/02/skos/core#prefLabel> ?LibelleNomBnf.
+  ?uri skos:exactMatch <??>.
+  ?uri skos:prefLabel ?LibelleNomBnf.
   ?uri rdfs:seeAlso ?LienCatalogueBnf.
 }`,
     },
