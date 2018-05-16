@@ -5,7 +5,7 @@ WORKDIR /app
 COPY package.json /app
 RUN rm -rf ./node_modules && \
     npm install && \
-    npm cache clean
+    npm cache clean --force
 
 ENV NODE_ENV production
 
