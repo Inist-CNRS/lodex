@@ -60,7 +60,7 @@ export const getRequest = createSelector(
     (token, cookie, { body, method = 'GET', url }) => ({
         url,
         body: JSON.stringify(body),
-        credentials: 'same-origin', //auth with include (error 401)
+        credentials: 'same-origin', //auth with include => error 401 https://developer.mozilla.org/fr/docs/Web/API/Request/credentials
         headers: {
             Accept: 'application/json',
             'Content-Type': 'application/json',

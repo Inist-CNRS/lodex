@@ -82,9 +82,6 @@ export default url => FormatView => {
                 ...props
             } = this.props;
 
-            // for maintenance
-            console.log(error);//eslint-disable-line
-
             if (error) {
                 return (
                     <p style={styles.message}>{polyglot.t('sparql_error')}</p>

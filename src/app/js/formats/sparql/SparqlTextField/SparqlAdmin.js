@@ -70,6 +70,9 @@ class SparqlTextFieldAdmin extends Component {
     };
 
     setMaxValue = (_, maxValue) => {
+        if (maxValue < 1) {
+            maxValue = 1;
+        }
         const { sparql, ...state } = this.props.args;
         const newState = { ...state, sparql: { ...sparql, maxValue } };
         this.props.onChange(newState);
@@ -96,6 +99,7 @@ class SparqlTextFieldAdmin extends Component {
                 />
                 <TextField
                     floatingLabelText={polyglot.t('max_value')}
+                    type="number"
                     onChange={this.setMaxValue}
                     style={styles.input}
                     value={maxValue}

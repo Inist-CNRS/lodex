@@ -13,6 +13,7 @@ import topairs from 'lodash.topairs';
 
 const styles = {
     icon: {
+        cursor: 'default',
         verticalAlign: 'bottom',
         width: '5%',
     },
@@ -21,9 +22,15 @@ const styles = {
         width: '100%',
         color: 'lightGrey',
     },
-    input: {
+    input1: {
         fontSize: '0.7em',
-        width: '95%',
+        width: '80%',
+        borderImage: 'none',
+    },
+    input2: {
+        marginLeft: '2.5%',
+        fontSize: '0.7em',
+        width: '12.5%',
         borderImage: 'none',
     },
     container2: {
@@ -46,6 +53,15 @@ const styles = {
     },
     value: {
         display: 'inline-block',
+    },
+    lang: {
+        display: 'inline-block',
+        marginRight: '1rem',
+        fontSize: '0.6em',
+        fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif',
+        color: 'grey',
+        textTransform: 'uppercase',
+        visibility: 'visible',
     },
     show: {
         display: 'inline-block',
@@ -72,10 +88,21 @@ export class SparqlTextField extends Component {
         }
     };
 
+    getLang = result => {
+        if (result[1]['xml:lang'] != undefined) {
+            return <span>{result[1]['xml:lang']}</span>;
+        } else {
+            return null;
+        }
+    };
+
     render() {
-        const { className, formatData, resource, field } = this.props;
+        const { className, formatData, resource, field, sparql } = this.props;
         if (formatData != undefined) {
             const requestText = resource[field.name];
+            let endpoint = sparql.endpoint.substring(
+                sparql.endpoint.search('//') + 2,
+            );
             return (
                 <div className={className}>
                     <div style={styles.container}>
@@ -83,9 +110,14 @@ export class SparqlTextField extends Component {
                             <ActionSearch color="lightGrey" />
                         </IconButton>
                         <TextField
-                            style={styles.input}
+                            style={styles.input1}
                             name="sparqlRequest"
                             value={requestText}
+                        />
+                        <TextField
+                            style={styles.input2}
+                            name="sparqlRequest"
+                            value={endpoint}
                         />
                     </div>
                     {formatData.results.bindings.map((result, key) => {
@@ -106,7 +138,13 @@ export class SparqlTextField extends Component {
                                                 className="value_sparql"
                                                 style={styles.value}
                                             >
-                                                {this.showURL(obj)}
+                                                {this.showURL(obj)} &#160;
+                                            </div>
+                                            <div
+                                                className="lang_sparql property_language"
+                                                style={styles.lang}
+                                            >
+                                                {this.getLang(obj)}
                                             </div>
                                         </div>
                                     );
@@ -121,23 +159,6 @@ export class SparqlTextField extends Component {
         }
     }
 }
-
-/*
-if () {
-      return (
-          <div className="showValue" id={index}>
-              titi
-          </div>
-  );
-} else {
-    return (
-        <div className="showValue" id={index}>
-            toto
-        </div>
-    );
-}
-
-*/
 
 SparqlTextField.propTypes = {
     className: PropTypes.string,
@@ -158,20 +179,23 @@ export default compose(
         if (!value) {
             return null;
         }
-        let constructURL = sparql.endpoint;
-        constructURL = constructURL.replace(/[\s\n\r\u200B]+/, '');
-        if (!isURL(constructURL)) {
-            constructURL = 'https:' + constructURL;
+        let builtURL = sparql.endpoint;
+        if (!isURL(builtURL)) {
+            builtURL = 'https://' + builtURL;
         }
 
-        if (!constructURL.endsWith('?query=')) {
-            constructURL += '?query=';
+        if (!builtURL.endsWith('?query=')) {
+            builtURL += '?query=';
         }
 
-        constructURL += sparql.request.replace(/[\n\r\u200B]+/g, ' ').replace(/[#]/g,'%23'); //eslint-disable-line
-        constructURL = constructURL.replace(/[?]{2}/g, value);
-        constructURL = constructURL.replace(/LIMIT\s\d*/, ''); //remove LIMIT with her var
-        const request = constructURL + ' LIMIT ' + sparql.maxValue;
+        builtURL += encodeURIComponent(
+            sparql.request
+                .trim()
+                .replace(/[\u200B]+/g, ' ')
+                .replace(/[?]{2}/g, value.trim()),
+        );
+        builtURL = builtURL.replace(/LIMIT\s\d*/, ''); //remove LIMIT with her var
+        const request = builtURL + '%20LIMIT%20' + sparql.maxValue;
         if (isURL(request)) {
             const source = URL.parse(request);
 
