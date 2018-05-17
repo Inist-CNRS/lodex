@@ -48,6 +48,8 @@ To see what Lodex can do, check out
 - actuality & news : http://lodex.inist.fr/
 - Twitter : https://twitter.com/lodex_team
 - Contribute (for developer) : https://github.com/Inist-CNRS/lodex/wiki
+- Contact email: contact@listes.lodex.fr
+- Mailing list about LODEX usage: users@listes.lodex.fr (subscribe on [listes.lodex.fr](https://listes.lodex.fr/sympa/info/users))
 
 ## Licence
 
