@@ -6,34 +6,10 @@ import SparqlRequest from '../SparqlRequest';
 import { isURL } from '../../../../../common/uris.js';
 import { field as fieldPropTypes } from '../../../propTypes';
 import URL from 'url';
-import IconButton from 'material-ui/IconButton';
-import ActionSearch from 'material-ui/svg-icons/action/search';
-import TextField from 'material-ui/TextField';
 import topairs from 'lodash.topairs';
 import toSentenceCase from 'js-sentencecase';
 
 const styles = {
-    icon: {
-        cursor: 'default',
-        verticalAlign: 'bottom',
-        width: '5%',
-    },
-    container: {
-        display: 'block',
-        width: '100%',
-        color: 'lightGrey',
-    },
-    input1: {
-        fontSize: '0.7em',
-        width: '80%',
-        borderImage: 'none',
-    },
-    input2: {
-        marginLeft: '2.5%',
-        fontSize: '0.7em',
-        width: '12.5%',
-        borderImage: 'none',
-    },
     container2: {
         paddingLeft: '2rem',
         marginBottom: '10px',
@@ -97,29 +73,10 @@ export class SparqlTextField extends Component {
     };
 
     render() {
-        const { className, formatData, resource, field, sparql } = this.props;
+        const { className, formatData } = this.props;
         if (formatData != undefined) {
-            const requestText = resource[field.name];
-            let endpoint = sparql.endpoint.substring(
-                sparql.endpoint.search('//') + 2,
-            );
             return (
                 <div className={className}>
-                    <div style={styles.container}>
-                        <IconButton style={styles.icon}>
-                            <ActionSearch color="lightGrey" />
-                        </IconButton>
-                        <TextField
-                            style={styles.input1}
-                            name="sparqlRequest"
-                            value={requestText}
-                        />
-                        <TextField
-                            style={styles.input2}
-                            name="sparqlEnpoint"
-                            value={endpoint}
-                        />
-                    </div>
                     {formatData.results.bindings.map((result, key) => {
                         return (
                             <div key={key} style={styles.container2}>
