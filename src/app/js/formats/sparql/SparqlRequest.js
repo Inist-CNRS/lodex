@@ -141,15 +141,17 @@ export default url => FormatView => {
                 );
             }
 
-            if (formatData == 0) {
-                return (
-                    <div style={styles.container}>
-                        {this.getHeaderFormat()}
-                        <p style={styles.message}>
-                            {polyglot.t('sparql_data')}
-                        </p>
-                    </div>
-                );
+            if (formatData != undefined) {
+                if (formatData.results.bindings.length == 0) {
+                    return (
+                        <div style={styles.container}>
+                            {this.getHeaderFormat()}
+                            <p style={styles.message}>
+                                {polyglot.t('sparql_data')}
+                            </p>
+                        </div>
+                    );
+                }
             }
 
             return (
