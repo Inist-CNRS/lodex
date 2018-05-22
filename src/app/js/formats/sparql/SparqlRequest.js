@@ -13,6 +13,7 @@ import { loadFormatData } from '../../formats/reducer';
 import Loading from '../../lib/components/Loading';
 import ActionSearch from 'material-ui/svg-icons/action/search';
 import TextField from 'material-ui/TextField';
+import { isURL } from '../../../../common/uris.js';
 
 const styles = {
     message: {
@@ -20,6 +21,11 @@ const styles = {
     },
     icon: {
         cursor: 'default',
+        verticalAlign: 'middle',
+        width: '5%',
+    },
+    pointer: {
+        cursor: 'pointer',
         verticalAlign: 'middle',
         width: '5%',
     },
@@ -94,6 +100,15 @@ export default url => FormatView => {
             });
         };
 
+        redirectIfUrl = () => {
+            const { resource, field } = this.props;
+            const requestText = resource[field.name];
+
+            if (isURL(requestText)) {
+                window.open(requestText);
+            }
+        };
+
         getHeaderFormat = () => {
             const { resource, field, sparql } = this.props;
             const requestText = resource[field.name];
@@ -103,7 +118,15 @@ export default url => FormatView => {
             if (!sparql.hiddenInfo) {
                 return (
                     <div>
-                        <ActionSearch style={styles.icon} color="lightGrey" />
+                        <ActionSearch
+                            style={
+                                isURL(requestText)
+                                    ? styles.pointer
+                                    : styles.icon
+                            }
+                            color="lightGrey"
+                            onClick={this.redirectIfUrl}
+                        />
                         <TextField
                             style={styles.input1}
                             name="sparqlRequest"
