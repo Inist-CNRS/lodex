@@ -96,27 +96,29 @@ export default url => FormatView => {
 
         getHeaderFormat = () => {
             const { resource, field, sparql } = this.props;
-            // let requestText = 'titi';
-            // let endpoint = 'toto';
             const requestText = resource[field.name];
             let endpoint = sparql.endpoint.substring(
                 sparql.endpoint.search('//') + 2,
             );
-            return (
-                <div>
-                    <ActionSearch style={styles.icon} color="lightGrey" />
-                    <TextField
-                        style={styles.input1}
-                        name="sparqlRequest"
-                        value={requestText}
-                    />
-                    <TextField
-                        style={styles.input2}
-                        name="sparqlEnpoint"
-                        value={endpoint}
-                    />
-                </div>
-            );
+            if (!sparql.hiddenInfo) {
+                return (
+                    <div>
+                        <ActionSearch style={styles.icon} color="lightGrey" />
+                        <TextField
+                            style={styles.input1}
+                            name="sparqlRequest"
+                            value={requestText}
+                        />
+                        <TextField
+                            style={styles.input2}
+                            name="sparqlEnpoint"
+                            value={endpoint}
+                        />
+                    </div>
+                );
+            }
+
+            return null;
         };
 
         render() {

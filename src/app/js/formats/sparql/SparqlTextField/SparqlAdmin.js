@@ -15,6 +15,9 @@ const styles = {
     input: {
         width: '100%',
     },
+    checkbox: {
+        marginTop: 12,
+    },
     previewDefaultColor: color => ({
         display: 'inline-block',
         backgroundColor: color,
@@ -38,6 +41,7 @@ WHERE
   ?uri skos:prefLabel ?LibelleNomBnf.
   ?uri rdfs:seeAlso ?LienCatalogueBnf.
 }`,
+        hiddenInfo: false,
     },
 };
 
@@ -48,6 +52,7 @@ class SparqlTextFieldAdmin extends Component {
                 endpoint: PropTypes.string,
                 maxValue: PropTypes.number,
                 request: PropTypes.string,
+                hiddenInfo: PropTypes.object,
             }),
         }),
         onChange: PropTypes.func.isRequired,
@@ -78,10 +83,17 @@ class SparqlTextFieldAdmin extends Component {
         const newState = { ...state, sparql: { ...sparql, maxValue } };
         this.props.onChange(newState);
     };
+    setHiddenInfo = event => {
+        let hiddenInfo = event.target.checked;
+        const { sparql, ...state } = this.props.args;
+        const newState = { ...state, sparql: { ...sparql, hiddenInfo } };
+        this.props.onChange(newState);
+    };
 
     render() {
         const { p: polyglot, args: { sparql } } = this.props;
-        const { endpoint, request, maxValue } = sparql || defaultArgs.sparql;
+        const { endpoint, request, maxValue, hiddenInfo } =
+            sparql || defaultArgs.sparql;
 
         return (
             <div style={styles.container}>
@@ -105,6 +117,14 @@ class SparqlTextFieldAdmin extends Component {
                     style={styles.input}
                     value={maxValue}
                 />
+                <label style={styles.checkbox}>
+                    <input
+                        type="checkbox"
+                        checked={hiddenInfo}
+                        onChange={this.setHiddenInfo}
+                    />
+                    {polyglot.t('hidden_info')}
+                </label>
             </div>
         );
     }
