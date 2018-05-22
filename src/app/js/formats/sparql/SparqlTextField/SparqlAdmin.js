@@ -17,6 +17,8 @@ const styles = {
     },
     checkbox: {
         marginTop: 12,
+        marginRight: 5,
+        verticalAlign: 'sub',
     },
     previewDefaultColor: color => ({
         display: 'inline-block',
@@ -117,11 +119,12 @@ class SparqlTextFieldAdmin extends Component {
                     style={styles.input}
                     value={maxValue}
                 />
-                <label style={styles.checkbox}>
+                <label>
                     <input
                         type="checkbox"
                         checked={hiddenInfo}
                         onChange={this.setHiddenInfo}
+                        style={styles.checkbox}
                     />
                     {polyglot.t('hidden_info')}
                 </label>
