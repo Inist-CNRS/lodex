@@ -31,7 +31,7 @@ const styles = {
 
 export const defaultArgs = {
     param: {
-        labelArray: [],
+        labelArray: [''],
     },
 };
 
@@ -51,7 +51,7 @@ class LodexFieldAdmin extends Component {
     };
 
     setRequest = (_, label) => {
-        const labelArray = label.split(';').map(str => str.trim());
+        const labelArray = label.split(';');
         const { param, ...args } = this.props.args;
         const newArgs = { ...args, param: { ...param, labelArray } };
         this.props.onChange(newArgs);
@@ -60,7 +60,7 @@ class LodexFieldAdmin extends Component {
     render() {
         const { p: polyglot, args: { param } } = this.props;
         const { labelArray } = param || defaultArgs.param;
-        const label = labelArray.join(' ; ');
+        const label = labelArray.join(';');
 
         return (
             <div style={styles.container}>
