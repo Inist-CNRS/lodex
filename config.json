@@ -28,6 +28,7 @@
     "tsv",
     "turtle",
     "atom",
+    "json",
     "jsonld",
     "jsonldcompacted",
     "sitemap",
