@@ -1,57 +1,25 @@
 import Koa from 'koa';
-import Path from 'path';
-import URL from 'url';
 import route from 'koa-route';
-import fs from 'fs';
 import ezs from 'ezs';
-import fetch from 'fetch-with-proxy';
 import { PassThrough } from 'stream';
 import Cache from 'streaming-cache';
 import cacheControl from 'koa-cache-control';
 import config from '../../../../config.json';
+import Script from '../../services/script';
 
 const memory = new Cache({
     max: config.memoryCacheMaxSize || 5,
     maxAge: config.memoryCacheMaxAge || 10000,
 });
-const routineLocalDirectory = Path.resolve(__dirname, '../../routines/');
-const routinesLocal = config.routines
-    .map(routineName =>
-        Path.resolve(routineLocalDirectory, routineName.concat('.ini')),
-    )
-    .filter(fileName => fs.existsSync(fileName))
-    .map(fileName => [
-        fileName,
-        ezs.metaFile(fileName),
-        Path.basename(fileName, '.ini'),
-        fs.readFileSync(fileName).toString(),
-    ]);
 
-const pluginsURL = config.pluginsURL || '';
-const routineRepository = URL.resolve(pluginsURL, './routines/');
-const routinesDistant = config.routines
-    .map(routineName =>
-        URL.resolve(routineRepository, routineName.concat('.ini')),
-    )
-    .map(fileName => [fileName, null, Path.basename(fileName, '.ini'), null]);
-
+const routine = new Script('routines');
 export const runRoutine = async (ctx, routineCalled) => {
-    const routineLocal = routinesLocal.find(r => r[2] === routineCalled);
-    const routineDistant = routinesDistant.find(r => r[2] === routineCalled);
-    if (!routineLocal && routineDistant) {
-        const response = await fetch(routineDistant[0]);
-        const routineScript = await response.text();
-        if (routineScript) {
-            routineDistant[1] = ezs.metaString(routineScript);
-            routineDistant[3] = routineScript;
-        }
-    }
-    const routine = routineLocal || routineDistant;
-    if (!routine) {
+    const currentRoutine = await routine.get(routineCalled);
+    if (!currentRoutine) {
         ctx.throw(404, `Unknown routine '${routineCalled}'`);
     }
 
-    const [, metaData, , script] = routine;
+    const [, metaData, , script] = currentRoutine;
 
     if (metaData.fileName) {
         ctx.set(
