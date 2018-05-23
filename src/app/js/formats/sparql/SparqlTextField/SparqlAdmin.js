@@ -2,8 +2,11 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
 import TextField from 'material-ui/TextField';
+import config from '../../../../../../config.json';
 
 import { polyglot as polyglotPropTypes } from '../../../propTypes';
+
+const endpoints = config.sparqlEndpoints;
 
 const styles = {
     container: {
@@ -101,10 +104,21 @@ class SparqlTextFieldAdmin extends Component {
             <div style={styles.container}>
                 <TextField
                     floatingLabelText={polyglot.t('sparql_endpoint')}
-                    onChange={this.setEndpoint}
                     style={styles.input}
                     value={endpoint}
+                    onChange={this.setEndpoint}
+                    native="true"
+                    type="text"
+                    name="valueEnpoint"
+                    list="listEnpoint"
+                    required="true"
                 />
+                <datalist id="listEnpoint">
+                    {endpoints.map(source => (
+                        <option key={source} value={source} />
+                    ))}
+                </datalist>
+
                 <TextField
                     floatingLabelText={polyglot.t('sparql_request')}
                     multiLine={true}
