@@ -31,7 +31,7 @@ const styles = {
 
 export const defaultArgs = {
     param: {
-        request: '?label',
+        labelArray: [],
     },
 };
 
@@ -39,7 +39,7 @@ class LodexFieldAdmin extends Component {
     static propTypes = {
         args: PropTypes.shape({
             param: PropTypes.shape({
-                labels: PropTypes.string,
+                labelArray: PropTypes.arrayOf(PropTypes.string),
             }),
         }),
         onChange: PropTypes.func.isRequired,
@@ -50,15 +50,17 @@ class LodexFieldAdmin extends Component {
         args: defaultArgs,
     };
 
-    setRequest = (_, labels) => {
+    setRequest = (_, label) => {
+        const labelArray = label.split(';').map(str => str.trim());
         const { param, ...args } = this.props.args;
-        const newArgs = { ...args, param: { ...param, labels } };
+        const newArgs = { ...args, param: { ...param, labelArray } };
         this.props.onChange(newArgs);
     };
 
     render() {
         const { p: polyglot, args: { param } } = this.props;
-        const { labels } = param || defaultArgs.param;
+        const { labelArray } = param || defaultArgs.param;
+        const label = labelArray.join(' ; ');
 
         return (
             <div style={styles.container}>
@@ -67,7 +69,7 @@ class LodexFieldAdmin extends Component {
                     multiLine={true}
                     onChange={this.setRequest}
                     style={styles.input}
-                    value={labels}
+                    value={label}
                 />
             </div>
         );
