@@ -1,7 +1,7 @@
 import 'babel-polyfill';
 import fs from 'fs';
 import CSV from 'csv-string';
-import config from 'config';
+import { loaders } from '../../config.json';
 import {
     DefinePlugin,
     SourceMapDevToolPlugin,
@@ -13,8 +13,6 @@ import CopyWebpackPlugin from 'copy-webpack-plugin';
 import CompressionPlugin from 'compression-webpack-plugin';
 import UglifyJsPlugin from 'uglifyjs-webpack-plugin';
 import { resolve } from 'path';
-
-import { loaderKeys } from '../api/loaders';
 
 const translationsFile = resolve(__dirname, './translations.tsv');
 const translationsTSV = fs.readFileSync(translationsFile, 'utf8');
@@ -77,7 +75,7 @@ export default {
     },
     plugins: [
         new DefinePlugin({
-            __DEBUG__: config.debug,
+            __DEBUG__: false,
             __EN__: JSON.stringify(translations.english),
             __FR__: JSON.stringify(translations.french),
             'process.env': {
@@ -86,7 +84,7 @@ export default {
                         ? JSON.stringify(process.env.NODE_ENV)
                         : JSON.stringify('production'), // eslint-disable-line max-len
             },
-            LOADERS: JSON.stringify(loaderKeys),
+            LOADERS: JSON.stringify(loaders),
         }),
         new HtmlWebpackPlugin({
             filename: 'index.html',

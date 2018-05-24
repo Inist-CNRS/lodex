@@ -20,6 +20,24 @@
     "distinct-ISO3166-1-alpha3-from",
     "distinct-ISO3166-1-alpha2-from"
   ],
+  "loaders": [
+    "csv",
+    "csv-semicolon",
+    "csv-comma",
+    "csv-alternative",
+    "tsv",
+    "tsv-double-quotes",
+    "rdf",
+    "skos",
+    "json",
+    "json-istex",
+    "json-lodex",
+    "rss",
+    "atom",
+    "mods",
+    "tei",
+    "corpus"
+  ],
   "exporters": [
     "nquads",
     "extendednquads",

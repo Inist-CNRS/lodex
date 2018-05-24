@@ -13,7 +13,8 @@ export default class Script {
             '../',
             routineDirectory,
         );
-        const routinesLocal = config.routines
+        const routinesDeclared = config[source] || [];
+        const routinesLocal = routinesDeclared
             .map(routineName =>
                 Path.resolve(routineLocalDirectory, routineName.concat('.ini')),
             )
