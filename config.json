@@ -1,6 +1,10 @@
 {
   "username": "admin",
   "password": "secret",
+  "userAuth": {
+      "username": "user",
+      "password": "secret"
+  },
   "pluginsURL" : "https://raw.githubusercontent.com/Inist-CNRS/lodex-extented/master/",
   "routines": [
     "hello-world",
