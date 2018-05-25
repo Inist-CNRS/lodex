@@ -15,7 +15,6 @@ export default {
     csv,
     extendednquads,
     extendednquadscompressed,
-    json,
     jsonld,
     jsonldcompacted,
     nquads,

@@ -1,10 +1,6 @@
 {
   "username": "admin",
   "password": "secret",
-  "userAuth": {
-      "username": "user",
-      "password": "secret"
-  },
   "pluginsURL" : "https://raw.githubusercontent.com/Inist-CNRS/lodex-extented/master/",
   "routines": [
     "hello-world",
@@ -15,6 +11,7 @@
     "count-by-fields",
     "count-all",
     "distinct-by",
+    "json-document",
     "pairing-with",
     "graph-by",
     "distinct-ISO3166-1-alpha3-from",
