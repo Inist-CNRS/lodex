@@ -28,6 +28,16 @@ const styles = {
         fontSize: '1.5rem',
         textDecoration: 'none',
     },
+    lang: {
+        display: 'inline-block',
+        marginRight: '1rem',
+        marginLeft: '1rem',
+        fontSize: '0.6em',
+        fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif',
+        color: 'grey',
+        textTransform: 'uppercase',
+        visibility: 'visible',
+    },
 };
 
 export class LodexResourceView extends Component {
@@ -48,6 +58,12 @@ export class LodexResourceView extends Component {
                             style={styles.value}
                         >
                             {data.value}
+                        </span>
+                        <span
+                            className={('lodex_field_lang', className)}
+                            style={styles.lang}
+                        >
+                            {data.lang}
                         </span>
                     </div>
                 );
