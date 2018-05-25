@@ -8,6 +8,28 @@ import { isURL } from '../../../../common/uris.js';
 import { field as fieldPropTypes } from '../../propTypes';
 import injectData from '../injectData';
 
+const styles = {
+    container: {
+        paddingLeft: '2rem',
+        marginBottom: '10px',
+        marginRight: '1em',
+        marginLeft: '2rem',
+        borderLeft: '1px dotted',
+        borderColor: '#9e9ea6',
+    },
+    label: {
+        color: 'rgb(158, 158, 158)',
+        flexGrow: '2',
+        fontSize: '1.5rem',
+        textDecoration: 'none',
+    },
+    value: {
+        flexGrow: '2',
+        fontSize: '1.5rem',
+        textDecoration: 'none',
+    },
+};
+
 export class LodexResourceView extends Component {
     toto = label => {
         const { className, formatData } = this.props;
@@ -15,12 +37,18 @@ export class LodexResourceView extends Component {
             if (label == data.id) {
                 return (
                     <div key={key}>
-                        <div className={('lodex_field_label', className)}>
-                            {data.label} :
-                        </div>
-                        <div className={('lodex_field_value', className)}>
+                        <span
+                            className={('lodex_field_label', className)}
+                            style={styles.label}
+                        >
+                            {data.label} : &#160;
+                        </span>
+                        <span
+                            className={('lodex_field_value', className)}
+                            style={styles.value}
+                        >
                             {data.value}
-                        </div>
+                        </span>
                     </div>
                 );
             } else {
@@ -36,7 +64,7 @@ export class LodexResourceView extends Component {
         }
         let labelArray = param.labelArray.map(e => e.trim()); //clean string
         return (
-            <div className={className}>
+            <div className={className} style={styles.container}>
                 {labelArray.map(label => {
                     return this.toto(label);
                 })}
