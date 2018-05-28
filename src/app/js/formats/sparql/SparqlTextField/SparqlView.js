@@ -77,12 +77,33 @@ const styles = {
         color: 'rgb(158, 158, 158)',
         fontSize: '1.3rem',
     },
+    imgDefault: {
+        height: '42',
+        width: '42',
+    },
 };
 
 export class SparqlTextField extends Component {
-    showURL = result => {
+    // checkImage = async src => {
+    //     let img = new Image();
+    //     img.onload = () => cb(<img src={src} style={styles.imgDefault} />); //<img src={src} style={styles.imgDefault} />;
+    //     img.onerror = () => cb(<a href={src}>{src}</a>); //<a href={src}>{src}</a>;
+    //     img.src = src;
+    // };
+    checkImage = async src => {
+        await new Promise(resolve => {
+            let img = new Image();
+            img.onload = () => resolve(<img src={src} style={styles.imgDefault} />); //<img src={src} style={styles.imgDefault} />;
+            img.onerror = () => resolve(<a href={src}>{src}</a>); //<a href={src}>{src}</a>;
+            img.src = src;
+        });
+    };
+    //<img src={src} style={styles.imgDefault} />;
+    //<a href={src}>{src}</a>;
+
+    showURL = async result => {
         if (isURL(result[1].value) && result[1].type == 'uri') {
-            return <a href={result[1].value}>{result[1].value}</a>;
+            return await this.checkImage(result[1].value);
         } else {
             return <span>{result[1].value}</span>;
         }
