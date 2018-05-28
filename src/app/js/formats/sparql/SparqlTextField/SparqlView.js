@@ -93,7 +93,9 @@ export class SparqlTextField extends Component {
     checkImage = async src => {
         await new Promise(resolve => {
             let img = new Image();
-            img.onload = () => resolve(<img src={src} style={styles.imgDefault} />); //<img src={src} style={styles.imgDefault} />;
+            img.onload = () =>
+                resolve(<img src={src} style={styles.imgDefault} />);
+            //<img src={src} style={styles.imgDefault} />;
             img.onerror = () => resolve(<a href={src}>{src}</a>); //<a href={src}>{src}</a>;
             img.src = src;
         });
