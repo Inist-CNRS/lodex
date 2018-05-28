@@ -125,7 +125,7 @@ export default url => FormatView => {
                                     : styles.icon
                             }
                             color="lightGrey"
-                            onClick={this.redirectIfUrl}
+                            onClick={this.windowOpenIfUrl}
                         />
                         <TextField
                             style={styles.input1}
