@@ -100,7 +100,7 @@ export default url => FormatView => {
             });
         };
 
-        redirectIfUrl = () => {
+        windowOpenIfUrl = () => {
             const { resource, field } = this.props;
             const requestText = resource[field.name];
 
