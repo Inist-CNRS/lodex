@@ -11,6 +11,9 @@ const exporter = (config, fields, characteristics, stream) =>
         .pipe(ezs('filterContributions', { fields }))
         .pipe(
             ezs((input, output) => {
+                if (!input) {
+                    return output.close();
+                }
                 const field2label = fields.reduce(
                     (f2l, e) => {
                         if (e.label) {
