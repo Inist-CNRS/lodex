@@ -10,20 +10,29 @@ const exporter = (config, fields, characteristics, stream) =>
         .pipe(ezs('filterVersions'))
         .pipe(ezs('filterContributions', { fields }))
         .pipe(
-            ezs('JSONLDObject', {
-                fields,
-                characteristics,
-                collectionClass: config.collectionClass,
-                exportDataset: config.exportDataset,
+            ezs((input, output) => {
+                const field2label = fields.reduce(
+                    (f2l, e) => {
+                        if (e.label) {
+                            f2l[e.name] = e.label;
+                        }
+                        return f2l;
+                    },
+                    { uri: 'uri' },
+                );
+                const res = Object.keys(input).reduce((r, field) => {
+                    if (field === undefined) {
+                        field = 'undefined';
+                    }
+                    if (input[field]) {
+                        r[field2label[field]] = input[field];
+                    }
+                    return r;
+                }, {});
+                output.send(res);
             }),
         )
-        .pipe(
-            ezs('linkDataset', {
-                uri: config.cleanHost,
-                scheme: config.schemeForDatasetLink,
-                datasetClass: config.datasetClass,
-            }),
-        )
+        .pipe(ezs('debug'))
         .pipe(ezs('jsonify'));
 
 exporter.extension = 'json';
