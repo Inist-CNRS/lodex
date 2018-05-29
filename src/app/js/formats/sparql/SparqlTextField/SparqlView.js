@@ -79,8 +79,8 @@ const styles = {
         fontSize: '1.3rem',
     },
     imgDefault: {
-        height: '42px',
-        width: '42px',
+        height: '200px',
+        width: '200px',
     },
 };
 
