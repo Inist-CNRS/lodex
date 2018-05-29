@@ -11,6 +11,7 @@ import ActionSearch from 'material-ui/svg-icons/action/search';
 import TextField from 'material-ui/TextField';
 import topairs from 'lodash.topairs';
 import toSentenceCase from 'js-sentencecase';
+import ifIsImage from 'if-is-image';
 
 const styles = {
     icon: {
@@ -78,34 +79,23 @@ const styles = {
         fontSize: '1.3rem',
     },
     imgDefault: {
-        height: '42',
-        width: '42',
+        height: '42px',
+        width: '42px',
     },
 };
 
 export class SparqlTextField extends Component {
-    // checkImage = async src => {
-    //     let img = new Image();
-    //     img.onload = () => cb(<img src={src} style={styles.imgDefault} />); //<img src={src} style={styles.imgDefault} />;
-    //     img.onerror = () => cb(<a href={src}>{src}</a>); //<a href={src}>{src}</a>;
-    //     img.src = src;
-    // };
-    checkImage = async src => {
-        await new Promise(resolve => {
-            let img = new Image();
-            img.onload = () =>
-                resolve(<img src={src} style={styles.imgDefault} />);
-            //<img src={src} style={styles.imgDefault} />;
-            img.onerror = () => resolve(<a href={src}>{src}</a>); //<a href={src}>{src}</a>;
-            img.src = src;
-        });
+    checkImage = src => {
+        if (ifIsImage(src)) {
+            return <img src={src} style={styles.imgDefault} />;
+        } else {
+            return <a href={src}>{src}</a>;
+        }
     };
-    //<img src={src} style={styles.imgDefault} />;
-    //<a href={src}>{src}</a>;
 
-    showURL = async result => {
+    showURL = result => {
         if (isURL(result[1].value) && result[1].type == 'uri') {
-            return await this.checkImage(result[1].value);
+            return this.checkImage(result[1].value);
         } else {
             return <span>{result[1].value}</span>;
         }
