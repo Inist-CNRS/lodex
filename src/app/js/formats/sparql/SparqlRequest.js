@@ -11,10 +11,38 @@ import {
 import { fromFormat } from '../../public/selectors';
 import { loadFormatData } from '../../formats/reducer';
 import Loading from '../../lib/components/Loading';
+import ActionSearch from 'material-ui/svg-icons/action/search';
+import TextField from 'material-ui/TextField';
+import { isURL } from '../../../../common/uris.js';
 
 const styles = {
     message: {
         margin: 20,
+    },
+    icon: {
+        cursor: 'default',
+        verticalAlign: 'middle',
+        width: '5%',
+    },
+    pointer: {
+        cursor: 'pointer',
+        verticalAlign: 'middle',
+        width: '5%',
+    },
+    container: {
+        display: 'block',
+        width: '100%',
+    },
+    input1: {
+        fontSize: '1em',
+        width: '80%',
+        borderImage: 'none',
+    },
+    input2: {
+        marginLeft: '2.5%',
+        fontSize: '1em',
+        width: '12.5%',
+        borderImage: 'none',
     },
 };
 
@@ -41,6 +69,7 @@ export default url => FormatView => {
             isLoaded: PropTypes.bool.isRequired,
             error: PropTypes.object,
             p: polyglotPropTypes.isRequired,
+            sparql: PropTypes.object,
         };
 
         loadFormatData = () => {
@@ -71,6 +100,50 @@ export default url => FormatView => {
             });
         };
 
+        windowOpenIfUrl = () => {
+            const { resource, field } = this.props;
+            const requestText = resource[field.name];
+
+            if (isURL(requestText)) {
+                window.open(requestText);
+            }
+        };
+
+        getHeaderFormat = () => {
+            const { resource, field, sparql } = this.props;
+            const requestText = resource[field.name];
+            let endpoint = sparql.endpoint.substring(
+                sparql.endpoint.search('//') + 2,
+            );
+            if (!sparql.hiddenInfo) {
+                return (
+                    <div>
+                        <ActionSearch
+                            style={
+                                isURL(requestText)
+                                    ? styles.pointer
+                                    : styles.icon
+                            }
+                            color="lightGrey"
+                            onClick={this.windowOpenIfUrl}
+                        />
+                        <TextField
+                            style={styles.input1}
+                            name="sparqlRequest"
+                            value={requestText}
+                        />
+                        <TextField
+                            style={styles.input2}
+                            name="sparqlEnpoint"
+                            value={endpoint}
+                        />
+                    </div>
+                );
+            }
+
+            return null;
+        };
+
         render() {
             const {
                 loadFormatData,
@@ -84,18 +157,31 @@ export default url => FormatView => {
 
             if (error) {
                 return (
-                    <p style={styles.message}>{polyglot.t('sparql_error')}</p>
+                    <div style={styles.container}>
+                        {this.getHeaderFormat()}
+                        <p style={styles.message}>
+                            {polyglot.t('sparql_error')}
+                        </p>
+                    </div>
                 );
             }
 
-            if (formatData === 'no result') {
-                return (
-                    <p style={styles.message}>{polyglot.t('sparql_data')}</p>
-                );
+            if (formatData != undefined) {
+                if (formatData.results.bindings.length == 0) {
+                    return (
+                        <div style={styles.container}>
+                            {this.getHeaderFormat()}
+                            <p style={styles.message}>
+                                {polyglot.t('sparql_data')}
+                            </p>
+                        </div>
+                    );
+                }
             }
 
             return (
                 <div>
+                    {this.getHeaderFormat()}
                     {!isLoaded && <Loading>{polyglot.t('loading')}</Loading>}
                     <FormatView
                         {...props}
