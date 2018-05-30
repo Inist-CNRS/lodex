@@ -14,6 +14,12 @@ const exporter = (config, fields, characteristics, stream) =>
                 if (!input) {
                     return output.close();
                 }
+                // {
+                //   uri:"http://data.istex.fr",
+                //   id:"Q98n",
+                //   label:"title",
+                //   value:"Terminator"
+                // }
                 const field2label = fields.reduce(
                     (f2l, e) => {
                         if (e.label) {

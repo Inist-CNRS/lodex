@@ -46,7 +46,7 @@ describe.only('export json', () => {
                 } else {
                     try {
                         expect(outputString).toEqual(
-                            '[{"uri":"http://data.istex.fr","title":"Terminator"}]',
+                            '[{"uri":"http://data.istex.fr","id":"Q98n","label":"title","value":"Terminator"}]',
                         );
                     } catch (e) {
                         return done(e);
