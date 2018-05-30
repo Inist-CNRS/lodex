@@ -156,7 +156,6 @@ export default compose(
         const request = builtURL + '%20LIMIT%20' + sparql.maxValue;
         if (isURL(request)) {
             const source = URL.parse(request);
-            console.log(URL.format(source)); //eslint-disable-line
             return URL.format(source);
         }
         return null;
