@@ -62,8 +62,8 @@ export const getRequest = createSelector(
         body: JSON.stringify(body),
         credentials: 'same-origin', //auth with include => error 401 https://developer.mozilla.org/fr/docs/Web/API/Request/credentials
         headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
+            // Accept: 'application/json',
+            // 'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,
             Cookie: cookie,
         },

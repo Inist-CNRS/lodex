@@ -177,8 +177,8 @@ export default url => FormatView => {
                 error,
                 ...props
             } = this.props;
-
             if (error) {
+                console.log(error); //eslint-disable-line
                 return (
                     <div style={styles.container}>
                         {this.getHeaderFormat()}
