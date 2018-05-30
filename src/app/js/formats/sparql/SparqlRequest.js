@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
+import URL from 'url';
 
 import {
     field as fieldPropTypes,
@@ -144,6 +145,7 @@ export default url => FormatView => {
             return null;
         };
         loadButton2ReloadInHttp = () => {
+            const { p: polyglot } = this.props;
             const source = URL.parse(window.location.href);
             if (source.protocol == 'http:') {
                 return null;
@@ -159,8 +161,8 @@ export default url => FormatView => {
             const url = URL.format(target);
             return (
                 <p>
-                    Ré-essayez en cliquant
-                    <a href={url}>ici</a>
+                    {polyglot.t('sparql_http_retry')}
+                    <a href={url}> {polyglot.t('here')} </a>
                 </p>
             );
         };
@@ -182,8 +184,8 @@ export default url => FormatView => {
                         {this.getHeaderFormat()}
                         <p style={styles.message}>
                             {polyglot.t('sparql_error')}
+                            {this.loadButton2ReloadInHttp()}
                         </p>
-                        {this.loadButton2ReloadInHttp()}
                     </div>
                 );
             }
