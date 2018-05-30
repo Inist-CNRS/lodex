@@ -41,9 +41,10 @@ const styles = {
 };
 
 export class LodexResourceView extends Component {
-    toto = label => {
+    loadContent = label => {
         const { className, formatData } = this.props;
         return formatData.map((data, key) => {
+            console.log(data); //eslint-disable-line
             if (label == data.id) {
                 return (
                     <div key={key}>
@@ -79,10 +80,11 @@ export class LodexResourceView extends Component {
             return <span> </span>;
         }
         let labelArray = param.labelArray.map(e => e.trim()); //clean string
+
         return (
             <div className={className} style={styles.container}>
                 {labelArray.map(label => {
-                    return this.toto(label);
+                    return this.loadContent(label);
                 })}
             </div>
         );
@@ -119,8 +121,8 @@ export default compose(
                     hostname: source.hostname,
                     slashes: source.slashes,
                     port: source.port,
-                    pathname: '/api/run/json-document/',
-                    search: `?$query[uri]=${encodeURIComponent(uri)}`,
+                    pathname: '/api/export/json',
+                    search: '?uri=' + uri,
                 };
                 return URL.format(target);
             }
