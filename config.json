@@ -24,7 +24,6 @@
     "csv",
     "csv-semicolon",
     "csv-comma",
-    "csv-alternative",
     "tsv",
     "tsv-double-quotes",
     "rdf",
@@ -36,6 +35,7 @@
     "atom",
     "mods",
     "tei",
+    "xml",
     "corpus"
   ],
   "exporters": [
