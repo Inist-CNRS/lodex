@@ -100,7 +100,7 @@ export default url => FormatView => {
             });
         };
 
-        windowOpenIfUrl = () => {
+        redirectIfUrl = () => {
             const { resource, field } = this.props;
             const requestText = resource[field.name];
 
@@ -125,7 +125,7 @@ export default url => FormatView => {
                                     : styles.icon
                             }
                             color="lightGrey"
-                            onClick={this.windowOpenIfUrl}
+                            onClick={this.redirectIfUrl}
                         />
                         <TextField
                             style={styles.input1}
@@ -142,6 +142,27 @@ export default url => FormatView => {
             }
 
             return null;
+        };
+        loadButton2ReloadInHttp = () => {
+            const source = URL.parse(window.location.href);
+            if (source.protocol == 'http:') {
+                return null;
+            }
+            const target = {
+                protocol: 'http:',
+                hostname: source.hostname,
+                slashes: source.slashes,
+                port: source.port,
+                pathname: source.pathname,
+                search: source.search,
+            };
+            const url = URL.format(target);
+            return (
+                <p>
+                    Ré-essayez en cliquant
+                    <a href={url}>ici</a>
+                </p>
+            );
         };
 
         render() {
@@ -162,6 +183,7 @@ export default url => FormatView => {
                         <p style={styles.message}>
                             {polyglot.t('sparql_error')}
                         </p>
+                        {this.loadButton2ReloadInHttp()}
                     </div>
                 );
             }
