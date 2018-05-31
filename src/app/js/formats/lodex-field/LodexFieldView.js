@@ -28,6 +28,12 @@ const styles = {
         fontSize: '1.5rem',
         textDecoration: 'none',
     },
+    array: {
+        flexGrow: '2',
+        fontSize: '1.5rem',
+        textDecoration: 'none',
+        margin: 0,
+    },
     lang: {
         display: 'inline-block',
         marginRight: '1rem',
@@ -41,6 +47,49 @@ const styles = {
 };
 
 export class LodexResourceView extends Component {
+    ifArray = value => {
+        const { className } = this.props;
+        if (typeof value == 'object') {
+            return (
+                <div
+                    className={('lodex_field_value_array', className)}
+                    style={styles.array}
+                >
+                    <ul>
+                        {value.map((data, key) => {
+                            return <li key={key}>{data}</li>;
+                        })}
+                    </ul>
+                </div>
+            );
+        } else {
+            return (
+                <span
+                    className={('lodex_field_value', className)}
+                    style={styles.value}
+                >
+                    {value}
+                </span>
+            );
+        }
+    };
+
+    ifLang = value => {
+        const { className } = this.props;
+        if (value) {
+            return (
+                <span
+                    className={('lodex_field_lang', className)}
+                    style={styles.lang}
+                >
+                    {value}
+                </span>
+            );
+        } else {
+            return;
+        }
+    };
+
     loadContent = label => {
         const { className, formatData } = this.props;
         return formatData[0].fields.map((data, key) => {
@@ -53,18 +102,8 @@ export class LodexResourceView extends Component {
                         >
                             {data.label} : &#160;
                         </span>
-                        <span
-                            className={('lodex_field_value', className)}
-                            style={styles.value}
-                        >
-                            {data.value}
-                        </span>
-                        <span
-                            className={('lodex_field_lang', className)}
-                            style={styles.lang}
-                        >
-                            {data.lang}
-                        </span>
+                        {this.ifArray(data.value)}
+                        {this.ifLang(data.lang)}
                     </div>
                 );
             } else {
