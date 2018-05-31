@@ -15,6 +15,7 @@ import Loading from '../../lib/components/Loading';
 import ActionSearch from 'material-ui/svg-icons/action/search';
 import TextField from 'material-ui/TextField';
 import { isURL } from '../../../../common/uris.js';
+import fetch from 'fetch-with-proxy';
 
 const styles = {
     message: {
@@ -71,17 +72,46 @@ export default url => FormatView => {
             error: PropTypes.object,
             p: polyglotPropTypes.isRequired,
             sparql: PropTypes.object,
+            onChange: PropTypes.func.isRequired,
         };
 
         loadFormatData = () => {
-            const { field, loadFormatData } = this.props;
-
+            // const { field, loadFormatData } = this.props;
+            const globalThis = this;
             const value = createUrl(this.props);
             if (!value) {
                 return;
             }
+            fetch(value)
+                .then(function(response) {
+                    if (response.status !== 200) {
+                        return;
+                    }
+                    // Examine the text in the response
+                    response.json().then(data => {
+                        const { ...props } = globalThis.props;
+                        console.log(globalThis.props);  //eslint-disable-line
+                        const newArgs = {
+                            ...props,
+                            formaData: data,
+                            isLoaded: false,
+                        };
+                        globalThis.setProps(newArgs);
+                        console.log(globalThis.props);  //eslint-disable-line
+                    });
+                })
+                .catch(err => {
+                    console.log(err); //eslint-disable-line
+                    const { ...props } = globalThis.props;
+                    const newArgs = {
+                        ...props,
+                        error: true,
+                        isLoaded: false,
+                    };
+                    globalThis.setProps(newArgs);
+                });
 
-            loadFormatData({ field, value });
+            //loadFormatData({ field, value });
         };
 
         componentDidMount() {
@@ -144,6 +174,7 @@ export default url => FormatView => {
 
             return null;
         };
+
         loadButton2ReloadInHttp = () => {
             const { p: polyglot } = this.props;
             const source = URL.parse(window.location.href);
@@ -177,15 +208,12 @@ export default url => FormatView => {
                 error,
                 ...props
             } = this.props;
-            if (error) {
-                console.log(error); //eslint-disable-line
+
+            if (isLoaded) {
                 return (
-                    <div style={styles.container}>
+                    <div>
                         {this.getHeaderFormat()}
-                        <p style={styles.message}>
-                            {polyglot.t('sparql_error')}
-                            {this.loadButton2ReloadInHttp()}
-                        </p>
+                        {<Loading>{polyglot.t('loading')}</Loading>}
                     </div>
                 );
             }
@@ -200,18 +228,27 @@ export default url => FormatView => {
                             </p>
                         </div>
                     );
+                } else {
+                    return (
+                        <div>
+                            {this.getHeaderFormat()}
+                            <FormatView
+                                {...props}
+                                formatData={formatData}
+                                field={field}
+                            />
+                        </div>
+                    );
                 }
             }
 
             return (
-                <div>
+                <div style={styles.container}>
                     {this.getHeaderFormat()}
-                    {!isLoaded && <Loading>{polyglot.t('loading')}</Loading>}
-                    <FormatView
-                        {...props}
-                        formatData={formatData /*injection dans le props ici*/}
-                        field={field}
-                    />
+                    <p style={styles.message}>
+                        {polyglot.t('sparql_error')}
+                        {this.loadButton2ReloadInHttp()}
+                    </p>
                 </div>
             );
         }
