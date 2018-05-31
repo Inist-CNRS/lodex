@@ -5,44 +5,42 @@ import ezsLocals from '../statements';
 ezs.use(ezsBasics);
 ezs.use(ezsLocals);
 
-const exporter = (config, fields, characteristics, stream) =>
-    stream
+const exporter = (config, fields, characteristics, stream) => {
+    const changeData = fields.reduce(
+        (data, field) => {
+            data[field.name] = field.label;
+
+            return data;
+        },
+        { uri: 'uri' },
+    );
+
+    return stream
         .pipe(ezs('filterVersions'))
         .pipe(ezs('filterContributions', { fields }))
         .pipe(
-            ezs((input, output) => {
-                if (!input) {
+            ezs((resource, output) => {
+                if (!resource) {
                     return output.close();
                 }
-                // {
-                //   uri:"http://data.istex.fr",
-                //   id:"Q98n",
-                //   label:"title",
-                //   value:"Terminator"
-                // }
-                const field2label = fields.reduce(
-                    (f2l, e) => {
-                        if (e.label) {
-                            f2l[e.name] = e.label;
-                        }
-                        return f2l;
-                    },
-                    { uri: 'uri' },
-                );
-                const res = Object.keys(input).reduce((r, field) => {
-                    if (field === undefined) {
-                        field = 'undefined';
-                    }
-                    if (input[field]) {
-                        r[field2label[field]] = input[field];
-                    }
-                    return r;
-                }, {});
-                output.send(res);
+
+                const changedFields = Object.entries(resource)
+                    .filter(([name]) => name !== 'uri')
+                    .map(([name, value]) => ({
+                        name,
+                        value,
+                        label: changeData[name],
+                    }));
+                const changedResource = {
+                    uri: resource.uri,
+                    fields: changedFields,
+                };
+                output.send(changedResource);
             }),
         )
         .pipe(ezs('debug'))
         .pipe(ezs('jsonify'));
+};
 
 exporter.extension = 'json';
 exporter.mimeType = 'application/json';

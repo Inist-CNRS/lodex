@@ -43,9 +43,8 @@ const styles = {
 export class LodexResourceView extends Component {
     loadContent = label => {
         const { className, formatData } = this.props;
-        return formatData.map((data, key) => {
-            console.log(data); //eslint-disable-line
-            if (label == data.id) {
+        return formatData[0].fields.map((data, key) => {
+            if (label == data.name) {
                 return (
                     <div key={key}>
                         <span

@@ -29,6 +29,35 @@ const fields = [
         position: 3,
         name: 'Q98n',
     },
+    {
+        cover: 'collection',
+        label: 'Abstract',
+        display_in_list: '',
+        display_in_resource: true,
+        searchable: true,
+        transformers: [
+            {
+                operation: 'COLUMN',
+                args: [
+                    {
+                        name: 'column',
+                        type: 'column',
+                        value: 'Ab',
+                    },
+                ],
+            },
+        ],
+        classes: [],
+        position: 12,
+        format: {
+            args: {
+                paragraphWidth: '100%',
+            },
+            name: 'paragraph',
+        },
+        count: 500,
+        name: 'JDGh',
+    },
 ];
 
 describe.only('export json', () => {
@@ -36,9 +65,15 @@ describe.only('export json', () => {
         let outputString = '';
         exportJson(
             {},
-            fields.slice(0, 1),
+            fields.slice(0, 2),
             null,
-            from([{ uri: 'http://data.istex.fr', Q98n: 'Terminator' }]),
+            from([
+                {
+                    uri: 'http://data.istex.fr',
+                    Q98n: 'Terminator',
+                    JDGh: 'Description',
+                },
+            ]),
         ).pipe(
             ezs((data, feed) => {
                 if (data !== null) {
@@ -46,7 +81,7 @@ describe.only('export json', () => {
                 } else {
                     try {
                         expect(outputString).toEqual(
-                            '[{"uri":"http://data.istex.fr","id":"Q98n","label":"title","value":"Terminator"}]',
+                            '[{"uri":"http://data.istex.fr","fields":[{"name":"Q98n","value":"Terminator","label":"title"},{"name":"JDGh","value":"Description","label":"Abstract"}]}]',
                         );
                     } catch (e) {
                         return done(e);
