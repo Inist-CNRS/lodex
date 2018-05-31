@@ -28,6 +28,7 @@ const fields = [
         searchable: true,
         position: 3,
         name: 'Q98n',
+        language: 'fr',
     },
     {
         cover: 'collection',
@@ -81,7 +82,7 @@ describe.only('export json', () => {
                 } else {
                     try {
                         expect(outputString).toEqual(
-                            '[{"uri":"http://data.istex.fr","fields":[{"name":"Q98n","value":"Terminator","label":"title"},{"name":"JDGh","value":"Description","label":"Abstract"}]}]',
+                            '[{"uri":"http://data.istex.fr","fields":[{"name":"Q98n","value":"Terminator","label":"title","language":"fr"},{"name":"JDGh","value":"Description","label":"Abstract"}]}]',
                         );
                     } catch (e) {
                         return done(e);

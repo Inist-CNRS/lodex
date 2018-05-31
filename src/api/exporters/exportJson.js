@@ -6,9 +6,18 @@ ezs.use(ezsBasics);
 ezs.use(ezsLocals);
 
 const exporter = (config, fields, characteristics, stream) => {
-    const changeData = fields.reduce(
+    const getLabel = fields.reduce(
         (data, field) => {
             data[field.name] = field.label;
+
+            return data;
+        },
+        { uri: 'uri' },
+    );
+
+    const getLang = fields.reduce(
+        (data, field) => {
+            data[field.name] = field.language;
 
             return data;
         },
@@ -29,7 +38,8 @@ const exporter = (config, fields, characteristics, stream) => {
                     .map(([name, value]) => ({
                         name,
                         value,
-                        label: changeData[name],
+                        label: getLabel[name],
+                        language: getLang[name],
                     }));
                 const changedResource = {
                     uri: resource.uri,
@@ -38,7 +48,6 @@ const exporter = (config, fields, characteristics, stream) => {
                 output.send(changedResource);
             }),
         )
-        .pipe(ezs('debug'))
         .pipe(ezs('jsonify'));
 };
 

@@ -103,7 +103,7 @@ export class LodexResourceView extends Component {
                             {data.label} : &#160;
                         </span>
                         {this.ifArray(data.value)}
-                        {this.ifLang(data.lang)}
+                        {this.ifLang(data.language)}
                     </div>
                 );
             } else {
