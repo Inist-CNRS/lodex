@@ -4,7 +4,8 @@ export const parse = value => {
     try {
         return JSON.parse(value);
     } catch (e) {
-        return e.toString();
+        console.error(e);
+        return value;
     }
 };
 
