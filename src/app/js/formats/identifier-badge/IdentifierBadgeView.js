@@ -47,7 +47,7 @@ const IdentifierBadgeView = ({ resource, field, typid, colors }) => {
     });
 
     return (
-        <a href={target} className={css(styles.label)}>
+        <a href={target}>
             <span className={css(styles.key)}>{typid}</span>
             <span className={css(styles.value)}>{identifier}</span>
         </a>
