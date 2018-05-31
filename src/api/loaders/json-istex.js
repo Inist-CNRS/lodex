@@ -8,6 +8,5 @@ ezs.use(ezsLocals);
 export default config => stream =>
     stream
         .pipe(ezs('JSONParse', { separator: 'hits.*', ...config }))
-        .pipe(ezs('flatten', { safe: false }))
-        .pipe(ezs('fixFlatten'))
+        .pipe(ezs('object2columns'))
         .pipe(ezs('standardize'));

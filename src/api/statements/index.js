@@ -20,6 +20,7 @@ import LodexParseQuery from './LodexParseQuery';
 import LodexReduceQuery from './LodexReduceQuery';
 import LodexOutput from './LodexOutput';
 import fixFlatten from './fixFlatten';
+import object2columns from './object2columns';
 
 export default {
     filterVersions,
@@ -43,4 +44,5 @@ export default {
     LodexSetField,
     LodexOutput,
     fixFlatten,
+    object2columns,
 };
