@@ -179,11 +179,13 @@ export default url => FormatView => {
                 ...props
             } = this.props;
 
-            if (isLoaded) {
+            if (error) {
                 return (
-                    <div>
+                    <div style={styles.container}>
                         {this.getHeaderFormat()}
-                        {<Loading>{polyglot.t('loading')}</Loading>}
+                        <p style={styles.message}>
+                            {polyglot.t('sparql_error')}
+                        </p>
                     </div>
                 );
             }
@@ -198,27 +200,18 @@ export default url => FormatView => {
                             </p>
                         </div>
                     );
-                } else {
-                    return (
-                        <div>
-                            {this.getHeaderFormat()}
-                            <FormatView
-                                {...props}
-                                formatData={formatData}
-                                field={field}
-                            />
-                        </div>
-                    );
                 }
             }
 
             return (
-                <div style={styles.container}>
+                <div>
                     {this.getHeaderFormat()}
-                    <p style={styles.message}>
-                        {polyglot.t('sparql_error')}
-                        {this.loadButton2ReloadInHttp()}
-                    </p>
+                    {!isLoaded && <Loading>{polyglot.t('loading')}</Loading>}
+                    <FormatView
+                        {...props}
+                        formatData={formatData /*injection dans le props ici*/}
+                        field={field}
+                    />
                 </div>
             );
         }
