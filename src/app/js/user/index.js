@@ -57,18 +57,37 @@ export const getRequest = createSelector(
     getToken,
     getCookie,
     (_, props) => props,
-    (token, cookie, { body, method = 'GET', url }) => ({
-        url,
-        body: JSON.stringify(body),
-        credentials: 'same-origin', //auth with include => error 401 https://developer.mozilla.org/fr/docs/Web/API/Request/credentials
-        headers: {
+    (
+        token,
+        cookie,
+        {
+            body,
+            method = 'GET',
+            url,
+            cred = 'same-origin',
+            cook = true,
+            auth = true,
+        },
+    ) => {
+        let myHeaders = new Headers({
             Accept: 'application/json',
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-            Cookie: cookie,
-        },
-        method,
-    }),
+        });
+        if (cook) {
+            myHeaders.append('Cookie', cookie);
+        }
+        if (auth) {
+            myHeaders.append('Authorization', `Bearer ${token}`);
+        }
+
+        return {
+            url,
+            body: JSON.stringify(body),
+            credentials: cred, //auth with include => error 401 https://developer.mozilla.org/fr/docs/Web/API/Request/credentials
+            headers: myHeaders,
+            method,
+        };
+    },
 );
 
 export const getLoginRequest = (state, credentials) =>
@@ -283,10 +302,19 @@ export const getUploadUrlRequest = (state, { url, parserName }) =>
     });
 
 export const getUrlRequest = (state, { url, queryString }) => {
-    console.log(url); //eslint-disable-line
     return getRequest(state, {
         method: 'GET',
         url: `${url}${queryString ? `?${queryString}` : ''}`,
+    });
+};
+
+export const getSparqlRequest = (state, { url, queryString }) => {
+    return getRequest(state, {
+        method: 'GET',
+        url: `${url}${queryString ? `?${queryString}` : ''}`,
+        cred: 'same-origin',
+        cook: false,
+        auth: false,
     });
 };
 
@@ -337,4 +365,5 @@ export const selectors = {
     getUploadUrlRequest,
     getUrlRequest,
     getExportPublishedDatasetRequest,
+    getSparqlRequest,
 };
