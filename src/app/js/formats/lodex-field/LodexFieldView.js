@@ -57,7 +57,7 @@ export class LodexResourceView extends Component {
                 >
                     <ul>
                         {value.map((data, key) => {
-                            return <li key={key}>{data}</li>;
+                            return <li key={key}>{this.ifUrl(data)}</li>;
                         })}
                     </ul>
                 </div>
@@ -68,7 +68,7 @@ export class LodexResourceView extends Component {
                     className={('lodex_field_value', className)}
                     style={styles.value}
                 >
-                    {value}
+                    {this.ifUrl(value)}
                 </span>
             );
         }
@@ -87,6 +87,14 @@ export class LodexResourceView extends Component {
             );
         } else {
             return;
+        }
+    };
+
+    ifUrl = value => {
+        if (isURL(value)) {
+            return <a href={value}>{value}</a>;
+        } else {
+            return { value };
         }
     };
 
