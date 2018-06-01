@@ -15,7 +15,6 @@ import Loading from '../../lib/components/Loading';
 import ActionSearch from 'material-ui/svg-icons/action/search';
 import TextField from 'material-ui/TextField';
 import { isURL } from '../../../../common/uris.js';
-import fetch from 'fetch-with-proxy';
 
 const styles = {
     message: {
@@ -76,42 +75,13 @@ export default url => FormatView => {
         };
 
         loadFormatData = () => {
-            // const { field, loadFormatData } = this.props;
-            const globalThis = this;
+            const { field, loadFormatData } = this.props;
             const value = createUrl(this.props);
             if (!value) {
                 return;
             }
-            fetch(value)
-                .then(function(response) {
-                    if (response.status !== 200) {
-                        return;
-                    }
-                    // Examine the text in the response
-                    response.json().then(data => {
-                        const { ...props } = globalThis.props;
-                        console.log(globalThis.props);  //eslint-disable-line
-                        const newArgs = {
-                            ...props,
-                            formaData: data,
-                            isLoaded: false,
-                        };
-                        globalThis.setProps(newArgs);
-                        console.log(globalThis.props);  //eslint-disable-line
-                    });
-                })
-                .catch(err => {
-                    console.log(err); //eslint-disable-line
-                    const { ...props } = globalThis.props;
-                    const newArgs = {
-                        ...props,
-                        error: true,
-                        isLoaded: false,
-                    };
-                    globalThis.setProps(newArgs);
-                });
 
-            //loadFormatData({ field, value });
+            loadFormatData({ field, value });
         };
 
         componentDidMount() {
