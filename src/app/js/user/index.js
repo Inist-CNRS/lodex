@@ -282,11 +282,13 @@ export const getUploadUrlRequest = (state, { url, parserName }) =>
         },
     });
 
-export const getUrlRequest = (state, { url, queryString }) =>
-    getRequest(state, {
+export const getUrlRequest = (state, { url, queryString }) => {
+    console.log(url); //eslint-disable-line
+    return getRequest(state, {
         method: 'GET',
         url: `${url}${queryString ? `?${queryString}` : ''}`,
     });
+};
 
 export const getExportPublishedDatasetRequest = (
     state,
