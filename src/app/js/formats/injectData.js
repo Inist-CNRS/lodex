@@ -123,6 +123,12 @@ export default url => FormatView => {
                 );
             }
 
+            if (formatData != undefined && formatData.length === 0) {
+                return (
+                    <p style={styles.message}>{polyglot.t('no_chart_data')}</p>
+                );
+            }
+
             return (
                 <div>
                     {!isLoaded && <Loading>{polyglot.t('loading')}</Loading>}
