@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
 import URL from 'url';
@@ -9,8 +8,6 @@ import {
     field as fieldPropTypes,
     polyglot as polyglotPropTypes,
 } from '../../propTypes.js';
-import { fromFormat } from '../../public/selectors';
-import { loadFormatData } from '../../formats/reducer';
 import Loading from '../../lib/components/Loading';
 import ActionSearch from 'material-ui/svg-icons/action/search';
 import TextField from 'material-ui/TextField';
@@ -47,19 +44,8 @@ const styles = {
     },
 };
 
-const getCreateUrl = url => {
-    if (typeof url === 'function') {
-        return url;
-    }
-    if (typeof url === 'string') {
-        return () => url;
-    }
-
-    return ({ field, resource }) => resource[field.name];
-};
-
 export default url => FormatView => {
-    const createUrl = getCreateUrl(url);
+    console.log(url());//eslint-disable-line
 
     class SparqlRequest extends Component {
         static propTypes = {
@@ -71,34 +57,6 @@ export default url => FormatView => {
             error: PropTypes.object,
             p: polyglotPropTypes.isRequired,
             sparql: PropTypes.object,
-            onChange: PropTypes.func.isRequired,
-        };
-
-        loadFormatData = () => {
-            const { field, loadFormatData } = this.props;
-            const value = createUrl(this.props);
-            if (!value) {
-                return;
-            }
-
-            loadFormatData({ field, value });
-        };
-
-        componentDidMount() {
-            const { field } = this.props;
-            if (!field) {
-                return;
-            }
-            this.loadFormatData();
-        }
-
-        filterFormatData = filter => {
-            const { field, loadFormatData } = this.props;
-            loadFormatData({
-                field,
-                value: createUrl(this.props),
-                filter,
-            });
         };
 
         redirectIfUrl = () => {
@@ -219,17 +177,5 @@ export default url => FormatView => {
 
     SparqlRequest.WrappedComponent = FormatView;
 
-    const mapStateToProps = (state, { field }) => ({
-        formatData: fromFormat.getFormatData(state, field.name),
-        isLoaded: field && fromFormat.isFormatDataLoaded(state, field.name),
-        error: fromFormat.getFormatError(state, field.name),
-    });
-
-    const mapDispatchToProps = {
-        loadFormatData,
-    };
-
-    return compose(connect(mapStateToProps, mapDispatchToProps), translate)(
-        SparqlRequest,
-    );
+    return compose(translate)(SparqlRequest);
 };
