@@ -174,8 +174,6 @@ export default compose(
             }
             return value;
         }
-        return `/api/run/json-document/?$query[uri]=${encodeURIComponent(
-            resource[field.name],
-        )}`;
+        return '/api/export/json/?uri=' + resource[field.name];
     }),
 )(LodexResourceView);
