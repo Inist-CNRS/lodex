@@ -67,12 +67,13 @@ export const getRequest = createSelector(
             cred = 'same-origin',
             cook = true,
             auth = true,
+            other = {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
         },
     ) => {
-        let myHeaders = new Headers({
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-        });
+        let myHeaders = new Headers(other);
         if (cook) {
             myHeaders.append('Cookie', cookie);
         }
@@ -83,7 +84,7 @@ export const getRequest = createSelector(
         return {
             url,
             body: JSON.stringify(body),
-            credentials: cred, //auth with include => error 401 https://developer.mozilla.org/fr/docs/Web/API/Request/credentials
+            credentials: cred,
             headers: myHeaders,
             method,
         };
@@ -301,20 +302,24 @@ export const getUploadUrlRequest = (state, { url, parserName }) =>
         },
     });
 
-export const getUrlRequest = (state, { url, queryString }) => {
-    return getRequest(state, {
-        method: 'GET',
-        url: `${url}${queryString ? `?${queryString}` : ''}`,
-    });
-};
+// export const getUrlRequest = (state, { url, queryString }) => {
+//     return getRequest(state, {
+//         method: 'GET',
+//         url: `${url}${queryString ? `?${queryString}` : ''}`,
+//     });
+// };
 
-export const getSparqlRequest = (state, { url, queryString }) => {
+export const getUrlRequest = (state, { url }) => {
+    //getSparqlRequest
     return getRequest(state, {
         method: 'GET',
-        url: `${url}${queryString ? `?${queryString}` : ''}`,
-        cred: 'same-origin',
+        url: url,
+        cred: 'omit',
         cook: false,
         auth: false,
+        other: {
+            Accept: 'application/sparql-results+json',
+        },
     });
 };
 
@@ -365,5 +370,5 @@ export const selectors = {
     getUploadUrlRequest,
     getUrlRequest,
     getExportPublishedDatasetRequest,
-    getSparqlRequest,
+    // getSparqlRequest,
 };
