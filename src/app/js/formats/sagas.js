@@ -46,9 +46,9 @@ import { COVER_DATASET } from '../../../common/cover';
 //     yield put(loadFormatDataSuccess({ name, data: response }));
 // }
 
-export function* loadFormatData(name, url) {
+export function* loadFormatDataSparql(name, url) {
     //loadFormatDataSparql
-    console.warn('ok', url);
+    console.log('toto20', url); //eslint-disable-line
     const request = yield select(fromUser.getSparqlRequest, {
         url,
     });
@@ -89,7 +89,8 @@ export function* handleLoadFormatDataRequest({
         },
     });
 
-    yield call(loadFormatData, name, value, queryString);
+    console.log('toto10', value); //eslint-disable-line
+    yield call(loadFormatDataSparql, name, value, queryString);
 }
 
 export function* loadFormatDataForName(name, filter) {
@@ -116,7 +117,8 @@ export function* loadFormatDataForName(name, filter) {
         },
     });
 
-    yield call(loadFormatData, name, url, queryString);
+    console.log('nope', url); //eslint-disable-line
+    yield call(loadFormatDataSparql, name, url, queryString);
 }
 
 export function* handleFilterFormatDataRequest({ payload: { filter } = {} }) {
@@ -126,6 +128,7 @@ export function* handleFilterFormatDataRequest({ payload: { filter } = {} }) {
         return;
     }
 
+    console.log('nope', name); //eslint-disable-line
     yield all(names.map(name => call(loadFormatDataForName, name, filter)));
 }
 

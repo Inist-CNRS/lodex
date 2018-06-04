@@ -13,6 +13,24 @@ export const loadFormatData = createAction(LOAD_FORMAT_DATA);
 export const loadFormatDataSuccess = createAction(LOAD_FORMAT_DATA_SUCCESS);
 export const loadFormatDataError = createAction(LOAD_FORMAT_DATA_ERROR);
 
+// export const PRE_LOAD_FORMAT_DATA_SPARQL = 'PRE_LOAD_FORMAT_DATA_SPARQL';
+// export const UN_LOAD_FORMAT_DATA_SPARQL = 'UN_LOAD_FORMAT_DATA_SPARQL';
+// export const LOAD_FORMAT_DATA_SPARQL = 'LOAD_FORMAT_DATA_SPARQL';
+// export const LOAD_FORMAT_DATA_SPARQL_SUCCESS =
+//     'LOAD_FORMAT_DATA_SPARQL_SUCCESS';
+// export const LOAD_FORMAT_DATA_SPARQL_ERROR = 'LOAD_FORMAT_DATA_SPARQL_ERROR';
+//
+// export const preLoadFormatDataSparql = createAction(
+//     PRE_LOAD_FORMAT_DATA_SPARQL,
+// );
+// export const unLoadFormatDataSparql = createAction(UN_LOAD_FORMAT_DATA_SPARQL);
+// export const loadFormatDataSparql = createAction(LOAD_FORMAT_DATA_SPARQL);
+// export const loadFormatDataSparqlSuccess = createAction(
+//     LOAD_FORMAT_DATA_SPARQL_SUCCESS,
+// );
+// export const loadFormatDataSparqlError = createAction(
+//     LOAD_FORMAT_DATA_SPARQL_ERROR,
+// );
 export const defaultState = {};
 
 export default handleActions(
@@ -21,10 +39,13 @@ export default handleActions(
             ...state,
             [field.name]: 'loading',
         }),
-        [LOAD_FORMAT_DATA_SUCCESS]: (state, { payload: { name, data } }) => ({
-            ...state,
-            [name]: { data },
-        }),
+        [LOAD_FORMAT_DATA_SUCCESS]: (state, { payload: { name, data } }) => {
+            console.log('toto100', data); //eslint-disable-line
+            return {
+                ...state,
+                [name]: { data },
+            };
+        },
         [LOAD_FORMAT_DATA_ERROR]: (state, { payload: { name, error } }) => ({
             ...state,
             [name]: { error },
@@ -33,6 +54,28 @@ export default handleActions(
             ...state,
             [name]: null,
         }),
+        // [LOAD_FORMAT_DATA_SPARQL]: (state, { payload: { field } }) => ({
+        //     ...state,
+        //     [field.name]: 'loading',
+        // }),
+        // [LOAD_FORMAT_DATA_SPARQL_SUCCESS]: (
+        //     state,
+        //     { payload: { name, data } },
+        // ) => ({
+        //     ...state,
+        //     [name]: { data },
+        // }),
+        // [LOAD_FORMAT_DATA_SPARQL_ERROR]: (
+        //     state,
+        //     { payload: { name, error } },
+        // ) => ({
+        //     ...state,
+        //     [name]: { error },
+        // }),
+        // [UN_LOAD_FORMAT_DATA_SPARQL]: (state, { payload: { name } }) => ({
+        //     ...state,
+        //     [name]: null,
+        // }),
     },
     defaultState,
 );
