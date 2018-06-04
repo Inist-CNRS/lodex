@@ -302,15 +302,14 @@ export const getUploadUrlRequest = (state, { url, parserName }) =>
         },
     });
 
-// export const getUrlRequest = (state, { url, queryString }) => {
-//     return getRequest(state, {
-//         method: 'GET',
-//         url: `${url}${queryString ? `?${queryString}` : ''}`,
-//     });
-// };
+export const getUrlRequest = (state, { url, queryString }) => {
+    return getRequest(state, {
+        method: 'GET',
+        url: `${url}${queryString ? `?${queryString}` : ''}`,
+    });
+};
 
-export const getUrlRequest = (state, { url }) => {
-    //getSparqlRequest
+export const getSparqlRequest = (state, { url }) => {
     return getRequest(state, {
         method: 'GET',
         url: url,
@@ -370,5 +369,5 @@ export const selectors = {
     getUploadUrlRequest,
     getUrlRequest,
     getExportPublishedDatasetRequest,
-    // getSparqlRequest,
+    getSparqlRequest,
 };

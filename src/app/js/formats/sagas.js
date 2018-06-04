@@ -22,10 +22,35 @@ import { CONFIGURE_FIELD_SUCCESS } from '../fields';
 import { UPDATE_CHARACTERISTICS_SUCCESS } from '../characteristic';
 import { COVER_DATASET } from '../../../common/cover';
 
-export function* loadFormatData(name, url, queryString) {
-    const request = yield select(fromUser.getUrlRequest, {
+// export function* loadFormatData(name, url, queryString) {
+//     const request = yield select(fromUser.getUrlRequest, {
+//         url,
+//         queryString,
+//     });
+//
+//     const { error, response } = yield call(fetchSaga, request);
+//     if (error) {
+//         yield put(loadFormatDataError({ name, error }));
+//         return;
+//     }
+//     if (response.data) {
+//         yield put(loadFormatDataSuccess({ name, data: response.data }));
+//         return;
+//     }
+//
+//     if (response.total === 0) {
+//         yield put(loadFormatDataSuccess({ name, data: [] }));
+//         return;
+//     }
+//
+//     yield put(loadFormatDataSuccess({ name, data: response }));
+// }
+
+export function* loadFormatData(name, url) {
+    //loadFormatDataSparql
+    console.warn('ok', url);
+    const request = yield select(fromUser.getSparqlRequest, {
         url,
-        queryString,
     });
 
     const { error, response } = yield call(fetchSaga, request);
