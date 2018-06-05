@@ -26,6 +26,7 @@ export function* loadFormatData(name, url, queryString) {
     let request;
     if (
         url.toLowerCase().includes('select') &&
+        url.toLowerCase().includes('where') &&
         url.toLowerCase().includes('?query=')
     ) {
         request = yield select(fromUser.getSparqlRequest, {
