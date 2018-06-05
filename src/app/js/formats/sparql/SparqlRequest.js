@@ -100,7 +100,7 @@ export default url => FormatView => {
             });
         };
 
-        redirectIfUrl = () => {
+        windowOpenIfUrl = () => {
             const { resource, field } = this.props;
             const requestText = resource[field.name];
 
@@ -125,7 +125,7 @@ export default url => FormatView => {
                                     : styles.icon
                             }
                             color="lightGrey"
-                            onClick={this.redirectIfUrl}
+                            onClick={this.windowOpenIfUrl}
                         />
                         <TextField
                             style={styles.input1}
