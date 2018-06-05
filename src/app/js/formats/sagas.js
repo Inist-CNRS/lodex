@@ -24,7 +24,10 @@ import { COVER_DATASET } from '../../../common/cover';
 
 export function* loadFormatData(name, url, queryString) {
     let request;
-    if (url.toLowerCase().includes('sparql')) {
+    if (
+        url.toLowerCase().includes('select') &&
+        url.toLowerCase().includes('?query=')
+    ) {
         request = yield select(fromUser.getSparqlRequest, {
             url,
         });
