@@ -75,10 +75,10 @@ export const getRequest = createSelector(
     ) => {
         let myHeaders = new Headers(other);
         if (cook) {
-            myHeaders.append('Cookie', cookie);
+            myHeaders['Cookie'] = cookie;
         }
         if (auth) {
-            myHeaders.append('Authorization', `Bearer ${token}`);
+            myHeaders['Authorization'] = `Bearer ${token}`;
         }
 
         return {
