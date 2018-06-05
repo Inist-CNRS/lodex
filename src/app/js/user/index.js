@@ -67,25 +67,24 @@ export const getRequest = createSelector(
             cred = 'same-origin',
             cook = true,
             auth = true,
-            other = {
+            head = {
                 Accept: 'application/json',
                 'Content-Type': 'application/json',
             },
         },
     ) => {
-        let myHeaders = new Headers(other);
         if (cook) {
-            myHeaders['Cookie'] = cookie;
+            head['Cookie'] = cookie;
         }
         if (auth) {
-            myHeaders['Authorization'] = `Bearer ${token}`;
+            head['Authorization'] = `Bearer ${token}`;
         }
 
         return {
             url,
             body: JSON.stringify(body),
             credentials: cred,
-            headers: myHeaders,
+            headers: head,
             method,
         };
     },
