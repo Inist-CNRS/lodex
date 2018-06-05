@@ -57,18 +57,37 @@ export const getRequest = createSelector(
     getToken,
     getCookie,
     (_, props) => props,
-    (token, cookie, { body, method = 'GET', url }) => ({
-        url,
-        body: JSON.stringify(body),
-        credentials: 'same-origin', //auth with include => error 401 https://developer.mozilla.org/fr/docs/Web/API/Request/credentials
-        headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-            Cookie: cookie,
+    (
+        token,
+        cookie,
+        {
+            body,
+            method = 'GET',
+            url,
+            cred = 'same-origin',
+            cook = true,
+            auth = true,
+            head = {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
         },
-        method,
-    }),
+    ) => {
+        if (cook) {
+            head['Cookie'] = cookie;
+        }
+        if (auth) {
+            head['Authorization'] = `Bearer ${token}`;
+        }
+
+        return {
+            url,
+            body: JSON.stringify(body),
+            credentials: cred,
+            headers: head,
+            method,
+        };
+    },
 );
 
 export const getLoginRequest = (state, credentials) =>
@@ -288,6 +307,19 @@ export const getUrlRequest = (state, { url, queryString }) =>
         url: `${url}${queryString ? `?${queryString}` : ''}`,
     });
 
+export const getSparqlRequest = (state, { url }) => {
+    return getRequest(state, {
+        method: 'GET',
+        url: url,
+        cred: 'omit',
+        cook: false,
+        auth: false,
+        head: {
+            Accept: 'application/sparql-results+json',
+        },
+    });
+};
+
 export const getExportPublishedDatasetRequest = (
     state,
     { type, queryString },
@@ -335,4 +367,5 @@ export const selectors = {
     getUploadUrlRequest,
     getUrlRequest,
     getExportPublishedDatasetRequest,
+    getSparqlRequest,
 };

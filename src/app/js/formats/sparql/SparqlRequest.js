@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
+import URL from 'url';
 
 import {
     field as fieldPropTypes,
@@ -70,11 +71,11 @@ export default url => FormatView => {
             error: PropTypes.object,
             p: polyglotPropTypes.isRequired,
             sparql: PropTypes.object,
+            onChange: PropTypes.func.isRequired,
         };
 
         loadFormatData = () => {
             const { field, loadFormatData } = this.props;
-
             const value = createUrl(this.props);
             if (!value) {
                 return;
@@ -100,7 +101,7 @@ export default url => FormatView => {
             });
         };
 
-        windowOpenIfUrl = () => {
+        redirectIfUrl = () => {
             const { resource, field } = this.props;
             const requestText = resource[field.name];
 
@@ -125,7 +126,7 @@ export default url => FormatView => {
                                     : styles.icon
                             }
                             color="lightGrey"
-                            onClick={this.windowOpenIfUrl}
+                            onClick={this.redirectIfUrl}
                         />
                         <TextField
                             style={styles.input1}
@@ -142,6 +143,29 @@ export default url => FormatView => {
             }
 
             return null;
+        };
+
+        loadButton2ReloadInHttp = () => {
+            const { p: polyglot } = this.props;
+            const source = URL.parse(window.location.href);
+            if (source.protocol == 'http:') {
+                return null;
+            }
+            const target = {
+                protocol: 'http:',
+                hostname: source.hostname,
+                slashes: source.slashes,
+                port: source.port,
+                pathname: source.pathname,
+                search: source.search,
+            };
+            const url = URL.format(target);
+            return (
+                <p>
+                    {polyglot.t('sparql_http_retry')}
+                    <a href={url}> {polyglot.t('here')} </a>
+                </p>
+            );
         };
 
         render() {
