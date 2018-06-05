@@ -101,7 +101,6 @@ export function* handleFilterFormatDataRequest({ payload: { filter } = {} }) {
         return;
     }
 
-    console.log('nope', name); //eslint-disable-line
     yield all(names.map(name => call(loadFormatDataForName, name, filter)));
 }
 

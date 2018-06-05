@@ -302,12 +302,11 @@ export const getUploadUrlRequest = (state, { url, parserName }) =>
         },
     });
 
-export const getUrlRequest = (state, { url, queryString }) => {
-    return getRequest(state, {
+export const getUrlRequest = (state, { url, queryString }) =>
+    getRequest(state, {
         method: 'GET',
         url: `${url}${queryString ? `?${queryString}` : ''}`,
     });
-};
 
 export const getSparqlRequest = (state, { url }) => {
     return getRequest(state, {
