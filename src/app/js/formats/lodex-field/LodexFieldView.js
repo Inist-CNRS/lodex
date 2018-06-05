@@ -94,7 +94,7 @@ export class LodexResourceView extends Component {
         if (isURL(value)) {
             return <a href={value}>{value}</a>;
         } else {
-            return { value };
+            return <p>{value}</p>;
         }
     };
 
