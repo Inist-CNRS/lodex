@@ -314,7 +314,7 @@ export const getSparqlRequest = (state, { url }) => {
         cred: 'omit',
         cook: false,
         auth: false,
-        other: {
+        head: {
             Accept: 'application/sparql-results+json',
         },
     });

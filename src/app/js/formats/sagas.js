@@ -23,10 +23,17 @@ import { UPDATE_CHARACTERISTICS_SUCCESS } from '../characteristic';
 import { COVER_DATASET } from '../../../common/cover';
 
 export function* loadFormatData(name, url, queryString) {
-    const request = yield select(fromUser.getUrlRequest, {
-        url,
-        queryString,
-    });
+    let request;
+    if (url.toLowerCase().includes('sparql')) {
+        request = yield select(fromUser.getSparqlRequest, {
+            url,
+        });
+    } else {
+        request = yield select(fromUser.getUrlRequest, {
+            url,
+            queryString,
+        });
+    }
 
     const { error, response } = yield call(fetchSaga, request);
     if (error) {
