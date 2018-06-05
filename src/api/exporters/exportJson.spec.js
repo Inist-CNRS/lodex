@@ -61,7 +61,7 @@ const fields = [
     },
 ];
 
-describe.only('export json', () => {
+describe('export json', () => {
     it('should export simple property', done => {
         let outputString = '';
         exportJson(
