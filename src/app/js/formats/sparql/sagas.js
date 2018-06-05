@@ -11,21 +11,28 @@ import {
     LOAD_FORMAT_DATA,
     loadFormatDataSuccess,
     loadFormatDataError,
-} from './reducer';
-import getQueryString from '../lib/getQueryString';
-import fetchSaga from '../lib/sagas/fetchSaga';
-import { fromDataset, fromFacet, fromFormat } from '../public/selectors';
-import { fromFields, fromUser, fromCharacteristic } from '../sharedSelectors';
-import { TOGGLE_FACET_VALUE, CLEAR_FACET, INVERT_FACET } from '../public/facet';
-import { APPLY_FILTER } from '../public/dataset';
-import { CONFIGURE_FIELD_SUCCESS } from '../fields';
-import { UPDATE_CHARACTERISTICS_SUCCESS } from '../characteristic';
-import { COVER_DATASET } from '../../../common/cover';
+} from '.././reducer';
+import getQueryString from '../../lib/getQueryString';
+import fetchSaga from '../../lib/sagas/fetchSaga';
+import { fromDataset, fromFacet, fromFormat } from '../../public/selectors';
+import {
+    fromFields,
+    fromUser,
+    fromCharacteristic,
+} from '../../sharedSelectors';
+import {
+    TOGGLE_FACET_VALUE,
+    CLEAR_FACET,
+    INVERT_FACET,
+} from '../../public/facet';
+import { APPLY_FILTER } from '../../public/dataset';
+import { CONFIGURE_FIELD_SUCCESS } from '../../fields';
+import { UPDATE_CHARACTERISTICS_SUCCESS } from '../../characteristic';
+import { COVER_DATASET } from '../../../../common/cover';
 
-export function* loadFormatData(name, url, queryString) {
-    const request = yield select(fromUser.getUrlRequest, {
+export function* loadFormatDataSparql(name, url) {
+    const request = yield select(fromUser.getSparqlRequest, {
         url,
-        queryString,
     });
 
     const { error, response } = yield call(fetchSaga, request);
@@ -64,7 +71,7 @@ export function* handleLoadFormatDataRequest({
         },
     });
 
-    yield call(loadFormatData, name, value, queryString);
+    yield call(loadFormatDataSparql, name, value, queryString);
 }
 
 export function* loadFormatDataForName(name, filter) {
@@ -91,7 +98,7 @@ export function* loadFormatDataForName(name, filter) {
         },
     });
 
-    yield call(loadFormatData, name, url, queryString);
+    yield call(loadFormatDataSparql, name, url, queryString);
 }
 
 export function* handleFilterFormatDataRequest({ payload: { filter } = {} }) {
@@ -101,7 +108,6 @@ export function* handleFilterFormatDataRequest({ payload: { filter } = {} }) {
         return;
     }
 
-    console.log('nope', name); //eslint-disable-line
     yield all(names.map(name => call(loadFormatDataForName, name, filter)));
 }
 

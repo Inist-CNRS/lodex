@@ -11,6 +11,7 @@ import fieldsSagas from '../fields/sagas';
 import resourceSagas from './resource/sagas';
 import graphSagas from '../formats/sagas';
 import userSagas from '../user/sagas';
+import sparqlSagas from '../formats/sparql/sagas';
 
 export default function*() {
     yield fork(characteristicSaga);
@@ -23,5 +24,6 @@ export default function*() {
     yield fork(fieldsSagas);
     yield fork(resourceSagas);
     yield fork(graphSagas);
+    yield fork(sparqlSagas);
     yield fork(userSagas);
 }
