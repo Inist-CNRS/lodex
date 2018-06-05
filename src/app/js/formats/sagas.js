@@ -23,7 +23,7 @@ import { UPDATE_CHARACTERISTICS_SUCCESS } from '../characteristic';
 import { COVER_DATASET } from '../../../common/cover';
 
 export function* loadFormatData(name, url, queryString) {
-    let request;
+    let request; //@TODO report the type of query in SparqlRequest
     if (
         url.toLowerCase().includes('select') &&
         url.toLowerCase().includes('where') &&
