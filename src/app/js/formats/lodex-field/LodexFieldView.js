@@ -7,6 +7,8 @@ import URL from 'url';
 import { isURL } from '../../../../common/uris.js';
 import { field as fieldPropTypes } from '../../propTypes';
 import injectData from '../injectData';
+import ActionSearch from 'material-ui/svg-icons/action/search';
+import TextField from 'material-ui/TextField';
 
 const styles = {
     container: {
@@ -43,6 +45,21 @@ const styles = {
         color: 'grey',
         textTransform: 'uppercase',
         visibility: 'visible',
+    },
+    input1: {
+        fontSize: '0.8em',
+        width: '95%',
+        borderImage: 'none',
+    },
+    icon: {
+        cursor: 'default',
+        verticalAlign: 'middle',
+        width: '5%',
+    },
+    pointer: {
+        cursor: 'pointer',
+        verticalAlign: 'middle',
+        width: '5%',
     },
 };
 
@@ -120,6 +137,38 @@ export class LodexResourceView extends Component {
         });
     };
 
+    windowOpenIfUrl = () => {
+        const { resource, field } = this.props;
+        const requestText = resource[field.name];
+
+        if (isURL(requestText)) {
+            window.location.replace(requestText);
+        }
+    };
+
+    getHeaderFormat = () => {
+        const { resource, field, param } = this.props;
+        const linkText = resource[field.name];
+        if (!param.hiddenInfo) {
+            return (
+                <div>
+                    <ActionSearch
+                        style={isURL(linkText) ? styles.pointer : styles.icon}
+                        color="lightGrey"
+                        onClick={this.windowOpenIfUrl}
+                    />
+                    <TextField
+                        style={styles.input1}
+                        name="sparqlRequest"
+                        value={linkText}
+                    />
+                </div>
+            );
+        }
+
+        return null;
+    };
+
     render() {
         const { className, formatData, param } = this.props;
         if (formatData == undefined) {
@@ -128,10 +177,13 @@ export class LodexResourceView extends Component {
         let labelArray = param.labelArray.map(e => e.trim()); //clean string
 
         return (
-            <div className={className} style={styles.container}>
-                {labelArray.map(label => {
-                    return this.loadContent(label);
-                })}
+            <div>
+                {this.getHeaderFormat()}
+                <div className={className} style={styles.container}>
+                    {labelArray.map(label => {
+                        return this.loadContent(label);
+                    })}
+                </div>
             </div>
         );
     }

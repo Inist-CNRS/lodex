@@ -40,6 +40,7 @@ class LodexFieldAdmin extends Component {
         args: PropTypes.shape({
             param: PropTypes.shape({
                 labelArray: PropTypes.arrayOf(PropTypes.string),
+                hiddenInfo: PropTypes.object,
             }),
         }),
         onChange: PropTypes.func.isRequired,
@@ -57,9 +58,16 @@ class LodexFieldAdmin extends Component {
         this.props.onChange(newArgs);
     };
 
+    setHiddenInfo = event => {
+        let hiddenInfo = event.target.checked;
+        const { param, ...state } = this.props.args;
+        const newState = { ...state, param: { ...param, hiddenInfo } };
+        this.props.onChange(newState);
+    };
+
     render() {
         const { p: polyglot, args: { param } } = this.props;
-        const { labelArray } = param || defaultArgs.param;
+        const { labelArray, hiddenInfo } = param || defaultArgs.param;
         const label = labelArray.join(';');
 
         return (
@@ -71,6 +79,15 @@ class LodexFieldAdmin extends Component {
                     style={styles.input}
                     value={label}
                 />
+                <label>
+                    <input
+                        type="checkbox"
+                        checked={hiddenInfo}
+                        onChange={this.setHiddenInfo}
+                        style={styles.checkbox}
+                    />
+                    {polyglot.t('hidden_info')}
+                </label>
             </div>
         );
     }
