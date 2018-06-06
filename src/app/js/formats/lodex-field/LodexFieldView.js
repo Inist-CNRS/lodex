@@ -177,13 +177,11 @@ export class LodexResourceView extends Component {
         let labelArray = param.labelArray.map(e => e.trim()); //clean string
 
         return (
-            <div>
+            <div className={className} style={styles.container}>
                 {this.getHeaderFormat()}
-                <div className={className} style={styles.container}>
-                    {labelArray.map(label => {
-                        return this.loadContent(label);
-                    })}
-                </div>
+                {labelArray.map(label => {
+                    return this.loadContent(label);
+                })}
             </div>
         );
     }
