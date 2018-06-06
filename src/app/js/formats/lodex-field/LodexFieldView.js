@@ -51,7 +51,7 @@ export class LodexResourceView extends Component {
         const { className } = this.props;
         if (typeof value == 'object') {
             return (
-                <div
+                <span
                     className={('lodex_field_value_array', className)}
                     style={styles.array}
                 >
@@ -60,7 +60,7 @@ export class LodexResourceView extends Component {
                             return <li key={key}>{this.ifUrl(data)}</li>;
                         })}
                     </ul>
-                </div>
+                </span>
             );
         } else {
             return (
@@ -94,7 +94,7 @@ export class LodexResourceView extends Component {
         if (isURL(value)) {
             return <a href={value}>{value}</a>;
         } else {
-            return <p>{value}</p>;
+            return <span>{value}</span>;
         }
     };
 
