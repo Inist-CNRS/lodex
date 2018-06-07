@@ -7,6 +7,7 @@ import { isURL } from '../../../../../common/uris.js';
 import { field as fieldPropTypes } from '../../../propTypes';
 import URL from 'url';
 import topairs from 'lodash.topairs';
+import clonedeep from 'lodash.clonedeep';
 import toSentenceCase from 'js-sentencecase';
 
 const styles = {
@@ -53,9 +54,42 @@ const styles = {
         color: 'rgb(158, 158, 158)',
         fontSize: '1.3rem',
     },
+    array: {
+        flexGrow: '2',
+        fontSize: '1.5rem',
+        textDecoration: 'none',
+        margin: 0,
+    },
 };
 
 export class SparqlTextField extends Component {
+    ifArray = result => {
+        const { className, sparql } = this.props;
+        const temp = clonedeep(result);
+        if (temp[1].value.includes(sparql.separator)) {
+            temp[1].value = temp[1].value.split(sparql.separator);
+            return (
+                <div
+                    className={('value_sparql_array', className)}
+                    style={styles.array}
+                >
+                    <ul>
+                        {temp[1].value.map((data, key) => {
+                            temp[1].value = data;
+                            return <li key={key}>{this.showURL(temp)}</li>;
+                        })}
+                    </ul>
+                </div>
+            );
+        } else {
+            return (
+                <div className="value_sparql" style={styles.value}>
+                    {this.showURL(temp)} &#160;
+                </div>
+            );
+        }
+    };
+
     showURL = result => {
         if (isURL(result[1].value) && result[1].type == 'uri') {
             return <a href={result[1].value}>{result[1].value}</a>;
@@ -92,12 +126,7 @@ export class SparqlTextField extends Component {
                                                     &#160; : &#160;
                                                 </span>
                                             </div>
-                                            <div
-                                                className="value_sparql"
-                                                style={styles.value}
-                                            >
-                                                {this.showURL(obj)} &#160;
-                                            </div>
+                                            {this.ifArray(obj)}
                                             <div
                                                 className="lang_sparql property_language"
                                                 style={styles.lang}
