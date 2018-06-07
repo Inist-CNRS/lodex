@@ -1,4 +1,4 @@
-export default function object2columns(data, feed) {
+export default function objects2columns(data, feed) {
     if (this.isLast()) {
         feed.close();
         return;
