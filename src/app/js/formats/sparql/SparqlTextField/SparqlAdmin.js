@@ -150,7 +150,7 @@ class SparqlTextFieldAdmin extends Component {
                     {polyglot.t('hidden_info')}
                 </label>
                 <TextField
-                    floatingLabelText={polyglot.t('separator')}
+                    floatingLabelText={polyglot.t('sparql_list_separator')}
                     type="string"
                     onChange={this.setSeparator}
                     style={styles.input}
