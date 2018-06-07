@@ -57,7 +57,7 @@ class SparqlTextFieldAdmin extends Component {
                 endpoint: PropTypes.string,
                 maxValue: PropTypes.number,
                 request: PropTypes.string,
-                hiddenInfo: PropTypes.object,
+                hiddenInfo: PropTypes.boolean,
             }),
         }),
         onChange: PropTypes.func.isRequired,
@@ -107,7 +107,6 @@ class SparqlTextFieldAdmin extends Component {
                     style={styles.input}
                     value={endpoint}
                     onChange={this.setEndpoint}
-                    native="true"
                     type="text"
                     name="valueEnpoint"
                     list="listEnpoint"
