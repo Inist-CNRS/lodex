@@ -185,6 +185,7 @@ export default url => FormatView => {
                         {this.getHeaderFormat()}
                         <p style={styles.message}>
                             {polyglot.t('sparql_error')}
+                            {this.loadButton2ReloadInHttp()}
                         </p>
                     </div>
                 );
