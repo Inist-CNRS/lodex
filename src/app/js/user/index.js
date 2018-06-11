@@ -309,7 +309,7 @@ export const getUrlRequest = (state, { url, queryString }) =>
 
 export const getSparqlRequest = (state, { url }) => {
     return getRequest(state, {
-        method: 'GET',
+        method: 'POST',
         url: url,
         cred: 'omit',
         cook: false,
