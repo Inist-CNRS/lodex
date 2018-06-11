@@ -29,8 +29,12 @@ export function* loadFormatData(name, url, queryString) {
         url.toLowerCase().includes('where') &&
         url.toLowerCase().includes('?query=')
     ) {
+        const newUrl = url.split('?query=')[0];
+        const body = 'query=' + url.split('?query=')[1];
+
         request = yield select(fromUser.getSparqlRequest, {
-            url,
+            url: newUrl,
+            body,
         });
     } else {
         request = yield select(fromUser.getUrlRequest, {

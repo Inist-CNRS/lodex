@@ -79,10 +79,13 @@ export const getRequest = createSelector(
         if (auth) {
             head['Authorization'] = `Bearer ${token}`;
         }
+        if (typeof body == 'object') {
+            body = JSON.stringify(body);
+        }
 
         return {
             url,
-            body: JSON.stringify(body),
+            body,
             credentials: cred,
             headers: head,
             method,
@@ -307,8 +310,9 @@ export const getUrlRequest = (state, { url, queryString }) =>
         url: `${url}${queryString ? `?${queryString}` : ''}`,
     });
 
-export const getSparqlRequest = (state, { url }) => {
+export const getSparqlRequest = (state, { url, body }) => {
     return getRequest(state, {
+        body,
         method: 'POST',
         url: url,
         cred: 'omit',
@@ -316,6 +320,7 @@ export const getSparqlRequest = (state, { url }) => {
         auth: false,
         head: {
             Accept: 'application/sparql-results+json',
+            'Content-Type': 'application/x-www-form-urlencoded',
         },
     });
 };
