@@ -22,13 +22,14 @@ import { CONFIGURE_FIELD_SUCCESS } from '../fields';
 import { UPDATE_CHARACTERISTICS_SUCCESS } from '../characteristic';
 import { COVER_DATASET } from '../../../common/cover';
 
+const isSparqlQuery = url =>
+    url.toLowerCase().includes('select') &&
+    url.toLowerCase().includes('where') &&
+    url.toLowerCase().includes('?query=');
+
 export function* loadFormatData(name, url, queryString) {
     let request; //@TODO report the type of query in SparqlRequest
-    if (
-        url.toLowerCase().includes('select') &&
-        url.toLowerCase().includes('where') &&
-        url.toLowerCase().includes('?query=')
-    ) {
+    if (isSparqlQuery) {
         const newUrl = url.split('?query=')[0];
         const body = 'query=' + url.split('?query=')[1];
 
