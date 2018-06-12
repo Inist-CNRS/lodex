@@ -64,7 +64,7 @@ export const getRequest = createSelector(
             body,
             method = 'GET',
             url,
-            cred = 'same-origin',
+            credentials = 'same-origin',
             cook = true,
             auth = true,
             head = {
@@ -86,7 +86,7 @@ export const getRequest = createSelector(
         return {
             url,
             body,
-            credentials: cred,
+            credentials,
             headers: head,
             method,
         };
