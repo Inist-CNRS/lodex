@@ -55,8 +55,7 @@ const styles = {
         fontSize: '1.3rem',
     },
     imgDefault: {
-        height: '200px',
-        width: '200px',
+        'max-width': '900px',
     },
 };
 
