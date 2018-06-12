@@ -29,7 +29,7 @@ const isSparqlQuery = url =>
 
 export function* loadFormatData(name, url, queryString) {
     let request; //@TODO report the type of query in SparqlRequest
-    if (isSparqlQuery) {
+    if (isSparqlQuery(url)) {
         const newUrl = url.split('?query=')[0];
         const body = 'query=' + url.split('?query=')[1];
 
