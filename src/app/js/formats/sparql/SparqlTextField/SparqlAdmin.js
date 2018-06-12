@@ -15,6 +15,11 @@ const styles = {
         width: '200%',
         justifyContent: 'space-between',
     },
+    pointer: {
+        cursor: 'pointer',
+        marginTop: 12,
+        marginBottom: '5px',
+    },
     input: {
         width: '100%',
     },
@@ -95,6 +100,10 @@ class SparqlTextFieldAdmin extends Component {
         this.props.onChange(newState);
     };
 
+    validator = () => {
+        window.open('http://sparql.org/query-validator.html');
+    };
+
     render() {
         const { p: polyglot, args: { sparql } } = this.props;
         const { endpoint, request, maxValue, hiddenInfo } =
@@ -119,6 +128,15 @@ class SparqlTextFieldAdmin extends Component {
                     ))}
                 </datalist>
 
+                <a
+                    onClick={() => {
+                        this.validator();
+                    }}
+                    className="link_validator"
+                    style={styles.pointer}
+                >
+                    {polyglot.t('sparql_validator')}
+                </a>
                 <TextField
                     floatingLabelText={polyglot.t('sparql_request')}
                     multiLine={true}

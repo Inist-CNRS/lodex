@@ -189,6 +189,7 @@
 "sparql_data"	"No data"	"Absence de donnée"
 "sparql_endpoint"	"SPARQL endpoint"	"Endpoint SPARQL"
 "sparql_request"	"SPARQL request"	"Requête SPARQL"
+"sparql_validator"	"SPARQL validator"	"Validateur SPARQL"
 "sparql_http_retry"	"Try again by clicking"	"Ré-essayez en cliquant"
 "hidden_info"	"Hide the resource field"	"Cacher le champ de la ressource"
 "a_column"	"A value from an existing column"	"Une valeur en provenance d'une colonne existante"
