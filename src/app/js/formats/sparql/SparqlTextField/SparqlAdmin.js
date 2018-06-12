@@ -15,6 +15,11 @@ const styles = {
         width: '200%',
         justifyContent: 'space-between',
     },
+    pointer: {
+        cursor: 'pointer',
+        marginTop: 12,
+        marginBottom: '5px',
+    },
     input: {
         width: '100%',
     },
@@ -35,7 +40,7 @@ const styles = {
 
 export const defaultArgs = {
     sparql: {
-        endpoint: '//data.istex.fr/sparql/',
+        endpoint: 'https://data.istex.fr/sparql/',
         maxValue: 1,
         request: `PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
@@ -95,6 +100,10 @@ class SparqlTextFieldAdmin extends Component {
         this.props.onChange(newState);
     };
 
+    validator = () => {
+        window.open('http://sparql.org/query-validator.html');
+    };
+
     render() {
         const { p: polyglot, args: { sparql } } = this.props;
         const { endpoint, request, maxValue, hiddenInfo } =
@@ -119,6 +128,15 @@ class SparqlTextFieldAdmin extends Component {
                     ))}
                 </datalist>
 
+                <a
+                    onClick={() => {
+                        this.validator();
+                    }}
+                    className="link_validator"
+                    style={styles.pointer}
+                >
+                    {polyglot.t('sparql_validator')}
+                </a>
                 <TextField
                     floatingLabelText={polyglot.t('sparql_request')}
                     multiLine={true}

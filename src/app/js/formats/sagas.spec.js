@@ -213,5 +213,32 @@ describe('format sagas', () => {
                 done: true,
             });
         });
+
+        it('should call loadFormatDataSuccess with url and the body of the request', () => {
+            const it = loadFormatData(
+                'name',
+                'https://data.istex.fr/sparql/?query=select * where {?s ?c ?d }',
+                'queryString',
+            );
+            expect(it.next()).toEqual({
+                value: select(fromUser.getUrlRequest, {
+                    url: 'https://data.istex.fr/sparql/',
+                    body: 'query=select * where {?s ?c ?d }',
+                }),
+                done: false,
+            });
+            expect(it.next('request')).toEqual({
+                value: call(fetchSaga, 'request'),
+                done: false,
+            });
+            expect(it.next({ response: { total: 0 } })).toEqual({
+                value: put(loadFormatDataSuccess({ name: 'name', data: [] })),
+                done: false,
+            });
+            expect(it.next()).toEqual({
+                value: undefined,
+                done: true,
+            });
+        });
     });
 });
