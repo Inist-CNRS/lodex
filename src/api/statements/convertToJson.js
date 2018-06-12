@@ -1,5 +1,13 @@
 module.exports = function convertToJson(data, feed) {
-    const getLabel = data.reduce(
+    const fields = this.getParam('fields', {});
+    // TODO: create the feed in this function (see exportAtom)
+    const config = this.getParam('config', {});
+
+    if (!fields) {
+        return config.close();
+    }
+
+    const getLabel = fields.reduce(
         (data, field) => {
             data[field.name] = field.label;
 
@@ -8,7 +16,7 @@ module.exports = function convertToJson(data, feed) {
         { uri: 'uri' },
     );
 
-    const getLang = data.reduce(
+    const getLang = fields.reduce(
         (data, field) => {
             data[field.name] = field.language;
 
@@ -17,11 +25,7 @@ module.exports = function convertToJson(data, feed) {
         { uri: 'uri' },
     );
 
-    if (!data) {
-        return feed.close();
-    }
-
-    const changedFields = Object.entries(data)
+    const changedFields = Object.entries(fields)
         .filter(([name]) => name !== 'uri')
         .map(([name, value]) => ({
             name,
@@ -29,11 +33,13 @@ module.exports = function convertToJson(data, feed) {
             label: getLabel[name],
             language: getLang[name],
         }));
+
     const changedResource = {
-        uri: data.uri,
+        uri: fields.uri,
         fields: changedFields,
     };
-    feed.send(changedResource);
+
+    config.send(changedResource);
 
     return feed.end();
 };
