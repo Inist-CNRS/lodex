@@ -149,8 +149,7 @@ export default compose(
         builtURL += encodeURIComponent(
             sparql.request
                 .trim()
-                .replace(/\s+/g, ' ')
-                .replace(/[\n\r\u200B]+/g, ' ')
+                .replace(/[\s\u200B]+/g, ' ')
                 .replace(/[?]{2}/g, value.trim()),
         );
         builtURL = builtURL.replace(/LIMIT([%]20)+\d*/i, ''); //remove LIMIT with its var
