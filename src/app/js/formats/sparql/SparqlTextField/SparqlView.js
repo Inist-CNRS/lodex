@@ -8,6 +8,7 @@ import { field as fieldPropTypes } from '../../../propTypes';
 import URL from 'url';
 import topairs from 'lodash.topairs';
 import toSentenceCase from 'js-sentencecase';
+import ifIsImage from 'if-is-image';
 
 const styles = {
     container2: {
@@ -53,12 +54,23 @@ const styles = {
         color: 'rgb(158, 158, 158)',
         fontSize: '1.3rem',
     },
+    imgDefault: {
+        'max-width': '900px',
+    },
 };
 
 export class SparqlTextField extends Component {
+    checkImage = src => {
+        if (ifIsImage(src)) {
+            return <img src={src} style={styles.imgDefault} />;
+        } else {
+            return <a href={src}>{src}</a>;
+        }
+    };
+
     showURL = result => {
         if (isURL(result[1].value) && result[1].type == 'uri') {
-            return <a href={result[1].value}>{result[1].value}</a>;
+            return this.checkImage(result[1].value);
         } else {
             return <span>{result[1].value}</span>;
         }
