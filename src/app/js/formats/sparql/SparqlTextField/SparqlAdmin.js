@@ -35,7 +35,7 @@ const styles = {
 
 export const defaultArgs = {
     sparql: {
-        endpoint: '//data.istex.fr/sparql/',
+        endpoint: 'https://data.istex.fr/sparql/',
         maxValue: 1,
         request: `PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
