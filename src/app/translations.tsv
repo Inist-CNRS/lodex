@@ -18,7 +18,7 @@
 "error"	"error"	"erreur"
 "atom"	"atom"	"atom"
 "publish"	"Publish"	"Publier"
-"here"	"here"	"ici"
+"here"	"Try another way (http)"	"Essayez un autre moyen (http)"
 "publication"	"Publication"	"Publication"
 "publication_explanations"	"Publishing will make your transformed data fully public. Once published, you will not be able to modify this."	"Publier rendra vos données transformées acccessible à tous. Une fois publiées, vous ne pourrez plus modifier ceci."
 "published"	"Your data has been published online. You can further configure its display and/or update it by using the public interface."	"Vos données ont été publiées en ligne. Vous pouvez configurer davantage l'affichage de ces dernières ou les mettre à  jour en utilisant l'interface publique"
