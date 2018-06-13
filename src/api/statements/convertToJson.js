@@ -37,7 +37,5 @@ module.exports = function convertToJson(input, output) {
         fields: changedFields,
     };
 
-    output.send(changedResource);
-
-    return output.end();
+    return output.send(changedResource);
 };
