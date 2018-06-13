@@ -73,17 +73,15 @@ export class SparqlTextField extends Component {
         if (temp[1].value.includes(sparql.separator)) {
             temp[1].value = temp[1].value.split(sparql.separator);
             return (
-                <div
+                <ul
                     className={('value_sparql_array', className)}
                     style={styles.array}
                 >
-                    <ul>
-                        {temp[1].value.map((data, key) => {
-                            temp[1].value = data;
-                            return <li key={key}>{this.showURL(temp)}</li>;
-                        })}
-                    </ul>
-                </div>
+                    {temp[1].value.map((data, key) => {
+                        temp[1].value = data;
+                        return <li key={key}>{this.showURL(temp)}</li>;
+                    })}
+                </ul>
             );
         } else {
             return (
