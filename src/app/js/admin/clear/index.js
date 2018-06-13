@@ -30,22 +30,28 @@ export default handleActions(
             error,
             loading: false,
         }),
-        CLEAR_DATASET_SUCCESS: state => ({
-            ...state,
-            status: 'success',
-            loading: false,
-        }),
+        CLEAR_DATASET_SUCCESS: state => {
+            window.location.href = '/admin';
+            return {
+                ...state,
+                status: 'success',
+                loading: false,
+            };
+        },
         CLEAR_PUBLISHED_ERROR: (state, { payload: error }) => ({
             ...state,
             status: 'error',
             error,
             loading: false,
         }),
-        CLEAR_PUBLISHED_SUCCESS: state => ({
-            ...state,
-            status: 'success',
-            loading: false,
-        }),
+        CLEAR_PUBLISHED_SUCCESS: state => {
+            window.location.href = '/admin';
+            return {
+                ...state,
+                status: 'success',
+                loading: false,
+            };
+        },
     },
     initialState,
 );
