@@ -88,7 +88,7 @@ const fields = [
 ];
 
 ezs.use(ezsLocals);
-describe.only('conversion to json', () => {
+describe('conversion to json', () => {
     it('should return json from the dataset', done => {
         const stream = from(dataTest).pipe(ezs('convertToJson', { fields }));
         testOne(
