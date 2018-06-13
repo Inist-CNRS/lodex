@@ -1,12 +1,12 @@
-module.exports = function convertToJson(data, feed) {
+module.exports = function convertToJson(input, output) {
     // console.log('data', data); //resource
     // console.log('feed', feed); //output
 
-    if (!data) {
-        return feed.close();
+    if (!input) {
+        return output.close();
     }
 
-    // const getLabel = data.reduce(
+    // const getLabel = input.reduce(
     //     (data, field) => {
     //         data[field.name] = field.label;
     //
@@ -14,8 +14,8 @@ module.exports = function convertToJson(data, feed) {
     //     },
     //     { uri: 'uri' },
     // );
-    //
-    // const getLang = data.reduce(
+
+    // const getLang = input.reduce(
     //     (data, field) => {
     //         data[field.name] = field.language;
     //
@@ -24,7 +24,7 @@ module.exports = function convertToJson(data, feed) {
     //     { uri: 'uri' },
     // );
 
-    const changedFields = Object.entries(data)
+    const changedFields = Object.entries(input)
         .filter(([name]) => name !== 'uri')
         .map(([name, value]) => ({
             name,
@@ -34,12 +34,12 @@ module.exports = function convertToJson(data, feed) {
         }));
 
     const changedResource = {
-        uri: data.uri,
+        uri: input.uri,
         fields: changedFields,
     };
 
     // console.log(changedResource);
-    feed.send(changedResource);
+    output.send(changedResource);
 
-    return feed.end();
+    return output.end();
 };
