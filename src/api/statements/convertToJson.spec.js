@@ -13,8 +13,18 @@ const dataTest = [
 const expectedJson = {
     uri: 'http://data.istex.fr',
     fields: [
-        { name: 'Q98n', value: 'Terminator', label: 'title', language: 'fr' },
-        { name: 'JDGh', value: 'Description', label: 'Abstract' },
+        {
+            name: 'Q98n',
+            value: 'Terminator',
+            label: 'title',
+            language: 'fr',
+        },
+        {
+            name: 'JDGh',
+            value: 'Description',
+            label: 'Abstract',
+            language: undefined,
+        },
     ],
 };
 const ezsLocals = require('.');
