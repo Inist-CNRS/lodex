@@ -5,16 +5,6 @@ module.exports = function convertToJson(input, output) {
         return output.close();
     }
 
-    // const getLabel = () =>
-    //     fields.reduce(
-    //         (data, field) => {
-    //             data[field.name] = field.label;
-    //
-    //             return data;
-    //         },
-    //         { uri: 'uri' },
-    //     );
-
     const getLabel = fields.reduce(
         (data, field) => {
             data[field.name] = field.label;
@@ -23,12 +13,6 @@ module.exports = function convertToJson(input, output) {
         },
         { uri: 'uri' },
     );
-
-    // const getLang = () =>
-    //     fields.reduce((data, field) => {
-    //         data[field.name] = field.language;
-    //         return data;
-    //     });
 
     const getLang = fields.reduce(
         (data, field) => {
