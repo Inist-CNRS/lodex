@@ -9,6 +9,7 @@ import URL from 'url';
 import topairs from 'lodash.topairs';
 import clonedeep from 'lodash.clonedeep';
 import toSentenceCase from 'js-sentencecase';
+import ifIsImage from 'if-is-image';
 
 const styles = {
     container2: {
@@ -60,6 +61,9 @@ const styles = {
         textDecoration: 'none',
         margin: 0,
     },
+    imgDefault: {
+        'max-width': '900px',
+    },
 };
 
 export class SparqlTextField extends Component {
@@ -90,9 +94,17 @@ export class SparqlTextField extends Component {
         }
     };
 
+    checkImage = src => {
+        if (ifIsImage(src)) {
+            return <img src={src} style={styles.imgDefault} />;
+        } else {
+            return <a href={src}>{src}</a>;
+        }
+    };
+
     showURL = result => {
         if (isURL(result[1].value) && result[1].type == 'uri') {
-            return <a href={result[1].value}>{result[1].value}</a>;
+            return this.checkImage(result[1].value);
         } else {
             return <span>{result[1].value}</span>;
         }
@@ -178,7 +190,7 @@ export default compose(
         builtURL += encodeURIComponent(
             sparql.request
                 .trim()
-                .replace(/[\n\r\u200B]+/g, ' ')
+                .replace(/[\s\u200B]+/g, ' ')
                 .replace(/[?]{2}/g, value.trim()),
         );
         builtURL = builtURL.replace(/LIMIT([%]20)+\d*/i, ''); //remove LIMIT with its var
