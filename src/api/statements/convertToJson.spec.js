@@ -5,30 +5,18 @@ import testOne from './testOne';
 
 const dataTest = [
     {
-        lodex: { uri: 'http://localhost:3000/ark:/67375/RZL-F4841DSB-1' },
-        content: {
-            arkIstex: 'ark:/67375/6H6-N49F7FRR-Q',
-            doi: ['10.1006/jmaa.2001.7542'],
-            fulltext: [
-                {
-                    extension: 'pdf',
-                    original: true,
-                    mimetype: 'application/pdf',
-                    uri:
-                        'https://api.istex.fr/document/9AA9EE9B75A6067C28F8119813504932FFD3D5A1/fulltext/pdf',
-                },
-                {
-                    extension: 'zip',
-                    original: false,
-                    mimetype: 'application/zip',
-                    uri:
-                        'https://api.istex.fr/document/9AA9EE9B75A6067C28F8119813504932FFD3D5A1/fulltext/zip',
-                },
-            ],
-        },
+        uri: 'http://data.istex.fr',
+        Q98n: 'Terminator',
+        JDGh: 'Description',
     },
 ];
-const expectedJson = {};
+const expectedJson = {
+    uri: 'http://data.istex.fr',
+    fields: [
+        { name: 'Q98n', value: 'Terminator', label: 'title', language: 'fr' },
+        { name: 'JDGh', value: 'Description', label: 'Abstract' },
+    ],
+};
 const ezsLocals = require('.');
 
 const fields = [
