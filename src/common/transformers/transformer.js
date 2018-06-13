@@ -67,3 +67,13 @@ export const rawTransformerWithArg = (func, name, value, args) => {
         }
     });
 };
+
+export const rawTransformerWithoutArg = (func, value) => {
+    return new Promise((resolve, reject) => {
+        try {
+            resolve(func(value));
+        } catch (error) {
+            reject(error);
+        }
+    });
+};

@@ -15,6 +15,11 @@ const styles = {
         width: '200%',
         justifyContent: 'space-between',
     },
+    pointer: {
+        cursor: 'pointer',
+        marginTop: 12,
+        marginBottom: '5px',
+    },
     input: {
         width: '100%',
     },
@@ -35,7 +40,7 @@ const styles = {
 
 export const defaultArgs = {
     sparql: {
-        endpoint: '//data.istex.fr/sparql/',
+        endpoint: 'https://data.istex.fr/sparql/',
         maxValue: 1,
         request: `PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
@@ -47,6 +52,7 @@ WHERE
   ?uri rdfs:seeAlso ?LienCatalogueBnf.
 }`,
         hiddenInfo: false,
+        separator: ';;',
     },
 };
 
@@ -57,7 +63,8 @@ class SparqlTextFieldAdmin extends Component {
                 endpoint: PropTypes.string,
                 maxValue: PropTypes.number,
                 request: PropTypes.string,
-                hiddenInfo: PropTypes.object,
+                hiddenInfo: PropTypes.boolean,
+                separator: PropTypes.string,
             }),
         }),
         onChange: PropTypes.func.isRequired,
@@ -95,9 +102,19 @@ class SparqlTextFieldAdmin extends Component {
         this.props.onChange(newState);
     };
 
+    setSeparator = (_, separator) => {
+        const { sparql, ...args } = this.props.args;
+        const newArgs = { ...args, sparql: { ...sparql, separator } };
+        this.props.onChange(newArgs);
+    };
+
+    validator = () => {
+        window.open('http://sparql.org/query-validator.html');
+    };
+
     render() {
         const { p: polyglot, args: { sparql } } = this.props;
-        const { endpoint, request, maxValue, hiddenInfo } =
+        const { endpoint, request, maxValue, hiddenInfo, separator } =
             sparql || defaultArgs.sparql;
 
         return (
@@ -107,7 +124,6 @@ class SparqlTextFieldAdmin extends Component {
                     style={styles.input}
                     value={endpoint}
                     onChange={this.setEndpoint}
-                    native="true"
                     type="text"
                     name="valueEnpoint"
                     list="listEnpoint"
@@ -119,6 +135,15 @@ class SparqlTextFieldAdmin extends Component {
                     ))}
                 </datalist>
 
+                <a
+                    onClick={() => {
+                        this.validator();
+                    }}
+                    className="link_validator"
+                    style={styles.pointer}
+                >
+                    {polyglot.t('sparql_validator')}
+                </a>
                 <TextField
                     floatingLabelText={polyglot.t('sparql_request')}
                     multiLine={true}
@@ -142,6 +167,13 @@ class SparqlTextFieldAdmin extends Component {
                     />
                     {polyglot.t('hidden_info')}
                 </label>
+                <TextField
+                    floatingLabelText={polyglot.t('sparql_list_separator')}
+                    type="string"
+                    onChange={this.setSeparator}
+                    style={styles.input}
+                    value={separator}
+                />
             </div>
         );
     }

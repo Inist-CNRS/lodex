@@ -52,6 +52,10 @@
     "https://lod.abes.fr/sparql",
     "http://data.persee.fr/sparql/",
     "https://data.istex.fr/sparql/",
-    "http://data.bnf.fr/sparql"
+    "http://data.bnf.fr/sparql",
+    "http://dbpedia.org/sparql",
+    "http://fr.dbpedia.org/sparql",
+    "https://query.wikidata.org/sparql",
+    "http://www.lotico.com:3030/lotico/sparql"
   ]
 }
