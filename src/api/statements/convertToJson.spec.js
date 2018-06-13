@@ -1,56 +1,104 @@
-import fs from 'fs';
-import path from 'path';
-import expect from 'expect';
-import Feed from 'feed';
 import ezs from 'ezs';
-import statements from './index';
+import from from 'from';
+import expect from 'expect';
+import testOne from './testOne';
 
-ezs.use(statements);
+const dataTest = [
+    {
+        lodex: { uri: 'http://localhost:3000/ark:/67375/RZL-F4841DSB-1' },
+        content: {
+            arkIstex: 'ark:/67375/6H6-N49F7FRR-Q',
+            doi: ['10.1006/jmaa.2001.7542'],
+            fulltext: [
+                {
+                    extension: 'pdf',
+                    original: true,
+                    mimetype: 'application/pdf',
+                    uri:
+                        'https://api.istex.fr/document/9AA9EE9B75A6067C28F8119813504932FFD3D5A1/fulltext/pdf',
+                },
+                {
+                    extension: 'zip',
+                    original: false,
+                    mimetype: 'application/zip',
+                    uri:
+                        'https://api.istex.fr/document/9AA9EE9B75A6067C28F8119813504932FFD3D5A1/fulltext/zip',
+                },
+            ],
+        },
+    },
+];
+const expectedJson = {};
+const ezsLocals = require('.');
 
-describe('convertToJson', () => {
-    it('should return the correct feed', done => {
-        const atomFeed = new Feed({
-            title: 'title',
-            generator: 'Lodex',
-            id: 'id',
-            link: 'link',
-            image:
-                'https://user-images.githubusercontent.com/7420853/30152932-1794db3c-93b5-11e7-98ab-a7f28d0061cb.png',
-        });
-        const mongoData = fs.createReadStream(
-            path.resolve(__dirname, './fixture.data.mongo.json'),
+const fields = [
+    {
+        cover: 'collection',
+        label: 'title',
+        transformers: [
+            {
+                operation: 'COLUMN',
+                args: [
+                    {
+                        name: 'column',
+                        type: 'column',
+                        value: 'title',
+                    },
+                ],
+            },
+        ],
+        scheme: 'http://purl.org/dc/terms/title',
+        format: {
+            name: 'None',
+        },
+        display_in_list: true,
+        display_in_resource: true,
+        searchable: true,
+        position: 3,
+        name: 'Q98n',
+        language: 'fr',
+    },
+    {
+        cover: 'collection',
+        label: 'Abstract',
+        display_in_list: '',
+        display_in_resource: true,
+        searchable: true,
+        transformers: [
+            {
+                operation: 'COLUMN',
+                args: [
+                    {
+                        name: 'column',
+                        type: 'column',
+                        value: 'Ab',
+                    },
+                ],
+            },
+        ],
+        classes: [],
+        position: 12,
+        format: {
+            args: {
+                paragraphWidth: '100%',
+            },
+            name: 'paragraph',
+        },
+        count: 500,
+        name: 'JDGh',
+    },
+];
+
+ezs.use(ezsLocals);
+describe.only('conversion to json', () => {
+    it('should return json from the dataset', done => {
+        const stream = from(dataTest).pipe(ezs('convertToJson', { fields }));
+        testOne(
+            stream,
+            data => {
+                expect(data).toEqual(expectedJson);
+            },
+            done,
         );
-        mongoData
-            .pipe(ezs('convertToJson', { fields: [], config: {}, atomFeed }))
-            .pipe(
-                ezs(input => {
-                    try {
-                        expect(input.split('\n')[0]).toBe(
-                            '<?xml version="1.0" encoding="utf-8"?>',
-                        );
-                        expect(input.split('\n')[1]).toBe(
-                            '<feed xmlns="http://www.w3.org/2005/Atom">',
-                        );
-                        expect(input.split('\n')[2]).toBe('    <id>id</id>');
-                        expect(input.split('\n')[3]).toBe(
-                            '    <title>title</title>',
-                        );
-                        expect(input.split('\n')[5]).toBe(
-                            '    <generator>Lodex</generator>',
-                        );
-                        expect(input.split('\n')[6]).toBe(
-                            '    <link rel="alternate" href="link"/>',
-                        );
-                        expect(input.split('\n')[7]).toBe(
-                            '    <logo>https://user-images.githubusercontent.com/7420853/30152932-1794db3c-93b5-11e7-98ab-a7f28d0061cb.png</logo>',
-                        );
-                        expect(input.split('\n')[8]).toBe('</feed>');
-                        done();
-                    } catch (e) {
-                        done(e);
-                    }
-                }),
-            );
-        mongoData.on('error', done);
     });
 });

@@ -1,45 +1,45 @@
 module.exports = function convertToJson(data, feed) {
-    const fields = this.getParam('fields', {});
-    // TODO: create the feed in this function (see exportAtom)
-    const config = this.getParam('config', {});
+    // console.log('data', data); //resource
+    // console.log('feed', feed); //output
 
-    if (!fields) {
-        return config.close();
+    if (!data) {
+        return feed.close();
     }
 
-    const getLabel = fields.reduce(
-        (data, field) => {
-            data[field.name] = field.label;
+    // const getLabel = data.reduce(
+    //     (data, field) => {
+    //         data[field.name] = field.label;
+    //
+    //         return data;
+    //     },
+    //     { uri: 'uri' },
+    // );
+    //
+    // const getLang = data.reduce(
+    //     (data, field) => {
+    //         data[field.name] = field.language;
+    //
+    //         return data;
+    //     },
+    //     { uri: 'uri' },
+    // );
 
-            return data;
-        },
-        { uri: 'uri' },
-    );
-
-    const getLang = fields.reduce(
-        (data, field) => {
-            data[field.name] = field.language;
-
-            return data;
-        },
-        { uri: 'uri' },
-    );
-
-    const changedFields = Object.entries(fields)
+    const changedFields = Object.entries(data)
         .filter(([name]) => name !== 'uri')
         .map(([name, value]) => ({
             name,
             value,
-            label: getLabel[name],
-            language: getLang[name],
+            // label: getLabel[name],
+            // language: getLang[name],
         }));
 
     const changedResource = {
-        uri: fields.uri,
+        uri: data.uri,
         fields: changedFields,
     };
 
-    config.send(changedResource);
+    // console.log(changedResource);
+    feed.send(changedResource);
 
     return feed.end();
 };

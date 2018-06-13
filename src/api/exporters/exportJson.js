@@ -9,7 +9,7 @@ const exporter = (config, fields, characteristics, stream) => {
     return stream
         .pipe(ezs('filterVersions'))
         .pipe(ezs('filterContributions', { fields }))
-        .pipe(ezs('convertToJson', { fields, config }))
+        .pipe(ezs('convertToJson', { fields }))
         .pipe(ezs('jsonify'));
 };
 
