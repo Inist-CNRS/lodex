@@ -125,7 +125,7 @@ class SparqlTextFieldAdmin extends Component {
     addSubformat = () => {
         const { sparql, ...state } = this.props.args;
         let subformat = sparql.subformat;
-        subformat.push({ attribute: '?example', subformat: 'none' });
+        subformat.push({ attribute: '?example', sub: 'none' });
         const newState = { ...state, sparql: { ...sparql, subformat } };
         this.props.onChange(newState);
     };
@@ -134,6 +134,22 @@ class SparqlTextFieldAdmin extends Component {
         const { sparql, ...state } = this.props.args;
         let subformat = sparql.subformat;
         subformat.splice(key, 1);
+        const newState = { ...state, sparql: { ...sparql, subformat } };
+        this.props.onChange(newState);
+    };
+
+    setAttribute = (attribute, key) => {
+        const { sparql, ...state } = this.props.args;
+        let subformat = sparql.subformat;
+        subformat[key].attribute = attribute;
+        const newState = { ...state, sparql: { ...sparql, subformat } };
+        this.props.onChange(newState);
+    };
+
+    setSubformat = (sub, key) => {
+        const { sparql, ...state } = this.props.args;
+        let subformat = sparql.subformat;
+        subformat[key].sub = sub;
         const newState = { ...state, sparql: { ...sparql, subformat } };
         this.props.onChange(newState);
     };
@@ -228,6 +244,9 @@ class SparqlTextFieldAdmin extends Component {
                                         'sparql_attribute',
                                     )}
                                     type="string"
+                                    onChange={e =>
+                                        this.setAttribute(e.target.value, key)
+                                    }
                                     style={styles.subformatInput}
                                     value={result.attribute}
                                 />
@@ -236,8 +255,11 @@ class SparqlTextFieldAdmin extends Component {
                                         'sparql_subformat',
                                     )}
                                     type="string"
+                                    onChange={e =>
+                                        this.setSubformat(e.target.value, key)
+                                    }
                                     style={styles.subformatInput}
-                                    value={result.subformat}
+                                    value={result.sub}
                                 />
                             </div>
                         );
