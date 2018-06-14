@@ -67,6 +67,19 @@ const styles = {
 };
 
 export class SparqlTextField extends Component {
+    applyFormat = result => {
+        const { sparql } = this.props;
+        // console.log(result[0]);
+        sparql.subformat.map(obj => {
+            const attr = obj.attribute.trim().replace(/^\?/, '');
+            if (result[0] == attr) {
+                console.log(attr, obj.sub); //eslint-disable-line
+            }
+        });
+
+        return this.ifArray(result);
+    };
+
     ifArray = result => {
         const { className, sparql } = this.props;
         const temp = clonedeep(result);
@@ -136,7 +149,7 @@ export class SparqlTextField extends Component {
                                                     &#160; : &#160;
                                                 </span>
                                             </div>
-                                            {this.ifArray(obj)}
+                                            {this.applyFormat(obj)}
                                             <div
                                                 className="lang_sparql property_language"
                                                 style={styles.lang}
