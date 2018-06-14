@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
 import TextField from 'material-ui/TextField';
 import config from '../../../../../../config.json';
+import ContentAdd from 'material-ui/svg-icons/content/add';
+import ContentClear from 'material-ui/svg-icons/content/clear';
 
 import { polyglot as polyglotPropTypes } from '../../../propTypes';
 
@@ -36,6 +38,16 @@ const styles = {
         marginLeft: 5,
         border: 'solid 1px black',
     }),
+    subformatPointer: {
+        cursor: 'pointer',
+        width: '5%',
+        color: 'red',
+    },
+    subformatInput: {
+        width: '45%',
+        marginLeft: '1%',
+        marginRight: '1%',
+    },
 };
 
 export const defaultArgs = {
@@ -53,6 +65,7 @@ WHERE
 }`,
         hiddenInfo: false,
         separator: ';;',
+        subformat: [],
     },
 };
 
@@ -65,6 +78,7 @@ class SparqlTextFieldAdmin extends Component {
                 request: PropTypes.string,
                 hiddenInfo: PropTypes.boolean,
                 separator: PropTypes.string,
+                subformat: PropTypes.arrayOf(PropTypes.object),
             }),
         }),
         onChange: PropTypes.func.isRequired,
@@ -106,6 +120,22 @@ class SparqlTextFieldAdmin extends Component {
         const { sparql, ...args } = this.props.args;
         const newArgs = { ...args, sparql: { ...sparql, separator } };
         this.props.onChange(newArgs);
+    };
+
+    addSubformat = () => {
+        const { sparql, ...state } = this.props.args;
+        let subformat = sparql.subformat;
+        subformat.push({ attribute: '?example', subformat: 'none' });
+        const newState = { ...state, sparql: { ...sparql, subformat } };
+        this.props.onChange(newState);
+    };
+
+    removeSubformat = key => {
+        const { sparql, ...state } = this.props.args;
+        let subformat = sparql.subformat;
+        subformat.splice(key, 1);
+        const newState = { ...state, sparql: { ...sparql, subformat } };
+        this.props.onChange(newState);
     };
 
     validator = () => {
@@ -174,6 +204,45 @@ class SparqlTextFieldAdmin extends Component {
                     style={styles.input}
                     value={separator}
                 />
+                <div>
+                    <div
+                        onClick={() => {
+                            this.addSubformat();
+                        }}
+                        style={styles.pointer}
+                    >
+                        <ContentAdd />
+                        {polyglot.t('sparql_add_subformat')}
+                    </div>
+                    {sparql.subformat.map((result, key) => {
+                        return (
+                            <div id={key} key={key}>
+                                <ContentClear
+                                    onClick={() => {
+                                        this.removeSubformat({ key });
+                                    }}
+                                    style={styles.subformatPointer}
+                                />
+                                <TextField
+                                    floatingLabelText={polyglot.t(
+                                        'sparql_attribute',
+                                    )}
+                                    type="string"
+                                    style={styles.subformatInput}
+                                    value={result.attribute}
+                                />
+                                <TextField
+                                    floatingLabelText={polyglot.t(
+                                        'sparql_subformat',
+                                    )}
+                                    type="string"
+                                    style={styles.subformatInput}
+                                    value={result.subformat}
+                                />
+                            </div>
+                        );
+                    })}
+                </div>
             </div>
         );
     }
