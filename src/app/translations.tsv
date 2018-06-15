@@ -260,7 +260,7 @@
 "min"	"Min"	"Min"
 "jsonld"	"JSON-LD"	"JSON-LD"
 "jsonldcompacted"	"JSON-LD (Compacted)"	"JSON-LD (Compacté)"
-"jsonAllValue"	"JSON"	"JSON"
+"jsonallvalue"	"JSON"	"JSON"
 "nquads"	"N-Quads"	"N-Quads"
 "nquadsextended"	"N-Quads Extended"	"N-Quads étendus"
 "nquadsextendedcompressed"	"N-Quads Extended (Compressed)"	"N-Quads étendus (compressés)"
