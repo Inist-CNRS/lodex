@@ -6,34 +6,12 @@ import SparqlRequest from '../SparqlRequest';
 import { isURL } from '../../../../../common/uris.js';
 import { field as fieldPropTypes } from '../../../propTypes';
 import URL from 'url';
-import IconButton from 'material-ui/IconButton';
-import ActionSearch from 'material-ui/svg-icons/action/search';
-import TextField from 'material-ui/TextField';
 import topairs from 'lodash.topairs';
+import clonedeep from 'lodash.clonedeep';
 import toSentenceCase from 'js-sentencecase';
+import ifIsImage from 'if-is-image';
 
 const styles = {
-    icon: {
-        cursor: 'default',
-        verticalAlign: 'bottom',
-        width: '5%',
-    },
-    container: {
-        display: 'block',
-        width: '100%',
-        color: 'lightGrey',
-    },
-    input1: {
-        fontSize: '0.7em',
-        width: '80%',
-        borderImage: 'none',
-    },
-    input2: {
-        marginLeft: '2.5%',
-        fontSize: '0.7em',
-        width: '12.5%',
-        borderImage: 'none',
-    },
     container2: {
         paddingLeft: '2rem',
         marginBottom: '10px',
@@ -77,12 +55,54 @@ const styles = {
         color: 'rgb(158, 158, 158)',
         fontSize: '1.3rem',
     },
+    array: {
+        flexGrow: '2',
+        fontSize: '1.5rem',
+        textDecoration: 'none',
+        margin: 0,
+    },
+    imgDefault: {
+        'max-width': '900px',
+    },
 };
 
 export class SparqlTextField extends Component {
+    ifArray = result => {
+        const { className, sparql } = this.props;
+        const temp = clonedeep(result);
+        if (temp[1].value.includes(sparql.separator)) {
+            temp[1].value = temp[1].value.split(sparql.separator);
+            return (
+                <ul
+                    className={('value_sparql_array', className)}
+                    style={styles.array}
+                >
+                    {temp[1].value.map((data, key) => {
+                        temp[1].value = data;
+                        return <li key={key}>{this.showURL(temp)}</li>;
+                    })}
+                </ul>
+            );
+        } else {
+            return (
+                <div className="value_sparql" style={styles.value}>
+                    {this.showURL(temp)} &#160;
+                </div>
+            );
+        }
+    };
+
+    checkImage = src => {
+        if (ifIsImage(src)) {
+            return <img src={src} style={styles.imgDefault} />;
+        } else {
+            return <a href={src}>{src}</a>;
+        }
+    };
+
     showURL = result => {
         if (isURL(result[1].value) && result[1].type == 'uri') {
-            return <a href={result[1].value}>{result[1].value}</a>;
+            return this.checkImage(result[1].value);
         } else {
             return <span>{result[1].value}</span>;
         }
@@ -97,29 +117,10 @@ export class SparqlTextField extends Component {
     };
 
     render() {
-        const { className, formatData, resource, field, sparql } = this.props;
+        const { className, formatData } = this.props;
         if (formatData != undefined) {
-            const requestText = resource[field.name];
-            let endpoint = sparql.endpoint.substring(
-                sparql.endpoint.search('//') + 2,
-            );
             return (
                 <div className={className}>
-                    <div style={styles.container}>
-                        <IconButton style={styles.icon}>
-                            <ActionSearch color="lightGrey" />
-                        </IconButton>
-                        <TextField
-                            style={styles.input1}
-                            name="sparqlRequest"
-                            value={requestText}
-                        />
-                        <TextField
-                            style={styles.input2}
-                            name="sparqlEnpoint"
-                            value={endpoint}
-                        />
-                    </div>
                     {formatData.results.bindings.map((result, key) => {
                         return (
                             <div key={key} style={styles.container2}>
@@ -135,12 +136,7 @@ export class SparqlTextField extends Component {
                                                     &#160; : &#160;
                                                 </span>
                                             </div>
-                                            <div
-                                                className="value_sparql"
-                                                style={styles.value}
-                                            >
-                                                {this.showURL(obj)} &#160;
-                                            </div>
+                                            {this.ifArray(obj)}
                                             <div
                                                 className="lang_sparql property_language"
                                                 style={styles.lang}
@@ -192,7 +188,7 @@ export default compose(
         builtURL += encodeURIComponent(
             sparql.request
                 .trim()
-                .replace(/[\n\r\u200B]+/g, ' ')
+                .replace(/[\s\u200B]+/g, ' ')
                 .replace(/[?]{2}/g, value.trim()),
         );
         builtURL = builtURL.replace(/LIMIT([%]20)+\d*/i, ''); //remove LIMIT with its var
