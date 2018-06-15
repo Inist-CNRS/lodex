@@ -253,17 +253,6 @@ class SparqlTextFieldAdmin extends Component {
                                     style={styles.subformatInput}
                                     value={result.attribute}
                                 />
-                                <TextField
-                                    floatingLabelText={polyglot.t(
-                                        'sparql_subformat',
-                                    )}
-                                    type="string"
-                                    onChange={e =>
-                                        this.setSubformat(e.target.value, key)
-                                    }
-                                    style={styles.subformatInput}
-                                    value={result.sub}
-                                />
                                 <SelectFormat
                                     onChange={e => this.setSubformat(e, key)}
                                     formats={FORMATS}
