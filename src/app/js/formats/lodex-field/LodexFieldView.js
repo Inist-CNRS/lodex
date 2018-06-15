@@ -66,7 +66,7 @@ const styles = {
 export class LodexResourceView extends Component {
     ifArray = value => {
         const { className } = this.props;
-        if (typeof value == 'object') {
+        if (Array.isArray(value)) {
             return (
                 <span
                     className={('lodex_field_value_array', className)}
