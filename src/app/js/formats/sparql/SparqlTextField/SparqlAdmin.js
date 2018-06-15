@@ -8,8 +8,7 @@ import ContentClear from 'material-ui/svg-icons/content/clear';
 import SelectFormat from '../../SelectFormat';
 
 import { polyglot as polyglotPropTypes } from '../../../propTypes';
-import { FORMATS } from '../../';
-// getAdminComponent
+import { FORMATS, getAdminComponent } from '../../';
 
 const endpoints = config.sparqlEndpoints;
 
@@ -234,6 +233,7 @@ class SparqlTextFieldAdmin extends Component {
                         {polyglot.t('sparql_add_subformat')}
                     </div>
                     {sparql.subformat.map((result, key) => {
+                        const SubAdminComponent = getAdminComponent(result.sub);
                         return (
                             <div id={key} key={key}>
                                 <ContentClear
@@ -257,6 +257,10 @@ class SparqlTextFieldAdmin extends Component {
                                     onChange={e => this.setSubformat(e, key)}
                                     formats={FORMATS}
                                     value={result.sub}
+                                />
+                                <SubAdminComponent
+                                    onChange={this.setSubFormatOptions}
+                                    args={result.option}
                                 />
                             </div>
                         );
