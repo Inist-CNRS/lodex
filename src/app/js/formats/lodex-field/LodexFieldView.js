@@ -186,18 +186,14 @@ export class LodexResourceView extends Component {
     };
 
     render() {
-        const { className, formatData, param, field } = this.props;
+        const { className, formatData, field } = this.props;
         if (formatData == undefined) {
             return <span> </span>;
         }
 
-        let labelArray;
-        if (param.labelArray[0] && param.labelArray.length < 1) {
-            labelArray = param.labelArray.map(e => e.trim()); //clean string
-        } else {
-            // if content List
-            labelArray = field.format.args.param.labelArray.map(e => e.trim());
-        }
+        const labelArray = field.format.args.param.labelArray.map(e =>
+            e.trim(),
+        );
 
         return (
             <div className={className} style={styles.container}>
