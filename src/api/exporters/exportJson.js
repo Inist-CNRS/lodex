@@ -16,6 +16,6 @@ const exporter = (config, fields, characteristics, stream) => {
 exporter.extension = 'json';
 exporter.mimeType = 'application/json';
 exporter.type = 'file';
-exporter.label = 'json';
+exporter.label = 'jsonAllValue';
 
 export default exporter;
