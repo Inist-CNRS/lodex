@@ -217,13 +217,13 @@ export default compose(
                     hostname: source.hostname,
                     slashes: source.slashes,
                     port: source.port,
-                    pathname: '/api/export/json',
+                    pathname: '/api/export/jsonallvalue',
                     search: '?uri=' + uri,
                 };
                 return URL.format(target);
             }
             return value;
         }
-        return '/api/export/json/?uri=' + resource[field.name];
+        return '/api/export/jsonallvalue/?uri=' + resource[field.name];
     }),
 )(LodexResourceView);
