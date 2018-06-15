@@ -202,7 +202,13 @@ LodexResourceView.defaultProps = {
 export default compose(
     translate,
     injectData(({ field, resource }) => {
-        const value = resource[field.name];
+        let value;
+
+        if (field.valueOfList) {
+            value = field.valueOfList.trim();
+        } else {
+            value = resource[field.name];
+        }
 
         if (!value) {
             return null;
