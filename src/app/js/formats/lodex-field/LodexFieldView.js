@@ -163,9 +163,9 @@ export class LodexResourceView extends Component {
     };
 
     getHeaderFormat = () => {
-        const { param } = this.props;
+        const { field } = this.props;
         const linkText = this.getValue();
-        if (!param.hiddenInfo) {
+        if (!field.format.args.param.hiddenInfo) {
             return (
                 <div>
                     <ActionSearch
@@ -209,7 +209,6 @@ export class LodexResourceView extends Component {
 LodexResourceView.propTypes = {
     className: PropTypes.string,
     formatData: PropTypes.arrayOf(PropTypes.object),
-    param: PropTypes.object,
     field: fieldPropTypes.isRequired,
     resource: PropTypes.object.isRequired,
 };
@@ -222,7 +221,7 @@ export default compose(
     translate,
     injectData(({ field, resource }) => {
         const value = buildValue(field, resource);
-
+        // @TODO crash à partir d'ici
         if (!value) {
             return null;
         }
