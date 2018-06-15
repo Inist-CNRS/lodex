@@ -68,27 +68,32 @@ const styles = {
 };
 
 export class SparqlTextField extends Component {
+    LoadSubformatComponent = (value, obj, key) => {
+        const { field } = this.props;
+        const { ViewComponent, args } = getViewComponent(obj.sub, true);
+        return (
+            <ViewComponent
+                resource={[value[1].value]}
+                field={{
+                    ...field,
+                    name: key.toString(),
+                    format: {
+                        name: obj.sub,
+                        args: obj.option,
+                    },
+                }}
+                {...args}
+            />
+        );
+    };
+
     applyFormat = result => {
-        const { sparql, field } = this.props;
+        const { sparql } = this.props;
 
         return sparql.subformat.map((obj, key) => {
             const attr = obj.attribute.trim().replace(/^\?/, '');
-            const { ViewComponent, args } = getViewComponent(obj.sub, true);
             if (result[0] == attr) {
-                return (
-                    <ViewComponent
-                        resource={[result[1].value]}
-                        field={{
-                            ...field,
-                            name: key.toString(),
-                            format: {
-                                name: obj.sub,
-                                args: obj.option,
-                            },
-                        }}
-                        {...args}
-                    />
-                );
+                return this.LoadSubformatComponent(result, obj, key);
             } else {
                 return this.ifArray(result);
             }
