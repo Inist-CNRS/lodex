@@ -10,6 +10,7 @@ import topairs from 'lodash.topairs';
 import clonedeep from 'lodash.clonedeep';
 import toSentenceCase from 'js-sentencecase';
 import ifIsImage from 'if-is-image';
+import { getViewComponent } from '../../';
 
 const styles = {
     container2: {
@@ -68,16 +69,30 @@ const styles = {
 
 export class SparqlTextField extends Component {
     applyFormat = result => {
-        const { sparql } = this.props;
-        // console.log(result[0]);
-        sparql.subformat.map(obj => {
+        const { sparql, field } = this.props;
+
+        return sparql.subformat.map((obj, key) => {
             const attr = obj.attribute.trim().replace(/^\?/, '');
+            const { ViewComponent, args } = getViewComponent(obj.sub, true);
             if (result[0] == attr) {
-                console.log(attr, obj.sub); //eslint-disable-line
+                return (
+                    <ViewComponent
+                        resource={[result[1].value]}
+                        field={{
+                            ...field,
+                            name: key.toString(),
+                            format: {
+                                name: obj.sub,
+                                args: obj.option,
+                            },
+                        }}
+                        {...args}
+                    />
+                );
+            } else {
+                return this.ifArray(result);
             }
         });
-
-        return this.ifArray(result);
     };
 
     ifArray = result => {
