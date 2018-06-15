@@ -62,7 +62,7 @@ const styles = {
         margin: 0,
     },
     imgDefault: {
-        'max-width': '900px',
+        maxWidth: '900px',
     },
 };
 
