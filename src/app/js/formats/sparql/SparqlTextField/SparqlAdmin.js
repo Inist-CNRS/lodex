@@ -5,8 +5,11 @@ import TextField from 'material-ui/TextField';
 import config from '../../../../../../config.json';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import ContentClear from 'material-ui/svg-icons/content/clear';
+import SelectFormat from '../../SelectFormat';
 
 import { polyglot as polyglotPropTypes } from '../../../propTypes';
+import { FORMATS } from '../../';
+// getAdminComponent
 
 const endpoints = config.sparqlEndpoints;
 
@@ -125,7 +128,7 @@ class SparqlTextFieldAdmin extends Component {
     addSubformat = () => {
         const { sparql, ...state } = this.props.args;
         let subformat = sparql.subformat;
-        subformat.push({ attribute: '?example', sub: 'none' });
+        subformat.push({ attribute: '?example', sub: '', option: {} });
         const newState = { ...state, sparql: { ...sparql, subformat } };
         this.props.onChange(newState);
     };
@@ -259,6 +262,11 @@ class SparqlTextFieldAdmin extends Component {
                                         this.setSubformat(e.target.value, key)
                                     }
                                     style={styles.subformatInput}
+                                    value={result.sub}
+                                />
+                                <SelectFormat
+                                    onChange={e => this.setSubformat(e, key)}
+                                    formats={FORMATS}
                                     value={result.sub}
                                 />
                             </div>
