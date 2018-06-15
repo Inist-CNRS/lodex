@@ -156,6 +156,14 @@ class SparqlTextFieldAdmin extends Component {
         this.props.onChange(newState);
     };
 
+    setSubformatOption = (option, key) => {
+        const { sparql, ...state } = this.props.args;
+        let subformat = sparql.subformat;
+        subformat[key].option = option;
+        const newState = { ...state, sparql: { ...sparql, subformat } };
+        this.props.onChange(newState);
+    };
+
     validator = () => {
         window.open('http://sparql.org/query-validator.html');
     };
@@ -259,7 +267,9 @@ class SparqlTextFieldAdmin extends Component {
                                     value={result.sub}
                                 />
                                 <SubAdminComponent
-                                    onChange={this.setSubFormatOptions}
+                                    onChange={e =>
+                                        this.setSubformatOption(e, key)
+                                    }
                                     args={result.option}
                                 />
                             </div>
