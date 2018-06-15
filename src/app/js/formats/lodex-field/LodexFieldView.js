@@ -63,7 +63,7 @@ const styles = {
     },
 };
 
-const getValue = (field, resource) => {
+const buildValue = (field, resource) => {
     let value;
 
     if (field.valueOfList) {
@@ -76,6 +76,11 @@ const getValue = (field, resource) => {
 };
 
 export class LodexResourceView extends Component {
+    getValue = () => {
+        const { field, resource } = this.props;
+        return buildValue(field, resource);
+    };
+
     ifArray = value => {
         const { className } = this.props;
         if (typeof value == 'object') {
@@ -150,8 +155,7 @@ export class LodexResourceView extends Component {
     };
 
     windowOpenIfUrl = () => {
-        const { resource, field } = this.props;
-        const requestText = getValue(field, resource);
+        const requestText = this.getValue();
 
         if (isURL(requestText)) {
             window.location.replace(requestText);
@@ -159,8 +163,8 @@ export class LodexResourceView extends Component {
     };
 
     getHeaderFormat = () => {
-        const { resource, field, param } = this.props;
-        const linkText = getValue(field, resource);
+        const { param } = this.props;
+        const linkText = this.getValue();
         if (!param.hiddenInfo) {
             return (
                 <div>
@@ -221,7 +225,7 @@ LodexResourceView.defaultProps = {
 export default compose(
     translate,
     injectData(({ field, resource }) => {
-        const value = getValue(field, resource);
+        const value = buildValue(field, resource);
 
         if (!value) {
             return null;
