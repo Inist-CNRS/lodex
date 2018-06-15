@@ -63,6 +63,18 @@ const styles = {
     },
 };
 
+const getValue = (field, resource) => {
+    let value;
+
+    if (field.valueOfList) {
+        value = field.valueOfList.trim();
+    } else {
+        value = resource[field.name];
+    }
+
+    return value;
+};
+
 export class LodexResourceView extends Component {
     ifArray = value => {
         const { className } = this.props;
@@ -139,7 +151,7 @@ export class LodexResourceView extends Component {
 
     windowOpenIfUrl = () => {
         const { resource, field } = this.props;
-        const requestText = resource[field.name];
+        const requestText = getValue(field, resource);
 
         if (isURL(requestText)) {
             window.location.replace(requestText);
@@ -148,7 +160,7 @@ export class LodexResourceView extends Component {
 
     getHeaderFormat = () => {
         const { resource, field, param } = this.props;
-        const linkText = resource[field.name];
+        const linkText = getValue(field, resource);
         if (!param.hiddenInfo) {
             return (
                 <div>
@@ -170,11 +182,18 @@ export class LodexResourceView extends Component {
     };
 
     render() {
-        const { className, formatData, param } = this.props;
+        const { className, formatData, param, field } = this.props;
         if (formatData == undefined) {
             return <span> </span>;
         }
-        let labelArray = param.labelArray.map(e => e.trim()); //clean string
+
+        let labelArray;
+        if (param.labelArray[0] && param.labelArray.length < 1) {
+            labelArray = param.labelArray.map(e => e.trim()); //clean string
+        } else {
+            // if content List
+            labelArray = field.format.args.param.labelArray.map(e => e.trim());
+        }
 
         return (
             <div className={className} style={styles.container}>
@@ -202,13 +221,7 @@ LodexResourceView.defaultProps = {
 export default compose(
     translate,
     injectData(({ field, resource }) => {
-        let value;
-
-        if (field.valueOfList) {
-            value = field.valueOfList.trim();
-        } else {
-            value = resource[field.name];
-        }
+        const value = getValue(field, resource);
 
         if (!value) {
             return null;
