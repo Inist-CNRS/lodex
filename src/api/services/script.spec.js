@@ -4,15 +4,15 @@ import Script from './script';
 describe('script ', () => {
     const routine = new Script('routines');
 
-    it('should be localy exists', async () => {
+    it('should exist locally', async () => {
         const current = await routine.get('distinct-by');
         assert.equal(current.length, 4);
     });
-    it('should be remotely exists', async () => {
+    it('should exist remotely', async () => {
         const current = await routine.get('hello-world');
         assert.equal(current.length, 4);
     });
-    it('should be notexists', async () => {
+    it('should not exist', async () => {
         const current = await routine.get('fake-world');
         assert.equal(current, undefined);
     });
