@@ -90,6 +90,10 @@ export class SparqlTextField extends Component {
     applyFormat = result => {
         const { sparql } = this.props;
 
+        if (sparql.subformat.length < 1) {
+            return this.ifArray(result);
+        }
+
         return sparql.subformat.map((obj, key) => {
             const attr = obj.attribute.trim().replace(/^\?/, '');
             if (result[0] == attr) {
