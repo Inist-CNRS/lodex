@@ -132,37 +132,19 @@ export class LodexResourceView extends Component {
 
     loadContent = label => {
         const { className, formatData } = this.props;
-        return formatData[0].fields
-            .find(data => data.name == label)
-            .map((data, key) => (
-                <div key={key}>
-                    <span
-                        className={('lodex_field_label', className)}
-                        style={styles.label}
-                    >
-                        {data.label} : &#160;
-                    </span>
-                    {this.ifArray(data.value)}
-                    {this.ifLang(data.language)}
-                </div>
-            ));
-        // return formatData[0].fields.map((data, key) => {
-        //     if (label == data.name) {
-        //         return (
-        //             <div key={key}>
-        //                 <span
-        //                     className={('lodex_field_label', className)}
-        //                     style={styles.label}
-        //                 >
-        //                     {data.label} : &#160;
-        //                 </span>
-        //                 {this.ifArray(data.value)}
-        //                 {this.ifLang(data.language)}
-        //             </div>
-        //         );
-        //     }
-        //     return null;
-        // });
+        const data = formatData[0].fields.find(data => data.name == label);
+        return (
+            <div>
+                <span
+                    className={('lodex_field_label', className)}
+                    style={styles.label}
+                >
+                    {data.label} : &#160;
+                </span>
+                {this.ifArray(data.value)}
+                {this.ifLang(data.language)}
+            </div>
+        );
     };
     openIfUrl = () => {
         const requestText = this.getValue();
