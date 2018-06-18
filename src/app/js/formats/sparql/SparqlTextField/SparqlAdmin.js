@@ -42,18 +42,33 @@ const styles = {
     }),
     subformatPointer: {
         cursor: 'pointer',
-        width: '5%',
+        width: '7%',
         color: 'red',
+        verticalAlign: 'top',
     },
     subformatInput: {
-        width: '45%',
+        width: '30%',
         marginLeft: '1%',
         marginRight: '1%',
+        marginTop: '0',
     },
     link: {
-        'font-size': 'small',
+        fontSize: 'small',
+    },
+    inline: {
+        width: '90%',
+        display: 'inline-block',
+    },
+    border: {
+        width: '100%',
+        borderStyle: 'solid',
+        borderColor: 'darkGrey',
+        borderWidth: '1px',
+        marginBottom: '2px',
+        backgroundColor: '#eaeaea',
     },
 };
+// backgroundColor: '#e9e9e9',
 
 export const defaultArgs = {
     sparql: {
@@ -171,6 +186,41 @@ class SparqlTextFieldAdmin extends Component {
         window.open('http://sparql.org/query-validator.html');
     };
 
+    loadSubformat = (result, key) => {
+        const { p: polyglot } = this.props;
+        const SubAdminComponent = getAdminComponent(result.sub);
+
+        return (
+            <div style={styles.inline}>
+                <TextField
+                    floatingLabelText={polyglot.t('sparql_attribute')}
+                    type="string"
+                    onChange={e => this.setAttribute(e.target.value, key)}
+                    style={styles.subformatInput}
+                    value={result.attribute}
+                />
+                <div
+                    style={{
+                        width: '100px',
+                        display: 'inline',
+                        verticalAlign: 'top',
+                        marginTop: 14,
+                    }}
+                >
+                    <SelectFormat
+                        onChange={e => this.setSubformat(e, key)}
+                        formats={FORMATS}
+                        value={result.sub}
+                    />
+                </div>
+                <SubAdminComponent
+                    onChange={e => this.setSubformatOption(e, key)}
+                    args={result.option}
+                />
+            </div>
+        );
+    };
+
     render() {
         const { p: polyglot, args: { sparql } } = this.props;
         const { endpoint, request, maxValue, hiddenInfo, separator } =
@@ -232,7 +282,7 @@ class SparqlTextFieldAdmin extends Component {
                     style={styles.input}
                     value={separator}
                 />
-                <div>
+                <div style={{ width: '100%' }}>
                     <div
                         onClick={() => {
                             this.addSubformat();
@@ -243,37 +293,15 @@ class SparqlTextFieldAdmin extends Component {
                         {polyglot.t('sparql_add_subformat')}
                     </div>
                     {sparql.subformat.map((result, key) => {
-                        const SubAdminComponent = getAdminComponent(result.sub);
                         return (
-                            <div id={key} key={key}>
+                            <div id={key} key={key} style={styles.border}>
                                 <ContentClear
                                     onClick={() => {
                                         this.removeSubformat({ key });
                                     }}
                                     style={styles.subformatPointer}
                                 />
-                                <TextField
-                                    floatingLabelText={polyglot.t(
-                                        'sparql_attribute',
-                                    )}
-                                    type="string"
-                                    onChange={e =>
-                                        this.setAttribute(e.target.value, key)
-                                    }
-                                    style={styles.subformatInput}
-                                    value={result.attribute}
-                                />
-                                <SelectFormat
-                                    onChange={e => this.setSubformat(e, key)}
-                                    formats={FORMATS}
-                                    value={result.sub}
-                                />
-                                <SubAdminComponent
-                                    onChange={e =>
-                                        this.setSubformatOption(e, key)
-                                    }
-                                    args={result.option}
-                                />
+                                {this.loadSubformat(result, key)}
                             </div>
                         );
                     })}
