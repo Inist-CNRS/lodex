@@ -50,6 +50,9 @@ const styles = {
         marginLeft: '1%',
         marginRight: '1%',
     },
+    link: {
+        'font-size': 'small',
+    },
 };
 
 export const defaultArgs = {
@@ -190,16 +193,6 @@ class SparqlTextFieldAdmin extends Component {
                         <option key={source} value={source} />
                     ))}
                 </datalist>
-
-                <a
-                    onClick={() => {
-                        this.validator();
-                    }}
-                    className="link_validator"
-                    style={styles.pointer}
-                >
-                    {polyglot.t('sparql_validator')}
-                </a>
                 <TextField
                     floatingLabelText={polyglot.t('sparql_request')}
                     multiLine={true}
@@ -207,6 +200,15 @@ class SparqlTextFieldAdmin extends Component {
                     style={styles.input}
                     value={request}
                 />
+                <a
+                    onClick={() => {
+                        this.validator();
+                    }}
+                    className="link_validator"
+                    style={(styles.pointer, styles.link)}
+                >
+                    {polyglot.t('sparql_validator')}
+                </a>
                 <TextField
                     floatingLabelText={polyglot.t('max_value')}
                     type="number"
