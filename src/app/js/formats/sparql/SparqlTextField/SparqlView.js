@@ -10,6 +10,7 @@ import topairs from 'lodash.topairs';
 import clonedeep from 'lodash.clonedeep';
 import toSentenceCase from 'js-sentencecase';
 import ifIsImage from 'if-is-image';
+import { getViewComponent } from '../../';
 
 const styles = {
     container2: {
@@ -67,6 +68,39 @@ const styles = {
 };
 
 export class SparqlTextField extends Component {
+    LoadSubformatComponent = (value, data) => {
+        const { field } = this.props;
+        const { ViewComponent, args } = getViewComponent(data.sub, true);
+        return (
+            <ViewComponent
+                resource={[value[1].value]}
+                field={{
+                    ...field,
+                    name: '0',
+                    format: {
+                        name: data.sub,
+                        args: data.option,
+                    },
+                }}
+                {...args}
+            />
+        );
+    };
+
+    applyFormat = result => {
+        const { sparql } = this.props;
+
+        const data = sparql.subformat.find(data => {
+            return result[0] == data.attribute.trim().replace(/^\?/, '');
+        });
+
+        if (data) {
+            return this.LoadSubformatComponent(result, data);
+        }
+
+        return this.ifArray(result);
+    };
+
     ifArray = result => {
         const { className, sparql } = this.props;
         const temp = clonedeep(result);
@@ -136,7 +170,7 @@ export class SparqlTextField extends Component {
                                                     &#160; : &#160;
                                                 </span>
                                             </div>
-                                            {this.ifArray(obj)}
+                                            {this.applyFormat(obj)}
                                             <div
                                                 className="lang_sparql property_language"
                                                 style={styles.lang}
