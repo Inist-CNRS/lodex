@@ -7,8 +7,6 @@ import URL from 'url';
 import { isURL } from '../../../../common/uris.js';
 import { field as fieldPropTypes } from '../../propTypes';
 import injectData from '../injectData';
-import ActionSearch from 'material-ui/svg-icons/action/search';
-import TextField from 'material-ui/TextField';
 
 const styles = {
     container: {
@@ -60,6 +58,9 @@ const styles = {
         cursor: 'pointer',
         verticalAlign: 'middle',
         width: '5%',
+    },
+    link: {
+        'font-weight': 'bold',
     },
 };
 
@@ -160,16 +161,13 @@ export class LodexResourceView extends Component {
         if (!field.format.args.param.hiddenInfo) {
             return (
                 <div>
-                    <ActionSearch
-                        style={isURL(linkText) ? styles.pointer : styles.icon}
-                        color="lightGrey"
-                        onClick={this.openIfUrl}
-                    />
-                    <TextField
-                        style={styles.input1}
-                        name="uriResource"
-                        value={linkText}
-                    />
+                    <a
+                        className="link_to_resource"
+                        style={styles.link}
+                        href={linkText}
+                    >
+                        {linkText}
+                    </a>
                 </div>
             );
         }
