@@ -79,16 +79,15 @@ export class LodexResourceView extends Component {
                     </ul>
                 </span>
             );
-        } else {
-            return (
-                <span
-                    className={('lodex_field_value', className)}
-                    style={styles.value}
-                >
-                    {this.ifUrl(value)}
-                </span>
-            );
         }
+        return (
+            <span
+                className={('lodex_field_value', className)}
+                style={styles.value}
+            >
+                {this.ifUrl(value)}
+            </span>
+        );
     };
 
     ifLang = value => {
@@ -102,42 +101,54 @@ export class LodexResourceView extends Component {
                     {value}
                 </span>
             );
-        } else {
-            return;
         }
+        return;
     };
 
     ifUrl = value => {
         if (isURL(value)) {
             return <a href={value}>{value}</a>;
-        } else {
-            return <span>{value}</span>;
         }
+
+        return <span>{value}</span>;
     };
 
     loadContent = label => {
         const { className, formatData } = this.props;
-        return formatData[0].fields.map((data, key) => {
-            if (label == data.name) {
-                return (
-                    <div key={key}>
-                        <span
-                            className={('lodex_field_label', className)}
-                            style={styles.label}
-                        >
-                            {data.label} : &#160;
-                        </span>
-                        {this.ifArray(data.value)}
-                        {this.ifLang(data.language)}
-                    </div>
-                );
-            } else {
-                return null;
-            }
-        });
+        return formatData[0].fields
+            .find(data => data.name == label)
+            .map((data, key) => (
+                <div key={key}>
+                    <span
+                        className={('lodex_field_label', className)}
+                        style={styles.label}
+                    >
+                        {data.label} : &#160;
+                    </span>
+                    {this.ifArray(data.value)}
+                    {this.ifLang(data.language)}
+                </div>
+            ));
+        // return formatData[0].fields.map((data, key) => {
+        //     if (label == data.name) {
+        //         return (
+        //             <div key={key}>
+        //                 <span
+        //                     className={('lodex_field_label', className)}
+        //                     style={styles.label}
+        //                 >
+        //                     {data.label} : &#160;
+        //                 </span>
+        //                 {this.ifArray(data.value)}
+        //                 {this.ifLang(data.language)}
+        //             </div>
+        //         );
+        //     }
+        //     return null;
+        // });
     };
 
-    windowOpenIfUrl = () => {
+    openIfUrl = () => {
         const { resource, field } = this.props;
         const requestText = resource[field.name];
 
@@ -155,11 +166,11 @@ export class LodexResourceView extends Component {
                     <ActionSearch
                         style={isURL(linkText) ? styles.pointer : styles.icon}
                         color="lightGrey"
-                        onClick={this.windowOpenIfUrl}
+                        onClick={this.openIfUrl}
                     />
                     <TextField
                         style={styles.input1}
-                        name="sparqlRequest"
+                        name="uriResource"
                         value={linkText}
                     />
                 </div>
@@ -171,7 +182,7 @@ export class LodexResourceView extends Component {
 
     render() {
         const { className, formatData, param } = this.props;
-        if (formatData == undefined) {
+        if (formatData === undefined) {
             return <span> </span>;
         }
         let labelArray = param.labelArray.map(e => e.trim()); //clean string
