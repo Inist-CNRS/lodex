@@ -2,6 +2,7 @@ import ezs from 'ezs';
 import from from 'from';
 import expect from 'expect';
 import testOne from './testOne';
+const ezsLocals = require('.');
 
 const dataTest = [
     {
@@ -27,62 +28,15 @@ const expectedJson = {
         },
     ],
 };
-const ezsLocals = require('.');
 
 const fields = [
     {
-        cover: 'collection',
         label: 'title',
-        transformers: [
-            {
-                operation: 'COLUMN',
-                args: [
-                    {
-                        name: 'column',
-                        type: 'column',
-                        value: 'title',
-                    },
-                ],
-            },
-        ],
-        scheme: 'http://purl.org/dc/terms/title',
-        format: {
-            name: 'None',
-        },
-        display_in_list: true,
-        display_in_resource: true,
-        searchable: true,
-        position: 3,
         name: 'Q98n',
         language: 'fr',
     },
     {
-        cover: 'collection',
         label: 'Abstract',
-        display_in_list: '',
-        display_in_resource: true,
-        searchable: true,
-        transformers: [
-            {
-                operation: 'COLUMN',
-                args: [
-                    {
-                        name: 'column',
-                        type: 'column',
-                        value: 'Ab',
-                    },
-                ],
-            },
-        ],
-        classes: [],
-        position: 12,
-        format: {
-            args: {
-                paragraphWidth: '100%',
-            },
-            name: 'paragraph',
-        },
-        count: 500,
         name: 'JDGh',
     },
 ];

@@ -62,7 +62,7 @@ const fields = [
 ];
 
 describe('export json', () => {
-    it('should export simple property', done => {
+    it('should export single resource', done => {
         let outputString = '';
         exportJson(
             {},
