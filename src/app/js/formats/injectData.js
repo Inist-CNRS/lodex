@@ -117,7 +117,10 @@ export default url => FormatView => {
                 );
             }
 
-            if (formatData === 'no result') {
+            if (
+                formatData === 'no result' ||
+                (formatData != undefined && formatData.length === 0)
+            ) {
                 return (
                     <p style={styles.message}>{polyglot.t('no_chart_data')}</p>
                 );

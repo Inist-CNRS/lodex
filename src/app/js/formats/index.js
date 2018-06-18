@@ -22,6 +22,7 @@ import title from './title';
 import paragraph from './paragraph';
 import sentence from './sentence';
 import resource from './lodex-resource';
+import lodexField from './lodex-field';
 import cartography from './cartography';
 import heatmap from './heatmap';
 import network from './network';
@@ -51,6 +52,7 @@ const components = {
     paragraph,
     sentence,
     resource,
+    lodexField,
     resourcesGrid,
     cartography,
     heatmap,
