@@ -1,7 +1,7 @@
 module.exports = function convertToJson(input, output) {
     const fields = this.getParam('fields', {});
 
-    if (!input) {
+    if (this.isLast()) {
         return output.close();
     }
 
