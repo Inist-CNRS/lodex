@@ -135,7 +135,7 @@ class SparqlTextFieldAdmin extends Component {
     removeSubformat = key => {
         const { sparql, ...state } = this.props.args;
         let subformat = sparql.subformat;
-        subformat.splice(key, 1);
+        subformat.splice(key.key, 1);
         const newState = { ...state, sparql: { ...sparql, subformat } };
         this.props.onChange(newState);
     };
