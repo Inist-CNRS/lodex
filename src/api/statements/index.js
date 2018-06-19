@@ -9,6 +9,7 @@ import JSONLDObject from './JSONLDObject';
 import extractIstexQuery from './extractIstexQuery';
 import scroll from './scroll';
 import convertJsonLdToNQuads from './convertJsonLdToNQuads';
+import convertToJson from './convertToJson';
 import convertToExtendedJsonLd from './convertToExtendedJsonLd';
 import convertToAtom from './convertToAtom';
 import convertToSitemap from './convertToSitemap';
@@ -33,6 +34,7 @@ export default {
     extractIstexQuery,
     scroll,
     convertJsonLdToNQuads,
+    convertToJson,
     convertToExtendedJsonLd,
     convertToAtom,
     convertToSitemap,
