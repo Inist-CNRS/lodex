@@ -163,6 +163,9 @@ export class SparqlTextField extends Component {
                         return (
                             <div key={key} style={styles.container2}>
                                 {topairs(result).map((obj, index) => {
+                                    if (!obj[1].value) {
+                                        return;
+                                    }
                                     return (
                                         <div key={index}>
                                             <div style={styles.id}>
