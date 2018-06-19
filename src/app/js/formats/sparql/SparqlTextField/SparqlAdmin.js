@@ -60,19 +60,27 @@ const styles = {
         width: '90%',
         display: 'inline-block',
     },
-    border: {
-        width: '100%',
-        borderStyle: 'solid',
-        borderColor: 'darkGrey',
-        borderWidth: '1px',
-        marginBottom: '2px',
-        backgroundColor: '#eaeaea',
-    },
     applyFormat: {
         width: '40%',
         display: 'inline',
         verticalAlign: 'top',
         marginTop: 14,
+    },
+    color1: {
+        backgroundColor: '#e9e9e9',
+        width: '100%',
+        borderStyle: 'solid',
+        borderColor: 'darkGrey',
+        borderWidth: '1px',
+        marginBottom: '2px',
+    },
+    color2: {
+        backgroundColor: '#d0d0d0',
+        width: '100%',
+        borderStyle: 'solid',
+        borderColor: 'darkGrey',
+        borderWidth: '1px',
+        marginBottom: '2px',
     },
 };
 // backgroundColor: '#e9e9e9',
@@ -289,12 +297,18 @@ class SparqlTextFieldAdmin extends Component {
                         }}
                         style={styles.pointer}
                     >
-                        <ContentAdd />
+                        <ContentAdd style={{ verticalAlign: 'sub' }} />
                         {polyglot.t('sparql_add_subformat')}
                     </div>
                     {sparql.subformat.map((result, key) => {
                         return (
-                            <div id={key} key={key} style={styles.border}>
+                            <div
+                                id={key}
+                                key={key}
+                                style={
+                                    key % 2 == 1 ? styles.color1 : styles.color2
+                                }
+                            >
                                 <ContentClear
                                     onClick={() => {
                                         this.removeSubformat({ key });
