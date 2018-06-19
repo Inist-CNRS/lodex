@@ -45,9 +45,10 @@ const styles = {
         width: '7%',
         color: 'red',
         verticalAlign: 'top',
+        marginTop: 14,
     },
     subformatInput: {
-        width: '30%',
+        width: '40%',
         marginLeft: '1%',
         marginRight: '1%',
         marginTop: '0',
@@ -66,6 +67,12 @@ const styles = {
         borderWidth: '1px',
         marginBottom: '2px',
         backgroundColor: '#eaeaea',
+    },
+    applyFormat: {
+        width: '40%',
+        display: 'inline',
+        verticalAlign: 'top',
+        marginTop: 14,
     },
 };
 // backgroundColor: '#e9e9e9',
@@ -199,14 +206,7 @@ class SparqlTextFieldAdmin extends Component {
                     style={styles.subformatInput}
                     value={result.attribute}
                 />
-                <div
-                    style={{
-                        width: '100px',
-                        display: 'inline',
-                        verticalAlign: 'top',
-                        marginTop: 14,
-                    }}
-                >
+                <div style={styles.applyFormat}>
                     <SelectFormat
                         onChange={e => this.setSubformat(e, key)}
                         formats={FORMATS}
