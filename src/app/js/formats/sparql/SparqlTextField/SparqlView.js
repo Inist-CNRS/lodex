@@ -127,6 +127,8 @@ export class SparqlTextField extends Component {
     };
 
     checkImage = src => {
+        const index = src.search(/[.][A-Z]+$/);
+        src = src.substring(0, index) + src.substring(index).toLowerCase();
         if (ifIsImage(src)) {
             return <img src={src} style={styles.imgDefault} />;
         } else {
