@@ -52,7 +52,7 @@ export default class Script {
                 routineDistant[3] = routineScript;
             }
         }
-        const routine = routineLocal || routineDistant;
+        const routine = routineDistant || routineLocal;
 
         return routine;
     }
