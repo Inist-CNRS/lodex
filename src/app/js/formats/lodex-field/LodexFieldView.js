@@ -60,7 +60,7 @@ const styles = {
         width: '5%',
     },
     link: {
-        'font-weight': 'bold',
+        fontWeight: 'bold',
     },
 };
 
@@ -76,7 +76,7 @@ const buildValue = (field, resource) => {
     return value;
 };
 
-export class LodexResourceView extends Component {
+export class LodexFieldView extends Component {
     getValue = () => {
         const { field, resource } = this.props;
         return buildValue(field, resource);
@@ -196,14 +196,14 @@ export class LodexResourceView extends Component {
     }
 }
 
-LodexResourceView.propTypes = {
+LodexFieldView.propTypes = {
     className: PropTypes.string,
     formatData: PropTypes.arrayOf(PropTypes.object),
     field: fieldPropTypes.isRequired,
     resource: PropTypes.object.isRequired,
 };
 
-LodexResourceView.defaultProps = {
+LodexFieldView.defaultProps = {
     className: null,
 };
 
@@ -234,4 +234,4 @@ export default compose(
         }
         return '/api/export/jsonallvalue/?uri=' + resource[field.name];
     }),
-)(LodexResourceView);
+)(LodexFieldView);
