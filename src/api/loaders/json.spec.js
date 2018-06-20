@@ -2,16 +2,17 @@ import expect from 'expect';
 import ezs from 'ezs';
 import from from 'from';
 
-describe('csv-semicolon.ini', () => {
-    it('should parse a csv', done => {
+describe('json.ini', () => {
+    it('should parse a JSON', done => {
         const res = [];
-        from(['a;b\n1;2\n'])
-            .pipe(ezs.fromFile(__dirname + '/csv-semicolon.ini'))
+        const expected = { a: '1', b: '2' };
+        from([JSON.stringify(expected)])
+            .pipe(ezs.fromFile(__dirname + '/json.ini'))
             .on('data', chunk => {
                 res.push(chunk);
             })
             .on('end', () => {
-                expect(res).toEqual([{ a: '1', b: '2' }]);
+                expect(res).toEqual([expected]);
                 done();
             });
     });
