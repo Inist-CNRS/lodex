@@ -6,7 +6,7 @@ describe('csv-semicolon.ini', () => {
     it('should parse a csv', done => {
         const res = [];
         from([`a,b\n1,2\n`])
-            .pipe(ezs.fromFile(__dirname + '/csv.ini'))
+            .pipe(ezs.fromFile(__dirname + '/csv-comma.ini'))
             .on('data', chunk => {
                 res.push(chunk);
             })
