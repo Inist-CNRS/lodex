@@ -2,8 +2,8 @@ import expect from 'expect';
 import ezs from 'ezs';
 import from from 'from';
 
-describe('csv-semicolon.ini', () => {
-    it('should parse a csv', done => {
+describe('csv-comma.ini', () => {
+    it('should parse a CSV', done => {
         const res = [];
         from([`a,b\n1,2\n`])
             .pipe(ezs.fromFile(__dirname + '/csv-comma.ini'))

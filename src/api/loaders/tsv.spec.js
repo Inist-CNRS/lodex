@@ -2,8 +2,8 @@ import expect from 'expect';
 import ezs from 'ezs';
 import from from 'from';
 
-describe.only('csv-semicolon.ini', () => {
-    it('should parse a csv', done => {
+describe.only('tsv.ini', () => {
+    it('should parse a TSV', done => {
         const res = [];
         from(['a\tb\n1\t2\n'])
             .pipe(ezs.fromFile(__dirname + '/tsv.ini'))
