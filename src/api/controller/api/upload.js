@@ -4,8 +4,9 @@ import asyncBusboy from 'async-busboy';
 import config from 'config';
 import koaBodyParser from 'koa-bodyparser';
 import request from 'request';
+import ezs from 'ezs';
 
-import loaders from '../../loaders';
+import Script from '../../services/script';
 import saveStream from '../../services/saveStream';
 import publishDocuments from '../../services/publishDocuments';
 import {
@@ -20,13 +21,32 @@ import {
 import publishFacets from './publishFacets';
 import saveParsedStream from '../../services/saveParsedStream';
 
-export const getParser = parserName => {
-    if (!loaders[parserName]) {
+const loaders = new Script('loaders');
+
+export const getParser = async parserName => {
+    const currentLoader = await loaders.get(parserName);
+    if (!currentLoader) {
         throw new Error(`Unknow parser: ${parserName}`);
     }
+
+    const [, , , script] = currentLoader;
+
+    /*
     const configKey = `loader.${parserName}`;
     const configObj = config.has(configKey) ? config.get(configKey) : {};
-    return loaders[parserName](configObj);
+    ezs.config(configKey, configObj);
+    */
+    return stream =>
+        stream.pipe(ezs.fromString(script)).pipe(
+            ezs((data, feed) => {
+                if (data instanceof Error) {
+                    global.console.error('Error in pipeline.', data);
+                    feed.end();
+                } else {
+                    feed.send(data);
+                }
+            }),
+        );
 };
 
 export const requestToStream = asyncBusboyImpl => async req => {
@@ -117,9 +137,10 @@ export async function uploadFileMiddleware(ctx, parserName) {
     const { filename, totalChunks, extension } = ctx.resumable;
     const mergedStream = await ctx.mergeChunks(filename, totalChunks);
 
-    const parseStream = ctx.getParser(
+    const parseStream = await ctx.getParser(
         !parserName || parserName === 'automatic' ? extension : parserName,
     );
+
     const parsedStream = await parseStream(mergedStream);
     await ctx.clearChunks(filename, totalChunks);
 
