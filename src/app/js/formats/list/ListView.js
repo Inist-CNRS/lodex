@@ -1,7 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import translate from 'redux-polyglot/translate';
 
-import { field as fieldPropTypes } from '../../propTypes';
+import {
+    field as fieldPropTypes,
+    polyglot as polyglotPropTypes,
+} from '../../propTypes';
 import { getViewComponent } from '../';
 
 export const UL = ({ className, children }) => (
@@ -29,6 +33,7 @@ const ListView = ({
     type,
     subFormat,
     subFormatOptions,
+    p: polyglot,
 }) => {
     const values = resource[field.name];
     const { ViewComponent, args } = getViewComponent(subFormat, true);
@@ -36,11 +41,7 @@ const ListView = ({
     const List = type === 'ordered' ? OL : UL;
 
     if (values.length < 1 || (values.length == 1 && !values[0].trim())) {
-        return (
-            <List className={className}>
-                <p>error</p>
-            </List>
-        );
+        return <p>{polyglot.t('error')}</p>;
     }
 
     return (
@@ -76,10 +77,11 @@ ListView.propTypes = {
     type: PropTypes.string,
     subFormat: PropTypes.string,
     subFormatOptions: PropTypes.any,
+    p: polyglotPropTypes.isRequired,
 };
 
 ListView.defaultProps = {
     className: null,
 };
 
-export default ListView;
+export default translate(ListView);
