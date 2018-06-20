@@ -131,11 +131,11 @@ export class LodexFieldView extends Component {
         return <span>{value}</span>;
     };
 
-    loadContent = label => {
+    loadContent = (label, key) => {
         const { className, formatData } = this.props;
         const data = formatData[0].fields.find(data => data.name == label);
         return (
-            <div>
+            <div key={key}>
                 <span
                     className={('lodex_field_label', className)}
                     style={styles.label}
@@ -188,8 +188,8 @@ export class LodexFieldView extends Component {
         return (
             <div className={className} style={styles.container}>
                 {this.getHeaderFormat()}
-                {labelArray.map(label => {
-                    return this.loadContent(label);
+                {labelArray.map((label, key) => {
+                    return this.loadContent(label, key);
                 })}
             </div>
         );
