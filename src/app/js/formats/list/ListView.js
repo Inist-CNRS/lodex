@@ -35,6 +35,14 @@ const ListView = ({
 
     const List = type === 'ordered' ? OL : UL;
 
+    if (values.length < 1 || (values.length == 1 && !values[0].trim())) {
+        return (
+            <List className={className}>
+                <p>error</p>
+            </List>
+        );
+    }
+
     return (
         <List className={className}>
             {values.map((value, index) => (
