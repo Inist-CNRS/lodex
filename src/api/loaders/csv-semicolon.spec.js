@@ -2,10 +2,10 @@ import expect from 'expect';
 import ezs from 'ezs';
 import from from 'from';
 
-describe('csv.ini', () => {
+describe('csv-semicolon.ini', () => {
     it('should parse a csv', done => {
         const res = [];
-        from(['a,b\n1,2\n'])
+        from([`a;b\n1;2\n`])
             .pipe(ezs.fromFile(__dirname + '/csv.ini'))
             .on('data', chunk => {
                 res.push(chunk);
