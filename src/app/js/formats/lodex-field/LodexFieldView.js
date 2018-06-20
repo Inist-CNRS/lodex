@@ -214,7 +214,7 @@ export default compose(
     translate,
     injectData(({ field, resource }) => {
         const value = buildValue(field, resource);
-        // @TODO crash à partir d'ici
+
         if (!value) {
             return null;
         }
