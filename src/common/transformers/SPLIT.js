@@ -8,8 +8,8 @@ export const split = (value, separator) => {
     if (typeof value !== 'string') {
         throw new Error('Invalid value: need a string');
     }
-    let removeEmpty = value.split(separator).map(x => x.trim());
-    return removeEmpty.filter(x => x != '');
+    let splitted = value.split(separator).map(x => x.trim());
+    return splitted.filter(x => x != '');
 };
 
 const transformation = (_, args) => value =>
