@@ -4,11 +4,12 @@ import { shallow } from 'enzyme';
 
 import LinkImageView from './LinkImageView';
 
-describe('<LinkImageView />', () => {
+describe.only('<LinkImageView />', () => {
     it('should render', () => {
         const resource = { foo: 'http://example.com' };
         const field = {
             name: 'foo',
+            format: { args: { maxHeight: 500 } },
         };
         const fields = [];
         const wrapper = shallow(
