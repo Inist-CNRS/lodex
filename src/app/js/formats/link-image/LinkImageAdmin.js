@@ -67,13 +67,13 @@ class LinkImageAdmin extends Component {
                 >
                     <MenuItem
                         value="text"
-                        primaryText={polyglot.t(
-                            'A custom URL (same for all resources)',
-                        )}
+                        primaryText={polyglot.t('Another column content')}
                     />
                     <MenuItem
                         value="column"
-                        primaryText={polyglot.t('Another column content')}
+                        primaryText={polyglot.t(
+                            'A custom URL (same for all resources)',
+                        )}
                     />
                 </SelectField>
                 <TextField
@@ -87,7 +87,7 @@ class LinkImageAdmin extends Component {
                     value={value}
                 />
                 <TextField
-                    floatingLabelText={polyglot.t('heigh_px')}
+                    floatingLabelText={polyglot.t('height_px')}
                     type="number"
                     onChange={this.setMaxHeight}
                     style={styles.input}
