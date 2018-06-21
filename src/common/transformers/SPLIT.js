@@ -9,13 +9,7 @@ export const split = (value, separator) => {
         throw new Error('Invalid value: need a string');
     }
     let removeEmpty = value.split(separator).map(x => x.trim());
-    for (var i = 0; i < removeEmpty.length; i++) {
-        if (!removeEmpty[i]) {
-            removeEmpty.splice(i, 1);
-            i--;
-        }
-    }
-    return removeEmpty;
+    return removeEmpty.filter(x => x != '');
 };
 
 const transformation = (_, args) => value =>
