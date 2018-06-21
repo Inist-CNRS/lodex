@@ -8,7 +8,10 @@ import { polyglot as polyglotPropTypes } from '../../propTypes';
 
 const styles = {
     container: {
-        display: 'inline-flex',
+        display: 'flex',
+        flexWrap: 'wrap',
+        width: '200%',
+        justifyContent: 'space-between',
     },
     input: {
         marginLeft: '1rem',
