@@ -22,14 +22,14 @@ describe('xml.ini', () => {
     it('should parse a MODS XML', done => {
         const res = [];
         from([
-            `<RmodsCollectionDF><mods><test>value</test></mods></RmodsCollectionDF>`,
+            `<modsCollection><mods><test>value</test></mods></modsCollection>`,
         ])
             .pipe(ezs.fromFile(__dirname + '/xml.ini'))
             .on('data', chunk => {
                 res.push(chunk);
             })
             .on('end', () => {
-              expect(res).toEqual([{ '$t': 'value' }]); // eslint-disable-line
+              expect(res).toEqual([{ 'test/$t': 'value' }]); // eslint-disable-line
                 done();
             });
     });
