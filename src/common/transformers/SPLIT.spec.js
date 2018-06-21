@@ -2,7 +2,7 @@ import expect from 'expect';
 
 import { split } from './SPLIT';
 
-describe.only('SPLIT', () => {
+describe('SPLIT', () => {
     it('should return splitted value', () => {
         expect(split('hello dear world', ' dear ')).toEqual(['hello', 'world']);
     });
