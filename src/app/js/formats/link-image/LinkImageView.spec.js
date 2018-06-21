@@ -4,7 +4,7 @@ import { shallow } from 'enzyme';
 
 import LinkImageView from './LinkImageView';
 
-describe.only('<LinkImageView />', () => {
+describe('<LinkImageView />', () => {
     it('should render', () => {
         const resource = { foo: 'http://example.com' };
         const field = {
