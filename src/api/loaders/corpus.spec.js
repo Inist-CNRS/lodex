@@ -267,14 +267,14 @@ describe('corpus.ini', () => {
                         host: {
                             author: [],
                             title:
-                                'From the "Address of the General Couneil of the International Working Man\'s Association on the Civil War in France", in Karl Marx, The Civil Warin France (Peking: Foreign Languages Press, 1966), 99.',
+                                'From the "Address of the General Couneil of the International Working Man\'s Association on the Civil War in France", in Karl Marx, The Civil War in France (Peking: Foreign Languages Press, 1966), 99.',
                         },
                     },
                     {
                         host: {
                             author: [],
                             title:
-                                "F. Engels, Introduction to The Civil War in France, 14. By 1891, Engels goes on to argue, the Proudhonist idea of a decentralized state and a federation of local working men's associations survived only among the \"'radical' bourgeoisie\". It has, of course, been argued many times that, if this was so, it was because the defeat of the Commune demonstrated the impractibility of such a scheme and not, as Engels claimed, because the Commune was, in effect, committed to the idea of the unitarystate.",
+                                "F. Engels, Introduction to The Civil War in France, 14. By 1891, Engels goes on to argue, the Proudhonist idea of a decentralized state and a federation of local working men's associations survived only among the \"'radical' bourgeoisie\". It has, of course, been argued many times that, if this was so, it was because the defeat of the Commune demonstrated the impractibility of such a scheme and not, as Engels claimed, because the Commune was, in effect, committed to the idea of the unitary state.",
                         },
                     },
                     {
