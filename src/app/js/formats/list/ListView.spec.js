@@ -5,7 +5,7 @@ import { shallow } from 'enzyme';
 import Component, { UL, OL } from './ListView';
 import DefaultView from '../DefaultFormat/DefaultView.js';
 
-describe.only('list format view Component', () => {
+describe('list format view Component', () => {
     const polyglot = {
         t: v => v,
     };
