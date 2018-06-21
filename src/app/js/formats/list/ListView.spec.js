@@ -94,4 +94,22 @@ describe.only('list format view Component', () => {
         const ol = component.find(OL);
         expect(ol.length).toBe(1);
     });
+
+    it('should return an error', () => {
+        const props = {
+            className: 'class',
+            field: {
+                name: 'name',
+            },
+            type: 'ordered',
+            subFormat: null,
+            subFormatOptions: {},
+            resource: {
+                name: [' '],
+            },
+            p: polyglot,
+        };
+        const component = shallow(<Component.WrappedComponent {...props} />);
+        expect(component.html()).toEqual('<p>error</p>');
+    });
 });
