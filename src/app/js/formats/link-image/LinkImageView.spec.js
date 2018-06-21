@@ -29,5 +29,11 @@ describe.only('<LinkImageView />', () => {
                 .find('img')
                 .prop('src'),
         ).toEqual('http://image.com');
+        expect(
+            wrapper
+                .find('a')
+                .find('img')
+                .prop('style'),
+        ).toEqual({ maxHeight: '500px' });
     });
 });
