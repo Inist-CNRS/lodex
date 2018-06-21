@@ -21,9 +21,15 @@ const LinkView = ({
         value,
     );
     const link = resource[field.name];
+
+    const style = {};
+    if (field.format.args.maxHeight) {
+        style.maxHeight = field.format.args.maxHeight + 'px';
+    }
+
     return (
         <a className={className} href={`${link}`}>
-            <img src={imageURL} />
+            <img src={imageURL} style={style} />
         </a>
     );
 };
@@ -36,6 +42,8 @@ LinkView.propTypes = {
     resource: PropTypes.object.isRequired,
     type: PropTypes.string.isRequired,
     value: PropTypes.string.isRequired,
+    maxWidth: PropTypes.number.isRequired,
+    maxHeight: PropTypes.number.isRequired,
 };
 
 LinkView.defaultProps = {

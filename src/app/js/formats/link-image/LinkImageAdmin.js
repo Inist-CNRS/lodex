@@ -18,6 +18,7 @@ const styles = {
 export const defaultArgs = {
     type: 'value',
     value: '',
+    maxHeight: undefined,
 };
 
 class LinkImageAdmin extends Component {
@@ -25,6 +26,7 @@ class LinkImageAdmin extends Component {
         args: PropTypes.shape({
             type: PropTypes.string,
             value: PropTypes.string,
+            maxHeight: PropTypes.number,
         }),
         onChange: PropTypes.func.isRequired,
         p: polyglotPropTypes.isRequired,
@@ -44,8 +46,16 @@ class LinkImageAdmin extends Component {
         this.props.onChange(newArgs);
     };
 
+    setMaxHeight = (_, maxHeight) => {
+        if (maxHeight < 1) {
+            maxHeight = 1;
+        }
+        const newArgs = { ...this.props.args, maxHeight };
+        this.props.onChange(newArgs);
+    };
+
     render() {
-        const { p: polyglot, args: { type, value } } = this.props;
+        const { p: polyglot, args: { type, value, maxHeight } } = this.props;
 
         return (
             <div style={styles.container}>
@@ -75,6 +85,13 @@ class LinkImageAdmin extends Component {
                     onChange={this.setValue}
                     style={styles.input}
                     value={value}
+                />
+                <TextField
+                    floatingLabelText={polyglot.t('heigh_px')}
+                    type="number"
+                    onChange={this.setMaxHeight}
+                    style={styles.input}
+                    value={maxHeight}
                 />
             </div>
         );
