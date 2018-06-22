@@ -16,4 +16,8 @@ describe('SPLIT', () => {
     it('should throw an error if value is not a string', () => {
         expect(() => split([], ' ')).toThrow('Invalid value: need a string');
     });
+
+    it('should return without extra with space', () => {
+        expect(split('hello ; ; world', ';')).toEqual(['hello', 'world']);
+    });
 });
