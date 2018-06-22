@@ -12,7 +12,7 @@ import {
 import { fromFormat } from '../../public/selectors';
 import { loadFormatData } from '../../formats/reducer';
 import Loading from '../../lib/components/Loading';
-import ActionSearch from 'material-ui/svg-icons/action/search';
+import Link from 'material-ui/svg-icons/content/link';
 import TextField from 'material-ui/TextField';
 import { isURL } from '../../../../common/uris.js';
 
@@ -34,16 +34,15 @@ const styles = {
         display: 'block',
         width: '100%',
     },
-    input1: {
-        fontSize: '1em',
-        width: '80%',
-        borderImage: 'none',
-    },
-    input2: {
+    input: {
         marginLeft: '2.5%',
         fontSize: '1em',
         width: '12.5%',
         borderImage: 'none',
+    },
+    link: {
+        display: 'inline-block',
+        width: '80%',
     },
 };
 
@@ -110,6 +109,20 @@ export default url => FormatView => {
             }
         };
 
+        ifUrl = () => {
+            const { resource, field } = this.props;
+            const requestText = resource[field.name];
+
+            if (isURL(requestText)) {
+                return (
+                    <a href={requestText} style={styles.link}>
+                        {requestText}
+                    </a>
+                );
+            }
+            return <span> {requestText} </span>;
+        };
+
         getHeaderFormat = () => {
             const { resource, field, sparql } = this.props;
             const requestText = resource[field.name];
@@ -119,7 +132,7 @@ export default url => FormatView => {
             if (!sparql.hiddenInfo) {
                 return (
                     <div>
-                        <ActionSearch
+                        <Link
                             style={
                                 isURL(requestText)
                                     ? styles.pointer
@@ -128,13 +141,9 @@ export default url => FormatView => {
                             color="lightGrey"
                             onClick={this.redirectIfUrl}
                         />
+                        {this.ifUrl()}
                         <TextField
-                            style={styles.input1}
-                            name="sparqlRequest"
-                            value={requestText}
-                        />
-                        <TextField
-                            style={styles.input2}
+                            style={styles.input}
                             name="sparqlEnpoint"
                             value={endpoint}
                         />
