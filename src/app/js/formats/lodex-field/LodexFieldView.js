@@ -65,15 +65,7 @@ const styles = {
 };
 
 const buildValue = (field, resource) => {
-    let value;
-
-    if (field.valueOfList) {
-        value = field.valueOfList.trim();
-    } else {
-        value = resource[field.name];
-    }
-
-    return value;
+    return field.valueOfList ? field.valueOfList.trim() : resource[field.name];
 };
 
 export class LodexFieldView extends Component {
