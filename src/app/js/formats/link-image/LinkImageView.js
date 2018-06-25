@@ -12,15 +12,9 @@ const LinkView = ({
     type,
     value,
 }) => {
-    const imageURL = getLabel(
-        field,
-        linkedResource,
-        resource,
-        fields,
-        type,
-        value,
-    );
-    const link = resource[field.name];
+    const link = getLabel(field, linkedResource, resource, fields, type, value);
+
+    const imageURL = field.format.args.value;
 
     const style = {};
     if (field.format.args.maxHeight) {
@@ -28,7 +22,7 @@ const LinkView = ({
     }
 
     return (
-        <a className={className} href={`${link}`}>
+        <a className={className} href={link}>
             <img src={imageURL} style={style} />
         </a>
     );
