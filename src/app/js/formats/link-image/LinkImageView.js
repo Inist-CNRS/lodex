@@ -42,7 +42,6 @@ LinkView.propTypes = {
     resource: PropTypes.object.isRequired,
     type: PropTypes.string.isRequired,
     value: PropTypes.string.isRequired,
-    maxWidth: PropTypes.number.isRequired,
     maxHeight: PropTypes.number.isRequired,
 };
 

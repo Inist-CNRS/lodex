@@ -50,9 +50,7 @@ class LinkImageAdmin extends Component {
     };
 
     setMaxHeight = (_, maxHeight) => {
-        if (maxHeight < 1) {
-            maxHeight = 1;
-        }
+        maxHeight = Math.max(maxHeight, 1);
         const newArgs = { ...this.props.args, maxHeight };
         this.props.onChange(newArgs);
     };
