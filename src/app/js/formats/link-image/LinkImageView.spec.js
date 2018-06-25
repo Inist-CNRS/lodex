@@ -11,13 +11,10 @@ describe('<LinkImageView />', () => {
             name: 'foo',
             format: { args: { maxHeight: 500 } },
         };
-        const fields = [];
         const wrapper = shallow(
             <LinkImageView
                 resource={resource}
                 field={field}
-                fields={fields}
-                type="text"
                 value="http://image.com"
             />,
         );
