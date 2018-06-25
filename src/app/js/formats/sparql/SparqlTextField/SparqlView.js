@@ -127,7 +127,7 @@ export class SparqlTextField extends Component {
     };
 
     checkImage = src => {
-        const index = src.search(/[.][A-Z]+$/);
+        const index = src.search(/[.][A-Z]+$/); //get the index of the extention at the end of the string
         if (index != -1) {
             src = src.substring(0, index) + src.substring(index).toLowerCase();
         }

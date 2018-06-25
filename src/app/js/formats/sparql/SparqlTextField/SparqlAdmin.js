@@ -83,7 +83,6 @@ const styles = {
         marginBottom: '2px',
     },
 };
-// backgroundColor: '#e9e9e9',
 
 export const defaultArgs = {
     sparql: {
