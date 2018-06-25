@@ -21,7 +21,7 @@ const styles = {
 export const defaultArgs = {
     type: 'value',
     value: '',
-    maxHeight: undefined,
+    maxHeight: 200,
 };
 
 class LinkImageAdmin extends Component {
