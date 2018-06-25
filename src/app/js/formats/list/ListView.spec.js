@@ -110,6 +110,6 @@ describe('list format view Component', () => {
             p: polyglot,
         };
         const component = shallow(<Component.WrappedComponent {...props} />);
-        expect(component.html()).toEqual('<p>error</p>');
+        expect(component.html()).toEqual('<p>error_listView</p>');
     });
 });
