@@ -90,14 +90,14 @@ export class SparqlTextField extends Component {
     applyFormat = result => {
         const { sparql } = this.props;
 
-        const data = sparql.subformat.find(obj => {
-            const attr = obj.attribute.trim().replace(/^\?/, '');
-            return result[0] == attr;
+        const data = sparql.subformat.find(data => {
+            return result[0] == data.attribute.trim().replace(/^\?/, '');
         });
 
         if (data) {
             return this.LoadSubformatComponent(result, data);
         }
+
         return this.ifArray(result);
     };
 

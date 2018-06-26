@@ -7,8 +7,6 @@ import URL from 'url';
 import { isURL } from '../../../../common/uris.js';
 import { field as fieldPropTypes } from '../../propTypes';
 import injectData from '../injectData';
-import ActionSearch from 'material-ui/svg-icons/action/search';
-import TextField from 'material-ui/TextField';
 
 const styles = {
     container: {
@@ -61,9 +59,21 @@ const styles = {
         verticalAlign: 'middle',
         width: '5%',
     },
+    link: {
+        fontWeight: 'bold',
+    },
 };
 
-export class LodexResourceView extends Component {
+const buildValue = (field, resource) => {
+    return field.valueOfList ? field.valueOfList.trim() : resource[field.name];
+};
+
+export class LodexFieldView extends Component {
+    getValue = () => {
+        const { field, resource } = this.props;
+        return buildValue(field, resource);
+    };
+
     ifArray = value => {
         const { className } = this.props;
         if (Array.isArray(value)) {
@@ -113,11 +123,15 @@ export class LodexResourceView extends Component {
         return <span>{value}</span>;
     };
 
-    loadContent = label => {
+    loadContent = (label, key) => {
         const { className, formatData } = this.props;
+        if (!label) {
+            return;
+        }
+
         const data = formatData[0].fields.find(data => data.name == label);
         return (
-            <div>
+            <div key={key}>
                 <span
                     className={('lodex_field_label', className)}
                     style={styles.label}
@@ -129,10 +143,8 @@ export class LodexResourceView extends Component {
             </div>
         );
     };
-
     openIfUrl = () => {
-        const { resource, field } = this.props;
-        const requestText = resource[field.name];
+        const requestText = this.getValue();
 
         if (isURL(requestText)) {
             window.location.replace(requestText);
@@ -140,21 +152,18 @@ export class LodexResourceView extends Component {
     };
 
     getHeaderFormat = () => {
-        const { resource, field, param } = this.props;
-        const linkText = resource[field.name];
-        if (!param.hiddenInfo) {
+        const { field } = this.props;
+        const linkText = this.getValue();
+        if (!field.format.args.param.hiddenInfo) {
             return (
                 <div>
-                    <ActionSearch
-                        style={isURL(linkText) ? styles.pointer : styles.icon}
-                        color="lightGrey"
-                        onClick={this.openIfUrl}
-                    />
-                    <TextField
-                        style={styles.input1}
-                        name="uriResource"
-                        value={linkText}
-                    />
+                    <a
+                        className="link_to_resource"
+                        style={styles.link}
+                        href={linkText}
+                    >
+                        {linkText}
+                    </a>
                 </div>
             );
         }
@@ -163,39 +172,41 @@ export class LodexResourceView extends Component {
     };
 
     render() {
-        const { className, formatData, param } = this.props;
+        const { className, formatData, field } = this.props;
         if (formatData === undefined) {
             return <span> </span>;
         }
-        let labelArray = param.labelArray.map(e => e.trim()); //clean string
+
+        const labelArray = field.format.args.param.labelArray.map(e =>
+            e.trim(),
+        );
 
         return (
             <div className={className} style={styles.container}>
                 {this.getHeaderFormat()}
-                {labelArray.map(label => {
-                    return this.loadContent(label);
+                {labelArray.map((label, key) => {
+                    return this.loadContent(label, key);
                 })}
             </div>
         );
     }
 }
 
-LodexResourceView.propTypes = {
+LodexFieldView.propTypes = {
     className: PropTypes.string,
     formatData: PropTypes.arrayOf(PropTypes.object),
-    param: PropTypes.object,
     field: fieldPropTypes.isRequired,
     resource: PropTypes.object.isRequired,
 };
 
-LodexResourceView.defaultProps = {
+LodexFieldView.defaultProps = {
     className: null,
 };
 
 export default compose(
     translate,
     injectData(({ field, resource }) => {
-        const value = resource[field.name];
+        const value = buildValue(field, resource);
 
         if (!value) {
             return null;
@@ -219,4 +230,4 @@ export default compose(
         }
         return '/api/export/jsonallvalue/?uri=' + resource[field.name];
     }),
-)(LodexResourceView);
+)(LodexFieldView);

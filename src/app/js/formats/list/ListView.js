@@ -55,6 +55,7 @@ const ListView = ({
                             field={{
                                 ...field,
                                 name: index.toString(),
+                                valueOfList: value,
                                 format: {
                                     name: subFormat,
                                     args: subFormatOptions,
