@@ -68,18 +68,18 @@ const styles = {
 };
 
 export class SparqlTextField extends Component {
-    LoadSubformatComponent = (value, data) => {
+    LoadSubformatComponent = (result, subformat) => {
         const { field } = this.props;
-        const { ViewComponent, args } = getViewComponent(data.sub, true);
+        const { ViewComponent, args } = getViewComponent(subformat.sub, true);
         return (
             <ViewComponent
-                resource={[value[1].value]}
+                resource={{ '0': result[1].value }}
                 field={{
                     ...field,
                     name: '0',
                     format: {
-                        name: data.sub,
-                        args: data.option,
+                        name: subformat.sub,
+                        args: subformat.option,
                     },
                 }}
                 {...args}
@@ -127,6 +127,10 @@ export class SparqlTextField extends Component {
     };
 
     checkImage = src => {
+        const index = src.search(/[.][A-Z]+$/); //get the index of the extention at the end of the string
+        if (index != -1) {
+            src = src.substring(0, index) + src.substring(index).toLowerCase();
+        }
         if (ifIsImage(src)) {
             return <img src={src} style={styles.imgDefault} />;
         } else {
@@ -159,6 +163,9 @@ export class SparqlTextField extends Component {
                         return (
                             <div key={key} style={styles.container2}>
                                 {topairs(result).map((obj, index) => {
+                                    if (!obj[1].value) {
+                                        return;
+                                    }
                                     return (
                                         <div key={index}>
                                             <div style={styles.id}>

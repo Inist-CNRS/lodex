@@ -2,9 +2,16 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { field as fieldPropTypes } from '../../propTypes';
 
+const getParagraphWidth = (paragraphWidth, field) => {
+    if (field.format.args.paragraphWidth) {
+        return field.format.args.paragraphWidth;
+    }
+    return paragraphWidth;
+};
+
 const ParagraphView = ({ resource, field, paragraphWidth }) => {
     const style = {
-        maxWidth: paragraphWidth,
+        maxWidth: getParagraphWidth(paragraphWidth, field),
         padding: 8,
         textAlign: 'justify',
     };
