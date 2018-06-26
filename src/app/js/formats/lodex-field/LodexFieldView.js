@@ -130,6 +130,9 @@ export class LodexFieldView extends Component {
         }
 
         const data = formatData[0].fields.find(data => data.name == label);
+        if (!data) {
+            return;
+        }
         return (
             <div key={key}>
                 <span
