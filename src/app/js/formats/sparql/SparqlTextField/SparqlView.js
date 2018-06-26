@@ -10,6 +10,7 @@ import topairs from 'lodash.topairs';
 import clonedeep from 'lodash.clonedeep';
 import toSentenceCase from 'js-sentencecase';
 import ifIsImage from 'if-is-image';
+import { getViewComponent } from '../../';
 
 const styles = {
     container2: {
@@ -62,11 +63,44 @@ const styles = {
         margin: 0,
     },
     imgDefault: {
-        'max-width': '900px',
+        maxWidth: '900px',
     },
 };
 
 export class SparqlTextField extends Component {
+    LoadSubformatComponent = (result, subformat) => {
+        const { field } = this.props;
+        const { ViewComponent, args } = getViewComponent(subformat.sub, true);
+        return (
+            <ViewComponent
+                resource={{ '0': result[1].value }}
+                field={{
+                    ...field,
+                    name: '0',
+                    format: {
+                        name: subformat.sub,
+                        args: subformat.option,
+                    },
+                }}
+                {...args}
+            />
+        );
+    };
+
+    applyFormat = result => {
+        const { sparql } = this.props;
+
+        const data = sparql.subformat.find(obj => {
+            const attr = obj.attribute.trim().replace(/^\?/, '');
+            return result[0] == attr;
+        });
+
+        if (data) {
+            return this.LoadSubformatComponent(result, data);
+        }
+        return this.ifArray(result);
+    };
+
     ifArray = result => {
         const { className, sparql } = this.props;
         const temp = clonedeep(result);
@@ -93,6 +127,10 @@ export class SparqlTextField extends Component {
     };
 
     checkImage = src => {
+        const index = src.search(/[.][A-Z]+$/); //get the index of the extention at the end of the string
+        if (index != -1) {
+            src = src.substring(0, index) + src.substring(index).toLowerCase();
+        }
         if (ifIsImage(src)) {
             return <img src={src} style={styles.imgDefault} />;
         } else {
@@ -125,6 +163,9 @@ export class SparqlTextField extends Component {
                         return (
                             <div key={key} style={styles.container2}>
                                 {topairs(result).map((obj, index) => {
+                                    if (!obj[1].value) {
+                                        return;
+                                    }
                                     return (
                                         <div key={index}>
                                             <div style={styles.id}>
@@ -136,7 +177,7 @@ export class SparqlTextField extends Component {
                                                     &#160; : &#160;
                                                 </span>
                                             </div>
-                                            {this.ifArray(obj)}
+                                            {this.applyFormat(obj)}
                                             <div
                                                 className="lang_sparql property_language"
                                                 style={styles.lang}
