@@ -8,7 +8,10 @@ import { polyglot as polyglotPropTypes } from '../../propTypes';
 
 const styles = {
     container: {
-        display: 'inline-flex',
+        display: 'flex',
+        flexWrap: 'wrap',
+        width: '200%',
+        justifyContent: 'space-between',
     },
     input: {
         marginLeft: '1rem',
@@ -18,6 +21,7 @@ const styles = {
 export const defaultArgs = {
     type: 'value',
     value: '',
+    maxHeight: 200,
 };
 
 class LinkImageAdmin extends Component {
@@ -25,6 +29,7 @@ class LinkImageAdmin extends Component {
         args: PropTypes.shape({
             type: PropTypes.string,
             value: PropTypes.string,
+            maxHeight: PropTypes.number,
         }),
         onChange: PropTypes.func.isRequired,
         p: polyglotPropTypes.isRequired,
@@ -44,8 +49,14 @@ class LinkImageAdmin extends Component {
         this.props.onChange(newArgs);
     };
 
+    setMaxHeight = (_, maxHeight) => {
+        maxHeight = Math.max(maxHeight, 1);
+        const newArgs = { ...this.props.args, maxHeight };
+        this.props.onChange(newArgs);
+    };
+
     render() {
-        const { p: polyglot, args: { type, value } } = this.props;
+        const { p: polyglot, args: { type, value, maxHeight } } = this.props;
 
         return (
             <div style={styles.container}>
@@ -57,13 +68,13 @@ class LinkImageAdmin extends Component {
                 >
                     <MenuItem
                         value="text"
-                        primaryText={polyglot.t(
-                            'A custom URL (same for all resources)',
-                        )}
+                        primaryText={polyglot.t('Another column content')}
                     />
                     <MenuItem
                         value="column"
-                        primaryText={polyglot.t('Another column content')}
+                        primaryText={polyglot.t(
+                            'A custom URL (same for all resources)',
+                        )}
                     />
                 </SelectField>
                 <TextField
@@ -75,6 +86,13 @@ class LinkImageAdmin extends Component {
                     onChange={this.setValue}
                     style={styles.input}
                     value={value}
+                />
+                <TextField
+                    floatingLabelText={polyglot.t('height_px')}
+                    type="number"
+                    onChange={this.setMaxHeight}
+                    style={styles.input}
+                    value={maxHeight}
                 />
             </div>
         );

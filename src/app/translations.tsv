@@ -361,6 +361,7 @@
 "vertical"	"vertical"	"vertical"
 "max_value"	"max value"	"valeur max"
 "min_value"	"min value"	"valeur minimum"
+"height_px"	"Pixel height"	"Hauteur en pixel"
 "flip_axis"	"flip axes"	"inverser les axes"
 "list_of_language"	"Choose the language"	"Choix du langage"
 "value_margin"	"margin for value axis (px)"	"marge pour l'axe des valeurs (px)"
