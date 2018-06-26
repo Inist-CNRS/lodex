@@ -77,6 +77,7 @@
 "error_language_invalid"	"Language is invalid"	"Langue invalide"
 "error_transformer.operation_invalid"	"Operation %{operation} does not exist"	"L'opération %{operation} n'existe pas"
 "error_transformer.args_invalid"	"Operation %{operation} is invalid : it requires %{args} args"	"L'opération %{operation} est invalide : arguments %{args} requis"
+"error_listView"	"Error: empty list"	"Erreur : liste vide"
 "remove_resource"	"Remove the resource"	"Retirer la ressource"
 "enter_reason"	"Enter your reason for removing"	"Donner en quelques mots une explication"
 "reason"	"Reason"	"La raison"
