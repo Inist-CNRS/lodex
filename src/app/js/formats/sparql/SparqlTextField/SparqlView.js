@@ -9,7 +9,6 @@ import URL from 'url';
 import topairs from 'lodash.topairs';
 import clonedeep from 'lodash.clonedeep';
 import toSentenceCase from 'js-sentencecase';
-import ifIsImage from 'if-is-image';
 import { getViewComponent } from '../../';
 
 const styles = {
@@ -126,21 +125,9 @@ export class SparqlTextField extends Component {
         }
     };
 
-    checkImage = src => {
-        const index = src.search(/[.][A-Z]+$/); //get the index of the extention at the end of the string
-        if (index != -1) {
-            src = src.substring(0, index) + src.substring(index).toLowerCase();
-        }
-        if (ifIsImage(src)) {
-            return <img src={src} style={styles.imgDefault} />;
-        } else {
-            return <a href={src}>{src}</a>;
-        }
-    };
-
     showURL = result => {
         if (isURL(result[1].value) && result[1].type == 'uri') {
-            return this.checkImage(result[1].value);
+            return <a href={result[1].value}>{result[1].value}</a>;
         } else {
             return <span>{result[1].value}</span>;
         }
