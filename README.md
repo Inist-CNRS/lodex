@@ -46,7 +46,7 @@ To see what Lodex can do, check out
   - http://lodex-istex.dpi.inist.fr/
 - user documentation : https://lodex.gitbooks.io/lodex-user-documentation/
 - actuality & news : http://lodex.inist.fr/
-- Twitter : https://twitter.com/lodex_team
+- Twitter : https://twitter.com/Lodex_Platform
 - Contribute (for developer) : https://github.com/Inist-CNRS/lodex/wiki
 - Contact email: contact@listes.lodex.fr
 - Mailing list about LODEX usage: users@listes.lodex.fr (subscribe on [listes.lodex.fr](https://listes.lodex.fr/sympa/info/users))
