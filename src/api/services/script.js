@@ -44,7 +44,11 @@ export default class Script {
     async get(routineCalled) {
         const routineLocal = this.local.find(r => r[2] === routineCalled);
         const routineDistant = this.distant.find(r => r[2] === routineCalled);
-        if (!routineLocal && routineDistant) {
+        // Warning : don't change the order, distant routine should be only use if there no local routine
+        if (routineLocal) {
+            return routineLocal;
+        }
+        if (routineDistant) {
             const response = await fetch(routineDistant[0]);
             const routineScript = await response.text();
             if (routineScript) {
@@ -52,8 +56,6 @@ export default class Script {
                 routineDistant[3] = routineScript;
             }
         }
-        const routine = routineDistant || routineLocal;
-
-        return routine;
+        return routineDistant;
     }
 }
