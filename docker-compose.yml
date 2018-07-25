@@ -11,8 +11,6 @@ services:
             no_proxy: "localhost,127.0.0.1,"
             NODE_ENV: ${NODE_ENV}
             EZMASTER_PUBLIC_URL: ${EZMASTER_PUBLIC_URL}
-        links:
-            - mongo
 
     api:
         image: node:8.9.1
