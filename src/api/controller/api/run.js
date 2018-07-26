@@ -2,18 +2,23 @@ import Koa from 'koa';
 import route from 'koa-route';
 import ezs from 'ezs';
 import { PassThrough } from 'stream';
-import Cache from 'streaming-cache';
+import hasher from 'node-object-hash';
 import cacheControl from 'koa-cache-control';
-import config from '../../../../config.json';
+import config from 'config';
 import Script from '../../services/script';
 
-const memory = new Cache({
-    max: config.memoryCacheMaxSize || 5,
-    maxAge: config.memoryCacheMaxAge || 10000,
+const hashCoerce = hasher({
+    sort: false,
+    coerce: true,
 });
+const cacheOptions = {
+    max: config.cache.max,
+    maxAge: config.cache.maxAge * 1000,
+};
+const cache = ezs.createCache(cacheOptions);
 
-const routine = new Script('routines');
 export const runRoutine = async (ctx, routineCalled) => {
+    const routine = new Script('routines');
     const currentRoutine = await routine.get(routineCalled);
     if (!currentRoutine) {
         ctx.throw(404, `Unknown routine '${routineCalled}'`);
@@ -43,40 +48,35 @@ export const runRoutine = async (ctx, routineCalled) => {
         host: ctx.host,
         hostname: ctx.hostname,
     };
-    const uniqkey = `${context.path}?${context.querystring}`;
+    const uniqHash = hashCoerce.hash([
+        __filename,
+        context.path,
+        context.querystring,
+    ]);
+    const uniqkey = `id-${uniqHash}`;
+    const cached = cache.get(uniqkey);
 
-    const cached = memory.get(uniqkey);
+    let result;
     if (cached) {
-        ctx.body = cached;
+        result = cached;
     } else {
         const input = new PassThrough({ objectMode: true });
-        const output = input
+        result = input
             .pipe(ezs.fromString(script))
-            .pipe(
-                ezs((data, feed) => {
-                    if (data instanceof Error) {
-                        global.console.error('Error in pipeline.', data);
-                        feed.end();
-                    } else {
-                        feed.send(data);
-                    }
-                }),
-            )
+            .pipe(ezs.catch(global.console.error))
             .pipe(ezs.toBuffer())
-            .pipe(memory.set(uniqkey));
-
-        ctx.body = output;
-
+            .pipe(cache.set(uniqkey));
         input.write(context);
         input.end();
     }
+    ctx.body = result;
 };
 
 const app = new Koa();
 app.use(
     cacheControl({
         public: true,
-        maxAge: 24 * 60 * 60,
+        maxAge: config.cache.maxAge,
     }),
 );
 app.use(route.get('/:routineCalled', runRoutine));
