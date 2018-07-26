@@ -23,7 +23,6 @@ import getTitle from '../../lib/getTitle';
 import ExportShareButton from '../ExportShareButton';
 import { getHost } from '../../../../common/uris';
 
-const topFieldsCount = 2;
 const styles = {
     container: {
         display: 'flex',
@@ -116,7 +115,7 @@ const styles = {
 };
 
 export const DetailComponent = ({ fields, resource, title, description }) => {
-    const topFieldsLimit = Number(topFieldsCount) || 2;
+    const topFieldsLimit = 1;
     const topFields = fields
         .filter(field => resource[field.name] || field.composedOf)
         .slice(0, topFieldsLimit);
