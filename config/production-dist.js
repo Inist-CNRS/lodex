@@ -5,7 +5,10 @@ const getMongoConfig = () => {
 
     const defaultConfig = {
         host: process.env.EZMASTER_MONGODB_HOST_PORT,
-        dbName: String(process.env.EZMASTER_TECHNICAL_NAME).replace(/(-[0-9]+)$/, ''),
+        dbName: String(process.env.EZMASTER_TECHNICAL_NAME).replace(
+            /(-[0-9]+)$/,
+            '',
+        ),
     };
 
     if (!mongo) {
@@ -25,6 +28,10 @@ module.exports = {
         cookieSecret: 'cookie',
         headerSecret: 'header',
         expiresIn: 10 * 3600, // 10 hours
+    },
+    cache: {
+        max: 500,
+        maxAge: 60 * 60, // 1 hour
     },
     buildFrontend: true,
 };
