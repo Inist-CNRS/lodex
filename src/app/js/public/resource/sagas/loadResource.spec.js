@@ -14,9 +14,11 @@ describe('resource saga', () => {
         const action = {
             type: LOCATION_CHANGE,
             payload: {
-                pathname: '/ark:/naan/publisher-id',
-                query: {
-                    uri: 'uri',
+                location: {
+                    pathname: '/ark:/naan/publisher-id',
+                    query: {
+                        uri: 'uri',
+                    },
                 },
             },
         };
@@ -31,9 +33,11 @@ describe('resource saga', () => {
             saga.next();
             expect(saga.next().value).toEqual(
                 call(getUri, LOCATION_CHANGE, {
-                    pathname: '/ark:/naan/publisher-id',
-                    query: {
-                        uri: 'uri',
+                    location: {
+                        pathname: '/ark:/naan/publisher-id',
+                        query: {
+                            uri: 'uri',
+                        },
                     },
                 }),
             );
@@ -161,15 +165,19 @@ describe('resource saga', () => {
     describe('getUriFromPayload', () => {
         it('should return payload.pathname if it match ark pattern', () => {
             expect(
-                getUriFromPayload({ pathname: '/ark:/naan/publis-id' }),
+                getUriFromPayload({
+                    location: { pathname: '/ark:/naan/publis-id' },
+                }),
             ).toEqual('ark:/naan/publis-id');
         });
 
         it('should return state.uri if pathname does not match ark', () => {
             expect(
                 getUriFromPayload({
-                    pathname: 'not an ark',
-                    state: { uri: 'state uri' },
+                    location: {
+                        pathname: 'not an ark',
+                        state: { uri: 'state uri' },
+                    },
                 }),
             ).toEqual('state uri');
         });
@@ -177,14 +185,18 @@ describe('resource saga', () => {
         it('should return uri from queryString if no ark and no state uri', () => {
             expect(
                 getUriFromPayload({
-                    pathname: '/resource',
-                    search: '?uri=queryStringUri',
+                    location: {
+                        pathname: '/resource',
+                        search: '?uri=queryStringUri',
+                    },
                 }),
             ).toEqual('queryStringUri');
         });
 
         it('should return null if none of the above match', () => {
-            expect(getUriFromPayload({ pathname: '/resource' })).toEqual(null);
+            expect(
+                getUriFromPayload({ location: { pathname: '/resource' } }),
+            ).toEqual(null);
         });
     });
 });

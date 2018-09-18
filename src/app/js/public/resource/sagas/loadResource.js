@@ -29,8 +29,13 @@ export const getUriFromPayload = payload => {
         return ark;
     }
 
-    if (payload && payload.state && payload.state.uri) {
-        return payload.state.uri;
+    if (
+        payload &&
+        payload.location &&
+        payload.location.state &&
+        payload.location.state.uri
+    ) {
+        return payload.location.state.uri;
     }
 
     return getUriFromQueryString(payload.location.search);
