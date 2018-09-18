@@ -19,7 +19,7 @@ describe('objects2columns', () => {
             stream,
             output => {
                 expect(output).toExist();
-                expect(output.truc).toBeEqual('{"hello":"world"}');
+                expect(output.truc).toBe('{"hello":"world"}');
             },
             done,
         );
