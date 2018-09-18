@@ -10,6 +10,7 @@
         "start": "NODE_ENV=production node --require babel-register src/api",
         "test": "npm run test:api && npm run test:app",
         "test:api": "mocha --require babel-polyfill --require babel-core/register 'src/api/**/*.spec.js' 'src/common/**/*.spec.js'",
+        "test:api:watch": "mocha -w --require babel-polyfill --require babel-core/register 'src/api/**/*.spec.js' 'src/common/**/*.spec.js'",
         "test:app": "BABEL_ENV=browser mocha --require babel-polyfill --require='./src/app/js/test.js' --compilers='css:./src/common/tests/webpack-null-compiler,js:babel-core/register' 'src/app/js/**/*.spec.js'",
         "test:app:watch": "BABEL_ENV=browser mocha -w --require babel-polyfill --require='./src/app/js/test.js' --compilers='css:./src/common/tests/webpack-null-compiler,js:babel-core/register' 'src/app/js/**/*.spec.js'",
         "build": "BABEL_ENV=browser webpack --config=./src/app/webpack.config.babel.js",
