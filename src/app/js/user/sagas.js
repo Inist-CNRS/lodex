@@ -1,6 +1,6 @@
 import { call, put, select, takeEvery } from 'redux-saga/effects';
 import { startSubmit, stopSubmit } from 'redux-form';
-import { push } from 'react-router-redux';
+import { push } from 'connected-react-router';
 
 import { LOGIN, LOGIN_FORM_NAME, loginSuccess } from './';
 import { fromUser } from '../sharedSelectors';

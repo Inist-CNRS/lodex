@@ -1,6 +1,6 @@
 import expect from 'expect';
 import { call, put, select } from 'redux-saga/effects';
-import { push } from 'react-router-redux';
+import { push } from 'connected-react-router';
 
 import { handleCreateResource } from './createResource';
 import {

@@ -1,5 +1,4 @@
 import { combineReducers } from 'redux';
-import { routerReducer as routing } from 'react-router-redux';
 import { reducer as form } from 'redux-form';
 import { polyglotReducer as polyglot } from 'redux-polyglot';
 import { reducer as tooltip } from 'redux-tooltip';
@@ -26,7 +25,6 @@ const rootReducer = combineReducers({
     polyglot,
     fields,
     resource,
-    routing,
     format,
     user,
     tooltip,

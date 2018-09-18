@@ -1,6 +1,6 @@
 import expect from 'expect';
 import { call, take, put, select, race } from 'redux-saga/effects';
-import { LOCATION_CHANGE } from 'react-router-redux';
+import { LOCATION_CHANGE } from 'connected-react-router';
 
 import { fromUser } from '../../sharedSelectors';
 import { importFieldsSuccess, importFieldsError } from './';

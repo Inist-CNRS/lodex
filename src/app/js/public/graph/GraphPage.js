@@ -100,7 +100,7 @@ GraphPage.propTypes = {
     resource: PropTypes.object.isRequired,
 };
 
-const mapStateToProps = (state, { params: { name } }) => ({
+const mapStateToProps = (state, { match: { params: { name } } }) => ({
     graphField: name && fromFields.getFieldByName(state, name),
     resource: fromCharacteristic.getCharacteristicsAsResource(state),
 });

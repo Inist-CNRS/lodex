@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { StyleSheet, css } from 'aphrodite/no-important';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import { getFullResourceUri, isLocalURL } from '../../../../common/uris';
 
 const styles = StyleSheet.create({

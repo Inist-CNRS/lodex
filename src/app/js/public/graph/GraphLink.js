@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Card, CardMedia, CardActions } from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import Forward from 'material-ui/svg-icons/content/forward';
 import translate from 'redux-polyglot/translate';
 

@@ -1,6 +1,6 @@
 import { race, call, take, put, select } from 'redux-saga/effects';
 import expect from 'expect';
-import { replace } from 'react-router-redux';
+import { replace } from 'connected-react-router';
 
 import fetchSaga from './fetchSaga';
 import fetch from '../fetch';

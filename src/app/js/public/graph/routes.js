@@ -1,12 +1,13 @@
+import React from 'react';
+import { Route } from 'react-router-dom';
+
 import GraphPage from './GraphPage';
 
-export default [
-    {
-        path: '/graph',
-        component: GraphPage,
-    },
-    {
-        path: '/graph/:name',
-        component: GraphPage,
-    },
-];
+const GraphRoutes = () => (
+    <div>
+        <Route path="/graph" component={GraphPage} />
+        <Route path="/graph/:name" component={GraphPage} />
+    </div>
+);
+
+export default GraphRoutes;

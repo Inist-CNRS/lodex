@@ -1,5 +1,5 @@
 import { call, put, select, takeLatest } from 'redux-saga/effects';
-import { LOCATION_CHANGE } from 'react-router-redux';
+import { LOCATION_CHANGE } from 'connected-react-router';
 import qs from 'qs';
 
 import {
@@ -24,8 +24,7 @@ export const parsePathName = pathname => {
 };
 
 export const getUriFromPayload = payload => {
-    const ark = parsePathName(payload.pathname);
-
+    const ark = parsePathName(payload.location.pathname);
     if (ark) {
         return ark;
     }
@@ -34,7 +33,7 @@ export const getUriFromPayload = payload => {
         return payload.state.uri;
     }
 
-    return getUriFromQueryString(payload.search);
+    return getUriFromQueryString(payload.location.search);
 };
 
 export function* getUri(type, payload) {
@@ -51,7 +50,7 @@ export function* getUri(type, payload) {
 }
 
 export function* handleLoadResource({ payload, type }) {
-    if (type === LOCATION_CHANGE && payload.pathname === '/login') {
+    if (type === LOCATION_CHANGE && payload.location.pathname === '/login') {
         return;
     }
     yield put(preLoadPublication());

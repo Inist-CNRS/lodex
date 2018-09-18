@@ -1,16 +1,14 @@
+import React from 'react';
+import { Route } from 'react-router-dom';
+
 import Resource from './Resource';
 
-export default [
-    {
-        path: '/resource',
-        component: Resource,
-    },
-    {
-        path: '/ark:/:naan/:rest',
-        component: Resource,
-    },
-    {
-        path: '/uid:/:uri',
-        component: Resource,
-    },
-];
+const ResourceRoutes = () => (
+    <div>
+        <Route path="/resource" component={Resource} />
+        <Route path="/ark:/:naan/:rest" component={Resource} />
+        <Route path="/uid:/:uri" component={Resource} />
+    </div>
+);
+
+export default ResourceRoutes;
