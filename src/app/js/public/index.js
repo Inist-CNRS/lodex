@@ -1,7 +1,6 @@
 import 'babel-polyfill';
 import 'url-api-polyfill';
 import { createBrowserHistory } from 'history';
-import injectTapEventPlugin from 'react-tap-event-plugin';
 import React from 'react';
 import { render } from 'react-dom';
 
@@ -28,8 +27,6 @@ const store = configureStore(
     window.__PRELOADED_STATE__ || initialState,
     history,
 );
-
-injectTapEventPlugin();
 
 render(
     <Root {...{ store, routes: <Routes />, history }} />,

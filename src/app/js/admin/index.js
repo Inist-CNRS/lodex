@@ -1,7 +1,6 @@
 import 'babel-polyfill';
 import 'url-api-polyfill';
 
-import injectTapEventPlugin from 'react-tap-event-plugin';
 import React from 'react';
 import { render } from 'react-dom';
 
@@ -23,8 +22,6 @@ const initialState = {
 
 const history = createHashHistory();
 const store = configureStore(rootReducer, sagas, initialState, history);
-
-injectTapEventPlugin();
 
 render(
     <Root {...{ store, routes: <Routes />, history }} />,
