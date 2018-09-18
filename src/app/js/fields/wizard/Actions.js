@@ -26,13 +26,13 @@ export const ActionsComponent = ({
                 <FlatButton
                     className="btn-exit-column-edition"
                     label={polyglot.t('cancel')}
-                    onTouchTap={onCancel}
+                    onClick={onCancel}
                 />
                 <FlatButton
                     className="btn-save"
                     label={polyglot.t('save')}
                     secondary
-                    onTouchTap={onSave}
+                    onClick={onSave}
                 />
             </div>
         );
@@ -44,19 +44,19 @@ export const ActionsComponent = ({
                 <FlatButton
                     className="btn-exit-column-edition"
                     label={polyglot.t('cancel')}
-                    onTouchTap={onCancel}
+                    onClick={onCancel}
                 />
                 <FlatButton
                     className="btn-next"
                     label={polyglot.t('next')}
                     primary
-                    onTouchTap={onNextStep}
+                    onClick={onNextStep}
                 />
                 <FlatButton
                     className="btn-save"
                     label={polyglot.t('save')}
                     secondary
-                    onTouchTap={onSave}
+                    onClick={onSave}
                 />
             </div>
         );
@@ -68,19 +68,19 @@ export const ActionsComponent = ({
                 <FlatButton
                     className="btn-exit-column-edition"
                     label={polyglot.t('cancel')}
-                    onTouchTap={onCancel}
+                    onClick={onCancel}
                 />
                 <FlatButton
                     className="btn-previous"
                     label={polyglot.t('previous')}
-                    onTouchTap={onPreviousStep}
+                    onClick={onPreviousStep}
                     primary
                 />
                 <FlatButton
                     className="btn-save"
                     label={polyglot.t('save')}
                     secondary
-                    onTouchTap={onSave}
+                    onClick={onSave}
                 />
             </div>
         );
@@ -91,25 +91,25 @@ export const ActionsComponent = ({
             <FlatButton
                 className="btn-exit-column-edition"
                 label={polyglot.t('cancel')}
-                onTouchTap={onCancel}
+                onClick={onCancel}
             />
             <FlatButton
                 className="btn-previous"
                 label={polyglot.t('previous')}
                 primary
-                onTouchTap={onPreviousStep}
+                onClick={onPreviousStep}
             />
             <FlatButton
                 className="btn-next"
                 label={polyglot.t('next')}
                 primary
-                onTouchTap={onNextStep}
+                onClick={onNextStep}
             />
             <FlatButton
                 className="btn-save"
                 label={polyglot.t('save')}
                 secondary
-                onTouchTap={onSave}
+                onClick={onSave}
             />
         </div>
     );

@@ -149,12 +149,12 @@ class Pagination extends Component {
                 <div style={styles.label}>{`${showing}`}</div>
                 <IconButton
                     disabled={currentPage === 0}
-                    onTouchTap={this.handlePreviousPageClick}>
+                    onClick={this.handlePreviousPageClick}>
                     <ChevronLeft/>
                 </IconButton>
                 <IconButton
                     disabled={currentPage === count - 1}
-                    onTouchTap={this.handleNextPageClick}>
+                    onClick={this.handleNextPageClick}>
                     <ChevronRight/>
                 </IconButton>
             </div>

@@ -39,7 +39,7 @@ export const PureButtonWithDialogForm = ({
             label={polyglot.t('save')}
             primary
             loading={saving}
-            onTouchTap={handleSubmit}
+            onClick={handleSubmit}
         />,
         <FlatButton
             key="cancel"

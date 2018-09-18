@@ -34,7 +34,7 @@ const ClassList = ({ fields, p: polyglot }) => (
             {polyglot.t('annotate_class')}
             <FloatingActionButton
                 className="add-class"
-                onTouchTap={() => fields.push()}
+                onClick={() => fields.push()}
                 mini
                 style={styles.add}
             >
