@@ -56,6 +56,9 @@ test-api-unit: ## Run the API unit tests
 test-frontend-unit: ## Run the frontend application unit tests
 	NODE_ENV=test docker-compose run --rm node npm run test:app
 
+test-frontend-unit-watch: ## Watch the frontend application unit tests
+	NODE_ENV=test docker-compose run --rm node npm run test:app:watch
+
 test: test-frontend-unit test-api-unit
 
 clear-database: ## Clear the whole database

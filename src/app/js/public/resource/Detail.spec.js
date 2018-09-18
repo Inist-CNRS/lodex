@@ -2,10 +2,60 @@ import React from 'react';
 import expect from 'expect';
 import { shallow } from 'enzyme';
 
-import { DetailComponent as Detail } from './Detail';
+import { DetailComponent as Detail, shouldDisplayField } from './Detail';
 import Property from '../Property';
 
 describe('Detail', () => {
+    describe('shouldDisplayField', () => {
+        it('should display an empty field for an admin', () => {
+            const field = { name: 'empty' };
+            const resource = {};
+            const isAdmin = true;
+
+            expect(shouldDisplayField(resource, isAdmin)(field)).toBe(true);
+        });
+
+        it('should not display an empty field for a user', () => {
+            const field = { name: 'empty' };
+            const resource = {};
+            const isAdmin = false;
+
+            expect(shouldDisplayField(resource, isAdmin)(field)).toBe(false);
+        });
+
+        it('should display a filled field for an admin', () => {
+            const field = { name: 'title' };
+            const resource = { title: 'Title' };
+            const isAdmin = true;
+
+            expect(shouldDisplayField(resource, isAdmin)(field)).toBe(true);
+        });
+
+        it('should display a filled field for a user', () => {
+            const field = { name: 'title' };
+            const resource = { title: 'Title' };
+            const isAdmin = false;
+
+            expect(shouldDisplayField(resource, isAdmin)(field)).toBe(true);
+        });
+
+        it('should display a composed field for an admin', () => {
+            const field = { name: 'title', composedOf: 'something' };
+            const resource = {};
+            const isAdmin = true;
+
+            expect(shouldDisplayField(resource, isAdmin)(field)).toBe(true);
+        });
+
+        it('should display a composed field for a user', () => {
+            const field = { name: 'title', composedOf: 'something' };
+            const resource = {};
+            const isAdmin = false;
+
+            expect(shouldDisplayField(resource, isAdmin)(field)).toBe(true);
+        });
+    });
+
     it('should render one Property per fields', () => {
         const props = {
             fields: [

@@ -12,13 +12,12 @@ import { Helmet } from 'react-helmet';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { fromResource } from '../selectors';
-import { fromFields } from '../../sharedSelectors';
+import { fromFields, fromUser } from '../../sharedSelectors';
 import Property from '../Property';
 import AddField from '../../fields/addField/AddField';
 import HideResource from './HideResource';
 import SelectVersion from './SelectVersion';
 import Version from '../Version';
-import addSchemePrefix from '../../lib/addSchemePrefix';
 import getTitle from '../../lib/getTitle';
 import ExportShareButton from '../ExportShareButton';
 import { getHost } from '../../../../common/uris';
@@ -114,13 +113,28 @@ const styles = {
     },
 };
 
-export const DetailComponent = ({ fields, resource, title, description }) => {
+export const shouldDisplayField = (resource, isAdmin) => field => {
+    if (isAdmin) {
+        return true;
+    }
+
+    const isEmptyValue = !resource[field.name];
+    return !isEmptyValue || Boolean(field.composedOf);
+};
+
+export const DetailComponent = ({
+    fields,
+    resource,
+    title,
+    description,
+    isAdmin,
+}) => {
     const topFieldsLimit = 1;
     const topFields = fields
-        .filter(field => resource[field.name] || field.composedOf)
+        .filter(shouldDisplayField(resource, isAdmin))
         .slice(0, topFieldsLimit);
     const otherFields = fields
-        .filter(field => resource[field.name] || field.composedOf)
+        .filter(shouldDisplayField(resource, isAdmin))
         .slice(topFieldsLimit);
 
     return (
@@ -193,6 +207,7 @@ DetailComponent.propTypes = {
     title: PropTypes.string,
     description: PropTypes.string,
     backToListLabel: PropTypes.string,
+    isAdmin: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = state => {
@@ -208,6 +223,7 @@ const mapStateToProps = state => {
         fields: fromFields.getResourceFields(state, resource),
         title,
         description,
+        isAdmin: fromUser.isAdmin(state),
     };
 };
 
