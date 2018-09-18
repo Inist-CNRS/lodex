@@ -136,7 +136,11 @@ export const getRenderingData = async (
 const handleRender = async (ctx, next) => {
     const { url, headers } = ctx.request;
 
-    if (url.match(/[^\\]*\.(\w+)$/) || url.match('/admin')) {
+    if (
+        url.match(/[^\\]*\.(\w+)$/) ||
+        url.match('/admin') ||
+        url.match('__webpack_hmr')
+    ) {
         // no route matched switch to static file
         return next();
     }
