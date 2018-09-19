@@ -19,7 +19,7 @@ const Routes = () => (
         />
         <PrivateRoute path="/removed" component={RemovedResourcePage} />
         <PrivateRoute path="/ontology" component={Ontology} />
-        <Route path="/login" component={Login} />
+        <Route path="/login" exact component={Login} />
     </App>
 );
 

@@ -116,7 +116,7 @@ export const getRenderingData = async (
 
     await sagaPromise;
 
-    const { html, css } = renderHtml(store, muiTheme, url);
+    const { html, css } = renderHtml(store, muiTheme, url, context);
     const helmet = Helmet.renderStatic();
     const preloadedState = store.getState();
 
@@ -193,10 +193,9 @@ if (config.userAuth) {
     app.use(async (ctx, next) => {
         if (
             !ctx.state.cookie &&
-            ctx.request.url === '/' &&
-            ctx.request.url === '/graph' &&
-            ctx.request.url.match(/^\/\w+:/) && // resource access for uid: ark: http:
-            ctx.request.url.startsWith('/api/')
+            ctx.request.url !== '/login' &&
+            !ctx.request.url.match(/[^\\]*\.(\w+)$/) &&
+            !ctx.request.url.match('__webpack_hmr')
         ) {
             ctx.redirect('/login');
             return;

@@ -24,7 +24,7 @@ const authentifiedHeader = {
     )}`,
 };
 
-describe('ssr', () => {
+describe.only('ssr', () => {
     let server;
     before(async () => {
         server = requestServer();
@@ -130,9 +130,7 @@ describe('ssr', () => {
             });
 
             it('should redirect to login', () => {
-                expect(state.routing.locationBeforeTransitions.pathname).toBe(
-                    '/login',
-                );
+                expect(state.router.location.pathname).toBe('/login');
             });
 
             it('should not preload the dataset for home', async () => {
@@ -232,9 +230,7 @@ describe('ssr', () => {
             });
 
             it('should redirect to login', () => {
-                expect(state.routing.locationBeforeTransitions.pathname).toBe(
-                    '/login',
-                );
+                expect(state.router.location.pathname).toEqual('/login');
             });
 
             it('should not preload fields', () => {

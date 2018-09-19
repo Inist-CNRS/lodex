@@ -9,7 +9,7 @@ import GraphPage from './graph/GraphPage';
 
 const Routes = () => (
     <App>
-        <Route path="/" component={Home} />
+        <Route path="/" exact component={Home} />
         <Route path="/resource" component={Resource} />
         <Route path="/ark:/:naan/:rest" component={Resource} />
         <Route path="/uid:/:uri" component={Resource} />
