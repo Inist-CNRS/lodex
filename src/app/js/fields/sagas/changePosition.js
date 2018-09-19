@@ -1,5 +1,5 @@
 import { takeEvery, call, select, put } from 'redux-saga/effects';
-import { CHANGE_POSITION, changePositionValue as changePosition } from '../';
+import { CHANGE_POSITION, changePositionValue } from '../';
 
 import { fromFields, fromUser } from '../../sharedSelectors';
 import fetchSaga from '../../lib/sagas/fetchSaga';
@@ -28,7 +28,7 @@ export function* handleChangePosition({
     const fields = yield select(fromFields.getFields);
     const resultArray = yield call(move, fields, oldPosition, newPosition);
 
-    yield put(changePosition({ fields: resultArray }));
+    yield put(changePositionValue({ fields: resultArray }));
 
     for (let i = 0; i < resultArray.length; i += 1) {
         const request = yield select(
@@ -38,7 +38,7 @@ export function* handleChangePosition({
         const { error } = yield call(fetchSaga, request);
         if (error) {
             yield put(
-                changePosition({
+                changePositionValue({
                     fields: [fields.find(e => e.name === resultArray[i].name)],
                 }),
             );
