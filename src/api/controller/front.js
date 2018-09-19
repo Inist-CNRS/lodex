@@ -107,7 +107,6 @@ export const getRenderingData = async (
     const sagaPromise = store.runSaga(sagas).done;
     const context = {};
     renderHtml(store, muiTheme, url, context);
-    renderHtml(store, muiTheme, url, context);
     store.dispatch(END);
 
     await sagaPromise;
