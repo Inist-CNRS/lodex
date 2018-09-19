@@ -24,7 +24,7 @@ const authentifiedHeader = {
     )}`,
 };
 
-describe.only('ssr', () => {
+describe('ssr', () => {
     let server;
     before(async () => {
         server = requestServer();

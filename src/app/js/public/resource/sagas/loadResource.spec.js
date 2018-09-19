@@ -6,8 +6,8 @@ import { loadResource, loadResourceSuccess, loadResourceError } from '../';
 import { preLoadPublication } from '../../../fields';
 import fetchSaga from '../../../lib/sagas/fetchSaga';
 import { fromUser } from '../../../sharedSelectors';
-import { fromResource } from '../../selectors';
-import { handleLoadResource, getUri, getUriFromPayload } from './loadResource';
+import { fromResource, fromRouter } from '../../selectors';
+import { handleLoadResource } from './loadResource';
 
 describe('resource saga', () => {
     describe('handleLoadResource', () => {
@@ -28,18 +28,11 @@ describe('resource saga', () => {
             expect(saga.next().value).toEqual(put(preLoadPublication()));
         });
 
-        it('should call getUri', () => {
+        it('should select getUri from router', () => {
             const saga = handleLoadResource(action);
             saga.next();
             expect(saga.next().value).toEqual(
-                call(getUri, LOCATION_CHANGE, {
-                    location: {
-                        pathname: '/ark:/naan/publisher-id',
-                        query: {
-                            uri: 'uri',
-                        },
-                    },
-                }),
+                select(fromRouter.getResourceUri),
             );
         });
 
@@ -124,79 +117,6 @@ describe('resource saga', () => {
             saga.next('request');
             const next = saga.next({ response: 'response' });
             expect(next.value).toEqual(put(loadResourceSuccess('response')));
-        });
-    });
-
-    describe('getUri', () => {
-        it('should return call getUriFromPayload result if type is LOCATION_CHANGE', () => {
-            const saga = getUri(LOCATION_CHANGE, 'payload');
-            let next = saga.next();
-            expect(next.value).toEqual(call(getUriFromPayload, 'payload'));
-            next = saga.next('result');
-            expect(next.value).toBe('result');
-            expect(next.done).toBe(true);
-        });
-
-        it('should select getResourceLastVersion if type is no LOCATION_CHANGE', () => {
-            const saga = getUri('not LOCATION_CHANGE', 'payload');
-            const next = saga.next();
-            expect(next.value).toEqual(
-                select(fromResource.getResourceLastVersion),
-            );
-        });
-
-        it('should return null if no resource', () => {
-            const saga = getUri('not LOCATION_CHANGE', 'payload');
-            saga.next();
-            const next = saga.next();
-            expect(next.done).toBe(true);
-            expect(next.value).toBe(null);
-        });
-
-        it('should return resource.uri', () => {
-            const saga = getUri('not LOCATION_CHANGE', 'payload');
-            saga.next();
-            const next = saga.next({ uri: 'uri' });
-            expect(next.done).toBe(true);
-            expect(next.value).toBe('uri');
-        });
-    });
-
-    describe('getUriFromPayload', () => {
-        it('should return payload.pathname if it match ark pattern', () => {
-            expect(
-                getUriFromPayload({
-                    location: { pathname: '/ark:/naan/publis-id' },
-                }),
-            ).toEqual('ark:/naan/publis-id');
-        });
-
-        it('should return state.uri if pathname does not match ark', () => {
-            expect(
-                getUriFromPayload({
-                    location: {
-                        pathname: 'not an ark',
-                        state: { uri: 'state uri' },
-                    },
-                }),
-            ).toEqual('state uri');
-        });
-
-        it('should return uri from queryString if no ark and no state uri', () => {
-            expect(
-                getUriFromPayload({
-                    location: {
-                        pathname: '/resource',
-                        search: '?uri=queryStringUri',
-                    },
-                }),
-            ).toEqual('queryStringUri');
-        });
-
-        it('should return null if none of the above match', () => {
-            expect(
-                getUriFromPayload({ location: { pathname: '/resource' } }),
-            ).toEqual(null);
         });
     });
 });

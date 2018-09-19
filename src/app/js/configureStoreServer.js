@@ -11,8 +11,8 @@ export default function configureStoreServer(
     history,
 ) {
     const middlewares = applyMiddleware(
-        sagaMiddleware,
         routerMiddleware(history),
+        sagaMiddleware,
     );
 
     const devtools =

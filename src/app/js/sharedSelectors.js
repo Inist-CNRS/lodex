@@ -14,4 +14,4 @@ export const fromFields = createGlobalSelectors(s => s.fields, fieldsSelectors);
 export const fromUser = createGlobalSelectors(s => s.user, userSelectors);
 
 export const getCurrentLocation = state =>
-    get(state, 'routing.locationBeforeTransitions.pathname');
+    get(state, 'router.location.pathname');
