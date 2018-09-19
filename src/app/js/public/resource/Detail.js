@@ -22,6 +22,8 @@ import getTitle from '../../lib/getTitle';
 import ExportShareButton from '../ExportShareButton';
 import { getHost } from '../../../../common/uris';
 
+const TOP_FIELDS_LIMIT = 1;
+
 const styles = {
     container: {
         display: 'flex',
@@ -129,13 +131,15 @@ export const DetailComponent = ({
     description,
     isAdmin,
 }) => {
-    const topFieldsLimit = 1;
-    const topFields = fields
+    const sortedFields = [...fields]; // Isolation
+    sortedFields.sort((a, b) => a.position - b.position);
+
+    const topFields = sortedFields
         .filter(shouldDisplayField(resource, isAdmin))
-        .slice(0, topFieldsLimit);
-    const otherFields = fields
+        .slice(0, TOP_FIELDS_LIMIT);
+    const otherFields = sortedFields
         .filter(shouldDisplayField(resource, isAdmin))
-        .slice(topFieldsLimit);
+        .slice(TOP_FIELDS_LIMIT);
 
     return (
         <div className="detail">
