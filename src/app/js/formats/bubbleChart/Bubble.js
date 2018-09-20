@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import memoize from 'lodash.memoize';
 import { hsl } from 'd3-color';
 import PropTypes from 'prop-types';
+import ReactTooltip from 'react-tooltip';
 
 const styles = {
     leaf: memoize(({ x, y, r }, name, color, style) => ({
@@ -30,18 +31,20 @@ const styles = {
 const Bubble = ({ r, x, y, name, value, color, style }) => (
     <div
         style={styles.leaf({ r, x, y }, name, color, style)}
-        data-value={value}
-        data-name={name}
+        data-tip={`${name}: ${value}`}
+        data-for={`bubble-${name}`}
+        data-iscapture="true"
     >
         {r > 10 && (
-            <div
-                style={styles.leafLabel({ r, x, y }, color)}
-                data-value={value}
-                data-name={name}
-            >
-                {name}
-            </div>
+            <div style={styles.leafLabel({ r, x, y }, color)}>{name}</div>
         )}
+        <ReactTooltip
+            id={`bubble-${name}`}
+            place="top"
+            type="light"
+            effect="float"
+            getContent={dataTip => dataTip}
+        />
     </div>
 );
 

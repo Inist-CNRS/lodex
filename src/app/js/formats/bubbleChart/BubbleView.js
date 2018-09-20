@@ -5,8 +5,6 @@ import compose from 'recompose/compose';
 import { pack, hierarchy } from 'd3-hierarchy';
 import { scaleOrdinal } from 'd3-scale';
 import memoize from 'lodash.memoize';
-import { Tooltip, actions } from 'redux-tooltip';
-import get from 'lodash.get';
 import { schemeAccent } from 'd3-scale-chromatic';
 import Transition from 'react-inline-transition-group';
 
@@ -37,29 +35,6 @@ const styles = {
 };
 
 class BubbleView extends React.Component {
-    handleMove = event => {
-        const x = event.clientX;
-        const y = event.clientY + window.pageYOffset;
-        const { value, name } = get(event, ['target', 'dataset'], {});
-
-        if (!value && value !== 0) {
-            this.props.hideTooltip();
-            return;
-        }
-
-        this.props.showTooltip({
-            origin: { x, y },
-            content: (
-                <p>
-                    {name}: {value}
-                </p>
-            ),
-        });
-    };
-
-    handleLeave = () => {
-        this.props.hideTooltip();
-    };
     render() {
         const { data, diameter, colorScale } = this.props;
 
@@ -88,7 +63,6 @@ class BubbleView extends React.Component {
                         />
                     ))}
                 </Transition>
-                <Tooltip />
             </div>
         );
     }
@@ -97,8 +71,6 @@ class BubbleView extends React.Component {
 BubbleView.propTypes = {
     data: PropTypes.array.isRequired,
     diameter: PropTypes.number.isRequired,
-    hideTooltip: PropTypes.func.isRequired,
-    showTooltip: PropTypes.func.isRequired,
     colorScale: PropTypes.func,
 };
 
@@ -130,10 +102,7 @@ const mapStateToProps = (state, { formatData, diameter, colorScheme }) => {
     };
 };
 
-const mapDispatchToProps = {
-    showTooltip: actions.show,
-    hideTooltip: actions.hide,
-};
+const mapDispatchToProps = {};
 
 export default compose(
     injectData(),
