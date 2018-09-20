@@ -4,16 +4,27 @@ import { CHANGE_POSITION, changePositionValue } from '../';
 import { fromFields, fromUser } from '../../sharedSelectors';
 import fetchSaga from '../../lib/sagas/fetchSaga';
 
-export const move = (fields, oldPosition, newPosition) => {
-    const fieldToMove = fields.find(field => field.position === oldPosition);
+export const movePosition = (fields, oldPosition, newPosition) => {
     const sortedFields = fields
-        .filter(field => field.position !== oldPosition)
+        .slice(0)
         .sort((a, b) => a.position - b.position);
 
+    const fieldToMove = sortedFields.find(
+        field => field.position === oldPosition,
+    );
+
+    const newIndex = sortedFields.findIndex(
+        field => field.position === newPosition,
+    );
+
+    const otherFields = sortedFields.filter(
+        field => field.position !== oldPosition,
+    );
+
     const reorderedFields = [
-        ...sortedFields.slice(0, newPosition),
+        ...otherFields.slice(0, newIndex),
         fieldToMove,
-        ...sortedFields.slice(newPosition),
+        ...otherFields.slice(newIndex),
     ];
 
     return reorderedFields.map((field, index) => ({
@@ -26,7 +37,12 @@ export function* handleChangePosition({
     payload: { newPosition, oldPosition },
 }) {
     const fields = yield select(fromFields.getFields);
-    const sortedFields = yield call(move, fields, oldPosition, newPosition);
+    const sortedFields = yield call(
+        movePosition,
+        fields,
+        oldPosition,
+        newPosition,
+    );
 
     yield put(changePositionValue({ fields: sortedFields }));
 
@@ -35,7 +51,9 @@ export function* handleChangePosition({
             fromUser.getUpdateFieldRequest,
             sortedFields[i],
         );
+
         const { error } = yield call(fetchSaga, request);
+
         if (error) {
             yield put(
                 changePositionValue({

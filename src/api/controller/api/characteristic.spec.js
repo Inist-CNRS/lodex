@@ -247,6 +247,7 @@ describe('characteristic routes', () => {
             foo: 'new foo',
             bar: 'new bar',
         };
+
         const ctx = {
             request: {
                 body: {
@@ -263,6 +264,7 @@ describe('characteristic routes', () => {
                 findLastVersion: createSpy().andReturn(characteristics),
             },
             field: {
+                getHighestPosition: createSpy().andReturn(4),
                 create: createSpy().andReturn({
                     name: 'newField',
                 }),
@@ -271,9 +273,11 @@ describe('characteristic routes', () => {
 
         it('should call ctx.field.create', async () => {
             await createCharacteristic(ctx);
+            expect(ctx.field.getHighestPosition).toHaveBeenCalled();
             expect(ctx.field.create).toHaveBeenCalledWith({
                 data: 'field data',
                 cover: COVER_DATASET,
+                position: 5,
                 transformers: [
                     {
                         operation: 'VALUE',
