@@ -30,12 +30,13 @@ const styles = {
 };
 
 class OntologyTable extends Component {
-    onSortEnd = ({ oldIndex, newIndex }, _, fields, handleChangePosition) => {
+    handleSortEnd = ({ oldIndex, newIndex }) => {
+        const { handleChangePosition } = this.props;
         handleChangePosition({ newPosition: newIndex, oldPosition: oldIndex });
     };
 
     render() {
-        const { title, fields, handleChangePosition, p: polyglot } = this.props;
+        const { title, fields, p: polyglot } = this.props;
 
         return (
             <div>
@@ -71,14 +72,7 @@ class OntologyTable extends Component {
                         lockAxis="y"
                         useDragHandle
                         items={fields}
-                        onSortEnd={(oldIndex, newIndex) =>
-                            this.onSortEnd(
-                                oldIndex,
-                                newIndex,
-                                fields,
-                                handleChangePosition,
-                            )
-                        }
+                        onSortEnd={this.handleSortEnd}
                     />
                 </Table>
             </div>

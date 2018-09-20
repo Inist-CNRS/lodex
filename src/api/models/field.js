@@ -63,25 +63,29 @@ export default async db => {
 
     collection.findOneByName = name => collection.findOne({ name });
 
-    collection.create = async (fieldData, nameArg) => {
+    collection.create = async (
+        fieldData,
+        nameArg,
+        shiftFieldsPosition = true,
+    ) => {
         const name = nameArg || (await generateUid());
-        let position = fieldData.position;
-
-        if (!position) {
-            position = await collection.count({});
+        if (!Number.isInteger(fieldData.position)) {
+            throw new Error("Argument missing 'position' in field.create");
         }
 
-        await collection.updateMany(
-            {
-                position: { $gte: fieldData.position },
-            },
-            {
-                $inc: { position: 1 },
-            },
-        );
+        if (shiftFieldsPosition) {
+            await collection.updateMany(
+                {
+                    position: { $gte: fieldData.position },
+                },
+                {
+                    $inc: { position: 1 },
+                },
+            );
+        }
 
         const { insertedId } = await collection.insertOne({
-            ...omit({ ...fieldData, position }, ['_id']),
+            ...omit(fieldData, ['_id']),
             name,
         });
 
@@ -145,7 +149,7 @@ export default async db => {
         nameArg,
     ) => {
         const name = field.name || nameArg || (await generateUid());
-        const position = await collection.count();
+        const position = (await collection.getHighestPosition()) + 1;
         await validateField(
             {
                 ...field,
@@ -222,6 +226,7 @@ export default async db => {
 
         return name;
     };
+
     collection.initializeModel = async () => {
         const uriColumn = await collection.findOne({ name: URI_FIELD_NAME });
 
@@ -235,6 +240,17 @@ export default async db => {
                 position: 0,
             });
         }
+    };
+
+    collection.getHighestPosition = async () => {
+        const DESC = -1;
+        const [highestPositionField] = await collection
+            .find({}, { position: 1 })
+            .sort({ position: DESC })
+            .limit(1)
+            .toArray();
+
+        return highestPositionField ? highestPositionField.position : 0;
     };
 
     return collection;

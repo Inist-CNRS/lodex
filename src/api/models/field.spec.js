@@ -9,24 +9,35 @@ import { COVER_DOCUMENT, COVER_COLLECTION } from '../../common/cover';
 
 describe('field', () => {
     describe('fieldFactory', () => {
-        const fieldCollection = {
-            createIndex: createSpy(),
-            findOne: createSpy().andReturn(Promise.resolve(null)),
-            insertOne: createSpy().andReturn({ insertedId: 'insertedId' }),
-            update: createSpy(),
-            count: createSpy().andReturn(10),
-            updateMany: createSpy(),
-        };
-        const db = {
-            collection: createSpy().andReturn(fieldCollection),
-        };
+        let fieldCollection;
+        let db;
         let field;
+        beforeEach(async () => {
+            fieldCollection = {
+                createIndex: createSpy(),
+                findOne: createSpy().andReturn(Promise.resolve(null)),
+                insertOne: createSpy().andReturn({ insertedId: 'insertedId' }),
+                update: createSpy(),
+                updateMany: createSpy(),
+                find: createSpy().andReturn({
+                    sort: () => ({
+                        limit: () => ({
+                            toArray: () => [
+                                {
+                                    position: 9,
+                                },
+                            ],
+                        }),
+                    }),
+                }),
+            };
 
-        before(async () => {
+            db = {
+                collection: createSpy().andReturn(fieldCollection),
+            };
+
             field = await fieldFactory(db);
-        });
 
-        beforeEach(() => {
             fieldCollection.insertOne.reset();
             fieldCollection.findOne.reset();
         });
@@ -44,7 +55,7 @@ describe('field', () => {
 
         describe('field.create', () => {
             it('should call collection.inserOne with given data and a random uid', async () => {
-                await field.create({ field: 'data' });
+                await field.create({ field: 'data', position: 10 });
 
                 expect(fieldCollection.insertOne.calls.length).toBe(1);
                 expect(fieldCollection.insertOne.calls[0].arguments).toMatch([
@@ -82,6 +93,16 @@ describe('field', () => {
                 );
             });
 
+            it('should not call collection.updateMany if third argument is false', async () => {
+                await field.create(
+                    { field: 'data', position: 15 },
+                    undefined,
+                    false,
+                );
+
+                expect(fieldCollection.updateMany.calls.length).toBe(0);
+            });
+
             it('should call collection.findOne with insertedId', async () => {
                 await field.create({ field: 'data', position: 15 });
 
@@ -96,13 +117,16 @@ describe('field', () => {
                 const fieldData = {
                     label: 'label',
                 };
+
                 const contributor = { contributor: 'data' };
+
                 await field.addContributionField(
                     fieldData,
                     contributor,
                     true,
                     'nameArg',
                 );
+
                 expect(fieldCollection.insertOne).toHaveBeenCalledWith({
                     label: 'label',
                     name: 'nameArg',
@@ -158,7 +182,7 @@ describe('field', () => {
                 });
             });
 
-            it('should call upadte if field has a name when logged', async () => {
+            it('should call update if field has a name when logged', async () => {
                 const fieldData = {
                     label: 'label',
                     value: 'field value',
@@ -186,7 +210,7 @@ describe('field', () => {
                 );
             });
 
-            it('should call upadte if field has a name and adding contributor when not logged', async () => {
+            it('should call update if field has a name and adding contributor when not logged', async () => {
                 const fieldData = {
                     label: 'label',
                     value: 'field value',
@@ -255,6 +279,36 @@ describe('field', () => {
                 await fieldNoUri.initializeModel();
 
                 expect(fieldCollectionNoUri.insertOne).toNotHaveBeenCalled();
+            });
+        });
+
+        describe('field.getHighestPosition', () => {
+            it('should get the highest position field and returns its position', async () => {
+                const position = await field.getHighestPosition();
+
+                expect(position).toBe(9);
+                expect(fieldCollection.find).toHaveBeenCalledWith(
+                    {},
+                    { position: 1 },
+                );
+            });
+
+            it('should return 0 if there is no field', async () => {
+                fieldCollection.find = createSpy().andReturn({
+                    sort: () => ({
+                        limit: () => ({
+                            toArray: () => [],
+                        }),
+                    }),
+                });
+
+                const position = await field.getHighestPosition();
+
+                expect(position).toBe(0);
+                expect(fieldCollection.find).toHaveBeenCalledWith(
+                    {},
+                    { position: 1 },
+                );
             });
         });
     });

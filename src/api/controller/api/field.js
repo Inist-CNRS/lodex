@@ -119,7 +119,13 @@ export const importFields = getUploadedFieldsImpl => async ctx => {
 
     await ctx.field.remove({});
     await Promise.all(
-        fields.map(({ name, ...field }) => ctx.field.create(field, name)),
+        fields.map(({ name, ...field }, index) =>
+            ctx.field.create(
+                { ...field, position: field.position || index },
+                name,
+                false,
+            ),
+        ),
     );
 
     ctx.status = 200;

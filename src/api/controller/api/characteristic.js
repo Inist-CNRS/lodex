@@ -52,8 +52,11 @@ export const updateCharacteristics = async ctx => {
 export const createCharacteristic = async ctx => {
     const { value, ...fieldData } = ctx.request.body;
 
+    const highestPosition = await ctx.field.getHighestPosition();
+
     const field = await ctx.field.create({
         ...fieldData,
+        position: highestPosition + 1,
         cover: COVER_DATASET,
         transformers: [
             {

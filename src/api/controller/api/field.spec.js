@@ -150,10 +150,15 @@ describe('field routes', () => {
     });
 
     describe('importFields', () => {
-        const getUploadedFields = createSpy().andReturn([
-            { name: 'field1', label: 'Field 1' },
-            { name: 'field2', label: 'Field 2' },
-        ]);
+        let getUploadedFields;
+
+        beforeEach(() => {
+            getUploadedFields = createSpy().andReturn([
+                { name: 'field1', label: 'Field 1' },
+                { name: 'field2', label: 'Field 2' },
+            ]);
+        });
+
         const ctx = {
             req: 'request',
             field: {
@@ -161,6 +166,7 @@ describe('field routes', () => {
                 remove: createSpy(),
             },
         };
+
         it('should call rawBody', async () => {
             await importFields(getUploadedFields)(ctx);
             expect(getUploadedFields).toHaveBeenCalledWith('request');
@@ -173,13 +179,38 @@ describe('field routes', () => {
 
         it('should call ctx.field.create for each field', async () => {
             await importFields(getUploadedFields)(ctx);
+
             expect(ctx.field.create).toHaveBeenCalledWith(
-                { label: 'Field 1' },
+                { label: 'Field 1', position: 0 },
                 'field1',
+                false,
             );
+
             expect(ctx.field.create).toHaveBeenCalledWith(
-                { label: 'Field 2' },
+                { label: 'Field 2', position: 1 },
                 'field2',
+                false,
+            );
+        });
+
+        it('should pass the position ctx.field.create if available', async () => {
+            getUploadedFields = createSpy().andReturn([
+                { name: 'field1', label: 'Field 1', position: 5 },
+                { name: 'field2', label: 'Field 2', position: 6 },
+            ]);
+
+            await importFields(getUploadedFields)(ctx);
+
+            expect(ctx.field.create).toHaveBeenCalledWith(
+                { label: 'Field 1', position: 5 },
+                'field1',
+                false,
+            );
+
+            expect(ctx.field.create).toHaveBeenCalledWith(
+                { label: 'Field 2', position: 6 },
+                'field2',
+                false,
             );
         });
 
