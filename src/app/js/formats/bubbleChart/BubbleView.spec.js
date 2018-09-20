@@ -5,7 +5,7 @@ import { shallow } from 'enzyme';
 import { BubbleView } from './BubbleView';
 
 describe('BubbleView', () => {
-    it.only('should render Bubble chart', () => {
+    it('should render Bubble chart', () => {
         const data = [
             { data: { _id: 1 }, r: 10, x: 10, y: 10, value: 'first' },
             { data: { _id: 2 }, r: 20, x: 20, y: 20, value: 'second' },

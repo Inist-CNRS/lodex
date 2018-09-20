@@ -96,7 +96,7 @@ const getColorStyle = color => ({
     backgroundColor: color,
 });
 
-class HeatMapView extends Component {
+export class HeatMapView extends Component {
     render() {
         const { xAxis, yAxis, dictionary, colorScale, legend } = this.props;
 
