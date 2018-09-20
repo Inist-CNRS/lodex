@@ -3,8 +3,7 @@ import { StyleSheet, css } from 'aphrodite/no-important';
 import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
-import get from 'lodash.get';
-import { Tooltip, actions } from 'redux-tooltip';
+import ReactTooltip from 'react-tooltip';
 
 import injectData from '../injectData';
 import { mapSourceToX, mapTargetToX } from './parseChartData';
@@ -98,40 +97,12 @@ const getColorStyle = color => ({
 });
 
 class HeatMapView extends Component {
-    handleMove = event => {
-        const x = event.clientX;
-        const y = event.clientY + window.pageYOffset;
-        const { value, source, target } = get(event, ['target', 'dataset'], {});
-        if (!Number(value)) {
-            this.props.hideTooltip();
-            return;
-        }
-
-        this.props.showTooltip({
-            origin: { x, y },
-            content: (
-                <div className={css(styles.tooltip)}>
-                    <p>{source}</p>
-                    <p>{target}</p>
-                    <p>{value}</p>
-                </div>
-            ),
-        });
-    };
-
-    handleLeave = () => {
-        this.props.hideTooltip();
-    };
     render() {
         const { xAxis, yAxis, dictionary, colorScale, legend } = this.props;
 
         return (
             <div>
-                <table
-                    onMouseMove={this.handleMove}
-                    onMouseLeave={this.handleLeave}
-                    className={css(styles.table)}
-                >
+                <table className={css(styles.table)}>
                     <thead className={css(styles.thead)}>
                         <tr className={css(styles.tr)}>
                             <th className={css(styles.th)} />
@@ -158,20 +129,45 @@ class HeatMapView extends Component {
                                     <td
                                         className={css(styles.td)}
                                         key={`${xKey}-${yKey}`}
-                                        data-value={dictionary[xKey][yKey] || 0}
-                                        data-source={xKey}
-                                        data-target={yKey}
+                                        data-tip={`${xKey},${yKey},${dictionary[
+                                            xKey
+                                        ][yKey] || 0}`}
+                                        data-for="heatmap"
                                         style={getColorStyle(
                                             colorScale(dictionary[xKey][yKey]),
                                         )}
                                     />
                                 ))}
+                                <ReactTooltip
+                                    id="heatmap"
+                                    getContent={data => {
+                                        if (!data) {
+                                            return null;
+                                        }
+                                        const [
+                                            source,
+                                            target,
+                                            value,
+                                        ] = data.split(',');
+                                        return (
+                                            <span
+                                                className={css(styles.tooltip)}
+                                            >
+                                                <p>{source}</p>
+                                                <p>{target}</p>
+                                                <p>{value}</p>
+                                            </span>
+                                        );
+                                    }}
+                                    place="top"
+                                    type="light"
+                                    effect="float"
+                                />
                             </tr>
                         ))}
                     </tbody>
                 </table>
                 {legend}
-                <Tooltip />
             </div>
         );
     }
@@ -184,8 +180,6 @@ HeatMapView.propTypes = {
         .isRequired,
     legend: PropTypes.element,
     colorScale: PropTypes.func,
-    showTooltip: PropTypes.func.isRequired,
-    hideTooltip: PropTypes.func.isRequired,
 };
 
 const alphabeticalComparison = (a, b) => {
@@ -228,10 +222,7 @@ const mapStateToProps = (state, { formatData, colorScheme, flipAxis }) => {
     };
 };
 
-const mapDispatchToProps = {
-    showTooltip: actions.show,
-    hideTooltip: actions.hide,
-};
+const mapDispatchToProps = {};
 
 export default compose(
     injectData(),
