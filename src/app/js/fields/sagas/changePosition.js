@@ -4,42 +4,42 @@ import { CHANGE_POSITION, changePositionValue } from '../';
 import { fromFields, fromUser } from '../../sharedSelectors';
 import fetchSaga from '../../lib/sagas/fetchSaga';
 
-export const move = (tab, previousIndex, newIndex) => {
-    const array = tab.slice(0);
-    if (newIndex >= array.length) {
-        let k = newIndex - array.length - 1;
-        while (k + 1) {
-            array.push(undefined);
-            k -= 1;
-        }
-    }
-    array.splice(newIndex, 0, array.splice(previousIndex, 1)[0]);
+export const move = (fields, oldPosition, newPosition) => {
+    const fieldToMove = fields.find(field => field.position === oldPosition);
+    const sortedFields = fields
+        .filter(field => field.position !== oldPosition)
+        .sort((a, b) => a.position - b.position);
 
-    return array
-        .map((e, i) => ({ ...e, position: i }))
-        .filter(e =>
-            tab.some(f => f.name === e.name && f.position !== e.position),
-        );
+    const reorderedFields = [
+        ...sortedFields.slice(0, newPosition),
+        fieldToMove,
+        ...sortedFields.slice(newPosition),
+    ];
+
+    return reorderedFields.map((field, index) => ({
+        ...field,
+        position: index,
+    }));
 };
 
 export function* handleChangePosition({
     payload: { newPosition, oldPosition },
 }) {
     const fields = yield select(fromFields.getFields);
-    const resultArray = yield call(move, fields, oldPosition, newPosition);
+    const sortedFields = yield call(move, fields, oldPosition, newPosition);
 
-    yield put(changePositionValue({ fields: resultArray }));
+    yield put(changePositionValue({ fields: sortedFields }));
 
-    for (let i = 0; i < resultArray.length; i += 1) {
+    for (let i = 0; i < sortedFields.length; i += 1) {
         const request = yield select(
             fromUser.getUpdateFieldRequest,
-            resultArray[i],
+            sortedFields[i],
         );
         const { error } = yield call(fetchSaga, request);
         if (error) {
             yield put(
                 changePositionValue({
-                    fields: [fields.find(e => e.name === resultArray[i].name)],
+                    fields: [fields.find(e => e.name === sortedFields[i].name)],
                 }),
             );
         }
