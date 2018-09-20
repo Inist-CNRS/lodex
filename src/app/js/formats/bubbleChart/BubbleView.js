@@ -34,7 +34,7 @@ const styles = {
     },
 };
 
-class BubbleView extends React.Component {
+export class BubbleView extends React.Component {
     render() {
         const { data, diameter, colorScale } = this.props;
 
