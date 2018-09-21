@@ -8,10 +8,16 @@ import Detail from './Detail';
 import RemovedDetail from './RemovedDetail';
 
 describe('<Resource />', () => {
+    const defaultProps = {
+        loading: true,
+        preLoadResource: () => null,
+        preLoadPublication: () => null,
+        p: { t: v => v },
+    };
     it('should display Loading if loading prop is true', () => {
         const props = {
+            ...defaultProps,
             loading: true,
-            p: { t: () => {} },
         };
 
         const wrapper = shallow(<ResourceComponent {...props} />);
@@ -20,8 +26,8 @@ describe('<Resource />', () => {
 
     it('should display not found message if no resource', () => {
         const props = {
+            ...defaultProps,
             loading: false,
-            p: { t: () => {} },
         };
 
         const wrapper = shallow(<ResourceComponent {...props} />);
@@ -31,9 +37,9 @@ describe('<Resource />', () => {
 
     it('should display Detail if resource', () => {
         const props = {
+            ...defaultProps,
             loading: false,
             resource: 'resource',
-            p: { t: () => {} },
         };
 
         const wrapper = shallow(<ResourceComponent {...props} />);
@@ -44,10 +50,10 @@ describe('<Resource />', () => {
 
     it('should display RemovedDetail if resource is removed', () => {
         const props = {
+            ...defaultProps,
             removed: true,
             loading: false,
             resource: 'resource',
-            p: { t: () => {} },
         };
 
         const wrapper = shallow(<ResourceComponent {...props} />);
@@ -57,10 +63,10 @@ describe('<Resource />', () => {
 
     it('should display back to list in link if no datasetTitle', () => {
         const props = {
+            ...defaultProps,
             loading: false,
             resource: 'resource',
             datasetTitle: null,
-            p: { t: v => v },
         };
 
         const wrapper = shallow(<ResourceComponent {...props} />);
@@ -71,11 +77,11 @@ describe('<Resource />', () => {
 
     it('should display datasetTitle in link', () => {
         const props = {
+            ...defaultProps,
             loading: false,
             resource: 'resource',
             datasetTitleKey: 'dataset_title',
             characteristics: { dataset_title: 'dataset title' },
-            p: { t: v => v },
         };
 
         const wrapper = shallow(<ResourceComponent {...props} />);

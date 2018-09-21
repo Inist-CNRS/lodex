@@ -4,7 +4,8 @@ import FlatButton from 'material-ui/FlatButton';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
-import { withRouter, Link } from 'react-router';
+import { withRouter } from 'react-router';
+import { Link } from 'react-router-dom';
 
 import ImportFieldsDialog from './ImportFieldsDialog';
 import { polyglot as polyglotPropTypes } from '../../propTypes';

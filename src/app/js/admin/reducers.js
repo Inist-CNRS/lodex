@@ -1,5 +1,4 @@
 import { combineReducers } from 'redux';
-import { routerReducer as routing } from 'react-router-redux';
 import { reducer as form } from 'redux-form';
 import { polyglotReducer as polyglot } from 'redux-polyglot';
 
@@ -30,7 +29,6 @@ const reducer = combineReducers({
     preview,
     publish: publishReducer,
     removedResources,
-    routing,
     upload,
     user,
     clear,

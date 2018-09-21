@@ -68,7 +68,7 @@ class ImportFieldsDialogComponent extends Component {
                 key="cancel"
                 className="btn-cancel"
                 label={polyglot.t('no')}
-                onTouchTap={onClose}
+                onClick={onClose}
             />,
         ];
 

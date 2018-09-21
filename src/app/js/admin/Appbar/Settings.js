@@ -99,7 +99,7 @@ class SettingsComponent extends Component {
             <div style={styles.container}>
                 <FlatButton
                     className="btn-danger-zone"
-                    onTouchTap={this.handleTouchTap}
+                    onClick={this.handleTouchTap}
                     label={polyglot.t('settings')}
                     labelPosition="before"
                     icon={<ArrowDown />}
@@ -117,13 +117,13 @@ class SettingsComponent extends Component {
                         <MenuItem
                             className="btn-clear-published"
                             primaryText={polyglot.t('clear_publish')}
-                            onTouchTap={this.handleClearPublished}
+                            onClick={this.handleClearPublished}
                             disabled={!hasPublishedDataset}
                         />
                         <MenuItem
                             className="btn-clear-dataset"
                             primaryText={polyglot.t('clear_dataset')}
-                            onTouchTap={this.handleClearDataset}
+                            onClick={this.handleClearDataset}
                             disabled={!hasLoadedDataset}
                         />
                     </Menu>

@@ -32,9 +32,7 @@ export const StepComponent = ({
         last={last}
         style={style}
     >
-        <StepButton onTouchTap={handleSelectStep}>
-            {polyglot.t(label)}
-        </StepButton>
+        <StepButton onClick={handleSelectStep}>{polyglot.t(label)}</StepButton>
         <StepContent>{children}</StepContent>
     </Step>
 );

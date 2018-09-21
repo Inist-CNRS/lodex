@@ -4,6 +4,7 @@ import { fromExport as localFromExport } from './export';
 import { fromFacet as localFromFacet } from './facet';
 import { fromResource as localFromResource } from './resource';
 import { fromFormat as localFromFormat } from '../formats/reducer';
+import qs from 'qs';
 
 const getDatasetState = state => state.dataset;
 export const fromDataset = createGlobalSelectors(
@@ -32,11 +33,18 @@ export const fromFormat = createGlobalSelectors(
     localFromFormat,
 );
 
-export const fromRouting = {
-    getGraphName: state => {
-        const route = state.routing.locationBeforeTransitions.pathname;
-        const match = route.match(/\/graph\/(.*?)$/);
+export const fromRouter = {
+    getResourceUri: state => {
+        const pathname = state.router.location.pathname;
+        const match = pathname.match(/^\/((?:ark|uid):\/.*$)/);
 
-        return match ? match[1] : null;
+        if (match) {
+            return match[1];
+        }
+
+        const queryString = state.router.location.search.replace('?', '');
+        const data = qs.parse(queryString);
+
+        return data.uri;
     },
 };

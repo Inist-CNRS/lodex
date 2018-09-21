@@ -5,7 +5,7 @@ import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 import { Card, CardHeader, Avatar } from 'material-ui';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 
 import { grey50 } from 'material-ui/styles/colors';
 

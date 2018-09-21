@@ -5,8 +5,7 @@ import Koa from 'koa';
 import serve from 'koa-static';
 import mount from 'koa-mount';
 import { Provider } from 'react-redux';
-import { createMemoryHistory, match, RouterContext } from 'react-router';
-import { syncHistoryWithStore } from 'react-router-redux';
+import { StaticRouter } from 'react-router';
 import { Helmet } from 'react-helmet';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
@@ -18,11 +17,12 @@ import jwt from 'koa-jwt';
 import jsonwebtoken from 'jsonwebtoken';
 import { auth } from 'config';
 import pick from 'lodash.pick';
+import { createMemoryHistory } from 'history';
 
 import rootReducer from '../../app/js/public/reducers';
 import sagas from '../../app/js/public/sagas';
 import configureStoreServer from '../../app/js/configureStoreServer';
-import routes from '../../app/js/public/routes';
+import Routes from '../../app/js/public/Routes';
 import webpackConfig, { translations } from '../../app/webpack.config.babel';
 import config from '../../../config.json';
 
@@ -76,38 +76,26 @@ const renderFullPage = (html, css, preloadedState, helmet) =>
             </body>`,
         );
 
-const renderHtml = (store, renderProps, muiTheme) =>
+const renderHtml = (store, muiTheme, url, context) =>
     StyleSheetServer.renderStatic(() =>
         renderToString(
-            <Provider {...{ store }}>
-                <MuiThemeProvider muiTheme={muiTheme}>
-                    <RouterContext {...renderProps} />
-                </MuiThemeProvider>
-            </Provider>,
+            <StaticRouter location={url} context={context}>
+                <Provider {...{ store }}>
+                    <MuiThemeProvider muiTheme={muiTheme}>
+                        <Routes />
+                    </MuiThemeProvider>
+                </Provider>
+            </StaticRouter>,
         ),
     );
 
-const getPropsFromUrl = async ({ history, routes, location: url }) =>
-    await new Promise((resolve, reject) => {
-        match(
-            { history, routes, location: url },
-            (error, redirect, renderProps) => {
-                if (error) {
-                    return reject(error);
-                }
-
-                resolve({ redirect, renderProps });
-            },
-        );
-    });
-
 export const getRenderingData = async (
-    renderProps,
     history,
     muiTheme,
     token,
     cookie,
     locale,
+    url,
 ) => {
     const store = configureStoreServer(
         rootReducer,
@@ -117,15 +105,18 @@ export const getRenderingData = async (
     );
 
     const sagaPromise = store.runSaga(sagas).done;
-
-    renderHtml(store, renderProps, muiTheme);
-
-    syncHistoryWithStore(history, store);
+    const context = {};
+    renderHtml(store, muiTheme, url, context);
     store.dispatch(END);
 
     await sagaPromise;
 
-    const { html, css } = renderHtml(store, renderProps, muiTheme);
+    const { html, css } = renderHtml(store, muiTheme, url, context);
+    if (context.url) {
+        return {
+            redirect: context.url,
+        };
+    }
     const helmet = Helmet.renderStatic();
     const preloadedState = store.getState();
 
@@ -145,23 +136,18 @@ export const getRenderingData = async (
 const handleRender = async (ctx, next) => {
     const { url, headers } = ctx.request;
 
-    const history = createMemoryHistory(url);
-
-    const { redirect, renderProps } = await getPropsFromUrl({
-        history,
-        routes,
-        location: url,
-    });
-
-    if (redirect) {
-        ctx.redirect(redirect.pathname + redirect.search);
-        return;
-    }
-
-    // no route matched switch to static file
-    if (!renderProps) {
+    if (
+        url.match(/[^\\]*\.(\w+)$/) ||
+        url.match('/admin') ||
+        url.match('__webpack_hmr')
+    ) {
+        // no route matched switch to static file
         return next();
     }
+
+    const history = createMemoryHistory({
+        initialEntries: [url],
+    });
 
     const muiTheme = getMuiTheme(
         {},
@@ -170,14 +156,24 @@ const handleRender = async (ctx, next) => {
         },
     );
 
-    const { html, css, preloadedState, helmet } = await getRenderingData(
-        renderProps,
+    const {
+        html,
+        css,
+        preloadedState,
+        helmet,
+        redirect,
+    } = await getRenderingData(
         history,
         muiTheme,
         ctx.state.headerToken,
         ctx.request.header.cookie,
         ctx.acceptsLanguages('en', 'fr'),
+        url,
     );
+
+    if (redirect) {
+        return ctx.redirect(redirect);
+    }
 
     ctx.body = renderFullPage(html, css, preloadedState, helmet);
 };
@@ -197,10 +193,9 @@ if (config.userAuth) {
     app.use(async (ctx, next) => {
         if (
             !ctx.state.cookie &&
-            ctx.request.url === '/' &&
-            ctx.request.url === '/graph' &&
-            ctx.request.url.match(/^\/\w+:/) && // resource access for uid: ark: http:
-            ctx.request.url.startsWith('/api/')
+            ctx.request.url !== '/login' &&
+            !ctx.request.url.match(/[^\\]*\.(\w+)$/) &&
+            !ctx.request.url.match('__webpack_hmr')
         ) {
             ctx.redirect('/login');
             return;

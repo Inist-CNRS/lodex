@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Card, CardTitle } from 'material-ui/Card';
@@ -19,6 +19,7 @@ import { grey500 } from 'material-ui/styles/colors';
 import Stats from '../Stats';
 import getTitle from '../../lib/getTitle';
 import ExportShareButton from '../ExportShareButton';
+import { preLoadPublication } from '../../fields';
 
 const styles = {
     container: {
@@ -49,60 +50,79 @@ const styles = {
     },
 };
 
-const GraphPage = ({ graphField, resource }) => (
-    <div style={styles.container}>
-        <Helmet>
-            <title>Resources - {getTitle()}</title>
-        </Helmet>
-        <div style={styles.centerColumn}>
-            <GraphSummary selected={graphField ? graphField.name : ''} />
-            <ExportShareButton style={{ float: 'right' }} />
-            <Stats />
-            <Card style={styles.section}>
-                <AppliedFacetList />
-            </Card>
-            {graphField && (
-                <Card style={styles.section}>
-                    <CardTitle style={styles.label}>
-                        {graphField.label}
-                        <EditButton field={graphField} resource={resource} />
-                        <EditOntologyFieldButton
-                            field={graphField}
-                            resource={resource}
-                        />
-                    </CardTitle>
-                    <Format field={graphField} resource={resource} />
-                    <CompositeProperty
-                        key="composite"
-                        field={graphField}
-                        resource={resource}
-                        parents={[]}
+class GraphPage extends Component {
+    componentWillMount() {
+        this.props.preLoadPublication();
+    }
+    render() {
+        const { graphField, resource } = this.props;
+
+        return (
+            <div style={styles.container}>
+                <Helmet>
+                    <title>Resources - {getTitle()}</title>
+                </Helmet>
+                <div style={styles.centerColumn}>
+                    <GraphSummary
+                        selected={graphField ? graphField.name : ''}
                     />
-                    <PropertyLinkedFields
-                        fieldName={graphField.name}
-                        resource={resource}
-                        parents={[]}
-                    />
-                </Card>
-            )}
-            <Card style={styles.section}>
-                <Dataset />
-            </Card>
-        </div>
-        <div style={styles.sideColumn}>
-            <Toolbar />
-        </div>
-    </div>
-);
+                    <ExportShareButton style={{ float: 'right' }} />
+                    <Stats />
+                    <Card style={styles.section}>
+                        <AppliedFacetList />
+                    </Card>
+                    {graphField && (
+                        <Card style={styles.section}>
+                            <CardTitle style={styles.label}>
+                                {graphField.label}
+                                <EditButton
+                                    field={graphField}
+                                    resource={resource}
+                                />
+                                <EditOntologyFieldButton
+                                    field={graphField}
+                                    resource={resource}
+                                />
+                            </CardTitle>
+                            <Format field={graphField} resource={resource} />
+                            <CompositeProperty
+                                key="composite"
+                                field={graphField}
+                                resource={resource}
+                                parents={[]}
+                            />
+                            <PropertyLinkedFields
+                                fieldName={graphField.name}
+                                resource={resource}
+                                parents={[]}
+                            />
+                        </Card>
+                    )}
+                    <Card style={styles.section}>
+                        <Dataset />
+                    </Card>
+                </div>
+                <div style={styles.sideColumn}>
+                    <Toolbar />
+                </div>
+            </div>
+        );
+    }
+}
 
 GraphPage.propTypes = {
     graphField: fieldPropTypes,
     resource: PropTypes.object.isRequired,
+    preLoadPublication: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = (state, { params: { name } }) => ({
+const mapStateToProps = (state, { match: { params: { name } } }) => ({
     graphField: name && fromFields.getFieldByName(state, name),
     resource: fromCharacteristic.getCharacteristicsAsResource(state),
 });
 
-export default connect(mapStateToProps)(GraphPage);
+const mapDispatchToprops = {
+    preLoadPublication,
+};
+
+export default connect(mapStateToProps, mapDispatchToprops)(GraphPage);

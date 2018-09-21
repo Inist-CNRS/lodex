@@ -1,9 +1,8 @@
 import { call, put, select, takeLatest } from 'redux-saga/effects';
-import { LOCATION_CHANGE } from 'react-router-redux';
-import qs from 'qs';
 
 import {
     HIDE_RESOURCE_SUCCESS,
+    PRE_LOAD_RESOURCE,
     loadResource,
     loadResourceSuccess,
     loadResourceError,
@@ -11,11 +10,7 @@ import {
 import { preLoadPublication } from '../../../fields';
 import { fromUser } from '../../../sharedSelectors';
 import fetchSaga from '../../../lib/sagas/fetchSaga';
-
-import { fromResource } from '../../selectors';
-
-export const getUriFromQueryString = queryString =>
-    qs.parse(queryString, { ignoreQueryPrefix: true }).uri;
+import { fromResource, fromRouter } from '../../selectors';
 
 export const parsePathName = pathname => {
     const match = pathname.match(/^\/((?:ark|uid):\/.*$)/);
@@ -23,40 +18,9 @@ export const parsePathName = pathname => {
     return match && match[1];
 };
 
-export const getUriFromPayload = payload => {
-    const ark = parsePathName(payload.pathname);
-
-    if (ark) {
-        return ark;
-    }
-
-    if (payload && payload.state && payload.state.uri) {
-        return payload.state.uri;
-    }
-
-    return getUriFromQueryString(payload.search);
-};
-
-export function* getUri(type, payload) {
-    if (type === LOCATION_CHANGE) {
-        return yield call(getUriFromPayload, payload);
-    }
-    const resource = yield select(fromResource.getResourceLastVersion);
-
-    if (!resource) {
-        return null;
-    }
-
-    return resource.uri;
-}
-
-export function* handleLoadResource({ payload, type }) {
-    if (type === LOCATION_CHANGE && payload.pathname === '/login') {
-        return;
-    }
+export function* handleLoadResource() {
     yield put(preLoadPublication());
-    const uri = yield call(getUri, type, payload);
-
+    const uri = yield select(fromRouter.getResourceUri);
     if (!uri) {
         return;
     }
@@ -79,7 +43,7 @@ export function* handleLoadResource({ payload, type }) {
 
 export default function* watchLocationChangeToResource() {
     yield takeLatest(
-        [LOCATION_CHANGE, HIDE_RESOURCE_SUCCESS],
+        [HIDE_RESOURCE_SUCCESS, PRE_LOAD_RESOURCE],
         handleLoadResource,
     );
 }

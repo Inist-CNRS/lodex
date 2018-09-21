@@ -114,7 +114,7 @@ class ClearDialogComponent extends Component {
                 key="cancel"
                 className="btn-cancel"
                 label={polyglot.t('cancel')}
-                onTouchTap={onClose}
+                onClick={onClose}
                 primary
             />,
             <ButtonWithStatus
@@ -123,7 +123,7 @@ class ClearDialogComponent extends Component {
                 className="btn-submit"
                 label={polyglot.t('valid')}
                 color={`${red600}`}
-                onTouchTap={this.handleClear(type)}
+                onClick={this.handleClear(type)}
                 secondary
                 error={hasFailed}
                 disabled={!validName}

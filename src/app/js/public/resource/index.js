@@ -3,6 +3,7 @@ import { createSelector } from 'reselect';
 
 import { PROPOSED } from '../../../../common/propositionStatus';
 
+export const PRE_LOAD_RESOURCE = 'PRE_LOAD_RESOURCE';
 export const LOAD_RESOURCE = 'LOAD_RESOURCE';
 export const LOAD_RESOURCE_SUCCESS = 'LOAD_RESOURCE_SUCCESS';
 export const LOAD_RESOURCE_ERROR = 'LOAD_RESOURCE_ERROR';
@@ -39,6 +40,7 @@ export const CREATE_RESOURCE_OPEN = 'CREATE_RESOURCE_OPEN';
 export const CREATE_RESOURCE_SUCCESS = 'CREATE_RESOURCE_SUCCESS';
 export const CREATE_RESOURCE_ERROR = 'CREATE_RESOURCE_ERROR';
 
+export const preLoadResource = createAction(PRE_LOAD_RESOURCE);
 export const loadResource = createAction(LOAD_RESOURCE);
 export const loadResourceSuccess = createAction(LOAD_RESOURCE_SUCCESS);
 export const loadResourceError = createAction(LOAD_RESOURCE_ERROR);

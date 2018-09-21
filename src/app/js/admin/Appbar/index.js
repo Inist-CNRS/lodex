@@ -6,7 +6,7 @@ import compose from 'recompose/compose';
 import AppBar from 'material-ui/AppBar';
 import CircularProgress from 'material-ui/CircularProgress';
 import FlatButton from 'material-ui/FlatButton';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 
 import SignOutButton from './SignOutButton';
 import SignInButton from './SignInButton';

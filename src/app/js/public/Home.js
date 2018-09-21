@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
-import { push } from 'react-router-redux';
+import { push } from 'connected-react-router';
 import { Helmet } from 'react-helmet';
 
 import { polyglot as polyglotPropTypes } from '../propTypes';
