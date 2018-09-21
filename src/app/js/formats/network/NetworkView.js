@@ -112,7 +112,11 @@ const mapStateToProps = (state, { formatData }) => {
         };
     }
 
-    const nodesDic = formatData.reduce(
+    const sanitizedFormatData = formatData.filter(
+        ({ source, data }) => source && data,
+    );
+
+    const nodesDic = sanitizedFormatData.reduce(
         (acc, { source, target }) => ({
             ...acc,
             [source]: {
@@ -138,7 +142,7 @@ const mapStateToProps = (state, { formatData }) => {
         .domain([min, max])
         .range([min === max ? 50 : 10, 50]);
 
-    const weightList = formatData.map(({ weight }) => weight);
+    const weightList = sanitizedFormatData.map(({ weight }) => weight);
     const maxWeight = Math.max(...weightList);
     const minWeight = Math.min(...weightList);
 
@@ -151,7 +155,7 @@ const mapStateToProps = (state, { formatData }) => {
             ...node,
             radius: nodeScale(node.radius),
         })),
-        links: formatData.map(({ source, target, weight }) => ({
+        links: sanitizedFormatData.map(({ source, target, weight }) => ({
             source,
             target,
             value: linkScale(weight),
