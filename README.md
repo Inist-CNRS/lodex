@@ -4,7 +4,7 @@
 
 Lodex is a tool to enable publishing a set of data `csv, tsv, xml, json ...` in semantic web formats `JSON-LD, N-Quads, ...` and propose to manipulate them in a backoffice.
 
-To see what Lodex can do, check out https://data.istex.fr/ or the user documentation at https://lodex.gitbooks.io/lodex-user-documentation/
+To see what Lodex can do, check out https://data.istex.fr/ or the user documentation at https://www-doc.lodex.inist.fr/
 
 ![preview](https://docs.google.com/drawings/d/e/2PACX-1vQA8ze2ktkRLXZB9sNWkft0cUpf_jOJbTfQA7AtzvwsRfswBCuiWwEsI3kvHzAzmZNhz4CxcePQ02cA/pub?w=904&h=581)
 
