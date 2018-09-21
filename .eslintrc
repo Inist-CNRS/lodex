@@ -4,7 +4,8 @@
         "es6": true,
         "browser": true,
         "mocha": true,
-        "node": true
+        "node": true,
+        "cypress/globals": true
     },
     "extends": [
         "eslint:recommended",
@@ -17,7 +18,8 @@
     "plugins": [
         "import",
         "react",
-        "prettier"
+        "prettier",
+        "cypress"
     ],
     "rules": {
         "prettier/prettier": ["error", {

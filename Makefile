@@ -62,7 +62,13 @@ test-frontend-unit: ## Run the frontend application unit tests
 test-frontend-unit-watch: ## Watch the frontend application unit tests
 	NODE_ENV=test docker-compose run --rm node npm run test:app:watch
 
-test: test-frontend-unit test-api-unit
+test-e2e:
+	docker-compose -f docker-compose.test.yml up -d
+	./node_modules/.bin/cypress install
+	./node_modules/.bin/cypress run
+	docker-compose -f docker-compose.test.yml down
+
+test: test-frontend-unit test-api-unit test-e2e
 
 clear-database: ## Clear the whole database
 	docker-compose exec mongo mongo lodex --eval " \
