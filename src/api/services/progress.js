@@ -5,6 +5,9 @@ export class Progress {
         this.target = target;
         this.progress = 0;
     }
+    finishPublishing() {
+        this.status = 'done';
+    }
 
     incrementProgress(progress) {
         if (this.status !== 'publishing') {
