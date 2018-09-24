@@ -40,27 +40,20 @@ export const putField = async (ctx, id) => {
     const newField = ctx.request.body;
 
     try {
+        if (newField.overview) {
+            await ctx.field.findOneAndUpdate(
+                { overview: newField.overview },
+                { $unset: { overview: '' } },
+            );
+        }
         ctx.body = await ctx.field.updateOneById(id, newField);
     } catch (error) {
         ctx.status = 403;
         ctx.body = { error: error.massage };
+        return;
     }
 
-    const fields = await ctx.field.findAll();
-
-    await Promise.all(
-        fields
-            .filter(
-                field =>
-                    field.overview === newField.overview &&
-                    String(field._id) !== id,
-            )
-            .map(e => {
-                delete e.overview;
-                return ctx.field.updateOneById(e._id, e);
-            }),
-    );
-    await ctx.publishFacets(ctx, fields);
+    await ctx.publishFacets(ctx, [ctx.body]);
 };
 
 export const removeField = async (ctx, id) => {

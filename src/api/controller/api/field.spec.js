@@ -242,33 +242,57 @@ describe('field routes', () => {
     describe('putField', () => {
         const ctx = {
             request: {
-                body: 'updated field data',
+                body: {
+                    overview: 200,
+                },
             },
             field: {
                 updateOneById: createSpy().andReturn(
                     Promise.resolve('update result'),
                 ),
-                findAll: createSpy().andReturn(
-                    Promise.resolve(['update result']),
-                ),
+                findOneAndUpdate: createSpy(),
             },
             publishFacets: createSpy(),
         };
 
-        it('should validateField and then update field', async () => {
+        beforeEach(() => {
+            ctx.field.updateOneById.reset();
+            ctx.field.findOneAndUpdate.reset();
+            ctx.publishFacets.reset();
+        });
+
+        it('should remove overview form other field with same overview, if overview is set', async () => {
             await putField(ctx, 'id');
-            expect(ctx.field.updateOneById).toHaveBeenCalledWith(
-                'id',
-                'updated field data',
+            expect(ctx.field.findOneAndUpdate).toHaveBeenCalledWith(
+                { overview: 200 },
+                { $unset: { overview: '' } },
             );
             expect(ctx.body).toInclude(['update result']);
         });
 
-        it('gets the current fields', () => {
-            expect(ctx.field.findAll).toHaveBeenCalled();
+        it('should not remove overview form other field with same overview, if overview is not set', async () => {
+            await putField(
+                {
+                    ...ctx,
+                    request: {
+                        body: {},
+                    },
+                },
+                'id',
+            );
+            expect(ctx.field.findOneAndUpdate).toNotHaveBeenCalled();
         });
 
-        it('update the published facets', () => {
+        it('should validateField and then update field', async () => {
+            await putField(ctx, 'id');
+            expect(ctx.field.updateOneById).toHaveBeenCalledWith('id', {
+                overview: 200,
+            });
+            expect(ctx.body).toInclude(['update result']);
+        });
+
+        it('update the published facets', async () => {
+            await putField(ctx, 'id');
             expect(ctx.publishFacets).toHaveBeenCalled();
         });
     });

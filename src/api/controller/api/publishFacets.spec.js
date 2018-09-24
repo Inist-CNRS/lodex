@@ -44,6 +44,9 @@ describe('publishFacets', () => {
 
     it('should call publishedFacet.remove', () => {
         expect(ctx.publishedFacet.remove).toHaveBeenCalled();
+        expect(ctx.publishedFacet.remove).toHaveBeenCalledWith({
+            field: { $in: ['facet1', 'facet2', 'field2'] },
+        });
     });
 
     it('should call ctx.publishedFacet.insertFacet for each facet field with their distinct values', () => {
