@@ -5,21 +5,11 @@ import { fromFields, fromUser } from '../../sharedSelectors';
 import fetchSaga from '../../lib/sagas/fetchSaga';
 
 export const movePosition = (fields, oldPosition, newPosition) => {
-    const sortedFields = fields
-        .slice(0)
-        .sort((a, b) => a.position - b.position);
+    const fieldToMove = fields.find(field => field.position === oldPosition);
 
-    const fieldToMove = sortedFields.find(
-        field => field.position === oldPosition,
-    );
+    const newIndex = fields.findIndex(field => field.position === newPosition);
 
-    const newIndex = sortedFields.findIndex(
-        field => field.position === newPosition,
-    );
-
-    const otherFields = sortedFields.filter(
-        field => field.position !== oldPosition,
-    );
+    const otherFields = fields.filter(field => field.position !== oldPosition);
 
     const reorderedFields = [
         ...otherFields.slice(0, newIndex),
@@ -34,34 +24,29 @@ export const movePosition = (fields, oldPosition, newPosition) => {
 };
 
 export function* handleChangePosition({
-    payload: { newPosition, oldPosition },
+    payload: { newPosition, oldPosition, type },
 }) {
-    const fields = yield select(fromFields.getFields);
-    const sortedFields = yield call(
+    const fields = yield select(fromFields.getOntologyFields, type);
+    const reorderedFields = yield call(
         movePosition,
         fields,
         oldPosition,
         newPosition,
     );
 
-    yield put(changePositionValue({ fields: sortedFields }));
+    yield put(changePositionValue({ fields: reorderedFields }));
 
-    for (let i = 0; i < sortedFields.length; i += 1) {
-        const request = yield select(
-            fromUser.getUpdateFieldRequest,
-            sortedFields[i],
-        );
-
-        const { error } = yield call(fetchSaga, request);
-
-        if (error) {
-            yield put(
-                changePositionValue({
-                    fields: [fields.find(e => e.name === sortedFields[i].name)],
-                }),
-            );
-        }
+    const request = yield select(
+        fromUser.getReorderFieldRequest,
+        reorderedFields,
+    );
+    const { error, response } = yield call(fetchSaga, request);
+    if (error) {
+        yield put(changePositionValue({ fields }));
+        return;
     }
+
+    yield put(changePositionValue({ fields: response }));
 }
 
 export default function* watchLoadField() {

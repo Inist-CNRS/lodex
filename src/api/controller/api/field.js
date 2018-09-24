@@ -124,6 +124,16 @@ export const importFields = getUploadedFieldsImpl => async ctx => {
     ctx.status = 200;
 };
 
+export const reorderField = async ctx => {
+    const { fields } = ctx.request.query;
+    ctx.body = await Promise.all(
+        Object.values(fields).map((name, index) =>
+            ctx.field.findOneAndUpdate({ name }, { $set: { position: index } }),
+        ),
+    );
+    ctx.status = 200;
+};
+
 const app = new Koa();
 
 app.use(setup);
@@ -139,6 +149,7 @@ app.use(
 );
 app.use(koaBodyParser());
 app.use(route.post('/', postField));
+app.use(route.put('/reorder', reorderField));
 app.use(route.put('/:id', putField));
 app.use(route.del('/:id', removeField));
 

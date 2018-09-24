@@ -9,6 +9,7 @@ import {
     postField,
     putField,
     removeField,
+    reorderField,
 } from './field';
 import publishFacets from './publishFacets';
 import { validateField } from '../../models/field';
@@ -313,6 +314,50 @@ describe('field routes', () => {
             await removeField(ctx, 'id');
             expect(ctx.field.removeById).toHaveBeenCalledWith('id');
             expect(ctx.body).toBe('deletion result');
+        });
+    });
+
+    describe('reorderField', () => {
+        it('should update field position based on index in array', async () => {
+            const ctx = {
+                request: {
+                    query: {
+                        fields: {
+                            0: 'a',
+                            1: 'b',
+                            2: 'c',
+                        },
+                    },
+                },
+                field: {
+                    findOneAndUpdate: createSpy().andReturn(
+                        Promise.resolve('update result'),
+                    ),
+                },
+            };
+
+            await reorderField(ctx, 'id');
+
+            expect(ctx.field.findOneAndUpdate).toHaveBeenCalledWith(
+                { name: 'a' },
+                { $set: { position: 0 } },
+            );
+
+            expect(ctx.field.findOneAndUpdate).toHaveBeenCalledWith(
+                { name: 'b' },
+                { $set: { position: 1 } },
+            );
+
+            expect(ctx.field.findOneAndUpdate).toHaveBeenCalledWith(
+                { name: 'c' },
+                { $set: { position: 2 } },
+            );
+
+            expect(ctx.body).toEqual([
+                'update result',
+                'update result',
+                'update result',
+            ]);
         });
     });
 });

@@ -1,6 +1,7 @@
 import { createAction, handleActions } from 'redux-actions';
 import { createSelector } from 'reselect';
 import omit from 'lodash.omit';
+import qs from 'qs';
 
 import getQueryString from '../lib/getQueryString';
 
@@ -334,6 +335,14 @@ export const getExportPublishedDatasetRequest = (
         url: `/api/export/${type}?${queryString}`,
     });
 
+export const getReorderFieldRequest = (state, fields) =>
+    getRequest(state, {
+        method: 'PUT',
+        url: `/api/field/reorder?${qs.stringify({
+            fields: fields.map(({ name }) => name),
+        })}`,
+    });
+
 export const selectors = {
     isAdmin,
     getToken,
@@ -373,4 +382,5 @@ export const selectors = {
     getUrlRequest,
     getExportPublishedDatasetRequest,
     getSparqlRequest,
+    getReorderFieldRequest,
 };
