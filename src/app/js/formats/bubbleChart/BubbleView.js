@@ -34,39 +34,31 @@ const styles = {
     },
 };
 
-export class BubbleView extends React.Component {
-    render() {
-        const { data, diameter, colorScale } = this.props;
-
-        return (
-            <div>
-                <Transition
-                    style={styles.container({ diameter })}
-                    onMouseMove={this.handleMove}
-                    onMouseLeave={this.handleLeave}
-                    childrenStyles={{
-                        base: styles.base,
-                        appear: styles.appear,
-                        enter: styles.appear,
-                        leave: styles.leave,
-                    }}
-                >
-                    {data.map(({ data: { _id: key }, r, x, y, value }) => (
-                        <Bubble
-                            key={key}
-                            r={r}
-                            x={x}
-                            y={y}
-                            name={key}
-                            value={value}
-                            color={colorScale(key)}
-                        />
-                    ))}
-                </Transition>
-            </div>
-        );
-    }
-}
+export const BubbleView = ({ data, diameter, colorScale }) => (
+    <div>
+        <Transition
+            style={styles.container({ diameter })}
+            childrenStyles={{
+                base: styles.base,
+                appear: styles.appear,
+                enter: styles.appear,
+                leave: styles.leave,
+            }}
+        >
+            {data.map(({ data: { _id: key }, r, x, y, value }) => (
+                <Bubble
+                    key={key}
+                    r={r}
+                    x={x}
+                    y={y}
+                    name={key}
+                    value={value}
+                    color={colorScale(key)}
+                />
+            ))}
+        </Transition>
+    </div>
+);
 
 BubbleView.propTypes = {
     data: PropTypes.array.isRequired,
@@ -102,10 +94,6 @@ const mapStateToProps = (state, { formatData, diameter, colorScheme }) => {
     };
 };
 
-const mapDispatchToProps = {};
-
-export default compose(
-    injectData(),
-    connect(mapStateToProps, mapDispatchToProps),
-    exportableToPng,
-)(BubbleView);
+export default compose(injectData(), connect(mapStateToProps), exportableToPng)(
+    BubbleView,
+);
