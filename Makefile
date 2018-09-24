@@ -80,7 +80,7 @@ test-e2e-open-cypress:
 
 test-e2e: test-e2e-start-dockers
 	./node_modules/.bin/cypress install
-	./node_modules/.bin/cypress run || $(MAKE) test-e2e-stop-dockers
+	./bin/wait-for -t 60 localhost:3000 -- ./node_modules/.bin/cypress run || $(MAKE) test-e2e-stop-dockers
 	$(MAKE) test-e2e-stop-dockers
 
 test: test-frontend-unit test-api-unit test-e2e
