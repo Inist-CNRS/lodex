@@ -41,6 +41,10 @@ const ListView = ({
 
     const List = type === 'ordered' ? OL : UL;
 
+    if (!Array.isArray(values)) {
+        return <p>{polyglot.t('bad_format_error')}</p>;
+    }
+
     if (values.length < 1 || (values.length == 1 && !values[0].trim())) {
         return <p>{polyglot.t('error_listView')}</p>;
     }
