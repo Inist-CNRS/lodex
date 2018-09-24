@@ -78,10 +78,16 @@ test-e2e-stop-dockers:
 test-e2e-open-cypress:
 	./node_modules/.bin/cypress open
 
-test-e2e: test-e2e-start-dockers
+test-e2e:
+ifeq "$(DISABLE_E2E_TESTS)" "true"
+	echo "E2E tests were disable because of the flag 'DISABLE_E2E_TESTS=true'"
+else
+	$(MAKE) test-e2e-start-dockers
 	./node_modules/.bin/cypress install
 	./bin/wait-for -t 60 localhost:3000 -- ./node_modules/.bin/cypress run || $(MAKE) test-e2e-stop-dockers
 	$(MAKE) test-e2e-stop-dockers
+endif
+
 
 test: test-frontend-unit test-api-unit test-e2e
 
