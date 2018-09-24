@@ -6,10 +6,15 @@ import koaQs from 'koa-qs';
 
 import logger from './services/logger';
 import controller from './controller';
+import testController from './controller/test';
 
 const app = koaQs(new Koa());
 
 app.use(cors({ credentials: true }));
+
+if (process.env.EXPOSE_TEST_CONTROLLER) {
+    app.use(mount('/tests', testController));
+}
 
 // server logs
 app.use(async (ctx, next) => {

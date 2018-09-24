@@ -1,4 +1,8 @@
+import { logout } from '../support/authentication';
+
 describe('Login', () => {
+    beforeEach(logout);
+
     it('should successfuly login as an admin', () => {
         cy.visit('http://localhost:3000');
 
@@ -6,6 +10,6 @@ describe('Login', () => {
         cy.get('input[name="password"]').type('secret');
         cy.get('button').click();
 
-        cy.contains('No dataset');
+        cy.location('pathname').should('equal', '/');
     });
 });

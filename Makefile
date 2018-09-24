@@ -62,11 +62,26 @@ test-frontend-unit: ## Run the frontend application unit tests
 test-frontend-unit-watch: ## Watch the frontend application unit tests
 	NODE_ENV=test docker-compose run --rm node npm run test:app:watch
 
-test-e2e:
+test-e2e-start-dockers:
+ifeq "$(CI)" "true"
+	docker-compose -f docker-compose.test.yml up -d --build
+else
 	docker-compose -f docker-compose.test.yml up -d
-	./node_modules/.bin/cypress install
-	./node_modules/.bin/cypress run
+endif
+
+test-e2e-logs:
+	docker-compose -f docker-compose.test.yml logs
+
+test-e2e-stop-dockers:
 	docker-compose -f docker-compose.test.yml down
+
+test-e2e-open-cypress:
+	./node_modules/.bin/cypress open
+
+test-e2e: test-e2e-start-dockers
+	./node_modules/.bin/cypress install
+	./node_modules/.bin/cypress run || $(MAKE) test-e2e-stop-dockers
+	$(MAKE) test-e2e-stop-dockers
 
 test: test-frontend-unit test-api-unit test-e2e
 

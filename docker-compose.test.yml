@@ -5,6 +5,7 @@ services:
         environment:
             EZMASTER_PUBLIC_URL: ${EZMASTER_PUBLIC_URL}
             EZMASTER_MONGODB_HOST_PORT: mongo:27017
+            EXPOSE_TEST_CONTROLLER: "true"
         links:
             - mongo
         depends_on:
