@@ -20,6 +20,7 @@ import dataset from './dataset';
 import upload from './upload';
 import widget from './widget';
 import run from './run';
+import progress from './progress';
 
 const app = new Koa();
 
@@ -87,6 +88,7 @@ app.use(mount('/parsing', parsing));
 app.use(mount('/publish', publish));
 app.use(mount('/upload', upload));
 app.use(mount('/dataset', dataset));
+app.use(route.get('/progress', progress));
 
 app.use(async ctx => {
     ctx.status = 404;
