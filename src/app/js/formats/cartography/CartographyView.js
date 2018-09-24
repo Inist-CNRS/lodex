@@ -8,11 +8,11 @@ import {
 import { connect } from 'react-redux';
 import memoize from 'lodash.memoize';
 import PropTypes from 'prop-types';
-import { Tooltip, actions } from 'redux-tooltip';
 import ZoomIn from 'material-ui/svg-icons/action/zoom-in';
 import ZoomOut from 'material-ui/svg-icons/action/zoom-out';
 import IconButton from 'material-ui/IconButton';
 import compose from 'recompose/compose';
+import ReactTooltip from 'react-tooltip';
 
 import injectData from '../injectData';
 import getGradientScaleAndLegend from '../../lib/components/getGradientScaleAndLegend';
@@ -85,32 +85,9 @@ const projectionConfig = {
 };
 
 class CartographyView extends Component {
-    handleMove = (data, event) => {
-        const x = event.clientX;
-        const y = event.clientY + window.pageYOffset;
-        const value = this.props.formatData[data.properties.ISO_A3];
-        if (!value) {
-            return;
-        }
-
-        this.props.showTooltip({
-            origin: { x, y },
-            content: (
-                <dl>
-                    <dt>{data.properties.NAME}</dt>
-                    <dd>{value}</dd>
-                </dl>
-            ),
-        });
-    };
-
     state = {
         zoom: 1,
         center: [0, 20],
-    };
-
-    handleLeave = () => {
-        this.props.hideTooltip();
     };
 
     zoomIn = () => {
@@ -176,8 +153,16 @@ class CartographyView extends Component {
                                         return (
                                             <Geography
                                                 key={`geography-${i}`}
-                                                onMouseMove={this.handleMove}
-                                                onMouseLeave={this.handleLeave}
+                                                data-for="cartography"
+                                                data-tip={
+                                                    value
+                                                        ? `${
+                                                              geography
+                                                                  .properties
+                                                                  .NAME
+                                                          },${value}`
+                                                        : undefined
+                                                }
                                                 cacheId={`geography-${i}`}
                                                 geography={geography}
                                                 projection={projection}
@@ -195,7 +180,23 @@ class CartographyView extends Component {
                         </ZoomableGroup>
                     </ComposableMap>
                 </div>
-                <Tooltip />
+                <ReactTooltip
+                    id="cartography"
+                    type="light"
+                    getContent={data => {
+                        if (!data) {
+                            return;
+                        }
+                        const [name, value] = data.split(',');
+
+                        return (
+                            <div>
+                                <p>{name}</p>
+                                <p>{value}</p>
+                            </div>
+                        );
+                    }}
+                />
             </div>
         );
     }
@@ -252,13 +253,10 @@ const mapStateToProps = (
     };
 };
 
-const mapSispatchToProps = {
-    showTooltip: actions.show,
-    hideTooltip: actions.hide,
-};
+const mapDispatchToProps = {};
 
 export default compose(
     injectData(),
-    connect(mapStateToProps, mapSispatchToProps),
+    connect(mapStateToProps, mapDispatchToProps),
     exportableToPng,
 )(CartographyView);

@@ -5,8 +5,6 @@ import compose from 'recompose/compose';
 import { pack, hierarchy } from 'd3-hierarchy';
 import { scaleOrdinal } from 'd3-scale';
 import memoize from 'lodash.memoize';
-import { Tooltip, actions } from 'redux-tooltip';
-import get from 'lodash.get';
 import { schemeAccent } from 'd3-scale-chromatic';
 import Transition from 'react-inline-transition-group';
 
@@ -36,69 +34,35 @@ const styles = {
     },
 };
 
-class BubbleView extends React.Component {
-    handleMove = event => {
-        const x = event.clientX;
-        const y = event.clientY + window.pageYOffset;
-        const { value, name } = get(event, ['target', 'dataset'], {});
-
-        if (!value && value !== 0) {
-            this.props.hideTooltip();
-            return;
-        }
-
-        this.props.showTooltip({
-            origin: { x, y },
-            content: (
-                <p>
-                    {name}: {value}
-                </p>
-            ),
-        });
-    };
-
-    handleLeave = () => {
-        this.props.hideTooltip();
-    };
-    render() {
-        const { data, diameter, colorScale } = this.props;
-
-        return (
-            <div>
-                <Transition
-                    style={styles.container({ diameter })}
-                    onMouseMove={this.handleMove}
-                    onMouseLeave={this.handleLeave}
-                    childrenStyles={{
-                        base: styles.base,
-                        appear: styles.appear,
-                        enter: styles.appear,
-                        leave: styles.leave,
-                    }}
-                >
-                    {data.map(({ data: { _id: key }, r, x, y, value }) => (
-                        <Bubble
-                            key={key}
-                            r={r}
-                            x={x}
-                            y={y}
-                            name={key}
-                            value={value}
-                            color={colorScale(key)}
-                        />
-                    ))}
-                </Transition>
-                <Tooltip />
-            </div>
-        );
-    }
-}
+export const BubbleView = ({ data, diameter, colorScale }) => (
+    <div>
+        <Transition
+            style={styles.container({ diameter })}
+            childrenStyles={{
+                base: styles.base,
+                appear: styles.appear,
+                enter: styles.appear,
+                leave: styles.leave,
+            }}
+        >
+            {data.map(({ data: { _id: key }, r, x, y, value }) => (
+                <Bubble
+                    key={key}
+                    r={r}
+                    x={x}
+                    y={y}
+                    name={key}
+                    value={value}
+                    color={colorScale(key)}
+                />
+            ))}
+        </Transition>
+    </div>
+);
 
 BubbleView.propTypes = {
     data: PropTypes.array.isRequired,
     diameter: PropTypes.number.isRequired,
-    hideTooltip: PropTypes.func.isRequired,
-    showTooltip: PropTypes.func.isRequired,
     colorScale: PropTypes.func,
 };
 
@@ -130,13 +94,6 @@ const mapStateToProps = (state, { formatData, diameter, colorScheme }) => {
     };
 };
 
-const mapDispatchToProps = {
-    showTooltip: actions.show,
-    hideTooltip: actions.hide,
-};
-
-export default compose(
-    injectData(),
-    connect(mapStateToProps, mapDispatchToProps),
-    exportableToPng,
-)(BubbleView);
+export default compose(injectData(), connect(mapStateToProps), exportableToPng)(
+    BubbleView,
+);

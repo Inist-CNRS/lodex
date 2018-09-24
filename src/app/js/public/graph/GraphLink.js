@@ -36,7 +36,7 @@ const GraphLink = ({ link, children, p: polyglot }) => (
             <FlatButton
                 fullWidth
                 style={styles.detailsButton}
-                containerElement={<Link />}
+                containerElement={<Link to={link} />}
                 to={link}
                 label={polyglot.t('view_details')}
                 labelPosition="before"

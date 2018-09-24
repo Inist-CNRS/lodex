@@ -1,7 +1,6 @@
 import { combineReducers } from 'redux';
 import { reducer as form } from 'redux-form';
 import { polyglotReducer as polyglot } from 'redux-polyglot';
-import { reducer as tooltip } from 'redux-tooltip';
 
 import characteristic from '../characteristic';
 import dataset from './dataset';
@@ -27,7 +26,6 @@ const rootReducer = combineReducers({
     resource,
     format,
     user,
-    tooltip,
 });
 
 export default rootReducer;
