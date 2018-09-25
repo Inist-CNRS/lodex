@@ -1,5 +1,3 @@
-import { MongoClient } from 'mongodb';
-import config from 'config';
 import ezs from 'ezs';
 import hasher from 'node-object-hash';
 import set from 'lodash.set';
@@ -8,10 +6,11 @@ import reducers from '../reducers/';
 import publishedDataset from '../models/publishedDataset';
 import fieldModel from '../models/field';
 import getPublishedDatasetFilter from '../models/getPublishedDatasetFilter';
+import mongoClient from '../services/mongoClient';
 
 const hashCoerce = hasher({ sort: false, coerce: true });
 
-export const createFunction = MongoClientImpl =>
+export const createFunction = mongoClientImpl =>
     async function LodexRunQuery(data, feed) {
         if (this.isLast()) {
             return feed.close();
@@ -34,9 +33,7 @@ export const createFunction = MongoClientImpl =>
             hashCoerce.hash({ reducer, fields }),
         );
 
-        const handleDb = await MongoClientImpl.connect(
-            `mongodb://${config.mongo.host}/${config.mongo.dbName}`,
-        );
+        const handleDb = await mongoClientImpl();
         const fieldHandle = await fieldModel(handleDb);
 
         const searchableFieldNames = await fieldHandle.findSearchableNames();
@@ -107,9 +104,8 @@ export const createFunction = MongoClientImpl =>
             feed.write(error);
         });
         stream.on('end', () => {
-            handleDb.close();
             feed.close();
         });
     };
 
-export default createFunction(MongoClient);
+export default createFunction(mongoClient);

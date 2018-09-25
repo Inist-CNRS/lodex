@@ -1,13 +1,12 @@
-import { MongoClient } from 'mongodb';
-import config from 'config';
 import ezs from 'ezs';
 import set from 'lodash.set';
 
 import publishedDataset from '../models/publishedDataset';
 import field from '../models/field';
 import getPublishedDatasetFilter from '../models/getPublishedDatasetFilter';
+import mongoClient from '../services/mongoClient';
 
-export const createFunction = MongoClientImpl =>
+export const createFunction = mongoClientImpl =>
     async function LodexRunQuery(data, feed) {
         if (this.isLast()) {
             return feed.close();
@@ -19,9 +18,7 @@ export const createFunction = MongoClientImpl =>
         const sort = this.getParam('sort', data.sort || {});
         const target = this.getParam('total');
 
-        const handleDb = await MongoClientImpl.connect(
-            `mongodb://${config.mongo.host}/${config.mongo.dbName}`,
-        );
+        const handleDb = await mongoClientImpl();
         let handle;
         let filter;
         const fieldHandle = await field(handleDb);
@@ -68,9 +65,8 @@ export const createFunction = MongoClientImpl =>
             feed.write(error);
         });
         stream.on('end', () => {
-            handleDb.close();
             feed.close();
         });
     };
 
-export default createFunction(MongoClient);
+export default createFunction(mongoClient);
