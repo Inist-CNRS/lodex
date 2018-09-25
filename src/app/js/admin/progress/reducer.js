@@ -3,9 +3,11 @@ import { createAction, handleActions } from 'redux-actions';
 export const UPDATE_PROGRESS = 'UPDATE_PROGRESS';
 export const START_PROGRESS = 'START_PROGRESS';
 export const ERROR_PROGRESS = 'ERROR_PROGRESS';
+export const LOAD_PROGRESS = 'LOAD_PROGRESS';
 
 export const updateProgress = createAction(UPDATE_PROGRESS);
 export const errorProgress = createAction(ERROR_PROGRESS);
+export const loadProgress = createAction(LOAD_PROGRESS);
 
 export const defaultState = {
     status: 'pending',
