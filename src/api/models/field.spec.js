@@ -329,7 +329,7 @@ describe('field', () => {
                         $set: { position: 'position' },
                     },
                     {
-                        returnNewDocument: true,
+                        returnOriginal: false,
                     },
                 );
             });

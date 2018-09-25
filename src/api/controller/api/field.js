@@ -7,6 +7,11 @@ import streamToString from 'stream-to-string';
 
 import { validateField } from '../../models/field';
 import publishFacets from './publishFacets';
+import {
+    COVER_DATASET,
+    COVER_COLLECTION,
+    COVER_DOCUMENT,
+} from '../../../common/cover';
 
 export const setup = async (ctx, next) => {
     ctx.validateField = validateField;
@@ -126,6 +131,39 @@ export const importFields = getUploadedFieldsImpl => async ctx => {
 
 export const reorderField = async ctx => {
     const { fields } = ctx.request.body;
+
+    const fieldsData = await Promise.all(fields.map(ctx.field.findOneByName));
+
+    const cover = fieldsData.reduce((prev, { cover }) => {
+        if (!prev) {
+            return cover;
+        }
+
+        if (prev === COVER_DATASET) {
+            if (cover === COVER_DATASET) {
+                return prev;
+            }
+
+            throw new Error(
+                'Bad cover: tryng to mix characteristic with other field',
+            );
+        }
+
+        if (cover === COVER_COLLECTION || cover === COVER_DOCUMENT) {
+            return COVER_COLLECTION;
+        }
+
+        throw new Error(
+            'Bad cover: tryng to mix characteristic with other field',
+        );
+    }, null);
+
+    if (cover === COVER_COLLECTION) {
+        if (fieldsData[0].name !== 'uri') {
+            throw new Error('Uri must always be the first field');
+        }
+    }
+
     ctx.body = await Promise.all(
         fields.map((name, position) =>
             ctx.field.updatePosition(name, position),

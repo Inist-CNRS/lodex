@@ -258,7 +258,7 @@ export default async db => {
             .findOneAndUpdate(
                 { name },
                 { $set: { position } },
-                { returnNewDocument: true },
+                { returnOriginal: false },
             )
             .then(({ value }) => value);
 

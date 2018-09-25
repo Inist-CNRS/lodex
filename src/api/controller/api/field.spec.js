@@ -13,6 +13,11 @@ import {
 } from './field';
 import publishFacets from './publishFacets';
 import { validateField } from '../../models/field';
+import {
+    COVER_DATASET,
+    COVER_COLLECTION,
+    COVER_DOCUMENT,
+} from '../../../common/cover';
 
 describe('field routes', () => {
     describe('setup', () => {
@@ -318,7 +323,74 @@ describe('field routes', () => {
     });
 
     describe('reorderField', () => {
-        it('should update field position based on index in array', async () => {
+        it('should update field position based on index in array when all cover are dataset', async () => {
+            const fieldsByName = {
+                a: { cover: COVER_DATASET },
+                b: { cover: COVER_DATASET },
+                c: { cover: COVER_DATASET },
+            };
+            const ctx = {
+                request: {
+                    body: {
+                        fields: ['a', 'b', 'c'],
+                    },
+                },
+                field: {
+                    updatePosition: createSpy().andCall(name =>
+                        Promise.resolve(`updated ${name}`),
+                    ),
+                    findOneByName: createSpy().andCall(
+                        name => fieldsByName[name],
+                    ),
+                },
+            };
+
+            await reorderField(ctx, 'id');
+
+            expect(ctx.field.updatePosition).toHaveBeenCalledWith('a', 0);
+            expect(ctx.field.updatePosition).toHaveBeenCalledWith('b', 1);
+            expect(ctx.field.updatePosition).toHaveBeenCalledWith('c', 2);
+
+            expect(ctx.body).toEqual(['updated a', 'updated b', 'updated c']);
+        });
+
+        it('should update field position based on index in array when all cover are collection or document and first one is uri', async () => {
+            const fieldsByName = {
+                a: { cover: COVER_COLLECTION, name: 'uri' },
+                b: { cover: COVER_DOCUMENT },
+                c: { cover: COVER_COLLECTION },
+            };
+            const ctx = {
+                request: {
+                    body: {
+                        fields: ['a', 'b', 'c'],
+                    },
+                },
+                field: {
+                    updatePosition: createSpy().andCall(name =>
+                        Promise.resolve(`updated ${name}`),
+                    ),
+                    findOneByName: createSpy().andCall(
+                        name => fieldsByName[name],
+                    ),
+                },
+            };
+
+            await reorderField(ctx, 'id');
+
+            expect(ctx.field.updatePosition).toHaveBeenCalledWith('a', 0);
+            expect(ctx.field.updatePosition).toHaveBeenCalledWith('b', 1);
+            expect(ctx.field.updatePosition).toHaveBeenCalledWith('c', 2);
+
+            expect(ctx.body).toEqual(['updated a', 'updated b', 'updated c']);
+        });
+
+        it('should throw an error if dataset is mixed with other cover', async () => {
+            const fieldsByName = {
+                a: { cover: COVER_DATASET },
+                b: { cover: COVER_DOCUMENT },
+                c: { cover: COVER_COLLECTION },
+            };
             const ctx = {
                 request: {
                     body: {
@@ -327,24 +399,58 @@ describe('field routes', () => {
                 },
                 field: {
                     updatePosition: createSpy().andReturn(
-                        Promise.resolve('update result'),
+                        Promise.resolve(`updated field`),
+                    ),
+                    findOneByName: createSpy().andCall(
+                        name => fieldsByName[name],
                     ),
                 },
             };
 
-            await reorderField(ctx, 'id');
+            const error = await reorderField(ctx, 'id')
+                .then(() => {
+                    throw new Error('Reorderfield should have throw an error');
+                })
+                .catch(e => e);
 
-            expect(ctx.field.updatePosition).toHaveBeenCalledWith('a', 0);
+            expect(error.message).toBe(
+                'Bad cover: tryng to mix characteristic with other field',
+            );
 
-            expect(ctx.field.updatePosition).toHaveBeenCalledWith('b', 1);
+            expect(ctx.field.updatePosition).toNotHaveBeenCalled();
+        });
 
-            expect(ctx.field.updatePosition).toHaveBeenCalledWith('c', 2);
+        it('should throw an error if cover is not dataset and first field is not uri', async () => {
+            const fieldsByName = {
+                a: { cover: COVER_COLLECTION, name: 'a' },
+                b: { cover: COVER_DOCUMENT, name: 'uri' },
+                c: { cover: COVER_COLLECTION, name: 'c' },
+            };
+            const ctx = {
+                request: {
+                    body: {
+                        fields: ['a', 'b', 'c'],
+                    },
+                },
+                field: {
+                    updatePosition: createSpy().andReturn(
+                        Promise.resolve(`updated field`),
+                    ),
+                    findOneByName: createSpy().andCall(
+                        name => fieldsByName[name],
+                    ),
+                },
+            };
 
-            expect(ctx.body).toEqual([
-                'update result',
-                'update result',
-                'update result',
-            ]);
+            const error = await reorderField(ctx, 'id')
+                .then(() => {
+                    throw new Error('Reorderfield should have throw an error');
+                })
+                .catch(e => e);
+
+            expect(error.message).toBe('Uri must always be the first field');
+
+            expect(ctx.field.updatePosition).toNotHaveBeenCalled();
         });
     });
 });
