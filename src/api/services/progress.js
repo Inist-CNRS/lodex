@@ -1,21 +1,21 @@
 export class Progress {
     status = 'pending';
-    startPublishing(target) {
-        this.status = 'publishing';
+    start(status, target) {
+        this.status = status;
         this.target = target;
         this.progress = 0;
     }
-    finishPublishing() {
-        this.status = 'done';
+    finish() {
+        this.status = 'pending';
     }
 
     incrementProgress(progress) {
-        if (this.status !== 'publishing') {
+        if (this.status === 'pending') {
             return;
         }
         this.progress += progress;
         if (this.progress >= this.target) {
-            this.status = 'done';
+            this.status = 'pending';
         }
     }
 

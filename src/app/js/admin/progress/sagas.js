@@ -19,7 +19,7 @@ export function* handleStartProgressSaga() {
 
         yield put(updateProgress(response));
 
-        if (response.status !== 'publishing') {
+        if (response.status === 'pending') {
             return;
         }
     }

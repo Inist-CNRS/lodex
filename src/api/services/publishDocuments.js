@@ -1,6 +1,7 @@
 import omit from 'lodash.omit';
 import getDocumentTransformer from './getDocumentTransformer';
 import transformAllDocuments from './transformAllDocuments';
+import progress from './progress';
 
 export const getVersionInitializer = transformDocument => async (
     doc,
@@ -38,12 +39,15 @@ export const publishDocumentsFactory = ({
 
         const initializeVersion = getVersionInitializer(transformDocument);
 
+        progress.start('Publishing documents', count);
         await transformAllDocuments(
             count,
             ctx.dataset.findLimitFromSkip,
             ctx.publishedDataset.insertBatch,
             initializeVersion,
         );
+
+        progress.finish();
     };
 
 export default publishDocumentsFactory({

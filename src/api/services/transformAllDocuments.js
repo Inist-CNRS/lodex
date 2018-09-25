@@ -6,7 +6,6 @@ export default async function transformAllDocument(
     insertBatch,
     transformer,
 ) {
-    progress.startPublishing(count);
     let handled = 0;
     while (handled < count) {
         const dataset = await findLimitFromSkip(1000, handled, {
@@ -17,5 +16,4 @@ export default async function transformAllDocument(
         progress.incrementProgress(dataset.length);
         handled += dataset.length;
     }
-    progress.finishPublishing();
 }

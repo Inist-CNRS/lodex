@@ -16,7 +16,10 @@ export const defaultState = {
 
 export default handleActions(
     {
-        [UPDATE_PROGRESS]: (state, { status, progress, target }) => ({
+        [UPDATE_PROGRESS]: (
+            state,
+            { payload: { status, progress, target } },
+        ) => ({
             ...state,
             status,
             progress,
@@ -24,7 +27,7 @@ export default handleActions(
         }),
         [START_PROGRESS]: state => ({
             ...state,
-            status: 'publishing',
+            status: 'working',
         }),
         [ERROR_PROGRESS]: (state, { payload: { error } }) => ({
             ...state,
