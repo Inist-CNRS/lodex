@@ -260,15 +260,18 @@ export default handleActions(
             error: null,
         }),
         CHANGE_POSITION_VALUE: (state, { payload: { fields } }) => {
-            const result = state.byName;
-            fields.forEach(e => {
-                result[e.name].position = e.position;
-            });
             return {
                 ...state,
-                byName: {
-                    ...result,
-                },
+                byName: fields.reduce(
+                    (acc, field) => ({
+                        ...acc,
+                        [field.name]: {
+                            ...acc[field.name],
+                            position: field.position,
+                        },
+                    }),
+                    state.byName,
+                ),
             };
         },
         LOAD_PUBLICATION: state => ({

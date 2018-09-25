@@ -253,5 +253,14 @@ export default async db => {
         return highestPositionField ? highestPositionField.position : 0;
     };
 
+    collection.updatePosition = async (name, position) =>
+        collection
+            .findOneAndUpdate(
+                { name },
+                { $set: { position } },
+                { returnNewDocument: true },
+            )
+            .then(({ value }) => value);
+
     return collection;
 };

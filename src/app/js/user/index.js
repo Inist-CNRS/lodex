@@ -1,7 +1,6 @@
 import { createAction, handleActions } from 'redux-actions';
 import { createSelector } from 'reselect';
 import omit from 'lodash.omit';
-import qs from 'qs';
 
 import getQueryString from '../lib/getQueryString';
 
@@ -338,9 +337,10 @@ export const getExportPublishedDatasetRequest = (
 export const getReorderFieldRequest = (state, fields) =>
     getRequest(state, {
         method: 'PUT',
-        url: `/api/field/reorder?${qs.stringify({
+        url: '/api/field/reorder',
+        body: {
             fields: fields.map(({ name }) => name),
-        })}`,
+        },
     });
 
 export const selectors = {

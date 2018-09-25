@@ -30,6 +30,9 @@ describe('field', () => {
                         }),
                     }),
                 }),
+                findOneAndUpdate: createSpy().andReturn(
+                    Promise.resolve({ value: 'result' }),
+                ),
             };
 
             db = {
@@ -40,6 +43,7 @@ describe('field', () => {
 
             fieldCollection.insertOne.reset();
             fieldCollection.findOne.reset();
+            fieldCollection.findOneAndUpdate.reset();
         });
 
         it('should call db.collection with `field`', () => {
@@ -308,6 +312,25 @@ describe('field', () => {
                 expect(fieldCollection.find).toHaveBeenCalledWith(
                     {},
                     { position: 1 },
+                );
+            });
+        });
+
+        describe('updatePosition', () => {
+            it('should call findOneAndUpdate with to update position of named field', async () => {
+                expect(await field.updatePosition('name', 'position')).toBe(
+                    'result',
+                );
+                expect(fieldCollection.findOneAndUpdate).toHaveBeenCalledWith(
+                    {
+                        name: 'name',
+                    },
+                    {
+                        $set: { position: 'position' },
+                    },
+                    {
+                        returnNewDocument: true,
+                    },
                 );
             });
         });

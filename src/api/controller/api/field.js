@@ -125,10 +125,10 @@ export const importFields = getUploadedFieldsImpl => async ctx => {
 };
 
 export const reorderField = async ctx => {
-    const { fields } = ctx.request.query;
+    const { fields } = ctx.request.body;
     ctx.body = await Promise.all(
-        Object.values(fields).map((name, index) =>
-            ctx.field.findOneAndUpdate({ name }, { $set: { position: index } }),
+        fields.map((name, position) =>
+            ctx.field.updatePosition(name, position),
         ),
     );
     ctx.status = 200;

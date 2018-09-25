@@ -321,16 +321,12 @@ describe('field routes', () => {
         it('should update field position based on index in array', async () => {
             const ctx = {
                 request: {
-                    query: {
-                        fields: {
-                            0: 'a',
-                            1: 'b',
-                            2: 'c',
-                        },
+                    body: {
+                        fields: ['a', 'b', 'c'],
                     },
                 },
                 field: {
-                    findOneAndUpdate: createSpy().andReturn(
+                    updatePosition: createSpy().andReturn(
                         Promise.resolve('update result'),
                     ),
                 },
@@ -338,20 +334,11 @@ describe('field routes', () => {
 
             await reorderField(ctx, 'id');
 
-            expect(ctx.field.findOneAndUpdate).toHaveBeenCalledWith(
-                { name: 'a' },
-                { $set: { position: 0 } },
-            );
+            expect(ctx.field.updatePosition).toHaveBeenCalledWith('a', 0);
 
-            expect(ctx.field.findOneAndUpdate).toHaveBeenCalledWith(
-                { name: 'b' },
-                { $set: { position: 1 } },
-            );
+            expect(ctx.field.updatePosition).toHaveBeenCalledWith('b', 1);
 
-            expect(ctx.field.findOneAndUpdate).toHaveBeenCalledWith(
-                { name: 'c' },
-                { $set: { position: 2 } },
-            );
+            expect(ctx.field.updatePosition).toHaveBeenCalledWith('c', 2);
 
             expect(ctx.body).toEqual([
                 'update result',
