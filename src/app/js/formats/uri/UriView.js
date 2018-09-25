@@ -5,24 +5,9 @@ import { field as fieldPropTypes } from '../../propTypes';
 import { getResourceUri } from '../../../../common/uris';
 import getLabel from '../shared/getLabel';
 
-const UriView = ({
-    className,
-    linkedResource,
-    resource,
-    field,
-    fields,
-    type,
-    value,
-}) => {
+const UriView = ({ className, resource, field, fields, type, value }) => {
     const uri = resource[field.name];
-    const label = getLabel(
-        field,
-        linkedResource,
-        resource,
-        fields,
-        type,
-        value,
-    );
+    const label = getLabel(field, resource, fields, type, value);
 
     return (
         <Link className={className} to={getResourceUri({ uri })}>
@@ -35,7 +20,6 @@ UriView.propTypes = {
     className: PropTypes.string,
     field: fieldPropTypes.isRequired,
     fields: PropTypes.arrayOf(fieldPropTypes).isRequired,
-    linkedResource: PropTypes.object,
     resource: PropTypes.object.isRequired,
     type: PropTypes.oneOf(['value', 'text', 'column']),
     value: PropTypes.string.isRequired,

@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 import { connect } from 'react-redux';
-import { change, getFormValues } from 'redux-form';
+import { getFormValues } from 'redux-form';
 
 import Step from './Step';
 import FieldFormatInput from '../FieldFormatInput';
@@ -18,42 +18,23 @@ import { fromFields } from '../../sharedSelectors';
 import FieldWidthInput from '../FieldWidthInput';
 import { COVERS, COVER_DATASET } from '../../../../common/cover';
 
-export class StepDisplayComponent extends Component {
-    componentWillReceiveProps(nextProps) {
-        if (
-            nextProps.transformers.find(t => t.operation === 'LINK') &&
-            !nextProps.format
-        ) {
-            this.props.updateField(FIELD_FORM_NAME, 'format', {
-                name: 'uri',
-                args: { type: 'value' },
-            });
-        }
-    }
-
-    render() {
-        const { cover, p: polyglot, ...props } = this.props;
-
-        return (
-            <Step label="field_wizard_step_display" {...props}>
-                <FieldDisplayInListInput />
-                <FieldDisplayInResourceInput />
-                {cover === COVER_DATASET && <FieldDisplayInGraphInput />}
-                {cover === COVER_DATASET && <FieldDisplayInHomeInput />}
-                <FieldOverviewInput />
-                <FieldFormatInput />
-                <FieldWidthInput />
-            </Step>
-        );
-    }
-}
+export const StepDisplayComponent = ({ cover, p: polyglot, ...props }) => (
+    <Step label="field_wizard_step_display" {...props}>
+        <FieldDisplayInListInput />
+        <FieldDisplayInResourceInput />
+        {cover === COVER_DATASET && <FieldDisplayInGraphInput />}
+        {cover === COVER_DATASET && <FieldDisplayInHomeInput />}
+        <FieldOverviewInput />
+        <FieldFormatInput />
+        <FieldWidthInput />
+    </Step>
+);
 
 StepDisplayComponent.propTypes = {
     transformers: PropTypes.arrayOf(PropTypes.object).isRequired,
     cover: PropTypes.oneOf(COVERS),
     format: PropTypes.object, // eslint-disable-line
     p: polyglotPropTypes.isRequired,
-    updateField: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => {
@@ -67,8 +48,6 @@ const mapStateToProps = state => {
     };
 };
 
-const mapDispatchToProps = { updateField: change };
-
-export default compose(connect(mapStateToProps, mapDispatchToProps), translate)(
+export default compose(connect(mapStateToProps), translate)(
     StepDisplayComponent,
 );

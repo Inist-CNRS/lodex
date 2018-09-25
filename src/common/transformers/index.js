@@ -3,7 +3,6 @@ import AUTOGENERATE_URI from './AUTOGENERATE_URI';
 import COLUMN from './COLUMN';
 import UPPERCASE from './UPPERCASE';
 import LOWERCASE from './LOWERCASE';
-import LINK from './LINK';
 import VALUE from './VALUE';
 import CONCAT from './CONCAT';
 import JBJ from './JBJ';
@@ -32,7 +31,6 @@ const transformers = {
     COLUMN: memoizeTransformer(COLUMN),
     UPPERCASE: memoizeTransformer(UPPERCASE),
     LOWERCASE: memoizeTransformer(LOWERCASE),
-    LINK: memoizeTransformer(LINK),
     VALUE: memoizeTransformer(VALUE),
     CONCAT: memoizeTransformer(CONCAT),
     JBJ: memoizeTransformer(JBJ),
@@ -55,6 +53,12 @@ const transformers = {
     FORMAT: memoizeTransformer(FORMAT),
     PARSE: memoizeTransformer(PARSE),
     SELECT: memoizeTransformer(SELECT),
+    LINK: () => () => {
+        console.warn(
+            'DeprecationWarning: The LINK transformer is no longer supported',
+        );
+        return '';
+    },
 };
 
 export default transformers;
@@ -62,7 +66,6 @@ export default transformers;
 const transformersMetas = [
     AUTOGENERATE_URI,
     COLUMN,
-    LINK,
     UPPERCASE,
     LOWERCASE,
     VALUE,

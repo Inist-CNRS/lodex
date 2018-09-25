@@ -1,5 +1,5 @@
 import React from 'react';
-import expect, { createSpy } from 'expect';
+import expect from 'expect';
 import { shallow } from 'enzyme';
 import UriView from '../formats/uri/UriView';
 
@@ -12,54 +12,19 @@ describe('<Format />', () => {
 
     const resource = {
         a_name: 'a_value',
-        linked: 'referenced_resource',
     };
 
-    const rawLinkedResource = {
-        versions: [resource],
-    };
-
-    const fetchLinkedResource = createSpy();
-
-    it('calls fetchLinkedResource on mount if column has a LINK transformer', () => {
-        const linkedField = {
-            name: 'linked',
-            label: 'Linked',
-            transformers: [
-                {
-                    operation: 'LINK',
-                    args: [],
-                },
-            ],
-        };
-        shallow(
-            <Format
-                field={linkedField}
-                fieldStatus={null}
-                fields={fields.concat(linkedField)}
-                resource={resource}
-                fetchLinkedResource={fetchLinkedResource}
-            />,
-        );
-
-        expect(fetchLinkedResource).toHaveBeenCalledWith('referenced_resource');
-    });
-
-    const linkedResource = { linked: true };
     const wrapper = shallow(
         <Format
             className={className}
             field={field}
             fieldStatus={null}
             fields={fields}
-            fetchLinkedResource={fetchLinkedResource}
-            linkedResource={linkedResource}
-            rawLinkedResource={rawLinkedResource}
             resource={resource}
         />,
     );
 
-    it('renders an UriView with correct props when no linkedResource is supplied', () => {
+    it('renders an UriView with correct props', () => {
         const element = wrapper.find(UriView);
 
         expect(element.props()).toEqual({
@@ -68,8 +33,6 @@ describe('<Format />', () => {
             fieldStatus: null,
             fields,
             resource,
-            linkedResource,
-            rawLinkedResource,
             shrink: false,
             facets: undefined,
             filter: undefined,

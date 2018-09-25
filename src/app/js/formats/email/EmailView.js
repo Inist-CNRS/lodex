@@ -4,23 +4,8 @@ import { Link } from 'react-router-dom';
 import { field as fieldPropTypes } from '../../propTypes';
 import getLabel from '../shared/getLabel';
 
-const EmailView = ({
-    className,
-    linkedResource,
-    resource,
-    field,
-    fields,
-    type,
-    value,
-}) => {
-    const label = getLabel(
-        field,
-        linkedResource,
-        resource,
-        fields,
-        type,
-        value,
-    );
+const EmailView = ({ className, resource, field, fields, type, value }) => {
+    const label = getLabel(field, resource, fields, type, value);
     const email = resource[field.name];
 
     return (
@@ -35,7 +20,6 @@ EmailView.propTypes = {
     field: fieldPropTypes.isRequired,
     fields: PropTypes.arrayOf(fieldPropTypes).isRequired,
     resource: PropTypes.object.isRequired,
-    linkedResource: PropTypes.object.isRequired,
     type: PropTypes.string.isRequired,
     value: PropTypes.string.isRequired,
 };

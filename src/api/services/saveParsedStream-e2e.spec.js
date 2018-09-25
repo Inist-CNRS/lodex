@@ -238,11 +238,11 @@ describe('e2e upload saveparsedStream', () => {
                 },
                 {
                     uri: 'uid:/spock',
-                    versions: [{ NAME: 'spock', STRONGER: 'uid:/rock' }],
+                    versions: [{ NAME: 'spock', STRONGER: '' }],
                 },
                 {
                     uri: 'uid:/lizard',
-                    versions: [{ NAME: 'lizard', STRONGER: 'uid:/paper' }],
+                    versions: [{ NAME: 'lizard', STRONGER: '' }],
                 },
             ]);
 
@@ -250,8 +250,9 @@ describe('e2e upload saveparsedStream', () => {
                 await ctx.publishedFacet.find({}, { _id: 0 }).toArray(),
             ).toEqual([
                 { field: 'STRONGER', value: 'uid:/scissor', count: 1 },
-                { field: 'STRONGER', value: 'uid:/paper', count: 2 },
-                { field: 'STRONGER', value: 'uid:/rock', count: 2 },
+                { field: 'STRONGER', value: 'uid:/paper', count: 1 },
+                { field: 'STRONGER', value: 'uid:/rock', count: 1 },
+                { field: 'STRONGER', value: '', count: 2 },
             ]);
         });
 
