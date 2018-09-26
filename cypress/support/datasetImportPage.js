@@ -40,8 +40,11 @@ export const addColumn = columnName => {
 };
 
 export const setUriColumnValue = (value = 'generate') => {
-    cy.get('.publication-excerpt .publication-excerpt-column-uri').click();
-    cy.get('.wizard').should('be.visible');
+    cy
+        .get('.publication-excerpt .publication-excerpt-column-uri')
+        .trigger('mouseover')
+        .click();
+    cy.get('.wizard', { timeout: 2000 }).should('be.visible');
     cy.get(`.radio_generate input[value="${value}"]`).click();
     cy.get('.btn-save').click();
     cy.get('.wizard').should('not.exist');

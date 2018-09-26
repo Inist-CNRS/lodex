@@ -9,6 +9,7 @@ import {
 import { PUBLISH } from '../publish';
 import fetchSaga from '../../lib/sagas/fetchSaga';
 import { fromUser } from '../../sharedSelectors';
+import { PENDING } from '../../../../common/progressStatus';
 
 const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
 
@@ -23,7 +24,7 @@ export function* handleStartProgressSaga() {
 
     yield put(updateProgress(response));
 
-    if (response.status === 'pending') {
+    if (response.status === PENDING) {
         return;
     }
     yield put(loadProgress());

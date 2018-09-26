@@ -24,7 +24,7 @@ export class Progress extends Component {
                 modal={false}
                 open={status !== PENDING}
             >
-                <div>
+                <div className="progress">
                     <p>{polyglot.t(status)}</p>
                     <LinearProgress
                         mode="determinate"
