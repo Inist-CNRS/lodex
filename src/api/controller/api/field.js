@@ -134,42 +134,49 @@ export const reorderField = async ctx => {
 
     const fieldsData = await Promise.all(fields.map(ctx.field.findOneByName));
 
-    const cover = fieldsData.reduce((prev, { cover }) => {
-        if (!prev) {
-            return cover;
-        }
+    try {
+        const cover = fieldsData.reduce((prev, { cover }) => {
+            if (!prev) {
+                return cover;
+            }
 
-        if (prev === COVER_DATASET) {
-            if (cover === COVER_DATASET) {
-                return prev;
+            if (prev === COVER_DATASET) {
+                if (cover === COVER_DATASET) {
+                    return prev;
+                }
+
+                throw new Error(
+                    'Bad cover: trying to mix characteristic with other fields',
+                );
+            }
+
+            if (cover === COVER_COLLECTION || cover === COVER_DOCUMENT) {
+                return COVER_COLLECTION;
             }
 
             throw new Error(
-                'Bad cover: tryng to mix characteristic with other field',
+                'Bad cover: trying to mix characteristic with other fields',
             );
+        }, null);
+
+        if (cover === COVER_COLLECTION) {
+            if (fieldsData[0].name !== 'uri') {
+                throw new Error('Uri must always be the first field');
+            }
         }
 
-        if (cover === COVER_COLLECTION || cover === COVER_DOCUMENT) {
-            return COVER_COLLECTION;
-        }
-
-        throw new Error(
-            'Bad cover: tryng to mix characteristic with other field',
+        ctx.body = await Promise.all(
+            fields.map((name, position) =>
+                ctx.field.updatePosition(name, position),
+            ),
         );
-    }, null);
-
-    if (cover === COVER_COLLECTION) {
-        if (fieldsData[0].name !== 'uri') {
-            throw new Error('Uri must always be the first field');
-        }
+        ctx.status = 200;
+    } catch (error) {
+        ctx.status = 400;
+        ctx.body = {
+            error: error.message,
+        };
     }
-
-    ctx.body = await Promise.all(
-        fields.map((name, position) =>
-            ctx.field.updatePosition(name, position),
-        ),
-    );
-    ctx.status = 200;
 };
 
 const app = new Koa();

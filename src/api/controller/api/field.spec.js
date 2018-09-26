@@ -407,14 +407,11 @@ describe('field routes', () => {
                 },
             };
 
-            const error = await reorderField(ctx, 'id')
-                .then(() => {
-                    throw new Error('Reorderfield should have throw an error');
-                })
-                .catch(e => e);
+            await reorderField(ctx, 'id');
 
-            expect(error.message).toBe(
-                'Bad cover: tryng to mix characteristic with other field',
+            expect(ctx.status).toBe(400);
+            expect(ctx.body.error).toBe(
+                'Bad cover: trying to mix characteristic with other fields',
             );
 
             expect(ctx.field.updatePosition).toNotHaveBeenCalled();
@@ -442,13 +439,10 @@ describe('field routes', () => {
                 },
             };
 
-            const error = await reorderField(ctx, 'id')
-                .then(() => {
-                    throw new Error('Reorderfield should have throw an error');
-                })
-                .catch(e => e);
+            await reorderField(ctx, 'id');
 
-            expect(error.message).toBe('Uri must always be the first field');
+            expect(ctx.status).toBe(400);
+            expect(ctx.body.error).toBe('Uri must always be the first field');
 
             expect(ctx.field.updatePosition).toNotHaveBeenCalled();
         });

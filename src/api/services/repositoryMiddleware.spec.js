@@ -1,5 +1,5 @@
 import expect, { createSpy } from 'expect';
-import { mongoClientFactory } from './mongoMiddleware';
+import { mongoClientFactory } from './repositoryMiddleware';
 
 describe('mongoClient middleware', () => {
     it('it should add db and collections to ctx', async () => {

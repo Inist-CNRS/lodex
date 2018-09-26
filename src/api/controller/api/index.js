@@ -6,7 +6,7 @@ import { auth } from 'config';
 import get from 'lodash.get';
 
 import ezMasterConfig from '../../services/ezMasterConfig';
-import mongoMiddleware from '../../services/mongoMiddleware';
+import repositoryMiddleware from '../../services/repositoryMiddleware';
 import characteristic from './characteristic';
 import exportPublishedDataset from './export';
 import facet from './facet';
@@ -24,7 +24,7 @@ import run from './run';
 const app = new Koa();
 
 app.use(ezMasterConfig);
-app.use(mongoMiddleware);
+app.use(repositoryMiddleware);
 
 app.use(mount('/login', login));
 
