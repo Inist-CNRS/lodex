@@ -31,8 +31,12 @@ const styles = {
 
 class OntologyTable extends Component {
     handleSortEnd = ({ oldIndex, newIndex }) => {
-        const { handleChangePosition } = this.props;
-        handleChangePosition({ newPosition: newIndex, oldPosition: oldIndex });
+        const { handleChangePosition, title } = this.props;
+        handleChangePosition({
+            newPosition: newIndex,
+            oldPosition: oldIndex,
+            type: title,
+        });
     };
 
     render() {

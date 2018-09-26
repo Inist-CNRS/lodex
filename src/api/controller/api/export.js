@@ -62,15 +62,11 @@ export async function exportFileMiddleware(
         ctx.request.query,
     );
 
-    exportStream.on('end', () => {
-        ctx.db.close();
-    });
     exportStream.on('error', error => {
         global.console.error(
             `Error while exporting published dataset into ${type}`,
             error,
         );
-        ctx.db.close();
     });
 
     ctx.set(

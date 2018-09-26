@@ -9,9 +9,15 @@ import {
     postField,
     putField,
     removeField,
+    reorderField,
 } from './field';
 import publishFacets from './publishFacets';
 import { validateField } from '../../models/field';
+import {
+    COVER_DATASET,
+    COVER_COLLECTION,
+    COVER_DOCUMENT,
+} from '../../../common/cover';
 
 describe('field routes', () => {
     describe('setup', () => {
@@ -242,33 +248,57 @@ describe('field routes', () => {
     describe('putField', () => {
         const ctx = {
             request: {
-                body: 'updated field data',
+                body: {
+                    overview: 200,
+                },
             },
             field: {
                 updateOneById: createSpy().andReturn(
                     Promise.resolve('update result'),
                 ),
-                findAll: createSpy().andReturn(
-                    Promise.resolve(['update result']),
-                ),
+                findOneAndUpdate: createSpy(),
             },
             publishFacets: createSpy(),
         };
 
-        it('should validateField and then update field', async () => {
+        beforeEach(() => {
+            ctx.field.updateOneById.reset();
+            ctx.field.findOneAndUpdate.reset();
+            ctx.publishFacets.reset();
+        });
+
+        it('should remove overview form other field with same overview, if overview is set', async () => {
             await putField(ctx, 'id');
-            expect(ctx.field.updateOneById).toHaveBeenCalledWith(
-                'id',
-                'updated field data',
+            expect(ctx.field.findOneAndUpdate).toHaveBeenCalledWith(
+                { overview: 200 },
+                { $unset: { overview: '' } },
             );
             expect(ctx.body).toInclude(['update result']);
         });
 
-        it('gets the current fields', () => {
-            expect(ctx.field.findAll).toHaveBeenCalled();
+        it('should not remove overview form other field with same overview, if overview is not set', async () => {
+            await putField(
+                {
+                    ...ctx,
+                    request: {
+                        body: {},
+                    },
+                },
+                'id',
+            );
+            expect(ctx.field.findOneAndUpdate).toNotHaveBeenCalled();
         });
 
-        it('update the published facets', () => {
+        it('should validateField and then update field', async () => {
+            await putField(ctx, 'id');
+            expect(ctx.field.updateOneById).toHaveBeenCalledWith('id', {
+                overview: 200,
+            });
+            expect(ctx.body).toInclude(['update result']);
+        });
+
+        it('update the published facets', async () => {
+            await putField(ctx, 'id');
             expect(ctx.publishFacets).toHaveBeenCalled();
         });
     });
@@ -289,6 +319,124 @@ describe('field routes', () => {
             await removeField(ctx, 'id');
             expect(ctx.field.removeById).toHaveBeenCalledWith('id');
             expect(ctx.body).toBe('deletion result');
+        });
+    });
+
+    describe('reorderField', () => {
+        it('should update field position based on index in array when all cover are dataset', async () => {
+            const fieldsByName = {
+                a: { cover: COVER_DATASET },
+                b: { cover: COVER_DATASET },
+                c: { cover: COVER_DATASET },
+            };
+            const ctx = {
+                request: {
+                    body: {
+                        fields: ['a', 'b', 'c'],
+                    },
+                },
+                field: {
+                    updatePosition: createSpy().andCall(name =>
+                        Promise.resolve(`updated ${name}`),
+                    ),
+                    findByNames: createSpy().andReturn(fieldsByName),
+                },
+            };
+
+            await reorderField(ctx, 'id');
+
+            expect(ctx.field.updatePosition).toHaveBeenCalledWith('a', 0);
+            expect(ctx.field.updatePosition).toHaveBeenCalledWith('b', 1);
+            expect(ctx.field.updatePosition).toHaveBeenCalledWith('c', 2);
+
+            expect(ctx.body).toEqual(['updated a', 'updated b', 'updated c']);
+        });
+
+        it('should update field position based on index in array when all cover are collection or document and first one is uri', async () => {
+            const fieldsByName = {
+                a: { cover: COVER_COLLECTION, name: 'uri' },
+                b: { cover: COVER_DOCUMENT },
+                c: { cover: COVER_COLLECTION },
+            };
+            const ctx = {
+                request: {
+                    body: {
+                        fields: ['a', 'b', 'c'],
+                    },
+                },
+                field: {
+                    updatePosition: createSpy().andCall(name =>
+                        Promise.resolve(`updated ${name}`),
+                    ),
+                    findByNames: createSpy().andReturn(fieldsByName),
+                },
+            };
+
+            await reorderField(ctx, 'id');
+
+            expect(ctx.field.updatePosition).toHaveBeenCalledWith('a', 0);
+            expect(ctx.field.updatePosition).toHaveBeenCalledWith('b', 1);
+            expect(ctx.field.updatePosition).toHaveBeenCalledWith('c', 2);
+
+            expect(ctx.body).toEqual(['updated a', 'updated b', 'updated c']);
+        });
+
+        it('should throw an error if dataset is mixed with other cover', async () => {
+            const fieldsByName = {
+                a: { cover: COVER_DATASET },
+                b: { cover: COVER_DOCUMENT },
+                c: { cover: COVER_COLLECTION },
+            };
+            const ctx = {
+                request: {
+                    body: {
+                        fields: ['a', 'b', 'c'],
+                    },
+                },
+                field: {
+                    updatePosition: createSpy().andReturn(
+                        Promise.resolve(`updated field`),
+                    ),
+                    findByNames: createSpy().andReturn(fieldsByName),
+                },
+            };
+
+            await reorderField(ctx, 'id');
+
+            expect(ctx.status).toBe(400);
+            expect(ctx.body.error).toBe(
+                'Bad cover: trying to mix characteristic with other fields',
+            );
+
+            expect(ctx.field.updatePosition).toNotHaveBeenCalled();
+        });
+
+        it('should throw an error if cover is not dataset and first field is not uri', async () => {
+            const fieldsByName = {
+                a: { cover: COVER_COLLECTION, name: 'a' },
+                b: { cover: COVER_DOCUMENT, name: 'uri' },
+                c: { cover: COVER_COLLECTION, name: 'c' },
+            };
+            const ctx = {
+                request: {
+                    body: {
+                        fields: ['a', 'b', 'c'],
+                    },
+                },
+                field: {
+                    updatePosition: createSpy().andReturn(
+                        Promise.resolve(`updated field`),
+                    ),
+                    findByNames: createSpy().andReturn(fieldsByName),
+                },
+            };
+
+            await reorderField(ctx, 'id');
+
+            expect(ctx.status).toBe(400);
+            expect(ctx.body.error).toBe('Uri must always be the first field');
+
+            expect(ctx.field.updatePosition).toNotHaveBeenCalled();
         });
     });
 });

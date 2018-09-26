@@ -334,6 +334,15 @@ export const getExportPublishedDatasetRequest = (
         url: `/api/export/${type}?${queryString}`,
     });
 
+export const getReorderFieldRequest = (state, fields) =>
+    getRequest(state, {
+        method: 'PUT',
+        url: '/api/field/reorder',
+        body: {
+            fields: fields.map(({ name }) => name),
+        },
+    });
+
 export const selectors = {
     isAdmin,
     getToken,
@@ -373,4 +382,5 @@ export const selectors = {
     getUrlRequest,
     getExportPublishedDatasetRequest,
     getSparqlRequest,
+    getReorderFieldRequest,
 };

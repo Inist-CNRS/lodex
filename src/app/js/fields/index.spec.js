@@ -20,6 +20,7 @@ import reducer, {
     closeEditFieldValue,
     addCharacteristicSuccess,
     fieldInvalid,
+    changePositionValue,
 } from './';
 
 import { addFieldToResourceSuccess } from '../public/resource';
@@ -389,6 +390,34 @@ describe('field reducer', () => {
                 isSaving: false,
                 invalidProperties: 'invalid properties',
             });
+        });
+    });
+
+    describe('CHANGE_POSITION_VALUE', () => {
+        const state = reducer(
+            {
+                foo: 'bar',
+                byName: {
+                    a: { position: 1 },
+                    b: { position: 2 },
+                    c: { position: 3 },
+                },
+            },
+            changePositionValue({
+                fields: [
+                    { name: 'a', position: 2 },
+                    { name: 'b', position: 1 },
+                ],
+            }),
+        );
+
+        expect(state).toEqual({
+            foo: 'bar',
+            byName: {
+                a: { position: 2 },
+                b: { position: 1 },
+                c: { position: 3 },
+            },
         });
     });
 });

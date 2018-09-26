@@ -7,6 +7,9 @@ import koaQs from 'koa-qs';
 import logger from './services/logger';
 import controller from './controller';
 import testController from './controller/test';
+import mongoClient from './services/mongoClient';
+
+mongoClient();
 
 const app = koaQs(new Koa());
 

@@ -86,10 +86,12 @@ describe('fields saga changePosition', () => {
 
         it('should reorder the fields positions and send it to the api', () => {
             const it = handleChangePosition({
-                payload: { oldPosition, newPosition },
+                payload: { oldPosition, newPosition, type: 'dataset' },
             });
 
-            expect(it.next().value).toEqual(select(fromFields.getFields));
+            expect(it.next().value).toEqual(
+                select(fromFields.getOntologyFields, 'dataset'),
+            );
             expect(it.next(fields).value).toEqual(
                 call(movePosition, fields, oldPosition, newPosition),
             );
@@ -97,24 +99,27 @@ describe('fields saga changePosition', () => {
                 put(changePositionValue({ fields: expectedOutput })),
             );
 
-            expectedOutput.forEach(field => {
-                expect(it.next({}).value).toEqual(
-                    select(fromUser.getUpdateFieldRequest, field),
-                );
-                expect(it.next(`request${field.position}`).value).toEqual(
-                    call(fetchSaga, `request${field.position}`),
-                );
-            });
+            expect(it.next().value).toEqual(
+                select(fromUser.getReorderFieldRequest, expectedOutput),
+            );
 
-            expect(it.next({}).done).toBe(true);
+            expect(it.next('request').value).toEqual(
+                call(fetchSaga, 'request'),
+            );
+            expect(it.next({ response: 'response' }).value).toEqual(
+                put(changePositionValue({ fields: 'response' })),
+            );
+            expect(it.next().done).toBe(true);
         });
 
         it('should rollback if the api update fail', () => {
             const it = handleChangePosition({
-                payload: { oldPosition, newPosition },
+                payload: { oldPosition, newPosition, type: 'dataset' },
             });
 
-            expect(it.next().value).toEqual(select(fromFields.getFields));
+            expect(it.next().value).toEqual(
+                select(fromFields.getOntologyFields, 'dataset'),
+            );
             expect(it.next(fields).value).toEqual(
                 call(movePosition, fields, oldPosition, newPosition),
             );
@@ -122,20 +127,17 @@ describe('fields saga changePosition', () => {
                 put(changePositionValue({ fields: expectedOutput })),
             );
 
-            expect(it.next({}).value).toEqual(
-                select(fromUser.getUpdateFieldRequest, expectedOutput[0]),
+            expect(it.next().value).toEqual(
+                select(fromUser.getReorderFieldRequest, expectedOutput),
             );
+
             expect(it.next('request').value).toEqual(
                 call(fetchSaga, 'request'),
             );
-
             expect(it.next({ error: 'error' }).value).toEqual(
-                put(
-                    changePositionValue({
-                        fields: [{ name: 'field1', position: 0 }],
-                    }),
-                ),
+                put(changePositionValue({ fields })),
             );
+            expect(it.next().done).toBe(true);
         });
     });
 });

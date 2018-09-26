@@ -1,10 +1,11 @@
-import { MongoClient } from 'mongodb';
 import ezs from 'ezs';
 import hasher from 'node-object-hash';
 import config from 'config';
+
 import publishedDataset from '../models/publishedDataset';
 import field from '../models/field';
 import getPublishedDatasetFilter from '../models/getPublishedDatasetFilter';
+import mongoClient from '../services/mongoClient';
 
 const hashCoerce = hasher({
     sort: false,
@@ -17,14 +18,12 @@ const cacheOptions = {
 };
 const cache = ezs.createCache(cacheOptions);
 
-export const createFunction = MongoClientImpl =>
+export const createFunction = mongoClientImpl =>
     async function LodexDocuments(data, feed) {
         if (this.isLast()) {
             return feed.close();
         }
-        const handleDb = await MongoClientImpl.connect(
-            `mongodb://${config.mongo.host}/${config.mongo.dbName}`,
-        );
+        const handleDb = await mongoClientImpl();
         const { query } = data;
         const fieldHandle = await field(handleDb);
         const searchableFieldNames = await fieldHandle.findSearchableNames();
@@ -89,10 +88,9 @@ export const createFunction = MongoClientImpl =>
                     } else {
                         feed.close();
                         output.close();
-                        handleDb.close();
                     }
                 }),
             );
     };
 
-export default createFunction(MongoClient);
+export default createFunction(mongoClient);

@@ -1,20 +1,18 @@
-import { MongoClient } from 'mongodb';
-import config from 'config';
 import set from 'lodash.set';
+
 import field from '../models/field';
 import { getHost, getCleanHost } from '../../common/uris';
 import publishedCharacteristic from '../models/publishedCharacteristic';
+import mongoClient from '../services/mongoClient';
 
-export const LodexContext = MongoClientImpl =>
+export const LodexContext = mongoClientImpl =>
     async function LodexContextImpl(data, feed) {
         if (this.isLast()) {
             feed.close();
             return;
         }
         const target = this.getParam('target');
-        const handleDb = await MongoClientImpl.connect(
-            `mongodb://${config.mongo.host}/${config.mongo.dbName}`,
-        );
+        const handleDb = await mongoClientImpl();
         const handleField = await field(handleDb);
         const handlePublishedCharacteristic = await publishedCharacteristic(
             handleDb,
@@ -28,7 +26,6 @@ export const LodexContext = MongoClientImpl =>
             cleanHost: getCleanHost(),
         });
         feed.send(data);
-        await handleDb.close();
     };
 
-export default LodexContext(MongoClient);
+export default LodexContext(mongoClient);

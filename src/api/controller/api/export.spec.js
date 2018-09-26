@@ -21,9 +21,6 @@ describe('export routes', () => {
         const mongoStream = { mongoStream: true };
 
         const ctx = {
-            db: {
-                close: createSpy(),
-            },
             request: {
                 query: {},
             },
@@ -94,14 +91,8 @@ describe('export routes', () => {
             expect(ctx.body).toEqual(resultStream);
         });
 
-        it('it should close the db when resultStream emits an `end` event', () => {
-            resultStream.emit('end');
-            expect(ctx.db.close).toHaveBeenCalled();
-        });
-
         it('it should close the db when resultStream emits an `error` event', () => {
             resultStream.emit('error');
-            expect(ctx.db.close).toHaveBeenCalled();
         });
     });
 });

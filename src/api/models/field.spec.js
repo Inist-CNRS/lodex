@@ -30,6 +30,9 @@ describe('field', () => {
                         }),
                     }),
                 }),
+                findOneAndUpdate: createSpy().andReturn(
+                    Promise.resolve({ value: 'result' }),
+                ),
             };
 
             db = {
@@ -40,6 +43,7 @@ describe('field', () => {
 
             fieldCollection.insertOne.reset();
             fieldCollection.findOne.reset();
+            fieldCollection.findOneAndUpdate.reset();
         });
 
         it('should call db.collection with `field`', () => {
@@ -309,6 +313,55 @@ describe('field', () => {
                     {},
                     { position: 1 },
                 );
+            });
+        });
+
+        describe('updatePosition', () => {
+            it('should call findOneAndUpdate with to update position of named field', async () => {
+                expect(await field.updatePosition('name', 'position')).toBe(
+                    'result',
+                );
+                expect(fieldCollection.findOneAndUpdate).toHaveBeenCalledWith(
+                    {
+                        name: 'name',
+                    },
+                    {
+                        $set: { position: 'position' },
+                    },
+                    {
+                        returnOriginal: false,
+                    },
+                );
+            });
+        });
+
+        describe('findByNames', () => {
+            it('should call find all field with names and make a name dictionary', async () => {
+                fieldCollection = {
+                    createIndex: createSpy(),
+                    find: createSpy().andReturn({
+                        toArray: () => [
+                            { name: 'a' },
+                            { name: 'b' },
+                            { name: 'c' },
+                        ],
+                    }),
+                };
+
+                db = {
+                    collection: createSpy().andReturn(fieldCollection),
+                };
+
+                field = await fieldFactory(db);
+                expect(await field.findByNames(['b', 'a', 'c'])).toEqual({
+                    a: { name: 'a' },
+                    b: { name: 'b' },
+                    c: { name: 'c' },
+                });
+
+                expect(fieldCollection.find).toHaveBeenCalledWith({
+                    name: { $in: ['b', 'a', 'c'] },
+                });
             });
         });
     });
