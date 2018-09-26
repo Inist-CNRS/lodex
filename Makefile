@@ -62,7 +62,34 @@ test-frontend-unit: ## Run the frontend application unit tests
 test-frontend-unit-watch: ## Watch the frontend application unit tests
 	NODE_ENV=test docker-compose run --rm node npm run test:app:watch
 
-test: test-frontend-unit test-api-unit
+test-e2e-start-dockers:
+ifeq "$(CI)" "true"
+	docker-compose -f docker-compose.test.yml up -d --build
+else
+	docker-compose -f docker-compose.test.yml up -d
+endif
+
+test-e2e-logs:
+	docker-compose -f docker-compose.test.yml logs
+
+test-e2e-stop-dockers:
+	docker-compose -f docker-compose.test.yml down
+
+test-e2e-open-cypress:
+	./node_modules/.bin/cypress open
+
+test-e2e:
+ifeq "$(DISABLE_E2E_TESTS)" "true"
+	echo "E2E tests were disable because of the flag 'DISABLE_E2E_TESTS=true'"
+else
+	$(MAKE) test-e2e-start-dockers
+	./node_modules/.bin/cypress install
+	./bin/wait-for -t 60 localhost:3000 -- ./node_modules/.bin/cypress run
+	$(MAKE) test-e2e-stop-dockers
+endif
+
+
+test: test-frontend-unit test-api-unit test-e2e
 
 clear-database: ## Clear the whole database
 	docker-compose exec mongo mongo lodex --eval " \

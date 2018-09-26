@@ -25,7 +25,10 @@ export const ParsingExcerptAddColumnComponent = ({
     atTop,
 }) => (
     <RaisedButton
-        className={`btn-excerpt-add-column btn-excerpt-add-column-${name}`}
+        className={`btn-excerpt-add-column btn-excerpt-add-column-${name.replace(
+            ' ',
+            '-',
+        )}`}
         label={polyglot.t('add_to_publication')}
         onClick={handleAddColumn}
         primary

@@ -39,10 +39,10 @@ To see what Lodex can do, check out
 
 - Data and Model ready to use : https://github.com/Inist-CNRS/lodex-use-cases
 - Videos : https://www.youtube.com/channel/UCXJjwCr-sfTZsFomFejEkEw/videos
-- Real life example : 
+- Real life example :
   - https://data.istex.fr/
 - Démo :
-  - http://lodex-cop21.dpi.inist.fr/ 
+  - http://lodex-cop21.dpi.inist.fr/
   - http://lodex-istex.dpi.inist.fr/
 - user documentation : https://lodex.gitbooks.io/lodex-user-documentation/
 - actuality & news : http://lodex.inist.fr/
@@ -50,6 +50,30 @@ To see what Lodex can do, check out
 - Contribute (for developer) : https://github.com/Inist-CNRS/lodex/wiki
 - Contact email: contact@listes.lodex.fr
 - Mailing list about LODEX usage: users@listes.lodex.fr (subscribe on [listes.lodex.fr](https://listes.lodex.fr/sympa/info/users))
+
+## Testing
+
+Lodex is well tested through numerous **unit tests** and some **E2E tests** to ensure the most common scenarios.
+
+_prerequisites_: Have installed the dependencies, see the [Install](#install) part of this README.
+
+```bash
+make test-frontend-unit
+make test-api-unit
+make test-e2e
+
+make test # Run all of the above tests
+```
+
+Be aware that the E2E tests (`make test-e2e`) can take several minutes to run. It requires to have a fresh production build.
+
+For some reasons, if you want to temporaly disable E2E tests, you can launch them with the following environment variable:
+
+```bash
+DISABLE_E2E_TESTS=true make test
+```
+
+You can also [define this environment variable on Travis](https://docs.travis-ci.com/user/environment-variables/), for a specific build or the whole project.
 
 ## Licence
 
