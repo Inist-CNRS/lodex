@@ -21,10 +21,6 @@ export const importDataset = (
     cy.get('tbody').should('have.text', expectedData.join(''));
 };
 
-const waitForModalToFadeOut = () => {
-    cy.wait(500);
-};
-
 export const addColumn = columnName => {
     const name = columnName.replace(' ', '-');
     cy.get('.btn-add-column button').click();
@@ -40,14 +36,14 @@ export const addColumn = columnName => {
         )
         .click();
     cy.get('.btn-save').click();
-    waitForModalToFadeOut();
+    cy.get('.wizard').should('not.exist');
 };
 
 export const setUriColumnValue = (value = 'generate') => {
     cy.get('.publication-excerpt .publication-excerpt-column-uri').click();
     cy.get(`.radio_generate input[value="${value}"]`).click();
     cy.get('.btn-save').click();
-    waitForModalToFadeOut();
+    cy.get('.wizard').should('not.exist');
 };
 
 export const publish = () => {

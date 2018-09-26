@@ -186,6 +186,7 @@ class FieldEditionWizardComponent extends Component {
                 contentStyle={styles.modal}
                 autoScrollBodyContent
                 repositionOnUpdate={false}
+                className="wizard"
             >
                 {field && (
                     <div style={styles.container}>

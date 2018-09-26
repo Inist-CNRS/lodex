@@ -32,9 +32,8 @@ describe('Dataset Import Page', () => {
             datasetImportPage.importDataset('dataset/simple.csv');
             datasetImportPage.addColumn('Column 1');
 
-            cy
-                .get('.publication-excerpt tbody')
-                .should('have.text', ['Row 1', 'Row 2', 'Remove'].join(''));
+            cy.contains('Row 1').should('be.visible');
+            cy.contains('Row 2').should('be.visible');
 
             datasetImportPage.setUriColumnValue();
             datasetImportPage.publish();
