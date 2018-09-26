@@ -1,11 +1,11 @@
 import koa from 'koa';
 import route from 'koa-route';
 
-import mongoClient from '../services/mongoClient';
+import repositoryMiddleware from '../services/repositoryMiddleware';
 
 const app = new koa();
 
-app.use(mongoClient);
+app.use(repositoryMiddleware);
 
 app.use(
     route.delete('/fixtures', async ctx => {
