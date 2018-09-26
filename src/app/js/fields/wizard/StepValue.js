@@ -11,14 +11,12 @@ import { getTransformerMetas } from '../../../../common/transformers';
 
 import StepValueValue from './StepValueValue';
 import StepValueColumn from './StepValueColumn';
-import StepValueLink from './StepValueLink';
 import StepValueConcat from './StepValueConcat';
 
 export const StepValueComponent = ({ field, handleChange, ...props }) => (
     <Step label="field_wizard_step_value" {...props}>
         <StepValueValue field={field} onChange={handleChange} />
         <StepValueColumn field={field} onChange={handleChange} />
-        <StepValueLink field={field} onChange={handleChange} />
         <StepValueConcat field={field} onChange={handleChange} />
     </Step>
 );

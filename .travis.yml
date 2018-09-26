@@ -16,6 +16,7 @@ dist: trusty
 cache:
     directories:
         - node_modules
+        - ~/.cache/Cypress
 
 install:
     - "make install"
