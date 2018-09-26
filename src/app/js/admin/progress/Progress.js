@@ -19,13 +19,12 @@ export class Progress extends Component {
         const { status, target, progress, p: polyglot } = this.props;
         return (
             <Dialog
-                title="progress"
+                title={polyglot.t(status)}
                 actions={[]}
                 modal={false}
                 open={status !== PENDING}
             >
                 <div className="progress">
-                    <p>{polyglot.t(status)}</p>
                     <LinearProgress
                         mode="determinate"
                         min={0}
