@@ -1,8 +1,8 @@
 import { createAction, handleActions } from 'redux-actions';
 import { PENDING, STARTING } from '../../../../common/progressStatus';
+import { PUBLISH } from '../publish';
 
 export const UPDATE_PROGRESS = 'UPDATE_PROGRESS';
-export const START_PROGRESS = 'START_PROGRESS';
 export const ERROR_PROGRESS = 'ERROR_PROGRESS';
 export const LOAD_PROGRESS = 'LOAD_PROGRESS';
 
@@ -27,10 +27,12 @@ export default handleActions(
             status,
             progress,
             target,
+            error: undefined,
         }),
-        [START_PROGRESS]: state => ({
+        [PUBLISH]: state => ({
             ...state,
             status: STARTING,
+            error: undefined,
         }),
         [ERROR_PROGRESS]: (state, { payload: { error } }) => ({
             ...state,
