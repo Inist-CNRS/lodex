@@ -334,6 +334,36 @@ describe('field', () => {
                 );
             });
         });
+
+        describe('findByNames', () => {
+            it('should call find all field with names and make a name dictionary', async () => {
+                fieldCollection = {
+                    createIndex: createSpy(),
+                    find: createSpy().andReturn({
+                        toArray: () => [
+                            { name: 'a' },
+                            { name: 'b' },
+                            { name: 'c' },
+                        ],
+                    }),
+                };
+
+                db = {
+                    collection: createSpy().andReturn(fieldCollection),
+                };
+
+                field = await fieldFactory(db);
+                expect(await field.findByNames(['b', 'a', 'c'])).toEqual({
+                    a: { name: 'a' },
+                    b: { name: 'b' },
+                    c: { name: 'c' },
+                });
+
+                expect(fieldCollection.find).toHaveBeenCalledWith({
+                    name: { $in: ['b', 'a', 'c'] },
+                });
+            });
+        });
     });
 
     describe('validateField', () => {

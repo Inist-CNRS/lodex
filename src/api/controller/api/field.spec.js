@@ -339,9 +339,7 @@ describe('field routes', () => {
                     updatePosition: createSpy().andCall(name =>
                         Promise.resolve(`updated ${name}`),
                     ),
-                    findOneByName: createSpy().andCall(
-                        name => fieldsByName[name],
-                    ),
+                    findByNames: createSpy().andReturn(fieldsByName),
                 },
             };
 
@@ -370,9 +368,7 @@ describe('field routes', () => {
                     updatePosition: createSpy().andCall(name =>
                         Promise.resolve(`updated ${name}`),
                     ),
-                    findOneByName: createSpy().andCall(
-                        name => fieldsByName[name],
-                    ),
+                    findByNames: createSpy().andReturn(fieldsByName),
                 },
             };
 
@@ -401,9 +397,7 @@ describe('field routes', () => {
                     updatePosition: createSpy().andReturn(
                         Promise.resolve(`updated field`),
                     ),
-                    findOneByName: createSpy().andCall(
-                        name => fieldsByName[name],
-                    ),
+                    findByNames: createSpy().andReturn(fieldsByName),
                 },
             };
 
@@ -433,9 +427,7 @@ describe('field routes', () => {
                     updatePosition: createSpy().andReturn(
                         Promise.resolve(`updated field`),
                     ),
-                    findOneByName: createSpy().andCall(
-                        name => fieldsByName[name],
-                    ),
+                    findByNames: createSpy().andReturn(fieldsByName),
                 },
             };
 

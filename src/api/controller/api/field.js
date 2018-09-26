@@ -132,7 +132,9 @@ export const importFields = getUploadedFieldsImpl => async ctx => {
 export const reorderField = async ctx => {
     const { fields } = ctx.request.body;
 
-    const fieldsData = await Promise.all(fields.map(ctx.field.findOneByName));
+    const fieldsDict = await ctx.field.findByNames(fields);
+
+    const fieldsData = fields.map(name => fieldsDict[name]);
 
     try {
         const cover = fieldsData.reduce((prev, { cover }) => {
