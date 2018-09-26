@@ -6,11 +6,11 @@ export const publishCharacteristicsFactory = ({ getDocumentTransformer }) =>
             return;
         }
         const getPublishedCharacteristics = getDocumentTransformer(
-            ctx.uriDataset.findBy,
+            ctx.dataset.findBy,
             datasetCoverFields,
         );
 
-        const [lastResource] = await ctx.uriDataset.findLimitFromSkip(
+        const [lastResource] = await ctx.dataset.findLimitFromSkip(
             1,
             count - 1,
         );

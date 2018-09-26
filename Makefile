@@ -96,7 +96,6 @@ clear-database: ## Clear the whole database
 		db.publishedDataset.remove({}); \
 		db.publishedCharacteristic.remove({}); \
 		db.field.remove({}); \
-		db.uriDataset.remove({}); \
 		db.dataset.remove({}); \
 	"
 clear-publication: ## Clear the published data, keep uploaded dataset and model
@@ -104,5 +103,4 @@ clear-publication: ## Clear the published data, keep uploaded dataset and model
 		db.publishedDataset.remove({}); \
 		db.publishedCharacteristic.remove({}); \
 		db.publishedFacet.remove({}); \
-		db.uriDataset.remove({}); \
 	"

@@ -21,10 +21,10 @@ describe('publishDocuments', () => {
             findAll: createSpy().andReturn(fields),
         },
         uriDataset: {
-            insertBatch: 'uriDataset.insertBatch()',
-            findLimitFromSkip: 'uriDataset.findLimitFromSkip()',
+            insertBatch: 'dataset.insertBatch()',
+            findLimitFromSkip: 'dataset.findLimitFromSkip()',
             count: createSpy().andReturn('count'),
-            findBy: 'uriDataset.findBy()',
+            findBy: 'dataset.findBy()',
         },
         publishedDataset: {
             insertBatch: 'publishedDataset.insertBatch()',
@@ -32,7 +32,6 @@ describe('publishDocuments', () => {
     };
 
     const getDocumentTransformer = createSpy().andReturn('transformDocument()');
-    const getAddUriTransformer = createSpy().andReturn('addUriToDocument()');
     const transformAllDocuments = createSpy();
 
     const getVersionInitializerMock = createSpy().andReturn(
@@ -43,31 +42,23 @@ describe('publishDocuments', () => {
         await publishDocumentsFactory({
             getVersionInitializer: getVersionInitializerMock,
             getDocumentTransformer,
-            getAddUriTransformer,
             transformAllDocuments,
         })(ctx, 'count', fields);
-    });
-
-    it('should call getAddUriTransformer to get the uri transformers', () => {
-        expect(getAddUriTransformer).toHaveBeenCalledWith('dataset.findBy()', {
-            name: 'uri',
-            cover: 'collection',
-        });
     });
 
     it('should call ctx.transformAllDocuments', () => {
         expect(transformAllDocuments).toHaveBeenCalledWith(
             'count',
             'dataset.findLimitFromSkip()',
-            'uriDataset.insertBatch()',
-            'addUriToDocument()',
+            'publishedDataset.insertBatch()',
+            'initializeVersion()',
         );
     });
 
     it('should call getDocumentTransformer with all other fields', () => {
         expect(getDocumentTransformer).toHaveBeenCalledWith(
-            'uriDataset.findBy()',
-            [fields[1]],
+            'dataset.findBy()',
+            [fields[0], fields[1]],
         );
     });
 
@@ -80,7 +71,7 @@ describe('publishDocuments', () => {
     it('should call ctx.transformAllDocuments', () => {
         expect(transformAllDocuments).toHaveBeenCalledWith(
             'count',
-            'uriDataset.findLimitFromSkip()',
+            'dataset.findLimitFromSkip()',
             'publishedDataset.insertBatch()',
             'initializeVersion()',
         );
@@ -88,7 +79,10 @@ describe('publishDocuments', () => {
 
     describe('getVersionInitializer', () => {
         it('should add doc.uri to transform result and move other keys as first version', async () => {
-            const transform = createSpy().andReturn({ transformed: 'data' });
+            const transform = createSpy().andReturn({
+                uri: 'transformedUri',
+                transformed: 'data',
+            });
             const doc = {
                 _id: 'id',
                 uri: 'uri',
@@ -98,7 +92,7 @@ describe('publishDocuments', () => {
             expect(
                 await getVersionInitializer(transform)(doc, null, null, date),
             ).toEqual({
-                uri: 'uri',
+                uri: 'transformedUri',
                 versions: [
                     {
                         transformed: 'data',

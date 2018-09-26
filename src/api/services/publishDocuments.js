@@ -1,5 +1,5 @@
+import omit from 'lodash.omit';
 import getDocumentTransformer from './getDocumentTransformer';
-import getAddUriTransformer from './getAddUriTransformer';
 import transformAllDocuments from './transformAllDocuments';
 
 export const getVersionInitializer = transformDocument => async (
@@ -7,20 +7,23 @@ export const getVersionInitializer = transformDocument => async (
     _,
     __,
     publicationDate = new Date(),
-) => ({
-    uri: doc.uri,
-    versions: [
-        {
-            ...(await transformDocument(doc)),
-            publicationDate,
-        },
-    ],
-});
+) => {
+    const transformedDoc = await transformDocument(doc);
+
+    return {
+        uri: transformedDoc.uri,
+        versions: [
+            {
+                ...omit(transformedDoc, ['uri']),
+                publicationDate,
+            },
+        ],
+    };
+};
 
 export const publishDocumentsFactory = ({
     getVersionInitializer,
     getDocumentTransformer,
-    getAddUriTransformer,
     transformAllDocuments,
 }) =>
     async function publishDocuments(ctx, count, fields) {
@@ -28,26 +31,16 @@ export const publishDocumentsFactory = ({
             c => c.cover === 'collection',
         );
 
-        const uriCol = fields.find(col => col.name === 'uri');
-        const addUri = getAddUriTransformer(ctx.dataset.findBy, uriCol);
-
-        await transformAllDocuments(
-            count,
-            ctx.dataset.findLimitFromSkip,
-            ctx.uriDataset.insertBatch,
-            addUri,
-        );
-
         const transformDocument = getDocumentTransformer(
-            ctx.uriDataset.findBy,
-            collectionCoverFields.filter(col => col.name !== 'uri'),
+            ctx.dataset.findBy,
+            collectionCoverFields,
         );
 
         const initializeVersion = getVersionInitializer(transformDocument);
 
         await transformAllDocuments(
             count,
-            ctx.uriDataset.findLimitFromSkip,
+            ctx.dataset.findLimitFromSkip,
             ctx.publishedDataset.insertBatch,
             initializeVersion,
         );
@@ -56,6 +49,5 @@ export const publishDocumentsFactory = ({
 export default publishDocumentsFactory({
     getVersionInitializer,
     getDocumentTransformer,
-    getAddUriTransformer,
     transformAllDocuments,
 });

@@ -12,7 +12,6 @@ app.use(
         await ctx.db.collection('publishedDataset').remove({});
         await ctx.db.collection('publishedCharacteristic').remove({});
         await ctx.db.collection('field').remove({});
-        await ctx.db.collection('uriDataset').remove({});
         await ctx.db.collection('dataset').remove({});
 
         ctx.body = { status: 'ok' };

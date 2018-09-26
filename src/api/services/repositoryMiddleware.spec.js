@@ -22,7 +22,6 @@ describe('mongoClient middleware', () => {
             'publishedCharacteristic',
             'publishedDataset',
             'publishedFacet',
-            'uriDataset',
         ]);
     });
 });

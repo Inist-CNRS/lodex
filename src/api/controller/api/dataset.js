@@ -9,7 +9,6 @@ export const clearDataset = async ctx => {
         await ctx.publishedCharacteristic.remove({});
         await ctx.publishedFacet.remove({});
         await ctx.field.remove({});
-        await ctx.uriDataset.remove({});
         await ctx.dataset.remove({});
 
         ctx.body = { status: 'success' };

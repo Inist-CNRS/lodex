@@ -42,11 +42,6 @@ describe('publish', () => {
                 countByFacet: createSpy().andReturn(100),
             },
             redirect: createSpy(),
-            uriDataset: {
-                insertBatch: 'uriDataset.insertBatch()',
-                findLimitFromSkip: 'uriDataset.findLimitFromSkip()',
-                distinct: createSpy().andReturn({ length: 'count' }),
-            },
             publishCharacteristics: createSpy(),
             publishDocuments: createSpy(),
             publishFacets: createSpy(),
@@ -104,11 +99,8 @@ describe('publish', () => {
     });
 
     describe('handlePublishError', () => {
-        it('should remove uriDataset and publishedDataset if next fail', done => {
+        it('should remove publishedDataset and publishedCharacteristic if next fail', done => {
             const ctx = {
-                uriDataset: {
-                    remove: createSpy(),
-                },
                 publishedDataset: {
                     remove: createSpy(),
                 },
@@ -126,7 +118,6 @@ describe('publish', () => {
                 })
                 .catch(e => {
                     expect(e).toEqual(error);
-                    expect(ctx.uriDataset.remove).toHaveBeenCalled();
                     expect(ctx.publishedDataset.remove).toHaveBeenCalled();
                     expect(
                         ctx.publishedCharacteristic.remove,

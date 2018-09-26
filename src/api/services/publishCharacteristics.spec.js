@@ -9,9 +9,9 @@ describe('publishCharacteristics', () => {
     });
     const count = 5;
     const ctx = {
-        uriDataset: {
+        dataset: {
             findLimitFromSkip: createSpy().andReturn(['doc']),
-            findBy: 'ctx.uriDataset.findBy',
+            findBy: 'ctx.dataset.findBy',
         },
         publishedCharacteristic: {
             addNewVersion: createSpy(),
@@ -35,13 +35,13 @@ describe('publishCharacteristics', () => {
 
     it('should call getDocumentTransformer', () => {
         expect(getDocumentTransformer).toHaveBeenCalledWith(
-            'ctx.uriDataset.findBy',
+            'ctx.dataset.findBy',
             datasetFields,
         );
     });
 
-    it('should call ctx.uriDataset.findLimitFromSkip', () => {
-        expect(ctx.uriDataset.findLimitFromSkip).toHaveBeenCalledWith(
+    it('should call ctx.dataset.findLimitFromSkip', () => {
+        expect(ctx.dataset.findLimitFromSkip).toHaveBeenCalledWith(
             1,
             count - 1,
         );

@@ -11,9 +11,6 @@ describe('saveParsedStream', () => {
                 count: createSpy().andReturn('count'),
                 updateMany: createSpy(),
             },
-            uriDataset: {
-                updateMany: createSpy(),
-            },
             publishedDataset: {
                 count: createSpy().andReturn(0),
                 updateMany: createSpy(),
@@ -53,9 +50,8 @@ describe('saveParsedStream', () => {
             expect(ctx.dataset.count).toHaveBeenCalled();
         });
 
-        it('should not have called updateMany on dataset, uriDataset and publishedDataset', () => {
+        it('should not have called updateMany on dataset and publishedDataset', () => {
             expect(ctx.dataset.updateMany).toNotHaveBeenCalled();
-            expect(ctx.uriDataset.updateMany).toNotHaveBeenCalled();
             expect(ctx.publishedDataset.updateMany).toNotHaveBeenCalled();
         });
     });
@@ -65,9 +61,6 @@ describe('saveParsedStream', () => {
             dataset: {
                 remove: createSpy(),
                 count: createSpy().andReturn('count'),
-                updateMany: createSpy(),
-            },
-            uriDataset: {
                 updateMany: createSpy(),
             },
             publishedDataset: {
@@ -103,13 +96,8 @@ describe('saveParsedStream', () => {
             expect(ctx.dataset.remove).toNotHaveBeenCalled();
         });
 
-        it('should have called updateMany on dataset, uriDataset and publishedDataset to set lodex_published to true', () => {
+        it('should have called updateMany on dataset and publishedDataset to set lodex_published to true', () => {
             expect(ctx.dataset.updateMany).toHaveBeenCalledWith(
-                {},
-                { $set: { lodex_published: true } },
-                { multi: true },
-            );
-            expect(ctx.uriDataset.updateMany).toHaveBeenCalledWith(
                 {},
                 { $set: { lodex_published: true } },
                 { multi: true },
@@ -161,10 +149,6 @@ describe('saveParsedStream', () => {
                 count: createSpy().andReturn('count'),
                 updateMany: createSpy(),
             },
-            uriDataset: {
-                updateMany: createSpy(),
-                remove: createSpy(),
-            },
             publishedDataset: {
                 count: createSpy().andReturn(1000),
                 updateMany: createSpy(),
@@ -199,13 +183,8 @@ describe('saveParsedStream', () => {
             expect(ctx.publishedDataset.count).toHaveBeenCalled();
         });
 
-        it('should have called updateMany on dataset, uriDataset and publishedDataset to set lodex_published to true', () => {
+        it('should have called updateMany on dataset and publishedDataset to set lodex_published to true', () => {
             expect(ctx.dataset.updateMany).toHaveBeenCalledWith(
-                {},
-                { $set: { lodex_published: true } },
-                { multi: true },
-            );
-            expect(ctx.uriDataset.updateMany).toHaveBeenCalledWith(
                 {},
                 { $set: { lodex_published: true } },
                 { multi: true },
@@ -241,11 +220,8 @@ describe('saveParsedStream', () => {
             expect(ctx.saveStream).toHaveBeenCalledWith('parsedStream');
         });
 
-        it('should remove all unpublished document from dataset, uriDataset and publishedDataset', () => {
+        it('should remove all unpublished document from dataset and publishedDataset', () => {
             expect(ctx.dataset.remove).toHaveBeenCalledWith({
-                lodex_published: { $exists: false },
-            });
-            expect(ctx.uriDataset.remove).toHaveBeenCalledWith({
                 lodex_published: { $exists: false },
             });
             expect(ctx.publishedDataset.remove).toHaveBeenCalledWith({
