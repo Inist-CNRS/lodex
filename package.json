@@ -169,6 +169,7 @@
     "stream-to-string": "1.1.0",
     "through": "2.3.8",
     "tmp-filepath": "2.0.0",
+    "uglifyjs-webpack-plugin": "1.0.1",
     "url-api-polyfill": "1.1.0",
     "url-loader": "0.5.8",
     "valid-url": "1.0.9",
@@ -200,7 +201,6 @@
     "react-addons-test-utils": "15.6.2",
     "react-hot-loader": "3.1.2",
     "sinon": "4.1.2",
-    "uglifyjs-webpack-plugin": "1.0.1",
     "webpack-dev-server": "2.9.4"
   },
   "pre-commit": [
