@@ -1,21 +1,23 @@
+import { PENDING } from '../../common/progressStatus';
+
 export class Progress {
-    status = 'pending';
+    status = PENDING;
     start(status, target) {
         this.status = status;
         this.target = target;
         this.progress = 0;
     }
     finish() {
-        this.status = 'pending';
+        this.status = PENDING;
     }
 
     incrementProgress(progress) {
-        if (this.status === 'pending') {
+        if (this.status === PENDING) {
             return;
         }
         this.progress += progress;
         if (this.progress >= this.target) {
-            this.status = 'pending';
+            this.status = PENDING;
         }
     }
 

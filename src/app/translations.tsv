@@ -397,3 +397,7 @@
 "corpus"	"TXT - corpus description"	"TXT - description de corpus"
 "automatic-parser"	"AUTO - with filename extension"	"AUTO - avec l'extension du nom de fichier"
 "bad_format_error"	"Error: Bad format, cannot display value"	"Erreur: Mauvais format, impossible d'afficher la valeur"
+"PUBLISH_FACET"	"Publishing facet"	"Publication des facettes"
+"PUBLISH_DOCUMENT"	"Publishing document"	"Publication des documents"
+"COMPUTE_URI"	"Computing uri"	"Calcul des uris"
+"STARTING"	"Starting"	"Démarrage"
