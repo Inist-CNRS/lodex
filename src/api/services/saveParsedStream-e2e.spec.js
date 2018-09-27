@@ -246,9 +246,9 @@ describe('e2e upload saveparsedStream', () => {
             const error = await saveParsedStream(ctx)(parsedStream).catch(
                 error => error,
             );
-            expect(error.message).toBe(
-                'E11000 duplicate key error index: lodex_test.publishedDataset.$uri_1 dup key: { : "uid:/rock" }',
-            );
+            expect(error.message).toContain('E11000 duplicate key error');
+            expect(error.message).toContain('dup key: { : "uid:/rock" }');
+
             expect(await ctx.dataset.count()).toEqual(3);
             expect(await ctx.dataset.find({}, { _id: 0 }).toArray()).toEqual([
                 {
