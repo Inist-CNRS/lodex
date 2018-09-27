@@ -185,4 +185,66 @@ describe('export Nquads', () => {
             }),
         );
     });
+
+    it.only('should export a composed object property (with a class) without number in sub-domain', done => {
+        let outputString = '';
+        exportNQuads(
+            {
+                cleanHost: '',
+                schemeForDatasetLink: '',
+            },
+            [
+                {
+                    cover: 'collection',
+                    scheme: 'http://property/composed',
+                    name: 'propcomposed',
+                    classes: ['http://class/composed'],
+                    composedOf: {
+                        fields: ['propb', 'propc'],
+                    },
+                },
+                {
+                    cover: 'collection',
+                    scheme: 'http://property/b',
+                    name: 'propb',
+                },
+                {
+                    cover: 'collection',
+                    scheme: 'http://property/c',
+                    name: 'propc',
+                },
+            ],
+            null,
+            from([
+                {
+                    uri: 'http://a-b-1.uri/1',
+                    propcomposed: 'label a',
+                    propb: 'value 1',
+                    propc: 'value 2',
+                },
+            ]),
+        ).pipe(
+            ezs((data, feed) => {
+                if (data !== null) {
+                    outputString += data;
+                } else {
+                    try {
+                        expect(outputString).toEqual(
+                            [
+                                '<http://a-b.uri/1#compose/propcomposed> <http://property/b> "value 1" .',
+                                '<http://a-b.uri/1#compose/propcomposed> <http://property/c> "value 2" .',
+                                '<http://a-b.uri/1#compose/propcomposed> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://class/composed> .',
+                                '<http://a-b.uri/1> <http://property/composed> <http://a-b.uri/1#compose/propcomposed> .',
+                                '',
+                            ].join('\n'),
+                        );
+                    } catch (e) {
+                        return done(e);
+                    }
+                    return done();
+                }
+                return feed.end();
+            }),
+        );
+    });
 });
