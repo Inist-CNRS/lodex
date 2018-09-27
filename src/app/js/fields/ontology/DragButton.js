@@ -24,8 +24,11 @@ DragIcon.propTypes = {
 
 const DragHandle = SortableHandle(DragIcon);
 
-const DragButton = ({ disabled }) =>
-    disabled ? <DragIcon disabled={disabled} /> : <DragHandle />;
+const DragButton = ({ disabled }) => (
+    <span className="drag-handle">
+        {disabled ? <DragIcon disabled={disabled} /> : <DragHandle />}
+    </span>
+);
 
 DragButton.propTypes = {
     disabled: PropTypes.bool,

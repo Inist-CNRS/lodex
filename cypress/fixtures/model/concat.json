@@ -2,7 +2,6 @@
     {
         "cover": "collection",
         "label": "uri",
-        "name": "uri",
         "display_on_list": true,
         "transformers": [
             {
@@ -10,7 +9,8 @@
                 "args": []
             }
         ],
-        "position": 0
+        "position": 0,
+        "name": "uri"
     },
     {
         "cover": "collection",
@@ -38,7 +38,6 @@
         "classes": [],
         "position": 1,
         "overview": 0,
-        "name": "gL4k",
         "format": {
             "args": {
                 "type": "unordered",
@@ -46,6 +45,86 @@
                 "subFormatOptions": {}
             },
             "name": "list"
-        }
+        },
+        "name": "gL4k"
+    },
+    {
+        "cover": "collection",
+        "label": "Column 2",
+        "display_in_list": true,
+        "display_in_resource": true,
+        "searchable": true,
+        "transformers": [
+            {
+                "operation": "COLUMN",
+                "args": [
+                    {
+                        "name": "column",
+                        "type": "column",
+                        "value": "Column 2"
+                    }
+                ]
+            }
+        ],
+        "classes": [],
+        "position": 2,
+        "overview": 0,
+        "format": {
+            "args": {},
+            "name": "None"
+        },
+        "name": "gL5k"
+    },
+    {
+        "cover": "dataset",
+        "label": "Title",
+        "display_in_list": false,
+        "display_in_resource": false,
+        "searchable": false,
+        "transformers": [
+            {
+                "operation": "VALUE",
+                "args": [
+                    {
+                        "name": "value",
+                        "type": "string",
+                        "value": "test data"
+                    }
+                ]
+            }
+        ],
+        "classes": [],
+        "position": 3,
+        "overview": 0,
+        "format": {
+            "args": {},
+            "name": "None"
+        },
+        "name": "gL6k",
+        "display_in_home": true
+    },
+    {
+        "cover": "dataset",
+        "label": "Description",
+        "display_in_list": "",
+        "display_in_resource": "",
+        "searchable": true,
+        "transformers": [
+            {
+                "operation": "VALUE",
+                "args": [
+                    {
+                        "name": "value",
+                        "type": "string",
+                        "value": "This is a test"
+                    }
+                ]
+            }
+        ],
+        "classes": [],
+        "position": 4,
+        "overview": 0,
+        "name": "a0ea",
+        "display_in_home": true
     }
 ]

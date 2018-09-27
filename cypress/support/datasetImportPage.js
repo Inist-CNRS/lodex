@@ -93,9 +93,8 @@ export const goToPublishedResources = () => {
     cy.location('pathname').should('equal', '/');
 };
 
-export const goToModelPage = () => {
+export const goToModel = () => {
     cy.get('.appbar a[href="#/ontology"]').click();
-    cy.location('pathname').should('equal', '/admin');
     cy.location('hash').should('equal', '#/ontology');
 };
 
