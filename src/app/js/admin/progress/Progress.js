@@ -31,12 +31,11 @@ export class Progress extends Component {
                         max={target}
                         value={progress}
                     />
-                    {progress &&
-                        target && (
-                            <p>
-                                {progress} / {target}
-                            </p>
-                        )}
+                    {progress && target ? (
+                        <p>
+                            {progress} / {target}
+                        </p>
+                    ) : null}
                 </div>
             </Dialog>
         );
