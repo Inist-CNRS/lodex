@@ -113,7 +113,7 @@ const mapStateToProps = (state, { formatData }) => {
     }
 
     const sanitizedFormatData = formatData.filter(
-        ({ source, data }) => source && data,
+        ({ source, target }) => source && target,
     );
 
     const nodesDic = sanitizedFormatData.reduce(
