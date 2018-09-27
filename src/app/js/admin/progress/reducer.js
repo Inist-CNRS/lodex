@@ -34,11 +34,15 @@ export default handleActions(
         [PUBLISH]: state => ({
             ...state,
             status: STARTING,
+            progress: undefined,
+            target: undefined,
             error: undefined,
         }),
         [ERROR_PROGRESS]: (state, { payload: { error } }) => ({
             ...state,
             status: PENDING,
+            progress: undefined,
+            target: undefined,
             error,
         }),
     },

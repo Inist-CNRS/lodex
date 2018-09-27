@@ -5,7 +5,12 @@ import { call, select, put } from 'redux-saga/effects';
 import { delay } from 'redux-saga';
 import { fromUser } from '../../sharedSelectors';
 import fetchSaga from '../../lib/sagas/fetchSaga';
-import { updateProgress, loadProgress, errorProgress } from './reducer';
+import {
+    updateProgress,
+    loadProgress,
+    errorProgress,
+    finishProgress,
+} from './reducer';
 import { PENDING } from '../../../../common/progressStatus';
 
 describe('progress sagas handleStartProgressSaga', () => {
@@ -21,7 +26,7 @@ describe('progress sagas handleStartProgressSaga', () => {
         expect(it.next()).toEqual({ value: undefined, done: true });
     });
 
-    it('should not trigger loadProgress action if response.status is PENDING', () => {
+    it('should trigger finishProgress action if response.status is PENDING', () => {
         const it = handleStartProgressSaga();
         expect(it.next().value).toEqual(delay(1000));
         expect(it.next().value).toEqual(select(fromUser.getProgressRequest));
@@ -29,6 +34,7 @@ describe('progress sagas handleStartProgressSaga', () => {
         expect(it.next({ response: { status: PENDING } }).value).toEqual(
             put(updateProgress({ status: PENDING })),
         );
+        expect(it.next().value).toEqual(put(finishProgress()));
         expect(it.next()).toEqual({ value: undefined, done: true });
     });
 

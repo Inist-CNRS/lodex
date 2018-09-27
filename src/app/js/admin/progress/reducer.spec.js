@@ -2,6 +2,7 @@ import expect from 'expect';
 
 import reducer, { updateProgress, errorProgress } from './reducer';
 import { publish } from '../publish';
+import { PENDING } from '../../../../common/progressStatus';
 
 describe('progress reducer', () => {
     describe('UPDATE_PROGRESS', () => {
@@ -33,6 +34,8 @@ describe('progress reducer', () => {
             expect(reducer(state, publish())).toEqual({
                 status: 'STARTING',
                 error: undefined,
+                progress: undefined,
+                target: undefined,
             });
         });
     });
@@ -43,6 +46,9 @@ describe('progress reducer', () => {
 
             expect(reducer(state, errorProgress({ error: 'error' }))).toEqual({
                 error: 'error',
+                status: PENDING,
+                progress: undefined,
+                target: undefined,
             });
         });
     });

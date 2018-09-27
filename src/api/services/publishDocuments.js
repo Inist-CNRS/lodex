@@ -47,8 +47,6 @@ export const publishDocumentsFactory = ({
             ctx.publishedDataset.insertBatch,
             initializeVersion,
         );
-
-        progress.finish();
     };
 
 export default publishDocumentsFactory({
