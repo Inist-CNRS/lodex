@@ -258,6 +258,17 @@ export default async db => {
     collection.findDistinctValuesForField = field =>
         collection.distinct(`versions.${field}`);
 
+    collection.getFacetsForField = field =>
+        collection.aggregate([
+            {
+                $project: {
+                    value: { $arrayElemAt: [`$versions.${field}`, -1] },
+                },
+            },
+            { $group: { _id: '$value', count: { $sum: 1 } } },
+            { $project: { _id: 0, value: '$_id', count: 1, field } },
+        ]);
+
     collection.countByFacet = async (field, value) =>
         collection.count({
             [field === 'uri' ? 'uri' : `versions.${field}`]: value,

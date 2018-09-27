@@ -49,7 +49,7 @@ services:
         command: npm run development:api
 
     mongo:
-        image: mongo:3.0.14
+        image: mongo:3.4.1
         command: "--smallfiles"
         ports:
             - 27017:27017

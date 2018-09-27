@@ -5,13 +5,24 @@ import publishFacets from './publishFacets';
 describe('publishFacets', () => {
     const ctx = {
         publishedDataset: {
-            findDistinctValuesForField: createSpy().andReturn(
-                Promise.resolve(['value1', 'value2']),
-            ),
-            countByFacet: createSpy().andReturn(Promise.resolve(100)),
+            getFacetsForField: createSpy().andCall(name => ({
+                toArray: () =>
+                    Promise.resolve([
+                        {
+                            field: name,
+                            value: 'value1',
+                            count: 100,
+                        },
+                        {
+                            field: name,
+                            value: 'value2',
+                            count: 200,
+                        },
+                    ]),
+            })),
         },
         publishedFacet: {
-            insertFacet: createSpy().andReturn(Promise.resolve()),
+            insertMany: createSpy().andReturn(Promise.resolve()),
             remove: createSpy(),
         },
     };
@@ -33,13 +44,13 @@ describe('publishFacets', () => {
         await publishFacets(ctx, facetFields);
     });
 
-    it('should call publishedDataset.findDistinctValuesForField for each facet field', () => {
-        expect(
-            ctx.publishedDataset.findDistinctValuesForField,
-        ).toHaveBeenCalledWith('facet1');
-        expect(
-            ctx.publishedDataset.findDistinctValuesForField,
-        ).toHaveBeenCalledWith('facet2');
+    it('should call publishedDataset.getFacetsForField for each facet field', () => {
+        expect(ctx.publishedDataset.getFacetsForField).toHaveBeenCalledWith(
+            'facet1',
+        );
+        expect(ctx.publishedDataset.getFacetsForField).toHaveBeenCalledWith(
+            'facet2',
+        );
     });
 
     it('should call publishedFacet.remove', () => {
@@ -49,14 +60,14 @@ describe('publishFacets', () => {
         });
     });
 
-    it('should call ctx.publishedFacet.insertFacet for each facet field with their distinct values', () => {
-        expect(ctx.publishedFacet.insertFacet).toHaveBeenCalledWith('facet1', [
-            { value: 'value1', count: 100 },
-            { value: 'value2', count: 100 },
+    it('should call ctx.publishedFacet.insertMany for each facet field with their distinct values', () => {
+        expect(ctx.publishedFacet.insertMany).toHaveBeenCalledWith([
+            { field: 'facet1', value: 'value1', count: 100 },
+            { field: 'facet1', value: 'value2', count: 200 },
         ]);
-        expect(ctx.publishedFacet.insertFacet).toHaveBeenCalledWith('facet2', [
-            { value: 'value1', count: 100 },
-            { value: 'value2', count: 100 },
+        expect(ctx.publishedFacet.insertMany).toHaveBeenCalledWith([
+            { field: 'facet2', value: 'value1', count: 100 },
+            { field: 'facet2', value: 'value2', count: 200 },
         ]);
     });
 });
