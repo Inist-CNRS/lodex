@@ -8,23 +8,15 @@ export default async (ctx, fields) => {
     const names = fields.map(({ name }) => name);
     await ctx.publishedFacet.remove({ field: { $in: names } });
 
-    return Promise.all(
-        facetFields.map(field =>
-            ctx.publishedDataset
-                .findDistinctValuesForField(field.name)
-                .then(values =>
-                    Promise.all(
-                        values.map(value =>
-                            ctx.publishedDataset
-                                .countByFacet(field.name, value)
-                                .then(count => ({ value, count })),
-                        ),
-                    ),
-                )
-                .then(values => {
-                    progress.incrementProgress(1);
-                    return ctx.publishedFacet.insertFacet(field.name, values);
-                }),
-        ),
+    return facetFields.reduce(
+        async (prevPromise, field) =>
+            prevPromise.then(async () => {
+                progress.incrementProgress(1);
+                const facets = await ctx.publishedDataset
+                    .getFacetsForField(field.name)
+                    .toArray();
+                await ctx.publishedFacet.insertMany(facets);
+            }),
+        Promise.resolve(),
     );
 };

@@ -204,10 +204,10 @@ describe('e2e upload saveparsedStream', () => {
             expect(
                 await ctx.publishedFacet.find({}, { _id: 0 }).toArray(),
             ).toEqual([
-                { field: 'STRONGER', value: 'uid:/scissor', count: 1 },
+                { field: 'STRONGER', value: '', count: 2 },
                 { field: 'STRONGER', value: 'uid:/paper', count: 1 },
                 { field: 'STRONGER', value: 'uid:/rock', count: 1 },
-                { field: 'STRONGER', value: '', count: 2 },
+                { field: 'STRONGER', value: 'uid:/scissor', count: 1 },
             ]);
         });
 
