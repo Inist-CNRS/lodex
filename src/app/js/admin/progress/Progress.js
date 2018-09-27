@@ -26,12 +26,17 @@ export class Progress extends Component {
             >
                 <div className="progress">
                     <LinearProgress
-                        mode="determinate"
+                        mode={target && progress && 'determinate'}
                         min={0}
                         max={target}
                         value={progress}
                     />
-                    {progress} / {target}
+                    {progress &&
+                        target && (
+                            <p>
+                                {progress} / {target}
+                            </p>
+                        )}
                 </div>
             </Dialog>
         );

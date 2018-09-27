@@ -10,6 +10,7 @@ import {
 } from './';
 import { fromUser } from '../../sharedSelectors';
 import fetchSaga from '../../lib/sagas/fetchSaga';
+import { FINISH_PROGRESS, ERROR_PROGRESS } from '../progress/reducer';
 
 export function* handlePublishRequest() {
     const verifyUriRequest = yield select(fromUser.getVerifyUriRequest);
@@ -41,6 +42,15 @@ export function* handlePublishRequest() {
 
     if (error) {
         yield put(publishError(error));
+        return;
+    }
+    const { progressError } = yield race({
+        progressFinish: take(FINISH_PROGRESS),
+        progressError: take(ERROR_PROGRESS),
+    });
+
+    if (progressError) {
+        yield put(publishError(progressError.payload.error));
         return;
     }
 

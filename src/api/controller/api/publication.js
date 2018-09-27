@@ -21,7 +21,7 @@ export default async ctx => {
         characteristics,
         fields: fieldsWithCount,
         published:
-            publishedDatasetCount > 0 &&
-            progress.getProgress().status === PENDING,
+            publishedDatasetCount > 0 ||
+            progress.getProgress().status !== PENDING,
     };
 };

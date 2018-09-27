@@ -78,10 +78,6 @@ describe('publish', () => {
                 'count',
             );
         });
-
-        it('should redirect to the publication route', () => {
-            expect(ctx.redirect).toHaveBeenCalledWith('/api/publication');
-        });
     });
 
     describe('preparePublish', () => {

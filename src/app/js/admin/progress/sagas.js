@@ -6,6 +6,7 @@ import {
     errorProgress,
     loadProgress,
     LOAD_PROGRESS,
+    finishProgress,
 } from './reducer';
 import { PUBLISH } from '../publish';
 import fetchSaga from '../../lib/sagas/fetchSaga';
@@ -24,6 +25,7 @@ export function* handleStartProgressSaga() {
     yield put(updateProgress(response));
 
     if (response.status === PENDING) {
+        yield put(finishProgress());
         return;
     }
     yield put(loadProgress());
