@@ -1,3 +1,5 @@
+import progress from './progress';
+
 export default async function transformAllDocument(
     count,
     findLimitFromSkip,
@@ -11,6 +13,7 @@ export default async function transformAllDocument(
         });
         const transformedDataset = await Promise.all(dataset.map(transformer));
         await insertBatch(transformedDataset);
+        progress.incrementProgress(dataset.length);
         handled += dataset.length;
     }
 }

@@ -4,6 +4,7 @@ import get from 'lodash.get';
 import publishDocuments from '../../services/publishDocuments';
 import publishCharacteristics from '../../services/publishCharacteristics';
 import publishFacets from './publishFacets';
+import publish from '../../services/publish';
 
 const app = new Koa();
 
@@ -25,18 +26,11 @@ export const handlePublishError = async (ctx, next) => {
 };
 
 export const doPublish = async ctx => {
-    const count = await ctx.dataset.count({});
-
-    const fields = await ctx.field.findAll();
-    const collectionCoverFields = fields.filter(c => c.cover === 'collection');
-
-    await ctx.publishDocuments(ctx, count, collectionCoverFields);
-
-    const datasetCoverFields = fields.filter(c => c.cover === 'dataset');
-    await ctx.publishCharacteristics(ctx, datasetCoverFields, count);
-    await ctx.publishFacets(ctx, fields);
-
-    ctx.redirect('/api/publication');
+    publish(ctx);
+    ctx.status = 200;
+    ctx.body = {
+        status: 'success',
+    };
 };
 
 export const verifyUri = async ctx => {

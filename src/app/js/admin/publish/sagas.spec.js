@@ -11,6 +11,7 @@ import {
 } from './';
 import { fromUser } from '../../sharedSelectors';
 import { handlePublishRequest } from './sagas';
+import { FINISH_PROGRESS, ERROR_PROGRESS } from '../progress/reducer';
 
 describe('publication saga', () => {
     describe('handlePublishRequest', () => {
@@ -40,11 +41,22 @@ describe('publication saga', () => {
             );
         });
 
-        it('should put publishSuccess action', () => {
-            expect(saga.next({}).value).toEqual(put(publishSuccess()));
+        it('should race ERROR_PROGRESS and FINISH_PROGRESS', () => {
+            expect(saga.next({}).value).toEqual(
+                race({
+                    progressFinish: take(FINISH_PROGRESS),
+                    progressError: take(ERROR_PROGRESS),
+                }),
+            );
         });
 
-        it('should put publishError action with error if any', () => {
+        it('should put publishSuccess action', () => {
+            expect(saga.next({ progressFinish: true }).value).toEqual(
+                put(publishSuccess()),
+            );
+        });
+
+        it('should put publishError action with error from request if any', () => {
             const failedSaga = handlePublishRequest();
             failedSaga.next();
             failedSaga.next();
@@ -53,6 +65,25 @@ describe('publication saga', () => {
             expect(failedSaga.next({ error: 'foo' }).value).toEqual(
                 put(publishError('foo')),
             );
+        });
+
+        it('should put publishError action with error from progress if any', () => {
+            const failedSaga = handlePublishRequest();
+            failedSaga.next();
+            failedSaga.next();
+            failedSaga.next({ response: { nbInvalidUri: 0 } });
+            failedSaga.next();
+            expect(failedSaga.next({}).value).toEqual(
+                race({
+                    progressFinish: take(FINISH_PROGRESS),
+                    progressError: take(ERROR_PROGRESS),
+                }),
+            );
+            expect(
+                failedSaga.next({
+                    progressError: { payload: { error: 'error' } },
+                }).value,
+            ).toEqual(put(publishError('error')));
         });
     });
 

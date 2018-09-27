@@ -1,8 +1,12 @@
+import progress from '../../services/progress';
+import { PUBLISH_FACET } from '../../../common/progressStatus';
+
 export default async (ctx, fields) => {
+    const facetFields = fields.filter(c => c.isFacet);
+    progress.start(PUBLISH_FACET, facetFields.length);
+
     const names = fields.map(({ name }) => name);
     await ctx.publishedFacet.remove({ field: { $in: names } });
-
-    const facetFields = fields.filter(c => c.isFacet);
 
     return Promise.all(
         facetFields.map(field =>
@@ -17,9 +21,10 @@ export default async (ctx, fields) => {
                         ),
                     ),
                 )
-                .then(values =>
-                    ctx.publishedFacet.insertFacet(field.name, values),
-                ),
+                .then(values => {
+                    progress.incrementProgress(1);
+                    return ctx.publishedFacet.insertFacet(field.name, values);
+                }),
         ),
     );
 };

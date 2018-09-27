@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 
 import AppBar from './Appbar';
 import getTitle from '../lib/getTitle';
+import Progress from './progress/Progress';
 
 export const AppComponent = ({ children }) => (
     <div>
@@ -11,6 +12,7 @@ export const AppComponent = ({ children }) => (
             <title>{getTitle()}</title>
         </Helmet>
         <AppBar />
+        <Progress />
 
         <div className="body">{children}</div>
     </div>

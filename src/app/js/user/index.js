@@ -343,6 +343,12 @@ export const getReorderFieldRequest = (state, fields) =>
         },
     });
 
+export const getProgressRequest = state =>
+    getRequest(state, {
+        method: 'GET',
+        url: '/api/progress',
+    });
+
 export const selectors = {
     isAdmin,
     getToken,
@@ -383,4 +389,5 @@ export const selectors = {
     getExportPublishedDatasetRequest,
     getSparqlRequest,
     getReorderFieldRequest,
+    getProgressRequest,
 };
