@@ -11,7 +11,8 @@ const IdentifierBadgeView = ({ resource, field, typid, colors }) => {
         .map(x => String('#').concat(x));
     const firstColor = colorsSet.shift() || '#8B8B8B';
     const resolver = resolvers[typid] || '';
-    const identifier = resource[field.name].replace(resolver, '');
+    const value = resource[field.name] || '';
+    const identifier = value.replace(resolver, '');
     const target = resolver + identifier;
 
     const styles = StyleSheet.create({
