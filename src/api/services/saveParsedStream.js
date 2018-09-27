@@ -14,11 +14,6 @@ const saveParsedStreamFactory = ctx =>
                 { $set: { lodex_published: true } },
                 { multi: true },
             );
-            await ctx.uriDataset.updateMany(
-                {},
-                { $set: { lodex_published: true } },
-                { multi: true },
-            );
             await ctx.publishedDataset.updateMany(
                 {},
                 { $set: { lodex_published: true } },
@@ -41,9 +36,6 @@ const saveParsedStreamFactory = ctx =>
             return ctx.dataset.count();
         } catch (error) {
             await ctx.dataset.remove({ lodex_published: { $exists: false } });
-            await ctx.uriDataset.remove({
-                lodex_published: { $exists: false },
-            });
             await ctx.publishedDataset.remove({
                 lodex_published: { $exists: false },
             });

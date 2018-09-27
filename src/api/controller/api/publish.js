@@ -18,7 +18,6 @@ export const handlePublishError = async (ctx, next) => {
     try {
         await next();
     } catch (error) {
-        await ctx.uriDataset.remove({});
         await ctx.publishedDataset.remove({});
         await ctx.publishedCharacteristic.remove({});
         throw error;
@@ -66,7 +65,6 @@ export const clearPublished = async ctx => {
         await ctx.publishedDataset.remove({});
         await ctx.publishedCharacteristic.remove({});
         await ctx.publishedFacet.remove({});
-        await ctx.uriDataset.remove({});
 
         ctx.body = {
             status: 'success',

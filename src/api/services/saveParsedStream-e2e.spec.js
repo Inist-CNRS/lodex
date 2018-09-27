@@ -12,7 +12,6 @@ import {
     close,
 } from '../../common/tests/fixtures';
 import datasetFactory from '../models/dataset';
-import uriDataset from '../models/uriDataset';
 import publishedDataset from '../models/publishedDataset';
 import publishedFacet from '../models/publishedFacet';
 import field from '../models/field';
@@ -85,11 +84,6 @@ const fixtures = {
         { id: 2, name: 'scissor', stronger_than: 3 },
         { id: 3, name: 'paper', stronger_than: 1 },
     ],
-    uriDataset: [
-        { uri: 'uid:/rock', id: 1, name: 'rock', stronger_than: 2 },
-        { uri: 'uid:/scissor', id: 2, name: 'scissor', stronger_than: 3 },
-        { uri: 'uid:/paper', id: 3, name: 'paper', stronger_than: 1 },
-    ],
     publishedDataset: [
         {
             uri: 'uid:/rock',
@@ -133,7 +127,6 @@ describe('e2e upload saveparsedStream', () => {
 
             ctx = {
                 dataset,
-                uriDataset: await uriDataset(db),
                 publishedDataset: await publishedDataset(db),
                 field: await field(db),
                 publishedFacet: await publishedFacet(db),
@@ -168,44 +161,6 @@ describe('e2e upload saveparsedStream', () => {
                 { id: 4, name: 'spock', stronger_than: 1 },
                 { id: 5, name: 'lizard', stronger_than: 3 },
             ]);
-            expect(await ctx.uriDataset.count()).toEqual(5);
-            expect(await ctx.uriDataset.find({}, { _id: 0 }).toArray()).toEqual(
-                [
-                    {
-                        id: 1,
-                        uri: 'uid:/rock',
-                        name: 'rock',
-                        stronger_than: 2,
-                        lodex_published: true,
-                    },
-                    {
-                        id: 2,
-                        uri: 'uid:/scissor',
-                        name: 'scissor',
-                        stronger_than: 3,
-                        lodex_published: true,
-                    },
-                    {
-                        id: 3,
-                        uri: 'uid:/paper',
-                        name: 'paper',
-                        stronger_than: 1,
-                        lodex_published: true,
-                    },
-                    {
-                        id: 4,
-                        uri: 'uid:/spock',
-                        name: 'spock',
-                        stronger_than: 1,
-                    },
-                    {
-                        id: 5,
-                        uri: 'uid:/lizard',
-                        name: 'lizard',
-                        stronger_than: 3,
-                    },
-                ],
-            );
             expect(await ctx.publishedDataset.count()).toEqual(5);
 
             const publishedDataset = await ctx.publishedDataset
@@ -278,7 +233,6 @@ describe('e2e upload saveparsedStream', () => {
 
             ctx = {
                 dataset,
-                uriDataset: await uriDataset(db),
                 publishedDataset: await publishedDataset(db),
                 field: await field(db),
                 publishedFacet: await publishedFacet(db),
@@ -293,7 +247,7 @@ describe('e2e upload saveparsedStream', () => {
                 error => error,
             );
             expect(error.message).toBe(
-                'E11000 duplicate key error index: lodex_test.uriDataset.$uri_1 dup key: { : "uid:/rock" }',
+                'E11000 duplicate key error index: lodex_test.publishedDataset.$uri_1 dup key: { : "uid:/rock" }',
             );
             expect(await ctx.dataset.count()).toEqual(3);
             expect(await ctx.dataset.find({}, { _id: 0 }).toArray()).toEqual([
@@ -316,32 +270,6 @@ describe('e2e upload saveparsedStream', () => {
                     lodex_published: true,
                 },
             ]);
-            expect(await ctx.uriDataset.count()).toEqual(3);
-            expect(await ctx.uriDataset.find({}, { _id: 0 }).toArray()).toEqual(
-                [
-                    {
-                        id: 1,
-                        uri: 'uid:/rock',
-                        name: 'rock',
-                        stronger_than: 2,
-                        lodex_published: true,
-                    },
-                    {
-                        id: 2,
-                        uri: 'uid:/scissor',
-                        name: 'scissor',
-                        stronger_than: 3,
-                        lodex_published: true,
-                    },
-                    {
-                        id: 3,
-                        uri: 'uid:/paper',
-                        name: 'paper',
-                        stronger_than: 1,
-                        lodex_published: true,
-                    },
-                ],
-            );
             expect(await ctx.publishedDataset.count()).toEqual(3);
 
             const publishedDataset = await ctx.publishedDataset

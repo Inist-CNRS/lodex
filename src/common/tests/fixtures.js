@@ -3,7 +3,6 @@ import publishedCharacteristicFactory from '../../api/models/publishedCharacteri
 import publishedDatasetFactory from '../../api/models/publishedDataset';
 import publishedFacetFactory from '../../api/models/publishedFacet';
 import fieldFactory from '../../api/models/field';
-import uriDatasetFactory from '../../api/models/uriDataset';
 import mongoClient from '../../api/services/mongoClient';
 
 let db;
@@ -16,7 +15,6 @@ export async function connect() {
         db.publishedCharacteristic = await publishedCharacteristicFactory(db);
         db.publishedFacet = await publishedFacetFactory(db);
         db.field = await fieldFactory(db);
-        db.uriDataset = await uriDatasetFactory(db);
     }
 
     return db;
@@ -46,9 +44,6 @@ export function loadFixtures(fixtures) {
     if (fixtures.publishedFacet) {
         promises.push(db.publishedFacet.insertMany(fixtures.publishedFacet));
     }
-    if (fixtures.uriDataset) {
-        promises.push(db.uriDataset.insertMany(fixtures.uriDataset));
-    }
 
     return Promise.all(promises);
 }
@@ -62,7 +57,6 @@ export async function clear() {
         db.publishedCharacteristic.remove({}),
         db.publishedDataset.remove({}),
         db.publishedFacet.remove({}),
-        db.uriDataset.remove({}),
     ]);
 
     return db;
