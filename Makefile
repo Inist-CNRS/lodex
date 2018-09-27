@@ -64,16 +64,16 @@ test-frontend-unit-watch: ## Watch the frontend application unit tests
 
 test-e2e-start-dockers:
 ifeq "$(CI)" "true"
-	docker-compose -f docker-compose.test.yml up -d --build
+	docker-compose -f docker-compose.spec.yml up -d --build
 else
-	docker-compose -f docker-compose.test.yml up -d
+	docker-compose -f docker-compose.spec.yml up -d
 endif
 
 test-e2e-logs:
-	docker-compose -f docker-compose.test.yml logs
+	docker-compose -f docker-compose.spec.yml logs
 
 test-e2e-stop-dockers:
-	docker-compose -f docker-compose.test.yml down
+	docker-compose -f docker-compose.spec.yml down
 
 test-e2e-open-cypress:
 	./node_modules/.bin/cypress open
