@@ -217,7 +217,7 @@ describe('export Nquads', () => {
             null,
             from([
                 {
-                    uri: 'http://a-b-1.uri/1',
+                    uri: 'http://a-b-1.c.d.e/1',
                     propcomposed: 'label a',
                     propb: 'value 1',
                     propc: 'value 2',
@@ -231,10 +231,10 @@ describe('export Nquads', () => {
                     try {
                         expect(outputString).toEqual(
                             [
-                                '<http://a-b.uri/1#compose/propcomposed> <http://property/b> "value 1" .',
-                                '<http://a-b.uri/1#compose/propcomposed> <http://property/c> "value 2" .',
-                                '<http://a-b.uri/1#compose/propcomposed> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://class/composed> .',
-                                '<http://a-b.uri/1> <http://property/composed> <http://a-b.uri/1#compose/propcomposed> .',
+                                '<http://a-b.c.d.e/1#compose/propcomposed> <http://property/b> "value 1" .',
+                                '<http://a-b.c.d.e/1#compose/propcomposed> <http://property/c> "value 2" .',
+                                '<http://a-b.c.d.e/1#compose/propcomposed> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://class/composed> .',
+                                '<http://a-b.c.d.e/1> <http://property/composed> <http://a-b.c.d.e/1#compose/propcomposed> .',
                                 '',
                             ].join('\n'),
                         );
