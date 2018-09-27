@@ -262,17 +262,18 @@ export default async db => {
             )
             .then(({ value }) => value);
 
-    collection.findByNames = async names =>
-        collection
+    collection.findByNames = async names => {
+        const fields = await collection
             .find({ name: { $in: names } })
-            .toArray()
-            .reduce(
-                (acc, field) => ({
-                    ...acc,
-                    [field.name]: field,
-                }),
-                {},
-            );
+            .toArray();
+        return fields.reduce(
+            (acc, field) => ({
+                ...acc,
+                [field.name]: field,
+            }),
+            {},
+        );
+    };
 
     return collection;
 };

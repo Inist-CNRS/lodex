@@ -340,11 +340,12 @@ describe('field', () => {
                 fieldCollection = {
                     createIndex: createSpy(),
                     find: createSpy().andReturn({
-                        toArray: () => [
-                            { name: 'a' },
-                            { name: 'b' },
-                            { name: 'c' },
-                        ],
+                        toArray: () =>
+                            Promise.resolve([
+                                { name: 'a' },
+                                { name: 'b' },
+                                { name: 'c' },
+                            ]),
                     }),
                 };
 
