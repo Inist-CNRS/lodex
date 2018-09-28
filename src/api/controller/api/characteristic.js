@@ -8,6 +8,21 @@ import { COVER_DATASET } from '../../../common/cover';
 
 const app = new Koa();
 
+const isCompositeField = field =>
+    field.composedOf &&
+    field.composedOf.isComposedOf &&
+    field.composedOf.fields.length > 0;
+
+const isValueField = field =>
+    get(field, 'transformers[0].operation') === 'VALUE';
+
+const updateFieldValue = async (ctx, field, value) => {
+    return await ctx.field.updateOneById(
+        field._id,
+        set(field, 'transformers[0].args[0].value', value),
+    );
+};
+
 export const updateCharacteristics = async ctx => {
     const {
         name,
@@ -16,20 +31,37 @@ export const updateCharacteristics = async ctx => {
     } = ctx.request.body;
 
     ctx.body = {};
+
     if (name) {
         const field = await ctx.field.findOneByName(name);
-        if (get(field, 'transformers[0].operation') === 'VALUE') {
-            const updatedField = set(
+
+        if (isValueField(field)) {
+            ctx.body.field = await updateFieldValue(
+                ctx,
                 field,
-                'transformers[0].args[0].value',
-                requestedNewCharacteristics[name],
+                requestedNewCharacteristics[field.name],
             );
-            ctx.body.field = await ctx.field.updateOneById(
-                field._id,
-                updatedField,
+        }
+
+        if (isCompositeField(field)) {
+            const composedFields = await Promise.all(
+                field.composedOf.fields.map(ctx.field.findOneByName),
+            );
+
+            await Promise.all(
+                composedFields.map(async composedField => {
+                    if (isValueField(composedField)) {
+                        await updateFieldValue(
+                            ctx,
+                            composedField,
+                            requestedNewCharacteristics[composedField.name],
+                        );
+                    }
+                }),
             );
         }
     }
+
     const characteristics = await ctx.publishedCharacteristic.findLastVersion();
 
     const newCharacteristics = Object.keys(characteristics).reduce(

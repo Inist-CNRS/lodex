@@ -43,6 +43,7 @@ export class OntologyComponent extends Component {
                         autoWidth
                         value={filter}
                         onChange={this.handleFilterChange}
+                        style={{ width: 400 }}
                     >
                         <MenuItem
                             value={ALL}
