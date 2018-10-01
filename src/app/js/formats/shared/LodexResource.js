@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { StyleSheet, css } from 'aphrodite/no-important';
 import { Link } from 'react-router-dom';
-import { getFullResourceUri, isLocalURL } from '../../../../common/uris';
+import { isLocalURL } from '../../../../common/uris';
 
 const styles = StyleSheet.create({
     contentTitle: {
@@ -48,26 +48,23 @@ const LodexResource = ({ id, url, title, summary }) => {
         </div>
     );
 
-    if (!isLocalURL(id)) {
+    if (isLocalURL(id)) {
         return (
             <div id={id}>
-                <Link
-                    className={css(styles.contentLink)}
-                    to={getFullResourceUri({ uri: id })}
-                >
-                    {content}
-                </Link>
-            </div>
-        );
-    } else {
-        return (
-            <div id={id}>
-                <Link className={css(styles.contentLink)} href={url}>
+                <Link className={css(styles.contentLink)} to={id}>
                     {content}
                 </Link>
             </div>
         );
     }
+
+    return (
+        <div id={id}>
+            <a className={css(styles.contentLink)} href={url}>
+                {content}
+            </a>
+        </div>
+    );
 };
 
 LodexResource.propTypes = {

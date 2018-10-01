@@ -8,8 +8,8 @@ export const isURL = v =>
 export const isLocalURL = v =>
     (typeof v === 'string' &&
         (v.startsWith('/api/') ||
-            v.startsWith('/uid:') ||
-            v.startsWith('/ark:'))) ||
+            v.startsWith('uid:') ||
+            v.startsWith('ark:'))) ||
     false;
 
 export const canonicalURL = u => {
