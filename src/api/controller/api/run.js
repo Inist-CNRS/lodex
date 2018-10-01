@@ -58,6 +58,7 @@ export const runRoutine = async (ctx, routineCalled) => {
 
     let result;
     if (cached) {
+        ctx.etag = `W/"${uniqkey}"`;
         result = cached;
     } else {
         const input = new PassThrough({ objectMode: true });
