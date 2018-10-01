@@ -110,6 +110,7 @@ class FieldEditionWizardComponent extends Component {
             steps = [
                 <StepIdentity
                     key={'identity'}
+                    id="step-identity"
                     index={0}
                     active={step === 0}
                     field={field}

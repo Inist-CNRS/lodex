@@ -21,7 +21,23 @@ export const importDataset = (
     cy.get('tbody').should('have.text', expectedData.join(''));
 };
 
-export const addColumn = columnName => {
+const fillStepValueConcatColumn = (value, index) => {
+    cy.get(`#select-column-${index}`).click();
+    cy
+        .get('div[role="menu"]')
+        .contains(value)
+        .click();
+};
+
+const fillStepDisplayFormat = format => {
+    cy.get('#step-value-format').click();
+    cy
+        .get(`div[role="menu"] div[data-value="${format}"]`)
+        .parent()
+        .click();
+};
+
+export const addColumn = (columnName, options = {}) => {
     const name = columnName.replace(' ', '-');
     cy.get('.btn-add-column button').click();
     cy.get('.btn-add-column-from-dataset button').click();
@@ -35,6 +51,23 @@ export const addColumn = columnName => {
             ].join(''),
         )
         .click();
+
+    if (options.composedOf && options.composedOf.length > 1) {
+        cy.get('#step-value').click();
+        cy.get('#step-value-concat input[type="radio"]').click();
+
+        options.composedOf.forEach(fillStepValueConcatColumn);
+    }
+
+    if (options.display) {
+        cy.get('#step-display').click();
+        const { format } = options.display;
+
+        if (format) {
+            fillStepDisplayFormat(format);
+        }
+    }
+
     cy.get('.btn-save').click();
     cy.get('.wizard').should('not.exist');
 };
@@ -58,6 +91,12 @@ export const publish = () => {
 export const goToPublishedResources = () => {
     cy.get('.data-published a[href="/"]').click();
     cy.location('pathname').should('equal', '/');
+};
+
+export const goToModelPage = () => {
+    cy.get('.appbar a[href="#/ontology"]').click();
+    cy.location('pathname').should('equal', '/admin');
+    cy.location('hash').should('equal', '#/ontology');
 };
 
 export const importModel = (filename, mimeType = 'application/json') => {

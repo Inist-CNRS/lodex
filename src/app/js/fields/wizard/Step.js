@@ -11,6 +11,7 @@ import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { FIELD_FORM_NAME } from '../';
 
 export const StepComponent = ({
+    id,
     active,
     completed,
     disabled,
@@ -24,6 +25,7 @@ export const StepComponent = ({
     p: polyglot,
 }) => (
     <Step
+        id={id}
         active={active}
         completed={completed}
         disabled={disabled}
@@ -38,6 +40,7 @@ export const StepComponent = ({
 );
 
 StepComponent.propTypes = {
+    id: PropTypes.string,
     // The following are props injected by the MUI Stepper component
     active: PropTypes.bool,
     completed: PropTypes.bool,
@@ -54,6 +57,7 @@ StepComponent.propTypes = {
 };
 
 StepComponent.defaultProps = {
+    id: null,
     active: false,
     canSelectStep: false,
     completed: false,

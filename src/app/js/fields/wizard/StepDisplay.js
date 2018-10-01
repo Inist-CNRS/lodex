@@ -19,7 +19,7 @@ import FieldWidthInput from '../FieldWidthInput';
 import { COVERS, COVER_DATASET } from '../../../../common/cover';
 
 export const StepDisplayComponent = ({ cover, p: polyglot, ...props }) => (
-    <Step label="field_wizard_step_display" {...props}>
+    <Step id="step-display" label="field_wizard_step_display" {...props}>
         <FieldDisplayInListInput />
         <FieldDisplayInResourceInput />
         {cover === COVER_DATASET && <FieldDisplayInGraphInput />}
