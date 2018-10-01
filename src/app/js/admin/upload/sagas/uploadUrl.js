@@ -3,7 +3,7 @@ import { call, put, select, takeEvery } from 'redux-saga/effects';
 import { fromUser } from '../../../sharedSelectors';
 import { fromUpload } from '../../selectors';
 import { UPLOAD_URL, uploadError, uploadSuccess } from '../';
-import fetch from '../../../lib/fetch';
+import fetch from '../../../../../common/lib/fetch';
 
 export function* handleUploadUrl() {
     const url = yield select(fromUpload.getUrl);

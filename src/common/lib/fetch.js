@@ -1,6 +1,6 @@
 import fetch from 'fetch-with-proxy';
 
-import { getHost } from '../../../common/uris';
+import { getHost } from '../uris';
 
 export default ({ url, ...config }, mode = 'json') => {
     const fullUrl = url.startsWith('http') ? url : getHost() + url;

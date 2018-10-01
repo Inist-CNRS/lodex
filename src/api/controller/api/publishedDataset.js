@@ -4,7 +4,7 @@ import koaBodyParser from 'koa-bodyparser';
 
 import { PROPOSED } from '../../../common/propositionStatus';
 import generateUri from '../../../common/transformers/AUTOGENERATE_URI';
-import ark from './ark';
+import ark, { prepareArk } from './ark';
 import updateFacetValue from '../../services/updateFacetValue';
 
 const app = new Koa();
@@ -190,6 +190,7 @@ app.use(koaBodyParser());
 app.use(route.get('/removed', getRemovedPage));
 app.use(route.get('/', getPage));
 app.use(route.put('/add_field', addFieldToResource));
+app.use(route.get('/ark', prepareArk));
 app.use(route.get('/ark', ark));
 app.use(async (ctx, next) => {
     if (!ctx.state.isAdmin) {

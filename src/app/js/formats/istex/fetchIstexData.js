@@ -1,4 +1,4 @@
-import fetch from '../../lib/fetch';
+import fetch from '../../../../common/lib/fetch';
 import composeAsync from '../../../../common/lib/composeAsync';
 import URL from 'url';
 import { ISTEX_API_URL as istexApiUrl } from '../../../../common/externals';

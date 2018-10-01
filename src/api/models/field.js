@@ -4,7 +4,11 @@ import { ObjectID } from 'mongodb';
 
 import { validateField as validateFieldIsomorphic } from '../../common/validateFields';
 import { URI_FIELD_NAME } from '../../common/uris';
-import { COVER_DOCUMENT, COVER_COLLECTION } from '../../common/cover';
+import {
+    COVER_DOCUMENT,
+    COVER_COLLECTION,
+    COVER_DATASET,
+} from '../../common/cover';
 import generateUid from '../services/generateUid';
 
 export const buildInvalidPropertiesMessage = name =>
@@ -39,6 +43,19 @@ export default async db => {
     collection.findAll = async () =>
         collection
             .find({})
+            .sort({ position: 1 })
+            .toArray();
+
+    collection.findPrefetchResourceFields = async () =>
+        collection
+            .find({
+                cover: { $ne: COVER_DATASET },
+                format: {
+                    args: {
+                        prefetch: { $exists: true },
+                    },
+                },
+            })
             .sort({ position: 1 })
             .toArray();
 

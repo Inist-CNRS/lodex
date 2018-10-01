@@ -1,6 +1,6 @@
 import { call, put, race, select, take } from 'redux-saga/effects';
 import { replace } from 'connected-react-router';
-import fetch from '../fetch';
+import fetch from '../../../../common/lib/fetch';
 import { logout } from '../../user';
 import { getCurrentLocation } from '../../sharedSelectors';
 
