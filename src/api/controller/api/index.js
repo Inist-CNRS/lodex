@@ -13,7 +13,7 @@ import facet from './facet';
 import fieldRoutes from './field';
 import login from './login';
 import parsing from './parsing';
-import publication from './publication';
+import publication, { preparePublication } from './publication';
 import publish from './publish';
 import publishedDataset from './publishedDataset';
 import dataset from './dataset';
@@ -63,6 +63,7 @@ app.use(mount('/export', exportPublishedDataset));
 app.use(mount('/facet', facet));
 app.use(mount('/widget', widget));
 app.use(mount('/run', run));
+app.use(route.get('/publication', preparePublication));
 app.use(route.get('/publication', publication));
 
 app.use(mount('/publishedDataset', publishedDataset));

@@ -4,7 +4,7 @@ import InistArk from 'inist-ark';
 import getFromArkUri from './ark';
 
 describe('ark routes', () => {
-    describe.only('getFromArkUri', () => {
+    describe('getFromArkUri', () => {
         it('should return 404 if uri does not match an ark URI', async () => {
             const ctx = {
                 path: 'invalid uri',
@@ -108,7 +108,7 @@ describe('ark routes', () => {
                         ]),
                     ),
                 },
-                fetch: createSpy().andReturn(
+                prefetchFormatData: createSpy().andReturn(
                     Promise.resolve('prefetched data'),
                 ),
             };
@@ -124,22 +124,37 @@ describe('ark routes', () => {
                         field_with_prefetch2: 'some_value',
                     },
                 ],
-                prefetchData: {
-                    field_with_prefetch1: 'prefetched data',
-                    field_with_prefetch2: 'prefetched data',
-                },
+                prefetchedData: 'prefetched data',
             });
             expect(ctx.publishedDataset.findByUri).toHaveBeenCalledWith(
                 'ark_custom_uri',
             );
             expect(ctx.field.findPrefetchResourceFields).toHaveBeenCalled();
-            expect(ctx.fetch).toHaveBeenCalledWith({
-                url:
-                    'https://api.istex.fr/document/?q=(host.issn%3A%22issn_value%22)size=10&output=*',
-            });
-            expect(ctx.fetch).toHaveBeenCalledWith({
-                url: 'https://api.istex.fr/some_value',
-            });
+            expect(ctx.prefetchFormatData).toHaveBeenCalledWith(
+                [
+                    {
+                        name: 'field_with_prefetch1',
+                        format: {
+                            args: {
+                                prefetch:
+                                    'https://api.istex.fr/document/?q=(host.issn%3A%22__VALUE__%22)size=10&output=*',
+                            },
+                        },
+                    },
+                    {
+                        name: 'field_with_prefetch2',
+                        format: {
+                            args: {
+                                prefetch: 'https://api.istex.fr/__VALUE__',
+                            },
+                        },
+                    },
+                ],
+                {
+                    field_with_prefetch1: 'issn_value',
+                    field_with_prefetch2: 'some_value',
+                },
+            );
         });
 
         it('should not prefetch data for value if applyFormat is true but there is no prefetch field', async () => {

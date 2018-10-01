@@ -1,6 +1,13 @@
 import progress from '../../services/progress';
 import { PENDING } from '../../../common/progressStatus';
 
+import preFetchFormatData from '../../services/preFetchFormatData';
+
+export const preparePublication = async (ctx, next) => {
+    ctx.preFetchFormatData = preFetchFormatData;
+    await next();
+};
+
 export default async ctx => {
     const publishedDatasetCount = await ctx.publishedDataset.count();
     const characteristics = await ctx.publishedCharacteristic.findAllVersions(
@@ -17,11 +24,28 @@ export default async ctx => {
 
     const fieldsWithCount = await Promise.all(fieldsWithCountPromises);
 
+    const published =
+        publishedDatasetCount > 0 || progress.getProgress().status !== PENDING;
+
+    if (!published) {
+        ctx.body = {
+            characteristics,
+            fields: fieldsWithCount,
+            published,
+        };
+        return;
+    }
+
+    const prefetchFields = await ctx.field.findPrefetchDatasetFields();
+
+    const prefetchedData = prefetchFields.length
+        ? await ctx.preFetchFormatData(prefetchFields, characteristics[0])
+        : {};
+
     ctx.body = {
         characteristics,
         fields: fieldsWithCount,
-        published:
-            publishedDatasetCount > 0 ||
-            progress.getProgress().status !== PENDING,
+        prefetchedData,
+        published,
     };
 };

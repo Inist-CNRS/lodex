@@ -1,11 +1,11 @@
 import InistArk from 'inist-ark';
 
-import fetch from '../../../common/lib/fetch';
+import prefetchFormatData from '../../services/preFetchFormatData';
 
 const ARK_URI = new RegExp(/ark:\/(\d{5,})/, 'i');
 
 export const prepareArk = async (ctx, next) => {
-    ctx.fetch = fetch;
+    ctx.prefetchFormatData = prefetchFormatData;
     await next();
 };
 
@@ -65,24 +65,13 @@ export default async ctx => {
         return;
     }
 
-    const prefetchedResults = await Promise.all(
-        fields.map(async field => {
-            const prefetchData = await ctx.fetch({
-                url: field.format.args.prefetch.replace(
-                    '__VALUE__',
-                    resource.versions.slice(-1)[0][field.name],
-                ),
-            });
-
-            return { [field.name]: prefetchData };
-        }),
+    const prefetchedData = await ctx.prefetchFormatData(
+        fields,
+        resource.versions.slice(-1)[0],
     );
 
     ctx.body = {
         ...resource,
-        prefetchData: prefetchedResults.reduce((acc, keyValue) => ({
-            ...acc,
-            ...keyValue,
-        })),
+        prefetchedData,
     };
 };

@@ -49,7 +49,20 @@ export default async db => {
     collection.findPrefetchResourceFields = async () =>
         collection
             .find({
-                cover: { $ne: COVER_DATASET },
+                cover: COVER_DATASET,
+                format: {
+                    args: {
+                        prefetch: { $exists: true },
+                    },
+                },
+            })
+            .sort({ position: 1 })
+            .toArray();
+
+    collection.findPrefetchDatasetFields = async () =>
+        collection
+            .find({
+                cover: { $eq: COVER_DATASET },
                 format: {
                     args: {
                         prefetch: { $exists: true },
