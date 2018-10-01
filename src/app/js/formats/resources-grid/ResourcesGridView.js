@@ -80,7 +80,7 @@ class ResourcesGridView extends Component {
             <div>
                 <ul className={css(styles.list)}>
                     {data.slice(0, this.state.more).map((entry, index) => {
-                        const key = String(index).concat('ResourcesGrid');
+                        const key = `${index}-resources-grid`;
                         return (
                             <li key={key} className={css(styles.item)}>
                                 <div className={css(styles.content)}>
