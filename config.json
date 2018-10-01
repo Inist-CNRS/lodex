@@ -5,7 +5,7 @@
       "username": "user",
       "password": "secret"
   },
-  "pluginsURL" : "https://raw.githubusercontent.com/Inist-CNRS/lodex-extented/master/",
+  "pluginsURL" : "https://plug-in.lodex.inist.fr/",
   "routines": [
     "hello-world",
     "all-fields",
