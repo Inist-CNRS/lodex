@@ -201,6 +201,27 @@ describe('field routes', () => {
 
         it('should pass the position ctx.field.create if available', async () => {
             getUploadedFields = createSpy().andReturn([
+                { name: 'field1', label: 'Field 1', position: 0 },
+                { name: 'field2', label: 'Field 2', position: 1 },
+            ]);
+
+            await importFields(getUploadedFields)(ctx);
+
+            expect(ctx.field.create).toHaveBeenCalledWith(
+                { label: 'Field 1', position: 0 },
+                'field1',
+                false,
+            );
+
+            expect(ctx.field.create).toHaveBeenCalledWith(
+                { label: 'Field 2', position: 1 },
+                'field2',
+                false,
+            );
+        });
+
+        it('should rearrange the position to avoid gap', async () => {
+            getUploadedFields = createSpy().andReturn([
                 { name: 'field1', label: 'Field 1', position: 5 },
                 { name: 'field2', label: 'Field 2', position: 6 },
             ]);
@@ -208,13 +229,13 @@ describe('field routes', () => {
             await importFields(getUploadedFields)(ctx);
 
             expect(ctx.field.create).toHaveBeenCalledWith(
-                { label: 'Field 1', position: 5 },
+                { label: 'Field 1', position: 0 },
                 'field1',
                 false,
             );
 
             expect(ctx.field.create).toHaveBeenCalledWith(
-                { label: 'Field 2', position: 6 },
+                { label: 'Field 2', position: 1 },
                 'field2',
                 false,
             );
