@@ -39,17 +39,19 @@ app.use(
 );
 app.use(jwt({ secret: auth.headerSecret, key: 'header', passthrough: true }));
 
+const isDevelopment = process.env.NODE_ENV === 'development';
+
 app.use(async (ctx, next) => {
     if (
         get(ctx, 'state.cookie.role') === 'admin' &&
-        get(ctx, 'state.header.role') === 'admin'
+        (isDevelopment || get(ctx, 'state.header.role') === 'admin')
     ) {
         ctx.state.isAdmin = true;
     }
     if (!ctx.ezMasterConfig.userAuth) {
         return next();
     }
-    if (!ctx.state.cookie || !ctx.state.header) {
+    if ((!isDevelopment && !ctx.state.cookie) || !ctx.state.header) {
         ctx.status = 401;
         ctx.cookies.set('lodex_token', '', { expires: new Date() });
         ctx.body = 'No authentication token found';
@@ -69,9 +71,9 @@ app.use(mount('/publishedDataset', publishedDataset));
 
 app.use(async (ctx, next) => {
     if (
-        !ctx.state.cookie ||
+        (!isDevelopment && !ctx.state.cookie) ||
         !ctx.state.header ||
-        ctx.state.cookie.role === 'user' ||
+        (!isDevelopment && ctx.state.cookie.role === 'user') ||
         ctx.state.header.role === 'user'
     ) {
         ctx.status = 401;
