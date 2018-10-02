@@ -73,9 +73,7 @@ export default {
             __EN__: JSON.stringify(translations.english),
             __FR__: JSON.stringify(translations.french),
             'process.env': {
-                NODE_ENV: JSON.stringify(
-                    isDevelopment ? process.env.NODE_ENV : 'production',
-                ),
+                NODE_ENV: JSON.stringify(process.env.NODE_ENV),
             },
             LOADERS: JSON.stringify(loaders),
         }),
