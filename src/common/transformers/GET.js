@@ -2,9 +2,6 @@ import _get from 'lodash.get';
 import { transformerWithArg } from './transformer';
 
 export const get = (value, path) => {
-    if (!value) {
-        return '';
-    }
     return _get(value, path, '');
 };
 
