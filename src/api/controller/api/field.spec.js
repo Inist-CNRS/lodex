@@ -299,7 +299,11 @@ describe('field routes', () => {
 
         it('update the published facets', async () => {
             await putField(ctx, 'id');
-            expect(ctx.publishFacets).toHaveBeenCalled();
+            expect(ctx.publishFacets).toHaveBeenCalledWith(
+                ctx,
+                ['update result'],
+                false,
+            );
         });
     });
 
