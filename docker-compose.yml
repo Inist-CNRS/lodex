@@ -1,17 +1,5 @@
 version: "2"
 services:
-    node:
-        image: node:8.9.1
-        volumes:
-            - .:/app
-        working_dir: /app
-        environment:
-            http_proxy: ${http_proxy}
-            https_proxy: ${https_proxy}
-            no_proxy: "localhost,127.0.0.1,"
-            NODE_ENV: ${NODE_ENV}
-            EZMASTER_PUBLIC_URL: ${EZMASTER_PUBLIC_URL}
-
     api:
         image: node:8.9.1
         volumes:
