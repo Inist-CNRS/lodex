@@ -5,7 +5,7 @@
       "username": "user",
       "password": "secret"
   },
-  "pluginsURL" : "https://raw.githubusercontent.com/Inist-CNRS/lodex-extented/master/",
+  "pluginsURL" : "https://plug-in.lodex.inist.fr/",
   "routines": [
     "hello-world",
     "all-fields",
@@ -17,6 +17,9 @@
     "distinct-by",
     "pairing-with",
     "graph-by",
+    "classif-with",
+    "tree-of",
+    "distinct-by-number",
     "distinct-ISO3166-1-alpha3-from",
     "distinct-ISO3166-1-alpha2-from"
   ],

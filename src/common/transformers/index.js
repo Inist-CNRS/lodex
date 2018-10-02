@@ -25,6 +25,7 @@ import UNIQ from './UNIQ';
 import FORMAT from './FORMAT';
 import PARSE from './PARSE';
 import SELECT from './SELECT';
+import GET from './GET';
 
 const transformers = {
     AUTOGENERATE_URI: memoizeTransformer(AUTOGENERATE_URI),
@@ -53,6 +54,7 @@ const transformers = {
     FORMAT: memoizeTransformer(FORMAT),
     PARSE: memoizeTransformer(PARSE),
     SELECT: memoizeTransformer(SELECT),
+    GET: memoizeTransformer(GET),
     LINK: () => () => {
         console.warn(
             'DeprecationWarning: The LINK transformer is no longer supported',
@@ -90,6 +92,7 @@ const transformersMetas = [
     FORMAT,
     PARSE,
     SELECT,
+    GET,
 ]
     .map(transformation => transformation.getMetas())
     .sort((x, y) => x.name.localeCompare(y.name));
