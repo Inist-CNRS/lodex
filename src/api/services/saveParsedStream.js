@@ -31,7 +31,7 @@ const saveParsedStreamFactory = ctx =>
             });
 
             await ctx.publishDocuments(ctx, count, collectionCoverFields);
-            await ctx.publishFacets(ctx, fields);
+            await ctx.publishFacets(ctx, fields, false);
 
             return ctx.dataset.count();
         } catch (error) {

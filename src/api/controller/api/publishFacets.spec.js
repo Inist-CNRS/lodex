@@ -41,7 +41,7 @@ describe('publishFacets', () => {
     ];
 
     before(async () => {
-        await publishFacets(ctx, facetFields);
+        await publishFacets(ctx, facetFields, false);
     });
 
     it('should call publishedDataset.getFacetsForField for each facet field', () => {

@@ -10,6 +10,6 @@ export default async ctx => {
 
     const datasetCoverFields = fields.filter(c => c.cover === 'dataset');
     await ctx.publishCharacteristics(ctx, datasetCoverFields, count);
-    await ctx.publishFacets(ctx, fields);
+    await ctx.publishFacets(ctx, fields, true);
     progress.finish();
 };

@@ -126,10 +126,11 @@ describe('saveParsedStream', () => {
         });
 
         it('should have called publishFacets', () => {
-            expect(ctx.publishFacets).toHaveBeenCalledWith(ctx, [
-                { cover: 'collection' },
-                { cover: 'dataset' },
-            ]);
+            expect(ctx.publishFacets).toHaveBeenCalledWith(
+                ctx,
+                [{ cover: 'collection' }, { cover: 'dataset' }],
+                false,
+            );
         });
 
         it('should have called saveStream with parsedStream', () => {
