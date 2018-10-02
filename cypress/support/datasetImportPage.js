@@ -89,7 +89,10 @@ export const publish = () => {
 };
 
 export const goToPublishedResources = () => {
-    cy.get('.data-published a[href="/"]').click();
+    cy
+        .get('.data-published a')
+        .contains('Go to my published data')
+        .click();
     cy.location('pathname').should('equal', '/');
 };
 
