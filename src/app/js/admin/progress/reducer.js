@@ -1,6 +1,7 @@
-import { createAction, handleActions } from 'redux-actions';
+import { createAction, handleActions, combineActions } from 'redux-actions';
 import { PENDING, STARTING } from '../../../../common/progressStatus';
 import { PUBLISH } from '../publish';
+import { UPLOAD_FILE } from '../upload';
 
 export const UPDATE_PROGRESS = 'UPDATE_PROGRESS';
 export const ERROR_PROGRESS = 'ERROR_PROGRESS';
@@ -17,21 +18,23 @@ export const defaultState = {
     progress: undefined,
     target: undefined,
     error: undefined,
+    symbol: undefined,
 };
 
 export default handleActions(
     {
         [UPDATE_PROGRESS]: (
             state,
-            { payload: { status, progress, target } },
+            { payload: { status, progress, target, symbol } },
         ) => ({
             ...state,
             status,
             progress,
             target,
+            symbol,
             error: undefined,
         }),
-        [PUBLISH]: state => ({
+        [combineActions(PUBLISH, UPLOAD_FILE)]: state => ({
             ...state,
             status: STARTING,
             progress: undefined,

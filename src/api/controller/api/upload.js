@@ -6,6 +6,9 @@ import koaBodyParser from 'koa-bodyparser';
 import request from 'request';
 import ezs from 'ezs';
 
+import progress from '../../services/progress';
+import { PENDING, UPLOADING_DATASET } from '../../../common/progressStatus';
+
 import Script from '../../services/script';
 import saveStream from '../../services/saveStream';
 import publishDocuments from '../../services/publishDocuments';
@@ -15,7 +18,7 @@ import {
     checkFileExists,
     mergeChunks,
     clearChunks,
-    areFileChunksComplete,
+    getUploadedFileSize,
     createReadStream,
 } from '../../services/fsHelpers';
 import publishFacets from './publishFacets';
@@ -31,11 +34,6 @@ export const getParser = async parserName => {
 
     const [, , , script] = currentLoader;
 
-    /*
-    const configKey = `loader.${parserName}`;
-    const configObj = config.has(configKey) ? config.get(configKey) : {};
-    ezs.config(configKey, configObj);
-    */
     return stream =>
         stream.pipe(ezs.fromString(script)).pipe(
             ezs((data, feed) => {
@@ -68,7 +66,7 @@ export const prepareUpload = async (ctx, next) => {
     ctx.saveStream = saveStream(ctx.dataset.insertMany.bind(ctx.dataset));
     ctx.checkFileExists = checkFileExists;
     ctx.saveStreamInFile = saveStreamInFile;
-    ctx.areFileChunksComplete = areFileChunksComplete;
+    ctx.getUploadedFileSize = getUploadedFileSize;
     ctx.mergeChunks = mergeChunks;
     ctx.clearChunks = clearChunks;
     ctx.createReadStream = createReadStream;
@@ -117,11 +115,24 @@ export async function uploadChunkMiddleware(ctx, parserName, next) {
             totalSize,
         } = ctx.resumable;
 
+        if (progress.getProgress().status === PENDING) {
+            progress.start(UPLOADING_DATASET, 100, '%');
+        }
+
         if (!await ctx.checkFileExists(chunkname, currentChunkSize)) {
             await ctx.saveStreamInFile(stream, chunkname);
         }
 
-        if (await ctx.areFileChunksComplete(filename, totalChunks, totalSize)) {
+        const uploadedFileSize = await ctx.getUploadedFileSize(
+            filename,
+            totalChunks,
+        );
+
+        const progression = Math.round(uploadedFileSize * 100 / totalSize);
+
+        progress.setProgress(progression === 100 ? 99 : progression);
+
+        if (uploadedFileSize === totalSize) {
             await next();
             return;
         }
@@ -147,6 +158,7 @@ export async function uploadFileMiddleware(ctx, parserName) {
     ctx.body = {
         totalLines: await ctx.saveParsedStream(parsedStream),
     };
+    progress.finish();
     ctx.status = 200;
 }
 

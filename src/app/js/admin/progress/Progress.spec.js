@@ -7,6 +7,8 @@ import { Progress } from './Progress';
 import { PENDING, STARTING } from '../../../../common/progressStatus';
 import LinearProgress from 'material-ui/LinearProgress';
 
+const identity = x => x;
+
 describe('Progress', () => {
     const defaultProps = {
         loadProgress: () => null,
@@ -14,7 +16,10 @@ describe('Progress', () => {
         target: 0,
         progress: 0,
         p: {
-            t: v => v,
+            t: identity,
+            tc: identity,
+            tu: identity,
+            tm: identity,
         },
     };
 
@@ -45,6 +50,23 @@ describe('Progress', () => {
         expect(linearProgress.prop('max')).toBe(1000);
         expect(linearProgress.prop('value')).toBe(700);
         expect(linearProgress.prop('mode')).toBe('determinate');
-        expect(wrapper.find('.progress').text()).toContain('700 / 1000');
+        expect(wrapper.find('.progress p').text()).toBe('700 / 1000');
+    });
+
+    it('should render the symbol if specified', () => {
+        const wrapper = shallow(
+            <Progress
+                {...defaultProps}
+                progress={70}
+                target={100}
+                symbol="%"
+            />,
+        );
+
+        const linearProgress = wrapper.find(LinearProgress);
+        expect(linearProgress.prop('value')).toBe(70);
+        expect(linearProgress.prop('max')).toBe(100);
+        expect(linearProgress.prop('mode')).toBe('determinate');
+        expect(wrapper.find('.progress p').text()).toBe('70 / 100 %');
     });
 });

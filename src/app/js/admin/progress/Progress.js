@@ -15,6 +15,29 @@ export class Progress extends Component {
     componentWillMount() {
         this.props.loadProgress();
     }
+
+    renderProgressText = () => {
+        const { progress, target, symbol } = this.props;
+
+        if (!progress || !target) {
+            return null;
+        }
+
+        if (symbol) {
+            return (
+                <p>
+                    {progress} / {target} {symbol}
+                </p>
+            );
+        }
+
+        return (
+            <p>
+                {progress} / {target}
+            </p>
+        );
+    };
+
     render() {
         const { status, target, progress, p: polyglot } = this.props;
         return (
@@ -26,16 +49,12 @@ export class Progress extends Component {
             >
                 <div className="progress">
                     <LinearProgress
-                        mode={target && progress && 'determinate'}
+                        mode="determinate"
                         min={0}
-                        max={target}
-                        value={progress}
+                        max={target || 0}
+                        value={progress || 0}
                     />
-                    {progress && target ? (
-                        <p>
-                            {progress} / {target}
-                        </p>
-                    ) : null}
+                    {this.renderProgressText()}
                 </div>
             </Dialog>
         );
@@ -46,8 +65,13 @@ Progress.propTypes = {
     status: PropTypes.string.isRequired,
     target: PropTypes.number.isRequired,
     progress: PropTypes.number.isRequired,
+    symbol: PropTypes.string,
     loadProgress: PropTypes.func.isRequired,
     p: polyglotPropTypes,
+};
+
+Progress.defaultProps = {
+    symbol: null,
 };
 
 const mapStateToProps = state => ({
