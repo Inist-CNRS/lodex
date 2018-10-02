@@ -27,7 +27,7 @@ export const StepValueValueComponent = ({
     selected,
     value,
 }) => (
-    <div>
+    <div id="step-value-value">
         <RadioButton
             className="radio_value"
             label={polyglot.t('a_value')}

@@ -6,16 +6,16 @@ import { field as fieldPropTypes } from '../../propTypes';
 import FieldComposedOf from '../FieldComposedOf';
 import FieldAnnotation from '../FieldAnnotation';
 
-export const StepIdentityComponent = ({ field, fields, ...props }) => (
-    <Step label="field_wizard_step_semantic" {...props}>
+export const StepSemanticsComponent = ({ field, fields, ...props }) => (
+    <Step id="step-semantics" label="field_wizard_step_semantic" {...props}>
         <FieldAnnotation field={field} fields={fields} />
         <FieldComposedOf field={field} fields={fields} />
     </Step>
 );
 
-StepIdentityComponent.propTypes = {
+StepSemanticsComponent.propTypes = {
     field: fieldPropTypes.isRequired,
     fields: PropTypes.arrayOf(fieldPropTypes).isRequired,
 };
 
-export default StepIdentityComponent;
+export default StepSemanticsComponent;

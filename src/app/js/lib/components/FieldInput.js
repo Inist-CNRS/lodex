@@ -6,6 +6,7 @@ import { Field } from 'redux-form';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 
 export const FieldInputComponent = ({
+    id,
     component,
     labelKey,
     name,
@@ -13,6 +14,7 @@ export const FieldInputComponent = ({
     ...props
 }) => (
     <Field
+        id={id}
         name={name}
         component={component}
         label={polyglot.t(labelKey)}
@@ -21,11 +23,16 @@ export const FieldInputComponent = ({
 );
 
 FieldInputComponent.propTypes = {
+    id: PropTypes.string,
     component: PropTypes.oneOfType([PropTypes.func, PropTypes.string])
         .isRequired,
     labelKey: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     p: polyglotPropTypes.isRequired,
+};
+
+FieldInputComponent.defaultProps = {
+    id: null,
 };
 
 export default translate(FieldInputComponent);

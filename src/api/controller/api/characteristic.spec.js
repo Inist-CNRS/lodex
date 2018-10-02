@@ -240,6 +240,165 @@ describe('characteristic routes', () => {
                 });
             });
         });
+
+        describe('When name received and updatedField is a composed field with value fields', () => {
+            const characteristics = {
+                foo: 'new foo',
+                bar: 'new bar',
+                iShouldntBeHere: 'iShouldntBeHere',
+                updatedField: 'unchanged value',
+            };
+
+            const newVersion = { newVersion: true };
+
+            const ctx = {
+                request: {
+                    body: {
+                        ...characteristics,
+                        name: 'updatedField',
+                    },
+                },
+                publishedCharacteristic: {
+                    addNewVersion: createSpy().andReturn(newVersion),
+                    findLastVersion: createSpy().andReturn({
+                        foo: 'old foo',
+                        bar: 'bar value',
+                        updatedField: 'unchanged value',
+                        doNotUpdateMe: 'doNotUpdateMe value',
+                    }),
+                },
+                field: {
+                    findByNames: createSpy().andReturn({
+                        updatedField: {
+                            _id: 'id',
+                            name: 'updatedField',
+                            transformers: [
+                                {
+                                    operation: 'VALUE',
+                                    args: [{ value: 'unchanged value' }],
+                                },
+                            ],
+                            composedOf: {
+                                isComposedOf: true,
+                                fields: ['foo', 'bar'],
+                            },
+                        },
+                        foo: {
+                            _id: 'id',
+                            name: 'foo',
+                            transformers: [
+                                {
+                                    operation: 'VALUE',
+                                    args: [{ value: characteristics.foo }],
+                                },
+                            ],
+                        },
+                        bar: {
+                            _id: 'id',
+                            name: 'bar',
+                            transformers: [
+                                {
+                                    operation: 'VALUE',
+                                    args: [{ value: characteristics.bar }],
+                                },
+                            ],
+                        },
+                    }),
+                    findOneByName: createSpy().andReturn({
+                        _id: 'id',
+                        name: 'updatedField',
+                        transformers: [
+                            {
+                                operation: 'VALUE',
+                                args: [{ value: 'unchanged value' }],
+                            },
+                        ],
+                        composedOf: {
+                            isComposedOf: true,
+                            fields: ['foo', 'bar'],
+                        },
+                    }),
+                    updateOneById: createSpy().andReturn('updatedField'),
+                },
+            };
+
+            it('should call ctx.field.findOneByName with name', async () => {
+                await updateCharacteristics(ctx);
+
+                expect(ctx.field.findOneByName).toHaveBeenCalledWith(
+                    'updatedField',
+                );
+            });
+
+            it('should call ctx.field.updateOneById with updated field with new value as transformer args.value ', async () => {
+                await updateCharacteristics(ctx);
+
+                expect(ctx.field.updateOneById).toHaveBeenCalledWith('id', {
+                    _id: 'id',
+                    name: 'updatedField',
+                    transformers: [
+                        {
+                            operation: 'VALUE',
+                            args: [{ value: 'unchanged value' }],
+                        },
+                    ],
+                    composedOf: {
+                        isComposedOf: true,
+                        fields: ['foo', 'bar'],
+                    },
+                });
+                expect(ctx.field.updateOneById).toHaveBeenCalledWith('id', {
+                    _id: 'id',
+                    name: 'foo',
+                    transformers: [
+                        {
+                            operation: 'VALUE',
+                            args: [{ value: 'new foo' }],
+                        },
+                    ],
+                });
+                expect(ctx.field.updateOneById).toHaveBeenCalledWith('id', {
+                    _id: 'id',
+                    name: 'bar',
+                    transformers: [
+                        {
+                            operation: 'VALUE',
+                            args: [{ value: 'new bar' }],
+                        },
+                    ],
+                });
+            });
+
+            it('should call ctx.publishedCharacteristic.findLastVersion', async () => {
+                await updateCharacteristics(ctx);
+
+                expect(
+                    ctx.publishedCharacteristic.findLastVersion,
+                ).toHaveBeenCalled();
+            });
+
+            it('should call ctx.publishedCharacteristic.addNewVersion with a new version', async () => {
+                await updateCharacteristics(ctx);
+
+                expect(
+                    ctx.publishedCharacteristic.addNewVersion,
+                ).toHaveBeenCalledWith({
+                    foo: 'new foo',
+                    bar: 'new bar',
+                    updatedField: 'unchanged value',
+                    doNotUpdateMe: 'doNotUpdateMe value',
+                });
+            });
+
+            it('should set ctx.body to the result of ctx.publishedCharacteristic.addNewVersion and ctx.field.updateOneById', async () => {
+                await updateCharacteristics(ctx);
+
+                expect(ctx.body).toEqual({
+                    characteristics: newVersion,
+                    field: 'updatedField',
+                });
+            });
+        });
     });
 
     describe('createCharacteristic', () => {

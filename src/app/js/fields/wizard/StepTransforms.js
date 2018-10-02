@@ -5,7 +5,7 @@ import Step from './Step';
 import TransformerList from '../TransformerList';
 
 export const StepTransformComponent = props => (
-    <Step label="field_wizard_step_tranforms" {...props}>
+    <Step id="step-transformers" label="field_wizard_step_tranforms" {...props}>
         <FieldArray
             name="transformers"
             component={TransformerList}

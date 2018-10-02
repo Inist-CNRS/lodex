@@ -8,7 +8,7 @@ import FieldIsFacetInput from '../FieldIsFacetInput';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 
 export const StepSearchComponent = ({ p: polyglot, ...props }) => (
-    <Step label="field_wizard_step_search" {...props}>
+    <Step id="step-search" label="field_wizard_step_search" {...props}>
         <FieldIsSearchableInput />
         <FieldIsFacetInput />
     </Step>

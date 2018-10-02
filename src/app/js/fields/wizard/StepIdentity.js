@@ -17,7 +17,7 @@ import {
 import ClassList from '../ClassList';
 
 export const StepIdentityComponent = ({ field, p: polyglot, ...props }) => (
-    <Step label="field_wizard_step_identity" {...props}>
+    <Step id="step-identity" label="field_wizard_step_identity" {...props}>
         <FieldLabelInput />
         <Field
             name="cover"

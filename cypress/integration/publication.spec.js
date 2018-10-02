@@ -3,7 +3,7 @@ import * as homePage from '../support/homePage';
 import * as datasetImportPage from '../support/datasetImportPage';
 import { fillInputWithFixture } from '../support/forms';
 
-describe('Dataset Import Page', () => {
+describe('Dataset Publication', () => {
     beforeEach(logoutAndLogin);
 
     describe('Dataset Import', () => {
@@ -59,6 +59,28 @@ describe('Dataset Import Page', () => {
             cy.contains('["Row 2","Test 2"]').should('be.visible');
 
             datasetImportPage.publish();
+            datasetImportPage.goToPublishedResources();
+            homePage.goToGraphPage();
+
+            cy.contains('Row 1').should('be.visible');
+            cy.contains('Row 2').should('be.visible');
+        });
+    });
+
+    describe('Transformers & Formats', () => {
+        it('should display a composed field with a LIST format', () => {
+            homePage.goToAdminDashboard();
+
+            datasetImportPage.importDataset('dataset/simple.csv');
+            datasetImportPage.setUriColumnValue();
+            datasetImportPage.addColumn('Column 1', {
+                composedOf: ['Column 1', 'Column 2'],
+                display: {
+                    format: 'list',
+                },
+            });
+            datasetImportPage.publish();
+
             datasetImportPage.goToPublishedResources();
             homePage.goToGraphPage();
 
