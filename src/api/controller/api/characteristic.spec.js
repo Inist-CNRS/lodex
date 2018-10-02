@@ -268,34 +268,55 @@ describe('characteristic routes', () => {
                     }),
                 },
                 field: {
-                    findOneByName: createSpy().andCall(name => {
-                        if (name === 'updatedField') {
-                            return {
-                                _id: 'id',
-                                name: 'updatedField',
-                                transformers: [
-                                    {
-                                        operation: 'VALUE',
-                                        args: [{ value: 'unchanged value' }],
-                                    },
-                                ],
-                                composedOf: {
-                                    isComposedOf: true,
-                                    fields: ['foo', 'bar'],
-                                },
-                            };
-                        }
-
-                        return {
+                    findByNames: createSpy().andReturn({
+                        updatedField: {
                             _id: 'id',
-                            name,
+                            name: 'updatedField',
                             transformers: [
                                 {
                                     operation: 'VALUE',
-                                    args: [{ value: characteristics[name] }],
+                                    args: [{ value: 'unchanged value' }],
                                 },
                             ],
-                        };
+                            composedOf: {
+                                isComposedOf: true,
+                                fields: ['foo', 'bar'],
+                            },
+                        },
+                        foo: {
+                            _id: 'id',
+                            name: 'foo',
+                            transformers: [
+                                {
+                                    operation: 'VALUE',
+                                    args: [{ value: characteristics.foo }],
+                                },
+                            ],
+                        },
+                        bar: {
+                            _id: 'id',
+                            name: 'bar',
+                            transformers: [
+                                {
+                                    operation: 'VALUE',
+                                    args: [{ value: characteristics.bar }],
+                                },
+                            ],
+                        },
+                    }),
+                    findOneByName: createSpy().andReturn({
+                        _id: 'id',
+                        name: 'updatedField',
+                        transformers: [
+                            {
+                                operation: 'VALUE',
+                                args: [{ value: 'unchanged value' }],
+                            },
+                        ],
+                        composedOf: {
+                            isComposedOf: true,
+                            fields: ['foo', 'bar'],
+                        },
                     }),
                     updateOneById: createSpy().andReturn('updatedField'),
                 },
