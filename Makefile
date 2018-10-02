@@ -51,10 +51,16 @@ npm: ## allow to run dockerized npm command eg make npm 'install koa --save'
 	docker-compose run --rm node npm $(COMMAND_ARGS)
 
 test-api-unit: ## Run the API unit tests
-	NODE_ENV=test docker-compose run --rm test-api npm run test:api
+	NODE_ENV=test \
+	EZMASTER_PUBLIC_URL="http://localhost:3010" \
+	docker-compose run --rm -p "3010:3010" api \
+		npm run test:api
 
-test-api-unit-watch: ## Run the API unit tests
-	NODE_ENV=test docker-compose run --rm test-api npm run test:api:watch
+test-api-unit-watch: ## Watch the API unit tests
+	NODE_ENV=test \
+	EZMASTER_PUBLIC_URL="http://localhost:3010" \
+	docker-compose run --rm -p "3010:3010" api \
+		npm run test:api:watch
 
 test-frontend-unit: ## Run the frontend application unit tests
 	NODE_ENV=test docker-compose run --rm node npm run test:app
