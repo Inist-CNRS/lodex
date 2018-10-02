@@ -11,8 +11,8 @@ import {
     field as fieldPropTypes,
     polyglot as polyglotPropTypes,
 } from '../../propTypes';
-import fetchIstexData from '../shared/fetchIstexData';
-import IstexItem from './IstexItem';
+import fetchIstexData, { getSiteUrl } from '../shared/fetchIstexData';
+import IstexSummaryItem from './IstexSummaryItem';
 
 const styles = {
     text: memoize(status =>
@@ -50,12 +50,7 @@ export const IstexView = ({
                     total: data ? data.total : 0,
                 })}
             </span>
-            <a
-                style={styles.dl}
-                href={'https://dl.istex.fr/?q='.concat(
-                    encodeURIComponent(resource[field.name]),
-                )}
-            >
+            <a style={styles.dl} href={getSiteUrl(resource[field.name])}>
                 {polyglot.t('download')}
             </a>
             {error && (
@@ -68,7 +63,7 @@ export const IstexView = ({
             data.hits && (
                 <div>
                     {data.hits.map(item => (
-                        <IstexItem key={item.id} {...item} />
+                        <IstexSummaryItem key={item.id} {...item} />
                     ))}
                 </div>
             )}

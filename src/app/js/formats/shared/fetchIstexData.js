@@ -1,7 +1,13 @@
 import fetch from '../../lib/fetch';
 import composeAsync from '../../../../common/lib/composeAsync';
 import URL from 'url';
-import { ISTEX_API_URL as istexApiUrl } from '../../../../common/externals';
+import { ISTEX_API_URL, ISTEX_SITE_URL } from '../../../../common/externals';
+
+export const getSiteUrl = value =>
+    `${ISTEX_SITE_URL}/?q=${encodeURIComponent(`host.issn="${value}"`)}`;
+
+export const getApiUrl = value =>
+    `${ISTEX_API_URL}/?q=${encodeURIComponent(`host.issn="${value}"`)}`;
 
 export const getUrl = ({ props: { resource, field }, page, perPage }) => {
     const value = resource[field.name];
@@ -9,7 +15,7 @@ export const getUrl = ({ props: { resource, field }, page, perPage }) => {
         'id,arkIstex,title,publicationDate,author,host.genre,host.title';
 
     return {
-        url: `${istexApiUrl}/?q=${encodeURIComponent(value)}&from=${page *
+        url: `${ISTEX_API_URL}/?q=${encodeURIComponent(value)}&from=${page *
             perPage}&size=${perPage}&output=${output}`,
     };
 };
@@ -19,7 +25,7 @@ export const parseFetchResult = fetchResult => {
         throw new Error(fetchResult.error);
     }
     const { response: { total, hits } } = fetchResult;
-    const { protocol, host } = URL.parse(istexApiUrl);
+    const { protocol, host } = URL.parse(ISTEX_API_URL);
     return {
         hits: hits.map(hit => ({
             id: hit.id,
