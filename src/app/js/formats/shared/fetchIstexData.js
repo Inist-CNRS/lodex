@@ -3,6 +3,8 @@ import composeAsync from '../../../../common/lib/composeAsync';
 import URL from 'url';
 import { ISTEX_API_URL, ISTEX_SITE_URL } from '../../../../common/externals';
 
+const output = 'id,arkIstex,title,publicationDate,author,host.genre,host.title';
+
 export const getSiteUrl = value =>
     `${ISTEX_SITE_URL}/?q=${encodeURIComponent(`host.issn="${value}"`)}`;
 
@@ -11,12 +13,11 @@ export const getApiUrl = value =>
 
 export const getUrl = ({ props: { resource, field }, page, perPage }) => {
     const value = resource[field.name];
-    const output =
-        'id,arkIstex,title,publicationDate,author,host.genre,host.title';
 
     return {
-        url: `${ISTEX_API_URL}/?q=${encodeURIComponent(value)}&from=${page *
-            perPage}&size=${perPage}&output=${output}`,
+        url: `${ISTEX_API_URL}/?q=${encodeURIComponent(
+            `host.issn="${value}"`,
+        )}&from=${page * perPage}&size=${perPage}&output=${output}`,
     };
 };
 

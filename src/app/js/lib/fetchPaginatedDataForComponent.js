@@ -13,7 +13,7 @@ const styles = {
 export default fetchProps => Component =>
     class FetchPaginatedDataForComponent extends React.Component {
         state = {
-            isLoading: true,
+            isLoading: !this.props.initialData,
             data: this.props.initialData,
             page: 0,
             perPage: 10,
@@ -24,7 +24,9 @@ export default fetchProps => Component =>
         };
 
         componentWillMount() {
-            this.fetchData();
+            if (this.state.isLoading) {
+                this.fetchData();
+            }
         }
 
         componentWillReceiveProps() {
