@@ -186,7 +186,7 @@ describe('export Nquads', () => {
         );
     });
 
-    it.only('should export a composed object property (with a class) without number in sub-domain', done => {
+    it('should export a composed object property (with a class) without number in sub-domain', done => {
         let outputString = '';
         exportNQuads(
             {
