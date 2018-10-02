@@ -1,24 +1,12 @@
 version: "2"
 services:
-    node:
-        image: node:8.9.1
-        volumes:
-            - .:/app
-        working_dir: /app
-        environment:
-            http_proxy: ${http_proxy}
-            https_proxy: ${https_proxy}
-            no_proxy: "localhost,127.0.0.1,"
-            NODE_ENV: ${NODE_ENV}
-            EZMASTER_PUBLIC_URL: ${EZMASTER_PUBLIC_URL}
-
     api:
         image: node:8.9.1
         volumes:
             - .:/app
         working_dir: /app
         environment:
-            NODE_ENV: development
+            NODE_ENV: ${NODE_ENV}
             http_proxy: ${http_proxy}
             https_proxy: ${https_proxy}
             no_proxy: "localhost,127.0.0.1,"
@@ -27,25 +15,6 @@ services:
             - mongo
         ports:
             - 3000:3000
-        command: npm run development:api
-
-    test-api:
-        image: node:8.9.1
-        volumes:
-            - .:/app
-        working_dir: /app
-        environment:
-            NODE_ENV: test
-            http_proxy: ${http_proxy}
-            https_proxy: ${https_proxy}
-            no_proxy: "localhost,127.0.0.1,"
-            EZMASTER_PUBLIC_URL: http://localhost:3010
-        depends_on:
-            - mongo
-        links:
-            - mongo
-        ports:
-            - 3010:3010
         command: npm run development:api
 
     mongo:

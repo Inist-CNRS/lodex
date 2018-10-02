@@ -25,18 +25,18 @@ endif
 
 install-npm-dependencies:
 	echo "Installing Node dependencies"
-	docker-compose run --rm node npm install
+	docker-compose run --no-deps --rm api npm install
 
 install: copy-conf install-npm-dependencies ## Install npm dependencies for the api, admin, and frontend apps
 
 build-app:
-	docker-compose run node npm run build
+	docker-compose run --no-deps --rm api npm run build
 
 build: ## build the docker image localy
 	docker build -t inistcnrs/lodex --build-arg http_proxy --build-arg https_proxy .
 
 run-dev: ## run node server
-	docker-compose up --force-recreate mongo api
+	docker-compose up --force-recreate
 
 mongo: ## Start the mongo database
 	docker-compose up -d mongo
@@ -48,19 +48,25 @@ mongo-shell-test: ## Start the mongo shell for the test database
 	docker-compose exec mongo mongo lodex_test
 
 npm: ## allow to run dockerized npm command eg make npm 'install koa --save'
-	docker-compose run --rm node npm $(COMMAND_ARGS)
+	docker-compose run --no-deps --rm api npm $(COMMAND_ARGS)
 
 test-api-unit: ## Run the API unit tests
-	NODE_ENV=test docker-compose run --rm test-api npm run test:api
+	NODE_ENV=test \
+	EZMASTER_PUBLIC_URL="http://localhost:3010" \
+	docker-compose run --rm -p "3010:3010" api \
+		npm run test:api
 
-test-api-unit-watch: ## Run the API unit tests
-	NODE_ENV=test docker-compose run --rm test-api npm run test:api:watch
+test-api-unit-watch: ## Watch the API unit tests
+	NODE_ENV=test \
+	EZMASTER_PUBLIC_URL="http://localhost:3010" \
+	docker-compose run --rm -p "3010:3010" api \
+		npm run test:api:watch
 
 test-frontend-unit: ## Run the frontend application unit tests
-	NODE_ENV=test docker-compose run --rm node npm run test:app
+	NODE_ENV=test docker-compose run --no-deps --rm api npm run test:app
 
 test-frontend-unit-watch: ## Watch the frontend application unit tests
-	NODE_ENV=test docker-compose run --rm node npm run test:app:watch
+	NODE_ENV=test docker-compose run --no-deps --rm api npm run test:app:watch
 
 test-e2e-start-dockers:
 ifeq "$(CI)" "true"
