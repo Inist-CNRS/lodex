@@ -1,7 +1,7 @@
 .PHONY: build test help
 .DEFAULT_GOAL := help
 
-NODE_ENV ?= development
+export NODE_ENV ?= development
 
 help:
 	@grep -P '^[a-zA-Z0-9_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
@@ -36,7 +36,7 @@ build: ## build the docker image localy
 	docker build -t inistcnrs/lodex --build-arg http_proxy --build-arg https_proxy .
 
 run-dev: ## run node server
-	NODE_ENV=development docker-compose up --force-recreate
+	docker-compose up --force-recreate
 
 mongo: ## Start the mongo database
 	docker-compose up -d mongo
