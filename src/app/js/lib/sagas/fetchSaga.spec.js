@@ -3,7 +3,7 @@ import expect from 'expect';
 import { replace } from 'connected-react-router';
 
 import fetchSaga from './fetchSaga';
-import fetch from '../fetch';
+import fetch from '../../../../common/lib/fetch';
 import { logout } from '../../user';
 import { getCurrentLocation } from '../../sharedSelectors';
 
