@@ -27,14 +27,12 @@ const ButtonWithStatus = ({
         <RaisedButton
             disabled={disabled || loading}
             icon={getIcon(error, loading, success)}
-            labelPosition="before"
             {...props}
         />
     ) : (
         <FlatButton
             disabled={disabled || loading}
             icon={getIcon(error, loading, success)}
-            labelPosition="before"
             {...props}
         />
     );
@@ -45,6 +43,7 @@ ButtonWithStatus.propTypes = {
     disabled: PropTypes.bool,
     loading: PropTypes.bool.isRequired,
     success: PropTypes.bool,
+    labelPosition: PropTypes.oneOf(['after', 'before']),
 };
 
 ButtonWithStatus.defaultProps = {
@@ -52,6 +51,7 @@ ButtonWithStatus.defaultProps = {
     error: false,
     disabled: false,
     success: false,
+    labelPosition: 'before',
 };
 
 export default ButtonWithStatus;
