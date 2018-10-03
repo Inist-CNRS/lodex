@@ -9,12 +9,13 @@ import fetch from '../../lib/fetch';
 import ButtonWithStatus from '../../lib/components/ButtonWithStatus';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import Alert from '../../lib/components/Alert';
-import IstexVolume from './IstexVolume';
 
-export const getVolumeUrl = ({ issn, year }) => {
+export const getIssueUrl = ({ issn, year, volume }) => {
     return `${ISTEX_API_URL}/?q=(${encodeURIComponent(
-        `host.issn="${issn}" AND publicationDate:"${year}"`,
-    )})&facet=host.volume[*-*:1]&size=0&output=*`;
+        `host.issn="${issn}" AND publicationDate:"${year}" AND host.volume:"${
+            volume
+        }"`,
+    )})&facet=host.issue[*-*:1]&size=0&output=*`;
 };
 
 const styles = {
@@ -23,7 +24,7 @@ const styles = {
     },
 };
 
-export class IstexYearComponent extends Component {
+export class IstexVolumeComponent extends Component {
     state = {
         data: null,
         error: null,
@@ -37,7 +38,7 @@ export class IstexYearComponent extends Component {
         });
 
         if (!this.state.data) {
-            const url = getVolumeUrl(this.props);
+            const url = getIssueUrl(this.props);
             this.setState({ isLoading: true });
             await fetch({ url }).then(({ response, error }) => {
                 if (error) {
@@ -62,7 +63,7 @@ export class IstexYearComponent extends Component {
     };
 
     render() {
-        const { issn, year, p: polyglot } = this.props;
+        const { volume, p: polyglot } = this.props;
         const { error, data, isOpen, isLoading } = this.state;
 
         if (error) {
@@ -70,11 +71,11 @@ export class IstexYearComponent extends Component {
         }
 
         return (
-            <div className="istex-year">
+            <div className="istex-volume">
                 {isOpen ? (
                     <div>
                         <ButtonWithStatus
-                            label={year}
+                            label={`${polyglot.t('volume')} ${volume}`}
                             labelPosition="after"
                             icon={<Folder />}
                             onClick={this.close}
@@ -83,22 +84,18 @@ export class IstexYearComponent extends Component {
                         <ul>
                             {get(
                                 data,
-                                ['aggregations', 'host.volume', 'buckets'],
+                                ['aggregations', 'host.issue', 'buckets'],
                                 [],
                             ).map(({ key }) => (
                                 <li key={key} style={styles.li}>
-                                    <IstexVolume
-                                        issn={issn}
-                                        year={year}
-                                        volume={key}
-                                    />
+                                    {polyglot.t('issue')}: {key}
                                 </li>
                             ))}
                         </ul>
                     </div>
                 ) : (
                     <ButtonWithStatus
-                        label={year}
+                        label={`${polyglot.t('volume')} ${volume}`}
                         labelPosition="after"
                         icon={<Folder />}
                         onClick={this.open}
@@ -110,16 +107,16 @@ export class IstexYearComponent extends Component {
     }
 }
 
-IstexYearComponent.propTypes = {
+IstexVolumeComponent.propTypes = {
     issn: PropTypes.string.isRequired,
-    year: PropTypes.string.isRequired,
+    volume: PropTypes.string.isRequired,
     formatData: PropTypes.shape({}),
     p: polyglotPropTypes.isRequired,
 };
 
-IstexYearComponent.defaultProps = {
+IstexVolumeComponent.defaultProps = {
     className: null,
     data: null,
 };
 
-export default translate(IstexYearComponent);
+export default translate(IstexVolumeComponent);
