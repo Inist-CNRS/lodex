@@ -36,7 +36,7 @@ build: ## build the docker image localy
 	docker build -t inistcnrs/lodex --build-arg http_proxy --build-arg https_proxy .
 
 run-dev: ## run node server
-	docker-compose up --force-recreate
+	NODE_ENV=development docker-compose up --force-recreate
 
 mongo: ## Start the mongo database
 	docker-compose up -d mongo
