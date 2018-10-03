@@ -62,7 +62,7 @@ export default url => FormatView => {
             loadFormatData({ field, value });
         };
 
-        componentDidMount() {
+        componentWillMount() {
             const { field } = this.props;
             if (!field) {
                 return;

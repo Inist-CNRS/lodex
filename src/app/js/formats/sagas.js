@@ -21,28 +21,55 @@ import { APPLY_FILTER } from '../public/dataset';
 import { CONFIGURE_FIELD_SUCCESS } from '../fields';
 import { UPDATE_CHARACTERISTICS_SUCCESS } from '../characteristic';
 import { COVER_DATASET } from '../../../common/cover';
+import { ISTEX_API_URL } from '../../../common/externals';
 
 const isSparqlQuery = url =>
     url.toLowerCase().includes('select') &&
     url.toLowerCase().includes('where') &&
     url.toLowerCase().includes('?query=');
 
-export function* loadFormatData(name, url, queryString) {
-    let request; //@TODO report the type of query in SparqlRequest
-    if (isSparqlQuery(url)) {
-        const newUrl = url.split('?query=')[0];
-        const body = 'query=' + url.split('?query=')[1];
+const isIstexQuery = url => url.includes(ISTEX_API_URL);
 
-        request = yield select(fromUser.getSparqlRequest, {
-            url: newUrl,
-            body,
-        });
-    } else {
-        request = yield select(fromUser.getUrlRequest, {
-            url,
-            queryString,
-        });
+export const getQueryType = url => {
+    if (isSparqlQuery(url)) {
+        return 'sparql';
     }
+
+    if (isIstexQuery(url)) {
+        return 'istex';
+    }
+
+    return 'other';
+};
+
+export function* getQuery(url, queryString) {
+    const queryType = yield call(getQueryType, url);
+    switch (queryType) {
+        case 'sparql': {
+            const newUrl = url.split('?query=')[0];
+            const body = 'query=' + url.split('?query=')[1];
+
+            return yield select(fromUser.getSparqlRequest, {
+                url: newUrl,
+                body,
+            });
+        }
+        case 'istex': {
+            return yield select(fromUser.getIstexRequest, {
+                url,
+                queryString,
+            });
+        }
+        default:
+            return yield select(fromUser.getUrlRequest, {
+                url,
+                queryString,
+            });
+    }
+}
+
+export function* loadFormatData(name, url, queryString) {
+    const request = yield call(getQuery, url, queryString);
 
     const { error, response } = yield call(fetchSaga, request);
     if (error) {

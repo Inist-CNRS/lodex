@@ -68,3 +68,4 @@ export const fetchForIstexSummaryFormat = composeAsync(
     fetch,
     parseFetchResult,
 );
+export const fetchIstexHierarchy = composeAsync(fetch, parseFetchResult);

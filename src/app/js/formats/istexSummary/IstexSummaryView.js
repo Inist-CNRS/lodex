@@ -1,83 +1,51 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import memoize from 'lodash.memoize';
-import translate from 'redux-polyglot/translate';
-import compose from 'recompose/compose';
+import get from 'lodash.get';
 
-import fetchPaginatedDataForComponent from '../../lib/fetchPaginatedDataForComponent';
-import Alert from '../../lib/components/Alert';
-import { REJECTED } from '../../../../common/propositionStatus';
 import {
     field as fieldPropTypes,
     polyglot as polyglotPropTypes,
 } from '../../propTypes';
-import {
-    fetchForIstexSummaryFormat,
-    getSiteUrl,
-} from '../shared/fetchIstexData';
-import IstexItem from '../istex/IstexItem';
+import { ISTEX_API_URL } from '../../../../common/externals';
+import injectData from '../injectData';
 
 const styles = {
-    text: memoize(status =>
-        Object.assign({
-            fontSize: '1.5rem',
-            textDecoration: status === REJECTED ? 'line-through' : 'none',
-        }),
-    ),
-    header: {
-        borderBottom: '1px solid lightgrey',
-        marginBottom: '1rem',
-    },
-    dl: {
-        float: 'right',
-    },
-    total: {
-        fontSize: '1.2rem',
-        fontWeight: 'bold',
-        color: 'rgba(0,0,0,0.54)',
+    text: {
+        fontSize: '1.5rem',
     },
 };
 
-export const IstexView = ({
-    fieldStatus,
-    data,
-    error,
-    field,
-    resource,
-    p: polyglot,
-}) => (
-    <div className="istex-list" style={styles.text(fieldStatus)}>
-        <div style={styles.header}>
-            <span style={styles.total}>
-                {polyglot.t('istex_total', {
-                    total: data ? data.total : 0,
-                })}
-            </span>
-            <a style={styles.dl} href={getSiteUrl(resource[field.name])}>
-                {polyglot.t('download')}
-            </a>
-            {error && (
-                <Alert>
-                    <p>{polyglot.t(error)}</p>
-                </Alert>
-            )}
-        </div>
-        {data &&
-            data.hits && (
-                <div>
-                    {data.hits.map(item => (
-                        <IstexItem key={item.id} {...item} />
-                    ))}
-                </div>
-            )}
-    </div>
-);
+export const getYearUrl = ({ resource, field }) => {
+    const value = resource[field.name];
+
+    return `${ISTEX_API_URL}/?q=(${encodeURIComponent(
+        `host.issn="${value}"`,
+    )})&facet=publicationDate[perYear]&size=0&output=*`;
+};
+
+export class IstexView extends Component {
+    render() {
+        const { fieldStatus, formatData } = this.props;
+
+        return (
+            <div className="istex-yeal" style={styles.text(fieldStatus)}>
+                {get(
+                    formatData,
+                    'aggregations.publicationDate.buckets',
+                    [],
+                ).map(({ keyAsString }) => (
+                    <p key={keyAsString}>{keyAsString}</p>
+                ))}
+            </div>
+        );
+    }
+}
 
 IstexView.propTypes = {
     fieldStatus: PropTypes.string,
     resource: PropTypes.object.isRequired, // eslint-disable-line
     field: fieldPropTypes.isRequired,
-    data: PropTypes.shape({}),
+    formatData: PropTypes.shape({}),
     error: PropTypes.string,
     p: polyglotPropTypes.isRequired,
 };
@@ -90,7 +58,4 @@ IstexView.defaultProps = {
     error: null,
 };
 
-export default compose(
-    translate,
-    fetchPaginatedDataForComponent(fetchForIstexSummaryFormat),
-)(IstexView);
+export default injectData(getYearUrl)(IstexView);
