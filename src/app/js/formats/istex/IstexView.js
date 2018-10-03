@@ -11,7 +11,7 @@ import {
     field as fieldPropTypes,
     polyglot as polyglotPropTypes,
 } from '../../propTypes';
-import fetchIstexData from '../shared/fetchIstexData';
+import { fetchForIstexFormat } from '../shared/fetchIstexData';
 import IstexItem from './IstexItem';
 
 const styles = {
@@ -94,5 +94,5 @@ IstexView.defaultProps = {
 
 export default compose(
     translate,
-    fetchPaginatedDataForComponent(fetchIstexData),
+    fetchPaginatedDataForComponent(fetchForIstexFormat),
 )(IstexView);

@@ -15,6 +15,19 @@ export const getUrl = ({ props: { resource, field }, page, perPage }) => {
     const value = resource[field.name];
 
     return {
+        url: `${ISTEX_API_URL}/?q=${encodeURIComponent(value)}&from=${page *
+            perPage}&size=${perPage}&output=${output}`,
+    };
+};
+
+export const getUrlFromISSN = ({
+    props: { resource, field },
+    page,
+    perPage,
+}) => {
+    const value = resource[field.name];
+
+    return {
         url: `${ISTEX_API_URL}/?q=${encodeURIComponent(
             `host.issn="${value}"`,
         )}&from=${page * perPage}&size=${perPage}&output=${output}`,
@@ -33,18 +46,25 @@ export const parseFetchResult = fetchResult => {
             url: URL.format({
                 protocol,
                 host,
-                pathname: hit.arkIstex.concat('/fulltext.pdf'),
+                pathname: `${hit.arkIstex}/fulltext.pdf')`,
             }),
             title: hit.title,
             publicationDate: hit.publicationDate,
-            authors: hit.author
-                ? hit.author.map(({ name }) => name).join(';')
-                : '',
-            hostGenre: hit.host.genre.shift(),
+            authors: hit.author ? hit.author.map(({ name }) => name) : '',
+            hostGenre: hit.host.genre[0],
             hostTitle: hit.host.title,
         })),
         total,
     };
 };
 
-export default composeAsync(getUrl, fetch, parseFetchResult);
+export const fetchForIstexFormat = composeAsync(
+    getUrl,
+    fetch,
+    parseFetchResult,
+);
+export const fetchForIstexSummaryFormat = composeAsync(
+    getUrlFromISSN,
+    fetch,
+    parseFetchResult,
+);

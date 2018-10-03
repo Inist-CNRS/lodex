@@ -11,8 +11,11 @@ import {
     field as fieldPropTypes,
     polyglot as polyglotPropTypes,
 } from '../../propTypes';
-import fetchIstexData, { getSiteUrl } from '../shared/fetchIstexData';
-import IstexSummaryItem from './IstexSummaryItem';
+import {
+    fetchForIstexSummaryFormat,
+    getSiteUrl,
+} from '../shared/fetchIstexData';
+import IstexItem from '../istex/IstexItem';
 
 const styles = {
     text: memoize(status =>
@@ -63,7 +66,7 @@ export const IstexView = ({
             data.hits && (
                 <div>
                     {data.hits.map(item => (
-                        <IstexSummaryItem key={item.id} {...item} />
+                        <IstexItem key={item.id} {...item} />
                     ))}
                 </div>
             )}
@@ -89,5 +92,5 @@ IstexView.defaultProps = {
 
 export default compose(
     translate,
-    fetchPaginatedDataForComponent(fetchIstexData),
+    fetchPaginatedDataForComponent(fetchForIstexSummaryFormat),
 )(IstexView);
