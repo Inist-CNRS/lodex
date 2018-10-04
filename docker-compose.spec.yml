@@ -1,8 +1,12 @@
 version: "3"
 services:
     api:
-        build: .
+        build:
+            context: .
+            args:
+                node_env: test
         environment:
+            NODE_ENV: "test"
             EZMASTER_PUBLIC_URL: ${EZMASTER_PUBLIC_URL}
             EZMASTER_MONGODB_HOST_PORT: mongo:27017
             EXPOSE_TEST_CONTROLLER: "true"

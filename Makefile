@@ -82,7 +82,7 @@ test-e2e-stop-dockers:
 	docker-compose -f docker-compose.spec.yml down
 
 test-e2e-open-cypress:
-	./node_modules/.bin/cypress open
+	NODE_ENV=test ./node_modules/.bin/cypress open
 
 test-e2e:
 ifeq "$(DISABLE_E2E_TESTS)" "true"

@@ -7,7 +7,8 @@ RUN rm -rf ./node_modules && \
     npm install --production && \
     npm cache clean --force
 
-ENV NODE_ENV production
+ARG node_env="production"
+ENV NODE_ENV=$node_env
 
 # Copy the local code source
 COPY . /app
