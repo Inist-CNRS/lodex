@@ -38,7 +38,7 @@ export const IstexItemComponent = ({
                     {title}
                 </a>
             </div>
-            <div style={styles.authors}> {authors} </div>
+            {authors && <div style={styles.authors}> {authors.join(';')} </div>}
             <div style={styles.metadata}>
                 {publicationDate},&nbsp;{hostTitle}
                 &nbsp;-&nbsp;
@@ -52,7 +52,7 @@ IstexItemComponent.propTypes = {
     title: PropTypes.string.isRequired,
     publicationDate: PropTypes.string.isRequired,
     url: PropTypes.string.isRequired,
-    authors: PropTypes.string.isRequired,
+    authors: PropTypes.arrayOf(PropTypes.string),
     hostTitle: PropTypes.string.isRequired,
     hostGenre: PropTypes.string.isRequired,
 };

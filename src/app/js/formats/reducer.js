@@ -1,5 +1,6 @@
 import { createAction, handleActions } from 'redux-actions';
 import get from 'lodash.get';
+import { LOAD_RESOURCE_SUCCESS } from '../public/resource';
 
 export const PRE_LOAD_FORMAT_DATA = 'PRE_LOAD_FORMAT_DATA';
 export const UN_LOAD_FORMAT_DATA = 'UN_LOAD_FORMAT_DATA';
@@ -24,6 +25,10 @@ export default handleActions(
         [LOAD_FORMAT_DATA_SUCCESS]: (state, { payload: { name, data } }) => ({
             ...state,
             [name]: { data },
+        }),
+        [LOAD_RESOURCE_SUCCESS]: (state, { payload: { prefetchedData } }) => ({
+            ...state,
+            ...prefetchedData,
         }),
         [LOAD_FORMAT_DATA_ERROR]: (state, { payload: { name, error } }) => ({
             ...state,

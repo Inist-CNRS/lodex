@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import CircularProgress from 'material-ui/CircularProgress';
 
 import Pagination from './components/Pagination';
@@ -12,14 +13,20 @@ const styles = {
 export default fetchProps => Component =>
     class FetchPaginatedDataForComponent extends React.Component {
         state = {
-            isLoading: true,
-            data: null,
+            isLoading: !this.props.initialData,
+            data: this.props.initialData,
             page: 0,
             perPage: 10,
         };
 
+        static propTypes = {
+            initialData: PropTypes.any,
+        };
+
         componentWillMount() {
-            this.fetchData();
+            if (this.state.isLoading) {
+                this.fetchData();
+            }
         }
 
         componentWillReceiveProps() {

@@ -199,7 +199,9 @@ export const getLoadPublicationRequest = state =>
 
 export const getLoadResourceRequest = (state, uri) =>
     getRequest(state, {
-        url: `/api/publishedDataset/ark?uri=${encodeURIComponent(uri)}`,
+        url: `/api/publishedDataset/ark?uri=${encodeURIComponent(
+            uri,
+        )}&applyFormat=true`,
     });
 
 export const getSaveResourceRequest = (state, { resource, field }) =>
