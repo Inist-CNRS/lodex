@@ -29,7 +29,7 @@ export class PureFacetList extends Component {
         if (!hasFacetFields) return null;
 
         return (
-            <List>
+            <List className="facet-list">
                 {fields.map(field => (
                     <FacetItem key={field.name} field={field} />
                 ))}

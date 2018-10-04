@@ -4,13 +4,7 @@ export const openImportModal = () => {
     cy.get('.upload.admin button').click();
 };
 
-const defaultExpectedData = ['Row 1', 'Test 1', 'Row 2', 'Test 2'];
-
-export const importDataset = (
-    filename,
-    mimeType = 'text/csv',
-    expectedData = defaultExpectedData,
-) => {
+export const importDataset = (filename, mimeType = 'text/csv') => {
     openImportModal();
     fillInputWithFixture(
         '.btn-upload-dataset input[type=file]',
@@ -18,7 +12,7 @@ export const importDataset = (
         mimeType,
     );
 
-    cy.get('tbody').should('have.text', expectedData.join(''));
+    cy.get('tbody').should('exist');
 };
 
 const fillStepValueConcatColumn = (value, index) => {
