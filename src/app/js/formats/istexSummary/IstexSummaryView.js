@@ -6,8 +6,12 @@ import { StyleSheet, css } from 'aphrodite/no-important';
 import { field as fieldPropTypes } from '../../propTypes';
 import { ISTEX_API_URL } from '../../../../common/externals';
 import injectData from '../injectData';
-import IstexYear from './IstexYear';
+import IstexItem from '../istex/IstexItem';
 import classnames from 'classnames';
+import FetchFold from './FetchFold';
+import composeAsync from '../../../../common/lib/composeAsync';
+import fetch from '../../lib/fetch';
+import { parseFetchResult } from '../shared/fetchIstexData';
 
 const styles = StyleSheet.create({
     text: {
@@ -29,6 +33,62 @@ export const getYearUrl = ({ resource, field }) => {
     )})&facet=publicationDate[perYear]&size=0&output=*`;
 };
 
+export const getVolumeUrl = ({ issn, year }) => () => ({
+    url: `${ISTEX_API_URL}/?q=(${encodeURIComponent(
+        `host.issn="${issn}" AND publicationDate:"${year}"`,
+    )})&facet=host.volume[*-*:1]&size=0&output=*`,
+});
+
+export const parseVolumeData = ({ response, error }) => {
+    if (error) {
+        throw error;
+    }
+
+    return get(response, ['aggregations', 'host.volume', 'buckets'], []).map(
+        ({ key }) => key,
+    );
+};
+
+export const getVolumeData = ({ issn, year }) =>
+    composeAsync(getVolumeUrl({ issn, year }), fetch, parseVolumeData);
+
+export const getIssueUrl = ({ issn, year, volume }) => () => ({
+    url: `${ISTEX_API_URL}/?q=(${encodeURIComponent(
+        `host.issn="${issn}" AND publicationDate:"${year}" AND host.volume:"${
+            volume
+        }"`,
+    )})&facet=host.issue[*-*:1]&size=0&output=*`,
+});
+
+export const parseIssueData = ({ response, error }) => {
+    if (error) {
+        throw error;
+    }
+
+    return get(response, ['aggregations', 'host.issue', 'buckets'], []).map(
+        ({ key }) => key,
+    );
+};
+
+export const getIssueData = ({ issn, year, volume }) =>
+    composeAsync(getIssueUrl({ issn, year, volume }), fetch, parseIssueData);
+
+export const getDocumentUrl = ({ issn, year, volume, issue }) => () => ({
+    url: `${ISTEX_API_URL}/?q=(${encodeURIComponent(
+        `host.issn="${issn}" AND publicationDate:"${year}" AND host.volume:"${
+            volume
+        }" AND host.issue:"${issue}"`,
+    )})&size=10&output=*`,
+});
+
+export const getDocumentData = ({ issn, year, volume, issue }) =>
+    composeAsync(
+        getDocumentUrl({ issn, year, volume, issue }),
+        fetch,
+        parseFetchResult,
+        ({ hits }) => hits,
+    );
+
 export class IstexSummaryView extends Component {
     render() {
         const { formatData, field, resource } = this.props;
@@ -39,9 +99,39 @@ export class IstexSummaryView extends Component {
                     .sort((a, b) => a.keyAsString - b.keyAsString)
                     .map(({ keyAsString }) => (
                         <li key={keyAsString} className={css(styles.li)}>
-                            <IstexYear
-                                year={keyAsString}
-                                issn={resource[field.name]}
+                            <FetchFold
+                                label={keyAsString}
+                                getData={getVolumeData({
+                                    issn: resource[field.name],
+                                    year: keyAsString,
+                                })}
+                                renderData={volume => (
+                                    <FetchFold
+                                        label={volume}
+                                        getData={getIssueData({
+                                            issn: resource[field.name],
+                                            year: keyAsString,
+                                            volume,
+                                        })}
+                                        renderData={issue => (
+                                            <FetchFold
+                                                label={issue}
+                                                getData={getDocumentData({
+                                                    issn: resource[field.name],
+                                                    year: keyAsString,
+                                                    volume,
+                                                    issue,
+                                                })}
+                                                renderData={document => (
+                                                    <IstexItem
+                                                        key={document.id}
+                                                        {...document}
+                                                    />
+                                                )}
+                                            />
+                                        )}
+                                    />
+                                )}
                             />
                         </li>
                     ))}
