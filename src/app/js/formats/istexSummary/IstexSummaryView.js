@@ -2,8 +2,13 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash.get';
 import { StyleSheet, css } from 'aphrodite/no-important';
+import compose from 'recompose/compose';
+import translate from 'redux-polyglot/translate';
 
-import { field as fieldPropTypes } from '../../propTypes';
+import {
+    field as fieldPropTypes,
+    polyglot as polyblotPropTypes,
+} from '../../propTypes';
 import { ISTEX_API_URL } from '../../../../common/externals';
 import injectData from '../injectData';
 import IstexItem from '../istex/IstexItem';
@@ -91,7 +96,7 @@ export const getDocumentData = ({ issn, year, volume, issue }) =>
 
 export class IstexSummaryView extends Component {
     render() {
-        const { formatData, field, resource } = this.props;
+        const { formatData, field, resource, p: polyglot } = this.props;
 
         return (
             <ul className={classnames('istex-year', css(styles.text))}>
@@ -107,7 +112,9 @@ export class IstexSummaryView extends Component {
                                 })}
                                 renderData={volume => (
                                     <FetchFold
-                                        label={volume}
+                                        label={`${polyglot.t('volume')}: ${
+                                            volume
+                                        }`}
                                         getData={getIssueData({
                                             issn: resource[field.name],
                                             year: keyAsString,
@@ -115,7 +122,9 @@ export class IstexSummaryView extends Component {
                                         })}
                                         renderData={issue => (
                                             <FetchFold
-                                                label={issue}
+                                                label={`${polyglot.t(
+                                                    'issue',
+                                                )}: ${issue}`}
                                                 getData={getDocumentData({
                                                     issn: resource[field.name],
                                                     year: keyAsString,
@@ -146,6 +155,7 @@ IstexSummaryView.propTypes = {
     field: fieldPropTypes.isRequired,
     formatData: PropTypes.shape({}),
     error: PropTypes.string,
+    p: polyblotPropTypes.isRequired,
 };
 
 IstexSummaryView.defaultProps = {
@@ -156,4 +166,4 @@ IstexSummaryView.defaultProps = {
     error: null,
 };
 
-export default injectData(getYearUrl)(IstexSummaryView);
+export default compose(injectData(getYearUrl), translate)(IstexSummaryView);
