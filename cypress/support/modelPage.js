@@ -10,13 +10,11 @@ export const checkFieldOrder = type => names => {
     cy
         .get(`.ontology-table-${type} table tbody tr`)
         .should('have.length', names.length);
-    names.forEach((name, index) => {
+    names.forEach((name, i) => {
         cy
-            .get(
-                `.ontology-table-${type} table tbody tr:nth-child(${index +
-                    1})`,
-            )
-            .contains(name);
+            .get(`.ontology-table-${type} table tbody tr:nth-child(${i + 1})`)
+            .contains(name)
+            .should('be.visible');
     });
 };
 
