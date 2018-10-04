@@ -65,36 +65,21 @@ export const checkFileExists = (filename, expectedSize) =>
 const addFileSize = chunkFilename => async (totalSize = 0) => {
     const size = await getFileSize(chunkFilename);
 
-    if (size === 0) {
-        throw new Error('empty chunk');
-    }
-
     return size + totalSize;
 };
 
-export const areFileChunksCompleteFactory = addFileSizeImpl => async (
+export const getUploadedFileSizeFactory = addFileSizeImpl => async (
     filename,
     totalChunk,
-    totalSize,
 ) => {
     const sizeComputation = rangeRight(1, totalChunk + 1)
         .map(nb => `${filename}.${nb}`)
         .map(name => addFileSizeImpl(name));
 
-    try {
-        const size = await composeAsync(...sizeComputation)();
-
-        return size === totalSize;
-    } catch (error) {
-        if (error.message === 'empty chunk') {
-            return false;
-        }
-
-        throw error;
-    }
+    return composeAsync(...sizeComputation)();
 };
 
-export const areFileChunksComplete = areFileChunksCompleteFactory(addFileSize);
+export const getUploadedFileSize = getUploadedFileSizeFactory(addFileSize);
 
 export const clearChunksFactory = unlinkFileImpl => async (
     filename,

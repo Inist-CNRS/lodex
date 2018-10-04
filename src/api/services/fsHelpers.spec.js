@@ -2,7 +2,7 @@ import expect, { createSpy } from 'expect';
 
 import {
     clearChunksFactory,
-    areFileChunksCompleteFactory,
+    getUploadedFileSizeFactory,
     mergeChunksFactory,
 } from './fsHelpers';
 
@@ -19,29 +19,22 @@ describe('fsHelpers', () => {
         });
     });
 
-    describe('areFileChunksCompleteFactory', () => {
+    describe('getUploadedFileSizeFactory', () => {
         describe('no error', () => {
             const reallyAddFileSize = createSpy(
                 (size = 0) => size + 1,
             ).andCallThrough(); // as if file had a size of 1
             const addFileSizeImpl = createSpy().andReturn(reallyAddFileSize);
 
-            it('should return true if resulting size is equal to total size', async () => {
-                const result = await areFileChunksCompleteFactory(
+            it('should return the resulting size', async () => {
+                const result = await getUploadedFileSizeFactory(
                     addFileSizeImpl,
                 )('filename', 3, 3);
-                expect(result).toBe(true);
-            });
-
-            it('should return false if resulting size is less than total size', async () => {
-                const result = await areFileChunksCompleteFactory(
-                    addFileSizeImpl,
-                )('filename', 3, 2);
-                expect(result).toBe(false);
+                expect(result).toBe(3);
             });
 
             it('should call addFileSizeImpl with each (chunkname)(size)', async () => {
-                await areFileChunksCompleteFactory(addFileSizeImpl)(
+                await getUploadedFileSizeFactory(addFileSizeImpl)(
                     'filename',
                     3,
                     3,
@@ -58,24 +51,19 @@ describe('fsHelpers', () => {
         });
 
         describe('with empty chunk error', () => {
-            const reallyAddFileSize = createSpy((size = 0) => {
-                if (size === 1) {
-                    throw new Error('empty chunk');
-                }
-                return size + 1;
-            }).andCallThrough(); // as if file had a size of 1
+            const reallyAddFileSize = createSpy(() => 0).andCallThrough(); // as if file had a size of 1
 
             const addFileSizeImpl = createSpy().andReturn(reallyAddFileSize);
 
-            it('should return false when addFileSize throw empty chunk error', async () => {
-                const result = await areFileChunksCompleteFactory(
+            it('should return 0 when addFileSize return 0', async () => {
+                const result = await getUploadedFileSizeFactory(
                     addFileSizeImpl,
                 )('filename', 3, 3);
-                expect(result).toBe(false);
+                expect(result).toBe(0);
             });
 
-            it('should call addFileSizeImpl with (chunkname)(size) up to error', async () => {
-                await areFileChunksCompleteFactory(addFileSizeImpl)(
+            it('should call addFileSizeImpl with (chunkname)(size)', async () => {
+                await getUploadedFileSizeFactory(addFileSizeImpl)(
                     'filename',
                     3,
                     3,
@@ -86,16 +74,8 @@ describe('fsHelpers', () => {
                 expect(addFileSizeImpl).toHaveBeenCalledWith('filename.3');
 
                 expect(reallyAddFileSize).toHaveBeenCalledWith(undefined);
-                expect(reallyAddFileSize).toHaveBeenCalledWith(1);
-
-                let error;
-                try {
-                    expect(reallyAddFileSize).toHaveBeenCalledWith(2);
-                } catch (e) {
-                    error = e.message;
-                }
-
-                expect(error).toBe('spy was never called with [ 2 ]');
+                expect(reallyAddFileSize).toHaveBeenCalledWith(0);
+                expect(reallyAddFileSize).toHaveBeenCalledWith(0);
             });
         });
 
@@ -110,7 +90,7 @@ describe('fsHelpers', () => {
             const addFileSizeImpl = createSpy().andReturn(reallyAddFileSize);
 
             it('should return throw other error', async () => {
-                const errorMessage = await areFileChunksCompleteFactory(
+                const errorMessage = await getUploadedFileSizeFactory(
                     addFileSizeImpl,
                 )('filename', 3, 3).catch(({ message }) => message);
                 expect(errorMessage).toBe('Boom');

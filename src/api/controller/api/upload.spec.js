@@ -42,7 +42,7 @@ describe('upload', () => {
             const ctx = {
                 checkFileExists: createSpy().andReturn(true),
                 saveStreamInFile: createSpy(),
-                areFileChunksComplete: createSpy().andReturn(false),
+                getUploadedFileSize: createSpy().andReturn(10),
                 resumable: {
                     chunkname: 'chunkname',
                     filename: 'filename',
@@ -70,11 +70,10 @@ describe('upload', () => {
                 expect(ctx.saveStreamInFile).toNotHaveBeenCalled();
             });
 
-            it('should have called areFileChunksComplete', () => {
-                expect(ctx.areFileChunksComplete).toHaveBeenCalledWith(
+            it('should have called getUploadedFileSize', () => {
+                expect(ctx.getUploadedFileSize).toHaveBeenCalledWith(
                     'filename',
                     'totalChunks',
-                    'totalSize',
                 );
             });
 
@@ -91,12 +90,12 @@ describe('upload', () => {
             const ctx = {
                 checkFileExists: createSpy().andReturn(true),
                 saveStreamInFile: createSpy(),
-                areFileChunksComplete: createSpy().andReturn(true),
+                getUploadedFileSize: createSpy().andReturn(10),
                 resumable: {
                     chunkname: 'chunkname',
                     filename: 'filename',
                     totalChunks: 'totalChunks',
-                    totalSize: 'totalSize',
+                    totalSize: 10,
                     currentChunkSize: 'currentChunkSize',
                     stream: 'stream',
                 },
@@ -119,15 +118,14 @@ describe('upload', () => {
                 expect(ctx.saveStreamInFile).toNotHaveBeenCalled();
             });
 
-            it('should have called areFileChunksComplete', () => {
-                expect(ctx.areFileChunksComplete).toHaveBeenCalledWith(
+            it('should have called getUploadedFileSize', () => {
+                expect(ctx.getUploadedFileSize).toHaveBeenCalledWith(
                     'filename',
                     'totalChunks',
-                    'totalSize',
                 );
             });
 
-            it('should not have called next', () => {
+            it('should have called next', () => {
                 expect(next).toHaveBeenCalled();
             });
 
@@ -140,12 +138,12 @@ describe('upload', () => {
             const ctx = {
                 checkFileExists: createSpy().andReturn(false),
                 saveStreamInFile: createSpy(),
-                areFileChunksComplete: createSpy().andReturn(true),
+                getUploadedFileSize: createSpy().andReturn(10),
                 resumable: {
                     chunkname: 'chunkname',
                     filename: 'filename',
                     totalChunks: 'totalChunks',
-                    totalSize: 'totalSize',
+                    totalSize: 10,
                     currentChunkSize: 'currentChunkSize',
                     stream: 'stream',
                 },
@@ -171,11 +169,10 @@ describe('upload', () => {
                 );
             });
 
-            it('should have called areFileChunksComplete', () => {
-                expect(ctx.areFileChunksComplete).toHaveBeenCalledWith(
+            it('should have called getUploadedFileSize', () => {
+                expect(ctx.getUploadedFileSize).toHaveBeenCalledWith(
                     'filename',
                     'totalChunks',
-                    'totalSize',
                 );
             });
 
@@ -192,7 +189,7 @@ describe('upload', () => {
             const ctx = {
                 checkFileExists: createSpy().andReturn(false),
                 saveStreamInFile: createSpy(),
-                areFileChunksComplete: createSpy().andReturn(false),
+                getUploadedFileSize: createSpy().andReturn(false),
                 resumable: {
                     chunkname: 'chunkname',
                     filename: 'filename',
@@ -223,11 +220,10 @@ describe('upload', () => {
                 );
             });
 
-            it('should have called areFileChunksComplete', () => {
-                expect(ctx.areFileChunksComplete).toHaveBeenCalledWith(
+            it('should have called getUploadedFileSize', () => {
+                expect(ctx.getUploadedFileSize).toHaveBeenCalledWith(
                     'filename',
                     'totalChunks',
-                    'totalSize',
                 );
             });
 

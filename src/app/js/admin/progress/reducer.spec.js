@@ -2,6 +2,7 @@ import expect from 'expect';
 
 import reducer, { updateProgress, errorProgress } from './reducer';
 import { publish } from '../publish';
+import { uploadFile } from '../upload';
 import { PENDING } from '../../../../common/progressStatus';
 
 describe('progress reducer', () => {
@@ -16,6 +17,7 @@ describe('progress reducer', () => {
                         status: 'status',
                         target: 'target',
                         progress: 'progress',
+                        symbol: 'symbol',
                     }),
                 ),
             ).toEqual({
@@ -23,6 +25,7 @@ describe('progress reducer', () => {
                 target: 'target',
                 progress: 'progress',
                 error: undefined,
+                symbol: 'symbol',
             });
         });
     });
@@ -32,6 +35,19 @@ describe('progress reducer', () => {
             const state = {};
 
             expect(reducer(state, publish())).toEqual({
+                status: 'STARTING',
+                error: undefined,
+                progress: undefined,
+                target: undefined,
+            });
+        });
+    });
+
+    describe('UPLOAD_FILE', () => {
+        it('should start progress', () => {
+            const state = {};
+
+            expect(reducer(state, uploadFile())).toEqual({
                 status: 'STARTING',
                 error: undefined,
                 progress: undefined,
