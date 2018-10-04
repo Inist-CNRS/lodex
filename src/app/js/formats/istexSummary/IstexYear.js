@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import get from 'lodash.get';
 import Folder from 'material-ui/svg-icons/file/folder';
 import translate from 'redux-polyglot/translate';
+import { StyleSheet, css } from 'aphrodite/no-important';
 
 import { ISTEX_API_URL } from '../../../../common/externals';
 import fetch from '../../lib/fetch';
@@ -17,11 +18,11 @@ export const getVolumeUrl = ({ issn, year }) => {
     )})&facet=host.volume[*-*:1]&size=0&output=*`;
 };
 
-const styles = {
+const styles = StyleSheet.create({
     li: {
         listStyleType: 'none',
     },
-};
+});
 
 export class IstexYearComponent extends Component {
     state = {
@@ -31,27 +32,27 @@ export class IstexYearComponent extends Component {
         isOpen: false,
     };
 
-    open = async () => {
+    open = () => {
         this.setState({
             isOpen: true,
         });
 
         if (!this.state.data) {
             const url = getVolumeUrl(this.props);
-            this.setState({ isLoading: true });
-            await fetch({ url }).then(({ response, error }) => {
-                if (error) {
-                    console.error(error);
-                    this.setState({
-                        isLoading: false,
-                        error: true,
-                    });
-                    return;
-                }
+            this.setState({ isLoading: true }, () => {
+                fetch({ url }).then(({ response, error }) => {
+                    if (error) {
+                        this.setState({
+                            isLoading: false,
+                            error: true,
+                        });
+                        return;
+                    }
 
-                this.setState({
-                    data: response,
-                    isLoading: false,
+                    this.setState({
+                        data: response,
+                        isLoading: false,
+                    });
                 });
             });
         }
@@ -86,7 +87,7 @@ export class IstexYearComponent extends Component {
                                 ['aggregations', 'host.volume', 'buckets'],
                                 [],
                             ).map(({ key }) => (
-                                <li key={key} style={styles.li}>
+                                <li key={key} className={css(styles.li)}>
                                     <IstexVolume
                                         issn={issn}
                                         year={year}
@@ -113,13 +114,7 @@ export class IstexYearComponent extends Component {
 IstexYearComponent.propTypes = {
     issn: PropTypes.string.isRequired,
     year: PropTypes.string.isRequired,
-    formatData: PropTypes.shape({}),
     p: polyglotPropTypes.isRequired,
-};
-
-IstexYearComponent.defaultProps = {
-    className: null,
-    data: null,
 };
 
 export default translate(IstexYearComponent);

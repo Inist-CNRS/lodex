@@ -1,25 +1,25 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import memoize from 'lodash.memoize';
 import get from 'lodash.get';
+import { StyleSheet, css } from 'aphrodite/no-important';
 
-import { REJECTED } from '../../../../common/propositionStatus';
 import { field as fieldPropTypes } from '../../propTypes';
 import { ISTEX_API_URL } from '../../../../common/externals';
 import injectData from '../injectData';
 import IstexYear from './IstexYear';
+import classnames from 'classnames';
 
-const styles = {
-    text: memoize(status =>
-        Object.assign({
-            fontSize: '1.5rem',
-            textDecoration: status === REJECTED ? 'line-through' : 'none',
-        }),
-    ),
+const styles = StyleSheet.create({
+    text: {
+        fontSize: '1.5rem',
+    },
+    rejected: {
+        textDecoration: 'line-through',
+    },
     li: {
         listStyleType: 'none',
     },
-};
+});
 
 export const getYearUrl = ({ resource, field }) => {
     const value = resource[field.name];
@@ -31,14 +31,14 @@ export const getYearUrl = ({ resource, field }) => {
 
 export class IstexSummaryView extends Component {
     render() {
-        const { fieldStatus, formatData, field, resource } = this.props;
+        const { formatData, field, resource } = this.props;
 
         return (
-            <ul className="istex-yeal" style={styles.text(fieldStatus)}>
+            <ul className={classnames('istex-year', css(styles.text))}>
                 {get(formatData, 'aggregations.publicationDate.buckets', [])
-                    .sort((a, b) => a - b)
+                    .sort((a, b) => a.keyAsString - b.keyAsString)
                     .map(({ keyAsString }) => (
-                        <li key={keyAsString} style={styles.li}>
+                        <li key={keyAsString} className={css(styles.li)}>
                             <IstexYear
                                 year={keyAsString}
                                 issn={resource[field.name]}

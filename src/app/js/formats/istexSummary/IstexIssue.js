@@ -3,30 +3,30 @@ import PropTypes from 'prop-types';
 import get from 'lodash.get';
 import Folder from 'material-ui/svg-icons/file/folder';
 import translate from 'redux-polyglot/translate';
-import { StyleSheet, css } from 'aphrodite/no-important';
 
 import { ISTEX_API_URL } from '../../../../common/externals';
 import fetch from '../../lib/fetch';
 import ButtonWithStatus from '../../lib/components/ButtonWithStatus';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import Alert from '../../lib/components/Alert';
-import IstexIssue from './IstexIssue';
+import { parseFetchResult } from '../shared/fetchIstexData';
+import IstexItem from '../istex/IstexItem';
 
-export const getIssueUrl = ({ issn, year, volume }) => {
+export const getDocumentUrl = ({ issn, year, volume, issue }) => {
     return `${ISTEX_API_URL}/?q=(${encodeURIComponent(
         `host.issn="${issn}" AND publicationDate:"${year}" AND host.volume:"${
             volume
-        }"`,
-    )})&facet=host.issue[*-*:1]&size=0&output=*`;
+        }" AND host.issue:"${issue}"`,
+    )})&size=10&output=*`;
 };
 
-const styles = StyleSheet.create({
+const styles = {
     li: {
         listStyleType: 'none',
     },
-});
+};
 
-export class IstexVolumeComponent extends Component {
+export class IstexIssueComponent extends Component {
     state = {
         data: null,
         error: null,
@@ -35,30 +35,25 @@ export class IstexVolumeComponent extends Component {
     };
 
     open = () => {
-        this.setState({
-            isOpen: true,
-        });
-
-        if (!this.state.data) {
-            const url = getIssueUrl(this.props);
-            this.setState({ isLoading: true }, () => {
-                fetch({ url }).then(({ response, error }) => {
-                    if (error) {
-                        console.error(error);
-                        this.setState({
-                            isLoading: false,
-                            error: true,
-                        });
-                        return;
-                    }
-
-                    this.setState({
-                        data: response,
-                        isLoading: false,
-                    });
-                });
-            });
-        }
+        this.setState(
+            {
+                isOpen: true,
+            },
+            () => {
+                if (!this.state.data) {
+                    const url = getDocumentUrl(this.props);
+                    this.setState({ isLoading: true });
+                    fetch({ url })
+                        .then(parseFetchResult)
+                        .then(data =>
+                            this.setState({
+                                data,
+                                isLoading: false,
+                            }),
+                        );
+                }
+            },
+        );
     };
 
     close = () => {
@@ -66,7 +61,7 @@ export class IstexVolumeComponent extends Component {
     };
 
     render() {
-        const { issn, year, volume, p: polyglot } = this.props;
+        const { issue, p: polyglot } = this.props;
         const { error, data, isOpen, isLoading } = this.state;
 
         if (error) {
@@ -78,32 +73,23 @@ export class IstexVolumeComponent extends Component {
                 {isOpen ? (
                     <div>
                         <ButtonWithStatus
-                            label={`${polyglot.t('volume')} ${volume}`}
+                            label={`${polyglot.t('issue')} ${issue}`}
                             labelPosition="after"
                             icon={<Folder />}
                             onClick={this.close}
                             loading={isLoading}
                         />
                         <ul>
-                            {get(
-                                data,
-                                ['aggregations', 'host.issue', 'buckets'],
-                                [],
-                            ).map(({ key }) => (
-                                <li key={key} className={css(styles.li)}>
-                                    <IstexIssue
-                                        issn={issn}
-                                        year={year}
-                                        volume={volume}
-                                        issue={key}
-                                    />
+                            {get(data, 'hits', []).map(item => (
+                                <li key={item.id} style={styles.li}>
+                                    <IstexItem {...item} />
                                 </li>
                             ))}
                         </ul>
                     </div>
                 ) : (
                     <ButtonWithStatus
-                        label={`${polyglot.t('volume')} ${volume}`}
+                        label={`${polyglot.t('issue')} ${issue}`}
                         labelPosition="after"
                         icon={<Folder />}
                         onClick={this.open}
@@ -115,11 +101,11 @@ export class IstexVolumeComponent extends Component {
     }
 }
 
-IstexVolumeComponent.propTypes = {
+IstexIssueComponent.propTypes = {
     issn: PropTypes.string.isRequired,
-    year: PropTypes.string.isRequired,
     volume: PropTypes.number.isRequired,
+    issue: PropTypes.number.isRequired,
     p: polyglotPropTypes.isRequired,
 };
 
-export default translate(IstexVolumeComponent);
+export default translate(IstexIssueComponent);
