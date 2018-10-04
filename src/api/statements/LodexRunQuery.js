@@ -13,7 +13,7 @@ export const createFunction = mongoClientImpl =>
         }
         const from = this.getParam('from', data.$from || 'dataset');
         const query = this.getParam('query', data.query || {});
-        const limit = this.getParam('limit', data.limit || 10);
+        const limit = this.getParam('limit', data.limit || 1000000);
         const skip = this.getParam('skip', data.skip || 0);
         const sort = this.getParam('sort', data.sort || {});
         const target = this.getParam('total');
