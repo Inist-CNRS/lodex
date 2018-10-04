@@ -85,7 +85,7 @@ export class FetchFold extends Component {
                         <div className={css(styles.buttonLabel)}>
                             <Arrow
                                 className={
-                                    isOpen ? css(styles.arrowClose) : undefined
+                                    isOpen ? undefined : css(styles.arrowClose)
                                 }
                             />
                             {isOpen ? <FolderOpen /> : <Folder />}
