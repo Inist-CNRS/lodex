@@ -1,0 +1,56 @@
+[
+    {
+        "cover": "collection",
+        "label": "uri",
+        "display_on_list": true,
+        "transformers": [{
+            "operation": "COLUMN",
+            "args": [{
+                "name": "column",
+                "type": "column",
+                "value": "ARK"
+            }]
+        }],
+        "position": 0,
+        "count": 0,
+        "name": "uri"
+    },
+    {
+        "cover": "collection",
+        "label": "Affiliation(s)",
+        "display_in_list": "",
+        "display_in_resource": true,
+        "searchable": true,
+        "transformers": [
+            {
+                "operation": "COLUMN",
+                "args": [{
+                    "name": "column",
+                    "type": "column",
+                    "value": "Affiliation(s)"
+                }]
+            },
+            {
+                "args": [{
+                    "name": "separator",
+                    "type": "string",
+                    "value": ";"
+                }],
+                "operation": "SPLIT"
+            }
+        ],
+        "classes": [],
+        "position": 56,
+        "count": 39,
+        "format": {
+            "args": {
+                "type": "unordered",
+                "subFormat": "none",
+                "subFormatOptions": {}
+            },
+            "name": "list"
+        },
+        "name": "a9UH",
+        "isFacet": true
+    }
+]

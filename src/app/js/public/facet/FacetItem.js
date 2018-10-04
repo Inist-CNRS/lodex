@@ -19,7 +19,7 @@ const styles = {
 
 const PureFacetItem = ({ onClick, isOpen, field, total }) => (
     <ListItem
-        className={`facet-${getFieldClassName(field)}`}
+        className={`facet-item facet-${getFieldClassName(field)}`}
         nestedListStyle={styles.nested}
         key={field.name}
         primaryText={`${field.label} ${total ? `(${total})` : ''}`}

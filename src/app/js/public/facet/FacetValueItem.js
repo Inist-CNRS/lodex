@@ -27,6 +27,7 @@ const styles = {
 
 const PureFacetValueItem = ({ value, count, isChecked, onCheck }) => (
     <ListItem
+        className="facet-value-item"
         style={styles.listItem}
         innerDivStyle={styles.innerDiv}
         primaryText={

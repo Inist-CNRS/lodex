@@ -88,4 +88,27 @@ describe('Dataset Publication', () => {
             cy.contains('Row 2').should('be.visible');
         });
     });
+
+    describe('Facets', () => {
+        it('should allow to have facets with multiples values in them', () => {
+            homePage.goToAdminDashboard();
+            datasetImportPage.importDataset('dataset/facet.csv');
+            datasetImportPage.importModel('model/facet.json');
+            datasetImportPage.publish();
+
+            datasetImportPage.goToPublishedResources();
+            homePage.goToGraphPage();
+
+            cy.contains('Affiliation(s)').click();
+            cy
+                .get('.facet-list')
+                .find('.facet-item')
+                .should('have.length', 1);
+
+            cy
+                .get('.facet-list')
+                .find('.facet-value-item')
+                .should('have.length', 3);
+        });
+    });
 });

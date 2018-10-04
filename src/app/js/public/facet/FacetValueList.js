@@ -45,7 +45,7 @@ const PureFacetValueList = ({
     sort,
     p: polyglot,
 }) => (
-    <div>
+    <div className="facet-value-list">
         <CheckBox
             label={polyglot.t('exclude')}
             checked={inverted}
