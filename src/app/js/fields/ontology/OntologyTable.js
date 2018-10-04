@@ -43,7 +43,7 @@ class OntologyTable extends Component {
         const { title, fields, p: polyglot } = this.props;
 
         return (
-            <div>
+            <div className={`ontology-table-${title}`}>
                 <h4>{polyglot.t(title)}</h4>
                 <Table fixedHeader={false} style={styles.table}>
                     <TableHeader

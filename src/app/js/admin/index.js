@@ -12,7 +12,8 @@ import configureStore from '../configureStore';
 import phrasesFor from '../i18n/translations';
 import { createHashHistory } from 'history';
 
-const language = window.navigator.language || 'en';
+const language =
+    (process.env.NODE_ENV !== 'test' && window.navigator.language) || 'en';
 const initialState = {
     polyglot: {
         locale: language,
