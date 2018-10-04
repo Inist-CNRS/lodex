@@ -180,11 +180,12 @@ describe('characteristic routes', () => {
                         transformers: [
                             {
                                 operation: 'VALUE',
-                                args: [{ value: 'updated value' }],
+                                args: [{ value: 'value' }],
                             },
                         ],
                     }),
                     updateOneById: createSpy().andReturn('updatedField'),
+                    findOne: createSpy().andReturn(null),
                 },
             };
 
@@ -246,7 +247,7 @@ describe('characteristic routes', () => {
                 foo: 'new foo',
                 bar: 'new bar',
                 iShouldntBeHere: 'iShouldntBeHere',
-                updatedField: 'unchanged value',
+                updatedField: 'updated value',
             };
 
             const newVersion = { newVersion: true };
@@ -263,46 +264,58 @@ describe('characteristic routes', () => {
                     findLastVersion: createSpy().andReturn({
                         foo: 'old foo',
                         bar: 'bar value',
-                        updatedField: 'unchanged value',
+                        updatedField: 'value',
                         doNotUpdateMe: 'doNotUpdateMe value',
                     }),
                 },
                 field: {
-                    findByNames: createSpy().andReturn({
-                        updatedField: {
-                            _id: 'id',
-                            name: 'updatedField',
-                            transformers: [
-                                {
-                                    operation: 'VALUE',
-                                    args: [{ value: 'unchanged value' }],
+                    findByNames: createSpy().andCall(names => {
+                        const fields = {};
+
+                        if (names.includes('updateField')) {
+                            fields.updatedField = {
+                                _id: 'id',
+                                name: 'updatedField',
+                                transformers: [
+                                    {
+                                        operation: 'VALUE',
+                                        args: [{ value: 'value' }],
+                                    },
+                                ],
+                                composedOf: {
+                                    isComposedOf: true,
+                                    fields: ['foo', 'bar'],
                                 },
-                            ],
-                            composedOf: {
-                                isComposedOf: true,
-                                fields: ['foo', 'bar'],
-                            },
-                        },
-                        foo: {
-                            _id: 'id',
-                            name: 'foo',
-                            transformers: [
-                                {
-                                    operation: 'VALUE',
-                                    args: [{ value: characteristics.foo }],
-                                },
-                            ],
-                        },
-                        bar: {
-                            _id: 'id',
-                            name: 'bar',
-                            transformers: [
-                                {
-                                    operation: 'VALUE',
-                                    args: [{ value: characteristics.bar }],
-                                },
-                            ],
-                        },
+                            };
+                        }
+
+                        if (names.includes('foo')) {
+                            fields.foo = {
+                                _id: 'id',
+                                name: 'foo',
+                                transformers: [
+                                    {
+                                        operation: 'VALUE',
+                                        args: [{ value: 'old foo' }],
+                                    },
+                                ],
+                            };
+                        }
+
+                        if (names.includes('bar')) {
+                            fields.bar = {
+                                _id: 'id',
+                                name: 'bar',
+                                transformers: [
+                                    {
+                                        operation: 'VALUE',
+                                        args: [{ value: 'old bar' }],
+                                    },
+                                ],
+                            };
+                        }
+
+                        return fields;
                     }),
                     findOneByName: createSpy().andReturn({
                         _id: 'id',
@@ -310,7 +323,7 @@ describe('characteristic routes', () => {
                         transformers: [
                             {
                                 operation: 'VALUE',
-                                args: [{ value: 'unchanged value' }],
+                                args: [{ value: 'value' }],
                             },
                         ],
                         composedOf: {
@@ -319,6 +332,7 @@ describe('characteristic routes', () => {
                         },
                     }),
                     updateOneById: createSpy().andReturn('updatedField'),
+                    findOne: createSpy().andReturn(null),
                 },
             };
 
@@ -339,7 +353,7 @@ describe('characteristic routes', () => {
                     transformers: [
                         {
                             operation: 'VALUE',
-                            args: [{ value: 'unchanged value' }],
+                            args: [{ value: 'updated value' }],
                         },
                     ],
                     composedOf: {
@@ -385,7 +399,7 @@ describe('characteristic routes', () => {
                 ).toHaveBeenCalledWith({
                     foo: 'new foo',
                     bar: 'new bar',
-                    updatedField: 'unchanged value',
+                    updatedField: 'updated value',
                     doNotUpdateMe: 'doNotUpdateMe value',
                 });
             });

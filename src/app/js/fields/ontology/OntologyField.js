@@ -42,7 +42,10 @@ const OntologyFieldComponent = ({ field, characteristics, p: polyglot }) => (
         <TableRowColumn style={styles.actionCol}>
             <DragButton disabled={field.name === 'uri'} />
             {field.cover === COVER_DATASET && (
-                <EditButton field={field} resource={characteristics} />
+                <EditButton
+                    field={field}
+                    resource={{ ...characteristics, name: field.name }}
+                />
             )}
             <EditOntologyFieldButton field={field} />
         </TableRowColumn>
