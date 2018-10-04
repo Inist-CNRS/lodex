@@ -265,6 +265,7 @@ export default async db => {
                     value: { $arrayElemAt: [`$versions.${field}`, -1] },
                 },
             },
+            { $unwind: '$value' },
             { $group: { _id: '$value', count: { $sum: 1 } } },
             { $project: { _id: 0, value: '$_id', count: 1, field } },
         ]);
