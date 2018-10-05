@@ -1,4 +1,4 @@
-import { logoutAndLogin } from '../support/authentication';
+import { teardown } from '../support/authentication';
 import * as datasetImportPage from '../support/datasetImportPage';
 import * as homePage from '../support/homePage';
 import * as modelPage from '../support/modelPage';
@@ -6,7 +6,7 @@ import * as graphPage from '../support/graphPage';
 
 describe('Model Page', () => {
     beforeEach(() => {
-        logoutAndLogin();
+        teardown();
         homePage.goToAdminDashboard();
         datasetImportPage.importDataset('dataset/simple.csv');
         datasetImportPage.importModel('model/concat.json');

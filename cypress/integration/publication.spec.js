@@ -1,11 +1,11 @@
-import { logoutAndLogin } from '../support/authentication';
+import { teardown } from '../support/authentication';
 import * as homePage from '../support/homePage';
 import * as datasetImportPage from '../support/datasetImportPage';
 import * as graphPage from '../support/graphPage';
 import { fillInputWithFixture } from '../support/forms';
 
 describe('Dataset Publication', () => {
-    beforeEach(logoutAndLogin);
+    beforeEach(teardown);
 
     describe('Dataset Import', () => {
         it('should receive a csv file and preview its data in a table', () => {
@@ -80,28 +80,6 @@ describe('Dataset Publication', () => {
             homePage.goToGraphPage();
 
             graphPage.expectRowsCountToBe(6);
-        });
-    });
-
-    describe('Transformers & Formats', () => {
-        it('should display a composed field with a LIST format', () => {
-            homePage.goToAdminDashboard();
-
-            datasetImportPage.importDataset('dataset/simple.csv');
-            datasetImportPage.setUriColumnValue();
-            datasetImportPage.addColumn('Column 1', {
-                composedOf: ['Column 1', 'Column 2'],
-                display: {
-                    format: 'list',
-                },
-            });
-            datasetImportPage.publish();
-
-            datasetImportPage.goToPublishedResources();
-            homePage.goToGraphPage();
-
-            cy.contains('Row 1').should('be.visible');
-            cy.contains('Row 2').should('be.visible');
         });
     });
 

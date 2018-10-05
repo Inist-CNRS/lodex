@@ -13,3 +13,19 @@ export const expectRowsCountToBe = expected => {
         .find('tr')
         .should('have.length', expected);
 };
+
+export const createResource = resource => {
+    cy.get('button.create-resource').click();
+
+    Object.entries(resource).forEach(([field, value]) => {
+        cy
+            .get('label')
+            .contains(field)
+            .parent()
+            .find('input')
+            .type(value);
+    });
+
+    cy.get('button.create-resource.save').click();
+    cy.location('pathname').should('not.equal', '/graph');
+};
