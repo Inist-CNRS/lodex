@@ -6,3 +6,10 @@ export const checkColumnHeaders = headers => {
             .should('be.visible');
     });
 };
+
+export const expectRowsCountToBe = expected => {
+    cy
+        .get('.dataset table tbody')
+        .find('tr')
+        .should('have.length', expected);
+};
