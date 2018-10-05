@@ -14,10 +14,8 @@ import fetchSaga from '../../lib/sagas/fetchSaga';
 import { fromUser } from '../../sharedSelectors';
 import { PENDING } from '../../../../common/progressStatus';
 
-export const delay1000 = delay(1000);
-
 export function* handleStartProgressSaga() {
-    yield delay1000;
+    yield delay(1000);
     const request = yield select(fromUser.getProgressRequest);
     const { error, response } = yield call(fetchSaga, request);
     if (error) {

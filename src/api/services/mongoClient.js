@@ -13,10 +13,6 @@ export const mongoClientFactory = MongoClientImpl => async () => {
         );
     }
 
-    const close = db.close.bind(db);
-    db.close = () => {
-        close();
-    };
     return db;
 };
 
