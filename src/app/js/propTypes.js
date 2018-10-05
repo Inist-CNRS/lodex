@@ -5,9 +5,6 @@ import { PROPOSED, VALIDATED, REJECTED } from '../../common/propositionStatus';
 
 export const polyglot = PropTypes.shape({
     t: PropTypes.func.isRequired,
-    tc: PropTypes.func.isRequired,
-    tu: PropTypes.func.isRequired,
-    tm: PropTypes.func.isRequired,
 });
 
 export const field = PropTypes.shape({

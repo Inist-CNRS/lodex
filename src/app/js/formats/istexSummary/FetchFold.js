@@ -56,13 +56,19 @@ export class FetchFold extends Component {
         }
 
         this.setState({ isLoading: true }, () => {
-            this.props.getData(this.props).then(data => {
-                this.setState({
-                    data,
-                    isLoading: false,
-                    isOpen: true,
+            this.props
+                .getData(this.props)
+                .then(data => {
+                    this.setState({
+                        data,
+                        isLoading: false,
+                        isOpen: true,
+                    });
+                })
+                .catch(error => {
+                    console.error(error);
+                    this.setState({ error: true });
                 });
-            });
         });
     };
 
