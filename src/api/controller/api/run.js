@@ -48,6 +48,15 @@ export const runRoutine = async (ctx, routineCalled) => {
         host: ctx.host,
         hostname: ctx.hostname,
     };
+    const fields = ctx.path
+        .trim()
+        .split('/')
+        .filter(x => x)
+        .slice(1);
+    const environment = {
+        ...ctx.query,
+        fields,
+    };
     const uniqHash = hashCoerce.hash([
         __filename,
         context.path,
@@ -56,21 +65,19 @@ export const runRoutine = async (ctx, routineCalled) => {
     const uniqkey = `id-${uniqHash}`;
     const cached = cache.get(uniqkey);
 
-    let result;
     if (cached) {
         ctx.etag = `W/"${uniqkey}"`;
-        result = cached;
+        ctx.body = cached;
     } else {
         const input = new PassThrough({ objectMode: true });
-        result = input
-            .pipe(ezs.fromString(script))
+        ctx.body = input
+            .pipe(ezs.fromString(script, environment))
             .pipe(ezs.catch(global.console.error))
             .pipe(ezs.toBuffer())
             .pipe(cache.set(uniqkey));
         input.write(context);
         input.end();
     }
-    ctx.body = result;
 };
 
 const app = new Koa();
