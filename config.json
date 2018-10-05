@@ -17,8 +17,9 @@
     "distinct-by",
     "pairing-with",
     "graph-by",
-    "classif-with",
-    "tree-of",
+    "distribute-by-date",
+    "tree-by",
+    "classif-by",
     "distinct-by-number",
     "distinct-ISO3166-1-alpha3-from",
     "distinct-ISO3166-1-alpha2-from"
