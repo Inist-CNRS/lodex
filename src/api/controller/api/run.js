@@ -17,7 +17,7 @@ const cacheOptions = {
 };
 const cache = ezs.createCache(cacheOptions);
 
-export const runRoutine = async (ctx, routineCalled) => {
+export const runRoutine = async (ctx, routineCalled, field1, field2) => {
     const routine = new Script('routines');
     const currentRoutine = await routine.get(routineCalled);
     if (!currentRoutine) {
@@ -48,11 +48,7 @@ export const runRoutine = async (ctx, routineCalled) => {
         host: ctx.host,
         hostname: ctx.hostname,
     };
-    const fields = ctx.path
-        .trim()
-        .split('/')
-        .filter(x => x)
-        .slice(1);
+    const fields = [field1, field2].filter(x => x);
     const environment = {
         ...ctx.query,
         fields,
