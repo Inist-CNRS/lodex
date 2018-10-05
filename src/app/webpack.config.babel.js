@@ -76,6 +76,7 @@ export default {
                 NODE_ENV: JSON.stringify(process.env.NODE_ENV),
             },
             LOADERS: JSON.stringify(loaders),
+            BASE_API_URL: JSON.stringify('http://localhost:3000'),
         }),
         new HtmlWebpackPlugin({
             filename: 'index.html',

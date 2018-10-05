@@ -17,6 +17,23 @@ services:
             - 3000:3000
         command: npm run development:api
 
+    front:
+        image: node:8.9.1
+        volumes:
+            - .:/app
+        working_dir: /app
+        environment:
+            NODE_ENV: ${NODE_ENV}
+            http_proxy: ${http_proxy}
+            https_proxy: ${https_proxy}
+            no_proxy: "localhost,127.0.0.1,"
+            EZMASTER_PUBLIC_URL: "http://localhost:3000"
+        links:
+            - mongo
+        ports:
+            - 8080:8080
+        command: npm run development:app
+
     mongo:
         image: mongo:3.4.1
         command: "--smallfiles"

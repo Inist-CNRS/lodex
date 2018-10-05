@@ -54,6 +54,9 @@ export const getHost = () => {
     if (typeof window !== 'undefined') {
         return `${window.location.protocol}//${window.location.host}`;
     }
+    if (BASE_API_URL) {
+        return BASE_API_URL;
+    }
     const host = process.env.EZMASTER_PUBLIC_URL || `http://localhost:3000`;
     return host;
 };
