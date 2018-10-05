@@ -1,5 +1,3 @@
-import expect from 'expect';
-
 import facetReducer, {
     OPEN_FACET,
     LOAD_FACET_VALUES_ERROR,

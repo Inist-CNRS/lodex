@@ -1,31 +1,34 @@
 /* eslint max-len: off */
-import expect, { createSpy } from 'expect';
-
 import { publishCharacteristicsFactory } from './publishCharacteristics';
 
 describe('publishCharacteristics', () => {
-    const transformDocument = createSpy().andReturn({
-        transformed: 'document',
-    });
-    const count = 5;
-    const ctx = {
-        dataset: {
-            findLimitFromSkip: createSpy().andReturn(['doc']),
-            findBy: 'ctx.dataset.findBy',
-        },
-        publishedCharacteristic: {
-            addNewVersion: createSpy(),
-        },
-    };
-    const getDocumentTransformer = createSpy().andReturn(transformDocument);
-    const datasetFields = [
-        {
-            name: 'transformed',
-            scheme: 'scheme',
-        },
-    ];
+    let transformDocument;
+    let count;
+    let ctx;
+    let getDocumentTransformer;
+    let datasetFields;
 
-    before(async () => {
+    beforeAll(async () => {
+        transformDocument = jest.fn(() => ({
+            transformed: 'document',
+        }));
+        count = 5;
+        ctx = {
+            dataset: {
+                findLimitFromSkip: jest.fn().mockImplementation(() => ['doc']),
+                findBy: 'ctx.dataset.findBy',
+            },
+            publishedCharacteristic: {
+                addNewVersion: jest.fn(),
+            },
+        };
+        getDocumentTransformer = jest.fn(() => transformDocument);
+        datasetFields = [
+            {
+                name: 'transformed',
+                scheme: 'scheme',
+            },
+        ];
         await publishCharacteristicsFactory({ getDocumentTransformer })(
             ctx,
             datasetFields,

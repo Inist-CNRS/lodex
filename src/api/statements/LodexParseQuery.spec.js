@@ -1,11 +1,9 @@
-import expect from 'expect';
-
 import LodexParseQuery from './LodexParseQuery';
 
 describe('LodexParseQuery', () => {
     it('should send default data', () => {
         const feed = {
-            send: expect.createSpy(),
+            send: jest.fn(),
         };
         const data = {
             query: {},
@@ -23,7 +21,7 @@ describe('LodexParseQuery', () => {
 
     it('should send parse query and send result', () => {
         const feed = {
-            send: expect.createSpy(),
+            send: jest.fn(),
         };
         const data = {
             query: {
@@ -54,14 +52,14 @@ describe('LodexParseQuery', () => {
 
     it('should send nothing if this.isLast return true and call feed.close instead', () => {
         const feed = {
-            send: expect.createSpy(),
-            close: expect.createSpy(),
+            send: jest.fn(),
+            close: jest.fn(),
         };
         const data = {
             query: {},
         };
         LodexParseQuery.bind({ isLast: () => true })(data, feed);
-        expect(feed.send).toNotHaveBeenCalled();
+        expect(feed.send).not.toHaveBeenCalled();
         expect(feed.close).toHaveBeenCalled();
     });
 });

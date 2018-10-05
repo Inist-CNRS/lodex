@@ -1,5 +1,3 @@
-import expect from 'expect';
-
 import { fromRouter } from './selectors';
 
 describe('selectors.fromRouter.getResourceUri', () => {

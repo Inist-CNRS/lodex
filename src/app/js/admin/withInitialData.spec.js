@@ -1,5 +1,4 @@
 import React from 'react';
-import expect, { createSpy } from 'expect';
 import { shallow } from 'enzyme';
 
 import { withInitialDataHoc } from './withInitialData';
@@ -9,7 +8,7 @@ describe('withInitialData HOC', () => {
     const Component = withInitialDataHoc(AdminComponent);
 
     it('should call loadParsingResult on mount', () => {
-        const loadParsingResult = createSpy();
+        const loadParsingResult = jest.fn();
         shallow(
             <Component
                 hasUploadedFile
@@ -23,7 +22,7 @@ describe('withInitialData HOC', () => {
     });
 
     it('should call loadPublication on mount', () => {
-        const loadPublication = createSpy();
+        const loadPublication = jest.fn();
         shallow(
             <Component
                 hasUploadedFile
@@ -37,7 +36,7 @@ describe('withInitialData HOC', () => {
     });
 
     it('should call loadField on mount', () => {
-        const loadField = createSpy();
+        const loadField = jest.fn();
         shallow(
             <Component
                 hasUploadedFile

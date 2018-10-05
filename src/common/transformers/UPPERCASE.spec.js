@@ -1,5 +1,3 @@
-import expect from 'expect';
-
 import { valueToUpperCase } from './UPPERCASE';
 
 describe('UPPERCASE', () => {

@@ -1,4 +1,3 @@
-import expect from 'expect';
 import { all, call, put, select } from 'redux-saga/effects';
 
 import getDocumentTransformer from '../../../lib/getDocumentTransformer';

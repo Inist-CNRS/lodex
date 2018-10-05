@@ -1,5 +1,3 @@
-import expect from 'expect';
-
 import { valueToString } from './STRING';
 
 describe('STRING', () => {

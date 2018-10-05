@@ -1,4 +1,3 @@
-import expect from 'expect';
 import mergeCompose from './mergeCompose';
 
 describe('JSONLDObject / mergeCompose', () => {
@@ -6,7 +5,7 @@ describe('JSONLDObject / mergeCompose', () => {
         try {
             mergeCompose();
         } catch (e) {
-            expect(e).toExist();
+            expect(e).toBeTruthy();
         }
     });
 
@@ -36,7 +35,7 @@ describe('JSONLDObject / mergeCompose', () => {
             },
         ];
         const res = mergeCompose(output, field, data, fields);
-        expect(res).toExist();
+        expect(res).toBeTruthy();
         expect(res).toEqual({
             '@context': {
                 component1: { '@id': 'http://component1.scheme' },

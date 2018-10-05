@@ -1,4 +1,3 @@
-import expect from 'expect';
 import ezs from 'ezs';
 import from from 'from';
 import statements from './index';
@@ -12,7 +11,7 @@ describe('LodexConfig', () => {
         testOne(
             stream,
             output => {
-                expect(output.$config.host).toExist();
+                expect(output.$config.host).toBeTruthy();
             },
             done,
         );

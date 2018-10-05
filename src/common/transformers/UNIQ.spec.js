@@ -1,5 +1,3 @@
-import expect from 'expect';
-
 import { uniqArray } from './UNIQ';
 
 describe('UNIQ', () => {

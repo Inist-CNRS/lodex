@@ -1,14 +1,12 @@
-import expect from 'expect';
-
 import countNotUnique, { countUniqueConcatenation } from './countNotUnique';
 
 describe('countNotUnique', () => {
     it('should call collection.count and collection.distinct, and return distinct.length === count', async () => {
         const collection = {
-            count: expect.createSpy().andReturn(Promise.resolve(10)),
-            distinct: expect
-                .createSpy()
-                .andReturn(Promise.resolve({ length: 10 })),
+            count: jest.fn().mockImplementation(() => Promise.resolve(10)),
+            distinct: jest
+                .fn()
+                .mockImplementation(() => Promise.resolve({ length: 10 })),
         };
         expect(await countNotUnique(collection)('fieldName')).toEqual(0);
 
@@ -19,10 +17,12 @@ describe('countNotUnique', () => {
     describe('countUniqueConcatenation', () => {
         it('should call aggregate with properly formed request', async () => {
             const aggregateResult = {
-                toArray: expect.createSpy().andReturn([{ distinct: 'result' }]),
+                toArray: jest
+                    .fn()
+                    .mockImplementation(() => [{ distinct: 'result' }]),
             };
             const collection = {
-                aggregate: expect.createSpy().andReturn(aggregateResult),
+                aggregate: jest.fn().mockImplementation(() => aggregateResult),
             };
             expect(
                 await countUniqueConcatenation(collection)([

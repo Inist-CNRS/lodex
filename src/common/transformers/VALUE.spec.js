@@ -1,5 +1,3 @@
-import expect from 'expect';
-
 import VALUE from './VALUE';
 
 describe('VALUE', () => {

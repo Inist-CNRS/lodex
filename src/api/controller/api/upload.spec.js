@@ -1,4 +1,3 @@
-import expect, { createSpy } from 'expect';
 import config from 'config';
 
 import { parseRequest, uploadChunkMiddleware, uploadUrl } from './upload';
@@ -7,8 +6,9 @@ describe('upload', () => {
     describe('parseRequest', () => {
         const ctx = {
             req: 'req',
-            requestToStream: createSpy().andReturn({
+            requestToStream: jest.fn().mockImplementation(() => ({
                 stream: 'stream',
+
                 fields: {
                     resumableChunkNumber: '10',
                     resumableIdentifier: 'identifier',
@@ -17,9 +17,9 @@ describe('upload', () => {
                     resumableCurrentChunkSize: '5',
                     resumableFilename: 'data.csv',
                 },
-            }),
+            })),
         };
-        const next = createSpy();
+        const next = jest.fn();
 
         it('should put info from resumable parsed request into ctx.resumable', async () => {
             await parseRequest(ctx, null, next);
@@ -40,9 +40,9 @@ describe('upload', () => {
     describe('uploadChunkMiddleware', () => {
         describe('when chunk already exists but not all chunk are present', () => {
             const ctx = {
-                checkFileExists: createSpy().andReturn(true),
-                saveStreamInFile: createSpy(),
-                getUploadedFileSize: createSpy().andReturn(10),
+                getUploadedFileSize: jest.fn(() => 10),
+                checkFileExists: jest.fn().mockImplementation(() => true),
+                saveStreamInFile: jest.fn(),
                 resumable: {
                     chunkname: 'chunkname',
                     filename: 'filename',
@@ -53,9 +53,9 @@ describe('upload', () => {
                 },
             };
 
-            const next = createSpy();
+            const next = jest.fn();
 
-            before(async () => {
+            beforeAll(async () => {
                 await uploadChunkMiddleware(ctx, 'type', next);
             });
 
@@ -67,7 +67,7 @@ describe('upload', () => {
             });
 
             it('should not have called saveStreamInFile', () => {
-                expect(ctx.saveStreamInFile).toNotHaveBeenCalled();
+                expect(ctx.saveStreamInFile).not.toHaveBeenCalled();
             });
 
             it('should have called getUploadedFileSize', () => {
@@ -78,7 +78,7 @@ describe('upload', () => {
             });
 
             it('should not have called next', () => {
-                expect(next).toNotHaveBeenCalled();
+                expect(next).not.toHaveBeenCalled();
             });
 
             it('should have set ctx.status to 200', () => {
@@ -88,9 +88,9 @@ describe('upload', () => {
 
         describe('when chunk already exists and all chunk are present', () => {
             const ctx = {
-                checkFileExists: createSpy().andReturn(true),
-                saveStreamInFile: createSpy(),
-                getUploadedFileSize: createSpy().andReturn(10),
+                getUploadedFileSize: jest.fn(() => 10),
+                checkFileExists: jest.fn().mockImplementation(() => true),
+                saveStreamInFile: jest.fn(),
                 resumable: {
                     chunkname: 'chunkname',
                     filename: 'filename',
@@ -101,9 +101,9 @@ describe('upload', () => {
                 },
             };
 
-            const next = createSpy();
+            const next = jest.fn();
 
-            before(async () => {
+            beforeAll(async () => {
                 await uploadChunkMiddleware(ctx, 'type', next);
             });
 
@@ -115,7 +115,7 @@ describe('upload', () => {
             });
 
             it('should not have called saveStreamInFile', () => {
-                expect(ctx.saveStreamInFile).toNotHaveBeenCalled();
+                expect(ctx.saveStreamInFile).not.toHaveBeenCalled();
             });
 
             it('should have called getUploadedFileSize', () => {
@@ -136,9 +136,9 @@ describe('upload', () => {
 
         describe('when chunk do not already exists and all chunk become present', () => {
             const ctx = {
-                checkFileExists: createSpy().andReturn(false),
-                saveStreamInFile: createSpy(),
-                getUploadedFileSize: createSpy().andReturn(10),
+                getUploadedFileSize: jest.fn(() => 10),
+                checkFileExists: jest.fn().mockImplementation(() => false),
+                saveStreamInFile: jest.fn(),
                 resumable: {
                     chunkname: 'chunkname',
                     filename: 'filename',
@@ -149,9 +149,9 @@ describe('upload', () => {
                 },
             };
 
-            const next = createSpy();
+            const next = jest.fn();
 
-            before(async () => {
+            beforeAll(async () => {
                 await uploadChunkMiddleware(ctx, 'type', next);
             });
 
@@ -187,9 +187,9 @@ describe('upload', () => {
 
         describe('when chunk do not already exists and all chunk are not present', () => {
             const ctx = {
-                checkFileExists: createSpy().andReturn(false),
-                saveStreamInFile: createSpy(),
-                getUploadedFileSize: createSpy().andReturn(false),
+                getUploadedFileSize: jest.fn(() => false),
+                checkFileExists: jest.fn().mockImplementation(() => false),
+                saveStreamInFile: jest.fn(),
                 resumable: {
                     chunkname: 'chunkname',
                     filename: 'filename',
@@ -200,9 +200,9 @@ describe('upload', () => {
                 },
             };
 
-            const next = createSpy();
+            const next = jest.fn();
 
-            before(async () => {
+            beforeAll(async () => {
                 await uploadChunkMiddleware(ctx, 'type', next);
             });
 
@@ -228,7 +228,7 @@ describe('upload', () => {
             });
 
             it('should not have called next', () => {
-                expect(next).toNotHaveBeenCalled();
+                expect(next).not.toHaveBeenCalled();
             });
 
             it('should have set ctx.status to 200', () => {
@@ -238,19 +238,21 @@ describe('upload', () => {
     });
 
     describe('uploadUrl', () => {
-        const parser = createSpy().andReturn('parsedStream');
+        const parser = jest.fn().mockImplementation(() => 'parsedStream');
         const ctx = {
             request: {
                 body: {
                     url: 'http://host/file.name.type',
                 },
             },
-            getParser: createSpy().andReturn(parser),
-            getStreamFromUrl: createSpy().andReturn('streamUrl'),
-            saveParsedStream: createSpy().andReturn('dataset count'),
+            getParser: jest.fn().mockImplementation(() => parser),
+            getStreamFromUrl: jest.fn().mockImplementation(() => 'streamUrl'),
+            saveParsedStream: jest
+                .fn()
+                .mockImplementation(() => 'dataset count'),
         };
 
-        before(async () => {
+        beforeAll(async () => {
             await uploadUrl(ctx);
         });
 

@@ -1,4 +1,3 @@
-import expect from 'expect';
 import { call, select, put } from 'redux-saga/effects';
 
 import { handleConfigureField } from './configureField';

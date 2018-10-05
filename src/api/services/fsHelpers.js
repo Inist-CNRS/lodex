@@ -62,7 +62,7 @@ export const getFileSize = filename =>
 export const checkFileExists = (filename, expectedSize) =>
     composeAsync(getFileSize, size => size === expectedSize)(filename);
 
-const addFileSize = chunkFilename => async (totalSize = 0) => {
+export const addFileSize = chunkFilename => async (totalSize = 0) => {
     const size = await getFileSize(chunkFilename);
 
     return size + totalSize;

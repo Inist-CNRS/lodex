@@ -1,4 +1,3 @@
-import expect from 'expect';
 import { createGlobalSelector, createGlobalSelectors } from './selectors';
 
 describe('selectors', () => {

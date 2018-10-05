@@ -1,4 +1,3 @@
-import expect from 'expect';
 import getFieldContext from './getFieldContext';
 
 describe('JSONLDObject / getFieldContext', () => {

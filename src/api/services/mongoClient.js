@@ -1,4 +1,4 @@
-import { MongoClient } from 'mongodb';
+import MongoClient from 'mongodb';
 import config from 'config';
 
 let db = null;

@@ -1,4 +1,3 @@
-import expect from 'expect';
 import transformCompleteFields from './transformCompleteFields';
 
 describe('JSONLDObject / transformCompleteFields', () => {
@@ -6,15 +5,15 @@ describe('JSONLDObject / transformCompleteFields', () => {
         try {
             await transformCompleteFields();
         } catch (e) {
-            expect(e).toExist();
+            expect(e).toBeTruthy();
         }
     });
 
     it('should aggregate various parts, and add a name', async () => {
         const field = { name: 'completing', completes: 'completed' };
         const res = await transformCompleteFields(field);
-        expect(res).toExist();
-        expect(res.name).toExist();
+        expect(res).toBeTruthy();
+        expect(res.name).toBeTruthy();
         expect(res).toEqual({
             name: res.name,
             complete: 'completing',
@@ -25,8 +24,8 @@ describe('JSONLDObject / transformCompleteFields', () => {
     it('should not work without a name', async () => {
         const field = { completes: 'completed' };
         const res = await transformCompleteFields(field);
-        expect(res).toExist();
-        expect(res.name).toExist();
+        expect(res).toBeTruthy();
+        expect(res.name).toBeTruthy();
         expect(res).toEqual({
             name: res.name,
             complete: undefined,
@@ -37,8 +36,8 @@ describe('JSONLDObject / transformCompleteFields', () => {
     it('should not work without a completes', async () => {
         const field = { name: 'completing' };
         const res = await transformCompleteFields(field);
-        expect(res).toExist();
-        expect(res.name).toExist();
+        expect(res).toBeTruthy();
+        expect(res.name).toBeTruthy();
         expect(res).toEqual({
             name: res.name,
             complete: 'completing',

@@ -1,5 +1,3 @@
-import expect from 'expect';
-
 import { defval } from './DEFAULT';
 
 describe('DEFAULT', () => {

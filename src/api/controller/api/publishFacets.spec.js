@@ -1,11 +1,10 @@
 /* eslint max-len: off */
-import expect, { createSpy } from 'expect';
 import publishFacets from './publishFacets';
 
 describe('publishFacets', () => {
     const ctx = {
         publishedDataset: {
-            getFacetsForField: createSpy().andCall(name => ({
+            getFacetsForField: jest.fn().mockImplementation(name => ({
                 toArray: () =>
                     Promise.resolve([
                         {
@@ -22,8 +21,8 @@ describe('publishFacets', () => {
             })),
         },
         publishedFacet: {
-            insertMany: createSpy().andReturn(Promise.resolve()),
-            remove: createSpy(),
+            insertMany: jest.fn().mockImplementation(() => Promise.resolve()),
+            remove: jest.fn(),
         },
     };
     const facetFields = [
@@ -40,7 +39,7 @@ describe('publishFacets', () => {
         },
     ];
 
-    before(async () => {
+    beforeAll(async () => {
         await publishFacets(ctx, facetFields, false);
     });
 

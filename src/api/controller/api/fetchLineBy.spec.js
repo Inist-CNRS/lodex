@@ -1,4 +1,3 @@
-import expect, { createSpy } from 'expect';
 import fetchLineBy from './fetchLineBy';
 
 describe('fetchLineBy', () => {
@@ -9,7 +8,9 @@ describe('fetchLineBy', () => {
 
         const ctx = {
             dataset: {
-                findBy: createSpy().andReturn(Promise.resolve(line)),
+                findBy: jest
+                    .fn()
+                    .mockImplementation(() => Promise.resolve(line)),
             },
         };
 
@@ -24,7 +25,9 @@ describe('fetchLineBy', () => {
 
         const ctx = {
             dataset: {
-                findBy: createSpy().andReturn(Promise.resolve(line)),
+                findBy: jest
+                    .fn()
+                    .mockImplementation(() => Promise.resolve(line)),
             },
         };
 
@@ -41,7 +44,7 @@ describe('fetchLineBy', () => {
 
         const ctx = {
             dataset: {
-                findBy: createSpy().andReturn(Promise.resolve()),
+                findBy: jest.fn().mockImplementation(() => Promise.resolve()),
             },
         };
 
@@ -55,7 +58,7 @@ describe('fetchLineBy', () => {
 
         const ctx = {
             dataset: {
-                findBy: createSpy().andReturn(Promise.resolve()),
+                findBy: jest.fn().mockImplementation(() => Promise.resolve()),
             },
         };
 

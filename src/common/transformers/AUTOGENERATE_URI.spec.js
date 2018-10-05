@@ -1,4 +1,3 @@
-import expect from 'expect';
 import InistArk from 'inist-ark';
 
 import { autoGenerateUri } from './AUTOGENERATE_URI';

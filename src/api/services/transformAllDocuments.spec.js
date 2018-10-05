@@ -1,20 +1,18 @@
-import expect, { createSpy } from 'expect';
-
 import tranformAllDocuments from './transformAllDocuments';
 
 describe('tranformAllDocuments', () => {
     const dataset = {
         length: 1000,
-        map: createSpy().andReturn(['transformed dataset']),
+        map: jest.fn().mockImplementation(() => ['transformed dataset']),
     };
     const count = 2001;
-    const findLimitFromSkip = createSpy().andReturn(dataset);
-    const insertBatch = createSpy();
-    const transformDocument = createSpy().andReturn(
-        Promise.resolve('transformedDocument'),
-    );
+    const findLimitFromSkip = jest.fn().mockImplementation(() => dataset);
+    const insertBatch = jest.fn();
+    const transformDocument = jest
+        .fn()
+        .mockImplementation(() => Promise.resolve('transformedDocument'));
 
-    before(async () => {
+    beforeAll(async () => {
         await tranformAllDocuments(
             count,
             findLimitFromSkip,

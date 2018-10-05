@@ -1,4 +1,3 @@
-import expect from 'expect';
 import mergeSimpleField from './mergeSimpleField';
 
 describe('JSONLDObject / mergeSimpleField', () => {
@@ -6,7 +5,7 @@ describe('JSONLDObject / mergeSimpleField', () => {
         try {
             mergeSimpleField();
         } catch (e) {
-            expect(e).toExist();
+            expect(e).toBeTruthy();
         }
     });
 

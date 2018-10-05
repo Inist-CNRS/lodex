@@ -1,4 +1,3 @@
-import expect from 'expect';
 import { call, select } from 'redux-saga/effects';
 
 import { fromFields } from '../../sharedSelectors';

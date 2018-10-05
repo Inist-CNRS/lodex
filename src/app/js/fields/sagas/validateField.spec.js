@@ -1,5 +1,3 @@
-import expect from 'expect';
-
 import validateFieldSaga from './validateField';
 import { select, call, put } from 'redux-saga/effects';
 import { fromFields } from '../../sharedSelectors';

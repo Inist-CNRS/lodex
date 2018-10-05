@@ -19,7 +19,8 @@
         "import",
         "react",
         "prettier",
-        "cypress"
+        "cypress",
+        "jest"
     ],
     "rules": {
         "prettier/prettier": ["error", {
@@ -36,6 +37,9 @@
         "__DEBUG__": true,
         "LOADERS": true,
         "__EN__": true,
-        "__FR__": true
+        "__FR__": true,
+        "jest": true,
+        "beforeAll": true,
+        "afterAll": true
     }
 }

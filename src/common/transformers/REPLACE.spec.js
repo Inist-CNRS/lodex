@@ -1,5 +1,3 @@
-import expect from 'expect';
-
 import { replace } from './REPLACE';
 
 describe('REPLACE', () => {
