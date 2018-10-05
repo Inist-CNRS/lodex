@@ -2,7 +2,6 @@ import {
     clearChunksFactory,
     getUploadedFileSizeFactory,
     mergeChunksFactory,
-    addFileSize
 } from './fsHelpers';
 
 describe('fsHelpers', () => {

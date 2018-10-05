@@ -1,4 +1,4 @@
-import MongoClient from 'mongodb';
+import { MongoClient } from 'mongodb';
 import config from 'config';
 
 let db = null;
@@ -12,6 +12,11 @@ export const mongoClientFactory = MongoClientImpl => async () => {
             },
         );
     }
+
+    const close = db.close.bind(db);
+    db.close = () => {
+        close();
+    };
     return db;
 };
 

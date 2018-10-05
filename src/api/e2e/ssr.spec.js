@@ -1,3 +1,4 @@
+import expect from 'expect';
 import omit from 'lodash.omit';
 import jwt from 'jsonwebtoken';
 import { auth } from 'config';
@@ -25,7 +26,7 @@ const authentifiedHeader = {
 
 describe('ssr', () => {
     let server;
-    beforeAll(async () => {
+    before(async () => {
         server = requestServer();
         await clear();
         await connect();
@@ -35,7 +36,7 @@ describe('ssr', () => {
     describe('/', () => {
         let state;
         describe('authentified', () => {
-            beforeAll(async () => {
+            before(async () => {
                 const response = await server
                     .get('/', authentifiedHeader)
                     .then(response => response.text());
@@ -117,7 +118,7 @@ describe('ssr', () => {
             });
         });
         describe('not authentified', () => {
-            beforeAll(async () => {
+            before(async () => {
                 const response = await server
                     .get('/')
                     .then(response => response.text());
@@ -161,7 +162,7 @@ describe('ssr', () => {
         let state;
 
         describe('authentified', () => {
-            beforeAll(async () => {
+            before(async () => {
                 const response = await server
                     .get('/resource?uri=1', authentifiedHeader)
                     .then(response => response.text());
@@ -217,7 +218,7 @@ describe('ssr', () => {
         });
 
         describe('not authentified', () => {
-            beforeAll(async () => {
+            before(async () => {
                 const response = await server
                     .get('/resource?uri=1')
                     .then(response => response.text());
@@ -260,7 +261,7 @@ describe('ssr', () => {
     describe('/graph', () => {
         let state;
         describe('authenticated', () => {
-            beforeAll(async () => {
+            before(async () => {
                 const response = await server
                     .get('/graph', authentifiedHeader)
                     .then(response => response.text());
@@ -334,7 +335,7 @@ describe('ssr', () => {
         });
 
         describe('not authenticated', () => {
-            beforeAll(async () => {
+            before(async () => {
                 const response = await server
                     .get('/graph')
                     .then(response => response.text());
@@ -366,7 +367,7 @@ describe('ssr', () => {
         });
     });
 
-    afterAll(async () => {
+    after(async () => {
         server.close();
 
         await clear();
