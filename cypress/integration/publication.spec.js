@@ -90,9 +90,30 @@ describe('Dataset Publication', () => {
     });
 
     describe('Facets', () => {
+        it('should allow to have a facet with a single value', () => {
+            homePage.goToAdminDashboard();
+            datasetImportPage.importDataset('dataset/single-facet.csv');
+            datasetImportPage.importModel('model/facet.json');
+            datasetImportPage.publish();
+
+            datasetImportPage.goToPublishedResources();
+            homePage.goToGraphPage();
+
+            cy.contains('Affiliation(s)').click();
+            cy
+                .get('.facet-list')
+                .find('.facet-item')
+                .should('have.length', 1);
+
+            cy
+                .get('.facet-list')
+                .find('.facet-value-item')
+                .should('have.length', 1);
+        });
+
         it('should allow to have facets with multiples values in them', () => {
             homePage.goToAdminDashboard();
-            datasetImportPage.importDataset('dataset/facet.csv');
+            datasetImportPage.importDataset('dataset/multiple-facet.csv');
             datasetImportPage.importModel('model/facet.json');
             datasetImportPage.publish();
 
