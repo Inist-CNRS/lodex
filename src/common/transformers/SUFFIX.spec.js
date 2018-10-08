@@ -1,5 +1,3 @@
-import expect from 'expect';
-
 import { suffix } from './SUFFIX';
 
 describe('SUFFIX', () => {

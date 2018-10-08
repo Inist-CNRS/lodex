@@ -1,5 +1,3 @@
-import expect from 'expect';
-
 import { split } from './SPLIT';
 
 describe('SPLIT', () => {
@@ -9,7 +7,7 @@ describe('SPLIT', () => {
 
     it('should return empty array if value is null', () => {
         const result = split(undefined, ' dear ');
-        expect(result).toBeA(Array);
+        expect(result).toBeInstanceOf(Array);
         expect(result).toEqual([]);
     });
 

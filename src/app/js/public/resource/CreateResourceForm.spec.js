@@ -1,5 +1,4 @@
 import React from 'react';
-import expect from 'expect';
 import { shallow } from 'enzyme';
 
 import { CreateResourceFormComponent } from './CreateResourceForm';
@@ -20,11 +19,9 @@ describe('<Resource />', () => {
         const fieldInputs = wrapper.find(FieldInput);
         expect(fieldInputs.length).toBe(2);
         expect(fieldInputs.at(0).props()).toEqual({
-            key: 'field1',
             field: { name: 'field1' },
         });
         expect(fieldInputs.at(1).props()).toEqual({
-            key: 'field2',
             field: { name: 'field2' },
         });
     });

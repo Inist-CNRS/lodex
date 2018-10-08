@@ -1,6 +1,7 @@
 import { logoutAndLogin } from '../support/authentication';
 import * as homePage from '../support/homePage';
 import * as datasetImportPage from '../support/datasetImportPage';
+import * as graphPage from '../support/graphPage';
 import { fillInputWithFixture } from '../support/forms';
 
 describe('Dataset Publication', () => {
@@ -65,6 +66,21 @@ describe('Dataset Publication', () => {
             cy.contains('Row 1').should('be.visible');
             cy.contains('Row 2').should('be.visible');
         });
+
+        it('should allow to load a file multiple times', () => {
+            homePage.goToAdminDashboard();
+            datasetImportPage.importDataset('dataset/simple.csv');
+            datasetImportPage.importModel('model/concat.json');
+            datasetImportPage.publish();
+
+            datasetImportPage.importMoreDataset('dataset/simple.csv');
+            datasetImportPage.importMoreDataset('dataset/simple.csv');
+
+            datasetImportPage.goToPublishedResources();
+            homePage.goToGraphPage();
+
+            graphPage.expectRowsCountToBe(6);
+        });
     });
 
     describe('Transformers & Formats', () => {
@@ -86,6 +102,50 @@ describe('Dataset Publication', () => {
 
             cy.contains('Row 1').should('be.visible');
             cy.contains('Row 2').should('be.visible');
+        });
+    });
+
+    describe('Facets', () => {
+        it('should allow to have a facet with a single value', () => {
+            homePage.goToAdminDashboard();
+            datasetImportPage.importDataset('dataset/single-facet.csv');
+            datasetImportPage.importModel('model/facet.json');
+            datasetImportPage.publish();
+
+            datasetImportPage.goToPublishedResources();
+            homePage.goToGraphPage();
+
+            cy.contains('Affiliation(s)').click();
+            cy
+                .get('.facet-list')
+                .find('.facet-item')
+                .should('have.length', 1);
+
+            cy
+                .get('.facet-list')
+                .find('.facet-value-item')
+                .should('have.length', 1);
+        });
+
+        it('should allow to have facets with multiples values in them', () => {
+            homePage.goToAdminDashboard();
+            datasetImportPage.importDataset('dataset/multiple-facet.csv');
+            datasetImportPage.importModel('model/facet.json');
+            datasetImportPage.publish();
+
+            datasetImportPage.goToPublishedResources();
+            homePage.goToGraphPage();
+
+            cy.contains('Affiliation(s)').click();
+            cy
+                .get('.facet-list')
+                .find('.facet-item')
+                .should('have.length', 1);
+
+            cy
+                .get('.facet-list')
+                .find('.facet-value-item')
+                .should('have.length', 3);
         });
     });
 });

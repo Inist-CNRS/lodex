@@ -1,5 +1,4 @@
 import React from 'react';
-import expect from 'expect';
 import { shallow } from 'enzyme';
 
 import Component, { UL, OL } from './ListView';

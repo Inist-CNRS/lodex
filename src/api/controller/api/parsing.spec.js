@@ -1,5 +1,3 @@
-import expect from 'expect';
-
 import { getExcerpt } from './parsing';
 
 describe('parsing', () => {

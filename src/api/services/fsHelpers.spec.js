@@ -1,5 +1,3 @@
-import expect, { createSpy } from 'expect';
-
 import {
     clearChunksFactory,
     getUploadedFileSizeFactory,
@@ -9,7 +7,7 @@ import {
 describe('fsHelpers', () => {
     describe('clearChunksFactory', () => {
         it('should call unlinkFile with each chunk', async () => {
-            const unlinkFile = createSpy();
+            const unlinkFile = jest.fn();
 
             await clearChunksFactory(unlinkFile)('filename', 3);
 
@@ -21,10 +19,10 @@ describe('fsHelpers', () => {
 
     describe('getUploadedFileSizeFactory', () => {
         describe('no error', () => {
-            const reallyAddFileSize = createSpy(
-                (size = 0) => size + 1,
-            ).andCallThrough(); // as if file had a size of 1
-            const addFileSizeImpl = createSpy().andReturn(reallyAddFileSize);
+            const reallyAddFileSize = jest.fn((size = 0) => size + 1); // as if file had a size of 1
+            const addFileSizeImpl = jest
+                .fn()
+                .mockImplementation(() => reallyAddFileSize);
 
             it('should return the resulting size', async () => {
                 const result = await getUploadedFileSizeFactory(
@@ -51,9 +49,11 @@ describe('fsHelpers', () => {
         });
 
         describe('with empty chunk error', () => {
-            const reallyAddFileSize = createSpy(() => 0).andCallThrough(); // as if file had a size of 1
+            const reallyAddFileSize = jest.fn(() => 0); // as if file had a size of 1
 
-            const addFileSizeImpl = createSpy().andReturn(reallyAddFileSize);
+            const addFileSizeImpl = jest
+                .fn()
+                .mockImplementation(() => reallyAddFileSize);
 
             it('should return 0 when addFileSize return 0', async () => {
                 const result = await getUploadedFileSizeFactory(
@@ -80,14 +80,16 @@ describe('fsHelpers', () => {
         });
 
         describe('with other error', () => {
-            const reallyAddFileSize = createSpy((size = 0) => {
+            const reallyAddFileSize = jest.fn((size = 0) => {
                 if (size === 1) {
                     throw new Error('Boom');
                 }
                 return size + 1;
-            }).andCallThrough(); // as if file had a size of 1
+            }); // as if file had a size of 1
 
-            const addFileSizeImpl = createSpy().andReturn(reallyAddFileSize);
+            const addFileSizeImpl = jest
+                .fn()
+                .mockImplementation(() => reallyAddFileSize);
 
             it('should return throw other error', async () => {
                 const errorMessage = await getUploadedFileSizeFactory(
@@ -99,13 +101,9 @@ describe('fsHelpers', () => {
     });
 
     describe('mergeChunksFactory', () => {
-        const createReadStreamImpl = createSpy(
-            v => `read stream for ${v}`,
-        ).andCallThrough();
-        const multiStreamImpl = createSpy(
-            () => 'merged stream',
-        ).andCallThrough();
-        before(async () => {
+        const createReadStreamImpl = jest.fn(v => `read stream for ${v}`);
+        const multiStreamImpl = jest.fn(() => 'merged stream');
+        beforeAll(async () => {
             await mergeChunksFactory(createReadStreamImpl, multiStreamImpl)(
                 'filename',
                 3,

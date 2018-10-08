@@ -1,4 +1,3 @@
-import expect from 'expect';
 import { call, take, put, select, race } from 'redux-saga/effects';
 import { LOCATION_CHANGE } from 'connected-react-router';
 

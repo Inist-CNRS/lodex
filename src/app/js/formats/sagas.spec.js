@@ -1,4 +1,3 @@
-import expect from 'expect';
 import { call, put, select, all } from 'redux-saga/effects';
 
 import {
@@ -221,7 +220,7 @@ describe('format sagas', () => {
                 'queryString',
             );
             expect(it.next()).toEqual({
-                value: select(fromUser.getUrlRequest, {
+                value: select(fromUser.getSparqlRequest, {
                     url: 'https://data.istex.fr/sparql/',
                     body: 'query=select * where {?s ?c ?d }',
                 }),

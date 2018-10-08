@@ -1,14 +1,15 @@
-import expect, { createSpy } from 'expect';
 import { getFacetFilteredValues } from './facet';
 
 describe('facets routes', () => {
     describe('getFacetFilteredValues', () => {
         const ctx = {
             publishedFacet: {
-                findValuesForField: createSpy().andReturn(Promise.resolve([])),
-                countValuesForField: createSpy().andReturn(
-                    Promise.resolve(100),
-                ),
+                findValuesForField: jest
+                    .fn()
+                    .mockImplementation(() => Promise.resolve([])),
+                countValuesForField: jest
+                    .fn()
+                    .mockImplementation(() => Promise.resolve(100)),
             },
             request: {
                 query: {

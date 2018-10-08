@@ -1,5 +1,3 @@
-import expect, { createSpy } from 'expect';
-
 import {
     setup,
     getAllField,
@@ -23,7 +21,7 @@ describe('field routes', () => {
     describe('setup', () => {
         it('should add validateField to ctx and call next', async () => {
             const ctx = {};
-            const next = createSpy();
+            const next = jest.fn();
 
             await setup(ctx, next);
 
@@ -35,9 +33,9 @@ describe('field routes', () => {
 
         it('should also set status and body if next is rejected', async () => {
             const ctx = {};
-            const next = createSpy().andReturn(
-                Promise.reject(new Error('Boom')),
-            );
+            const next = jest
+                .fn()
+                .mockImplementation(() => Promise.reject(new Error('Boom')));
 
             await setup(ctx, next);
 
@@ -54,9 +52,11 @@ describe('field routes', () => {
         it('should call ctx.field.findAll and pass the result to ctx.body', async () => {
             const ctx = {
                 field: {
-                    findAll: createSpy().andReturn(
-                        Promise.resolve('all fields'),
-                    ),
+                    findAll: jest
+                        .fn()
+                        .mockImplementation(() =>
+                            Promise.resolve('all fields'),
+                        ),
                 },
             };
 
@@ -70,14 +70,22 @@ describe('field routes', () => {
         it('should call ctx.field.findAll and pass the result with correct transformers', async () => {
             const ctx = {
                 field: {
-                    findAll: createSpy().andReturn(
+                    findAll: jest.fn().mockImplementation(() =>
                         Promise.resolve([
-                            { name: 'field1', label: 'column1', _id: 'id1' },
-                            { name: 'field2', label: 'column2', _id: 'id2' },
+                            {
+                                name: 'field1',
+                                label: 'column1',
+                                _id: 'id1',
+                            },
+                            {
+                                name: 'field2',
+                                label: 'column2',
+                                _id: 'id2',
+                            },
                         ]),
                     ),
                 },
-                attachment: createSpy(),
+                attachment: jest.fn(),
             };
 
             await exportFieldsReady(ctx);
@@ -131,14 +139,16 @@ describe('field routes', () => {
         it('should call ctx.field.findAll and pass the result to ctx.body with correct headers', async () => {
             const ctx = {
                 field: {
-                    findAll: createSpy().andReturn(
-                        Promise.resolve([
-                            { name: 'field1', _id: 'id1' },
-                            { name: 'field2', _id: 'id2' },
-                        ]),
-                    ),
+                    findAll: jest
+                        .fn()
+                        .mockImplementation(() =>
+                            Promise.resolve([
+                                { name: 'field1', _id: 'id1' },
+                                { name: 'field2', _id: 'id2' },
+                            ]),
+                        ),
                 },
-                attachment: createSpy(),
+                attachment: jest.fn(),
             };
 
             await exportFields(ctx);
@@ -159,17 +169,19 @@ describe('field routes', () => {
         let getUploadedFields;
 
         beforeEach(() => {
-            getUploadedFields = createSpy().andReturn([
-                { name: 'field1', label: 'Field 1' },
-                { name: 'field2', label: 'Field 2' },
-            ]);
+            getUploadedFields = jest
+                .fn()
+                .mockImplementation(() => [
+                    { name: 'field1', label: 'Field 1' },
+                    { name: 'field2', label: 'Field 2' },
+                ]);
         });
 
         const ctx = {
             req: 'request',
             field: {
-                create: createSpy(),
-                remove: createSpy(),
+                create: jest.fn(),
+                remove: jest.fn(),
             },
         };
 
@@ -200,21 +212,44 @@ describe('field routes', () => {
         });
 
         it('should pass the position ctx.field.create if available', async () => {
-            getUploadedFields = createSpy().andReturn([
-                { name: 'field1', label: 'Field 1', position: 5 },
-                { name: 'field2', label: 'Field 2', position: 6 },
+            getUploadedFields = jest.fn(() => [
+                { name: 'field1', label: 'Field 1', position: 0 },
+                { name: 'field2', label: 'Field 2', position: 1 },
             ]);
 
             await importFields(getUploadedFields)(ctx);
 
             expect(ctx.field.create).toHaveBeenCalledWith(
-                { label: 'Field 1', position: 5 },
+                { label: 'Field 1', position: 0 },
                 'field1',
                 false,
             );
 
             expect(ctx.field.create).toHaveBeenCalledWith(
-                { label: 'Field 2', position: 6 },
+                { label: 'Field 2', position: 1 },
+                'field2',
+                false,
+            );
+        });
+
+        it('should rearrange the position to avoid gap', async () => {
+            getUploadedFields = jest
+                .fn()
+                .mockImplementation(() => [
+                    { name: 'field1', label: 'Field 1', position: 5 },
+                    { name: 'field2', label: 'Field 2', position: 6 },
+                ]);
+
+            await importFields(getUploadedFields)(ctx);
+
+            expect(ctx.field.create).toHaveBeenCalledWith(
+                { label: 'Field 1', position: 0 },
+                'field1',
+                false,
+            );
+
+            expect(ctx.field.create).toHaveBeenCalledWith(
+                { label: 'Field 2', position: 1 },
                 'field2',
                 false,
             );
@@ -233,9 +268,11 @@ describe('field routes', () => {
                     body: 'new field data',
                 },
                 field: {
-                    create: createSpy().andReturn(
-                        Promise.resolve('inserted item'),
-                    ),
+                    create: jest
+                        .fn()
+                        .mockImplementation(() =>
+                            Promise.resolve('inserted item'),
+                        ),
                 },
             };
 
@@ -253,18 +290,18 @@ describe('field routes', () => {
                 },
             },
             field: {
-                updateOneById: createSpy().andReturn(
-                    Promise.resolve('update result'),
-                ),
-                findOneAndUpdate: createSpy(),
+                updateOneById: jest
+                    .fn()
+                    .mockImplementation(() => Promise.resolve('update result')),
+                findOneAndUpdate: jest.fn(),
             },
-            publishFacets: createSpy(),
+            publishFacets: jest.fn(),
         };
 
         beforeEach(() => {
-            ctx.field.updateOneById.reset();
-            ctx.field.findOneAndUpdate.reset();
-            ctx.publishFacets.reset();
+            ctx.field.updateOneById.mockClear();
+            ctx.field.findOneAndUpdate.mockClear();
+            ctx.publishFacets.mockClear();
         });
 
         it('should remove overview form other field with same overview, if overview is set', async () => {
@@ -273,7 +310,7 @@ describe('field routes', () => {
                 { overview: 200 },
                 { $unset: { overview: '' } },
             );
-            expect(ctx.body).toInclude(['update result']);
+            expect(ctx.body).toContain(['update result']);
         });
 
         it('should not remove overview form other field with same overview, if overview is not set', async () => {
@@ -286,7 +323,7 @@ describe('field routes', () => {
                 },
                 'id',
             );
-            expect(ctx.field.findOneAndUpdate).toNotHaveBeenCalled();
+            expect(ctx.field.findOneAndUpdate).not.toHaveBeenCalled();
         });
 
         it('should validateField and then update field', async () => {
@@ -294,7 +331,7 @@ describe('field routes', () => {
             expect(ctx.field.updateOneById).toHaveBeenCalledWith('id', {
                 overview: 200,
             });
-            expect(ctx.body).toInclude(['update result']);
+            expect(ctx.body).toContain(['update result']);
         });
 
         it('update the published facets', async () => {
@@ -314,9 +351,11 @@ describe('field routes', () => {
                     body: 'updated field data',
                 },
                 field: {
-                    removeById: createSpy().andReturn(
-                        Promise.resolve('deletion result'),
-                    ),
+                    removeById: jest
+                        .fn()
+                        .mockImplementation(() =>
+                            Promise.resolve('deletion result'),
+                        ),
                 },
             };
 
@@ -340,10 +379,14 @@ describe('field routes', () => {
                     },
                 },
                 field: {
-                    updatePosition: createSpy().andCall(name =>
-                        Promise.resolve(`updated ${name}`),
-                    ),
-                    findByNames: createSpy().andReturn(fieldsByName),
+                    updatePosition: jest
+                        .fn()
+                        .mockImplementation(name =>
+                            Promise.resolve(`updated ${name}`),
+                        ),
+                    findByNames: jest
+                        .fn()
+                        .mockImplementation(() => fieldsByName),
                 },
             };
 
@@ -369,10 +412,14 @@ describe('field routes', () => {
                     },
                 },
                 field: {
-                    updatePosition: createSpy().andCall(name =>
-                        Promise.resolve(`updated ${name}`),
-                    ),
-                    findByNames: createSpy().andReturn(fieldsByName),
+                    updatePosition: jest
+                        .fn()
+                        .mockImplementation(name =>
+                            Promise.resolve(`updated ${name}`),
+                        ),
+                    findByNames: jest
+                        .fn()
+                        .mockImplementation(() => fieldsByName),
                 },
             };
 
@@ -398,10 +445,14 @@ describe('field routes', () => {
                     },
                 },
                 field: {
-                    updatePosition: createSpy().andReturn(
-                        Promise.resolve(`updated field`),
-                    ),
-                    findByNames: createSpy().andReturn(fieldsByName),
+                    updatePosition: jest
+                        .fn()
+                        .mockImplementation(() =>
+                            Promise.resolve(`updated field`),
+                        ),
+                    findByNames: jest
+                        .fn()
+                        .mockImplementation(() => fieldsByName),
                 },
             };
 
@@ -412,7 +463,7 @@ describe('field routes', () => {
                 'Bad cover: trying to mix characteristic with other fields',
             );
 
-            expect(ctx.field.updatePosition).toNotHaveBeenCalled();
+            expect(ctx.field.updatePosition).not.toHaveBeenCalled();
         });
 
         it('should throw an error if cover is not dataset and first field is not uri', async () => {
@@ -428,10 +479,14 @@ describe('field routes', () => {
                     },
                 },
                 field: {
-                    updatePosition: createSpy().andReturn(
-                        Promise.resolve(`updated field`),
-                    ),
-                    findByNames: createSpy().andReturn(fieldsByName),
+                    updatePosition: jest
+                        .fn()
+                        .mockImplementation(() =>
+                            Promise.resolve(`updated field`),
+                        ),
+                    findByNames: jest
+                        .fn()
+                        .mockImplementation(() => fieldsByName),
                 },
             };
 
@@ -440,7 +495,7 @@ describe('field routes', () => {
             expect(ctx.status).toBe(400);
             expect(ctx.body.error).toBe('Uri must always be the first field');
 
-            expect(ctx.field.updatePosition).toNotHaveBeenCalled();
+            expect(ctx.field.updatePosition).not.toHaveBeenCalled();
         });
     });
 });

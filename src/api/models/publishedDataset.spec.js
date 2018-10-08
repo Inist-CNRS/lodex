@@ -1,20 +1,18 @@
-import expect, { createSpy } from 'expect';
-
 import publishedDataset from './publishedDataset';
 import { VALIDATED, PROPOSED } from '../../common/propositionStatus';
 
 describe('publishedDataset', () => {
     describe('addVersion', () => {
         const collection = {
-            createIndex: createSpy(),
-            findOneAndUpdate: createSpy(),
+            createIndex: jest.fn(),
+            findOneAndUpdate: jest.fn(),
         };
         const db = {
             collection: () => collection,
         };
         let publishedDatasetCollection;
 
-        before(async () => {
+        beforeAll(async () => {
             publishedDatasetCollection = await publishedDataset(db);
         });
 
@@ -57,9 +55,9 @@ describe('publishedDataset', () => {
             ],
         };
         const collection = {
-            findOne: createSpy().andReturn(previousResource),
-            update: createSpy(),
-            createIndex: createSpy(),
+            findOne: jest.fn().mockImplementation(() => previousResource),
+            update: jest.fn(),
+            createIndex: jest.fn(),
         };
         const db = {
             collection: () => collection,
@@ -67,7 +65,7 @@ describe('publishedDataset', () => {
 
         let publishedDatasetCollection;
 
-        before(async () => {
+        beforeAll(async () => {
             publishedDatasetCollection = await publishedDataset(db);
         });
 
@@ -167,12 +165,14 @@ describe('publishedDataset', () => {
     describe('changePropositionStatus', () => {
         const previousStatus = 'previousStatus';
         const aggregateResult = {
-            toArray: createSpy().andReturn([{ status: previousStatus }]),
+            toArray: jest
+                .fn()
+                .mockImplementation(() => [{ status: previousStatus }]),
         };
         const collection = {
-            aggregate: createSpy().andReturn(aggregateResult),
-            update: createSpy(),
-            createIndex: createSpy(),
+            aggregate: jest.fn().mockImplementation(() => aggregateResult),
+            update: jest.fn(),
+            createIndex: jest.fn(),
         };
         const db = {
             collection: () => collection,
@@ -180,7 +180,7 @@ describe('publishedDataset', () => {
 
         let publishedDatasetCollection;
 
-        before(async () => {
+        beforeAll(async () => {
             publishedDatasetCollection = await publishedDataset(db);
         });
 
@@ -218,22 +218,33 @@ describe('publishedDataset', () => {
     });
 
     describe('findPage', () => {
-        const count = createSpy().andReturn('count');
-        const toArray = createSpy().andReturn('result');
-        const limit = createSpy().andReturn({ toArray });
-        const skip = createSpy().andReturn({ limit });
-        const sort = createSpy().andReturn({ skip, count });
-        const find = createSpy().andReturn({ sort, skip, count });
+        const count = jest.fn().mockImplementation(() => 'count');
+        const toArray = jest.fn().mockImplementation(() => 'result');
+        const limit = jest.fn().mockImplementation(() => ({
+            toArray,
+        }));
+        const skip = jest.fn().mockImplementation(() => ({
+            limit,
+        }));
+        const sort = jest.fn().mockImplementation(() => ({
+            skip,
+            count,
+        }));
+        const find = jest.fn().mockImplementation(() => ({
+            sort,
+            skip,
+            count,
+        }));
         const db = {
             collection: () => ({
                 find,
-                createIndex: createSpy(),
+                createIndex: jest.fn(),
             }),
         };
 
         let publishedDatasetCollection;
 
-        before(async () => {
+        beforeAll(async () => {
             publishedDatasetCollection = await publishedDataset(db);
         });
 
@@ -342,17 +353,17 @@ describe('publishedDataset', () => {
     });
 
     describe('create', () => {
-        const insertOne = createSpy().andReturn('inserted');
+        const insertOne = jest.fn().mockImplementation(() => 'inserted');
         const db = {
             collection: () => ({
                 insertOne,
-                createIndex: createSpy(),
+                createIndex: jest.fn(),
             }),
         };
 
         let publishedDatasetCollection;
 
-        before(async () => {
+        beforeAll(async () => {
             publishedDatasetCollection = await publishedDataset(db);
         });
 

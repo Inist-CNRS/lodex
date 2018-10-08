@@ -1,5 +1,4 @@
 import React from 'react';
-import expect from 'expect';
 import { shallow } from 'enzyme';
 import RaisedButton from 'material-ui/RaisedButton';
 import Alert from '../../lib/components/Alert';
@@ -7,7 +6,7 @@ import Alert from '../../lib/components/Alert';
 import { UploadComponent as Upload } from './Upload';
 
 describe('<Upload />', () => {
-    before(() => {
+    beforeAll(() => {
         global.LOADERS = [];
     });
 
@@ -20,7 +19,7 @@ describe('<Upload />', () => {
         const wrapper = shallow(<Upload {...props} />);
 
         const raisedButton = wrapper.find(RaisedButton).at(0);
-        expect(raisedButton).toNotBe(undefined);
+        expect(raisedButton).not.toBe(undefined);
 
         expect(
             wrapper.contains(
@@ -50,7 +49,7 @@ describe('<Upload />', () => {
         ).toBe(true);
     });
 
-    after(() => {
+    afterAll(() => {
         delete global.LOADERS;
     });
 });

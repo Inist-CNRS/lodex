@@ -1,5 +1,4 @@
 import React from 'react';
-import expect, { createSpy } from 'expect';
 import { shallow } from 'enzyme';
 import moment from 'moment';
 
@@ -42,7 +41,7 @@ describe('<RemovedResourceList />', () => {
     ];
 
     it('should call loadRemovedResourcePage on mount', () => {
-        const loadRemovedResourcePage = createSpy();
+        const loadRemovedResourcePage = jest.fn();
 
         shallow(
             <RemovedResourceList
@@ -239,7 +238,7 @@ describe('<RemovedResourceList />', () => {
     });
 
     it('should call loadRemovedResourcePage on pagination change', () => {
-        const loadRemovedResourcePage = createSpy();
+        const loadRemovedResourcePage = jest.fn();
         const wrapper = shallow(
             <RemovedResourceList
                 p={{ t: key => key }}
@@ -260,7 +259,7 @@ describe('<RemovedResourceList />', () => {
     });
 
     it('should call restoreRessource on restore button click', () => {
-        const restoreRessource = createSpy();
+        const restoreRessource = jest.fn();
         const wrapper = shallow(
             <RemovedResourceList
                 p={{ t: key => key }}

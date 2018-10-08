@@ -56,6 +56,12 @@ test-api-unit: ## Run the API unit tests
 	docker-compose run --rm -p "3010:3010" api \
 		npm run test:api
 
+test-api-e2e: ## Run the API unit tests
+	NODE_ENV=test \
+	EZMASTER_PUBLIC_URL="http://localhost:3010" \
+	docker-compose run --rm -p "3010:3010" api \
+		npm run test:api:e2e
+
 test-api-unit-watch: ## Watch the API unit tests
 	NODE_ENV=test \
 	EZMASTER_PUBLIC_URL="http://localhost:3010" \
@@ -82,7 +88,7 @@ test-e2e-stop-dockers:
 	docker-compose -f docker-compose.spec.yml down
 
 test-e2e-open-cypress:
-	./node_modules/.bin/cypress open
+	NODE_ENV=test ./node_modules/.bin/cypress open
 
 test-e2e:
 ifeq "$(DISABLE_E2E_TESTS)" "true"
@@ -95,7 +101,7 @@ else
 endif
 
 
-test: test-frontend-unit test-api-unit test-e2e
+test: test-frontend-unit test-api-unit test-api-e2e test-e2e
 
 clear-database: ## Clear the whole database
 	docker-compose exec mongo mongo lodex --eval " \

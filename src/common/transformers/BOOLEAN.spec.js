@@ -1,5 +1,3 @@
-import expect from 'expect';
-
 import { valueToBoolean } from './BOOLEAN';
 
 describe('BOOLEAN', () => {

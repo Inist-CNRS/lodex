@@ -1,5 +1,3 @@
-import expect from 'expect';
-
 import { mapSourceToX, mapTargetToX } from './parseChartData';
 
 describe('parseChartData', () => {

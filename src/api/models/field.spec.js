@@ -1,4 +1,3 @@
-import expect, { createSpy } from 'expect';
 import fieldFactory, {
     validateField,
     buildInvalidPropertiesMessage,
@@ -14,12 +13,16 @@ describe('field', () => {
         let field;
         beforeEach(async () => {
             fieldCollection = {
-                createIndex: createSpy(),
-                findOne: createSpy().andReturn(Promise.resolve(null)),
-                insertOne: createSpy().andReturn({ insertedId: 'insertedId' }),
-                update: createSpy(),
-                updateMany: createSpy(),
-                find: createSpy().andReturn({
+                createIndex: jest.fn(),
+                findOne: jest
+                    .fn()
+                    .mockImplementation(() => Promise.resolve(null)),
+                insertOne: jest.fn().mockImplementation(() => ({
+                    insertedId: 'insertedId',
+                })),
+                update: jest.fn(),
+                updateMany: jest.fn(),
+                find: jest.fn().mockImplementation(() => ({
                     sort: () => ({
                         limit: () => ({
                             toArray: () => [
@@ -29,21 +32,23 @@ describe('field', () => {
                             ],
                         }),
                     }),
-                }),
-                findOneAndUpdate: createSpy().andReturn(
-                    Promise.resolve({ value: 'result' }),
-                ),
+                })),
+                findOneAndUpdate: jest
+                    .fn()
+                    .mockImplementation(() =>
+                        Promise.resolve({ value: 'result' }),
+                    ),
             };
 
             db = {
-                collection: createSpy().andReturn(fieldCollection),
+                collection: jest.fn().mockImplementation(() => fieldCollection),
             };
 
             field = await fieldFactory(db);
 
-            fieldCollection.insertOne.reset();
-            fieldCollection.findOne.reset();
-            fieldCollection.findOneAndUpdate.reset();
+            fieldCollection.insertOne.mockClear();
+            fieldCollection.findOne.mockClear();
+            fieldCollection.findOneAndUpdate.mockClear();
         });
 
         it('should call db.collection with `field`', () => {
@@ -61,8 +66,8 @@ describe('field', () => {
             it('should call collection.inserOne with given data and a random uid', async () => {
                 await field.create({ field: 'data', position: 10 });
 
-                expect(fieldCollection.insertOne.calls.length).toBe(1);
-                expect(fieldCollection.insertOne.calls[0].arguments).toMatch([
+                expect(fieldCollection.insertOne).toHaveBeenCalledTimes(1);
+                expect(fieldCollection.insertOne.mock.calls[0]).toMatchObject([
                     {
                         name: /^[A-Za-z0-9+/]{4}$/,
                         field: 'data',
@@ -74,8 +79,8 @@ describe('field', () => {
             it('should call collection.inserOne with given data and random uid when given position', async () => {
                 await field.create({ field: 'data', position: 15 });
 
-                expect(fieldCollection.insertOne.calls.length).toBe(1);
-                expect(fieldCollection.insertOne.calls[0].arguments).toMatch([
+                expect(fieldCollection.insertOne).toHaveBeenCalledTimes(1);
+                expect(fieldCollection.insertOne.mock.calls[0]).toMatchObject([
                     {
                         name: /^[A-Za-z0-9+/]{4}$/,
                         field: 'data',
@@ -104,7 +109,7 @@ describe('field', () => {
                     false,
                 );
 
-                expect(fieldCollection.updateMany.calls.length).toBe(0);
+                expect(fieldCollection.updateMany).toHaveBeenCalledTimes(0);
             });
 
             it('should call collection.findOne with insertedId', async () => {
@@ -270,19 +275,23 @@ describe('field', () => {
 
             it('should not create a new uri field if present', async () => {
                 const fieldCollectionNoUri = {
-                    createIndex: createSpy(),
-                    findOne: createSpy().andReturn(Promise.resolve({})),
-                    insertOne: createSpy(),
+                    createIndex: jest.fn(),
+                    findOne: jest
+                        .fn()
+                        .mockImplementation(() => Promise.resolve({})),
+                    insertOne: jest.fn(),
                 };
                 const dbNoUri = {
-                    collection: createSpy().andReturn(fieldCollectionNoUri),
+                    collection: jest
+                        .fn()
+                        .mockImplementation(() => fieldCollectionNoUri),
                 };
 
                 const fieldNoUri = await fieldFactory(dbNoUri);
 
                 await fieldNoUri.initializeModel();
 
-                expect(fieldCollectionNoUri.insertOne).toNotHaveBeenCalled();
+                expect(fieldCollectionNoUri.insertOne).not.toHaveBeenCalled();
             });
         });
 
@@ -298,13 +307,13 @@ describe('field', () => {
             });
 
             it('should return 0 if there is no field', async () => {
-                fieldCollection.find = createSpy().andReturn({
+                fieldCollection.find = jest.fn().mockImplementation(() => ({
                     sort: () => ({
                         limit: () => ({
                             toArray: () => [],
                         }),
                     }),
-                });
+                }));
 
                 const position = await field.getHighestPosition();
 
@@ -338,19 +347,21 @@ describe('field', () => {
         describe('findByNames', () => {
             it('should call find all field with names and make a name dictionary', async () => {
                 fieldCollection = {
-                    createIndex: createSpy(),
-                    find: createSpy().andReturn({
+                    createIndex: jest.fn(),
+                    find: jest.fn().mockImplementation(() => ({
                         toArray: () =>
                             Promise.resolve([
                                 { name: 'a' },
                                 { name: 'b' },
                                 { name: 'c' },
                             ]),
-                    }),
+                    })),
                 };
 
                 db = {
-                    collection: createSpy().andReturn(fieldCollection),
+                    collection: jest
+                        .fn()
+                        .mockImplementation(() => fieldCollection),
                 };
 
                 field = await fieldFactory(db);

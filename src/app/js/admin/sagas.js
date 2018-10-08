@@ -16,6 +16,7 @@ import fetchSaga from '../fetch/sagas';
 import i18nSagas from '../i18n/sagas';
 import clearSaga from './clear/sagas';
 import progressSaga from './progress/sagas';
+import characteristicSaga from '../characteristic/sagas';
 
 export default function*() {
     yield fork(exportSaga);
@@ -34,4 +35,5 @@ export default function*() {
     yield fork(i18nSagas);
     yield fork(clearSaga);
     yield fork(progressSaga);
+    yield fork(characteristicSaga);
 }

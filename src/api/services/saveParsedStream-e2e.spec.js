@@ -1,4 +1,3 @@
-import expect from 'expect';
 import Stream from 'stream';
 import omit from 'lodash.omit';
 import get from 'lodash.get';
@@ -107,7 +106,7 @@ const fixtures = {
 
 describe('e2e upload saveparsedStream', () => {
     let db;
-    before(async () => {
+    beforeAll(async () => {
         db = await connect();
     });
 
@@ -117,7 +116,7 @@ describe('e2e upload saveparsedStream', () => {
             { id: 4, name: 'spock', stronger_than: 1 },
             { id: 5, name: 'lizard', stronger_than: 3 },
         ];
-        before(async () => {
+        beforeAll(async () => {
             await loadFixtures(fixtures);
 
             parsedStream = new Stream.Transform({ objectMode: true });
@@ -211,7 +210,7 @@ describe('e2e upload saveparsedStream', () => {
             ]);
         });
 
-        after(async () => {
+        afterAll(async () => {
             await clear();
         });
     });
@@ -223,7 +222,7 @@ describe('e2e upload saveparsedStream', () => {
             { id: 5, name: 'lizard', stronger_than: 3 },
             { id: 1, name: 'rock', stronger_than: 2 }, // duplicate
         ];
-        before(async () => {
+        beforeAll(async () => {
             await loadFixtures(fixtures);
 
             parsedStream = new Stream.Transform({ objectMode: true });
@@ -311,12 +310,12 @@ describe('e2e upload saveparsedStream', () => {
             ]);
         });
 
-        after(async () => {
+        afterAll(async () => {
             await clear();
         });
     });
 
-    after(async () => {
+    afterAll(async () => {
         await close();
     });
 });

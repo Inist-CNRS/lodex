@@ -1,4 +1,3 @@
-import expect from 'expect';
 import ezs from 'ezs';
 import from from 'from';
 import statements from './index';
@@ -18,7 +17,7 @@ describe('objects2columns', () => {
         testOne(
             stream,
             output => {
-                expect(output).toExist();
+                expect(output).toBeTruthy();
                 expect(output.truc).toBe('{"hello":"world"}');
             },
             done,

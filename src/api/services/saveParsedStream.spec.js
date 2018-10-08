@@ -1,5 +1,3 @@
-import expect, { createSpy } from 'expect';
-
 import saveParsedStream from './saveParsedStream';
 
 describe('saveParsedStream', () => {
@@ -7,22 +5,22 @@ describe('saveParsedStream', () => {
         const parsedStream = 'parsedStream';
         const ctx = {
             dataset: {
-                remove: createSpy(),
-                count: createSpy().andReturn('count'),
-                updateMany: createSpy(),
+                remove: jest.fn(),
+                count: jest.fn().mockImplementation(() => 'count'),
+                updateMany: jest.fn(),
             },
             publishedDataset: {
-                count: createSpy().andReturn(0),
-                updateMany: createSpy(),
+                count: jest.fn().mockImplementation(() => 0),
+                updateMany: jest.fn(),
             },
             field: {
-                initializeModel: createSpy(),
+                initializeModel: jest.fn(),
             },
-            saveStream: createSpy(),
+            saveStream: jest.fn(),
         };
         let result;
 
-        before(async () => {
+        beforeAll(async () => {
             result = await saveParsedStream(ctx)(parsedStream);
         });
 
@@ -51,36 +49,38 @@ describe('saveParsedStream', () => {
         });
 
         it('should not have called updateMany on dataset and publishedDataset', () => {
-            expect(ctx.dataset.updateMany).toNotHaveBeenCalled();
-            expect(ctx.publishedDataset.updateMany).toNotHaveBeenCalled();
+            expect(ctx.dataset.updateMany).not.toHaveBeenCalled();
+            expect(ctx.publishedDataset.updateMany).not.toHaveBeenCalled();
         });
     });
 
     describe('with publication', () => {
         const ctx = {
             dataset: {
-                remove: createSpy(),
-                count: createSpy().andReturn('count'),
-                updateMany: createSpy(),
+                remove: jest.fn(),
+                count: jest.fn().mockImplementation(() => 'count'),
+                updateMany: jest.fn(),
             },
             publishedDataset: {
-                count: createSpy().andReturn(1000),
-                updateMany: createSpy(),
+                count: jest.fn().mockImplementation(() => 1000),
+                updateMany: jest.fn(),
             },
             field: {
-                findAll: createSpy().andReturn([
-                    { cover: 'collection' },
-                    { cover: 'dataset' },
-                ]),
+                findAll: jest
+                    .fn()
+                    .mockImplementation(() => [
+                        { cover: 'collection' },
+                        { cover: 'dataset' },
+                    ]),
             },
-            saveStream: createSpy(),
-            publishDocuments: createSpy(),
-            publishFacets: createSpy(),
+            saveStream: jest.fn(),
+            publishDocuments: jest.fn(),
+            publishFacets: jest.fn(),
         };
         let result;
         const parsedStream = 'parsedStream';
 
-        before(async () => {
+        beforeAll(async () => {
             result = await saveParsedStream(ctx)(parsedStream);
         });
 
@@ -93,7 +93,7 @@ describe('saveParsedStream', () => {
         });
 
         it('should not have called dataset.remove', () => {
-            expect(ctx.dataset.remove).toNotHaveBeenCalled();
+            expect(ctx.dataset.remove).not.toHaveBeenCalled();
         });
 
         it('should have called updateMany on dataset and publishedDataset to set lodex_published to true', () => {
@@ -146,31 +146,33 @@ describe('saveParsedStream', () => {
         const parsedStream = 'parsedStream';
         const ctx = {
             dataset: {
-                remove: createSpy(),
-                count: createSpy().andReturn('count'),
-                updateMany: createSpy(),
+                remove: jest.fn(),
+                count: jest.fn().mockImplementation(() => 'count'),
+                updateMany: jest.fn(),
             },
             publishedDataset: {
-                count: createSpy().andReturn(1000),
-                updateMany: createSpy(),
-                remove: createSpy(),
+                count: jest.fn().mockImplementation(() => 1000),
+                updateMany: jest.fn(),
+                remove: jest.fn(),
             },
             field: {
-                findAll: createSpy().andReturn([
-                    { cover: 'collection' },
-                    { cover: 'dataset' },
-                ]),
+                findAll: jest
+                    .fn()
+                    .mockImplementation(() => [
+                        { cover: 'collection' },
+                        { cover: 'dataset' },
+                    ]),
             },
-            saveStream: createSpy(),
-            publishDocuments: createSpy().andThrow(
-                new Error('Error during publication'),
-            ),
-            publishFacets: createSpy(),
+            saveStream: jest.fn(),
+            publishDocuments: jest.fn().mockImplementation(() => {
+                throw new Error('Error during publication');
+            }),
+            publishFacets: jest.fn(),
         };
 
         let result;
 
-        before(async () => {
+        beforeAll(async () => {
             result = await saveParsedStream(ctx)(parsedStream).catch(
                 error => error,
             );
@@ -214,7 +216,7 @@ describe('saveParsedStream', () => {
         });
 
         it('should not have called publishFacets', () => {
-            expect(ctx.publishFacets).toNotHaveBeenCalled();
+            expect(ctx.publishFacets).not.toHaveBeenCalled();
         });
 
         it('should have called saveStream with parsedStream', () => {

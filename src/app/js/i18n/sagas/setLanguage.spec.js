@@ -1,4 +1,3 @@
-import expect from 'expect';
 import { call, put } from 'redux-saga/effects';
 import { setLanguage } from 'redux-polyglot';
 

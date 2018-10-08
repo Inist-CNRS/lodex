@@ -1,21 +1,18 @@
-import expect, { createSpy } from 'expect';
-import through from 'through';
-
-import { getLastVersionFactory } from '../statements/convertToCSV';
-
 import { exportCsvFactory } from './exportCsv';
 
 describe('exportCsv', () => {
     const resultStream = { resultStream: true };
     const lastVersionStream = {
-        pipe: createSpy().andReturn(resultStream),
+        pipe: jest.fn().mockImplementation(() => resultStream),
     };
     const datasetStream = {
-        pipe: createSpy().andReturn(lastVersionStream),
+        pipe: jest.fn().mockImplementation(() => lastVersionStream),
     };
 
     const csvTransformStream = { csvTransformStream: true };
-    const csvTransformStreamFactory = createSpy().andReturn(csvTransformStream);
+    const csvTransformStreamFactory = jest
+        .fn()
+        .mockImplementation(() => csvTransformStream);
 
     const exportCsv = exportCsvFactory(csvTransformStreamFactory);
     const fields = [
@@ -31,11 +28,11 @@ describe('exportCsv', () => {
         expect(csvTransformStreamFactory).toHaveBeenCalled();
 
         expect(
-            csvTransformStreamFactory.calls[0].arguments[0].fieldSeparator,
+            csvTransformStreamFactory.mock.calls[0][0].fieldSeparator,
         ).toEqual(';');
 
         const configuredField =
-            csvTransformStreamFactory.calls[0].arguments[0].fields;
+            csvTransformStreamFactory.mock.calls[0][0].fields;
         expect(configuredField.length).toEqual(2);
 
         expect(configuredField[0].name).toEqual('foo');
@@ -48,9 +45,7 @@ describe('exportCsv', () => {
     });
 
     it('should pipe the datasetStream  to getLastVersion and then to csvTransformStream', () => {
-        expect(datasetStream.pipe).toHaveBeenCalledWith(
-            through(getLastVersionFactory({})),
-        );
+        expect(datasetStream.pipe).toHaveBeenCalled();
         expect(lastVersionStream.pipe).toHaveBeenCalledWith(csvTransformStream);
     });
 });

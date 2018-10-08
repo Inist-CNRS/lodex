@@ -1,5 +1,4 @@
 import React from 'react';
-import expect, { createSpy } from 'expect';
 import { shallow } from 'enzyme';
 
 import { DatasetComponent as Dataset } from './Dataset';
@@ -19,7 +18,7 @@ describe('<Dataset />', () => {
     ];
 
     it('should call preLoadDatasetPage on mount', () => {
-        const preLoadDatasetPage = createSpy();
+        const preLoadDatasetPage = jest.fn();
 
         shallow(
             <Dataset
@@ -137,8 +136,8 @@ describe('<Dataset />', () => {
     });
 
     it('should call preLoadDatasetPage on pagination change', () => {
-        const preLoadDatasetPage = createSpy();
-        const changePage = createSpy();
+        const preLoadDatasetPage = jest.fn();
+        const changePage = jest.fn();
         const wrapper = shallow(
             <Dataset
                 p={{ t: key => key }}

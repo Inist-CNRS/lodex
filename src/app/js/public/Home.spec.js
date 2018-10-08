@@ -1,5 +1,4 @@
 import React from 'react';
-import expect, { createSpy } from 'expect';
 import { shallow } from 'enzyme';
 
 import { HomeComponent as Home } from './Home';
@@ -8,9 +7,9 @@ import NoDataset from './NoDataset';
 
 describe('<Home />', () => {
     it('should call preLoadPublication on mount', () => {
-        const preLoadPublication = createSpy();
-        const preLoadDatasetPage = createSpy();
-        const preLoadExporters = createSpy();
+        const preLoadPublication = jest.fn();
+        const preLoadDatasetPage = jest.fn();
+        const preLoadExporters = jest.fn();
 
         shallow(
             <Home

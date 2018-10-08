@@ -62,6 +62,6 @@ export async function clear() {
     return db;
 }
 
-export const close = async () => {
+export const close = () => {
     db = undefined;
 };

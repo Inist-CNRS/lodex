@@ -1,6 +1,4 @@
 /* eslint max-len: off */
-import expect, { createSpy } from 'expect';
-
 import { doPublish, preparePublish, handlePublishError } from './publish';
 import publishCharacteristics from '../../services/publishCharacteristics';
 import publishDocuments from '../../services/publishDocuments';
@@ -23,31 +21,35 @@ describe('publish', () => {
         ];
 
         const ctx = {
-            versionTransformResult: createSpy().andReturn(
-                'transformDocumentAndKeepUri()',
-            ),
+            versionTransformResult: jest
+                .fn()
+                .mockImplementation(() => 'transformDocumentAndKeepUri()'),
             dataset: {
-                count: createSpy().andReturn(Promise.resolve('count')),
+                count: jest
+                    .fn()
+                    .mockImplementation(() => Promise.resolve('count')),
                 findLimitFromSkip: 'dataset.findLimitFromSkip()',
             },
             field: {
-                findAll: createSpy().andReturn(fields),
+                findAll: jest.fn().mockImplementation(() => fields),
             },
             publishedCharacteristic: {
-                addNewVersion: createSpy(),
+                addNewVersion: jest.fn(),
             },
             publishedDataset: {
-                findLimitFromSkip: createSpy().andReturn(publishedDataset),
+                findLimitFromSkip: jest
+                    .fn()
+                    .mockImplementation(() => publishedDataset),
                 insertBatch: 'publishedDataset.insertBatch()',
-                countByFacet: createSpy().andReturn(100),
+                countByFacet: jest.fn().mockImplementation(() => 100),
             },
-            redirect: createSpy(),
-            publishCharacteristics: createSpy(),
-            publishDocuments: createSpy(),
-            publishFacets: createSpy(),
+            redirect: jest.fn(),
+            publishCharacteristics: jest.fn(),
+            publishDocuments: jest.fn(),
+            publishFacets: jest.fn(),
         };
 
-        before(async () => {
+        beforeAll(async () => {
             await doPublish(ctx);
         });
 
@@ -83,7 +85,7 @@ describe('publish', () => {
     describe('preparePublish', () => {
         it('should provide ctx with needed dependency', async () => {
             const ctx = {};
-            const next = createSpy();
+            const next = jest.fn();
             await preparePublish(ctx, next);
 
             expect(ctx).toEqual({
@@ -98,14 +100,16 @@ describe('publish', () => {
         it('should remove publishedDataset and publishedCharacteristic if next fail', done => {
             const ctx = {
                 publishedDataset: {
-                    remove: createSpy(),
+                    remove: jest.fn(),
                 },
                 publishedCharacteristic: {
-                    remove: createSpy(),
+                    remove: jest.fn(),
                 },
             };
             const error = new Error('Boom');
-            const next = createSpy().andReturn(Promise.reject(error));
+            const next = jest
+                .fn()
+                .mockImplementation(() => Promise.reject(error));
             handlePublishError(ctx, next)
                 .then(() => {
                     throw new Error(

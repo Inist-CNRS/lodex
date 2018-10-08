@@ -1,24 +1,24 @@
 import expect from 'expect';
 
 export const validateConfig = config => {
-    expect(config).toMatch({
+    expect(config).toMatchObject({
         username: /.+/,
         password: /.+/,
     });
 
     if (config.userAuth) {
-        expect(config.userAuth).toMatch({
+        expect(config.userAuth).toMatchObject({
             username: /.+/,
             password: /.+/,
         });
     }
 
     if (config.naan) {
-        expect(config.naan).toMatch(/(\d{5,})/);
+        expect(config.naan).toMatchObject(/(\d{5,})/);
     }
 
     if (config.subpublisher) {
-        expect(config.subpublisher).toMatch(
+        expect(config.subpublisher).toMatchObject(
             /[0123456789BCDFGHJKLMNPQRSTVWXZ]{3}/,
         );
     }

@@ -44,6 +44,7 @@ export class OntologyComponent extends Component {
                         value={filter}
                         onChange={this.handleFilterChange}
                         style={{ width: 400 }}
+                        className="select-filter"
                     >
                         <MenuItem
                             value={ALL}

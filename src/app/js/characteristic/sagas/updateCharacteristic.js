@@ -14,6 +14,7 @@ export function* handleUpdateCharacteristics({ payload }) {
         fromUser.getUpdateCharacteristicsRequest,
         payload,
     );
+
     const { error, response } = yield call(fetchSaga, request);
 
     if (error) {

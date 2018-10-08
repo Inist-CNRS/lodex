@@ -1,5 +1,4 @@
 import { PassThrough } from 'stream';
-import expect from 'expect';
 import filterContributions from './filterContributions';
 import { PROPOSED, REJECTED, VALIDATED } from '../../common/propositionStatus';
 

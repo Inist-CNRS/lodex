@@ -1,5 +1,3 @@
-import expect from 'expect';
-
 import composeTransformers from './composeTransformers';
 
 describe('composeTransformers', () => {

@@ -1,4 +1,3 @@
-import expect, { createSpy } from 'expect';
 import EventEmitter from 'events';
 import { exportFileMiddleware } from './export';
 import config from '../../../../config.json';
@@ -9,7 +8,9 @@ describe('export routes', () => {
             { name: 'characteristic1', value: 'characteristic1_value' },
         ];
         const resultStream = new EventEmitter();
-        const exporterStreamFactory = createSpy().andReturn(resultStream);
+        const exporterStreamFactory = jest
+            .fn()
+            .mockImplementation(() => resultStream);
         exporterStreamFactory.mimeType = 'a_mime_type';
         exporterStreamFactory.extension = 'foo';
         exporterStreamFactory.type = 'file';
@@ -25,20 +26,24 @@ describe('export routes', () => {
                 query: {},
             },
             field: {
-                findAll: createSpy().andReturn(fields),
-                findSearchableNames: createSpy().andReturn([]),
-                findFacetNames: createSpy().andReturn([]),
+                findAll: jest.fn().mockImplementation(() => fields),
+                findSearchableNames: jest.fn().mockImplementation(() => []),
+                findFacetNames: jest.fn().mockImplementation(() => []),
             },
-            getExporter: createSpy().andReturn(exporterStreamFactory),
+            getExporter: jest
+                .fn()
+                .mockImplementation(() => exporterStreamFactory),
             publishedCharacteristic: {
-                findAllVersions: createSpy().andReturn(
-                    Promise.resolve(characteristics),
-                ),
+                findAllVersions: jest
+                    .fn()
+                    .mockImplementation(() => Promise.resolve(characteristics)),
             },
             publishedDataset: {
-                getFindAllStream: createSpy().andReturn(mongoStream),
+                getFindAllStream: jest
+                    .fn()
+                    .mockImplementation(() => mongoStream),
             },
-            set: createSpy(),
+            set: jest.fn(),
         };
 
         it('it should set keepDbOpened to true', async () => {

@@ -1,5 +1,3 @@
-import expect, { createSpy } from 'expect';
-
 import {
     getVersionInitializer,
     publishDocumentsFactory,
@@ -18,12 +16,12 @@ describe('publishDocuments', () => {
             findBy: 'dataset.findBy()',
         },
         field: {
-            findAll: createSpy().andReturn(fields),
+            findAll: jest.fn().mockImplementation(() => fields),
         },
         uriDataset: {
             insertBatch: 'dataset.insertBatch()',
             findLimitFromSkip: 'dataset.findLimitFromSkip()',
-            count: createSpy().andReturn('count'),
+            count: jest.fn().mockImplementation(() => 'count'),
             findBy: 'dataset.findBy()',
         },
         publishedDataset: {
@@ -31,14 +29,16 @@ describe('publishDocuments', () => {
         },
     };
 
-    const getDocumentTransformer = createSpy().andReturn('transformDocument()');
-    const transformAllDocuments = createSpy();
+    const getDocumentTransformer = jest
+        .fn()
+        .mockImplementation(() => 'transformDocument()');
+    const transformAllDocuments = jest.fn();
 
-    const getVersionInitializerMock = createSpy().andReturn(
-        'initializeVersion()',
-    );
+    const getVersionInitializerMock = jest
+        .fn()
+        .mockImplementation(() => 'initializeVersion()');
 
-    before(async () => {
+    beforeAll(async () => {
         await publishDocumentsFactory({
             getVersionInitializer: getVersionInitializerMock,
             getDocumentTransformer,
@@ -79,10 +79,10 @@ describe('publishDocuments', () => {
 
     describe('getVersionInitializer', () => {
         it('should add doc.uri to transform result and move other keys as first version', async () => {
-            const transform = createSpy().andReturn({
+            const transform = jest.fn().mockImplementation(() => ({
                 uri: 'transformedUri',
                 transformed: 'data',
-            });
+            }));
             const doc = {
                 _id: 'id',
                 uri: 'uri',

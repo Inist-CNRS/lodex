@@ -1,20 +1,20 @@
-import expect, { createSpy } from 'expect';
-
 import memoizeTransformer from './memoizeTransformer';
 
 describe('memoizeTransfomer', () => {
-    const configuredTransformer = createSpy().andReturn('result');
-    const transformer = createSpy().andReturn(configuredTransformer);
+    const configuredTransformer = jest.fn().mockImplementation(() => 'result');
+    const transformer = jest
+        .fn()
+        .mockImplementation(() => configuredTransformer);
 
     it('should call configuredTransformer only the first time', () => {
         const memoized = memoizeTransformer(transformer);
         memoized('context', ['args'])({ doc: 'data' });
         expect(transformer).toHaveBeenCalledWith('context', ['args']);
         expect(configuredTransformer).toHaveBeenCalledWith({ doc: 'data' });
-        transformer.reset();
-        configuredTransformer.reset();
+        transformer.mockClear();
+        configuredTransformer.mockClear();
         memoized('context', ['args'])({ doc: 'data' });
-        expect(transformer).toNotHaveBeenCalled();
-        expect(configuredTransformer).toNotHaveBeenCalled();
+        expect(transformer).not.toHaveBeenCalled();
+        expect(configuredTransformer).not.toHaveBeenCalled();
     });
 });

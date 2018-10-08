@@ -1,5 +1,4 @@
 import React from 'react';
-import expect, { createSpy } from 'expect';
 import { shallow } from 'enzyme';
 
 import { PublishButtonComponent as PublishButton } from './PublishButton';
@@ -25,7 +24,7 @@ describe('<Publish />', () => {
     });
 
     it('should trigger the onPublish action on click', () => {
-        const onPublish = createSpy();
+        const onPublish = jest.fn();
 
         const wrapper = shallow(
             <PublishButton

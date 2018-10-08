@@ -1,5 +1,4 @@
 import React from 'react';
-import expect from 'expect';
 import { shallow } from 'enzyme';
 import { lightGreenA400, red400 } from 'material-ui/styles/colors';
 import CircularProgress from 'material-ui/CircularProgress';

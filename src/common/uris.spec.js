@@ -1,5 +1,3 @@
-import expect from 'expect';
-
 import { getResourceUri } from './uris';
 
 describe('uris', () => {

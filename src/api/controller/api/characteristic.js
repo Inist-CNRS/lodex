@@ -18,12 +18,46 @@ const isValueField = field =>
     get(field, 'transformers[0].operation') === 'VALUE';
 
 const updateFieldValue = async (ctx, field, value) => {
+    if (get(field, 'transformers[0].args[0].value') === value) {
+        return field;
+    }
+
     // lodash.set mutate the object, so we need to copy the object first
     const copiedField = deepCopy(field);
-    return await ctx.field.updateOneById(
+    return ctx.field.updateOneById(
         field._id,
         set(copiedField, 'transformers[0].args[0].value', value),
     );
+};
+
+const updateField = (ctx, requestedNewCharacteristics) => async field => {
+    const body = {};
+
+    if (isValueField(field)) {
+        body.field = await updateFieldValue(
+            ctx,
+            field,
+            requestedNewCharacteristics[field.name],
+        );
+
+        const annotation = await ctx.field.findOne({ completes: field.name });
+
+        if (annotation) {
+            await updateField(ctx, requestedNewCharacteristics)(annotation);
+        }
+    }
+
+    if (isCompositeField(field)) {
+        const composedFields = Object.values(
+            await ctx.field.findByNames(field.composedOf.fields),
+        );
+
+        await Promise.all(
+            composedFields.map(updateField(ctx, requestedNewCharacteristics)),
+        );
+    }
+
+    return body;
 };
 
 export const updateCharacteristics = async ctx => {
@@ -38,31 +72,7 @@ export const updateCharacteristics = async ctx => {
     if (name) {
         const field = await ctx.field.findOneByName(name);
 
-        if (isValueField(field)) {
-            ctx.body.field = await updateFieldValue(
-                ctx,
-                field,
-                requestedNewCharacteristics[field.name],
-            );
-        }
-
-        if (isCompositeField(field)) {
-            const composedFields = Object.values(
-                await ctx.field.findByNames(field.composedOf.fields),
-            );
-
-            await Promise.all(
-                composedFields.map(async composedField => {
-                    if (isValueField(composedField)) {
-                        await updateFieldValue(
-                            ctx,
-                            composedField,
-                            requestedNewCharacteristics[composedField.name],
-                        );
-                    }
-                }),
-            );
-        }
+        ctx.body = await updateField(ctx, requestedNewCharacteristics)(field);
     }
 
     const characteristics = await ctx.publishedCharacteristic.findLastVersion();

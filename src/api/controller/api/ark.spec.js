@@ -1,4 +1,3 @@
-import expect, { createSpy } from 'expect';
 import InistArk from 'inist-ark';
 
 import getFromArkUri from './ark';
@@ -11,7 +10,7 @@ describe('ark routes', () => {
                 query: {},
                 status: 200,
             };
-            const next = createSpy();
+            const next = jest.fn();
             await getFromArkUri(ctx, next);
             expect(ctx.status).toEqual(200);
             expect(next).toHaveBeenCalled();
@@ -39,7 +38,9 @@ describe('ark routes', () => {
             const ctx = {
                 path: uri,
                 publishedDataset: {
-                    findByUri: createSpy().andReturn({ id: 'foo' }),
+                    findByUri: jest.fn().mockImplementation(() => ({
+                        id: 'foo',
+                    })),
                 },
                 query: {},
                 status: 200,
@@ -55,7 +56,9 @@ describe('ark routes', () => {
             const ctx = {
                 path: 'foo',
                 publishedDataset: {
-                    findByUri: createSpy().andReturn({ id: 'foo' }),
+                    findByUri: jest.fn().mockImplementation(() => ({
+                        id: 'foo',
+                    })),
                 },
                 query: { uri: 'ark_custom_uri' },
                 status: 200,
