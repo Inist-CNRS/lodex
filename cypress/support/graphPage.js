@@ -29,3 +29,13 @@ export const createResource = resource => {
     cy.get('button.create-resource.save').click();
     cy.location('pathname').should('not.equal', '/graph');
 };
+
+export const goToResourceFromRowContaining = selector => {
+    selector
+        .parentsUntil('tbody')
+        .last() // <tr>
+        .find('a')
+        .click();
+
+    cy.location('pathname').should('not.equal', '/graph');
+};

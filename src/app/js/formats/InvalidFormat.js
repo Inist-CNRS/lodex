@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
+import classnames from 'classnames';
+import { StyleSheet, css } from 'aphrodite/no-important';
 import Warning from 'material-ui/svg-icons/alert/warning';
 
 import { fromUser } from '../sharedSelectors';
@@ -11,7 +13,7 @@ import { polyglot as polyglotPropTypes } from '../propTypes';
 const capitalize = str =>
     str ? str.charAt(0).toUpperCase() + str.slice(1) : '';
 
-const styles = {
+const styles = StyleSheet.create({
     container: {
         display: 'flex',
         flexDirection: 'column',
@@ -28,13 +30,14 @@ const styles = {
         flex: '1 0 0',
         textAlign: 'right',
     },
-    icon: {
-        width: 18,
-        height: 18,
-    },
     details: {
         flex: '1 1 auto',
     },
+});
+
+const iconStyle = {
+    width: 18,
+    height: 18,
 };
 
 const renderDetails = (polyglot, format = {}, value) => {
@@ -64,16 +67,18 @@ const InvalidFormat = ({ p: polyglot, isAdmin, format, value }) => {
     }
 
     return (
-        <div className="invalid-format" style={styles.container}>
-            <div style={styles.titleRow}>
-                <span style={styles.title}>
+        <div className={classnames('invalid-format', css(styles.container))}>
+            <div className={css(styles.titleRow)}>
+                <span className={css(styles.title)}>
                     <strong>{polyglot.t('bad_format_error')}</strong>
                 </span>
-                <span style={styles.titleLogo}>
-                    <Warning iconStyle={styles.icon} style={styles.icon} />
+                <span className={css(styles.titleLogo)}>
+                    <Warning iconStyle={iconStyle} style={iconStyle} />
                 </span>
             </div>
-            <p style={styles.details}>{polyglot.t('bad_format_details')}</p>
+            <p className={css(styles.details)}>
+                {polyglot.t('bad_format_details')}
+            </p>
             {renderDetails(polyglot, format, value)}
         </div>
     );

@@ -65,13 +65,9 @@ describe('Transformers & Formats', () => {
                 logoutAndLoginAs('user');
                 homePage.goToGraphPage();
 
-                cy
-                    .contains('New Resource')
-                    .parentsUntil('tbody')
-                    .last() // <tr>
-                    .find('a')
-                    .click();
-                cy.location('pathname').should('not.equal', '/graph');
+                graphPage.goToResourceFromRowContaining(
+                    cy.contains('New Resource'),
+                );
 
                 cy
                     .get('.detail')
