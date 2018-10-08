@@ -42,7 +42,7 @@ describe('ssr', () => {
                     .then(response => response.text());
                 state = JSON.parse(
                     response.match(
-                        /__PRELOADED_STATE__ = ([\s\S]*?)<\/script>/,
+                        /__PRELOADED_STATE__ = ([\s\S]*?);window.ISTEX_API_URL/,
                     )[1],
                 );
             });
@@ -124,7 +124,7 @@ describe('ssr', () => {
                     .then(response => response.text());
                 state = JSON.parse(
                     response.match(
-                        /__PRELOADED_STATE__ = ([\s\S]*?)<\/script>/,
+                        /__PRELOADED_STATE__ = ([\s\S]*?);window.ISTEX_API_URL/,
                     )[1],
                 );
             });
@@ -168,7 +168,7 @@ describe('ssr', () => {
                     .then(response => response.text());
                 state = JSON.parse(
                     response.match(
-                        /__PRELOADED_STATE__ = ([\s\S]*?)<\/script>/,
+                        /__PRELOADED_STATE__ = ([\s\S]*?);window.ISTEX_API_URL/,
                     )[1],
                 );
             });
@@ -224,7 +224,7 @@ describe('ssr', () => {
                     .then(response => response.text());
                 state = JSON.parse(
                     response.match(
-                        /__PRELOADED_STATE__ = ([\s\S]*?)<\/script>/,
+                        /__PRELOADED_STATE__ = ([\s\S]*?);window.ISTEX_API_URL/,
                     )[1],
                 );
             });
@@ -267,7 +267,7 @@ describe('ssr', () => {
                     .then(response => response.text());
                 state = JSON.parse(
                     response.match(
-                        /__PRELOADED_STATE__ = ([\s\S]*?)<\/script>/,
+                        /__PRELOADED_STATE__ = ([\s\S]*?);window.ISTEX_API_URL/,
                     )[1],
                 );
             });
@@ -341,7 +341,7 @@ describe('ssr', () => {
                     .then(response => response.text());
                 state = JSON.parse(
                     response.match(
-                        /__PRELOADED_STATE__ = ([\s\S]*?)<\/script>/,
+                        /__PRELOADED_STATE__ = ([\s\S]*?);window.ISTEX_API_URL/,
                     )[1],
                 );
             });

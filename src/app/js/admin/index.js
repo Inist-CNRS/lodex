@@ -13,7 +13,7 @@ import phrasesFor from '../i18n/translations';
 import { createHashHistory } from 'history';
 
 const language =
-    (process.env.NODE_ENV !== 'test' && window.navigator.language) || 'en';
+    (process.env.NODE_ENV !== 'e2e' && window.navigator.language) || 'en';
 const initialState = {
     polyglot: {
         locale: language,

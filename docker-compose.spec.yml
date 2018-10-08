@@ -4,9 +4,9 @@ services:
         build:
             context: .
             args:
-                node_env: test
+                node_env: e2e
         environment:
-            NODE_ENV: "test"
+            NODE_ENV: "e2e"
             EZMASTER_PUBLIC_URL: ${EZMASTER_PUBLIC_URL}
             EZMASTER_MONGODB_HOST_PORT: mongo:27017
             EXPOSE_TEST_CONTROLLER: "true"

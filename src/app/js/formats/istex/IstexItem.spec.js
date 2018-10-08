@@ -1,9 +1,12 @@
 import React from 'react';
 import { shallow } from 'enzyme';
+import { StyleSheetTestUtils } from 'aphrodite';
 
 import { IstexItemComponent } from './IstexItem';
 
 describe('<IstexItem />', () => {
+    beforeEach(() => StyleSheetTestUtils.suppressStyleInjection());
+
     it('should display one a with correct props', () => {
         const wrapper = shallow(
             <IstexItemComponent
@@ -19,4 +22,5 @@ describe('<IstexItem />', () => {
         expect(a.length).toEqual(1);
         expect(a.props().href).toEqual('url');
     });
+    afterEach(() => StyleSheetTestUtils.clearBufferAndResumeStyleInjection());
 });

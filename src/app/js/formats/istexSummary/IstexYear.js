@@ -9,6 +9,7 @@ import composeAsync from '../../../../common/lib/composeAsync';
 import { parseFetchResult } from '../shared/fetchIstexData';
 import { polyglot as polyblotPropTypes } from '../../propTypes';
 import fetch from '../../lib/fetch';
+import { ISTEX_API_URL } from '../../../../common/externals';
 
 export const getVolumeUrl = ({ issn, year }) => () => ({
     url: `${ISTEX_API_URL}/?q=(${encodeURIComponent(

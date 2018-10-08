@@ -1,7 +1,7 @@
 import fetch from '../../lib/fetch';
 import composeAsync from '../../../../common/lib/composeAsync';
 import URL from 'url';
-import { ISTEX_SITE_URL } from '../../../../common/externals';
+import { ISTEX_SITE_URL, ISTEX_API_URL } from '../../../../common/externals';
 
 const output = 'id,arkIstex,title,publicationDate,author,host.genre,host.title';
 

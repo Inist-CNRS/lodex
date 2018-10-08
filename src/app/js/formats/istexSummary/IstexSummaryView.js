@@ -7,6 +7,7 @@ import { field as fieldPropTypes } from '../../propTypes';
 import injectData from '../injectData';
 import classnames from 'classnames';
 import IstexYear from './IstexYear';
+import { ISTEX_API_URL } from '../../../../common/externals';
 
 const styles = StyleSheet.create({
     text: {
