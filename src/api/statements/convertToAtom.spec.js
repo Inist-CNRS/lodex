@@ -1,6 +1,5 @@
 import fs from 'fs';
 import path from 'path';
-import expect from 'expect';
 import Feed from 'feed';
 import ezs from 'ezs';
 import statements from './index';

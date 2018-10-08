@@ -1,4 +1,3 @@
-import expect from 'expect';
 import ezMasterConfig, { validateConfig } from './ezMasterConfig';
 
 describe('ezMasterConfig', () => {

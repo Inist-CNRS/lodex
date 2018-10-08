@@ -12,6 +12,7 @@ export const mongoClientFactory = MongoClientImpl => async () => {
             },
         );
     }
+
     return db;
 };
 

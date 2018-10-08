@@ -1,5 +1,3 @@
-import expect from 'expect';
-
 import { shift } from './SHIFT';
 
 describe('SHIFT', () => {

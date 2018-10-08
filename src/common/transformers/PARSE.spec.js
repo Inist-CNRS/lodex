@@ -1,5 +1,3 @@
-import expect from 'expect';
-
 import { parse } from './PARSE';
 
 describe('PARSE', () => {

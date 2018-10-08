@@ -1,5 +1,3 @@
-import expect from 'expect';
-
 import { truncate } from './TRUNCATE';
 
 describe('TRUNCATE', () => {

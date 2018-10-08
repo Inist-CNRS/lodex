@@ -1,5 +1,3 @@
-import expect, { createSpy } from 'expect';
-
 import {
     getPage,
     getRemovedPage,
@@ -13,7 +11,7 @@ describe('publishedDataset', () => {
     describe('getPage', () => {
         const ctx = {
             publishedDataset: {
-                findPage: createSpy().andReturn(
+                findPage: jest.fn().mockImplementation(() =>
                     Promise.resolve({
                         data: [
                             { uri: 1, versions: [{ v: 1 }, { v: 2 }] },
@@ -26,14 +24,15 @@ describe('publishedDataset', () => {
                         total: 42,
                     }),
                 ),
-                countAll: createSpy().andReturn('fullTotal'),
+                countAll: jest.fn().mockImplementation(() => 'fullTotal'),
             },
             field: {
-                findFacetNames: createSpy().andReturn(['facet1', 'facet2']),
-                findSearchableNames: createSpy().andReturn([
-                    'searchable1',
-                    'searchable2',
-                ]),
+                findFacetNames: jest
+                    .fn()
+                    .mockImplementation(() => ['facet1', 'facet2']),
+                findSearchableNames: jest
+                    .fn()
+                    .mockImplementation(() => ['searchable1', 'searchable2']),
             },
             request: {
                 query: {
@@ -81,7 +80,7 @@ describe('publishedDataset', () => {
     describe('getRemovedPage', () => {
         const ctx = {
             publishedDataset: {
-                findRemovedPage: createSpy().andReturn(
+                findRemovedPage: jest.fn().mockImplementation(() =>
                     Promise.resolve({
                         data: [
                             {
@@ -156,7 +155,7 @@ describe('publishedDataset', () => {
     describe('editResource', () => {
         const ctx = {
             publishedDataset: {
-                findByUri: createSpy().andReturn(
+                findByUri: jest.fn().mockImplementation(() =>
                     Promise.resolve({
                         uri: 'the uri',
                         versions: [
@@ -167,11 +166,13 @@ describe('publishedDataset', () => {
                         ],
                     }),
                 ),
-                addVersion: createSpy().andReturn(
-                    Promise.resolve('the new version'),
-                ),
+                addVersion: jest
+                    .fn()
+                    .mockImplementation(() =>
+                        Promise.resolve('the new version'),
+                    ),
             },
-            updateFacetValue: createSpy(),
+            updateFacetValue: jest.fn(),
             request: {
                 body: {
                     resource: {
@@ -227,7 +228,7 @@ describe('publishedDataset', () => {
         it('should not updateFacetValue if field is not a facet', async () => {
             const noFacetCtx = {
                 publishedDataset: {
-                    findByUri: createSpy().andReturn(
+                    findByUri: jest.fn().mockImplementation(() =>
                         Promise.resolve({
                             uri: 'the uri',
                             versions: [
@@ -238,11 +239,13 @@ describe('publishedDataset', () => {
                             ],
                         }),
                     ),
-                    addVersion: createSpy().andReturn(
-                        Promise.resolve('the new version'),
-                    ),
+                    addVersion: jest
+                        .fn()
+                        .mockImplementation(() =>
+                            Promise.resolve('the new version'),
+                        ),
                 },
-                updateFacetValue: createSpy(),
+                updateFacetValue: jest.fn(),
                 request: {
                     body: {
                         resource: {
@@ -258,7 +261,7 @@ describe('publishedDataset', () => {
             };
             await editResource(noFacetCtx);
 
-            expect(noFacetCtx.updateFacetValue).toNotHaveBeenCalled();
+            expect(noFacetCtx.updateFacetValue).not.toHaveBeenCalled();
         });
 
         it('should return the new version', async () => {
@@ -271,7 +274,9 @@ describe('publishedDataset', () => {
     describe('removeResource', () => {
         const ctx = {
             publishedDataset: {
-                hide: createSpy().andReturn(Promise.resolve('foo')),
+                hide: jest
+                    .fn()
+                    .mockImplementation(() => Promise.resolve('foo')),
             },
             request: {
                 body: {
@@ -300,7 +305,9 @@ describe('publishedDataset', () => {
     describe('restoreResource', () => {
         const ctx = {
             publishedDataset: {
-                restore: createSpy().andReturn(Promise.resolve('foo')),
+                restore: jest
+                    .fn()
+                    .mockImplementation(() => Promise.resolve('foo')),
             },
             request: {
                 body: {
@@ -328,8 +335,8 @@ describe('publishedDataset', () => {
         it('should call findByUri with body.uri and create with body', async () => {
             const ctx = {
                 publishedDataset: {
-                    findByUri: createSpy().andReturn(null),
-                    create: createSpy().andReturn('create result'),
+                    findByUri: jest.fn().mockImplementation(() => null),
+                    create: jest.fn().mockImplementation(() => 'create result'),
                 },
                 request: {
                     body: {
@@ -354,8 +361,10 @@ describe('publishedDataset', () => {
         it('should call findByUri with body.uri and return 401 if it found something', async () => {
             const ctx = {
                 publishedDataset: {
-                    findByUri: createSpy().andReturn('found something'),
-                    create: createSpy().andReturn('create result'),
+                    findByUri: jest
+                        .fn()
+                        .mockImplementation(() => 'found something'),
+                    create: jest.fn().mockImplementation(() => 'create result'),
                 },
                 request: {
                     body: {
@@ -372,7 +381,7 @@ describe('publishedDataset', () => {
             expect(ctx.publishedDataset.findByUri).toHaveBeenCalledWith(
                 'the uri',
             );
-            expect(ctx.publishedDataset.create).toNotHaveBeenCalled();
+            expect(ctx.publishedDataset.create).not.toHaveBeenCalled();
         });
     });
 });

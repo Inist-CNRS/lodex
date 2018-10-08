@@ -1,5 +1,3 @@
-import expect from 'expect';
-
 import reducer, { updateProgress, errorProgress } from './reducer';
 import { publish } from '../publish';
 import { uploadFile } from '../upload';

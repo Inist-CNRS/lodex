@@ -1,5 +1,3 @@
-import expect from 'expect';
-
 import { format } from './FORMAT';
 
 describe('FORMAT', () => {

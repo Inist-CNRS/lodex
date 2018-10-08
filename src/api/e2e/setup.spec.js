@@ -1,4 +1,4 @@
-import mongoClient from './services/mongoClient';
+import mongoClient from '../services/mongoClient';
 
 after(async () => {
     const db = await mongoClient();

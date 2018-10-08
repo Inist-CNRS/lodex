@@ -1,5 +1,3 @@
-import expect from 'expect';
-
 import { select } from './SELECT';
 
 describe('SELECT', () => {

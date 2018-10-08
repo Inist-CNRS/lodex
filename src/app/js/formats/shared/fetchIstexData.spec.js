@@ -1,5 +1,3 @@
-import expect from 'expect';
-
 import { getUrl, getUrlFromISSN, parseFetchResult } from './fetchIstexData';
 
 describe('fetchIstexData', () => {

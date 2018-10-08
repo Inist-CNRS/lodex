@@ -1,11 +1,12 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import expect from 'expect';
 import { Link } from 'react-router-dom';
+import { StyleSheetTestUtils } from 'aphrodite';
 
 import LodexResource from './LodexResource';
 
 describe('LodexResource', () => {
+    beforeEach(() => StyleSheetTestUtils.suppressStyleInjection());
     it('should render Link with to=id if id is of type uid', () => {
         const wrapper = shallow(
             <LodexResource
@@ -65,4 +66,6 @@ describe('LodexResource', () => {
 
         expect(link.prop('href')).toBe('http://otherSiteUrl');
     });
+
+    afterEach(() => StyleSheetTestUtils.clearBufferAndResumeStyleInjection());
 });

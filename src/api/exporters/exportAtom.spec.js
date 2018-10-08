@@ -1,4 +1,3 @@
-import expect from 'expect';
 import ezs from 'ezs';
 import from from 'from';
 import exportAtom from './exportAtom';

@@ -1,13 +1,12 @@
-import expect from 'expect';
 import mergeClasses from './mergeClasses';
 
 describe('JSONLDObject / mergeClasses', () => {
     it('should throw when no parameters given', () => {
         try {
             const output = mergeClasses();
-            expect(output).toNotExist();
+            expect(output).toBeFalsy();
         } catch (e) {
-            expect(e).toExist();
+            expect(e).toBeTruthy();
         }
     });
 
@@ -18,18 +17,18 @@ describe('JSONLDObject / mergeClasses', () => {
                 { name: 'field', classes: [] },
                 { uri: 'a' },
             );
-            expect(output).toNotExist();
+            expect(output).toBeFalsy();
         } catch (e) {
-            expect(e).toExist();
+            expect(e).toBeTruthy();
         }
     });
 
     it('should throw when no "field" given', () => {
         try {
             const output = mergeClasses({}, undefined, { uri: 'a' });
-            expect(output).toNotExist();
+            expect(output).toBeFalsy();
         } catch (e) {
-            expect(e).toExist();
+            expect(e).toBeTruthy();
         }
     });
 
@@ -40,9 +39,9 @@ describe('JSONLDObject / mergeClasses', () => {
                 { name: 'field', classes: [] },
                 undefined,
             );
-            expect(output).toNotExist();
+            expect(output).toBeFalsy();
         } catch (e) {
-            expect(e).toExist();
+            expect(e).toBeTruthy();
         }
     });
 
@@ -52,7 +51,7 @@ describe('JSONLDObject / mergeClasses', () => {
             { name: 'field', classes: [] },
             { uri: 'a' },
         );
-        expect(output).toExist();
+        expect(output).toBeTruthy();
     });
 
     it('should return JSON-LD', () => {

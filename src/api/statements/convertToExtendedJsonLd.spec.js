@@ -1,6 +1,5 @@
 import ezs from 'ezs';
 import from from 'from';
-import expect from 'expect';
 import testOne from './testOne';
 
 const dataTest = [

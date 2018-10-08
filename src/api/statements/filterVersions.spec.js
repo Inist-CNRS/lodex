@@ -1,5 +1,4 @@
 import { PassThrough } from 'stream';
-import expect from 'expect';
 import filterVersions from './filterVersions';
 
 class Feed extends PassThrough {

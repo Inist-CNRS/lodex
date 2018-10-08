@@ -1,11 +1,9 @@
-import expect, { createSpy } from 'expect';
-
 import publishedFacetFactory from './publishedFacet';
 
 describe('publishedFacet model', () => {
     const collection = {
-        count: createSpy(),
-        find: createSpy().andReturn({
+        count: jest.fn(),
+        find: jest.fn().mockImplementation(() => ({
             skip: () => ({
                 limit: () => ({
                     sort: () => ({
@@ -13,7 +11,7 @@ describe('publishedFacet model', () => {
                     }),
                 }),
             }),
-        }),
+        })),
     };
     const db = {
         collection: () => collection,

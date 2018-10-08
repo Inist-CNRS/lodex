@@ -1,5 +1,3 @@
-import expect from 'expect';
-
 import COLUMN from './COLUMN';
 
 describe('COLUMN', () => {

@@ -1,4 +1,3 @@
-import expect, { createSpy } from 'expect';
 import { VALIDATED, REJECTED, PROPOSED } from '../../common/propositionStatus';
 import {
     getCsvFieldFactory,
@@ -105,7 +104,7 @@ describe('convertToCSV', () => {
 
     describe('getLastVersion', () => {
         it('should call this.queue with resource uri + last version', () => {
-            const queue = createSpy();
+            const queue = jest.fn();
             const bindedGetLastVersion = getLastVersionFactory({}).bind({
                 queue,
             });
@@ -126,7 +125,7 @@ describe('convertToCSV', () => {
         });
 
         it('should remove non validated contribution', () => {
-            const queue = createSpy();
+            const queue = jest.fn();
             const bindedGetLastVersion = getLastVersionFactory({}).bind({
                 queue,
             });
@@ -168,7 +167,7 @@ describe('convertToCSV', () => {
         });
 
         it('should add value from default document', () => {
-            const queue = createSpy();
+            const queue = jest.fn();
             const defaultDocument = {
                 data: 'defaultValue',
             };
@@ -193,7 +192,7 @@ describe('convertToCSV', () => {
         });
 
         it('should not add value from default document if they are present', () => {
-            const queue = createSpy();
+            const queue = jest.fn();
             const defaultDocument = {
                 data: 'defaultValue',
             };

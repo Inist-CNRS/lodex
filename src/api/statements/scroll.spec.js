@@ -1,5 +1,4 @@
 import request from 'request';
-import expect from 'expect';
 import ezs from 'ezs';
 import from from 'from';
 import sinon from 'sinon';

@@ -1,5 +1,3 @@
-import expect from 'expect';
-
 import { COVER_DOCUMENT, COVER_COLLECTION } from './cover';
 import {
     validateCompletesField,

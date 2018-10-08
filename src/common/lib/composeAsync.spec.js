@@ -1,4 +1,3 @@
-import expect from 'expect';
 import composeAsync from './composeAsync';
 
 describe('composeAsync', () => {
@@ -8,7 +7,7 @@ describe('composeAsync', () => {
             prev => `previous result is ${prev}`,
         );
 
-        expect(fn).toBeA('function');
+        expect(typeof fn).toBe('function');
 
         expect(await fn([1, 2, 3])).toBe('previous result is 1/2/3');
     });
@@ -19,7 +18,7 @@ describe('composeAsync', () => {
             async prev => `previous result is ${prev}`,
         );
 
-        expect(fn).toBeA('function');
+        expect(typeof fn).toBe('function');
 
         expect(await fn([1, 2, 3])).toBe('previous result is 1/2/3');
     });
@@ -30,7 +29,7 @@ describe('composeAsync', () => {
             prev => Promise.resolve(`previous result is ${prev}`),
         );
 
-        expect(fn).toBeA('function');
+        expect(typeof fn).toBe('function');
 
         expect(await fn([1, 2, 3])).toBe('previous result is 1/2/3');
     });
@@ -41,7 +40,7 @@ describe('composeAsync', () => {
             prev => prev.split(''),
         );
 
-        expect(fn).toBeA('function');
+        expect(typeof fn).toBe('function');
 
         expect(await fn('hello')).toEqual(['H', 'E', 'L', 'L', 'O']);
     });

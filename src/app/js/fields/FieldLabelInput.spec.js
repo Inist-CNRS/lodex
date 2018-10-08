@@ -1,5 +1,3 @@
-import expect from 'expect';
-
 import { uniqueField } from './FieldLabelInput';
 
 describe('FieldLabelInput', () => {

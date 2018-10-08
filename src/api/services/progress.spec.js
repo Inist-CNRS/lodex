@@ -1,5 +1,3 @@
-import expect from 'expect';
-
 import { Progress } from './progress';
 import { PENDING, PUBLISH_DOCUMENT } from '../../common/progressStatus';
 

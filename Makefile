@@ -50,11 +50,20 @@ mongo-shell-test: ## Start the mongo shell for the test database
 npm: ## allow to run dockerized npm command eg make npm 'install koa --save'
 	docker-compose run --no-deps --rm api npm $(COMMAND_ARGS)
 
+test-unit-watch: ## launch unit test in watch mode
+	docker-compose run --no-deps --rm api npm run test:watch
+
 test-api-unit: ## Run the API unit tests
 	NODE_ENV=test \
 	EZMASTER_PUBLIC_URL="http://localhost:3010" \
 	docker-compose run --rm -p "3010:3010" api \
 		npm run test:api
+
+test-api-e2e: ## Run the API unit tests
+	NODE_ENV=test \
+	EZMASTER_PUBLIC_URL="http://localhost:3010" \
+	docker-compose run --rm -p "3010:3010" api \
+		npm run test:api:e2e
 
 test-api-unit-watch: ## Watch the API unit tests
 	NODE_ENV=test \
@@ -95,7 +104,7 @@ else
 endif
 
 
-test: test-frontend-unit test-api-unit test-e2e
+test: test-frontend-unit test-api-unit test-api-e2e test-e2e
 
 clear-database: ## Clear the whole database
 	docker-compose exec mongo mongo lodex --eval " \

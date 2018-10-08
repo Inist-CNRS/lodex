@@ -1,4 +1,3 @@
-import expect from 'expect';
 import mergeCompleteField from './mergeCompleteField';
 
 describe('JSONLDObject / mergeCompleteField', () => {
@@ -6,7 +5,7 @@ describe('JSONLDObject / mergeCompleteField', () => {
         try {
             await mergeCompleteField();
         } catch (e) {
-            expect(e).toExist();
+            expect(e).toBeTruthy();
         }
     });
 
@@ -14,7 +13,7 @@ describe('JSONLDObject / mergeCompleteField', () => {
         try {
             await mergeCompleteField({});
         } catch (e) {
-            expect(e).toExist();
+            expect(e).toBeTruthy();
         }
     });
 
@@ -22,7 +21,7 @@ describe('JSONLDObject / mergeCompleteField', () => {
         try {
             await mergeCompleteField({}, {});
         } catch (e) {
-            expect(e).toExist();
+            expect(e).toBeTruthy();
         }
     });
 
@@ -30,7 +29,7 @@ describe('JSONLDObject / mergeCompleteField', () => {
         try {
             await mergeCompleteField({}, {}, []);
         } catch (e) {
-            expect(e).toExist();
+            expect(e).toBeTruthy();
         }
     });
 
@@ -38,7 +37,7 @@ describe('JSONLDObject / mergeCompleteField', () => {
         try {
             await mergeCompleteField({}, {}, [], {});
         } catch (e) {
-            expect(e).toExist();
+            expect(e).toBeTruthy();
         }
     });
 
@@ -46,7 +45,7 @@ describe('JSONLDObject / mergeCompleteField', () => {
         try {
             await mergeCompleteField({}, { name: 'completing' }, [], {});
         } catch (e) {
-            expect(e).toExist();
+            expect(e).toBeTruthy();
         }
     });
 
@@ -54,7 +53,7 @@ describe('JSONLDObject / mergeCompleteField', () => {
         try {
             await mergeCompleteField({}, { completes: 'completed' }, [], {});
         } catch (e) {
-            expect(e).toExist();
+            expect(e).toBeTruthy();
         }
     });
 
@@ -62,7 +61,7 @@ describe('JSONLDObject / mergeCompleteField', () => {
         try {
             await mergeCompleteField({}, { completes: 'completed' }, [], {});
         } catch (e) {
-            expect(e).toExist();
+            expect(e).toBeTruthy();
         }
     });
 
@@ -80,7 +79,7 @@ describe('JSONLDObject / mergeCompleteField', () => {
                 {},
             );
         } catch (e) {
-            expect(e).toExist();
+            expect(e).toBeTruthy();
         }
     });
 
@@ -98,7 +97,7 @@ describe('JSONLDObject / mergeCompleteField', () => {
                 {},
             );
         } catch (e) {
-            expect(e).toExist();
+            expect(e).toBeTruthy();
         }
     });
 
@@ -120,7 +119,7 @@ describe('JSONLDObject / mergeCompleteField', () => {
                 {},
             );
         } catch (e) {
-            expect(e).toExist();
+            expect(e).toBeTruthy();
         }
     });
 
@@ -145,7 +144,7 @@ describe('JSONLDObject / mergeCompleteField', () => {
                 },
             );
         } catch (e) {
-            expect(e).toExist();
+            expect(e).toBeTruthy();
         }
     });
 
@@ -170,7 +169,7 @@ describe('JSONLDObject / mergeCompleteField', () => {
                 },
             );
         } catch (e) {
-            expect(e).toExist();
+            expect(e).toBeTruthy();
         }
     });
 
@@ -195,7 +194,7 @@ describe('JSONLDObject / mergeCompleteField', () => {
                 },
             );
         } catch (e) {
-            expect(e).toExist();
+            expect(e).toBeTruthy();
         }
     });
 
@@ -218,9 +217,9 @@ describe('JSONLDObject / mergeCompleteField', () => {
             completed: 'completed value',
         };
         const res = await mergeCompleteField(output, field, fields, data);
-        expect(res).toExist();
+        expect(res).toBeTruthy();
         const name = Object.keys(res).find(n => n !== '@context');
-        expect(name).toExist();
+        expect(name).toBeTruthy();
         expect(res).toEqual({
             '@context': {
                 completed: {
@@ -260,9 +259,9 @@ describe('JSONLDObject / mergeCompleteField', () => {
             completed: 'completed value',
         };
         const res = await mergeCompleteField(output, field, fields, data);
-        expect(res).toExist();
+        expect(res).toBeTruthy();
         const name = Object.keys(res).find(n => n !== '@context');
-        expect(name).toExist();
+        expect(name).toBeTruthy();
         expect(res).toEqual({
             '@context': {
                 completed: {
@@ -302,9 +301,9 @@ describe('JSONLDObject / mergeCompleteField', () => {
             completed: 'http://completed/value',
         };
         const res = await mergeCompleteField(output, field, fields, data);
-        expect(res).toExist();
+        expect(res).toBeTruthy();
         const name = Object.keys(res).find(n => n !== '@context');
-        expect(name).toExist();
+        expect(name).toBeTruthy();
         expect(res).toEqual({
             '@context': {
                 completed: {

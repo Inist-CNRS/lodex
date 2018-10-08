@@ -1,4 +1,3 @@
-import expect from 'expect';
 import formatData from './formatData';
 
 describe('JSONLDObject / formatData', () => {

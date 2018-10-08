@@ -1,4 +1,3 @@
-import expect, { createSpy } from 'expect';
 import { mongoClientFactory } from './repositoryMiddleware';
 
 describe('mongoClient middleware', () => {
@@ -9,7 +8,7 @@ describe('mongoClient middleware', () => {
 
         const next = () => Promise.resolve();
 
-        const mongoClientImpl = createSpy().andReturn(db);
+        const mongoClientImpl = jest.fn().mockImplementation(() => db);
         const ctx = {};
         await mongoClientFactory(mongoClientImpl)(ctx, next);
 

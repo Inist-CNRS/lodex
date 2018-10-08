@@ -1,5 +1,3 @@
-import expect from 'expect';
-
 import interleave from './interleave';
 
 describe('interleave', () => {

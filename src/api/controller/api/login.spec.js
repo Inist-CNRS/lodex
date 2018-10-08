@@ -1,6 +1,5 @@
 import { auth } from 'config';
 import jwt from 'jsonwebtoken';
-import expect from 'expect';
 
 import { postLogin as login } from './login';
 

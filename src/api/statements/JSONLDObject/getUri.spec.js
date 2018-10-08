@@ -1,13 +1,12 @@
-import expect from 'expect';
 import getUri from './getUri';
 
 describe('JSONLDObject / getUri', () => {
     it('should throw when no parameters given', () => {
         try {
             const output = getUri();
-            expect(output).toNotExist();
+            expect(output).toBeFalsy();
         } catch (e) {
-            expect(e).toExist();
+            expect(e).toBeTruthy();
         }
     });
 

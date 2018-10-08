@@ -1,10 +1,11 @@
 import React from 'react';
-import expect from 'expect';
 import { shallow } from 'enzyme';
+import { StyleSheetTestUtils } from 'aphrodite';
 
 import { HeatMapView } from './HeatMapView';
 
 describe('HeatMapView', () => {
+    beforeEach(() => StyleSheetTestUtils.suppressStyleInjection());
     it('should render Heat Map chart', () => {
         const xAxis = ['one', 'two', 'three'];
         const yAxis = ['A', 'B', 'C'];
@@ -69,4 +70,5 @@ describe('HeatMapView', () => {
             '',
         ]);
     });
+    afterEach(() => StyleSheetTestUtils.clearBufferAndResumeStyleInjection());
 });

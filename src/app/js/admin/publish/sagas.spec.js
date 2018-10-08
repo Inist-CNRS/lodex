@@ -1,4 +1,3 @@
-import expect from 'expect';
 import { call, put, select, race, take } from 'redux-saga/effects';
 import fetchSaga from '../../lib/sagas/fetchSaga';
 

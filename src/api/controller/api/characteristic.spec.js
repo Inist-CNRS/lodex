@@ -1,4 +1,3 @@
-import expect, { createSpy } from 'expect';
 import { updateCharacteristics, createCharacteristic } from './characteristic';
 import { COVER_DATASET } from '../../../common/cover';
 
@@ -18,16 +17,18 @@ describe('characteristic routes', () => {
                     body: characteristics,
                 },
                 publishedCharacteristic: {
-                    addNewVersion: createSpy().andReturn(newVersion),
-                    findLastVersion: createSpy().andReturn({
+                    addNewVersion: jest
+                        .fn()
+                        .mockImplementation(() => newVersion),
+                    findLastVersion: jest.fn().mockImplementation(() => ({
                         foo: 'foo value',
                         bar: 'bar value',
                         doNotUpdateMe: 'doNotUpdateMe value',
-                    }),
+                    })),
                 },
                 field: {
-                    findOneByName: createSpy(),
-                    updateOneById: createSpy(),
+                    findOneByName: jest.fn(),
+                    updateOneById: jest.fn(),
                 },
             };
 
@@ -42,7 +43,7 @@ describe('characteristic routes', () => {
             it('should not call ctx.field.findOneByName', async () => {
                 await updateCharacteristics(ctx);
 
-                expect(ctx.field.findOneByName).toNotHaveBeenCalled();
+                expect(ctx.field.findOneByName).not.toHaveBeenCalled();
             });
 
             it('should call ctx.publishedCharacteristic.addNewVersion with a new version', async () => {
@@ -81,25 +82,30 @@ describe('characteristic routes', () => {
                     },
                 },
                 publishedCharacteristic: {
-                    addNewVersion: createSpy().andReturn(newVersion),
-                    findLastVersion: createSpy().andReturn({
+                    addNewVersion: jest
+                        .fn()
+                        .mockImplementation(() => newVersion),
+                    findLastVersion: jest.fn().mockImplementation(() => ({
                         foo: 'foo value',
                         bar: 'bar value',
                         updatedField: 'updated value',
                         doNotUpdateMe: 'doNotUpdateMe value',
-                    }),
+                    })),
                 },
                 field: {
-                    findOneByName: createSpy().andReturn({
+                    findOneByName: jest.fn().mockImplementation(() => ({
                         _id: 'id',
                         name: 'updatedField',
+
                         transformers: [
                             {
                                 operation: 'COLUMN',
                             },
                         ],
-                    }),
-                    updateOneById: createSpy().andReturn('updatedField'),
+                    })),
+                    updateOneById: jest
+                        .fn()
+                        .mockImplementation(() => 'updatedField'),
                 },
             };
 
@@ -114,7 +120,7 @@ describe('characteristic routes', () => {
             it('should not call ctx.field.updateOneById', async () => {
                 await updateCharacteristics(ctx);
 
-                expect(ctx.field.updateOneById).toNotHaveBeenCalled();
+                expect(ctx.field.updateOneById).not.toHaveBeenCalled();
             });
 
             it('should call ctx.publishedCharacteristic.findLastVersion', async () => {
@@ -165,27 +171,32 @@ describe('characteristic routes', () => {
                     },
                 },
                 publishedCharacteristic: {
-                    addNewVersion: createSpy().andReturn(newVersion),
-                    findLastVersion: createSpy().andReturn({
+                    addNewVersion: jest
+                        .fn()
+                        .mockImplementation(() => newVersion),
+                    findLastVersion: jest.fn().mockImplementation(() => ({
                         foo: 'foo value',
                         bar: 'bar value',
                         updatedField: 'value',
                         doNotUpdateMe: 'doNotUpdateMe value',
-                    }),
+                    })),
                 },
                 field: {
-                    findOneByName: createSpy().andReturn({
+                    findOneByName: jest.fn().mockImplementation(() => ({
                         _id: 'id',
                         name: 'updatedField',
+
                         transformers: [
                             {
                                 operation: 'VALUE',
                                 args: [{ value: 'value' }],
                             },
                         ],
-                    }),
-                    updateOneById: createSpy().andReturn('updatedField'),
-                    findOne: createSpy().andReturn(null),
+                    })),
+                    updateOneById: jest
+                        .fn()
+                        .mockImplementation(() => 'updatedField'),
+                    findOne: jest.fn(() => null),
                 },
             };
 
@@ -260,16 +271,18 @@ describe('characteristic routes', () => {
                     },
                 },
                 publishedCharacteristic: {
-                    addNewVersion: createSpy().andReturn(newVersion),
-                    findLastVersion: createSpy().andReturn({
+                    addNewVersion: jest
+                        .fn()
+                        .mockImplementation(() => newVersion),
+                    findLastVersion: jest.fn().mockImplementation(() => ({
                         foo: 'old foo',
                         bar: 'bar value',
                         updatedField: 'value',
                         doNotUpdateMe: 'doNotUpdateMe value',
-                    }),
+                    })),
                 },
                 field: {
-                    findByNames: createSpy().andCall(names => {
+                    findByNames: jest.fn().mockImplementation(names => {
                         const fields = {};
 
                         if (names.includes('updateField')) {
@@ -317,22 +330,26 @@ describe('characteristic routes', () => {
 
                         return fields;
                     }),
-                    findOneByName: createSpy().andReturn({
+                    findOneByName: jest.fn(() => ({
                         _id: 'id',
                         name: 'updatedField',
+
                         transformers: [
                             {
                                 operation: 'VALUE',
                                 args: [{ value: 'value' }],
                             },
                         ],
+
                         composedOf: {
                             isComposedOf: true,
                             fields: ['foo', 'bar'],
                         },
-                    }),
-                    updateOneById: createSpy().andReturn('updatedField'),
-                    findOne: createSpy().andReturn(null),
+                    })),
+                    updateOneById: jest
+                        .fn()
+                        .mockImplementation(() => 'updatedField'),
+                    findOne: jest.fn(() => null),
                 },
             };
 
@@ -429,18 +446,20 @@ describe('characteristic routes', () => {
                 },
             },
             publishedCharacteristic: {
-                addNewVersion: createSpy().andReturn({
+                addNewVersion: jest.fn().mockImplementation(() => ({
                     foo: 'new foo',
                     bar: 'new bar',
                     newField: 'value',
-                }),
-                findLastVersion: createSpy().andReturn(characteristics),
+                })),
+                findLastVersion: jest
+                    .fn()
+                    .mockImplementation(() => characteristics),
             },
             field: {
-                getHighestPosition: createSpy().andReturn(4),
-                create: createSpy().andReturn({
+                getHighestPosition: jest.fn().mockImplementation(() => 4),
+                create: jest.fn().mockImplementation(() => ({
                     name: 'newField',
-                }),
+                })),
             },
         };
 
