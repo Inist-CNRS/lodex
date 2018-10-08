@@ -1,0 +1,79 @@
+[
+    {
+        "cover": "collection",
+        "label": "uri",
+        "name": "uri",
+        "display_on_list": true,
+        "transformers": [
+            {
+                "operation": "AUTOGENERATE_URI",
+                "args": []
+            }
+        ],
+        "position": 0
+    },
+    {
+        "cover": "collection",
+        "label": "Column 1",
+        "display_in_list": true,
+        "display_in_resource": true,
+        "searchable": true,
+        "transformers": [
+            {
+                "operation": "CONCAT",
+                "args": [
+                    {
+                        "name": "column",
+                        "type": "column",
+                        "value": "Column 1"
+                    },
+                    {
+                        "name": "column",
+                        "type": "column",
+                        "value": "Column 2"
+                    }
+                ]
+            }
+        ],
+        "classes": [],
+        "position": 1,
+        "overview": 0,
+        "format": {
+            "args": {
+                "type": "unordered",
+                "subFormat": "none",
+                "subFormatOptions": {}
+            },
+            "name": "list"
+        },
+        "name": "cnUz",
+        "count": 0
+    },
+    {
+        "cover": "collection",
+        "label": "Column 2",
+        "display_in_list": "",
+        "display_in_resource": true,
+        "searchable": true,
+        "transformers": [
+            {
+                "operation": "COLUMN",
+                "args": [
+                    {
+                        "name": "column",
+                        "type": "column",
+                        "value": "Column 2"
+                    }
+                ]
+            }
+        ],
+        "classes": [],
+        "position": 2,
+        "overview": 0,
+        "format": {
+            "args": {},
+            "name": "markdown"
+        },
+        "name": "asq9"
+    }
+]

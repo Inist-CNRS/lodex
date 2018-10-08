@@ -1,10 +1,11 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 
-import Component, { UL, OL } from './ListView';
+import ListView, { UL, OL } from './ListView';
 import DefaultView from '../DefaultFormat/DefaultView.js';
+import InvalidFormat from '../InvalidFormat';
 
-describe('list format view Component', () => {
+describe('list format view <ListView />', () => {
     const polyglot = {
         t: v => v,
     };
@@ -22,7 +23,7 @@ describe('list format view Component', () => {
             p: polyglot,
         };
 
-        const component = shallow(<Component.WrappedComponent {...props} />);
+        const component = shallow(<ListView {...props} />);
         const li = component.find('li');
         expect(li.length).toBe(3);
         expect(li.map(l => l.text())).toEqual(['value1', 'value2', 'value3']);
@@ -43,7 +44,7 @@ describe('list format view Component', () => {
             },
             p: polyglot,
         };
-        const component = shallow(<Component.WrappedComponent {...props} />);
+        const component = shallow(<ListView {...props} />);
         const title = component.find(DefaultView);
         expect(title.length).toBe(3);
         title.forEach((t, index) => {
@@ -66,7 +67,7 @@ describe('list format view Component', () => {
             },
             p: polyglot,
         };
-        const component = shallow(<Component.WrappedComponent {...props} />);
+        const component = shallow(<ListView {...props} />);
         const ul = component.find(UL);
         expect(ul.length).toBe(1);
         const ol = component.find(OL);
@@ -87,7 +88,7 @@ describe('list format view Component', () => {
             },
             p: polyglot,
         };
-        const component = shallow(<Component.WrappedComponent {...props} />);
+        const component = shallow(<ListView {...props} />);
         const ul = component.find(UL);
         expect(ul.length).toBe(0);
         const ol = component.find(OL);
@@ -108,7 +109,8 @@ describe('list format view Component', () => {
             },
             p: polyglot,
         };
-        const component = shallow(<Component.WrappedComponent {...props} />);
-        expect(component.html()).toEqual('<p>error_listView</p>');
+        const component = shallow(<ListView {...props} />);
+        const invalidFormat = component.find(InvalidFormat);
+        expect(invalidFormat.length).toBe(1);
     });
 });

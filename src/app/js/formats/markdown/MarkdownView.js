@@ -2,18 +2,28 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import MarkdownIt from 'markdown-it';
+
 import { field as fieldPropTypes } from '../../propTypes';
+import InvalidFormat from '../InvalidFormat';
 
 const markdown = new MarkdownIt();
 
-const MarkdownView = ({ className, resource, field }) => (
-    <div
-        className={className}
-        dangerouslySetInnerHTML={{
-            __html: markdown.render(resource[field.name]),
-        }}
-    />
-);
+const MarkdownView = ({ className, resource, field }) => {
+    const value = resource[field.name];
+
+    if (!value) {
+        return <InvalidFormat format={field.format} value={value} />;
+    }
+
+    return (
+        <div
+            className={className}
+            dangerouslySetInnerHTML={{
+                __html: markdown.render(value),
+            }}
+        />
+    );
+};
 
 MarkdownView.propTypes = {
     className: PropTypes.string,

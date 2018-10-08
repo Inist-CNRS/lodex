@@ -1,7 +1,9 @@
-import { logout, login } from '../support/authentication';
+import { teardown, login } from '../support/authentication';
 
 describe('Login', () => {
-    beforeEach(logout);
+    beforeEach(() => {
+        teardown(true);
+    });
 
     it('should successfuly login as an admin', () => {
         login();

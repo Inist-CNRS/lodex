@@ -7,10 +7,24 @@ export const login = (username = 'admin', password = 'secret') => {
 };
 
 export const logout = () => {
-    cy.request('DELETE', '/tests/fixtures');
+    cy.clearCookies();
+    cy.window().then(win => {
+        win.sessionStorage.clear();
+    });
 };
 
-export const logoutAndLogin = () => {
+export const logoutAndLoginAs = username => {
     logout();
-    login();
+    login(username);
+};
+
+export const teardown = (withoutLogin = false) => {
+    cy.request('DELETE', '/tests/fixtures');
+
+    if (withoutLogin) {
+        logout();
+        return;
+    }
+
+    logoutAndLoginAs('admin');
 };
