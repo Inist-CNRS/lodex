@@ -50,9 +50,6 @@ mongo-shell-test: ## Start the mongo shell for the test database
 npm: ## allow to run dockerized npm command eg make npm 'install koa --save'
 	docker-compose run --no-deps --rm api npm $(COMMAND_ARGS)
 
-test-unit-watch: ## launch unit test in watch mode
-	docker-compose run --no-deps --rm api npm run test:watch
-
 test-api-unit: ## Run the API unit tests
 	NODE_ENV=test \
 	EZMASTER_PUBLIC_URL="http://localhost:3010" \
