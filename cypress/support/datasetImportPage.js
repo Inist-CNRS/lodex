@@ -15,6 +15,20 @@ export const importDataset = (filename, mimeType = 'text/csv') => {
     cy.get('tbody').should('exist');
 };
 
+export const importMoreDataset = (filename, mimeType = 'text/csv') => {
+    cy.get('.appbar button.open-upload').click();
+    fillInputWithFixture(
+        '.btn-upload-dataset input[type=file]',
+        filename,
+        mimeType,
+    );
+
+    cy
+        .get('.data-published a')
+        .contains('Go to my published data')
+        .should('be.visible');
+};
+
 const fillStepValueConcatColumn = (value, index) => {
     cy.get(`#select-column-${index}`).click();
     cy
