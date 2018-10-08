@@ -30,7 +30,7 @@ const store = configureStore(
 );
 
 render(
-    <Root {...{ store, routes: <Routes />, history }} />,
+    <Root store={store} routes={<Routes />} history={history} />,
     document.getElementById('root'),
 );
 
@@ -39,7 +39,7 @@ if (module.hot) {
     module.hot.accept('../Root', () => {
         const NewRoot = require('../Root').default; // eslint-disable-line
         render(
-            <NewRoot {...{ store, routes: <Routes />, history }} />,
+            <NewRoot store={store} routes={<Routes />} history={history} />,
             document.getElementById('root'),
         );
     });
