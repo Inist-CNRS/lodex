@@ -38,6 +38,7 @@
         "LOADERS": true,
         "__EN__": true,
         "__FR__": true,
+        "ISTEX_API_URL": true,
         "jest": true,
         "beforeAll": true,
         "afterAll": true

@@ -133,12 +133,14 @@ export async function uploadChunkMiddleware(ctx, parserName, next) {
         progress.setProgress(progression === 100 ? 99 : progression);
 
         if (uploadedFileSize === totalSize) {
+            progress.finish();
             await next();
             return;
         }
 
         ctx.status = 200;
     } catch (error) {
+        progress.finish();
         ctx.status = 500;
         ctx.body = error.message;
     }

@@ -17,6 +17,17 @@ services:
         ports:
             - 3000:3000
 
+    istex-api:
+        image: node:8.9.1
+        volumes:
+            - .:/app
+        working_dir: /app
+        environment:
+            NODE_ENV: "test"
+        ports:
+            - 3011:3011
+        command: node --require babel-register ./cypress/mocks/istexApi.js
+
     mongo:
         image: mongo:3.4.1
         command: "--smallfiles"

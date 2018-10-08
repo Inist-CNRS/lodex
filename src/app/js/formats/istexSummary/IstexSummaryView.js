@@ -4,7 +4,6 @@ import get from 'lodash.get';
 import { StyleSheet, css } from 'aphrodite/no-important';
 
 import { field as fieldPropTypes } from '../../propTypes';
-import { ISTEX_API_URL } from '../../../../common/externals';
 import injectData from '../injectData';
 import classnames from 'classnames';
 import IstexYear from './IstexYear';

@@ -90,6 +90,11 @@
                 ]
             }
         ],
+        "format": {
+            "args": {
+            },
+            "name": "istexSummary"
+        },
         "classes": [],
         "position": 3,
         "count": 64,

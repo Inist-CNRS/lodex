@@ -21,7 +21,6 @@ import { APPLY_FILTER } from '../public/dataset';
 import { CONFIGURE_FIELD_SUCCESS } from '../fields';
 import { UPDATE_CHARACTERISTICS_SUCCESS } from '../characteristic';
 import { COVER_DATASET } from '../../../common/cover';
-import { ISTEX_API_URL } from '../../../common/externals';
 
 const isSparqlQuery = url =>
     url.toLowerCase().includes('select') &&

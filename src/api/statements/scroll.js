@@ -1,7 +1,9 @@
 import request from 'request';
 import url from 'url';
 import logger from '../services/logger';
-import { ISTEX_API_URL as istexApiUrl } from '../../common/externals';
+import config from 'config';
+
+const { istexApiUrl } = config;
 
 /**
  * Recursive scroll

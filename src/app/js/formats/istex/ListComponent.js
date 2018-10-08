@@ -4,7 +4,6 @@ import memoize from 'lodash.memoize';
 
 import { REJECTED } from '../../../../common/propositionStatus';
 import { field as fieldPropTypes } from '../../propTypes';
-import { ISTEX_API_URL as istexApiUrl } from '../../../../common/externals';
 
 const styles = {
     text: memoize(status =>
@@ -16,7 +15,7 @@ const styles = {
 };
 
 const IstexView = ({ fieldStatus, field, resource }) => {
-    const url = `${istexApiUrl}/?q=${resource[field.name]}`;
+    const url = `${ISTEX_API_URL}/?q=${resource[field.name]}`;
     return (
         <a style={styles.text(fieldStatus)} href={`${url}`}>
             {url}

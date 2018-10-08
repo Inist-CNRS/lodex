@@ -6,7 +6,6 @@ import translate from 'redux-polyglot/translate';
 import FetchFold from './FetchFold';
 import IstexItem from '../istex/IstexItem';
 import composeAsync from '../../../../common/lib/composeAsync';
-import { ISTEX_API_URL } from '../../../../common/externals';
 import { parseFetchResult } from '../shared/fetchIstexData';
 import { polyglot as polyblotPropTypes } from '../../propTypes';
 import fetch from '../../lib/fetch';

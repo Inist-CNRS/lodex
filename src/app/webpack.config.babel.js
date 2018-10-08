@@ -1,7 +1,6 @@
 import 'babel-polyfill';
 import fs from 'fs';
 import CSV from 'csv-string';
-import { loaders } from '../../config.json';
 import {
     DefinePlugin,
     SourceMapDevToolPlugin,
@@ -13,6 +12,9 @@ import CopyWebpackPlugin from 'copy-webpack-plugin';
 import CompressionPlugin from 'compression-webpack-plugin';
 import UglifyJsPlugin from 'uglifyjs-webpack-plugin';
 import { resolve } from 'path';
+import config from 'config';
+
+import { loaders } from '../../config.json';
 
 const isDevelopment = process.env.NODE_ENV === 'development';
 
@@ -72,6 +74,7 @@ export default {
             __DEBUG__: false,
             __EN__: JSON.stringify(translations.english),
             __FR__: JSON.stringify(translations.french),
+            ISTEX_API_URL: JSON.stringify(config.istexApiUrl),
             'process.env': {
                 NODE_ENV: JSON.stringify(process.env.NODE_ENV),
             },
