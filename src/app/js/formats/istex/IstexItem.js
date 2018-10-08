@@ -13,6 +13,7 @@ const styles = StyleSheet.create({
     },
     titleIcon: {
         marginRight: 8,
+        flexShrink: 0,
     },
     link: {
         fontSize: '2rem',

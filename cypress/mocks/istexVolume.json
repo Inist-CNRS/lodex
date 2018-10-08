@@ -1,0 +1,16 @@
+{
+    "total": 61,
+    "hits": [],
+    "aggregations": {
+        "host.volume": {
+            "buckets": [
+                {
+                    "key": 52,
+                    "docCount": 61,
+                    "rangeAsString": "[52-53]"
+                }
+            ],
+            "keyCount": 1
+        }
+    }
+}

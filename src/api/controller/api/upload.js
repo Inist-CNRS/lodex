@@ -75,8 +75,13 @@ export const prepareUpload = async (ctx, next) => {
     ctx.publishDocuments = publishDocuments;
     ctx.publishFacets = publishFacets;
     ctx.saveParsedStream = saveParsedStream(ctx);
-
-    await next();
+    try {
+        await next();
+    } catch (error) {
+        progress.finish();
+        ctx.status = 500;
+        ctx.body = error.message;
+    }
 };
 
 export const parseRequest = async (ctx, parserName, next) => {
@@ -105,45 +110,39 @@ export const parseRequest = async (ctx, parserName, next) => {
 };
 
 export async function uploadChunkMiddleware(ctx, parserName, next) {
-    try {
-        const {
-            chunkname,
-            currentChunkSize,
-            stream,
-            filename,
-            totalChunks,
-            totalSize,
-        } = ctx.resumable;
+    const {
+        chunkname,
+        currentChunkSize,
+        stream,
+        filename,
+        totalChunks,
+        totalSize,
+    } = ctx.resumable;
 
-        if (progress.getProgress().status === PENDING) {
-            progress.start(UPLOADING_DATASET, 100, '%');
-        }
-
-        if (!await ctx.checkFileExists(chunkname, currentChunkSize)) {
-            await ctx.saveStreamInFile(stream, chunkname);
-        }
-
-        const uploadedFileSize = await ctx.getUploadedFileSize(
-            filename,
-            totalChunks,
-        );
-
-        const progression = Math.round(uploadedFileSize * 100 / totalSize);
-
-        progress.setProgress(progression === 100 ? 99 : progression);
-
-        if (uploadedFileSize === totalSize) {
-            progress.finish();
-            await next();
-            return;
-        }
-
-        ctx.status = 200;
-    } catch (error) {
-        progress.finish();
-        ctx.status = 500;
-        ctx.body = error.message;
+    if (progress.getProgress().status === PENDING) {
+        progress.start(UPLOADING_DATASET, 100, '%');
     }
+
+    if (!await ctx.checkFileExists(chunkname, currentChunkSize)) {
+        await ctx.saveStreamInFile(stream, chunkname);
+    }
+
+    const uploadedFileSize = await ctx.getUploadedFileSize(
+        filename,
+        totalChunks,
+    );
+
+    const progression = Math.round(uploadedFileSize * 100 / totalSize);
+
+    progress.setProgress(progression === 100 ? 99 : progression);
+
+    if (uploadedFileSize >= totalSize) {
+        progress.finish();
+        await next();
+        return;
+    }
+
+    ctx.status = 200;
 }
 
 export async function uploadFileMiddleware(ctx, parserName) {

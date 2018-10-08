@@ -55,7 +55,7 @@ export const getDocumentUrl = ({ issn, year, volume, issue }) => () => ({
         `host.issn="${issn}" AND publicationDate:"${year}" AND host.volume:"${
             volume
         }" AND host.issue:"${issue}"`,
-    )})&size=10&output=*`,
+    )})&size=10&output=id,arkIstex,title,publicationDate,author,host.genre,host.title`,
 });
 
 export const getDocumentData = ({ issn, year, volume, issue }) =>
