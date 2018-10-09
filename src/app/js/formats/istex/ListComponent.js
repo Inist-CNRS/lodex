@@ -16,7 +16,7 @@ const styles = {
 };
 
 const IstexView = ({ fieldStatus, field, resource }) => {
-    const url = `${ISTEX_API_URL}/?q=${resource[field.name]}`;
+    const url = `${ISTEX_API_URL}/document/?q=${resource[field.name]}`;
     return (
         <a style={styles.text(fieldStatus)} href={`${url}`}>
             {url}

@@ -9,14 +9,17 @@ export const getSiteUrl = value =>
     `${ISTEX_SITE_URL}/?q=${encodeURIComponent(`host.issn="${value}"`)}`;
 
 export const getApiUrl = value =>
-    `${ISTEX_API_URL}/?q=${encodeURIComponent(`host.issn="${value}"`)}`;
+    `${ISTEX_API_URL}/document/?q=${encodeURIComponent(
+        `host.issn="${value}"`,
+    )}`;
 
 export const getUrl = ({ props: { resource, field }, page, perPage }) => {
     const value = resource[field.name];
 
     return {
-        url: `${ISTEX_API_URL}/?q=${encodeURIComponent(value)}&from=${page *
-            perPage}&size=${perPage}&output=${output}`,
+        url: `${ISTEX_API_URL}/document/?q=${encodeURIComponent(
+            value,
+        )}&from=${page * perPage}&size=${perPage}&output=${output}`,
     };
 };
 
@@ -28,7 +31,7 @@ export const getUrlFromISSN = ({
     const value = resource[field.name];
 
     return {
-        url: `${ISTEX_API_URL}/?q=${encodeURIComponent(
+        url: `${ISTEX_API_URL}/document/?q=${encodeURIComponent(
             `host.issn="${value}"`,
         )}&from=${page * perPage}&size=${perPage}&output=${output}`,
     };

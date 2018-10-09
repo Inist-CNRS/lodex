@@ -19,7 +19,6 @@ module.exports = {
         quote: '"',
         delimiter: ';',
     },
-    buildFrontend: false,
     host: 'http://localhost:3010',
-    istexApiUrl: 'http://localhost:3011/document',
+    istexApiUrl: 'http://localhost:3011',
 };

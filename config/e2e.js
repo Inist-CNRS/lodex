@@ -1,7 +1,6 @@
 module.exports = {
     port: 3000,
-    buildFrontend: true,
-    istexApiUrl: 'http://localhost:3011/document',
+    istexApiUrl: 'http://localhost:3011',
     mongo: {
         host: 'mongo:27017',
         dbName: 'lodex_test',

@@ -4,7 +4,7 @@ import * as homePage from '../support/homePage';
 import * as graphPage from '../support/graphPage';
 import * as bookSummaryPage from '../support/bookSummary';
 
-describe('Model Page', () => {
+describe('Book Summary', () => {
     beforeEach(() => {
         logoutAndLoginAs('admin');
         homePage.goToAdminDashboard();

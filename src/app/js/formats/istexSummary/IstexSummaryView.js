@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash.get';
 import { StyleSheet, css } from 'aphrodite/no-important';
@@ -24,31 +24,25 @@ const styles = StyleSheet.create({
 export const getYearUrl = ({ resource, field }) => {
     const value = resource[field.name];
 
-    return `${ISTEX_API_URL}/?q=(${encodeURIComponent(
+    return `${ISTEX_API_URL}/document/?q=(${encodeURIComponent(
         `host.issn="${value}"`,
     )})&facet=publicationDate[perYear]&size=0&output=*`;
 };
 
-export class IstexSummaryView extends Component {
-    render() {
-        const { formatData, field, resource } = this.props;
+export const getYear = formatData =>
+    get(formatData, 'aggregations.publicationDate.buckets', [])
+        .sort((a, b) => a.keyAsString - b.keyAsString)
+        .map(({ keyAsString }) => keyAsString);
 
-        return (
-            <ul className={classnames('istex-year', css(styles.text))}>
-                {get(formatData, 'aggregations.publicationDate.buckets', [])
-                    .sort((a, b) => a.keyAsString - b.keyAsString)
-                    .map(({ keyAsString }) => (
-                        <li key={keyAsString} className={css(styles.li)}>
-                            <IstexYear
-                                issn={resource[field.name]}
-                                year={keyAsString}
-                            />
-                        </li>
-                    ))}
-            </ul>
-        );
-    }
-}
+export const IstexSummaryView = ({ formatData, field, resource }) => (
+    <ul className={classnames('istex-year', css(styles.text))}>
+        {getYear(formatData).map(year => (
+            <li key={year} className={css(styles.li)}>
+                <IstexYear issn={resource[field.name]} year={year} />
+            </li>
+        ))}
+    </ul>
+);
 
 IstexSummaryView.propTypes = {
     fieldStatus: PropTypes.string,

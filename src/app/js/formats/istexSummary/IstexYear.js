@@ -12,7 +12,7 @@ import fetch from '../../lib/fetch';
 import { ISTEX_API_URL } from '../../../../common/externals';
 
 export const getVolumeUrl = ({ issn, year }) => () => ({
-    url: `${ISTEX_API_URL}/?q=(${encodeURIComponent(
+    url: `${ISTEX_API_URL}/document/?q=(${encodeURIComponent(
         `host.issn="${issn}" AND publicationDate:"${year}"`,
     )})&facet=host.volume[*-*:1]&size=0&output=*`,
 });
@@ -31,7 +31,7 @@ export const getVolumeData = ({ issn, year }) =>
     composeAsync(getVolumeUrl({ issn, year }), fetch, parseVolumeData);
 
 export const getIssueUrl = ({ issn, year, volume }) => () => ({
-    url: `${ISTEX_API_URL}/?q=(${encodeURIComponent(
+    url: `${ISTEX_API_URL}/document/?q=(${encodeURIComponent(
         `host.issn="${issn}" AND publicationDate:"${year}" AND host.volume:"${
             volume
         }"`,
@@ -52,7 +52,7 @@ export const getIssueData = ({ issn, year, volume }) =>
     composeAsync(getIssueUrl({ issn, year, volume }), fetch, parseIssueData);
 
 export const getDocumentUrl = ({ issn, year, volume, issue }) => () => ({
-    url: `${ISTEX_API_URL}/?q=(${encodeURIComponent(
+    url: `${ISTEX_API_URL}/document/?q=(${encodeURIComponent(
         `host.issn="${issn}" AND publicationDate:"${year}" AND host.volume:"${
             volume
         }" AND host.issue:"${issue}"`,
@@ -91,8 +91,11 @@ const IstexYear = ({ issn, year, p: polyglot }) => (
                             volume,
                             issue,
                         })}
-                        renderData={document => (
-                            <IstexItem key={document.id} {...document} />
+                        renderData={istexDocument => (
+                            <IstexItem
+                                key={istexDocument.id}
+                                {...istexDocument}
+                            />
                         )}
                     />
                 )}

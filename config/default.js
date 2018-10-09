@@ -15,5 +15,5 @@ module.exports = {
     },
     hostname: 'http://data.istex.fr/',
     uploadDir: 'upload',
-    istexApiUrl: 'https://api.istex.fr/document',
+    istexApiUrl: 'https://api.istex.fr',
 };
