@@ -12,14 +12,14 @@ import AdminOnlyAlert from '../../lib/components/AdminOnlyAlert';
 describe('FetchFold', () => {
     const defaultProps = {
         getData: jest.fn(() => Promise.resolve([])),
-        renderData: jest.fn(),
+        children: jest.fn(),
         label: 'label',
         p: { t: v => v },
     };
 
     beforeEach(() => {
         StyleSheetTestUtils.suppressStyleInjection();
-        defaultProps.renderData.mockClear();
+        defaultProps.children.mockClear();
     });
 
     it('should render closed', () => {
@@ -27,7 +27,7 @@ describe('FetchFold', () => {
         expect(wrapper.find(Folder).length).toBe(1);
         expect(wrapper.find(FolderOpen).length).toBe(0);
         expect(wrapper.find('li').length).toBe(0);
-        expect(defaultProps.renderData).toHaveBeenCalledTimes(0);
+        expect(defaultProps.children).toHaveBeenCalledTimes(0);
         expect(defaultProps.getData).toHaveBeenCalledTimes(0);
         expect(wrapper.find(CircularProgress)).toHaveLength(0);
     });
@@ -50,10 +50,10 @@ describe('FetchFold', () => {
         expect(wrapper.find(Folder).length).toBe(0);
         expect(wrapper.find(FolderOpen).length).toBe(1);
         expect(wrapper.find('li')).toHaveLength(3);
-        expect(defaultProps.renderData).toHaveBeenCalledTimes(3);
-        expect(defaultProps.renderData).toHaveBeenCalledWith(1);
-        expect(defaultProps.renderData).toHaveBeenCalledWith(2);
-        expect(defaultProps.renderData).toHaveBeenCalledWith(3);
+        expect(defaultProps.children).toHaveBeenCalledTimes(3);
+        expect(defaultProps.children).toHaveBeenCalledWith(1);
+        expect(defaultProps.children).toHaveBeenCalledWith(2);
+        expect(defaultProps.children).toHaveBeenCalledWith(3);
     });
 
     it('should display an error when getData fail', async () => {
@@ -77,7 +77,7 @@ describe('FetchFold', () => {
         const alert = wrapper.find(AdminOnlyAlert);
         expect(alert).toHaveLength(1);
         expect(alert.prop('children')).toBe('istex_error');
-        expect(defaultProps.renderData).toHaveBeenCalledTimes(0);
+        expect(defaultProps.children).toHaveBeenCalledTimes(0);
     });
 
     afterEach(() => StyleSheetTestUtils.clearBufferAndResumeStyleInjection());

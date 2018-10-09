@@ -77,7 +77,7 @@ export class FetchFold extends Component {
     };
 
     render() {
-        const { label, p: polyglot, renderData } = this.props;
+        const { label, p: polyglot, children } = this.props;
         const { error, data, isOpen, isLoading } = this.state;
 
         if (error) {
@@ -108,7 +108,7 @@ export class FetchFold extends Component {
                                     key={get(value, 'id', value)}
                                     className={css(styles.li)}
                                 >
-                                    {renderData(value)}
+                                    {children(value)}
                                 </li>
                             ))}
                         </ul>
@@ -123,7 +123,7 @@ FetchFold.propTypes = {
     label: PropTypes.string.isRequired,
     p: polyglotPropTypes.isRequired,
     getData: PropTypes.func.isRequired,
-    renderData: PropTypes.func.isRequired,
+    children: PropTypes.func.isRequired,
 };
 
 export default translate(FetchFold);

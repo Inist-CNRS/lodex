@@ -74,7 +74,8 @@ const IstexYear = ({ issn, year, p: polyglot }) => (
             issn,
             year,
         })}
-        renderData={volume => (
+    >
+        {volume => (
             <FetchFold
                 label={`${polyglot.t('volume')}: ${volume}`}
                 getData={getIssueData({
@@ -82,7 +83,8 @@ const IstexYear = ({ issn, year, p: polyglot }) => (
                     year,
                     volume,
                 })}
-                renderData={issue => (
+            >
+                {issue => (
                     <FetchFold
                         label={`${polyglot.t('issue')}: ${issue}`}
                         getData={getDocumentData({
@@ -91,17 +93,18 @@ const IstexYear = ({ issn, year, p: polyglot }) => (
                             volume,
                             issue,
                         })}
-                        renderData={istexDocument => (
+                    >
+                        {istexDocument => (
                             <IstexItem
                                 key={istexDocument.id}
                                 {...istexDocument}
                             />
                         )}
-                    />
+                    </FetchFold>
                 )}
-            />
+            </FetchFold>
         )}
-    />
+    </FetchFold>
 );
 
 IstexYear.propTypes = {
