@@ -1,4 +1,4 @@
-import { COVER_DOCUMENT, COVER_COLLECTION } from './cover';
+import { COVER_DOCUMENT, COVER_COLLECTION, COVER_DATASET } from './cover';
 import {
     validateCompletesField,
     validateComposedOf,
@@ -178,13 +178,30 @@ describe('validateField', () => {
             });
         });
 
-        it('should return invalid result if position is 0 and field is not uri', () => {
+        it('should return invalid result if position is 0 and cover is no dataset and field is not uri', () => {
             expect(
-                validatePosition({ position: 0, name: 'foo' }, true),
+                validatePosition(
+                    { position: 0, name: 'foo', cover: COVER_COLLECTION },
+                    true,
+                ),
             ).toEqual({
                 name: 'position',
+                cover: COVER_COLLECTION,
                 isValid: false,
                 error: 'uri_must_come_first',
+            });
+        });
+
+        it('should return valid result if position is 0 and cover dataset and field is not uri', () => {
+            expect(
+                validatePosition(
+                    { position: 0, name: 'foo', cover: COVER_DATASET },
+                    true,
+                ),
+            ).toEqual({
+                name: 'position',
+                cover: COVER_DATASET,
+                isValid: false,
             });
         });
 

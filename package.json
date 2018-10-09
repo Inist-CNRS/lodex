@@ -14,11 +14,9 @@
     "development:app": "BABEL_ENV=browser node_modules/.bin/webpack-dev-server --config=./src/app/webpack.config.babel.js --port=8080 --host=0.0.0.0",
     "postversion": "git push && git push --tags",
     "lint": "./pre-commit",
-    "test:api": "./node_modules/jest/bin/jest.js --config ./src/api/jest.config.js  ./src/api/**/*.spec.js",
-    "test:api:watch": "./node_modules/jest/bin/jest.js --config ./src/api/jest.config.js  ./src/api/**/*.spec.js --watch",
-    "test:app": "./node_modules/jest/bin/jest.js --config ./src/app/jest.config.js  ./src/app/**/*.spec.js",
-    "test:app:watch": "./node_modules/jest/bin/jest.js --config ./src/app/jest.config.js  ./src/app/**/*.spec.js ./src/common/**/*.spec.js --watch",
-    "test:api:e2e": "mocha --require babel-polyfill --require babel-core/register 'src/api/e2e/*.spec.js'"
+    "test:api:e2e": "mocha --require babel-polyfill --require babel-core/register 'src/api/e2e/*.spec.js'",
+    "test:unit": "./node_modules/jest/bin/jest.js",
+    "test:unit:watch": "./node_modules/jest/bin/jest.js --watch"
   },
   "repository": {
     "type": "git",
