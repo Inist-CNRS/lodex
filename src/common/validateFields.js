@@ -1,4 +1,4 @@
-import { COVERS, COVER_DOCUMENT } from './cover';
+import { COVERS, COVER_DOCUMENT, COVER_DATASET } from './cover';
 import knownTransformers from './transformers';
 import languagesList from './languages';
 
@@ -57,7 +57,11 @@ export const validatePosition = field => {
         };
     }
 
-    if (field.position === 0 && field.name !== 'uri') {
+    if (
+        field.position === 0 &&
+        field.cover !== COVER_DATASET &&
+        field.name !== 'uri'
+    ) {
         return {
             ...result,
             isValid: false,

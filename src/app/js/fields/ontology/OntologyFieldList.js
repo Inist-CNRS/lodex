@@ -15,7 +15,7 @@ const OntologyFieldList = SortableContainer(({ items }) => (
                 collection={
                     field.cover === COVER_DATASET ? 'dataset' : 'document'
                 }
-                disabled={field.position === 0}
+                disabled={field.name === 'uri'}
             />
         ))}
     </TableBody>

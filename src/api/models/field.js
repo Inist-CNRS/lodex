@@ -39,7 +39,7 @@ export default async db => {
     collection.findAll = async () =>
         collection
             .find({})
-            .sort({ position: 1 })
+            .sort({ position: 1, cover: 1 })
             .toArray();
 
     collection.findSearchableNames = async () => {
