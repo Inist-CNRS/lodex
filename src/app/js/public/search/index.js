@@ -15,16 +15,22 @@ export const defaultState = {
 
 export const fromSearch = {
     isLoading: state => state.search.loading,
+    getDataset: state => state.search.dataset,
 };
 
 export default handleActions(
     {
         SEARCH: state => ({
             ...state,
+            loading: true,
         }),
-        [combineActions(SEARCH_RESULTS, SEARCH_ERROR)]: state => ({
+        [combineActions(SEARCH_RESULTS, SEARCH_ERROR)]: (
+            state,
+            { payload },
+        ) => ({
             ...state,
             loading: false,
+            dataset: payload.dataset || [],
         }),
     },
     defaultState,
