@@ -186,7 +186,6 @@ describe('validateField', () => {
                 ),
             ).toEqual({
                 name: 'position',
-                cover: COVER_COLLECTION,
                 isValid: false,
                 error: 'uri_must_come_first',
             });
@@ -200,8 +199,7 @@ describe('validateField', () => {
                 ),
             ).toEqual({
                 name: 'position',
-                cover: COVER_DATASET,
-                isValid: false,
+                isValid: true,
             });
         });
 

@@ -69,8 +69,8 @@ describe('JSONLDObject / formatData', () => {
             'prop',
         );
         expect(output).toEqual([
-            { '@id': `${process.env.EZMASTER_PUBLIC_URL}/ftp://uri` },
-            { '@id': `${process.env.EZMASTER_PUBLIC_URL}/ftp://valid.uri/` },
+            { '@id': `http://localhost:3000/ftp://uri` },
+            { '@id': `http://localhost:3000/ftp://valid.uri/` },
         ]);
     });
 });

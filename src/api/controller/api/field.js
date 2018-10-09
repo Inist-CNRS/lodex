@@ -119,7 +119,9 @@ export const importFields = getUploadedFieldsImpl => async ctx => {
     await Promise.all(
         fields
             .sort(
-                (a, b) => (a.name === 'uri' ? -1000 : a.position - b.position),
+                (a, b) =>
+                    (a.name === 'uri' ? -1 : a.position) -
+                    (b.name === 'uri' ? -1 : b.position),
             )
             .map(({ name, ...field }, index) =>
                 ctx.field.create({ ...field, position: index }, name, false),

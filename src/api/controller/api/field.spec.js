@@ -168,15 +168,6 @@ describe('field routes', () => {
     describe('importFields', () => {
         let getUploadedFields;
 
-        beforeEach(() => {
-            getUploadedFields = jest
-                .fn()
-                .mockImplementation(() => [
-                    { name: 'field1', label: 'Field 1' },
-                    { name: 'field2', label: 'Field 2' },
-                ]);
-        });
-
         const ctx = {
             req: 'request',
             field: {
@@ -184,6 +175,17 @@ describe('field routes', () => {
                 remove: jest.fn(),
             },
         };
+
+        beforeEach(() => {
+            getUploadedFields = jest
+                .fn()
+                .mockImplementation(() => [
+                    { name: 'field1', label: 'Field 1' },
+                    { name: 'field2', label: 'Field 2' },
+                ]);
+            ctx.field.create.mockClear();
+            ctx.field.remove.mockClear();
+        });
 
         it('should call rawBody', async () => {
             await importFields(getUploadedFields)(ctx);
@@ -250,6 +252,36 @@ describe('field routes', () => {
 
             expect(ctx.field.create).toHaveBeenCalledWith(
                 { label: 'Field 2', position: 1 },
+                'field2',
+                false,
+            );
+        });
+
+        it('should ensure uri is first', async () => {
+            getUploadedFields = jest
+                .fn()
+                .mockImplementation(() => [
+                    { name: 'field1', label: 'Field 1', position: 5 },
+                    { name: 'field2', label: 'Field 2', position: 6 },
+                    { name: 'uri', label: 'Uri', position: 10 },
+                ]);
+
+            await importFields(getUploadedFields)(ctx);
+
+            expect(ctx.field.create).toHaveBeenCalledWith(
+                { label: 'Uri', position: 0 },
+                'uri',
+                false,
+            );
+
+            expect(ctx.field.create).toHaveBeenCalledWith(
+                { label: 'Field 1', position: 1 },
+                'field1',
+                false,
+            );
+
+            expect(ctx.field.create).toHaveBeenCalledWith(
+                { label: 'Field 2', position: 2 },
                 'field2',
                 false,
             );
