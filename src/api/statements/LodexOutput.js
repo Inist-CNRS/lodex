@@ -18,7 +18,7 @@ export default function LodexOutput(data, feed) {
                 feed.write(index === 0 ? '' : ',');
                 feed.write(json(k));
                 feed.write(':');
-                feed.write(json(values[index] || null));
+                feed.write(json(values[index]));
             });
             feed.write(`,"${keyName}":[`);
         } else {
