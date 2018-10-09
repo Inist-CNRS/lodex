@@ -1,4 +1,4 @@
-import { logoutAndLoginAs } from '../support/authentication';
+import { teardown } from '../support/authentication';
 import * as datasetImportPage from '../support/datasetImportPage';
 import * as homePage from '../support/homePage';
 import * as graphPage from '../support/graphPage';
@@ -6,7 +6,8 @@ import * as bookSummaryPage from '../support/bookSummary';
 
 describe('Book Summary', () => {
     beforeEach(() => {
-        logoutAndLoginAs('admin');
+        cy.visit('http://localhost:3000/admin');
+        teardown();
         homePage.goToAdminDashboard();
         datasetImportPage.importDataset('dataset/book.csv');
         datasetImportPage.importModel('model/book.json');
