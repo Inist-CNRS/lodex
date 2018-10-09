@@ -1,4 +1,4 @@
-import { logoutAndLogin } from '../support/authentication';
+import { logoutAndLoginAs } from '../support/authentication';
 import * as datasetImportPage from '../support/datasetImportPage';
 import * as homePage from '../support/homePage';
 import * as graphPage from '../support/graphPage';
@@ -6,7 +6,7 @@ import * as bookSummaryPage from '../support/bookSummary';
 
 describe('Model Page', () => {
     beforeEach(() => {
-        logoutAndLogin();
+        logoutAndLoginAs('admin');
         homePage.goToAdminDashboard();
         datasetImportPage.importDataset('dataset/book.csv');
         datasetImportPage.importModel('model/book.json');
