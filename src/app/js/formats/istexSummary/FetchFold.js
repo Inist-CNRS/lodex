@@ -10,7 +10,7 @@ import CircularProgress from 'material-ui/CircularProgress';
 import get from 'lodash.get';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
-import Alert from '../../lib/components/Alert';
+import AdminOnlyAlert from '../../lib/components/AdminOnlyAlert';
 
 const styles = StyleSheet.create({
     li: {
@@ -81,7 +81,7 @@ export class FetchFold extends Component {
         const { error, data, isOpen, isLoading } = this.state;
 
         if (error) {
-            return <Alert>{polyglot.t('istex_error')}</Alert>;
+            return <AdminOnlyAlert>{polyglot.t('istex_error')}</AdminOnlyAlert>;
         }
 
         return (

@@ -7,7 +7,7 @@ import { CircularProgress } from 'material-ui';
 import { StyleSheetTestUtils } from 'aphrodite';
 
 import { FetchFold } from './FetchFold';
-import Alert from '../../lib/components/Alert';
+import AdminOnlyAlert from '../../lib/components/AdminOnlyAlert';
 
 describe('FetchFold', () => {
     const defaultProps = {
@@ -74,7 +74,7 @@ describe('FetchFold', () => {
         expect(wrapper.find(Folder).length).toBe(0);
         expect(wrapper.find(FolderOpen).length).toBe(0);
         expect(wrapper.find('li')).toHaveLength(0);
-        const alert = wrapper.find(Alert);
+        const alert = wrapper.find(AdminOnlyAlert);
         expect(alert).toHaveLength(1);
         expect(alert.prop('children')).toBe('istex_error');
         expect(defaultProps.renderData).toHaveBeenCalledTimes(0);
