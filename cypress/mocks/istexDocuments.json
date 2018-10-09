@@ -1,0 +1,449 @@
+{
+	"total": 11,
+	"nextPageURI": "https://api.istex.fr/document/?q=(host.issn=%221366-8714%22%20AND%20host.volume:%2252%22%20AND%20host.issue:%223%22)&size=10&output=id,arkIstex,title,publicationDate,author,host.genre,host.title&defaultOperator=OR&from=10",
+	"firstPageURI": "https://api.istex.fr/document/?q=(host.issn=%221366-8714%22%20AND%20host.volume:%2252%22%20AND%20host.issue:%223%22)&size=10&output=id,arkIstex,title,publicationDate,author,host.genre,host.title&defaultOperator=OR&from=0",
+	"lastPageURI": "https://api.istex.fr/document/?q=(host.issn=%221366-8714%22%20AND%20host.volume:%2252%22%20AND%20host.issue:%223%22)&size=10&output=id,arkIstex,title,publicationDate,author,host.genre,host.title&defaultOperator=OR&from=1",
+	"hits": [
+		{
+			"author": [
+				{
+					"name": "M C McFadyen"
+				},
+				{
+					"name": "G I Murray"
+				},
+				{
+					"name": "W T Melvin"
+				}
+			],
+			"host": {
+				"genre": [
+					"journal"
+				],
+				"title": "Molecular Pathology"
+			},
+			"arkIstex": "ark:/67375/NVC-9LF1GJ22-6",
+			"title": "Cytochrome P450 CYP 1B1 mRNA in normal human brain.",
+			"publicationDate": "1999",
+			"id": "89576A1309F92FC8845FF9314EF46901C55717CB",
+			"score": 18.315224
+		},
+		{
+			"author": [
+				{
+					"name": "A J Wood",
+					"affiliations": [
+						"Department of Pathology, New Cross Hospital, Wolverhampton, UK."
+					]
+				},
+				{
+					"name": "C M Thomas",
+					"affiliations": [
+						"Department of Pathology, New Cross Hospital, Wolverhampton, UK."
+					]
+				},
+				{
+					"name": "K R Baumforth",
+					"affiliations": [
+						"Department of Pathology, New Cross Hospital, Wolverhampton, UK."
+					]
+				},
+				{
+					"name": "J R Flavell",
+					"affiliations": [
+						"Department of Pathology, New Cross Hospital, Wolverhampton, UK."
+					]
+				},
+				{
+					"name": "K W Scott",
+					"affiliations": [
+						"Department of Pathology, New Cross Hospital, Wolverhampton, UK."
+					]
+				},
+				{
+					"name": "R H Grace",
+					"affiliations": [
+						"Department of Pathology, New Cross Hospital, Wolverhampton, UK."
+					]
+				},
+				{
+					"name": "J G Williams",
+					"affiliations": [
+						"Department of Pathology, New Cross Hospital, Wolverhampton, UK."
+					]
+				},
+				{
+					"name": "M R Holland",
+					"affiliations": [
+						"Department of Pathology, New Cross Hospital, Wolverhampton, UK."
+					]
+				},
+				{
+					"name": "R Dunn",
+					"affiliations": [
+						"Department of Pathology, New Cross Hospital, Wolverhampton, UK."
+					]
+				},
+				{
+					"name": "A G Jacobs",
+					"affiliations": [
+						"Department of Pathology, New Cross Hospital, Wolverhampton, UK."
+					]
+				},
+				{
+					"name": "A Harrison",
+					"affiliations": [
+						"Department of Pathology, New Cross Hospital, Wolverhampton, UK."
+					]
+				},
+				{
+					"name": "S Brun",
+					"affiliations": [
+						"Department of Pathology, New Cross Hospital, Wolverhampton, UK."
+					]
+				},
+				{
+					"name": "N Plessis",
+					"affiliations": [
+						"Department of Pathology, New Cross Hospital, Wolverhampton, UK."
+					]
+				},
+				{
+					"name": "P G Murray",
+					"affiliations": [
+						"Department of Pathology, New Cross Hospital, Wolverhampton, UK."
+					]
+				}
+			],
+			"host": {
+				"genre": [
+					"journal"
+				],
+				"title": "Molecular Pathology"
+			},
+			"arkIstex": "ark:/67375/NVC-HWT907WN-F",
+			"title": "Absence of prolactin gene expression in colorectal cancer.",
+			"publicationDate": "1999",
+			"id": "BAAB6B878BE8F11EBCC05D2BC5B649CD92C16793",
+			"score": 12.01457
+		},
+		{
+			"author": [
+				{
+					"name": "A R Conde",
+					"affiliations": [
+						"Department of Genetics, Faculty of Medical Sciences, New University of Lisbon, Lisboa, Portugal."
+					]
+				},
+				{
+					"name": "G Martins",
+					"affiliations": [
+						"Department of Genetics, Faculty of Medical Sciences, New University of Lisbon, Lisboa, Portugal."
+					]
+				},
+				{
+					"name": "C Saraiva",
+					"affiliations": [
+						"Department of Genetics, Faculty of Medical Sciences, New University of Lisbon, Lisboa, Portugal."
+					]
+				},
+				{
+					"name": "J Rueff",
+					"affiliations": [
+						"Department of Genetics, Faculty of Medical Sciences, New University of Lisbon, Lisboa, Portugal."
+					]
+				},
+				{
+					"name": "C Monteiro",
+					"affiliations": [
+						"Department of Genetics, Faculty of Medical Sciences, New University of Lisbon, Lisboa, Portugal."
+					]
+				}
+			],
+			"host": {
+				"genre": [
+					"journal"
+				],
+				"title": "Molecular Pathology"
+			},
+			"arkIstex": "ark:/67375/NVC-93QCDD80-P",
+			"title": "Association of p53 genomic instability with the glutathione S-transferase null genotype in gastric cancer in the Portuguese population.",
+			"publicationDate": "1999",
+			"id": "E567B471889409AC90877F959FA4A761078EE004",
+			"score": 11.687256
+		},
+		{
+			"author": [
+				{
+					"name": "J S Randhawa",
+					"affiliations": [
+						"Department of Biological Sciences, University of Warwick, Coventry, UK."
+					]
+				},
+				{
+					"name": "A J Easton",
+					"affiliations": [
+						"Department of Biological Sciences, University of Warwick, Coventry, UK."
+					]
+				}
+			],
+			"host": {
+				"genre": [
+					"journal"
+				],
+				"title": "Molecular Pathology"
+			},
+			"arkIstex": "ark:/67375/NVC-DCC3XSRR-B",
+			"title": "Demystified ... DNA nucleotide sequencing.",
+			"publicationDate": "1999",
+			"id": "6D19ADF3ECD0E9BA4E6D5D57A307AFF8779B7EC7",
+			"score": 10.376349
+		},
+		{
+			"author": [
+				{
+					"name": "H E Alcock",
+					"affiliations": [
+						"Institute for Cancer Studies, Sheffield University Medical School, UK."
+					]
+				},
+				{
+					"name": "T J Stephenson",
+					"affiliations": [
+						"Institute for Cancer Studies, Sheffield University Medical School, UK."
+					]
+				},
+				{
+					"name": "J A Royds",
+					"affiliations": [
+						"Institute for Cancer Studies, Sheffield University Medical School, UK."
+					]
+				},
+				{
+					"name": "D W Hammond",
+					"affiliations": [
+						"Institute for Cancer Studies, Sheffield University Medical School, UK."
+					]
+				}
+			],
+			"host": {
+				"genre": [
+					"journal"
+				],
+				"title": "Molecular Pathology"
+			},
+			"arkIstex": "ark:/67375/NVC-5Q1GSDSB-V",
+			"title": "A simple method for PCR based analyses of immunohistochemically stained, microdissected, formalin fixed, paraffin wax embedded material.",
+			"publicationDate": "1999",
+			"id": "FF17A29559855F60E39F4F4FBE38E18B6FD7447D",
+			"score": 10.276854
+		},
+		{
+			"author": [
+				{
+					"name": "E A Garbett",
+					"affiliations": [
+						"Professorial Unit of Surgery, North Tees General Hospital, Stockton on Tees, UK. lizbaker@hotmail.com"
+					]
+				},
+				{
+					"name": "M W Reed",
+					"affiliations": [
+						"Professorial Unit of Surgery, North Tees General Hospital, Stockton on Tees, UK. lizbaker@hotmail.com"
+					]
+				},
+				{
+					"name": "N J Brown",
+					"affiliations": [
+						"Professorial Unit of Surgery, North Tees General Hospital, Stockton on Tees, UK. lizbaker@hotmail.com"
+					]
+				}
+			],
+			"host": {
+				"genre": [
+					"journal"
+				],
+				"title": "Molecular Pathology"
+			},
+			"arkIstex": "ark:/67375/NVC-GQ7R8FT7-S",
+			"title": "Proteolysis in colorectal cancer.",
+			"publicationDate": "1999",
+			"id": "64EF3DC794583DC091E54A27DCEDB53ADF294766",
+			"score": 10.154856
+		},
+		{
+			"author": [
+				{
+					"name": "D S Sanders",
+					"affiliations": [
+						"Department of Histopathology, University Hospital Birmingham Trust, Edgbaston, UK. d.s.a.sanders@bham.ac.uk"
+					]
+				},
+				{
+					"name": "K Blessing",
+					"affiliations": [
+						"Department of Histopathology, University Hospital Birmingham Trust, Edgbaston, UK. d.s.a.sanders@bham.ac.uk"
+					]
+				},
+				{
+					"name": "G A Hassan",
+					"affiliations": [
+						"Department of Histopathology, University Hospital Birmingham Trust, Edgbaston, UK. d.s.a.sanders@bham.ac.uk"
+					]
+				},
+				{
+					"name": "R Bruton",
+					"affiliations": [
+						"Department of Histopathology, University Hospital Birmingham Trust, Edgbaston, UK. d.s.a.sanders@bham.ac.uk"
+					]
+				},
+				{
+					"name": "J R Marsden",
+					"affiliations": [
+						"Department of Histopathology, University Hospital Birmingham Trust, Edgbaston, UK. d.s.a.sanders@bham.ac.uk"
+					]
+				},
+				{
+					"name": "J Jankowski",
+					"affiliations": [
+						"Department of Histopathology, University Hospital Birmingham Trust, Edgbaston, UK. d.s.a.sanders@bham.ac.uk"
+					]
+				}
+			],
+			"host": {
+				"genre": [
+					"journal"
+				],
+				"title": "Molecular Pathology"
+			},
+			"arkIstex": "ark:/67375/NVC-PF8VH1PV-1",
+			"title": "Alterations in cadherin and catenin expression during the biological progression of melanocytic tumours.",
+			"publicationDate": "1999",
+			"id": "D4E1762E3F6D5518C16A648C96D32D3F26CEB27B",
+			"score": 10.154856
+		},
+		{
+			"author": [
+				{
+					"name": "R Caldarelli-Stefano",
+					"affiliations": [
+						"Pathology Unit, L. Sacco Hospital, Institute of Biomedical Sciences, University of Milan, Italy."
+					]
+				},
+				{
+					"name": "L Vago",
+					"affiliations": [
+						"Pathology Unit, L. Sacco Hospital, Institute of Biomedical Sciences, University of Milan, Italy."
+					]
+				},
+				{
+					"name": "S Bonetto",
+					"affiliations": [
+						"Pathology Unit, L. Sacco Hospital, Institute of Biomedical Sciences, University of Milan, Italy."
+					]
+				},
+				{
+					"name": "M Nebuloni",
+					"affiliations": [
+						"Pathology Unit, L. Sacco Hospital, Institute of Biomedical Sciences, University of Milan, Italy."
+					]
+				},
+				{
+					"name": "G Costanzi",
+					"affiliations": [
+						"Pathology Unit, L. Sacco Hospital, Institute of Biomedical Sciences, University of Milan, Italy."
+					]
+				}
+			],
+			"host": {
+				"genre": [
+					"journal"
+				],
+				"title": "Molecular Pathology"
+			},
+			"arkIstex": "ark:/67375/NVC-SF1TPTX5-2",
+			"title": "Use of magnetic beads for tissue DNA extraction and IS6110 Mycobacterium tuberculosis PCR.",
+			"publicationDate": "1999",
+			"id": "98F73C8D0A1543AE62F00A1DCE37867F99B9222E",
+			"score": 10.154856
+		},
+		{
+			"author": [
+				{
+					"name": "S Duensing",
+					"affiliations": [
+						"Pathologishes Institut, Medizinische Hochschule Hannover, Germany."
+					]
+				},
+				{
+					"name": "A Duensing",
+					"affiliations": [
+						"Pathologishes Institut, Medizinische Hochschule Hannover, Germany."
+					]
+				},
+				{
+					"name": "J G Meran",
+					"affiliations": [
+						"Pathologishes Institut, Medizinische Hochschule Hannover, Germany."
+					]
+				},
+				{
+					"name": "A Kreft",
+					"affiliations": [
+						"Pathologishes Institut, Medizinische Hochschule Hannover, Germany."
+					]
+				},
+				{
+					"name": "G Büsche",
+					"affiliations": [
+						"Pathologishes Institut, Medizinische Hochschule Hannover, Germany."
+					]
+				},
+				{
+					"name": "A Ganser",
+					"affiliations": [
+						"Pathologishes Institut, Medizinische Hochschule Hannover, Germany."
+					]
+				},
+				{
+					"name": "A Georgii",
+					"affiliations": [
+						"Pathologishes Institut, Medizinische Hochschule Hannover, Germany."
+					]
+				}
+			],
+			"host": {
+				"genre": [
+					"journal"
+				],
+				"title": "Molecular Pathology"
+			},
+			"arkIstex": "ark:/67375/NVC-BMXX3Z61-W",
+			"title": "Molecular detection of c-mpl thrombopoietin receptor gene expression in chronic myeloproliferative disorders.",
+			"publicationDate": "1999",
+			"id": "8E03E9DB4BD514598999C37FDABD4D72002FDCF9",
+			"score": 10.102428
+		},
+		{
+			"author": [
+				{
+					"name": "J P Iredale",
+					"affiliations": [
+						"University Medicine, Southampton General Hospital, UK."
+					]
+				}
+			],
+			"host": {
+				"genre": [
+					"journal"
+				],
+				"title": "Molecular Pathology"
+			},
+			"arkIstex": "ark:/67375/NVC-F69ZVVKV-9",
+			"title": "Demystified ... gene knockouts.",
+			"publicationDate": "1999",
+			"id": "F40279E9B10762C5F12FCC8F230964D72304B483",
+			"score": 10.102428
+		}
+	]
+}

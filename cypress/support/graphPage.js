@@ -39,3 +39,8 @@ export const goToResourceFromRowContaining = selector => {
 
     cy.location('pathname').should('not.equal', '/graph');
 };
+
+export const goToResourceNumber = nb => {
+    cy.get(`tr:nth-child(${nb}) .dataset-uri`).click();
+    cy.location('pathname').should('not.equal', '/graph');
+};

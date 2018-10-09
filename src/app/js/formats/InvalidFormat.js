@@ -1,25 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
-import classnames from 'classnames';
 import { StyleSheet, css } from 'aphrodite/no-important';
 import Warning from 'material-ui/svg-icons/alert/warning';
 
-import { fromUser } from '../sharedSelectors';
 import { polyglot as polyglotPropTypes } from '../propTypes';
+import AdminOnlyAlert from '../lib/components/AdminOnlyAlert';
 
 const capitalize = str =>
     str ? str.charAt(0).toUpperCase() + str.slice(1) : '';
 
 const styles = StyleSheet.create({
-    container: {
-        display: 'flex',
-        flexDirection: 'column',
-        backgroundColor: '#FDDBD3',
-        padding: '2rem 1.5rem',
-    },
     titleRow: {
         display: 'flex',
     },
@@ -61,32 +52,25 @@ const renderDetails = (polyglot, format = {}, value) => {
     );
 };
 
-const InvalidFormat = ({ p: polyglot, isAdmin, format, value }) => {
-    if (!isAdmin) {
-        return null;
-    }
-
-    return (
-        <div className={classnames('invalid-format', css(styles.container))}>
-            <div className={css(styles.titleRow)}>
-                <span className={css(styles.title)}>
-                    <strong>{polyglot.t('bad_format_error')}</strong>
-                </span>
-                <span className={css(styles.titleLogo)}>
-                    <Warning iconStyle={iconStyle} style={iconStyle} />
-                </span>
-            </div>
-            <p className={css(styles.details)}>
-                {polyglot.t('bad_format_details')}
-            </p>
-            {renderDetails(polyglot, format, value)}
+const InvalidFormat = ({ p: polyglot, format, value }) => (
+    <AdminOnlyAlert className="invalid-format">
+        <div className={css(styles.titleRow)}>
+            <span className={css(styles.title)}>
+                <strong>{polyglot.t('bad_format_error')}</strong>
+            </span>
+            <span className={css(styles.titleLogo)}>
+                <Warning iconStyle={iconStyle} style={iconStyle} />
+            </span>
         </div>
-    );
-};
+        <p className={css(styles.details)}>
+            {polyglot.t('bad_format_details')}
+        </p>
+        {renderDetails(polyglot, format, value)}
+    </AdminOnlyAlert>
+);
 
 InvalidFormat.propTypes = {
     p: polyglotPropTypes.isRequired,
-    isAdmin: PropTypes.bool.isRequired,
     format: PropTypes.shape({
         name: PropTypes.string.isRequired,
     }),
@@ -98,8 +82,4 @@ InvalidFormat.propTypes = {
     value: undefined,
 };
 
-const mapStateToProps = state => ({
-    isAdmin: fromUser.isAdmin(state),
-});
-
-export default compose(translate, connect(mapStateToProps))(InvalidFormat);
+export default translate(InvalidFormat);

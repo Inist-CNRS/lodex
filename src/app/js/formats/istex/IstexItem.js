@@ -1,12 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Book from 'material-ui/svg-icons/av/library-books';
+import { StyleSheet, css } from 'aphrodite/no-important';
 
-const styles = {
+const styles = StyleSheet.create({
     article: {
         paddingBottom: '3rem',
     },
     title: {
         lineHeight: '2rem',
+        display: 'flex',
+    },
+    titleIcon: {
+        marginRight: 8,
+        flexShrink: 0,
     },
     link: {
         fontSize: '2rem',
@@ -21,7 +28,7 @@ const styles = {
     genre: {
         textTransform: 'capitalize',
     },
-};
+});
 
 export const IstexItemComponent = ({
     title,
@@ -32,17 +39,20 @@ export const IstexItemComponent = ({
     hostGenre,
 }) => (
     <article>
-        <div style={styles.article}>
-            <div style={styles.title}>
-                <a style={styles.link} href={url} rel="noopener noreferrer">
+        <div className={css(styles.article)}>
+            <div className={css(styles.title)}>
+                <Book size="20" className={css(styles.titleIcon)} />
+                <a style={styles.link} href={url}>
                     {title}
                 </a>
             </div>
-            {authors && <div style={styles.authors}> {authors.join(';')} </div>}
-            <div style={styles.metadata}>
+            {authors && (
+                <div className={css(styles.authors)}> {authors.join(';')} </div>
+            )}
+            <div className={css(styles.metadata)}>
                 {publicationDate},&nbsp;{hostTitle}
                 &nbsp;-&nbsp;
-                <span style={styles.genre}>{hostGenre}</span>
+                <span className={css(styles.genre)}>{hostGenre}</span>
             </div>
         </div>
     </article>

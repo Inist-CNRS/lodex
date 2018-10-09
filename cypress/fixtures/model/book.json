@@ -1,0 +1,104 @@
+[
+    {
+        "cover": "collection",
+        "label": "uri",
+        "display_on_list": true,
+        "transformers": [
+            {
+                "operation": "COLUMN",
+                "args": [
+                    {
+                        "name": "column",
+                        "type": "column",
+                        "value": "uri"
+                    }
+                ]
+            }
+        ],
+        "position": 0,
+        "name": "uri"
+    },
+    {
+        "cover": "collection",
+        "label": "Title",
+        "display_in_list": true,
+        "display_in_resource": true,
+        "searchable": true,
+        "transformers": [
+            {
+                "operation": "COLUMN",
+                "args": [
+                    {
+                        "name": "column",
+                        "type": "column",
+                        "value": "Title"
+                    }
+                ]
+            }
+        ],
+        "classes": [],
+        "position": 1,
+        "overview": 1,
+        "count": 2223,
+        "name": "XXRn"
+    },
+    {
+        "cover": "collection",
+        "label": "URL",
+        "display_in_list": "",
+        "display_in_resource": true,
+        "searchable": "",
+        "transformers": [
+            {
+                "operation": "COLUMN",
+                "args": [
+                    {
+                        "name": "column",
+                        "type": "column",
+                        "value": "URL"
+                    }
+                ]
+            }
+        ],
+        "classes": [],
+        "position": 2,
+        "format": {
+            "args": {
+                "type": "value",
+                "value": ""
+            },
+            "name": "link"
+        },
+        "count": 64,
+        "name": "j7uI"
+    },
+    {
+        "cover": "collection",
+        "label": "ISSN",
+        "display_in_list": true,
+        "display_in_resource": true,
+        "searchable": "",
+        "transformers": [
+            {
+                "operation": "COLUMN",
+                "args": [
+                    {
+                        "name": "column",
+                        "type": "column",
+                        "value": "ISSN"
+                    }
+                ]
+            }
+        ],
+        "format": {
+            "args": {
+            },
+            "name": "istexSummary"
+        },
+        "classes": [],
+        "position": 3,
+        "count": 64,
+        "width": "50",
+        "name": "khbR"
+    }
+]

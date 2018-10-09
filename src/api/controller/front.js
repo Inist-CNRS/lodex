@@ -15,7 +15,7 @@ import fs from 'fs';
 import { StyleSheetServer } from 'aphrodite/no-important';
 import jwt from 'koa-jwt';
 import jsonwebtoken from 'jsonwebtoken';
-import { auth } from 'config';
+import { auth, istexApiUrl } from 'config';
 import pick from 'lodash.pick';
 import { createMemoryHistory } from 'history';
 
@@ -71,7 +71,9 @@ const renderFullPage = (html, css, preloadedState, helmet) =>
             '</body>',
             `<script>window.__PRELOADED_STATE__ = ${JSON.stringify(
                 preloadedState,
-            ).replace(/</g, '\\u003c')}</script>
+            ).replace(/</g, '\\u003c')};window.ISTEX_API_URL=${JSON.stringify(
+                istexApiUrl,
+            )}</script>
             <script src="/index.js"></script>
             </body>`,
         );

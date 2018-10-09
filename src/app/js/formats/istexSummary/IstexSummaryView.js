@@ -1,88 +1,58 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import memoize from 'lodash.memoize';
-import translate from 'redux-polyglot/translate';
-import compose from 'recompose/compose';
+import get from 'lodash.get';
+import { StyleSheet, css } from 'aphrodite/no-important';
 
-import fetchPaginatedDataForComponent from '../../lib/fetchPaginatedDataForComponent';
-import Alert from '../../lib/components/Alert';
-import { REJECTED } from '../../../../common/propositionStatus';
-import {
-    field as fieldPropTypes,
-    polyglot as polyglotPropTypes,
-} from '../../propTypes';
-import {
-    fetchForIstexSummaryFormat,
-    getSiteUrl,
-} from '../shared/fetchIstexData';
-import IstexItem from '../istex/IstexItem';
+import { field as fieldPropTypes } from '../../propTypes';
+import injectData from '../injectData';
+import classnames from 'classnames';
+import IstexYear from './IstexYear';
+import { ISTEX_API_URL } from '../../../../common/externals';
 
-const styles = {
-    text: memoize(status =>
-        Object.assign({
-            fontSize: '1.5rem',
-            textDecoration: status === REJECTED ? 'line-through' : 'none',
-        }),
-    ),
-    header: {
-        borderBottom: '1px solid lightgrey',
-        marginBottom: '1rem',
+const styles = StyleSheet.create({
+    text: {
+        fontSize: '1.5rem',
     },
-    dl: {
-        float: 'right',
+    rejected: {
+        textDecoration: 'line-through',
     },
-    total: {
-        fontSize: '1.2rem',
-        fontWeight: 'bold',
-        color: 'rgba(0,0,0,0.54)',
+    li: {
+        listStyleType: 'none',
     },
+});
+
+export const getYearUrl = ({ resource, field }) => {
+    const value = resource[field.name];
+
+    return `${ISTEX_API_URL}/document/?q=(${encodeURIComponent(
+        `host.issn="${value}"`,
+    )})&facet=publicationDate[perYear]&size=0&output=*`;
 };
 
-export const IstexView = ({
-    fieldStatus,
-    data,
-    error,
-    field,
-    resource,
-    p: polyglot,
-}) => (
-    <div className="istex-list" style={styles.text(fieldStatus)}>
-        <div style={styles.header}>
-            <span style={styles.total}>
-                {polyglot.t('istex_total', {
-                    total: data ? data.total : 0,
-                })}
-            </span>
-            <a style={styles.dl} href={getSiteUrl(resource[field.name])}>
-                {polyglot.t('download')}
-            </a>
-            {error && (
-                <Alert>
-                    <p>{polyglot.t(error)}</p>
-                </Alert>
-            )}
-        </div>
-        {data &&
-            data.hits && (
-                <div>
-                    {data.hits.map(item => (
-                        <IstexItem key={item.id} {...item} />
-                    ))}
-                </div>
-            )}
-    </div>
+export const getYear = formatData =>
+    get(formatData, 'aggregations.publicationDate.buckets', [])
+        .sort((a, b) => a.keyAsString - b.keyAsString)
+        .map(({ keyAsString }) => keyAsString);
+
+export const IstexSummaryView = ({ formatData, field, resource }) => (
+    <ul className={classnames('istex-year', css(styles.text))}>
+        {getYear(formatData).map(year => (
+            <li key={year} className={css(styles.li)}>
+                <IstexYear issn={resource[field.name]} year={year} />
+            </li>
+        ))}
+    </ul>
 );
 
-IstexView.propTypes = {
+IstexSummaryView.propTypes = {
     fieldStatus: PropTypes.string,
     resource: PropTypes.object.isRequired, // eslint-disable-line
     field: fieldPropTypes.isRequired,
-    data: PropTypes.shape({}),
+    formatData: PropTypes.shape({}),
     error: PropTypes.string,
-    p: polyglotPropTypes.isRequired,
 };
 
-IstexView.defaultProps = {
+IstexSummaryView.defaultProps = {
     className: null,
     fieldStatus: null,
     shrink: false,
@@ -90,7 +60,4 @@ IstexView.defaultProps = {
     error: null,
 };
 
-export default compose(
-    translate,
-    fetchPaginatedDataForComponent(fetchForIstexSummaryFormat),
-)(IstexView);
+export default injectData(getYearUrl)(IstexSummaryView);

@@ -4,9 +4,9 @@ services:
         build:
             context: .
             args:
-                node_env: test
+                node_env: e2e
         environment:
-            NODE_ENV: "test"
+            NODE_ENV: "e2e"
             EZMASTER_PUBLIC_URL: ${EZMASTER_PUBLIC_URL}
             EZMASTER_MONGODB_HOST_PORT: mongo:27017
             EXPOSE_TEST_CONTROLLER: "true"
@@ -16,6 +16,17 @@ services:
             - mongo
         ports:
             - 3000:3000
+
+    istex-api:
+        image: node:8.9.1
+        volumes:
+            - .:/app
+        working_dir: /app
+        environment:
+            NODE_ENV: "test"
+        ports:
+            - 3011:3011
+        command: node --require babel-register ./cypress/mocks/istexApi.js
 
     mongo:
         image: mongo:3.4.1

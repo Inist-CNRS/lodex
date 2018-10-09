@@ -327,6 +327,19 @@ export const getSparqlRequest = (state, { url, body }) => {
     });
 };
 
+export const getIstexRequest = (state, { url }) => {
+    return getRequest(state, {
+        method: 'GET',
+        url,
+        cred: 'omit',
+        cook: false,
+        auth: false,
+        head: {
+            Accept: 'application/sparql-results+json',
+        },
+    });
+};
+
 export const getExportPublishedDatasetRequest = (
     state,
     { type, queryString },
@@ -392,4 +405,5 @@ export const selectors = {
     getSparqlRequest,
     getReorderFieldRequest,
     getProgressRequest,
+    getIstexRequest,
 };

@@ -6,8 +6,11 @@
   "version": "8.22.5",
   "description": "",
   "main": "src/api/index.js",
+  "browser": {
+    "config": false
+  },
   "scripts": {
-    "start": "NODE_ENV=production node --require babel-register src/api",
+    "start": "node --require babel-register src/api",
     "build": "BABEL_ENV=browser webpack --config=./src/app/webpack.config.babel.js",
     "dev": "pm2-docker process.yml",
     "development:api": "node --require babel-register src/api",

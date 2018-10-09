@@ -1,0 +1,41 @@
+{
+    "total": 61,
+    "hits": [],
+    "aggregations": {
+        "host.issue": {
+            "buckets": [
+                {
+                    "key": 1,
+                    "docCount": 11,
+                    "rangeAsString": "[1-2["
+                },
+                {
+                    "key": 2,
+                    "docCount": 9,
+                    "rangeAsString": "[2-3["
+                },
+                {
+                    "key": 3,
+                    "docCount": 11,
+                    "rangeAsString": "[3-4["
+                },
+                {
+                    "key": 4,
+                    "docCount": 11,
+                    "rangeAsString": "[4-5["
+                },
+                {
+                    "key": 5,
+                    "docCount": 11,
+                    "rangeAsString": "[5-6["
+                },
+                {
+                    "key": 6,
+                    "docCount": 8,
+                    "rangeAsString": "[6-7]"
+                }
+            ],
+            "keyCount": 6
+        }
+    }
+}

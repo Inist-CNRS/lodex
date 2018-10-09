@@ -4,6 +4,8 @@ import {
     handleFilterFormatDataRequest,
     loadFormatDataForName,
     loadFormatData,
+    getQuery,
+    getQueryType,
 } from './sagas';
 import { loadFormatDataSuccess, loadFormatDataError } from './reducer';
 import getQueryString from '../lib/getQueryString';
@@ -111,14 +113,76 @@ describe('format sagas', () => {
         });
     });
 
-    describe('loadFormatData', () => {
-        it('should call loadFormatDataSuccess with name and response', () => {
-            const it = loadFormatData('name', 'url', 'queryString');
+    describe('getQuery', () => {
+        it('should return request for given query', () => {
+            const it = getQuery('url', 'queryString');
             expect(it.next()).toEqual({
+                value: call(getQueryType, 'url'),
+                done: false,
+            });
+            expect(it.next('other')).toEqual({
                 value: select(fromUser.getUrlRequest, {
                     url: 'url',
                     queryString: 'queryString',
                 }),
+                done: false,
+            });
+            expect(it.next()).toEqual({
+                value: undefined,
+                done: true,
+            });
+        });
+
+        it('should return sparql request if url is of type sparql', () => {
+            const it = getQuery(
+                'https://data.istex.fr/sparql/?query=select * where {?s ?c ?d }',
+                'queryString',
+            );
+            expect(it.next()).toEqual({
+                value: call(
+                    getQueryType,
+                    'https://data.istex.fr/sparql/?query=select * where {?s ?c ?d }',
+                ),
+                done: false,
+            });
+            expect(it.next('sparql')).toEqual({
+                value: select(fromUser.getSparqlRequest, {
+                    url: 'https://data.istex.fr/sparql/',
+                    body: 'query=select * where {?s ?c ?d }',
+                }),
+                done: false,
+            });
+            expect(it.next()).toEqual({
+                value: undefined,
+                done: true,
+            });
+        });
+
+        it('should return istex request if url is of type istex', () => {
+            const it = getQuery('url', 'queryString');
+            expect(it.next()).toEqual({
+                value: call(getQueryType, 'url'),
+                done: false,
+            });
+            expect(it.next('istex')).toEqual({
+                value: select(fromUser.getIstexRequest, {
+                    url: 'url',
+                    queryString: 'queryString',
+                }),
+                done: false,
+            });
+            expect(it.next()).toEqual({
+                value: undefined,
+                done: true,
+            });
+        });
+    });
+
+    describe('loadFormatData', () => {
+        it('should call loadFormatDataSuccess with name and response', () => {
+            const it = loadFormatData('name', 'url', 'queryString');
+            expect(it.next()).toEqual({
+                value: call(getQuery, 'url', 'queryString'),
                 done: false,
             });
             expect(it.next('request')).toEqual({
@@ -140,10 +204,7 @@ describe('format sagas', () => {
         it('should call loadFormatDataSuccess with name and response.data if set', () => {
             const it = loadFormatData('name', 'url', 'queryString');
             expect(it.next()).toEqual({
-                value: select(fromUser.getUrlRequest, {
-                    url: 'url',
-                    queryString: 'queryString',
-                }),
+                value: call(getQuery, 'url', 'queryString'),
                 done: false,
             });
             expect(it.next('request')).toEqual({
@@ -164,11 +225,9 @@ describe('format sagas', () => {
 
         it('should call loadFormatDataSuccess with name and empty array if response.total is set at 0', () => {
             const it = loadFormatData('name', 'url', 'queryString');
+
             expect(it.next()).toEqual({
-                value: select(fromUser.getUrlRequest, {
-                    url: 'url',
-                    queryString: 'queryString',
-                }),
+                value: call(getQuery, 'url', 'queryString'),
                 done: false,
             });
             expect(it.next('request')).toEqual({
@@ -187,11 +246,9 @@ describe('format sagas', () => {
 
         it('should call loadFormatDataError if the request returned one', () => {
             const it = loadFormatData('name', 'url', 'queryString');
+
             expect(it.next()).toEqual({
-                value: select(fromUser.getUrlRequest, {
-                    url: 'url',
-                    queryString: 'queryString',
-                }),
+                value: call(getQuery, 'url', 'queryString'),
                 done: false,
             });
             expect(it.next('request')).toEqual({
@@ -205,33 +262,6 @@ describe('format sagas', () => {
                         error: 'failed to fetch',
                     }),
                 ),
-                done: false,
-            });
-            expect(it.next()).toEqual({
-                value: undefined,
-                done: true,
-            });
-        });
-
-        it('should call loadFormatDataSuccess with url and the body of the request', () => {
-            const it = loadFormatData(
-                'name',
-                'https://data.istex.fr/sparql/?query=select * where {?s ?c ?d }',
-                'queryString',
-            );
-            expect(it.next()).toEqual({
-                value: select(fromUser.getSparqlRequest, {
-                    url: 'https://data.istex.fr/sparql/',
-                    body: 'query=select * where {?s ?c ?d }',
-                }),
-                done: false,
-            });
-            expect(it.next('request')).toEqual({
-                value: call(fetchSaga, 'request'),
-                done: false,
-            });
-            expect(it.next({ response: { total: 0 } })).toEqual({
-                value: put(loadFormatDataSuccess({ name: 'name', data: [] })),
                 done: false,
             });
             expect(it.next()).toEqual({
