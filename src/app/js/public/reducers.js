@@ -12,6 +12,7 @@ import fields from '../fields';
 import resource from './resource';
 import format from '../formats/reducer';
 import user from '../user';
+import searchReducer from './search';
 
 const rootReducer = combineReducers({
     characteristic,
@@ -26,6 +27,7 @@ const rootReducer = combineReducers({
     resource,
     format,
     user,
+    search: searchReducer,
 });
 
 export default rootReducer;

@@ -4,6 +4,6 @@ Design:
 Development:
  - Thiery, Marmelab
  - Gildas, Marmelab
+ - Kévin, Marmelab
  - François, CNRS
  - and guests (thanks to all)
-  
