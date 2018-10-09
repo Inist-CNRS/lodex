@@ -118,7 +118,11 @@ export const importFields = getUploadedFieldsImpl => async ctx => {
     await ctx.field.remove({});
     await Promise.all(
         fields
-            .sort((a, b) => a.position - b.position)
+            .sort(
+                (a, b) =>
+                    (a.name === 'uri' ? -1 : a.position) -
+                    (b.name === 'uri' ? -1 : b.position),
+            )
             .map(({ name, ...field }, index) =>
                 ctx.field.create({ ...field, position: index }, name, false),
             ),
