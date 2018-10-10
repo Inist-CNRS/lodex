@@ -4,7 +4,13 @@ import classnames from 'classnames';
 import { StyleSheet, css } from 'aphrodite/no-important';
 import { Link } from 'react-router-dom';
 
+import {
+    field as fieldProptypes,
+    resource as resourcePropTypes,
+} from '../../propTypes';
+
 import { getResourceUri } from '../../../../common/uris';
+import Format from '../Format';
 
 const styles = StyleSheet.create({
     container: {
@@ -45,54 +51,67 @@ const styles = StyleSheet.create({
 
 const cnames = (name, ...classes) => classnames(name, ...classes.map(css));
 
-const SearchResult = ({ result }) => (
-    <Link
-        id={`search-result-${result.uri}`}
-        to={getResourceUri(result)}
-        className={cnames('search-result', styles.container)}
-    >
-        {result.title && (
-            <div className={cnames('search-result-title', styles.title)}>
-                {result.title}
-            </div>
-        )}
-        {result.description && (
-            <div
-                className={cnames(
-                    'search-result-description',
-                    styles.description,
+const SearchResult = ({ fields, fieldNames, result }) => {
+    const titleField = fields.find(field => field.name === fieldNames.title);
+    const descriptionField = fields.find(
+        field => field.name === fieldNames.description,
+    );
+
+    return (
+        <Link
+            id={`search-result-${result.uri}`}
+            to={getResourceUri(result)}
+            className={cnames('search-result', styles.container)}
+        >
+            {titleField &&
+                result[titleField.name] && (
+                    <div
+                        className={cnames('search-result-title', styles.title)}
+                    >
+                        <Format field={titleField} resource={result} />
+                    </div>
                 )}
-            >
-                {result.description}
-            </div>
-        )}
-        <div className={cnames('search-result-details', styles.details)}>
-            <div
-                className={cnames(
-                    'search-result-detail1',
-                    styles.detailsColumn,
+            {descriptionField &&
+                result[descriptionField.name] && (
+                    <div
+                        className={cnames(
+                            'search-result-description',
+                            styles.description,
+                        )}
+                    >
+                        <Format field={descriptionField} resource={result} />
+                    </div>
                 )}
-            >
-                BMJ
+            <div className={cnames('search-result-details', styles.details)}>
+                <div
+                    className={cnames(
+                        'search-result-detail1',
+                        styles.detailsColumn,
+                    )}
+                >
+                    BMJ
+                </div>
+                <div
+                    className={cnames(
+                        'search-result-detail2',
+                        styles.detailsColumn,
+                    )}
+                >
+                    0393-2990
+                </div>
             </div>
-            <div
-                className={cnames(
-                    'search-result-detail2',
-                    styles.detailsColumn,
-                )}
-            >
-                0393-2990
-            </div>
-        </div>
-    </Link>
-);
+        </Link>
+    );
+};
 
 SearchResult.propTypes = {
-    result: PropTypes.shape({
-        uri: PropTypes.string.isRequired,
+    fields: PropTypes.arrayOf(fieldProptypes).isRequired,
+    fieldNames: PropTypes.shape({
+        uri: PropTypes.string,
         title: PropTypes.string,
         description: PropTypes.string,
     }).isRequired,
+    result: resourcePropTypes.isRequired,
 };
 
 export default SearchResult;

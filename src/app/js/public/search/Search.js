@@ -10,9 +10,14 @@ import debounce from 'lodash.debounce';
 import TextField from 'material-ui/TextField';
 import CircularProgress from 'material-ui/CircularProgress';
 
-import { polyglot as polyglotPropTypes } from '../../propTypes';
-
+import {
+    polyglot as polyglotPropTypes,
+    field as fieldProptypes,
+    resource as resourcePropTypes,
+} from '../../propTypes';
+import { preLoadPublication as preLoadPublicationAction } from '../../fields';
 import { search as searchAction, fromSearch } from './';
+import { fromFields } from '../../sharedSelectors';
 import SearchResult from './SearchResult';
 
 const styles = StyleSheet.create({
@@ -51,6 +56,7 @@ class Search extends Component {
     };
 
     componentWillMount() {
+        this.props.preLoadPublication();
         this.props.search();
     }
 
@@ -65,7 +71,13 @@ class Search extends Component {
 
     render() {
         const { query } = this.state;
-        const { loading, results, p: polyglot } = this.props;
+        const {
+            loading,
+            fields,
+            fieldNames,
+            results,
+            p: polyglot,
+        } = this.props;
 
         return (
             <div className={cnames('search', styles.container)}>
@@ -105,7 +117,12 @@ class Search extends Component {
                     )}
                     {!loading &&
                         results.map(result => (
-                            <SearchResult key={result.uri} result={result} />
+                            <SearchResult
+                                key={result.uri}
+                                fields={fields}
+                                fieldNames={fieldNames}
+                                result={result}
+                            />
                         ))}
                     {!loading &&
                         results.length === 0 && (
@@ -118,25 +135,29 @@ class Search extends Component {
 }
 
 Search.propTypes = {
-    loading: PropTypes.bool.isRequired,
     search: PropTypes.func.isRequired,
+    preLoadPublication: PropTypes.func.isRequired,
+    loading: PropTypes.bool.isRequired,
     p: polyglotPropTypes.isRequired,
-    results: PropTypes.arrayOf(
-        PropTypes.shape({
-            uri: PropTypes.string.isRequired,
-            title: PropTypes.string,
-            description: PropTypes.string,
-        }),
-    ).isRequired,
+    results: PropTypes.arrayOf(resourcePropTypes).isRequired,
+    fieldNames: PropTypes.shape({
+        uri: PropTypes.string,
+        title: PropTypes.string,
+        description: PropTypes.string,
+    }).isRequired,
+    fields: PropTypes.arrayOf(fieldProptypes).isRequired,
 };
 
 const mapStateToProps = state => ({
     loading: fromSearch.isLoading(state),
     results: fromSearch.getDataset(state),
+    fieldNames: fromSearch.getFieldNames(state),
+    fields: fromFields.getFields(state),
 });
 
 const mapDispatchToProps = {
     search: searchAction,
+    preLoadPublication: preLoadPublicationAction,
 };
 
 export default compose(translate, connect(mapStateToProps, mapDispatchToProps))(

@@ -8,19 +8,21 @@ export const search = createAction(SEARCH);
 export const searchSucceed = createAction(SEARCH_RESULTS);
 export const searchFailed = createAction(SEARCH_ERROR);
 
-export const defaultState = {
-    dataset: [],
-    loading: true,
-};
-
 export const fromSearch = {
     isLoading: state => state.search.loading,
     getDataset: state => state.search.dataset,
+    getFieldNames: state => state.search.fields,
+};
+
+export const defaultState = {
+    dataset: [],
+    fields: {},
+    loading: false,
 };
 
 export default handleActions(
     {
-        SEARCH: state => ({
+        [SEARCH]: state => ({
             ...state,
             loading: true,
         }),
@@ -31,6 +33,7 @@ export default handleActions(
             ...state,
             loading: false,
             dataset: payload.dataset || [],
+            fields: payload.fields || state.fields,
         }),
     },
     defaultState,
