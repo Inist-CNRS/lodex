@@ -8,7 +8,7 @@ import {
     searchFailed,
     searchSucceed,
     fromSearch,
-} from './';
+} from './reducer';
 import { LOAD_PUBLICATION_SUCCESS } from '../../fields';
 import { fromUser, fromFields } from '../../sharedSelectors';
 import fetchSaga from '../../lib/sagas/fetchSaga';

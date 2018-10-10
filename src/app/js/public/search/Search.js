@@ -21,7 +21,7 @@ import {
     fromSearch,
     search as searchAction,
     loadMore as loadMoreAction,
-} from './';
+} from './reducer';
 import { fromFields } from '../../sharedSelectors';
 import SearchResult from './SearchResult';
 import AdminOnlyAlert from '../../lib/components/AdminOnlyAlert';
@@ -134,11 +134,11 @@ class Search extends Component {
         const { query } = this.state;
         const { loading, fieldNames, results, total, p: polyglot } = this.props;
 
-        const noResults = !loading && results.length === 0;
         const noOverviewField =
             !loading &&
             Object.values(fieldNames).filter(Boolean).length === 1 &&
             fieldNames.uri === 'uri';
+        const noResults = !loading && !noOverviewField && results.length === 0;
 
         const everythingIsOk = !noOverviewField && !noResults;
         const canLoadMore =
@@ -157,7 +157,7 @@ class Search extends Component {
                         )}
                     >
                         <TextField
-                            hintText="🔍 search"
+                            hintText={`🔍 ${polyglot.t('search_placeholder')}`}
                             fullWidth
                             onChange={this.handleTextFieldChange}
                             value={query || ''}
@@ -169,7 +169,7 @@ class Search extends Component {
                             styles.advancedSearchToggle,
                         )}
                     >
-                        <a href="#">Recherche avancée</a>
+                        <a href="#">{polyglot.t('search_advanced')}</a>
                     </div>
                 </div>
                 <div className={cnames('search-results', styles.searchResults)}>

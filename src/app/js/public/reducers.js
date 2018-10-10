@@ -12,7 +12,7 @@ import fields from '../fields';
 import resource from './resource';
 import format from '../formats/reducer';
 import user from '../user';
-import searchReducer from './search';
+import searchReducer from './search/reducer';
 
 const rootReducer = combineReducers({
     characteristic,
