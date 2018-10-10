@@ -23,8 +23,9 @@ export const saveStreamInFile = (stream, filename) =>
 
         stream.pipe(writableStream);
 
-        stream.on('end', resolve);
+        writableStream.on('finish', resolve);
         stream.on('error', reject);
+        writableStream.on('error', reject);
     });
 
 export const createWriteStream = chunkname => fs.createWriteStream(chunkname);
