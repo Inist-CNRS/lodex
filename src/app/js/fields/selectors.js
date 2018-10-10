@@ -15,7 +15,7 @@ import { getProps } from '../lib/selectors';
 
 export const NEW_CHARACTERISTIC_FORM_NAME = 'NEW_CHARACTERISTIC_FORM_NAME';
 
-const getFields = ({ byName, list }) =>
+export const getFields = ({ byName, list = [] }) =>
     list.map(name => byName[name]).sort((f1, f2) => f1.position - f2.position);
 
 const getOntologyFields = createSelector(

@@ -19,6 +19,7 @@ import { preLoadPublication as preLoadPublicationAction } from '../../fields';
 import { search as searchAction, fromSearch } from './';
 import { fromFields } from '../../sharedSelectors';
 import SearchResult from './SearchResult';
+import AdminOnlyAlert from '../../lib/components/AdminOnlyAlert';
 
 const styles = StyleSheet.create({
     container: {
@@ -69,15 +70,57 @@ class Search extends Component {
         this.setState({ query });
     };
 
+    renderLoading = () => {
+        const { p: polyglot } = this.props;
+
+        return (
+            <div>
+                <CircularProgress size={20} className={css(styles.loading)} />{' '}
+                {polyglot.t('loading')}
+            </div>
+        );
+    };
+
+    renderResults = () => {
+        const { results, fields, fieldNames } = this.props;
+
+        return results.map(result => (
+            <SearchResult
+                key={result.uri}
+                fields={fields}
+                fieldNames={fieldNames}
+                result={result}
+            />
+        ));
+    };
+
+    renderNoResults = () => {
+        const { p: polyglot } = this.props;
+
+        return <p>{polyglot.t('no_result')}</p>;
+    };
+
+    renderNoOverviewField = () => {
+        const { p: polyglot } = this.props;
+
+        return (
+            <AdminOnlyAlert>
+                {polyglot.t('no_overview_field_error')}
+            </AdminOnlyAlert>
+        );
+    };
+
     render() {
         const { query } = this.state;
-        const {
-            loading,
-            fields,
-            fieldNames,
-            results,
-            p: polyglot,
-        } = this.props;
+        const { loading, fieldNames, results } = this.props;
+
+        const noResults = !loading && results.length === 0;
+        const noOverviewField =
+            !loading &&
+            Object.values(fieldNames).filter(Boolean).length === 1 &&
+            fieldNames.uri === 'uri';
+
+        const everythingIsOk = !loading && !noOverviewField && !noResults;
 
         return (
             <div className={cnames('search', styles.container)}>
@@ -106,28 +149,10 @@ class Search extends Component {
                     </div>
                 </div>
                 <div className={cnames('search-results', styles.searchResults)}>
-                    {loading && (
-                        <div>
-                            <CircularProgress
-                                size={20}
-                                className={css(styles.loading)}
-                            />{' '}
-                            {polyglot.t('loading')}
-                        </div>
-                    )}
-                    {!loading &&
-                        results.map(result => (
-                            <SearchResult
-                                key={result.uri}
-                                fields={fields}
-                                fieldNames={fieldNames}
-                                result={result}
-                            />
-                        ))}
-                    {!loading &&
-                        results.length === 0 && (
-                            <p>{polyglot.t('no_result')}</p>
-                        )}
+                    {loading && this.renderLoading()}
+                    {noOverviewField && this.renderNoOverviewField()}
+                    {noResults && this.renderNoResults()}
+                    {everythingIsOk && this.renderResults()}
                 </div>
             </div>
         );

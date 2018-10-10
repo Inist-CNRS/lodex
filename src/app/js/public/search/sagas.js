@@ -1,6 +1,7 @@
-import { put, select, call, takeEvery } from 'redux-saga/effects';
+import { take, put, select, call, takeEvery } from 'redux-saga/effects';
 
 import { SEARCH, searchSucceed, searchFailed } from './';
+import { LOAD_PUBLICATION_SUCCESS } from '../../fields';
 import { fromUser, fromFields } from '../../sharedSelectors';
 import fetchSaga from '../../lib/sagas/fetchSaga';
 
@@ -8,8 +9,8 @@ const handleSearch = function*({ payload }) {
     const fieldsNumber = yield select(fromFields.getNbColumns);
 
     if (fieldsNumber === 0) {
-        // Fields aren't loaded yet. Skip the search.
-        return;
+        // Fields aren't loaded yet. Wait for them.
+        yield take(LOAD_PUBLICATION_SUCCESS);
     }
 
     const fields = {
