@@ -407,3 +407,5 @@
 "issue"	"Issue"	"Issue"
 "istex_error"	"An error occured while trying to fetch data from ISTEX"	"Une erreur est survenue en tentant de contacter ISTEX"
 "no_overview_field_error"	"Warning: No field has been tagged for a resource syndication. Please select at least one from the admin dashboard."	"Attention : Aucun champs n'a été tagué pour une syndication. Veuillez en sélectionner au moins un depuis le panneau d'administration."
+"load_more"	"Load more"	"Voir plus"
+"search_page_title"	"Journals"	"Revues"

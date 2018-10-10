@@ -9,6 +9,7 @@ import debounce from 'lodash.debounce';
 
 import TextField from 'material-ui/TextField';
 import CircularProgress from 'material-ui/CircularProgress';
+import FlatButton from 'material-ui/FlatButton';
 
 import {
     polyglot as polyglotPropTypes,
@@ -16,7 +17,11 @@ import {
     resource as resourcePropTypes,
 } from '../../propTypes';
 import { preLoadPublication as preLoadPublicationAction } from '../../fields';
-import { search as searchAction, fromSearch } from './';
+import {
+    fromSearch,
+    search as searchAction,
+    loadMore as loadMoreAction,
+} from './';
 import { fromFields } from '../../sharedSelectors';
 import SearchResult from './SearchResult';
 import AdminOnlyAlert from '../../lib/components/AdminOnlyAlert';
@@ -46,6 +51,9 @@ const styles = StyleSheet.create({
     loading: {
         marginRight: '1rem',
         marginTop: '-0.2rem',
+    },
+    loadMore: {
+        marginTop: '1.5rem',
     },
 });
 
@@ -110,9 +118,21 @@ class Search extends Component {
         );
     };
 
+    renderLoadMore = () => {
+        const { loadMore, p: polyglot } = this.props;
+
+        return (
+            <div className={classnames('load-more', css(styles.loadMore))}>
+                <FlatButton fullWidth onClick={loadMore}>
+                    {polyglot.t('load_more')}
+                </FlatButton>
+            </div>
+        );
+    };
+
     render() {
         const { query } = this.state;
-        const { loading, fieldNames, results } = this.props;
+        const { loading, fieldNames, results, total, p: polyglot } = this.props;
 
         const noResults = !loading && results.length === 0;
         const noOverviewField =
@@ -120,12 +140,16 @@ class Search extends Component {
             Object.values(fieldNames).filter(Boolean).length === 1 &&
             fieldNames.uri === 'uri';
 
-        const everythingIsOk = !loading && !noOverviewField && !noResults;
+        const everythingIsOk = !noOverviewField && !noResults;
+        const canLoadMore =
+            !loading && everythingIsOk && results.length < total;
 
         return (
             <div className={cnames('search', styles.container)}>
                 <div className={cnames('search-header', styles.header)}>
-                    <h2 className={css(styles.title)}>Revues</h2>
+                    <h2 className={css(styles.title)}>
+                        {polyglot.t('search_page_title')}
+                    </h2>
                     <div
                         className={cnames(
                             'search-bar',
@@ -149,10 +173,11 @@ class Search extends Component {
                     </div>
                 </div>
                 <div className={cnames('search-results', styles.searchResults)}>
-                    {loading && this.renderLoading()}
                     {noOverviewField && this.renderNoOverviewField()}
                     {noResults && this.renderNoResults()}
                     {everythingIsOk && this.renderResults()}
+                    {loading && this.renderLoading()}
+                    {canLoadMore && this.renderLoadMore()}
                 </div>
             </div>
         );
@@ -171,6 +196,8 @@ Search.propTypes = {
         description: PropTypes.string,
     }).isRequired,
     fields: PropTypes.arrayOf(fieldProptypes).isRequired,
+    loadMore: PropTypes.func.isRequired,
+    total: PropTypes.number.isRequired,
 };
 
 const mapStateToProps = state => ({
@@ -178,11 +205,13 @@ const mapStateToProps = state => ({
     results: fromSearch.getDataset(state),
     fieldNames: fromSearch.getFieldNames(state),
     fields: fromFields.getFields(state),
+    total: fromSearch.getTotal(state),
 });
 
 const mapDispatchToProps = {
     search: searchAction,
     preLoadPublication: preLoadPublicationAction,
+    loadMore: loadMoreAction,
 };
 
 export default compose(translate, connect(mapStateToProps, mapDispatchToProps))(

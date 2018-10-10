@@ -1,9 +1,27 @@
 import { take, put, select, call, takeEvery } from 'redux-saga/effects';
 
-import { SEARCH, searchSucceed, searchFailed } from './';
+import {
+    loadMoreFailed,
+    loadMoreSucceed,
+    SEARCH_LOAD_MORE,
+    SEARCH,
+    searchFailed,
+    searchSucceed,
+    fromSearch,
+} from './';
 import { LOAD_PUBLICATION_SUCCESS } from '../../fields';
 import { fromUser, fromFields } from '../../sharedSelectors';
 import fetchSaga from '../../lib/sagas/fetchSaga';
+
+const doSearchRequest = function*(payload, page = 0) {
+    const request = yield select(fromUser.getLoadDatasetPageRequest, {
+        match: payload ? payload.query : '',
+        perPage: 10,
+        page,
+    });
+
+    return yield call(fetchSaga, request);
+};
 
 const handleSearch = function*({ payload }) {
     const fieldsNumber = yield select(fromFields.getNbColumns);
@@ -13,27 +31,49 @@ const handleSearch = function*({ payload }) {
         yield take(LOAD_PUBLICATION_SUCCESS);
     }
 
-    const fields = {
-        uri: 'uri',
-        title: yield select(fromFields.getResourceTitleFieldName),
-        description: yield select(fromFields.getResourceDescriptionFieldName),
-    };
-
-    const request = yield select(fromUser.getLoadDatasetPageRequest, {
-        match: payload ? payload.query : '',
-        perPage: 10,
-    });
-
-    const { error, response } = yield call(fetchSaga, request);
+    const { error, response } = yield doSearchRequest(payload);
 
     if (error) {
         yield put(searchFailed({ error }));
         return;
     }
 
-    yield put(searchSucceed({ dataset: response.data, fields }));
+    const fields = {
+        uri: 'uri',
+        title: yield select(fromFields.getResourceTitleFieldName),
+        description: yield select(fromFields.getResourceDescriptionFieldName),
+    };
+
+    yield put(
+        searchSucceed({
+            dataset: response.data,
+            fields,
+            total: response.total,
+        }),
+    );
+};
+
+const handleLoadMore = function*({ payload }) {
+    const currentPage = yield select(fromSearch.getPage);
+    const page = currentPage + 1;
+
+    const { error, response } = yield doSearchRequest(payload, page);
+
+    if (error) {
+        yield put(loadMoreFailed({ error }));
+        return;
+    }
+
+    yield put(
+        loadMoreSucceed({
+            dataset: response.data,
+            page,
+            total: response.total,
+        }),
+    );
 };
 
 export default function*() {
     yield takeEvery(SEARCH, handleSearch);
+    yield takeEvery(SEARCH_LOAD_MORE, handleLoadMore);
 }
