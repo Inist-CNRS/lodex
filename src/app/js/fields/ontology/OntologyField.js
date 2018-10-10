@@ -58,6 +58,8 @@ const OntologyFieldComponent = ({ field, characteristics, p: polyglot }) => (
             {(field.overview === 2 || field.overview === 200) && (
                 <span style={styles.badge}>description</span>
             )}
+            {field.overview === 3 && <span style={styles.badge}>detail 1</span>}
+            {field.overview === 4 && <span style={styles.badge}>detail 2</span>}
         </TableRowColumn>
         <TableRowColumn>{polyglot.t(`cover_${field.cover}`)}</TableRowColumn>
         <TableRowColumn>

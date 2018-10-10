@@ -56,6 +56,16 @@ const SearchResult = ({ fields, fieldNames, result }) => {
     const descriptionField = fields.find(
         field => field.name === fieldNames.description,
     );
+    const firstDetailField = fields.find(
+        field => field.name === fieldNames.detail1,
+    );
+    const secondDetailField = fields.find(
+        field => field.name === fieldNames.detail2,
+    );
+
+    const shouldDisplayDetails =
+        (firstDetailField && result[firstDetailField.name]) ||
+        (secondDetailField && result[secondDetailField.name]);
 
     return (
         <Link
@@ -82,24 +92,40 @@ const SearchResult = ({ fields, fieldNames, result }) => {
                         <Format field={descriptionField} resource={result} />
                     </div>
                 )}
-            <div className={cnames('search-result-details', styles.details)}>
+            {shouldDisplayDetails && (
                 <div
-                    className={cnames(
-                        'search-result-detail1',
-                        styles.detailsColumn,
-                    )}
+                    className={cnames('search-result-details', styles.details)}
                 >
-                    BMJ
+                    {firstDetailField &&
+                        result[firstDetailField.name] && (
+                            <div
+                                className={cnames(
+                                    'search-result-detail1',
+                                    styles.detailsColumn,
+                                )}
+                            >
+                                <Format
+                                    field={firstDetailField}
+                                    resource={result}
+                                />
+                            </div>
+                        )}
+                    {secondDetailField &&
+                        result[secondDetailField.name] && (
+                            <div
+                                className={cnames(
+                                    'search-result-detail2',
+                                    styles.detailsColumn,
+                                )}
+                            >
+                                <Format
+                                    field={secondDetailField}
+                                    resource={result}
+                                />
+                            </div>
+                        )}
                 </div>
-                <div
-                    className={cnames(
-                        'search-result-detail2',
-                        styles.detailsColumn,
-                    )}
-                >
-                    0393-2990
-                </div>
-            </div>
+            )}
         </Link>
     );
 };

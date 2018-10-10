@@ -135,6 +135,16 @@ const getOverviewSubTitleCol = createSelector(
     findFieldWithOverviewID(2),
 );
 
+const getOverviewDetail1Col = createSelector(
+    getAllListFields,
+    findFieldWithOverviewID(3),
+);
+
+const getOverviewDetail2Col = createSelector(
+    getAllListFields,
+    findFieldWithOverviewID(4),
+);
+
 export const getFieldByName = createSelector(
     getProps,
     getFields,
@@ -395,6 +405,8 @@ export default {
     isFieldConfigured,
     getOverviewTitleCol,
     getOverviewSubTitleCol,
+    getOverviewDetail1Col,
+    getOverviewDetail2Col,
     getFieldFormatArgs,
     getOntologyFields,
     getInvalidProperties,

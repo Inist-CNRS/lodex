@@ -288,6 +288,8 @@
 "overviewNone"	"None"	"Aucun"
 "overviewTitle"	"RESOURCE - Title"	"RESOURCE - Titre"
 "overviewDescription"	"RESOURCE - Description"	"RESOURCE - Description"
+"overviewDetail1"	"RESOURCE - Detail 1"	"RESOURCE - Detail 1"
+"overviewDetail2"	"RESOURCE - Detail 2"	"RESOURCE - Detail 2"
 "overviewDatasetTitle"	"DATASET - Title"	"DATASET - Titre"
 "overviewDatasetDescription"	"DATASET - Description"	"DATASET - Description"
 "ten_percent"	"10 %"	"10 %"

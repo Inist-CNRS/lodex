@@ -23,6 +23,14 @@ export const OverviewFieldComponent = ({ p: polyglot }) => {
             value: 'description',
         },
         {
+            _id: 3,
+            value: 'detail1',
+        },
+        {
+            _id: 4,
+            value: 'detail2',
+        },
+        {
             _id: 100,
             value: 'datasetTitle',
         },

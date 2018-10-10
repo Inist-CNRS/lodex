@@ -42,6 +42,8 @@ const handleSearch = function*({ payload }) {
         uri: 'uri',
         title: yield select(fromFields.getResourceTitleFieldName),
         description: yield select(fromFields.getResourceDescriptionFieldName),
+        detail1: yield select(fromFields.getOverviewDetail1Col),
+        detail2: yield select(fromFields.getOverviewDetail2Col),
     };
 
     yield put(
