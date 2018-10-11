@@ -7,8 +7,11 @@ import request from 'request';
 import ezs from 'ezs';
 
 import progress from '../../services/progress';
-import { PENDING, UPLOADING_DATASET } from '../../../common/progressStatus';
-
+import {
+    PENDING,
+    UPLOADING_DATASET,
+    SAVING_DATASET,
+} from '../../../common/progressStatus';
 import Script from '../../services/script';
 import saveStream from '../../services/saveStream';
 import publishDocuments from '../../services/publishDocuments';
@@ -23,6 +26,7 @@ import {
 } from '../../services/fsHelpers';
 import publishFacets from './publishFacets';
 import saveParsedStream from '../../services/saveParsedStream';
+import safePipe from '../../services/safePipe';
 
 const loaders = new Script('loaders');
 
@@ -35,24 +39,17 @@ export const getParser = async parserName => {
     const [, , , script] = currentLoader;
 
     return stream =>
-        new Promise((resolve, reject) => {
-            stream
-                .on('error', reject)
-                .pipe(ezs.fromString(script))
-                .on('error', reject)
-                .pipe(
-                    ezs((data, feed) => {
-                        if (data instanceof Error) {
-                            global.console.error('Error in pipeline.', data);
-                            feed.end();
-                        } else {
-                            feed.send(data);
-                        }
-                    }),
-                )
-                .on('error', reject)
-                .on('end', () => resolve(stream));
-        });
+        safePipe(stream, [
+            ezs.fromString(script),
+            ezs((data, feed) => {
+                if (data instanceof Error) {
+                    global.console.error('Error in pipeline.', data);
+                    feed.end();
+                } else {
+                    feed.send(data);
+                }
+            }),
+        ]);
 };
 
 export const requestToStream = asyncBusboyImpl => async req => {
@@ -152,19 +149,21 @@ export async function uploadChunkMiddleware(ctx, parserName, next) {
 }
 
 export async function uploadFileMiddleware(ctx, parserName) {
+    progress.start(SAVING_DATASET, 0);
     const { filename, totalChunks, extension } = ctx.resumable;
-    const mergedStream = await ctx.mergeChunks(filename, totalChunks);
+    const mergedStream = ctx.mergeChunks(filename, totalChunks);
 
     const parseStream = await ctx.getParser(
         !parserName || parserName === 'automatic' ? extension : parserName,
     );
 
-    const parsedStream = await parseStream(mergedStream);
+    const parsedStream = parseStream(mergedStream);
+
+    const totalLines = await ctx.saveParsedStream(parsedStream);
 
     await ctx.clearChunks(filename, totalChunks);
-
     ctx.body = {
-        totalLines: await ctx.saveParsedStream(parsedStream),
+        totalLines,
     };
     progress.finish();
     ctx.status = 200;

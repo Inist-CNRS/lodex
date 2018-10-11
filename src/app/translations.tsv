@@ -406,6 +406,7 @@
 "PUBLISH_DOCUMENT"	"Publishing documents"	"Publication des documents"
 "STARTING"	"Starting"	"Démarrage"
 "UPLOADING_DATASET"	"Uploading the dataset"	"Chargement du jeu de données"
+"SAVING_DATASET"	"Saving the dataset"	"Sauvegarde du jeu de données"
 "volume"	"Volume"	"Volume"
 "issue"	"Issue"	"Numéro"
 "istex_error"	"An error occured while trying to fetch data from ISTEX"	"Une erreur est survenue en tentant de contacter ISTEX"
