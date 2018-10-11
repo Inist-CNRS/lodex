@@ -11,6 +11,7 @@ import {
     COVER_DOCUMENT,
     COVER_DATASET,
 } from '../../../common/cover';
+import * as overview from '../../../common/overview';
 import { getProps } from '../lib/selectors';
 
 export const NEW_CHARACTERISTIC_FORM_NAME = 'NEW_CHARACTERISTIC_FORM_NAME';
@@ -124,26 +125,6 @@ const findFieldWithOverviewID = id => fields => {
     const result = fields.filter(f => f.overview === id);
     return result[0] ? result[0].name : null;
 };
-
-const getOverviewTitleCol = createSelector(
-    getAllListFields,
-    findFieldWithOverviewID(1),
-);
-
-const getOverviewSubTitleCol = createSelector(
-    getAllListFields,
-    findFieldWithOverviewID(2),
-);
-
-const getOverviewDetail1Col = createSelector(
-    getAllListFields,
-    findFieldWithOverviewID(3),
-);
-
-const getOverviewDetail2Col = createSelector(
-    getAllListFields,
-    findFieldWithOverviewID(4),
-);
 
 export const getFieldByName = createSelector(
     getProps,
@@ -282,22 +263,32 @@ const getLinkedFields = createSelector(
 
 const getDatasetTitleFieldName = createSelector(
     getDatasetFields,
-    findFieldWithOverviewID(100),
+    findFieldWithOverviewID(overview.DATASET_TITLE),
 );
 
 const getDatasetDescriptionFieldName = createSelector(
     getDatasetFields,
-    findFieldWithOverviewID(200),
+    findFieldWithOverviewID(overview.DATASET_DESCRIPTION),
 );
 
 const getResourceTitleFieldName = createSelector(
     getCollectionFields,
-    findFieldWithOverviewID(1),
+    findFieldWithOverviewID(overview.RESOURCE_TITLE),
 );
 
 const getResourceDescriptionFieldName = createSelector(
     getCollectionFields,
-    findFieldWithOverviewID(2),
+    findFieldWithOverviewID(overview.RESOURCE_DESCRIPTION),
+);
+
+const getResourceDetail1FieldName = createSelector(
+    getAllListFields,
+    findFieldWithOverviewID(overview.RESOURCE_DETAIL_1),
+);
+
+const getResourceDetail2FieldName = createSelector(
+    getAllListFields,
+    findFieldWithOverviewID(overview.RESOURCE_DETAIL_2),
 );
 
 const getPublishData = ({ error, published, editedFieldIndex, loading }) => ({
@@ -391,6 +382,8 @@ export default {
     getDatasetDescriptionFieldName,
     getResourceTitleFieldName,
     getResourceDescriptionFieldName,
+    getResourceDetail1FieldName,
+    getResourceDetail2FieldName,
     getPublishData,
     isLoading,
     isSaving,
@@ -403,10 +396,6 @@ export default {
     getEditedValueFieldName,
     isFieldEdited,
     isFieldConfigured,
-    getOverviewTitleCol,
-    getOverviewSubTitleCol,
-    getOverviewDetail1Col,
-    getOverviewDetail2Col,
     getFieldFormatArgs,
     getOntologyFields,
     getInvalidProperties,

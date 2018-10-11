@@ -5,37 +5,38 @@ import { Field } from 'redux-form';
 import MenuItem from 'material-ui/MenuItem';
 import upperFirst from 'lodash.upperfirst';
 
+import * as overview from '../../../common/overview';
 import { polyglot as polyglotPropTypes } from '../propTypes';
 import FormSelectField from '../lib/components/FormSelectField';
 
 export const OverviewFieldComponent = ({ p: polyglot }) => {
     const overviewItems = [
         {
-            _id: 0,
+            _id: overview.NONE,
             value: 'none',
         },
         {
-            _id: 1,
+            _id: overview.RESOURCE_TITLE,
             value: 'title',
         },
         {
-            _id: 2,
+            _id: overview.RESOURCE_DESCRIPTION,
             value: 'description',
         },
         {
-            _id: 3,
+            _id: overview.RESOURCE_DETAIL_1,
             value: 'detail1',
         },
         {
-            _id: 4,
+            _id: overview.RESOURCE_DETAIL_2,
             value: 'detail2',
         },
         {
-            _id: 100,
+            _id: overview.DATASET_TITLE,
             value: 'datasetTitle',
         },
         {
-            _id: 200,
+            _id: overview.DATASET_DESCRIPTION,
             value: 'datasetDescription',
         },
     ];
