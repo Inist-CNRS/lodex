@@ -5,15 +5,20 @@ import {
     configureFieldSuccess,
     configureFieldError,
     preLoadPublication,
+    loadPublication,
 } from '../';
 import { getFieldOntologyFormData } from '../selectors';
-import { fromUser } from '../../sharedSelectors';
+import { fromUser, fromFields } from '../../sharedSelectors';
 import fetchSaga from '../../lib/sagas/fetchSaga';
 import validateField from './validateField';
 
 export function* handleConfigureField() {
     const formData = yield select(getFieldOntologyFormData);
+    const fields = yield select(fromFields.getFields);
+    const fieldToUpdate = fields.find(f => f.name === formData.name);
+
     const isValid = yield call(validateField, formData);
+
     if (!isValid) {
         return;
     }
@@ -26,6 +31,12 @@ export function* handleConfigureField() {
     }
 
     yield put(configureFieldSuccess({ field }));
+
+    if (fieldToUpdate && fieldToUpdate.overview !== field.overview) {
+        yield put(loadPublication());
+        return;
+    }
+
     yield put(preLoadPublication());
 }
 

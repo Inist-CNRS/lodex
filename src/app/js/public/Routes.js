@@ -6,11 +6,13 @@ import Home from './Home';
 import Resource from './resource/Resource';
 import Login from '../user/Login';
 import GraphPage from './graph/GraphPage';
+import Search from './search/Search';
 
 const Routes = () => (
     <App>
         <Route path="/" exact component={Home} />
         <Route path="/resource" component={Resource} />
+        <Route path="/search" component={Search} />
         <Route path="/ark:/:naan/:rest" component={Resource} />
         <Route path="/uid:/:uri" component={Resource} />
         <Route path="/login" component={Login} />

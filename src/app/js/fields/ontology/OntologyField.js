@@ -16,6 +16,7 @@ import languages from '../../../../common/languages';
 import { fromCharacteristic } from '../../sharedSelectors';
 import EditButton from '../editFieldValue/EditButton';
 import { COVER_DATASET } from '../../../../common/cover';
+import * as overview from '../../../../common/overview';
 
 const styles = {
     badge: {
@@ -52,11 +53,19 @@ const OntologyFieldComponent = ({ field, characteristics, p: polyglot }) => (
         <TableRowColumn>{field.name}</TableRowColumn>
         <TableRowColumn>
             {field.label}
-            {(field.overview === 1 || field.overview === 100) && (
+            {(field.overview === overview.RESOURCE_TITLE ||
+                field.overview === overview.DATASET_TITLE) && (
                 <span style={styles.badge}>title</span>
             )}
-            {(field.overview === 2 || field.overview === 200) && (
+            {(field.overview === overview.RESOURCE_DESCRIPTION ||
+                field.overview === overview.DATASET_DESCRIPTION) && (
                 <span style={styles.badge}>description</span>
+            )}
+            {field.overview === overview.RESOURCE_DETAIL_1 && (
+                <span style={styles.badge}>detail 1</span>
+            )}
+            {field.overview === overview.RESOURCE_DETAIL_2 && (
+                <span style={styles.badge}>detail 2</span>
             )}
         </TableRowColumn>
         <TableRowColumn>{polyglot.t(`cover_${field.cover}`)}</TableRowColumn>
