@@ -21,11 +21,11 @@ export const saveStreamInFile = (stream, filename) =>
     new Promise((resolve, reject) => {
         const writableStream = fs.createWriteStream(filename);
 
-        stream.pipe(writableStream);
-
-        writableStream.on('finish', resolve);
-        stream.on('error', reject);
-        writableStream.on('error', reject);
+        stream
+            .on('error', reject)
+            .pipe(writableStream)
+            .on('error', reject)
+            .on('finish', resolve);
     });
 
 export const createWriteStream = chunkname => fs.createWriteStream(chunkname);
@@ -36,11 +36,16 @@ export const mergeChunksFactory = (createReadStreamImpl, multiStreamImpl) => (
     filename,
     nbChunks,
 ) => {
-    const sourceStreams = range(1, nbChunks + 1)
-        .map(nb => `${filename}.${nb}`)
-        .map(chunkname => createReadStreamImpl(chunkname));
+    return new Promise((resolve, reject) => {
+        const sourceStreams = range(1, nbChunks + 1)
+            .map(nb => `${filename}.${nb}`)
+            .map(chunkname =>
+                createReadStreamImpl(chunkname).on('error', reject),
+            );
 
-    return multiStreamImpl(sourceStreams);
+        const result = multiStreamImpl(sourceStreams).on('error', reject);
+        result.on('end', () => resolve(result));
+    });
 };
 
 export const mergeChunks = mergeChunksFactory(createReadStream, multiStream);

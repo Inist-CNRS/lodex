@@ -20,8 +20,11 @@ export const chunkStream = chunkSize => {
 
 export default insertMany => stream =>
     new Promise((resolve, reject) => {
-        stream.pipe(chunkStream(100)).pipe(through(chunk => insertMany(chunk)));
-
-        stream.on('end', resolve);
-        stream.on('error', reject);
+        stream
+            .on('error', reject)
+            .pipe(chunkStream(100))
+            .on('error', reject)
+            .pipe(through(chunk => insertMany(chunk)))
+            .on('error', reject)
+            .on('end', resolve);
     });

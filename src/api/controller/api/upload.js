@@ -35,16 +35,24 @@ export const getParser = async parserName => {
     const [, , , script] = currentLoader;
 
     return stream =>
-        stream.pipe(ezs.fromString(script)).pipe(
-            ezs((data, feed) => {
-                if (data instanceof Error) {
-                    global.console.error('Error in pipeline.', data);
-                    feed.end();
-                } else {
-                    feed.send(data);
-                }
-            }),
-        );
+        new Promise((resolve, reject) => {
+            stream
+                .on('error', reject)
+                .pipe(ezs.fromString(script))
+                .on('error', reject)
+                .pipe(
+                    ezs((data, feed) => {
+                        if (data instanceof Error) {
+                            global.console.error('Error in pipeline.', data);
+                            feed.end();
+                        } else {
+                            feed.send(data);
+                        }
+                    }),
+                )
+                .on('error', reject)
+                .on('end', () => resolve(stream));
+        });
 };
 
 export const requestToStream = asyncBusboyImpl => async req => {
@@ -122,7 +130,6 @@ export async function uploadChunkMiddleware(ctx, parserName, next) {
     if (progress.getProgress().status === PENDING) {
         progress.start(UPLOADING_DATASET, 100, '%');
     }
-
     if (!await ctx.checkFileExists(chunkname, currentChunkSize)) {
         await ctx.saveStreamInFile(stream, chunkname);
     }
@@ -137,7 +144,6 @@ export async function uploadChunkMiddleware(ctx, parserName, next) {
     progress.setProgress(progression === 100 ? 99 : progression);
 
     if (uploadedFileSize >= totalSize) {
-        progress.finish();
         await next();
         return;
     }
@@ -154,6 +160,7 @@ export async function uploadFileMiddleware(ctx, parserName) {
     );
 
     const parsedStream = await parseStream(mergedStream);
+
     await ctx.clearChunks(filename, totalChunks);
 
     ctx.body = {
