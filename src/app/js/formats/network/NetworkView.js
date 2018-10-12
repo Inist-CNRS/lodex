@@ -74,9 +74,9 @@ class Network extends Component {
                             fill={nodeColor}
                         />
                     ))}
-                    {links.map(link => (
+                    {links.map((link, index) => (
                         <ForceGraphLink
-                            key={`${link.source}_${link.target}`}
+                            key={`${link.source}_${link.target}_${index}`}
                             link={link}
                         />
                     ))}
