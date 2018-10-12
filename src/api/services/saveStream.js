@@ -3,6 +3,8 @@ import through from 'through';
 import safePipe from './safePipe';
 import progress from './progress';
 
+const defaultChunkSize = 100;
+
 export const chunkStream = chunkSize => {
     let acc = [];
     return through(
@@ -26,12 +28,12 @@ export const chunkStream = chunkSize => {
 export default insertMany => stream =>
     new Promise((resolve, reject) => {
         safePipe(stream, [
-            chunkStream(100),
+            chunkStream(defaultChunkSize),
             through(function(chunk) {
                 insertMany(chunk)
                     .then(data => {
                         this.emit('data', data);
-                        progress.incrementProgress(100);
+                        progress.incrementProgress(defaultChunkSize);
                     })
                     .catch(error => this.emit('error', error));
             }),
