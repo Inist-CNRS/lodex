@@ -1,5 +1,5 @@
-export default (readable, transforms) =>
-    transforms.reduce((readable, newReadable) => {
-        readable.on('error', e => newReadable.emit('error', e));
-        return readable.pipe(newReadable);
-    }, readable);
+export default (stream, transforms) =>
+    transforms.reduce((prevStream, nextStream) => {
+        prevStream.on('error', e => nextStream.emit('error', e));
+        return prevStream.pipe(nextStream);
+    }, stream);
