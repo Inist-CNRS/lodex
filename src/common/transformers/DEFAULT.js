@@ -1,7 +1,9 @@
 import { rawTransformerWithArg } from './transformer';
 
 export const defval = (value, alternative) => {
-    if (!value) {
+    if (Array.isArray(value) && value.length === 0) {
+        return [alternative];
+    } else if (value === '' || value === null || value === undefined) {
         return alternative;
     }
     return value;
