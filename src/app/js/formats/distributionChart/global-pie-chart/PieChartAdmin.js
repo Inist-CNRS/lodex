@@ -15,17 +15,13 @@ const styles = {
         justifyContent: 'space-between',
     },
     input: {
-        marginLeft: '1rem',
-        width: '40%',
-    },
-    input2: {
         width: '100%',
     },
 };
 
 export const defaultArgs = {
     params: {
-        maxSize: 5,
+        maxSize: 200,
         orderBy: 'value/asc',
     },
     colors: '#1D1A31 #4D2D52 #9A4C95 #F08CAE #C1A5A9',
@@ -131,7 +127,7 @@ class PieChartAdmin extends Component {
                 <TextField
                     floatingLabelText={polyglot.t('colors_set')}
                     onChange={this.setColors}
-                    style={styles.input2}
+                    style={styles.input}
                     value={colors}
                 />
             </div>

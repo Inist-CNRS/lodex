@@ -16,10 +16,6 @@ const styles = {
         justifyContent: 'space-between',
     },
     input: {
-        marginLeft: '1rem',
-        width: '40%',
-    },
-    input2: {
         width: '100%',
     },
 };
@@ -146,7 +142,7 @@ class RadarChartAdmin extends Component {
                 <TextField
                     floatingLabelText={polyglot.t('colors_set')}
                     onChange={this.setColors}
-                    style={styles.input2}
+                    style={styles.input}
                     value={colors}
                 />
                 <Checkbox
