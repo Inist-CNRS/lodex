@@ -21,6 +21,10 @@
     "tree-by",
     "classif-by",
     "distinct-by-number",
+    "distinct-by-field",
+    "decompose-by",
+    "cross-by",
+    "distribute-by-date",
     "distinct-ISO3166-1-alpha3-from",
     "distinct-ISO3166-1-alpha2-from"
   ],
