@@ -400,6 +400,7 @@
 "corpus"	"TXT - corpus description"	"TXT - description de corpus"
 "automatic-parser"	"AUTO - with filename extension"	"AUTO - avec l'extension du nom de fichier"
 "bad_format_error"	"Error: Unable to display the value"	"Erreur : Impossible d'afficher la valeur"
+"fetch_format_no_value_error"	"Error: Cannot retrieve data for an empty value."	"Erreur: Impossible de récupérer les données pour une valeur vide."
 "bad_format_details"	"The format of this field does not allow the current value to be displayed. Please edit the value or change the format."	"Le format de ce champs ne permet pas d'afficher la valeur courante. Veuillez éditer la valeur ou changer de format. "
 "PUBLISH_FACET"	"Publishing facet"	"Publication des facettes"
 "PUBLISH_DOCUMENT"	"Publishing documents"	"Publication des documents"
