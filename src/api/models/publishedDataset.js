@@ -271,9 +271,24 @@ export default async db => {
         ]);
 
     collection.countByFacet = async (field, value) =>
-        collection.count({
-            [field === 'uri' ? 'uri' : `versions.${field}`]: value,
-        });
+        field === 'uri'
+            ? collection.count({
+                  uri: value,
+              })
+            : collection
+                  .aggregate([
+                      {
+                          $project: {
+                              value: {
+                                  $arrayElemAt: [`$versions.${field}`, -1],
+                              },
+                          },
+                      },
+                      { $match: { value } },
+                      { $count: 'value' },
+                  ])
+                  .toArray()
+                  .then(result => (result[0] ? result[0].value : 0));
 
     collection.countAll = async () =>
         collection.count({
