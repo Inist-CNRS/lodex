@@ -2,18 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash.get';
 import { StyleSheet, css } from 'aphrodite/no-important';
-import compose from 'recompose/compose';
-import translate from 'redux-polyglot/translate';
 
-import {
-    field as fieldPropTypes,
-    polyglot as polyglotPropTypes,
-} from '../../propTypes';
+import { field as fieldPropTypes } from '../../propTypes';
 import injectData from '../injectData';
 import classnames from 'classnames';
 import IstexYear from './IstexYear';
 import { ISTEX_API_URL } from '../../../../common/externals';
-import AdminOnlyAlert from '../../lib/components/AdminOnlyAlert';
+import InvalidFormat from '../InvalidFormat';
 
 const styles = StyleSheet.create({
     text: {
@@ -44,17 +39,10 @@ export const getYear = formatData =>
         .sort((a, b) => a.keyAsString - b.keyAsString)
         .map(({ keyAsString }) => keyAsString);
 
-export const IstexSummaryView = ({
-    formatData,
-    field,
-    resource,
-    p: polyglot,
-}) => {
+export const IstexSummaryView = ({ formatData, field, resource }) => {
     if (!resource[field.name]) {
         return (
-            <AdminOnlyAlert>
-                {polyglot.t('fetch_format_no_value_error')}
-            </AdminOnlyAlert>
+            <InvalidFormat format={field.format} value={resource[field.name]} />
         );
     }
 
@@ -75,7 +63,6 @@ IstexSummaryView.propTypes = {
     field: fieldPropTypes.isRequired,
     formatData: PropTypes.shape({}),
     error: PropTypes.string,
-    p: polyglotPropTypes.isRequired,
 };
 
 IstexSummaryView.defaultProps = {
@@ -86,4 +73,4 @@ IstexSummaryView.defaultProps = {
     error: null,
 };
 
-export default compose(injectData(getYearUrl), translate)(IstexSummaryView);
+export default injectData(getYearUrl)(IstexSummaryView);
