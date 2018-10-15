@@ -4,7 +4,6 @@ import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 
-import { loadField as loadFieldAction } from '../fields';
 import { loadParsingResult as loadParsingResultAction } from './parsing';
 import { loadPublication as loadPublicationAction } from './publication';
 
@@ -13,13 +12,11 @@ export const withInitialDataHoc = BaseComponent =>
         static propTypes = {
             loadParsingResult: PropTypes.func.isRequired,
             loadPublication: PropTypes.func.isRequired,
-            loadField: PropTypes.func.isRequired,
         };
 
         componentWillMount() {
             this.props.loadPublication();
             this.props.loadParsingResult();
-            this.props.loadField();
         }
 
         render() {
@@ -33,7 +30,6 @@ export default BaseComponent => {
     const mapDispatchToProps = {
         loadParsingResult: loadParsingResultAction,
         loadPublication: loadPublicationAction,
-        loadField: loadFieldAction,
     };
 
     return compose(connect(undefined, mapDispatchToProps), translate)(
