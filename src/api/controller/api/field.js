@@ -58,7 +58,9 @@ export const putField = async (ctx, id) => {
         return;
     }
 
-    await ctx.publishFacets(ctx, [ctx.body], false);
+    if ((await ctx.publishedDataset.countAll()) > 0) {
+        await ctx.publishFacets(ctx, [ctx.body], false);
+    }
 };
 
 export const removeField = async (ctx, id) => {
