@@ -23,6 +23,7 @@ import LodexOutput from './LodexOutput';
 import LodexDocuments from './LodexDocuments';
 import fixFlatten from './fixFlatten';
 import objects2columns from './objects2columns';
+import standardize2 from './standardize2.js';
 
 export default {
     filterVersions,
@@ -49,4 +50,5 @@ export default {
     LodexDocuments,
     fixFlatten,
     objects2columns,
+    standardize2,
 };
