@@ -6,18 +6,18 @@ import ExcerptLine from './ExcerptLine';
 import { ExcerptComponent as Excerpt } from './Excerpt';
 
 describe('<Excerpt />', () => {
-    it('should render headers', () => {
-        const columns = [
+    const defaultProps = {
+        columns: [
             { name: 'foo', label: 'foo' },
             { name: 'bar', label: 'Super Bar' },
-        ];
-        const lines = [
-            { foo: 'foo1', bar: 'bar1' },
-            { foo: 'foo2', bar: 'bar2' },
-        ];
-        const wrapper = shallow(
-            <Excerpt columns={columns} lines={lines} p={{ t: key => key }} />,
-        );
+        ],
+        lines: [{ foo: 'foo1', bar: 'bar1' }, { foo: 'foo2', bar: 'bar2' }],
+        p: { t: key => key },
+        loadField: jest.fn(),
+    };
+
+    it('should render headers', () => {
+        const wrapper = shallow(<Excerpt {...defaultProps} />);
         const headers = wrapper.find(TableHeaderColumn);
         expect(
             headers
@@ -36,26 +36,27 @@ describe('<Excerpt />', () => {
     });
 
     it('should render lines', () => {
-        const columns = [
-            { name: 'foo', label: 'foo' },
-            { name: 'bar', label: 'bar' },
-        ];
-        const lines = [
-            { uri: 'uri1', foo: 'foo1', bar: 'bar1' },
-            { uri: 'uri2', foo: 'foo2', bar: 'bar2' },
-        ];
-        const wrapper = shallow(
-            <Excerpt columns={columns} lines={lines} p={{ t: key => key }} />,
-        );
+        const wrapper = shallow(<Excerpt {...defaultProps} />);
 
         const excerptLines = wrapper.find(ExcerptLine);
         expect(excerptLines.at(0).props()).toEqual({
-            line: lines[0],
-            columns,
+            line: { foo: 'foo1', bar: 'bar1' },
+            columns: [
+                { name: 'foo', label: 'foo' },
+                { name: 'bar', label: 'Super Bar' },
+            ],
         });
         expect(excerptLines.at(1).props()).toEqual({
-            line: lines[1],
-            columns,
+            line: { foo: 'foo2', bar: 'bar2' },
+            columns: [
+                { name: 'foo', label: 'foo' },
+                { name: 'bar', label: 'Super Bar' },
+            ],
         });
+    });
+
+    it('should load field on mount', () => {
+        shallow(<Excerpt {...defaultProps} />);
+        expect(defaultProps.loadField).toHaveBeenCalled();
     });
 });
