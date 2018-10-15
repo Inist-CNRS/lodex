@@ -284,12 +284,18 @@ describe('export Nquads', () => {
                     outputString += data;
                 } else {
                     try {
+                        expect(outputString).toContain('#complete/');
+                        const completing = RegExp('#complete/([^>]*)').exec(
+                            outputString,
+                        )[1];
                         expect(outputString).toEqual(
                             [
-                                '<http://a-b.c.d.e/1#complete/completing> <http://purl.org/dc/terms/source> <https://fr.wikipedia.org/wiki/Chimie_inorganique> .',
-                                '<http://a-b.c.d.e/1#complete/completing> <http://www.w3.org/2000/01/rdf-schema#label> "La chimie minérale (= inorganique) étudie ..." .',
-                                '<http://a-b.c.d.e/1> <http://purl.org/dc/terms/description> <http://a-b.c.d.e/1#complete/completing> .',
+                                /*eslint-disable prettier/prettier */
+                                `<http://a-b.c.d.e/1#complete/${completing}> <http://purl.org/dc/terms/source> <https://fr.wikipedia.org/wiki/Chimie_inorganique> .`,
+                                `<http://a-b.c.d.e/1#complete/${completing}> <http://www.w3.org/2000/01/rdf-schema#label> "La chimie minérale (= inorganique) étudie ..." .`,
+                                `<http://a-b.c.d.e/1> <http://purl.org/dc/terms/description> <http://a-b.c.d.e/1#complete/${completing}> .`,
                                 '',
+                                /*eslint-enable prettier/prettier */
                             ].join('\n'),
                         );
                     } catch (e) {
