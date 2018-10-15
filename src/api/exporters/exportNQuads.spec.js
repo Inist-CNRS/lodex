@@ -247,4 +247,58 @@ describe('export Nquads', () => {
             }),
         );
     });
+
+    it.only('should export a annotating property without number in sub-domain', done => {
+        let outputString = '';
+        exportNQuads(
+            {
+                cleanHost: '',
+                schemeForDatasetLink: '',
+            },
+            [
+                {
+                    cover: 'collection',
+                    scheme: 'http://purl.org/dc/terms/description',
+                    name: 'completed',
+                },
+                {
+                    cover: 'collection',
+                    scheme: 'http://purl.org/dc/terms/source',
+                    completes: 'completed',
+                    name: 'completing',
+                },
+            ],
+            null,
+            from([
+                {
+                    uri: 'http://a-b-1.c.d.e/1',
+                    completed: 'La chimie minérale (= inorganique) étudie ...',
+                    completing: [
+                        'https://fr.wikipedia.org/wiki/Chimie_inorganique',
+                    ],
+                },
+            ]),
+        ).pipe(
+            ezs((data, feed) => {
+                if (data !== null) {
+                    outputString += data;
+                } else {
+                    try {
+                        expect(outputString).toEqual(
+                            [
+                                '<http://a-b.c.d.e/1#complete/completing> <http://purl.org/dc/terms/source> <https://fr.wikipedia.org/wiki/Chimie_inorganique> .',
+                                '<http://a-b.c.d.e/1#complete/completing> <http://www.w3.org/2000/01/rdf-schema#label> "La chimie minérale (= inorganique) étudie ..." .',
+                                '<http://a-b.c.d.e/1> <http://purl.org/dc/terms/description> <http://a-b.c.d.e/1#complete/completing> .',
+                                '',
+                            ].join('\n'),
+                        );
+                    } catch (e) {
+                        return done(e);
+                    }
+                    return done();
+                }
+                return feed.end();
+            }),
+        );
+    });
 });
