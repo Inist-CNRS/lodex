@@ -12,6 +12,8 @@ export const importDataset = (filename, mimeType = 'text/csv') => {
         mimeType,
     );
 
+    cy.get('.progress').should('exist');
+    cy.get('.progress').should('not.exist');
     cy.get('tbody').should('exist');
 };
 

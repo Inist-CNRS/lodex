@@ -40,6 +40,14 @@ export class Progress {
         this.checkProgress();
     }
 
+    incrementTarget(target = 1) {
+        if (this.status === PENDING) {
+            return;
+        }
+
+        this.target += target;
+    }
+
     getProgress() {
         return {
             status: this.status,

@@ -4,6 +4,7 @@ import rangeRight from 'lodash.rangeright';
 import multiStream from 'multistream';
 
 import composeAsync from '../../common/lib/composeAsync';
+import safePipe from './safePipe';
 
 export const unlinkFile = filename =>
     new Promise((resolve, reject) => {
@@ -18,16 +19,11 @@ export const unlinkFile = filename =>
     });
 
 export const saveStreamInFile = (stream, filename) =>
-    new Promise((resolve, reject) => {
-        const writableStream = fs.createWriteStream(filename);
-
-        stream.pipe(writableStream);
-
-        writableStream.on('finish', resolve);
-        stream.on('error', reject);
-        writableStream.on('error', reject);
-    });
-
+    new Promise((resolve, reject) =>
+        safePipe(stream, [fs.createWriteStream(filename)])
+            .on('error', reject)
+            .on('finish', resolve),
+    );
 export const createWriteStream = chunkname => fs.createWriteStream(chunkname);
 
 export const createReadStream = chunkname => fs.createReadStream(chunkname);
