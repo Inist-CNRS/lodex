@@ -28,8 +28,8 @@ import AdminOnlyAlert from '../../lib/components/AdminOnlyAlert';
 
 const styles = StyleSheet.create({
     container: {
-        width: 500,
         margin: '0 auto',
+        padding: '0 1rem',
     },
     header: {
         display: 'flex',
@@ -90,7 +90,7 @@ class Search extends Component {
     };
 
     renderResults = () => {
-        const { results, fields, fieldNames } = this.props;
+        const { results, fields, fieldNames, closeDrawer } = this.props;
 
         return results.map(result => (
             <SearchResult
@@ -98,6 +98,7 @@ class Search extends Component {
                 fields={fields}
                 fieldNames={fieldNames}
                 result={result}
+                closeDrawer={closeDrawer}
             />
         ));
     };
@@ -119,12 +120,12 @@ class Search extends Component {
     };
 
     renderLoadMore = () => {
-        const { loadMore, p: polyglot } = this.props;
+        const { loadMore, p: polyglot, results, total } = this.props;
 
         return (
             <div className={classnames('load-more', css(styles.loadMore))}>
                 <FlatButton fullWidth onClick={loadMore}>
-                    {polyglot.t('load_more')}
+                    {polyglot.t('search_load_more')} ({total - results.length})
                 </FlatButton>
             </div>
         );
@@ -198,6 +199,7 @@ Search.propTypes = {
     fields: PropTypes.arrayOf(fieldProptypes).isRequired,
     loadMore: PropTypes.func.isRequired,
     total: PropTypes.number.isRequired,
+    closeDrawer: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
