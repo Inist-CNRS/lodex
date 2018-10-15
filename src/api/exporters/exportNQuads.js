@@ -9,6 +9,7 @@ const exporter = (config, fields, characteristics, stream) =>
     stream
         .pipe(ezs('filterVersions'))
         .pipe(ezs('filterContributions', { fields }))
+        // .pipe(ezs('debug'))
         .pipe(
             ezs('JSONLDObject', {
                 fields,
@@ -17,6 +18,7 @@ const exporter = (config, fields, characteristics, stream) =>
                 exportDataset: config.exportDataset,
             }),
         )
+        .pipe(ezs.catch(console.error))
         .pipe(
             ezs('linkDataset', {
                 uri: config.cleanHost,
