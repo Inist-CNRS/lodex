@@ -328,6 +328,9 @@ describe('field routes', () => {
                 findOneAndUpdate: jest.fn(),
             },
             publishFacets: jest.fn(),
+            publishedDataset: {
+                countAll: jest.fn(() => Promise.resolve(1000)),
+            },
         };
 
         beforeEach(() => {
@@ -373,6 +376,13 @@ describe('field routes', () => {
                 ['update result'],
                 false,
             );
+        });
+
+        it('should not update the published facets if dataset is not published (publishedDataset = 0)', async () => {
+            ctx.publishedDataset.countAll.mockImplementation(() =>
+                Promise.resolve(0),
+            );
+            expect(ctx.publishFacets).toHaveBeenCalledTimes(0);
         });
     });
 
