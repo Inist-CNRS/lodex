@@ -13,7 +13,6 @@ describe('<Excerpt />', () => {
         ],
         lines: [{ foo: 'foo1', bar: 'bar1' }, { foo: 'foo2', bar: 'bar2' }],
         p: { t: key => key },
-        loadField: jest.fn(),
     };
 
     it('should render headers', () => {
@@ -53,10 +52,5 @@ describe('<Excerpt />', () => {
                 { name: 'bar', label: 'Super Bar' },
             ],
         });
-    });
-
-    it('should load field on mount', () => {
-        shallow(<Excerpt {...defaultProps} />);
-        expect(defaultProps.loadField).toHaveBeenCalled();
     });
 });

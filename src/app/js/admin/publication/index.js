@@ -48,7 +48,9 @@ export default handleActions(
 );
 
 export const hasPublishedDataset = ({ published }) => published;
+export const isPublicationLoading = ({ loading }) => loading;
 
 export const selectors = {
     hasPublishedDataset,
+    isPublicationLoading,
 };

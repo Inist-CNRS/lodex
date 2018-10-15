@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import pure from 'recompose/pure';
@@ -13,7 +13,6 @@ import {
     TableHeaderColumn,
     TableRow,
 } from 'material-ui/Table';
-import { connect } from 'react-redux';
 
 import {
     polyglot as polyglotPropTypes,
@@ -23,7 +22,6 @@ import ExcerptHeader from './ExcerptHeader';
 import ExcerptRemoveColumn from './ExcerptRemoveColumn';
 import ExcerptLine from './ExcerptLine';
 import getFieldClassName from '../../lib/getFieldClassName';
-import { loadField } from '../../fields';
 
 const styles = {
     header: {
@@ -42,76 +40,65 @@ const styles = {
 
 const getColStyle = memoize(style => Object.assign(styles.header, style));
 
-export class ExcerptComponent extends Component {
-    componentWillMount() {
-        this.props.loadField();
-    }
-    render() {
-        const {
-            colStyle,
-            areHeadersClickable,
-            className,
-            columns,
-            lines,
-            onCellClick,
-            onHeaderClick,
-            p: polyglot,
-            isPreview = false,
-        } = this.props;
-
-        return (
-            <Table
-                className={className}
-                selectable={false}
-                fixedHeader={false}
-                style={styles.table(isPreview)}
-                onCellClick={onCellClick}
-            >
-                <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
-                    <TableRow onCellClick={onHeaderClick}>
-                        {columns.map(field => (
-                            <TableHeaderColumn
-                                key={field.name}
-                                className={`publication-excerpt-column publication-excerpt-column-${getFieldClassName(
-                                    field,
-                                )}`}
-                                style={getColStyle(colStyle)}
-                                tooltip={
-                                    areHeadersClickable
-                                        ? polyglot.t(
-                                              'click_to_edit_publication_field',
-                                          )
-                                        : ''
-                                }
-                            >
-                                <ExcerptHeader field={field} />
-                            </TableHeaderColumn>
-                        ))}
-                    </TableRow>
-                </TableHeader>
-                <TableBody displayRowCheckbox={false}>
-                    {lines.map((line, index) => (
-                        <ExcerptLine
-                            key={`${line.uri}-${index}` || index}
-                            line={line}
-                            columns={columns}
+export const ExcerptComponent = ({
+    colStyle,
+    areHeadersClickable,
+    className,
+    columns,
+    lines,
+    onCellClick,
+    onHeaderClick,
+    p: polyglot,
+    isPreview = false,
+}) => (
+    <Table
+        className={className}
+        selectable={false}
+        fixedHeader={false}
+        style={styles.table(isPreview)}
+        onCellClick={onCellClick}
+    >
+        <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
+            <TableRow onCellClick={onHeaderClick}>
+                {columns.map(field => (
+                    <TableHeaderColumn
+                        key={field.name}
+                        className={`publication-excerpt-column publication-excerpt-column-${getFieldClassName(
+                            field,
+                        )}`}
+                        style={getColStyle(colStyle)}
+                        tooltip={
+                            areHeadersClickable
+                                ? polyglot.t('click_to_edit_publication_field')
+                                : ''
+                        }
+                    >
+                        <ExcerptHeader field={field} />
+                    </TableHeaderColumn>
+                ))}
+            </TableRow>
+        </TableHeader>
+        <TableBody displayRowCheckbox={false}>
+            {lines.map((line, index) => (
+                <ExcerptLine
+                    key={`${line.uri}-${index}` || index}
+                    line={line}
+                    columns={columns}
+                />
+            ))}
+            {areHeadersClickable && (
+                <TableRow>
+                    {columns.map(c => (
+                        <ExcerptRemoveColumn
+                            key={`remove_column_${c}`}
+                            field={c}
                         />
                     ))}
-                    {areHeadersClickable && (
-                        <TableRow>
-                            {columns.map(c => (
-                                <ExcerptRemoveColumn
-                                    key={`remove_column_${c}`}
-                                    field={c}
-                                />
-                            ))}
-                        </TableRow>
-                    )}
-                </TableBody>
-            </Table>
-        );
-    }
-}
+                </TableRow>
+            )}
+        </TableBody>
+    </Table>
+);
 
 ExcerptComponent.propTypes = {
     areHeadersClickable: PropTypes.bool.isRequired,
@@ -129,10 +116,6 @@ ExcerptComponent.propTypes = {
 ExcerptComponent.defaultProps = {
     className: 'publication-excerpt',
     colStyle: null,
-};
-
-const mapDispatchToProps = {
-    loadField,
 };
 
 export default compose(
@@ -153,5 +136,4 @@ export default compose(
             }
         },
     }),
-    connect(null, mapDispatchToProps),
 )(ExcerptComponent);
