@@ -4,7 +4,7 @@ import mergeClasses from './mergeClasses';
 import mergeCompose from './mergeCompose';
 import getUri from './getUri';
 
-const merge = (field, fields, currentOutput, data) => {
+const merge = async (field, fields, currentOutput, data) => {
     const propertyName = field.name;
     const isCompletedByAnotherField = fields.some(
         f => f.completes === field.name,
@@ -25,7 +25,7 @@ const merge = (field, fields, currentOutput, data) => {
     }
 
     if (completesAnotherField) {
-        return mergeCompleteField(currentOutput, field, fields, data);
+        return mergeCompleteField(currentOutput, field, fields, data); // FIXME: mergeCompleteField is async!!! JSONLDObject can also be async
     }
 
     if (
@@ -40,34 +40,39 @@ const merge = (field, fields, currentOutput, data) => {
     return currentOutput;
 };
 
-export default function JSONLDObject(data, feed) {
+export default async function JSONLDObject(data, feed) {
     if (this.isLast()) {
         feed.close();
         return;
     }
-    const fields = this.getParam('fields', {});
+    const fields = this.getParam('fields', []);
     const collectionClass = this.getParam('collectionClass', '');
     const characteristics = this.getParam('characteristics', {});
     const exportDataset = this.getParam('exportDataset', false) === 'true';
-    const output = fields.filter(f => f.cover === 'collection').reduce(
-        (currentOutput, field) => {
+    const output = await fields.filter(f => f.cover === 'collection').reduce(
+        async (previousPromise, field) => {
+            const currentOutput = await previousPromise;
             if (collectionClass) currentOutput['@type'] = collectionClass;
-            return merge(field, fields, currentOutput, data);
+            return await merge(field, fields, currentOutput, data);
         },
-        {
+        Promise.resolve({
             '@id': getUri(data.uri),
-        }
+        })
     );
 
     if (this.isFirst() && exportDataset) {
-        output.dataset = fields
+        // https://gyandeeps.com/array-reduce-async-await/ TODO: write a test
+        output.dataset = await fields
             .filter(f => f.cover === 'dataset')
-            .reduce(
-                (currentOutput, field) =>
-                    merge(field, fields, currentOutput, characteristics[0]),
-                {},
-            );
+            .reduce(async (previousPromise, field) => {
+                const currentOutput = await previousPromise;
+                return await merge(
+                    field,
+                    fields,
+                    currentOutput,
+                    characteristics[0],
+                );
+            }, Promise.resolve({}));
     }
-
     feed.send(output);
 }
