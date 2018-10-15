@@ -248,7 +248,7 @@ describe('export Nquads', () => {
         );
     });
 
-    it.only('should export a annotating property without number in sub-domain', done => {
+    it('should export an annotating property without number in sub-domain', done => {
         let outputString = '';
         exportNQuads(
             {
