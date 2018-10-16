@@ -1,7 +1,6 @@
 import { call, put, select, takeLatest } from 'redux-saga/effects';
 
 import fetchSaga from '../../lib/sagas/fetchSaga';
-
 import { LOAD_FIELD, loadFieldError, loadFieldSuccess } from '../';
 import { UPLOAD_SUCCESS } from '../../admin/upload';
 import { IMPORT_FIELDS_SUCCESS } from '../../admin/import';
