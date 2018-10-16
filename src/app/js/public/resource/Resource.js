@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import HomeIcon from 'material-ui/svg-icons/action/home';
 import { CardText, CardActions } from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
+import get from 'lodash.get';
 
 import { fromResource } from '../selectors';
 import { fromFields, fromCharacteristic } from '../../sharedSelectors';
@@ -23,6 +24,16 @@ export class ResourceComponent extends Component {
         this.props.preLoadResource();
         this.props.preLoadPublication();
     }
+
+    componentDidUpdate(prevProps) {
+        if (
+            get(this.props, 'match.params.uri', '') !==
+            get(prevProps, 'match.params.uri', '')
+        ) {
+            this.props.preLoadResource();
+        }
+    }
+
     render() {
         const {
             resource,
@@ -93,6 +104,11 @@ ResourceComponent.propTypes = {
     removed: PropTypes.bool.isRequired,
     preLoadResource: PropTypes.func.isRequired,
     preLoadPublication: PropTypes.func.isRequired,
+    match: PropTypes.shape({
+        params: PropTypes.shape({
+            uri: PropTypes.string,
+        }),
+    }).isRequired,
 };
 
 const mapStateToProps = state => ({

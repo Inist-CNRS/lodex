@@ -12,7 +12,9 @@ describe('<Resource />', () => {
         preLoadResource: () => null,
         preLoadPublication: () => null,
         p: { t: v => v },
+        match: {},
     };
+
     it('should display Loading if loading prop is true', () => {
         const props = {
             ...defaultProps,
@@ -87,5 +89,21 @@ describe('<Resource />', () => {
         expect(wrapper.find(Detail).prop('backToListLabel')).toEqual(
             'dataset title',
         );
+    });
+
+    it('should call again preLoadResource if the uri change in the url', () => {
+        const preLoadResource = jest.fn();
+        const props = {
+            ...defaultProps,
+            preLoadResource,
+            loading: false,
+            resource: 'resource',
+        };
+
+        const wrapper = shallow(<ResourceComponent {...props} />);
+        expect(preLoadResource).toHaveBeenCalledTimes(1);
+
+        wrapper.setProps({ ...props, match: { params: { uri: 'changed' } } });
+        expect(preLoadResource).toHaveBeenCalledTimes(2);
     });
 });
