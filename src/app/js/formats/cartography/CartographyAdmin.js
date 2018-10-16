@@ -4,8 +4,9 @@ import translate from 'redux-polyglot/translate';
 import { schemeBlues, schemeOrRd } from 'd3-scale-chromatic';
 
 import { GradientSchemeSelector } from '../../lib/components/ColorSchemeSelector';
-
 import { polyglot as polyglotPropTypes } from '../../propTypes';
+import updateAdminArgs from '../shared/updateAdminArgs';
+import RoutineParamsAdmin from '../shared/RoutineParamsAdmin';
 
 const styles = {
     container: {
@@ -32,6 +33,10 @@ const styles = {
 };
 
 export const defaultArgs = {
+    params: {
+        maxSize: 200,
+        orderBy: 'value/asc',
+    },
     colorScheme: schemeOrRd[9],
     hoverColorScheme: schemeBlues[9],
 };
@@ -39,6 +44,12 @@ export const defaultArgs = {
 class CartographyAdmin extends Component {
     static propTypes = {
         args: PropTypes.shape({
+            params: PropTypes.shape({
+                maxSize: PropTypes.number,
+                maxValue: PropTypes.number,
+                minValue: PropTypes.number,
+                orderBy: PropTypes.string,
+            }),
             colorScheme: PropTypes.arrayOf(PropTypes.string),
             hoverColorScheme: PropTypes.arrayOf(PropTypes.string),
         }),
@@ -50,28 +61,30 @@ class CartographyAdmin extends Component {
         args: defaultArgs,
     };
 
+    setParams = params => updateAdminArgs('params', params, this.props);
+
     setColorScheme = (_, __, colorScheme) => {
-        const newState = {
-            ...this.props.args,
-            colorScheme: colorScheme.split(','),
-        };
-        this.props.onChange(newState);
+        updateAdminArgs('colorScheme', colorScheme.split(','), this.props);
     };
 
     setHoverColorScheme = (_, __, hoverColorScheme) => {
-        const newState = {
-            ...this.props.args,
-            hoverColorScheme: hoverColorScheme.split(','),
-        };
-        this.props.onChange(newState);
+        updateAdminArgs(
+            'hoverColorScheme',
+            hoverColorScheme.split(','),
+            this.props,
+        );
     };
 
     render() {
-        const { p: polyglot } = this.props;
+        const { p: polyglot, args: { params } } = this.props;
         const { colorScheme, hoverColorScheme } = this.props.args;
-
         return (
             <div style={styles.container}>
+                <RoutineParamsAdmin
+                    params={params || defaultArgs.params}
+                    onChange={this.setParams}
+                    polyglot={polyglot}
+                />
                 <GradientSchemeSelector
                     label={polyglot.t('color_scheme')}
                     onChange={this.setColorScheme}

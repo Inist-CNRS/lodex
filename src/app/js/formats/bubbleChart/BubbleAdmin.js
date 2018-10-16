@@ -6,6 +6,8 @@ import { schemeAccent } from 'd3-scale-chromatic';
 import { CategorySchemeSelector } from '../../lib/components/ColorSchemeSelector';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
+import updateAdminArgs from '../shared/updateAdminArgs';
+import RoutineParamsAdmin from '../shared/RoutineParamsAdmin';
 
 const styles = {
     container: {
@@ -15,15 +17,15 @@ const styles = {
         justifyContent: 'space-between',
     },
     input: {
-        marginLeft: '1rem',
-        width: '40%',
-    },
-    input2: {
         width: '100%',
     },
 };
 
 export const defaultArgs = {
+    params: {
+        maxSize: 200,
+        orderBy: 'value/asc',
+    },
     colorScheme: schemeAccent,
     diameter: 500,
 };
@@ -31,6 +33,12 @@ export const defaultArgs = {
 class BubbleAdmin extends Component {
     static propTypes = {
         args: PropTypes.shape({
+            params: PropTypes.shape({
+                maxSize: PropTypes.number,
+                maxValue: PropTypes.number,
+                minValue: PropTypes.number,
+                orderBy: PropTypes.string,
+            }),
             colorScheme: PropTypes.arrayOf(PropTypes.string),
             diameter: PropTypes.number,
         }),
@@ -42,28 +50,27 @@ class BubbleAdmin extends Component {
         args: defaultArgs,
     };
 
+    setParams = params => updateAdminArgs('params', params, this.props);
+
     setColorScheme = (_, __, colorScheme) => {
-        const newState = {
-            ...this.props.args,
-            colorScheme: colorScheme.split(','),
-        };
-        this.props.onChange(newState);
+        updateAdminArgs('colorScheme', colorScheme.split(','), this.props);
     };
 
     setDiameter = (_, diameter) => {
-        const newState = {
-            ...this.props.args,
-            diameter,
-        };
-        this.props.onChange(newState);
+        updateAdminArgs('diameter', diameter, this.props);
     };
 
     render() {
-        const { p: polyglot } = this.props;
+        const { p: polyglot, args: { params } } = this.props;
         const { diameter, colorScheme } = this.props.args;
 
         return (
             <div style={styles.container}>
+                <RoutineParamsAdmin
+                    params={params || defaultArgs.params}
+                    onChange={this.setParams}
+                    polyglot={polyglot}
+                />
                 <CategorySchemeSelector
                     label={polyglot.t('color_scheme')}
                     onChange={this.setColorScheme}

@@ -4,6 +4,8 @@ import translate from 'redux-polyglot/translate';
 import TextField from 'material-ui/TextField';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
+import updateAdminArgs from '../shared/updateAdminArgs';
+import RoutineParamsAdmin from '../shared/RoutineParamsAdmin';
 
 const styles = {
     container: {
@@ -28,6 +30,7 @@ const styles = {
 export const defaultArgs = {
     params: {
         maxSize: 200,
+        orderBy: 'value/asc',
     },
     nodeColor: 'red',
 };
@@ -37,6 +40,9 @@ class CartographyAdmin extends Component {
         args: PropTypes.shape({
             params: PropTypes.shape({
                 maxSize: PropTypes.number,
+                maxValue: PropTypes.number,
+                minValue: PropTypes.number,
+                orderBy: PropTypes.string,
             }),
             nodeColor: PropTypes.string,
         }),
@@ -48,30 +54,24 @@ class CartographyAdmin extends Component {
         args: defaultArgs,
     };
 
-    setMaxSize = (_, maxSize) => {
-        const { params, ...args } = this.props.args;
-        const newArgs = { ...args, params: { ...params, maxSize } };
-        this.props.onChange(newArgs);
+    setParams = params => {
+        updateAdminArgs('params', params, this.props);
     };
 
     setNodeColor = (_, nodeColor) => {
-        const { ...state } = this.props.args;
-        const newArgs = { ...state, nodeColor };
-        this.props.onChange(newArgs);
+        updateAdminArgs('nodeColor', nodeColor, this.props);
     };
 
     render() {
         const { p: polyglot, args: { params } } = this.props;
         const { nodeColor } = this.props.args;
-        const { maxSize } = params || defaultArgs.params;
 
         return (
             <div style={styles.container}>
-                <TextField
-                    floatingLabelText={polyglot.t('max_fields')}
-                    onChange={this.setMaxSize}
-                    style={styles.input}
-                    value={maxSize}
+                <RoutineParamsAdmin
+                    params={params || defaultArgs.params}
+                    polyglot={polyglot}
+                    onChange={this.setParams}
                 />
                 <TextField
                     floatingLabelText={
