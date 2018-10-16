@@ -1,6 +1,7 @@
 import { call, put, select, all } from 'redux-saga/effects';
 
 import {
+    handleLoadFormatDataRequest,
     handleFilterFormatDataRequest,
     loadFormatDataForName,
     loadFormatData,
@@ -255,7 +256,7 @@ describe('format sagas', () => {
                 value: call(fetchSaga, 'request'),
                 done: false,
             });
-            expect(it.next({ error: 'failed to fetch' })).toEqual({
+            expect(it.next({ error: { message: 'failed to fetch' } })).toEqual({
                 value: put(
                     loadFormatDataError({
                         name: 'name',
@@ -267,6 +268,101 @@ describe('format sagas', () => {
             expect(it.next()).toEqual({
                 value: undefined,
                 done: true,
+            });
+        });
+    });
+
+    describe('handleLoadFormatDataRequest', () => {
+        it('should loadFormatData for field', () => {
+            const iterator = handleLoadFormatDataRequest({
+                payload: {
+                    field: { name: 'fieldName' },
+                    filter: { filterKey: 'filterValue' },
+                    value: 'url',
+                },
+            });
+
+            expect(iterator.next()).toEqual({
+                done: false,
+                value: select(
+                    fromFields.getGraphFieldParamsByName,
+                    'fieldName',
+                ),
+            });
+
+            expect(iterator.next({ paramsKey: 'paramsValue' })).toEqual({
+                done: false,
+                value: call(getQueryString, {
+                    params: {
+                        filterKey: 'filterValue',
+                        paramsKey: 'paramsValue',
+                    },
+                }),
+            });
+
+            expect(iterator.next('queryString')).toEqual({
+                done: false,
+                value: call(loadFormatData, 'fieldName', 'url', 'queryString'),
+            });
+
+            expect(iterator.next()).toEqual({
+                done: true,
+                value: undefined,
+            });
+        });
+
+        it('should put loadFormatDataError if value is not a string', () => {
+            const iterator = handleLoadFormatDataRequest({
+                payload: {
+                    field: { name: 'fieldName' },
+                    filter: { filterKey: 'filterValue' },
+                    value: ['an', 'incorrect', 'value'],
+                },
+            });
+
+            expect(iterator.next()).toEqual({
+                done: false,
+                value: put(
+                    loadFormatDataError({
+                        name: 'fieldName',
+                        error: 'bad value',
+                    }),
+                ),
+            });
+
+            expect(iterator.next()).toEqual({
+                done: true,
+                value: undefined,
+            });
+        });
+
+        it('should do nothing if field has no name', () => {
+            const iterator = handleLoadFormatDataRequest({
+                payload: {
+                    field: {},
+                    filter: { filterKey: 'filterValue' },
+                    value: 'url',
+                },
+            });
+
+            expect(iterator.next()).toEqual({
+                done: true,
+                value: undefined,
+            });
+        });
+
+        it('should do nothing if receiving no field', () => {
+            const iterator = handleLoadFormatDataRequest({
+                payload: {
+                    field: null,
+                    filter: { filterKey: 'filterValue' },
+                    value: 'url',
+                },
+            });
+
+            expect(iterator.next()).toEqual({
+                done: true,
+                value: undefined,
             });
         });
     });

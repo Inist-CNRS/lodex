@@ -17,6 +17,7 @@ import {
     unLoadFormatData,
 } from '../formats/reducer';
 import Loading from '../lib/components/Loading';
+import InvalidFormat from './InvalidFormat';
 
 const styles = {
     message: {
@@ -108,11 +109,17 @@ export default url => FormatView => {
                 field,
                 isLoaded,
                 error,
+                resource,
                 ...props
             } = this.props;
 
             if (error) {
-                return (
+                return error === 'bad value' ? (
+                    <InvalidFormat
+                        format={field.format}
+                        value={resource[field.name]}
+                    />
+                ) : (
                     <p style={styles.message}>{polyglot.t('chart_error')}</p>
                 );
             }
@@ -132,6 +139,7 @@ export default url => FormatView => {
                     <FormatView
                         {...props}
                         field={field}
+                        resource={resource}
                         formatData={formatData}
                         filterFormatData={this.filterFormatData}
                     />

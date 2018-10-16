@@ -4,7 +4,7 @@ import { fieldInvalid } from '../';
 import { fromFields } from '../../sharedSelectors';
 import { validateAddedField } from '../../../../common/validateFields';
 
-export default function* handleConfigureField(formData) {
+export default function* validateField(formData) {
     const fields = yield select(fromFields.getFields);
     const { isValid, properties } = yield call(
         validateAddedField,
