@@ -3,6 +3,7 @@ import { renderToString } from 'react-dom/server';
 import React from 'react';
 import Koa from 'koa';
 import serve from 'koa-static';
+import route from 'koa-route';
 import mount from 'koa-mount';
 import { Provider } from 'react-redux';
 import { StaticRouter } from 'react-router';
@@ -28,6 +29,11 @@ import config from '../../../config.json';
 const indexHtml = fs
     .readFileSync(path.resolve(__dirname, '../../app/custom/index.html'))
     .toString();
+
+const adminIndexHtml = fs
+    .readFileSync(path.resolve(__dirname, '../../app/admin.html'))
+    .toString()
+    .replace('{|__JS_HOST__|}', jsHost);
 
 const getInitialState = (token, cookie, locale) => ({
     fields: {
@@ -211,6 +217,11 @@ if (config.userAuth) {
 }
 
 app.use(handleRender);
+app.use(
+    route.get('/admin', async ctx => {
+        ctx.body = adminIndexHtml;
+    }),
+);
 
 app.use(mount('/', serve(path.resolve(__dirname, '../../build'))));
 app.use(mount('/', serve(path.resolve(__dirname, '../../app/custom'))));
