@@ -10,12 +10,11 @@ import { Helmet } from 'react-helmet';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import { END } from 'redux-saga';
-import koaWebpack from 'koa-webpack';
 import fs from 'fs';
 import { StyleSheetServer } from 'aphrodite/no-important';
 import jwt from 'koa-jwt';
 import jsonwebtoken from 'jsonwebtoken';
-import { auth, istexApiUrl } from 'config';
+import { auth, istexApiUrl, jsHost } from 'config';
 import pick from 'lodash.pick';
 import { createMemoryHistory } from 'history';
 
@@ -23,7 +22,7 @@ import rootReducer from '../../app/js/public/reducers';
 import sagas from '../../app/js/public/sagas';
 import configureStoreServer from '../../app/js/configureStoreServer';
 import Routes from '../../app/js/public/Routes';
-import webpackConfig, { translations } from '../../app/webpack.config.babel';
+import { translations } from '../../app/webpack.config.babel';
 import config from '../../../config.json';
 
 const indexHtml = fs
@@ -74,7 +73,7 @@ const renderFullPage = (html, css, preloadedState, helmet) =>
             ).replace(/</g, '\\u003c')};window.ISTEX_API_URL=${JSON.stringify(
                 istexApiUrl,
             )}</script>
-            <script src="/index.js"></script>
+            <script src="${jsHost}/index.js"></script>
             </body>`,
         );
 
@@ -213,28 +212,7 @@ if (config.userAuth) {
 
 app.use(handleRender);
 
-if (process.env.NODE_ENV === 'development') {
-    app.use(
-        koaWebpack({
-            config: webpackConfig,
-            dev: {
-                publicPath: '/',
-                stats: {
-                    colors: true,
-                },
-                quiet: false,
-                noInfo: true,
-            },
-            hot: {
-                log: global.console.log,
-                path: '/__webpack_hmr',
-                heartbeat: 10 * 1000,
-            },
-        }),
-    );
-} else {
-    app.use(mount('/', serve(path.resolve(__dirname, '../../build'))));
-    app.use(mount('/', serve(path.resolve(__dirname, '../../app/custom'))));
-}
+app.use(mount('/', serve(path.resolve(__dirname, '../../build'))));
+app.use(mount('/', serve(path.resolve(__dirname, '../../app/custom'))));
 
 export default app;

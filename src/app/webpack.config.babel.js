@@ -35,14 +35,10 @@ export default {
     entry: {
         index: [
             isDevelopment && 'react-hot-loader/patch',
-            isDevelopment &&
-                'webpack-hot-middleware/client?path=/__webpack_hmr&reload=true',
             resolve(__dirname, './js/public/index.js'),
         ].filter(Boolean),
         'admin/index': [
             isDevelopment && 'react-hot-loader/patch',
-            isDevelopment &&
-                'webpack-hot-middleware/client?path=/__webpack_hmr&reload=true',
             resolve(__dirname, './js/admin/index.js'),
         ].filter(Boolean),
     },

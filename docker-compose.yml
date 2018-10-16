@@ -13,9 +13,21 @@ services:
             EZMASTER_PUBLIC_URL: ${EZMASTER_PUBLIC_URL}
         links:
             - mongo
+            - dev-server
         ports:
             - 3000:3000
         command: npm run development:api
+
+    dev-server:
+        image: node:8.9.1
+        volumes:
+            - .:/app
+        working_dir: /app
+        environment:
+            NODE_ENV: development
+        ports:
+            - 8080:8080
+        command: npm run dev:server
 
     mongo:
         image: mongo:3.4.1
