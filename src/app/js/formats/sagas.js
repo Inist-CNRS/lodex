@@ -73,7 +73,7 @@ export function* loadFormatData(name, url, queryString) {
 
     const { error, response } = yield call(fetchSaga, request);
     if (error) {
-        yield put(loadFormatDataError({ name, error }));
+        yield put(loadFormatDataError({ name, error: error.message }));
         return;
     }
     if (response.data) {
@@ -102,7 +102,7 @@ export function* handleLoadFormatDataRequest({
         yield put(
             loadFormatDataError({
                 name,
-                error: new Error('value is not an url'),
+                error: 'bad value',
             }),
         );
         return;

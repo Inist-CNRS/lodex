@@ -114,11 +114,13 @@ export default url => FormatView => {
             } = this.props;
 
             if (error) {
-                return (
+                return error === 'bad value' ? (
                     <InvalidFormat
                         format={field.format}
                         value={resource[field.name]}
                     />
+                ) : (
+                    <p style={styles.message}>{polyglot.t('chart_error')}</p>
                 );
             }
 
