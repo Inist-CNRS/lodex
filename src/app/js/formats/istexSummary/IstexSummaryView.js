@@ -8,6 +8,7 @@ import injectData from '../injectData';
 import classnames from 'classnames';
 import IstexYear from './IstexYear';
 import { ISTEX_API_URL } from '../../../../common/externals';
+import InvalidFormat from '../InvalidFormat';
 
 const styles = StyleSheet.create({
     text: {
@@ -24,6 +25,10 @@ const styles = StyleSheet.create({
 export const getYearUrl = ({ resource, field }) => {
     const value = resource[field.name];
 
+    if (!value) {
+        return null;
+    }
+
     return `${ISTEX_API_URL}/document/?q=(${encodeURIComponent(
         `host.issn="${value}"`,
     )})&facet=publicationDate[perYear]&size=0&output=*`;
@@ -34,15 +39,23 @@ export const getYear = formatData =>
         .sort((a, b) => a.keyAsString - b.keyAsString)
         .map(({ keyAsString }) => keyAsString);
 
-export const IstexSummaryView = ({ formatData, field, resource }) => (
-    <ul className={classnames('istex-year', css(styles.text))}>
-        {getYear(formatData).map(year => (
-            <li key={year} className={css(styles.li)}>
-                <IstexYear issn={resource[field.name]} year={year} />
-            </li>
-        ))}
-    </ul>
-);
+export const IstexSummaryView = ({ formatData, field, resource }) => {
+    if (!resource[field.name]) {
+        return (
+            <InvalidFormat format={field.format} value={resource[field.name]} />
+        );
+    }
+
+    return (
+        <ul className={classnames('istex-year', css(styles.text))}>
+            {getYear(formatData).map(year => (
+                <li key={year} className={css(styles.li)}>
+                    <IstexYear issn={resource[field.name]} year={year} />
+                </li>
+            ))}
+        </ul>
+    );
+};
 
 IstexSummaryView.propTypes = {
     fieldStatus: PropTypes.string,
