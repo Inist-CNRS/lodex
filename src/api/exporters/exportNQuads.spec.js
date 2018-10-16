@@ -291,10 +291,10 @@ describe('export Nquads', () => {
                         expect(outputString).toEqual(
                             [
                                 /*eslint-disable prettier/prettier */
-                                `<http://a-b.c.d.e/1#complete/${completing}> <http://purl.org/dc/terms/source> <https://fr.wikipedia.org/wiki/Chimie_inorganique> .`,
-                                `<http://a-b.c.d.e/1#complete/${completing}> <http://www.w3.org/2000/01/rdf-schema#label> "La chimie minérale (= inorganique) étudie ..." .`,
-                                `<http://a-b.c.d.e/1> <http://purl.org/dc/terms/description> <http://a-b.c.d.e/1#complete/${completing}> .`,
-                                '',
+`<http://a-b.c.d.e/1#complete/${completing}> <http://purl.org/dc/terms/source> <https://fr.wikipedia.org/wiki/Chimie_inorganique> .`,
+`<http://a-b.c.d.e/1#complete/${completing}> <http://www.w3.org/2000/01/rdf-schema#label> "La chimie minérale (= inorganique) étudie ..." .`,
+`<http://a-b.c.d.e/1> <http://purl.org/dc/terms/description> <http://a-b.c.d.e/1#complete/${completing}> .`,
+'',
                                 /*eslint-enable prettier/prettier */
                             ].join('\n'),
                         );
