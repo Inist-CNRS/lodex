@@ -98,6 +98,16 @@ export function* handleLoadFormatDataRequest({
         return;
     }
 
+    if (typeof value !== 'string') {
+        yield put(
+            loadFormatDataError({
+                name,
+                error: new Error('value is not an url'),
+            }),
+        );
+        return;
+    }
+
     const params = yield select(fromFields.getGraphFieldParamsByName, name);
 
     const queryString = yield call(getQueryString, {
@@ -112,7 +122,6 @@ export function* handleLoadFormatDataRequest({
 
 export function* loadFormatDataForName(name, filter) {
     const field = yield select(fromFields.getFieldByName, name);
-
     if (field.cover !== COVER_DATASET) {
         return;
     }
