@@ -1,0 +1,411 @@
+[
+    {
+        "cover": "collection",
+        "label": "uri",
+        "display_on_list": true,
+        "transformers": [
+            {
+                "operation": "AUTOGENERATE_URI",
+                "args": []
+            }
+        ],
+        "position": 0,
+        "name": "uri"
+    },
+    {
+        "cover": "collection",
+        "label": "Title",
+        "display_in_list": true,
+        "display_in_resource": true,
+        "searchable": true,
+        "transformers": [
+            {
+                "operation": "COLUMN",
+                "args": [
+                    {
+                        "name": "column",
+                        "type": "column",
+                        "value": "publication_title"
+                    }
+                ]
+            }
+        ],
+        "classes": [],
+        "position": 1,
+        "overview": 1,
+        "count": 2223,
+        "name": "XXRn"
+    },
+    {
+        "cover": "collection",
+        "label": "URL",
+        "display_in_list": "",
+        "display_in_resource": true,
+        "searchable": "",
+        "transformers": [
+            {
+                "operation": "COLUMN",
+                "args": [
+                    {
+                        "name": "column",
+                        "type": "column",
+                        "value": "title_url"
+                    }
+                ]
+            }
+        ],
+        "classes": [],
+        "position": 2,
+        "format": {
+            "args": {
+                "type": "value",
+                "value": ""
+            },
+            "name": "link"
+        },
+        "count": 64,
+        "name": "j7uI",
+        "overview": 2
+    },
+    {
+        "cover": "collection",
+        "label": "ISSN",
+        "display_in_list": true,
+        "display_in_resource": true,
+        "searchable": "",
+        "transformers": [
+            {
+                "operation": "COLUMN",
+                "args": [
+                    {
+                        "name": "column",
+                        "type": "column",
+                        "value": "print_identifier"
+                    }
+                ]
+            }
+        ],
+        "classes": [],
+        "position": 3,
+        "count": 64,
+        "width": "50",
+        "name": "khbR",
+        "overview": 3
+    },
+    {
+        "cover": "collection",
+        "label": "eISSN",
+        "display_in_list": "",
+        "display_in_resource": true,
+        "searchable": true,
+        "transformers": [
+            {
+                "operation": "COLUMN",
+                "args": [
+                    {
+                        "name": "column",
+                        "type": "column",
+                        "value": "online_identifier"
+                    }
+                ]
+            }
+        ],
+        "classes": [],
+        "position": 4,
+        "count": 2223,
+        "width": "50",
+        "name": "Encb"
+    },
+    {
+        "cover": "collection",
+        "label": "Première mise de ligne en",
+        "display_in_list": "",
+        "display_in_resource": true,
+        "searchable": "",
+        "transformers": [
+            {
+                "operation": "COLUMN",
+                "args": [
+                    {
+                        "name": "column",
+                        "type": "column",
+                        "value": "date_first_issue_online"
+                    }
+                ]
+            }
+        ],
+        "classes": [],
+        "position": 5,
+        "isFacet": true,
+        "count": 64,
+        "width": "50",
+        "name": "Rijz",
+        "overview": 4
+    },
+    {
+        "cover": "collection",
+        "label": "Dernière mise en ligne en",
+        "display_in_list": "",
+        "display_in_resource": true,
+        "searchable": "",
+        "transformers": [
+            {
+                "operation": "COLUMN",
+                "args": [
+                    {
+                        "name": "column",
+                        "type": "column",
+                        "value": "date_last_issue_online"
+                    }
+                ]
+            }
+        ],
+        "classes": [],
+        "position": 6,
+        "isFacet": true,
+        "count": 64,
+        "width": "50",
+        "name": "ZLPq"
+    },
+    {
+        "cover": "collection",
+        "label": "Couverture",
+        "display_in_list": "",
+        "display_in_resource": true,
+        "searchable": "",
+        "transformers": [
+            {
+                "operation": "COLUMN",
+                "args": [
+                    {
+                        "name": "column",
+                        "type": "column",
+                        "value": "coverage_depth"
+                    }
+                ]
+            }
+        ],
+        "classes": [],
+        "position": 7,
+        "isFacet": true,
+        "count": 2223,
+        "width": "25",
+        "name": "XG29"
+    },
+    {
+        "cover": "collection",
+        "label": "Editeur",
+        "display_in_list": "",
+        "display_in_resource": true,
+        "searchable": "",
+        "transformers": [
+            {
+                "operation": "COLUMN",
+                "args": [
+                    {
+                        "name": "column",
+                        "type": "column",
+                        "value": "publisher_name"
+                    }
+                ]
+            }
+        ],
+        "classes": [],
+        "position": 8,
+        "isFacet": true,
+        "count": 2223,
+        "width": "25",
+        "name": "UVFW"
+    },
+    {
+        "cover": "collection",
+        "label": "Access",
+        "display_in_list": "",
+        "display_in_resource": true,
+        "searchable": "",
+        "transformers": [
+            {
+                "operation": "COLUMN",
+                "args": [
+                    {
+                        "name": "column",
+                        "type": "column",
+                        "value": "access_type"
+                    }
+                ]
+            }
+        ],
+        "classes": [],
+        "position": 9,
+        "count": 64,
+        "width": "25",
+        "name": "Fr7z"
+    },
+    {
+        "cover": "collection",
+        "label": "Type",
+        "display_in_list": "",
+        "display_in_resource": true,
+        "searchable": "",
+        "transformers": [
+            {
+                "operation": "COLUMN",
+                "args": [
+                    {
+                        "name": "column",
+                        "type": "column",
+                        "value": "publication_type"
+                    }
+                ]
+            }
+        ],
+        "classes": [],
+        "position": 10,
+        "isFacet": true,
+        "count": 64,
+        "width": "25",
+        "name": "WmzM"
+    },
+    {
+        "label": "",
+        "format": {
+            "args": {
+                "level": 1
+            },
+            "name": "title"
+        },
+        "width": "100",
+        "cover": "dataset",
+        "transformers": [
+            {
+                "operation": "VALUE",
+                "args": [
+                    {
+                        "name": "value",
+                        "type": "string",
+                        "value": "Quelques revues présentes dans ISTEX"
+                    }
+                ]
+            }
+        ],
+        "position": 11,
+        "count": 0,
+        "display_in_home": true,
+        "name": "ExFk"
+    },
+    {
+        "cover": "dataset",
+        "label": "Titres",
+        "display_in_list": "",
+        "display_in_resource": "",
+        "searchable": true,
+        "transformers": [
+            {
+                "operation": "VALUE",
+                "args": [
+                    {
+                        "name": "value",
+                        "type": "string",
+                        "value": "/api/run/syndication"
+                    }
+                ]
+            }
+        ],
+        "classes": [],
+        "position": 12,
+        "overview": 0,
+        "display_in_home": true,
+        "count": 0,
+        "format": {
+            "args": {
+                "spaceWidth": "30%",
+                "pageSize": 15,
+                "orderBy": "value/asc"
+            },
+            "name": "resourcesGrid"
+        },
+        "name": "hzEL"
+    },
+    {
+        "label": "Articles",
+        "cover": "collection",
+        "contribution": true,
+        "position": 13,
+        "transformers": [
+            {
+                "operation": "COLUMN",
+                "args": [
+                    {
+                        "name": "column",
+                        "type": "column",
+                        "value": "print_identifier"
+                    }
+                ]
+            }
+        ],
+        "format": {
+            "args": {},
+            "name": "istexSummary"
+        },
+        "count": 64,
+        "display_in_resource": true,
+        "name": "afRt"
+    },
+    {
+        "label": "Dans ISTEX",
+        "cover": "document",
+        "contribution": true,
+        "position": 14,
+        "transformers": [
+            {
+                "operation": "COLUMN",
+                "args": [
+                    {
+                        "name": "column",
+                        "type": "column",
+                        "value": "Dans ISTEX"
+                    }
+                ]
+            }
+        ],
+        "format": {
+            "args": {},
+            "name": "istex"
+        },
+        "display_in_resource": true,
+        "count": 0,
+        "name": "zEVz"
+    },
+    {
+        "label": "Editeur",
+        "cover": "document",
+        "contribution": true,
+        "position": 15,
+        "transformers": [
+            {
+                "operation": "COLUMN",
+                "args": [
+                    {
+                        "name": "column",
+                        "type": "column",
+                        "value": "Editeur"
+                    }
+                ]
+            }
+        ],
+        "format": {
+            "args": {
+                "param": {
+                    "labelArray": [
+                        "W0zn",
+                        "V8Si",
+                        "gEbL"
+                    ]
+                }
+            },
+            "name": "lodexField"
+        },
+        "count": 0,
+        "name": "yuYo"
+    }
+]
