@@ -40,12 +40,6 @@ export default {
             resolve(__dirname, './js/admin/index.js'),
         ].filter(Boolean),
     },
-    optimization: {
-        splitChunks: {
-            chunks: 'all',
-        },
-        mergeDuplicateChunks: false,
-    },
     module: {
         rules: [
             {
