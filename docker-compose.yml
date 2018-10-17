@@ -13,7 +13,6 @@ services:
             EZMASTER_PUBLIC_URL: ${EZMASTER_PUBLIC_URL}
         links:
             - mongo
-            - dev-server
         ports:
             - 3000:3000
         command: npm run development:api

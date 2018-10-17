@@ -31,14 +31,8 @@ export const translations = {
 export default {
     mode: isDevelopment ? 'development' : 'production',
     entry: {
-        index: [
-            isDevelopment && 'react-hot-loader/patch',
-            resolve(__dirname, './js/public/index.js'),
-        ].filter(Boolean),
-        'admin/index': [
-            isDevelopment && 'react-hot-loader/patch',
-            resolve(__dirname, './js/admin/index.js'),
-        ].filter(Boolean),
+        index: [resolve(__dirname, './js/public/index.js')],
+        'admin/index': [resolve(__dirname, './js/admin/index.js')],
     },
     module: {
         rules: [
@@ -68,6 +62,9 @@ export default {
             __EN__: JSON.stringify(translations.english),
             __FR__: JSON.stringify(translations.french),
             LOADERS: JSON.stringify(loaders),
+            'process.env': {
+                NODE_ENV: JSON.stringify(process.env.NODE_ENV),
+            },
         }),
         new CopyWebpackPlugin(
             [
