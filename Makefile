@@ -1,7 +1,13 @@
 .PHONY: build test help
 .DEFAULT_GOAL := help
 
+USER_ID = $(shell id -u)
+GROUP_ID = $(shell id -g)
+
 export NODE_ENV ?= development
+export UID = $(USER_ID)
+export GID = $(GROUP_ID)
+
 
 help:
 	@grep -P '^[a-zA-Z0-9_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
