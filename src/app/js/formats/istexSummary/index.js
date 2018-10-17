@@ -1,6 +1,6 @@
 import Component from './IstexSummaryView';
 import ListComponent from './IstexSummaryList';
-import AdminComponent from './IstexSummaryAdmin';
+import AdminComponent, { defaultArgs } from './IstexSummaryAdmin';
 import DefaultFormat from '../DefaultFormat';
 
 export default {
@@ -8,4 +8,5 @@ export default {
     Component,
     ListComponent,
     AdminComponent,
+    defaultArgs,
 };

@@ -5,16 +5,10 @@ import { parseFetchResult } from '../shared/fetchIstexData';
 import { ISTEX_API_URL } from '../../../../common/externals';
 import fetch from '../../lib/fetch';
 
-export const getYearUrl = ({ resource, field }) => {
+export const getYearUrl = ({ resource, field, searchedField }) => {
     const value = resource[field.name];
 
-    if (!value) {
-        return null;
-    }
-
-    const searchedField = get(field, 'format.args.searchedField');
-
-    if (!searchedField) {
+    if (!value || !searchedField) {
         return null;
     }
 

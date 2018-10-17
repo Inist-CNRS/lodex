@@ -53,14 +53,14 @@ export default url => FormatView => {
         };
 
         loadFormatData = () => {
-            const { field, loadFormatData } = this.props;
+            const { loadFormatData } = this.props;
 
             const value = createUrl(this.props);
             if (!value) {
                 return;
             }
 
-            loadFormatData({ field, value });
+            loadFormatData({ ...this.props, value });
         };
 
         componentWillMount() {

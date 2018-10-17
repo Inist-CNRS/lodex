@@ -38,12 +38,8 @@ describe('getIstexData', () => {
                     },
                     field: {
                         name: 'value',
-                        format: {
-                            args: {
-                                searchedField: 'searched.field',
-                            },
-                        },
                     },
+                    searchedField: 'searched.field',
                 }),
             ).toEqual(
                 'https://api.istex.fr/document/?q=(searched.field%3A%22issn%22)&facet=publicationDate[perYear]&size=0&output=*',

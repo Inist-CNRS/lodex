@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import get from 'lodash.get';
 import { StyleSheet, css } from 'aphrodite/no-important';
 
 import { field as fieldPropTypes } from '../../propTypes';
@@ -9,6 +8,7 @@ import classnames from 'classnames';
 import IstexYear from './IstexYear';
 import InvalidFormat from '../InvalidFormat';
 import { getYearUrl, parseYearData } from './getIstexData';
+import { searchedFieldValues } from './IstexSummaryAdmin';
 
 const styles = StyleSheet.create({
     text: {
@@ -22,13 +22,17 @@ const styles = StyleSheet.create({
     },
 });
 
-export const IstexSummaryView = ({ formatData, field, resource }) => {
-    if (!resource[field.name]) {
+export const IstexSummaryView = ({
+    formatData,
+    field,
+    resource,
+    searchedField,
+}) => {
+    if (!resource[field.name] || !searchedField) {
         return (
             <InvalidFormat format={field.format} value={resource[field.name]} />
         );
     }
-    const searchedField = get(field, 'format.args.searchedField');
 
     return (
         <ul className={classnames('istex-year', css(styles.text))}>
@@ -51,6 +55,7 @@ IstexSummaryView.propTypes = {
     field: fieldPropTypes.isRequired,
     formatData: PropTypes.shape({}),
     error: PropTypes.string,
+    searchedField: PropTypes.oneOf(searchedFieldValues),
 };
 
 IstexSummaryView.defaultProps = {
