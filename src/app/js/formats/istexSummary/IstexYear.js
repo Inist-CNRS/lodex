@@ -8,18 +8,20 @@ import { polyglot as polyblotPropTypes } from '../../propTypes';
 import { searchedFieldValues } from './IstexSummaryAdmin';
 import { getVolumeData, getIssueData, getDocumentData } from './getIstexData';
 
-const IstexYear = ({ issn, year, searchedField, p: polyglot }) => (
+const IstexYear = ({ issn, year, count, searchedField, p: polyglot }) => (
     <FetchFold
         label={year}
+        count={count}
         getData={getVolumeData({
             issn,
             year,
             searchedField,
         })}
     >
-        {volume => (
+        {({ name: volume, count }) => (
             <FetchFold
                 label={`${polyglot.t('volume')}: ${volume}`}
+                count={count}
                 getData={getIssueData({
                     issn,
                     year,
@@ -27,9 +29,10 @@ const IstexYear = ({ issn, year, searchedField, p: polyglot }) => (
                     searchedField,
                 })}
             >
-                {issue => (
+                {({ name: issue, count }) => (
                     <FetchFold
                         label={`${polyglot.t('issue')}: ${issue}`}
+                        count={count}
                         getData={getDocumentData({
                             issn,
                             year,
@@ -56,6 +59,7 @@ IstexYear.propTypes = {
     year: PropTypes.string.isRequired,
     searchedField: PropTypes.oneOf(searchedFieldValues),
     p: polyblotPropTypes.isRequired,
+    count: PropTypes.number.isRequired,
 };
 
 export default translate(IstexYear);

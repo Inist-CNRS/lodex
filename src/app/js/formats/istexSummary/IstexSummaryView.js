@@ -36,11 +36,12 @@ export const IstexSummaryView = ({
 
     return (
         <ul className={classnames('istex-year', css(styles.text))}>
-            {parseYearData(formatData).map(year => (
-                <li key={year} className={css(styles.li)}>
+            {parseYearData(formatData).map(({ name, count }) => (
+                <li key={name} className={css(styles.li)}>
                     <IstexYear
                         issn={resource[field.name]}
-                        year={year}
+                        year={name}
+                        count={count}
                         searchedField={searchedField}
                     />
                 </li>

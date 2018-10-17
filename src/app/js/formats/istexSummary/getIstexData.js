@@ -20,7 +20,10 @@ export const getYearUrl = ({ resource, field, searchedField }) => {
 export const parseYearData = formatData =>
     get(formatData, 'aggregations.publicationDate.buckets', [])
         .sort((a, b) => a.keyAsString - b.keyAsString)
-        .map(({ keyAsString }) => keyAsString);
+        .map(({ keyAsString, docCount }) => ({
+            name: keyAsString,
+            count: docCount,
+        }));
 
 export const getVolumeUrl = ({ issn, year, searchedField }) => () => ({
     url: `${ISTEX_API_URL}/document/?q=(${encodeURIComponent(
@@ -34,7 +37,7 @@ export const parseFacetData = facetName => ({ response, error }) => {
     }
 
     return get(response, ['aggregations', facetName, 'buckets'], []).map(
-        ({ key }) => key,
+        ({ key, docCount }) => ({ name: key, count: docCount }),
     );
 };
 

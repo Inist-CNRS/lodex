@@ -24,6 +24,15 @@ const styles = StyleSheet.create({
     labelText: {
         marginLeft: 8,
     },
+    count: {
+        marginLeft: 8,
+        backgroundColor: '#EEE',
+        borderRadius: '0.7em',
+        fontSize: '0.7em',
+        lineHeight: '0.7em',
+        padding: '0.5em',
+        fontStyle: 'italic',
+    },
     arrowClose: {
         transform: 'rotate(-90deg)',
     },
@@ -77,7 +86,7 @@ export class FetchFold extends Component {
     };
 
     render() {
-        const { label, p: polyglot, children } = this.props;
+        const { label, count, p: polyglot, children } = this.props;
         const { error, data, isOpen, isLoading } = this.state;
 
         if (error) {
@@ -98,6 +107,7 @@ export class FetchFold extends Component {
                             <span className={css(styles.labelText)}>
                                 {label}
                             </span>
+                            <span className={css(styles.count)}>{count}</span>
                             {isLoading && circularProgress}
                         </div>
                     </Button>
@@ -105,7 +115,7 @@ export class FetchFold extends Component {
                         <ul>
                             {data.map(value => (
                                 <li
-                                    key={get(value, 'id', value)}
+                                    key={get(value, 'id', value.name)}
                                     className={css(styles.li)}
                                 >
                                     {children(value)}
@@ -124,6 +134,7 @@ FetchFold.propTypes = {
     p: polyglotPropTypes.isRequired,
     getData: PropTypes.func.isRequired,
     children: PropTypes.func.isRequired,
+    count: PropTypes.number.isRequired,
 };
 
 export default translate(FetchFold);
