@@ -29,8 +29,14 @@ export const getYearUrl = ({ resource, field }) => {
         return null;
     }
 
+    const searchedField = get(field, 'format.args.searchedField');
+
+    if (!searchedField) {
+        return null;
+    }
+
     return `${ISTEX_API_URL}/document/?q=(${encodeURIComponent(
-        `host.issn="${value}"`,
+        `${searchedField}:"${value}"`,
     )})&facet=publicationDate[perYear]&size=0&output=*`;
 };
 
@@ -45,12 +51,17 @@ export const IstexSummaryView = ({ formatData, field, resource }) => {
             <InvalidFormat format={field.format} value={resource[field.name]} />
         );
     }
+    const searchedField = get(field, 'format.args.searchedField');
 
     return (
         <ul className={classnames('istex-year', css(styles.text))}>
             {getYear(formatData).map(year => (
                 <li key={year} className={css(styles.li)}>
-                    <IstexYear issn={resource[field.name]} year={year} />
+                    <IstexYear
+                        issn={resource[field.name]}
+                        year={year}
+                        searchedField={searchedField}
+                    />
                 </li>
             ))}
         </ul>

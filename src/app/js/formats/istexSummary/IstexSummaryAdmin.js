@@ -23,7 +23,7 @@ export const defaultArgs = {
     searchedField: 'host.issn',
 };
 
-const searchedFieldValues = [
+export const searchedFieldValues = [
     'host.issn',
     'host.eissn',
     'host.isbn',
@@ -31,7 +31,7 @@ const searchedFieldValues = [
     'host.title',
 ];
 
-class IstexSummaryAdmin extends Component {
+export class IstexSummaryAdmin extends Component {
     static propTypes = {
         args: PropTypes.shape({
             searchedField: PropTypes.oneOf(),

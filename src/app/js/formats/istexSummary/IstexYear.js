@@ -10,10 +10,11 @@ import { parseFetchResult } from '../shared/fetchIstexData';
 import { polyglot as polyblotPropTypes } from '../../propTypes';
 import fetch from '../../lib/fetch';
 import { ISTEX_API_URL } from '../../../../common/externals';
+import { searchedFieldValues } from './IstexSummaryAdmin';
 
-export const getVolumeUrl = ({ issn, year }) => () => ({
+export const getVolumeUrl = ({ issn, year, searchedField }) => () => ({
     url: `${ISTEX_API_URL}/document/?q=(${encodeURIComponent(
-        `host.issn="${issn}" AND publicationDate:"${year}"`,
+        `${searchedField}:"${issn}" AND publicationDate:"${year}"`,
     )})&facet=host.volume[*-*:1]&size=0&output=*`,
 });
 
@@ -27,14 +28,18 @@ export const parseVolumeData = ({ response, error }) => {
     );
 };
 
-export const getVolumeData = ({ issn, year }) =>
-    composeAsync(getVolumeUrl({ issn, year }), fetch, parseVolumeData);
+export const getVolumeData = ({ issn, year, searchedField }) =>
+    composeAsync(
+        getVolumeUrl({ issn, year, searchedField }),
+        fetch,
+        parseVolumeData,
+    );
 
-export const getIssueUrl = ({ issn, year, volume }) => () => ({
+export const getIssueUrl = ({ issn, year, volume, searchedField }) => () => ({
     url: `${ISTEX_API_URL}/document/?q=(${encodeURIComponent(
-        `host.issn="${issn}" AND publicationDate:"${year}" AND host.volume:"${
-            volume
-        }"`,
+        `${searchedField}:"${issn}" AND publicationDate:"${
+            year
+        }" AND host.volume:"${volume}"`,
     )})&facet=host.issue[*-*:1]&size=0&output=*`,
 });
 
@@ -48,31 +53,42 @@ export const parseIssueData = ({ response, error }) => {
     );
 };
 
-export const getIssueData = ({ issn, year, volume }) =>
-    composeAsync(getIssueUrl({ issn, year, volume }), fetch, parseIssueData);
+export const getIssueData = ({ issn, year, volume, searchedField }) =>
+    composeAsync(
+        getIssueUrl({ issn, year, volume, searchedField }),
+        fetch,
+        parseIssueData,
+    );
 
-export const getDocumentUrl = ({ issn, year, volume, issue }) => () => ({
+export const getDocumentUrl = ({
+    issn,
+    year,
+    volume,
+    issue,
+    searchedField,
+}) => () => ({
     url: `${ISTEX_API_URL}/document/?q=(${encodeURIComponent(
-        `host.issn="${issn}" AND publicationDate:"${year}" AND host.volume:"${
-            volume
-        }" AND host.issue:"${issue}"`,
+        `${searchedField}:"${issn}" AND publicationDate:"${
+            year
+        }" AND host.volume:"${volume}" AND host.issue:"${issue}"`,
     )})&size=10&output=id,arkIstex,title,publicationDate,author,host.genre,host.title`,
 });
 
-export const getDocumentData = ({ issn, year, volume, issue }) =>
+export const getDocumentData = ({ issn, year, volume, issue, searchedField }) =>
     composeAsync(
-        getDocumentUrl({ issn, year, volume, issue }),
+        getDocumentUrl({ issn, year, volume, issue, searchedField }),
         fetch,
         parseFetchResult,
         ({ hits }) => hits,
     );
 
-const IstexYear = ({ issn, year, p: polyglot }) => (
+const IstexYear = ({ issn, year, searchedField, p: polyglot }) => (
     <FetchFold
         label={year}
         getData={getVolumeData({
             issn,
             year,
+            searchedField,
         })}
     >
         {volume => (
@@ -82,6 +98,7 @@ const IstexYear = ({ issn, year, p: polyglot }) => (
                     issn,
                     year,
                     volume,
+                    searchedField,
                 })}
             >
                 {issue => (
@@ -92,6 +109,7 @@ const IstexYear = ({ issn, year, p: polyglot }) => (
                             year,
                             volume,
                             issue,
+                            searchedField,
                         })}
                     >
                         {istexDocument => (
@@ -110,6 +128,7 @@ const IstexYear = ({ issn, year, p: polyglot }) => (
 IstexYear.propTypes = {
     issn: PropTypes.string.isRequired,
     year: PropTypes.string.isRequired,
+    searchedField: PropTypes.oneOf(searchedFieldValues),
     p: polyblotPropTypes.isRequired,
 };
 
