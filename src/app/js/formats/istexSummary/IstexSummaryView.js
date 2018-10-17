@@ -1,26 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { StyleSheet, css } from 'aphrodite/no-important';
 
 import { field as fieldPropTypes } from '../../propTypes';
 import injectData from '../injectData';
-import classnames from 'classnames';
 import IstexYear from './IstexYear';
 import InvalidFormat from '../InvalidFormat';
 import { getYearUrl, parseYearData } from './getIstexData';
 import { searchedFieldValues } from './IstexSummaryAdmin';
-
-const styles = StyleSheet.create({
-    text: {
-        fontSize: '1.5rem',
-    },
-    rejected: {
-        textDecoration: 'line-through',
-    },
-    li: {
-        listStyleType: 'none',
-    },
-});
+import IstexList from './IstexList';
 
 export const IstexSummaryView = ({
     formatData,
@@ -35,18 +22,16 @@ export const IstexSummaryView = ({
     }
 
     return (
-        <ul className={classnames('istex-year', css(styles.text))}>
-            {parseYearData(formatData).map(({ name, count }) => (
-                <li key={name} className={css(styles.li)}>
-                    <IstexYear
-                        issn={resource[field.name]}
-                        year={name}
-                        count={count}
-                        searchedField={searchedField}
-                    />
-                </li>
-            ))}
-        </ul>
+        <IstexList data={parseYearData(formatData)}>
+            {({ name, count }) => (
+                <IstexYear
+                    issn={resource[field.name]}
+                    year={name}
+                    count={count}
+                    searchedField={searchedField}
+                />
+            )}
+        </IstexList>
     );
 };
 
