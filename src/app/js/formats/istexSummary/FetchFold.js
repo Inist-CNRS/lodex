@@ -7,7 +7,6 @@ import translate from 'redux-polyglot/translate';
 import { StyleSheet, css } from 'aphrodite/no-important';
 import Button from 'material-ui/FlatButton';
 import CircularProgress from 'material-ui/CircularProgress';
-import get from 'lodash.get';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import AdminOnlyAlert from '../../lib/components/AdminOnlyAlert';
@@ -111,18 +110,7 @@ export class FetchFold extends Component {
                             {isLoading && circularProgress}
                         </div>
                     </Button>
-                    {isOpen && (
-                        <ul>
-                            {data.map(value => (
-                                <li
-                                    key={get(value, 'id', value.name)}
-                                    className={css(styles.li)}
-                                >
-                                    {children(value)}
-                                </li>
-                            ))}
-                        </ul>
-                    )}
+                    {isOpen && children(data)}
                 </div>
             </div>
         );
