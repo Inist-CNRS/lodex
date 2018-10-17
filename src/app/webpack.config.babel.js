@@ -5,12 +5,9 @@ import {
     DefinePlugin,
     SourceMapDevToolPlugin,
     HotModuleReplacementPlugin,
-    NamedModulesPlugin,
 } from 'webpack';
-import HtmlWebpackPlugin from 'html-webpack-plugin';
 import CopyWebpackPlugin from 'copy-webpack-plugin';
 import CompressionPlugin from 'compression-webpack-plugin';
-import UglifyJsPlugin from 'uglifyjs-webpack-plugin';
 import { resolve } from 'path';
 
 import { loaders } from '../../config.json';
@@ -32,19 +29,10 @@ export const translations = {
 };
 
 export default {
+    mode: isDevelopment ? 'development' : 'production',
     entry: {
-        index: [
-            isDevelopment && 'react-hot-loader/patch',
-            isDevelopment &&
-                'webpack-hot-middleware/client?path=/__webpack_hmr&reload=true',
-            resolve(__dirname, './js/public/index.js'),
-        ].filter(Boolean),
-        'admin/index': [
-            isDevelopment && 'react-hot-loader/patch',
-            isDevelopment &&
-                'webpack-hot-middleware/client?path=/__webpack_hmr&reload=true',
-            resolve(__dirname, './js/admin/index.js'),
-        ].filter(Boolean),
+        index: [resolve(__dirname, './js/public/index.js')],
+        'admin/index': [resolve(__dirname, './js/admin/index.js')],
     },
     module: {
         rules: [
@@ -73,22 +61,10 @@ export default {
             __DEBUG__: false,
             __EN__: JSON.stringify(translations.english),
             __FR__: JSON.stringify(translations.french),
+            LOADERS: JSON.stringify(loaders),
             'process.env': {
                 NODE_ENV: JSON.stringify(process.env.NODE_ENV),
             },
-            LOADERS: JSON.stringify(loaders),
-        }),
-        new HtmlWebpackPlugin({
-            filename: 'index.html',
-            template: resolve(__dirname, './custom/index.html'),
-            chunks: ['index'],
-            inject: 'body',
-        }),
-        new HtmlWebpackPlugin({
-            filename: 'admin/index.html',
-            template: resolve(__dirname, './admin.html'),
-            chunks: ['admin/index'],
-            inject: 'body',
         }),
         new CopyWebpackPlugin(
             [
@@ -114,23 +90,10 @@ export default {
         ]),
 
         // prints more readable module names in the browser console on HMR updates
-        isDevelopment && new NamedModulesPlugin(),
         isDevelopment && new HotModuleReplacementPlugin(),
         isDevelopment && new SourceMapDevToolPlugin({ filename: '[file].map' }),
 
         // Production plugins
-        !isDevelopment &&
-            new UglifyJsPlugin({
-                uglifyOptions: {
-                    ie8: false,
-                    beautify: false,
-                    comments: false,
-                    sourceMap: false,
-                },
-                exclude: /node_modules/,
-                parallel: true,
-                cache: true,
-            }),
         !isDevelopment && new CompressionPlugin(),
     ].filter(Boolean),
     resolve: {

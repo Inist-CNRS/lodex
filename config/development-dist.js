@@ -15,4 +15,5 @@ module.exports = {
         dbName: 'lodex',
     },
     host: process.env.EZMASTER_PUBLIC_URL || 'http://localhost:3000',
+    jsHost: 'http://localhost:8080',
 };
