@@ -2,27 +2,39 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
+import TextField from 'material-ui/TextField';
 import translate from 'redux-polyglot/translate';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
+import updateAdminArgs from '../shared/updateAdminArgs';
 
 const styles = {
     container: {
         display: 'inline-flex',
     },
     input: {
-        marginLeft: '1rem',
+        width: '100%',
     },
+    previewDefaultColor: color => ({
+        display: 'inline-block',
+        backgroundColor: color,
+        height: '1em',
+        width: '1em',
+        marginLeft: 5,
+        border: 'solid 1px black',
+    }),
 };
 
 export const defaultArgs = {
     level: 1,
+    textColor: 'black',
 };
 
 class TitleAdmin extends Component {
     static propTypes = {
-        args: {
+        args: PropTypes.shape({
             level: PropTypes.number,
-        },
+            textColor: PropTypes.string,
+        }),
         onChange: PropTypes.func.isRequired,
         p: polyglotPropTypes.isRequired,
     };
@@ -35,8 +47,13 @@ class TitleAdmin extends Component {
         this.props.onChange({ level });
     };
 
+    setTextColor = (_, textColor) => {
+        updateAdminArgs('textColor', textColor, this.props);
+    };
+
     render() {
         const { p: polyglot, args: { level } } = this.props;
+        const { textColor } = this.props.args;
 
         return (
             <div style={styles.container}>
@@ -53,6 +70,21 @@ class TitleAdmin extends Component {
                     <MenuItem value={3} primaryText={polyglot.t('level3')} />
                     <MenuItem value={4} primaryText={polyglot.t('level4')} />
                 </SelectField>
+                <TextField
+                    floatingLabelText={
+                        <span>
+                            {polyglot.t('text_color')}
+                            <span
+                                style={styles.previewDefaultColor(textColor)}
+                            />
+                        </span>
+                    }
+                    onChange={this.setTextColor}
+                    style={styles.input}
+                    underlineStyle={{ borderColor: textColor }}
+                    underlineFocusStyle={{ borderColor: textColor }}
+                    value={textColor}
+                />
             </div>
         );
     }
