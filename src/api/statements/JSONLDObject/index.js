@@ -25,7 +25,7 @@ const merge = async (field, fields, currentOutput, data) => {
     }
 
     if (completesAnotherField) {
-        return mergeCompleteField(currentOutput, field, fields, data); // FIXME: mergeCompleteField is async!!! JSONLDObject can also be async
+        return await mergeCompleteField(currentOutput, field, fields, data);
     }
 
     if (
