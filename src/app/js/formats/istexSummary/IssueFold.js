@@ -23,6 +23,7 @@ const IssueFold = ({
         volume={volume}
         issue={issue}
         searchedField={searchedField}
+        polyglot={polyglot}
         getData={getDocumentData({
             issn,
             year,

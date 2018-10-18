@@ -6,7 +6,7 @@ import Button from 'material-ui/FlatButton';
 import { CircularProgress } from 'material-ui';
 import { StyleSheetTestUtils } from 'aphrodite';
 
-import { FetchFold } from './FetchFold';
+import FetchFold from './FetchFold';
 import AdminOnlyAlert from '../../lib/components/AdminOnlyAlert';
 
 describe('FetchFold', () => {
@@ -17,7 +17,7 @@ describe('FetchFold', () => {
         )),
         label: 'label',
         count: 10,
-        p: { t: v => v },
+        polyglot: { t: v => v },
     };
 
     beforeEach(() => {
@@ -33,6 +33,7 @@ describe('FetchFold', () => {
         expect(defaultProps.children).toHaveBeenCalledTimes(0);
         expect(defaultProps.getData).toHaveBeenCalledTimes(0);
         expect(wrapper.find(CircularProgress)).toHaveLength(0);
+        expect(wrapper.find('p')).toHaveLength(0);
     });
 
     it('should open and fetch data when clicking on button', async () => {
@@ -66,6 +67,7 @@ describe('FetchFold', () => {
                 { name: 3, count: 30 },
             ],
         });
+        expect(wrapper.find('p')).toHaveLength(0);
     });
 
     it('should display an error when getData fail', async () => {
@@ -90,6 +92,7 @@ describe('FetchFold', () => {
         expect(alert).toHaveLength(1);
         expect(alert.prop('children')).toBe('istex_error');
         expect(defaultProps.children).toHaveBeenCalledTimes(0);
+        expect(wrapper.find('p')).toHaveLength(0);
     });
 
     it('should not render if count is 0', () => {
@@ -97,6 +100,7 @@ describe('FetchFold', () => {
         expect(wrapper.find(Folder).length).toBe(0);
         expect(wrapper.find(FolderOpen).length).toBe(0);
         expect(wrapper.find(AdminOnlyAlert)).toHaveLength(0);
+        expect(wrapper.find('p')).toHaveLength(0);
     });
 
     it('should render not found message if data is empty', async () => {
@@ -118,6 +122,7 @@ describe('FetchFold', () => {
         expect(wrapper.find('.children')).toHaveLength(0);
         expect(defaultProps.children).toHaveBeenCalledTimes(0);
         const message = wrapper.find('p');
+        expect(wrapper.find('p')).toHaveLength(1);
         expect(message.text()).toBe('istex_no_result');
     });
 

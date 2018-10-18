@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import Folder from 'material-ui/svg-icons/file/folder';
 import FolderOpen from 'material-ui/svg-icons/file/folder-open';
 import Arrow from 'material-ui/svg-icons/hardware/keyboard-arrow-down';
-import translate from 'redux-polyglot/translate';
 import { StyleSheet, css } from 'aphrodite/no-important';
 import Button from 'material-ui/FlatButton';
 import CircularProgress from 'material-ui/CircularProgress';
@@ -47,7 +46,7 @@ const circularProgress = (
     />
 );
 
-export class FetchFold extends Component {
+class FetchFold extends Component {
     state = {
         data: null,
         error: null,
@@ -85,7 +84,7 @@ export class FetchFold extends Component {
     };
 
     render() {
-        const { label, count, p: polyglot, children } = this.props;
+        const { label, count, polyglot, children } = this.props;
         const { error, data, isOpen, isLoading } = this.state;
 
         if (error) {
@@ -113,11 +112,9 @@ export class FetchFold extends Component {
                             {isLoading && circularProgress}
                         </div>
                     </Button>
-                    {isOpen && data.length ? (
-                        children({ ...this.props, data })
-                    ) : (
-                        <p>{polyglot.t('istex_no_result')}</p>
-                    )}
+                    {isOpen && data.length && children({ ...this.props, data })}
+                    {isOpen &&
+                        !data.length && <p>{polyglot.t('istex_no_result')}</p>}
                 </div>
             </div>
         );
@@ -126,10 +123,10 @@ export class FetchFold extends Component {
 
 FetchFold.propTypes = {
     label: PropTypes.string.isRequired,
-    p: polyglotPropTypes.isRequired,
+    polyglot: polyglotPropTypes.isRequired,
     getData: PropTypes.func.isRequired,
     children: PropTypes.func.isRequired,
     count: PropTypes.number.isRequired,
 };
 
-export default translate(FetchFold);
+export default FetchFold;
