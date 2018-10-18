@@ -10,7 +10,8 @@ export default function LodexConfig(data, feed) {
     const target = this.getParam('target', '$config');
     set(data, `${target || '$context'}`, {
         ...config,
-        host: getHost(),
+        host: getCleanHost(),
+        rawHost: getHost(),
         cleanHost: getCleanHost(),
     });
     feed.send(data);

@@ -13,6 +13,7 @@ import ShareSection from './ShareSection';
 import ShareLink from './ShareLink';
 import Widgets from './Widgets';
 import Version from './Version';
+import { getCleanHost } from '../../../common/uris';
 
 export const PureExportShare = ({
     sharingUri,
@@ -42,8 +43,9 @@ const getSharingUrl = () => {
     if (typeof window === 'undefined') {
         return '';
     }
-
-    return window.location.toString();
+    const baseUrl = getCleanHost().replace(/https?:/, '');
+    const { pathname } = window.location;
+    return `${baseUrl}${pathname}`;
 };
 
 const mapStateToProps = state => {

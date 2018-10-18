@@ -20,7 +20,7 @@ import SelectVersion from './SelectVersion';
 import Version from '../Version';
 import getTitle from '../../lib/getTitle';
 import ExportShareButton from '../ExportShareButton';
-import { getHost } from '../../../../common/uris';
+import { getCleanHost } from '../../../../common/uris';
 
 const TOP_FIELDS_LIMIT = 1;
 
@@ -177,7 +177,7 @@ export const DetailComponent = ({
                 </div>
                 <CardActions style={styles.actions}>
                     <FlatButton
-                        href={`${getHost()}/${resource.uri} `}
+                        href={`${getCleanHost()}/${resource.uri} `}
                         label={resource.uri}
                         primary={true}
                     />

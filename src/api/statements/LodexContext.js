@@ -22,7 +22,8 @@ export const LodexContext = mongoClientImpl =>
         set(data, `${target || '$context'}`, {
             fields,
             characteristics,
-            host: getHost(),
+            host: getCleanHost(),
+            rawHost: getHost(),
             cleanHost: getCleanHost(),
         });
         feed.send(data);
