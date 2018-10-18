@@ -91,6 +91,9 @@ export class FetchFold extends Component {
         if (error) {
             return <AdminOnlyAlert>{polyglot.t('istex_error')}</AdminOnlyAlert>;
         }
+        if (count === 0) {
+            return null;
+        }
 
         return (
             <div className="istex-fold">
@@ -110,7 +113,11 @@ export class FetchFold extends Component {
                             {isLoading && circularProgress}
                         </div>
                     </Button>
-                    {isOpen && children({ ...this.props, data })}
+                    {isOpen && data.length ? (
+                        children({ ...this.props, data })
+                    ) : (
+                        <p>{polyglot.t('istex_no_result')}</p>
+                    )}
                 </div>
             </div>
         );
