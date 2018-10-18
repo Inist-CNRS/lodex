@@ -23,7 +23,7 @@ export const IstexSummaryView = ({
 
     return (
         <IstexList data={parseYearData(formatData)}>
-            {({ name, count }) => (
+            {({ item: { name, count } }) => (
                 <IstexYear
                     issn={resource[field.name]}
                     year={name}

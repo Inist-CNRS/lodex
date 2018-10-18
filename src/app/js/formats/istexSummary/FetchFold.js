@@ -110,7 +110,7 @@ export class FetchFold extends Component {
                             {isLoading && circularProgress}
                         </div>
                     </Button>
-                    {isOpen && children(data)}
+                    {isOpen && children({ ...this.props, data })}
                 </div>
             </div>
         );

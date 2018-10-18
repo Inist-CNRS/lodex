@@ -8,11 +8,11 @@ const styles = StyleSheet.create({
     },
 });
 
-const IstexList = ({ data, children }) => (
+const IstexList = ({ data, children, ...props }) => (
     <ul>
         {data.map((item, index) => (
             <li className={css(styles.li)} key={index}>
-                {children(item)}
+                {children({ ...props, item })}
             </li>
         ))}
     </ul>
