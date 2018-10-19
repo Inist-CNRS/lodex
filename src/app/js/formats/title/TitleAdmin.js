@@ -17,14 +17,6 @@ const styles = {
     input: {
         width: '100%',
     },
-    previewDefaultColor: color => ({
-        display: 'inline-block',
-        backgroundColor: color,
-        height: '1em',
-        width: '1em',
-        marginLeft: 5,
-        border: 'solid 1px black',
-    }),
 };
 
 export const defaultArgs = {
