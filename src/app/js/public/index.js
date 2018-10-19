@@ -10,9 +10,9 @@ import Routes from './Routes';
 import sagas from './sagas';
 import configureStore from '../configureStore';
 import phrasesFor from '../i18n/translations';
+import getLocale from '../../../common/getLocale';
 
-const language =
-    (process.env.NODE_ENV !== 'test' && window.navigator.language) || 'en';
+const language = getLocale();
 const initialState = {
     polyglot: {
         locale: language,

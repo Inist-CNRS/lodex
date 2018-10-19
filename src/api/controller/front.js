@@ -25,6 +25,7 @@ import configureStoreServer from '../../app/js/configureStoreServer';
 import Routes from '../../app/js/public/Routes';
 import { translations } from '../../app/webpack.config.babel';
 import config from '../../../config.json';
+import getLocale from '../../common/getLocale';
 
 const indexHtml = fs
     .readFileSync(path.resolve(__dirname, '../../app/custom/index.html'))
@@ -50,7 +51,10 @@ const getInitialState = (token, cookie, locale) => ({
     },
     polyglot: {
         locale: locale,
-        phrases: locale === 'fr' ? translations.french : translations.english,
+        phrases:
+            locale === 'fr' || locale === 'fr-FR'
+                ? translations.french
+                : translations.english,
     },
     user: {
         token,
@@ -174,7 +178,7 @@ const handleRender = async (ctx, next) => {
         muiTheme,
         ctx.state.headerToken,
         ctx.request.header.cookie,
-        ctx.acceptsLanguages('en', 'fr'),
+        getLocale(ctx),
         url,
     );
 

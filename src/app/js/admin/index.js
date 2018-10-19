@@ -11,9 +11,9 @@ import sagas from './sagas';
 import configureStore from '../configureStore';
 import phrasesFor from '../i18n/translations';
 import { createHashHistory } from 'history';
+import getLocale from '../../../common/getLocale';
 
-const language =
-    (process.env.NODE_ENV !== 'e2e' && window.navigator.language) || 'en';
+const language = getLocale();
 const initialState = {
     polyglot: {
         locale: language,

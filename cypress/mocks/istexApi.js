@@ -30,7 +30,7 @@ app.use(
             return;
         }
 
-        if (get(ctx, 'query.q', '').match('host.issn=')) {
+        if (get(ctx, 'query.q', '').match('host.issn:')) {
             ctx.body = istexYear;
             return;
         }
