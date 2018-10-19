@@ -53,13 +53,14 @@ export const getDecadeYearData = ({ issn, to, from, searchedField }) =>
         parseFacetData('publicationDate', ({ keyAsString }) => keyAsString),
     );
 
-export const parseYearData = formatData =>
-    get(formatData, 'aggregations.publicationDate.buckets', [])
+export const parseYearData = formatData => ({
+    hits: get(formatData, 'aggregations.publicationDate.buckets', [])
         .sort((a, b) => a.keyAsString - b.keyAsString)
         .map(({ keyAsString, docCount }) => ({
             name: keyAsString,
             count: docCount,
-        }));
+        })),
+});
 
 export const getVolumeUrl = ({ issn, year, searchedField }) => () => ({
     url: `${ISTEX_API_URL}/document/?q=(${encodeURIComponent(

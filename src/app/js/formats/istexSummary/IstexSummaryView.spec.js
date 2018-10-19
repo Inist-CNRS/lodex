@@ -16,7 +16,7 @@ jest.mock('./getIstexData');
 
 describe('IstexSummaryView', () => {
     const defaultProps = {
-        formatData: [1, 2, 3],
+        formatData: { hits: [1, 2, 3] },
         field: {
             name: 'field',
         },
@@ -35,7 +35,7 @@ describe('IstexSummaryView', () => {
 
         expect(composeRenderProps).toBeCalledWith(
             <FoldList
-                data={[1, 2, 3]}
+                data={{ hits: [1, 2, 3] }}
                 issn={'value'}
                 searchedField={'searchedField'}
                 polyglot={defaultProps.p}
@@ -50,18 +50,21 @@ describe('IstexSummaryView', () => {
                 IstexDocument,
             ],
         );
-        expect(parseYearData).toHaveBeenCalledWith([1, 2, 3]);
+        expect(parseYearData).toHaveBeenCalledWith({ hits: [1, 2, 3] });
         expect(wrapper.find('div').text()).toEqual('Composed Child');
     });
 
     it('should render Fold for decade year volume issue and document if formatData.length > 50', () => {
         const wrapper = shallow(
-            <IstexSummaryView {...defaultProps} formatData={{ length: 51 }} />,
+            <IstexSummaryView
+                {...defaultProps}
+                formatData={{ hits: { length: 51 } }}
+            />,
         );
 
         expect(composeRenderProps).toBeCalledWith(
             <FetchIstex
-                data={{ length: 51 }}
+                data={{ hits: { length: 51 } }}
                 issn={'value'}
                 searchedField={'searchedField'}
                 getData={getDecadeData({
@@ -83,7 +86,7 @@ describe('IstexSummaryView', () => {
                 IstexDocument,
             ],
         );
-        expect(parseYearData).toHaveBeenCalledWith({ length: 51 });
+        expect(parseYearData).toHaveBeenCalledWith({ hits: { length: 51 } });
         expect(wrapper.find('div').text()).toEqual('Composed Child');
     });
 

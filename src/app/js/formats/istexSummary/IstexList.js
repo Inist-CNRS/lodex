@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { StyleSheet, css } from 'aphrodite/no-important';
 import classnames from 'classnames';
-import FlatButton from 'material-ui/FlatButton';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { getMoreDocumentData } from './getIstexData';
+import ButtonWithStatus from '../../lib/components/ButtonWithStatus';
 
 const styles = StyleSheet.create({
     li: {
@@ -19,25 +19,30 @@ const styles = StyleSheet.create({
 class IstexList extends Component {
     constructor(props) {
         super(props);
-        this.state = this.props.data;
+        this.state = {
+            ...this.props.data,
+            isLoading: false,
+        };
     }
 
     loadMore = () => {
-        getMoreDocumentData(this.state.nextPageURI).then(
-            ({ hits, total, nextPageURI }) =>
-                this.setState(state => ({
-                    ...state,
-                    hits: state.hits.concat(hits),
-                    total,
-                    nextPageURI,
-                })),
+        this.setState({ isLoading: true }, () =>
+            getMoreDocumentData(this.state.nextPageURI).then(
+                ({ hits, total, nextPageURI }) =>
+                    this.setState(state => ({
+                        ...state,
+                        hits: state.hits.concat(hits),
+                        total,
+                        nextPageURI,
+                        isLoading: false,
+                    })),
+            ),
         );
     };
 
     render() {
-        const { children, polyglot, ...props } = this.props;
-
-        const { hits, total, nextPageURI } = this.state;
+        const { children, polyglot, data, ...props } = this.props;
+        const { hits, total, nextPageURI, isLoading } = this.state;
 
         if (!hits || !hits.length) {
             return (
@@ -64,10 +69,14 @@ class IstexList extends Component {
                             css(styles.loadMore),
                         )}
                     >
-                        <FlatButton fullWidth onClick={this.loadMore}>
+                        <ButtonWithStatus
+                            fullWidth
+                            onClick={this.loadMore}
+                            loading={isLoading}
+                        >
                             {polyglot.t('search_load_more')} ({total -
                                 hits.length})
-                        </FlatButton>
+                        </ButtonWithStatus>
                     </div>
                 )}
             </div>
@@ -76,7 +85,11 @@ class IstexList extends Component {
 }
 
 IstexList.propTypes = {
-    data: PropTypes.array.isRequired,
+    data: PropTypes.shape({
+        hits: PropTypes.array.isRequired,
+        total: PropTypes.number.isRequired,
+        nextPageURI: PropTypes.string,
+    }).isRequired,
     children: PropTypes.func.isRequired,
     polyglot: polyglotPropTypes.isRequired,
 };
