@@ -22,6 +22,9 @@ import DecadeFold from './DecadeFold';
 
 export const FoldList = props => <IstexList {...props} />;
 export const IstexDocument = ({ item }) => <IstexItem {...item} />;
+
+export const fetchIstex = props => <FetchIstex {...props} />;
+
 IstexDocument.propTypes = {
     item: PropTypes.shape({ id: PropTypes.string.isRequired }).isRequired,
 };
@@ -42,40 +45,11 @@ export const IstexSummaryView = ({
     const data = parseYearData(formatData);
 
     if (data.hits.length > 50) {
-        return composeRenderProps(
-            <FetchIstex
-                data={data}
-                issn={resource[field.name]}
-                searchedField={searchedField}
-                getData={getDecadeData({
-                    issn: resource[field.name],
-                    searchedField: searchedField,
-                })}
-                polyglot={polyglot}
-            />,
-            [
-                FoldList,
-                DecadeFold,
-                FoldList,
-                YearFold,
-                FoldList,
-                VolumeFold,
-                FoldList,
-                IssueFold,
-                FoldList,
-                IstexDocument,
-            ],
-        );
-    }
-
-    return composeRenderProps(
-        <FoldList
-            data={data}
-            issn={resource[field.name]}
-            searchedField={searchedField}
-            polyglot={polyglot}
-        />,
-        [
+        return composeRenderProps([
+            fetchIstex,
+            FoldList,
+            DecadeFold,
+            FoldList,
             YearFold,
             FoldList,
             VolumeFold,
@@ -83,8 +57,33 @@ export const IstexSummaryView = ({
             IssueFold,
             FoldList,
             IstexDocument,
-        ],
-    );
+        ])({
+            data: data,
+            issn: resource[field.name],
+            searchedField: searchedField,
+            getData: getDecadeData({
+                issn: resource[field.name],
+                searchedField: searchedField,
+            }),
+            polyglot: polyglot,
+        });
+    }
+
+    return composeRenderProps([
+        FoldList,
+        YearFold,
+        FoldList,
+        VolumeFold,
+        FoldList,
+        IssueFold,
+        FoldList,
+        IstexDocument,
+    ])({
+        data: data,
+        issn: resource[field.name],
+        searchedField: searchedField,
+        polyglot: polyglot,
+    });
 };
 
 IstexSummaryView.propTypes = {

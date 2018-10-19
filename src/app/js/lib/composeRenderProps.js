@@ -1,12 +1,6 @@
-import { cloneElement } from 'react';
+export const concat = (render1, render2) => props =>
+    render2({ ...props, children: p => render1({ ...props, ...p }) });
 
-export default (parent, renderProps) => {
-    const composedRender = renderProps.reverse().reduce((acc, render) => {
-        if (!acc) {
-            return render;
-        }
-        return (...args) => cloneElement(render(...args), { children: acc });
-    }, null);
+export const neutral = ({ children }) => children();
 
-    return cloneElement(parent, {}, composedRender);
-};
+export default renderProps => renderProps.reverse().reduce(concat, neutral);
