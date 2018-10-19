@@ -112,7 +112,9 @@ class FetchFold extends Component {
                             {isLoading && circularProgress}
                         </div>
                     </Button>
-                    {isOpen && data.length && children({ ...this.props, data })}
+                    {isOpen && data.length
+                        ? children({ ...this.props, data })
+                        : null}
                     {isOpen &&
                         !data.length && <p>{polyglot.t('istex_no_result')}</p>}
                 </div>

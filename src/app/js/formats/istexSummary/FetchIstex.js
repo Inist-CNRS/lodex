@@ -19,25 +19,23 @@ class FetchIstex extends Component {
     state = {
         data: null,
         error: null,
-        isLoading: false,
+        isLoading: true,
     };
 
     componentWillMount() {
-        this.setState({ isLoading: true }, () => {
-            this.props
-                .getData(this.props)
-                .then(data => {
-                    this.setState({
-                        data,
-                        isLoading: false,
-                        isOpen: true,
-                    });
-                })
-                .catch(error => {
-                    console.error(error);
-                    this.setState({ error: true });
+        this.props
+            .getData(this.props)
+            .then(data => {
+                this.setState({
+                    data,
+                    isLoading: false,
+                    isOpen: true,
                 });
-        });
+            })
+            .catch(error => {
+                console.error(error);
+                this.setState({ error: true, isLoading: false });
+            });
     }
 
     render() {
@@ -57,7 +55,6 @@ class FetchIstex extends Component {
 }
 
 FetchIstex.propTypes = {
-    label: PropTypes.string.isRequired,
     polyglot: polyglotPropTypes.isRequired,
     getData: PropTypes.func.isRequired,
     children: PropTypes.func.isRequired,
