@@ -20,8 +20,8 @@ import IstexItem from '../istex/IstexItem';
 import FetchIstex from './FetchIstex';
 import DecadeFold from './DecadeFold';
 
-const FoldList = props => <IstexList {...props} />;
-const IstexDocument = ({ item }) => <IstexItem {...item} />;
+export const FoldList = props => <IstexList {...props} />;
+export const IstexDocument = ({ item }) => <IstexItem {...item} />;
 IstexDocument.propTypes = {
     item: PropTypes.shape({ id: PropTypes.string.isRequired }).isRequired,
 };
