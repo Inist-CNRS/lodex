@@ -51,10 +51,10 @@ class ImportFieldsDialogComponent extends Component {
         const actions = [
             <FlatButton
                 key="confirm"
-                className="btn-confirm"
+                className="btn-save"
                 containerElement="label"
-                label={polyglot.t('import_fields')}
-                primary
+                label={polyglot.t('confirm')}
+                secondary
                 style={styles.button}
             >
                 <input
@@ -67,7 +67,7 @@ class ImportFieldsDialogComponent extends Component {
             <FlatButton
                 key="cancel"
                 className="btn-cancel"
-                label={polyglot.t('no')}
+                label={polyglot.t('cancel')}
                 onClick={onClose}
             />,
         ];

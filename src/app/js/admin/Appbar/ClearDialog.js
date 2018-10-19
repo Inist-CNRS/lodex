@@ -6,7 +6,6 @@ import translate from 'redux-polyglot/translate';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
-import { red600 } from 'material-ui/styles/colors';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import ButtonWithStatus from '../../lib/components/ButtonWithStatus';
@@ -110,24 +109,21 @@ class ClearDialogComponent extends Component {
         const { validName } = this.state;
 
         const actions = [
-            <FlatButton
-                key="cancel"
-                className="btn-cancel"
-                label={polyglot.t('cancel')}
-                onClick={onClose}
-                primary
-            />,
             <ButtonWithStatus
                 key="submit"
-                raised
-                className="btn-submit"
-                label={polyglot.t('valid')}
-                color={`${red600}`}
+                className="btn-save"
+                label={polyglot.t('confirm')}
                 onClick={this.handleClear(type)}
                 secondary
                 error={hasFailed}
                 disabled={!validName}
                 loading={isClearing}
+            />,
+            <FlatButton
+                key="cancel"
+                className="btn-cancel"
+                label={polyglot.t('cancel')}
+                onClick={onClose}
             />,
         ];
         return (
