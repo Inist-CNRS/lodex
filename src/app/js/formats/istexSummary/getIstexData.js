@@ -75,9 +75,14 @@ export const parseFacetData = (facetName, getName = ({ key }) => key) => ({
         throw error;
     }
 
-    return get(response, ['aggregations', facetName, 'buckets'], []).map(
-        ({ docCount, ...data }) => ({ name: getName(data), count: docCount }),
-    );
+    return {
+        hits: get(response, ['aggregations', facetName, 'buckets'], []).map(
+            ({ docCount, ...data }) => ({
+                name: getName(data),
+                count: docCount,
+            }),
+        ),
+    };
 };
 
 export const parseVolumeData = parseFacetData('host.volume');
@@ -125,5 +130,11 @@ export const getDocumentData = ({ issn, year, volume, issue, searchedField }) =>
         getDocumentUrl({ issn, year, volume, issue, searchedField }),
         fetch,
         parseFetchResult,
-        ({ hits }) => hits,
     );
+
+export const getMoreDocumentUrl = nextPageURI => ({
+    url: nextPageURI,
+});
+
+export const getMoreDocumentData = nextPageURI =>
+    composeAsync(getMoreDocumentUrl, fetch, parseFetchResult)(nextPageURI);

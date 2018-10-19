@@ -41,7 +41,7 @@ export const parseFetchResult = fetchResult => {
     if (fetchResult.error) {
         throw new Error(fetchResult.error);
     }
-    const { response: { total, hits } } = fetchResult;
+    const { response: { total, hits, nextPageURI } } = fetchResult;
     const { protocol, host } = URL.parse(ISTEX_API_URL);
     return {
         hits: hits.map(hit => ({
@@ -58,6 +58,7 @@ export const parseFetchResult = fetchResult => {
             hostTitle: hit.host.title,
         })),
         total,
+        nextPageURI,
     };
 };
 

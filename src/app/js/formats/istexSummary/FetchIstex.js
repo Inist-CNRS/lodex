@@ -49,7 +49,6 @@ class FetchIstex extends Component {
         if (isLoading) {
             return circularProgress;
         }
-
         return children({ ...this.props, data });
     }
 }
