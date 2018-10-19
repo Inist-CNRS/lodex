@@ -9,7 +9,10 @@ import updateAdminArgs from '../shared/updateAdminArgs';
 
 const styles = {
     container: {
-        display: 'inline-flex',
+        display: 'flex',
+        flexWrap: 'wrap',
+        width: '200%',
+        justifyContent: 'space-between',
     },
     input: {
         width: '100%',
@@ -26,7 +29,7 @@ const styles = {
 
 export const defaultArgs = {
     level: 1,
-    textColor: 'black',
+    textColor: '#000',
 };
 
 class TitleAdmin extends Component {
@@ -47,8 +50,8 @@ class TitleAdmin extends Component {
         this.props.onChange({ level });
     };
 
-    setTextColor = (_, textColor) => {
-        updateAdminArgs('textColor', textColor, this.props);
+    setTextColor = (_, color) => {
+        updateAdminArgs('textColor', color, this.props);
     };
 
     render() {
@@ -71,18 +74,9 @@ class TitleAdmin extends Component {
                     <MenuItem value={4} primaryText={polyglot.t('level4')} />
                 </SelectField>
                 <TextField
-                    floatingLabelText={
-                        <span>
-                            {polyglot.t('text_color')}
-                            <span
-                                style={styles.previewDefaultColor(textColor)}
-                            />
-                        </span>
-                    }
-                    onChange={this.setTextColor}
+                    floatingLabelText={polyglot.t('text_color')}
                     style={styles.input}
-                    underlineStyle={{ borderColor: textColor }}
-                    underlineFocusStyle={{ borderColor: textColor }}
+                    onChange={this.setTextColor}
                     value={textColor}
                 />
             </div>
