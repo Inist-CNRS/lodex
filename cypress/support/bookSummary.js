@@ -1,7 +1,7 @@
 export const checkYears = years => {
     years.forEach((year, index) => {
         cy
-            .get(`.istex-year>li:nth-child(${index + 1})>.istex-fold`)
+            .get(`li:nth-child(${index + 1})>.istex-fold`)
             .contains(year)
             .should('be.visible');
     });
@@ -18,7 +18,7 @@ export const openFold = label => {
 
 export const checkVolumes = (year, volumes) => {
     const yearFold = cy
-        .get(`.istex-year>li>.istex-fold`)
+        .get(`li>.istex-fold`)
         .contains(year)
         .parentsUntil('.istex-fold');
     volumes.forEach((volume, index) => {
@@ -31,7 +31,7 @@ export const checkVolumes = (year, volumes) => {
 
 export const checkIssues = (year, volume, issues) => {
     const volumeFold = cy
-        .get('.istex-year>li>.istex-fold')
+        .get('li>.istex-fold')
         .contains(year)
         .parentsUntil('.istex-fold')
         .get('.istex-fold')
@@ -47,7 +47,7 @@ export const checkIssues = (year, volume, issues) => {
 
 export const checkDocuments = (year, volume, issue, documentTitles) => {
     const issueFold = cy
-        .get('.istex-year>li>.istex-fold')
+        .get('li>.istex-fold')
         .contains(year)
         .parentsUntil('.istex-fold')
         .get('.istex-fold')
