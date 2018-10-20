@@ -1,6 +1,6 @@
 {
 	"total": 11,
-	"nextPageURI": "https://api.istex.fr/document/?q=(host.issn=%221366-8714%22%20AND%20host.volume:%2252%22%20AND%20host.issue:%223%22)&size=10&output=id,arkIstex,title,publicationDate,author,host.genre,host.title&defaultOperator=OR&from=10",
+	"nextPageURI": "http://localhost:3011/nextPage",
 	"firstPageURI": "https://api.istex.fr/document/?q=(host.issn=%221366-8714%22%20AND%20host.volume:%2252%22%20AND%20host.issue:%223%22)&size=10&output=id,arkIstex,title,publicationDate,author,host.genre,host.title&defaultOperator=OR&from=0",
 	"lastPageURI": "https://api.istex.fr/document/?q=(host.issn=%221366-8714%22%20AND%20host.volume:%2252%22%20AND%20host.issue:%223%22)&size=10&output=id,arkIstex,title,publicationDate,author,host.genre,host.title&defaultOperator=OR&from=1",
 	"hits": [

@@ -37,5 +37,19 @@ describe('Book Summary', () => {
             'Molecular detection of c-mpl thrombopoietin receptor gene expression in chronic myeloproliferative disorders.',
             'Demystified ... gene knockouts.',
         ]);
+        bookSummaryPage.loadMore();
+        bookSummaryPage.checkDocuments(1998, 52, 3, [
+            'Cytochrome P450 CYP 1B1 mRNA in normal human brain.',
+            'Absence of prolactin gene expression in colorectal cancer.',
+            'Association of p53 genomic instability with the glutathione S-transferase null genotype in gastric cancer in the Portuguese population.',
+            'Demystified ... DNA nucleotide sequencing.',
+            'A simple method for PCR based analyses of immunohistochemically stained, microdissected, formalin fixed, paraffin wax embedded material.',
+            'Proteolysis in colorectal cancer.',
+            'Alterations in cadherin and catenin expression during the biological progression of melanocytic tumours.',
+            'Use of magnetic beads for tissue DNA extraction and IS6110 Mycobacterium tuberculosis PCR.',
+            'Molecular detection of c-mpl thrombopoietin receptor gene expression in chronic myeloproliferative disorders.',
+            'Demystified ... gene knockouts.',
+            'DNA repair gene status in oesophageal cancer.',
+        ]);
     });
 });

@@ -8,6 +8,7 @@ import istexDocuments from './istexDocuments.json';
 import istexIssue from './istexIssue.json';
 import istexVolume from './istexVolume.json';
 import istexYear from './istexYear.json';
+import nextPage from './nextPage.json';
 
 const app = koaQs(new Koa());
 
@@ -35,6 +36,12 @@ app.use(
             return;
         }
         ctx.body = {};
+    }),
+);
+
+app.use(
+    route.get('/nextPage', async ctx => {
+        ctx.body = nextPage;
     }),
 );
 
