@@ -27,10 +27,7 @@ describe('VolumeFold', () => {
         expect(fetchFold.props()).toEqual({
             label: 'volume: volume',
             count: 'count',
-            issn: 'issn',
-            year: 'year',
             volume: 'volume',
-            searchedField: 'searchedField',
             getData: 'getData',
             children: 'children',
             polyglot: defaultProps.polyglot,

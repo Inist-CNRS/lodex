@@ -16,10 +16,8 @@ const DecadeFold = ({
     <FetchFold
         label={`${from}-${to}`}
         count={count}
-        issn={issn}
         from={from}
         to={to}
-        searchedField={searchedField}
         polyglot={polyglot}
         getData={getDecadeYearData({
             issn,

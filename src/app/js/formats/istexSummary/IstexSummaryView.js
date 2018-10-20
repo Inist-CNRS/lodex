@@ -20,10 +20,7 @@ import IstexItem from '../istex/IstexItem';
 import FetchIstex from './FetchIstex';
 import DecadeFold from './DecadeFold';
 
-export const FoldList = props => <IstexList {...props} />;
 export const IstexDocument = ({ item }) => <IstexItem {...item} />;
-
-export const fetchIstex = props => <FetchIstex {...props} />;
 
 IstexDocument.propTypes = {
     item: PropTypes.shape({ id: PropTypes.string.isRequired }).isRequired,
@@ -46,16 +43,16 @@ export const IstexSummaryView = ({
 
     if (data.hits.length > 50) {
         return composeRenderProps([
-            fetchIstex,
-            FoldList,
+            FetchIstex,
+            IstexList,
             DecadeFold,
-            FoldList,
+            IstexList,
             YearFold,
-            FoldList,
+            IstexList,
             VolumeFold,
-            FoldList,
+            IstexList,
             IssueFold,
-            FoldList,
+            IstexList,
             IstexDocument,
         ])({
             data: data,
@@ -70,13 +67,13 @@ export const IstexSummaryView = ({
     }
 
     return composeRenderProps([
-        FoldList,
+        IstexList,
         YearFold,
-        FoldList,
+        IstexList,
         VolumeFold,
-        FoldList,
+        IstexList,
         IssueFold,
-        FoldList,
+        IstexList,
         IstexDocument,
     ])({
         data: data,

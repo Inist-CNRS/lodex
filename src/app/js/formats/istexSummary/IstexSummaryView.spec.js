@@ -1,19 +1,16 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 
-import {
-    IstexSummaryView,
-    FoldList,
-    IstexDocument,
-    fetchIstex,
-} from './IstexSummaryView';
+import { IstexSummaryView, IstexDocument } from './IstexSummaryView';
 import composeRenderProps from '../../lib/composeRenderProps';
 import { parseYearData, getDecadeData } from './getIstexData';
+import IstexList from './IstexList';
 import IssueFold from './IssueFold';
 import VolumeFold from './VolumeFold';
 import YearFold from './YearFold';
 import DecadeFold from './DecadeFold';
 import InvalidFormat from '../InvalidFormat';
+import FetchIstex from './FetchIstex';
 
 jest.mock('../../lib/composeRenderProps');
 jest.mock('./getIstexData');
@@ -39,13 +36,13 @@ describe('IstexSummaryView', () => {
         const wrapper = shallow(<IstexSummaryView {...defaultProps} />);
 
         expect(composeRenderProps).toHaveBeenCalledWith([
-            FoldList,
+            IstexList,
             YearFold,
-            FoldList,
+            IstexList,
             VolumeFold,
-            FoldList,
+            IstexList,
             IssueFold,
-            FoldList,
+            IstexList,
             IstexDocument,
         ]);
 
@@ -68,16 +65,16 @@ describe('IstexSummaryView', () => {
         );
 
         expect(composeRenderProps).toHaveBeenCalledWith([
-            fetchIstex,
-            FoldList,
+            FetchIstex,
+            IstexList,
             DecadeFold,
-            FoldList,
+            IstexList,
             YearFold,
-            FoldList,
+            IstexList,
             VolumeFold,
-            FoldList,
+            IstexList,
             IssueFold,
-            FoldList,
+            IstexList,
             IstexDocument,
         ]);
 

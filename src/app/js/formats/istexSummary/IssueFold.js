@@ -18,11 +18,7 @@ const IssueFold = ({
     <FetchFold
         label={`${polyglot.t('issue')}: ${issue}`}
         count={count}
-        issn={issn}
-        year={year}
-        volume={volume}
         issue={issue}
-        searchedField={searchedField}
         polyglot={polyglot}
         getData={getDocumentData({
             issn,
