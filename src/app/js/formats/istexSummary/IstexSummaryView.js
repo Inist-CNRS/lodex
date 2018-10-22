@@ -1,14 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import get from 'lodash.get';
 import { StyleSheet, css } from 'aphrodite/no-important';
 
 import { field as fieldPropTypes } from '../../propTypes';
 import injectData from '../injectData';
 import classnames from 'classnames';
 import IstexYear from './IstexYear';
-import { ISTEX_API_URL } from '../../../../common/externals';
 import InvalidFormat from '../InvalidFormat';
+import { getYearUrl, parseYearData } from './getIstexData';
+import { searchedFieldValues } from './IstexSummaryAdmin';
 
 const styles = StyleSheet.create({
     text: {
@@ -22,25 +22,13 @@ const styles = StyleSheet.create({
     },
 });
 
-export const getYearUrl = ({ resource, field }) => {
-    const value = resource[field.name];
-
-    if (!value) {
-        return null;
-    }
-
-    return `${ISTEX_API_URL}/document/?q=(${encodeURIComponent(
-        `host.issn="${value}"`,
-    )})&facet=publicationDate[perYear]&size=0&output=*`;
-};
-
-export const getYear = formatData =>
-    get(formatData, 'aggregations.publicationDate.buckets', [])
-        .sort((a, b) => a.keyAsString - b.keyAsString)
-        .map(({ keyAsString }) => keyAsString);
-
-export const IstexSummaryView = ({ formatData, field, resource }) => {
-    if (!resource[field.name]) {
+export const IstexSummaryView = ({
+    formatData,
+    field,
+    resource,
+    searchedField,
+}) => {
+    if (!resource[field.name] || !searchedField) {
         return (
             <InvalidFormat format={field.format} value={resource[field.name]} />
         );
@@ -48,9 +36,13 @@ export const IstexSummaryView = ({ formatData, field, resource }) => {
 
     return (
         <ul className={classnames('istex-year', css(styles.text))}>
-            {getYear(formatData).map(year => (
+            {parseYearData(formatData).map(year => (
                 <li key={year} className={css(styles.li)}>
-                    <IstexYear issn={resource[field.name]} year={year} />
+                    <IstexYear
+                        issn={resource[field.name]}
+                        year={year}
+                        searchedField={searchedField}
+                    />
                 </li>
             ))}
         </ul>
@@ -63,6 +55,7 @@ IstexSummaryView.propTypes = {
     field: fieldPropTypes.isRequired,
     formatData: PropTypes.shape({}),
     error: PropTypes.string,
+    searchedField: PropTypes.oneOf(searchedFieldValues),
 };
 
 IstexSummaryView.defaultProps = {
