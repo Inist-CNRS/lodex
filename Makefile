@@ -1,11 +1,12 @@
 .PHONY: build test help
 .DEFAULT_GOAL := help
 
+export NODE_ENV ?= development
+
 ifneq "$(CI)" "true"
 	USER_ID = $(shell id -u)
 	GROUP_ID = $(shell id -g)
 
-	export NODE_ENV ?= development
 	export UID = $(USER_ID)
 	export GID = $(GROUP_ID)
 endif

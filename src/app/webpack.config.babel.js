@@ -1,34 +1,20 @@
-import 'babel-polyfill';
-import fs from 'fs';
-import CSV from 'csv-string';
-import {
+const {
     DefinePlugin,
     SourceMapDevToolPlugin,
     HotModuleReplacementPlugin,
-} from 'webpack';
-import CopyWebpackPlugin from 'copy-webpack-plugin';
-import CompressionPlugin from 'compression-webpack-plugin';
-import { resolve } from 'path';
+} = require('webpack');
 
-import { loaders } from '../../config.json';
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+const CompressionPlugin = require('compression-webpack-plugin');
+const { resolve } = require('path');
+
+const { loaders } = require('../../config.json');
 
 const isDevelopment = process.env.NODE_ENV === 'development';
 
-const translationsFile = resolve(__dirname, './translations.tsv');
-const translationsTSV = fs.readFileSync(translationsFile, 'utf8');
-const translationsRAW = CSV.parse(translationsTSV, `\t`, '"');
-export const translations = {
-    english: translationsRAW.reduce(
-        (acc, line) => ({ ...acc, [line[0]]: line[1] }),
-        {},
-    ),
-    french: translationsRAW.reduce(
-        (acc, line) => ({ ...acc, [line[0]]: line[2] }),
-        {},
-    ),
-};
+const translations = require('./translations');
 
-export default {
+module.exports = {
     mode: isDevelopment ? 'development' : 'production',
     entry: {
         index: [resolve(__dirname, './js/public/index.js')],
@@ -43,11 +29,6 @@ export default {
                     resolve(__dirname, '../common'),
                 ],
                 loader: 'babel-loader',
-                options: {
-                    cacheDirectory: true,
-                    forceEnv: 'browser',
-                    presets: ['react', 'stage-2'],
-                },
             },
         ],
     },

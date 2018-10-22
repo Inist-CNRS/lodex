@@ -28,7 +28,7 @@ services:
             NODE_ENV: "test"
         ports:
             - 3011:3011
-        command: node --require babel-register ./cypress/mocks/istexApi.js
+        command: node --require @babel/register ./cypress/mocks/istexApi.js
 
     mongo:
         image: mongo:3.4.1
