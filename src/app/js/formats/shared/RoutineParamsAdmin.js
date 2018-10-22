@@ -27,21 +27,21 @@ class RoutineParamsAdmin extends Component {
     setMaxSize = (_, maxSize) => {
         this.props.onChange({
             ...this.props.params,
-            maxSize,
+            maxSize: parseInt(maxSize),
         });
     };
 
     setMaxValue = (_, maxValue) => {
         this.props.onChange({
             ...this.props.params,
-            maxValue,
+            maxValue: parseInt(maxValue),
         });
     };
 
     setMinValue = (_, minValue) => {
         this.props.onChange({
             ...this.props.params,
-            minValue,
+            minValue: parseInt(minValue),
         });
     };
 
