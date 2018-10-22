@@ -57,7 +57,6 @@ const expectedJsonLd = {
                 },
             ],
             '@id': 'https://api.istex.fr/ark:/67375/6H6-N49F7FRR-Q',
-            '@type': 'http://purl.org/ontology/bibo/Document',
             'categories.inist':
                 'http://localhost:3000/ark:/67375/RZL-F4841DSB-1',
             'fulltext[0].uri': {
