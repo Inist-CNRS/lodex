@@ -1,0 +1,107 @@
+import React from 'react';
+import { StyleSheet, css } from 'aphrodite/no-important';
+import { Link } from 'react-router-dom';
+import { PropTypes } from 'prop-types';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHome } from '@fortawesome/free-solid-svg-icons/faHome';
+import { faChartArea } from '@fortawesome/free-solid-svg-icons/faChartArea';
+import { faSearch } from '@fortawesome/free-solid-svg-icons/faSearch';
+import { faCogs } from '@fortawesome/free-solid-svg-icons/faCogs';
+import { faSignInAlt } from '@fortawesome/free-solid-svg-icons/faSignInAlt';
+
+const styles = StyleSheet.create({
+    container: {
+        zIndex: 10000,
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        backgroundColor: '#555',
+        height: '100vh',
+        minWidth: 75,
+        marginRight: 20,
+        display: 'flex',
+        flexDirection: 'column',
+        paddingTop: 10,
+    },
+    icon: {
+        maxHeight: 'fit-content',
+        margin: '10px auto',
+    },
+    menuItem: {
+        width: '100%',
+        padding: 10,
+        display: 'flex',
+        flexDirection: 'column',
+        textAlign: 'center',
+        textDecoration: 'none',
+        color: '#DDD',
+        cursor: 'pointer',
+        ':hover': {
+            textDecoration: 'none',
+            color: '#DDD',
+            fontWeight: 'bold',
+            backgroundColor: '#AAA',
+        },
+    },
+    menuItemIcon: {
+        margin: '0 auto',
+    },
+    link: {
+        ':hover': {
+            textDecoration: 'none',
+            color: '#DDD',
+        },
+    },
+    last: {
+        marginBottom: 0,
+        marginTop: 'auto',
+    },
+});
+
+const MenuItem = ({ label, icon }) => (
+    <div className={css(styles.menuItem)}>
+        <FontAwesomeIcon
+            size="2x"
+            icon={icon}
+            className={css(styles.menuItemIcon)}
+        />
+        {label}
+    </div>
+);
+
+MenuItem.propTypes = {
+    label: PropTypes.string.isRequired,
+    icon: PropTypes.object.isRequired,
+};
+
+const NavBar = () => {
+    let img;
+    return (
+        <div className={css(styles.container)}>
+            <img
+                className={css(styles.icon)}
+                src="http://localhost:8080/favicon.ico"
+                ref={el => (img = el)}
+                onError={() => (img.style.display = 'none')}
+            />
+            <div>
+                <Link to="/" className={css(styles.link)}>
+                    <MenuItem label="Home" icon={faHome} />
+                </Link>
+                <MenuItem label="Chart" icon={faChartArea} />
+                <MenuItem label="Search" icon={faSearch} />
+            </div>
+            <div className={css(styles.last)}>
+                <Link to="/admin" className={css(styles.link)}>
+                    <MenuItem label="Admin" icon={faCogs} />
+                </Link>
+
+                <Link to="/login" className={css(styles.link)}>
+                    <MenuItem label="Sign in" icon={faSignInAlt} />
+                </Link>
+            </div>
+        </div>
+    );
+};
+
+export default NavBar;

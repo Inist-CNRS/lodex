@@ -1,15 +1,12 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 
-import Drawer from './Drawer';
-import Search from './search/Search';
+import NavBar from './NavBar';
 
 export const AppComponent = ({ children }) => (
     <Fragment>
+        <NavBar />
         <div className="body">{children}</div>
-        <Drawer>
-            {({ closeDrawer }) => <Search closeDrawer={closeDrawer} />}
-        </Drawer>
     </Fragment>
 );
 
