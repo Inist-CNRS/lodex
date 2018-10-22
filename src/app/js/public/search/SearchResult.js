@@ -19,7 +19,6 @@ const styles = StyleSheet.create({
         padding: '1rem 0',
         borderTop: '2px solid black',
         ':hover': {
-            color: 'black',
             backgroundColor: 'lightgray',
         },
     },
@@ -70,14 +69,14 @@ const SearchResult = ({ fields, fieldNames, result, closeDrawer }) => {
         (secondDetailField && result[secondDetailField.name]);
 
     return (
-        <div
-            id={`search-result-${result.uri}`}
-            className={cnames('search-result', styles.container)}
+        <Link
+            to={getResourceUri(result)}
+            className={cnames('search-result-link', styles.link)}
+            onClick={closeDrawer}
         >
-            <Link
-                to={getResourceUri(result)}
-                className={cnames('search-result-link', styles.link)}
-                onClick={closeDrawer}
+            <div
+                id={`search-result-${result.uri}`}
+                className={cnames('search-result', styles.container)}
             >
                 {titleField &&
                     result[titleField.name] && (
@@ -141,8 +140,8 @@ const SearchResult = ({ fields, fieldNames, result, closeDrawer }) => {
                             )}
                     </div>
                 )}
-            </Link>
-        </div>
+            </div>
+        </Link>
     );
 };
 
