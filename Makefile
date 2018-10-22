@@ -33,7 +33,7 @@ endif
 
 install-npm-dependencies:
 	echo "Installing Node dependencies"
-	docker-compose run --no-deps --rm api npm install
+	docker-compose run --no-deps --rm api npm install --no-optional
 
 install: copy-conf install-npm-dependencies ## Install npm dependencies for the api, admin, and frontend apps
 
