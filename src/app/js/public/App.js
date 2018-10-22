@@ -1,13 +1,8 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
-import NavBar from './NavBar';
-
 export const AppComponent = ({ children }) => (
-    <Fragment>
-        <NavBar />
-        <div className="body">{children}</div>
-    </Fragment>
+    <div className="body">{children}</div>
 );
 
 AppComponent.propTypes = {

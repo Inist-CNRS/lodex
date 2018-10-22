@@ -8,6 +8,11 @@ import { faChartArea } from '@fortawesome/free-solid-svg-icons/faChartArea';
 import { faSearch } from '@fortawesome/free-solid-svg-icons/faSearch';
 import { faCogs } from '@fortawesome/free-solid-svg-icons/faCogs';
 import { faSignInAlt } from '@fortawesome/free-solid-svg-icons/faSignInAlt';
+import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons/faSignOutAlt';
+import { connect } from 'react-redux';
+
+import { fromUser } from '../sharedSelectors';
+import { logout } from '../user';
 
 const styles = StyleSheet.create({
     container: {
@@ -58,8 +63,8 @@ const styles = StyleSheet.create({
     },
 });
 
-const MenuItem = ({ label, icon }) => (
-    <div className={css(styles.menuItem)}>
+const MenuItem = ({ label, icon, ...props }) => (
+    <div {...props} className={css(styles.menuItem)}>
         <FontAwesomeIcon
             size="2x"
             icon={icon}
@@ -74,7 +79,7 @@ MenuItem.propTypes = {
     icon: PropTypes.object.isRequired,
 };
 
-const NavBar = () => {
+const NavBar = ({ role, logout }) => {
     let img;
     return (
         <div className={css(styles.container)}>
@@ -92,16 +97,40 @@ const NavBar = () => {
                 <MenuItem label="Search" icon={faSearch} />
             </div>
             <div className={css(styles.last)}>
-                <Link to="/admin" className={css(styles.link)}>
-                    <MenuItem label="Admin" icon={faCogs} />
-                </Link>
-
-                <Link to="/login" className={css(styles.link)}>
-                    <MenuItem label="Sign in" icon={faSignInAlt} />
-                </Link>
+                {role === 'admin' && (
+                    <a href="/admin" className={css(styles.link)}>
+                        <MenuItem label="Admin" icon={faCogs} />
+                    </a>
+                )}
+                {role === 'not logged' ? (
+                    <Link to="/login" className={css(styles.link)}>
+                        <MenuItem label="Sign in" icon={faSignInAlt} />
+                    </Link>
+                ) : (
+                    <Link to="/login" className={css(styles.link)}>
+                        <MenuItem
+                            label="Sign out"
+                            icon={faSignOutAlt}
+                            onClick={logout}
+                        />
+                    </Link>
+                )}
             </div>
         </div>
     );
 };
 
-export default NavBar;
+NavBar.propTypes = {
+    role: PropTypes.oneOf(['admin', 'user', 'notLogged']).isRequired,
+    logout: PropTypes.func.isRequired,
+};
+
+const mapStasteToProps = state => ({
+    role: fromUser.getRole(state),
+});
+
+const mapDispatchToProps = {
+    logout,
+};
+
+export default connect(mapStasteToProps, mapDispatchToProps)(NavBar);
