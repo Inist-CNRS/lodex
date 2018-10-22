@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import RaisedButton from 'material-ui/RaisedButton';
-import CircularProgress from 'material-ui/CircularProgress';
 import { StyleSheet, css } from 'aphrodite/no-important';
 import compose from 'recompose/compose';
 
@@ -25,7 +23,7 @@ class ResourcesGridView extends Component {
         };
     }
 
-   render() {
+    render() {
         const { data, spaceWidth } = this.props;
         const styles = StyleSheet.create({
             list: {
