@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import TextField from 'material-ui/TextField';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import translate from 'redux-polyglot/translate';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
+import updateAdminArgs from '../shared/updateAdminArgs';
+import RoutineParamsAdmin from '../shared/RoutineParamsAdmin';
 
 const styles = {
     container: {
@@ -14,26 +15,28 @@ const styles = {
         justifyContent: 'space-between',
     },
     input: {
-        marginLeft: '1rem',
-        width: '40%',
-    },
-    input2: {
         width: '100%',
     },
 };
 
 export const defaultArgs = {
     spaceWidth: '30%',
-    pageSize: 5,
-    orderBy: 'value/asc',
+    params: {
+        maxSize: 5,
+        orderBy: 'value/asc',
+    },
 };
 
 class RessourcesGridAdmin extends Component {
     static propTypes = {
         args: PropTypes.shape({
+            params: PropTypes.shape({
+                maxSize: PropTypes.number,
+                maxValue: PropTypes.number,
+                minValue: PropTypes.number,
+                orderBy: PropTypes.string,
+            }),
             spaceWidth: PropTypes.string,
-            orderBy: PropTypes.string,
-            pageSize: PropTypes.number,
         }),
         onChange: PropTypes.func.isRequired,
         p: polyglotPropTypes.isRequired,
@@ -43,70 +46,23 @@ class RessourcesGridAdmin extends Component {
         args: defaultArgs,
     };
 
-    setPageSize = (_, pageSize) => {
-        const newArgs = {
-            ...this.props.args,
-            pageSize: parseInt(pageSize),
-        };
-        this.props.onChange(newArgs);
-    };
-
-    setOrderBy = orderBy => {
-        const newArgs = {
-            ...this.props.args,
-            orderBy,
-        };
-        this.props.onChange(newArgs);
-    };
+    setParams = params => updateAdminArgs('params', params, this.props);
 
     setWidth = spaceWidth => {
-        const newArgs = {
-            ...this.props.args,
-            spaceWidth,
-        };
-        this.props.onChange(newArgs);
+        updateAdminArgs('spaceWidth', spaceWidth, this.props);
     };
 
     render() {
-        const {
-            p: polyglot,
-            args: { spaceWidth, orderBy, pageSize },
-        } = this.props;
+        const { p: polyglot, args: { params } } = this.props;
+        const { spaceWidth } = this.props.args;
 
         return (
             <div style={styles.container}>
-                <TextField
-                    floatingLabelText={polyglot.t('max_fields')}
-                    onChange={this.setPageSize}
-                    style={styles.input}
-                    value={pageSize}
-                    type="number"
+                <RoutineParamsAdmin
+                    params={params || defaultArgs.params}
+                    onChange={this.setParams}
+                    polyglot={polyglot}
                 />
-                <SelectField
-                    floatingLabelText={polyglot.t('order_by')}
-                    onChange={(event, index, newValue) =>
-                        this.setOrderBy(newValue)
-                    }
-                    style={styles.input}
-                    value={orderBy}
-                >
-                    <MenuItem
-                        value="label/asc"
-                        primaryText={polyglot.t('label_asc')}
-                    />
-                    <MenuItem
-                        value="label/desc"
-                        primaryText={polyglot.t('label_desc')}
-                    />
-                    <MenuItem
-                        value="value/asc"
-                        primaryText={polyglot.t('value_asc')}
-                    />
-                    <MenuItem
-                        value="value/desc"
-                        primaryText={polyglot.t('value_desc')}
-                    />
-                </SelectField>
                 <SelectField
                     floatingLabelText={polyglot.t(
                         'list_format_select_image_width',

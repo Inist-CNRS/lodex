@@ -14,8 +14,6 @@ class ResourcesGridView extends Component {
     static propTypes = {
         field: fieldPropTypes.isRequired,
         data: PropTypes.arrayOf(PropTypes.object).isRequired,
-        total: PropTypes.number.isRequired,
-        pageSize: PropTypes.number.isRequired,
         spaceWidth: PropTypes.string.isRequired,
         filterFormatData: PropTypes.func.isRequired,
     };
@@ -24,24 +22,11 @@ class ResourcesGridView extends Component {
         super(props);
         this.state = {
             fetch: false,
-            more: 0,
         };
     }
 
-    componentWillMount() {
-        this.handleMore();
-    }
-
-    handleMore = () => {
-        const { filterFormatData } = this.props;
-        this.setState(
-            prevState => ({ more: prevState.more + this.props.pageSize }),
-            () => filterFormatData({ maxSize: this.state.more }),
-        );
-    };
-
-    render() {
-        const { data, total, spaceWidth } = this.props;
+   render() {
+        const { data, spaceWidth } = this.props;
         const styles = StyleSheet.create({
             list: {
                 display: 'flex',
@@ -79,7 +64,7 @@ class ResourcesGridView extends Component {
         return (
             <div>
                 <ul className={css(styles.list)}>
-                    {data.slice(0, this.state.more).map((entry, index) => {
+                    {data.map((entry, index) => {
                         const key = `${index}-resources-grid`;
                         return (
                             <li key={key} className={css(styles.item)}>
@@ -90,41 +75,21 @@ class ResourcesGridView extends Component {
                         );
                     })}
                 </ul>
-                <div className={css(styles.button)}>
-                    {this.state.more < total && (
-                        <RaisedButton
-                            label="MORE"
-                            onClick={this.handleMore}
-                            icon={
-                                this.state.fetch && (
-                                    <CircularProgress size={20} />
-                                )
-                            }
-                        />
-                    )}
-                </div>
             </div>
         );
     }
 }
 
-const mapStateToProps = (
-    state,
-    { formatData, pageSize, spaceWidth, orderBy },
-) => {
+const mapStateToProps = (state, { formatData, spaceWidth }) => {
     if (!formatData || !formatData.items) {
         return {
             data: [],
-            total: 0,
         };
     }
 
     return {
         data: formatData.items,
-        total: formatData.total,
-        pageSize,
         spaceWidth,
-        orderBy,
     };
 };
 
