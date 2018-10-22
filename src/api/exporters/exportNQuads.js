@@ -17,6 +17,7 @@ const exporter = (config, fields, characteristics, stream) =>
                 exportDataset: config.exportDataset,
             }),
         )
+        .pipe(ezs.catch(console.error))
         .pipe(
             ezs('linkDataset', {
                 uri: config.cleanHost,
