@@ -85,11 +85,7 @@ const styles = StyleSheet.create({
 
 export const MenuItem = ({ label, icon, ...props }) => (
     <div {...props} className={css(styles.menuItem)}>
-        <FontAwesomeIcon
-            size="2x"
-            icon={icon}
-            className={css(styles.menuItemIcon)}
-        />
+        <FontAwesomeIcon icon={icon} className={css(styles.menuItemIcon)} />
         {label}
     </div>
 );
