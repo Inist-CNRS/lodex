@@ -35,9 +35,7 @@ const styles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-    },
-    title: {
-        fontWeight: 'bold',
+        padding: '1rem 0',
     },
     searchBarContainer: {
         width: '100%',
@@ -148,9 +146,6 @@ class Search extends Component {
         return (
             <div className={cnames('search', styles.container)}>
                 <div className={cnames('search-header', styles.header)}>
-                    <h2 className={css(styles.title)}>
-                        {polyglot.t('search_page_title')}
-                    </h2>
                     <div
                         className={cnames(
                             'search-bar',
