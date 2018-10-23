@@ -11,10 +11,15 @@ import { faSignInAlt } from '@fortawesome/free-solid-svg-icons/faSignInAlt';
 import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons/faSignOutAlt';
 import { connect } from 'react-redux';
 import { config } from '@fortawesome/fontawesome-svg-core';
+import translate from 'redux-polyglot/translate';
+import compose from 'recompose/compose';
 
 import { fromUser, fromFields } from '../sharedSelectors';
 import { logout } from '../user';
-import { field as fieldPropTypes } from '../propTypes';
+import {
+    field as fieldPropTypes,
+    polyglot as polyglotPropTypes,
+} from '../propTypes';
 
 config.autoAddCss = false;
 
@@ -26,7 +31,7 @@ const styles = StyleSheet.create({
         left: 0,
         backgroundColor: 'white',
         height: '100vh',
-        minWidth: 75,
+        minWidth: 110,
         marginRight: 20,
         display: 'flex',
         flexDirection: 'column',
@@ -48,6 +53,7 @@ const styles = StyleSheet.create({
         cursor: 'pointer',
         justifyContent: 'center',
         userSelect: 'none',
+        textTransform: 'capitalize',
         ':hover': {
             color: '#B22F90',
             fontWeight: 'bold',
@@ -77,7 +83,7 @@ const styles = StyleSheet.create({
     },
 });
 
-const MenuItem = ({ label, icon, ...props }) => (
+export const MenuItem = ({ label, icon, ...props }) => (
     <div {...props} className={css(styles.menuItem)}>
         <FontAwesomeIcon
             size="2x"
@@ -93,7 +99,13 @@ MenuItem.propTypes = {
     icon: PropTypes.object.isRequired,
 };
 
-const NavBar = ({ role, canBeSearched, graphFields, logout }) => {
+export const NavBar = ({
+    role,
+    canBeSearched,
+    graphFields,
+    logout,
+    p: polyglot,
+}) => {
     let img;
     return (
         <div className={css(styles.container)}>
@@ -105,27 +117,35 @@ const NavBar = ({ role, canBeSearched, graphFields, logout }) => {
             />
             <div>
                 <Link to="/" className={css(styles.link)}>
-                    <MenuItem label="Home" icon={faHome} />
+                    <MenuItem label={polyglot.t('home')} icon={faHome} />
                 </Link>
                 {!!graphFields.length && (
-                    <MenuItem label="Chart" icon={faChartArea} />
+                    <MenuItem label={polyglot.t('graphs')} icon={faChartArea} />
                 )}
-                {canBeSearched && <MenuItem label="Search" icon={faSearch} />}
+                {canBeSearched && (
+                    <MenuItem
+                        label={polyglot.t('search_placeholder')}
+                        icon={faSearch}
+                    />
+                )}
             </div>
             <div className={css(styles.last)}>
                 {role === 'admin' && (
                     <a href="/admin" className={css(styles.link)}>
-                        <MenuItem label="Admin" icon={faCogs} />
+                        <MenuItem label={polyglot.t('admin')} icon={faCogs} />
                     </a>
                 )}
                 {role === 'not logged' ? (
                     <Link to="/login" className={css(styles.link)}>
-                        <MenuItem label="Sign in" icon={faSignInAlt} />
+                        <MenuItem
+                            label={polyglot.t('sign in')}
+                            icon={faSignInAlt}
+                        />
                     </Link>
                 ) : (
                     <Link to="/login" className={css(styles.link)}>
                         <MenuItem
-                            label="Sign out"
+                            label={polyglot.t('sign_out')}
                             icon={faSignOutAlt}
                             onClick={logout}
                         />
@@ -141,6 +161,7 @@ NavBar.propTypes = {
     logout: PropTypes.func.isRequired,
     canBeSearched: PropTypes.bool.isRequired,
     graphFields: PropTypes.arrayOf(fieldPropTypes).isRequired,
+    p: polyglotPropTypes.isRequired,
 };
 
 const mapStasteToProps = state => ({
@@ -153,4 +174,7 @@ const mapDispatchToProps = {
     logout,
 };
 
-export default connect(mapStasteToProps, mapDispatchToProps)(NavBar);
+export default compose(
+    connect(mapStasteToProps, mapDispatchToProps),
+    translate,
+)(NavBar);
