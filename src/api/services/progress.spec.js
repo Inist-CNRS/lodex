@@ -13,10 +13,23 @@ describe('Progress', () => {
         });
     });
 
-    it('should not change status on start if target is 0', () => {
+    it('should change status on start if target is 0', () => {
         const progress = new Progress();
 
         progress.start(PUBLISH_DOCUMENT, 0);
+
+        expect(progress.getProgress()).toEqual({
+            target: 0,
+            progress: 0,
+            status: PUBLISH_DOCUMENT,
+            symbol: undefined,
+        });
+    });
+
+    it('should not change status on start if target is null', () => {
+        const progress = new Progress();
+
+        progress.start(PUBLISH_DOCUMENT, null);
 
         expect(progress.getProgress()).toEqual({
             target: undefined,
