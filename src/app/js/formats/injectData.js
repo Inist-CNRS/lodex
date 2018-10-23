@@ -133,17 +133,18 @@ export default url => FormatView => {
                 );
             }
 
+            if (!isLoaded) {
+                return <Loading>{polyglot.t('loading')}</Loading>;
+            }
+
             return (
-                <div>
-                    {!isLoaded && <Loading>{polyglot.t('loading')}</Loading>}
-                    <FormatView
-                        {...props}
-                        field={field}
-                        resource={resource}
-                        formatData={formatData}
-                        filterFormatData={this.filterFormatData}
-                    />
-                </div>
+                <FormatView
+                    {...props}
+                    field={field}
+                    resource={resource}
+                    formatData={formatData}
+                    filterFormatData={this.filterFormatData}
+                />
             );
         }
     }

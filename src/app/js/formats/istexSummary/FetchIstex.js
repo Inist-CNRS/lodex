@@ -24,7 +24,7 @@ class FetchIstex extends Component {
 
     componentWillMount() {
         this.props
-            .getData(this.props)
+            .getData()
             .then(data => {
                 this.setState({
                     data,
@@ -49,7 +49,6 @@ class FetchIstex extends Component {
         if (isLoading) {
             return circularProgress;
         }
-
         return children({ ...this.props, data });
     }
 }

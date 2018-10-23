@@ -11,7 +11,7 @@ import AdminOnlyAlert from '../../lib/components/AdminOnlyAlert';
 
 describe('FetchFold', () => {
     const defaultProps = {
-        getData: jest.fn(() => Promise.resolve([])),
+        getData: jest.fn(() => Promise.resolve({ hits: [] })),
         children: jest.fn(() => (
             <div className="children">rendered children</div>
         )),
@@ -37,11 +37,13 @@ describe('FetchFold', () => {
     });
 
     it('should open and fetch data when clicking on button', async () => {
-        const dataPromise = Promise.resolve([
-            { name: 1, count: 10 },
-            { name: 2, count: 20 },
-            { name: 3, count: 30 },
-        ]);
+        const dataPromise = Promise.resolve({
+            hits: [
+                { name: 1, count: 10 },
+                { name: 2, count: 20 },
+                { name: 3, count: 30 },
+            ],
+        });
         const getData = jest.fn(() => dataPromise);
 
         const wrapper = shallow(
@@ -52,7 +54,7 @@ describe('FetchFold', () => {
         button.simulate('click');
         expect(getData).toHaveBeenCalledTimes(1);
         expect(wrapper.find(CircularProgress).length).toBe(1);
-        await dataPromise; // // wait for dataPromise to be resolveda by component
+        await dataPromise; // wait for dataPromise to be resolved by component
         wrapper.update();
         expect(wrapper.find(CircularProgress).length).toBe(0);
         expect(wrapper.find(Folder).length).toBe(0);
@@ -61,11 +63,13 @@ describe('FetchFold', () => {
         expect(defaultProps.children).toHaveBeenCalledWith({
             ...defaultProps,
             getData,
-            data: [
-                { name: 1, count: 10 },
-                { name: 2, count: 20 },
-                { name: 3, count: 30 },
-            ],
+            data: {
+                hits: [
+                    { name: 1, count: 10 },
+                    { name: 2, count: 20 },
+                    { name: 3, count: 30 },
+                ],
+            },
         });
         expect(wrapper.find('p')).toHaveLength(0);
     });
@@ -101,29 +105,6 @@ describe('FetchFold', () => {
         expect(wrapper.find(FolderOpen).length).toBe(0);
         expect(wrapper.find(AdminOnlyAlert)).toHaveLength(0);
         expect(wrapper.find('p')).toHaveLength(0);
-    });
-
-    it('should render not found message if data is empty', async () => {
-        const dataPromise = Promise.resolve([]);
-        const getData = jest.fn(() => dataPromise);
-        const wrapper = shallow(
-            <FetchFold {...defaultProps} getData={getData} />,
-        );
-        const button = wrapper.find(Button);
-        expect(wrapper.find(CircularProgress).length).toBe(0);
-        button.simulate('click');
-        expect(getData).toHaveBeenCalledTimes(1);
-        expect(wrapper.find(CircularProgress).length).toBe(1);
-        await dataPromise; // // wait for dataPromise to be resolveda by component
-        wrapper.update();
-        expect(wrapper.find(CircularProgress).length).toBe(0);
-        expect(wrapper.find(Folder).length).toBe(0);
-        expect(wrapper.find(FolderOpen)).toHaveLength(1);
-        expect(wrapper.find('.children')).toHaveLength(0);
-        expect(defaultProps.children).toHaveBeenCalledTimes(0);
-        const message = wrapper.find('p');
-        expect(wrapper.find('p')).toHaveLength(1);
-        expect(message.text()).toBe('istex_no_result');
     });
 
     afterEach(() => StyleSheetTestUtils.clearBufferAndResumeStyleInjection());

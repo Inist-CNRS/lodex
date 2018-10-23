@@ -25,12 +25,14 @@ describe('getIstexData', () => {
                         },
                     },
                 }),
-            ).toEqual([
-                { name: 'value1', count: 1 },
-                { name: 'value2', count: 2 },
-                { name: 'value3', count: 3 },
-                { name: 'value4', count: 4 },
-            ]);
+            ).toEqual({
+                hits: [
+                    { name: 'value1', count: 1 },
+                    { name: 'value2', count: 2 },
+                    { name: 'value3', count: 3 },
+                    { name: 'value4', count: 4 },
+                ],
+            });
         });
     });
 
@@ -67,16 +69,18 @@ describe('getIstexData', () => {
                         },
                     },
                 }),
-            ).toEqual([
-                { name: 2000, count: 1 },
-                { name: 2005, count: 4 },
-                { name: 2006, count: 3 },
-                { name: 2010, count: 2 },
-            ]);
+            ).toEqual({
+                hits: [
+                    { name: 2000, count: 1 },
+                    { name: 2005, count: 4 },
+                    { name: 2006, count: 3 },
+                    { name: 2010, count: 2 },
+                ],
+            });
         });
 
         it('should return empty array if empty response', () => {
-            expect(parseYearData({})).toEqual([]);
+            expect(parseYearData({})).toEqual({ hits: [] });
         });
     });
 

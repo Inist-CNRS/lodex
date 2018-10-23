@@ -41,7 +41,7 @@ export const IstexSummaryView = ({
 
     const data = parseYearData(formatData);
 
-    if (data.length > 50) {
+    if (data.hits.length > 50) {
         return composeRenderProps(
             <FetchIstex
                 data={data}
@@ -91,7 +91,7 @@ IstexSummaryView.propTypes = {
     fieldStatus: PropTypes.string,
     resource: PropTypes.object.isRequired, // eslint-disable-line
     field: fieldPropTypes.isRequired,
-    formatData: PropTypes.shape({}),
+    formatData: PropTypes.shape({ hits: PropTypes.Array }),
     error: PropTypes.string,
     searchedField: PropTypes.oneOf(searchedFieldValues),
     p: polyglotPropTypes.isRequired,

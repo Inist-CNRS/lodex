@@ -53,13 +53,14 @@ export const getDecadeYearData = ({ issn, to, from, searchedField }) =>
         parseFacetData('publicationDate', ({ keyAsString }) => keyAsString),
     );
 
-export const parseYearData = formatData =>
-    get(formatData, 'aggregations.publicationDate.buckets', [])
+export const parseYearData = formatData => ({
+    hits: get(formatData, 'aggregations.publicationDate.buckets', [])
         .sort((a, b) => a.keyAsString - b.keyAsString)
         .map(({ keyAsString, docCount }) => ({
             name: keyAsString,
             count: docCount,
-        }));
+        })),
+});
 
 export const getVolumeUrl = ({ issn, year, searchedField }) => () => ({
     url: `${ISTEX_API_URL}/document/?q=(${encodeURIComponent(
@@ -75,9 +76,14 @@ export const parseFacetData = (facetName, getName = ({ key }) => key) => ({
         throw error;
     }
 
-    return get(response, ['aggregations', facetName, 'buckets'], []).map(
-        ({ docCount, ...data }) => ({ name: getName(data), count: docCount }),
-    );
+    return {
+        hits: get(response, ['aggregations', facetName, 'buckets'], []).map(
+            ({ docCount, ...data }) => ({
+                name: getName(data),
+                count: docCount,
+            }),
+        ),
+    };
 };
 
 export const parseVolumeData = parseFacetData('host.volume');
@@ -125,5 +131,11 @@ export const getDocumentData = ({ issn, year, volume, issue, searchedField }) =>
         getDocumentUrl({ issn, year, volume, issue, searchedField }),
         fetch,
         parseFetchResult,
-        ({ hits }) => hits,
     );
+
+export const getMoreDocumentUrl = nextPageURI => ({
+    url: nextPageURI,
+});
+
+export const getMoreDocumentData = nextPageURI =>
+    composeAsync(getMoreDocumentUrl, fetch, parseFetchResult)(nextPageURI);

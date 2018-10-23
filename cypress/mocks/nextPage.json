@@ -1,0 +1,35 @@
+{
+    "total": 11,
+    "prevPageURI": "https://api.istex.fr/document/?q=(host.issn=%221366-8714%22%20AND%20host.volume:%2252%22%20AND%20host.issue:%223%22)&size=10&output=id,arkIstex,title,publicationDate,author,host.genre,host.title&defaultOperator=OR&from=0",
+    "firstPageURI": "https://api.istex.fr/document/?q=(host.issn=%221366-8714%22%20AND%20host.volume:%2252%22%20AND%20host.issue:%223%22)&size=10&output=id,arkIstex,title,publicationDate,author,host.genre,host.title&defaultOperator=OR&from=0",
+    "lastPageURI": "https://api.istex.fr/document/?q=(host.issn=%221366-8714%22%20AND%20host.volume:%2252%22%20AND%20host.issue:%223%22)&size=10&output=id,arkIstex,title,publicationDate,author,host.genre,host.title&defaultOperator=OR&from=1",
+    "hits": [
+        {
+            "author": [
+            {
+                "name": "R Naidoo",
+                "affiliations": [
+                "Department of Pathology, University of Natal School of Medicine, Durban, South Africa."
+                ]
+            },
+            {
+                "name": "R Chetty",
+                "affiliations": [
+                "Department of Pathology, University of Natal School of Medicine, Durban, South Africa."
+                ]
+            }
+            ],
+            "host": {
+            "genre": [
+                "journal"
+            ],
+            "title": "Molecular Pathology"
+            },
+            "arkIstex": "ark:/67375/NVC-71GPQBDQ-M",
+            "title": "DNA repair gene status in oesophageal cancer.",
+            "publicationDate": "1999",
+            "id": "F0977265BDBFE22F5B25161CA11021CE6E2105D9",
+            "score": 10.102428
+        }
+    ]
+}

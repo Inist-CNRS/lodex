@@ -65,3 +65,12 @@ export const checkDocuments = (year, volume, issue, documentTitles) => {
             .should('be.visible');
     });
 };
+
+export const loadMore = () => {
+    cy
+        .get('.load-more')
+        .contains('View more results (1)')
+        .click();
+    cy.get('.load-more svg').should('exist');
+    cy.get('.load-more svg').should('not.exist');
+};
