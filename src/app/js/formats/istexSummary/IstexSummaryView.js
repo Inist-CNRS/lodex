@@ -1,32 +1,37 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { StyleSheet, css } from 'aphrodite/no-important';
+import translate from 'redux-polyglot/translate';
+import compose from 'recompose/compose';
 
-import { field as fieldPropTypes } from '../../propTypes';
+import {
+    field as fieldPropTypes,
+    polyglot as polyglotPropTypes,
+} from '../../propTypes';
 import injectData from '../injectData';
-import classnames from 'classnames';
-import IstexYear from './IstexYear';
 import InvalidFormat from '../InvalidFormat';
-import { getYearUrl, parseYearData } from './getIstexData';
+import { getYearUrl, parseYearData, getDecadeData } from './getIstexData';
 import { searchedFieldValues } from './IstexSummaryAdmin';
+import composeRenderProps from '../../lib/composeRenderProps';
+import IstexList from './IstexList';
+import IssueFold from './IssueFold';
+import VolumeFold from './VolumeFold';
+import YearFold from './YearFold';
+import IstexItem from '../istex/IstexItem';
+import FetchIstex from './FetchIstex';
+import DecadeFold from './DecadeFold';
 
-const styles = StyleSheet.create({
-    text: {
-        fontSize: '1.5rem',
-    },
-    rejected: {
-        textDecoration: 'line-through',
-    },
-    li: {
-        listStyleType: 'none',
-    },
-});
+export const FoldList = props => <IstexList {...props} />;
+export const IstexDocument = ({ item }) => <IstexItem {...item} />;
+IstexDocument.propTypes = {
+    item: PropTypes.shape({ id: PropTypes.string.isRequired }).isRequired,
+};
 
 export const IstexSummaryView = ({
     formatData,
     field,
     resource,
     searchedField,
+    p: polyglot,
 }) => {
     if (!resource[field.name] || !searchedField) {
         return (
@@ -34,18 +39,51 @@ export const IstexSummaryView = ({
         );
     }
 
-    return (
-        <ul className={classnames('istex-year', css(styles.text))}>
-            {parseYearData(formatData).map(year => (
-                <li key={year} className={css(styles.li)}>
-                    <IstexYear
-                        issn={resource[field.name]}
-                        year={year}
-                        searchedField={searchedField}
-                    />
-                </li>
-            ))}
-        </ul>
+    const data = parseYearData(formatData);
+
+    if (data.length > 50) {
+        return composeRenderProps(
+            <FetchIstex
+                data={data}
+                issn={resource[field.name]}
+                searchedField={searchedField}
+                getData={getDecadeData({
+                    issn: resource[field.name],
+                    searchedField: searchedField,
+                })}
+                polyglot={polyglot}
+            />,
+            [
+                FoldList,
+                DecadeFold,
+                FoldList,
+                YearFold,
+                FoldList,
+                VolumeFold,
+                FoldList,
+                IssueFold,
+                FoldList,
+                IstexDocument,
+            ],
+        );
+    }
+
+    return composeRenderProps(
+        <FoldList
+            data={data}
+            issn={resource[field.name]}
+            searchedField={searchedField}
+            polyglot={polyglot}
+        />,
+        [
+            YearFold,
+            FoldList,
+            VolumeFold,
+            FoldList,
+            IssueFold,
+            FoldList,
+            IstexDocument,
+        ],
     );
 };
 
@@ -56,6 +94,7 @@ IstexSummaryView.propTypes = {
     formatData: PropTypes.shape({}),
     error: PropTypes.string,
     searchedField: PropTypes.oneOf(searchedFieldValues),
+    p: polyglotPropTypes.isRequired,
 };
 
 IstexSummaryView.defaultProps = {
@@ -66,4 +105,4 @@ IstexSummaryView.defaultProps = {
     error: null,
 };
 
-export default injectData(getYearUrl)(IstexSummaryView);
+export default compose(injectData(getYearUrl), translate)(IstexSummaryView);

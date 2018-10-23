@@ -6,15 +6,18 @@ import Button from 'material-ui/FlatButton';
 import { CircularProgress } from 'material-ui';
 import { StyleSheetTestUtils } from 'aphrodite';
 
-import { FetchFold } from './FetchFold';
+import FetchFold from './FetchFold';
 import AdminOnlyAlert from '../../lib/components/AdminOnlyAlert';
 
 describe('FetchFold', () => {
     const defaultProps = {
         getData: jest.fn(() => Promise.resolve([])),
-        children: jest.fn(),
+        children: jest.fn(() => (
+            <div className="children">rendered children</div>
+        )),
         label: 'label',
-        p: { t: v => v },
+        count: 10,
+        polyglot: { t: v => v },
     };
 
     beforeEach(() => {
@@ -30,10 +33,15 @@ describe('FetchFold', () => {
         expect(defaultProps.children).toHaveBeenCalledTimes(0);
         expect(defaultProps.getData).toHaveBeenCalledTimes(0);
         expect(wrapper.find(CircularProgress)).toHaveLength(0);
+        expect(wrapper.find('p')).toHaveLength(0);
     });
 
     it('should open and fetch data when clicking on button', async () => {
-        const dataPromise = Promise.resolve([1, 2, 3]);
+        const dataPromise = Promise.resolve([
+            { name: 1, count: 10 },
+            { name: 2, count: 20 },
+            { name: 3, count: 30 },
+        ]);
         const getData = jest.fn(() => dataPromise);
 
         const wrapper = shallow(
@@ -48,12 +56,18 @@ describe('FetchFold', () => {
         wrapper.update();
         expect(wrapper.find(CircularProgress).length).toBe(0);
         expect(wrapper.find(Folder).length).toBe(0);
-        expect(wrapper.find(FolderOpen).length).toBe(1);
-        expect(wrapper.find('li')).toHaveLength(3);
-        expect(defaultProps.children).toHaveBeenCalledTimes(3);
-        expect(defaultProps.children).toHaveBeenCalledWith(1);
-        expect(defaultProps.children).toHaveBeenCalledWith(2);
-        expect(defaultProps.children).toHaveBeenCalledWith(3);
+        expect(wrapper.find(FolderOpen)).toHaveLength(1);
+        expect(wrapper.find('.children')).toHaveLength(1);
+        expect(defaultProps.children).toHaveBeenCalledWith({
+            ...defaultProps,
+            getData,
+            data: [
+                { name: 1, count: 10 },
+                { name: 2, count: 20 },
+                { name: 3, count: 30 },
+            ],
+        });
+        expect(wrapper.find('p')).toHaveLength(0);
     });
 
     it('should display an error when getData fail', async () => {
@@ -78,6 +92,38 @@ describe('FetchFold', () => {
         expect(alert).toHaveLength(1);
         expect(alert.prop('children')).toBe('istex_error');
         expect(defaultProps.children).toHaveBeenCalledTimes(0);
+        expect(wrapper.find('p')).toHaveLength(0);
+    });
+
+    it('should not render if count is 0', () => {
+        const wrapper = shallow(<FetchFold {...defaultProps} count={0} />);
+        expect(wrapper.find(Folder).length).toBe(0);
+        expect(wrapper.find(FolderOpen).length).toBe(0);
+        expect(wrapper.find(AdminOnlyAlert)).toHaveLength(0);
+        expect(wrapper.find('p')).toHaveLength(0);
+    });
+
+    it('should render not found message if data is empty', async () => {
+        const dataPromise = Promise.resolve([]);
+        const getData = jest.fn(() => dataPromise);
+        const wrapper = shallow(
+            <FetchFold {...defaultProps} getData={getData} />,
+        );
+        const button = wrapper.find(Button);
+        expect(wrapper.find(CircularProgress).length).toBe(0);
+        button.simulate('click');
+        expect(getData).toHaveBeenCalledTimes(1);
+        expect(wrapper.find(CircularProgress).length).toBe(1);
+        await dataPromise; // // wait for dataPromise to be resolveda by component
+        wrapper.update();
+        expect(wrapper.find(CircularProgress).length).toBe(0);
+        expect(wrapper.find(Folder).length).toBe(0);
+        expect(wrapper.find(FolderOpen)).toHaveLength(1);
+        expect(wrapper.find('.children')).toHaveLength(0);
+        expect(defaultProps.children).toHaveBeenCalledTimes(0);
+        const message = wrapper.find('p');
+        expect(wrapper.find('p')).toHaveLength(1);
+        expect(message.text()).toBe('istex_no_result');
     });
 
     afterEach(() => StyleSheetTestUtils.clearBufferAndResumeStyleInjection());

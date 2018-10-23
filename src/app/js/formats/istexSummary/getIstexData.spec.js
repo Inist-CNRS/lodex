@@ -16,16 +16,21 @@ describe('getIstexData', () => {
                         aggregations: {
                             'facet.name': {
                                 buckets: [
-                                    { key: 'value1' },
-                                    { key: 'value2' },
-                                    { key: 'value3' },
-                                    { key: 'value4' },
+                                    { key: 'value1', docCount: 1 },
+                                    { key: 'value2', docCount: 2 },
+                                    { key: 'value3', docCount: 3 },
+                                    { key: 'value4', docCount: 4 },
                                 ],
                             },
                         },
                     },
                 }),
-            ).toEqual(['value1', 'value2', 'value3', 'value4']);
+            ).toEqual([
+                { name: 'value1', count: 1 },
+                { name: 'value2', count: 2 },
+                { name: 'value3', count: 3 },
+                { name: 'value4', count: 4 },
+            ]);
         });
     });
 
@@ -54,15 +59,20 @@ describe('getIstexData', () => {
                     aggregations: {
                         publicationDate: {
                             buckets: [
-                                { keyAsString: 2000 },
-                                { keyAsString: 2010 },
-                                { keyAsString: 2006 },
-                                { keyAsString: 2005 },
+                                { keyAsString: 2000, docCount: 1 },
+                                { keyAsString: 2010, docCount: 2 },
+                                { keyAsString: 2006, docCount: 3 },
+                                { keyAsString: 2005, docCount: 4 },
                             ],
                         },
                     },
                 }),
-            ).toEqual([2000, 2005, 2006, 2010]);
+            ).toEqual([
+                { name: 2000, count: 1 },
+                { name: 2005, count: 4 },
+                { name: 2006, count: 3 },
+                { name: 2010, count: 2 },
+            ]);
         });
 
         it('should return empty array if empty response', () => {

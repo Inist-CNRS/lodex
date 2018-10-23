@@ -3,11 +3,9 @@ import PropTypes from 'prop-types';
 import Folder from 'material-ui/svg-icons/file/folder';
 import FolderOpen from 'material-ui/svg-icons/file/folder-open';
 import Arrow from 'material-ui/svg-icons/hardware/keyboard-arrow-down';
-import translate from 'redux-polyglot/translate';
 import { StyleSheet, css } from 'aphrodite/no-important';
 import Button from 'material-ui/FlatButton';
 import CircularProgress from 'material-ui/CircularProgress';
-import get from 'lodash.get';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import AdminOnlyAlert from '../../lib/components/AdminOnlyAlert';
@@ -24,6 +22,15 @@ const styles = StyleSheet.create({
     labelText: {
         marginLeft: 8,
     },
+    count: {
+        marginLeft: 8,
+        backgroundColor: '#EEE',
+        borderRadius: '0.7em',
+        fontSize: '0.7em',
+        lineHeight: '0.7em',
+        padding: '0.5em',
+        fontStyle: 'italic',
+    },
     arrowClose: {
         transform: 'rotate(-90deg)',
     },
@@ -39,7 +46,7 @@ const circularProgress = (
     />
 );
 
-export class FetchFold extends Component {
+class FetchFold extends Component {
     state = {
         data: null,
         error: null,
@@ -77,11 +84,14 @@ export class FetchFold extends Component {
     };
 
     render() {
-        const { label, p: polyglot, children } = this.props;
+        const { label, count, polyglot, children } = this.props;
         const { error, data, isOpen, isLoading } = this.state;
 
         if (error) {
             return <AdminOnlyAlert>{polyglot.t('istex_error')}</AdminOnlyAlert>;
+        }
+        if (count === 0) {
+            return null;
         }
 
         return (
@@ -98,21 +108,15 @@ export class FetchFold extends Component {
                             <span className={css(styles.labelText)}>
                                 {label}
                             </span>
+                            <span className={css(styles.count)}>{count}</span>
                             {isLoading && circularProgress}
                         </div>
                     </Button>
-                    {isOpen && (
-                        <ul>
-                            {data.map(value => (
-                                <li
-                                    key={get(value, 'id', value)}
-                                    className={css(styles.li)}
-                                >
-                                    {children(value)}
-                                </li>
-                            ))}
-                        </ul>
-                    )}
+                    {isOpen && data.length
+                        ? children({ ...this.props, data })
+                        : null}
+                    {isOpen &&
+                        !data.length && <p>{polyglot.t('istex_no_result')}</p>}
                 </div>
             </div>
         );
@@ -121,9 +125,10 @@ export class FetchFold extends Component {
 
 FetchFold.propTypes = {
     label: PropTypes.string.isRequired,
-    p: polyglotPropTypes.isRequired,
+    polyglot: polyglotPropTypes.isRequired,
     getData: PropTypes.func.isRequired,
     children: PropTypes.func.isRequired,
+    count: PropTypes.number.isRequired,
 };
 
-export default translate(FetchFold);
+export default FetchFold;
