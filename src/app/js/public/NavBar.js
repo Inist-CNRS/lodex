@@ -107,7 +107,7 @@ export const NavBar = ({
         <nav className={css(styles.container)}>
             <img
                 className={css(styles.icon)}
-                src="http://localhost:8080/favicon.ico"
+                src="/favicon.ico"
                 ref={el => (img = el)}
                 onError={() => (img.style.display = 'none')}
             />
