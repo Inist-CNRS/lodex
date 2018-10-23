@@ -108,7 +108,7 @@ export const NavBar = ({
 }) => {
     let img;
     return (
-        <div className={css(styles.container)}>
+        <nav className={css(styles.container)}>
             <img
                 className={css(styles.icon)}
                 src="http://localhost:8080/favicon.ico"
@@ -152,7 +152,7 @@ export const NavBar = ({
                     </Link>
                 )}
             </div>
-        </div>
+        </nav>
     );
 };
 
