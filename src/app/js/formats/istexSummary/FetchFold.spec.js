@@ -54,7 +54,7 @@ describe('FetchFold', () => {
         button.simulate('click');
         expect(getData).toHaveBeenCalledTimes(1);
         expect(wrapper.find(CircularProgress).length).toBe(1);
-        await dataPromise; // // wait for dataPromise to be resolveda by component
+        await dataPromise; // wait for dataPromise to be resolved by component
         wrapper.update();
         expect(wrapper.find(CircularProgress).length).toBe(0);
         expect(wrapper.find(Folder).length).toBe(0);

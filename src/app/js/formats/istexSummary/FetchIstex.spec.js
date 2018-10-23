@@ -33,7 +33,7 @@ describe('FetchIstex', () => {
         );
 
         expect(wrapper.find(CircularProgress)).toHaveLength(1);
-        await dataPromise; // // wait for dataPromise to be resolveda by component
+        await dataPromise; // wait for dataPromise to be resolved by component
         wrapper.update();
         expect(wrapper.find(CircularProgress)).toHaveLength(0);
         expect(wrapper.find(AdminOnlyAlert)).toHaveLength(0);
@@ -53,7 +53,7 @@ describe('FetchIstex', () => {
         );
 
         expect(wrapper.find(CircularProgress)).toHaveLength(1);
-        await dataPromise.catch(v => v); // // wait for dataPromise to be resolveda by component
+        await dataPromise.catch(v => v); // wait for dataPromise to be rejected by component
         wrapper.update();
         expect(wrapper.find(CircularProgress)).toHaveLength(0);
         expect(wrapper.find('#children')).toHaveLength(0);
