@@ -16,9 +16,7 @@ const YearFold = ({
     <FetchFold
         label={year}
         count={count}
-        issn={issn}
         year={year}
-        searchedField={searchedField}
         polyglot={polyglot}
         getData={getVolumeData({
             issn,

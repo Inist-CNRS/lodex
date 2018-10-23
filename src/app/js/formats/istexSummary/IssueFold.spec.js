@@ -28,11 +28,7 @@ describe('IssueFold', () => {
         expect(fetchFold.props()).toEqual({
             label: 'issue: issue',
             count: 'count',
-            issn: 'issn',
-            year: 'year',
-            volume: 'volume',
             issue: 'issue',
-            searchedField: 'searchedField',
             getData: 'getData',
             children: 'children',
             polyglot: defaultProps.polyglot,

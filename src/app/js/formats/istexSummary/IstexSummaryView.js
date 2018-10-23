@@ -20,8 +20,8 @@ import IstexItem from '../istex/IstexItem';
 import FetchIstex from './FetchIstex';
 import DecadeFold from './DecadeFold';
 
-export const FoldList = props => <IstexList {...props} />;
 export const IstexDocument = ({ item }) => <IstexItem {...item} />;
+
 IstexDocument.propTypes = {
     item: PropTypes.shape({ id: PropTypes.string.isRequired }).isRequired,
 };
@@ -42,49 +42,45 @@ export const IstexSummaryView = ({
     const data = parseYearData(formatData);
 
     if (data.hits.length > 50) {
-        return composeRenderProps(
-            <FetchIstex
-                data={data}
-                issn={resource[field.name]}
-                searchedField={searchedField}
-                getData={getDecadeData({
-                    issn: resource[field.name],
-                    searchedField: searchedField,
-                })}
-                polyglot={polyglot}
-            />,
-            [
-                FoldList,
-                DecadeFold,
-                FoldList,
-                YearFold,
-                FoldList,
-                VolumeFold,
-                FoldList,
-                IssueFold,
-                FoldList,
-                IstexDocument,
-            ],
-        );
+        return composeRenderProps([
+            FetchIstex,
+            IstexList,
+            DecadeFold,
+            IstexList,
+            YearFold,
+            IstexList,
+            VolumeFold,
+            IstexList,
+            IssueFold,
+            IstexList,
+            IstexDocument,
+        ])({
+            data: data,
+            issn: resource[field.name],
+            searchedField: searchedField,
+            getData: getDecadeData({
+                issn: resource[field.name],
+                searchedField: searchedField,
+            }),
+            polyglot: polyglot,
+        });
     }
 
-    return composeRenderProps(
-        <FoldList
-            data={data}
-            issn={resource[field.name]}
-            searchedField={searchedField}
-            polyglot={polyglot}
-        />,
-        [
-            YearFold,
-            FoldList,
-            VolumeFold,
-            FoldList,
-            IssueFold,
-            FoldList,
-            IstexDocument,
-        ],
-    );
+    return composeRenderProps([
+        IstexList,
+        YearFold,
+        IstexList,
+        VolumeFold,
+        IstexList,
+        IssueFold,
+        IstexList,
+        IstexDocument,
+    ])({
+        data: data,
+        issn: resource[field.name],
+        searchedField: searchedField,
+        polyglot: polyglot,
+    });
 };
 
 IstexSummaryView.propTypes = {

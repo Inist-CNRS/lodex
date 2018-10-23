@@ -53,6 +53,7 @@ class IstexList extends Component {
                 </ul>
             );
         }
+
         return (
             <div>
                 <ul>

@@ -1,15 +1,16 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 
-import { IstexSummaryView, FoldList, IstexDocument } from './IstexSummaryView';
+import { IstexSummaryView, IstexDocument } from './IstexSummaryView';
 import composeRenderProps from '../../lib/composeRenderProps';
 import { parseYearData, getDecadeData } from './getIstexData';
+import IstexList from './IstexList';
 import IssueFold from './IssueFold';
 import VolumeFold from './VolumeFold';
 import YearFold from './YearFold';
-import FetchIstex from './FetchIstex';
 import DecadeFold from './DecadeFold';
 import InvalidFormat from '../InvalidFormat';
+import FetchIstex from './FetchIstex';
 
 jest.mock('../../lib/composeRenderProps');
 jest.mock('./getIstexData');
@@ -24,32 +25,33 @@ describe('IstexSummaryView', () => {
         searchedField: 'searchedField',
         p: { t: v => v },
     };
+    const renderComposedChild = jest.fn(() => <div>Composed Child</div>);
 
     beforeAll(() => {
         parseYearData.mockImplementation(v => v);
-        composeRenderProps.mockImplementation(() => <div>Composed Child</div>);
+        composeRenderProps.mockImplementation(() => renderComposedChild);
     });
 
     it('should render Fold for year volume issue and document', () => {
         const wrapper = shallow(<IstexSummaryView {...defaultProps} />);
 
-        expect(composeRenderProps).toBeCalledWith(
-            <FoldList
-                data={{ hits: [1, 2, 3] }}
-                issn={'value'}
-                searchedField={'searchedField'}
-                polyglot={defaultProps.p}
-            />,
-            [
-                YearFold,
-                FoldList,
-                VolumeFold,
-                FoldList,
-                IssueFold,
-                FoldList,
-                IstexDocument,
-            ],
-        );
+        expect(composeRenderProps).toHaveBeenCalledWith([
+            IstexList,
+            YearFold,
+            IstexList,
+            VolumeFold,
+            IstexList,
+            IssueFold,
+            IstexList,
+            IstexDocument,
+        ]);
+
+        expect(renderComposedChild).toHaveBeenCalledWith({
+            data: { hits: [1, 2, 3] },
+            issn: 'value',
+            searchedField: 'searchedField',
+            polyglot: defaultProps.p,
+        });
         expect(parseYearData).toHaveBeenCalledWith({ hits: [1, 2, 3] });
         expect(wrapper.find('div').text()).toEqual('Composed Child');
     });
@@ -62,30 +64,30 @@ describe('IstexSummaryView', () => {
             />,
         );
 
-        expect(composeRenderProps).toBeCalledWith(
-            <FetchIstex
-                data={{ hits: { length: 51 } }}
-                issn={'value'}
-                searchedField={'searchedField'}
-                getData={getDecadeData({
-                    issn: 'value',
-                    searchedField: 'searchedField',
-                })}
-                polyglot={defaultProps.p}
-            />,
-            [
-                FoldList,
-                DecadeFold,
-                FoldList,
-                YearFold,
-                FoldList,
-                VolumeFold,
-                FoldList,
-                IssueFold,
-                FoldList,
-                IstexDocument,
-            ],
-        );
+        expect(composeRenderProps).toHaveBeenCalledWith([
+            FetchIstex,
+            IstexList,
+            DecadeFold,
+            IstexList,
+            YearFold,
+            IstexList,
+            VolumeFold,
+            IstexList,
+            IssueFold,
+            IstexList,
+            IstexDocument,
+        ]);
+
+        expect(renderComposedChild).toHaveBeenCalledWith({
+            data: { hits: { length: 51 } },
+            issn: 'value',
+            searchedField: 'searchedField',
+            getData: getDecadeData({
+                issn: 'value',
+                searchedField: 'searchedField',
+            }),
+            polyglot: defaultProps.p,
+        });
         expect(parseYearData).toHaveBeenCalledWith({ hits: { length: 51 } });
         expect(wrapper.find('div').text()).toEqual('Composed Child');
     });
@@ -118,6 +120,7 @@ describe('IstexSummaryView', () => {
     afterEach(() => {
         parseYearData.mockClear();
         composeRenderProps.mockClear();
+        renderComposedChild.mockClear();
     });
 
     afterAll(() => {

@@ -17,10 +17,7 @@ const VolumeFold = ({
     <FetchFold
         label={`${polyglot.t('volume')}: ${volume}`}
         count={count}
-        issn={issn}
-        year={year}
         volume={volume}
-        searchedField={searchedField}
         polyglot={polyglot}
         getData={getIssueData({
             issn,

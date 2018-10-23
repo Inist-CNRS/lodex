@@ -26,9 +26,7 @@ describe('YearFold', () => {
         expect(fetchFold.props()).toEqual({
             label: 'year',
             count: 'count',
-            issn: 'issn',
             year: 'year',
-            searchedField: 'searchedField',
             getData: 'getData',
             children: 'children',
             polyglot: defaultProps.polyglot,
