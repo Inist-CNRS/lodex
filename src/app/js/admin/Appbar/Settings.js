@@ -100,7 +100,7 @@ class SettingsComponent extends Component {
                 <FlatButton
                     className="btn-danger-zone"
                     onClick={this.handleTouchTap}
-                    label={polyglot.t('settings')}
+                    label={polyglot.t('clear')}
                     labelPosition="before"
                     icon={<ArrowDown />}
                     style={styles.button}

@@ -48,7 +48,6 @@
 "cover_document"	"Only present on certain resource"	"Présente uniquement sur certaines ressources"
 "dataset_characteristics"	"Characteristics"	"Caractéristiques"
 "export"	"Export as %{type}"	"Exporter en %{type}"
-"settings"	"Clear"	"Effacer"
 "danger_zone"	"Danger zone"	"Zone de danger"
 "clear"	"Clear"	"Effacer"
 "clear_publish"	"Clear published"	"Effacer les données publiées"
