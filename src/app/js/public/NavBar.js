@@ -10,9 +10,13 @@ import { faCogs } from '@fortawesome/free-solid-svg-icons/faCogs';
 import { faSignInAlt } from '@fortawesome/free-solid-svg-icons/faSignInAlt';
 import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons/faSignOutAlt';
 import { connect } from 'react-redux';
+import { config } from '@fortawesome/fontawesome-svg-core';
 
-import { fromUser } from '../sharedSelectors';
+import { fromUser, fromFields } from '../sharedSelectors';
 import { logout } from '../user';
+import { field as fieldPropTypes } from '../propTypes';
+
+config.autoAddCss = false;
 
 const styles = StyleSheet.create({
     container: {
@@ -34,6 +38,7 @@ const styles = StyleSheet.create({
     },
     menuItem: {
         width: '100%',
+        height: 75,
         padding: 10,
         display: 'flex',
         flexDirection: 'column',
@@ -41,11 +46,12 @@ const styles = StyleSheet.create({
         textDecoration: 'none',
         color: '#DDD',
         cursor: 'pointer',
+        justifyContent: 'center',
         ':hover': {
             textDecoration: 'none',
             color: '#DDD',
             fontWeight: 'bold',
-            backgroundColor: '#AAA',
+            backgroundColor: '#888',
         },
     },
     menuItemIcon: {
@@ -79,7 +85,7 @@ MenuItem.propTypes = {
     icon: PropTypes.object.isRequired,
 };
 
-const NavBar = ({ role, logout }) => {
+const NavBar = ({ role, canBeSearched, graphFields, logout }) => {
     let img;
     return (
         <div className={css(styles.container)}>
@@ -93,8 +99,10 @@ const NavBar = ({ role, logout }) => {
                 <Link to="/" className={css(styles.link)}>
                     <MenuItem label="Home" icon={faHome} />
                 </Link>
-                <MenuItem label="Chart" icon={faChartArea} />
-                <MenuItem label="Search" icon={faSearch} />
+                {!!graphFields.length && (
+                    <MenuItem label="Chart" icon={faChartArea} />
+                )}
+                {canBeSearched && <MenuItem label="Search" icon={faSearch} />}
             </div>
             <div className={css(styles.last)}>
                 {role === 'admin' && (
@@ -123,10 +131,14 @@ const NavBar = ({ role, logout }) => {
 NavBar.propTypes = {
     role: PropTypes.oneOf(['admin', 'user', 'notLogged']).isRequired,
     logout: PropTypes.func.isRequired,
+    canBeSearched: PropTypes.bool.isRequired,
+    graphFields: PropTypes.arrayOf(fieldPropTypes).isRequired,
 };
 
 const mapStasteToProps = state => ({
     role: fromUser.getRole(state),
+    canBeSearched: fromFields.canBeSearched(state),
+    graphFields: fromFields.getGraphFields(state),
 });
 
 const mapDispatchToProps = {
