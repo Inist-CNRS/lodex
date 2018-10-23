@@ -24,15 +24,15 @@ export const ActionsComponent = ({
         return (
             <div>
                 <FlatButton
-                    className="btn-exit-column-edition"
-                    label={polyglot.t('cancel')}
-                    onClick={onCancel}
-                />
-                <FlatButton
                     className="btn-save"
                     label={polyglot.t('save')}
                     secondary
                     onClick={onSave}
+                />
+                <FlatButton
+                    className="btn-exit-column-edition"
+                    label={polyglot.t('cancel')}
+                    onClick={onCancel}
                 />
             </div>
         );
@@ -41,11 +41,6 @@ export const ActionsComponent = ({
     if (step === 0) {
         return (
             <div>
-                <FlatButton
-                    className="btn-exit-column-edition"
-                    label={polyglot.t('cancel')}
-                    onClick={onCancel}
-                />
                 <FlatButton
                     className="btn-next"
                     label={polyglot.t('next')}
@@ -58,6 +53,11 @@ export const ActionsComponent = ({
                     secondary
                     onClick={onSave}
                 />
+                <FlatButton
+                    className="btn-exit-column-edition"
+                    label={polyglot.t('cancel')}
+                    onClick={onCancel}
+                />
             </div>
         );
     }
@@ -65,11 +65,6 @@ export const ActionsComponent = ({
     if (step === stepsCount - 1) {
         return (
             <div>
-                <FlatButton
-                    className="btn-exit-column-edition"
-                    label={polyglot.t('cancel')}
-                    onClick={onCancel}
-                />
                 <FlatButton
                     className="btn-previous"
                     label={polyglot.t('previous')}
@@ -82,17 +77,17 @@ export const ActionsComponent = ({
                     secondary
                     onClick={onSave}
                 />
+                <FlatButton
+                    className="btn-exit-column-edition"
+                    label={polyglot.t('cancel')}
+                    onClick={onCancel}
+                />
             </div>
         );
     }
 
     return (
         <div>
-            <FlatButton
-                className="btn-exit-column-edition"
-                label={polyglot.t('cancel')}
-                onClick={onCancel}
-            />
             <FlatButton
                 className="btn-previous"
                 label={polyglot.t('previous')}
@@ -110,6 +105,11 @@ export const ActionsComponent = ({
                 label={polyglot.t('save')}
                 secondary
                 onClick={onSave}
+            />
+            <FlatButton
+                className="btn-exit-column-edition"
+                label={polyglot.t('cancel')}
+                onClick={onCancel}
             />
         </div>
     );
