@@ -79,7 +79,6 @@ module.exports = function convertToExtendedJsonLd(data, feed) {
         ...data.content,
     };
     newHit['@id'] = `https://api.istex.fr/${data.content.arkIstex}`;
-    newHit['@type'] = 'http://purl.org/ontology/bibo/Document';
     newHit[config.istexQuery.linked] = data.lodex.uri;
 
     this.searchKeys.forEach(key => {
