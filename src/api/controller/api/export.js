@@ -17,7 +17,8 @@ export const getExporter = type => {
 
 export const getExporterConfig = () => ({
     ...config,
-    host: getHost(),
+    host: getCleanHost(),
+    rawHost: getHost(),
     cleanHost: getCleanHost(),
 });
 

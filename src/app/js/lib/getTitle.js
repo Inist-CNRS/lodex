@@ -1,7 +1,7 @@
-import { getHost } from '../../../common/uris';
+import { getCleanHost } from '../../../common/uris';
 
 export default () => {
-    const host = getHost();
+    const host = getCleanHost();
 
     return host ? /https?:\/\/([\w-]+)/.exec(host)[1] : 'example';
 };
