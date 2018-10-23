@@ -374,6 +374,7 @@
 "all"	"All"	"Tous"
 "document"	"Document"	"Document"
 "node_color"	"Node Color"	"Couleur des nœuds"
+"text_color"	"Text Color"	"Couleur du texte"
 "network"	"Graph - Network"	"Graphique - Réseaux"
 "bubbleChart"	"Graph - Bubble"	"Graphique - Graphe à bulles"
 "diameter"	"Chart Diameter"	"Diamètre des bulles"
