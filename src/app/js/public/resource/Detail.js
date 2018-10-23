@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import GraphSummary from '../graph/GraphSummary';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
 import { CardActions } from 'material-ui/Card';
@@ -150,7 +149,6 @@ export const DetailComponent = ({
                 <meta name="description" content={description} />
             </Helmet>
             <div className="header-resource-section">
-                <GraphSummary />
                 <div style={styles.container}>
                     <div style={styles.propertiesContainer}>
                         {topFields.map(field => (

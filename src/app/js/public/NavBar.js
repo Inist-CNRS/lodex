@@ -22,6 +22,7 @@ import {
 } from '../propTypes';
 import Drawer from './Drawer';
 import Search from './search/Search';
+import GraphSummary from './graph/GraphSummary';
 
 const ANIMATION_DURATION = 300; // ms
 
@@ -103,6 +104,7 @@ MenuItem.propTypes = {
 export class NavBar extends Component {
     state = {
         searchDrawer: 'closed',
+        graphDrawer: 'closed',
     };
 
     openSearch = () => {
@@ -111,11 +113,11 @@ export class NavBar extends Component {
         if (searchDrawer === 'open') {
             return;
         }
-
-        this.setState({ searchDrawer: 'open' });
+        this.closeGraph();
+        this.setState({ searchDrawer: 'open', graphDrawer: 'closing' });
     };
 
-    closeDrawer = () => {
+    closeSearch = () => {
         const { searchDrawer } = this.state;
 
         if (searchDrawer === 'closed') {
@@ -130,6 +132,37 @@ export class NavBar extends Component {
         });
     };
 
+    openGraph = () => {
+        const { graphDrawer } = this.state;
+        this.closeSearch();
+
+        if (graphDrawer === 'open') {
+            return;
+        }
+
+        this.setState({ graphDrawer: 'open' });
+    };
+
+    closeGraph = () => {
+        const { graphDrawer } = this.state;
+
+        if (graphDrawer === 'closed') {
+            return;
+        }
+
+        this.setState({ graphDrawer: 'closing' }, () => {
+            setTimeout(
+                () => this.setState({ graphDrawer: 'closed' }),
+                ANIMATION_DURATION,
+            );
+        });
+    };
+
+    closeAll = () => {
+        this.closeSearch();
+        this.closeGraph();
+    };
+
     render() {
         const {
             role,
@@ -138,7 +171,7 @@ export class NavBar extends Component {
             logout,
             p: polyglot,
         } = this.props;
-        const { searchDrawer } = this.state;
+        const { searchDrawer, graphDrawer } = this.state;
         let img;
 
         return (
@@ -155,12 +188,14 @@ export class NavBar extends Component {
                             <MenuItem
                                 label={polyglot.t('home')}
                                 icon={faHome}
+                                onClick={this.closeAll}
                             />
                         </Link>
                         {!!graphFields.length && (
                             <MenuItem
                                 label={polyglot.t('graphs')}
                                 icon={faChartArea}
+                                onClick={this.openGraph}
                             />
                         )}
                         {canBeSearched && (
@@ -199,11 +234,18 @@ export class NavBar extends Component {
                     </div>
                 </nav>
                 <Drawer
-                    status={searchDrawer}
-                    onClose={this.closeDrawer}
+                    status={graphDrawer}
+                    onClose={this.closeGraph}
                     animationDuration={ANIMATION_DURATION}
                 >
-                    {() => <Search closeDrawer={this.closeDrawer} />}
+                    {() => <GraphSummary closeDrawer={this.closeGraph} />}
+                </Drawer>
+                <Drawer
+                    status={searchDrawer}
+                    onClose={this.closeSearch}
+                    animationDuration={ANIMATION_DURATION}
+                >
+                    {() => <Search closeDrawer={this.closeSearch} />}
                 </Drawer>
             </Fragment>
         );

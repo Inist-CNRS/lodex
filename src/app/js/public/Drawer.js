@@ -28,16 +28,17 @@ const styles = StyleSheet.create({
         backgroundColor: '#f8f8f8',
         width: DRAWER_WIDTH,
         overflowY: 'auto',
-        boxShadow: '0 2px 1rem #777',
     },
     closed: {
         transform: `translateX(-${DRAWER_WIDTH}px)`,
     },
     closing: {
         transform: `translateX(-${DRAWER_WIDTH}px)`,
+        boxShadow: '0 2px 1rem #777',
     },
     open: {
         transform: 'translate(0)',
+        boxShadow: '0 2px 1rem #777',
     },
     mask: {
         position: 'absolute',
