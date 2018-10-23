@@ -24,13 +24,14 @@ const styles = StyleSheet.create({
         position: 'fixed',
         top: 0,
         left: 0,
-        backgroundColor: '#555',
+        backgroundColor: 'white',
         height: '100vh',
         minWidth: 75,
         marginRight: 20,
         display: 'flex',
         flexDirection: 'column',
         paddingTop: 10,
+        borderRight: '1px solid #E3EAF2',
     },
     icon: {
         maxHeight: 'fit-content',
@@ -43,24 +44,31 @@ const styles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'column',
         textAlign: 'center',
-        textDecoration: 'none',
-        color: '#DDD',
+        color: '#7DBD42',
         cursor: 'pointer',
         justifyContent: 'center',
+        userSelect: 'none',
         ':hover': {
-            textDecoration: 'none',
-            color: '#DDD',
+            color: '#B22F90',
             fontWeight: 'bold',
-            backgroundColor: '#888',
+        },
+        ':active': {
+            color: '#F48022',
         },
     },
     menuItemIcon: {
         margin: '0 auto',
     },
     link: {
+        textDecoration: 'none',
         ':hover': {
             textDecoration: 'none',
-            color: '#DDD',
+        },
+        ':focus': {
+            textDecoration: 'none',
+        },
+        ':visited': {
+            textDecoration: 'none',
         },
     },
     last: {
