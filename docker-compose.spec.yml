@@ -5,6 +5,7 @@ services:
             context: .
             args:
                 node_env: e2e
+        user: "${UID}:${GID}"
         environment:
             NODE_ENV: "e2e"
             EZMASTER_PUBLIC_URL: ${EZMASTER_PUBLIC_URL}
@@ -18,15 +19,16 @@ services:
             - 3000:3000
 
     istex-api:
-        image: node:8.9.1
+        image: node:10
         volumes:
             - .:/app
         working_dir: /app
+        user: "${UID}:${GID}"
         environment:
             NODE_ENV: "test"
         ports:
             - 3011:3011
-        command: node --require babel-register ./cypress/mocks/istexApi.js
+        command: node --require @babel/register ./cypress/mocks/istexApi.js
 
     mongo:
         image: mongo:3.4.1

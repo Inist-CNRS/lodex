@@ -3,6 +3,14 @@
 
 export NODE_ENV ?= development
 
+ifneq "$(CI)" "true"
+	USER_ID = $(shell id -u)
+	GROUP_ID = $(shell id -g)
+
+	export UID = $(USER_ID)
+	export GID = $(GROUP_ID)
+endif
+
 help:
 	@grep -P '^[a-zA-Z0-9_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 

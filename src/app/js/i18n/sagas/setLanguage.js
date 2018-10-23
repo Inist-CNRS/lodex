@@ -9,9 +9,7 @@ import {
 } from '../';
 
 export function loadPhrases(locale) {
-    return System.import(`../translations/${locale}`).then(module =>
-        module.default(),
-    );
+    return import(`../translations/${locale}`).then(module => module.default());
 }
 
 export function* handleSetLanguage({ payload: language }) {

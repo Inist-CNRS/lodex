@@ -23,7 +23,7 @@ import rootReducer from '../../app/js/public/reducers';
 import sagas from '../../app/js/public/sagas';
 import configureStoreServer from '../../app/js/configureStoreServer';
 import Routes from '../../app/js/public/Routes';
-import { translations } from '../../app/webpack.config.babel';
+import translations from '../../app/translations';
 import config from '../../../config.json';
 import getLocale from '../../common/getLocale';
 
