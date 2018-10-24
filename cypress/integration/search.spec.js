@@ -3,8 +3,7 @@ import * as homePage from '../support/homePage';
 import * as datasetImportPage from '../support/datasetImportPage';
 import * as searchDrawer from '../support/searchDrawer';
 
-// TODO unskip once search is readded in navbar
-describe.skip('Search', () => {
+describe('Search', () => {
     beforeEach(() => {
         teardown();
         homePage.goToAdminDashboard();
@@ -30,8 +29,7 @@ describe.skip('Search', () => {
             .click();
 
         cy.url().should('contain', '/uid');
-        cy
-            .get('.property_value')
+        cy.get('.property_value')
             .contains('Annals of the rheumatic diseases')
             .should('be.visible');
     });

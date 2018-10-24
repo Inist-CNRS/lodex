@@ -1,14 +1,11 @@
 export const openSearchDrawer = () => {
     cy.get('.drawer-container').should('exist');
 
-    cy
-        .get('.drawer-container')
-        .children()
-        .first()
-        // force click because the element is position:fixed and partially hidden
-        .click({ force: true });
+    cy.get('nav div')
+        .contains('search')
+        .click();
 
-    cy.get('.drawer-container .drawer').should('be.visible');
+    cy.get('.drawer-container .drawer .search').should('be.visible');
 };
 
 export const search = value => {
