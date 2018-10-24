@@ -6,7 +6,7 @@ import translate from 'redux-polyglot/translate';
 import { Link } from 'react-router-dom';
 import Divider from 'material-ui/Divider';
 import { List, ListItem } from 'material-ui/List';
-import SearchIcon from 'material-ui/svg-icons/action/search';
+import ListIcon from 'material-ui/svg-icons/action/list';
 import { fromFields } from '../../sharedSelectors';
 import {
     field as fieldPropTypes,
@@ -30,7 +30,7 @@ const PureGraphSummary = ({ graphFields, closeDrawer, p: polyglot }) => (
                 onClick={closeDrawer}
                 containerElement={<Link style={styles.link} to="/graph" />}
                 primaryText={polyglot.t('dataset')}
-                leftIcon={<SearchIcon />}
+                leftIcon={<ListIcon />}
             />
             <Divider />
             {graphFields.map(field => (
@@ -60,4 +60,7 @@ const mapStateToProps = state => ({
     graphFields: fromFields.getGraphFields(state),
 });
 
-export default compose(connect(mapStateToProps), translate)(PureGraphSummary);
+export default compose(
+    connect(mapStateToProps),
+    translate,
+)(PureGraphSummary);

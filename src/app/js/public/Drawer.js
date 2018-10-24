@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { StyleSheet, css } from 'aphrodite/no-important';
@@ -50,49 +50,39 @@ const styles = StyleSheet.create({
     },
 });
 
-class Drawer extends Component {
-    render() {
-        const { children, status, animationDuration, onClose } = this.props;
-
-        return (
+const Drawer = ({ children, status, animationDuration, onClose }) => (
+    <div
+        className={classnames(
+            'drawer-container',
+            css(styles.container),
+            css(
+                styles[status === 'open' ? 'openContainer' : 'closedContainer'],
+            ),
+        )}
+    >
+        <div
+            className={classnames(
+                'drawer',
+                css(styles.drawer),
+                css(styles[status]),
+            )}
+            style={{
+                transition: `transform ${animationDuration}ms`,
+            }}
+        >
+            {status !== 'closed' && children}
+        </div>
+        {status === 'open' && (
             <div
-                className={classnames(
-                    'drawer-container',
-                    css(styles.container),
-                    css(
-                        styles[
-                            status === 'open'
-                                ? 'openContainer'
-                                : 'closedContainer'
-                        ],
-                    ),
-                )}
-            >
-                <div
-                    className={classnames(
-                        'drawer',
-                        css(styles.drawer),
-                        css(styles[status]),
-                    )}
-                    style={{
-                        transition: `transform ${animationDuration}ms`,
-                    }}
-                >
-                    {status !== 'closed' && children()}
-                </div>
-                {status === 'open' && (
-                    <div
-                        className={classnames('mask', css(styles.mask))}
-                        onClick={onClose}
-                    />
-                )}
-            </div>
-        );
-    }
-}
+                className={classnames('mask', css(styles.mask))}
+                onClick={onClose}
+            />
+        )}
+    </div>
+);
 
 Drawer.propTypes = {
-    children: PropTypes.func.isRequired,
+    children: PropTypes.node.isRequired,
     status: PropTypes.oneOf(['open', 'closing', 'closed']).isRequired,
     onClose: PropTypes.func.isRequired,
     animationDuration: PropTypes.number.isRequired,

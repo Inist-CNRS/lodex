@@ -23,6 +23,7 @@ import {
 import Drawer from './Drawer';
 import Search from './search/Search';
 import GraphSummary from './graph/GraphSummary';
+import Favicon from './Favicon';
 
 const ANIMATION_DURATION = 300; // ms
 
@@ -100,7 +101,6 @@ MenuItem.propTypes = {
     icon: PropTypes.object.isRequired,
 };
 
-
 export class NavBar extends Component {
     state = {
         searchDrawer: 'closed',
@@ -172,17 +172,11 @@ export class NavBar extends Component {
             p: polyglot,
         } = this.props;
         const { searchDrawer, graphDrawer } = this.state;
-        let img;
 
         return (
             <Fragment>
                 <nav className={css(styles.container)}>
-                    <img
-                        className={css(styles.icon)}
-                        src="/favicon.ico"
-                        ref={el => (img = el)}
-                        onError={() => (img.style.display = 'none')}
-                    />
+                    <Favicon className={css(styles.icon)} />
                     <div>
                         <Link to="/" className={css(styles.link)}>
                             <MenuItem
@@ -238,14 +232,14 @@ export class NavBar extends Component {
                     onClose={this.closeGraph}
                     animationDuration={ANIMATION_DURATION}
                 >
-                    {() => <GraphSummary closeDrawer={this.closeGraph} />}
+                    <GraphSummary closeDrawer={this.closeGraph} />
                 </Drawer>
                 <Drawer
                     status={searchDrawer}
                     onClose={this.closeSearch}
                     animationDuration={ANIMATION_DURATION}
                 >
-                    {() => <Search closeDrawer={this.closeSearch} />}
+                    <Search closeDrawer={this.closeSearch} />
                 </Drawer>
             </Fragment>
         );
@@ -271,6 +265,9 @@ const mapDispatchToProps = {
 };
 
 export default compose(
-    connect(mapStasteToProps, mapDispatchToProps),
+    connect(
+        mapStasteToProps,
+        mapDispatchToProps,
+    ),
     translate,
 )(NavBar);
