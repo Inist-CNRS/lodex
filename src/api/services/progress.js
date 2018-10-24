@@ -3,7 +3,7 @@ import { PENDING } from '../../common/progressStatus';
 export class Progress {
     status = PENDING;
     start(status, target, symbol) {
-        if (!target) {
+        if (target === null || target === undefined) {
             return;
         }
 

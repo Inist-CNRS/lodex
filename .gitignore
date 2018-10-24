@@ -43,6 +43,7 @@ config/staging.js
 config/test.js
 build
 typings
+upload/
 
 # Cypress
 cypress/videos

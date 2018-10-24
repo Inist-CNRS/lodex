@@ -15,11 +15,19 @@ const MarkdownView = ({ className, resource, field }) => {
         return <InvalidFormat format={field.format} value={value} />;
     }
 
+    let html;
+
+    try {
+        html = markdown.render(value);
+    } catch (e) {
+        return <InvalidFormat format={field.format} value={value} />;
+    }
+
     return (
         <div
             className={className}
             dangerouslySetInnerHTML={{
-                __html: markdown.render(value),
+                __html: html,
             }}
         />
     );
