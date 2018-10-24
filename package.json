@@ -3,7 +3,7 @@
         "node": ">= 7.8.0"
     },
     "name": "lodex",
-    "version": "8.25.1",
+    "version": "8.25.2",
     "description": "",
     "main": "src/api/index.js",
     "browser": {
@@ -39,6 +39,7 @@
     },
     "homepage": "https://github.com/Inist-CNRS/lodex#readme",
     "dependencies": {
+        "@babel/core": "7.1.2",
         "@babel/cli": "7.1.2",
         "@babel/plugin-proposal-class-properties": "7.1.0",
         "@babel/plugin-proposal-object-rest-spread": "7.0.0",
@@ -55,6 +56,8 @@
         "classnames": "2.2.5",
         "comma-number": "2.0.0",
         "common-tags": "1.4.0",
+        "compression-webpack-plugin": "2.0.0",
+        "copy-webpack-plugin": "4.5.3",
         "config": "1.26.2",
         "connected-react-router": "4.4.1",
         "csv-parse": "1.2.0",
@@ -170,17 +173,16 @@
         "tmp-filepath": "2.0.0",
         "url-api-polyfill": "1.1.0",
         "valid-url": "1.0.9",
+        "webpack": "4.22.0",
+        "webpack-cli": "3.1.2",
         "winston": "2.4.0",
         "xml-writer": "1.7.0"
     },
     "devDependencies": {
-        "@babel/core": "7.1.2",
         "babel-core": "7.0.0-bridge.0",
         "babel-jest": "23.6.0",
         "btoa": "1.1.2",
         "chai": "4.1.2",
-        "compression-webpack-plugin": "2.0.0",
-        "copy-webpack-plugin": "4.5.3",
         "cypress": "3.1.0",
         "enzyme": "3.7.0",
         "enzyme-adapter-react-16": "1.6.0",
@@ -203,8 +205,6 @@
         "prettier": "1.14.3",
         "react-addons-test-utils": "15.6.2",
         "sinon": "4.1.2",
-        "webpack": "4.22.0",
-        "webpack-cli": "3.1.2",
         "webpack-dev-server": "3.1.9"
     }
 }
