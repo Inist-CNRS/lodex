@@ -32,11 +32,13 @@ export default handleActions(
             ...state,
             showModal: true,
             token: null,
+            role: null,
         }),
         SIGNOUT: state => ({
             ...state,
             showModal: false,
             token: null,
+            role: null,
         }),
     },
     defaultState,
@@ -49,6 +51,7 @@ export const logout = createAction(LOGOUT);
 export const signOut = createAction(SIGNOUT);
 
 export const isAdmin = state => state.role === 'admin';
+export const getRole = state => state.role || 'not logged';
 export const getToken = state => state.token;
 export const getCookie = state => state.cookie;
 export const isUserModalShown = state => state.showModal;
@@ -366,6 +369,7 @@ export const getProgressRequest = state =>
 
 export const selectors = {
     isAdmin,
+    getRole,
     getToken,
     getCookie,
     getRequest,

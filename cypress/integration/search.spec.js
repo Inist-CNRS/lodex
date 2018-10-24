@@ -3,7 +3,8 @@ import * as homePage from '../support/homePage';
 import * as datasetImportPage from '../support/datasetImportPage';
 import * as searchDrawer from '../support/searchDrawer';
 
-describe('Search', () => {
+// TODO unskip once search is readded in navbar
+describe.skip('Search', () => {
     beforeEach(() => {
         teardown();
         homePage.goToAdminDashboard();

@@ -317,6 +317,12 @@ const hasSearchableFields = createSelector(
     allFields => allFields.filter(f => f.searchable).length > 0,
 );
 
+const canBeSearched = createSelector(
+    hasFacetFields,
+    hasSearchableFields,
+    (hasFacet, hasSearchable) => hasFacet || hasSearchable,
+);
+
 const getNbColumns = state => state.list.length;
 
 const getEditedValueFieldName = ({ editedValueFieldName }) =>
@@ -399,4 +405,5 @@ export default {
     getFieldFormatArgs,
     getOntologyFields,
     getInvalidProperties,
+    canBeSearched,
 };

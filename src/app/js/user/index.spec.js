@@ -42,6 +42,7 @@ describe('user reducer', () => {
         expect(state).toEqual({
             showModal: true,
             token: null,
+            role: null,
         });
     });
 

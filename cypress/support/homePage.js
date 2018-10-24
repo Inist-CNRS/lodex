@@ -1,16 +1,13 @@
 export const goToAdminDashboard = () => {
     cy
         .get('nav a')
-        .contains('Administration')
+        .contains('admin')
         .click();
     cy.location('pathname').should('equal', '/admin');
 };
 
 export const goToGraphPage = () => {
-    cy
-        .get('nav a')
-        .contains('Resources')
-        .click();
+    cy.visit('/graph'); // TODO revert to a click on link once new navigation is complete
     cy.location('pathname').should('equal', '/graph');
 };
 
