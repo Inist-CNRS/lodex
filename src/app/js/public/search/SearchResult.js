@@ -12,6 +12,12 @@ import {
 import { getResourceUri } from '../../../../common/uris';
 import Format from '../Format';
 
+const ellipsis = {
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+};
+
 const styles = StyleSheet.create({
     container: {
         display: 'flex',
@@ -33,10 +39,17 @@ const styles = StyleSheet.create({
         flex: '0 0 auto',
         fontWeight: 'bold',
         marginBottom: '.75rem',
+        ...ellipsis,
     },
     description: {
         flex: '0 0 auto',
         marginBottom: '.75rem',
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+        maxHeight: 60,
+        display: '-webkit-box',
+        '-webkit-line-clamp': '3',
+        '-webkit-box-orient': 'vertical',
     },
     details: {
         display: 'flex',
@@ -47,10 +60,12 @@ const styles = StyleSheet.create({
     detailsColumn: {
         flex: '1 0 0',
         paddingRight: '1rem',
+        ...ellipsis,
     },
 });
 
 const cnames = (name, ...classes) => classnames(name, ...classes.map(css));
+const isString = obj => typeof obj === 'string';
 
 const SearchResult = ({ fields, fieldNames, result, closeDrawer }) => {
     const titleField = fields.find(field => field.name === fieldNames.title);
@@ -85,6 +100,7 @@ const SearchResult = ({ fields, fieldNames, result, closeDrawer }) => {
                                 'search-result-title',
                                 styles.title,
                             )}
+                            title={result[titleField.name]}
                         >
                             <Format field={titleField} resource={result} />
                         </div>
@@ -96,11 +112,16 @@ const SearchResult = ({ fields, fieldNames, result, closeDrawer }) => {
                                 'search-result-description',
                                 styles.description,
                             )}
+                            title={result[descriptionField.name]}
                         >
-                            <Format
-                                field={descriptionField}
-                                resource={result}
-                            />
+                            {isString(result[descriptionField.name]) ? (
+                                result[descriptionField.name]
+                            ) : (
+                                <Format
+                                    field={descriptionField}
+                                    resource={result}
+                                />
+                            )}
                         </div>
                     )}
                 {shouldDisplayDetails && (
@@ -117,6 +138,7 @@ const SearchResult = ({ fields, fieldNames, result, closeDrawer }) => {
                                         'search-result-detail1',
                                         styles.detailsColumn,
                                     )}
+                                    title={result[firstDetailField.name]}
                                 >
                                     <Format
                                         field={firstDetailField}
@@ -131,6 +153,7 @@ const SearchResult = ({ fields, fieldNames, result, closeDrawer }) => {
                                         'search-result-detail2',
                                         styles.detailsColumn,
                                     )}
+                                    title={result[secondDetailField.name]}
                                 >
                                     <Format
                                         field={secondDetailField}
