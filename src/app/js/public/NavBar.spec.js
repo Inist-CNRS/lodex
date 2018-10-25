@@ -19,8 +19,19 @@ describe('NavBar', () => {
         const wrapper = shallow(<NavBar {...defaultProps} />);
 
         const items = wrapper.find('.nav-item');
+        expect(items).toHaveLength(3);
+        const expectedLabels = ['home', 'resources', 'sign in'];
+        items.forEach((item, index) => {
+            expect(item.prop('children')).toContain(expectedLabels[index]);
+        });
+    });
+
+    it('should render NavBar with graphs too if hasGraph is true', () => {
+        const wrapper = shallow(<NavBar {...defaultProps} hasGraph />);
+
+        const items = wrapper.find('.nav-item');
         expect(items).toHaveLength(4);
-        const expectedLabels = ['home', 'dataset_link', 'graphs', 'sign in'];
+        const expectedLabels = ['home', 'resources', 'graphs', 'sign in'];
         items.forEach((item, index) => {
             expect(item.prop('children')).toContain(expectedLabels[index]);
         });
@@ -30,11 +41,10 @@ describe('NavBar', () => {
         const wrapper = shallow(<NavBar {...defaultProps} canBeSearched />);
 
         const items = wrapper.find('.nav-item');
-        expect(items).toHaveLength(5);
+        expect(items).toHaveLength(4);
         const expectedLabels = [
             'home',
-            'dataset_link',
-            'graphs',
+            'resources',
             'search_placeholder',
             'sign in',
         ];
@@ -47,8 +57,8 @@ describe('NavBar', () => {
         const wrapper = shallow(<NavBar {...defaultProps} role="user" />);
 
         const items = wrapper.find('.nav-item');
-        expect(items).toHaveLength(4);
-        const expectedLabels = ['home', 'dataset_link', 'graphs', 'sign_out'];
+        expect(items).toHaveLength(3);
+        const expectedLabels = ['home', 'resources', 'sign_out'];
         items.forEach((item, index) => {
             expect(item.prop('children')).toContain(expectedLabels[index]);
         });
@@ -58,14 +68,8 @@ describe('NavBar', () => {
         const wrapper = shallow(<NavBar {...defaultProps} role="admin" />);
 
         const items = wrapper.find('.nav-item');
-        expect(items).toHaveLength(5);
-        const expectedLabels = [
-            'home',
-            'dataset_link',
-            'graphs',
-            'Admin',
-            'sign_out',
-        ];
+        expect(items).toHaveLength(4);
+        const expectedLabels = ['home', 'resources', 'Admin', 'sign_out'];
         items.forEach((item, index) => {
             expect(item.prop('children')).toContain(expectedLabels[index]);
         });
