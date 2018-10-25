@@ -88,7 +88,7 @@ diagram by TheFit Project from the Noun Project
 Heat Map by Sophia Bai from the Noun Project
 Pie Chart by Gregor Cresnar from the Noun Project
 Radar Chart by Agus Purwanto from the Noun Project
-World Map by Nikita Kozin from the Noun Project
 statistics by Creative Stall from the Noun Project
+Globe by alrigel from the Noun Project
 
 Thanks to the noun project and their respective creators
