@@ -19,8 +19,8 @@
         "postversion": "git push && git push --tags",
         "lint": "./pre-commit",
         "test:api:e2e": "mocha --require @babel/register 'src/api/e2e/*.spec.js'",
-        "test:unit": "./node_modules/jest/bin/jest.js",
-        "test:unit:watch": "./node_modules/jest/bin/jest.js --watch"
+        "test:unit": "./node_modules/jest/bin/jest.js --colors",
+        "test:unit:watch": "./node_modules/jest/bin/jest.js --watch --colors"
     },
     "nodemonConfig": {
         "ignore": [

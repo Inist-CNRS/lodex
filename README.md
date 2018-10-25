@@ -79,3 +79,16 @@ You can also [define this environment variable on Travis](https://docs.travis-ci
 
 This software is [CeCILL license](https://github.com/Inist-CNRS/lodex/blob/master/LICENSE).
 You can  use, modify and/ or redistribute the software under the terms of the CeCILL license.
+
+We also use the following icons :
+
+Big data by Eliricon from the Noun Project
+bubble chart by Kirby Wu from the Noun Project
+diagram by TheFit Project from the Noun Project
+Heat Map by Sophia Bai from the Noun Project
+Pie Chart by Gregor Cresnar from the Noun Project
+Radar Chart by Agus Purwanto from the Noun Project
+statistics by Creative Stall from the Noun Project
+Globe by alrigel from the Noun Project
+
+Thanks to the noun project and their respective creators
