@@ -264,10 +264,6 @@ export class NavBar extends Component {
                                 className={classnames(
                                     'nav-item',
                                     css(styles.menuItem),
-                                    {
-                                        [css(styles.active)]:
-                                            searchDrawer === 'open',
-                                    },
                                 )}
                             >
                                 <FontAwesomeIcon
@@ -283,10 +279,6 @@ export class NavBar extends Component {
                                 className={classnames(
                                     'nav-item',
                                     css(styles.menuItem),
-                                    {
-                                        [css(styles.active)]:
-                                            searchDrawer === 'open',
-                                    },
                                 )}
                             >
                                 <FontAwesomeIcon
@@ -301,10 +293,6 @@ export class NavBar extends Component {
                                 className={classnames(
                                     'nav-item',
                                     css(styles.menuItem),
-                                    {
-                                        [css(styles.active)]:
-                                            searchDrawer === 'open',
-                                    },
                                 )}
                                 onClick={logout}
                             >
@@ -340,11 +328,11 @@ NavBar.propTypes = {
     role: PropTypes.oneOf(['admin', 'user', 'notLogged']).isRequired,
     logout: PropTypes.func.isRequired,
     canBeSearched: PropTypes.bool.isRequired,
-    gasGraph: PropTypes.bool.isRequired,
+    hasGraph: PropTypes.bool.isRequired,
     p: polyglotPropTypes.isRequired,
 };
 
-const mapStasteToProps = state => ({
+const mapStateToProps = state => ({
     role: fromUser.getRole(state),
     canBeSearched: fromFields.canBeSearched(state),
     hasGraph: fromFields.getGraphFields(state).length > 0,
@@ -356,7 +344,7 @@ const mapDispatchToProps = {
 
 export default compose(
     connect(
-        mapStasteToProps,
+        mapStateToProps,
         mapDispatchToProps,
     ),
     translate,
