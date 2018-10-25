@@ -163,6 +163,8 @@ const mapStateToProps = (state, { formatData }) => {
     };
 };
 
-export default compose(injectData(), connect(mapStateToProps), exportableToPng)(
-    Network,
-);
+export default compose(
+    injectData(),
+    connect(mapStateToProps),
+    exportableToPng,
+)(Network);
