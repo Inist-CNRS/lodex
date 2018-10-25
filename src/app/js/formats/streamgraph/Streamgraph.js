@@ -78,7 +78,7 @@ function stackMax(layer) {
 }
 
 function stackMin(layer) {
-    return d3.min(layer, function (d) { return d[0]; });
+    return d3.min(layer, function (d) { return d[1]; });
 }
 
 // ===========================================================================================
@@ -181,7 +181,32 @@ function transformDataIntoMap(formatData) {
             }
         }
     }
-    return (valuesMap);
+    // order all the values by date
+    let maxLenArray = 0;
+    for (let elem of valuesMap) {
+        if (elem) {
+            if (elem[1].valuesList.length > maxLenArray){
+                maxLenArray = elem[1].valuesList.length;
+            }
+            elem[1].valuesList.sort((a, b) => {
+                return (parseInt(a[0]) - parseInt(b[0]));
+            });
+        }
+    }
+
+    let layersValues = [];
+    for (let i = 0; i < maxLenArray; i++) {
+        let tmpList = [];
+        for (let elem of valuesMap) {
+            if (i < elem[1].valuesList.length) {
+                tmpList.push(elem[1].valuesList[i][1]);
+            } else {
+                tmpList.push(0); // TODO : you're creating data, that's bad
+            }
+        }
+        layersValues.push(tmpList);
+    }
+    return ([valuesMap, layersValues]);
 }
 
 class Streamgraph extends PureComponent {
@@ -195,11 +220,7 @@ class Streamgraph extends PureComponent {
     }
 
     setGraph() {
-        console.log("formatData : ");
-        console.log(this.props.formatData);
-        let valuesMap = transformDataIntoMap(this.props.formatData);
-        console.log("valuesMap");
-        console.log(valuesMap);
+        let [valuesMap, layersValues] = transformDataIntoMap(this.props.formatData);
 
         let { width, height } = this.state;
         const svgWidth = width;
@@ -212,23 +233,29 @@ class Streamgraph extends PureComponent {
         // Set all the variables (to move in states)
         // ===========================================================================================
 
-        const n = 9,  // number of layers
-            m = 100,// number of samples per layer
+        let n = 9,  // number of layers
+            maxElementsNumber = 100,// number of samples per layer
             k = 50; // number of bumps per layer
 
         // stack the datas
-        const stack = d3.stack().keys(d3.range(n)).offset(d3.stackOffsetWiggle),
-            layers0 = stack(d3.transpose(d3.range(n).map(function () { return bumps(m, k); }))),
-            layers1 = stack(d3.transpose(d3.range(n).map(function () { return bumps(m, k); }))),
+        let stack = d3.stack().keys(d3.range(n)).offset(d3.stackOffsetWiggle),
+            layers0 = stack(d3.transpose(d3.range(n).map(function () { return bumps(maxElementsNumber, k); }))),
+            layers1 = stack(d3.transpose(d3.range(n).map(function () { return bumps(maxElementsNumber, k); }))),
             layers = layers0.concat(layers1);
 
-        //console.log("fake data layers : ");
-        //console.log(layers);
+        layersValues = stack(layersValues);
 
-        //const newLayers = transformDataIntoMap(this.props.formatData);
+        // go through map and set values in a list
+        maxElementsNumber = 0;
+        let realLayers = [];
+        for (let element of valuesMap) {
+            realLayers.push(element[1].valuesList);
+            if (maxElementsNumber < element[1].valuesList.length) {
+                maxElementsNumber = element[1].valuesList.length;
+            }
+        }
 
-        //console.log("newLayers");
-        //console.log(newLayers);
+        layers = realLayers;
 
         const tmpNames = [
             "Toxicologie et écotoxicologie des polluants & Études de taxonomie",
@@ -288,11 +315,13 @@ class Streamgraph extends PureComponent {
 
         // create scale objects
         xAxisScale = d3.scaleLinear()
-            .domain([0, m - 1])
+            .domain([0, maxElementsNumber - 1])
             .range([0, width]);
 
+        //console.log("yaxis min : " + d3.min(layers, stackMin) + " max : "+d3.max(layers, stackMax));
         yAxisScale = d3.scaleLinear()
-            .domain([d3.min(layers, stackMin), d3.max(layers, stackMax)])
+            //.domain([d3.min(layers, stackMin), d3.max(layers, stackMax)])
+            .domain([-3, 3])
             .range([height, 0]);
 
         // create axis objects
@@ -332,7 +361,8 @@ class Streamgraph extends PureComponent {
             .y1(function (d) { return yAxisScale(d[1]); });
 
         streams = graphZone.selectAll("path")
-            .data(layers0)
+            .data(layersValues)// tata
+            //.data(layers0)
             .enter().append("path") // append all paths (area streams)
             .attr("d", area)
             //.attr("d", function(d) {return area(d.values);})
