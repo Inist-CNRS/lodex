@@ -31,6 +31,7 @@ import bubbleChart from './bubbleChart';
 import sparqlTextField from './sparql/SparqlTextField/';
 import DefaultFormat from './DefaultFormat';
 import istexSummary from './istexSummary';
+import streamgraph from './streamgraph';
 
 const components = {
     code,
@@ -62,6 +63,7 @@ const components = {
     bubbleChart,
     sparqlTextField,
     istexSummary,
+    streamgraph,
 };
 
 export const FORMATS = Object.keys(components).sort();
