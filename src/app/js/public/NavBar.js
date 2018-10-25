@@ -19,10 +19,7 @@ import get from 'lodash.get';
 
 import { fromUser, fromFields } from '../sharedSelectors';
 import { logout } from '../user';
-import {
-    field as fieldPropTypes,
-    polyglot as polyglotPropTypes,
-} from '../propTypes';
+import { polyglot as polyglotPropTypes } from '../propTypes';
 import Drawer from './Drawer';
 import Search from './search/Search';
 import GraphSummary from './graph/GraphSummary';
@@ -166,7 +163,13 @@ export class NavBar extends Component {
     };
 
     render() {
-        const { role, canBeSearched, logout, p: polyglot } = this.props;
+        const {
+            role,
+            canBeSearched,
+            hasGraph,
+            logout,
+            p: polyglot,
+        } = this.props;
         const { searchDrawer, graphDrawer } = this.state;
 
         return (
@@ -206,32 +209,34 @@ export class NavBar extends Component {
                                 icon={faList}
                                 className={css(styles.menuItemIcon)}
                             />
-                            {polyglot.t('dataset_link')}
+                            {polyglot.t('resources')}
                         </NavLink>
-                        <NavLink
-                            to="/graph"
-                            onClick={this.openGraph}
-                            isActive={(location, params) =>
-                                get(location, 'url') === '/graph' &&
-                                get(params, 'pathname') !== '/graph'
-                            }
-                            activeClassName={css(styles.active)}
-                            className={classnames(
-                                'nav-item',
-                                css(styles.menuItem),
-                                css(styles.link),
-                                {
-                                    [css(styles.active)]:
-                                        graphDrawer === 'open',
-                                },
-                            )}
-                        >
-                            <FontAwesomeIcon
-                                icon={faChartArea}
-                                className={css(styles.menuItemIcon)}
-                            />
-                            {polyglot.t('graphs')}
-                        </NavLink>
+                        {hasGraph && (
+                            <NavLink
+                                to="/graph"
+                                onClick={this.openGraph}
+                                isActive={(location, params) =>
+                                    get(location, 'url') === '/graph' &&
+                                    get(params, 'pathname') !== '/graph'
+                                }
+                                activeClassName={css(styles.active)}
+                                className={classnames(
+                                    'nav-item',
+                                    css(styles.menuItem),
+                                    css(styles.link),
+                                    {
+                                        [css(styles.active)]:
+                                            graphDrawer === 'open',
+                                    },
+                                )}
+                            >
+                                <FontAwesomeIcon
+                                    icon={faChartArea}
+                                    className={css(styles.menuItemIcon)}
+                                />
+                                {polyglot.t('graphs')}
+                            </NavLink>
+                        )}
                         {canBeSearched && (
                             <div
                                 onClick={this.openSearch}
@@ -335,13 +340,14 @@ NavBar.propTypes = {
     role: PropTypes.oneOf(['admin', 'user', 'notLogged']).isRequired,
     logout: PropTypes.func.isRequired,
     canBeSearched: PropTypes.bool.isRequired,
-    graphFields: PropTypes.arrayOf(fieldPropTypes).isRequired,
+    gasGraph: PropTypes.bool.isRequired,
     p: polyglotPropTypes.isRequired,
 };
 
 const mapStasteToProps = state => ({
     role: fromUser.getRole(state),
     canBeSearched: fromFields.canBeSearched(state),
+    hasGraph: fromFields.getGraphFields(state).length > 0,
 });
 
 const mapDispatchToProps = {
