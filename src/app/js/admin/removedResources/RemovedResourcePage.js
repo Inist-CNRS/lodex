@@ -7,6 +7,7 @@ import Divider from 'material-ui/Divider';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import RemovedResourceList from './RemovedResourceList';
 import withInitialData from '../withInitialData';
+import redirectToDashboardIfNoField from '../../admin/redirectToDashboardIfNoField';
 
 export const RemovedResourcePageComponent = ({ p: polyglot }) => (
     <Card>
@@ -20,6 +21,8 @@ RemovedResourcePageComponent.propTypes = {
     p: polyglotPropTypes.isRequired,
 };
 
-export default compose(withInitialData, translate)(
-    RemovedResourcePageComponent,
-);
+export default compose(
+    redirectToDashboardIfNoField,
+    withInitialData,
+    translate,
+)(RemovedResourcePageComponent);
