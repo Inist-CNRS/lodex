@@ -4,9 +4,15 @@ import { Link } from 'react-router-dom';
 import { field as fieldPropTypes } from '../../propTypes';
 import { getResourceUri } from '../../../../common/uris';
 import getLabel from '../shared/getLabel';
+import InvalidFormat from '../InvalidFormat';
 
 const UriView = ({ className, resource, field, fields, type, value }) => {
     const uri = resource[field.name];
+
+    if (typeof uri !== 'string') {
+        return <InvalidFormat format={field.format} value={uri} />;
+    }
+
     const label = getLabel(field, resource, fields, type, value);
 
     return (
