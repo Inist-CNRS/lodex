@@ -2,7 +2,6 @@ import React, { Fragment, Component } from 'react';
 import { StyleSheet, css } from 'aphrodite/no-important';
 import { Link } from 'react-router-dom';
 import { PropTypes } from 'prop-types';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome } from '@fortawesome/free-solid-svg-icons/faHome';
 import { faChartArea } from '@fortawesome/free-solid-svg-icons/faChartArea';
 import { faSearch } from '@fortawesome/free-solid-svg-icons/faSearch';
@@ -24,6 +23,7 @@ import Drawer from './Drawer';
 import Search from './search/Search';
 import GraphSummary from './graph/GraphSummary';
 import Favicon from './Favicon';
+import MenuItem from './MenuItem';
 
 const ANIMATION_DURATION = 300; // ms
 
@@ -48,29 +48,6 @@ const styles = StyleSheet.create({
         maxHeight: 'fit-content',
         margin: '10px auto',
     },
-    menuItem: {
-        width: '100%',
-        height: 75,
-        padding: 10,
-        display: 'flex',
-        flexDirection: 'column',
-        textAlign: 'center',
-        color: '#7DBD42',
-        cursor: 'pointer',
-        justifyContent: 'center',
-        userSelect: 'none',
-        textTransform: 'capitalize',
-        ':hover': {
-            color: '#B22F90',
-            fontWeight: 'bold',
-        },
-        ':active': {
-            color: '#F48022',
-        },
-    },
-    menuItemIcon: {
-        margin: '0 auto',
-    },
     link: {
         textDecoration: 'none',
         ':hover': {
@@ -88,13 +65,6 @@ const styles = StyleSheet.create({
         marginTop: 'auto',
     },
 });
-
-export const MenuItem = ({ label, icon, ...props }) => (
-    <div {...props} className={css(styles.menuItem)}>
-        <FontAwesomeIcon icon={icon} className={css(styles.menuItemIcon)} />
-        {label}
-    </div>
-);
 
 MenuItem.propTypes = {
     label: PropTypes.string.isRequired,
@@ -167,7 +137,6 @@ export class NavBar extends Component {
         const {
             role,
             canBeSearched,
-            graphFields,
             logout,
             p: polyglot,
         } = this.props;
@@ -185,13 +154,11 @@ export class NavBar extends Component {
                                 onClick={this.closeAll}
                             />
                         </Link>
-                        {!!graphFields.length && (
-                            <MenuItem
-                                label={polyglot.t('graphs')}
-                                icon={faChartArea}
-                                onClick={this.openGraph}
-                            />
-                        )}
+                        <MenuItem
+                            label={polyglot.t('graphs')}
+                            icon={faChartArea}
+                            onClick={this.openGraph}
+                        />
                         {canBeSearched && (
                             <MenuItem
                                 onClick={this.openSearch}
