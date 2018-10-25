@@ -20,7 +20,7 @@ describe('NavBar', () => {
 
         const items = wrapper.find('.nav-item');
         expect(items).toHaveLength(4);
-        const expectedLabels = ['home', 'dataset', 'graphs', 'sign in'];
+        const expectedLabels = ['home', 'dataset_link', 'graphs', 'sign in'];
         items.forEach((item, index) => {
             expect(item.prop('children')).toContain(expectedLabels[index]);
         });
@@ -33,7 +33,7 @@ describe('NavBar', () => {
         expect(items).toHaveLength(5);
         const expectedLabels = [
             'home',
-            'dataset',
+            'dataset_link',
             'graphs',
             'search_placeholder',
             'sign in',
@@ -48,7 +48,7 @@ describe('NavBar', () => {
 
         const items = wrapper.find('.nav-item');
         expect(items).toHaveLength(4);
-        const expectedLabels = ['home', 'dataset', 'graphs', 'sign_out'];
+        const expectedLabels = ['home', 'dataset_link', 'graphs', 'sign_out'];
         items.forEach((item, index) => {
             expect(item.prop('children')).toContain(expectedLabels[index]);
         });
@@ -61,7 +61,7 @@ describe('NavBar', () => {
         expect(items).toHaveLength(5);
         const expectedLabels = [
             'home',
-            'dataset',
+            'dataset_link',
             'graphs',
             'Admin',
             'sign_out',

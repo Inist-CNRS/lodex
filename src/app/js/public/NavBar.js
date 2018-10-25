@@ -206,7 +206,7 @@ export class NavBar extends Component {
                                 icon={faList}
                                 className={css(styles.menuItemIcon)}
                             />
-                            {polyglot.t('dataset')}
+                            {polyglot.t('dataset_link')}
                         </NavLink>
                         <NavLink
                             to="/graph"
