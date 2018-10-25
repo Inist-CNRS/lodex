@@ -2,7 +2,8 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import { StyleSheetTestUtils } from 'aphrodite';
 
-import { NavBar, MenuItem } from './NavBar';
+import { NavBar } from './NavBar';
+import MenuItem from './MenuItem';
 
 describe('NavBar', () => {
     const defaultProps = {
@@ -19,8 +20,8 @@ describe('NavBar', () => {
         const wrapper = shallow(<NavBar {...defaultProps} />);
 
         const items = wrapper.find(MenuItem);
-        expect(items).toHaveLength(2);
-        const expectedLabels = ['home', 'sign in'];
+        expect(items).toHaveLength(3);
+        const expectedLabels = ['home', 'graphs', 'sign in'];
         items.forEach((item, index) => {
             expect(item.prop('label')).toEqual(expectedLabels[index]);
         });
@@ -30,21 +31,13 @@ describe('NavBar', () => {
         const wrapper = shallow(<NavBar {...defaultProps} canBeSearched />);
 
         const items = wrapper.find(MenuItem);
-        expect(items).toHaveLength(3);
-        const expectedLabels = ['home', 'search_placeholder', 'sign in'];
-        items.forEach((item, index) => {
-            expect(item.prop('label')).toEqual(expectedLabels[index]);
-        });
-    });
-
-    it('should render NavBar with graphs too if graphFields is not empty', () => {
-        const wrapper = shallow(
-            <NavBar {...defaultProps} graphFields={[1, 2, 3]} />,
-        );
-
-        const items = wrapper.find(MenuItem);
-        expect(items).toHaveLength(3);
-        const expectedLabels = ['home', 'graphs', 'sign in'];
+        expect(items).toHaveLength(4);
+        const expectedLabels = [
+            'home',
+            'graphs',
+            'search_placeholder',
+            'sign in',
+        ];
         items.forEach((item, index) => {
             expect(item.prop('label')).toEqual(expectedLabels[index]);
         });
@@ -54,8 +47,8 @@ describe('NavBar', () => {
         const wrapper = shallow(<NavBar {...defaultProps} role="user" />);
 
         const items = wrapper.find(MenuItem);
-        expect(items).toHaveLength(2);
-        const expectedLabels = ['home', 'sign_out'];
+        expect(items).toHaveLength(3);
+        const expectedLabels = ['home', 'graphs', 'sign_out'];
         items.forEach((item, index) => {
             expect(item.prop('label')).toEqual(expectedLabels[index]);
         });
@@ -65,8 +58,8 @@ describe('NavBar', () => {
         const wrapper = shallow(<NavBar {...defaultProps} role="admin" />);
 
         const items = wrapper.find(MenuItem);
-        expect(items).toHaveLength(3);
-        const expectedLabels = ['home', 'Admin', 'sign_out'];
+        expect(items).toHaveLength(4);
+        const expectedLabels = ['home', 'graphs', 'Admin', 'sign_out'];
         items.forEach((item, index) => {
             expect(item.prop('label')).toEqual(expectedLabels[index]);
         });
