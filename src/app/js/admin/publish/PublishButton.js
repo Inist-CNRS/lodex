@@ -79,6 +79,10 @@ const mapDispatchToProps = {
     onPublish: publishAction,
 };
 
-export default compose(connect(mapStateToProps, mapDispatchToProps), translate)(
-    PublishButtonComponent,
-);
+export default compose(
+    connect(
+        mapStateToProps,
+        mapDispatchToProps,
+    ),
+    translate,
+)(PublishButtonComponent);

@@ -184,7 +184,8 @@ export const getInvalidFields = createSelector(
         })),
 );
 
-export const areAllFieldsValid = state => state.allValid;
+export const areAllFieldsValid = state =>
+    state.allValid && (state.list || []).length > 0;
 
 export const getLineColGetterFromAllFields = (fieldByName, field) => {
     if (!field) {
