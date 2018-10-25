@@ -1,7 +1,9 @@
 import selectors, {
     isACompositeFields,
     getLineColGetterFromAllFields,
+    areAllFieldsValid,
 } from './selectors';
+
 import {
     COVER_DATASET,
     COVER_COLLECTION,
@@ -327,6 +329,35 @@ describe('field selectors', () => {
                     'no name',
                 ),
             ).toBe(false);
+        });
+    });
+
+    describe('areAllFieldsValid', () => {
+        it('should return true if there are fields and all are valid', () => {
+            const state = {
+                allValid: true,
+                list: [1, 2, 3],
+            };
+
+            expect(areAllFieldsValid(state)).toBe(true);
+        });
+
+        it('should return false if there are fields but not all are valid', () => {
+            const state = {
+                allValid: false,
+                fields: [1, 2, 3],
+            };
+
+            expect(areAllFieldsValid(state)).toBe(false);
+        });
+
+        it('should return false if there is no fields', () => {
+            const state = {
+                allValid: true,
+                fields: [],
+            };
+
+            expect(areAllFieldsValid(state)).toBe(false);
         });
     });
 });

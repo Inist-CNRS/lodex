@@ -6,12 +6,12 @@ import PublishButton from './PublishButton';
 import ValidationButton from './ValidationButton';
 
 const mapStateToProps = state => ({
-    fields: fromFields.getInvalidFields(state),
+    invalidFields: fromFields.getInvalidFields(state),
 });
 
 export default connect(mapStateToProps)(
     branch(
-        ({ fields }) => fields.length > 0,
+        ({ invalidFields }) => invalidFields.length > 0,
         renderComponent(ValidationButton),
     )(PublishButton),
 );
