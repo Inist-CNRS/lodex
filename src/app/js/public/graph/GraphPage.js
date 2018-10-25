@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { Card, CardTitle } from 'material-ui/Card';
 import { Helmet } from 'react-helmet';
 
-import GraphSummary from './GraphSummary';
 import Dataset from '../dataset/Dataset';
 import Toolbar from '../Toolbar';
 import { fromFields, fromCharacteristic } from '../../sharedSelectors';
@@ -63,9 +62,6 @@ class GraphPage extends Component {
                     <title>Resources - {getTitle()}</title>
                 </Helmet>
                 <div style={styles.centerColumn}>
-                    <GraphSummary
-                        selected={graphField ? graphField.name : ''}
-                    />
                     <ExportShareButton style={{ float: 'right' }} />
                     <Stats />
                     <Card style={styles.section}>

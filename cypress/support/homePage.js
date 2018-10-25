@@ -1,7 +1,6 @@
 export const goToAdminDashboard = () => {
-    cy
-        .get('nav a')
-        .contains('admin')
+    cy.get('nav a')
+        .contains('Admin')
         .click();
     cy.location('pathname').should('equal', '/admin');
 };

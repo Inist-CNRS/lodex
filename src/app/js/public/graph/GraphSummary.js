@@ -5,12 +5,8 @@ import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 import { Link } from 'react-router-dom';
 import Divider from 'material-ui/Divider';
-import IconMenu from 'material-ui/IconMenu';
-import MenuItem from 'material-ui/MenuItem';
-import HomeIcon from 'material-ui/svg-icons/action/home';
-import SearchIcon from 'material-ui/svg-icons/action/search';
-import IconButton from 'material-ui/IconButton';
-import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
+import { List, ListItem } from 'material-ui/List';
+import ListIcon from 'material-ui/svg-icons/action/list';
 import { fromFields } from '../../sharedSelectors';
 import {
     field as fieldPropTypes,
@@ -18,11 +14,6 @@ import {
 } from '../../propTypes';
 
 const styles = {
-    container: {
-        float: 'left',
-        marginLeft: '-5rem',
-        marginTop: '-1rem',
-    },
     link: {
         textDecoration: 'none',
         color: 'unset',
@@ -31,35 +22,22 @@ const styles = {
     },
 };
 
-const PureGraphSummary = ({ graphFields, selected, p: polyglot }) => (
-    <div style={styles.container}>
-        <IconMenu
-            value={selected}
-            iconButtonElement={
-                <IconButton>
-                    <MoreVertIcon />
-                </IconButton>
-            }
-            anchorOrigin={{ horizontal: 'left', vertical: 'top' }}
-            targetOrigin={{ horizontal: 'left', vertical: 'top' }}
-        >
-            <MenuItem
+const PureGraphSummary = ({ graphFields, closeDrawer, p: polyglot }) => (
+    <div>
+        <List>
+            <ListItem
                 value=""
-                containerElement={<Link style={styles.link} to="/" />}
-                primaryText={polyglot.t('home')}
-                leftIcon={<HomeIcon />}
-            />
-            <MenuItem
-                value=""
+                onClick={closeDrawer}
                 containerElement={<Link style={styles.link} to="/graph" />}
                 primaryText={polyglot.t('dataset')}
-                leftIcon={<SearchIcon />}
+                leftIcon={<ListIcon />}
             />
             <Divider />
             {graphFields.map(field => (
-                <MenuItem
+                <ListItem
                     key={field.name}
                     value={field.name}
+                    onClick={closeDrawer}
                     primaryText={
                         <Link style={styles.link} to={`/graph/${field.name}`}>
                             {field.label}
@@ -67,13 +45,14 @@ const PureGraphSummary = ({ graphFields, selected, p: polyglot }) => (
                     }
                 />
             ))}
-        </IconMenu>
+        </List>
     </div>
 );
 
 PureGraphSummary.propTypes = {
     graphFields: PropTypes.arrayOf(fieldPropTypes).isRequired,
     selected: PropTypes.string.isRequired,
+    closeDrawer: PropTypes.func.isRequired,
     p: polyglotPropType,
 };
 
@@ -81,4 +60,7 @@ const mapStateToProps = state => ({
     graphFields: fromFields.getGraphFields(state),
 });
 
-export default compose(connect(mapStateToProps), translate)(PureGraphSummary);
+export default compose(
+    connect(mapStateToProps),
+    translate,
+)(PureGraphSummary);

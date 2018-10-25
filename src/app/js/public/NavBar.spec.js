@@ -66,7 +66,7 @@ describe('NavBar', () => {
 
         const items = wrapper.find(MenuItem);
         expect(items).toHaveLength(3);
-        const expectedLabels = ['home', 'admin', 'sign_out'];
+        const expectedLabels = ['home', 'Admin', 'sign_out'];
         items.forEach((item, index) => {
             expect(item.prop('label')).toEqual(expectedLabels[index]);
         });

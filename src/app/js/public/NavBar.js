@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment, Component } from 'react';
 import { StyleSheet, css } from 'aphrodite/no-important';
 import { Link } from 'react-router-dom';
 import { PropTypes } from 'prop-types';
@@ -20,6 +20,12 @@ import {
     field as fieldPropTypes,
     polyglot as polyglotPropTypes,
 } from '../propTypes';
+import Drawer from './Drawer';
+import Search from './search/Search';
+import GraphSummary from './graph/GraphSummary';
+import Favicon from './Favicon';
+
+const ANIMATION_DURATION = 300; // ms
 
 config.autoAddCss = false;
 
@@ -95,62 +101,150 @@ MenuItem.propTypes = {
     icon: PropTypes.object.isRequired,
 };
 
-export const NavBar = ({
-    role,
-    canBeSearched,
-    graphFields,
-    logout,
-    p: polyglot,
-}) => {
-    let img;
-    return (
-        <nav className={css(styles.container)}>
-            <img
-                className={css(styles.icon)}
-                src="/favicon.ico"
-                ref={el => (img = el)}
-                onError={() => (img.style.display = 'none')}
-            />
-            <div>
-                <Link to="/" className={css(styles.link)}>
-                    <MenuItem label={polyglot.t('home')} icon={faHome} />
-                </Link>
-                {!!graphFields.length && (
-                    <MenuItem label={polyglot.t('graphs')} icon={faChartArea} />
-                )}
-                {canBeSearched && (
-                    <MenuItem
-                        label={polyglot.t('search_placeholder')}
-                        icon={faSearch}
-                    />
-                )}
-            </div>
-            <div className={css(styles.last)}>
-                {role === 'admin' && (
-                    <a href="/admin" className={css(styles.link)}>
-                        <MenuItem label={polyglot.t('admin')} icon={faCogs} />
-                    </a>
-                )}
-                {role === 'not logged' ? (
-                    <Link to="/login" className={css(styles.link)}>
-                        <MenuItem
-                            label={polyglot.t('sign in')}
-                            icon={faSignInAlt}
-                        />
-                    </Link>
-                ) : (
-                    <Link to="/login" className={css(styles.link)}>
-                        <MenuItem
-                            label={polyglot.t('sign_out')}
-                            icon={faSignOutAlt}
-                            onClick={logout}
-                        />
-                    </Link>
-                )}
-            </div>
-        </nav>
-    );
-};
+export class NavBar extends Component {
+    state = {
+        searchDrawer: 'closed',
+        graphDrawer: 'closed',
+    };
+
+    openSearch = () => {
+        const { searchDrawer } = this.state;
+
+        if (searchDrawer === 'open') {
+            return;
+        }
+        this.closeGraph();
+        this.setState({ searchDrawer: 'open', graphDrawer: 'closing' });
+    };
+
+    closeSearch = () => {
+        const { searchDrawer } = this.state;
+
+        if (searchDrawer === 'closed') {
+            return;
+        }
+
+        this.setState({ searchDrawer: 'closing' }, () => {
+            setTimeout(
+                () => this.setState({ searchDrawer: 'closed' }),
+                ANIMATION_DURATION,
+            );
+        });
+    };
+
+    openGraph = () => {
+        const { graphDrawer } = this.state;
+        this.closeSearch();
+
+        if (graphDrawer === 'open') {
+            return;
+        }
+
+        this.setState({ graphDrawer: 'open' });
+    };
+
+    closeGraph = () => {
+        const { graphDrawer } = this.state;
+
+        if (graphDrawer === 'closed') {
+            return;
+        }
+
+        this.setState({ graphDrawer: 'closing' }, () => {
+            setTimeout(
+                () => this.setState({ graphDrawer: 'closed' }),
+                ANIMATION_DURATION,
+            );
+        });
+    };
+
+    closeAll = () => {
+        this.closeSearch();
+        this.closeGraph();
+    };
+
+    render() {
+        const {
+            role,
+            canBeSearched,
+            graphFields,
+            logout,
+            p: polyglot,
+        } = this.props;
+        const { searchDrawer, graphDrawer } = this.state;
+
+        return (
+            <Fragment>
+                <nav className={css(styles.container)}>
+                    <Favicon className={css(styles.icon)} />
+                    <div>
+                        <Link to="/" className={css(styles.link)}>
+                            <MenuItem
+                                label={polyglot.t('home')}
+                                icon={faHome}
+                                onClick={this.closeAll}
+                            />
+                        </Link>
+                        {!!graphFields.length && (
+                            <MenuItem
+                                label={polyglot.t('graphs')}
+                                icon={faChartArea}
+                                onClick={this.openGraph}
+                            />
+                        )}
+                        {canBeSearched && (
+                            <MenuItem
+                                onClick={this.openSearch}
+                                label={polyglot.t('search_placeholder')}
+                                icon={faSearch}
+                            />
+                        )}
+                    </div>
+                    <div className={css(styles.last)}>
+                        {role === 'admin' && (
+                            <a href="/admin" className={css(styles.link)}>
+                                <MenuItem
+                                    label={polyglot.t('Admin')}
+                                    icon={faCogs}
+                                />
+                            </a>
+                        )}
+                        {role === 'not logged' ? (
+                            <Link to="/login" className={css(styles.link)}>
+                                <MenuItem
+                                    label={polyglot.t('sign in')}
+                                    icon={faSignInAlt}
+                                />
+                            </Link>
+                        ) : (
+                            <Link to="/login" className={css(styles.link)}>
+                                <MenuItem
+                                    label={polyglot.t('sign_out')}
+                                    icon={faSignOutAlt}
+                                    onClick={logout}
+                                />
+                            </Link>
+                        )}
+                    </div>
+                </nav>
+                <Drawer
+                    status={graphDrawer}
+                    onClose={this.closeGraph}
+                    animationDuration={ANIMATION_DURATION}
+                >
+                    <GraphSummary closeDrawer={this.closeGraph} />
+                </Drawer>
+                <Drawer
+                    status={searchDrawer}
+                    onClose={this.closeSearch}
+                    animationDuration={ANIMATION_DURATION}
+                >
+                    <Search closeDrawer={this.closeSearch} />
+                </Drawer>
+            </Fragment>
+        );
+    }
+}
 
 NavBar.propTypes = {
     role: PropTypes.oneOf(['admin', 'user', 'notLogged']).isRequired,
@@ -171,6 +265,9 @@ const mapDispatchToProps = {
 };
 
 export default compose(
-    connect(mapStasteToProps, mapDispatchToProps),
+    connect(
+        mapStasteToProps,
+        mapDispatchToProps,
+    ),
     translate,
 )(NavBar);

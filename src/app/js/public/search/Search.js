@@ -211,6 +211,10 @@ const mapDispatchToProps = {
     loadMore: loadMoreAction,
 };
 
-export default compose(translate, connect(mapStateToProps, mapDispatchToProps))(
-    Search,
-);
+export default compose(
+    translate,
+    connect(
+        mapStateToProps,
+        mapDispatchToProps,
+    ),
+)(Search);
