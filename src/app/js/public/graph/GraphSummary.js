@@ -1,21 +1,24 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import compose from 'recompose/compose';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import classnames from 'classnames';
-import translate from 'redux-polyglot/translate';
 
 import { fromFields } from '../../sharedSelectors';
-import {
-    field as fieldPropTypes,
-    polyglot as polyglotPropType,
-} from '../../propTypes';
+import { field as fieldPropTypes } from '../../propTypes';
 import { getIconComponent } from '../../formats';
 import { StyleSheet, css } from 'aphrodite/no-important';
 import MixedChartIcon from './MixedChartIcon';
 
 const styles = StyleSheet.create({
+    activeLink: {
+        color: '#F48022',
+        fill: '#F48022',
+        ':hover': {
+            fill: '#F48022',
+            color: '#F48022',
+        },
+    },
     link: {
         textDecoration: 'none',
         backgroundColor: 'white',
@@ -35,17 +38,6 @@ const styles = StyleSheet.create({
         ':visited': {
             textDecoration: 'none',
         },
-        ':active': {
-            color: '#F48022',
-            fill: '#F48022',
-        },
-    },
-    all: {
-        width: '100%',
-        margin: 10,
-        textAlign: 'center',
-        fontSize: '2em',
-        textTransform: 'uppercase',
     },
     item: {
         display: 'flex',
@@ -72,24 +64,21 @@ const styles = StyleSheet.create({
     },
 });
 
-const PureGraphSummary = ({ graphFields, closeDrawer, p: polyglot }) => (
+const PureGraphSummary = ({ graphFields, closeDrawer }) => (
     <div className={classnames('graph-summary', css(styles.container))}>
-        <Link
-            className={classnames('all', css(styles.link), css(styles.all))}
-            to={`/graph`}
-            onClick={closeDrawer}
-        >
-            {polyglot.t('dataset')}
-        </Link>
         {graphFields.map(field => {
             const Icon = getIconComponent(field);
             return (
-                <Link
+                <NavLink
                     key={field.name}
                     className={classnames(
                         'graph-link',
                         css(styles.link),
                         css(styles.item),
+                    )}
+                    activeClassName={classnames(
+                        'active',
+                        css(styles.activeLink),
                     )}
                     to={`/graph/${field.name}`}
                     onClick={closeDrawer}
@@ -100,7 +89,7 @@ const PureGraphSummary = ({ graphFields, closeDrawer, p: polyglot }) => (
                         <MixedChartIcon className={css(styles.icon)} />
                     )}
                     <div className={css(styles.label)}>{field.label}</div>
-                </Link>
+                </NavLink>
             );
         })}
     </div>
@@ -110,14 +99,10 @@ PureGraphSummary.propTypes = {
     graphFields: PropTypes.arrayOf(fieldPropTypes).isRequired,
     selected: PropTypes.string.isRequired,
     closeDrawer: PropTypes.func.isRequired,
-    p: polyglotPropType,
 };
 
 const mapStateToProps = state => ({
     graphFields: fromFields.getGraphFields(state),
 });
 
-export default compose(
-    connect(mapStateToProps),
-    translate,
-)(PureGraphSummary);
+export default connect(mapStateToProps)(PureGraphSummary);
