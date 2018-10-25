@@ -114,7 +114,7 @@ const getListFields = createSelector(getCollectionFields, fields =>
 );
 
 const getGraphFields = createSelector(getDatasetFields, fields =>
-    fields.filter(f => f.display_in_graph).filter(f => !f.composedOf),
+    fields.filter(f => f.display_in_graph),
 );
 
 const getAllListFields = createSelector(getCollectionFields, fields =>

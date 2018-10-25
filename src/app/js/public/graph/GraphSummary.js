@@ -13,6 +13,7 @@ import {
 } from '../../propTypes';
 import { getIconComponent } from '../../formats';
 import { StyleSheet, css } from 'aphrodite/no-important';
+import MixedChartIcon from './MixedChartIcon';
 
 const styles = StyleSheet.create({
     link: {
@@ -72,9 +73,9 @@ const styles = StyleSheet.create({
 });
 
 const PureGraphSummary = ({ graphFields, closeDrawer, p: polyglot }) => (
-    <div className={css(styles.container)}>
+    <div className={classnames('graph-summary', css(styles.container))}>
         <Link
-            className={classnames(css(styles.link), css(styles.all))}
+            className={classnames('all', css(styles.link), css(styles.all))}
             to={`/graph`}
             onClick={closeDrawer}
         >
@@ -85,11 +86,19 @@ const PureGraphSummary = ({ graphFields, closeDrawer, p: polyglot }) => (
             return (
                 <Link
                     key={field.name}
-                    className={classnames(css(styles.link), css(styles.item))}
+                    className={classnames(
+                        'graph-link',
+                        css(styles.link),
+                        css(styles.item),
+                    )}
                     to={`/graph/${field.name}`}
                     onClick={closeDrawer}
                 >
-                    {Icon && <Icon className={css(styles.icon)} />}
+                    {Icon ? (
+                        <Icon className={css(styles.icon)} />
+                    ) : (
+                        <MixedChartIcon className={css(styles.icon)} />
+                    )}
                     <div className={css(styles.label)}>{field.label}</div>
                 </Link>
             );

@@ -134,12 +134,7 @@ export class NavBar extends Component {
     };
 
     render() {
-        const {
-            role,
-            canBeSearched,
-            logout,
-            p: polyglot,
-        } = this.props;
+        const { role, canBeSearched, logout, p: polyglot } = this.props;
         const { searchDrawer, graphDrawer } = this.state;
 
         return (
@@ -224,7 +219,6 @@ NavBar.propTypes = {
 const mapStasteToProps = state => ({
     role: fromUser.getRole(state),
     canBeSearched: fromFields.canBeSearched(state),
-    graphFields: fromFields.getGraphFields(state),
 });
 
 const mapDispatchToProps = {
