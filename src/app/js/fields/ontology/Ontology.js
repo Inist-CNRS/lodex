@@ -8,7 +8,10 @@ import Divider from 'material-ui/Divider';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 
-import { polyglot as polyglotPropTypes } from '../../propTypes';
+import {
+    polyglot as polyglotPropTypes,
+    field as fieldPropTypes,
+} from '../../propTypes';
 import { preLoadPublication } from '../';
 import AddCharacteristic from '../addCharacteristic/AddCharacteristic';
 import OntologyTable from './OntologyTable';
@@ -16,16 +19,18 @@ import { COVER_DATASET } from '../../../../common/cover';
 import ExportFieldsButton from '../../public/export/ExportFieldsButton';
 import ExportFieldsReadyButton from '../../public/export/ExportFieldsReadyButton';
 
+import redirectToDashboardIfNoField from '../../admin/redirectToDashboardIfNoField';
+
 const ALL = 'all';
 
 export class OntologyComponent extends Component {
-    componentWillMount() {
-        this.props.preLoadPublication();
-    }
-
     constructor(props) {
         super(props);
         this.state = { filter: COVER_DATASET };
+    }
+
+    UNSAFE_componentWillMount() {
+        this.props.preLoadPublication();
     }
 
     handleFilterChange = (_, __, filter) => this.setState({ filter });
@@ -79,12 +84,18 @@ export class OntologyComponent extends Component {
 OntologyComponent.propTypes = {
     preLoadPublication: PropTypes.func.isRequired,
     p: polyglotPropTypes.isRequired,
+    fields: PropTypes.arrayOf(fieldPropTypes).isRequired,
 };
 
 const mapDispatchToProps = {
     preLoadPublication,
 };
 
-export default compose(connect(null, mapDispatchToProps), translate)(
-    OntologyComponent,
-);
+export default compose(
+    connect(
+        null,
+        mapDispatchToProps,
+    ),
+    redirectToDashboardIfNoField,
+    translate,
+)(OntologyComponent);
