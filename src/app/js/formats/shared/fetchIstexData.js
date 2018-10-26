@@ -41,7 +41,9 @@ export const parseFetchResult = fetchResult => {
     if (fetchResult.error) {
         throw new Error(fetchResult.error);
     }
-    const { response: { total, hits, nextPageURI } } = fetchResult;
+    const {
+        response: { total, hits, nextPageURI },
+    } = fetchResult;
     const { protocol, host } = URL.parse(ISTEX_API_URL);
     return {
         hits: hits.map(hit => ({
@@ -49,7 +51,7 @@ export const parseFetchResult = fetchResult => {
             url: URL.format({
                 protocol,
                 host,
-                pathname: `${hit.arkIstex}/fulltext.pdf')`,
+                pathname: `${hit.arkIstex}/fulltext.pdf`,
             }),
             title: hit.title,
             publicationDate: hit.publicationDate,
