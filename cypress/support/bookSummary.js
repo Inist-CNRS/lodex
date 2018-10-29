@@ -1,15 +1,13 @@
 export const checkYears = years => {
     years.forEach((year, index) => {
-        cy
-            .get(`li:nth-child(${index + 1})>.istex-fold`)
+        cy.get(`li:nth-child(${index + 1})>.istex-fold`)
             .contains(year)
             .should('be.visible');
     });
 };
 
 export const openFold = label => {
-    cy
-        .get(`.istex-fold button`)
+    cy.get(`.istex-fold button`)
         .contains(label)
         .click();
 
@@ -67,10 +65,8 @@ export const checkDocuments = (year, volume, issue, documentTitles) => {
 };
 
 export const loadMore = () => {
-    cy
-        .get('.load-more')
+    cy.get('.load-more')
         .contains('View more results (1)')
         .click();
-    cy.get('.load-more svg').should('exist');
     cy.get('.load-more svg').should('not.exist');
 };
