@@ -24,6 +24,7 @@ import Drawer from './Drawer';
 import Search from './search/Search';
 import GraphSummary from './graph/GraphSummary';
 import Favicon from './Favicon';
+import theme from '../theme';
 
 const ANIMATION_DURATION = 300; // ms
 
@@ -44,6 +45,11 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         paddingTop: 10,
         borderRight: '1px solid #E3EAF2',
+        transition: 'filter 300ms ease-in-out', // , -webkit-filter 300ms ease-in-out
+        filter: 'brightness(1)',
+    },
+    containerWithDrawer: {
+        filter: 'brightness(0.98)',
     },
     icon: {
         maxHeight: 'fit-content',
@@ -56,19 +62,25 @@ const styles = StyleSheet.create({
         },
         ':focus': {
             textDecoration: 'none',
-            color: '#F48022',
+            color: theme.orange.primary,
         },
         ':visited': {
             textDecoration: 'none',
         },
         ':active': {
-            color: '#F48022',
+            color: theme.orange.primary,
         },
     },
     active: {
-        color: '#F48022',
+        color: theme.orange.primary,
         ':hover': {
-            color: '#F48022',
+            color: theme.orange.primary,
+        },
+    },
+    drawerActive: {
+        color: `${theme.purple.primary} !important`,
+        ':hover': {
+            color: `${theme.purple.primary} !important`,
         },
     },
     last: {
@@ -82,16 +94,16 @@ const styles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'column',
         textAlign: 'center',
-        color: '#7DBD42',
+        color: theme.green.primary,
         cursor: 'pointer',
         justifyContent: 'center',
         userSelect: 'none',
         textTransform: 'capitalize',
         ':hover': {
-            color: '#B22F90',
+            color: theme.purple.primary,
         },
         ':active': {
-            color: '#F48022',
+            color: theme.orange.primary,
         },
     },
     menuItemIcon: {
@@ -105,61 +117,61 @@ export class NavBar extends Component {
         graphDrawer: 'closed',
     };
 
-    openSearch = () => {
-        const { searchDrawer } = this.state;
-
-        if (searchDrawer === 'open') {
-            return;
-        }
-        this.closeGraph();
-        this.setState({ searchDrawer: 'open', graphDrawer: 'closing' });
-    };
-
-    closeSearch = () => {
-        const { searchDrawer } = this.state;
-
-        if (searchDrawer === 'closed') {
-            return;
-        }
-
-        this.setState({ searchDrawer: 'closing' }, () => {
-            setTimeout(
-                () => this.setState({ searchDrawer: 'closed' }),
-                ANIMATION_DURATION,
-            );
-        });
-    };
-
-    openGraph = e => {
-        e.preventDefault();
-        const { graphDrawer } = this.state;
-        this.closeSearch();
+    toggleSearch = () => {
+        const { searchDrawer, graphDrawer } = this.state;
 
         if (graphDrawer === 'open') {
+            this.toggleGraph();
+        }
+
+        if (searchDrawer === 'open') {
+            this.setState({ searchDrawer: 'closing' }, () => {
+                setTimeout(
+                    () => this.setState({ searchDrawer: 'closed' }),
+                    ANIMATION_DURATION,
+                );
+            });
+            return;
+        }
+
+        this.setState({ searchDrawer: 'open' });
+    };
+
+    toggleGraph = () => {
+        const { graphDrawer, searchDrawer } = this.state;
+
+        if (searchDrawer === 'open') {
+            this.toggleSearch();
+        }
+
+        if (graphDrawer === 'open') {
+            this.setState({ graphDrawer: 'closing' }, () => {
+                setTimeout(
+                    () => this.setState({ graphDrawer: 'closed' }),
+                    ANIMATION_DURATION,
+                );
+            });
             return;
         }
 
         this.setState({ graphDrawer: 'open' });
     };
 
-    closeGraph = () => {
-        const { graphDrawer } = this.state;
+    closeAll = () => {
+        const { searchDrawer, graphDrawer } = this.state;
 
-        if (graphDrawer === 'closed') {
-            return;
+        if (searchDrawer === 'open') {
+            this.toggleSearch();
         }
 
-        this.setState({ graphDrawer: 'closing' }, () => {
-            setTimeout(
-                () => this.setState({ graphDrawer: 'closed' }),
-                ANIMATION_DURATION,
-            );
-        });
+        if (graphDrawer === 'open') {
+            this.toggleGraph();
+        }
     };
 
-    closeAll = () => {
-        this.closeSearch();
-        this.closeGraph();
+    handleGraphItemClick = evt => {
+        evt.preventDefault();
+        this.toggleGraph();
     };
 
     render() {
@@ -174,7 +186,12 @@ export class NavBar extends Component {
 
         return (
             <Fragment>
-                <nav className={css(styles.container)}>
+                <nav
+                    className={classnames(css(styles.container), {
+                        [css(styles.containerWithDrawer)]:
+                            searchDrawer === 'open' || graphDrawer === 'open',
+                    })}
+                >
                     <Favicon className={css(styles.icon)} />
                     <div>
                         <NavLink
@@ -214,21 +231,21 @@ export class NavBar extends Component {
                         {hasGraph && (
                             <NavLink
                                 to="/graph"
-                                onClick={this.openGraph}
-                                isActive={(location, params) =>
-                                    get(location, 'url') === '/graph' &&
-                                    get(params, 'pathname') !== '/graph'
-                                }
-                                activeClassName={css(styles.active)}
+                                onClick={this.handleGraphItemClick}
                                 className={classnames(
                                     'nav-item',
                                     css(styles.menuItem),
                                     css(styles.link),
                                     {
-                                        [css(styles.active)]:
+                                        [css(styles.drawerActive)]:
                                             graphDrawer === 'open',
                                     },
                                 )}
+                                isActive={(location, params) =>
+                                    get(location, 'url') === '/graph' &&
+                                    get(params, 'pathname') !== '/graph'
+                                }
+                                activeClassName={css(styles.active)}
                             >
                                 <FontAwesomeIcon
                                     icon={faChartArea}
@@ -239,12 +256,12 @@ export class NavBar extends Component {
                         )}
                         {canBeSearched && (
                             <div
-                                onClick={this.openSearch}
+                                onClick={this.toggleSearch}
                                 className={classnames(
                                     'nav-item',
                                     css(styles.menuItem),
                                     {
-                                        [css(styles.active)]:
+                                        [css(styles.drawerActive)]:
                                             searchDrawer === 'open',
                                     },
                                 )}
@@ -307,17 +324,17 @@ export class NavBar extends Component {
                 </nav>
                 <Drawer
                     status={graphDrawer}
-                    onClose={this.closeGraph}
+                    onClose={this.toggleGraph}
                     animationDuration={ANIMATION_DURATION}
                 >
-                    <GraphSummary closeDrawer={this.closeGraph} />
+                    <GraphSummary closeDrawer={this.toggleGraph} />
                 </Drawer>
                 <Drawer
                     status={searchDrawer}
-                    onClose={this.closeSearch}
+                    onClose={this.toggleSearch}
                     animationDuration={ANIMATION_DURATION}
                 >
-                    <Search closeDrawer={this.closeSearch} />
+                    <Search closeDrawer={this.toggleSearch} />
                 </Drawer>
             </Fragment>
         );

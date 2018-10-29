@@ -9,28 +9,29 @@ import { field as fieldPropTypes } from '../../propTypes';
 import { getIconComponent } from '../../formats';
 import { StyleSheet, css } from 'aphrodite/no-important';
 import MixedChartIcon from './MixedChartIcon';
+import theme from '../../theme';
 
 const styles = StyleSheet.create({
     activeLink: {
-        color: '#F48022',
-        fill: '#F48022',
+        color: theme.orange.primary,
+        fill: theme.orange.primary,
         ':hover': {
-            fill: '#F48022',
-            color: '#F48022',
+            fill: theme.orange.primary,
+            color: theme.orange.primary,
         },
     },
     link: {
         textDecoration: 'none',
-        backgroundColor: 'white',
-        fill: '#7DBD42',
-        color: '#7DBD42',
+        backgroundColor: '#f8f8f8',
+        fill: theme.green.primary,
+        color: theme.green.primary,
         cursor: 'pointer',
         userSelect: 'none',
         textTransform: 'capitalize',
         ':hover': {
             textDecoration: 'none',
-            fill: '#B22F90',
-            color: '#B22F90',
+            fill: theme.purple.primary,
+            color: theme.purple.primary,
         },
         ':focus': {
             textDecoration: 'none',
