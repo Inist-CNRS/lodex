@@ -4,9 +4,9 @@ const getCustomPage = link => {
     class CustomPage extends Component {
         state = {};
         UNSAFE_componentWillMount() {
-            fetch(`${link}.html`)
-                .then(response => response.text())
-                .then(html => this.setState({ html }));
+            fetch(`/customPage${link}`)
+                .then(response => response.json())
+                .then(({ html }) => this.setState({ html }));
         }
         render() {
             const { html } = this.state;
