@@ -29,13 +29,12 @@ import AdminOnlyAlert from '../../lib/components/AdminOnlyAlert';
 const styles = StyleSheet.create({
     container: {
         margin: '0 auto',
-        padding: '0 1rem',
     },
     header: {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        padding: '1rem 0',
+        padding: '1rem',
     },
     searchBarContainer: {
         width: '100%',
