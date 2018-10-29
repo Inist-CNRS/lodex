@@ -285,6 +285,46 @@ const MenuItem = ({
                 )
             );
 
+        case 'custom': {
+            const { link } = config;
+            if (!link) {
+                console.error(
+                    `Missing link for custom menuItem: ${JSON.stringify(
+                        config,
+                    )}`,
+                );
+                return null;
+            }
+            if (link.startsWith('http')) {
+                return (
+                    <a
+                        href={link}
+                        className={classnames(
+                            'nav-item',
+                            config.class,
+                            css(styles.menuItem),
+                        )}
+                    >
+                        {label}
+                    </a>
+                );
+            }
+            return (
+                <NavLink
+                    to={link}
+                    onClick={closeAll}
+                    className={classnames(
+                        'nav-item',
+                        config.class,
+                        css(styles.menuItem),
+                        css(styles.link),
+                    )}
+                    activeClassName={css(styles.active)}
+                >
+                    {label}
+                </NavLink>
+            );
+        }
         default:
             console.error(
                 `Unknow role: ${config.role} menu item: ${JSON.stringify(

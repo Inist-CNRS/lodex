@@ -8,6 +8,12 @@ import Resource from './resource/Resource';
 import Login from '../user/Login';
 import GraphPage from './graph/GraphPage';
 import NavBar from './NavBar';
+import jsonConfig from '../../../../config.json';
+import getCustomPage from './getCustomPage';
+
+const customRoutes = jsonConfig.front.menu.filter(
+    ({ role, link }) => (role !== 'custom' ? false : link.startsWith('/')),
+);
 
 const notLogin = new RegExp('^(?!.*(/login)).*$');
 
@@ -28,6 +34,9 @@ const Routes = () => (
             <Route path="/login" component={Login} />
             <Route path="/graph" exact component={GraphPage} />
             <Route path="/graph/:name" component={GraphPage} />
+            {customRoutes.map(({ link }) => (
+                <Route key={link} path={link} component={getCustomPage(link)} />
+            ))}
         </div>
     </App>
 );

@@ -124,6 +124,16 @@
       },
       {
         "label": {
+                "en": "About",
+                "fr": "A propos"
+        },
+        "class": "about",
+        "position": "top",
+        "role": "custom",
+        "link": "/about"
+      },
+      {
+        "label": {
                 "en": "Admin",
                 "fr": "Admin"
         },
