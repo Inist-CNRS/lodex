@@ -25,9 +25,10 @@ const styles = StyleSheet.create({
         position: 'relative',
         height: '100vh',
         transitionTimingFunction: 'ease-in-out',
-        backgroundColor: '#f8f8f8',
+        backgroundColor: 'white',
         width: DRAWER_WIDTH,
         overflowY: 'auto',
+        top: 0,
     },
     closed: {
         transform: `translateX(-${DRAWER_WIDTH}px)`,
@@ -47,6 +48,14 @@ const styles = StyleSheet.create({
         left: 0,
         height: '100vh',
         width: `100vw`,
+        backgroundColor: 'black',
+        opacity: '0',
+        pointerEvents: 'none',
+        transition: 'opacity 300ms ease-in-out',
+    },
+    maskOpen: {
+        opacity: '.3',
+        pointerEvents: 'auto',
     },
 });
 
@@ -72,12 +81,12 @@ const Drawer = ({ children, status, animationDuration, onClose }) => (
         >
             {status !== 'closed' && children}
         </div>
-        {status === 'open' && (
-            <div
-                className={classnames('mask', css(styles.mask))}
-                onClick={onClose}
-            />
-        )}
+        <div
+            className={classnames('mask', css(styles.mask), {
+                [css(styles.maskOpen)]: status === 'open',
+            })}
+            onClick={onClose}
+        />
     </div>
 );
 

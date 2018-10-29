@@ -25,6 +25,7 @@ import {
 import { fromFields } from '../../sharedSelectors';
 import SearchResult from './SearchResult';
 import AdminOnlyAlert from '../../lib/components/AdminOnlyAlert';
+import theme from '../../theme';
 
 const styles = StyleSheet.create({
     container: {
@@ -62,6 +63,12 @@ const styles = StyleSheet.create({
     },
 });
 
+const muiStyles = {
+    searchBarUnderline: {
+        borderColor: theme.orange.primary,
+    },
+};
+
 const cnames = (name, ...classes) => classnames(name, ...classes.map(css));
 
 class Search extends Component {
@@ -70,12 +77,18 @@ class Search extends Component {
         opening: true,
     };
 
+    constructor(props) {
+        super(props);
+        this.textInput = React.createRef();
+    }
+
     UNSAFE_componentWillMount() {
         this.props.preLoadPublication();
         this.props.search();
 
         setTimeout(() => {
             this.setState({ opening: false });
+            this.textInput.current.input.focus();
         }, 300);
     }
 
@@ -171,6 +184,9 @@ class Search extends Component {
                             fullWidth
                             onChange={this.handleTextFieldChange}
                             value={query || ''}
+                            underlineStyle={muiStyles.searchBarUnderline}
+                            underlineFocusStyle={muiStyles.searchBarUnderline}
+                            ref={this.textInput}
                         />
                     </div>
                     <div

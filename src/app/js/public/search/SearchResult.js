@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
         padding: '1rem',
         borderTop: '1px solid rgba(153, 153, 153, 0.2)',
         ':hover': {
-            backgroundColor: 'rgba(153, 153, 153, 0.2)',
+            backgroundColor: '#f8f8f8',
         },
     },
     link: {
