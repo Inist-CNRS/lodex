@@ -459,6 +459,8 @@ export class NavBar extends Component {
                                 closeAll={this.closeAll}
                                 handleGraphItemClick={this.handleGraphItemClick}
                                 toggleSearch={this.toggleSearch}
+                                graphDrawer={graphDrawer}
+                                searchDrawer={searchDrawer}
                             />
                         ))}
                     </div>
@@ -475,6 +477,8 @@ export class NavBar extends Component {
                                 closeAll={this.closeAll}
                                 handleGraphItemClick={this.handleGraphItemClick}
                                 toggleSearch={this.toggleSearch}
+                                graphDrawer={graphDrawer}
+                                saerchDrawer={searchDrawer}
                             />
                         ))}
                     </div>
