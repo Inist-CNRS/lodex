@@ -21,13 +21,26 @@ if (simulatedLatency) {
 
 app.use(mount('/api', api));
 
+const scriptRegEx = new RegExp('<script( src=".*")?>.*?</script>', 'gm');
+
 app.use(
     route.get('/customPage/:file', async (ctx, file) => {
-        const html = await readFile(
+        const html = (await readFile(
             path.resolve(__dirname, `../../app/custom/${file}`),
-        );
+        )).toString();
 
-        ctx.body = { html: html.toString() };
+        const scripts = html
+            .match(scriptRegEx)
+            .map(script => {
+                const src = script.match(/<script src="(.*)">/);
+                console.log({ src });
+                return src && src[1];
+            })
+            .filter(src => !!src);
+
+        console.log({ scripts });
+
+        ctx.body = { html, scripts };
     }),
 );
 

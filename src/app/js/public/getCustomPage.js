@@ -1,4 +1,5 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
+import Helmet from 'react-helmet';
 
 const getCustomPage = link => {
     class CustomPage extends Component {
@@ -6,14 +7,23 @@ const getCustomPage = link => {
         UNSAFE_componentWillMount() {
             fetch(`/customPage${link}`)
                 .then(response => response.json())
-                .then(({ html }) => this.setState({ html }));
+                .then(({ html, scripts }) => this.setState({ html, scripts }));
         }
         render() {
-            const { html } = this.state;
+            const { html, scripts } = this.state;
             if (!html) {
                 return null;
             }
-            return <div dangerouslySetInnerHTML={{ __html: html }} />;
+            return (
+                <Fragment>
+                    <Helmet>
+                        {scripts.map((src, index) => (
+                            <script key={index} src={src} />
+                        ))}
+                    </Helmet>
+                    <div dangerouslySetInnerHTML={{ __html: html }} />
+                </Fragment>
+            );
         }
     }
 
