@@ -9,6 +9,7 @@ export const LOAD_DATASET_PAGE_ERROR = 'LOAD_DATASET_PAGE_ERROR';
 export const CHANGE_PAGE = 'CHANGE_PAGE';
 
 export const APPLY_FILTER = 'APPLY_FILTER';
+export const CLEAR_FILTER = 'CLEAR_FILTER';
 
 export const SORT_DATASET = 'SORT_DATASET';
 
@@ -20,6 +21,7 @@ export const loadDatasetPageError = createAction(LOAD_DATASET_PAGE_ERROR);
 export const changePage = createAction(CHANGE_PAGE);
 
 export const applyFilter = createAction(APPLY_FILTER);
+export const clearFilter = createAction(CLEAR_FILTER);
 
 export const sortDataset = createAction(SORT_DATASET);
 
@@ -53,6 +55,7 @@ export default handleActions(
             loading: true,
             perPage: (payload && payload.perPage) || state.perPage,
         }),
+        CLEAR_FILTER: () => defaultState,
         LOAD_DATASET_PAGE_SUCCESS: (
             state,
             { payload: { dataset, page: currentPage, total, fullTotal } },
@@ -65,7 +68,6 @@ export default handleActions(
             total,
             fullTotal,
         }),
-
         LOAD_DATASET_PAGE_ERROR: (state, { payload: error }) => ({
             ...state,
             error: error.message,

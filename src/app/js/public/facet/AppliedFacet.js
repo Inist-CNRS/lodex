@@ -76,7 +76,10 @@ const mapDispatchToProps = { onClearFacet: clearFacet };
 
 export default compose(
     translate,
-    connect(mapStateToProps, mapDispatchToProps),
+    connect(
+        mapStateToProps,
+        mapDispatchToProps,
+    ),
     withHandlers({
         onRequestDelete: ({ name, onClearFacet }) => () => onClearFacet(name),
     }),
