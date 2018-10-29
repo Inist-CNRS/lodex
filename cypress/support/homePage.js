@@ -6,8 +6,26 @@ export const goToAdminDashboard = () => {
 };
 
 export const goToGraphPage = () => {
-    cy.visit('/graph'); // TODO revert to a click on link once new navigation is complete
+    cy.get('nav a')
+        .contains('Resources')
+        .click();
     cy.location('pathname').should('equal', '/graph');
+};
+
+export const openChartDrawer = () => {
+    cy.get('nav a')
+        .contains('graphs')
+        .click();
+    cy.get('.graph-summary').should('be.visible');
+};
+
+export const goToChart = name => {
+    cy.get('.graph-link')
+        .contains(name)
+        .click();
+    cy.get('.graph .title')
+        .contains(name)
+        .should('be.visible');
 };
 
 export const checkCharacteristicsOrder = names => {

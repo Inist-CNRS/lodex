@@ -68,8 +68,8 @@ class GraphPage extends Component {
                         <AppliedFacetList />
                     </Card>
                     {graphField && (
-                        <Card style={styles.section}>
-                            <CardTitle style={styles.label}>
+                        <Card style={styles.section} className="graph">
+                            <CardTitle style={styles.label} className="title">
                                 {graphField.label}
                                 <EditButton
                                     field={graphField}

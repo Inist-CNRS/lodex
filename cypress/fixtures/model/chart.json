@@ -1,0 +1,267 @@
+[
+    {
+        "cover": "collection",
+        "label": "uri",
+        "display_on_list": true,
+        "transformers": [
+            {
+                "operation": "AUTOGENERATE_URI",
+                "args": []
+            }
+        ],
+        "position": 0,
+        "name": "uri"
+    },
+    {
+        "cover": "collection",
+        "label": "Title",
+        "display_in_list": true,
+        "display_in_resource": true,
+        "searchable": true,
+        "transformers": [
+            {
+                "operation": "COLUMN",
+                "args": [
+                    {
+                        "name": "column",
+                        "type": "column",
+                        "value": "Ti"
+                    }
+                ]
+            }
+        ],
+        "classes": [],
+        "position": 1,
+        "overview": 1,
+        "format": {
+            "args": {
+                "level": 4
+            },
+            "name": "title"
+        },
+        "count": 50,
+        "name": "No04"
+    },
+    {
+        "cover": "collection",
+        "label": "Publication Year",
+        "display_in_list": "",
+        "display_in_resource": true,
+        "searchable": true,
+        "transformers": [
+            {
+                "operation": "COLUMN",
+                "args": [
+                    {
+                        "name": "column",
+                        "type": "column",
+                        "value": "Py"
+                    }
+                ]
+            }
+        ],
+        "classes": [],
+        "position": 2,
+        "format": {
+            "args": {
+                "level": 4
+            },
+            "name": "title"
+        },
+        "isFacet": true,
+        "overview": 2,
+        "count": 500,
+        "name": "Bzu3"
+    },
+    {
+        "cover": "collection",
+        "label": "Web of Science Category(ies)",
+        "display_in_list": "",
+        "display_in_resource": true,
+        "searchable": true,
+        "transformers": [
+            {
+                "operation": "COLUMN",
+                "args": [
+                    {
+                        "name": "column",
+                        "type": "column",
+                        "value": "Wc"
+                    }
+                ]
+            },
+            {
+                "args": [
+                    {
+                        "name": "separator",
+                        "type": "string",
+                        "value": "; "
+                    }
+                ],
+                "operation": "SPLIT"
+            }
+        ],
+        "classes": [],
+        "position": 3,
+        "format": {
+            "args": {
+                "type": "unordered",
+                "subFormat": "none",
+                "subFormatOptions": {}
+            },
+            "name": "list"
+        },
+        "isFacet": true,
+        "count": 500,
+        "width": "50",
+        "name": "WXcA"
+    },
+    {
+        "label": "Bar Chart",
+        "format": {
+            "args": {
+                "params": {
+                    "maxSize": "21",
+                    "orderBy": "value/desc"
+                },
+                "colors": "#8c6bb1",
+                "axisRoundValue": true,
+                "diagonalCategoryAxis": false,
+                "diagonalValueAxis": false,
+                "direction": "horizontal",
+                "scale": "linear",
+                "categoryMargin": "200",
+                "valueMargin": "30",
+                "barSize": "26"
+            },
+            "name": "globalBarchart"
+        },
+        "width": "",
+        "cover": "dataset",
+        "transformers": [
+            {
+                "operation": "VALUE",
+                "args": [
+                    {
+                        "name": "value",
+                        "type": "string",
+                        "value": "/api/run/distinct-by/WXcA/"
+                    }
+                ]
+            }
+        ],
+        "position": 4,
+        "display_in_graph": true,
+        "count": 0,
+        "name": "cRJu"
+    },
+    {
+        "label": "Bubble Chart",
+        "format": {
+            "args": {
+                "params": {
+                    "maxSize": 200,
+                    "orderBy": "value/asc",
+                    "minValue": 1,
+                    "maxValue": 100
+                },
+                "colorScheme": [
+                    "#8dd3c7",
+                    "#ffffb3",
+                    "#bebada",
+                    "#fb8072",
+                    "#80b1d3",
+                    "#fdb462",
+                    "#b3de69",
+                    "#fccde5",
+                    "#d9d9d9",
+                    "#bc80bd",
+                    "#ccebc5",
+                    "#ffed6f"
+                ],
+                "diameter": "550"
+            },
+            "name": "bubbleChart"
+        },
+        "cover": "dataset",
+        "transformers": [
+            {
+                "operation": "VALUE",
+                "args": [
+                    {
+                        "name": "value",
+                        "type": "string",
+                        "value": "/api/run/distinct-by/WXcA/"
+                    }
+                ]
+            }
+        ],
+        "position": 5,
+        "display_in_graph": true,
+        "width": "",
+        "count": 0,
+        "name": "JkBk"
+    },
+    {
+        "label": "Pie Chart",
+        "format": {
+            "args": {
+                "params": {
+                    "maxSize": 5,
+                    "orderBy": "value/asc"
+                },
+                "colors": "#1D1A31 #4D2D52 #9A4C95 #F08CAE #C1A5A9"
+            },
+            "name": "globalPiechart"
+        },
+        "position": 6,
+        "cover": "dataset",
+        "transformers": [
+            {
+                "operation": "VALUE",
+                "args": [
+                    {
+                        "name": "value",
+                        "type": "string",
+                        "value": "/api/run/distinct-by/WXcA/"
+                    }
+                ]
+            }
+        ],
+        "display_in_graph": true,
+        "name": "ax5a",
+        "count": 0
+    },
+    {
+        "label": "Radar Chart",
+        "format": {
+            "args": {
+                "params": {
+                    "maxSize": 5,
+                    "orderBy": "value/asc"
+                },
+                "colors": "#1D1A31 #4D2D52 #9A4C95 #F08CAE #C1A5A9",
+                "axisRoundValue": true,
+                "scale": "linear"
+            },
+            "name": "globalRadarchart"
+        },
+        "position": 7,
+        "cover": "dataset",
+        "transformers": [
+            {
+                "operation": "VALUE",
+                "args": [
+                    {
+                        "name": "value",
+                        "type": "string",
+                        "value": "/api/run/distinct-by/WXcA/"
+                    }
+                ]
+            }
+        ],
+        "display_in_graph": true,
+        "name": "QC65",
+        "count": 0
+    }
+]
