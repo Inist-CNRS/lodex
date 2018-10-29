@@ -28,8 +28,11 @@ const styles = StyleSheet.create({
         },
     },
     link: {
-        textDecoration: 'none !important',
         color: 'black',
+        ':hover': {
+            textDecoration: 'none !important',
+            color: 'inherit',
+        },
     },
     row: {
         flex: '0 0 auto',

@@ -44,6 +44,14 @@ const styles = StyleSheet.create({
     },
     searchResults: {
         margin: '1.5rem 0',
+        opacity: '1',
+        transition: 'opacity 300ms ease-in-out',
+    },
+    searchResultsOpening: {
+        opacity: '0',
+    },
+    searchResultsEmpty: {
+        opacity: '0',
     },
     loading: {
         marginRight: '1rem',
@@ -59,11 +67,16 @@ const cnames = (name, ...classes) => classnames(name, ...classes.map(css));
 class Search extends Component {
     state = {
         query: null,
+        opening: true,
     };
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         this.props.preLoadPublication();
         this.props.search();
+
+        setTimeout(() => {
+            this.setState({ opening: false });
+        }, 300);
     }
 
     debouncedSearch = debounce(params => {
@@ -129,7 +142,7 @@ class Search extends Component {
     };
 
     render() {
-        const { query } = this.state;
+        const { query, opening } = this.state;
         const { loading, fieldNames, results, total, p: polyglot } = this.props;
 
         const noOverviewField =
@@ -144,7 +157,9 @@ class Search extends Component {
 
         return (
             <div className={cnames('search', styles.container)}>
-                <div className={cnames('search-header', styles.header)}>
+                <div
+                    className={classnames('search-header', css(styles.header))}
+                >
                     <div
                         className={cnames(
                             'search-bar',
@@ -167,7 +182,13 @@ class Search extends Component {
                         <a href="#">{polyglot.t('search_advanced')}</a>
                     </div>
                 </div>
-                <div className={cnames('search-results', styles.searchResults)}>
+                <div
+                    className={classnames(
+                        'search-results',
+                        css(styles.searchResults),
+                        { [css(styles.searchResultsOpening)]: opening },
+                    )}
+                >
                     {noOverviewField && this.renderNoOverviewField()}
                     {noResults && this.renderNoResults()}
                     {everythingIsOk && this.renderResults()}

@@ -105,61 +105,60 @@ export class NavBar extends Component {
         graphDrawer: 'closed',
     };
 
-    openSearch = () => {
-        const { searchDrawer } = this.state;
-
-        if (searchDrawer === 'open') {
-            return;
-        }
-        this.closeGraph();
-        this.setState({ searchDrawer: 'open', graphDrawer: 'closing' });
-    };
-
-    closeSearch = () => {
-        const { searchDrawer } = this.state;
-
-        if (searchDrawer === 'closed') {
-            return;
-        }
-
-        this.setState({ searchDrawer: 'closing' }, () => {
-            setTimeout(
-                () => this.setState({ searchDrawer: 'closed' }),
-                ANIMATION_DURATION,
-            );
-        });
-    };
-
-    openGraph = e => {
-        e.preventDefault();
-        const { graphDrawer } = this.state;
-        this.closeSearch();
+    toggleSearch = () => {
+        const { searchDrawer, graphDrawer } = this.state;
 
         if (graphDrawer === 'open') {
+            this.toggleGraph()();
+        }
+
+        if (searchDrawer === 'open') {
+            this.setState({ searchDrawer: 'closing' }, () => {
+                setTimeout(
+                    () => this.setState({ searchDrawer: 'closed' }),
+                    ANIMATION_DURATION,
+                );
+            });
+            return;
+        }
+
+        this.setState({ searchDrawer: 'open' });
+    };
+
+    toggleGraph = (shouldPreventDefault = false) => evt => {
+        const { graphDrawer, searchDrawer } = this.state;
+
+        if (evt && shouldPreventDefault) {
+            evt.preventDefault();
+        }
+
+        if (searchDrawer === 'open') {
+            this.toggleSearch();
+        }
+
+        if (graphDrawer === 'open') {
+            this.setState({ graphDrawer: 'closing' }, () => {
+                setTimeout(
+                    () => this.setState({ graphDrawer: 'closed' }),
+                    ANIMATION_DURATION,
+                );
+            });
             return;
         }
 
         this.setState({ graphDrawer: 'open' });
     };
 
-    closeGraph = () => {
-        const { graphDrawer } = this.state;
+    closeAll = () => {
+        const { searchDrawer, graphDrawer } = this.state;
 
-        if (graphDrawer === 'closed') {
-            return;
+        if (searchDrawer === 'open') {
+            this.toggleSearch();
         }
 
-        this.setState({ graphDrawer: 'closing' }, () => {
-            setTimeout(
-                () => this.setState({ graphDrawer: 'closed' }),
-                ANIMATION_DURATION,
-            );
-        });
-    };
-
-    closeAll = () => {
-        this.closeSearch();
-        this.closeGraph();
+        if (graphDrawer === 'open') {
+            this.toggleGraph()();
+        }
     };
 
     render() {
@@ -214,7 +213,7 @@ export class NavBar extends Component {
                         {hasGraph && (
                             <NavLink
                                 to="/graph"
-                                onClick={this.openGraph}
+                                onClick={this.toggleGraph(true)}
                                 isActive={(location, params) =>
                                     get(location, 'url') === '/graph' &&
                                     get(params, 'pathname') !== '/graph'
@@ -239,7 +238,7 @@ export class NavBar extends Component {
                         )}
                         {canBeSearched && (
                             <div
-                                onClick={this.openSearch}
+                                onClick={this.toggleSearch}
                                 className={classnames(
                                     'nav-item',
                                     css(styles.menuItem),
@@ -307,17 +306,17 @@ export class NavBar extends Component {
                 </nav>
                 <Drawer
                     status={graphDrawer}
-                    onClose={this.closeGraph}
+                    onClose={this.toggleGraph()}
                     animationDuration={ANIMATION_DURATION}
                 >
-                    <GraphSummary closeDrawer={this.closeGraph} />
+                    <GraphSummary closeDrawer={this.toggleGraph()} />
                 </Drawer>
                 <Drawer
                     status={searchDrawer}
-                    onClose={this.closeSearch}
+                    onClose={this.toggleSearch}
                     animationDuration={ANIMATION_DURATION}
                 >
-                    <Search closeDrawer={this.closeSearch} />
+                    <Search closeDrawer={this.toggleSearch} />
                 </Drawer>
             </Fragment>
         );
