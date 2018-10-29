@@ -1,12 +1,9 @@
 import { teardown } from '../support/authentication';
 import * as datasetImportPage from '../support/datasetImportPage';
 import * as homePage from '../support/homePage';
-import * as graphPage from '../support/graphPage';
-import * as bookSummaryPage from '../support/bookSummary';
 
-describe('Book Summary', () => {
+describe('Chart Menu', () => {
     beforeEach(() => {
-        cy.visit('http://localhost:3000/admin');
         teardown();
         homePage.goToAdminDashboard();
         datasetImportPage.importDataset('dataset/chart.csv');
