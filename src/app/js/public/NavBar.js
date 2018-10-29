@@ -25,6 +25,14 @@ import Search from './search/Search';
 import GraphSummary from './graph/GraphSummary';
 import Favicon from './Favicon';
 import theme from '../theme';
+import jsonConfig from '../../../../config.json';
+
+const topMenu = jsonConfig.front.menu.filter(
+    ({ position }) => position === 'top',
+);
+const bottomMenu = jsonConfig.front.menu.filter(
+    ({ position }) => position === 'bottom',
+);
 
 const ANIMATION_DURATION = 300; // ms
 
@@ -111,6 +119,211 @@ const styles = StyleSheet.create({
     },
 });
 
+const MenuItem = ({
+    config,
+    polyglot,
+    closeAll,
+    hasGraph,
+    graphDrawer,
+    searchDrawer,
+    handleGraphItemClick,
+    toggleSearch,
+    canBeSearched,
+    role,
+    logout,
+}) => {
+    const label = config.label[polyglot.currentLocale];
+    switch (config.role) {
+        case 'home':
+            return (
+                <NavLink
+                    to="/"
+                    exact
+                    className={classnames(
+                        'nav-item',
+                        config.class,
+                        css(styles.menuItem),
+                        css(styles.link),
+                    )}
+                    activeClassName={css(styles.active)}
+                    onClick={closeAll}
+                >
+                    <FontAwesomeIcon
+                        icon={faHome}
+                        className={css(styles.menuItemIcon)}
+                    />
+                    {label}
+                </NavLink>
+            );
+        case 'resources':
+            return (
+                <NavLink
+                    to="/graph"
+                    exact
+                    className={classnames(
+                        'nav-item',
+                        css(styles.menuItem),
+                        css(styles.link),
+                    )}
+                    activeClassName={css(styles.active)}
+                    onClick={closeAll}
+                >
+                    <FontAwesomeIcon
+                        icon={faList}
+                        className={css(styles.menuItemIcon)}
+                    />
+                    {label}
+                </NavLink>
+            );
+        case 'graphs':
+            return (
+                hasGraph && (
+                    <NavLink
+                        to="/graph"
+                        onClick={handleGraphItemClick}
+                        className={classnames(
+                            'nav-item',
+                            css(styles.menuItem),
+                            css(styles.link),
+                            {
+                                [css(styles.drawerActive)]:
+                                    graphDrawer === 'open',
+                            },
+                        )}
+                        isActive={(location, params) =>
+                            get(location, 'url') === '/graph' &&
+                            get(params, 'pathname') !== '/graph'
+                        }
+                        activeClassName={css(styles.active)}
+                    >
+                        <FontAwesomeIcon
+                            icon={faChartArea}
+                            className={css(styles.menuItemIcon)}
+                        />
+                        {label}
+                    </NavLink>
+                )
+            );
+        case 'search':
+            return (
+                canBeSearched && (
+                    <div
+                        onClick={toggleSearch}
+                        className={classnames(
+                            'nav-item',
+                            css(styles.menuItem),
+                            {
+                                [css(styles.drawerActive)]:
+                                    searchDrawer === 'open',
+                            },
+                        )}
+                    >
+                        <FontAwesomeIcon
+                            icon={faSearch}
+                            className={css(styles.menuItemIcon)}
+                        />
+                        {label}
+                    </div>
+                )
+            );
+        case 'admin':
+            return (
+                role === 'admin' && (
+                    <a
+                        href="/admin"
+                        className={classnames(
+                            'nav-item',
+                            config.class,
+                            css(styles.menuItem),
+                        )}
+                    >
+                        <FontAwesomeIcon
+                            icon={faCogs}
+                            className={css(styles.menuItemIcon)}
+                        />
+                        {label}
+                    </a>
+                )
+            );
+        case 'sign-in':
+            return (
+                role === 'not logged' && (
+                    <Link
+                        to="/login"
+                        className={classnames(
+                            'nav-item',
+                            config.class,
+                            css(styles.menuItem),
+                        )}
+                    >
+                        <FontAwesomeIcon
+                            icon={faSignInAlt}
+                            className={css(styles.menuItemIcon)}
+                        />
+                        {label}
+                    </Link>
+                )
+            );
+        case 'sign-out':
+            return (
+                role !== 'not logged' && (
+                    <Link
+                        to="/login"
+                        className={classnames(
+                            'nav-item',
+                            config.class,
+                            css(styles.menuItem),
+                        )}
+                        onClick={logout}
+                    >
+                        <FontAwesomeIcon
+                            icon={faSignOutAlt}
+                            className={css(styles.menuItemIcon)}
+                        />
+                        {label}
+                    </Link>
+                )
+            );
+
+        default:
+            console.error(
+                `Unknow role: ${config.role} menu item: ${JSON.stringify(
+                    config,
+                )} will be ignored`,
+            );
+            return null;
+    }
+};
+
+MenuItem.propTypes = {
+    config: PropTypes.shape({
+        role: PropTypes.oneOf([
+            'home',
+            'resources',
+            'graphs',
+            'search',
+            'admin',
+            'sign-in',
+            'sign-out',
+        ]),
+        label: PropTypes.shape({
+            en: PropTypes.string.isRequired,
+            fr: PropTypes.string.isRequired,
+        }).isRequired,
+        class: PropTypes.string.isRequired,
+    }),
+    closeAll: PropTypes.func.isRequired,
+    graphDrawer: PropTypes.oneOf(['open', 'closing', 'closed']),
+    searchDrawer: PropTypes.oneOf(['open', 'closing', 'closed']),
+    handleGraphItemClick: PropTypes.func.isRequired,
+    toggleSearch: PropTypes.func.isRequired,
+    role: PropTypes.oneOf(['admin', 'user', 'notLogged']).isRequired,
+    logout: PropTypes.func.isRequired,
+    canBeSearched: PropTypes.bool.isRequired,
+    hasGraph: PropTypes.bool.isRequired,
+    polyglot: polyglotPropTypes.isRequired,
+};
+
 export class NavBar extends Component {
     state = {
         searchDrawer: 'closed',
@@ -194,132 +407,36 @@ export class NavBar extends Component {
                 >
                     <Favicon className={css(styles.icon)} />
                     <div>
-                        <NavLink
-                            to="/"
-                            exact
-                            className={classnames(
-                                'nav-item',
-                                css(styles.menuItem),
-                                css(styles.link),
-                            )}
-                            activeClassName={css(styles.active)}
-                            onClick={this.closeAll}
-                        >
-                            <FontAwesomeIcon
-                                icon={faHome}
-                                className={css(styles.menuItemIcon)}
+                        {topMenu.map((config, index) => (
+                            <MenuItem
+                                key={index}
+                                config={config}
+                                role={role}
+                                canBeSearched={canBeSearched}
+                                hasGraph={hasGraph}
+                                logout={logout}
+                                polyglot={polyglot}
+                                closeAll={this.closeAll}
+                                handleGraphItemClick={this.handleGraphItemClick}
+                                toggleSearch={this.toggleSearch}
                             />
-                            {polyglot.t('home')}
-                        </NavLink>
-                        <NavLink
-                            to="/graph"
-                            exact
-                            className={classnames(
-                                'nav-item',
-                                css(styles.menuItem),
-                                css(styles.link),
-                            )}
-                            activeClassName={css(styles.active)}
-                            onClick={this.closeAll}
-                        >
-                            <FontAwesomeIcon
-                                icon={faList}
-                                className={css(styles.menuItemIcon)}
-                            />
-                            {polyglot.t('resources')}
-                        </NavLink>
-                        {hasGraph && (
-                            <NavLink
-                                to="/graph"
-                                onClick={this.handleGraphItemClick}
-                                className={classnames(
-                                    'nav-item',
-                                    css(styles.menuItem),
-                                    css(styles.link),
-                                    {
-                                        [css(styles.drawerActive)]:
-                                            graphDrawer === 'open',
-                                    },
-                                )}
-                                isActive={(location, params) =>
-                                    get(location, 'url') === '/graph' &&
-                                    get(params, 'pathname') !== '/graph'
-                                }
-                                activeClassName={css(styles.active)}
-                            >
-                                <FontAwesomeIcon
-                                    icon={faChartArea}
-                                    className={css(styles.menuItemIcon)}
-                                />
-                                {polyglot.t('graphs')}
-                            </NavLink>
-                        )}
-                        {canBeSearched && (
-                            <div
-                                onClick={this.toggleSearch}
-                                className={classnames(
-                                    'nav-item',
-                                    css(styles.menuItem),
-                                    {
-                                        [css(styles.drawerActive)]:
-                                            searchDrawer === 'open',
-                                    },
-                                )}
-                            >
-                                <FontAwesomeIcon
-                                    icon={faSearch}
-                                    className={css(styles.menuItemIcon)}
-                                />
-                                {polyglot.t('search_placeholder')}
-                            </div>
-                        )}
+                        ))}
                     </div>
                     <div className={css(styles.last)}>
-                        {role === 'admin' && (
-                            <a
-                                href="/admin"
-                                className={classnames(
-                                    'nav-item',
-                                    css(styles.menuItem),
-                                )}
-                            >
-                                <FontAwesomeIcon
-                                    icon={faCogs}
-                                    className={css(styles.menuItemIcon)}
-                                />
-                                {polyglot.t('Admin')}
-                            </a>
-                        )}
-                        {role === 'not logged' ? (
-                            <Link
-                                to="/login"
-                                className={classnames(
-                                    'nav-item',
-                                    css(styles.menuItem),
-                                )}
-                            >
-                                <FontAwesomeIcon
-                                    icon={faSignInAlt}
-                                    className={css(styles.menuItemIcon)}
-                                />
-                                {polyglot.t('sign in')}
-                            </Link>
-                        ) : (
-                            <Link
-                                to="/login"
-                                className={classnames(
-                                    'nav-item',
-                                    css(styles.menuItem),
-                                )}
-                                onClick={logout}
-                            >
-                                <FontAwesomeIcon
-                                    icon={faSignOutAlt}
-                                    className={css(styles.menuItemIcon)}
-                                />
-                                {polyglot.t('sign_out')}
-                            </Link>
-                        )}
+                        {bottomMenu.map((config, index) => (
+                            <MenuItem
+                                key={index}
+                                config={config}
+                                role={role}
+                                canBeSearched={canBeSearched}
+                                hasGraph={hasGraph}
+                                logout={logout}
+                                polyglot={polyglot}
+                                closeAll={this.closeAll}
+                                handleGraphItemClick={this.handleGraphItemClick}
+                                toggleSearch={this.toggleSearch}
+                            />
+                        ))}
                     </div>
                 </nav>
                 <Drawer
