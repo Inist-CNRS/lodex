@@ -2,13 +2,7 @@ import React, { Fragment, Component } from 'react';
 import { StyleSheet, css } from 'aphrodite/no-important';
 import { Link, NavLink } from 'react-router-dom';
 import { PropTypes } from 'prop-types';
-import { faHome } from '@fortawesome/free-solid-svg-icons/faHome';
-import { faChartArea } from '@fortawesome/free-solid-svg-icons/faChartArea';
-import { faSearch } from '@fortawesome/free-solid-svg-icons/faSearch';
-import { faCogs } from '@fortawesome/free-solid-svg-icons/faCogs';
-import { faSignInAlt } from '@fortawesome/free-solid-svg-icons/faSignInAlt';
-import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons/faSignOutAlt';
-import { faList } from '@fortawesome/free-solid-svg-icons/faList';
+import * as icons from '@fortawesome/free-solid-svg-icons';
 import { connect } from 'react-redux';
 import { config } from '@fortawesome/fontawesome-svg-core';
 import translate from 'redux-polyglot/translate';
@@ -119,6 +113,26 @@ const styles = StyleSheet.create({
     },
 });
 
+const getIcon = icon => {
+    const faIcon = get(icons, icon);
+    if (faIcon) {
+        return (
+            <FontAwesomeIcon
+                icon={faIcon}
+                className={css(styles.menuItemIcon)}
+            />
+        );
+    }
+    return (
+        <img
+            src={icon}
+            className={css(styles.menuItemIcon)}
+            width={50}
+            height={50}
+        />
+    );
+};
+
 const MenuItem = ({
     config,
     polyglot,
@@ -133,6 +147,8 @@ const MenuItem = ({
     logout,
 }) => {
     const label = config.label[polyglot.currentLocale];
+    const icon = getIcon(config.icon);
+
     switch (config.role) {
         case 'home':
             return (
@@ -141,17 +157,13 @@ const MenuItem = ({
                     exact
                     className={classnames(
                         'nav-item',
-                        config.class,
                         css(styles.menuItem),
                         css(styles.link),
                     )}
                     activeClassName={css(styles.active)}
                     onClick={closeAll}
                 >
-                    <FontAwesomeIcon
-                        icon={faHome}
-                        className={css(styles.menuItemIcon)}
-                    />
+                    {icon}
                     {label}
                 </NavLink>
             );
@@ -168,10 +180,7 @@ const MenuItem = ({
                     activeClassName={css(styles.active)}
                     onClick={closeAll}
                 >
-                    <FontAwesomeIcon
-                        icon={faList}
-                        className={css(styles.menuItemIcon)}
-                    />
+                    {icon}
                     {label}
                 </NavLink>
             );
@@ -196,10 +205,7 @@ const MenuItem = ({
                         }
                         activeClassName={css(styles.active)}
                     >
-                        <FontAwesomeIcon
-                            icon={faChartArea}
-                            className={css(styles.menuItemIcon)}
-                        />
+                        {icon}
                         {label}
                     </NavLink>
                 )
@@ -218,10 +224,7 @@ const MenuItem = ({
                             },
                         )}
                     >
-                        <FontAwesomeIcon
-                            icon={faSearch}
-                            className={css(styles.menuItemIcon)}
-                        />
+                        {icon}
                         {label}
                     </div>
                 )
@@ -231,16 +234,9 @@ const MenuItem = ({
                 role === 'admin' && (
                     <a
                         href="/admin"
-                        className={classnames(
-                            'nav-item',
-                            config.class,
-                            css(styles.menuItem),
-                        )}
+                        className={classnames('nav-item', css(styles.menuItem))}
                     >
-                        <FontAwesomeIcon
-                            icon={faCogs}
-                            className={css(styles.menuItemIcon)}
-                        />
+                        {icon}
                         {label}
                     </a>
                 )
@@ -250,16 +246,9 @@ const MenuItem = ({
                 role === 'not logged' && (
                     <Link
                         to="/login"
-                        className={classnames(
-                            'nav-item',
-                            config.class,
-                            css(styles.menuItem),
-                        )}
+                        className={classnames('nav-item', css(styles.menuItem))}
                     >
-                        <FontAwesomeIcon
-                            icon={faSignInAlt}
-                            className={css(styles.menuItemIcon)}
-                        />
+                        {icon}
                         {label}
                     </Link>
                 )
@@ -269,17 +258,10 @@ const MenuItem = ({
                 role !== 'not logged' && (
                     <Link
                         to="/login"
-                        className={classnames(
-                            'nav-item',
-                            config.class,
-                            css(styles.menuItem),
-                        )}
+                        className={classnames('nav-item', css(styles.menuItem))}
                         onClick={logout}
                     >
-                        <FontAwesomeIcon
-                            icon={faSignOutAlt}
-                            className={css(styles.menuItemIcon)}
-                        />
+                        {icon}
                         {label}
                     </Link>
                 )
@@ -299,12 +281,9 @@ const MenuItem = ({
                 return (
                     <a
                         href={link}
-                        className={classnames(
-                            'nav-item',
-                            config.class,
-                            css(styles.menuItem),
-                        )}
+                        className={classnames('nav-item', css(styles.menuItem))}
                     >
+                        {icon}
                         {label}
                     </a>
                 );
@@ -315,12 +294,12 @@ const MenuItem = ({
                     onClick={closeAll}
                     className={classnames(
                         'nav-item',
-                        config.class,
                         css(styles.menuItem),
                         css(styles.link),
                     )}
                     activeClassName={css(styles.active)}
                 >
+                    {icon}
                     {label}
                 </NavLink>
             );
