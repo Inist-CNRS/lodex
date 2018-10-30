@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         paddingTop: 10,
         borderRight: '1px solid #E3EAF2',
-        transition: 'filter 300ms ease-in-out', // , -webkit-filter 300ms ease-in-out
+        transition: 'filter 300ms ease-in-out', // -webkit-filter 300ms ease-in-out
         filter: 'brightness(1)',
     },
     containerWithDrawer: {
