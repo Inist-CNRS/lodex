@@ -71,7 +71,9 @@ export function* handleLoadDatasetPageRequest({ payload }) {
 }
 
 const clearDatasetSearch = function*({ payload: { location } }) {
-    if (!location.pathname.startsWith('/graph')) {
+    const match = yield select(fromDataset.getFilter);
+
+    if (match && !location.pathname.startsWith('/graph')) {
         yield put(clearFilter());
     }
 };

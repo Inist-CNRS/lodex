@@ -33,7 +33,12 @@ export function* handleLoadFacetValuesRequest({ payload: { name } }) {
 }
 
 export function* clearFacetSaga({ payload: { location } }) {
-    if (!location.pathname.startsWith('/graph')) {
+    const appliedFacets = yield select(fromFacet.getAppliedFacets);
+
+    if (
+        Object.keys(appliedFacets).length > 0 &&
+        !location.pathname.startsWith('/graph')
+    ) {
         yield put(clearFacet());
     }
 }
