@@ -32,11 +32,15 @@ export function* handleLoadFacetValuesRequest({ payload: { name } }) {
     return yield put(loadFacetValuesSuccess({ name, values }));
 }
 
-export function* clearFacetSaga({ payload: { action, pathname } }) {
-    if (pathname === '/login' || action === 'POP' || action === 'REPLACE') {
-        return;
+export function* clearFacetSaga({ payload: { location } }) {
+    const appliedFacets = yield select(fromFacet.getAppliedFacets);
+
+    if (
+        Object.keys(appliedFacets).length > 0 &&
+        !location.pathname.startsWith('/graph')
+    ) {
+        yield put(clearFacet());
     }
-    yield put(clearFacet());
 }
 
 export function* scrollToTopSaga() {

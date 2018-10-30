@@ -6,6 +6,7 @@ import {
     takeLatest,
     throttle,
 } from 'redux-saga/effects';
+import { LOCATION_CHANGE } from 'connected-react-router';
 
 import {
     LOAD_DATASET_PAGE,
@@ -16,6 +17,7 @@ import {
     loadDatasetPage,
     loadDatasetPageSuccess,
     loadDatasetPageError,
+    clearFilter,
 } from './';
 
 import { TOGGLE_FACET_VALUE, CLEAR_FACET, INVERT_FACET } from '../facet';
@@ -68,6 +70,14 @@ export function* handleLoadDatasetPageRequest({ payload }) {
     yield put(loadDatasetPageSuccess({ dataset, page, total, fullTotal }));
 }
 
+const clearDatasetSearch = function*({ payload: { location } }) {
+    const match = yield select(fromDataset.getFilter);
+
+    if (match && !location.pathname.startsWith('/graph')) {
+        yield put(clearFilter());
+    }
+};
+
 export default function*() {
     yield fork(function*() {
         // see https://github.com/redux-saga/redux-saga/blob/master/docs/api/README.md#throttlems-pattern-saga-args
@@ -88,4 +98,6 @@ export default function*() {
     yield fork(function*() {
         yield takeLatest(PRE_LOAD_DATASET_PAGE, handlePreLoadDatasetPage);
     });
+
+    yield takeLatest(LOCATION_CHANGE, clearDatasetSearch);
 }

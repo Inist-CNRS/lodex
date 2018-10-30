@@ -5,7 +5,6 @@ services:
             context: .
             args:
                 node_env: e2e
-        user: "${UID}:${GID}"
         environment:
             NODE_ENV: "e2e"
             EZMASTER_PUBLIC_URL: ${EZMASTER_PUBLIC_URL}
