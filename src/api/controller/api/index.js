@@ -21,6 +21,7 @@ import upload from './upload';
 import widget from './widget';
 import run from './run';
 import progress from './progress';
+import menu from './menu';
 
 const app = new Koa();
 
@@ -28,6 +29,7 @@ app.use(ezMasterConfig);
 app.use(repositoryMiddleware);
 
 app.use(mount('/login', login));
+app.use(route.get('/menu', menu));
 
 app.use(
     jwt({

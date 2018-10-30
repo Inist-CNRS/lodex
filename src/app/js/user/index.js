@@ -367,6 +367,12 @@ export const getProgressRequest = state =>
         url: '/api/progress',
     });
 
+export const getMenuRequest = state =>
+    getRequest(state, {
+        method: 'GET',
+        url: '/api/menu',
+    });
+
 export const selectors = {
     isAdmin,
     getRole,
@@ -410,4 +416,5 @@ export const selectors = {
     getReorderFieldRequest,
     getProgressRequest,
     getIstexRequest,
+    getMenuRequest,
 };

@@ -7,8 +7,8 @@ import get from 'lodash.get';
 import { StyleSheet, css } from 'aphrodite/no-important';
 import classnames from 'classnames';
 
-import theme from '../theme';
-import { polyglot as polyglotPropTypes } from '../propTypes';
+import theme from '../../theme';
+import { polyglot as polyglotPropTypes } from '../../propTypes';
 
 const styles = StyleSheet.create({
     link: {

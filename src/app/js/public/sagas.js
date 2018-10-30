@@ -12,6 +12,7 @@ import resourceSagas from './resource/sagas';
 import graphSagas from '../formats/sagas';
 import userSagas from '../user/sagas';
 import searchSagas from './search/sagas';
+import menuSagas from './menu/loadMenuSaga';
 
 export default function*() {
     yield fork(characteristicSaga);
@@ -26,4 +27,5 @@ export default function*() {
     yield fork(graphSagas);
     yield fork(userSagas);
     yield fork(searchSagas);
+    yield fork(menuSagas);
 }

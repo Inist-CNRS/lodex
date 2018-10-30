@@ -1,30 +1,33 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
-import translate from 'redux-polyglot/translate';
-import fetch from 'fetch-with-proxy';
+import CircularProgress from 'material-ui/CircularProgress';
 
+import fetch from '../lib/fetch';
 import { polyglot as polyglotPropTypes } from '../propTypes';
 
 export class CustomPage extends Component {
     state = {};
     UNSAFE_componentWillMount() {
-        fetch(`/customPage${this.props.link}`)
-            .then(response => response.json())
-            .then(({ html, scripts }) => this.setState({ html, scripts }))
+        fetch({ url: `/customPage${this.props.link}` })
+            .then(({ response: { html, scripts }, error }) => {
+                if (error) {
+                    throw error;
+                }
+                this.setState({ html, scripts });
+            })
             .catch(error => {
                 console.error(error);
                 this.setState({ error: true });
             });
     }
     render() {
-        const { p: polyglot } = this.props;
         const { html, scripts, error } = this.state;
         if (error) {
-            return <div>{polyglot.t('page_not_found')}</div>;
+            return null;
         }
         if (!html) {
-            return null;
+            return <CircularProgress />;
         }
         return (
             <Fragment>
@@ -45,8 +48,8 @@ CustomPage.propTypes = {
 };
 
 const getCustomPage = link =>
-    translate(function CustomPageForLink() {
+    function CustomLinkPage() {
         return <CustomPage link={link} />;
-    });
+    };
 
 export default getCustomPage;

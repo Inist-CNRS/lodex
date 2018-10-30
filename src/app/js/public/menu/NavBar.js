@@ -7,22 +7,15 @@ import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
 import classnames from 'classnames';
 
-import { fromUser, fromFields } from '../sharedSelectors';
-import { logout } from '../user';
-import { polyglot as polyglotPropTypes } from '../propTypes';
-import Drawer from './Drawer';
-import Search from './search/Search';
-import GraphSummary from './graph/GraphSummary';
-import Favicon from './Favicon';
-import jsonConfig from '../../../../config.json';
+import { fromUser, fromFields } from '../../sharedSelectors';
+import { fromMenu } from '../selectors';
+import { logout } from '../../user';
+import { polyglot as polyglotPropTypes } from '../../propTypes';
+import Drawer from '../Drawer';
+import Search from '../search/Search';
+import GraphSummary from '../graph/GraphSummary';
+import Favicon from '../Favicon';
 import MenuItem from './MenuItem';
-
-const topMenu = jsonConfig.front.menu.filter(
-    ({ position }) => position === 'top',
-);
-const bottomMenu = jsonConfig.front.menu.filter(
-    ({ position }) => position === 'bottom',
-);
 
 const ANIMATION_DURATION = 300; // ms
 
@@ -128,10 +121,10 @@ export class NavBar extends Component {
             canBeSearched,
             hasGraph,
             logout,
-            topMenu,
-            bottomMenu,
+            menu,
             p: polyglot,
         } = this.props;
+        const { topMenu, bottomMenu } = menu;
         const { searchDrawer, graphDrawer } = this.state;
 
         return (
@@ -199,6 +192,26 @@ export class NavBar extends Component {
     }
 }
 
+const menuPropTypes = PropTypes.arrayOf(
+    PropTypes.shape({
+        role: PropTypes.oneOf([
+            'home',
+            'resources',
+            'graphs',
+            'search',
+            'admin',
+            'sign-in',
+            'sign-out',
+            'custom',
+        ]),
+        label: PropTypes.shape({
+            en: PropTypes.string.isRequired,
+            fr: PropTypes.string.isRequired,
+        }).isRequired,
+        icon: PropTypes.string.isRequired,
+    }),
+);
+
 NavBar.propTypes = {
     role: PropTypes.oneOf(['admin', 'user', 'not logged']).isRequired,
     logout: PropTypes.func.isRequired,
@@ -224,36 +237,18 @@ NavBar.propTypes = {
             icon: PropTypes.string.isRequired,
         }),
     ),
-    bottomMenu: PropTypes.arrayOf(
-        PropTypes.shape({
-            role: PropTypes.oneOf([
-                'home',
-                'resources',
-                'graphs',
-                'search',
-                'admin',
-                'sign-in',
-                'sign-out',
-                'custom',
-            ]),
-            label: PropTypes.shape({
-                en: PropTypes.string.isRequired,
-                fr: PropTypes.string.isRequired,
-            }).isRequired,
-            icon: PropTypes.string.isRequired,
-        }),
-    ),
-};
-
-NavBar.defaultProps = {
-    topMenu,
-    bottomMenu,
+    menu: PropTypes.shape({
+        topMenu: menuPropTypes,
+        bottomMenu: menuPropTypes,
+    }),
+    loadMenu: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
     role: fromUser.getRole(state),
     canBeSearched: fromFields.canBeSearched(state),
     hasGraph: fromFields.getGraphFields(state).length > 0,
+    menu: fromMenu.getMenu(state),
 });
 
 const mapDispatchToProps = {
