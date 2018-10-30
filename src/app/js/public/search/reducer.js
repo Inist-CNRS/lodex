@@ -22,6 +22,7 @@ export const fromSearch = {
     getFieldNames: state => state.search.fields,
     getPage: state => state.search.page,
     getTotal: state => state.search.total,
+    getQuery: state => state.search.query,
 };
 
 export const defaultState = {
@@ -30,16 +31,18 @@ export const defaultState = {
     loading: false,
     page: null,
     total: 0,
+    query: null,
 };
 
 export default handleActions(
     {
-        [SEARCH]: state => ({
+        [SEARCH]: (state, { payload }) => ({
             ...state,
             dataset: [],
             loading: true,
             page: 0,
             total: 0,
+            query: payload.query,
         }),
         [combineActions(SEARCH_RESULTS, SEARCH_ERROR)]: (
             state,

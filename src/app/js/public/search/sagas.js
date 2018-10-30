@@ -55,11 +55,12 @@ const handleSearch = function*({ payload }) {
     );
 };
 
-const handleLoadMore = function*({ payload }) {
+const handleLoadMore = function*() {
     const currentPage = yield select(fromSearch.getPage);
+    const query = yield select(fromSearch.getQuery);
     const page = currentPage + 1;
 
-    const { error, response } = yield doSearchRequest(payload, page);
+    const { error, response } = yield doSearchRequest({ query }, page);
 
     if (error) {
         yield put(loadMoreFailed({ error }));

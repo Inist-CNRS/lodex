@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { StyleSheet, css } from 'aphrodite/no-important';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 import {
     field as fieldProptypes,
@@ -10,6 +10,7 @@ import {
 } from '../../propTypes';
 
 import { getResourceUri } from '../../../../common/uris';
+import theme from '../../theme';
 
 const ellipsis = {
     whiteSpace: 'nowrap',
@@ -33,6 +34,9 @@ const styles = StyleSheet.create({
             textDecoration: 'none !important',
             color: 'inherit',
         },
+    },
+    activeLink: {
+        color: theme.orange.primary,
     },
     row: {
         flex: '0 0 auto',
@@ -85,10 +89,11 @@ const SearchResult = ({ fields, fieldNames, result, closeDrawer }) => {
         (secondDetailField && result[secondDetailField.name]);
 
     return (
-        <Link
+        <NavLink
             to={getResourceUri(result)}
             className={cnames('search-result-link', styles.link)}
             onClick={closeDrawer}
+            activeClassName={css(styles.activeLink)}
         >
             <div
                 id={`search-result-${result.uri}`}
@@ -152,7 +157,7 @@ const SearchResult = ({ fields, fieldNames, result, closeDrawer }) => {
                     </div>
                 )}
             </div>
-        </Link>
+        </NavLink>
     );
 };
 
