@@ -80,6 +80,9 @@ endif
 test-e2e-logs:
 	docker-compose -f docker-compose.spec.yml logs
 
+test-e2e-logs-watch:
+	docker-compose -f docker-compose.spec.yml logs -f
+
 test-e2e-stop-dockers:
 	docker-compose -f docker-compose.spec.yml down
 
