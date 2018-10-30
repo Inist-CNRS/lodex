@@ -124,16 +124,6 @@
       },
       {
         "label": {
-                "en": "About",
-                "fr": "A propos"
-        },
-        "icon": "/about.svg",
-        "position": "top",
-        "role": "custom",
-        "link": "/about.html"
-      },
-      {
-        "label": {
                 "en": "Admin",
                 "fr": "Admin"
         },
