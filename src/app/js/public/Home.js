@@ -41,7 +41,7 @@ export class HomeComponent extends Component {
         description: PropTypes.string,
     };
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         this.props.preLoadPublication();
         this.props.preLoadDatasetPage();
         this.props.preLoadExporters();
@@ -115,6 +115,10 @@ const mapDispatchToProps = {
     navigateTo: push,
 };
 
-export default compose(connect(mapStateToProps, mapDispatchToProps), translate)(
-    HomeComponent,
-);
+export default compose(
+    connect(
+        mapStateToProps,
+        mapDispatchToProps,
+    ),
+    translate,
+)(HomeComponent);

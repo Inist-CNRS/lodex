@@ -6,7 +6,6 @@ import { render } from 'react-dom';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import { Provider } from 'react-redux';
 
-import Root from '../Root';
 import rootReducer from './reducers';
 import Routes from './Routes';
 import sagas from './sagas';

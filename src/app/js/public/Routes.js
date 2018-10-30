@@ -11,7 +11,7 @@ import Resource from './resource/Resource';
 import Login from '../user/Login';
 import GraphPage from './graph/GraphPage';
 import NavBar from './menu/NavBar';
-import getCustomPage from './getCustomPage';
+import CustomPage from './CustomPage';
 import { loadMenu } from './menu/reducer';
 import { fromMenu } from './selectors';
 import scrollToTop from '../lib/scrollToTop';
@@ -54,7 +54,7 @@ class Routes extends Component {
                                 <Route
                                     key={link}
                                     path={link}
-                                    component={getCustomPage(link)}
+                                    component={<CustomPage link={link} />}
                                 />
                             ))}
                         </div>

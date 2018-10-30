@@ -1,13 +1,13 @@
 import jsonConfig from '../../../../config.json';
 
-const topMenu = jsonConfig.front.menu.filter(
+export const topMenu = jsonConfig.front.menu.filter(
     ({ position }) => position === 'top',
 );
-const bottomMenu = jsonConfig.front.menu.filter(
+export const bottomMenu = jsonConfig.front.menu.filter(
     ({ position }) => position === 'bottom',
 );
 
-const customRoutes = jsonConfig.front.menu
+export const customRoutes = jsonConfig.front.menu
     .filter(
         ({ role, link }) => (role !== 'custom' ? false : link.startsWith('/')),
     )

@@ -6,7 +6,7 @@ import { fromUser } from '../../sharedSelectors';
 import fetchSaga from '../../lib/sagas/fetchSaga';
 
 export function* handleLoadMenu() {
-    const menu = yield select(fromMenu.getMenu);
+    const menu = yield select(fromMenu.hasMenu);
     if (menu) {
         return;
     }

@@ -47,9 +47,4 @@ CustomPage.propTypes = {
     p: polyglotPropTypes.isRequired,
 };
 
-const getCustomPage = link =>
-    function CustomLinkPage() {
-        return <CustomPage link={link} />;
-    };
-
-export default getCustomPage;
+export default CustomPage;

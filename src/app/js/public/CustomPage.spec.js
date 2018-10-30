@@ -1,9 +1,10 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import fetch from 'fetch-with-proxy';
+import CircularProgress from 'material-ui/CircularProgress';
 
-import { CustomPage } from './getCustomPage';
-jest.mock('fetch-with-proxy');
+import { CustomPage } from './CustomPage';
+import fetch from '../lib/fetch';
+jest.mock('../lib/fetch');
 
 describe('getCustomPage CustomPage', () => {
     const defaultProps = {
@@ -15,23 +16,22 @@ describe('getCustomPage CustomPage', () => {
         fetch.mockClear();
     });
 
-    it('should render nothing at first', () => {
-        fetch.mockImplementation(() => Promise.resolve({ json: () => {} }));
+    it('should render spinner at first', () => {
+        fetch.mockImplementation(() => Promise.resolve({ response: {} }));
         const wrapper = shallow(<CustomPage {...defaultProps} />);
-        const div = wrapper.find('div');
-        expect(div).toHaveLength(0);
+        expect(wrapper.find(CircularProgress)).toHaveLength(1);
     });
 
     it('should fetch link data and render html and scripts tag', async () => {
         const response = Promise.resolve({
-            json: () => ({
+            response: {
                 html: '<div>Custom page content</div>',
                 scripts: ['/script.js', '/other/script.js'],
-            }),
+            },
         });
         fetch.mockImplementation(() => response);
         const wrapper = shallow(<CustomPage {...defaultProps} />);
-        expect(fetch).toHaveBeenCalledWith('/customPage/custom/page');
+        expect(fetch).toHaveBeenCalledWith({ url: '/customPage/custom/page' });
         await response;
         wrapper.update();
         const div = wrapper.find('div');
@@ -46,15 +46,15 @@ describe('getCustomPage CustomPage', () => {
         );
     });
 
-    it('should render not found if could not fetch page data', async () => {
-        const response = Promise.reject(new Error('nope'));
+    it('should render nothing if could not fetch page data', async () => {
+        const response = Promise.resolve({ error: new Error('nope') });
         fetch.mockImplementation(() => response);
         const wrapper = shallow(<CustomPage {...defaultProps} />);
-        expect(fetch).toHaveBeenCalledWith('/customPage/custom/page');
-        await response.catch(() => null);
+        expect(fetch).toHaveBeenCalledWith({ url: '/customPage/custom/page' });
+        await response;
         wrapper.update();
-        const div = wrapper.find('div');
-        expect(div.text()).toEqual('page_not_found');
+        expect(wrapper.find('div')).toHaveLength(0);
+        expect(wrapper.find(CircularProgress)).toHaveLength(0);
         const scripts = wrapper.find('script');
         expect(scripts).toHaveLength(0);
     });

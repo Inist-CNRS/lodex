@@ -121,10 +121,14 @@ export class NavBar extends Component {
             canBeSearched,
             hasGraph,
             logout,
-            menu,
+            topMenu,
+            bottomMenu,
             p: polyglot,
         } = this.props;
-        const { topMenu, bottomMenu } = menu;
+
+        if (!topMenu || !bottomMenu) {
+            return null;
+        }
         const { searchDrawer, graphDrawer } = this.state;
 
         return (
@@ -218,29 +222,8 @@ NavBar.propTypes = {
     canBeSearched: PropTypes.bool.isRequired,
     hasGraph: PropTypes.bool.isRequired,
     p: polyglotPropTypes.isRequired,
-    topMenu: PropTypes.arrayOf(
-        PropTypes.shape({
-            role: PropTypes.oneOf([
-                'home',
-                'resources',
-                'graphs',
-                'search',
-                'admin',
-                'sign-in',
-                'sign-out',
-                'custom',
-            ]),
-            label: PropTypes.shape({
-                en: PropTypes.string.isRequired,
-                fr: PropTypes.string.isRequired,
-            }).isRequired,
-            icon: PropTypes.string.isRequired,
-        }),
-    ),
-    menu: PropTypes.shape({
-        topMenu: menuPropTypes,
-        bottomMenu: menuPropTypes,
-    }),
+    topMenu: menuPropTypes,
+    bottomMenu: menuPropTypes,
     loadMenu: PropTypes.func.isRequired,
 };
 
@@ -248,7 +231,8 @@ const mapStateToProps = state => ({
     role: fromUser.getRole(state),
     canBeSearched: fromFields.canBeSearched(state),
     hasGraph: fromFields.getGraphFields(state).length > 0,
-    menu: fromMenu.getMenu(state),
+    topMenu: fromMenu.getTopMenu(state),
+    bottomMenu: fromMenu.getBottomMenu(state),
 });
 
 const mapDispatchToProps = {

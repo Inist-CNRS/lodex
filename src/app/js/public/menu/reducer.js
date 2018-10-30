@@ -1,5 +1,6 @@
 import { createAction, handleActions } from 'redux-actions';
 import { createSelector } from 'reselect';
+import omit from 'lodash.omit';
 
 export const LOAD_MENU = 'LOAD_MENU';
 export const LOAD_MENU_SUCCESS = 'LOAD_MENU_SUCCESS';
@@ -21,11 +22,10 @@ export default handleActions(
             { payload: { topMenu, bottomMenu, customRoutes } },
         ) => ({
             ...state,
-            menu: {
-                topMenu,
-                bottomMenu,
-                customRoutes,
-            },
+            topMenu,
+            bottomMenu,
+            customRoutes,
+            error: null,
         }),
         [LOAD_MENU_ERROR]: (state, { payload: { error } }) => ({
             ...state,
@@ -35,17 +35,14 @@ export default handleActions(
     initialState,
 );
 
-export const getMenu = state => state.menu;
+export const hasMenu = state => state;
 
-const getTopMenu = createSelector(getMenu, menu => menu.topMenu);
-const getBottomMenu = createSelector(getMenu, menu => menu.bottomMenu);
-const getCustomRoutes = createSelector(
-    getMenu,
-    menu => menu && menu.customRoutes,
-);
+const getTopMenu = state => state.topMenu;
+const getBottomMenu = state => state.bottomMenu;
+const getCustomRoutes = state => state.customRoutes;
 
 export const fromMenu = {
-    getMenu,
+    hasMenu,
     getTopMenu,
     getBottomMenu,
     getCustomRoutes,
