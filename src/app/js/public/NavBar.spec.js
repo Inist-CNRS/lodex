@@ -3,6 +3,7 @@ import { shallow } from 'enzyme';
 import { StyleSheetTestUtils } from 'aphrodite';
 
 import { NavBar } from './NavBar';
+import MenuItem from './MenuItem';
 
 describe('NavBar', () => {
     const defaultProps = {
@@ -11,6 +12,8 @@ describe('NavBar', () => {
         graphFields: [],
         role: 'not logged',
         logout: jest.fn(),
+        topMenu: ['menu1', 'menu2'],
+        bottomMenu: ['menu3', 'menu4'],
     };
 
     beforeEach(() => StyleSheetTestUtils.suppressStyleInjection());
@@ -18,60 +21,11 @@ describe('NavBar', () => {
     it('should render NavBar with home and sign in', () => {
         const wrapper = shallow(<NavBar {...defaultProps} />);
 
-        const items = wrapper.find('.nav-item');
-        expect(items).toHaveLength(3);
-        const expectedLabels = ['home', 'resources', 'sign in'];
-        items.forEach((item, index) => {
-            expect(item.prop('children')).toContain(expectedLabels[index]);
-        });
-    });
-
-    it('should render NavBar with graphs too if hasGraph is true', () => {
-        const wrapper = shallow(<NavBar {...defaultProps} hasGraph />);
-
-        const items = wrapper.find('.nav-item');
+        const items = wrapper.find(MenuItem);
         expect(items).toHaveLength(4);
-        const expectedLabels = ['home', 'resources', 'graphs', 'sign in'];
+        const expectedMenu = ['menu1', 'menu2', 'menu3', 'menu4'];
         items.forEach((item, index) => {
-            expect(item.prop('children')).toContain(expectedLabels[index]);
-        });
-    });
-
-    it('should render NavBar with search too if canBeSearched is true', () => {
-        const wrapper = shallow(<NavBar {...defaultProps} canBeSearched />);
-
-        const items = wrapper.find('.nav-item');
-        expect(items).toHaveLength(4);
-        const expectedLabels = [
-            'home',
-            'resources',
-            'search_placeholder',
-            'sign in',
-        ];
-        items.forEach((item, index) => {
-            expect(item.prop('children')).toContain(expectedLabels[index]);
-        });
-    });
-
-    it('should render NavBar render sign_out instead of sign in if role is user', () => {
-        const wrapper = shallow(<NavBar {...defaultProps} role="user" />);
-
-        const items = wrapper.find('.nav-item');
-        expect(items).toHaveLength(3);
-        const expectedLabels = ['home', 'resources', 'sign_out'];
-        items.forEach((item, index) => {
-            expect(item.prop('children')).toContain(expectedLabels[index]);
-        });
-    });
-
-    it('should render NavBar render sign_out instead of sign in and add admin if role is admin', () => {
-        const wrapper = shallow(<NavBar {...defaultProps} role="admin" />);
-
-        const items = wrapper.find('.nav-item');
-        expect(items).toHaveLength(4);
-        const expectedLabels = ['home', 'resources', 'Admin', 'sign_out'];
-        items.forEach((item, index) => {
-            expect(item.prop('children')).toContain(expectedLabels[index]);
+            expect(item.prop('config')).toEqual(expectedMenu[index]);
         });
     });
 

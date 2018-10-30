@@ -23,18 +23,21 @@ app.use(mount('/api', api));
 
 const scriptRegEx = new RegExp('<script.*?( src=".*")?.*?>.*?</script>', 'gm');
 
+export const getScriptsFromHtml = html =>
+    (html.match(scriptRegEx) || [])
+        .map(script => {
+            const src = script.match(/<script.*?src="(.*?)".*?>/);
+            return src && src[1];
+        })
+        .filter(src => !!src);
+
 app.use(
     route.get('/customPage/:file', async (ctx, file) => {
         const html = (await readFile(
             path.resolve(__dirname, `../../app/custom/${file}`),
         )).toString();
 
-        const scripts = (html.match(scriptRegEx) || [])
-            .map(script => {
-                const src = script.match(/<script.*?src="(.*?)".*?>/);
-                return src && src[1];
-            })
-            .filter(src => !!src);
+        const scripts = getScriptsFromHtml(html);
 
         ctx.body = { html, scripts };
     }),

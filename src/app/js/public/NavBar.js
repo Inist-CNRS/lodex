@@ -128,6 +128,8 @@ export class NavBar extends Component {
             canBeSearched,
             hasGraph,
             logout,
+            topMenu,
+            bottomMenu,
             p: polyglot,
         } = this.props;
         const { searchDrawer, graphDrawer } = this.state;
@@ -198,11 +200,54 @@ export class NavBar extends Component {
 }
 
 NavBar.propTypes = {
-    role: PropTypes.oneOf(['admin', 'user', 'notLogged']).isRequired,
+    role: PropTypes.oneOf(['admin', 'user', 'not logged']).isRequired,
     logout: PropTypes.func.isRequired,
     canBeSearched: PropTypes.bool.isRequired,
     hasGraph: PropTypes.bool.isRequired,
     p: polyglotPropTypes.isRequired,
+    topMenu: PropTypes.arrayOf(
+        PropTypes.shape({
+            role: PropTypes.oneOf([
+                'home',
+                'resources',
+                'graphs',
+                'search',
+                'admin',
+                'sign-in',
+                'sign-out',
+                'custom',
+            ]),
+            label: PropTypes.shape({
+                en: PropTypes.string.isRequired,
+                fr: PropTypes.string.isRequired,
+            }).isRequired,
+            icon: PropTypes.string.isRequired,
+        }),
+    ),
+    bottomMenu: PropTypes.arrayOf(
+        PropTypes.shape({
+            role: PropTypes.oneOf([
+                'home',
+                'resources',
+                'graphs',
+                'search',
+                'admin',
+                'sign-in',
+                'sign-out',
+                'custom',
+            ]),
+            label: PropTypes.shape({
+                en: PropTypes.string.isRequired,
+                fr: PropTypes.string.isRequired,
+            }).isRequired,
+            icon: PropTypes.string.isRequired,
+        }),
+    ),
+};
+
+NavBar.defaultProps = {
+    topMenu,
+    bottomMenu,
 };
 
 const mapStateToProps = state => ({
