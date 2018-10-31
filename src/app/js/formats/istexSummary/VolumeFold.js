@@ -15,7 +15,11 @@ const VolumeFold = ({
     polyglot,
 }) => (
     <FetchFold
-        label={`${polyglot.t('volume')}: ${volume}`}
+        label={
+            volume === 'other'
+                ? polyglot.t('other_volume')
+                : `${polyglot.t('volume')}: ${volume}`
+        }
         count={count}
         volume={volume}
         polyglot={polyglot}
