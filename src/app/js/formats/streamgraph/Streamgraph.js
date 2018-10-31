@@ -71,40 +71,6 @@ function zoomFunction() {
 };
 
 // ===========================================================================================
-// stackMax and stackMin functions returns the max and the min value of a @layer
-// ===========================================================================================
-
-function stackMax(layer) {
-    return d3.max(layer, function (d) { console.log("Max..."); console.log(d); return d[1]; });
-}
-
-function stackMin(layer) {
-    return d3.min(layer, function (d) { return d[1]; });
-}
-
-// ===========================================================================================
-// Test data generator
-// Inspired by Lee Byron’s test data generator.
-// ===========================================================================================
-
-function bumps(n, m) {
-    let a = [], i;
-    for (i = 0; i < n; ++i) a[i] = 0;
-    for (i = 0; i < m; ++i) bump(a, n);
-    return a;
-}
-
-function bump(a, n) {
-    let x = 1 / (0.1 + Math.random()),
-        y = 2 * Math.random() - 0.5,
-        z = 10 / (0.1 + Math.random());
-    for (let i = 0; i < n; i++) {
-        let w = (i / n - y) * z;
-        a[i] += x * Math.exp(-w * w);
-    }
-}
-
-// ===========================================================================================
 // distinctColors : return a list of @count different and distinct colors in hsl hexa
 // ===========================================================================================
 
@@ -150,10 +116,10 @@ function hslToHex(h, s, l) {
 }
 
 // ===========================================================================================
-// transformDataIntoMap : convert all the data into a map
+// transformDataIntoMapArray : convert all the data into an array
 // ===========================================================================================
 
-function transformDataIntoMap(formatData) {
+function transformDataIntoMapArray(formatData) {
     let dateMin = -42;
     let dateMax = -42;
     let valuesObjectsArray = [];
@@ -239,6 +205,28 @@ function transformDataIntoMap(formatData) {
     return ([valuesObjectsArray, valuesArray, dateMin, dateMax, namesList]);
 }
 
+// ===========================================================================================
+// getMinMaxValue : go through the stackedData and find the min and max value 
+// ===========================================================================================
+
+function getMinMaxValue(stackedData){
+    let minValue = 0;
+    let maxValue = 0;
+
+    for (let element of stackedData) {
+        for (let value of element) {
+            if (minValue > value[0]) {
+                minValue = value[0];
+            }
+            if (maxValue < value[1]) {
+                maxValue = value[1];
+            }
+        }
+    }
+
+    return ([minValue, maxValue]);
+}
+
 class Streamgraph extends PureComponent {
 
     constructor(props) {
@@ -250,7 +238,7 @@ class Streamgraph extends PureComponent {
     }
 
     setGraph() {
-        let [valuesObjectsArray, valuesArray, minDate, maxDate, nameList] = transformDataIntoMap(this.props.formatData);
+        let [valuesObjectsArray, valuesArray, minDate, maxDate, nameList] = transformDataIntoMapArray(this.props.formatData);
         let { width, height } = this.state;
         const svgWidth = width;
         const svgHeight = height;
@@ -262,7 +250,7 @@ class Streamgraph extends PureComponent {
         // Set all the variables (to move in states)
         // ===========================================================================================
 
-        let layersNumber = valuesObjectsArray.length;  // number of layers
+        let layersNumber = valuesObjectsArray.length;  
 
         // stack the datas
         let stackMethod = d3.stack()
@@ -270,10 +258,11 @@ class Streamgraph extends PureComponent {
             .order(d3.stackOrderNone)
             .offset(d3.stackOffsetWiggle);
 
-        let stackedData
+        let stackedData;
         if (valuesArray.length > 0) {
             stackedData = stackMethod(valuesArray);
         }
+        let [minValue, maxValue] = getMinMaxValue(stackedData);
 
         const margin = { top: 60, right: 40, bottom: 50, left: 60 };
         width = svgWidth - margin.left - margin.right;
@@ -319,36 +308,25 @@ class Streamgraph extends PureComponent {
         // Create and set axis
         // ===========================================================================================
 
-        // create scale objects
         minDate = new Date(String(minDate));
         maxDate = new Date(String(maxDate));
-        xAxisScale = d3.scaleTime() // test
-            .domain([minDate, maxDate]) // 2000, 2013
+
+        // create scale objects
+        xAxisScale = d3.scaleTime() 
+            .domain([minDate, maxDate]) 
             .range([0, width]);
         
         xAxis = d3.axisBottom(xAxisScale)
         .tickFormat(d3.timeFormat("%Y"))
         .ticks(d3.timeYear, 1);
-        //.ticks(1);        
-        //xAxisScale = d3.scaleLinear() // origin
-        //    .domain([0, maxElementsNumber - 1])
-        //    .range([0, width]);
-        //console.log("xAxis");
-        //console.log(xAxis);        //xAxisScale = d3.scaleLinear() // origin
-        //    .domain([0, maxElementsNumber - 1])
-        //    .range([0, width]);
 
         gx = innerSpace.append("g")
-            .attr("class", "x axis")        //xAxisScale = d3.scaleLinear() // origin
-            //    .domain([0, maxElementsNumber - 1])
-            //    .range([0, width]);
+            .attr("class", "x axis")        
             .attr("transform", "translate(0," + height + ")")
             .call(xAxis);
 
         yAxisScale = d3.scaleLinear()
-            //.domain([d3.min(layersValues, stackMin), d3.max(layersValues, stackMax)])
-            //.domain([d3.min(valuesArray, stackMin), d3.max(valuesArray, stackMax)])
-            .domain([-5, 5])
+            .domain([minValue, maxValue])
             .range([height, 0]);
 
         yAxisL = d3.axisLeft(yAxisScale);
