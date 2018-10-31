@@ -277,8 +277,10 @@ class Streamgraph extends PureComponent {
         // Zoom Function
         const zoom = d3.zoom()
             .scaleExtent([1, 32])
+            .translateExtent([[0, 0], [width, height]])
+            .extent([[0, 0], [width, height]])
             .on("zoom", zoomFunction);
-
+            
         svgViewport.append("defs")
             .append("clipPath")
             .attr("id", "mask")
