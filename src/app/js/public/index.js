@@ -38,18 +38,3 @@ render(
     </Provider>,
     document.getElementById('root'),
 );
-
-// Hot Module Replacement API
-if (module.hot) {
-    module.hot.accept('../Root', () => {
-        const NewRoutes = require('./Routes').default; // eslint-disable-line
-        render(
-            <Provider {...{ store }}>
-                <MuiThemeProvider>
-                    <NewRoutes history={history} />
-                </MuiThemeProvider>
-            </Provider>,
-            document.getElementById('root'),
-        );
-    });
-}
