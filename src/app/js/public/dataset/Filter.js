@@ -30,6 +30,13 @@ class FilterComponent extends Component {
         query: null,
     };
 
+    componentDidUpdate(prevProps) {
+        // Reset prop when switching to another graph
+        if (!!prevProps.filter && !this.props.filter && !!this.state.query) {
+            this.setState({ query: null });
+        }
+    }
+
     debouncedApplyFilter = debounce(value => {
         this.props.applyFilter(value);
     }, 500);
