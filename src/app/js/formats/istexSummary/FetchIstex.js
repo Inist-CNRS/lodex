@@ -22,7 +22,7 @@ class FetchIstex extends Component {
         isLoading: true,
     };
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         this.props
             .getData()
             .then(data => {
