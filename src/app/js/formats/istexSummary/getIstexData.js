@@ -5,23 +5,6 @@ import { parseFetchResult } from '../shared/fetchIstexData';
 import { ISTEX_API_URL } from '../../../../common/externals';
 import fetch from '../../lib/fetch';
 
-export const getDecadeUrl = ({ issn, searchedField }) => () => ({
-    url: `${ISTEX_API_URL}/document/?q=(${encodeURIComponent(
-        `${searchedField}:"${issn}"`,
-    )})&facet=publicationDate[*-*:10]&size=0&output=*`,
-});
-
-export const getDecadeData = ({ issn, searchedField }) =>
-    composeAsync(
-        getDecadeUrl({ issn, searchedField }),
-        fetch,
-        parseFacetData('publicationDate', ({ rangeAsString }) => {
-            const [from, to] = rangeAsString.replace(/\[|\]/g, '').split('-');
-
-            return { from, to: to - 1 };
-        }),
-    );
-
 export const getYearUrl = ({ resource, field, searchedField }) => {
     const value = resource[field.name];
 
