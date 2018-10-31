@@ -129,9 +129,6 @@ export const getVolumeData = ({ issn, year, searchedField }) =>
 const getVolumeQuery = volume =>
     volume === 'other' ? '-host.volume:[0 TO *]' : `host.volume:"${volume}"`;
 
-const getIssueQuery = issue =>
-    issue === 'other' ? '-host.issue:[0 TO *]' : `host.issue:"${issue}"`;
-
 export const getIssueUrl = ({ issn, year, volume, searchedField }) => () => ({
     url: `${ISTEX_API_URL}/document/?q=(${encodeURIComponent(
         `${searchedField}:"${issn}" AND publicationDate:"${year}" AND ${getVolumeQuery(
@@ -181,6 +178,9 @@ export const getIssueData = ({ issn, year, volume, searchedField }) =>
         parseIssueData,
         addOtherIssueData({ issn, year, volume, searchedField }),
     );
+
+const getIssueQuery = issue =>
+    issue === 'other' ? '-host.issue:[0 TO *]' : `host.issue:"${issue}"`;
 
 export const getDocumentUrl = ({
     issn,
