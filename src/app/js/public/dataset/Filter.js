@@ -27,15 +27,8 @@ const styles = {
 
 class FilterComponent extends Component {
     state = {
-        query: null,
+        query: this.props.filter,
     };
-
-    componentDidUpdate(prevProps) {
-        // Reset query when switching to another graph
-        if (!!prevProps.filter && !this.props.filter && !!this.state.query) {
-            this.setState({ query: null });
-        }
-    }
 
     debouncedApplyFilter = debounce(value => {
         this.props.applyFilter(value);

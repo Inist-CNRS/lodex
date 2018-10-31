@@ -44,10 +44,14 @@ export const goToResourceNumber = nb => {
 
 export const getSearchInput = () => cy.get('.filter input[type=text]');
 
-export const searchFor = text => {
-    getSearchInput().type(text);
+export const waitForLoading = () => {
     cy.get('.loading').should('exist');
     cy.get('.loading').should('not.exist');
+};
+
+export const searchFor = text => {
+    getSearchInput().type(text);
+    waitForLoading();
 };
 
 export const getFacet = name => cy.get('.facet-item').contains(name);
@@ -66,4 +70,5 @@ export const setFacet = (name, value) => {
     getFacet(name).click();
     getFacetItem(name, value).click();
     getFacet(name).click();
+    waitForLoading();
 };

@@ -50,11 +50,12 @@ const styles = {
 };
 
 class GraphPage extends Component {
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         this.props.preLoadPublication();
     }
+
     render() {
-        const { graphField, resource } = this.props;
+        const { graphField, resource, name } = this.props;
 
         return (
             <div style={styles.container}>
@@ -99,7 +100,7 @@ class GraphPage extends Component {
                     </Card>
                 </div>
                 <div style={styles.sideColumn}>
-                    <Toolbar />
+                    <Toolbar name={name} />
                 </div>
             </div>
         );
@@ -107,12 +108,25 @@ class GraphPage extends Component {
 }
 
 GraphPage.propTypes = {
+    name: PropTypes.string,
     graphField: fieldPropTypes,
     resource: PropTypes.object.isRequired,
     preLoadPublication: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = (state, { match: { params: { name } } }) => ({
+GraphPage.defaultProps = {
+    name: null,
+};
+
+const mapStateToProps = (
+    state,
+    {
+        match: {
+            params: { name },
+        },
+    },
+) => ({
+    name,
     graphField: name && fromFields.getFieldByName(state, name),
     resource: fromCharacteristic.getCharacteristicsAsResource(state),
 });
@@ -121,4 +135,7 @@ const mapDispatchToprops = {
     preLoadPublication,
 };
 
-export default connect(mapStateToProps, mapDispatchToprops)(GraphPage);
+export default connect(
+    mapStateToProps,
+    mapDispatchToprops,
+)(GraphPage);
