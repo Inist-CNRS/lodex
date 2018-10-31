@@ -2,7 +2,7 @@ export const openSearchDrawer = () => {
     cy.get('.drawer-container').should('exist');
 
     cy.get('nav div')
-        .contains('search')
+        .contains('Search')
         .click();
 
     cy.get('.drawer-container .drawer .search').should('be.visible');
