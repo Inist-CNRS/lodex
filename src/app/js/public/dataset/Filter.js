@@ -31,7 +31,7 @@ class FilterComponent extends Component {
     };
 
     componentDidUpdate(prevProps) {
-        // Reset prop when switching to another graph
+        // Reset query when switching to another graph
         if (!!prevProps.filter && !this.props.filter && !!this.state.query) {
             this.setState({ query: null });
         }
