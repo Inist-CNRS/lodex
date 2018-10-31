@@ -28,14 +28,3 @@ render(
     <Root {...{ store, routes: <Routes />, history }} />,
     document.getElementById('root'),
 );
-
-// Hot Module Replacement API
-if (module.hot) {
-    module.hot.accept('../Root', () => {
-        const NewRoot = require('../Root').default; // eslint-disable-line
-        render(
-            <NewRoot {...{ store, routes: <Routes />, history }} />,
-            document.getElementById('root'),
-        );
-    });
-}

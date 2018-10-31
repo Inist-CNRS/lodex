@@ -14,7 +14,7 @@ export const goToGraphPage = () => {
 
 export const openChartDrawer = () => {
     cy.get('nav a')
-        .contains('graphs')
+        .contains('Graphs')
         .click();
     cy.get('.graph-summary').should('be.visible');
 };

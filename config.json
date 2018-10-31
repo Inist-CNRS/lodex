@@ -83,5 +83,72 @@
     "http://fr.dbpedia.org/sparql",
     "https://query.wikidata.org/sparql",
     "http://www.lotico.com:3030/lotico/sparql"
-  ]
+  ],
+  "front": {
+    "menu": [
+      {
+        "label": {
+                "en": "Home",
+                "fr": "Accueil"
+        },
+        "icon": "faHome",
+        "position": "top",
+        "role": "home"
+      },
+      {
+        "label": {
+                "en": "Resources",
+                "fr": "Ressources"
+        },
+        "icon": "faList",
+        "position": "top",
+        "role": "resources"
+      },
+      {
+        "label": {
+                "en": "Graphs",
+                "fr": "Graphiques"
+        },
+        "icon": "faChartArea",
+        "position": "top",
+        "role": "graphs"
+      },
+      {
+        "label": {
+                "en": "Search",
+                "fr": "recherche"
+        },
+        "icon": "faSearch",
+        "position": "top",
+        "role": "search"
+      },
+      {
+        "label": {
+                "en": "Admin",
+                "fr": "Admin"
+        },
+        "icon": "faCogs",
+        "position": "bottom",
+        "role": "admin"
+      },
+      {
+        "label": {
+                "en": "Sign in",
+                "fr": "Connexion"
+        },
+        "icon": "faSignInAlt",
+        "position": "bottom",
+        "role": "sign-in"
+      },
+      {
+        "label": {
+                "en": "Sign out",
+                "fr": "Déconnexion"
+        },
+        "icon": "faSignOutAlt",
+        "position": "bottom",
+        "role": "sign-out"
+      }
+    ]
+  }
 }

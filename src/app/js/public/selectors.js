@@ -4,6 +4,7 @@ import { fromExport as localFromExport } from './export';
 import { fromFacet as localFromFacet } from './facet';
 import { fromResource as localFromResource } from './resource';
 import { fromFormat as localFromFormat } from '../formats/reducer';
+import { fromMenu as localFromMenu } from './menu/reducer';
 import qs from 'qs';
 
 const getDatasetState = state => state.dataset;
@@ -32,6 +33,9 @@ export const fromFormat = createGlobalSelectors(
     getFormatState,
     localFromFormat,
 );
+
+const getMenuState = state => state.menu;
+export const fromMenu = createGlobalSelectors(getMenuState, localFromMenu);
 
 export const fromRouter = {
     getResourceUri: state => {

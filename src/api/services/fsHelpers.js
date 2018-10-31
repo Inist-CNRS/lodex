@@ -87,3 +87,11 @@ export const clearChunksFactory = unlinkFileImpl => async (
     );
 
 export const clearChunks = clearChunksFactory(unlinkFile);
+
+export const readFile = file =>
+    new Promise((resolve, reject) => {
+        fs.readFile(
+            file,
+            (error, content) => (error ? reject(error) : resolve(content)),
+        );
+    });

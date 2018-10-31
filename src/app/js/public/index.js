@@ -3,8 +3,9 @@ import 'url-api-polyfill';
 import { createBrowserHistory } from 'history';
 import React from 'react';
 import { render } from 'react-dom';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import { Provider } from 'react-redux';
 
-import Root from '../Root';
 import rootReducer from './reducers';
 import Routes from './Routes';
 import sagas from './sagas';
@@ -30,17 +31,10 @@ const store = configureStore(
 );
 
 render(
-    <Root store={store} routes={<Routes />} history={history} />,
+    <Provider {...{ store }}>
+        <MuiThemeProvider>
+            <Routes history={history} />
+        </MuiThemeProvider>
+    </Provider>,
     document.getElementById('root'),
 );
-
-// Hot Module Replacement API
-if (module.hot) {
-    module.hot.accept('../Root', () => {
-        const NewRoot = require('../Root').default; // eslint-disable-line
-        render(
-            <NewRoot store={store} routes={<Routes />} history={history} />,
-            document.getElementById('root'),
-        );
-    });
-}
