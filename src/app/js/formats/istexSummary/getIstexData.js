@@ -129,6 +129,9 @@ export const getVolumeData = ({ issn, year, searchedField }) =>
 const getVolumeQuery = volume =>
     volume === 'other' ? '-host.volume:[0 TO *]' : `host.volume:"${volume}"`;
 
+const getIssueQuery = issue =>
+    issue === 'other' ? '-host.issue:[0 TO *]' : `host.issue:"${issue}"`;
+
 export const getIssueUrl = ({ issn, year, volume, searchedField }) => () => ({
     url: `${ISTEX_API_URL}/document/?q=(${encodeURIComponent(
         `${searchedField}:"${issn}" AND publicationDate:"${year}" AND ${getVolumeQuery(
@@ -139,11 +142,44 @@ export const getIssueUrl = ({ issn, year, volume, searchedField }) => () => ({
 
 export const parseIssueData = parseFacetData('host.issue');
 
+export const getOtherIssueUrl = ({
+    issn,
+    year,
+    volume,
+    searchedField,
+}) => () => ({
+    url: `${ISTEX_API_URL}/document/?q=(${encodeURIComponent(
+        `${searchedField}:"${issn}" AND publicationDate:"${year}" AND ${getVolumeQuery(
+            volume,
+        )} AND -host.issue:[0 TO *]`,
+    )})&size=0&output=*`,
+});
+
+export const getOtherIssueData = ({ issn, year, volume, searchedField }) =>
+    composeAsync(
+        getOtherIssueUrl({ issn, year, volume, searchedField }),
+        fetch,
+        parseOtherData,
+    );
+
+export const addOtherIssueData = ({
+    issn,
+    year,
+    volume,
+    searchedField,
+}) => async ({ hits }) => ({
+    hits: [
+        ...hits,
+        await getOtherIssueData({ issn, year, volume, searchedField })(),
+    ],
+});
+
 export const getIssueData = ({ issn, year, volume, searchedField }) =>
     composeAsync(
         getIssueUrl({ issn, year, volume, searchedField }),
         fetch,
         parseIssueData,
+        addOtherIssueData({ issn, year, volume, searchedField }),
     );
 
 export const getDocumentUrl = ({
@@ -156,7 +192,7 @@ export const getDocumentUrl = ({
     url: `${ISTEX_API_URL}/document/?q=(${encodeURIComponent(
         `${searchedField}:"${issn}" AND publicationDate:"${year}" AND ${getVolumeQuery(
             volume,
-        )} AND host.issue:"${issue}"`,
+        )} AND ${getIssueQuery(issue)}`,
     )})&size=10&output=id,arkIstex,title,publicationDate,author,host.genre,host.title`,
 });
 

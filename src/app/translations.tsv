@@ -423,4 +423,5 @@
 "host.isbn"	"ISBN"	"ISBN"
 "host.eisbn"	"E-ISBN"	"E-ISBN"
 "host.title"	"Title"	"Titre"
-"other_volume"	"other volumes"	"Autre volumes"
+"other_volume"	"Other volumes"	"Autres volumes"
+"other_issue"	"Other issues"	"Autres numéros"
