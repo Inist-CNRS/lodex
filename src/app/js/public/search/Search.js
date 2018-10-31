@@ -73,7 +73,7 @@ const cnames = (name, ...classes) => classnames(name, ...classes.map(css));
 
 class Search extends Component {
     state = {
-        query: null,
+        bufferQuery: null,
         opening: true,
     };
 
@@ -83,8 +83,10 @@ class Search extends Component {
     }
 
     UNSAFE_componentWillMount() {
-        this.props.preLoadPublication();
-        this.props.search();
+        const { searchQuery, search, preLoadPublication } = this.props;
+
+        preLoadPublication();
+        search({ query: searchQuery || '' });
 
         setTimeout(() => {
             this.setState({ opening: false });
@@ -98,7 +100,7 @@ class Search extends Component {
 
     handleTextFieldChange = (_, query) => {
         this.debouncedSearch({ query });
-        this.setState({ query });
+        this.setState({ bufferQuery: query });
     };
 
     renderLoading = () => {
@@ -155,8 +157,15 @@ class Search extends Component {
     };
 
     render() {
-        const { query, opening } = this.state;
-        const { loading, fieldNames, results, total, p: polyglot } = this.props;
+        const { bufferQuery, opening } = this.state;
+        const {
+            searchQuery,
+            loading,
+            fieldNames,
+            results,
+            total,
+            p: polyglot,
+        } = this.props;
 
         const noOverviewField =
             !loading &&
@@ -183,7 +192,11 @@ class Search extends Component {
                             hintText={`🔍 ${polyglot.t('search_placeholder')}`}
                             fullWidth
                             onChange={this.handleTextFieldChange}
-                            value={query || ''}
+                            value={
+                                (bufferQuery !== null
+                                    ? bufferQuery
+                                    : searchQuery) || ''
+                            }
                             underlineStyle={muiStyles.searchBarUnderline}
                             underlineFocusStyle={muiStyles.searchBarUnderline}
                             ref={this.textInput}
@@ -218,6 +231,7 @@ class Search extends Component {
 
 Search.propTypes = {
     search: PropTypes.func.isRequired,
+    searchQuery: PropTypes.string,
     preLoadPublication: PropTypes.func.isRequired,
     loading: PropTypes.bool.isRequired,
     p: polyglotPropTypes.isRequired,
@@ -233,12 +247,17 @@ Search.propTypes = {
     closeDrawer: PropTypes.func.isRequired,
 };
 
+Search.defaultProps = {
+    searchQuery: null,
+};
+
 const mapStateToProps = state => ({
     loading: fromSearch.isLoading(state),
     results: fromSearch.getDataset(state),
     fieldNames: fromSearch.getFieldNames(state),
     fields: fromFields.getFields(state),
     total: fromSearch.getTotal(state),
+    searchQuery: fromSearch.getQuery(state),
 });
 
 const mapDispatchToProps = {

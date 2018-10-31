@@ -44,4 +44,35 @@ describe('Search', () => {
         cy.get('.search-result').should('have.length', 12);
         cy.get('.drawer-container .load-more button').should('not.be.visible');
     });
+
+    it('should mark active resource on the result list', () => {
+        searchDrawer.openSearchDrawer();
+        searchDrawer.search('Annals of the rheumatic');
+
+        searchDrawer
+            .findSearchResultByTitle('Annals of the rheumatic diseases')
+            .click();
+
+        cy.url().should('contain', '/uid');
+        searchDrawer.openSearchDrawer();
+
+        cy.get('.search-result-link[class*=activeLink_]').should('exist');
+    });
+
+    it('should keep track of the current search after changing page', () => {
+        const query = 'Annals of the rheumatic';
+        searchDrawer.openSearchDrawer();
+        searchDrawer.search(query);
+        cy.get('.search-result').should('have.length', 1);
+
+        searchDrawer
+            .findSearchResultByTitle('Annals of the rheumatic diseases')
+            .click();
+
+        cy.url().should('contain', '/uid');
+        searchDrawer.openSearchDrawer();
+
+        cy.get('.search-result').should('have.length', 1);
+        searchDrawer.searchInput().should('have.value', query);
+    });
 });

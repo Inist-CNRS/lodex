@@ -8,9 +8,12 @@ export const openSearchDrawer = () => {
     cy.get('.drawer-container .drawer .search').should('be.visible');
 };
 
+export const searchInput = () =>
+    cy.get('.drawer-container .drawer input[type="text"]');
+
 export const search = value => {
     cy.get('.drawer-container .search-bar').should('be.visible');
-    cy.get('.drawer-container .drawer input[type="text"]').type(value);
+    searchInput().type(value);
     cy.wait(500); // Wait for the debounce
 };
 
