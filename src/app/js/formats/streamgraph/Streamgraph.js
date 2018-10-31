@@ -26,7 +26,7 @@ const styles = {
         marginLeft: 5,
     },
     legendButton: {
-        height:15,
+        height: 15,
         width: 15,
     },
 };
@@ -145,7 +145,7 @@ function transformDataIntoMapArray(formatData) {
 
                     if (currentItem === undefined) {
                         currentItem = {
-                            name: elem.target, 
+                            name: elem.target,
                             values: []
                         }
                         valuesObjectsArray.push(currentItem);
@@ -193,13 +193,13 @@ function transformDataIntoMapArray(formatData) {
 
             // loop which add 0 value to the missing keys
             let resMissingNameList = differenceBy(namesList, tmpName);
-            for (let elemToAdd of resMissingNameList){
+            for (let elemToAdd of resMissingNameList) {
                 newElem[elemToAdd] = 0;
             }
         }
 
         valuesArray.push(newElem);
-        currentDate ++;
+        currentDate++;
     }
 
     return ([valuesObjectsArray, valuesArray, dateMin, dateMax, namesList]);
@@ -209,7 +209,7 @@ function transformDataIntoMapArray(formatData) {
 // getMinMaxValue : go through the stackedData and find the min and max value 
 // ===========================================================================================
 
-function getMinMaxValue(stackedData){
+function getMinMaxValue(stackedData) {
     let minValue = 0;
     let maxValue = 0;
 
@@ -250,7 +250,7 @@ class Streamgraph extends PureComponent {
         // Set all the variables (to move in states)
         // ===========================================================================================
 
-        let layersNumber = valuesObjectsArray.length;  
+        let layersNumber = valuesObjectsArray.length;
 
         // stack the datas
         let stackMethod = d3.stack()
@@ -312,16 +312,16 @@ class Streamgraph extends PureComponent {
         maxDate = new Date(String(maxDate));
 
         // create scale objects
-        xAxisScale = d3.scaleTime() 
-            .domain([minDate, maxDate]) 
+        xAxisScale = d3.scaleTime()
+            .domain([minDate, maxDate])
             .range([0, width]);
-        
+
         xAxis = d3.axisBottom(xAxisScale)
-        .tickFormat(d3.timeFormat("%Y"))
-        .ticks(d3.timeYear, 1);
+            .tickFormat(d3.timeFormat("%Y"))
+            .ticks(d3.timeYear, 1);
 
         gx = innerSpace.append("g")
-            .attr("class", "x axis")        
+            .attr("class", "x axis")
             .attr("transform", "translate(0," + height + ")")
             .call(xAxis);
 
@@ -352,10 +352,10 @@ class Streamgraph extends PureComponent {
         // Create and set the streams
         // ===========================================================================================
 
-        const area = d3.area() 
+        const area = d3.area()
             .x(function (d, i) {
-                 return (xAxisScale(d.data.date));
-            }) 
+                return (xAxisScale(d.data.date));
+            })
             .y0(function (d) { return yAxisScale(d[0]); })
             .y1(function (d) { return yAxisScale(d[1]); })
 
@@ -368,7 +368,7 @@ class Streamgraph extends PureComponent {
                 } else {
                     return ([]);
                 }
-            }) 
+            })
             .attr("name", function (d, i) {
                 let name = nameList[i];
                 let color = z[i];
@@ -490,10 +490,16 @@ class Streamgraph extends PureComponent {
             // *******************************************************
 
             let mousex = d3.mouse(this)[0];
-            var invertedx = xAxisScale.invert(mousex);
+            let date = xAxisScale.invert(mousex);
 
             hoveredKey = d3.select(this).attr("name");
-            hoveredValue = d[Math.floor(invertedx)][1] - d[Math.floor(invertedx)][0];
+
+            for (let elem of d) {
+                if (elem.data.date.getFullYear() == date.getFullYear()) {
+                    hoveredValue = elem.data[hoveredKey];
+                    break;
+                }
+            }
 
             d3.select(this)
                 .classed("hover", true)
@@ -533,7 +539,7 @@ class Streamgraph extends PureComponent {
     componentDidMount() {
         this.setGraph();
     }
-    
+
     render() {
         const { width, height } = this.state;
         return (
