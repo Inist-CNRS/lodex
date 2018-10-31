@@ -58,7 +58,7 @@ class GraphPage extends Component {
         const { graphField, resource, name } = this.props;
 
         return (
-            <div style={styles.container}>
+            <div className="graph-page" style={styles.container}>
                 <Helmet>
                     <title>Resources - {getTitle()}</title>
                 </Helmet>

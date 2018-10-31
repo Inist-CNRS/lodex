@@ -45,8 +45,10 @@ export const goToResourceNumber = nb => {
 export const getSearchInput = () => cy.get('.filter input[type=text]');
 
 export const waitForLoading = () => {
-    cy.get('.loading').should('exist');
-    cy.get('.loading').should('not.exist');
+    // This is the best way to wait for the loading to disappear so far
+    // Because sometimes the loading doesn't appear at all
+    cy.wait(500);
+    cy.get('.graph-page .loading').should('not.exist');
 };
 
 export const searchFor = text => {
@@ -69,6 +71,6 @@ export const getFacetItem = (name, value) =>
 export const setFacet = (name, value) => {
     getFacet(name).click();
     getFacetItem(name, value).click();
-    getFacet(name).click();
     waitForLoading();
+    getFacet(name).click();
 };
