@@ -45,7 +45,7 @@ RedirectView.propTypes = {
 };
 
 RedirectView.defaultProps = {
-    className: 'redirect',
+    className: null,
 };
 
 export default RedirectView;
