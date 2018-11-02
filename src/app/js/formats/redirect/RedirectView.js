@@ -1,7 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Helmet } from 'react-helmet';
 import { field as fieldPropTypes } from '../../propTypes';
 import { isURL } from '../../../../common/uris.js';
+
+const getURL = value => {
+    const values = Array.isArray(value) ? value : [value];
+    const URLs = values.filter(v => isURL(v));
+    return URLs.pop();
+};
 
 class RedirectView extends Component {
     constructor(props) {
@@ -10,11 +17,7 @@ class RedirectView extends Component {
 
     componentDidMount() {
         const { field, resource } = this.props;
-        const value = resource[field.name];
-        const values = Array.isArray(value) ? value : [value];
-        const URLs = values.filter(v => isURL(v));
-        const url = URLs.pop();
-
+        const url = getURL(resource[field.name]);
         if (url) {
             window.location.href = url;
         }
@@ -22,7 +25,15 @@ class RedirectView extends Component {
 
     render() {
         const { field, resource, className } = this.props;
-        return <span className={className}>{resource[field.name]}</span>;
+        const url = getURL(resource[field.name]);
+        return (
+            <div className={className}>
+                <Helmet>
+                    <link rel="canonical" href={url} />
+                </Helmet>
+                <a href={url}>{url}</a>
+            </div>
+        );
     }
 }
 
@@ -34,7 +45,7 @@ RedirectView.propTypes = {
 };
 
 RedirectView.defaultProps = {
-    className: null,
+    className: 'redirect',
 };
 
 export default RedirectView;
