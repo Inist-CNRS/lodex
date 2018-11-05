@@ -35,7 +35,8 @@ export const LoginComponent = ({ login, p: polyglot, submit, submitting }) => (
                 loading={submitting}
                 onClick={submit}
                 primary
-            />,
+            />
+            ,
         </CardActions>
     </Card>
 );
@@ -91,6 +92,10 @@ export const mapDispatchToProps = (dispatch, ownProps) =>
         dispatch,
     );
 
-export default compose(connect(mapStateToProps, mapDispatchToProps), translate)(
-    LoginComponent,
-);
+export default compose(
+    connect(
+        mapStateToProps,
+        mapDispatchToProps,
+    ),
+    translate,
+)(LoginComponent);

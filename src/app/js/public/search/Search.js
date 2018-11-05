@@ -42,6 +42,7 @@ const styles = StyleSheet.create({
     },
     advancedSearchToggle: {
         alignSelf: 'flex-end',
+        cursor: 'pointer',
     },
     searchResults: {
         margin: '1.5rem 0',
@@ -156,6 +157,11 @@ class Search extends Component {
         );
     };
 
+    handleAdvancedSearchClick = evt => {
+        evt.preventDefault();
+        this.props.toggleAdvancedSearch();
+    };
+
     render() {
         const { bufferQuery, opening } = this.state;
         const {
@@ -208,7 +214,9 @@ class Search extends Component {
                             styles.advancedSearchToggle,
                         )}
                     >
-                        <a href="#">{polyglot.t('search_advanced')}</a>
+                        <a onClick={this.handleAdvancedSearchClick}>
+                            {polyglot.t('search_advanced')}
+                        </a>
                     </div>
                 </div>
                 <div
@@ -245,6 +253,7 @@ Search.propTypes = {
     loadMore: PropTypes.func.isRequired,
     total: PropTypes.number.isRequired,
     closeDrawer: PropTypes.func.isRequired,
+    toggleAdvancedSearch: PropTypes.func.isRequired,
 };
 
 Search.defaultProps = {

@@ -55,6 +55,7 @@ const styles = StyleSheet.create({
 export class NavBar extends Component {
     state = {
         searchDrawer: 'closed',
+        advancedSearchDrawer: 'closed',
         graphDrawer: 'closed',
     };
 
@@ -76,6 +77,19 @@ export class NavBar extends Component {
         }
 
         this.setState({ searchDrawer: 'open' });
+    };
+
+    toggleAdvancedSearch = () => {
+        const { searchDrawer, advancedSearchDrawer } = this.state;
+
+        if (advancedSearchDrawer === 'open') {
+            this.setState({ advancedSearchDrawer: 'closed' });
+            return;
+        }
+
+        if (searchDrawer === 'open') {
+            this.setState({ advancedSearchDrawer: 'open' });
+        }
     };
 
     toggleGraph = () => {
@@ -129,7 +143,8 @@ export class NavBar extends Component {
         if (!topMenu || !bottomMenu) {
             return null;
         }
-        const { searchDrawer, graphDrawer } = this.state;
+
+        const { searchDrawer, graphDrawer, advancedSearchDrawer } = this.state;
 
         return (
             <Fragment>
@@ -172,7 +187,7 @@ export class NavBar extends Component {
                                 handleGraphItemClick={this.handleGraphItemClick}
                                 toggleSearch={this.toggleSearch}
                                 graphDrawer={graphDrawer}
-                                saerchDrawer={searchDrawer}
+                                searchDrawer={searchDrawer}
                             />
                         ))}
                     </div>
@@ -185,11 +200,23 @@ export class NavBar extends Component {
                     <GraphSummary closeDrawer={this.toggleGraph} />
                 </Drawer>
                 <Drawer
+                    status={advancedSearchDrawer}
+                    onClose={this.toggleAdvancedSearch}
+                    animationDuration={ANIMATION_DURATION}
+                    shift={440}
+                >
+                    <h1>Advanced Search</h1>
+                </Drawer>
+                <Drawer
                     status={searchDrawer}
                     onClose={this.toggleSearch}
                     animationDuration={ANIMATION_DURATION}
+                    disabled={advancedSearchDrawer === 'open'}
                 >
-                    <Search closeDrawer={this.toggleSearch} />
+                    <Search
+                        closeDrawer={this.toggleSearch}
+                        toggleAdvancedSearch={this.toggleAdvancedSearch}
+                    />
                 </Drawer>
             </Fragment>
         );
