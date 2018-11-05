@@ -4,13 +4,23 @@ import omit from 'lodash.omit';
 import pick from 'lodash.pick';
 
 import facetValueReducer, {
-    LOAD_FACET_VALUES_SUCCESS as LOAD_FACET_VALUES_SUCCESS2,
-    FACET_VALUE_CHANGE as FACET_VALUE_CHANGE2,
-    FACET_VALUE_SORT as FACET_VALUE_SORT2,
-    loadFacetValuesSuccess as loadFacetValuesSuccess2,
-    changeFacetValue as changeFacetValue2,
-    sortFacetValue as sortFacetValue2,
+    LOAD_FACET_VALUES_SUCCESS,
+    FACET_VALUE_CHANGE,
+    FACET_VALUE_SORT,
+    loadFacetValuesSuccess,
+    changeFacetValue,
+    sortFacetValue,
 } from './facetValueReducer';
+
+export {
+    LOAD_FACET_VALUES_SUCCESS,
+    FACET_VALUE_CHANGE,
+    FACET_VALUE_SORT,
+    loadFacetValuesSuccess,
+    changeFacetValue,
+    sortFacetValue,
+};
+
 import { SAVE_RESOURCE_SUCCESS } from '../resource/index';
 
 export const OPEN_FACET = 'OPEN_FACET';
@@ -18,9 +28,6 @@ export const TOGGLE_FACET_VALUE = 'TOGGLE_FACET_VALUE';
 export const CLEAR_FACET = 'CLEAR_FACET';
 export const LOAD_FACET_VALUES = 'LOAD_FACET_VALUES';
 export const LOAD_FACET_VALUES_ERROR = 'LOAD_FACET_VALUES_ERROR';
-export const LOAD_FACET_VALUES_SUCCESS = LOAD_FACET_VALUES_SUCCESS2;
-export const FACET_VALUE_CHANGE = FACET_VALUE_CHANGE2;
-export const FACET_VALUE_SORT = FACET_VALUE_SORT2;
 export const INVERT_FACET = 'INVERT_FACET';
 
 export const openFacet = createAction(OPEN_FACET);
@@ -28,16 +35,10 @@ export const toggleFacetValue = createAction(TOGGLE_FACET_VALUE);
 export const clearFacet = createAction(CLEAR_FACET);
 export const loadFacetValues = createAction(LOAD_FACET_VALUES);
 export const loadFacetValuesError = createAction(LOAD_FACET_VALUES_ERROR);
-export const loadFacetValuesSuccess = loadFacetValuesSuccess2;
-export const changeFacetValue = changeFacetValue2;
-export const sortFacetValue = sortFacetValue2;
 export const invertFacet = createAction(INVERT_FACET);
 
 export const initialState = {
     error: null,
-    selectedFacet: null,
-    selectedFacetValues: [],
-    selectedFacetValuesTotal: 0,
     appliedFacets: {},
     facetsValues: {},
     openedFacets: {},
@@ -134,13 +135,6 @@ export default handleActions(
     initialState,
 );
 
-export const getSelectedFacet = state => state.selectedFacet;
-
-export const getSelectedFacetValues = state => ({
-    values: state.selectedFacetValues,
-    total: state.selectedFacetValuesTotal,
-});
-
 export const getAppliedFacets = ({ appliedFacets }) => appliedFacets;
 
 export const getAppliedFacetList = ({ appliedFacets }) =>
@@ -189,8 +183,6 @@ export const getFacetValueRequestData = (state, name) =>
 export const fromFacet = {
     getAppliedFacets,
     getAppliedFacetList,
-    getSelectedFacet,
-    getSelectedFacetValues,
     isFacetOpen,
     getFacetValues,
     isFacetValuesChecked,
