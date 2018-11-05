@@ -128,6 +128,10 @@ const mapDispatchToProps = {
     onChangeClass: changeClass,
 };
 
-export default compose(connect(mapStateToProps, mapDispatchToProps), translate)(
-    ClassListItem,
-);
+export default compose(
+    connect(
+        mapStateToProps,
+        mapDispatchToProps,
+    ),
+    translate,
+)(ClassListItem);
