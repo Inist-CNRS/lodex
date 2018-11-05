@@ -23,6 +23,8 @@ export const goToChart = name => {
     cy.get('.graph-link')
         .contains(name)
         .click();
+    cy.wait(500);
+    cy.get('.loading').should('not.be.visible');
     cy.get('.graph .title')
         .contains(name)
         .should('be.visible');

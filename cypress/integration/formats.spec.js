@@ -48,13 +48,11 @@ describe('Transformers & Formats', () => {
 
         describe('As Admin', () => {
             it('should display an error message describing the issue', () => {
-                cy
-                    .get('.detail')
+                cy.get('.detail')
                     .find('.property')
                     .should('have.length', 2);
 
-                cy
-                    .get('.detail')
+                cy.get('.detail')
                     .find('.invalid-format')
                     .should('have.length', 1);
             });
@@ -69,13 +67,11 @@ describe('Transformers & Formats', () => {
                     cy.contains('New Resource'),
                 );
 
-                cy
-                    .get('.detail')
+                cy.get('.detail')
                     .find('.property')
                     .should('have.length', 1);
 
-                cy
-                    .get('.detail')
+                cy.get('.detail')
                     .find('.invalid-format')
                     .should('have.length', 0);
             });

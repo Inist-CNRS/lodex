@@ -1,5 +1,6 @@
 import { createAction, handleActions, combineActions } from 'redux-actions';
 import { createSelector } from 'reselect';
+import get from 'lodash.get';
 
 import { PROPOSED } from '../../../../common/propositionStatus';
 
@@ -289,7 +290,7 @@ const hasBeenRemoved = (state, resource = state.resource) => {
 };
 
 const getResourceProposedFields = state => {
-    const { contributions } = state.resource;
+    const contributions = get(state, 'resource.contributions');
     if (!contributions) {
         return [];
     }
@@ -299,7 +300,7 @@ const getResourceProposedFields = state => {
 };
 
 const getProposedFieldStatus = state => {
-    const { contributions } = state.resource;
+    const contributions = get(state, 'resource.contributions');
     if (!contributions) {
         return {};
     }
@@ -319,7 +320,8 @@ const getFieldStatus = createSelector(
     (fieldStatusByName, name) => fieldStatusByName[name],
 );
 
-const getResourceContributions = state => state.resource.contributions || [];
+const getResourceContributions = state =>
+    get(state, 'resource.contributions', []);
 
 const getResourceContributorsCatalog = createSelector(
     getResourceContributions,
@@ -341,6 +343,9 @@ const getResourceContributorForField = createSelector(
 
 const getRemovedData = state => {
     const resource = state.resource;
+    if (!resource) {
+        return {};
+    }
     const { uri, removedAt, reason } = resource;
     return {
         uri,
@@ -353,14 +358,13 @@ const isSaving = state => state.saving;
 
 const isLoading = state => state.loading;
 
-const getVersions = state =>
-    state.resource.versions.map(({ publicationDate }) => publicationDate);
+const getVersions = ({ resource }) =>
+    resource
+        ? resource.versions.map(({ publicationDate }) => publicationDate)
+        : [];
 
-const getNbVersions = state =>
-    (state.resource &&
-        state.resource.versions &&
-        state.resource.versions.length) ||
-    0;
+const getNbVersions = ({ resource }) =>
+    (resource && resource.versions && resource.versions.length) || 0;
 
 const getSelectedVersion = createSelector(
     state => state.selectedVersion,
@@ -427,10 +431,10 @@ export const fromResource = {
     isResourceLoaded,
 };
 
-export const getResourceFormData = state => state.form.resource.values;
-export const getHideResourceFormData = state => state.form.hideResource.values;
+export const getResourceFormData = state => get(state, 'form.resource.values');
+export const getHideResourceFormData = state =>
+    get(state, 'form.hideResource.values');
 export const getNewResourceFieldFormData = state =>
-    state.form.newResourceField && state.form.newResourceField.values;
+    get(state, 'form.newResourceField.values');
 export const getNewResourceFormData = state =>
-    state.form[CREATE_RESOURCE_FORM_NAME] &&
-    state.form[CREATE_RESOURCE_FORM_NAME].values;
+    get(state, ['form', CREATE_RESOURCE_FORM_NAME, 'values']);
