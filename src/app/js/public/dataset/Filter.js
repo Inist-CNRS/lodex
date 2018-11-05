@@ -27,7 +27,7 @@ const styles = {
 
 class FilterComponent extends Component {
     state = {
-        query: null,
+        query: this.props.filter,
     };
 
     debouncedApplyFilter = debounce(value => {

@@ -5,6 +5,7 @@ export const openSearchDrawer = () => {
         .contains('Search')
         .click();
 
+    cy.wait(300);
     cy.get('.drawer-container .drawer .search').should('be.visible');
 };
 

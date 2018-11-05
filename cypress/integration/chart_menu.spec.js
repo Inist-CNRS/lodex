@@ -12,7 +12,7 @@ describe('Chart Menu', () => {
         datasetImportPage.goToPublishedResources();
     });
 
-    it('should display chart menu withlist of all chart', () => {
+    it('should display chart menu with list of all chart', () => {
         homePage.openChartDrawer();
         const charts = [
             'Bar Chart',

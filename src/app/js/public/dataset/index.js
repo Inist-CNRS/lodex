@@ -108,7 +108,7 @@ const getDataset = state => state.dataset;
 const getDatasetTotal = state => state.total;
 const getDatasetFullTotal = state => state.fullTotal;
 const isDatasetLoaded = state => state.total > 0;
-const getFilter = state => state.match || '';
+const getFilter = state => state.match;
 const getSort = state => state.sort;
 const isSaving = state => state.isSaving;
 

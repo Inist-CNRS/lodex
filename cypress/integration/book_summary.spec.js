@@ -4,7 +4,7 @@ import * as homePage from '../support/homePage';
 import * as graphPage from '../support/graphPage';
 import * as bookSummaryPage from '../support/bookSummary';
 
-describe('Book Summary', () => {
+describe('Book Summary Format', () => {
     beforeEach(() => {
         cy.visit('http://localhost:3000/admin');
         teardown();

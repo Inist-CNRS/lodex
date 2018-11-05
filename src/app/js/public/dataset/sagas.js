@@ -70,10 +70,10 @@ export function* handleLoadDatasetPageRequest({ payload }) {
     yield put(loadDatasetPageSuccess({ dataset, page, total, fullTotal }));
 }
 
-const clearDatasetSearch = function*({ payload: { location } }) {
+const clearDatasetSearch = function*() {
     const match = yield select(fromDataset.getFilter);
 
-    if (match && !location.pathname.startsWith('/graph')) {
+    if (match) {
         yield put(clearFilter());
     }
 };
