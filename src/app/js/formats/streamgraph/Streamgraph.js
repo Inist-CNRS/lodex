@@ -8,6 +8,10 @@ import exportableToPng from '../exportableToPng';
 import * as d3 from 'd3';
 
 const styles = {
+    divContainer: {
+        overflow: 'hidden',
+        position: 'relative',
+    },
     tooltip: {
         marginTop: 900,
     },
@@ -239,9 +243,11 @@ class Streamgraph extends PureComponent {
 
     setGraph() {
         let [valuesObjectsArray, valuesArray, minDate, maxDate, nameList] = transformDataIntoMapArray(this.props.formatData);
-        let { width, height } = this.state;
-        const svgWidth = width;
+        const divContainerWidth = document.getElementById("divContainer").clientWidth;
+        let { height } = this.state;
+        let width = divContainerWidth;
         const svgHeight = height;
+        const svgWidth = width;
 
         const divContainer = d3.select(this.refs.divContainer)
         const svgViewport = d3.select(this.refs.anchor);
@@ -280,7 +286,7 @@ class Streamgraph extends PureComponent {
             .translateExtent([[0, 0], [width, height]])
             .extent([[0, 0], [width, height]])
             .on("zoom", zoomFunction);
-            
+
         svgViewport.append("defs")
             .append("clipPath")
             .attr("id", "mask")
@@ -290,6 +296,7 @@ class Streamgraph extends PureComponent {
 
         // Inner Drawing Space
         const innerSpace = svgViewport.append("g")
+            .attr("width", width)
             .attr("class", "inner_space")
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
@@ -422,10 +429,9 @@ class Streamgraph extends PureComponent {
         // Set legend
         // ===========================================================================================
 
-        const legendView = divContainer
+        const legendView = divContainer.append('div')
             .attr("id", "legend")
             .attr("style", getCssToString(styles.legend))
-            .append('div');
 
         for (let index = colorNameList.length - 1; index > 0; index--) {
             let element = colorNameList[index];
@@ -545,7 +551,7 @@ class Streamgraph extends PureComponent {
     render() {
         const { width, height } = this.state;
         return (
-            <div ref="divContainer">
+            <div id="divContainer" ref="divContainer" style={styles.divContainer}>
                 <svg width={width} height={height}>
                     <g ref="anchor" />
                 </svg>
