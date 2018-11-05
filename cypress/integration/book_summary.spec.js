@@ -53,7 +53,7 @@ describe('Book Summary Format', () => {
         ]);
     });
 
-    it.only('should allow to configure year order', () => {
+    it('should allow to configure year order', () => {
         bookSummaryPage.checkYears([2003, 2002, 2001, 2000, 1999, 1998, 1997]);
         bookSummaryPage.openConfigure();
         bookSummaryPage.configureYearSort('From oldest to youngest');

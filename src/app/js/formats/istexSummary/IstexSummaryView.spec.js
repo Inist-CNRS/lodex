@@ -24,6 +24,7 @@ describe('IstexSummaryView', () => {
         },
         resource: { field: 'value' },
         searchedField: 'searchedField',
+        sortDir: 'sortDir',
         p: { t: v => v },
     };
     const renderComposedChild = jest.fn(() => <div>Composed Child</div>);
@@ -54,7 +55,10 @@ describe('IstexSummaryView', () => {
             searchedField: 'searchedField',
             polyglot: defaultProps.p,
         });
-        expect(parseYearData).toHaveBeenCalledWith({ hits: [1, 2, 3] });
+        expect(parseYearData).toHaveBeenCalledWith(
+            { hits: [1, 2, 3] },
+            'sortDir',
+        );
         expect(wrapper.find('div').text()).toEqual('Composed Child');
     });
 
@@ -85,7 +89,10 @@ describe('IstexSummaryView', () => {
             searchedField: 'searchedField',
             polyglot: defaultProps.p,
         });
-        expect(parseYearData).toHaveBeenCalledWith({ hits: { length: 51 } });
+        expect(parseYearData).toHaveBeenCalledWith(
+            { hits: { length: 51 } },
+            'sortDir',
+        );
         expect(getDecadeFromData).toHaveBeenCalledWith({
             hits: { length: 51 },
         });
