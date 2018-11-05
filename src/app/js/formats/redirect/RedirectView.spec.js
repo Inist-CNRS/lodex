@@ -10,6 +10,6 @@ describe('<RedirectView />', () => {
         const wrapper = shallow(
             <RedirectView resource={resource} field={field} />,
         );
-        expect(wrapper.find('span').text()).toEqual('Run you fools!');
+        expect(wrapper.find('a').text()).toEqual('Run you fools!');
     });
 });
