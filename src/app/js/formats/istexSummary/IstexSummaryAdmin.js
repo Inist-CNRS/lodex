@@ -65,6 +65,7 @@ export class IstexSummaryAdmin extends Component {
         return (
             <div style={styles.container}>
                 <SelectField
+                    className="searched_field"
                     floatingLabelText={polyglot.t('searched_field')}
                     onChange={this.setSearchedField}
                     style={styles.input}
@@ -79,6 +80,7 @@ export class IstexSummaryAdmin extends Component {
                     ))}
                 </SelectField>
                 <SelectField
+                    className="year_sort_dir"
                     floatingLabelText={polyglot.t('year_sort_dir')}
                     onChange={this.setSortDir}
                     style={styles.input}

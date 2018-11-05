@@ -70,3 +70,22 @@ export const loadMore = () => {
         .click();
     cy.get('.load-more svg').should('not.exist');
 };
+
+export const openConfigure = () => {
+    cy.get('.format_istexSummary .configure-field').click();
+    cy.get('.configure-field.save').should('be.visible');
+};
+
+export const saveConfiguration = () => {
+    cy.get('.configure-field.save').click();
+    cy.get('.configure-field.save').should('not.be.visible');
+};
+
+export const configureYearSort = dir => {
+    cy.get('.year_sort_dir button')
+        .scrollIntoView()
+        .click();
+    cy.get('span[role="menuitem"]')
+        .contains(dir)
+        .click();
+};
