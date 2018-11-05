@@ -425,3 +425,6 @@
 "host.title"	"Title"	"Titre"
 "other_volume"	"Other volumes"	"Autres volumes"
 "other_issue"	"Other issues"	"Autres numéros"
+"year_sort_dir"	"Year sort"	"Tri des années"
+"YEAR_ASC"	"From oldest to youngest"	"Du + vieux au + récent"
+"YEAR_DESC"	"From youngest to oldest"	"Du + récent au + vieux"

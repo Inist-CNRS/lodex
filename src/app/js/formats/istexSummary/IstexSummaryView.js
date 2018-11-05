@@ -31,6 +31,7 @@ export const IstexSummaryView = ({
     field,
     resource,
     searchedField,
+    sortDir,
     p: polyglot,
 }) => {
     if (!resource[field.name] || !searchedField) {
@@ -39,7 +40,7 @@ export const IstexSummaryView = ({
         );
     }
 
-    const data = parseYearData(formatData);
+    const data = parseYearData(formatData, sortDir);
 
     if (data.hits.length > 50) {
         return composeRenderProps([
