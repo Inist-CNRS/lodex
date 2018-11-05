@@ -88,29 +88,99 @@ export const parseFacetData = (facetName, getName = ({ key }) => key) => ({
 
 export const parseVolumeData = parseFacetData('host.volume');
 
+export const getOtherVolumeUrl = ({ issn, year, searchedField }) => () => ({
+    url: `${ISTEX_API_URL}/document/?q=(${encodeURIComponent(
+        `${searchedField}:"${issn}" AND publicationDate:"${year}" AND -host.volume:[0 TO *]`,
+    )})&size=0&output=*`,
+});
+
+export const parseOtherData = ({ response, error }) => {
+    if (error) {
+        throw error;
+    }
+
+    return {
+        name: 'other',
+        count: response.total,
+    };
+};
+
+export const getOtherVolumeData = ({ issn, year, searchedField }) =>
+    composeAsync(
+        getOtherVolumeUrl({ issn, year, searchedField }),
+        fetch,
+        parseOtherData,
+    );
+
+export const addOtherVolumeData = ({ issn, year, searchedField }) => async ({
+    hits,
+}) => ({
+    hits: [...hits, await getOtherVolumeData({ issn, year, searchedField })()],
+});
+
 export const getVolumeData = ({ issn, year, searchedField }) =>
     composeAsync(
         getVolumeUrl({ issn, year, searchedField }),
         fetch,
         parseVolumeData,
+        addOtherVolumeData({ issn, year, searchedField }),
     );
+
+const getVolumeQuery = volume =>
+    volume === 'other' ? '-host.volume:[0 TO *]' : `host.volume:"${volume}"`;
 
 export const getIssueUrl = ({ issn, year, volume, searchedField }) => () => ({
     url: `${ISTEX_API_URL}/document/?q=(${encodeURIComponent(
-        `${searchedField}:"${issn}" AND publicationDate:"${
-            year
-        }" AND host.volume:"${volume}"`,
+        `${searchedField}:"${issn}" AND publicationDate:"${year}" AND ${getVolumeQuery(
+            volume,
+        )}`,
     )})&facet=host.issue[*-*:1]&size=0&output=*`,
 });
 
 export const parseIssueData = parseFacetData('host.issue');
+
+export const getOtherIssueUrl = ({
+    issn,
+    year,
+    volume,
+    searchedField,
+}) => () => ({
+    url: `${ISTEX_API_URL}/document/?q=(${encodeURIComponent(
+        `${searchedField}:"${issn}" AND publicationDate:"${year}" AND ${getVolumeQuery(
+            volume,
+        )} AND -host.issue:[0 TO *]`,
+    )})&size=0&output=*`,
+});
+
+export const getOtherIssueData = ({ issn, year, volume, searchedField }) =>
+    composeAsync(
+        getOtherIssueUrl({ issn, year, volume, searchedField }),
+        fetch,
+        parseOtherData,
+    );
+
+export const addOtherIssueData = ({
+    issn,
+    year,
+    volume,
+    searchedField,
+}) => async ({ hits }) => ({
+    hits: [
+        ...hits,
+        await getOtherIssueData({ issn, year, volume, searchedField })(),
+    ],
+});
 
 export const getIssueData = ({ issn, year, volume, searchedField }) =>
     composeAsync(
         getIssueUrl({ issn, year, volume, searchedField }),
         fetch,
         parseIssueData,
+        addOtherIssueData({ issn, year, volume, searchedField }),
     );
+
+const getIssueQuery = issue =>
+    issue === 'other' ? '-host.issue:[0 TO *]' : `host.issue:"${issue}"`;
 
 export const getDocumentUrl = ({
     issn,
@@ -120,9 +190,9 @@ export const getDocumentUrl = ({
     searchedField,
 }) => () => ({
     url: `${ISTEX_API_URL}/document/?q=(${encodeURIComponent(
-        `${searchedField}:"${issn}" AND publicationDate:"${
-            year
-        }" AND host.volume:"${volume}" AND host.issue:"${issue}"`,
+        `${searchedField}:"${issn}" AND publicationDate:"${year}" AND ${getVolumeQuery(
+            volume,
+        )} AND ${getIssueQuery(issue)}`,
     )})&size=10&output=id,arkIstex,title,publicationDate,author,host.genre,host.title`,
 });
 

@@ -16,7 +16,11 @@ const IssueFold = ({
     children,
 }) => (
     <FetchFold
-        label={`${polyglot.t('issue')}: ${issue}`}
+        label={
+            issue === 'other'
+                ? polyglot.t('other_issue')
+                : `${polyglot.t('issue')}: ${issue}`
+        }
         count={count}
         issue={issue}
         polyglot={polyglot}
