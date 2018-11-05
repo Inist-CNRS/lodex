@@ -101,10 +101,13 @@ const getResourceFields = createSelector(
     getParams,
     getDocumentFields,
     getRootCollectionFields,
-    (resource, documentFields, collectionFields) => [
-        ...collectionFields,
-        ...documentFields.filter(({ name }) => !!resource[name]),
-    ],
+    (resource, documentFields, collectionFields) =>
+        resource
+            ? [
+                  ...collectionFields,
+                  ...documentFields.filter(({ name }) => !!resource[name]),
+              ]
+            : [],
 );
 
 const getListFields = createSelector(getCollectionFields, fields =>

@@ -29,6 +29,7 @@ describe('Search', () => {
             .click();
 
         cy.url().should('contain', '/uid');
+        cy.get('.loading').should('not.be.visible');
         cy.get('.property_value')
             .contains('Annals of the rheumatic diseases')
             .should('be.visible');
@@ -54,6 +55,7 @@ describe('Search', () => {
             .click();
 
         cy.url().should('contain', '/uid');
+        cy.get('.loading').should('not.be.visible');
         searchDrawer.openSearchDrawer();
 
         cy.get('.search-result-link[class*=activeLink_]').should('exist');
@@ -70,6 +72,7 @@ describe('Search', () => {
             .click();
 
         cy.url().should('contain', '/uid');
+        cy.get('.loading').should('not.be.visible');
         searchDrawer.openSearchDrawer();
 
         cy.get('.search-result').should('have.length', 1);

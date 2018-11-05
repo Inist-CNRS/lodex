@@ -3,17 +3,18 @@ import { shallow } from 'enzyme';
 
 import { IstexSummaryView, IstexDocument } from './IstexSummaryView';
 import composeRenderProps from '../../lib/composeRenderProps';
-import { parseYearData, getDecadeData } from './getIstexData';
+import { parseYearData } from './getIstexData';
 import IstexList from './IstexList';
 import IssueFold from './IssueFold';
 import VolumeFold from './VolumeFold';
 import YearFold from './YearFold';
 import DecadeFold from './DecadeFold';
 import InvalidFormat from '../InvalidFormat';
-import FetchIstex from './FetchIstex';
+import getDecadeFromData from './getDecadeFromData';
 
 jest.mock('../../lib/composeRenderProps');
 jest.mock('./getIstexData');
+jest.mock('./getDecadeFromData');
 
 describe('IstexSummaryView', () => {
     const defaultProps = {
@@ -30,6 +31,7 @@ describe('IstexSummaryView', () => {
     beforeAll(() => {
         parseYearData.mockImplementation(v => v);
         composeRenderProps.mockImplementation(() => renderComposedChild);
+        getDecadeFromData.mockImplementation(() => 'decade data');
     });
 
     it('should render Fold for year volume issue and document', () => {
@@ -65,7 +67,6 @@ describe('IstexSummaryView', () => {
         );
 
         expect(composeRenderProps).toHaveBeenCalledWith([
-            FetchIstex,
             IstexList,
             DecadeFold,
             IstexList,
@@ -79,16 +80,15 @@ describe('IstexSummaryView', () => {
         ]);
 
         expect(renderComposedChild).toHaveBeenCalledWith({
-            data: { hits: { length: 51 } },
+            data: 'decade data',
             issn: 'value',
             searchedField: 'searchedField',
-            getData: getDecadeData({
-                issn: 'value',
-                searchedField: 'searchedField',
-            }),
             polyglot: defaultProps.p,
         });
         expect(parseYearData).toHaveBeenCalledWith({ hits: { length: 51 } });
+        expect(getDecadeFromData).toHaveBeenCalledWith({
+            hits: { length: 51 },
+        });
         expect(wrapper.find('div').text()).toEqual('Composed Child');
     });
 

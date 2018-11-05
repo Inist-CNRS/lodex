@@ -8,7 +8,10 @@ import { polyglot as polyglotPropTypes } from '../../propTypes';
 
 const DecadeFold = ({
     issn,
-    item: { name: { from, to }, count },
+    item: {
+        name: { from, to },
+        count,
+    },
     searchedField,
     polyglot,
     children,

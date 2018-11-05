@@ -9,7 +9,7 @@ import {
 } from '../../propTypes';
 import injectData from '../injectData';
 import InvalidFormat from '../InvalidFormat';
-import { getYearUrl, parseYearData, getDecadeData } from './getIstexData';
+import { getYearUrl, parseYearData } from './getIstexData';
 import { searchedFieldValues } from './IstexSummaryAdmin';
 import composeRenderProps from '../../lib/composeRenderProps';
 import IstexList from './IstexList';
@@ -17,8 +17,8 @@ import IssueFold from './IssueFold';
 import VolumeFold from './VolumeFold';
 import YearFold from './YearFold';
 import IstexItem from '../istex/IstexItem';
-import FetchIstex from './FetchIstex';
 import DecadeFold from './DecadeFold';
+import getDecadeFromData from './getDecadeFromData';
 
 export const IstexDocument = ({ item }) => <IstexItem {...item} />;
 
@@ -43,7 +43,6 @@ export const IstexSummaryView = ({
 
     if (data.hits.length > 50) {
         return composeRenderProps([
-            FetchIstex,
             IstexList,
             DecadeFold,
             IstexList,
@@ -55,13 +54,9 @@ export const IstexSummaryView = ({
             IstexList,
             IstexDocument,
         ])({
-            data: data,
+            data: getDecadeFromData(data),
             issn: resource[field.name],
             searchedField: searchedField,
-            getData: getDecadeData({
-                issn: resource[field.name],
-                searchedField: searchedField,
-            }),
             polyglot: polyglot,
         });
     }
@@ -101,4 +96,7 @@ IstexSummaryView.defaultProps = {
     error: null,
 };
 
-export default compose(injectData(getYearUrl), translate)(IstexSummaryView);
+export default compose(
+    injectData(getYearUrl),
+    translate,
+)(IstexSummaryView);
