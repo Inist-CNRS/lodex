@@ -85,6 +85,8 @@ describe('resourceReducer', () => {
         expect(state).toEqual({
             key: 'value',
             error: null,
+            resource: null,
+            selectedVersion: 0,
             loading: true,
             saving: false,
         });
