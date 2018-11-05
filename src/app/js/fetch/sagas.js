@@ -9,7 +9,7 @@ export const filterAction = action =>
     action.type === FETCH && action.meta && action.meta.name === name;
 
 export function* handleFetch({ payload: config, meta: { name } }) {
-    yield delay(200);
+    yield call(delay, 200);
     const { fetch } = yield race({
         fetch: call(fetchSaga, config),
         cancel: take(filterAction),
