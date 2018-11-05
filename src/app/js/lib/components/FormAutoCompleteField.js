@@ -26,6 +26,7 @@ const FormAutoCompleteField = ({
         dataSource={dataSource}
         searchText={input.value}
         {...omit(props, ['getFetchRequest', 'parseResponse', 'handleSearch'])}
+        anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
     />
 );
 
