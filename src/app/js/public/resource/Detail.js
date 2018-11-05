@@ -8,6 +8,7 @@ import FlatButton from 'material-ui/FlatButton';
 import { grey500 } from 'material-ui/styles/colors';
 import memoize from 'lodash.memoize';
 import { Helmet } from 'react-helmet';
+import get from 'lodash.get';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { fromResource } from '../selectors';
@@ -130,6 +131,9 @@ export const DetailComponent = ({
     description,
     isAdmin,
 }) => {
+    if (!resource) {
+        return null;
+    }
     const sortedFields = [...fields]; // Isolation
     sortedFields.sort((a, b) => a.position - b.position);
 
@@ -217,8 +221,8 @@ const mapStateToProps = state => {
 
     const titleKey = fromFields.getResourceTitleFieldName(state);
     const descriptionKey = fromFields.getResourceDescriptionFieldName(state);
-    const title = titleKey && resource[titleKey];
-    const description = descriptionKey && resource[descriptionKey];
+    const title = get(resource, titleKey);
+    const description = get(resource, descriptionKey);
 
     return {
         resource,
@@ -229,4 +233,7 @@ const mapStateToProps = state => {
     };
 };
 
-export default compose(connect(mapStateToProps), translate)(DetailComponent);
+export default compose(
+    connect(mapStateToProps),
+    translate,
+)(DetailComponent);

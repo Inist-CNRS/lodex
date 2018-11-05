@@ -81,7 +81,7 @@ export const createResourceSuccess = createAction(CREATE_RESOURCE_SUCCESS);
 export const createResourceError = createAction(CREATE_RESOURCE_ERROR);
 
 export const defaultState = {
-    resource: {},
+    resource: null,
     error: null,
     loading: false,
     saving: false,
@@ -94,6 +94,8 @@ export default handleActions(
     {
         LOAD_RESOURCE: state => ({
             ...state,
+            resource: null,
+            selectedVersion: 0,
             error: null,
             loading: true,
             saving: false,

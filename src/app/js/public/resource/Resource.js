@@ -20,7 +20,7 @@ import { preLoadResource } from './';
 import { preLoadPublication } from '../../fields';
 
 export class ResourceComponent extends Component {
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         this.props.preLoadResource();
         this.props.preLoadPublication();
     }
@@ -125,6 +125,10 @@ const mapDispatchToProps = {
     preLoadPublication,
 };
 
-export default compose(connect(mapStateToProps, mapDispatchToProps), translate)(
-    ResourceComponent,
-);
+export default compose(
+    connect(
+        mapStateToProps,
+        mapDispatchToProps,
+    ),
+    translate,
+)(ResourceComponent);

@@ -2,6 +2,9 @@ import range from 'lodash.range';
 import chunk from 'lodash.chunk';
 
 export default data => {
+    if (!data.hits.length) {
+        return data;
+    }
     const min = Number(data.hits[0].name);
     const roundedMin = Math.floor(min / 10) * 10;
     const max = Number(data.hits.slice(-1)[0].name);

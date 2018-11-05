@@ -21,4 +21,14 @@ describe('getDecadeFromData', () => {
             ],
         });
     });
+
+    it('should do nothing if hits izs empty', () => {
+        expect(
+            getDecadeFromData({
+                hits: [],
+            }),
+        ).toEqual({
+            hits: [],
+        });
+    });
 });
