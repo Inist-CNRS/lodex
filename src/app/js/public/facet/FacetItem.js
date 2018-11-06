@@ -6,8 +6,6 @@ import compose from 'recompose/compose';
 import withHandlers from 'recompose/withHandlers';
 
 import getFieldClassName from '../../lib/getFieldClassName';
-import { fromDataset } from '../selectors';
-import { facetActions } from '../dataset';
 import { field as fieldPropType } from '../../propTypes';
 import FacetValueList from './FacetValueList';
 
@@ -17,7 +15,7 @@ const styles = {
     },
 };
 
-const PureFacetItem = ({ onClick, isOpen, field, total }) => (
+const FacetItem = ({ onClick, isOpen, field, total, ...rest }) => (
     <ListItem
         className={`facet-item facet-${getFieldClassName(field)}`}
         nestedListStyle={styles.nested}
@@ -27,33 +25,41 @@ const PureFacetItem = ({ onClick, isOpen, field, total }) => (
         onNestedListToggle={onClick}
         open={isOpen}
         nestedItems={[
-            <FacetValueList key="list" name={field.name} label={field.label} />,
+            <FacetValueList
+                key="list"
+                name={field.name}
+                label={field.label}
+                {...rest}
+            />,
         ]}
     />
 );
 
-PureFacetItem.propTypes = {
+FacetItem.propTypes = {
     onClick: PropTypes.func.isRequired,
     isOpen: PropTypes.bool.isRequired,
     field: fieldPropType.isRequired,
     total: PropTypes.number,
 };
 
-const mapStateToProps = (state, { field }) => ({
-    isOpen: fromDataset.isFacetOpen(state, field.name),
-    total: fromDataset.getFacetValuesTotal(state, field.name),
+const mapStateToProps = (
+    state,
+    { field, isFacetOpen, getFacetValuesTotal },
+) => ({
+    isOpen: isFacetOpen(state, field.name),
+    total: getFacetValuesTotal(state, field.name),
 });
 
-const mapDispatchtoProps = {
-    openFacet: facetActions.openFacet,
-};
+const mapDispatchToProps = (dispatch, { openFacet }) => ({
+    openFacet: (...args) => dispatch(openFacet(...args)),
+});
 
 export default compose(
     connect(
         mapStateToProps,
-        mapDispatchtoProps,
+        mapDispatchToProps,
     ),
     withHandlers({
         onClick: ({ openFacet, field: { name } }) => () => openFacet({ name }),
     }),
-)(PureFacetItem);
+)(FacetItem);

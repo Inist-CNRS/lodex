@@ -7,7 +7,7 @@ import Filter from './dataset/Filter';
 export const Toolbar = ({ name }) => (
     <div>
         <Filter key={name} />
-        <FacetList />
+        <FacetList page="dataset" />
     </div>
 );
 

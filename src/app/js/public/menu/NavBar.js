@@ -16,6 +16,7 @@ import Search from '../search/Search';
 import GraphSummary from '../graph/GraphSummary';
 import Favicon from '../Favicon';
 import MenuItem from './MenuItem';
+import FacetList from '../facet/FacetList';
 
 const ANIMATION_DURATION = 300; // ms
 
@@ -138,6 +139,7 @@ export class NavBar extends Component {
             topMenu,
             bottomMenu,
             p: polyglot,
+            hasFacetFields,
         } = this.props;
 
         if (!topMenu || !bottomMenu) {
@@ -199,14 +201,16 @@ export class NavBar extends Component {
                 >
                     <GraphSummary closeDrawer={this.toggleGraph} />
                 </Drawer>
-                <Drawer
-                    status={advancedSearchDrawer}
-                    onClose={this.toggleAdvancedSearch}
-                    animationDuration={ANIMATION_DURATION}
-                    shift={440}
-                >
-                    <h1>Advanced Search</h1>
-                </Drawer>
+                {hasFacetFields && (
+                    <Drawer
+                        status={advancedSearchDrawer}
+                        onClose={this.toggleAdvancedSearch}
+                        animationDuration={ANIMATION_DURATION}
+                        shift={440}
+                    >
+                        <FacetList page="search" />
+                    </Drawer>
+                )}
                 <Drawer
                     status={searchDrawer}
                     onClose={this.toggleSearch}
@@ -215,6 +219,7 @@ export class NavBar extends Component {
                 >
                     <Search
                         closeDrawer={this.toggleSearch}
+                        showAdvancedSearch={hasFacetFields}
                         toggleAdvancedSearch={this.toggleAdvancedSearch}
                     />
                 </Drawer>
@@ -252,6 +257,7 @@ NavBar.propTypes = {
     topMenu: menuPropTypes,
     bottomMenu: menuPropTypes,
     loadMenu: PropTypes.func.isRequired,
+    hasFacetFields: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = state => ({
@@ -260,6 +266,7 @@ const mapStateToProps = state => ({
     hasGraph: fromFields.getGraphFields(state).length > 0,
     topMenu: fromMenu.getTopMenu(state),
     bottomMenu: fromMenu.getBottomMenu(state),
+    hasFacetFields: fromFields.hasFacetFields(state),
 });
 
 const mapDispatchToProps = {

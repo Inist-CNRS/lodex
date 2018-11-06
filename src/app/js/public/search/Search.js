@@ -168,6 +168,7 @@ class Search extends Component {
             results,
             total,
             p: polyglot,
+            showAdvancedSearch,
         } = this.props;
 
         const noOverviewField =
@@ -205,16 +206,18 @@ class Search extends Component {
                             ref={this.textInput}
                         />
                     </div>
-                    <div
-                        className={cnames(
-                            'search-advanced-toggle',
-                            styles.advancedSearchToggle,
-                        )}
-                    >
-                        <a onClick={this.handleAdvancedSearchClick}>
-                            {polyglot.t('search_advanced')}
-                        </a>
-                    </div>
+                    {showAdvancedSearch && (
+                        <div
+                            className={cnames(
+                                'search-advanced-toggle',
+                                styles.advancedSearchToggle,
+                            )}
+                        >
+                            <a onClick={this.handleAdvancedSearchClick}>
+                                {polyglot.t('search_advanced')}
+                            </a>
+                        </div>
+                    )}
                 </div>
                 <div
                     className={classnames(
@@ -250,6 +253,7 @@ Search.propTypes = {
     loadMore: PropTypes.func.isRequired,
     total: PropTypes.number.isRequired,
     closeDrawer: PropTypes.func.isRequired,
+    showAdvancedSearch: PropTypes.bool.isRequired,
     toggleAdvancedSearch: PropTypes.func.isRequired,
 };
 

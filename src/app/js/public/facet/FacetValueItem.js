@@ -46,13 +46,13 @@ PureFacetValueItem.propTypes = {
     onCheck: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = (state, { name, value }) => ({
-    isChecked: fromDataset.isFacetValuesChecked(state, { name, value }),
+const mapStateToProps = (state, { name, value, isFacetValuesChecked }) => ({
+    isChecked: isFacetValuesChecked(state, { name, value }),
 });
 
-const mapDispatchToProps = {
-    toggleFacetValue: facetActions.toggleFacetValue,
-};
+const mapDispatchToProps = (dispatch, { toggleFacetValue }) => ({
+    toggleFacetValue: (...args) => dispatch(toggleFacetValue(...args)),
+});
 
 export default compose(
     connect(

@@ -19,11 +19,13 @@ import {
     loadDatasetPageError,
     clearFilter,
     facetActionTypes,
+    facetActions,
 } from './';
 
 import { fromUser } from '../../sharedSelectors';
 import fetchSaga from '../../lib/sagas/fetchSaga';
 import { fromDataset } from '../selectors';
+import facetSagasFactory from '../facet/sagas';
 
 export function* handlePreLoadDatasetPage() {
     if (yield select(fromDataset.isDatasetLoaded)) {
@@ -78,6 +80,12 @@ const clearDatasetSearch = function*() {
     }
 };
 
+const facetSagas = facetSagasFactory({
+    actionTypes: facetActionTypes,
+    actions: facetActions,
+    selectors: fromDataset,
+});
+
 export default function*() {
     yield fork(function*() {
         // see https://github.com/redux-saga/redux-saga/blob/master/docs/api/README.md#throttlems-pattern-saga-args
@@ -94,9 +102,9 @@ export default function*() {
             ],
             handleLoadDatasetPageRequest,
         );
-    });
-    yield fork(function*() {
+
         yield takeLatest(PRE_LOAD_DATASET_PAGE, handlePreLoadDatasetPage);
+        yield facetSagas();
     });
 
     yield takeLatest(LOCATION_CHANGE, clearDatasetSearch);

@@ -1,48 +1,37 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 import { List } from 'material-ui/List';
 
-import {
-    field as fieldPropTypes,
-    polyglot as polyglotPropTypes,
-} from '../../propTypes';
+import { field as fieldPropTypes } from '../../propTypes';
 
 import { fromFields } from '../../sharedSelectors';
-import { facetActions } from '../dataset';
 import FacetItem from './FacetItem';
+import getActionsForPage from './getActionsForPage';
 
-export class FacetList extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            anchorEl: null,
-            showMenu: false,
-        };
-    }
+const FacetList = ({ hasFacetFields, fields, page }) => {
+    if (!hasFacetFields) return null;
+    const props = getActionsForPage(page);
 
-    render() {
-        const { fields, hasFacetFields } = this.props;
-
-        if (!hasFacetFields) return null;
-
-        return (
-            <List className="facet-list">
-                {fields.map(field => (
-                    <FacetItem key={field.name} field={field} />
-                ))}
-            </List>
-        );
-    }
-}
+    return (
+        <List className="facet-list">
+            {fields.map(field => (
+                <FacetItem
+                    key={`${page}-${field.name}`}
+                    field={field}
+                    {...props}
+                />
+            ))}
+        </List>
+    );
+};
 
 FacetList.propTypes = {
     fields: PropTypes.arrayOf(fieldPropTypes).isRequired,
-    handleFacetSelected: PropTypes.func.isRequired,
     hasFacetFields: PropTypes.bool.isRequired,
-    p: polyglotPropTypes.isRequired,
+    page: PropTypes.oneOf(['dataset', 'search']).isRequired,
 };
 
 const mapStateToProps = state => ({
@@ -50,14 +39,7 @@ const mapStateToProps = state => ({
     fields: fromFields.getFacetFields(state),
 });
 
-const mapDispatchToProps = {
-    handleFacetSelected: facetActions.openFacet,
-};
-
 export default compose(
-    connect(
-        mapStateToProps,
-        mapDispatchToProps,
-    ),
+    connect(mapStateToProps),
     translate,
 )(FacetList);

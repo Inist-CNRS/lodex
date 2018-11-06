@@ -1,5 +1,9 @@
 import { createAction, handleActions, combineActions } from 'redux-actions';
 
+import { createGlobalSelectors } from '../../lib/selectors';
+import createFacetReducer from '../facet';
+import facetSelectors from '../facet/selectors';
+
 export const SEARCH = 'SEARCH';
 export const SEARCH_RESULTS = 'SEARCH_RESULTS';
 export const SEARCH_ERROR = 'SEARCH_ERROR';
@@ -23,7 +27,16 @@ export const fromSearch = {
     getPage: state => state.page,
     getTotal: state => state.total,
     getQuery: state => state.query,
+    ...createGlobalSelectors(state => state.facet, facetSelectors),
 };
+
+const {
+    actionTypes: facetActionTypes,
+    actions: facetActions,
+    reducer: facetReducer,
+} = createFacetReducer('SEARCH');
+
+export { facetActions, facetActionTypes };
 
 export const defaultState = {
     dataset: [],
@@ -32,10 +45,18 @@ export const defaultState = {
     page: null,
     total: 0,
     query: null,
+    facet: facetReducer(undefined, {}),
 };
 
 export default handleActions(
     {
+        [combineActions(...Object.values(facetActionTypes))]: (
+            state,
+            action,
+        ) => ({
+            ...state,
+            facet: facetReducer(state.facet, action),
+        }),
         [SEARCH]: (state, { payload }) => ({
             ...state,
             dataset: [],

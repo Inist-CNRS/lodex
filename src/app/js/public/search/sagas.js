@@ -1,4 +1,4 @@
-import { take, put, select, call, takeEvery } from 'redux-saga/effects';
+import { take, put, select, call, takeEvery, fork } from 'redux-saga/effects';
 
 import {
     loadMoreFailed,
@@ -7,11 +7,14 @@ import {
     SEARCH,
     searchFailed,
     searchSucceed,
+    facetActionTypes,
+    facetActions,
 } from './reducer';
 import { fromSearch } from '../selectors';
 import { LOAD_PUBLICATION_SUCCESS } from '../../fields';
 import { fromUser, fromFields } from '../../sharedSelectors';
 import fetchSaga from '../../lib/sagas/fetchSaga';
+import facetSagasFactory from '../facet/sagas';
 
 const doSearchRequest = function*(payload, page = 0) {
     const request = yield select(fromUser.getLoadDatasetPageRequest, {
@@ -76,7 +79,14 @@ const handleLoadMore = function*() {
     );
 };
 
+const facetSagas = facetSagasFactory({
+    actionTypes: facetActionTypes,
+    actions: facetActions,
+    selectors: fromSearch,
+});
+
 export default function*() {
     yield takeEvery(SEARCH, handleSearch);
     yield takeEvery(SEARCH_LOAD_MORE, handleLoadMore);
+    yield fork(facetSagas);
 }

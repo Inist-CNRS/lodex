@@ -13,8 +13,6 @@ import {
 } from '../../propTypes';
 import FacetValueItem from './FacetValueItem';
 import Pagination from '../../lib/components/Pagination';
-import { fromDataset } from '../selectors';
-import { facetActions } from '../dataset';
 import SortButton from '../../lib/components/SortButton';
 
 const styles = {
@@ -44,6 +42,7 @@ const PureFacetValueList = ({
     inverted,
     sort,
     p: polyglot,
+    ...rest
 }) => (
     <div className="facet-value-list">
         <CheckBox
@@ -84,6 +83,7 @@ const PureFacetValueList = ({
                         name={name}
                         value={value}
                         count={count}
+                        {...rest}
                     />
                 ))}
             </div>
@@ -118,21 +118,36 @@ PureFacetValueList.propTypes = {
     p: polyglotPropType,
 };
 
-const mapStateToProps = (state, { name }) => ({
-    facetValues: fromDataset.getFacetValues(state, name),
-    total: fromDataset.getFacetValuesTotal(state, name),
-    currentPage: fromDataset.getFacetValuesPage(state, name),
-    perPage: fromDataset.getFacetValuesPerPage(state, name),
-    filter: fromDataset.getFacetValuesFilter(state, name),
-    inverted: fromDataset.isFacetValuesInverted(state, name),
-    sort: fromDataset.getFacetValuesSort(state, name),
+const mapStateToProps = (
+    state,
+    {
+        name,
+        getFacetValues,
+        getFacetValuesTotal,
+        getFacetValuesPage,
+        getFacetValuesPerPage,
+        getFacetValuesFilter,
+        isFacetValuesInverted,
+        getFacetValuesSort,
+    },
+) => ({
+    facetValues: getFacetValues(state, name),
+    total: getFacetValuesTotal(state, name),
+    currentPage: getFacetValuesPage(state, name),
+    perPage: getFacetValuesPerPage(state, name),
+    filter: getFacetValuesFilter(state, name),
+    inverted: isFacetValuesInverted(state, name),
+    sort: getFacetValuesSort(state, name),
 });
 
-const mapDispatchtoProps = {
-    changeFacetValue: facetActions.changeFacetValue,
-    invertFacet: facetActions.invertFacet,
-    sortFacetValue: facetActions.sortFacetValue,
-};
+const mapDispatchtoProps = (
+    dispatch,
+    { changeFacetValue, invertFacet, sortFacetValue },
+) => ({
+    changeFacetValue: (...args) => dispatch(changeFacetValue(...args)),
+    invertFacet: (...args) => dispatch(invertFacet(...args)),
+    sortFacetValue: (...args) => dispatch(sortFacetValue(...args)),
+});
 
 export default compose(
     translate,
