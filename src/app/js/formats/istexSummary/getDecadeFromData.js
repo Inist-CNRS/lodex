@@ -24,8 +24,10 @@ export default (data, reverse) => {
 
     const years = [...emptyBeforeYears, ...ascendingHits, ...emptyAfterYears];
 
-    const decades = chunk(years, 10).map(yearList =>
-        yearList.reduce(
+    const decades = chunk(years, 10).map(yearList => {
+        const decadeMin = Number(yearList[0].name);
+        const decadeMax = Number(yearList.slice(-1)[0].name);
+        return yearList.reduce(
             (acc, { count }) => ({
                 ...acc,
                 count: acc.count + count,
@@ -33,12 +35,12 @@ export default (data, reverse) => {
             {
                 count: 0,
                 name: {
-                    from: Number(yearList[0].name),
-                    to: Number(yearList.slice(-1)[0].name),
+                    from: decadeMin < min ? min : decadeMin,
+                    to: decadeMax > max ? max : decadeMax,
                 },
             },
-        ),
-    );
+        );
+    });
 
     return {
         hits: reverse ? decades.reverse() : decades,

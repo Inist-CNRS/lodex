@@ -19,8 +19,8 @@ describe('getDecadeFromData', () => {
             ),
         ).toEqual({
             hits: [
-                { count: 5, name: { from: 1980, to: 1989 } },
-                { count: 2, name: { from: 1990, to: 1999 } },
+                { count: 5, name: { from: 1985, to: 1989 } },
+                { count: 2, name: { from: 1990, to: 1991 } },
             ],
         });
     });
@@ -43,8 +43,8 @@ describe('getDecadeFromData', () => {
             ),
         ).toEqual({
             hits: [
-                { count: 2, name: { from: 1990, to: 1999 } },
-                { count: 5, name: { from: 1980, to: 1989 } },
+                { count: 2, name: { from: 1990, to: 1991 } },
+                { count: 5, name: { from: 1985, to: 1989 } },
             ],
         });
     });
