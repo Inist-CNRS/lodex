@@ -54,12 +54,12 @@ describe('IstexSummaryView', () => {
             data: { hits: [1, 2, 3] },
             issn: 'value',
             searchedField: 'searchedField',
+            sortDir: 'sortDir',
             polyglot: defaultProps.p,
         });
         expect(parseYearData).toHaveBeenCalledWith(
             { hits: [1, 2, 3] },
             'sortDir',
-            50,
         );
     });
 
@@ -88,16 +88,19 @@ describe('IstexSummaryView', () => {
             data: 'decade data',
             issn: 'value',
             searchedField: 'searchedField',
+            sortDir: 'sortDir',
             polyglot: defaultProps.p,
         });
         expect(parseYearData).toHaveBeenCalledWith(
             { hits: { length: 51 } },
             'sortDir',
-            50,
         );
-        expect(getDecadeFromData).toHaveBeenCalledWith({
-            hits: { length: 51 },
-        });
+        expect(getDecadeFromData).toHaveBeenCalledWith(
+            {
+                hits: { length: 51 },
+            },
+            false,
+        );
     });
 
     it('should render InvalidFormat if resource[field.name] is not set', () => {

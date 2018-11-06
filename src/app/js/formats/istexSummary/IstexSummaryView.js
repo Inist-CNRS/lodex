@@ -66,15 +66,20 @@ export const IstexSummaryView = ({
         );
     }
 
-    const data = parseYearData(formatData, sortDir, yearThreshold);
+    const data = parseYearData(formatData, sortDir);
     const displayDecade = yearThreshold && data.hits.length > yearThreshold;
     const ComposedComponent = getComposedComponent(displayDecade);
 
     return (
         <ComposedComponent
-            data={displayDecade ? getDecadeFromData(data) : data}
+            data={
+                displayDecade
+                    ? getDecadeFromData(data, sortDir === yearSortDirValues[0])
+                    : data
+            }
             issn={resource[field.name]}
             searchedField={searchedField}
+            sortDir={sortDir}
             polyglot={polyglot}
         />
     );

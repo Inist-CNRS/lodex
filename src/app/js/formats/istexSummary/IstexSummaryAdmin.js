@@ -105,6 +105,7 @@ export class IstexSummaryAdmin extends Component {
                     ))}
                 </SelectField>
                 <TextField
+                    className="year_threshold"
                     type="number"
                     floatingLabelText={polyglot.t('year_threshold')}
                     onChange={this.setYearThreshold}
