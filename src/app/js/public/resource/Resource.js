@@ -8,6 +8,7 @@ import HomeIcon from 'material-ui/svg-icons/action/home';
 import { CardText, CardActions } from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
 import get from 'lodash.get';
+import isEqual from 'lodash.isequal';
 
 import { fromResource } from '../selectors';
 import { fromFields, fromCharacteristic } from '../../sharedSelectors';
@@ -27,8 +28,10 @@ export class ResourceComponent extends Component {
 
     componentDidUpdate(prevProps) {
         if (
-            get(this.props, 'match.params.uri', '') !==
-            get(prevProps, 'match.params.uri', '')
+            !isEqual(
+                get(this.props, 'match.params', {}),
+                get(prevProps, 'match.params', {}),
+            )
         ) {
             this.props.preLoadResource();
         }
