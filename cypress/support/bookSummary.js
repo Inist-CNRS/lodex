@@ -89,3 +89,10 @@ export const configureYearSort = dir => {
         .contains(dir)
         .click();
 };
+
+export const configureYearThreshold = value => {
+    cy.get('.year_threshold input')
+        .scrollIntoView()
+        .clear()
+        .type(value);
+};
