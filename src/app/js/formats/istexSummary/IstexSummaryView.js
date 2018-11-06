@@ -10,7 +10,7 @@ import {
 import injectData from '../injectData';
 import InvalidFormat from '../InvalidFormat';
 import { getYearUrl, parseYearData } from './getIstexData';
-import { searchedFieldValues } from './IstexSummaryAdmin';
+import { searchedFieldValues, yearSortDirValues } from './IstexSummaryAdmin';
 import composeRenderProps from '../../lib/composeRenderProps';
 import IstexList from './IstexList';
 import IssueFold from './IssueFold';
@@ -32,6 +32,7 @@ export const IstexSummaryView = ({
     resource,
     searchedField,
     sortDir,
+    yearThreshold,
     p: polyglot,
 }) => {
     if (!resource[field.name] || !searchedField) {
@@ -41,9 +42,8 @@ export const IstexSummaryView = ({
     }
 
     const data = parseYearData(formatData, sortDir);
-
-    if (data.hits.length > 50) {
-        return composeRenderProps([
+    if (yearThreshold && data.hits.length > yearThreshold) {
+        const ComposedComponent = composeRenderProps([
             IstexList,
             DecadeFold,
             IstexList,
@@ -81,20 +81,22 @@ export const IstexSummaryView = ({
 
 IstexSummaryView.propTypes = {
     fieldStatus: PropTypes.string,
-    resource: PropTypes.object.isRequired, // eslint-disable-line
+    resource: PropTypes.object.isRequired,
     field: fieldPropTypes.isRequired,
     formatData: PropTypes.shape({ hits: PropTypes.Array }),
     error: PropTypes.string,
     searchedField: PropTypes.oneOf(searchedFieldValues),
+    sortDir: PropTypes.oneOf(yearSortDirValues).isRequired,
+    yearThreshold: PropTypes.number.isRequired,
     p: polyglotPropTypes.isRequired,
 };
 
 IstexSummaryView.defaultProps = {
     className: null,
     fieldStatus: null,
-    shrink: false,
-    data: null,
+    formatData: null,
     error: null,
+    yearThreshold: 50,
 };
 
 export default compose(
