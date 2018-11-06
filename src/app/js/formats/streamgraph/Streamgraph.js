@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import differenceBy from 'lodash/differenceBy';
 
+import { draft } from './utils';
 import injectData from '../injectData';
 import exportableToPng from '../exportableToPng';
 import * as d3 from 'd3';
@@ -124,6 +125,9 @@ function hslToHex(h, s, l) {
 // ===========================================================================================
 
 function transformDataIntoMapArray(formatData) {
+    console.log("========================================================");
+    console.log("formatData :");
+    console.log(formatData);
     let dateMin = -42;
     let dateMax = -42;
     let valuesObjectsArray = [];
@@ -135,7 +139,6 @@ function transformDataIntoMapArray(formatData) {
                 // source: "2010"
                 // target: "Pétrogenèse de roches basaltiques"
                 // weight: 0.9013102637325718
-
 
                 if (elem.source && elem.weight) {
 
@@ -169,6 +172,11 @@ function transformDataIntoMapArray(formatData) {
                     }
                 }
             }
+        }
+        // display the datas at the center when only one x value
+        if (dateMin == dateMax){
+            dateMin --;
+            dateMax ++;
         }
     }
 
@@ -206,6 +214,12 @@ function transformDataIntoMapArray(formatData) {
         currentDate++;
     }
 
+    console.log("valuesObjectsArray");
+    console.log(valuesObjectsArray);
+    console.log("valuesArray");
+    console.log(valuesArray);
+    console.log("namesList");
+    console.log(namesList);
     return ([valuesObjectsArray, valuesArray, dateMin, dateMax, namesList]);
 }
 
@@ -231,6 +245,17 @@ function getMinMaxValue(stackedData) {
     return ([minValue, maxValue]);
 }
 
+const randomId = (length = 8) => {
+    let text = ''
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+
+    for (let i = 0; i < length; i++) {
+        text += chars.charAt(Math.floor(Math.random() * chars.length))
+    }
+
+    return text
+}
+
 class Streamgraph extends PureComponent {
 
     constructor(props) {
@@ -239,17 +264,26 @@ class Streamgraph extends PureComponent {
             width: 800,
             height: 300
         }
+        this.uniqueId = randomId(10);
+        this.divContainer = "divContainer" + this.uniqueId;
+        this.svgContainer = "svgContainer" + this.uniqueId;
+        this.anchor = "anchor" + this.uniqueId;
+        console.log("uniqueId : " + this.uniqueId);
+        this.draft = draft.bind(this);
     }
 
     setGraph() {
         let [valuesObjectsArray, valuesArray, minDate, maxDate, nameList] = transformDataIntoMapArray(this.props.formatData);
-        const divContainerWidth = document.getElementById("divContainer").clientWidth;
+        const divContainerWidth = document.getElementById(this.divContainer).clientWidth;
         let { height } = this.state;
         let width = divContainerWidth;
         const svgHeight = height;
         const svgWidth = width;
 
+        const d3DivContainerId = "d3DivContainer" + this.uniqueId;
         const divContainer = d3.select(this.refs.divContainer)
+        const d3DivContainer =  divContainer.append("div")
+            .attr("id", d3DivContainerId);
         const svgViewport = d3.select(this.refs.anchor);
 
         // ===========================================================================================
@@ -287,18 +321,18 @@ class Streamgraph extends PureComponent {
             .extent([[0, 0], [width, height]])
             .on("zoom", zoomFunction);
 
-        svgViewport.append("defs")
-            .append("clipPath")
-            .attr("id", "mask")
-            .append("rect")
-            .attr("width", width)
-            .attr("height", height);
-
         // Inner Drawing Space
         const innerSpace = svgViewport.append("g")
             .attr("width", width)
             .attr("class", "inner_space")
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+        innerSpace.append("defs")
+            .append("clipPath")
+            .attr("id", "mask")
+            .append("rect")
+            .attr("width", width)
+            .attr("height", height);
 
         // graphZone where the area will be append
         const graphZone = innerSpace.append("g")
@@ -392,7 +426,7 @@ class Streamgraph extends PureComponent {
         // ===========================================================================================
 
         //const tooltip = svgViewport.append("div")
-        const tooltip = divContainer.append("div")
+        const tooltip = d3DivContainer.append("div")
             .attr("class", "remove")
             .attr("id", "tooltip")
             .attr("style", getCssToString(styles.tooltip))
@@ -412,7 +446,7 @@ class Streamgraph extends PureComponent {
         let mouseIsOverStream = false;
 
         // vertical line
-        const vertical = divContainer.append("div")
+        const vertical = d3DivContainer.append("div")
             //.attr("class", {style.vertical})
             .style("position", "absolute")
             .style("z-index", "19")
@@ -429,7 +463,7 @@ class Streamgraph extends PureComponent {
         // Set legend
         // ===========================================================================================
 
-        const legendView = divContainer.append('div')
+        const legendView = d3DivContainer.append('div')
             .attr("id", "legend")
             .attr("style", getCssToString(styles.legend))
 
@@ -499,8 +533,14 @@ class Streamgraph extends PureComponent {
 
             let mousex = d3.mouse(this)[0];
             let date = xAxisScale.invert(mousex);
+            console.log("mousex : " + mousex);
+            console.log("date : " + date);
 
             hoveredKey = d3.select(this).attr("name");
+            console.log("hoveredKey : " + hoveredKey);
+
+            console.log("range");
+            console.log(xAxisScale.range());
 
             for (let elem of d) {
                 if (elem.data.date.getFullYear() == date.getFullYear()) {
@@ -526,8 +566,7 @@ class Streamgraph extends PureComponent {
                 .attr("opacity", function (d, j) {
                     return j != i ? 0.3 : 1;
                 })
-        })
-            .on("mouseout", function (d, i) {
+        }).on("mouseout", function (d, i) {
 
                 // *******************************************************
                 // unset hover and hide tooltip
@@ -546,14 +585,26 @@ class Streamgraph extends PureComponent {
 
     componentDidMount() {
         this.setGraph();
+        console.log("componentDIdMount");
+    }
+
+    componentWillUpdate() {
+        d3.selectAll("#d3DivContainer"+this.uniqueId).selectAll("div").remove();
+        d3.selectAll("#d3DivContainer"+this.uniqueId).remove();
+        d3.selectAll("#"+this.anchor).selectAll("g").remove();
+        d3.selectAll("#"+this.anchor).selectAll("defs").remove();
+    }
+
+    componentDidUpdate() {
+        this.setGraph();
     }
 
     render() {
         const { width, height } = this.state;
         return (
-            <div id="divContainer" ref="divContainer" style={styles.divContainer}>
-                <svg width={width} height={height}>
-                    <g ref="anchor" />
+            <div id={this.divContainer} ref="divContainer" style={styles.divContainer}>
+                <svg id={this.svgContainer} width={width} height={height}>
+                    <g id={this.anchor} ref="anchor" />
                 </svg>
             </div>
         );
@@ -561,8 +612,8 @@ class Streamgraph extends PureComponent {
 };
 
 const mapStateToProps = (state, { formatData }) => {
-    //console.log("mapStateToProps - state:");
-    //console.log(state);
+    console.log("mapStateToProps - state:");
+    console.log(state);
     return ({});
 };
 
