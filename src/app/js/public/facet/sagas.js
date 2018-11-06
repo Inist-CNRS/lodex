@@ -1,5 +1,4 @@
 import { call, put, select, takeLatest } from 'redux-saga/effects';
-import { LOCATION_CHANGE } from 'connected-react-router';
 
 import { fromUser } from '../../sharedSelectors';
 import fetchSaga from '../../lib/sagas/fetchSaga';
@@ -26,14 +25,6 @@ export default ({ actionTypes, actions, selectors }) => {
         return yield put(actions.loadFacetValuesSuccess({ name, values }));
     };
 
-    const clearFacetSaga = function*() {
-        const appliedFacets = yield select(selectors.getAppliedFacets);
-
-        if (Object.keys(appliedFacets).length > 0) {
-            yield put(actions.clearFacet());
-        }
-    };
-
     return function* facetSagas() {
         yield takeLatest(
             [
@@ -46,6 +37,5 @@ export default ({ actionTypes, actions, selectors }) => {
         );
 
         yield takeLatest(actionTypes.TOGGLE_FACET_VALUE, scrollToTopSaga);
-        yield takeLatest(LOCATION_CHANGE, clearFacetSaga);
     };
 };

@@ -13,10 +13,10 @@ import { logout } from '../../user';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import Drawer from '../Drawer';
 import Search from '../search/Search';
+import AdvancedSearch from '../search/AdvancedSearch';
 import GraphSummary from '../graph/GraphSummary';
 import Favicon from '../Favicon';
 import MenuItem from './MenuItem';
-import FacetList from '../facet/FacetList';
 
 const ANIMATION_DURATION = 300; // ms
 
@@ -208,7 +208,7 @@ export class NavBar extends Component {
                         animationDuration={ANIMATION_DURATION}
                         shift={440}
                     >
-                        <FacetList page="search" />
+                        <AdvancedSearch />
                     </Drawer>
                 )}
                 <Drawer

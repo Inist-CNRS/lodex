@@ -80,6 +80,14 @@ const clearDatasetSearch = function*() {
     }
 };
 
+const clearFacetSaga = function*() {
+    const appliedFacets = yield select(fromDataset.getAppliedFacets);
+
+    if (Object.keys(appliedFacets).length > 0) {
+        yield put(facetActions.clearFacet());
+    }
+};
+
 const facetSagas = facetSagasFactory({
     actionTypes: facetActionTypes,
     actions: facetActions,
@@ -108,4 +116,5 @@ export default function*() {
     });
 
     yield takeLatest(LOCATION_CHANGE, clearDatasetSearch);
+    yield takeLatest(LOCATION_CHANGE, clearFacetSaga);
 }
