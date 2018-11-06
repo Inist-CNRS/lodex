@@ -75,8 +75,8 @@ class IstexList extends Component {
                             onClick={this.loadMore}
                             loading={isLoading}
                         >
-                            {polyglot.t('search_load_more')} ({total -
-                                hits.length})
+                            {polyglot.t('search_load_more')} (
+                            {total - hits.length})
                         </ButtonWithStatus>
                     </div>
                 )}

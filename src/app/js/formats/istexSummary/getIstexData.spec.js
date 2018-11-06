@@ -74,6 +74,33 @@ describe('getIstexData', () => {
                 }),
             ).toEqual({
                 hits: [
+                    { name: 2010, count: 2 },
+                    { name: 2006, count: 3 },
+                    { name: 2005, count: 4 },
+                    { name: 2000, count: 1 },
+                ],
+            });
+        });
+
+        it('should extract year from data', () => {
+            expect(
+                parseYearData(
+                    {
+                        aggregations: {
+                            publicationDate: {
+                                buckets: [
+                                    { keyAsString: 2000, docCount: 1 },
+                                    { keyAsString: 2010, docCount: 2 },
+                                    { keyAsString: 2006, docCount: 3 },
+                                    { keyAsString: 2005, docCount: 4 },
+                                ],
+                            },
+                        },
+                    },
+                    'YEAR_ASC',
+                ),
+            ).toEqual({
+                hits: [
                     { name: 2000, count: 1 },
                     { name: 2005, count: 4 },
                     { name: 2006, count: 3 },

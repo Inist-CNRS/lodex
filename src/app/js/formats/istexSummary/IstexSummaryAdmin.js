@@ -19,9 +19,7 @@ const styles = {
     },
 };
 
-export const defaultArgs = {
-    searchedField: 'host.issn',
-};
+export const yearSortDirValues = ['YEAR_DESC', 'YEAR_ASC'];
 
 export const searchedFieldValues = [
     'host.issn',
@@ -31,10 +29,16 @@ export const searchedFieldValues = [
     'host.title',
 ];
 
+export const defaultArgs = {
+    searchedField: searchedFieldValues[0],
+    sortDir: yearSortDirValues[0],
+};
+
 export class IstexSummaryAdmin extends Component {
     static propTypes = {
         args: PropTypes.shape({
-            searchedField: PropTypes.oneOf(),
+            searchedField: PropTypes.oneOf(searchedFieldValues),
+            sortDir: PropTypes.oneOf(yearSortDirValues),
         }),
         onChange: PropTypes.func.isRequired,
         p: polyglotPropTypes.isRequired,
@@ -48,18 +52,41 @@ export class IstexSummaryAdmin extends Component {
         updateAdminArgs('searchedField', searchedField, this.props);
     };
 
+    setSortDir = (event, index, sortDir) => {
+        updateAdminArgs('sortDir', sortDir, this.props);
+    };
+
     render() {
-        const { p: polyglot, args: { searchedField } } = this.props;
+        const {
+            p: polyglot,
+            args: { searchedField, sortDir },
+        } = this.props;
 
         return (
             <div style={styles.container}>
                 <SelectField
+                    className="searched_field"
                     floatingLabelText={polyglot.t('searched_field')}
                     onChange={this.setSearchedField}
                     style={styles.input}
                     value={searchedField}
                 >
                     {searchedFieldValues.map(value => (
+                        <MenuItem
+                            key={value}
+                            value={value}
+                            primaryText={polyglot.t(value)}
+                        />
+                    ))}
+                </SelectField>
+                <SelectField
+                    className="year_sort_dir"
+                    floatingLabelText={polyglot.t('year_sort_dir')}
+                    onChange={this.setSortDir}
+                    style={styles.input}
+                    value={sortDir}
+                >
+                    {yearSortDirValues.map(value => (
                         <MenuItem
                             key={value}
                             value={value}

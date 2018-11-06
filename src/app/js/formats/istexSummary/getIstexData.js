@@ -4,6 +4,7 @@ import composeAsync from '../../../../common/lib/composeAsync';
 import { parseFetchResult } from '../shared/fetchIstexData';
 import { ISTEX_API_URL } from '../../../../common/externals';
 import fetch from '../../lib/fetch';
+import { yearSortDirValues } from './IstexSummaryAdmin';
 
 export const getYearUrl = ({ resource, field, searchedField }) => {
     const value = resource[field.name];
@@ -36,9 +37,14 @@ export const getDecadeYearData = ({ issn, to, from, searchedField }) =>
         parseFacetData('publicationDate', ({ keyAsString }) => keyAsString),
     );
 
-export const parseYearData = formatData => ({
+export const parseYearData = (formatData, sortDir = yearSortDirValues[0]) => ({
     hits: get(formatData, 'aggregations.publicationDate.buckets', [])
-        .sort((a, b) => a.keyAsString - b.keyAsString)
+        .sort(
+            (a, b) =>
+                sortDir === yearSortDirValues[0]
+                    ? b.keyAsString - a.keyAsString
+                    : a.keyAsString - b.keyAsString,
+        )
         .map(({ keyAsString, docCount }) => ({
             name: keyAsString,
             count: docCount,

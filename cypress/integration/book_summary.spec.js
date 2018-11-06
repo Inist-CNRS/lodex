@@ -18,7 +18,7 @@ describe('Book Summary Format', () => {
     });
 
     it('should display list of year', () => {
-        bookSummaryPage.checkYears([1997, 1998, 1999, 2000, 2001, 2002, 2003]);
+        bookSummaryPage.checkYears([2003, 2002, 2001, 2000, 1999, 1998, 1997]);
         bookSummaryPage.openFold(1998);
         bookSummaryPage.checkVolumes(1998, [52]);
         bookSummaryPage.openFold('Volume: 52');
@@ -51,5 +51,13 @@ describe('Book Summary Format', () => {
             'Demystified ... gene knockouts.',
             'DNA repair gene status in oesophageal cancer.',
         ]);
+    });
+
+    it('should allow to configure year order', () => {
+        bookSummaryPage.checkYears([2003, 2002, 2001, 2000, 1999, 1998, 1997]);
+        bookSummaryPage.openConfigure();
+        bookSummaryPage.configureYearSort('From oldest to youngest');
+        bookSummaryPage.saveConfiguration();
+        bookSummaryPage.checkYears([1997, 1998, 1999, 2000, 2001, 2002, 2003]);
     });
 });
