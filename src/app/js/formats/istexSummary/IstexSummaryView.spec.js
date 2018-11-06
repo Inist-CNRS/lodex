@@ -25,13 +25,14 @@ describe('IstexSummaryView', () => {
         resource: { field: 'value' },
         searchedField: 'searchedField',
         sortDir: 'sortDir',
+        yearThreshold: 50,
         p: { t: v => v },
     };
-    const renderComposedChild = jest.fn(() => <div>Composed Child</div>);
+    const ComposedComponent = () => <div>Composed Child</div>;
 
     beforeAll(() => {
         parseYearData.mockImplementation(v => v);
-        composeRenderProps.mockImplementation(() => renderComposedChild);
+        composeRenderProps.mockImplementation(() => ComposedComponent);
         getDecadeFromData.mockImplementation(() => 'decade data');
     });
 
@@ -49,7 +50,7 @@ describe('IstexSummaryView', () => {
             IstexDocument,
         ]);
 
-        expect(renderComposedChild).toHaveBeenCalledWith({
+        expect(wrapper.find(ComposedComponent).props()).toEqual({
             data: { hits: [1, 2, 3] },
             issn: 'value',
             searchedField: 'searchedField',
@@ -58,8 +59,8 @@ describe('IstexSummaryView', () => {
         expect(parseYearData).toHaveBeenCalledWith(
             { hits: [1, 2, 3] },
             'sortDir',
+            50,
         );
-        expect(wrapper.find('div').text()).toEqual('Composed Child');
     });
 
     it('should render Fold for decade year volume issue and document if formatData.length > 50', () => {
@@ -83,7 +84,7 @@ describe('IstexSummaryView', () => {
             IstexDocument,
         ]);
 
-        expect(renderComposedChild).toHaveBeenCalledWith({
+        expect(wrapper.find(ComposedComponent).props()).toEqual({
             data: 'decade data',
             issn: 'value',
             searchedField: 'searchedField',
@@ -92,11 +93,11 @@ describe('IstexSummaryView', () => {
         expect(parseYearData).toHaveBeenCalledWith(
             { hits: { length: 51 } },
             'sortDir',
+            50,
         );
         expect(getDecadeFromData).toHaveBeenCalledWith({
             hits: { length: 51 },
         });
-        expect(wrapper.find('div').text()).toEqual('Composed Child');
     });
 
     it('should render InvalidFormat if resource[field.name] is not set', () => {
@@ -127,7 +128,6 @@ describe('IstexSummaryView', () => {
     afterEach(() => {
         parseYearData.mockClear();
         composeRenderProps.mockClear();
-        renderComposedChild.mockClear();
     });
 
     afterAll(() => {
