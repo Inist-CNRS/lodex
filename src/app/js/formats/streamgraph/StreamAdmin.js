@@ -27,17 +27,18 @@ class StreamAdmin extends Component {
         });
     };
 
+    //<TextField
+    //    floatingLabelText="height"
+    //    onChange={this.setHeightValue}
+    ///>
+    //<TextField
+    //    floatingLabelText="color"
+    //    onChange={console.log("color")}
+    ///>
+
     render() {
         return (
             <div style={styles.container}>
-                <TextField
-                    floatingLabelText="height"
-                    onChange={this.setHeightValue}
-                />
-                <TextField
-                    floatingLabelText="color"
-                    onChange={console.log("color")}
-                />
             </div>
         );
     }
