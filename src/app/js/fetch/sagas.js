@@ -1,4 +1,5 @@
 import { race, call, put, take, takeLatest } from 'redux-saga/effects';
+import { delay } from 'redux-saga';
 
 import fetchSaga from '../lib/sagas/fetchSaga';
 
@@ -8,6 +9,7 @@ export const filterAction = action =>
     action.type === FETCH && action.meta && action.meta.name === name;
 
 export function* handleFetch({ payload: config, meta: { name } }) {
+    yield call(delay, 200);
     const { fetch } = yield race({
         fetch: call(fetchSaga, config),
         cancel: take(filterAction),
