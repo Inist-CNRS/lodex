@@ -27,29 +27,17 @@ IstexDocument.propTypes = {
 };
 
 export const getComposedComponent = displayDecade =>
-    displayDecade
-        ? composeRenderProps([
-              IstexList,
-              DecadeFold,
-              IstexList,
-              YearFold,
-              IstexList,
-              VolumeFold,
-              IstexList,
-              IssueFold,
-              IstexList,
-              IstexDocument,
-          ])
-        : composeRenderProps([
-              IstexList,
-              YearFold,
-              IstexList,
-              VolumeFold,
-              IstexList,
-              IssueFold,
-              IstexList,
-              IstexDocument,
-          ]);
+    composeRenderProps([
+        ...(displayDecade ? [IstexList, DecadeFold] : []),
+        IstexList,
+        YearFold,
+        IstexList,
+        VolumeFold,
+        IstexList,
+        IssueFold,
+        IstexList,
+        IstexDocument,
+    ]);
 
 export const IstexSummaryView = ({
     formatData,
