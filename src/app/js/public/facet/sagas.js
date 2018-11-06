@@ -1,23 +1,28 @@
 import { call, put, select, takeLatest } from 'redux-saga/effects';
 import { LOCATION_CHANGE } from 'connected-react-router';
 
-import {
+import { facetActionTypes, facetActions } from '../dataset';
+import { fromUser } from '../../sharedSelectors';
+import { fromDataset } from '../selectors';
+import fetchSaga from '../../lib/sagas/fetchSaga';
+import scrollToTop from '../../lib/scrollToTop';
+
+const {
     LOAD_FACET_VALUES,
     OPEN_FACET,
     FACET_VALUE_CHANGE,
     FACET_VALUE_SORT,
     TOGGLE_FACET_VALUE,
+} = facetActionTypes;
+
+const {
     loadFacetValuesError,
     loadFacetValuesSuccess,
     clearFacet,
-} from './';
-import { fromUser } from '../../sharedSelectors';
-import { fromFacet } from '../selectors';
-import fetchSaga from '../../lib/sagas/fetchSaga';
-import scrollToTop from '../../lib/scrollToTop';
+} = facetActions;
 
 export function* handleLoadFacetValuesRequest({ payload: { name } }) {
-    const data = yield select(fromFacet.getFacetValueRequestData, name);
+    const data = yield select(fromDataset.getFacetValueRequestData, name);
     const request = yield select(fromUser.getLoadFacetValuesRequest, {
         field: name,
         ...data,
@@ -33,7 +38,7 @@ export function* handleLoadFacetValuesRequest({ payload: { name } }) {
 }
 
 export function* clearFacetSaga() {
-    const appliedFacets = yield select(fromFacet.getAppliedFacets);
+    const appliedFacets = yield select(fromDataset.getAppliedFacets);
 
     if (Object.keys(appliedFacets).length > 0) {
         yield put(clearFacet());

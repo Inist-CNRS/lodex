@@ -11,7 +11,7 @@ import {
 } from '../../propTypes';
 
 import { fromFields } from '../../sharedSelectors';
-import { openFacet } from './index';
+import { facetActions } from '../dataset';
 import FacetItem from './FacetItem';
 
 export class FacetList extends Component {
@@ -51,7 +51,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = {
-    handleFacetSelected: openFacet,
+    handleFacetSelected: facetActions.openFacet,
 };
 
 export default compose(

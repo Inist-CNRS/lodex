@@ -6,8 +6,8 @@ import compose from 'recompose/compose';
 import withHandlers from 'recompose/withHandlers';
 
 import getFieldClassName from '../../lib/getFieldClassName';
-import { fromFacet } from '../selectors';
-import { openFacet } from './index';
+import { fromDataset } from '../selectors';
+import { facetActions } from '../dataset';
 import { field as fieldPropType } from '../../propTypes';
 import FacetValueList from './FacetValueList';
 
@@ -40,16 +40,19 @@ PureFacetItem.propTypes = {
 };
 
 const mapStateToProps = (state, { field }) => ({
-    isOpen: fromFacet.isFacetOpen(state, field.name),
-    total: fromFacet.getFacetValuesTotal(state, field.name),
+    isOpen: fromDataset.isFacetOpen(state, field.name),
+    total: fromDataset.getFacetValuesTotal(state, field.name),
 });
 
 const mapDispatchtoProps = {
-    openFacet,
+    openFacet: facetActions.openFacet,
 };
 
 export default compose(
-    connect(mapStateToProps, mapDispatchtoProps),
+    connect(
+        mapStateToProps,
+        mapDispatchtoProps,
+    ),
     withHandlers({
         onClick: ({ openFacet, field: { name } }) => () => openFacet({ name }),
     }),

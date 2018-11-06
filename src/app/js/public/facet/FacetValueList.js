@@ -13,8 +13,8 @@ import {
 } from '../../propTypes';
 import FacetValueItem from './FacetValueItem';
 import Pagination from '../../lib/components/Pagination';
-import { fromFacet } from '../selectors';
-import { changeFacetValue, invertFacet, sortFacetValue } from './';
+import { fromDataset } from '../selectors';
+import { facetActions } from '../dataset';
 import SortButton from '../../lib/components/SortButton';
 
 const styles = {
@@ -119,24 +119,27 @@ PureFacetValueList.propTypes = {
 };
 
 const mapStateToProps = (state, { name }) => ({
-    facetValues: fromFacet.getFacetValues(state, name),
-    total: fromFacet.getFacetValuesTotal(state, name),
-    currentPage: fromFacet.getFacetValuesPage(state, name),
-    perPage: fromFacet.getFacetValuesPerPage(state, name),
-    filter: fromFacet.getFacetValuesFilter(state, name),
-    inverted: fromFacet.isFacetValuesInverted(state, name),
-    sort: fromFacet.getFacetValuesSort(state, name),
+    facetValues: fromDataset.getFacetValues(state, name),
+    total: fromDataset.getFacetValuesTotal(state, name),
+    currentPage: fromDataset.getFacetValuesPage(state, name),
+    perPage: fromDataset.getFacetValuesPerPage(state, name),
+    filter: fromDataset.getFacetValuesFilter(state, name),
+    inverted: fromDataset.isFacetValuesInverted(state, name),
+    sort: fromDataset.getFacetValuesSort(state, name),
 });
 
 const mapDispatchtoProps = {
-    changeFacetValue,
-    invertFacet,
-    sortFacetValue,
+    changeFacetValue: facetActions.changeFacetValue,
+    invertFacet: facetActions.invertFacet,
+    sortFacetValue: facetActions.sortFacetValue,
 };
 
 export default compose(
     translate,
-    connect(mapStateToProps, mapDispatchtoProps),
+    connect(
+        mapStateToProps,
+        mapDispatchtoProps,
+    ),
     withHandlers({
         onPageChange: ({ name, filter, changeFacetValue }) => (
             currentPage,

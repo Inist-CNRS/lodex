@@ -6,8 +6,8 @@ import { ListItem } from 'material-ui/List';
 import withHandlers from 'recompose/withHandlers';
 import compose from 'recompose/compose';
 
-import { toggleFacetValue } from './';
-import { fromFacet } from '../selectors';
+import { facetActions } from '../dataset';
+import { fromDataset } from '../selectors';
 
 const styles = {
     container: {
@@ -47,15 +47,18 @@ PureFacetValueItem.propTypes = {
 };
 
 const mapStateToProps = (state, { name, value }) => ({
-    isChecked: fromFacet.isFacetValuesChecked(state, { name, value }),
+    isChecked: fromDataset.isFacetValuesChecked(state, { name, value }),
 });
 
 const mapDispatchToProps = {
-    toggleFacetValue,
+    toggleFacetValue: facetActions.toggleFacetValue,
 };
 
 export default compose(
-    connect(mapStateToProps, mapDispatchToProps),
+    connect(
+        mapStateToProps,
+        mapDispatchToProps,
+    ),
     withHandlers({
         onCheck: ({ name, value, toggleFacetValue }) => () =>
             toggleFacetValue({ name, value }),

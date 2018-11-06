@@ -12,23 +12,23 @@ import {
 } from './sagas';
 import { fromUser } from '../../sharedSelectors';
 import fetchSaga from '../../lib/sagas/fetchSaga';
-import { fromDataset, fromFacet } from '../selectors';
+import { fromDataset } from '../selectors';
 
 describe('dataset saga', () => {
     describe('handleLoadDatasetPageRequest', () => {
         const saga = handleLoadDatasetPageRequest({});
 
-        it('should select fromFacet.getAppliedFacets', () => {
+        it('should select fromDataset.getAppliedFacets', () => {
             expect(saga.next().value).toEqual(
-                select(fromFacet.getAppliedFacets),
+                select(fromDataset.getAppliedFacets),
             );
         });
 
-        it('should select fromFacet.getInvertedFacets', () => {
+        it('should select fromDataset.getInvertedFacets', () => {
             expect(
                 saga.next([{ field: { name: 'aFacet' }, value: 'aFacetValue' }])
                     .value,
-            ).toEqual(select(fromFacet.getInvertedFacets));
+            ).toEqual(select(fromDataset.getInvertedFacets));
         });
 
         it('should select fromDataset.getFilter', () => {
