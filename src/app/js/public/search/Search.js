@@ -17,12 +17,9 @@ import {
     resource as resourcePropTypes,
 } from '../../propTypes';
 import { preLoadPublication as preLoadPublicationAction } from '../../fields';
-import {
-    fromSearch,
-    search as searchAction,
-    loadMore as loadMoreAction,
-} from './reducer';
+import { search as searchAction, loadMore as loadMoreAction } from './reducer';
 import { fromFields } from '../../sharedSelectors';
+import { fromSearch } from '../selectors';
 import SearchResult from './SearchResult';
 import AdminOnlyAlert from '../../lib/components/AdminOnlyAlert';
 import theme from '../../theme';

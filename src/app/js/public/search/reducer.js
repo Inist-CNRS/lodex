@@ -17,12 +17,12 @@ export const loadMoreSucceed = createAction(SEARCH_LOAD_MORE_SUCCESS);
 export const loadMoreFailed = createAction(SEARCH_LOAD_MORE_ERROR);
 
 export const fromSearch = {
-    isLoading: state => state.search.loading,
-    getDataset: state => state.search.dataset,
-    getFieldNames: state => state.search.fields,
-    getPage: state => state.search.page,
-    getTotal: state => state.search.total,
-    getQuery: state => state.search.query,
+    isLoading: state => state.loading,
+    getDataset: state => state.dataset,
+    getFieldNames: state => state.fields,
+    getPage: state => state.page,
+    getTotal: state => state.total,
+    getQuery: state => state.query,
 };
 
 export const defaultState = {

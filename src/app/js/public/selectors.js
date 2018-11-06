@@ -5,6 +5,7 @@ import { fromExport as localFromExport } from './export';
 import { fromResource as localFromResource } from './resource';
 import { fromFormat as localFromFormat } from '../formats/reducer';
 import { fromMenu as localFromMenu } from './menu/reducer';
+import { fromSearch as localFromSearch } from './search/reducer';
 
 const getDatasetState = state => state.dataset;
 export const fromDataset = createGlobalSelectors(
@@ -32,6 +33,12 @@ export const fromFormat = createGlobalSelectors(
 
 const getMenuState = state => state.menu;
 export const fromMenu = createGlobalSelectors(getMenuState, localFromMenu);
+
+const getSearchState = state => state.search;
+export const fromSearch = createGlobalSelectors(
+    getSearchState,
+    localFromSearch,
+);
 
 export const fromRouter = {
     getResourceUri: state => {
