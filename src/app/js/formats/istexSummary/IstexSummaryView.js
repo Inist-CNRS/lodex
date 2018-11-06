@@ -26,6 +26,31 @@ IstexDocument.propTypes = {
     item: PropTypes.shape({ id: PropTypes.string.isRequired }).isRequired,
 };
 
+export const getComposedComponent = displayDecade =>
+    displayDecade
+        ? composeRenderProps([
+              IstexList,
+              DecadeFold,
+              IstexList,
+              YearFold,
+              IstexList,
+              VolumeFold,
+              IstexList,
+              IssueFold,
+              IstexList,
+              IstexDocument,
+          ])
+        : composeRenderProps([
+              IstexList,
+              YearFold,
+              IstexList,
+              VolumeFold,
+              IstexList,
+              IssueFold,
+              IstexList,
+              IstexDocument,
+          ]);
+
 export const IstexSummaryView = ({
     formatData,
     field,
@@ -41,42 +66,18 @@ export const IstexSummaryView = ({
         );
     }
 
-    const data = parseYearData(formatData, sortDir);
-    if (yearThreshold && data.hits.length > yearThreshold) {
-        const ComposedComponent = composeRenderProps([
-            IstexList,
-            DecadeFold,
-            IstexList,
-            YearFold,
-            IstexList,
-            VolumeFold,
-            IstexList,
-            IssueFold,
-            IstexList,
-            IstexDocument,
-        ])({
-            data: getDecadeFromData(data),
-            issn: resource[field.name],
-            searchedField: searchedField,
-            polyglot: polyglot,
-        });
-    }
+    const data = parseYearData(formatData, sortDir, yearThreshold);
+    const displayDecade = yearThreshold && data.hits.length > yearThreshold;
+    const ComposedComponent = getComposedComponent(displayDecade);
 
-    return composeRenderProps([
-        IstexList,
-        YearFold,
-        IstexList,
-        VolumeFold,
-        IstexList,
-        IssueFold,
-        IstexList,
-        IstexDocument,
-    ])({
-        data: data,
-        issn: resource[field.name],
-        searchedField: searchedField,
-        polyglot: polyglot,
-    });
+    return (
+        <ComposedComponent
+            data={displayDecade ? getDecadeFromData(data) : data}
+            issn={resource[field.name]}
+            searchedField={searchedField}
+            polyglot={polyglot}
+        />
+    );
 };
 
 IstexSummaryView.propTypes = {
