@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
+import TextField from 'material-ui/TextField';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import updateAdminArgs from '../shared/updateAdminArgs';
@@ -32,6 +33,7 @@ export const searchedFieldValues = [
 export const defaultArgs = {
     searchedField: searchedFieldValues[0],
     sortDir: yearSortDirValues[0],
+    yearThreshold: 50,
 };
 
 export class IstexSummaryAdmin extends Component {
@@ -39,6 +41,7 @@ export class IstexSummaryAdmin extends Component {
         args: PropTypes.shape({
             searchedField: PropTypes.oneOf(searchedFieldValues),
             sortDir: PropTypes.oneOf(yearSortDirValues),
+            yearThreshold: PropTypes.number,
         }),
         onChange: PropTypes.func.isRequired,
         p: polyglotPropTypes.isRequired,
@@ -56,10 +59,17 @@ export class IstexSummaryAdmin extends Component {
         updateAdminArgs('sortDir', sortDir, this.props);
     };
 
+    setYearThreshold = (_, yearThreshold) =>
+        updateAdminArgs(
+            'yearThreshold',
+            parseInt(yearThreshold, 10),
+            this.props,
+        );
+
     render() {
         const {
             p: polyglot,
-            args: { searchedField, sortDir },
+            args: { searchedField, sortDir, yearThreshold },
         } = this.props;
 
         return (
@@ -94,6 +104,14 @@ export class IstexSummaryAdmin extends Component {
                         />
                     ))}
                 </SelectField>
+                <TextField
+                    className="year_threshold"
+                    type="number"
+                    floatingLabelText={polyglot.t('year_threshold')}
+                    onChange={this.setYearThreshold}
+                    style={styles.input}
+                    value={yearThreshold}
+                />
             </div>
         );
     }

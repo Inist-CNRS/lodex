@@ -53,11 +53,19 @@ describe('Book Summary Format', () => {
         ]);
     });
 
-    it('should allow to configure year order', () => {
+    it('should allow to configure format', () => {
         bookSummaryPage.checkYears([2003, 2002, 2001, 2000, 1999, 1998, 1997]);
         bookSummaryPage.openConfigure();
         bookSummaryPage.configureYearSort('From oldest to youngest');
         bookSummaryPage.saveConfiguration();
         bookSummaryPage.checkYears([1997, 1998, 1999, 2000, 2001, 2002, 2003]);
+        bookSummaryPage.openConfigure();
+        bookSummaryPage.configureYearThreshold(5);
+        bookSummaryPage.saveConfiguration();
+        bookSummaryPage.checkYears(['1997-1999', '2000-2003']);
+        bookSummaryPage.openConfigure();
+        bookSummaryPage.configureYearSort('From youngest to oldest');
+        bookSummaryPage.saveConfiguration();
+        bookSummaryPage.checkYears(['2003-2000', '1999-1997']);
     });
 });

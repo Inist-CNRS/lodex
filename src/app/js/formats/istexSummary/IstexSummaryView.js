@@ -10,7 +10,7 @@ import {
 import injectData from '../injectData';
 import InvalidFormat from '../InvalidFormat';
 import { getYearUrl, parseYearData } from './getIstexData';
-import { searchedFieldValues } from './IstexSummaryAdmin';
+import { searchedFieldValues, yearSortDirValues } from './IstexSummaryAdmin';
 import composeRenderProps from '../../lib/composeRenderProps';
 import IstexList from './IstexList';
 import IssueFold from './IssueFold';
@@ -26,12 +26,26 @@ IstexDocument.propTypes = {
     item: PropTypes.shape({ id: PropTypes.string.isRequired }).isRequired,
 };
 
+export const getComposedComponent = displayDecade =>
+    composeRenderProps([
+        ...(displayDecade ? [IstexList, DecadeFold] : []),
+        IstexList,
+        YearFold,
+        IstexList,
+        VolumeFold,
+        IstexList,
+        IssueFold,
+        IstexList,
+        IstexDocument,
+    ]);
+
 export const IstexSummaryView = ({
     formatData,
     field,
     resource,
     searchedField,
     sortDir,
+    yearThreshold,
     p: polyglot,
 }) => {
     if (!resource[field.name] || !searchedField) {
@@ -41,60 +55,42 @@ export const IstexSummaryView = ({
     }
 
     const data = parseYearData(formatData, sortDir);
+    const displayDecade = yearThreshold && data.hits.length > yearThreshold;
+    const ComposedComponent = getComposedComponent(displayDecade);
 
-    if (data.hits.length > 50) {
-        return composeRenderProps([
-            IstexList,
-            DecadeFold,
-            IstexList,
-            YearFold,
-            IstexList,
-            VolumeFold,
-            IstexList,
-            IssueFold,
-            IstexList,
-            IstexDocument,
-        ])({
-            data: getDecadeFromData(data),
-            issn: resource[field.name],
-            searchedField: searchedField,
-            polyglot: polyglot,
-        });
-    }
-
-    return composeRenderProps([
-        IstexList,
-        YearFold,
-        IstexList,
-        VolumeFold,
-        IstexList,
-        IssueFold,
-        IstexList,
-        IstexDocument,
-    ])({
-        data: data,
-        issn: resource[field.name],
-        searchedField: searchedField,
-        polyglot: polyglot,
-    });
+    return (
+        <ComposedComponent
+            data={
+                displayDecade
+                    ? getDecadeFromData(data, sortDir === yearSortDirValues[0])
+                    : data
+            }
+            issn={resource[field.name]}
+            searchedField={searchedField}
+            sortDir={sortDir}
+            polyglot={polyglot}
+        />
+    );
 };
 
 IstexSummaryView.propTypes = {
     fieldStatus: PropTypes.string,
-    resource: PropTypes.object.isRequired, // eslint-disable-line
+    resource: PropTypes.object.isRequired,
     field: fieldPropTypes.isRequired,
     formatData: PropTypes.shape({ hits: PropTypes.Array }),
     error: PropTypes.string,
     searchedField: PropTypes.oneOf(searchedFieldValues),
+    sortDir: PropTypes.oneOf(yearSortDirValues).isRequired,
+    yearThreshold: PropTypes.number.isRequired,
     p: polyglotPropTypes.isRequired,
 };
 
 IstexSummaryView.defaultProps = {
     className: null,
     fieldStatus: null,
-    shrink: false,
-    data: null,
+    formatData: null,
     error: null,
+    yearThreshold: 50,
 };
 
 export default compose(

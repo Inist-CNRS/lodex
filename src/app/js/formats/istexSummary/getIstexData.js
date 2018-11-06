@@ -30,11 +30,20 @@ export const getDecadeYearUrl = ({ issn, to, from, searchedField }) => () => ({
     )})&facet=publicationDate[*-*:1]&size=0&output=*`,
 });
 
-export const getDecadeYearData = ({ issn, to, from, searchedField }) =>
+export const getDecadeYearData = ({ issn, to, from, searchedField, sortDir }) =>
     composeAsync(
         getDecadeYearUrl({ issn, to, from, searchedField }),
         fetch,
         parseFacetData('publicationDate', ({ keyAsString }) => keyAsString),
+        data => ({
+            ...data,
+            hits: data.hits.sort(
+                (a, b) =>
+                    sortDir === yearSortDirValues[0]
+                        ? b.name - a.name
+                        : a.name - b.name,
+            ),
+        }),
     );
 
 export const parseYearData = (formatData, sortDir = yearSortDirValues[0]) => ({
