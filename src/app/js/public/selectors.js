@@ -1,11 +1,12 @@
+import qs from 'qs';
 import { createGlobalSelectors } from '../lib/selectors';
 import { fromDataset as localFromDataset } from './dataset';
 import { fromExport as localFromExport } from './export';
-import { fromFacet as localFromFacet } from './facet';
 import { fromResource as localFromResource } from './resource';
 import { fromFormat as localFromFormat } from '../formats/reducer';
 import { fromMenu as localFromMenu } from './menu/reducer';
-import qs from 'qs';
+import { fromSearch as localFromSearch } from './search/reducer';
+import localFromFacet from './facet/selectors';
 
 const getDatasetState = state => state.dataset;
 export const fromDataset = createGlobalSelectors(
@@ -18,9 +19,6 @@ export const fromExport = createGlobalSelectors(
     getExportState,
     localFromExport,
 );
-
-const getFacetState = state => state.facet;
-export const fromFacet = createGlobalSelectors(getFacetState, localFromFacet);
 
 const getResourceState = state => state.resource;
 export const fromResource = createGlobalSelectors(
@@ -36,6 +34,19 @@ export const fromFormat = createGlobalSelectors(
 
 const getMenuState = state => state.menu;
 export const fromMenu = createGlobalSelectors(getMenuState, localFromMenu);
+
+const getSearchState = state => state.search;
+export const fromSearch = createGlobalSelectors(
+    getSearchState,
+    localFromSearch,
+);
+
+const getFacet = page => state => state[page].facet;
+const facetSelectorsByPage = {
+    dataset: createGlobalSelectors(getFacet('dataset'), localFromFacet),
+    search: createGlobalSelectors(getFacet('search'), localFromFacet),
+};
+export const fromFacet = page => facetSelectorsByPage[page];
 
 export const fromRouter = {
     getResourceUri: state => {

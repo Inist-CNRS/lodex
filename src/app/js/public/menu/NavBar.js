@@ -13,6 +13,7 @@ import { logout } from '../../user';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import Drawer from '../Drawer';
 import Search from '../search/Search';
+import AdvancedSearch from '../search/AdvancedSearch';
 import GraphSummary from '../graph/GraphSummary';
 import Favicon from '../Favicon';
 import MenuItem from './MenuItem';
@@ -55,6 +56,7 @@ const styles = StyleSheet.create({
 export class NavBar extends Component {
     state = {
         searchDrawer: 'closed',
+        advancedSearchDrawer: 'closed',
         graphDrawer: 'closed',
     };
 
@@ -76,6 +78,19 @@ export class NavBar extends Component {
         }
 
         this.setState({ searchDrawer: 'open' });
+    };
+
+    toggleAdvancedSearch = () => {
+        const { searchDrawer, advancedSearchDrawer } = this.state;
+
+        if (advancedSearchDrawer === 'open') {
+            this.setState({ advancedSearchDrawer: 'closed' });
+            return;
+        }
+
+        if (searchDrawer === 'open') {
+            this.setState({ advancedSearchDrawer: 'open' });
+        }
     };
 
     toggleGraph = () => {
@@ -124,12 +139,14 @@ export class NavBar extends Component {
             topMenu,
             bottomMenu,
             p: polyglot,
+            hasFacetFields,
         } = this.props;
 
         if (!topMenu || !bottomMenu) {
             return null;
         }
-        const { searchDrawer, graphDrawer } = this.state;
+
+        const { searchDrawer, graphDrawer, advancedSearchDrawer } = this.state;
 
         return (
             <Fragment>
@@ -172,7 +189,7 @@ export class NavBar extends Component {
                                 handleGraphItemClick={this.handleGraphItemClick}
                                 toggleSearch={this.toggleSearch}
                                 graphDrawer={graphDrawer}
-                                saerchDrawer={searchDrawer}
+                                searchDrawer={searchDrawer}
                             />
                         ))}
                     </div>
@@ -184,12 +201,27 @@ export class NavBar extends Component {
                 >
                     <GraphSummary closeDrawer={this.toggleGraph} />
                 </Drawer>
+                {hasFacetFields && (
+                    <Drawer
+                        status={advancedSearchDrawer}
+                        onClose={this.toggleAdvancedSearch}
+                        animationDuration={ANIMATION_DURATION}
+                        shift={440}
+                    >
+                        <AdvancedSearch />
+                    </Drawer>
+                )}
                 <Drawer
                     status={searchDrawer}
                     onClose={this.toggleSearch}
                     animationDuration={ANIMATION_DURATION}
+                    disabled={advancedSearchDrawer === 'open'}
                 >
-                    <Search closeDrawer={this.toggleSearch} />
+                    <Search
+                        closeDrawer={this.toggleSearch}
+                        showAdvancedSearch={hasFacetFields}
+                        toggleAdvancedSearch={this.toggleAdvancedSearch}
+                    />
                 </Drawer>
             </Fragment>
         );
@@ -225,6 +257,7 @@ NavBar.propTypes = {
     topMenu: menuPropTypes,
     bottomMenu: menuPropTypes,
     loadMenu: PropTypes.func.isRequired,
+    hasFacetFields: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = state => ({
@@ -233,6 +266,7 @@ const mapStateToProps = state => ({
     hasGraph: fromFields.getGraphFields(state).length > 0,
     topMenu: fromMenu.getTopMenu(state),
     bottomMenu: fromMenu.getBottomMenu(state),
+    hasFacetFields: fromFields.hasFacetFields(state),
 });
 
 const mapDispatchToProps = {

@@ -13,15 +13,13 @@ describe('Graph Page', () => {
         cy.visit('http://localhost:3000/graph');
     });
 
-    // Some for reasons, this test fails only on Travis
-    // @FIXME https://trello.com/c/c7fnunZ7
-    it.skip('should reset filters & search query when switching to another graph', () => {
+    it('should reset filters & search query when switching to another graph', () => {
         homePage.openChartDrawer();
         homePage.goToChart('Bar Chart');
 
         graphPage.searchFor('Biodiversity');
         graphPage.expectRowsCountToBe(5);
-        graphPage.setFacet('Publication Year', '2011'); // This step fails
+        graphPage.setFacet('Publication Year', '2011');
         graphPage.expectRowsCountToBe(4);
 
         homePage.openChartDrawer();

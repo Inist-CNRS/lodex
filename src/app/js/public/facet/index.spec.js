@@ -1,4 +1,8 @@
-import facetReducer, {
+import { createReducer } from './';
+
+const { reducer: facetReducer, actionTypes } = createReducer('PREFIX');
+
+const {
     OPEN_FACET,
     LOAD_FACET_VALUES_ERROR,
     LOAD_FACET_VALUES_SUCCESS,
@@ -7,7 +11,7 @@ import facetReducer, {
     FACET_VALUE_CHANGE,
     INVERT_FACET,
     FACET_VALUE_SORT,
-} from './';
+} = actionTypes;
 
 describe('facet reducer', () => {
     describe('OPEN_FACET', () => {

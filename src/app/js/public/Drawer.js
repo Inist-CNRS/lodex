@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { StyleSheet, css } from 'aphrodite/no-important';
+import memoize from 'lodash.memoize';
 
 const DRAWER_WIDTH = 440; // px
 
@@ -29,17 +30,13 @@ const styles = StyleSheet.create({
         width: DRAWER_WIDTH,
         overflowY: 'auto',
         top: 0,
+        borderRight: '1px solid #E3EAF2',
     },
-    closed: {
-        transform: `translateX(-${DRAWER_WIDTH}px)`,
-    },
-    closing: {
-        transform: `translateX(-${DRAWER_WIDTH}px)`,
+    drawerBoxShadow: {
         boxShadow: '0 2px 1rem #777',
     },
-    open: {
-        transform: 'translate(0)',
-        boxShadow: '0 2px 1rem #777',
+    drawerDisabled: {
+        filter: 'brightness(0.98)',
     },
     mask: {
         position: 'absolute',
@@ -59,31 +56,49 @@ const styles = StyleSheet.create({
     },
 });
 
-const Drawer = ({ children, status, animationDuration, onClose }) => (
+const drawerStyleFromProps = memoize(
+    ({ animationDuration, status, shift }) => ({
+        transition: `transform ${animationDuration}ms`,
+        transform:
+            status === 'open'
+                ? `translateX(${shift}px)`
+                : `translateX(-${DRAWER_WIDTH}px)`,
+    }),
+);
+
+const Drawer = ({
+    children,
+    status,
+    animationDuration,
+    onClose,
+    shift,
+    disabled,
+}) => (
     <div
         className={classnames(
             'drawer-container',
             css(styles.container),
             css(
-                styles[status === 'open' ? 'openContainer' : 'closedContainer'],
+                styles[
+                    status === 'open' && !disabled
+                        ? 'openContainer'
+                        : 'closedContainer'
+                ],
             ),
         )}
     >
         <div
-            className={classnames(
-                'drawer',
-                css(styles.drawer),
-                css(styles[status]),
-            )}
-            style={{
-                transition: `transform ${animationDuration}ms`,
-            }}
+            className={classnames('drawer', css(styles.drawer), {
+                [css(styles.drawerBoxShadow)]: status === 'open' && !disabled,
+                [css(styles.drawerDisabled)]: disabled,
+            })}
+            style={drawerStyleFromProps({ animationDuration, status, shift })}
         >
             {status !== 'closed' && children}
         </div>
         <div
             className={classnames('mask', css(styles.mask), {
-                [css(styles.maskOpen)]: status === 'open',
+                [css(styles.maskOpen)]: status === 'open' && !disabled,
             })}
             onClick={onClose}
         />
@@ -95,6 +110,13 @@ Drawer.propTypes = {
     status: PropTypes.oneOf(['open', 'closing', 'closed']).isRequired,
     onClose: PropTypes.func.isRequired,
     animationDuration: PropTypes.number.isRequired,
+    shift: PropTypes.number,
+    disabled: PropTypes.bool,
+};
+
+Drawer.defaultProps = {
+    shift: 0,
+    disabled: false,
 };
 
 export default Drawer;

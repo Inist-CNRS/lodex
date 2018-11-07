@@ -2,7 +2,7 @@ import { call, select } from 'redux-saga/effects';
 
 import { handleExportPublishedDatasetSuccess } from './exportPublishedDataset';
 import getQueryString from '../../../lib/getQueryString';
-import { fromDataset, fromFacet } from '../../selectors';
+import { fromDataset } from '../../selectors';
 import { fromUser } from '../../../sharedSelectors';
 import fetchSaga from '../../../lib/sagas/fetchSaga';
 import downloadFile from '../../../lib/downloadFile';
@@ -13,9 +13,9 @@ describe('export saga', () => {
             payload: { type: 'type' },
         });
 
-        it('should select fromFacet.getAppliedFacets', () => {
+        it('should select fromDataset.getAppliedFacets', () => {
             expect(saga.next().value).toEqual(
-                select(fromFacet.getAppliedFacets),
+                select(fromDataset.getAppliedFacets),
             );
         });
 

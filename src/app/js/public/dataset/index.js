@@ -1,5 +1,8 @@
 import { createAction, handleActions, combineActions } from 'redux-actions';
-import { TOGGLE_FACET_VALUE } from '../facet';
+
+import { createGlobalSelectors } from '../../lib/selectors';
+import createFacetReducer from '../facet';
+import facetSelectors from '../facet/selectors';
 
 export const PRE_LOAD_DATASET_PAGE = 'PRE_LOAD_DATASET_PAGE';
 export const LOAD_DATASET_PAGE = 'LOAD_DATASET_PAGE';
@@ -25,6 +28,14 @@ export const clearFilter = createAction(CLEAR_FILTER);
 
 export const sortDataset = createAction(SORT_DATASET);
 
+const {
+    actionTypes: facetActionTypes,
+    actions: facetActions,
+    reducer: facetReducer,
+} = createFacetReducer('DATASET');
+
+export { facetActions, facetActionTypes };
+
 export const defaultState = {
     isSaving: false,
     isCreating: false,
@@ -36,17 +47,25 @@ export const defaultState = {
     sort: {},
     total: 0,
     fullTotal: 0,
+    facet: facetReducer(undefined, {}),
 };
 
 export default handleActions(
     {
+        [combineActions(...Object.values(facetActionTypes))]: (
+            state,
+            action,
+        ) => ({
+            ...state,
+            facet: facetReducer(state.facet, action),
+        }),
         PRE_LOAD_DATASET_PAGE: (state, { payload }) => ({
             ...state,
             perPage: (payload && payload.perPage) || state.perPage,
         }),
         [combineActions(
             LOAD_DATASET_PAGE,
-            TOGGLE_FACET_VALUE,
+            facetActionTypes.TOGGLE_FACET_VALUE,
             APPLY_FILTER,
             CHANGE_PAGE,
         )]: (state, { payload }) => ({
@@ -78,7 +97,7 @@ export default handleActions(
             currentPage: 0,
             match,
         }),
-        TOGGLE_FACET_VALUE: state => ({
+        [facetActionTypes.TOGGLE_FACET_VALUE]: state => ({
             ...state,
             currentPage: 0,
         }),
@@ -111,6 +130,7 @@ const isDatasetLoaded = state => state.total > 0;
 const getFilter = state => state.match;
 const getSort = state => state.sort;
 const isSaving = state => state.isSaving;
+const getFacet = state => state.facet;
 
 export const fromDataset = {
     isDatasetLoading,
@@ -123,4 +143,5 @@ export const fromDataset = {
     getFilter,
     getSort,
     isSaving,
+    ...createGlobalSelectors(getFacet, facetSelectors),
 };

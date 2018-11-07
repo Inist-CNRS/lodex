@@ -78,4 +78,15 @@ describe('Search', () => {
         cy.get('.search-result').should('have.length', 1);
         searchDrawer.searchInput().should('have.value', query);
     });
+
+    describe('Advanced Search', () => {
+        it('should filter search results by facets', () => {
+            searchDrawer.openSearchDrawer();
+            cy.get('.search-result').should('have.length', 10);
+
+            searchDrawer.openAdvancedSearchDrawer();
+            searchDrawer.setFacet('Dernière mise en ligne en', '2014');
+            cy.get('.search-result').should('have.length', 1);
+        });
+    });
 });

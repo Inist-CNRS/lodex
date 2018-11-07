@@ -17,12 +17,9 @@ import {
     resource as resourcePropTypes,
 } from '../../propTypes';
 import { preLoadPublication as preLoadPublicationAction } from '../../fields';
-import {
-    fromSearch,
-    search as searchAction,
-    loadMore as loadMoreAction,
-} from './reducer';
+import { search as searchAction, loadMore as loadMoreAction } from './reducer';
 import { fromFields } from '../../sharedSelectors';
+import { fromSearch } from '../selectors';
 import SearchResult from './SearchResult';
 import AdminOnlyAlert from '../../lib/components/AdminOnlyAlert';
 import theme from '../../theme';
@@ -42,6 +39,7 @@ const styles = StyleSheet.create({
     },
     advancedSearchToggle: {
         alignSelf: 'flex-end',
+        cursor: 'pointer',
     },
     searchResults: {
         margin: '1.5rem 0',
@@ -156,6 +154,11 @@ class Search extends Component {
         );
     };
 
+    handleAdvancedSearchClick = evt => {
+        evt.preventDefault();
+        this.props.toggleAdvancedSearch();
+    };
+
     render() {
         const { bufferQuery, opening } = this.state;
         const {
@@ -165,6 +168,7 @@ class Search extends Component {
             results,
             total,
             p: polyglot,
+            showAdvancedSearch,
         } = this.props;
 
         const noOverviewField =
@@ -202,14 +206,18 @@ class Search extends Component {
                             ref={this.textInput}
                         />
                     </div>
-                    <div
-                        className={cnames(
-                            'search-advanced-toggle',
-                            styles.advancedSearchToggle,
-                        )}
-                    >
-                        <a href="#">{polyglot.t('search_advanced')}</a>
-                    </div>
+                    {showAdvancedSearch && (
+                        <div
+                            className={cnames(
+                                'search-advanced-toggle',
+                                styles.advancedSearchToggle,
+                            )}
+                        >
+                            <a onClick={this.handleAdvancedSearchClick}>
+                                {polyglot.t('search_advanced')}
+                            </a>
+                        </div>
+                    )}
                 </div>
                 <div
                     className={classnames(
@@ -245,6 +253,8 @@ Search.propTypes = {
     loadMore: PropTypes.func.isRequired,
     total: PropTypes.number.isRequired,
     closeDrawer: PropTypes.func.isRequired,
+    showAdvancedSearch: PropTypes.bool.isRequired,
+    toggleAdvancedSearch: PropTypes.func.isRequired,
 };
 
 Search.defaultProps = {

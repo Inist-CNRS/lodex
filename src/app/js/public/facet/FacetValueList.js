@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
-import withHandlers from 'recompose/withHandlers';
 import TextField from 'material-ui/TextField';
 import CheckBox from 'material-ui/Checkbox';
 
@@ -11,11 +10,11 @@ import {
     facetValue as facetValuePropType,
     polyglot as polyglotPropType,
 } from '../../propTypes';
+import { fromFacet } from '../selectors';
 import FacetValueItem from './FacetValueItem';
 import Pagination from '../../lib/components/Pagination';
-import { fromFacet } from '../selectors';
-import { changeFacetValue, invertFacet, sortFacetValue } from './';
 import SortButton from '../../lib/components/SortButton';
+import FacetActionsContext from './FacetActionsContext';
 
 const styles = {
     listHeader: {
@@ -29,76 +28,114 @@ const styles = {
     },
 };
 
-const PureFacetValueList = ({
+const onPageChange = (changeFacetValue, filter, name) => (
+    currentPage,
+    perPage,
+) =>
+    changeFacetValue({
+        name,
+        currentPage,
+        perPage,
+        filter,
+    });
+
+const onFilterChange = (changeFacetValue, name, currentPage, perPage) => (
+    _,
+    filter,
+) =>
+    changeFacetValue({
+        name,
+        currentPage,
+        perPage,
+        filter,
+    });
+
+const onInvertChange = (invertFacet, name) => (_, inverted) =>
+    invertFacet({ name, inverted });
+
+const onSortChange = (sortFacetValue, name) => nextSortBy =>
+    sortFacetValue({
+        name,
+        nextSortBy,
+    });
+
+const FacetValueList = ({
     name,
     label,
     facetValues,
     total,
     currentPage,
     perPage,
-    onPageChange,
-    onFilterChange,
-    onInvertChange,
-    onSortChange,
     filter,
     inverted,
     sort,
     p: polyglot,
+    page,
 }) => (
-    <div className="facet-value-list">
-        <CheckBox
-            label={polyglot.t('exclude')}
-            checked={inverted}
-            onCheck={onInvertChange}
-        />
-        <TextField
-            hintText={polyglot.t('filter_value', { field: label })}
-            value={filter}
-            onChange={onFilterChange}
-        />
-        <div>
-            <div style={styles.listHeader}>
-                <div style={styles.valueHeader}>
-                    <SortButton
-                        name="value"
-                        label={polyglot.t('value')}
-                        sortDir={sort.sortDir}
-                        sortBy={sort.sortBy}
-                        sort={onSortChange}
-                    />
+    <FacetActionsContext.Consumer>
+        {({ changeFacetValue, invertFacet, sortFacetValue }) => (
+            <div className="facet-value-list">
+                <CheckBox
+                    label={polyglot.t('exclude')}
+                    checked={inverted}
+                    onCheck={onInvertChange(invertFacet, name)}
+                />
+                <TextField
+                    hintText={polyglot.t('filter_value', { field: label })}
+                    value={filter}
+                    onChange={onFilterChange(
+                        changeFacetValue,
+                        name,
+                        currentPage,
+                        perPage,
+                    )}
+                />
+                <div>
+                    <div style={styles.listHeader}>
+                        <div style={styles.valueHeader}>
+                            <SortButton
+                                name="value"
+                                label={polyglot.t('value')}
+                                sortDir={sort.sortDir}
+                                sortBy={sort.sortBy}
+                                sort={onSortChange(sortFacetValue, name)}
+                            />
+                        </div>
+                        <div style={styles.totalHeader}>
+                            <SortButton
+                                name="count"
+                                label={polyglot.t('count')}
+                                sortDir={sort.sortDir}
+                                sortBy={sort.sortBy}
+                                sort={onSortChange}
+                            />
+                        </div>
+                    </div>
+                    <div>
+                        {facetValues.map(({ value, count }) => (
+                            <FacetValueItem
+                                key={value}
+                                name={name}
+                                value={value}
+                                count={count}
+                                page={page}
+                            />
+                        ))}
+                    </div>
                 </div>
-                <div style={styles.totalHeader}>
-                    <SortButton
-                        name="count"
-                        label={polyglot.t('count')}
-                        sortDir={sort.sortDir}
-                        sortBy={sort.sortBy}
-                        sort={onSortChange}
-                    />
-                </div>
+                <Pagination
+                    column
+                    total={total}
+                    currentPage={currentPage}
+                    perPage={perPage}
+                    onChange={onPageChange(changeFacetValue, filter, name)}
+                />
             </div>
-            <div>
-                {facetValues.map(({ value, count }) => (
-                    <FacetValueItem
-                        key={value}
-                        name={name}
-                        value={value}
-                        count={count}
-                    />
-                ))}
-            </div>
-        </div>
-        <Pagination
-            column
-            total={total}
-            currentPage={currentPage}
-            perPage={perPage}
-            onChange={onPageChange}
-        />
-    </div>
+        )}
+    </FacetActionsContext.Consumer>
 );
 
-PureFacetValueList.propTypes = {
+FacetValueList.propTypes = {
     facetValues: PropTypes.arrayOf(facetValuePropType).isRequired,
     name: PropTypes.string.isRequired,
     label: PropTypes.string.isRequired,
@@ -107,63 +144,29 @@ PureFacetValueList.propTypes = {
     total: PropTypes.number.isRequired,
     currentPage: PropTypes.number.isRequired,
     perPage: PropTypes.number.isRequired,
-    onPageChange: PropTypes.func.isRequired,
-    onFilterChange: PropTypes.func.isRequired,
-    onInvertChange: PropTypes.func.isRequired,
-    onSortChange: PropTypes.func.isRequired,
     sort: PropTypes.shape({
         sortBy: PropTypes.string,
         sortDir: PropTypes.oneOf(['ASC', 'DESC']),
     }).isRequired,
     p: polyglotPropType,
+    page: PropTypes.oneOf(['dataset', 'search']).isRequired,
 };
 
-const mapStateToProps = (state, { name }) => ({
-    facetValues: fromFacet.getFacetValues(state, name),
-    total: fromFacet.getFacetValuesTotal(state, name),
-    currentPage: fromFacet.getFacetValuesPage(state, name),
-    perPage: fromFacet.getFacetValuesPerPage(state, name),
-    filter: fromFacet.getFacetValuesFilter(state, name),
-    inverted: fromFacet.isFacetValuesInverted(state, name),
-    sort: fromFacet.getFacetValuesSort(state, name),
-});
+const mapStateToProps = (state, { name, page }) => {
+    const selectors = fromFacet(page);
 
-const mapDispatchtoProps = {
-    changeFacetValue,
-    invertFacet,
-    sortFacetValue,
+    return {
+        facetValues: selectors.getFacetValues(state, name),
+        total: selectors.getFacetValuesTotal(state, name),
+        currentPage: selectors.getFacetValuesPage(state, name),
+        perPage: selectors.getFacetValuesPerPage(state, name),
+        filter: selectors.getFacetValuesFilter(state, name),
+        inverted: selectors.isFacetValuesInverted(state, name),
+        sort: selectors.getFacetValuesSort(state, name),
+    };
 };
 
 export default compose(
     translate,
-    connect(mapStateToProps, mapDispatchtoProps),
-    withHandlers({
-        onPageChange: ({ name, filter, changeFacetValue }) => (
-            currentPage,
-            perPage,
-        ) =>
-            changeFacetValue({
-                name,
-                currentPage,
-                perPage,
-                filter,
-            }),
-        onFilterChange: ({ name, currentPage, perPage, changeFacetValue }) => (
-            _,
-            filter,
-        ) =>
-            changeFacetValue({
-                name,
-                currentPage,
-                perPage,
-                filter,
-            }),
-        onInvertChange: ({ name, invertFacet }) => (_, inverted) =>
-            invertFacet({ name, inverted }),
-        onSortChange: ({ name, sortFacetValue }) => nextSortBy =>
-            sortFacetValue({
-                name,
-                nextSortBy,
-            }),
-    }),
-)(PureFacetValueList);
+    connect(mapStateToProps),
+)(FacetValueList);
