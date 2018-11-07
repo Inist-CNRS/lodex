@@ -13,25 +13,25 @@ import theme from '../../theme';
 
 const styles = StyleSheet.create({
     activeLink: {
-        color: theme.orange.primary,
-        fill: theme.orange.primary,
+        color: theme.orange,
+        fill: theme.orange,
         ':hover': {
-            fill: theme.orange.primary,
-            color: theme.orange.primary,
+            fill: theme.orange,
+            color: theme.orange,
         },
     },
     link: {
         textDecoration: 'none',
         backgroundColor: '#f8f8f8',
-        fill: theme.green.primary,
-        color: theme.green.primary,
+        fill: theme.green,
+        color: theme.green,
         cursor: 'pointer',
         userSelect: 'none',
         textTransform: 'capitalize',
         ':hover': {
             textDecoration: 'none',
-            fill: theme.purple.primary,
-            color: theme.purple.primary,
+            fill: theme.purple,
+            color: theme.purple,
         },
         ':focus': {
             textDecoration: 'none',

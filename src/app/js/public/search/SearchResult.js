@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
         },
     },
     activeLink: {
-        color: theme.orange.primary,
+        color: theme.orange,
     },
     row: {
         flex: '0 0 auto',

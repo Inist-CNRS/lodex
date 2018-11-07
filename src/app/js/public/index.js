@@ -5,6 +5,7 @@ import React from 'react';
 import { render } from 'react-dom';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import { Provider } from 'react-redux';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
 
 import rootReducer from './reducers';
 import Routes from './Routes';
@@ -12,6 +13,16 @@ import sagas from './sagas';
 import configureStore from '../configureStore';
 import phrasesFor from '../i18n/translations';
 import getLocale from '../../../common/getLocale';
+import theme from '../theme';
+
+const muiTheme = getMuiTheme({
+    palette: {
+        accent1Color: theme.orange,
+        primary1Color: theme.green,
+        primary2Color: theme.purple,
+        textColor: '#5F6368',
+    },
+});
 
 const language = getLocale();
 const initialState = {
@@ -32,7 +43,7 @@ const store = configureStore(
 
 render(
     <Provider {...{ store }}>
-        <MuiThemeProvider>
+        <MuiThemeProvider muiTheme={muiTheme}>
             <Routes history={history} />
         </MuiThemeProvider>
     </Provider>,

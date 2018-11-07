@@ -5,6 +5,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import Card from '../../lib/components/Card';
+import theme from '../../theme';
 
 const styles = {
     container: {
@@ -13,7 +14,7 @@ const styles = {
         alignItems: 'center',
     },
     text: {
-        color: '#b22f90',
+        color: theme.purple,
         fontSize: '1rem',
         textAlign: 'center',
     },

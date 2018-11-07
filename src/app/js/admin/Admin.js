@@ -14,12 +14,13 @@ import Upload from './upload/Upload';
 import Loading from '../lib/components/Loading';
 import Card from '../lib/components/Card';
 import Statistics from './Statistics';
+import theme from '../theme';
 
 const styles = {
     punchLine: {
         padding: '16px',
         textAlign: 'center',
-        color: '#7DBD42',
+        color: theme.purple,
     },
 };
 

@@ -10,6 +10,7 @@ import { fromPublish, fromPublication } from '../selectors';
 import ButtonWithStatus from '../../lib/components/ButtonWithStatus';
 import ConfirmPublication from './ConfirmPublication';
 import { fromFields } from '../../sharedSelectors';
+import theme from '../../theme';
 
 const styles = {
     title: {
@@ -39,7 +40,7 @@ export class PublishButtonComponent extends Component {
             <div>
                 <ButtonWithStatus
                     raised
-                    labelColor="#7DBD42"
+                    labelColor={theme.green}
                     className="btn-publish"
                     loading={isPublishing}
                     error={error}

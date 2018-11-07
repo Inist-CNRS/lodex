@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
 
 const muiStyles = {
     searchBarUnderline: {
-        borderColor: theme.orange.primary,
+        borderColor: theme.orange,
     },
 };
 

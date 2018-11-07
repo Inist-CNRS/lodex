@@ -18,25 +18,25 @@ const styles = StyleSheet.create({
         },
         ':focus': {
             textDecoration: 'none',
-            color: theme.orange.primary,
+            color: theme.orange,
         },
         ':visited': {
             textDecoration: 'none',
         },
         ':active': {
-            color: theme.orange.primary,
+            color: theme.orange,
         },
     },
     active: {
-        color: theme.orange.primary,
+        color: theme.orange,
         ':hover': {
-            color: theme.orange.primary,
+            color: theme.orange,
         },
     },
     drawerActive: {
-        color: `${theme.purple.primary} !important`,
+        color: `${theme.purple} !important`,
         ':hover': {
-            color: `${theme.purple.primary} !important`,
+            color: `${theme.purple} !important`,
         },
     },
     menuItem: {
@@ -46,16 +46,16 @@ const styles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'column',
         textAlign: 'center',
-        color: theme.green.primary,
+        color: theme.green,
         cursor: 'pointer',
         justifyContent: 'center',
         userSelect: 'none',
         textTransform: 'capitalize',
         ':hover': {
-            color: theme.purple.primary,
+            color: theme.purple,
         },
         ':active': {
-            color: theme.orange.primary,
+            color: theme.orange,
         },
     },
     menuItemIcon: {
