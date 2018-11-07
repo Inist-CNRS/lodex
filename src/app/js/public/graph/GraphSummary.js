@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { NavLink } from 'react-router-dom';
 import classnames from 'classnames';
 
 import { fromFields } from '../../sharedSelectors';
@@ -10,6 +9,7 @@ import { getIconComponent } from '../../formats';
 import { StyleSheet, css } from 'aphrodite/no-important';
 import MixedChartIcon from './MixedChartIcon';
 import theme from '../../theme';
+import Link from '../../lib/components/Link';
 
 const styles = StyleSheet.create({
     activeLink: {
@@ -70,7 +70,8 @@ const PureGraphSummary = ({ graphFields, closeDrawer }) => (
         {graphFields.map(field => {
             const Icon = getIconComponent(field);
             return (
-                <NavLink
+                <Link
+                    routeAware
                     key={field.name}
                     className={classnames(
                         'graph-link',
@@ -90,7 +91,7 @@ const PureGraphSummary = ({ graphFields, closeDrawer }) => (
                         <MixedChartIcon className={css(styles.icon)} />
                     )}
                     <div className={css(styles.label)}>{field.label}</div>
-                </NavLink>
+                </Link>
             );
         })}
     </div>

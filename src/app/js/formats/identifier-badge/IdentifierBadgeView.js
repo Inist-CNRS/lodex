@@ -4,6 +4,7 @@ import { StyleSheet, css } from 'aphrodite/no-important';
 import { field as fieldPropTypes } from '../../propTypes';
 import { resolvers } from '.';
 import InvalidFormat from '../InvalidFormat';
+import Link from '../../lib/components/Link';
 
 const IdentifierBadgeView = ({ resource, field, typid, colors }) => {
     const colorsSet = String(colors)
@@ -54,10 +55,10 @@ const IdentifierBadgeView = ({ resource, field, typid, colors }) => {
     });
 
     return (
-        <a href={target}>
+        <Link href={target}>
             <span className={css(styles.key)}>{typid}</span>
             <span className={css(styles.value)}>{identifier}</span>
-        </a>
+        </Link>
     );
 };
 

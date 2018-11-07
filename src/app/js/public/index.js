@@ -22,6 +22,7 @@ const muiTheme = getMuiTheme({
         primary2Color: theme.purple,
         textColor: '#5F6368',
     },
+    fontFamily: 'Quicksand, sans-serif',
 });
 
 const language = getLocale();

@@ -2,13 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { StyleSheet, css } from 'aphrodite/no-important';
-import { NavLink } from 'react-router-dom';
 
+import Link from '../../lib/components/Link';
 import {
     field as fieldProptypes,
     resource as resourcePropTypes,
 } from '../../propTypes';
-
 import { getResourceUri } from '../../../../common/uris';
 import theme from '../../theme';
 
@@ -89,7 +88,8 @@ const SearchResult = ({ fields, fieldNames, result, closeDrawer }) => {
         (secondDetailField && result[secondDetailField.name]);
 
     return (
-        <NavLink
+        <Link
+            routeAware
             to={getResourceUri(result)}
             className={cnames('search-result-link', styles.link)}
             onClick={closeDrawer}
@@ -157,7 +157,7 @@ const SearchResult = ({ fields, fieldNames, result, closeDrawer }) => {
                     </div>
                 )}
             </div>
-        </NavLink>
+        </Link>
     );
 };
 

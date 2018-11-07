@@ -10,6 +10,7 @@ import debounce from 'lodash.debounce';
 import TextField from 'material-ui/TextField';
 import CircularProgress from 'material-ui/CircularProgress';
 import FlatButton from 'material-ui/FlatButton';
+import Link from '../../lib/components/Link';
 
 import {
     polyglot as polyglotPropTypes,
@@ -213,9 +214,9 @@ class Search extends Component {
                                 styles.advancedSearchToggle,
                             )}
                         >
-                            <a onClick={this.handleAdvancedSearchClick}>
+                            <Link onClick={this.handleAdvancedSearchClick}>
                                 {polyglot.t('search_advanced')}
-                            </a>
+                            </Link>
                         </div>
                     )}
                 </div>

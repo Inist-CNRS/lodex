@@ -5,12 +5,12 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 import { withRouter } from 'react-router';
-import { Link } from 'react-router-dom';
 
 import ImportFieldsDialog from './ImportFieldsDialog';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { exportFields as exportFieldsAction } from '../../exportFields';
 import { exportFieldsReady as exportFieldsReadyAction } from '../../exportFieldsReady';
+import Link from '../../lib/components/Link';
 
 const styles = {
     container: {

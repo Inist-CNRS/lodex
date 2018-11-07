@@ -6,7 +6,6 @@ import compose from 'recompose/compose';
 import AppBar from 'material-ui/AppBar';
 import CircularProgress from 'material-ui/CircularProgress';
 import FlatButton from 'material-ui/FlatButton';
-import { Link } from 'react-router-dom';
 
 import SignOutButton from './SignOutButton';
 import SignInButton from './SignInButton';
@@ -17,6 +16,7 @@ import UploadButton from '../upload/UploadButton';
 import { fromUser } from '../../sharedSelectors';
 import { fromPublication, fromParsing } from '../selectors';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
+import Link from '../../lib/components/Link';
 
 const styles = {
     appBar: {
@@ -141,4 +141,7 @@ const mapStateToProps = state => ({
     isAdmin: fromUser.isAdmin(state),
 });
 
-export default compose(translate, connect(mapStateToProps))(AppbarComponent);
+export default compose(
+    translate,
+    connect(mapStateToProps),
+)(AppbarComponent);

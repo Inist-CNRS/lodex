@@ -1,7 +1,8 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import MenuItem from 'material-ui/MenuItem';
 import PropTypes from 'prop-types';
+
+import Link from '../../lib/components/Link';
 
 const styles = {
     link: {
