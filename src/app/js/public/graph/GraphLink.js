@@ -34,6 +34,7 @@ const GraphLink = ({ link, children, p: polyglot }) => (
         <CardMedia style={styles.media}>{children}</CardMedia>
         <CardActions style={styles.actions}>
             <FlatButton
+                primary
                 fullWidth
                 style={styles.detailsButton}
                 containerElement={<Link to={link} />}
