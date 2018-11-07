@@ -67,4 +67,7 @@ const mapStateToProps = state => {
     };
 };
 
-export default compose(connect(mapStateToProps), translate)(PureExportShare);
+export default compose(
+    connect(mapStateToProps),
+    translate,
+)(PureExportShare);

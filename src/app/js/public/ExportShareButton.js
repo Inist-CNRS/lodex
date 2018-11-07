@@ -22,6 +22,10 @@ const mapDispatchToProps = {
     handleClose: closeExport,
 };
 
-export default compose(translate, connect(mapStateToProps, mapDispatchToProps))(
-    ButtonWithDialog,
-);
+export default compose(
+    translate,
+    connect(
+        mapStateToProps,
+        mapDispatchToProps,
+    ),
+)(ButtonWithDialog);
