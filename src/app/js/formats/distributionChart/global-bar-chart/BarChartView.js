@@ -29,6 +29,9 @@ const styles = {
         fontSize: '1.5rem',
         margin: '10px',
     },
+    tooltipItem: {
+        color: 'black',
+    },
 };
 
 const BarChartView = ({
@@ -58,7 +61,7 @@ const BarChartView = ({
                         ? categoryAxisProps
                         : valueAxisProps)}
                 />
-                <Tooltip />
+                <Tooltip itemStyle={styles.tooltipItem} />
                 <CartesianGrid strokeDasharray="3 3" />
                 <Bar dataKey="value" fill="#8884d8">
                     {formatData.map((entry, index) => (
@@ -96,7 +99,9 @@ export const getValueAxisProps = ({
     angle: diagonalValueAxis ? -45 : null,
     textAnchor: diagonalValueAxis
         ? 'end'
-        : direction === 'horizontal' ? 'middle' : 'end',
+        : direction === 'horizontal'
+            ? 'middle'
+            : 'end',
     type: 'number',
     allowDecimals: !axisRoundValue,
     scale,
@@ -114,7 +119,9 @@ export const getCategoryAxisProps = ({
     angle: diagonalCategoryAxis ? -45 : null,
     textAnchor: diagonalCategoryAxis
         ? 'end'
-        : direction === 'horizontal' ? 'end' : 'middle',
+        : direction === 'horizontal'
+            ? 'end'
+            : 'middle',
     type: 'category',
     dataKey: '_id',
     interval: 0,
@@ -170,6 +177,8 @@ const mapStateToProps = (
     };
 };
 
-export default compose(injectData(), connect(mapStateToProps), exportableToPng)(
-    BarChartView,
-);
+export default compose(
+    injectData(),
+    connect(mapStateToProps),
+    exportableToPng,
+)(BarChartView);
