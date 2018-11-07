@@ -76,12 +76,14 @@ class Streamgraph extends PureComponent {
         const d3DivContainer = divContainer.append("div")
             .attr("id", d3DivContainerId);
         const svgViewport = d3.select(this.refs.anchor);
+        let svgContainerDiv = d3.select(this.refs.svgContainer);
         let componentContext = this;
 
         // ===========================================================================================
-        // Set all the variables (to move in states)
+        // Set all the variables 
         // ===========================================================================================
 
+        svgContainerDiv.attr("width", divContainer);
         let layersNumber = valuesObjectsArray.length;
 
         // stack the datas
@@ -389,7 +391,7 @@ class Streamgraph extends PureComponent {
         const { width, height } = this.state;
         return (
             <div id={this.divContainer} ref="divContainer" style={styles.divContainer}>
-                <svg id={this.svgContainer} width={width} height={height}>
+                <svg id={this.svgContainer} ref="svgContainer" width={width} height={height}>
                     <g id={this.anchor} ref="anchor" />
                 </svg>
             </div>
