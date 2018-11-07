@@ -152,15 +152,19 @@ FacetValueList.propTypes = {
     page: PropTypes.oneOf(['dataset', 'search']).isRequired,
 };
 
-const mapStateToProps = (state, { name, page }) => ({
-    facetValues: fromFacet(page).getFacetValues(state, name),
-    total: fromFacet(page).getFacetValuesTotal(state, name),
-    currentPage: fromFacet(page).getFacetValuesPage(state, name),
-    perPage: fromFacet(page).getFacetValuesPerPage(state, name),
-    filter: fromFacet(page).getFacetValuesFilter(state, name),
-    inverted: fromFacet(page).isFacetValuesInverted(state, name),
-    sort: fromFacet(page).getFacetValuesSort(state, name),
-});
+const mapStateToProps = (state, { name, page }) => {
+    const selectors = fromFacet(page);
+
+    return {
+        facetValues: selectors.getFacetValues(state, name),
+        total: selectors.getFacetValuesTotal(state, name),
+        currentPage: selectors.getFacetValuesPage(state, name),
+        perPage: selectors.getFacetValuesPerPage(state, name),
+        filter: selectors.getFacetValuesFilter(state, name),
+        inverted: selectors.isFacetValuesInverted(state, name),
+        sort: selectors.getFacetValuesSort(state, name),
+    };
+};
 
 export default compose(
     translate,

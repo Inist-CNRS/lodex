@@ -9,7 +9,7 @@ import InvalidFormat from '../InvalidFormat';
 const UriView = ({ className, resource, field, fields, type, value }) => {
     const uri = resource[field.name];
 
-    if (typeof uri !== 'string') {
+    if (!uri || typeof uri !== 'string') {
         return <InvalidFormat format={field.format} value={uri} />;
     }
 

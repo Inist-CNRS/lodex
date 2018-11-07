@@ -42,8 +42,11 @@ export const fromSearch = createGlobalSelectors(
 );
 
 const getFacet = page => state => state[page].facet;
-export const fromFacet = page =>
-    createGlobalSelectors(getFacet(page), localFromFacet);
+const facetSelectorsByPage = {
+    dataset: createGlobalSelectors(getFacet('dataset'), localFromFacet),
+    search: createGlobalSelectors(getFacet('search'), localFromFacet),
+};
+export const fromFacet = page => facetSelectorsByPage[page];
 
 export const fromRouter = {
     getResourceUri: state => {

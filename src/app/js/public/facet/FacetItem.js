@@ -48,9 +48,13 @@ FacetItem.propTypes = {
     page: PropTypes.oneOf(['dataset', 'search']).isRequired,
 };
 
-const mapStateToProps = (state, { field, page }) => ({
-    isOpen: fromFacet(page).isFacetOpen(state, field.name),
-    total: fromFacet(page).getFacetValuesTotal(state, field.name),
-});
+const mapStateToProps = (state, { field, page }) => {
+    const selectors = fromFacet(page);
+
+    return {
+        isOpen: selectors.isFacetOpen(state, field.name),
+        total: selectors.getFacetValuesTotal(state, field.name),
+    };
+};
 
 export default connect(mapStateToProps)(FacetItem);
