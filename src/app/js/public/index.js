@@ -13,17 +13,9 @@ import sagas from './sagas';
 import configureStore from '../configureStore';
 import phrasesFor from '../i18n/translations';
 import getLocale from '../../../common/getLocale';
-import theme from '../theme';
+import customTheme from './customTheme';
 
-const muiTheme = getMuiTheme({
-    palette: {
-        accent1Color: theme.orange,
-        primary1Color: theme.green,
-        primary2Color: theme.purple,
-        textColor: '#5F6368',
-    },
-    fontFamily: 'Quicksand, sans-serif',
-});
+const muiTheme = getMuiTheme(customTheme);
 
 const language = getLocale();
 const initialState = {

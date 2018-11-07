@@ -27,6 +27,7 @@ import translations from '../../app/translations';
 import config from '../../../config.json';
 import getLocale from '../../common/getLocale';
 import { topMenu, bottomMenu, customRoutes } from './api/menu';
+import customTheme from '../../app/js/public/customTheme';
 
 const indexHtml = fs
     .readFileSync(path.resolve(__dirname, '../../app/custom/index.html'))
@@ -161,12 +162,9 @@ const handleRender = async (ctx, next) => {
         initialEntries: [url],
     });
 
-    const muiTheme = getMuiTheme(
-        {},
-        {
-            userAgent: headers['user-agent'],
-        },
-    );
+    const muiTheme = getMuiTheme(customTheme, {
+        userAgent: headers['user-agent'],
+    });
 
     const {
         html,

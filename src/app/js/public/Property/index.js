@@ -81,7 +81,6 @@ const styles = {
         padding: '0.75rem',
         paddingLeft: '0px',
         textAlign: 'justify',
-        fontFamily: 'Roboto, sans-serif',
     },
 };
 
