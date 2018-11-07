@@ -12,7 +12,6 @@ import { facetActions as searchActions } from '../search/reducer';
 import FacetActionsContext from './FacetActionsContext';
 
 import { fromFields } from '../../sharedSelectors';
-import getSelectorsForPage from './getSelectorsForPage';
 import FacetItem from './FacetItem';
 
 const FacetList = ({
@@ -35,8 +34,6 @@ const FacetList = ({
         toggleFacetValue,
     };
 
-    const selectors = getSelectorsForPage(page);
-
     return (
         <List className="facet-list">
             <FacetActionsContext.Provider value={actions}>
@@ -44,7 +41,7 @@ const FacetList = ({
                     <FacetItem
                         key={`${page}-${field.name}`}
                         field={field}
-                        {...selectors}
+                        page={page}
                     />
                 ))}
             </FacetActionsContext.Provider>

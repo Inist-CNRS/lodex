@@ -6,6 +6,7 @@ import { fromResource as localFromResource } from './resource';
 import { fromFormat as localFromFormat } from '../formats/reducer';
 import { fromMenu as localFromMenu } from './menu/reducer';
 import { fromSearch as localFromSearch } from './search/reducer';
+import localFromFacet from './facet/selectors';
 
 const getDatasetState = state => state.dataset;
 export const fromDataset = createGlobalSelectors(
@@ -39,6 +40,10 @@ export const fromSearch = createGlobalSelectors(
     getSearchState,
     localFromSearch,
 );
+
+const getFacet = page => state => state[page].facet;
+export const fromFacet = page =>
+    createGlobalSelectors(getFacet(page), localFromFacet);
 
 export const fromRouter = {
     getResourceUri: state => {

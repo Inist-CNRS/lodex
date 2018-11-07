@@ -10,6 +10,7 @@ import {
     facetValue as facetValuePropType,
     polyglot as polyglotPropType,
 } from '../../propTypes';
+import { fromFacet } from '../selectors';
 import FacetValueItem from './FacetValueItem';
 import Pagination from '../../lib/components/Pagination';
 import SortButton from '../../lib/components/SortButton';
@@ -69,7 +70,7 @@ const FacetValueList = ({
     inverted,
     sort,
     p: polyglot,
-    ...rest
+    page,
 }) => (
     <FacetActionsContext.Consumer>
         {({ changeFacetValue, invertFacet, sortFacetValue }) => (
@@ -117,7 +118,7 @@ const FacetValueList = ({
                                 name={name}
                                 value={value}
                                 count={count}
-                                {...rest}
+                                page={page}
                             />
                         ))}
                     </div>
@@ -148,28 +149,17 @@ FacetValueList.propTypes = {
         sortDir: PropTypes.oneOf(['ASC', 'DESC']),
     }).isRequired,
     p: polyglotPropType,
+    page: PropTypes.oneOf(['dataset', 'search']).isRequired,
 };
 
-const mapStateToProps = (
-    state,
-    {
-        name,
-        getFacetValues,
-        getFacetValuesTotal,
-        getFacetValuesPage,
-        getFacetValuesPerPage,
-        getFacetValuesFilter,
-        isFacetValuesInverted,
-        getFacetValuesSort,
-    },
-) => ({
-    facetValues: getFacetValues(state, name),
-    total: getFacetValuesTotal(state, name),
-    currentPage: getFacetValuesPage(state, name),
-    perPage: getFacetValuesPerPage(state, name),
-    filter: getFacetValuesFilter(state, name),
-    inverted: isFacetValuesInverted(state, name),
-    sort: getFacetValuesSort(state, name),
+const mapStateToProps = (state, { name, page }) => ({
+    facetValues: fromFacet(page).getFacetValues(state, name),
+    total: fromFacet(page).getFacetValuesTotal(state, name),
+    currentPage: fromFacet(page).getFacetValuesPage(state, name),
+    perPage: fromFacet(page).getFacetValuesPerPage(state, name),
+    filter: fromFacet(page).getFacetValuesFilter(state, name),
+    inverted: fromFacet(page).isFacetValuesInverted(state, name),
+    sort: fromFacet(page).getFacetValuesSort(state, name),
 });
 
 export default compose(

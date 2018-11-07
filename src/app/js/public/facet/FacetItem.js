@@ -3,8 +3,9 @@ import PropTypes from 'prop-types';
 import { ListItem } from 'material-ui/List';
 import { connect } from 'react-redux';
 
-import getFieldClassName from '../../lib/getFieldClassName';
 import { field as fieldPropType } from '../../propTypes';
+import { fromFacet } from '../selectors';
+import getFieldClassName from '../../lib/getFieldClassName';
 import FacetValueList from './FacetValueList';
 import FacetActionsContext from './FacetActionsContext';
 
@@ -16,7 +17,7 @@ const styles = {
 
 const onClick = (openFacet, field) => () => openFacet({ name: field.name });
 
-const FacetItem = ({ isOpen, field, total, ...rest }) => (
+const FacetItem = ({ isOpen, field, total, page }) => (
     <FacetActionsContext.Consumer>
         {({ openFacet }) => (
             <ListItem
@@ -32,7 +33,7 @@ const FacetItem = ({ isOpen, field, total, ...rest }) => (
                         key="list"
                         name={field.name}
                         label={field.label}
-                        {...rest}
+                        page={page}
                     />,
                 ]}
             />
@@ -44,14 +45,12 @@ FacetItem.propTypes = {
     isOpen: PropTypes.bool.isRequired,
     field: fieldPropType.isRequired,
     total: PropTypes.number,
+    page: PropTypes.oneOf(['dataset', 'search']).isRequired,
 };
 
-const mapStateToProps = (
-    state,
-    { field, isFacetOpen, getFacetValuesTotal },
-) => ({
-    isOpen: isFacetOpen(state, field.name),
-    total: getFacetValuesTotal(state, field.name),
+const mapStateToProps = (state, { field, page }) => ({
+    isOpen: fromFacet(page).isFacetOpen(state, field.name),
+    total: fromFacet(page).getFacetValuesTotal(state, field.name),
 });
 
 export default connect(mapStateToProps)(FacetItem);

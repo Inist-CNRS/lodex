@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import Checkbox from 'material-ui/Checkbox';
 import { ListItem } from 'material-ui/List';
 
+import { fromFacet } from '../selectors';
 import FacetActionsContext from './FacetActionsContext';
 
 const styles = {
@@ -52,10 +53,11 @@ FacetValueItem.propTypes = {
     value: PropTypes.string.isRequired,
     count: PropTypes.number.isRequired,
     isChecked: PropTypes.bool.isRequired,
+    page: PropTypes.oneOf(['dataset', 'search']).isRequired,
 };
 
-const mapStateToProps = (state, { name, value, isFacetValuesChecked }) => ({
-    isChecked: isFacetValuesChecked(state, { name, value }),
+const mapStateToProps = (state, { name, value, page }) => ({
+    isChecked: fromFacet(page).isFacetValuesChecked(state, { name, value }),
 });
 
 export default connect(mapStateToProps)(FacetValueItem);
