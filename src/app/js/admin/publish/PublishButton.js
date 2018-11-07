@@ -39,7 +39,7 @@ export class PublishButtonComponent extends Component {
             <div>
                 <ButtonWithStatus
                     raised
-                    backgroundColor="#a4c639"
+                    labelColor="#7DBD42"
                     className="btn-publish"
                     loading={isPublishing}
                     error={error}

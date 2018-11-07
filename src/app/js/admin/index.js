@@ -20,14 +20,14 @@ import getLocale from '../../../common/getLocale';
 
 const muiTheme = getMuiTheme({
     palette: {
-        accent1Color: '#ff4081',
+        accent1Color: '#F48022',
         accent2Color: '#f5f5f5',
         accent3Color: '#9e9e9e',
         alternateTextColor: '#ffffff',
         disabledColor: '#5F6368',
         primary1Color: '#7DBD42',
         primary2Color: '#B22F90',
-        primary3Color: '#F48022',
+        primary3Color: '#7DBD42',
         shadowColor: 'rgba(0, 0, 0, 1)',
         textColor: '#5F6368',
     },

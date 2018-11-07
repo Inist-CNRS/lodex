@@ -34,6 +34,7 @@ export const PureButtonWithDialogForm = ({
     }
     const actions = [
         <ButtonWithStatus
+            raised
             key="save"
             className={classnames(className, 'save')}
             label={polyglot.t('save')}
@@ -42,6 +43,7 @@ export const PureButtonWithDialogForm = ({
             onClick={handleSubmit}
         />,
         <FlatButton
+            secondary
             key="cancel"
             label={polyglot.t('cancel')}
             onClick={handleClose}
@@ -106,7 +108,10 @@ PureButtonWithDialogForm.propTypes = {
 const mapDispatchToProps = { submit: submitAction };
 
 export default compose(
-    connect(null, mapDispatchToProps),
+    connect(
+        null,
+        mapDispatchToProps,
+    ),
     withHandlers({
         handleSubmit: ({ submit, formName }) => () => {
             submit(formName);

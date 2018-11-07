@@ -41,6 +41,10 @@ const mapDispatchToProps = (dispatch, { field: { name } }) => ({
     handleClose: () => dispatch(configureFieldCancel()),
 });
 
-export default compose(translate, connect(mapStateToProps, mapDispatchToProps))(
-    ButtonWithDialogForm,
-);
+export default compose(
+    translate,
+    connect(
+        mapStateToProps,
+        mapDispatchToProps,
+    ),
+)(ButtonWithDialogForm);
