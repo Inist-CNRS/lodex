@@ -36,7 +36,6 @@ export const LoginComponent = ({ login, p: polyglot, submit, submitting }) => (
                 onClick={submit}
                 primary
             />
-            ,
         </CardActions>
     </Card>
 );
