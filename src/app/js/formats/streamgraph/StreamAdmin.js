@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import TextField from 'material-ui/TextField';
+import translate from 'redux-polyglot/translate';
 
 export const defaultArgs = {
     diameter: 500,
@@ -44,4 +45,4 @@ class StreamAdmin extends Component {
     }
 }
 
-export default StreamAdmin;
+export default translate(StreamAdmin);

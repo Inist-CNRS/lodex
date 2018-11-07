@@ -1,11 +1,11 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
+import * as d3 from 'd3';
 
 import { getCssToString, zoomFunction, distinctColors, transformDataIntoMapArray, randomId, getMinMaxValue } from './utils';
 import injectData from '../injectData';
 import exportableToPng from '../exportableToPng';
-import * as d3 from 'd3';
 
 const styles = {
     divContainer: {
@@ -83,7 +83,7 @@ class Streamgraph extends PureComponent {
         // Set all the variables 
         // ===========================================================================================
 
-        svgContainerDiv.attr("width", divContainer);
+        svgContainerDiv.attr("width", divContainerWidth);
         let layersNumber = valuesObjectsArray.length;
 
         // stack the datas
