@@ -3,11 +3,8 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Checkbox from 'material-ui/Checkbox';
 import { ListItem } from 'material-ui/List';
-import withHandlers from 'recompose/withHandlers';
-import compose from 'recompose/compose';
 
-import { facetActions } from '../dataset';
-import { fromDataset } from '../selectors';
+import FacetActionsContext from './FacetActionsContext';
 
 const styles = {
     container: {
@@ -25,42 +22,40 @@ const styles = {
     },
 };
 
-const PureFacetValueItem = ({ value, count, isChecked, onCheck }) => (
-    <ListItem
-        className="facet-value-item"
-        style={styles.listItem}
-        innerDivStyle={styles.innerDiv}
-        primaryText={
-            <div style={styles.container}>
-                <Checkbox label={value} checked={isChecked} onCheck={onCheck} />
-                <span style={styles.count}>{count}</span>
-            </div>
-        }
-    />
+const onCheck = (toggleFacetValue, name, value) => () =>
+    toggleFacetValue({ name, value });
+
+const FacetValueItem = ({ name, value, count, isChecked }) => (
+    <FacetActionsContext.Consumer>
+        {({ toggleFacetValue }) => (
+            <ListItem
+                className="facet-value-item"
+                style={styles.listItem}
+                innerDivStyle={styles.innerDiv}
+                primaryText={
+                    <div style={styles.container}>
+                        <Checkbox
+                            label={value}
+                            checked={isChecked}
+                            onCheck={onCheck(toggleFacetValue, name, value)}
+                        />
+                        <span style={styles.count}>{count}</span>
+                    </div>
+                }
+            />
+        )}
+    </FacetActionsContext.Consumer>
 );
 
-PureFacetValueItem.propTypes = {
+FacetValueItem.propTypes = {
+    name: PropTypes.string.isRequired,
     value: PropTypes.string.isRequired,
     count: PropTypes.number.isRequired,
     isChecked: PropTypes.bool.isRequired,
-    onCheck: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state, { name, value, isFacetValuesChecked }) => ({
     isChecked: isFacetValuesChecked(state, { name, value }),
 });
 
-const mapDispatchToProps = (dispatch, { toggleFacetValue }) => ({
-    toggleFacetValue: (...args) => dispatch(toggleFacetValue(...args)),
-});
-
-export default compose(
-    connect(
-        mapStateToProps,
-        mapDispatchToProps,
-    ),
-    withHandlers({
-        onCheck: ({ name, value, toggleFacetValue }) => () =>
-            toggleFacetValue({ name, value }),
-    }),
-)(PureFacetValueItem);
+export default connect(mapStateToProps)(FacetValueItem);

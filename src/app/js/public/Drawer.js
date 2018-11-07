@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { StyleSheet, css } from 'aphrodite/no-important';
+import memoize from 'lodash.memoize';
 
 const DRAWER_WIDTH = 440; // px
 
@@ -55,13 +56,15 @@ const styles = StyleSheet.create({
     },
 });
 
-const drawerStyleFromProps = ({ animationDuration, status, shift }) => ({
-    transition: `transform ${animationDuration}ms`,
-    transform:
-        status === 'open'
-            ? `translateX(${shift}px)`
-            : `translateX(-${DRAWER_WIDTH}px)`,
-});
+const drawerStyleFromProps = memoize(
+    ({ animationDuration, status, shift }) => ({
+        transition: `transform ${animationDuration}ms`,
+        transform:
+            status === 'open'
+                ? `translateX(${shift}px)`
+                : `translateX(-${DRAWER_WIDTH}px)`,
+    }),
+);
 
 const Drawer = ({
     children,

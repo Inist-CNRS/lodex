@@ -39,7 +39,7 @@ export const loadMore = () => {
 export const waitForLoading = () => {
     // This is the best way to wait for the loading to disappear so far
     // Because sometimes the loading doesn't appear at all
-    cy.wait(500);
+    cy.wait(1000);
     cy.get('.graph-page .loading').should('not.exist');
 };
 
