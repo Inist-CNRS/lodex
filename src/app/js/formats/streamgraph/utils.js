@@ -1,5 +1,6 @@
 
 import differenceBy from 'lodash/differenceBy';
+import * as d3 from 'd3';
 
 // ===========================================================================================
 // getCssToString get the css js object and return it as string
