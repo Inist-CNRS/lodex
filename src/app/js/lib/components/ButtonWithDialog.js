@@ -19,7 +19,6 @@ export const PureButtonWithDialog = ({
     p: polyglot,
     actions = [
         <FlatButton
-            secondary
             key="cancel"
             label={polyglot.t('close')}
             onClick={handleClose}

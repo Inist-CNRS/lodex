@@ -9,10 +9,18 @@ import FlatButton from 'material-ui/FlatButton';
 import IconButton from 'material-ui/IconButton';
 import classnames from 'classnames';
 import CircularProgress from 'material-ui/CircularProgress';
+import { StyleSheet, css } from 'aphrodite/no-important';
 
 import ButtonWithStatus from './ButtonWithStatus';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import ButtonWithDialog from './ButtonWithDialog';
+import theme from '../../theme';
+
+const styles = StyleSheet.create({
+    icon: {
+        color: theme.green,
+    },
+});
 
 export const PureButtonWithDialogForm = ({
     buttonStyle,
@@ -52,16 +60,22 @@ export const PureButtonWithDialogForm = ({
 
     const openButton = icon ? (
         <IconButton
-            className={classnames('open', className)}
+            className={classnames(
+                'open',
+                'dialog-button',
+                className,
+                css(styles.icon),
+            )}
             tooltip={label}
             onClick={handleOpen}
             style={buttonStyle}
+            iconStyle={{ color: 'inherit' }}
         >
             {saving ? <CircularProgress /> : icon}
         </IconButton>
     ) : (
         <FlatButton
-            className={className}
+            className={classnames(className, 'dialog-button')}
             label={label}
             primary
             onClick={handleOpen}
