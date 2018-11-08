@@ -192,7 +192,7 @@ class Streamgraph extends PureComponent {
       .selectAll("path")
       .data(stackedData)
       .enter()
-      .append("path") 
+      .append("path")
       .attr("d", d => {
         if (d) {
           return area(d);
@@ -355,7 +355,6 @@ class Streamgraph extends PureComponent {
     this.setMouseMoveAndOverStreams(tooltip);
     this.setMouseOutStreams(tooltip);
   }
-
 
   setGraph() {
     let [
