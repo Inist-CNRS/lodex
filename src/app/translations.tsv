@@ -429,3 +429,4 @@
 "YEAR_ASC"	"From oldest to youngest"	"Du plus ancien au plus récent"
 "YEAR_DESC"	"From youngest to oldest"	"Du plus récent au plus ancien"
 "year_threshold"	"Gather years by decades starting from (years count)"	"Regrouper les années par décennies à partir de (nombre d'années)"
+"empty"	"Empty"	"Vide"
