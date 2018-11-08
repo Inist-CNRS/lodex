@@ -20,7 +20,7 @@ const styles = {
     punchLine: {
         padding: '16px',
         textAlign: 'center',
-        color: theme.purple,
+        color: theme.purple.primary,
     },
 };
 

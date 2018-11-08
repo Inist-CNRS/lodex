@@ -7,19 +7,19 @@ import theme from '../../theme';
 
 const styles = StyleSheet.create({
     link: {
-        color: theme.green,
+        color: theme.green.primary,
         textDecoration: 'none',
         ':hover': {
-            color: theme.green,
+            color: theme.green.primary,
             textDecoration: 'underline',
         },
         ':active': {
             textDecoration: 'underline',
-            color: theme.orange,
+            color: theme.orange.primary,
         },
         ':focus': {
             textDecoration: 'underline',
-            color: theme.orange,
+            color: theme.orange.primary,
         },
     },
 });

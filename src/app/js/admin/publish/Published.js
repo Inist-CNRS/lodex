@@ -14,7 +14,7 @@ const styles = {
         alignItems: 'center',
     },
     text: {
-        color: theme.purple,
+        color: theme.purple.primary,
         fontSize: '1rem',
         textAlign: 'center',
     },

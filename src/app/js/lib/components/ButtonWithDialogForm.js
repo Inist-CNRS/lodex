@@ -18,7 +18,7 @@ import theme from '../../theme';
 
 const styles = StyleSheet.create({
     icon: {
-        color: theme.green,
+        color: theme.green.primary,
     },
 });
 
