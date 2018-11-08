@@ -70,7 +70,7 @@ const styles = {
 export class SparqlTextField extends Component {
     LoadSubformatComponent = (result, subformat) => {
         const { field } = this.props;
-        const { ViewComponent, args } = getViewComponent(subformat.sub, true);
+        const { ViewComponent, args } = getViewComponent(subformat.sub);
         return (
             <ViewComponent
                 resource={{ '0': result[1].value }}
@@ -83,6 +83,7 @@ export class SparqlTextField extends Component {
                     },
                 }}
                 {...args}
+                {...subformat.option}
             />
         );
     };
