@@ -21,9 +21,11 @@ import { preLoadPublication as preLoadPublicationAction } from '../../fields';
 import { search as searchAction, loadMore as loadMoreAction } from './reducer';
 import { fromFields } from '../../sharedSelectors';
 import { fromSearch } from '../selectors';
-import SearchResult from './SearchResult';
-import AdminOnlyAlert from '../../lib/components/AdminOnlyAlert';
 import theme from '../../theme';
+
+import AdminOnlyAlert from '../../lib/components/AdminOnlyAlert';
+import SearchResult from './SearchResult';
+import AppliedFacets from './AppliedFacets';
 
 const styles = StyleSheet.create({
     container: {
@@ -32,15 +34,22 @@ const styles = StyleSheet.create({
     header: {
         display: 'flex',
         flexDirection: 'column',
-        alignItems: 'center',
         padding: '1rem',
     },
     searchBarContainer: {
-        width: '100%',
+        flex: '1 0 0',
     },
-    advancedSearchToggle: {
+    advanced: {
+        display: 'flex',
+        flex: '0 0 auto',
+        flexDirection: 'column',
+    },
+    advancedToggle: {
         alignSelf: 'flex-end',
         cursor: 'pointer',
+    },
+    advancedFacets: {
+        flex: '0 0 auto',
     },
     searchResults: {
         margin: '1.5rem 0',
@@ -155,11 +164,6 @@ class Search extends Component {
         );
     };
 
-    handleAdvancedSearchClick = evt => {
-        evt.preventDefault();
-        this.props.toggleAdvancedSearch();
-    };
-
     render() {
         const { bufferQuery, opening } = this.state;
         const {
@@ -170,6 +174,7 @@ class Search extends Component {
             total,
             p: polyglot,
             showAdvancedSearch,
+            toggleAdvancedSearch,
         } = this.props;
 
         const noOverviewField =
@@ -210,13 +215,22 @@ class Search extends Component {
                     {showAdvancedSearch && (
                         <div
                             className={cnames(
-                                'search-advanced-toggle',
-                                styles.advancedSearchToggle,
+                                'search-advanced',
+                                styles.advanced,
                             )}
                         >
-                            <Link onClick={this.handleAdvancedSearchClick}>
+                            <Link
+                                className={cnames(
+                                    'search-advanced-toggle',
+                                    styles.advancedToggle,
+                                )}
+                                onClick={toggleAdvancedSearch}
+                            >
                                 {polyglot.t('search_advanced')}
                             </Link>
+                            <AppliedFacets
+                                className={css(styles.advancedFacets)}
+                            />
                         </div>
                     )}
                 </div>

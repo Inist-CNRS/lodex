@@ -8,7 +8,7 @@ import Dataset from '../dataset/Dataset';
 import Toolbar from '../Toolbar';
 import { fromFields, fromCharacteristic } from '../../sharedSelectors';
 import Format from '../Format';
-import AppliedFacetList from '../facet/AppliedFacetList';
+import AppliedFacetList from '../dataset/AppliedFacetList';
 import { field as fieldPropTypes } from '../../propTypes';
 import EditButton from '../../fields/editFieldValue/EditButton';
 import EditOntologyFieldButton from '../../fields/ontology/EditOntologyFieldButton';
