@@ -9,7 +9,7 @@ import { polyglot as polyglotPropTypes } from '../propTypes';
 export class CustomPage extends Component {
     state = {};
     UNSAFE_componentWillMount() {
-        fetch({ url: `/customPage${this.props.link}` })
+        fetch({ url: `/customPage${this.props.location.pathname}` })
             .then(({ response: { html, scripts }, error }) => {
                 if (error) {
                     throw error;
@@ -23,6 +23,7 @@ export class CustomPage extends Component {
     }
     render() {
         const { html, scripts, error } = this.state;
+
         if (error) {
             return null;
         }
@@ -44,6 +45,9 @@ export class CustomPage extends Component {
 
 CustomPage.propTypes = {
     link: PropTypes.string.isRequired,
+    location: PropTypes.shape({
+        pathname: PropTypes.string.isRequired,
+    }).isRequired,
     p: polyglotPropTypes.isRequired,
 };
 

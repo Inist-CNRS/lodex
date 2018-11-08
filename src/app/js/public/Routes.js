@@ -54,7 +54,7 @@ class Routes extends Component {
                                 <Route
                                     key={link}
                                     path={link}
-                                    component={<CustomPage link={link} />}
+                                    component={CustomPage}
                                 />
                             ))}
                         </div>

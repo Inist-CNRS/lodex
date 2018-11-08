@@ -9,7 +9,9 @@ jest.mock('../lib/fetch');
 describe('getCustomPage CustomPage', () => {
     const defaultProps = {
         p: { t: v => v },
-        link: '/custom/page',
+        location: {
+            pathname: '/custom/page',
+        },
     };
 
     beforeEach(() => {
