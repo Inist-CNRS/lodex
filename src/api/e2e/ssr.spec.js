@@ -36,7 +36,8 @@ describe('ssr', () => {
     describe('/', () => {
         let state;
         describe('authentified', () => {
-            before(async () => {
+            before(async function() {
+                this.timeout(5000);
                 const response = await server
                     .get('/', authentifiedHeader)
                     .then(response => response.text());

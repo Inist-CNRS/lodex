@@ -1,3 +1,4 @@
+const { resolve } = require('path');
 const {
     DefinePlugin,
     SourceMapDevToolPlugin,
@@ -6,7 +7,7 @@ const {
 
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const CompressionPlugin = require('compression-webpack-plugin');
-const { resolve } = require('path');
+const LoadablePlugin = require('@loadable/webpack-plugin');
 
 const { loaders } = require('../../config.json');
 
@@ -35,7 +36,7 @@ module.exports = {
     output: {
         filename: '[name].js',
         path: resolve(__dirname, '../build'),
-        publicPath: '/',
+        publicPath: isDevelopment ? 'http://localhost:8080/' : '/',
     },
     plugins: [
         new DefinePlugin({
@@ -69,6 +70,7 @@ module.exports = {
                 to: resolve(__dirname, '../build'),
             },
         ]),
+        new LoadablePlugin(),
 
         // prints more readable module names in the browser console on HMR updates
         isDevelopment && new HotModuleReplacementPlugin(),
@@ -79,5 +81,11 @@ module.exports = {
     ].filter(Boolean),
     resolve: {
         modules: [resolve(__dirname, '../../node_modules')],
+    },
+    optimization: {
+        splitChunks: {
+            name: 'common',
+            minChunks: Infinity,
+        },
     },
 };

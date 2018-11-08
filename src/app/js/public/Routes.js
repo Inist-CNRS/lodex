@@ -4,19 +4,29 @@ import { StyleSheet, css } from 'aphrodite/no-important';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { ConnectedRouter } from 'connected-react-router';
+import loadable from '@loadable/component';
 
 import App from './App';
-import Home from './Home';
-import Resource from './resource/Resource';
 import Login from '../user/Login';
-import GraphPage from './graph/GraphPage';
 import NavBar from './menu/NavBar';
-import CustomPage from './CustomPage';
 import { loadMenu } from './menu/reducer';
 import { fromMenu } from './selectors';
 import scrollToTop from '../lib/scrollToTop';
 
 const notLogin = new RegExp('^(?!.*(/login)).*$');
+
+const components = {
+    Home: loadable(() => import(/* webpackChunkName: "home" */ './Home')),
+    Resource: loadable(() =>
+        import(/* webpackChunkName: "resource" */ './resource/Resource'),
+    ),
+    GraphPage: loadable(() =>
+        import(/* webpackChunkName: "graph" */ './graph/GraphPage'),
+    ),
+    CustomPage: loadable(() =>
+        import(/* webpackChunkName: "custom" */ './CustomPage'),
+    ),
+};
 
 const styles = StyleSheet.create({
     container: {
@@ -40,22 +50,35 @@ class Routes extends Component {
                     <Fragment>
                         <Route path={notLogin} component={NavBar} />
                         <div className={css(styles.container)}>
-                            <Route path="/" exact component={Home} />
-                            <Route path="/resource" component={Resource} />
+                            <Route path="/" exact component={components.Home} />
+                            <Route
+                                path="/resource"
+                                component={components.Resource}
+                            />
                             <Route
                                 path="/ark:/:naan/:rest"
-                                component={Resource}
+                                component={components.Resource}
                             />
-                            <Route path="/uid:/:uri" component={Resource} />
+                            <Route
+                                path="/uid:/:uri"
+                                component={components.Resource}
+                            />
                             <Route path="/login" component={Login} />
-                            <Route path="/graph" exact component={GraphPage} />
-                            <Route path="/graph/:name" component={GraphPage} />
+                            <Route
+                                path="/graph"
+                                exact
+                                component={components.GraphPage}
+                            />
+                            <Route
+                                path="/graph/:name"
+                                component={components.GraphPage}
+                            />
                             {customRoutes.map(link => (
                                 <Route
                                     key={link}
                                     exact
                                     path={link}
-                                    component={CustomPage}
+                                    component={components.CustomPage}
                                 />
                             ))}
                         </div>

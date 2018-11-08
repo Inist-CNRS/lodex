@@ -18,6 +18,7 @@ import jsonwebtoken from 'jsonwebtoken';
 import { auth, istexApiUrl, jsHost } from 'config';
 import pick from 'lodash.pick';
 import { createMemoryHistory } from 'history';
+import { LoadableState, LoadableStateManager } from '@loadable/server';
 
 import rootReducer from '../../app/js/public/reducers';
 import sagas from '../../app/js/public/sagas';
@@ -28,6 +29,15 @@ import config from '../../../config.json';
 import getLocale from '../../common/getLocale';
 import { topMenu, bottomMenu, customRoutes } from './api/menu';
 import customTheme from '../../app/js/public/customTheme';
+
+const loadableManifest = {
+    'admin/index': 'admin/index.js',
+    index: 'index.js',
+    'loadable-custom': 'loadable-custom.js',
+    'loadable-graph': 'loadable-graph.js',
+    'loadable-home': 'loadable-home.js',
+    'loadable-resource': 'loadable-resource.js',
+};
 
 const indexHtml = fs
     .readFileSync(path.resolve(__dirname, '../../app/custom/index.html'))
@@ -65,7 +75,7 @@ const getInitialState = (token, cookie, locale) => ({
     menu: { topMenu, bottomMenu, customRoutes, error: null },
 });
 
-const renderFullPage = (html, css, preloadedState, helmet) =>
+const renderFullPage = (html, css, preloadedState, helmet, scriptTags) =>
     indexHtml
         .replace(
             '<div id="root"></div>',
@@ -87,19 +97,24 @@ const renderFullPage = (html, css, preloadedState, helmet) =>
                 istexApiUrl,
             )}</script>
             <script src="${jsHost}/index.js"></script>
+            ${scriptTags.replace(/src="/g, `src="${jsHost}/`)}
             </body>`,
         );
+
+const loadableState = new LoadableState(loadableManifest);
 
 const renderHtml = (store, muiTheme, url, context, history) =>
     StyleSheetServer.renderStatic(() =>
         renderToString(
-            <StaticRouter location={url} context={context}>
-                <Provider {...{ store }}>
-                    <MuiThemeProvider muiTheme={muiTheme}>
-                        <Routes history={history} />
-                    </MuiThemeProvider>
-                </Provider>
-            </StaticRouter>,
+            <LoadableStateManager state={loadableState}>
+                <StaticRouter location={url} context={context}>
+                    <Provider {...{ store }}>
+                        <MuiThemeProvider muiTheme={muiTheme}>
+                            <Routes history={history} />
+                        </MuiThemeProvider>
+                    </Provider>
+                </StaticRouter>
+            </LoadableStateManager>,
         ),
     );
 
@@ -144,6 +159,7 @@ export const getRenderingData = async (
                 token: null,
             },
         },
+        scriptTags: loadableState.getScriptTags(),
     };
 };
 
@@ -172,6 +188,7 @@ const handleRender = async (ctx, next) => {
         preloadedState,
         helmet,
         redirect,
+        scriptTags,
     } = await getRenderingData(
         history,
         muiTheme,
@@ -185,7 +202,7 @@ const handleRender = async (ctx, next) => {
         return ctx.redirect(redirect);
     }
 
-    ctx.body = renderFullPage(html, css, preloadedState, helmet);
+    ctx.body = renderFullPage(html, css, preloadedState, helmet, scriptTags);
 };
 
 const app = new Koa();
