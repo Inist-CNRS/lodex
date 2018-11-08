@@ -23,7 +23,7 @@ export const createResource = resource => {
             .type(value);
     });
 
-    cy.get('button.create-resource.save').click();
+    cy.get('.create-resource.save button').click();
     cy.location('pathname').should('not.equal', '/graph');
 };
 
