@@ -1,6 +1,7 @@
 import React, { PureComponent } from "react";
 import { connect } from "react-redux";
 import compose from "recompose/compose";
+import { StyleSheet, css } from "aphrodite/no-important";
 import * as d3 from "d3";
 import {
   getCssToString,
@@ -13,7 +14,7 @@ import {
 import injectData from "../injectData";
 import exportableToPng from "../exportableToPng";
 
-const styles = {
+const styles = StyleSheet.create({
   divContainer: {
     overflow: "hidden",
     position: "relative"
@@ -39,7 +40,7 @@ const styles = {
     height: 15,
     width: 15
   }
-};
+});
 
 class Streamgraph extends PureComponent {
   constructor(props) {
