@@ -2,7 +2,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 
 import ListView, { UL, OL } from './ListView';
-import DefaultView from '../DefaultFormat/DefaultView.js';
+import TitleView from '../title/TitleView';
 import InvalidFormat from '../InvalidFormat';
 
 describe('list format view <ListView />', () => {
@@ -45,7 +45,7 @@ describe('list format view <ListView />', () => {
             p: polyglot,
         };
         const component = shallow(<ListView {...props} />);
-        const title = component.find(DefaultView);
+        const title = component.find(TitleView);
         expect(title.length).toBe(3);
         title.forEach((t, index) => {
             expect(t.props().resource).toEqual(['value1', 'value2', 'value3']);
