@@ -53,6 +53,7 @@ class Routes extends Component {
                             {customRoutes.map(link => (
                                 <Route
                                     key={link}
+                                    exact
                                     path={link}
                                     component={CustomPage}
                                 />
