@@ -61,3 +61,12 @@ export const setFacet = (name, value) => {
     getFacetItem(name, value).click();
     waitForLoading();
 };
+
+export const clearFacet = value => {
+    cy.get('.search-advanced')
+        .contains(value)
+        .parent()
+        .find('svg')
+        .click();
+    waitForLoading();
+};

@@ -61,10 +61,15 @@ export class NavBar extends Component {
     };
 
     toggleSearch = () => {
-        const { searchDrawer, graphDrawer } = this.state;
+        const { searchDrawer, graphDrawer, advancedSearchDrawer } = this.state;
 
         if (graphDrawer === 'open') {
             this.toggleGraph();
+        }
+
+        if (advancedSearchDrawer === 'open') {
+            this.toggleAdvancedSearch();
+            return;
         }
 
         if (searchDrawer === 'open') {
