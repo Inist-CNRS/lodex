@@ -91,7 +91,7 @@ export class SparqlTextField extends Component {
         const { sparql } = this.props;
 
         const subFormat = sparql.subformat.find(data => {
-            return attrName == data.attribute.trim().replace(/^\?/, '');
+            return attrName === data.attribute.trim().replace(/^\?/, '');
         });
 
         if (subFormat) {
@@ -128,14 +128,14 @@ export class SparqlTextField extends Component {
     };
 
     renderAttributeValue = (value, type) => {
-        if (isURL(value) && type == 'uri') {
+        if (isURL(value) && type === 'uri') {
             return <Link href={value}>{value}</Link>;
         }
         return <span>{value}</span>;
     };
 
     renderLang = attrData => {
-        if (attrData['xml:lang'] != undefined) {
+        if (attrData['xml:lang'] !== undefined) {
             return <span>{attrData['xml:lang']}</span>;
         }
         return null;
