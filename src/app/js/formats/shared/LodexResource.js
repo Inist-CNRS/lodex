@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { StyleSheet, css } from 'aphrodite/no-important';
-import { Link } from 'react-router-dom';
 import { isLocalURL } from '../../../../common/uris';
+import Link from '../../lib/components/Link';
 
 const styles = StyleSheet.create({
     contentTitle: {
@@ -60,9 +60,9 @@ const LodexResource = ({ id, url, title, summary }) => {
 
     return (
         <div id={id}>
-            <a className={css(styles.contentLink)} href={url}>
+            <Link className={css(styles.contentLink)} href={url}>
                 {content}
-            </a>
+            </Link>
         </div>
     );
 };

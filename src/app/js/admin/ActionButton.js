@@ -132,6 +132,8 @@ export class ActionButtonComponent extends Component {
         return (
             <FloatingActionButton
                 className="btn-add-column"
+                secondary={showCancel}
+                primary={!showCancel}
                 tooltip={tooltip}
                 onClick={this.handleClick}
                 style={styles.actionButton(!showPopover)}

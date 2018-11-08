@@ -2,6 +2,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 
 import LinkView from './LinkView';
+import Link from '../../lib/components/Link';
 
 describe('<LinkView />', () => {
     it('should render', () => {
@@ -19,9 +20,9 @@ describe('<LinkView />', () => {
                 value="label"
             />,
         );
-        expect(wrapper.find('a').length).toEqual(1);
+        expect(wrapper.find(Link).length).toEqual(1);
         expect(wrapper.prop('href')).toEqual('http://example.com');
-        expect(wrapper.find('a').text()).toEqual('label');
+        expect(wrapper.find(Link).prop('children')).toEqual('label');
     });
 
     it('should render a list with an array', () => {
@@ -34,30 +35,30 @@ describe('<LinkView />', () => {
             <LinkView resource={resource} field={field} fields={fields} />,
         );
         expect(wrapper.find('li').length).toEqual(2);
-        expect(wrapper.find('a').length).toEqual(2);
+        expect(wrapper.find(Link).length).toEqual(2);
         expect(
             wrapper
-                .find('a')
+                .find(Link)
                 .first()
                 .prop('href'),
         ).toEqual('http://example.com');
         expect(
             wrapper
-                .find('a')
+                .find(Link)
                 .last()
                 .prop('href'),
         ).toEqual('http://example.com/2');
         expect(
             wrapper
-                .find('a')
+                .find(Link)
                 .first()
-                .text(),
+                .prop('children'),
         ).toEqual('http://example.com');
         expect(
             wrapper
-                .find('a')
+                .find(Link)
                 .last()
-                .text(),
+                .prop('children'),
         ).toEqual('http://example.com/2');
     });
 });

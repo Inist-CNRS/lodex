@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
-import { Link } from 'react-router-dom';
 import HomeIcon from 'material-ui/svg-icons/action/home';
 import { CardText, CardActions } from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
@@ -19,6 +18,7 @@ import { polyglot as polyglotPropTypes } from '../../propTypes';
 import Loading from '../../lib/components/Loading';
 import { preLoadResource } from './';
 import { preLoadPublication } from '../../fields';
+import Link from '../../lib/components/Link';
 
 export class ResourceComponent extends Component {
     UNSAFE_componentWillMount() {

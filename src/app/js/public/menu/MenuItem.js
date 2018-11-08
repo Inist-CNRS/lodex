@@ -1,11 +1,12 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
-import { Link, NavLink } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import * as icons from '@fortawesome/free-solid-svg-icons';
 import get from 'lodash.get';
 import { StyleSheet, css } from 'aphrodite/no-important';
 import classnames from 'classnames';
+
+import Link from '../../lib/components/Link';
 
 import theme from '../../theme';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
@@ -102,7 +103,8 @@ const MenuItem = ({
     switch (config.role) {
         case 'home':
             return (
-                <NavLink
+                <Link
+                    routeAware
                     to="/"
                     exact
                     className={classnames(
@@ -115,11 +117,12 @@ const MenuItem = ({
                 >
                     {icon}
                     {label}
-                </NavLink>
+                </Link>
             );
         case 'resources':
             return (
-                <NavLink
+                <Link
+                    routeAware
                     to="/graph"
                     exact
                     className={classnames(
@@ -132,12 +135,13 @@ const MenuItem = ({
                 >
                     {icon}
                     {label}
-                </NavLink>
+                </Link>
             );
         case 'graphs':
             return (
                 hasGraph && (
-                    <NavLink
+                    <Link
+                        routeAware
                         to="/graph"
                         onClick={handleGraphItemClick}
                         className={classnames(
@@ -157,7 +161,7 @@ const MenuItem = ({
                     >
                         {icon}
                         {label}
-                    </NavLink>
+                    </Link>
                 )
             );
         case 'search':
@@ -239,7 +243,8 @@ const MenuItem = ({
                 );
             }
             return (
-                <NavLink
+                <Link
+                    routeAware
                     to={link}
                     onClick={closeAll}
                     className={classnames(
@@ -251,7 +256,7 @@ const MenuItem = ({
                 >
                     {icon}
                     {label}
-                </NavLink>
+                </Link>
             );
         }
         default:

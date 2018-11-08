@@ -10,6 +10,7 @@ import { red300 } from 'material-ui/styles/colors';
 import { importFields as importFieldsAction } from '../import';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { fromImport } from '../selectors';
+import { RaisedButton } from 'material-ui';
 
 const styles = {
     input: {
@@ -49,12 +50,12 @@ class ImportFieldsDialogComponent extends Component {
         const { failed, onClose, p: polyglot } = this.props;
 
         const actions = [
-            <FlatButton
+            <RaisedButton
                 key="confirm"
                 className="btn-save"
                 containerElement="label"
                 label={polyglot.t('confirm')}
-                secondary
+                primary
                 style={styles.button}
             >
                 <input
@@ -63,8 +64,9 @@ class ImportFieldsDialogComponent extends Component {
                     onChange={this.handleFileUpload}
                     style={styles.input}
                 />
-            </FlatButton>,
+            </RaisedButton>,
             <FlatButton
+                secondary
                 key="cancel"
                 className="btn-cancel"
                 label={polyglot.t('cancel')}

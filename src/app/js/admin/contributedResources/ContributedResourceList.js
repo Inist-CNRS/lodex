@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
-import FlatButton from 'material-ui/FlatButton';
+import RaisedButton from 'material-ui/RaisedButton';
 import { CardText } from 'material-ui/Card';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
@@ -39,7 +39,7 @@ const styles = {
 };
 
 export class ContributedResourceListComponent extends Component {
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         const { loadContributedResourcePage, currentPage, filter } = this.props;
         loadContributedResourcePage({ page: currentPage, perPage: 10, filter });
     }
@@ -122,7 +122,7 @@ export class ContributedResourceListComponent extends Component {
                                                 baseUri,
                                             )}
                                         >
-                                            <FlatButton
+                                            <RaisedButton
                                                 className="btn-review-resource"
                                                 label={polyglot.t('review')}
                                                 primary

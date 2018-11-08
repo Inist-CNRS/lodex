@@ -10,6 +10,7 @@ import {
 } from 'material-ui/svg-icons';
 import { milestones } from 'inist-roadmap';
 import { field as fieldPropTypes } from '../../propTypes';
+import Link from '../../lib/components/Link';
 
 function getIconFromLabel(labels) {
     const smallIcon = {
@@ -67,7 +68,7 @@ export default class Roadmap extends Component {
                         icon={getIconFromLabel(milestone.labels)}
                     >
                         <div style={SeeMoreStyle}>
-                            <a href={milestone.trelloLink}>See more</a>
+                            <Link href={milestone.trelloLink}>See more</Link>
                         </div>
                         {milestone.title}
                     </TimelineEvent>

@@ -1,10 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+
 import { field as fieldPropTypes } from '../../propTypes';
 import { getResourceUri } from '../../../../common/uris';
 import getLabel from '../shared/getLabel';
 import InvalidFormat from '../InvalidFormat';
+import Link from '../../lib/components/Link';
 
 const UriView = ({ className, resource, field, fields, type, value }) => {
     const uri = resource[field.name];

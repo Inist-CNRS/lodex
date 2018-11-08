@@ -96,17 +96,19 @@ class ClearDialogComponent extends Component {
 
         const actions = [
             <ButtonWithStatus
+                raised
                 key="submit"
                 className="btn-save"
                 label={polyglot.t('confirm')}
                 onClick={this.handleClear(type)}
-                secondary
+                primary
                 error={hasFailed}
                 disabled={!validName}
                 loading={isClearing}
             />,
             <FlatButton
                 key="cancel"
+                secondary
                 className="btn-cancel"
                 label={polyglot.t('cancel')}
                 onClick={onClose}

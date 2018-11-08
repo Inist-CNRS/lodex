@@ -17,6 +17,7 @@ import { fromCharacteristic } from '../../sharedSelectors';
 import EditButton from '../editFieldValue/EditButton';
 import { COVER_DATASET } from '../../../../common/cover';
 import * as overview from '../../../../common/overview';
+import Link from '../../lib/components/Link';
 
 const styles = {
     badge: {
@@ -70,7 +71,7 @@ const OntologyFieldComponent = ({ field, characteristics, p: polyglot }) => (
         </TableRowColumn>
         <TableRowColumn>{polyglot.t(`cover_${field.cover}`)}</TableRowColumn>
         <TableRowColumn>
-            {field.scheme && <a href={field.scheme}>{field.scheme}</a>}
+            {field.scheme && <Link href={field.scheme}>{field.scheme}</Link>}
         </TableRowColumn>
         <TableRowColumn>{field.count || 1}</TableRowColumn>
         <TableRowColumn>
@@ -94,6 +95,8 @@ const mapStateToProps = state => ({
     characteristics: fromCharacteristic.getCharacteristicsAsResource(state),
 });
 
-export default compose(translate, SortableElement, connect(mapStateToProps))(
-    OntologyFieldComponent,
-);
+export default compose(
+    translate,
+    SortableElement,
+    connect(mapStateToProps),
+)(OntologyFieldComponent);

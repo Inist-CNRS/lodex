@@ -104,7 +104,7 @@
 "new_field"	"Field"	"Champ"
 "contributed_by"	"Contributed by %{name}"	"Contribution de %{name}"
 "added_by"	"Added by %{name}"	"Ajouté par %{name}"
-"add_to_publication"	"Add to publication"	"Ajouter à une publication"
+"add_to_publication"	"Add"	"Ajouter"
 "add_column"	"Add a new column"	"Ajouter une nouvelle colonne"
 "no_dataset"	"No dataset"	"Aucun jeu de données"
 "scheme"	"scheme"	"scheme"

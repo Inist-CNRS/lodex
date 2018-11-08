@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { StyleSheetTestUtils } from 'aphrodite';
-import { Link, NavLink } from 'react-router-dom';
+import Link from '../../lib/components/Link';
 
 import MenuItem from './MenuItem';
 
@@ -35,7 +35,7 @@ describe('MenuItem', () => {
             />,
         );
 
-        const link = wrapper.find(NavLink);
+        const link = wrapper.find(Link);
 
         expect(
             link
@@ -58,7 +58,7 @@ describe('MenuItem', () => {
             />,
         );
 
-        const link = wrapper.find(NavLink);
+        const link = wrapper.find(Link);
 
         expect(
             link
@@ -81,7 +81,7 @@ describe('MenuItem', () => {
                 />,
             );
 
-            const link = wrapper.find(NavLink);
+            const link = wrapper.find(Link);
 
             expect(link.prop('to')).toBe('/');
             expect(link.prop('onClick')).toBe(defaultProps.closeAll);
@@ -101,7 +101,7 @@ describe('MenuItem', () => {
                 />,
             );
 
-            const link = wrapper.find(NavLink);
+            const link = wrapper.find(Link);
 
             expect(link.prop('to')).toBe('/graph');
             expect(link.prop('onClick')).toBe(defaultProps.closeAll);
@@ -122,7 +122,7 @@ describe('MenuItem', () => {
                 />,
             );
 
-            const link = wrapper.find(NavLink);
+            const link = wrapper.find(Link);
 
             expect(link.prop('to')).toBe('/graph');
             expect(link.prop('onClick')).toBe(
@@ -142,7 +142,7 @@ describe('MenuItem', () => {
                 />,
             );
 
-            expect(wrapper.find(NavLink)).toHaveLength(0);
+            expect(wrapper.find(Link)).toHaveLength(0);
         });
     });
 
@@ -178,7 +178,7 @@ describe('MenuItem', () => {
                 />,
             );
 
-            expect(wrapper.find(NavLink)).toHaveLength(0);
+            expect(wrapper.find(Link)).toHaveLength(0);
         });
     });
 
@@ -322,7 +322,7 @@ describe('MenuItem', () => {
                 />,
             );
 
-            const navLink = wrapper.find(NavLink);
+            const navLink = wrapper.find(Link);
             expect(navLink).toHaveLength(1);
             expect(navLink.prop('to')).toBe('/internal/link');
             expect(navLink.prop('onClick')).toBe(defaultProps.closeAll);
@@ -340,7 +340,7 @@ describe('MenuItem', () => {
                 />,
             );
 
-            expect(wrapper.find(NavLink)).toHaveLength(0);
+            expect(wrapper.find(Link)).toHaveLength(0);
             expect(wrapper.find('a')).toHaveLength(0);
         });
     });

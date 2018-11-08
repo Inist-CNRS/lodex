@@ -28,7 +28,7 @@ export const ExcerptRemoveColumnComponent = ({
                 )}`}
                 label={polyglot.t('remove_from_publication')}
                 onClick={removeColumn}
-                primary
+                secondary
             />
         ) : null}
     </TableRowColumn>

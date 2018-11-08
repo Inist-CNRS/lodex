@@ -2,11 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Card, CardMedia, CardActions } from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
-import { Link } from 'react-router-dom';
 import Forward from 'material-ui/svg-icons/content/forward';
 import translate from 'redux-polyglot/translate';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
+import Link from '../../lib/components/Link';
 
 const styles = {
     media: {
@@ -34,6 +34,7 @@ const GraphLink = ({ link, children, p: polyglot }) => (
         <CardMedia style={styles.media}>{children}</CardMedia>
         <CardActions style={styles.actions}>
             <FlatButton
+                primary
                 fullWidth
                 style={styles.detailsButton}
                 containerElement={<Link to={link} />}

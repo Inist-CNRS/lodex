@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
-import { lightBlue500 } from 'material-ui/styles/colors';
 
 import { polyglot as polyglotPropTypes } from '../propTypes';
 import withInitialData from './withInitialData';
@@ -15,12 +14,13 @@ import Upload from './upload/Upload';
 import Loading from '../lib/components/Loading';
 import Card from '../lib/components/Card';
 import Statistics from './Statistics';
+import theme from '../theme';
 
 const styles = {
     punchLine: {
         padding: '16px',
         textAlign: 'center',
-        color: lightBlue500,
+        color: theme.purple.primary,
     },
 };
 
@@ -79,6 +79,8 @@ const mapStateToProps = state => ({
     hasPublishedDataset: fromPublication.hasPublishedDataset(state),
 });
 
-export default compose(withInitialData, connect(mapStateToProps), translate)(
-    AdminComponent,
-);
+export default compose(
+    withInitialData,
+    connect(mapStateToProps),
+    translate,
+)(AdminComponent);

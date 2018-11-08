@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import FlatButton from 'material-ui/FlatButton';
+import RaisedButton from 'material-ui/RaisedButton';
 import translate from 'redux-polyglot/translate';
 
 import {
@@ -23,7 +24,7 @@ export const ActionsComponent = ({
     if (field.name === 'uri') {
         return (
             <div>
-                <FlatButton
+                <RaisedButton
                     className="btn-save"
                     label={polyglot.t('save')}
                     secondary
@@ -44,18 +45,18 @@ export const ActionsComponent = ({
                 <FlatButton
                     className="btn-next"
                     label={polyglot.t('next')}
-                    primary
                     onClick={onNextStep}
                 />
-                <FlatButton
+                <RaisedButton
                     className="btn-save"
                     label={polyglot.t('save')}
-                    secondary
+                    primary
                     onClick={onSave}
                 />
                 <FlatButton
                     className="btn-exit-column-edition"
                     label={polyglot.t('cancel')}
+                    secondary
                     onClick={onCancel}
                 />
             </div>
@@ -69,16 +70,16 @@ export const ActionsComponent = ({
                     className="btn-previous"
                     label={polyglot.t('previous')}
                     onClick={onPreviousStep}
+                />
+                <RaisedButton
+                    className="btn-save"
+                    label={polyglot.t('save')}
+                    onClick={onSave}
                     primary
                 />
                 <FlatButton
-                    className="btn-save"
-                    label={polyglot.t('save')}
-                    secondary
-                    onClick={onSave}
-                />
-                <FlatButton
                     className="btn-exit-column-edition"
+                    secondary
                     label={polyglot.t('cancel')}
                     onClick={onCancel}
                 />
@@ -91,24 +92,23 @@ export const ActionsComponent = ({
             <FlatButton
                 className="btn-previous"
                 label={polyglot.t('previous')}
-                primary
                 onClick={onPreviousStep}
             />
             <FlatButton
                 className="btn-next"
                 label={polyglot.t('next')}
-                primary
                 onClick={onNextStep}
             />
-            <FlatButton
+            <RaisedButton
                 className="btn-save"
                 label={polyglot.t('save')}
-                secondary
+                primary
                 onClick={onSave}
             />
             <FlatButton
                 className="btn-exit-column-edition"
                 label={polyglot.t('cancel')}
+                secondary
                 onClick={onCancel}
             />
         </div>

@@ -98,6 +98,7 @@ export class RemovedResourceListComponent extends Component {
                                 <TableRowColumn>{data.reason}</TableRowColumn>
                                 <TableRowColumn>
                                     <ButtonWithStatus
+                                        raised
                                         className="btn-restore-resource"
                                         loading={loading}
                                         label={polyglot.t('restore')}

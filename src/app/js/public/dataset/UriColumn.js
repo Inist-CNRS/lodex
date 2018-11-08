@@ -1,13 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { Link } from 'react-router-dom';
 import { TableRowColumn } from 'material-ui/Table';
 import FlatButton from 'material-ui/FlatButton';
 import RightIcon from 'material-ui/svg-icons/hardware/keyboard-arrow-right';
 
 import { field as fieldPropTypes } from '../../propTypes';
 import { getResourceUri } from '../../../../common/uris';
+import Link from '../../lib/components/Link';
 
 const UriColumn = ({ column, resource, indice }) => (
     <TableRowColumn

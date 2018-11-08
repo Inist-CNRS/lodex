@@ -10,6 +10,7 @@ import topairs from 'lodash.topairs';
 import clonedeep from 'lodash.clonedeep';
 import toSentenceCase from 'js-sentencecase';
 import { getViewComponent } from '../../';
+import Link from '../../../lib/components/Link';
 
 const styles = {
     container2: {
@@ -127,7 +128,7 @@ export class SparqlTextField extends Component {
 
     showURL = result => {
         if (isURL(result[1].value) && result[1].type == 'uri') {
-            return <a href={result[1].value}>{result[1].value}</a>;
+            return <Link href={result[1].value}>{result[1].value}</Link>;
         } else {
             return <span>{result[1].value}</span>;
         }

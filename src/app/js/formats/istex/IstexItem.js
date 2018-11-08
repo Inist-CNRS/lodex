@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import Book from 'material-ui/svg-icons/av/library-books';
 import { StyleSheet, css } from 'aphrodite/no-important';
 
+import Link from '../../lib/components/Link';
+
 const styles = StyleSheet.create({
     article: {
         paddingBottom: '3rem',
@@ -14,9 +16,6 @@ const styles = StyleSheet.create({
     titleIcon: {
         marginRight: 8,
         flexShrink: 0,
-    },
-    link: {
-        fontSize: '2rem',
     },
     authors: {
         fontStyle: 'oblique',
@@ -42,15 +41,15 @@ export const IstexItemComponent = ({
         <div className={css(styles.article)}>
             <div className={css(styles.title)}>
                 <Book size="20" className={css(styles.titleIcon)} />
-                <a style={styles.link} href={url}>
-                    {title}
-                </a>
+                <Link href={url}>{title}</Link>
             </div>
             {authors && (
                 <div className={css(styles.authors)}> {authors.join(';')} </div>
             )}
             <div className={css(styles.metadata)}>
-                {publicationDate},&nbsp;{hostTitle}
+                {publicationDate}
+                ,&nbsp;
+                {hostTitle}
                 &nbsp;-&nbsp;
                 <span className={css(styles.genre)}>{hostGenre}</span>
             </div>
