@@ -42,8 +42,8 @@ const styles = StyleSheet.create({
     },
     item: {
         display: 'flex',
-        width: 192,
-        height: 192,
+        width: 190,
+        height: 190,
         margin: 10,
         flexDirection: 'column',
         textAlign: 'center',
@@ -59,6 +59,7 @@ const styles = StyleSheet.create({
     container: {
         display: 'flex',
         flexWrap: 'wrap',
+        justifyContent: 'space-around',
     },
     label: {
         width: '100%',
