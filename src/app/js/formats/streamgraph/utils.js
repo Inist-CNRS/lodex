@@ -1,23 +1,6 @@
 import differenceBy from "lodash/differenceBy";
 import * as d3 from "d3";
 
-// ===========================================================================================
-// getCssToString get the css js object and return it as string
-// ===========================================================================================
-
-export function getCssToString(cssToChange, styles) {
-  const cssString = Object.keys(styles.legend)
-    .map(key => {
-      return `${key}: ${styles.legend[key]};`;
-    })
-    .join(" ");
-  return cssString;
-}
-
-// ===========================================================================================
-// zoomFunction will update the zoom on the graph
-// ===========================================================================================
-
 export function zoomFunction() {
   // create new scale ojects based on event
   let new_xScale = d3.event.transform.rescaleX(this.xAxisScale);
@@ -32,10 +15,6 @@ export function zoomFunction() {
   this.streams.attr("transform", d3.event.transform);
 }
 
-// ===========================================================================================
-// distinctColors : return a list of @count different and distinct colors in hsl hexa
-// ===========================================================================================
-
 export function distinctColors(count) {
   let colors = [];
   for (let hue = 0; hue < 360; hue += 360 / count) {
@@ -43,10 +22,6 @@ export function distinctColors(count) {
   }
   return colors;
 }
-
-// ===========================================================================================
-// hslToHex : Convert hsl values color to hex color
-// ===========================================================================================
 
 export function hslToHex(h, s, l) {
   h /= 360;
@@ -76,10 +51,6 @@ export function hslToHex(h, s, l) {
   };
   return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
 }
-
-// ===========================================================================================
-// transformDataIntoMapArray : convert all the data into an array
-// ===========================================================================================
 
 export function transformDataIntoMapArray(formatData) {
   let dateMin = -42;
@@ -116,7 +87,6 @@ export function transformDataIntoMapArray(formatData) {
             value: elem.weight
           });
 
-          // save min date and maxDate
           if (parseInt(elem.source) < dateMin || dateMin === -42) {
             dateMin = parseInt(elem.source);
           }
@@ -170,10 +140,6 @@ export function transformDataIntoMapArray(formatData) {
   return [valuesObjectsArray, valuesArray, dateMin, dateMax, namesList];
 }
 
-// ===========================================================================================
-// getMinMaxValue : go through the stackedData and find the min and max value
-// ===========================================================================================
-
 export function getMinMaxValue(stackedData) {
   let minValue = 0;
   let maxValue = 0;
@@ -190,16 +156,4 @@ export function getMinMaxValue(stackedData) {
   }
 
   return [minValue, maxValue];
-}
-
-export function randomId(length = 8) {
-  let text = "";
-  const chars =
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-
-  for (let i = 0; i < length; i++) {
-    text += chars.charAt(Math.floor(Math.random() * chars.length));
-  }
-
-  return text;
 }
