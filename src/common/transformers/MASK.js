@@ -4,7 +4,7 @@ export const mask = (value, reg) => {
     if (typeof value === 'string') {
         return RegExp(reg, 'gi').test(value) ? value : null;
     }
-    return value;
+    return null;
 };
 
 const transformation = (_, args) => value =>
