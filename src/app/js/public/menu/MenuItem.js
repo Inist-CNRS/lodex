@@ -5,8 +5,8 @@ import * as icons from '@fortawesome/free-solid-svg-icons';
 import get from 'lodash.get';
 import { StyleSheet, css } from 'aphrodite/no-important';
 import classnames from 'classnames';
-
-import Link from '../../lib/components/Link';
+import Link from 'react-router-dom/Link';
+import NavLink from 'react-router-dom/NavLink';
 
 import theme from '../../theme';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
@@ -103,8 +103,7 @@ const MenuItem = ({
     switch (config.role) {
         case 'home':
             return (
-                <Link
-                    routeAware
+                <NavLink
                     to="/"
                     exact
                     className={classnames(
@@ -117,12 +116,11 @@ const MenuItem = ({
                 >
                     {icon}
                     {label}
-                </Link>
+                </NavLink>
             );
         case 'resources':
             return (
-                <Link
-                    routeAware
+                <NavLink
                     to="/graph"
                     exact
                     className={classnames(
@@ -135,13 +133,12 @@ const MenuItem = ({
                 >
                     {icon}
                     {label}
-                </Link>
+                </NavLink>
             );
         case 'graphs':
             return (
                 hasGraph && (
-                    <Link
-                        routeAware
+                    <NavLink
                         to="/graph"
                         onClick={handleGraphItemClick}
                         className={classnames(
@@ -161,7 +158,7 @@ const MenuItem = ({
                     >
                         {icon}
                         {label}
-                    </Link>
+                    </NavLink>
                 )
             );
         case 'search':
@@ -243,8 +240,7 @@ const MenuItem = ({
                 );
             }
             return (
-                <Link
-                    routeAware
+                <NavLink
                     to={link}
                     onClick={closeAll}
                     className={classnames(
@@ -256,7 +252,7 @@ const MenuItem = ({
                 >
                     {icon}
                     {label}
-                </Link>
+                </NavLink>
             );
         }
         default:

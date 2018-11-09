@@ -1,7 +1,8 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { StyleSheetTestUtils } from 'aphrodite';
-import Link from '../../lib/components/Link';
+import Link from 'react-router-dom/Link';
+import NavLink from 'react-router-dom/NavLink';
 
 import MenuItem from './MenuItem';
 
@@ -35,7 +36,7 @@ describe('MenuItem', () => {
             />,
         );
 
-        const link = wrapper.find(Link);
+        const link = wrapper.find(NavLink);
 
         expect(
             link
@@ -58,7 +59,7 @@ describe('MenuItem', () => {
             />,
         );
 
-        const link = wrapper.find(Link);
+        const link = wrapper.find(NavLink);
 
         expect(
             link
@@ -81,7 +82,7 @@ describe('MenuItem', () => {
                 />,
             );
 
-            const link = wrapper.find(Link);
+            const link = wrapper.find(NavLink);
 
             expect(link.prop('to')).toBe('/');
             expect(link.prop('onClick')).toBe(defaultProps.closeAll);
@@ -101,7 +102,7 @@ describe('MenuItem', () => {
                 />,
             );
 
-            const link = wrapper.find(Link);
+            const link = wrapper.find(NavLink);
 
             expect(link.prop('to')).toBe('/graph');
             expect(link.prop('onClick')).toBe(defaultProps.closeAll);
@@ -122,7 +123,7 @@ describe('MenuItem', () => {
                 />,
             );
 
-            const link = wrapper.find(Link);
+            const link = wrapper.find(NavLink);
 
             expect(link.prop('to')).toBe('/graph');
             expect(link.prop('onClick')).toBe(
@@ -322,7 +323,7 @@ describe('MenuItem', () => {
                 />,
             );
 
-            const navLink = wrapper.find(Link);
+            const navLink = wrapper.find(NavLink);
             expect(navLink).toHaveLength(1);
             expect(navLink.prop('to')).toBe('/internal/link');
             expect(navLink.prop('onClick')).toBe(defaultProps.closeAll);
