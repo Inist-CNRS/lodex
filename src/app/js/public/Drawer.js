@@ -4,7 +4,7 @@ import classnames from 'classnames';
 import { StyleSheet, css } from 'aphrodite/no-important';
 import memoize from 'lodash.memoize';
 
-const DRAWER_WIDTH = 442; // px
+const DRAWER_WIDTH = 440; // px
 
 const styles = StyleSheet.create({
     container: {
