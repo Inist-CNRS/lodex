@@ -107,7 +107,7 @@ const FacetValueList = ({
                                 label={polyglot.t('count')}
                                 sortDir={sort.sortDir}
                                 sortBy={sort.sortBy}
-                                sort={onSortChange}
+                                sort={onSortChange(sortFacetValue, name)}
                             />
                         </div>
                     </div>
