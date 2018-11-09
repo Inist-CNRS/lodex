@@ -4,11 +4,9 @@ import compose from "recompose/compose";
 import { StyleSheet, css } from "aphrodite/no-important";
 import * as d3 from "d3";
 import {
-  getCssToString,
   zoomFunction,
   distinctColors,
   transformDataIntoMapArray,
-  randomId,
   getMinMaxValue
 } from "./utils";
 import injectData from "../injectData";
@@ -20,7 +18,7 @@ const styles = StyleSheet.create({
     position: "relative"
   },
   tooltip: {
-    marginTop: 900
+    position: 'absolute'
   },
   vertical: {
     marginTop: 60,
@@ -33,7 +31,7 @@ const styles = StyleSheet.create({
   legendItem: {
     marginTop: 2
   },
-  legentItemText: {
+  legendItemText: {
     marginLeft: 5
   },
   legendButton: {
@@ -51,12 +49,6 @@ class Streamgraph extends PureComponent {
     };
 
     this.refs = React.createRef();
-
-    this.uniqueId = randomId(10);
-    this.divContainer = "divContainer" + this.uniqueId;
-    this.svgContainer = "svgContainer" + this.uniqueId;
-    this.anchor = "anchor" + this.uniqueId;
-
     this.xAxisScale;
     this.yAxisScale;
     this.xAxis;
@@ -214,21 +206,12 @@ class Streamgraph extends PureComponent {
     return colorNameList;
   }
 
-  createAndSetDataReader(d3DivContainer, height, margin) {
-    const tooltip = d3DivContainer
-      .append("div")
-      .attr("class", "remove")
-      .attr("id", "tooltip")
-      .attr("style", getCssToString(styles.tooltip, styles))
-      .style("position", "absolute")
-      .style("z-index", "2")
-      .style("visibility", "hidden")
-      .style("top", "4px")
-      .style("left", "12px");
+  createAndSetDataReader(divContainer, height, margin) {
 
-    const vertical = d3DivContainer
-      .append("div")
-      .style("position", "absolute")
+    const vertical = divContainer
+      .insert("div", "#svgContainer")
+      .attr("id", "vertical")
+      .style("position", "absolute") // need relative in parent
       .style("z-index", "19")
       .style("width", "1px")
       .style("height", `${height}px`)
@@ -238,6 +221,17 @@ class Streamgraph extends PureComponent {
       .style("margin-top", `${margin.top - 10}px`)
       .style("pointer-events", "none")
       .style("background", "#000");
+
+    const tooltip = divContainer
+      .insert("div", "#svgContainer")
+      .attr("class", `remove ${css(styles.tooltip)}`)
+      .attr("id", "tooltip")
+      .style("position", "absolute")
+      .style("z-index", "2")
+      .style("visibility", "hidden")
+      .style("top", "4px")
+      .style("left", "12px");
+
     return [tooltip, vertical];
   }
 
@@ -245,14 +239,13 @@ class Streamgraph extends PureComponent {
     const legendView = d3DivContainer
       .append("div")
       .attr("id", "legend")
-      .attr("style", getCssToString(styles.legend, styles));
+      .attr("class", `${css(styles.legend)}`);
 
     for (let index = colorNameList.length - 1; index > 0; index--) {
       let element = colorNameList[index];
       let legendItemContainer = legendView
         .append("div")
-        .attr("style", getCssToString(styles.legendItem, styles))
-        .attr("class", "legendItem");
+        .attr("class", `${css(styles.legendItem)}`);
 
       legendItemContainer
         .append("svg")
@@ -262,8 +255,7 @@ class Streamgraph extends PureComponent {
 
       legendItemContainer
         .append("text")
-        .attr("style", getCssToString(styles.legentItemText, styles))
-        .attr("class", "legentItemText")
+        .attr("class", `${styles.legendItemText}`)
         .text(element[0]);
     }
   }
@@ -367,17 +359,19 @@ class Streamgraph extends PureComponent {
     ] = transformDataIntoMapArray(this.props.formatData);
 
     let svgWidth = this.refs.divContainer.clientWidth;
+
     let { height } = this.state;
     let svgHeight = height;
     const margin = { top: 60, right: 40, bottom: 50, left: 60 };
     let width = svgWidth - margin.left - margin.right;
     height = svgHeight - margin.top - margin.bottom;
 
-    const d3DivContainerId = "d3DivContainer" + this.uniqueId;
     const divContainer = d3.select(this.refs.divContainer);
+
     const d3DivContainer = divContainer
+      .attr("class", `${css(styles.divContainer)}`)
       .append("div")
-      .attr("id", d3DivContainerId);
+      .attr("id", "d3DivContainer");
 
     const svgViewport = d3.select(this.refs.anchor);
 
@@ -393,6 +387,12 @@ class Streamgraph extends PureComponent {
       height,
       margin,
       svgViewport
+    );
+
+    let [tooltip, vertical] = this.createAndSetDataReader(
+      divContainer,
+      height,
+      margin
     );
 
     this.createAndSetAxis(
@@ -412,14 +412,7 @@ class Streamgraph extends PureComponent {
       nameList
     );
 
-    let [tooltip, vertical] = this.createAndSetDataReader(
-      d3DivContainer,
-      height,
-      margin
-    );
-
     this.createAndSetTheLegend(d3DivContainer, colorNameList);
-
     this.setTheEventsActions(svgViewport, vertical, tooltip);
   }
 
@@ -428,14 +421,24 @@ class Streamgraph extends PureComponent {
   }
 
   componentWillUpdate() {
-    d3.selectAll("#d3DivContainer" + this.uniqueId)
+    d3.select(this.refs.divContainer)
+      .selectAll("#d3DivContainer")
       .selectAll("div")
       .remove();
-    d3.selectAll("#d3DivContainer" + this.uniqueId).remove();
-    d3.selectAll("#" + this.anchor)
+
+    d3.select(this.refs.divContainer)
+      .selectAll("#d3DivContainer")
+      .remove();
+
+    d3.select(this.refs.divContainer)
+      .selectAll("#vertical")
+      .remove();
+
+    d3.select(this.refs.anchor)
       .selectAll("g")
       .remove();
-    d3.selectAll("#" + this.anchor)
+
+    d3.select(this.refs.anchor)
       .selectAll("defs")
       .remove();
   }
@@ -446,31 +449,18 @@ class Streamgraph extends PureComponent {
 
   render() {
     const { width, height } = this.state;
+
     return (
-      <div
-        id={this.divContainer}
-        ref="divContainer"
-        style={styles.divContainer}
-      >
-        <svg
-          id={this.svgContainer}
-          ref="svgContainer"
-          width={width}
-          height={height}
-        >
-          <g id={this.anchor} ref="anchor" />
+      <div id="divContainer" ref="divContainer" style={styles.divContainer}>
+        <svg id="svgContainer" ref="svgContainer" width={width} height={height}>
+          <g id="anchor" ref="anchor" />
         </svg>
       </div>
     );
   }
 }
 
-const mapStateToProps = (state, { formatData }) => {
-  return {};
-};
-
 export default compose(
   injectData(),
-  connect(mapStateToProps),
   exportableToPng
 )(Streamgraph);
