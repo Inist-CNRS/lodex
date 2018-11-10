@@ -1,14 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
+import InvalidFormat from '../InvalidFormat';
 import { field as fieldPropTypes } from '../../propTypes';
 import { isURL } from '../../../../common/uris.js';
-
-const getURL = value => {
-    const values = Array.isArray(value) ? value : [value];
-    const URLs = values.filter(v => isURL(v));
-    return URLs.pop();
-};
 
 class RedirectView extends Component {
     constructor(props) {
@@ -17,15 +12,18 @@ class RedirectView extends Component {
 
     componentDidMount() {
         const { field, resource } = this.props;
-        const url = getURL(resource[field.name]);
-        if (url) {
+        const url = resource[field.name];
+        if (isURL(url)) {
             window.location.href = url;
         }
     }
 
     render() {
         const { field, resource, className } = this.props;
-        const url = getURL(resource[field.name]);
+        const url = resource[field.name];
+        if (!isURL(url)) {
+            return <InvalidFormat format={field.format} value={url} />;
+        }
         return (
             <div className={className}>
                 <Helmet>
