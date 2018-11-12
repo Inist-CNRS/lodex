@@ -17,8 +17,12 @@ const translations = require('./translations');
 module.exports = {
     mode: isDevelopment ? 'development' : 'production',
     entry: {
-        index: [resolve(__dirname, './js/public/index.js')],
-        'admin/index': [resolve(__dirname, './js/admin/index.js')],
+        index: resolve(__dirname, './js/public/index.js'),
+        'admin/index': resolve(__dirname, './js/admin/index.js'),
+        embeddedIstexSummary: resolve(
+            __dirname,
+            './js/embeddedIstexSummary/index.js',
+        ),
     },
     module: {
         rules: [
