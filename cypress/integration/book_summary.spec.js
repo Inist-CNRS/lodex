@@ -66,6 +66,6 @@ describe('Book Summary Format', () => {
         bookSummaryPage.openConfigure();
         bookSummaryPage.configureYearSort('From youngest to oldest');
         bookSummaryPage.saveConfiguration();
-        bookSummaryPage.checkYears(['2003-2000', '1999-1997']);
+        bookSummaryPage.checkYears(['2000-2003', '1997-1999']);
     });
 });

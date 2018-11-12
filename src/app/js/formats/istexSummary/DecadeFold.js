@@ -18,9 +18,7 @@ const DecadeFold = ({
     children,
 }) => (
     <FetchFold
-        label={
-            sortDir === yearSortDirValues[0] ? `${to}-${from}` : `${from}-${to}`
-        }
+        label={`${from}-${to}`}
         count={count}
         from={from}
         to={to}
