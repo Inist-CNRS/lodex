@@ -16,7 +16,7 @@ const ImageView = ({ resource, field, imageWidth }) => {
         src: imageURL,
     };
 
-    return <ImageZoom image={image} zoomImage={zoomImage} />;
+    return <ImageZoom key={imageWidth} image={image} zoomImage={zoomImage} />;
 };
 
 ImageView.propTypes = {
