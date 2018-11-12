@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
+import withRouter from 'react-router/withRouter';
 
 import { polyglot as polyglotPropTypes } from '../propTypes';
 import ButtonWithDialog from '../lib/components/ButtonWithDialog';
@@ -10,16 +11,22 @@ import { fromExport } from './selectors';
 import { openExport, closeExport } from './export';
 import ExportShare from './ExportShare';
 
+const getUri = location =>
+    location.pathname.match(/\/uid:\//) || location.pathname.match(/\/ark:\//)
+        ? location.pathname
+        : null;
+
 export const PureExportShareMenuItem = ({
     handleClose,
     handleOpen,
     open,
     renderOpenButton,
     p,
+    location,
 }) => (
     <ButtonWithDialog
         openButton={renderOpenButton({ handleOpen, open })}
-        dialog={<ExportShare />}
+        dialog={<ExportShare uri={getUri(location)} />}
         open={open}
         label={p.t('share_export')}
         handleClose={handleClose}
@@ -37,6 +44,9 @@ PureExportShareMenuItem.propTypes = {
     p: polyglotPropTypes.isRequired,
     open: PropTypes.bool,
     renderOpenButton: PropTypes.func.isRequired,
+    location: PropTypes.shape({
+        pathname: PropTypes.string,
+    }).isRequired,
 };
 
 const mapStateToProps = state => ({
@@ -54,4 +64,5 @@ export default compose(
         mapStateToProps,
         mapDispatchToProps,
     ),
+    withRouter,
 )(PureExportShareMenuItem);
