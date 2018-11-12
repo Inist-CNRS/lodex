@@ -1,0 +1,53 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`getIstexData getDocumentUrl should return url to get document 1`] = `
+Object {
+  "url": "https://api.istex.fr/document/?output=id%2CarkIstex%2Ctitle%2CpublicationDate%2Cauthor%2Chost.genre%2Chost.title&size=10&q=(searched.field%3A%22issn%22%20AND%20publicationDate%3A%22year%22%20AND%20host.volume%3A%22volume%22%20AND%20host.issue%3A%22issue%22)",
+}
+`;
+
+exports[`getIstexData getDocumentUrl should return url to get document with other issue retrieving all non numerical issue 1`] = `
+Object {
+  "url": "https://api.istex.fr/document/?output=id%2CarkIstex%2Ctitle%2CpublicationDate%2Cauthor%2Chost.genre%2Chost.title&size=10&q=(searched.field%3A%22issn%22%20AND%20publicationDate%3A%22year%22%20AND%20host.volume%3A%22volume%22%20AND%20-host.issue%3A%5B0%20TO%20*%5D)",
+}
+`;
+
+exports[`getIstexData getDocumentUrl should return url to get document with other volume retrieving all non numerical volume 1`] = `
+Object {
+  "url": "https://api.istex.fr/document/?output=id%2CarkIstex%2Ctitle%2CpublicationDate%2Cauthor%2Chost.genre%2Chost.title&size=10&q=(searched.field%3A%22issn%22%20AND%20publicationDate%3A%22year%22%20AND%20-host.volume%3A%5B0%20TO%20*%5D%20AND%20host.issue%3A%22issue%22)",
+}
+`;
+
+exports[`getIstexData getIssueUrl should return url to get issue facet 1`] = `
+Object {
+  "url": "https://api.istex.fr/document/?facet=host.issue%5B*-*%3A1%5D&output=*&size=0&q=(searched.field%3A%22issn%22%20AND%20publicationDate%3A%22year%22%20AND%20host.volume%3A%22volume%22)",
+}
+`;
+
+exports[`getIstexData getIssueUrl should return url to get issue facet with other volume retrieving all non numerical volume 1`] = `
+Object {
+  "url": "https://api.istex.fr/document/?facet=host.issue%5B*-*%3A1%5D&output=*&size=0&q=(searched.field%3A%22issn%22%20AND%20publicationDate%3A%22year%22%20AND%20-host.volume%3A%5B0%20TO%20*%5D)",
+}
+`;
+
+exports[`getIstexData getOtherIssueUrl should return url to get non numerical issues 1`] = `
+Object {
+  "url": "https://api.istex.fr/document/?output=*&size=0&q=(searched.field%3A%22issn%22%20AND%20publicationDate%3A%22year%22%20AND%20host.volume%3A%22volume%22%20AND%20-host.issue%3A%5B0%20TO%20*%5D)",
+}
+`;
+
+exports[`getIstexData getOtherVolumeUrl should return url to get non numerical volumes 1`] = `
+Object {
+  "url": "https://api.istex.fr/document/?output=*&size=0&q=(searched.field%3A%22issn%22%20AND%20publicationDate%3A%22year%22%20AND%20-host.volume%3A%5B0%20TO%20*%5D)",
+}
+`;
+
+exports[`getIstexData getVolumeUrl should return url to get volume facet 1`] = `
+Object {
+  "url": "https://api.istex.fr/document/?facet=host.volume%5B*-*%3A1%5D&output=*&size=0&q=(searched.field%3A%22issn%22%20AND%20publicationDate%3A%22year%22)",
+}
+`;
+
+exports[`getIstexData getYearUrl should return the value if the custom ISTEX query is selected 1`] = `"https://api.istex.fr/document/?facet=publicationDate%5BperYear%5D&output=*&size=0&q=((CUSTOM_QUERY))"`;
+
+exports[`getIstexData getYearUrl should return url to get year facet 1`] = `"https://api.istex.fr/document/?facet=publicationDate%5BperYear%5D&output=*&size=0&q=(searched.field%3A%22issn%22)"`;

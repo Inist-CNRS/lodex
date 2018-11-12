@@ -7,6 +7,12 @@ import TextField from 'material-ui/TextField';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import updateAdminArgs from '../shared/updateAdminArgs';
+import {
+    SEARCHED_FIELD_VALUES,
+    SORT_YEAR_VALUES,
+    CUSTOM_ISTEX_QUERY,
+    SORT_YEAR_DESC,
+} from './constants';
 
 const styles = {
     container: {
@@ -20,27 +26,17 @@ const styles = {
     },
 };
 
-export const yearSortDirValues = ['YEAR_DESC', 'YEAR_ASC'];
-
-export const searchedFieldValues = [
-    'host.issn',
-    'host.eissn',
-    'host.isbn',
-    'host.eisbn',
-    'host.title',
-];
-
 export const defaultArgs = {
-    searchedField: searchedFieldValues[0],
-    sortDir: yearSortDirValues[0],
+    searchedField: CUSTOM_ISTEX_QUERY,
+    sortDir: SORT_YEAR_DESC,
     yearThreshold: 50,
 };
 
 export class IstexSummaryAdmin extends Component {
     static propTypes = {
         args: PropTypes.shape({
-            searchedField: PropTypes.oneOf(searchedFieldValues),
-            sortDir: PropTypes.oneOf(yearSortDirValues),
+            searchedField: PropTypes.oneOf(SEARCHED_FIELD_VALUES),
+            sortDir: PropTypes.oneOf(SORT_YEAR_VALUES),
             yearThreshold: PropTypes.number,
         }),
         onChange: PropTypes.func.isRequired,
@@ -81,7 +77,7 @@ export class IstexSummaryAdmin extends Component {
                     style={styles.input}
                     value={searchedField}
                 >
-                    {searchedFieldValues.map(value => (
+                    {SEARCHED_FIELD_VALUES.map(value => (
                         <MenuItem
                             key={value}
                             value={value}
@@ -96,7 +92,7 @@ export class IstexSummaryAdmin extends Component {
                     style={styles.input}
                     value={sortDir}
                 >
-                    {yearSortDirValues.map(value => (
+                    {SORT_YEAR_VALUES.map(value => (
                         <MenuItem
                             key={value}
                             value={value}

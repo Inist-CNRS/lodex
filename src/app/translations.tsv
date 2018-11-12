@@ -431,3 +431,4 @@
 "year_threshold"	"Gather years by decades starting from (years count)"	"Regrouper les années par décennies à partir de (nombre d'années)"
 "empty"	"Empty"	"Vide"
 "progress_error"	"The operation was aborted due to an error"	"L'opération a été annulée à cause d'une erreur"
+"custom_istex_query"	"Custom ISTEX Query"	"Requête ISTEX personnalisée"

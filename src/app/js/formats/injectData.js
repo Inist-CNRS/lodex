@@ -167,7 +167,11 @@ export default url => FormatView => {
         loadFormatData,
     };
 
-    return compose(connect(mapStateToProps, mapDispatchToProps), translate)(
-        GraphItem,
-    );
+    return compose(
+        connect(
+            mapStateToProps,
+            mapDispatchToProps,
+        ),
+        translate,
+    )(GraphItem);
 };

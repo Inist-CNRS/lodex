@@ -23,7 +23,7 @@ describe('IstexSummaryView', () => {
             name: 'field',
         },
         resource: { field: 'value' },
-        searchedField: 'searchedField',
+        searchedField: 'host.issn',
         sortDir: 'sortDir',
         yearThreshold: 50,
         p: { t: v => v },
@@ -52,8 +52,8 @@ describe('IstexSummaryView', () => {
 
         expect(wrapper.find(ComposedComponent).props()).toEqual({
             data: { hits: [1, 2, 3] },
-            issn: 'value',
-            searchedField: 'searchedField',
+            value: 'value',
+            searchedField: 'host.issn',
             sortDir: 'sortDir',
             polyglot: defaultProps.p,
         });
@@ -86,8 +86,8 @@ describe('IstexSummaryView', () => {
 
         expect(wrapper.find(ComposedComponent).props()).toEqual({
             data: 'decade data',
-            issn: 'value',
-            searchedField: 'searchedField',
+            value: 'value',
+            searchedField: 'host.issn',
             sortDir: 'sortDir',
             polyglot: defaultProps.p,
         });

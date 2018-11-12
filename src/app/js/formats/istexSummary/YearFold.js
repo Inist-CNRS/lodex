@@ -3,11 +3,11 @@ import PropTypes from 'prop-types';
 
 import FetchFold from './FetchFold';
 import { getVolumeData } from './getIstexData';
-import { searchedFieldValues } from './IstexSummaryAdmin';
+import { SEARCHED_FIELD_VALUES } from './constants';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 
 const YearFold = ({
-    issn,
+    value,
     item: { name: year, count },
     searchedField,
     polyglot,
@@ -19,7 +19,7 @@ const YearFold = ({
         year={year}
         polyglot={polyglot}
         getData={getVolumeData({
-            issn,
+            value,
             year,
             searchedField,
         })}
@@ -29,12 +29,12 @@ const YearFold = ({
 );
 
 YearFold.propTypes = {
-    issn: PropTypes.string.isRequired,
+    value: PropTypes.string.isRequired,
     item: PropTypes.shape({
         name: PropTypes.string.isRequired,
         count: PropTypes.number.isRequired,
     }).isRequired,
-    searchedField: PropTypes.oneOf(searchedFieldValues),
+    searchedField: PropTypes.oneOf(SEARCHED_FIELD_VALUES),
     children: PropTypes.func.isRequired,
     polyglot: polyglotPropTypes.isRequired,
 };
