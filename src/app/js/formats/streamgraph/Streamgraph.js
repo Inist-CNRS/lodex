@@ -1,5 +1,4 @@
 import React, { PureComponent } from "react";
-import { connect } from "react-redux";
 import compose from "recompose/compose";
 import { StyleSheet, css } from "aphrodite/no-important";
 import * as d3 from "d3";
@@ -18,7 +17,7 @@ const styles = StyleSheet.create({
     position: "relative"
   },
   tooltip: {
-    position: 'absolute'
+    position: "absolute"
   },
   vertical: {
     marginTop: 60,
@@ -48,7 +47,10 @@ class Streamgraph extends PureComponent {
       height: 300
     };
 
-    this.refs = React.createRef();
+    this.divContainer = React.createRef();
+    this.svgContainer = React.createRef();
+    this.anchor = React.createRef();
+
     this.xAxisScale;
     this.yAxisScale;
     this.xAxis;
@@ -207,7 +209,6 @@ class Streamgraph extends PureComponent {
   }
 
   createAndSetDataReader(divContainer, height, margin) {
-
     const vertical = divContainer
       .insert("div", "#svgContainer")
       .attr("id", "vertical")
@@ -358,7 +359,7 @@ class Streamgraph extends PureComponent {
       nameList
     ] = transformDataIntoMapArray(this.props.formatData);
 
-    let svgWidth = this.refs.divContainer.clientWidth;
+    let svgWidth = this.divContainer.clientWidth;
 
     let { height } = this.state;
     let svgHeight = height;
@@ -366,16 +367,16 @@ class Streamgraph extends PureComponent {
     let width = svgWidth - margin.left - margin.right;
     height = svgHeight - margin.top - margin.bottom;
 
-    const divContainer = d3.select(this.refs.divContainer);
+    const divContainer = d3.select(this.divContainer);
 
     const d3DivContainer = divContainer
       .attr("class", `${css(styles.divContainer)}`)
       .append("div")
       .attr("id", "d3DivContainer");
 
-    const svgViewport = d3.select(this.refs.anchor);
+    const svgViewport = d3.select(this.anchor);
 
-    d3.select(this.refs.svgContainer).attr("width", svgWidth);
+    d3.select(this.svgContainer).attr("width", svgWidth);
 
     let layersNumber = valuesObjectsArray.length;
 
@@ -421,24 +422,24 @@ class Streamgraph extends PureComponent {
   }
 
   componentWillUpdate() {
-    d3.select(this.refs.divContainer)
+    d3.select(this.divContainer)
       .selectAll("#d3DivContainer")
       .selectAll("div")
       .remove();
 
-    d3.select(this.refs.divContainer)
+    d3.select(this.divContainer)
       .selectAll("#d3DivContainer")
       .remove();
 
-    d3.select(this.refs.divContainer)
+    d3.select(this.divContainer)
       .selectAll("#vertical")
       .remove();
 
-    d3.select(this.refs.anchor)
+    d3.select(this.anchor)
       .selectAll("g")
       .remove();
 
-    d3.select(this.refs.anchor)
+    d3.select(this.anchor)
       .selectAll("defs")
       .remove();
   }
@@ -451,9 +452,18 @@ class Streamgraph extends PureComponent {
     const { width, height } = this.state;
 
     return (
-      <div id="divContainer" ref="divContainer" style={styles.divContainer}>
-        <svg id="svgContainer" ref="svgContainer" width={width} height={height}>
-          <g id="anchor" ref="anchor" />
+      <div
+        id="divContainer"
+        ref={divContainer => (this.divContainer = divContainer)}
+        style={styles.divContainer}
+      >
+        <svg
+          id="svgContainer"
+          ref={svgContainer => (this.svgContainer = svgContainer)}
+          width={width}
+          height={height}
+        >
+          <g id="anchor" ref={anchor => (this.anchor = anchor)} />
         </svg>
       </div>
     );
