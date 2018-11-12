@@ -124,6 +124,15 @@
       },
       {
         "label": {
+                "en": "Export",
+                "fr": "Exporter"
+        },
+        "icon": "faShareAlt",
+        "position": "bottom",
+        "role": "share_export"
+      },
+      {
+        "label": {
                 "en": "Admin",
                 "fr": "Admin"
         },
