@@ -6,6 +6,7 @@ import { fromUpload } from '../../selectors';
 import { loadDatasetFile } from '../../../lib/loadFile';
 import { UPLOAD_FILE, uploadError, uploadSuccess } from '../';
 import { preventUnload, allowUnload } from './unload';
+import { FINISH_PROGRESS } from '../../progress/reducer';
 
 export function* handleUploadFile(action) {
     if (!action || !action.payload) {
@@ -24,6 +25,9 @@ export function* handleUploadFile(action) {
         if (cancel) {
             return;
         }
+
+        yield take(FINISH_PROGRESS);
+
         yield put(uploadSuccess(file));
     } catch (error) {
         allowUnload();

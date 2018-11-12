@@ -17,18 +17,11 @@ export class Progress {
         this.status = PENDING;
     }
 
-    checkProgress() {
-        if (this.progress >= this.target) {
-            this.status = PENDING;
-        }
-    }
-
     incrementProgress(progress = 1) {
         if (this.status === PENDING) {
             return;
         }
         this.progress += progress;
-        this.checkProgress();
     }
 
     setProgress(progress) {
@@ -37,7 +30,6 @@ export class Progress {
         }
 
         this.progress = progress;
-        this.checkProgress();
     }
 
     incrementTarget(target = 1) {
