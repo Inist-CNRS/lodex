@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
@@ -66,6 +66,7 @@ const styles = StyleSheet.create({
         marginTop: '-0.2rem',
     },
     loadMore: {
+        height: 36,
         marginTop: '1.5rem',
     },
 });
@@ -138,13 +139,24 @@ class Search extends Component {
     };
 
     renderLoadMore = () => {
-        const { loadMore, p: polyglot, results, total } = this.props;
+        const { loadMore, p: polyglot, results, total, loading } = this.props;
 
         return (
             <div className={classnames('load-more', css(styles.loadMore))}>
-                <FlatButton fullWidth onClick={loadMore}>
-                    {polyglot.t('search_load_more')} ({total - results.length})
-                </FlatButton>
+                {loading ? (
+                    <Fragment>
+                        <CircularProgress
+                            size={20}
+                            className={css(styles.loading)}
+                        />{' '}
+                        {polyglot.t('loading')}
+                    </Fragment>
+                ) : (
+                    <FlatButton fullWidth onClick={loadMore}>
+                        {polyglot.t('search_load_more')} (
+                        {total - results.length})
+                    </FlatButton>
+                )}
             </div>
         );
     };
@@ -171,8 +183,7 @@ class Search extends Component {
         const noResults = !loading && !noOverviewField && results.length === 0;
 
         const everythingIsOk = !noOverviewField && !noResults;
-        const canLoadMore =
-            !loading && everythingIsOk && results.length < total;
+        const canLoadMore = everythingIsOk && results.length < total;
 
         return (
             <div className={cnames('search', styles.container)}>
@@ -238,7 +249,6 @@ class Search extends Component {
                             closeDrawer={closeDrawer}
                         />
                     )}
-                    {loading && this.renderLoading()}
                     {canLoadMore && this.renderLoadMore()}
                 </div>
             </div>
