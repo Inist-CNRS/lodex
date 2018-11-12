@@ -359,7 +359,7 @@ class Streamgraph extends PureComponent {
       nameList
     ] = transformDataIntoMapArray(this.props.formatData);
 
-    let svgWidth = this.divContainer.clientWidth;
+    let svgWidth = this.divContainer.current.clientWidth;
 
     let { height } = this.state;
     let svgHeight = height;
@@ -367,16 +367,16 @@ class Streamgraph extends PureComponent {
     let width = svgWidth - margin.left - margin.right;
     height = svgHeight - margin.top - margin.bottom;
 
-    const divContainer = d3.select(this.divContainer);
+    const divContainer = d3.select(this.divContainer.current);
 
     const d3DivContainer = divContainer
       .attr("class", `${css(styles.divContainer)}`)
       .append("div")
       .attr("id", "d3DivContainer");
 
-    const svgViewport = d3.select(this.anchor);
+    const svgViewport = d3.select(this.anchor.current);
 
-    d3.select(this.svgContainer).attr("width", svgWidth);
+    d3.select(this.svgContainer.current).attr("width", svgWidth);
 
     let layersNumber = valuesObjectsArray.length;
 
@@ -422,24 +422,24 @@ class Streamgraph extends PureComponent {
   }
 
   componentWillUpdate() {
-    d3.select(this.divContainer)
+    d3.select(this.divContainer.current)
       .selectAll("#d3DivContainer")
       .selectAll("div")
       .remove();
 
-    d3.select(this.divContainer)
+    d3.select(this.divContainer.current)
       .selectAll("#d3DivContainer")
       .remove();
 
-    d3.select(this.divContainer)
+    d3.select(this.divContainer.current)
       .selectAll("#vertical")
       .remove();
 
-    d3.select(this.anchor)
+    d3.select(this.anchor.current)
       .selectAll("g")
       .remove();
 
-    d3.select(this.anchor)
+    d3.select(this.anchor.current)
       .selectAll("defs")
       .remove();
   }
@@ -454,16 +454,16 @@ class Streamgraph extends PureComponent {
     return (
       <div
         id="divContainer"
-        ref={divContainer => (this.divContainer = divContainer)}
+        ref={this.divContainer}
         style={styles.divContainer}
       >
         <svg
           id="svgContainer"
-          ref={svgContainer => (this.svgContainer = svgContainer)}
+          ref={this.svgContainer}
           width={width}
           height={height}
         >
-          <g id="anchor" ref={anchor => (this.anchor = anchor)} />
+          <g id="anchor" ref={this.anchor} />
         </svg>
       </div>
     );
