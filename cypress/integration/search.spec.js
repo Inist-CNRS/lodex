@@ -99,5 +99,75 @@ describe('Search', () => {
             searchDrawer.clearFacet('2014');
             cy.get('.search-result').should('have.length', 10);
         });
+
+        it('should allow to sort facet', () => {
+            searchDrawer.openSearchDrawer();
+            searchDrawer.openAdvancedSearchDrawer();
+            searchDrawer.getFacet('Première mise en ligne en').click();
+            searchDrawer.checkFacetsItem('Première mise en ligne en', [
+                '2011',
+                '1988',
+                '2008',
+                '1853',
+                '1984',
+                '1983',
+                '2007',
+                '1939',
+                '1926',
+                '2004',
+            ]);
+            searchDrawer.sortFacet('Première mise en ligne en', 'value');
+            searchDrawer.checkFacetsItem('Première mise en ligne en', [
+                '2011',
+                '2008',
+                '2007',
+                '2004',
+                '1988',
+                '1984',
+                '1983',
+                '1939',
+                '1926',
+                '1853',
+            ]);
+            searchDrawer.sortFacet('Première mise en ligne en', 'value');
+            searchDrawer.checkFacetsItem('Première mise en ligne en', [
+                '1853',
+                '1926',
+                '1939',
+                '1983',
+                '1984',
+                '1988',
+                '2004',
+                '2007',
+                '2008',
+                '2011',
+            ]);
+            searchDrawer.sortFacet('Première mise en ligne en', 'count');
+            searchDrawer.checkFacetsItem('Première mise en ligne en', [
+                '2011',
+                '1988',
+                '2008',
+                '1853',
+                '1984',
+                '1983',
+                '2007',
+                '1939',
+                '1926',
+                '2004',
+            ]);
+            searchDrawer.sortFacet('Première mise en ligne en', 'count');
+            searchDrawer.checkFacetsItem('Première mise en ligne en', [
+                '2008',
+                '1853',
+                '1984',
+                '1983',
+                '2007',
+                '1939',
+                '1926',
+                '2004',
+                '2011',
+                '1988',
+            ]);
+        });
     });
 });
