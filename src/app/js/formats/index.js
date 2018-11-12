@@ -100,3 +100,4 @@ export const getViewComponent = (field, isList) => {
 };
 export const getAdminComponent = name => getComponent(name).AdminComponent;
 export const getEditionComponent = name => getComponent(name).EditionComponent;
+export const getIconComponent = name => getComponent(name).Icon;

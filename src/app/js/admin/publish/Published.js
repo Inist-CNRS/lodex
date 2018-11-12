@@ -2,10 +2,10 @@ import React from 'react';
 import translate from 'redux-polyglot/translate';
 import { CardText } from 'material-ui/Card';
 import RaisedButton from 'material-ui/RaisedButton';
-import { cyan500 } from 'material-ui/styles/colors';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import Card from '../../lib/components/Card';
+import theme from '../../theme';
 
 const styles = {
     container: {
@@ -14,7 +14,7 @@ const styles = {
         alignItems: 'center',
     },
     text: {
-        color: cyan500,
+        color: theme.purple.primary,
         fontSize: '1rem',
         textAlign: 'center',
     },

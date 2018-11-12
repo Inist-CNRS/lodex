@@ -12,8 +12,8 @@ import {
 } from '../../propTypes';
 import getFieldClassName from '../../lib/getFieldClassName';
 import { fromFields } from '../../sharedSelectors';
-import { fromFacet } from '../selectors';
-import { clearFacet } from './index';
+import { fromDataset } from '../selectors';
+import { facetActions } from '../dataset';
 import interleave from '../../lib/interleave';
 
 const styles = {
@@ -69,14 +69,17 @@ AppliedFacetComponent.propTypes = {
 
 const mapStateToProps = (state, { name }) => ({
     field: fromFields.getFieldByName(state, name),
-    inverted: fromFacet.isFacetValuesInverted(state, name),
+    inverted: fromDataset.isFacetValuesInverted(state, name),
 });
 
-const mapDispatchToProps = { onClearFacet: clearFacet };
+const mapDispatchToProps = { onClearFacet: facetActions.clearFacet };
 
 export default compose(
     translate,
-    connect(mapStateToProps, mapDispatchToProps),
+    connect(
+        mapStateToProps,
+        mapDispatchToProps,
+    ),
     withHandlers({
         onRequestDelete: ({ name, onClearFacet }) => () => onClearFacet(name),
     }),

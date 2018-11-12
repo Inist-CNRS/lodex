@@ -12,9 +12,10 @@ import {
 import { fromFormat } from '../../public/selectors';
 import { loadFormatData } from '../../formats/reducer';
 import Loading from '../../lib/components/Loading';
-import Link from 'material-ui/svg-icons/content/link';
+import LinkIcon from 'material-ui/svg-icons/content/link';
 import TextField from 'material-ui/TextField';
 import { isURL } from '../../../../common/uris.js';
+import Link from '../../lib/components/Link';
 
 const styles = {
     message: {
@@ -115,9 +116,9 @@ export default url => FormatView => {
 
             if (isURL(requestText)) {
                 return (
-                    <a href={requestText} style={styles.link}>
+                    <Link href={requestText} style={styles.link}>
                         {requestText}
-                    </a>
+                    </Link>
                 );
             }
             return <span> {requestText} </span>;
@@ -132,7 +133,7 @@ export default url => FormatView => {
             if (!sparql.hiddenInfo) {
                 return (
                     <div>
-                        <Link
+                        <LinkIcon
                             style={
                                 isURL(requestText)
                                     ? styles.pointer
@@ -172,7 +173,7 @@ export default url => FormatView => {
             return (
                 <p>
                     {polyglot.t('sparql_http_retry')}
-                    <a href={url}> {polyglot.t('here')} </a>
+                    <Link href={url}> {polyglot.t('here')} </Link>
                 </p>
             );
         };
@@ -239,7 +240,11 @@ export default url => FormatView => {
         loadFormatData,
     };
 
-    return compose(connect(mapStateToProps, mapDispatchToProps), translate)(
-        SparqlRequest,
-    );
+    return compose(
+        connect(
+            mapStateToProps,
+            mapDispatchToProps,
+        ),
+        translate,
+    )(SparqlRequest);
 };

@@ -15,7 +15,6 @@ import {
     clearPublished as clearPublishedAction,
 } from '../clear';
 
-import { reloadParsingResult } from '../parsing';
 import { fromClear } from '../selectors';
 import { getHost } from '../../../../common/uris';
 
@@ -37,22 +36,9 @@ class ClearDialogComponent extends Component {
         };
     }
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         if (nextProps.succeeded) { // eslint-disable-line
-            this.props.onClose();
-
-            switch (this.props.type) {
-                case 'dataset':
-                    this.props.reloadParsing();
-                    break;
-                case 'published':
-                    // this.props.reloadPublication();
-                    // must be change
-                    window.location.href = '/admin/#/dashboard';
-                    break;
-                default:
-                    break;
-            }
+            window.location.reload();
         }
     }
 
@@ -110,17 +96,19 @@ class ClearDialogComponent extends Component {
 
         const actions = [
             <ButtonWithStatus
+                raised
                 key="submit"
                 className="btn-save"
                 label={polyglot.t('confirm')}
                 onClick={this.handleClear(type)}
-                secondary
+                primary
                 error={hasFailed}
                 disabled={!validName}
                 loading={isClearing}
             />,
             <FlatButton
                 key="cancel"
+                secondary
                 className="btn-cancel"
                 label={polyglot.t('cancel')}
                 onClick={onClose}
@@ -129,7 +117,9 @@ class ClearDialogComponent extends Component {
         return (
             <Dialog
                 open
-                title={`${polyglot.t('clear')} ${type}`}
+                title={polyglot.t(
+                    type === 'dataset' ? 'clear_dataset' : 'clear_publish',
+                )}
                 actions={actions}
                 contentStyle={styles.dialog}
             >
@@ -137,8 +127,7 @@ class ClearDialogComponent extends Component {
                 <br />
                 <br />
                 <div>
-                    {polyglot.t('enter_name')} :
-                    <b> {this.getInstanceName()}</b>
+                    {polyglot.t('enter_name')} :<b> {this.getInstanceName()}</b>
                     <TextField
                         name="field-name-instance"
                         hintText={polyglot.t('instance_name')}
@@ -173,10 +162,12 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = {
     clearDataset: clearDatasetAction,
     clearPublished: clearPublishedAction,
-    reloadParsing: reloadParsingResult,
-    // reloadPublication: reloadPublicationAction,
 };
 
-export default compose(translate, connect(mapStateToProps, mapDispatchToProps))(
-    ClearDialogComponent,
-);
+export default compose(
+    translate,
+    connect(
+        mapStateToProps,
+        mapDispatchToProps,
+    ),
+)(ClearDialogComponent);

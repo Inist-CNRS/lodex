@@ -18,12 +18,10 @@ describe('Dataset Publication', () => {
                 'text/csv',
             );
 
-            cy
-                .get('tbody')
-                .should(
-                    'have.text',
-                    ['Row 1', 'Test 1', 'Row 2', 'Test 2'].join(''),
-                );
+            cy.get('tbody').should(
+                'have.text',
+                ['Row 1', 'Test 1', 'Row 2', 'Test 2'].join(''),
+            );
         });
     });
 
@@ -33,12 +31,10 @@ describe('Dataset Publication', () => {
             datasetImportPage.importDataset('dataset/simple.csv');
             datasetImportPage.addColumn('Column 1');
 
-            cy
-                .get('.publication-excerpt')
+            cy.get('.publication-excerpt')
                 .contains('Row 1')
                 .should('be.visible');
-            cy
-                .get('.publication-excerpt')
+            cy.get('.publication-excerpt')
                 .contains('Row 2')
                 .should('be.visible');
 
@@ -94,13 +90,11 @@ describe('Dataset Publication', () => {
             homePage.goToGraphPage();
 
             cy.contains('Affiliation(s)').click();
-            cy
-                .get('.facet-list')
+            cy.get('.facet-list')
                 .find('.facet-item')
                 .should('have.length', 1);
 
-            cy
-                .get('.facet-list')
+            cy.get('.facet-list')
                 .find('.facet-value-item')
                 .should('have.length', 1);
         });
@@ -115,13 +109,11 @@ describe('Dataset Publication', () => {
             homePage.goToGraphPage();
 
             cy.contains('Affiliation(s)').click();
-            cy
-                .get('.facet-list')
+            cy.get('.facet-list')
                 .find('.facet-item')
                 .should('have.length', 1);
 
-            cy
-                .get('.facet-list')
+            cy.get('.facet-list')
                 .find('.facet-value-item')
                 .should('have.length', 3);
         });

@@ -1,4 +1,4 @@
-import { take, put, select, call, takeEvery } from 'redux-saga/effects';
+import { take, put, select, call, takeEvery, fork } from 'redux-saga/effects';
 
 import {
     loadMoreFailed,
@@ -7,23 +7,33 @@ import {
     SEARCH,
     searchFailed,
     searchSucceed,
-    fromSearch,
+    facetActionTypes,
+    facetActions,
 } from './reducer';
+
+import { fromSearch } from '../selectors';
 import { LOAD_PUBLICATION_SUCCESS } from '../../fields';
 import { fromUser, fromFields } from '../../sharedSelectors';
 import fetchSaga from '../../lib/sagas/fetchSaga';
+import facetSagasFactory from '../facet/sagas';
 
-const doSearchRequest = function*(payload, page = 0) {
+const doSearchRequest = function*(page = 0) {
+    const query = yield select(fromSearch.getQuery);
+    const facets = yield select(fromSearch.getAppliedFacets);
+    const invertedFacets = yield select(fromSearch.getInvertedFacets);
+
     const request = yield select(fromUser.getLoadDatasetPageRequest, {
-        match: payload ? payload.query : '',
+        match: query || '',
         perPage: 10,
         page,
+        facets,
+        invertedFacets,
     });
 
     return yield call(fetchSaga, request);
 };
 
-const handleSearch = function*({ payload }) {
+const handleSearch = function*() {
     const fieldsNumber = yield select(fromFields.getNbColumns);
 
     if (fieldsNumber === 0) {
@@ -31,7 +41,7 @@ const handleSearch = function*({ payload }) {
         yield take(LOAD_PUBLICATION_SUCCESS);
     }
 
-    const { error, response } = yield doSearchRequest(payload);
+    const { error, response } = yield doSearchRequest();
 
     if (error) {
         yield put(searchFailed({ error }));
@@ -55,11 +65,11 @@ const handleSearch = function*({ payload }) {
     );
 };
 
-const handleLoadMore = function*({ payload }) {
+const handleLoadMore = function*() {
     const currentPage = yield select(fromSearch.getPage);
     const page = currentPage + 1;
 
-    const { error, response } = yield doSearchRequest(payload, page);
+    const { error, response } = yield doSearchRequest(page);
 
     if (error) {
         yield put(loadMoreFailed({ error }));
@@ -75,7 +85,22 @@ const handleLoadMore = function*({ payload }) {
     );
 };
 
+const facetSagas = facetSagasFactory({
+    actionTypes: facetActionTypes,
+    actions: facetActions,
+    selectors: fromSearch,
+});
+
 export default function*() {
-    yield takeEvery(SEARCH, handleSearch);
+    yield takeEvery(
+        [
+            SEARCH,
+            facetActionTypes.TOGGLE_FACET_VALUE,
+            facetActionTypes.INVERT_FACET,
+            facetActionTypes.CLEAR_FACET,
+        ],
+        handleSearch,
+    );
     yield takeEvery(SEARCH_LOAD_MORE, handleLoadMore);
+    yield fork(facetSagas);
 }

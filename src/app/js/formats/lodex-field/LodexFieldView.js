@@ -7,6 +7,7 @@ import URL from 'url';
 import { isURL } from '../../../../common/uris.js';
 import { field as fieldPropTypes } from '../../propTypes';
 import injectData from '../injectData';
+import Link from '../../lib/components/Link';
 
 const styles = {
     container: {
@@ -117,7 +118,7 @@ export class LodexFieldView extends Component {
 
     ifUrl = value => {
         if (isURL(value)) {
-            return <a href={value}>{value}</a>;
+            return <Link href={value}>{value}</Link>;
         }
 
         return <span>{value}</span>;

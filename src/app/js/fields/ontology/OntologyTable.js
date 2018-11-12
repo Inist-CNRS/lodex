@@ -100,7 +100,10 @@ const mapDispatchToProps = {
 };
 
 export default compose(
-    connect(mapStateToProps, mapDispatchToProps),
+    connect(
+        mapStateToProps,
+        mapDispatchToProps,
+    ),
     withHandlers({
         handleChangePosition: ({ changePositionAction }) => field => {
             changePositionAction(field);

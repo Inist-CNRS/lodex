@@ -59,7 +59,7 @@ export const getHost = () => {
 };
 
 export const getFullResourceUri = (resource, defaultBaseUri) => {
-    const baseUri = getHost() || defaultBaseUri;
+    const baseUri = getCleanHost() || defaultBaseUri;
     const uri = getResourceUri(resource);
 
     return `${baseUri}${uri}`;

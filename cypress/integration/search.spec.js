@@ -29,8 +29,8 @@ describe('Search', () => {
             .click();
 
         cy.url().should('contain', '/uid');
-        cy
-            .get('.property_value')
+        cy.get('.loading').should('not.be.visible');
+        cy.get('.property_value')
             .contains('Annals of the rheumatic diseases')
             .should('be.visible');
     });
@@ -44,5 +44,60 @@ describe('Search', () => {
 
         cy.get('.search-result').should('have.length', 12);
         cy.get('.drawer-container .load-more button').should('not.be.visible');
+    });
+
+    it('should mark active resource on the result list', () => {
+        searchDrawer.openSearchDrawer();
+        searchDrawer.search('Annals of the rheumatic');
+
+        searchDrawer
+            .findSearchResultByTitle('Annals of the rheumatic diseases')
+            .click();
+
+        cy.url().should('contain', '/uid');
+        cy.get('.loading').should('not.be.visible');
+        searchDrawer.openSearchDrawer();
+
+        cy.get('.search-result-link[class*=activeLink_]').should('exist');
+    });
+
+    it('should keep track of the current search after changing page', () => {
+        const query = 'Annals of the rheumatic';
+        searchDrawer.openSearchDrawer();
+        searchDrawer.search(query);
+        cy.get('.search-result').should('have.length', 1);
+
+        searchDrawer
+            .findSearchResultByTitle('Annals of the rheumatic diseases')
+            .click();
+
+        cy.url().should('contain', '/uid');
+        cy.get('.loading').should('not.be.visible');
+        searchDrawer.openSearchDrawer();
+
+        cy.get('.search-result').should('have.length', 1);
+        searchDrawer.searchInput().should('have.value', query);
+    });
+
+    describe('Advanced Search', () => {
+        it('should filter search results by facets', () => {
+            searchDrawer.openSearchDrawer();
+            cy.get('.search-result').should('have.length', 10);
+
+            searchDrawer.openAdvancedSearchDrawer();
+            searchDrawer.setFacet('Dernière mise en ligne en', '2014');
+            cy.get('.search-result').should('have.length', 1);
+        });
+
+        it('should allow to clear facets from the search results', () => {
+            searchDrawer.openSearchDrawer();
+            searchDrawer.openAdvancedSearchDrawer();
+            searchDrawer.setFacet('Dernière mise en ligne en', '2014');
+            cy.get('.search-result').should('have.length', 1);
+
+            searchDrawer.openSearchDrawer();
+            searchDrawer.clearFacet('2014');
+            cy.get('.search-result').should('have.length', 10);
+        });
     });
 });

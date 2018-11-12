@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Chip from 'material-ui/Chip';
 
-import { fromFacet } from '../selectors';
+import { fromDataset } from '../selectors';
 import AppliedFacet from './AppliedFacet';
-import { clearFacet } from './index';
+import { facetActions } from '../dataset';
 
 const styles = {
     container: {
@@ -46,13 +46,14 @@ AppliedFacetListComponent.propTypes = {
 };
 
 const mapStateToProps = state => ({
-    facets: fromFacet.getAppliedFacetList(state),
+    facets: fromDataset.getAppliedFacetList(state),
 });
 
 const mapDispatchToProps = {
-    clearAll: () => clearFacet(),
+    clearAll: () => facetActions.clearFacet(),
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(
-    AppliedFacetListComponent,
-);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(AppliedFacetListComponent);

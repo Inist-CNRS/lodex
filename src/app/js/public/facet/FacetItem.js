@@ -2,14 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { ListItem } from 'material-ui/List';
 import { connect } from 'react-redux';
-import compose from 'recompose/compose';
-import withHandlers from 'recompose/withHandlers';
 
-import getFieldClassName from '../../lib/getFieldClassName';
-import { fromFacet } from '../selectors';
-import { openFacet } from './index';
 import { field as fieldPropType } from '../../propTypes';
+import { fromFacet } from '../selectors';
+import getFieldClassName from '../../lib/getFieldClassName';
 import FacetValueList from './FacetValueList';
+import FacetActionsContext from './FacetActionsContext';
 
 const styles = {
     nested: {
@@ -17,40 +15,46 @@ const styles = {
     },
 };
 
-const PureFacetItem = ({ onClick, isOpen, field, total }) => (
-    <ListItem
-        className={`facet-item facet-${getFieldClassName(field)}`}
-        nestedListStyle={styles.nested}
-        key={field.name}
-        primaryText={`${field.label} ${total ? `(${total})` : ''}`}
-        onClick={onClick}
-        onNestedListToggle={onClick}
-        open={isOpen}
-        nestedItems={[
-            <FacetValueList key="list" name={field.name} label={field.label} />,
-        ]}
-    />
+const onClick = (openFacet, field) => () => openFacet({ name: field.name });
+
+const FacetItem = ({ isOpen, field, total, page }) => (
+    <FacetActionsContext.Consumer>
+        {({ openFacet }) => (
+            <ListItem
+                className={`facet-item facet-${getFieldClassName(field)}`}
+                nestedListStyle={styles.nested}
+                key={field.name}
+                primaryText={`${field.label} ${total ? `(${total})` : ''}`}
+                onClick={onClick(openFacet, field)}
+                onNestedListToggle={onClick(openFacet, field)}
+                open={isOpen}
+                nestedItems={[
+                    <FacetValueList
+                        key="list"
+                        name={field.name}
+                        label={field.label}
+                        page={page}
+                    />,
+                ]}
+            />
+        )}
+    </FacetActionsContext.Consumer>
 );
 
-PureFacetItem.propTypes = {
-    onClick: PropTypes.func.isRequired,
+FacetItem.propTypes = {
     isOpen: PropTypes.bool.isRequired,
     field: fieldPropType.isRequired,
     total: PropTypes.number,
+    page: PropTypes.oneOf(['dataset', 'search']).isRequired,
 };
 
-const mapStateToProps = (state, { field }) => ({
-    isOpen: fromFacet.isFacetOpen(state, field.name),
-    total: fromFacet.getFacetValuesTotal(state, field.name),
-});
+const mapStateToProps = (state, { field, page }) => {
+    const selectors = fromFacet(page);
 
-const mapDispatchtoProps = {
-    openFacet,
+    return {
+        isOpen: selectors.isFacetOpen(state, field.name),
+        total: selectors.getFacetValuesTotal(state, field.name),
+    };
 };
 
-export default compose(
-    connect(mapStateToProps, mapDispatchtoProps),
-    withHandlers({
-        onClick: ({ openFacet, field: { name } }) => () => openFacet({ name }),
-    }),
-)(PureFacetItem);
+export default connect(mapStateToProps)(FacetItem);

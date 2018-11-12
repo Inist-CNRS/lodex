@@ -11,7 +11,7 @@ import {
 import { loadFormatDataSuccess, loadFormatDataError } from './reducer';
 import getQueryString from '../lib/getQueryString';
 import fetchSaga from '../lib/sagas/fetchSaga';
-import { fromDataset, fromFacet, fromFormat } from '../public/selectors';
+import { fromDataset, fromFormat } from '../public/selectors';
 import { fromFields, fromUser, fromCharacteristic } from '../sharedSelectors';
 import { COVER_DATASET } from '../../../common/cover';
 
@@ -68,11 +68,11 @@ describe('format sagas', () => {
                 done: false,
             });
             expect(it.next({ params: 'data' })).toEqual({
-                value: select(fromFacet.getAppliedFacets),
+                value: select(fromDataset.getAppliedFacets),
                 done: false,
             });
             expect(it.next('facets')).toEqual({
-                value: select(fromFacet.getInvertedFacets),
+                value: select(fromDataset.getInvertedFacets),
                 done: false,
             });
             expect(it.next('invertedFacets')).toEqual({

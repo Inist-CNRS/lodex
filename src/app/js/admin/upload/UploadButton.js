@@ -32,6 +32,7 @@ const UploadButtonComponent = ({
     const actions = [
         <FlatButton
             key="cancel"
+            secondary
             label={polyglot.t('cancel')}
             onClick={handleClose}
         />,

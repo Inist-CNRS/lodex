@@ -8,6 +8,7 @@ import { bindActionCreators } from 'redux';
 import { grey500 } from 'material-ui/styles/colors';
 import memoize from 'lodash.memoize';
 import get from 'lodash.get';
+
 import { fromResource } from '../selectors';
 import { field as fieldPropTypes } from '../../propTypes';
 import CompositeProperty from './CompositeProperty';
@@ -25,6 +26,7 @@ import getFieldClassName from '../../lib/getFieldClassName';
 import addSchemePrefix from '../../lib/addSchemePrefix';
 import Format from '../Format';
 import GraphLink from '../graph/GraphLink';
+import Link from '../../lib/components/Link';
 
 const styles = {
     container: memoize(
@@ -79,7 +81,6 @@ const styles = {
         padding: '0.75rem',
         paddingLeft: '0px',
         textAlign: 'justify',
-        fontFamily: 'Roboto, sans-serif',
     },
 };
 
@@ -157,9 +158,9 @@ const PropertyComponent = ({
                         )}
                         style={styles.scheme}
                     >
-                        <a style={styles.schemeLink} href={field.scheme}>
+                        <Link style={styles.schemeLink} href={field.scheme}>
                             {addSchemePrefix(field.scheme)}
-                        </a>
+                        </Link>
                     </span>
                 </div>
                 <PropertyContributor
@@ -226,7 +227,10 @@ const mapDispatchToProps = (dispatch, { field, resource: { uri } }) =>
     );
 
 const Property = compose(
-    connect(mapStateToProps, mapDispatchToProps),
+    connect(
+        mapStateToProps,
+        mapDispatchToProps,
+    ),
     withProps(({ field, parents = [] }) => ({
         parents: [field.name, ...parents],
     })),

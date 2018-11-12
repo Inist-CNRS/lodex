@@ -13,6 +13,7 @@ import {
     PROPOSED,
     VALIDATED,
 } from '../../../../common/propositionStatus';
+import Link from '../../lib/components/Link';
 
 const styles = {
     [REJECTED]: {
@@ -42,15 +43,15 @@ const DefaultView = ({
         return <p>{polyglot.t('bad_format', { label: field.label })}</p>;
     } else if (isURL(value)) {
         return (
-            <a style={styles[fieldStatus]} href={`${value}`}>
+            <Link style={styles[fieldStatus]} href={`${value}`}>
                 {value}
-            </a>
+            </Link>
         );
     } else if (isLocalURL(value)) {
         return (
-            <a style={styles[fieldStatus]} href={`${canonicalURL(value)}`}>
+            <Link style={styles[fieldStatus]} href={`${canonicalURL(value)}`}>
                 {value}
-            </a>
+            </Link>
         );
     } else {
         return (

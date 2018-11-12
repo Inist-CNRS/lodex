@@ -1,4 +1,5 @@
 import { race, call, put, take } from 'redux-saga/effects';
+import { delay } from 'redux-saga';
 
 import fetchSaga from '../lib/sagas/fetchSaga';
 
@@ -12,6 +13,10 @@ describe('fetch', () => {
             const saga = handleFetch({
                 payload: 'config',
                 meta: { name: 'name' },
+            });
+
+            it('should delay(200)', () => {
+                expect(saga.next().value).toEqual(call(delay, 200));
             });
 
             it('should race a call to fetchSaga and cancel filterAction', () => {
@@ -43,6 +48,7 @@ describe('fetch', () => {
                     payload: 'config',
                     meta: { name: 'name' },
                 });
+                failedSaga.next();
                 failedSaga.next();
                 expect(
                     failedSaga.next({

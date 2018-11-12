@@ -91,10 +91,11 @@ describe('<Resource />', () => {
         );
     });
 
-    it('should call again preLoadResource if the uri change in the url', () => {
+    it('should call again preLoadResource if the uid uri change in the url', () => {
         const preLoadResource = jest.fn();
         const props = {
             ...defaultProps,
+            match: { params: { uri: 'uri' } },
             preLoadResource,
             loading: false,
             resource: 'resource',
@@ -104,6 +105,26 @@ describe('<Resource />', () => {
         expect(preLoadResource).toHaveBeenCalledTimes(1);
 
         wrapper.setProps({ ...props, match: { params: { uri: 'changed' } } });
+        expect(preLoadResource).toHaveBeenCalledTimes(2);
+    });
+
+    it('should call again preLoadResource if the ark uri change in the url', () => {
+        const preLoadResource = jest.fn();
+        const props = {
+            ...defaultProps,
+            match: { params: { naan: 'naan', rest: 'rest' } },
+            preLoadResource,
+            loading: false,
+            resource: 'resource',
+        };
+
+        const wrapper = shallow(<ResourceComponent {...props} />);
+        expect(preLoadResource).toHaveBeenCalledTimes(1);
+
+        wrapper.setProps({
+            ...props,
+            match: { params: { naan: 'naan', rest: 'changed' } },
+        });
         expect(preLoadResource).toHaveBeenCalledTimes(2);
     });
 });

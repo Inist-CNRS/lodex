@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+
 import { field as fieldPropTypes } from '../../propTypes';
+import Link from '../../lib/components/Link';
 
 const LinkView = ({ className, resource, field, value }) => {
     const imageURL = value;
@@ -12,9 +14,9 @@ const LinkView = ({ className, resource, field, value }) => {
     }
 
     return (
-        <a className={className} href={`${link}`}>
+        <Link className={className} href={`${link}`}>
             <img src={imageURL} style={style} />
-        </a>
+        </Link>
     );
 };
 

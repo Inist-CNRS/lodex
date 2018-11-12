@@ -4,7 +4,7 @@ import * as homePage from '../support/homePage';
 import * as graphPage from '../support/graphPage';
 import * as bookSummaryPage from '../support/bookSummary';
 
-describe('Book Summary', () => {
+describe('Book Summary Format', () => {
     beforeEach(() => {
         cy.visit('http://localhost:3000/admin');
         teardown();
@@ -18,7 +18,7 @@ describe('Book Summary', () => {
     });
 
     it('should display list of year', () => {
-        bookSummaryPage.checkYears([1997, 1998, 1999, 2000, 2001, 2002, 2003]);
+        bookSummaryPage.checkYears([2003, 2002, 2001, 2000, 1999, 1998, 1997]);
         bookSummaryPage.openFold(1998);
         bookSummaryPage.checkVolumes(1998, [52]);
         bookSummaryPage.openFold('Volume: 52');
@@ -51,5 +51,21 @@ describe('Book Summary', () => {
             'Demystified ... gene knockouts.',
             'DNA repair gene status in oesophageal cancer.',
         ]);
+    });
+
+    it('should allow to configure format', () => {
+        bookSummaryPage.checkYears([2003, 2002, 2001, 2000, 1999, 1998, 1997]);
+        bookSummaryPage.openConfigure();
+        bookSummaryPage.configureYearSort('From oldest to youngest');
+        bookSummaryPage.saveConfiguration();
+        bookSummaryPage.checkYears([1997, 1998, 1999, 2000, 2001, 2002, 2003]);
+        bookSummaryPage.openConfigure();
+        bookSummaryPage.configureYearThreshold(5);
+        bookSummaryPage.saveConfiguration();
+        bookSummaryPage.checkYears(['1997-1999', '2000-2003']);
+        bookSummaryPage.openConfigure();
+        bookSummaryPage.configureYearSort('From youngest to oldest');
+        bookSummaryPage.saveConfiguration();
+        bookSummaryPage.checkYears(['2000-2003', '1997-1999']);
     });
 });

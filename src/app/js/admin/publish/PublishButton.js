@@ -10,6 +10,7 @@ import { fromPublish, fromPublication } from '../selectors';
 import ButtonWithStatus from '../../lib/components/ButtonWithStatus';
 import ConfirmPublication from './ConfirmPublication';
 import { fromFields } from '../../sharedSelectors';
+import theme from '../../theme';
 
 const styles = {
     title: {
@@ -39,7 +40,7 @@ export class PublishButtonComponent extends Component {
             <div>
                 <ButtonWithStatus
                     raised
-                    backgroundColor="#a4c639"
+                    labelColor={theme.green.primary}
                     className="btn-publish"
                     loading={isPublishing}
                     error={error}
@@ -79,6 +80,10 @@ const mapDispatchToProps = {
     onPublish: publishAction,
 };
 
-export default compose(connect(mapStateToProps, mapDispatchToProps), translate)(
-    PublishButtonComponent,
-);
+export default compose(
+    connect(
+        mapStateToProps,
+        mapDispatchToProps,
+    ),
+    translate,
+)(PublishButtonComponent);

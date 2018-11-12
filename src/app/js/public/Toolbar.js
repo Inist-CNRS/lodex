@@ -1,13 +1,22 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import FacetList from './facet/FacetList';
 import Filter from './dataset/Filter';
 
-export const ToolbarComponent = () => (
+export const Toolbar = ({ name }) => (
     <div>
-        <Filter />
-        <FacetList />
+        <Filter key={name} />
+        <FacetList page="dataset" />
     </div>
 );
 
-export default ToolbarComponent;
+Toolbar.propTypes = {
+    name: PropTypes.string,
+};
+
+Toolbar.defaultProps = {
+    name: 'empty',
+};
+
+export default Toolbar;

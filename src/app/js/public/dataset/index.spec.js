@@ -5,8 +5,8 @@ import reducer, {
     loadDatasetPageError,
     sortDataset,
     applyFilter,
+    facetActionTypes,
 } from './';
-import { TOGGLE_FACET_VALUE } from '../facet';
 
 describe('dataset reducer', () => {
     it('should initialize with correct state', () => {
@@ -67,7 +67,11 @@ describe('dataset reducer', () => {
     });
 
     it('should handle TOGGLE_FACET_VALUE action', () => {
-        const state = reducer({ perPage: 20 }, { type: TOGGLE_FACET_VALUE });
+        const state = reducer(
+            { perPage: 20 },
+            { type: facetActionTypes.TOGGLE_FACET_VALUE, payload: {} },
+        );
+        delete state.facet;
         expect(state).toEqual({
             currentPage: 0,
             error: null,

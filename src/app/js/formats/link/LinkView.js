@@ -1,7 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+
 import { field as fieldPropTypes } from '../../propTypes';
 import getLabel from '../shared/getLabel';
+import Link from '../../lib/components/Link';
 
 const LinkView = ({ className, resource, field, fields, type, value }) => {
     const label = getLabel(field, resource, fields, type, value);
@@ -13,9 +15,9 @@ const LinkView = ({ className, resource, field, fields, type, value }) => {
             <ul>
                 {links.map((link, index) => (
                     <li key={index}>
-                        <a className={className} href={`${link}`}>
+                        <Link className={className} href={`${link}`}>
                             {link}
-                        </a>
+                        </Link>
                     </li>
                 ))}
             </ul>
@@ -25,9 +27,9 @@ const LinkView = ({ className, resource, field, fields, type, value }) => {
     const link = resource[field.name];
 
     return (
-        <a className={className} href={`${link}`}>
+        <Link className={className} href={`${link}`}>
             {label}
-        </a>
+        </Link>
     );
 };
 

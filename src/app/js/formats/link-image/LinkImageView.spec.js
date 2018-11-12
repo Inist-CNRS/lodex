@@ -2,6 +2,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 
 import LinkImageView from './LinkImageView';
+import Link from '../../lib/components/Link';
 
 describe('<LinkImageView />', () => {
     it('should render', () => {
@@ -17,17 +18,17 @@ describe('<LinkImageView />', () => {
                 value="http://image.com"
             />,
         );
-        expect(wrapper.find('a').length).toEqual(1);
+        expect(wrapper.find(Link).length).toEqual(1);
         expect(wrapper.prop('href')).toEqual('http://example.com');
         expect(
             wrapper
-                .find('a')
+                .find(Link)
                 .find('img')
                 .prop('src'),
         ).toEqual('http://image.com');
         expect(
             wrapper
-                .find('a')
+                .find(Link)
                 .find('img')
                 .prop('style'),
         ).toEqual({ maxHeight: '500px' });

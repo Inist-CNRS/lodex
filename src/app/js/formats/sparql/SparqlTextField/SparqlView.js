@@ -6,10 +6,10 @@ import SparqlRequest from '../SparqlRequest';
 import { isURL } from '../../../../../common/uris.js';
 import { field as fieldPropTypes } from '../../../propTypes';
 import URL from 'url';
-import topairs from 'lodash.topairs';
-import clonedeep from 'lodash.clonedeep';
+import toPairs from 'lodash.topairs';
 import toSentenceCase from 'js-sentencecase';
 import { getViewComponent } from '../../';
+import Link from '../../../lib/components/Link';
 
 const styles = {
     container2: {
@@ -67,12 +67,12 @@ const styles = {
 };
 
 export class SparqlTextField extends Component {
-    LoadSubformatComponent = (result, subformat) => {
+    renderSubformatComponent = (attrData, subformat) => {
         const { field } = this.props;
-        const { ViewComponent, args } = getViewComponent(subformat.sub, true);
+        const { ViewComponent, args } = getViewComponent(subformat.sub);
         return (
             <ViewComponent
-                resource={{ '0': result[1].value }}
+                resource={{ '0': attrData.value }}
                 field={{
                     ...field,
                     name: '0',
@@ -82,75 +82,79 @@ export class SparqlTextField extends Component {
                     },
                 }}
                 {...args}
+                {...subformat.option}
             />
         );
     };
 
-    applyFormat = result => {
+    renderAttributeFormat = (attrName, attrData) => {
         const { sparql } = this.props;
 
-        const data = sparql.subformat.find(data => {
-            return result[0] == data.attribute.trim().replace(/^\?/, '');
+        const subFormat = sparql.subformat.find(data => {
+            return attrName === data.attribute.trim().replace(/^\?/, '');
         });
 
-        if (data) {
-            return this.LoadSubformatComponent(result, data);
+        if (subFormat) {
+            return this.renderSubformatComponent(attrData, subFormat);
         }
 
-        return this.ifArray(result);
+        return this.renderDefaultAttributeFormat(attrData);
     };
 
-    ifArray = result => {
+    renderDefaultAttributeFormat = attrData => {
         const { className, sparql } = this.props;
-        const temp = clonedeep(result);
-        if (temp[1].value.includes(sparql.separator)) {
-            temp[1].value = temp[1].value.split(sparql.separator);
+
+        if (attrData.value.includes(sparql.separator)) {
+            const values = attrData.value.split(sparql.separator);
             return (
                 <ul
                     className={('value_sparql_array', className)}
                     style={styles.array}
                 >
-                    {temp[1].value.map((data, key) => {
-                        temp[1].value = data;
-                        return <li key={key}>{this.showURL(temp)}</li>;
-                    })}
+                    {values.map((data, key) => (
+                        <li key={key}>
+                            {this.renderAttributeValue(data, attrData.type)}
+                        </li>
+                    ))}
                 </ul>
             );
-        } else {
-            return (
-                <div className="value_sparql" style={styles.value}>
-                    {this.showURL(temp)} &#160;
-                </div>
-            );
         }
+        return (
+            <div className="value_sparql" style={styles.value}>
+                {this.renderAttributeValue(attrData.value, attrData.type)}{' '}
+                &#160;
+            </div>
+        );
     };
 
-    showURL = result => {
-        if (isURL(result[1].value) && result[1].type == 'uri') {
-            return <a href={result[1].value}>{result[1].value}</a>;
-        } else {
-            return <span>{result[1].value}</span>;
+    renderAttributeValue = (value, type) => {
+        if (isURL(value) && type === 'uri') {
+            return <Link href={value}>{value}</Link>;
         }
+        return <span>{value}</span>;
     };
 
-    getLang = result => {
-        if (result[1]['xml:lang'] != undefined) {
-            return <span>{result[1]['xml:lang']}</span>;
-        } else {
-            return null;
+    renderLang = attrData => {
+        if (attrData['xml:lang'] !== undefined) {
+            return <span>{attrData['xml:lang']}</span>;
         }
+        return null;
     };
 
     render() {
         const { className, formatData } = this.props;
-        if (formatData != undefined) {
-            return (
-                <div className={className}>
-                    {formatData.results.bindings.map((result, key) => {
-                        return (
-                            <div key={key} style={styles.container2}>
-                                {topairs(result).map((obj, index) => {
-                                    if (!obj[1].value) {
+        if (!formatData) {
+            return null;
+        }
+
+        return (
+            <div className={className}>
+                {formatData.results.bindings.map((result, key) => {
+                    return (
+                        <div key={key} style={styles.container2}>
+                            {toPairs(result).map(
+                                ([attrName, attrData], index) => {
+                                    if (!attrData.value) {
                                         return;
                                     }
                                     return (
@@ -160,28 +164,29 @@ export class SparqlTextField extends Component {
                                                     className="label_sparql"
                                                     style={styles.label}
                                                 >
-                                                    {toSentenceCase(obj[0])}
+                                                    {toSentenceCase(attrName)}
                                                     &#160; : &#160;
                                                 </span>
                                             </div>
-                                            {this.applyFormat(obj)}
+                                            {this.renderAttributeFormat(
+                                                attrName,
+                                                attrData,
+                                            )}
                                             <div
                                                 className="lang_sparql property_language"
                                                 style={styles.lang}
                                             >
-                                                {this.getLang(obj)}
+                                                {this.renderLang(attrData)}
                                             </div>
                                         </div>
                                     );
-                                })}
-                            </div>
-                        );
-                    })}
-                </div>
-            );
-        } else {
-            return <span> </span>;
-        }
+                                },
+                            )}
+                        </div>
+                    );
+                })}
+            </div>
+        );
     }
 }
 

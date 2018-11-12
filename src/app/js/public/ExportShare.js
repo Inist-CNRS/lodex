@@ -7,7 +7,7 @@ import Divider from 'material-ui/Divider';
 
 import { polyglot as polyglotPropTypes } from '../propTypes';
 import { fromFields, fromCharacteristic } from '../sharedSelectors';
-import AppliedFacetList from './facet/AppliedFacetList';
+import AppliedFacetList from './dataset/AppliedFacetList';
 import ExportSection from './export/ExportSection';
 import ShareSection from './ShareSection';
 import ShareLink from './ShareLink';
@@ -15,12 +15,7 @@ import Widgets from './Widgets';
 import Version from './Version';
 import { getCleanHost } from '../../../common/uris';
 
-export const PureExportShare = ({
-    sharingUri,
-    uri,
-    sharingTitle,
-    p: polyglot,
-}) => (
+export const ExportShare = ({ sharingUri, uri, sharingTitle, p: polyglot }) => (
     <div>
         <AppliedFacetList />
         <ExportSection uri={uri} />
@@ -32,7 +27,7 @@ export const PureExportShare = ({
     </div>
 );
 
-PureExportShare.propTypes = {
+ExportShare.propTypes = {
     p: polyglotPropTypes.isRequired,
     sharingTitle: PropTypes.string,
     sharingUri: PropTypes.string,
@@ -67,4 +62,7 @@ const mapStateToProps = state => {
     };
 };
 
-export default compose(connect(mapStateToProps), translate)(PureExportShare);
+export default compose(
+    connect(mapStateToProps),
+    translate,
+)(ExportShare);

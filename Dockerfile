@@ -1,17 +1,17 @@
 FROM node:10
 
 WORKDIR /app
+
+# Copy the local code source
+COPY . /app
+
 # Install the node modules only
-COPY package.json /app
 RUN rm -rf ./node_modules && \
     npm install --production && \
     npm cache clean --force
 
 ARG node_env="production"
 ENV NODE_ENV=$node_env
-
-# Copy the local code source
-COPY . /app
 
 RUN cp -n ./config/production-dist.js ./config/production.js
 

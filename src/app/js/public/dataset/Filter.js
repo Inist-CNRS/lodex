@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
-import withHandlers from 'recompose/withHandlers';
+import debounce from 'lodash.debounce';
 import translate from 'redux-polyglot/translate';
 import TextField from 'material-ui/TextField';
 import { ToolbarGroup } from 'material-ui/Toolbar';
@@ -25,38 +25,63 @@ const styles = {
     },
 };
 
-export const FilterComponent = ({
-    filter,
-    handleFilterChange,
-    hasSearchableFields,
-    isDatasetLoading,
-    p: polyglot,
-}) =>
-    hasSearchableFields ? (
-        <ToolbarGroup>
-            <div style={styles.icon}>
-                {isDatasetLoading ? (
-                    <CircularProgress className="dataset-loading" size={20} />
-                ) : (
-                    <ActionSearch />
-                )}
-            </div>
-            <TextField
-                className="filter"
-                value={filter}
-                hintText={polyglot.t('filter')}
-                onChange={(_, e) => handleFilterChange(e)}
-                style={styles.textbox}
-            />
-        </ToolbarGroup>
-    ) : null;
+class FilterComponent extends Component {
+    state = {
+        query: this.props.filter,
+    };
+
+    debouncedApplyFilter = debounce(value => {
+        this.props.applyFilter(value);
+    }, 500);
+
+    handleFilterChange = (_, value) => {
+        this.setState({ query: value });
+        this.debouncedApplyFilter(value);
+    };
+
+    render() {
+        const {
+            filter,
+            hasSearchableFields,
+            isDatasetLoading,
+            p: polyglot,
+        } = this.props;
+        const { query } = this.state;
+
+        if (!hasSearchableFields) {
+            return null;
+        }
+
+        return (
+            <ToolbarGroup>
+                <div style={styles.icon}>
+                    {isDatasetLoading ? (
+                        <CircularProgress
+                            className="dataset-loading"
+                            size={20}
+                        />
+                    ) : (
+                        <ActionSearch />
+                    )}
+                </div>
+                <TextField
+                    className="filter"
+                    value={query !== null ? query : filter}
+                    hintText={polyglot.t('filter')}
+                    onChange={this.handleFilterChange}
+                    style={styles.textbox}
+                />
+            </ToolbarGroup>
+        );
+    }
+}
 
 FilterComponent.defaultProps = {
     filter: '',
 };
 
 FilterComponent.propTypes = {
-    handleFilterChange: PropTypes.func.isRequired,
+    applyFilter: PropTypes.func.isRequired,
     hasSearchableFields: PropTypes.bool.isRequired,
     isDatasetLoading: PropTypes.bool.isRequired,
     filter: PropTypes.string,
@@ -74,11 +99,9 @@ const mapDispatchToProps = {
 };
 
 export default compose(
-    connect(mapStateToProps, mapDispatchToProps),
-    withHandlers({
-        handleFilterChange: ({ applyFilter }) => match => {
-            applyFilter(match);
-        },
-    }),
+    connect(
+        mapStateToProps,
+        mapDispatchToProps,
+    ),
     translate,
 )(FilterComponent);

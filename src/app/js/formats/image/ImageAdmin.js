@@ -40,7 +40,10 @@ class ImageAdmin extends Component {
     };
 
     render() {
-        const { p: polyglot, args: { imageWidth } } = this.props;
+        const {
+            p: polyglot,
+            args: { imageWidth },
+        } = this.props;
 
         return (
             <div style={styles.container}>

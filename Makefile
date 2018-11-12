@@ -80,6 +80,9 @@ endif
 test-e2e-logs:
 	docker-compose -f docker-compose.spec.yml logs
 
+test-e2e-logs-watch:
+	docker-compose -f docker-compose.spec.yml logs -f
+
 test-e2e-stop-dockers:
 	docker-compose -f docker-compose.spec.yml down
 
@@ -92,7 +95,7 @@ ifeq "$(DISABLE_E2E_TESTS)" "true"
 else
 	$(MAKE) test-e2e-start-dockers
 	./node_modules/.bin/cypress install
-	./bin/wait-for -t 60 localhost:3000 -- ./node_modules/.bin/cypress run
+	./bin/wait-for -t 60 localhost:3000 -- ./node_modules/.bin/cypress run --browser chrome
 	$(MAKE) test-e2e-stop-dockers
 endif
 

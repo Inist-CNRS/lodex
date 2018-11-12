@@ -1,84 +1,111 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import compose from 'recompose/compose';
-import translate from 'redux-polyglot/translate';
-import { Link } from 'react-router-dom';
-import Divider from 'material-ui/Divider';
-import IconMenu from 'material-ui/IconMenu';
-import MenuItem from 'material-ui/MenuItem';
-import HomeIcon from 'material-ui/svg-icons/action/home';
-import SearchIcon from 'material-ui/svg-icons/action/search';
-import IconButton from 'material-ui/IconButton';
-import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
-import { fromFields } from '../../sharedSelectors';
-import {
-    field as fieldPropTypes,
-    polyglot as polyglotPropType,
-} from '../../propTypes';
+import classnames from 'classnames';
 
-const styles = {
-    container: {
-        float: 'left',
-        marginLeft: '-5rem',
-        marginTop: '-1rem',
+import { fromFields } from '../../sharedSelectors';
+import { field as fieldPropTypes } from '../../propTypes';
+import { getIconComponent } from '../../formats';
+import { StyleSheet, css } from 'aphrodite/no-important';
+import MixedChartIcon from './MixedChartIcon';
+import theme from '../../theme';
+import Link from '../../lib/components/Link';
+
+const styles = StyleSheet.create({
+    activeLink: {
+        color: theme.orange.primary,
+        fill: theme.orange.primary,
+        ':hover': {
+            fill: theme.orange.primary,
+            color: theme.orange.primary,
+        },
     },
     link: {
         textDecoration: 'none',
-        color: 'unset',
-        display: 'block',
+        backgroundColor: '#f8f8f8',
+        fill: theme.green.primary,
+        color: theme.green.primary,
+        cursor: 'pointer',
+        userSelect: 'none',
+        textTransform: 'capitalize',
+        ':hover': {
+            textDecoration: 'none',
+            fill: theme.purple.primary,
+            color: theme.purple.primary,
+        },
+        ':focus': {
+            textDecoration: 'none',
+        },
+        ':visited': {
+            textDecoration: 'none',
+        },
+    },
+    item: {
+        display: 'flex',
+        width: 190,
+        height: 190,
+        margin: 10,
+        flexDirection: 'column',
+        textAlign: 'center',
+        alignItems: 'center',
+        padding: 10,
+        justifyContent: 'center',
+        userSelect: 'none',
+        textTransform: 'capitalize',
+    },
+    icon: {
+        fontSize: '7em',
+    },
+    container: {
+        display: 'flex',
+        flexWrap: 'wrap',
+        justifyContent: 'space-around',
+    },
+    label: {
         width: '100%',
     },
-};
+});
 
-const PureGraphSummary = ({ graphFields, selected, p: polyglot }) => (
-    <div style={styles.container}>
-        <IconMenu
-            value={selected}
-            iconButtonElement={
-                <IconButton>
-                    <MoreVertIcon />
-                </IconButton>
-            }
-            anchorOrigin={{ horizontal: 'left', vertical: 'top' }}
-            targetOrigin={{ horizontal: 'left', vertical: 'top' }}
-        >
-            <MenuItem
-                value=""
-                containerElement={<Link style={styles.link} to="/" />}
-                primaryText={polyglot.t('home')}
-                leftIcon={<HomeIcon />}
-            />
-            <MenuItem
-                value=""
-                containerElement={<Link style={styles.link} to="/graph" />}
-                primaryText={polyglot.t('dataset')}
-                leftIcon={<SearchIcon />}
-            />
-            <Divider />
-            {graphFields.map(field => (
-                <MenuItem
+const PureGraphSummary = ({ graphFields, closeDrawer }) => (
+    <div className={classnames('graph-summary', css(styles.container))}>
+        {graphFields.map(field => {
+            const Icon = getIconComponent(field);
+            return (
+                <Link
+                    routeAware
                     key={field.name}
-                    value={field.name}
-                    primaryText={
-                        <Link style={styles.link} to={`/graph/${field.name}`}>
-                            {field.label}
-                        </Link>
-                    }
-                />
-            ))}
-        </IconMenu>
+                    className={classnames(
+                        'graph-link',
+                        css(styles.link),
+                        css(styles.item),
+                    )}
+                    activeClassName={classnames(
+                        'active',
+                        css(styles.activeLink),
+                    )}
+                    to={`/graph/${field.name}`}
+                    onClick={closeDrawer}
+                >
+                    {Icon ? (
+                        <Icon className={css(styles.icon)} />
+                    ) : (
+                        <MixedChartIcon className={css(styles.icon)} />
+                    )}
+                    <div className={css(styles.label)}>{field.label}</div>
+                </Link>
+            );
+        })}
     </div>
 );
 
 PureGraphSummary.propTypes = {
     graphFields: PropTypes.arrayOf(fieldPropTypes).isRequired,
     selected: PropTypes.string.isRequired,
-    p: polyglotPropType,
+    closeDrawer: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
     graphFields: fromFields.getGraphFields(state),
 });
 
-export default compose(connect(mapStateToProps), translate)(PureGraphSummary);
+export default connect(mapStateToProps)(PureGraphSummary);

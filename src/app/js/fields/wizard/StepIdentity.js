@@ -6,7 +6,6 @@ import MenuItem from 'material-ui/MenuItem';
 
 import Step from './Step';
 import FormSelectField from '../../lib/components/FormSelectField';
-import FieldSchemeInput from '../FieldSchemeInput';
 import FieldLanguageInput from '../FieldLanguageInput';
 import FieldLabelInput from '../FieldLabelInput';
 import {
@@ -34,7 +33,6 @@ export const StepIdentityComponent = ({ field, p: polyglot, ...props }) => (
                 primaryText={polyglot.t('cover_collection')}
             />
         </Field>
-        <FieldSchemeInput />
         <FieldArray name="classes" component={ClassList} type="classes" />
         <FieldLanguageInput field={field} />
     </Step>

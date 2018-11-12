@@ -4,12 +4,11 @@ import { connect } from 'react-redux';
 import { Card, CardTitle } from 'material-ui/Card';
 import { Helmet } from 'react-helmet';
 
-import GraphSummary from './GraphSummary';
 import Dataset from '../dataset/Dataset';
 import Toolbar from '../Toolbar';
 import { fromFields, fromCharacteristic } from '../../sharedSelectors';
 import Format from '../Format';
-import AppliedFacetList from '../facet/AppliedFacetList';
+import AppliedFacetList from '../dataset/AppliedFacetList';
 import { field as fieldPropTypes } from '../../propTypes';
 import EditButton from '../../fields/editFieldValue/EditButton';
 import EditOntologyFieldButton from '../../fields/ontology/EditOntologyFieldButton';
@@ -51,29 +50,27 @@ const styles = {
 };
 
 class GraphPage extends Component {
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         this.props.preLoadPublication();
     }
+
     render() {
-        const { graphField, resource } = this.props;
+        const { graphField, resource, name } = this.props;
 
         return (
-            <div style={styles.container}>
+            <div className="graph-page" style={styles.container}>
                 <Helmet>
                     <title>Resources - {getTitle()}</title>
                 </Helmet>
                 <div style={styles.centerColumn}>
-                    <GraphSummary
-                        selected={graphField ? graphField.name : ''}
-                    />
                     <ExportShareButton style={{ float: 'right' }} />
                     <Stats />
                     <Card style={styles.section}>
                         <AppliedFacetList />
                     </Card>
                     {graphField && (
-                        <Card style={styles.section}>
-                            <CardTitle style={styles.label}>
+                        <Card style={styles.section} className="graph">
+                            <CardTitle style={styles.label} className="title">
                                 {graphField.label}
                                 <EditButton
                                     field={graphField}
@@ -103,7 +100,7 @@ class GraphPage extends Component {
                     </Card>
                 </div>
                 <div style={styles.sideColumn}>
-                    <Toolbar />
+                    <Toolbar name={name} />
                 </div>
             </div>
         );
@@ -111,12 +108,25 @@ class GraphPage extends Component {
 }
 
 GraphPage.propTypes = {
+    name: PropTypes.string,
     graphField: fieldPropTypes,
     resource: PropTypes.object.isRequired,
     preLoadPublication: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = (state, { match: { params: { name } } }) => ({
+GraphPage.defaultProps = {
+    name: null,
+};
+
+const mapStateToProps = (
+    state,
+    {
+        match: {
+            params: { name },
+        },
+    },
+) => ({
+    name,
     graphField: name && fromFields.getFieldByName(state, name),
     resource: fromCharacteristic.getCharacteristicsAsResource(state),
 });
@@ -125,4 +135,7 @@ const mapDispatchToprops = {
     preLoadPublication,
 };
 
-export default connect(mapStateToProps, mapDispatchToprops)(GraphPage);
+export default connect(
+    mapStateToProps,
+    mapDispatchToprops,
+)(GraphPage);

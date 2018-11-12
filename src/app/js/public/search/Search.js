@@ -10,6 +10,7 @@ import debounce from 'lodash.debounce';
 import TextField from 'material-ui/TextField';
 import CircularProgress from 'material-ui/CircularProgress';
 import FlatButton from 'material-ui/FlatButton';
+import Link from '../../lib/components/Link';
 
 import {
     polyglot as polyglotPropTypes,
@@ -17,34 +18,49 @@ import {
     resource as resourcePropTypes,
 } from '../../propTypes';
 import { preLoadPublication as preLoadPublicationAction } from '../../fields';
-import {
-    fromSearch,
-    search as searchAction,
-    loadMore as loadMoreAction,
-} from './reducer';
+import { search as searchAction, loadMore as loadMoreAction } from './reducer';
 import { fromFields } from '../../sharedSelectors';
-import SearchResult from './SearchResult';
+import { fromSearch } from '../selectors';
+import theme from '../../theme';
+
 import AdminOnlyAlert from '../../lib/components/AdminOnlyAlert';
+import SearchResult from './SearchResult';
+import AppliedFacets from './AppliedFacets';
 
 const styles = StyleSheet.create({
     container: {
         margin: '0 auto',
-        padding: '0 1rem',
     },
     header: {
         display: 'flex',
         flexDirection: 'column',
-        alignItems: 'center',
-        padding: '1rem 0',
+        padding: '1rem',
     },
     searchBarContainer: {
-        width: '100%',
+        flex: '1 0 0',
     },
-    advancedSearchToggle: {
+    advanced: {
+        display: 'flex',
+        flex: '0 0 auto',
+        flexDirection: 'column',
+    },
+    advancedToggle: {
         alignSelf: 'flex-end',
+        cursor: 'pointer',
+    },
+    advancedFacets: {
+        flex: '0 0 auto',
     },
     searchResults: {
         margin: '1.5rem 0',
+        opacity: '1',
+        transition: 'opacity 300ms ease-in-out',
+    },
+    searchResultsOpening: {
+        opacity: '0',
+    },
+    searchResultsEmpty: {
+        opacity: '0',
     },
     loading: {
         marginRight: '1rem',
@@ -55,16 +71,35 @@ const styles = StyleSheet.create({
     },
 });
 
+const muiStyles = {
+    searchBarUnderline: {
+        borderColor: theme.orange.primary,
+    },
+};
+
 const cnames = (name, ...classes) => classnames(name, ...classes.map(css));
 
 class Search extends Component {
     state = {
-        query: null,
+        bufferQuery: null,
+        opening: true,
     };
 
-    componentWillMount() {
-        this.props.preLoadPublication();
-        this.props.search();
+    constructor(props) {
+        super(props);
+        this.textInput = React.createRef();
+    }
+
+    UNSAFE_componentWillMount() {
+        const { searchQuery, search, preLoadPublication } = this.props;
+
+        preLoadPublication();
+        search({ query: searchQuery || '' });
+
+        setTimeout(() => {
+            this.setState({ opening: false });
+            this.textInput.current.input.focus();
+        }, 300);
     }
 
     debouncedSearch = debounce(params => {
@@ -73,7 +108,7 @@ class Search extends Component {
 
     handleTextFieldChange = (_, query) => {
         this.debouncedSearch({ query });
-        this.setState({ query });
+        this.setState({ bufferQuery: query });
     };
 
     renderLoading = () => {
@@ -130,8 +165,17 @@ class Search extends Component {
     };
 
     render() {
-        const { query } = this.state;
-        const { loading, fieldNames, results, total, p: polyglot } = this.props;
+        const { bufferQuery, opening } = this.state;
+        const {
+            searchQuery,
+            loading,
+            fieldNames,
+            results,
+            total,
+            p: polyglot,
+            showAdvancedSearch,
+            toggleAdvancedSearch,
+        } = this.props;
 
         const noOverviewField =
             !loading &&
@@ -145,7 +189,9 @@ class Search extends Component {
 
         return (
             <div className={cnames('search', styles.container)}>
-                <div className={cnames('search-header', styles.header)}>
+                <div
+                    className={classnames('search-header', css(styles.header))}
+                >
                     <div
                         className={cnames(
                             'search-bar',
@@ -156,19 +202,45 @@ class Search extends Component {
                             hintText={`🔍 ${polyglot.t('search_placeholder')}`}
                             fullWidth
                             onChange={this.handleTextFieldChange}
-                            value={query || ''}
+                            value={
+                                (bufferQuery !== null
+                                    ? bufferQuery
+                                    : searchQuery) || ''
+                            }
+                            underlineStyle={muiStyles.searchBarUnderline}
+                            underlineFocusStyle={muiStyles.searchBarUnderline}
+                            ref={this.textInput}
                         />
                     </div>
-                    <div
-                        className={cnames(
-                            'search-advanced-toggle',
-                            styles.advancedSearchToggle,
-                        )}
-                    >
-                        <a href="#">{polyglot.t('search_advanced')}</a>
-                    </div>
+                    {showAdvancedSearch && (
+                        <div
+                            className={cnames(
+                                'search-advanced',
+                                styles.advanced,
+                            )}
+                        >
+                            <Link
+                                className={cnames(
+                                    'search-advanced-toggle',
+                                    styles.advancedToggle,
+                                )}
+                                onClick={toggleAdvancedSearch}
+                            >
+                                {polyglot.t('search_advanced')}
+                            </Link>
+                            <AppliedFacets
+                                className={css(styles.advancedFacets)}
+                            />
+                        </div>
+                    )}
                 </div>
-                <div className={cnames('search-results', styles.searchResults)}>
+                <div
+                    className={classnames(
+                        'search-results',
+                        css(styles.searchResults),
+                        { [css(styles.searchResultsOpening)]: opening },
+                    )}
+                >
                     {noOverviewField && this.renderNoOverviewField()}
                     {noResults && this.renderNoResults()}
                     {everythingIsOk && this.renderResults()}
@@ -182,6 +254,7 @@ class Search extends Component {
 
 Search.propTypes = {
     search: PropTypes.func.isRequired,
+    searchQuery: PropTypes.string,
     preLoadPublication: PropTypes.func.isRequired,
     loading: PropTypes.bool.isRequired,
     p: polyglotPropTypes.isRequired,
@@ -195,6 +268,12 @@ Search.propTypes = {
     loadMore: PropTypes.func.isRequired,
     total: PropTypes.number.isRequired,
     closeDrawer: PropTypes.func.isRequired,
+    showAdvancedSearch: PropTypes.bool.isRequired,
+    toggleAdvancedSearch: PropTypes.func.isRequired,
+};
+
+Search.defaultProps = {
+    searchQuery: null,
 };
 
 const mapStateToProps = state => ({
@@ -203,6 +282,7 @@ const mapStateToProps = state => ({
     fieldNames: fromSearch.getFieldNames(state),
     fields: fromFields.getFields(state),
     total: fromSearch.getTotal(state),
+    searchQuery: fromSearch.getQuery(state),
 });
 
 const mapDispatchToProps = {
@@ -211,6 +291,10 @@ const mapDispatchToProps = {
     loadMore: loadMoreAction,
 };
 
-export default compose(translate, connect(mapStateToProps, mapDispatchToProps))(
-    Search,
-);
+export default compose(
+    translate,
+    connect(
+        mapStateToProps,
+        mapDispatchToProps,
+    ),
+)(Search);

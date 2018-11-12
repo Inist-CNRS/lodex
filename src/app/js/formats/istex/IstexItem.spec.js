@@ -4,6 +4,8 @@ import { StyleSheetTestUtils } from 'aphrodite';
 
 import { IstexItemComponent } from './IstexItem';
 
+import Link from '../../lib/components/Link';
+
 describe('<IstexItem />', () => {
     beforeEach(() => StyleSheetTestUtils.suppressStyleInjection());
 
@@ -18,9 +20,9 @@ describe('<IstexItem />', () => {
                 hostGenre="hostGenre"
             />,
         );
-        const a = wrapper.find('a');
-        expect(a.length).toEqual(1);
-        expect(a.props().href).toEqual('url');
+        const link = wrapper.find(Link);
+        expect(link.length).toEqual(1);
+        expect(link.props().href).toEqual('url');
     });
     afterEach(() => StyleSheetTestUtils.clearBufferAndResumeStyleInjection());
 });

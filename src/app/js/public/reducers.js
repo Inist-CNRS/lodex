@@ -13,6 +13,7 @@ import resource from './resource';
 import format from '../formats/reducer';
 import user from '../user';
 import searchReducer from './search/reducer';
+import menu from './menu/reducer';
 
 const rootReducer = combineReducers({
     characteristic,
@@ -28,6 +29,7 @@ const rootReducer = combineReducers({
     format,
     user,
     search: searchReducer,
+    menu,
 });
 
 export default rootReducer;

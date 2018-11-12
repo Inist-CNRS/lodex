@@ -1,65 +1,91 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 import { List } from 'material-ui/List';
 
-import {
-    field as fieldPropTypes,
-    polyglot as polyglotPropTypes,
-} from '../../propTypes';
-import { fromFacet } from '../selectors';
+import { field as fieldPropTypes } from '../../propTypes';
+
+import { facetActions as datasetActions } from '../dataset';
+import { facetActions as searchActions } from '../search/reducer';
+import FacetActionsContext from './FacetActionsContext';
+
 import { fromFields } from '../../sharedSelectors';
-import { openFacet } from './index';
 import FacetItem from './FacetItem';
 
-export class PureFacetList extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            anchorEl: null,
-            showMenu: false,
-        };
-    }
+const FacetList = ({
+    hasFacetFields,
+    fields,
+    page,
+    changeFacetValue,
+    invertFacet,
+    openFacet,
+    sortFacetValue,
+    toggleFacetValue,
+}) => {
+    if (!hasFacetFields) return null;
 
-    render() {
-        const { fields, hasFacetFields } = this.props;
+    const actions = {
+        changeFacetValue,
+        invertFacet,
+        openFacet,
+        sortFacetValue,
+        toggleFacetValue,
+    };
 
-        if (!hasFacetFields) return null;
-
-        return (
-            <List className="facet-list">
+    return (
+        <List className="facet-list">
+            <FacetActionsContext.Provider value={actions}>
                 {fields.map(field => (
-                    <FacetItem key={field.name} field={field} />
+                    <FacetItem
+                        key={`${page}-${field.name}`}
+                        field={field}
+                        page={page}
+                    />
                 ))}
-            </List>
-        );
-    }
-}
-
-PureFacetList.propTypes = {
-    fields: PropTypes.arrayOf(fieldPropTypes).isRequired,
-    handleFacetSelected: PropTypes.func.isRequired,
-    hasFacetFields: PropTypes.bool.isRequired,
-    p: polyglotPropTypes.isRequired,
-    selectedFacet: fieldPropTypes,
+            </FacetActionsContext.Provider>
+        </List>
+    );
 };
 
-PureFacetList.defaultProps = {
-    selectedFacet: null,
+FacetList.propTypes = {
+    fields: PropTypes.arrayOf(fieldPropTypes).isRequired,
+    hasFacetFields: PropTypes.bool.isRequired,
+    page: PropTypes.oneOf(['dataset', 'search']).isRequired,
+    changeFacetValue: PropTypes.func.isRequired,
+    invertFacet: PropTypes.func.isRequired,
+    openFacet: PropTypes.func.isRequired,
+    sortFacetValue: PropTypes.func.isRequired,
+    toggleFacetValue: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
     hasFacetFields: fromFields.hasFacetFields(state),
-    selectedFacet: fromFacet.getSelectedFacet(state),
     fields: fromFields.getFacetFields(state),
 });
 
-const mapDispatchToProps = {
-    handleFacetSelected: openFacet,
+const actionsByPage = {
+    dataset: datasetActions,
+    search: searchActions,
 };
 
-export default compose(connect(mapStateToProps, mapDispatchToProps), translate)(
-    PureFacetList,
-);
+const mapDispatchToProps = (dispatch, { page }) => ({
+    changeFacetValue: (...args) =>
+        dispatch(actionsByPage[page].changeFacetValue(...args)),
+    invertFacet: (...args) =>
+        dispatch(actionsByPage[page].invertFacet(...args)),
+    openFacet: (...args) => dispatch(actionsByPage[page].openFacet(...args)),
+    sortFacetValue: (...args) =>
+        dispatch(actionsByPage[page].sortFacetValue(...args)),
+    toggleFacetValue: (...args) =>
+        dispatch(actionsByPage[page].toggleFacetValue(...args)),
+});
+
+export default compose(
+    connect(
+        mapStateToProps,
+        mapDispatchToProps,
+    ),
+    translate,
+)(FacetList);

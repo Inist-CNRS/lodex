@@ -32,11 +32,13 @@ export default handleActions(
             ...state,
             showModal: true,
             token: null,
+            role: null,
         }),
         SIGNOUT: state => ({
             ...state,
             showModal: false,
             token: null,
+            role: null,
         }),
     },
     defaultState,
@@ -49,6 +51,7 @@ export const logout = createAction(LOGOUT);
 export const signOut = createAction(SIGNOUT);
 
 export const isAdmin = state => state.role === 'admin';
+export const getRole = state => state.role || 'not logged';
 export const getToken = state => state.token;
 export const getCookie = state => state.cookie;
 export const isUserModalShown = state => state.showModal;
@@ -364,8 +367,15 @@ export const getProgressRequest = state =>
         url: '/api/progress',
     });
 
+export const getMenuRequest = state =>
+    getRequest(state, {
+        method: 'GET',
+        url: '/api/menu',
+    });
+
 export const selectors = {
     isAdmin,
+    getRole,
     getToken,
     getCookie,
     getRequest,
@@ -406,4 +416,5 @@ export const selectors = {
     getReorderFieldRequest,
     getProgressRequest,
     getIstexRequest,
+    getMenuRequest,
 };

@@ -3,14 +3,19 @@ import 'url-api-polyfill';
 import { createBrowserHistory } from 'history';
 import React from 'react';
 import { render } from 'react-dom';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import { Provider } from 'react-redux';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
 
-import Root from '../Root';
 import rootReducer from './reducers';
 import Routes from './Routes';
 import sagas from './sagas';
 import configureStore from '../configureStore';
 import phrasesFor from '../i18n/translations';
 import getLocale from '../../../common/getLocale';
+import customTheme from './customTheme';
+
+const muiTheme = getMuiTheme(customTheme);
 
 const language = getLocale();
 const initialState = {
@@ -30,17 +35,10 @@ const store = configureStore(
 );
 
 render(
-    <Root store={store} routes={<Routes />} history={history} />,
+    <Provider {...{ store }}>
+        <MuiThemeProvider muiTheme={muiTheme}>
+            <Routes history={history} />
+        </MuiThemeProvider>
+    </Provider>,
     document.getElementById('root'),
 );
-
-// Hot Module Replacement API
-if (module.hot) {
-    module.hot.accept('../Root', () => {
-        const NewRoot = require('../Root').default; // eslint-disable-line
-        render(
-            <NewRoot store={store} routes={<Routes />} history={history} />,
-            document.getElementById('root'),
-        );
-    });
-}

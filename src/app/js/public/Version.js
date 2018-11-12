@@ -3,6 +3,7 @@ import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
 
 import { polyglot as polyglotPropTypes } from '../propTypes';
+import Link from '../lib/components/Link';
 
 const { version } = require('../../../../package.json');
 
@@ -25,7 +26,7 @@ export const VersionComponent = ({ p: polyglot }) => (
         {polyglot.t('powered')}
         <b>
             {' '}
-            Lodex <a href={link}>{version}</a>
+            Lodex <Link href={link}>{version}</Link>
         </b>
     </div>
 );

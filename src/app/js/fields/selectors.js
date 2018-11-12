@@ -101,10 +101,13 @@ const getResourceFields = createSelector(
     getParams,
     getDocumentFields,
     getRootCollectionFields,
-    (resource, documentFields, collectionFields) => [
-        ...collectionFields,
-        ...documentFields.filter(({ name }) => !!resource[name]),
-    ],
+    (resource, documentFields, collectionFields) =>
+        resource
+            ? [
+                  ...collectionFields,
+                  ...documentFields.filter(({ name }) => !!resource[name]),
+              ]
+            : [],
 );
 
 const getListFields = createSelector(getCollectionFields, fields =>
@@ -114,7 +117,7 @@ const getListFields = createSelector(getCollectionFields, fields =>
 );
 
 const getGraphFields = createSelector(getDatasetFields, fields =>
-    fields.filter(f => f.display_in_graph).filter(f => !f.composedOf),
+    fields.filter(f => f.display_in_graph),
 );
 
 const getAllListFields = createSelector(getCollectionFields, fields =>
@@ -184,7 +187,8 @@ export const getInvalidFields = createSelector(
         })),
 );
 
-export const areAllFieldsValid = state => state.allValid;
+export const areAllFieldsValid = state =>
+    state.allValid && (state.list || []).length > 0;
 
 export const getLineColGetterFromAllFields = (fieldByName, field) => {
     if (!field) {
@@ -317,6 +321,12 @@ const hasSearchableFields = createSelector(
     allFields => allFields.filter(f => f.searchable).length > 0,
 );
 
+const canBeSearched = createSelector(
+    hasFacetFields,
+    hasSearchableFields,
+    (hasFacet, hasSearchable) => hasFacet || hasSearchable,
+);
+
 const getNbColumns = state => state.list.length;
 
 const getEditedValueFieldName = ({ editedValueFieldName }) =>
@@ -399,4 +409,5 @@ export default {
     getFieldFormatArgs,
     getOntologyFields,
     getInvalidProperties,
+    canBeSearched,
 };

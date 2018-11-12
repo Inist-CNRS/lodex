@@ -13,8 +13,11 @@ const styles = {
     button: memoize(atTop => ({
         bottom: atTop ? '0' : '-68px',
         position: 'absolute',
-        left: '1.5rem',
-        zIndex: 10000,
+        marginLeft: 'auto',
+        marginRight: 'auto',
+        width: '80%',
+        display: 'flex',
+        zIndex: 1,
     })),
 };
 

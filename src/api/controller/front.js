@@ -26,6 +26,8 @@ import Routes from '../../app/js/public/Routes';
 import translations from '../../app/translations';
 import config from '../../../config.json';
 import getLocale from '../../common/getLocale';
+import { topMenu, bottomMenu, customRoutes } from './api/menu';
+import customTheme from '../../app/js/public/customTheme';
 
 const indexHtml = fs
     .readFileSync(path.resolve(__dirname, '../../app/custom/index.html'))
@@ -60,6 +62,7 @@ const getInitialState = (token, cookie, locale) => ({
         token,
         cookie,
     },
+    menu: { topMenu, bottomMenu, customRoutes, error: null },
 });
 
 const renderFullPage = (html, css, preloadedState, helmet) =>
@@ -87,13 +90,13 @@ const renderFullPage = (html, css, preloadedState, helmet) =>
             </body>`,
         );
 
-const renderHtml = (store, muiTheme, url, context) =>
+const renderHtml = (store, muiTheme, url, context, history) =>
     StyleSheetServer.renderStatic(() =>
         renderToString(
             <StaticRouter location={url} context={context}>
                 <Provider {...{ store }}>
                     <MuiThemeProvider muiTheme={muiTheme}>
-                        <Routes />
+                        <Routes history={history} />
                     </MuiThemeProvider>
                 </Provider>
             </StaticRouter>,
@@ -117,12 +120,12 @@ export const getRenderingData = async (
 
     const sagaPromise = store.runSaga(sagas).done;
     const context = {};
-    renderHtml(store, muiTheme, url, context);
+    renderHtml(store, muiTheme, url, context, history);
     store.dispatch(END);
 
     await sagaPromise;
 
-    const { html, css } = renderHtml(store, muiTheme, url, context);
+    const { html, css } = renderHtml(store, muiTheme, url, context, history);
     if (context.url) {
         return {
             redirect: context.url,
@@ -146,9 +149,8 @@ export const getRenderingData = async (
 
 const handleRender = async (ctx, next) => {
     const { url, headers } = ctx.request;
-
     if (
-        url.match(/[^\\]*\.(\w+)$/) ||
+        (url.match(/[^\\]*\.(\w+)$/) && !url.match(/[^\\]*\.html$/)) ||
         url.match('/admin') ||
         url.match('__webpack_hmr')
     ) {
@@ -160,12 +162,9 @@ const handleRender = async (ctx, next) => {
         initialEntries: [url],
     });
 
-    const muiTheme = getMuiTheme(
-        {},
-        {
-            userAgent: headers['user-agent'],
-        },
-    );
+    const muiTheme = getMuiTheme(customTheme, {
+        userAgent: headers['user-agent'],
+    });
 
     const {
         html,

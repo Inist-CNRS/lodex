@@ -33,7 +33,7 @@ const ListView = ({
 }) => {
     let values = resource[field.name];
     values = typeof values === 'string' ? [values] : values;
-    const { ViewComponent, args } = getViewComponent(subFormat, true);
+    const { ViewComponent, args } = getViewComponent(subFormat);
 
     const List = type === 'ordered' ? OL : UL;
 
@@ -64,6 +64,7 @@ const ListView = ({
                                 },
                             }}
                             {...args}
+                            {...subFormatOptions}
                         />
                     ) : (
                         value

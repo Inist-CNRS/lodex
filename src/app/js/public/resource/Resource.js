@@ -3,11 +3,11 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
-import { Link } from 'react-router-dom';
 import HomeIcon from 'material-ui/svg-icons/action/home';
 import { CardText, CardActions } from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
 import get from 'lodash.get';
+import isEqual from 'lodash.isequal';
 
 import { fromResource } from '../selectors';
 import { fromFields, fromCharacteristic } from '../../sharedSelectors';
@@ -18,17 +18,20 @@ import { polyglot as polyglotPropTypes } from '../../propTypes';
 import Loading from '../../lib/components/Loading';
 import { preLoadResource } from './';
 import { preLoadPublication } from '../../fields';
+import Link from '../../lib/components/Link';
 
 export class ResourceComponent extends Component {
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         this.props.preLoadResource();
         this.props.preLoadPublication();
     }
 
     componentDidUpdate(prevProps) {
         if (
-            get(this.props, 'match.params.uri', '') !==
-            get(prevProps, 'match.params.uri', '')
+            !isEqual(
+                get(this.props, 'match.params', {}),
+                get(prevProps, 'match.params', {}),
+            )
         ) {
             this.props.preLoadResource();
         }
@@ -125,6 +128,10 @@ const mapDispatchToProps = {
     preLoadPublication,
 };
 
-export default compose(connect(mapStateToProps, mapDispatchToProps), translate)(
-    ResourceComponent,
-);
+export default compose(
+    connect(
+        mapStateToProps,
+        mapDispatchToProps,
+    ),
+    translate,
+)(ResourceComponent);

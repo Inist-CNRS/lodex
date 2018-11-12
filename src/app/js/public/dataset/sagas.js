@@ -6,6 +6,7 @@ import {
     takeLatest,
     throttle,
 } from 'redux-saga/effects';
+import { LOCATION_CHANGE } from 'connected-react-router';
 
 import {
     LOAD_DATASET_PAGE,
@@ -16,12 +17,15 @@ import {
     loadDatasetPage,
     loadDatasetPageSuccess,
     loadDatasetPageError,
+    clearFilter,
+    facetActionTypes,
+    facetActions,
 } from './';
 
-import { TOGGLE_FACET_VALUE, CLEAR_FACET, INVERT_FACET } from '../facet';
 import { fromUser } from '../../sharedSelectors';
 import fetchSaga from '../../lib/sagas/fetchSaga';
-import { fromDataset, fromFacet } from '../selectors';
+import { fromDataset } from '../selectors';
+import facetSagasFactory from '../facet/sagas';
 
 export function* handlePreLoadDatasetPage() {
     if (yield select(fromDataset.isDatasetLoaded)) {
@@ -32,8 +36,8 @@ export function* handlePreLoadDatasetPage() {
 }
 
 export function* handleLoadDatasetPageRequest({ payload }) {
-    const facets = yield select(fromFacet.getAppliedFacets);
-    const invertedFacets = yield select(fromFacet.getInvertedFacets);
+    const facets = yield select(fromDataset.getAppliedFacets);
+    const invertedFacets = yield select(fromDataset.getInvertedFacets);
     const match = yield select(fromDataset.getFilter);
     const sort = yield select(fromDataset.getSort);
 
@@ -68,6 +72,28 @@ export function* handleLoadDatasetPageRequest({ payload }) {
     yield put(loadDatasetPageSuccess({ dataset, page, total, fullTotal }));
 }
 
+const clearDatasetSearch = function*() {
+    const match = yield select(fromDataset.getFilter);
+
+    if (match) {
+        yield put(clearFilter());
+    }
+};
+
+const clearFacetSaga = function*() {
+    const appliedFacets = yield select(fromDataset.getAppliedFacets);
+
+    if (Object.keys(appliedFacets).length > 0) {
+        yield put(facetActions.clearFacet());
+    }
+};
+
+const facetSagas = facetSagasFactory({
+    actionTypes: facetActionTypes,
+    actions: facetActions,
+    selectors: fromDataset,
+});
+
 export default function*() {
     yield fork(function*() {
         // see https://github.com/redux-saga/redux-saga/blob/master/docs/api/README.md#throttlems-pattern-saga-args
@@ -76,16 +102,19 @@ export default function*() {
             [
                 LOAD_DATASET_PAGE,
                 APPLY_FILTER,
-                TOGGLE_FACET_VALUE,
-                CLEAR_FACET,
-                INVERT_FACET,
+                facetActionTypes.TOGGLE_FACET_VALUE,
+                facetActionTypes.CLEAR_FACET,
+                facetActionTypes.INVERT_FACET,
                 SORT_DATASET,
                 CHANGE_PAGE,
             ],
             handleLoadDatasetPageRequest,
         );
-    });
-    yield fork(function*() {
+
         yield takeLatest(PRE_LOAD_DATASET_PAGE, handlePreLoadDatasetPage);
+        yield facetSagas();
     });
+
+    yield takeLatest(LOCATION_CHANGE, clearDatasetSearch);
+    yield takeLatest(LOCATION_CHANGE, clearFacetSaga);
 }

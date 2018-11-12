@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+
 import { field as fieldPropTypes } from '../../propTypes';
 import getLabel from '../shared/getLabel';
+import Link from '../../lib/components/Link';
 
 const EmailView = ({ className, resource, field, fields, type, value }) => {
     const label = getLabel(field, resource, fields, type, value);

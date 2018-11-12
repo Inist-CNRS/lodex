@@ -113,7 +113,7 @@ ClassListItem.defaultProps = {
 const mapStateToProps = state => ({
     fields: fromFields.getFields(state),
     getSchemeSearchRequest: query => ({
-        url: `https://lov.okfn.org/dataset/lov/api/v2/term/search?q=${query}`,
+        url: `https://lov.linkeddata.es/dataset/lov/api/v2/term/search?q=${query}`,
     }),
     getSchemeMenuItemsDataFromResponse: response =>
         response && response.results
@@ -128,6 +128,10 @@ const mapDispatchToProps = {
     onChangeClass: changeClass,
 };
 
-export default compose(connect(mapStateToProps, mapDispatchToProps), translate)(
-    ClassListItem,
-);
+export default compose(
+    connect(
+        mapStateToProps,
+        mapDispatchToProps,
+    ),
+    translate,
+)(ClassListItem);

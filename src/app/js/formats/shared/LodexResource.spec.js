@@ -1,9 +1,9 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import { Link } from 'react-router-dom';
 import { StyleSheetTestUtils } from 'aphrodite';
 
 import LodexResource from './LodexResource';
+import Link from '../../lib/components/Link';
 
 describe('LodexResource', () => {
     beforeEach(() => StyleSheetTestUtils.suppressStyleInjection());
@@ -62,7 +62,7 @@ describe('LodexResource', () => {
             />,
         );
 
-        const link = wrapper.find('a');
+        const link = wrapper.find(Link);
 
         expect(link.prop('href')).toBe('http://otherSiteUrl');
     });
