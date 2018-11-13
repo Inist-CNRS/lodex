@@ -13,7 +13,7 @@ export const expectRowsCountToBe = expected => {
 };
 
 export const createResource = resource => {
-    cy.get('button.create-resource').click();
+    cy.get('.create-resource button').click();
 
     Object.entries(resource).forEach(([field, value]) => {
         cy.get('label')

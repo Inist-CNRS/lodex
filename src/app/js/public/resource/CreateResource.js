@@ -29,6 +29,7 @@ const CreateResource = ({ handleOpen, p, ...props }) => (
         formName={CREATE_RESOURCE_FORM_NAME}
         form={<CreateResourceForm />}
         label={p.t('create_resource')}
+        className="create-resource"
         openButton={
             <FloatingActionButton
                 className="create-resource"
