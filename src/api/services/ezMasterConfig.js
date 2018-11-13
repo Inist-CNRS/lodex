@@ -14,12 +14,12 @@ export const validateConfig = config => {
     }
 
     if (config.naan) {
-        expect(config.naan).toMatchObject(/(\d{5,})/);
+        expect(config.naan).toMatch(/(\d{5,})/);
     }
 
     if (config.subpublisher) {
-        expect(config.subpublisher).toMatchObject(
-            /[0123456789BCDFGHJKLMNPQRSTVWXZ]{3}/,
+        expect(config.subpublisher).toMatch(
+            /[0123456789ABCDFGHJKLMNPQRSTVWXZ]{3}/,
         );
     }
 };
