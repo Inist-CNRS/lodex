@@ -92,6 +92,7 @@
         ],
         "format": {
             "args": {
+                "searchedField": "host.issn"
             },
             "name": "istexSummary"
         },

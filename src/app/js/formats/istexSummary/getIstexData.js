@@ -21,17 +21,15 @@ const buildIstexQuery = (options = defaultQueryOptions) => {
         q: `(${opts.query})`,
     };
 
-    return (
-        ISTEX_API_URL +
-        '/document/?' +
-        Object.entries(params)
-            .filter(param => Number.isInteger(param[1]) || !!param[1])
-            .map(
-                ([key, value]) =>
-                    `${encodeURIComponent(key)}=${encodeURIComponent(value)}`,
-            )
-            .join('&')
-    );
+    const queryParams = Object.entries(params)
+        .filter(param => Number.isInteger(param[1]) || !!param[1])
+        .map(
+            ([key, value]) =>
+                `${encodeURIComponent(key)}=${encodeURIComponent(value)}`,
+        )
+        .join('&');
+
+    return `${ISTEX_API_URL}/document/?${queryParams}`;
 };
 
 const getFilterQuery = (searchedField, value) =>
