@@ -10,6 +10,7 @@ import NavLink from 'react-router-dom/NavLink';
 
 import theme from '../../theme';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
+import ExportShareMenuItem from '../ExportShareMenuItem';
 
 const styles = StyleSheet.create({
     link: {
@@ -217,6 +218,28 @@ const MenuItem = ({
                     </Link>
                 )
             );
+
+        case 'share_export': {
+            return (
+                <ExportShareMenuItem
+                    renderOpenButton={({ handleOpen, open }) => (
+                        <div
+                            className={classnames(
+                                'nav-item',
+                                css(styles.menuItem),
+                                {
+                                    [css(styles.drawerActive)]: open,
+                                },
+                            )}
+                            onClick={handleOpen}
+                        >
+                            {icon}
+                            {label}
+                        </div>
+                    )}
+                />
+            );
+        }
 
         case 'custom': {
             const { link } = config;
