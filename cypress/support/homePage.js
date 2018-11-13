@@ -6,9 +6,7 @@ export const goToAdminDashboard = () => {
 };
 
 export const goToGraphPage = () => {
-    cy.get('nav a')
-        .contains('Resources')
-        .click();
+    cy.visit('/graph');
     cy.location('pathname').should('equal', '/graph');
 };
 

@@ -2,7 +2,7 @@ import '@babel/polyfill';
 import 'url-api-polyfill';
 import { createBrowserHistory } from 'history';
 import React from 'react';
-import { render } from 'react-dom';
+import { hydrate } from 'react-dom';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import { Provider } from 'react-redux';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
@@ -34,7 +34,7 @@ const store = configureStore(
     history,
 );
 
-render(
+hydrate(
     <Provider {...{ store }}>
         <MuiThemeProvider muiTheme={muiTheme}>
             <Routes history={history} />
