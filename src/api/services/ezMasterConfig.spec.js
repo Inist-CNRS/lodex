@@ -63,7 +63,7 @@ describe('ezMasterConfig', () => {
                     naan: '555555',
                     subpublisher: 'ABC',
                 }),
-            ).toThrow();
+            ).not.toThrow();
         });
     });
 
