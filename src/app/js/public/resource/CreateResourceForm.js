@@ -50,9 +50,9 @@ export const CreateResourceFormComponent = ({
             </Alert>
         )}
         <UriFieldInput />
-        {fields
-            .filter(({ name }) => name !== 'uri')
-            .map(field => <FieldInput key={field.name} field={field} />)}
+        {fields.filter(({ name }) => name !== 'uri').map(field => (
+            <FieldInput key={field.name} field={field} />
+        ))}
     </form>
 );
 
@@ -90,7 +90,10 @@ const mapDispatchToProps = {
 
 export default compose(
     translate,
-    connect(mapStateToProps, mapDispatchToProps),
+    connect(
+        mapStateToProps,
+        mapDispatchToProps,
+    ),
     reduxForm({
         form: CREATE_RESOURCE_FORM_NAME,
         validate,

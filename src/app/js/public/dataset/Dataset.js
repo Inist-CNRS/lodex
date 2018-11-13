@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
-import { CardActions } from 'material-ui/Card';
 import { grey500 } from 'material-ui/styles/colors';
 
 import {
@@ -21,7 +20,6 @@ import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { preLoadDatasetPage, changePage } from './';
 import { fromDataset } from '../selectors';
 import { fromFields } from '../../sharedSelectors';
-import CreateResource from '../resource/CreateResource';
 
 const styles = {
     table: {
@@ -55,7 +53,7 @@ const styles = {
 };
 
 export class DatasetComponent extends Component {
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         const { currentPage, perPage } = this.props;
         this.props.preLoadDatasetPage({ page: currentPage, perPage });
     }
@@ -147,9 +145,6 @@ export class DatasetComponent extends Component {
                         showing: polyglot.t('showing'),
                     }}
                 />
-                <CardActions style={styles.actions}>
-                    <CreateResource />
-                </CardActions>
             </div>
         );
     }
@@ -186,6 +181,10 @@ const mapDispatchToProps = {
     changePage,
 };
 
-export default compose(connect(mapStateToProps, mapDispatchToProps), translate)(
-    DatasetComponent,
-);
+export default compose(
+    connect(
+        mapStateToProps,
+        mapDispatchToProps,
+    ),
+    translate,
+)(DatasetComponent);
