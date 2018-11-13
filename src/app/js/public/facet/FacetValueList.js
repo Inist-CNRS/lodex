@@ -28,7 +28,7 @@ const styles = {
     },
 };
 
-export const onPageChange = (changeFacetValue, filter, name) => (
+const onPageChange = (changeFacetValue, filter, name) => (
     currentPage,
     perPage,
 ) =>
@@ -39,12 +39,10 @@ export const onPageChange = (changeFacetValue, filter, name) => (
         filter,
     });
 
-export const onFilterChange = (
-    changeFacetValue,
-    name,
-    currentPage,
-    perPage,
-) => (_, filter) =>
+const onFilterChange = (changeFacetValue, name, currentPage, perPage) => (
+    _,
+    filter,
+) =>
     changeFacetValue({
         name,
         currentPage,
@@ -52,10 +50,10 @@ export const onFilterChange = (
         filter,
     });
 
-export const onInvertChange = (invertFacet, name) => (_, inverted) =>
+const onInvertChange = (invertFacet, name) => (_, inverted) =>
     invertFacet({ name, inverted });
 
-export const onSortChange = (sortFacetValue, name) => nextSortBy =>
+const onSortChange = (sortFacetValue, name) => nextSortBy =>
     sortFacetValue({
         name,
         nextSortBy,
