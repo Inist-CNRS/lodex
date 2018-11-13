@@ -15,6 +15,7 @@ import CustomPage from './CustomPage';
 import { loadMenu } from './menu/reducer';
 import { fromMenu } from './selectors';
 import scrollToTop from '../lib/scrollToTop';
+import CreateResource from './resource/CreateResource';
 
 const notLogin = new RegExp('^(?!.*(/login)).*$');
 
@@ -58,6 +59,7 @@ class Routes extends Component {
                                     component={CustomPage}
                                 />
                             ))}
+                            <Route path={notLogin} component={CreateResource} />
                         </div>
                     </Fragment>
                 </ConnectedRouter>

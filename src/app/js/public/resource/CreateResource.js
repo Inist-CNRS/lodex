@@ -2,6 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
+import FloatingActionButton from 'material-ui/FloatingActionButton';
+import ContentAdd from 'material-ui/svg-icons/content/add';
 
 import { fromResource } from '../selectors';
 import CreateResourceForm from './CreateResourceForm';
@@ -13,14 +15,38 @@ import {
 } from './';
 import { fromUser } from '../../sharedSelectors';
 
-const mapStateToProps = (state, { p }) => ({
+const styles = {
+    button: {
+        position: 'fixed',
+        bottom: 40,
+        right: 40,
+    },
+};
+
+const CreateResource = ({ handleOpen, p, ...props }) => (
+    <ButtonWithDialogForm
+        {...props}
+        formName={CREATE_RESOURCE_FORM_NAME}
+        form={<CreateResourceForm />}
+        label={p.t('create_resource')}
+        className="create-resource"
+        openButton={
+            <FloatingActionButton
+                className="create-resource"
+                onClick={handleOpen}
+                style={styles.button}
+                title={p.t('create_resource')}
+            >
+                <ContentAdd />
+            </FloatingActionButton>
+        }
+    />
+);
+
+const mapStateToProps = state => ({
     show: fromUser.isAdmin(state),
     open: fromResource.isCreating(state),
     saving: fromResource.isSaving(state),
-    formName: CREATE_RESOURCE_FORM_NAME,
-    form: <CreateResourceForm />,
-    label: p.t('create_resource'),
-    className: 'create-resource',
 });
 
 const mapDispatchToProps = {
@@ -28,6 +54,10 @@ const mapDispatchToProps = {
     handleClose: createResourceCancel,
 };
 
-export default compose(translate, connect(mapStateToProps, mapDispatchToProps))(
-    ButtonWithDialogForm,
-);
+export default compose(
+    translate,
+    connect(
+        mapStateToProps,
+        mapDispatchToProps,
+    ),
+)(CreateResource);

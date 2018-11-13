@@ -35,30 +35,7 @@ export const PureButtonWithDialogForm = ({
     form,
     className,
     label,
-    p: polyglot,
-}) => {
-    if (!show) {
-        return null;
-    }
-    const actions = [
-        <ButtonWithStatus
-            raised
-            key="save"
-            className={classnames(className, 'save')}
-            label={polyglot.t('save')}
-            primary
-            loading={saving}
-            onClick={handleSubmit}
-        />,
-        <FlatButton
-            secondary
-            key="cancel"
-            label={polyglot.t('cancel')}
-            onClick={handleClose}
-        />,
-    ];
-
-    const openButton = icon ? (
+    openButton = icon ? (
         <IconButton
             className={classnames(
                 'open',
@@ -81,7 +58,29 @@ export const PureButtonWithDialogForm = ({
             onClick={handleOpen}
             style={buttonStyle}
         />
-    );
+    ),
+    p: polyglot,
+}) => {
+    if (!show) {
+        return null;
+    }
+    const actions = [
+        <ButtonWithStatus
+            raised
+            key="save"
+            className={classnames(className, 'save')}
+            label={polyglot.t('save')}
+            primary
+            loading={saving}
+            onClick={handleSubmit}
+        />,
+        <FlatButton
+            secondary
+            key="cancel"
+            label={polyglot.t('cancel')}
+            onClick={handleClose}
+        />,
+    ];
 
     return (
         <ButtonWithDialog
@@ -117,6 +116,7 @@ PureButtonWithDialogForm.propTypes = {
     icon: PropTypes.node,
     label: PropTypes.string.isRequired,
     className: PropTypes.string.isRequired,
+    openButton: PropTypes.element.isRequired,
 };
 
 const mapDispatchToProps = { submit: submitAction };
