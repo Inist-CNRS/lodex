@@ -6,6 +6,7 @@ import path from 'path';
 import { simulatedLatency } from 'config';
 import api from './api';
 import front from './front';
+import embedded from './embedded';
 import { readFile } from '../services/fsHelpers';
 
 const app = new Koa();
@@ -19,6 +20,7 @@ if (simulatedLatency) {
     app.use(simulateLatency(simulatedLatency));
 }
 
+app.use(mount('/embedded', embedded));
 app.use(mount('/api', api));
 
 const scriptRegEx = new RegExp('<script.*?( src=".*")?.*?>.*?</script>', 'gm');

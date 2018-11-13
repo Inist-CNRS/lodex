@@ -275,5 +275,11 @@ export default async db => {
         );
     };
 
+    collection.findByName = async name => {
+        const fields = await collection.findByNames([name]);
+
+        return fields[name];
+    };
+
     return collection;
 };

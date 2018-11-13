@@ -1,7 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import translate from 'redux-polyglot/translate';
-import compose from 'recompose/compose';
 
 import {
     field as fieldPropTypes,
@@ -14,6 +12,7 @@ import {
     SEARCHED_FIELD_VALUES,
     SORT_YEAR_VALUES,
     SORT_YEAR_DESC,
+    CUSTOM_ISTEX_QUERY,
 } from './constants';
 import composeRenderProps from '../../lib/composeRenderProps';
 import IstexList from './IstexList';
@@ -59,6 +58,7 @@ export const IstexSummaryView = ({
     }
 
     const data = parseYearData(formatData, sortDir);
+
     const displayDecade = yearThreshold && data.hits.length > yearThreshold;
     const ComposedComponent = getComposedComponent(displayDecade);
 
@@ -84,7 +84,7 @@ IstexSummaryView.propTypes = {
     formatData: PropTypes.shape({ hits: PropTypes.Array }),
     error: PropTypes.string,
     searchedField: PropTypes.oneOf(SEARCHED_FIELD_VALUES),
-    sortDir: PropTypes.oneOf(SORT_YEAR_VALUES).isRequired,
+    sortDir: PropTypes.oneOf(SORT_YEAR_VALUES),
     yearThreshold: PropTypes.number.isRequired,
     p: polyglotPropTypes.isRequired,
 };
@@ -95,9 +95,8 @@ IstexSummaryView.defaultProps = {
     formatData: null,
     error: null,
     yearThreshold: 50,
+    searchedField: CUSTOM_ISTEX_QUERY,
+    sortDir: SORT_YEAR_DESC,
 };
 
-export default compose(
-    injectData(getYearUrl),
-    translate,
-)(IstexSummaryView);
+export default injectData(getYearUrl)(IstexSummaryView);
