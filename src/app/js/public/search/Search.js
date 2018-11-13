@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
@@ -22,10 +22,9 @@ import { search as searchAction, loadMore as loadMoreAction } from './reducer';
 import { fromFields } from '../../sharedSelectors';
 import { fromSearch } from '../selectors';
 import theme from '../../theme';
-
 import AdminOnlyAlert from '../../lib/components/AdminOnlyAlert';
-import SearchResult from './SearchResult';
 import AppliedFacets from './AppliedFacets';
+import SearchResultList from './SearchResultList';
 
 const styles = StyleSheet.create({
     container: {
@@ -67,6 +66,7 @@ const styles = StyleSheet.create({
         marginTop: '-0.2rem',
     },
     loadMore: {
+        height: 36,
         marginTop: '1.5rem',
     },
 });
@@ -122,20 +122,6 @@ class Search extends Component {
         );
     };
 
-    renderResults = () => {
-        const { results, fields, fieldNames, closeDrawer } = this.props;
-
-        return results.map(result => (
-            <SearchResult
-                key={result.uri}
-                fields={fields}
-                fieldNames={fieldNames}
-                result={result}
-                closeDrawer={closeDrawer}
-            />
-        ));
-    };
-
     renderNoResults = () => {
         const { p: polyglot } = this.props;
 
@@ -153,13 +139,24 @@ class Search extends Component {
     };
 
     renderLoadMore = () => {
-        const { loadMore, p: polyglot, results, total } = this.props;
+        const { loadMore, p: polyglot, results, total, loading } = this.props;
 
         return (
             <div className={classnames('load-more', css(styles.loadMore))}>
-                <FlatButton fullWidth onClick={loadMore}>
-                    {polyglot.t('search_load_more')} ({total - results.length})
-                </FlatButton>
+                {loading ? (
+                    <Fragment>
+                        <CircularProgress
+                            size={20}
+                            className={css(styles.loading)}
+                        />{' '}
+                        {polyglot.t('loading')}
+                    </Fragment>
+                ) : (
+                    <FlatButton fullWidth onClick={loadMore}>
+                        {polyglot.t('search_load_more')} (
+                        {total - results.length})
+                    </FlatButton>
+                )}
             </div>
         );
     };
@@ -175,6 +172,8 @@ class Search extends Component {
             p: polyglot,
             showAdvancedSearch,
             toggleAdvancedSearch,
+            fields,
+            closeDrawer,
         } = this.props;
 
         const noOverviewField =
@@ -184,8 +183,7 @@ class Search extends Component {
         const noResults = !loading && !noOverviewField && results.length === 0;
 
         const everythingIsOk = !noOverviewField && !noResults;
-        const canLoadMore =
-            !loading && everythingIsOk && results.length < total;
+        const canLoadMore = everythingIsOk && results.length < total;
 
         return (
             <div className={cnames('search', styles.container)}>
@@ -243,8 +241,14 @@ class Search extends Component {
                 >
                     {noOverviewField && this.renderNoOverviewField()}
                     {noResults && this.renderNoResults()}
-                    {everythingIsOk && this.renderResults()}
-                    {loading && this.renderLoading()}
+                    {everythingIsOk && (
+                        <SearchResultList
+                            results={results}
+                            fields={fields}
+                            fieldNames={fieldNames}
+                            closeDrawer={closeDrawer}
+                        />
+                    )}
                     {canLoadMore && this.renderLoadMore()}
                 </div>
             </div>
