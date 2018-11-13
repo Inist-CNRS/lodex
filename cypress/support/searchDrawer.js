@@ -70,3 +70,22 @@ export const clearFacet = value => {
         .click();
     waitForLoading();
 };
+
+export const checkFacetsItem = (name, facets) => {
+    const facetValueItems = getFacet(name)
+        .parentsUntil('.facet-list > div')
+        .last()
+        .next() // .facet-value-list next to the .facet-item
+        .find('.facet-value-item');
+
+    facetValueItems.each((facetValueItem, index) => {
+        cy.wrap(facetValueItem).contains(facets[index]);
+    });
+};
+
+export const sortFacet = (name, sortName) => {
+    getFacet(name)
+        .get(`.sort_${sortName}`)
+        .click();
+    cy.wait(500);
+};
