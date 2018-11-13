@@ -94,6 +94,10 @@ const mapDispatchToProps = {
     handleClose: closeUpload,
 };
 
-export default compose(translate, connect(mapStateToProps, mapDispatchToProps))(
-    UploadButtonComponent,
-);
+export default compose(
+    translate,
+    connect(
+        mapStateToProps,
+        mapDispatchToProps,
+    ),
+)(UploadButtonComponent);

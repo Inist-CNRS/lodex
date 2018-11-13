@@ -162,6 +162,10 @@ const mapDispatchToProps = {
     onChangeParserName: (_, idx, val) => changeParserName(val),
 };
 
-export default compose(translate, connect(mapStateToProps, mapDispatchToProps))(
-    UploadDialogComponent,
-);
+export default compose(
+    translate,
+    connect(
+        mapStateToProps,
+        mapDispatchToProps,
+    ),
+)(UploadDialogComponent);

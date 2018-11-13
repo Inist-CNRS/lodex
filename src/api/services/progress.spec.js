@@ -23,6 +23,7 @@ describe('Progress', () => {
             progress: 0,
             status: PUBLISH_DOCUMENT,
             symbol: undefined,
+            error: null,
         });
     });
 
@@ -49,6 +50,7 @@ describe('Progress', () => {
             progress: 0,
             status: PUBLISH_DOCUMENT,
             symbol: undefined,
+            error: null,
         });
 
         progress.incrementProgress(10);
@@ -58,6 +60,7 @@ describe('Progress', () => {
             progress: 10,
             status: PUBLISH_DOCUMENT,
             symbol: undefined,
+            error: null,
         });
 
         progress.setProgress(20);
@@ -67,6 +70,7 @@ describe('Progress', () => {
             progress: 20,
             status: PUBLISH_DOCUMENT,
             symbol: undefined,
+            error: null,
         });
 
         progress.incrementProgress(10);
@@ -74,8 +78,9 @@ describe('Progress', () => {
         expect(progress.getProgress()).toEqual({
             target: 30,
             progress: 30,
-            status: PENDING,
+            status: PUBLISH_DOCUMENT,
             symbol: undefined,
+            error: null,
         });
     });
 
@@ -89,5 +94,27 @@ describe('Progress', () => {
         progress.incrementProgress();
 
         expect(progress.getProgress().symbol).toBe('%');
+    });
+
+    describe('.throw', () => {
+        it('should cancel progress ignoring all further operation until getProgress is called that will throw the error', () => {
+            const progress = new Progress();
+
+            progress.start(PUBLISH_DOCUMENT, 30);
+            const error = new Error('Boom');
+            progress.throw(error);
+            progress.incrementProgress();
+            progress.finish();
+
+            expect(() => progress.getProgress()).toThrowError(error);
+
+            expect(progress.getProgress()).toEqual({
+                error: null,
+                progress: 0,
+                status: 'PENDING',
+                symbol: undefined,
+                target: 30,
+            });
+        });
     });
 });

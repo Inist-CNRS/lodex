@@ -1,4 +1,4 @@
-import { PENDING } from '../../common/progressStatus';
+import { PENDING, ERROR } from '../../common/progressStatus';
 
 export class Progress {
     status = PENDING;
@@ -11,37 +11,38 @@ export class Progress {
         this.target = target;
         this.progress = 0;
         this.symbol = symbol;
+        this.error = null;
     }
 
     finish() {
+        if (this.status === ERROR) {
+            return;
+        }
         this.status = PENDING;
     }
 
-    checkProgress() {
-        if (this.progress >= this.target) {
-            this.status = PENDING;
-        }
+    throw(error) {
+        this.status = ERROR;
+        this.error = error;
     }
 
     incrementProgress(progress = 1) {
-        if (this.status === PENDING) {
+        if (this.status === PENDING || this.status === ERROR) {
             return;
         }
         this.progress += progress;
-        this.checkProgress();
     }
 
     setProgress(progress) {
-        if (this.status === PENDING) {
+        if (this.status === PENDING || this.status === ERROR) {
             return;
         }
 
         this.progress = progress;
-        this.checkProgress();
     }
 
     incrementTarget(target = 1) {
-        if (this.status === PENDING) {
+        if (this.status === PENDING || this.status === ERROR) {
             return;
         }
 
@@ -49,11 +50,18 @@ export class Progress {
     }
 
     getProgress() {
+        if (this.status === ERROR) {
+            const error = this.error;
+            this.error = null;
+            this.status = PENDING;
+            throw error;
+        }
         return {
             status: this.status,
             target: this.target,
             progress: this.progress,
             symbol: this.symbol,
+            error: this.error,
         };
     }
 }

@@ -7,12 +7,12 @@ import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
 
 import { fromProgress } from '../selectors';
-import { loadProgress } from './reducer';
+import { loadProgress, clearProgress } from './reducer';
 import { PENDING } from '../../../../common/progressStatus';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 
 export class Progress extends Component {
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         this.props.loadProgress();
     }
 
@@ -39,7 +39,29 @@ export class Progress extends Component {
     };
 
     render() {
-        const { status, target, progress, p: polyglot } = this.props;
+        const {
+            status,
+            target,
+            progress,
+            error,
+            clearProgress,
+            p: polyglot,
+        } = this.props;
+
+        if (error) {
+            return (
+                <Dialog
+                    title={polyglot.t(status)}
+                    actions={[]}
+                    modal={false}
+                    open={status !== PENDING}
+                    onRequestClose={clearProgress}
+                >
+                    <div>{polyglot.t('progress_error')}</div>
+                </Dialog>
+            );
+        }
+
         return (
             <Dialog
                 title={polyglot.t(status)}
@@ -67,6 +89,8 @@ Progress.propTypes = {
     progress: PropTypes.number.isRequired,
     symbol: PropTypes.string,
     loadProgress: PropTypes.func.isRequired,
+    error: PropTypes.bool.isRequired,
+    clearProgress: PropTypes.func.isRequired,
     p: polyglotPropTypes,
 };
 
@@ -80,8 +104,13 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
     loadProgress,
+    clearProgress,
 };
 
-export default compose(translate, connect(mapStateToProps, mapDispatchToProps))(
-    Progress,
-);
+export default compose(
+    translate,
+    connect(
+        mapStateToProps,
+        mapDispatchToProps,
+    ),
+)(Progress);

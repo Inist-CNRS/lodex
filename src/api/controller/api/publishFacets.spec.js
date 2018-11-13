@@ -69,4 +69,20 @@ describe('publishFacets', () => {
             { field: 'facet2', value: 'value2', count: 200 },
         ]);
     });
+
+    describe('with no facet', () => {
+        beforeEach(() => {
+            ctx.publishedFacet.remove.mockClear();
+            ctx.publishedFacet.insertMany.mockClear();
+        });
+        it('should do nothing', async () => {
+            await publishFacets(
+                ctx,
+                [{ name: 'field1' }, { name: 'field2' }, { name: 'field3' }],
+                false,
+            );
+            expect(ctx.publishedFacet.remove).toBeCalledTimes(0);
+            expect(ctx.publishedFacet.insertMany).toBeCalledTimes(0);
+        });
+    });
 });

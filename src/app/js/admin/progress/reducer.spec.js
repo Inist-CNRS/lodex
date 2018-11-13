@@ -1,7 +1,11 @@
-import reducer, { updateProgress, errorProgress } from './reducer';
+import reducer, {
+    updateProgress,
+    errorProgress,
+    clearProgress,
+} from './reducer';
 import { publish } from '../publish';
 import { uploadFile } from '../upload';
-import { PENDING } from '../../../../common/progressStatus';
+import { PENDING, ERROR } from '../../../../common/progressStatus';
 
 describe('progress reducer', () => {
     describe('UPDATE_PROGRESS', () => {
@@ -58,8 +62,21 @@ describe('progress reducer', () => {
         it('should set error in progress', () => {
             const state = {};
 
-            expect(reducer(state, errorProgress({ error: 'error' }))).toEqual({
-                error: 'error',
+            expect(reducer(state, errorProgress())).toEqual({
+                error: true,
+                status: ERROR,
+                progress: undefined,
+                target: undefined,
+            });
+        });
+    });
+
+    describe('CLEAR_PROGRESS', () => {
+        it('should clear progress', () => {
+            const state = {};
+
+            expect(reducer(state, clearProgress())).toEqual({
+                error: false,
                 status: PENDING,
                 progress: undefined,
                 target: undefined,
