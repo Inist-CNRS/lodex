@@ -74,7 +74,7 @@ describe('Progress', () => {
         expect(progress.getProgress()).toEqual({
             target: 30,
             progress: 30,
-            status: PENDING,
+            status: PUBLISH_DOCUMENT,
             symbol: undefined,
         });
     });

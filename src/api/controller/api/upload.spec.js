@@ -18,6 +18,7 @@ describe('upload', () => {
                     resumableFilename: 'data.csv',
                 },
             })),
+            uploadFile: jest.fn(),
         };
         const next = jest.fn();
 
@@ -51,6 +52,7 @@ describe('upload', () => {
                     currentChunkSize: 'currentChunkSize',
                     stream: 'stream',
                 },
+                uploadFile: jest.fn(),
             };
 
             const next = jest.fn();
@@ -83,6 +85,10 @@ describe('upload', () => {
 
             it('should have set ctx.status to 200', () => {
                 expect(ctx.status).toBe(200);
+            });
+
+            it('should not call uploadFile', () => {
+                expect(ctx.uploadFile).toBeCalledTimes(0);
             });
         });
 
@@ -99,6 +105,7 @@ describe('upload', () => {
                     currentChunkSize: 'currentChunkSize',
                     stream: 'stream',
                 },
+                uploadFile: jest.fn(),
             };
 
             const next = jest.fn();
@@ -125,12 +132,8 @@ describe('upload', () => {
                 );
             });
 
-            it('should have called next', () => {
-                expect(next).toHaveBeenCalled();
-            });
-
-            it('should not have set ctx.status to 200', () => {
-                expect(ctx.status).toBe(undefined);
+            it('should call uploadFile', () => {
+                expect(ctx.uploadFile).toBeCalledTimes(1);
             });
         });
 
@@ -147,6 +150,7 @@ describe('upload', () => {
                     currentChunkSize: 'currentChunkSize',
                     stream: 'stream',
                 },
+                uploadFile: jest.fn(),
             };
 
             const next = jest.fn();
@@ -176,12 +180,8 @@ describe('upload', () => {
                 );
             });
 
-            it('should have called next', () => {
-                expect(next).toHaveBeenCalled();
-            });
-
-            it('should not have set ctx.status to 200', () => {
-                expect(ctx.status).toBe(undefined);
+            it('should call uploadFile', () => {
+                expect(ctx.uploadFile).toBeCalledTimes(1);
             });
         });
 
@@ -198,6 +198,7 @@ describe('upload', () => {
                     currentChunkSize: 'currentChunkSize',
                     stream: 'stream',
                 },
+                uploadFile: jest.fn(),
             };
 
             const next = jest.fn();
@@ -233,6 +234,10 @@ describe('upload', () => {
 
             it('should have set ctx.status to 200', () => {
                 expect(ctx.status).toBe(200);
+            });
+
+            it('should not call uploadFile', () => {
+                expect(ctx.uploadFile).toBeCalledTimes(0);
             });
         });
     });
@@ -250,6 +255,7 @@ describe('upload', () => {
             saveParsedStream: jest
                 .fn()
                 .mockImplementation(() => 'dataset count'),
+            uploadFile: jest.fn(),
         };
 
         beforeAll(async () => {

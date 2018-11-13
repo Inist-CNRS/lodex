@@ -65,6 +65,29 @@ export const clearUpload = async ctx => {
 
 export const getStreamFromUrl = url => request.get(url);
 
+export const uploadFile = ctx => async parserName => {
+    progress.start(SAVING_DATASET, 0);
+    const { filename, totalChunks, extension } = ctx.resumable;
+    const mergedStream = ctx.mergeChunks(filename, totalChunks);
+
+    const parseStream = await ctx.getParser(
+        !parserName || parserName === 'automatic' ? extension : parserName,
+    );
+
+    const parsedStream = parseStream(mergedStream);
+
+    try {
+        await ctx.saveParsedStream(parsedStream);
+    } catch (error) {
+        progress.throw(error);
+        return;
+    }
+
+    await ctx.clearChunks(filename, totalChunks);
+
+    progress.finish();
+};
+
 export const prepareUpload = async (ctx, next) => {
     ctx.getParser = getParser;
     ctx.requestToStream = requestToStream(asyncBusboy);
@@ -80,10 +103,12 @@ export const prepareUpload = async (ctx, next) => {
     ctx.publishDocuments = publishDocuments;
     ctx.publishFacets = publishFacets;
     ctx.saveParsedStream = saveParsedStream(ctx);
+    ctx.uploadFile = uploadFile(ctx);
+
     try {
         await next();
     } catch (error) {
-        progress.finish();
+        progress.throw(error);
         ctx.status = 500;
         ctx.body = error.message;
     }
@@ -142,30 +167,9 @@ export async function uploadChunkMiddleware(ctx, parserName) {
     progress.setProgress(progression === 100 ? 99 : progression);
 
     if (uploadedFileSize >= totalSize) {
-        uploadFileMiddleware(ctx, parserName);
+        ctx.uploadFile(parserName);
     }
 
-    ctx.status = 200;
-}
-
-export async function uploadFileMiddleware(ctx, parserName) {
-    progress.start(SAVING_DATASET, 0);
-    const { filename, totalChunks, extension } = ctx.resumable;
-    const mergedStream = ctx.mergeChunks(filename, totalChunks);
-
-    const parseStream = await ctx.getParser(
-        !parserName || parserName === 'automatic' ? extension : parserName,
-    );
-
-    const parsedStream = parseStream(mergedStream);
-
-    const totalLines = await ctx.saveParsedStream(parsedStream);
-
-    await ctx.clearChunks(filename, totalChunks);
-    ctx.body = {
-        totalLines,
-    };
-    progress.finish();
     ctx.status = 200;
 }
 

@@ -6,6 +6,7 @@ import { fromUpload } from '../../selectors';
 import { uploadSuccess, uploadError } from '../';
 import { loadDatasetFile } from '../../../lib/loadFile';
 import { handleUploadFile as uploadFileSaga } from './uploadFile';
+import { FINISH_PROGRESS } from '../../progress/reducer';
 
 describe('handleUploadFile saga', () => {
     let saga;
@@ -62,11 +63,20 @@ describe('handleUploadFile saga', () => {
         expect(value).toEqual(put(uploadError(error)));
     });
 
-    it('should put loadFileSuccess with file', () => {
+    it('should take FINISH_PROGRESS', () => {
         saga.next();
         saga.next('parserName');
         saga.next('token');
         const { value } = saga.next({ file: 'file' });
+        expect(value).toEqual(take(FINISH_PROGRESS));
+    });
+
+    it('should put loadFileSuccess with file', () => {
+        saga.next();
+        saga.next('parserName');
+        saga.next('token');
+        saga.next({ file: 'file' });
+        const { value } = saga.next();
         expect(value).toEqual(put(uploadSuccess('file')));
     });
 });
