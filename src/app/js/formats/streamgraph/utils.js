@@ -3,8 +3,8 @@ import * as d3 from "d3";
 
 export function zoomFunction() {
   // create new scale ojects based on event
-  let new_xScale = d3.event.transform.rescaleX(this.xAxisScale);
-  let new_yScale = d3.event.transform.rescaleY(this.yAxisScale);
+  const new_xScale = d3.event.transform.rescaleX(this.xAxisScale);
+  const new_yScale = d3.event.transform.rescaleY(this.yAxisScale);
 
   // update axes
   this.gx.call(this.xAxis.scale(new_xScale));
@@ -16,7 +16,7 @@ export function zoomFunction() {
 }
 
 export function distinctColors(count) {
-  let colors = [];
+  const colors = [];
   for (let hue = 0; hue < 360; hue += 360 / count) {
     colors.push(hslToHex(hue, 90, 50));
   }
@@ -55,7 +55,7 @@ export function hslToHex(h, s, l) {
 export function transformDataIntoMapArray(formatData) {
   let dateMin = -42;
   let dateMax = -42;
-  let valuesObjectsArray = [];
+  const valuesObjectsArray = [];
 
   if (formatData) {
     for (let i = 0; i < formatData.length; i++) {
@@ -87,11 +87,11 @@ export function transformDataIntoMapArray(formatData) {
             value: elem.weight
           });
 
-          if (parseInt(elem.source) < dateMin || dateMin === -42) {
-            dateMin = parseInt(elem.source);
+          if (parseInt(elem.source, 10) < dateMin || dateMin === -42) {
+            dateMin = parseInt(elem.source, 10);
           }
-          if (parseInt(elem.source) > dateMax || dateMax === -42) {
-            dateMax = parseInt(elem.source);
+          if (parseInt(elem.source, 10) > dateMax || dateMax === -42) {
+            dateMax = parseInt(elem.source, 10);
           }
         }
       }
@@ -103,13 +103,10 @@ export function transformDataIntoMapArray(formatData) {
     }
   }
 
-  let namesList = [];
-  for (let element of valuesObjectsArray) {
-    namesList.push(element.name);
-  }
+  const namesList = valuesObjectsArray.map(value => value.name);
 
   let currentDate = dateMin;
-  let valuesArray = [];
+  const valuesArray = [];
 
   while (currentDate <= dateMax) {
     let tmpName = [];
@@ -137,23 +134,25 @@ export function transformDataIntoMapArray(formatData) {
     currentDate++;
   }
 
-  return [valuesObjectsArray, valuesArray, dateMin, dateMax, namesList];
+  return { valuesObjectsArray, valuesArray, dateMin, dateMax, namesList };
 }
 
 export function getMinMaxValue(stackedData) {
   let minValue = 0;
   let maxValue = 0;
 
-  for (let element of stackedData) {
-    for (let value of element) {
-      if (minValue > value[0]) {
-        minValue = value[0];
-      }
-      if (maxValue < value[1]) {
-        maxValue = value[1];
+  if (stackedData) {
+    for (let element of stackedData) {
+      for (let value of element) {
+        if (minValue > value[0]) {
+          minValue = value[0];
+        }
+        if (maxValue < value[1]) {
+          maxValue = value[1];
+        }
       }
     }
   }
 
-  return [minValue, maxValue];
+  return { minValue, maxValue };
 }
