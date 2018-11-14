@@ -51,20 +51,7 @@ class Streamgraph extends PureComponent {
     this.svgContainer = React.createRef();
     this.anchor = React.createRef();
 
-    this.xAxisScale;
-    this.yAxisScale;
-    this.xAxis;
-    this.yAxisL;
-    this.yAxisR;
-    this.gx;
-    this.gyr;
-    this.gyl;
-    this.streams;
-
-    this.hoveredKey;
-    this.hoveredValue;
     this.mouseIsOverStream = false;
-
     this.zoomFunction = zoomFunction.bind(this);
   }
 
