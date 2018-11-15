@@ -70,6 +70,12 @@ describe('Book Summary Format', () => {
             bookSummary.saveConfiguration();
             bookSummary.checkYears(['2000-2003', '1997-1999']);
         });
+
+        it('should allow to embed the summary into an external website', () => {
+            bookSummary.openEmbedModal();
+
+            cy.contains('embedded-istex-summary').should('be.visible');
+        });
     });
 
     describe('On Embedded Page', () => {

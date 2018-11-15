@@ -55,11 +55,6 @@ export const PureButtonWithDialog = ({
     );
 };
 
-PureButtonWithDialog.defaultProps = {
-    show: true,
-    open: false,
-};
-
 PureButtonWithDialog.propTypes = {
     handleClose: PropTypes.func,
     handleOpen: PropTypes.func,
@@ -70,9 +65,15 @@ PureButtonWithDialog.propTypes = {
     dialog: PropTypes.node.isRequired,
     label: PropTypes.string.isRequired,
     icon: PropTypes.node,
-    className: PropTypes.string.isRequired,
+    className: PropTypes.string,
     actions: PropTypes.arrayOf(PropTypes.node),
     openButton: PropTypes.node,
+};
+
+PureButtonWithDialog.defaultProps = {
+    show: true,
+    open: false,
+    className: null,
 };
 
 export default translate(PureButtonWithDialog);

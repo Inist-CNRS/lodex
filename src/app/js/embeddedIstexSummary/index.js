@@ -33,15 +33,16 @@ const App = props => (
                     resource={resource}
                     formatData={formatData}
                     p={polyglot}
+                    showEmbedButton={false}
                 />
             )}
         </FieldProvider>
     </MuiThemeProvider>
 );
 
-const element = document.getElementById('embedded-istex-summary');
+const elements = document.querySelectorAll('.embedded-istex-summary');
 
-if (element) {
+elements.forEach(element => {
     const props = {
         api: element.getAttribute('data-api'),
         uri: element.getAttribute('data-uri'),
@@ -49,4 +50,4 @@ if (element) {
     };
 
     render(<App {...props} />, element);
-}
+});

@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { StyleSheet, css } from 'aphrodite/no-important';
 
 import {
     field as fieldPropTypes,
@@ -22,6 +23,7 @@ import YearFold from './YearFold';
 import IstexItem from '../istex/IstexItem';
 import DecadeFold from './DecadeFold';
 import getDecadeFromData from './getDecadeFromData';
+import EmbedButton from './EmbedButton';
 
 export const IstexDocument = ({ item }) => <IstexItem {...item} />;
 
@@ -42,6 +44,17 @@ export const getComposedComponent = displayDecade =>
         IstexDocument,
     ]);
 
+const styles = StyleSheet.create({
+    container: {
+        position: 'relative',
+    },
+    embedButton: {
+        position: 'absolute',
+        top: 0,
+        right: '-2rem',
+    },
+});
+
 export const IstexSummaryView = ({
     formatData,
     field,
@@ -50,6 +63,7 @@ export const IstexSummaryView = ({
     sortDir,
     yearThreshold,
     p: polyglot,
+    showEmbedButton,
 }) => {
     if (!resource[field.name] || !searchedField) {
         return (
@@ -63,17 +77,27 @@ export const IstexSummaryView = ({
     const ComposedComponent = getComposedComponent(displayDecade);
 
     return (
-        <ComposedComponent
-            data={
-                displayDecade
-                    ? getDecadeFromData(data, sortDir === SORT_YEAR_DESC)
-                    : data
-            }
-            value={resource[field.name]}
-            searchedField={searchedField}
-            sortDir={sortDir}
-            polyglot={polyglot}
-        />
+        <div className={`istex-summary ${css(styles.container)}`}>
+            {showEmbedButton && (
+                <EmbedButton
+                    className={css(styles.embedButton)}
+                    uri={resource.uri}
+                    fieldName={field.name}
+                    p={polyglot}
+                />
+            )}
+            <ComposedComponent
+                data={
+                    displayDecade
+                        ? getDecadeFromData(data, sortDir === SORT_YEAR_DESC)
+                        : data
+                }
+                value={resource[field.name]}
+                searchedField={searchedField}
+                sortDir={sortDir}
+                polyglot={polyglot}
+            />
+        </div>
     );
 };
 
@@ -87,6 +111,7 @@ IstexSummaryView.propTypes = {
     sortDir: PropTypes.oneOf(SORT_YEAR_VALUES),
     yearThreshold: PropTypes.number.isRequired,
     p: polyglotPropTypes.isRequired,
+    showEmbedButton: PropTypes.bool,
 };
 
 IstexSummaryView.defaultProps = {
@@ -97,6 +122,7 @@ IstexSummaryView.defaultProps = {
     yearThreshold: 50,
     searchedField: CUSTOM_ISTEX_QUERY,
     sortDir: SORT_YEAR_DESC,
+    showEmbedButton: true,
 };
 
 export default injectData(getYearUrl)(IstexSummaryView);

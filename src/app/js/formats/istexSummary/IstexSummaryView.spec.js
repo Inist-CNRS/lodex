@@ -1,5 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
+import { StyleSheetTestUtils } from 'aphrodite';
 
 import { IstexSummaryView, IstexDocument } from './IstexSummaryView';
 import composeRenderProps from '../../lib/composeRenderProps';
@@ -17,12 +18,14 @@ jest.mock('./getIstexData');
 jest.mock('./getDecadeFromData');
 
 describe('IstexSummaryView', () => {
+    beforeEach(() => StyleSheetTestUtils.suppressStyleInjection());
+
     const defaultProps = {
         formatData: { hits: [1, 2, 3] },
         field: {
             name: 'field',
         },
-        resource: { field: 'value' },
+        resource: { uri: 'uri', field: 'value' },
         searchedField: 'host.issn',
         sortDir: 'sortDir',
         yearThreshold: 50,
@@ -131,6 +134,7 @@ describe('IstexSummaryView', () => {
     afterEach(() => {
         parseYearData.mockClear();
         composeRenderProps.mockClear();
+        StyleSheetTestUtils.clearBufferAndResumeStyleInjection();
     });
 
     afterAll(() => {
