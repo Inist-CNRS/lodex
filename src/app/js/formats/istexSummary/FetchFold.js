@@ -46,6 +46,53 @@ const circularProgress = (
     />
 );
 
+class SkipFold extends Component {
+    state = {
+        data: null,
+        error: null,
+        isLoading: true,
+    };
+
+    UNSAFE_componentWillMount() {
+        this.props
+            .getData(this.props)
+            .then(data => {
+                this.setState({
+                    data,
+                    isLoading: false,
+                    isOpen: true,
+                });
+            })
+            .catch(error => {
+                console.error(error);
+                this.setState({ error: true, isLoading: false });
+            });
+    }
+
+    render() {
+        const { data, isLoading, error, polyglot } = this.state;
+
+        if (error) {
+            return <AdminOnlyAlert>{polyglot.t('istex_error')}</AdminOnlyAlert>;
+        }
+
+        if (isLoading) {
+            return circularProgress;
+        }
+
+        if (!data.hits.length) {
+            return null;
+        }
+
+        return this.props.children({ ...this.props, data, skip: false });
+    }
+}
+
+SkipFold.propTypes = {
+    children: PropTypes.func.isRequired,
+    getData: PropTypes.func.isRequired,
+};
+
 class FetchFold extends Component {
     state = {
         data: null,
@@ -84,8 +131,12 @@ class FetchFold extends Component {
     };
 
     render() {
-        const { label, count, polyglot, children } = this.props;
+        const { label, count, polyglot, children, skip } = this.props;
         const { error, data, isOpen, isLoading } = this.state;
+
+        if (skip) {
+            return <SkipFold {...this.props} />;
+        }
 
         if (error) {
             return <AdminOnlyAlert>{polyglot.t('istex_error')}</AdminOnlyAlert>;

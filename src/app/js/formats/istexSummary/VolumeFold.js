@@ -20,6 +20,7 @@ const VolumeFold = ({
                 ? polyglot.t('other_volume')
                 : `${polyglot.t('volume')}: ${volume}`
         }
+        skip={volume === 'other'}
         count={count}
         volume={volume}
         polyglot={polyglot}

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 
 import FetchFold from './FetchFold';
@@ -21,6 +21,7 @@ const IssueFold = ({
                 ? polyglot.t('other_issue')
                 : `${polyglot.t('issue')}: ${issue}`
         }
+        skip={issue === 'other'}
         count={count}
         issue={issue}
         polyglot={polyglot}
@@ -46,6 +47,7 @@ IssueFold.propTypes = {
     volume: PropTypes.string.isRequired,
     searchedField: PropTypes.oneOf(SEARCHED_FIELD_VALUES),
     children: PropTypes.func.isRequired,
+    isOther: PropTypes.bool,
     polyglot: polyglotPropTypes.isRequired,
 };
 
