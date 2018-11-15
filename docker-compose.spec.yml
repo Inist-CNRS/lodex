@@ -16,6 +16,8 @@ services:
             - mongo
         ports:
             - 3000:3000
+        volumes:
+            - ./cypress/mocks/external:/app/external
 
     istex-api:
         image: node:10
