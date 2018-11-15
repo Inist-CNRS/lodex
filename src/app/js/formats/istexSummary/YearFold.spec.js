@@ -6,15 +6,17 @@ import YearFold from './YearFold';
 import { getVolumeData } from './getIstexData';
 jest.mock('./getIstexData');
 
-getVolumeData.mockImplementation(() => 'getData');
+const getData = () => 'data';
+getVolumeData.mockImplementation(() => getData);
 
 describe('YearFold', () => {
+    const children = () => 'children';
     const defaultProps = {
-        issn: 'issn',
-        item: { name: 'year', count: 'count' },
-        searchedField: 'searchedField',
-        polyglot: v => v,
-        children: 'children',
+        value: 'value',
+        item: { name: 'year', count: 1 },
+        searchedField: 'host.issn',
+        polyglot: { t: v => v },
+        children,
     };
 
     it('should render FetchFold to fetch Year', () => {
@@ -25,16 +27,16 @@ describe('YearFold', () => {
         expect(fetchFold).toHaveLength(1);
         expect(fetchFold.props()).toEqual({
             label: 'year',
-            count: 'count',
+            count: 1,
             year: 'year',
-            getData: 'getData',
-            children: 'children',
+            getData,
+            children,
             polyglot: defaultProps.polyglot,
         });
         expect(getVolumeData).toHaveBeenCalledWith({
-            issn: 'issn',
+            value: 'value',
             year: 'year',
-            searchedField: 'searchedField',
+            searchedField: 'host.issn',
         });
     });
 });

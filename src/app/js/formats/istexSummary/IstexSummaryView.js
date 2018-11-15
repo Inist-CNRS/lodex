@@ -10,7 +10,11 @@ import {
 import injectData from '../injectData';
 import InvalidFormat from '../InvalidFormat';
 import { getYearUrl, parseYearData } from './getIstexData';
-import { searchedFieldValues, yearSortDirValues } from './IstexSummaryAdmin';
+import {
+    SEARCHED_FIELD_VALUES,
+    SORT_YEAR_VALUES,
+    SORT_YEAR_DESC,
+} from './constants';
 import composeRenderProps from '../../lib/composeRenderProps';
 import IstexList from './IstexList';
 import IssueFold from './IssueFold';
@@ -62,10 +66,10 @@ export const IstexSummaryView = ({
         <ComposedComponent
             data={
                 displayDecade
-                    ? getDecadeFromData(data, sortDir === yearSortDirValues[0])
+                    ? getDecadeFromData(data, sortDir === SORT_YEAR_DESC)
                     : data
             }
-            issn={resource[field.name]}
+            value={resource[field.name]}
             searchedField={searchedField}
             sortDir={sortDir}
             polyglot={polyglot}
@@ -79,8 +83,8 @@ IstexSummaryView.propTypes = {
     field: fieldPropTypes.isRequired,
     formatData: PropTypes.shape({ hits: PropTypes.Array }),
     error: PropTypes.string,
-    searchedField: PropTypes.oneOf(searchedFieldValues),
-    sortDir: PropTypes.oneOf(yearSortDirValues).isRequired,
+    searchedField: PropTypes.oneOf(SEARCHED_FIELD_VALUES),
+    sortDir: PropTypes.oneOf(SORT_YEAR_VALUES).isRequired,
     yearThreshold: PropTypes.number.isRequired,
     p: polyglotPropTypes.isRequired,
 };
