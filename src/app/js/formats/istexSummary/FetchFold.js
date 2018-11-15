@@ -86,7 +86,7 @@ class SkipFold extends Component {
             return null;
         }
 
-        return this.props.children({ ...this.props, data, skip: false });
+        return this.props.children({ ...this.props, data });
     }
 }
 
