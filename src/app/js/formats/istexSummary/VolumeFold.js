@@ -8,6 +8,7 @@ import { polyglot as polyglotPropTypes } from '../../propTypes';
 
 const VolumeFold = ({
     item: { name: volume, count },
+    nbSiblings,
     value,
     year,
     searchedField,
@@ -20,7 +21,7 @@ const VolumeFold = ({
                 ? polyglot.t('other_volume')
                 : `${polyglot.t('volume')}: ${volume}`
         }
-        skip={volume === 'other'}
+        skip={volume === 'other' && nbSiblings === 1}
         count={count}
         volume={volume}
         polyglot={polyglot}
@@ -44,6 +45,7 @@ VolumeFold.propTypes = {
     year: PropTypes.string.isRequired,
     searchedField: PropTypes.oneOf(SEARCHED_FIELD_VALUES),
     children: PropTypes.func.isRequired,
+    nbSiblings: PropTypes.number,
     polyglot: polyglotPropTypes.isRequired,
 };
 

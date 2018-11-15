@@ -70,6 +70,7 @@ describe('FetchFold', () => {
                     { name: 3, count: 30 },
                 ],
             },
+            nbSiblings: 3,
         });
         expect(wrapper.find('p')).toHaveLength(0);
     });
