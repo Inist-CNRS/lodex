@@ -6,7 +6,8 @@ import {
   zoomFunction,
   distinctColors,
   transformDataIntoMapArray,
-  getMinMaxValue
+  getMinMaxValue,
+  cutStr
 } from "./utils";
 import injectData from "../injectData";
 import exportableToPng from "../exportableToPng";
@@ -25,13 +26,28 @@ const styles = StyleSheet.create({
     pointerEvents: "none"
   },
   legend: {
-    position: "relative"
+    position: "relative",
+    columnCount: 3,
+    textAlign: "left",
+    marginLeft: 20,
+    paddingBottom: 30
   },
   legendItem: {
     marginTop: 2
   },
+  legendItemTooltip: {
+    visibility: "hidden",
+    backgroundColor: "#4e4e4e",
+    color: "#fff",
+    textAlign: "center",
+    borderRadius: "6px",
+    padding: "5px 0",
+
+    position: "absolute",
+    zIndex: 10,
+  },
   legendItemText: {
-    marginLeft: 5
+    marginLeft: 5,
   },
   legendButton: {
     height: 15,
@@ -244,8 +260,23 @@ class Streamgraph extends PureComponent {
 
       legendItemContainer
         .append("text")
-        .attr("class", `${styles.legendItemText}`)
+        .attr("class", `${css(styles.legendItemText)}`)
+        .text(cutStr(element.name));
+
+      const legendItemTooltip = legendItemContainer.append("span")
+        .attr("class", `${css(styles.legendItemTooltip)}`)
         .text(element.name);
+
+        legendItemContainer.on("mouseover", (d, i) => {
+          legendItemTooltip.style("visibility", "visible");
+        })
+        .on("mousemove", (d, i) => {
+          legendItemTooltip.style("visibility", "visible");
+        })
+        .on("mouseout", (d, i) => {
+          legendItemTooltip.style("visibility", "hidden");
+        });
+      
     });
   }
 
