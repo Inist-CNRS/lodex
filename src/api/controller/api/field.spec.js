@@ -16,8 +16,14 @@ import {
     COVER_COLLECTION,
     COVER_DOCUMENT,
 } from '../../../common/cover';
+import indexSearchableField from '../../services/indexSearchableField';
+
+jest.mock('../../services/indexSearchableField');
 
 describe('field routes', () => {
+    beforeAll(() => {
+        indexSearchableField.mockImplementation(() => null);
+    });
     describe('setup', () => {
         it('should add validateField to ctx and call next', async () => {
             const ctx = {};
@@ -539,5 +545,8 @@ describe('field routes', () => {
 
             expect(ctx.field.updatePosition).not.toHaveBeenCalled();
         });
+    });
+    afterAll(() => {
+        indexSearchableField.mockClear();
     });
 });
