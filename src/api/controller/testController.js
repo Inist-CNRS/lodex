@@ -1,5 +1,8 @@
+import path from 'path';
 import koa from 'koa';
 import route from 'koa-route';
+import serve from 'koa-static';
+import mount from 'koa-mount';
 
 import repositoryMiddleware from '../services/repositoryMiddleware';
 
@@ -16,6 +19,10 @@ app.use(
 
         ctx.body = { status: 'ok' };
     }),
+);
+
+app.use(
+    mount('/external', serve(path.resolve(__dirname, '../../../external'))),
 );
 
 export default app;

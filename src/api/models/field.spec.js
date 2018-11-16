@@ -2,6 +2,7 @@ import fieldFactory, {
     validateField,
     buildInvalidPropertiesMessage,
     buildInvalidTransformersMessage,
+    findByName,
 } from './field';
 import { URI_FIELD_NAME } from '../../common/uris';
 import { COVER_DOCUMENT, COVER_COLLECTION } from '../../common/cover';
@@ -373,6 +374,35 @@ describe('field', () => {
 
                 expect(fieldCollection.find).toHaveBeenCalledWith({
                     name: { $in: ['b', 'a', 'c'] },
+                });
+            });
+        });
+
+        describe('findByName', () => {
+            it('should call find the field with the right name', async () => {
+                fieldCollection = {
+                    createIndex: jest.fn(),
+                    find: jest.fn().mockImplementation(() => ({
+                        toArray: () =>
+                            Promise.resolve([
+                                { name: 'a' },
+                                { name: 'b' },
+                                { name: 'c' },
+                            ]),
+                    })),
+                };
+
+                db = {
+                    collection: jest
+                        .fn()
+                        .mockImplementation(() => fieldCollection),
+                };
+
+                field = await fieldFactory(db);
+                expect(await field.findByName('b')).toEqual({ name: 'b' });
+
+                expect(fieldCollection.find).toHaveBeenCalledWith({
+                    name: { $in: ['b'] },
                 });
             });
         });

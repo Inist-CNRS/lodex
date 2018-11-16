@@ -63,7 +63,7 @@ export default url => FormatView => {
             loadFormatData({ ...this.props, value });
         };
 
-        componentWillMount() {
+        UNSAFE_componentWillMount() {
             const { field } = this.props;
             if (!field) {
                 return;
@@ -78,6 +78,7 @@ export default url => FormatView => {
 
             unLoadFormatData(field);
         }
+
         componentDidUpdate(prevProps) {
             const { field, resource } = this.props;
             if (
@@ -140,6 +141,7 @@ export default url => FormatView => {
             return (
                 <FormatView
                     {...props}
+                    p={polyglot}
                     field={field}
                     resource={resource}
                     formatData={formatData}

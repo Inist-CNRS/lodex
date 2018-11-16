@@ -96,3 +96,7 @@ export const configureYearThreshold = value => {
         .clear()
         .type(value);
 };
+
+export const openEmbedModal = () => {
+    cy.get('.istex-summary .embed-button').click();
+};

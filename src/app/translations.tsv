@@ -432,3 +432,6 @@
 "empty"	"Empty"	"Vide"
 "progress_error"	"The operation was aborted due to an error"	"L'opération a été annulée à cause d'une erreur"
 "custom_istex_query"	"Custom ISTEX Query"	"Requête ISTEX personnalisée"
+"embed_istex_summary"	"Embed this summary into your website"	"Intégrez ce sommaire à votre site web"
+"embed_step_head"	"Add this code in the head section of your page (needed only once)"	"Ajouter ce code dans la section 'head' de votre page (une fois seulement)"
+"embed_step_div"	"Add this code where you want the summary to appear on your page"	"Ajouter ce code dans votre page à l'endroit où vous voulez que le sommaire s'affiche"
