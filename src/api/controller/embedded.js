@@ -1,8 +1,6 @@
 import Koa from 'koa';
 import route from 'koa-route';
 
-import repositoryMiddleware from '../services/repositoryMiddleware';
-
 export const getFieldAndLatestValue = async ctx => {
     const { uri, fieldName } = ctx.query;
 
@@ -25,8 +23,6 @@ export const getFieldAndLatestValue = async ctx => {
 };
 
 const app = new Koa();
-
-app.use(repositoryMiddleware);
 
 app.use(route.get('/', getFieldAndLatestValue));
 

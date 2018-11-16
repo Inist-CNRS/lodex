@@ -159,7 +159,7 @@ export default url => FormatView => {
                 ? fromCharacteristic.getCharacteristicsAsResource(state)
                 : fromResource.getResourceLastVersion(state),
         formatData: fromFormat.getFormatData(state, field.name),
-        isLoaded: field && fromFormat.isFormatDataLoaded(state, field.name),
+        isLoaded: !!field,
         error: fromFormat.getFormatError(state, field.name),
     });
 

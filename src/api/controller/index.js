@@ -8,6 +8,7 @@ import api from './api';
 import front from './front';
 import embedded from './embedded';
 import { readFile } from '../services/fsHelpers';
+import repositoryMiddleware from '../services/repositoryMiddleware';
 
 const app = new Koa();
 
@@ -19,6 +20,8 @@ const simulateLatency = ms => async (ctx, next) => {
 if (simulatedLatency) {
     app.use(simulateLatency(simulatedLatency));
 }
+
+app.use(repositoryMiddleware);
 
 app.use(mount('/embedded', embedded));
 app.use(mount('/api', api));

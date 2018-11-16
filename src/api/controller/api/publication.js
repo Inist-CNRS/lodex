@@ -1,7 +1,7 @@
 import progress from '../../services/progress';
 import { PENDING } from '../../../common/progressStatus';
 
-export default async ctx => {
+export const getPublication = async ctx => {
     const publishedDatasetCount = await ctx.publishedDataset.count();
     const characteristics = await ctx.publishedCharacteristic.findAllVersions(
         {},
@@ -17,11 +17,15 @@ export default async ctx => {
 
     const fieldsWithCount = await Promise.all(fieldsWithCountPromises);
 
-    ctx.body = {
+    return {
         characteristics,
         fields: fieldsWithCount,
         published:
             publishedDatasetCount > 0 ||
             progress.getProgress().status !== PENDING,
     };
+};
+
+export default async ctx => {
+    ctx.body = await getPublication(ctx);
 };
