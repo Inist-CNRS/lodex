@@ -5,9 +5,16 @@ export const addMatchToFilters = (match, searchableFieldNames) => filters => {
         return filters;
     }
 
+    const regexMatch = new RegExp(match);
+
     return {
         ...filters,
-        $text: { $search: match },
+        $or: [
+            { $text: { $search: match } },
+            ...searchableFieldNames.map(name => ({
+                [`versions.${name}`]: { $regex: regexMatch, $options: 'i' },
+            })),
+        ],
     };
 };
 

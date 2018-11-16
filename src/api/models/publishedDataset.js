@@ -314,7 +314,15 @@ export default async db => {
             return;
         }
 
-        const newIndex = fields.reduce(
+        await Promise.all(
+            fields.map(name =>
+                collection.createIndex({
+                    [`versions.${name}`]: 1,
+                }),
+            ),
+        );
+
+        const textIndex = fields.reduce(
             (acc, name) => ({
                 ...acc,
                 [`versions.${name}`]: 'text',
@@ -323,12 +331,12 @@ export default async db => {
         );
 
         try {
-            await collection.createIndex(newIndex);
+            await collection.createIndex(textIndex, {
+                name: 'match_index',
+            });
         } catch (error) {
-            const indexes = await collection.indexes();
-            const textIndex = indexes.find(({ key }) => key._fts === 'text');
-            await collection.dropIndex(textIndex.name);
-            await collection.createIndex(newIndex);
+            await collection.dropIndex('match_index');
+            await collection.createIndex(textIndex);
         }
     };
 
