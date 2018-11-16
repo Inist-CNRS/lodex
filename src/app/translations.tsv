@@ -435,4 +435,4 @@
 "embed_istex_summary"	"Embed this summary into your website"	"Intégrez ce sommaire à votre site web"
 "embed_step_head"	"Add this code in the head section of your page (needed only once)"	"Ajouter ce code dans la section 'head' de votre page (une fois seulement)"
 "embed_step_div"	"Add this code where you want the summary to appear on your page"	"Ajouter ce code dans votre page à l'endroit où vous voulez que le sommaire s'affiche"
-"document_sort_by"	"sort document by (istex api)"	"trier les documents par (api istex)"
+"document_sort_by"	"Sort document by (see ISTEX API doc)"	"Trier les documents par (voir doc API ISTEX)"
