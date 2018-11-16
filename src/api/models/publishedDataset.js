@@ -309,5 +309,28 @@ export default async db => {
         });
     };
 
+    collection.createTextIndexes = async fields => {
+        if (!fields.length) {
+            return;
+        }
+
+        const newIndex = fields.reduce(
+            (acc, name) => ({
+                ...acc,
+                [`versions.${name}`]: 'text',
+            }),
+            {},
+        );
+
+        try {
+            await collection.createIndex(newIndex);
+        } catch (error) {
+            const indexes = await collection.indexes();
+            const textIndex = indexes.find(({ key }) => key._fts === 'text');
+            await collection.dropIndex(textIndex.name);
+            await collection.createIndex(newIndex);
+        }
+    };
+
     return collection;
 };

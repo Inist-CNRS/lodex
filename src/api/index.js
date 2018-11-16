@@ -7,8 +7,11 @@ import koaQs from 'koa-qs';
 import logger from './services/logger';
 import controller from './controller';
 import testController from './controller/testController';
+import indexSearchableField from './services/indexSearchableField';
 
 const app = koaQs(new Koa());
+
+indexSearchableField();
 
 app.use(cors({ credentials: true }));
 

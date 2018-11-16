@@ -171,10 +171,9 @@ describe('getPublishedDatasetFilter', () => {
                 addMatchToFilters(match, searchableFields)({ filter: 'data' }),
             ).toEqual({
                 filter: 'data',
-                $or: [
-                    { 'versions.field1': { $regex: /match/, $options: 'i' } },
-                    { 'versions.field2': { $regex: /match/, $options: 'i' } },
-                ],
+                $text: {
+                    $search: 'match',
+                },
             });
         });
 
