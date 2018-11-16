@@ -336,7 +336,9 @@ export default async db => {
             });
         } catch (error) {
             await collection.dropIndex('match_index');
-            await collection.createIndex(textIndex);
+            await collection.createIndex(textIndex, {
+                name: 'match_index',
+            });
         }
     };
 
