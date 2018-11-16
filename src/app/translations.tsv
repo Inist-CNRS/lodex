@@ -409,7 +409,7 @@
 "STARTING"	"Starting"	"Démarrage"
 "UPLOADING_DATASET"	"Uploading the dataset"	"Chargement du jeu de données"
 "SAVING_DATASET"	"Saving the dataset"	"Sauvegarde du jeu de données"
-"CREATE_INDEX"	"Index creation"	"Création des index"
+"CREATE_INDEX"	"Search indexes creation"	"Création des indexes de recherche"
 "volume"	"Volume"	"Volume"
 "issue"	"Issue"	"Numéro"
 "istex_error"	"An error occured while trying to fetch data from ISTEX"	"Une erreur est survenue en tentant de contacter ISTEX"
