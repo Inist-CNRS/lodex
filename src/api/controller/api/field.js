@@ -12,7 +12,7 @@ import {
     COVER_COLLECTION,
     COVER_DOCUMENT,
 } from '../../../common/cover';
-import indexSearchableField from '../../services/indexSearchableField';
+import indexSearchableFields from '../../services/indexSearchableFields';
 
 export const setup = async (ctx, next) => {
     ctx.validateField = validateField;
@@ -37,7 +37,7 @@ export const postField = async ctx => {
     const result = await ctx.field.create(newField);
 
     if (searchable) {
-        await indexSearchableField();
+        await indexSearchableFields();
     }
 
     if (result) {
@@ -59,7 +59,7 @@ export const putField = async (ctx, id) => {
             );
         }
         ctx.body = await ctx.field.updateOneById(id, newField);
-        await indexSearchableField();
+        await indexSearchableFields();
     } catch (error) {
         ctx.status = 403;
         ctx.body = { error: error.massage };
@@ -73,7 +73,7 @@ export const putField = async (ctx, id) => {
 
 export const removeField = async (ctx, id) => {
     ctx.body = await ctx.field.removeById(id);
-    await indexSearchableField();
+    await indexSearchableFields();
 };
 
 export const exportFields = async ctx => {

@@ -1,4 +1,4 @@
-import indexSearchableField from './indexSearchableField';
+import indexSearchableFields from './indexSearchableFields';
 import mongoClient from './mongoClient';
 import field from '../models/field';
 import publishedDataset from '../models/publishedDataset';
@@ -7,7 +7,7 @@ jest.mock('./mongoClient');
 jest.mock('../models/field');
 jest.mock('../models/publishedDataset');
 
-describe('indexSearchableField', () => {
+describe('indexSearchableFields', () => {
     it('should call createTextIndexes with findSearchable result', async () => {
         mongoClient.mockImplementation(() => 'db');
         const createTextIndexes = jest.fn();
@@ -18,7 +18,7 @@ describe('indexSearchableField', () => {
         publishedDataset.mockImplementation(() => ({
             createTextIndexes,
         }));
-        await indexSearchableField();
+        await indexSearchableFields();
 
         expect(mongoClient).toBeCalledTimes(2);
         expect(field).toHaveBeenCalledWith('db');

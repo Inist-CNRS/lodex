@@ -1,5 +1,5 @@
 import progress from './progress';
-import indexSearchableField from './indexSearchableField';
+import indexSearchableFields from './indexSearchableFields';
 import { CREATE_INDEX } from '../../common/progressStatus';
 
 export default async ctx => {
@@ -15,6 +15,6 @@ export default async ctx => {
     await ctx.publishFacets(ctx, fields, true);
     await ctx.publishFacets(ctx, fields, true);
     progress.start(CREATE_INDEX, null);
-    await indexSearchableField();
+    await indexSearchableFields();
     progress.finish();
 };
