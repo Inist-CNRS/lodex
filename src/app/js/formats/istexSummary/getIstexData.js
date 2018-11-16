@@ -244,6 +244,7 @@ export const getDocumentUrl = ({
     volume,
     issue,
     searchedField,
+    documentSortBy,
 }) => () => ({
     url: buildIstexQuery({
         query: `${getFilterQuery(
@@ -253,6 +254,7 @@ export const getDocumentUrl = ({
             volume,
         )} AND ${getIssueQuery(issue)}`,
         output: documentOutput.join(','),
+        sortBy: documentSortBy,
         size: 10,
     }),
 });
@@ -263,9 +265,17 @@ export const getDocumentData = ({
     volume,
     issue,
     searchedField,
+    documentSortBy,
 }) =>
     composeAsync(
-        getDocumentUrl({ value, year, volume, issue, searchedField }),
+        getDocumentUrl({
+            value,
+            year,
+            volume,
+            issue,
+            searchedField,
+            documentSortBy,
+        }),
         fetch,
         parseFetchResult,
     );

@@ -14,6 +14,7 @@ const IssueFold = ({
     searchedField,
     polyglot,
     children,
+    documentSortBy,
 }) => (
     <FetchFold
         label={
@@ -31,6 +32,7 @@ const IssueFold = ({
             volume,
             issue,
             searchedField,
+            documentSortBy,
         })}
     >
         {children}
@@ -49,6 +51,7 @@ IssueFold.propTypes = {
     children: PropTypes.func.isRequired,
     isOther: PropTypes.bool,
     polyglot: polyglotPropTypes.isRequired,
+    documentSortBy: PropTypes.string.isRequired,
 };
 
 export default IssueFold;

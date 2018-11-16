@@ -62,6 +62,7 @@ export const IstexSummaryView = ({
     searchedField,
     sortDir,
     yearThreshold,
+    documentSortBy,
     p: polyglot,
     showEmbedButton,
 }) => {
@@ -95,6 +96,7 @@ export const IstexSummaryView = ({
                 value={resource[field.name]}
                 searchedField={searchedField}
                 sortDir={sortDir}
+                documentSortBy={documentSortBy}
                 polyglot={polyglot}
             />
         </div>
@@ -110,6 +112,7 @@ IstexSummaryView.propTypes = {
     searchedField: PropTypes.oneOf(SEARCHED_FIELD_VALUES),
     sortDir: PropTypes.oneOf(SORT_YEAR_VALUES),
     yearThreshold: PropTypes.number.isRequired,
+    documentSortBy: PropTypes.string.isRequired,
     p: polyglotPropTypes.isRequired,
     showEmbedButton: PropTypes.bool,
 };

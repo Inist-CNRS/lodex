@@ -30,6 +30,7 @@ export const defaultArgs = {
     searchedField: CUSTOM_ISTEX_QUERY,
     sortDir: SORT_YEAR_DESC,
     yearThreshold: 50,
+    documentSortBy: 'host.pages.first,title.raw',
 };
 
 export class IstexSummaryAdmin extends Component {
@@ -62,10 +63,13 @@ export class IstexSummaryAdmin extends Component {
             this.props,
         );
 
+    setDocumentSortBy = (_, documentSortBy) =>
+        updateAdminArgs('documentSortBy', documentSortBy, this.props);
+
     render() {
         const {
             p: polyglot,
-            args: { searchedField, sortDir, yearThreshold },
+            args: { searchedField, sortDir, yearThreshold, documentSortBy },
         } = this.props;
 
         return (
@@ -107,6 +111,13 @@ export class IstexSummaryAdmin extends Component {
                     onChange={this.setYearThreshold}
                     style={styles.input}
                     value={yearThreshold}
+                />
+                <TextField
+                    className="document_sort_by"
+                    floatingLabelText={polyglot.t('document_sort_by')}
+                    onChange={this.setDocumentSortBy}
+                    style={styles.input}
+                    value={documentSortBy}
                 />
             </div>
         );
