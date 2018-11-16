@@ -378,6 +378,7 @@
 "text_color"	"Text Color"	"Couleur du texte"
 "network"	"Graph - Network"	"Graphique - Réseaux"
 "bubbleChart"	"Graph - Bubble"	"Graphique - Graphe à bulles"
+"streamgraph"	"Graph - Streamgraph"	"Graphique - Graphique de flux"
 "diameter"	"Chart Diameter"	"Diamètre des bulles"
 "min_radius"	"Min radius"	"Rayon min"
 "max_radius"	"Max radius"	"Rayon max"
