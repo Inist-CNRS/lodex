@@ -171,6 +171,7 @@ describe('getIstexData', () => {
                     volume: 'volume',
                     issue: 'issue',
                     searchedField: 'searched.field',
+                    documentSortBy: 'title.raw',
                 })(),
             ).toMatchSnapshot();
         });
@@ -183,6 +184,7 @@ describe('getIstexData', () => {
                     volume: 'other',
                     issue: 'issue',
                     searchedField: 'searched.field',
+                    documentSortBy: 'title.raw',
                 })(),
             ).toMatchSnapshot();
         });
@@ -195,6 +197,7 @@ describe('getIstexData', () => {
                     volume: 'volume',
                     issue: 'other',
                     searchedField: 'searched.field',
+                    documentSortBy: 'title.raw',
                 })(),
             ).toMatchSnapshot();
         });
