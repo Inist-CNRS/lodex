@@ -278,7 +278,11 @@ describe('publishedDataset', () => {
             });
             expect(find).toHaveBeenCalledWith({
                 removedAt: { $exists: false },
-                $text: { $search: 'match' },
+                $or: [
+                    { $text: { $search: 'match' } },
+                    { 'versions.field1': { $regex: /match/, $options: 'i' } },
+                    { 'versions.field2': { $regex: /match/, $options: 'i' } },
+                ],
             });
         });
 
