@@ -34,6 +34,7 @@ describe('IssueFold', () => {
             getData,
             children,
             polyglot: defaultProps.polyglot,
+            skip: false,
         });
         expect(getDocumentData).toHaveBeenCalledWith({
             value: 'value',

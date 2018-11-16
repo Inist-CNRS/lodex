@@ -32,6 +32,7 @@ describe('VolumeFold', () => {
             volume: 'volume',
             getData,
             children,
+            skip: false,
             polyglot: defaultProps.polyglot,
         });
         expect(getIssueData).toHaveBeenCalledWith({

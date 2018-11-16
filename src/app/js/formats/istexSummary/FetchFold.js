@@ -6,9 +6,11 @@ import Arrow from 'material-ui/svg-icons/hardware/keyboard-arrow-down';
 import { StyleSheet, css } from 'aphrodite/no-important';
 import Button from 'material-ui/FlatButton';
 import CircularProgress from 'material-ui/CircularProgress';
+import get from 'lodash.get';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import AdminOnlyAlert from '../../lib/components/AdminOnlyAlert';
+import SkipFold from './SkipFold';
 
 const styles = StyleSheet.create({
     li: {
@@ -84,8 +86,12 @@ class FetchFold extends Component {
     };
 
     render() {
-        const { label, count, polyglot, children } = this.props;
+        const { label, count, polyglot, children, skip } = this.props;
         const { error, data, isOpen, isLoading } = this.state;
+
+        if (skip) {
+            return <SkipFold {...this.props} />;
+        }
 
         if (error) {
             return <AdminOnlyAlert>{polyglot.t('istex_error')}</AdminOnlyAlert>;
@@ -112,7 +118,12 @@ class FetchFold extends Component {
                             {isLoading && circularProgress}
                         </div>
                     </Button>
-                    {isOpen && children({ ...this.props, data })}
+                    {isOpen &&
+                        children({
+                            ...this.props,
+                            data,
+                            nbSiblings: get(data, 'hits.length', 0),
+                        })}
                 </div>
             </div>
         );

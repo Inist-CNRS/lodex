@@ -14,6 +14,9 @@ const styles = StyleSheet.create({
     loadMore: {
         marginTop: '1.5rem',
     },
+    skip: {
+        paddingLeft: 0,
+    },
 });
 
 class IstexList extends Component {
@@ -41,7 +44,7 @@ class IstexList extends Component {
     };
 
     render() {
-        const { children, polyglot, data, ...props } = this.props;
+        const { children, polyglot, data, skip, ...props } = this.props;
         const { hits, total, nextPageURI, isLoading } = this.state;
 
         if (!hits || !hits.length) {
@@ -56,7 +59,7 @@ class IstexList extends Component {
 
         return (
             <div>
-                <ul>
+                <ul className={classnames({ skip }, skip && css(styles.skip))}>
                     {hits.map((item, index) => (
                         <li className={css(styles.li)} key={index}>
                             {children({ ...props, polyglot, item })}
@@ -93,6 +96,7 @@ IstexList.propTypes = {
     }).isRequired,
     children: PropTypes.func.isRequired,
     polyglot: polyglotPropTypes.isRequired,
+    skip: PropTypes.bool.isRequired,
 };
 
 export default IstexList;
