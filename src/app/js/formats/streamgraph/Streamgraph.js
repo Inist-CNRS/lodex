@@ -3,64 +3,59 @@ import compose from 'recompose/compose';
 import * as d3 from 'd3';
 
 import {
-    zoomFunction,
-    distinctColors,
-    transformDataIntoMapArray,
-    getMinMaxValue,
-    cutStr,
-} from './utils';
-import injectData from '../injectData';
-import exportableToPng from '../exportableToPng';
-import stylesToClassname from '../../lib/stylesToClassName';
+  zoomFunction,
+  distinctColors,
+  transformDataIntoMapArray,
+  getMinMaxValue,
+  cutStr
+} from "./utils";
+import injectData from "../injectData";
+import exportableToPng from "../exportableToPng";
 
-const styles = stylesToClassname(
-    {
-        divContainer: {
-            overflow: 'hidden',
-            position: 'relative',
-        },
-        tooltip: {
-            position: 'absolute',
-        },
-        vertical: {
-            marginTop: 60,
-            height: 190,
-            pointerEvents: 'none',
-        },
-        legend: {
-            position: 'relative',
-            columnCount: 3,
-            textAlign: 'left',
-            marginLeft: 20,
-            paddingBottom: 30,
-        },
-        legendItem: {
-            marginTop: 2,
-        },
-        legendItemTooltip: {
-            visibility: 'hidden',
-            backgroundColor: '#4e4e4e',
-            color: '#fff',
-            textAlign: 'center',
-            borderRadius: '6px',
-            padding: '5px 0',
+const styles = StyleSheet.create({
+  divContainer: {
+    overflow: "hidden",
+    position: "relative"
+  },
+  tooltip: {
+    position: "absolute"
+  },
+  vertical: {
+    marginTop: 60,
+    height: 190,
+    pointerEvents: "none"
+  },
+  legend: {
+    position: "relative",
+    textAlign: "left",
+    marginLeft: 20,
+    columnCount: 3,
+    paddingBottom: 30
+  },
+  legendItem: {
+    marginTop: 2
+  },
+  legendItemTooltip: {
+    visibility: "hidden",
+    backgroundColor: "#4e4e4e",
+    color: "#fff",
+    textAlign: "center",
+    borderRadius: "6px",
+    padding: "5px 4px",
 
-            position: 'absolute',
-            zIndex: 10,
-        },
-        legendItemText: {
-            marginLeft: 5,
-        },
-        legendButton: {
-            height: 15,
-            width: 15,
-        },
-    },
-    'stream-graph',
-);
-
-const WIDTH = 800;
-const HEIGHT = 300;
+    position: "absolute",
+    left: "0px",
+    top: "-33px",
+    zIndex: 10
+  },
+  legendItemText: {
+    marginLeft: 5
+  },
+  legendButton: {
+    height: 15,
+    width: 15
+  }
+});
 
 class Streamgraph extends PureComponent {
     constructor(props) {
@@ -504,6 +499,152 @@ class Streamgraph extends PureComponent {
             </div>
         );
     }
+  }
+
+  setTheEventsActions(svgViewport, vertical, tooltip) {
+    // Can't split events in different blocks because .on("") events
+    // definition erase the previous ones
+    this.setViewportEvents(svgViewport, vertical);
+    this.setMouseMoveAndOverStreams(tooltip);
+    this.setMouseOutStreams(tooltip);
+  }
+
+  updateDimensions() {
+    this.removeGraph();
+    this.setGraph();
+  }
+
+  setGraph() {
+    const {
+      valuesObjectsArray,
+      valuesArray,
+      dateMin,
+      dateMax,
+      namesList
+    } = transformDataIntoMapArray(this.props.formatData);
+
+    const svgWidth = this.divContainer.current.clientWidth;
+
+    const { height: svgHeight } = this.state;
+    const margin = { top: 60, right: 40, bottom: 50, left: 60 };
+    const width = svgWidth - margin.left - margin.right;
+    const height = svgHeight - margin.top - margin.bottom;
+
+    const divContainer = d3.select(this.divContainer.current);
+
+    const d3DivContainer = divContainer
+      .attr("class", `${css(styles.divContainer)}`)
+      .append("div")
+      .attr("id", "d3DivContainer");
+
+    const svgViewport = d3.select(this.anchor.current);
+
+    d3.select(this.svgContainer.current).attr("width", svgWidth);
+
+    const layersNumber = valuesObjectsArray.length;
+
+    const stackedData = this.stackDatas(namesList, valuesArray);
+    const { minValue, maxValue } = getMinMaxValue(stackedData);
+
+    const { innerSpace, graphZone } = this.initTheGraphBasicsElements(
+      width,
+      height,
+      margin,
+      svgViewport
+    );
+
+    const { tooltip, vertical } = this.createAndSetDataReader(
+      divContainer,
+      height,
+      margin
+    );
+
+    this.createAndSetAxis(
+      dateMin,
+      dateMax,
+      minValue,
+      maxValue,
+      width,
+      height,
+      innerSpace
+    );
+
+    const colorNameList = this.createAndSetStreams(
+      layersNumber,
+      graphZone,
+      stackedData,
+      namesList
+    );
+
+    this.createAndSetTheLegend(d3DivContainer, colorNameList, width);
+    this.setTheEventsActions(svgViewport, vertical, tooltip);
+  }
+
+  removeGraph() {
+    d3.select(this.divContainer.current)
+      .selectAll("#d3DivContainer")
+      .selectAll("div")
+      .remove();
+
+    d3.select(this.divContainer.current)
+      .selectAll("#d3DivContainer")
+      .remove();
+
+    d3.select(this.divContainer.current)
+      .selectAll("#vertical")
+      .remove();
+
+    d3.select(this.divContainer.current)
+      .selectAll("#tooltip")
+      .remove();
+
+    d3.select(this.anchor.current)
+      .selectAll("g")
+      .remove();
+
+    d3.select(this.anchor.current)
+      .selectAll("defs")
+      .remove();
+  }
+
+  componentDidMount() {
+    window.addEventListener("resize", this.updateDimensions.bind(this));
+    this.setGraph();
+  }
+
+  componentWillUpdate() {
+    this.removeGraph();
+  }
+
+  componentDidUpdate() {
+    this.setGraph();
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener("resize", this.updateDimensions.bind(this));
+    this.removeGraph();
+  }
+
+  render() {
+    const { width, height } = this.state;
+
+    return (
+      <div
+        id="divContainer"
+        ref={this.divContainer}
+        style={styles.divContainer}
+      >
+        <svg
+          id="svgContainer"
+          ref={this.svgContainer}
+          width={width}
+          height={height}
+        >
+          <g id="anchor" ref={this.anchor} />
+        </svg>
+      </div>
+    );
+  }
 }
 
 export default compose(
