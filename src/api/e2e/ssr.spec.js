@@ -3,6 +3,7 @@ import omit from 'lodash.omit';
 import jwt from 'jsonwebtoken';
 import { auth } from 'config';
 
+import mongoClient from '../services/mongoClient';
 import requestServer from './utils/requestServer';
 import fixtures from './ssr.json';
 import {
@@ -26,8 +27,12 @@ const authentifiedHeader = {
 
 describe('ssr', () => {
     let server;
-    before(async () => {
+
+    beforeAll(() => {
         server = requestServer();
+    });
+
+    beforeEach(async () => {
         await clear();
         await connect();
         await loadFixtures(fixtures);
@@ -35,8 +40,9 @@ describe('ssr', () => {
 
     describe('/', () => {
         let state;
+
         describe('authentified', () => {
-            before(async () => {
+            beforeEach(async () => {
                 const response = await server
                     .get('/', authentifiedHeader)
                     .then(response => response.text());
@@ -117,8 +123,9 @@ describe('ssr', () => {
                 });
             });
         });
+
         describe('not authentified', () => {
-            before(async () => {
+            beforeEach(async () => {
                 const response = await server
                     .get('/')
                     .then(response => response.text());
@@ -162,7 +169,7 @@ describe('ssr', () => {
         let state;
 
         describe('authentified', () => {
-            before(async () => {
+            beforeEach(async () => {
                 const response = await server
                     .get('/resource?uri=1', authentifiedHeader)
                     .then(response => response.text());
@@ -218,7 +225,7 @@ describe('ssr', () => {
         });
 
         describe('not authentified', () => {
-            before(async () => {
+            beforeEach(async () => {
                 const response = await server
                     .get('/resource?uri=1')
                     .then(response => response.text());
@@ -259,13 +266,14 @@ describe('ssr', () => {
     });
 
     describe('/graph', () => {
-        let state;
         describe('authenticated', () => {
-            before(async () => {
+            let authentifiedState;
+
+            beforeEach(async () => {
                 const response = await server
                     .get('/graph', authentifiedHeader)
                     .then(response => response.text());
-                state = JSON.parse(
+                authentifiedState = JSON.parse(
                     response.match(
                         /__PRELOADED_STATE__ = ([\s\S]*?);window.ISTEX_API_URL/,
                     )[1],
@@ -273,7 +281,7 @@ describe('ssr', () => {
             });
 
             it('should preload the dataset', async () => {
-                expect(state.dataset.dataset).toEqual([
+                expect(authentifiedState.dataset.dataset).toEqual([
                     {
                         uri: '1',
                         fullname: 'PEREGRIN.TOOK',
@@ -303,14 +311,14 @@ describe('ssr', () => {
             });
 
             it('should preload fields', () => {
-                expect(state.fields.list).toEqual([
+                expect(authentifiedState.fields.list).toEqual([
                     'uri',
                     'fullname',
                     'email',
                     'movie',
                     'author',
                 ]);
-                expect(Object.keys(state.fields.byName)).toEqual([
+                expect(Object.keys(authentifiedState.fields.byName)).toEqual([
                     'uri',
                     'fullname',
                     'email',
@@ -321,25 +329,27 @@ describe('ssr', () => {
 
             it('should preload characteristics', async () => {
                 expect(
-                    state.characteristic.characteristics.map(d =>
+                    authentifiedState.characteristic.characteristics.map(d =>
                         omit(d, '_id'),
                     ),
                 ).toEqual([{ movie: 'LOTR', author: 'Peter Jackson' }]);
             });
 
             it('should not include token in state', () => {
-                expect(state.user).toEqual({
+                expect(authentifiedState.user).toEqual({
                     token: null,
                 });
             });
         });
 
         describe('not authenticated', () => {
-            before(async () => {
+            let unauthentifiedState;
+
+            beforeEach(async () => {
                 const response = await server
                     .get('/graph')
                     .then(response => response.text());
-                state = JSON.parse(
+                unauthentifiedState = JSON.parse(
                     response.match(
                         /__PRELOADED_STATE__ = ([\s\S]*?);window.ISTEX_API_URL/,
                     )[1],
@@ -347,30 +357,38 @@ describe('ssr', () => {
             });
 
             it('should not preload the dataset', async () => {
-                expect(state.dataset.dataset).toEqual([]);
+                expect(unauthentifiedState.dataset.dataset).toEqual([]);
             });
 
             it('should not preload fields', () => {
-                expect(state.fields.list).toEqual([]);
-                expect(Object.keys(state.fields.byName)).toEqual([]);
+                expect(unauthentifiedState.fields.list).toEqual([]);
+                expect(Object.keys(unauthentifiedState.fields.byName)).toEqual(
+                    [],
+                );
             });
 
             it('should not preload characteristics', async () => {
-                expect(state.characteristic.characteristics).toEqual([]);
+                expect(
+                    unauthentifiedState.characteristic.characteristics,
+                ).toEqual([]);
             });
 
             it('should not include token in state', () => {
-                expect(state.user).toEqual({
+                expect(unauthentifiedState.user).toEqual({
                     token: null,
                 });
             });
         });
     });
 
-    after(async () => {
-        server.close();
-
+    afterEach(async () => {
         await clear();
         await close();
+    });
+
+    afterAll(async () => {
+        server.close();
+        const db = await mongoClient();
+        db.close();
     });
 });

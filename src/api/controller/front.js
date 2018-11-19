@@ -41,7 +41,40 @@ const adminIndexHtml = fs
     .toString()
     .replace('{|__JS_HOST__|}', jsHost);
 
+const defaultInitialState = (token, cookie, locale) => ({
+    fields: {
+        loading: false,
+        isSaving: false,
+        byName: {},
+        allValid: true,
+        list: [],
+        invalidFields: [],
+        editedFieldName: undefined,
+        editedValueFieldName: null,
+        configuredFieldName: null,
+        published: true,
+    },
+    polyglot: {
+        locale: locale,
+        phrases:
+            locale === 'fr' || locale === 'fr-FR'
+                ? translations.french
+                : translations.english,
+    },
+    user: {
+        token,
+        cookie,
+    },
+    menu: { topMenu, bottomMenu, customRoutes, error: null },
+});
+
 const getInitialState = async (token, cookie, locale, ctx) => {
+    const initialState = defaultInitialState(token, cookie, locale);
+
+    if (!cookie) {
+        return initialState;
+    }
+
     const {
         characteristics,
         fields: fieldsWithCount,
@@ -54,30 +87,13 @@ const getInitialState = async (token, cookie, locale, ctx) => {
     );
 
     return {
+        ...initialState,
         fields: {
-            loading: false,
-            isSaving: false,
+            ...initialState.fields,
             byName,
-            allValid: true,
             list,
-            invalidFields: [],
-            editedFieldName: undefined,
-            editedValueFieldName: null,
-            configuredFieldName: null,
             published,
         },
-        polyglot: {
-            locale: locale,
-            phrases:
-                locale === 'fr' || locale === 'fr-FR'
-                    ? translations.french
-                    : translations.english,
-        },
-        user: {
-            token,
-            cookie,
-        },
-        menu: { topMenu, bottomMenu, customRoutes, error: null },
         characteristic: {
             characteristics,
             error: null,

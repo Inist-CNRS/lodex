@@ -18,7 +18,8 @@
         "development:app": "BABEL_ENV=browser node_modules/.bin/webpack-dev-server --config=./src/app/webpack.config.babel.js --port=8080 --host=0.0.0.0",
         "postversion": "git push && git push --tags",
         "lint": "./pre-commit",
-        "test:api:e2e": "mocha --require @babel/register 'src/api/e2e/*.spec.js'",
+        "test:api:e2e": "./node_modules/jest/bin/jest.js --colors --runInBand  -c src/api/e2e/jest.config.js src/api/e2e",
+        "test:api:e2e:watch": "./node_modules/jest/bin/jest.js --colors --runInBand  -c src/api/e2e/jest.config.js src/api/e2e --watch",
         "test:unit": "./node_modules/jest/bin/jest.js --colors",
         "test:unit:watch": "./node_modules/jest/bin/jest.js --watch --colors"
     },
@@ -204,7 +205,6 @@
         "jest": "23.6.0",
         "koa-connect": "2.0.1",
         "memorystream": "0.3.1",
-        "mocha": "5.2.0",
         "nodemon": "1.18.4",
         "prettier": "1.14.3",
         "react-addons-test-utils": "15.6.2",
