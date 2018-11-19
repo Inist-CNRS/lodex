@@ -41,7 +41,7 @@ const adminIndexHtml = fs
     .toString()
     .replace('{|__JS_HOST__|}', jsHost);
 
-const defaultInitialState = (token, cookie, locale) => ({
+const getDefaultInitialState = (token, cookie, locale) => ({
     fields: {
         loading: false,
         isSaving: false,
@@ -69,7 +69,7 @@ const defaultInitialState = (token, cookie, locale) => ({
 });
 
 const getInitialState = async (token, cookie, locale, ctx) => {
-    const initialState = defaultInitialState(token, cookie, locale);
+    const initialState = getDefaultInitialState(token, cookie, locale);
 
     if (!cookie) {
         return initialState;
