@@ -4,14 +4,34 @@ import { Field } from 'redux-form';
 
 import FormTextField from '../../lib/components/FormTextField';
 
-const format = v => v && v.join(';');
+const format = v => {
+    try {
+        return v && v.join(';');
+    } catch (error) {
+        return error;
+    }
+};
 const normalize = v => v && v.split(';');
+
+const SafeFormTextField = ({ input, label, polyglot, ...props }) => {
+    if (input.value instanceof Error) {
+        return <p>{polyglot.t('bad_format', { label })}</p>;
+    }
+    return (
+        <FormTextField
+            {...props}
+            input={input}
+            label={label}
+            polyglot={polyglot}
+        />
+    );
+};
 
 const EditionComponent = ({ name, disabled, label, fullWidth, ...input }) => (
     <Field
         key={name}
         name={name}
-        component={FormTextField}
+        component={SafeFormTextField}
         disabled={name === 'uri'}
         label={label}
         fullWidth
