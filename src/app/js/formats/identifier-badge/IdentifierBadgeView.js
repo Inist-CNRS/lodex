@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { StyleSheet, css } from 'aphrodite/no-important';
 import { field as fieldPropTypes } from '../../propTypes';
 import { resolvers } from '.';
-import InvalidFormat from '../InvalidFormat';
 import Link from '../../lib/components/Link';
 
 const IdentifierBadgeView = ({ resource, field, typid, colors }) => {
@@ -14,10 +13,6 @@ const IdentifierBadgeView = ({ resource, field, typid, colors }) => {
     const firstColor = colorsSet.shift() || '#8B8B8B';
     const resolver = resolvers[typid] || '';
     const value = resource[field.name] || '';
-
-    if (typeof value !== 'string') {
-        return <InvalidFormat format={field.format} value={value} />;
-    }
 
     const identifier = value.replace(resolver, '');
     const target = resolver + identifier;

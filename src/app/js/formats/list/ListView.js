@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 
 import { field as fieldPropTypes } from '../../propTypes';
 import { getViewComponent } from '../';
-import InvalidFormat from '../InvalidFormat';
 
 export const UL = ({ className, children }) => (
     <ul className={className}>{children}</ul>
@@ -35,16 +34,6 @@ const ListView = ({
     const { ViewComponent, args } = getViewComponent(subFormat);
 
     const List = type === 'ordered' ? OL : UL;
-
-    const noValue = !values;
-    const invalidValue = !Array.isArray(values);
-    const emptyValue =
-        values &&
-        (values.length < 1 || (values.length === 1 && !values[0].trim()));
-
-    if (noValue || invalidValue || emptyValue) {
-        return <InvalidFormat format={field.format} value={values} />;
-    }
 
     return (
         <List className={className}>
