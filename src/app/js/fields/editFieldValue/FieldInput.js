@@ -31,7 +31,7 @@ export const FieldInputComponent = ({
         return <CompositeFieldInput label={label} field={field} />;
     }
 
-    const Component = getEditionComponent(field);
+    const { Component, predicate } = getEditionComponent(field);
 
     if (Component.isReduxFormReady) {
         return (
@@ -55,6 +55,9 @@ export const FieldInputComponent = ({
             disabled={field.name === 'uri'}
             label={label}
             field={field}
+            validate={v =>
+                predicate(v) ? undefined : polyglot.t('bad_format_details')
+            }
             fullWidth
             {...input}
         />

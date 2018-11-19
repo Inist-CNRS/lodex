@@ -6,6 +6,7 @@ import ActionDeleteIcon from 'material-ui/svg-icons/action/delete';
 import ActionAddIcon from 'material-ui/svg-icons/content/add';
 import translate from 'redux-polyglot/translate';
 import { StyleSheet, css } from 'aphrodite/no-important';
+import RaisedButton from 'material-ui/RaisedButton';
 
 import { getEditionComponent } from '../';
 import {
@@ -33,13 +34,30 @@ const getSubFormat = args => ({
 class EditionComponent extends Component {
     constructor(props) {
         super(props);
-        this.ItemComponent = getEditionComponent(
+        const { Component } = getEditionComponent(
             getSubFormat(props.field.format.args),
         );
+        this.ItemComponent = Component;
     }
 
     renderList = ({ fields }) => {
         const { p: polyglot } = this.props;
+        const all = fields.getAll();
+        if (typeof all === 'string') {
+            return (
+                <div>
+                    <p>{polyglot.t('bad_format_edit_value')}</p>
+                    <RaisedButton
+                        primary
+                        onClick={() => {
+                            fields.removeAll();
+                            all.split(';').forEach(fields.push);
+                        }}
+                        label={polyglot.t('convert_to_list')}
+                    />
+                </div>
+            );
+        }
         return (
             <div>
                 {fields.map((value, index) => (
@@ -71,11 +89,11 @@ class EditionComponent extends Component {
     };
 
     render() {
-        const { label, input } = this.props;
+        const { label, name } = this.props;
 
         return (
             <FieldArray
-                name={input.name}
+                name={name}
                 component={this.renderList}
                 disabled={name === 'uri'}
                 label={label}
@@ -86,9 +104,7 @@ class EditionComponent extends Component {
 }
 
 EditionComponent.propTypes = {
-    input: PropTypes.shape({
-        name: PropTypes.string.isRequired,
-    }),
+    name: PropTypes.string.isRequired,
     field: fieldPropTypes.isRequired,
     p: polyglotPropTypes.isRequired,
     label: PropTypes.string.isRequired,

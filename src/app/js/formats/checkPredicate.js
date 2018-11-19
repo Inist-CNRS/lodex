@@ -6,7 +6,7 @@ import InvalidFormat from './InvalidFormat';
 
 export default (predicate, Component, format, type) => {
     const CheckedComponent = ({
-        input,
+        meta,
         label,
         resource,
         field,
@@ -15,7 +15,7 @@ export default (predicate, Component, format, type) => {
     }) => {
         const value =
             type === 'edition'
-                ? get(input, 'value')
+                ? get(meta, 'initial')
                 : get(resource, field.name);
 
         if (typeof value === 'undefined') {
@@ -29,7 +29,7 @@ export default (predicate, Component, format, type) => {
             <Component
                 {...props}
                 label={label}
-                input={{ ...input, value }}
+                meta={meta}
                 resource={resource}
                 field={field}
             />
