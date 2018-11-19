@@ -11,8 +11,6 @@ import indexSearchableFields from './services/indexSearchableFields';
 
 const app = koaQs(new Koa());
 
-indexSearchableFields();
-
 app.use(cors({ credentials: true }));
 
 if (process.env.EXPOSE_TEST_CONTROLLER) {
@@ -38,6 +36,7 @@ app.use(async (ctx, next) => {
 app.use(mount('/', controller));
 
 if (!module.parent) {
+    indexSearchableFields();
     global.console.log(`Server listening on port ${config.port}`);
     global.console.log('Press CTRL+C to stop server');
     app.listen(config.port);
