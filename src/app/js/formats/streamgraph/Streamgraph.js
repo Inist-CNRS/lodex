@@ -27,9 +27,9 @@ const styles = StyleSheet.create({
   },
   legend: {
     position: "relative",
-    columnCount: 3,
     textAlign: "left",
     marginLeft: 20,
+    columnCount: 3,
     paddingBottom: 30
   },
   legendItem: {
@@ -41,13 +41,15 @@ const styles = StyleSheet.create({
     color: "#fff",
     textAlign: "center",
     borderRadius: "6px",
-    padding: "5px 0",
+    padding: "5px 4px",
 
     position: "absolute",
-    zIndex: 10,
+    left: "0px",
+    top: "-33px",
+    zIndex: 10
   },
   legendItemText: {
-    marginLeft: 5,
+    marginLeft: 5
   },
   legendButton: {
     height: 15,
@@ -145,9 +147,13 @@ class Streamgraph extends PureComponent {
       .range([0, width]);
 
     this.xAxis = d3
-      .axisBottom(this.xAxisScale)
+      //.axisBottom(this.xAxisScale)
+      .axisBottom()
       .tickFormat(d3.timeFormat("%Y"))
-      .ticks(d3.timeYear, 1);
+      .tickPadding(5)
+      .ticks(d3.timeYear)
+      .scale(this.xAxisScale);
+    //.ticks(d3.timeYear, 1);
 
     this.gx = innerSpace
       .append("g")
@@ -167,11 +173,13 @@ class Streamgraph extends PureComponent {
       .append("g")
       .attr("class", "y axis")
       .attr("transform", "translate(" + width + ", 0)")
+      .style("visibility", "hidden")
       .call(this.yAxisR);
 
     this.gyl = innerSpace
       .append("g")
       .attr("class", "y axis")
+      .style("visibility", "hidden")
       .call(this.yAxisL);
   }
 
@@ -222,6 +230,7 @@ class Streamgraph extends PureComponent {
       .style("left", "0px")
       .style("margin-top", `${margin.top - 10}px`)
       .style("pointer-events", "none")
+      .style("visibility", "hidden")
       .style("background", "#000");
 
     const tooltip = divContainer
@@ -237,11 +246,15 @@ class Streamgraph extends PureComponent {
     return { tooltip, vertical };
   }
 
-  createAndSetTheLegend(d3DivContainer, colorNameList) {
+  createAndSetTheLegend(d3DivContainer, colorNameList, width) {
     const legendView = d3DivContainer
       .append("div")
       .attr("id", "legend")
       .attr("class", `${css(styles.legend)}`);
+
+    width > 500
+      ? legendView.style("column-count", 3)
+      : legendView.style("column-count", 2);
 
     const colorNameTmpList = colorNameList;
     colorNameTmpList.reverse();
@@ -263,11 +276,13 @@ class Streamgraph extends PureComponent {
         .attr("class", `${css(styles.legendItemText)}`)
         .text(cutStr(element.name));
 
-      const legendItemTooltip = legendItemContainer.append("span")
+      const legendItemTooltip = legendItemContainer
+        .append("span")
         .attr("class", `${css(styles.legendItemTooltip)}`)
         .text(element.name);
 
-        legendItemContainer.on("mouseover", (d, i) => {
+      legendItemContainer
+        .on("mouseover", (d, i) => {
           legendItemTooltip.style("visibility", "visible");
         })
         .on("mousemove", (d, i) => {
@@ -275,8 +290,7 @@ class Streamgraph extends PureComponent {
         })
         .on("mouseout", (d, i) => {
           legendItemTooltip.style("visibility", "hidden");
-        });
-      
+        })
     });
   }
 
@@ -372,6 +386,11 @@ class Streamgraph extends PureComponent {
     this.setMouseOutStreams(tooltip);
   }
 
+  updateDimensions() {
+    this.removeGraph();
+    this.setGraph();
+  }
+
   setGraph() {
     const {
       valuesObjectsArray,
@@ -434,15 +453,11 @@ class Streamgraph extends PureComponent {
       namesList
     );
 
-    this.createAndSetTheLegend(d3DivContainer, colorNameList);
+    this.createAndSetTheLegend(d3DivContainer, colorNameList, width);
     this.setTheEventsActions(svgViewport, vertical, tooltip);
   }
 
-  componentDidMount() {
-    this.setGraph();
-  }
-
-  componentWillUpdate() {
+  removeGraph() {
     d3.select(this.divContainer.current)
       .selectAll("#d3DivContainer")
       .selectAll("div")
@@ -456,6 +471,10 @@ class Streamgraph extends PureComponent {
       .selectAll("#vertical")
       .remove();
 
+    d3.select(this.divContainer.current)
+      .selectAll("#tooltip")
+      .remove();
+
     d3.select(this.anchor.current)
       .selectAll("g")
       .remove();
@@ -465,8 +484,22 @@ class Streamgraph extends PureComponent {
       .remove();
   }
 
+  componentDidMount() {
+    window.addEventListener("resize", this.updateDimensions.bind(this));
+    this.setGraph();
+  }
+
+  componentWillUpdate() {
+    this.removeGraph();
+  }
+
   componentDidUpdate() {
     this.setGraph();
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener("resize", this.updateDimensions.bind(this));
+    this.removeGraph();
   }
 
   render() {
