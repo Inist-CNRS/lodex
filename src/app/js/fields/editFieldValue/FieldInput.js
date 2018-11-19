@@ -41,6 +41,7 @@ export const FieldInputComponent = ({
                 disabled={field.name === 'uri'}
                 label={label}
                 fullWidth
+                field={field}
                 {...input}
             />
         );
@@ -53,6 +54,7 @@ export const FieldInputComponent = ({
             component={Component}
             disabled={field.name === 'uri'}
             label={label}
+            field={field}
             fullWidth
             {...input}
         />
@@ -75,8 +77,9 @@ const mapStateToProps = (state, { field }) => ({
     completedField: fromFields.getCompletedField(state, field),
 });
 
-const EditDetailsField = compose(connect(mapStateToProps), translate)(
-    FieldInputComponent,
-);
+const EditDetailsField = compose(
+    connect(mapStateToProps),
+    translate,
+)(FieldInputComponent);
 
 export default EditDetailsField;

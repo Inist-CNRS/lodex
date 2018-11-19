@@ -40,7 +40,7 @@ const DefaultView = ({
 }) => {
     let value = resource[field.name];
     if (Array.isArray(value)) {
-        return <p>{polyglot.t('bad_format', { label: field.label })}</p>;
+        return <p>{polyglot.t('bad_value_format', { label: field.label })}</p>;
     } else if (isURL(value)) {
         return (
             <Link style={styles[fieldStatus]} href={`${value}`}>
