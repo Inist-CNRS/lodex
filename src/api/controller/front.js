@@ -29,6 +29,9 @@ import getLocale from '../../common/getLocale';
 import { topMenu, bottomMenu, customRoutes } from './api/menu';
 import customTheme from '../../app/js/public/customTheme';
 
+import { getPublication } from './api/publication';
+import getCatalogFromArray from '../../common/fields/getCatalogFromArray.js';
+
 const indexHtml = fs
     .readFileSync(path.resolve(__dirname, '../../app/custom/index.html'))
     .toString();
@@ -38,7 +41,7 @@ const adminIndexHtml = fs
     .toString()
     .replace('{|__JS_HOST__|}', jsHost);
 
-const getInitialState = (token, cookie, locale) => ({
+const getDefaultInitialState = (token, cookie, locale) => ({
     fields: {
         loading: false,
         isSaving: false,
@@ -64,6 +67,42 @@ const getInitialState = (token, cookie, locale) => ({
     },
     menu: { topMenu, bottomMenu, customRoutes, error: null },
 });
+
+const getInitialState = async (token, cookie, locale, ctx) => {
+    const initialState = getDefaultInitialState(token, cookie, locale);
+
+    if (!cookie) {
+        return initialState;
+    }
+
+    const {
+        characteristics,
+        fields: fieldsWithCount,
+        published,
+    } = await getPublication(ctx);
+
+    const { catalog: byName, list } = getCatalogFromArray(
+        fieldsWithCount,
+        'name',
+    );
+
+    return {
+        ...initialState,
+        fields: {
+            ...initialState.fields,
+            byName,
+            list,
+            published,
+        },
+        characteristic: {
+            characteristics,
+            error: null,
+            newCharacteristics: characteristics[0],
+            isSaving: false,
+            isAdding: false,
+        },
+    };
+};
 
 const renderFullPage = (html, css, preloadedState, helmet) =>
     indexHtml
@@ -110,11 +149,12 @@ export const getRenderingData = async (
     cookie,
     locale,
     url,
+    ctx,
 ) => {
     const store = configureStoreServer(
         rootReducer,
         sagas,
-        getInitialState(token, cookie, locale),
+        await getInitialState(token, cookie, locale, ctx),
         history,
     );
 
@@ -179,6 +219,7 @@ const handleRender = async (ctx, next) => {
         ctx.request.header.cookie,
         getLocale(ctx),
         url,
+        ctx,
     );
 
     if (redirect) {

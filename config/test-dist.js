@@ -21,4 +21,7 @@ module.exports = {
     },
     host: 'http://localhost:3010',
     istexApiUrl: 'http://localhost:3011',
+    logger: {
+        disabled: true,
+    },
 };

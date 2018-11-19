@@ -2,6 +2,7 @@ import expect from 'expect';
 import jwt from 'jsonwebtoken';
 import { auth } from 'config';
 
+import mongoClient from '../services/mongoClient';
 import requestServer from './utils/requestServer';
 import fixtures from './ssr.json';
 import {
@@ -47,7 +48,8 @@ const userHeader = {
 
 describe('e2e publishedDataset Authentication', () => {
     let server;
-    before(async () => {
+
+    beforeAll(async () => {
         server = requestServer();
         await clear();
         await connect();
@@ -389,10 +391,12 @@ describe('e2e publishedDataset Authentication', () => {
         });
     });
 
-    after(async () => {
+    afterAll(async () => {
         server.close();
 
         await clear();
         await close();
+        const db = await mongoClient();
+        db.close();
     });
 });
