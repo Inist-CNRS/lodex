@@ -3,6 +3,7 @@ import compose from 'recompose/compose';
 import * as d3 from 'd3';
 
 import {
+<<<<<<< HEAD
     zoomFunction,
     distinctColors,
     transformDataIntoMapArray,
@@ -61,6 +62,61 @@ const styles = stylesToClassname(
 
 const WIDTH = 800;
 const HEIGHT = 300;
+=======
+  zoomFunction,
+  distinctColors,
+  transformDataIntoMapArray,
+  getMinMaxValue,
+  cutStr
+} from "./utils";
+import injectData from "../injectData";
+import exportableToPng from "../exportableToPng";
+
+const styles = StyleSheet.create({
+  divContainer: {
+    overflow: "hidden",
+    position: "relative"
+  },
+  tooltip: {
+    position: "absolute"
+  },
+  vertical: {
+    marginTop: 60,
+    height: 190,
+    pointerEvents: "none"
+  },
+  legend: {
+    position: "relative",
+    textAlign: "left",
+    marginLeft: 20,
+    columnCount: 3,
+    paddingBottom: 30
+  },
+  legendItem: {
+    marginTop: 2
+  },
+  legendItemTooltip: {
+    visibility: "hidden",
+    backgroundColor: "#4e4e4e",
+    color: "#fff",
+    textAlign: "center",
+    borderRadius: "6px",
+    padding: "5px 4px",
+
+    position: "absolute",
+    left: "0px",
+    top: "-33px",
+    zIndex: 10
+  },
+  legendItemText: {
+    marginLeft: 5
+  },
+  legendButton: {
+    height: 15,
+    width: 15
+  }
+});
+>>>>>>> b137d7e8... css update
 
 class Streamgraph extends PureComponent {
     constructor(props) {
@@ -178,6 +234,7 @@ class Streamgraph extends PureComponent {
             .call(this.yAxisL);
     }
 
+<<<<<<< HEAD
     createAndSetStreams(layersNumber, graphZone, stackedData, nameList) {
         const colorNameList = [];
         if (stackedData) {
@@ -214,6 +271,86 @@ class Streamgraph extends PureComponent {
         }
         return colorNameList;
     }
+=======
+    const stackMethod = d3
+      .stack()
+      .keys(nameList)
+      .order(d3.stackOrderNone)
+      .offset(d3.stackOffsetWiggle);
+
+    return stackMethod(valuesArray);
+  }
+
+  createAndSetAxis(
+    minDate,
+    maxDate,
+    minValue,
+    maxValue,
+    width,
+    height,
+    innerSpace
+  ) {
+    const min = new Date(String(minDate));
+    const max = new Date(String(maxDate));
+
+    this.xAxisScale = d3
+      .scaleTime()
+      .domain([min, max])
+      .range([0, width]);
+
+    this.xAxis = d3
+      //.axisBottom(this.xAxisScale)
+      .axisBottom()
+      .tickFormat(d3.timeFormat("%Y"))
+      .tickPadding(5)
+      .ticks(d3.timeYear)
+      .scale(this.xAxisScale);
+    //.ticks(d3.timeYear, 1);
+
+    this.gx = innerSpace
+      .append("g")
+      .attr("class", "x axis")
+      .attr("transform", "translate(0," + height + ")")
+      .call(this.xAxis);
+
+    this.yAxisScale = d3
+      .scaleLinear()
+      .domain([minValue, maxValue])
+      .range([height, 0]);
+
+    this.yAxisL = d3.axisLeft(this.yAxisScale);
+    this.yAxisR = d3.axisRight(this.yAxisScale);
+
+    this.gyr = innerSpace
+      .append("g")
+      .attr("class", "y axis")
+      .attr("transform", "translate(" + width + ", 0)")
+      .style("visibility", "hidden")
+      .call(this.yAxisR);
+
+    this.gyl = innerSpace
+      .append("g")
+      .attr("class", "y axis")
+      .style("visibility", "hidden")
+      .call(this.yAxisL);
+  }
+
+  createAndSetStreams(layersNumber, graphZone, stackedData, nameList) {
+    const colorNameList = [];
+    if (stackedData) {
+      const z = distinctColors(layersNumber);
+      const area = d3
+        .area()
+        .x((d, i) => {
+          return this.xAxisScale(d.data.date);
+        })
+        .y0(d => {
+          return this.yAxisScale(d[0]);
+        })
+        .y1(d => {
+          return this.yAxisScale(d[1]);
+        });
+>>>>>>> b137d7e8... css update
 
     createAndSetDataReader(divContainer, height, margin) {
         const vertical = divContainer
@@ -242,6 +379,7 @@ class Streamgraph extends PureComponent {
 
         return { tooltip, vertical };
     }
+<<<<<<< HEAD
 
     createAndSetTheLegend(d3DivContainer, colorNameList) {
         const legendView = d3DivContainer
@@ -352,6 +490,109 @@ class Streamgraph extends PureComponent {
                             return j != i ? 0.3 : 1;
                         });
                 });
+=======
+    return colorNameList;
+  }
+
+  createAndSetDataReader(divContainer, height, margin) {
+    const vertical = divContainer
+      .insert("div", "#svgContainer")
+      .attr("id", "vertical")
+      .style("position", "absolute") // need relative in parent
+      .style("z-index", "19")
+      .style("width", "1px")
+      .style("height", `${height}px`)
+      .style("top", "10px")
+      .style("bottom", "30px")
+      .style("left", "0px")
+      .style("margin-top", `${margin.top - 10}px`)
+      .style("pointer-events", "none")
+      .style("visibility", "hidden")
+      .style("background", "#000");
+
+    const tooltip = divContainer
+      .insert("div", "#svgContainer")
+      .attr("class", `remove ${css(styles.tooltip)}`)
+      .attr("id", "tooltip")
+      .style("position", "absolute")
+      .style("z-index", "2")
+      .style("visibility", "hidden")
+      .style("top", "4px")
+      .style("left", "12px");
+
+    return { tooltip, vertical };
+  }
+
+  createAndSetTheLegend(d3DivContainer, colorNameList, width) {
+    const legendView = d3DivContainer
+      .append("div")
+      .attr("id", "legend")
+      .attr("class", `${css(styles.legend)}`);
+
+    width > 500
+      ? legendView.style("column-count", 3)
+      : legendView.style("column-count", 2);
+
+    const colorNameTmpList = colorNameList;
+    colorNameTmpList.reverse();
+
+    colorNameList.forEach((item, index) => {
+      const element = colorNameList[index];
+      const legendItemContainer = legendView
+        .append("div")
+        .attr("class", `${css(styles.legendItem)}`);
+
+      legendItemContainer
+        .append("svg")
+        .attr("width", 15)
+        .attr("height", 15)
+        .style("background-color", element.color);
+
+      legendItemContainer
+        .append("text")
+        .attr("class", `${css(styles.legendItemText)}`)
+        .text(cutStr(element.name));
+
+      const legendItemTooltip = legendItemContainer
+        .append("span")
+        .attr("class", `${css(styles.legendItemTooltip)}`)
+        .text(element.name);
+
+      legendItemContainer
+        .on("mouseover", (d, i) => {
+          legendItemTooltip.style("visibility", "visible");
+        })
+        .on("mousemove", (d, i) => {
+          legendItemTooltip.style("visibility", "visible");
+        })
+        .on("mouseout", (d, i) => {
+          legendItemTooltip.style("visibility", "hidden");
+        })
+    });
+  }
+
+  setViewportEvents(svgViewport, vertical) {
+    const componentContext = this;
+    svgViewport
+      .on("mouseover", function(d, i) {
+        if (componentContext.mouseIsOverStream) {
+          let mousex = d3.mouse(this);
+          mousex = mousex[0];
+          vertical.style("visibility", "visible");
+          vertical.style("left", mousex + "px");
+        } else {
+          vertical.style("visibility", "hidden");
+        }
+      })
+      .on("mousemove", function(d, i) {
+        if (componentContext.mouseIsOverStream) {
+          let mousex = d3.mouse(this);
+          mousex = mousex[0];
+          vertical.style("visibility", "visible");
+          vertical.style("left", mousex + "px");
+        } else {
+          vertical.style("visibility", "hidden");
+>>>>>>> b137d7e8... css update
         }
     }
 
@@ -504,6 +745,155 @@ class Streamgraph extends PureComponent {
             </div>
         );
     }
+<<<<<<< HEAD
+=======
+  }
+
+  setTheEventsActions(svgViewport, vertical, tooltip) {
+    // Can't split events in different blocks because .on("") events
+    // definition erase the previous ones
+    this.setViewportEvents(svgViewport, vertical);
+    this.setMouseMoveAndOverStreams(tooltip);
+    this.setMouseOutStreams(tooltip);
+  }
+
+  updateDimensions() {
+    this.removeGraph();
+    this.setGraph();
+  }
+
+  setGraph() {
+    const {
+      valuesObjectsArray,
+      valuesArray,
+      dateMin,
+      dateMax,
+      namesList
+    } = transformDataIntoMapArray(this.props.formatData);
+
+    const svgWidth = this.divContainer.current.clientWidth;
+
+    const { height: svgHeight } = this.state;
+    const margin = { top: 60, right: 40, bottom: 50, left: 60 };
+    const width = svgWidth - margin.left - margin.right;
+    const height = svgHeight - margin.top - margin.bottom;
+
+    const divContainer = d3.select(this.divContainer.current);
+
+    const d3DivContainer = divContainer
+      .attr("class", `${css(styles.divContainer)}`)
+      .append("div")
+      .attr("id", "d3DivContainer");
+
+    const svgViewport = d3.select(this.anchor.current);
+
+    d3.select(this.svgContainer.current).attr("width", svgWidth);
+
+    const layersNumber = valuesObjectsArray.length;
+
+    const stackedData = this.stackDatas(namesList, valuesArray);
+    const { minValue, maxValue } = getMinMaxValue(stackedData);
+
+    const { innerSpace, graphZone } = this.initTheGraphBasicsElements(
+      width,
+      height,
+      margin,
+      svgViewport
+    );
+
+    const { tooltip, vertical } = this.createAndSetDataReader(
+      divContainer,
+      height,
+      margin
+    );
+
+    this.createAndSetAxis(
+      dateMin,
+      dateMax,
+      minValue,
+      maxValue,
+      width,
+      height,
+      innerSpace
+    );
+
+    const colorNameList = this.createAndSetStreams(
+      layersNumber,
+      graphZone,
+      stackedData,
+      namesList
+    );
+
+    this.createAndSetTheLegend(d3DivContainer, colorNameList, width);
+    this.setTheEventsActions(svgViewport, vertical, tooltip);
+  }
+
+  removeGraph() {
+    d3.select(this.divContainer.current)
+      .selectAll("#d3DivContainer")
+      .selectAll("div")
+      .remove();
+
+    d3.select(this.divContainer.current)
+      .selectAll("#d3DivContainer")
+      .remove();
+
+    d3.select(this.divContainer.current)
+      .selectAll("#vertical")
+      .remove();
+
+    d3.select(this.divContainer.current)
+      .selectAll("#tooltip")
+      .remove();
+
+    d3.select(this.anchor.current)
+      .selectAll("g")
+      .remove();
+
+    d3.select(this.anchor.current)
+      .selectAll("defs")
+      .remove();
+  }
+
+  componentDidMount() {
+    window.addEventListener("resize", this.updateDimensions.bind(this));
+    this.setGraph();
+  }
+
+  componentWillUpdate() {
+    this.removeGraph();
+  }
+
+  componentDidUpdate() {
+    this.setGraph();
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener("resize", this.updateDimensions.bind(this));
+    this.removeGraph();
+  }
+
+  render() {
+    const { width, height } = this.state;
+
+    return (
+      <div
+        id="divContainer"
+        ref={this.divContainer}
+        style={styles.divContainer}
+      >
+        <svg
+          id="svgContainer"
+          ref={this.svgContainer}
+          width={width}
+          height={height}
+        >
+          <g id="anchor" ref={this.anchor} />
+        </svg>
+      </div>
+    );
+  }
+>>>>>>> b137d7e8... css update
 }
 
 export default compose(
