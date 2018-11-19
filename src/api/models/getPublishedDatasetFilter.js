@@ -4,13 +4,17 @@ export const addMatchToFilters = (match, searchableFieldNames) => filters => {
     if (!match || !searchableFieldNames || !searchableFieldNames.length) {
         return filters;
     }
+
     const regexMatch = new RegExp(match);
 
     return {
         ...filters,
-        $or: searchableFieldNames.map(name => ({
-            [`versions.${name}`]: { $regex: regexMatch, $options: 'i' },
-        })),
+        $or: [
+            { $text: { $search: match } },
+            ...searchableFieldNames.map(name => ({
+                [`versions.${name}`]: { $regex: regexMatch, $options: 'i' },
+            })),
+        ],
     };
 };
 

@@ -279,6 +279,7 @@ describe('publishedDataset', () => {
             expect(find).toHaveBeenCalledWith({
                 removedAt: { $exists: false },
                 $or: [
+                    { $text: { $search: 'match' } },
                     { 'versions.field1': { $regex: /match/, $options: 'i' } },
                     { 'versions.field2': { $regex: /match/, $options: 'i' } },
                 ],

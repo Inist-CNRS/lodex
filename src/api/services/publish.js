@@ -1,4 +1,6 @@
 import progress from './progress';
+import indexSearchableFields from './indexSearchableFields';
+import { CREATE_INDEX } from '../../common/progressStatus';
 
 export default async ctx => {
     const count = await ctx.dataset.count({});
@@ -11,5 +13,8 @@ export default async ctx => {
     const datasetCoverFields = fields.filter(c => c.cover === 'dataset');
     await ctx.publishCharacteristics(ctx, datasetCoverFields, count);
     await ctx.publishFacets(ctx, fields, true);
+    await ctx.publishFacets(ctx, fields, true);
+    progress.start(CREATE_INDEX, null);
+    await indexSearchableFields();
     progress.finish();
 };

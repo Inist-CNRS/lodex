@@ -172,6 +172,7 @@ describe('getPublishedDatasetFilter', () => {
             ).toEqual({
                 filter: 'data',
                 $or: [
+                    { $text: { $search: 'match' } },
                     { 'versions.field1': { $regex: /match/, $options: 'i' } },
                     { 'versions.field2': { $regex: /match/, $options: 'i' } },
                 ],
