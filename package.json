@@ -122,6 +122,7 @@
         "markdown-it": "8.4.0",
         "material-ui": "0.20.2",
         "material-ui-superselectfield": "1.9.8",
+        "memorystream": "0.3.1",
         "moment": "2.19.4",
         "mongodb": "2.2.33",
         "multistream": "2.1.0",
@@ -172,8 +173,6 @@
     "devDependencies": {
         "babel-core": "7.0.0-bridge.0",
         "babel-jest": "23.6.0",
-        "btoa": "1.1.2",
-        "chai": "4.1.2",
         "cypress": "3.1.1",
         "enzyme": "3.7.0",
         "enzyme-adapter-react-16": "1.6.0",
@@ -186,14 +185,9 @@
         "eslint-plugin-jsx-a11y": "6.1.2",
         "eslint-plugin-prettier": "3.0.0",
         "eslint-plugin-react": "7.11.1",
-        "hook": "0.0.5",
-        "http-server": "0.10.0",
         "jest": "23.6.0",
-        "koa-connect": "2.0.1",
-        "memorystream": "0.3.1",
         "nodemon": "1.18.4",
         "prettier": "1.14.3",
-        "react-addons-test-utils": "15.6.2",
         "sinon": "4.1.2",
         "webpack-dev-server": "3.1.9"
     }

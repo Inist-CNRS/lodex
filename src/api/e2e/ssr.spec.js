@@ -1,4 +1,3 @@
-import expect from 'expect';
 import omit from 'lodash.omit';
 import jwt from 'jsonwebtoken';
 import { auth } from 'config';
