@@ -1,0 +1,531 @@
+[
+    {
+        "cover": "collection",
+        "label": "uri",
+        "display_on_list": true,
+        "transformers": [
+            {
+                "operation": "AUTOGENERATE_URI",
+                "args": []
+            }
+        ],
+        "position": 0,
+        "name": "uri"
+    },
+    {
+        "cover": "collection",
+        "label": "Label",
+        "display_in_list": true,
+        "display_in_resource": true,
+        "searchable": true,
+        "transformers": [
+            {
+                "operation": "COLUMN",
+                "args": [
+                    {
+                        "name": "column",
+                        "type": "column",
+                        "value": "nom"
+                    }
+                ]
+            }
+        ],
+        "position": 1,
+        "scheme": "http://www.w3.org/2004/02/skos/core#prefLabel",
+        "language": "fr",
+        "name": "7zCs",
+        "count": 92,
+        "overview": 1
+    },
+    {
+        "cover": "collection",
+        "label": "Type",
+        "display_in_list": true,
+        "display_in_resource": true,
+        "searchable": false,
+        "transformers": [
+            {
+                "operation": "COLUMN",
+                "args": [
+                    {
+                        "name": "column",
+                        "type": "column",
+                        "value": "type"
+                    }
+                ]
+            }
+        ],
+        "position": 2,
+        "scheme": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+        "language": "fr",
+        "isFacet": true,
+        "name": "AMx5"
+    },
+    {
+        "cover": "collection",
+        "label": "Sous-type",
+        "display_in_list": true,
+        "display_in_resource": true,
+        "searchable": false,
+        "transformers": [
+            {
+                "operation": "COLUMN",
+                "args": [
+                    {
+                        "name": "column",
+                        "type": "column",
+                        "value": "fonction"
+                    }
+                ]
+            }
+        ],
+        "position": 3,
+        "scheme": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+        "language": "fr",
+        "completes": "AMx5",
+        "isFacet": true,
+        "name": "V9AO"
+    },
+    {
+        "cover": "collection",
+        "label": "Date",
+        "display_in_list": true,
+        "display_in_resource": true,
+        "searchable": false,
+        "transformers": [
+            {
+                "operation": "COLUMN",
+                "args": [
+                    {
+                        "name": "column",
+                        "type": "column",
+                        "value": "date"
+                    }
+                ]
+            }
+        ],
+        "position": 4,
+        "scheme": "http://ns.nature.com/terms/date",
+        "isFacet": false,
+        "name": "48Az"
+    },
+    {
+        "cover": "collection",
+        "label": "Nationalité",
+        "display_in_list": true,
+        "display_in_resource": true,
+        "searchable": true,
+        "transformers": [
+            {
+                "operation": "COLUMN",
+                "args": [
+                    {
+                        "name": "column",
+                        "type": "column",
+                        "value": "nationalite"
+                    }
+                ]
+            }
+        ],
+        "position": 5,
+        "scheme": "http://dbpedia.org/ontology/nationality",
+        "language": "fr",
+        "isFacet": true,
+        "name": "vpiz"
+    },
+    {
+        "cover": "collection",
+        "label": "Naissance",
+        "display_in_list": false,
+        "display_in_resource": true,
+        "searchable": true,
+        "transformers": [
+            {
+                "operation": "COLUMN",
+                "args": [
+                    {
+                        "name": "column",
+                        "type": "column",
+                        "value": "naissance"
+                    }
+                ]
+            }
+        ],
+        "position": 6,
+        "scheme": "http://purl.org/vocab/bio/0.1/birth",
+        "name": "dImS"
+    },
+    {
+        "cover": "collection",
+        "label": "Mort",
+        "display_in_list": false,
+        "display_in_resource": true,
+        "searchable": true,
+        "transformers": [
+            {
+                "operation": "COLUMN",
+                "args": [
+                    {
+                        "name": "column",
+                        "type": "column",
+                        "value": "mort"
+                    }
+                ]
+            }
+        ],
+        "position": 7,
+        "scheme": "http://purl.org/vocab/bio/0.1/death",
+        "completes": "dImS",
+        "language": "fr",
+        "name": "MnXd"
+    },
+    {
+        "cover": "collection",
+        "label": "Vie",
+        "display_in_list": false,
+        "display_in_resource": true,
+        "searchable": false,
+        "transformers": [
+            {
+                "operation": "CONCAT",
+                "args": [
+                    {
+                        "name": "column",
+                        "type": "column",
+                        "value": "naissance"
+                    },
+                    {
+                        "name": "column",
+                        "type": "column",
+                        "value": "mort"
+                    }
+                ]
+            }
+        ],
+        "position": 8,
+        "scheme": "http://dbpedia.org/ontology/lifeExpectancy",
+        "composedOf": {
+            "fields": [
+                "dImS",
+                "MnXd"
+            ]
+        },
+        "name": "TQuZ"
+    },
+    {
+        "cover": "collection",
+        "label": "Groupe",
+        "display_in_list": true,
+        "display_in_resource": true,
+        "searchable": true,
+        "transformers": [
+            {
+                "operation": "COLUMN",
+                "args": [
+                    {
+                        "name": "column",
+                        "type": "column",
+                        "value": "groupe"
+                    }
+                ]
+            }
+        ],
+        "position": 9,
+        "scheme": "http://voag.linkedmodel.org/voag#proprietary",
+        "language": "fr",
+        "isFacet": true,
+        "name": "Orcf"
+    },
+    {
+        "cover": "collection",
+        "label": "Créateur",
+        "display_in_list": true,
+        "display_in_resource": true,
+        "searchable": true,
+        "transformers": [
+            {
+                "operation": "COLUMN",
+                "args": [
+                    {
+                        "name": "column",
+                        "type": "column",
+                        "value": "createur"
+                    }
+                ]
+            }
+        ],
+        "position": 10,
+        "scheme": "http://purl.org/dc/terms/creator",
+        "completes": "7zCs",
+        "name": "mJWq"
+    },
+    {
+        "cover": "collection",
+        "label": "Réalisateur",
+        "display_in_list": false,
+        "display_in_resource": true,
+        "searchable": true,
+        "transformers": [
+            {
+                "operation": "COLUMN",
+                "args": [
+                    {
+                        "name": "column",
+                        "type": "column",
+                        "value": "realisateur"
+                    }
+                ]
+            }
+        ],
+        "position": 11,
+        "scheme": "http://purl.org/vocab/frbr/core#realizationOf",
+        "isFacet": true,
+        "name": "qHD2"
+    },
+    {
+        "cover": "collection",
+        "label": "Bande-originale",
+        "display_in_list": false,
+        "display_in_resource": true,
+        "searchable": true,
+        "transformers": [
+            {
+                "operation": "COLUMN",
+                "args": [
+                    {
+                        "name": "column",
+                        "type": "column",
+                        "value": "bande-originale"
+                    }
+                ]
+            }
+        ],
+        "position": 12,
+        "scheme": "http://dbpedia.org/ontology/musicBy",
+        "name": "qI34"
+    },
+    {
+        "cover": "collection",
+        "label": "Genre",
+        "display_in_list": false,
+        "display_in_resource": true,
+        "searchable": true,
+        "transformers": [
+            {
+                "operation": "COLUMN",
+                "args": [
+                    {
+                        "name": "column",
+                        "type": "column",
+                        "value": "genre"
+                    }
+                ]
+            }
+        ],
+        "position": 13,
+        "scheme": "http://schema.org/genre",
+        "language": "fr",
+        "isFacet": true,
+        "name": "7kvE"
+    },
+    {
+        "cover": "collection",
+        "label": "Membres",
+        "display_in_list": false,
+        "display_in_resource": true,
+        "searchable": false,
+        "transformers": [
+            {
+                "operation": "COLUMN",
+                "args": [
+                    {
+                        "name": "column",
+                        "type": "column",
+                        "value": "membres"
+                    }
+                ]
+            }
+        ],
+        "position": 14,
+        "scheme": "http://xmlns.com/foaf/0.1/member",
+        "name": "lzFf"
+    },
+    {
+        "cover": "collection",
+        "label": "Sous-genre",
+        "display_in_list": false,
+        "display_in_resource": true,
+        "searchable": true,
+        "transformers": [
+            {
+                "operation": "COLUMN",
+                "args": [
+                    {
+                        "name": "column",
+                        "type": "column",
+                        "value": "genre2"
+                    }
+                ]
+            }
+        ],
+        "position": 15,
+        "scheme": "http://dbpedia.org/ontology/genre",
+        "language": "fr",
+        "completes": "7kvE",
+        "isFacet": true,
+        "name": "rMVO"
+    },
+    {
+        "cover": "collection",
+        "label": "Sous-genre",
+        "display_in_list": false,
+        "display_in_resource": true,
+        "searchable": true,
+        "transformers": [
+            {
+                "operation": "COLUMN",
+                "args": [
+                    {
+                        "name": "column",
+                        "type": "column",
+                        "value": "genre3"
+                    }
+                ]
+            }
+        ],
+        "position": 16,
+        "scheme": "http://dbpedia.org/ontology/genre",
+        "language": "fr",
+        "completes": "7kvE",
+        "isFacet": true,
+        "name": "lfCa"
+    },
+    {
+        "cover": "collection",
+        "label": "Description",
+        "display_in_list": false,
+        "display_in_resource": true,
+        "searchable": false,
+        "transformers": [
+            {
+                "operation": "COLUMN",
+                "args": [
+                    {
+                        "name": "column",
+                        "type": "column",
+                        "value": "description"
+                    }
+                ]
+            }
+        ],
+        "position": 17,
+        "scheme": "http://purl.org/dc/terms/description",
+        "format": {
+            "args": {
+                "type": "value",
+                "value": ""
+            },
+            "name": "uri"
+        },
+        "name": "LKz3"
+    },
+    {
+        "cover": "collection",
+        "label": "Video",
+        "display_in_list": false,
+        "display_in_resource": true,
+        "searchable": false,
+        "transformers": [
+            {
+                "operation": "COLUMN",
+                "args": [
+                    {
+                        "name": "column",
+                        "type": "column",
+                        "value": "video"
+                    }
+                ]
+            }
+        ],
+        "position": 18,
+        "scheme": "http://schema.org/video",
+        "format": {
+            "name": "uri"
+        },
+        "name": "oriN"
+    },
+    {
+        "cover": "collection",
+        "label": "Image",
+        "display_in_list": false,
+        "display_in_resource": true,
+        "searchable": false,
+        "transformers": [
+            {
+                "operation": "COLUMN",
+                "args": [
+                    {
+                        "name": "column",
+                        "type": "column",
+                        "value": "image"
+                    }
+                ]
+            }
+        ],
+        "position": 19,
+        "scheme": "http://dbpedia.org/ontology/picture",
+        "format": {
+            "name": "uri"
+        },
+        "name": "UxIo"
+    },
+    {
+        "cover": "collection",
+        "label": "Musique",
+        "display_in_list": false,
+        "display_in_resource": true,
+        "searchable": false,
+        "transformers": [
+            {
+                "operation": "COLUMN",
+                "args": [
+                    {
+                        "name": "column",
+                        "type": "column",
+                        "value": "musique"
+                    }
+                ]
+            }
+        ],
+        "position": 20,
+        "scheme": "http://www.w3.org/2006/vcard/ns#sound",
+        "format": {
+            "name": "uri"
+        },
+        "name": "z3LU"
+    },
+    {
+        "cover": "collection",
+        "label": "Couleur",
+        "display_in_list": false,
+        "display_in_resource": true,
+        "searchable": true,
+        "transformers": [
+            {
+                "operation": "COLUMN",
+                "args": [
+                    {
+                        "name": "column",
+                        "type": "column",
+                        "value": "couleur"
+                    }
+                ]
+            }
+        ],
+        "position": 21,
+        "scheme": "http://schema.org/color",
+        "language": "fr",
+        "isFacet": true,
+        "name": "6mks"
+    }
+]

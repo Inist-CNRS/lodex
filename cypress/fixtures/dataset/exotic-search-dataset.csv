@@ -1,0 +1,93 @@
+nom;type;fonction;date;nationalite;naissance;mort;lieu;createur;realisateur;presentateur;membres;acteurs;bande-originale;genre;genre2;genre3;description;image;musique;video;matiere;couleur;groupe
+Le Cinquième élément;Film;;1997;Française;;;;;Luc Besson;;;Bruce Willis, Milla Jovovich;;Science-fiction;;;;;;;;;
+BeetleJuice;Film;;1988;Américaine;;;;;Tim Burton;;;Michael Keaton, Winona Ryder;Danny Elfman;Comédie;Fantastique;;;;;;;;
+Die Hard;Film;;1988;Américaine;;;;;John McTiernan;;;Bruce Willis;;Action;Policier;;;;;;;;
+Dracula;Film;;1992;Américaine;;;;;Francis Coppola;;;Gary Oldman, Winina Ryder, Anthony Hopkins, Keanu Reeves;Wojciech Kilar;Fantastique;;;;;;;;;Columbia Pictures
+Hook;Film;;1991;Américaine;;;;;Steven Spielberg;;;Robin Williams, Dustin Hoffman, Julia Roberts;John Williams;Aventure;Fantastique;;;;;;;;Amblin Entertainment
+Jumanji;Film;;1995;Américaine;;;;Chris Van Allsburg;Joe Johnston;;;Robin Williams;;Fantastique;;;;;;;;;
+Jurassic Park;Film;;1993;Américaine;;;;;Steven Spielberg;;;Sam Neill,  Laura Dern;;Science-fiction;;;;https://upload.wikimedia.org/wikipedia/fr/thumb/e/e2/Jurassic_Park.png/220px-Jurassic_Park.png;;;;;Universal Pictures
+L’Histoire sans Fin;Film;;1984;Américaine;;;;;Wolfgang Petersen;;;Barret Oliver, Noah Hathaway;Klaus Doldinger, Giorgio Moroder;Fantasy;;;;;;;;;
+La famille Addams;Film;;1991;Américaine;;;;David Levy;Barry Sonnenfeld;;;Anjelica Huston, Raul Julia, Christopher Lloyd, Christina Ricci;Marc Shaiman, Vic Mizzy, Mc Hammer;Fantastique;Comédie;;;;;;;;Paramount Pictures
+La petite sirène;Film;Dessin Animé;1989;Américaine;;;;Hans Christian Andersen;John Musker, Ron Clements;;;;Alan Menken, Howard Ashman;Comédie;Jeunesse;Romance;;;;;;;Walt Disney Pictures
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque ultrices turpis id lacinia condimentum. Nulla bibendum tristique nulla sit amet luctus. Ut auctor eleifend mi. Suspendisse placerat erat eu nisl malesuada mollis. In vitae scelerisque tortor.;Film;;1985;Américaine;;;;Steven Spielberg;Richard Donner;;;Sean Astin, Josh Brolin, Jeff Cohen Robert Davi;Dave Grusin;Aventure;;;;https://scontent.xx.fbcdn.net/v/t1.0-0/s261x260/17498441_10154946157024892_1629208491368483018_n.jpg?oh=ab61a5c7d28412898b0a15a6182c3597&oe=59610F64;;;;;Warner Bros
+Les Gremlins;Film;;1984;Américaine;;;;;Joe Dante;;;Zach Galligan, Phoebe Cates;Jerry Goldsmith;Comédie;Horreur;;;;;;;;Warner Bros
+Princess Bride;Film;;1987;Américaine;;;;William Goldman;Rob Reiner;;;Cary Elwes, Robin Wright, Mandy Patinkin, Chris Sarandon, Peter Falk;Willy DeVille, Mark Knopfler;Aventure;Fantasy;;;;;https://www.youtube.com/watch?v=6JGp7Meg42U;;;
+Rambo;Film;;1982 - 2008;Américaine;;;;David Morrel;Ted Kotcheff;;;Sylvester Stallone;;Action;Guerre;;;;;;;;
+Rocky;Film;;1976 – 2006;Américaine;;;;Sylvester Stallone;John G. Avildsen;;;Sylvester Stallone;;Biographique;Boxe;;;;;;;;
+Roger Rabbit;Film;Animation;1988;Américaine;;;;;Robert Zemeckis;;;Bob Hoskins, Christopher Lloyd;Alan Silvestri, Kansas Joe McCoy, Dave Franklin;Comédie;;;;https://upload.wikimedia.org/wikipedia/fr/thumb/b/bd/Qui_veut_la_peau_de_Roger_Rabbit_%3F.png/220px-Qui_veut_la_peau_de_Roger_Rabbit_%3F.png;;;;;
+Seul au monde;Film;;2000;Américaine;;;;;Robet Zemeckis;;;Tom Hanks;Alan Silvestri;Aventure;;;;;;;;;
+Star Wars;Film;;1977;Américaine;;;;Georges Lucas;;;;;;Fantastique;Science-Fiction;;;;;;;;
+Truman Show;Film;;1998;Américaine;;;;;Peter Weir;;;Jim Carrey;;Comédie;Dramatique;Anticipation;;;;;;;
+Walt Disney Pictures;Film;Dessins Animés;1983;Américaine;;;;Walt Disney;;;;;;;;;;https://upload.wikimedia.org/wikipedia/fr/thumb/f/f0/Walt_Disney_Pictures_Logo.svg/langfr-280px-Walt_Disney_Pictures_Logo.svg.png;;;;;
+Waterworld;Film;;1995;Américaine;;;;;Kevin Reynolds;;;Kevin Coster;James Newton Howard;Action;Fantastique;Science-fiction;;;;;;;
+Willow;Film;;1988;Américaine;;;;Georges Lucas;Ron Howard;;;Val Kilmer, Warwick Davis, Joanne Whalley, Jean Marsh;James Horner;Fantasy;;;;;;;;;Lucas Film
+Pyramide du Louvre;Monument;Musée;1989;Française;;;Paris, France;Ieoh Ming Pei;;;;;;;;;;https://upload.wikimedia.org/wikipedia/commons/thumb/6/66/Louvre_Museum_Wikimedia_Commons.jpg/1920px-Louvre_Museum_Wikimedia_Commons.jpg;;;Verre / fer;Transparent;
+Atari;Objet;Console de jeux;1985;Française;;;;Nolan Bushnell;;;;;;;;;;https://upload.wikimedia.org/wikipedia/fr/thumb/b/ba/Atari_Inc._2003_Logo.png/280px-Atari_Inc._2003_Logo.png;;;;;
+Baladeurs cassette;Objet;Musique;1977;;;;;Andread Pavel;;;;;;;;;;;;;Plastique;;
+Cartes Magic;Objet;Cartes;1993;Américaine;;;;Richard Garfield;;;;;;Médiéval;Fantastique;;;;;;;;Wizards of the Coast
+Cassette audio;Objet;Musique;1963;Américaine;;;;Phillips;;;;;;;;;;https://upload.wikimedia.org/wikipedia/commons/thumb/f/f1/Tdkc60cassette.jpg/220px-Tdkc60cassette.jpg;;;;;
+Cassette VHS;Objet;Vidéos;1970;Japonaise;;;;JVC;;;;;;;;;;https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/VHS-cassette.jpg/250px-VHS-cassette.jpg;;;;;
+CrashBandicoot;Objet;Jeu vidéo;1994;Américaine;;;;Naughty Dog;;;;;;Plates-formes;;;;;;;;;Sony Computer Entertainment
+DreamCast;Objet;Console de jeux;1999;Japonaise;;;;Sega;;;;;;;;;;;;;;;
+Final Fantasy 7;Objet;Jeu vidéo;1997;Japonaise;;;;Square;;;;;;Aventure;RPG;;;;;;;;Sony Computer Entertainment
+Game Boy;Objet;Jeu vidéo;1989;Japonaise;;;;Gunpei Yokoi;;;;;;;;;;;;;;;Nintendo
+Jouets Kinder Surprise;Objet;Jouet;1974;Italienne;;;;Michele Ferrero;;;;;;;;;;https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Kinder_Surprise_halved.jpg/220px-Kinder_Surprise_halved.jpg;;;Chocolat au lait;Marron/Blanc;
+Legos;Objet;Jouet;1932;Danoise;;;;Ole Kirk Christiansen;;;;;;;;;;;;;Plastique;;
+Les billes;Objet;Jouet;?;;;;;;;;;;;;;;;;;;;;
+Modems;Objet;Internet;1950;Américaine;;;;;;;;;;;;;;;;;;;
+Peluches Kikis;Objet;Jouet;1974;;;;Tokyo;Koichi Sekiguchi;;;;;;;;;;;;;Plastique / fourrure synthétique;;
+Pitchs;Objet;Nourriture;;Française;;;;Brioche Pasquier;;;;;;;;;;;;;;;
+Playstation 1;Objet;Console de jeux;1994;Japonaise;;;;Ken Kutaragi;;;;;;;;;;;;;;;Sony Computer Entertainment
+Pogs;Objet;Jouet;1995;Hawaïenne;;;;PassionFruit Orange Guava;;;;;;;;;;;;;;;
+Pokemon;Objet;Jeu vidéo;1996;Japonaise;;;;Satoshi Tajiri;;;;;;RPG;;;;https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/International_Pok%C3%A9mon_logo.svg/200px-International_Pok%C3%A9mon_logo.svg.png;;;;;Nintendo
+Polly Pocket;Objet;Jouet;1983;Anglaise;;;;Chris Wiggs;;;;;;;;;;;;;Plastique;;Mattel
+Ras de cous élastiques noirs;Objet;Bijou;;;;;;;;;;;;;;;;;;;;;
+Rubik’s cube;Objet;Jouet;1974;;;;;Erno Rubik;;;;;;Habileté;Reflexion;;;https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Rubik%27s_cube.svg/langfr-220px-Rubik%27s_cube.svg.png;;;;;
+Secret of Mana;Objet;Jeu vidéo;1994;Japonaise;;;;Square;;;;;Hiroki Kikuta;Action;RPG;;;https://upload.wikimedia.org/wikipedia/fr/thumb/0/05/Secret_of_Mana_Logo.svg/langfr-280px-Secret_of_Mana_Logo.svg.png;;;;;Nintendo
+Tamagotchi;Objet;Jeu vidéo;1996;Japonaise;;;;Bandai;;;;;;;;;;https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Tamagotchi_0124_ubt.jpeg/200px-Tamagotchi_0124_ubt.jpeg;;;;;
+Tang;Objet;Boisson;1970;;;;;General Foods;;;;;;;;;;;;;Poudre;;
+Tekken;Objet;Jeu vidéo;1994;Japonaise;;;;Seiichi Ishii;;;;;;Arcade;Combat;;;;;;;;Namco
+Yoyo;Objet;Jouet;1999;;;;;;;;;;;;;;;https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/Us_yoyo_national_1a.jpg/200px-Us_yoyo_national_1a.jpg;;;;;
+Zelda : A link to the past;Objet;Jeu vidéo;1992;;;;;Shigeru Miyamoto;Takashi Tezuka;;;;Koji Kondo;Action;Aventure;;;https://upload.wikimedia.org/wikipedia/fr/thumb/2/2f/Logo_The_Legend_of_Zelda_A_Link_to_the_Past.png/280px-Logo_The_Legend_of_Zelda_A_Link_to_the_Past.png;;;;;Nintendo
+Les crados;Objet;Cartes;1989;Française;;;;Avimages;Brent Engstrom;;;;;;;;https://fr.wikipedia.org/wiki/Les_Crados;;;;;;
+2be3;Personne(s);Boys Band;1996-1999;Française;;;;;;;Adel Kachermi, Filip Nikolic, Frank Delay;;;;;;;https://upload.wikimedia.org/wikipedia/commons/6/6b/Les_2_be_3.jpg;https://www.youtube.com/watch?v=BpOYdzSayE0;;;;
+Britney Spears;Personne(s);Chanteuse;1992;Américaine;1981;;;;;;;;;;;;;;https://www.youtube.com/watch?v=C-u5WLJ9Yk4;;;;
+Karen Cheryl ;Personne(s);Chanteuse;1991;Française;1955;;;;;;;;;;;;;;https://www.youtube.com/watch?v=_L6zuJWQdmE;;;;
+Korn;Personne(s);Groupe de musique;1993;Américaine;;;;;;;Reginal Fieldy Arvizu, Ray Luzier, Jonathan Davis, James Munky Shaffer, Brian Welch;;;;;;;;https://www.youtube.com/watch?v=SGK00Q7xx-s;;;;
+Les Inconnus;Personne(s);Humoristes;1984;Française;;;;;;;Didier Bourdon, Bernard Campan, Pascal Légitimus;;;;;;;;;https://www.youtube.com/watch?v=BDaUNr3unU0;;;
+Les Nuls;Personne(s);Humoristes;1987;Française;;;;;;;Alain Chabat, Chantal Lauby, Dominique Farrugia;;;;;;;;;http://www.dailymotion.com/video/xw6ge_les-nuls-kwiskas_news;;;
+Les robins des bois;Personne(s);Humoristes;1996;Française;;;;;;;Pierre-François Martin-Laval, Marina Foïs, Maurices Barthélemy, Pascal Vincent, Élise Larnicol, Jean-Paul Rouve;;;;;;;;;https://www.youtube.com/watch?v=QhXUNu4X-Ew;;;
+Marylin Manson;Personne(s);Chanteur;1989;Américaine;05/01/69;;;;;;;;;;;;;;;https://www.youtube.com/watch?v=wFnG4WlSgSI;;;
+Michel Platini;Personne(s);Footballer – Président Union des associations Européennes de football;2007-2015;Française;21/06/55;;;;;;;;;;;;;https://upload.wikimedia.org/wikipedia/commons/thumb/f/f0/Michel_Platini_in_Wroclaw_by_Klearchos_Kapoutsis_tight_crop.jpg/260px-Michel_Platini_in_Wroclaw_by_Klearchos_Kapoutsis_tight_crop.jpg;;;;;
+Nintendo;Personne(s);Groupe de jeux vidéos;1889;Japonaise;;;;Fusajiro Yamauchi;;;;;;;;;https://fr.wikipedia.org/wiki/Nintendo;;;;;;
+Nirvana;Personne(s);Groupe de musique;1987-1994;Américaine;;;;;;;Kurt Cobain, Krist Novoselic, Dave Grohl;;;Grunge;Rock Alternatif;;https://fr.wikipedia.org/wiki/Nirvana_(groupe);;;;;;
+Robin Williams;Personne(s);Acteur;1974;Américaine;21/07/51;11/08/14;;;;;;;;;;;https://fr.wikipedia.org/wiki/Robin_Williams;https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Robin_Williams_2011a_%282%29.jpg/220px-Robin_Williams_2011a_%282%29.jpg;;;;;
+Ronald Wilson Reagan;Personne(s);Politicien – Président des Etats Unis – Acteur;1981-1989;Américaine;06/02/11;05/06/04;;;;;;;;Républicain;;;https://fr.wikipedia.org/wiki/Ronald_Reagan;https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/Official_Portrait_of_President_Reagan_1981.jpg/220px-Official_Portrait_of_President_Reagan_1981.jpg;;;;;Ideal Toys
+Spice Girls;Personne(s);GirlsBand;1994-2001;Anglaise;;;;Simon Fuller;;;Victoria Beckham, Emma Bunton, Melanie Brown, Melanie Chisholm, Geri Halliwel;;;Pop;;;https://fr.wikipedia.org/wiki/Spice_Girls;;;;;;
+Margaret Thatcher;Personne(s);Politicienne – Première Ministre en Angleterre;1979-1992;Anglaise;13/10/25;08/04/13;;;;;;;;;;;https://fr.wikipedia.org/wiki/Margaret_Thatcher;https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Margaret_Thatcher_cropped2.png/220px-Margaret_Thatcher_cropped2.png;;;;;
+Albator;Télé;Dessin Animé;1980;Japonaise;;;;Leiji Matsumoto;Rintaro;;;;;Space Opera;Science-Fiction;;https://fr.wikipedia.org/wiki/Albator,_le_corsaire_de_l%27espace;;;;;;Toei Animation
+Batman: The Animated Series;Télé;Dessin Animé;1992;Américaine;;;;DC Comics;;;;;Danny Elfman;Tout public;Aventure;;https://fr.wikipedia.org/wiki/Batman_(s%C3%A9rie_t%C3%A9l%C3%A9vis%C3%A9e_d%27animation,_1992);;;;;;
+BigDil;Télé;Émission;1998-2004;Française;;;;;Gabriel Cotto;Vincent Lagaf’, Bill;;;Pierre Billon, Patrick Martini;Tout public;Jeu;;https://fr.wikipedia.org/wiki/Le_Bigdil;;;;;;TF1
+Buffy contre les vampires;Télé;Série;1997-2003;Américaine;;;;Joss Whedon;;;Sarah Michelle Gellar, Alyson Hannigan, Nicholas Brendon, Anthony Stewart Head;;;Fantasy;Horreur;Action;https://fr.wikipedia.org/wiki/Buffy_contre_les_vampires#Musique;;;;;;
+Canal J;Télé;Chaîne;1985;Française;;;;Hachette;;;;;;Tout public;Jeunesse;;https://fr.wikipedia.org/wiki/Canal_J;https://upload.wikimedia.org/wikipedia/fr/thumb/d/dc/Canal_J_logo_2015.png/100px-Canal_J_logo_2015.png;;;;;Lagardère Active
+Cat’s Eyes;Télé;Dessin Animé;1985;Japonaise;;;;Tsukasa Hojo;Yoshio Takeuchi, Kenji Kodama;;;;;;;;https://fr.wikipedia.org/wiki/Cat%27s_Eye;;;;;;Tokyo Movie Shinsha
+Club Dorothée;Télé;Émission;1987;Française;;;;Jean-Luc Azoulay;Robert Réa, Pat Le Guen;Dorothée;;;Gerar Salesses;Tout public;Jeunesse;;https://fr.wikipedia.org/wiki/Club_Doroth%C3%A9e;;;;;;TF1
+Culture Pub;Télé;Émission;1986-2012;Française;;;;;;Christian Blachas, Anne Magnien, Thomas Hervé, Faustine Bollaert, Audrey Dana, Charlotte Bricard;;;;Magazine;Publicité;;https://fr.wikipedia.org/wiki/Culture_Pub;;;;;;CBTV
+De Caunes et Garcia;Télé;Humoristes;1987-1995;Française;;;;;;;Antoine De Caunes et José Garcias;;;;;;https://fr.wikipedia.org/wiki/Antoine_de_Caunes https://fr.wikipedia.org/wiki/Jos%C3%A9_Garcia;;;;;;
+Dragon Ball Z;Télé;Dessin Animé;1989-1996;Japonaise;;;;Akira Toriyama;Daisuke Nishio;;;;;Action;Science-Fiction;;https://fr.wikipedia.org/wiki/Dragon_Ball_Z;;;;;;Fuji Television
+En route pour l’aventure;Télé;Émission;1988;Française;;;;France 5;;Michel Robbe;;;;;;;;;;https://youtu.be/0kqbhFdaxYk;;;France 5
+Ghost in the Shell;Télé;Dessin Animé;1991;Japonaise;;;;Masmune Shirow;;;;;;Action;Policier;Cyberpunk;https://fr.wikipedia.org/wiki/Ghost_in_the_Shell;;;;;;Kodansha – Glénat
+KD2A;Télé;Émission;2001-2009;Française;;;;France 2;;Jérémy Ganneval, Yoann Sover;;;;Jeunesse;;;https://fr.wikipedia.org/wiki/KD2A;;;;;;France 2
+La trilogie du Samedi;Télé;Émission;1997-2008;Française;;;;M6;;;;;;;;;https://fr.wikipedia.org/wiki/La_Trilogie_du_samedi;;;;;;M6
+Les filles d’à côté;Télé;Série;1993-1995;Française;;;;Jean-Luc Azoulay;;;;;Cécile Auclert, Christiane Jean, Hélène Le Moignic, Bradley Cole, Thierry Redler, Gérard Vives, Vincent Latorre, Dan Simkovitch;Sitcom;;;https://fr.wikipedia.org/wiki/Les_Filles_d%27%C3%A0_c%C3%B4t%C3%A9;;;;;;TF1
+Les mystérieuses cités d’or;Télé;Dessin Animé;1982-1983;Japonaise;;;;Jean Chalopin, Mitsuru Kaneko, Mitsuru Majima, Sōji Yoshikawa;;;;;;Animation;Aventure;;https://fr.wikipedia.org/wiki/Les_Myst%C3%A9rieuses_Cit%C3%A9s_d%27or_(s%C3%A9rie_t%C3%A9l%C3%A9vis%C3%A9e_d%27animation,_1982);;;;;;NHK, Antenne 2, RTL Télévision
+MacGyver;Télé;Série;1985-1992;Canadienne;;;;Lee David Zlotoff;;;Richard Dean Anderson, Dana Elcar;;Randy Edelman;Aventure;Action;Espionnage;https://fr.wikipedia.org/wiki/MacGyver;;;;;;ABC
+MiniKeums;Télé;Émission;1993-2002;Française;;;;Arnold Boiseau, Patrice Levallois;Alain Duverne;Les Minikeums;;;Roddy Julienne, Philippe Almosnino;Tout public;Jeunesse;;;https://upload.wikimedia.org/wikipedia/fr/d/db/Minikeums.JPG;;https://www.youtube.com/watch?v=RqGeTfvDRGY;;;
+Nicky Larson;Télé;Dessin Animé;1987-1991;Japonaise;;;;Tsukasa Hojo;Kenji Kodama;;;;;Action;Aventure;Comédie;https://fr.wikipedia.org/wiki/Nicky_Larson_(s%C3%A9rie_t%C3%A9l%C3%A9vis%C3%A9e_d%27animation);;;;;;Animax
+Nulle part Ailleurs;Télé;Émission;1987-1995;;;;;;;;;;;;;;https://fr.wikipedia.org/wiki/Nulle_part_ailleurs;;;;;;
+Pubs kitkat;Télé;Pub;;;;;;;;;;;;;;;;;;;;;
+Pubs Orangina;Télé;Pub;;;;;;;;;;;;;;;;;;;;;
+Sailor Moon;Télé;Dessin Animé;1992-1997;Japonaise;;;;Naoko Takeuchi;Jun’ichi Sato, Kunihiko Ikuhara, Takuya Igarashi;;;;;Amour;Combat;Magie;https://fr.wikipedia.org/wiki/Sailor_Moon;;;;;;Kodansha – Glénat
+Strip Tease;Télé;Émission;1985-2012;Belge;;;;Jean Libon, Marco Lamensch;;Manault Deva, Martine Matagne;;;;;;;https://fr.wikipedia.org/wiki/Strip-tease_(%C3%A9mission_de_t%C3%A9l%C3%A9vision);;;;;;La Une
+Tintin;Télé;Dessin Animé;1929-1986;Belge;;;;Hergé;;;;;;Aventure;Policier;Science-fiction;;https://upload.wikimedia.org/wikipedia/commons/thumb/b/b0/Stockel-TinTin-1.jpg/280px-Stockel-TinTin-1.jpg;;;;;
+Virgin Cola;Télé;Pub;1994;Anglaise;;;;Virgin;;;;;;;;;https://fr.wikipedia.org/wiki/Virgin_Cola;;;;;;

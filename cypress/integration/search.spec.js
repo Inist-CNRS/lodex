@@ -3,83 +3,100 @@ import * as homePage from '../support/homePage';
 import * as datasetImportPage from '../support/datasetImportPage';
 import * as searchDrawer from '../support/searchDrawer';
 
+const initSearchDataset = (
+    dataset = 'dataset/book_summary.csv',
+    model = 'model/book_summary.json',
+) => () => {
+    teardown();
+    homePage.goToAdminDashboard();
+
+    datasetImportPage.importDataset(dataset);
+    datasetImportPage.importModel(model);
+    datasetImportPage.publish();
+    datasetImportPage.goToPublishedResources();
+};
+
 describe('Search', () => {
-    beforeEach(() => {
-        teardown();
-        homePage.goToAdminDashboard();
+    describe('Basics', () => {
+        beforeEach(initSearchDataset());
 
-        datasetImportPage.importDataset('dataset/book_summary.csv');
-        datasetImportPage.importModel('model/book_summary.json');
-        datasetImportPage.publish();
-        datasetImportPage.goToPublishedResources();
-    });
+        it('should have the right informations in the search results', () => {
+            searchDrawer.openSearchDrawer();
+            cy.get('.search-result').should('have.length', 10);
+            cy.get('.drawer-container .load-more button').should(
+                'contain',
+                '(2)',
+            );
+        });
 
-    it('should have the right informations in the search results', () => {
-        searchDrawer.openSearchDrawer();
-        cy.get('.search-result').should('have.length', 10);
-        cy.get('.drawer-container .load-more button').should('contain', '(2)');
-    });
+        it('should do a search, and its result redirect to a resource', () => {
+            searchDrawer.openSearchDrawer();
+            searchDrawer.search('Annals of the rheumatic');
 
-    it('should do a search, and its result redirect to a resource', () => {
-        searchDrawer.openSearchDrawer();
-        searchDrawer.search('Annals of the rheumatic');
+            searchDrawer
+                .findSearchResultByTitle('Annals of the rheumatic diseases')
+                .click();
 
-        searchDrawer
-            .findSearchResultByTitle('Annals of the rheumatic diseases')
-            .click();
+            cy.url().should('contain', '/uid');
+            cy.get('.loading').should('not.be.visible');
+            cy.get('.property_value')
+                .contains('Annals of the rheumatic diseases')
+                .should('be.visible');
+        });
 
-        cy.url().should('contain', '/uid');
-        cy.get('.loading').should('not.be.visible');
-        cy.get('.property_value')
-            .contains('Annals of the rheumatic diseases')
-            .should('be.visible');
-    });
+        it('should be able to load more search results', () => {
+            searchDrawer.openSearchDrawer();
+            cy.get('.search-result').should('have.length', 10);
+            cy.get('.drawer-container .load-more button').should(
+                'contain',
+                '(2)',
+            );
 
-    it('should be able to load more search results', () => {
-        searchDrawer.openSearchDrawer();
-        cy.get('.search-result').should('have.length', 10);
-        cy.get('.drawer-container .load-more button').should('contain', '(2)');
+            searchDrawer.loadMore();
 
-        searchDrawer.loadMore();
+            cy.get('.search-result').should('have.length', 12);
+            cy.get('.drawer-container .load-more button').should(
+                'not.be.visible',
+            );
+        });
 
-        cy.get('.search-result').should('have.length', 12);
-        cy.get('.drawer-container .load-more button').should('not.be.visible');
-    });
+        it('should mark active resource on the result list', () => {
+            searchDrawer.openSearchDrawer();
+            searchDrawer.search('Annals of the rheumatic');
 
-    it('should mark active resource on the result list', () => {
-        searchDrawer.openSearchDrawer();
-        searchDrawer.search('Annals of the rheumatic');
+            searchDrawer
+                .findSearchResultByTitle('Annals of the rheumatic diseases')
+                .click();
 
-        searchDrawer
-            .findSearchResultByTitle('Annals of the rheumatic diseases')
-            .click();
+            cy.url().should('contain', '/uid');
+            cy.get('.loading').should('not.be.visible');
+            searchDrawer.openSearchDrawer();
 
-        cy.url().should('contain', '/uid');
-        cy.get('.loading').should('not.be.visible');
-        searchDrawer.openSearchDrawer();
+            cy.get('.search-result-link[class*=activeLink_]').should('exist');
+        });
 
-        cy.get('.search-result-link[class*=activeLink_]').should('exist');
-    });
+        it('should keep track of the current search after changing page', () => {
+            const query = 'Annals of the rheumatic';
+            searchDrawer.openSearchDrawer();
+            searchDrawer.search(query);
+            cy.get('.search-result').should('have.length', 1);
 
-    it('should keep track of the current search after changing page', () => {
-        const query = 'Annals of the rheumatic';
-        searchDrawer.openSearchDrawer();
-        searchDrawer.search(query);
-        cy.get('.search-result').should('have.length', 1);
+            searchDrawer
+                .findSearchResultByTitle('Annals of the rheumatic diseases')
+                .click();
 
-        searchDrawer
-            .findSearchResultByTitle('Annals of the rheumatic diseases')
-            .click();
+            cy.url().should('contain', '/uid');
+            cy.get('.loading').should('not.be.visible');
+            searchDrawer.openSearchDrawer();
 
-        cy.url().should('contain', '/uid');
-        cy.get('.loading').should('not.be.visible');
-        searchDrawer.openSearchDrawer();
-
-        cy.get('.search-result').should('have.length', 1);
-        searchDrawer.searchInput().should('have.value', query);
+            cy.get('.search-result').should('have.length', 1);
+            searchDrawer.searchInput().should('have.value', query);
+        });
     });
 
     describe('Advanced Search', () => {
+        beforeEach(initSearchDataset());
+
         it('should filter search results by facets', () => {
             searchDrawer.openSearchDrawer();
             cy.get('.search-result').should('have.length', 10);
@@ -168,6 +185,27 @@ describe('Search', () => {
                 '2011',
                 '1988',
             ]);
+        });
+    });
+
+    describe('Edge Cases', () => {
+        beforeEach(
+            initSearchDataset(
+                'dataset/exotic-search-dataset.csv',
+                'model/exotic-search-model.json',
+            ),
+        );
+
+        it('should have a diacritic insensible text-based search', () => {
+            searchDrawer.openSearchDrawer();
+            searchDrawer.search('sirene');
+            cy.get('.search-result').should('have.length', 1);
+        });
+
+        it('should allow to search for long sentences or descriptions', () => {
+            searchDrawer.openSearchDrawer();
+            searchDrawer.search('Lorem ipsum');
+            cy.get('.search-result').should('have.length', 1);
         });
     });
 });
