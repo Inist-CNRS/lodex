@@ -1,7 +1,10 @@
 import request from 'request';
 import ezs from 'ezs';
 import from from 'from';
-import sinon from 'sinon';
+
+jest.mock('request', () => ({
+    get: jest.fn(),
+}));
 
 const dataTest = require('./fixture.data.json');
 const ezsLocals = require('.');
@@ -9,16 +12,14 @@ const ezsLocals = require('.');
 ezs.use(ezsLocals);
 
 describe('scrollISTEX request', () => {
-    let sandbox;
     beforeEach(() => {
-        sandbox = sinon.sandbox.create();
-        const s = sandbox.stub(request, 'get');
-        s.onFirstCall().yields(null, { statusCode: 200 }, dataTest[0]);
-        s.onSecondCall().yields(null, { statusCode: 200 }, dataTest[1]);
-    });
-
-    afterEach(() => {
-        sandbox.restore();
+        request.get
+            .mockImplementationOnce((_, cb) =>
+                cb(null, { statusCode: 200 }, dataTest[0]),
+            )
+            .mockImplementationOnce((_, cb) =>
+                cb(null, { statusCode: 200 }, dataTest[1]),
+            );
     });
 
     it('should return dataset of the API', done => {

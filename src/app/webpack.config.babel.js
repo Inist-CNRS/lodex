@@ -83,5 +83,14 @@ module.exports = {
     ].filter(Boolean),
     resolve: {
         modules: [resolve(__dirname, '../../node_modules')],
+        alias: {
+            // Because lodash.isarray which has been deprecated,
+            // react-infinite can't work properly
+            // This workaround avoid to install an extra polyfill to fix the issue
+            'lodash.isarray': resolve(
+                __dirname,
+                '../../node_modules/react-infinite/node_modules/lodash.isarray/index.js',
+            ),
+        },
     },
 };

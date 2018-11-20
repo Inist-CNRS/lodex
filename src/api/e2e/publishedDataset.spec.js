@@ -1,4 +1,3 @@
-import expect from 'expect';
 import jwt from 'jsonwebtoken';
 import { auth } from 'config';
 
