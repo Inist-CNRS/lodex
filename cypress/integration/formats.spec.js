@@ -1,7 +1,6 @@
 import { teardown, logoutAndLoginAs } from '../support/authentication';
 import * as homePage from '../support/homePage';
 import * as datasetImportPage from '../support/datasetImportPage';
-import * as graphPage from '../support/graphPage';
 
 describe('Transformers & Formats', () => {
     beforeEach(teardown);
@@ -105,8 +104,7 @@ describe('Transformers & Formats', () => {
         });
 
         describe('As User', () => {
-            // TODO fix
-            it.skip('should not display broken fields or error messages', () => {
+            it('should not display broken fields or error messages', () => {
                 logoutAndLoginAs('user');
 
                 cy.visit('http://localhost:3000/uid:/wrong');

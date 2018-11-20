@@ -116,3 +116,5 @@ export const getEditionComponent = field => {
     };
 };
 export const getIconComponent = name => getComponent(name).Icon;
+
+export const getPredicate = name => getComponent(name).predicate;
