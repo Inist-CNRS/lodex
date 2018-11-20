@@ -80,6 +80,8 @@ class EditionComponent extends Component {
                             underlineStyle={underlineStyle}
                             name={name}
                             component={this.ItemComponent}
+                            resource={{ [name]: all[index] }}
+                            field={{ name }}
                         />
 
                         <IconButton

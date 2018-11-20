@@ -153,11 +153,8 @@ export default url => FormatView => {
 
     GraphItem.WrappedComponent = FormatView;
 
-    const mapStateToProps = (state, { field }) => ({
-        resource:
-            field.cover === 'dataset'
-                ? fromCharacteristic.getCharacteristicsAsResource(state)
-                : fromResource.getResourceLastVersion(state),
+    const mapStateToProps = (state, { field, resource }) => ({
+        resource,
         formatData: fromFormat.getFormatData(state, field.name),
         isLoaded: !!field,
         error: fromFormat.getFormatError(state, field.name),

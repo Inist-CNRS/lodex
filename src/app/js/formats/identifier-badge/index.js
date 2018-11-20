@@ -8,7 +8,7 @@ export default {
     ListComponent: Component,
     AdminComponent,
     defaultArgs,
-    predicate: value => typeof value !== 'string',
+    predicate: value => typeof value === 'string',
 };
 
 export const resolvers = {
