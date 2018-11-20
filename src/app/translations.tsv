@@ -379,7 +379,7 @@
 "network"	"Graph - Network"	"Graphique - Réseaux"
 "bubbleChart"	"Graph - Bubble"	"Graphique - Graphe à bulles"
 "streamgraph"	"Graph - Streamgraph"	"Graphique - Graphique de flux"
-"diameter"	"Chart Diameter"	"Diamètre des bulles"
+"diameter"	"Bubbles Diameter (number in px)"	"Diamètre des bulles (nombre, en px)"
 "min_radius"	"Min radius"	"Rayon min"
 "max_radius"	"Max radius"	"Rayon max"
 "view_details"	"View Details"	"Voir les détails"

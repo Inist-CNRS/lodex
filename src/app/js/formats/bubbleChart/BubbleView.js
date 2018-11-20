@@ -19,16 +19,13 @@ const styles = {
         height: diameter,
         overflow: 'hidden',
     })),
-
     base: {
         opacity: 0,
         transition: 'all 500ms',
     },
-
     appear: {
         opacity: 1,
     },
-
     leave: {
         opacity: 0,
     },
@@ -62,13 +59,18 @@ export const BubbleView = ({ data, diameter, colorScale }) => (
 
 BubbleView.propTypes = {
     data: PropTypes.array.isRequired,
-    diameter: PropTypes.number.isRequired,
+    diameter: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
+        .isRequired,
     colorScale: PropTypes.func,
 };
 
 BubbleView.displayName = 'BubbleView';
 
-const mapStateToProps = (state, { formatData, diameter, colorScheme }) => {
+const mapStateToProps = (
+    state,
+    { formatData, diameter: stringDiameter, colorScheme },
+) => {
+    const diameter = parseInt(stringDiameter, 10);
     const colorScale = scaleOrdinal(colorScheme || schemeAccent);
     if (!formatData) {
         return {
@@ -94,6 +96,8 @@ const mapStateToProps = (state, { formatData, diameter, colorScheme }) => {
     };
 };
 
-export default compose(injectData(), connect(mapStateToProps), exportableToPng)(
-    BubbleView,
-);
+export default compose(
+    injectData(),
+    connect(mapStateToProps),
+    exportableToPng,
+)(BubbleView);

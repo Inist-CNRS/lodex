@@ -1,12 +1,11 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import memoize from 'lodash.memoize';
 import { hsl } from 'd3-color';
 import PropTypes from 'prop-types';
 import ReactTooltip from 'react-tooltip';
 
 const styles = {
-    leaf: memoize(({ x, y, r }, name, color, style) => ({
-        ...style,
+    leaf: memoize(({ x, y, r }, name, color) => ({
         position: 'absolute',
         top: x - r,
         left: y - r,
@@ -28,9 +27,9 @@ const styles = {
     })),
 };
 
-const Bubble = ({ r, x, y, name, value, color, style }) => (
+const Bubble = ({ r, x, y, name, value, color }) => (
     <div
-        style={styles.leaf({ r, x, y }, name, color, style)}
+        style={styles.leaf({ r, x, y }, name, color)}
         data-tip={`${name}: ${value}`}
         data-for={`bubble-${name}`}
         data-iscapture="true"
@@ -55,7 +54,6 @@ Bubble.propTypes = {
     name: PropTypes.string.isRequired,
     color: PropTypes.string.isRequired,
     value: PropTypes.number.isRequired,
-    style: PropTypes.object.isRequired,
 };
 
 export default Bubble;
