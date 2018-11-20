@@ -17,6 +17,7 @@ import {
 const styles = StyleSheet.create({
     item: {
         display: 'flex',
+        padding: 10,
     },
     input: {
         flex: 'auto',
@@ -24,7 +25,12 @@ const styles = StyleSheet.create({
     add: {
         float: 'right',
     },
+    list: {
+        marginTop: 14,
+    },
 });
+
+const underlineStyle = { position: 'relative' };
 
 const getSubFormat = args => ({
     args: args.subFormatOptions,
@@ -41,7 +47,7 @@ class EditionComponent extends Component {
     }
 
     renderList = ({ fields }) => {
-        const { p: polyglot } = this.props;
+        const { p: polyglot, label } = this.props;
         const all = fields.getAll();
         if (typeof all === 'string') {
             return (
@@ -58,14 +64,17 @@ class EditionComponent extends Component {
                 </div>
             );
         }
+
         return (
-            <div>
-                {fields.map((value, index) => (
-                    <div key={value} className={css(styles.item)}>
+            <div className={css(styles.list)}>
+                <label>{label}</label>
+                {fields.length === 0 && <p>{polyglot.t('empty')}</p>}
+                {fields.map((name, index) => (
+                    <div key={name} className={css(styles.item)}>
                         <Field
                             className={css(styles.input)}
-                            name={value}
-                            fullwidth
+                            underlineStyle={underlineStyle}
+                            name={name}
                             component={this.ItemComponent}
                         />
 
