@@ -19,6 +19,7 @@ import Stats from '../Stats';
 import getTitle from '../../lib/getTitle';
 import ExportShareButton from '../ExportShareButton';
 import { preLoadPublication } from '../../fields';
+import { preLoadDatasetPage as preLoadDatasetPageAction } from '../dataset';
 
 const styles = {
     container: {
@@ -52,6 +53,12 @@ const styles = {
 class GraphPage extends Component {
     UNSAFE_componentWillMount() {
         this.props.preLoadPublication();
+    }
+
+    componentDidUpdate(prevProps) {
+        if (prevProps.name !== this.props.name) {
+            this.props.preLoadDatasetPage();
+        }
     }
 
     render() {
@@ -112,6 +119,7 @@ GraphPage.propTypes = {
     graphField: fieldPropTypes,
     resource: PropTypes.object.isRequired,
     preLoadPublication: PropTypes.func.isRequired,
+    preLoadDatasetPage: PropTypes.func.isRequired,
 };
 
 GraphPage.defaultProps = {
@@ -133,6 +141,7 @@ const mapStateToProps = (
 
 const mapDispatchToprops = {
     preLoadPublication,
+    preLoadDatasetPage: preLoadDatasetPageAction,
 };
 
 export default connect(

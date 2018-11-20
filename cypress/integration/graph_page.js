@@ -16,6 +16,7 @@ describe('Graph Page', () => {
     it('should reset filters & search query when switching to another graph', () => {
         homePage.openChartDrawer();
         homePage.goToChart('Bar Chart');
+        graphPage.expectRowsCountToBe(10);
 
         graphPage.searchFor('Biodiversity');
         graphPage.expectRowsCountToBe(5);
@@ -26,6 +27,7 @@ describe('Graph Page', () => {
         homePage.goToChart('Bubble Chart');
 
         graphPage.getSearchInput().should('have.value', '');
+        graphPage.expectRowsCountToBe(10);
         graphPage.getFacet('Publication Year').click();
         graphPage
             .getFacetItem('Publication Year', '2011')
