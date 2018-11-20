@@ -218,8 +218,8 @@ describe('publishedDataset', () => {
     });
 
     describe('findPage', () => {
-        const count = jest.fn().mockImplementation(() => 'count');
-        const toArray = jest.fn().mockImplementation(() => 'result');
+        const count = jest.fn().mockImplementation(() => 1);
+        const toArray = jest.fn().mockImplementation(() => ['result']);
         const limit = jest.fn().mockImplementation(() => ({
             toArray,
         }));
@@ -244,7 +244,7 @@ describe('publishedDataset', () => {
 
         let publishedDatasetCollection;
 
-        beforeAll(async () => {
+        beforeEach(async () => {
             publishedDatasetCollection = await publishedDataset(db);
         });
 
@@ -254,8 +254,8 @@ describe('publishedDataset', () => {
                 page: 'page',
             });
             expect(result).toEqual({
-                data: 'result',
-                total: 'count',
+                data: ['result'],
+                total: 1,
             });
         });
 
@@ -269,17 +269,57 @@ describe('publishedDataset', () => {
             });
         });
 
-        it('should call find with removedAt false and $regex on each fields if provided', async () => {
+        it('should be able to do a text-based search', async () => {
             await publishedDatasetCollection.findPage({
                 perPage: 'perPage',
                 page: 'page',
                 match: 'match',
                 searchableFieldNames: ['field1', 'field2'],
             });
+
             expect(find).toHaveBeenCalledWith({
                 removedAt: { $exists: false },
+                $text: { $search: 'match' },
+            });
+        });
+
+        it('should fallback to regex search if text-based search returns nothing', async () => {
+            const skipToEmpty = () => ({
+                limit: () => ({
+                    toArray: () => [],
+                }),
+            });
+            const emptyFind = jest.fn().mockImplementation(() => ({
+                sort: () => ({
+                    skip: skipToEmpty,
+                    count: () => 0,
+                }),
+                skip: skipToEmpty,
+                count,
+            }));
+
+            publishedDatasetCollection = await publishedDataset({
+                collection: () => ({
+                    find: emptyFind,
+                    createIndex: jest.fn(),
+                }),
+            });
+
+            await publishedDatasetCollection.findPage({
+                perPage: 'perPage',
+                page: 'page',
+                match: 'match',
+                searchableFieldNames: ['field1', 'field2'],
+            });
+
+            expect(emptyFind).toHaveBeenCalledWith({
+                removedAt: { $exists: false },
+                $text: { $search: 'match' },
+            });
+
+            expect(emptyFind).toHaveBeenCalledWith({
+                removedAt: { $exists: false },
                 $or: [
-                    { $text: { $search: 'match' } },
                     { 'versions.field1': { $regex: /match/, $options: 'i' } },
                     { 'versions.field2': { $regex: /match/, $options: 'i' } },
                 ],
