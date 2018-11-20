@@ -5,16 +5,24 @@ export const addMatchToFilters = (match, searchableFieldNames) => filters => {
         return filters;
     }
 
+    return {
+        ...filters,
+        $text: { $search: match },
+    };
+};
+
+export const addRegexToFilters = (match, searchableFieldNames) => filters => {
+    if (!match || !searchableFieldNames || !searchableFieldNames.length) {
+        return filters;
+    }
+
     const regexMatch = new RegExp(match);
 
     return {
         ...filters,
-        $or: [
-            { $text: { $search: match } },
-            ...searchableFieldNames.map(name => ({
-                [`versions.${name}`]: { $regex: regexMatch, $options: 'i' },
-            })),
-        ],
+        $or: searchableFieldNames.map(name => ({
+            [`versions.${name}`]: { $regex: regexMatch, $options: 'i' },
+        })),
     };
 };
 
@@ -83,11 +91,17 @@ const getPublishedDatasetFilter = ({
     facets,
     facetFieldNames,
     invertedFacets,
-}) =>
-    compose(
+    regexSearch = false,
+}) => {
+    const addSearchFilters = regexSearch
+        ? addRegexToFilters
+        : addMatchToFilters;
+
+    return compose(
         addKeyToFilters('uri', uri),
-        addMatchToFilters(match, searchableFieldNames),
+        addSearchFilters(match, searchableFieldNames),
         addFacetToFilters(facets, facetFieldNames, invertedFacets),
     )({ removedAt: { $exists: false } });
+};
 
 export default getPublishedDatasetFilter;

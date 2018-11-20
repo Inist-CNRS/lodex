@@ -1,6 +1,7 @@
 import {
     addFacetToFilters,
     addMatchToFilters,
+    addRegexToFilters,
     addKeyToFilters,
     getValueQueryFragment,
 } from './getPublishedDatasetFilter';
@@ -164,15 +165,47 @@ describe('getPublishedDatasetFilter', () => {
     });
 
     describe('addMatchToFilters', () => {
-        it('should add match for each searchablefields to filters', () => {
+        it('should add a text search with the matching query', () => {
             const match = 'match';
             const searchableFields = ['field1', 'field2'];
             expect(
                 addMatchToFilters(match, searchableFields)({ filter: 'data' }),
             ).toEqual({
                 filter: 'data',
+                $text: { $search: 'match' },
+            });
+        });
+
+        it('should return filters if no match', () => {
+            const match = null;
+            const searchableFields = ['field1', 'field2'];
+            expect(
+                addMatchToFilters(match, searchableFields)({ filter: 'data' }),
+            ).toEqual({
+                filter: 'data',
+            });
+        });
+
+        it('should return filters if no searchableFields', () => {
+            const match = 'match';
+            const searchableFields = null;
+            expect(
+                addMatchToFilters(match, searchableFields)({ filter: 'data' }),
+            ).toEqual({
+                filter: 'data',
+            });
+        });
+    });
+
+    describe('addRegexToFilters', () => {
+        it('should add regex filters for each searchablefields to filters', () => {
+            const match = 'match';
+            const searchableFields = ['field1', 'field2'];
+            expect(
+                addRegexToFilters(match, searchableFields)({ filter: 'data' }),
+            ).toEqual({
+                filter: 'data',
                 $or: [
-                    { $text: { $search: 'match' } },
                     { 'versions.field1': { $regex: /match/, $options: 'i' } },
                     { 'versions.field2': { $regex: /match/, $options: 'i' } },
                 ],
@@ -183,7 +216,7 @@ describe('getPublishedDatasetFilter', () => {
             const match = null;
             const searchableFields = ['field1', 'field2'];
             expect(
-                addMatchToFilters(match, searchableFields)({ filter: 'data' }),
+                addRegexToFilters(match, searchableFields)({ filter: 'data' }),
             ).toEqual({
                 filter: 'data',
             });
@@ -211,6 +244,7 @@ describe('getPublishedDatasetFilter', () => {
                 key: 'value',
             });
         });
+
         it('should return filters if no values', () => {
             expect(
                 addKeyToFilters('key', null)({

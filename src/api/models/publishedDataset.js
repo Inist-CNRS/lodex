@@ -69,10 +69,30 @@ export default async db => {
             invertedFacets,
         });
 
-        return collection.findLimitFromSkip(
+        const results = await collection.findLimitFromSkip(
             perPage,
             page * perPage,
             filters,
+            sortBy,
+            sortDir,
+        );
+
+        if (results.data.length > 0) {
+            return results;
+        }
+
+        const regexFilters = getPublishedDatasetFilter({
+            match,
+            searchableFieldNames,
+            facets,
+            facetFieldNames,
+            regexSearch: true,
+        });
+
+        return await collection.findLimitFromSkip(
+            perPage,
+            page * perPage,
+            regexFilters,
             sortBy,
             sortDir,
         );
@@ -110,14 +130,13 @@ export default async db => {
         const cursor = collection.getFindCursor(filters, sortBy, sortDir);
 
         return cursor
-            .map(
-                resource =>
-                    resource.uri.startsWith('http')
-                        ? resource
-                        : {
-                              ...resource,
-                              uri: getFullResourceUri(resource),
-                          },
+            .map(resource =>
+                resource.uri.startsWith('http')
+                    ? resource
+                    : {
+                          ...resource,
+                          uri: getFullResourceUri(resource),
+                      },
             )
             .stream();
     };
@@ -313,14 +332,6 @@ export default async db => {
         if (!fields.length) {
             return;
         }
-
-        await Promise.all(
-            fields.map(name =>
-                collection.createIndex({
-                    [`versions.${name}`]: 1,
-                }),
-            ),
-        );
 
         const textIndex = fields.reduce(
             (acc, name) => ({
