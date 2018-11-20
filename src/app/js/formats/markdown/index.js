@@ -7,5 +7,5 @@ export default {
     Component,
     ListComponent: Component,
     EditionComponent,
-    predicate: value => typeof value === 'string',
+    predicate: value => value && typeof value === 'string',
 };

@@ -4,9 +4,9 @@ import DefaultFormat from '../DefaultFormat';
 import Icon from './BubbleChartIcon';
 
 export default {
+    ...DefaultFormat,
     Component,
     AdminComponent,
-    EditionComponent: DefaultFormat.EditionComponent,
     defaultArgs,
     Icon,
 };

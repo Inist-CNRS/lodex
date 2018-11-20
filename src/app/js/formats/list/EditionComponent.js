@@ -7,6 +7,7 @@ import ActionAddIcon from 'material-ui/svg-icons/content/add';
 import translate from 'redux-polyglot/translate';
 import { StyleSheet, css } from 'aphrodite/no-important';
 import RaisedButton from 'material-ui/RaisedButton';
+import classnames from 'classnames';
 
 import { getEditionComponent } from '../';
 import {
@@ -49,11 +50,13 @@ class EditionComponent extends Component {
     renderList = ({ fields }) => {
         const { p: polyglot, label } = this.props;
         const all = fields.getAll();
+
         if (typeof all === 'string') {
             return (
                 <div>
-                    <p>{polyglot.t('bad_format_edit_value')}</p>
+                    <p>{polyglot.t('bad_format_edit_list')}</p>
                     <RaisedButton
+                        className="convert-to-list"
                         primary
                         onClick={() => {
                             fields.removeAll();
@@ -72,6 +75,7 @@ class EditionComponent extends Component {
                 {fields.map((name, index) => (
                     <div key={name} className={css(styles.item)}>
                         <Field
+                            {...this.props}
                             className={css(styles.input)}
                             underlineStyle={underlineStyle}
                             name={name}
@@ -79,6 +83,7 @@ class EditionComponent extends Component {
                         />
 
                         <IconButton
+                            className="remove"
                             tooltip={polyglot.t('remove')}
                             onClick={() => fields.remove(index)}
                         >
@@ -87,7 +92,7 @@ class EditionComponent extends Component {
                     </div>
                 ))}
                 <IconButton
-                    className={css(styles.add)}
+                    className={classnames(css(styles.add), 'add')}
                     tooltip={polyglot.t('add')}
                     onClick={() => fields.push()}
                 >

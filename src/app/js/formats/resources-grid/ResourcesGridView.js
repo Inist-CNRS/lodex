@@ -91,6 +91,7 @@ const mapStateToProps = (state, { formatData, spaceWidth }) => {
     };
 };
 
-export default compose(injectData(), connect(mapStateToProps))(
-    ResourcesGridView,
-);
+export default compose(
+    injectData(),
+    connect(mapStateToProps),
+)(ResourcesGridView);
