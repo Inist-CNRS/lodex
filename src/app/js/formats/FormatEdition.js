@@ -25,21 +25,6 @@ class FormatEdition extends Component {
         };
     }
 
-    componentWillReceiveProps(nextProps) {
-        if (nextProps.input.value.name !== this.state.name) {
-            this.setState({ name: nextProps.input.value.name });
-        }
-
-        if (nextProps.input.value.args !== this.state.args) {
-            const args = merge(
-                getFormatInitialArgs(nextProps.input.value.name),
-                nextProps.input.value.args,
-            );
-
-            this.setState({ args });
-        }
-    }
-
     setArguments = args => {
         this.setState({ args });
         this.props.input.onChange({
@@ -49,11 +34,10 @@ class FormatEdition extends Component {
     };
 
     setFormat = name => {
-        this.setState({ name });
-        this.props.input.onChange({
-            args: getFormatInitialArgs(name),
-            name,
-        });
+        this.setState(
+            { name, args: getFormatInitialArgs(name) },
+            this.props.input.onChange,
+        );
     };
 
     render() {
