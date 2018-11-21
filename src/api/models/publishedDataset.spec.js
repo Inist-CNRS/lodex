@@ -277,10 +277,13 @@ describe('publishedDataset', () => {
                 searchableFieldNames: ['field1', 'field2'],
             });
 
-            expect(find).toHaveBeenCalledWith({
-                removedAt: { $exists: false },
-                $text: { $search: 'match' },
-            });
+            expect(find).toHaveBeenCalledWith(
+                {
+                    removedAt: { $exists: false },
+                    $text: { $search: 'match' },
+                },
+                { score: { $meta: 'textScore' } },
+            );
         });
 
         it('should fallback to regex search if text-based search returns nothing', async () => {
@@ -312,10 +315,13 @@ describe('publishedDataset', () => {
                 searchableFieldNames: ['field1', 'field2'],
             });
 
-            expect(emptyFind).toHaveBeenCalledWith({
-                removedAt: { $exists: false },
-                $text: { $search: 'match' },
-            });
+            expect(emptyFind).toHaveBeenCalledWith(
+                {
+                    removedAt: { $exists: false },
+                    $text: { $search: 'match' },
+                },
+                { score: { $meta: 'textScore' } },
+            );
 
             expect(emptyFind).toHaveBeenCalledWith({
                 removedAt: { $exists: false },

@@ -92,6 +92,27 @@ describe('Search', () => {
             cy.get('.search-result').should('have.length', 1);
             searchDrawer.searchInput().should('have.value', query);
         });
+
+        it('should sort result by pertinence', () => {
+            searchDrawer.openSearchDrawer();
+            searchDrawer.search('medicine');
+            cy.get('.search-result').should('have.length', 2);
+
+            searchDrawer.checkResultList([
+                'Acupuncture in medicine',
+                'Archives of emergency medicine',
+            ]);
+            searchDrawer.search(' archive');
+            cy.get('.search-result').should('have.length', 5);
+
+            searchDrawer.checkResultList([
+                'Archives of emergency medicine',
+                'Acupuncture in medicine',
+                'Archives of disease in childhood',
+                'Archives of disease in childhood. Education and practice edition',
+                'Archives of disease in childhood. Fetal and neonatal edition',
+            ]);
+        });
     });
 
     describe('Advanced Search', () => {

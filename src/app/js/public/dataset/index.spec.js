@@ -63,6 +63,7 @@ describe('dataset reducer', () => {
             loading: true,
             match: 'foo',
             perPage: 20,
+            sort: {},
         });
     });
 

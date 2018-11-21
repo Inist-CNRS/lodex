@@ -32,6 +32,16 @@ export const findSearchResultByTitle = value =>
         .contains(value)
         .parent();
 
+export const checkResultList = titles => {
+    titles.forEach((title, index) => {
+        cy.get(
+            `.search-result-link:nth-child(${index + 1}) .search-result-title`,
+        )
+            .contains(title)
+            .should('be.visible');
+    });
+};
+
 export const loadMore = () => {
     cy.get('.drawer-container .load-more button').click();
 };
