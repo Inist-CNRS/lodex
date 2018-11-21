@@ -63,7 +63,7 @@ class HeatMapAdmin extends Component {
     };
 
     handleColorSchemeChange = (event, index, colorScheme) => {
-        updateAdminArgs('colorScheme', colorScheme.split(''), this.props);
+        updateAdminArgs('colorScheme', colorScheme.split(','), this.props);
     };
 
     toggleFlipAxis = () => {
