@@ -96,6 +96,7 @@ export default handleActions(
             ...state,
             currentPage: 0,
             match,
+            sort: {},
         }),
         [facetActionTypes.TOGGLE_FACET_VALUE]: state => ({
             ...state,
