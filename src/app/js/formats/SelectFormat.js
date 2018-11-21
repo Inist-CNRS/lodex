@@ -5,11 +5,14 @@ import SelectField from 'material-ui/SelectField';
 import translate from 'redux-polyglot/translate';
 import { polyglot as polyglotPropTypes } from '../propTypes';
 
+const dropDownMenuProps = { autoWidth: true };
+
 const SelectFormat = ({ formats, value, onChange, p: polyglot }) => (
     <SelectField
         floatingLabelText={polyglot.t('select_a_format')}
         onChange={(event, index, newValue) => onChange(newValue)}
         value={value}
+        dropDownMenuProps={dropDownMenuProps}
     >
         <MenuItem value="None" primaryText="None" />
 
