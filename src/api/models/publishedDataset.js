@@ -6,6 +6,34 @@ import { getFullResourceUri } from '../../common/uris';
 import getPublishedDatasetFilter from './getPublishedDatasetFilter';
 import { VALIDATED, PROPOSED } from '../../common/propositionStatus';
 
+const getMeta = (match, searchableFieldNames) => {
+    if (!match || !searchableFieldNames || !searchableFieldNames.length) {
+        return null;
+    }
+
+    return {
+        score: { $meta: 'textScore' },
+    };
+};
+
+const getSort = (sortBy, sortDir, match, searchableFieldNames) => {
+    if (sortBy) {
+        return {
+            [sortBy === 'uri' ? sortBy : `versions.${sortBy}`]:
+                sortDir === 'ASC' ? 1 : -1,
+        };
+    }
+
+    if (match && searchableFieldNames && searchableFieldNames.length) {
+        return {
+            score: {
+                $meta: 'textScore',
+            },
+        };
+    }
+    return { uri: -1 };
+};
+
 export default async db => {
     const collection = db.collection('publishedDataset');
 
@@ -21,25 +49,28 @@ export default async db => {
             ),
         );
 
-    collection.getFindCursor = (filter, sortBy = 'uri', sortDir = 'ASC') => {
-        let cursor = collection.find(filter);
-        if (sortBy) {
-            cursor = cursor.sort({
-                [sortBy === 'uri' ? sortBy : `versions.${sortBy}`]:
-                    sortDir === 'ASC' ? 1 : -1,
-            });
+    collection.getFindCursor = ({ filter, meta, sort }) => {
+        const cursor = meta
+            ? collection.find(filter, meta)
+            : collection.find(filter);
+        if (sort) {
+            return cursor.sort(sort);
         }
         return cursor;
     };
 
-    collection.findLimitFromSkip = async (
+    collection.findLimitFromSkip = async ({
         limit,
         skip,
         filter,
-        sortBy,
-        sortDir = 'ASC',
-    ) => {
-        const cursor = collection.getFindCursor(filter, sortBy, sortDir);
+        meta,
+        sort,
+    }) => {
+        const cursor = collection.getFindCursor({
+            filter,
+            meta,
+            sort,
+        });
 
         return {
             data: await cursor
@@ -53,7 +84,7 @@ export default async db => {
     collection.findPage = async ({
         page = 0,
         perPage = 10,
-        sortBy = 'uri',
+        sortBy,
         sortDir,
         match,
         facets,
@@ -61,7 +92,7 @@ export default async db => {
         searchableFieldNames,
         facetFieldNames,
     }) => {
-        const filters = getPublishedDatasetFilter({
+        const filter = getPublishedDatasetFilter({
             match,
             searchableFieldNames,
             facets,
@@ -69,13 +100,17 @@ export default async db => {
             invertedFacets,
         });
 
-        const results = await collection.findLimitFromSkip(
-            perPage,
-            page * perPage,
-            filters,
-            sortBy,
-            sortDir,
-        );
+        const meta = getMeta(match, searchableFieldNames);
+
+        const sort = getSort(sortBy, sortDir, match, searchableFieldNames);
+
+        const results = await collection.findLimitFromSkip({
+            limit: perPage,
+            skip: page * perPage,
+            filter,
+            meta,
+            sort,
+        });
 
         if (results.data.length > 0) {
             return results;
@@ -89,24 +124,31 @@ export default async db => {
             regexSearch: true,
         });
 
-        return await collection.findLimitFromSkip(
-            perPage,
-            page * perPage,
-            regexFilters,
-            sortBy,
-            sortDir,
-        );
+        return await collection.findLimitFromSkip({
+            limit: perPage,
+            skip: page * perPage,
+            filter: regexFilters,
+            sort: getSort(sortBy, sortDir),
+        });
     };
 
     collection.findRemovedPage = (page = 0, perPage = 10) =>
-        collection.findLimitFromSkip(perPage, page * perPage, {
-            removedAt: { $exists: true },
+        collection.findLimitFromSkip({
+            limit: perPage,
+            skip: page * perPage,
+            filter: {
+                removedAt: { $exists: true },
+            },
         });
 
     collection.findContributedPage = (page, perPage, status) =>
-        collection.findLimitFromSkip(perPage, page * perPage, {
-            removedAt: { $exists: false },
-            'contributions.status': status,
+        collection.findLimitFromSkip({
+            limit: perPage,
+            skip: page * perPage,
+            filter: {
+                removedAt: { $exists: false },
+                'contributions.status': status,
+            },
         });
 
     collection.getFindAllStream = (
@@ -119,7 +161,7 @@ export default async db => {
         sortBy,
         sortDir,
     ) => {
-        const filters = getPublishedDatasetFilter({
+        const filter = getPublishedDatasetFilter({
             uri,
             match,
             searchableFieldNames,
@@ -127,7 +169,8 @@ export default async db => {
             facetFieldNames,
             invertedFacets,
         });
-        const cursor = collection.getFindCursor(filters, sortBy, sortDir);
+        const sort = getSort(sortBy, sortDir, match, searchableFieldNames);
+        const cursor = collection.getFindCursor({ filter, sort });
 
         return cursor
             .map(resource =>
