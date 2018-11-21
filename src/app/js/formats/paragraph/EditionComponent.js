@@ -1,23 +1,25 @@
 import React from 'react';
-import TextField from 'material-ui/TextField';
 import { formField as formFieldPropTypes } from '../../propTypes';
+import DefaultEdition from '../DefaultFormat/DefaultEdition';
 
-const FormTextField = ({
-    input,
-    label,
-    meta: { touched, error },
-    ...custom
-}) => (
-    <TextField
-        hintText={label}
-        floatingLabelText={label}
-        multiLine
-        rows={4}
-        errorText={touched && error}
-        {...input}
-        {...custom}
-    />
-);
+const FormTextField = props => {
+    const {
+        input,
+        label,
+        meta: { touched, error },
+    } = props;
+    return (
+        <DefaultEdition
+            {...props}
+            {...input}
+            hintText={label}
+            floatingLabelText={label}
+            multiLine
+            rows={4}
+            errorText={touched && error}
+        />
+    );
+};
 
 FormTextField.propTypes = formFieldPropTypes;
 

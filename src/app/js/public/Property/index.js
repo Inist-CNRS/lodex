@@ -27,6 +27,7 @@ import addSchemePrefix from '../../lib/addSchemePrefix';
 import Format from '../Format';
 import GraphLink from '../graph/GraphLink';
 import Link from '../../lib/components/Link';
+import { getPredicate } from '../../formats';
 
 const styles = {
     container: memoize(
@@ -95,6 +96,13 @@ const PropertyComponent = ({
     style,
     parents,
 }) => {
+    if (!isAdmin) {
+        const predicate = getPredicate(field);
+        if (!predicate(resource[field.name])) {
+            return null;
+        }
+    }
+
     if (!isAdmin && fieldStatus === REJECTED) {
         return null;
     }

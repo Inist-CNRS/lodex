@@ -1,22 +1,53 @@
 import React, { Component } from 'react';
 import translate from 'redux-polyglot/translate';
+import { change } from 'redux-form';
+import get from 'lodash.get';
+import { connect } from 'react-redux';
+import compose from 'recompose/compose';
 
 import { formField as formFieldPropTypes } from '../../propTypes';
 import FormTextField from '../../lib/components/FormTextField';
+import RaisedButton from 'material-ui/RaisedButton';
 
 class DefaultEditon extends Component {
-    onChangeArray = (_, value) =>
-        this.props.input.onChange(_, value.split(','));
-
+    convertValue = () => {
+        const {
+            change,
+            meta: { form },
+            input: { name, value },
+        } = this.props;
+        change(form, name, value.join(';'));
+    };
     render() {
-        const { input: { value }, label, p: polyglot } = this.props;
-        if (Array.isArray(value)) {
-            return <p>{polyglot.t('bad_format', { label })}</p>;
+        const { input, value, label, p: polyglot } = this.props;
+        const currentValue = get(input, 'value', value);
+        if (Array.isArray(currentValue)) {
+            return (
+                <div>
+                    <p>{polyglot.t('bad_format_edit_value', { label })}</p>
+                    <RaisedButton
+                        className="convert-to-value"
+                        primary
+                        label={polyglot.t('convert_to_value')}
+                        onClick={this.convertValue}
+                    />
+                </div>
+            );
         }
-        return <FormTextField {...this.props} />;
+        return <FormTextField {...this.props} value={currentValue} />;
     }
 }
 
 DefaultEditon.propTypes = formFieldPropTypes;
 
-export default translate(DefaultEditon);
+const mapDispatchToProps = {
+    change,
+};
+
+export default compose(
+    translate,
+    connect(
+        null,
+        mapDispatchToProps,
+    ),
+)(DefaultEditon);

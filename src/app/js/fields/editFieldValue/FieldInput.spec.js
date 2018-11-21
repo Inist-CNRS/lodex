@@ -37,12 +37,14 @@ describe('EditFieldInput', () => {
 
         const field = wrapper.find(Field);
         expect(field.length).toBe(1);
-        expect(field.at(0).props()).toEqual({
-            name: 'field',
+        expect(field.at(0).prop('name')).toBe('field');
+        expect(field.at(0).prop('label')).toBe('Field');
+        expect(field.at(0).prop('disabled')).toBe(false);
+        expect(field.at(0).prop('fullWidth')).toBe(true);
+        expect(field.at(0).prop('component')).toBe(DefaultEdition);
+        expect(field.at(0).prop('field')).toEqual({
             label: 'Field',
-            disabled: false,
-            fullWidth: true,
-            component: DefaultEdition,
+            name: 'field',
         });
     });
 });

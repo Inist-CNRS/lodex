@@ -32,6 +32,7 @@ import sparqlTextField from './sparql/SparqlTextField/';
 import DefaultFormat from './DefaultFormat';
 import istexSummary from './istexSummary';
 import streamgraph from './streamgraph';
+import checkPredicate from './checkPredicate';
 
 const components = {
     code,
@@ -87,17 +88,27 @@ export const getComponent = field => {
 };
 
 export const getViewComponent = (field, isList) => {
-    const component = getComponent(field);
+    const { defaultArgs, Component, ListComponent, predicate } = getComponent(
+        field,
+    );
 
-    const args = merge(component.defaultArgs, get(field, 'format.args', {}));
+    const args = merge(defaultArgs, get(field, 'format.args', {}));
+
+    const ViewComponent = isList ? ListComponent || Component : Component;
 
     return {
-        ViewComponent: isList
-            ? component.ListComponent || component.Component
-            : component.Component,
+        ViewComponent: checkPredicate(
+            predicate,
+            ViewComponent,
+            field.format,
+            'view',
+        ),
         args,
     };
 };
+
 export const getAdminComponent = name => getComponent(name).AdminComponent;
-export const getEditionComponent = name => getComponent(name).EditionComponent;
+export const getEditionComponent = field =>
+    getComponent(field).EditionComponent;
 export const getIconComponent = name => getComponent(name).Icon;
+export const getPredicate = name => getComponent(name).predicate;

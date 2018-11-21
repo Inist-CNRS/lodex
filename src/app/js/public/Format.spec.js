@@ -1,6 +1,5 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import UriView from '../formats/uri/UriView';
 
 import { FormatComponent as Format } from './Format';
 
@@ -24,7 +23,7 @@ describe('<Format />', () => {
     );
 
     it('renders an UriView with correct props', () => {
-        const element = wrapper.find(UriView);
+        const element = wrapper.find('Translated(CheckedComponent)');
 
         expect(element.props()).toEqual({
             className,

@@ -12,6 +12,8 @@ export const isLocalURL = v =>
             v.startsWith('ark:'))) ||
     false;
 
+export const isLink = value => value && (isURL(value) || isLocalURL(value));
+
 export const canonicalURL = u => {
     if (isURL(u)) {
         return u;

@@ -10,5 +10,6 @@ export default {
     ListComponent: DefaultView,
     AdminComponent: Empty,
     EditionComponent: DefaultEdition,
+    predicate: value => !Array.isArray(value),
     defaultArgs: {},
 };

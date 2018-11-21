@@ -1,31 +1,64 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Field } from 'redux-form';
+import { FieldArray } from 'redux-form';
+import translate from 'redux-polyglot/translate';
 
-import FormTextField from '../../lib/components/FormTextField';
+import { getEditionComponent } from '../';
+import {
+    field as fieldPropTypes,
+    polyglot as polyglotPropTypes,
+} from '../../propTypes';
+import InputList from './InputList';
 
-const format = v => v && v.join(';');
-const normalize = v => v && v.split(';');
+const getSubFormat = args => ({
+    args: args.subFormatOptions,
+    name: args.subFormat,
+});
 
-const EditionComponent = ({ name, disabled, label, fullWidth, ...input }) => (
-    <Field
-        key={name}
-        name={name}
-        component={FormTextField}
-        disabled={name === 'uri'}
-        label={label}
-        fullWidth
-        {...input}
-        format={format}
-        normalize={normalize}
-    />
-);
+class EditionComponent extends Component {
+    constructor(props) {
+        super(props);
+        this.ItemComponent = getEditionComponent(
+            getSubFormat(props.field.format.args),
+        );
+    }
+
+    renderList = ({ fields }) => {
+        const { p: polyglot, label } = this.props;
+        const all = fields.getAll();
+
+        return (
+            <InputList
+                polyglot={polyglot}
+                label={label}
+                fields={fields}
+                all={all}
+                ItemComponent={this.ItemComponent}
+            />
+        );
+    };
+
+    render() {
+        const { label, name } = this.props;
+
+        return (
+            <FieldArray
+                name={name}
+                component={this.renderList}
+                disabled={name === 'uri'}
+                label={label}
+                fullWidth
+            />
+        );
+    }
+}
 
 EditionComponent.propTypes = {
     name: PropTypes.string.isRequired,
-    disabled: PropTypes.bool,
+    field: fieldPropTypes.isRequired,
+    p: polyglotPropTypes.isRequired,
     label: PropTypes.string.isRequired,
-    fullWidth: PropTypes.bool, // eslint-disable-line
+    fullWidth: PropTypes.bool,
 };
 
 EditionComponent.defaultProps = {
@@ -34,4 +67,4 @@ EditionComponent.defaultProps = {
 
 EditionComponent.isReduxFormReady = true;
 
-export default EditionComponent;
+export default translate(EditionComponent);

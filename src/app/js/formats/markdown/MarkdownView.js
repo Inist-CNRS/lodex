@@ -11,10 +11,6 @@ const markdown = new MarkdownIt();
 const MarkdownView = ({ className, resource, field }) => {
     const value = resource[field.name];
 
-    if (!value) {
-        return <InvalidFormat format={field.format} value={value} />;
-    }
-
     let html;
 
     try {
