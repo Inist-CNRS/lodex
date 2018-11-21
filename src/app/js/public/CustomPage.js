@@ -8,28 +8,37 @@ import { polyglot as polyglotPropTypes } from '../propTypes';
 
 export class CustomPage extends Component {
     state = {};
+
     UNSAFE_componentWillMount() {
-        fetch({ url: `/customPage${this.props.location.pathname}` })
-            .then(({ response: { html, scripts }, error }) => {
+        const { pathname } = this.props.location;
+        fetch({
+            url: `/customPage/${encodeURIComponent(pathname.substring(1))}`,
+        })
+            .then(({ response, error }) => {
                 if (error) {
                     throw error;
                 }
-                this.setState({ html, scripts });
+                this.setState({
+                    html: response.html,
+                    scripts: response.scripts,
+                });
             })
-            .catch(error => {
-                console.error(error);
+            .catch(() => {
                 this.setState({ error: true });
             });
     }
+
     render() {
         const { html, scripts, error } = this.state;
 
         if (error) {
             return null;
         }
+
         if (!html) {
             return <CircularProgress />;
         }
+
         return (
             <Fragment>
                 <Helmet>
