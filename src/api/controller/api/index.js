@@ -68,15 +68,27 @@ app.use(route.get('/publication', publication));
 app.use(mount('/publishedDataset', publishedDataset));
 
 app.use(async (ctx, next) => {
-    if (
-        !ctx.state.cookie ||
-        !ctx.state.header ||
-        ctx.state.cookie.role === 'user' ||
-        ctx.state.header.role === 'user'
-    ) {
+    if (!ctx.state.cookie || !ctx.state.header) {
         ctx.status = 401;
         ctx.cookies.set('lodex_token', '', { expires: new Date() });
         ctx.body = 'No authentication token found';
+        return;
+    }
+
+    if (
+        get(ctx, 'state.cookie.role') === 'user' &&
+        get(ctx, 'state.header.role') === 'user'
+    ) {
+        ctx.status = 404;
+        return;
+    }
+
+    if (
+        get(ctx, 'state.cookie.role') !== 'admin' ||
+        get(ctx, 'state.header.role') !== 'admin'
+    ) {
+        ctx.status = 403;
+        ctx.body = 'Forbidden';
         return;
     }
 
