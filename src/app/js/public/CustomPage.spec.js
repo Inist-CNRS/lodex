@@ -12,6 +12,7 @@ describe('getCustomPage CustomPage', () => {
         location: {
             pathname: '/custom/page',
         },
+        link: '/custom/page',
     };
 
     beforeEach(() => {
@@ -33,7 +34,9 @@ describe('getCustomPage CustomPage', () => {
         });
         fetch.mockImplementation(() => response);
         const wrapper = shallow(<CustomPage {...defaultProps} />);
-        expect(fetch).toHaveBeenCalledWith({ url: '/customPage/custom/page' });
+        expect(fetch).toHaveBeenCalledWith({
+            url: '/customPage/custom%2Fpage',
+        });
         await response;
         wrapper.update();
         const div = wrapper.find('div');
@@ -52,7 +55,9 @@ describe('getCustomPage CustomPage', () => {
         const response = Promise.resolve({ error: new Error('nope') });
         fetch.mockImplementation(() => response);
         const wrapper = shallow(<CustomPage {...defaultProps} />);
-        expect(fetch).toHaveBeenCalledWith({ url: '/customPage/custom/page' });
+        expect(fetch).toHaveBeenCalledWith({
+            url: '/customPage/custom%2Fpage',
+        });
         await response;
         wrapper.update();
         expect(wrapper.find('div')).toHaveLength(0);
