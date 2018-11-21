@@ -1,5 +1,5 @@
 import React, { Fragment, Component } from 'react';
-import { StyleSheet, css } from 'aphrodite/no-important';
+// import { StyleSheet, css } from 'aphrodite/no-important';
 import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
 import { config } from '@fortawesome/fontawesome-svg-core';
@@ -17,41 +17,45 @@ import AdvancedSearch from '../search/AdvancedSearch';
 import GraphSummary from '../graph/GraphSummary';
 import Favicon from '../Favicon';
 import MenuItem from './MenuItem';
+import stylesToClassname from '../../lib/stylesToClassName';
 
 const ANIMATION_DURATION = 300; // ms
 
 config.autoAddCss = false;
 
-const styles = StyleSheet.create({
-    container: {
-        zIndex: 10000,
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        backgroundColor: 'white',
-        height: '100vh',
-        minWidth: 110,
-        maxWidth: 110,
-        marginRight: 20,
-        display: 'flex',
-        flexDirection: 'column',
-        paddingTop: 10,
-        borderRight: '1px solid #E3EAF2',
-        transition: 'filter 300ms ease-in-out', // -webkit-filter 300ms ease-in-out
-        filter: 'brightness(1)',
+const styles = stylesToClassname(
+    {
+        container: {
+            zIndex: 10000,
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            backgroundColor: 'white',
+            height: '100vh',
+            minWidth: 110,
+            maxWidth: 110,
+            marginRight: 20,
+            display: 'flex',
+            flexDirection: 'column',
+            paddingTop: 10,
+            borderRight: '1px solid #E3EAF2',
+            transition: 'filter 300ms ease-in-out', // -webkit-filter 300ms ease-in-out
+            filter: 'brightness(1)',
+        },
+        containerWithDrawer: {
+            filter: 'brightness(0.98)',
+        },
+        icon: {
+            maxHeight: 'fit-content',
+            margin: '10px auto',
+        },
+        last: {
+            marginBottom: 0,
+            marginTop: 'auto',
+        },
     },
-    containerWithDrawer: {
-        filter: 'brightness(0.98)',
-    },
-    icon: {
-        maxHeight: 'fit-content',
-        margin: '10px auto',
-    },
-    last: {
-        marginBottom: 0,
-        marginTop: 'auto',
-    },
-});
+    'nav-bar',
+);
 
 export class NavBar extends Component {
     state = {
@@ -156,12 +160,12 @@ export class NavBar extends Component {
         return (
             <Fragment>
                 <nav
-                    className={classnames(css(styles.container), {
-                        [css(styles.containerWithDrawer)]:
+                    className={classnames(styles.container, {
+                        [styles.containerWithDrawer]:
                             searchDrawer === 'open' || graphDrawer === 'open',
                     })}
                 >
-                    <Favicon className={css(styles.icon)} />
+                    <Favicon className={styles.icon} />
                     <div>
                         {topMenu.map((config, index) => (
                             <MenuItem
@@ -180,7 +184,7 @@ export class NavBar extends Component {
                             />
                         ))}
                     </div>
-                    <div className={css(styles.last)}>
+                    <div className={styles.last}>
                         {bottomMenu.map((config, index) => (
                             <MenuItem
                                 key={index}
