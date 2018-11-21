@@ -1,12 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { StyleSheet, css } from 'aphrodite/no-important';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 import withHandlers from 'recompose/withHandlers';
-
 import { Chip } from 'material-ui';
 
 import {
@@ -16,24 +14,28 @@ import {
 import { fromSearch } from '../selectors';
 import { fromFields } from '../../sharedSelectors';
 import { facetActions } from './reducer';
+import stylesToClassname from '../../lib/stylesToClassName';
 
-const styles = StyleSheet.create({
-    container: {
-        display: 'flex',
-        flexWrap: 'wrap',
-        justifyContent: 'flex-end',
+const styles = stylesToClassname(
+    {
+        container: {
+            display: 'flex',
+            flexWrap: 'wrap',
+            justifyContent: 'flex-end',
+        },
+        chip: {
+            margin: '.25rem !important',
+        },
     },
-    chip: {
-        margin: '.25rem !important',
-    },
-});
+    'applied-facet',
+);
 
 const AppliedFacets = ({ className, facets, p: polyglot, onRequestDelete }) => (
-    <div className={classnames(css(styles.container), className)}>
+    <div className={classnames(styles.container, className)}>
         {facets.map(({ name, value, field, inverted }) => (
             <Chip
                 key={name}
-                className={css(styles.chip)}
+                className={styles.chip}
                 onRequestDelete={onRequestDelete(name)}
                 title={`${field.label} ${
                     inverted ? '(' + polyglot.t('excluding') + ')' : ''

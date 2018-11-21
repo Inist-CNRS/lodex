@@ -1,5 +1,4 @@
 import React, { Fragment, Component } from 'react';
-// import { StyleSheet, css } from 'aphrodite/no-important';
 import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
 import { config } from '@fortawesome/fontawesome-svg-core';

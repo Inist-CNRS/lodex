@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
-import { StyleSheet, css } from 'aphrodite/no-important';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import get from 'lodash.get';
@@ -11,23 +10,25 @@ import { isURL } from '../../../../common/uris.js';
 import LodexResource from '../shared/LodexResource';
 import { field as fieldPropTypes } from '../../propTypes';
 import injectData from '../injectData';
+import stylesToClassname from '../../lib/stylesToClassName';
 
-const LodexResourceView = props => {
-    const styles = StyleSheet.create({
+const styles = stylesToClassname(
+    {
         wrapper: {
             padding: '1.1em',
             borderRadius: '3px',
             background: 'white',
             boxShadow: '0px 6px 6px rgba(170, 170, 170, 0.25)',
         },
-    });
+    },
+    'lodex-resource',
+);
 
-    return (
-        <div className={css(styles.wrapper)}>
-            <LodexResource {...props} />
-        </div>
-    );
-};
+const LodexResourceView = props => (
+    <div className={styles.wrapper}>
+        <LodexResource {...props} />
+    </div>
+);
 
 LodexResourceView.propTypes = {
     field: fieldPropTypes.isRequired,

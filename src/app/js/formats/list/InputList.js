@@ -4,28 +4,31 @@ import { Field } from 'redux-form';
 import IconButton from 'material-ui/IconButton';
 import ActionDeleteIcon from 'material-ui/svg-icons/action/delete';
 import ActionAddIcon from 'material-ui/svg-icons/content/add';
-import { StyleSheet, css } from 'aphrodite/no-important';
 import RaisedButton from 'material-ui/RaisedButton';
 import classnames from 'classnames';
 import memoize from 'lodash.memoize';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
+import stylesToClassname from '../../lib/stylesToClassName';
 
-const styles = StyleSheet.create({
-    item: {
-        display: 'flex',
-        padding: 10,
+const styles = stylesToClassname(
+    {
+        item: {
+            display: 'flex',
+            padding: 10,
+        },
+        input: {
+            flex: 'auto',
+        },
+        add: {
+            float: 'right',
+        },
+        list: {
+            marginTop: 14,
+        },
     },
-    input: {
-        flex: 'auto',
-    },
-    add: {
-        float: 'right',
-    },
-    list: {
-        marginTop: 14,
-    },
-});
+    'input-list',
+);
 
 const underlineStyle = { position: 'relative' };
 
@@ -57,14 +60,14 @@ class InputList extends Component {
         }
 
         return (
-            <div className={css(styles.list)}>
+            <div className={styles.list}>
                 <label>{label}</label>
                 {fields.length === 0 && <p>{polyglot.t('empty')}</p>}
                 {fields.map((name, index) => (
-                    <div key={name} className={css(styles.item)}>
+                    <div key={name} className={styles.item}>
                         <Field
                             {...this.props}
-                            className={css(styles.input)}
+                            className={styles.input}
                             underlineStyle={underlineStyle}
                             name={name}
                             component={ItemComponent}
@@ -82,7 +85,7 @@ class InputList extends Component {
                     </div>
                 ))}
                 <IconButton
-                    className={classnames(css(styles.add), 'add')}
+                    className={classnames(styles.add, 'add')}
                     tooltip={polyglot.t('add')}
                     onClick={this.addValue}
                 >

@@ -1,6 +1,5 @@
 import React, { Component, Fragment } from 'react';
 import { Route } from 'react-router-dom';
-import { StyleSheet, css } from 'aphrodite/no-important';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { ConnectedRouter } from 'connected-react-router';
@@ -16,14 +15,18 @@ import { loadMenu } from './menu/reducer';
 import { fromMenu } from './selectors';
 import scrollToTop from '../lib/scrollToTop';
 import CreateResource from './resource/CreateResource';
+import stylesToClassname from '../lib/stylesToClassName';
 
 const notLogin = new RegExp('^(?!.*(/login)).*$');
 
-const styles = StyleSheet.create({
-    container: {
-        marginLeft: 110,
+const styles = stylesToClassname(
+    {
+        container: {
+            marginLeft: 110,
+        },
     },
-});
+    'routes',
+);
 
 class Routes extends Component {
     UNSAFE_componentWillMount() {
@@ -40,7 +43,7 @@ class Routes extends Component {
                 <ConnectedRouter history={history} onUpdate={scrollToTop}>
                     <Fragment>
                         <Route path={notLogin} component={NavBar} />
-                        <div className={css(styles.container)}>
+                        <div className={styles.container}>
                             <Route path="/" exact component={Home} />
                             <Route path="/resource" component={Resource} />
                             <Route

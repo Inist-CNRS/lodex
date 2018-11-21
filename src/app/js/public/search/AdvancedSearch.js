@@ -1,16 +1,19 @@
 import React from 'react';
-import { StyleSheet, css } from 'aphrodite/no-important';
 
 import FacetList from '../facet/FacetList';
+import stylesToClassname from '../../lib/stylesToClassName';
 
-const styles = StyleSheet.create({
-    container: {
-        padding: '1rem',
+const styles = stylesToClassname(
+    {
+        container: {
+            padding: '1rem',
+        },
     },
-});
+    'advanced-search',
+);
 
 const AdvancedSearch = () => (
-    <div className={`advanced-search ${css(styles.container)}`}>
+    <div className={`advanced-search ${styles.container}`}>
         <FacetList page="search" />
     </div>
 );

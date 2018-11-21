@@ -1,38 +1,42 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { StyleSheet, css } from 'aphrodite/no-important';
+
 import { isLocalURL, getResourceUri } from '../../../../common/uris';
 import Link from '../../lib/components/Link';
+import stylesToClassname from '../../lib/stylesToClassName';
 
-const styles = StyleSheet.create({
-    contentTitle: {
-        fontSize: '16px',
-        lineHeight: '20px',
-        fontWeight: '400',
-    },
-    contentParagraph: {
-        flex: '1 0 auto',
-        color: '#A1A1A4',
-        lineHeight: '16px',
-    },
-    contentLink: {
-        cursor: 'pointer',
-        textDecoration: 'inherit',
-        color: 'inherit',
-        fill: 'inherit',
-        ':hover': {
+const styles = stylesToClassname(
+    {
+        contentTitle: {
+            fontSize: '16px',
+            lineHeight: '20px',
+            fontWeight: '400',
+        },
+        contentParagraph: {
+            flex: '1 0 auto',
+            color: '#A1A1A4',
+            lineHeight: '16px',
+        },
+        contentLink: {
+            cursor: 'pointer',
             textDecoration: 'inherit',
             color: 'inherit',
             fill: 'inherit',
+            ':hover': {
+                textDecoration: 'inherit',
+                color: 'inherit',
+                fill: 'inherit',
+            },
+            ':active': {
+                textDecoration: 'inherit',
+                color: 'inherit',
+                fill: 'inherit',
+            },
         },
-        ':active': {
-            textDecoration: 'inherit',
-            color: 'inherit',
-            fill: 'inherit',
-        },
+        contentCustomDiv: {},
     },
-    contentCustomDiv: {},
-});
+    'lodex-resource',
+);
 
 // see https://jsonfeed.org/version/1#items
 const LodexResource = ({ id, url, title, summary }) => {
@@ -42,9 +46,9 @@ const LodexResource = ({ id, url, title, summary }) => {
 
     const content = (
         <div>
-            <div className={css(styles.contentTitle)}>{title}</div>
-            <div className={css(styles.contentParagraph)}>{summary}</div>
-            <div className={css(styles.contentCustomDiv)} />
+            <div className={styles.contentTitle}>{title}</div>
+            <div className={styles.contentParagraph}>{summary}</div>
+            <div className={styles.contentCustomDiv} />
         </div>
     );
 
@@ -52,7 +56,7 @@ const LodexResource = ({ id, url, title, summary }) => {
         return (
             <div id={id}>
                 <Link
-                    className={css(styles.contentLink)}
+                    className={styles.contentLink}
                     to={getResourceUri({ uri: id })}
                 >
                     {content}
@@ -63,7 +67,7 @@ const LodexResource = ({ id, url, title, summary }) => {
 
     return (
         <div id={id}>
-            <Link className={css(styles.contentLink)} href={url}>
+            <Link className={styles.contentLink} href={url}>
                 {content}
             </Link>
         </div>

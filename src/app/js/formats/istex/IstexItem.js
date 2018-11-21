@@ -1,33 +1,36 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Book from 'material-ui/svg-icons/av/library-books';
-import { StyleSheet, css } from 'aphrodite/no-important';
 
 import Link from '../../lib/components/Link';
+import stylesToClassname from '../../lib/stylesToClassName';
 
-const styles = StyleSheet.create({
-    article: {
-        paddingBottom: '3rem',
+const styles = stylesToClassname(
+    {
+        article: {
+            paddingBottom: '3rem',
+        },
+        title: {
+            lineHeight: '2rem',
+            display: 'flex',
+        },
+        titleIcon: {
+            marginRight: 8,
+            flexShrink: 0,
+        },
+        authors: {
+            fontStyle: 'oblique',
+        },
+        metadata: {
+            lineHeight: '1.5rem',
+            color: '#757575',
+        },
+        genre: {
+            textTransform: 'capitalize',
+        },
     },
-    title: {
-        lineHeight: '2rem',
-        display: 'flex',
-    },
-    titleIcon: {
-        marginRight: 8,
-        flexShrink: 0,
-    },
-    authors: {
-        fontStyle: 'oblique',
-    },
-    metadata: {
-        lineHeight: '1.5rem',
-        color: '#757575',
-    },
-    genre: {
-        textTransform: 'capitalize',
-    },
-});
+    'istex-item',
+);
 
 export const IstexItemComponent = ({
     title,
@@ -38,20 +41,20 @@ export const IstexItemComponent = ({
     hostGenre,
 }) => (
     <article>
-        <div className={css(styles.article)}>
-            <div className={css(styles.title)}>
-                <Book size="20" className={css(styles.titleIcon)} />
+        <div className={styles.article}>
+            <div className={styles.title}>
+                <Book size="20" className={styles.titleIcon} />
                 <Link href={url}>{title}</Link>
             </div>
             {authors && (
-                <div className={css(styles.authors)}> {authors.join(';')} </div>
+                <div className={styles.authors}> {authors.join(';')} </div>
             )}
-            <div className={css(styles.metadata)}>
+            <div className={styles.metadata}>
                 {publicationDate}
                 ,&nbsp;
                 {hostTitle}
                 &nbsp;-&nbsp;
-                <span className={css(styles.genre)}>{hostGenre}</span>
+                <span className={styles.genre}>{hostGenre}</span>
             </div>
         </div>
     </article>

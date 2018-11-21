@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import Folder from 'material-ui/svg-icons/file/folder';
 import FolderOpen from 'material-ui/svg-icons/file/folder-open';
 import Arrow from 'material-ui/svg-icons/hardware/keyboard-arrow-down';
-import { StyleSheet, css } from 'aphrodite/no-important';
 import Button from 'material-ui/FlatButton';
 import CircularProgress from 'material-ui/CircularProgress';
 import get from 'lodash.get';
@@ -11,32 +10,36 @@ import get from 'lodash.get';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import AdminOnlyAlert from '../../lib/components/AdminOnlyAlert';
 import SkipFold from './SkipFold';
+import stylesToClassname from '../../lib/stylesToClassName';
 
-const styles = StyleSheet.create({
-    li: {
-        listStyleType: 'none',
+const styles = stylesToClassname(
+    {
+        li: {
+            listStyleType: 'none',
+        },
+        buttonLabel: {
+            display: 'flex',
+            alignItems: 'center',
+            padding: '0px 8px',
+        },
+        labelText: {
+            marginLeft: 8,
+        },
+        count: {
+            marginLeft: 8,
+            backgroundColor: '#EEE',
+            borderRadius: '0.7em',
+            fontSize: '0.7em',
+            lineHeight: '0.7em',
+            padding: '0.5em',
+            fontStyle: 'italic',
+        },
+        arrowClose: {
+            transform: 'rotate(-90deg)',
+        },
     },
-    buttonLabel: {
-        display: 'flex',
-        alignItems: 'center',
-        padding: '0px 8px',
-    },
-    labelText: {
-        marginLeft: 8,
-    },
-    count: {
-        marginLeft: 8,
-        backgroundColor: '#EEE',
-        borderRadius: '0.7em',
-        fontSize: '0.7em',
-        lineHeight: '0.7em',
-        padding: '0.5em',
-        fontStyle: 'italic',
-    },
-    arrowClose: {
-        transform: 'rotate(-90deg)',
-    },
-});
+    'fetch-fold',
+);
 
 const circularProgress = (
     <CircularProgress
@@ -104,17 +107,15 @@ class FetchFold extends Component {
             <div className="istex-fold">
                 <div>
                     <Button onClick={isOpen ? this.close : this.open}>
-                        <div className={css(styles.buttonLabel)}>
+                        <div className={styles.buttonLabel}>
                             <Arrow
                                 className={
-                                    isOpen ? undefined : css(styles.arrowClose)
+                                    isOpen ? undefined : styles.arrowClose
                                 }
                             />
                             {isOpen ? <FolderOpen /> : <Folder />}
-                            <span className={css(styles.labelText)}>
-                                {label}
-                            </span>
-                            <span className={css(styles.count)}>{count}</span>
+                            <span className={styles.labelText}>{label}</span>
+                            <span className={styles.count}>{count}</span>
                             {isLoading && circularProgress}
                         </div>
                     </Button>

@@ -4,14 +4,12 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 import classnames from 'classnames';
-import { StyleSheet, css } from 'aphrodite/no-important';
 import debounce from 'lodash.debounce';
 
 import TextField from 'material-ui/TextField';
 import CircularProgress from 'material-ui/CircularProgress';
 import FlatButton from 'material-ui/FlatButton';
 import Link from '../../lib/components/Link';
-
 import {
     polyglot as polyglotPropTypes,
     field as fieldProptypes,
@@ -25,59 +23,61 @@ import theme from '../../theme';
 import AdminOnlyAlert from '../../lib/components/AdminOnlyAlert';
 import AppliedFacets from './AppliedFacets';
 import SearchResultList from './SearchResultList';
+import stylesToClassname from '../../lib/stylesToClassName';
 
-const styles = StyleSheet.create({
-    container: {
-        margin: '0 auto',
+const styles = stylesToClassname(
+    {
+        container: {
+            margin: '0 auto',
+        },
+        header: {
+            display: 'flex',
+            flexDirection: 'column',
+            padding: '1rem',
+        },
+        searchBarContainer: {
+            flex: '1 0 0',
+        },
+        advanced: {
+            display: 'flex',
+            flex: '0 0 auto',
+            flexDirection: 'column',
+        },
+        advancedToggle: {
+            alignSelf: 'flex-end',
+            cursor: 'pointer',
+        },
+        advancedFacets: {
+            flex: '0 0 auto',
+        },
+        searchResults: {
+            margin: '1.5rem 0',
+            opacity: '1',
+            transition: 'opacity 300ms ease-in-out',
+        },
+        searchResultsOpening: {
+            opacity: '0',
+        },
+        searchResultsEmpty: {
+            opacity: '0',
+        },
+        loading: {
+            marginRight: '1rem',
+            marginTop: '-0.2rem',
+        },
+        loadMore: {
+            height: 36,
+            marginTop: '1.5rem',
+        },
     },
-    header: {
-        display: 'flex',
-        flexDirection: 'column',
-        padding: '1rem',
-    },
-    searchBarContainer: {
-        flex: '1 0 0',
-    },
-    advanced: {
-        display: 'flex',
-        flex: '0 0 auto',
-        flexDirection: 'column',
-    },
-    advancedToggle: {
-        alignSelf: 'flex-end',
-        cursor: 'pointer',
-    },
-    advancedFacets: {
-        flex: '0 0 auto',
-    },
-    searchResults: {
-        margin: '1.5rem 0',
-        opacity: '1',
-        transition: 'opacity 300ms ease-in-out',
-    },
-    searchResultsOpening: {
-        opacity: '0',
-    },
-    searchResultsEmpty: {
-        opacity: '0',
-    },
-    loading: {
-        marginRight: '1rem',
-        marginTop: '-0.2rem',
-    },
-    loadMore: {
-        height: 36,
-        marginTop: '1.5rem',
-    },
-});
+    'search',
+);
 
 const muiStyles = {
     searchBarUnderline: {
         borderColor: theme.orange.primary,
     },
 };
-
-const cnames = (name, ...classes) => classnames(name, ...classes.map(css));
 
 class Search extends Component {
     state = {
@@ -116,7 +116,7 @@ class Search extends Component {
 
         return (
             <div>
-                <CircularProgress size={20} className={css(styles.loading)} />{' '}
+                <CircularProgress size={20} className={styles.loading} />{' '}
                 {polyglot.t('loading')}
             </div>
         );
@@ -142,12 +142,12 @@ class Search extends Component {
         const { loadMore, p: polyglot, results, total, loading } = this.props;
 
         return (
-            <div className={classnames('load-more', css(styles.loadMore))}>
+            <div className={classnames('load-more', styles.loadMore)}>
                 {loading ? (
                     <Fragment>
                         <CircularProgress
                             size={20}
-                            className={css(styles.loading)}
+                            className={styles.loading}
                         />{' '}
                         {polyglot.t('loading')}
                     </Fragment>
@@ -186,12 +186,10 @@ class Search extends Component {
         const canLoadMore = everythingIsOk && results.length < total;
 
         return (
-            <div className={cnames('search', styles.container)}>
-                <div
-                    className={classnames('search-header', css(styles.header))}
-                >
+            <div className={classnames('search', styles.container)}>
+                <div className={classnames('search-header', styles.header)}>
                     <div
-                        className={cnames(
+                        className={classnames(
                             'search-bar',
                             styles.searchBarContainer,
                         )}
@@ -212,13 +210,13 @@ class Search extends Component {
                     </div>
                     {showAdvancedSearch && (
                         <div
-                            className={cnames(
+                            className={classnames(
                                 'search-advanced',
                                 styles.advanced,
                             )}
                         >
                             <Link
-                                className={cnames(
+                                className={classnames(
                                     'search-advanced-toggle',
                                     styles.advancedToggle,
                                 )}
@@ -226,17 +224,15 @@ class Search extends Component {
                             >
                                 {polyglot.t('search_advanced')}
                             </Link>
-                            <AppliedFacets
-                                className={css(styles.advancedFacets)}
-                            />
+                            <AppliedFacets className={styles.advancedFacets} />
                         </div>
                     )}
                 </div>
                 <div
                     className={classnames(
                         'search-results',
-                        css(styles.searchResults),
-                        { [css(styles.searchResultsOpening)]: opening },
+                        styles.searchResults,
+                        { [styles.searchResultsOpening]: opening },
                     )}
                 >
                     {noOverviewField && this.renderNoOverviewField()}

@@ -3,7 +3,6 @@ import { PropTypes } from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import * as icons from '@fortawesome/free-solid-svg-icons';
 import get from 'lodash.get';
-import { StyleSheet, css } from 'aphrodite/no-important';
 import classnames from 'classnames';
 import Link from 'react-router-dom/Link';
 import NavLink from 'react-router-dom/NavLink';
@@ -11,74 +10,75 @@ import NavLink from 'react-router-dom/NavLink';
 import theme from '../../theme';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import ExportShareMenuItem from '../ExportShareMenuItem';
+import stylesToClassname from '../../lib/stylesToClassName';
 
-const styles = StyleSheet.create({
-    link: {
-        textDecoration: 'none',
-        ':hover': {
+const styles = stylesToClassname(
+    {
+        link: {
             textDecoration: 'none',
+            ':hover': {
+                textDecoration: 'none',
+            },
+            ':focus': {
+                textDecoration: 'none',
+                color: theme.orange.primary,
+            },
+            ':visited': {
+                textDecoration: 'none',
+            },
+            ':active': {
+                color: theme.orange.primary,
+            },
         },
-        ':focus': {
-            textDecoration: 'none',
+        active: {
             color: theme.orange.primary,
+            ':hover': {
+                color: theme.orange.primary,
+            },
         },
-        ':visited': {
-            textDecoration: 'none',
-        },
-        ':active': {
-            color: theme.orange.primary,
-        },
-    },
-    active: {
-        color: theme.orange.primary,
-        ':hover': {
-            color: theme.orange.primary,
-        },
-    },
-    drawerActive: {
-        color: `${theme.purple.primary} !important`,
-        ':hover': {
+        drawerActive: {
             color: `${theme.purple.primary} !important`,
+            ':hover': {
+                color: `${theme.purple.primary} !important`,
+            },
+        },
+        menuItem: {
+            width: '100%',
+            height: 75,
+            padding: 10,
+            display: 'flex',
+            flexDirection: 'column',
+            textAlign: 'center',
+            color: theme.green.primary,
+            cursor: 'pointer',
+            justifyContent: 'center',
+            userSelect: 'none',
+            textTransform: 'capitalize',
+            ':hover': {
+                color: theme.purple.primary,
+            },
+            ':active': {
+                color: theme.orange.primary,
+            },
+        },
+        menuItemIcon: {
+            margin: '0 auto',
         },
     },
-    menuItem: {
-        width: '100%',
-        height: 75,
-        padding: 10,
-        display: 'flex',
-        flexDirection: 'column',
-        textAlign: 'center',
-        color: theme.green.primary,
-        cursor: 'pointer',
-        justifyContent: 'center',
-        userSelect: 'none',
-        textTransform: 'capitalize',
-        ':hover': {
-            color: theme.purple.primary,
-        },
-        ':active': {
-            color: theme.orange.primary,
-        },
-    },
-    menuItemIcon: {
-        margin: '0 auto',
-    },
-});
+    'nav-bar',
+);
 
 const getIcon = icon => {
     const faIcon = get(icons, icon);
     if (faIcon) {
         return (
-            <FontAwesomeIcon
-                icon={faIcon}
-                className={css(styles.menuItemIcon)}
-            />
+            <FontAwesomeIcon icon={faIcon} className={styles.menuItemIcon} />
         );
     }
     return (
         <img
             src={icon}
-            className={css(styles.menuItemIcon)}
+            className={styles.menuItemIcon}
             width={50}
             height={50}
         />
@@ -109,10 +109,10 @@ const MenuItem = ({
                     exact
                     className={classnames(
                         'nav-item',
-                        css(styles.menuItem),
-                        css(styles.link),
+                        styles.menuItem,
+                        styles.link,
                     )}
-                    activeClassName={css(styles.active)}
+                    activeClassName={styles.active}
                     onClick={closeAll}
                 >
                     {icon}
@@ -126,10 +126,10 @@ const MenuItem = ({
                     exact
                     className={classnames(
                         'nav-item',
-                        css(styles.menuItem),
-                        css(styles.link),
+                        styles.menuItem,
+                        styles.link,
                     )}
-                    activeClassName={css(styles.active)}
+                    activeClassName={styles.active}
                     onClick={closeAll}
                 >
                     {icon}
@@ -144,18 +144,17 @@ const MenuItem = ({
                         onClick={handleGraphItemClick}
                         className={classnames(
                             'nav-item',
-                            css(styles.menuItem),
-                            css(styles.link),
+                            styles.menuItem,
+                            styles.link,
                             {
-                                [css(styles.drawerActive)]:
-                                    graphDrawer === 'open',
+                                [styles.drawerActive]: graphDrawer === 'open',
                             },
                         )}
                         isActive={(location, params) =>
                             get(location, 'url') === '/graph' &&
                             get(params, 'pathname') !== '/graph'
                         }
-                        activeClassName={css(styles.active)}
+                        activeClassName={styles.active}
                     >
                         {icon}
                         {label}
@@ -167,14 +166,9 @@ const MenuItem = ({
                 canBeSearched && (
                     <div
                         onClick={toggleSearch}
-                        className={classnames(
-                            'nav-item',
-                            css(styles.menuItem),
-                            {
-                                [css(styles.drawerActive)]:
-                                    searchDrawer === 'open',
-                            },
-                        )}
+                        className={classnames('nav-item', styles.menuItem, {
+                            [styles.drawerActive]: searchDrawer === 'open',
+                        })}
                     >
                         {icon}
                         {label}
@@ -186,7 +180,7 @@ const MenuItem = ({
                 role === 'admin' && (
                     <a
                         href="/admin"
-                        className={classnames('nav-item', css(styles.menuItem))}
+                        className={classnames('nav-item', styles.menuItem)}
                     >
                         {icon}
                         {label}
@@ -198,7 +192,7 @@ const MenuItem = ({
                 role === 'not logged' && (
                     <Link
                         to="/login"
-                        className={classnames('nav-item', css(styles.menuItem))}
+                        className={classnames('nav-item', styles.menuItem)}
                     >
                         {icon}
                         {label}
@@ -210,7 +204,7 @@ const MenuItem = ({
                 role !== 'not logged' && (
                     <Link
                         to="/login"
-                        className={classnames('nav-item', css(styles.menuItem))}
+                        className={classnames('nav-item', styles.menuItem)}
                         onClick={logout}
                     >
                         {icon}
@@ -224,13 +218,9 @@ const MenuItem = ({
                 <ExportShareMenuItem
                     renderOpenButton={({ handleOpen, open }) => (
                         <div
-                            className={classnames(
-                                'nav-item',
-                                css(styles.menuItem),
-                                {
-                                    [css(styles.drawerActive)]: open,
-                                },
-                            )}
+                            className={classnames('nav-item', styles.menuItem, {
+                                [styles.drawerActive]: open,
+                            })}
                             onClick={handleOpen}
                         >
                             {icon}
@@ -255,7 +245,7 @@ const MenuItem = ({
                 return (
                     <a
                         href={link}
-                        className={classnames('nav-item', css(styles.menuItem))}
+                        className={classnames('nav-item', styles.menuItem)}
                     >
                         {icon}
                         {label}
@@ -268,10 +258,10 @@ const MenuItem = ({
                     onClick={closeAll}
                     className={classnames(
                         'nav-item',
-                        css(styles.menuItem),
-                        css(styles.link),
+                        styles.menuItem,
+                        styles.link,
                     )}
-                    activeClassName={css(styles.active)}
+                    activeClassName={styles.active}
                 >
                     {icon}
                     {label}
