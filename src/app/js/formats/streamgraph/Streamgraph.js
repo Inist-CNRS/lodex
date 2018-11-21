@@ -1,65 +1,70 @@
 import React, { PureComponent } from 'react';
 import compose from 'recompose/compose';
+import { StyleSheet, css } from 'aphrodite/no-important';
 import * as d3 from 'd3';
-
 import {
-  zoomFunction,
-  distinctColors,
-  transformDataIntoMapArray,
-  getMinMaxValue,
-  cutStr
-} from "./utils";
-import injectData from "../injectData";
-import exportableToPng from "../exportableToPng";
+    zoomFunction,
+    transformDataIntoMapArray,
+    getMinMaxValue,
+    cutStr,
+} from './utils';
+import injectData from '../injectData';
+import exportableToPng from '../exportableToPng';
+import ZoomIcon from './zoomIcon';
+import MoveIcon from './moveIcon';
 
 const styles = StyleSheet.create({
-  divContainer: {
-    overflow: "hidden",
-    position: "relative"
-  },
-  tooltip: {
-    position: "absolute"
-  },
-  vertical: {
-    marginTop: 60,
-    height: 190,
-    pointerEvents: "none"
-  },
-  legend: {
-    position: "relative",
-    textAlign: "left",
-    marginLeft: 20,
-    columnCount: 3,
-    paddingBottom: 30
-  },
-  legendItem: {
-    marginTop: 2
-  },
-  legendItemTooltip: {
-    visibility: "hidden",
-    backgroundColor: "#4e4e4e",
-    color: "#fff",
-    textAlign: "center",
-    borderRadius: "6px",
-    padding: "5px 4px",
+    divContainer: {
+        overflow: 'hidden',
+        position: 'relative',
+    },
+    tooltip: {
+        position: 'absolute',
+    },
+    vertical: {
+        marginTop: 60,
+        height: 190,
+        pointerEvents: 'none',
+    },
+    legend: {
+        position: 'relative',
+        textAlign: 'left',
+        marginLeft: 20,
+        columnCount: 3,
+        paddingBottom: 30,
+    },
+    legendItem: {
+        marginTop: 2,
+    },
+    legendItemTooltip: {
+        visibility: 'hidden',
+        backgroundColor: '#4e4e4e',
+        color: '#fff',
+        textAlign: 'center',
+        borderRadius: '6px',
+        padding: '5px 4px',
 
-    position: "absolute",
-    left: "0px",
-    top: "-33px",
-    zIndex: 10
-  },
-  legendItemText: {
-    marginLeft: 5
-  },
-  legendButton: {
-    height: 15,
-    width: 15
-  }
+        position: 'absolute',
+        left: '0px',
+        top: '-33px',
+        zIndex: 10,
+    },
+    legendItemText: {
+        marginLeft: 5,
+    },
+    legendButton: {
+        height: 15,
+        width: 15,
+    },
 });
 
 class Streamgraph extends PureComponent {
     constructor(props) {
         super(props);
+        this.state = {
+            width: 800,
+            height: 300,
+        };
 
         this.divContainer = React.createRef();
         this.svgContainer = React.createRef();
@@ -137,15 +142,21 @@ class Streamgraph extends PureComponent {
         const min = new Date(String(minDate));
         const max = new Date(String(maxDate));
 
+        console.log(`min : ${min}, max : ${max}`);
+
         this.xAxisScale = d3
             .scaleTime()
             .domain([min, max])
             .range([0, width]);
 
         this.xAxis = d3
-            .axisBottom(this.xAxisScale)
+            //.axisBottom(this.xAxisScale)
+            .axisBottom()
             .tickFormat(d3.timeFormat('%Y'))
-            .ticks(d3.timeYear, 1);
+            .tickPadding(5)
+            .ticks(d3.timeYear)
+            .scale(this.xAxisScale);
+        //.ticks(d3.timeYear, 1);
 
         this.gx = innerSpace
             .append('g')
@@ -165,21 +176,26 @@ class Streamgraph extends PureComponent {
             .append('g')
             .attr('class', 'y axis')
             .attr('transform', 'translate(' + width + ', 0)')
+            .style('visibility', 'hidden')
             .call(this.yAxisR);
 
         this.gyl = innerSpace
             .append('g')
             .attr('class', 'y axis')
+            .style('visibility', 'hidden')
             .call(this.yAxisL);
     }
 
     createAndSetStreams(layersNumber, graphZone, stackedData, nameList) {
         const colorNameList = [];
         if (stackedData) {
-            const z = distinctColors(layersNumber);
+            let z = this.props.colors.split(' ');
+            while (z.length < layersNumber) {
+                z = [...z, ...z];
+            }
             const area = d3
                 .area()
-                .x(d => {
+                .x((d, i) => {
                     return this.xAxisScale(d.data.date);
                 })
                 .y0(d => {
@@ -223,11 +239,12 @@ class Streamgraph extends PureComponent {
             .style('left', '0px')
             .style('margin-top', `${margin.top - 10}px`)
             .style('pointer-events', 'none')
+            .style('visibility', 'hidden')
             .style('background', '#000');
 
         const tooltip = divContainer
             .insert('div', '#svgContainer')
-            .attr('class', `remove ${styles.tooltip}`)
+            .attr('class', `remove ${css(styles.tooltip)}`)
             .attr('id', 'tooltip')
             .style('position', 'absolute')
             .style('z-index', '2')
@@ -238,11 +255,15 @@ class Streamgraph extends PureComponent {
         return { tooltip, vertical };
     }
 
-    createAndSetTheLegend(d3DivContainer, colorNameList) {
+    createAndSetTheLegend(d3DivContainer, colorNameList, width) {
         const legendView = d3DivContainer
             .append('div')
             .attr('id', 'legend')
-            .attr('class', styles.legend);
+            .attr('class', `${css(styles.legend)}`);
+
+        width > 500
+            ? legendView.style('column-count', 3)
+            : legendView.style('column-count', 2);
 
         const colorNameTmpList = colorNameList;
         colorNameTmpList.reverse();
@@ -251,33 +272,37 @@ class Streamgraph extends PureComponent {
             const element = colorNameList[index];
             const legendItemContainer = legendView
                 .append('div')
-                .attr('class', styles.legendItem);
+                .attr('class', `${css(styles.legendItem)}`);
 
             legendItemContainer
                 .append('svg')
                 .attr('width', 15)
                 .attr('height', 15)
+                .style('vertical-align', 'middle')
                 .style('background-color', element.color);
 
             legendItemContainer
                 .append('text')
-                .attr('class', styles.legendItemText)
+                .attr('class', `${css(styles.legendItemText)}`)
                 .text(cutStr(element.name));
 
             const legendItemTooltip = legendItemContainer
                 .append('span')
-                .attr('class', styles.legendItemTooltip)
+                .attr('class', `${css(styles.legendItemTooltip)}`)
                 .text(element.name);
 
             legendItemContainer
-                .on('mouseover', () => {
+                .on('mouseover', (d, i) => {
                     legendItemTooltip.style('visibility', 'visible');
                 })
-                .on('mousemove', () => {
+                .on('mousemove', (d, i) => {
                     legendItemTooltip.style('visibility', 'visible');
                 })
-                .on('mouseout', () => {
+                .on('mouseout', (d, i) => {
                     legendItemTooltip.style('visibility', 'hidden');
+                })
+                .on('click', (d, i) => {
+                    console.log('you clicked me !');
                 });
         });
     }
@@ -285,7 +310,7 @@ class Streamgraph extends PureComponent {
     setViewportEvents(svgViewport, vertical) {
         const componentContext = this;
         svgViewport
-            .on('mouseover', function() {
+            .on('mouseover', function(d, i) {
                 if (componentContext.mouseIsOverStream) {
                     let mousex = d3.mouse(this);
                     mousex = mousex[0];
@@ -295,7 +320,7 @@ class Streamgraph extends PureComponent {
                     vertical.style('visibility', 'hidden');
                 }
             })
-            .on('mousemove', function() {
+            .on('mousemove', function(d, i) {
                 if (componentContext.mouseIsOverStream) {
                     let mousex = d3.mouse(this);
                     mousex = mousex[0];
@@ -312,7 +337,7 @@ class Streamgraph extends PureComponent {
 
         if (this.streams) {
             this.streams
-                .on('mousemove', function(d) {
+                .on('mousemove', function(d, i) {
                     const mousex = d3.mouse(this)[0];
                     const date = componentContext.xAxisScale.invert(mousex);
                     componentContext.mouseIsOverStream = true;
@@ -323,20 +348,16 @@ class Streamgraph extends PureComponent {
                             elem.data.date.getFullYear() === date.getFullYear(),
                     ).data[this.hoveredKey];
 
-                    d3
-                        .select(this)
-                        .classed('hover', true)
-                        .attr('stroke', '#000')
-                        .attr('stroke-width', '0.5px'),
-                        tooltip
-                            .html(
-                                '<p>' +
-                                    this.hoveredKey +
-                                    '<br>' +
-                                    this.hoveredValue +
-                                    '</p>',
-                            )
-                            .style('visibility', 'visible');
+                    d3.select(this).classed('hover', true);
+                    tooltip
+                        .html(
+                            '<p>' +
+                                this.hoveredKey +
+                                '<br>' +
+                                this.hoveredValue +
+                                '</p>',
+                        )
+                        .style('visibility', 'visible');
                 })
                 .on('mouseover', (d, i) => {
                     componentContext.mouseIsOverStream = true;
@@ -354,25 +375,22 @@ class Streamgraph extends PureComponent {
         const componentContext = this;
 
         if (this.streams) {
-            this.streams.on('mouseout', function() {
+            this.streams.on('mouseout', function(d, i) {
                 componentContext.mouseIsOverStream = false;
                 componentContext.streams
                     .transition()
                     .duration(25)
                     .attr('opacity', '1');
-                d3
-                    .select(this)
-                    .classed('hover', false)
-                    .attr('stroke-width', '0px'),
-                    tooltip
-                        .html(
-                            '<p>' +
-                                this.hoveredKey +
-                                '<br>' +
-                                this.hoveredValue +
-                                '</p>',
-                        )
-                        .style('visibility', 'hidden');
+                d3.select(this).classed('hover', false);
+                tooltip
+                    .html(
+                        '<p>' +
+                            this.hoveredKey +
+                            '<br>' +
+                            this.hoveredValue +
+                            '</p>',
+                    )
+                    .style('visibility', 'hidden');
             });
         }
     }
@@ -383,6 +401,11 @@ class Streamgraph extends PureComponent {
         this.setViewportEvents(svgViewport, vertical);
         this.setMouseMoveAndOverStreams(tooltip);
         this.setMouseOutStreams(tooltip);
+    }
+
+    updateDimensions() {
+        this.removeGraph();
+        this.setGraph();
     }
 
     setGraph() {
@@ -396,14 +419,15 @@ class Streamgraph extends PureComponent {
 
         const svgWidth = this.divContainer.current.clientWidth;
 
+        const { height: svgHeight } = this.state;
         const margin = { top: 60, right: 40, bottom: 50, left: 60 };
         const width = svgWidth - margin.left - margin.right;
-        const height = HEIGHT - margin.top - margin.bottom;
+        const height = svgHeight - margin.top - margin.bottom;
 
         const divContainer = d3.select(this.divContainer.current);
 
         const d3DivContainer = divContainer
-            .attr('class', styles.divContainer)
+            .attr('class', `${css(styles.divContainer)}`)
             .append('div')
             .attr('id', 'd3DivContainer');
 
@@ -446,15 +470,11 @@ class Streamgraph extends PureComponent {
             namesList,
         );
 
-        this.createAndSetTheLegend(d3DivContainer, colorNameList);
+        this.createAndSetTheLegend(d3DivContainer, colorNameList, width);
         this.setTheEventsActions(svgViewport, vertical, tooltip);
     }
 
-    componentDidMount() {
-        this.setGraph();
-    }
-
-    UNSAFE_componentWillUpdate() {
+    removeGraph() {
         d3.select(this.divContainer.current)
             .selectAll('#d3DivContainer')
             .selectAll('div')
@@ -468,6 +488,10 @@ class Streamgraph extends PureComponent {
             .selectAll('#vertical')
             .remove();
 
+        d3.select(this.divContainer.current)
+            .selectAll('#tooltip')
+            .remove();
+
         d3.select(this.anchor.current)
             .selectAll('g')
             .remove();
@@ -477,11 +501,28 @@ class Streamgraph extends PureComponent {
             .remove();
     }
 
+    componentDidMount() {
+        window.addEventListener('resize', this.updateDimensions.bind(this));
+        this.setGraph();
+    }
+
+    componentWillUpdate() {
+        this.removeGraph();
+    }
+
     componentDidUpdate() {
         this.setGraph();
     }
 
+    componentWillUnmount() {
+        window.removeEventListener('resize', this.updateDimensions.bind(this));
+        this.removeGraph();
+    }
+
     render() {
+        const { width, height } = this.state;
+
+        //<ZoomIcon width={35}/>
         return (
             <div
                 id="divContainer"
@@ -491,160 +532,14 @@ class Streamgraph extends PureComponent {
                 <svg
                     id="svgContainer"
                     ref={this.svgContainer}
-                    width={WIDTH}
-                    height={HEIGHT}
+                    width={width}
+                    height={height}
                 >
                     <g id="anchor" ref={this.anchor} />
                 </svg>
             </div>
         );
     }
-  }
-
-  setTheEventsActions(svgViewport, vertical, tooltip) {
-    // Can't split events in different blocks because .on("") events
-    // definition erase the previous ones
-    this.setViewportEvents(svgViewport, vertical);
-    this.setMouseMoveAndOverStreams(tooltip);
-    this.setMouseOutStreams(tooltip);
-  }
-
-  updateDimensions() {
-    this.removeGraph();
-    this.setGraph();
-  }
-
-  setGraph() {
-    const {
-      valuesObjectsArray,
-      valuesArray,
-      dateMin,
-      dateMax,
-      namesList
-    } = transformDataIntoMapArray(this.props.formatData);
-
-    const svgWidth = this.divContainer.current.clientWidth;
-
-    const { height: svgHeight } = this.state;
-    const margin = { top: 60, right: 40, bottom: 50, left: 60 };
-    const width = svgWidth - margin.left - margin.right;
-    const height = svgHeight - margin.top - margin.bottom;
-
-    const divContainer = d3.select(this.divContainer.current);
-
-    const d3DivContainer = divContainer
-      .attr("class", `${css(styles.divContainer)}`)
-      .append("div")
-      .attr("id", "d3DivContainer");
-
-    const svgViewport = d3.select(this.anchor.current);
-
-    d3.select(this.svgContainer.current).attr("width", svgWidth);
-
-    const layersNumber = valuesObjectsArray.length;
-
-    const stackedData = this.stackDatas(namesList, valuesArray);
-    const { minValue, maxValue } = getMinMaxValue(stackedData);
-
-    const { innerSpace, graphZone } = this.initTheGraphBasicsElements(
-      width,
-      height,
-      margin,
-      svgViewport
-    );
-
-    const { tooltip, vertical } = this.createAndSetDataReader(
-      divContainer,
-      height,
-      margin
-    );
-
-    this.createAndSetAxis(
-      dateMin,
-      dateMax,
-      minValue,
-      maxValue,
-      width,
-      height,
-      innerSpace
-    );
-
-    const colorNameList = this.createAndSetStreams(
-      layersNumber,
-      graphZone,
-      stackedData,
-      namesList
-    );
-
-    this.createAndSetTheLegend(d3DivContainer, colorNameList, width);
-    this.setTheEventsActions(svgViewport, vertical, tooltip);
-  }
-
-  removeGraph() {
-    d3.select(this.divContainer.current)
-      .selectAll("#d3DivContainer")
-      .selectAll("div")
-      .remove();
-
-    d3.select(this.divContainer.current)
-      .selectAll("#d3DivContainer")
-      .remove();
-
-    d3.select(this.divContainer.current)
-      .selectAll("#vertical")
-      .remove();
-
-    d3.select(this.divContainer.current)
-      .selectAll("#tooltip")
-      .remove();
-
-    d3.select(this.anchor.current)
-      .selectAll("g")
-      .remove();
-
-    d3.select(this.anchor.current)
-      .selectAll("defs")
-      .remove();
-  }
-
-  componentDidMount() {
-    window.addEventListener("resize", this.updateDimensions.bind(this));
-    this.setGraph();
-  }
-
-  componentWillUpdate() {
-    this.removeGraph();
-  }
-
-  componentDidUpdate() {
-    this.setGraph();
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener("resize", this.updateDimensions.bind(this));
-    this.removeGraph();
-  }
-
-  render() {
-    const { width, height } = this.state;
-
-    return (
-      <div
-        id="divContainer"
-        ref={this.divContainer}
-        style={styles.divContainer}
-      >
-        <svg
-          id="svgContainer"
-          ref={this.svgContainer}
-          width={width}
-          height={height}
-        >
-          <g id="anchor" ref={this.anchor} />
-        </svg>
-      </div>
-    );
-  }
 }
 
 export default compose(
