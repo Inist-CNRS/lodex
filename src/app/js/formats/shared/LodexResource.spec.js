@@ -7,6 +7,7 @@ import Link from '../../lib/components/Link';
 
 describe('LodexResource', () => {
     beforeEach(() => StyleSheetTestUtils.suppressStyleInjection());
+
     it('should render Link with to=id if id is of type uid', () => {
         const wrapper = shallow(
             <LodexResource
@@ -19,7 +20,7 @@ describe('LodexResource', () => {
 
         const link = wrapper.find(Link);
 
-        expect(link.prop('to')).toBe('uid:/id');
+        expect(link.prop('to')).toBe('/uid:/id');
     });
 
     it('should render Link with to=id if id is of type ark', () => {
@@ -34,22 +35,7 @@ describe('LodexResource', () => {
 
         const link = wrapper.find(Link);
 
-        expect(link.prop('to')).toBe('ark:/id');
-    });
-
-    it('should render Link with to=id if id starts with /api', () => {
-        const wrapper = shallow(
-            <LodexResource
-                id="/api/id"
-                url="http://localhost:3000/api/id"
-                title="title"
-                summary="summary"
-            />,
-        );
-
-        const link = wrapper.find(Link);
-
-        expect(link.prop('to')).toBe('/api/id');
+        expect(link.prop('to')).toBe('/ark:/id');
     });
 
     it('should render a with href=url if id is not local', () => {

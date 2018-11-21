@@ -12,6 +12,7 @@
     "all-resources",
     "all-documents",
     "syndication",
+    "syndication-from",
     "count-by-fields",
     "count-all",
     "distinct-by",
