@@ -186,7 +186,10 @@ class Streamgraph extends PureComponent {
   createAndSetStreams(layersNumber, graphZone, stackedData, nameList) {
     const colorNameList = [];
     if (stackedData) {
-      const z = distinctColors(layersNumber);
+      let z = this.props.colors.split(" ");
+      while (z.length < layersNumber) {
+        z = [...z, ...z];
+      }
       const area = d3
         .area()
         .x((d, i) => {
@@ -290,7 +293,7 @@ class Streamgraph extends PureComponent {
         })
         .on("mouseout", (d, i) => {
           legendItemTooltip.style("visibility", "hidden");
-        })
+        });
     });
   }
 
@@ -334,16 +337,10 @@ class Streamgraph extends PureComponent {
             elem => elem.data.date.getFullYear() === date.getFullYear()
           ).data[this.hoveredKey];
 
-          d3
-            .select(this)
-            .classed("hover", true)
-            .attr("stroke", "#000")
-            .attr("stroke-width", "0.5px"),
-            tooltip
-              .html(
-                "<p>" + this.hoveredKey + "<br>" + this.hoveredValue + "</p>"
-              )
-              .style("visibility", "visible");
+          d3.select(this).classed("hover", true);
+          tooltip
+            .html("<p>" + this.hoveredKey + "<br>" + this.hoveredValue + "</p>")
+            .style("visibility", "visible");
         })
         .on("mouseover", (d, i) => {
           componentContext.mouseIsOverStream = true;
@@ -367,13 +364,10 @@ class Streamgraph extends PureComponent {
           .transition()
           .duration(25)
           .attr("opacity", "1");
-        d3
-          .select(this)
-          .classed("hover", false)
-          .attr("stroke-width", "0px"),
-          tooltip
-            .html("<p>" + this.hoveredKey + "<br>" + this.hoveredValue + "</p>")
-            .style("visibility", "hidden");
+        d3.select(this).classed("hover", false);
+        tooltip
+          .html("<p>" + this.hoveredKey + "<br>" + this.hoveredValue + "</p>")
+          .style("visibility", "hidden");
       });
     }
   }
