@@ -108,13 +108,7 @@ export const getViewComponent = (field, isList) => {
 };
 
 export const getAdminComponent = name => getComponent(name).AdminComponent;
-export const getEditionComponent = field => {
-    const { EditionComponent, predicate } = getComponent(field);
-    return {
-        Component: EditionComponent,
-        predicate,
-    };
-};
+export const getEditionComponent = field =>
+    getComponent(field).EditionComponent;
 export const getIconComponent = name => getComponent(name).Icon;
-
 export const getPredicate = name => getComponent(name).predicate;

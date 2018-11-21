@@ -1,11 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import translate from 'redux-polyglot/translate';
 
-import {
-    field as fieldPropTypes,
-    polyglot as polyglotPropTypes,
-} from '../../propTypes';
+import { field as fieldPropTypes } from '../../propTypes';
 import { isLongText, getShortText } from '../../lib/longTexts';
 import { isURL, isLocalURL, canonicalURL } from '../../../../common/uris.js';
 import {
@@ -30,18 +26,9 @@ const styles = {
     },
 };
 
-const DefaultView = ({
-    className,
-    resource,
-    field,
-    fieldStatus,
-    shrink,
-    p: polyglot,
-}) => {
+const DefaultView = ({ className, resource, field, fieldStatus, shrink }) => {
     let value = resource[field.name];
-    if (Array.isArray(value)) {
-        return <p>{polyglot.t('bad_value_format', { label: field.label })}</p>;
-    } else if (isURL(value)) {
+    if (isURL(value)) {
         return (
             <Link style={styles[fieldStatus]} href={`${value}`}>
                 {value}
@@ -72,7 +59,6 @@ DefaultView.propTypes = {
     fieldStatus: PropTypes.string,
     resource: PropTypes.any.isRequired,
     shrink: PropTypes.bool,
-    p: polyglotPropTypes.isRequired,
 };
 
 DefaultView.defaultProps = {
@@ -81,4 +67,4 @@ DefaultView.defaultProps = {
     shrink: false,
 };
 
-export default translate(DefaultView);
+export default DefaultView;
