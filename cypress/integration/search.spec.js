@@ -93,7 +93,7 @@ describe('Search', () => {
             searchDrawer.searchInput().should('have.value', query);
         });
 
-        it.only('should sort result by pertinence', () => {
+        it('should sort result by pertinence', () => {
             searchDrawer.openSearchDrawer();
             searchDrawer.search('medicine');
             cy.get('.search-result').should('have.length', 2);
