@@ -31,7 +31,7 @@ const getSort = (sortBy, sortDir, match, searchableFieldNames) => {
             },
         };
     }
-    return { uri: -1 };
+    return { uri: 1 };
 };
 
 export default async db => {
