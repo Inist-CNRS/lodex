@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { StyleSheet, css } from 'aphrodite/no-important';
-import { isLocalURL } from '../../../../common/uris';
+import { isLocalURL, getResourceUri } from '../../../../common/uris';
 import Link from '../../lib/components/Link';
 
 const styles = StyleSheet.create({
@@ -51,7 +51,10 @@ const LodexResource = ({ id, url, title, summary }) => {
     if (isLocalURL(id)) {
         return (
             <div id={id}>
-                <Link className={css(styles.contentLink)} to={id}>
+                <Link
+                    className={css(styles.contentLink)}
+                    to={getResourceUri({ uri: id })}
+                >
                     {content}
                 </Link>
             </div>
