@@ -229,7 +229,10 @@ class SparqlTextFieldAdmin extends Component {
     };
 
     render() {
-        const { p: polyglot, args: { sparql } } = this.props;
+        const {
+            p: polyglot,
+            args: { sparql },
+        } = this.props;
         const { endpoint, request, maxValue, hiddenInfo, separator } =
             sparql || defaultArgs.sparql;
 
