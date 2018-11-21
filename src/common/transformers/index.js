@@ -28,6 +28,7 @@ import SELECT from './SELECT';
 import GET from './GET';
 import ARRAY from './ARRAY';
 import MASK from './MASK';
+import URLENCODE from './URLENCODE';
 
 const transformers = {
     AUTOGENERATE_URI: memoizeTransformer(AUTOGENERATE_URI),
@@ -59,6 +60,7 @@ const transformers = {
     GET: memoizeTransformer(GET),
     ARRAY: memoizeTransformer(ARRAY),
     MASK: memoizeTransformer(MASK),
+    URLENCODE: memoizeTransformer(URLENCODE),
     LINK: () => () => {
         console.warn(
             'DeprecationWarning: The LINK transformer is no longer supported',
@@ -99,6 +101,7 @@ const transformersMetas = [
     GET,
     ARRAY,
     MASK,
+    URLENCODE,
 ]
     .map(transformation => transformation.getMetas())
     .sort((x, y) => x.name.localeCompare(y.name));
