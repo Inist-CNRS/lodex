@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { StyleSheet, css } from 'aphrodite/no-important';
 
 import {
     field as fieldPropTypes,
@@ -24,6 +23,7 @@ import IstexItem from '../istex/IstexItem';
 import DecadeFold from './DecadeFold';
 import getDecadeFromData from './getDecadeFromData';
 import EmbedButton from './EmbedButton';
+import stylesToClassname from '../../lib/stylesToClassName';
 
 export const IstexDocument = ({ item }) => <IstexItem {...item} />;
 
@@ -44,16 +44,19 @@ export const getComposedComponent = displayDecade =>
         IstexDocument,
     ]);
 
-const styles = StyleSheet.create({
-    container: {
-        position: 'relative',
+const styles = stylesToClassname(
+    {
+        container: {
+            position: 'relative',
+        },
+        embedButton: {
+            position: 'absolute',
+            top: 0,
+            right: '-2rem',
+        },
     },
-    embedButton: {
-        position: 'absolute',
-        top: 0,
-        right: '-2rem',
-    },
-});
+    'istex-summary',
+);
 
 export const IstexSummaryView = ({
     formatData,
@@ -78,10 +81,10 @@ export const IstexSummaryView = ({
     const ComposedComponent = getComposedComponent(displayDecade);
 
     return (
-        <div className={`istex-summary ${css(styles.container)}`}>
+        <div className={`istex-summary ${styles.container}`}>
             {showEmbedButton && (
                 <EmbedButton
-                    className={css(styles.embedButton)}
+                    className={styles.embedButton}
                     uri={resource.uri}
                     fieldName={field.name}
                     p={polyglot}

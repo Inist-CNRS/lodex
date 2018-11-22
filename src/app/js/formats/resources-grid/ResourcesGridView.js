@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { StyleSheet, css } from 'aphrodite/no-important';
 import compose from 'recompose/compose';
+import { connect } from 'react-redux';
 
 import LodexResource from '../shared/LodexResource';
 import { field as fieldPropTypes } from '../../propTypes';
 import injectData from '../injectData';
-import { connect } from 'react-redux';
+import stylesToClassname from '../../lib/stylesToClassName';
 
 class ResourcesGridView extends Component {
     static propTypes = {
@@ -25,48 +25,51 @@ class ResourcesGridView extends Component {
 
     render() {
         const { data, spaceWidth } = this.props;
-        const styles = StyleSheet.create({
-            list: {
-                display: 'flex',
-                flexWrap: 'wrap',
-                margin: '0',
-                padding: '0',
-                listStyle: 'none',
-            },
-            item: {
-                listStyle: 'none',
-                display: 'flex',
-                padding: '0.5em',
-                width: '100%',
-                borderRadius: '2px',
-                background: 'white',
-                boxShadow: '0 2px 1px rgba(170, 170, 170, 0.25)',
-                '@media all and (min-width: 40em)': {
-                    width: '50%',
+        const styles = stylesToClassname(
+            {
+                list: {
+                    display: 'flex',
+                    flexWrap: 'wrap',
                     margin: '0',
+                    padding: '0',
+                    listStyle: 'none',
                 },
-                '@media all and (min-width: 60em)': {
-                    width: `${spaceWidth}`,
-                    margin: '1%',
+                item: {
+                    listStyle: 'none',
+                    display: 'flex',
+                    padding: '0.5em',
+                    width: '100%',
+                    borderRadius: '2px',
+                    background: 'white',
+                    boxShadow: '0 2px 1px rgba(170, 170, 170, 0.25)',
+                    '@media all and (min-width: 40em)': {
+                        width: '50%',
+                        margin: '0',
+                    },
+                    '@media all and (min-width: 60em)': {
+                        width: `${spaceWidth}`,
+                        margin: '1%',
+                    },
+                },
+                content: {
+                    backgroundColor: '#fff',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    padding: '1em',
+                    width: '100%',
                 },
             },
-            content: {
-                backgroundColor: '#fff',
-                display: 'flex',
-                flexDirection: 'column',
-                padding: '1em',
-                width: '100%',
-            },
-        });
+            'resources-grid',
+        );
 
         return (
             <div>
-                <ul className={css(styles.list)}>
+                <ul className={styles.list}>
                     {data.map((entry, index) => {
                         const key = `${index}-resources-grid`;
                         return (
-                            <li key={key} className={css(styles.item)}>
-                                <div className={css(styles.content)}>
+                            <li key={key} className={styles.item}>
+                                <div className={styles.content}>
                                     <LodexResource {...entry} />
                                 </div>
                             </li>

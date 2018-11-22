@@ -1,19 +1,22 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { StyleSheet, css } from 'aphrodite/no-important';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
 
 import { fromUser } from '../../sharedSelectors';
+import stylesToClassname from '../../lib/stylesToClassName';
 
-const styles = StyleSheet.create({
-    alert: {
-        display: 'flex',
-        flexDirection: 'column',
-        backgroundColor: '#FDDBD3',
-        padding: '2rem 1.5rem',
+const styles = stylesToClassname(
+    {
+        alert: {
+            display: 'flex',
+            flexDirection: 'column',
+            backgroundColor: '#FDDBD3',
+            padding: '2rem 1.5rem',
+        },
     },
-});
+    'admin-only-alert',
+);
 
 export const AdminOnlyAlertComponent = ({
     children,
@@ -21,9 +24,7 @@ export const AdminOnlyAlertComponent = ({
     className = 'alert',
 }) =>
     isAdmin ? (
-        <div className={classnames(className, css(styles.alert))}>
-            {children}
-        </div>
+        <div className={classnames(className, styles.alert)}>{children}</div>
     ) : null;
 
 AdminOnlyAlertComponent.propTypes = {

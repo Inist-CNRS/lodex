@@ -1,5 +1,4 @@
 import React from 'react';
-import { StyleSheet, css } from 'aphrodite/no-important';
 import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
@@ -9,6 +8,7 @@ import injectData from '../injectData';
 import { mapSourceToX, mapTargetToX } from './parseChartData';
 import getGradientScaleAndLegend from '../../lib/components/getGradientScaleAndLegend';
 import exportableToPng from '../exportableToPng';
+import stylesToClassname from '../../lib/stylesToClassName';
 
 const firstCell = {
     height: '60px',
@@ -22,75 +22,78 @@ const firstCell = {
     lineHeight: 0.8,
 };
 
-const styles = StyleSheet.create({
-    table: {
-        verticalAlign: 'top',
-        maxWidth: '100%',
-        whiteSpace: 'nowrap',
-        borderCollapse: 'collapse',
-        borderSpacing: 0,
-        display: 'flex',
-        overflow: 'hidden',
-        background: 'none',
+const styles = stylesToClassname(
+    {
+        table: {
+            verticalAlign: 'top',
+            maxWidth: '100%',
+            whiteSpace: 'nowrap',
+            borderCollapse: 'collapse',
+            borderSpacing: 0,
+            display: 'flex',
+            overflow: 'hidden',
+            background: 'none',
+        },
+        thead: {
+            display: 'flex',
+            flexShrink: 0,
+            minWidth: 'min-content',
+        },
+        tbody: {
+            display: 'flex',
+            position: 'relative',
+            overflowX: 'auto',
+            overflowY: 'hidden',
+            width: '100%',
+        },
+        tr: {
+            display: 'flex',
+            flexDirection: 'column',
+            minWidth: 'min-content',
+            flexShrink: 0,
+        },
+        td: {
+            ':first-child': firstCell,
+            display: 'block',
+            borderLeft: 0,
+            width: '30px',
+            height: '30px',
+            margin: '2px',
+        },
+        th: {
+            ':first-child': firstCell,
+            fontSize: '12px',
+            textAlign: 'right',
+            textTransform: 'none',
+            display: 'block',
+            height: '30px',
+            margin: '2px',
+            lineHeight: '30px',
+        },
+        rotate: {
+            position: 'relative',
+            top: '0px',
+            left: '0px',
+            height: '100%',
+            transform: 'skew(-45deg,0deg)',
+        },
+        rotateSpan: {
+            fontWeight: 'bold',
+            transform: 'skew(45deg,0deg) rotate(315deg)',
+            position: 'absolute',
+            bottom: '30px',
+            left: '0px',
+            display: 'inline-block',
+            width: '85px',
+            textAlign: 'left',
+            whiteSpace: 'normal',
+        },
+        tooltip: {
+            textAlign: 'center',
+        },
     },
-    thead: {
-        display: 'flex',
-        flexShrink: 0,
-        minWidth: 'min-content',
-    },
-    tbody: {
-        display: 'flex',
-        position: 'relative',
-        overflowX: 'auto',
-        overflowY: 'hidden',
-        width: '100%',
-    },
-    tr: {
-        display: 'flex',
-        flexDirection: 'column',
-        minWidth: 'min-content',
-        flexShrink: 0,
-    },
-    td: {
-        ':first-child': firstCell,
-        display: 'block',
-        borderLeft: 0,
-        width: '30px',
-        height: '30px',
-        margin: '2px',
-    },
-    th: {
-        ':first-child': firstCell,
-        fontSize: '12px',
-        textAlign: 'right',
-        textTransform: 'none',
-        display: 'block',
-        height: '30px',
-        margin: '2px',
-        lineHeight: '30px',
-    },
-    rotate: {
-        position: 'relative',
-        top: '0px',
-        left: '0px',
-        height: '100%',
-        transform: 'skew(-45deg,0deg)',
-    },
-    rotateSpan: {
-        fontWeight: 'bold',
-        transform: 'skew(45deg,0deg) rotate(315deg)',
-        position: 'absolute',
-        bottom: '30px',
-        left: '0px',
-        display: 'inline-block',
-        width: '85px',
-        textAlign: 'left',
-        whiteSpace: 'normal',
-    },
-    tooltip: {
-        textAlign: 'center',
-    },
-});
+    'heat-map',
+);
 
 const getColorStyle = color => ({
     backgroundColor: color,
@@ -107,30 +110,30 @@ export const HeatMapView = ({
     legend,
 }) => (
     <div>
-        <table className={css(styles.table)}>
-            <thead className={css(styles.thead)}>
-                <tr className={css(styles.tr)}>
-                    <th className={css(styles.th)} />
+        <table className={styles.table}>
+            <thead className={styles.thead}>
+                <tr className={styles.tr}>
+                    <th className={styles.th} />
                     {yAxis.map(yKey => (
-                        <th className={css(styles.th)} key={yKey}>
+                        <th className={styles.th} key={yKey}>
                             {yKey}
                         </th>
                     ))}
                 </tr>
             </thead>
-            <tbody className={css(styles.tbody)}>
+            <tbody className={styles.tbody}>
                 {xAxis.map(xKey => (
-                    <tr key={xKey} className={css(styles.tr)}>
-                        <td className={css(styles.td)}>
-                            <div className={css(styles.rotate)}>
-                                <span className={css(styles.rotateSpan)}>
+                    <tr key={xKey} className={styles.tr}>
+                        <td className={styles.td}>
+                            <div className={styles.rotate}>
+                                <span className={styles.rotateSpan}>
                                     {xKey}
                                 </span>
                             </div>
                         </td>
                         {yAxis.map(yKey => (
                             <td
-                                className={css(styles.td)}
+                                className={styles.td}
                                 key={`${xKey}-${yKey}`}
                                 data-tip={getTooltip(xKey, yKey, dictionary)}
                                 data-for="heatmap"
@@ -147,7 +150,7 @@ export const HeatMapView = ({
                                 }
                                 const [source, target, value] = data.split(',');
                                 return (
-                                    <span className={css(styles.tooltip)}>
+                                    <span className={styles.tooltip}>
                                         <p>{source}</p>
                                         <p>{target}</p>
                                         <p>{value}</p>

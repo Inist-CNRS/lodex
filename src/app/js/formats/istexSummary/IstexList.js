@@ -1,23 +1,26 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { StyleSheet, css } from 'aphrodite/no-important';
 import classnames from 'classnames';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { getMoreDocumentData } from './getIstexData';
 import ButtonWithStatus from '../../lib/components/ButtonWithStatus';
+import stylesToClassname from '../../lib/stylesToClassName';
 
-const styles = StyleSheet.create({
-    li: {
-        listStyleType: 'none',
+const styles = stylesToClassname(
+    {
+        li: {
+            listStyleType: 'none',
+        },
+        loadMore: {
+            marginTop: '1.5rem',
+        },
+        skip: {
+            paddingLeft: 0,
+        },
     },
-    loadMore: {
-        marginTop: '1.5rem',
-    },
-    skip: {
-        paddingLeft: 0,
-    },
-});
+    'istex-list',
+);
 
 class IstexList extends Component {
     constructor(props) {
@@ -50,7 +53,7 @@ class IstexList extends Component {
         if (!hits || !hits.length) {
             return (
                 <ul>
-                    <li className={css(styles.li)}>
+                    <li className={styles.li}>
                         {polyglot.t('istex_no_result')}
                     </li>
                 </ul>
@@ -59,20 +62,15 @@ class IstexList extends Component {
 
         return (
             <div>
-                <ul className={classnames({ skip }, skip && css(styles.skip))}>
+                <ul className={classnames({ skip }, skip && styles.skip)}>
                     {hits.map((item, index) => (
-                        <li className={css(styles.li)} key={index}>
+                        <li className={styles.li} key={index}>
                             {children({ ...props, polyglot, item })}
                         </li>
                     ))}
                 </ul>
                 {nextPageURI && (
-                    <div
-                        className={classnames(
-                            'load-more',
-                            css(styles.loadMore),
-                        )}
-                    >
+                    <div className={classnames('load-more', styles.loadMore)}>
                         <ButtonWithStatus
                             fullWidth
                             onClick={this.loadMore}
