@@ -20,7 +20,7 @@ describe('Dataset Publication', () => {
 
             cy.get('tbody').should(
                 'have.text',
-                ['Row 1', 'Test 1', 'Row 2', 'Test 2'].join(''),
+                ['1', 'Row 1', 'Test 1', '2', 'Row 2', 'Test 2'].join(''),
             );
         });
     });

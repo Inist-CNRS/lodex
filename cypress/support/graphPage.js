@@ -27,16 +27,6 @@ export const createResource = resource => {
     cy.location('pathname').should('not.equal', '/graph');
 };
 
-export const goToResourceFromRowContaining = selector => {
-    selector
-        .parentsUntil('tbody')
-        .last() // <tr>
-        .find('a')
-        .click();
-
-    cy.location('pathname').should('not.equal', '/graph');
-};
-
 export const goToResourceNumber = nb => {
     cy.get(`tr:nth-child(${nb}) .dataset-uri`).click();
     cy.location('pathname').should('not.equal', '/graph');
