@@ -65,10 +65,11 @@ const mapStateToProps = (state, { field, line }) => {
     const value = getLineCol(line) || '';
 
     return {
-        value,
+        value: typeof value === 'object' ? JSON.stringify(value) : value,
     };
 };
 
-export default compose(translate, connect(mapStateToProps))(
-    ExcerptLineColComponent,
-);
+export default compose(
+    translate,
+    connect(mapStateToProps),
+)(ExcerptLineColComponent);
