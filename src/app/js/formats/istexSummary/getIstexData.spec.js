@@ -231,14 +231,31 @@ describe('getIstexData', () => {
     });
 
     describe('parseOtherData', () => {
-        it('should retrieve total of response and assign it to ther result', () => {
+        it('should count hits `key` values and convert it to an array', () => {
             expect(
-                parseOtherData({
+                parseOtherData('key')({
                     response: {
-                        total: 19,
+                        total: 10,
+                        hits: [
+                            { key: 'Suppl 3' },
+                            { key: 'Suppl 1' },
+                            { key: 'Suppl 2' },
+                            { key: 'Suppl 3' },
+                            { key: 'Suppl 2' },
+                            { key: 'Suppl 3' },
+                            {},
+                            {},
+                            {},
+                            {},
+                        ],
                     },
                 }),
-            ).toEqual({ name: 'other', count: 19 });
+            ).toEqual([
+                { name: 'Suppl 3', count: 3 },
+                { name: 'Suppl 1', count: 1 },
+                { name: 'Suppl 2', count: 2 },
+                { name: 'other', count: 4 },
+            ]);
         });
     });
 });
