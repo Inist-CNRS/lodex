@@ -443,3 +443,6 @@
 "bad_format_edit_value"	"Cannot edit this value, format expected a single value but got a list"	"Edition impossible: le format nécessite une seule valeur et non une liste"
 "convert_to_list"	"Convert to list"	"Convertir en liste"
 "convert_to_value"	"Convert to value"	"Convertir en valeur"
+"allow_to_load_more"	"Allow to load more resources"	"Autoriser à charger plus de ressources"
+"items_per_page"	"Resource number per page"	"Nombre de ressources par page"
+"see_more"	"See more"	"Voir plus"
