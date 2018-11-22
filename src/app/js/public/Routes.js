@@ -16,6 +16,7 @@ import { fromMenu } from './selectors';
 import scrollToTop from '../lib/scrollToTop';
 import CreateResource from './resource/CreateResource';
 import stylesToClassname from '../lib/stylesToClassName';
+import ScrollToTop from './ScrollToTop';
 
 const notLogin = new RegExp('^(?!.*(/login)).*$');
 
@@ -42,6 +43,7 @@ class Routes extends Component {
             <App>
                 <ConnectedRouter history={history} onUpdate={scrollToTop}>
                     <Fragment>
+                        <ScrollToTop />
                         <Route path={notLogin} component={NavBar} />
                         <div className={styles.container}>
                             <Route path="/" exact component={Home} />
