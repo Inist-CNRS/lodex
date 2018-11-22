@@ -19,7 +19,7 @@ const styles = stylesToClassname(
             paddingLeft: 0,
         },
     },
-    'load-more',
+    'istex-list',
 );
 
 class IstexList extends Component {
