@@ -16,12 +16,12 @@ app.use(cors());
 
 app.use(
     route.get('/document', async ctx => {
-        if (get(ctx, 'query.q', '').match('host.issue:')) {
+        if (get(ctx, 'query.q', '').match('host.issue.raw:')) {
             ctx.body = istexDocuments;
             return;
         }
 
-        if (get(ctx, 'query.q', '').match('host.volume:')) {
+        if (get(ctx, 'query.q', '').match('host.volume.raw:')) {
             ctx.body = istexIssue;
             return;
         }
