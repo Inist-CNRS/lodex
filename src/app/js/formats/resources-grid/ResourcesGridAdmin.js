@@ -2,7 +2,10 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
+import Checkbox from 'material-ui/Checkbox';
+import TextField from 'material-ui/TextField';
 import translate from 'redux-polyglot/translate';
+
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import updateAdminArgs from '../shared/updateAdminArgs';
 import RoutineParamsAdmin from '../shared/RoutineParamsAdmin';
@@ -20,6 +23,8 @@ const styles = {
 };
 
 export const defaultArgs = {
+    allowToLoadMore: true,
+    pageSize: 6,
     spaceWidth: '30%',
     params: {
         maxSize: 5,
@@ -37,6 +42,8 @@ class RessourcesGridAdmin extends Component {
                 orderBy: PropTypes.string,
             }),
             spaceWidth: PropTypes.string,
+            allowToLoadMore: PropTypes.bool,
+            pageSize: PropTypes.number,
         }),
         onChange: PropTypes.func.isRequired,
         p: polyglotPropTypes.isRequired,
@@ -52,9 +59,28 @@ class RessourcesGridAdmin extends Component {
         updateAdminArgs('spaceWidth', spaceWidth, this.props);
     };
 
+    toggleAllowToLoadMore = () =>
+        updateAdminArgs(
+            'allowToLoadMore',
+            !this.props.args.allowToLoadMore,
+            this.props,
+        );
+
+    setPageSize = (_, pageSize) => {
+        const { args, onChange } = this.props;
+
+        onChange({
+            ...args,
+            pageSize: parseInt(pageSize, 10),
+        });
+    };
+
     render() {
-        const { p: polyglot, args: { params } } = this.props;
-        const { spaceWidth } = this.props.args;
+        const {
+            p: polyglot,
+            args: { params },
+        } = this.props;
+        const { spaceWidth, allowToLoadMore, pageSize } = this.props.args;
 
         return (
             <div style={styles.container}>
@@ -98,6 +124,21 @@ class RessourcesGridAdmin extends Component {
                         primaryText={polyglot.t('hundred_percent')}
                     />
                 </SelectField>
+                <Checkbox
+                    label={polyglot.t('allow_to_load_more')}
+                    onCheck={this.toggleAllowToLoadMore}
+                    style={styles.input}
+                    checked={allowToLoadMore}
+                />
+                {allowToLoadMore && (
+                    <TextField
+                        floatingLabelText={polyglot.t('items_per_page')}
+                        onChange={this.setPageSize}
+                        style={styles.input}
+                        value={pageSize}
+                        type="number"
+                    />
+                )}
             </div>
         );
     }

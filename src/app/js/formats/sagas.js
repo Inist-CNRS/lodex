@@ -121,7 +121,7 @@ export function* handleLoadFormatDataRequest({
 
 export function* loadFormatDataForName(name, filter) {
     const field = yield select(fromFields.getFieldByName, name);
-    if (field.cover !== COVER_DATASET) {
+    if (!field || field.cover !== COVER_DATASET) {
         return;
     }
     const url = yield select(fromCharacteristic.getCharacteristicByName, name);
