@@ -22,7 +22,12 @@ export default async ctx => {
 
     let html;
 
-    const pathname = path.resolve(__dirname, `../../app/custom/${file}`);
+    const pathname = path.resolve(
+        __dirname,
+        file.endsWith('/')
+            ? `../../app/custom/${file}/index.html`
+            : `../../app/custom/${file}`,
+    );
     try {
         html = (await readFile(pathname)).toString();
     } catch (error) {
