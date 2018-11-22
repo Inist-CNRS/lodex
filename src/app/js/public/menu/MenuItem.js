@@ -65,7 +65,7 @@ const styles = stylesToClassname(
             margin: '0 auto',
         },
     },
-    'nav-bar',
+    'menu-item',
 );
 
 const getIcon = icon => {
