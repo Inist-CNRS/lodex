@@ -1,13 +1,13 @@
 import Koa from 'koa';
 import mount from 'koa-mount';
 import route from 'koa-route';
-import path from 'path';
 
 import { simulatedLatency } from 'config';
 import api from './api';
 import front from './front';
 import embedded from './embedded';
-import { readFile } from '../services/fsHelpers';
+import customPage from './customPage';
+
 import repositoryMiddleware from '../services/repositoryMiddleware';
 
 const app = new Koa();
@@ -26,27 +26,7 @@ app.use(repositoryMiddleware);
 app.use(mount('/embedded', embedded));
 app.use(mount('/api', api));
 
-const scriptRegEx = new RegExp('<script.*?( src=".*")?.*?>.*?</script>', 'gm');
-
-export const getScriptsFromHtml = html =>
-    (html.match(scriptRegEx) || [])
-        .map(script => {
-            const src = script.match(/<script.*?src="(.*?)".*?>/);
-            return src && src[1];
-        })
-        .filter(src => !!src);
-
-app.use(
-    route.get('/customPage/:file', async (ctx, file) => {
-        const html = (await readFile(
-            path.resolve(__dirname, `../../app/custom/${file}`),
-        )).toString();
-
-        const scripts = getScriptsFromHtml(html);
-
-        ctx.body = { html, scripts };
-    }),
-);
+app.use(route.get('/customPage/', customPage));
 
 app.use(mount('/', front));
 

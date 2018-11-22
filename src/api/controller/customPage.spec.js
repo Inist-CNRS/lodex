@@ -1,4 +1,4 @@
-import { getScriptsFromHtml } from './index';
+import { getScriptsFromHtml } from './customPage';
 
 describe('getScriptFromHtml', () => {
     it('should return empty array if no script tag', () => {

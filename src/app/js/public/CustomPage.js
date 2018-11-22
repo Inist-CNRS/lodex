@@ -12,7 +12,9 @@ export class CustomPage extends Component {
     UNSAFE_componentWillMount() {
         const { pathname } = this.props.location;
         fetch({
-            url: `/customPage/${encodeURIComponent(pathname.substring(1))}`,
+            url: `/customPage/?page=${encodeURIComponent(
+                pathname.substring(1),
+            )}`,
         })
             .then(({ response, error }) => {
                 if (error) {
