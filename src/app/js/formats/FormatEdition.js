@@ -26,17 +26,12 @@ class FormatEdition extends Component {
     }
 
     setArguments = args => {
-        this.setState({ args });
-        this.props.input.onChange({
-            args,
-            name: this.state.name,
-        });
+        this.setState({ args }, () => this.props.input.onChange(this.state));
     };
 
     setFormat = name => {
-        this.setState(
-            { name, args: getFormatInitialArgs(name) },
-            this.props.input.onChange,
+        this.setState({ name, args: getFormatInitialArgs(name) }, () =>
+            this.props.input.onChange(this.state),
         );
     };
 
