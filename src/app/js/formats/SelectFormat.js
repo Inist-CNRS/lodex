@@ -9,6 +9,7 @@ const dropDownMenuProps = { autoWidth: true };
 
 const SelectFormat = ({ formats, value, onChange, p: polyglot }) => (
     <SelectField
+        className="select-format"
         floatingLabelText={polyglot.t('select_a_format')}
         onChange={(event, index, newValue) => onChange(newValue)}
         value={value}
@@ -20,6 +21,7 @@ const SelectFormat = ({ formats, value, onChange, p: polyglot }) => (
             .sort((x, y) => polyglot.t(x).localeCompare(polyglot.t(y)))
             .map(format => (
                 <MenuItem
+                    className="select-format-item"
                     key={format}
                     value={format}
                     primaryText={polyglot.t(format)}

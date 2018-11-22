@@ -1,0 +1,79 @@
+[
+    {
+        "cover": "collection",
+        "label": "uri",
+        "name": "uri",
+        "display_on_list": true,
+        "transformers": [
+            {
+                "operation": "COLUMN",
+                "args": [
+                    {
+                        "name": "column",
+                        "type": "column",
+                        "value": "URI"
+                    }
+                ]
+            }
+        ],
+        "position": 0
+    },
+    {
+        "cover": "collection",
+        "label": "Column 1",
+        "display_in_list": true,
+        "display_in_resource": true,
+        "searchable": true,
+        "transformers": [
+            {
+                "operation": "COLUMN",
+                "args": [
+                    {
+                        "name": "column",
+                        "type": "column",
+                        "value": "Column 1"
+                    }
+                ]
+            }
+        ],
+        "classes": [],
+        "position": 1,
+        "overview": 0,
+        "name": "column1",
+        "format": {
+            "name": "title",
+            "args": {
+                "level": 3
+            }
+        }
+    },
+    {
+        "cover": "collection",
+        "label": "Column 2",
+        "display_in_list": true,
+        "display_in_resource": true,
+        "searchable": true,
+        "transformers": [
+            {
+                "operation": "COLUMN",
+                "args": [
+                    {
+                        "name": "column",
+                        "type": "column",
+                        "value": "Column 2"
+                    }
+                ]
+            }
+        ],
+        "classes": [],
+        "position": 2,
+        "overview": 0,
+        "name": "column2",
+        "format": {
+            "name": "paragraph",
+            "args": {
+                "paragraphWidth": "100%"
+            }
+        }
+    }
+]

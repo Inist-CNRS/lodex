@@ -11,21 +11,6 @@ import FieldInput from './FieldInput';
 
 export const FORM_NAME = 'PROPERTY_FORM';
 
-const validate = (values, { p: polyglot }) => {
-    const errors = Object.keys(values).reduce((currentErrors, field) => {
-        if (!values[field]) {
-            return {
-                ...currentErrors,
-                [field]: polyglot.t('required'),
-            };
-        }
-
-        return currentErrors;
-    }, {});
-
-    return errors;
-};
-
 export const EditFieldFormComponent = ({ field, error, handleSubmit }) => (
     <form id="field_form" onSubmit={handleSubmit}>
         {error && (
@@ -60,6 +45,5 @@ export default compose(
     })),
     reduxForm({
         form: FORM_NAME,
-        validate,
     }),
 )(EditFieldFormComponent);
