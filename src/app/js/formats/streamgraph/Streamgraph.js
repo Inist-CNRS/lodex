@@ -247,7 +247,7 @@ class Streamgraph extends PureComponent {
         const legendView = d3DivContainer
             .append('div')
             .attr('id', 'legend')
-            .attr('class', `${styles.legend}`);
+            .attr('class', styles.legend);
 
         const colorNameTmpList = colorNameList;
         colorNameTmpList.reverse();
@@ -256,7 +256,7 @@ class Streamgraph extends PureComponent {
             const element = colorNameList[index];
             const legendItemContainer = legendView
                 .append('div')
-                .attr('class', `${styles.legendItem}`);
+                .attr('class', styles.legendItem);
 
             legendItemContainer
                 .append('svg')
@@ -266,12 +266,12 @@ class Streamgraph extends PureComponent {
 
             legendItemContainer
                 .append('text')
-                .attr('class', `${styles.legendItemText}`)
+                .attr('class', styles.legendItemText)
                 .text(cutStr(element.name));
 
             const legendItemTooltip = legendItemContainer
                 .append('span')
-                .attr('class', `${styles.legendItemTooltip}`)
+                .attr('class', styles.legendItemTooltip)
                 .text(element.name);
 
             legendItemContainer
@@ -408,7 +408,7 @@ class Streamgraph extends PureComponent {
         const divContainer = d3.select(this.divContainer.current);
 
         const d3DivContainer = divContainer
-            .attr('class', `${styles.divContainer}`)
+            .attr('class', styles.divContainer)
             .append('div')
             .attr('id', 'd3DivContainer');
 
