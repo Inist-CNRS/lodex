@@ -73,22 +73,18 @@ export const getDecadeYearData = ({
         parseFacetData('publicationDate', ({ keyAsString }) => keyAsString),
         data => ({
             ...data,
-            hits: data.hits.sort(
-                (a, b) =>
-                    sortDir === SORT_YEAR_DESC
-                        ? b.name - a.name
-                        : a.name - b.name,
+            hits: data.hits.sort((a, b) =>
+                sortDir === SORT_YEAR_DESC ? b.name - a.name : a.name - b.name,
             ),
         }),
     );
 
 export const parseYearData = (formatData, sortDir = SORT_YEAR_DESC) => ({
     hits: get(formatData, 'aggregations.publicationDate.buckets', [])
-        .sort(
-            (a, b) =>
-                sortDir === SORT_YEAR_DESC
-                    ? b.keyAsString - a.keyAsString
-                    : a.keyAsString - b.keyAsString,
+        .sort((a, b) =>
+            sortDir === SORT_YEAR_DESC
+                ? b.keyAsString - a.keyAsString
+                : a.keyAsString - b.keyAsString,
         )
         .map(({ keyAsString, docCount }) => ({
             name: keyAsString,
@@ -195,14 +191,33 @@ export const getOtherIssueUrl = ({
         )} AND publicationDate:"${year}" AND ${getVolumeQuery(
             volume,
         )} AND -host.issue:[0 TO *]`,
+        size: '*',
+        output: 'host.issue',
     }),
 });
+
+export const parseOtherIssueData = ({ response, error }) => {
+    if (error) {
+        throw error;
+    }
+    const issues = response.hits.map(hit => get(hit, 'host.issue', 'other'));
+
+    const count = issues.reduce(
+        (acc, issueName) => ({
+            ...acc,
+            [issueName]: get(acc, issueName, 0) + 1,
+        }),
+        {},
+    );
+
+    return Object.keys(count).map(name => ({ name, count: count[name] }));
+};
 
 export const getOtherIssueData = ({ value, year, volume, searchedField }) =>
     composeAsync(
         getOtherIssueUrl({ value, year, volume, searchedField }),
         fetch,
-        parseOtherData,
+        parseOtherIssueData,
     );
 
 export const addOtherIssueData = ({
@@ -213,8 +228,8 @@ export const addOtherIssueData = ({
 }) => async ({ hits }) => ({
     hits: [
         ...hits,
-        await getOtherIssueData({ value, year, volume, searchedField })(),
-    ],
+        ...(await getOtherIssueData({ value, year, volume, searchedField })()),
+    ].sort((a, b) => (a.name < b.name ? -1 : 1)),
 });
 
 export const getIssueData = ({ value, year, volume, searchedField }) =>
@@ -226,7 +241,7 @@ export const getIssueData = ({ value, year, volume, searchedField }) =>
     );
 
 const getIssueQuery = issue =>
-    issue === 'other' ? '-host.issue:[0 TO *]' : `host.issue:"${issue}"`;
+    issue === 'other' ? '-host.issue.raw:*' : `host.issue.raw:"${issue}"`;
 
 const documentOutput = [
     'id',

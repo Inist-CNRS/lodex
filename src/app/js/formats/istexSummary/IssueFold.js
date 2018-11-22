@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
 import FetchFold from './FetchFold';
@@ -15,6 +15,7 @@ const IssueFold = ({
     polyglot,
     children,
     documentSortBy,
+    nbSiblings,
 }) => (
     <FetchFold
         label={
@@ -22,7 +23,7 @@ const IssueFold = ({
                 ? polyglot.t('other_issue')
                 : `${polyglot.t('issue')}: ${issue}`
         }
-        skip={issue === 'other'}
+        skip={issue === 'other' && nbSiblings === 1}
         count={count}
         issue={issue}
         polyglot={polyglot}
@@ -52,6 +53,7 @@ IssueFold.propTypes = {
     isOther: PropTypes.bool,
     polyglot: polyglotPropTypes.isRequired,
     documentSortBy: PropTypes.string.isRequired,
+    nbSiblings: PropTypes.number.isRequired,
 };
 
 export default IssueFold;
