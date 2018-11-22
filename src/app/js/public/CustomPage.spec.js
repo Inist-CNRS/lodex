@@ -35,7 +35,7 @@ describe('getCustomPage CustomPage', () => {
         fetch.mockImplementation(() => response);
         const wrapper = shallow(<CustomPage {...defaultProps} />);
         expect(fetch).toHaveBeenCalledWith({
-            url: '/customPage/custom%2Fpage',
+            url: '/customPage/?page=custom%2Fpage',
         });
         await response;
         wrapper.update();
@@ -56,7 +56,7 @@ describe('getCustomPage CustomPage', () => {
         fetch.mockImplementation(() => response);
         const wrapper = shallow(<CustomPage {...defaultProps} />);
         expect(fetch).toHaveBeenCalledWith({
-            url: '/customPage/custom%2Fpage',
+            url: '/customPage/?page=custom%2Fpage',
         });
         await response;
         wrapper.update();
