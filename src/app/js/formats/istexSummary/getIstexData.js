@@ -5,6 +5,7 @@ import composeAsync from '../../../../common/lib/composeAsync';
 import { parseFetchResult } from '../shared/fetchIstexData';
 import { ISTEX_API_URL } from '../../../../common/externals';
 import fetch from '../../lib/fetch';
+import alphabeticalSort from '../../lib/alphabeticalSort';
 import { CUSTOM_ISTEX_QUERY, SORT_YEAR_DESC } from './constants';
 
 const defaultQueryOptions = {
@@ -158,10 +159,10 @@ export const getOtherVolumeData = ({ value, year, searchedField }) =>
 export const addOtherVolumeData = ({ value, year, searchedField }) => async ({
     hits,
 }) => ({
-    hits: [
+    hits: alphabeticalSort([
         ...hits,
         ...(await getOtherVolumeData({ value, year, searchedField })()),
-    ],
+    ]),
 });
 
 export const getVolumeData = ({ value, year, searchedField }) =>
@@ -218,10 +219,10 @@ export const addOtherIssueData = ({
     volume,
     searchedField,
 }) => async ({ hits }) => ({
-    hits: [
+    hits: alphabeticalSort([
         ...hits,
         ...(await getOtherIssueData({ value, year, volume, searchedField })()),
-    ].sort((a, b) => (a.name < b.name ? -1 : 1)),
+    ]),
 });
 
 export const getIssueData = ({ value, year, volume, searchedField }) =>
