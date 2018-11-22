@@ -128,31 +128,40 @@ export const getOtherVolumeUrl = ({ value, year, searchedField }) => () => ({
             searchedField,
             value,
         )} AND publicationDate:"${year}" AND -host.volume:[0 TO *]`,
+        output: 'host.volume',
+        size: '*',
     }),
 });
 
-export const parseOtherData = ({ response, error }) => {
+export const parseOtherData = key => ({ response, error }) => {
     if (error) {
         throw error;
     }
+    const count = response.hits.reduce((acc, hit) => {
+        const name = get(hit, key, 'other');
+        return {
+            ...acc,
+            [name]: get(acc, name, 0) + 1,
+        };
+    }, {});
 
-    return {
-        name: 'other',
-        count: response.total,
-    };
+    return Object.keys(count).map(name => ({ name, count: count[name] }));
 };
 
 export const getOtherVolumeData = ({ value, year, searchedField }) =>
     composeAsync(
         getOtherVolumeUrl({ value, year, searchedField }),
         fetch,
-        parseOtherData,
+        parseOtherData('host.volume'),
     );
 
 export const addOtherVolumeData = ({ value, year, searchedField }) => async ({
     hits,
 }) => ({
-    hits: [...hits, await getOtherVolumeData({ value, year, searchedField })()],
+    hits: [
+        ...hits,
+        ...(await getOtherVolumeData({ value, year, searchedField })()),
+    ],
 });
 
 export const getVolumeData = ({ value, year, searchedField }) =>
@@ -164,7 +173,7 @@ export const getVolumeData = ({ value, year, searchedField }) =>
     );
 
 const getVolumeQuery = volume =>
-    volume === 'other' ? '-host.volume:[0 TO *]' : `host.volume:"${volume}"`;
+    volume === 'other' ? '-host.volume.raw:*' : `host.volume.raw:"${volume}"`;
 
 export const getIssueUrl = ({ value, year, volume, searchedField }) => () => ({
     url: buildIstexQuery({
@@ -196,28 +205,11 @@ export const getOtherIssueUrl = ({
     }),
 });
 
-export const parseOtherIssueData = ({ response, error }) => {
-    if (error) {
-        throw error;
-    }
-    const issues = response.hits.map(hit => get(hit, 'host.issue', 'other'));
-
-    const count = issues.reduce(
-        (acc, issueName) => ({
-            ...acc,
-            [issueName]: get(acc, issueName, 0) + 1,
-        }),
-        {},
-    );
-
-    return Object.keys(count).map(name => ({ name, count: count[name] }));
-};
-
 export const getOtherIssueData = ({ value, year, volume, searchedField }) =>
     composeAsync(
         getOtherIssueUrl({ value, year, volume, searchedField }),
         fetch,
-        parseOtherIssueData,
+        parseOtherData('host.issue'),
     );
 
 export const addOtherIssueData = ({
