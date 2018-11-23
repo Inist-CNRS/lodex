@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import compose from 'recompose/compose';
 import * as d3 from 'd3';
+import { StyleSheet, css } from 'aphrodite/no-important';
 
 import {
     zoomFunction,
@@ -11,53 +12,49 @@ import {
 } from './utils';
 import injectData from '../injectData';
 import exportableToPng from '../exportableToPng';
-import stylesToClassname from '../../lib/stylesToClassName';
 
-const styles = stylesToClassname(
-    {
-        divContainer: {
-            overflow: 'hidden',
-            position: 'relative',
-        },
-        tooltip: {
-            position: 'absolute',
-        },
-        vertical: {
-            marginTop: 60,
-            height: 190,
-            pointerEvents: 'none',
-        },
-        legend: {
-            position: 'relative',
-            columnCount: 3,
-            textAlign: 'left',
-            marginLeft: 20,
-            paddingBottom: 30,
-        },
-        legendItem: {
-            marginTop: 2,
-        },
-        legendItemTooltip: {
-            visibility: 'hidden',
-            backgroundColor: '#4e4e4e',
-            color: '#fff',
-            textAlign: 'center',
-            borderRadius: '6px',
-            padding: '5px 0',
-
-            position: 'absolute',
-            zIndex: 10,
-        },
-        legendItemText: {
-            marginLeft: 5,
-        },
-        legendButton: {
-            height: 15,
-            width: 15,
-        },
+const styles = StyleSheet.create({
+    divContainer: {
+        overflow: 'hidden',
+        position: 'relative',
     },
-    'stream-graph',
-);
+    tooltip: {
+        position: 'absolute',
+    },
+    vertical: {
+        marginTop: 60,
+        height: 190,
+        pointerEvents: 'none',
+    },
+    legend: {
+        position: 'relative',
+        columnCount: 3,
+        textAlign: 'left',
+        marginLeft: 20,
+        paddingBottom: 30,
+    },
+    legendItem: {
+        marginTop: 2,
+    },
+    legendItemTooltip: {
+        visibility: 'hidden',
+        backgroundColor: '#4e4e4e',
+        color: '#fff',
+        textAlign: 'center',
+        borderRadius: '6px',
+        padding: '5px 0',
+
+        position: 'absolute',
+        zIndex: 10,
+    },
+    legendItemText: {
+        marginLeft: 5,
+    },
+    legendButton: {
+        height: 15,
+        width: 15,
+    },
+});
 
 const WIDTH = 800;
 const HEIGHT = 300;
@@ -232,7 +229,7 @@ class Streamgraph extends PureComponent {
 
         const tooltip = divContainer
             .insert('div', '#svgContainer')
-            .attr('class', `remove ${styles.tooltip}`)
+            .attr('class', `remove ${css(styles.tooltip)}`)
             .attr('id', 'tooltip')
             .style('position', 'absolute')
             .style('z-index', '2')
@@ -247,7 +244,7 @@ class Streamgraph extends PureComponent {
         const legendView = d3DivContainer
             .append('div')
             .attr('id', 'legend')
-            .attr('class', styles.legend);
+            .attr('class', `${css(styles.legend)}`);
 
         const colorNameTmpList = colorNameList;
         colorNameTmpList.reverse();
@@ -256,7 +253,7 @@ class Streamgraph extends PureComponent {
             const element = colorNameList[index];
             const legendItemContainer = legendView
                 .append('div')
-                .attr('class', styles.legendItem);
+                .attr('class', `${css(styles.legendItem)}`);
 
             legendItemContainer
                 .append('svg')
@@ -266,12 +263,12 @@ class Streamgraph extends PureComponent {
 
             legendItemContainer
                 .append('text')
-                .attr('class', styles.legendItemText)
+                .attr('class', `${css(styles.legendItemText)}`)
                 .text(cutStr(element.name));
 
             const legendItemTooltip = legendItemContainer
                 .append('span')
-                .attr('class', styles.legendItemTooltip)
+                .attr('class', `${css(styles.legendItemTooltip)}`)
                 .text(element.name);
 
             legendItemContainer
@@ -408,7 +405,7 @@ class Streamgraph extends PureComponent {
         const divContainer = d3.select(this.divContainer.current);
 
         const d3DivContainer = divContainer
-            .attr('class', styles.divContainer)
+            .attr('class', `${css(styles.divContainer)}`)
             .append('div')
             .attr('id', 'd3DivContainer');
 
