@@ -11,7 +11,6 @@ import {
 import injectData from '../injectData';
 import exportableToPng from '../exportableToPng';
 import ZoomIcon from './zoomIcon';
-import MoveIcon from './moveIcon';
 
 const styles = StyleSheet.create({
     divContainer: {
@@ -74,15 +73,11 @@ class Streamgraph extends PureComponent {
         this.zoomIconEnter = this.zoomIconEnter.bind(this);
         this.zoomIconLeave = this.zoomIconLeave.bind(this);
 
-        //static propTypes = {
-        //    name: PropTypes.string.isRequired,
-        //}
         this.divContainer = React.createRef();
         this.svgContainer = React.createRef();
         this.anchor = React.createRef();
         this.zoomIndicator = React.createRef();
         this.zoomIndicatorBackground = React.createRef();
-
 
         this.mouseIsOverStream = false;
         this.zoomFunction = zoomFunction.bind(this);
@@ -162,13 +157,11 @@ class Streamgraph extends PureComponent {
             .range([0, width]);
 
         this.xAxis = d3
-            //.axisBottom(this.xAxisScale)
             .axisBottom()
             .tickFormat(d3.timeFormat('%Y'))
             .tickPadding(5)
             .ticks(d3.timeYear)
             .scale(this.xAxisScale);
-        //.ticks(d3.timeYear, 1);
 
         this.gx = innerSpace
             .append('g')
@@ -423,9 +416,6 @@ class Streamgraph extends PureComponent {
     }
 
     setGraph() {
-        console.log('props ! ');
-        console.log(this.props);
-
         const {
             valuesObjectsArray,
             valuesArray,
@@ -521,7 +511,7 @@ class Streamgraph extends PureComponent {
         this.setGraph();
     }
 
-    componentWillUpdate() {
+    UNSAFE_componentWillUpdate() {
         this.removeGraph();
     }
 
