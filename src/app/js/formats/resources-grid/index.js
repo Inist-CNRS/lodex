@@ -7,4 +7,19 @@ export default {
     Component,
     AdminComponent,
     defaultArgs,
+    predicate: (value, formatData) => {
+        if (!DefaultFormat.predicate(value)) {
+            return false;
+        }
+
+        if (formatData === 'loading' || typeof formatData === 'undefined') {
+            return true;
+        }
+
+        return (
+            formatData &&
+            Array.isArray(formatData.items) &&
+            formatData.items.length
+        );
+    },
 };
