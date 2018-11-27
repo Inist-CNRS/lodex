@@ -85,7 +85,13 @@ const styles = {
     },
 };
 
-const PropertyComponent = ({
+const isEmpty = value =>
+    value === null ||
+    typeof value === 'undefined' ||
+    value === '' ||
+    (Array.isArray(value) && value.length === 0);
+
+export const PropertyComponent = ({
     className,
     field,
     isSub,
@@ -97,14 +103,14 @@ const PropertyComponent = ({
     parents,
 }) => {
     if (!isAdmin) {
-        const predicate = getPredicate(field);
-        if (!predicate(resource[field.name])) {
+        if (fieldStatus === REJECTED) {
             return null;
         }
-    }
-
-    if (!isAdmin && fieldStatus === REJECTED) {
-        return null;
+        const value = resource[field.name];
+        const predicate = getPredicate(field);
+        if (!predicate(value) || isEmpty(value)) {
+            return null;
+        }
     }
     const fieldClassName = getFieldClassName(field);
 
