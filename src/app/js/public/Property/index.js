@@ -91,7 +91,7 @@ const isEmpty = value =>
     value === '' ||
     (Array.isArray(value) && value.length === 0);
 
-const PropertyComponent = ({
+export const PropertyComponent = ({
     className,
     field,
     isSub,
