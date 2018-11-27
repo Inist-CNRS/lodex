@@ -56,6 +56,11 @@ const styles = StyleSheet.create({
         height: 15,
         width: 15,
     },
+    zoomIcon: {
+        position: 'absolute',
+        top: '210px',
+        left: '55px',
+    },
 });
 
 class Streamgraph extends PureComponent {
@@ -64,11 +69,20 @@ class Streamgraph extends PureComponent {
         this.state = {
             width: 800,
             height: 300,
+            margin: { top: 60, right: 40, bottom: 50, left: 60 },
         };
+        this.zoomIconEnter = this.zoomIconEnter.bind(this);
+        this.zoomIconLeave = this.zoomIconLeave.bind(this);
 
+        //static propTypes = {
+        //    name: PropTypes.string.isRequired,
+        //}
         this.divContainer = React.createRef();
         this.svgContainer = React.createRef();
         this.anchor = React.createRef();
+        this.zoomIndicator = React.createRef();
+        this.zoomIndicatorBackground = React.createRef();
+
 
         this.mouseIsOverStream = false;
         this.zoomFunction = zoomFunction.bind(this);
@@ -142,8 +156,6 @@ class Streamgraph extends PureComponent {
         const min = new Date(String(minDate));
         const max = new Date(String(maxDate));
 
-        console.log(`min : ${min}, max : ${max}`);
-
         this.xAxisScale = d3
             .scaleTime()
             .domain([min, max])
@@ -189,7 +201,12 @@ class Streamgraph extends PureComponent {
     createAndSetStreams(layersNumber, graphZone, stackedData, nameList) {
         const colorNameList = [];
         if (stackedData) {
-            let z = this.props.colors.split(' ');
+            let colorList = this.props.colors;
+            if (!colorList) {
+                colorList =
+                    '#e6194b #3cb44b #ffe119 #4363d8 #f58231 #911eb4 #46f0f0 #f032e6 #bcf60c #fabebe #008080 #e6beff #9a6324 #fffac8 #800000 #aaffc3 #808000 #ffd8b1 #000075 #808080 #ffffff #000000';
+            }
+            let z = colorList.split(' ');
             while (z.length < layersNumber) {
                 z = [...z, ...z];
             }
@@ -300,9 +317,6 @@ class Streamgraph extends PureComponent {
                 })
                 .on('mouseout', (d, i) => {
                     legendItemTooltip.style('visibility', 'hidden');
-                })
-                .on('click', (d, i) => {
-                    console.log('you clicked me !');
                 });
         });
     }
@@ -409,6 +423,9 @@ class Streamgraph extends PureComponent {
     }
 
     setGraph() {
+        console.log('props ! ');
+        console.log(this.props);
+
         const {
             valuesObjectsArray,
             valuesArray,
@@ -418,12 +435,10 @@ class Streamgraph extends PureComponent {
         } = transformDataIntoMapArray(this.props.formatData);
 
         const svgWidth = this.divContainer.current.clientWidth;
-
-        const { height: svgHeight } = this.state;
-        const margin = { top: 60, right: 40, bottom: 50, left: 60 };
+        const { margin, height: svgHeight } = this.state;
         const width = svgWidth - margin.left - margin.right;
         const height = svgHeight - margin.top - margin.bottom;
-
+        this.setState({ width: width });
         const divContainer = d3.select(this.divContainer.current);
 
         const d3DivContainer = divContainer
@@ -519,16 +534,63 @@ class Streamgraph extends PureComponent {
         this.removeGraph();
     }
 
-    render() {
-        const { width, height } = this.state;
+    zoomIconEnter() {
+        this.zoomIndicator.current.style.visibility = 'visible';
+        this.zoomIndicatorBackground.current.style.visibility = 'visible';
+    }
 
-        //<ZoomIcon width={35}/>
+    zoomIconLeave() {
+        this.zoomIndicator.current.style.visibility = 'hidden';
+        this.zoomIndicatorBackground.current.style.visibility = 'hidden';
+    }
+
+    render() {
+        const { width, height, margin } = this.state;
+
         return (
             <div
                 id="divContainer"
                 ref={this.divContainer}
                 style={styles.divContainer}
             >
+                <div
+                    id="zoomIndicatorBackground"
+                    ref={this.zoomIndicatorBackground}
+                    style={{
+                        visibility: 'hidden',
+                        position: 'absolute',
+                        top: `${margin.top}px`,
+                        left: `${margin.left}px`,
+                        width: `${width}px`,
+                        height: `${height - margin.top - margin.bottom}px`,
+                        backgroundColor: '#0000006b',
+                    }}
+                />
+                <div
+                    id="zoomIndicator"
+                    ref={this.zoomIndicator}
+                    style={{
+                        visibility: 'hidden',
+                        position: 'absolute',
+                        top: '115px',
+                        left: '175px',
+                        color: 'white',
+                    }}
+                >
+                    <h4>
+                        Use mouse scroll to zoom and
+                        <br />
+                        mouse drag to move the chart.
+                    </h4>
+                </div>
+                <div
+                    id="zoomIconContainer"
+                    onMouseEnter={this.zoomIconEnter}
+                    onMouseLeave={this.zoomIconLeave}
+                    style={{ position: 'absolute', top: '210px', left: '55px' }}
+                >
+                    <ZoomIcon width={35} />
+                </div>
                 <svg
                     id="svgContainer"
                     ref={this.svgContainer}
