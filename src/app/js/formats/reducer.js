@@ -44,7 +44,7 @@ export default handleActions(
 
 const isFormatDataLoaded = (state, name) => state[name] !== 'loading';
 
-const getFormatData = (state, name) => get(state, [name, 'data']);
+const getFormatData = (state, name) => console.log({ name }) || get(state, [name, 'data']);
 const getFormatError = (state, name) => get(state, [name, 'error']);
 
 export const getCurrentFieldNames = state =>

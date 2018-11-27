@@ -9,7 +9,7 @@ import { grey500 } from 'material-ui/styles/colors';
 import memoize from 'lodash.memoize';
 import get from 'lodash.get';
 
-import { fromResource } from '../selectors';
+import { fromResource, fromFormat } from '../selectors';
 import { field as fieldPropTypes } from '../../propTypes';
 import CompositeProperty from './CompositeProperty';
 import propositionStatus, {
@@ -101,6 +101,7 @@ export const PropertyComponent = ({
     changeStatus,
     style,
     parents,
+    formatData,
 }) => {
     if (!isAdmin) {
         if (fieldStatus === REJECTED) {
@@ -108,7 +109,7 @@ export const PropertyComponent = ({
         }
         const value = resource[field.name];
         const predicate = getPredicate(field);
-        if (!predicate(value) || isEmpty(value)) {
+        if (!predicate(value, formatData) || isEmpty(value)) {
             return null;
         }
     }
@@ -213,6 +214,7 @@ PropertyComponent.propTypes = {
     resource: PropTypes.shape({}).isRequired,
     parents: PropTypes.arrayOf(PropTypes.string).isRequired,
     style: PropTypes.object,
+    formatData: PropTypes.any,
 };
 
 PropertyComponent.defaultProps = {
@@ -224,6 +226,7 @@ PropertyComponent.defaultProps = {
 const mapStateToProps = (state, { field }) => ({
     isAdmin: fromUser.isAdmin(state),
     fieldStatus: fromResource.getFieldStatus(state, field),
+    formatData: fromFormat.getFormatData(state, field.name),
 });
 
 const mapDispatchToProps = (dispatch, { field, resource: { uri } }) =>

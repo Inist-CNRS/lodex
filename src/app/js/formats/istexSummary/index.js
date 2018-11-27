@@ -1,3 +1,4 @@
+import get from 'lodash.get';
 import translate from 'redux-polyglot/translate';
 
 import Component from './IstexSummaryView';
@@ -11,4 +12,19 @@ export default {
     ListComponent,
     AdminComponent,
     defaultArgs,
+    predicate: (value, formatData) => {
+        if (!DefaultFormat.predicate(value)) {
+            return false;
+        }
+
+        if (formatData === 'loading' || typeof formatData === 'undefined') {
+            return true;
+        }
+
+        return get(
+            formatData,
+            'aggregations.publicationDate.buckets.length',
+            false,
+        );
+    },
 };
