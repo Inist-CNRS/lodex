@@ -8,9 +8,7 @@ export const bottomMenu = jsonConfig.front.menu.filter(
 );
 
 export const customRoutes = jsonConfig.front.menu
-    .filter(
-        ({ role, link }) => (role !== 'custom' ? false : link.startsWith('/')),
-    )
+    .filter(({ role }) => role === 'custom')
     .map(({ link }) => link);
 
 export default async ctx => {
