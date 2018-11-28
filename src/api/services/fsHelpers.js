@@ -90,8 +90,21 @@ export const clearChunks = clearChunksFactory(unlinkFile);
 
 export const readFile = file =>
     new Promise((resolve, reject) => {
-        fs.readFile(
-            file,
-            (error, content) => (error ? reject(error) : resolve(content)),
+        fs.readFile(file, (error, content) =>
+            error ? reject(error) : resolve(content),
         );
+    });
+
+export const getFileStatsIfExists = pathname =>
+    new Promise((resolve, reject) => {
+        fs.access(pathname, fs.constants.R_OK, err => {
+            if (err) {
+                resolve(false);
+                return;
+            }
+
+            getFileStats(pathname)
+                .then(resolve)
+                .catch(reject);
+        });
     });

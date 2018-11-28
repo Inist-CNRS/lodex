@@ -1,6 +1,6 @@
 import path from 'path';
 
-import { readFile } from '../services/fsHelpers';
+import { getFileStatsIfExists, readFile } from '../services/fsHelpers';
 import logger from '../services/logger';
 
 const scriptRegEx = new RegExp('<script.*?( src=".*")?.*?>.*?</script>', 'gm');
@@ -13,6 +13,25 @@ export const getScriptsFromHtml = html =>
         })
         .filter(src => !!src);
 
+const getPathname = async file => {
+    const absoluteFilename = path.resolve(
+        __dirname,
+        `../../app/custom/${file}`,
+    );
+
+    const stats = await getFileStatsIfExists(absoluteFilename);
+
+    if (stats && !stats.isDirectory()) {
+        return absoluteFilename;
+    }
+
+    if (stats && stats.isDirectory()) {
+        return `${absoluteFilename}/index.html`;
+    }
+
+    return `${absoluteFilename}.html`;
+};
+
 export default async ctx => {
     const { page: file } = ctx.request.query;
     if (!file) {
@@ -20,14 +39,10 @@ export default async ctx => {
         return;
     }
 
+    const pathname = await getPathname(file);
+
     let html;
 
-    const pathname = path.resolve(
-        __dirname,
-        file.endsWith('/')
-            ? `../../app/custom/${file}/index.html`
-            : `../../app/custom/${file}`,
-    );
     try {
         html = (await readFile(pathname)).toString();
     } catch (error) {

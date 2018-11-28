@@ -1,6 +1,4 @@
 import { createAction, handleActions } from 'redux-actions';
-import { createSelector } from 'reselect';
-import omit from 'lodash.omit';
 
 export const LOAD_MENU = 'LOAD_MENU';
 export const LOAD_MENU_SUCCESS = 'LOAD_MENU_SUCCESS';
