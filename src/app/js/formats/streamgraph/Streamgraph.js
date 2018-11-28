@@ -63,6 +63,7 @@ const styles = StyleSheet.create({
 });
 
 class Streamgraph extends PureComponent {
+    _isMounted = false;
     constructor(props) {
         super(props);
         this.state = {
@@ -428,7 +429,9 @@ class Streamgraph extends PureComponent {
         const { margin, height: svgHeight } = this.state;
         const width = svgWidth - margin.left - margin.right;
         const height = svgHeight - margin.top - margin.bottom;
-        this.setState({ width: width });
+        if (this._isMounted) {
+            this.setState({ width: width });
+        }
         const divContainer = d3.select(this.divContainer.current);
 
         const d3DivContainer = divContainer
@@ -507,6 +510,7 @@ class Streamgraph extends PureComponent {
     }
 
     componentDidMount() {
+        this._isMounted = true;
         window.addEventListener('resize', this.updateDimensions.bind(this));
         this.setGraph();
     }
@@ -520,6 +524,7 @@ class Streamgraph extends PureComponent {
     }
 
     componentWillUnmount() {
+        this._isMounted = false;
         window.removeEventListener('resize', this.updateDimensions.bind(this));
         this.removeGraph();
     }
@@ -562,8 +567,8 @@ class Streamgraph extends PureComponent {
                     style={{
                         visibility: 'hidden',
                         position: 'absolute',
-                        top: '115px',
-                        left: '175px',
+                        top: `${height / 2 - 30}px`,
+                        left: `${margin.left + width / 2 - 130}px`,
                         color: 'white',
                     }}
                 >
