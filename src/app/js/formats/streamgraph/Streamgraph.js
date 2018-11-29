@@ -1,17 +1,16 @@
 import React, { PureComponent } from 'react';
 import compose from 'recompose/compose';
-import * as d3 from 'd3';
 import { StyleSheet, css } from 'aphrodite/no-important';
-
+import * as d3 from 'd3';
 import {
     zoomFunction,
-    distinctColors,
     transformDataIntoMapArray,
     getMinMaxValue,
     cutStr,
 } from './utils';
 import injectData from '../injectData';
 import exportableToPng from '../exportableToPng';
+import ZoomIcon from './zoomIcon';
 
 const styles = StyleSheet.create({
     divContainer: {
@@ -28,9 +27,9 @@ const styles = StyleSheet.create({
     },
     legend: {
         position: 'relative',
-        columnCount: 3,
         textAlign: 'left',
         marginLeft: 20,
+        columnCount: 3,
         paddingBottom: 30,
     },
     legendItem: {
@@ -42,9 +41,11 @@ const styles = StyleSheet.create({
         color: '#fff',
         textAlign: 'center',
         borderRadius: '6px',
-        padding: '5px 0',
+        padding: '5px 4px',
 
         position: 'absolute',
+        left: '0px',
+        top: '-33px',
         zIndex: 10,
     },
     legendItemText: {
@@ -54,18 +55,30 @@ const styles = StyleSheet.create({
         height: 15,
         width: 15,
     },
+    zoomIcon: {
+        position: 'absolute',
+        top: '210px',
+        left: '55px',
+    },
 });
 
-const WIDTH = 800;
-const HEIGHT = 300;
-
 class Streamgraph extends PureComponent {
+    _isMounted = false;
     constructor(props) {
         super(props);
+        this.state = {
+            width: 800,
+            height: 300,
+            margin: { top: 60, right: 40, bottom: 50, left: 60 },
+        };
+        this.zoomIconEnter = this.zoomIconEnter.bind(this);
+        this.zoomIconLeave = this.zoomIconLeave.bind(this);
 
         this.divContainer = React.createRef();
         this.svgContainer = React.createRef();
         this.anchor = React.createRef();
+        this.zoomIndicator = React.createRef();
+        this.zoomIndicatorBackground = React.createRef();
 
         this.mouseIsOverStream = false;
         this.zoomFunction = zoomFunction.bind(this);
@@ -145,9 +158,11 @@ class Streamgraph extends PureComponent {
             .range([0, width]);
 
         this.xAxis = d3
-            .axisBottom(this.xAxisScale)
+            .axisBottom()
             .tickFormat(d3.timeFormat('%Y'))
-            .ticks(d3.timeYear, 1);
+            .tickPadding(5)
+            .ticks(d3.timeYear)
+            .scale(this.xAxisScale);
 
         this.gx = innerSpace
             .append('g')
@@ -167,21 +182,31 @@ class Streamgraph extends PureComponent {
             .append('g')
             .attr('class', 'y axis')
             .attr('transform', 'translate(' + width + ', 0)')
+            .style('visibility', 'hidden')
             .call(this.yAxisR);
 
         this.gyl = innerSpace
             .append('g')
             .attr('class', 'y axis')
+            .style('visibility', 'hidden')
             .call(this.yAxisL);
     }
 
     createAndSetStreams(layersNumber, graphZone, stackedData, nameList) {
         const colorNameList = [];
         if (stackedData) {
-            const z = distinctColors(layersNumber);
+            let colorList = this.props.colors;
+            if (!colorList) {
+                colorList =
+                    '#e6194b #3cb44b #ffe119 #4363d8 #f58231 #911eb4 #46f0f0 #f032e6 #bcf60c #fabebe #008080 #e6beff #9a6324 #fffac8 #800000 #aaffc3 #808000 #ffd8b1 #000075 #808080 #ffffff #000000';
+            }
+            let z = colorList.split(' ');
+            while (z.length < layersNumber) {
+                z = [...z, ...z];
+            }
             const area = d3
                 .area()
-                .x(d => {
+                .x((d, i) => {
                     return this.xAxisScale(d.data.date);
                 })
                 .y0(d => {
@@ -225,6 +250,7 @@ class Streamgraph extends PureComponent {
             .style('left', '0px')
             .style('margin-top', `${margin.top - 10}px`)
             .style('pointer-events', 'none')
+            .style('visibility', 'hidden')
             .style('background', '#000');
 
         const tooltip = divContainer
@@ -240,11 +266,15 @@ class Streamgraph extends PureComponent {
         return { tooltip, vertical };
     }
 
-    createAndSetTheLegend(d3DivContainer, colorNameList) {
+    createAndSetTheLegend(d3DivContainer, colorNameList, width) {
         const legendView = d3DivContainer
             .append('div')
             .attr('id', 'legend')
             .attr('class', `${css(styles.legend)}`);
+
+        width > 500
+            ? legendView.style('column-count', 3)
+            : legendView.style('column-count', 2);
 
         const colorNameTmpList = colorNameList;
         colorNameTmpList.reverse();
@@ -259,6 +289,7 @@ class Streamgraph extends PureComponent {
                 .append('svg')
                 .attr('width', 15)
                 .attr('height', 15)
+                .style('vertical-align', 'middle')
                 .style('background-color', element.color);
 
             legendItemContainer
@@ -272,13 +303,13 @@ class Streamgraph extends PureComponent {
                 .text(element.name);
 
             legendItemContainer
-                .on('mouseover', () => {
+                .on('mouseover', (d, i) => {
                     legendItemTooltip.style('visibility', 'visible');
                 })
-                .on('mousemove', () => {
+                .on('mousemove', (d, i) => {
                     legendItemTooltip.style('visibility', 'visible');
                 })
-                .on('mouseout', () => {
+                .on('mouseout', (d, i) => {
                     legendItemTooltip.style('visibility', 'hidden');
                 });
         });
@@ -287,7 +318,7 @@ class Streamgraph extends PureComponent {
     setViewportEvents(svgViewport, vertical) {
         const componentContext = this;
         svgViewport
-            .on('mouseover', function() {
+            .on('mouseover', function(d, i) {
                 if (componentContext.mouseIsOverStream) {
                     let mousex = d3.mouse(this);
                     mousex = mousex[0];
@@ -297,7 +328,7 @@ class Streamgraph extends PureComponent {
                     vertical.style('visibility', 'hidden');
                 }
             })
-            .on('mousemove', function() {
+            .on('mousemove', function(d, i) {
                 if (componentContext.mouseIsOverStream) {
                     let mousex = d3.mouse(this);
                     mousex = mousex[0];
@@ -314,7 +345,7 @@ class Streamgraph extends PureComponent {
 
         if (this.streams) {
             this.streams
-                .on('mousemove', function(d) {
+                .on('mousemove', function(d, i) {
                     const mousex = d3.mouse(this)[0];
                     const date = componentContext.xAxisScale.invert(mousex);
                     componentContext.mouseIsOverStream = true;
@@ -325,20 +356,16 @@ class Streamgraph extends PureComponent {
                             elem.data.date.getFullYear() === date.getFullYear(),
                     ).data[this.hoveredKey];
 
-                    d3
-                        .select(this)
-                        .classed('hover', true)
-                        .attr('stroke', '#000')
-                        .attr('stroke-width', '0.5px'),
-                        tooltip
-                            .html(
-                                '<p>' +
-                                    this.hoveredKey +
-                                    '<br>' +
-                                    this.hoveredValue +
-                                    '</p>',
-                            )
-                            .style('visibility', 'visible');
+                    d3.select(this).classed('hover', true);
+                    tooltip
+                        .html(
+                            '<p>' +
+                                this.hoveredKey +
+                                '<br>' +
+                                this.hoveredValue +
+                                '</p>',
+                        )
+                        .style('visibility', 'visible');
                 })
                 .on('mouseover', (d, i) => {
                     componentContext.mouseIsOverStream = true;
@@ -356,25 +383,22 @@ class Streamgraph extends PureComponent {
         const componentContext = this;
 
         if (this.streams) {
-            this.streams.on('mouseout', function() {
+            this.streams.on('mouseout', function(d, i) {
                 componentContext.mouseIsOverStream = false;
                 componentContext.streams
                     .transition()
                     .duration(25)
                     .attr('opacity', '1');
-                d3
-                    .select(this)
-                    .classed('hover', false)
-                    .attr('stroke-width', '0px'),
-                    tooltip
-                        .html(
-                            '<p>' +
-                                this.hoveredKey +
-                                '<br>' +
-                                this.hoveredValue +
-                                '</p>',
-                        )
-                        .style('visibility', 'hidden');
+                d3.select(this).classed('hover', false);
+                tooltip
+                    .html(
+                        '<p>' +
+                            this.hoveredKey +
+                            '<br>' +
+                            this.hoveredValue +
+                            '</p>',
+                    )
+                    .style('visibility', 'hidden');
             });
         }
     }
@@ -387,6 +411,11 @@ class Streamgraph extends PureComponent {
         this.setMouseOutStreams(tooltip);
     }
 
+    updateDimensions() {
+        this.removeGraph();
+        this.setGraph();
+    }
+
     setGraph() {
         const {
             valuesObjectsArray,
@@ -397,11 +426,12 @@ class Streamgraph extends PureComponent {
         } = transformDataIntoMapArray(this.props.formatData);
 
         const svgWidth = this.divContainer.current.clientWidth;
-
-        const margin = { top: 60, right: 40, bottom: 50, left: 60 };
+        const { margin, height: svgHeight } = this.state;
         const width = svgWidth - margin.left - margin.right;
-        const height = HEIGHT - margin.top - margin.bottom;
-
+        const height = svgHeight - margin.top - margin.bottom;
+        if (this._isMounted) {
+            this.setState({ width: width });
+        }
         const divContainer = d3.select(this.divContainer.current);
 
         const d3DivContainer = divContainer
@@ -448,15 +478,11 @@ class Streamgraph extends PureComponent {
             namesList,
         );
 
-        this.createAndSetTheLegend(d3DivContainer, colorNameList);
+        this.createAndSetTheLegend(d3DivContainer, colorNameList, width);
         this.setTheEventsActions(svgViewport, vertical, tooltip);
     }
 
-    componentDidMount() {
-        this.setGraph();
-    }
-
-    UNSAFE_componentWillUpdate() {
+    removeGraph() {
         d3.select(this.divContainer.current)
             .selectAll('#d3DivContainer')
             .selectAll('div')
@@ -470,6 +496,10 @@ class Streamgraph extends PureComponent {
             .selectAll('#vertical')
             .remove();
 
+        d3.select(this.divContainer.current)
+            .selectAll('#tooltip')
+            .remove();
+
         d3.select(this.anchor.current)
             .selectAll('g')
             .remove();
@@ -479,22 +509,88 @@ class Streamgraph extends PureComponent {
             .remove();
     }
 
+    componentDidMount() {
+        this._isMounted = true;
+        window.addEventListener('resize', this.updateDimensions.bind(this));
+        this.setGraph();
+    }
+
+    UNSAFE_componentWillUpdate() {
+        this.removeGraph();
+    }
+
     componentDidUpdate() {
         this.setGraph();
     }
 
+    componentWillUnmount() {
+        this._isMounted = false;
+        window.removeEventListener('resize', this.updateDimensions.bind(this));
+        this.removeGraph();
+    }
+
+    zoomIconEnter() {
+        this.zoomIndicator.current.style.visibility = 'visible';
+        this.zoomIndicatorBackground.current.style.visibility = 'visible';
+    }
+
+    zoomIconLeave() {
+        this.zoomIndicator.current.style.visibility = 'hidden';
+        this.zoomIndicatorBackground.current.style.visibility = 'hidden';
+    }
+
     render() {
+        const { width, height, margin } = this.state;
+
         return (
             <div
                 id="divContainer"
                 ref={this.divContainer}
                 style={styles.divContainer}
             >
+                <div
+                    id="zoomIndicatorBackground"
+                    ref={this.zoomIndicatorBackground}
+                    style={{
+                        visibility: 'hidden',
+                        position: 'absolute',
+                        top: `${margin.top}px`,
+                        left: `${margin.left}px`,
+                        width: `${width}px`,
+                        height: `${height - margin.top - margin.bottom}px`,
+                        backgroundColor: '#0000006b',
+                    }}
+                />
+                <div
+                    id="zoomIndicator"
+                    ref={this.zoomIndicator}
+                    style={{
+                        visibility: 'hidden',
+                        position: 'absolute',
+                        top: `${height / 2 - 30}px`,
+                        left: `${margin.left + width / 2 - 130}px`,
+                        color: 'white',
+                    }}
+                >
+                    <h4>
+                        Use mouse scroll to zoom and
+                        <br />
+                        mouse drag to move the chart.
+                    </h4>
+                </div>
+                <div
+                    id="zoomIconContainer"
+                    onMouseEnter={this.zoomIconEnter}
+                    onMouseLeave={this.zoomIconLeave}
+                    style={{ position: 'absolute', top: '210px', left: '55px' }}
+                >
+                    <ZoomIcon width={35} />
+                </div>
                 <svg
                     id="svgContainer"
                     ref={this.svgContainer}
-                    width={WIDTH}
-                    height={HEIGHT}
+                    width={width}
+                    height={height}
                 >
                     <g id="anchor" ref={this.anchor} />
                 </svg>
