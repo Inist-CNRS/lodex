@@ -7,6 +7,7 @@ import {
     transformDataIntoMapArray,
     getMinMaxValue,
     cutStr,
+    findNearestTickPosition,
 } from './utils';
 import injectData from '../injectData';
 import exportableToPng from '../exportableToPng';
@@ -166,7 +167,7 @@ class Streamgraph extends PureComponent {
 
         this.gx = innerSpace
             .append('g')
-            .attr('class', 'x axis')
+            .attr('class', 'xAxis')
             .attr('transform', 'translate(0,' + height + ')')
             .call(this.xAxis);
 
@@ -317,13 +318,15 @@ class Streamgraph extends PureComponent {
 
     setViewportEvents(svgViewport, vertical) {
         const componentContext = this;
+
         svgViewport
             .on('mouseover', function(d, i) {
                 if (componentContext.mouseIsOverStream) {
                     let mousex = d3.mouse(this);
                     mousex = mousex[0];
+                    let nearestTickPosition = findNearestTickPosition(mousex);
                     vertical.style('visibility', 'visible');
-                    vertical.style('left', mousex + 'px');
+                    vertical.style('left', nearestTickPosition + 'px');
                 } else {
                     vertical.style('visibility', 'hidden');
                 }
@@ -332,8 +335,9 @@ class Streamgraph extends PureComponent {
                 if (componentContext.mouseIsOverStream) {
                     let mousex = d3.mouse(this);
                     mousex = mousex[0];
+                    let nearestTickPosition = findNearestTickPosition(mousex);
                     vertical.style('visibility', 'visible');
-                    vertical.style('left', mousex + 'px');
+                    vertical.style('left', nearestTickPosition + 'px');
                 } else {
                     vertical.style('visibility', 'hidden');
                 }
@@ -346,8 +350,12 @@ class Streamgraph extends PureComponent {
         if (this.streams) {
             this.streams
                 .on('mousemove', function(d, i) {
-                    const mousex = d3.mouse(this)[0];
-                    const date = componentContext.xAxisScale.invert(mousex);
+                    const mousex = d3.mouse(this)[0] + 60;
+
+                    let nearestTickPosition = findNearestTickPosition(mousex);
+                    const date = componentContext.xAxisScale.invert(
+                        nearestTickPosition - 60,
+                    );
                     componentContext.mouseIsOverStream = true;
                     this.hoveredKey = d3.select(this).attr('name');
 
