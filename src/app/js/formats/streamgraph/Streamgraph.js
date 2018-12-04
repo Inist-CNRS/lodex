@@ -576,14 +576,14 @@ class Streamgraph extends PureComponent {
                         visibility: 'hidden',
                         position: 'absolute',
                         top: `${height / 2 - 30}px`,
-                        left: `${margin.left + width / 2 - 130}px`,
+                        left: `${margin.left + width / 2 - 275}px`,
                         color: 'white',
                     }}
                 >
                     <h4>
-                        Use mouse scroll to zoom and
+                        Utilisez la molette de la souris pour zoomer 
                         <br />
-                        mouse drag to move the chart.
+                        puis cliquez et faites glisser la souris pour déplacer le graphique.
                     </h4>
                 </div>
                 <div
