@@ -7,5 +7,6 @@ export default {
     ...DefaultFormat,
     Component,
     AdminComponent,
+    defaultArgs,
     Icon,
 };
