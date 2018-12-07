@@ -1,9 +1,11 @@
 import ezs from 'ezs';
 import ezsBasics from 'ezs-basics';
-import ezsLocals from '../statements';
+import ezsLodex from 'ezs-lodex';
 
 ezs.use(ezsBasics);
-ezs.use(ezsLocals);
+ezs.use(ezsLodex);
+
+// TODO: write tests
 
 const exporter = (config, fields, characteristics, stream) =>
     stream
@@ -11,6 +13,7 @@ const exporter = (config, fields, characteristics, stream) =>
         .pipe(ezs('filterContributions', { fields }))
         .pipe(ezs('extractIstexQuery', { fields, config }))
         .pipe(
+            // FIXME: add ezs.use(ezsIstex)
             ezs('ISTEXSearch', {
                 source: 'content',
                 target: 'content',
