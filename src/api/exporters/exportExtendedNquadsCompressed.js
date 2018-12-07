@@ -13,28 +13,16 @@ const exporter = (config, fields, characteristics, stream) =>
         .pipe(ezs('filterVersions'))
         .pipe(ezs('filterContributions', { fields }))
         .pipe(ezs('extractIstexQuery', { fields, config }))
+        .pipe(ezs('extract', { path: 'content' }))
+        // FIXME: add ezs.use(ezsIstex)
         .pipe(
-            // FIXME: add ezs.use(ezsIstex)
-            ezs('ISTEXSearch', {
-                source: 'content',
-                target: 'content',
+            ezs('ISTEXScroll', {
                 field: Object.keys(config.istexQuery.context).filter(
                     e => e !== config.istexQuery.linked,
                 ),
             }),
         )
-        .pipe(
-            ezs('ISTEXScroll', {
-                source: 'content',
-                target: 'content',
-            }),
-        )
-        .pipe(
-            ezs('ISTEXResult', {
-                source: 'content',
-                target: 'content',
-            }),
-        )
+        .pipe(ezs('ISTEXResult'))
         .pipe(ezs('convertToExtendedJsonLd', { config }))
         .pipe(ezs('convertJsonLdToNQuads'))
         .pipe(ezs.catch())
