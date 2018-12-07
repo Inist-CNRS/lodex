@@ -26,6 +26,25 @@ export const addRegexToFilters = (match, searchableFieldNames) => filters => {
     };
 };
 
+export const addFieldsToFilters = matchableFields => filters => {
+    if (!matchableFields) {
+        return filters;
+    }
+
+    const matchableFieldNames = Object.keys(matchableFields);
+    if (!matchableFieldNames.length) {
+        return filters;
+    }
+
+    return {
+        ...filters,
+        $or: matchableFieldNames.map(fieldName => ({
+            [`versions.${fieldName}`]: matchableFields[fieldName],
+        })),
+    };
+};
+
+
 export const getValueQueryFragment = (name, value, inverted) => {
     if (Array.isArray(value) && value.length > 1) {
         return {
@@ -87,6 +106,7 @@ export const addKeyToFilters = (key, value) => filters => {
 const getPublishedDatasetFilter = ({
     uri,
     match,
+    matchableFields,
     searchableFieldNames,
     facets,
     facetFieldNames,
@@ -99,6 +119,7 @@ const getPublishedDatasetFilter = ({
 
     return compose(
         addKeyToFilters('uri', uri),
+        addFieldsToFilters(matchableFields),
         addSearchFilters(match, searchableFieldNames),
         addFacetToFilters(facets, facetFieldNames, invertedFacets),
     )({ removedAt: { $exists: false } });
