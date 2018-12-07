@@ -72,7 +72,7 @@ function scrollR(uri, data, feed) {
  * @param data  Object  {content: uri, lodex: LODEX URI }
  * @param feed  Stream  stream managed with ezs
  */
-module.exports = function scroll(data, feed) {
+export default function scroll(data, feed) {
     if (this.isLast()) {
         return feed.close();
     }

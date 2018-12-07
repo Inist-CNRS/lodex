@@ -1,6 +1,6 @@
 import extractIstexQuery from './extractIstexQuery';
 import scroll from './scroll';
-import LodexContext from './LodexContext';
+import LodexContext from './LodexContext'; // eslint-disable-line import/no-named-as-default
 import LodexConfig from './LodexConfig';
 import LodexRunQuery from './LodexRunQuery';
 import LodexSetField from './LodexSetField';
