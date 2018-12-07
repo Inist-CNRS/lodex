@@ -58,4 +58,4 @@ export default function extractIstexQuery(data, feed) {
                 content: data[propertyName],
             });
         });
-};
+}

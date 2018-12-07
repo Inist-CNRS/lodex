@@ -92,11 +92,12 @@ export default function scroll(data, feed) {
         pathname: 'document',
         // Change '&' to validate the query as an URI component (and not the '?'
         // at the beginning)
-        search: `q=${search.replace(/&/g, '%26')}&scroll=30s&output=arkIstex,${
-            cleanOutput
-        }&size=${size}&sid=${sid}`,
+        search: `q=${search.replace(
+            /&/g,
+            '%26',
+        )}&scroll=30s&output=arkIstex,${cleanOutput}&size=${size}&sid=${sid}`,
     };
     const uri = url.format(urlObj);
 
     return scrollR(uri, data, feed);
-};
+}
