@@ -11,7 +11,6 @@ import scroll from './scroll';
 import convertJsonLdToNQuads from './convertJsonLdToNQuads';
 import convertToJson from './convertToJson';
 import convertToExtendedJsonLd from './convertToExtendedJsonLd';
-import convertToAtom from './convertToAtom';
 import convertToSitemap from './convertToSitemap';
 import LodexContext from './LodexContext';
 import LodexConfig from './LodexConfig';
@@ -37,7 +36,6 @@ export default {
     convertJsonLdToNQuads,
     convertToJson,
     convertToExtendedJsonLd,
-    convertToAtom,
     convertToSitemap,
     LodexContext,
     LodexConfig,
