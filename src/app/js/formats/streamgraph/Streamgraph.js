@@ -549,6 +549,7 @@ class Streamgraph extends PureComponent {
 
     render() {
         const { width, height, margin } = this.state;
+        const { p: polyglot } = this.props;
 
         return (
             <div
@@ -581,9 +582,9 @@ class Streamgraph extends PureComponent {
                     }}
                 >
                     <h4>
-                        Utilisez la molette de la souris pour zoomer 
+                        {polyglot.t('user_can_interact_with_mouse_1')}
                         <br />
-                        puis cliquez et faites glisser la souris pour déplacer le graphique.
+                        {polyglot.t('user_can_interact_with_mouse_2')}
                     </h4>
                 </div>
                 <div
