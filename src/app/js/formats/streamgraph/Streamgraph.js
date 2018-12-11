@@ -12,6 +12,7 @@ import {
 import injectData from '../injectData';
 import exportableToPng from '../exportableToPng';
 import ZoomIcon from './zoomIcon';
+import moment from 'moment';
 
 const styles = StyleSheet.create({
     divContainer: {
@@ -150,12 +151,12 @@ class Streamgraph extends PureComponent {
         height,
         innerSpace,
     ) {
-        const min = new Date(String(minDate));
-        const max = new Date(String(maxDate));
+        const minMoment = moment(`01/01/${minDate}`, 'DD/MM/YYYY', true);
+        const maxMoment = moment(`01/01/${maxDate}`, 'DD/MM/YYYY', true);
 
         this.xAxisScale = d3
             .scaleTime()
-            .domain([min, max])
+            .domain([minMoment.toDate(), maxMoment.toDate()])
             .range([0, width]);
 
         this.xAxis = d3
