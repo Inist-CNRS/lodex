@@ -317,6 +317,8 @@
 "globalBarchart"	"Graph - Bar Chart"	"Graphique - Diagramme en barres"
 "max_fields"	"Maximum number of fields"	"Nombre max de champs"
 "colors_set"	"Colour set"	"Jeu de couleurs"
+"user_can_interact_with_mouse_1"	"Use the mouse wheel to zoom and "	"Utilisez la molette de la souris pour zoomer"
+"user_can_interact_with_mouse_2"	"click to translate the chart"	"puis cliquez et faites glisser la souris pour déplacer le graphique."
 "order_by"	"Order by"	"Trier par"
 "label_asc"	"Label ↗"	"Label ↗"
 "label_desc"	"Label ↘"	"Label ↘"
@@ -445,4 +447,5 @@
 "convert_to_value"	"Convert to value"	"Convertir en valeur"
 "allow_to_load_more"	"Allow to load more resources"	"Autoriser à charger plus de ressources"
 "items_per_page"	"Resource number per page"	"Nombre de ressources par page"
-"see_more"	"See more"	"Voir plus"
+"see_more"  "See more"	"Voir plus"
+                        

@@ -12,6 +12,7 @@ import {
 import injectData from '../injectData';
 import exportableToPng from '../exportableToPng';
 import ZoomIcon from './zoomIcon';
+import moment from 'moment';
 
 const styles = StyleSheet.create({
     divContainer: {
@@ -150,12 +151,12 @@ class Streamgraph extends PureComponent {
         height,
         innerSpace,
     ) {
-        const min = new Date(String(minDate));
-        const max = new Date(String(maxDate));
+        const minMoment = moment(`01/01/${minDate}`, 'DD/MM/YYYY', true);
+        const maxMoment = moment(`01/01/${maxDate}`, 'DD/MM/YYYY', true);
 
         this.xAxisScale = d3
             .scaleTime()
-            .domain([min, max])
+            .domain([minMoment.toDate(), maxMoment.toDate()])
             .range([0, width]);
 
         this.xAxis = d3
@@ -549,6 +550,7 @@ class Streamgraph extends PureComponent {
 
     render() {
         const { width, height, margin } = this.state;
+        const { p: polyglot } = this.props;
 
         return (
             <div
@@ -576,14 +578,14 @@ class Streamgraph extends PureComponent {
                         visibility: 'hidden',
                         position: 'absolute',
                         top: `${height / 2 - 30}px`,
-                        left: `${margin.left + width / 2 - 130}px`,
+                        left: `${margin.left + width / 2 - 275}px`,
                         color: 'white',
                     }}
                 >
                     <h4>
-                        Use mouse scroll to zoom and
+                        {polyglot.t('user_can_interact_with_mouse_1')}
                         <br />
-                        mouse drag to move the chart.
+                        {polyglot.t('user_can_interact_with_mouse_2')}
                     </h4>
                 </div>
                 <div
