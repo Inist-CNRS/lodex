@@ -33,32 +33,30 @@ function ezsExport(data, feed) {
             }),
         )
         .pipe(ezs('ISTEXResult'))
+        .pipe(
+            ezs(function(d, f) {
+                if (this.isLast()) {
+                    return f.close();
+                }
+                const o = {
+                    lodex: {
+                        uri: data.uri,
+                    },
+                    content: d,
+                };
+                f.write(o);
+                f.send();
+            }),
+        )
+        .pipe(ezs('convertToExtendedJsonLd', { config }))
+        .pipe(ezs('convertJsonLdToNQuads'))
         .on('data', d => {
-            const o = {
-                lodex: {
-                    uri: data.uri,
-                },
-                content: d,
-            };
-            const subInput = ezs.createStream(ezs.objectMode());
-            subInput
-                .pipe(ezs('convertToExtendedJsonLd', { config }))
-                .pipe(ezs('convertJsonLdToNQuads'))
-                .on('data', d => {
-                    feed.write(d);
-                })
-                .on('end', () => feed.end())
-                .on('error', err => {
-                    console.error(err);
-                    feed.stop(err);
-                });
-            subInput.write(o);
-            subInput.end();
-            subInput.destroy();
+            feed.send(d);
         })
         .on('close', () => feed.end())
         .on('error', err => {
             console.error(err);
+            feed.stop(err);
         });
 }
 
