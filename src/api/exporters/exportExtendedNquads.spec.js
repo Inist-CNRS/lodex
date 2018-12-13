@@ -89,5 +89,37 @@ describe('export extended N-Quads', () => {
             .on('error', done);
     });
 
+    it('should export single resource with more documents', done => {
+        let outputString = '';
+        const resource = {
+            uri: 'http://uri/cat',
+            title: 'First title',
+            istexQuery: 'language.raw:cat',
+        };
+        exportExtendedNquads(config, fields, characteristics, from([resource]))
+            .on('data', data => {
+                if (data) outputString += data;
+            })
+            .on('end', () => {
+                const res = outputString.split('\n');
+                expect(res).toHaveLength(11);
+                expect(res).toEqual([
+                    '<https://api.istex.fr/ark:/67375/6H6-NTDRQKJZ-W> <http://uri/language> <http://uri/cat> .',
+                    '<https://api.istex.fr/ark:/67375/6H6-NTDRQKJZ-W> <http://uri/title> "Diferncies socials en el cncer de bufeta urinria a Catalunya" .',
+                    '<https://api.istex.fr/ark:/67375/WNG-QK4K9FN2-3> <http://uri/language> <http://uri/cat> .',
+                    '<https://api.istex.fr/ark:/67375/WNG-QK4K9FN2-3> <http://uri/title> "JOSEPH SILK: The Big Bang. The Creation and Evolution of the Universe. W. H. Freeman and Company, San Francisco, 1980. 394 + X Seiten. Preis $4.90." .',
+                    '<https://api.istex.fr/ark:/67375/WNG-7S1DTV7P-G> <http://uri/language> <http://uri/cat> .',
+                    '<https://api.istex.fr/ark:/67375/WNG-7S1DTV7P-G> <http://uri/title> "J. HEIUMANN : Relativistic Cosmology. An Introduction. Springer‐Verlag, Berlin, Heidelbcrg, New York, 1980. XI1 + 168 Seitcn, Preis DM 48. ‐." .',
+                    '<https://api.istex.fr/ark:/67375/WNG-JCTCNPC8-S> <http://uri/language> <http://uri/cat> .',
+                    '<https://api.istex.fr/ark:/67375/WNG-JCTCNPC8-S> <http://uri/title> "ROBERT K. NESBET: Variational Methods in Electron ‐ Atom Scattering Theory. Plenum Press, New York and London, 1980. 228 Seiten, ISBN 0‐306‐40413‐3. Preis: US $32.50." .',
+                    '<https://api.istex.fr/ark:/67375/6H6-8V6QFS7V-9> <http://uri/language> <http://uri/cat> .',
+                    '<https://api.istex.fr/ark:/67375/6H6-8V6QFS7V-9> <http://uri/title> "La mortalitat a catalunya: descripci i, comparaci per edat i sexe" .',
+                    '',
+                ]);
+                done();
+            })
+            .on('error', done);
+    });
+
     // TODO: test when config.istexQuery.context is undefined
 });

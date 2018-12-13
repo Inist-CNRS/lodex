@@ -51,9 +51,9 @@ function ezsExport(data, feed) {
         .pipe(ezs('convertToExtendedJsonLd', { config }))
         .pipe(ezs('convertJsonLdToNQuads'))
         .on('data', d => {
-            feed.send(d);
+            feed.write(d);
         })
-        .on('close', () => feed.end())
+        .on('end', () => feed.end())
         .on('error', err => {
             console.error(err);
             feed.stop(err);
