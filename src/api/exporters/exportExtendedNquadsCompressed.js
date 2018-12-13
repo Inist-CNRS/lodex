@@ -2,11 +2,9 @@ import from from 'from';
 import ezs from 'ezs';
 import ezsLodex from 'ezs-lodex';
 import ezsIstex from 'ezs-istex';
-import ezsBasics from 'ezs-basics';
 
 ezs.use(ezsLodex);
 ezs.use(ezsIstex);
-ezs.use(ezsBasics);
 
 /**
  * export data into the feed
