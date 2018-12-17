@@ -38,10 +38,20 @@ const styles = stylesToClassname(
         searchBarContainer: {
             flex: '1 0 0',
         },
+        details: {
+            display: 'flex',
+        },
         advanced: {
             display: 'flex',
             flex: '0 0 auto',
             flexDirection: 'column',
+        },
+        advancedTopBar: {
+            display: 'flex',
+        },
+        searchMessage: {
+            flex: '1 0 0',
+            color: 'rgb(95, 99, 104)',
         },
         advancedToggle: {
             alignSelf: 'flex-end',
@@ -68,6 +78,12 @@ const styles = stylesToClassname(
         loadMore: {
             height: 36,
             marginTop: '1.5rem',
+        },
+        noResult: {
+            position: 'absolute',
+            top: '40%',
+            width: '100%',
+            textAlign: 'center',
         },
     },
     'search',
@@ -111,21 +127,17 @@ class Search extends Component {
         this.setState({ bufferQuery: query });
     };
 
-    renderLoading = () => {
-        const { p: polyglot } = this.props;
-
-        return (
-            <div>
-                <CircularProgress size={20} className={styles.loading} />{' '}
-                {polyglot.t('loading')}
-            </div>
-        );
-    };
-
     renderNoResults = () => {
         const { p: polyglot } = this.props;
 
-        return <p>{polyglot.t('no_result')}</p>;
+        return (
+            <div className={styles.noResult}>
+                <div>
+                    <strong>{polyglot.t('no_result')}</strong>
+                </div>
+                <div>{polyglot.t('no_result_details')}</div>
+            </div>
+        );
     };
 
     renderNoOverviewField = () => {
@@ -153,8 +165,8 @@ class Search extends Component {
                     </Fragment>
                 ) : (
                     <FlatButton fullWidth onClick={loadMore}>
-                        {polyglot.t('search_load_more')} (
-                        {total - results.length})
+                        {polyglot.t('search_load_more')} ({results.length} /{' '}
+                        {total})
                     </FlatButton>
                 )}
             </div>
@@ -208,25 +220,43 @@ class Search extends Component {
                             ref={this.textInput}
                         />
                     </div>
-                    {showAdvancedSearch && (
-                        <div
-                            className={classnames(
-                                'search-advanced',
-                                styles.advanced,
+                    <div
+                        className={classnames(
+                            'search-advanced',
+                            styles.advanced,
+                        )}
+                    >
+                        <div className={styles.advancedTopBar}>
+                            {(everythingIsOk || noResults) && (
+                                <div
+                                    className={classnames(
+                                        'search-message',
+                                        styles.searchMessage,
+                                    )}
+                                >
+                                    {loading
+                                        ? polyglot.t('loading')
+                                        : polyglot.t('results', {
+                                              smart_count: total,
+                                          })}
+                                </div>
                             )}
-                        >
-                            <Link
-                                className={classnames(
-                                    'search-advanced-toggle',
-                                    styles.advancedToggle,
-                                )}
-                                onClick={toggleAdvancedSearch}
-                            >
-                                {polyglot.t('search_advanced')}
-                            </Link>
-                            <AppliedFacets className={styles.advancedFacets} />
+                            {showAdvancedSearch && (
+                                <Link
+                                    className={classnames(
+                                        'search-advanced-toggle',
+                                        styles.advancedToggle,
+                                    )}
+                                    onClick={toggleAdvancedSearch}
+                                >
+                                    {polyglot.t('search_advanced')}
+                                </Link>
+                            )}
                         </div>
-                    )}
+                        {showAdvancedSearch && (
+                            <AppliedFacets className={styles.advancedFacets} />
+                        )}
+                    </div>
                 </div>
                 <div
                     className={classnames(
