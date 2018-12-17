@@ -1,8 +1,25 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import classnames from 'classnames';
 
 import { field as fieldPropTypes } from '../../propTypes';
 import { getViewComponent } from '../';
+import stylesToClassname from '../../lib/stylesToClassName';
+
+const styles = stylesToClassname(
+    {
+        ordered: {
+            listStyleType: 'decimal',
+        },
+        unordered: {
+            listStyleType: 'initial',
+        },
+        unordered_without_bullet: {
+            listStyleType: 'none',
+        },
+    },
+    'list-format',
+);
 
 export const UL = ({ className, children }) => (
     <ul className={className}>{children}</ul>
@@ -36,7 +53,7 @@ const ListView = ({
     const List = type === 'ordered' ? OL : UL;
 
     return (
-        <List className={className}>
+        <List className={classnames(styles[type], className)}>
             {values.map((value, index) => (
                 <li key={value}>
                     {subFormat ? (
