@@ -95,6 +95,12 @@ class ListAdmin extends Component {
                         value="ordered"
                         primaryText={polyglot.t('list_format_ordered')}
                     />
+                    <MenuItem
+                        value="unordered_without_bullet"
+                        primaryText={polyglot.t(
+                            'list_format_unordered_without_bullet',
+                        )}
+                    />
                 </SelectField>
             </div>
         );

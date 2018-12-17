@@ -1,36 +1,38 @@
 import React from 'react';
 import { shallow } from 'enzyme';
+import { StyleSheetTestUtils } from 'aphrodite';
 
 import ListView, { UL, OL } from './ListView';
-import TitleView from '../title/TitleView';
-import DefaultEdition from '../DefaultFormat/DefaultEdition';
 
 describe('list format view <ListView />', () => {
     const polyglot = {
         t: v => v,
     };
-    it('should render list of value', () => {
-        const props = {
-            className: 'class',
-            field: {
-                name: 'name',
-                format: {
-                    name: 'list',
-                    args: {
-                        subFormat: 'none',
-                        subFormatOptions: {},
-                    },
+
+    const defaultProps = {
+        className: 'class',
+        field: {
+            name: 'name',
+            format: {
+                name: 'list',
+                args: {
+                    subFormat: 'none',
+                    subFormatOptions: {},
                 },
             },
-            subFormat: 'none',
-            subFormatOptions: {},
-            resource: {
-                name: ['value1', 'value2', 'value3'],
-            },
-            p: polyglot,
-        };
+        },
+        subFormat: 'none',
+        subFormatOptions: {},
+        resource: {
+            name: ['value1', 'value2', 'value3'],
+        },
+        p: polyglot,
+    };
 
-        const component = shallow(<ListView {...props} />);
+    beforeEach(() => StyleSheetTestUtils.suppressStyleInjection());
+
+    it('should render list of value', () => {
+        const component = shallow(<ListView {...defaultProps} />);
         const subFormat = component.find('Translated(CheckedComponent)');
         expect(subFormat.length).toBe(3);
         subFormat.forEach((t, index) => {
@@ -42,7 +44,7 @@ describe('list format view <ListView />', () => {
 
     it('should render list of subFormat if subformat is provided', () => {
         const props = {
-            className: 'class',
+            ...defaultProps,
             field: {
                 name: 'name',
                 format: {
@@ -59,10 +61,6 @@ describe('list format view <ListView />', () => {
             subFormatOptions: {
                 level: 2,
             },
-            resource: {
-                name: ['value1', 'value2', 'value3'],
-            },
-            p: polyglot,
         };
         const component = shallow(<ListView {...props} />);
         const title = component.find('Translated(CheckedComponent)');
@@ -76,26 +74,7 @@ describe('list format view <ListView />', () => {
     });
 
     it('should wrap list in UL if no format type provided', () => {
-        const props = {
-            className: 'class',
-            field: {
-                name: 'name',
-                format: {
-                    name: 'list',
-                    args: {
-                        subFormat: 'none',
-                        subFormatOptions: {},
-                    },
-                },
-            },
-            subFormat: 'none',
-            subFormatOptions: {},
-            resource: {
-                name: ['value1', 'value2', 'value3'],
-            },
-            p: polyglot,
-        };
-        const component = shallow(<ListView {...props} />);
+        const component = shallow(<ListView {...defaultProps} />);
         const ul = component.find(UL);
         expect(ul.length).toBe(1);
         const ol = component.find(OL);
@@ -104,7 +83,7 @@ describe('list format view <ListView />', () => {
 
     it('should wrap list in OL if format type is ordered', () => {
         const props = {
-            className: 'class',
+            ...defaultProps,
             field: {
                 name: 'name',
                 format: {
@@ -117,12 +96,6 @@ describe('list format view <ListView />', () => {
                 },
             },
             type: 'ordered',
-            subFormat: 'none',
-            subFormatOptions: {},
-            resource: {
-                name: ['value1', 'value2', 'value3'],
-            },
-            p: polyglot,
         };
         const component = shallow(<ListView {...props} />);
         const ul = component.find(UL);
@@ -130,4 +103,29 @@ describe('list format view <ListView />', () => {
         const ol = component.find(OL);
         expect(ol.length).toBe(1);
     });
+
+    it('should wrap list in UL if format type is unordered_without_bullet', () => {
+        const props = {
+            ...defaultProps,
+            field: {
+                name: 'name',
+                format: {
+                    name: 'list',
+                    args: {
+                        type: 'unordered_without_bullet',
+                        subFormat: 'none',
+                        subFormatOptions: {},
+                    },
+                },
+            },
+            type: 'unordered_without_bullet',
+        };
+        const component = shallow(<ListView {...props} />);
+        const ul = component.find(UL);
+        expect(ul.length).toBe(1);
+        const ol = component.find(OL);
+        expect(ol.length).toBe(0);
+    });
+
+    afterEach(() => StyleSheetTestUtils.clearBufferAndResumeStyleInjection());
 });
