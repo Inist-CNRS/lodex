@@ -7,18 +7,16 @@ import NavLink from 'react-router-dom/NavLink';
 import MenuItem from './MenuItem';
 
 describe('MenuItem', () => {
+    const onClick = jest.fn();
     const defaultProps = {
         config: {},
         polyglot: { currentLocale: 'fr' },
-        closeAll: jest.fn(),
         hasGraph: false,
         graphDrawer: 'closed',
         searchDrawer: 'closed',
-        handleGraphItemClick: jest.fn(),
-        toggleSearch: jest.fn(),
         canBeSearched: false,
         role: 'not logged',
-        logout: jest.fn(),
+        onClick: jest.fn(() => onClick),
     };
 
     beforeEach(() => StyleSheetTestUtils.suppressStyleInjection());
@@ -85,7 +83,7 @@ describe('MenuItem', () => {
             const link = wrapper.find(NavLink);
 
             expect(link.prop('to')).toBe('/');
-            expect(link.prop('onClick')).toBe(defaultProps.closeAll);
+            expect(link.prop('onClick')).toBe(onClick);
         });
     });
 
@@ -105,7 +103,7 @@ describe('MenuItem', () => {
             const link = wrapper.find(NavLink);
 
             expect(link.prop('to')).toBe('/graph');
-            expect(link.prop('onClick')).toBe(defaultProps.closeAll);
+            expect(link.prop('onClick')).toBe(onClick);
         });
     });
 
@@ -126,9 +124,7 @@ describe('MenuItem', () => {
             const link = wrapper.find(NavLink);
 
             expect(link.prop('to')).toBe('/graph');
-            expect(link.prop('onClick')).toBe(
-                defaultProps.handleGraphItemClick,
-            );
+            expect(link.prop('onClick')).toBe(onClick);
         });
         it('should not render MenuItem to open graphDrawer when hasGraph is false', () => {
             const wrapper = shallow(
@@ -163,7 +159,7 @@ describe('MenuItem', () => {
 
             const link = wrapper.find('div');
 
-            expect(link.prop('onClick')).toBe(defaultProps.toggleSearch);
+            expect(link.prop('onClick')).toBe(onClick);
         });
 
         it('should not render MenuItem to open graphDrawer when canBeSearched is false', () => {
@@ -272,7 +268,7 @@ describe('MenuItem', () => {
             const link = wrapper.find(Link);
 
             expect(link.prop('to')).toBe('/login');
-            expect(link.prop('onClick')).toBe(defaultProps.logout);
+            expect(link.prop('onClick')).toBe(onClick);
         });
 
         it('should not render MenuItem when role is "not logged"', () => {
@@ -326,7 +322,7 @@ describe('MenuItem', () => {
             const navLink = wrapper.find(NavLink);
             expect(navLink).toHaveLength(1);
             expect(navLink.prop('to')).toBe('/internal/link');
-            expect(navLink.prop('onClick')).toBe(defaultProps.closeAll);
+            expect(navLink.prop('onClick')).toBe(onClick);
         });
 
         it('should render nothing if no config.link', () => {

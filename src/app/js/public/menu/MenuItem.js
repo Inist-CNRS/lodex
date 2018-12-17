@@ -88,15 +88,12 @@ const getIcon = icon => {
 const MenuItem = ({
     config,
     polyglot,
-    closeAll,
     hasGraph,
     graphDrawer,
     searchDrawer,
-    handleGraphItemClick,
-    toggleSearch,
     canBeSearched,
     role,
-    logout,
+    onClick,
 }) => {
     const label = config.label[polyglot.currentLocale];
     const icon = getIcon(config.icon);
@@ -113,7 +110,7 @@ const MenuItem = ({
                         styles.link,
                     )}
                     activeClassName={styles.active}
-                    onClick={closeAll}
+                    onClick={onClick(config.role)}
                 >
                     {icon}
                     {label}
@@ -130,7 +127,7 @@ const MenuItem = ({
                         styles.link,
                     )}
                     activeClassName={styles.active}
-                    onClick={closeAll}
+                    onClick={onClick(config.role)}
                 >
                     {icon}
                     {label}
@@ -141,7 +138,7 @@ const MenuItem = ({
                 hasGraph && (
                     <NavLink
                         to="/graph"
-                        onClick={handleGraphItemClick}
+                        onClick={onClick(config.role, true)}
                         className={classnames(
                             'nav-item',
                             styles.menuItem,
@@ -165,7 +162,7 @@ const MenuItem = ({
             return (
                 canBeSearched && (
                     <div
-                        onClick={toggleSearch}
+                        onClick={onClick(config.role)}
                         className={classnames('nav-item', styles.menuItem, {
                             [styles.drawerActive]: searchDrawer === 'open',
                         })}
@@ -205,7 +202,7 @@ const MenuItem = ({
                     <Link
                         to="/login"
                         className={classnames('nav-item', styles.menuItem)}
-                        onClick={logout}
+                        onClick={onClick(config.role)}
                     >
                         {icon}
                         {label}
@@ -255,7 +252,7 @@ const MenuItem = ({
             return (
                 <NavLink
                     to={link}
-                    onClick={closeAll}
+                    onClick={onClick(config.role)}
                     className={classnames(
                         'nav-item',
                         styles.menuItem,
@@ -296,13 +293,10 @@ MenuItem.propTypes = {
         }).isRequired,
         icon: PropTypes.string.isRequired,
     }).isRequired,
-    closeAll: PropTypes.func.isRequired,
+    onClick: PropTypes.func.isRequired,
     graphDrawer: PropTypes.oneOf(['open', 'closing', 'closed']),
     searchDrawer: PropTypes.oneOf(['open', 'closing', 'closed']),
-    handleGraphItemClick: PropTypes.func.isRequired,
-    toggleSearch: PropTypes.func.isRequired,
     role: PropTypes.oneOf(['admin', 'user', 'not logged']).isRequired,
-    logout: PropTypes.func.isRequired,
     canBeSearched: PropTypes.bool.isRequired,
     hasGraph: PropTypes.bool.isRequired,
     polyglot: polyglotPropTypes.isRequired,
