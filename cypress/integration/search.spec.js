@@ -25,7 +25,7 @@ describe('Search', () => {
             cy.get('.search-result').should('have.length', 10);
             cy.get('.drawer-container .load-more button').should(
                 'contain',
-                '(2)',
+                '(10 / 12)',
             );
         });
 
@@ -49,7 +49,7 @@ describe('Search', () => {
             cy.get('.search-result').should('have.length', 10);
             cy.get('.drawer-container .load-more button').should(
                 'contain',
-                '(2)',
+                '(10 / 12)',
             );
 
             searchDrawer.loadMore();

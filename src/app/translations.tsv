@@ -146,7 +146,6 @@
 "field_display_in_home"	"Display in home page"	"Afficher sur la page d'accueil"
 "field_searchable"	"Searchable - global full text search will target this field"	"Une recherche texte globale peut être effectuée sur ce champ"
 "filter"	"Enter your search term here"	"Vous pouvez saisir votre recherche ici"
-"no_result"	"No matching resource found"	"Aucune correspondance trouvée"
 "field_is_facet"	"is a facet"	"est une facette"
 "add_facet"	"Add a facet"	"Ajouter une facette"
 "select_facet_value"	"Select a value for: %{facet}"	"Sélectionner une valeur pour: %{facet}"
@@ -447,5 +446,7 @@
 "convert_to_value"	"Convert to value"	"Convertir en valeur"
 "allow_to_load_more"	"Allow to load more resources"	"Autoriser à charger plus de ressources"
 "items_per_page"	"Resource number per page"	"Nombre de ressources par page"
-"see_more"  "See more"	"Voir plus"
-                        
+"see_more"	"See more"	"Voir plus"
+"results"	"%{smart_count} result |||| %{smart_count} results"	"%{smart_count} résultat |||| %{smart_count} résultats"
+"no_result"	"No matching resource found"	"Aucune correspondance trouvée"
+"no_result_details"	"Please change your search terms or facets"	"Veuillez changer vos filtres ou termes de recherche"
