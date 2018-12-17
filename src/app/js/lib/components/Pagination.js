@@ -30,14 +30,14 @@ const styles = {
         marginLeft: 16,
     },
     label: {
-		display: 'inline-block',
+        display: 'inline-block',
         color: '#999',
         fontWeight: 300,
         fontSize: 12,
-		marginRight: 16
+        marginRight: 16
     },
     input: {
-		display: 'inline-block',
+        display: 'inline-block',
         width: '100%',
     },
     underline: {
@@ -94,54 +94,54 @@ class Pagination extends Component {
     }
 
     handleChangePerPage = (e, idx, perPage) => {
-		const count = Math.ceil(this.props.total / perPage);
-		let currentPage = this.props.currentPage;
+        const count = Math.ceil(this.props.total / perPage);
+        let currentPage = this.props.currentPage;
 
-		if (count < this.state.count && currentPage !== 0) {
-			currentPage = count - 1;
-		}
+        if (count < this.state.count && currentPage !== 0) {
+            currentPage = count - 1;
+        }
 
         this.props.onChange(currentPage, perPage);
     }
 
-	handlePreviousPageClick = () => {
-		this.handleChangePage(this.props.currentPage - 1);
-	}
+    handlePreviousPageClick = () => {
+        this.handleChangePage(this.props.currentPage - 1);
+    }
 
-	handleNextPageClick = () => {
-		this.handleChangePage(this.props.currentPage + 1);
-	}
+    handleNextPageClick = () => {
+        this.handleChangePage(this.props.currentPage + 1);
+    }
 
     handleChangePage = (currentPage) => {
         this.props.onChange(currentPage, this.props.perPage);
     }
 
-	handleChangePageFromSelect = (e, idx, page) => {
-		this.handleChangePage(page);
-	}
+    handleChangePageFromSelect = (e, idx, page) => {
+        this.handleChangePage(page);
+    }
 
-	handleChangePageFromText = (e) => {
-		const page = parseInt(e.target.value) - 1;
+    handleChangePageFromText = (e) => {
+        const page = parseInt(e.target.value) - 1;
 
-		if (page < this.state.count && page > -1) {
-			this.handleChangePage(page);
-		}
-	}
+        if (page < this.state.count && page > -1) {
+            this.handleChangePage(page);
+        }
+    }
 
     render() {
         const { perPage, currentPage, total, texts, column } = this.props;
         const { pages, count } = this.state;
-		const pageToDisplay = currentPage + 1;
+        const pageToDisplay = currentPage + 1;
 
-        let to = pageToDisplay * perPage,
-            _from = to - perPage;
+        let to = pageToDisplay * perPage;
+        const from = (to - perPage) + 1
 
         if(to > total) {
             to = total;
-		}
+        }
 
         let showing = texts.showing.replace('{total}', total)
-            .replace('{from}', _from)
+            .replace('{from}', from)
             .replace('{to}', to);
 
         const navigationArrow = (
@@ -172,31 +172,31 @@ class Pagination extends Component {
             <div style={styles.container}>
                 <div style={styles.elements}>
                     <div style={styles.label}>{`${texts.page} `}</div>
-					{pages.length < 11 &&
-						<SelectField
-							onChange={this.handleChangePageFromSelect}
-							value={currentPage}
-							style={styles.input}
-							underlineStyle={styles.underline}>
-							{
-								pages.map(page => (
-									<MenuItem
-										primaryText={page + 1}
-										value={page}
-										key={`page-${page}`}/>
-								))
-							}
-						</SelectField>
-					}
-					{pages.length > 10 &&
-						<TextField
-							name="page"
-							onChange={this.handleChangePageFromText}
-							style={styles.input}
-							value={pageToDisplay}
-							type="number"
-						/>
-					}
+                    {pages.length < 11 &&
+                        <SelectField
+                            onChange={this.handleChangePageFromSelect}
+                            value={currentPage}
+                            style={styles.input}
+                            underlineStyle={styles.underline}>
+                            {
+                                pages.map(page => (
+                                    <MenuItem
+                                        primaryText={page + 1}
+                                        value={page}
+                                        key={`page-${page}`}/>
+                                ))
+                            }
+                        </SelectField>
+                    }
+                    {pages.length > 10 &&
+                        <TextField
+                            name="page"
+                            onChange={this.handleChangePageFromText}
+                            style={styles.input}
+                            value={pageToDisplay}
+                            type="number"
+                        />
+                    }
                 </div>
                 <div style={styles.elements}>
                     <div style={styles.label}>{`${texts.perPage} `}</div>
