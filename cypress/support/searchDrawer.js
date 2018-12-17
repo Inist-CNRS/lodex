@@ -89,7 +89,9 @@ export const checkFacetsItem = (name, facets) => {
         .find('.facet-value-item');
 
     facetValueItems.each((facetValueItem, index) => {
-        cy.wrap(facetValueItem).contains(facets[index]);
+        cy.wrap(facetValueItem)
+            .contains(facets[index])
+            .should('exist');
     });
 };
 
