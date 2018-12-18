@@ -56,35 +56,10 @@ export const mapStateToProps = state => ({
     submitting: isSubmitting(LOGIN_FORM_NAME)(state),
 });
 
-export const getPreviousState = (ownProps, location) => {
-    if (
-        ownProps.location &&
-        ownProps.location.state &&
-        ownProps.location.state.nextPathname &&
-        ownProps.location.state.nextPathname !== '/login'
-    ) {
-        return ownProps.location.state.nextPathname;
-    }
-
-    if (location) {
-        const url = new URL(location.toString());
-        const pathname = url.searchParams.get('nextpathname');
-        if (pathname && pathname !== '/login') {
-            return pathname;
-        }
-    }
-
-    return '/';
-};
-
-export const mapDispatchToProps = (dispatch, ownProps) =>
+export const mapDispatchToProps = dispatch =>
     bindActionCreators(
         {
-            login: values =>
-                loginAction({
-                    ...values,
-                    previousState: getPreviousState(ownProps, window.location),
-                }),
+            login: values => loginAction(values),
             submit: () => submitAction(LOGIN_FORM_NAME),
             toggleLogin: toggleLoginAction,
         },

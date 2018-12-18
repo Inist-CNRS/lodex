@@ -4,7 +4,7 @@ import { replace } from 'connected-react-router';
 import fetchSaga from './fetchSaga';
 import fetch from '../fetch';
 import { logout } from '../../user';
-import { getCurrentLocation } from '../../sharedSelectors';
+import { getCurrentQuery } from '../../sharedSelectors';
 
 describe('sagas fetch', () => {
     let iterator;
@@ -37,15 +37,14 @@ describe('sagas fetch', () => {
     it('should select currentLocation, redirect to login put logout and return if 401', () => {
         iterator.next();
         let next = iterator.next({ fetchResult: { error: { code: 401 } } });
-        expect(next.value).toEqual(select(getCurrentLocation));
+        expect(next.value).toEqual(select(getCurrentQuery));
 
-        next = iterator.next('currentLocation');
+        next = iterator.next('/current/location?query=1');
 
         expect(next.value).toEqual(
             put(
                 replace({
-                    pathname: '/login',
-                    state: { nextPathname: 'currentLocation' },
+                    pathname: '/login?page=%2Fcurrent%2Flocation%3Fquery%3D1',
                 }),
             ),
         );

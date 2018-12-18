@@ -244,11 +244,11 @@ if (config.userAuth) {
     app.use(async (ctx, next) => {
         if (
             !ctx.state.cookie &&
-            ctx.request.url !== '/login' &&
+            !ctx.request.url.startsWith('/login') &&
             !ctx.request.url.match(/[^\\]*\.(\w+)$/) &&
             !ctx.request.url.match('__webpack_hmr')
         ) {
-            ctx.redirect('/login');
+            ctx.redirect(`/login?page=${encodeURIComponent(ctx.request.url)}`);
             return;
         }
         ctx.state.headerToken = jsonwebtoken.sign(

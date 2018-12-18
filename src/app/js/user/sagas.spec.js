@@ -1,9 +1,10 @@
 import { call, put, select } from 'redux-saga/effects';
 import { startSubmit, stopSubmit } from 'redux-form';
+import { push } from 'connected-react-router';
 
 import fetchSaga from '../lib/sagas/fetchSaga';
 import { LOGIN_FORM_NAME, loginSuccess } from './';
-import { fromUser } from '../sharedSelectors';
+import { fromUser, getCurrentSearch } from '../sharedSelectors';
 import { handleLoginRequest } from './sagas';
 
 describe('user saga', () => {
@@ -37,6 +38,11 @@ describe('user saga', () => {
             expect(
                 saga.next({ response: { token: 'foo', role: 'admin' } }).value,
             ).toEqual(put(loginSuccess({ token: 'foo', role: 'admin' })));
+        });
+
+        it('should redirect to the right page', () => {
+            expect(saga.next().value).toEqual(select(getCurrentSearch));
+            expect(saga.next().value).toEqual(put(push('/')));
         });
 
         it('should put stopSubmit action for login form', () => {
