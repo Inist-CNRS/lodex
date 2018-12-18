@@ -1,11 +1,11 @@
 import ezs from 'ezs';
 import N3 from 'n3';
 import ezsBasics from 'ezs-basics';
-import ezsLodex from 'ezs-lodex';
+import ezsLocals from '../statements';
 import prefixes from '../../common/prefixes';
 
 ezs.use(ezsBasics);
-ezs.use(ezsLodex);
+ezs.use(ezsLocals);
 
 const exporter = (config, fields, characteristics, stream) =>
     stream

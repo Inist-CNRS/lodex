@@ -1,9 +1,9 @@
 import ezs from 'ezs';
 import ezsBasics from 'ezs-basics';
-import ezsLodex from 'ezs-lodex';
+import ezsLocals from '../statements';
 
 ezs.use(ezsBasics);
-ezs.use(ezsLodex);
+ezs.use(ezsLocals);
 
 const exporter = (config, fields, characteristics, stream) => {
     return stream
