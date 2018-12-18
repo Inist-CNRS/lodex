@@ -2,7 +2,7 @@ import { call, put, race, select, take } from 'redux-saga/effects';
 import { replace } from 'connected-react-router';
 import fetch from '../fetch';
 import { logout } from '../../user';
-import { getCurrentLocation } from '../../sharedSelectors';
+import { getCurrentQuery } from '../../sharedSelectors';
 
 export default function* fetchSaga(
     request,
@@ -19,12 +19,11 @@ export default function* fetchSaga(
     }
 
     if (fetchResult.error && fetchResult.error.code === 401) {
-        const location = yield select(getCurrentLocation);
+        const pathname = yield select(getCurrentQuery);
 
         yield put(
             replace({
-                pathname: '/login',
-                state: { nextPathname: location },
+                pathname: `/login?page=${encodeURIComponent(pathname)}`,
             }),
         );
 

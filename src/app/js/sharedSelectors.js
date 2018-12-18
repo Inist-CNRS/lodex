@@ -15,3 +15,12 @@ export const fromUser = createGlobalSelectors(s => s.user, userSelectors);
 
 export const getCurrentLocation = state =>
     get(state, 'router.location.pathname');
+
+export const getCurrentSearch = state => get(state, 'router.location.search');
+
+export const getCurrentQuery = state => {
+    const search = getCurrentSearch(state);
+    const location = getCurrentLocation(state);
+
+    return search ? `${location}${search}` : location;
+};
