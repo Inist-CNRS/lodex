@@ -102,7 +102,16 @@ export class NavBar extends Component {
     };
 
     toggleGraph = () => {
-        const { graphDrawer, searchDrawer } = this.state;
+        const { graphDrawer, searchDrawer, advancedSearchDrawer } = this.state;
+
+        if (advancedSearchDrawer === 'open') {
+            this.toggleAdvancedSearch();
+            setTimeout(() => {
+                this.toggleSearch();
+                this.setState({ graphDrawer: 'open' });
+            }, ANIMATION_DURATION);
+            return;
+        }
 
         if (searchDrawer === 'open') {
             this.toggleSearch();
@@ -122,7 +131,14 @@ export class NavBar extends Component {
     };
 
     closeAll = () => {
-        const { searchDrawer, graphDrawer } = this.state;
+        const { searchDrawer, graphDrawer, advancedSearchDrawer } = this.state;
+
+        if (advancedSearchDrawer === 'open') {
+            this.toggleAdvancedSearch();
+            setTimeout(() => {
+                this.toggleSearch();
+            }, ANIMATION_DURATION);
+        }
 
         if (searchDrawer === 'open') {
             this.toggleSearch();
@@ -133,9 +149,27 @@ export class NavBar extends Component {
         }
     };
 
-    handleGraphItemClick = evt => {
-        evt.preventDefault();
-        this.toggleGraph();
+    handleMenuItemClick = (role, supressEvent = false) => evt => {
+        if (supressEvent) {
+            evt.preventDefault();
+        }
+
+        const { logout } = this.props;
+
+        switch (role) {
+            case 'graphs':
+                this.toggleGraph();
+                break;
+            case 'search':
+                this.toggleSearch();
+                break;
+            case 'sign-out':
+                logout();
+                break;
+            default:
+                this.closeAll();
+                return;
+        }
     };
 
     render() {
@@ -143,7 +177,6 @@ export class NavBar extends Component {
             role,
             canBeSearched,
             hasGraph,
-            logout,
             topMenu,
             bottomMenu,
             p: polyglot,
@@ -173,11 +206,8 @@ export class NavBar extends Component {
                                 role={role}
                                 canBeSearched={canBeSearched}
                                 hasGraph={hasGraph}
-                                logout={logout}
                                 polyglot={polyglot}
-                                closeAll={this.closeAll}
-                                handleGraphItemClick={this.handleGraphItemClick}
-                                toggleSearch={this.toggleSearch}
+                                onClick={this.handleMenuItemClick}
                                 graphDrawer={graphDrawer}
                                 searchDrawer={searchDrawer}
                             />
@@ -191,11 +221,8 @@ export class NavBar extends Component {
                                 role={role}
                                 canBeSearched={canBeSearched}
                                 hasGraph={hasGraph}
-                                logout={logout}
+                                onClick={this.handleMenuItemClick}
                                 polyglot={polyglot}
-                                closeAll={this.closeAll}
-                                handleGraphItemClick={this.handleGraphItemClick}
-                                toggleSearch={this.toggleSearch}
                                 graphDrawer={graphDrawer}
                                 searchDrawer={searchDrawer}
                             />
