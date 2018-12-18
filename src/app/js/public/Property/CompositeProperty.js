@@ -12,7 +12,7 @@ const styles = {
         marginLeft: '2rem',
         borderLeft: '1px dotted rgb(224, 224, 224)',
         display: 'flex',
-        flexDirection: 'column',
+        flexFlow: 'row wrap',
     },
     property: {
         paddingTop: '0.5rem',
