@@ -267,12 +267,13 @@ class Search extends Component {
                 >
                     {noOverviewField && this.renderNoOverviewField()}
                     {noResults && this.renderNoResults()}
-                    {everythingIsOk && (
+                    {(everythingIsOk || loading) && (
                         <SearchResultList
                             results={results}
                             fields={fields}
                             fieldNames={fieldNames}
                             closeDrawer={closeDrawer}
+                            placeholders={loading}
                         />
                     )}
                     {canLoadMore && this.renderLoadMore()}
