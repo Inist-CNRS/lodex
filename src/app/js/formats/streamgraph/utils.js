@@ -74,18 +74,32 @@ export function transformDataIntoMapArray(formatData) {
                         }
                     }
 
+                    let addValueAsSum = false;
                     if (currentItem === undefined) {
                         currentItem = {
                             name: elem.target,
                             values: [],
                         };
                         valuesObjectsArray.push(currentItem);
+                    } else {
+                        for (let valueElem of currentItem.values) {
+                            if (
+                                parseInt(valueElem.date.getFullYear()) ===
+                                parseInt(elem.source)
+                            ) {
+                                valueElem.value = valueElem.value + elem.weight;
+                                addValueAsSum = true;
+                                break;
+                            }
+                        }
                     }
 
-                    currentItem.values.push({
-                        date: new Date(elem.source),
-                        value: elem.weight,
-                    });
+                    if (!addValueAsSum) {
+                        currentItem.values.push({
+                            date: new Date(elem.source),
+                            value: elem.weight,
+                        });
+                    }
 
                     if (
                         parseInt(elem.source, 10) < dateMin ||
