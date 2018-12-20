@@ -32,8 +32,7 @@ export const defaultArgs = {
         maxSize: 200,
         orderBy: 'value/asc',
     },
-    specTemplate:
-        '{"width": 600, "autosize": {"type": "fit", "contains": "padding" }, "mark": "bar", "encoding": { "x": {"field": "_id", "type": "ordinal"}, "y": {"field": "value", "type": "quantitative"} } }',
+    specTemplate: '{}',
 };
 
 class VegaLiteAdmin extends Component {
@@ -59,12 +58,8 @@ class VegaLiteAdmin extends Component {
         updateAdminArgs('params', params, this.props);
     };
 
-    setSpecTemplate = (_, specTemplate) => {
+    setNodeColor = (_, specTemplate) => {
         updateAdminArgs('specTemplate', specTemplate, this.props);
-    };
-
-    validator = () => {
-        window.open('https://vega.github.io/editor/#/edited');
     };
 
     render() {
@@ -81,16 +76,16 @@ class VegaLiteAdmin extends Component {
                     polyglot={polyglot}
                     onChange={this.setParams}
                 />
-                <a
-                    onClick={() => {
-                        this.validator();
-                    }}
-                    style={(styles.pointer, styles.link)}
-                >
-                    {polyglot.t('vega_validator')}
-                </a>
                 <TextField
-                    onChange={this.setSpecTemplate}
+                    floatingLabelText={
+                        <span>
+                            {polyglot.t('node_color')}
+                            <span
+                                style={styles.previewDefaultColor(specTemplate)}
+                            />
+                        </span>
+                    }
+                    onChange={this.setNodeColor}
                     style={styles.input}
                     value={specTemplate}
                 />

@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import VegaLite from 'react-vega-lite';
-import InvalidFormat from '../InvalidFormat';
 import injectData from '../injectData';
 import { field as fieldPropTypes } from '../../propTypes';
 
@@ -16,17 +15,12 @@ const styles = {
 
 class VegaLiteView extends Component {
     render() {
-        const { field, data, specTemplate } = this.props;
-        let spec;
+        const { formatData, specTemplate } = this.props;
+        const spec = JSON.parse(specTemplate);
 
-        try {
-            spec = JSON.parse(specTemplate);
-        } catch (e) {
-            return <InvalidFormat format={field.format} value={e.message} />;
-        }
         return (
             <div style={styles.container}>
-                <VegaLite spec={spec || {}} data={data} />
+                <VegaLite spec={spec} data={formatData} />
             </div>
         );
     }
@@ -35,7 +29,7 @@ class VegaLiteView extends Component {
 VegaLiteView.propTypes = {
     field: fieldPropTypes.isRequired,
     resource: PropTypes.object.isRequired,
-    data: PropTypes.any,
+    formatData: PropTypes.any,
     specTemplate: PropTypes.string.isRequired,
 };
 
@@ -44,13 +38,8 @@ VegaLiteView.defaultProps = {
 };
 
 const mapStateToProps = (state, { formatData }) => {
-    if (!formatData) {
-        return {};
-    }
     return {
-        data: {
-            values: formatData,
-        },
+        formatData,
     };
 };
 
