@@ -20,7 +20,7 @@
         "lint": "./pre-commit",
         "test:api:e2e": "./node_modules/jest/bin/jest.js --colors --runInBand  -c src/api/e2e/jest.config.js src/api/e2e",
         "test:api:e2e:watch": "./node_modules/jest/bin/jest.js --colors --runInBand  -c src/api/e2e/jest.config.js src/api/e2e --watch",
-        "test:unit": "./node_modules/jest/bin/jest.js --colors",
+        "test:unit": "./node_modules/jest/bin/jest.js --detectOpenHandles --colors",
         "test:unit:watch": "./node_modules/jest/bin/jest.js --watch --colors"
     },
     "nodemonConfig": {
