@@ -13,7 +13,7 @@ const styles = {
     },
 };
 
-class VegaView extends Component {
+class VegaLiteView extends Component {
     render() {
         const { formatData, specTemplate } = this.props;
         const spec = JSON.parse(specTemplate);
@@ -26,14 +26,14 @@ class VegaView extends Component {
     }
 }
 
-VegaView.propTypes = {
+VegaLiteView.propTypes = {
     field: fieldPropTypes.isRequired,
     resource: PropTypes.object.isRequired,
     formatData: PropTypes.any,
     specTemplate: PropTypes.string.isRequired,
 };
 
-VegaView.defaultProps = {
+VegaLiteView.defaultProps = {
     className: null,
 };
 
@@ -46,4 +46,4 @@ const mapStateToProps = (state, { formatData }) => {
 export default compose(
     injectData(),
     connect(mapStateToProps),
-)(VegaView);
+)(VegaLiteView);

@@ -1,7 +1,7 @@
 import DefaultFormat from '../DefaultFormat';
-import Component from './VegaView';
-import AdminComponent, { defaultArgs } from './VegaAdmin';
-import Icon from './VegaIcon';
+import Component from './VegaLiteView';
+import AdminComponent, { defaultArgs } from './VegaLiteAdmin';
+import Icon from './VegaLiteIcon';
 
 export default {
     ...DefaultFormat,

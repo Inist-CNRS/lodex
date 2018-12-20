@@ -35,7 +35,7 @@ export const defaultArgs = {
     specTemplate: '{}',
 };
 
-class CartographyAdmin extends Component {
+class VegaLiteAdmin extends Component {
     static propTypes = {
         args: PropTypes.shape({
             params: PropTypes.shape({
@@ -94,4 +94,4 @@ class CartographyAdmin extends Component {
     }
 }
 
-export default translate(CartographyAdmin);
+export default translate(VegaLiteAdmin);

@@ -21,7 +21,7 @@ import uri from './uri';
 import title from './title';
 import paragraph from './paragraph';
 import sentence from './sentence';
-import vega from './vega';
+import vegaLite from './vega-lite';
 import resource from './lodex-resource';
 import lodexField from './lodex-field';
 import cartography from './cartography';
@@ -55,7 +55,7 @@ const components = {
     title,
     paragraph,
     sentence,
-    vega,
+    vegaLite,
     resource,
     lodexField,
     resourcesGrid,
