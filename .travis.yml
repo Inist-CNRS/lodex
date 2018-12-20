@@ -22,6 +22,8 @@ cache:
     directories:
         - node_modules
         - ~/.cache/Cypress
+        - ~/node_modules/.cache/
+        - ~/node_modules/.cache/@babel/register/
 
 install:
     - "make install"
