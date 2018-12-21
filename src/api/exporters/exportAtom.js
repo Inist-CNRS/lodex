@@ -1,10 +1,10 @@
 import ezs from 'ezs';
 import Feed from 'feed';
 import ezsBasics from 'ezs-basics';
-import ezsLocals from '../statements';
+import ezsLodex from 'ezs-lodex';
 
 ezs.use(ezsBasics);
-ezs.use(ezsLocals);
+ezs.use(ezsLodex);
 
 const exporter = (config, fields, characteristics, stream) => {
     const title = `${/https?:\/\/([\w-]+)/.exec(config.cleanHost)[1]} feed`;
