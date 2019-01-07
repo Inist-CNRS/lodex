@@ -216,3 +216,15 @@ export function findNearestTickPosition(cursorPosition) {
     });
     return nearestTickPosition;
 }
+
+export function generateUniqueId(length = 8) {
+    const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz'.split(
+        '',
+    );
+
+    let str = '';
+    for (let i = 0; i < length; i++) {
+        str += chars[Math.floor(Math.random() * chars.length)];
+    }
+    return str;
+}

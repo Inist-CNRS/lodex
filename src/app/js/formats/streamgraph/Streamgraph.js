@@ -8,6 +8,7 @@ import {
     getMinMaxValue,
     cutStr,
     findNearestTickPosition,
+    generateUniqueId,
 } from './utils';
 import injectData from '../injectData';
 import exportableToPng from '../exportableToPng';
@@ -84,6 +85,7 @@ class Streamgraph extends PureComponent {
 
         this.mouseIsOverStream = false;
         this.zoomFunction = zoomFunction.bind(this);
+        this.uniqueId = generateUniqueId();
     }
 
     initTheGraphBasicsElements(width, height, margin, svgViewport) {
@@ -103,7 +105,7 @@ class Streamgraph extends PureComponent {
         innerSpace
             .append('defs')
             .append('clipPath')
-            .attr('id', 'mask')
+            .attr('id', `mask${this.uniqueId}`)
             .append('rect')
             .attr('width', width)
             .attr('height', height);
@@ -112,7 +114,7 @@ class Streamgraph extends PureComponent {
             .append('g')
             .attr('width', width)
             .attr('height', height)
-            .attr('clip-path', 'url(#mask)')
+            .attr('clip-path', `url(#mask${this.uniqueId})`)
             .call(zoom);
 
         graphZone
