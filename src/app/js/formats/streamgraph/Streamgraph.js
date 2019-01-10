@@ -21,7 +21,16 @@ const styles = StyleSheet.create({
         position: 'relative',
     },
     tooltip: {
-        position: 'absolute',
+        position: 'relative',
+        height: '65px',
+        marginLeft: '20px',
+        marginRight: '20px',
+        backgroundColor: 'rgb(232, 232, 232)',
+        borderRadius: '0.45rem',
+        display: 'flex',
+        alignItems: 'center',
+        padding: '5px',
+        paddingTop: '14px',
     },
     vertical: {
         marginTop: 60,
@@ -258,14 +267,12 @@ class Streamgraph extends PureComponent {
             .style('background', '#000');
 
         const tooltip = divContainer
-            .insert('div', '#svgContainer')
+            .insert('div', '#d3DivContainer')
             .attr('class', `remove ${css(styles.tooltip)}`)
             .attr('id', 'tooltip')
-            .style('position', 'absolute')
             .style('z-index', '2')
             .style('visibility', 'hidden')
-            .style('top', '4px')
-            .style('left', '12px');
+            .style('marginLeft', '20px');
 
         return { tooltip, vertical };
     }
@@ -347,7 +354,7 @@ class Streamgraph extends PureComponent {
             });
     }
 
-    setMouseMoveAndOverStreams(tooltip) {
+    setMouseMoveAndOverStreams(tooltip, colorNameList) {
         const componentContext = this;
 
         if (this.streams) {
@@ -369,14 +376,22 @@ class Streamgraph extends PureComponent {
 
                     d3.select(this).classed('hover', true);
                     tooltip
+
                         .html(
                             '<p>' +
+                                '<svg width="15" height="15" style="vertical-align: middle; background-color: ' +
+                                this.hoveredColor +
+                                '"></svg>' + '  ' +
                                 this.hoveredKey +
                                 '<br>' +
                                 this.hoveredValue +
                                 '</p>',
                         )
                         .style('visibility', 'visible');
+
+                    this.hoveredColor = colorNameList.find(
+                        elem => elem.name === this.hoveredKey,
+                    ).color;
                 })
                 .on('mouseover', (d, i) => {
                     componentContext.mouseIsOverStream = true;
@@ -403,7 +418,7 @@ class Streamgraph extends PureComponent {
                 d3.select(this).classed('hover', false);
                 tooltip
                     .html(
-                        '<p>' +
+                        '<p>  ' +
                             this.hoveredKey +
                             '<br>' +
                             this.hoveredValue +
@@ -414,11 +429,11 @@ class Streamgraph extends PureComponent {
         }
     }
 
-    setTheEventsActions(svgViewport, vertical, tooltip) {
+    setTheEventsActions(svgViewport, vertical, tooltip, colorNameList) {
         // Can't split events in different blocks because .on("") events
         // definition erase the previous ones
         this.setViewportEvents(svgViewport, vertical);
-        this.setMouseMoveAndOverStreams(tooltip);
+        this.setMouseMoveAndOverStreams(tooltip, colorNameList);
         this.setMouseOutStreams(tooltip);
     }
 
@@ -490,7 +505,7 @@ class Streamgraph extends PureComponent {
         );
 
         this.createAndSetTheLegend(d3DivContainer, colorNameList, width);
-        this.setTheEventsActions(svgViewport, vertical, tooltip);
+        this.setTheEventsActions(svgViewport, vertical, tooltip, colorNameList);
     }
 
     removeGraph() {
