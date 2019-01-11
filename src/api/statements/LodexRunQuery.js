@@ -58,7 +58,7 @@ export const createFunction = mongoClientImpl =>
                         }
                         feed.write(data1);
                     }
-                    feed1.close();
+                    feed1.end();
                 }),
             );
         stream.on('error', error => {

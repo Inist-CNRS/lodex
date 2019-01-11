@@ -97,7 +97,7 @@ export const createFunction = mongoClientImpl =>
                         set(data1, `${target || 'total'}`, total);
                         feed.write(data1);
                     }
-                    feed1.close();
+                    feed1.end();
                 }),
             );
         stream.on('error', error => {
