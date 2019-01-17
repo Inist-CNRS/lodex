@@ -26,6 +26,8 @@
     "decompose-by",
     "cross-by",
     "distribute-by-date",
+    "distribute-by-decadal",
+    "distribute-by-interval",
     "distinct-ISO3166-1-alpha3-from",
     "distinct-ISO3166-1-alpha2-from"
   ],
