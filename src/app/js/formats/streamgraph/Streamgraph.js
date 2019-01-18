@@ -328,27 +328,31 @@ class Streamgraph extends PureComponent {
     }
 
     setViewportEvents(svgViewport, vertical) {
-        const componentContext = this;
-
         svgViewport
-            .on('mouseover', function(d, i) {
-                if (componentContext.mouseIsOverStream) {
-                    let mousex = d3.mouse(this);
-                    mousex = mousex[0];
-                    let nearestTickPosition = findNearestTickPosition(mousex, componentContext.uniqueId);
+            .on('mouseover', (d, i, nodes) => {
+                if (this.mouseIsOverStream) {
+                    const mousex = d3.mouse(nodes[i])[0];
+                    const { tickPosition, tickValue } = findNearestTickPosition(
+                        mousex,
+                    );
+                    this.nearestTickPosition = tickPosition;
+                    this.nearestTickValue = tickValue;
                     vertical.style('visibility', 'visible');
-                    vertical.style('left', nearestTickPosition + 'px');
+                    vertical.style('left', this.nearestTickPosition + 'px');
                 } else {
                     vertical.style('visibility', 'hidden');
                 }
             })
-            .on('mousemove', function(d, i) {
-                if (componentContext.mouseIsOverStream) {
-                    let mousex = d3.mouse(this);
-                    mousex = mousex[0];
-                    let nearestTickPosition = findNearestTickPosition(mousex, componentContext.uniqueId);
+            .on('mousemove', (d, i, nodes) => {
+                if (this.mouseIsOverStream) {
+                    const mousex = d3.mouse(nodes[i])[0];
+                    const { tickPosition, tickValue } = findNearestTickPosition(
+                        mousex,
+                    );
+                    this.nearestTickPosition = tickPosition;
+                    this.nearestTickValue = tickValue;
                     vertical.style('visibility', 'visible');
-                    vertical.style('left', nearestTickPosition + 'px');
+                    vertical.style('left', this.nearestTickPosition + 'px');
                 } else {
                     vertical.style('visibility', 'hidden');
                 }
@@ -356,34 +360,25 @@ class Streamgraph extends PureComponent {
     }
 
     setMouseMoveAndOverStreams(tooltip, colorNameList) {
-        const componentContext = this;
-
         if (this.streams) {
             this.streams
-                .on('mousemove', function(d, i, nodes) {
-                    const firstTickPosition = findFirstTickPosition(componentContext.uniqueId);
-                    const mousex = d3.mouse(this)[0] + firstTickPosition;
-
-                    let nearestTickPosition = findNearestTickPosition(mousex, componentContext.uniqueId);
-                    const date = componentContext.xAxisScale.invert(
-                        nearestTickPosition - 60,
-                    );
-                    componentContext.mouseIsOverStream = true;
-                    this.hoveredKey = d3.select(this).attr('name');
+                .on('mousemove', (d, i, nodes) => {
+                    const date = this.nearestTickValue;
+                    this.mouseIsOverStream = true;
+                    this.hoveredKey = d3.select(nodes[i]).attr('name');
 
                     this.hoveredValue = d.find(
-                        elem =>
-                            elem.data.date.getFullYear() === date.getFullYear(),
+                        elem => elem.data.date.getFullYear() === parseInt(date),
                     ).data[this.hoveredKey];
 
-                    d3.select(this).classed('hover', true);
+                    d3.select(nodes[i]).classed('hover', true);
                     tooltip
-
                         .html(
                             '<p>' +
                                 '<svg width="15" height="15" style="vertical-align: middle; background-color: ' +
                                 this.hoveredColor +
-                                '"></svg>' + '  ' +
+                                '"></svg>' +
+                                '  ' +
                                 this.hoveredKey +
                                 '<br>' +
                                 this.hoveredValue +
@@ -396,7 +391,7 @@ class Streamgraph extends PureComponent {
                     ).color;
                 })
                 .on('mouseover', (d, i) => {
-                    componentContext.mouseIsOverStream = true;
+                    this.mouseIsOverStream = true;
                     this.streams
                         .transition()
                         .duration(25)
@@ -409,7 +404,6 @@ class Streamgraph extends PureComponent {
 
     setMouseOutStreams(tooltip) {
         const componentContext = this;
-
         if (this.streams) {
             this.streams.on('mouseout', function(d, i) {
                 componentContext.mouseIsOverStream = false;
