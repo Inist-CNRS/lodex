@@ -7,6 +7,7 @@ import {
     transformDataIntoMapArray,
     getMinMaxValue,
     cutStr,
+    findFirstTickPosition,
     findNearestTickPosition,
     generateUniqueId,
 } from './utils';
@@ -179,7 +180,7 @@ class Streamgraph extends PureComponent {
 
         this.gx = innerSpace
             .append('g')
-            .attr('class', 'xAxis')
+            .attr('class', `xAxis${this.uniqueId}`) 
             .attr('transform', 'translate(0,' + height + ')')
             .call(this.xAxis);
 
@@ -252,7 +253,7 @@ class Streamgraph extends PureComponent {
 
     createAndSetDataReader(divContainer, height, margin) {
         const vertical = divContainer
-            .insert('div', '#svgContainer')
+            .insert('div', `#svgContainer${this.uniqueId}`)
             .attr('id', 'vertical')
             .style('position', 'absolute') // need relative in parent
             .style('z-index', '19')
@@ -334,7 +335,7 @@ class Streamgraph extends PureComponent {
                 if (componentContext.mouseIsOverStream) {
                     let mousex = d3.mouse(this);
                     mousex = mousex[0];
-                    let nearestTickPosition = findNearestTickPosition(mousex);
+                    let nearestTickPosition = findNearestTickPosition(mousex, componentContext.uniqueId);
                     vertical.style('visibility', 'visible');
                     vertical.style('left', nearestTickPosition + 'px');
                 } else {
@@ -345,7 +346,7 @@ class Streamgraph extends PureComponent {
                 if (componentContext.mouseIsOverStream) {
                     let mousex = d3.mouse(this);
                     mousex = mousex[0];
-                    let nearestTickPosition = findNearestTickPosition(mousex);
+                    let nearestTickPosition = findNearestTickPosition(mousex, componentContext.uniqueId);
                     vertical.style('visibility', 'visible');
                     vertical.style('left', nearestTickPosition + 'px');
                 } else {
@@ -359,10 +360,11 @@ class Streamgraph extends PureComponent {
 
         if (this.streams) {
             this.streams
-                .on('mousemove', function(d, i) {
-                    const mousex = d3.mouse(this)[0] + 60;
+                .on('mousemove', function(d, i, nodes) {
+                    const firstTickPosition = findFirstTickPosition(componentContext.uniqueId);
+                    const mousex = d3.mouse(this)[0] + firstTickPosition;
 
-                    let nearestTickPosition = findNearestTickPosition(mousex);
+                    let nearestTickPosition = findNearestTickPosition(mousex, componentContext.uniqueId);
                     const date = componentContext.xAxisScale.invert(
                         nearestTickPosition - 60,
                     );
@@ -571,9 +573,9 @@ class Streamgraph extends PureComponent {
 
         return (
             <div
-                id="divContainer"
                 ref={this.divContainer}
                 style={styles.divContainer}
+                id={`divContainer${this.uniqueId}`}
             >
                 <div
                     id="zoomIndicatorBackground"
@@ -589,7 +591,7 @@ class Streamgraph extends PureComponent {
                     }}
                 />
                 <div
-                    id="zoomIndicator"
+                    id={`zoomIndicator${this.uniqueId}`}
                     ref={this.zoomIndicator}
                     style={{
                         visibility: 'hidden',
@@ -606,7 +608,7 @@ class Streamgraph extends PureComponent {
                     </h4>
                 </div>
                 <div
-                    id="zoomIconContainer"
+                    id={`zoomIconContainer${this.uniqueId}`}
                     onMouseEnter={this.zoomIconEnter}
                     onMouseLeave={this.zoomIconLeave}
                     style={{ position: 'absolute', top: '210px', left: '55px' }}
@@ -614,7 +616,7 @@ class Streamgraph extends PureComponent {
                     <ZoomIcon width={35} />
                 </div>
                 <svg
-                    id="svgContainer"
+                    id={`svgContainer${this.uniqueId}`}
                     ref={this.svgContainer}
                     width={width}
                     height={height}

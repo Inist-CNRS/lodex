@@ -194,12 +194,22 @@ export function cutStr(str) {
     return resStr;
 }
 
-export function findNearestTickPosition(cursorPosition) {
+export function findFirstTickPosition(uniqueId) {
     const containerXPosition = document
-        .querySelector('#divContainer')
+        .querySelector(`#divContainer${uniqueId}`)
+        .getBoundingClientRect().left;
+    document.querySelectorAll(`.xAxis${uniqueId} .tick`).forEach(function(value) {
+            return (value.getBoundingClientRect().left - containerXPosition);
+    });
+    return 0;
+}
+
+export function findNearestTickPosition(cursorPosition, uniqueId) {
+    const containerXPosition = document
+        .querySelector(`#divContainer${uniqueId}`)
         .getBoundingClientRect().left;
     const ticksPositionList = [];
-    document.querySelectorAll('.xAxis .tick').forEach(function(value) {
+    document.querySelectorAll(`.xAxis${uniqueId} .tick`).forEach(function(value) {
         ticksPositionList.push(
             value.getBoundingClientRect().left - containerXPosition + 11,
         );
