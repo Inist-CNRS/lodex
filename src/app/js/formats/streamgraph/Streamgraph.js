@@ -180,7 +180,7 @@ class Streamgraph extends PureComponent {
 
         this.gx = innerSpace
             .append('g')
-            .attr('class', `xAxis${this.uniqueId}`) 
+            .attr('class', `xAxis${this.uniqueId}`)
             .attr('transform', 'translate(0,' + height + ')')
             .call(this.xAxis);
 
@@ -334,6 +334,7 @@ class Streamgraph extends PureComponent {
                     const mousex = d3.mouse(nodes[i])[0];
                     const { tickPosition, tickValue } = findNearestTickPosition(
                         mousex,
+                        this.uniqueId,
                     );
                     this.nearestTickPosition = tickPosition;
                     this.nearestTickValue = tickValue;
@@ -348,6 +349,7 @@ class Streamgraph extends PureComponent {
                     const mousex = d3.mouse(nodes[i])[0];
                     const { tickPosition, tickValue } = findNearestTickPosition(
                         mousex,
+                        this.uniqueId,
                     );
                     this.nearestTickPosition = tickPosition;
                     this.nearestTickValue = tickValue;
