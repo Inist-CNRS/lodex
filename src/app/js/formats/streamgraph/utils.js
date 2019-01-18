@@ -218,7 +218,8 @@ export function findNearestTickPosition(cursorPosition, uniqueId) {
                 position:
                     value.getBoundingClientRect().left -
                     containerXPosition +
-                    11,
+                    value.getBoundingClientRect().width / 2 -
+                    1,
                 value: value.children[1].innerHTML,
             });
         });
