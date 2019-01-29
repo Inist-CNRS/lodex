@@ -5,6 +5,7 @@ import MenuItem from 'material-ui/MenuItem';
 import translate from 'redux-polyglot/translate';
 
 import FormSelectField from '../lib/components/FormSelectField';
+import getFieldClassName from '../lib/getFieldClassName';
 import {
     polyglot as polyglotPropTypes,
     field as fieldPropTypes,
@@ -37,9 +38,7 @@ const FieldAnnotation = ({ fields, p: polyglot }) => (
             />
             {fields.map(f => (
                 <MenuItem
-                    className={`completes_${f.label
-                        .toLowerCase()
-                        .replace(/\s/g, '_')}`}
+                    className={`completes-${getFieldClassName(f)}`}
                     key={f.name}
                     value={f.name}
                     primaryText={f.label}
