@@ -10,9 +10,13 @@ export const getPublication = async ctx => {
 
     const fieldsWithCountPromises = fields.map(async field => ({
         ...field,
-        count: await ctx.publishedDataset.countByFacet(field.name, {
+        count: 0,
+        /* Attempt to fix extreme slowness when loading the home page */
+        /*
+         await ctx.publishedDataset.countByFacet(field.name, {
             $ne: null,
         }),
+        */
     }));
 
     const fieldsWithCount = await Promise.all(fieldsWithCountPromises);
