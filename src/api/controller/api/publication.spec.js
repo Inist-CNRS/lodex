@@ -36,8 +36,8 @@ describe('publication', () => {
                 findAllVersions: () => Promise.resolve(characteristics),
             },
             publishedDataset: {
-                count: () => Promise.resolve(100),
-                countByFacet: () => 100,
+                count: () => Promise.resolve(0),
+                countByFacet: () => 0,
             },
         };
 
@@ -45,7 +45,7 @@ describe('publication', () => {
 
         expect(ctx.body).toEqual({
             characteristics,
-            fields: [{ foo: 'foo', count: 100 }],
+            fields: [{ foo: 'foo', count: 0 }],
             published: true,
         });
     });
