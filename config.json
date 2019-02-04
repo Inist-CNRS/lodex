@@ -72,9 +72,7 @@
     "linked": "categories.inist",
     "context": {
       "categories.inist": "istex:subjectInist",
-      "link": "dcterms:isPartOf",
-      "doi": "bibo:doi",
-      "fulltext[0].uri": "istex:accessURL"
+      "link": "dcterms:isPartOf"
     }
   },
   "sparqlEndpoints": [
