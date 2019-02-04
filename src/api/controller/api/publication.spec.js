@@ -27,7 +27,7 @@ describe('publication', () => {
         });
     });
 
-    it('should return the correct status if a dataset has been published', async () => {
+    it.skip('should return the correct status if a dataset has been published', async () => {
         const ctx = {
             field: {
                 findAll: () => Promise.resolve(fields),
