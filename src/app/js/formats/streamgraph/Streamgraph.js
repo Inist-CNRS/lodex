@@ -101,7 +101,8 @@ class Streamgraph extends PureComponent {
     initTheGraphBasicsElements(width, height, margin, svgViewport) {
         const zoom = d3
             .zoom()
-            .scaleExtent([1, 32])
+            //.scaleExtent([1, 32])
+            .scaleExtent([1, 572])
             .translateExtent([[0, 0], [width, height]])
             .extent([[0, 0], [width, height]])
             .on('zoom', this.zoomFunction);
