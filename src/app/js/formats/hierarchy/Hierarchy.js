@@ -12,57 +12,67 @@ const styles = StyleSheet.create({
         overflow: 'hidden',
         position: 'relative',
     },
-    tooltip: {
-        position: 'relative',
-        height: '65px',
-        marginLeft: '20px',
-        marginRight: '20px',
-        backgroundColor: 'rgb(232, 232, 232)',
-        borderRadius: '0.45rem',
-        display: 'flex',
-        alignItems: 'center',
-        padding: '5px',
-        paddingTop: '14px',
+    link : {
+        fill: 'none',
+        stroke: '#555',
+        strokeOpacity: 0.4,
+        strokeWidth: '1px',
     },
-    vertical: {
-        marginTop: 60,
-        height: 190,
-        pointerEvents: 'none',
-    },
-    legend: {
-        position: 'relative',
-        textAlign: 'left',
-        marginLeft: 20,
-        columnCount: 3,
-        paddingBottom: 30,
-    },
-    legendItem: {
-        marginTop: 2,
-    },
-    legendItemTooltip: {
-        visibility: 'hidden',
-        backgroundColor: '#4e4e4e',
-        color: '#fff',
-        textAlign: 'center',
-        borderRadius: '6px',
-        padding: '5px 4px',
 
-        position: 'absolute',
-        left: '0px',
-        top: '-33px',
-        zIndex: 10,
+    text : {
+        fill: 'black',
+        fontWeight: 'bold',
+        fontSize: '12px'
     },
-    legendItemText: {
-        marginLeft: 5,
+
+
+    node : {
+        cursor: 'pointer',
     },
-    legendButton: {
-        height: 15,
-        width: 15,
+
+    nodeCircle : {
+        fill: '#999',
     },
-    zoomIcon: {
-        position: 'absolute',
-        top: '210px',
-        left: '55px',
+
+    nodeInternalCircle : {
+        fill: '#555',
+    },
+
+    nodeInternalText : {
+        fontSize: '12px',
+    },
+
+    nodeLeafText : {
+        fill: '#000000',
+    },
+
+    nodeCollapsedText : {
+        fill: '#000',
+    },
+
+    nodeCollapsedCircle : {
+        fill: '#555',
+    },
+
+    shadow : {
+        webkitFilter: 'drop-shadow(-1.5px -1.5px 1.5px #000)',
+        filter: 'drop-shadow(-1.5px -1.5px 1.5px #000)',
+    },
+
+    svg : {
+        border: 'black solid 1px',
+    },
+
+    divTooltip : {	
+        position: 'absolute',			
+        textAlign: 'center',													
+        padding: '4px',				
+        fontSize: '12px',
+        fontWeight: 'bold',
+        background: '#ebebeb',	
+        border:  'solid 1px black',		
+        borderRadius: '8px',			
+        pointerEvents: 'none',			
     },
 });
 
@@ -88,6 +98,7 @@ class Hierarchy extends PureComponent {
         this.zoomFunction = zoomFunction.bind(this);
         this.uniqueId = generateUniqueId();
         this.collapse = this.collapse.bind(this);
+        // this.click = this.click.bind(this)
     }
 
     setGraph() {
@@ -96,38 +107,17 @@ class Hierarchy extends PureComponent {
             // tata code base
 
             //var svg = d3.select('svg'),
-            let svg = d3.select(this.anchor.current);
+            console.log(`#svgContainer${this.uniqueId}`)
+            console.log(this.svgContainer.current);
+            let svg = d3.select(this.svgContainer.current);
             //let width = +svg.attr('width');
-            const width = this.divContainer.current.clientWidth;
-            let height = 4500;
-            let g = svg.append('g').attr('transform', 'translate(20,20)'); // move right 20px.
-            let ratioGridTree = 0.7; // width of the tree/ width of the grid
+        
+            let g = d3.select(this.anchor.current).attr('transform', 'translate(20,20)'); // move right 20px.
 
             // define the zoomListener which calls the zoom function on the "zoom" event
             var zoomListener = d3.zoom().on('zoom', () => { this.zoom(g) } );
             svg.call(zoomListener);
 
-            // x-scale and x-axis
-            //var experienceName = [
-            //    '',
-            //    'Basic 1.0',
-            //    'Alright 2.0',
-            //    'Handy 3.0',
-            //    'Expert 4.0',
-            //    'Guru 5.0',
-            //];
-            //var formatSkillPoints = function(d) {
-            //    return experienceName[d % 6];
-            //};
-            var xScale = d3
-                .scaleLinear()
-                .domain([0, 5]) // the values // tata
-                .range([0, width * (1 - ratioGridTree)]);
-            let maxWeight = 0;
-            var xAxis = d3
-                .axisTop()
-                .scale(xScale)
-                .ticks(5);
             // .tickFormat(formatSkillPoints);
 
             // Setting up a way to handle the data
@@ -136,7 +126,6 @@ class Hierarchy extends PureComponent {
                 .separation(function(a, b) {
                     return a.parent == b.parent ? 3 : 4;
                 }) // define separation ratio between siblings
-                .size([height, width * ratioGridTree]); // Total width - bar chart width = Dendrogram chart width
 
             //.size([height, width - 460]);    // Total width - bar chart width = Dendrogram chart width
 
@@ -165,22 +154,11 @@ class Hierarchy extends PureComponent {
                 }
                 // collpsed all nodes
                 root.children.forEach(d => d.children.forEach(this.collapse));
-                maxWeight = d3.max(root.leaves(), function(d) {
-                    return d.data.weight;
-                });
-                xScale.domain([0, maxWeight]);
-                xAxis.scale(xScale);
 
                 this.update(
                     svg,
-                    width,
-                    height,
                     tree,
-                    xScale,
-                    maxWeight,
                     root,
-                    ratioGridTree,
-                    xAxis,
                     g,
                 );
             } 
@@ -189,29 +167,30 @@ class Hierarchy extends PureComponent {
 
     update(
         svg,
-        width,
-        height,
         tree,
-        xScale,
-        maxWeight,
         root,
-        ratioGridTree,
-        xAxis,
         g,
     ) {
         // update tree size
         if (root && tree) {
-            height = (root.leaves().length + 1) * 50;
+            const height = (root.leaves().length + 1) * 50;
+            const width = (root.depth + root.height) * 200;
             // d3.select("svg").attr("height", height)
-            tree.size([height, width * ratioGridTree]);
+            tree.size([height, width]);
             // tree.nodeSize([40, 200])
 
             // update axis
-            maxWeight = d3.max(root.leaves(), function(d) {
+            const maxWeight =d3.max(root.descendants().filter(d => !d.children && !d._children), function(d) {
                 return d.data.weight;
-            });
-            xScale.domain([0, maxWeight]);
-            xAxis.scale(xScale);
+            })
+            let xScale = d3
+                .scaleLinear()
+                .domain([0, maxWeight])
+                .range([0, 500]);
+            let xAxis = d3
+                .axisTop()
+                .scale(xScale)
+                .ticks(5);
             // generate a new hierarchy from the specified tabular data
             // root object example
             // children: Array(6) [ {…}, {…}, {…}, … ]
@@ -227,23 +206,26 @@ class Hierarchy extends PureComponent {
                 d.y = d.x;
                 d.x =
                     ((d.depth - 1) / (d.depth + d.height - 1)) *
-                    width *
-                    ratioGridTree;
+                    width;
             });
 
             // Draw every datum a line connecting to its parent.
-            g.selectAll('.link')
-                .data(
-                    root
-                        .descendants()
-                        .slice(1)
-                        .filter(d => !d.parent.data.isFakeNode),
-                ) // remove links from fakeRootNode
-                .enter()
-                .append('path')
-                .attr('class', function(d) {
-                    return d.parent.isCollapsedNode ? '' : 'link';
-                })
+            let link = g.selectAll(".link")
+            .data(root.descendants().slice(1).filter(d => !d.parent.data.isFakeNode && !d.parent.isCollapsedNode), function (d) {
+                return d.id;
+            }); // remove links from fakeRootNode
+            //remove old links
+            link.exit().remove()
+            // update remaining link
+            link.attr("d", function (d) {
+                    return "M" + d.x + "," + d.y
+                        + "C" + (d.parent.x + 100) + "," + d.y
+                        + " " + (d.parent.x + 100) + "," + d.parent.y
+                        + " " + d.parent.x + "," + d.parent.y;
+                });
+            // add new one
+            link.enter().append("path")
+                .attr('class', `${css(styles.link)}`)
                 .attr('d', function(d) {
                     return (
                         'M' +
@@ -266,101 +248,99 @@ class Hierarchy extends PureComponent {
                 });
 
             // Setup position for every datum; Applying different css classes to parents and leafs.
-            var node = g
-                .selectAll('.node')
-                .data(
-                    root.descendants().filter(d => {
-                        return !d.data.isFakeNode; // remove fake node (ie: fakeRoot and fake children when collapsed)
-                    }),
-                )
-                .enter()
-                .append('g')
-                .attr('class', function(d) {
-                    return (
-                        'node' +
-                        (d.children ? ' node--internal' : ' node--leaf') +
-                        (d.isCollapsedNode ? ' node--collapsed' : '')
-                    );
-                })
-                .attr('transform', function(d) {
-                    return 'translate(' + d.x + ',' + d.y + ')';
-                });
-
-            // Draw every datum a small circle.
-            node.append('circle').attr('r', 4);
-
-            node.on('click', () => {
-                this.click(
-                    this,
-                    svg,
-                    width,
-                    height,
-                    tree,
-                    xScale,
-                    maxWeight,
-                    root,
-                    ratioGridTree,
-                    xAxis,
-                    g,
-                );
+            // Setup position for every datum; Applying different css classes to parents and leafs.
+        var node = g.selectAll(".node")
+        .data(root.descendants().filter(d => {
+            return !d.data.isFakeNode; // remove fake node (ie: fakeRoot and fake children when collapsed)
+        }), function(d) {
+            return d.id;
+        });
+        
+        // remove old nodes
+        node.exit().remove()
+        //udpate remaining nodes
+        node.attr("transform", function (d) { 
+                return "translate(" + d.x + "," + d.y + ")";
             });
+        var nodeLeafG = node.filter(function(d) {
+                return !d.children && !d._children;
+            }).selectAll("g");
+        nodeLeafG.select("rect")
+            .attr("width", function (d) { return xScale(d.data.weight); });
+        nodeLeafG.select("text")
+            .attr("width", function (d) { return xScale(d.data.weight) - 8; })
+            .text(function(d) {
+                return d.id;
+            });
+            // .call(dotme);
 
-            // Setup G for every leaf datum. (rectangle)
-            var leafNodeG = g
-                .selectAll('.node--leaf')
-                .append('g')
-                .attr('class', 'node--leaf-g')
-                .attr('transform', 'translate(' + 8 + ',' + -13 + ')'); // move rectangle to be centered to the node
+        // add new nodes
+        var nodeEnter = node.enter().append("g")
+            .attr("class", function (d) { return `${css(styles.node)}` + ((d.children || d._children) ? " node--internal" : " node--leaf") + (d._children ? ' node--collapsed' : ''); })
+            .on("click", (d) => {
+                this.click(
+                    d,
+                    svg,
+                    tree,
+                    root,
+                    g,
+                )
+            })
+            .attr("transform", function (d) { 
+                return "translate(" + d.x + "," + d.y + ")"; 
+            })
+        nodeEnter.append("circle")
+            .attr("class", `${css(styles.nodeInternalCircle)}`)
+            .attr("r", 4);
+        
+        var nodeInternal = nodeEnter.filter(function(d) {
+            return (d.children || d._children);
+        });
+        nodeInternal.append("text")
+            .style("text-anchor", "middle")
+            .text(function(d) {
+                return d.id;
+            })
+            .attr("y", -10);
 
-            leafNodeG
-                .append('rect')
-                .attr('class', 'shadow')
-                .style('fill', function(d) {
-                    return '#ebebeb';
-                })
-                .attr('width', 2)
-                .attr('height', 30)
-                .attr('rx', 2)
-                .attr('ry', 2)
-                .transition()
-                .duration(800)
-                // .attr("width", function (d) {
-                //     let text = Number(d.data.weight).toFixed(1) + ` - ${d.id}`;
-                //     return (9 * text.length  + 20);
-                // });
-                .attr('width', function(d) {
-                    return xScale(d.data.weight);
-                });
+        // Setup G for every leaf datum. (rectangle)
+        var leafNodeGEnter = nodeEnter.filter(function(d) {
+                return !d.children && !d._children;
+            }).append("g")
+            .attr("class", "node--leaf-g")
+            .attr("transform", "translate(" + 8 + "," + 0 + ")"); // move rectangle to be centered to the node
 
-            leafNodeG
-                .append('text')
-                .attr('dy', 19.5)
-                .attr('x', 8)
-                .style('text-anchor', 'start')
-                .text(function(d) {
-                    // let text = d.id ? Number(d.data.weight).toFixed(1) + ` - ${d.id}` : '';
-                    // return text;
-                    return d.id;
-                });
+        leafNodeGEnter.append("rect")
+            .attr("class", "")
+            .style("fill", function (d) { return "#555"; })
+            .attr("width", 2)
+            .attr("height", 10)
+            .attr("rx", 2)
+            .attr("ry", 2)
+            .transition().duration(500)
+            // .attr("width", function (d) { 
+            //     let text = Number(d.data.weight).toFixed(1) + ` - ${d.id}`;
+            //     return (9 * text.length  + 20); 
+            // }); 
+            .attr("width", function (d) { return xScale(d.data.weight); });
 
-            // Write down text for every parent datum
-            var internalNode = g.selectAll('.node--internal');
-            internalNode
-                .append('text')
-                .attr('y', -10)
-                .style('text-anchor', 'middle')
-                .text(function(d) {
-                    // let text = Number(d.data.weight).toFixed(1) + ` - ${d.id}`;
-                    // return text;
-                    return d.id;
-                });
+        leafNodeGEnter.append("text")
+            .style("text-anchor", "start")
+            .text(function(d) {
+                return d.id;
+            })
+            .attr("dy", -5)
+            .attr("x", 8)
+            .attr("width", function (d) { return xScale(d.data.weight) - 8; });
+            // .call(dotme);
+    
 
             // Attach the xAxis a the top of the document
             g.insert('g')
                 .attr('class', 'xAxis')
                 .attr(
                     'transform',
-                    'translate(' + (7 + width * ratioGridTree) + ',' + 0 + ')',
+                    'translate(' + (7 + width) + ',' + 0 + ')',
                 )
                 .call(xAxis);
 
@@ -370,7 +350,7 @@ class Hierarchy extends PureComponent {
                 .attr(
                     'transform',
                     'translate(' +
-                        (7 + width * ratioGridTree) +
+                        (7 + width) +
                         ',' +
                         height +
                         ')',
@@ -406,27 +386,7 @@ class Hierarchy extends PureComponent {
                 .style('stroke-dasharray', '20,1')
                 .style('stroke', 'black');
 
-            // The moving ball
-            // tata
-            var ballG = g
-                .insert('g')
-                .attr('class', 'ballG')
-                .attr('stroke-width', '5')
-                .attr(
-                    'transform',
-                    'translate(' + (width + 1000) + ',' + height / 2 + ')',
-                );
-            ballG
-                .insert('circle')
-                .attr('class', 'shadow')
-                .style('fill', 'steelblue')
-                .attr('r', 5);
-            ballG
-                .insert('text')
-                .style('text-anchor', 'middle')
-                .attr('dy', 5)
-                .text('0.0');
-
+            
             //// Animation functions for mouse on and off events.
             d3.selectAll('.node--leaf-g')
                 .on('mouseover', handleMouseOver)
@@ -442,84 +402,55 @@ class Hierarchy extends PureComponent {
         function handleMouseOver(d) {
             var leafG = d3.select(this);
 
-            leafG
-                .select('rect')
-                .attr('stroke', '#4D4D4D')
-                .attr('stroke-width', '2');
+            leafG.select("rect")
+                    .attr("stroke","#4D4D4D")
+                    .attr("stroke-width","2");
 
-            let textSize = leafG
-                .select('text')
-                .node()
-                .getComputedTextLength(); //get text length
-            var ballGMovement = ballG
-                .transition()
-                .duration(400)
-                .attr(
-                    'transform',
-                    'translate(' + (d.x + textSize + 90) + ',' + d.y + ')',
-                );
-
-            ballGMovement
-                .select('circle')
-                .style('fill', '#454545')
-                .attr('r', 18);
-
-            let text = Number(d.data.weight).toFixed(1);
-            ballGMovement
-                .select('text')
-                .delay(300)
-                .text(text);
+            let textSize = leafG.select("text").node().getComputedTextLength(); //get text length
+            
+            // tooltip.style("opacity", 1);		
+            // tooltip.html(`${d.id} - ${d.data.weight.toFixed(1)}`)
+            //     .style("left", d3.event.pageX + "px")		
+            //     .style("top", (d3.event.pageY - 28) + "px");
         }
         function handleMouseOut() {
             var leafG = d3.select(this);
 
-            leafG.select('rect').attr('stroke-width', '0');
+            leafG.select("rect")
+                    .attr("stroke-width","0");
+            // tooltip.style("opacity", 0);
         }
+
         function handleMouseOverInternalNode(d) {
-            var text = d3.select(this).select('text');
-            text.text(function(d) {
-                return d.id + ' - ' + d.data.weight.toFixed(1);
-            });
-            d3.select(this)
-                .select('circle')
-                .attr('r', 8);
+            var nodeG = d3.select(this);
+            var text = nodeG.select("text");
+            // tooltip.style("opacity", 1);		
+            // tooltip.html(`${d.id} - ${d.data.weight.toFixed(1)}`)
+            //     .style("left", (d3.event.pageX - text.node().getComputedTextLength() *0.5) + "px")		
+            //     .style("top", (d3.event.pageY - 28) + "px");
+            nodeG.select("circle")
+                .attr("r", 8)
         }
+        
         function handleMouseOutInternalNode(d) {
-            var text = d3.select(this).select('text');
-            text.text(function(d) {
-                return d.id;
-            });
-            d3.select(this)
-                .select('circle')
-                .attr('r', 4);
+            // tooltip.style("opacity", 0);
+            d3.select(this).select("circle")
+                .attr("r", 4)
         }
     }
 
     collapse(d) {
-        if (d.children != null && !d.isCollapsedNode) {
-            d.isCollapsedNode = true;
-            d.children.forEach(this.collapse);
+        if (d.children) {
             d._children = d.children;
-            // d.children = null;
-            d.children = [
-                {
-                    children: null,
-                    parent: d,
-                    depth: d.depth + 1,
-                    height: 1,
-                    id: '',
-                    data: {
-                        isFakeNode: true, // flag to mark built node
-                        weight: 0,
-                        target: null,
-                        source: d.id,
-                    },
-                },
-            ];
-        } else {
+            d._children.forEach(this.collapse);
+            d.children = null;
+        }
+    }
+
+    expand(d) {
+        if (d._children) {
             d.children = d._children;
             d._children = null;
-            d.isCollapsedNode = false;
         }
     }
 
@@ -533,29 +464,21 @@ class Hierarchy extends PureComponent {
     click(
         d,
         svg,
-        width,
-        height,
         tree,
-        xScale,
-        maxWeight,
         root,
-        ratioGridTree,
-        xAxis,
         g,
     ) {
         let saveD = d;
-        this.collapse(d);
+        if(d.children) {
+            this.collapse(d)
+        } else {
+            this.expand(d)
+        }
         this.removeCurrentGraph(svg);
         this.update(
             svg,
-            width,
-            height,
             tree,
-            xScale,
-            maxWeight,
             root,
-            ratioGridTree,
-            xAxis,
             g,
         );
         this.centerNode(saveD, svg, g);
