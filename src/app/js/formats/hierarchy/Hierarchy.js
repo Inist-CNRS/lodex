@@ -81,8 +81,8 @@ class Hierarchy extends PureComponent {
     constructor(props) {
         super(props);
         this.state = {
-            width: 800,
-            height: 300,
+            width: 900,
+            height: 600,
             margin: { top: 60, right: 40, bottom: 50, left: 60 },
         };
         this.zoomIconEnter = this.zoomIconEnter.bind(this);
@@ -100,25 +100,25 @@ class Hierarchy extends PureComponent {
         this.collapse = this.collapse.bind(this);
         // this.click = this.click.bind(this)
     }
+    
+    svg() {
+        return d3.select(this.svgContainer.current);
+    }
+
+    g() {
+        return d3.select(this.anchor.current);
+    }
 
     setGraph() {
 
         if (this.props.formatData) {
-            // tata code base
-
-            //var svg = d3.select('svg'),
-            console.log(`#svgContainer${this.uniqueId}`)
-            console.log(this.svgContainer.current);
-            let svg = d3.select(this.svgContainer.current);
-            //let width = +svg.attr('width');
         
-            let g = d3.select(this.anchor.current).attr('transform', 'translate(20,20)'); // move right 20px.
-
+            this.g().attr('transform', 'translate(20,20)'); // move right 20px.
+            this.g().append('g').attr('class', 'xAxis');
+            this.g().append('g').attr('class', 'grid');
             // define the zoomListener which calls the zoom function on the "zoom" event
-            var zoomListener = d3.zoom().on('zoom', () => { this.zoom(g) } );
-            svg.call(zoomListener);
-
-            // .tickFormat(formatSkillPoints);
+            var zoomListener = d3.zoom().on('zoom', () => { this.zoom() } );
+            this.svg().call(zoomListener);
 
             // Setting up a way to handle the data
             var tree = d3
@@ -127,11 +127,7 @@ class Hierarchy extends PureComponent {
                     return a.parent == b.parent ? 3 : 4;
                 }) // define separation ratio between siblings
 
-            //.size([height, width - 460]);    // Total width - bar chart width = Dendrogram chart width
-
-            //var stratify = d3.stratify()            // This D3 API method gives cvs file flat data array dimensions.
-            //    .parentId(function (d) { return d.id.substring(0, d.id.lastIndexOf(".")); });
-
+            
             var stratify = d3
                 .stratify() // This D3 API method gives cvs file flat data array dimensions.
                 .id(function(d) {
@@ -156,20 +152,16 @@ class Hierarchy extends PureComponent {
                 root.children.forEach(d => d.children.forEach(this.collapse));
 
                 this.update(
-                    svg,
                     tree,
                     root,
-                    g,
                 );
             } 
         }
     }
 
     update(
-        svg,
         tree,
         root,
-        g,
     ) {
         // update tree size
         if (root && tree) {
@@ -210,7 +202,7 @@ class Hierarchy extends PureComponent {
             });
 
             // Draw every datum a line connecting to its parent.
-            let link = g.selectAll(".link")
+            let link = this.g().selectAll(`.${css(styles.link)}`)
             .data(root.descendants().slice(1).filter(d => !d.parent.data.isFakeNode && !d.parent.isCollapsedNode), function (d) {
                 return d.id;
             }); // remove links from fakeRootNode
@@ -249,7 +241,7 @@ class Hierarchy extends PureComponent {
 
             // Setup position for every datum; Applying different css classes to parents and leafs.
             // Setup position for every datum; Applying different css classes to parents and leafs.
-        var node = g.selectAll(".node")
+        var node = this.g().selectAll(`.${css(styles.node)}`)
         .data(root.descendants().filter(d => {
             return !d.data.isFakeNode; // remove fake node (ie: fakeRoot and fake children when collapsed)
         }), function(d) {
@@ -280,10 +272,8 @@ class Hierarchy extends PureComponent {
             .on("click", (d) => {
                 this.click(
                     d,
-                    svg,
                     tree,
                     root,
-                    g,
                 )
             })
             .attr("transform", function (d) { 
@@ -336,8 +326,8 @@ class Hierarchy extends PureComponent {
     
 
             // Attach the xAxis a the top of the document
-            g.insert('g')
-                .attr('class', 'xAxis')
+            
+            this.g().select(".xAxis")
                 .attr(
                     'transform',
                     'translate(' + (7 + width) + ',' + 0 + ')',
@@ -345,9 +335,7 @@ class Hierarchy extends PureComponent {
                 .call(xAxis);
 
             // tick mark for x-axis
-            g.insert('g')
-                .attr('class', 'grid')
-                .attr(
+            this.g().select(".grid").attr(
                     'transform',
                     'translate(' +
                         (7 + width) +
@@ -364,24 +352,8 @@ class Hierarchy extends PureComponent {
                         .tickFormat(''),
                 );
 
-            // Write down text for every collapsed datum
-            //var leafNodeGCollapsed = g.selectAll(".node--leaf")
-            //leafNodeGCollapsed.append("text")
-            //    .attr("y", -10)
-            //    .style("text-anchor", "middle")
-            //    .text(function (d) {
-            //        return ((d.isCollapsedNode === true) ? d.data.id.substring(d.data.id.lastIndexOf(".") + 1 ) : '');
-            //    });
-            //var internalNodeCollapsed = g.selectAll(".node--internal");
-            //internalNodeCollapsed.append("text")
-            //    .attr("y", -10)
-            //    .style("text-anchor", "middle")
-            //    .text(function (d) {
-            //        return ((d.isCollapsedNode === true) ? d.data.id.substring(d.data.id.lastIndexOf(".") + 1 ) : '');
-            //    });
-
             // Emphasize the y-axis baseline.
-            svg.selectAll('.grid')
+            this.g().select('.grid')
                 .select('line')
                 .style('stroke-dasharray', '20,1')
                 .style('stroke', 'black');
@@ -454,44 +426,31 @@ class Hierarchy extends PureComponent {
         }
     }
 
-    removeCurrentGraph(svg) {
-        svg.selectAll('path.link').remove();
-        svg.selectAll('g.node').remove();
-        svg.selectAll('g.ballG').remove();
-        svg.selectAll('.grid').remove();
-    }
-
     click(
         d,
-        svg,
         tree,
         root,
-        g,
     ) {
-        let saveD = d;
         if(d.children) {
             this.collapse(d)
         } else {
             this.expand(d)
         }
-        this.removeCurrentGraph(svg);
         this.update(
-            svg,
             tree,
             root,
-            g,
         );
-        this.centerNode(saveD, svg, g);
+        this.centerNode(d);
     }
-    centerNode(source, svg, g) {
+    centerNode(source) {
         let scale = d3.zoomTransform(this).k;
         let x = -source.x;
         let y = -source.y;
-        x = x * scale + d3.select('svg').attr('width') / 2;
-        y = y * scale + d3.select('svg').attr('height') / 2;
-        svg.call(d3.zoom().transform, d3.zoomIdentity.translate(x, y));
+        x = x * scale + this.svg().attr('width') / 2;
+        y = y * scale + this.svg().attr('height') / 2;
+        this.svg().call(d3.zoom().transform, d3.zoomIdentity.translate(x, y));
         if ((x, y)) {
-            g.transition()
+            this.g().transition()
                 .duration(1000)
                 .attr('transform', 'translate(' + x + ',' + y + ')');
         }  
@@ -540,7 +499,7 @@ class Hierarchy extends PureComponent {
     }
 
     zoom(g) {
-        g.attr('transform', d3.event.transform);
+        this.g().attr('transform', d3.event.transform);
     }
     // tata code base
 
@@ -597,7 +556,10 @@ class Hierarchy extends PureComponent {
         return (
             <div
                 ref={this.divContainer}
-                style={styles.divContainer}
+                style={{
+                    overflow: 'hidden',
+                    position: 'relative',
+                }}
                 id={`divContainer${this.uniqueId}`}
             >
                 <div
@@ -606,10 +568,8 @@ class Hierarchy extends PureComponent {
                     style={{
                         visibility: 'hidden',
                         position: 'absolute',
-                        top: `${margin.top}px`,
-                        left: `${margin.left}px`,
                         width: `${width}px`,
-                        height: `${height - margin.top - margin.bottom}px`,
+                        height: `${height}px`,
                         backgroundColor: '#0000006b',
                     }}
                 />
@@ -620,7 +580,7 @@ class Hierarchy extends PureComponent {
                         visibility: 'hidden',
                         position: 'absolute',
                         top: `${height / 2 - 30}px`,
-                        left: `${margin.left + width / 2 - 275}px`,
+                        left: 'calc(50% - 150px)',
                         color: 'white',
                     }}
                 >
@@ -634,7 +594,7 @@ class Hierarchy extends PureComponent {
                     id={`zoomIconContainer${this.uniqueId}`}
                     onMouseEnter={this.zoomIconEnter}
                     onMouseLeave={this.zoomIconLeave}
-                    style={{ position: 'absolute', top: '210px', left: '55px' }}
+                    style={{ position: 'absolute', bottom: '32px', left: '16px' }}
                 >
                     <ZoomIcon width={35} />
                 </div>
