@@ -16,7 +16,6 @@ const styles = {
 export const defaultArgs = {};
 
 class HierarchyAdmin extends Component {
-    //setParams = params => updateAdminArgs('params', params, this.props);
 
     render() {
         return <div style={styles.container} />;
