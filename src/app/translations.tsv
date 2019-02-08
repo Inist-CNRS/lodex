@@ -453,3 +453,4 @@
 "results"	"%{smart_count} result |||| %{smart_count} results"	"%{smart_count} résultat |||| %{smart_count} résultats"
 "no_result"	"No matching resource found"	"Aucune correspondance trouvée"
 "no_result_details"	"Please change your search terms or facets"	"Veuillez changer vos filtres ou termes de recherche"
+"error_rendering_chart"	"An error occured while rendering the chart"	"Une erreur s'est produite pendant le tracé du graphique"

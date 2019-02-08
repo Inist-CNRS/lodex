@@ -145,21 +145,32 @@ class Hierarchy extends PureComponent {
             let root;
 
             let treeData = this.props.formatData;
-            if (treeData) {
+            try {
+                if (treeData) {
 
-                myData = this.addRootElements(treeData);
-                root = stratify(myData);
-                if (!root) {
-                    debugger;
+                    myData = this.addRootElements(treeData);
+                    root = stratify(myData);
+                    if (!root) {
+                        debugger;
+                    }
+                    // collpsed all nodes
+                    root.children.forEach(d => d.children.forEach(this.collapse));
+
+                    this.update(
+                        tree,
+                        root,
+                    );
                 }
-                // collpsed all nodes
-                root.children.forEach(d => d.children.forEach(this.collapse));
-
-                this.update(
-                    tree,
-                    root,
-                );
-            } 
+            } catch(error) {
+                const { p: polyglot } = this.props;
+                this.tooltip().style("background-color", "red")
+                .style("color", "white")
+                .style("border-color", "red")
+                .style("opacity", 1)
+                .style("top", `${+this.svg().attr("height") / 2}px`)
+                .style("left", `${(+this.svg().attr("width") / 2) -140}px`)
+                .html(`${polyglot.t('error_rendering_chart')}:<br>${error}`);
+            }
         }
     }
 
