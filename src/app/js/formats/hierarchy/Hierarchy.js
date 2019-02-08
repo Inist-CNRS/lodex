@@ -240,7 +240,6 @@ class Hierarchy extends PureComponent {
                 .attr('d', function(d) {
                     return (
                         'M' +
-                        ',' +
                         d.x +
                         ',' +
                         d.y +
