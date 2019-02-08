@@ -603,7 +603,7 @@ class Hierarchy extends PureComponent {
                 <svg
                     id={`svgContainer${this.uniqueId}`}
                     ref={this.svgContainer}
-                    width={width}
+                    width={width + margin.left + margin.right}
                     height={height}
                 >
                     <g id="anchor" ref={this.anchor} />
