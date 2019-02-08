@@ -398,8 +398,6 @@ class Hierarchy extends PureComponent {
     handleMouseOverInternalNode(d, i , nodes) {
         let nodeG = d3.select(nodes[i]);
         let text = nodeG.select("text");
-        console.log(d3.event);
-        console.log(this.tooltip().attr("id"));
         this.tooltip().style("opacity", 1);		
         this.tooltip().html(`${d.id}: ${d.data.weight.toFixed(0)} documents`)
             .style("left", (d3.event.layerX - text.node().getComputedTextLength() *0.5) + "px")		
