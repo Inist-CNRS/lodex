@@ -12,67 +12,66 @@ const styles = StyleSheet.create({
         overflow: 'hidden',
         position: 'relative',
     },
-    link : {
+    link: {
         fill: 'none',
         stroke: '#555',
         strokeOpacity: 0.4,
         strokeWidth: '1px',
     },
 
-    text : {
+    text: {
         fill: 'black',
         fontWeight: 'bold',
-        fontSize: '12px'
-    },
-
-
-    node : {
-        cursor: 'pointer',
-    },
-
-    nodeCircle : {
-        fill: '#999',
-    },
-
-    nodeInternalCircle : {
-        fill: '#555',
-    },
-
-    nodeInternalText : {
         fontSize: '12px',
     },
 
-    nodeLeafText : {
-        fill: '#000000',
+    node: {
+        cursor: 'pointer',
     },
 
-    nodeCollapsedText : {
-        fill: '#000',
+    nodeCircle: {
+        fill: '#999',
     },
 
-    nodeCollapsedCircle : {
+    nodeInternalCircle: {
         fill: '#555',
     },
 
-    shadow : {
+    nodeInternalText: {
+        fontSize: '12px',
+    },
+
+    nodeLeafText: {
+        fill: '#000000',
+    },
+
+    nodeCollapsedText: {
+        fill: '#000',
+    },
+
+    nodeCollapsedCircle: {
+        fill: '#555',
+    },
+
+    shadow: {
         webkitFilter: 'drop-shadow(-1.5px -1.5px 1.5px #000)',
         filter: 'drop-shadow(-1.5px -1.5px 1.5px #000)',
     },
 
-    svg : {
+    svg: {
         border: 'black solid 1px',
     },
 
-    tooltip : {	
-        position: 'absolute',			
-        textAlign: 'center',													
-        padding: '4px',				
+    tooltip: {
+        position: 'absolute',
+        textAlign: 'center',
+        padding: '4px',
         fontSize: '12px',
         fontWeight: 'bold',
-        background: '#ebebeb',	
-        border:  'solid 1px black',		
-        borderRadius: '8px',			
-        pointerEvents: 'none',			
+        background: '#ebebeb',
+        border: 'solid 1px black',
+        borderRadius: '8px',
+        pointerEvents: 'none',
     },
 });
 
@@ -100,7 +99,7 @@ class Hierarchy extends PureComponent {
         this.uniqueId = generateUniqueId();
         this.collapse = this.collapse.bind(this);
     }
-    
+
     svg() {
         return d3.select(this.svgContainer.current);
     }
@@ -114,14 +113,18 @@ class Hierarchy extends PureComponent {
     }
 
     setGraph() {
-
         if (this.props.formatData) {
-        
             this.g().attr('transform', 'translate(20,20)'); // move right 20px.
-            this.g().append('g').attr('class', 'xAxis');
-            this.g().append('g').attr('class', 'grid');
-            // define the zoomListener which calls the zoom function on the "zoom" event
-            let zoomListener = d3.zoom().on('zoom', () => { this.zoom() } );
+            this.g()
+                .append('g')
+                .attr('class', 'xAxis');
+            this.g()
+                .append('g')
+                .attr('class', 'grid');
+
+            let zoomListener = d3.zoom().on('zoom', () => {
+                this.zoom();
+            });
             this.svg().call(zoomListener);
 
             // Setting up a way to handle the data
@@ -129,9 +132,8 @@ class Hierarchy extends PureComponent {
                 .cluster() // This D3 API method setup the Dendrogram elements position.
                 .separation(function(a, b) {
                     return a.parent == b.parent ? 3 : 4;
-                }) // define separation ratio between siblings
+                }); // define separation ratio between siblings
 
-            
             let stratify = d3
                 .stratify() // This D3 API method gives cvs file flat data array dimensions.
                 .id(function(d) {
@@ -146,88 +148,100 @@ class Hierarchy extends PureComponent {
 
             let treeData = this.props.formatData;
             if (treeData) {
-
                 myData = this.addRootElements(treeData);
                 root = stratify(myData);
-                if (!root) {
-                    debugger;
-                }
+
                 // collpsed all nodes
                 root.children.forEach(d => d.children.forEach(this.collapse));
 
-                this.update(
-                    tree,
-                    root,
-                );
-            } 
+                this.update(tree, root);
+            }
         }
     }
 
-    update(
-        tree,
-        root,
-    ) {
+    update(tree, root) {
         // update tree size
         if (root && tree) {
             const height = (root.leaves().length + 1) * 50;
             const width = (root.depth + root.height) * 200;
-            // d3.select("svg").attr("height", height)
             tree.size([height, width]);
-            // tree.nodeSize([40, 200])
 
             // update axis
-            const maxWeight =d3.max(root.descendants().filter(d => !d.children && !d._children), function(d) {
-                return d.data.weight;
-            })
+            const maxWeight = d3.max(
+                root.descendants().filter(d => !d.children && !d._children),
+                function(d) {
+                    return d.data.weight;
+                },
+            );
+
             let xScale = d3
                 .scaleLinear()
                 .domain([0, maxWeight])
                 .range([0, 500]);
+
             let xAxis = d3
                 .axisTop()
                 .scale(xScale)
                 .ticks(5);
-            // generate a new hierarchy from the specified tabular data
-            // root object example
-            // children: Array(6) [ {…}, {…}, {…}, … ]
-            // data: Object { id: "Tom", value: 0, color: undefined }
-            // depth: 0
-            // height: 3
-            // id: "Tom"
-            // parent: null
-            // x: 657.7932098765434
-            // y: 0
+
             tree(root); // d3.cluster()
             root.descendants().forEach(d => {
                 d.y = d.x;
-                d.x =
-                    ((d.depth - 1) / (d.depth + d.height - 1)) *
-                    width;
+                d.x = ((d.depth - 1) / (d.depth + d.height - 1)) * width;
             });
 
             // Draw every datum a line connecting to its parent.
-            let link = this.g().selectAll(`.${css(styles.link)}`)
-            // remove links from fakeRootNode
-            .data(root.descendants().slice(1).filter(d => !d.parent.data.isFakeNode && !d.parent.isCollapsedNode), function (d) {
-                return d.id;
-            });
+            let link = this.g()
+                .selectAll(`.${css(styles.link)}`)
+                // remove links from fakeRootNode
+                .data(
+                    root
+                        .descendants()
+                        .slice(1)
+                        .filter(
+                            d =>
+                                !d.parent.data.isFakeNode &&
+                                !d.parent.isCollapsedNode,
+                        ),
+                    function(d) {
+                        return d.id;
+                    },
+                );
+
             //remove old links
-            link.exit().remove()
+            link.exit().remove();
+
             // update remaining link
-            link.attr("d", function (d) {
-                    return "M" + d.x + "," + d.y
-                        + "C" + (d.parent.x + 100) + "," + d.y
-                        + " " + (d.parent.x + 100) + "," + d.parent.y
-                        + " " + d.parent.x + "," + d.parent.y;
-                });
+            link.attr('d', function(d) {
+                return (
+                    'M' +
+                    d.x +
+                    ',' +
+                    d.y +
+                    'C' +
+                    (d.parent.x + 100) +
+                    ',' +
+                    d.y +
+                    ' ' +
+                    (d.parent.x + 100) +
+                    ',' +
+                    d.parent.y +
+                    ' ' +
+                    d.parent.x +
+                    ',' +
+                    d.parent.y
+                );
+            });
+
             // add new one
-            link.enter().append("path")
+            link.enter()
+                .append('path')
                 .attr('class', `${css(styles.link)}`)
                 .attr('d', function(d) {
                     return (
                         'M' +
-                        d.x +
                         ',' +
+                        d.x +
                         d.y +
                         'C' +
                         (d.parent.x + 100) +
@@ -244,101 +258,125 @@ class Hierarchy extends PureComponent {
                     );
                 });
 
-        // Setup position for every datum; Applying different css classes to parents and leafs.
-        let node = this.g().selectAll(`.${css(styles.node)}`)
-        .data(root.descendants().filter(d => {
-            return !d.data.isFakeNode; // remove fake node (ie: fakeRoot and fake children when collapsed)
-        }), function(d) {
-            return d.id;
-        });
-        
-        // remove old nodes
-        node.exit().remove()
-        //udpate remaining nodes
-        node.attr("transform", function (d) { 
-                return "translate(" + d.x + "," + d.y + ")";
-            });
-        let nodeLeafG = node.filter(function(d) {
-                return !d.children && !d._children;
-            }).selectAll("g");
-        nodeLeafG.select("rect")
-            .attr("width", function (d) { return xScale(d.data.weight); });
-        nodeLeafG.select("text")
-            .attr("width", function (d) { return xScale(d.data.weight) - 8; })
-            .text(function(d) {
-                return d.id;
+            // Setup position for every datum; Applying different css classes to parents and leafs.
+            let node = this.g()
+                .selectAll(`.${css(styles.node)}`)
+                .data(
+                    root.descendants().filter(d => {
+                        return !d.data.isFakeNode; // remove fake node (ie: fakeRoot and fake children when collapsed)
+                    }),
+                    function(d) {
+                        return d.id;
+                    },
+                );
+
+            // remove old nodes
+            node.exit().remove();
+
+            //udpate remaining nodes
+            node.attr('transform', function(d) {
+                return 'translate(' + d.x + ',' + d.y + ')';
             });
 
-        // add new nodes
-        let nodeEnter = node.enter().append("g")
-            .attr("class", function (d) { return `${css(styles.node)}` + ((d.children || d._children) ? " node--internal" : " node--leaf") + (d._children ? ' node--collapsed' : ''); })
-            .on("click", (d) => {
-                this.click(
-                    d,
-                    tree,
-                    root,
-                )
-            })
-            .attr("transform", function (d) { 
-                return "translate(" + d.x + "," + d.y + ")"; 
-            })
-        nodeEnter.append("circle")
-            .attr("class", `${css(styles.nodeInternalCircle)}`)
-            .attr("r", 4);
-        
-        let nodeInternal = nodeEnter.filter(function(d) {
-            return (d.children || d._children);
-        });
-        nodeInternal.append("text")
-            .style("text-anchor", "middle")
-            .text(function(d) {
-                return d.id;
-            })
-            .attr("y", -10);
+            let nodeLeafG = node
+                .filter(function(d) {
+                    return !d.children && !d._children;
+                })
+                .selectAll('g');
+            nodeLeafG.select('rect').attr('width', function(d) {
+                return xScale(d.data.weight);
+            });
+            nodeLeafG
+                .select('text')
+                .attr('width', function(d) {
+                    return xScale(d.data.weight) - 8;
+                })
+                .text(function(d) {
+                    return d.id;
+                });
 
-        // Setup G for every leaf datum. (rectangle)
-        let leafNodeGEnter = nodeEnter.filter(function(d) {
-                return !d.children && !d._children;
-            }).append("g")
-            .attr("class", "node--leaf-g")
-            .attr("transform", "translate(" + 8 + "," + 0 + ")"); // move rectangle to be centered to the node
+            // add new nodes
+            let nodeEnter = node
+                .enter()
+                .append('g')
+                .attr('class', function(d) {
+                    return (
+                        `${css(styles.node)}` +
+                        (d.children || d._children
+                            ? ' node--internal'
+                            : ' node--leaf') +
+                        (d._children ? ' node--collapsed' : '')
+                    );
+                })
+                .on('click', d => {
+                    this.click(d, tree, root);
+                })
+                .attr('transform', function(d) {
+                    return 'translate(' + d.x + ',' + d.y + ')';
+                });
+            nodeEnter
+                .append('circle')
+                .attr('class', `${css(styles.nodeInternalCircle)}`)
+                .attr('r', 4);
 
-        leafNodeGEnter.append("rect")
-            .attr("class", "")
-            .style("fill", function (d) { return "#555"; })
-            .attr("width", 2)
-            .attr("height", 10)
-            .attr("rx", 2)
-            .attr("ry", 2)
-            .transition().duration(500)
-            .attr("width", function (d) { return xScale(d.data.weight); });
+            let nodeInternal = nodeEnter.filter(function(d) {
+                return d.children || d._children;
+            });
+            nodeInternal
+                .append('text')
+                .style('text-anchor', 'middle')
+                .text(function(d) {
+                    return d.id;
+                })
+                .attr('y', -10);
 
-        leafNodeGEnter.append("text")
-            .style("text-anchor", "start")
-            .text(function(d) {
-                return d.id;
-            })
-            .attr("dy", -5)
-            .attr("x", 8)
-            .attr("width", function (d) { return xScale(d.data.weight) - 8; });
-    
+            // Setup G for every leaf datum. (rectangle)
+            let leafNodeGEnter = nodeEnter
+                .filter(function(d) {
+                    return !d.children && !d._children;
+                })
+                .append('g')
+                .attr('class', 'node--leaf-g')
+                .attr('transform', 'translate(' + 8 + ',' + 0 + ')'); // move rectangle to be centered to the node
+            leafNodeGEnter
+                .append('rect')
+                .attr('class', '')
+                .style('fill', function(d) {
+                    return '#555';
+                })
+                .attr('width', 2)
+                .attr('height', 10)
+                .attr('rx', 2)
+                .attr('ry', 2)
+                .transition()
+                .duration(500)
+                .attr('width', function(d) {
+                    return xScale(d.data.weight);
+                });
+            leafNodeGEnter
+                .append('text')
+                .style('text-anchor', 'start')
+                .text(function(d) {
+                    return d.id;
+                })
+                .attr('dy', -5)
+                .attr('x', 8)
+                .attr('width', function(d) {
+                    return xScale(d.data.weight) - 8;
+                });
 
             // Attach the xAxis a the top of the document
-            this.g().select(".xAxis")
-                .attr(
-                    'transform',
-                    'translate(' + (7 + width) + ',' + 0 + ')',
-                )
+            this.g()
+                .select('.xAxis')
+                .attr('transform', 'translate(' + (7 + width) + ',' + 0 + ')')
                 .call(xAxis);
 
             // tick mark for x-axis
-            this.g().select(".grid").attr(
+            this.g()
+                .select('.grid')
+                .attr(
                     'transform',
-                    'translate(' +
-                        (7 + width) +
-                        ',' +
-                        height +
-                        ')',
+                    'translate(' + (7 + width) + ',' + height + ')',
                 )
                 .call(
                     d3
@@ -350,14 +388,15 @@ class Hierarchy extends PureComponent {
                 );
 
             // Emphasize the y-axis baseline.
-            this.g().select('.grid')
+            this.g()
+                .select('.grid')
                 .select('line')
                 .style('stroke-dasharray', '20,1')
                 .style('stroke', 'black');
 
-            
             // Animation functions for mouse on and off events.
-            this.g().selectAll('.node--leaf-g')
+            this.g()
+                .selectAll('.node--leaf-g')
                 .on('mouseover', (d, i, nodes) => {
                     this.handleMouseOver(d, i, nodes);
                 })
@@ -365,51 +404,60 @@ class Hierarchy extends PureComponent {
                     this.handleMouseOut(d, i, nodes);
                 });
 
-            this.g().selectAll('.node--internal')
+            this.g()
+                .selectAll('.node--internal')
                 .on('mouseover', (d, i, nodes) => {
-                    this.handleMouseOverInternalNode(d, i, nodes)
+                    this.handleMouseOverInternalNode(d, i, nodes);
                 })
                 .on('mouseout', (d, i, nodes) => {
-                    this.handleMouseOutInternalNode(d, i, nodes)
+                    this.handleMouseOutInternalNode(d, i, nodes);
                 });
-        } else {
         }
     }
 
     handleMouseOver(d, i, nodes) {
         let leafG = d3.select(nodes[i]);
 
-        leafG.select("rect")
-                .attr("stroke","#4D4D4D")
-                .attr("stroke-width","2");
-        this.tooltip().style("opacity", 1);		
-        this.tooltip().html(`${d.id}: ${d.data.weight.toFixed(0)} documents`)
-            .style("left", d3.event.layerX + "px")		
-            .style("top", (d3.event.layerY - 28) + "px");
+        leafG
+            .select('rect')
+            .attr('stroke', '#4D4D4D')
+            .attr('stroke-width', '2');
+        this.tooltip().style('opacity', 1);
+
+        this.tooltip()
+            .html(`${d.id}: ${d.data.weight.toFixed(0)} documents`)
+            .style('left', d3.event.layerX + 'px')
+            .style('top', d3.event.layerY - 28 + 'px');
     }
-    handleMouseOut(d, i , nodes) {
+
+    handleMouseOut(d, i, nodes) {
         let leafG = d3.select(nodes[i]);
 
-        leafG.select("rect")
-                .attr("stroke-width","0");
-        this.tooltip().style("opacity", 0);
+        leafG.select('rect').attr('stroke-width', '0');
+        this.tooltip().style('opacity', 0);
     }
 
-    handleMouseOverInternalNode(d, i , nodes) {
+    handleMouseOverInternalNode(d, i, nodes) {
         let nodeG = d3.select(nodes[i]);
-        let text = nodeG.select("text");
-        this.tooltip().style("opacity", 1);		
-        this.tooltip().html(`${d.id}: ${d.data.weight.toFixed(0)} documents`)
-            .style("left", (d3.event.layerX - text.node().getComputedTextLength() *0.5) + "px")		
-            .style("top", (d3.event.layerY - 28) + "px");
-        nodeG.select("circle")
-            .attr("r", 8)
+        let text = nodeG.select('text');
+        this.tooltip().style('opacity', 1);
+        this.tooltip()
+            .html(`${d.id}: ${d.data.weight.toFixed(0)} documents`)
+            .style(
+                'left',
+                d3.event.layerX -
+                    text.node().getComputedTextLength() * 0.5 +
+                    'px',
+            )
+            .style('top', d3.event.layerY - 28 + 'px');
+        nodeG.select('circle').attr('r', 8);
     }
-    
-    handleMouseOutInternalNode(d, i , nodes) {
-        this.tooltip().style("opacity", 0);
-        d3.select(nodes[i]).select("circle")
-            .attr("r", 4)
+
+    handleMouseOutInternalNode(d, i, nodes) {
+        this.tooltip().style('opacity', 0);
+        d3.select(nodes[i])
+            .select('circle')
+            .attr('r', 4);
     }
 
     collapse(d) {
@@ -427,22 +475,16 @@ class Hierarchy extends PureComponent {
         }
     }
 
-    click(
-        d,
-        tree,
-        root,
-    ) {
-        if(d.children) {
-            this.collapse(d)
+    click(d, tree, root) {
+        if (d.children) {
+            this.collapse(d);
         } else {
-            this.expand(d)
+            this.expand(d);
         }
-        this.update(
-            tree,
-            root,
-        );
+        this.update(tree, root);
         this.centerNode(d);
     }
+
     centerNode(source) {
         let scale = d3.zoomTransform(this).k;
         let x = -source.x;
@@ -451,10 +493,11 @@ class Hierarchy extends PureComponent {
         y = y * scale + this.svg().attr('height') / 2;
         this.svg().call(d3.zoom().transform, d3.zoomIdentity.translate(x, y));
         if ((x, y)) {
-            this.g().transition()
+            this.g()
+                .transition()
                 .duration(1000)
                 .attr('transform', 'translate(' + x + ',' + y + ')');
-        }  
+        }
     }
 
     addRootElements(data) {
@@ -499,7 +542,7 @@ class Hierarchy extends PureComponent {
         return newData;
     }
 
-    zoom(g) {
+    zoom() {
         this.g().attr('transform', d3.event.transform);
     }
 
@@ -594,7 +637,11 @@ class Hierarchy extends PureComponent {
                     id={`zoomIconContainer${this.uniqueId}`}
                     onMouseEnter={this.zoomIconEnter}
                     onMouseLeave={this.zoomIconLeave}
-                    style={{ position: 'absolute', bottom: '32px', left: '16px' }}
+                    style={{
+                        position: 'absolute',
+                        bottom: '32px',
+                        left: '16px',
+                    }}
                 >
                     <ZoomIcon width={35} />
                 </div>
@@ -607,10 +654,10 @@ class Hierarchy extends PureComponent {
                     <g id="anchor" ref={this.anchor} />
                 </svg>
                 <div
-                id={`tooltipContainer${this.uniqueId}`}
-                class={`${css(styles.tooltip)}`}
-                ref={this.tooltipContainer}>
-                </div>
+                    id={`tooltipContainer${this.uniqueId}`}
+                    className={`${css(styles.tooltip)}`}
+                    ref={this.tooltipContainer}
+                />
             </div>
         );
     }
