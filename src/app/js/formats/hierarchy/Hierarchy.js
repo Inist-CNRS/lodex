@@ -242,6 +242,7 @@ class Hierarchy extends PureComponent {
                         'M' +
                         ',' +
                         d.x +
+                        ',' +
                         d.y +
                         'C' +
                         (d.parent.x + 100) +
