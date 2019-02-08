@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
         border: 'black solid 1px',
     },
 
-    divTooltip : {	
+    tooltip : {	
         position: 'absolute',			
         textAlign: 'center',													
         padding: '4px',				
@@ -90,6 +90,7 @@ class Hierarchy extends PureComponent {
 
         this.divContainer = React.createRef();
         this.svgContainer = React.createRef();
+        this.tooltipContainer = React.createRef();
         this.anchor = React.createRef();
         this.zoomIndicator = React.createRef();
         this.zoomIndicatorBackground = React.createRef();
@@ -98,7 +99,6 @@ class Hierarchy extends PureComponent {
         this.zoomFunction = zoomFunction.bind(this);
         this.uniqueId = generateUniqueId();
         this.collapse = this.collapse.bind(this);
-        // this.click = this.click.bind(this)
     }
     
     svg() {
@@ -109,6 +109,10 @@ class Hierarchy extends PureComponent {
         return d3.select(this.anchor.current);
     }
 
+    tooltip() {
+        return d3.select(this.tooltipContainer.current);
+    }
+
     setGraph() {
 
         if (this.props.formatData) {
@@ -117,18 +121,18 @@ class Hierarchy extends PureComponent {
             this.g().append('g').attr('class', 'xAxis');
             this.g().append('g').attr('class', 'grid');
             // define the zoomListener which calls the zoom function on the "zoom" event
-            var zoomListener = d3.zoom().on('zoom', () => { this.zoom() } );
+            let zoomListener = d3.zoom().on('zoom', () => { this.zoom() } );
             this.svg().call(zoomListener);
 
             // Setting up a way to handle the data
-            var tree = d3
+            let tree = d3
                 .cluster() // This D3 API method setup the Dendrogram elements position.
                 .separation(function(a, b) {
                     return a.parent == b.parent ? 3 : 4;
                 }) // define separation ratio between siblings
 
             
-            var stratify = d3
+            let stratify = d3
                 .stratify() // This D3 API method gives cvs file flat data array dimensions.
                 .id(function(d) {
                     return d.target;
@@ -203,9 +207,10 @@ class Hierarchy extends PureComponent {
 
             // Draw every datum a line connecting to its parent.
             let link = this.g().selectAll(`.${css(styles.link)}`)
+            // remove links from fakeRootNode
             .data(root.descendants().slice(1).filter(d => !d.parent.data.isFakeNode && !d.parent.isCollapsedNode), function (d) {
                 return d.id;
-            }); // remove links from fakeRootNode
+            });
             //remove old links
             link.exit().remove()
             // update remaining link
@@ -239,9 +244,8 @@ class Hierarchy extends PureComponent {
                     );
                 });
 
-            // Setup position for every datum; Applying different css classes to parents and leafs.
-            // Setup position for every datum; Applying different css classes to parents and leafs.
-        var node = this.g().selectAll(`.${css(styles.node)}`)
+        // Setup position for every datum; Applying different css classes to parents and leafs.
+        let node = this.g().selectAll(`.${css(styles.node)}`)
         .data(root.descendants().filter(d => {
             return !d.data.isFakeNode; // remove fake node (ie: fakeRoot and fake children when collapsed)
         }), function(d) {
@@ -254,7 +258,7 @@ class Hierarchy extends PureComponent {
         node.attr("transform", function (d) { 
                 return "translate(" + d.x + "," + d.y + ")";
             });
-        var nodeLeafG = node.filter(function(d) {
+        let nodeLeafG = node.filter(function(d) {
                 return !d.children && !d._children;
             }).selectAll("g");
         nodeLeafG.select("rect")
@@ -264,10 +268,9 @@ class Hierarchy extends PureComponent {
             .text(function(d) {
                 return d.id;
             });
-            // .call(dotme);
 
         // add new nodes
-        var nodeEnter = node.enter().append("g")
+        let nodeEnter = node.enter().append("g")
             .attr("class", function (d) { return `${css(styles.node)}` + ((d.children || d._children) ? " node--internal" : " node--leaf") + (d._children ? ' node--collapsed' : ''); })
             .on("click", (d) => {
                 this.click(
@@ -283,7 +286,7 @@ class Hierarchy extends PureComponent {
             .attr("class", `${css(styles.nodeInternalCircle)}`)
             .attr("r", 4);
         
-        var nodeInternal = nodeEnter.filter(function(d) {
+        let nodeInternal = nodeEnter.filter(function(d) {
             return (d.children || d._children);
         });
         nodeInternal.append("text")
@@ -294,7 +297,7 @@ class Hierarchy extends PureComponent {
             .attr("y", -10);
 
         // Setup G for every leaf datum. (rectangle)
-        var leafNodeGEnter = nodeEnter.filter(function(d) {
+        let leafNodeGEnter = nodeEnter.filter(function(d) {
                 return !d.children && !d._children;
             }).append("g")
             .attr("class", "node--leaf-g")
@@ -308,10 +311,6 @@ class Hierarchy extends PureComponent {
             .attr("rx", 2)
             .attr("ry", 2)
             .transition().duration(500)
-            // .attr("width", function (d) { 
-            //     let text = Number(d.data.weight).toFixed(1) + ` - ${d.id}`;
-            //     return (9 * text.length  + 20); 
-            // }); 
             .attr("width", function (d) { return xScale(d.data.weight); });
 
         leafNodeGEnter.append("text")
@@ -322,11 +321,9 @@ class Hierarchy extends PureComponent {
             .attr("dy", -5)
             .attr("x", 8)
             .attr("width", function (d) { return xScale(d.data.weight) - 8; });
-            // .call(dotme);
     
 
             // Attach the xAxis a the top of the document
-            
             this.g().select(".xAxis")
                 .attr(
                     'transform',
@@ -359,56 +356,62 @@ class Hierarchy extends PureComponent {
                 .style('stroke', 'black');
 
             
-            //// Animation functions for mouse on and off events.
-            d3.selectAll('.node--leaf-g')
-                .on('mouseover', handleMouseOver)
-                .on('mouseout', handleMouseOut);
+            // Animation functions for mouse on and off events.
+            this.g().selectAll('.node--leaf-g')
+                .on('mouseover', (d, i, nodes) => {
+                    this.handleMouseOver(d, i, nodes);
+                })
+                .on('mouseout', (d, i, nodes) => {
+                    this.handleMouseOut(d, i, nodes);
+                });
 
-            d3.selectAll('.node--internal')
-                .on('mouseover', handleMouseOverInternalNode)
-                .on('mouseout', handleMouseOutInternalNode);
-            // tata
+            this.g().selectAll('.node--internal')
+                .on('mouseover', (d, i, nodes) => {
+                    this.handleMouseOverInternalNode(d, i, nodes)
+                })
+                .on('mouseout', (d, i, nodes) => {
+                    this.handleMouseOutInternalNode(d, i, nodes)
+                });
         } else {
         }
+    }
 
-        function handleMouseOver(d) {
-            var leafG = d3.select(this);
+    handleMouseOver(d, i, nodes) {
+        let leafG = d3.select(nodes[i]);
 
-            leafG.select("rect")
-                    .attr("stroke","#4D4D4D")
-                    .attr("stroke-width","2");
+        leafG.select("rect")
+                .attr("stroke","#4D4D4D")
+                .attr("stroke-width","2");
+        this.tooltip().style("opacity", 1);		
+        this.tooltip().html(`${d.id}: ${d.data.weight.toFixed(0)} documents`)
+            .style("left", d3.event.layerX + "px")		
+            .style("top", (d3.event.layerY - 28) + "px");
+    }
+    handleMouseOut(d, i , nodes) {
+        let leafG = d3.select(nodes[i]);
 
-            let textSize = leafG.select("text").node().getComputedTextLength(); //get text length
-            
-            // tooltip.style("opacity", 1);		
-            // tooltip.html(`${d.id} - ${d.data.weight.toFixed(1)}`)
-            //     .style("left", d3.event.pageX + "px")		
-            //     .style("top", (d3.event.pageY - 28) + "px");
-        }
-        function handleMouseOut() {
-            var leafG = d3.select(this);
+        leafG.select("rect")
+                .attr("stroke-width","0");
+        this.tooltip().style("opacity", 0);
+    }
 
-            leafG.select("rect")
-                    .attr("stroke-width","0");
-            // tooltip.style("opacity", 0);
-        }
-
-        function handleMouseOverInternalNode(d) {
-            var nodeG = d3.select(this);
-            var text = nodeG.select("text");
-            // tooltip.style("opacity", 1);		
-            // tooltip.html(`${d.id} - ${d.data.weight.toFixed(1)}`)
-            //     .style("left", (d3.event.pageX - text.node().getComputedTextLength() *0.5) + "px")		
-            //     .style("top", (d3.event.pageY - 28) + "px");
-            nodeG.select("circle")
-                .attr("r", 8)
-        }
-        
-        function handleMouseOutInternalNode(d) {
-            // tooltip.style("opacity", 0);
-            d3.select(this).select("circle")
-                .attr("r", 4)
-        }
+    handleMouseOverInternalNode(d, i , nodes) {
+        let nodeG = d3.select(nodes[i]);
+        let text = nodeG.select("text");
+        console.log(d3.event);
+        console.log(this.tooltip().attr("id"));
+        this.tooltip().style("opacity", 1);		
+        this.tooltip().html(`${d.id}: ${d.data.weight.toFixed(0)} documents`)
+            .style("left", (d3.event.layerX - text.node().getComputedTextLength() *0.5) + "px")		
+            .style("top", (d3.event.layerY - 28) + "px");
+        nodeG.select("circle")
+            .attr("r", 8)
+    }
+    
+    handleMouseOutInternalNode(d, i , nodes) {
+        this.tooltip().style("opacity", 0);
+        d3.select(nodes[i]).select("circle")
+            .attr("r", 4)
     }
 
     collapse(d) {
@@ -501,7 +504,6 @@ class Hierarchy extends PureComponent {
     zoom(g) {
         this.g().attr('transform', d3.event.transform);
     }
-    // tata code base
 
     updateDimensions() {
         this.removeGraph();
@@ -606,6 +608,11 @@ class Hierarchy extends PureComponent {
                 >
                     <g id="anchor" ref={this.anchor} />
                 </svg>
+                <div
+                id={`tooltipContainer${this.uniqueId}`}
+                class={`${css(styles.tooltip)}`}
+                ref={this.tooltipContainer}>
+                </div>
             </div>
         );
     }
