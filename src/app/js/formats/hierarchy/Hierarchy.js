@@ -147,6 +147,7 @@ class Hierarchy extends PureComponent {
             let root;
 
             let treeData = this.props.formatData;
+
             try {
                 if (treeData) {
                     myData = this.addRootElements(treeData);
@@ -557,7 +558,27 @@ class Hierarchy extends PureComponent {
 
             newData.push.apply(newData, data);
         }
+        newData = this.setRootNodeWeight(newData, parentsAdded);
         return newData;
+    }
+
+    setRootNodeWeight(data, rootNodesList) {
+        if (data) {
+            for (let rootName of rootNodesList) {
+                const rootNodePos = data
+                    .map(e => {
+                        return e.target;
+                    })
+                    .indexOf(rootName);
+                for (let elem of data) {
+                    if (rootName === elem.source) {
+                        data[rootNodePos].weight =
+                            data[rootNodePos].weight + elem.weight;
+                    }
+                }
+            }
+        }
+        return data;
     }
 
     zoom() {
