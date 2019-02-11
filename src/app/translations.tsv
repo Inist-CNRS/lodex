@@ -384,6 +384,7 @@
 "network"	"Graph - Network"	"Graphique - Réseaux"
 "bubbleChart"	"Graph - Bubble"	"Graphique - Graphe à bulles"
 "streamgraph"	"Graph - Streamgraph"	"Graphique - Graphique de flux"
+"hierarchy"	"Graph - Hierarchy"	"Graphique - Graphique hiérarchique"
 "diameter"	"Bubbles Diameter (number in px)"	"Diamètre des bulles (nombre, en px)"
 "min_radius"	"Min radius"	"Rayon min"
 "max_radius"	"Max radius"	"Rayon max"

@@ -45,9 +45,6 @@ class Network extends Component {
     };
 
     componentDidUpdate(prevProps) {
-        console.log('NetworkView did update - props');
-        console.log(this.props.formatData);
-        console.log('===================================');
         if (isEqual(prevProps, this.props)) {
             return;
         }
