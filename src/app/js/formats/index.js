@@ -33,6 +33,7 @@ import sparqlTextField from './sparql/SparqlTextField/';
 import DefaultFormat from './DefaultFormat';
 import istexSummary from './istexSummary';
 import streamgraph from './streamgraph';
+import hierarchy from './hierarchy';
 import checkPredicate from './checkPredicate';
 
 const components = {
@@ -67,6 +68,7 @@ const components = {
     sparqlTextField,
     istexSummary,
     streamgraph,
+    hierarchy,
 };
 
 export const FORMATS = Object.keys(components).sort();
