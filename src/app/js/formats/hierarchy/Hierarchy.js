@@ -114,13 +114,7 @@ class Hierarchy extends PureComponent {
 
     setGraph() {
         if (this.props.formatData) {
-            this.g().attr('transform', 'translate(20,20)'); // move right 20px.
-            this.g()
-                .append('g')
-                .attr('class', 'xAxis');
-            this.g()
-                .append('g')
-                .attr('class', 'grid');
+            this.g().attr('transform', 'translate(200,20)'); // move right 200px.
 
             let zoomListener = d3.zoom().on('zoom', () => {
                 this.zoom();
@@ -197,11 +191,6 @@ class Hierarchy extends PureComponent {
                 .scaleLinear()
                 .domain([0, maxWeight])
                 .range([0, 500]);
-
-            let xAxis = d3
-                .axisTop()
-                .scale(xScale)
-                .ticks(5);
 
             tree(root); // d3.cluster()
             root.descendants().forEach(d => {
@@ -383,35 +372,6 @@ class Hierarchy extends PureComponent {
                 .attr('width', function(d) {
                     return xScale(d.data.weight) - 8;
                 });
-
-            // Attach the xAxis a the top of the document
-            this.g()
-                .select('.xAxis')
-                .attr('transform', 'translate(' + (7 + width) + ',' + 0 + ')')
-                .call(xAxis);
-
-            // tick mark for x-axis
-            this.g()
-                .select('.grid')
-                .attr(
-                    'transform',
-                    'translate(' + (7 + width) + ',' + height + ')',
-                )
-                .call(
-                    d3
-                        .axisBottom()
-                        .scale(xScale)
-                        .ticks(5)
-                        .tickSize(-height, 0, 0)
-                        .tickFormat(''),
-                );
-
-            // Emphasize the y-axis baseline.
-            this.g()
-                .select('.grid')
-                .select('line')
-                .style('stroke-dasharray', '20,1')
-                .style('stroke', 'black');
 
             // Animation functions for mouse on and off events.
             this.g()
