@@ -114,7 +114,7 @@ class Hierarchy extends PureComponent {
 
     setGraph() {
         if (this.props.formatData) {
-            this.g().attr('transform', 'translate(20,20)'); // move right 20px.
+            this.g().attr('transform', 'translate(200,20)'); // move right 200px.
 
             let zoomListener = d3.zoom().on('zoom', () => {
                 this.zoom();
