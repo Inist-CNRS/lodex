@@ -444,7 +444,7 @@ class Hierarchy extends PureComponent {
         this.tooltip().style('opacity', 1);
 
         this.tooltip()
-            .html(`${d.id} : ${d.data.weight.toFixed(0)} documents`)
+            .html(`${d.id} : ${d.data.weight.toFixed(0)} document(s)`)
             .style('left', d3.event.layerX + 'px')
             .style('top', d3.event.layerY - 28 + 'px');
     }
