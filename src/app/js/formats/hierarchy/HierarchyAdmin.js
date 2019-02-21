@@ -41,15 +41,8 @@ class HierarchyAdmin extends Component {
         updateAdminArgs('params', params, this.props);
     };
 
-    setMaxSize = (_, maxSizeValue) => {
-        this.setParams({ maxSize: maxSizeValue });
-    };
-
     render() {
-        const {
-            p: polyglot,
-            args: { params },
-        } = this.props;
+        const { p: polyglot, args: { params } } = this.props;
 
         return (
             <div style={styles.container}>
