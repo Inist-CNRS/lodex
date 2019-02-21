@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import TextField from 'material-ui/TextField';
 import translate from 'redux-polyglot/translate';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import updateAdminArgs from '../shared/updateAdminArgs';
+import RoutineParamsAdmin from '../shared/RoutineParamsAdmin';
 
 const styles = {
     container: {
@@ -46,15 +46,17 @@ class HierarchyAdmin extends Component {
     };
 
     render() {
-        const { p: polyglot } = this.props;
+        const {
+            p: polyglot,
+            args: { params },
+        } = this.props;
 
         return (
             <div style={styles.container}>
-                <TextField
-                    floatingLabelText={polyglot.t('max_fields')}
-                    onChange={this.setMaxSize}
-                    style={styles.input}
-                    value={this.props.args.params.maxSize}
+                <RoutineParamsAdmin
+                    params={params || defaultArgs.params}
+                    polyglot={polyglot}
+                    onChange={this.setParams}
                 />
             </div>
         );
