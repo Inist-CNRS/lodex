@@ -42,7 +42,10 @@ class HierarchyAdmin extends Component {
     };
 
     render() {
-        const { p: polyglot, args: { params } } = this.props;
+        const {
+            p: polyglot,
+            args: { params },
+        } = this.props;
 
         return (
             <div style={styles.container}>
