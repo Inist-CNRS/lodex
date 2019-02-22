@@ -63,7 +63,10 @@ class CartographyAdmin extends Component {
     };
 
     render() {
-        const { p: polyglot, args: { params } } = this.props;
+        const {
+            p: polyglot,
+            args: { params },
+        } = this.props;
         const { nodeColor } = this.props.args;
 
         return (
