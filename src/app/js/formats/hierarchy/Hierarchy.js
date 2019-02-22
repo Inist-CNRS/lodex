@@ -332,7 +332,7 @@ class Hierarchy extends PureComponent {
             });
             nodeInternal
                 .append('text')
-                .style('text-anchor', 'middle')
+                .style('text-anchor', 'start')
                 .text(function(d) {
                     return d.id;
                 })
