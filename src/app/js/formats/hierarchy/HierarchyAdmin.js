@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
+import TextField from 'material-ui/TextField';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import updateAdminArgs from '../shared/updateAdminArgs';
@@ -21,6 +22,7 @@ const styles = {
 export const defaultArgs = {
     params: {
         maxSize: 5000,
+        maxLabelLength: 25,
     },
 };
 
@@ -28,6 +30,7 @@ class HierarchyAdmin extends Component {
     static propTypes = {
         args: PropTypes.shape({
             maxSize: PropTypes.number,
+            maxLabelLength: PropTypes.number,
         }),
         onChange: PropTypes.func.isRequired,
         p: polyglotPropTypes.isRequired,
@@ -39,6 +42,10 @@ class HierarchyAdmin extends Component {
 
     setParams = params => {
         updateAdminArgs('params', params, this.props);
+    };
+
+    setMaxLabelLength = (_, maxLabelLength) => {
+        this.setParams({ maxLabelLength: parseInt(maxLabelLength, 10) });
     };
 
     render() {
@@ -54,6 +61,12 @@ class HierarchyAdmin extends Component {
                     polyglot={polyglot}
                     onChange={this.setParams}
                 />
+                <TextField
+                    floatingLabelText={polyglot.t('max_char_number_in_labels')}
+                    onChange={this.setMaxLabelLength}
+                    style={styles.input}
+                    value={this.props.args.params.maxLabelLength}
+                />{' '}
             </div>
         );
     }

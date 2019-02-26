@@ -333,8 +333,8 @@ class Hierarchy extends PureComponent {
             nodeInternal
                 .append('text')
                 .style('text-anchor', 'start')
-                .text(function(d) {
-                    return d.id;
+                .text(d => {
+                    return this.cutText(d.id);
                 })
                 .attr('y', -10);
 
@@ -481,6 +481,22 @@ class Hierarchy extends PureComponent {
                 .duration(1000)
                 .attr('transform', 'translate(' + x + ',' + y + ')');
         }
+    }
+
+    cutText(text) {
+        let new_text = '';
+        let letter_counter = 0;
+        const text_limit = this.props.params.maxLabelLength;
+        text = text.split('');
+        for (let letter of text) {
+            if (letter_counter === text_limit) {
+                new_text += '..';
+                break;
+            }
+            new_text += letter;
+            letter_counter++;
+        }
+        return new_text;
     }
 
     addRootElements(data) {
