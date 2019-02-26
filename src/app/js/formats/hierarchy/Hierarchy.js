@@ -422,7 +422,7 @@ class Hierarchy extends PureComponent {
         this.tooltip().style('opacity', 1);
         this.tooltip()
             .html(
-                `${d.id} , ${this.props.p.t('poids')} : ${d.data.weight.toFixed(
+                `${d.id}, ${this.props.p.t('poids')} : ${d.data.weight.toFixed(
                     0,
                 )}`,
             )
