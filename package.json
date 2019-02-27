@@ -3,7 +3,7 @@
         "node": ">= 7.8.0"
     },
     "name": "lodex",
-    "version": "9.5.1",
+    "version": "9.5.2",
     "description": "",
     "main": "src/api/index.js",
     "browser": {
@@ -72,7 +72,7 @@
         "ezs": "6.3.0",
         "ezs-analytics": "1.8.1",
         "ezs-basics": "3.6.7",
-        "ezs-istex": "5.0.3",
+        "ezs-istex": "5.0.5",
         "ezs-lodex": "1.1.2",
         "feed": "1.1.0",
         "fetch-with-proxy": "1.1.0",
