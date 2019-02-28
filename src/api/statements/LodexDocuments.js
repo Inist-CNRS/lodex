@@ -1,8 +1,6 @@
 import ezs from 'ezs';
 
 import publishedDataset from '../models/publishedDataset';
-import field from '../models/field';
-import getPublishedDatasetFilter from '../models/getPublishedDatasetFilter';
 import mongoClient from '../services/mongoClient';
 
 export const createFunction = mongoClientImpl =>
@@ -10,20 +8,9 @@ export const createFunction = mongoClientImpl =>
         if (this.isLast()) {
             return feed.close();
         }
-        const handleDb = await mongoClientImpl();
-        const { query } = data;
-        const fieldHandle = await field(handleDb);
-        const searchableFieldNames = await fieldHandle.findSearchableNames();
-        const facetFieldNames = await fieldHandle.findFacetNames();
-        const filter = getPublishedDatasetFilter({
-            ...query,
-            searchableFieldNames,
-            facetFieldNames,
-        });
-        if (filter.$and && !filter.$and.length) {
-            delete filter.$and;
-        }
 
+        const filter = this.getParam('filter', data.filter || {});
+        const handleDb = await mongoClientImpl();
         const handle = await publishedDataset(handleDb);
         const cursor = handle.find(filter);
         const total = await cursor.count();

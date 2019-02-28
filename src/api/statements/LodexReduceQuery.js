@@ -4,8 +4,6 @@ import set from 'lodash.set';
 
 import reducers from '../reducers/';
 import publishedDataset from '../models/publishedDataset';
-import fieldModel from '../models/field';
-import getPublishedDatasetFilter from '../models/getPublishedDatasetFilter';
 import mongoClient from '../services/mongoClient';
 
 const hashCoerce = hasher({ sort: false, coerce: true });
@@ -16,12 +14,14 @@ export const createFunction = mongoClientImpl =>
             return feed.close();
         }
 
-        const query = this.getParam('query', data.query || {});
+        const filter = this.getParam('filter', data.filter || {});
         const limit = this.getParam('limit', data.limit || 1000000);
         const skip = this.getParam('skip', data.skip || 0);
         const sort = this.getParam('sort', data.sort || {});
-        const field = this.getParam('field', data.$field || 'uri');
-        const target = this.getParam('total');
+        const field = this.getParam(
+            'field',
+            data.field || data.$field || 'uri',
+        );
         const minValue = this.getParam('minValue', data.minValue);
         const maxValue = this.getParam('maxValue', data.maxValue);
 
@@ -33,17 +33,6 @@ export const createFunction = mongoClientImpl =>
             hashCoerce.hash({ reducer, fields }),
         );
 
-        const handleDb = await mongoClientImpl();
-        const fieldHandle = await fieldModel(handleDb);
-
-        const searchableFieldNames = await fieldHandle.findSearchableNames();
-        const facetFieldNames = await fieldHandle.findFacetNames();
-
-        const filter = getPublishedDatasetFilter({
-            ...query,
-            searchableFieldNames,
-            facetFieldNames,
-        });
         const options = {
             query: filter,
             finalize,
@@ -54,6 +43,7 @@ export const createFunction = mongoClientImpl =>
                 fields,
             },
         };
+        const handleDb = await mongoClientImpl();
         const handlePublishedDataset = await publishedDataset(handleDb);
 
         if (!reducer) {
@@ -94,7 +84,7 @@ export const createFunction = mongoClientImpl =>
             .pipe(
                 ezs((data1, feed1) => {
                     if (typeof data1 === 'object') {
-                        set(data1, `${target || 'total'}`, total);
+                        set(data1, 'total', total);
                         feed.write(data1);
                     }
                     feed1.end();

@@ -5,6 +5,12 @@ import { PassThrough } from 'stream';
 import cacheControl from 'koa-cache-control';
 import config from 'config';
 import Script from '../../services/script';
+import getPublishedDatasetFilter from '../../models/getPublishedDatasetFilter';
+import field from '../../models/field';
+import mongoClient from '../../services/mongoClient';
+import Statements from '../../statements';
+
+ezs.use(Statements);
 
 export const runRoutine = async (ctx, routineCalled, field1, field2) => {
     const routine = new Script('routines');
@@ -14,7 +20,6 @@ export const runRoutine = async (ctx, routineCalled, field1, field2) => {
     }
 
     const [, metaData, , script] = currentRoutine;
-
     if (metaData.fileName) {
         ctx.set(
             'Content-disposition',
@@ -24,19 +29,49 @@ export const runRoutine = async (ctx, routineCalled, field1, field2) => {
     ctx.type = metaData.mimeType;
     ctx.status = 200;
 
+    const {
+        maxSize,
+        skip,
+        maxValue,
+        minValue,
+        match,
+        orderBy = '_id/asc',
+        invertedFacets = [],
+        $query,
+        ...facets
+    } = ctx.query;
+    const [order, dir] = orderBy.split('/');
+    const handleDb = await mongoClient();
+    const fieldHandle = await field(handleDb);
+    const searchableFieldNames = await fieldHandle.findSearchableNames();
+    const facetFieldNames = await fieldHandle.findFacetNames();
+    const filter = getPublishedDatasetFilter({
+        match,
+        invertedFacets,
+        facets,
+        searchableFieldNames,
+        facetFieldNames,
+    });
+
+    if (filter.$and && !filter.$and.length) {
+        delete filter.$and;
+    }
+    // context is the intput for LodexReduceQuery & LodexRunQuery & LodexDocuments
     const context = {
-        headers: ctx.headers,
-        method: ctx.method,
-        url: ctx.url,
-        originalUrl: ctx.originalUrl,
-        origin: ctx.origin,
-        href: ctx.href,
-        path: ctx.path,
-        query: ctx.query,
-        querystring: ctx.querystring,
-        host: ctx.host,
-        hostname: ctx.hostname,
+        limit: maxSize,
+        skip,
+        sort: {
+            [order]: dir === 'asc' ? 1 : -1,
+        },
+        filter,
+        maxValue,
+        minValue,
     };
+    // to by pass all statements before
+    ezs.config('LodexRunQuery', context);
+    ezs.config('LodexReduceQuery', context);
+    ezs.config('LodexDocuments', context);
+
     const fields = [field1, field2].filter(x => x);
     const environment = {
         ...ctx.query,
@@ -45,17 +80,20 @@ export const runRoutine = async (ctx, routineCalled, field1, field2) => {
     };
     const input = new PassThrough({ objectMode: true });
     const commands = ezs.parseString(script, environment);
-    const method = config.routinesCache ? 'pipeline' : 'booster';
+    const method = config.routinesCache ? 'booster' : 'pipeline';
     const errorHandle = err => {
         ctx.status = 503;
         ctx.body.destroy();
         input.destroy();
         global.console.error(ctx.query, err);
     };
-    const handle = ezs[method](commands, environment).on('error', errorHandle);
+    const routineHandle = ezs[method](commands, environment).on(
+        'error',
+        errorHandle,
+    );
 
     ctx.body = input
-        .pipe(handle)
+        .pipe(routineHandle)
         .pipe(ezs.catch(errorHandle))
         .pipe(ezs.toBuffer());
     input.write(context);
