@@ -6,6 +6,7 @@ import { zoomFunction, generateUniqueId } from './utils';
 import injectData from '../injectData';
 import exportableToPng from '../exportableToPng';
 import ZoomIcon from './zoomIcon';
+import cliTruncate from 'cli-truncate';
 
 const styles = StyleSheet.create({
     divContainer: {
@@ -334,7 +335,7 @@ class Hierarchy extends PureComponent {
                 .append('text')
                 .style('text-anchor', 'start')
                 .text(d => {
-                    return this.cutText(d.id);
+                    return cliTruncate(d.id, this.props.params.maxLabelLength);
                 })
                 .attr('y', -10);
 
@@ -481,22 +482,6 @@ class Hierarchy extends PureComponent {
                 .duration(1000)
                 .attr('transform', 'translate(' + x + ',' + y + ')');
         }
-    }
-
-    cutText(text) {
-        let new_text = '';
-        let letter_counter = 0;
-        const text_limit = this.props.params.maxLabelLength;
-        text = text.split('');
-        for (let letter of text) {
-            if (letter_counter === text_limit) {
-                new_text += '..';
-                break;
-            }
-            new_text += letter;
-            letter_counter++;
-        }
-        return new_text;
     }
 
     addRootElements(data) {
