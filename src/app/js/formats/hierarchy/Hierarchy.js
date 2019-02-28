@@ -87,6 +87,7 @@ class Hierarchy extends PureComponent {
         };
         this.zoomIconEnter = this.zoomIconEnter.bind(this);
         this.zoomIconLeave = this.zoomIconLeave.bind(this);
+        this.centerGraphClick = this.centerGraphClick.bind(this);
 
         this.divContainer = React.createRef();
         this.svgContainer = React.createRef();
@@ -100,8 +101,8 @@ class Hierarchy extends PureComponent {
         this.uniqueId = generateUniqueId();
         this.collapse = this.collapse.bind(this);
         this.initialPosition = {
-            x: 0,
-            y: 0,
+            x: 20,
+            y: 20,
             scale: 0,
         };
     }
@@ -172,34 +173,19 @@ class Hierarchy extends PureComponent {
             let gBbox = this.g()
                 .node()
                 .getBBox();
-            let scaleFactor;
 
             if (
                 current.clientWidth - gBbox.width <
                 current.clientHeight - gBbox.height
             ) {
-                scaleFactor = current.clientWidth / gBbox.width;
+                this.initialPosition.scale = current.clientWidth / gBbox.width;
             } else {
-                scaleFactor = current.clientHeight / gBbox.height;
+                this.initialPosition.scale =
+                    current.clientHeight / gBbox.height;
             }
 
-            scaleFactor = scaleFactor * 0.8;
-            this.g().attr(
-                'transform',
-                'translate(' + 20 + ',' + 20 + ')scale(' + scaleFactor + ')',
-            );
-
-            let transform = d3.zoomIdentity
-                .translate(20, 20)
-                .scale(scaleFactor);
-
-            let zoomListener = d3.zoom().on('zoom', () => {
-                this.zoom();
-            });
-
-            this.svg()
-                .call(zoomListener)
-                .call(zoomListener.transform, transform);
+            this.initialPosition.scale = this.initialPosition.scale * 0.8;
+            this.centerGraphClick();
         }
     }
 
@@ -627,7 +613,28 @@ class Hierarchy extends PureComponent {
     }
 
     centerGraphClick() {
-        console.log(`you clicked on centerGraph`);
+        this.g().attr(
+            'transform',
+            'translate(' +
+                this.initialPosition.x +
+                ',' +
+                this.initialPosition.y +
+                ')scale(' +
+                this.initialPosition.scale +
+                ')',
+        );
+
+        let transform = d3.zoomIdentity
+            .translate(this.initialPosition.x, this.initialPosition.y)
+            .scale(this.initialPosition.scale);
+
+        let zoomListener = d3.zoom().on('zoom', () => {
+            this.zoom();
+        });
+
+        this.svg()
+            .call(zoomListener)
+            .call(zoomListener.transform, transform);
     }
 
     render() {
