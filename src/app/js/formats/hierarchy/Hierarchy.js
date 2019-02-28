@@ -122,11 +122,6 @@ class Hierarchy extends PureComponent {
         if (this.props.formatData) {
             this.g().attr('transform', 'translate(20,20)'); // move right 20px.
 
-            let zoomListener = d3.zoom().on('zoom', () => {
-                this.zoom();
-            });
-            this.svg().call(zoomListener);
-
             // Setting up a way to handle the data
             let tree = d3
                 .cluster() // This D3 API method setup the Dendrogram elements position.
@@ -152,9 +147,6 @@ class Hierarchy extends PureComponent {
                 if (treeData) {
                     myData = this.addRootElements(treeData);
                     root = stratify(myData);
-                    if (!root) {
-                        debugger;
-                    }
                     // collpsed all nodes
                     root.children.forEach(d =>
                         d.children.forEach(this.collapse),
@@ -175,6 +167,39 @@ class Hierarchy extends PureComponent {
                         `${polyglot.t('error_rendering_chart')}:<br>${error}`,
                     );
             }
+
+            let current = this.divContainer.current;
+            let gBbox = this.g()
+                .node()
+                .getBBox();
+            let scaleFactor;
+
+            if (
+                current.clientWidth - gBbox.width <
+                current.clientHeight - gBbox.height
+            ) {
+                scaleFactor = current.clientWidth / gBbox.width;
+            } else {
+                scaleFactor = current.clientHeight / gBbox.height;
+            }
+
+            scaleFactor = scaleFactor * 0.8;
+            this.g().attr(
+                'transform',
+                'translate(' + 20 + ',' + 20 + ')scale(' + scaleFactor + ')',
+            );
+
+            let transform = d3.zoomIdentity
+                .translate(20, 20)
+                .scale(scaleFactor);
+
+            let zoomListener = d3.zoom().on('zoom', () => {
+                this.zoom();
+            });
+
+            this.svg()
+                .call(zoomListener)
+                .call(zoomListener.transform, transform);
         }
     }
 
