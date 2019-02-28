@@ -2,20 +2,9 @@ import Koa from 'koa';
 import route from 'koa-route';
 import ezs from 'ezs';
 import { PassThrough } from 'stream';
-import hasher from 'node-object-hash';
 import cacheControl from 'koa-cache-control';
 import config from 'config';
 import Script from '../../services/script';
-
-const hashCoerce = hasher({
-    sort: false,
-    coerce: true,
-});
-const cacheOptions = {
-    max: config.cache.max,
-    maxAge: config.cache.maxAge * 1000,
-};
-const cache = ezs.createCache(cacheOptions);
 
 export const runRoutine = async (ctx, routineCalled, field1, field2) => {
     const routine = new Script('routines');
@@ -51,29 +40,26 @@ export const runRoutine = async (ctx, routineCalled, field1, field2) => {
     const fields = [field1, field2].filter(x => x);
     const environment = {
         ...ctx.query,
+        ...config,
         fields,
     };
-    const uniqHash = hashCoerce.hash([
-        __filename,
-        context.path,
-        context.querystring,
-    ]);
-    const uniqkey = `id-${uniqHash}`;
-    const cached = cache.get(uniqkey);
+    const input = new PassThrough({ objectMode: true });
+    const commands = ezs.parseString(script, environment);
+    const method = config.routinesCache ? 'pipeline' : 'booster';
+    const errorHandle = err => {
+        ctx.status = 503;
+        ctx.body.destroy();
+        input.destroy();
+        global.console.error(ctx.query, err);
+    };
+    const handle = ezs[method](commands, environment).on('error', errorHandle);
 
-    if (cached) {
-        ctx.etag = `W/"${uniqkey}"`;
-        ctx.body = cached;
-    } else {
-        const input = new PassThrough({ objectMode: true });
-        ctx.body = input
-            .pipe(ezs.fromString(script, environment))
-            .pipe(ezs.catch(global.console.error))
-            .pipe(ezs.toBuffer())
-            .pipe(cache.set(uniqkey));
-        input.write(context);
-        input.end();
-    }
+    ctx.body = input
+        .pipe(handle)
+        .pipe(ezs.catch(errorHandle))
+        .pipe(ezs.toBuffer());
+    input.write(context);
+    input.end();
 };
 
 const app = new Koa();

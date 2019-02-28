@@ -1,11 +1,12 @@
 {
   "username": "admin",
   "password": "secret",
-  "userAuth": {
+  "#userAuth": {
       "username": "user",
       "password": "secret"
   },
   "pluginsURL" : "https://plug-in.lodex.inist.fr/",
+  "routinesCache" : true,
   "routines": [
     "hello-world",
     "all-fields",
