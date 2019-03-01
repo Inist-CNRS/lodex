@@ -6,11 +6,8 @@ import { zoomFunction, generateUniqueId } from './utils';
 import injectData from '../injectData';
 import exportableToPng from '../exportableToPng';
 import ZoomIcon from './zoomIcon';
-<<<<<<< HEAD
-import cliTruncate from 'cli-truncate';
-=======
 import CenterGraph from './centerGraph';
->>>>>>> d9944e1026c07cc624ce8cceb942df4e27b3ac66
+import cliTruncate from 'cli-truncate';
 
 const styles = StyleSheet.create({
     divContainer: {
