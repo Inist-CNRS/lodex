@@ -6,7 +6,11 @@ import { zoomFunction, generateUniqueId } from './utils';
 import injectData from '../injectData';
 import exportableToPng from '../exportableToPng';
 import ZoomIcon from './zoomIcon';
+<<<<<<< HEAD
 import cliTruncate from 'cli-truncate';
+=======
+import CenterGraph from './centerGraph';
+>>>>>>> d9944e1026c07cc624ce8cceb942df4e27b3ac66
 
 const styles = StyleSheet.create({
     divContainer: {
@@ -87,6 +91,7 @@ class Hierarchy extends PureComponent {
         };
         this.zoomIconEnter = this.zoomIconEnter.bind(this);
         this.zoomIconLeave = this.zoomIconLeave.bind(this);
+        this.centerGraphClick = this.centerGraphClick.bind(this);
 
         this.divContainer = React.createRef();
         this.svgContainer = React.createRef();
@@ -99,6 +104,11 @@ class Hierarchy extends PureComponent {
         this.zoomFunction = zoomFunction.bind(this);
         this.uniqueId = generateUniqueId();
         this.collapse = this.collapse.bind(this);
+        this.initialPosition = {
+            x: 20,
+            y: 20,
+            scale: 0,
+        };
     }
 
     svg() {
@@ -116,11 +126,6 @@ class Hierarchy extends PureComponent {
     setGraph() {
         if (this.props.formatData) {
             this.g().attr('transform', 'translate(20,20)'); // move right 20px.
-
-            let zoomListener = d3.zoom().on('zoom', () => {
-                this.zoom();
-            });
-            this.svg().call(zoomListener);
 
             // Setting up a way to handle the data
             let tree = d3
@@ -147,9 +152,6 @@ class Hierarchy extends PureComponent {
                 if (treeData) {
                     myData = this.addRootElements(treeData);
                     root = stratify(myData);
-                    if (!root) {
-                        debugger;
-                    }
                     // collpsed all nodes
                     root.children.forEach(d =>
                         d.children.forEach(this.collapse),
@@ -170,6 +172,24 @@ class Hierarchy extends PureComponent {
                         `${polyglot.t('error_rendering_chart')}:<br>${error}`,
                     );
             }
+
+            let current = this.divContainer.current;
+            let gBbox = this.g()
+                .node()
+                .getBBox();
+
+            if (
+                current.clientWidth - gBbox.width <
+                current.clientHeight - gBbox.height
+            ) {
+                this.initialPosition.scale = current.clientWidth / gBbox.width;
+            } else {
+                this.initialPosition.scale =
+                    current.clientHeight / gBbox.height;
+            }
+
+            this.initialPosition.scale = this.initialPosition.scale * 0.8;
+            this.centerGraphClick();
         }
     }
 
@@ -596,6 +616,31 @@ class Hierarchy extends PureComponent {
         this.zoomIndicatorBackground.current.style.visibility = 'hidden';
     }
 
+    centerGraphClick() {
+        this.g().attr(
+            'transform',
+            'translate(' +
+                this.initialPosition.x +
+                ',' +
+                this.initialPosition.y +
+                ')scale(' +
+                this.initialPosition.scale +
+                ')',
+        );
+
+        let transform = d3.zoomIdentity
+            .translate(this.initialPosition.x, this.initialPosition.y)
+            .scale(this.initialPosition.scale);
+
+        let zoomListener = d3.zoom().on('zoom', () => {
+            this.zoom();
+        });
+
+        this.svg()
+            .call(zoomListener)
+            .call(zoomListener.transform, transform);
+    }
+
     render() {
         const { width, height, margin } = this.state;
         const { p: polyglot } = this.props;
@@ -648,6 +693,17 @@ class Hierarchy extends PureComponent {
                     }}
                 >
                     <ZoomIcon width={35} />
+                </div>
+                <div
+                    id={`centerGraph${this.uniqueId}`}
+                    onClick={this.centerGraphClick}
+                    style={{
+                        position: 'absolute',
+                        bottom: '19px',
+                        right: '56px',
+                    }}
+                >
+                    <CenterGraph width={48} />
                 </div>
                 <svg
                     id={`svgContainer${this.uniqueId}`}

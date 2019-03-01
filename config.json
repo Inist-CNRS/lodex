@@ -6,6 +6,7 @@
       "password": "secret"
   },
   "pluginsURL" : "https://plug-in.lodex.inist.fr/",
+  "routinesCache" : true,
   "routines": [
     "hello-world",
     "all-fields",
