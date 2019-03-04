@@ -205,9 +205,11 @@ class Hierarchy extends PureComponent {
                 },
             );
 
+            // tata
+            //let maxDomain = maxWeight > 5 ? maxWeight : 5;
             let xScale = d3
                 .scaleLinear()
-                .domain([0, maxWeight])
+                .domain([0, maxWeight > 5 ? maxWeight : 5])
                 .range([0, 500]);
 
             tree(root); // d3.cluster()
