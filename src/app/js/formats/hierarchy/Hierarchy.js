@@ -7,6 +7,7 @@ import injectData from '../injectData';
 import exportableToPng from '../exportableToPng';
 import ZoomIcon from './zoomIcon';
 import CenterGraph from './centerGraph';
+import cliTruncate from 'cli-truncate';
 
 const styles = StyleSheet.create({
     divContainer: {
@@ -203,9 +204,11 @@ class Hierarchy extends PureComponent {
                 },
             );
 
+            // tata
+            //let maxDomain = maxWeight > 5 ? maxWeight : 5;
             let xScale = d3
                 .scaleLinear()
-                .domain([0, maxWeight])
+                .domain([0, maxWeight > 5 ? maxWeight : 5])
                 .range([0, 500]);
 
             tree(this.root); // d3.cluster()
@@ -349,8 +352,8 @@ class Hierarchy extends PureComponent {
             nodeInternal
                 .append('text')
                 .style('text-anchor', 'start')
-                .text(function(d) {
-                    return d.id;
+                .text(d => {
+                    return cliTruncate(d.id, this.props.params.maxLabelLength);
                 })
                 .attr('y', -10);
 
@@ -438,7 +441,7 @@ class Hierarchy extends PureComponent {
         this.tooltip().style('opacity', 1);
         this.tooltip()
             .html(
-                `${d.id} , ${this.props.p.t('poids')} : ${d.data.weight.toFixed(
+                `${d.id}, ${this.props.p.t('poids')} : ${d.data.weight.toFixed(
                     0,
                 )}`,
             )

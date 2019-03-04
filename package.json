@@ -3,7 +3,7 @@
         "node": ">= 7.8.0"
     },
     "name": "lodex",
-    "version": "9.5.2",
+    "version": "9.5.3",
     "description": "",
     "main": "src/api/index.js",
     "browser": {
@@ -58,6 +58,7 @@
         "babel-eslint": "10.0.1",
         "babel-loader": "8.0.4",
         "classnames": "2.2.6",
+        "cli-truncate": "1.1.0",
         "comma-number": "2.0.0",
         "common-tags": "1.8.0",
         "compression-webpack-plugin": "2.0.0",
