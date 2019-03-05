@@ -198,23 +198,34 @@ class Hierarchy extends PureComponent {
 
             // update axis
             const maxWeight = d3.max(
-                this.root.descendants().filter(d => !d.children && !d._children),
+                this.root
+                    .descendants()
+                    .filter(d => !d.children && !d._children),
                 function(d) {
                     return d.data.weight;
                 },
             );
 
-            // tata
-            //let maxDomain = maxWeight > 5 ? maxWeight : 5;
             let xScale = d3
                 .scaleLinear()
                 .domain([0, maxWeight > 5 ? maxWeight : 5])
                 .range([0, 500]);
 
             tree(this.root); // d3.cluster()
+            let maxHeightInTree = 0;
+            this.root.descendants().forEach(d => {
+                if (maxHeightInTree < d.height) {
+                    maxHeightInTree = d.height;
+                }
+            });
+
             this.root.descendants().forEach(d => {
                 d.y = d.x;
-                d.x = ((d.depth - 1) / (d.depth + d.height - 1)) * width;
+                if (d.height > 0) {
+                    d.x = (d.depth / maxHeightInTree) * width;
+                } else {
+                    d.x = ((d.depth - 1) / (d.depth + d.height - 1)) * width; // origin
+                }
             });
 
             // Draw every datum a line connecting to its parent.
