@@ -101,6 +101,10 @@ class ListAdmin extends Component {
                             'list_format_unordered_without_bullet',
                         )}
                     />
+                    <MenuItem
+                        value="unordered_flat"
+                        primaryText={polyglot.t('list_format_unordered_flat')}
+                    />
                 </SelectField>
             </div>
         );

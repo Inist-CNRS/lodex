@@ -11,11 +11,23 @@ const styles = stylesToClassname(
         ordered: {
             listStyleType: 'decimal',
         },
+        ordered_li: {},
         unordered: {
             listStyleType: 'initial',
         },
+        unordered_li: {},
         unordered_without_bullet: {
             listStyleType: 'none',
+        },
+        unordered_without_bullet_li: {},
+        unordered_flat: {
+            listStyleType: 'none',
+        },
+        unordered_flat_li: {
+            display: 'inline',
+            ':after': {
+                content: '" ; "',
+            },
         },
     },
     'list-format',
@@ -55,7 +67,10 @@ const ListView = ({
     return (
         <List className={classnames(styles[type], className)}>
             {values.map((value, index) => (
-                <li key={value}>
+                <li
+                    key={value}
+                    className={classnames(styles[`${type}_li`])}
+                >
                     {subFormat ? (
                         <ViewComponent
                             resource={values}
