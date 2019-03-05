@@ -3,12 +3,11 @@ import hasher from 'node-object-hash';
 import set from 'lodash.set';
 
 import reducers from '../reducers/';
-import publishedDataset from '../models/publishedDataset';
-import mongoClient from '../services/mongoClient';
+import { MongoClient } from 'mongodb';
 
 const hashCoerce = hasher({ sort: false, coerce: true });
 
-export const createFunction = mongoClientImpl =>
+export const createFunction = () =>
     async function LodexRunQuery(data, feed) {
         if (this.isLast()) {
             return feed.close();
@@ -43,8 +42,17 @@ export const createFunction = mongoClientImpl =>
                 fields,
             },
         };
-        const handleDb = await mongoClientImpl();
-        const handlePublishedDataset = await publishedDataset(handleDb);
+        const connectionStringURI = this.getParam(
+            'connectionStringURI',
+            data.connectionStringURI || '',
+        );
+        const db = await MongoClient.connect(
+            connectionStringURI,
+            {
+                poolSize: 10,
+            },
+        );
+        const collection = db.collection('publishedDataset');
 
         if (!reducer) {
             throw new Error('reducer= must be defined as parameter.');
@@ -53,11 +61,7 @@ export const createFunction = mongoClientImpl =>
             throw new Error(`Unknown reducer '${reducer}'`);
         }
 
-        const cursor = await handlePublishedDataset.mapReduce(
-            map,
-            reduce,
-            options,
-        );
+        const cursor = await collection.mapReduce(map, reduce, options);
 
         const total = await cursor.count();
 
@@ -98,4 +102,4 @@ export const createFunction = mongoClientImpl =>
         });
     };
 
-export default createFunction(mongoClient);
+export default createFunction();

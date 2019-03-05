@@ -9,6 +9,7 @@ import getPublishedDatasetFilter from '../../models/getPublishedDatasetFilter';
 import field from '../../models/field';
 import mongoClient from '../../services/mongoClient';
 import Statements from '../../statements';
+import localConfig from '../../../../config.json';
 
 ezs.use(Statements);
 
@@ -56,6 +57,9 @@ export const runRoutine = async (ctx, routineCalled, field1, field2) => {
     if (filter.$and && !filter.$and.length) {
         delete filter.$and;
     }
+    const connectionStringURI = `mongodb://${config.mongo.host}/${
+        config.mongo.dbName
+    }`;
     // context is the intput for LodexReduceQuery & LodexRunQuery & LodexDocuments
     const context = {
         limit: maxSize,
@@ -66,6 +70,7 @@ export const runRoutine = async (ctx, routineCalled, field1, field2) => {
         filter,
         maxValue,
         minValue,
+        connectionStringURI,
     };
     // to by pass all statements before
     ezs.config('LodexRunQuery', context);
@@ -75,12 +80,12 @@ export const runRoutine = async (ctx, routineCalled, field1, field2) => {
     const fields = [field1, field2].filter(x => x);
     const environment = {
         ...ctx.query,
-        ...config,
+        ...localConfig,
         fields,
     };
     const input = new PassThrough({ objectMode: true });
     const commands = ezs.parseString(script, environment);
-    const method = config.routinesCache ? 'booster' : 'pipeline';
+    const method = localConfig.routinesCache ? 'booster' : 'pipeline';
     const errorHandle = err => {
         ctx.status = 503;
         ctx.body.destroy();
