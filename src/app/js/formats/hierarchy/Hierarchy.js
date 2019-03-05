@@ -141,20 +141,19 @@ class Hierarchy extends PureComponent {
                 });
 
             let myData;
-            let root;
 
             let treeData = this.props.formatData;
 
             try {
                 if (treeData) {
                     myData = this.addRootElements(treeData);
-                    root = stratify(myData);
+                    this.root = stratify(myData);
                     // collpsed all nodes
-                    root.children.forEach(d =>
+                    this.root.children.forEach(d =>
                         d.children.forEach(this.collapse),
                     );
 
-                    this.update(tree, root);
+                    this.update(tree);
                 }
             } catch (error) {
                 const { p: polyglot } = this.props;
@@ -190,16 +189,16 @@ class Hierarchy extends PureComponent {
         }
     }
 
-    update(tree, root) {
+    update(tree) {
         // update tree size
-        if (root && tree) {
-            const height = (root.leaves().length + 1) * 50;
-            const width = (root.depth + root.height) * 200;
+        if (this.root && tree) {
+            const height = (this.root.leaves().length + 1) * 50;
+            const width = (this.root.depth + this.root.height) * 200;
             tree.size([height, width]);
 
             // update axis
             const maxWeight = d3.max(
-                root.descendants().filter(d => !d.children && !d._children),
+                this.root.descendants().filter(d => !d.children && !d._children),
                 function(d) {
                     return d.data.weight;
                 },
@@ -212,8 +211,8 @@ class Hierarchy extends PureComponent {
                 .domain([0, maxWeight > 5 ? maxWeight : 5])
                 .range([0, 500]);
 
-            tree(root); // d3.cluster()
-            root.descendants().forEach(d => {
+            tree(this.root); // d3.cluster()
+            this.root.descendants().forEach(d => {
                 d.y = d.x;
                 d.x = ((d.depth - 1) / (d.depth + d.height - 1)) * width;
             });
@@ -223,7 +222,7 @@ class Hierarchy extends PureComponent {
                 .selectAll(`.${css(styles.link)}`)
                 // remove links from fakeRootNode
                 .data(
-                    root
+                    this.root
                         .descendants()
                         .slice(1)
                         .filter(
@@ -290,7 +289,7 @@ class Hierarchy extends PureComponent {
             let node = this.g()
                 .selectAll(`.${css(styles.node)}`)
                 .data(
-                    root.descendants().filter(d => {
+                    this.root.descendants().filter(d => {
                         return !d.data.isFakeNode; // remove fake node (ie: fakeRoot and fake children when collapsed)
                     }),
                     function(d) {
@@ -337,7 +336,7 @@ class Hierarchy extends PureComponent {
                     );
                 })
                 .on('click', d => {
-                    this.click(d, tree, root);
+                    this.click(d, tree);
                 })
                 .attr('transform', function(d) {
                     return 'translate(' + d.x + ',' + d.y + ')';
@@ -478,13 +477,13 @@ class Hierarchy extends PureComponent {
         }
     }
 
-    click(d, tree, root) {
+    click(d, tree) {
         if (d.children) {
             this.collapse(d);
         } else {
             this.expand(d);
         }
-        this.update(tree, root);
+        this.update(tree, this.root);
         this.centerNode(d);
     }
 
@@ -596,6 +595,7 @@ class Hierarchy extends PureComponent {
     }
 
     componentDidUpdate() {
+        this.removeGraph();
         this.setGraph();
     }
 
