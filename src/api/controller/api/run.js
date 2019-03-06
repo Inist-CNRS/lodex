@@ -50,6 +50,7 @@ export const runRoutine = async (ctx, routineCalled, field1, field2) => {
         match,
         invertedFacets,
         facets,
+        ...$query,
         searchableFieldNames,
         facetFieldNames,
     });
