@@ -237,6 +237,7 @@
 "list_format_unordered"	"Unordered list"	"Liste désordonnée"
 "list_format_ordered"	"Ordered list"	"Liste ordonnée"
 "list_format_unordered_without_bullet"	"Unordered list (without bullet)"	"Liste désordonnée (sans puce)"
+"list_format_unordered_flat"	"Flat list (separated by semicolon)"	"Liste à plat (séparée par des points-virgules)"
 "uri_format_select_type"	"How is the label defined ?"	"Comment l'étiquette est-elle définie ?"
 "uri_format_column"	"Label is the column content"	"L'étiquette est le contenu de la colonne"
 "uri_format_custom"	"List is a custom text (same for all resources)"	"La liste est un texte personnalisé (le même pour toutes les ressources)"
