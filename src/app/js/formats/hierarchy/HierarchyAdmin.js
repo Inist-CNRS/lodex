@@ -45,7 +45,13 @@ class HierarchyAdmin extends Component {
     };
 
     setMaxLabelLength = (_, maxLabelLength) => {
-        this.setParams({ maxLabelLength: parseInt(maxLabelLength, 10) });
+        this.setParams({
+            maxLabelLength: parseInt(maxLabelLength, 10),
+            maxSize: this.props.args.params.maxSize,
+            maxValue: this.props.args.maxValue,
+            minValue: this.props.args.minValue,
+            orderBy: this.props.args.orderBy,
+        });
     };
 
     render() {

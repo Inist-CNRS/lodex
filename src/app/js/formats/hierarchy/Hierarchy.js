@@ -122,6 +122,7 @@ class Hierarchy extends PureComponent {
 
     setGraph() {
         if (this.props.formatData) {
+            console.log(`formatData : `, this.props.formatData);
             this.g().attr('transform', 'translate(20,20)'); // move right 20px.
 
             // Setting up a way to handle the data
