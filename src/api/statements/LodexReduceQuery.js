@@ -3,25 +3,24 @@ import hasher from 'node-object-hash';
 import set from 'lodash.set';
 
 import reducers from '../reducers/';
-import publishedDataset from '../models/publishedDataset';
-import fieldModel from '../models/field';
-import getPublishedDatasetFilter from '../models/getPublishedDatasetFilter';
-import mongoClient from '../services/mongoClient';
+import { MongoClient } from 'mongodb';
 
 const hashCoerce = hasher({ sort: false, coerce: true });
 
-export const createFunction = mongoClientImpl =>
+export const createFunction = () =>
     async function LodexRunQuery(data, feed) {
         if (this.isLast()) {
             return feed.close();
         }
 
-        const query = this.getParam('query', data.query || {});
+        const filter = this.getParam('filter', data.filter || {});
         const limit = this.getParam('limit', data.limit || 1000000);
         const skip = this.getParam('skip', data.skip || 0);
         const sort = this.getParam('sort', data.sort || {});
-        const field = this.getParam('field', data.$field || 'uri');
-        const target = this.getParam('total');
+        const field = this.getParam(
+            'field',
+            data.field || data.$field || 'uri',
+        );
         const minValue = this.getParam('minValue', data.minValue);
         const maxValue = this.getParam('maxValue', data.maxValue);
 
@@ -33,17 +32,6 @@ export const createFunction = mongoClientImpl =>
             hashCoerce.hash({ reducer, fields }),
         );
 
-        const handleDb = await mongoClientImpl();
-        const fieldHandle = await fieldModel(handleDb);
-
-        const searchableFieldNames = await fieldHandle.findSearchableNames();
-        const facetFieldNames = await fieldHandle.findFacetNames();
-
-        const filter = getPublishedDatasetFilter({
-            ...query,
-            searchableFieldNames,
-            facetFieldNames,
-        });
         const options = {
             query: filter,
             finalize,
@@ -54,7 +42,17 @@ export const createFunction = mongoClientImpl =>
                 fields,
             },
         };
-        const handlePublishedDataset = await publishedDataset(handleDb);
+        const connectionStringURI = this.getParam(
+            'connectionStringURI',
+            data.connectionStringURI || '',
+        );
+        const db = await MongoClient.connect(
+            connectionStringURI,
+            {
+                poolSize: 10,
+            },
+        );
+        const collection = db.collection('publishedDataset');
 
         if (!reducer) {
             throw new Error('reducer= must be defined as parameter.');
@@ -63,11 +61,7 @@ export const createFunction = mongoClientImpl =>
             throw new Error(`Unknown reducer '${reducer}'`);
         }
 
-        const cursor = await handlePublishedDataset.mapReduce(
-            map,
-            reduce,
-            options,
-        );
+        const cursor = await collection.mapReduce(map, reduce, options);
 
         const total = await cursor.count();
 
@@ -94,7 +88,7 @@ export const createFunction = mongoClientImpl =>
             .pipe(
                 ezs((data1, feed1) => {
                     if (typeof data1 === 'object') {
-                        set(data1, `${target || 'total'}`, total);
+                        set(data1, 'total', total);
                         feed.write(data1);
                     }
                     feed1.end();
@@ -108,4 +102,4 @@ export const createFunction = mongoClientImpl =>
         });
     };
 
-export default createFunction(mongoClient);
+export default createFunction();
