@@ -63,8 +63,6 @@ export const runRoutine = async (ctx, routineCalled, field1, field2) => {
     }`;
     // context is the intput for LodexReduceQuery & LodexRunQuery & LodexDocuments
     const context = {
-        limit: Number(maxSize) || 200,
-        skip,
         sort: {
             [order]: dir === 'asc' ? 1 : -1,
         },
