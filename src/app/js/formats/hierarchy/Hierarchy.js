@@ -617,6 +617,9 @@ class Hierarchy extends PureComponent {
     }
 
     zoomIconEnter() {
+        let zoomIndic = d3.select(`#zoomIndicator${this.uniqueId}`);
+        const width = zoomIndic.node().getBoundingClientRect().width;
+        zoomIndic.style('left', `calc(50% - ${width / 2}px)`);
         this.zoomIndicator.current.style.visibility = 'visible';
         this.zoomIndicatorBackground.current.style.visibility = 'visible';
     }
@@ -682,7 +685,6 @@ class Hierarchy extends PureComponent {
                         visibility: 'hidden',
                         position: 'absolute',
                         top: `${height / 2 - 30}px`,
-                        left: 'calc(50% - 150px)',
                         color: 'white',
                     }}
                 >
