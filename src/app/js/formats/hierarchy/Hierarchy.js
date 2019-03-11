@@ -122,7 +122,6 @@ class Hierarchy extends PureComponent {
 
     setGraph() {
         if (this.props.formatData) {
-            console.log(`formatData : `, this.props.formatData);
             this.g().attr('transform', 'translate(20,20)'); // move right 20px.
 
             // Setting up a way to handle the data
@@ -209,7 +208,12 @@ class Hierarchy extends PureComponent {
 
             let xScale = d3
                 .scaleLinear()
-                .domain([0, maxWeight > 5 ? maxWeight : 5])
+                .domain([
+                    0,
+                    maxWeight > this.props.params.minimumScaleValue
+                        ? maxWeight
+                        : this.props.params.minimumScaleValue,
+                ])
                 .range([0, 500]);
 
             tree(this.root); // d3.cluster()

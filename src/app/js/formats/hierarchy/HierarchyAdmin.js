@@ -23,6 +23,7 @@ export const defaultArgs = {
     params: {
         maxSize: 5000,
         maxLabelLength: 25,
+        minimumScaleValue: 5,
     },
 };
 
@@ -31,6 +32,7 @@ class HierarchyAdmin extends Component {
         args: PropTypes.shape({
             maxSize: PropTypes.number,
             maxLabelLength: PropTypes.number,
+            minimumScaleValue: PropTypes.number,
         }),
         onChange: PropTypes.func.isRequired,
         p: polyglotPropTypes.isRequired,
@@ -48,6 +50,18 @@ class HierarchyAdmin extends Component {
         this.setParams({
             maxLabelLength: parseInt(maxLabelLength, 10),
             maxSize: this.props.args.params.maxSize,
+            minimumScaleValue: this.props.args.params.minimumScaleValue,
+            maxValue: this.props.args.maxValue,
+            minValue: this.props.args.minValue,
+            orderBy: this.props.args.orderBy,
+        });
+    };
+
+    setMinimumScaleValue = (_, minimumScaleValue) => {
+        this.setParams({
+            maxLabelLength: this.props.args.params.maxLabelLength,
+            maxSize: this.props.args.params.maxSize,
+            minimumScaleValue: parseInt(minimumScaleValue, 10),
             maxValue: this.props.args.maxValue,
             minValue: this.props.args.minValue,
             orderBy: this.props.args.orderBy,
@@ -72,7 +86,13 @@ class HierarchyAdmin extends Component {
                     onChange={this.setMaxLabelLength}
                     style={styles.input}
                     value={this.props.args.params.maxLabelLength}
-                />{' '}
+                />
+                <TextField
+                    floatingLabelText={polyglot.t('minimum_scale_value')}
+                    onChange={this.setMinimumScaleValue}
+                    style={styles.input}
+                    value={this.props.args.params.minimumScaleValue}
+                />
             </div>
         );
     }
