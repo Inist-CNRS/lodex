@@ -208,7 +208,12 @@ class Hierarchy extends PureComponent {
 
             let xScale = d3
                 .scaleLinear()
-                .domain([0, maxWeight > 5 ? maxWeight : 5])
+                .domain([
+                    0,
+                    maxWeight > this.props.params.minimumScaleValue
+                        ? maxWeight
+                        : this.props.params.minimumScaleValue,
+                ])
                 .range([0, 500]);
 
             tree(this.root); // d3.cluster()
