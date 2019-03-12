@@ -458,4 +458,5 @@
 "no_result_details"	"Please change your search terms or facets"	"Veuillez changer vos filtres ou termes de recherche"
 "max_char_number_in_labels"	"Maximum character number in labels"	"Nombre max de caractères dans les intitulés"
 "error_rendering_chart"	"An error occured while rendering the chart, think to check your input data"	"Une erreur s'est produite pendant le tracé du graphique, pensez à vérifier vos données"
+"graph_reinit"	"Click to initialize the graph"	"Cliquez sur ce bouton pour réinitialiser le graphique"
 "minimum_scale_value"	"Minimum scale value"	"Valeur minimum pour l'échelle"

@@ -88,6 +88,8 @@ class Hierarchy extends PureComponent {
         };
         this.zoomIconEnter = this.zoomIconEnter.bind(this);
         this.zoomIconLeave = this.zoomIconLeave.bind(this);
+        this.centerIconEnter = this.centerIconEnter.bind(this);
+        this.centerIconLeave = this.centerIconLeave.bind(this);
         this.centerGraphClick = this.centerGraphClick.bind(this);
 
         this.divContainer = React.createRef();
@@ -96,6 +98,7 @@ class Hierarchy extends PureComponent {
         this.anchor = React.createRef();
         this.zoomIndicator = React.createRef();
         this.zoomIndicatorBackground = React.createRef();
+        this.centerIndicator = React.createRef();
 
         this.mouseIsOverStream = false;
         this.zoomFunction = zoomFunction.bind(this);
@@ -126,7 +129,7 @@ class Hierarchy extends PureComponent {
             this.g().attr('transform', 'translate(20,20)'); // move right 20px.
 
             // Setting up a way to handle the data
-            let tree = d3
+            this.tree = d3
                 .cluster() // This D3 API method setup the Dendrogram elements position.
                 .separation(function(a, b) {
                     return a.parent == b.parent ? 3 : 4;
@@ -154,7 +157,7 @@ class Hierarchy extends PureComponent {
                         d.children.forEach(this.collapse),
                     );
 
-                    this.update(tree);
+                    this.update();
                 }
             } catch (error) {
                 const { p: polyglot } = this.props;
@@ -190,12 +193,12 @@ class Hierarchy extends PureComponent {
         }
     }
 
-    update(tree) {
+    update() {
         // update tree size
-        if (this.root && tree) {
+        if (this.root && this.tree) {
             const height = (this.root.leaves().length + 1) * 50;
             const width = (this.root.depth + this.root.height) * 200;
-            tree.size([height, width]);
+            this.tree.size([height, width]);
 
             // update axis
             const maxWeight = d3.max(
@@ -217,7 +220,7 @@ class Hierarchy extends PureComponent {
                 ])
                 .range([0, 500]);
 
-            tree(this.root); // d3.cluster()
+            this.tree(this.root); // d3.cluster()
             let maxHeightInTree = 0;
             this.root.descendants().forEach(d => {
                 if (maxHeightInTree < d.height) {
@@ -353,7 +356,7 @@ class Hierarchy extends PureComponent {
                     );
                 })
                 .on('click', d => {
-                    this.click(d, tree);
+                    this.click(d, this.tree);
                 })
                 .attr('transform', function(d) {
                     return 'translate(' + d.x + ',' + d.y + ')';
@@ -505,7 +508,7 @@ class Hierarchy extends PureComponent {
         }
     }
 
-    click(d, tree) {
+    click(d) {
         if (d.children) {
             this.collapse(d);
         } else {
@@ -521,7 +524,7 @@ class Hierarchy extends PureComponent {
                 return d.id;
             }
         });
-        this.update(tree, this.root);
+        this.update();
         this.centerNode(d);
     }
 
@@ -656,6 +659,14 @@ class Hierarchy extends PureComponent {
         this.zoomIndicatorBackground.current.style.visibility = 'hidden';
     }
 
+    centerIconEnter() {
+        this.centerIndicator.current.style.visibility = 'visible';
+    }
+
+    centerIconLeave() {
+        this.centerIndicator.current.style.visibility = 'hidden';
+    }
+
     centerGraphClick() {
         this.g().attr(
             'transform',
@@ -679,6 +690,11 @@ class Hierarchy extends PureComponent {
         this.svg()
             .call(zoomListener)
             .call(zoomListener.transform, transform);
+
+        this.root.children.forEach(d => {
+            d.children.forEach(this.collapse);
+        });
+        this.update();
     }
 
     render() {
@@ -736,14 +752,30 @@ class Hierarchy extends PureComponent {
                 <div
                     id={`centerGraph${this.uniqueId}`}
                     onClick={this.centerGraphClick}
+                    onMouseEnter={this.centerIconEnter}
+                    onMouseLeave={this.centerIconLeave}
                     style={{
                         position: 'absolute',
                         bottom: '19px',
-                        right: '56px',
+                        left: '50px',
                     }}
                 >
                     <CenterGraph width={48} />
                 </div>
+                <div
+                    id={`centerGraphText${this.uniqueId}`}
+                    ref={this.centerIndicator}
+                    style={{
+                        visibility: 'hidden',
+                        position: 'absolute',
+                        bottom: '19px',
+                        left: '50px',
+                        color: 'black',
+                    }}
+                >
+                    {polyglot.t('graph_reinit')}
+                </div>
+
                 <svg
                     id={`svgContainer${this.uniqueId}`}
                     ref={this.svgContainer}
