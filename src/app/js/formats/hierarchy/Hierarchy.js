@@ -122,6 +122,7 @@ class Hierarchy extends PureComponent {
 
     setGraph() {
         if (this.props.formatData) {
+            console.log(`this.props.formatData() : `, this.props.formatData);
             this.g().attr('transform', 'translate(20,20)'); // move right 20px.
 
             // Setting up a way to handle the data
@@ -369,7 +370,18 @@ class Hierarchy extends PureComponent {
                 .append('text')
                 .style('text-anchor', 'start')
                 .text(d => {
-                    return cliTruncate(d.id, this.props.params.maxLabelLength);
+                    if (d.children != null) {
+                        // node is expanded
+                        return cliTruncate(
+                            d.id,
+                            this.props.params.maxLabelLength,
+                        );
+                    } else {
+                        return d.id;
+                    }
+                })
+                .attr('id', d => {
+                    return `id_${d.id.split(' ').join('_')}_${this.uniqueId}`;
                 })
                 .attr('y', -10);
 
@@ -499,6 +511,16 @@ class Hierarchy extends PureComponent {
         } else {
             this.expand(d);
         }
+        d3.select(
+            `[id="id_${d.id.split(' ').join('_')}_${this.uniqueId}"]`,
+        ).text(d => {
+            if (d.children != null) {
+                // node is expanded
+                return cliTruncate(d.id, this.props.params.maxLabelLength);
+            } else {
+                return d.id;
+            }
+        });
         this.update(tree, this.root);
         this.centerNode(d);
     }
