@@ -102,8 +102,8 @@ class Hierarchy extends PureComponent {
         this.uniqueId = generateUniqueId();
         this.collapse = this.collapse.bind(this);
         this.initialPosition = {
-            x: 20,
-            y: 20,
+            x: 0,
+            y: 0,
             scale: 0,
         };
     }
@@ -176,8 +176,8 @@ class Hierarchy extends PureComponent {
                 .getBBox();
 
             if (
-                current.clientWidth - gBbox.width <
-                current.clientHeight - gBbox.height
+                current.clientWidth / gBbox.width <
+                current.clientHeight / gBbox.height
             ) {
                 this.initialPosition.scale = current.clientWidth / gBbox.width;
             } else {
