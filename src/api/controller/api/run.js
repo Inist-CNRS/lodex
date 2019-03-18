@@ -6,7 +6,7 @@ import cacheControl from 'koa-cache-control';
 import config from 'config';
 import Script from '../../services/script';
 import getPublishedDatasetFilter from '../../models/getPublishedDatasetFilter';
-import field from '../../models/field';
+import getFields from '../../models/field';
 import mongoClient from '../../services/mongoClient';
 import Statements from '../../statements';
 import localConfig from '../../../../config.json';
@@ -41,9 +41,9 @@ export const runRoutine = async (ctx, routineCalled, field1, field2) => {
         $query,
         ...facets
     } = ctx.query;
-    const [order, dir] = orderBy.split('/');
+    const field = [field1, field2].filter(x => x);
     const handleDb = await mongoClient();
-    const fieldHandle = await field(handleDb);
+    const fieldHandle = await getFields(handleDb);
     const searchableFieldNames = await fieldHandle.findSearchableNames();
     const facetFieldNames = await fieldHandle.findFacetNames();
     const filter = getPublishedDatasetFilter({
@@ -63,11 +63,10 @@ export const runRoutine = async (ctx, routineCalled, field1, field2) => {
     }`;
     // context is the intput for LodexReduceQuery & LodexRunQuery & LodexDocuments
     const context = {
+        // /*
         // to build the MongoDB Query
-        sort: {
-            [order]: dir === 'asc' ? 1 : -1,
-        },
         filter,
+        field,
         // Default parameters for ALL routines
         maxSize,
         maxValue,
@@ -81,11 +80,10 @@ export const runRoutine = async (ctx, routineCalled, field1, field2) => {
     ezs.config('LodexReduceQuery', context);
     ezs.config('LodexDocuments', context);
 
-    const fields = [field1, field2].filter(x => x);
     const environment = {
         ...ctx.query,
         ...localConfig,
-        fields,
+        ...context,
     };
     const input = new PassThrough({ objectMode: true });
     const commands = ezs.parseString(script, environment);
