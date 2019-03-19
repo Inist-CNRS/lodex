@@ -125,7 +125,6 @@ class Hierarchy extends PureComponent {
 
     setGraph() {
         if (this.props.formatData) {
-            console.log(`this.props.formatData() : `, this.props.formatData);
             this.g().attr('transform', 'translate(20,20)'); // move right 20px.
 
             // Setting up a way to handle the data
@@ -369,22 +368,36 @@ class Hierarchy extends PureComponent {
             let nodeInternal = nodeEnter.filter(function(d) {
                 return d.children || d._children;
             });
+            let currentId = '';
+
+            nodeInternal
+                .append('rect')
+                .attr('x', -5)
+                .attr('y', -22)
+                .attr('width', d => {
+                    const label = this.getLabelAccordingChildren(d);
+                    return label.length * 8;
+                })
+                .attr('id', d => {
+                    return `id_${d.id.split(' ').join('_')}_${
+                        this.uniqueId
+                    }_rect`;
+                })
+                .attr('height', 15)
+                .attr('fill-opacity', '0.4')
+                .attr('fill', '#BBBBBB'); // tata
+
             nodeInternal
                 .append('text')
                 .style('text-anchor', 'start')
                 .text(d => {
-                    if (d.children != null) {
-                        // node is expanded
-                        return cliTruncate(
-                            d.id,
-                            this.props.params.maxLabelLength,
-                        );
-                    } else {
-                        return d.id;
-                    }
+                    return this.getLabelAccordingChildren(d);
                 })
                 .attr('id', d => {
-                    return `id_${d.id.split(' ').join('_')}_${this.uniqueId}`;
+                    currentId = `id_${d.id.split(' ').join('_')}_${
+                        this.uniqueId
+                    }`;
+                    return currentId;
                 })
                 .attr('y', -10);
 
@@ -517,13 +530,16 @@ class Hierarchy extends PureComponent {
         d3.select(
             `[id="id_${d.id.split(' ').join('_')}_${this.uniqueId}"]`,
         ).text(d => {
-            if (d.children != null) {
-                // node is expanded
-                return cliTruncate(d.id, this.props.params.maxLabelLength);
-            } else {
-                return d.id;
-            }
+            return this.getLabelAccordingChildren(d);
         });
+
+        d3.select(
+            `[id="id_${d.id.split(' ').join('_')}_${this.uniqueId}_rect"]`,
+        ).attr('width', d => {
+            const label = this.getLabelAccordingChildren(d);
+            return label.length * 8;
+        });
+
         this.update();
         this.centerNode(d);
     }
@@ -646,6 +662,14 @@ class Hierarchy extends PureComponent {
         this.removeGraph();
     }
 
+    getLabelAccordingChildren(d) {
+        if (d.children != null) {
+            return cliTruncate(d.id, this.props.params.maxLabelLength);
+        } else {
+            return d.id;
+        }
+    }
+
     zoomIconEnter() {
         let zoomIndic = d3.select(`#zoomIndicator${this.uniqueId}`);
         const width = zoomIndic.node().getBoundingClientRect().width;
@@ -728,6 +752,7 @@ class Hierarchy extends PureComponent {
                         visibility: 'hidden',
                         position: 'absolute',
                         top: `${height / 2 - 30}px`,
+                        left: 'calc(50% - 150px)',
                         color: 'white',
                     }}
                 >
