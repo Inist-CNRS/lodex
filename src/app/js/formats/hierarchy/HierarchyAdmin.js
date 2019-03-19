@@ -31,6 +31,9 @@ class HierarchyAdmin extends Component {
     static propTypes = {
         args: PropTypes.shape({
             maxSize: PropTypes.number,
+            maxValue: PropTypes.number,
+            minValue: PropTypes.number,
+            orderBy: PropTypes.string,
             maxLabelLength: PropTypes.number,
             minimumScaleValue: PropTypes.number,
         }),
@@ -51,9 +54,9 @@ class HierarchyAdmin extends Component {
             maxLabelLength: parseInt(maxLabelLength, 10),
             maxSize: this.props.args.params.maxSize,
             minimumScaleValue: this.props.args.params.minimumScaleValue,
-            maxValue: this.props.args.maxValue,
-            minValue: this.props.args.minValue,
-            orderBy: this.props.args.orderBy,
+            maxValue: this.props.args.params.maxValue,
+            minValue: this.props.args.params.minValue,
+            orderBy: this.props.args.params.orderBy,
         });
     };
 
@@ -62,9 +65,9 @@ class HierarchyAdmin extends Component {
             maxLabelLength: this.props.args.params.maxLabelLength,
             maxSize: this.props.args.params.maxSize,
             minimumScaleValue: parseInt(minimumScaleValue, 10),
-            maxValue: this.props.args.maxValue,
-            minValue: this.props.args.minValue,
-            orderBy: this.props.args.orderBy,
+            maxValue: this.props.args.params.maxValue,
+            minValue: this.props.args.params.minValue,
+            orderBy: this.props.args.params.orderBy,
         });
     };
 
