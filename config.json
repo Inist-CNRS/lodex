@@ -8,6 +8,7 @@
   "pluginsURL" : "https://raw.githubusercontent.com/Inist-CNRS/lodex-extented/v2/",
   "routinesCache" : true,
   "routines": [
+    "hello-world",
     "syndication",
     "distinct-by"
   ],
