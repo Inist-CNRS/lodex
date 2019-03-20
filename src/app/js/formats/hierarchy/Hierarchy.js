@@ -545,11 +545,22 @@ class Hierarchy extends PureComponent {
     }
 
     centerNode(source) {
+        console.log(`===================centerNode()==============`);
+        console.log(`source : `, source);
         let scale = d3.zoomTransform(this).k;
+        console.log(`scale : `, scale);
         let x = -source.x;
         let y = -source.y;
-        x = x * scale + this.svg().attr('width') / 2;
-        y = y * scale + this.svg().attr('height') / 2;
+        //console.log(`this.svg.width : ${d3.select(`#divContainer${this.uniqueId}`).select().attr('width')}`);
+        //console.log(`this.svg.height : ${d3.select(`#divContainer${this.uniqueId}`).select().attr('height')}`);
+        //x = x * scale + d3.select(`#divContainer${this.uniqueId}`).attr('width') / 2;
+        //y = y * scale + d3.select(`#divContainer${this.uniqueId}`).attr('height') / 2;
+        console.log(`this.divContainer.current : `, d3.select(this.divContainer.current));
+        let divContainerBoundingRect = d3.select(this.divContainer.current).node().getBoundingClientRect();
+        console.log(`divContainerBbox : `, divContainerBoundingRect);
+        x = x * scale + divContainerBoundingRect.width / 2;
+        y = y * scale + divContainerBoundingRect.height / 2;
+        console.log(`new pos : x : ${x}, y : ${y}`);
         this.svg().call(d3.zoom().transform, d3.zoomIdentity.translate(x, y));
         if ((x, y)) {
             this.g()
