@@ -372,7 +372,7 @@ class Hierarchy extends PureComponent {
 
             nodeInternal
                 .append('rect')
-                .attr('x', -5)
+                .attr('x', -5 - this.props.params.labelOffset)
                 .attr('y', -22)
                 .attr('width', d => {
                     const label = this.getLabelAccordingChildren(d);
@@ -399,6 +399,7 @@ class Hierarchy extends PureComponent {
                     }`;
                     return currentId;
                 })
+                .attr('x', -this.props.params.labelOffset)
                 .attr('y', -10);
 
             // Setup G for every leaf datum. (rectangle)
