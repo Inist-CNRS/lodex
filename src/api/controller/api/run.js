@@ -2,6 +2,7 @@ import Koa from 'koa';
 import route from 'koa-route';
 import ezs from 'ezs';
 import { PassThrough } from 'stream';
+import deepCopy from 'lodash.clonedeep';
 import cacheControl from 'koa-cache-control';
 import config from 'config';
 import Script from '../../services/script';
@@ -65,8 +66,8 @@ export const runRoutine = async (ctx, routineCalled, field1, field2) => {
     const context = {
         // /*
         // to build the MongoDB Query
-        filter,
-        field,
+        filter: deepCopy(filter),
+        field: deepCopy(field),
         // Default parameters for ALL routines
         maxSize,
         maxValue,
@@ -87,21 +88,17 @@ export const runRoutine = async (ctx, routineCalled, field1, field2) => {
     };
     const input = new PassThrough({ objectMode: true });
     const commands = ezs.parseString(script, environment);
-    const method = localConfig.routinesCache ? 'booster' : 'pipeline';
+    const statement = localConfig.routinesCache ? 'booster' : 'delegate';
     const errorHandle = err => {
         ctx.status = 503;
         ctx.body.destroy();
         input.destroy();
-        global.console.error(ctx.query, err);
+        global.console.error('Error with ', ctx.path, ' and', ctx.query, err);
     };
-    const routineHandle = ezs[method](commands, environment).on(
-        'error',
-        errorHandle,
-    );
-
     ctx.body = input
-        .pipe(routineHandle)
-        .pipe(ezs.catch(errorHandle))
+        .pipe(ezs(statement, { commands }, environment))
+        .pipe(ezs.catch(e => e))
+        .on('error', errorHandle)
         .pipe(ezs.toBuffer());
     input.write(context);
     input.end();
