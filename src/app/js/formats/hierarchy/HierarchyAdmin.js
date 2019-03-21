@@ -57,9 +57,9 @@ class HierarchyAdmin extends Component {
             labelOffset: this.props.args.params.labelOffset,
             maxSize: this.props.args.params.maxSize,
             minimumScaleValue: this.props.args.params.minimumScaleValue,
-            maxValue: this.props.args.maxValue,
-            minValue: this.props.args.minValue,
-            orderBy: this.props.args.orderBy,
+            maxValue: this.props.args.params.maxValue,
+            minValue: this.props.args.params.minValue,
+            orderBy: this.props.args.params.orderBy,
         });
     };
 
