@@ -7,7 +7,7 @@ describe('tei.ini', () => {
         from([
             `<teiCorpus><TEI><any>value</any><any>other</any></TEI></teiCorpus>`,
         ])
-            .pipe(ezs('delegate', { file: '/tei.ini' }))
+            .pipe(ezs('delegate', { file: __dirname + '/tei.ini' }))
             .on('data', chunk => {
                 res.push(chunk);
             })

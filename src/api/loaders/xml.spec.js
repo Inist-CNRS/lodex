@@ -7,7 +7,7 @@ describe('xml.ini', () => {
         from([
             `<root><row><f1>val1</f1><f2>val2</f2></row><row><f1>val1</f1><f2>val2</f2></row></root>`,
         ])
-            .pipe(ezs('delegate', { file: '/xml.ini' }))
+            .pipe(ezs('delegate', { file: __dirname + '/xml.ini' }))
             .on('data', chunk => {
                 res.push(chunk);
             })
@@ -23,7 +23,7 @@ describe('xml.ini', () => {
         from([
             `<modsCollection><mods><test>value</test></mods></modsCollection>`,
         ])
-            .pipe(ezs('delegate', { file: '/xml.ini' }))
+            .pipe(ezs('delegate', { file: __dirname + '/xml.ini' }))
             .on('data', chunk => {
                 res.push(chunk);
             })

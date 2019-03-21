@@ -6,7 +6,7 @@ describe('json.ini', () => {
         const res = [];
         const expected = [{ a: '1', b: '2' }];
         from([JSON.stringify(expected)])
-            .pipe(ezs('delegate', { file: '/json.ini' }))
+            .pipe(ezs('delegate', { file: __dirname + '/json.ini' }))
             .on('data', chunk => {
                 res.push(chunk);
             })

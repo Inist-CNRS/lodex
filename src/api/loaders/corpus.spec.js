@@ -440,7 +440,7 @@ id F6CB7249E90BD96D5F7E3C4E80CC1C3FEE4FF483
 #id D8243AB8AF68D5226C3990E465CEE399E012663F
 `,
         ])
-            .pipe(ezs('delegate', { file: '/corpus.ini' }))
+            .pipe(ezs('delegate', { file: __dirname + '/corpus.ini' }))
             .on('data', chunk => {
                 res.push(chunk);
             })
