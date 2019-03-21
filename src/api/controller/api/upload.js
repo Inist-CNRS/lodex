@@ -40,7 +40,7 @@ export const getParser = async parserName => {
 
     return stream =>
         safePipe(stream, [
-            ezs.fromString(script),
+            ezs('delegate', { script }),
             ezs((data, feed) => {
                 if (data instanceof Error) {
                     global.console.error('Error in pipeline.', data);

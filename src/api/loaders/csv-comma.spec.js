@@ -5,7 +5,7 @@ describe('csv-comma.ini', () => {
     it('should parse a CSV', done => {
         const res = [];
         from([`a,b\n1,2\n`])
-            .pipe(ezs.fromFile(__dirname + '/csv-comma.ini'))
+            .pipe(ezs('delegate', { file: '/csv-comma.ini' }))
             .on('data', chunk => {
                 res.push(chunk);
             })

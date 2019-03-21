@@ -5,7 +5,7 @@ describe('tsv.ini', () => {
     it('should parse a TSV', done => {
         const res = [];
         from(['a\tb\n1\t2\n'])
-            .pipe(ezs.fromFile(__dirname + '/tsv.ini'))
+            .pipe(ezs('delegate', { file: '/tsv.ini' }))
             .on('data', chunk => {
                 res.push(chunk);
             })

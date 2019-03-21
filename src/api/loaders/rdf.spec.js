@@ -5,7 +5,7 @@ describe('rdf.ini', () => {
     it('should parse a RDF XML', done => {
         const res = [];
         from([`<RDF><item><any>value</any><other>thing</other></item></RDF>`])
-            .pipe(ezs.fromFile(__dirname + '/rdf.ini'))
+            .pipe(ezs('delegate', { file: '/rdf.ini' }))
             .on('data', chunk => {
                 res.push(chunk);
             })
@@ -20,7 +20,7 @@ describe('rdf.ini', () => {
         from([
             `<rdf:RDF><item><any>value</any><other>thing</other></item></rdf:RDF>`,
         ])
-            .pipe(ezs.fromFile(__dirname + '/rdf.ini'))
+            .pipe(ezs('delegate', { file: '/rdf.ini' }))
             .on('data', chunk => {
                 res.push(chunk);
             })
