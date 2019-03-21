@@ -551,7 +551,10 @@ class Hierarchy extends PureComponent {
         let y = -source.y;
         x = x * scale + this.svg().attr('width') / 2;
         y = y * scale + this.svg().attr('height') / 2;
+
         this.svg().call(d3.zoom().transform, d3.zoomIdentity.translate(x, y));
+        this.svg().on('dblclick.zoom', null);
+
         if ((x, y)) {
             this.g()
                 .transition()
