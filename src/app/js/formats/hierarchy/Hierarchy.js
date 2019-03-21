@@ -385,7 +385,7 @@ class Hierarchy extends PureComponent {
                 })
                 .attr('height', 15)
                 .attr('fill-opacity', '0.4')
-                .attr('fill', '#BBBBBB'); // tata
+                .attr('fill', '#FFFFFF');
 
             nodeInternal
                 .append('text')
