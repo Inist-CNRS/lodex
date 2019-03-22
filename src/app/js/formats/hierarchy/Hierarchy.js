@@ -372,7 +372,7 @@ class Hierarchy extends PureComponent {
 
             nodeInternal
                 .append('rect')
-                .attr('x', -5)
+                .attr('x', -5 - this.props.params.labelOffset)
                 .attr('y', -22)
                 .attr('width', d => {
                     const label = this.getLabelAccordingChildren(d);
@@ -385,7 +385,7 @@ class Hierarchy extends PureComponent {
                 })
                 .attr('height', 15)
                 .attr('fill-opacity', '0.4')
-                .attr('fill', '#BBBBBB'); // tata
+                .attr('fill', '#FFFFFF');
 
             nodeInternal
                 .append('text')
@@ -399,6 +399,7 @@ class Hierarchy extends PureComponent {
                     }`;
                     return currentId;
                 })
+                .attr('x', -this.props.params.labelOffset)
                 .attr('y', -10);
 
             // Setup G for every leaf datum. (rectangle)
@@ -548,10 +549,14 @@ class Hierarchy extends PureComponent {
         let scale = d3.zoomTransform(this).k;
         let x = -source.x;
         let y = -source.y;
+
         let divContainerBoundingRect = d3.select(this.divContainer.current).node().getBoundingClientRect();
         x = x * scale + divContainerBoundingRect.width / 2;
         y = y * scale + divContainerBoundingRect.height / 2;
+
         this.svg().call(d3.zoom().transform, d3.zoomIdentity.translate(x, y));
+        this.svg().on('dblclick.zoom', null);
+
         if ((x, y)) {
             this.g()
                 .transition()

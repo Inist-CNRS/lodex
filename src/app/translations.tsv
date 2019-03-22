@@ -460,3 +460,4 @@
 "error_rendering_chart"	"An error occured while rendering the chart, think to check your input data"	"Une erreur s'est produite pendant le tracé du graphique, pensez à vérifier vos données"
 "graph_reinit"	"Click to initialize the graph"	"Cliquez sur ce bouton pour réinitialiser le graphique"
 "minimum_scale_value"	"Minimum scale value"	"Valeur minimum pour l'échelle"
+"label_offset"	"Label left offset (in px)"	"Décalage du label à gauche (en px)"

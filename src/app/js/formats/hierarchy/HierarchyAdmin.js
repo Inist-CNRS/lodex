@@ -23,6 +23,7 @@ export const defaultArgs = {
     params: {
         maxSize: 5000,
         maxLabelLength: 25,
+        labelOffset: 50,
         minimumScaleValue: 5,
     },
 };
@@ -31,7 +32,11 @@ class HierarchyAdmin extends Component {
     static propTypes = {
         args: PropTypes.shape({
             maxSize: PropTypes.number,
+            maxValue: PropTypes.number,
+            minValue: PropTypes.number,
+            orderBy: PropTypes.string,
             maxLabelLength: PropTypes.number,
+            labelOffset: PropTypes.number,
             minimumScaleValue: PropTypes.number,
         }),
         onChange: PropTypes.func.isRequired,
@@ -49,22 +54,36 @@ class HierarchyAdmin extends Component {
     setMaxLabelLength = (_, maxLabelLength) => {
         this.setParams({
             maxLabelLength: parseInt(maxLabelLength, 10),
+            labelOffset: this.props.args.params.labelOffset,
             maxSize: this.props.args.params.maxSize,
             minimumScaleValue: this.props.args.params.minimumScaleValue,
-            maxValue: this.props.args.maxValue,
-            minValue: this.props.args.minValue,
-            orderBy: this.props.args.orderBy,
+            maxValue: this.props.args.params.maxValue,
+            minValue: this.props.args.params.minValue,
+            orderBy: this.props.args.params.orderBy,
+        });
+    };
+
+    setLabelOffset = (_, labelOffset) => {
+        this.setParams({
+            maxLabelLength: this.props.args.params.maxLabelLength,
+            labelOffset: parseInt(labelOffset, 10),
+            maxSize: this.props.args.params.maxSize,
+            minimumScaleValue: this.props.args.params.minimumScaleValue,
+            maxValue: this.props.args.params.maxValue,
+            minValue: this.props.args.params.minValue,
+            orderBy: this.props.args.params.orderBy,
         });
     };
 
     setMinimumScaleValue = (_, minimumScaleValue) => {
         this.setParams({
             maxLabelLength: this.props.args.params.maxLabelLength,
+            labelOffset: this.props.args.params.labelOffset,
             maxSize: this.props.args.params.maxSize,
             minimumScaleValue: parseInt(minimumScaleValue, 10),
-            maxValue: this.props.args.maxValue,
-            minValue: this.props.args.minValue,
-            orderBy: this.props.args.orderBy,
+            maxValue: this.props.args.params.maxValue,
+            minValue: this.props.args.params.minValue,
+            orderBy: this.props.args.params.orderBy,
         });
     };
 
@@ -86,6 +105,12 @@ class HierarchyAdmin extends Component {
                     onChange={this.setMaxLabelLength}
                     style={styles.input}
                     value={this.props.args.params.maxLabelLength}
+                />
+                <TextField
+                    floatingLabelText={polyglot.t('label_offset')}
+                    onChange={this.setLabelOffset}
+                    style={styles.input}
+                    value={this.props.args.params.labelOffset}
                 />
                 <TextField
                     floatingLabelText={polyglot.t('minimum_scale_value')}
