@@ -23,7 +23,7 @@ export const defaultArgs = {
     params: {
         maxSize: 5000,
         maxLabelLength: 25,
-        labelOffset: 0,
+        labelOffset: 50,
         minimumScaleValue: 5,
     },
 };
