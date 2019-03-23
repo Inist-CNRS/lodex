@@ -1,8 +1,8 @@
 import Koa from 'koa';
 import route from 'koa-route';
 import ezs from 'ezs';
+import Booster from 'ezs-booster';
 import { PassThrough } from 'stream';
-import deepCopy from 'lodash.clonedeep';
 import cacheControl from 'koa-cache-control';
 import config from 'config';
 import Script from '../../services/script';
@@ -13,6 +13,7 @@ import Statements from '../../statements';
 import localConfig from '../../../../config.json';
 
 ezs.use(Statements);
+ezs.use(Booster);
 
 export const runRoutine = async (ctx, routineCalled, field1, field2) => {
     const routine = new Script('routines');
@@ -63,23 +64,21 @@ export const runRoutine = async (ctx, routineCalled, field1, field2) => {
         config.mongo.dbName
     }`;
     // context is the intput for LodexReduceQuery & LodexRunQuery & LodexDocuments
-    const context = {
-        // /*
-        // to build the MongoDB Query
-        filter: deepCopy(filter),
-        field: deepCopy(field),
-        // Default parameters for ALL routines
-        maxSize,
-        maxValue,
-        minValue,
-        orderBy,
-        // to externalize routine
-        connectionStringURI,
-    };
-    // to by pass all statements before
-    ezs.config('LodexRunQuery', context);
-    ezs.config('LodexReduceQuery', context);
-    ezs.config('LodexDocuments', context);
+    const context = JSON.parse(
+        JSON.stringify({
+            // /*
+            // to build the MongoDB Query
+            filter,
+            field,
+            // Default parameters for ALL routines
+            maxSize,
+            maxValue,
+            minValue,
+            orderBy,
+            // to externalize routine
+            connectionStringURI,
+        }),
+    );
 
     const environment = {
         ...ctx.query,
@@ -96,7 +95,7 @@ export const runRoutine = async (ctx, routineCalled, field1, field2) => {
         global.console.error('Error with ', ctx.path, ' and', ctx.query, err);
     };
     ctx.body = input
-        .pipe(ezs(statement, { commands }, environment))
+        .pipe(ezs(statement, { commands, key: ctx.url }, environment))
         .pipe(ezs.catch(e => e))
         .on('error', errorHandle)
         .pipe(ezs.toBuffer());
