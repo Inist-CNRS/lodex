@@ -11,6 +11,7 @@ import getFields from '../../models/field';
 import mongoClient from '../../services/mongoClient';
 import Statements from '../../statements';
 import localConfig from '../../../../config.json';
+import { getCleanHost } from '../../../common/uris';
 
 ezs.use(Statements);
 ezs.use(Booster);
@@ -43,11 +44,13 @@ export const runRoutine = async (ctx, routineCalled, field1, field2) => {
         $query,
         ...facets
     } = ctx.query;
+    const host = getCleanHost();
     const field = [field1, field2].filter(x => x);
     const handleDb = await mongoClient();
     const fieldHandle = await getFields(handleDb);
     const searchableFieldNames = await fieldHandle.findSearchableNames();
     const facetFieldNames = await fieldHandle.findFacetNames();
+    const fields = await fieldHandle.findAll();
     const filter = getPublishedDatasetFilter({
         match,
         invertedFacets,
@@ -64,21 +67,21 @@ export const runRoutine = async (ctx, routineCalled, field1, field2) => {
         config.mongo.dbName
     }`;
     // context is the intput for LodexReduceQuery & LodexRunQuery & LodexDocuments
-    const context = JSON.parse(
-        JSON.stringify({
-            // /*
-            // to build the MongoDB Query
-            filter,
-            field,
-            // Default parameters for ALL routines
-            maxSize,
-            maxValue,
-            minValue,
-            orderBy,
-            // to externalize routine
-            connectionStringURI,
-        }),
-    );
+    const context = {
+        // /*
+        // to build the MongoDB Query
+        filter,
+        field,
+        fields,
+        // Default parameters for ALL routines
+        maxSize,
+        maxValue,
+        minValue,
+        orderBy,
+        host,
+        // to externalize routine
+        connectionStringURI,
+    };
 
     const environment = {
         ...ctx.query,
