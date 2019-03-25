@@ -3,7 +3,7 @@
         "node": ">= 7.8.0"
     },
     "name": "lodex",
-    "version": "9.5.10",
+    "version": "9.5.11",
     "description": "",
     "main": "src/api/index.js",
     "browser": {
