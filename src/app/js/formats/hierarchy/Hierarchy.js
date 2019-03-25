@@ -125,6 +125,7 @@ class Hierarchy extends PureComponent {
 
     setGraph() {
         if (this.props.formatData) {
+            this.setState({ width: this.divContainer.current.clientWidth });
             this.g().attr('transform', 'translate(20,20)'); // move right 20px.
 
             // Setting up a way to handle the data
@@ -550,7 +551,10 @@ class Hierarchy extends PureComponent {
         let x = -source.x;
         let y = -source.y;
 
-        let divContainerBoundingRect = d3.select(this.divContainer.current).node().getBoundingClientRect();
+        let divContainerBoundingRect = d3
+            .select(this.divContainer.current)
+            .node()
+            .getBoundingClientRect();
         x = x * scale + divContainerBoundingRect.width / 2;
         y = y * scale + divContainerBoundingRect.height / 2;
 
@@ -658,7 +662,6 @@ class Hierarchy extends PureComponent {
     }
 
     componentDidUpdate() {
-        this.removeGraph();
         this.setGraph();
     }
 
@@ -810,7 +813,7 @@ class Hierarchy extends PureComponent {
                 <svg
                     id={`svgContainer${this.uniqueId}`}
                     ref={this.svgContainer}
-                    width={width + margin.left + margin.right}
+                    width={width}
                     height={height}
                 >
                     <g id="anchor" ref={this.anchor} />
