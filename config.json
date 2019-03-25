@@ -10,7 +10,6 @@
   "routines": [
       "all-documents",
       "classif-by",
-      "classif-with",
       "count-all",
       "count-by-fields",
       "cross-by",
@@ -20,7 +19,6 @@
       "distinct-alpha-3-ISO3166-1-from",
       "distinct-by-field",
       "distinct-by",
-      "distinct-by-number",
       "distinct-ISO3166-1-alpha2-from",
       "distinct-ISO3166-1-alpha3-from",
       "distinct-with-quote-rate",
