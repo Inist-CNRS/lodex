@@ -7,7 +7,7 @@ describe('mods.ini', () => {
         from([
             `<modsCollection><mods><any>value</any><other>thing</other></mods></modsCollection>`,
         ])
-            .pipe(ezs.fromFile(__dirname + '/mods.ini'))
+            .pipe(ezs('delegate', { file: __dirname + '/mods.ini' }))
             .on('data', chunk => {
                 res.push(chunk);
             })

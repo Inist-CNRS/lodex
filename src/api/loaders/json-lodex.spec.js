@@ -7,7 +7,7 @@ describe('json-lodex.ini', () => {
         const expected = [{ a: '1', b: '2' }];
         const input = { data: expected };
         from([JSON.stringify(input)])
-            .pipe(ezs.fromFile(__dirname + '/json-lodex.ini'))
+            .pipe(ezs('delegate', { file: __dirname + '/json-lodex.ini' }))
             .on('data', chunk => {
                 res.push(chunk);
             })

@@ -5,7 +5,7 @@ describe('csv.ini', () => {
     it('should parse a comma csv', done => {
         const res = [];
         from(['a,b\n1,2\n'])
-            .pipe(ezs.fromFile(__dirname + '/csv.ini'))
+            .pipe(ezs('delegate', { file: __dirname + '/csv.ini' }))
             .on('data', chunk => {
                 res.push(chunk);
             })
@@ -17,7 +17,7 @@ describe('csv.ini', () => {
     it('should parse a semicolon csv', done => {
         const res = [];
         from(['a;b\n1;2\n'])
-            .pipe(ezs.fromFile(__dirname + '/csv.ini'))
+            .pipe(ezs('delegate', { file: __dirname + '/csv.ini' }))
             .on('data', chunk => {
                 res.push(chunk);
             })

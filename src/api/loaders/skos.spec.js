@@ -5,7 +5,7 @@ describe('skos.ini', () => {
     it('should parse a skos XML', done => {
         const res = [];
         from([`<RDF><doc><any>value</any><other>thing</other></doc></RDF>`])
-            .pipe(ezs.fromFile(__dirname + '/skos.ini'))
+            .pipe(ezs('delegate', { file: __dirname + '/skos.ini' }))
             .on('data', chunk => {
                 res.push(chunk);
             })

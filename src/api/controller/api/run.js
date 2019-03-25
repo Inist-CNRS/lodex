@@ -1,6 +1,7 @@
 import Koa from 'koa';
 import route from 'koa-route';
 import ezs from 'ezs';
+import Booster from 'ezs-booster';
 import { PassThrough } from 'stream';
 import cacheControl from 'koa-cache-control';
 import config from 'config';
@@ -10,8 +11,10 @@ import getFields from '../../models/field';
 import mongoClient from '../../services/mongoClient';
 import Statements from '../../statements';
 import localConfig from '../../../../config.json';
+import { getCleanHost } from '../../../common/uris';
 
 ezs.use(Statements);
+ezs.use(Booster);
 
 export const runRoutine = async (ctx, routineCalled, field1, field2) => {
     const routine = new Script('routines');
@@ -41,11 +44,13 @@ export const runRoutine = async (ctx, routineCalled, field1, field2) => {
         $query,
         ...facets
     } = ctx.query;
+    const host = getCleanHost();
     const field = [field1, field2].filter(x => x);
     const handleDb = await mongoClient();
     const fieldHandle = await getFields(handleDb);
     const searchableFieldNames = await fieldHandle.findSearchableNames();
     const facetFieldNames = await fieldHandle.findFacetNames();
+    const fields = await fieldHandle.findAll();
     const filter = getPublishedDatasetFilter({
         match,
         invertedFacets,
@@ -67,18 +72,16 @@ export const runRoutine = async (ctx, routineCalled, field1, field2) => {
         // to build the MongoDB Query
         filter,
         field,
+        fields,
         // Default parameters for ALL routines
         maxSize,
         maxValue,
         minValue,
         orderBy,
+        host,
         // to externalize routine
         connectionStringURI,
     };
-    // to by pass all statements before
-    ezs.config('LodexRunQuery', context);
-    ezs.config('LodexReduceQuery', context);
-    ezs.config('LodexDocuments', context);
 
     const environment = {
         ...ctx.query,
@@ -87,21 +90,17 @@ export const runRoutine = async (ctx, routineCalled, field1, field2) => {
     };
     const input = new PassThrough({ objectMode: true });
     const commands = ezs.parseString(script, environment);
-    const method = localConfig.routinesCache ? 'booster' : 'pipeline';
+    const statement = localConfig.routinesCache ? 'booster' : 'delegate';
     const errorHandle = err => {
         ctx.status = 503;
         ctx.body.destroy();
         input.destroy();
-        global.console.error(ctx.query, err);
+        global.console.error('Error with ', ctx.path, ' and', ctx.query, err);
     };
-    const routineHandle = ezs[method](commands, environment).on(
-        'error',
-        errorHandle,
-    );
-
     ctx.body = input
-        .pipe(routineHandle)
-        .pipe(ezs.catch(errorHandle))
+        .pipe(ezs(statement, { commands, key: ctx.url }, environment))
+        .pipe(ezs.catch(e => e))
+        .on('error', errorHandle)
         .pipe(ezs.toBuffer());
     input.write(context);
     input.end();

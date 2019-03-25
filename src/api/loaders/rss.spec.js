@@ -7,7 +7,7 @@ describe('rss.ini', () => {
         from([
             `<rss><channel><item><any>value</any><other>thing</other></item></channel></rss>`,
         ])
-            .pipe(ezs.fromFile(__dirname + '/rss.ini'))
+            .pipe(ezs('delegate', { file: __dirname + '/rss.ini' }))
             .on('data', chunk => {
                 res.push(chunk);
             })

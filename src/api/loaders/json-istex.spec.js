@@ -7,7 +7,7 @@ describe('json-istex.ini', () => {
         const expected = [{ a: '1', b: '2' }];
         const input = { hits: expected };
         from([JSON.stringify(input)])
-            .pipe(ezs.fromFile(__dirname + '/json-istex.ini'))
+            .pipe(ezs('delegate', { file: __dirname + '/json-istex.ini' }))
             .on('data', chunk => {
                 res.push(chunk);
             })

@@ -7,7 +7,7 @@ describe('atom.ini', () => {
         from([
             `<feed><entry><any>value</any><other>thing</other></entry></feed>`,
         ])
-            .pipe(ezs.fromFile(__dirname + '/atom.ini'))
+            .pipe(ezs('delegate', { file: __dirname + '/atom.ini' }))
             .on('data', chunk => {
                 res.push(chunk);
             })
