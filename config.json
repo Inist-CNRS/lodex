@@ -51,7 +51,8 @@
     "mods",
     "tei",
     "xml",
-    "corpus"
+    "corpus",
+    "zip"
   ],
   "exporters": [
     "nquads",
