@@ -27,7 +27,7 @@ export default class Script {
             ]);
         const pluginsURL = config.pluginsURL || '';
         const routineRepository = URL.resolve(pluginsURL, routineDirectory);
-        const routinesDistant = config.routines
+        const routinesDistant = routinesDeclared
             .map(routineName =>
                 URL.resolve(routineRepository, routineName.concat('.ini')),
             )
@@ -39,13 +39,19 @@ export default class Script {
             ]);
         this.local = routinesLocal;
         this.distant = routinesDistant;
+
+        this.cache = {};
     }
 
     async get(routineCalled) {
+        if (this.cache[routineCalled]) {
+            return this.cache[routineCalled];
+        }
         const routineLocal = this.local.find(r => r[2] === routineCalled);
         const routineDistant = this.distant.find(r => r[2] === routineCalled);
         // Warning : don't change the order, distant routine should be only use if there no local routine
         if (routineLocal) {
+            this.cache[routineCalled] = routineLocal;
             return routineLocal;
         }
         if (routineDistant) {
@@ -56,6 +62,7 @@ export default class Script {
                 routineDistant[3] = routineScript;
             }
         }
+        this.cache[routineCalled] = routineDistant;
         return routineDistant;
     }
 }
