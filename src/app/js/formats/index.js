@@ -11,6 +11,7 @@ import resourcesGrid from './resources-grid/';
 import email from './email';
 import html from './html';
 import image from './image';
+import pdf from './pdf';
 import istex from './istex';
 import link from './link';
 import linkImage from './link-image';
@@ -46,6 +47,7 @@ const components = {
     email,
     html,
     image,
+    pdf,
     istex,
     link,
     linkImage,

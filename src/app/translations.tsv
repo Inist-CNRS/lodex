@@ -281,6 +281,7 @@
 "uri"	"URL - Internal URI"	"URL - Lien interne"
 "email"	"URL - Email"	"URL - Lien courriel"
 "image"	"Other - Image"	"Autre - URL d'une image"
+"pdf"	"Other - PDF"	"Autre - URL d'un PDF"
 "linkImage"	"URL - Image Link"	"Autre - Lien image"
 "link"	"URL - Link"	"URL externe"
 "redirect"	"URL - Automatic redirect"	"URL - Redirection automatique"
