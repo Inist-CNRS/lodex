@@ -2,9 +2,9 @@
 
 <img src="https://user-images.githubusercontent.com/7420853/30152932-1794db3c-93b5-11e7-98ab-a7f28d0061cb.png" width=150 align=right>
 
-Lodex is a tool to enable publishing a set of data `csv, tsv, xml, json ...` in semantic web formats `JSON-LD, N-Quads, ...` and propose to manipulate them in a backoffice.
+Lodex is a tool to enable publishing a set of data `csv`, `tsv`, `xml`, `json`, ... in semantic web formats `JSON-LD`, `N-Quads`, ... and propose to manipulate them in a backoffice.
 
-To see what Lodex can do, check out https://data.istex.fr/ or the user documentation at https://www-doc.lodex.inist.fr/
+To see what Lodex can do, check out <https://data.istex.fr/> or the user documentation at <https://www-doc.lodex.inist.fr/>
 
 ![preview](https://docs.google.com/drawings/d/e/2PACX-1vQA8ze2ktkRLXZB9sNWkft0cUpf_jOJbTfQA7AtzvwsRfswBCuiWwEsI3kvHzAzmZNhz4CxcePQ02cA/pub?w=904&h=581)
 
@@ -37,17 +37,17 @@ NB : MongoDB should be started and listening on port 27017
 
 To see what Lodex can do, check out
 
-- Data and Model ready to use : https://github.com/Inist-CNRS/lodex-use-cases
-- Videos : https://www.youtube.com/channel/UCXJjwCr-sfTZsFomFejEkEw/videos
+- Data and Model ready to use : <https://github.com/Inist-CNRS/lodex-use-cases>
+- Videos : <https://www.youtube.com/channel/UCXJjwCr-sfTZsFomFejEkEw/videos>
 - Real life example :
-  - https://data.istex.fr/
+  - <https://data.istex.fr/>
 - Démo :
-  - http://lodex-cop21.dpi.inist.fr/
-  - http://lodex-istex.dpi.inist.fr/
-- user documentation : https://lodex.gitbooks.io/lodex-user-documentation/
-- actuality & news : http://lodex.inist.fr/
-- Twitter : https://twitter.com/Lodex_Platform
-- Contribute (for developer) : https://github.com/Inist-CNRS/lodex/wiki
+  - <http://lodex-cop21.dpi.inist.fr/>
+  - <http://lodex-istex.dpi.inist.fr/>
+- user documentation : <https://user-doc.lodex.inist.fr/>
+- actuality & news : <http://lodex.inist.fr/>
+- Twitter : <https://twitter.com/Lodex_Platform>
+- Contribute (for developer) : <https://github.com/Inist-CNRS/lodex/wiki>
 - Contact email: contact@listes.lodex.fr
 - Mailing list about LODEX usage: users@listes.lodex.fr (subscribe on [listes.lodex.fr](https://listes.lodex.fr/sympa/info/users))
 
