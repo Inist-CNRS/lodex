@@ -14,8 +14,7 @@ export const getExporter = async type => {
         throw new Error(`Unsupported document type: ${type}`);
     }
 
-    const [fileName, metaData, baseName, script] = exporter;
-    // console.log(`getExporter(${type}) = [${fileName}, ,${baseName}, ]`)
+    const [, metaData, , script] = exporter;
 
     const exporterStreamFactory = (config, fields, characteristics, stream) => {
         return stream.pipe(
@@ -120,7 +119,7 @@ export async function exportMiddleware(ctx, type) {
     try {
         const exporterConfig = ctx.getExporterConfig();
 
-        const exportStreamFactory = ctx.getExporter(type);
+        const exportStreamFactory = await ctx.getExporter(type);
 
         if (exportStreamFactory.type === 'file') {
             await ctx.exportFileMiddleware(
@@ -142,16 +141,16 @@ export async function exportMiddleware(ctx, type) {
 export async function getExporters(ctx) {
     const configuredExporters = config.exporters || [];
 
-    const availableExporters = configuredExporters.map(async exporter => {
-        const exportStreamFactory = await ctx.getExporter(exporter);
-
-        return {
-            name: exportStreamFactory.label,
-            type: exportStreamFactory.type,
-        };
-    });
-
-    ctx.body = availableExporters;
+    const availableExportStreamFactoryPromises = configuredExporters.map(
+        exporter => ctx.getExporter(exporter),
+    );
+    const availableExporters = await Promise.all(
+        availableExportStreamFactoryPromises,
+    );
+    ctx.body = availableExporters.map(exporter => ({
+        name: exporter.label,
+        type: exporter.type,
+    }));
 }
 
 const app = new Koa();
