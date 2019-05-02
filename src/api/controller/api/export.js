@@ -1,18 +1,37 @@
 import Koa from 'koa';
 import route from 'koa-route';
+import ezs from 'ezs';
 import { getHost, getCleanHost } from '../../../common/uris';
 import config from '../../../../config.json';
 
-import exporters from '../../exporters';
+import Script from '../../services/script';
 
-export const getExporter = type => {
-    const exporter = exporters[type];
+const exporters = new Script('exporters');
 
+export const getExporter = async type => {
+    const exporter = await exporters.get(type);
     if (!exporter) {
         throw new Error(`Unsupported document type: ${type}`);
     }
 
-    return exporter;
+    const [fileName, metaData, baseName, script] = exporter;
+    // console.log(`getExporter(${type}) = [${fileName}, ,${baseName}, ]`)
+
+    const exporterStreamFactory = (config, fields, characteristics, stream) => {
+        return stream.pipe(
+            ezs(
+                'delegate',
+                { script },
+                { localConfig: config, fields, characteristics },
+            ),
+        );
+    };
+    exporterStreamFactory.extension = metaData.extension;
+    exporterStreamFactory.mimeType = metaData.mimeType;
+    exporterStreamFactory.type = metaData.type;
+    exporterStreamFactory.label = metaData.label;
+
+    return exporterStreamFactory;
 };
 
 export const getExporterConfig = () => ({
@@ -82,9 +101,9 @@ export async function exportFileMiddleware(
 export async function exportWidgetMiddleware(ctx, type) {
     const fields = encodeURIComponent(JSON.stringify(ctx.query.fields));
     const uri = encodeURIComponent(ctx.query.uri);
-    const widgetUrl = `${config.host}/api/widget?type=${type}&fields=${
-        fields
-    }&uri=${uri}`;
+    const widgetUrl = `${
+        config.host
+    }/api/widget?type=${type}&fields=${fields}&uri=${uri}`;
 
     ctx.body = widgetUrl;
 }
@@ -123,8 +142,8 @@ export async function exportMiddleware(ctx, type) {
 export async function getExporters(ctx) {
     const configuredExporters = config.exporters || [];
 
-    const availableExporters = configuredExporters.map(exporter => {
-        const exportStreamFactory = ctx.getExporter(exporter);
+    const availableExporters = configuredExporters.map(async exporter => {
+        const exportStreamFactory = await ctx.getExporter(exporter);
 
         return {
             name: exportStreamFactory.label,
