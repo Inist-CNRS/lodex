@@ -54,15 +54,16 @@
   ],
   "exporters": [
     "nquads",
-    "extendednquads",
+    "extended-nquads",
     "extendednquadscompressed",
     "csv",
     "tsv",
     "turtle",
     "atom",
+    "json",
     "jsonallvalue",
     "jsonld",
-    "jsonldcompacted",
+    "jsonld-compacted",
     "sitemap",
     "widget"
   ],
