@@ -99,8 +99,8 @@ export async function exportFileMiddleware(
         });
 
     ctx.set(
-        'Content-disposition',
-        `attachment; filename=export.${exportStreamFactory.extension}`,
+        'Content-Disposition',
+        `attachment; filename="export.${exportStreamFactory.extension}"`,
     );
     ctx.type = exportStreamFactory.mimeType;
     ctx.status = 200;
