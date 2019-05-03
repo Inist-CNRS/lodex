@@ -7,15 +7,11 @@ import jsonallvalue from './exportJson';
 import jsonld from './exportJsonld';
 import jsonldcompacted from './exportJsonldCompacted';
 import widget from './exportWidgetResource';
-import extendednquads from './exportExtendedNquads';
-import extendednquadscompressed from './exportExtendedNquadsCompressed';
 import sitemap from './exportSitemap';
 
 export default {
     atom,
     csv,
-    extendednquads,
-    extendednquadscompressed,
     jsonallvalue,
     jsonld,
     jsonldcompacted,
