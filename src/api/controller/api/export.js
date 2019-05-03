@@ -1,12 +1,15 @@
 import Koa from 'koa';
 import route from 'koa-route';
 import ezs from 'ezs';
+import ezsLodex from 'ezs-lodex';
 import { getHost, getCleanHost } from '../../../common/uris';
 import config from '../../../../config.json';
 
 import Script from '../../services/script';
 
 const exporters = new Script('exporters');
+
+ezs.use(ezsLodex);
 
 export const getExporter = async type => {
     const exporter = await exporters.get(type);
@@ -16,15 +19,18 @@ export const getExporter = async type => {
 
     const [, metaData, , script] = exporter;
 
-    const exporterStreamFactory = (config, fields, characteristics, stream) => {
-        return stream.pipe(
-            ezs(
-                'delegate',
-                { script },
-                { localConfig: config, fields, characteristics },
-            ),
-        );
-    };
+    const exporterStreamFactory = (config, fields, characteristics, stream) =>
+        stream
+            .pipe(ezs('filterVersions'))
+            .pipe(ezs('filterContributions', { fields }))
+            .pipe(
+                ezs(
+                    'delegate',
+                    { script },
+                    { localConfig: config, fields, characteristics },
+                ),
+            );
+
     exporterStreamFactory.extension = metaData.extension;
     exporterStreamFactory.mimeType = metaData.mimeType;
     exporterStreamFactory.type = metaData.type;
@@ -81,12 +87,16 @@ export async function exportFileMiddleware(
         ctx.request.query,
     );
 
-    exportStream.on('error', error => {
-        global.console.error(
-            `Error while exporting published dataset into ${type}`,
-            error,
-        );
-    });
+    exportStream
+        .pipe(ezs.toBuffer())
+        // .pipe(ezs('debug'))
+        .pipe(ezs.catch(e => e))
+        .on('error', error => {
+            global.console.error(
+                `Error while exporting published dataset into ${type}`,
+                error,
+            );
+        });
 
     ctx.set(
         'Content-disposition',
