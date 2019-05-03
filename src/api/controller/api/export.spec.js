@@ -8,6 +8,7 @@ describe('export routes', () => {
             { name: 'characteristic1', value: 'characteristic1_value' },
         ];
         const resultStream = new EventEmitter();
+        resultStream.pipe = jest.fn().mockImplementation(() => resultStream);
         const exporterStreamFactory = jest
             .fn()
             .mockImplementation(() => resultStream);
@@ -69,8 +70,8 @@ describe('export routes', () => {
 
         it('it set the Content-disposition header', () => {
             expect(ctx.set).toHaveBeenCalledWith(
-                'Content-disposition',
-                'attachment; filename=export.foo',
+                'Content-Disposition',
+                'attachment; filename="export.foo"',
             );
         });
 
