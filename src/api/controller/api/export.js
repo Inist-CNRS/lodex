@@ -144,19 +144,26 @@ export async function exportMiddleware(ctx, type) {
     }
 }
 
-export async function getExporters(ctx) {
+// The returned exporters are not attached to ctx
+export async function getDetachedExporters() {
     const configuredExporters = config.exporters || [];
 
     const availableExportStreamFactoryPromises = configuredExporters.map(
-        exporter => ctx.getExporter(exporter),
+        exporter => getExporter(exporter),
     );
     const availableExporters = await Promise.all(
         availableExportStreamFactoryPromises,
     );
-    ctx.body = availableExporters.map(exporter => ({
-        name: exporter.label,
-        type: exporter.type,
-    }));
+    return availableExporters
+        .filter(exporter => exporter.label !== undefined)
+        .map(exporter => ({
+            name: exporter.label,
+            type: exporter.type,
+        }));
+}
+
+export async function getExporters(ctx) {
+    ctx.body = getDetachedExporters();
 }
 
 const app = new Koa();
