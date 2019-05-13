@@ -62,7 +62,7 @@ const styles = stylesToClassname(
             },
         },
         menuItemIcon: {
-            margin: '0 auto',
+            margin: '0',
         },
     },
     'menu-item',
