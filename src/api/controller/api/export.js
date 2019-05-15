@@ -27,7 +27,18 @@ export const getExporter = async type => {
                 ezs(
                     'delegate',
                     { script },
-                    { localConfig: config, fields, characteristics },
+                    {
+                        cleanHost: config.cleanHost,
+                        collectionClass: config.collectionClass,
+                        datasetClass: config.datasetClass,
+                        exportDataset: config.exportDataset,
+                        schemeForDatasetLink: config.schemeForDatasetLink,
+                        labels: config.istexQuery.labels,
+                        linked: config.istexQuery.linked,
+                        context: config.istexQuery.context,
+                        fields,
+                        characteristics,
+                    },
                 ),
             );
 
