@@ -9,6 +9,7 @@ describe('export routes', () => {
         ];
         const resultStream = new EventEmitter();
         resultStream.pipe = jest.fn().mockImplementation(() => resultStream);
+        resultStream.resume = jest.fn().mockImplementation(() => resultStream);
         const exporterStreamFactory = jest
             .fn()
             .mockImplementation(() => resultStream);
@@ -76,7 +77,7 @@ describe('export routes', () => {
         });
 
         it('it set the Content-type header', () => {
-            expect(ctx.type).toEqual(exporterStreamFactory.mimeType);
+            expect(ctx.type).toEqual(`${exporterStreamFactory.mimeType}; charset=utf-8`);
         });
 
         it('it set the status to 200', () => {
