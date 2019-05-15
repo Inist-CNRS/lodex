@@ -109,7 +109,7 @@ export async function exportFileMiddleware(
         'Content-Disposition',
         `attachment; filename="export.${exportStreamFactory.extension}"`,
     );
-    ctx.type = exportStreamFactory.mimeType;
+    ctx.type = `${exportStreamFactory.mimeType}; charset=utf-8`;
     ctx.status = 200;
     ctx.body = exportStream;
 }
