@@ -75,7 +75,7 @@
         "ezs-basics": "3.9.0",
         "ezs-booster": "1.1.0",
         "ezs-istex": "6.1.0",
-        "ezs-lodex": "3.0.0",
+        "ezs-lodex": "5.0.0",
         "ezs-sparql": "1.0.0",
         "feed": "1.1.0",
         "fetch-with-proxy": "1.1.0",
