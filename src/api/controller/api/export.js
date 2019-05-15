@@ -98,12 +98,15 @@ export async function exportFileMiddleware(
         ctx.request.query,
     );
 
-    exportStream.pipe(ezs.catch(e => e)).on('error', error => {
-        global.console.error(
-            `Error while exporting published dataset into ${type}`,
-            error,
-        );
-    });
+    exportStream
+        .pipe(ezs.catch(e => e))
+        .on('error', error => {
+            global.console.error(
+                `Error while exporting published dataset into ${type}`,
+                error,
+            );
+        })
+        .resume();
 
     ctx.set(
         'Content-Disposition',
