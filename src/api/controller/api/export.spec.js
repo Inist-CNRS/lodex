@@ -77,7 +77,9 @@ describe('export routes', () => {
         });
 
         it('it set the Content-type header', () => {
-            expect(ctx.type).toEqual(`${exporterStreamFactory.mimeType}; charset=utf-8`);
+            expect(ctx.type).toEqual(
+                `${exporterStreamFactory.mimeType}; charset=utf-8`,
+            );
         });
 
         it('it set the status to 200', () => {
