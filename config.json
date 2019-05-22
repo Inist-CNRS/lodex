@@ -5,7 +5,7 @@
       "username": "user",
       "password": "secret"
   },
-  "pluginsURL" : "https://raw.githubusercontent.com/Inist-CNRS/lodex-extented/v2/",
+  "pluginsURL" : "https://raw.githubusercontent.com/Inist-CNRS/lodex-extended/v2/",
   "routinesCache" : true,
   "routines": [
       "all-documents",
@@ -53,17 +53,11 @@
     "zip"
   ],
   "exporters": [
+    "csv",
     "nquads",
     "extended-nquads",
-    "extendednquadscompressed",
-    "csv",
-    "tsv",
-    "turtle",
-    "atom",
-    "json",
     "jsonallvalue",
     "jsonld",
-    "jsonld-compacted",
     "sitemap",
     "widget"
   ],
@@ -72,7 +66,7 @@
   "exportDataset": "true",
   "collectionClass": "",
   "istexQuery": {
-    "labels": "",
+    "labels": ["Cette ressource dans ISTEX"],
     "linked": "categories.inist",
     "context": {
       "categories.inist": "istex:subjectInist",
