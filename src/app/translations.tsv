@@ -393,7 +393,7 @@
 "max_radius"	"Max radius"	"Rayon max"
 "view_details"	"View Details"	"Voir les détails"
 "resources_found"	"Found %{current} on %{total}"	"%{current} ressources trouvées sur un total de %{total}"
-"extendednquads"	"N-Quads Extended"	"N-Quads étendus"
+"extended-nquads"	"N-Quads Extended"	"N-Quads étendus"
 "extendednquadscompressed"	"N-Quads Extended (Compressed)"	"N-Quads étendus (Compressé)"
 "csv"	"CSV - auto-detected separator"	"CSV - détection automatique du séparateur"
 "csv-semicolon"	"CSV - with semicolon"	"CSV - avec des points virgules"
