@@ -1,18 +1,53 @@
 import Koa from 'koa';
 import route from 'koa-route';
+import ezs from 'ezs';
+import ezsLodex from 'ezs-lodex';
 import { getHost, getCleanHost } from '../../../common/uris';
 import config from '../../../../config.json';
 
-import exporters from '../../exporters';
+import Script from '../../services/script';
 
-export const getExporter = type => {
-    const exporter = exporters[type];
+const exporters = new Script('exporters');
 
+ezs.use(ezsLodex);
+
+export const getExporter = async type => {
+    const exporter = await exporters.get(type);
     if (!exporter) {
         throw new Error(`Unsupported document type: ${type}`);
     }
 
-    return exporter;
+    const [, metaData, , script] = exporter;
+
+    const exporterStreamFactory = (config, fields, characteristics, stream) =>
+        stream
+            .pipe(ezs('filterVersions'))
+            .pipe(ezs('filterContributions', { fields }))
+            .pipe(
+                ezs(
+                    'delegate',
+                    { script },
+                    {
+                        cleanHost: config.cleanHost,
+                        collectionClass: config.collectionClass,
+                        datasetClass: config.datasetClass,
+                        exportDataset: config.exportDataset,
+                        schemeForDatasetLink: config.schemeForDatasetLink,
+                        labels: config.istexQuery.labels,
+                        linked: config.istexQuery.linked,
+                        context: config.istexQuery.context,
+                        fields,
+                        characteristics,
+                    },
+                ),
+            );
+
+    exporterStreamFactory.extension = metaData.extension;
+    exporterStreamFactory.mimeType = metaData.mimeType;
+    exporterStreamFactory.type = metaData.type;
+    exporterStreamFactory.label = metaData.label;
+
+    return exporterStreamFactory;
 };
 
 export const getExporterConfig = () => ({
@@ -63,18 +98,21 @@ export async function exportFileMiddleware(
         ctx.request.query,
     );
 
-    exportStream.on('error', error => {
-        global.console.error(
-            `Error while exporting published dataset into ${type}`,
-            error,
-        );
-    });
+    exportStream
+        .pipe(ezs.catch(e => e))
+        .on('error', error => {
+            global.console.error(
+                `Error while exporting published dataset into ${type}`,
+                error,
+            );
+        })
+        .resume();
 
     ctx.set(
-        'Content-disposition',
-        `attachment; filename=export.${exportStreamFactory.extension}`,
+        'Content-Disposition',
+        `attachment; filename="export.${exportStreamFactory.extension}"`,
     );
-    ctx.type = exportStreamFactory.mimeType;
+    ctx.type = `${exportStreamFactory.mimeType}; charset=utf-8`;
     ctx.status = 200;
     ctx.body = exportStream;
 }
@@ -82,9 +120,9 @@ export async function exportFileMiddleware(
 export async function exportWidgetMiddleware(ctx, type) {
     const fields = encodeURIComponent(JSON.stringify(ctx.query.fields));
     const uri = encodeURIComponent(ctx.query.uri);
-    const widgetUrl = `${config.host}/api/widget?type=${type}&fields=${
-        fields
-    }&uri=${uri}`;
+    const widgetUrl = `${
+        config.host
+    }/api/widget?type=${type}&fields=${fields}&uri=${uri}`;
 
     ctx.body = widgetUrl;
 }
@@ -101,7 +139,7 @@ export async function exportMiddleware(ctx, type) {
     try {
         const exporterConfig = ctx.getExporterConfig();
 
-        const exportStreamFactory = ctx.getExporter(type);
+        const exportStreamFactory = await ctx.getExporter(type);
 
         if (exportStreamFactory.type === 'file') {
             await ctx.exportFileMiddleware(
@@ -123,16 +161,18 @@ export async function exportMiddleware(ctx, type) {
 export async function getExporters(ctx) {
     const configuredExporters = config.exporters || [];
 
-    const availableExporters = configuredExporters.map(exporter => {
-        const exportStreamFactory = ctx.getExporter(exporter);
-
-        return {
-            name: exportStreamFactory.label,
-            type: exportStreamFactory.type,
-        };
-    });
-
-    ctx.body = availableExporters;
+    const availableExportStreamFactoryPromises = configuredExporters.map(
+        exporter => ctx.getExporter(exporter),
+    );
+    const availableExporters = await Promise.all(
+        availableExportStreamFactoryPromises,
+    );
+    ctx.body = availableExporters
+        .filter(exporter => exporter.label !== undefined)
+        .map(exporter => ({
+            name: exporter.label,
+            type: exporter.type,
+        }));
 }
 
 const app = new Koa();

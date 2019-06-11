@@ -8,6 +8,8 @@ describe('export routes', () => {
             { name: 'characteristic1', value: 'characteristic1_value' },
         ];
         const resultStream = new EventEmitter();
+        resultStream.pipe = jest.fn().mockImplementation(() => resultStream);
+        resultStream.resume = jest.fn().mockImplementation(() => resultStream);
         const exporterStreamFactory = jest
             .fn()
             .mockImplementation(() => resultStream);
@@ -69,13 +71,15 @@ describe('export routes', () => {
 
         it('it set the Content-disposition header', () => {
             expect(ctx.set).toHaveBeenCalledWith(
-                'Content-disposition',
-                'attachment; filename=export.foo',
+                'Content-Disposition',
+                'attachment; filename="export.foo"',
             );
         });
 
         it('it set the Content-type header', () => {
-            expect(ctx.type).toEqual(exporterStreamFactory.mimeType);
+            expect(ctx.type).toEqual(
+                `${exporterStreamFactory.mimeType}; charset=utf-8`,
+            );
         });
 
         it('it set the status to 200', () => {
