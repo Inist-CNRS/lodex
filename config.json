@@ -54,11 +54,13 @@
   ],
   "exporters": [
     "csv",
-    "nquads",
+    "extended-nquads-compressed",
     "extended-nquads",
     "jsonallvalue",
     "jsonld",
+    "nquads",
     "sitemap",
+    "tsv",
     "widget"
   ],
   "datasetClass": "http://test.fr/datasetClass",
