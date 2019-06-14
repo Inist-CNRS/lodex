@@ -53,7 +53,10 @@ class PieChartAdmin extends Component {
     };
 
     render() {
-        const { p: polyglot, args: { params, colors } } = this.props;
+        const {
+            p: polyglot,
+            args: { params, colors },
+        } = this.props;
 
         return (
             <div style={styles.container}>

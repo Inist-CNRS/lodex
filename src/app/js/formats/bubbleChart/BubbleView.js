@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import { pack, hierarchy } from 'd3-hierarchy';
-import { scaleOrdinal } from 'd3-scale';
+//import { scaleOrdinal } from 'd3-scale';
 import memoize from 'lodash.memoize';
-import { schemeAccent } from 'd3-scale-chromatic';
+//import { schemeAccent } from 'd3-scale-chromatic';
 import Transition from 'react-inline-transition-group';
 
 import injectData from '../injectData';
@@ -31,7 +31,7 @@ const styles = {
     },
 };
 
-export const BubbleView = ({ data, diameter, colorScale }) => (
+export const BubbleView = ({ data, diameter, colorSet /*colorScale,*/ }) => (
     <div>
         <Transition
             style={styles.container({ diameter })}
@@ -42,7 +42,7 @@ export const BubbleView = ({ data, diameter, colorScale }) => (
                 leave: styles.leave,
             }}
         >
-            {data.map(({ data: { _id: key }, r, x, y, value }) => (
+            {data.map(({ data: { _id: key }, r, x, y, value }, index) => (
                 <Bubble
                     key={key}
                     r={r}
@@ -50,7 +50,8 @@ export const BubbleView = ({ data, diameter, colorScale }) => (
                     y={y}
                     name={key}
                     value={value}
-                    color={colorScale(key)}
+                    //color={colorScale(key)}
+                    color={colorSet[index % colorSet.length]}
                 />
             ))}
         </Transition>
@@ -61,22 +62,23 @@ BubbleView.propTypes = {
     data: PropTypes.array.isRequired,
     diameter: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
         .isRequired,
-    colorScale: PropTypes.func,
+    //colorScale: PropTypes.func,
+    colorSet: PropTypes.arrayOf(PropTypes.string),
 };
 
 BubbleView.displayName = 'BubbleView';
 
 const mapStateToProps = (
     state,
-    { formatData, diameter: stringDiameter, colorScheme },
+    { formatData, diameter: stringDiameter /*, colorScheme*/ },
 ) => {
     const diameter = parseInt(stringDiameter, 10);
-    const colorScale = scaleOrdinal(colorScheme || schemeAccent);
+    //const colorScale = scaleOrdinal(colorScheme || schemeAccent);
     if (!formatData) {
         return {
             data: [],
             diameter,
-            colorScale,
+            //colorScale,
         };
     }
 
@@ -92,7 +94,7 @@ const mapStateToProps = (
     return {
         data,
         diameter,
-        colorScale,
+        //colorScale,
     };
 };
 

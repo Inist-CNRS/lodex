@@ -100,8 +100,8 @@ export const getValueAxisProps = ({
     textAnchor: diagonalValueAxis
         ? 'end'
         : direction === 'horizontal'
-            ? 'middle'
-            : 'end',
+        ? 'middle'
+        : 'end',
     type: 'number',
     allowDecimals: !axisRoundValue,
     scale,
@@ -120,8 +120,8 @@ export const getCategoryAxisProps = ({
     textAnchor: diagonalCategoryAxis
         ? 'end'
         : direction === 'horizontal'
-            ? 'end'
-            : 'middle',
+        ? 'end'
+        : 'middle',
     type: 'category',
     dataKey: '_id',
     interval: 0,
