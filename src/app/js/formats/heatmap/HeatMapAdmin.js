@@ -9,8 +9,6 @@ import { polyglot as polyglotPropTypes } from '../../propTypes';
 import updateAdminArgs from '../shared/updateAdminArgs';
 import RoutineParamsAdmin from '../shared/RoutineParamsAdmin';
 
-import TextField from 'material-ui/TextField';
-
 const styles = {
     container: {
         display: 'flex',
@@ -38,7 +36,6 @@ export const defaultArgs = {
     },
     colorScheme: schemeOrRd[9],
     flipAxis: false,
-    colorsTest: '#1D1A31 #4D2D52 #9A4C95 #F08CAE #C1A5A9',
 };
 
 class HeatMapAdmin extends Component {
@@ -52,7 +49,6 @@ class HeatMapAdmin extends Component {
             }),
             colorScheme: PropTypes.arrayOf(PropTypes.string),
             flipAxis: PropTypes.bool,
-            colorsTest: PropTypes.string,
         }),
         onChange: PropTypes.func.isRequired,
         p: polyglotPropTypes.isRequired,
@@ -74,14 +70,10 @@ class HeatMapAdmin extends Component {
         updateAdminArgs('flipAxis', !this.props.args.flipAxis, this.props);
     };
 
-    setColorsTest = (_, colors) => {
-        updateAdminArgs('colors', colors, this.props);
-    };
-
     render() {
         const {
             p: polyglot,
-            args: { params, colorScheme, colorsTest, flipAxis },
+            args: { params, colorScheme, flipAxis },
         } = this.props;
 
         return (
@@ -102,12 +94,6 @@ class HeatMapAdmin extends Component {
                     onCheck={this.toggleFlipAxis}
                     style={styles.input}
                     checked={flipAxis}
-                />
-                <TextField
-                    floatingLabelText={polyglot.t('colors_set')}
-                    onChange={this.setColorsTest}
-                    style={styles.input}
-                    value={colorsTest}
                 />
             </div>
         );
