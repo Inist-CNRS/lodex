@@ -36,7 +36,7 @@ describe('BubbleView', () => {
             <BubbleView
                 data={data}
                 diameter={'100'}
-                colorSet={() => 'color'}
+                colorSet={colors.split(' ')}
             />,
         );
 
