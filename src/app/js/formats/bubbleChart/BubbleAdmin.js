@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import translate from 'redux-polyglot/translate';
 import TextField from 'material-ui/TextField';
-//import { schemeAccent } from 'd3-scale-chromatic';
-//import { GradientSchemeSelector } from '../../lib/components/ColorSchemeSelector';
+import translate from 'redux-polyglot/translate';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import updateAdminArgs from '../shared/updateAdminArgs';
@@ -26,7 +24,6 @@ export const defaultArgs = {
         maxSize: 200,
         orderBy: 'value/asc',
     },
-    // colorScheme: schemeAccent,
     diameter: 500,
     colors: '#1D1A31 #4D2D52 #9A4C95 #F08CAE #C1A5A9',
 };
@@ -40,7 +37,6 @@ class BubbleAdmin extends Component {
                 minValue: PropTypes.number,
                 orderBy: PropTypes.string,
             }),
-            //colorScheme: PropTypes.arrayOf(PropTypes.string),
             diameter: PropTypes.number,
             colors: PropTypes.string,
         }),
@@ -54,17 +50,9 @@ class BubbleAdmin extends Component {
 
     setParams = params => updateAdminArgs('params', params, this.props);
 
-    setColorScheme = (_, __, colorScheme) => {
-        updateAdminArgs('colorScheme', colorScheme.split(','), this.props);
-    };
-
     setDiameter = (_, diameter) => {
         updateAdminArgs('diameter', diameter, this.props);
     };
-
-    /*handleColorSchemeChange = (event, index, colorScheme) => {
-        updateAdminArgs('colorScheme', colorScheme.split(','), this.props);
-    };*/
 
     setColors = (_, colors) => {
         updateAdminArgs('colors', colors, this.props);
@@ -75,7 +63,7 @@ class BubbleAdmin extends Component {
             p: polyglot,
             args: { params, colors },
         } = this.props;
-        const { diameter /*, colorScheme*/ } = this.props.args;
+        const { diameter } = this.props.args;
 
         return (
             <div style={styles.container}>
@@ -84,14 +72,6 @@ class BubbleAdmin extends Component {
                     onChange={this.setParams}
                     polyglot={polyglot}
                 />
-                {/*
-                <GradientSchemeSelector
-                    label={polyglot.t('color_scheme')}
-                    onChange={this.handleColorSchemeChange}
-                    style={styles.input}
-                    value={colorScheme}
-                />
-                */}
                 <TextField
                     floatingLabelText={polyglot.t('diameter')}
                     onChange={this.setDiameter}
