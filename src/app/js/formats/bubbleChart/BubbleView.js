@@ -64,13 +64,8 @@ BubbleView.propTypes = {
 
 BubbleView.displayName = 'BubbleView';
 
-const mapStateToProps = (
-    state,
-    { formatData, diameter: stringDiameter, colors },
-) => {
+const mapStateToProps = (state, { formatData, diameter: stringDiameter }) => {
     const diameter = parseInt(stringDiameter, 10);
-    const colorSet = colors;
-
     if (!formatData) {
         return {
             data: [],
@@ -90,7 +85,6 @@ const mapStateToProps = (
     return {
         data,
         diameter,
-        colorSet,
     };
 };
 
