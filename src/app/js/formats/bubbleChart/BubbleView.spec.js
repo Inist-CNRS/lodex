@@ -12,11 +12,7 @@ const data = [
 describe('BubbleView', () => {
     it('should render Bubble chart', () => {
         const wrapper = shallow(
-            <BubbleView
-                data={data}
-                diameter={100}
-                colorScale={() => 'color'}
-            />,
+            <BubbleView data={data} diameter={100} colorSet={() => 'color'} />,
         );
 
         const bubbles = wrapper.find('Bubble');
@@ -34,7 +30,7 @@ describe('BubbleView', () => {
             <BubbleView
                 data={data}
                 diameter={'100'}
-                colorScale={() => 'color'}
+                colorSet={() => 'color'}
             />,
         );
 
