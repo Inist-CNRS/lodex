@@ -14,7 +14,11 @@ const colors = '#1D1A31 #4D2D52 #9A4C95 #F08CAE #C1A5A9';
 describe('BubbleView', () => {
     it('should render Bubble chart', () => {
         const wrapper = shallow(
-            <BubbleView data={data} diameter={100} colorSet={colors} />,
+            <BubbleView
+                data={data}
+                diameter={100}
+                colorSet={colors.split(' ')}
+            />,
         );
 
         const bubbles = wrapper.find('Bubble');
