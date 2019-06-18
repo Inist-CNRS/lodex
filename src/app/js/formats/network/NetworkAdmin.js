@@ -17,14 +17,6 @@ const styles = {
     input: {
         width: '100%',
     },
-    previewDefaultColor: color => ({
-        display: 'inline-block',
-        backgroundColor: color,
-        height: '1em',
-        width: '1em',
-        marginLeft: 5,
-        border: 'solid 1px black',
-    }),
 };
 
 export const defaultArgs = {
@@ -32,10 +24,10 @@ export const defaultArgs = {
         maxSize: 200,
         orderBy: 'value/asc',
     },
-    nodeColor: 'red',
+    colors: '#FFFFFF',
 };
 
-class CartographyAdmin extends Component {
+class NetworkAdmin extends Component {
     static propTypes = {
         args: PropTypes.shape({
             params: PropTypes.shape({
@@ -44,7 +36,7 @@ class CartographyAdmin extends Component {
                 minValue: PropTypes.number,
                 orderBy: PropTypes.string,
             }),
-            nodeColor: PropTypes.string,
+            colors: PropTypes.string,
         }),
         onChange: PropTypes.func.isRequired,
         p: polyglotPropTypes.isRequired,
@@ -58,16 +50,15 @@ class CartographyAdmin extends Component {
         updateAdminArgs('params', params, this.props);
     };
 
-    setNodeColor = (_, nodeColor) => {
-        updateAdminArgs('nodeColor', nodeColor, this.props);
+    setColors = (_, colors) => {
+        updateAdminArgs('colors', colors, this.props);
     };
 
     render() {
         const {
             p: polyglot,
-            args: { params },
+            args: { params, colors },
         } = this.props;
-        const { nodeColor } = this.props.args;
 
         return (
             <div style={styles.container}>
@@ -77,23 +68,14 @@ class CartographyAdmin extends Component {
                     onChange={this.setParams}
                 />
                 <TextField
-                    floatingLabelText={
-                        <span>
-                            {polyglot.t('node_color')}
-                            <span
-                                style={styles.previewDefaultColor(nodeColor)}
-                            />
-                        </span>
-                    }
-                    onChange={this.setNodeColor}
+                    floatingLabelText={polyglot.t('colors_set')}
+                    onChange={this.setColors}
                     style={styles.input}
-                    underlineStyle={{ borderColor: nodeColor }}
-                    underlineFocusStyle={{ borderColor: nodeColor }}
-                    value={nodeColor}
+                    value={colors}
                 />
             </div>
         );
     }
 }
 
-export default translate(CartographyAdmin);
+export default translate(NetworkAdmin);
