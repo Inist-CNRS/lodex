@@ -26,6 +26,7 @@ export const defaultArgs = {
         labelOffset: 50,
         minimumScaleValue: 5,
     },
+    colors: '#FF6347',
 };
 
 class HierarchyAdmin extends Component {
@@ -38,6 +39,7 @@ class HierarchyAdmin extends Component {
             maxLabelLength: PropTypes.number,
             labelOffset: PropTypes.number,
             minimumScaleValue: PropTypes.number,
+            colors: PropTypes.string,
         }),
         onChange: PropTypes.func.isRequired,
         p: polyglotPropTypes.isRequired,
@@ -49,6 +51,10 @@ class HierarchyAdmin extends Component {
 
     setParams = params => {
         updateAdminArgs('params', params, this.props);
+    };
+
+    setColors = (_, colors) => {
+        updateAdminArgs('colors', colors, this.props);
     };
 
     setMaxLabelLength = (_, maxLabelLength) => {
@@ -90,7 +96,7 @@ class HierarchyAdmin extends Component {
     render() {
         const {
             p: polyglot,
-            args: { params },
+            args: { params, colors },
         } = this.props;
 
         return (
@@ -99,6 +105,12 @@ class HierarchyAdmin extends Component {
                     params={params || defaultArgs.params}
                     polyglot={polyglot}
                     onChange={this.setParams}
+                />
+                <TextField
+                    floatingLabelText={polyglot.t('colors_set')}
+                    onChange={this.setColors}
+                    style={styles.input}
+                    value={colors}
                 />
                 <TextField
                     floatingLabelText={polyglot.t('max_char_number_in_labels')}

@@ -16,7 +16,6 @@ const styles = StyleSheet.create({
     },
     link: {
         fill: 'none',
-        stroke: '#555',
         strokeOpacity: 0.4,
         strokeWidth: '1px',
     },
@@ -33,10 +32,6 @@ const styles = StyleSheet.create({
 
     nodeCircle: {
         fill: '#999',
-    },
-
-    nodeInternalCircle: {
-        fill: '#555',
     },
 
     nodeInternalText: {
@@ -194,6 +189,7 @@ class Hierarchy extends PureComponent {
     }
 
     update() {
+        const color = this.props.colors;
         // update tree size
         if (this.root && this.tree) {
             const height = (this.root.leaves().length + 1) * 50;
@@ -303,7 +299,8 @@ class Hierarchy extends PureComponent {
                         ',' +
                         d.parent.y
                     );
-                });
+                })
+                .attr('stroke', color);
 
             // Setup position for every datum; Applying different css classes to parents and leafs.
             let node = this.g()
@@ -364,7 +361,8 @@ class Hierarchy extends PureComponent {
             nodeEnter
                 .append('circle')
                 .attr('class', `${css(styles.nodeInternalCircle)}`)
-                .attr('r', 4);
+                .attr('r', 4)
+                .attr('fill', color);
 
             let nodeInternal = nodeEnter.filter(function(d) {
                 return d.children || d._children;
@@ -415,7 +413,7 @@ class Hierarchy extends PureComponent {
                 .append('rect')
                 .attr('class', '')
                 .style('fill', function(d) {
-                    return '#555';
+                    return color;
                 })
                 .attr('width', 2)
                 .attr('height', 10)
