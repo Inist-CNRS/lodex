@@ -25,7 +25,7 @@ const styles = {
 
 export const defaultArgs = {
     typid: 1,
-    colors: '#8B8B8B #5B5B5B #818181',
+    colors: '#818181',
 };
 
 class IdentifierBadgeAdmin extends Component {
@@ -53,7 +53,10 @@ class IdentifierBadgeAdmin extends Component {
     };
 
     render() {
-        const { p: polyglot, args: { colors, typid } } = this.props;
+        const {
+            p: polyglot,
+            args: { colors, typid },
+        } = this.props;
         const items = Object.keys(resolvers).map(resolverID => (
             <MenuItem
                 key={`resolver_${resolverID}`}

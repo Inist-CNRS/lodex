@@ -24,7 +24,7 @@ export const defaultArgs = {
         maxSize: 200,
         orderBy: 'value/asc',
     },
-    colors: '#FFFFFF',
+    colors: '#818181',
 };
 
 class NetworkAdmin extends Component {

@@ -24,7 +24,7 @@ const styles = {
 
 export const defaultArgs = {
     size: 4,
-    colors: '#818181 #8B8B8B #5B5B5B',
+    colors: '#818181',
 };
 
 class EmphasedNumberAdmin extends Component {
@@ -58,7 +58,10 @@ class EmphasedNumberAdmin extends Component {
     };
 
     render() {
-        const { p: polyglot, args: { colors, size } } = this.props;
+        const {
+            p: polyglot,
+            args: { colors, size },
+        } = this.props;
 
         return (
             <div style={styles.container}>

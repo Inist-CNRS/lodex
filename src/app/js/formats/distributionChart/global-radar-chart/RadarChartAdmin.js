@@ -27,7 +27,7 @@ export const defaultArgs = {
         maxSize: 5,
         orderBy: 'value/asc',
     },
-    colors: '#1D1A31 #4D2D52 #9A4C95 #F08CAE #C1A5A9',
+    colors: '#818181',
     axisRoundValue: true,
     scale: 'linear',
 };
