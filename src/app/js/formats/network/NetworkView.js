@@ -71,7 +71,7 @@ class Network extends Component {
                         <ForceGraphNode
                             key={node.id}
                             node={node}
-                            fill={colorSet[0]} // TODO : check here
+                            fill={colorSet[0]}
                         />
                     ))}
                     {links.map((link, index) => (
