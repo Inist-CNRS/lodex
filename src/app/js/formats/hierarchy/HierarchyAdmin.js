@@ -7,6 +7,8 @@ import { polyglot as polyglotPropTypes } from '../../propTypes';
 import updateAdminArgs from '../shared/updateAdminArgs';
 import RoutineParamsAdmin from '../shared/RoutineParamsAdmin';
 
+import * as colorUtils from '../colorUtils';
+
 const styles = {
     container: {
         display: 'flex',
@@ -26,7 +28,7 @@ export const defaultArgs = {
         labelOffset: 50,
         minimumScaleValue: 5,
     },
-    colors: '#FF6347',
+    colors: colorUtils.MONOCHROMATIC_DEFAULT_COLORSET,
 };
 
 class HierarchyAdmin extends Component {

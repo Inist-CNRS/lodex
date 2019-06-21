@@ -10,6 +10,8 @@ import injectData from '../injectData';
 import exportableToPng from '../exportableToPng';
 import Bubble from './Bubble';
 
+import * as colorUtils from '../colorUtils';
+
 const styles = {
     container: memoize(({ diameter }) => ({
         position: 'relative',
@@ -49,7 +51,7 @@ export const BubbleView = ({ data, diameter, colorSet }) => (
                     name={key}
                     value={value}
                     color={
-                        /(^#[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)/i.test(
+                        colorUtils.isValidColor(
                             colorSet[index % colorSet.length],
                         )
                             ? colorSet[index % colorSet.length]

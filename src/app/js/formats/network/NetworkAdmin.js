@@ -7,6 +7,8 @@ import { polyglot as polyglotPropTypes } from '../../propTypes';
 import updateAdminArgs from '../shared/updateAdminArgs';
 import RoutineParamsAdmin from '../shared/RoutineParamsAdmin';
 
+import * as colorUtils from '../colorUtils';
+
 const styles = {
     container: {
         display: 'flex',
@@ -24,7 +26,7 @@ export const defaultArgs = {
         maxSize: 200,
         orderBy: 'value/asc',
     },
-    colors: '#818181',
+    colors: colorUtils.MONOCHROMATIC_DEFAULT_COLORSET,
 };
 
 class NetworkAdmin extends Component {

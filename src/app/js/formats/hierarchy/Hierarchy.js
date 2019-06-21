@@ -9,6 +9,8 @@ import ZoomIcon from './zoomIcon';
 import CenterGraph from './centerGraph';
 import cliTruncate from 'cli-truncate';
 
+import * as colorUtils from '../colorUtils';
+
 const styles = StyleSheet.create({
     divContainer: {
         overflow: 'hidden',
@@ -286,9 +288,7 @@ class Hierarchy extends PureComponent {
                 })
                 .attr(
                     'stroke',
-                    /(^#[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)/i.test(color)
-                        ? color
-                        : 'black',
+                    colorUtils.isValidColor(color) ? color : 'black',
                 );
 
             // Setup position for every datum; Applying different css classes to parents and leafs.
