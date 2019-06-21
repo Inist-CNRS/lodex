@@ -30,24 +30,8 @@ const styles = StyleSheet.create({
         cursor: 'pointer',
     },
 
-    nodeCircle: {
-        fill: '#999',
-    },
-
     nodeInternalText: {
         fontSize: '12px',
-    },
-
-    nodeLeafText: {
-        fill: '#000000',
-    },
-
-    nodeCollapsedText: {
-        fill: '#000',
-    },
-
-    nodeCollapsedCircle: {
-        fill: '#555',
     },
 
     shadow: {
@@ -300,7 +284,12 @@ class Hierarchy extends PureComponent {
                         d.parent.y
                     );
                 })
-                .attr('stroke', color);
+                .attr(
+                    'stroke',
+                    /(^#[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)/i.test(color)
+                        ? color
+                        : 'black',
+                );
 
             // Setup position for every datum; Applying different css classes to parents and leafs.
             let node = this.g()
@@ -460,10 +449,7 @@ class Hierarchy extends PureComponent {
     handleMouseOver(d, i, nodes) {
         let leafG = d3.select(nodes[i]);
 
-        leafG
-            .select('rect')
-            .attr('stroke', '#4D4D4D')
-            .attr('stroke-width', '2');
+        leafG.select('rect').attr('stroke-width', '2');
         this.tooltip().style('opacity', 1);
 
         this.tooltip()
@@ -729,7 +715,7 @@ class Hierarchy extends PureComponent {
     }
 
     render() {
-        const { width, height, margin } = this.state;
+        const { width, height } = this.state;
         const { p: polyglot } = this.props;
 
         return (
@@ -802,7 +788,7 @@ class Hierarchy extends PureComponent {
                         position: 'absolute',
                         bottom: '19px',
                         left: '50px',
-                        color: 'black',
+                        color: 'black', // TODO : text
                     }}
                 >
                     {polyglot.t('graph_reinit')}
