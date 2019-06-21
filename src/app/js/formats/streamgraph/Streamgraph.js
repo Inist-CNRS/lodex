@@ -607,7 +607,7 @@ class Streamgraph extends PureComponent {
                     id={`zoomIconContainer${this.uniqueId}`}
                     onMouseEnter={this.zoomIconEnter}
                     onMouseLeave={this.zoomIconLeave}
-                    style={{ position: 'absolute', top: '210px', left: '55px' }}
+                    style={{ position: 'absolute', top: '210px', left: '25px' }}
                 >
                     <ZoomIcon width={35} />
                 </div>
