@@ -48,7 +48,13 @@ export const BubbleView = ({ data, diameter, colorSet }) => (
                     y={y}
                     name={key}
                     value={value}
-                    color={colorSet[index % colorSet.length]}
+                    color={
+                        /(^#[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)/i.test(
+                            colorSet[index % colorSet.length],
+                        )
+                            ? colorSet[index % colorSet.length]
+                            : 'black'
+                    }
                 />
             ))}
         </Transition>
