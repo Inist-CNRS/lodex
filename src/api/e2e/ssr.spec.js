@@ -11,8 +11,6 @@ import {
     loadFixtures,
     close,
 } from '../../common/tests/fixtures';
-import exporters from '../exporters';
-import config from '../../../config.json';
 
 const authentifiedHeader = {
     cookie: `lodex_token=${jwt.sign(
@@ -105,15 +103,6 @@ describe('ssr', () => {
                         omit(d, '_id'),
                     ),
                 ).toEqual([{ movie: 'LOTR', author: 'Peter Jackson' }]);
-            });
-
-            it('should preload exporters for home', async () => {
-                expect(state.export.exporters).toEqual(
-                    config.exporters.map(name => ({
-                        name,
-                        type: exporters[name].type,
-                    })),
-                );
             });
 
             it('should not include token in state', () => {
