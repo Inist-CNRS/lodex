@@ -9,13 +9,15 @@ const data = [
     { data: { _id: 'id3' }, r: 30, x: 30, y: 30, value: 3 },
 ];
 
+const colors = '#1D1A31 #4D2D52 #9A4C95 #F08CAE #C1A5A9';
+
 describe('BubbleView', () => {
     it('should render Bubble chart', () => {
         const wrapper = shallow(
             <BubbleView
                 data={data}
                 diameter={100}
-                colorScale={() => 'color'}
+                colorSet={colors.split(' ')}
             />,
         );
 
@@ -23,9 +25,9 @@ describe('BubbleView', () => {
         expect(bubbles.length).toBe(3);
 
         expect(bubbles.map(b => b.props())).toEqual([
-            { color: 'color', name: 'id1', r: 10, value: 1, x: 10, y: 10 },
-            { color: 'color', name: 'id2', r: 20, value: 2, x: 20, y: 20 },
-            { color: 'color', name: 'id3', r: 30, value: 3, x: 30, y: 30 },
+            { color: '#1D1A31', name: 'id1', r: 10, value: 1, x: 10, y: 10 },
+            { color: '#4D2D52', name: 'id2', r: 20, value: 2, x: 20, y: 20 },
+            { color: '#9A4C95', name: 'id3', r: 30, value: 3, x: 30, y: 30 },
         ]);
     });
 
@@ -34,7 +36,7 @@ describe('BubbleView', () => {
             <BubbleView
                 data={data}
                 diameter={'100'}
-                colorScale={() => 'color'}
+                colorSet={colors.split(' ')}
             />,
         );
 
@@ -42,9 +44,9 @@ describe('BubbleView', () => {
         expect(bubbles.length).toBe(3);
 
         expect(bubbles.map(b => b.props())).toEqual([
-            { color: 'color', name: 'id1', r: 10, value: 1, x: 10, y: 10 },
-            { color: 'color', name: 'id2', r: 20, value: 2, x: 20, y: 20 },
-            { color: 'color', name: 'id3', r: 30, value: 3, x: 30, y: 30 },
+            { color: '#1D1A31', name: 'id1', r: 10, value: 1, x: 10, y: 10 },
+            { color: '#4D2D52', name: 'id2', r: 20, value: 2, x: 20, y: 20 },
+            { color: '#9A4C95', name: 'id3', r: 30, value: 3, x: 30, y: 30 },
         ]);
     });
 });

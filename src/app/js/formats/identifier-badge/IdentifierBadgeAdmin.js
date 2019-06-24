@@ -7,6 +7,8 @@ import translate from 'redux-polyglot/translate';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { resolvers } from '.';
 
+import * as colorUtils from '../colorUtils';
+
 const styles = {
     container: {
         display: 'flex',
@@ -25,7 +27,7 @@ const styles = {
 
 export const defaultArgs = {
     typid: 1,
-    colors: '#8B8B8B #5B5B5B #818181',
+    colors: colorUtils.MONOCHROMATIC_DEFAULT_COLORSET,
 };
 
 class IdentifierBadgeAdmin extends Component {
@@ -53,7 +55,10 @@ class IdentifierBadgeAdmin extends Component {
     };
 
     render() {
-        const { p: polyglot, args: { colors, typid } } = this.props;
+        const {
+            p: polyglot,
+            args: { colors, typid },
+        } = this.props;
         const items = Object.keys(resolvers).map(resolverID => (
             <MenuItem
                 key={`resolver_${resolverID}`}

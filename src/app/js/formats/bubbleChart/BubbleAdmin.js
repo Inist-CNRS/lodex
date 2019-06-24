@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import translate from 'redux-polyglot/translate';
 import TextField from 'material-ui/TextField';
-import { schemeAccent } from 'd3-scale-chromatic';
-import { CategorySchemeSelector } from '../../lib/components/ColorSchemeSelector';
+import translate from 'redux-polyglot/translate';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import updateAdminArgs from '../shared/updateAdminArgs';
 import RoutineParamsAdmin from '../shared/RoutineParamsAdmin';
+
+import * as colorUtils from '../colorUtils';
 
 const styles = {
     container: {
@@ -26,8 +26,8 @@ export const defaultArgs = {
         maxSize: 200,
         orderBy: 'value/asc',
     },
-    colorScheme: schemeAccent,
     diameter: 500,
+    colors: colorUtils.MULTICHROMATIC_DEFAULT_COLORSET,
 };
 
 class BubbleAdmin extends Component {
@@ -39,8 +39,8 @@ class BubbleAdmin extends Component {
                 minValue: PropTypes.number,
                 orderBy: PropTypes.string,
             }),
-            colorScheme: PropTypes.arrayOf(PropTypes.string),
             diameter: PropTypes.number,
+            colors: PropTypes.string,
         }),
         onChange: PropTypes.func.isRequired,
         p: polyglotPropTypes.isRequired,
@@ -52,17 +52,20 @@ class BubbleAdmin extends Component {
 
     setParams = params => updateAdminArgs('params', params, this.props);
 
-    setColorScheme = (_, __, colorScheme) => {
-        updateAdminArgs('colorScheme', colorScheme.split(','), this.props);
-    };
-
     setDiameter = (_, diameter) => {
         updateAdminArgs('diameter', diameter, this.props);
     };
 
+    setColors = (_, colors) => {
+        updateAdminArgs('colors', colors, this.props);
+    };
+
     render() {
-        const { p: polyglot, args: { params } } = this.props;
-        const { diameter, colorScheme } = this.props.args;
+        const {
+            p: polyglot,
+            args: { params, colors },
+        } = this.props;
+        const { diameter } = this.props.args;
 
         return (
             <div style={styles.container}>
@@ -71,17 +74,17 @@ class BubbleAdmin extends Component {
                     onChange={this.setParams}
                     polyglot={polyglot}
                 />
-                <CategorySchemeSelector
-                    label={polyglot.t('color_scheme')}
-                    onChange={this.setColorScheme}
-                    style={styles.input}
-                    value={colorScheme}
-                />
                 <TextField
                     floatingLabelText={polyglot.t('diameter')}
                     onChange={this.setDiameter}
                     style={styles.input}
                     value={diameter}
+                />
+                <TextField
+                    floatingLabelText={polyglot.t('colors_set')}
+                    onChange={this.setColors}
+                    style={styles.input}
+                    value={colors}
                 />
             </div>
         );

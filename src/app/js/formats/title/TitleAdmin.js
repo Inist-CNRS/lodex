@@ -7,6 +7,8 @@ import translate from 'redux-polyglot/translate';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import updateAdminArgs from '../shared/updateAdminArgs';
 
+import * as colorUtils from '../colorUtils';
+
 const styles = {
     container: {
         display: 'flex',
@@ -21,7 +23,7 @@ const styles = {
 
 export const defaultArgs = {
     level: 1,
-    textColor: '#000',
+    textColor: colorUtils.MONOCHROMATIC_DEFAULT_COLORSET,
 };
 
 class TitleAdmin extends Component {
@@ -47,7 +49,10 @@ class TitleAdmin extends Component {
     };
 
     render() {
-        const { p: polyglot, args: { level } } = this.props;
+        const {
+            p: polyglot,
+            args: { level },
+        } = this.props;
         const { textColor } = this.props.args;
 
         return (

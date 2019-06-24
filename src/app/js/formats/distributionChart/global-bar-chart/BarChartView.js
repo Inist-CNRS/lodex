@@ -63,7 +63,7 @@ const BarChartView = ({
                 />
                 <Tooltip itemStyle={styles.tooltipItem} />
                 <CartesianGrid strokeDasharray="3 3" />
-                <Bar dataKey="value" fill="#8884d8">
+                <Bar dataKey="value">
                     {formatData.map((entry, index) => (
                         <Cell
                             key={String(index).concat('_cell_bar')}
@@ -100,8 +100,8 @@ export const getValueAxisProps = ({
     textAnchor: diagonalValueAxis
         ? 'end'
         : direction === 'horizontal'
-            ? 'middle'
-            : 'end',
+        ? 'middle'
+        : 'end',
     type: 'number',
     allowDecimals: !axisRoundValue,
     scale,
@@ -120,8 +120,8 @@ export const getCategoryAxisProps = ({
     textAnchor: diagonalCategoryAxis
         ? 'end'
         : direction === 'horizontal'
-            ? 'end'
-            : 'middle',
+        ? 'end'
+        : 'middle',
     type: 'category',
     dataKey: '_id',
     interval: 0,

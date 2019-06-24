@@ -53,7 +53,7 @@ class Network extends Component {
     }
 
     render() {
-        const { nodes, links, nodeColor } = this.props;
+        const { nodes, links, colorSet } = this.props;
 
         return (
             <div style={styles.container}>
@@ -71,7 +71,7 @@ class Network extends Component {
                         <ForceGraphNode
                             key={node.id}
                             node={node}
-                            fill={nodeColor}
+                            fill={colorSet[0]}
                         />
                     ))}
                     {links.map((link, index) => (
@@ -87,7 +87,7 @@ class Network extends Component {
 }
 
 Network.propTypes = {
-    nodeColor: PropTypes.string.isRequired,
+    colorSet: PropTypes.arrayOf(PropTypes.string),
     nodes: PropTypes.arrayOf(
         PropTypes.shape({
             id: PropTypes.string,

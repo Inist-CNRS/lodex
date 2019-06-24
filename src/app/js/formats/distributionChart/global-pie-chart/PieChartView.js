@@ -26,7 +26,6 @@ const PieChartView = ({ formatData = [], colorSet }) => (
                     cx={155}
                     data={formatData}
                     nameKey="_id"
-                    fill="#8884d8"
                     outerRadius="63%"
                     labelLine
                     label
@@ -50,4 +49,7 @@ PieChartView.propTypes = {
     colorSet: PropTypes.arrayOf(PropTypes.string),
 };
 
-export default compose(injectData(), exportableToPng)(PieChartView);
+export default compose(
+    injectData(),
+    exportableToPng,
+)(PieChartView);

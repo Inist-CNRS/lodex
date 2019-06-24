@@ -7,6 +7,8 @@ import { polyglot as polyglotPropTypes } from '../../../propTypes';
 import updateAdminArgs from '../../shared/updateAdminArgs';
 import RoutineParamsAdmin from '../../shared/RoutineParamsAdmin';
 
+import * as colorUtils from '../../colorUtils';
+
 const styles = {
     container: {
         display: 'flex',
@@ -24,7 +26,7 @@ export const defaultArgs = {
         maxSize: 200,
         orderBy: 'value/asc',
     },
-    colors: '#1D1A31 #4D2D52 #9A4C95 #F08CAE #C1A5A9',
+    colors: colorUtils.MULTICHROMATIC_DEFAULT_COLORSET,
 };
 
 class PieChartAdmin extends Component {
@@ -53,7 +55,10 @@ class PieChartAdmin extends Component {
     };
 
     render() {
-        const { p: polyglot, args: { params, colors } } = this.props;
+        const {
+            p: polyglot,
+            args: { params, colors },
+        } = this.props;
 
         return (
             <div style={styles.container}>

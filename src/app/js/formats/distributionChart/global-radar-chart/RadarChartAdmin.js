@@ -10,6 +10,8 @@ import { polyglot as polyglotPropTypes } from '../../../propTypes';
 import updateAdminArgs from '../../shared/updateAdminArgs';
 import RoutineParamsAdmin from '../../shared/RoutineParamsAdmin';
 
+import * as colorUtils from '../../colorUtils';
+
 const styles = {
     container: {
         display: 'flex',
@@ -27,7 +29,7 @@ export const defaultArgs = {
         maxSize: 5,
         orderBy: 'value/asc',
     },
-    colors: '#1D1A31 #4D2D52 #9A4C95 #F08CAE #C1A5A9',
+    colors: colorUtils.MONOCHROMATIC_DEFAULT_COLORSET,
     axisRoundValue: true,
     scale: 'linear',
 };

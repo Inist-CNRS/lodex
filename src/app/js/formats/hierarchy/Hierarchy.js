@@ -9,6 +9,8 @@ import ZoomIcon from './zoomIcon';
 import CenterGraph from './centerGraph';
 import cliTruncate from 'cli-truncate';
 
+import * as colorUtils from '../colorUtils';
+
 const styles = StyleSheet.create({
     divContainer: {
         overflow: 'hidden',
@@ -16,7 +18,6 @@ const styles = StyleSheet.create({
     },
     link: {
         fill: 'none',
-        stroke: '#555',
         strokeOpacity: 0.4,
         strokeWidth: '1px',
     },
@@ -31,28 +32,8 @@ const styles = StyleSheet.create({
         cursor: 'pointer',
     },
 
-    nodeCircle: {
-        fill: '#999',
-    },
-
-    nodeInternalCircle: {
-        fill: '#555',
-    },
-
     nodeInternalText: {
         fontSize: '12px',
-    },
-
-    nodeLeafText: {
-        fill: '#000000',
-    },
-
-    nodeCollapsedText: {
-        fill: '#000',
-    },
-
-    nodeCollapsedCircle: {
-        fill: '#555',
     },
 
     shadow: {
@@ -194,6 +175,7 @@ class Hierarchy extends PureComponent {
     }
 
     update() {
+        const color = this.props.colors;
         // update tree size
         if (this.root && this.tree) {
             const height = (this.root.leaves().length + 1) * 50;
@@ -303,7 +285,11 @@ class Hierarchy extends PureComponent {
                         ',' +
                         d.parent.y
                     );
-                });
+                })
+                .attr(
+                    'stroke',
+                    colorUtils.isValidColor(color) ? color : 'black',
+                );
 
             // Setup position for every datum; Applying different css classes to parents and leafs.
             let node = this.g()
@@ -364,7 +350,8 @@ class Hierarchy extends PureComponent {
             nodeEnter
                 .append('circle')
                 .attr('class', `${css(styles.nodeInternalCircle)}`)
-                .attr('r', 4);
+                .attr('r', 4)
+                .attr('fill', color);
 
             let nodeInternal = nodeEnter.filter(function(d) {
                 return d.children || d._children;
@@ -415,7 +402,7 @@ class Hierarchy extends PureComponent {
                 .append('rect')
                 .attr('class', '')
                 .style('fill', function(d) {
-                    return '#555';
+                    return color;
                 })
                 .attr('width', 2)
                 .attr('height', 10)
@@ -462,10 +449,7 @@ class Hierarchy extends PureComponent {
     handleMouseOver(d, i, nodes) {
         let leafG = d3.select(nodes[i]);
 
-        leafG
-            .select('rect')
-            .attr('stroke', '#4D4D4D')
-            .attr('stroke-width', '2');
+        leafG.select('rect').attr('stroke-width', '2');
         this.tooltip().style('opacity', 1);
 
         this.tooltip()
@@ -731,7 +715,7 @@ class Hierarchy extends PureComponent {
     }
 
     render() {
-        const { width, height, margin } = this.state;
+        const { width, height } = this.state;
         const { p: polyglot } = this.props;
 
         return (
@@ -804,7 +788,7 @@ class Hierarchy extends PureComponent {
                         position: 'absolute',
                         bottom: '19px',
                         left: '50px',
-                        color: 'black',
+                        color: 'black', // TODO : text
                     }}
                 >
                     {polyglot.t('graph_reinit')}
