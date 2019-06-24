@@ -10,7 +10,12 @@ import { polyglot as polyglotPropTypes } from '../../../propTypes';
 import updateAdminArgs from '../../shared/updateAdminArgs';
 import RoutineParamsAdmin from '../../shared/RoutineParamsAdmin';
 
-import * as colorUtils from '../../colorUtils';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+    faPlusCircle,
+    faMinusCircle,
+    faCheck,
+} from '@fortawesome/free-solid-svg-icons';
 
 const styles = {
     container: {
@@ -29,7 +34,7 @@ export const defaultArgs = {
         maxSize: 5,
         orderBy: 'value/asc',
     },
-    colors: colorUtils.MONOCHROMATIC_DEFAULT_COLORSET,
+    colors: '#FF6347',
     axisRoundValue: true,
     scale: 'linear',
 };
@@ -63,6 +68,10 @@ class RadarChartAdmin extends Component {
         updateAdminArgs('colors', colors, this.props);
     };
 
+    setColorsWithColorPicker = () => {
+        updateAdminArgs('colors', this.getColorsFromPicker(), this.props);
+    };
+
     setAxisRoundValue = () => {
         updateAdminArgs(
             'axisRoundValue',
@@ -75,9 +84,63 @@ class RadarChartAdmin extends Component {
         updateAdminArgs('scale', scale, this.props);
     };
 
+    constructor(props) {
+        super(props);
+        this.state = {
+            colors: [{ color: '#000000' }],
+        };
+    }
+
+    addClick() {
+        this.setState(prevState => ({
+            colors: [...prevState.colors, { color: '#000000' }],
+        }));
+    }
+
+    removeClick() {
+        if (this.state.colors.length != 1) {
+            let colors = [...this.state.colors];
+            colors.pop();
+            this.setState({ colors });
+        }
+    }
+
+    handleChange(i, e) {
+        const { value } = e.target;
+        let colors = [...this.state.colors];
+        colors[i] = { color: value };
+        this.setState({ colors });
+    }
+
+    getColorsFromPicker() {
+        let res = '';
+        for (var i = 0; i < this.state.colors.length; i++) {
+            if (i == 0) {
+                res += this.state.colors[i].color;
+            } else {
+                res += ' ' + this.state.colors[i].color;
+            }
+        }
+        this.setColors;
+        event.preventDefault();
+        return res;
+    }
+
+    createUI() {
+        return this.state.colors.map((element, i) => (
+            <div key={i}>
+                <input
+                    name="color"
+                    type="color"
+                    onChange={this.handleChange.bind(this, i)}
+                />
+            </div>
+        ));
+    }
+
     render() {
         const { p: polyglot } = this.props;
-        const { params, colors, axisRoundValue, scale } = this.props.args;
+        const { params, axisRoundValue, colors, scale } = this.props.args;
 
         return (
             <div style={styles.container}>
@@ -92,6 +155,25 @@ class RadarChartAdmin extends Component {
                     style={styles.input}
                     value={colors}
                 />
+                {this.createUI()}
+                <FontAwesomeIcon
+                    icon={faPlusCircle}
+                    height={24}
+                    onClick={this.addClick.bind(this)}
+                />
+                <FontAwesomeIcon
+                    icon={faMinusCircle}
+                    height={24}
+                    onClick={this.removeClick.bind(this)}
+                />
+                <br />
+                <FontAwesomeIcon
+                    icon={faCheck}
+                    height={24}
+                    onClick={this.setColorsWithColorPicker.bind(this)}
+                />
+                <br />
+                <br />
                 <Checkbox
                     label={polyglot.t('axis_round_value')}
                     onCheck={this.setAxisRoundValue}
