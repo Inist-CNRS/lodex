@@ -28,10 +28,11 @@ _prerequisites_ : mongo, node 8
 ```bash
 npm install
 npm run build
-npm start
+EZMASTER_MONGODB_HOST_PORT=localhost:27017 NODE_ENV=production npm start
 ```
 
-NB : MongoDB should be started and listening on port 27017
+NB : MongoDB should be started and listening on port 27017 (use e.g. `make
+mongo` to launch mongo).
 
 ## Usage
 
