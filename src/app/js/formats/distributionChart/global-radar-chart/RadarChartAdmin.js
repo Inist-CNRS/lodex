@@ -15,7 +15,7 @@ import * as colorUtils from '../../colorUtils';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowUp } from '@fortawesome/free-solid-svg-icons';
 
-let condition = true;
+let isFirstLoading = true; // to fetch values into the picker fields
 
 const styles = {
     container: {
@@ -70,7 +70,6 @@ class RadarChartAdmin extends Component {
 
     setColorsWithColorPicker = () => {
         updateAdminArgs('colors', this.getColorsFromPicker(), this.props);
-        condition = true;
     };
 
     setAxisRoundValue = () => {
@@ -87,15 +86,19 @@ class RadarChartAdmin extends Component {
 
     constructor(props) {
         super(props);
-        const { colors } = this.props.args;
-        const colorsArray = colors.split(' ');
+        isFirstLoading = true; // to initialize values on admin UI opening
+        const colorsArray = this.props.args.colors.split(' ');
+
         this.state = {
-            colors: [
-                { color: colorsArray[0] },
-                { color: colorsArray[1] },
-                { color: colorsArray[2] },
-            ],
+            colors: [{ color: colorsArray[0] }],
         };
+
+        let numberOfPickers = this.getNumberOfPickers();
+        for (let index = 1; index < numberOfPickers; index++) {
+            this.state = {
+                colors: [...this.state.colors, { color: colorsArray[index] }],
+            };
+        }
     }
 
     handleChange(i, e) {
@@ -103,12 +106,10 @@ class RadarChartAdmin extends Component {
         let colors = [...this.state.colors];
         colors[i] = { color: value };
         this.setState({ colors });
-        condition = false;
     }
 
     getColorsFromPicker() {
         let numberOfPickers = this.getNumberOfPickers();
-
         let res = '';
         for (var i = 0; i < numberOfPickers; i++) {
             if (i == 0) {
@@ -118,49 +119,45 @@ class RadarChartAdmin extends Component {
             }
         }
         this.setColors;
-        event.preventDefault();
         return res;
     }
 
     createUI() {
         const { colors } = this.props.args;
         const colorsArray = colors.split(' ');
-        return colorsArray.map((element, i) => (
-            <div key={i}>
-                <input
-                    name="color"
-                    type="color"
-                    onChange={this.handleChange.bind(this, i)}
-                    value={colorsArray[i]}
-                />
-            </div>
-        ));
-    }
-
-    createUI2() {
-        const { colors } = this.props.args;
-        const colorsArray = colors.split(' ');
-        return colorsArray.map((element, i) => (
-            <div key={i}>
-                <input
-                    name="color"
-                    type="color"
-                    onChange={this.handleChange.bind(this, i)}
-                />
-            </div>
-        ));
+        if (isFirstLoading) {
+            isFirstLoading = false;
+            return colorsArray.map((element, i) => (
+                <div key={i}>
+                    <input
+                        name="color"
+                        type="color"
+                        onChange={this.handleChange.bind(this, i)}
+                        value={colorsArray[i]} // this assignment should only be done once
+                    />
+                </div>
+            ));
+        } else {
+            return colorsArray.map((element, i) => (
+                <div key={i}>
+                    <input
+                        name="color"
+                        type="color"
+                        onChange={this.handleChange.bind(this, i)}
+                    />
+                </div>
+            ));
+        }
     }
 
     getNumberOfPickers() {
         const { colors } = this.props.args;
-        const colorsArray = colors.split(' ');
-        return colorsArray.length;
+        return colors.split(' ').length;
     }
 
     render() {
         const { p: polyglot } = this.props;
         const { params, colors, axisRoundValue, scale } = this.props.args;
-
         return (
             <div style={styles.container}>
                 <RoutineParamsAdmin
@@ -174,7 +171,7 @@ class RadarChartAdmin extends Component {
                     style={styles.input}
                     value={colors}
                 />
-                {(condition && this.createUI()) || this.createUI2()}
+                {this.createUI()}
                 <br />
                 <FontAwesomeIcon
                     icon={faArrowUp}
