@@ -10,12 +10,12 @@ import { polyglot as polyglotPropTypes } from '../../../propTypes';
 import updateAdminArgs from '../../shared/updateAdminArgs';
 import RoutineParamsAdmin from '../../shared/RoutineParamsAdmin';
 
+import * as colorUtils from '../../colorUtils';
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-    faPlusCircle,
-    faMinusCircle,
-    faCheck,
-} from '@fortawesome/free-solid-svg-icons';
+import { faArrowUp } from '@fortawesome/free-solid-svg-icons';
+
+let condition = true;
 
 const styles = {
     container: {
@@ -34,7 +34,7 @@ export const defaultArgs = {
         maxSize: 5,
         orderBy: 'value/asc',
     },
-    colors: '#FF6347',
+    colors: colorUtils.MONOCHROMATIC_DEFAULT_COLORSET,
     axisRoundValue: true,
     scale: 'linear',
 };
@@ -70,6 +70,7 @@ class RadarChartAdmin extends Component {
 
     setColorsWithColorPicker = () => {
         updateAdminArgs('colors', this.getColorsFromPicker(), this.props);
+        condition = true;
     };
 
     setAxisRoundValue = () => {
@@ -86,23 +87,15 @@ class RadarChartAdmin extends Component {
 
     constructor(props) {
         super(props);
+        const { colors } = this.props.args;
+        const colorsArray = colors.split(' ');
         this.state = {
-            colors: [{ color: '#000000' }],
+            colors: [
+                { color: colorsArray[0] },
+                { color: colorsArray[1] },
+                { color: colorsArray[2] },
+            ],
         };
-    }
-
-    addClick() {
-        this.setState(prevState => ({
-            colors: [...prevState.colors, { color: '#000000' }],
-        }));
-    }
-
-    removeClick() {
-        if (this.state.colors.length != 1) {
-            let colors = [...this.state.colors];
-            colors.pop();
-            this.setState({ colors });
-        }
     }
 
     handleChange(i, e) {
@@ -110,11 +103,14 @@ class RadarChartAdmin extends Component {
         let colors = [...this.state.colors];
         colors[i] = { color: value };
         this.setState({ colors });
+        condition = false;
     }
 
     getColorsFromPicker() {
+        let numberOfPickers = this.getNumberOfPickers();
+
         let res = '';
-        for (var i = 0; i < this.state.colors.length; i++) {
+        for (var i = 0; i < numberOfPickers; i++) {
             if (i == 0) {
                 res += this.state.colors[i].color;
             } else {
@@ -127,7 +123,24 @@ class RadarChartAdmin extends Component {
     }
 
     createUI() {
-        return this.state.colors.map((element, i) => (
+        const { colors } = this.props.args;
+        const colorsArray = colors.split(' ');
+        return colorsArray.map((element, i) => (
+            <div key={i}>
+                <input
+                    name="color"
+                    type="color"
+                    onChange={this.handleChange.bind(this, i)}
+                    value={colorsArray[i]}
+                />
+            </div>
+        ));
+    }
+
+    createUI2() {
+        const { colors } = this.props.args;
+        const colorsArray = colors.split(' ');
+        return colorsArray.map((element, i) => (
             <div key={i}>
                 <input
                     name="color"
@@ -138,9 +151,15 @@ class RadarChartAdmin extends Component {
         ));
     }
 
+    getNumberOfPickers() {
+        const { colors } = this.props.args;
+        const colorsArray = colors.split(' ');
+        return colorsArray.length;
+    }
+
     render() {
         const { p: polyglot } = this.props;
-        const { params, axisRoundValue, colors, scale } = this.props.args;
+        const { params, colors, axisRoundValue, scale } = this.props.args;
 
         return (
             <div style={styles.container}>
@@ -155,20 +174,10 @@ class RadarChartAdmin extends Component {
                     style={styles.input}
                     value={colors}
                 />
-                {this.createUI()}
-                <FontAwesomeIcon
-                    icon={faPlusCircle}
-                    height={24}
-                    onClick={this.addClick.bind(this)}
-                />
-                <FontAwesomeIcon
-                    icon={faMinusCircle}
-                    height={24}
-                    onClick={this.removeClick.bind(this)}
-                />
+                {(condition && this.createUI()) || this.createUI2()}
                 <br />
                 <FontAwesomeIcon
-                    icon={faCheck}
+                    icon={faArrowUp}
                     height={24}
                     onClick={this.setColorsWithColorPicker.bind(this)}
                 />
