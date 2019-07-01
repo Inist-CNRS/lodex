@@ -15,8 +15,6 @@ import * as colorUtils from '../../colorUtils';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
 
-let isFirstLoading = true; // to fetch values into the picker fields
-
 const styles = {
     container: {
         display: 'flex',
@@ -51,6 +49,7 @@ class RadarChartAdmin extends Component {
             colors: PropTypes.string,
             axisRoundValue: PropTypes.bool,
             scale: PropTypes.oneOf(['log', 'linear']),
+            isFirstLoading: PropTypes.bool, // to fetch values into the picker fields
         }),
         onChange: PropTypes.func.isRequired,
         p: polyglotPropTypes.isRequired,
@@ -85,17 +84,7 @@ class RadarChartAdmin extends Component {
     };
 
     getColorsFromPicker() {
-        let numberOfPickers = this.getColorsArray().length;
-        let res = '';
-        for (var i = 0; i < numberOfPickers; i++) {
-            if (i == 0) {
-                res += this.state.colors[i].color;
-            } else {
-                res += ' ' + this.state.colors[i].color;
-            }
-        }
-        this.setColors;
-        return res;
+        return this.state.colors.map(({ color }) => color).join(' ');
     }
 
     getColorsArray() {
@@ -104,19 +93,10 @@ class RadarChartAdmin extends Component {
 
     constructor(props) {
         super(props);
-        isFirstLoading = true; // to initialize values on admin UI opening
-        const colorsArray = this.getColorsArray();
-
+        this.isFirstLoading = true; // to initialize values on admin UI opening
         this.state = {
-            colors: [{ color: colorsArray[0] }],
+            colors: this.getColorsArray().map(color => ({ color })),
         };
-
-        let numberOfPickers = this.getColorsArray().length;
-        for (let index = 1; index < numberOfPickers; index++) {
-            this.state = {
-                colors: [...this.state.colors, { color: colorsArray[index] }],
-            };
-        }
     }
 
     handleChange(i, e) {
@@ -128,8 +108,9 @@ class RadarChartAdmin extends Component {
 
     createUI() {
         const colorsArray = this.getColorsArray();
-        if (isFirstLoading) {
-            isFirstLoading = false;
+
+        if (this.isFirstLoading) {
+            this.isFirstLoading = false;
             return colorsArray.map((element, i) => (
                 <div key={i}>
                     <input
@@ -141,6 +122,12 @@ class RadarChartAdmin extends Component {
                 </div>
             ));
         } else {
+            // the length of colors array should be limited to match the actual number of pickers
+            [...this.state.colors] = this.state.colors.slice(
+                0,
+                colorsArray.length,
+            );
+
             return colorsArray.map((element, i) => (
                 <div key={i}>
                     <input
@@ -170,14 +157,11 @@ class RadarChartAdmin extends Component {
                     value={colors}
                 />
                 {this.createUI()}
-                <br />
                 <FontAwesomeIcon
                     icon={faCheck}
                     height={24}
                     onClick={this.setColorsWithColorPicker.bind(this)}
                 />
-                <br />
-                <br />
                 <Checkbox
                     label={polyglot.t('axis_round_value')}
                     onCheck={this.setAxisRoundValue}
