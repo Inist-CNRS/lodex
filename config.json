@@ -50,6 +50,7 @@
     "tei",
     "xml",
     "corpus",
+    "zip-raw",
     "zip"
   ],
   "exporters": [
