@@ -48,6 +48,8 @@ class PieChartAdmin extends Component {
         args: defaultArgs,
     };
 
+    setParams = params => updateAdminArgs('params', params, this.props);
+
     constructor(props) {
         super(props);
         this.handleColorsChange = this.handleColorsChange.bind(this);
@@ -63,8 +65,6 @@ class PieChartAdmin extends Component {
         updateAdminArgs('colors', colors, this.props);
         this.setState({ colors });
     }
-
-    setParams = params => updateAdminArgs('params', params, this.props);
 
     render() {
         const {
