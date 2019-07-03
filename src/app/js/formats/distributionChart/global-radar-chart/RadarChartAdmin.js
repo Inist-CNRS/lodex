@@ -25,6 +25,10 @@ const styles = {
     input: {
         width: '100%',
     },
+    colorpicker: {
+        width: '100%',
+        'margin-bottom': '15px',
+    },
 };
 
 export const defaultArgs = {
@@ -150,18 +154,6 @@ class RadarChartAdmin extends Component {
                     onChange={this.setParams}
                     polyglot={polyglot}
                 />
-                <TextField
-                    floatingLabelText={polyglot.t('colors_set')}
-                    onChange={this.setColors}
-                    style={styles.input}
-                    value={colors}
-                />
-                {this.createUI()}
-                <FontAwesomeIcon
-                    icon={faCheck}
-                    height={24}
-                    onClick={this.setColorsWithColorPicker.bind(this)}
-                />
                 <Checkbox
                     label={polyglot.t('axis_round_value')}
                     onCheck={this.setAxisRoundValue}
@@ -180,6 +172,18 @@ class RadarChartAdmin extends Component {
                     />
                     <MenuItem value="log" primaryText={polyglot.t('log')} />
                 </SelectField>
+                <TextField
+                    floatingLabelText={polyglot.t('colors_set')}
+                    onChange={this.setColors}
+                    style={styles.colorpicker}
+                    value={colors}
+                />
+                {this.createUI()}
+                <FontAwesomeIcon
+                    icon={faCheck}
+                    height={24}
+                    onClick={this.setColorsWithColorPicker.bind(this)}
+                />
             </div>
         );
     }
