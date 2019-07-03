@@ -706,7 +706,6 @@ class Hierarchy extends PureComponent {
                         left: '16px',
                     }}
                 >
-                    {/* TODO : put svg data in separate file */}
                     <svg
                         data-tip
                         data-for="mouseIconTooltip"
@@ -742,7 +741,6 @@ class Hierarchy extends PureComponent {
                     }}
                     onClick={this.centerGraphClick}
                 >
-                    {/* TODO : put svg data in separate file */}
                     <svg
                         data-tip
                         data-for="centerIconTooltip"
@@ -769,7 +767,7 @@ class Hierarchy extends PureComponent {
                         position: 'absolute',
                         bottom: '19px',
                         left: '50px',
-                        color: 'black', // TODO : text
+                        color: 'black',
                     }}
                 >
                     {polyglot.t('graph_reinit')}

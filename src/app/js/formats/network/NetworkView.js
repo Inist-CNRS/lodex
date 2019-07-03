@@ -54,10 +54,6 @@ class Network extends Component {
         this.simulation.alpha(1).restart(); // reset simulation alpha and restart it to fix animation on node change
     }
 
-    centerGraphClick() {
-        // TODO !
-    }
-
     render() {
         const { nodes, links, colorSet, p: polyglot } = this.props;
 
@@ -88,9 +84,7 @@ class Network extends Component {
                     ))}
                 </InteractiveForceGraph>
 
-                {/* 1) MouseIcon */}
                 <div>
-                    {/* TODO : put svg data in separate file */}
                     <svg
                         data-tip
                         data-for="mouseIconTooltip"
