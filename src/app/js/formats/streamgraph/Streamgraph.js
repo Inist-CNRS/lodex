@@ -564,23 +564,8 @@ class Streamgraph extends PureComponent {
                 id={`divContainer${this.uniqueId}`}
             >
                 <div
-                    id="zoomIndicatorBackground"
-                    ref={this.zoomIndicat3orBackground}
-                    style={{
-                        visibility: 'hidden',
-                        position: 'absolute',
-                        top: `${margin.top}px`,
-                        left: `${margin.left}px`,
-                        width: `${width}px`,
-                        height: `${height - margin.top - margin.bottom}px`,
-                        backgroundColor: '#0000006b',
-                    }}
-                />
-
-                <div
                     style={{ position: 'absolute', top: '210px', left: '5px' }}
                 >
-                    {/* TODO : put in separate file */}
                     <svg
                         data-tip
                         data-for="svgTooltip"
