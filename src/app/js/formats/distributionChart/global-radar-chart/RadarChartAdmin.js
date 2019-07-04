@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import TextField from 'material-ui/TextField';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import translate from 'redux-polyglot/translate';
@@ -9,6 +8,7 @@ import Checkbox from 'material-ui/Checkbox';
 import { polyglot as polyglotPropTypes } from '../../../propTypes';
 import updateAdminArgs from '../../shared/updateAdminArgs';
 import RoutineParamsAdmin from '../../shared/RoutineParamsAdmin';
+import ColorPickerParamsAdmin from '../../shared/ColorPickerParamsAdmin';
 
 import * as colorUtils from '../../colorUtils';
 
@@ -55,13 +55,26 @@ class RadarChartAdmin extends Component {
         args: defaultArgs,
     };
 
+    constructor(props) {
+        super(props);
+        this.handleColorsChange = this.handleColorsChange.bind(this);
+        this.state = {
+            colors:
+                this.props.args.colors != null
+                    ? this.props.args.colors
+                    : colorUtils.MONOCHROMATIC_DEFAULT_COLORSET,
+        };
+    }
+
     setParams = params => {
         updateAdminArgs('params', params, this.props);
     };
 
-    setColors = (_, colors) => {
+    /* Updates both the text and the pickers */
+    handleColorsChange(colors) {
         updateAdminArgs('colors', colors, this.props);
-    };
+        this.setState({ colors });
+    }
 
     setAxisRoundValue = () => {
         updateAdminArgs(
@@ -77,7 +90,7 @@ class RadarChartAdmin extends Component {
 
     render() {
         const { p: polyglot } = this.props;
-        const { params, colors, axisRoundValue, scale } = this.props.args;
+        const { params, axisRoundValue, scale } = this.props.args;
 
         return (
             <div style={styles.container}>
@@ -86,11 +99,10 @@ class RadarChartAdmin extends Component {
                     onChange={this.setParams}
                     polyglot={polyglot}
                 />
-                <TextField
-                    floatingLabelText={polyglot.t('colors_set')}
-                    onChange={this.setColors}
-                    style={styles.input}
-                    value={colors}
+                <ColorPickerParamsAdmin
+                    colors={this.state.colors || defaultArgs.colors}
+                    onColorsChange={this.handleColorsChange}
+                    polyglot={polyglot}
                 />
                 <Checkbox
                     label={polyglot.t('axis_round_value')}
