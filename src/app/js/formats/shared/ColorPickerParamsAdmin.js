@@ -4,8 +4,6 @@ import TextField from 'material-ui/TextField';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 
-import updateAdminArgs from '../shared/updateAdminArgs';
-
 const styles = {
     input: {
         width: '100%',
@@ -45,12 +43,10 @@ class ColorPickerParamsAdmin extends Component {
         const { value } = e.target;
         let colorsBuffer = [...this.state.colors];
         colorsBuffer[i] = { color: value };
-
-        this.setState({ colors: colorsBuffer });
         this.props.onColorsChange(this.arrayFixer(colorsBuffer));
     }
 
-    /** Fixes the length and format of the array made from state.colors to pass it to onColorsChange */
+    /** Fixes the length and format of the array made from state.colors to pass it to the parent Component with onColorsChange */
     arrayFixer(arr) {
         return arr
             .map(({ color }) => color)
