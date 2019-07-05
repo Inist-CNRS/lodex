@@ -32,14 +32,6 @@ class ColorPickerParamsAdmin extends Component {
         };
     }
 
-    setColorsWithColorPicker() {
-        updateAdminArgs('colors', this.getColorsFromPicker(), this.props);
-    }
-
-    getColorsFromPicker() {
-        return this.state.colors.map(({ color }) => color).join(' ');
-    }
-
     getColorsArray() {
         return this.props.colors.split(' ');
     }
@@ -102,4 +94,3 @@ class ColorPickerParamsAdmin extends Component {
 }
 
 export default ColorPickerParamsAdmin;
-
