@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import TextField from 'material-ui/TextField';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import translate from 'redux-polyglot/translate';
@@ -9,11 +8,9 @@ import Checkbox from 'material-ui/Checkbox';
 import { polyglot as polyglotPropTypes } from '../../../propTypes';
 import updateAdminArgs from '../../shared/updateAdminArgs';
 import RoutineParamsAdmin from '../../shared/RoutineParamsAdmin';
+import ColorPickerParamsAdmin from '../../shared/ColorPickerParamsAdmin';
 
 import * as colorUtils from '../../colorUtils';
-
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCheck } from '@fortawesome/free-solid-svg-icons';
 
 const styles = {
     container: {
@@ -24,10 +21,6 @@ const styles = {
     },
     input: {
         width: '100%',
-    },
-    colorpicker: {
-        width: '100%',
-        'margin-bottom': '15px',
     },
 };
 
@@ -53,7 +46,6 @@ class RadarChartAdmin extends Component {
             colors: PropTypes.string,
             axisRoundValue: PropTypes.bool,
             scale: PropTypes.oneOf(['log', 'linear']),
-            isFirstLoading: PropTypes.bool, // to fetch values into the picker fields
         }),
         onChange: PropTypes.func.isRequired,
         p: polyglotPropTypes.isRequired,
@@ -62,6 +54,17 @@ class RadarChartAdmin extends Component {
     static defaultProps = {
         args: defaultArgs,
     };
+
+    constructor(props) {
+        super(props);
+        this.handleColorsChange = this.handleColorsChange.bind(this);
+        this.state = {
+            colors:
+                this.props.args.colors != null
+                    ? this.props.args.colors
+                    : colorUtils.MONOCHROMATIC_DEFAULT_COLORSET,
+        };
+    }
 
     setParams = params => {
         updateAdminArgs('params', params, this.props);
@@ -79,76 +82,22 @@ class RadarChartAdmin extends Component {
         updateAdminArgs('scale', scale, this.props);
     };
 
-    setColors = (_, colors) => {
+    handleColorsChange(colors) {
         updateAdminArgs('colors', colors, this.props);
-    };
-
-    setColorsWithColorPicker = () => {
-        updateAdminArgs('colors', this.getColorsFromPicker(), this.props);
-    };
-
-    getColorsFromPicker() {
-        return this.state.colors.map(({ color }) => color).join(' ');
-    }
-
-    getColorsArray() {
-        return this.props.args.colors.split(' ');
-    }
-
-    constructor(props) {
-        super(props);
-        this.isFirstLoading = true; // to initialize values on admin UI opening
-        this.state = {
-            colors: this.getColorsArray().map(color => ({ color })),
-        };
-    }
-
-    handleChange(i, e) {
-        const { value } = e.target;
-        let colors = [...this.state.colors];
-        colors[i] = { color: value };
         this.setState({ colors });
-    }
-
-    createUI() {
-        const colorsArray = this.getColorsArray();
-
-        if (this.isFirstLoading) {
-            this.isFirstLoading = false;
-            return colorsArray.map((element, i) => (
-                <div key={i}>
-                    <input
-                        name="color"
-                        type="color"
-                        onChange={this.handleChange.bind(this, i)}
-                        value={colorsArray[i]} // this assignment should only be done once
-                    />
-                </div>
-            ));
-        } else {
-            // the length of colors array should be limited to match the actual number of pickers
-            [...this.state.colors] = this.state.colors.slice(
-                0,
-                colorsArray.length,
-            );
-
-            return colorsArray.map((element, i) => (
-                <div key={i}>
-                    <input
-                        name="color"
-                        type="color"
-                        onChange={this.handleChange.bind(this, i)}
-                    />
-                </div>
-            ));
-        }
     }
 
     render() {
         const { p: polyglot } = this.props;
-        const { params, colors, axisRoundValue, scale } = this.props.args;
+        const { params, axisRoundValue, scale } = this.props.args;
+
         return (
             <div style={styles.container}>
+                <ColorPickerParamsAdmin
+                    colors={this.state.colors || defaultArgs.colors}
+                    onColorsChange={this.handleColorsChange}
+                    polyglot={polyglot}
+                />
                 <RoutineParamsAdmin
                     params={params || defaultArgs.params}
                     onChange={this.setParams}
@@ -172,18 +121,6 @@ class RadarChartAdmin extends Component {
                     />
                     <MenuItem value="log" primaryText={polyglot.t('log')} />
                 </SelectField>
-                <TextField
-                    floatingLabelText={polyglot.t('colors_set')}
-                    onChange={this.setColors}
-                    style={styles.colorpicker}
-                    value={colors}
-                />
-                {this.createUI()}
-                <FontAwesomeIcon
-                    icon={faCheck}
-                    height={24}
-                    onClick={this.setColorsWithColorPicker.bind(this)}
-                />
             </div>
         );
     }
