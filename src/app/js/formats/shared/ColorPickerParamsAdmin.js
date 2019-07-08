@@ -39,6 +39,9 @@ class ColorPickerParamsAdmin extends Component {
     handleChangeText(e) {
         this.setState({ numberOfPickers: e.target.value.split(' ').length });
         this.props.onColorsChange(e.target.value);
+        this.setState({
+            colors: e.target.value.split(' ').map(color => ({ color })),
+        });
     }
 
     handleChangePicker(i, e) {
@@ -47,19 +50,9 @@ class ColorPickerParamsAdmin extends Component {
         colorsBuffer[i] = { color: value };
 
         this.setState({ colors: colorsBuffer });
-        this.props.onColorsChange(this.arrayFixer(colorsBuffer));
-    }
-
-    /** Fixes the length and format of the array made from state.colors to pass it to onColorsChange */
-    arrayFixer(arr) {
-        return arr
-            .map(({ color }) => color)
-            .join(' ')
-            .slice(
-                0,
-                7 * this.state.numberOfPickers +
-                    (this.state.numberOfPickers - 1),
-            );
+        this.props.onColorsChange(
+            colorsBuffer.map(({ color }) => color).join(' '),
+        );
     }
 
     createUI() {
