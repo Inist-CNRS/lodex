@@ -39,7 +39,6 @@ const styles = {
     },
     section: {
         margin: '20px 0',
-        fontFamily: 'Roboto, sans-serif',
     },
     label: {
         display: 'flex',
