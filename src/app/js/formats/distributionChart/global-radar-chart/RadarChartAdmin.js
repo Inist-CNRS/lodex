@@ -93,14 +93,14 @@ class RadarChartAdmin extends Component {
 
         return (
             <div style={styles.container}>
-                <ColorPickerParamsAdmin
-                    colors={this.state.colors || defaultArgs.colors}
-                    onColorsChange={this.handleColorsChange}
-                    polyglot={polyglot}
-                />
                 <RoutineParamsAdmin
                     params={params || defaultArgs.params}
                     onChange={this.setParams}
+                    polyglot={polyglot}
+                />
+                <ColorPickerParamsAdmin
+                    colors={this.state.colors || defaultArgs.colors}
+                    onColorsChange={this.handleColorsChange}
                     polyglot={polyglot}
                 />
                 <Checkbox

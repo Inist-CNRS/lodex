@@ -6,6 +6,7 @@ import translate from 'redux-polyglot/translate';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import updateAdminArgs from '../shared/updateAdminArgs';
 import RoutineParamsAdmin from '../shared/RoutineParamsAdmin';
+import ColorPickerParamsAdmin from '../shared/ColorPickerParamsAdmin';
 
 import * as colorUtils from '../colorUtils';
 
@@ -50,20 +51,32 @@ class BubbleAdmin extends Component {
         args: defaultArgs,
     };
 
+    constructor(props) {
+        super(props);
+        this.handleColorsChange = this.handleColorsChange.bind(this);
+        this.state = {
+            colors:
+                this.props.args.colors != null
+                    ? this.props.args.colors
+                    : colorUtils.MULTICHROMATIC_DEFAULT_COLORSET,
+        };
+    }
+
     setParams = params => updateAdminArgs('params', params, this.props);
 
     setDiameter = (_, diameter) => {
         updateAdminArgs('diameter', diameter, this.props);
     };
 
-    setColors = (_, colors) => {
+    handleColorsChange(colors) {
         updateAdminArgs('colors', colors, this.props);
-    };
+        this.setState({ colors });
+    }
 
     render() {
         const {
             p: polyglot,
-            args: { params, colors },
+            args: { params },
         } = this.props;
         const { diameter } = this.props.args;
 
@@ -74,17 +87,16 @@ class BubbleAdmin extends Component {
                     onChange={this.setParams}
                     polyglot={polyglot}
                 />
+                <ColorPickerParamsAdmin
+                    colors={this.state.colors || defaultArgs.colors}
+                    onColorsChange={this.handleColorsChange}
+                    polyglot={polyglot}
+                />
                 <TextField
                     floatingLabelText={polyglot.t('diameter')}
                     onChange={this.setDiameter}
                     style={styles.input}
                     value={diameter}
-                />
-                <TextField
-                    floatingLabelText={polyglot.t('colors_set')}
-                    onChange={this.setColors}
-                    style={styles.input}
-                    value={colors}
                 />
             </div>
         );

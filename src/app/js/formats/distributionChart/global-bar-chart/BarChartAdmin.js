@@ -9,6 +9,7 @@ import Checkbox from 'material-ui/Checkbox';
 import { polyglot as polyglotPropTypes } from '../../../propTypes';
 import updateAdminArgs from '../../shared/updateAdminArgs';
 import RoutineParamsAdmin from '../../shared/RoutineParamsAdmin';
+import ColorPickerParamsAdmin from '../../shared/ColorPickerParamsAdmin';
 
 import * as colorUtils from '../../colorUtils';
 
@@ -67,11 +68,23 @@ class BarChartAdmin extends Component {
         args: defaultArgs,
     };
 
+    constructor(props) {
+        super(props);
+        this.handleColorsChange = this.handleColorsChange.bind(this);
+        this.state = {
+            colors:
+                this.props.args.colors != null
+                    ? this.props.args.colors
+                    : colorUtils.MULTICHROMATIC_DEFAULT_COLORSET,
+        };
+    }
+
     setParams = params => updateAdminArgs('params', params, this.props);
 
-    setColors = (_, colors) => {
+    handleColorsChange(colors) {
         updateAdminArgs('colors', colors, this.props);
-    };
+        this.setState({ colors });
+    }
 
     setAxisRoundValue = () => {
         updateAdminArgs(
@@ -122,7 +135,6 @@ class BarChartAdmin extends Component {
             p: polyglot,
             args: {
                 params,
-                colors,
                 axisRoundValue,
                 diagonalValueAxis,
                 diagonalCategoryAxis,
@@ -141,11 +153,10 @@ class BarChartAdmin extends Component {
                     onChange={this.setParams}
                     polyglot={polyglot}
                 />
-                <TextField
-                    floatingLabelText={polyglot.t('colors_set')}
-                    onChange={this.setColors}
-                    style={styles.input}
-                    value={colors}
+                <ColorPickerParamsAdmin
+                    colors={this.state.colors || defaultArgs.colors}
+                    onColorsChange={this.handleColorsChange}
+                    polyglot={polyglot}
                 />
                 <SelectField
                     floatingLabelText={polyglot.t('direction')}

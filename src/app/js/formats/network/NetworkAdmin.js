@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
-import TextField from 'material-ui/TextField';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import updateAdminArgs from '../shared/updateAdminArgs';
 import RoutineParamsAdmin from '../shared/RoutineParamsAdmin';
+import ColorPickerParamsAdmin from '../shared/ColorPickerParamsAdmin';
 
 import * as colorUtils from '../colorUtils';
 
@@ -48,18 +48,30 @@ class NetworkAdmin extends Component {
         args: defaultArgs,
     };
 
+    constructor(props) {
+        super(props);
+        this.handleColorsChange = this.handleColorsChange.bind(this);
+        this.state = {
+            colors:
+                this.props.args.colors != null
+                    ? this.props.args.colors
+                    : colorUtils.MONOCHROMATIC_DEFAULT_COLORSET,
+        };
+    }
+
     setParams = params => {
         updateAdminArgs('params', params, this.props);
     };
 
-    setColors = (_, colors) => {
+    handleColorsChange(colors) {
         updateAdminArgs('colors', colors, this.props);
-    };
+        this.setState({ colors });
+    }
 
     render() {
         const {
             p: polyglot,
-            args: { params, colors },
+            args: { params },
         } = this.props;
 
         return (
@@ -69,11 +81,10 @@ class NetworkAdmin extends Component {
                     polyglot={polyglot}
                     onChange={this.setParams}
                 />
-                <TextField
-                    floatingLabelText={polyglot.t('colors_set')}
-                    onChange={this.setColors}
-                    style={styles.input}
-                    value={colors}
+                <ColorPickerParamsAdmin
+                    colors={this.state.colors || defaultArgs.colors}
+                    onColorsChange={this.handleColorsChange}
+                    polyglot={polyglot}
                 />
             </div>
         );

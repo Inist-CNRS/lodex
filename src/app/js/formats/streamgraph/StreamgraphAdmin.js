@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import TextField from 'material-ui/TextField';
 import translate from 'redux-polyglot/translate';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import updateAdminArgs from '../shared/updateAdminArgs';
 import RoutineParamsAdmin from '../shared/RoutineParamsAdmin';
+import ColorPickerParamsAdmin from '../shared/ColorPickerParamsAdmin';
 
+import * as colorUtils from '../colorUtils';
 const styles = {
     container: {
         display: 'flex',
@@ -24,8 +25,7 @@ export const defaultArgs = {
         maxSize: 200,
         orderBy: 'value/asc',
     },
-    colors:
-        '#e6194B #3cb44b #ffe119 #4363d8 #f58231 #911eb4 #42d4f4 #f032e6 #bfef45 #fabebe #469990 #e6beff #9A6324 #fffac8 #800000 #aaffc3 #808000 #ffd8b1 #000075 #a9a9a9 #ffffff #00000',
+    colors: colorUtils.MULTICHROMATIC_DEFAULT_COLORSET_STREAMGRAPH,
 };
 
 class StreamgraphAdmin extends Component {
@@ -41,16 +41,28 @@ class StreamgraphAdmin extends Component {
         args: defaultArgs,
     };
 
+    constructor(props) {
+        super(props);
+        this.handleColorsChange = this.handleColorsChange.bind(this);
+        this.state = {
+            colors:
+                this.props.args.colors != null
+                    ? this.props.args.colors
+                    : colorUtils.MULTICHROMATIC_DEFAULT_COLORSET_STREAMGRAPH,
+        };
+    }
+
     setParams = params => updateAdminArgs('params', params, this.props);
 
-    setColors = (_, colors) => {
+    handleColorsChange(colors) {
         updateAdminArgs('colors', colors, this.props);
-    };
+        this.setState({ colors });
+    }
 
     render() {
         const {
             p: polyglot,
-            args: { colors, params },
+            args: { params },
         } = this.props;
 
         return (
@@ -60,11 +72,10 @@ class StreamgraphAdmin extends Component {
                     polyglot={polyglot}
                     onChange={this.setParams}
                 />
-                <TextField
-                    floatingLabelText={polyglot.t('colors_set')}
-                    onChange={this.setColors}
-                    style={styles.input}
-                    value={colors}
+                <ColorPickerParamsAdmin
+                    colors={this.state.colors || defaultArgs.colors}
+                    onColorsChange={this.handleColorsChange}
+                    polyglot={polyglot}
                 />
             </div>
         );
