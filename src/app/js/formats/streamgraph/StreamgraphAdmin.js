@@ -67,6 +67,7 @@ class StreamgraphAdmin extends Component {
                     params={params || defaultArgs.params}
                     polyglot={polyglot}
                     onChange={this.setParams}
+                    fieldsToShow={'maxSize, minValue, maxValue, orderBy'}
                 />
                 <ColorPickerParamsAdmin
                     colors={this.state.colors || defaultArgs.colors}

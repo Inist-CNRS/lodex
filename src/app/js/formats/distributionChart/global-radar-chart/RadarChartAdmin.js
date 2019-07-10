@@ -93,6 +93,7 @@ class RadarChartAdmin extends Component {
                     params={params || defaultArgs.params}
                     onChange={this.setParams}
                     polyglot={polyglot}
+                    fieldsToShow={'maxSize, minValue, maxValue, orderBy'}
                 />
                 <ColorPickerParamsAdmin
                     colors={this.state.colors}
