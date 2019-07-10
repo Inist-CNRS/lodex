@@ -568,7 +568,7 @@ class Streamgraph extends PureComponent {
                 >
                     <svg
                         data-tip
-                        data-for="svgTooltip"
+                        data-for="mouseIconTooltip"
                         width="45"
                         height="45"
                         viewBox="0 0 197.896 197.896"
@@ -583,7 +583,7 @@ class Streamgraph extends PureComponent {
                         />
                     </svg>
 
-                    <ReactTooltip id="svgTooltip">
+                    <ReactTooltip id="mouseIconTooltip" effect="solid">
                         <ul>
                             {polyglot.t('user_can_interact_with_mouse_1')}
                             {<br />}

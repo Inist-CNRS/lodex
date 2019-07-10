@@ -723,7 +723,7 @@ class Hierarchy extends PureComponent {
                         />
                     </svg>
 
-                    <ReactTooltip id="mouseIconTooltip">
+                    <ReactTooltip id="mouseIconTooltip" effect="solid">
                         <ul>
                             {polyglot.t('user_can_interact_with_mouse_1')}
                             {<br />}
@@ -754,7 +754,11 @@ class Hierarchy extends PureComponent {
                         </g>
                     </svg>
 
-                    <ReactTooltip id="centerIconTooltip">
+                    <ReactTooltip
+                        id="centerIconTooltip"
+                        place="right"
+                        effect="solid"
+                    >
                         <ul>{polyglot.t('graph_reinit')}</ul>
                     </ReactTooltip>
                 </div>

@@ -101,7 +101,7 @@ class Network extends Component {
                             d="M114.742 70.936l-4.807 5.87h9.602zM114.913 121.223l4.796-5.869h-9.591z"
                         />
                     </svg>
-                    <ReactTooltip id="mouseIconTooltip">
+                    <ReactTooltip id="mouseIconTooltip" effect="solid">
                         <ul>
                             {polyglot.t('user_can_interact_with_mouse_1')}
                             {<br />}
