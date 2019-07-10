@@ -76,7 +76,10 @@ class CartographyAdmin extends Component {
     };
 
     render() {
-        const { p: polyglot, args: { params } } = this.props;
+        const {
+            p: polyglot,
+            args: { params },
+        } = this.props;
         const { colorScheme, hoverColorScheme } = this.props.args;
         return (
             <div style={styles.container}>
@@ -84,6 +87,7 @@ class CartographyAdmin extends Component {
                     params={params || defaultArgs.params}
                     onChange={this.setParams}
                     polyglot={polyglot}
+                    fieldsToShow={'maxSize, minValue, maxValue, orderBy'}
                 />
                 <GradientSchemeSelector
                     label={polyglot.t('color_scheme')}

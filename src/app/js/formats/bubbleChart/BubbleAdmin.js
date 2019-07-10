@@ -73,6 +73,7 @@ class BubbleAdmin extends Component {
                     params={params || defaultArgs.params}
                     onChange={this.setParams}
                     polyglot={polyglot}
+                    fieldsToShow={'maxSize, minValue, maxValue, orderBy'}
                 />
                 <TextField
                     floatingLabelText={polyglot.t('diameter')}
