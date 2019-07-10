@@ -107,7 +107,7 @@ class HierarchyAdmin extends Component {
                     params={params || defaultArgs.params}
                     polyglot={polyglot}
                     onChange={this.setParams}
-                    fieldsToShow={'maxSize, minValue, maxValue, orderBy'}
+                    fieldsToShow={'minValue, maxValue, orderBy'}
                 />
                 <TextField
                     floatingLabelText={polyglot.t('colors_set')}
