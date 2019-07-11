@@ -52,10 +52,7 @@ class PieChartAdmin extends Component {
         super(props);
         this.handleColorsChange = this.handleColorsChange.bind(this);
         this.state = {
-            colors:
-                this.props.args.colors != null
-                    ? this.props.args.colors
-                    : colorUtils.MULTICHROMATIC_DEFAULT_COLORSET,
+            colors: this.props.args.colors || defaultArgs.colors,
         };
     }
 

@@ -59,10 +59,7 @@ class RadarChartAdmin extends Component {
         super(props);
         this.handleColorsChange = this.handleColorsChange.bind(this);
         this.state = {
-            colors:
-                this.props.args.colors != null
-                    ? this.props.args.colors
-                    : colorUtils.MONOCHROMATIC_DEFAULT_COLORSET,
+            colors: this.props.args.colors || defaultArgs.colors,
         };
     }
 
