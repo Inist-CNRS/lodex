@@ -17,26 +17,22 @@ const styles = {
 class ColorPickerParamsAdmin extends Component {
     static propTypes = {
         colors: PropTypes.string,
-        onColorsChange: PropTypes.func.isRequired,
+        onChange: PropTypes.func.isRequired,
         polyglot: polyglotPropTypes.isRequired,
     };
 
     constructor(props) {
         super(props);
         this.state = {
-            colors: this.getColorsArray().map(color => ({ color })),
+            colors: this.props.colors.split(' ').map(color => ({ color })),
         };
-    }
-
-    getColorsArray() {
-        return this.props.colors.split(' ');
     }
 
     handleChangeText(e) {
         this.setState({
             colors: e.target.value.split(' ').map(color => ({ color })),
         });
-        this.props.onColorsChange(e.target.value);
+        this.props.onChange(e.target.value);
     }
 
     handleChangePicker(i, e) {
@@ -44,33 +40,35 @@ class ColorPickerParamsAdmin extends Component {
         colorsBuffer[i] = { color: e.target.value };
 
         this.setState({ colors: colorsBuffer });
-        this.props.onColorsChange(
-            colorsBuffer.map(({ color }) => color).join(' '),
-        );
+        this.props.onChange(colorsBuffer.map(({ color }) => color).join(' '));
     }
 
     createUI() {
-        const colorsArray = this.getColorsArray();
-        return colorsArray.map((element, i) => (
+        const colors = this.state.colors;
+        return colors.map((element, i) => (
             <div key={i}>
                 <input
                     name="color"
                     type="color"
                     onChange={this.handleChangePicker.bind(this, i)}
-                    value={colorsArray[i]}
+                    value={colors[i].color}
                 />
             </div>
         ));
     }
 
     render() {
+        const colorsToString = this.state.colors
+            .map(({ color }) => color)
+            .join(' ');
+
         return (
             <Fragment>
                 <TextField
                     floatingLabelText={this.props.polyglot.t('colors_set')}
                     onChange={this.handleChangeText.bind(this)}
                     style={styles.colorpicker}
-                    value={this.props.colors}
+                    value={colorsToString}
                 />
                 {this.createUI()}
             </Fragment>

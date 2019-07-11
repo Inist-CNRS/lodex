@@ -53,7 +53,7 @@ class BubbleAdmin extends Component {
 
     constructor(props) {
         super(props);
-        this.handleColorsChange = this.handleColorsChange.bind(this);
+        this.setColors = this.setColors.bind(this);
         this.state = {
             colors: this.props.args.colors || defaultArgs.colors,
         };
@@ -61,14 +61,13 @@ class BubbleAdmin extends Component {
 
     setParams = params => updateAdminArgs('params', params, this.props);
 
+    setColors(colors) {
+        updateAdminArgs('colors', colors, this.props);
+    }
+
     setDiameter = (_, diameter) => {
         updateAdminArgs('diameter', diameter, this.props);
     };
-
-    handleColorsChange(colors) {
-        updateAdminArgs('colors', colors, this.props);
-        this.setState({ colors });
-    }
 
     render() {
         const {
@@ -86,7 +85,7 @@ class BubbleAdmin extends Component {
                 />
                 <ColorPickerParamsAdmin
                     colors={this.state.colors || defaultArgs.colors}
-                    onColorsChange={this.handleColorsChange}
+                    onChange={this.setColors}
                     polyglot={polyglot}
                 />
                 <TextField
