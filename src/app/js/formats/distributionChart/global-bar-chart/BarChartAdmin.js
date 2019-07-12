@@ -9,6 +9,7 @@ import Checkbox from 'material-ui/Checkbox';
 import { polyglot as polyglotPropTypes } from '../../../propTypes';
 import updateAdminArgs from '../../shared/updateAdminArgs';
 import RoutineParamsAdmin from '../../shared/RoutineParamsAdmin';
+import ColorPickerParamsAdmin from '../../shared/ColorPickerParamsAdmin';
 
 import * as colorUtils from '../../colorUtils';
 
@@ -67,11 +68,19 @@ class BarChartAdmin extends Component {
         args: defaultArgs,
     };
 
+    constructor(props) {
+        super(props);
+        this.setColors = this.setColors.bind(this);
+        this.state = {
+            colors: this.props.args.colors || defaultArgs.colors,
+        };
+    }
+
     setParams = params => updateAdminArgs('params', params, this.props);
 
-    setColors = (_, colors) => {
-        updateAdminArgs('colors', colors, this.props);
-    };
+    setColors(colors) {
+        updateAdminArgs('colors', colors || defaultArgs.colors, this.props);
+    }
 
     setAxisRoundValue = () => {
         updateAdminArgs(
@@ -122,7 +131,6 @@ class BarChartAdmin extends Component {
             p: polyglot,
             args: {
                 params,
-                colors,
                 axisRoundValue,
                 diagonalValueAxis,
                 diagonalCategoryAxis,
@@ -141,11 +149,10 @@ class BarChartAdmin extends Component {
                     onChange={this.setParams}
                     polyglot={polyglot}
                 />
-                <TextField
-                    floatingLabelText={polyglot.t('colors_set')}
+                <ColorPickerParamsAdmin
+                    colors={this.state.colors}
                     onChange={this.setColors}
-                    style={styles.input}
-                    value={colors}
+                    polyglot={polyglot}
                 />
                 <SelectField
                     floatingLabelText={polyglot.t('direction')}

@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import TextField from 'material-ui/TextField';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import translate from 'redux-polyglot/translate';
@@ -9,6 +8,7 @@ import Checkbox from 'material-ui/Checkbox';
 import { polyglot as polyglotPropTypes } from '../../../propTypes';
 import updateAdminArgs from '../../shared/updateAdminArgs';
 import RoutineParamsAdmin from '../../shared/RoutineParamsAdmin';
+import ColorPickerParamsAdmin from '../../shared/ColorPickerParamsAdmin';
 
 import * as colorUtils from '../../colorUtils';
 
@@ -55,12 +55,16 @@ class RadarChartAdmin extends Component {
         args: defaultArgs,
     };
 
+    constructor(props) {
+        super(props);
+        this.setColors = this.setColors.bind(this);
+        this.state = {
+            colors: this.props.args.colors || defaultArgs.colors,
+        };
+    }
+
     setParams = params => {
         updateAdminArgs('params', params, this.props);
-    };
-
-    setColors = (_, colors) => {
-        updateAdminArgs('colors', colors, this.props);
     };
 
     setAxisRoundValue = () => {
@@ -75,9 +79,13 @@ class RadarChartAdmin extends Component {
         updateAdminArgs('scale', scale, this.props);
     };
 
+    setColors(colors) {
+        updateAdminArgs('colors', colors || defaultArgs.colors, this.props);
+    }
+
     render() {
         const { p: polyglot } = this.props;
-        const { params, colors, axisRoundValue, scale } = this.props.args;
+        const { params, axisRoundValue, scale } = this.props.args;
 
         return (
             <div style={styles.container}>
@@ -86,11 +94,10 @@ class RadarChartAdmin extends Component {
                     onChange={this.setParams}
                     polyglot={polyglot}
                 />
-                <TextField
-                    floatingLabelText={polyglot.t('colors_set')}
+                <ColorPickerParamsAdmin
+                    colors={this.state.colors}
                     onChange={this.setColors}
-                    style={styles.input}
-                    value={colors}
+                    polyglot={polyglot}
                 />
                 <Checkbox
                     label={polyglot.t('axis_round_value')}

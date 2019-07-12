@@ -6,6 +6,7 @@ import TextField from 'material-ui/TextField';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import updateAdminArgs from '../shared/updateAdminArgs';
 import RoutineParamsAdmin from '../shared/RoutineParamsAdmin';
+import ColorPickerParamsAdmin from '../shared/ColorPickerParamsAdmin';
 
 import * as colorUtils from '../colorUtils';
 
@@ -51,13 +52,21 @@ class HierarchyAdmin extends Component {
         args: defaultArgs,
     };
 
+    constructor(props) {
+        super(props);
+        this.setColors = this.setColors.bind(this);
+        this.state = {
+            colors: this.props.args.colors || defaultArgs.colors,
+        };
+    }
+
     setParams = params => {
         updateAdminArgs('params', params, this.props);
     };
 
-    setColors = (_, colors) => {
-        updateAdminArgs('colors', colors, this.props);
-    };
+    setColors(colors) {
+        updateAdminArgs('colors', colors || defaultArgs.colors, this.props);
+    }
 
     setMaxLabelLength = (_, maxLabelLength) => {
         this.setParams({
@@ -98,7 +107,7 @@ class HierarchyAdmin extends Component {
     render() {
         const {
             p: polyglot,
-            args: { params, colors },
+            args: { params },
         } = this.props;
 
         return (
@@ -108,11 +117,10 @@ class HierarchyAdmin extends Component {
                     polyglot={polyglot}
                     onChange={this.setParams}
                 />
-                <TextField
-                    floatingLabelText={polyglot.t('colors_set')}
+                <ColorPickerParamsAdmin
+                    colors={this.state.colors || defaultArgs.colors}
                     onChange={this.setColors}
-                    style={styles.input}
-                    value={colors}
+                    polyglot={polyglot}
                 />
                 <TextField
                     floatingLabelText={polyglot.t('max_char_number_in_labels')}

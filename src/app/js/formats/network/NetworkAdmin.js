@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
-import TextField from 'material-ui/TextField';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import updateAdminArgs from '../shared/updateAdminArgs';
 import RoutineParamsAdmin from '../shared/RoutineParamsAdmin';
+import ColorPickerParamsAdmin from '../shared/ColorPickerParamsAdmin';
 
 import * as colorUtils from '../colorUtils';
 
@@ -48,18 +48,26 @@ class NetworkAdmin extends Component {
         args: defaultArgs,
     };
 
+    constructor(props) {
+        super(props);
+        this.setColors = this.setColors.bind(this);
+        this.state = {
+            colors: this.props.args.colors || defaultArgs.colors,
+        };
+    }
+
     setParams = params => {
         updateAdminArgs('params', params, this.props);
     };
 
-    setColors = (_, colors) => {
-        updateAdminArgs('colors', colors, this.props);
-    };
+    setColors(colors) {
+        updateAdminArgs('colors', colors || defaultArgs.colors, this.props);
+    }
 
     render() {
         const {
             p: polyglot,
-            args: { params, colors },
+            args: { params },
         } = this.props;
 
         return (
@@ -69,11 +77,10 @@ class NetworkAdmin extends Component {
                     polyglot={polyglot}
                     onChange={this.setParams}
                 />
-                <TextField
-                    floatingLabelText={polyglot.t('colors_set')}
+                <ColorPickerParamsAdmin
+                    colors={this.state.colors}
                     onChange={this.setColors}
-                    style={styles.input}
-                    value={colors}
+                    polyglot={polyglot}
                 />
             </div>
         );

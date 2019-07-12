@@ -6,6 +6,7 @@ import translate from 'redux-polyglot/translate';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import updateAdminArgs from '../shared/updateAdminArgs';
 import RoutineParamsAdmin from '../shared/RoutineParamsAdmin';
+import ColorPickerParamsAdmin from '../shared/ColorPickerParamsAdmin';
 
 import * as colorUtils from '../colorUtils';
 
@@ -50,20 +51,28 @@ class BubbleAdmin extends Component {
         args: defaultArgs,
     };
 
+    constructor(props) {
+        super(props);
+        this.setColors = this.setColors.bind(this);
+        this.state = {
+            colors: this.props.args.colors || defaultArgs.colors,
+        };
+    }
+
     setParams = params => updateAdminArgs('params', params, this.props);
+
+    setColors(colors) {
+        updateAdminArgs('colors', colors, this.props);
+    }
 
     setDiameter = (_, diameter) => {
         updateAdminArgs('diameter', diameter, this.props);
     };
 
-    setColors = (_, colors) => {
-        updateAdminArgs('colors', colors, this.props);
-    };
-
     render() {
         const {
             p: polyglot,
-            args: { params, colors },
+            args: { params },
         } = this.props;
         const { diameter } = this.props.args;
 
@@ -74,17 +83,16 @@ class BubbleAdmin extends Component {
                     onChange={this.setParams}
                     polyglot={polyglot}
                 />
+                <ColorPickerParamsAdmin
+                    colors={this.state.colors || defaultArgs.colors}
+                    onChange={this.setColors}
+                    polyglot={polyglot}
+                />
                 <TextField
                     floatingLabelText={polyglot.t('diameter')}
                     onChange={this.setDiameter}
                     style={styles.input}
                     value={diameter}
-                />
-                <TextField
-                    floatingLabelText={polyglot.t('colors_set')}
-                    onChange={this.setColors}
-                    style={styles.input}
-                    value={colors}
                 />
             </div>
         );
