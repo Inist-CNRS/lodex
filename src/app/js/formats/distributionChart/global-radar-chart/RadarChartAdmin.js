@@ -57,7 +57,7 @@ class RadarChartAdmin extends Component {
 
     constructor(props) {
         super(props);
-        this.handleColorsChange = this.handleColorsChange.bind(this);
+        this.setColors = this.setColors.bind(this);
         this.state = {
             colors: this.props.args.colors || defaultArgs.colors,
         };
@@ -79,9 +79,8 @@ class RadarChartAdmin extends Component {
         updateAdminArgs('scale', scale, this.props);
     };
 
-    handleColorsChange(colors) {
-        updateAdminArgs('colors', colors, this.props);
-        this.setState({ colors });
+    setColors(colors) {
+        updateAdminArgs('colors', colors || defaultArgs.colors, this.props);
     }
 
     render() {
@@ -96,8 +95,8 @@ class RadarChartAdmin extends Component {
                     polyglot={polyglot}
                 />
                 <ColorPickerParamsAdmin
-                    colors={this.state.colors || defaultArgs.colors}
-                    onColorsChange={this.handleColorsChange}
+                    colors={this.state.colors}
+                    onChange={this.setColors}
                     polyglot={polyglot}
                 />
                 <Checkbox

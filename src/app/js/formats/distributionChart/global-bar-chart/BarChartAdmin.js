@@ -70,7 +70,7 @@ class BarChartAdmin extends Component {
 
     constructor(props) {
         super(props);
-        this.handleColorsChange = this.handleColorsChange.bind(this);
+        this.setColors = this.setColors.bind(this);
         this.state = {
             colors: this.props.args.colors || defaultArgs.colors,
         };
@@ -78,9 +78,8 @@ class BarChartAdmin extends Component {
 
     setParams = params => updateAdminArgs('params', params, this.props);
 
-    handleColorsChange(colors) {
-        updateAdminArgs('colors', colors, this.props);
-        this.setState({ colors });
+    setColors(colors) {
+        updateAdminArgs('colors', colors || defaultArgs.colors, this.props);
     }
 
     setAxisRoundValue = () => {
@@ -151,8 +150,8 @@ class BarChartAdmin extends Component {
                     polyglot={polyglot}
                 />
                 <ColorPickerParamsAdmin
-                    colors={this.state.colors || defaultArgs.colors}
-                    onColorsChange={this.handleColorsChange}
+                    colors={this.state.colors}
+                    onChange={this.setColors}
                     polyglot={polyglot}
                 />
                 <SelectField

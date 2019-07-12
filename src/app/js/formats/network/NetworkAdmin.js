@@ -50,7 +50,7 @@ class NetworkAdmin extends Component {
 
     constructor(props) {
         super(props);
-        this.handleColorsChange = this.handleColorsChange.bind(this);
+        this.setColors = this.setColors.bind(this);
         this.state = {
             colors: this.props.args.colors || defaultArgs.colors,
         };
@@ -60,9 +60,8 @@ class NetworkAdmin extends Component {
         updateAdminArgs('params', params, this.props);
     };
 
-    handleColorsChange(colors) {
-        updateAdminArgs('colors', colors, this.props);
-        this.setState({ colors });
+    setColors(colors) {
+        updateAdminArgs('colors', colors || defaultArgs.colors, this.props);
     }
 
     render() {
@@ -79,8 +78,8 @@ class NetworkAdmin extends Component {
                     onChange={this.setParams}
                 />
                 <ColorPickerParamsAdmin
-                    colors={this.state.colors || defaultArgs.colors}
-                    onColorsChange={this.handleColorsChange}
+                    colors={this.state.colors}
+                    onChange={this.setColors}
                     polyglot={polyglot}
                 />
             </div>

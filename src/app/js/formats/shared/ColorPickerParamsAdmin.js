@@ -23,6 +23,7 @@ class ColorPickerParamsAdmin extends Component {
 
     constructor(props) {
         super(props);
+        this.handleChangeText = this.handleChangeText.bind(this);
         this.state = {
             colors: this.props.colors.split(' ').map(color => ({ color })),
         };
@@ -56,19 +57,18 @@ class ColorPickerParamsAdmin extends Component {
             </div>
         ));
     }
+    getStateColorsString() {
+        return this.state.colors.map(({ color }) => color).join(' ');
+    }
 
     render() {
-        const colorsToString = this.state.colors
-            .map(({ color }) => color)
-            .join(' ');
-
         return (
             <Fragment>
                 <TextField
                     floatingLabelText={this.props.polyglot.t('colors_set')}
-                    onChange={this.handleChangeText.bind(this)}
+                    onChange={this.handleChangeText}
                     style={styles.colorpicker}
-                    value={colorsToString}
+                    value={this.getStateColorsString()}
                 />
                 {this.createUI()}
             </Fragment>

@@ -54,7 +54,7 @@ class HierarchyAdmin extends Component {
 
     constructor(props) {
         super(props);
-        this.handleColorsChange = this.handleColorsChange.bind(this);
+        this.setColors = this.setColors.bind(this);
         this.state = {
             colors: this.props.args.colors || defaultArgs.colors,
         };
@@ -64,9 +64,8 @@ class HierarchyAdmin extends Component {
         updateAdminArgs('params', params, this.props);
     };
 
-    handleColorsChange(colors) {
-        updateAdminArgs('colors', colors, this.props);
-        this.setState({ colors });
+    setColors(colors) {
+        updateAdminArgs('colors', colors || defaultArgs.colors, this.props);
     }
 
     setMaxLabelLength = (_, maxLabelLength) => {
@@ -120,7 +119,7 @@ class HierarchyAdmin extends Component {
                 />
                 <ColorPickerParamsAdmin
                     colors={this.state.colors || defaultArgs.colors}
-                    onColorsChange={this.handleColorsChange}
+                    onChange={this.setColors}
                     polyglot={polyglot}
                 />
                 <TextField
