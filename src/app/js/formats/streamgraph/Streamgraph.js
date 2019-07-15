@@ -7,7 +7,7 @@ import {
     transformDataIntoMapArray,
     getMinMaxValue,
     cutStr,
-    findFirstTickPosition,
+    /*findFirstTickPosition,*/
     findNearestTickPosition,
     generateUniqueId,
 } from './utils';
@@ -17,6 +17,8 @@ import moment from 'moment';
 
 import * as colorUtils from '../colorUtils';
 import ReactTooltip from 'react-tooltip';
+
+import PropTypes from 'prop-types';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 
 const styles = StyleSheet.create({
@@ -78,6 +80,10 @@ const styles = StyleSheet.create({
     },
 });
 
+export const defaultArgs = {
+    colors: colorUtils.MULTICHROMATIC_DEFAULT_COLORSET_STREAMGRAPH,
+};
+
 class Streamgraph extends PureComponent {
     _isMounted = false;
     constructor(props) {
@@ -97,6 +103,10 @@ class Streamgraph extends PureComponent {
         this.zoomFunction = zoomFunction.bind(this);
         this.uniqueId = generateUniqueId();
     }
+
+    static defaultProps = {
+        args: defaultArgs,
+    };
 
     initTheGraphBasicsElements(width, height, margin, svgViewport) {
         const zoom = d3
@@ -211,8 +221,7 @@ class Streamgraph extends PureComponent {
         if (stackedData) {
             let colorList = this.props.colors;
             if (!colorList) {
-                colorList =
-                    colorUtils.MULTICHROMATIC_DEFAULT_COLORSET_STREAMGRAPH;
+                colorList = defaultArgs.colors;
             }
             let z = colorList.split(' ');
             while (z.length < layersNumber) {
@@ -220,7 +229,7 @@ class Streamgraph extends PureComponent {
             }
             const area = d3
                 .area()
-                .x((d, i) => {
+                .x(d => {
                     return this.xAxisScale(d.data.date);
                 })
                 .y0(d => {
@@ -295,7 +304,9 @@ class Streamgraph extends PureComponent {
             const element = colorNameList[index];
             const legendItemContainer = legendView
                 .append('div')
-                .attr('class', `${css(styles.legendItem)}`);
+                .attr('class', `${css(styles.legendItem)}`)
+                .style('padding', '5px')
+                .style('margin', '-5px');
 
             legendItemContainer
                 .append('svg')
@@ -308,21 +319,24 @@ class Streamgraph extends PureComponent {
                 .append('text')
                 .attr('class', `${css(styles.legendItemText)}`)
                 .text(cutStr(element.name));
-
-            const legendItemTooltip = legendItemContainer
-                .append('span')
-                .attr('class', `${css(styles.legendItemTooltip)}`)
-                .text(element.name);
-
             legendItemContainer
-                .on('mouseover', (d, i) => {
-                    legendItemTooltip.style('visibility', 'visible');
+                .on('mouseover', d => {
+                    this.streams
+                        .transition()
+                        .duration(25)
+                        .attr('opacity', (d, j) => {
+                            return j != colorNameList.length - index - 1
+                                ? 0.3
+                                : 1;
+                        });
                 })
-                .on('mousemove', (d, i) => {
-                    legendItemTooltip.style('visibility', 'visible');
-                })
-                .on('mouseout', (d, i) => {
-                    legendItemTooltip.style('visibility', 'hidden');
+                .on('mouseout', d => {
+                    this.streams
+                        .transition()
+                        .duration(25)
+                        .attr('opacity', d => {
+                            return 1;
+                        });
                 });
         });
     }
@@ -407,7 +421,7 @@ class Streamgraph extends PureComponent {
     setMouseOutStreams(tooltip) {
         const componentContext = this;
         if (this.streams) {
-            this.streams.on('mouseout', function(d, i) {
+            this.streams.on('mouseout', function(d) {
                 componentContext.mouseIsOverStream = false;
                 componentContext.streams
                     .transition()
@@ -554,7 +568,7 @@ class Streamgraph extends PureComponent {
     }
 
     render() {
-        const { width, height, margin } = this.state;
+        const { width, height /*, margin*/ } = this.state;
         const { p: polyglot } = this.props;
 
         if (!this._isMounted) {
@@ -631,6 +645,8 @@ class Streamgraph extends PureComponent {
 
 Streamgraph.propTypes = {
     p: polyglotPropTypes.isRequired,
+    colors: PropTypes.string,
+    formatData: PropTypes.any,
 };
 
 export default compose(
