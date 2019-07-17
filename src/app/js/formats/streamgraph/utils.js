@@ -184,8 +184,8 @@ export function cutStr(str, column_number) {
 
     let maxLength;
     if (column_number == 3) {
-        maxLength = 45;
-    } else maxLength = 28;
+        maxLength = 31;
+    } else maxLength = 31;
 
     while (
         tokenCounter < strSplit.length &&
