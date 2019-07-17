@@ -52,19 +52,22 @@ const styles = StyleSheet.create({
     },
     legendItem: {
         marginTop: 2,
+        'white-space': 'nowrap',
+        overflow: 'hidden',
+        'text-overflow': 'ellipsis',
     },
     legendItemTooltip: {
         visibility: 'hidden',
         backgroundColor: '#4e4e4e',
         color: '#fff',
-        textAlign: 'center',
         borderRadius: '6px',
-        padding: '5px 4px',
-
+        padding: '5px 10px',
         position: 'absolute',
         left: '0px',
-        top: '-33px',
+        right: '15px',
+        top: '-66px',
         zIndex: 10,
+        'white-space': 'pre-wrap',
     },
     legendItemText: {
         marginLeft: 5,
@@ -96,8 +99,6 @@ class Streamgraph extends PureComponent {
         this.divContainer = React.createRef();
         this.svgContainer = React.createRef();
         this.anchor = React.createRef();
-        this.zoomIndicator = React.createRef();
-        this.zoomIndicatorBackground = React.createRef();
 
         this.mouseIsOverStream = false;
         this.zoomFunction = zoomFunction.bind(this);
@@ -293,9 +294,9 @@ class Streamgraph extends PureComponent {
             .attr('id', 'legend')
             .attr('class', `${css(styles.legend)}`);
 
-        width > 500
-            ? legendView.style('column-count', 3)
-            : legendView.style('column-count', 2);
+        let column_number;
+        width > 500 ? (column_number = 3) : (column_number = 2);
+        legendView.style('column-count', column_number);
 
         const colorNameTmpList = colorNameList;
         colorNameTmpList.reverse();
@@ -318,9 +319,17 @@ class Streamgraph extends PureComponent {
             legendItemContainer
                 .append('text')
                 .attr('class', `${css(styles.legendItemText)}`)
-                .text(cutStr(element.name));
+                .text(cutStr(element.name, column_number));
+
+            const legendItemTooltip = legendItemContainer
+                .append('span')
+                .attr('class', `${css(styles.legendItemTooltip)}`)
+                .text(element.name);
+
             legendItemContainer
                 .on('mouseover', d => {
+                    legendItemTooltip.style('visibility', 'visible');
+
                     this.streams
                         .transition()
                         .duration(25)
@@ -330,7 +339,12 @@ class Streamgraph extends PureComponent {
                                 : 1;
                         });
                 })
+                .on('mousemove', (d, i) => {
+                    legendItemTooltip.style('visibility', 'visible');
+                })
                 .on('mouseout', d => {
+                    legendItemTooltip.style('visibility', 'hidden');
+
                     this.streams
                         .transition()
                         .duration(25)
