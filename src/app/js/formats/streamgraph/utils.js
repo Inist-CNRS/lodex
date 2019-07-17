@@ -177,18 +177,25 @@ export function getMinMaxValue(stackedData) {
     return { minValue, maxValue };
 }
 
-export function cutStr(str) {
-    const strSplit = str.split(' ');
+export function cutStr(str, column_number) {
+    const strSplit = str.split(/-| /);
     let resStr = '';
-    const words_nb = 3;
+    let tokenCounter = 0;
 
-    for (let i = 0; i < strSplit.length && i < words_nb; i++) {
-        if (i < words_nb - 1 || strSplit[i].length > 3) {
-            resStr = `${resStr} ${strSplit[i]}`;
-        }
+    let maxLength;
+    if (column_number == 3) {
+        maxLength = 45;
+    } else maxLength = 28;
+
+    while (
+        tokenCounter < strSplit.length &&
+        `${resStr} ${strSplit[tokenCounter]}`.length < maxLength
+    ) {
+        resStr = `${resStr} ${strSplit[tokenCounter]}`;
+        tokenCounter++;
     }
 
-    if (strSplit.length > 3) {
+    if (tokenCounter < strSplit.length) {
         resStr = `${resStr} [...]`;
     }
     return resStr;
