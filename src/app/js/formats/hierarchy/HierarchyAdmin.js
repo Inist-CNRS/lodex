@@ -30,6 +30,10 @@ export const defaultArgs = {
         minimumScaleValue: 5,
     },
     colors: colorUtils.MONOCHROMATIC_DEFAULT_COLORSET,
+    showMaxSize: true,
+    showMaxValue: true,
+    showMinValue: true,
+    showOrderBy: true,
 };
 
 class HierarchyAdmin extends Component {
@@ -46,6 +50,10 @@ class HierarchyAdmin extends Component {
         }),
         onChange: PropTypes.func.isRequired,
         p: polyglotPropTypes.isRequired,
+        showMaxSize: PropTypes.bool.isRequired,
+        showMaxValue: PropTypes.bool.isRequired,
+        showMinValue: PropTypes.bool.isRequired,
+        showOrderBy: PropTypes.bool.isRequired,
     };
 
     static defaultProps = {
@@ -108,6 +116,10 @@ class HierarchyAdmin extends Component {
         const {
             p: polyglot,
             args: { params },
+            showMaxSize = false,
+            showMaxValue = false,
+            showMinValue = false,
+            showOrderBy = true,
         } = this.props;
 
         return (
@@ -116,7 +128,10 @@ class HierarchyAdmin extends Component {
                     params={params || defaultArgs.params}
                     polyglot={polyglot}
                     onChange={this.setParams}
-                    fieldsToShow={'minValue, maxValue, orderBy'}
+                    showMaxSize={showMaxSize}
+                    showMaxValue={showMaxValue}
+                    showMinValue={showMinValue}
+                    showOrderBy={showOrderBy}
                 />
                 <ColorPickerParamsAdmin
                     colors={this.state.colors || defaultArgs.colors}
