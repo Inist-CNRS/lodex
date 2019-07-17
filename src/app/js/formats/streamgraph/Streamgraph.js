@@ -294,7 +294,7 @@ class Streamgraph extends PureComponent {
             .attr('id', 'legend')
             .attr('class', `${css(styles.legend)}`);
 
-        let column_number;
+        let column_number; // TODO : make it an admin parameter
         width > 500 ? (column_number = 3) : (column_number = 2);
         legendView.style('column-count', column_number);
 
