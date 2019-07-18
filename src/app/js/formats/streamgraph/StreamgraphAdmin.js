@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import TextField from 'material-ui/TextField';
 import translate from 'redux-polyglot/translate';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
@@ -31,8 +32,15 @@ export const defaultArgs = {
 class StreamgraphAdmin extends Component {
     static propTypes = {
         args: PropTypes.shape({
-            colors: PropTypes.string,
+            params: PropTypes.shape({
+                maxSize: PropTypes.number,
+                maxValue: PropTypes.number,
+                minValue: PropTypes.number,
+                orderBy: PropTypes.string,
+            }),
         }),
+        colors: PropTypes.string,
+        maxLegendLength: PropTypes.number,
         onChange: PropTypes.func.isRequired,
         p: polyglotPropTypes.isRequired,
     };
@@ -45,7 +53,7 @@ class StreamgraphAdmin extends Component {
         super(props);
         this.setColors = this.setColors.bind(this);
         this.state = {
-            colors: this.props.args.colors || defaultArgs.colors,
+            colors: this.props.colors || defaultArgs.colors,
         };
     }
 
@@ -55,10 +63,14 @@ class StreamgraphAdmin extends Component {
         updateAdminArgs('colors', colors || defaultArgs.colors, this.props);
     }
 
+    setMaxLegendLength = (_, maxLegendLength) => {
+        updateAdminArgs('maxLegendLength', maxLegendLength, this.props);
+    };
+
     render() {
         const {
             p: polyglot,
-            args: { params },
+            args: { params, maxLegendLength },
         } = this.props;
 
         return (
@@ -72,6 +84,12 @@ class StreamgraphAdmin extends Component {
                     colors={this.state.colors || defaultArgs.colors}
                     onChange={this.setColors}
                     polyglot={polyglot}
+                />
+                <TextField
+                    floatingLabelText={polyglot.t('max_char_number_in_legends')}
+                    onChange={this.setMaxLegendLength}
+                    style={styles.input}
+                    value={maxLegendLength}
                 />
             </div>
         );

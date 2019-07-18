@@ -9,7 +9,11 @@ import cliTruncate from 'cli-truncate';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 
 import * as colorUtils from '../colorUtils';
-import ReactTooltip from 'react-tooltip';
+import MouseIcon from '../shared/MouseIcon';
+
+import theme from '../../theme';
+import CenterIcon from '../shared/CenterIcon';
+import stylesToClassname from '../../lib/stylesToClassName';
 
 const styles = StyleSheet.create({
     divContainer: {
@@ -55,6 +59,15 @@ const styles = StyleSheet.create({
         border: 'solid 1px black',
         borderRadius: '8px',
         pointerEvents: 'none',
+    },
+});
+
+const stylesWithClassnames = stylesToClassname({
+    icon: {
+        color: theme.green.primary,
+        ':hover': {
+            color: theme.purple.primary,
+        },
     },
 });
 
@@ -685,6 +698,16 @@ class Hierarchy extends PureComponent {
         this.update();
     }
 
+    handleMouseEnter = () => {
+        this.isHovered = true;
+        alert('enter');
+    };
+
+    handleMouseLeave = () => {
+        this.isHovered = true;
+        alert('leave');
+    };
+
     render() {
         const { width, height } = this.state;
         const { p: polyglot } = this.props;
@@ -698,7 +721,6 @@ class Hierarchy extends PureComponent {
                 }}
                 id={`divContainer${this.uniqueId}`}
             >
-                {/* 1) MouseIcon */}
                 <div
                     style={{
                         position: 'absolute',
@@ -706,61 +728,19 @@ class Hierarchy extends PureComponent {
                         left: '16px',
                     }}
                 >
-                    <svg
-                        data-tip
-                        data-for="mouseIconTooltip"
-                        width="45"
-                        height="45"
-                        viewBox="0 0 197.896 197.896"
-                    >
-                        <path
-                            d="M102.004 56.098c-.054-4.559 2.061-8.12 4.119-11.581 2.713-4.574 5.522-9.305 3.568-15.808-1.986-5.966-5.751-8.893-9.087-11.495-4.488-3.482-7.727-5.998-6.038-15.543l.147-.82L89.883 0l-.143.812c-2.201 12.469 3.142 16.617 7.856 20.278 3.042 2.373 5.916 4.61 7.415 9.097 1.31 4.381-.644 7.669-3.11 11.832-2.294 3.869-4.889 8.231-4.828 14.076-24.469.025-49.47 1.041-49.47 88.004 0 39.192 31.49 53.797 51.346 53.797 19.845 0 51.346-14.605 51.346-53.797-.001-86.859-25.479-87.929-48.291-88.001zm-.604 4.907c20.195.043 39.106.845 43.172 57.809-13.814 6.46-28.33 9.896-43.172 10.236v-10.615c3.024-.58 5.3-3.253 5.3-6.378V80.005c0-3.135-2.28-5.801-5.3-6.385V61.005zM97.724 78.38h2.452a1.63 1.63 0 0 1 1.621 1.625v32.052c0 .891-.73 1.607-1.621 1.607h-2.452a1.612 1.612 0 0 1-1.618-1.607V80.005c0-.891.727-1.625 1.618-1.625zm-1.235-17.375V73.62c-3.024.583-5.293 3.257-5.293 6.385v32.052c0 3.124 2.269 5.798 5.293 6.378v10.615c-22.586-.53-39.027-8.06-43.172-10.16 4.048-57.047 22.97-57.842 43.172-57.885zm2.459 131.97c-17.952 0-46.439-13.267-46.439-48.88 0-7.097.161-13.789.48-19.909 7.168 3.325 23.964 9.806 46.053 9.806 15.725 0 31.15-3.343 45.856-9.917.319 6.148.483 12.884.483 20.024-.001 35.609-28.481 48.876-46.433 48.876z"
-                            fill="#010002"
-                        />
-                        <path
-                            fill="#010002"
-                            d="M114.742 70.936l-4.807 5.87h9.602zM114.913 121.223l4.796-5.869h-9.591z"
-                        />
-                    </svg>
-
-                    <ReactTooltip id="mouseIconTooltip" effect="solid">
-                        <ul>
-                            {polyglot.t('user_can_interact_with_mouse_1')}
-                            {<br />}
-                            {polyglot.t('user_can_interact_with_mouse_2')}
-                        </ul>
-                    </ReactTooltip>
+                    <MouseIcon polyglot={polyglot} />
                 </div>
 
-                {/* 2) CenterIcon */}
                 <div
                     style={{
                         position: 'absolute',
-                        bottom: '19px',
-                        left: '50px',
+                        bottom: '33px',
+                        left: '55px',
                     }}
                     onClick={this.centerGraphClick}
+                    className={stylesWithClassnames.icon}
                 >
-                    <svg
-                        data-tip
-                        data-for="centerIconTooltip"
-                        width="45"
-                        height="45"
-                        viewBox="0 0 100 125"
-                    >
-                        <g fill="#000" fillRule="evenodd">
-                            <path d="M50 59c-4.962 0-9-4.038-9-9s4.038-9 9-9 9 4.038 9 9-4.038 9-9 9m0-22c-7.18 0-13 5.82-13 13s5.82 13 13 13 13-5.82 13-13-5.82-13-13-13" />
-                            <path d="M50 75c-13.807 0-25-11.193-25-25s11.193-25 25-25c13.808 0 25 11.193 25 25S63.808 75 50 75m41.005-27H78.923C77.937 33.601 66.399 22.063 52 21.077V10.994A1.999 1.999 0 0 0 50 9c-1.112 0-2 .893-2 1.994v10.083C33.601 22.063 22.063 33.601 21.077 48H8.995A1.998 1.998 0 0 0 7 50c0 1.112.893 2 1.995 2h12.082C22.063 66.399 33.601 77.937 48 78.923v10.083c0 1.099.896 1.994 2 1.994 1.112 0 2-.893 2-1.994V78.923C66.399 77.937 77.937 66.399 78.923 52h12.082A1.998 1.998 0 0 0 93 50c0-1.112-.894-2-1.995-2" />
-                        </g>
-                    </svg>
-
-                    <ReactTooltip
-                        id="centerIconTooltip"
-                        place="right"
-                        effect="solid"
-                    >
-                        <ul>{polyglot.t('graph_reinit')}</ul>
-                    </ReactTooltip>
+                    <CenterIcon polyglot={polyglot} />
                 </div>
 
                 <div
