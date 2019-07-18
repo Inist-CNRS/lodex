@@ -464,3 +464,4 @@
 "graph_reinit"	"Click to initialize the graph"	"Cliquez sur ce bouton pour réinitialiser le graphique"
 "minimum_scale_value"	"Minimum scale value"	"Valeur minimum pour l'échelle"
 "label_offset"	"Label left offset (in px)"	"Décalage du label à gauche (en px)"
+"max_char_number_in_legends"	"Maximum character number in legends"	"Nombre max de caractères dans les légendes"

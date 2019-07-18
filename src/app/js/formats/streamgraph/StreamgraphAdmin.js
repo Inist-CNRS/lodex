@@ -26,13 +26,21 @@ export const defaultArgs = {
     },
     colors:
         '#e6194B #3cb44b #ffe119 #4363d8 #f58231 #911eb4 #42d4f4 #f032e6 #bfef45 #fabebe #469990 #e6beff #9A6324 #fffac8 #800000 #aaffc3 #808000 #ffd8b1 #000075 #a9a9a9 #ffffff #00000',
+    maxLegendLength: 31,
 };
 
 class StreamgraphAdmin extends Component {
     static propTypes = {
         args: PropTypes.shape({
-            colors: PropTypes.string,
+            params: PropTypes.shape({
+                maxSize: PropTypes.number,
+                maxValue: PropTypes.number,
+                minValue: PropTypes.number,
+                orderBy: PropTypes.string,
+            }),
         }),
+        colors: PropTypes.string,
+        maxLegendLength: PropTypes.number,
         onChange: PropTypes.func.isRequired,
         p: polyglotPropTypes.isRequired,
     };
@@ -47,10 +55,14 @@ class StreamgraphAdmin extends Component {
         updateAdminArgs('colors', colors, this.props);
     };
 
+    setMaxLegendLength = (_, maxLegendLength) => {
+        updateAdminArgs('maxLegendLength', maxLegendLength, this.props);
+    };
+
     render() {
         const {
             p: polyglot,
-            args: { colors, params },
+            args: { params, colors, maxLegendLength },
         } = this.props;
 
         return (
@@ -65,6 +77,12 @@ class StreamgraphAdmin extends Component {
                     onChange={this.setColors}
                     style={styles.input}
                     value={colors}
+                />
+                <TextField
+                    floatingLabelText={polyglot.t('max_char_number_in_legends')}
+                    onChange={this.setMaxLegendLength}
+                    style={styles.input}
+                    value={maxLegendLength}
                 />
             </div>
         );
