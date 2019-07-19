@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import TextField from 'material-ui/TextField';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import translate from 'redux-polyglot/translate';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
+import updateAdminArgs from '../shared/updateAdminArgs';
 import { resolvers } from '.';
 
 import * as colorUtils from '../colorUtils';
+import ColorPickerParamsAdmin from '../shared/ColorPickerParamsAdmin';
 
 const styles = {
     container: {
@@ -19,9 +20,6 @@ const styles = {
     input: {
         marginLeft: '1rem',
         width: '40%',
-    },
-    input2: {
-        width: '100%',
     },
 };
 
@@ -42,22 +40,30 @@ class IdentifierBadgeAdmin extends Component {
 
     static defaultProps = {
         args: defaultArgs,
+        colors: colorUtils.MONOCHROMATIC_DEFAULT_COLORSET,
     };
+
+    constructor(props) {
+        super(props);
+        this.setColors = this.setColors.bind(this);
+        this.state = {
+            colors: this.props.args.colors || defaultArgs.colors,
+        };
+    }
 
     setTypid = typid => {
         const newArgs = { ...this.props.args, typid };
         this.props.onChange(newArgs);
     };
 
-    setColors = colors => {
-        const newArgs = { ...this.props.args, colors };
-        this.props.onChange(newArgs);
-    };
+    setColors(colors) {
+        updateAdminArgs('colors', colors.split(' ')[0], this.props);
+    }
 
     render() {
         const {
             p: polyglot,
-            args: { colors, typid },
+            args: { typid },
         } = this.props;
         const items = Object.keys(resolvers).map(resolverID => (
             <MenuItem
@@ -80,11 +86,10 @@ class IdentifierBadgeAdmin extends Component {
                 >
                     {items}
                 </SelectField>
-                <TextField
-                    floatingLabelText={polyglot.t('colors_set')}
-                    onChange={(event, newValue) => this.setColors(newValue)}
-                    style={styles.input2}
-                    value={colors}
+                <ColorPickerParamsAdmin
+                    colors={this.state.colors || defaultArgs.colors}
+                    onChange={this.setColors}
+                    polyglot={polyglot}
                 />
             </div>
         );

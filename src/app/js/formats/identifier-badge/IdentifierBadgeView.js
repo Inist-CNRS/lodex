@@ -36,26 +36,19 @@ const styles = stylesToClassname({
     },
 });
 
-const getColorStyle = color => ({
-    backgroundColor: color,
-});
-
 const IdentifierBadgeView = ({ resource, field, typid, colors }) => {
-    const colorsSet = String(colors)
-        .split(/[^\w]/)
-        .filter(x => x.length > 0)
-        .map(x => String('#').concat(x));
-    const firstColor = colorsSet.shift() || '#8B8B8B';
     const resolver = resolvers[typid] || '';
     const value = resource[field.name] || '';
 
     const identifier = value.replace(resolver, '');
     const target = resolver + identifier;
-
+    const colorStyle = {
+        backgroundColor: colors.split(' ')[0],
+    };
     return (
         <Link href={target}>
             <span className={styles.key}>{typid}</span>
-            <span className={styles.value} style={getColorStyle(firstColor)}>
+            <span className={styles.value} style={colorStyle}>
                 {identifier}
             </span>
         </Link>

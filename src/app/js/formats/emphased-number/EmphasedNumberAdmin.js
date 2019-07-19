@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import TextField from 'material-ui/TextField';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import translate from 'redux-polyglot/translate';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
+import updateAdminArgs from '../shared/updateAdminArgs';
+import ColorPickerParamsAdmin from '../shared/ColorPickerParamsAdmin';
+
+import * as colorUtils from '../colorUtils';
 
 const styles = {
     container: {
@@ -17,14 +20,11 @@ const styles = {
         marginLeft: '1rem',
         width: '40%',
     },
-    input2: {
-        width: '100%',
-    },
 };
 
 export const defaultArgs = {
     size: 4,
-    colors: '#818181',
+    colors: colorUtils.MONOCHROMATIC_DEFAULT_COLORSET,
 };
 
 class EmphasedNumberAdmin extends Component {
@@ -41,6 +41,14 @@ class EmphasedNumberAdmin extends Component {
         args: defaultArgs,
     };
 
+    constructor(props) {
+        super(props);
+        this.setColors = this.setColors.bind(this);
+        this.state = {
+            colors: this.props.args.colors || defaultArgs.colors,
+        };
+    }
+
     setSize = size => {
         const newArgs = {
             ...this.props.args,
@@ -49,18 +57,14 @@ class EmphasedNumberAdmin extends Component {
         this.props.onChange(newArgs);
     };
 
-    setColors = colors => {
-        const newArgs = {
-            ...this.props.args,
-            colors,
-        };
-        this.props.onChange(newArgs);
-    };
+    setColors(colors) {
+        updateAdminArgs('colors', colors.split(' ')[0], this.props);
+    }
 
     render() {
         const {
             p: polyglot,
-            args: { colors, size },
+            args: { size },
         } = this.props;
 
         return (
@@ -78,11 +82,10 @@ class EmphasedNumberAdmin extends Component {
                     <MenuItem value={3} primaryText={polyglot.t('size3')} />
                     <MenuItem value={4} primaryText={polyglot.t('size4')} />
                 </SelectField>
-                <TextField
-                    floatingLabelText={polyglot.t('colors_set')}
-                    onChange={(event, newValue) => this.setColors(newValue)}
-                    style={styles.input2}
-                    value={colors}
+                <ColorPickerParamsAdmin
+                    colors={this.state.colors || defaultArgs.colors}
+                    onChange={this.setColors}
+                    polyglot={polyglot}
                 />
             </div>
         );

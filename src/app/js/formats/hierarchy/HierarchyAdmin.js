@@ -58,7 +58,7 @@ class HierarchyAdmin extends Component {
         super(props);
         this.setColors = this.setColors.bind(this);
         this.state = {
-            colors: this.props.args.colors || defaultArgs.colors,
+            colors: this.props.colors || defaultArgs.colors,
         };
     }
 
@@ -67,7 +67,11 @@ class HierarchyAdmin extends Component {
     };
 
     setColors(colors) {
-        updateAdminArgs('colors', colors || defaultArgs.colors, this.props);
+        updateAdminArgs(
+            'colors',
+            colors.split(' ')[0] || defaultArgs.colors,
+            this.props,
+        );
     }
 
     setMaxLabelLength = (_, maxLabelLength) => {

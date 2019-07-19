@@ -2,10 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { field as fieldPropTypes } from '../../propTypes';
 
-const TitleView = ({ resource, field, level, textColor }) => {
+const TitleView = ({ resource, field, level, colors }) => {
     const value = resource[field.name];
     const style = {
-        color: textColor,
+        color: colors.split(' ')[0],
     };
     switch (level) {
         case 6:
@@ -28,7 +28,7 @@ TitleView.propTypes = {
     field: fieldPropTypes.isRequired,
     resource: PropTypes.object.isRequired,
     level: PropTypes.oneOf([1, 2, 3, 4, 5, 6]).isRequired,
-    textColor: PropTypes.string.isRequired,
+    colors: PropTypes.string.isRequired,
 };
 
 TitleView.defaultProps = {

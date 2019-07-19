@@ -61,7 +61,11 @@ class NetworkAdmin extends Component {
     };
 
     setColors(colors) {
-        updateAdminArgs('colors', colors || defaultArgs.colors, this.props);
+        updateAdminArgs(
+            'colors',
+            colors.split(' ')[0] || defaultArgs.colors,
+            this.props,
+        );
     }
 
     render() {
