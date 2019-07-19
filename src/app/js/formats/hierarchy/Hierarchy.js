@@ -6,6 +6,7 @@ import { zoomFunction, generateUniqueId } from './utils';
 import injectData from '../injectData';
 import exportableToPng from '../exportableToPng';
 import cliTruncate from 'cli-truncate';
+import PropTypes from 'prop-types';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 
 import * as colorUtils from '../colorUtils';
@@ -201,9 +202,9 @@ class Hierarchy extends PureComponent {
                 .scaleLinear()
                 .domain([
                     0,
-                    maxWeight > this.props.params.minimumScaleValue
+                    maxWeight > this.props.minimumScaleValue
                         ? maxWeight
-                        : this.props.params.minimumScaleValue,
+                        : this.props.minimumScaleValue,
                 ])
                 .range([0, 500]);
 
@@ -365,7 +366,7 @@ class Hierarchy extends PureComponent {
 
             nodeInternal
                 .append('rect')
-                .attr('x', -5 - this.props.params.labelOffset)
+                .attr('x', -5 - this.props.labelOffset)
                 .attr('y', -22)
                 .attr('width', d => {
                     const label = this.getLabelAccordingChildren(d);
@@ -392,7 +393,7 @@ class Hierarchy extends PureComponent {
                     }`;
                     return currentId;
                 })
-                .attr('x', -this.props.params.labelOffset)
+                .attr('x', -this.props.labelOffset)
                 .attr('y', -10);
 
             // Setup G for every leaf datum. (rectangle)
@@ -406,7 +407,7 @@ class Hierarchy extends PureComponent {
             leafNodeGEnter
                 .append('rect')
                 .attr('class', '')
-                .style('fill', function(d) {
+                .style('fill', function() {
                     return color;
                 })
                 .attr('width', 2)
@@ -662,7 +663,7 @@ class Hierarchy extends PureComponent {
 
     getLabelAccordingChildren(d) {
         if (d.children != null) {
-            return cliTruncate(d.id, this.props.params.maxLabelLength);
+            return cliTruncate(d.id, this.props.maxLabelLength);
         } else {
             return d.id;
         }
@@ -776,7 +777,13 @@ class Hierarchy extends PureComponent {
 }
 
 Hierarchy.propTypes = {
+    minimumScaleValue: PropTypes.number.isRequired,
+    maxLabelLength: PropTypes.number.isRequired,
+    formatData: PropTypes.array.isRequired,
+    labelOffset: PropTypes.number.isRequired,
+    colors: PropTypes.string.isRequired,
     p: polyglotPropTypes.isRequired,
+    anchor: PropTypes.any.isRequired,
 };
 
 export default compose(

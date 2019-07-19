@@ -178,7 +178,7 @@ export function getMinMaxValue(stackedData) {
 }
 
 export function cutStr(str, maxLegendLength) {
-    const slicedStr = str.slice(0, maxLegendLength);
+    const slicedStr = str.substring(0, maxLegendLength);
     return slicedStr.length < str.length ? `${slicedStr} [...]` : str;
 }
 
