@@ -8,12 +8,7 @@ describe('<TitleView />', () => {
         const resource = { foo: 'Run you fools!' };
         const field = { name: 'foo' };
         const wrapper = shallow(
-            <TitleView
-                resource={resource}
-                field={field}
-                level={1}
-                textColor={'#ff6347'}
-            />,
+            <TitleView resource={resource} field={field} level={1} />,
         );
         expect(wrapper.find('h1').text()).toEqual('Run you fools!');
     });
