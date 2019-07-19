@@ -12,7 +12,7 @@ describe('<TitleView />', () => {
                 resource={resource}
                 field={field}
                 level={1}
-                textColor={'#ff6347'}
+                colors={'#ff6347'}
             />,
         );
         expect(wrapper.find('h1').text()).toEqual('Run you fools!');
