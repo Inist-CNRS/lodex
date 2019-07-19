@@ -68,15 +68,8 @@
   "datasetClass": "http://test.fr/datasetClass",
   "schemeForDatasetLink": "http://www.w3.org/2004/02/skos/core#inScheme",
   "exportDataset": "true",
-  "collectionClass": "",
-  "istexQuery": {
-    "labels": ["Cette ressource dans ISTEX"],
-    "linked": "categories.inist",
-    "context": {
-      "categories.inist": "istex:subjectInist",
-      "link": "dcterms:isPartOf"
-    }
-  },
+  "collectionClass": "https://data.istex.fr/ontology/istex#ClassToChange",
+  "schemeForIstexQuery": "https://data.istex.fr/ontology/istex#propertyToChange",
   "sparqlEndpoints": [
     "https://lod.abes.fr/sparql",
     "http://data.persee.fr/sparql/",
