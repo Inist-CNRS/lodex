@@ -406,6 +406,10 @@ class Streamgraph extends PureComponent {
                         elem => elem.data.date.getFullYear() === parseInt(date),
                     ).data[this.hoveredKey];
 
+                    this.hoveredColor = colorNameList.find(
+                        elem => elem.name === this.hoveredKey,
+                    ).color;
+
                     d3.select(nodes[i]).classed('hover', true);
                     tooltip
                         .html(
@@ -420,10 +424,6 @@ class Streamgraph extends PureComponent {
                                 '</p>',
                         )
                         .style('visibility', 'visible');
-
-                    this.hoveredColor = colorNameList.find(
-                        elem => elem.name === this.hoveredKey,
-                    ).color;
                 })
                 .on('mouseover', (d, i) => {
                     this.mouseIsOverStream = true;

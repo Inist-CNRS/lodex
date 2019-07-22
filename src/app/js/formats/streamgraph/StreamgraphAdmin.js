@@ -27,6 +27,7 @@ export const defaultArgs = {
         orderBy: 'value/asc',
     },
     colors: colorUtils.MULTICHROMATIC_DEFAULT_COLORSET_STREAMGRAPH,
+    maxLegendLength: 30,
 };
 
 class StreamgraphAdmin extends Component {
