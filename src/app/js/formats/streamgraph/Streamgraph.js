@@ -89,8 +89,12 @@ export const defaultArgs = {
     maxLegendLength: 31,
 };
 
+let renderCounter = 0;
+
 class Streamgraph extends PureComponent {
     _isMounted = false;
+    //console.log(isLoaded);
+
     constructor(props) {
         super(props);
         this.state = {
@@ -587,12 +591,15 @@ class Streamgraph extends PureComponent {
     }
 
     render() {
+        renderCounter++;
         const { width, height } = this.state;
         const { p: polyglot } = this.props;
 
-        let hourglass;
-        if (!this._isMounted) {
-            hourglass = <LoadingHourglass polyglot={polyglot} />;
+        let loading = <LoadingHourglass polyglot={polyglot} />;
+
+        // since the data comes in the form of an Array, we wait for that
+        if (Array.isArray(this.props.formatData)) {
+            loading = '';
         }
 
         return (
@@ -601,7 +608,7 @@ class Streamgraph extends PureComponent {
                 style={styles.divContainer}
                 id={`divContainer${this.uniqueId}`}
             >
-                <div>{hourglass}</div>
+                <div>{loading}</div>
 
                 <div
                     style={{ position: 'absolute', top: '210px', left: '5px' }}
@@ -627,6 +634,7 @@ Streamgraph.propTypes = {
     colors: PropTypes.string.isRequired,
     formatData: PropTypes.array.isRequired,
     maxLegendLength: PropTypes.number.isRequired,
+    isLoaded: PropTypes.bool.isRequired,
 };
 
 export default compose(
