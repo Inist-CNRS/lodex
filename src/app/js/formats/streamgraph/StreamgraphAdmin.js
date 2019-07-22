@@ -67,10 +67,6 @@ class StreamgraphAdmin extends Component {
         updateAdminArgs('maxLegendLength', maxLegendLength, this.props);
     };
 
-    setMaxLegendLength = (_, maxLegendLength) => {
-        updateAdminArgs('maxLegendLength', maxLegendLength, this.props);
-    };
-
     render() {
         const {
             p: polyglot,
@@ -88,12 +84,6 @@ class StreamgraphAdmin extends Component {
                     colors={this.state.colors || defaultArgs.colors}
                     onChange={this.setColors}
                     polyglot={polyglot}
-                />
-                <TextField
-                    floatingLabelText={polyglot.t('max_char_number_in_legends')}
-                    onChange={this.setMaxLegendLength}
-                    style={styles.input}
-                    value={maxLegendLength}
                 />
                 <TextField
                     floatingLabelText={polyglot.t('max_char_number_in_legends')}
