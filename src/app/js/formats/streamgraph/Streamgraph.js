@@ -89,8 +89,6 @@ export const defaultArgs = {
     maxLegendLength: 31,
 };
 
-let renderCounter = 0;
-
 class Streamgraph extends PureComponent {
     _isMounted = false;
     constructor(props) {
@@ -589,7 +587,6 @@ class Streamgraph extends PureComponent {
     }
 
     render() {
-        renderCounter++;
         const { width, height } = this.state;
         const { p: polyglot } = this.props;
 
@@ -632,7 +629,6 @@ Streamgraph.propTypes = {
     colors: PropTypes.string.isRequired,
     formatData: PropTypes.array.isRequired,
     maxLegendLength: PropTypes.number.isRequired,
-    isLoaded: PropTypes.bool.isRequired,
 };
 
 export default compose(
