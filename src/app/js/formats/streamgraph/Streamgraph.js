@@ -93,8 +93,6 @@ let renderCounter = 0;
 
 class Streamgraph extends PureComponent {
     _isMounted = false;
-    //console.log(isLoaded);
-
     constructor(props) {
         super(props);
         this.state = {
