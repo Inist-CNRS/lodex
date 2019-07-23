@@ -95,7 +95,7 @@ class Streamgraph extends PureComponent {
         super(props);
         this.state = {
             width: 800,
-            height: 300,
+            height: this.props.height,
             margin: { top: 60, right: 40, bottom: 50, left: 60 },
         };
         this.divContainer = React.createRef();
@@ -587,8 +587,8 @@ class Streamgraph extends PureComponent {
     }
 
     render() {
-        const { width, height } = this.state;
-        const { p: polyglot } = this.props;
+        const { width } = this.state;
+        const { p: polyglot, height } = this.props;
 
         let loading = <LoadingHourglass polyglot={polyglot} />;
 
@@ -629,6 +629,7 @@ Streamgraph.propTypes = {
     colors: PropTypes.string.isRequired,
     formatData: PropTypes.array.isRequired,
     maxLegendLength: PropTypes.number.isRequired,
+    height: PropTypes.number.isRequired,
 };
 
 export default compose(

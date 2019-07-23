@@ -28,6 +28,7 @@ export const defaultArgs = {
     },
     colors: colorUtils.MULTICHROMATIC_DEFAULT_COLORSET_STREAMGRAPH,
     maxLegendLength: 30,
+    height: 300,
 };
 
 class StreamgraphAdmin extends Component {
@@ -42,6 +43,7 @@ class StreamgraphAdmin extends Component {
         }),
         colors: PropTypes.string,
         maxLegendLength: PropTypes.number,
+        height: PropTypes.number.isRequired,
         onChange: PropTypes.func.isRequired,
         p: polyglotPropTypes.isRequired,
     };
@@ -68,10 +70,14 @@ class StreamgraphAdmin extends Component {
         updateAdminArgs('maxLegendLength', maxLegendLength, this.props);
     };
 
+    setHeight = (_, height) => {
+        updateAdminArgs('height', height, this.props);
+    };
+
     render() {
         const {
             p: polyglot,
-            args: { params, maxLegendLength },
+            args: { params, maxLegendLength, height },
         } = this.props;
 
         return (
@@ -91,6 +97,12 @@ class StreamgraphAdmin extends Component {
                     onChange={this.setMaxLegendLength}
                     style={styles.input}
                     value={maxLegendLength}
+                />
+                <TextField
+                    floatingLabelText={polyglot.t('height_px')}
+                    onChange={this.setHeight}
+                    style={styles.input}
+                    value={height}
                 />
             </div>
         );
