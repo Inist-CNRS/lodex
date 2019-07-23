@@ -87,6 +87,7 @@ const styles = StyleSheet.create({
 export const defaultArgs = {
     colors: colorUtils.MULTICHROMATIC_DEFAULT_COLORSET_STREAMGRAPH,
     maxLegendLength: 31,
+    height: 300,
 };
 
 class Streamgraph extends PureComponent {
@@ -606,7 +607,11 @@ class Streamgraph extends PureComponent {
                 <div>{loading}</div>
 
                 <div
-                    style={{ position: 'absolute', top: '210px', left: '5px' }}
+                    style={{
+                        position: 'absolute',
+                        top: 210 + (height - defaultArgs.height) + 'px',
+                        left: '5px',
+                    }}
                 >
                     <MouseIcon polyglot={polyglot} />
                 </div>
