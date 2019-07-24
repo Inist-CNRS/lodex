@@ -92,6 +92,8 @@ export const defaultArgs = {
 
 class Streamgraph extends PureComponent {
     _isMounted = false;
+    mouseIcon = '';
+
     constructor(props) {
         super(props);
         this.state = {
@@ -571,6 +573,9 @@ class Streamgraph extends PureComponent {
         this._isMounted = true;
         window.addEventListener('resize', this.updateDimensions.bind(this));
         this.setGraph();
+
+        // if the mouseIcon content is available before componentDidMount, the content prints weirdly in a corner of the page
+        this.mouseIcon = <MouseIcon polyglot={this.props.p} />;
     }
 
     UNSAFE_componentWillUpdate() {
@@ -589,11 +594,11 @@ class Streamgraph extends PureComponent {
 
     render() {
         const { width } = this.state;
-        const { p: polyglot, height } = this.props;
+        const { height } = this.props;
 
-        let loading = <LoadingHourglass polyglot={polyglot} />;
+        let loading = <LoadingHourglass polyglot={this.props.p} />;
 
-        // since the data comes in the form of an Array, we wait for that
+        // since the data comes in the form of an Array, we wait for that to hide the loading label
         if (Array.isArray(this.props.formatData)) {
             loading = '';
         }
@@ -613,7 +618,7 @@ class Streamgraph extends PureComponent {
                         left: '5px',
                     }}
                 >
-                    <MouseIcon polyglot={polyglot} />
+                    {this.mouseIcon}
                 </div>
 
                 <svg
