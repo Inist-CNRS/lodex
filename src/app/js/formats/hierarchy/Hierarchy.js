@@ -68,12 +68,16 @@ const stylesWithClassnames = stylesToClassname({
         color: theme.green.primary,
         ':hover': {
             color: theme.purple.primary,
+            cursor: 'pointer',
         },
     },
 });
 
 class Hierarchy extends PureComponent {
     _isMounted = false;
+    mouseIcon = '';
+    centerIcon = '';
+
     constructor(props) {
         super(props);
         this.state = {
@@ -653,6 +657,10 @@ class Hierarchy extends PureComponent {
 
     componentDidUpdate() {
         this.setGraph();
+
+        // if the mouseIcon content is available before componentDidMount, the content prints weirdly in a corner of the page
+        this.mouseIcon = <MouseIcon polyglot={this.props.p} />;
+        this.centerIcon = <CenterIcon polyglot={this.props.p} />;
     }
 
     componentWillUnmount() {
@@ -725,23 +733,23 @@ class Hierarchy extends PureComponent {
                 <div
                     style={{
                         position: 'absolute',
-                        bottom: '32px',
-                        left: '16px',
+                        bottom: '0px',
+                        left: '5px',
                     }}
                 >
-                    <MouseIcon polyglot={polyglot} />
+                    {this.mouseIcon}
                 </div>
 
                 <div
                     style={{
                         position: 'absolute',
-                        bottom: '33px',
-                        left: '55px',
+                        bottom: '1px',
+                        left: '57px',
                     }}
                     onClick={this.centerGraphClick}
                     className={stylesWithClassnames.icon}
                 >
-                    <CenterIcon polyglot={polyglot} />
+                    {this.centerIcon}
                 </div>
 
                 <div

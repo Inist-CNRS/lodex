@@ -39,6 +39,7 @@ const styles = {
 const zoomOptions = { minScale: 0.25, maxScale: 16 };
 
 class Network extends Component {
+    mouseIcon = '';
     createSimulation = options => {
         // extends react-vis-force createSimulation to get a reference on the simulation
         this.simulation = createSimulation(options);
@@ -54,8 +55,13 @@ class Network extends Component {
         this.simulation.alpha(1).restart(); // reset simulation alpha and restart it to fix animation on node change
     }
 
+    UNSAFE_componentWillUpdate() {
+        // if the mouseIcon content is available before componentDidMount, the content prints weirdly in a corner of the page
+        this.mouseIcon = <MouseIcon polyglot={this.props.p} />;
+    }
+
     render() {
-        const { nodes, links, colorSet, p: polyglot } = this.props;
+        const { nodes, links, colorSet } = this.props;
 
         return (
             <div style={styles.container}>
@@ -84,9 +90,7 @@ class Network extends Component {
                     ))}
                 </InteractiveForceGraph>
 
-                <div>
-                    <MouseIcon polyglot={polyglot} />
-                </div>
+                <div>{this.mouseIcon}</div>
             </div>
         );
     }
