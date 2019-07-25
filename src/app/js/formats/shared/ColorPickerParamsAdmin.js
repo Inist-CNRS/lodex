@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import TextField from 'material-ui/TextField';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
+import * as colorUtils from '../colorUtils';
 
 const styles = {
     input: {
@@ -13,6 +14,8 @@ const styles = {
         'margin-bottom': '15px',
     },
 };
+
+const multichromatic_maxLength = colorUtils.MAX_COLORS_NUMBER * 8 - 1;
 
 class ColorPickerParamsAdmin extends Component {
     static propTypes = {
@@ -70,7 +73,9 @@ class ColorPickerParamsAdmin extends Component {
                     onChange={this.handleChangeText}
                     style={styles.colorpicker}
                     value={this.getStateColorsString()}
-                    maxLength={this.props.monochromatic ? 7 : None}
+                    maxLength={
+                        this.props.monochromatic ? 7 : multichromatic_maxLength
+                    }
                 />
                 {this.createUI()}
             </Fragment>
