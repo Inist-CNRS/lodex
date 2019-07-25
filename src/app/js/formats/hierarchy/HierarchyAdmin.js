@@ -127,6 +127,7 @@ class HierarchyAdmin extends Component {
                     colors={this.state.colors || defaultArgs.colors}
                     onChange={this.setColors}
                     polyglot={polyglot}
+                    monochromatic={true}
                 />
                 <TextField
                     floatingLabelText={polyglot.t('max_char_number_in_labels')}

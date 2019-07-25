@@ -19,6 +19,7 @@ class ColorPickerParamsAdmin extends Component {
         colors: PropTypes.string,
         onChange: PropTypes.func.isRequired,
         polyglot: polyglotPropTypes.isRequired,
+        monochromatic: PropTypes.bool.isRequired,
     };
 
     constructor(props) {
@@ -69,6 +70,7 @@ class ColorPickerParamsAdmin extends Component {
                     onChange={this.handleChangeText}
                     style={styles.colorpicker}
                     value={this.getStateColorsString()}
+                    maxLength={this.props.monochromatic ? 7 : None}
                 />
                 {this.createUI()}
             </Fragment>

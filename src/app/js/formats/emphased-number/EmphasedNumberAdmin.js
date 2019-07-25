@@ -86,6 +86,7 @@ class EmphasedNumberAdmin extends Component {
                     colors={this.state.colors || defaultArgs.colors}
                     onChange={this.setColors}
                     polyglot={polyglot}
+                    monochromatic={true}
                 />
             </div>
         );

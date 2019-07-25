@@ -85,6 +85,7 @@ class NetworkAdmin extends Component {
                     colors={this.state.colors}
                     onChange={this.setColors}
                     polyglot={polyglot}
+                    monochromatic={true}
                 />
             </div>
         );
