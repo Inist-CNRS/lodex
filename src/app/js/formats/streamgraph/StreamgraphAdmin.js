@@ -40,8 +40,8 @@ class StreamgraphAdmin extends Component {
                 minValue: PropTypes.number,
                 orderBy: PropTypes.string,
             }),
+            colors: PropTypes.string,
         }),
-        colors: PropTypes.string,
         maxLegendLength: PropTypes.number,
         height: PropTypes.number.isRequired,
         onChange: PropTypes.func.isRequired,
@@ -56,7 +56,7 @@ class StreamgraphAdmin extends Component {
         super(props);
         this.setColors = this.setColors.bind(this);
         this.state = {
-            colors: this.props.colors || defaultArgs.colors,
+            colors: this.props.args.colors || defaultArgs.colors,
         };
     }
 
@@ -88,7 +88,7 @@ class StreamgraphAdmin extends Component {
                     onChange={this.setParams}
                 />
                 <ColorPickerParamsAdmin
-                    colors={this.state.colors || defaultArgs.colors}
+                    colors={this.state.colors}
                     onChange={this.setColors}
                     polyglot={polyglot}
                 />
