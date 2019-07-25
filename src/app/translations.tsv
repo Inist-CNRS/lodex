@@ -322,6 +322,7 @@
 "globalBarchart"	"Graph - Bar Chart"	"Graphique - Diagramme en barres"
 "max_fields"	"Maximum number of fields"	"Nombre max de champs"
 "colors_set"	"Colour set"	"Jeu de couleurs"
+"color_set"	"Colour"	"Couleur"
 "user_can_interact_with_mouse_1"	"Use the mouse wheel to zoom and "	"Utilisez la molette de la souris pour zoomer puis cliquez"
 "user_can_interact_with_mouse_2"	"click to translate the chart"	"et faites glisser la souris pour déplacer le graphique."
 "order_by"	"Order by"	"Trier par"

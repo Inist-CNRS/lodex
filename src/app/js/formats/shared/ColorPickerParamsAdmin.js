@@ -66,16 +66,19 @@ class ColorPickerParamsAdmin extends Component {
     }
 
     render() {
+        const { monochromatic } = this.props;
         return (
             <Fragment>
                 <TextField
-                    floatingLabelText={this.props.polyglot.t('colors_set')}
+                    floatingLabelText={
+                        monochromatic
+                            ? this.props.polyglot.t('color_set')
+                            : this.props.polyglot.t('colors_set')
+                    }
                     onChange={this.handleChangeText}
                     style={styles.colorpicker}
                     value={this.getStateColorsString()}
-                    maxLength={
-                        this.props.monochromatic ? 7 : multichromatic_maxLength
-                    }
+                    maxLength={monochromatic ? 7 : multichromatic_maxLength}
                 />
                 {this.createUI()}
             </Fragment>
