@@ -24,6 +24,7 @@ const styles = {
 
 export const defaultArgs = {
     params: {
+        orderBy: 'value/asc',
         maxSize: 5000,
         maxLabelLength: 25,
         labelOffset: 50,
@@ -35,13 +36,15 @@ export const defaultArgs = {
 class HierarchyAdmin extends Component {
     static propTypes = {
         args: PropTypes.shape({
-            maxSize: PropTypes.number,
-            maxValue: PropTypes.number,
-            minValue: PropTypes.number,
-            orderBy: PropTypes.string,
-            maxLabelLength: PropTypes.number,
-            labelOffset: PropTypes.number,
-            minimumScaleValue: PropTypes.number,
+            params: PropTypes.shape({
+                maxSize: PropTypes.number,
+                maxValue: PropTypes.number,
+                minValue: PropTypes.number,
+                orderBy: PropTypes.string,
+                maxLabelLength: PropTypes.number,
+                labelOffset: PropTypes.number,
+                minimumScaleValue: PropTypes.number,
+            }),
             colors: PropTypes.string,
         }),
         onChange: PropTypes.func.isRequired,
@@ -73,37 +76,22 @@ class HierarchyAdmin extends Component {
 
     setMaxLabelLength = (_, maxLabelLength) => {
         this.setParams({
+            ...this.props.args.params,
             maxLabelLength: parseInt(maxLabelLength, 10),
-            labelOffset: this.props.args.params.labelOffset,
-            maxSize: this.props.args.params.maxSize,
-            minimumScaleValue: this.props.args.params.minimumScaleValue,
-            maxValue: this.props.args.params.maxValue,
-            minValue: this.props.args.params.minValue,
-            orderBy: this.props.args.params.orderBy,
         });
     };
 
     setLabelOffset = (_, labelOffset) => {
         this.setParams({
-            maxLabelLength: this.props.args.params.maxLabelLength,
+            ...this.props.args.params,
             labelOffset: parseInt(labelOffset, 10),
-            maxSize: this.props.args.params.maxSize,
-            minimumScaleValue: this.props.args.params.minimumScaleValue,
-            maxValue: this.props.args.params.maxValue,
-            minValue: this.props.args.params.minValue,
-            orderBy: this.props.args.params.orderBy,
         });
     };
 
     setMinimumScaleValue = (_, minimumScaleValue) => {
         this.setParams({
-            maxLabelLength: this.props.args.params.maxLabelLength,
-            labelOffset: this.props.args.params.labelOffset,
-            maxSize: this.props.args.params.maxSize,
+            ...this.props.args.params,
             minimumScaleValue: parseInt(minimumScaleValue, 10),
-            maxValue: this.props.args.params.maxValue,
-            minValue: this.props.args.params.minValue,
-            orderBy: this.props.args.params.orderBy,
         });
     };
 

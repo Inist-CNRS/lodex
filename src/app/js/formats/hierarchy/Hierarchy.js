@@ -775,10 +775,12 @@ class Hierarchy extends PureComponent {
 }
 
 Hierarchy.propTypes = {
-    minimumScaleValue: PropTypes.number.isRequired,
-    maxLabelLength: PropTypes.number.isRequired,
+    params: {
+        minimumScaleValue: PropTypes.number.isRequired,
+        maxLabelLength: PropTypes.number.isRequired,
+        labelOffset: PropTypes.number.isRequired,
+    },
     formatData: PropTypes.array.isRequired,
-    labelOffset: PropTypes.number.isRequired,
     colors: PropTypes.string.isRequired,
     p: polyglotPropTypes.isRequired,
     anchor: PropTypes.any.isRequired,
