@@ -206,9 +206,9 @@ class Hierarchy extends PureComponent {
                 .scaleLinear()
                 .domain([
                     0,
-                    maxWeight > this.props.minimumScaleValue
+                    maxWeight > this.props.params.minimumScaleValue
                         ? maxWeight
-                        : this.props.minimumScaleValue,
+                        : this.props.params.minimumScaleValue,
                 ])
                 .range([0, 500]);
 
@@ -370,7 +370,7 @@ class Hierarchy extends PureComponent {
 
             nodeInternal
                 .append('rect')
-                .attr('x', -5 - this.props.labelOffset)
+                .attr('x', -5 - this.props.params.labelOffset)
                 .attr('y', -22)
                 .attr('width', d => {
                     const label = this.getLabelAccordingChildren(d);
@@ -397,7 +397,7 @@ class Hierarchy extends PureComponent {
                     }`;
                     return currentId;
                 })
-                .attr('x', -this.props.labelOffset)
+                .attr('x', -this.props.params.labelOffset)
                 .attr('y', -10);
 
             // Setup G for every leaf datum. (rectangle)
@@ -671,7 +671,7 @@ class Hierarchy extends PureComponent {
 
     getLabelAccordingChildren(d) {
         if (d.children != null) {
-            return cliTruncate(d.id, this.props.maxLabelLength);
+            return cliTruncate(d.id, this.props.params.maxLabelLength);
         } else {
             return d.id;
         }
@@ -706,16 +706,6 @@ class Hierarchy extends PureComponent {
         });
         this.update();
     }
-
-    handleMouseEnter = () => {
-        this.isHovered = true;
-        alert('enter');
-    };
-
-    handleMouseLeave = () => {
-        this.isHovered = true;
-        alert('leave');
-    };
 
     render() {
         const { width, height } = this.state;

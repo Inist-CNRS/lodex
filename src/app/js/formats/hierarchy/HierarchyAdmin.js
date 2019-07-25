@@ -25,27 +25,25 @@ const styles = {
 export const defaultArgs = {
     params: {
         maxSize: 5000,
+        maxLabelLength: 25,
+        labelOffset: 50,
         minimumScaleValue: 5,
     },
-    maxLabelLength: 25,
-    labelOffset: 50,
     colors: colorUtils.MONOCHROMATIC_DEFAULT_COLORSET,
 };
 
 class HierarchyAdmin extends Component {
     static propTypes = {
         args: PropTypes.shape({
-            params: PropTypes.shape({
-                maxSize: PropTypes.number,
-                maxValue: PropTypes.number,
-                minValue: PropTypes.number,
-                orderBy: PropTypes.string,
-            }),
+            maxSize: PropTypes.number,
+            maxValue: PropTypes.number,
+            minValue: PropTypes.number,
+            orderBy: PropTypes.string,
+            maxLabelLength: PropTypes.number,
+            labelOffset: PropTypes.number,
+            minimumScaleValue: PropTypes.number,
+            colors: PropTypes.string,
         }),
-        minimumScaleValue: PropTypes.number,
-        maxLabelLength: PropTypes.number,
-        labelOffset: PropTypes.number,
-        colors: PropTypes.string,
         onChange: PropTypes.func.isRequired,
         p: polyglotPropTypes.isRequired,
     };
@@ -58,10 +56,9 @@ class HierarchyAdmin extends Component {
         super(props);
         this.setColors = this.setColors.bind(this);
         this.state = {
-            colors: this.props.colors || defaultArgs.colors,
+            colors: this.props.args.colors || defaultArgs.colors,
         };
     }
-
     setParams = params => {
         updateAdminArgs('params', params, this.props);
     };
@@ -77,9 +74,9 @@ class HierarchyAdmin extends Component {
     setMaxLabelLength = (_, maxLabelLength) => {
         this.setParams({
             maxLabelLength: parseInt(maxLabelLength, 10),
-            labelOffset: this.props.labelOffset,
+            labelOffset: this.props.args.params.labelOffset,
             maxSize: this.props.args.params.maxSize,
-            minimumScaleValue: this.props.minimumScaleValue,
+            minimumScaleValue: this.props.args.params.minimumScaleValue,
             maxValue: this.props.args.params.maxValue,
             minValue: this.props.args.params.minValue,
             orderBy: this.props.args.params.orderBy,
@@ -88,10 +85,10 @@ class HierarchyAdmin extends Component {
 
     setLabelOffset = (_, labelOffset) => {
         this.setParams({
-            maxLabelLength: this.props.maxLabelLength,
+            maxLabelLength: this.props.args.params.maxLabelLength,
             labelOffset: parseInt(labelOffset, 10),
             maxSize: this.props.args.params.maxSize,
-            minimumScaleValue: this.props.minimumScaleValue,
+            minimumScaleValue: this.props.args.params.minimumScaleValue,
             maxValue: this.props.args.params.maxValue,
             minValue: this.props.args.params.minValue,
             orderBy: this.props.args.params.orderBy,
@@ -100,8 +97,8 @@ class HierarchyAdmin extends Component {
 
     setMinimumScaleValue = (_, minimumScaleValue) => {
         this.setParams({
-            maxLabelLength: this.props.maxLabelLength,
-            labelOffset: this.props.labelOffset,
+            maxLabelLength: this.props.args.params.maxLabelLength,
+            labelOffset: this.props.args.params.labelOffset,
             maxSize: this.props.args.params.maxSize,
             minimumScaleValue: parseInt(minimumScaleValue, 10),
             maxValue: this.props.args.params.maxValue,
@@ -133,19 +130,19 @@ class HierarchyAdmin extends Component {
                     floatingLabelText={polyglot.t('max_char_number_in_labels')}
                     onChange={this.setMaxLabelLength}
                     style={styles.input}
-                    value={this.props.maxLabelLength}
+                    value={this.props.args.params.maxLabelLength}
                 />
                 <TextField
                     floatingLabelText={polyglot.t('label_offset')}
                     onChange={this.setLabelOffset}
                     style={styles.input}
-                    value={this.props.labelOffset}
+                    value={this.props.args.params.labelOffset}
                 />
                 <TextField
                     floatingLabelText={polyglot.t('minimum_scale_value')}
                     onChange={this.setMinimumScaleValue}
                     style={styles.input}
-                    value={this.props.minimumScaleValue}
+                    value={this.props.args.params.minimumScaleValue}
                 />
             </div>
         );
