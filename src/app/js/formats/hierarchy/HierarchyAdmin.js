@@ -7,7 +7,6 @@ import { polyglot as polyglotPropTypes } from '../../propTypes';
 import updateAdminArgs from '../shared/updateAdminArgs';
 import RoutineParamsAdmin from '../shared/RoutineParamsAdmin';
 import ColorPickerParamsAdmin from '../shared/ColorPickerParamsAdmin';
-
 import * as colorUtils from '../colorUtils';
 
 const styles = {
@@ -24,8 +23,8 @@ const styles = {
 
 export const defaultArgs = {
     params: {
-        orderBy: 'value/asc',
         maxSize: 5000,
+        orderBy: 'value/asc',
         maxLabelLength: 25,
         labelOffset: 50,
         minimumScaleValue: 5,

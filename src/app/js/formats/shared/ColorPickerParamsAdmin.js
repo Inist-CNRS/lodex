@@ -61,6 +61,7 @@ class ColorPickerParamsAdmin extends Component {
             </div>
         ));
     }
+
     getStateColorsString() {
         return this.state.colors.map(({ color }) => color).join(' ');
     }

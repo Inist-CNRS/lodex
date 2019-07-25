@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
 
 export const defaultArgs = {
     colors: colorUtils.MULTICHROMATIC_DEFAULT_COLORSET_STREAMGRAPH,
-    maxLegendLength: 31,
+    maxLegendLength: 30,
     height: 300,
 };
 
@@ -98,7 +98,7 @@ class Streamgraph extends PureComponent {
         super(props);
         this.state = {
             width: 800,
-            height: this.props.height,
+            height: this.props.height || defaultArgs.height,
             margin: { top: 60, right: 40, bottom: 50, left: 60 },
         };
         this.divContainer = React.createRef();
@@ -319,7 +319,13 @@ class Streamgraph extends PureComponent {
             legendItemContainer
                 .append('text')
                 .attr('class', `${css(styles.legendItemText)}`)
-                .text(cutStr(element.name, this.props.maxLegendLength));
+                .text(
+                    cutStr(
+                        element.name,
+                        this.props.maxLegendLength ||
+                            defaultArgs.maxLegendLength,
+                    ),
+                );
 
             const legendItemTooltip = legendItemContainer
                 .append('span')
@@ -594,11 +600,10 @@ class Streamgraph extends PureComponent {
 
     render() {
         const { width } = this.state;
-        const { height } = this.props;
-
-        let loading = <LoadingHourglass polyglot={this.props.p} />;
+        const height = this.props.height || defaultArgs.height;
 
         // since the data comes in the form of an Array, we wait for that to hide the loading label
+        let loading = <LoadingHourglass polyglot={this.props.p} />;
         if (Array.isArray(this.props.formatData)) {
             loading = '';
         }
