@@ -15,7 +15,7 @@ const styles = {
     },
 };
 
-const multichromatic_maxLength = colorUtils.MAX_COLORS_NUMBER * 8 - 1;
+const multichromatic_maxLength = 100 * 8 - 1; // "#RRGGBB " is 8 chars, minus the last space, so we can set 100 pickers
 
 class ColorPickerParamsAdmin extends Component {
     static propTypes = {
@@ -73,7 +73,7 @@ class ColorPickerParamsAdmin extends Component {
                 <TextField
                     floatingLabelText={
                         monochromatic
-                            ? this.props.polyglot.t('color_set')
+                            ? this.props.polyglot.t('Color')
                             : this.props.polyglot.t('colors_set')
                     }
                     onChange={this.handleChangeText}

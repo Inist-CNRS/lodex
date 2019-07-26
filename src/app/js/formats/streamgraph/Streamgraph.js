@@ -18,7 +18,7 @@ import * as colorUtils from '../colorUtils';
 
 import PropTypes from 'prop-types';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
-import LoadingHourglass from '../shared/LoadingHourglass';
+import LoadingGraph from '../shared/LoadingGraph';
 import MouseIcon from '../shared/MouseIcon';
 
 const styles = StyleSheet.create({
@@ -603,7 +603,7 @@ class Streamgraph extends PureComponent {
         const height = this.props.height || defaultArgs.height;
 
         // since the data comes in the form of an Array, we wait for that to hide the loading label
-        let loading = <LoadingHourglass polyglot={this.props.p} />;
+        let loading = <LoadingGraph polyglot={this.props.p} />;
         if (Array.isArray(this.props.formatData)) {
             loading = '';
         }
@@ -614,7 +614,15 @@ class Streamgraph extends PureComponent {
                 style={styles.divContainer}
                 id={`divContainer${this.uniqueId}`}
             >
-                <div>{loading}</div>
+                <div
+                    style={{
+                        textAlign: 'center',
+                        fontSize: '24px',
+                        paddingTop: '5px',
+                    }}
+                >
+                    {loading}
+                </div>
 
                 <div
                     style={{

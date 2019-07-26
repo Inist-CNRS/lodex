@@ -6,4 +6,3 @@ export const MULTICHROMATIC_DEFAULT_COLORSET_STREAMGRAPH =
 export function isValidColor(colorInput) {
     return /(^#[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)/i.test(colorInput) ? true : false;
 }
-export const MAX_COLORS_NUMBER = '100';
