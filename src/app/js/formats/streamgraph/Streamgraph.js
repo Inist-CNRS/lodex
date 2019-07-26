@@ -26,19 +26,6 @@ const styles = StyleSheet.create({
         overflow: 'hidden',
         position: 'relative',
     },
-    tooltip: {
-        position: 'relative',
-        height: '65px',
-        marginLeft: '20px',
-        marginRight: '20px',
-        backgroundColor: '#4e4e4e',
-        color: '#fff',
-        borderRadius: '0.45rem',
-        display: 'flex',
-        alignItems: 'center',
-        padding: '5px',
-        paddingTop: '14px',
-    },
     vertical: {
         marginTop: 60,
         height: 190,
@@ -57,18 +44,37 @@ const styles = StyleSheet.create({
         padding: '5px',
         margin: '-5px',
     },
+    graphItemTooltip: {
+        color: '#000000',
+        position: 'relative',
+        borderStyle: 'solid',
+        borderColor: '#9e9e9e',
+        borderRadius: '6px',
+        marginLeft: '20px',
+        marginRight: '20px',
+        display: 'flex',
+        alignItems: 'center',
+        paddingTop: '15px',
+        paddingBottom: '5px',
+        paddingLeft: '15px',
+        paddingRight: '5px',
+        height: '65px',
+        marginBottom: '10px',
+    },
     legendItemTooltip: {
         visibility: 'hidden',
-        backgroundColor: '#4e4e4e',
-        color: '#fff',
-        borderRadius: '6px',
-        padding: '5px',
         position: 'absolute',
+        color: '#000000',
+        borderStyle: 'solid',
+        borderColor: '#9e9e9e',
+        borderRadius: '6px',
+        paddingTop: '15px',
+        paddingBottom: '5px',
+        paddingLeft: '15px',
+        paddingRight: '5px',
         left: '0px',
-        right: '15px',
-        top: '-66px',
-        zIndex: 10,
-        'white-space': 'nowrap',
+        right: '20px',
+        top: '-75px',
     },
     legendItemText: {
         marginLeft: 5,
@@ -284,11 +290,10 @@ class Streamgraph extends PureComponent {
 
         const tooltip = divContainer
             .insert('div', '#d3DivContainer')
-            .attr('class', `remove ${css(styles.tooltip)}`)
+            .attr('class', `remove ${css(styles.graphItemTooltip)}`)
             .attr('id', 'tooltip')
             .style('z-index', '2')
-            .style('visibility', 'hidden')
-            .style('marginLeft', '20px');
+            .style('visibility', 'hidden');
 
         return { tooltip, vertical };
     }
@@ -336,8 +341,7 @@ class Streamgraph extends PureComponent {
                     '<p>' +
                         '<svg width="15" height="15" style="vertical-align: middle; background-color: ' +
                         element.color +
-                        '"></svg>' +
-                        '  ' +
+                        '"></svg> ' +
                         element.name +
                         '</p>',
                 );
@@ -426,11 +430,16 @@ class Streamgraph extends PureComponent {
                                 '<svg width="15" height="15" style="vertical-align: middle; background-color: ' +
                                 this.hoveredColor +
                                 '"></svg>' +
-                                '  ' +
+                                '<ul style="list-style: none;text-indent:-35px">' +
+                                '<li>' +
                                 this.hoveredKey +
-                                '<br>' +
+                                '</li>' +
+                                '<li>' +
                                 this.hoveredValue +
-                                '</p>',
+                                ' en ' +
+                                date +
+                                '</li>' +
+                                '</ul></p>',
                         )
                         .style('visibility', 'visible');
                 })
