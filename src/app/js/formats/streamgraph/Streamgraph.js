@@ -435,12 +435,10 @@ class Streamgraph extends PureComponent {
                                 this.hoveredKey +
                                 '</li>' +
                                 '<li>' +
-                                this.hoveredValue +
-                                ' ' +
-                                this.props.p.t('en') +
-                                ' ' +
                                 date +
-                                ' </li>' +
+                                ' : <b>' +
+                                this.hoveredValue +
+                                '</b></li>' +
                                 '</ul></p>',
                         )
                         .style('visibility', 'visible');
