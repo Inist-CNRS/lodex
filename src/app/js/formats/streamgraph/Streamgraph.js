@@ -21,6 +21,10 @@ import { polyglot as polyglotPropTypes } from '../../propTypes';
 import LoadingGraph from '../shared/LoadingGraph';
 import MouseIcon from '../shared/MouseIcon';
 
+import theme from '../../theme';
+import CenterIcon from '../shared/CenterIcon';
+import stylesToClassname from '../../lib/stylesToClassName';
+
 const styles = StyleSheet.create({
     divContainer: {
         overflow: 'hidden',
@@ -96,9 +100,22 @@ export const defaultArgs = {
     height: 300,
 };
 
+const stylesWithClassnames = stylesToClassname({
+    icon: {
+        color: theme.green.primary,
+        ':hover': {
+            color: theme.purple.primary,
+            cursor: 'pointer',
+        },
+    },
+});
+
+let zoom;
+
 class Streamgraph extends PureComponent {
     _isMounted = false;
     mouseIcon = '';
+    centerIcon = '';
 
     constructor(props) {
         super(props);
@@ -107,8 +124,10 @@ class Streamgraph extends PureComponent {
             height: this.props.height || defaultArgs.height,
             margin: { top: 60, right: 40, bottom: 50, left: 60 },
         };
+        this.centerGraphClick = this.centerGraphClick.bind(this);
         this.divContainer = React.createRef();
         this.svgContainer = React.createRef();
+        this.graphZone = React.createRef();
         this.anchor = React.createRef();
 
         this.mouseIsOverStream = false;
@@ -120,8 +139,13 @@ class Streamgraph extends PureComponent {
         args: defaultArgs,
     };
 
+    centerGraphClick() {
+        d3.select(this.graphZone.current).call(zoom.transform, d3.zoomIdentity);
+        this.updateDimensions();
+    }
+
     initTheGraphBasicsElements(width, height, margin, svgViewport) {
-        const zoom = d3
+        zoom = d3
             .zoom()
             .scaleExtent([1, 99999])
             .translateExtent([[0, 0], [width, height]])
@@ -588,8 +612,9 @@ class Streamgraph extends PureComponent {
         window.addEventListener('resize', this.updateDimensions.bind(this));
         this.setGraph();
 
-        // if the mouseIcon content is available before componentDidMount, the content prints weirdly in a corner of the page
+        // if the icon content is available before componentDidMount, the content prints weirdly in a corner of the page
         this.mouseIcon = <MouseIcon polyglot={this.props.p} />;
+        this.centerIcon = <CenterIcon polyglot={this.props.p} />;
     }
 
     UNSAFE_componentWillUpdate() {
@@ -635,11 +660,23 @@ class Streamgraph extends PureComponent {
                 <div
                     style={{
                         position: 'absolute',
-                        top: 210 + (height - defaultArgs.height) + 'px',
+                        top: 150 + (height - defaultArgs.height) + 'px',
                         left: '5px',
                     }}
                 >
                     {this.mouseIcon}
+                </div>
+
+                <div
+                    style={{
+                        position: 'absolute',
+                        top: 210 + (height - defaultArgs.height) + 'px',
+                        left: '12px',
+                    }}
+                    onClick={this.centerGraphClick}
+                    className={stylesWithClassnames.icon}
+                >
+                    {this.centerIcon}
                 </div>
 
                 <svg

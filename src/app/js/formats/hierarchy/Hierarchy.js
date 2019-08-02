@@ -658,7 +658,7 @@ class Hierarchy extends PureComponent {
     componentDidUpdate() {
         this.setGraph();
 
-        // if the mouseIcon content is available before componentDidMount, the content prints weirdly in a corner of the page
+        // if the icon content is available before componentDidMount, the content prints weirdly in a corner of the page
         this.mouseIcon = <MouseIcon polyglot={this.props.p} />;
         this.centerIcon = <CenterIcon polyglot={this.props.p} />;
     }
