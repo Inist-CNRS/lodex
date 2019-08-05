@@ -348,6 +348,7 @@ class Streamgraph extends PureComponent {
             legendItemContainer
                 .append('text')
                 .attr('class', `${css(styles.legendItemText)}`)
+                .attr('id', index++)
                 .text(
                     cutStr(
                         element.name,
@@ -465,6 +466,16 @@ class Streamgraph extends PureComponent {
                                 '</li></ul></p>',
                         )
                         .style('visibility', 'visible');
+
+                    colorNameList.forEach((item, index) => {
+                        index == i
+                            ? (document.getElementById(
+                                  colorNameList.length - index - 1,
+                              ).style.opacity = '1')
+                            : (document.getElementById(
+                                  colorNameList.length - index - 1,
+                              ).style.opacity = '0.3');
+                    });
                 })
                 .on('mouseover', (d, i) => {
                     this.mouseIsOverStream = true;
@@ -478,7 +489,7 @@ class Streamgraph extends PureComponent {
         }
     }
 
-    setMouseOutStreams(tooltip) {
+    setMouseOutStreams(tooltip, colorNameList) {
         const componentContext = this;
         if (this.streams) {
             this.streams.on('mouseout', function() {
@@ -497,6 +508,10 @@ class Streamgraph extends PureComponent {
                             '</p>',
                     )
                     .style('visibility', 'hidden');
+
+                colorNameList.forEach((item, index) => {
+                    document.getElementById(index).style.opacity = '1';
+                });
             });
         }
     }
@@ -506,7 +521,7 @@ class Streamgraph extends PureComponent {
         // definition erase the previous ones
         this.setViewportEvents(svgViewport, vertical);
         this.setMouseMoveAndOverStreams(tooltip, colorNameList);
-        this.setMouseOutStreams(tooltip);
+        this.setMouseOutStreams(tooltip, colorNameList);
     }
 
     updateDimensions() {
