@@ -55,6 +55,10 @@ class CartographyAdmin extends Component {
         }),
         onChange: PropTypes.func.isRequired,
         p: polyglotPropTypes.isRequired,
+        showMaxSize: PropTypes.bool.isRequired,
+        showMaxValue: PropTypes.bool.isRequired,
+        showMinValue: PropTypes.bool.isRequired,
+        showOrderBy: PropTypes.bool.isRequired,
     };
 
     static defaultProps = {
@@ -79,6 +83,10 @@ class CartographyAdmin extends Component {
         const {
             p: polyglot,
             args: { params },
+            showMaxSize = false,
+            showMaxValue = false,
+            showMinValue = false,
+            showOrderBy = false,
         } = this.props;
         const { colorScheme, hoverColorScheme } = this.props.args;
         return (
@@ -87,7 +95,10 @@ class CartographyAdmin extends Component {
                     params={params || defaultArgs.params}
                     onChange={this.setParams}
                     polyglot={polyglot}
-                    fieldsToShow={'maxSize, minValue, maxValue, orderBy'}
+                    showMaxSize={showMaxSize}
+                    showMaxValue={showMaxValue}
+                    showMinValue={showMinValue}
+                    showOrderBy={showOrderBy}
                 />
                 <GradientSchemeSelector
                     label={polyglot.t('color_scheme')}

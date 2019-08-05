@@ -30,10 +30,6 @@ export const defaultArgs = {
         minimumScaleValue: 5,
     },
     colors: colorUtils.MONOCHROMATIC_DEFAULT_COLORSET,
-    showMaxSize: true,
-    showMaxValue: true,
-    showMinValue: true,
-    showOrderBy: true,
 };
 
 class HierarchyAdmin extends Component {
@@ -116,7 +112,7 @@ class HierarchyAdmin extends Component {
         const {
             p: polyglot,
             args: { params },
-            showMaxSize = false,
+            showMaxSize = true,
             showMaxValue = false,
             showMinValue = false,
             showOrderBy = true,

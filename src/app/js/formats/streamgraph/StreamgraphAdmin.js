@@ -23,7 +23,7 @@ const styles = {
 export const defaultArgs = {
     params: {
         maxSize: 200,
-        orderBy: 'value/asc',
+        orderBy: 'value/desc',
     },
     colors: colorUtils.MULTICHROMATIC_DEFAULT_COLORSET_STREAMGRAPH,
 };
@@ -35,6 +35,10 @@ class StreamgraphAdmin extends Component {
         }),
         onChange: PropTypes.func.isRequired,
         p: polyglotPropTypes.isRequired,
+        showMaxSize: PropTypes.bool.isRequired,
+        showMaxValue: PropTypes.bool.isRequired,
+        showMinValue: PropTypes.bool.isRequired,
+        showOrderBy: PropTypes.bool.isRequired,
     };
 
     static defaultProps = {
@@ -59,6 +63,10 @@ class StreamgraphAdmin extends Component {
         const {
             p: polyglot,
             args: { params },
+            showMaxSize = true,
+            showMaxValue = false,
+            showMinValue = false,
+            showOrderBy = true,
         } = this.props;
 
         return (
@@ -67,7 +75,10 @@ class StreamgraphAdmin extends Component {
                     params={params || defaultArgs.params}
                     polyglot={polyglot}
                     onChange={this.setParams}
-                    fieldsToShow={'maxSize, minValue, maxValue, orderBy'}
+                    showMaxSize={showMaxSize}
+                    showMaxValue={showMaxValue}
+                    showMinValue={showMinValue}
+                    showOrderBy={showOrderBy}
                 />
                 <ColorPickerParamsAdmin
                     colors={this.state.colors || defaultArgs.colors}
