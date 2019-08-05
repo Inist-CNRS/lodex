@@ -379,10 +379,20 @@ class Streamgraph extends PureComponent {
                         .transition()
                         .duration(25)
                         .attr('opacity', (d, j) => {
-                            return j != colorNameList.length - index - 1
-                                ? 0.3
-                                : 1;
+                            return j != colorNameList.length - index ? 0.3 : 1;
                         });
+
+                    colorNameList.forEach((item, index) => {
+                        document.getElementById(
+                            colorNameList.length - index - 1,
+                        ).textContent == element.name
+                            ? (document.getElementById(
+                                  colorNameList.length - index - 1,
+                              ).style.opacity = '1')
+                            : (document.getElementById(
+                                  colorNameList.length - index - 1,
+                              ).style.opacity = '0.3');
+                    });
                 })
                 .on('mousemove', () => {
                     legendItemTooltip.style('visibility', 'visible');
@@ -394,6 +404,10 @@ class Streamgraph extends PureComponent {
                         .transition()
                         .duration(25)
                         .attr('opacity', () => 1);
+
+                    colorNameList.forEach((item, index) => {
+                        document.getElementById(index).style.opacity = '1';
+                    });
                 });
         });
     }
