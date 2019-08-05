@@ -66,7 +66,7 @@ class StreamgraphAdmin extends Component {
             showMaxSize = true,
             showMaxValue = false,
             showMinValue = false,
-            showOrderBy = true,
+            showOrderBy = false,
         } = this.props;
 
         return (

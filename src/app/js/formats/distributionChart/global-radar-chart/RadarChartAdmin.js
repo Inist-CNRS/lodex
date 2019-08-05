@@ -49,6 +49,10 @@ class RadarChartAdmin extends Component {
         }),
         onChange: PropTypes.func.isRequired,
         p: polyglotPropTypes.isRequired,
+        showMaxSize: PropTypes.bool.isRequired,
+        showMaxValue: PropTypes.bool.isRequired,
+        showMinValue: PropTypes.bool.isRequired,
+        showOrderBy: PropTypes.bool.isRequired,
     };
 
     static defaultProps = {
@@ -84,7 +88,13 @@ class RadarChartAdmin extends Component {
     }
 
     render() {
-        const { p: polyglot } = this.props;
+        const {
+            p: polyglot,
+            showMaxSize = true,
+            showMaxValue = true,
+            showMinValue = true,
+            showOrderBy = true,
+        } = this.props;
         const { params, axisRoundValue, scale } = this.props.args;
 
         return (
@@ -93,7 +103,10 @@ class RadarChartAdmin extends Component {
                     params={params || defaultArgs.params}
                     onChange={this.setParams}
                     polyglot={polyglot}
-                    fieldsToShow={'maxSize, minValue, maxValue, orderBy'}
+                    showMaxSize={showMaxSize}
+                    showMaxValue={showMaxValue}
+                    showMinValue={showMinValue}
+                    showOrderBy={showOrderBy}
                 />
                 <ColorPickerParamsAdmin
                     colors={this.state.colors}
