@@ -56,7 +56,7 @@ class Network extends Component {
     }
 
     UNSAFE_componentWillUpdate() {
-        // if the mouseIcon content is available before componentDidMount, the content prints weirdly in a corner of the page
+        // if the tooltip content is available before componentDidMount, the content prints weirdly in a corner of the page
         this.mouseIcon = <MouseIcon polyglot={this.props.p} />;
     }
 

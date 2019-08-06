@@ -127,7 +127,6 @@ class Streamgraph extends PureComponent {
         this.centerGraphClick = this.centerGraphClick.bind(this);
         this.divContainer = React.createRef();
         this.svgContainer = React.createRef();
-        this.graphZone = React.createRef();
         this.anchor = React.createRef();
 
         this.mouseIsOverStream = false;
@@ -140,12 +139,11 @@ class Streamgraph extends PureComponent {
     };
 
     centerGraphClick() {
-        d3.select(this.graphZone.current).call(zoom.transform, d3.zoomIdentity);
         this.updateDimensions();
     }
 
     initTheGraphBasicsElements(width, height, margin, svgViewport) {
-        zoom = d3
+        const zoom = d3
             .zoom()
             .scaleExtent([1, 99999])
             .translateExtent([[0, 0], [width, height]])
@@ -382,16 +380,16 @@ class Streamgraph extends PureComponent {
                             return j != colorNameList.length - index ? 0.3 : 1;
                         });
 
+                    var currentLegendItem;
                     colorNameList.forEach((item, index) => {
-                        document.getElementById(
+                        currentLegendItem = document.getElementById(
                             colorNameList.length - index - 1,
-                        ).textContent == element.name
-                            ? (document.getElementById(
-                                  colorNameList.length - index - 1,
-                              ).style.opacity = '1')
-                            : (document.getElementById(
-                                  colorNameList.length - index - 1,
-                              ).style.opacity = '0.3');
+                        );
+
+                        currentLegendItem.style.opacity =
+                            currentLegendItem.textContent == element.name
+                                ? 1
+                                : 0.3;
                     });
                 })
                 .on('mousemove', () => {
@@ -481,14 +479,12 @@ class Streamgraph extends PureComponent {
                         )
                         .style('visibility', 'visible');
 
+                    var currentLegendItem;
                     colorNameList.forEach((item, index) => {
-                        index == i
-                            ? (document.getElementById(
-                                  colorNameList.length - index - 1,
-                              ).style.opacity = '1')
-                            : (document.getElementById(
-                                  colorNameList.length - index - 1,
-                              ).style.opacity = '0.3');
+                        currentLegendItem = document.getElementById(
+                            colorNameList.length - index - 1,
+                        );
+                        currentLegendItem.style.opacity = index == i ? 1 : 0.3;
                     });
                 })
                 .on('mouseover', (d, i) => {
@@ -641,7 +637,7 @@ class Streamgraph extends PureComponent {
         window.addEventListener('resize', this.updateDimensions.bind(this));
         this.setGraph();
 
-        // if the icon content is available before componentDidMount, the content prints weirdly in a corner of the page
+        // if the tooltip content is available before componentDidMount, the content prints weirdly in a corner of the page
         this.mouseIcon = <MouseIcon polyglot={this.props.p} />;
         this.centerIcon = <CenterIcon polyglot={this.props.p} />;
     }
