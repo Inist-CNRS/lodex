@@ -7,7 +7,6 @@ import { polyglot as polyglotPropTypes } from '../../propTypes';
 import updateAdminArgs from '../shared/updateAdminArgs';
 import RoutineParamsAdmin from '../shared/RoutineParamsAdmin';
 import ColorPickerParamsAdmin from '../shared/ColorPickerParamsAdmin';
-
 import * as colorUtils from '../colorUtils';
 
 const styles = {
@@ -25,6 +24,7 @@ const styles = {
 export const defaultArgs = {
     params: {
         maxSize: 5000,
+        orderBy: 'value/asc',
         maxLabelLength: 25,
         labelOffset: 50,
         minimumScaleValue: 5,
@@ -35,13 +35,15 @@ export const defaultArgs = {
 class HierarchyAdmin extends Component {
     static propTypes = {
         args: PropTypes.shape({
-            maxSize: PropTypes.number,
-            maxValue: PropTypes.number,
-            minValue: PropTypes.number,
-            orderBy: PropTypes.string,
-            maxLabelLength: PropTypes.number,
-            labelOffset: PropTypes.number,
-            minimumScaleValue: PropTypes.number,
+            params: PropTypes.shape({
+                maxSize: PropTypes.number,
+                maxValue: PropTypes.number,
+                minValue: PropTypes.number,
+                orderBy: PropTypes.string,
+                maxLabelLength: PropTypes.number,
+                labelOffset: PropTypes.number,
+                minimumScaleValue: PropTypes.number,
+            }),
             colors: PropTypes.string,
         }),
         onChange: PropTypes.func.isRequired,
@@ -59,48 +61,36 @@ class HierarchyAdmin extends Component {
             colors: this.props.args.colors || defaultArgs.colors,
         };
     }
-
     setParams = params => {
         updateAdminArgs('params', params, this.props);
     };
 
     setColors(colors) {
-        updateAdminArgs('colors', colors || defaultArgs.colors, this.props);
+        updateAdminArgs(
+            'colors',
+            colors.split(' ')[0] || defaultArgs.colors,
+            this.props,
+        );
     }
 
     setMaxLabelLength = (_, maxLabelLength) => {
         this.setParams({
+            ...this.props.args.params,
             maxLabelLength: parseInt(maxLabelLength, 10),
-            labelOffset: this.props.args.params.labelOffset,
-            maxSize: this.props.args.params.maxSize,
-            minimumScaleValue: this.props.args.params.minimumScaleValue,
-            maxValue: this.props.args.params.maxValue,
-            minValue: this.props.args.params.minValue,
-            orderBy: this.props.args.params.orderBy,
         });
     };
 
     setLabelOffset = (_, labelOffset) => {
         this.setParams({
-            maxLabelLength: this.props.args.params.maxLabelLength,
+            ...this.props.args.params,
             labelOffset: parseInt(labelOffset, 10),
-            maxSize: this.props.args.params.maxSize,
-            minimumScaleValue: this.props.args.params.minimumScaleValue,
-            maxValue: this.props.args.params.maxValue,
-            minValue: this.props.args.params.minValue,
-            orderBy: this.props.args.params.orderBy,
         });
     };
 
     setMinimumScaleValue = (_, minimumScaleValue) => {
         this.setParams({
-            maxLabelLength: this.props.args.params.maxLabelLength,
-            labelOffset: this.props.args.params.labelOffset,
-            maxSize: this.props.args.params.maxSize,
+            ...this.props.args.params,
             minimumScaleValue: parseInt(minimumScaleValue, 10),
-            maxValue: this.props.args.params.maxValue,
-            minValue: this.props.args.params.minValue,
-            orderBy: this.props.args.params.orderBy,
         });
     };
 
@@ -121,6 +111,7 @@ class HierarchyAdmin extends Component {
                     colors={this.state.colors || defaultArgs.colors}
                     onChange={this.setColors}
                     polyglot={polyglot}
+                    monochromatic={true}
                 />
                 <TextField
                     floatingLabelText={polyglot.t('max_char_number_in_labels')}

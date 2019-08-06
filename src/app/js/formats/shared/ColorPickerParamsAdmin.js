@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import TextField from 'material-ui/TextField';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
+import * as colorUtils from '../colorUtils';
 
 const styles = {
     input: {
@@ -14,11 +15,14 @@ const styles = {
     },
 };
 
+const multichromatic_maxLength = 100 * 8 - 1; // "#RRGGBB " is 8 chars, minus the last space, so we can set 100 pickers
+
 class ColorPickerParamsAdmin extends Component {
     static propTypes = {
         colors: PropTypes.string,
         onChange: PropTypes.func.isRequired,
         polyglot: polyglotPropTypes.isRequired,
+        monochromatic: PropTypes.bool.isRequired,
     };
 
     constructor(props) {
@@ -57,18 +61,25 @@ class ColorPickerParamsAdmin extends Component {
             </div>
         ));
     }
+
     getStateColorsString() {
         return this.state.colors.map(({ color }) => color).join(' ');
     }
 
     render() {
+        const { monochromatic } = this.props;
         return (
             <Fragment>
                 <TextField
-                    floatingLabelText={this.props.polyglot.t('colors_set')}
+                    floatingLabelText={
+                        monochromatic
+                            ? this.props.polyglot.t('Color')
+                            : this.props.polyglot.t('colors_set')
+                    }
                     onChange={this.handleChangeText}
                     style={styles.colorpicker}
                     value={this.getStateColorsString()}
+                    maxLength={monochromatic ? 7 : multichromatic_maxLength}
                 />
                 {this.createUI()}
             </Fragment>

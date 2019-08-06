@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import stylesToClassname from '../../lib/stylesToClassName';
+import * as colorUtils from '../colorUtils';
 
 const sizes = ['8rem', '6rem', '3rem'];
 
@@ -15,8 +16,9 @@ const styles = stylesToClassname(
     'big-bold',
 );
 
-const getContentInlineStyle = (colorsSet, size) => {
-    const color = colorsSet.shift() || '#8B8B8B';
+const getContentInlineStyle = (colors, size) => {
+    const color =
+        colors.split(' ')[0] || colorUtils.MONOCHROMATIC_DEFAULT_COLORSET;
     const currentSize = sizes[size - 1];
     const fontSize = currentSize || 'inherit';
     const fontWeight = currentSize ? 'bold' : 'normal';
@@ -30,9 +32,9 @@ const getContentInlineStyle = (colorsSet, size) => {
     };
 };
 
-const Bigbold = ({ value, colorsSet, size }) => (
+const Bigbold = ({ value, colors, size }) => (
     <div className={styles.ribbon}>
-        <div className="content" style={getContentInlineStyle(colorsSet, size)}>
+        <div className="content" style={getContentInlineStyle(colors, size)}>
             {value}
         </div>
     </div>
@@ -40,7 +42,7 @@ const Bigbold = ({ value, colorsSet, size }) => (
 
 Bigbold.propTypes = {
     value: PropTypes.string.isRequired,
-    colorsSet: PropTypes.array.isRequired,
+    colors: PropTypes.string.isRequired,
     size: PropTypes.number.isRequired,
 };
 

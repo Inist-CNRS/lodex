@@ -177,21 +177,9 @@ export function getMinMaxValue(stackedData) {
     return { minValue, maxValue };
 }
 
-export function cutStr(str) {
-    const strSplit = str.split(' ');
-    let resStr = '';
-    const words_nb = 3;
-
-    for (let i = 0; i < strSplit.length && i < words_nb; i++) {
-        if (i < words_nb - 1 || strSplit[i].length > 3) {
-            resStr = `${resStr} ${strSplit[i]}`;
-        }
-    }
-
-    if (strSplit.length > 3) {
-        resStr = `${resStr} [...]`;
-    }
-    return resStr;
+export function cutStr(str, maxLegendLength) {
+    const slicedStr = str.substring(0, maxLegendLength);
+    return slicedStr.length < str.length ? `${slicedStr} [...]` : str;
 }
 
 export function findFirstTickPosition(uniqueId) {

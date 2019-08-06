@@ -80,7 +80,11 @@ class RadarChartAdmin extends Component {
     };
 
     setColors(colors) {
-        updateAdminArgs('colors', colors || defaultArgs.colors, this.props);
+        updateAdminArgs(
+            'colors',
+            colors.split(' ')[0] || defaultArgs.colors,
+            this.props,
+        );
     }
 
     render() {
@@ -98,6 +102,7 @@ class RadarChartAdmin extends Component {
                     colors={this.state.colors}
                     onChange={this.setColors}
                     polyglot={polyglot}
+                    monochromatic={true}
                 />
                 <Checkbox
                     label={polyglot.t('axis_round_value')}

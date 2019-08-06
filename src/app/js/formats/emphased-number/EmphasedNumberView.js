@@ -18,17 +18,13 @@ class EmphasedNumberView extends Component {
             size,
             colors,
         } = this.props;
-        const colorsSet = String(colors)
-            .split(/[^\w]/)
-            .filter(x => x.length > 0)
-            .map(x => String('#').concat(x));
         const value = formatData || resource[field.name];
 
         return (
             <div className={className}>
                 <Bigbold
                     value={commaNumber(value, ' ')}
-                    colorsSet={colorsSet}
+                    colors={colors}
                     size={size}
                 />
             </div>
