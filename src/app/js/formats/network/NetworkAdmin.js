@@ -6,7 +6,6 @@ import { polyglot as polyglotPropTypes } from '../../propTypes';
 import updateAdminArgs from '../shared/updateAdminArgs';
 import RoutineParamsAdmin from '../shared/RoutineParamsAdmin';
 import ColorPickerParamsAdmin from '../shared/ColorPickerParamsAdmin';
-
 import * as colorUtils from '../colorUtils';
 
 const styles = {
@@ -65,7 +64,11 @@ class NetworkAdmin extends Component {
     };
 
     setColors(colors) {
-        updateAdminArgs('colors', colors || defaultArgs.colors, this.props);
+        updateAdminArgs(
+            'colors',
+            colors.split(' ')[0] || defaultArgs.colors,
+            this.props,
+        );
     }
 
     render() {
@@ -93,6 +96,7 @@ class NetworkAdmin extends Component {
                     colors={this.state.colors}
                     onChange={this.setColors}
                     polyglot={polyglot}
+                    monochromatic={true}
                 />
             </div>
         );

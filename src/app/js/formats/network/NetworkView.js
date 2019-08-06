@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { polyglot as polyglotPropTypes } from '../../propTypes';
 import {
     InteractiveForceGraph,
     ForceGraphNode,
@@ -14,6 +15,7 @@ import { scaleLinear } from 'd3-scale';
 
 import injectData from '../injectData';
 import exportableToPng from '../exportableToPng';
+import MouseIcon from '../shared/MouseIcon';
 
 const simulationOptions = {
     animate: true,
@@ -37,6 +39,7 @@ const styles = {
 const zoomOptions = { minScale: 0.25, maxScale: 16 };
 
 class Network extends Component {
+    mouseIcon = '';
     createSimulation = options => {
         // extends react-vis-force createSimulation to get a reference on the simulation
         this.simulation = createSimulation(options);
@@ -50,6 +53,11 @@ class Network extends Component {
         }
 
         this.simulation.alpha(1).restart(); // reset simulation alpha and restart it to fix animation on node change
+    }
+
+    UNSAFE_componentWillUpdate() {
+        // if the tooltip content is available before componentDidMount, the content prints weirdly in a corner of the page
+        this.mouseIcon = <MouseIcon polyglot={this.props.p} />;
     }
 
     render() {
@@ -81,6 +89,8 @@ class Network extends Component {
                         />
                     ))}
                 </InteractiveForceGraph>
+
+                <div>{this.mouseIcon}</div>
             </div>
         );
     }
@@ -102,6 +112,7 @@ Network.propTypes = {
             weight: PropTypes.number,
         }),
     ).isRequired,
+    p: polyglotPropTypes.isRequired,
 };
 
 const mapStateToProps = (state, { formatData }) => {

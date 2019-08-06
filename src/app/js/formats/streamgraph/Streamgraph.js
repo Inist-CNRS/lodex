@@ -7,33 +7,28 @@ import {
     transformDataIntoMapArray,
     getMinMaxValue,
     cutStr,
-    findFirstTickPosition,
     findNearestTickPosition,
     generateUniqueId,
 } from './utils';
 import injectData from '../injectData';
 import exportableToPng from '../exportableToPng';
-import ZoomIcon from './zoomIcon';
 import moment from 'moment';
 
 import * as colorUtils from '../colorUtils';
+
+import PropTypes from 'prop-types';
+import { polyglot as polyglotPropTypes } from '../../propTypes';
+import LoadingGraph from '../shared/LoadingGraph';
+import MouseIcon from '../shared/MouseIcon';
+
+import theme from '../../theme';
+import CenterIcon from '../shared/CenterIcon';
+import stylesToClassname from '../../lib/stylesToClassName';
 
 const styles = StyleSheet.create({
     divContainer: {
         overflow: 'hidden',
         position: 'relative',
-    },
-    tooltip: {
-        position: 'relative',
-        height: '65px',
-        marginLeft: '20px',
-        marginRight: '20px',
-        backgroundColor: 'rgb(232, 232, 232)',
-        borderRadius: '0.45rem',
-        display: 'flex',
-        alignItems: 'center',
-        padding: '5px',
-        paddingTop: '14px',
     },
     vertical: {
         marginTop: 60,
@@ -49,19 +44,41 @@ const styles = StyleSheet.create({
     },
     legendItem: {
         marginTop: 2,
+        'white-space': 'nowrap',
+        padding: '5px',
+        margin: '-5px',
+    },
+    graphItemTooltip: {
+        color: '#000000',
+        position: 'relative',
+        borderStyle: 'solid',
+        borderColor: '#9e9e9e',
+        borderRadius: '6px',
+        marginLeft: '20px',
+        marginRight: '20px',
+        display: 'flex',
+        alignItems: 'center',
+        paddingTop: '15px',
+        paddingBottom: '5px',
+        paddingLeft: '15px',
+        paddingRight: '5px',
+        height: '65px',
+        marginBottom: '10px',
     },
     legendItemTooltip: {
         visibility: 'hidden',
-        backgroundColor: '#4e4e4e',
-        color: '#fff',
-        textAlign: 'center',
-        borderRadius: '6px',
-        padding: '5px 4px',
-
         position: 'absolute',
+        color: '#000000',
+        borderStyle: 'solid',
+        borderColor: '#9e9e9e',
+        borderRadius: '6px',
+        paddingTop: '15px',
+        paddingBottom: '5px',
+        paddingLeft: '15px',
+        paddingRight: '5px',
         left: '0px',
-        top: '-33px',
-        zIndex: 10,
+        right: '20px',
+        top: '-75px',
     },
     legendItemText: {
         marginLeft: 5,
@@ -77,27 +94,52 @@ const styles = StyleSheet.create({
     },
 });
 
+export const defaultArgs = {
+    colors: colorUtils.MULTICHROMATIC_DEFAULT_COLORSET_STREAMGRAPH,
+    maxLegendLength: 30,
+    height: 300,
+};
+
+const stylesWithClassnames = stylesToClassname({
+    icon: {
+        color: theme.green.primary,
+        ':hover': {
+            color: theme.purple.primary,
+            cursor: 'pointer',
+        },
+    },
+});
+
+let zoom;
+
 class Streamgraph extends PureComponent {
     _isMounted = false;
+    mouseIcon = '';
+    centerIcon = '';
+
     constructor(props) {
         super(props);
         this.state = {
             width: 800,
-            height: 300,
+            height: this.props.height || defaultArgs.height,
             margin: { top: 60, right: 40, bottom: 50, left: 60 },
         };
-        this.zoomIconEnter = this.zoomIconEnter.bind(this);
-        this.zoomIconLeave = this.zoomIconLeave.bind(this);
-
+        this.centerGraphClick = this.centerGraphClick.bind(this);
         this.divContainer = React.createRef();
         this.svgContainer = React.createRef();
         this.anchor = React.createRef();
-        this.zoomIndicator = React.createRef();
-        this.zoomIndicatorBackground = React.createRef();
 
         this.mouseIsOverStream = false;
         this.zoomFunction = zoomFunction.bind(this);
         this.uniqueId = generateUniqueId();
+    }
+
+    static defaultProps = {
+        args: defaultArgs,
+    };
+
+    centerGraphClick() {
+        this.updateDimensions();
     }
 
     initTheGraphBasicsElements(width, height, margin, svgViewport) {
@@ -213,7 +255,7 @@ class Streamgraph extends PureComponent {
         if (stackedData) {
             let colorList = this.props.colors;
             if (!colorList) {
-                colorList = colorUtils.MULTICHROMATIC_DEFAULT_COLORSET_STREAMGRAPH
+                colorList = defaultArgs.colors;
             }
             let z = colorList.split(' ');
             while (z.length < layersNumber) {
@@ -221,7 +263,7 @@ class Streamgraph extends PureComponent {
             }
             const area = d3
                 .area()
-                .x((d, i) => {
+                .x(d => {
                     return this.xAxisScale(d.data.date);
                 })
                 .y0(d => {
@@ -270,11 +312,10 @@ class Streamgraph extends PureComponent {
 
         const tooltip = divContainer
             .insert('div', '#d3DivContainer')
-            .attr('class', `remove ${css(styles.tooltip)}`)
+            .attr('class', `remove ${css(styles.graphItemTooltip)}`)
             .attr('id', 'tooltip')
             .style('z-index', '2')
-            .style('visibility', 'hidden')
-            .style('marginLeft', '20px');
+            .style('visibility', 'hidden');
 
         return { tooltip, vertical };
     }
@@ -283,11 +324,8 @@ class Streamgraph extends PureComponent {
         const legendView = d3DivContainer
             .append('div')
             .attr('id', 'legend')
-            .attr('class', `${css(styles.legend)}`);
-
-        width > 500
-            ? legendView.style('column-count', 3)
-            : legendView.style('column-count', 2);
+            .attr('class', `${css(styles.legend)}`)
+            .style('column-count', width > 500 ? 3 : 2);
 
         const colorNameTmpList = colorNameList;
         colorNameTmpList.reverse();
@@ -308,22 +346,65 @@ class Streamgraph extends PureComponent {
             legendItemContainer
                 .append('text')
                 .attr('class', `${css(styles.legendItemText)}`)
-                .text(cutStr(element.name));
+                .attr('id', index++)
+                .text(
+                    cutStr(
+                        element.name,
+                        this.props.maxLegendLength ||
+                            defaultArgs.maxLegendLength,
+                    ),
+                );
 
             const legendItemTooltip = legendItemContainer
                 .append('span')
                 .attr('class', `${css(styles.legendItemTooltip)}`)
-                .text(element.name);
+                .text(element.name)
+
+                .html(
+                    '<p>' +
+                        '<svg width="15" height="15" style="vertical-align: middle; background-color: ' +
+                        element.color +
+                        '"></svg> ' +
+                        element.name +
+                        '</p>',
+                );
 
             legendItemContainer
-                .on('mouseover', (d, i) => {
+                .on('mouseover', () => {
+                    legendItemTooltip.style('visibility', 'visible');
+
+                    this.streams
+                        .transition()
+                        .duration(25)
+                        .attr('opacity', (d, j) => {
+                            return j != colorNameList.length - index ? 0.3 : 1;
+                        });
+
+                    colorNameList.forEach((item, index) => {
+                        const currentLegendItem = document.getElementById(
+                            colorNameList.length - index - 1,
+                        );
+
+                        currentLegendItem.style.opacity =
+                            currentLegendItem.textContent == element.name
+                                ? 1
+                                : 0.3;
+                    });
+                })
+                .on('mousemove', () => {
                     legendItemTooltip.style('visibility', 'visible');
                 })
-                .on('mousemove', (d, i) => {
-                    legendItemTooltip.style('visibility', 'visible');
-                })
-                .on('mouseout', (d, i) => {
+                .on('mouseout', () => {
                     legendItemTooltip.style('visibility', 'hidden');
+
+                    this.streams
+                        .transition()
+                        .duration(25)
+                        .attr('opacity', () => 1);
+
+                    colorNameList.forEach((item, index) => {
+                        document.getElementById(index).style.opacity = '1';
+                    });
                 });
         });
     }
@@ -374,6 +455,10 @@ class Streamgraph extends PureComponent {
                         elem => elem.data.date.getFullYear() === parseInt(date),
                     ).data[this.hoveredKey];
 
+                    this.hoveredColor = colorNameList.find(
+                        elem => elem.name === this.hoveredKey,
+                    ).color;
+
                     d3.select(nodes[i]).classed('hover', true);
                     tooltip
                         .html(
@@ -381,17 +466,24 @@ class Streamgraph extends PureComponent {
                                 '<svg width="15" height="15" style="vertical-align: middle; background-color: ' +
                                 this.hoveredColor +
                                 '"></svg>' +
-                                '  ' +
+                                '<ul style="list-style: none;text-indent:-35px">' +
+                                '<li>' +
                                 this.hoveredKey +
-                                '<br>' +
+                                '</li>' +
+                                '<li>' +
+                                date +
+                                ' : ' +
                                 this.hoveredValue +
-                                '</p>',
+                                '</li></ul></p>',
                         )
                         .style('visibility', 'visible');
 
-                    this.hoveredColor = colorNameList.find(
-                        elem => elem.name === this.hoveredKey,
-                    ).color;
+                    colorNameList.forEach((item, index) => {
+                        const currentLegendItem = document.getElementById(
+                            colorNameList.length - index - 1,
+                        );
+                        currentLegendItem.style.opacity = index == i ? 1 : 0.3;
+                    });
                 })
                 .on('mouseover', (d, i) => {
                     this.mouseIsOverStream = true;
@@ -405,10 +497,10 @@ class Streamgraph extends PureComponent {
         }
     }
 
-    setMouseOutStreams(tooltip) {
+    setMouseOutStreams(tooltip, colorNameList) {
         const componentContext = this;
         if (this.streams) {
-            this.streams.on('mouseout', function(d, i) {
+            this.streams.on('mouseout', function() {
                 componentContext.mouseIsOverStream = false;
                 componentContext.streams
                     .transition()
@@ -424,6 +516,10 @@ class Streamgraph extends PureComponent {
                             '</p>',
                     )
                     .style('visibility', 'hidden');
+
+                colorNameList.forEach((item, index) => {
+                    document.getElementById(index).style.opacity = '1';
+                });
             });
         }
     }
@@ -433,7 +529,7 @@ class Streamgraph extends PureComponent {
         // definition erase the previous ones
         this.setViewportEvents(svgViewport, vertical);
         this.setMouseMoveAndOverStreams(tooltip, colorNameList);
-        this.setMouseOutStreams(tooltip);
+        this.setMouseOutStreams(tooltip, colorNameList);
     }
 
     updateDimensions() {
@@ -538,6 +634,10 @@ class Streamgraph extends PureComponent {
         this._isMounted = true;
         window.addEventListener('resize', this.updateDimensions.bind(this));
         this.setGraph();
+
+        // if the tooltip content is available before componentDidMount, the content prints weirdly in a corner of the page
+        this.mouseIcon = <MouseIcon polyglot={this.props.p} />;
+        this.centerIcon = <CenterIcon polyglot={this.props.p} />;
     }
 
     UNSAFE_componentWillUpdate() {
@@ -554,19 +654,15 @@ class Streamgraph extends PureComponent {
         this.removeGraph();
     }
 
-    zoomIconEnter() {
-        this.zoomIndicator.current.style.visibility = 'visible';
-        this.zoomIndicatorBackground.current.style.visibility = 'visible';
-    }
-
-    zoomIconLeave() {
-        this.zoomIndicator.current.style.visibility = 'hidden';
-        this.zoomIndicatorBackground.current.style.visibility = 'hidden';
-    }
-
     render() {
-        const { width, height, margin } = this.state;
-        const { p: polyglot } = this.props;
+        const { width } = this.state;
+        const height = this.props.height || defaultArgs.height;
+
+        // since the data comes in the form of an Array, we wait for that to hide the loading label
+        let loading = <LoadingGraph polyglot={this.props.p} />;
+        if (Array.isArray(this.props.formatData)) {
+            loading = '';
+        }
 
         return (
             <div
@@ -575,43 +671,37 @@ class Streamgraph extends PureComponent {
                 id={`divContainer${this.uniqueId}`}
             >
                 <div
-                    id="zoomIndicatorBackground"
-                    ref={this.zoomIndicatorBackground}
                     style={{
-                        visibility: 'hidden',
-                        position: 'absolute',
-                        top: `${margin.top}px`,
-                        left: `${margin.left}px`,
-                        width: `${width}px`,
-                        height: `${height - margin.top - margin.bottom}px`,
-                        backgroundColor: '#0000006b',
-                    }}
-                />
-                <div
-                    id={`zoomIndicator${this.uniqueId}`}
-                    ref={this.zoomIndicator}
-                    style={{
-                        visibility: 'hidden',
-                        position: 'absolute',
-                        top: `${height / 2 - 30}px`,
-                        left: `${margin.left + width / 2 - 275}px`,
-                        color: 'white',
+                        textAlign: 'center',
+                        fontSize: '24px',
+                        paddingTop: '5px',
                     }}
                 >
-                    <h4>
-                        {polyglot.t('user_can_interact_with_mouse_1')}
-                        <br />
-                        {polyglot.t('user_can_interact_with_mouse_2')}
-                    </h4>
+                    {loading}
                 </div>
+
                 <div
-                    id={`zoomIconContainer${this.uniqueId}`}
-                    onMouseEnter={this.zoomIconEnter}
-                    onMouseLeave={this.zoomIconLeave}
-                    style={{ position: 'absolute', top: '210px', left: '25px' }}
+                    style={{
+                        position: 'absolute',
+                        top: 150 + (height - defaultArgs.height) + 'px',
+                        left: '5px',
+                    }}
                 >
-                    <ZoomIcon width={35} />
+                    {this.mouseIcon}
                 </div>
+
+                <div
+                    style={{
+                        position: 'absolute',
+                        top: 210 + (height - defaultArgs.height) + 'px',
+                        left: '12px',
+                    }}
+                    onClick={this.centerGraphClick}
+                    className={stylesWithClassnames.icon}
+                >
+                    {this.centerIcon}
+                </div>
+
                 <svg
                     id={`svgContainer${this.uniqueId}`}
                     ref={this.svgContainer}
@@ -624,6 +714,14 @@ class Streamgraph extends PureComponent {
         );
     }
 }
+
+Streamgraph.propTypes = {
+    p: polyglotPropTypes.isRequired,
+    colors: PropTypes.string.isRequired,
+    formatData: PropTypes.array.isRequired,
+    maxLegendLength: PropTypes.number.isRequired,
+    height: PropTypes.number.isRequired,
+};
 
 export default compose(
     injectData(),

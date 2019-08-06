@@ -48,6 +48,7 @@ const styles = {
         fontWeight: 'bold',
         fontSize: isSub === true ? 'initial' : '2rem',
         textDecoration: status === REJECTED ? 'line-through' : 'none',
+        fontFamily: 'Quicksand, sans-serif',
     }),
     language: memoize(hide => ({
         marginRight: '1rem',

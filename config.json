@@ -62,6 +62,7 @@
     "nquads",
     "sitemap",
     "tsv",
+    "turtle",
     "widget"
   ],
   "datasetClass": "http://test.fr/datasetClass",

@@ -5,11 +5,16 @@ import * as d3 from 'd3';
 import { zoomFunction, generateUniqueId } from './utils';
 import injectData from '../injectData';
 import exportableToPng from '../exportableToPng';
-import ZoomIcon from './zoomIcon';
-import CenterGraph from './centerGraph';
 import cliTruncate from 'cli-truncate';
+import PropTypes from 'prop-types';
+import { polyglot as polyglotPropTypes } from '../../propTypes';
 
 import * as colorUtils from '../colorUtils';
+import MouseIcon from '../shared/MouseIcon';
+
+import theme from '../../theme';
+import CenterIcon from '../shared/CenterIcon';
+import stylesToClassname from '../../lib/stylesToClassName';
 
 const styles = StyleSheet.create({
     divContainer: {
@@ -58,8 +63,21 @@ const styles = StyleSheet.create({
     },
 });
 
+const stylesWithClassnames = stylesToClassname({
+    icon: {
+        color: theme.green.primary,
+        ':hover': {
+            color: theme.purple.primary,
+            cursor: 'pointer',
+        },
+    },
+});
+
 class Hierarchy extends PureComponent {
     _isMounted = false;
+    mouseIcon = '';
+    centerIcon = '';
+
     constructor(props) {
         super(props);
         this.state = {
@@ -67,19 +85,11 @@ class Hierarchy extends PureComponent {
             height: 600,
             margin: { top: 60, right: 40, bottom: 50, left: 60 },
         };
-        this.zoomIconEnter = this.zoomIconEnter.bind(this);
-        this.zoomIconLeave = this.zoomIconLeave.bind(this);
-        this.centerIconEnter = this.centerIconEnter.bind(this);
-        this.centerIconLeave = this.centerIconLeave.bind(this);
         this.centerGraphClick = this.centerGraphClick.bind(this);
-
         this.divContainer = React.createRef();
         this.svgContainer = React.createRef();
         this.tooltipContainer = React.createRef();
         this.anchor = React.createRef();
-        this.zoomIndicator = React.createRef();
-        this.zoomIndicatorBackground = React.createRef();
-        this.centerIndicator = React.createRef();
 
         this.mouseIsOverStream = false;
         this.zoomFunction = zoomFunction.bind(this);
@@ -401,7 +411,7 @@ class Hierarchy extends PureComponent {
             leafNodeGEnter
                 .append('rect')
                 .attr('class', '')
-                .style('fill', function(d) {
+                .style('fill', function() {
                     return color;
                 })
                 .attr('width', 2)
@@ -647,6 +657,10 @@ class Hierarchy extends PureComponent {
 
     componentDidUpdate() {
         this.setGraph();
+
+        // if the tooltip content is available before componentDidMount, the content prints weirdly in a corner of the page
+        this.mouseIcon = <MouseIcon polyglot={this.props.p} />;
+        this.centerIcon = <CenterIcon polyglot={this.props.p} />;
     }
 
     componentWillUnmount() {
@@ -661,27 +675,6 @@ class Hierarchy extends PureComponent {
         } else {
             return d.id;
         }
-    }
-
-    zoomIconEnter() {
-        let zoomIndic = d3.select(`#zoomIndicator${this.uniqueId}`);
-        const width = zoomIndic.node().getBoundingClientRect().width;
-        zoomIndic.style('left', `calc(50% - ${width / 2}px)`);
-        this.zoomIndicator.current.style.visibility = 'visible';
-        this.zoomIndicatorBackground.current.style.visibility = 'visible';
-    }
-
-    zoomIconLeave() {
-        this.zoomIndicator.current.style.visibility = 'hidden';
-        this.zoomIndicatorBackground.current.style.visibility = 'hidden';
-    }
-
-    centerIconEnter() {
-        this.centerIndicator.current.style.visibility = 'visible';
-    }
-
-    centerIconLeave() {
-        this.centerIndicator.current.style.visibility = 'hidden';
     }
 
     centerGraphClick() {
@@ -728,58 +721,27 @@ class Hierarchy extends PureComponent {
                 id={`divContainer${this.uniqueId}`}
             >
                 <div
-                    id="zoomIndicatorBackground"
-                    ref={this.zoomIndicatorBackground}
                     style={{
-                        visibility: 'hidden',
                         position: 'absolute',
-                        width: `${width}px`,
-                        height: `${height}px`,
-                        backgroundColor: '#0000006b',
-                    }}
-                />
-                <div
-                    id={`zoomIndicator${this.uniqueId}`}
-                    ref={this.zoomIndicator}
-                    style={{
-                        visibility: 'hidden',
-                        position: 'absolute',
-                        top: `${height / 2 - 30}px`,
-                        left: 'calc(50% - 150px)',
-                        color: 'white',
+                        bottom: '0px',
+                        left: '5px',
                     }}
                 >
-                    <h4>
-                        {polyglot.t('user_can_interact_with_mouse_1')}
-                        <br />
-                        {polyglot.t('user_can_interact_with_mouse_2')}
-                    </h4>
+                    {this.mouseIcon}
                 </div>
+
                 <div
-                    id={`zoomIconContainer${this.uniqueId}`}
-                    onMouseEnter={this.zoomIconEnter}
-                    onMouseLeave={this.zoomIconLeave}
                     style={{
                         position: 'absolute',
-                        bottom: '32px',
-                        left: '16px',
+                        bottom: '1px',
+                        left: '57px',
                     }}
-                >
-                    <ZoomIcon width={35} />
-                </div>
-                <div
-                    id={`centerGraph${this.uniqueId}`}
                     onClick={this.centerGraphClick}
-                    onMouseEnter={this.centerIconEnter}
-                    onMouseLeave={this.centerIconLeave}
-                    style={{
-                        position: 'absolute',
-                        bottom: '19px',
-                        left: '50px',
-                    }}
+                    className={stylesWithClassnames.icon}
                 >
-                    <CenterGraph width={48} />
+                    {this.centerIcon}
                 </div>
+
                 <div
                     id={`centerGraphText${this.uniqueId}`}
                     ref={this.centerIndicator}
@@ -788,7 +750,7 @@ class Hierarchy extends PureComponent {
                         position: 'absolute',
                         bottom: '19px',
                         left: '50px',
-                        color: 'black', // TODO : text
+                        color: 'black',
                     }}
                 >
                     {polyglot.t('graph_reinit')}
@@ -811,6 +773,18 @@ class Hierarchy extends PureComponent {
         );
     }
 }
+
+Hierarchy.propTypes = {
+    params: {
+        minimumScaleValue: PropTypes.number.isRequired,
+        maxLabelLength: PropTypes.number.isRequired,
+        labelOffset: PropTypes.number.isRequired,
+    },
+    formatData: PropTypes.array.isRequired,
+    colors: PropTypes.string.isRequired,
+    p: polyglotPropTypes.isRequired,
+    anchor: PropTypes.any.isRequired,
+};
 
 export default compose(
     injectData(),
