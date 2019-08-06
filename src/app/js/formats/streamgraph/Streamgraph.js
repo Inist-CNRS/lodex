@@ -380,9 +380,8 @@ class Streamgraph extends PureComponent {
                             return j != colorNameList.length - index ? 0.3 : 1;
                         });
 
-                    var currentLegendItem;
                     colorNameList.forEach((item, index) => {
-                        currentLegendItem = document.getElementById(
+                        const currentLegendItem = document.getElementById(
                             colorNameList.length - index - 1,
                         );
 
@@ -479,9 +478,8 @@ class Streamgraph extends PureComponent {
                         )
                         .style('visibility', 'visible');
 
-                    var currentLegendItem;
                     colorNameList.forEach((item, index) => {
-                        currentLegendItem = document.getElementById(
+                        const currentLegendItem = document.getElementById(
                             colorNameList.length - index - 1,
                         );
                         currentLegendItem.style.opacity = index == i ? 1 : 0.3;
