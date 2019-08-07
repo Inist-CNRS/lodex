@@ -82,6 +82,7 @@ class HeatMapAdmin extends Component {
                     params={params || defaultArgs.params}
                     polyglot={polyglot}
                     onChange={this.setParams}
+                    fieldsToShow={'maxSize, minValue, maxValue, orderBy'}
                 />
                 <GradientSchemeSelector
                     label={polyglot.t('color_scheme')}

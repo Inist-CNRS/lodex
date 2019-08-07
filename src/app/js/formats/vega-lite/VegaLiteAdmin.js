@@ -49,6 +49,10 @@ class VegaLiteAdmin extends Component {
         }),
         onChange: PropTypes.func.isRequired,
         p: polyglotPropTypes.isRequired,
+        showMaxSize: PropTypes.bool.isRequired,
+        showMaxValue: PropTypes.bool.isRequired,
+        showMinValue: PropTypes.bool.isRequired,
+        showOrderBy: PropTypes.bool.isRequired,
     };
 
     static defaultProps = {
@@ -71,6 +75,10 @@ class VegaLiteAdmin extends Component {
         const {
             p: polyglot,
             args: { params },
+            showMaxSize = true,
+            showMaxValue = true,
+            showMinValue = true,
+            showOrderBy = true,
         } = this.props;
         const { specTemplate } = this.props.args;
 
@@ -80,6 +88,10 @@ class VegaLiteAdmin extends Component {
                     params={params || defaultArgs.params}
                     polyglot={polyglot}
                     onChange={this.setParams}
+                    showMaxSize={showMaxSize}
+                    showMaxValue={showMaxValue}
+                    showMinValue={showMinValue}
+                    showOrderBy={showOrderBy}
                 />
                 <a
                     onClick={() => {

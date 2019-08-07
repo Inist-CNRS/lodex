@@ -62,6 +62,10 @@ class BarChartAdmin extends Component {
         }),
         onChange: PropTypes.func.isRequired,
         p: polyglotPropTypes.isRequired,
+        showMaxSize: PropTypes.bool.isRequired,
+        showMaxValue: PropTypes.bool.isRequired,
+        showMinValue: PropTypes.bool.isRequired,
+        showOrderBy: PropTypes.bool.isRequired,
     };
 
     static defaultProps = {
@@ -140,6 +144,10 @@ class BarChartAdmin extends Component {
                 valueMargin,
                 barSize,
             },
+            showMaxSize = true,
+            showMaxValue = true,
+            showMinValue = true,
+            showOrderBy = true,
         } = this.props;
 
         return (
@@ -148,6 +156,10 @@ class BarChartAdmin extends Component {
                     params={params || defaultArgs.params}
                     onChange={this.setParams}
                     polyglot={polyglot}
+                    showMaxSize={showMaxSize}
+                    showMaxValue={showMaxValue}
+                    showMinValue={showMinValue}
+                    showOrderBy={showOrderBy}
                 />
                 <ColorPickerParamsAdmin
                     colors={this.state.colors}

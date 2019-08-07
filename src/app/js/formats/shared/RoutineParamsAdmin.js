@@ -22,6 +22,11 @@ class RoutineParamsAdmin extends Component {
         }),
         onChange: PropTypes.func.isRequired,
         polyglot: polyglotPropTypes.isRequired,
+        fieldsToShow: PropTypes.array.isRequired,
+        showMaxSize: PropTypes.bool.isRequired,
+        showMaxValue: PropTypes.bool.isRequired,
+        showMinValue: PropTypes.bool.isRequired,
+        showOrderBy: PropTypes.bool.isRequired,
     };
 
     setMaxSize = (_, maxSize) => {
@@ -53,30 +58,63 @@ class RoutineParamsAdmin extends Component {
     };
 
     render() {
-        const { params, polyglot } = this.props;
+        const {
+            params,
+            polyglot,
+            showMaxSize,
+            showMaxValue,
+            showMinValue,
+            showOrderBy,
+        } = this.props;
 
         const { maxSize, maxValue, minValue, orderBy } = params;
 
-        return (
-            <Fragment>
+        var maxSizeField;
+
+        if (showMaxSize) {
+            maxSizeField = (
                 <TextField
                     floatingLabelText={polyglot.t('max_fields')}
                     onChange={this.setMaxSize}
                     style={styles.input}
                     value={maxSize}
                 />
-                <TextField
-                    floatingLabelText={polyglot.t('max_value')}
-                    onChange={this.setMaxValue}
-                    style={styles.input}
-                    value={maxValue}
-                />
+            );
+        } else {
+            maxSizeField = '';
+        }
+
+        var minValueField;
+        if (showMinValue) {
+            minValueField = (
                 <TextField
                     floatingLabelText={polyglot.t('min_value')}
                     onChange={this.setMinValue}
                     style={styles.input}
                     value={minValue}
                 />
+            );
+        } else {
+            minValueField = '';
+        }
+
+        var maxValueField;
+        if (showMaxValue) {
+            maxValueField = (
+                <TextField
+                    floatingLabelText={polyglot.t('max_value')}
+                    onChange={this.setMaxValue}
+                    style={styles.input}
+                    value={maxValue}
+                />
+            );
+        } else {
+            maxValueField = '';
+        }
+
+        var orderByField;
+        if (showOrderBy) {
+            orderByField = (
                 <SelectField
                     floatingLabelText={polyglot.t('order_by')}
                     onChange={this.setOrderBy}
@@ -100,6 +138,17 @@ class RoutineParamsAdmin extends Component {
                         primaryText={polyglot.t('value_desc')}
                     />
                 </SelectField>
+            );
+        } else {
+            orderByField = '';
+        }
+
+        return (
+            <Fragment>
+                {maxSizeField}
+                {minValueField}
+                {maxValueField}
+                {orderByField}
             </Fragment>
         );
     }
