@@ -110,8 +110,6 @@ const stylesWithClassnames = stylesToClassname({
     },
 });
 
-let zoom;
-
 class Streamgraph extends PureComponent {
     _isMounted = false;
     mouseIcon = '';
