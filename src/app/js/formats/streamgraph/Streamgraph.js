@@ -110,8 +110,6 @@ const stylesWithClassnames = stylesToClassname({
     },
 });
 
-let zoom;
-
 class Streamgraph extends PureComponent {
     _isMounted = false;
     mouseIcon = '';
@@ -332,6 +330,7 @@ class Streamgraph extends PureComponent {
 
         colorNameList.forEach((item, index) => {
             const element = colorNameList[index];
+            element.id = index;
             const legendItemContainer = legendView
                 .append('div')
                 .attr('class', `${css(styles.legendItem)}`);
@@ -386,9 +385,7 @@ class Streamgraph extends PureComponent {
                         );
 
                         currentLegendItem.style.opacity =
-                            currentLegendItem.textContent == element.name
-                                ? 1
-                                : 0.3;
+                            currentLegendItem.id == element.id ? 1 : 0.3;
                     });
                 })
                 .on('mousemove', () => {
