@@ -5,6 +5,7 @@
       "username": "user",
       "password": "secret"
   },
+  "workersURL" : "http://127.0.0.1:31976",
   "pluginsURL" : "https://raw.githubusercontent.com/Inist-CNRS/lodex-extended/v2/",
   "routinesCache" : true,
   "routines": [

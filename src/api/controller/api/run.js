@@ -4,6 +4,8 @@ import ezs from 'ezs';
 import Booster from 'ezs-booster';
 import { PassThrough } from 'stream';
 import cacheControl from 'koa-cache-control';
+import URL from 'url';
+import qs from 'qs';
 import config from 'config';
 import Script from '../../services/script';
 import getPublishedDatasetFilter from '../../models/getPublishedDatasetFilter';
@@ -88,6 +90,21 @@ export const runRoutine = async (ctx, routineCalled, field1, field2) => {
         ...localConfig,
         ...context,
     };
+    if (localConfig.workersURL) {
+        const query = { 
+            maxSize,
+            maxValue,
+            minValue,
+            orderBy,
+            host,
+            // to externalize routine
+            connectionStringURI,
+        };
+        const wurl = URL.parse(localConfig.workersURL);
+        wurl.pathname = `/${routineCalled}.ini`;
+        wurl.search = qs.stringify(query);
+        return ctx.redirect(URL.format(wurl));
+    }
     const input = new PassThrough({ objectMode: true });
     const commands = ezs.parseString(script, environment);
     const statement = localConfig.routinesCache ? 'booster' : 'delegate';
