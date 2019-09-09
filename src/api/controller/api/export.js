@@ -1,6 +1,6 @@
 import Koa from 'koa';
 import route from 'koa-route';
-import ezs from 'ezs';
+import ezs from '@ezs/core';
 import ezsLodex from 'ezs-lodex';
 import { getHost, getCleanHost } from '../../../common/uris';
 import config from '../../../../config.json';

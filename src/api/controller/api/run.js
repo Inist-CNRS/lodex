@@ -1,6 +1,6 @@
 import Koa from 'koa';
 import route from 'koa-route';
-import ezs from 'ezs';
+import ezs from '@ezs/core';
 import Booster from 'ezs-booster';
 import { PassThrough } from 'stream';
 import cacheControl from 'koa-cache-control';

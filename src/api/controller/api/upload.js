@@ -4,7 +4,7 @@ import asyncBusboy from 'async-busboy';
 import config from 'config';
 import koaBodyParser from 'koa-bodyparser';
 import request from 'request';
-import ezs from 'ezs';
+import ezs from '@ezs/core';
 
 import progress from '../../services/progress';
 import {
