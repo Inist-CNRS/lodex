@@ -25,19 +25,17 @@ config.autoAddCss = false;
 const styles = stylesToClassname(
     {
         container: {
-            zIndex: 10000,
+            zIndex: 12000,
             position: 'fixed',
-            top: 0,
+            bottom: 0,
             left: 0,
             backgroundColor: 'white',
-            height: '100vh',
-            minWidth: 110,
-            maxWidth: 110,
-            marginRight: 20,
+            width: '100%',
+            minHeight: 80,
+            maxHeight: 80,
             display: 'flex',
-            flexDirection: 'column',
-            paddingTop: 10,
-            borderRight: '1px solid #E3EAF2',
+            paddingLeft: 10,
+            borderTop: '1px solid #E3EAF2',
             transition: 'filter 300ms ease-in-out', // -webkit-filter 300ms ease-in-out
             filter: 'brightness(1)',
         },
@@ -46,11 +44,15 @@ const styles = stylesToClassname(
         },
         icon: {
             maxHeight: 'fit-content',
-            margin: '10px auto',
+            margin: 'auto 10px',
+        },
+        first: {
+            display: 'flex',
         },
         last: {
-            marginBottom: 0,
-            marginTop: 'auto',
+            display: 'flex',
+            marginRight: 0,
+            marginLeft: 'auto',
         },
     },
     'nav-bar',
@@ -198,7 +200,7 @@ export class NavBar extends Component {
                     })}
                 >
                     <Favicon className={styles.icon} />
-                    <div>
+                    <div className={styles.first}>
                         {topMenu.map((config, index) => (
                             <MenuItem
                                 key={index}
