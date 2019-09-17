@@ -32,8 +32,8 @@ const styles = stylesToClassname(
             backgroundColor: 'white',
             height: DRAWER_HEIGHT,
             overflowY: 'auto',
-            bottom: 0,
-            borderRight: '1px solid #E3EAF2',
+            bottom: NAVBAR_HEIGHT,
+            borderTop: '1px solid #E3EAF2',
         },
         drawerBoxShadow: {
             boxShadow: '0 2px 1rem #777',
@@ -44,7 +44,7 @@ const styles = stylesToClassname(
         mask: {
             position: 'absolute',
             zIndex: 1000,
-            bottom: NAVBAR_HEIGHT,
+            bottom: 0,
             left: 0,
             height: '100vh',
             width: `100vw`,
