@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
-import withRouter from 'react-router/withRouter';
+import { withRouter } from 'react-router';
 
 import { polyglot as polyglotPropTypes } from '../propTypes';
 import ButtonWithDialog from '../lib/components/ButtonWithDialog';
