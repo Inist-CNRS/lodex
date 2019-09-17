@@ -5,13 +5,14 @@ import memoize from 'lodash.memoize';
 
 import stylesToClassname from '../lib/stylesToClassName';
 
-const DRAWER_WIDTH = 440; // px
+const DRAWER_HEIGHT = 440; // px
+const NAVBAR_HEIGHT = 110; // px
 
 const styles = stylesToClassname(
     {
         container: {
             position: 'fixed',
-            top: 0,
+            bottom: NAVBAR_HEIGHT,
             left: 0,
             height: '100vh',
             width: '100vw',
@@ -25,13 +26,13 @@ const styles = stylesToClassname(
         },
         drawer: {
             zIndex: 1001,
-            position: 'relative',
-            height: '100vh',
+            position: 'absolute',
+            width: '100vw',
             transitionTimingFunction: 'ease-in-out',
             backgroundColor: 'white',
-            width: DRAWER_WIDTH,
+            height: DRAWER_HEIGHT,
             overflowY: 'auto',
-            top: 0,
+            bottom: 0,
             borderRight: '1px solid #E3EAF2',
         },
         drawerBoxShadow: {
@@ -43,7 +44,7 @@ const styles = stylesToClassname(
         mask: {
             position: 'absolute',
             zIndex: 1000,
-            top: 0,
+            bottom: NAVBAR_HEIGHT,
             left: 0,
             height: '100vh',
             width: `100vw`,
@@ -65,8 +66,8 @@ const drawerStyleFromProps = memoize(
         transition: `transform ${animationDuration}ms`,
         transform:
             status === 'open'
-                ? `translateX(${shift}px)`
-                : `translateX(-${DRAWER_WIDTH}px)`,
+                ? `translateY(-${shift}px)`
+                : `translateY(${DRAWER_HEIGHT}px)`,
     }),
 );
 
@@ -82,7 +83,6 @@ const Drawer = ({
         className={classnames(
             'drawer-container',
             styles.container,
-
             styles[
                 status === 'open' && !disabled
                     ? 'openContainer'
