@@ -100,7 +100,6 @@ const PureGraphSummary = ({ graphFields, closeDrawer }) => (
 
 PureGraphSummary.propTypes = {
     graphFields: PropTypes.arrayOf(fieldPropTypes).isRequired,
-    selected: PropTypes.string.isRequired,
     closeDrawer: PropTypes.func.isRequired,
 };
 
