@@ -20,7 +20,7 @@ services:
             - 3000:3000
         command: npm run development:api
 
-    dev-server:
+    dev-server: ## Enable hot-reload in development
         image: node:10
         volumes:
             - .:/app
