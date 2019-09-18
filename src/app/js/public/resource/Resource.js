@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
-import HomeIcon from '@material-ui/icons/Home';
+import { Home as HomeIcon } from '@material-ui/icons';
 import { CardText, CardActions } from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
 import get from 'lodash.get';

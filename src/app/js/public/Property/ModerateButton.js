@@ -1,9 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import IconButton from 'material-ui/IconButton';
-import RejectedIcon from '@material-ui/icons/Clear';
-import ProposedIcon from '@material-ui/icons/Remove';
-import ValidatedIcon from '@material-ui/icons/Done';
+import {
+    Clear as RejectedIcon,
+    Remove as ProposedIcon,
+    Done as ValidatedIcon,
+} from '@material-ui/icons';
+
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';

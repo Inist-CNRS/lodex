@@ -5,7 +5,7 @@ import compose from 'recompose/compose';
 import withHandlers from 'recompose/withHandlers';
 import translate from 'redux-polyglot/translate';
 import { ListItem } from 'material-ui/List';
-import FileDownloadIcon from '@material-ui/icons/FileDownload';
+import { FileDownload as FileDownloadIcon } from '@material-ui/icons';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 

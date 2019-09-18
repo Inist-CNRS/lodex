@@ -3,7 +3,7 @@ import classnames from 'classnames';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
-import SettingsIcon from '@material-ui/icons/Settings';
+import { Settings as SettingsIcon } from '@material-ui/icons';
 
 import getFieldClassName from '../../lib/getFieldClassName';
 import EditOntologyFieldForm, { FORM_NAME } from './EditOntologyFieldForm';

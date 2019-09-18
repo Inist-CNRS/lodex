@@ -5,9 +5,11 @@ import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 
 import Popover, { PopoverAnimationVertical } from 'material-ui/Popover';
-import ActionDescription from '@material-ui/icons/Description';
-import ContentAdd from '@material-ui/icons/Add';
-import ContentClear from '@material-ui/icons/Clear';
+import {
+    Description as ActionDescription,
+    Add as ContentAdd,
+    Clear as ContentClear,
+} from '@material-ui/icons';
 
 import FloatingActionButton from '../lib/components/FloatingActionButton';
 import { fromFields } from '../sharedSelectors';

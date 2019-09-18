@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Reorder from '@material-ui/icons/FormatLineSpacing';
+import { FormatLineSpacing as Reorder } from '@material-ui/icons';
 import { SortableHandle } from 'react-sortable-hoc';
 import { grey400 } from 'material-ui/styles/colors';
 

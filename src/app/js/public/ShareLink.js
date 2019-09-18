@@ -5,7 +5,7 @@ import CopyToClipboard from 'react-copy-to-clipboard';
 import translate from 'redux-polyglot/translate';
 import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
-import LinkIcon from '@material-ui/icons/Link';
+import { Link as LinkIcon } from '@material-ui/icons';
 import Subheader from 'material-ui/Subheader';
 import { CardText } from 'material-ui/Card';
 

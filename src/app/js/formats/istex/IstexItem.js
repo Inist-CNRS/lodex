@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Book from '@material-ui/icons/LibraryBooks';
+import { LibraryBooks as Book } from '@material-ui/icons';
 
 import Link from '../../lib/components/Link';
 import stylesToClassname from '../../lib/stylesToClassName';

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
-import ContentAdd from '@material-ui/icons/Add';
+import { Add as ContentAdd } from '@material-ui/icons';
 
 import { fromResource } from '../selectors';
 import CreateResourceForm from './CreateResourceForm';

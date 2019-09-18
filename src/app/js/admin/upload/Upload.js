@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 import classnames from 'classnames';
-import ArchiveIcon from '@material-ui/icons/Archive';
+import { Archive as ArchiveIcon } from '@material-ui/icons';
 import { lightBlue500 } from 'material-ui/styles/colors';
 
 import Alert from '../../lib/components/Alert';

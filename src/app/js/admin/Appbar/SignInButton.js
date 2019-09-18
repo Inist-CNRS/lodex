@@ -6,7 +6,7 @@ import compose from 'recompose/compose';
 
 import translate from 'redux-polyglot/translate';
 import IconButton from 'material-ui/IconButton';
-import LockOutlineIcon from '@material-ui/icons/LockOutline';
+import { LockOutline as LockOutlineIcon } from '@material-ui/icons';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { toggleLogin as toggleLoginAction } from '../../user';

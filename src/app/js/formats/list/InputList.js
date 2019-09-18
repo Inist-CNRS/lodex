@@ -2,8 +2,10 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
 import IconButton from 'material-ui/IconButton';
-import ActionDeleteIcon from '@material-ui/icons/Delete';
-import ActionAddIcon from '@material-ui/icons/Add';
+import {
+    Add as ActionAddIcon,
+    Delete as ActionDeleteIcon,
+} from '@material-ui/icons';
 import RaisedButton from 'material-ui/RaisedButton';
 import classnames from 'classnames';
 import memoize from 'lodash.memoize';

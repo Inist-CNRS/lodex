@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
-import ShareIcon from '@material-ui/icons/Share';
+import { Share as ShareIcon } from '@material-ui/icons';
 
 import { fromExport } from './selectors';
 import ButtonWithDialog from '../lib/components/ButtonWithDialog';

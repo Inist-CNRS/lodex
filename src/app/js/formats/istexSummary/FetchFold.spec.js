@@ -1,7 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import Folder from '@material-ui/icons/Folder';
-import FolderOpen from '@material-ui/icons/FolderOpen';
+import { Folder, FolderOpen } from '@material-ui/icons';
 import Button from 'material-ui/FlatButton';
 import { CircularProgress } from 'material-ui';
 import { StyleSheetTestUtils } from 'aphrodite';

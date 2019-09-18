@@ -10,8 +10,7 @@ import MenuItem from 'material-ui/MenuItem';
 import SelectField from 'material-ui/SelectField';
 import TextField from 'material-ui/TextField';
 
-import ChevronLeft from '@material-ui/icons/ChevronLeft';
-import ChevronRight from '@material-ui/icons/ChevronRight';
+import { ChevronLeft, ChevronRight } from '@material-ui/icons';
 
 const styles = {
     container: {

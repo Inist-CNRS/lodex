@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 import IconButton from 'material-ui/IconButton';
 import MenuItem from 'material-ui/MenuItem';
-import ActionDeleteIcon from '@material-ui/icons/Delete';
+import { Delete as ActionDeleteIcon } from '@material-ui/icons';
 import { Field, FieldArray } from 'redux-form';
 import memoize from 'lodash.memoize';
 
