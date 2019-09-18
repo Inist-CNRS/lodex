@@ -3,15 +3,12 @@ Taken from https://raw.githubusercontent.com/ENDiGo/pagination-material-ui
 Could not use it from npm at the time as it has not been compiled correctly
 */
 
-/* eslint-disable */
-
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import IconButton from 'material-ui/IconButton';
 import MenuItem from 'material-ui/MenuItem';
 import SelectField from 'material-ui/SelectField';
 import TextField from 'material-ui/TextField';
-import memoize from 'lodash.memoize';
 
 import ChevronLeft from 'material-ui/svg-icons/navigation/chevron-left';
 import ChevronRight from 'material-ui/svg-icons/navigation/chevron-right';
@@ -34,22 +31,22 @@ const styles = {
         color: '#999',
         fontWeight: 300,
         fontSize: 12,
-        marginRight: 16
+        marginRight: 16,
     },
     input: {
         display: 'inline-block',
         width: '100%',
     },
     underline: {
-        display: 'none'
-    }
-}
+        display: 'none',
+    },
+};
 
 const texts = {
     page: 'Page: ',
     perPage: 'Per Page: ',
-    showing: 'Showing {from} to {to} of {total}'
-}
+    showing: 'Showing {from} to {to} of {total}',
+};
 
 class Pagination extends Component {
     static propTypes = {
@@ -61,13 +58,15 @@ class Pagination extends Component {
             page: PropTypes.string.isRequired,
             perPage: PropTypes.string.isRequired,
             showing: PropTypes.string.isRequired,
-        })
+        }),
+        column: PropTypes.any,
     };
 
     static defaultProps = {
         total: 0,
         perPage: 10,
-        texts: texts
+        texts: texts,
+        column: null,
     };
 
     state = {
@@ -75,10 +74,10 @@ class Pagination extends Component {
     };
 
     componentDidMount() {
-        this.calculatePageCount(this.props.total, this.props.perPage)
+        this.calculatePageCount(this.props.total, this.props.perPage);
     }
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         this.calculatePageCount(nextProps.total, nextProps.perPage);
     }
 
@@ -91,7 +90,7 @@ class Pagination extends Component {
         }
 
         this.setState({ pages, count });
-    }
+    };
 
     handleChangePerPage = (e, idx, perPage) => {
         const count = Math.ceil(this.props.total / perPage);
@@ -102,31 +101,31 @@ class Pagination extends Component {
         }
 
         this.props.onChange(currentPage, perPage);
-    }
+    };
 
     handlePreviousPageClick = () => {
         this.handleChangePage(this.props.currentPage - 1);
-    }
+    };
 
     handleNextPageClick = () => {
         this.handleChangePage(this.props.currentPage + 1);
-    }
+    };
 
-    handleChangePage = (currentPage) => {
+    handleChangePage = currentPage => {
         this.props.onChange(currentPage, this.props.perPage);
-    }
+    };
 
     handleChangePageFromSelect = (e, idx, page) => {
         this.handleChangePage(page);
-    }
+    };
 
-    handleChangePageFromText = (e) => {
+    handleChangePageFromText = e => {
         const page = parseInt(e.target.value) - 1;
 
         if (page < this.state.count && page > -1) {
             this.handleChangePage(page);
         }
-    }
+    };
 
     render() {
         const { perPage, currentPage, total, texts, column } = this.props;
@@ -134,13 +133,14 @@ class Pagination extends Component {
         const pageToDisplay = currentPage + 1;
 
         let to = pageToDisplay * perPage;
-        const from = (to - perPage) + 1
+        const from = to - perPage + 1;
 
-        if(to > total) {
+        if (to > total) {
             to = total;
         }
 
-        let showing = texts.showing.replace('{total}', total)
+        let showing = texts.showing
+            .replace('{total}', total)
             .replace('{from}', from)
             .replace('{to}', to);
 
@@ -149,46 +149,44 @@ class Pagination extends Component {
                 <div style={styles.label}>{`${showing}`}</div>
                 <IconButton
                     disabled={currentPage === 0}
-                    onClick={this.handlePreviousPageClick}>
-                    <ChevronLeft/>
+                    onClick={this.handlePreviousPageClick}
+                >
+                    <ChevronLeft />
                 </IconButton>
                 <IconButton
                     disabled={currentPage === count - 1}
-                    onClick={this.handleNextPageClick}>
-                    <ChevronRight/>
+                    onClick={this.handleNextPageClick}
+                >
+                    <ChevronRight />
                 </IconButton>
             </div>
         );
 
         if (column) {
-            return (
-                <div style={styles.container}>
-                    {navigationArrow}
-                </div>
-            );
+            return <div style={styles.container}>{navigationArrow}</div>;
         }
 
         return (
             <div style={styles.container}>
                 <div style={styles.elements}>
                     <div style={styles.label}>{`${texts.page} `}</div>
-                    {pages.length < 11 &&
+                    {pages.length < 11 && (
                         <SelectField
                             onChange={this.handleChangePageFromSelect}
                             value={currentPage}
                             style={styles.input}
-                            underlineStyle={styles.underline}>
-                            {
-                                pages.map(page => (
-                                    <MenuItem
-                                        primaryText={page + 1}
-                                        value={page}
-                                        key={`page-${page}`}/>
-                                ))
-                            }
+                            underlineStyle={styles.underline}
+                        >
+                            {pages.map(page => (
+                                <MenuItem
+                                    primaryText={page + 1}
+                                    value={page}
+                                    key={`page-${page}`}
+                                />
+                            ))}
                         </SelectField>
-                    }
-                    {pages.length > 10 &&
+                    )}
+                    {pages.length > 10 && (
                         <TextField
                             name="page"
                             onChange={this.handleChangePageFromText}
@@ -196,7 +194,7 @@ class Pagination extends Component {
                             value={pageToDisplay}
                             type="number"
                         />
-                    }
+                    )}
                 </div>
                 <div style={styles.elements}>
                     <div style={styles.label}>{`${texts.perPage} `}</div>
@@ -204,16 +202,17 @@ class Pagination extends Component {
                         onChange={this.handleChangePerPage}
                         value={perPage}
                         style={styles.input}
-                        underlineStyle={styles.underline}>
-                        <MenuItem value={10} primaryText="10"/>
-                        <MenuItem value={20} primaryText="20"/>
-                        <MenuItem value={50} primaryText="50"/>
-                        <MenuItem value={100} primaryText="100"/>
+                        underlineStyle={styles.underline}
+                    >
+                        <MenuItem value={10} primaryText="10" />
+                        <MenuItem value={20} primaryText="20" />
+                        <MenuItem value={50} primaryText="50" />
+                        <MenuItem value={100} primaryText="100" />
                     </SelectField>
                 </div>
                 {navigationArrow}
             </div>
-        )
+        );
     }
 }
 

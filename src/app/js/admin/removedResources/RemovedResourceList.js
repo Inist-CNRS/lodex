@@ -38,7 +38,7 @@ const styles = {
 };
 
 export class RemovedResourceListComponent extends Component {
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         const { loadRemovedResourcePage, currentPage } = this.props;
         loadRemovedResourcePage({ page: currentPage, perPage: 10 });
     }
@@ -158,6 +158,10 @@ const mapDispatchToProps = {
     restoreRessource: restoreRessourceAction,
 };
 
-export default compose(connect(mapStateToProps, mapDispatchToProps), translate)(
-    RemovedResourceListComponent,
-);
+export default compose(
+    connect(
+        mapStateToProps,
+        mapDispatchToProps,
+    ),
+    translate,
+)(RemovedResourceListComponent);

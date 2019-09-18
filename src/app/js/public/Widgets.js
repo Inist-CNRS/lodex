@@ -20,7 +20,7 @@ export class WidgetsComponent extends Component {
         this.state = { exportedFields: [] };
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         this.props.preLoadExporters();
     }
 
@@ -83,6 +83,10 @@ const mapDispatchToProps = dispatch =>
         dispatch,
     );
 
-export default compose(connect(mapStateToProps, mapDispatchToProps), translate)(
-    WidgetsComponent,
-);
+export default compose(
+    connect(
+        mapStateToProps,
+        mapDispatchToProps,
+    ),
+    translate,
+)(WidgetsComponent);

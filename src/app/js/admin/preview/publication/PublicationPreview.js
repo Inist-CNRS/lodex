@@ -34,9 +34,10 @@ const styles = {
 };
 
 export class PublicationPreviewComponent extends Component {
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         this.props.loadField();
     }
+
     handleExitColumEdition = event => {
         event.preventDefault();
         event.stopPropagation();
@@ -75,6 +76,10 @@ const mapDispatchToProps = {
     loadField,
 };
 
-export default compose(connect(null, mapDispatchToProps), translate)(
-    PublicationPreviewComponent,
-);
+export default compose(
+    connect(
+        null,
+        mapDispatchToProps,
+    ),
+    translate,
+)(PublicationPreviewComponent);

@@ -67,7 +67,7 @@ class FieldEditionWizardComponent extends Component {
         this.state = { step: 0 };
     }
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         if (
             !nextProps.field ||
             !this.props.field ||
@@ -232,6 +232,9 @@ const mapDispatchToProps = {
     saveField: saveFieldAction,
 };
 
-export default compose(connect(mapStateToProps, mapDispatchToProps))(
-    FieldEditionWizardComponent,
-);
+export default compose(
+    connect(
+        mapStateToProps,
+        mapDispatchToProps,
+    ),
+)(FieldEditionWizardComponent);

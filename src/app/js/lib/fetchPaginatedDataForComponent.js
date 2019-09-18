@@ -23,13 +23,13 @@ export default fetchProps => Component =>
             initialData: PropTypes.any,
         };
 
-        componentWillMount() {
+        UNSAFE_componentWillMount() {
             if (this.state.isLoading) {
                 this.fetchData();
             }
         }
 
-        componentWillReceiveProps() {
+        UNSAFE_componentWillReceiveProps() {
             this.fetchData();
         }
 
