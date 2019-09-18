@@ -5,7 +5,7 @@ import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 import classnames from 'classnames';
 import { Archive as ArchiveIcon } from '@material-ui/icons';
-import { lightBlue500 } from 'material-ui/styles/colors';
+import { lightBlue } from '@material-ui/core/colors';
 
 import Alert from '../../lib/components/Alert';
 import { uploadFile } from './';
@@ -37,7 +37,7 @@ const styles = {
         marginTop: '2rem',
     },
     actionText: {
-        color: lightBlue500,
+        color: lightBlue[500],
         paddingLeft: '10px',
     },
 };

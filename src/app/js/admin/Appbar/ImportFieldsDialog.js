@@ -5,7 +5,7 @@ import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 import Dialog from '@material-ui/core/Dialog';
 import FlatButton from '@material-ui/core/FlatButton';
-import { red300 } from 'material-ui/styles/colors';
+import { red } from '@material-ui/core/colors';
 
 import { importFields as importFieldsAction } from '../import';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
@@ -27,13 +27,14 @@ const styles = {
         top: '12px',
     },
     error: {
-        color: red300,
+        color: red[300],
     },
 };
 
 class ImportFieldsDialogComponent extends Component {
     UNSAFE_componentWillReceiveProps(nextProps) {
-        if (nextProps.succeeded) { // eslint-disable-line
+        if (nextProps.succeeded) {
+            // eslint-disable-line
             this.props.onClose();
         }
     }

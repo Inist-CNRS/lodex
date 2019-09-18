@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
-import { grey400 } from 'material-ui/styles/colors';
+import { grey } from '@material-ui/core/colors';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { reloadParsingResult } from './';
@@ -23,7 +23,7 @@ const styles = {
         display: 'flex',
     },
     list: {
-        borderRight: `solid 1px ${grey400}`,
+        borderRight: `solid 1px ${grey[400]}`,
         listStyleType: 'none',
         margin: 0,
         padding: 0,
@@ -98,6 +98,10 @@ const mapDispatchToProps = {
     handleClearParsing: reloadParsingResult,
 };
 
-export default compose(connect(mapStateToProps, mapDispatchToProps), translate)(
-    ParsingResultComponent,
-);
+export default compose(
+    connect(
+        mapStateToProps,
+        mapDispatchToProps,
+    ),
+    translate,
+)(ParsingResultComponent);

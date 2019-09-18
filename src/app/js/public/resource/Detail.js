@@ -5,7 +5,7 @@ import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
 import { CardActions } from '@material-ui/core/Card';
 import FlatButton from '@material-ui/core/FlatButton';
-import { grey500 } from 'material-ui/styles/colors';
+import { grey } from '@material-ui/core/colors';
 import memoize from 'lodash.memoize';
 import { Helmet } from 'react-helmet';
 import get from 'lodash.get';
@@ -77,7 +77,7 @@ const styles = {
         textAlign: 'justify',
     },
     label: {
-        color: grey500,
+        color: grey[500],
         flexGrow: 2,
         fontWeight: 'bold',
         fontSize: '2rem',

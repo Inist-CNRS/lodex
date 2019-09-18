@@ -2,12 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { FormatLineSpacing as Reorder } from '@material-ui/icons';
 import { SortableHandle } from 'react-sortable-hoc';
-import { grey400 } from 'material-ui/styles/colors';
+import { grey } from '@material-ui/core/colors';
 
 const styles = {
     iconDisabled: {
         cursor: 'default',
-        color: grey400,
+        color: grey[400],
     },
     icon: {
         cursor: 'pointer',

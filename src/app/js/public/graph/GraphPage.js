@@ -14,7 +14,7 @@ import EditButton from '../../fields/editFieldValue/EditButton';
 import EditOntologyFieldButton from '../../fields/ontology/EditOntologyFieldButton';
 import PropertyLinkedFields from '../Property/PropertyLinkedFields';
 import CompositeProperty from '../Property/CompositeProperty';
-import { grey500 } from 'material-ui/styles/colors';
+import { grey } from '@material-ui/core/colors';
 import Stats from '../Stats';
 import getTitle from '../../lib/getTitle';
 import ExportShareButton from '../ExportShareButton';
@@ -43,7 +43,7 @@ const styles = {
     label: {
         display: 'flex',
         alignItems: 'center',
-        color: grey500,
+        color: grey[500],
         fontWeight: 'bold',
         fontSize: '2rem',
     },

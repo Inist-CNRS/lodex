@@ -10,12 +10,12 @@ import EditOntologyFieldForm, { FORM_NAME } from './EditOntologyFieldForm';
 import { fromUser, fromFields } from '../../sharedSelectors';
 import ButtonWithDialogForm from '../../lib/components/ButtonWithDialogForm';
 import { configureFieldOpen, configureFieldCancel } from '../';
-import { grey400 } from 'material-ui/styles/colors';
+import { grey } from '@material-ui/core/colors';
 
 const styles = {
     label: {
         float: 'right',
-        color: grey400,
+        color: grey[400],
         fontSize: '1.5rem',
     },
 };

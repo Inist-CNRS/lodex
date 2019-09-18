@@ -5,7 +5,7 @@ import compose from 'recompose/compose';
 import withProps from 'recompose/withProps';
 import classnames from 'classnames';
 import { bindActionCreators } from 'redux';
-import { grey500 } from 'material-ui/styles/colors';
+import { grey } from '@material-ui/core/colors';
 import memoize from 'lodash.memoize';
 import get from 'lodash.get';
 
@@ -43,7 +43,7 @@ const styles = {
         (style, value) => ({ style, value }),
     ),
     label: (status, isSub) => ({
-        color: grey500,
+        color: grey[500],
         flexGrow: 2,
         fontWeight: 'bold',
         fontSize: isSub === true ? 'initial' : '2rem',

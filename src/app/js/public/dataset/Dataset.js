@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
-import { grey500 } from 'material-ui/styles/colors';
+import { grey } from '@material-ui/core/colors';
 
 import {
     Table,
@@ -39,7 +39,7 @@ const styles = {
         paddingRight: '1rem',
     },
     label: {
-        color: grey500,
+        color: grey[500],
         flexGrow: 2,
         fontWeight: 'bold',
         fontSize: '1rem',

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { lightGreenA400, red400 } from 'material-ui/styles/colors';
+import { lightGreen, red } from '@material-ui/core/colors';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import FlatButton from '@material-ui/core/FlatButton';
 import RaisedButton from '@material-ui/core/RaisedButton';
@@ -8,8 +8,8 @@ import { Warning, Done as Success } from '@material-ui/icons';
 
 const getIcon = (error, loading, success) => {
     if (loading) return <CircularProgress size={20} />;
-    if (error) return <Warning color={red400} />;
-    if (success) return <Success color={lightGreenA400} />;
+    if (error) return <Warning color={red[400]} />;
+    if (success) return <Success color={lightGreen[400]} />;
     return null;
 };
 
