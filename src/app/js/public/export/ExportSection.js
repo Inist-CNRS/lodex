@@ -4,8 +4,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
-import { List } from '@material-ui/core/List';
-import Subheader from '@material-ui/core/Subheader';
+import { List, ListSubheader } from '@material-ui/core';
 
 import { fromExport } from '../selectors';
 import {
@@ -38,8 +37,7 @@ export class PureExportSection extends Component {
 
         return (
             <div>
-                <Subheader>{polyglot.t('export_data')}</Subheader>
-
+                <ListSubheader>{polyglot.t('export_data')}</ListSubheader>
                 <List className="export">
                     {exporters.map(({ name }) => (
                         <ExportItem

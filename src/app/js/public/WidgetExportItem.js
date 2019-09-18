@@ -3,9 +3,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import translate from 'redux-polyglot/translate';
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
-import Subheader from '@material-ui/core/Subheader';
+import { Button, TextField, ListSubheader } from '@material-ui/core';
 
 import { polyglot as polyglotPropTypes } from '../propTypes';
 import { getCleanHost } from '../../../common/uris';
@@ -59,7 +57,7 @@ export class WidgetExportItemComponent extends Component {
 
         return (
             <div className="share-widget">
-                <Subheader>{polyglot.t(label)}</Subheader>
+                <ListSubheader>{polyglot.t(label)}</ListSubheader>
                 <div style={styles.container}>
                     <TextField
                         ref={this.saveRef}

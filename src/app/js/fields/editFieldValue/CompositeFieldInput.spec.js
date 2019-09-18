@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import Subheader from '@material-ui/core/Subheader';
+import { ListSubheader } from '@material-ui/core';
 
 import FieldInput from './FieldInput';
 import { CompositeFieldInputComponent as CompositeFieldInput } from './CompositeFieldInput';
@@ -18,13 +18,13 @@ describe('CompositeEditDetailsField', () => {
         expect(editField.at(1).props()).toEqual({ field: 'field2' });
     });
 
-    it('should render Subheader with label', () => {
+    it('should render ListSubheader with label', () => {
         const props = {
             label: 'Field',
             compositeFields: ['field1', 'field2'],
         };
         const wrapper = shallow(<CompositeFieldInput {...props} />);
-        const subheader = wrapper.find(Subheader);
+        const subheader = wrapper.find(ListSubheader);
         expect(subheader.length).toBe(1);
         expect(
             subheader
