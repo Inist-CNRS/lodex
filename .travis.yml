@@ -30,23 +30,23 @@ install:
 
 stages:
     - name: test
+      branches:
+          only:
+              - master
 
 jobs:
     include:
         - stage: test
           name: 'Unit Tests'
           env: NODE_ENV=test
-          script:
-              - make test-unit
+          script: make test-unit
 
         - stage: test
           name: 'API E2E Tests'
           env: NODE_ENV=test
-          script:
-              - make test-api-e2e
+          script: make test-api-e2e
 
         - stage: test
           name: 'E2E Tests'
           env: NODE_ENV=test
-          script:
-              - make test-e2e
+          script: make test-e2e
