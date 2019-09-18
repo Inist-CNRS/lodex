@@ -12,7 +12,7 @@ const styles = stylesToClassname(
         container: {
             position: 'fixed',
             top: 0,
-            left: 110,
+            left: 0,
             height: '100vh',
             width: '100vw',
             zIndex: 1000, // navbar is z-index 10000

@@ -25,6 +25,11 @@ config.autoAddCss = false;
 const styles = stylesToClassname(
     {
         container: {
+            display: 'flex',
+            paddingLeft: 10,
+            paddingRight: 25,
+        },
+        menu: {
             zIndex: 12000,
             position: 'fixed',
             bottom: 0,
@@ -33,8 +38,6 @@ const styles = stylesToClassname(
             width: '100%',
             minHeight: 80,
             maxHeight: 80,
-            display: 'flex',
-            paddingLeft: 10,
             borderTop: '1px solid #E3EAF2',
             transition: 'filter 300ms ease-in-out', // -webkit-filter 300ms ease-in-out
             filter: 'brightness(1)',
@@ -44,7 +47,7 @@ const styles = stylesToClassname(
         },
         icon: {
             maxHeight: 'fit-content',
-            margin: 'auto 10px',
+            margin: '10px 10px auto',
         },
         first: {
             display: 'flex',
@@ -193,44 +196,47 @@ export class NavBar extends Component {
 
         return (
             <Fragment>
-                <nav
-                    className={classnames(styles.container, {
-                        [styles.containerWithDrawer]:
-                            searchDrawer === 'open' || graphDrawer === 'open',
-                    })}
-                >
-                    <Favicon className={styles.icon} />
-                    <div className={styles.first}>
-                        {topMenu.map((config, index) => (
-                            <MenuItem
-                                key={index}
-                                config={config}
-                                role={role}
-                                canBeSearched={canBeSearched}
-                                hasGraph={hasGraph}
-                                polyglot={polyglot}
-                                onClick={this.handleMenuItemClick}
-                                graphDrawer={graphDrawer}
-                                searchDrawer={searchDrawer}
-                            />
-                        ))}
-                    </div>
-                    <div className={styles.last}>
-                        {bottomMenu.map((config, index) => (
-                            <MenuItem
-                                key={index}
-                                config={config}
-                                role={role}
-                                canBeSearched={canBeSearched}
-                                hasGraph={hasGraph}
-                                onClick={this.handleMenuItemClick}
-                                polyglot={polyglot}
-                                graphDrawer={graphDrawer}
-                                searchDrawer={searchDrawer}
-                            />
-                        ))}
-                    </div>
-                </nav>
+                <div className={classnames(styles.menu)}>
+                    <nav
+                        className={classnames('container', styles.container, {
+                            [styles.menuWithDrawer]:
+                                searchDrawer === 'open' ||
+                                graphDrawer === 'open',
+                        })}
+                    >
+                        <Favicon className={styles.icon} />
+                        <div className={styles.first}>
+                            {topMenu.map((config, index) => (
+                                <MenuItem
+                                    key={index}
+                                    config={config}
+                                    role={role}
+                                    canBeSearched={canBeSearched}
+                                    hasGraph={hasGraph}
+                                    polyglot={polyglot}
+                                    onClick={this.handleMenuItemClick}
+                                    graphDrawer={graphDrawer}
+                                    searchDrawer={searchDrawer}
+                                />
+                            ))}
+                        </div>
+                        <div className={styles.last}>
+                            {bottomMenu.map((config, index) => (
+                                <MenuItem
+                                    key={index}
+                                    config={config}
+                                    role={role}
+                                    canBeSearched={canBeSearched}
+                                    hasGraph={hasGraph}
+                                    onClick={this.handleMenuItemClick}
+                                    polyglot={polyglot}
+                                    graphDrawer={graphDrawer}
+                                    searchDrawer={searchDrawer}
+                                />
+                            ))}
+                        </div>
+                    </nav>
+                </div>
                 <Drawer
                     status={graphDrawer}
                     onClose={this.toggleGraph}

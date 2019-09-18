@@ -15,19 +15,9 @@ import { loadMenu } from './menu/reducer';
 import { fromMenu } from './selectors';
 import scrollToTop from '../lib/scrollToTop';
 import CreateResource from './resource/CreateResource';
-import stylesToClassname from '../lib/stylesToClassName';
 import ScrollToTop from './ScrollToTop';
 
 const notLogin = new RegExp('^(?!.*(/login)).*$');
-
-const styles = stylesToClassname(
-    {
-        container: {
-            marginLeft: 110,
-        },
-    },
-    'routes',
-);
 
 class Routes extends Component {
     UNSAFE_componentWillMount() {
@@ -45,27 +35,22 @@ class Routes extends Component {
                     <Fragment>
                         <ScrollToTop />
                         <Route path={notLogin} component={NavBar} />
-                        <div className={styles.container}>
-                            <Route path="/" exact component={Home} />
-                            <Route path="/resource" component={Resource} />
+                        <Route path="/" exact component={Home} />
+                        <Route path="/resource" component={Resource} />
+                        <Route path="/ark:/:naan/:rest" component={Resource} />
+                        <Route path="/uid:/:uri" component={Resource} />
+                        <Route path="/login" component={Login} />
+                        <Route path="/graph" exact component={GraphPage} />
+                        <Route path="/graph/:name" component={GraphPage} />
+                        {customRoutes.map(link => (
                             <Route
-                                path="/ark:/:naan/:rest"
-                                component={Resource}
+                                key={link}
+                                exact
+                                path={link}
+                                component={CustomPage}
                             />
-                            <Route path="/uid:/:uri" component={Resource} />
-                            <Route path="/login" component={Login} />
-                            <Route path="/graph" exact component={GraphPage} />
-                            <Route path="/graph/:name" component={GraphPage} />
-                            {customRoutes.map(link => (
-                                <Route
-                                    key={link}
-                                    exact
-                                    path={link}
-                                    component={CustomPage}
-                                />
-                            ))}
-                            <Route path={notLogin} component={CreateResource} />
-                        </div>
+                        ))}
+                        <Route path={notLogin} component={CreateResource} />
                     </Fragment>
                 </ConnectedRouter>
             </App>
