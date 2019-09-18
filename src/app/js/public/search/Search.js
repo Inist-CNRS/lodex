@@ -5,9 +5,9 @@ import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 import classnames from 'classnames';
 import debounce from 'lodash.debounce';
-import TextField from 'material-ui/TextField';
-import CircularProgress from 'material-ui/CircularProgress';
-import FlatButton from 'material-ui/FlatButton';
+import TextField from '@material-ui/core/TextField';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Button from '@material-ui/core/Button';
 
 import Link from '../../lib/components/Link';
 import {
@@ -198,10 +198,10 @@ class Search extends Component {
                         {polyglot.t('loading')}
                     </Fragment>
                 ) : (
-                    <FlatButton fullWidth onClick={loadMore}>
+                    <Button fullWidth onClick={loadMore}>
                         {polyglot.t('search_load_more')} ({results.length} /{' '}
                         {total})
-                    </FlatButton>
+                    </Button>
                 )}
             </div>
         );

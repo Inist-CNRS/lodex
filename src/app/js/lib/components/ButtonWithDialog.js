@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
-import FlatButton from '@material-ui/core/FlatButton';
+import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
@@ -18,14 +18,14 @@ export const PureButtonWithDialog = ({
     icon,
     p: polyglot,
     actions = [
-        <FlatButton
+        <Button
             key="cancel"
             label={polyglot.t('close')}
             onClick={handleClose}
         />,
     ],
     openButton = (
-        <FlatButton
+        <Button
             primary
             className={className}
             label={label}

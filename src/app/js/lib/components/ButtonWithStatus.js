@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { lightGreen, red } from '@material-ui/core/colors';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import FlatButton from '@material-ui/core/FlatButton';
+import Button from '@material-ui/core/Button';
 import RaisedButton from '@material-ui/core/RaisedButton';
 import { Warning, Done as Success } from '@material-ui/icons';
 
@@ -28,7 +28,7 @@ const ButtonWithStatus = ({
             {...props}
         />
     ) : (
-        <FlatButton
+        <Button
             disabled={disabled || loading}
             icon={getIcon(error, loading, success)}
             {...props}

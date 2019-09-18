@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 import Dialog from '@material-ui/core/Dialog';
-import FlatButton from '@material-ui/core/FlatButton';
+import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
@@ -107,7 +107,7 @@ class ClearDialogComponent extends Component {
                 disabled={!validName}
                 loading={isClearing}
             />,
-            <FlatButton
+            <Button
                 key="cancel"
                 secondary
                 className="btn-cancel"

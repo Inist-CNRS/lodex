@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import translate from 'redux-polyglot/translate';
-import FlatButton from '@material-ui/core/FlatButton';
+import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Subheader from '@material-ui/core/Subheader';
 
@@ -71,7 +71,7 @@ export class WidgetExportItemComponent extends Component {
                     />
 
                     <CopyToClipboard text={value}>
-                        <FlatButton label={polyglot.t('copy_to_clipboard')} />
+                        <Button label={polyglot.t('copy_to_clipboard')} />
                     </CopyToClipboard>
                 </div>
             </div>

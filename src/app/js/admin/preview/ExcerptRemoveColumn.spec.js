@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import FlatButton from '@material-ui/core/FlatButton';
+import Button from '@material-ui/core/Button';
 
 import { ExcerptRemoveColumnComponent as ExcerptRemoveColumn } from './ExcerptRemoveColumn';
 
@@ -16,7 +16,7 @@ describe('<ExcerptRemoveColumn />', () => {
             />,
         );
 
-        expect(wrapper.find(FlatButton).exists()).toBeTruthy();
+        expect(wrapper.find(Button).exists()).toBeTruthy();
     });
 
     it('does not render a remove button if column is uri', () => {
@@ -30,6 +30,6 @@ describe('<ExcerptRemoveColumn />', () => {
             />,
         );
 
-        expect(wrapper.find(FlatButton).exists()).toBeFalsy();
+        expect(wrapper.find(Button).exists()).toBeFalsy();
     });
 });

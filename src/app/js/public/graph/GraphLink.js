@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Card, CardMedia, CardActions } from '@material-ui/core/Card';
-import FlatButton from '@material-ui/core/FlatButton';
+import Button from '@material-ui/core/Button';
 import { Forward } from '@material-ui/icons';
 import translate from 'redux-polyglot/translate';
 
@@ -33,7 +33,7 @@ const GraphLink = ({ link, children, p: polyglot }) => (
     <Card>
         <CardMedia style={styles.media}>{children}</CardMedia>
         <CardActions style={styles.actions}>
-            <FlatButton
+            <Button
                 primary
                 fullWidth
                 style={styles.detailsButton}

@@ -5,7 +5,7 @@ import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
 import AppBar from '@material-ui/core/AppBar';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import FlatButton from '@material-ui/core/FlatButton';
+import Button from '@material-ui/core/Button';
 
 import SignOutButton from './SignOutButton';
 import SignInButton from './SignInButton';
@@ -74,7 +74,7 @@ const AppbarComponent = ({
             )}
             {isAdmin &&
                 hasPublishedDataset && (
-                    <FlatButton
+                    <Button
                         label={polyglot.t('moderation')}
                         containerElement={<Link to="/contributions" />}
                         style={styles.button}
@@ -82,7 +82,7 @@ const AppbarComponent = ({
                 )}
             {isAdmin &&
                 hasPublishedDataset && (
-                    <FlatButton
+                    <Button
                         label={polyglot.t('removed_resources')}
                         containerElement={<Link to="/removed" />}
                         style={styles.button}

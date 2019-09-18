@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import FlatButton from '@material-ui/core/FlatButton';
+import Button from '@material-ui/core/Button';
 import { Sort as ContentSort } from '@material-ui/icons';
 import withHandlers from 'recompose/withHandlers';
 import { isLongText, getShortText } from '../../lib/longTexts';
@@ -14,7 +14,7 @@ const styles = {
 };
 
 const SortButton = ({ name, label, sortBy, sortDir, sort }) => (
-    <FlatButton
+    <Button
         className={`sort_${name}`}
         labelPosition="before"
         onClick={sort}

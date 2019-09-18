@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { TableRowColumn } from '@material-ui/core/Table';
-import FlatButton from '@material-ui/core/FlatButton';
+import Button from '@material-ui/core/Button';
 import { KeyboardArrowRight as RightIcon } from '@material-ui/icons';
 
 import { field as fieldPropTypes } from '../../propTypes';
@@ -13,7 +13,7 @@ const UriColumn = ({ column, resource, indice }) => (
     <TableRowColumn
         className={classnames('dataset-column', `dataset-${column.name}`)}
     >
-        <FlatButton
+        <Button
             labelPosition="after"
             label={indice}
             containerElement={<Link to={getResourceUri(resource)} />}

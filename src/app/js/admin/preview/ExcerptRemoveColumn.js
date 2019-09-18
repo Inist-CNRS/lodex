@@ -6,7 +6,7 @@ import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 
 import { TableRowColumn } from '@material-ui/core/Table';
-import FlatButton from '@material-ui/core/FlatButton';
+import Button from '@material-ui/core/Button';
 
 import { removeField } from '../../fields';
 import {
@@ -22,7 +22,7 @@ export const ExcerptRemoveColumnComponent = ({
 }) => (
     <TableRowColumn>
         {name !== 'uri' ? (
-            <FlatButton
+            <Button
                 className={`btn-excerpt-remove-column btn-excerpt-remove-column-${getFieldClassName(
                     { name },
                 )}`}

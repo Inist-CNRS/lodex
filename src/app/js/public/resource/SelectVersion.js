@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-import FlatButton from '@material-ui/core/FlatButton';
+import Button from '@material-ui/core/Button';
 import Popover from '@material-ui/core/Popover';
 import { connect } from 'react-redux';
 import moment from 'moment';
@@ -68,7 +68,7 @@ export class SelectVersionComponent extends Component {
 
         return (
             <div>
-                <FlatButton
+                <Button
                     className="select-version"
                     label={format(versions[selectedVersion], selectedVersion)}
                     labelPosition="before"

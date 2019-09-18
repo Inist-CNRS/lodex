@@ -3,7 +3,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import RadioButton from '@material-ui/core/RadioButton';
-import FlatButton from '@material-ui/core/FlatButton';
+import Button from '@material-ui/core/Button';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
 import withHandlers from 'recompose/withHandlers';
@@ -67,7 +67,7 @@ export const StepValueConcatComponent = ({
                         handleRemoveColumn={handleRemoveColumn}
                     />
                 ))}
-                <FlatButton
+                <Button
                     label={polyglot.t('add_column')}
                     onClick={handleAddColumn}
                 />

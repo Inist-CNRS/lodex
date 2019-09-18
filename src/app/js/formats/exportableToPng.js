@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import FlatButton from '@material-ui/core/FlatButton';
+import Button from '@material-ui/core/Button';
 import { CardActions } from '@material-ui/core/Card';
 
 import convertHtmlToPng from '../lib/convertHtmlToPng';
@@ -62,13 +62,13 @@ export default FormatView => {
                     </div>
                     <CardActions style={styles.actions}>
                         {error && <p style={styles.error}>{error}</p>}
-                        <FlatButton
+                        <Button
                             primary
                             style={styles.button}
                             onClick={this.exportElement}
                         >
                             SAVE AS PNG
-                        </FlatButton>
+                        </Button>
                     </CardActions>
                 </div>
             );

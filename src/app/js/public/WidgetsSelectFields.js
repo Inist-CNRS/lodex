@@ -4,7 +4,7 @@ import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 import SuperSelectField from 'material-ui-superselectfield';
 import classnames from 'classnames';
-import FlatButton from '@material-ui/core/FlatButton';
+import Button from '@material-ui/core/Button';
 
 import { polyglot as polyglotPropTypes } from '../propTypes';
 import WidgetsSelectFieldItem from './WidgetsSelectFieldItem';
@@ -87,7 +87,7 @@ export class WidgetsSelectFieldsComponent extends Component {
                         'filter_fields_for_widgets',
                     )}
                     menuCloseButton={
-                        <FlatButton
+                        <Button
                             className="btn-apply-widget-select"
                             label={polyglot.t('apply')}
                         />

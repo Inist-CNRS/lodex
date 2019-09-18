@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
 import { CardActions } from '@material-ui/core/Card';
-import FlatButton from '@material-ui/core/FlatButton';
+import Button from '@material-ui/core/Button';
 import { grey } from '@material-ui/core/colors';
 import memoize from 'lodash.memoize';
 import { Helmet } from 'react-helmet';
@@ -178,7 +178,7 @@ export const DetailComponent = ({
                     ))}
                 </div>
                 <CardActions style={styles.actions}>
-                    <FlatButton
+                    <Button
                         href={`${getCleanHost()}/${resource.uri} `}
                         label={resource.uri}
                         primary={true}

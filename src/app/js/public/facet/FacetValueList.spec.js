@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import FlatButton from '@material-ui/core/FlatButton';
+import Button from '@material-ui/core/Button';
 import CheckBox from '@material-ui/core/Checkbox';
 
 import { FacetValueList } from './FacetValueList';
@@ -46,7 +46,7 @@ describe('FacetValueList', () => {
             .at(0)
             .dive()
             .dive()
-            .find(FlatButton)
+            .find(Button)
             .simulate('click');
 
         expect(defaultProps.sortFacetValue).toBeCalledTimes(1);
@@ -60,7 +60,7 @@ describe('FacetValueList', () => {
             .at(1)
             .dive()
             .dive()
-            .find(FlatButton)
+            .find(Button)
             .simulate('click');
 
         expect(defaultProps.sortFacetValue).toBeCalledTimes(2);

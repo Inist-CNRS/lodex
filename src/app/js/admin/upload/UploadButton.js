@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
 import Dialog from '@material-ui/core/Dialog';
-import FlatButton from '@material-ui/core/FlatButton';
+import Button from '@material-ui/core/Button';
 import RaisedButton from '@material-ui/core/RaisedButton';
 import { Archive as ArchiveIcon } from '@material-ui/icons';
 
@@ -30,7 +30,7 @@ const UploadButtonComponent = ({
     p: polyglot,
 }) => {
     const actions = [
-        <FlatButton
+        <Button
             key="cancel"
             secondary
             label={polyglot.t('cancel')}
@@ -50,7 +50,7 @@ const UploadButtonComponent = ({
                     onClick={handleOpen}
                 />
             ) : (
-                <FlatButton
+                <Button
                     style={styles.button}
                     className="open-upload"
                     label={label}
