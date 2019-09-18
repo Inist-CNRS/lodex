@@ -19,12 +19,12 @@ import { openEditFieldValue, closeEditFieldValue } from '../';
 import { COVER_DATASET } from '../../../../common/cover';
 import { saveResource } from '../../public/resource';
 import { updateCharacteristics } from '../../characteristic';
-import { grey400 } from '@material-ui/core/styles/colors';
+import { grey } from '@material-ui/core/colors';
 
 const styles = {
     label: {
         float: 'right',
-        color: grey400,
+        color: grey[400],
         fontSize: '1.5rem',
     },
 };
