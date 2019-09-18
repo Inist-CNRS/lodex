@@ -4,8 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import * as icons from '@fortawesome/free-solid-svg-icons';
 import get from 'lodash.get';
 import classnames from 'classnames';
-import Link from 'react-router-dom/Link';
-import NavLink from 'react-router-dom/NavLink';
+import { Link, NavLink } from 'react-router-dom';
 
 import theme from '../../theme';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
@@ -292,6 +291,9 @@ MenuItem.propTypes = {
             fr: PropTypes.string.isRequired,
         }).isRequired,
         icon: PropTypes.string.isRequired,
+        link: PropTypes.shape({
+            startsWith: PropTypes.func.isRequired,
+        }),
     }).isRequired,
     onClick: PropTypes.func.isRequired,
     graphDrawer: PropTypes.oneOf(['open', 'closing', 'closed']),

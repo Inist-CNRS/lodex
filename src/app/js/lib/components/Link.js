@@ -1,6 +1,5 @@
 import React from 'react';
-import RouterLink from 'react-router-dom/Link';
-import NavLink from 'react-router-dom/NavLink';
+import { Link as RouterLink, NavLink } from 'react-router-dom';
 import classnames from 'classnames';
 
 import theme from '../../theme';

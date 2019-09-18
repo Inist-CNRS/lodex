@@ -14,19 +14,16 @@
         "prettier",
         "prettier/react"
     ],
-    "plugins": [
-        "import",
-        "react",
-        "prettier",
-        "cypress",
-        "jest"
-    ],
+    "plugins": ["import", "react", "prettier", "cypress", "jest"],
     "rules": {
-        "prettier/prettier": ["error", {
-            "singleQuote": true,
-            "tabWidth": 4,
-            "trailingComma": "all"
-        }],
+        "prettier/prettier": [
+            "error",
+            {
+                "singleQuote": true,
+                "tabWidth": 4,
+                "trailingComma": "all"
+            }
+        ],
         "import/no-extraneous-dependencies": "off",
         "no-console": ["error", { "allow": ["warn", "error"] }],
         "no-unused-vars": ["error", { "ignoreRestSiblings": true }]

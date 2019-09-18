@@ -1,8 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { StyleSheetTestUtils } from 'aphrodite';
-import Link from 'react-router-dom/Link';
-import NavLink from 'react-router-dom/NavLink';
+import { Link, NavLink } from 'react-router-dom';
 
 import MenuItem from './MenuItem';
 

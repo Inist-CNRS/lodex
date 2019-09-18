@@ -17,7 +17,7 @@ export const withInitialDataHoc = BaseComponent =>
             isLoading: PropTypes.bool.isRequired,
         };
 
-        componentWillMount() {
+        UNSAFE_componentWillMount() {
             this.props.loadPublication();
             this.props.loadParsingResult();
         }
@@ -50,7 +50,11 @@ export default BaseComponent => {
             fromPublication.isPublicationLoading(state),
     });
 
-    return compose(connect(mapStateToProps, mapDispatchToProps), translate)(
-        withInitialDataHoc(BaseComponent),
-    );
+    return compose(
+        connect(
+            mapStateToProps,
+            mapDispatchToProps,
+        ),
+        translate,
+    )(withInitialDataHoc(BaseComponent));
 };

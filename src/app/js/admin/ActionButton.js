@@ -55,7 +55,7 @@ export class ActionButtonComponent extends Component {
         };
     }
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         if (nextProps.editedColumn) {
             const currentEditedColumnName = this.props.editedColumn
                 ? this.props.editedColumn.name
@@ -180,6 +180,7 @@ const mapStateToProps = state => ({
     editedColumn: fromFields.getEditedField(state),
 });
 
-export default compose(connect(mapStateToProps), translate)(
-    ActionButtonComponent,
-);
+export default compose(
+    connect(mapStateToProps),
+    translate,
+)(ActionButtonComponent);

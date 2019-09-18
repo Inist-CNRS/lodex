@@ -21,7 +21,7 @@ export class PureExportSection extends Component {
         this.state = { exportedFields: [] };
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         this.props.preLoadExporters();
     }
 
@@ -81,6 +81,10 @@ const mapDispatchToProps = dispatch =>
         dispatch,
     );
 
-export default compose(connect(mapStateToProps, mapDispatchToProps), translate)(
-    PureExportSection,
-);
+export default compose(
+    connect(
+        mapStateToProps,
+        mapDispatchToProps,
+    ),
+    translate,
+)(PureExportSection);

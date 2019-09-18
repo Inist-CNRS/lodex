@@ -40,7 +40,7 @@ export class WidgetExportItemComponent extends Component {
         };
     }
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         const { uri, fields, type } = nextProps;
         this.setState({ value: generateWidget(uri, fields, type) });
     }

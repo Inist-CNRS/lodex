@@ -44,11 +44,13 @@ install: copy-conf install-npm-dependencies ## Install npm dependencies for the 
 build-app:
 	docker-compose run --no-deps --rm api npm run build
 
-build: ## build the docker image localy
+build: ## Build the docker image localy
 	docker build -t inistcnrs/lodex --build-arg http_proxy --build-arg https_proxy .
 
-run-dev: ## run node server
+run-dev: ## Run the project in dev mode
 	docker-compose up --force-recreate
+
+start: run-dev ## Start the project (alias of make run-dev)
 
 mongo: ## Start the mongo database
 	docker-compose up -d mongo
