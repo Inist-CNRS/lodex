@@ -1,8 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import SelectField from '@material-ui/core/SelectField';
-import MenuItem from '@material-ui/core/MenuItem';
-import IconButton from '@material-ui/core/IconButton';
+import { SelectField, MenuItem, IconButton } from '@material-ui/core';
 import { Delete as IconDelete } from '@material-ui/icons';
 import translate from 'redux-polyglot/translate';
 
@@ -41,8 +39,9 @@ const ComposedOfColumn = ({
                     className={`composite-field-${index}-${f.name}`}
                     key={`composite-field-${index}-${f.name}`}
                     value={f.name}
-                    primaryText={f.label}
-                />
+                >
+                    {f.label}
+                </MenuItem>
             ))}
         </SelectField>
         {index > 1 && (

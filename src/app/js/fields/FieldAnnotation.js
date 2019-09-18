@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
-import MenuItem from '@material-ui/core/MenuItem';
+import { MenuItem } from '@material-ui/core';
 import translate from 'redux-polyglot/translate';
 
 import FormSelectField from '../lib/components/FormSelectField';
@@ -32,17 +32,17 @@ const FieldAnnotation = ({ fields, p: polyglot }) => (
             hint={polyglot.t('select_a_column')}
             fullWidth
         >
-            <MenuItem
-                value={null}
-                primaryText={polyglot.t('completes_field_none')}
-            />
+            <MenuItem value={null}>
+                {polyglot.t('completes_field_none')}
+            </MenuItem>
             {fields.map(f => (
                 <MenuItem
                     className={`completes-${getFieldClassName(f)}`}
                     key={f.name}
                     value={f.name}
-                    primaryText={f.label}
-                />
+                >
+                    {f.label}
+                </MenuItem>
             ))}
         </Field>
     </div>

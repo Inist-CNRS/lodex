@@ -1,8 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import Checkbox from '@material-ui/core/Checkbox';
-import { ListItem } from '@material-ui/core/List';
+import { Checkbox, ListItem } from '@material-ui/core';
 
 import { fromFacet } from '../selectors';
 import FacetActionsContext from './FacetActionsContext';

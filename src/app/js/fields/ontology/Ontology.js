@@ -3,10 +3,15 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
-import { Card, CardHeader, CardText, CardActions } from '@material-ui/core/Card';
-import Divider from '@material-ui/core/Divider';
-import SelectField from '@material-ui/core/SelectField';
-import MenuItem from '@material-ui/core/MenuItem';
+import {
+    Divider,
+    SelectField,
+    MenuItem,
+    Card,
+    CardHeader,
+    CardText,
+    CardActions,
+} from '@material-ui/core';
 
 import {
     polyglot as polyglotPropTypes,
@@ -51,18 +56,15 @@ export class OntologyComponent extends Component {
                         style={{ width: 400 }}
                         className="select-filter"
                     >
-                        <MenuItem
-                            value={ALL}
-                            primaryText={polyglot.t('model_filter_all')}
-                        />
-                        <MenuItem
-                            value={'document'}
-                            primaryText={polyglot.t('model_filter_document')}
-                        />
-                        <MenuItem
-                            value={'dataset'}
-                            primaryText={polyglot.t('model_filter_dataset')}
-                        />
+                        <MenuItem value={ALL}>
+                            {polyglot.t('model_filter_all')}
+                        </MenuItem>
+                        <MenuItem value={'document'}>
+                            {polyglot.t('model_filter_document')}
+                        </MenuItem>
+                        <MenuItem value={'dataset'}>
+                            {polyglot.t('model_filter_dataset')}
+                        </MenuItem>
                     </SelectField>
                     {(filter === ALL || filter === COVER_DATASET) && (
                         <OntologyTable title="dataset" />

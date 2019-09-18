@@ -3,8 +3,7 @@ import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
-import IconButton from '@material-ui/core/IconButton';
-import MenuItem from '@material-ui/core/MenuItem';
+import { IconButton, MenuItem } from '@material-ui/core';
 import { Delete as ActionDeleteIcon } from '@material-ui/icons';
 import { Field, FieldArray } from 'redux-form';
 import memoize from 'lodash.memoize';
@@ -46,8 +45,9 @@ const TransformerListItem = ({
                     key={t.name}
                     className={`transformer_${t.name}`}
                     value={t.name}
-                    primaryText={t.name}
-                />
+                >
+                    {t.name}
+                </MenuItem>
             ))}
         </Field>
         <FieldArray name={`${fieldName}.args`} component={TransformerArgList} />

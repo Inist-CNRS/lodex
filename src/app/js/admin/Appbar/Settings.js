@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Button from '@material-ui/core/Button';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
+import { Button, Menu, MenuItem } from '@material-ui/core';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
@@ -116,16 +114,18 @@ class SettingsComponent extends Component {
                     <Menu>
                         <MenuItem
                             className="btn-clear-published"
-                            primaryText={polyglot.t('clear_publish')}
                             onClick={this.handleClearPublished}
                             disabled={!hasPublishedDataset}
-                        />
+                        >
+                            {polyglot.t('clear_publish')}
+                        </MenuItem>
                         <MenuItem
                             className="btn-clear-dataset"
-                            primaryText={polyglot.t('clear_dataset')}
                             onClick={this.handleClearDataset}
                             disabled={!hasLoadedDataset}
-                        />
+                        >
+                            {polyglot.t('clear_dataset')}
+                        </MenuItem>
                     </Menu>
                 </Popover>
                 {showClearPublished && (

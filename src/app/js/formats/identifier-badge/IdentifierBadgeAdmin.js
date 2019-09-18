@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import SelectField from '@material-ui/core/SelectField';
-import MenuItem from '@material-ui/core/MenuItem';
+import { SelectField, MenuItem } from '@material-ui/core';
 import translate from 'redux-polyglot/translate';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import updateAdminArgs from '../shared/updateAdminArgs';
@@ -66,11 +65,9 @@ class IdentifierBadgeAdmin extends Component {
             args: { typid },
         } = this.props;
         const items = Object.keys(resolvers).map(resolverID => (
-            <MenuItem
-                key={`resolver_${resolverID}`}
-                value={resolverID}
-                primaryText={polyglot.t(resolverID)}
-            />
+            <MenuItem key={`resolver_${resolverID}`} value={resolverID}>
+                {polyglot.t(resolverID)}
+            </MenuItem>
         ));
         return (
             <div style={styles.container}>

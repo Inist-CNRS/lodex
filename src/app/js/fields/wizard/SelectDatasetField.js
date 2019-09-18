@@ -1,12 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import SelectField from '@material-ui/core/SelectField';
-import MenuItem from '@material-ui/core/MenuItem';
+import { SelectField, MenuItem } from '@material-ui/core';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
-import { fromParsing } from '../../admin/selectors';
 
+import { fromParsing } from '../../admin/selectors';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 
 const styles = {
@@ -35,8 +34,9 @@ export const SelectDatasetFieldComponent = ({
                 key={`id_${datasetField}`}
                 className={`column-${datasetField}`}
                 value={datasetField}
-                primaryText={datasetField}
-            />
+            >
+                {datasetField}
+            </MenuItem>
         ))}
     </SelectField>
 );
@@ -58,6 +58,7 @@ const mapStateToProps = state => ({
     datasetFields: fromParsing.getParsedExcerptColumns(state),
 });
 
-export default compose(connect(mapStateToProps), translate)(
-    SelectDatasetFieldComponent,
-);
+export default compose(
+    connect(mapStateToProps),
+    translate,
+)(SelectDatasetFieldComponent);

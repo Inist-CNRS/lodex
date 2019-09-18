@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
-import SelectField from '@material-ui/core/SelectField';
-import MenuItem from '@material-ui/core/MenuItem';
-import TextField from '@material-ui/core/TextField';
+import { SelectField, MenuItem, TextField } from '@material-ui/core';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import updateAdminArgs from '../shared/updateAdminArgs';
@@ -39,6 +37,7 @@ export class IstexSummaryAdmin extends Component {
             searchedField: PropTypes.oneOf(SEARCHED_FIELD_VALUES),
             sortDir: PropTypes.oneOf(SORT_YEAR_VALUES),
             yearThreshold: PropTypes.number,
+            documentSortBy: PropTypes.string,
         }),
         onChange: PropTypes.func.isRequired,
         p: polyglotPropTypes.isRequired,
@@ -82,11 +81,9 @@ export class IstexSummaryAdmin extends Component {
                     value={searchedField}
                 >
                     {SEARCHED_FIELD_VALUES.map(value => (
-                        <MenuItem
-                            key={value}
-                            value={value}
-                            primaryText={polyglot.t(value)}
-                        />
+                        <MenuItem key={value} value={value}>
+                            {polyglot.t(value)}
+                        </MenuItem>
                     ))}
                 </SelectField>
                 <SelectField
@@ -97,11 +94,9 @@ export class IstexSummaryAdmin extends Component {
                     value={sortDir}
                 >
                     {SORT_YEAR_VALUES.map(value => (
-                        <MenuItem
-                            key={value}
-                            value={value}
-                            primaryText={polyglot.t(value)}
-                        />
+                        <MenuItem key={value} value={value}>
+                            {polyglot.t(value)}
+                        </MenuItem>
                     ))}
                 </SelectField>
                 <TextField

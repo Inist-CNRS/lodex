@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import SelectField from '@material-ui/core/SelectField';
-import MenuItem from '@material-ui/core/MenuItem';
+import { SelectField, MenuItem } from '@material-ui/core';
 import translate from 'redux-polyglot/translate';
+
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import updateAdminArgs from '../shared/updateAdminArgs';
 import ColorPickerParamsAdmin from '../shared/ColorPickerParamsAdmin';
@@ -72,10 +72,10 @@ class TitleAdmin extends Component {
                     style={styles.input}
                     value={level}
                 >
-                    <MenuItem value={1} primaryText={polyglot.t('level1')} />
-                    <MenuItem value={2} primaryText={polyglot.t('level2')} />
-                    <MenuItem value={3} primaryText={polyglot.t('level3')} />
-                    <MenuItem value={4} primaryText={polyglot.t('level4')} />
+                    <MenuItem value={1}>{polyglot.t('level1')}</MenuItem>
+                    <MenuItem value={2}>{polyglot.t('level2')}</MenuItem>
+                    <MenuItem value={3}>{polyglot.t('level3')}</MenuItem>
+                    <MenuItem value={4}>{polyglot.t('level4')}</MenuItem>
                 </SelectField>
                 <ColorPickerParamsAdmin
                     colors={this.state.colors || defaultArgs.colors}

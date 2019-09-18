@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
-import MenuItem from '@material-ui/core/MenuItem';
-import SelectField from '@material-ui/core/SelectField';
-import TextField from '@material-ui/core/TextField';
+import { TextField, SelectField, MenuItem } from '@material-ui/core';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 
 const styles = {
@@ -14,6 +12,7 @@ const styles = {
         marginLeft: '1rem',
     },
 };
+
 export const defaultArgs = {
     type: 'value',
     value: '',
@@ -44,7 +43,10 @@ class UriAdmin extends Component {
     };
 
     render() {
-        const { p: polyglot, args: { type, value } } = this.props;
+        const {
+            p: polyglot,
+            args: { type, value },
+        } = this.props;
 
         return (
             <div style={styles.container}>
@@ -54,18 +56,15 @@ class UriAdmin extends Component {
                     style={styles.input}
                     value={type}
                 >
-                    <MenuItem
-                        value="value"
-                        primaryText={polyglot.t('uri_format_column')}
-                    />
-                    <MenuItem
-                        value="text"
-                        primaryText={polyglot.t('uri_format_custom')}
-                    />
-                    <MenuItem
-                        value="column"
-                        primaryText={polyglot.t('uri_format_another_column')}
-                    />
+                    <MenuItem value="value">
+                        {polyglot.t('uri_format_column')}
+                    </MenuItem>
+                    <MenuItem value="text">
+                        {polyglot.t('uri_format_custom')}
+                    </MenuItem>
+                    <MenuItem value="column">
+                        {polyglot.t('uri_format_another_column')}
+                    </MenuItem>
                 </SelectField>
 
                 {type !== 'value' && (

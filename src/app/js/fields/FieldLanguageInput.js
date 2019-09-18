@@ -1,7 +1,7 @@
 import React from 'react';
 import translate from 'redux-polyglot/translate';
 import { Field } from 'redux-form';
-import MenuItem from '@material-ui/core/MenuItem';
+import { MenuItem } from '@material-ui/core';
 
 import languages from '../../../common/languages';
 import {
@@ -21,8 +21,9 @@ export const FieldLanguageInputComponent = ({
             className={`language_${getFieldClassName(field)}`}
             key={language.code}
             value={language.code}
-            primaryText={language.label}
-        />
+        >
+            {language.label}
+        </MenuItem>
     ));
 
     return (
@@ -37,8 +38,10 @@ export const FieldLanguageInputComponent = ({
                 className={`language_${getFieldClassName(field)}`}
                 key={null}
                 value={null}
-                primaryText={polyglot.t('none')}
-            />
+            >
+                {polyglot.t('none')}
+            </MenuItem>
+
             {languagesItems}
         </Field>
     );

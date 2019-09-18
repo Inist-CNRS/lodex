@@ -1,9 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
-import Button from '@material-ui/core/Button';
-import Popover from '@material-ui/core/Popover';
+import { Menu, MenuItem, Button, Popover } from '@material-ui/core';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import translate from 'redux-polyglot/translate';
@@ -39,8 +36,9 @@ export class SelectVersionComponent extends Component {
                 key={date}
                 className={`version version_${index}`}
                 value={index}
-                primaryText={format(date, index)}
-            />
+            >
+                {format(date, index)}
+            </MenuItem>
         ));
 
     handleClick = event => {

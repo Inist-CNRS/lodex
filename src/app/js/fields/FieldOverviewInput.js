@@ -2,7 +2,7 @@ import React from 'react';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 import { Field } from 'redux-form';
-import MenuItem from '@material-ui/core/MenuItem';
+import { MenuItem } from '@material-ui/core';
 import upperFirst from 'lodash.upperfirst';
 
 import * as overview from '../../../common/overview';
@@ -41,12 +41,9 @@ export const OverviewFieldComponent = ({ p: polyglot }) => {
         },
     ];
     const overviewMenuItems = overviewItems.map(({ _id, value }) => (
-        <MenuItem
-            className={value}
-            key={value}
-            value={_id}
-            primaryText={polyglot.t(`overview${upperFirst(value)}`)}
-        />
+        <MenuItem className={value} key={value} value={_id}>
+            {polyglot.t(`overview${upperFirst(value)}`)}
+        </MenuItem>
     ));
 
     return (

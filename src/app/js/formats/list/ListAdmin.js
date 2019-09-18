@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import MenuItem from '@material-ui/core/MenuItem';
-import SelectField from '@material-ui/core/SelectField';
+import { SelectField, MenuItem } from '@material-ui/core';
+
 import translate from 'redux-polyglot/translate';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
@@ -87,24 +87,18 @@ class ListAdmin extends Component {
                     style={styles.input}
                     value={type}
                 >
-                    <MenuItem
-                        value="unordered"
-                        primaryText={polyglot.t('list_format_unordered')}
-                    />
-                    <MenuItem
-                        value="ordered"
-                        primaryText={polyglot.t('list_format_ordered')}
-                    />
-                    <MenuItem
-                        value="unordered_without_bullet"
-                        primaryText={polyglot.t(
-                            'list_format_unordered_without_bullet',
-                        )}
-                    />
-                    <MenuItem
-                        value="unordered_flat"
-                        primaryText={polyglot.t('list_format_unordered_flat')}
-                    />
+                    <MenuItem value="unordered">
+                        {polyglot.t('list_format_unordered')}
+                    </MenuItem>
+                    <MenuItem value="ordered">
+                        {polyglot.t('list_format_ordered')}
+                    </MenuItem>
+                    <MenuItem value="unordered_without_bullet">
+                        {polyglot.t('list_format_unordered_without_bullet')}
+                    </MenuItem>
+                    <MenuItem value="unordered_flat">
+                        {polyglot.t('list_format_unordered_flat')}
+                    </MenuItem>
                 </SelectField>
             </div>
         );

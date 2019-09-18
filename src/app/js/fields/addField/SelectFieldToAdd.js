@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import SelectField from '@material-ui/core/SelectField';
-import MenuItem from '@material-ui/core/MenuItem';
+import { SelectField, MenuItem } from '@material-ui/core';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
@@ -30,20 +29,15 @@ export const SelectFieldToAddComponent = ({
         value={selectedField}
         onChange={(_, __, value) => onSelectField(value)}
     >
-        <MenuItem
-            value="new"
-            className="new"
-            primaryText={polyglot.t('new_contribution_field')}
-        />
+        <MenuItem value="new" className="new">
+            {polyglot.t('new_contribution_field')}
+        </MenuItem>
         {contributionFields
             .filter(({ name }) => !resource[name])
             .map(({ name, label }) => (
-                <MenuItem
-                    key={name}
-                    className={name}
-                    value={name}
-                    primaryText={label}
-                />
+                <MenuItem key={name} className={name} value={name}>
+                    {label}
+                </MenuItem>
             ))}
     </SelectField>
 );
@@ -70,6 +64,10 @@ const mapDispatchToProps = {
     onSelectField: selectField,
 };
 
-export default compose(connect(mapStateToProps, mapDispatchToProps), translate)(
-    SelectFieldToAddComponent,
-);
+export default compose(
+    connect(
+        mapStateToProps,
+        mapDispatchToProps,
+    ),
+    translate,
+)(SelectFieldToAddComponent);

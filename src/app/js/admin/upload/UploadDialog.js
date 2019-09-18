@@ -61,7 +61,11 @@ export const UploadDialogComponent = ({
 }) => {
     const parserNames = LOADERS.sort((x, y) =>
         polyglot.t(x).localeCompare(polyglot.t(y)),
-    ).map(pn => <MenuItem key={pn} value={pn} primaryText={polyglot.t(pn)} />);
+    ).map(pn => (
+        <MenuItem key={pn} value={pn}>
+            {polyglot.t(pn)}
+        </MenuItem>
+    ));
 
     return (
         <div>
@@ -75,11 +79,9 @@ export const UploadDialogComponent = ({
                             onChange={onChangeParserName}
                             fullWidth
                         >
-                            <MenuItem
-                                key={'automatic'}
-                                value={'automatic'}
-                                primaryText={polyglot.t('automatic-parser')}
-                            />
+                            <MenuItem key={'automatic'} value={'automatic'}>
+                                {polyglot.t('automatic-parser')}
+                            </MenuItem>
                             {parserNames}
                         </SelectField>
                     </StepContent>

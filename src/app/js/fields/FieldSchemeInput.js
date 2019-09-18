@@ -4,7 +4,7 @@ import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 import { Field } from 'redux-form';
-import MenuItem from '@material-ui/core/MenuItem';
+import { MenuItem } from '@material-ui/core';
 
 import { polyglot as polyglotPropTypes } from '../propTypes';
 import FormAutoCompleteField from '../lib/components/FormAutoCompleteField';

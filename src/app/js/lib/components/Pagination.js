@@ -5,10 +5,12 @@ Could not use it from npm at the time as it has not been compiled correctly
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import IconButton from '@material-ui/core/IconButton';
-import MenuItem from '@material-ui/core/MenuItem';
-import SelectField from '@material-ui/core/SelectField';
-import TextField from '@material-ui/core/TextField';
+import {
+    IconButton,
+    MenuItem,
+    SelectField,
+    TextField,
+} from '@material-ui/core';
 
 import { ChevronLeft, ChevronRight } from '@material-ui/icons';
 
@@ -177,11 +179,9 @@ class Pagination extends Component {
                             underlineStyle={styles.underline}
                         >
                             {pages.map(page => (
-                                <MenuItem
-                                    primaryText={page + 1}
-                                    value={page}
-                                    key={`page-${page}`}
-                                />
+                                <MenuItem value={page} key={`page-${page}`}>
+                                    {page + 1}
+                                </MenuItem>
                             ))}
                         </SelectField>
                     )}
@@ -203,10 +203,10 @@ class Pagination extends Component {
                         style={styles.input}
                         underlineStyle={styles.underline}
                     >
-                        <MenuItem value={10} primaryText="10" />
-                        <MenuItem value={20} primaryText="20" />
-                        <MenuItem value={50} primaryText="50" />
-                        <MenuItem value={100} primaryText="100" />
+                        <MenuItem value={10}>10</MenuItem>
+                        <MenuItem value={20}>20</MenuItem>
+                        <MenuItem value={50}>50</MenuItem>
+                        <MenuItem value={100}>100</MenuItem>
                     </SelectField>
                 </div>
                 {navigationArrow}
