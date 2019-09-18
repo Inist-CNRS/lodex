@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 import IconButton from 'material-ui/IconButton';
 import MenuItem from 'material-ui/MenuItem';
-import ActionDeleteIcon from 'material-ui/svg-icons/action/delete';
+import ActionDeleteIcon from '@material-ui/icons/Delete';
 import { Field, FieldArray } from 'redux-form';
 import memoize from 'lodash.memoize';
 
@@ -83,6 +83,10 @@ const mapDispatchToProps = {
     onChangeOperation: changeOperation,
 };
 
-export default compose(connect(mapStateToProps, mapDispatchToProps), translate)(
-    TransformerListItem,
-);
+export default compose(
+    connect(
+        mapStateToProps,
+        mapDispatchToProps,
+    ),
+    translate,
+)(TransformerListItem);

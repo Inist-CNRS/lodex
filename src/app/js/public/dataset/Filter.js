@@ -6,7 +6,7 @@ import debounce from 'lodash.debounce';
 import translate from 'redux-polyglot/translate';
 import TextField from 'material-ui/TextField';
 import { ToolbarGroup } from 'material-ui/Toolbar';
-import ActionSearch from 'material-ui/svg-icons/action/search';
+import ActionSearch from '@material-ui/icons/Search';
 import CircularProgress from 'material-ui/CircularProgress';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';

@@ -6,7 +6,7 @@ import compose from 'recompose/compose';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
-import ArchiveIcon from 'material-ui/svg-icons/content/archive';
+import ArchiveIcon from '@material-ui/icons/Archive';
 
 import UploadDialog from './UploadDialog';
 import { fromUpload } from '../selectors';

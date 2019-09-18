@@ -7,7 +7,7 @@ import {
     ActionBookmark,
     ActionRecordVoiceOver,
     ActionTrendingUp,
-} from 'material-ui/svg-icons';
+} from '@material-ui/icons';
 import { milestones } from 'inist-roadmap';
 import { field as fieldPropTypes } from '../../propTypes';
 import Link from '../../lib/components/Link';

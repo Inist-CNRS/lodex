@@ -6,7 +6,7 @@ import compose from 'recompose/compose';
 
 import translate from 'redux-polyglot/translate';
 import IconButton from 'material-ui/IconButton';
-import LockOutlineIcon from 'material-ui/svg-icons/action/lock-outline';
+import LockOutlineIcon from '@material-ui/icons/LockOutline';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { toggleLogin as toggleLoginAction } from '../../user';
@@ -34,6 +34,10 @@ const mapDispatchToProps = dispatch =>
         dispatch,
     );
 
-export default compose(connect(undefined, mapDispatchToProps), translate)(
-    SignInButtonComponent,
-);
+export default compose(
+    connect(
+        undefined,
+        mapDispatchToProps,
+    ),
+    translate,
+)(SignInButtonComponent);

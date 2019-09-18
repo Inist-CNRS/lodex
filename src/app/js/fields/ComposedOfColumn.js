@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import IconButton from 'material-ui/IconButton';
-import IconDelete from 'material-ui/svg-icons/action/delete';
+import IconDelete from '@material-ui/icons/Delete';
 import translate from 'redux-polyglot/translate';
 
 import {
@@ -47,9 +47,7 @@ const ComposedOfColumn = ({
         </SelectField>
         {index > 1 && (
             <IconButton
-                className={`btn-remove-composite-field btn-remove-composite-field-${
-                    index
-                }`}
+                className={`btn-remove-composite-field btn-remove-composite-field-${index}`}
                 onClick={handleRemoveColumn}
                 title={polyglot.t('remove_composition_column')}
             >

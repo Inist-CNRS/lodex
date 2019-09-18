@@ -4,7 +4,7 @@ import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 import pure from 'recompose/pure';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
-import ContentAdd from 'material-ui/svg-icons/content/add';
+import ContentAdd from '@material-ui/icons/Add';
 import { polyglot as polyglotPropTypes } from '../propTypes';
 import ListItem from './ClassListItem';
 
@@ -63,4 +63,7 @@ ClassList.PropTypes = {
     onChangeClass: PropTypes.func.isRequired,
 };
 
-export default compose(translate, pure)(ClassList);
+export default compose(
+    translate,
+    pure,
+)(ClassList);

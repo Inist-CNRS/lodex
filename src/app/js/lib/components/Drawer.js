@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Drawer from 'material-ui/Drawer';
 import IconButton from 'material-ui/IconButton';
 import FlatButton from 'material-ui/FlatButton';
-import CloseIcon from 'material-ui/svg-icons/content/clear';
+import CloseIcon from '@material-ui/icons/Clear';
 
 const styles = {
     container: {

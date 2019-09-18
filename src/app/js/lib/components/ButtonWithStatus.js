@@ -5,8 +5,8 @@ import CircularProgress from 'material-ui/CircularProgress';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
 
-import Warning from 'material-ui/svg-icons/alert/warning';
-import Success from 'material-ui/svg-icons/action/done';
+import Warning from '@material-ui/icons/Warning';
+import Success from '@material-ui/icons/Done';
 
 const getIcon = (error, loading, success) => {
     if (loading) return <CircularProgress size={20} />;

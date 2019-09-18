@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 import classnames from 'classnames';
-import ArchiveIcon from 'material-ui/svg-icons/content/archive';
+import ArchiveIcon from '@material-ui/icons/Archive';
 import { lightBlue500 } from 'material-ui/styles/colors';
 
 import Alert from '../../lib/components/Alert';
@@ -93,6 +93,9 @@ const mapDispatchToProps = {
 };
 
 export default compose(
-    connect(mapsStateToProps, mapDispatchToProps),
+    connect(
+        mapsStateToProps,
+        mapDispatchToProps,
+    ),
     translate,
 )(UploadComponent);

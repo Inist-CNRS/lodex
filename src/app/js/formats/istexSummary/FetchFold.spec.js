@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import Folder from 'material-ui/svg-icons/file/folder';
-import FolderOpen from 'material-ui/svg-icons/file/folder-open';
+import Folder from '@material-ui/icons/Folder';
+import FolderOpen from '@material-ui/icons/FolderOpen';
 import Button from 'material-ui/FlatButton';
 import { CircularProgress } from 'material-ui';
 import { StyleSheetTestUtils } from 'aphrodite';

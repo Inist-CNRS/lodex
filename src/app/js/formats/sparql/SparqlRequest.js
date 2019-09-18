@@ -12,7 +12,7 @@ import {
 import { fromFormat } from '../../public/selectors';
 import { loadFormatData } from '../../formats/reducer';
 import Loading from '../../lib/components/Loading';
-import LinkIcon from 'material-ui/svg-icons/content/link';
+import LinkIcon from '@material-ui/icons/Link';
 import TextField from 'material-ui/TextField';
 import { isURL } from '../../../../common/uris.js';
 import Link from '../../lib/components/Link';
@@ -220,7 +220,7 @@ export default url => FormatView => {
                     {!isLoaded && <Loading>{polyglot.t('loading')}</Loading>}
                     <FormatView
                         {...props}
-                        formatData={formatData /*injection dans le props ici*/}
+                        formatData={formatData /* injection dans le props ici*/}
                         field={field}
                     />
                 </div>

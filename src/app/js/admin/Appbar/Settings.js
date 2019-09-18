@@ -7,7 +7,7 @@ import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 import Popover, { PopoverAnimationVertical } from 'material-ui/Popover';
-import ArrowDown from 'material-ui/svg-icons/hardware/keyboard-arrow-down';
+import ArrowDown from '@material-ui/icons/KeyboardArrowDown';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 
@@ -150,4 +150,7 @@ const mapStateToProps = state => ({
     hasLoadedDataset: fromParsing.hasUploadedFile(state),
 });
 
-export default compose(translate, connect(mapStateToProps))(SettingsComponent);
+export default compose(
+    translate,
+    connect(mapStateToProps),
+)(SettingsComponent);

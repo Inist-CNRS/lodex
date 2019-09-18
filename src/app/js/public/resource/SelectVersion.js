@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 import moment from 'moment';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
-import ArrowDown from 'material-ui/svg-icons/hardware/keyboard-arrow-down';
+import ArrowDown from '@material-ui/icons/KeyboardArrowDown';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { selectVersion } from '../resource';
@@ -107,6 +107,10 @@ const mapDispatchToProps = {
     onSelectVersion: selectVersion,
 };
 
-export default compose(connect(mapStateToProps, mapDispatchToProps), translate)(
-    SelectVersionComponent,
-);
+export default compose(
+    connect(
+        mapStateToProps,
+        mapDispatchToProps,
+    ),
+    translate,
+)(SelectVersionComponent);

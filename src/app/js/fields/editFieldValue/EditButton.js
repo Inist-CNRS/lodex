@@ -3,7 +3,7 @@ import classnames from 'classnames';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
-import EditIcon from 'material-ui/svg-icons/editor/mode-edit';
+import EditIcon from '@material-ui/icons/ModeEdit';
 import withHandlers from 'recompose/withHandlers';
 
 import EditFieldForm, { FORM_NAME } from './EditFieldForm';
@@ -67,7 +67,10 @@ const mapDispatchToProps = {
 
 export default compose(
     translate,
-    connect(null, mapDispatchToProps),
+    connect(
+        null,
+        mapDispatchToProps,
+    ),
     withHandlers({
         onSaveProperty: ({
             updateCharacteristics,
