@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Toggle from '@material-ui/core/Toggle';
+import Switch from '@material-ui/core/Switch';
 import Button from '@material-ui/core/Button';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
@@ -76,10 +76,10 @@ class FieldComposedOf extends Component {
                     {polyglot.t('wizard_composed_of')}
                 </div>
                 <div style={styles.inset}>
-                    <Toggle
+                    <Switch
                         label="is_composite_field"
-                        toggled={isComposedOf}
-                        onToggle={this.handleToggle}
+                        checked={isComposedOf}
+                        onChange={this.handleToggle}
                     />
                     {isComposedOf &&
                         columns.map((col, index) => (
@@ -144,6 +144,10 @@ const mapDispatchToProps = (dispatch, { FORM_NAME = FIELD_FORM_NAME }) => ({
     },
 });
 
-export default compose(connect(mapStateToProps, mapDispatchToProps), translate)(
-    FieldComposedOf,
-);
+export default compose(
+    connect(
+        mapStateToProps,
+        mapDispatchToProps,
+    ),
+    translate,
+)(FieldComposedOf);
