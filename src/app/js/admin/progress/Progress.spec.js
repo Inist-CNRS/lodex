@@ -4,7 +4,7 @@ import { Dialog } from 'material-ui';
 
 import { Progress } from './Progress';
 import { PENDING, STARTING } from '../../../../common/progressStatus';
-import LinearProgress from 'material-ui/LinearProgress';
+import LinearProgress from '@material-ui/core/LinearProgress';
 
 const identity = x => x;
 

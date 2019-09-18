@@ -4,10 +4,10 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import debounce from 'lodash.debounce';
 import translate from 'redux-polyglot/translate';
-import TextField from 'material-ui/TextField';
-import { ToolbarGroup } from 'material-ui/Toolbar';
+import TextField from '@material-ui/core/TextField';
+import { ToolbarGroup } from '@material-ui/core/Toolbar';
 import { Search as ActionSearch } from '@material-ui/icons';
-import CircularProgress from 'material-ui/CircularProgress';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { applyFilter as applyFilterAction } from './';

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import FlatButton from 'material-ui/FlatButton';
-import { CardActions } from 'material-ui/Card';
+import FlatButton from '@material-ui/core/FlatButton';
+import { CardActions } from '@material-ui/core/Card';
 
 import convertHtmlToPng from '../lib/convertHtmlToPng';
 

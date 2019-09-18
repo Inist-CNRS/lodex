@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import withHandlers from 'recompose/withHandlers';
-import Chip from 'material-ui/Chip';
+import Chip from '@material-ui/core/Chip';
 import translate from 'redux-polyglot/translate';
 
 import {

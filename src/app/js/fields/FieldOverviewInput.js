@@ -2,7 +2,7 @@ import React from 'react';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 import { Field } from 'redux-form';
-import MenuItem from 'material-ui/MenuItem';
+import MenuItem from '@material-ui/core/MenuItem';
 import upperFirst from 'lodash.upperfirst';
 
 import * as overview from '../../../common/overview';

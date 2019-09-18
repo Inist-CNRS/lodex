@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
-import { List } from 'material-ui/List';
+import { List } from '@material-ui/core/List';
 
 import { field as fieldPropTypes } from '../../propTypes';
 

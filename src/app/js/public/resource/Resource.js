@@ -4,8 +4,8 @@ import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
 import { Home as HomeIcon } from '@material-ui/icons';
-import { CardText, CardActions } from 'material-ui/Card';
-import FlatButton from 'material-ui/FlatButton';
+import { CardText, CardActions } from '@material-ui/core/Card';
+import FlatButton from '@material-ui/core/FlatButton';
 import get from 'lodash.get';
 import isEqual from 'lodash.isequal';
 

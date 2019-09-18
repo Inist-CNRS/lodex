@@ -1,6 +1,6 @@
 import React from 'react';
 import { SortableContainer } from 'react-sortable-hoc';
-import { TableBody } from 'material-ui/Table';
+import { TableBody } from '@material-ui/core/Table';
 
 import OntologyField from './OntologyField';
 import { COVER_DATASET } from '../../../../common/cover';

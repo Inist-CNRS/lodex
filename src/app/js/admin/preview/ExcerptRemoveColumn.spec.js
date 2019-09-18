@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import FlatButton from 'material-ui/FlatButton';
+import FlatButton from '@material-ui/core/FlatButton';
 
 import { ExcerptRemoveColumnComponent as ExcerptRemoveColumn } from './ExcerptRemoveColumn';
 

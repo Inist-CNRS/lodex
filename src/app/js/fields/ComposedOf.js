@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Field, FieldArray, change } from 'redux-form';
 import translate from 'redux-polyglot/translate';
-import Subheader from 'material-ui/Subheader';
-import FlatButton from 'material-ui/FlatButton';
+import Subheader from '@material-ui/core/Subheader';
+import FlatButton from '@material-ui/core/FlatButton';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 

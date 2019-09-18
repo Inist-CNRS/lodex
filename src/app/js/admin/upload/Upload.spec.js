@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import RaisedButton from 'material-ui/RaisedButton';
+import RaisedButton from '@material-ui/core/RaisedButton';
 import Alert from '../../lib/components/Alert';
 
 import { UploadComponent as Upload } from './Upload';

@@ -3,9 +3,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import translate from 'redux-polyglot/translate';
-import FlatButton from 'material-ui/FlatButton';
-import TextField from 'material-ui/TextField';
-import Subheader from 'material-ui/Subheader';
+import FlatButton from '@material-ui/core/FlatButton';
+import TextField from '@material-ui/core/TextField';
+import Subheader from '@material-ui/core/Subheader';
 
 import { polyglot as polyglotPropTypes } from '../propTypes';
 import { getCleanHost } from '../../../common/uris';

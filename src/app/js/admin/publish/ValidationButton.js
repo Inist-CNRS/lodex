@@ -5,9 +5,9 @@ import compose from 'recompose/compose';
 import withHandlers from 'recompose/withHandlers';
 import withState from 'recompose/withState';
 import translate from 'redux-polyglot/translate';
-import RaisedButton from 'material-ui/RaisedButton';
-import { List } from 'material-ui/List';
-import Popover from 'material-ui/Popover';
+import RaisedButton from '@material-ui/core/RaisedButton';
+import { List } from '@material-ui/core/List';
+import Popover from '@material-ui/core/Popover';
 
 import { fromFields } from '../../sharedSelectors';
 import ValidationField from './ValidationField';

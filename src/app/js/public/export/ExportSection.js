@@ -4,8 +4,8 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
-import { List } from 'material-ui/List';
-import Subheader from 'material-ui/Subheader';
+import { List } from '@material-ui/core/List';
+import Subheader from '@material-ui/core/Subheader';
 
 import { fromExport } from '../selectors';
 import {

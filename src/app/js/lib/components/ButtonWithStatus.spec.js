@@ -1,9 +1,9 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { lightGreenA400, red400 } from 'material-ui/styles/colors';
-import CircularProgress from 'material-ui/CircularProgress';
-import FlatButton from 'material-ui/FlatButton';
-import RaisedButton from 'material-ui/RaisedButton';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import FlatButton from '@material-ui/core/FlatButton';
+import RaisedButton from '@material-ui/core/RaisedButton';
 import { Warning, Done as Success } from '@material-ui/icons';
 
 import ButtonWithStatus from './ButtonWithStatus';

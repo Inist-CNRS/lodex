@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import MenuItem from 'material-ui/MenuItem';
+import MenuItem from '@material-ui/core/MenuItem';
 import { Field } from 'redux-form';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { TableHeaderColumn } from 'material-ui/Table';
+import { TableHeaderColumn } from '@material-ui/core/Table';
 import { connect } from 'react-redux';
 
 import { sortDataset as sortDatasetAction } from './';

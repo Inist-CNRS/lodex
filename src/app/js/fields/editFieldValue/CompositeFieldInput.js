@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import Subheader from 'material-ui/Subheader';
+import Subheader from '@material-ui/core/Subheader';
 
 import FieldInput from './FieldInput';
 import { fromFields } from '../../sharedSelectors';

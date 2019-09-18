@@ -7,7 +7,7 @@ import compose from 'recompose/compose';
 
 import { formField as formFieldPropTypes } from '../../propTypes';
 import FormTextField from '../../lib/components/FormTextField';
-import RaisedButton from 'material-ui/RaisedButton';
+import RaisedButton from '@material-ui/core/RaisedButton';
 
 class DefaultEditon extends Component {
     convertValue = () => {

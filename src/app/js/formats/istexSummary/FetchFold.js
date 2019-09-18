@@ -5,8 +5,8 @@ import {
     FolderOpen,
     KeyboardArrowDown as Arrow,
 } from '@material-ui/icons';
-import Button from 'material-ui/FlatButton';
-import CircularProgress from 'material-ui/CircularProgress';
+import Button from '@material-ui/core/FlatButton';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import get from 'lodash.get';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';

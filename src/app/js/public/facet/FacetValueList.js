@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
-import TextField from 'material-ui/TextField';
-import CheckBox from 'material-ui/Checkbox';
+import TextField from '@material-ui/core/TextField';
+import CheckBox from '@material-ui/core/Checkbox';
 
 import {
     facetValue as facetValuePropType,

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
-import Divider from 'material-ui/Divider';
+import Divider from '@material-ui/core/Divider';
 
 import { polyglot as polyglotPropTypes } from '../propTypes';
 import { fromFields, fromCharacteristic } from '../sharedSelectors';

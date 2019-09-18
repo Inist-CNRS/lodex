@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import FlatButton from 'material-ui/FlatButton';
+import FlatButton from '@material-ui/core/FlatButton';
 import { Sort as ContentSort } from '@material-ui/icons';
 import withHandlers from 'recompose/withHandlers';
 import { isLongText, getShortText } from '../../lib/longTexts';

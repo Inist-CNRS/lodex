@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 
 import translate from 'redux-polyglot/translate';
-import FlatButton from 'material-ui/FlatButton';
+import FlatButton from '@material-ui/core/FlatButton';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { signOut } from '../../user';

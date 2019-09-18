@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
-import Subheader from 'material-ui/Subheader';
-import { CardText } from 'material-ui/Card';
+import Subheader from '@material-ui/core/Subheader';
+import { CardText } from '@material-ui/core/Card';
 
 import { ShareButtons, generateShareIcon } from 'react-share';
 

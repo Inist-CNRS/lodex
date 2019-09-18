@@ -19,7 +19,7 @@ import { openEditFieldValue, closeEditFieldValue } from '../';
 import { COVER_DATASET } from '../../../../common/cover';
 import { saveResource } from '../../public/resource';
 import { updateCharacteristics } from '../../characteristic';
-import { grey400 } from 'material-ui/styles/colors';
+import { grey400 } from '@material-ui/core/styles/colors';
 
 const styles = {
     label: {

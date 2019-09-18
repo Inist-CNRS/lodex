@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
-import FloatingActionButton from 'material-ui/FloatingActionButton';
+import FloatingActionButton from '@material-ui/core/FloatingActionButton';
 import { Add as ContentAdd } from '@material-ui/icons';
 
 import { fromResource } from '../selectors';

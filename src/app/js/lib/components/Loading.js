@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { CardText } from 'material-ui/Card';
-import CircularProgress from 'material-ui/CircularProgress';
+import { CardText } from '@material-ui/core/Card';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import Card from './Card';
 
 const styles = {

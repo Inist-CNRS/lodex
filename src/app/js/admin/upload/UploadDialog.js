@@ -1,13 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
-import RaisedButton from 'material-ui/RaisedButton';
+import RaisedButton from '@material-ui/core/RaisedButton';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
-import { Step, Stepper, StepLabel, StepContent } from 'material-ui/Stepper';
-import TextField from 'material-ui/TextField';
-import SelectField from 'material-ui/SelectField';
-import MenuItem from 'material-ui/MenuItem';
+import { Step, Stepper, StepLabel, StepContent } from '@material-ui/core/Stepper';
+import TextField from '@material-ui/core/TextField';
+import SelectField from '@material-ui/core/SelectField';
+import MenuItem from '@material-ui/core/MenuItem';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { uploadFile, changeUploadUrl, changeParserName, uploadUrl } from './';

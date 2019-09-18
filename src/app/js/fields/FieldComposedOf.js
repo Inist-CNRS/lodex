@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Toggle from 'material-ui/Toggle';
-import FlatButton from 'material-ui/FlatButton';
+import Toggle from '@material-ui/core/Toggle';
+import FlatButton from '@material-ui/core/FlatButton';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';

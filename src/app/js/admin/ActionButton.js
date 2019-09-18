@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 
-import Popover, { PopoverAnimationVertical } from 'material-ui/Popover';
+import Popover, { PopoverAnimationVertical } from '@material-ui/core/Popover';
 import {
     Description as ActionDescription,
     Add as ContentAdd,

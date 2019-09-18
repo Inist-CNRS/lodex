@@ -4,8 +4,8 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
-import { CardText } from 'material-ui/Card';
-import Subheader from 'material-ui/Subheader';
+import { CardText } from '@material-ui/core/Card';
+import Subheader from '@material-ui/core/Subheader';
 
 import { fromExport } from './selectors';
 import { fromFields } from '../sharedSelectors';

@@ -5,7 +5,7 @@ import withHandlers from 'recompose/withHandlers';
 import translate from 'redux-polyglot/translate';
 import memoize from 'lodash.memoize';
 
-import RaisedButton from 'material-ui/RaisedButton';
+import RaisedButton from '@material-ui/core/RaisedButton';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 

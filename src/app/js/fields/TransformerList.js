@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 import pure from 'recompose/pure';
-import FlatButton from 'material-ui/FlatButton';
-import Subheader from 'material-ui/Subheader';
+import FlatButton from '@material-ui/core/FlatButton';
+import Subheader from '@material-ui/core/Subheader';
 import memoize from 'lodash.memoize';
 
 import { polyglot as polyglotPropTypes } from '../propTypes';

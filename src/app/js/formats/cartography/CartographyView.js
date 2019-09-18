@@ -9,7 +9,7 @@ import { connect } from 'react-redux';
 import memoize from 'lodash.memoize';
 import PropTypes from 'prop-types';
 import { ZoomIn, ZoomOut } from '@material-ui/icons';
-import IconButton from 'material-ui/IconButton';
+import IconButton from '@material-ui/core/IconButton';
 import compose from 'recompose/compose';
 import ReactTooltip from 'react-tooltip';
 

@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
-import CircularProgress from 'material-ui/CircularProgress';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import theme from '../../theme';
 
 class LoadingGraph extends Component {

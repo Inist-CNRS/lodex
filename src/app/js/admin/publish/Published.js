@@ -1,7 +1,7 @@
 import React from 'react';
 import translate from 'redux-polyglot/translate';
-import { CardText } from 'material-ui/Card';
-import RaisedButton from 'material-ui/RaisedButton';
+import { CardText } from '@material-ui/core/Card';
+import RaisedButton from '@material-ui/core/RaisedButton';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import Card from '../../lib/components/Card';

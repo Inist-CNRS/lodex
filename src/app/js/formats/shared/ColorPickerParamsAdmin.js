@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import TextField from 'material-ui/TextField';
+import TextField from '@material-ui/core/TextField';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import * as colorUtils from '../colorUtils';

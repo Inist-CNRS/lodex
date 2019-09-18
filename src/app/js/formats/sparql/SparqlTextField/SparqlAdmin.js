@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
-import TextField from 'material-ui/TextField';
+import TextField from '@material-ui/core/TextField';
 import config from '../../../../../../config.json';
 import { Add as ContentAdd, Clear as ContentClear } from '@material-ui/icons';
 import SelectFormat from '../../SelectFormat';

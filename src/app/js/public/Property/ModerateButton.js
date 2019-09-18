@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import IconButton from 'material-ui/IconButton';
+import IconButton from '@material-ui/core/IconButton';
 import {
     Clear as RejectedIcon,
     Remove as ProposedIcon,
@@ -15,7 +15,7 @@ import {
     yellow500,
     green500,
     grey500,
-} from 'material-ui/styles/colors';
+} from '@material-ui/core/styles/colors';
 import classnames from 'classnames';
 
 import propositionStatus from '../../../../common/propositionStatus';

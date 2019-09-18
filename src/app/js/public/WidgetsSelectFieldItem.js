@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import withHandlers from 'recompose/withHandlers';
-import Chip from 'material-ui/Chip/Chip';
+import Chip from '@material-ui/core/Chip/Chip';
 import classnames from 'classnames';
 
 import getFieldClassName from '../lib/getFieldClassName';

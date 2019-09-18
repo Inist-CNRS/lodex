@@ -2,7 +2,7 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import IconButton from 'material-ui/IconButton';
+import IconButton from '@material-ui/core/IconButton';
 import { Delete as ActionDeleteIcon } from '@material-ui/icons';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';

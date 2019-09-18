@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import MenuItem from 'material-ui/MenuItem';
-import SelectField from 'material-ui/SelectField';
-import TextField from 'material-ui/TextField';
+import MenuItem from '@material-ui/core/MenuItem';
+import SelectField from '@material-ui/core/SelectField';
+import TextField from '@material-ui/core/TextField';
 
 const styles = {
     container: {

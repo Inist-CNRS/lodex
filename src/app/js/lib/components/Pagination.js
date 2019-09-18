@@ -5,10 +5,10 @@ Could not use it from npm at the time as it has not been compiled correctly
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import IconButton from 'material-ui/IconButton';
-import MenuItem from 'material-ui/MenuItem';
-import SelectField from 'material-ui/SelectField';
-import TextField from 'material-ui/TextField';
+import IconButton from '@material-ui/core/IconButton';
+import MenuItem from '@material-ui/core/MenuItem';
+import SelectField from '@material-ui/core/SelectField';
+import TextField from '@material-ui/core/TextField';
 
 import { ChevronLeft, ChevronRight } from '@material-ui/icons';
 

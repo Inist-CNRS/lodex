@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import Chip from 'material-ui/Chip';
+import Chip from '@material-ui/core/Chip';
 
 import { fromDataset } from '../selectors';
 import AppliedFacet from './AppliedFacet';

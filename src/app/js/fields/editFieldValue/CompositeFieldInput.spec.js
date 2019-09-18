@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import Subheader from 'material-ui/Subheader';
+import Subheader from '@material-ui/core/Subheader';
 
 import FieldInput from './FieldInput';
 import { CompositeFieldInputComponent as CompositeFieldInput } from './CompositeFieldInput';
