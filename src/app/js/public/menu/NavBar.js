@@ -35,7 +35,7 @@ const styles = stylesToClassname(
             bottom: 0,
             left: 0,
             backgroundColor: 'white',
-            width: '100%',
+            width: '100vw',
             minHeight: 80,
             maxHeight: 80,
             borderTop: '1px solid #E3EAF2',
