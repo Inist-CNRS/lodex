@@ -9,7 +9,7 @@ services:
     - docker
 
 node_js:
-    - "10"
+    - '10'
 
 env:
     global:
@@ -25,9 +25,29 @@ cache:
         - ~/node_modules/.cache/
         - ~/node_modules/.cache/@babel/register/
 
+branches:
+    only:
+        - master
 
 install:
-    - "make install"
+    - make install
 
-script:
-    - make test
+stages:
+    - name: test
+
+jobs:
+    include:
+        - stage: test
+          name: 'Unit Tests'
+          env: NODE_ENV=test
+          script: make test-unit
+
+        - stage: test
+          name: 'API E2E Tests'
+          env: NODE_ENV=test
+          script: make test-api-e2e
+
+        - stage: test
+          name: 'E2E Tests'
+          env: NODE_ENV=test
+          script: make test-e2e

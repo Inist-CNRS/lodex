@@ -99,15 +99,15 @@ test-e2e-stop-dockers:
 	docker-compose -f docker-compose.spec.yml down
 
 test-e2e-open-cypress:
-	NODE_ENV=e2e ./node_modules/.bin/cypress open
+	NODE_ENV=e2e npx cypress open
 
 test-e2e:
 ifeq "$(DISABLE_E2E_TESTS)" "true"
 	echo "E2E tests were disable because of the flag 'DISABLE_E2E_TESTS=true'"
 else
 	$(MAKE) test-e2e-start-dockers
-	./node_modules/.bin/cypress install
-	./bin/wait-for -t 30 localhost:3000 -- ./node_modules/.bin/cypress run --browser chrome || \
+	npx cypress install
+	./bin/wait-for -t 30 localhost:3000 -- npx cypress run --browser chrome || \
 		echo "ERROR: The API didn't start! Here are the logs:" && \
 		$(MAKE) test-e2e-logs && \
 		$(MAKE) test-e2e-stop-dockers && \
