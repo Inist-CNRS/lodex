@@ -8,7 +8,8 @@ import mount from 'koa-mount';
 import { Provider } from 'react-redux';
 import { StaticRouter } from 'react-router';
 import { Helmet } from 'react-helmet';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import { MuiThemeProvider as V0MuiThemeProvider } from 'material-ui';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import { END } from 'redux-saga';
 import fs from 'fs';
@@ -139,13 +140,15 @@ const renderFullPage = (html, css, preloadedState, helmet) =>
             </body>`,
         );
 
-const renderHtml = (store, muiTheme, url, context, history) =>
+const renderHtml = (store, muiTheme, muiThemeV0, url, context, history) =>
     StyleSheetServer.renderStatic(() =>
         renderToString(
             <StaticRouter location={url} context={context}>
                 <Provider {...{ store }}>
-                    <MuiThemeProvider muiTheme={muiTheme}>
-                        <Routes history={history} />
+                    <MuiThemeProvider theme={muiTheme}>
+                        <V0MuiThemeProvider muiTheme={muiThemeV0}>
+                            <Routes history={history} />
+                        </V0MuiThemeProvider>
                     </MuiThemeProvider>
                 </Provider>
             </StaticRouter>,
@@ -155,6 +158,7 @@ const renderHtml = (store, muiTheme, url, context, history) =>
 export const getRenderingData = async (
     history,
     muiTheme,
+    muiThemeV0,
     token,
     cookie,
     locale,
@@ -170,12 +174,19 @@ export const getRenderingData = async (
 
     const sagaPromise = store.runSaga(sagas).done;
     const context = {};
-    renderHtml(store, muiTheme, url, context, history);
+    renderHtml(store, muiTheme, muiThemeV0, url, context, history);
     store.dispatch(END);
 
     await sagaPromise;
 
-    const { html, css } = renderHtml(store, muiTheme, url, context, history);
+    const { html, css } = renderHtml(
+        store,
+        muiTheme,
+        muiThemeV0,
+        url,
+        context,
+        history,
+    );
     if (context.url) {
         return {
             redirect: context.url,
@@ -212,7 +223,11 @@ const handleRender = async (ctx, next) => {
         initialEntries: [url],
     });
 
-    const muiTheme = getMuiTheme(customTheme, {
+    const muiThemeV0 = getMuiTheme(customTheme, {
+        userAgent: headers['user-agent'],
+    });
+
+    const muiTheme = createMuiTheme(customTheme, {
         userAgent: headers['user-agent'],
     });
 
@@ -225,6 +240,7 @@ const handleRender = async (ctx, next) => {
     } = await getRenderingData(
         history,
         muiTheme,
+        muiThemeV0,
         ctx.state.headerToken,
         ctx.request.header.cookie,
         getLocale(ctx),

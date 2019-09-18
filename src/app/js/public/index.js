@@ -3,9 +3,10 @@ import 'url-api-polyfill';
 import { createBrowserHistory } from 'history';
 import React from 'react';
 import { hydrate } from 'react-dom';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import { Provider } from 'react-redux';
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import { MuiThemeProvider as V0MuiThemeProvider } from 'material-ui';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import { Provider } from 'react-redux';
 
 import rootReducer from './reducers';
 import Routes from './Routes';
@@ -15,7 +16,8 @@ import phrasesFor from '../i18n/translations';
 import getLocale from '../../../common/getLocale';
 import customTheme from './customTheme';
 
-const muiTheme = getMuiTheme(customTheme);
+const muiTheme = createMuiTheme(customTheme);
+const muiThemeV0 = getMuiTheme(customTheme);
 
 const language = getLocale();
 const initialState = {
@@ -36,8 +38,10 @@ const store = configureStore(
 
 hydrate(
     <Provider {...{ store }}>
-        <MuiThemeProvider muiTheme={muiTheme}>
-            <Routes history={history} />
+        <MuiThemeProvider theme={muiTheme}>
+            <V0MuiThemeProvider muiTheme={muiThemeV0}>
+                <Routes history={history} />
+            </V0MuiThemeProvider>
         </MuiThemeProvider>
     </Provider>,
     document.getElementById('root'),
