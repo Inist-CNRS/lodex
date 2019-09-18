@@ -1,17 +1,17 @@
-version: "2"
+version: '2'
 services:
     api:
         image: node:10
         volumes:
             - .:/app
         working_dir: /app
-        user: "${UID}:${GID}"
+        user: '${UID}:${GID}'
         environment:
             DEBUG: ${DEBUG}
             NODE_ENV: ${NODE_ENV}
             http_proxy: ${http_proxy}
             https_proxy: ${https_proxy}
-            no_proxy: "localhost,127.0.0.1,"
+            no_proxy: 'localhost,127.0.0.1,'
             EZMASTER_PUBLIC_URL: ${EZMASTER_PUBLIC_URL}
             CI: ${CI}
         links:
@@ -25,7 +25,7 @@ services:
         volumes:
             - .:/app
         working_dir: /app
-        user: "${UID}:${GID}"
+        user: '${UID}:${GID}'
         environment:
             NODE_ENV: development
         ports:
@@ -34,6 +34,6 @@ services:
 
     mongo:
         image: mongo:3.4.1
-        command: "--smallfiles"
+        command: '--smallfiles'
         ports:
             - 27017:27017

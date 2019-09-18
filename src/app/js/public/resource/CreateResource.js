@@ -18,7 +18,7 @@ import { fromUser } from '../../sharedSelectors';
 const styles = {
     button: {
         position: 'fixed',
-        bottom: 40,
+        bottom: 100,
         right: 40,
     },
 };

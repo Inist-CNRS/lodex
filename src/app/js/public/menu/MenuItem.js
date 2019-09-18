@@ -43,7 +43,7 @@ const styles = stylesToClassname(
             },
         },
         menuItem: {
-            width: '100%',
+            width: 'auto',
             height: 75,
             padding: 10,
             display: 'flex',
