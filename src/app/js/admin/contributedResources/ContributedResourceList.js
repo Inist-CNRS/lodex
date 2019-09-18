@@ -3,18 +3,18 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
-import RaisedButton from '@material-ui/core/RaisedButton';
-import { CardText } from '@material-ui/core/Card';
-import SelectField from '@material-ui/core/SelectField';
-import MenuItem from '@material-ui/core/MenuItem';
 import {
+    Button,
+    CardText,
+    SelectField,
+    MenuItem,
     Table,
     TableBody,
     TableHeader,
     TableHeaderColumn,
     TableRow,
     TableRowColumn,
-} from '@material-ui/core/Table';
+} from '@material-ui/core';
 
 import Loading from '../../lib/components/Loading';
 import Pagination from '../../lib/components/Pagination';
@@ -122,10 +122,11 @@ export class ContributedResourceListComponent extends Component {
                                                 baseUri,
                                             )}
                                         >
-                                            <RaisedButton
+                                            <Button
                                                 className="btn-review-resource"
                                                 label={polyglot.t('review')}
                                                 primary
+                                                variant="contained"
                                             />
                                         </a>
                                     </TableRowColumn>
@@ -183,6 +184,10 @@ const mapDispatchToProps = {
     onChangeFilter: changeContributedResourceFilter,
 };
 
-export default compose(connect(mapStateToProps, mapDispatchToProps), translate)(
-    ContributedResourceListComponent,
-);
+export default compose(
+    connect(
+        mapStateToProps,
+        mapDispatchToProps,
+    ),
+    translate,
+)(ContributedResourceListComponent);

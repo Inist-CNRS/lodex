@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
-import IconButton from '@material-ui/core/IconButton';
 import {
     Add as ActionAddIcon,
     Delete as ActionDeleteIcon,
 } from '@material-ui/icons';
-import RaisedButton from '@material-ui/core/RaisedButton';
+import { Button, IconButton } from '@material-ui/core';
 import classnames from 'classnames';
 import memoize from 'lodash.memoize';
 
@@ -51,9 +50,10 @@ class InputList extends Component {
             return (
                 <div>
                     <p>{polyglot.t('bad_format_edit_list')}</p>
-                    <RaisedButton
+                    <Button
                         className="convert-to-list"
                         primary
+                        variant="contained"
                         onClick={this.convertToList}
                         label={polyglot.t('convert_to_list')}
                     />

@@ -3,9 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
-import Dialog from '@material-ui/core/Dialog';
-import Button from '@material-ui/core/Button';
-import RaisedButton from '@material-ui/core/RaisedButton';
+import { Button, Dialog } from '@material-ui/core';
 import { Archive as ArchiveIcon } from '@material-ui/icons';
 
 import UploadDialog from './UploadDialog';
@@ -41,7 +39,8 @@ const UploadButtonComponent = ({
     return (
         <span>
             {raised ? (
-                <RaisedButton
+                <Button
+                    variant="contained"
                     style={styles.button}
                     className="open-upload"
                     icon={<ArchiveIcon />}

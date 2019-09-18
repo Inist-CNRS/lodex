@@ -10,7 +10,6 @@ import { red } from '@material-ui/core/colors';
 import { importFields as importFieldsAction } from '../import';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { fromImport } from '../selectors';
-import { RaisedButton } from 'material-ui';
 
 const styles = {
     input: {
@@ -51,12 +50,13 @@ class ImportFieldsDialogComponent extends Component {
         const { failed, onClose, p: polyglot } = this.props;
 
         const actions = [
-            <RaisedButton
+            <Button
                 key="confirm"
                 className="btn-save"
                 containerElement="label"
                 label={polyglot.t('confirm')}
                 primary
+                variant="contained"
                 style={styles.button}
             >
                 <input
@@ -65,7 +65,7 @@ class ImportFieldsDialogComponent extends Component {
                     onChange={this.handleFileUpload}
                     style={styles.input}
                 />
-            </RaisedButton>,
+            </Button>,
             <Button
                 secondary
                 key="cancel"

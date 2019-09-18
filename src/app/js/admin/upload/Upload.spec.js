@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import RaisedButton from '@material-ui/core/RaisedButton';
+import { Button } from '@material-ui/core';
 import Alert from '../../lib/components/Alert';
 
 import { UploadComponent as Upload } from './Upload';
@@ -18,8 +18,8 @@ describe('<Upload />', () => {
         };
         const wrapper = shallow(<Upload {...props} />);
 
-        const raisedButton = wrapper.find(RaisedButton).at(0);
-        expect(raisedButton).not.toBe(undefined);
+        const button = wrapper.find(Button).at(0);
+        expect(button).not.toBe(undefined);
 
         expect(
             wrapper.contains(

@@ -1,13 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
-import RaisedButton from '@material-ui/core/RaisedButton';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
-import { Step, Stepper, StepLabel, StepContent } from '@material-ui/core/Stepper';
-import TextField from '@material-ui/core/TextField';
-import SelectField from '@material-ui/core/SelectField';
-import MenuItem from '@material-ui/core/MenuItem';
+import {
+    Button,
+    MenuItem,
+    TextField,
+    SelectField,
+    Step,
+    Stepper,
+    StepLabel,
+    StepContent,
+} from '@material-ui/core';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { uploadFile, changeUploadUrl, changeParserName, uploadUrl } from './';
@@ -82,10 +87,11 @@ export const UploadDialogComponent = ({
                 <Step active>
                     <StepLabel>{polyglot.t('select_file')}</StepLabel>
                     <StepContent>
-                        <RaisedButton
+                        <Button
                             className="btn-upload-dataset"
                             containerElement="label"
                             primary
+                            variant="contained"
                             fullWidth
                             label={polyglot.t('upload_file')}
                             style={styles.button}
@@ -96,7 +102,7 @@ export const UploadDialogComponent = ({
                                 onChange={onFileLoad}
                                 style={styles.input}
                             />
-                        </RaisedButton>
+                        </Button>
                         <div style={styles.divider}>
                             <hr style={styles.dividerHr} />
                             <div style={styles.dividerLabel}>
@@ -116,12 +122,13 @@ export const UploadDialogComponent = ({
                                 }
                                 hintText="URL"
                             />
-                            <RaisedButton
+                            <Button
                                 onClick={onUrlUpload}
                                 disabled={!isUrlValid}
                                 className="btn-upload-url"
                                 containerElement="label"
                                 primary
+                                variant="contained"
                                 fullWidth
                                 label={polyglot.t('upload_url')}
                                 style={styles.button}

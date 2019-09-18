@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Button from '@material-ui/core/Button';
-import RaisedButton from '@material-ui/core/RaisedButton';
+import { Button } from '@material-ui/core';
 import translate from 'redux-polyglot/translate';
 
 import {
@@ -24,10 +23,11 @@ export const ActionsComponent = ({
     if (field.name === 'uri') {
         return (
             <div>
-                <RaisedButton
+                <Button
                     className="btn-save"
                     label={polyglot.t('save')}
                     secondary
+                    variant="contained"
                     onClick={onSave}
                 />
                 <Button
@@ -47,10 +47,11 @@ export const ActionsComponent = ({
                     label={polyglot.t('next')}
                     onClick={onNextStep}
                 />
-                <RaisedButton
+                <Button
                     className="btn-save"
                     label={polyglot.t('save')}
                     primary
+                    variant="contained"
                     onClick={onSave}
                 />
                 <Button
@@ -71,11 +72,12 @@ export const ActionsComponent = ({
                     label={polyglot.t('previous')}
                     onClick={onPreviousStep}
                 />
-                <RaisedButton
+                <Button
                     className="btn-save"
                     label={polyglot.t('save')}
                     onClick={onSave}
                     primary
+                    variant="contained"
                 />
                 <Button
                     className="btn-exit-column-edition"
@@ -99,10 +101,11 @@ export const ActionsComponent = ({
                 label={polyglot.t('next')}
                 onClick={onNextStep}
             />
-            <RaisedButton
+            <Button
                 className="btn-save"
                 label={polyglot.t('save')}
                 primary
+                variant="contained"
                 onClick={onSave}
             />
             <Button

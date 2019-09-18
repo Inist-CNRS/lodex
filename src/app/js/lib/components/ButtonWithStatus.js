@@ -1,9 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { lightGreen, red } from '@material-ui/core/colors';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import Button from '@material-ui/core/Button';
-import RaisedButton from '@material-ui/core/RaisedButton';
+import { CircularProgress, Button } from '@material-ui/core';
 import { Warning, Done as Success } from '@material-ui/icons';
 
 const getIcon = (error, loading, success) => {
@@ -22,7 +20,8 @@ const ButtonWithStatus = ({
     ...props
 }) =>
     raised ? (
-        <RaisedButton
+        <Button
+            variant="contained"
             disabled={disabled || loading}
             icon={getIcon(error, loading, success)}
             {...props}
