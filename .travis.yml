@@ -25,14 +25,15 @@ cache:
         - ~/node_modules/.cache/
         - ~/node_modules/.cache/@babel/register/
 
+branches:
+    only:
+        - master
+
 install:
     - make install
 
 stages:
     - name: test
-      branches:
-          only:
-              - master
 
 jobs:
     include:
