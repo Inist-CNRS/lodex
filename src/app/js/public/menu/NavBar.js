@@ -181,13 +181,13 @@ export class NavBar extends Component {
             role,
             canBeSearched,
             hasGraph,
-            topMenu,
-            bottomMenu,
+            leftMenu,
+            rightMenu,
             p: polyglot,
             hasFacetFields,
         } = this.props;
 
-        if (!topMenu || !bottomMenu) {
+        if (!leftMenu || !rightMenu) {
             return null;
         }
 
@@ -204,7 +204,7 @@ export class NavBar extends Component {
                     <div className={classnames('container', styles.container)}>
                         <Favicon className={styles.icon} />
                         <div className={styles.first}>
-                            {topMenu.map((config, index) => (
+                            {leftMenu.map((config, index) => (
                                 <MenuItem
                                     key={index}
                                     config={config}
@@ -219,7 +219,7 @@ export class NavBar extends Component {
                             ))}
                         </div>
                         <div className={styles.last}>
-                            {bottomMenu.map((config, index) => (
+                            {rightMenu.map((config, index) => (
                                 <MenuItem
                                     key={index}
                                     config={config}
@@ -295,8 +295,9 @@ NavBar.propTypes = {
     canBeSearched: PropTypes.bool.isRequired,
     hasGraph: PropTypes.bool.isRequired,
     p: polyglotPropTypes.isRequired,
-    topMenu: menuPropTypes,
-    bottomMenu: menuPropTypes,
+    leftMenu: menuPropTypes,
+    rightMenu: menuPropTypes,
+    advancedMenu: menuPropTypes,
     loadMenu: PropTypes.func.isRequired,
     hasFacetFields: PropTypes.bool.isRequired,
 };
@@ -305,8 +306,9 @@ const mapStateToProps = state => ({
     role: fromUser.getRole(state),
     canBeSearched: fromFields.canBeSearched(state),
     hasGraph: fromFields.getGraphFields(state).length > 0,
-    topMenu: fromMenu.getTopMenu(state),
-    bottomMenu: fromMenu.getBottomMenu(state),
+    leftMenu: fromMenu.getLeftMenu(state),
+    rightMenu: fromMenu.getRightMenu(state),
+    advancedMenu: fromMenu.getAdvancedMenu(state),
     hasFacetFields: fromFields.hasFacetFields(state),
 });
 

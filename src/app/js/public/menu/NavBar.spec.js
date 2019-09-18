@@ -12,8 +12,8 @@ describe('NavBar', () => {
         graphFields: [],
         role: 'not logged',
         logout: jest.fn(),
-        topMenu: ['menu1', 'menu2'],
-        bottomMenu: ['menu3', 'menu4'],
+        leftMenu: ['menu1', 'menu2'],
+        rightMenu: ['menu3', 'menu4'],
     };
 
     beforeEach(() => StyleSheetTestUtils.suppressStyleInjection());
