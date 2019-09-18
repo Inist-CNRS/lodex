@@ -5,7 +5,7 @@
  */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import transitions from 'material-ui/styles/transitions';
+import transitions from '@material-ui/core/styles/transitions';
 
 function getStyles(props, context, state) {
     const verticalPosition = props.verticalPosition;
@@ -32,12 +32,7 @@ function getStyles(props, context, state) {
         rootWhenShownTop = 36;
     }
 
-    const {
-        baseTheme,
-        zIndex,
-        tooltip,
-        borderRadius,
-    } = context.muiTheme;
+    const { baseTheme, zIndex, tooltip, borderRadius } = context.muiTheme;
 
     const styles = {
         root: {
@@ -54,12 +49,21 @@ function getStyles(props, context, state) {
             userSelect: 'none',
             opacity: 0,
             right: horizontalPosition === 'left' ? 70 : null,
-            left: horizontalPosition === 'center' ?
-                (state.offsetWidth - 48) / 2 * -1 :
-                horizontalPosition === 'right' ? 12 : null,
-            transition: `${transitions.easeOut('0ms', 'top', '450ms')}, ${
-                transitions.easeOut('450ms', 'transform', '0ms')}, ${
-                transitions.easeOut('450ms', 'opacity', '0ms')}`,
+            left:
+                horizontalPosition === 'center'
+                    ? ((state.offsetWidth - 48) / 2) * -1
+                    : horizontalPosition === 'right'
+                    ? 12
+                    : null,
+            transition: `${transitions.easeOut(
+                '0ms',
+                'top',
+                '450ms',
+            )}, ${transitions.easeOut(
+                '450ms',
+                'transform',
+                '0ms',
+            )}, ${transitions.easeOut('450ms', 'opacity', '0ms')}`,
         },
         label: {
             position: 'relative',
@@ -67,23 +71,39 @@ function getStyles(props, context, state) {
         },
         ripple: {
             position: 'absolute',
-            left: horizontalPosition === 'center' ? '50%' :
-                horizontalPosition === 'left' ? '100%' : '0%',
+            left:
+                horizontalPosition === 'center'
+                    ? '50%'
+                    : horizontalPosition === 'left'
+                    ? '100%'
+                    : '0%',
             top: verticalPosition === 'bottom' ? 0 : '100%',
             transform: 'translate(-50%, -50%)',
             borderRadius: '50%',
             backgroundColor: 'transparent',
-            transition: `${transitions.easeOut('0ms', 'width', '450ms')}, ${
-                transitions.easeOut('0ms', 'height', '450ms')}, ${
-                transitions.easeOut('450ms', 'backgroundColor', '0ms')}`,
+            transition: `${transitions.easeOut(
+                '0ms',
+                'width',
+                '450ms',
+            )}, ${transitions.easeOut(
+                '0ms',
+                'height',
+                '450ms',
+            )}, ${transitions.easeOut('450ms', 'backgroundColor', '0ms')}`,
         },
         rootWhenShown: {
             top: rootWhenShownTop,
             opacity: 0.9,
             transform: `translate(0px, ${offset}px)`,
-            transition: `${transitions.easeOut('0ms', 'top', '0ms')}, ${
-                transitions.easeOut('450ms', 'transform', '0ms')}, ${
-                transitions.easeOut('450ms', 'opacity', '0ms')}`,
+            transition: `${transitions.easeOut(
+                '0ms',
+                'top',
+                '0ms',
+            )}, ${transitions.easeOut(
+                '450ms',
+                'transform',
+                '0ms',
+            )}, ${transitions.easeOut('450ms', 'opacity', '0ms')}`,
         },
         rootWhenTouched: {
             fontSize: '14px',
@@ -92,9 +112,15 @@ function getStyles(props, context, state) {
         },
         rippleWhenShown: {
             backgroundColor: tooltip.rippleBackgroundColor,
-            transition: `${transitions.easeOut('450ms', 'width', '0ms')}, ${
-                transitions.easeOut('450ms', 'height', '0ms')}, ${
-                transitions.easeOut('450ms', 'backgroundColor', '0ms')}`,
+            transition: `${transitions.easeOut(
+                '450ms',
+                'width',
+                '0ms',
+            )}, ${transitions.easeOut(
+                '450ms',
+                'height',
+                '0ms',
+            )}, ${transitions.easeOut('450ms', 'backgroundColor', '0ms')}`,
         },
     };
 
@@ -142,11 +168,15 @@ class Tooltip extends Component {
     setRippleSize() {
         const ripple = this.refs.ripple;
         const tooltip = this.refs.tooltip;
-        const tooltipWidth = parseInt(tooltip.offsetWidth, 10) /
-        (this.props.horizontalPosition === 'center' ? 2 : 1);
+        const tooltipWidth =
+            parseInt(tooltip.offsetWidth, 10) /
+            (this.props.horizontalPosition === 'center' ? 2 : 1);
         const tooltipHeight = parseInt(tooltip.offsetHeight, 10);
 
-        const rippleDiameter = Math.ceil((Math.sqrt(Math.pow(tooltipHeight, 2) + Math.pow(tooltipWidth, 2)) * 2));
+        const rippleDiameter = Math.ceil(
+            Math.sqrt(Math.pow(tooltipHeight, 2) + Math.pow(tooltipWidth, 2)) *
+                2,
+        );
         if (this.props.show) {
             ripple.style.height = `${rippleDiameter}px`;
             ripple.style.width = `${rippleDiameter}px`;
@@ -162,12 +192,12 @@ class Tooltip extends Component {
 
     render() {
         const {
-        horizontalPosition, // eslint-disable-line no-unused-vars
-        label,
-        show, // eslint-disable-line no-unused-vars
-        touch, // eslint-disable-line no-unused-vars
-        verticalPosition, // eslint-disable-line no-unused-vars
-        ...other
+            horizontalPosition, // eslint-disable-line no-unused-vars
+            label,
+            show, // eslint-disable-line no-unused-vars
+            touch, // eslint-disable-line no-unused-vars
+            verticalPosition, // eslint-disable-line no-unused-vars
+            ...other
         } = this.props;
 
         const { prepareStyles } = this.context.muiTheme;
@@ -177,23 +207,25 @@ class Tooltip extends Component {
             <div
                 {...other}
                 ref="tooltip"
-                style={prepareStyles(Object.assign(
-                    styles.root,
-                    this.props.show && styles.rootWhenShown,
-                    this.props.touch && styles.rootWhenTouched,
-                    this.props.style,
-                ))}
+                style={prepareStyles(
+                    Object.assign(
+                        styles.root,
+                        this.props.show && styles.rootWhenShown,
+                        this.props.touch && styles.rootWhenTouched,
+                        this.props.style,
+                    ),
+                )}
             >
                 <div
                     ref="ripple"
-                    style={prepareStyles(Object.assign(
-                        styles.ripple,
-                        this.props.show && styles.rippleWhenShown,
-                    ))}
+                    style={prepareStyles(
+                        Object.assign(
+                            styles.ripple,
+                            this.props.show && styles.rippleWhenShown,
+                        ),
+                    )}
                 />
-                <span style={prepareStyles(styles.label)}>
-                    {label}
-                </span>
+                <span style={prepareStyles(styles.label)}>{label}</span>
             </div>
         );
     }

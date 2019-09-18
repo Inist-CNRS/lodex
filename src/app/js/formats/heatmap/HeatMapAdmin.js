@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
 import { schemeOrRd } from 'd3-scale-chromatic';
-import { Checkbox } from 'material-ui';
+import { Checkbox } from '@material-ui/core';
 
 import { GradientSchemeSelector } from '../../lib/components/ColorSchemeSelector';
 import { polyglot as polyglotPropTypes } from '../../propTypes';

@@ -1,10 +1,9 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import { Dialog } from 'material-ui';
+import { Dialog, LinearProgress } from '@material-ui/core';
 
 import { Progress } from './Progress';
 import { PENDING, STARTING } from '../../../../common/progressStatus';
-import { LinearProgress } from '@material-ui/core';
 
 const identity = x => x;
 
