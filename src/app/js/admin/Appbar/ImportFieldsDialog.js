@@ -3,8 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
-import Dialog from '@material-ui/core/Dialog';
-import Button from '@material-ui/core/Button';
+import { Dialog, Button } from '@material-ui/core';
 import { red } from '@material-ui/core/colors';
 
 import { importFields as importFieldsAction } from '../import';

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { CardHeader, CardText } from '@material-ui/core/Card';
+import { CardHeader, CardText } from '@material-ui/core';
 import moment from 'moment';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
@@ -32,9 +32,9 @@ export const RemovedDetailComponent = ({ reason, removedAt, p: polyglot }) => (
             <dl style={styles.container}>
                 <dt style={styles.reason}>{polyglot.t('reason')}</dt>
                 <dd className="reason">
-                    {reason
-                        .split('\n')
-                        .map((line, index) => <p key={index}>{line}</p>)}
+                    {reason.split('\n').map((line, index) => (
+                        <p key={index}>{line}</p>
+                    ))}
                 </dd>
             </dl>
         </CardText>
@@ -56,6 +56,10 @@ const mapStateToProps = fromResource.getRemovedData;
 
 const mapDispatchToProps = {};
 
-export default compose(translate, connect(mapStateToProps, mapDispatchToProps))(
-    RemovedDetailComponent,
-);
+export default compose(
+    translate,
+    connect(
+        mapStateToProps,
+        mapDispatchToProps,
+    ),
+)(RemovedDetailComponent);

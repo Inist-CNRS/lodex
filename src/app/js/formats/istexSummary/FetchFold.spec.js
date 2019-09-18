@@ -1,8 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { Folder, FolderOpen } from '@material-ui/icons';
-import Button from '@material-ui/core/Button';
-import { CircularProgress } from 'material-ui';
+import { CircularProgress, Button } from '@material-ui/core';
 import { StyleSheetTestUtils } from 'aphrodite';
 
 import FetchFold from './FetchFold';

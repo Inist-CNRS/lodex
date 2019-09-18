@@ -5,7 +5,7 @@ import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 import { submit as submitAction, isSubmitting } from 'redux-form';
-import { Card, CardActions, CardHeader, CardText } from '@material-ui/core/Card';
+import { Card, CardActions, CardHeader, CardText } from '@material-ui/core';
 
 import { polyglot as polyglotPropTypes } from '../propTypes';
 import {

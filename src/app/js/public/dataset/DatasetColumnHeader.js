@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { TableHeaderColumn } from '@material-ui/core/Table';
+import { TableHeaderColumn } from '@material-ui/core';
 import { connect } from 'react-redux';
 
 import { sortDataset as sortDatasetAction } from './';
@@ -45,6 +45,7 @@ const mapDispatchToProps = {
     sortDataset: sortDatasetAction,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(
-    DatasetColumnHeader,
-);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(DatasetColumnHeader);

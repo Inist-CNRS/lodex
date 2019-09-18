@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Button from '@material-ui/core/Button';
-import { CardActions } from '@material-ui/core/Card';
+import { Button, CardActions } from '@material-ui/core';
 
 import convertHtmlToPng from '../lib/convertHtmlToPng';
 

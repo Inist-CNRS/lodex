@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Drawer from '@material-ui/core/Drawer';
-import IconButton from '@material-ui/core/IconButton';
-import Button from '@material-ui/core/Button';
+import { Drawer, IconButton, Button } from '@material-ui/core';
 import { Clear as CloseIcon } from '@material-ui/icons';
 
 const styles = {

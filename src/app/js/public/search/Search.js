@@ -5,9 +5,7 @@ import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 import classnames from 'classnames';
 import debounce from 'lodash.debounce';
-import TextField from '@material-ui/core/TextField';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import Button from '@material-ui/core/Button';
+import { TextField, Button, CircularProgress } from '@material-ui/core';
 
 import Link from '../../lib/components/Link';
 import {

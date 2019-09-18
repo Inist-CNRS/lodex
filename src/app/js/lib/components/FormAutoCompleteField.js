@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import compose from 'recompose/compose';
 import withHandlers from 'recompose/withHandlers';
 import { connect } from 'react-redux';
-import AutoComplete from '@material-ui/core/AutoComplete';
+import { AutoComplete } from '@material-ui/core';
 
 import { fetch as fetchAction } from '../../fetch';
 import { formField as formFieldPropTypes } from '../../propTypes';

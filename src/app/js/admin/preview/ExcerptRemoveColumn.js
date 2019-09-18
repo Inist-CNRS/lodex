@@ -4,9 +4,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
-
-import { TableRowColumn } from '@material-ui/core/Table';
-import Button from '@material-ui/core/Button';
+import { Button, TableRowColumn } from '@material-ui/core';
 
 import { removeField } from '../../fields';
 import {
@@ -48,6 +46,10 @@ const mapDispatchtoProps = (dispatch, { field: { name } }) =>
         dispatch,
     );
 
-export default compose(connect(undefined, mapDispatchtoProps), translate)(
-    ExcerptRemoveColumnComponent,
-);
+export default compose(
+    connect(
+        undefined,
+        mapDispatchtoProps,
+    ),
+    translate,
+)(ExcerptRemoveColumnComponent);

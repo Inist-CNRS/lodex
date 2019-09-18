@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import withHandlers from 'recompose/withHandlers';
 import translate from 'redux-polyglot/translate';
-import { ListItem } from '@material-ui/core/List';
+import { ListItem } from '@material-ui/core';
 import {
     polyglot as polyglotPropTypes,
     validationField as validationFieldPropType,

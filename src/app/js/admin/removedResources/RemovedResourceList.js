@@ -4,17 +4,15 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 import moment from 'moment';
-
-import { CardText } from '@material-ui/core/Card';
-
 import {
+    CardText,
     Table,
     TableBody,
     TableHeader,
     TableHeaderColumn,
     TableRow,
     TableRowColumn,
-} from '@material-ui/core/Table';
+} from '@material-ui/core';
 
 import ButtonWithStatus from '../../lib/components/ButtonWithStatus';
 import Loading from '../../lib/components/Loading';

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Button from '@material-ui/core/Button';
+import { Button } from '@material-ui/core';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
@@ -107,12 +107,11 @@ export class ModelMenuComponent extends Component {
                         style={styles.button}
                     />
                 )}
-                {!hasPublishedDataset &&
-                    showImportFieldsConfirmation && (
-                        <ImportFieldsDialog
-                            onClose={this.handleImportFieldsClose}
-                        />
-                    )}
+                {!hasPublishedDataset && showImportFieldsConfirmation && (
+                    <ImportFieldsDialog
+                        onClose={this.handleImportFieldsClose}
+                    />
+                )}
             </div>
         );
     }
@@ -125,6 +124,9 @@ const mapDispatchToProps = {
 
 export default compose(
     withRouter,
-    connect(null, mapDispatchToProps),
+    connect(
+        null,
+        mapDispatchToProps,
+    ),
     translate,
 )(ModelMenuComponent);

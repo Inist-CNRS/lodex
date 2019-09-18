@@ -1,10 +1,16 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Menu, MenuItem } from '@material-ui/core';
+import {
+    Button,
+    Menu,
+    MenuItem,
+    Popover,
+    PopoverAnimationVertical,
+} from '@material-ui/core';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
-import Popover, { PopoverAnimationVertical } from '@material-ui/core/Popover';
+
 import { KeyboardArrowDown as ArrowDown } from '@material-ui/icons';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';

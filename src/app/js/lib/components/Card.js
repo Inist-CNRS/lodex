@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Card } from '@material-ui/core/Card';
+import { Card } from '@material-ui/core';
 
 const getStyles = style => ({
     marginTop: '0.5rem',

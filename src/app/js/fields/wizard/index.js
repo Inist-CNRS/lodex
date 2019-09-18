@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
-import Dialog from '@material-ui/core/Dialog';
-import { Stepper } from '@material-ui/core/Stepper';
+import { Dialog, Stepper } from '@material-ui/core';
 
 import {
     editField as editFieldAction,

@@ -4,7 +4,7 @@ import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 import SuperSelectField from 'material-ui-superselectfield';
 import classnames from 'classnames';
-import Button from '@material-ui/core/Button';
+import { Button } from '@material-ui/core';
 
 import { polyglot as polyglotPropTypes } from '../propTypes';
 import WidgetsSelectFieldItem from './WidgetsSelectFieldItem';

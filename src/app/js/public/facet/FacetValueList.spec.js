@@ -1,7 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import Button from '@material-ui/core/Button';
-import CheckBox from '@material-ui/core/Checkbox';
+import { Button } from '@material-ui/core';
 
 import { FacetValueList } from './FacetValueList';
 import SortButton from '../../lib/components/SortButton';

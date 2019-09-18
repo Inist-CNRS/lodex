@@ -11,7 +11,7 @@ import {
     TableHeader,
     TableRow,
     TableRowColumn,
-} from '@material-ui/core/Table';
+} from '@material-ui/core';
 import DatasetColumn from './DatasetColumn';
 import DatasetColumnHeader from './DatasetColumnHeader';
 import Pagination from '../../lib/components/Pagination';

@@ -12,7 +12,7 @@ import {
     TableHeader,
     TableHeaderColumn,
     TableRow,
-} from '@material-ui/core/Table';
+} from '@material-ui/core';
 
 import {
     polyglot as polyglotPropTypes,

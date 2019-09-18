@@ -1,8 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import moment from 'moment';
-
-import { TableHeaderColumn, TableRowColumn } from '@material-ui/core/Table';
+import { TableHeaderColumn, TableRowColumn } from '@material-ui/core';
 
 import { RemovedResourceListComponent as RemovedResourceList } from './RemovedResourceList';
 import Pagination from '../../lib/components/Pagination';

@@ -2,8 +2,7 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import RadioButton from '@material-ui/core/RadioButton';
-import Button from '@material-ui/core/Button';
+import { RadioButton, Button } from '@material-ui/core';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
 import withHandlers from 'recompose/withHandlers';

@@ -3,9 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
-import Dialog from '@material-ui/core/Dialog';
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
+import { Dialog, Button, TextField } from '@material-ui/core';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import ButtonWithStatus from '../../lib/components/ButtonWithStatus';

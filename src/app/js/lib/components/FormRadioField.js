@@ -1,5 +1,5 @@
 import React from 'react';
-import RadioButton from '@material-ui/core/RadioButton';
+import { RadioButton } from '@material-ui/core';
 import { formField as formFieldPropTypes } from '../../propTypes';
 
 const FormRadioField = ({ input, label, meta, ...custom }) => (

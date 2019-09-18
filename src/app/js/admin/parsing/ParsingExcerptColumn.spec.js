@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import { TableRowColumn } from '@material-ui/core/Table';
+import { TableRowColumn } from '@material-ui/core';
 
 import { getShortText } from '../../lib/longTexts';
 import { ParsingExcerptColumnComponent as ParsingExcerptColumn } from './ParsingExcerptColumn';

@@ -1,8 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
+import { Button, Dialog } from '@material-ui/core';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 

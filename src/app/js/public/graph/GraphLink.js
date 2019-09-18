@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Card, CardMedia, CardActions } from '@material-ui/core/Card';
-import Button from '@material-ui/core/Button';
+import { Card, CardMedia, CardActions, Button } from '@material-ui/core';
 import { Forward } from '@material-ui/icons';
 import translate from 'redux-polyglot/translate';
 

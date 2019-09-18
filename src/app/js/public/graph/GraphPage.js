@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Card, CardTitle } from '@material-ui/core/Card';
+import { Card, CardTitle } from '@material-ui/core';
 import { Helmet } from 'react-helmet';
 
 import Dataset from '../dataset/Dataset';

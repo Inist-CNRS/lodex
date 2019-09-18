@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import LinearProgress from '@material-ui/core/LinearProgress';
+import { LinearProgress } from '@material-ui/core';
 
 import { withInitialDataHoc } from './withInitialData';
 import { AdminComponent } from './Admin';

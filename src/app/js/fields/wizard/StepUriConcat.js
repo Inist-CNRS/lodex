@@ -2,14 +2,12 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import RadioButton from '@material-ui/core/RadioButton';
-import Button from '@material-ui/core/Button';
+import { RadioButton, Button, TextField } from '@material-ui/core';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
 import withHandlers from 'recompose/withHandlers';
 import { connect } from 'react-redux';
 import { formValueSelector } from 'redux-form';
-import TextField from '@material-ui/core/TextField';
 import get from 'lodash.get';
 
 import { FIELD_FORM_NAME } from '../';

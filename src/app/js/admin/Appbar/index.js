@@ -3,9 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
-import AppBar from '@material-ui/core/AppBar';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import Button from '@material-ui/core/Button';
+import { AppBar, CircularProgress, Button } from '@material-ui/core';
 
 import SignOutButton from './SignOutButton';
 import SignInButton from './SignInButton';
@@ -72,22 +70,20 @@ const AppbarComponent = ({
                     )}
                 />
             )}
-            {isAdmin &&
-                hasPublishedDataset && (
-                    <Button
-                        label={polyglot.t('moderation')}
-                        containerElement={<Link to="/contributions" />}
-                        style={styles.button}
-                    />
-                )}
-            {isAdmin &&
-                hasPublishedDataset && (
-                    <Button
-                        label={polyglot.t('removed_resources')}
-                        containerElement={<Link to="/removed" />}
-                        style={styles.button}
-                    />
-                )}
+            {isAdmin && hasPublishedDataset && (
+                <Button
+                    label={polyglot.t('moderation')}
+                    containerElement={<Link to="/contributions" />}
+                    style={styles.button}
+                />
+            )}
+            {isAdmin && hasPublishedDataset && (
+                <Button
+                    label={polyglot.t('removed_resources')}
+                    containerElement={<Link to="/removed" />}
+                    style={styles.button}
+                />
+            )}
             {isAdmin ? (
                 <ModelMenu hasPublishedDataset={hasPublishedDataset} />
             ) : (

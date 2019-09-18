@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 
 import translate from 'redux-polyglot/translate';
-import Button from '@material-ui/core/Button';
+import { Button } from '@material-ui/core';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { signOut } from '../../user';
@@ -40,6 +40,10 @@ const mapDispatchToProps = dispatch =>
         dispatch,
     );
 
-export default compose(connect(undefined, mapDispatchToProps), translate)(
-    SignOutButtonComponent,
-);
+export default compose(
+    connect(
+        undefined,
+        mapDispatchToProps,
+    ),
+    translate,
+)(SignOutButtonComponent);

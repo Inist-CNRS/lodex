@@ -1,8 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { TableRowColumn } from '@material-ui/core/Table';
-import Button from '@material-ui/core/Button';
+import { Button, TableRowColumn } from '@material-ui/core';
 import { KeyboardArrowRight as RightIcon } from '@material-ui/icons';
 
 import { field as fieldPropTypes } from '../../propTypes';

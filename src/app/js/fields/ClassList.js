@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 import pure from 'recompose/pure';
-import FloatingActionButton from '@material-ui/core/FloatingActionButton';
+import { FloatingActionButton } from '@material-ui/core';
 import { Add as ContentAdd } from '@material-ui/icons';
 import { polyglot as polyglotPropTypes } from '../propTypes';
 import ListItem from './ClassListItem';

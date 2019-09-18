@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { TableRow } from '@material-ui/core/Table';
+import { TableRow } from '@material-ui/core';
 
 import {
     field as fieldPropTypes,

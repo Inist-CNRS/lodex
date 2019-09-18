@@ -4,7 +4,7 @@ import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 import memoize from 'lodash.memoize';
-import CircularProgress from '@material-ui/core/CircularProgress';
+import { CircularProgress } from '@material-ui/core';
 
 import { fromParsing, fromPublicationPreview } from './selectors';
 import { fromFields } from '../sharedSelectors';
@@ -100,6 +100,10 @@ const mapDispatchToProps = {
     handleHideExistingColumns: hideAddColumns,
 };
 
-export default compose(connect(mapStateToProps, mapDispatchToProps), translate)(
-    StatisticsComponent,
-);
+export default compose(
+    connect(
+        mapStateToProps,
+        mapDispatchToProps,
+    ),
+    translate,
+)(StatisticsComponent);
