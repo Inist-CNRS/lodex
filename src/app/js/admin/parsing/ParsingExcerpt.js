@@ -3,8 +3,6 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import pure from 'recompose/pure';
-import { spring } from 'react-motion';
-import Transition from 'react-motion-ui-pack';
 
 import { Table, TableBody, TableHeader, TableRow } from 'material-ui/Table';
 
@@ -78,25 +76,14 @@ export const ParsingExcerptComponent = ({
                                     key={`${column}_${line._id}`}
                                     value={line[column]}
                                 >
-                                    <Transition
-                                        component={false}
-                                        enter={{
-                                            opacity: spring(1),
-                                        }}
-                                        leave={{
-                                            opacity: 0,
-                                        }}
-                                        runOnMount
-                                    >
-                                        {showAddColumnButton && (
-                                            <ParsingExcerptAddColumn
-                                                key={`add_column_${column}`}
-                                                name={column}
-                                                onAddColumn={handleAddColumn}
-                                                atTop={total < 3}
-                                            />
-                                        )}
-                                    </Transition>
+                                    {showAddColumnButton && (
+                                        <ParsingExcerptAddColumn
+                                            key={`add_column_${column}`}
+                                            name={column}
+                                            onAddColumn={handleAddColumn}
+                                            atTop={total < 3}
+                                        />
+                                    )}
                                 </ParsingExcerptColumn>
                             );
                         })}
@@ -118,6 +105,10 @@ const mapDispatchToProps = {
     handleAddColumn: addField,
 };
 
-export default compose(connect(undefined, mapDispatchToProps), pure)(
-    ParsingExcerptComponent,
-);
+export default compose(
+    connect(
+        undefined,
+        mapDispatchToProps,
+    ),
+    pure,
+)(ParsingExcerptComponent);
