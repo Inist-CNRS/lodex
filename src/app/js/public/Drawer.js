@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import memoize from 'lodash.memoize';
@@ -12,8 +12,9 @@ const styles = stylesToClassname(
             position: 'absolute',
             top: '100vh',
             left: '0px',
-            width: 'calc(100vw - 15px)',
+            width: '100vw',
             height: '100vh',
+            marginBottom: '100px',
             overflowY: 'auto',
             backgroundColor: 'white',
             borderTop: '1px solid #E3EAF2',
@@ -32,11 +33,11 @@ const styles = stylesToClassname(
         },
         drawerOpen: {
             boxShadow: '0 2px 1rem #777',
-            height: '100vh',
+            height: 'calc(100vh - 10vh - 80px)', // Screen height - position from top - navbar height
             top: '10vh',
         },
         drawerClosing: {
-            height: '100vh',
+            height: 'calc(100vh - 10vh - 80px)', // Screen height - position from top - navbar height
             top: '100vh',
         },
         drawerClosed: {
@@ -52,7 +53,7 @@ const styles = stylesToClassname(
             bottom: '0px',
             left: '0px',
             height: '0vh',
-            width: 'calc(100vw - 15px)',
+            width: '0vw',
             backgroundColor: 'black',
             opacity: '0',
             pointerEvents: 'none',
@@ -60,12 +61,23 @@ const styles = stylesToClassname(
         },
         maskOpen: {
             height: '100vh',
+            width: '100vw',
             opacity: '.3',
             pointerEvents: 'auto',
         },
     },
     'drawer',
 );
+
+const preventScroll = () => {
+    document.body.style['overflow'] = 'hidden';
+    document.body.style['-webkit-overflow-scrolling'] = 'touch';
+};
+
+const removePreventScroll = () => {
+    document.body.style['overflow'] = '';
+    document.body.style['-webkit-overflow-scrolling'] = '';
+};
 
 const buildDrawerAnimationStyles = memoize(({ animationDuration }) => ({
     transition: `top ${animationDuration}ms`,
@@ -76,6 +88,17 @@ const Drawer = ({ children, status, animationDuration, onClose, disabled }) => {
     const drawerStyle = buildDrawerAnimationStyles({
         animationDuration,
     });
+
+    useEffect(() => {
+        switch (status) {
+            case 'open':
+                preventScroll();
+                return;
+            default:
+                removePreventScroll();
+                return;
+        }
+    }, [status]);
 
     return (
         <>
