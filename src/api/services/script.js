@@ -1,6 +1,6 @@
 import Path from 'path';
 import fs from 'fs';
-import ezs from 'ezs';
+import ezs from '@ezs/core';
 import URL from 'url';
 import fetch from 'fetch-with-proxy';
 import config from '../../../config.json';

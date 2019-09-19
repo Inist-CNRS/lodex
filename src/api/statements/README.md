@@ -1,1 +1,1 @@
-see https://github.com/Inist-CNRS/node-ezs-lodex
+See <https://github.com/Inist-CNRS/ezs/tree/master/packages/lodex>
