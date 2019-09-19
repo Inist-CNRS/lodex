@@ -415,8 +415,9 @@ NavBar.propTypes = {
     p: polyglotPropTypes.isRequired,
     leftMenu: menuPropTypes,
     rightMenu: menuPropTypes,
+    topMenu: menuPropTypes,
+    bottomMenu: menuPropTypes,
     advancedMenu: menuPropTypes,
-    loadMenu: PropTypes.func.isRequired,
     hasFacetFields: PropTypes.bool.isRequired,
 };
 
