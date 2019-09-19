@@ -1,166 +1,166 @@
 {
-  "username": "admin",
-  "password": "secret",
-  "userAuth": {
-      "username": "user",
-      "password": "secret"
-  },
-  "pluginsURL" : "https://raw.githubusercontent.com/Inist-CNRS/lodex-extended/v2/",
-  "routinesCache" : true,
-  "routines": [
-      "all-documents",
-      "classif-by",
-      "count-all",
-      "count-by-fields",
-      "cross-by",
-      "decompose-by",
-      "distinct-alpha-2-alpha3-from",
-      "distinct-alpha-3-alpha2-from",
-      "distinct-alpha-3-ISO3166-1-from",
-      "distinct-by-field",
-      "distinct-by",
-      "distinct-ISO3166-1-alpha2-from",
-      "distinct-ISO3166-1-alpha3-from",
-      "distinct-with-quote-rate",
-      "distribute-by-date",
-      "distribute-by-decadal",
-      "distribute-by-interval",
-      "graph-by",
-      "hello-world",
-      "pairing-with",
-      "syndication-from",
-      "syndication",
-      "total-of",
-      "tree-by"
-  ],
-  "loaders": [
-    "csv",
-    "csv-semicolon",
-    "csv-comma",
-    "tsv",
-    "tsv-double-quotes",
-    "rdf",
-    "skos",
-    "json",
-    "json-istex",
-    "json-lodex",
-    "rss",
-    "atom",
-    "mods",
-    "tei",
-    "xml",
-    "corpus",
-    "zip-raw",
-    "zip"
-  ],
-  "exporters": [
-    "csv",
-    "extended-nquads-compressed",
-    "extended-nquads",
-    "jsonallvalue",
-    "jsonld",
-    "nquads",
-    "sitemap",
-    "tsv",
-    "turtle",
-    "widget"
-  ],
-  "datasetClass": "http://test.fr/datasetClass",
-  "schemeForDatasetLink": "http://www.w3.org/2004/02/skos/core#inScheme",
-  "exportDataset": "true",
-  "collectionClass": "",
-  "istexQuery": {
-    "labels": ["Cette ressource dans ISTEX"],
-    "linked": "categories.inist",
-    "context": {
-      "categories.inist": "istex:subjectInist",
-      "link": "dcterms:isPartOf"
+    "username": "admin",
+    "password": "secret",
+    "userAuth": {
+        "username": "user",
+        "password": "secret"
+    },
+    "pluginsURL": "https://raw.githubusercontent.com/Inist-CNRS/lodex-extended/v2/",
+    "routinesCache": true,
+    "routines": [
+        "all-documents",
+        "classif-by",
+        "count-all",
+        "count-by-fields",
+        "cross-by",
+        "decompose-by",
+        "distinct-alpha-2-alpha3-from",
+        "distinct-alpha-3-alpha2-from",
+        "distinct-alpha-3-ISO3166-1-from",
+        "distinct-by-field",
+        "distinct-by",
+        "distinct-ISO3166-1-alpha2-from",
+        "distinct-ISO3166-1-alpha3-from",
+        "distinct-with-quote-rate",
+        "distribute-by-date",
+        "distribute-by-decadal",
+        "distribute-by-interval",
+        "graph-by",
+        "hello-world",
+        "pairing-with",
+        "syndication-from",
+        "syndication",
+        "total-of",
+        "tree-by"
+    ],
+    "loaders": [
+        "csv",
+        "csv-semicolon",
+        "csv-comma",
+        "tsv",
+        "tsv-double-quotes",
+        "rdf",
+        "skos",
+        "json",
+        "json-istex",
+        "json-lodex",
+        "rss",
+        "atom",
+        "mods",
+        "tei",
+        "xml",
+        "corpus",
+        "zip-raw",
+        "zip"
+    ],
+    "exporters": [
+        "csv",
+        "extended-nquads-compressed",
+        "extended-nquads",
+        "jsonallvalue",
+        "jsonld",
+        "nquads",
+        "sitemap",
+        "tsv",
+        "turtle",
+        "widget"
+    ],
+    "datasetClass": "http://test.fr/datasetClass",
+    "schemeForDatasetLink": "http://www.w3.org/2004/02/skos/core#inScheme",
+    "exportDataset": "true",
+    "collectionClass": "",
+    "istexQuery": {
+        "labels": ["Cette ressource dans ISTEX"],
+        "linked": "categories.inist",
+        "context": {
+            "categories.inist": "istex:subjectInist",
+            "link": "dcterms:isPartOf"
+        }
+    },
+    "sparqlEndpoints": [
+        "https://lod.abes.fr/sparql",
+        "http://data.persee.fr/sparql/",
+        "https://data.istex.fr/sparql/",
+        "http://data.bnf.fr/sparql",
+        "http://dbpedia.org/sparql",
+        "http://fr.dbpedia.org/sparql",
+        "https://query.wikidata.org/sparql",
+        "http://www.lotico.com:3030/lotico/sparql"
+    ],
+    "front": {
+        "menu": [
+            {
+                "label": {
+                    "en": "Home",
+                    "fr": "Accueil"
+                },
+                "icon": "faHome",
+                "position": "left",
+                "role": "home"
+            },
+            {
+                "label": {
+                    "en": "Resources",
+                    "fr": "Ressources"
+                },
+                "icon": "faList",
+                "position": "left",
+                "role": "resources"
+            },
+            {
+                "label": {
+                    "en": "Graphs",
+                    "fr": "Graphiques"
+                },
+                "icon": "faChartArea",
+                "position": "advanced",
+                "role": "graphs"
+            },
+            {
+                "label": {
+                    "en": "Search",
+                    "fr": "recherche"
+                },
+                "icon": "faSearch",
+                "position": "right",
+                "role": "search"
+            },
+            {
+                "label": {
+                    "en": "Export",
+                    "fr": "Exporter"
+                },
+                "icon": "faShareAlt",
+                "position": "advanced",
+                "role": "share_export"
+            },
+            {
+                "label": {
+                    "en": "Admin",
+                    "fr": "Admin"
+                },
+                "icon": "faCogs",
+                "position": "advanced",
+                "role": "admin"
+            },
+            {
+                "label": {
+                    "en": "Sign in",
+                    "fr": "Connexion"
+                },
+                "icon": "faSignInAlt",
+                "position": "advanced",
+                "role": "sign-in"
+            },
+            {
+                "label": {
+                    "en": "Sign out",
+                    "fr": "Déconnexion"
+                },
+                "icon": "faSignOutAlt",
+                "position": "advanced",
+                "role": "sign-out"
+            }
+        ]
     }
-  },
-  "sparqlEndpoints": [
-    "https://lod.abes.fr/sparql",
-    "http://data.persee.fr/sparql/",
-    "https://data.istex.fr/sparql/",
-    "http://data.bnf.fr/sparql",
-    "http://dbpedia.org/sparql",
-    "http://fr.dbpedia.org/sparql",
-    "https://query.wikidata.org/sparql",
-    "http://www.lotico.com:3030/lotico/sparql"
-  ],
-  "front": {
-    "menu": [
-      {
-        "label": {
-                "en": "Home",
-                "fr": "Accueil"
-        },
-        "icon": "faHome",
-        "position": "top",
-        "role": "home"
-      },
-      {
-        "label": {
-                "en": "Resources",
-                "fr": "Ressources"
-        },
-        "icon": "faList",
-        "position": "top",
-        "role": "resources"
-      },
-      {
-        "label": {
-                "en": "Graphs",
-                "fr": "Graphiques"
-        },
-        "icon": "faChartArea",
-        "position": "top",
-        "role": "graphs"
-      },
-      {
-        "label": {
-                "en": "Search",
-                "fr": "recherche"
-        },
-        "icon": "faSearch",
-        "position": "top",
-        "role": "search"
-      },
-      {
-        "label": {
-                "en": "Export",
-                "fr": "Exporter"
-        },
-        "icon": "faShareAlt",
-        "position": "bottom",
-        "role": "share_export"
-      },
-      {
-        "label": {
-                "en": "Admin",
-                "fr": "Admin"
-        },
-        "icon": "faCogs",
-        "position": "bottom",
-        "role": "admin"
-      },
-      {
-        "label": {
-                "en": "Sign in",
-                "fr": "Connexion"
-        },
-        "icon": "faSignInAlt",
-        "position": "bottom",
-        "role": "sign-in"
-      },
-      {
-        "label": {
-                "en": "Sign out",
-                "fr": "Déconnexion"
-        },
-        "icon": "faSignOutAlt",
-        "position": "bottom",
-        "role": "sign-out"
-      }
-    ]
-  }
 }

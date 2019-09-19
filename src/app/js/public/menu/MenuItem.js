@@ -90,6 +90,7 @@ const MenuItem = ({
     hasGraph,
     graphDrawer,
     searchDrawer,
+    advancedDrawer,
     canBeSearched,
     role,
     onClick,
@@ -170,6 +171,18 @@ const MenuItem = ({
                         {label}
                     </div>
                 )
+            );
+        case 'advanced':
+            return (
+                <div
+                    onClick={onClick(config.role)}
+                    className={classnames('nav-item', styles.menuItem, {
+                        [styles.drawerActive]: advancedDrawer === 'open',
+                    })}
+                >
+                    {icon}
+                    {label}
+                </div>
             );
         case 'admin':
             return (
@@ -298,6 +311,7 @@ MenuItem.propTypes = {
     onClick: PropTypes.func.isRequired,
     graphDrawer: PropTypes.oneOf(['open', 'closing', 'closed']),
     searchDrawer: PropTypes.oneOf(['open', 'closing', 'closed']),
+    advancedDrawer: PropTypes.oneOf(['open', 'closing', 'closed']),
     role: PropTypes.oneOf(['admin', 'user', 'not logged']).isRequired,
     canBeSearched: PropTypes.bool.isRequired,
     hasGraph: PropTypes.bool.isRequired,

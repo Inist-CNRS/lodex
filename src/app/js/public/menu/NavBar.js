@@ -14,6 +14,7 @@ import Drawer from '../Drawer';
 import Search from '../search/Search';
 import AdvancedSearch from '../search/AdvancedSearch';
 import GraphSummary from '../graph/GraphSummary';
+import AdvancedPage from './AdvancedPage';
 import Favicon from '../Favicon';
 import MenuItem from './MenuItem';
 import stylesToClassname from '../../lib/stylesToClassName';
@@ -65,10 +66,16 @@ export class NavBar extends Component {
         searchDrawer: 'closed',
         advancedSearchDrawer: 'closed',
         graphDrawer: 'closed',
+        advancedDrawer: 'closed',
     };
 
     toggleSearch = () => {
-        const { searchDrawer, graphDrawer, advancedSearchDrawer } = this.state;
+        const {
+            searchDrawer,
+            graphDrawer,
+            advancedSearchDrawer,
+            advancedDrawer,
+        } = this.state;
 
         if (graphDrawer === 'open') {
             this.toggleGraph();
@@ -77,6 +84,10 @@ export class NavBar extends Component {
         if (advancedSearchDrawer === 'open') {
             this.toggleAdvancedSearch();
             return;
+        }
+
+        if (advancedDrawer === 'open') {
+            this.toggleAdvancedGraph();
         }
 
         if (searchDrawer === 'open') {
@@ -106,7 +117,12 @@ export class NavBar extends Component {
     };
 
     toggleGraph = () => {
-        const { graphDrawer, searchDrawer, advancedSearchDrawer } = this.state;
+        const {
+            graphDrawer,
+            searchDrawer,
+            advancedSearchDrawer,
+            advancedDrawer,
+        } = this.state;
 
         if (advancedSearchDrawer === 'open') {
             this.toggleAdvancedSearch();
@@ -119,6 +135,10 @@ export class NavBar extends Component {
 
         if (searchDrawer === 'open') {
             this.toggleSearch();
+        }
+
+        if (advancedDrawer === 'open') {
+            this.toggleAdvancedGraph();
         }
 
         if (graphDrawer === 'open') {
@@ -134,8 +154,51 @@ export class NavBar extends Component {
         this.setState({ graphDrawer: 'open' });
     };
 
+    toggleAdvancedGraph = () => {
+        const {
+            graphDrawer,
+            searchDrawer,
+            advancedSearchDrawer,
+            advancedDrawer,
+        } = this.state;
+
+        if (advancedSearchDrawer === 'open') {
+            this.toggleAdvancedSearch();
+            setTimeout(() => {
+                this.toggleSearch();
+                this.setState({ graphDrawer: 'open' });
+            }, ANIMATION_DURATION);
+            return;
+        }
+
+        if (searchDrawer === 'open') {
+            this.toggleSearch();
+        }
+
+        if (graphDrawer === 'open') {
+            this.toggleGraph();
+        }
+
+        if (advancedDrawer === 'open') {
+            this.setState({ advancedDrawer: 'closing' }, () => {
+                setTimeout(
+                    () => this.setState({ advancedDrawer: 'closed' }),
+                    ANIMATION_DURATION,
+                );
+            });
+            return;
+        }
+
+        this.setState({ advancedDrawer: 'open' });
+    };
+
     closeAll = () => {
-        const { searchDrawer, graphDrawer, advancedSearchDrawer } = this.state;
+        const {
+            searchDrawer,
+            graphDrawer,
+            advancedSearchDrawer,
+            advancedDrawer,
+        } = this.state;
 
         if (advancedSearchDrawer === 'open') {
             this.toggleAdvancedSearch();
@@ -150,6 +213,10 @@ export class NavBar extends Component {
 
         if (graphDrawer === 'open') {
             this.toggleGraph();
+        }
+
+        if (advancedDrawer === 'open') {
+            this.toggleAdvancedGraph();
         }
     };
 
@@ -170,6 +237,9 @@ export class NavBar extends Component {
             case 'sign-out':
                 logout();
                 break;
+            case 'advanced':
+                this.toggleAdvancedGraph();
+                break;
             default:
                 this.closeAll();
                 return;
@@ -183,6 +253,7 @@ export class NavBar extends Component {
             hasGraph,
             leftMenu,
             rightMenu,
+            advancedMenu,
             p: polyglot,
             hasFacetFields,
         } = this.props;
@@ -191,7 +262,12 @@ export class NavBar extends Component {
             return null;
         }
 
-        const { searchDrawer, graphDrawer, advancedSearchDrawer } = this.state;
+        const {
+            searchDrawer,
+            graphDrawer,
+            advancedSearchDrawer,
+            advancedDrawer,
+        } = this.state;
 
         return (
             <Fragment>
@@ -215,6 +291,7 @@ export class NavBar extends Component {
                                     onClick={this.handleMenuItemClick}
                                     graphDrawer={graphDrawer}
                                     searchDrawer={searchDrawer}
+                                    advancedDrawer={advancedDrawer}
                                 />
                             ))}
                         </div>
@@ -230,8 +307,30 @@ export class NavBar extends Component {
                                     polyglot={polyglot}
                                     graphDrawer={graphDrawer}
                                     searchDrawer={searchDrawer}
+                                    advancedDrawer={advancedDrawer}
                                 />
                             ))}
+                            {advancedMenu.length > 0 && (
+                                <MenuItem
+                                    key={'advanced'}
+                                    config={{
+                                        label: {
+                                            en: 'Advanced',
+                                            fr: 'Avancé',
+                                        },
+                                        icon: 'faCog',
+                                        role: 'advanced',
+                                    }}
+                                    role={role}
+                                    canBeSearched={canBeSearched}
+                                    hasGraph={hasGraph}
+                                    onClick={this.handleMenuItemClick}
+                                    polyglot={polyglot}
+                                    graphDrawer={graphDrawer}
+                                    searchDrawer={searchDrawer}
+                                    advancedDrawer={advancedDrawer}
+                                />
+                            )}
                         </div>
                     </div>
                 </nav>
@@ -263,6 +362,21 @@ export class NavBar extends Component {
                     animationDuration={ANIMATION_DURATION}
                 >
                     <GraphSummary closeDrawer={this.toggleGraph} />
+                </Drawer>
+                <Drawer
+                    status={advancedDrawer}
+                    onClose={this.toggleAdvancedGraphGraph}
+                    animationDuration={ANIMATION_DURATION}
+                >
+                    <AdvancedPage
+                        role={role}
+                        canBeSearched={canBeSearched}
+                        hasGraph={hasGraph}
+                        onClick={this.handleMenuItemClick}
+                        advancedMenu={advancedMenu}
+                        polyglot={polyglot}
+                        closeDrawer={this.handleMenuItemClick}
+                    />
                 </Drawer>
             </Fragment>
         );
