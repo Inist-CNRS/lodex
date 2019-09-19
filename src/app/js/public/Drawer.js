@@ -9,7 +9,7 @@ const styles = stylesToClassname(
     {
         drawer: {
             zIndex: 1001,
-            position: 'absolute',
+            position: 'fixed',
             top: '100vh',
             left: '0px',
             width: '100vw',
@@ -49,7 +49,7 @@ const styles = stylesToClassname(
         },
         mask: {
             zIndex: 1000,
-            position: 'absolute',
+            position: 'fixed',
             bottom: '0px',
             left: '0px',
             height: '0vh',
@@ -70,12 +70,12 @@ const styles = stylesToClassname(
 );
 
 const preventScroll = () => {
-    document.body.style['overflow'] = 'hidden';
+    document.body.style.overflow = 'hidden';
     document.body.style['-webkit-overflow-scrolling'] = 'touch';
 };
 
 const removePreventScroll = () => {
-    document.body.style['overflow'] = '';
+    document.body.style.overflow = '';
     document.body.style['-webkit-overflow-scrolling'] = '';
 };
 
