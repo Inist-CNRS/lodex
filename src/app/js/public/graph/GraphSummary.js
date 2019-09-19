@@ -13,6 +13,15 @@ import stylesToClassname from '../../lib/stylesToClassName';
 
 const styles = stylesToClassname(
     {
+        container: {
+            display: 'flex',
+            justifyContent: 'center',
+        },
+        links: {
+            display: 'flex',
+            justifyContent: 'center',
+            flexWrap: 'wrap',
+        },
         activeLink: {
             color: theme.orange.primary,
             fill: theme.orange.primary,
@@ -57,11 +66,6 @@ const styles = stylesToClassname(
         icon: {
             fontSize: '7em',
         },
-        container: {
-            display: 'flex',
-            flexWrap: 'wrap',
-            justifyContent: 'space-around',
-        },
         label: {
             width: '100%',
         },
@@ -70,31 +74,36 @@ const styles = stylesToClassname(
 );
 
 const PureGraphSummary = ({ graphFields, closeDrawer }) => (
-    <div className={classnames('graph-summary', styles.container)}>
-        {graphFields.map(field => {
-            const Icon = getIconComponent(field);
-            return (
-                <Link
-                    routeAware
-                    key={field.name}
-                    className={classnames(
-                        'graph-link',
-                        styles.link,
-                        styles.item,
-                    )}
-                    activeClassName={classnames('active', styles.activeLink)}
-                    to={`/graph/${field.name}`}
-                    onClick={closeDrawer}
-                >
-                    {Icon ? (
-                        <Icon className={styles.icon} />
-                    ) : (
-                        <MixedChartIcon className={styles.icon} />
-                    )}
-                    <div className={styles.label}>{field.label}</div>
-                </Link>
-            );
-        })}
+    <div className={styles.container}>
+        <div className={classnames('graph-summary', styles.links)}>
+            {graphFields.map(field => {
+                const Icon = getIconComponent(field);
+                return (
+                    <Link
+                        routeAware
+                        key={field.name}
+                        className={classnames(
+                            'graph-link',
+                            styles.link,
+                            styles.item,
+                        )}
+                        activeClassName={classnames(
+                            'active',
+                            styles.activeLink,
+                        )}
+                        to={`/graph/${field.name}`}
+                        onClick={closeDrawer}
+                    >
+                        {Icon ? (
+                            <Icon className={styles.icon} />
+                        ) : (
+                            <MixedChartIcon className={styles.icon} />
+                        )}
+                        <div className={styles.label}>{field.label}</div>
+                    </Link>
+                );
+            })}
+        </div>
     </div>
 );
 
