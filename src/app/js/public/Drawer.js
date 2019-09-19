@@ -17,7 +17,6 @@ const styles = stylesToClassname(
             marginBottom: '100px',
             overflowY: 'auto',
             backgroundColor: 'white',
-            borderTop: '1px solid #E3EAF2',
             '@media (min-width: 768px)': {
                 maxWidth: '750px',
                 left: 'calc(50% - (750px / 2))',
@@ -32,6 +31,7 @@ const styles = stylesToClassname(
             },
         },
         drawerOpen: {
+            borderTop: '1px solid #E3EAF2',
             boxShadow: '0 2px 1rem #777',
             height: 'calc(100vh - 10vh - 80px)', // Screen height - position from top - navbar height
             top: '10vh',
