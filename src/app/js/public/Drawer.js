@@ -1,58 +1,67 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import memoize from 'lodash.memoize';
 
 import stylesToClassname from '../lib/stylesToClassName';
 
-const DRAWER_WIDTH = 440; // px
-
 const styles = stylesToClassname(
     {
-        container: {
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            height: '100vh',
-            width: '100vw',
-            zIndex: 1000, // navbar is z-index 10000
-        },
-        closedContainer: {
-            pointerEvents: 'none',
-        },
-        openContainer: {
-            pointerEvents: 'auto',
-        },
         drawer: {
             zIndex: 1001,
-            position: 'relative',
+            position: 'absolute',
+            top: '100vh',
+            left: '0px',
+            width: '100vw',
             height: '100vh',
-            transitionTimingFunction: 'ease-in-out',
-            backgroundColor: 'white',
-            width: DRAWER_WIDTH,
+            marginBottom: '100px',
             overflowY: 'auto',
-            top: 0,
-            borderRight: '1px solid #E3EAF2',
+            backgroundColor: 'white',
+            '@media (min-width: 768px)': {
+                maxWidth: '750px',
+                left: 'calc(50% - (750px / 2))',
+            },
+            '@media (min-width: 992px)': {
+                maxWidth: '970px',
+                left: 'calc(50% - (970px / 2))',
+            },
+            '@media (min-width: 1200px)': {
+                maxWidth: '1170px',
+                left: 'calc(50% - (1170px / 2))',
+            },
         },
-        drawerBoxShadow: {
+        drawerOpen: {
+            borderTop: '1px solid #E3EAF2',
             boxShadow: '0 2px 1rem #777',
+            height: 'calc(100vh - 10vh - 80px)', // Screen height - position from top - navbar height
+            top: '10vh',
+        },
+        drawerClosing: {
+            height: 'calc(100vh - 10vh - 80px)', // Screen height - position from top - navbar height
+            top: '100vh',
+        },
+        drawerClosed: {
+            height: '0vh',
+            top: '100vh',
         },
         drawerDisabled: {
             filter: 'brightness(0.98)',
         },
         mask: {
-            position: 'absolute',
             zIndex: 1000,
-            top: 0,
-            left: 0,
-            height: '100vh',
-            width: `100vw`,
+            position: 'absolute',
+            bottom: '0px',
+            left: '0px',
+            height: '0vh',
+            width: '0vw',
             backgroundColor: 'black',
             opacity: '0',
             pointerEvents: 'none',
             transition: 'opacity 300ms ease-in-out',
         },
         maskOpen: {
+            height: '100vh',
+            width: '100vw',
             opacity: '.3',
             pointerEvents: 'auto',
         },
@@ -60,65 +69,68 @@ const styles = stylesToClassname(
     'drawer',
 );
 
-const drawerStyleFromProps = memoize(
-    ({ animationDuration, status, shift }) => ({
-        transition: `transform ${animationDuration}ms`,
-        transform:
-            status === 'open'
-                ? `translateX(${shift}px)`
-                : `translateX(-${DRAWER_WIDTH}px)`,
-    }),
-);
+const preventScroll = () => {
+    document.body.style['overflow'] = 'hidden';
+    document.body.style['-webkit-overflow-scrolling'] = 'touch';
+};
 
-const Drawer = ({
-    children,
-    status,
-    animationDuration,
-    onClose,
-    shift,
-    disabled,
-}) => (
-    <div
-        className={classnames(
-            'drawer-container',
-            styles.container,
+const removePreventScroll = () => {
+    document.body.style['overflow'] = '';
+    document.body.style['-webkit-overflow-scrolling'] = '';
+};
 
-            styles[
-                status === 'open' && !disabled
-                    ? 'openContainer'
-                    : 'closedContainer'
-            ],
-        )}
-    >
-        <div
-            className={classnames('drawer', styles.drawer, {
-                [styles.drawerBoxShadow]: status === 'open' && !disabled,
-                [styles.drawerDisabled]: disabled,
-            })}
-            style={drawerStyleFromProps({ animationDuration, status, shift })}
-        >
-            {status !== 'closed' && children}
-        </div>
-        <div
-            className={classnames('mask', styles.mask, {
-                [styles.maskOpen]: status === 'open' && !disabled,
-            })}
-            onClick={onClose}
-        />
-    </div>
-);
+const buildDrawerAnimationStyles = memoize(({ animationDuration }) => ({
+    transition: `top ${animationDuration}ms`,
+    transitionTimingFunction: 'ease-in-out',
+}));
+
+const Drawer = ({ children, status, animationDuration, onClose, disabled }) => {
+    const drawerStyle = buildDrawerAnimationStyles({
+        animationDuration,
+    });
+
+    useEffect(() => {
+        switch (status) {
+            case 'open':
+                preventScroll();
+                return;
+            default:
+                removePreventScroll();
+                return;
+        }
+    }, [status]);
+
+    return (
+        <>
+            <div
+                className={classnames('drawer', styles.drawer, {
+                    [styles.drawerOpen]: status === 'open' && !disabled,
+                    [styles.drawerClosed]: status === 'closed',
+                    [styles.drawerDisabled]: disabled,
+                })}
+                style={drawerStyle}
+            >
+                {status !== 'closed' && children}
+            </div>
+            <div
+                className={classnames('mask', styles.mask, {
+                    [styles.maskOpen]: status === 'open' && !disabled,
+                })}
+                onClick={onClose}
+            />
+        </>
+    );
+};
 
 Drawer.propTypes = {
     children: PropTypes.node.isRequired,
     status: PropTypes.oneOf(['open', 'closing', 'closed']).isRequired,
     onClose: PropTypes.func.isRequired,
     animationDuration: PropTypes.number.isRequired,
-    shift: PropTypes.number,
     disabled: PropTypes.bool,
 };
 
 Drawer.defaultProps = {
-    shift: 0,
     disabled: false,
 };
 

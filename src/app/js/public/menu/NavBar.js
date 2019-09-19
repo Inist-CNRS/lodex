@@ -24,11 +24,6 @@ config.autoAddCss = false;
 
 const styles = stylesToClassname(
     {
-        container: {
-            display: 'flex',
-            paddingLeft: 10,
-            paddingRight: 25,
-        },
         menu: {
             zIndex: 12000,
             position: 'fixed',
@@ -42,8 +37,12 @@ const styles = stylesToClassname(
             transition: 'filter 300ms ease-in-out', // -webkit-filter 300ms ease-in-out
             filter: 'brightness(1)',
         },
-        containerWithDrawer: {
+        menuWithDrawer: {
             filter: 'brightness(0.98)',
+        },
+        container: {
+            display: 'flex',
+            padding: '0px 10px',
         },
         icon: {
             maxHeight: 'fit-content',
@@ -196,14 +195,13 @@ export class NavBar extends Component {
 
         return (
             <Fragment>
-                <div className={classnames(styles.menu)}>
-                    <nav
-                        className={classnames('container', styles.container, {
-                            [styles.menuWithDrawer]:
-                                searchDrawer === 'open' ||
-                                graphDrawer === 'open',
-                        })}
-                    >
+                <nav
+                    className={classnames(styles.menu, {
+                        [styles.menuWithDrawer]:
+                            searchDrawer === 'open' || graphDrawer === 'open',
+                    })}
+                >
+                    <div className={classnames('container', styles.container)}>
                         <Favicon className={styles.icon} />
                         <div className={styles.first}>
                             {topMenu.map((config, index) => (
@@ -235,15 +233,8 @@ export class NavBar extends Component {
                                 />
                             ))}
                         </div>
-                    </nav>
-                </div>
-                <Drawer
-                    status={graphDrawer}
-                    onClose={this.toggleGraph}
-                    animationDuration={ANIMATION_DURATION}
-                >
-                    <GraphSummary closeDrawer={this.toggleGraph} />
-                </Drawer>
+                    </div>
+                </nav>
                 {hasFacetFields && (
                     <Drawer
                         status={advancedSearchDrawer}
@@ -265,6 +256,13 @@ export class NavBar extends Component {
                         showAdvancedSearch={hasFacetFields}
                         toggleAdvancedSearch={this.toggleAdvancedSearch}
                     />
+                </Drawer>
+                <Drawer
+                    status={graphDrawer}
+                    onClose={this.toggleGraph}
+                    animationDuration={ANIMATION_DURATION}
+                >
+                    <GraphSummary closeDrawer={this.toggleGraph} />
                 </Drawer>
             </Fragment>
         );
