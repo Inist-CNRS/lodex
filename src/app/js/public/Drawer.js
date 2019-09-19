@@ -20,12 +20,15 @@ const styles = stylesToClassname(
         },
         drawerOpen: {
             boxShadow: '0 2px 1rem #777',
+            height: '100vh',
             top: '10vh',
         },
         drawerClosing: {
+            height: '100vh',
             top: '100vh',
         },
         drawerClosed: {
+            height: '0vh',
             top: '100vh',
         },
         drawerDisabled: {
