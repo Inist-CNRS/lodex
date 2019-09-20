@@ -61,7 +61,7 @@ const styles = stylesToClassname(
     'nav-bar',
 );
 
-const NavBar = ({
+export const NavBar = ({
     logout,
     role,
     canBeSearched,
