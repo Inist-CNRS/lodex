@@ -7,7 +7,8 @@ export const rightMenu = jsonConfig.front.menu.filter(
     ({ position }) => position === 'right',
 );
 export const advancedMenu = jsonConfig.front.menu.filter(
-    ({ position }) => position === 'advanced',
+    ({ position }) =>
+        position === 'advanced' || position === 'top' || position === 'bottom',
 );
 
 export const customRoutes = jsonConfig.front.menu
