@@ -66,11 +66,16 @@ const NavBar = ({
     role,
     canBeSearched,
     hasGraph,
-    topMenu,
-    bottomMenu,
+    leftMenu,
+    rightMenu,
+    advancedMenu,
     p: polyglot,
     hasFacetFields,
 }) => {
+    if (!leftMenu || !rightMenu) {
+        return null;
+    }
+
     const [searchDrawer, toggleSearchDrawer, closeSearchDrawer] = useDrawer(
         DRAWER_CLOSED,
     );
@@ -145,7 +150,7 @@ const NavBar = ({
                 <div className={classnames('container', styles.container)}>
                     <Favicon className={styles.icon} />
                     <div className={styles.first}>
-                        {topMenu.map((config, index) => (
+                        {leftMenu.map((config, index) => (
                             <MenuItem
                                 key={index}
                                 config={config}
@@ -156,11 +161,12 @@ const NavBar = ({
                                 onClick={handleMenuItemClick}
                                 graphDrawer={graphDrawer}
                                 searchDrawer={searchDrawer}
+                                advancedDrawer={advancedMenuDrawer}
                             />
                         ))}
                     </div>
                     <div className={styles.last}>
-                        {bottomMenu.map((config, index) => (
+                        {rightMenu.map((config, index) => (
                             <MenuItem
                                 key={index}
                                 config={config}
@@ -171,9 +177,31 @@ const NavBar = ({
                                 polyglot={polyglot}
                                 graphDrawer={graphDrawer}
                                 searchDrawer={searchDrawer}
+                                advancedDrawer={advancedMenuDrawer}
                             />
                         ))}
                     </div>
+                    {advancedMenu.length > 0 && (
+                        <MenuItem
+                            key="advanced"
+                            config={{
+                                label: {
+                                    en: 'Advanced',
+                                    fr: 'Avancé',
+                                },
+                                icon: 'faCog',
+                                role: 'advanced',
+                            }}
+                            role={role}
+                            canBeSearched={canBeSearched}
+                            hasGraph={hasGraph}
+                            onClick={this.handleMenuItemClick}
+                            polyglot={polyglot}
+                            graphDrawer={graphDrawer}
+                            searchDrawer={searchDrawer}
+                            advancedDrawer={advancedMenuDrawer}
+                        />
+                    )}
                 </div>
             </nav>
             <Drawer status={searchDrawer} onClose={toggleSearch}>
