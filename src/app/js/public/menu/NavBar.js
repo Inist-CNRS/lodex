@@ -48,6 +48,9 @@ const styles = stylesToClassname(
         icon: {
             maxHeight: 'fit-content',
             margin: '10px 10px auto',
+            '@media (max-width: 360px)': {
+                display: 'none',
+            },
         },
         first: {
             display: 'flex',
@@ -391,6 +394,7 @@ const menuPropTypes = PropTypes.arrayOf(
             'graphs',
             'search',
             'admin',
+            'share_export',
             'sign-in',
             'sign-out',
             'custom',
