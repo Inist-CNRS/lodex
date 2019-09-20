@@ -1,4 +1,4 @@
-import React, { Fragment, Component } from 'react';
+import React, { Fragment } from 'react';
 import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
 import { config } from '@fortawesome/fontawesome-svg-core';
@@ -10,7 +10,7 @@ import { fromUser, fromFields } from '../../sharedSelectors';
 import { fromMenu } from '../selectors';
 import { logout } from '../../user';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
-import Drawer from '../Drawer';
+import Drawer, { useDrawer, DRAWER_CLOSED } from '../Drawer';
 import Search from '../search/Search';
 import GraphSummary from '../graph/GraphSummary';
 import AdvancedPage from './AdvancedPage';
@@ -63,246 +63,147 @@ const styles = stylesToClassname(
     'nav-bar',
 );
 
-export class NavBar extends Component {
-    state = {
-        searchDrawer: 'closed',
-        graphDrawer: 'closed',
-        advancedDrawer: 'closed',
+const NavBar = ({
+    logout,
+    role,
+    canBeSearched,
+    hasGraph,
+    topMenu,
+    bottomMenu,
+    p: polyglot,
+    hasFacetFields,
+}) => {
+    const [searchDrawer, toggleSearchDrawer, closeSearchDrawer] = useDrawer(
+        DRAWER_CLOSED,
+        ANIMATION_DURATION,
+    );
+    const [graphDrawer, toggleGraphDrawer, closeGraphDrawer] = useDrawer(
+        DRAWER_CLOSED,
+        ANIMATION_DURATION,
+    );
+    const [
+        advancedMenuDrawer,
+        toggleAdvancedMenuDrawer,
+        closeAdvancedMenuDrawer,
+    ] = useDrawer(DRAWER_CLOSED, ANIMATION_DURATION);
+
+    const toggleSearch = () => {
+        closeAdvancedMenuDrawer();
+        closeGraphDrawer();
+
+        toggleSearchDrawer();
     };
 
-    toggleSearch = () => {
-        const { searchDrawer, graphDrawer, advancedDrawer } = this.state;
+    const toggleGraph = () => {
+        closeAdvancedMenuDrawer();
+        closeSearchDrawer();
 
-        if (graphDrawer === 'open') {
-            this.toggleGraph();
-        }
-
-        if (advancedDrawer === 'open') {
-            this.toggleAdvancedMenu();
-        }
-
-        if (searchDrawer === 'open') {
-            this.setState({ searchDrawer: 'closing' }, () => {
-                setTimeout(
-                    () => this.setState({ searchDrawer: 'closed' }),
-                    ANIMATION_DURATION,
-                );
-            });
-            return;
-        }
-
-        this.setState({ searchDrawer: 'open' });
+        toggleGraphDrawer();
     };
 
-    toggleGraph = () => {
-        const { graphDrawer, searchDrawer, advancedDrawer } = this.state;
+    const toggleAdvancedMenu = () => {
+        closeSearchDrawer();
+        closeGraphDrawer();
 
-        if (searchDrawer === 'open') {
-            this.toggleSearch();
-        }
-
-        if (advancedDrawer === 'open') {
-            this.toggleAdvancedMenu();
-        }
-
-        if (graphDrawer === 'open') {
-            this.setState({ graphDrawer: 'closing' }, () => {
-                setTimeout(
-                    () => this.setState({ graphDrawer: 'closed' }),
-                    ANIMATION_DURATION,
-                );
-            });
-            return;
-        }
-
-        this.setState({ graphDrawer: 'open' });
+        toggleAdvancedMenuDrawer();
     };
 
-    toggleAdvancedMenu = () => {
-        const { graphDrawer, searchDrawer, advancedDrawer } = this.state;
-
-        if (searchDrawer === 'open') {
-            this.toggleSearch();
-        }
-
-        if (graphDrawer === 'open') {
-            this.toggleGraph();
-        }
-
-        if (advancedDrawer === 'open') {
-            this.setState({ advancedDrawer: 'closing' }, () => {
-                setTimeout(
-                    () => this.setState({ advancedDrawer: 'closed' }),
-                    ANIMATION_DURATION,
-                );
-            });
-            return;
-        }
-
-        this.setState({ advancedDrawer: 'open' });
+    const closeAll = () => {
+        closeAdvancedMenuDrawer();
+        closeSearchDrawer();
+        closeGraphDrawer();
     };
 
-    closeAll = () => {
-        const { searchDrawer, graphDrawer, advancedDrawer } = this.state;
-
-        if (searchDrawer === 'open') {
-            this.toggleSearch();
-        }
-
-        if (graphDrawer === 'open') {
-            this.toggleGraph();
-        }
-
-        if (advancedDrawer === 'open') {
-            this.toggleAdvancedMenu();
-        }
-    };
-
-    handleMenuItemClick = (role, supressEvent = false) => evt => {
+    const handleMenuItemClick = (role, supressEvent = false) => evt => {
         if (supressEvent) {
             evt.preventDefault();
         }
 
-        const { logout } = this.props;
-
         switch (role) {
             case 'graphs':
-                this.toggleGraph();
+                toggleGraph();
                 break;
             case 'search':
-                this.toggleSearch();
+                toggleSearch();
                 break;
             case 'sign-out':
                 logout();
                 break;
             case 'advanced':
-                this.toggleAdvancedMenu();
+                toggleAdvancedMenu();
                 break;
             default:
-                this.closeAll();
+                closeAll();
                 return;
         }
     };
 
-    render() {
-        const {
-            role,
-            canBeSearched,
-            hasGraph,
-            leftMenu,
-            rightMenu,
-            advancedMenu,
-            p: polyglot,
-            hasFacetFields,
-        } = this.props;
-
-        if (!leftMenu || !rightMenu) {
-            return null;
-        }
-
-        const { searchDrawer, graphDrawer, advancedDrawer } = this.state;
-
-        return (
-            <Fragment>
-                <nav
-                    className={classnames(styles.menu, {
-                        [styles.menuWithDrawer]:
-                            searchDrawer === 'open' || graphDrawer === 'open',
-                    })}
-                >
-                    <div className={classnames('container', styles.container)}>
-                        <Favicon className={styles.icon} />
-                        <div className={styles.first}>
-                            {leftMenu.map((config, index) => (
-                                <MenuItem
-                                    key={index}
-                                    config={config}
-                                    role={role}
-                                    canBeSearched={canBeSearched}
-                                    hasGraph={hasGraph}
-                                    polyglot={polyglot}
-                                    onClick={this.handleMenuItemClick}
-                                    graphDrawer={graphDrawer}
-                                    searchDrawer={searchDrawer}
-                                    advancedDrawer={advancedDrawer}
-                                />
-                            ))}
-                        </div>
-                        <div className={styles.last}>
-                            {rightMenu.map((config, index) => (
-                                <MenuItem
-                                    key={index}
-                                    config={config}
-                                    role={role}
-                                    canBeSearched={canBeSearched}
-                                    hasGraph={hasGraph}
-                                    onClick={this.handleMenuItemClick}
-                                    polyglot={polyglot}
-                                    graphDrawer={graphDrawer}
-                                    searchDrawer={searchDrawer}
-                                    advancedDrawer={advancedDrawer}
-                                />
-                            ))}
-                            {advancedMenu.length > 0 && (
-                                <MenuItem
-                                    key={'advanced'}
-                                    config={{
-                                        label: {
-                                            en: 'Advanced',
-                                            fr: 'Avancé',
-                                        },
-                                        icon: 'faCog',
-                                        role: 'advanced',
-                                    }}
-                                    role={role}
-                                    canBeSearched={canBeSearched}
-                                    hasGraph={hasGraph}
-                                    onClick={this.handleMenuItemClick}
-                                    polyglot={polyglot}
-                                    graphDrawer={graphDrawer}
-                                    searchDrawer={searchDrawer}
-                                    advancedDrawer={advancedDrawer}
-                                />
-                            )}
-                        </div>
+    return (
+        <Fragment>
+            <nav
+                className={classnames(styles.menu, {
+                    [styles.menuWithDrawer]:
+                        searchDrawer === 'open' || graphDrawer === 'open',
+                })}
+            >
+                <div className={classnames('container', styles.container)}>
+                    <Favicon className={styles.icon} />
+                    <div className={styles.first}>
+                        {topMenu.map((config, index) => (
+                            <MenuItem
+                                key={index}
+                                config={config}
+                                role={role}
+                                canBeSearched={canBeSearched}
+                                hasGraph={hasGraph}
+                                polyglot={polyglot}
+                                onClick={handleMenuItemClick}
+                                graphDrawer={graphDrawer}
+                                searchDrawer={searchDrawer}
+                            />
+                        ))}
                     </div>
-                </nav>
-                <Drawer
-                    status={searchDrawer}
-                    onClose={this.toggleSearch}
-                    animationDuration={ANIMATION_DURATION}
-                >
-                    <Search
-                        closeDrawer={this.toggleSearch}
-                        showAdvancedSearch={hasFacetFields}
-                    />
-                </Drawer>
-                <Drawer
-                    status={graphDrawer}
-                    onClose={this.toggleGraph}
-                    animationDuration={ANIMATION_DURATION}
-                >
-                    <GraphSummary closeDrawer={this.toggleGraph} />
-                </Drawer>
-                <Drawer
-                    status={advancedDrawer}
-                    onClose={this.toggleAdvancedMenu}
-                    animationDuration={ANIMATION_DURATION}
-                >
-                    <AdvancedPage
-                        role={role}
-                        canBeSearched={canBeSearched}
-                        hasGraph={hasGraph}
-                        onClick={this.handleMenuItemClick}
-                        advancedMenu={advancedMenu}
-                        polyglot={polyglot}
-                        closeDrawer={this.handleMenuItemClick}
-                    />
-                </Drawer>
-            </Fragment>
-        );
-    }
-}
+                    <div className={styles.last}>
+                        {bottomMenu.map((config, index) => (
+                            <MenuItem
+                                key={index}
+                                config={config}
+                                role={role}
+                                canBeSearched={canBeSearched}
+                                hasGraph={hasGraph}
+                                onClick={handleMenuItemClick}
+                                polyglot={polyglot}
+                                graphDrawer={graphDrawer}
+                                searchDrawer={searchDrawer}
+                            />
+                        ))}
+                    </div>
+                </div>
+            </nav>
+            <Drawer
+                status={searchDrawer}
+                onClose={toggleSearch}
+                animationDuration={ANIMATION_DURATION}
+            >
+                <Search showAdvancedSearch={hasFacetFields} />
+            </Drawer>
+            <Drawer
+                status={graphDrawer}
+                onClose={toggleGraph}
+                animationDuration={ANIMATION_DURATION}
+            >
+                <GraphSummary />
+            </Drawer>
+            <Drawer
+                status={advancedMenuDrawer}
+                onClose={toggleAdvancedMenu}
+                animationDuration={ANIMATION_DURATION}
+            >
+                <AdvancedPage />
+            </Drawer>
+        </Fragment>
+    );
+};
 
 const menuPropTypes = PropTypes.arrayOf(
     PropTypes.shape({
