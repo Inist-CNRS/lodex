@@ -141,7 +141,7 @@ export class NavBar extends Component {
         }
 
         if (advancedDrawer === 'open') {
-            this.toggleAdvancedGraph();
+            this.toggleAdvancedMenu();
         }
 
         if (graphDrawer === 'open') {
@@ -157,7 +157,7 @@ export class NavBar extends Component {
         this.setState({ graphDrawer: 'open' });
     };
 
-    toggleAdvancedGraph = () => {
+    toggleAdvancedMenu = () => {
         const {
             graphDrawer,
             searchDrawer,
@@ -219,7 +219,7 @@ export class NavBar extends Component {
         }
 
         if (advancedDrawer === 'open') {
-            this.toggleAdvancedGraph();
+            this.toggleAdvancedMenu();
         }
     };
 
@@ -241,7 +241,7 @@ export class NavBar extends Component {
                 logout();
                 break;
             case 'advanced':
-                this.toggleAdvancedGraph();
+                this.toggleAdvancedMenu();
                 break;
             default:
                 this.closeAll();
@@ -368,7 +368,7 @@ export class NavBar extends Component {
                 </Drawer>
                 <Drawer
                     status={advancedDrawer}
-                    onClose={this.toggleAdvancedGraphGraph}
+                    onClose={this.toggleAdvancedMenu}
                     animationDuration={ANIMATION_DURATION}
                 >
                     <AdvancedPage
