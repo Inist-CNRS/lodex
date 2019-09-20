@@ -1,9 +1,50 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import memoize from 'lodash.memoize';
 
 import stylesToClassname from '../lib/stylesToClassName';
+
+export const DRAWER_OPEN = 'open';
+export const DRAWER_CLOSING = 'closing';
+export const DRAWER_CLOSED = 'closed';
+
+export const useDrawer = (
+    initialPosition = DRAWER_CLOSED,
+    animationDuration = 300,
+) => {
+    if (initialPosition !== DRAWER_OPEN && initialPosition !== DRAWER_CLOSED) {
+        throw new Error(
+            `Error in useDrawer hook: the initial position should be ${DRAWER_OPEN} or ${DRAWER_CLOSED}`,
+        );
+    }
+
+    const [position, setPosition] = useState(initialPosition);
+
+    const open = () => {
+        setPosition(DRAWER_OPEN);
+    };
+
+    const close = () => {
+        if (position !== DRAWER_OPEN) {
+            return;
+        }
+        setPosition(DRAWER_CLOSING);
+        setTimeout(() => {
+            setPosition(DRAWER_CLOSED);
+        }, animationDuration);
+    };
+
+    const toggle = () => {
+        if (position == DRAWER_OPEN) {
+            close();
+            return;
+        }
+        open();
+    };
+
+    return [position, toggle, close, open];
+};
 
 const styles = stylesToClassname(
     {
@@ -104,17 +145,18 @@ const Drawer = ({ children, status, animationDuration, onClose, disabled }) => {
         <>
             <div
                 className={classnames('drawer', styles.drawer, {
-                    [styles.drawerOpen]: status === 'open' && !disabled,
-                    [styles.drawerClosed]: status === 'closed',
+                    [styles.drawerOpen]: status === DRAWER_OPEN && !disabled,
+                    [styles.drawerClosed]: status === DRAWER_CLOSED,
                     [styles.drawerDisabled]: disabled,
                 })}
                 style={drawerStyle}
             >
-                {status !== 'closed' && children}
+                {status !== DRAWER_CLOSED &&
+                    React.cloneElement(children, { closeDrawer: onClose })}
             </div>
             <div
                 className={classnames('mask', styles.mask, {
-                    [styles.maskOpen]: status === 'open' && !disabled,
+                    [styles.maskOpen]: status === DRAWER_OPEN && !disabled,
                 })}
                 onClick={onClose}
             />
@@ -124,7 +166,8 @@ const Drawer = ({ children, status, animationDuration, onClose, disabled }) => {
 
 Drawer.propTypes = {
     children: PropTypes.node.isRequired,
-    status: PropTypes.oneOf(['open', 'closing', 'closed']).isRequired,
+    status: PropTypes.oneOf([DRAWER_OPEN, DRAWER_CLOSING, DRAWER_CLOSED])
+        .isRequired,
     onClose: PropTypes.func.isRequired,
     animationDuration: PropTypes.number.isRequired,
     disabled: PropTypes.bool,
