@@ -17,11 +17,12 @@ export default handleActions(
     {
         [LOAD_MENU_SUCCESS]: (
             state,
-            { payload: { topMenu, bottomMenu, customRoutes } },
+            { payload: { leftMenu, rightMenu, advancedMenu, customRoutes } },
         ) => ({
             ...state,
-            topMenu,
-            bottomMenu,
+            leftMenu,
+            rightMenu,
+            advancedMenu,
             customRoutes,
             error: null,
         }),
@@ -35,13 +36,15 @@ export default handleActions(
 
 export const hasMenu = state => state;
 
-const getTopMenu = state => state.topMenu;
-const getBottomMenu = state => state.bottomMenu;
+const getLeftMenu = state => state.leftMenu;
+const getRightMenu = state => state.rightMenu;
+const getAdvancedMenu = state => state.advancedMenu;
 const getCustomRoutes = state => state.customRoutes;
 
 export const fromMenu = {
     hasMenu,
-    getTopMenu,
-    getBottomMenu,
+    getLeftMenu,
+    getRightMenu,
+    getAdvancedMenu,
     getCustomRoutes,
 };

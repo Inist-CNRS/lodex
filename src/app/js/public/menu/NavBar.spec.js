@@ -12,8 +12,9 @@ describe('NavBar', () => {
         graphFields: [],
         role: 'not logged',
         logout: jest.fn(),
-        topMenu: ['menu1', 'menu2'],
-        bottomMenu: ['menu3', 'menu4'],
+        leftMenu: ['menu1', 'menu2'],
+        rightMenu: ['menu3', 'menu4'],
+        advancedMenu: ['menu5'],
     };
 
     beforeEach(() => StyleSheetTestUtils.suppressStyleInjection());
@@ -22,8 +23,18 @@ describe('NavBar', () => {
         const wrapper = shallow(<NavBar {...defaultProps} />);
 
         const items = wrapper.find(MenuItem);
-        expect(items).toHaveLength(4);
-        const expectedMenu = ['menu1', 'menu2', 'menu3', 'menu4'];
+        expect(items).toHaveLength(5);
+        const expectedMenu = [
+            'menu1',
+            'menu2',
+            'menu3',
+            'menu4',
+            {
+                icon: 'faCog',
+                label: { en: 'Advanced', fr: 'Avancé' },
+                role: 'advanced',
+            },
+        ];
         items.forEach((item, index) => {
             expect(item.prop('config')).toEqual(expectedMenu[index]);
         });
