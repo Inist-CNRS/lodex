@@ -18,8 +18,6 @@ import Favicon from '../Favicon';
 import MenuItem from './MenuItem';
 import stylesToClassname from '../../lib/stylesToClassName';
 
-const ANIMATION_DURATION = 300; // ms
-
 config.autoAddCss = false;
 
 const styles = stylesToClassname(
@@ -75,11 +73,9 @@ const NavBar = ({
 }) => {
     const [searchDrawer, toggleSearchDrawer, closeSearchDrawer] = useDrawer(
         DRAWER_CLOSED,
-        ANIMATION_DURATION,
     );
     const [graphDrawer, toggleGraphDrawer, closeGraphDrawer] = useDrawer(
         DRAWER_CLOSED,
-        ANIMATION_DURATION,
     );
     const [
         advancedMenuDrawer,
@@ -180,18 +176,10 @@ const NavBar = ({
                     </div>
                 </div>
             </nav>
-            <Drawer
-                status={searchDrawer}
-                onClose={toggleSearch}
-                animationDuration={ANIMATION_DURATION}
-            >
+            <Drawer status={searchDrawer} onClose={toggleSearch}>
                 <Search showAdvancedSearch={hasFacetFields} />
             </Drawer>
-            <Drawer
-                status={graphDrawer}
-                onClose={toggleGraph}
-                animationDuration={ANIMATION_DURATION}
-            >
+            <Drawer status={graphDrawer} onClose={toggleGraph}>
                 <GraphSummary />
             </Drawer>
             <Drawer

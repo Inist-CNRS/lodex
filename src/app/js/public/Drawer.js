@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import memoize from 'lodash.memoize';
 
 import stylesToClassname from '../lib/stylesToClassName';
+
+export const ANIMATION_DURATION = 300; // ms
 
 export const DRAWER_OPEN = 'open';
 export const DRAWER_CLOSING = 'closing';
@@ -11,7 +12,7 @@ export const DRAWER_CLOSED = 'closed';
 
 export const useDrawer = (
     initialPosition = DRAWER_CLOSED,
-    animationDuration = 300,
+    animationDuration = ANIMATION_DURATION,
 ) => {
     if (initialPosition !== DRAWER_OPEN && initialPosition !== DRAWER_CLOSED) {
         throw new Error(
@@ -58,6 +59,7 @@ const styles = stylesToClassname(
             marginBottom: '100px',
             overflowY: 'auto',
             backgroundColor: 'white',
+            transition: `top 300ms ease-in-out`,
             '@media (min-width: 768px)': {
                 maxWidth: '750px',
                 left: 'calc(50% - (750px / 2))',
@@ -98,7 +100,7 @@ const styles = stylesToClassname(
             backgroundColor: 'black',
             opacity: '0',
             pointerEvents: 'none',
-            transition: 'opacity 300ms ease-in-out',
+            transition: `opacity ${ANIMATION_DURATION}ms ease-in-out`,
         },
         maskOpen: {
             height: '100vh',
@@ -120,16 +122,7 @@ const removePreventScroll = () => {
     document.body.style['-webkit-overflow-scrolling'] = '';
 };
 
-const buildDrawerAnimationStyles = memoize(({ animationDuration }) => ({
-    transition: `top ${animationDuration}ms`,
-    transitionTimingFunction: 'ease-in-out',
-}));
-
-const Drawer = ({ children, status, animationDuration, onClose, disabled }) => {
-    const drawerStyle = buildDrawerAnimationStyles({
-        animationDuration,
-    });
-
+const Drawer = ({ children, status, onClose, disabled }) => {
     useEffect(() => {
         switch (status) {
             case 'open':
@@ -149,7 +142,6 @@ const Drawer = ({ children, status, animationDuration, onClose, disabled }) => {
                     [styles.drawerClosed]: status === DRAWER_CLOSED,
                     [styles.drawerDisabled]: disabled,
                 })}
-                style={drawerStyle}
             >
                 {status !== DRAWER_CLOSED &&
                     React.cloneElement(children, { closeDrawer: onClose })}
@@ -169,13 +161,11 @@ Drawer.propTypes = {
     status: PropTypes.oneOf([DRAWER_OPEN, DRAWER_CLOSING, DRAWER_CLOSED])
         .isRequired,
     onClose: PropTypes.func.isRequired,
-    animationDuration: PropTypes.number.isRequired,
     disabled: PropTypes.bool,
 };
 
 Drawer.defaultProps = {
     disabled: false,
-    animationDuration: 300,
 };
 
 export default Drawer;
