@@ -46,7 +46,7 @@ const styles = stylesToClassname(
             height: 75,
             padding: 10,
             display: 'flex',
-            flexDirection: 'column',
+            flexDirection: 'row',
             textAlign: 'center',
             color: theme.green.primary,
             cursor: 'pointer',
