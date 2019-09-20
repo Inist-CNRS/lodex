@@ -40,6 +40,7 @@ const getLeftMenu = state => state.leftMenu;
 const getRightMenu = state => state.rightMenu;
 const getAdvancedMenu = state => state.advancedMenu;
 const getCustomRoutes = state => state.customRoutes;
+const getAdvancedMenuButton = state => state.advancedMenuButton;
 
 export const fromMenu = {
     hasMenu,
@@ -47,4 +48,5 @@ export const fromMenu = {
     getRightMenu,
     getAdvancedMenu,
     getCustomRoutes,
+    getAdvancedMenuButton,
 };
