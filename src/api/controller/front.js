@@ -26,7 +26,13 @@ import Routes from '../../app/js/public/Routes';
 import translations from '../../app/translations';
 import config from '../../../config.json';
 import getLocale from '../../common/getLocale';
-import { leftMenu, rightMenu, advancedMenu, customRoutes } from './api/menu';
+import {
+    leftMenu,
+    rightMenu,
+    advancedMenu,
+    advancedMenuButton,
+    customRoutes,
+} from './api/menu';
 import customTheme from '../../app/js/public/customTheme';
 
 import { getPublication } from './api/publication';
@@ -65,7 +71,14 @@ const getDefaultInitialState = (token, cookie, locale) => ({
         token,
         cookie,
     },
-    menu: { leftMenu, rightMenu, advancedMenu, customRoutes, error: null },
+    menu: {
+        leftMenu,
+        rightMenu,
+        advancedMenu,
+        advancedMenuButton,
+        customRoutes,
+        error: null,
+    },
 });
 
 const getInitialState = async (token, cookie, locale, ctx) => {
