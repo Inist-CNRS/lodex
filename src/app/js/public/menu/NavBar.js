@@ -69,6 +69,7 @@ const NavBar = ({
     leftMenu,
     rightMenu,
     advancedMenu,
+    advancedMenuButton,
     p: polyglot,
     hasFacetFields,
 }) => {
@@ -184,18 +185,11 @@ const NavBar = ({
                     {advancedMenu.length > 0 && (
                         <MenuItem
                             key="advanced"
-                            config={{
-                                label: {
-                                    en: 'Advanced',
-                                    fr: 'Avancé',
-                                },
-                                icon: 'faCog',
-                                role: 'advanced',
-                            }}
+                            config={{ ...advancedMenuButton, role: 'advanced' }}
                             role={role}
                             canBeSearched={canBeSearched}
                             hasGraph={hasGraph}
-                            onClick={this.handleMenuItemClick}
+                            onClick={handleMenuItemClick}
                             polyglot={polyglot}
                             graphDrawer={graphDrawer}
                             searchDrawer={searchDrawer}
@@ -249,6 +243,13 @@ NavBar.propTypes = {
     topMenu: menuPropTypes,
     bottomMenu: menuPropTypes,
     advancedMenu: menuPropTypes,
+    advancedMenuButton: PropTypes.shape({
+        label: PropTypes.shape({
+            en: PropTypes.string.isRequired,
+            fr: PropTypes.string.isRequired,
+        }).isRequired,
+        icon: PropTypes.string.isRequired,
+    }),
     hasFacetFields: PropTypes.bool.isRequired,
 };
 
@@ -259,6 +260,7 @@ const mapStateToProps = state => ({
     leftMenu: fromMenu.getLeftMenu(state),
     rightMenu: fromMenu.getRightMenu(state),
     advancedMenu: fromMenu.getAdvancedMenu(state),
+    advancedMenuButton: fromMenu.getAdvancedMenuButton(state),
     hasFacetFields: fromFields.hasFacetFields(state),
 });
 
