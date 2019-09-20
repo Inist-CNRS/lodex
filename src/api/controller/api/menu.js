@@ -15,11 +15,14 @@ export const customRoutes = jsonConfig.front.menu
     .filter(({ role }) => role === 'custom')
     .map(({ link }) => link);
 
+export const advancedMenuButton = jsonConfig.front.advancedMenuButton;
+
 export default async ctx => {
     ctx.body = {
         leftMenu,
         rightMenu,
         advancedMenu,
+        advancedMenuButton,
         customRoutes,
     };
 };

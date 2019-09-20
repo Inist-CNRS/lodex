@@ -21,6 +21,7 @@ const styles = stylesToClassname(
             display: 'flex',
             justifyContent: 'center',
             flexWrap: 'wrap',
+            margin: 20,
         },
         activeLink: {
             color: theme.orange.primary,
@@ -52,9 +53,9 @@ const styles = stylesToClassname(
         },
         item: {
             display: 'flex',
-            width: 190,
-            height: 190,
-            margin: 10,
+            width: 130,
+            height: 130,
+            margin: 5,
             flexDirection: 'column',
             textAlign: 'center',
             alignItems: 'center',
@@ -62,6 +63,16 @@ const styles = stylesToClassname(
             justifyContent: 'center',
             userSelect: 'none',
             textTransform: 'capitalize',
+            '@media (min-width: 768px)': {
+                width: 160,
+                height: 160,
+                margin: 5,
+            },
+            '@media (min-width: 992px)': {
+                width: 190,
+                height: 190,
+                margin: 10,
+            },
         },
         icon: {
             fontSize: '7em',

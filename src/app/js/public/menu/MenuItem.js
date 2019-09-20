@@ -298,6 +298,7 @@ MenuItem.propTypes = {
             'sign-in',
             'sign-out',
             'custom',
+            'share_export',
         ]),
         label: PropTypes.shape({
             en: PropTypes.string.isRequired,

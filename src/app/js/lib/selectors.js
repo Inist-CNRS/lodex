@@ -3,8 +3,10 @@ import { createSelector } from 'reselect';
 export const getProps = (state, props) => props;
 
 export const createGlobalSelector = (getLocalState, selector) =>
-    createSelector(getLocalState, getProps, (localState, props) =>
-        selector(localState, props),
+    createSelector(
+        getLocalState,
+        getProps,
+        (localState, props) => selector(localState, props),
     );
 
 export const createGlobalSelectors = (getLocalState, selectors) =>

@@ -1,15 +1,57 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import memoize from 'lodash.memoize';
 
 import stylesToClassname from '../lib/stylesToClassName';
+
+export const ANIMATION_DURATION = 300; // ms
+
+export const DRAWER_OPEN = 'open';
+export const DRAWER_CLOSING = 'closing';
+export const DRAWER_CLOSED = 'closed';
+
+export const useDrawer = (
+    initialPosition = DRAWER_CLOSED,
+    animationDuration = ANIMATION_DURATION,
+) => {
+    if (initialPosition !== DRAWER_OPEN && initialPosition !== DRAWER_CLOSED) {
+        throw new Error(
+            `Error in useDrawer hook: the initial position should be ${DRAWER_OPEN} or ${DRAWER_CLOSED}`,
+        );
+    }
+
+    const [position, setPosition] = useState(initialPosition);
+
+    const open = () => {
+        setPosition(DRAWER_OPEN);
+    };
+
+    const close = () => {
+        if (position !== DRAWER_OPEN) {
+            return;
+        }
+        setPosition(DRAWER_CLOSING);
+        setTimeout(() => {
+            setPosition(DRAWER_CLOSED);
+        }, animationDuration);
+    };
+
+    const toggle = () => {
+        if (position == DRAWER_OPEN) {
+            close();
+            return;
+        }
+        open();
+    };
+
+    return [position, toggle, close, open];
+};
 
 const styles = stylesToClassname(
     {
         drawer: {
             zIndex: 1001,
-            position: 'absolute',
+            position: 'fixed',
             top: '100vh',
             left: '0px',
             width: '100vw',
@@ -17,6 +59,7 @@ const styles = stylesToClassname(
             marginBottom: '100px',
             overflowY: 'auto',
             backgroundColor: 'white',
+            transition: `top 300ms ease-in-out`,
             '@media (min-width: 768px)': {
                 maxWidth: '750px',
                 left: 'calc(50% - (750px / 2))',
@@ -49,7 +92,7 @@ const styles = stylesToClassname(
         },
         mask: {
             zIndex: 1000,
-            position: 'absolute',
+            position: 'fixed',
             bottom: '0px',
             left: '0px',
             height: '0vh',
@@ -57,7 +100,7 @@ const styles = stylesToClassname(
             backgroundColor: 'black',
             opacity: '0',
             pointerEvents: 'none',
-            transition: 'opacity 300ms ease-in-out',
+            transition: `opacity ${ANIMATION_DURATION}ms ease-in-out`,
         },
         maskOpen: {
             height: '100vh',
@@ -70,25 +113,16 @@ const styles = stylesToClassname(
 );
 
 const preventScroll = () => {
-    document.body.style['overflow'] = 'hidden';
+    document.body.style.overflow = 'hidden';
     document.body.style['-webkit-overflow-scrolling'] = 'touch';
 };
 
 const removePreventScroll = () => {
-    document.body.style['overflow'] = '';
+    document.body.style.overflow = '';
     document.body.style['-webkit-overflow-scrolling'] = '';
 };
 
-const buildDrawerAnimationStyles = memoize(({ animationDuration }) => ({
-    transition: `top ${animationDuration}ms`,
-    transitionTimingFunction: 'ease-in-out',
-}));
-
-const Drawer = ({ children, status, animationDuration, onClose, disabled }) => {
-    const drawerStyle = buildDrawerAnimationStyles({
-        animationDuration,
-    });
-
+const Drawer = ({ children, status, onClose, disabled }) => {
     useEffect(() => {
         switch (status) {
             case 'open':
@@ -104,17 +138,17 @@ const Drawer = ({ children, status, animationDuration, onClose, disabled }) => {
         <>
             <div
                 className={classnames('drawer', styles.drawer, {
-                    [styles.drawerOpen]: status === 'open' && !disabled,
-                    [styles.drawerClosed]: status === 'closed',
+                    [styles.drawerOpen]: status === DRAWER_OPEN && !disabled,
+                    [styles.drawerClosed]: status === DRAWER_CLOSED,
                     [styles.drawerDisabled]: disabled,
                 })}
-                style={drawerStyle}
             >
-                {status !== 'closed' && children}
+                {status !== DRAWER_CLOSED &&
+                    React.cloneElement(children, { closeDrawer: onClose })}
             </div>
             <div
                 className={classnames('mask', styles.mask, {
-                    [styles.maskOpen]: status === 'open' && !disabled,
+                    [styles.maskOpen]: status === DRAWER_OPEN && !disabled,
                 })}
                 onClick={onClose}
             />
@@ -124,9 +158,9 @@ const Drawer = ({ children, status, animationDuration, onClose, disabled }) => {
 
 Drawer.propTypes = {
     children: PropTypes.node.isRequired,
-    status: PropTypes.oneOf(['open', 'closing', 'closed']).isRequired,
+    status: PropTypes.oneOf([DRAWER_OPEN, DRAWER_CLOSING, DRAWER_CLOSED])
+        .isRequired,
     onClose: PropTypes.func.isRequired,
-    animationDuration: PropTypes.number.isRequired,
     disabled: PropTypes.bool,
 };
 
