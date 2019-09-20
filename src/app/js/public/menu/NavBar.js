@@ -48,7 +48,7 @@ const styles = stylesToClassname(
         icon: {
             maxHeight: 'fit-content',
             margin: '10px 10px auto',
-            '@media (max-width: 360px)': {
+            '@media (max-width: 768px)': {
                 display: 'none',
             },
         },
