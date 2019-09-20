@@ -184,7 +184,6 @@ const NavBar = ({
                     </div>
                     {advancedMenu.length > 0 && (
                         <MenuItem
-                            key="advanced"
                             config={{ ...advancedMenuButton, role: 'advanced' }}
                             role={role}
                             canBeSearched={canBeSearched}
@@ -205,7 +204,14 @@ const NavBar = ({
                 <GraphSummary />
             </Drawer>
             <Drawer status={advancedMenuDrawer} onClose={toggleAdvancedMenu}>
-                <AdvancedPage />
+                <AdvancedPage
+                    role={role}
+                    canBeSearched={canBeSearched}
+                    hasGraph={hasGraph}
+                    onClick={handleMenuItemClick}
+                    advancedMenu={advancedMenu}
+                    polyglot={polyglot}
+                />
             </Drawer>
         </Fragment>
     );
