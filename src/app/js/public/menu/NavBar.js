@@ -81,7 +81,7 @@ const NavBar = ({
         advancedMenuDrawer,
         toggleAdvancedMenuDrawer,
         closeAdvancedMenuDrawer,
-    ] = useDrawer(DRAWER_CLOSED, ANIMATION_DURATION);
+    ] = useDrawer(DRAWER_CLOSED);
 
     const toggleSearch = () => {
         closeAdvancedMenuDrawer();
@@ -182,11 +182,7 @@ const NavBar = ({
             <Drawer status={graphDrawer} onClose={toggleGraph}>
                 <GraphSummary />
             </Drawer>
-            <Drawer
-                status={advancedMenuDrawer}
-                onClose={toggleAdvancedMenu}
-                animationDuration={ANIMATION_DURATION}
-            >
+            <Drawer status={advancedMenuDrawer} onClose={toggleAdvancedMenu}>
                 <AdvancedPage />
             </Drawer>
         </Fragment>
