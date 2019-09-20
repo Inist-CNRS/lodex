@@ -132,6 +132,7 @@ Drawer.propTypes = {
 
 Drawer.defaultProps = {
     disabled: false,
+    animationDuration: 300,
 };
 
 export default Drawer;
