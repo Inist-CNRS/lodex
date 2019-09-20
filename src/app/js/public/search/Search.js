@@ -183,10 +183,11 @@ class Search extends Component {
             total,
             p: polyglot,
             showAdvancedSearch,
-            toggleAdvancedSearch,
             fields,
             closeDrawer,
         } = this.props;
+
+        const toggleAdvancedSearch = () => {};
 
         const noOverviewField =
             !loading &&
@@ -300,7 +301,6 @@ Search.propTypes = {
     total: PropTypes.number.isRequired,
     closeDrawer: PropTypes.func.isRequired,
     showAdvancedSearch: PropTypes.bool.isRequired,
-    toggleAdvancedSearch: PropTypes.func.isRequired,
 };
 
 Search.defaultProps = {
