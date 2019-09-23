@@ -60,18 +60,6 @@ const styles = stylesToClassname(
             overflowY: 'auto',
             backgroundColor: 'white',
             transition: `top 300ms ease-in-out`,
-            '@media (min-width: 768px)': {
-                maxWidth: '750px',
-                left: 'calc(50% - (750px / 2))',
-            },
-            '@media (min-width: 992px)': {
-                maxWidth: '970px',
-                left: 'calc(50% - (970px / 2))',
-            },
-            '@media (min-width: 1200px)': {
-                maxWidth: '1170px',
-                left: 'calc(50% - (1170px / 2))',
-            },
         },
         drawerOpen: {
             borderTop: '1px solid #E3EAF2',
