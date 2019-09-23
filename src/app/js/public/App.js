@@ -1,14 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import classnames from 'classnames';
 
-const styles = {
-    body: {
-        paddingBottom: 80,
+import stylesToClassname from '../lib/stylesToClassName';
+
+const styles = stylesToClassname(
+    {
+        page: {
+            paddingBottom: 80,
+        },
     },
-};
+    'page',
+);
 
 export const AppComponent = ({ children }) => (
-    <div style={styles.body}>
+    <div className={classnames(styles.page)}>
         <div className="body">{children}</div>
     </div>
 );
