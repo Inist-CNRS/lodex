@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import classnames from 'classnames';
 
 import stylesToClassname from '../lib/stylesToClassName';
 
@@ -14,8 +13,8 @@ const styles = stylesToClassname(
 );
 
 export const AppComponent = ({ children }) => (
-    <div className={classnames(styles.page)}>
-        <div className="body">{children}</div>
+    <div className="body">
+        <div className={styles.page}>{children}</div>
     </div>
 );
 
