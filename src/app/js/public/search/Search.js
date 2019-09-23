@@ -54,17 +54,45 @@ const styles = stylesToClassname(
             flex: '1 0 0',
             color: 'rgb(95, 99, 104)',
         },
-        advancedToggle: {
+        toggleFacets: {
             alignSelf: 'flex-end',
             cursor: 'pointer',
+            '@media (min-width: 992px)': {
+                display: 'none',
+            },
         },
-        advancedFacets: {
+        appliedFacets: {
             flex: '0 0 auto',
+        },
+        searchContent: {
+            '@media (min-width: 992px)': {
+                display: 'flex',
+                flexDirection: 'row-reverse',
+            },
+        },
+        facets: {
+            opacity: '0',
+            maxHeight: '0px',
+            transition: 'max-height 300ms ease-in-out',
+            '@media (min-width: 992px)': {
+                opacity: '1',
+                maxHeight: '1000px',
+                minWidth: '300px',
+                flex: 1,
+            },
+        },
+        facetsOpening: {
+            opacity: '1',
+            maxHeight: '1000px',
         },
         searchResults: {
             margin: '1.5rem 0',
             opacity: '1',
             transition: 'opacity 300ms ease-in-out',
+            '@media (min-width: 992px)': {
+                minWidth: '600px',
+                flex: 3,
+            },
         },
         searchResultsOpening: {
             opacity: '0',
@@ -250,8 +278,8 @@ class Search extends Component {
                             {withFacets && (
                                 <Link
                                     className={classnames(
-                                        'facets-toggle',
-                                        styles.advancedToggle,
+                                        'search-facets-toggle',
+                                        styles.toggleFacets,
                                     )}
                                     onClick={this.handleToggleFacets}
                                 >
@@ -266,28 +294,41 @@ class Search extends Component {
                     </div>
                 </div>
                 {withFacets && (
-                    <AppliedFacets className={styles.advancedFacets} />
+                    <AppliedFacets className={styles.appliedFacets} />
                 )}
-                {showFacets && <Facets />}
                 <div
                     className={classnames(
-                        'search-results',
-                        styles.searchResults,
-                        { [styles.searchResultsOpening]: opening },
+                        'search-content',
+                        styles.searchContent,
                     )}
                 >
-                    {noOverviewField && this.renderNoOverviewField()}
-                    {noResults && this.renderNoResults()}
-                    {(everythingIsOk || loading) && (
-                        <SearchResultList
-                            results={results}
-                            fields={fields}
-                            fieldNames={fieldNames}
-                            closeDrawer={closeDrawer}
-                            placeholders={loading}
-                        />
-                    )}
-                    {canLoadMore && this.renderLoadMore()}
+                    <Facets
+                        className={classnames('search-facets', styles.facets, {
+                            [styles.facetsOpening]: showFacets,
+                        })}
+                    />
+                    <div
+                        className={classnames(
+                            'search-results',
+                            styles.searchResults,
+                            {
+                                [styles.searchResultsOpening]: opening,
+                            },
+                        )}
+                    >
+                        {noOverviewField && this.renderNoOverviewField()}
+                        {noResults && this.renderNoResults()}
+                        {(everythingIsOk || loading) && (
+                            <SearchResultList
+                                results={results}
+                                fields={fields}
+                                fieldNames={fieldNames}
+                                closeDrawer={closeDrawer}
+                                placeholders={loading}
+                            />
+                        )}
+                        {canLoadMore && this.renderLoadMore()}
+                    </div>
                 </div>
             </div>
         );
