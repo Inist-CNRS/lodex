@@ -57,6 +57,7 @@ const styles = stylesToClassname(
             width: '100vw',
             height: '100vh',
             marginBottom: '100px',
+            padding: '15px',
             overflowY: 'auto',
             backgroundColor: 'white',
             transition: `top 300ms ease-in-out`,
@@ -64,11 +65,11 @@ const styles = stylesToClassname(
         drawerOpen: {
             borderTop: '1px solid #E3EAF2',
             boxShadow: '0 2px 1rem #777',
-            height: 'calc(100vh - 10vh - 80px)', // Screen height - position from top - navbar height
-            top: '10vh',
+            height: 'calc(100vh - 8vh - 80px)', // Screen height - position from top - navbar height
+            top: '8vh',
         },
         drawerClosing: {
-            height: 'calc(100vh - 10vh - 80px)', // Screen height - position from top - navbar height
+            height: 'calc(100vh - 8vh - 80px)', // Screen height - position from top - navbar height
             top: '100vh',
         },
         drawerClosed: {
@@ -95,6 +96,10 @@ const styles = stylesToClassname(
             width: '100vw',
             opacity: '.3',
             pointerEvents: 'auto',
+            cursor: 'pointer',
+            ':hover': {
+                opacity: '.4',
+            },
         },
     },
     'drawer',
