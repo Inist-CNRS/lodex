@@ -9,8 +9,6 @@ import { Provider } from 'react-redux';
 import { StaticRouter } from 'react-router';
 import { Helmet } from 'react-helmet';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
-import { MuiThemeProvider as V0MuiThemeProvider } from 'material-ui';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import { END } from 'redux-saga';
 import fs from 'fs';
 import { StyleSheetServer } from 'aphrodite/no-important';
@@ -146,9 +144,7 @@ const renderHtml = (store, muiTheme, muiThemeV0, url, context, history) =>
             <StaticRouter location={url} context={context}>
                 <Provider {...{ store }}>
                     <MuiThemeProvider theme={muiTheme}>
-                        <V0MuiThemeProvider muiTheme={muiThemeV0}>
-                            <Routes history={history} />
-                        </V0MuiThemeProvider>
+                        <Routes history={history} />
                     </MuiThemeProvider>
                 </Provider>
             </StaticRouter>,
@@ -174,19 +170,12 @@ export const getRenderingData = async (
 
     const sagaPromise = store.runSaga(sagas).done;
     const context = {};
-    renderHtml(store, muiTheme, muiThemeV0, url, context, history);
+    renderHtml(store, muiTheme, url, context, history);
     store.dispatch(END);
 
     await sagaPromise;
 
-    const { html, css } = renderHtml(
-        store,
-        muiTheme,
-        muiThemeV0,
-        url,
-        context,
-        history,
-    );
+    const { html, css } = renderHtml(store, muiTheme, url, context, history);
     if (context.url) {
         return {
             redirect: context.url,
@@ -223,10 +212,6 @@ const handleRender = async (ctx, next) => {
         initialEntries: [url],
     });
 
-    const muiThemeV0 = getMuiTheme(customTheme, {
-        userAgent: headers['user-agent'],
-    });
-
     const muiTheme = createMuiTheme(customTheme, {
         userAgent: headers['user-agent'],
     });
@@ -240,7 +225,6 @@ const handleRender = async (ctx, next) => {
     } = await getRenderingData(
         history,
         muiTheme,
-        muiThemeV0,
         ctx.state.headerToken,
         ctx.request.header.cookie,
         getLocale(ctx),

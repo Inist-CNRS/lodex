@@ -4,8 +4,7 @@ import 'url-api-polyfill';
 import React from 'react';
 import { render } from 'react-dom';
 import Polyglot from 'node-polyglot';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 
 import getLocale from '../../../common/getLocale';
 
@@ -19,7 +18,7 @@ import customTheme from '../public/customTheme';
 import FieldProvider from './FieldProvider';
 import { IstexSummaryView } from '../formats/istexSummary/IstexSummaryView';
 
-const muiTheme = getMuiTheme(customTheme, {
+const muiTheme = createMuiTheme(customTheme, {
     userAgent: navigator.userAgent,
 });
 

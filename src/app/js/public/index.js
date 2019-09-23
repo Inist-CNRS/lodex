@@ -4,8 +4,6 @@ import { createBrowserHistory } from 'history';
 import React from 'react';
 import { hydrate } from 'react-dom';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
-import { MuiThemeProvider as V0MuiThemeProvider } from 'material-ui';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import { Provider } from 'react-redux';
 
 import rootReducer from './reducers';
@@ -17,7 +15,6 @@ import getLocale from '../../../common/getLocale';
 import customTheme from './customTheme';
 
 const muiTheme = createMuiTheme(customTheme);
-const muiThemeV0 = getMuiTheme(customTheme);
 
 const language = getLocale();
 const initialState = {
@@ -39,9 +36,7 @@ const store = configureStore(
 hydrate(
     <Provider {...{ store }}>
         <MuiThemeProvider theme={muiTheme}>
-            <V0MuiThemeProvider muiTheme={muiThemeV0}>
-                <Routes history={history} />
-            </V0MuiThemeProvider>
+            <Routes history={history} />
         </MuiThemeProvider>
     </Provider>,
     document.getElementById('root'),

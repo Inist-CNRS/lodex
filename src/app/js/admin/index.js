@@ -11,15 +11,15 @@ import configureStore from '../configureStore';
 import phrasesFor from '../i18n/translations';
 import { createHashHistory } from 'history';
 import { Provider } from 'react-redux';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+
 import scrollToTop from '../lib/scrollToTop';
 import { ConnectedRouter } from 'connected-react-router';
 
 import getLocale from '../../../common/getLocale';
 import theme from '../theme';
 
-const muiTheme = getMuiTheme({
+const muiTheme = createMuiTheme({
     palette: {
         accent1Color: theme.orange.primary,
         primary1Color: theme.green.primary,
