@@ -5,10 +5,10 @@ import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 import classnames from 'classnames';
 import debounce from 'lodash.debounce';
-
 import TextField from 'material-ui/TextField';
 import CircularProgress from 'material-ui/CircularProgress';
 import FlatButton from 'material-ui/FlatButton';
+
 import Link from '../../lib/components/Link';
 import {
     polyglot as polyglotPropTypes,
@@ -22,6 +22,7 @@ import { fromSearch } from '../selectors';
 import theme from '../../theme';
 import AdminOnlyAlert from '../../lib/components/AdminOnlyAlert';
 import AppliedFacets from './AppliedFacets';
+import Facets from './Facets';
 import SearchResultList from './SearchResultList';
 import stylesToClassname from '../../lib/stylesToClassName';
 
@@ -53,17 +54,45 @@ const styles = stylesToClassname(
             flex: '1 0 0',
             color: 'rgb(95, 99, 104)',
         },
-        advancedToggle: {
+        toggleFacets: {
             alignSelf: 'flex-end',
             cursor: 'pointer',
+            '@media (min-width: 992px)': {
+                display: 'none',
+            },
         },
-        advancedFacets: {
+        appliedFacets: {
             flex: '0 0 auto',
+        },
+        searchContent: {
+            '@media (min-width: 992px)': {
+                display: 'flex',
+                flexDirection: 'row-reverse',
+            },
+        },
+        facets: {
+            opacity: '0',
+            maxHeight: '0px',
+            transition: 'max-height 300ms ease-in-out',
+            '@media (min-width: 992px)': {
+                opacity: '1',
+                maxHeight: '1000px',
+                minWidth: '300px',
+                flex: 1,
+            },
+        },
+        facetsOpening: {
+            opacity: '1',
+            maxHeight: '1000px',
         },
         searchResults: {
             margin: '1.5rem 0',
             opacity: '1',
             transition: 'opacity 300ms ease-in-out',
+            '@media (min-width: 992px)': {
+                minWidth: '600px',
+                flex: 3,
+            },
         },
         searchResultsOpening: {
             opacity: '0',
@@ -99,6 +128,7 @@ class Search extends Component {
     state = {
         bufferQuery: null,
         opening: true,
+        showFacets: false,
     };
 
     constructor(props) {
@@ -125,6 +155,11 @@ class Search extends Component {
     handleTextFieldChange = (_, query) => {
         this.debouncedSearch({ query });
         this.setState({ bufferQuery: query });
+    };
+
+    handleToggleFacets = () => {
+        const { showFacets } = this.state;
+        this.setState({ showFacets: !showFacets });
     };
 
     renderNoResults = () => {
@@ -174,7 +209,7 @@ class Search extends Component {
     };
 
     render() {
-        const { bufferQuery, opening } = this.state;
+        const { bufferQuery, opening, showFacets } = this.state;
         const {
             searchQuery,
             loading,
@@ -182,12 +217,10 @@ class Search extends Component {
             results,
             total,
             p: polyglot,
-            showAdvancedSearch,
+            withFacets,
             fields,
             closeDrawer,
         } = this.props;
-
-        const toggleAdvancedSearch = () => {};
 
         const noOverviewField =
             !loading &&
@@ -242,42 +275,60 @@ class Search extends Component {
                                           })}
                                 </div>
                             )}
-                            {showAdvancedSearch && (
+                            {withFacets && (
                                 <Link
                                     className={classnames(
-                                        'search-advanced-toggle',
-                                        styles.advancedToggle,
+                                        'search-facets-toggle',
+                                        styles.toggleFacets,
                                     )}
-                                    onClick={toggleAdvancedSearch}
+                                    onClick={this.handleToggleFacets}
                                 >
-                                    {polyglot.t('search_advanced')}
+                                    {polyglot.t(
+                                        showFacets
+                                            ? 'search_facets_close'
+                                            : 'search_facets_open',
+                                    )}
                                 </Link>
                             )}
                         </div>
-                        {showAdvancedSearch && (
-                            <AppliedFacets className={styles.advancedFacets} />
-                        )}
                     </div>
                 </div>
+                {withFacets && (
+                    <AppliedFacets className={styles.appliedFacets} />
+                )}
                 <div
                     className={classnames(
-                        'search-results',
-                        styles.searchResults,
-                        { [styles.searchResultsOpening]: opening },
+                        'search-content',
+                        styles.searchContent,
                     )}
                 >
-                    {noOverviewField && this.renderNoOverviewField()}
-                    {noResults && this.renderNoResults()}
-                    {(everythingIsOk || loading) && (
-                        <SearchResultList
-                            results={results}
-                            fields={fields}
-                            fieldNames={fieldNames}
-                            closeDrawer={closeDrawer}
-                            placeholders={loading}
-                        />
-                    )}
-                    {canLoadMore && this.renderLoadMore()}
+                    <Facets
+                        className={classnames('search-facets', styles.facets, {
+                            [styles.facetsOpening]: showFacets,
+                        })}
+                    />
+                    <div
+                        className={classnames(
+                            'search-results',
+                            styles.searchResults,
+                            {
+                                [styles.searchResultsOpening]: opening,
+                            },
+                        )}
+                    >
+                        {noOverviewField && this.renderNoOverviewField()}
+                        {noResults && this.renderNoResults()}
+                        {(everythingIsOk || loading) && (
+                            <SearchResultList
+                                results={results}
+                                fields={fields}
+                                fieldNames={fieldNames}
+                                closeDrawer={closeDrawer}
+                                placeholders={loading}
+                            />
+                        )}
+                        {canLoadMore && this.renderLoadMore()}
+                    </div>
                 </div>
             </div>
         );
@@ -300,7 +351,7 @@ Search.propTypes = {
     loadMore: PropTypes.func.isRequired,
     total: PropTypes.number.isRequired,
     closeDrawer: PropTypes.func.isRequired,
-    showAdvancedSearch: PropTypes.bool.isRequired,
+    withFacets: PropTypes.bool.isRequired,
 };
 
 Search.defaultProps = {
