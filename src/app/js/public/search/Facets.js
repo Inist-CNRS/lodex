@@ -1,4 +1,5 @@
 import React from 'react';
+import classnames from 'classnames';
 
 import FacetList from '../facet/FacetList';
 import stylesToClassname from '../../lib/stylesToClassName';
@@ -9,13 +10,13 @@ const styles = stylesToClassname(
             padding: '1rem',
         },
     },
-    'advanced-search',
+    'facets',
 );
 
-const AdvancedSearch = () => (
-    <div className={`advanced-search ${styles.container}`}>
+const Facets = () => (
+    <div className={classnames('facets', styles.container)}>
         <FacetList page="search" />
     </div>
 );
 
-export default AdvancedSearch;
+export default Facets;

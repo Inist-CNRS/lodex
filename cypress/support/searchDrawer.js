@@ -14,7 +14,7 @@ export const openAdvancedSearchDrawer = () => {
 
     cy.get('.search-advanced-toggle').click();
     cy.wait(300);
-    cy.get('.drawer-container .drawer .advanced-search').should('be.visible');
+    cy.get('.drawer-container .drawer .facets').should('be.visible');
 };
 
 export const searchInput = () =>
@@ -53,8 +53,7 @@ export const waitForLoading = () => {
     cy.get('.graph-page .loading').should('not.exist');
 };
 
-export const getFacet = name =>
-    cy.get('.advanced-search .facet-item').contains(name);
+export const getFacet = name => cy.get('.facets .facet-item').contains(name);
 
 export const getFacetItem = (name, value) =>
     getFacet(name)
