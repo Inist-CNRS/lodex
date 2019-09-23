@@ -12,7 +12,7 @@ export const openSearchDrawer = () => {
 export const openAdvancedSearchDrawer = () => {
     cy.get('.drawer-container .drawer .search').should('be.visible');
 
-    cy.get('.search-advanced-toggle').click();
+    cy.get('.facets-toggle').click();
     cy.wait(300);
     cy.get('.drawer-container .drawer .facets').should('be.visible');
 };

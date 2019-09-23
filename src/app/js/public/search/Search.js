@@ -5,10 +5,10 @@ import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 import classnames from 'classnames';
 import debounce from 'lodash.debounce';
-
 import TextField from 'material-ui/TextField';
 import CircularProgress from 'material-ui/CircularProgress';
 import FlatButton from 'material-ui/FlatButton';
+
 import Link from '../../lib/components/Link';
 import {
     polyglot as polyglotPropTypes,
@@ -22,6 +22,7 @@ import { fromSearch } from '../selectors';
 import theme from '../../theme';
 import AdminOnlyAlert from '../../lib/components/AdminOnlyAlert';
 import AppliedFacets from './AppliedFacets';
+import Facets from './Facets';
 import SearchResultList from './SearchResultList';
 import stylesToClassname from '../../lib/stylesToClassName';
 
@@ -99,6 +100,7 @@ class Search extends Component {
     state = {
         bufferQuery: null,
         opening: true,
+        showFacets: false,
     };
 
     constructor(props) {
@@ -125,6 +127,11 @@ class Search extends Component {
     handleTextFieldChange = (_, query) => {
         this.debouncedSearch({ query });
         this.setState({ bufferQuery: query });
+    };
+
+    handleToggleFacets = () => {
+        const { showFacets } = this.state;
+        this.setState({ showFacets: !showFacets });
     };
 
     renderNoResults = () => {
@@ -174,7 +181,7 @@ class Search extends Component {
     };
 
     render() {
-        const { bufferQuery, opening } = this.state;
+        const { bufferQuery, opening, showFacets } = this.state;
         const {
             searchQuery,
             loading,
@@ -182,12 +189,10 @@ class Search extends Component {
             results,
             total,
             p: polyglot,
-            showAdvancedSearch,
+            withFacets,
             fields,
             closeDrawer,
         } = this.props;
-
-        const toggleAdvancedSearch = () => {};
 
         const noOverviewField =
             !loading &&
@@ -242,23 +247,28 @@ class Search extends Component {
                                           })}
                                 </div>
                             )}
-                            {showAdvancedSearch && (
+                            {withFacets && (
                                 <Link
                                     className={classnames(
-                                        'search-advanced-toggle',
+                                        'facets-toggle',
                                         styles.advancedToggle,
                                     )}
-                                    onClick={toggleAdvancedSearch}
+                                    onClick={this.handleToggleFacets}
                                 >
-                                    {polyglot.t('search_advanced')}
+                                    {polyglot.t(
+                                        showFacets
+                                            ? 'search_facets_close'
+                                            : 'search_facets_open',
+                                    )}
                                 </Link>
                             )}
                         </div>
-                        {showAdvancedSearch && (
-                            <AppliedFacets className={styles.advancedFacets} />
-                        )}
                     </div>
                 </div>
+                {withFacets && (
+                    <AppliedFacets className={styles.advancedFacets} />
+                )}
+                {showFacets && <Facets />}
                 <div
                     className={classnames(
                         'search-results',
@@ -300,7 +310,7 @@ Search.propTypes = {
     loadMore: PropTypes.func.isRequired,
     total: PropTypes.number.isRequired,
     closeDrawer: PropTypes.func.isRequired,
-    showAdvancedSearch: PropTypes.bool.isRequired,
+    withFacets: PropTypes.bool.isRequired,
 };
 
 Search.defaultProps = {
