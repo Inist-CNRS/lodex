@@ -68,6 +68,9 @@ class GraphPage extends Component {
                 <Helmet>
                     <title>Resources - {getTitle()}</title>
                 </Helmet>
+                <div style={styles.sideColumn}>
+                    <Toolbar name={name} />
+                </div>
                 <div style={styles.centerColumn}>
                     <ExportShareButton style={{ float: 'right' }} />
                     <Stats />
@@ -104,9 +107,6 @@ class GraphPage extends Component {
                     <Card style={styles.section}>
                         <Dataset />
                     </Card>
-                </div>
-                <div style={styles.sideColumn}>
-                    <Toolbar name={name} />
                 </div>
             </div>
         );
