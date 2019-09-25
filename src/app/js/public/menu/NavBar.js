@@ -43,7 +43,7 @@ const styles = stylesToClassname(
             padding: '0px 10px',
         },
         icon: {
-            maxHeight: 'fit-content',
+            height: 48,
             margin: '10px 10px auto',
             '@media (max-width: 768px)': {
                 display: 'none',
