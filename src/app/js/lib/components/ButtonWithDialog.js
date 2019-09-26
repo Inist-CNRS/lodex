@@ -17,20 +17,15 @@ export const PureButtonWithDialog = ({
     icon,
     p: polyglot,
     actions = [
-        <Button
-            key="cancel"
-            label={polyglot.t('close')}
-            onClick={handleClose}
-        />,
+        <Button key="cancel" onClick={handleClose}>
+            {polyglot.t('close')}
+        </Button>,
     ],
     openButton = (
-        <Button
-            primary
-            className={className}
-            label={label}
-            icon={icon}
-            onClick={handleOpen}
-        />
+        <Button color="primary" className={className} onClick={handleOpen}>
+            {icon}
+            {label}
+        </Button>
     ),
 }) => {
     if (!show) {

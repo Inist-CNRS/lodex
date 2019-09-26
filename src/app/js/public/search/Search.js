@@ -197,8 +197,9 @@ class Search extends Component {
                     </Fragment>
                 ) : (
                     <Button fullWidth onClick={loadMore}>
-                        {polyglot.t('search_load_more')} ({results.length} /{' '}
-                        {total})
+                        {`${polyglot.t('search_load_more')} (${
+                            results.length
+                        } / ${total})`}
                     </Button>
                 )}
             </div>

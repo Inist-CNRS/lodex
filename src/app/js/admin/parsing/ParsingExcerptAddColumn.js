@@ -31,12 +31,13 @@ export const ParsingExcerptAddColumnComponent = ({
             ' ',
             '-',
         )}`}
-        label={polyglot.t('add_to_publication')}
         onClick={handleAddColumn}
         primary
         variant="contained"
         style={styles.button(atTop)}
-    />
+    >
+        {polyglot.t('add_to_publication')}
+    </Button>
 );
 
 ParsingExcerptAddColumnComponent.propTypes = {

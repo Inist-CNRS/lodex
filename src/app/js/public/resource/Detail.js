@@ -179,9 +179,10 @@ export const DetailComponent = ({
                 <CardActions style={styles.actions}>
                     <Button
                         href={`${getCleanHost()}/${resource.uri} `}
-                        label={resource.uri}
-                        primary={true}
-                    />
+                        color="primary"
+                    >
+                        {resource.uri}
+                    </Button>
                     <SelectVersion />
                     <AddField style={{ marginLeft: 'auto' }} />
                     <HideResource />

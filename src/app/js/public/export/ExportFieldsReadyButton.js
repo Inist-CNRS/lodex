@@ -22,12 +22,9 @@ export const ExportFieldsReadyButtonComponent = ({
     handleClick,
     p: polyglot,
 }) => (
-    <Button
-        primary
-        onClick={handleClick}
-        label={polyglot.t('export_fields_ready')}
-        style={styles.button}
-    />
+    <Button primary onClick={handleClick} style={styles.button}>
+        {polyglot.t('export_fields_ready')}
+    </Button>
 );
 
 ExportFieldsReadyButtonComponent.propTypes = {

@@ -60,10 +60,9 @@ export const StepValueConcatComponent = ({
                         handleRemoveColumn={handleRemoveColumn}
                     />
                 ))}
-                <Button
-                    label={polyglot.t('add_column')}
-                    onClick={handleAddColumn}
-                />
+                <Button onClick={handleAddColumn}>
+                    {polyglot.t('add_column')}
+                </Button>
             </div>
         )}
     </div>

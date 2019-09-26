@@ -52,11 +52,12 @@ class InputList extends Component {
                     <p>{polyglot.t('bad_format_edit_list')}</p>
                     <Button
                         className="convert-to-list"
-                        primary
+                        color="primary"
                         variant="contained"
                         onClick={this.convertToList}
-                        label={polyglot.t('convert_to_list')}
-                    />
+                    >
+                        {polyglot.t('convert_to_list')}
+                    </Button>
                 </div>
             );
         }

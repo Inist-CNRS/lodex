@@ -14,10 +14,11 @@ const UriColumn = ({ column, resource, indice }) => (
     >
         <Button
             labelPosition="after"
-            label={indice}
             containerElement={<Link to={getResourceUri(resource)} />}
-            icon={<RightIcon />}
-        />
+        >
+            <RightIcon />
+            {indice}
+        </Button>
     </TableCell>
 );
 

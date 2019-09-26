@@ -98,9 +98,10 @@ class FieldComposedOf extends Component {
                     {isComposedOf && (
                         <Button
                             className="btn-add-composition-column"
-                            label={polyglot.t('add_composition_column')}
                             onClick={this.handleAddColumn}
-                        />
+                        >
+                            {polyglot.t('add_composition_column')}
+                        </Button>
                     )}
                 </div>
             </div>

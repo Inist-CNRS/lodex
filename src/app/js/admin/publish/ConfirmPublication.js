@@ -30,16 +30,18 @@ export const ConfirmPublicationComponent = ({
             primary
             key="confirm"
             className="confirm"
-            label={polyglot.t('force_publish')}
             onClick={confirmPublication}
-        />,
+        >
+            {polyglot.t('force_publish')}
+        </Button>,
         <Button
             secondary
             key="cancel"
             className="cancel"
-            label={polyglot.t('cancel')}
             onClick={cancelPublication}
-        />,
+        >
+            {polyglot.t('cancel')}
+        </Button>,
     ];
     return (
         <Dialog

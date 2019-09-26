@@ -28,10 +28,11 @@ const PublishedComponent = ({ p: polyglot }) => (
             <Button
                 className="btn-navigate-to-published-data"
                 href="/"
-                label={polyglot.t('navigate_to_published_data')}
                 primary
                 variant="contained"
-            />
+            >
+                {polyglot.t('navigate_to_published_data')}
+            </Button>
         </CardContent>
     </Card>
 );

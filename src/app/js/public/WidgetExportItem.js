@@ -67,9 +67,8 @@ export class WidgetExportItemComponent extends Component {
                         fullWidth
                         onClick={this.handleClick}
                     />
-
                     <CopyToClipboard text={value}>
-                        <Button label={polyglot.t('copy_to_clipboard')} />
+                        <Button>{polyglot.t('copy_to_clipboard')}</Button>
                     </CopyToClipboard>
                 </div>
             </div>

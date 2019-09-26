@@ -115,12 +115,10 @@ class ResourcesGridView extends Component {
                 </ul>
                 {allowToLoadMore && more < total && (
                     <div className={styles.button}>
-                        <Button
-                            variant="contained"
-                            label={polyglot.t('see_more')}
-                            onClick={this.handleMore}
-                            icon={fetch ? <CircularProgress size={20} /> : null}
-                        />
+                        <Button variant="contained" onClick={this.handleMore}>
+                            {fetch ? <CircularProgress size={20} /> : null}
+                            {polyglot.t('see_more')}
+                        </Button>
                     </div>
                 )}
             </div>

@@ -19,12 +19,9 @@ const styles = {
 };
 
 export const SignOutButtonComponent = ({ onSignOut, p: polyglot }) => (
-    <Button
-        className="btn-sign-out"
-        label={polyglot.t('sign_out')}
-        onClick={onSignOut}
-        style={styles.button}
-    />
+    <Button className="btn-sign-out" onClick={onSignOut} style={styles.button}>
+        {polyglot.t('sign_out')}
+    </Button>
 );
 
 SignOutButtonComponent.propTypes = {

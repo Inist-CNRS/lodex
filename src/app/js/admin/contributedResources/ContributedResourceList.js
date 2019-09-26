@@ -122,10 +122,11 @@ export class ContributedResourceListComponent extends Component {
                                         >
                                             <Button
                                                 className="btn-review-resource"
-                                                label={polyglot.t('review')}
                                                 primary
                                                 variant="contained"
-                                            />
+                                            >
+                                                {polyglot.t('review')}
+                                            </Button>
                                         </a>
                                     </TableCell>
                                     {columns.map(({ name }) => (

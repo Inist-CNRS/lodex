@@ -35,8 +35,8 @@ class ClearDialogComponent extends Component {
     }
 
     UNSAFE_componentWillReceiveProps(nextProps) {
+        // eslint-disable-next-line
         if (nextProps.succeeded) {
-            // eslint-disable-line
             window.location.reload();
         }
     }
@@ -109,9 +109,10 @@ class ClearDialogComponent extends Component {
                 key="cancel"
                 secondary
                 className="btn-cancel"
-                label={polyglot.t('cancel')}
                 onClick={onClose}
-            />,
+            >
+                {polyglot.t('cancel')}
+            </Button>,
         ];
         return (
             <Dialog

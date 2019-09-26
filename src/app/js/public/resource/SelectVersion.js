@@ -66,13 +66,10 @@ export class SelectVersionComponent extends Component {
 
         return (
             <div>
-                <Button
-                    className="select-version"
-                    label={format(versions[selectedVersion], selectedVersion)}
-                    labelPosition="before"
-                    onClick={this.handleClick}
-                    icon={<ArrowDown />}
-                />
+                <Button className="select-version" onClick={this.handleClick}>
+                    {format(versions[selectedVersion], selectedVersion)}
+                    <ArrowDown />
+                </Button>
                 <Popover
                     open={showMenu}
                     onRequestClose={this.handleRequestClose}

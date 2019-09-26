@@ -32,11 +32,9 @@ const TransformerList = ({
     <div>
         <ListSubheader style={styles.header}>
             {polyglot.t('transformers')}
-            <Button
-                className="add-transformer"
-                onClick={() => fields.push({})}
-                label={polyglot.t('add_transformer')}
-            />
+            <Button className="add-transformer" onClick={() => fields.push({})}>
+                {polyglot.t('add_transformer')}
+            </Button>
         </ListSubheader>
         {touched && error && <span>{error}</span>}
 

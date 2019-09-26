@@ -42,7 +42,6 @@ export class ShareLinkComponent extends Component {
                 <ListSubheader>{title}</ListSubheader>
                 <CardContent style={styles.container}>
                     <LinkIcon style={styles.icon} />
-
                     <TextField
                         ref={this.saveRef}
                         id="share-link"
@@ -51,9 +50,8 @@ export class ShareLinkComponent extends Component {
                         fullWidth
                         onClick={this.handleClick}
                     />
-
                     <CopyToClipboard text={uri}>
-                        <Button label={polyglot.t('copy_to_clipboard')} />
+                        <Button>{polyglot.t('copy_to_clipboard')}</Button>
                     </CopyToClipboard>
                 </CardContent>
             </div>

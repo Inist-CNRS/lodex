@@ -72,17 +72,19 @@ const AppbarComponent = ({
             )}
             {isAdmin && hasPublishedDataset && (
                 <Button
-                    label={polyglot.t('moderation')}
                     containerElement={<Link to="/contributions" />}
                     style={styles.button}
-                />
+                >
+                    {polyglot.t('moderation')}
+                </Button>
             )}
             {isAdmin && hasPublishedDataset && (
                 <Button
-                    label={polyglot.t('removed_resources')}
                     containerElement={<Link to="/removed" />}
                     style={styles.button}
-                />
+                >
+                    {polyglot.t('removed_resources')}
+                </Button>
             )}
             {isAdmin ? (
                 <ModelMenu hasPublishedDataset={hasPublishedDataset} />

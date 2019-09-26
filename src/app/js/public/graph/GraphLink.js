@@ -38,10 +38,10 @@ const GraphLink = ({ link, children, p: polyglot }) => (
                 style={styles.detailsButton}
                 containerElement={<Link to={link} />}
                 to={link}
-                label={polyglot.t('view_details')}
-                labelPosition="before"
-                icon={<Forward style={styles.icon} />}
-            />
+            >
+                {polyglot.t('view_details')}
+                <Forward style={styles.icon} />
+            </Button>
         </CardActions>
     </Card>
 );

@@ -62,7 +62,7 @@ export default FormatView => {
                     <CardActions style={styles.actions}>
                         {error && <p style={styles.error}>{error}</p>}
                         <Button
-                            primary
+                            color="primary"
                             style={styles.button}
                             onClick={this.exportElement}
                         >

@@ -58,12 +58,12 @@ export class ResourceComponent extends Component {
             (datasetTitleKey && characteristics[datasetTitleKey]) ||
             polyglot.t('back_to_list');
         const backToListButton = (
-            <Button
-                className="btn-back-to-list"
-                containerElement={<Link to="/graph" />}
-                label={backToListLabel}
-                icon={<HomeIcon />}
-            />
+            <Button className="btn-back-to-list">
+                <Link to="/graph">
+                    <HomeIcon />
+                    {backToListLabel}
+                </Link>
+            </Button>
         );
 
         if (!resource) {

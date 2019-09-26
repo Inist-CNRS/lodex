@@ -98,11 +98,11 @@ class SettingsComponent extends Component {
                 <Button
                     className="btn-danger-zone"
                     onClick={this.handleTouchTap}
-                    label={polyglot.t('clear')}
-                    labelPosition="before"
-                    icon={<ArrowDown />}
                     style={styles.button}
-                />
+                >
+                    {polyglot.t('clear')}
+                    <ArrowDown />
+                </Button>
                 <Popover
                     open={open}
                     anchorEl={anchorEl}

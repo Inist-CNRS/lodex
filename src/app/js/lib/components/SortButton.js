@@ -18,10 +18,11 @@ const SortButton = ({ name, label, sortBy, sortDir, sort }) => (
         className={`sort_${name}`}
         labelPosition="before"
         onClick={sort}
-        label={isLongText(label, 15) ? getShortText(label, 15) : label}
-        icon={sortBy === name && <ContentSort style={styles[sortDir]} />}
         style={styles.sortButton}
-    />
+    >
+        {sortBy === name && <ContentSort style={styles[sortDir]} />}
+        {isLongText(label, 15) ? getShortText(label, 15) : label}
+    </Button>
 );
 
 SortButton.defaultProps = {

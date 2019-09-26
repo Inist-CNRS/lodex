@@ -31,8 +31,8 @@ const styles = {
 
 class ImportFieldsDialogComponent extends Component {
     UNSAFE_componentWillReceiveProps(nextProps) {
+        // eslint-disable-next-line
         if (nextProps.succeeded) {
-            // eslint-disable-line
             this.props.onClose();
         }
     }
@@ -53,11 +53,11 @@ class ImportFieldsDialogComponent extends Component {
                 key="confirm"
                 className="btn-save"
                 containerElement="label"
-                label={polyglot.t('confirm')}
                 primary
                 variant="contained"
                 style={styles.button}
             >
+                {polyglot.t('confirm')}
                 <input
                     name="file_model"
                     type="file"
@@ -69,9 +69,10 @@ class ImportFieldsDialogComponent extends Component {
                 secondary
                 key="cancel"
                 className="btn-cancel"
-                label={polyglot.t('cancel')}
                 onClick={onClose}
-            />,
+            >
+                {polyglot.t('cancel')}
+            </Button>,
         ];
 
         return (

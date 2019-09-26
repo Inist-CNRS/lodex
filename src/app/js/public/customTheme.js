@@ -8,4 +8,7 @@ export default {
         textColor: '#5F6368',
     },
     fontFamily: 'Quicksand, sans-serif',
+    typography: {
+        useNextVariants: true,
+    },
 };

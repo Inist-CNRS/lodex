@@ -138,7 +138,7 @@ const renderFullPage = (html, css, preloadedState, helmet) =>
             </body>`,
         );
 
-const renderHtml = (store, muiTheme, muiThemeV0, url, context, history) =>
+const renderHtml = (store, muiTheme, url, context, history) =>
     StyleSheetServer.renderStatic(() =>
         renderToString(
             <StaticRouter location={url} context={context}>
@@ -154,7 +154,6 @@ const renderHtml = (store, muiTheme, muiThemeV0, url, context, history) =>
 export const getRenderingData = async (
     history,
     muiTheme,
-    muiThemeV0,
     token,
     cookie,
     locale,
