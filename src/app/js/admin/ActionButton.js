@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
-import { Popover, PopoverAnimationVertical } from '@material-ui/core';
+import { Popover } from '@material-ui/core';
 import {
     Description as ActionDescription,
     Add as ContentAdd,
@@ -141,7 +141,6 @@ export class ActionButtonComponent extends Component {
             >
                 <Popover
                     open={showPopover}
-                    animation={PopoverAnimationVertical}
                     anchorEl={this.anchor}
                     anchorOrigin={{ horizontal: 'middle', vertical: 'bottom' }}
                     autoCloseWhenOffScreen={false}
