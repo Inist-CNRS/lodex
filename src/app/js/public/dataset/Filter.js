@@ -65,7 +65,7 @@ class FilterComponent extends Component {
                 <TextField
                     className="filter"
                     value={query !== null ? query : filter}
-                    hintText={polyglot.t('filter')}
+                    label={polyglot.t('filter')}
                     onChange={this.handleFilterChange}
                     style={styles.textbox}
                 />

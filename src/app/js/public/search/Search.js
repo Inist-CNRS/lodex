@@ -238,7 +238,7 @@ class Search extends Component {
                         )}
                     >
                         <TextField
-                            hintText={`🔍 ${polyglot.t('search_placeholder')}`}
+                            label={`🔍 ${polyglot.t('search_placeholder')}`}
                             fullWidth
                             onChange={this.handleTextFieldChange}
                             value={

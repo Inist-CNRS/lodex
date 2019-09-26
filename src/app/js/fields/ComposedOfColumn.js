@@ -1,6 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Select, MenuItem, IconButton } from '@material-ui/core';
+import {
+    FormControl,
+    InputLabel,
+    Select,
+    MenuItem,
+    IconButton,
+} from '@material-ui/core';
 import { Delete as IconDelete } from '@material-ui/icons';
 import translate from 'redux-polyglot/translate';
 
@@ -27,23 +33,25 @@ const ComposedOfColumn = ({
     p: polyglot,
 }) => (
     <div style={styles.compositionContainer}>
-        <Select
-            onChange={handleSelectColumn}
-            style={styles.select}
-            hintText={polyglot.t('select_a_column')}
-            value={column}
-            required
-        >
-            {fields.map(f => (
-                <MenuItem
-                    className={`composite-field-${index}-${f.name}`}
-                    key={`composite-field-${index}-${f.name}`}
-                    value={f.name}
-                >
-                    {f.label}
-                </MenuItem>
-            ))}
-        </Select>
+        <FormControl>
+            <InputLabel>{polyglot.t('select_a_column')}</InputLabel>
+            <Select
+                onChange={handleSelectColumn}
+                style={styles.select}
+                value={column}
+                required
+            >
+                {fields.map(f => (
+                    <MenuItem
+                        className={`composite-field-${index}-${f.name}`}
+                        key={`composite-field-${index}-${f.name}`}
+                        value={f.name}
+                    >
+                        {f.label}
+                    </MenuItem>
+                ))}
+            </Select>
+        </FormControl>
         {index > 1 && (
             <IconButton
                 className={`btn-remove-composite-field btn-remove-composite-field-${index}`}

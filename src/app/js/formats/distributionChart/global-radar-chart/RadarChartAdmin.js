@@ -1,6 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Select, MenuItem, Checkbox } from '@material-ui/core';
+import {
+    FormControl,
+    InputLabel,
+    Select,
+    MenuItem,
+    Checkbox,
+} from '@material-ui/core';
 import translate from 'redux-polyglot/translate';
 
 import { polyglot as polyglotPropTypes } from '../../../propTypes';
@@ -122,15 +128,19 @@ class RadarChartAdmin extends Component {
                     style={styles.input}
                     checked={axisRoundValue}
                 />
-                <Select
-                    floatingLabelText={polyglot.t('scale')}
-                    onChange={this.setScale}
-                    style={styles.input}
-                    value={scale}
-                >
-                    <MenuItem value="linear">{polyglot.t('linear')}</MenuItem>
-                    <MenuItem value="log">{polyglot.t('log')}</MenuItem>
-                </Select>
+                <FormControl>
+                    <InputLabel>{polyglot.t('scale')}</InputLabel>
+                    <Select
+                        onChange={this.setScale}
+                        style={styles.input}
+                        value={scale}
+                    >
+                        <MenuItem value="linear">
+                            {polyglot.t('linear')}
+                        </MenuItem>
+                        <MenuItem value="log">{polyglot.t('log')}</MenuItem>
+                    </Select>
+                </FormControl>
             </div>
         );
     }

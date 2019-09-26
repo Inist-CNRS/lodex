@@ -42,20 +42,23 @@ class SentenceAdmin extends Component {
     };
 
     render() {
-        const { p: polyglot, args: { prefix, suffix } } = this.props;
+        const {
+            p: polyglot,
+            args: { prefix, suffix },
+        } = this.props;
 
         return (
             <div style={styles.container}>
                 <TextField
                     key="prefix"
-                    floatingLabelText={polyglot.t('prefix')}
+                    label={polyglot.t('prefix')}
                     onChange={(event, newValue) => this.setPrefix(newValue)}
                     style={styles.input}
                     value={prefix}
                 />
                 <TextField
                     key="suffix"
-                    floatingLabelText={polyglot.t('suffix')}
+                    label={polyglot.t('suffix')}
                     onChange={(event, newValue) => this.setSuffix(newValue)}
                     style={styles.input}
                     value={suffix}

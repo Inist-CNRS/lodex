@@ -7,7 +7,9 @@ import {
     Button,
     MenuItem,
     TextField,
-    SelectField,
+    FormControl,
+    InputLabel,
+    Select,
     Step,
     Stepper,
     StepLabel,
@@ -73,17 +75,19 @@ export const UploadDialogComponent = ({
                 <Step active>
                     <StepLabel>{polyglot.t('select_parser')}</StepLabel>
                     <StepContent>
-                        <SelectField
-                            floatingLabelText={polyglot.t('parser_name')}
-                            value={parserName}
-                            onChange={onChangeParserName}
-                            fullWidth
-                        >
-                            <MenuItem key={'automatic'} value={'automatic'}>
-                                {polyglot.t('automatic-parser')}
-                            </MenuItem>
-                            {parserNames}
-                        </SelectField>
+                        <FormControl>
+                            <InputLabel>{polyglot.t('parser_name')}</InputLabel>
+                            <Select
+                                value={parserName}
+                                onChange={onChangeParserName}
+                                fullWidth
+                            >
+                                <MenuItem key="automatic" value="automatic">
+                                    {polyglot.t('automatic-parser')}
+                                </MenuItem>
+                                {parserNames}
+                            </Select>
+                        </FormControl>
                     </StepContent>
                 </Step>
                 <Step active>

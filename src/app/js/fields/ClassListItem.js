@@ -56,7 +56,6 @@ export const ClassListItem = ({
                 style={styles.field}
                 allowNewItem
                 fullWidth
-                hintText={polyglot.t('enter_class')}
                 label={`${polyglot.t('class')} ${parseInt(
                     /\d+/.exec(fieldName)[0],
                     10,

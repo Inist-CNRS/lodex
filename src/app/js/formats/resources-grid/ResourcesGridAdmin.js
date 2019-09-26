@@ -1,6 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Select, MenuItem, Checkbox, TextField } from '@material-ui/core';
+import {
+    FormControl,
+    InputLabel,
+    Select,
+    MenuItem,
+    Checkbox,
+    TextField,
+} from '@material-ui/core';
 import translate from 'redux-polyglot/translate';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
@@ -85,34 +92,39 @@ class RessourcesGridAdmin extends Component {
                     params={params || defaultArgs.params}
                     onChange={this.setParams}
                     polyglot={polyglot}
-                />
-                <Select
-                    floatingLabelText={polyglot.t(
-                        'list_format_select_image_width',
-                    )}
-                    onChange={(event, index, newValue) =>
-                        this.setWidth(newValue)
-                    }
-                    style={styles.input}
-                    value={spaceWidth}
-                >
-                    <MenuItem value="10%">{polyglot.t('ten_percent')}</MenuItem>
-                    <MenuItem value="20%">
-                        {polyglot.t('twenty_percent')}
-                    </MenuItem>
-                    <MenuItem value="30%">
-                        {polyglot.t('thirty_percent')}
-                    </MenuItem>
-                    <MenuItem value="50%">
-                        {polyglot.t('fifty_percent')}
-                    </MenuItem>
-                    <MenuItem value="80%">
-                        {polyglot.t('eighty_percent')}
-                    </MenuItem>
-                    <MenuItem value="100%">
-                        {polyglot.t('hundred_percent')}
-                    </MenuItem>
-                </Select>
+                />{' '}
+                <FormControl>
+                    <InputLabel>
+                        {polyglot.t('list_format_select_image_width')}
+                    </InputLabel>
+
+                    <Select
+                        onChange={(event, index, newValue) =>
+                            this.setWidth(newValue)
+                        }
+                        style={styles.input}
+                        value={spaceWidth}
+                    >
+                        <MenuItem value="10%">
+                            {polyglot.t('ten_percent')}
+                        </MenuItem>
+                        <MenuItem value="20%">
+                            {polyglot.t('twenty_percent')}
+                        </MenuItem>
+                        <MenuItem value="30%">
+                            {polyglot.t('thirty_percent')}
+                        </MenuItem>
+                        <MenuItem value="50%">
+                            {polyglot.t('fifty_percent')}
+                        </MenuItem>
+                        <MenuItem value="80%">
+                            {polyglot.t('eighty_percent')}
+                        </MenuItem>
+                        <MenuItem value="100%">
+                            {polyglot.t('hundred_percent')}
+                        </MenuItem>
+                    </Select>
+                </FormControl>
                 <Checkbox
                     label={polyglot.t('allow_to_load_more')}
                     onCheck={this.toggleAllowToLoadMore}
@@ -121,7 +133,7 @@ class RessourcesGridAdmin extends Component {
                 />
                 {allowToLoadMore && (
                     <TextField
-                        floatingLabelText={polyglot.t('items_per_page')}
+                        label={polyglot.t('items_per_page')}
                         onChange={this.setPageSize}
                         style={styles.input}
                         value={pageSize}

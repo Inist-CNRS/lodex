@@ -4,8 +4,7 @@ import { formField as formFieldPropTypes } from '../../propTypes';
 
 const CodeEdit = ({ input, label, meta: { touched, error }, ...custom }) => (
     <TextField
-        hintText={label}
-        floatingLabelText={label}
+        label={label}
         multiLine
         rows={4}
         errorText={touched && error}

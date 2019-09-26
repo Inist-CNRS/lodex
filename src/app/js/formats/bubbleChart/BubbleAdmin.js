@@ -101,7 +101,7 @@ class BubbleAdmin extends Component {
                     polyglot={polyglot}
                 />
                 <TextField
-                    floatingLabelText={polyglot.t('diameter')}
+                    label={polyglot.t('diameter')}
                     onChange={this.setDiameter}
                     style={styles.input}
                     value={diameter}

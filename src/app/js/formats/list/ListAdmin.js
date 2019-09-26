@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Select, MenuItem } from '@material-ui/core';
+import { FormControl, InputLabel, Select, MenuItem } from '@material-ui/core';
 
 import translate from 'redux-polyglot/translate';
 
@@ -79,27 +79,32 @@ class ListAdmin extends Component {
                     onChange={this.setSubFormatOptions}
                     args={subFormatOptions}
                 />
-                <Select
-                    floatingLabelText={polyglot.t('list_format_select_type')}
-                    onChange={(event, index, newValue) =>
-                        this.setType(newValue)
-                    }
-                    style={styles.input}
-                    value={type}
-                >
-                    <MenuItem value="unordered">
-                        {polyglot.t('list_format_unordered')}
-                    </MenuItem>
-                    <MenuItem value="ordered">
-                        {polyglot.t('list_format_ordered')}
-                    </MenuItem>
-                    <MenuItem value="unordered_without_bullet">
-                        {polyglot.t('list_format_unordered_without_bullet')}
-                    </MenuItem>
-                    <MenuItem value="unordered_flat">
-                        {polyglot.t('list_format_unordered_flat')}
-                    </MenuItem>
-                </Select>
+                <FormControl>
+                    <InputLabel>
+                        {polyglot.t('list_format_select_type')}
+                    </InputLabel>
+
+                    <Select
+                        onChange={(event, index, newValue) =>
+                            this.setType(newValue)
+                        }
+                        style={styles.input}
+                        value={type}
+                    >
+                        <MenuItem value="unordered">
+                            {polyglot.t('list_format_unordered')}
+                        </MenuItem>
+                        <MenuItem value="ordered">
+                            {polyglot.t('list_format_ordered')}
+                        </MenuItem>
+                        <MenuItem value="unordered_without_bullet">
+                            {polyglot.t('list_format_unordered_without_bullet')}
+                        </MenuItem>
+                        <MenuItem value="unordered_flat">
+                            {polyglot.t('list_format_unordered_flat')}
+                        </MenuItem>
+                    </Select>
+                </FormControl>
             </div>
         );
     }

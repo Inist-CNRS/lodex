@@ -81,7 +81,7 @@ export const FacetValueList = ({
             onCheck={onInvertChange(invertFacet, name)}
         />
         <TextField
-            hintText={polyglot.t('filter_value', { field: label })}
+            label={polyglot.t('filter_value', { field: label })}
             value={filter}
             onChange={onFilterChange(
                 changeFacetValue,

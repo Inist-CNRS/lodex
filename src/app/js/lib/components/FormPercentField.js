@@ -18,8 +18,7 @@ const FormPercentField = ({
         min={10}
         max={100}
         step={10}
-        hintText={label}
-        floatingLabelText={label}
+        label={label}
         errorText={touched && error}
         {...input}
         {...custom}

@@ -1,7 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
-import { Select, MenuItem, TextField } from '@material-ui/core';
+import {
+    FormControl,
+    InputLabel,
+    Select,
+    MenuItem,
+    TextField,
+} from '@material-ui/core';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import updateAdminArgs from '../shared/updateAdminArgs';
@@ -73,43 +79,47 @@ export class IstexSummaryAdmin extends Component {
 
         return (
             <div style={styles.container}>
-                <Select
-                    className="searched_field"
-                    floatingLabelText={polyglot.t('searched_field')}
-                    onChange={this.setSearchedField}
-                    style={styles.input}
-                    value={searchedField}
-                >
-                    {SEARCHED_FIELD_VALUES.map(value => (
-                        <MenuItem key={value} value={value}>
-                            {polyglot.t(value)}
-                        </MenuItem>
-                    ))}
-                </Select>
-                <Select
-                    className="year_sort_dir"
-                    floatingLabelText={polyglot.t('year_sort_dir')}
-                    onChange={this.setSortDir}
-                    style={styles.input}
-                    value={sortDir}
-                >
-                    {SORT_YEAR_VALUES.map(value => (
-                        <MenuItem key={value} value={value}>
-                            {polyglot.t(value)}
-                        </MenuItem>
-                    ))}
-                </Select>
+                <FormControl>
+                    <InputLabel>{polyglot.t('searched_field')}</InputLabel>
+                    <Select
+                        className="searched_field"
+                        onChange={this.setSearchedField}
+                        style={styles.input}
+                        value={searchedField}
+                    >
+                        {SEARCHED_FIELD_VALUES.map(value => (
+                            <MenuItem key={value} value={value}>
+                                {polyglot.t(value)}
+                            </MenuItem>
+                        ))}
+                    </Select>
+                </FormControl>
+                <FormControl>
+                    <InputLabel>{polyglot.t('year_sort_dir')}</InputLabel>
+                    <Select
+                        className="year_sort_dir"
+                        onChange={this.setSortDir}
+                        style={styles.input}
+                        value={sortDir}
+                    >
+                        {SORT_YEAR_VALUES.map(value => (
+                            <MenuItem key={value} value={value}>
+                                {polyglot.t(value)}
+                            </MenuItem>
+                        ))}
+                    </Select>
+                </FormControl>
                 <TextField
                     className="year_threshold"
                     type="number"
-                    floatingLabelText={polyglot.t('year_threshold')}
+                    label={polyglot.t('year_threshold')}
                     onChange={this.setYearThreshold}
                     style={styles.input}
                     value={yearThreshold}
                 />
                 <TextField
                     className="document_sort_by"
-                    floatingLabelText={polyglot.t('document_sort_by')}
+                    label={polyglot.t('document_sort_by')}
                     onChange={this.setDocumentSortBy}
                     style={styles.input}
                     value={documentSortBy}

@@ -1,6 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Select, MenuItem, TextField } from '@material-ui/core';
+import {
+    FormControl,
+    InputLabel,
+    Select,
+    MenuItem,
+    TextField,
+} from '@material-ui/core';
 import translate from 'redux-polyglot/translate';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 
@@ -61,21 +67,25 @@ class LinkImageAdmin extends Component {
 
         return (
             <div style={styles.container}>
-                <Select
-                    floatingLabelText={polyglot.t('Select a format')}
-                    onChange={this.setType}
-                    style={styles.input}
-                    value={type}
-                >
-                    <MenuItem value="text">
-                        {polyglot.t('Another column content')}
-                    </MenuItem>
-                    <MenuItem value="column">
-                        {polyglot.t('A custom URL (same for all resources)')}
-                    </MenuItem>
-                </Select>
+                <FormControl>
+                    <InputLabel>{polyglot.t('Select a format')}</InputLabel>
+                    <Select
+                        onChange={this.setType}
+                        style={styles.input}
+                        value={type}
+                    >
+                        <MenuItem value="text">
+                            {polyglot.t('Another column content')}
+                        </MenuItem>
+                        <MenuItem value="column">
+                            {polyglot.t(
+                                'A custom URL (same for all resources)',
+                            )}
+                        </MenuItem>
+                    </Select>
+                </FormControl>
                 <TextField
-                    floatingLabelText={
+                    label={
                         type !== 'text'
                             ? polyglot.t('Custom URL')
                             : polyglot.t("Column's name")
@@ -85,7 +95,7 @@ class LinkImageAdmin extends Component {
                     value={value}
                 />
                 <TextField
-                    floatingLabelText={polyglot.t('height_px')}
+                    label={polyglot.t('height_px')}
                     type="number"
                     onChange={this.setMaxHeight}
                     style={styles.input}

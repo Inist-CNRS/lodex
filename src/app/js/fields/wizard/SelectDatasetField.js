@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Select, MenuItem } from '@material-ui/core';
+import { FormControl, InputLabel, Select, MenuItem } from '@material-ui/core';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
@@ -22,23 +22,25 @@ export const SelectDatasetFieldComponent = ({
     label,
     id,
 }) => (
-    <Select
-        id={id}
-        onChange={handleChange}
-        style={styles.select}
-        floatingLabelText={polyglot.t(label)}
-        value={column}
-    >
-        {datasetFields.map(datasetField => (
-            <MenuItem
-                key={`id_${datasetField}`}
-                className={`column-${datasetField}`}
-                value={datasetField}
-            >
-                {datasetField}
-            </MenuItem>
-        ))}
-    </Select>
+    <FormControl>
+        <InputLabel>{polyglot.t(label)}</InputLabel>
+        <Select
+            id={id}
+            onChange={handleChange}
+            style={styles.select}
+            value={column}
+        >
+            {datasetFields.map(datasetField => (
+                <MenuItem
+                    key={`id_${datasetField}`}
+                    className={`column-${datasetField}`}
+                    value={datasetField}
+                >
+                    {datasetField}
+                </MenuItem>
+            ))}
+        </Select>
+    </FormControl>
 );
 
 SelectDatasetFieldComponent.propTypes = {

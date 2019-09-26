@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Select, MenuItem } from '@material-ui/core';
+import { FormControl, InputLabel, Select, MenuItem } from '@material-ui/core';
 import { scaleQuantize } from 'd3-scale';
 import {
     schemeBlues,
@@ -62,22 +62,20 @@ import ColorScalePreview from '../../lib/components/ColorScalePreview';
 
 const getColorSchemeSelector = schemes => {
     const ColorSchemeSelector = ({ value = [], style, label, onChange }) => (
-        <Select
-            floatingLabelText={label}
-            onChange={onChange}
-            style={style}
-            value={value.join(',')}
-        >
-            {schemes.map(scheme => (
-                <MenuItem key={scheme} value={scheme.join(',')}>
-                    <ColorScalePreview
-                        colorScale={scaleQuantize()
-                            .domain([0, 100])
-                            .range(scheme)}
-                    />
-                </MenuItem>
-            ))}
-        </Select>
+        <FormControl>
+            <InputLabel>{label}</InputLabel>
+            <Select onChange={onChange} style={style} value={value.join(',')}>
+                {schemes.map(scheme => (
+                    <MenuItem key={scheme} value={scheme.join(',')}>
+                        <ColorScalePreview
+                            colorScale={scaleQuantize()
+                                .domain([0, 100])
+                                .range(scheme)}
+                        />
+                    </MenuItem>
+                ))}
+            </Select>
+        </FormControl>
     );
     ColorSchemeSelector.propTypes = {
         value: PropTypes.arrayOf(PropTypes.string),

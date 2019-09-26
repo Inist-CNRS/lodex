@@ -1,5 +1,10 @@
 import React from 'react';
-import { Select } from '@material-ui/core';
+import {
+    FormControl,
+    InputLabel,
+    FormHelperText,
+    Select,
+} from '@material-ui/core';
 import { formField as formFieldPropTypes } from '../../propTypes';
 
 const FormSelectField = ({
@@ -9,14 +14,15 @@ const FormSelectField = ({
     meta: { touched, error },
     ...props
 }) => (
-    <Select
-        floatingLabelText={label}
-        hintText={hint}
-        errorText={touched && error}
-        {...input}
-        onChange={(event, index, value) => input.onChange(value)}
-        {...props}
-    />
+    <FormControl>
+        <InputLabel>{label}</InputLabel>
+        <Select
+            {...input}
+            onChange={(event, index, value) => input.onChange(value)}
+            {...props}
+        />
+        <FormHelperText>{touched && error}</FormHelperText>
+    </FormControl>
 );
 
 FormSelectField.propTypes = formFieldPropTypes;

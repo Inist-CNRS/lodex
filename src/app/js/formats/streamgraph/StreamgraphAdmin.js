@@ -105,13 +105,13 @@ class StreamgraphAdmin extends Component {
                     polyglot={polyglot}
                 />
                 <TextField
-                    floatingLabelText={polyglot.t('max_char_number_in_legends')}
+                    label={polyglot.t('max_char_number_in_legends')}
                     onChange={this.setMaxLegendLength}
                     style={styles.input}
                     value={maxLegendLength}
                 />
                 <TextField
-                    floatingLabelText={polyglot.t('height_px')}
+                    label={polyglot.t('height_px')}
                     onChange={this.setHeight}
                     style={styles.input}
                     value={height}

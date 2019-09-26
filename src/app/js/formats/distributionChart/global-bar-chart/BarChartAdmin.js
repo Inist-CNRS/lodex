@@ -1,6 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { TextField, Select, MenuItem, Checkbox } from '@material-ui/core';
+import {
+    FormControl,
+    InputLabel,
+    Select,
+    MenuItem,
+    TextField,
+    Checkbox,
+} from '@material-ui/core';
 import translate from 'redux-polyglot/translate';
 
 import { polyglot as polyglotPropTypes } from '../../../propTypes';
@@ -163,29 +170,31 @@ class BarChartAdmin extends Component {
                     onChange={this.setColors}
                     polyglot={polyglot}
                 />
-                <Select
-                    floatingLabelText={polyglot.t('direction')}
-                    onChange={this.setDirection}
-                    style={styles.input}
-                    value={direction}
-                >
-                    <MenuItem value="horizontal">
-                        {polyglot.t('horizontal')}
-                    </MenuItem>
-                    <MenuItem value="vertical">
-                        {polyglot.t('vertical')}
-                    </MenuItem>
-                </Select>
+                <FormControl>
+                    <InputLabel>{polyglot.t('direction')}</InputLabel>
+                    <Select
+                        onChange={this.setDirection}
+                        style={styles.input}
+                        value={direction}
+                    >
+                        <MenuItem value="horizontal">
+                            {polyglot.t('horizontal')}
+                        </MenuItem>
+                        <MenuItem value="vertical">
+                            {polyglot.t('vertical')}
+                        </MenuItem>
+                    </Select>
+                </FormControl>
                 <TextField
                     type="number"
-                    floatingLabelText={polyglot.t('category_margin')}
+                    label={polyglot.t('category_margin')}
                     onChange={this.setCategoryMargin}
                     style={styles.input}
                     value={categoryMargin}
                 />
                 <TextField
                     type="number"
-                    floatingLabelText={polyglot.t('value_margin')}
+                    label={polyglot.t('value_margin')}
                     onChange={this.setValueMargin}
                     style={styles.input}
                     value={valueMargin}
@@ -208,17 +217,22 @@ class BarChartAdmin extends Component {
                     style={styles.input}
                     checked={axisRoundValue}
                 />
-                <Select
-                    floatingLabelText={polyglot.t('scale')}
-                    onChange={this.setScale}
-                    style={styles.input}
-                    value={scale}
-                >
-                    <MenuItem value="linear">{polyglot.t('linear')}</MenuItem>
-                    <MenuItem value="log">{polyglot.t('log')}</MenuItem>
-                </Select>
+                <FormControl>
+                    <InputLabel>{polyglot.t('scale')}</InputLabel>
+                    <Select
+                        onChange={this.setScale}
+                        style={styles.input}
+                        value={scale}
+                    >
+                        <MenuItem value="linear">
+                            {polyglot.t('linear')}
+                        </MenuItem>
+                        <MenuItem value="log">{polyglot.t('log')}</MenuItem>
+                    </Select>{' '}
+                </FormControl>
+
                 <TextField
-                    floatingLabelText={polyglot.t('bar_size')}
+                    label={polyglot.t('bar_size')}
                     onChange={this.setBarSize}
                     style={styles.input}
                     value={barSize}

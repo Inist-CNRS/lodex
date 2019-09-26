@@ -66,14 +66,17 @@ class LodexFieldAdmin extends Component {
     };
 
     render() {
-        const { p: polyglot, args: { param } } = this.props;
+        const {
+            p: polyglot,
+            args: { param },
+        } = this.props;
         const { labelArray, hiddenInfo } = param || defaultArgs.param;
         const label = labelArray.join(';');
 
         return (
             <div style={styles.container}>
                 <TextField
-                    floatingLabelText={polyglot.t('param_labels')}
+                    label={polyglot.t('param_labels')}
                     multiLine={true}
                     onChange={this.setRequest}
                     style={styles.input}

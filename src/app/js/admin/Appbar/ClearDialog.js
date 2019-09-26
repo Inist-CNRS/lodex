@@ -129,7 +129,7 @@ class ClearDialogComponent extends Component {
                     {polyglot.t('enter_name')} :<b> {this.getInstanceName()}</b>
                     <TextField
                         name="field-name-instance"
-                        hintText={polyglot.t('instance_name')}
+                        label={polyglot.t('instance_name')}
                         fullWidth
                         onChange={this.handleChangeField}
                         onKeyPress={e => this.handleKeyPress(e, type)}

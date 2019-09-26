@@ -1,7 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
-import { TextField, Select, MenuItem } from '@material-ui/core';
+import {
+    FormControl,
+    InputLabel,
+    TextField,
+    Select,
+    MenuItem,
+} from '@material-ui/core';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 
 const styles = {
@@ -50,26 +56,29 @@ class UriAdmin extends Component {
 
         return (
             <div style={styles.container}>
-                <Select
-                    floatingLabelText={polyglot.t('uri_format_select_type')}
-                    onChange={this.setType}
-                    style={styles.input}
-                    value={type}
-                >
-                    <MenuItem value="value">
-                        {polyglot.t('uri_format_column')}
-                    </MenuItem>
-                    <MenuItem value="text">
-                        {polyglot.t('uri_format_custom')}
-                    </MenuItem>
-                    <MenuItem value="column">
-                        {polyglot.t('uri_format_another_column')}
-                    </MenuItem>
-                </Select>
-
+                <FormControl>
+                    <InputLabel>
+                        {polyglot.t('uri_format_select_type')}
+                    </InputLabel>
+                    <Select
+                        onChange={this.setType}
+                        style={styles.input}
+                        value={type}
+                    >
+                        <MenuItem value="value">
+                            {polyglot.t('uri_format_column')}
+                        </MenuItem>
+                        <MenuItem value="text">
+                            {polyglot.t('uri_format_custom')}
+                        </MenuItem>
+                        <MenuItem value="column">
+                            {polyglot.t('uri_format_another_column')}
+                        </MenuItem>
+                    </Select>
+                </FormControl>
                 {type !== 'value' && (
                     <TextField
-                        floatingLabelText={
+                        label={
                             type !== 'text'
                                 ? polyglot.t('uri_format_custom_value')
                                 : polyglot.t('uri_format_another_column_value')

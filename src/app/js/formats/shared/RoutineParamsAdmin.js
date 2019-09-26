@@ -1,6 +1,12 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { TextField, Select, MenuItem } from '@material-ui/core';
+import {
+    FormControl,
+    InputLabel,
+    Select,
+    MenuItem,
+    TextField,
+} from '@material-ui/core';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 
@@ -72,7 +78,7 @@ class RoutineParamsAdmin extends Component {
         if (showMaxSize) {
             maxSizeField = (
                 <TextField
-                    floatingLabelText={polyglot.t('max_fields')}
+                    label={polyglot.t('max_fields')}
                     onChange={this.setMaxSize}
                     style={styles.input}
                     value={maxSize}
@@ -86,7 +92,7 @@ class RoutineParamsAdmin extends Component {
         if (showMinValue) {
             minValueField = (
                 <TextField
-                    floatingLabelText={polyglot.t('min_value')}
+                    label={polyglot.t('min_value')}
                     onChange={this.setMinValue}
                     style={styles.input}
                     value={minValue}
@@ -100,7 +106,7 @@ class RoutineParamsAdmin extends Component {
         if (showMaxValue) {
             maxValueField = (
                 <TextField
-                    floatingLabelText={polyglot.t('max_value')}
+                    label={polyglot.t('max_value')}
                     onChange={this.setMaxValue}
                     style={styles.input}
                     value={maxValue}
@@ -113,25 +119,27 @@ class RoutineParamsAdmin extends Component {
         var orderByField;
         if (showOrderBy) {
             orderByField = (
-                <Select
-                    floatingLabelText={polyglot.t('order_by')}
-                    onChange={this.setOrderBy}
-                    style={styles.input}
-                    value={orderBy}
-                >
-                    <MenuItem value="_id/asc">
-                        {polyglot.t('label_asc')}
-                    </MenuItem>
-                    <MenuItem value="_id/desc">
-                        {polyglot.t('label_desc')}
-                    </MenuItem>
-                    <MenuItem value="value/asc">
-                        {polyglot.t('value_asc')}
-                    </MenuItem>
-                    <MenuItem value="value/desc">
-                        {polyglot.t('value_desc')}
-                    </MenuItem>
-                </Select>
+                <FormControl>
+                    <InputLabel>{polyglot.t('order_by')}</InputLabel>
+                    <Select
+                        onChange={this.setOrderBy}
+                        style={styles.input}
+                        value={orderBy}
+                    >
+                        <MenuItem value="_id/asc">
+                            {polyglot.t('label_asc')}
+                        </MenuItem>
+                        <MenuItem value="_id/desc">
+                            {polyglot.t('label_desc')}
+                        </MenuItem>
+                        <MenuItem value="value/asc">
+                            {polyglot.t('value_asc')}
+                        </MenuItem>
+                        <MenuItem value="value/desc">
+                            {polyglot.t('value_desc')}
+                        </MenuItem>
+                    </Select>
+                </FormControl>
             );
         } else {
             orderByField = '';
