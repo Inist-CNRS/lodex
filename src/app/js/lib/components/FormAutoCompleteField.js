@@ -4,7 +4,8 @@ import { bindActionCreators } from 'redux';
 import compose from 'recompose/compose';
 import withHandlers from 'recompose/withHandlers';
 import { connect } from 'react-redux';
-import { AutoComplete } from '@material-ui/core';
+
+import Autocomplete from './Autocomplete';
 
 import { fetch as fetchAction } from '../../fetch';
 import { formField as formFieldPropTypes } from '../../propTypes';
@@ -19,8 +20,8 @@ const FormAutoCompleteField = ({
     meta: { error },
     ...props
 }) => (
-    <AutoComplete
-        floatingLabelText={error ? error.message || error : label}
+    <Autocomplete
+        label={error ? error.message || error : label}
         onUpdateInput={handleComplete}
         onNewRequest={handleValueChosen}
         dataSource={dataSource}
