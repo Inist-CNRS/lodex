@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { RadioButton, TextField } from '@material-ui/core';
+import { FormControlLabel, Radio, TextField } from '@material-ui/core';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
 import withHandlers from 'recompose/withHandlers';
@@ -27,13 +27,17 @@ export const StepValueValueComponent = ({
     value,
 }) => (
     <div id="step-value-value">
-        <RadioButton
-            className="radio_value"
+        <FormControlLabel
             label={polyglot.t('a_value')}
-            value="value"
-            onClick={handleSelect}
-            checked={selected}
-            style={styles.radio}
+            control={
+                <Radio
+                    className="radio_value"
+                    value="value"
+                    onClick={handleSelect}
+                    checked={selected}
+                    style={styles.radio}
+                />
+            }
         />
         {selected && (
             <div style={styles.inset}>
