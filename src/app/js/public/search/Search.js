@@ -67,7 +67,6 @@ const styles = stylesToClassname(
         searchContent: {
             '@media (min-width: 992px)': {
                 display: 'flex',
-                flexDirection: 'row-reverse',
             },
         },
         facets: {
