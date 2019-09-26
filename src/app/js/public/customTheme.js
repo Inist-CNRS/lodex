@@ -2,13 +2,30 @@ import theme from '../theme';
 
 export default {
     palette: {
-        accent1Color: theme.orange.primary,
-        primary1Color: theme.green.primary,
-        primary2Color: theme.purple.primary,
-        textColor: '#5F6368',
+        common: {
+            black: theme.black,
+            white: theme.white,
+        },
+        background: {
+            paper: theme.white,
+            default: '#fafafa',
+        },
+        primary: {
+            main: theme.green.primary,
+            contrastText: theme.white,
+        },
+        secondary: {
+            main: theme.purple.primary,
+            contrastText: theme.white,
+        },
+        error: {
+            main: theme.red.primary,
+            contrastText: theme.white,
+        },
     },
-    fontFamily: 'Quicksand, sans-serif',
     typography: {
         useNextVariants: true,
+        fontFamily: 'Quicksand, sans-serif',
+        fontSize: 12,
     },
 };
