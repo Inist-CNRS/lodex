@@ -1,98 +1,101 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
-import SuperSelectField from 'material-ui-superselectfield';
+import {
+    FormControl,
+    FormHelperText,
+    InputLabel,
+    Select,
+} from '@material-ui/core';
 import classnames from 'classnames';
-import { Button } from '@material-ui/core';
+import stylesToClassname from '../lib/stylesToClassName';
 
 import { polyglot as polyglotPropTypes } from '../propTypes';
 import WidgetsSelectFieldItem from './WidgetsSelectFieldItem';
 import getFieldClassName from '../lib/getFieldClassName';
 
-const styles = {
-    chip: {
-        width: '100%',
-        height: '100%',
-        margin: 0,
-        borderRadius: '50%',
-        backgroundSize: 'cover',
+const styles = stylesToClassname(
+    {
+        chip: {
+            width: '100%',
+            height: '100%',
+            margin: 0,
+            borderRadius: '50%',
+            backgroundSize: 'cover',
+        },
+        select: {
+            margin: '0px 0px 0px 18px',
+        },
+        empty: {
+            minHeight: 42,
+            lineHeight: '42px',
+        },
+        noEmpty: {
+            display: 'flex',
+            flexWrap: 'wrap',
+        },
     },
-    select: {
-        margin: '0px 0px 0px 18px',
-    },
-    empty: {
-        minHeight: 42,
-        lineHeight: '42px',
-    },
-    menuFooter: {
-        display: 'flex',
-        flexGrow: 2,
-        justifyContent: 'flex-start',
+    'widget-select-fields',
+);
+
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+    PaperProps: {
+        style: {
+            maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+            width: 250,
+        },
     },
 };
 
-export class WidgetsSelectFieldsComponent extends Component {
-    handleChange = values => {
-        this.props.onChange(values);
+export const WidgetsSelectFieldsComponent = ({
+    p: polyglot,
+    fields,
+    value,
+    onChange,
+}) => {
+    const handleChange = values => {
+        onChange(values);
     };
 
-    handleRemove = value => {
-        this.handleChange([
-            ...this.props.value.slice(
-                0,
-                this.props.value.findIndex(f => f.value === value),
-            ),
-            ...this.props.value.slice(
-                this.props.value.findIndex(f => f.value === value) + 1,
-            ),
+    const handleRemove = removedValue => {
+        handleChange([
+            ...value.slice(0, value.findIndex(f => f.value === removedValue)),
+            ...value.slice(value.findIndex(f => f.value === removedValue) + 1),
         ]);
     };
 
-    renderSelected = values => {
-        const { p: polyglot } = this.props;
-
-        return values.length ? (
-            <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+    const renderSelected = values =>
+        values.length ? (
+            <div className={styles.noEmpty}>
                 {values.map(({ label, value }) => (
                     <WidgetsSelectFieldItem
                         key={value}
                         value={value}
                         label={label}
-                        onRemove={this.handleRemove}
+                        onRemove={handleRemove}
                     />
                 ))}
             </div>
         ) : (
-            <div style={styles.empty}>
+            <div className={styles.empty}>
                 {polyglot.t('select_exported_fields_all')}
             </div>
         );
-    };
 
-    render() {
-        const { fields, value, p: polyglot } = this.props;
-
-        return (
-            <div className="widget-select-field">
-                <SuperSelectField
-                    checkPosition="left"
+    return (
+        <div className="widget-select-field">
+            <FormControl>
+                <InputLabel>{polyglot.t('select_exported_fields')}</InputLabel>
+                <Select
                     multiple
-                    onChange={this.handleChange}
-                    selectionsRenderer={this.renderSelected}
-                    style={styles.select}
                     value={value}
-                    floatingLabel={polyglot.t('select_exported_fields')}
-                    hintTextAutocomplete={polyglot.t(
-                        'filter_fields_for_widgets',
-                    )}
-                    menuCloseButton={
-                        <Button
-                            className="btn-apply-widget-select"
-                            label={polyglot.t('apply')}
-                        />
-                    }
-                    menuFooterStyle={styles.menuFooter}
+                    onChange={handleChange}
+                    renderValue={renderSelected}
+                    MenuProps={MenuProps}
+                    className={styles.select}
                 >
                     {fields.map(field => (
                         <div
@@ -107,17 +110,20 @@ export class WidgetsSelectFieldsComponent extends Component {
                             {field.label}
                         </div>
                     ))}
-                </SuperSelectField>
-            </div>
-        );
-    }
-}
+                </Select>
+                <FormHelperText>
+                    {polyglot.t('filter_fields_for_widgets')}
+                </FormHelperText>
+            </FormControl>
+        </div>
+    );
+};
 
 WidgetsSelectFieldsComponent.propTypes = {
-    fields: PropTypes.arrayOf(PropTypes.object).isRequired,
-    onChange: PropTypes.func.isRequired,
     p: polyglotPropTypes.isRequired,
+    fields: PropTypes.arrayOf(PropTypes.object).isRequired,
     value: PropTypes.arrayOf(PropTypes.object),
+    onChange: PropTypes.func.isRequired,
 };
 
 WidgetsSelectFieldsComponent.defaultProps = {
