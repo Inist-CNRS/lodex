@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { SelectField, MenuItem } from '@material-ui/core';
+import { Select, MenuItem } from '@material-ui/core';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
@@ -22,7 +22,7 @@ export const SelectDatasetFieldComponent = ({
     label,
     id,
 }) => (
-    <SelectField
+    <Select
         id={id}
         onChange={handleChange}
         style={styles.select}
@@ -38,7 +38,7 @@ export const SelectDatasetFieldComponent = ({
                 {datasetField}
             </MenuItem>
         ))}
-    </SelectField>
+    </Select>
 );
 
 SelectDatasetFieldComponent.propTypes = {

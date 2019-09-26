@@ -1,5 +1,5 @@
 import React from 'react';
-import { SelectField } from '@material-ui/core';
+import { Select } from '@material-ui/core';
 import { formField as formFieldPropTypes } from '../../propTypes';
 
 const FormSelectField = ({
@@ -9,7 +9,7 @@ const FormSelectField = ({
     meta: { touched, error },
     ...props
 }) => (
-    <SelectField
+    <Select
         floatingLabelText={label}
         hintText={hint}
         errorText={touched && error}

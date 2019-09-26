@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { TextField, SelectField, MenuItem, Checkbox } from '@material-ui/core';
+import { TextField, Select, MenuItem, Checkbox } from '@material-ui/core';
 import translate from 'redux-polyglot/translate';
 
 import { polyglot as polyglotPropTypes } from '../../../propTypes';
@@ -163,7 +163,7 @@ class BarChartAdmin extends Component {
                     onChange={this.setColors}
                     polyglot={polyglot}
                 />
-                <SelectField
+                <Select
                     floatingLabelText={polyglot.t('direction')}
                     onChange={this.setDirection}
                     style={styles.input}
@@ -175,7 +175,7 @@ class BarChartAdmin extends Component {
                     <MenuItem value="vertical">
                         {polyglot.t('vertical')}
                     </MenuItem>
-                </SelectField>
+                </Select>
                 <TextField
                     type="number"
                     floatingLabelText={polyglot.t('category_margin')}
@@ -208,7 +208,7 @@ class BarChartAdmin extends Component {
                     style={styles.input}
                     checked={axisRoundValue}
                 />
-                <SelectField
+                <Select
                     floatingLabelText={polyglot.t('scale')}
                     onChange={this.setScale}
                     style={styles.input}
@@ -216,7 +216,7 @@ class BarChartAdmin extends Component {
                 >
                     <MenuItem value="linear">{polyglot.t('linear')}</MenuItem>
                     <MenuItem value="log">{polyglot.t('log')}</MenuItem>
-                </SelectField>
+                </Select>
                 <TextField
                     floatingLabelText={polyglot.t('bar_size')}
                     onChange={this.setBarSize}

@@ -8,7 +8,7 @@ import PropTypes from 'prop-types';
 import {
     IconButton,
     MenuItem,
-    SelectField,
+    Select,
     TextField,
 } from '@material-ui/core';
 
@@ -172,7 +172,7 @@ class Pagination extends Component {
                 <div style={styles.elements}>
                     <div style={styles.label}>{`${texts.page} `}</div>
                     {pages.length < 11 && (
-                        <SelectField
+                        <Select
                             onChange={this.handleChangePageFromSelect}
                             value={currentPage}
                             style={styles.input}
@@ -183,7 +183,7 @@ class Pagination extends Component {
                                     {page + 1}
                                 </MenuItem>
                             ))}
-                        </SelectField>
+                        </Select>
                     )}
                     {pages.length > 10 && (
                         <TextField
@@ -197,7 +197,7 @@ class Pagination extends Component {
                 </div>
                 <div style={styles.elements}>
                     <div style={styles.label}>{`${texts.perPage} `}</div>
-                    <SelectField
+                    <Select
                         onChange={this.handleChangePerPage}
                         value={perPage}
                         style={styles.input}
@@ -207,7 +207,7 @@ class Pagination extends Component {
                         <MenuItem value={20}>20</MenuItem>
                         <MenuItem value={50}>50</MenuItem>
                         <MenuItem value={100}>100</MenuItem>
-                    </SelectField>
+                    </Select>
                 </div>
                 {navigationArrow}
             </div>

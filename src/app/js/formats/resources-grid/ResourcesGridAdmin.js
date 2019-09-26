@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { SelectField, MenuItem, Checkbox, TextField } from '@material-ui/core';
+import { Select, MenuItem, Checkbox, TextField } from '@material-ui/core';
 import translate from 'redux-polyglot/translate';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
@@ -86,7 +86,7 @@ class RessourcesGridAdmin extends Component {
                     onChange={this.setParams}
                     polyglot={polyglot}
                 />
-                <SelectField
+                <Select
                     floatingLabelText={polyglot.t(
                         'list_format_select_image_width',
                     )}
@@ -112,7 +112,7 @@ class RessourcesGridAdmin extends Component {
                     <MenuItem value="100%">
                         {polyglot.t('hundred_percent')}
                     </MenuItem>
-                </SelectField>
+                </Select>
                 <Checkbox
                     label={polyglot.t('allow_to_load_more')}
                     onCheck={this.toggleAllowToLoadMore}

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { MenuItem, SelectField, TextField } from '@material-ui/core';
+import { MenuItem, Select, TextField } from '@material-ui/core';
 
 const styles = {
     container: {
@@ -44,7 +44,7 @@ class DefaultAdminComponentWithLabel extends Component {
 
         return (
             <div style={styles.container}>
-                <SelectField
+                <Select
                     floatingLabelText="Select a format"
                     onChange={this.setType}
                     style={styles.input}
@@ -55,7 +55,7 @@ class DefaultAdminComponentWithLabel extends Component {
                         A custom text (same for all resources)
                     </MenuItem>
                     <MenuItem value="column">Another column content</MenuItem>
-                </SelectField>
+                </Select>
 
                 {type !== 'value' && (
                     <TextField

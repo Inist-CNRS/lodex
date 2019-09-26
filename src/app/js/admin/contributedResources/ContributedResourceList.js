@@ -6,7 +6,7 @@ import translate from 'redux-polyglot/translate';
 import {
     Button,
     CardText,
-    SelectField,
+    Select,
     MenuItem,
     Table,
     TableHead,
@@ -72,7 +72,7 @@ export class ContributedResourceListComponent extends Component {
         return (
             <div className="contributed_resources">
                 <CardText>
-                    <SelectField
+                    <Select
                         className="filter"
                         style={styles.select}
                         autoWidth
@@ -90,7 +90,7 @@ export class ContributedResourceListComponent extends Component {
                                 })}
                             </MenuItem>
                         ))}
-                    </SelectField>
+                    </Select>
                 </CardText>
 
                 <CardText>

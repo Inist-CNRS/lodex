@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { SelectField, MenuItem } from '@material-ui/core';
+import { Select, MenuItem } from '@material-ui/core';
 import translate from 'redux-polyglot/translate';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import updateAdminArgs from '../shared/updateAdminArgs';
@@ -71,7 +71,7 @@ class IdentifierBadgeAdmin extends Component {
         ));
         return (
             <div style={styles.container}>
-                <SelectField
+                <Select
                     floatingLabelText={polyglot.t(
                         'list_format_select_identifier',
                     )}
@@ -82,7 +82,7 @@ class IdentifierBadgeAdmin extends Component {
                     value={typid}
                 >
                     {items}
-                </SelectField>
+                </Select>
                 <ColorPickerParamsAdmin
                     colors={this.state.colors || defaultArgs.colors}
                     onChange={this.setColors}

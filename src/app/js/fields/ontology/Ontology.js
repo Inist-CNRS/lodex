@@ -5,7 +5,7 @@ import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 import {
     Divider,
-    SelectField,
+    Select,
     MenuItem,
     Card,
     CardHeader,
@@ -49,7 +49,7 @@ export class OntologyComponent extends Component {
                 <CardHeader title={<h3>{polyglot.t('model')}</h3>} />
                 <Divider />
                 <CardText>
-                    <SelectField
+                    <Select
                         autoWidth
                         value={filter}
                         onChange={this.handleFilterChange}
@@ -65,7 +65,7 @@ export class OntologyComponent extends Component {
                         <MenuItem value={'dataset'}>
                             {polyglot.t('model_filter_dataset')}
                         </MenuItem>
-                    </SelectField>
+                    </Select>
                     {(filter === ALL || filter === COVER_DATASET) && (
                         <OntologyTable title="dataset" />
                     )}
