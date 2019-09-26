@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
-import { TableRowColumn } from '@material-ui/core';
+import { TableCell } from '@material-ui/core';
 import { connect } from 'react-redux';
 
 import { fromFields } from '../../sharedSelectors';
@@ -29,7 +29,7 @@ const styles = {
 
 export const ExcerptLineColComponent = ({ field, value = '' }) =>
     isLongText(value) ? (
-        <TableRowColumn
+        <TableCell
             title={value}
             style={styles.cell}
             className={classnames(
@@ -38,9 +38,9 @@ export const ExcerptLineColComponent = ({ field, value = '' }) =>
             )}
         >
             {getShortText(value)}
-        </TableRowColumn>
+        </TableCell>
     ) : (
-        <TableRowColumn
+        <TableCell
             style={styles.cell}
             className={classnames(
                 'publication-preview-column',
@@ -48,7 +48,7 @@ export const ExcerptLineColComponent = ({ field, value = '' }) =>
             )}
         >
             {value}
-        </TableRowColumn>
+        </TableCell>
     );
 
 ExcerptLineColComponent.propTypes = {

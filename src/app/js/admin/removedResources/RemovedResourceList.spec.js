@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import moment from 'moment';
-import { TableHeaderColumn, TableRowColumn } from '@material-ui/core';
+import { TableCell } from '@material-ui/core';
 
 import { RemovedResourceListComponent as RemovedResourceList } from './RemovedResourceList';
 import Pagination from '../../lib/components/Pagination';
@@ -58,7 +58,7 @@ describe('<RemovedResourceList />', () => {
         });
     });
 
-    it('should render the TableHeaderColumn for each column', () => {
+    it('should render the TableCell for each column', () => {
         const wrapper = shallow(
             <RemovedResourceList
                 currentPage={1}
@@ -71,7 +71,7 @@ describe('<RemovedResourceList />', () => {
             />,
         );
 
-        const headers = wrapper.find(TableHeaderColumn);
+        const headers = wrapper.find(TableCell);
         expect(
             headers
                 .at(0)
@@ -98,7 +98,7 @@ describe('<RemovedResourceList />', () => {
         ).toEqual('Col 2');
     });
 
-    it('should render the TableRowColumn for each value for each column', () => {
+    it('should render the TableCell for each value for each column', () => {
         const wrapper = shallow(
             <RemovedResourceList
                 currentPage={1}
@@ -111,7 +111,7 @@ describe('<RemovedResourceList />', () => {
             />,
         );
 
-        const cells = wrapper.find(TableRowColumn);
+        const cells = wrapper.find(TableCell);
         expect(
             cells
                 .at(0)

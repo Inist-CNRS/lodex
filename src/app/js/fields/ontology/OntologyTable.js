@@ -4,12 +4,7 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import withHandlers from 'recompose/withHandlers';
 import translate from 'redux-polyglot/translate';
-import {
-    Table,
-    TableHeader,
-    TableHeaderColumn,
-    TableRow,
-} from '@material-ui/core';
+import { Table, TableHead, TableCell, TableRow } from '@material-ui/core';
 
 import {
     field as fieldPropTypes,
@@ -46,32 +41,22 @@ class OntologyTable extends Component {
             <div className={`ontology-table-${title}`}>
                 <h4>{polyglot.t(title)}</h4>
                 <Table fixedHeader={false} style={styles.table}>
-                    <TableHeader
+                    <TableHead
                         displaySelectAll={false}
                         adjustForCheckbox={false}
                     >
                         <TableRow>
-                            <TableHeaderColumn />
-                            <TableHeaderColumn>
-                                {polyglot.t('identifier')}
-                            </TableHeaderColumn>
-                            <TableHeaderColumn>
-                                {polyglot.t('label')}
-                            </TableHeaderColumn>
-                            <TableHeaderColumn>
-                                {polyglot.t('cover')}
-                            </TableHeaderColumn>
-                            <TableHeaderColumn>
-                                {polyglot.t('scheme')}
-                            </TableHeaderColumn>
-                            <TableHeaderColumn>
+                            <TableCell />
+                            <TableCell>{polyglot.t('identifier')}</TableCell>
+                            <TableCell>{polyglot.t('label')}</TableCell>
+                            <TableCell>{polyglot.t('cover')}</TableCell>
+                            <TableCell>{polyglot.t('scheme')}</TableCell>
+                            <TableCell>
                                 {polyglot.t('count_of_field')}
-                            </TableHeaderColumn>
-                            <TableHeaderColumn>
-                                {polyglot.t('language')}
-                            </TableHeaderColumn>
+                            </TableCell>
+                            <TableCell>{polyglot.t('language')}</TableCell>
                         </TableRow>
-                    </TableHeader>
+                    </TableHead>
                     <OntologyFieldList
                         lockAxis="y"
                         useDragHandle

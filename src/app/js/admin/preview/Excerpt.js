@@ -9,8 +9,8 @@ import memoize from 'lodash.memoize';
 import {
     Table,
     TableBody,
-    TableHeader,
-    TableHeaderColumn,
+    TableHead,
+    TableCell,
     TableRow,
 } from '@material-ui/core';
 
@@ -58,10 +58,10 @@ export const ExcerptComponent = ({
         style={styles.table(isPreview)}
         onCellClick={onCellClick}
     >
-        <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
+        <TableHead displaySelectAll={false} adjustForCheckbox={false}>
             <TableRow onCellClick={onHeaderClick}>
                 {columns.map(field => (
-                    <TableHeaderColumn
+                    <TableCell
                         key={field.name}
                         className={`publication-excerpt-column publication-excerpt-column-${getFieldClassName(
                             field,
@@ -74,10 +74,10 @@ export const ExcerptComponent = ({
                         }
                     >
                         <ExcerptHeader field={field} />
-                    </TableHeaderColumn>
+                    </TableCell>
                 ))}
             </TableRow>
-        </TableHeader>
+        </TableHead>
         <TableBody displayRowCheckbox={false}>
             {lines.map((line, index) => (
                 <ExcerptLine

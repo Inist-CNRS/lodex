@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import pure from 'recompose/pure';
-import { TableHeaderColumn } from '@material-ui/core';
+import { TableCell } from '@material-ui/core';
 import { isLongText, getShortText } from '../../lib/longTexts';
 
 const styles = {
@@ -15,14 +15,11 @@ const styles = {
 
 export const ParsingExcerptHeaderColumnComponent = ({ style, column }) =>
     isLongText(column) ? (
-        <TableHeaderColumn
-            style={Object.assign(styles.col, style)}
-            title={column}
-        >
+        <TableCell style={Object.assign(styles.col, style)} title={column}>
             {getShortText(column)}
-        </TableHeaderColumn>
+        </TableCell>
     ) : (
-        <TableHeaderColumn style={styles.col}>{column}</TableHeaderColumn>
+        <TableCell style={styles.col}>{column}</TableCell>
     );
 
 ParsingExcerptHeaderColumnComponent.propTypes = {

@@ -1,7 +1,7 @@
 import React from 'react';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
-import { TableRow, TableRowColumn } from '@material-ui/core';
+import { TableRow, TableCell } from '@material-ui/core';
 import { SortableElement } from 'react-sortable-hoc';
 import DragButton from './DragButton';
 import { connect } from 'react-redux';
@@ -41,7 +41,7 @@ const styles = {
 
 const OntologyFieldComponent = ({ field, characteristics, p: polyglot }) => (
     <TableRow>
-        <TableRowColumn style={styles.actionCol}>
+        <TableCell style={styles.actionCol}>
             <DragButton disabled={field.name === 'uri'} />
             {field.cover === COVER_DATASET && (
                 <EditButton
@@ -50,9 +50,9 @@ const OntologyFieldComponent = ({ field, characteristics, p: polyglot }) => (
                 />
             )}
             <EditOntologyFieldButton field={field} />
-        </TableRowColumn>
-        <TableRowColumn>{field.name}</TableRowColumn>
-        <TableRowColumn>
+        </TableCell>
+        <TableCell>{field.name}</TableCell>
+        <TableCell>
             {field.label}
             {(field.overview === overview.RESOURCE_TITLE ||
                 field.overview === overview.DATASET_TITLE) && (
@@ -68,16 +68,16 @@ const OntologyFieldComponent = ({ field, characteristics, p: polyglot }) => (
             {field.overview === overview.RESOURCE_DETAIL_2 && (
                 <span style={styles.badge}>detail 2</span>
             )}
-        </TableRowColumn>
-        <TableRowColumn>{polyglot.t(`cover_${field.cover}`)}</TableRowColumn>
-        <TableRowColumn>
+        </TableCell>
+        <TableCell>{polyglot.t(`cover_${field.cover}`)}</TableCell>
+        <TableCell>
             {field.scheme && <Link href={field.scheme}>{field.scheme}</Link>}
-        </TableRowColumn>
-        <TableRowColumn>{field.count || 1}</TableRowColumn>
-        <TableRowColumn>
+        </TableCell>
+        <TableCell>{field.count || 1}</TableCell>
+        <TableCell>
             {field.language &&
                 languages.find(l => l.code === field.language).label}
-        </TableRowColumn>
+        </TableCell>
     </TableRow>
 );
 

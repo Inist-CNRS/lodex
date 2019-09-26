@@ -37,7 +37,7 @@ describe('<Dataset />', () => {
         });
     });
 
-    it('should render the TableHeaderColumn for each column', () => {
+    it('should render the TableCell for each column', () => {
         const wrapper = shallow(
             <Dataset
                 currentPage={1}
@@ -62,7 +62,7 @@ describe('<Dataset />', () => {
         });
     });
 
-    it('should render the TableRowColumn for each value for each column', () => {
+    it('should render the TableCell for each value for each column', () => {
         const wrapper = shallow(
             <Dataset
                 currentPage={1}

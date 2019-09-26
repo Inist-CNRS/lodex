@@ -1,14 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import { TableCell } from '@material-ui/core';
 
-import { TableRowColumn } from '@material-ui/core';
 import Format from '../Format';
 import { field as fieldPropTypes } from '../../propTypes';
 import getFieldClassName from '../../lib/getFieldClassName';
 
 const DatasetColumn = ({ column, columns, resource }) => (
-    <TableRowColumn
+    <TableCell
         className={classnames(
             'dataset-column',
             `dataset-${getFieldClassName(column)}`,
@@ -21,7 +21,7 @@ const DatasetColumn = ({ column, columns, resource }) => (
             resource={resource}
             shrink
         />
-    </TableRowColumn>
+    </TableCell>
 );
 
 DatasetColumn.propTypes = {

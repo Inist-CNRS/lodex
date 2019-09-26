@@ -8,10 +8,9 @@ import {
     CardText,
     Table,
     TableBody,
-    TableHeader,
-    TableHeaderColumn,
+    TableHead,
     TableRow,
-    TableRowColumn,
+    TableCell,
 } from '@material-ui/core';
 
 import ButtonWithStatus from '../../lib/components/ButtonWithStatus';
@@ -68,33 +67,29 @@ export class RemovedResourceListComponent extends Component {
                     fixedHeader={false}
                     style={styles.table}
                 >
-                    <TableHeader
+                    <TableHead
                         displaySelectAll={false}
                         adjustForCheckbox={false}
                     >
                         <TableRow>
-                            <TableHeaderColumn>
-                                {polyglot.t('removed_at')}
-                            </TableHeaderColumn>
-                            <TableHeaderColumn>
+                            <TableCell>{polyglot.t('removed_at')}</TableCell>
+                            <TableCell>
                                 {polyglot.t('removed_reason')}
-                            </TableHeaderColumn>
-                            <TableHeaderColumn />
+                            </TableCell>
+                            <TableCell />
                             {columns.map(({ name, label }) => (
-                                <TableHeaderColumn key={name}>
-                                    {label}
-                                </TableHeaderColumn>
+                                <TableCell key={name}>{label}</TableCell>
                             ))}
                         </TableRow>
-                    </TableHeader>
+                    </TableHead>
                     <TableBody displayRowCheckbox={false}>
                         {resources.map(data => (
                             <TableRow key={data.uri}>
-                                <TableRowColumn>
+                                <TableCell>
                                     {moment(data.removedAt).format('L')}
-                                </TableRowColumn>
-                                <TableRowColumn>{data.reason}</TableRowColumn>
-                                <TableRowColumn>
+                                </TableCell>
+                                <TableCell>{data.reason}</TableCell>
+                                <TableCell>
                                     <ButtonWithStatus
                                         raised
                                         className="btn-restore-resource"
@@ -106,11 +101,11 @@ export class RemovedResourceListComponent extends Component {
                                         primary
                                         data={data.uri}
                                     />
-                                </TableRowColumn>
+                                </TableCell>
                                 {columns.map(({ name }) => (
-                                    <TableRowColumn key={data[name]}>
+                                    <TableCell key={data[name]}>
                                         {data[name]}
-                                    </TableRowColumn>
+                                    </TableCell>
                                 ))}
                             </TableRow>
                         ))}

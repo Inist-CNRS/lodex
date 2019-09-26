@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import { TableHeaderColumn } from '@material-ui/core';
+import { TableCell } from '@material-ui/core';
 import ExcerptLine from './ExcerptLine';
 
 import { ExcerptComponent as Excerpt } from './Excerpt';
@@ -17,7 +17,7 @@ describe('<Excerpt />', () => {
 
     it('should render headers', () => {
         const wrapper = shallow(<Excerpt {...defaultProps} />);
-        const headers = wrapper.find(TableHeaderColumn);
+        const headers = wrapper.find(TableCell);
         expect(
             headers
                 .at(0)

@@ -9,11 +9,10 @@ import {
     SelectField,
     MenuItem,
     Table,
+    TableHead,
     TableBody,
-    TableHeader,
-    TableHeaderColumn,
     TableRow,
-    TableRowColumn,
+    TableCell,
 } from '@material-ui/core';
 
 import Loading from '../../lib/components/Loading';
@@ -100,23 +99,21 @@ export class ContributedResourceListComponent extends Component {
                         fixedHeader={false}
                         style={styles.table}
                     >
-                        <TableHeader
+                        <TableHead
                             displaySelectAll={false}
                             adjustForCheckbox={false}
                         >
                             <TableRow>
-                                <TableHeaderColumn />
+                                <TableCell />
                                 {columns.map(({ name, label }) => (
-                                    <TableHeaderColumn key={name}>
-                                        {label}
-                                    </TableHeaderColumn>
+                                    <TableCell key={name}>{label}</TableCell>
                                 ))}
                             </TableRow>
-                        </TableHeader>
+                        </TableHead>
                         <TableBody displayRowCheckbox={false}>
                             {resources.map(data => (
                                 <TableRow key={data.uri}>
-                                    <TableRowColumn key="review">
+                                    <TableCell key="review">
                                         <a
                                             href={getFullResourceUri(
                                                 data,
@@ -130,11 +127,11 @@ export class ContributedResourceListComponent extends Component {
                                                 variant="contained"
                                             />
                                         </a>
-                                    </TableRowColumn>
+                                    </TableCell>
                                     {columns.map(({ name }) => (
-                                        <TableRowColumn key={name}>
+                                        <TableCell key={name}>
                                             {data[name]}
-                                        </TableRowColumn>
+                                        </TableCell>
                                     ))}
                                 </TableRow>
                             ))}
