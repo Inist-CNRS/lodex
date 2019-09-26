@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FloatingActionButton } from '@material-ui/core';
+import { Fab } from '@material-ui/core';
 import compose from 'recompose/compose';
 import withState from 'recompose/withState';
 import withHandlers from 'recompose/withHandlers';
@@ -25,13 +25,13 @@ export const FloatingActionButtonComponent = ({
     ...props
 }) => (
     <div style={Object.assign({}, styles.container, style)}>
-        <FloatingActionButton
+        <Fab
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
             {...props}
         >
             {children}
-        </FloatingActionButton>
+        </Fab>
         {tooltip && (
             <Tooltip
                 show={showTooltip}
