@@ -34,6 +34,7 @@ export const runRoutine = async (ctx, routineCalled, field1, field2) => {
     ctx.status = 200;
 
     const {
+        uri,
         maxSize,
         skip,
         maxValue,
@@ -52,6 +53,7 @@ export const runRoutine = async (ctx, routineCalled, field1, field2) => {
     const facetFieldNames = await fieldHandle.findFacetNames();
     const fields = await fieldHandle.findAll();
     const filter = getPublishedDatasetFilter({
+        uri,
         match,
         invertedFacets,
         facets,
