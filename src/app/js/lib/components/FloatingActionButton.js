@@ -26,6 +26,7 @@ export const FloatingActionButtonComponent = ({
 }) => (
     <div style={Object.assign({}, styles.container, style)}>
         <Fab
+            color="primary"
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
             {...props}

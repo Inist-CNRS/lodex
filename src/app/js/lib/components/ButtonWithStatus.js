@@ -21,20 +21,13 @@ const ButtonWithStatus = ({
     ...props
 }) =>
     raised ? (
-        <Button
-            variant="contained"
-            disabled={disabled || loading}
-            icon={getIcon(error, loading, success)}
-            {...props}
-        >
+        <Button variant="contained" disabled={disabled || loading} {...props}>
+            {getIcon(error, loading, success)}
             {label}
         </Button>
     ) : (
-        <Button
-            disabled={disabled || loading}
-            icon={getIcon(error, loading, success)}
-            {...props}
-        >
+        <Button disabled={disabled || loading} {...props}>
+            {getIcon(error, loading, success)}
             {label}
         </Button>
     );
@@ -46,7 +39,6 @@ ButtonWithStatus.propTypes = {
     disabled: PropTypes.bool,
     loading: PropTypes.bool.isRequired,
     success: PropTypes.bool,
-    labelPosition: PropTypes.oneOf(['after', 'before']),
 };
 
 ButtonWithStatus.defaultProps = {
@@ -54,7 +46,6 @@ ButtonWithStatus.defaultProps = {
     error: false,
     disabled: false,
     success: false,
-    labelPosition: 'before',
 };
 
 export default ButtonWithStatus;

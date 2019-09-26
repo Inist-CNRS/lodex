@@ -325,10 +325,11 @@ class Autocomplete extends Component {
                                 <MenuItem
                                     innerDivStyle={styles.innerDiv}
                                     value={item}
-                                    primaryText={item}
                                     disableFocusRipple={disableFocusRipple}
                                     key={index}
-                                />
+                                    >
+                                    {item}
+                                </MenuItem>
                             ),
                         });
                     }
@@ -365,10 +366,12 @@ class Autocomplete extends Component {
                                 value: (
                                     <MenuItem
                                         innerDivStyle={styles.innerDiv}
-                                        primaryText={itemText}
                                         disableFocusRipple={disableFocusRipple}
                                         key={index}
-                                    />
+                                        >
+                                        {itemText}
+                                        </MenuItem>
+
                                 ),
                             });
                         }

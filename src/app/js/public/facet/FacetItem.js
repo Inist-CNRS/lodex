@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { ListItem } from '@material-ui/core';
+import { Collapse, List, ListItem, ListItemText } from '@material-ui/core';
 import { connect } from 'react-redux';
 
 import { field as fieldPropType } from '../../propTypes';
@@ -20,23 +20,28 @@ const onClick = (openFacet, field) => () => openFacet({ name: field.name });
 const FacetItem = ({ isOpen, field, total, page }) => (
     <FacetActionsContext.Consumer>
         {({ openFacet }) => (
-            <ListItem
-                className={`facet-item facet-${getFieldClassName(field)}`}
-                nestedListStyle={styles.nested}
-                key={field.name}
-                primaryText={`${field.label} ${total ? `(${total})` : ''}`}
-                onClick={onClick(openFacet, field)}
-                onNestedListToggle={onClick(openFacet, field)}
-                open={isOpen}
-                nestedItems={[
-                    <FacetValueList
-                        key="list"
-                        name={field.name}
-                        label={field.label}
-                        page={page}
-                    />,
-                ]}
-            />
+            <Fragment>
+                <ListItem
+                    className={`facet-item facet-${getFieldClassName(field)}`}
+                    key={field.name}
+                    onClick={onClick(openFacet, field)}
+                    onNestedListToggle={onClick(openFacet, field)}
+                >
+                    <ListItemText
+                        primary={`${field.label} ${total ? `(${total})` : ''}`}
+                    />
+                </ListItem>
+                <Collapse in={isOpen} timeout="auto" unmountOnExit>
+                    <List component="div" style={styles.nested} disablePadding>
+                        <FacetValueList
+                            key="list"
+                            name={field.name}
+                            label={field.label}
+                            page={page}
+                        />
+                    </List>
+                </Collapse>
+            </Fragment>
         )}
     </FacetActionsContext.Consumer>
 );

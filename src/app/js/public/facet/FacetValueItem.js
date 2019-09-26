@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Checkbox, ListItem } from '@material-ui/core';
+import { Checkbox, ListItem, ListItemText } from '@material-ui/core';
 
 import { fromFacet } from '../selectors';
 import FacetActionsContext from './FacetActionsContext';
@@ -32,17 +32,20 @@ const FacetValueItem = ({ name, value, count, isChecked }) => (
                 className="facet-value-item"
                 style={styles.listItem}
                 innerDivStyle={styles.innerDiv}
-                primaryText={
-                    <div style={styles.container}>
-                        <Checkbox
-                            label={value}
-                            checked={isChecked}
-                            onCheck={onCheck(toggleFacetValue, name, value)}
-                        />
-                        <span style={styles.count}>{count}</span>
-                    </div>
-                }
-            />
+            >
+                <ListItemText
+                    primary={
+                        <div style={styles.container}>
+                            <Checkbox
+                                label={value}
+                                checked={isChecked}
+                                onCheck={onCheck(toggleFacetValue, name, value)}
+                            />
+                            <span style={styles.count}>{count}</span>
+                        </div>
+                    }
+                />
+            </ListItem>
         )}
     </FacetActionsContext.Consumer>
 );

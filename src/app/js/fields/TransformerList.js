@@ -37,7 +37,6 @@ const TransformerList = ({
             </Button>
         </ListSubheader>
         {touched && error && <span>{error}</span>}
-
         {fields.map((fieldName, index) => (
             <TransformerListItem
                 key={fieldName}

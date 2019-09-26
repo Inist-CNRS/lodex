@@ -12,12 +12,11 @@ const UriColumn = ({ column, resource, indice }) => (
     <TableCell
         className={classnames('dataset-column', `dataset-${column.name}`)}
     >
-        <Button
-            labelPosition="after"
-            containerElement={<Link to={getResourceUri(resource)} />}
-        >
-            <RightIcon />
-            {indice}
+        <Button>
+            <Link to={getResourceUri(resource)}>
+                <RightIcon />
+                {indice}
+            </Link>
         </Button>
     </TableCell>
 );

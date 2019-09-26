@@ -4,19 +4,25 @@ import classnames from 'classnames';
 import compose from 'recompose/compose';
 import withHandlers from 'recompose/withHandlers';
 import translate from 'redux-polyglot/translate';
-import { ListItem } from '@material-ui/core';
+import { ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
 import { CloudDownloadOutlined as FileDownloadIcon } from '@material-ui/icons';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 
 export const ExportItemComponent = ({ type, p: polyglot, handleClick }) => (
     <ListItem
+        button
         key={type}
         className={classnames('btn-export', type)}
-        primaryText={polyglot.t('export', { type: polyglot.t(type) })}
-        leftIcon={<FileDownloadIcon />}
         onClick={handleClick}
-    />
+    >
+        <ListItemIcon>
+            <FileDownloadIcon />
+        </ListItemIcon>
+        <ListItemText
+            primary={polyglot.t('export', { type: polyglot.t(type) })}
+        />
+    </ListItem>
 );
 
 ExportItemComponent.propTypes = {

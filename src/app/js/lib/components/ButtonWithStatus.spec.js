@@ -14,7 +14,6 @@ describe('<ButtonWithStatus />', () => {
 
             expect(button.prop('disabled')).toEqual(false);
             expect(button.prop('icon')).toEqual(null);
-            expect(button.prop('labelPosition')).toEqual('before');
             expect(button.prop('label')).toEqual('Foo');
         });
 
@@ -49,7 +48,6 @@ describe('<ButtonWithStatus />', () => {
 
             expect(button.prop('disabled')).toEqual(false);
             expect(button.prop('icon')).toEqual(null);
-            expect(button.prop('labelPosition')).toEqual('before');
             expect(button.prop('label')).toEqual('Foo');
             expect(button.prop('variant')).toEqual('contained');
         });

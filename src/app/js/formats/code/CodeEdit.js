@@ -7,7 +7,8 @@ const CodeEdit = ({ input, label, meta: { touched, error }, ...custom }) => (
         label={label}
         multiLine
         rows={4}
-        errorText={touched && error}
+        error={touched && error}
+        helperText={touched ? error : ''}
         {...input}
         {...custom}
     />

@@ -14,12 +14,7 @@ const styles = {
 };
 
 const SortButton = ({ name, label, sortBy, sortDir, sort }) => (
-    <Button
-        className={`sort_${name}`}
-        labelPosition="before"
-        onClick={sort}
-        style={styles.sortButton}
-    >
+    <Button className={`sort_${name}`} onClick={sort} style={styles.sortButton}>
         {sortBy === name && <ContentSort style={styles[sortDir]} />}
         {isLongText(label, 15) ? getShortText(label, 15) : label}
     </Button>

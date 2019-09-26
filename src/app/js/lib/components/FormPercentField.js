@@ -19,7 +19,8 @@ const FormPercentField = ({
         max={100}
         step={10}
         label={label}
-        errorText={touched && error}
+        error={touched && error}
+        helperText={touched ? error : ''}
         {...input}
         {...custom}
     />

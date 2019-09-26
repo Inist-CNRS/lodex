@@ -12,7 +12,8 @@ const FormTextField = ({
 }) => (
     <TextField
         label={label}
-        errorText={touched && error}
+        error={touched && error}
+        helperText={touched ? error : ''}
         {...input}
         value={input.value === null ? '' : input.value}
         {...custom}

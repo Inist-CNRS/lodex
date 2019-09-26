@@ -134,7 +134,8 @@ class ClearDialogComponent extends Component {
                         fullWidth
                         onChange={this.handleChangeField}
                         onKeyPress={e => this.handleKeyPress(e, type)}
-                        errorText={hasFailed && polyglot.t('error')}
+                        error={hasFailed}
+                        helperText={hasFailed ? polyglot.t('error') : ''}
                     />
                 </div>
             </Dialog>
