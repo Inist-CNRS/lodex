@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import debounce from 'lodash.debounce';
 import translate from 'redux-polyglot/translate';
-import { CircularProgress, TextField, ToolbarGroup } from '@material-ui/core';
+import { CircularProgress, TextField } from '@material-ui/core';
 import { Search as ActionSearch } from '@material-ui/icons';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
@@ -51,7 +51,7 @@ class FilterComponent extends Component {
         }
 
         return (
-            <ToolbarGroup>
+            <div>
                 <div style={styles.icon}>
                     {isDatasetLoading ? (
                         <CircularProgress
@@ -69,7 +69,7 @@ class FilterComponent extends Component {
                     onChange={this.handleFilterChange}
                     style={styles.textbox}
                 />
-            </ToolbarGroup>
+            </div>
         );
     }
 }
