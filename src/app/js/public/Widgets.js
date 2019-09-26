@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
-import { CardText, ListSubheader } from '@material-ui/core';
+import { CardContent, ListSubheader } from '@material-ui/core';
 
 import { fromExport } from './selectors';
 import { fromFields } from '../sharedSelectors';
@@ -34,7 +34,7 @@ export class WidgetsComponent extends Component {
         return (
             <div className="widget">
                 <ListSubheader>{polyglot.t('embed_widget')}</ListSubheader>
-                <CardText>
+                <CardContent>
                     <WidgetsSelectFields
                         fields={fields}
                         value={exportedFields}
@@ -49,7 +49,7 @@ export class WidgetsComponent extends Component {
                             fields={exportedFields.map(field => field.value)}
                         />
                     ))}
-                </CardText>
+                </CardContent>
             </div>
         );
     }

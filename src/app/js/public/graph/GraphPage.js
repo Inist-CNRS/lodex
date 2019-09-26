@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Card, CardTitle } from '@material-ui/core';
+import { Card, CardHeader } from '@material-ui/core';
 import { Helmet } from 'react-helmet';
 
 import Dataset from '../dataset/Dataset';
@@ -79,7 +79,7 @@ class GraphPage extends Component {
                     </Card>
                     {graphField && (
                         <Card style={styles.section} className="graph">
-                            <CardTitle style={styles.label} className="title">
+                            <CardHeader style={styles.label} className="title">
                                 {graphField.label}
                                 <EditButton
                                     field={graphField}
@@ -89,7 +89,7 @@ class GraphPage extends Component {
                                     field={graphField}
                                     resource={resource}
                                 />
-                            </CardTitle>
+                            </CardHeader>
                             <Format field={graphField} resource={resource} />
                             <CompositeProperty
                                 key="composite"

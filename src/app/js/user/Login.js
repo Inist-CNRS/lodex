@@ -5,7 +5,7 @@ import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 import { submit as submitAction, isSubmitting } from 'redux-form';
-import { Card, CardActions, CardHeader, CardText } from '@material-ui/core';
+import { Card, CardActions, CardHeader, CardContent } from '@material-ui/core';
 
 import { polyglot as polyglotPropTypes } from '../propTypes';
 import {
@@ -26,9 +26,9 @@ const styles = {
 export const LoginComponent = ({ login, p: polyglot, submit, submitting }) => (
     <Card style={styles.container}>
         <CardHeader title={polyglot.t('Login')} />
-        <CardText>
+        <CardContent>
             <LoginForm onSubmit={login} />
-        </CardText>
+        </CardContent>
         <CardActions>
             <ButtonWithStatus
                 label={polyglot.t('Sign in')}

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { CircularProgress, CardText } from '@material-ui/core';
+import { CircularProgress, CardContent } from '@material-ui/core';
 import Card from './Card';
 
 const styles = {
@@ -18,10 +18,10 @@ const styles = {
 
 const Loading = ({ children }) => (
     <Card className="loading" style={styles.container}>
-        <CardText style={styles.textContainer}>
+        <CardContent style={styles.textContainer}>
             <CircularProgress style={styles.progress} size={20} />
             {children}
-        </CardText>
+        </CardContent>
     </Card>
 );
 

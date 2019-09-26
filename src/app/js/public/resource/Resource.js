@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
 import { Home as HomeIcon } from '@material-ui/icons';
-import { Button, CardText, CardActions } from '@material-ui/core';
+import { Button, CardContent, CardActions } from '@material-ui/core';
 import get from 'lodash.get';
 import isEqual from 'lodash.isequal';
 
@@ -73,9 +73,9 @@ export class ResourceComponent extends Component {
                         <CardActions>{backToListButton}</CardActions>
                     </Card>
                     <Card>
-                        <CardText>
+                        <CardContent>
                             <h1>{polyglot.t('not_found')}</h1>
-                        </CardText>
+                        </CardContent>
                     </Card>
                 </div>
             );

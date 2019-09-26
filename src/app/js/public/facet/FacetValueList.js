@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
-import { TextField, CheckBox } from '@material-ui/core';
+import { TextField, Checkbox } from '@material-ui/core';
 
 import {
     facetValue as facetValuePropType,
@@ -75,7 +75,7 @@ export const FacetValueList = ({
     sortFacetValue,
 }) => (
     <div className="facet-value-list">
-        <CheckBox
+        <Checkbox
             label={polyglot.t('exclude')}
             checked={inverted}
             onCheck={onInvertChange(invertFacet, name)}

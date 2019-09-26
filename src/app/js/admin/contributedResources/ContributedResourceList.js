@@ -5,7 +5,7 @@ import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 import {
     Button,
-    CardText,
+    CardContent,
     Select,
     MenuItem,
     Table,
@@ -71,7 +71,7 @@ export class ContributedResourceListComponent extends Component {
 
         return (
             <div className="contributed_resources">
-                <CardText>
+                <CardContent>
                     <Select
                         className="filter"
                         style={styles.select}
@@ -91,9 +91,9 @@ export class ContributedResourceListComponent extends Component {
                             </MenuItem>
                         ))}
                     </Select>
-                </CardText>
+                </CardContent>
 
-                <CardText>
+                <CardContent>
                     <Table
                         selectable={false}
                         fixedHeader={false}
@@ -148,7 +148,7 @@ export class ContributedResourceListComponent extends Component {
                             showing: polyglot.t('showing'),
                         }}
                     />
-                </CardText>
+                </CardContent>
             </div>
         );
     }

@@ -4,7 +4,12 @@ import PropTypes from 'prop-types';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import translate from 'redux-polyglot/translate';
 import { Link as LinkIcon } from '@material-ui/icons';
-import { Button, TextField, CardText, ListSubheader } from '@material-ui/core';
+import {
+    Button,
+    TextField,
+    CardContent,
+    ListSubheader,
+} from '@material-ui/core';
 
 import { polyglot as polyglotPropTypes } from '../propTypes';
 
@@ -35,7 +40,7 @@ export class ShareLinkComponent extends Component {
         return (
             <div className="share-link">
                 <ListSubheader>{title}</ListSubheader>
-                <CardText style={styles.container}>
+                <CardContent style={styles.container}>
                     <LinkIcon style={styles.icon} />
 
                     <TextField
@@ -50,7 +55,7 @@ export class ShareLinkComponent extends Component {
                     <CopyToClipboard text={uri}>
                         <Button label={polyglot.t('copy_to_clipboard')} />
                     </CopyToClipboard>
-                </CardText>
+                </CardContent>
             </div>
         );
     }

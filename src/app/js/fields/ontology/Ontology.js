@@ -9,7 +9,7 @@ import {
     MenuItem,
     Card,
     CardHeader,
-    CardText,
+    CardContent,
     CardActions,
 } from '@material-ui/core';
 
@@ -48,7 +48,7 @@ export class OntologyComponent extends Component {
             <Card>
                 <CardHeader title={<h3>{polyglot.t('model')}</h3>} />
                 <Divider />
-                <CardText>
+                <CardContent>
                     <Select
                         autoWidth
                         value={filter}
@@ -72,7 +72,7 @@ export class OntologyComponent extends Component {
                     {(filter === ALL || filter != COVER_DATASET) && (
                         <OntologyTable title="document" />
                     )}
-                </CardText>
+                </CardContent>
                 <CardActions>
                     <ExportFieldsButton />
                     <ExportFieldsReadyButton />

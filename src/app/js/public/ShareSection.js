@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
-import { CardText, ListSubheader } from '@material-ui/core';
+import { CardContent, ListSubheader } from '@material-ui/core';
 import { ShareButtons, generateShareIcon } from 'react-share';
 
 import { polyglot as polyglotPropTypes } from '../propTypes';
@@ -37,7 +37,7 @@ const styles = {
 export const PureShareSection = ({ uri, title, p: polyglot }) => (
     <div className="share">
         <ListSubheader>{polyglot.t('share')}</ListSubheader>
-        <CardText style={styles.container}>
+        <CardContent style={styles.container}>
             <FacebookShareButton
                 className="share-facebook"
                 url={uri}
@@ -94,7 +94,7 @@ export const PureShareSection = ({ uri, title, p: polyglot }) => (
             >
                 <VKIcon size={32} round />
             </VKShareButton>
-        </CardText>
+        </CardContent>
     </div>
 );
 

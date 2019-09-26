@@ -5,7 +5,7 @@ import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 import moment from 'moment';
 import {
-    CardText,
+    CardContent,
     Table,
     TableBody,
     TableHead,
@@ -61,7 +61,7 @@ export class RemovedResourceListComponent extends Component {
         if (loading) return <Loading>{polyglot.t('loading')}</Loading>;
 
         return (
-            <CardText className="removed_resources">
+            <CardContent className="removed_resources">
                 <Table
                     selectable={false}
                     fixedHeader={false}
@@ -122,7 +122,7 @@ export class RemovedResourceListComponent extends Component {
                         showing: polyglot.t('showing'),
                     }}
                 />
-            </CardText>
+            </CardContent>
         );
     }
 }
