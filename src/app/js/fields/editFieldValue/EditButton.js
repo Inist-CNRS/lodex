@@ -3,7 +3,7 @@ import classnames from 'classnames';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
-import { ModeEdit as EditIcon } from '@material-ui/icons';
+import { Edit as EditIcon } from '@material-ui/icons';
 import withHandlers from 'recompose/withHandlers';
 
 import EditFieldForm, { FORM_NAME } from './EditFieldForm';

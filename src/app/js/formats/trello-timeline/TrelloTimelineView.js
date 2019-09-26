@@ -2,11 +2,11 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Timeline, TimelineEvent } from 'react-event-timeline/dist';
 import {
-    ActionDateRange,
-    ActionAlarm,
-    ActionBookmark,
-    ActionRecordVoiceOver,
-    ActionTrendingUp,
+    DateRange,
+    Alarm,
+    Bookmark,
+    RecordVoiceOver,
+    TrendingUp,
 } from '@material-ui/icons';
 import { milestones } from 'inist-roadmap';
 import { field as fieldPropTypes } from '../../propTypes';
@@ -18,17 +18,15 @@ function getIconFromLabel(labels) {
         height: 18,
     };
     if (labels.indexOf('sprint-review') !== -1) {
-        return <ActionAlarm iconStyle={smallIcon} style={smallIcon} />;
+        return <Alarm iconStyle={smallIcon} style={smallIcon} />;
     } else if (labels.indexOf('communication') !== -1) {
-        return (
-            <ActionRecordVoiceOver iconStyle={smallIcon} style={smallIcon} />
-        );
+        return <RecordVoiceOver iconStyle={smallIcon} style={smallIcon} />;
     } else if (labels.indexOf('objectif') !== -1) {
-        return <ActionTrendingUp iconStyle={smallIcon} style={smallIcon} />;
+        return <TrendingUp iconStyle={smallIcon} style={smallIcon} />;
     } else if (labels.indexOf('reunion') !== -1) {
-        return <ActionDateRange iconStyle={smallIcon} style={smallIcon} />;
+        return <DateRange iconStyle={smallIcon} style={smallIcon} />;
     }
-    return <ActionBookmark iconStyle={smallIcon} style={smallIcon} />;
+    return <Bookmark iconStyle={smallIcon} style={smallIcon} />;
 }
 
 const SeeMoreStyle = {
