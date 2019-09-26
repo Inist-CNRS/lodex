@@ -12,6 +12,7 @@ const getIcon = (error, loading, success) => {
 };
 
 const ButtonWithStatus = ({
+    label,
     raised,
     error,
     loading,
@@ -25,16 +26,21 @@ const ButtonWithStatus = ({
             disabled={disabled || loading}
             icon={getIcon(error, loading, success)}
             {...props}
-        />
+        >
+            {label}
+        </Button>
     ) : (
         <Button
             disabled={disabled || loading}
             icon={getIcon(error, loading, success)}
             {...props}
-        />
+        >
+            {label}
+        </Button>
     );
 
 ButtonWithStatus.propTypes = {
+    label: PropTypes.string.isRequired,
     raised: PropTypes.bool,
     error: PropTypes.bool,
     disabled: PropTypes.bool,
