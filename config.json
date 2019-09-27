@@ -88,6 +88,7 @@
         "http://www.lotico.com:3030/lotico/sparql"
     ],
     "front": {
+        "breadcrumb": [],
         "menu": [
             {
                 "label": {
