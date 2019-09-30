@@ -16,6 +16,7 @@ import { fromMenu } from './selectors';
 import scrollToTop from '../lib/scrollToTop';
 import CreateResource from './resource/CreateResource';
 import ScrollToTop from './ScrollToTop';
+import Breadcrumb from './breadcrumb/Breadcrumb';
 
 const notLogin = new RegExp('^(?!.*(/login)).*$');
 
@@ -34,6 +35,7 @@ class Routes extends Component {
                 <ConnectedRouter history={history} onUpdate={scrollToTop}>
                     <Fragment>
                         <ScrollToTop />
+                        <Route path={notLogin} component={Breadcrumb} />
                         <Route path={notLogin} component={NavBar} />
                         <Route path="/" exact component={Home} />
                         <Route path="/resource" component={Resource} />

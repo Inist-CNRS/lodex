@@ -13,8 +13,8 @@ const styles = stylesToClassname(
 );
 
 export const AppComponent = ({ children }) => (
-    <div className="body">
-        <div className={styles.page}>{children}</div>
+    <div className={styles.page}>
+        <div className="body">{children}</div>
     </div>
 );
 

@@ -1,8 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 
-import { fromFields } from '../../sharedSelectors';
 import { field as fieldPropTypes } from '../../propTypes';
 import MenuItem from './MenuItem';
 
