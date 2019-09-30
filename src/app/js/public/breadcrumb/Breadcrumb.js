@@ -26,8 +26,9 @@ const Breadcrumb = ({ location }) => {
     ) {
         return null;
     }
-    const items = [...breadcrumb];
-    const lastItem = items.pop();
+    const items = isRoot
+        ? breadcrumb.slice(0, breadcrumb.length - 1)
+        : breadcrumb;
 
     return (
         <div>
@@ -35,15 +36,9 @@ const Breadcrumb = ({ location }) => {
                 {items.map((item, index) => (
                     <>
                         <BreadcrumbItem key={index} value={item} />
-                        {items.length - 1 == index && isRoot ? null : '>'}
+                        {index + 1 < items.length ? '>' : null}
                     </>
                 ))}
-                {!isRoot ? (
-                    <BreadcrumbItem
-                        key={breadcrumb.length - 1}
-                        value={lastItem}
-                    />
-                ) : null}
             </div>
         </div>
     );
