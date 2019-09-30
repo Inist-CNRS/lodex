@@ -33,6 +33,7 @@ const styles = stylesToClassname(
 
 const BreadcrumbItem = ({ value, p: polyglot }) => {
     const label = value.label[polyglot.currentLocale];
+
     return (
         <a href={value.url} className={styles.link}>
             {label}

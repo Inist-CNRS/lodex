@@ -2,8 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import BreadcrumbItem from './BreadcrumbItem';
-import { polyglot as polyglotPropTypes } from '../../propTypes';
-import { breadcrumb } from '../../../../api/controller/api/breadcrumb';
+import { getBreadcrumb } from '../../../../api/controller/api/breadcrumb';
 import stylesToClassname from '../../lib/stylesToClassName';
 import theme from '../../theme';
 
@@ -19,6 +18,7 @@ const styles = stylesToClassname(
 
 const Breadcrumb = ({ location }) => {
     const isRoot = location.pathname === '/';
+    const breadcrumb = getBreadcrumb();
     if (
         !breadcrumb ||
         breadcrumb.length == 0 ||
@@ -53,7 +53,6 @@ Breadcrumb.propTypes = {
     location: PropTypes.shape({
         pathname: PropTypes.string.isRequired,
     }).isRequired,
-    p: polyglotPropTypes.isRequired,
 };
 
 export default Breadcrumb;
