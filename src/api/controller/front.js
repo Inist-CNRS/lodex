@@ -119,10 +119,7 @@ const getInitialState = async (token, cookie, locale, ctx) => {
 
 const renderFullPage = (html, css, preloadedState, helmet) =>
     indexHtml
-        .replace(
-            '<div id="root"></div>',
-            `<div id="root"><div>${html}</div></div>`,
-        )
+        .replace('<div id="root"></div>', `<div id="root">${html}</div>`)
         .replace(/<title>.*?<\/title>/, helmet.title.toString())
         .replace(
             '</head>',
