@@ -12,9 +12,13 @@ export const SEARCH_LOAD_MORE = 'SEARCH_LOAD_MORE';
 export const SEARCH_LOAD_MORE_SUCCESS = 'SEARCH_LOAD_MORE_SUCCESS';
 export const SEARCH_LOAD_MORE_ERROR = 'SEARCH_LOAD_MORE_ERROR';
 
+export const SEARCH_SORT = 'SEARCH_SORT';
+
 export const search = createAction(SEARCH);
 export const searchSucceed = createAction(SEARCH_RESULTS);
 export const searchFailed = createAction(SEARCH_ERROR);
+
+export const searchSort = createAction(SEARCH_SORT);
 
 export const loadMore = createAction(SEARCH_LOAD_MORE);
 export const loadMoreSucceed = createAction(SEARCH_LOAD_MORE_SUCCESS);
@@ -23,6 +27,7 @@ export const loadMoreFailed = createAction(SEARCH_LOAD_MORE_ERROR);
 export const fromSearch = {
     isLoading: state => state.loading,
     getDataset: state => state.dataset,
+    getSort: state => state.sort,
     getFieldNames: state => state.fields,
     getPage: state => state.page,
     getTotal: state => state.total,
@@ -41,6 +46,10 @@ export { facetActions, facetActionTypes };
 export const defaultState = {
     dataset: [],
     fields: {},
+    sort: {
+        sortBy: '',
+        sortDir: '',
+    },
     loading: false,
     page: null,
     total: 0,
@@ -60,10 +69,15 @@ export default handleActions(
         [SEARCH]: (state, { payload }) => ({
             ...state,
             dataset: [],
+            sort: payload.sort,
             loading: true,
             page: 0,
             total: 0,
             query: payload.query,
+        }),
+        [SEARCH_SORT]: (state, { payload }) => ({
+            ...state,
+            sort: payload.sort,
         }),
         [combineActions(SEARCH_RESULTS, SEARCH_ERROR)]: (
             state,
