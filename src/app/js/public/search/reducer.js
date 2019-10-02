@@ -18,7 +18,7 @@ export const search = createAction(SEARCH);
 export const searchSucceed = createAction(SEARCH_RESULTS);
 export const searchFailed = createAction(SEARCH_ERROR);
 
-export const searchSort = createAction(SEARCH_SORT);
+export const sort = createAction(SEARCH_SORT);
 
 export const loadMore = createAction(SEARCH_LOAD_MORE);
 export const loadMoreSucceed = createAction(SEARCH_LOAD_MORE_SUCCESS);
