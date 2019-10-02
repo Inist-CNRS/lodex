@@ -1,21 +1,17 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
 import { field as fieldProptypes } from '../../propTypes';
 import SortButton from '../../lib/components/SortButton';
 
-const SearchResultSort = ({ fields, fieldNames }) => {
+const SearchResultSort = ({ fields, fieldNames, sort, sortBy, sortDir }) => {
     const titleField = fields.find(field => field.name === fieldNames.title);
     const descriptionField = fields.find(
         field => field.name === fieldNames.description,
     );
 
-    const [sortBy, setSortBy] = useState('');
-    const sortDir = 'ASC';
-
     const handleSort = name => {
-        console.log('sort - ', name);
-        setSortBy(name);
+        sort({ sortBy: name });
     };
 
     return (
@@ -25,7 +21,7 @@ const SearchResultSort = ({ fields, fieldNames }) => {
                     className={`sort_${fieldNames.title}`}
                     name={fieldNames.title}
                     label={titleField.label}
-                    sort={handleSort}
+                    sort={() => handleSort(fieldNames.title)}
                     sortBy={sortBy}
                     sortDir={sortDir}
                 />
@@ -35,7 +31,7 @@ const SearchResultSort = ({ fields, fieldNames }) => {
                     className={`sort_${fieldNames.description}`}
                     name={fieldNames.description}
                     label={descriptionField.label}
-                    sort={handleSort}
+                    sort={() => handleSort(fieldNames.description)}
                     sortBy={sortBy}
                     sortDir={sortDir}
                 />
@@ -51,6 +47,9 @@ SearchResultSort.propTypes = {
         title: PropTypes.string,
         description: PropTypes.string,
     }).isRequired,
+    sortBy: PropTypes.string,
+    sortDir: PropTypes.oneOf(['ASC', 'DESC']),
+    sort: PropTypes.func.isRequired,
 };
 
 export default SearchResultSort;

@@ -16,7 +16,11 @@ import {
     resource as resourcePropTypes,
 } from '../../propTypes';
 import { preLoadPublication as preLoadPublicationAction } from '../../fields';
-import { search as searchAction, loadMore as loadMoreAction } from './reducer';
+import {
+    search as searchAction,
+    sort as sortAction,
+    loadMore as loadMoreAction,
+} from './reducer';
 import { fromFields } from '../../sharedSelectors';
 import { fromSearch } from '../selectors';
 import theme from '../../theme';
@@ -162,6 +166,11 @@ class Search extends Component {
         this.setState({ showFacets: !showFacets });
     };
 
+    handleSort = ({ sortBy }) => {
+        const { sort } = this.props;
+        sort({ sortBy });
+    };
+
     renderNoResults = () => {
         const { p: polyglot } = this.props;
 
@@ -212,6 +221,8 @@ class Search extends Component {
         const { bufferQuery, opening, showFacets } = this.state;
         const {
             searchQuery,
+            sortBy,
+            sortDir,
             loading,
             fieldNames,
             results,
@@ -320,7 +331,13 @@ class Search extends Component {
                         {noResults && this.renderNoResults()}
                         {(everythingIsOk || loading) && (
                             <div>
-                                <SearchResultSort />
+                                <SearchResultSort
+                                    fields={fields}
+                                    fieldNames={fieldNames}
+                                    sort={this.handleSort}
+                                    sortBy={sortBy}
+                                    sortDir={sortDir}
+                                />
                                 <SearchResultList
                                     results={results}
                                     fields={fields}
@@ -341,6 +358,9 @@ class Search extends Component {
 Search.propTypes = {
     search: PropTypes.func.isRequired,
     searchQuery: PropTypes.string,
+    sort: PropTypes.func.isRequired,
+    sortBy: PropTypes.string.isRequired,
+    sortDir: PropTypes.oneOf(['ASC', 'DESC']).isRequired,
     preLoadPublication: PropTypes.func.isRequired,
     loading: PropTypes.bool.isRequired,
     p: polyglotPropTypes.isRequired,
@@ -361,17 +381,24 @@ Search.defaultProps = {
     searchQuery: null,
 };
 
-const mapStateToProps = state => ({
-    loading: fromSearch.isLoading(state),
-    results: fromSearch.getDataset(state),
-    fieldNames: fromSearch.getFieldNames(state),
-    fields: fromFields.getFields(state),
-    total: fromSearch.getTotal(state),
-    searchQuery: fromSearch.getQuery(state),
-});
+const mapStateToProps = state => {
+    const { sortBy, sortDir } = fromSearch.getSort(state);
+
+    return {
+        loading: fromSearch.isLoading(state),
+        results: fromSearch.getDataset(state),
+        fieldNames: fromSearch.getFieldNames(state),
+        fields: fromFields.getFields(state),
+        total: fromSearch.getTotal(state),
+        searchQuery: fromSearch.getQuery(state),
+        sortBy,
+        sortDir,
+    };
+};
 
 const mapDispatchToProps = {
     search: searchAction,
+    sort: sortAction,
     preLoadPublication: preLoadPublicationAction,
     loadMore: loadMoreAction,
 };
