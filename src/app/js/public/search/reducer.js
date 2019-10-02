@@ -48,7 +48,7 @@ export const defaultState = {
     fields: {},
     sort: {
         sortBy: '',
-        sortDir: '',
+        sortDir: 'ASC',
     },
     loading: false,
     page: null,
@@ -69,24 +69,23 @@ export default handleActions(
         [SEARCH]: (state, { payload }) => ({
             ...state,
             dataset: [],
-            sort: payload.sort,
             loading: true,
             page: 0,
             total: 0,
             query: payload.query,
         }),
-        [SEARCH_SORT]: (state, { payload: sortBy }) => {
-            const sortDir =
-                sortBy === state.sort.sortBy && state.sort.sortDir === 'ASC'
-                    ? 'DESC'
-                    : 'ASC';
+        [SEARCH_SORT]: (state, { payload: { sortBy: nextSortBy } }) => {
+            const { sortBy, sortDir } = state.sort;
+
+            const nextSortDir =
+                sortBy === nextSortBy && sortDir === 'ASC' ? 'DESC' : 'ASC';
 
             return {
                 ...state,
                 page: 0,
                 sort: {
-                    sortBy,
-                    sortDir,
+                    sortBy: nextSortBy,
+                    sortDir: nextSortDir,
                 },
             };
         },
