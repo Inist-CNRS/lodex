@@ -8,6 +8,8 @@ import { isLongText, getShortText } from '../../lib/longTexts';
 const styles = {
     sortButton: {
         minWidth: 40,
+        paddingLeft: '1rem',
+        paddingRight: '1rem',
     },
     iconSortBy: {
         transition: 'transform 100ms ease-in-out',

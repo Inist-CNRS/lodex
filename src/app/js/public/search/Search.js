@@ -90,7 +90,7 @@ const styles = stylesToClassname(
             maxHeight: '1000px',
         },
         searchResults: {
-            margin: '1.5rem 0',
+            padding: '1rem 0',
             opacity: '1',
             transition: 'opacity 300ms ease-in-out',
             '@media (min-width: 992px)': {
@@ -318,6 +318,7 @@ class Search extends Component {
                             [styles.facetsOpening]: showFacets,
                         })}
                     />
+
                     <div
                         className={classnames(
                             'search-results',
