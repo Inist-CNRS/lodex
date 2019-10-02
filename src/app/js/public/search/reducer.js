@@ -75,10 +75,21 @@ export default handleActions(
             total: 0,
             query: payload.query,
         }),
-        [SEARCH_SORT]: (state, { payload }) => ({
-            ...state,
-            sort: payload.sort,
-        }),
+        [SEARCH_SORT]: (state, { payload: sortBy }) => {
+            const sortDir =
+                sortBy === state.sort.sortBy && state.sort.sortDir === 'ASC'
+                    ? 'DESC'
+                    : 'ASC';
+
+            return {
+                ...state,
+                page: 0,
+                sort: {
+                    sortBy,
+                    sortDir,
+                },
+            };
+        },
         [combineActions(SEARCH_RESULTS, SEARCH_ERROR)]: (
             state,
             { payload },
