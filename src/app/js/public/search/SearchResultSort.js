@@ -1,29 +1,41 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 
 import { field as fieldProptypes } from '../../propTypes';
 import SortButton from '../../lib/components/SortButton';
-import { sortDataset as sortDatasetAction } from '../dataset';
-import { fromDataset } from '../selectors';
 
-const SearchResultSort = ({
-    fields,
-    fieldNames,
-    sortDataset,
-    sortBy,
-    sortDir,
-}) => {
+const SearchResultSort = ({ fields, fieldNames }) => {
     const titleField = fields.find(field => field.name === fieldNames.title);
+    const descriptionField = fields.find(
+        field => field.name === fieldNames.description,
+    );
+
+    const [sortBy, setSortBy] = useState('');
+    const sortDir = 'ASC';
+
+    const handleSort = name => {
+        console.log('sort - ', name);
+        setSortBy(name);
+    };
 
     return (
         <div>
             {titleField && (
                 <SortButton
-                    className={`sort_${name}`}
-                    sort={sortDataset}
+                    className={`sort_${fieldNames.title}`}
                     name={fieldNames.title}
-                    label={titleField}
+                    label={titleField.label}
+                    sort={handleSort}
+                    sortBy={sortBy}
+                    sortDir={sortDir}
+                />
+            )}
+            {descriptionField && (
+                <SortButton
+                    className={`sort_${fieldNames.description}`}
+                    name={fieldNames.description}
+                    label={descriptionField.label}
+                    sort={handleSort}
                     sortBy={sortBy}
                     sortDir={sortDir}
                 />
@@ -39,20 +51,6 @@ SearchResultSort.propTypes = {
         title: PropTypes.string,
         description: PropTypes.string,
     }).isRequired,
-    sortBy: PropTypes.string,
-    sortDir: PropTypes.oneOf(['ASC', 'DESC']),
-    sortDataset: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = state => ({
-    ...fromDataset.getSort(state),
-});
-
-const mapDispatchToProps = {
-    sortDataset: sortDatasetAction,
-};
-
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps,
-)(SearchResultSort);
+export default SearchResultSort;
