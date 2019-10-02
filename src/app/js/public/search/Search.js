@@ -24,6 +24,7 @@ import AdminOnlyAlert from '../../lib/components/AdminOnlyAlert';
 import AppliedFacets from './AppliedFacets';
 import Facets from './Facets';
 import SearchResultList from './SearchResultList';
+import SearchResultSort from './SearchResultSort';
 import stylesToClassname from '../../lib/stylesToClassName';
 
 const styles = stylesToClassname(
@@ -318,13 +319,16 @@ class Search extends Component {
                         {noOverviewField && this.renderNoOverviewField()}
                         {noResults && this.renderNoResults()}
                         {(everythingIsOk || loading) && (
-                            <SearchResultList
-                                results={results}
-                                fields={fields}
-                                fieldNames={fieldNames}
-                                closeDrawer={closeDrawer}
-                                placeholders={loading}
-                            />
+                            <div>
+                                <SearchResultSort />
+                                <SearchResultList
+                                    results={results}
+                                    fields={fields}
+                                    fieldNames={fieldNames}
+                                    closeDrawer={closeDrawer}
+                                    placeholders={loading}
+                                />
+                            </div>
                         )}
                         {canLoadMore && this.renderLoadMore()}
                     </div>
