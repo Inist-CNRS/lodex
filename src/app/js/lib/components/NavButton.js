@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import FlatButton from 'material-ui/FlatButton';
+import IconButton from 'material-ui/IconButton';
 import ChevronLeft from 'material-ui/svg-icons/navigation/chevron-left';
 import ChevronRight from 'material-ui/svg-icons/navigation/chevron-right';
 import withHandlers from 'recompose/withHandlers';
@@ -30,17 +30,15 @@ const NavButton = ({ direction, label, navigate }) => {
     }
 
     const transformedLabel = isLongText(label) ? getShortText(label) : label;
-    const labelPosition = direction === NEXT ? 'before' : 'after';
     const icon = renderIcon(direction);
     const handleNavigate = () => navigate(direction);
 
     return (
-        <FlatButton
+        <IconButton
             className={`nav_${direction}`}
             style={styles.root}
-            label={transformedLabel}
+            title={transformedLabel}
             icon={icon}
-            labelPosition={labelPosition}
             onClick={handleNavigate}
         />
     );
