@@ -14,10 +14,10 @@ const styles = {
     iconSortBy: {
         transition: 'transform 100ms ease-in-out',
     },
-    ASC: {
+    ASC: {},
+    DESC: {
         transform: 'rotate(180deg)',
     },
-    DESC: {},
 };
 
 const SortButton = ({ name, label, sortBy, sortDir, sort }) => (
