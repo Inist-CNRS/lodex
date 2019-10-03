@@ -1,16 +1,23 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import FlatButton from 'material-ui/FlatButton';
-import ContentSort from 'material-ui/svg-icons/content/sort';
+import ArrowUp from 'material-ui/svg-icons/navigation/arrow-upward';
 import withHandlers from 'recompose/withHandlers';
 import { isLongText, getShortText } from '../../lib/longTexts';
 
 const styles = {
     sortButton: {
         minWidth: 40,
+        paddingLeft: '1rem',
+        paddingRight: '1rem',
     },
-    ASC: { transform: 'rotate(180deg)' },
-    DESC: {},
+    iconSortBy: {
+        transition: 'transform 100ms ease-in-out',
+    },
+    ASC: {},
+    DESC: {
+        transform: 'rotate(180deg)',
+    },
 };
 
 const SortButton = ({ name, label, sortBy, sortDir, sort }) => (
@@ -18,8 +25,18 @@ const SortButton = ({ name, label, sortBy, sortDir, sort }) => (
         className={`sort_${name}`}
         labelPosition="before"
         onClick={sort}
-        label={isLongText(label, 15) ? getShortText(label, 15) : label}
-        icon={sortBy === name && <ContentSort style={styles[sortDir]} />}
+        label={isLongText(label) ? getShortText(label) : label}
+        icon={
+            sortBy === name && (
+                <ArrowUp
+                    style={Object.assign(
+                        {},
+                        styles.iconSortBy,
+                        styles[sortDir],
+                    )}
+                />
+            )
+        }
         style={styles.sortButton}
     />
 );

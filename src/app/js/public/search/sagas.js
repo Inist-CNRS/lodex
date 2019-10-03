@@ -5,6 +5,7 @@ import {
     loadMoreSucceed,
     SEARCH_LOAD_MORE,
     SEARCH,
+    SEARCH_SORT,
     searchFailed,
     searchSucceed,
     facetActionTypes,
@@ -19,11 +20,13 @@ import facetSagasFactory from '../facet/sagas';
 
 const doSearchRequest = function*(page = 0) {
     const query = yield select(fromSearch.getQuery);
+    const sort = yield select(fromSearch.getSort);
     const facets = yield select(fromSearch.getAppliedFacets);
     const invertedFacets = yield select(fromSearch.getInvertedFacets);
 
     const request = yield select(fromUser.getLoadDatasetPageRequest, {
         match: query || '',
+        sort,
         perPage: 10,
         page,
         facets,
@@ -95,6 +98,7 @@ export default function*() {
     yield takeEvery(
         [
             SEARCH,
+            SEARCH_SORT,
             facetActionTypes.TOGGLE_FACET_VALUE,
             facetActionTypes.INVERT_FACET,
             facetActionTypes.CLEAR_FACET,

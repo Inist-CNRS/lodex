@@ -16,7 +16,11 @@ import {
     resource as resourcePropTypes,
 } from '../../propTypes';
 import { preLoadPublication as preLoadPublicationAction } from '../../fields';
-import { search as searchAction, loadMore as loadMoreAction } from './reducer';
+import {
+    search as searchAction,
+    sort as sortAction,
+    loadMore as loadMoreAction,
+} from './reducer';
 import { fromFields } from '../../sharedSelectors';
 import { fromSearch } from '../selectors';
 import theme from '../../theme';
@@ -24,6 +28,7 @@ import AdminOnlyAlert from '../../lib/components/AdminOnlyAlert';
 import AppliedFacets from './AppliedFacets';
 import Facets from './Facets';
 import SearchResultList from './SearchResultList';
+import SearchResultSort from './SearchResultSort';
 import stylesToClassname from '../../lib/stylesToClassName';
 
 const styles = stylesToClassname(
@@ -85,7 +90,7 @@ const styles = stylesToClassname(
             maxHeight: '1000px',
         },
         searchResults: {
-            margin: '1.5rem 0',
+            padding: '1rem 0',
             opacity: '1',
             transition: 'opacity 300ms ease-in-out',
             '@media (min-width: 992px)': {
@@ -161,6 +166,11 @@ class Search extends Component {
         this.setState({ showFacets: !showFacets });
     };
 
+    handleSort = ({ sortBy }) => {
+        const { sort } = this.props;
+        sort({ sortBy });
+    };
+
     renderNoResults = () => {
         const { p: polyglot } = this.props;
 
@@ -211,6 +221,8 @@ class Search extends Component {
         const { bufferQuery, opening, showFacets } = this.state;
         const {
             searchQuery,
+            sortBy,
+            sortDir,
             loading,
             fieldNames,
             results,
@@ -306,6 +318,7 @@ class Search extends Component {
                             [styles.facetsOpening]: showFacets,
                         })}
                     />
+
                     <div
                         className={classnames(
                             'search-results',
@@ -318,13 +331,22 @@ class Search extends Component {
                         {noOverviewField && this.renderNoOverviewField()}
                         {noResults && this.renderNoResults()}
                         {(everythingIsOk || loading) && (
-                            <SearchResultList
-                                results={results}
-                                fields={fields}
-                                fieldNames={fieldNames}
-                                closeDrawer={closeDrawer}
-                                placeholders={loading}
-                            />
+                            <Fragment>
+                                <SearchResultSort
+                                    fields={fields}
+                                    fieldNames={fieldNames}
+                                    sort={this.handleSort}
+                                    sortBy={sortBy}
+                                    sortDir={sortDir}
+                                />
+                                <SearchResultList
+                                    results={results}
+                                    fields={fields}
+                                    fieldNames={fieldNames}
+                                    closeDrawer={closeDrawer}
+                                    placeholders={loading}
+                                />
+                            </Fragment>
                         )}
                         {canLoadMore && this.renderLoadMore()}
                     </div>
@@ -337,6 +359,9 @@ class Search extends Component {
 Search.propTypes = {
     search: PropTypes.func.isRequired,
     searchQuery: PropTypes.string,
+    sort: PropTypes.func.isRequired,
+    sortBy: PropTypes.string.isRequired,
+    sortDir: PropTypes.oneOf(['ASC', 'DESC']).isRequired,
     preLoadPublication: PropTypes.func.isRequired,
     loading: PropTypes.bool.isRequired,
     p: polyglotPropTypes.isRequired,
@@ -357,17 +382,24 @@ Search.defaultProps = {
     searchQuery: null,
 };
 
-const mapStateToProps = state => ({
-    loading: fromSearch.isLoading(state),
-    results: fromSearch.getDataset(state),
-    fieldNames: fromSearch.getFieldNames(state),
-    fields: fromFields.getFields(state),
-    total: fromSearch.getTotal(state),
-    searchQuery: fromSearch.getQuery(state),
-});
+const mapStateToProps = state => {
+    const { sortBy, sortDir } = fromSearch.getSort(state);
+
+    return {
+        loading: fromSearch.isLoading(state),
+        results: fromSearch.getDataset(state),
+        fieldNames: fromSearch.getFieldNames(state),
+        fields: fromFields.getFields(state),
+        total: fromSearch.getTotal(state),
+        searchQuery: fromSearch.getQuery(state),
+        sortBy,
+        sortDir,
+    };
+};
 
 const mapDispatchToProps = {
     search: searchAction,
+    sort: sortAction,
     preLoadPublication: preLoadPublicationAction,
     loadMore: loadMoreAction,
 };

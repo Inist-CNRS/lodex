@@ -74,9 +74,7 @@ class GraphPage extends Component {
                 <div style={styles.centerColumn}>
                     <ExportShareButton style={{ float: 'right' }} />
                     <Stats />
-                    <Card style={styles.section}>
-                        <AppliedFacetList />
-                    </Card>
+                    <AppliedFacetList style={styles.section} />
                     {graphField && (
                         <Card style={styles.section} className="graph">
                             <CardTitle style={styles.label} className="title">

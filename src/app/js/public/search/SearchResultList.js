@@ -9,7 +9,6 @@ import {
 } from '../../propTypes';
 import SearchResult from './SearchResult';
 import SearchResultPlaceholders from './SearchResultPlaceholders';
-
 import stylesToClassname from '../../lib/stylesToClassName';
 
 const DEFAULT_PLACEHOLDER_NUMBER = 8;

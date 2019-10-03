@@ -17,6 +17,9 @@ import SortButton from '../../lib/components/SortButton';
 import FacetActionsContext from './FacetActionsContext';
 
 const styles = {
+    list: {
+        padding: '1rem 2rem',
+    },
     listHeader: {
         display: 'flex',
     },
@@ -75,7 +78,7 @@ export const FacetValueList = ({
     invertFacet,
     sortFacetValue,
 }) => (
-    <div className="facet-value-list">
+    <div className="facet-value-list" style={styles.list}>
         <CheckBox
             label={polyglot.t('exclude')}
             checked={inverted}
