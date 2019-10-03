@@ -24,9 +24,8 @@ const getSortableFields = (fields, fieldNames) => {
             case fieldNames.detail2:
                 acc.secondDetailField = cur;
                 break;
-            default:
-                return acc;
         }
+        return acc;
     }, {});
 
     return [
