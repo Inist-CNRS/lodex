@@ -12,9 +12,15 @@ const styles = stylesToClassname(
         },
         left: {
             left: '0',
+            '@media (min-width: 992px)': {
+                marginLeft: '10px',
+            },
         },
         right: {
             right: '0',
+            '@media (min-width: 992px)': {
+                marginRight: '10px',
+            },
         },
     },
     'resource-navigation',
