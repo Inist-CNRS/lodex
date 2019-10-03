@@ -1,5 +1,8 @@
 import React, { Fragment } from 'react';
 import classnames from 'classnames';
+import PropTypes from 'prop-types';
+import compose from 'recompose/compose';
+import { withRouter } from 'react-router-dom';
 
 import stylesToClassname from '../../lib/stylesToClassName';
 import NavButton, { NEXT, PREV } from '../../lib/components/NavButton';
@@ -26,17 +29,28 @@ const styles = stylesToClassname(
     'resource-navigation',
 );
 
-const ResourceNavigation = () => {
+const ResourceNavigation = ({ history }) => {
+    const location = {
+        pathname: '/',
+        state: {},
+    };
+
+    const navigate = () => history.push(location);
+
     return (
         <Fragment>
             <div className={classnames(styles.nav, styles.left)}>
-                <NavButton direction={PREV}></NavButton>
+                <NavButton direction={PREV} navigate={navigate}></NavButton>
             </div>
             <div className={classnames(styles.nav, styles.right)}>
-                <NavButton direction={NEXT}></NavButton>
+                <NavButton direction={NEXT} navigate={navigate}></NavButton>
             </div>
         </Fragment>
     );
 };
 
-export default ResourceNavigation;
+ResourceNavigation.propTypes = {
+    history: PropTypes.object,
+};
+
+export default compose(withRouter)(ResourceNavigation);
