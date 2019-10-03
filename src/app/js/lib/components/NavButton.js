@@ -1,11 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import compose from 'recompose/compose';
+import translate from 'redux-polyglot/translate';
 import IconButton from 'material-ui/IconButton';
 import ChevronLeft from 'material-ui/svg-icons/navigation/chevron-left';
 import ChevronRight from 'material-ui/svg-icons/navigation/chevron-right';
-import withHandlers from 'recompose/withHandlers';
 
-import { isLongText, getShortText } from '../../lib/longTexts';
+import { polyglot as polyglotPropTypes } from '../../propTypes';
 
 const styles = {
     root: {},
@@ -14,7 +15,7 @@ const styles = {
 };
 
 const NEXT = 'next';
-const PREV = 'prev';
+const PREV = 'previous';
 const NONE = '';
 
 const renderIcon = direction =>
@@ -24,12 +25,12 @@ const renderIcon = direction =>
         <ChevronLeft style={styles.prev} />
     );
 
-const NavButton = ({ direction, label, navigate }) => {
+const NavButton = ({ p: polyglot, direction, navigate }) => {
     if (!direction) {
         return null;
     }
 
-    const transformedLabel = isLongText(label) ? getShortText(label) : label;
+    const label = polyglot.t(direction);
     const icon = renderIcon(direction);
     const handleNavigate = () => navigate(direction);
 
@@ -37,23 +38,23 @@ const NavButton = ({ direction, label, navigate }) => {
         <IconButton
             className={`nav_${direction}`}
             style={styles.root}
-            title={transformedLabel}
-            icon={icon}
+            tooltip={label}
             onClick={handleNavigate}
-        />
+        >
+            {icon}
+        </IconButton>
     );
 };
 
 NavButton.propTypes = {
-    direction: PropTypes.oneOf([NEXT, PREV, NONE]).isRequired,
-    label: PropTypes.string.isRequired,
-    navigate: PropTypes.func.isRequired,
+    p: polyglotPropTypes.isRequired,
+    direction: PropTypes.oneOf([NEXT, PREV, NONE]),
+    navigate: PropTypes.func,
 };
 
 NavButton.defaultProps = {
     direction: NONE,
-    label: '',
     navigate: () => {},
 };
 
-export default withHandlers()(NavButton);
+export default compose(translate)(NavButton);
