@@ -67,10 +67,10 @@ describe('<SearchResultSort />', () => {
             expect(result[1].label).toEqual('Description');
 
             expect(result[2].name).toEqual('my-first-detail');
-            expect(result[2].label).toEqual('First-detail');
+            expect(result[2].label).toEqual('First Detail');
 
             expect(result[3].name).toEqual('my-second-detail');
-            expect(result[3].label).toEqual('Second-detail');
+            expect(result[3].label).toEqual('Second Detail');
         });
     });
 });
