@@ -4,40 +4,26 @@ import PropTypes from 'prop-types';
 import { field as fieldProptypes } from '../../propTypes';
 import SortButton from '../../lib/components/SortButton';
 
-const getSortableFields = (fields, fieldNames) => {
-    const {
-        titleField,
-        descriptionField,
-        firstDetailField,
-        secondDetailField,
-    } = fields.reduce((acc, cur) => {
-        switch (cur.name) {
-            case fieldNames.title:
-                acc.titleField = cur;
-                break;
-            case fieldNames.description:
-                acc.descriptionField = cur;
-                break;
-            case fieldNames.detail1:
-                acc.firstDetailField = cur;
-                break;
-            case fieldNames.detail2:
-                acc.secondDetailField = cur;
-                break;
-        }
-        return acc;
-    }, {});
-
-    return [
-        titleField,
-        descriptionField,
-        firstDetailField,
-        secondDetailField,
+export const getSortableFieldNames = fieldNames =>
+    [
+        fieldNames.title,
+        fieldNames.description,
+        fieldNames.detail1,
+        fieldNames.detail2,
     ].filter(x => !!x);
-};
+
+export const getSortableFields = (fields, sortedFieldNames) =>
+    fields
+        .filter(field => sortedFieldNames.includes(field.name))
+        .sort(
+            (fieldA, fieldB) =>
+                sortedFieldNames.indexOf(fieldA.name) -
+                sortedFieldNames.indexOf(fieldB.name),
+        );
 
 const SearchResultSort = ({ fields, fieldNames, sort, sortBy, sortDir }) => {
-    const sortableFields = getSortableFields(fields, fieldNames);
+    const sortableFieldNames = getSortableFieldNames(fieldNames);
+    const sortableFields = getSortableFields(fields, sortableFieldNames);
 
     const handleSort = name => {
         sort({ sortBy: name });
