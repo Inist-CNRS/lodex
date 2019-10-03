@@ -14,6 +14,7 @@ import { fromFields, fromCharacteristic } from '../../sharedSelectors';
 import Card from '../../lib/components/Card';
 import Detail from './Detail';
 import RemovedDetail from './RemovedDetail';
+import ResourceNavigation from './ResourceNavigation';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import Loading from '../../lib/components/Loading';
 import { preLoadResource } from './';
@@ -85,6 +86,7 @@ export class ResourceComponent extends Component {
             <div className="resource">
                 {removed && <RemovedDetail />}
                 {!removed && <Detail backToListLabel={backToListLabel} />}
+                <ResourceNavigation />
             </div>
         );
     }
