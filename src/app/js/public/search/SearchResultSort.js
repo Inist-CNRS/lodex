@@ -4,11 +4,41 @@ import PropTypes from 'prop-types';
 import { field as fieldProptypes } from '../../propTypes';
 import SortButton from '../../lib/components/SortButton';
 
+const getSortableFields = (fields, fieldNames) => {
+    const {
+        titleField,
+        descriptionField,
+        firstDetailField,
+        secondDetailField,
+    } = fields.reduce((acc, cur) => {
+        switch (cur.name) {
+            case fieldNames.title:
+                acc.titleField = cur;
+                break;
+            case fieldNames.description:
+                acc.descriptionField = cur;
+                break;
+            case fieldNames.detail1:
+                acc.firstDetailField = cur;
+                break;
+            case fieldNames.detail2:
+                acc.secondDetailField = cur;
+                break;
+            default:
+                return acc;
+        }
+    }, {});
+
+    return [
+        titleField,
+        descriptionField,
+        firstDetailField,
+        secondDetailField,
+    ].filter(x => !!x);
+};
+
 const SearchResultSort = ({ fields, fieldNames, sort, sortBy, sortDir }) => {
-    const titleField = fields.find(field => field.name === fieldNames.title);
-    const descriptionField = fields.find(
-        field => field.name === fieldNames.description,
-    );
+    const sortableFields = getSortableFields(fields, fieldNames);
 
     const handleSort = name => {
         sort({ sortBy: name });
@@ -16,26 +46,17 @@ const SearchResultSort = ({ fields, fieldNames, sort, sortBy, sortDir }) => {
 
     return (
         <Fragment>
-            {titleField && (
+            {sortableFields.map(field => (
                 <SortButton
-                    className={`sort_${fieldNames.title}`}
-                    name={fieldNames.title}
-                    label={titleField.label}
-                    sort={() => handleSort(fieldNames.title)}
+                    key={field.name}
+                    className={`sort_${field.name}`}
+                    name={field.name}
+                    label={field.label}
+                    sort={() => handleSort(field.name)}
                     sortBy={sortBy}
                     sortDir={sortDir}
                 />
-            )}
-            {descriptionField && (
-                <SortButton
-                    className={`sort_${fieldNames.description}`}
-                    name={fieldNames.description}
-                    label={descriptionField.label}
-                    sort={() => handleSort(fieldNames.description)}
-                    sortBy={sortBy}
-                    sortDir={sortDir}
-                />
-            )}
+            ))}
         </Fragment>
     );
 };
@@ -46,6 +67,8 @@ SearchResultSort.propTypes = {
         uri: PropTypes.string,
         title: PropTypes.string,
         description: PropTypes.string,
+        detail1: PropTypes.string,
+        detail2: PropTypes.string,
     }).isRequired,
     sortBy: PropTypes.string,
     sortDir: PropTypes.oneOf(['ASC', 'DESC']),
