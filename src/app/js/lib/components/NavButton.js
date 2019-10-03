@@ -14,9 +14,9 @@ const styles = {
     prev: {},
 };
 
-const NEXT = 'next';
-const PREV = 'previous';
-const NONE = '';
+export const NEXT = 'next';
+export const PREV = 'previous';
+export const NONE = '';
 
 const renderIcon = direction =>
     direction === NEXT ? (

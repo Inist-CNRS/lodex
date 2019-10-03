@@ -2,7 +2,7 @@ import React, { Fragment } from 'react';
 import classnames from 'classnames';
 
 import stylesToClassname from '../../lib/stylesToClassName';
-import NavButton from '../../lib/components/NavButton';
+import NavButton, { NEXT, PREV } from '../../lib/components/NavButton';
 
 const styles = stylesToClassname(
     {
@@ -24,10 +24,10 @@ const ResourceNavigation = () => {
     return (
         <Fragment>
             <div className={classnames(styles.nav, styles.left)}>
-                <NavButton direction="prev" label="Prev"></NavButton>
+                <NavButton direction={PREV}></NavButton>
             </div>
             <div className={classnames(styles.nav, styles.right)}>
-                <NavButton direction="next" label="Next"></NavButton>
+                <NavButton direction={NEXT}></NavButton>
             </div>
         </Fragment>
     );
