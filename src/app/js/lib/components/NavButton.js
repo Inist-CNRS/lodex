@@ -6,12 +6,11 @@ import IconButton from 'material-ui/IconButton';
 import ChevronLeft from 'material-ui/svg-icons/navigation/chevron-left';
 import ChevronRight from 'material-ui/svg-icons/navigation/chevron-right';
 
+import theme from '../../theme';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 
 const styles = {
     root: {},
-    next: {},
-    prev: {},
 };
 
 export const NEXT = 'next';
@@ -20,9 +19,15 @@ export const NONE = '';
 
 const renderIcon = direction =>
     direction === NEXT ? (
-        <ChevronRight style={styles.next} />
+        <ChevronRight
+            color={theme.green.primary}
+            hoverColor={theme.purple.primary}
+        />
     ) : (
-        <ChevronLeft style={styles.prev} />
+        <ChevronLeft
+            color={theme.green.primary}
+            hoverColor={theme.purple.primary}
+        />
     );
 
 const NavButton = ({ p: polyglot, direction, navigate }) => {
