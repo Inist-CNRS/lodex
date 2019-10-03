@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 
 import { field as fieldProptypes } from '../../propTypes';
@@ -15,7 +15,7 @@ const SearchResultSort = ({ fields, fieldNames, sort, sortBy, sortDir }) => {
     };
 
     return (
-        <div>
+        <Fragment>
             {titleField && (
                 <SortButton
                     className={`sort_${fieldNames.title}`}
@@ -36,7 +36,7 @@ const SearchResultSort = ({ fields, fieldNames, sort, sortBy, sortDir }) => {
                     sortDir={sortDir}
                 />
             )}
-        </div>
+        </Fragment>
     );
 };
 

@@ -331,7 +331,7 @@ class Search extends Component {
                         {noOverviewField && this.renderNoOverviewField()}
                         {noResults && this.renderNoResults()}
                         {(everythingIsOk || loading) && (
-                            <div>
+                            <Fragment>
                                 <SearchResultSort
                                     fields={fields}
                                     fieldNames={fieldNames}
@@ -346,7 +346,7 @@ class Search extends Component {
                                     closeDrawer={closeDrawer}
                                     placeholders={loading}
                                 />
-                            </div>
+                            </Fragment>
                         )}
                         {canLoadMore && this.renderLoadMore()}
                     </div>
