@@ -17,13 +17,12 @@ const NEXT = 'next';
 const PREV = 'prev';
 const NONE = '';
 
-const renderIcon = direction => {
-    if (direction === NEXT) {
-        return <ChevronRight style={styles.next} />;
-    } else {
-        return <ChevronLeft style={styles.left} />;
-    }
-};
+const renderIcon = direction =>
+    direction === NEXT ? (
+        <ChevronRight style={styles.next} />
+    ) : (
+        <ChevronLeft style={styles.prev} />
+    );
 
 const NavButton = ({ direction, label, navigate }) => {
     if (!direction) {
@@ -31,6 +30,7 @@ const NavButton = ({ direction, label, navigate }) => {
     }
 
     const transformedLabel = isLongText(label) ? getShortText(label) : label;
+    const labelPosition = direction === NEXT ? 'before' : 'after';
     const icon = renderIcon(direction);
     const handleNavigate = () => navigate(direction);
 
@@ -38,10 +38,10 @@ const NavButton = ({ direction, label, navigate }) => {
         <FlatButton
             className={`nav_${direction}`}
             style={styles.root}
-            labelPosition="before"
-            onClick={handleNavigate}
             label={transformedLabel}
             icon={icon}
+            labelPosition={labelPosition}
+            onClick={handleNavigate}
         />
     );
 };
