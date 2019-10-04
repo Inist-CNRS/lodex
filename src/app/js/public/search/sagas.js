@@ -12,12 +12,14 @@ import {
     facetActions,
 } from './reducer';
 
-import { fromSearch } from '../selectors';
+import { fromSearch, fromResource } from '../selectors';
 import { LOAD_PUBLICATION_SUCCESS } from '../../fields';
 import { LOAD_RESOURCE_SUCCESS } from '../resource';
 import { fromUser, fromFields } from '../../sharedSelectors';
 import fetchSaga from '../../lib/sagas/fetchSaga';
 import facetSagasFactory from '../facet/sagas';
+
+const PER_PAGE = 10;
 
 const doSearchRequest = function*(page = 0) {
     const query = yield select(fromSearch.getQuery);
@@ -28,7 +30,7 @@ const doSearchRequest = function*(page = 0) {
     const request = yield select(fromUser.getLoadDatasetPageRequest, {
         match: query || '',
         sort,
-        perPage: 10,
+        perPage: PER_PAGE,
         page,
         facets,
         invertedFacets,
@@ -91,16 +93,19 @@ const handleLoadMore = function*() {
 
 const handleLoadNextResource = function*() {
     const total = yield select(fromSearch.getTotal);
-    const currentPage = yield select(fromSearch.getPage);
-    const page = currentPage + 1;
+    const results = yield select(fromSearch.getDataset);
 
-    if (page > total) {
+    if (results.length >= total) {
         return;
     }
 
-    const nextResource = yield select(fromSearch.getNextResource);
+    const currentResource = yield select(fromResource.getResourceLastVersion);
+    const nextResource = yield select(
+        fromSearch.getNextResource,
+        currentResource,
+    );
 
-    if (nextResource !== null) {
+    if (nextResource != null) {
         return;
     }
 
