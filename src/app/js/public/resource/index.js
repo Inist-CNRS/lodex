@@ -101,14 +101,17 @@ export default handleActions(
             loading: true,
             saving: false,
         }),
-        LOAD_RESOURCE_SUCCESS: (state, { payload }) => ({
-            ...state,
-            resource: payload,
-            selectedVersion: payload.versions.length - 1,
-            error: null,
-            loading: false,
-            saving: false,
-        }),
+        LOAD_RESOURCE_SUCCESS: (state, { payload }) => {
+            const versions = get(payload, 'versions', []);
+            return {
+                ...state,
+                resource: payload,
+                selectedVersion: versions.length - 1,
+                error: null,
+                loading: false,
+                saving: false,
+            };
+        },
         LOAD_RESOURCE_ERROR: (state, { payload: error }) => ({
             ...state,
             error: error.message,
@@ -126,10 +129,11 @@ export default handleActions(
         }),
         SAVE_RESOURCE_SUCCESS: (state, { payload }) => {
             const resource = payload || state.resource;
+            const versions = get(resource, 'versions', []);
             return {
                 ...state,
                 resource,
-                selectedVersion: resource.versions.length - 1,
+                selectedVersion: versions.length - 1,
                 error: null,
                 saving: false,
             };
@@ -148,18 +152,18 @@ export default handleActions(
                 removedAt,
             },
         }),
-        [ADD_FIELD_TO_RESOURCE_SUCCESS]: (
-            state,
-            { payload: { resource } },
-        ) => ({
-            ...state,
-            resource,
-            selectedVersion: resource.versions.length - 1,
-            error: null,
-            loading: false,
-            addingField: null,
-            saving: false,
-        }),
+        [ADD_FIELD_TO_RESOURCE_SUCCESS]: (state, { payload: { resource } }) => {
+            const versions = get(resource, 'versions', []);
+            return {
+                ...state,
+                resource,
+                selectedVersion: versions.length - 1,
+                error: null,
+                loading: false,
+                addingField: null,
+                saving: false,
+            };
+        },
         [combineActions(
             SAVE_RESOURCE_ERROR,
             HIDE_RESOURCE_ERROR,
@@ -360,10 +364,10 @@ const isSaving = state => state.saving;
 
 const isLoading = state => state.loading;
 
-const getVersions = ({ resource }) =>
-    resource
-        ? resource.versions.map(({ publicationDate }) => publicationDate)
-        : [];
+const getVersions = ({ resource }) => {
+    const versions = get(resource, 'versions', []);
+    return versions.map(({ publicationDate }) => publicationDate);
+};
 
 const getNbVersions = ({ resource }) =>
     (resource && resource.versions && resource.versions.length) || 0;
