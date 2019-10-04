@@ -29,10 +29,13 @@ const styles = stylesToClassname(
     'resource-navigation',
 );
 
-const buildLocationFromResource = resource => ({
-    pathname: `/uid:/${resource.uri}`,
-    state: {},
-});
+const buildLocationFromResource = resource =>
+    resource
+        ? {
+              pathname: `/uid:/${resource.uri}`,
+              state: {},
+          }
+        : {};
 
 const ResourceNavigation = ({ history, prevResource, nextResource }) => {
     const prevLocation = buildLocationFromResource(prevResource);
