@@ -39,7 +39,7 @@ export const fromSearch = {
         const indexCurrentResource = state.dataset.findIndex(
             resource => resource.uri === currentResource.uri,
         );
-        return indexCurrentResource === -1 || indexCurrentResource - 1 < 0
+        return indexCurrentResource < 0
             ? null
             : state.dataset[indexCurrentResource - 1];
     },

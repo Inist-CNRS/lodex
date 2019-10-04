@@ -50,7 +50,7 @@ const ResourceNavigation = ({ history, prevResource, nextResource }) => {
                     <NavButton
                         direction={PREV}
                         navigate={() => navigate(prevLocation)}
-                    ></NavButton>
+                    />
                 </div>
             )}
             {nextResource && (
@@ -58,7 +58,7 @@ const ResourceNavigation = ({ history, prevResource, nextResource }) => {
                     <NavButton
                         direction={NEXT}
                         navigate={() => navigate(nextLocation)}
-                    ></NavButton>
+                    />
                 </div>
             )}
         </Fragment>
