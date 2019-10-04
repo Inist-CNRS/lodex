@@ -32,7 +32,7 @@ const styles = stylesToClassname(
 const buildLocationFromResource = resource =>
     resource
         ? {
-              pathname: `/uid:/${resource.uri}`,
+              pathname: `/${resource.uri}`,
               state: {},
           }
         : {};
