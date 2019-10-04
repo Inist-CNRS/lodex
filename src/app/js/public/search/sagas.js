@@ -14,6 +14,7 @@ import {
 
 import { fromSearch } from '../selectors';
 import { LOAD_PUBLICATION_SUCCESS } from '../../fields';
+import { LOAD_RESOURCE_SUCCESS } from '../resource';
 import { fromUser, fromFields } from '../../sharedSelectors';
 import fetchSaga from '../../lib/sagas/fetchSaga';
 import facetSagasFactory from '../facet/sagas';
@@ -88,6 +89,24 @@ const handleLoadMore = function*() {
     );
 };
 
+const handleLoadNextResource = function*() {
+    const total = yield select(fromSearch.getTotal);
+    const currentPage = yield select(fromSearch.getPage);
+    const page = currentPage + 1;
+
+    if (page > total) {
+        return;
+    }
+
+    const nextResource = yield select(fromSearch.getNextResource);
+
+    if (nextResource !== null) {
+        return;
+    }
+
+    yield handleLoadMore();
+};
+
 const facetSagas = facetSagasFactory({
     actionTypes: facetActionTypes,
     actions: facetActions,
@@ -105,6 +124,7 @@ export default function*() {
         ],
         handleSearch,
     );
-    yield takeEvery(SEARCH_LOAD_MORE, handleLoadMore);
+    yield takeEvery([SEARCH_LOAD_MORE], handleLoadMore);
+    yield takeEvery([LOAD_RESOURCE_SUCCESS], handleLoadNextResource);
     yield fork(facetSagas);
 }

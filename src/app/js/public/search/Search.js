@@ -141,10 +141,12 @@ class Search extends Component {
     }
 
     UNSAFE_componentWillMount() {
-        const { searchQuery, search, preLoadPublication } = this.props;
+        const { searchQuery, search, results, preLoadPublication } = this.props;
 
-        preLoadPublication();
-        search({ query: searchQuery || '' });
+        if (!results || results.length === 0) {
+            preLoadPublication();
+            search({ query: searchQuery || '' });
+        }
 
         setTimeout(() => {
             this.setState({ opening: false });
