@@ -8,7 +8,6 @@ import { getFormValues } from 'redux-form';
 import Step from './Step';
 import FieldFormatInput from '../FieldFormatInput';
 import FieldOverviewInput from '../FieldOverviewInput';
-import FieldDisplayInListInput from '../FieldDisplayInListInput';
 import FieldDisplayInResourceInput from '../FieldDisplayInResourceInput';
 import FieldDisplayInGraphInput from '../FieldDisplayInGraphInput';
 import FieldDisplayInHomeInput from '../FieldDisplayInHomeInput';
@@ -20,7 +19,6 @@ import { COVERS, COVER_DATASET } from '../../../../common/cover';
 
 export const StepDisplayComponent = ({ cover, p: polyglot, ...props }) => (
     <Step id="step-display" label="field_wizard_step_display" {...props}>
-        <FieldDisplayInListInput />
         <FieldDisplayInResourceInput />
         {cover === COVER_DATASET && <FieldDisplayInGraphInput />}
         {cover === COVER_DATASET && <FieldDisplayInHomeInput />}
@@ -48,6 +46,7 @@ const mapStateToProps = state => {
     };
 };
 
-export default compose(connect(mapStateToProps), translate)(
-    StepDisplayComponent,
-);
+export default compose(
+    connect(mapStateToProps),
+    translate,
+)(StepDisplayComponent);

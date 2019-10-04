@@ -117,10 +117,7 @@ const getResourceFields = createSelector(
 
 const getListFields = createSelector(
     getCollectionFields,
-    fields =>
-        fields
-            .filter(f => f.display_in_list || f.name === 'uri')
-            .filter(f => !f.composedOf),
+    fields => fields.filter(f => f.name === 'uri').filter(f => !f.composedOf),
 );
 
 const getGraphFields = createSelector(
