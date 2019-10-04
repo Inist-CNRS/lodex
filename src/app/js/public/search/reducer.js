@@ -32,6 +32,29 @@ export const fromSearch = {
     getPage: state => state.page,
     getTotal: state => state.total,
     getQuery: state => state.query,
+    getPrevResource: (state, currentResource) => {
+        if (!currentResource || !currentResource.uri) {
+            return null;
+        }
+        const indexCurrentResource = state.dataset.findIndex(
+            resource => resource.uri === currentResource.uri,
+        );
+        return indexCurrentResource < 0
+            ? null
+            : state.dataset[indexCurrentResource - 1];
+    },
+    getNextResource: (state, currentResource) => {
+        if (!currentResource || !currentResource.uri) {
+            return null;
+        }
+        const indexCurrentResource = state.dataset.findIndex(
+            resource => resource.uri === currentResource.uri,
+        );
+        return indexCurrentResource === -1 ||
+            indexCurrentResource + 1 > state.dataset.length
+            ? null
+            : state.dataset[indexCurrentResource + 1];
+    },
     ...createGlobalSelectors(state => state.facet, facetSelectors),
 };
 

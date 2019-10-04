@@ -102,9 +102,11 @@ class GraphPage extends Component {
                             />
                         </Card>
                     )}
-                    <Card style={styles.section}>
-                        <Dataset />
-                    </Card>
+                    {!graphField && (
+                        <Card style={styles.section}>
+                            <Dataset />
+                        </Card>
+                    )}
                 </div>
             </div>
         );

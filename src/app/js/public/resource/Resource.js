@@ -9,11 +9,12 @@ import FlatButton from 'material-ui/FlatButton';
 import get from 'lodash.get';
 import isEqual from 'lodash.isequal';
 
-import { fromResource } from '../selectors';
+import { fromResource, fromSearch } from '../selectors';
 import { fromFields, fromCharacteristic } from '../../sharedSelectors';
 import Card from '../../lib/components/Card';
 import Detail from './Detail';
 import RemovedDetail from './RemovedDetail';
+import ResourceNavigation from './ResourceNavigation';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import Loading from '../../lib/components/Loading';
 import { preLoadResource } from './';
@@ -45,6 +46,8 @@ export class ResourceComponent extends Component {
             loading,
             removed,
             p: polyglot,
+            prevResource,
+            nextResource,
         } = this.props;
 
         if (loading) {
@@ -85,6 +88,10 @@ export class ResourceComponent extends Component {
             <div className="resource">
                 {removed && <RemovedDetail />}
                 {!removed && <Detail backToListLabel={backToListLabel} />}
+                <ResourceNavigation
+                    prevResource={prevResource}
+                    nextResource={nextResource}
+                />
             </div>
         );
     }
@@ -96,6 +103,8 @@ ResourceComponent.defaultProps = {
     datasetTitle: null,
     datasetTitleKey: null,
     titleKey: null,
+    prevResource: null,
+    nextResource: null,
 };
 
 ResourceComponent.propTypes = {
@@ -112,16 +121,23 @@ ResourceComponent.propTypes = {
             uri: PropTypes.string,
         }),
     }).isRequired,
+    prevResource: PropTypes.object,
+    nextResource: PropTypes.object,
 };
 
-const mapStateToProps = state => ({
-    resource: fromResource.getResourceLastVersion(state),
-    removed: fromResource.hasBeenRemoved(state),
-    characteristics: fromCharacteristic.getCharacteristicsAsResource(state),
-    datasetTitleKey: fromFields.getDatasetTitleFieldName(state),
-    fields: fromFields.getFields(state),
-    loading: fromResource.isLoading(state),
-});
+const mapStateToProps = state => {
+    const resource = fromResource.getResourceLastVersion(state);
+    return {
+        resource,
+        removed: fromResource.hasBeenRemoved(state),
+        characteristics: fromCharacteristic.getCharacteristicsAsResource(state),
+        datasetTitleKey: fromFields.getDatasetTitleFieldName(state),
+        fields: fromFields.getFields(state),
+        loading: fromResource.isLoading(state),
+        prevResource: fromSearch.getPrevResource(state, resource),
+        nextResource: fromSearch.getNextResource(state, resource),
+    };
+};
 
 const mapDispatchToProps = {
     preLoadResource,
