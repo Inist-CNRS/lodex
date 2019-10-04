@@ -326,13 +326,15 @@ const getResourceContributions = state =>
 const getResourceContributorsCatalog = createSelector(
     getResourceContributions,
     contributions =>
-        contributions.filter(({ contributor }) => !!contributor).reduce(
-            (acc, { fieldName, contributor: { name } }) => ({
-                ...acc,
-                [fieldName]: name,
-            }),
-            {},
-        ),
+        contributions
+            .filter(({ contributor }) => !!contributor)
+            .reduce(
+                (acc, { fieldName, contributor: { name } }) => ({
+                    ...acc,
+                    [fieldName]: name,
+                }),
+                {},
+            ),
 );
 
 const getResourceContributorForField = createSelector(
