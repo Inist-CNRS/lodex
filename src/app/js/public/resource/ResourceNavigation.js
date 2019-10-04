@@ -29,28 +29,48 @@ const styles = stylesToClassname(
     'resource-navigation',
 );
 
-const ResourceNavigation = ({ history }) => {
-    const location = {
-        pathname: '/',
-        state: {},
-    };
+const buildLocationFromResource = resource => ({
+    pathname: `/uid:/${resource.uri}`,
+    state: {},
+});
 
-    const navigate = () => history.push(location);
+const ResourceNavigation = ({ history, prevResource, nextResource }) => {
+    const prevLocation = buildLocationFromResource(prevResource);
+    const nextLocation = buildLocationFromResource(nextResource);
+
+    const navigate = location => history.push(location);
 
     return (
         <Fragment>
-            <div className={classnames(styles.nav, styles.left)}>
-                <NavButton direction={PREV} navigate={navigate}></NavButton>
-            </div>
-            <div className={classnames(styles.nav, styles.right)}>
-                <NavButton direction={NEXT} navigate={navigate}></NavButton>
-            </div>
+            {prevResource && (
+                <div className={classnames(styles.nav, styles.left)}>
+                    <NavButton
+                        direction={PREV}
+                        navigate={() => navigate(prevLocation)}
+                    ></NavButton>
+                </div>
+            )}
+            {nextResource && (
+                <div className={classnames(styles.nav, styles.right)}>
+                    <NavButton
+                        direction={NEXT}
+                        navigate={() => navigate(nextLocation)}
+                    ></NavButton>
+                </div>
+            )}
         </Fragment>
     );
 };
 
 ResourceNavigation.propTypes = {
-    history: PropTypes.object,
+    history: PropTypes.object.isRequired,
+    prevResource: PropTypes.object,
+    nextResource: PropTypes.object,
+};
+
+ResourceNavigation.defaultProps = {
+    prevResource: null,
+    nextResource: null,
 };
 
 export default compose(withRouter)(ResourceNavigation);
