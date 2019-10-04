@@ -33,7 +33,6 @@ export const fromSearch = {
     getTotal: state => state.total,
     getQuery: state => state.query,
     getPrevResource: (state, currentResource) => {
-        console.log('state', state, 'currentResource', currentResource);
         if (!currentResource || !currentResource.uri) {
             return null;
         }
