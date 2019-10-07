@@ -221,7 +221,6 @@ const menuPropTypes = PropTypes.arrayOf(
     PropTypes.shape({
         role: PropTypes.oneOf([
             'home',
-            'resources',
             'graphs',
             'search',
             'admin',
