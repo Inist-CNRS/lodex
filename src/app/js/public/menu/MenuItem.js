@@ -116,23 +116,6 @@ const MenuItem = ({
                     {label}
                 </NavLink>
             );
-        case 'resources':
-            return (
-                <NavLink
-                    to="/graph"
-                    exact
-                    className={classnames(
-                        'nav-item',
-                        styles.menuItem,
-                        styles.link,
-                    )}
-                    activeClassName={styles.active}
-                    onClick={onClick(config.role)}
-                >
-                    {icon}
-                    {label}
-                </NavLink>
-            );
         case 'graphs':
             return (
                 hasGraph && (
