@@ -274,9 +274,7 @@ export const getLoadContributedResourcePageRequest = (
     const encodedPerPage = encodeURIComponent(perPage);
 
     return getRequest(state, {
-        url: `/api/publishedDataset/${filter}?page=${encodedPage}&perPage=${
-            encodedPerPage
-        }`,
+        url: `/api/publishedDataset/${filter}?page=${encodedPage}&perPage=${encodedPerPage}`,
     });
 };
 
@@ -367,6 +365,12 @@ export const getProgressRequest = state =>
         url: '/api/progress',
     });
 
+export const getBreadcrumbRequest = state =>
+    getRequest(state, {
+        method: 'GET',
+        url: '/api/breadcrumb',
+    });
+
 export const getMenuRequest = state =>
     getRequest(state, {
         method: 'GET',
@@ -417,4 +421,5 @@ export const selectors = {
     getProgressRequest,
     getIstexRequest,
     getMenuRequest,
+    getBreadcrumbRequest,
 };

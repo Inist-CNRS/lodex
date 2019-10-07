@@ -4,6 +4,7 @@ import { fromDataset as localFromDataset } from './dataset';
 import { fromExport as localFromExport } from './export';
 import { fromResource as localFromResource } from './resource';
 import { fromFormat as localFromFormat } from '../formats/reducer';
+import { fromBreadcrumb as localFromBreadcrumb } from './breadcrumb/reducer';
 import { fromMenu as localFromMenu } from './menu/reducer';
 import { fromSearch as localFromSearch } from './search/reducer';
 import localFromFacet from './facet/selectors';
@@ -30,6 +31,12 @@ const getFormatState = state => state.format;
 export const fromFormat = createGlobalSelectors(
     getFormatState,
     localFromFormat,
+);
+
+const getBreadcrumbState = state => state.breadcrumb;
+export const fromBreadcrumb = createGlobalSelectors(
+    getBreadcrumbState,
+    localFromBreadcrumb,
 );
 
 const getMenuState = state => state.menu;
