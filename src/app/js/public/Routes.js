@@ -42,7 +42,6 @@ class Routes extends Component {
                         <Route path="/ark:/:naan/:rest" component={Resource} />
                         <Route path="/uid:/:uri" component={Resource} />
                         <Route path="/login" component={Login} />
-                        <Route path="/graph" exact component={GraphPage} />
                         <Route path="/graph/:name" component={GraphPage} />
                         {customRoutes.map(link => (
                             <Route
