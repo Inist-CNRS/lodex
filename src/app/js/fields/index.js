@@ -115,7 +115,6 @@ const getDefaultField = (name, index) => ({
     cover: 'collection',
     label: name || `newField ${index + 1}`,
     name: 'new',
-    display_in_list: true,
     display_in_resource: true,
     searchable: true,
     transformers: name

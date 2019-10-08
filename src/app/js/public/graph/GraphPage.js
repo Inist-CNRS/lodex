@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { Card, CardTitle } from 'material-ui/Card';
 import { Helmet } from 'react-helmet';
 
-import Dataset from '../dataset/Dataset';
 import Toolbar from '../Toolbar';
 import { fromFields, fromCharacteristic } from '../../sharedSelectors';
 import Format from '../Format';
@@ -100,11 +99,6 @@ class GraphPage extends Component {
                                 resource={resource}
                                 parents={[]}
                             />
-                        </Card>
-                    )}
-                    {!graphField && (
-                        <Card style={styles.section}>
-                            <Dataset />
                         </Card>
                     )}
                 </div>

@@ -18,6 +18,10 @@ describe('MenuItem', () => {
         onClick: jest.fn(() => onClick),
     };
 
+    beforeAll(() => {
+        console.error = jest.fn(() => onClick);
+    });
+
     beforeEach(() => StyleSheetTestUtils.suppressStyleInjection());
 
     it('should translate label based on currentLocate fr', () => {
@@ -87,7 +91,7 @@ describe('MenuItem', () => {
     });
 
     describe('role: resources', () => {
-        it('should render MenuItem to resources', () => {
+        it('should not render MenuItem to resources', () => {
             const wrapper = shallow(
                 <MenuItem
                     {...defaultProps}
@@ -101,8 +105,8 @@ describe('MenuItem', () => {
 
             const link = wrapper.find(NavLink);
 
-            expect(link.prop('to')).toBe('/graph');
-            expect(link.prop('onClick')).toBe(onClick);
+            expect(link).toHaveLength(0);
+            expect(console.error).toHaveBeenCalled();
         });
     });
 
@@ -305,6 +309,7 @@ describe('MenuItem', () => {
             expect(a).toHaveLength(1);
             expect(a.prop('href')).toBe('http://external/link');
         });
+
         it('should render NavLink to config.link', () => {
             const wrapper = shallow(
                 <MenuItem

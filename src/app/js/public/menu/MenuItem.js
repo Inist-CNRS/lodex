@@ -116,23 +116,6 @@ const MenuItem = ({
                     {label}
                 </NavLink>
             );
-        case 'resources':
-            return (
-                <NavLink
-                    to="/graph"
-                    exact
-                    className={classnames(
-                        'nav-item',
-                        styles.menuItem,
-                        styles.link,
-                    )}
-                    activeClassName={styles.active}
-                    onClick={onClick(config.role)}
-                >
-                    {icon}
-                    {label}
-                </NavLink>
-            );
         case 'graphs':
             return (
                 hasGraph && (
@@ -239,7 +222,6 @@ const MenuItem = ({
                 />
             );
         }
-
         case 'custom': {
             const { link } = config;
             if (!link) {
@@ -277,11 +259,21 @@ const MenuItem = ({
                 </NavLink>
             );
         }
+        case 'resources': {
+            console.error(
+                `The role ${
+                    config.role
+                } has been removed in lodex v11.0.2 (https://github.com/Inist-CNRS/lodex/releases/tag/v11.0.1). Menu item: ${JSON.stringify(
+                    config,
+                )} will be ignored.`,
+            );
+            return null;
+        }
         default:
             console.error(
-                `Unknow role: ${config.role} menu item: ${JSON.stringify(
+                `Unknow role: ${config.role}. Menu item: ${JSON.stringify(
                     config,
-                )} will be ignored`,
+                )} will be ignored.`,
             );
             return null;
     }

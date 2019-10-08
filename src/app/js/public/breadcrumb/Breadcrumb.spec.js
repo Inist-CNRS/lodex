@@ -23,7 +23,7 @@ describe('Breadcrumb', () => {
         const wrapper = shallow(
             <Breadcrumb
                 location={{
-                    pathname: '/graph',
+                    pathname: '/uid:/0568XNKN',
                 }}
             />,
         );
@@ -48,7 +48,7 @@ describe('Breadcrumb', () => {
         const wrapper = shallow(
             <Breadcrumb
                 location={{
-                    pathname: '/graph',
+                    pathname: '/uid:/0568XNKN',
                 }}
             />,
         );

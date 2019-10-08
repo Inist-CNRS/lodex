@@ -101,15 +101,6 @@
             },
             {
                 "label": {
-                    "en": "Resources",
-                    "fr": "Ressources"
-                },
-                "icon": "faList",
-                "position": "left",
-                "role": "resources"
-            },
-            {
-                "label": {
                     "en": "Search",
                     "fr": "recherche"
                 },
