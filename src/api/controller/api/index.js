@@ -20,7 +20,7 @@ import upload from './upload';
 import widget from './widget';
 import run from './run';
 import progress from './progress';
-import breadcrumb from './breadcrumb';
+import breadcrumbs from './breadcrumb';
 import menu from './menu';
 
 const app = new Koa();
@@ -28,7 +28,7 @@ const app = new Koa();
 app.use(ezMasterConfig);
 
 app.use(mount('/login', login));
-app.use(route.get('/breadcrumb', breadcrumb));
+app.use(route.get('/breadcrumb', breadcrumbs));
 app.use(route.get('/menu', menu));
 
 app.use(

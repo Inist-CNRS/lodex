@@ -33,7 +33,7 @@ import {
     advancedMenuButton,
     customRoutes,
 } from './api/menu';
-import { getBreadcrumb } from './api/breadcrumb';
+import { breadcrumb } from './api/breadcrumb';
 import customTheme from '../../app/js/public/customTheme';
 
 import { getPublication } from './api/publication';
@@ -72,7 +72,7 @@ const getDefaultInitialState = (token, cookie, locale) => ({
         token,
         cookie,
     },
-    breadcrumb: getBreadcrumb(),
+    breadcrumb,
     menu: {
         leftMenu,
         rightMenu,

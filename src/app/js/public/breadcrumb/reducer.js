@@ -30,7 +30,7 @@ export default handleActions(
 
 export const hasBreadcrumb = state => state;
 
-const getBreadcrumb = state => state.breadcrumb;
+const getBreadcrumb = state => state;
 
 export const fromBreadcrumb = {
     hasBreadcrumb,
