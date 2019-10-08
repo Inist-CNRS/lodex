@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
@@ -6,6 +6,7 @@ import { withRouter } from 'react-router-dom';
 
 import stylesToClassname from '../../lib/stylesToClassName';
 import NavButton, { NEXT, PREV } from '../../lib/components/NavButton';
+import useSwiper, { SWIPE_LEFT, SWIPE_RIGHT } from '../../lib/hooks/useSwiper';
 
 const styles = stylesToClassname(
     {
@@ -42,6 +43,16 @@ const ResourceNavigation = ({ history, prevResource, nextResource }) => {
     const nextLocation = buildLocationFromResource(nextResource);
 
     const navigate = location => history.push(location);
+
+    const direction = useSwiper();
+
+    useEffect(() => {
+        if (direction === SWIPE_LEFT && prevLocation) {
+            navigate(prevLocation);
+        } else if (direction === SWIPE_RIGHT && nextLocation) {
+            navigate(nextLocation);
+        }
+    }, [direction]);
 
     return (
         <Fragment>
