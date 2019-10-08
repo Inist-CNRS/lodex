@@ -18,6 +18,7 @@ const getCoordsXFromEvent = event =>
 const startEvent = 'touchstart';
 const moveEvent = 'touchmove';
 const stopEvent = 'touchend';
+const cancelEvent = 'touchcancel';
 
 const subscribeToEvents = ({ handleStart, handleMove, handleStop }) => {
     if (handleStart) {
@@ -28,6 +29,7 @@ const subscribeToEvents = ({ handleStart, handleMove, handleStop }) => {
     }
     if (handleStop) {
         document.addEventListener(stopEvent, handleStop);
+        document.addEventListener(cancelEvent, handleStop);
     }
 };
 
@@ -40,6 +42,7 @@ const unSubscribeToEvents = ({ handleStart, handleMove, handleStop }) => {
     }
     if (handleStop) {
         document.removeEventListener(stopEvent, handleStop);
+        document.removeEventListener(cancelEvent, handleStop);
     }
 };
 
