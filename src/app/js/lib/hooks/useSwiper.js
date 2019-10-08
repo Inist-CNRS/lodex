@@ -6,49 +6,40 @@ export const SWIPE_NONE = 'none';
 export const SWIPE_LEFT = 'left';
 export const SWIPE_RIGHT = 'right';
 
-const DEFAULT_MIN_DELTA = 15;
+const DEFAULT_MIN_DELTA = 30;
 
 const isMoving = (deltaX, minDelta) => Math.abs(deltaX) > minDelta;
 
 const getDirection = deltaX => (deltaX > 0 ? SWIPE_RIGHT : SWIPE_LEFT);
 
-const startEvents = ['mousedown', 'touchstart'];
-const moveEvents = ['mousemove', 'touchmove'];
-const stopEvents = ['mouseup', 'touchend'];
+const getCoordsXFromEvent = event =>
+    event.touches ? event.touches[0].clientX : event.clientX;
+
+const startEvent = 'touchstart';
+const moveEvent = 'touchmove';
+const stopEvent = 'touchend';
 
 const subscribeToEvents = ({ handleStart, handleMove, handleStop }) => {
-    if (startEvents) {
-        startEvents.forEach(event =>
-            document.addEventListener(event, handleStart),
-        );
+    if (handleStart) {
+        document.addEventListener(startEvent, handleStart);
     }
-    if (moveEvents) {
-        moveEvents.forEach(event =>
-            document.addEventListener(event, handleMove),
-        );
+    if (handleMove) {
+        document.addEventListener(moveEvent, handleMove);
     }
-    if (stopEvents) {
-        stopEvents.forEach(event =>
-            document.addEventListener(event, handleStop),
-        );
+    if (handleStop) {
+        document.addEventListener(stopEvent, handleStop);
     }
 };
 
 const unSubscribeToEvents = ({ handleStart, handleMove, handleStop }) => {
-    if (startEvents) {
-        startEvents.forEach(event =>
-            document.removeEventListener(event, handleStart),
-        );
+    if (handleStart) {
+        document.removeEventListener(startEvent, handleStart);
     }
-    if (moveEvents) {
-        moveEvents.forEach(event =>
-            document.removeEventListener(event, handleMove),
-        );
+    if (handleMove) {
+        document.removeEventListener(moveEvent, handleMove);
     }
-    if (stopEvents) {
-        stopEvents.forEach(event =>
-            document.removeEventListener(event, handleStop),
-        );
+    if (handleStop) {
+        document.removeEventListener(stopEvent, handleStop);
     }
 };
 
@@ -57,11 +48,11 @@ export default (minDelta = DEFAULT_MIN_DELTA) => {
     const [swipeDirection, setSwipeDirection] = useState(SWIPE_NONE);
 
     const handleStart = event => {
-        setCoordsX(event.clientX);
+        setCoordsX(getCoordsXFromEvent(event));
     };
 
     const handleMove = event => {
-        const deltaX = coordsX - event.clientX;
+        const deltaX = coordsX - getCoordsXFromEvent(event);
         if (!isMoving(deltaX, minDelta)) {
             return;
         }
@@ -76,6 +67,10 @@ export default (minDelta = DEFAULT_MIN_DELTA) => {
 
     useEffect(() => {
         subscribeToEvents({ handleStart });
+
+        return () => {
+            unSubscribeToEvents({ handleStart });
+        };
     });
 
     useEffect(() => {
@@ -86,7 +81,7 @@ export default (minDelta = DEFAULT_MIN_DELTA) => {
         }
 
         return () => {
-            unSubscribeToEvents({ handleStart, handleMove, handleStop });
+            unSubscribeToEvents({ handleMove, handleStop });
         };
     }, [coordsX]);
 
