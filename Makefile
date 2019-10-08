@@ -110,7 +110,8 @@ else
 		echo "ERROR: The API didn't start! Here are the logs:" && \
 		$(MAKE) test-e2e-logs && \
 		$(MAKE) test-e2e-stop-dockers && \
-		echo 'Done or not, but why ?'
+		echo 'Done or not, but why ?' && \
+		exit 1
 	$(MAKE) test-e2e-stop-dockers
 endif
 
