@@ -9,13 +9,13 @@ import { fromBreadcrumb } from '../selectors';
 import { fromUser } from '../../sharedSelectors';
 import fetchSaga from '../../lib/sagas/fetchSaga';
 
-export function* handleLoadMenu() {
-    const menu = yield select(fromBreadcrumb.hasMenu);
-    if (menu) {
+export function* handleLoadBreadcrumb() {
+    const breadcrumb = yield select(fromBreadcrumb.hasBreadcrumb);
+    if (breadcrumb) {
         return;
     }
 
-    const request = yield select(fromUser.getMenuRequest);
+    const request = yield select(fromUser.getBreadcrumbRequest);
 
     const { error, response } = yield call(fetchSaga, request);
 
@@ -28,5 +28,5 @@ export function* handleLoadMenu() {
 }
 
 export default function* watchLoadPublicationRequest() {
-    yield takeLatest([LOAD_BREADCRUMB], handleLoadMenu);
+    yield takeLatest([LOAD_BREADCRUMB], handleLoadBreadcrumb);
 }
