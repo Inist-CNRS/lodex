@@ -1,17 +1,35 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import classnames from 'classnames';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 import IconButton from 'material-ui/IconButton';
-import ChevronLeft from 'material-ui/svg-icons/navigation/chevron-left';
-import ChevronRight from 'material-ui/svg-icons/navigation/chevron-right';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons';
 
 import theme from '../../theme';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
+import stylesToClassname from '../../lib/stylesToClassName';
 
-const styles = {
-    root: {},
-};
+const styles = stylesToClassname(
+    {
+        root: {
+            height: '48px !important',
+            width: '48px !important',
+            padding: '0px !important',
+        },
+        icon: {
+            color: theme.green.primary,
+            ':hover': {
+                color: theme.purple.primary,
+            },
+            ':active': {
+                color: theme.orange.primary,
+            },
+        },
+    },
+    'nav-button',
+);
 
 export const NEXT = 'next';
 export const PREV = 'previous';
@@ -19,14 +37,18 @@ export const NONE = '';
 
 const renderIcon = direction =>
     direction === NEXT ? (
-        <ChevronRight
+        <FontAwesomeIcon
+            className={styles.icon}
+            icon={faAngleRight}
             color={theme.green.primary}
-            hoverColor={theme.purple.primary}
+            height={36}
         />
     ) : (
-        <ChevronLeft
+        <FontAwesomeIcon
+            className={styles.icon}
+            icon={faAngleLeft}
             color={theme.green.primary}
-            hoverColor={theme.purple.primary}
+            height={36}
         />
     );
 
@@ -41,9 +63,9 @@ const NavButton = ({ p: polyglot, direction, navigate }) => {
 
     return (
         <IconButton
-            className={`nav_${direction}`}
-            style={styles.root}
+            className={classnames(`nav-button-${direction}`, styles.root)}
             tooltip={label}
+            tooltipPosition="bottom-center"
             onClick={handleNavigate}
         >
             {icon}
