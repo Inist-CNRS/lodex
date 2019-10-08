@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react';
-import { Route, Redirect } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { ConnectedRouter } from 'connected-react-router';
@@ -52,7 +52,6 @@ class Routes extends Component {
                             />
                         ))}
                         <Route path={notLogin} component={CreateResource} />
-                        <Redirect from="*" to="/" />
                     </Fragment>
                 </ConnectedRouter>
             </App>
