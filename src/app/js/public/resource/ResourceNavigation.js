@@ -49,10 +49,14 @@ const ResourceNavigation = ({ history, prevResource, nextResource }) => {
     useEffect(() => {
         switch (direction) {
             case SWIPE_LEFT:
-                navigate(prevLocation);
+                if (prevLocation) {
+                    navigate(prevLocation);
+                }
                 return;
             case SWIPE_RIGHT:
-                navigate(nextLocation);
+                if (nextLocation) {
+                    navigate(nextLocation);
+                }
                 return;
         }
     }, [direction]);
