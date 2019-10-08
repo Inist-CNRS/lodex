@@ -10,7 +10,6 @@ describe('Graph Page', () => {
         datasetImportPage.importDataset('dataset/chart.csv');
         datasetImportPage.importModel('model/chart.json');
         datasetImportPage.publish();
-        cy.visit('http://localhost:3000/graph');
     });
 
     it('should reset filters & search query when switching to another graph', () => {
