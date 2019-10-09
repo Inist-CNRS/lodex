@@ -100,12 +100,11 @@ const handleLoadNextResource = function*() {
     }
 
     const currentResource = yield select(fromResource.getResourceLastVersion);
-    const nextResource = yield select(
-        fromSearch.getNextResource,
-        currentResource,
+    const indexCurrentResource = results.findIndex(
+        resource => resource.uri === currentResource.uri,
     );
 
-    if (nextResource != null) {
+    if (indexCurrentResource < results.length - 1) {
         return;
     }
 
