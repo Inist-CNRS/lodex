@@ -284,6 +284,7 @@ MenuItem.propTypes = {
         role: PropTypes.oneOf([
             'home',
             'resources',
+            'advanced',
             'graphs',
             'search',
             'admin',

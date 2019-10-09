@@ -205,7 +205,7 @@ export const NavBar = ({
             </Drawer>
             <Drawer status={advancedMenuDrawer} onClose={toggleAdvancedMenu}>
                 <AdvancedPage
-                    role={role}
+                    role="user"
                     canBeSearched={canBeSearched}
                     hasGraph={hasGraph}
                     onClick={handleMenuItemClick}
