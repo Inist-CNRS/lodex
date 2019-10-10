@@ -1,24 +1,24 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import compose from 'recompose/compose';
 
+import { fromBreadcrumb } from '../selectors';
 import BreadcrumbItem from './BreadcrumbItem';
-import { getBreadcrumb } from '../../../../api/controller/api/breadcrumb';
 import stylesToClassname from '../../lib/stylesToClassName';
-import theme from '../../theme';
 
 const styles = stylesToClassname(
     {
         trail: {
-            color: theme.green.primary,
-            marginTop: 5,
+            margin: '5px 0px',
         },
     },
     'breadcrumb',
 );
 
-const Breadcrumb = ({ location }) => {
+export const Breadcrumb = ({ breadcrumb, location }) => {
     const isRoot = location.pathname === '/';
-    const breadcrumb = getBreadcrumb();
+
     if (
         !breadcrumb ||
         breadcrumb.length == 0 ||
@@ -35,8 +35,12 @@ const Breadcrumb = ({ location }) => {
             <div className={styles.trail}>
                 {items.map((item, index) => (
                     <>
-                        <BreadcrumbItem key={index} value={item} />
-                        {index + 1 < items.length ? '>' : null}
+                        <BreadcrumbItem
+                            key={index}
+                            value={item}
+                            className={styles.item}
+                        />
+                        {index + 1 < items.length && <span>/</span>}
                     </>
                 ))}
             </div>
@@ -48,6 +52,23 @@ Breadcrumb.propTypes = {
     location: PropTypes.shape({
         pathname: PropTypes.string.isRequired,
     }).isRequired,
+    breadcrumb: PropTypes.arrayOf(
+        PropTypes.shape({
+            value: PropTypes.shape({
+                label: PropTypes.shape({
+                    en: PropTypes.string.isRequired,
+                    fr: PropTypes.string.isRequired,
+                }).isRequired,
+                url: PropTypes.string.isRequired,
+            }),
+        }),
+    ),
 };
 
-export default Breadcrumb;
+const mapStateToProps = state => {
+    return {
+        breadcrumb: fromBreadcrumb.getBreadcrumb(state),
+    };
+};
+
+export default compose(connect(mapStateToProps))(Breadcrumb);

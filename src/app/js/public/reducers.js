@@ -12,6 +12,7 @@ import resource from './resource';
 import format from '../formats/reducer';
 import user from '../user';
 import searchReducer from './search/reducer';
+import breadcrumb from './breadcrumb/reducer';
 import menu from './menu/reducer';
 
 const rootReducer = combineReducers({
@@ -28,6 +29,7 @@ const rootReducer = combineReducers({
     user,
     search: searchReducer,
     menu,
+    breadcrumb,
 });
 
 export default rootReducer;
