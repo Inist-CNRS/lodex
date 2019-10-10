@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import classnames from 'classnames';
 import { connect } from 'react-redux';
-import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
+import { withRouter } from 'react-router-dom';
+import translate from 'redux-polyglot/translate';
 import HomeIcon from 'material-ui/svg-icons/action/home';
 import { CardText, CardActions } from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
+import { Swipeable } from 'react-swipeable';
 import get from 'lodash.get';
 import isEqual from 'lodash.isequal';
 
@@ -14,12 +17,45 @@ import { fromFields, fromCharacteristic } from '../../sharedSelectors';
 import Card from '../../lib/components/Card';
 import Detail from './Detail';
 import RemovedDetail from './RemovedDetail';
-import ResourceNavigation from './ResourceNavigation';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import Loading from '../../lib/components/Loading';
 import { preLoadResource } from './';
 import { preLoadPublication } from '../../fields';
 import Link from '../../lib/components/Link';
+import stylesToClassname from '../../lib/stylesToClassName';
+import NavButton, { NEXT, PREV } from '../../lib/components/NavButton';
+
+const navStyles = stylesToClassname(
+    {
+        nav: {
+            position: 'fixed',
+            top: '50%',
+        },
+        left: {
+            left: '0',
+            '@media (min-width: 992px)': {
+                marginLeft: '10px',
+            },
+        },
+        right: {
+            right: '0',
+            '@media (min-width: 992px)': {
+                marginRight: '10px',
+            },
+        },
+    },
+    'resource-navigation',
+);
+
+const buildLocationFromResource = resource =>
+    resource
+        ? {
+              pathname: `/${resource.uri}`,
+              state: {},
+          }
+        : {};
+
+const navigate = (history, location) => history.push(location);
 
 export class ResourceComponent extends Component {
     UNSAFE_componentWillMount() {
@@ -40,6 +76,7 @@ export class ResourceComponent extends Component {
 
     render() {
         const {
+            history,
             resource,
             datasetTitleKey,
             characteristics,
@@ -84,15 +121,55 @@ export class ResourceComponent extends Component {
                 </div>
             );
         }
+        const swipeableConfig = {
+            preventDefaultTouchmoveEvent: true,
+            trackMouse: false,
+        };
+
+        const prevLocation = buildLocationFromResource(prevResource);
+        const nextLocation = buildLocationFromResource(nextResource);
+
+        const navigatePrev = () => navigate(history, prevLocation);
+        const navigateNext = () => navigate(history, nextLocation);
+
         return (
-            <div className="resource">
-                {removed && <RemovedDetail />}
-                {!removed && <Detail backToListLabel={backToListLabel} />}
-                <ResourceNavigation
-                    prevResource={prevResource}
-                    nextResource={nextResource}
-                />
-            </div>
+            <Swipeable
+                {...swipeableConfig}
+                onSwipedRight={navigatePrev}
+                onSwipedLeft={navigateNext}
+            >
+                <div className="resource">
+                    {removed && <RemovedDetail />}
+                    {!removed && <Detail backToListLabel={backToListLabel} />}
+
+                    {prevResource && (
+                        <div
+                            className={classnames(
+                                navStyles.nav,
+                                navStyles.left,
+                            )}
+                        >
+                            <NavButton
+                                direction={PREV}
+                                navigate={navigatePrev}
+                            />
+                        </div>
+                    )}
+                    {nextResource && (
+                        <div
+                            className={classnames(
+                                navStyles.nav,
+                                navStyles.right,
+                            )}
+                        >
+                            <NavButton
+                                direction={NEXT}
+                                navigate={navigateNext}
+                            />
+                        </div>
+                    )}
+                </div>
+            </Swipeable>
         );
     }
 }
@@ -116,6 +193,9 @@ ResourceComponent.propTypes = {
     removed: PropTypes.bool.isRequired,
     preLoadResource: PropTypes.func.isRequired,
     preLoadPublication: PropTypes.func.isRequired,
+    history: PropTypes.shape({
+        push: PropTypes.func.isRequired,
+    }),
     match: PropTypes.shape({
         params: PropTypes.shape({
             uri: PropTypes.string,
@@ -150,4 +230,5 @@ export default compose(
         mapDispatchToProps,
     ),
     translate,
+    withRouter,
 )(ResourceComponent);
