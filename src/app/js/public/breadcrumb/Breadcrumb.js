@@ -6,13 +6,11 @@ import compose from 'recompose/compose';
 import { fromBreadcrumb } from '../selectors';
 import BreadcrumbItem from './BreadcrumbItem';
 import stylesToClassname from '../../lib/stylesToClassName';
-import theme from '../../theme';
 
 const styles = stylesToClassname(
     {
         trail: {
-            color: theme.green.primary,
-            marginTop: 5,
+            margin: '5px 0px',
         },
     },
     'breadcrumb',
@@ -37,8 +35,12 @@ export const Breadcrumb = ({ breadcrumb, location }) => {
             <div className={styles.trail}>
                 {items.map((item, index) => (
                     <>
-                        <BreadcrumbItem key={index} value={item} />
-                        {index + 1 < items.length ? '>' : null}
+                        <BreadcrumbItem
+                            key={index}
+                            value={item}
+                            className={styles.item}
+                        />
+                        {index + 1 < items.length && <span>/</span>}
                     </>
                 ))}
             </div>

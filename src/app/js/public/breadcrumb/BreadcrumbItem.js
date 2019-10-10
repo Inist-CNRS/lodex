@@ -9,7 +9,7 @@ import theme from '../../theme';
 const styles = stylesToClassname(
     {
         link: {
-            padding: 5,
+            padding: '5px',
             color: theme.green.primary,
             textDecoration: 'none',
             ':hover': {
