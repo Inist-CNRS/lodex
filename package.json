@@ -13,6 +13,7 @@
         "dev:server": "BABEL_ENV=browser webpack-dev-server --config ./src/app/webpack.config.babel.js --host 0.0.0.0",
         "start": "node --require @babel/register src/api",
         "build": "BABEL_ENV=browser node --max_old_space_size=4096 ./node_modules/.bin/webpack --config=./src/app/webpack.config.babel.js",
+        "analyze": "BABEL_ENV=browser NODE_ENV=analyze npx webpack --config=./src/app/webpack.config.babel.js --profile --json > stats.json",
         "dev": "pm2-docker process.yml",
         "development:api": "nodemon --require @babel/register --watch src/api src/api",
         "development:app": "BABEL_ENV=browser node_modules/.bin/webpack-dev-server --config=./src/app/webpack.config.babel.js --port=8080 --host=0.0.0.0",

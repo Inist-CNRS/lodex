@@ -44,6 +44,9 @@ install: copy-conf install-npm-dependencies ## Install npm dependencies for the 
 build-app:
 	docker-compose run --no-deps --rm api npm run build
 
+analyze-code: ## Generate statistics about the bundle. Usage: make analyze-code.
+	docker-compose run --no-deps --rm api npm run analyze
+
 build: ## Build the docker image localy
 	docker build -t inistcnrs/lodex --build-arg http_proxy --build-arg https_proxy .
 
