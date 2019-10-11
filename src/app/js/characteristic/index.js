@@ -104,11 +104,7 @@ const getRootCharacteristics = createSelector(
                 ...field,
                 value: characteristics[field.name],
             }))
-            .filter(
-                field =>
-                    !field.completes &&
-                    (field.display_in_home || field.display_in_graph),
-            ),
+            .filter(field => !field.completes && !!field.display_in_home),
 );
 
 const getCharacteristicByName = createSelector(
