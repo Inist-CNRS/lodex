@@ -195,6 +195,7 @@
         "jest": "24.9.0",
         "nodemon": "1.18.7",
         "prettier": "1.18.2",
-        "webpack-dev-server": "3.8.1"
+        "webpack-dev-server": "3.8.1",
+        "webpack-bundle-analyzer": "3.4.1"
     }
 }
