@@ -258,21 +258,19 @@ export default handleActions(
             isSaving: false,
             error: null,
         }),
-        CHANGE_POSITION_VALUE: (state, { payload: { fields } }) => {
-            return {
-                ...state,
-                byName: fields.reduce(
-                    (acc, field) => ({
-                        ...acc,
-                        [field.name]: {
-                            ...acc[field.name],
-                            position: field.position,
-                        },
-                    }),
-                    state.byName,
-                ),
-            };
-        },
+        CHANGE_POSITION_VALUE: (state, { payload: { fields } }) => ({
+            ...state,
+            byName: fields.reduce(
+                (acc, field) => ({
+                    ...acc,
+                    [field.name]: {
+                        ...acc[field.name],
+                        position: field.position,
+                    },
+                }),
+                state.byName,
+            ),
+        }),
         LOAD_PUBLICATION: state => ({
             ...state,
             error: null,
