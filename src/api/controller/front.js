@@ -172,17 +172,17 @@ export const getRenderingData = async (
 
     const sagaPromise = store.runSaga(sagas).done;
     const context = {};
-    renderHtml(store, muiTheme, url, context, history);
+    const { html, css } = renderHtml(store, muiTheme, url, context, history);
     store.dispatch(END);
 
     await sagaPromise;
 
-    const { html, css } = renderHtml(store, muiTheme, url, context, history);
     if (context.url) {
         return {
             redirect: context.url,
         };
     }
+
     const helmet = Helmet.renderStatic();
     const preloadedState = store.getState();
 

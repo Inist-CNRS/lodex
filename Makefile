@@ -24,7 +24,8 @@ ifneq "$(SUPPORTS_MAKE_ARGS)" ""
     $(eval $(COMMAND_ARGS):;@:)
 endif
 
-# Initialization ===============================================================
+## Initialization ==============================================================
+
 copy-conf: ## Initialize the configuration files by copying the *''-dist" versions (does not override existing config)
 	-cp -n ./config/${NODE_ENV}-dist.js ./config/${NODE_ENV}.js
 ifeq ($(NODE_ENV), development)
@@ -41,28 +42,26 @@ endif
 
 install: copy-conf install-npm-dependencies ## Install npm dependencies for the api, admin, and frontend apps
 
-build-app:
-	docker-compose run --no-deps --rm api npm run build
-
-build: ## Build the docker image localy
-	docker build -t inistcnrs/lodex --build-arg http_proxy --build-arg https_proxy .
+## Development =================================================================
 
 run-dev: ## Run the project in dev mode
 	docker-compose up --force-recreate
 
 start: run-dev ## Start the project (alias of make run-dev)
 
-mongo: ## Start the mongo database
-	docker-compose up -d mongo
+build-app:
+	docker-compose run --no-deps --rm api npm run build
 
-mongo-shell: ## Start the mongo shell
-	docker-compose exec mongo mongo lodex
+build: ## Build the docker image localy
+	docker build -t inistcnrs/lodex --build-arg http_proxy --build-arg https_proxy .
 
-mongo-shell-test: ## Start the mongo shell for the test database
-	docker-compose exec mongo mongo lodex_test
+analyze-code: ## Generate statistics about the bundle. Usage: make analyze-code.
+	docker-compose run --no-deps --rm api npm run analyze
 
 npm: ## allow to run dockerized npm command eg make npm 'install koa --save'
 	docker-compose run --no-deps --rm api npm $(COMMAND_ARGS)
+
+## Tests =======================================================================
 
 test-api-e2e: ## Run the API E2E tests
 	NODE_ENV=test \
@@ -115,8 +114,18 @@ else
 	$(MAKE) test-e2e-stop-dockers
 endif
 
-
 test: test-unit test-api-e2e test-e2e
+
+## Data ========================================================================
+
+mongo: ## Start the mongo database
+	docker-compose up -d mongo
+
+mongo-shell: ## Start the mongo shell
+	docker-compose exec mongo mongo lodex
+
+mongo-shell-test: ## Start the mongo shell for the test database
+	docker-compose exec mongo mongo lodex_test
 
 clear-database: ## Clear the whole database
 	docker-compose exec mongo mongo lodex --eval " \

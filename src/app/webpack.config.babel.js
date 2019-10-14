@@ -4,6 +4,8 @@ const {
     HotModuleReplacementPlugin,
 } = require('webpack');
 
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
+    .BundleAnalyzerPlugin;
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const CompressionPlugin = require('compression-webpack-plugin');
 const { resolve } = require('path');
@@ -11,6 +13,7 @@ const { resolve } = require('path');
 const { loaders } = require('../../config.json');
 
 const isDevelopment = process.env.NODE_ENV === 'development';
+const isAnalyze = process.env.NODE_ENV === 'analyze';
 
 const translations = require('./translations');
 
@@ -40,6 +43,17 @@ module.exports = {
         filename: '[name].js',
         path: resolve(__dirname, '../build'),
         publicPath: '/',
+    },
+    optimization: {
+        splitChunks: {
+            cacheGroups: {
+                commons: {
+                    test: /[\\/]node_modules[\\/]/,
+                    name: 'vendors',
+                    chunks: 'all',
+                },
+            },
+        },
     },
     plugins: [
         new DefinePlugin({
@@ -80,6 +94,9 @@ module.exports = {
 
         // Production plugins
         !isDevelopment && new CompressionPlugin(),
+
+        // Analyze plugins
+        isAnalyze && new BundleAnalyzerPlugin(),
     ].filter(Boolean),
     resolve: {
         modules: [resolve(__dirname, '../../node_modules')],

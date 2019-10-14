@@ -18,7 +18,7 @@ _prerequisites_ : docker
 
 ```bash
 make install
-make run-dev
+make start
 ```
 
 ### with npm

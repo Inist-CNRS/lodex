@@ -48,3 +48,6 @@ upload/
 # Cypress
 cypress/videos
 cypress/screenshots
+
+# Webpack Bundle Analyzer
+stats.json
