@@ -13,25 +13,37 @@ const style = {
     },
 };
 
-export const CompositeFieldInputComponent = ({ label, compositeFields }) => (
+export const CompositeFieldInputComponent = ({
+    label,
+    rootField,
+    compositeFields,
+}) => (
     <div>
         <Subheader>{label}</Subheader>
+        <FieldInput field={rootField} />
         <div style={style.list}>
-            {compositeFields.map(f => <FieldInput key={f.name} field={f} />)}
+            {compositeFields.map(f => (
+                <FieldInput key={f.name} field={f} />
+            ))}
         </div>
     </div>
 );
 
 CompositeFieldInputComponent.propTypes = {
     label: PropTypes.string.isRequired,
+    rootField: fieldPropTypes.isRequired,
     compositeFields: PropTypes.arrayOf(fieldPropTypes).isRequired,
 };
 
 CompositeFieldInputComponent.defaultProps = {
-    completedField: null,
+    compositeFields: null,
 };
 
 const mapStateToProps = (state, { field }) => ({
+    rootField: {
+        ...fromFields.getFieldByName(state, field.name),
+        composedOf: null,
+    },
     compositeFields: fromFields.getCompositeFieldsByField(state, field),
 });
 
