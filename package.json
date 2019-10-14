@@ -16,7 +16,7 @@
         "analyze": "BABEL_ENV=browser NODE_ENV=analyze npx webpack --config=./src/app/webpack.config.babel.js --profile --json > stats.json",
         "dev": "pm2-docker process.yml",
         "development:api": "nodemon --require @babel/register --watch src/api src/api",
-        "development:app": "BABEL_ENV=browser node_modules/.bin/webpack-dev-server --config=./src/app/webpack.config.babel.js --port=8080 --host=0.0.0.0",
+        "development:app": "BABEL_ENV=browser npx webpack-dev-server --config=./src/app/webpack.config.babel.js --port=8080 --host=0.0.0.0",
         "postversion": "git push && git push --tags",
         "lint": "./pre-commit",
         "test:api:e2e": "./node_modules/jest/bin/jest.js --colors --runInBand  -c src/api/e2e/jest.config.js src/api/e2e",
