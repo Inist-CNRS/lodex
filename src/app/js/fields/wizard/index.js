@@ -36,6 +36,7 @@ const styles = {
     },
     modal: {
         maxWidth: '100%',
+        transform: 'translate(0px, 8px)',
     },
     column: {
         minWidth: '10rem',
