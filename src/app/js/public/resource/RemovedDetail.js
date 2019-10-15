@@ -32,9 +32,9 @@ export const RemovedDetailComponent = ({ reason, removedAt, p: polyglot }) => (
             <dl style={styles.container}>
                 <dt style={styles.reason}>{polyglot.t('reason')}</dt>
                 <dd className="reason">
-                    {reason
-                        .split('\n')
-                        .map((line, index) => <p key={index}>{line}</p>)}
+                    {reason.split('\n').map((line, index) => (
+                        <p key={index}>{line}</p>
+                    ))}
                 </dd>
             </dl>
         </CardText>
@@ -56,6 +56,10 @@ const mapStateToProps = fromResource.getRemovedData;
 
 const mapDispatchToProps = {};
 
-export default compose(translate, connect(mapStateToProps, mapDispatchToProps))(
-    RemovedDetailComponent,
-);
+export default compose(
+    translate,
+    connect(
+        mapStateToProps,
+        mapDispatchToProps,
+    ),
+)(RemovedDetailComponent);

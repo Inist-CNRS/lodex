@@ -166,33 +166,35 @@ export const DetailComponent = ({
                     </div>
                 </div>
             </div>
-            <div className="main-resource-section" style={styles.container}>
-                <div style={styles.propertiesContainer}>
-                    {otherFields.map(field => (
-                        <Property
-                            key={field.name}
-                            field={field}
-                            resource={resource}
-                            style={styles.property}
+            <div className="main-resource-section">
+                <div style={styles.container}>
+                    <div style={styles.propertiesContainer}>
+                        {otherFields.map(field => (
+                            <Property
+                                key={field.name}
+                                field={field}
+                                resource={resource}
+                                style={styles.property}
+                            />
+                        ))}
+                    </div>
+                    <CardActions style={styles.actions}>
+                        <FlatButton
+                            href={`${getCleanHost()}/${resource.uri} `}
+                            label={resource.uri}
+                            primary={true}
                         />
-                    ))}
-                </div>
-                <CardActions style={styles.actions}>
-                    <FlatButton
-                        href={`${getCleanHost()}/${resource.uri} `}
-                        label={resource.uri}
-                        primary={true}
-                    />
-                    <SelectVersion />
-                    <AddField style={{ marginLeft: 'auto' }} />
-                    <HideResource />
-                    <ExportShareButton
-                        style={{ float: 'right' }}
-                        uri={resource.uri}
-                    />
-                </CardActions>
-                <div style={styles.version}>
-                    <Version />
+                        <SelectVersion />
+                        <AddField style={{ marginLeft: 'auto' }} />
+                        <HideResource />
+                        <ExportShareButton
+                            style={{ float: 'right' }}
+                            uri={resource.uri}
+                        />
+                    </CardActions>
+                    <div style={styles.version}>
+                        <Version />
+                    </div>
                 </div>
             </div>
         </div>
