@@ -44,17 +44,6 @@ module.exports = {
         path: resolve(__dirname, '../build'),
         publicPath: '/',
     },
-    optimization: {
-        splitChunks: {
-            cacheGroups: {
-                commons: {
-                    test: /[\\/]node_modules[\\/]/,
-                    name: 'vendors',
-                    chunks: 'all',
-                },
-            },
-        },
-    },
     plugins: [
         new DefinePlugin({
             __DEBUG__: false,
