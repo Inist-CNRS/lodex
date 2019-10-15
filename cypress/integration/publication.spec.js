@@ -4,13 +4,6 @@ import * as datasetImportPage from '../support/datasetImportPage';
 import * as graphPage from '../support/graphPage';
 import { fillInputWithFixture } from '../support/forms';
 
-Cypress.on('uncaught:exception', (err, runnable) => {
-    console.log(err);
-    // returning false here prevents Cypress from
-    // failing the test
-    return false;
-});
-
 describe('Dataset Publication', () => {
     beforeEach(teardown);
 

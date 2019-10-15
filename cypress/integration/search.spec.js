@@ -3,13 +3,6 @@ import * as homePage from '../support/homePage';
 import * as datasetImportPage from '../support/datasetImportPage';
 import * as searchDrawer from '../support/searchDrawer';
 
-Cypress.on('uncaught:exception', (err, runnable) => {
-    console.log(err);
-    // returning false here prevents Cypress from
-    // failing the test
-    return false;
-});
-
 const initSearchDataset = (
     dataset = 'dataset/book_summary.csv',
     model = 'model/book_summary.json',

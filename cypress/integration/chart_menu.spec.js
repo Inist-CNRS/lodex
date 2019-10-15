@@ -2,13 +2,6 @@ import { teardown } from '../support/authentication';
 import * as datasetImportPage from '../support/datasetImportPage';
 import * as homePage from '../support/homePage';
 
-Cypress.on('uncaught:exception', (err, runnable) => {
-    console.log(err);
-    // returning false here prevents Cypress from
-    // failing the test
-    return false;
-});
-
 describe('Chart Menu', () => {
     beforeEach(() => {
         teardown();
