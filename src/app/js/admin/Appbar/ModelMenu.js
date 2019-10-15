@@ -107,12 +107,11 @@ export class ModelMenuComponent extends Component {
                         style={styles.button}
                     />
                 )}
-                {!hasPublishedDataset &&
-                    showImportFieldsConfirmation && (
-                        <ImportFieldsDialog
-                            onClose={this.handleImportFieldsClose}
-                        />
-                    )}
+                {!hasPublishedDataset && showImportFieldsConfirmation && (
+                    <ImportFieldsDialog
+                        onClose={this.handleImportFieldsClose}
+                    />
+                )}
             </div>
         );
     }
@@ -125,6 +124,9 @@ const mapDispatchToProps = {
 
 export default compose(
     withRouter,
-    connect(null, mapDispatchToProps),
+    connect(
+        null,
+        mapDispatchToProps,
+    ),
     translate,
 )(ModelMenuComponent);
