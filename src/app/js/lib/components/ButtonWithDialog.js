@@ -6,6 +6,12 @@ import Dialog from 'material-ui/Dialog';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 
+const styles = {
+    modal: {
+        transform: 'translate(0px, 8px)',
+    },
+};
+
 export const PureButtonWithDialog = ({
     handleClose,
     handleOpen,
@@ -48,6 +54,7 @@ export const PureButtonWithDialog = ({
                 open={open}
                 onRequestClose={handleClose}
                 autoScrollBodyContent
+                contentStyle={styles.modal}
             >
                 {dialog}
             </Dialog>
