@@ -1,8 +1,8 @@
 import { teardown } from '../support/authentication';
 import * as datasetImportPage from '../support/datasetImportPage';
 import * as homePage from '../support/homePage';
-import * as graphPage from '../support/graphPage';
 import * as bookSummary from '../support/bookSummary';
+import * as searchDrawer from '../support/searchDrawer';
 
 describe('Book Summary Format', () => {
     beforeEach(() => {
@@ -12,12 +12,16 @@ describe('Book Summary Format', () => {
         datasetImportPage.importDataset('dataset/book.csv');
         datasetImportPage.importModel('model/book.json');
         datasetImportPage.publish();
+        datasetImportPage.goToPublishedResources();
     });
 
     describe('On Resource Page', () => {
+        const resourceTitle = 'MP. Molecular pathology';
+
         beforeEach(() => {
-            homePage.goToGraphPage();
-            graphPage.goToResourceNumber(1);
+            searchDrawer.openSearchDrawer();
+            searchDrawer.search(resourceTitle);
+            searchDrawer.findSearchResultByTitle(resourceTitle).click();
         });
 
         it('should display list of year', () => {
