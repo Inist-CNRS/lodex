@@ -25,24 +25,21 @@ export const importMoreDataset = (filename, mimeType = 'text/csv') => {
         mimeType,
     );
 
-    cy
-        .get('.data-published a')
+    cy.get('.data-published a')
         .contains('Go to my published data')
         .should('be.visible');
 };
 
 const fillStepValueConcatColumn = (value, index) => {
     cy.get(`#select-column-${index}`).click();
-    cy
-        .get('div[role="menu"]')
+    cy.get('div[role="menu"]')
         .contains(value)
         .click();
 };
 
 const fillStepDisplayFormat = format => {
     cy.get('#step-value-format').click();
-    cy
-        .get(`div[role="menu"] div[data-value="${format}"]`)
+    cy.get(`div[role="menu"] div[data-value="${format}"]`)
         .parent()
         .click();
 };
@@ -51,16 +48,14 @@ export const addColumn = (columnName, options = {}) => {
     const name = columnName.replace(' ', '-');
     cy.get('.btn-add-column button').click();
     cy.get('.btn-add-column-from-dataset button').click();
-    cy
-        .get(
-            [
-                '.btn-excerpt-add-column',
-                `.btn-excerpt-add-column-${name}`,
-                ' ',
-                'button',
-            ].join(''),
-        )
-        .click();
+    cy.get(
+        [
+            '.btn-excerpt-add-column',
+            `.btn-excerpt-add-column-${name}`,
+            ' ',
+            'button',
+        ].join(''),
+    ).click();
 
     if (options.composedOf && options.composedOf.length > 1) {
         cy.get('#step-value').click();
@@ -83,8 +78,7 @@ export const addColumn = (columnName, options = {}) => {
 };
 
 export const setUriColumnValue = (value = 'generate') => {
-    cy
-        .get('.publication-excerpt .publication-excerpt-column-uri')
+    cy.get('.publication-excerpt .publication-excerpt-column-uri')
         .trigger('mouseover')
         .click();
     cy.get('.wizard', { timeout: 2000 }).should('be.visible');
@@ -99,8 +93,7 @@ export const publish = () => {
 };
 
 export const goToPublishedResources = () => {
-    cy
-        .get('.data-published a')
+    cy.get('.data-published a')
         .contains('Go to my published data')
         .click();
     cy.location('pathname').should('equal', '/');

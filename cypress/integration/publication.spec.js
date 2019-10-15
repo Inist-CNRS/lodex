@@ -4,11 +4,19 @@ import * as datasetImportPage from '../support/datasetImportPage';
 import * as graphPage from '../support/graphPage';
 import { fillInputWithFixture } from '../support/forms';
 
+Cypress.on('uncaught:exception', (err, runnable) => {
+    console.log(err);
+    // returning false here prevents Cypress from
+    // failing the test
+    return false;
+});
+
 describe('Dataset Publication', () => {
     beforeEach(teardown);
 
     describe('Dataset Import', () => {
         it('should receive a csv file and preview its data in a table', () => {
+            homePage.openAdvancedDrawer();
             homePage.goToAdminDashboard();
             datasetImportPage.openImportModal();
 
@@ -27,6 +35,7 @@ describe('Dataset Publication', () => {
 
     describe('Publication', () => {
         it('should publish dataset by manually adding columns', () => {
+            homePage.openAdvancedDrawer();
             homePage.goToAdminDashboard();
             datasetImportPage.importDataset('dataset/simple.csv');
             datasetImportPage.addColumn('Column 1');
@@ -48,6 +57,7 @@ describe('Dataset Publication', () => {
         });
 
         it('should publish dataset by importing an existing model', () => {
+            homePage.openAdvancedDrawer();
             homePage.goToAdminDashboard();
             datasetImportPage.importDataset('dataset/simple.csv');
             datasetImportPage.importModel('model/concat.json');
@@ -64,6 +74,7 @@ describe('Dataset Publication', () => {
         });
 
         it('should allow to load a file multiple times', () => {
+            homePage.openAdvancedDrawer();
             homePage.goToAdminDashboard();
             datasetImportPage.importDataset('dataset/simple.csv');
             datasetImportPage.importModel('model/concat.json');
@@ -81,6 +92,7 @@ describe('Dataset Publication', () => {
 
     describe('Facets', () => {
         it('should allow to have a facet with a single value', () => {
+            homePage.openAdvancedDrawer();
             homePage.goToAdminDashboard();
             datasetImportPage.importDataset('dataset/single-facet.csv');
             datasetImportPage.importModel('model/facet.json');
@@ -100,6 +112,7 @@ describe('Dataset Publication', () => {
         });
 
         it('should allow to have facets with multiples values in them', () => {
+            homePage.openAdvancedDrawer();
             homePage.goToAdminDashboard();
             datasetImportPage.importDataset('dataset/multiple-facet.csv');
             datasetImportPage.importModel('model/facet.json');

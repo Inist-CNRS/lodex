@@ -2,9 +2,17 @@ import { teardown } from '../support/authentication';
 import * as datasetImportPage from '../support/datasetImportPage';
 import * as homePage from '../support/homePage';
 
+Cypress.on('uncaught:exception', (err, runnable) => {
+    console.log(err);
+    // returning false here prevents Cypress from
+    // failing the test
+    return false;
+});
+
 describe('Chart Menu', () => {
     beforeEach(() => {
         teardown();
+        homePage.openAdvancedDrawer();
         homePage.goToAdminDashboard();
         datasetImportPage.importDataset('dataset/chart.csv');
         datasetImportPage.importModel('model/chart.json');
@@ -13,6 +21,7 @@ describe('Chart Menu', () => {
     });
 
     it('should display chart menu with list of all chart', () => {
+        homePage.openAdvancedDrawer();
         homePage.openChartDrawer();
         const charts = [
             'Bar Chart',
@@ -29,6 +38,7 @@ describe('Chart Menu', () => {
         });
 
         homePage.goToChart('Pie Chart');
+        homePage.openAdvancedDrawer();
         homePage.openChartDrawer();
 
         cy.get(`.graph-link.active`)

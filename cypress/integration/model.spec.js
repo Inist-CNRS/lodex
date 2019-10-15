@@ -7,6 +7,7 @@ import * as graphPage from '../support/graphPage';
 describe('Model Page', () => {
     beforeEach(() => {
         teardown();
+        homePage.openAdvancedDrawer();
         homePage.goToAdminDashboard();
         datasetImportPage.importDataset('dataset/simple.csv');
         datasetImportPage.importModel('model/concat.json');
@@ -16,6 +17,7 @@ describe('Model Page', () => {
 
     it('should display list of characteristics and allow to reorder them', () => {
         homePage.checkCharacteristicsOrder(['Title', 'Description']);
+        homePage.openAdvancedDrawer();
         homePage.goToAdminDashboard();
         datasetImportPage.goToModel();
         cy.get('.ontology-table-dataset h4')
@@ -36,6 +38,7 @@ describe('Model Page', () => {
         homePage.goToGraphPage();
         graphPage.checkColumnHeaders(['#', 'Column 1', 'Column 2']);
 
+        homePage.openAdvancedDrawer();
         homePage.goToAdminDashboard();
         datasetImportPage.goToModel();
 

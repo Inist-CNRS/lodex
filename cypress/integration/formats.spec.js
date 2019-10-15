@@ -3,11 +3,19 @@ import * as homePage from '../support/homePage';
 import * as datasetImportPage from '../support/datasetImportPage';
 import * as configureField from '../support/configureField';
 
+Cypress.on('uncaught:exception', (err, runnable) => {
+    console.log(err);
+    // returning false here prevents Cypress from
+    // failing the test
+    return false;
+});
+
 describe('Transformers & Formats', () => {
     beforeEach(teardown);
 
     describe('LIST format', () => {
         it('should display a composed field with a LIST format', () => {
+            homePage.openAdvancedDrawer();
             homePage.goToAdminDashboard();
 
             datasetImportPage.importDataset('dataset/simple.csv');
@@ -30,6 +38,7 @@ describe('Transformers & Formats', () => {
 
     describe('Broken Formats & Wrong Values', () => {
         beforeEach(() => {
+            homePage.openAdvancedDrawer();
             homePage.goToAdminDashboard();
 
             datasetImportPage.importDataset('dataset/broken-formats.csv');

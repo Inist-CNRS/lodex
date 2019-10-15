@@ -3,11 +3,19 @@ import * as homePage from '../support/homePage';
 import * as datasetImportPage from '../support/datasetImportPage';
 import * as searchDrawer from '../support/searchDrawer';
 
+Cypress.on('uncaught:exception', (err, runnable) => {
+    console.log(err);
+    // returning false here prevents Cypress from
+    // failing the test
+    return false;
+});
+
 const initSearchDataset = (
     dataset = 'dataset/book_summary.csv',
     model = 'model/book_summary.json',
 ) => () => {
     teardown();
+    homePage.openAdvancedDrawer();
     homePage.goToAdminDashboard();
 
     datasetImportPage.importDataset(dataset);
@@ -23,10 +31,7 @@ describe('Search', () => {
         it('should have the right informations in the search results', () => {
             searchDrawer.openSearchDrawer();
             cy.get('.search-result').should('have.length', 10);
-            cy.get('.drawer-container .load-more button').should(
-                'contain',
-                '(10 / 12)',
-            );
+            cy.get('.drawer .load-more button').should('contain', '(10 / 12)');
         });
 
         it('should do a search, and its result redirect to a resource', () => {
@@ -47,17 +52,12 @@ describe('Search', () => {
         it('should be able to load more search results', () => {
             searchDrawer.openSearchDrawer();
             cy.get('.search-result').should('have.length', 10);
-            cy.get('.drawer-container .load-more button').should(
-                'contain',
-                '(10 / 12)',
-            );
+            cy.get('.drawer .load-more button').should('contain', '(10 / 12)');
 
             searchDrawer.loadMore();
 
             cy.get('.search-result').should('have.length', 12);
-            cy.get('.drawer-container .load-more button').should(
-                'not.be.visible',
-            );
+            cy.get('.drawer- .load-more button').should('not.be.visible');
         });
 
         it('should mark active resource on the result list', () => {

@@ -3,9 +3,17 @@ import * as datasetImportPage from '../support/datasetImportPage';
 import * as homePage from '../support/homePage';
 import * as graphPage from '../support/graphPage';
 
+Cypress.on('uncaught:exception', (err, runnable) => {
+    console.log(err);
+    // returning false here prevents Cypress from
+    // failing the test
+    return false;
+});
+
 describe('Graph Page', () => {
     beforeEach(() => {
         teardown();
+        homePage.openAdvancedDrawer();
         homePage.goToAdminDashboard();
         datasetImportPage.importDataset('dataset/chart.csv');
         datasetImportPage.importModel('model/chart.json');

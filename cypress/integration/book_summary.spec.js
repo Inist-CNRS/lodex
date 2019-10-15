@@ -4,9 +4,17 @@ import * as homePage from '../support/homePage';
 import * as graphPage from '../support/graphPage';
 import * as bookSummary from '../support/bookSummary';
 
+Cypress.on('uncaught:exception', (err, runnable) => {
+    console.log(err);
+    // returning false here prevents Cypress from
+    // failing the test
+    return false;
+});
+
 describe('Book Summary Format', () => {
     beforeEach(() => {
         teardown();
+        homePage.openAdvancedDrawer();
         homePage.goToAdminDashboard();
         datasetImportPage.importDataset('dataset/book.csv');
         datasetImportPage.importModel('model/book.json');

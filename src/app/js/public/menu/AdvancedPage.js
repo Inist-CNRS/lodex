@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import classnames from 'classnames';
 
 import stylesToClassname from '../../lib/stylesToClassName';
 import MenuItem from './MenuItem';
@@ -16,7 +17,7 @@ const styles = stylesToClassname(
 );
 
 const AdvancedPage = ({ advancedMenu, ...rest }) => (
-    <div className={styles.root}>
+    <div className={classnames('advanced-page', styles.root)}>
         {advancedMenu.map((config, index) => (
             <MenuItem key={index} config={config} {...rest} />
         ))}

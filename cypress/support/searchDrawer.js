@@ -1,34 +1,33 @@
 export const openSearchDrawer = () => {
-    cy.get('.drawer-container').should('exist');
+    cy.get('.drawer').should('exist');
 
     cy.get('nav div')
         .contains('Search')
         .click();
 
     cy.wait(300);
-    cy.get('.drawer-container .drawer .search').should('be.visible');
+    cy.get('.drawer .search .search-header').should('be.visible');
 };
 
 export const openAdvancedSearchDrawer = () => {
-    cy.get('.drawer-container .drawer .search').should('be.visible');
+    cy.get('.drawer .search').should('be.visible');
 
     cy.get('.facets-toggle').click();
     cy.wait(300);
-    cy.get('.drawer-container .drawer .facets').should('be.visible');
+    cy.get('.drawer .facets').should('be.visible');
 };
 
-export const searchInput = () =>
-    cy.get('.drawer-container .drawer input[type="text"]');
+export const searchInput = () => cy.get('.drawer input[type="text"]');
 
 export const search = value => {
-    cy.get('.drawer-container .search-bar').should('be.visible');
+    cy.get('.drawer .search-bar').should('be.visible');
     searchInput().type(value);
     cy.wait(500); // Wait for the debounce
 };
 
 export const findSearchResultByTitle = value =>
     cy
-        .get('.drawer-container .search-result-title')
+        .get('.drawer .search-result-title')
         .contains(value)
         .parent();
 
@@ -43,7 +42,7 @@ export const checkResultList = titles => {
 };
 
 export const loadMore = () => {
-    cy.get('.drawer-container .load-more button').click();
+    cy.get('.drawer .load-more button').click();
 };
 
 export const waitForLoading = () => {
