@@ -4,7 +4,7 @@ import * as datasetImportPage from '../support/datasetImportPage';
 import * as graphPage from '../support/graphPage';
 import { fillInputWithFixture } from '../support/forms';
 
-describe.skip('Dataset Publication', () => {
+describe('Dataset Publication', () => {
     beforeEach(teardown);
 
     describe('Dataset Import', () => {
