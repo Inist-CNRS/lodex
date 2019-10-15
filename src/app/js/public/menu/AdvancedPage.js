@@ -1,10 +1,22 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import stylesToClassname from '../../lib/stylesToClassName';
 import MenuItem from './MenuItem';
 
+const styles = stylesToClassname(
+    {
+        root: {
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+        },
+    },
+    'advanced-page',
+);
+
 const AdvancedPage = ({ advancedMenu, ...rest }) => (
-    <div>
+    <div className={styles.root}>
         {advancedMenu.map((config, index) => (
             <MenuItem key={index} config={config} {...rest} />
         ))}
