@@ -21,7 +21,7 @@ export const StatsComponent = ({
     currentNbResources,
     p: polyglot,
 }) => (
-    <div style={styles.nb}>
+    <div className="stats" style={styles.nb}>
         {polyglot.t('resources_found', {
             current: currentNbResources,
             total: nbResources,
@@ -42,4 +42,7 @@ const mapStateToProps = state => ({
     nbResources: fromDataset.getDatasetFullTotal(state),
 });
 
-export default compose(connect(mapStateToProps), translate)(StatsComponent);
+export default compose(
+    connect(mapStateToProps),
+    translate,
+)(StatsComponent);
