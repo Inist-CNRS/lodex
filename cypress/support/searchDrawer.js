@@ -9,18 +9,12 @@ export const openSearchDrawer = () => {
     cy.get('.drawer .search .search-header').should('be.visible');
 };
 
-export const openAdvancedSearchDrawer = () => {
-    cy.get('.drawer .search').should('be.visible');
-
-    cy.get('.facets-toggle').click();
-    cy.wait(300);
-    cy.get('.drawer .facets').should('be.visible');
-};
-
 export const searchInput = () => cy.get('.drawer input[type="text"]');
 
 export const search = value => {
-    cy.get('.drawer .search-bar').should('be.visible');
+    cy.get('.drawer .search-bar')
+        .scrollIntoView()
+        .should('be.visible');
     searchInput().type(value);
     cy.wait(500); // Wait for the debounce
 };
@@ -37,6 +31,7 @@ export const checkResultList = titles => {
             `.search-result-link:nth-child(${index + 1}) .search-result-title`,
         )
             .contains(title)
+            .scrollIntoView()
             .should('be.visible');
     });
 };
@@ -71,7 +66,7 @@ export const setFacet = (name, value) => {
 };
 
 export const clearFacet = value => {
-    cy.get('.search-advanced')
+    cy.get('.applied-facet-container')
         .contains(value)
         .parent()
         .find('svg')

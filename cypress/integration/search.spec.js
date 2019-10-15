@@ -115,25 +115,21 @@ describe('Search', () => {
             searchDrawer.openSearchDrawer();
             cy.get('.search-result').should('have.length', 10);
 
-            searchDrawer.openAdvancedSearchDrawer();
             searchDrawer.setFacet('Dernière mise en ligne en', '2014');
             cy.get('.search-result').should('have.length', 1);
         });
 
         it('should allow to clear facets from the search results', () => {
             searchDrawer.openSearchDrawer();
-            searchDrawer.openAdvancedSearchDrawer();
             searchDrawer.setFacet('Dernière mise en ligne en', '2014');
             cy.get('.search-result').should('have.length', 1);
 
-            searchDrawer.openSearchDrawer();
             searchDrawer.clearFacet('2014');
             cy.get('.search-result').should('have.length', 10);
         });
 
         it('should allow to sort facet', () => {
             searchDrawer.openSearchDrawer();
-            searchDrawer.openAdvancedSearchDrawer();
             searchDrawer.getFacet('Première mise en ligne en').click();
             searchDrawer.checkFacetsItem('Première mise en ligne en', [
                 '2011',
