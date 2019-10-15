@@ -10,7 +10,7 @@ export const openAdvancedDrawer = () => {
 };
 
 export const goToAdminDashboard = () => {
-    cy.get('.advanced a')
+    cy.get('.advanced-page a')
         .contains('Admin')
         .click();
     cy.location('pathname').should('equal', '/admin');
@@ -22,7 +22,7 @@ export const goToGraphPage = () => {
 };
 
 export const openChartDrawer = () => {
-    cy.get('.advanced a')
+    cy.get('.advanced-page a')
         .contains('Graphs')
         .click();
     cy.get('.graph-summary').should('be.visible');
