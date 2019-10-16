@@ -111,3 +111,10 @@ export const checkMoreCount = (count, total) => {
         .contains(total)
         .should('be.visible');
 };
+
+export const goToResourceNumber = nb => {
+    cy.get(
+        `.search-result-list-container > a:nth-child(${nb}) .search-result`,
+    ).click();
+    cy.location('pathname').should('not.equal', '/');
+};

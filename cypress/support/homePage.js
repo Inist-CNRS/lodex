@@ -16,11 +16,6 @@ export const goToAdminDashboard = () => {
     cy.location('pathname').should('equal', '/admin');
 };
 
-export const goToGraphPage = () => {
-    cy.visit('/graph');
-    cy.location('pathname').should('equal', '/graph');
-};
-
 export const openChartDrawer = () => {
     cy.get('.advanced-page a')
         .contains('Graphs')

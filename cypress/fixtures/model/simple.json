@@ -38,7 +38,7 @@
         ],
         "classes": [],
         "position": 1,
-        "overview": 0,
+        "overview": 1,
         "name": "column1",
         "format": {
             "name": "title",
@@ -67,7 +67,7 @@
         ],
         "classes": [],
         "position": 2,
-        "overview": 0,
+        "overview": 2,
         "name": "column2",
         "format": {
             "name": "paragraph",
