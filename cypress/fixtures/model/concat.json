@@ -37,6 +37,7 @@
         ],
         "classes": [],
         "position": 1,
+        "isFacet": true,
         "overview": 0,
         "format": {
             "args": {
@@ -68,6 +69,7 @@
         ],
         "classes": [],
         "position": 2,
+        "isFacet": true,
         "overview": 0,
         "format": {
             "args": {},

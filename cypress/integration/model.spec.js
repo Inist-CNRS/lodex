@@ -2,7 +2,7 @@ import { teardown } from '../support/authentication';
 import * as datasetImportPage from '../support/datasetImportPage';
 import * as homePage from '../support/homePage';
 import * as modelPage from '../support/modelPage';
-import * as graphPage from '../support/graphPage';
+import * as searchDrawer from '../support/searchDrawer';
 
 describe('Model Page', () => {
     beforeEach(() => {
@@ -35,8 +35,8 @@ describe('Model Page', () => {
     });
 
     it('should display list of resource field and allow to reorder them', () => {
-        homePage.goToGraphPage();
-        graphPage.checkColumnHeaders(['#', 'Column 1', 'Column 2']);
+        searchDrawer.openSearchDrawer();
+        searchDrawer.getFacetsOrder(['Column 1', 'Column 2']);
 
         homePage.openAdvancedDrawer();
         homePage.goToAdminDashboard();
@@ -59,7 +59,8 @@ describe('Model Page', () => {
 
         modelPage.goToDatasetImportPage();
         datasetImportPage.goToPublishedResources();
-        homePage.goToGraphPage();
-        graphPage.checkColumnHeaders(['#', 'Column 2', 'Column 1']);
+
+        searchDrawer.openSearchDrawer();
+        searchDrawer.getFacetsOrder(['Column 2', 'Column 1']);
     });
 });

@@ -47,6 +47,14 @@ export const waitForLoading = () => {
     cy.get('.graph-page .loading').should('not.exist');
 };
 
+export const getFacetsOrder = facets => {
+    facets.forEach((name, index) => {
+        cy.get(`.facet-list > div:nth-child(${index + 1})`)
+            .contains(name)
+            .should('be.visible');
+    });
+};
+
 export const getFacet = name => cy.get('.facets .facet-item').contains(name);
 
 export const getFacetItem = (name, value) =>
