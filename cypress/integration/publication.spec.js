@@ -1,8 +1,8 @@
 import { teardown } from '../support/authentication';
 import * as homePage from '../support/homePage';
 import * as datasetImportPage from '../support/datasetImportPage';
-import * as graphPage from '../support/graphPage';
 import { fillInputWithFixture } from '../support/forms';
+import * as searchDrawer from '../support/searchDrawer';
 
 describe('Dataset Publication', () => {
     beforeEach(teardown);
@@ -43,7 +43,7 @@ describe('Dataset Publication', () => {
             datasetImportPage.setUriColumnValue();
             datasetImportPage.publish();
             datasetImportPage.goToPublishedResources();
-            homePage.goToGraphPage();
+            searchDrawer.openSearchDrawer();
 
             cy.contains('Row 1').should('be.visible');
             cy.contains('Row 2').should('be.visible');
@@ -60,10 +60,14 @@ describe('Dataset Publication', () => {
 
             datasetImportPage.publish();
             datasetImportPage.goToPublishedResources();
-            homePage.goToGraphPage();
+            searchDrawer.openSearchDrawer();
 
-            cy.contains('Row 1').should('be.visible');
-            cy.contains('Row 2').should('be.visible');
+            cy.get('.search-result-title')
+                .contains('Row 1')
+                .should('be.visible');
+            cy.get('.search-result-title')
+                .contains('Row 2')
+                .should('be.visible');
         });
 
         it('should allow to load a file multiple times', () => {
@@ -75,11 +79,15 @@ describe('Dataset Publication', () => {
 
             datasetImportPage.importMoreDataset('dataset/simple.csv');
             datasetImportPage.importMoreDataset('dataset/simple.csv');
+            datasetImportPage.importMoreDataset('dataset/simple.csv');
+            datasetImportPage.importMoreDataset('dataset/simple.csv');
+            datasetImportPage.importMoreDataset('dataset/simple.csv');
+            datasetImportPage.importMoreDataset('dataset/simple.csv');
 
             datasetImportPage.goToPublishedResources();
-            homePage.goToGraphPage();
 
-            graphPage.getStats().should('have.text', 'Found 6 on 50');
+            searchDrawer.openSearchDrawer();
+            searchDrawer.checkMoreCount(10, 14);
         });
     });
 
@@ -92,7 +100,7 @@ describe('Dataset Publication', () => {
             datasetImportPage.publish();
 
             datasetImportPage.goToPublishedResources();
-            homePage.goToGraphPage();
+            searchDrawer.openSearchDrawer();
 
             cy.contains('Affiliation(s)').click();
             cy.get('.facet-list')
@@ -112,7 +120,7 @@ describe('Dataset Publication', () => {
             datasetImportPage.publish();
 
             datasetImportPage.goToPublishedResources();
-            homePage.goToGraphPage();
+            searchDrawer.openSearchDrawer();
 
             cy.contains('Affiliation(s)').click();
             cy.get('.facet-list')

@@ -102,3 +102,12 @@ export const sortFacet = (name, sortName) => {
         .click();
     cy.wait(500);
 };
+
+export const checkMoreCount = (count, total) => {
+    cy.get('.load-more')
+        .scrollIntoView()
+        .contains(count)
+        .should('be.visible')
+        .contains(total)
+        .should('be.visible');
+};

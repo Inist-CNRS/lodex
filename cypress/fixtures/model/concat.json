@@ -38,7 +38,7 @@
         "classes": [],
         "position": 1,
         "isFacet": true,
-        "overview": 0,
+        "overview": 1,
         "format": {
             "args": {
                 "type": "unordered",
@@ -70,7 +70,7 @@
         "classes": [],
         "position": 2,
         "isFacet": true,
-        "overview": 0,
+        "overview": 2,
         "format": {
             "args": {},
             "name": "None"
