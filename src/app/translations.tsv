@@ -58,6 +58,7 @@
 "not_found"	"Resource not found"	"Ressource non trouvée"
 "powered"	"Powered by"	"Propulsé par"
 "loading_resource"	"Resource loading..."	"Ressource en cours de chargement..."
+"error_field_required"	"This field is required"	"Ce champ est requis"
 "error_label_required"	"Label is required"	"L'étiquette est requise"
 "error_cover_required"	"Coverage is required"	"La couverture est requise"
 "error_scheme_invalid"	"The scheme must be an url"	"Le schéma doit être un url"
