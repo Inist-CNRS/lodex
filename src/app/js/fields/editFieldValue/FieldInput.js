@@ -8,6 +8,8 @@ import { Field } from 'redux-form';
 import { getEditionComponent, getPredicate } from '../../formats';
 import CompositeFieldInput from './CompositeFieldInput';
 import { fromFields } from '../../sharedSelectors';
+import isFieldRequired from '../../../../common/fields/isFieldRequired';
+import isEmpty from '../../../../common/lib/isEmpty';
 
 import {
     field as fieldPropTypes,
@@ -21,6 +23,9 @@ export const FieldInputComponent = ({
     input,
 }) => {
     const validate = value => {
+        if (isFieldRequired(field) && isEmpty(value)) {
+            return polyglot.t('error_field_required');
+        }
         const predicate = getPredicate(field);
         return predicate(value) ? undefined : polyglot.t('bad_format_details');
     };

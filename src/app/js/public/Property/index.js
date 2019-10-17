@@ -15,6 +15,7 @@ import CompositeProperty from './CompositeProperty';
 import propositionStatus, {
     REJECTED,
 } from '../../../../common/propositionStatus';
+import isEmpty from '../../../../common/lib/isEmpty';
 import ModerateButton from './ModerateButton';
 import { changeFieldStatus } from '../resource';
 import PropertyContributor from './PropertyContributor';
@@ -85,12 +86,6 @@ const styles = {
         textAlign: 'justify',
     },
 };
-
-const isEmpty = value =>
-    value === null ||
-    typeof value === 'undefined' ||
-    value === '' ||
-    (Array.isArray(value) && value.length === 0);
 
 export const PropertyComponent = ({
     className,
