@@ -117,13 +117,10 @@ const removePreventScroll = () => {
 
 const Drawer = ({ children, status, onClose, disabled }) => {
     useEffect(() => {
-        switch (status) {
-            case 'open':
-                preventScroll();
-                return;
-            default:
-                removePreventScroll();
-                return;
+        if (status === 'open') {
+            preventScroll();
+        } else {
+            removePreventScroll();
         }
     }, [status]);
 

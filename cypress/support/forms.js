@@ -1,6 +1,5 @@
 export const fillInputWithFixture = (selector, filename, mimeType) => {
-    cy
-        .fixture(filename)
+    cy.fixture(filename)
         .as('data')
         .get(selector)
         .then(function(element) {
@@ -14,5 +13,6 @@ export const fillInputWithFixture = (selector, filename, mimeType) => {
 
             dataTransfer.items.add(file);
             element[0].files = dataTransfer.files;
+            return cy.wrap(element[0]).trigger('change', { force: true }); // https://github.com/cypress-io/cypress/issues/3730
         });
 };

@@ -2,11 +2,12 @@ import { teardown } from '../support/authentication';
 import * as datasetImportPage from '../support/datasetImportPage';
 import * as homePage from '../support/homePage';
 import * as modelPage from '../support/modelPage';
-import * as graphPage from '../support/graphPage';
+import * as searchDrawer from '../support/searchDrawer';
 
 describe('Model Page', () => {
     beforeEach(() => {
         teardown();
+        homePage.openAdvancedDrawer();
         homePage.goToAdminDashboard();
         datasetImportPage.importDataset('dataset/simple.csv');
         datasetImportPage.importModel('model/concat.json');
@@ -16,6 +17,7 @@ describe('Model Page', () => {
 
     it('should display list of characteristics and allow to reorder them', () => {
         homePage.checkCharacteristicsOrder(['Title', 'Description']);
+        homePage.openAdvancedDrawer();
         homePage.goToAdminDashboard();
         datasetImportPage.goToModel();
         cy.get('.ontology-table-dataset h4')
@@ -33,9 +35,10 @@ describe('Model Page', () => {
     });
 
     it('should display list of resource field and allow to reorder them', () => {
-        homePage.goToGraphPage();
-        graphPage.checkColumnHeaders(['#', 'Column 1', 'Column 2']);
+        searchDrawer.openSearchDrawer();
+        searchDrawer.getFacetsOrder(['Column 1', 'Column 2']);
 
+        homePage.openAdvancedDrawer();
         homePage.goToAdminDashboard();
         datasetImportPage.goToModel();
 
@@ -56,7 +59,8 @@ describe('Model Page', () => {
 
         modelPage.goToDatasetImportPage();
         datasetImportPage.goToPublishedResources();
-        homePage.goToGraphPage();
-        graphPage.checkColumnHeaders(['#', 'Column 2', 'Column 1']);
+
+        searchDrawer.openSearchDrawer();
+        searchDrawer.getFacetsOrder(['Column 2', 'Column 1']);
     });
 });

@@ -106,12 +106,11 @@ ifeq "$(DISABLE_E2E_TESTS)" "true"
 else
 	$(MAKE) test-e2e-start-dockers
 	npx cypress install
-	./bin/wait-for -t 30 localhost:3000 -- npx cypress run --browser chrome || \
-		echo "ERROR: The API didn't start! Here are the logs:" && \
+	./bin/wait-for -t 30 localhost:3000 -- npx cypress run --browser chrome || (\
+		echo "ERROR: Here are the logs:" && \
 		$(MAKE) test-e2e-logs && \
 		$(MAKE) test-e2e-stop-dockers && \
-		echo 'Done or not, but why ?'
-	$(MAKE) test-e2e-stop-dockers
+		exit 1)
 endif
 
 test: test-unit test-api-e2e test-e2e

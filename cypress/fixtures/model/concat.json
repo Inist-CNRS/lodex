@@ -37,7 +37,8 @@
         ],
         "classes": [],
         "position": 1,
-        "overview": 0,
+        "isFacet": true,
+        "overview": 1,
         "format": {
             "args": {
                 "type": "unordered",
@@ -68,7 +69,8 @@
         ],
         "classes": [],
         "position": 2,
-        "overview": 0,
+        "isFacet": true,
+        "overview": 2,
         "format": {
             "args": {},
             "name": "None"

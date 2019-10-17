@@ -1,16 +1,4 @@
-export const checkColumnHeaders = headers => {
-    headers.forEach((col, index) => {
-        cy.get(`.dataset table thead th:nth-child(${index + 1})`)
-            .contains(col)
-            .should('be.visible');
-    });
-};
-
-export const expectRowsCountToBe = expected => {
-    cy.get('.dataset table tbody')
-        .find('tr')
-        .should('have.length', expected);
-};
+export const getStats = () => cy.get('.stats');
 
 export const createResource = resource => {
     cy.get('.create-resource button').click();
@@ -24,11 +12,6 @@ export const createResource = resource => {
     });
 
     cy.get('.create-resource.save button').click();
-    cy.location('pathname').should('not.equal', '/graph');
-};
-
-export const goToResourceNumber = nb => {
-    cy.get(`tr:nth-child(${nb}) .dataset-uri`).click();
     cy.location('pathname').should('not.equal', '/graph');
 };
 

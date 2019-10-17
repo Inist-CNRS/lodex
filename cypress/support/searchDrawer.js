@@ -1,34 +1,27 @@
 export const openSearchDrawer = () => {
-    cy.get('.drawer-container').should('exist');
+    cy.get('.drawer').should('exist');
 
     cy.get('nav div')
         .contains('Search')
         .click();
 
     cy.wait(300);
-    cy.get('.drawer-container .drawer .search').should('be.visible');
+    cy.get('.drawer .search .search-header').should('be.visible');
 };
 
-export const openAdvancedSearchDrawer = () => {
-    cy.get('.drawer-container .drawer .search').should('be.visible');
-
-    cy.get('.facets-toggle').click();
-    cy.wait(300);
-    cy.get('.drawer-container .drawer .facets').should('be.visible');
-};
-
-export const searchInput = () =>
-    cy.get('.drawer-container .drawer input[type="text"]');
+export const searchInput = () => cy.get('.drawer input[type="text"]');
 
 export const search = value => {
-    cy.get('.drawer-container .search-bar').should('be.visible');
+    cy.get('.drawer .search-bar')
+        .scrollIntoView()
+        .should('be.visible');
     searchInput().type(value);
     cy.wait(500); // Wait for the debounce
 };
 
 export const findSearchResultByTitle = value =>
     cy
-        .get('.drawer-container .search-result-title')
+        .get('.drawer .search-result-title')
         .contains(value)
         .parent();
 
@@ -38,12 +31,13 @@ export const checkResultList = titles => {
             `.search-result-link:nth-child(${index + 1}) .search-result-title`,
         )
             .contains(title)
+            .scrollIntoView()
             .should('be.visible');
     });
 };
 
 export const loadMore = () => {
-    cy.get('.drawer-container .load-more button').click();
+    cy.get('.drawer .load-more button').click();
 };
 
 export const waitForLoading = () => {
@@ -51,6 +45,14 @@ export const waitForLoading = () => {
     // Because sometimes the loading doesn't appear at all
     cy.wait(1000);
     cy.get('.graph-page .loading').should('not.exist');
+};
+
+export const getFacetsOrder = facets => {
+    facets.forEach((name, index) => {
+        cy.get(`.facet-list > div:nth-child(${index + 1})`)
+            .contains(name)
+            .should('be.visible');
+    });
 };
 
 export const getFacet = name => cy.get('.facets .facet-item').contains(name);
@@ -72,7 +74,7 @@ export const setFacet = (name, value) => {
 };
 
 export const clearFacet = value => {
-    cy.get('.search-advanced')
+    cy.get('.applied-facet-container')
         .contains(value)
         .parent()
         .find('svg')
@@ -99,4 +101,20 @@ export const sortFacet = (name, sortName) => {
         .get(`.sort_${sortName}`)
         .click();
     cy.wait(500);
+};
+
+export const checkMoreCount = (count, total) => {
+    cy.get('.load-more')
+        .scrollIntoView()
+        .contains(count)
+        .should('be.visible')
+        .contains(total)
+        .should('be.visible');
+};
+
+export const goToResourceNumber = nb => {
+    cy.get(
+        `.search-result-list-container > a:nth-child(${nb}) .search-result`,
+    ).click();
+    cy.location('pathname').should('not.equal', '/');
 };

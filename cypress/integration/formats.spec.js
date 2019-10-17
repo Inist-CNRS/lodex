@@ -2,12 +2,14 @@ import { teardown, logoutAndLoginAs } from '../support/authentication';
 import * as homePage from '../support/homePage';
 import * as datasetImportPage from '../support/datasetImportPage';
 import * as configureField from '../support/configureField';
+import * as searchDrawer from '../support/searchDrawer';
 
 describe('Transformers & Formats', () => {
     beforeEach(teardown);
 
     describe('LIST format', () => {
         it('should display a composed field with a LIST format', () => {
+            homePage.openAdvancedDrawer();
             homePage.goToAdminDashboard();
 
             datasetImportPage.importDataset('dataset/simple.csv');
@@ -21,7 +23,7 @@ describe('Transformers & Formats', () => {
             datasetImportPage.publish();
 
             datasetImportPage.goToPublishedResources();
-            homePage.goToGraphPage();
+            searchDrawer.openSearchDrawer();
 
             cy.contains('Row 1').should('be.visible');
             cy.contains('Row 2').should('be.visible');
@@ -30,6 +32,7 @@ describe('Transformers & Formats', () => {
 
     describe('Broken Formats & Wrong Values', () => {
         beforeEach(() => {
+            homePage.openAdvancedDrawer();
             homePage.goToAdminDashboard();
 
             datasetImportPage.importDataset('dataset/broken-formats.csv');

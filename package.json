@@ -166,6 +166,7 @@
         "request": "2.88.0",
         "reselect": "3.0.1",
         "resumablejs": "1.1.0",
+        "scheduler": "0.14.0",
         "sprintf-js": "1.1.1",
         "stream-to-string": "1.1.0",
         "through": "2.3.8",

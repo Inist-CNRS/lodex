@@ -65,9 +65,9 @@ const styles = {
     schemeLink: {
         color: 'grey',
     },
-    editButton: memoize(hide => ({
-        display: hide ? 'none' : 'inline-block',
-    })),
+    editButton: {
+        display: 'inline-block',
+    },
     labelContainer: {
         display: 'flex',
         justifyContent: 'flex-end',
@@ -161,10 +161,12 @@ export const PropertyComponent = ({
                         style={styles.label(fieldStatus, isSub)}
                     >
                         {field.label}
-                        <span style={styles.editButton(!isAdmin)}>
-                            <EditButton field={field} resource={resource} />
-                            <EditOntologyFieldButton field={field} />
-                        </span>
+                        {isAdmin && (
+                            <span style={styles.editButton}>
+                                <EditButton field={field} resource={resource} />
+                                <EditOntologyFieldButton field={field} />
+                            </span>
+                        )}
                     </span>
                     <span
                         className={classnames(

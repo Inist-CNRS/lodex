@@ -5,7 +5,7 @@ describe('Login', () => {
         teardown(true);
     });
 
-    it('should successfuly login as an admin', () => {
+    it('should successfully login as an admin', () => {
         login();
         cy.contains('No dataset').should('be.visible');
     });
