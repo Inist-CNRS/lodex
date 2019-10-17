@@ -145,7 +145,7 @@ export const DetailComponent = ({
         .slice(TOP_FIELDS_LIMIT);
 
     return (
-        <div className="detail">
+        <span className="detail">
             <Helmet>
                 <title>
                     {title || resource.uri} - {getTitle()}
@@ -197,7 +197,7 @@ export const DetailComponent = ({
                     </div>
                 </div>
             </div>
-        </div>
+        </span>
     );
 };
 
