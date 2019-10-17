@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
@@ -14,58 +14,58 @@ import {
     polyglot as polyglotPropTypes,
 } from '../../propTypes';
 
-export class FieldInputComponent extends Component {
-    validate = value => {
-        const { field, p: polyglot } = this.props;
+export const FieldInputComponent = ({
+    field,
+    completedField,
+    p: polyglot,
+    input,
+}) => {
+    const validate = value => {
         const predicate = getPredicate(field);
         return predicate(value) ? undefined : polyglot.t('bad_format_details');
     };
 
-    render() {
-        const { field, completedField, p: polyglot, input } = this.props;
+    let label = field.label;
+    if (completedField) {
+        label = `${label} (${polyglot.t('completes_field_X', {
+            field: completedField.label,
+        })})`;
+    }
 
-        let label = field.label;
-        if (completedField) {
-            label = `${label} (${polyglot.t('completes_field_X', {
-                field: completedField.label,
-            })})`;
-        }
+    if (field.composedOf) {
+        return <CompositeFieldInput label={label} field={field} />;
+    }
 
-        if (field.composedOf) {
-            return <CompositeFieldInput label={label} field={field} />;
-        }
+    const EditionComponent = getEditionComponent(field);
 
-        const EditionComponent = getEditionComponent(field);
-
-        if (EditionComponent.isReduxFormReady) {
-            return (
-                <EditionComponent
-                    key={field.name}
-                    name={field.name}
-                    disabled={field.name === 'uri'}
-                    label={label}
-                    fullWidth
-                    field={field}
-                    {...input}
-                />
-            );
-        }
-
+    if (EditionComponent.isReduxFormReady) {
         return (
-            <Field
+            <EditionComponent
                 key={field.name}
                 name={field.name}
-                component={EditionComponent}
                 disabled={field.name === 'uri'}
                 label={label}
-                field={field}
-                validate={this.validate}
                 fullWidth
+                field={field}
                 {...input}
             />
         );
     }
-}
+
+    return (
+        <Field
+            key={field.name}
+            name={field.name}
+            component={EditionComponent}
+            disabled={field.name === 'uri'}
+            label={label}
+            field={field}
+            validate={validate}
+            fullWidth
+            {...input}
+        />
+    );
+};
 
 FieldInputComponent.propTypes = {
     field: fieldPropTypes.isRequired,
