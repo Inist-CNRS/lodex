@@ -10,5 +10,5 @@ export default {
     AdminComponent,
     EditionComponent,
     defaultArgs,
-    predicate: value => Array.isArray(value),
+    predicate: value => value == null || value === '' || Array.isArray(value),
 };

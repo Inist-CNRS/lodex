@@ -9,5 +9,5 @@ export default {
     ListComponent: Component,
     AdminComponent,
     defaultArgs,
-    predicate: isLink,
+    predicate: value => value == null || value === '' || isLink(value),
 };
