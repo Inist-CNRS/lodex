@@ -2,13 +2,25 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faAngleLeft } from '@fortawesome/free-solid-svg-icons';
 
+import theme from '../../theme';
 import { fromBreadcrumb } from '../selectors';
 import BreadcrumbItem from './BreadcrumbItem';
 import stylesToClassname from '../../lib/stylesToClassName';
 
 const styles = stylesToClassname(
     {
+        root: {
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'flex-start',
+        },
+        icon: {
+            color: theme.green.primary,
+            margin: '5px 0px',
+        },
         trail: {
             margin: '5px 0px',
         },
@@ -31,7 +43,12 @@ export const Breadcrumb = ({ breadcrumb, location }) => {
         : breadcrumb;
 
     return (
-        <div>
+        <div className={styles.root}>
+            <FontAwesomeIcon
+                className={styles.icon}
+                icon={faAngleLeft}
+                height={20}
+            />
             <div className={styles.trail}>
                 {items.map((item, index) => (
                     <>
