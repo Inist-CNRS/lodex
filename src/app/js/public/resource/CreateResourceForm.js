@@ -4,6 +4,7 @@ import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import translate from 'redux-polyglot/translate';
 import { reduxForm, propTypes as reduxFormPropTypes } from 'redux-form';
+import { isLink } from '../../../../common/uris';
 
 import { createResource, CREATE_RESOURCE_FORM_NAME } from './';
 import Alert from '../../lib/components/Alert';
@@ -17,12 +18,7 @@ export const validate = (values, { p: polyglot }) => {
     const errors = Object.keys(values).reduce((currentErrors, field) => {
         if (field === 'uri') {
             const uri = values[field];
-            if (
-                !uri ||
-                uri.startsWith('uid:/') ||
-                uri.startsWith('ark:/') ||
-                uri.startsWith('http://')
-            ) {
+            if (!isLink(uri)) {
                 return currentErrors;
             }
             return {
