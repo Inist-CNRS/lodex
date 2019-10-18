@@ -23,6 +23,7 @@ export const findSearchResultByTitle = value =>
     cy
         .get('.drawer .search-result-title')
         .contains(value)
+        .should('be.visible')
         .parent();
 
 export const checkResultList = titles => {
