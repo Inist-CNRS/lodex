@@ -173,6 +173,8 @@ SearchResult.propTypes = {
         uri: PropTypes.string,
         title: PropTypes.string,
         description: PropTypes.string,
+        detail1: PropTypes.string,
+        detail2: PropTypes.string,
     }).isRequired,
     result: resourcePropTypes.isRequired,
     closeDrawer: PropTypes.func.isRequired,
