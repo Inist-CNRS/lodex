@@ -16,26 +16,35 @@ import {
     polyglot as polyglotPropTypes,
 } from '../../propTypes';
 
-export const FieldInputComponent = ({
-    field,
-    completedField,
-    p: polyglot,
-    input,
-}) => {
-    const validate = value => {
-        if (isFieldRequired(field) && isEmpty(value)) {
-            return polyglot.t('error_field_required');
-        }
-        const predicate = getPredicate(field);
-        return predicate(value) ? undefined : polyglot.t('bad_format_details');
-    };
-
+const getLabel = (field, polyglot, completedField, required) => {
     let label = field.label;
     if (completedField) {
         label = `${label} (${polyglot.t('completes_field_X', {
             field: completedField.label,
         })})`;
     }
+    if (required) {
+        label = `${label}*`;
+    }
+    return label;
+};
+
+export const FieldInputComponent = ({
+    field,
+    completedField,
+    p: polyglot,
+    input,
+}) => {
+    const required = isFieldRequired(field);
+    const label = getLabel(field, polyglot, completedField, required);
+
+    const validate = value => {
+        if (required && isEmpty(value)) {
+            return polyglot.t('error_overview_field_required');
+        }
+        const predicate = getPredicate(field);
+        return predicate(value) ? undefined : polyglot.t('bad_format_details');
+    };
 
     if (field.composedOf) {
         return <CompositeFieldInput label={label} field={field} />;
