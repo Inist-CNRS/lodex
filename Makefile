@@ -85,7 +85,7 @@ test-e2e-start-dockers:
 ifeq "$(CI)" "true"
 	docker-compose -f docker-compose.spec.yml up -d --build
 else
-	docker-compose -f docker-compose.spec.yml up -d
+	docker-compose -f docker-compose.spec.yml up --build
 endif
 
 test-e2e-logs:
