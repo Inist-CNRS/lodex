@@ -16,7 +16,7 @@ const styles = {
         paddingTop: '5px',
     },
     listItem: {
-        fontSize: '1.5rem',
+        visibility: 'visible',
     },
     innerDiv: {
         padding: '0 5px',

@@ -5,7 +5,6 @@ import compose from 'recompose/compose';
 import withProps from 'recompose/withProps';
 import classnames from 'classnames';
 import { bindActionCreators } from 'redux';
-import { grey500 } from 'material-ui/styles/colors';
 import memoize from 'lodash.memoize';
 import get from 'lodash.get';
 
@@ -44,27 +43,19 @@ const styles = {
         (style, value) => ({ style, value }),
     ),
     label: (status, isSub) => ({
-        color: grey500,
         flexGrow: 2,
-        fontWeight: 'bold',
-        fontSize: isSub === true ? 'initial' : '2rem',
+        fontSize: isSub === true ? 'initial' : '80%',
         textDecoration: status === REJECTED ? 'line-through' : 'none',
-        fontFamily: 'Quicksand, sans-serif',
     }),
     language: memoize(hide => ({
-        marginRight: '1rem',
-        fontSize: '0.6em',
-        color: 'grey',
         textTransform: 'uppercase',
         visibility: hide ? 'hidden' : 'visible',
     })),
     scheme: {
-        fontWeight: 'normale',
-        fontSize: '0.75em',
         alignSelf: 'flex-end',
     },
     schemeLink: {
-        color: 'grey',
+        visibility: 'visible',
     },
     editButton: {
         display: 'inline-block',
@@ -81,9 +72,6 @@ const styles = {
     value: {
         flexGrow: 2,
         width: '100%',
-        padding: '0.75rem',
-        paddingLeft: '0px',
-        textAlign: 'justify',
     },
 };
 

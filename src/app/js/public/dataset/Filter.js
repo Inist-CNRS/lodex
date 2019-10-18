@@ -21,7 +21,7 @@ const styles = {
         marginTop: 8,
     },
     textbox: {
-        fontSize: '1.5rem',
+        visibility: 'visible',
     },
 };
 

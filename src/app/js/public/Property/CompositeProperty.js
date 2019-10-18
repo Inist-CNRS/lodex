@@ -9,14 +9,12 @@ import getFieldClassName from '../../lib/getFieldClassName';
 const styles = {
     container: {
         paddingLeft: '2rem',
-        marginLeft: '2rem',
         borderLeft: '1px dotted rgb(224, 224, 224)',
         display: 'flex',
         flexFlow: 'row wrap',
     },
     property: {
-        paddingTop: '0.5rem',
-        paddingBottom: '0.5rem',
+        visibility: 'visible',
     },
 };
 
