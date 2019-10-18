@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Card, CardTitle } from 'material-ui/Card';
 import { Helmet } from 'react-helmet';
+import FlatButton from 'material-ui/FlatButton';
 
 import Toolbar from '../Toolbar';
 import { fromFields, fromCharacteristic } from '../../sharedSelectors';
@@ -59,6 +60,10 @@ class GraphPage extends Component {
         }
     }
 
+    onSearchWithFacets = () => {
+        // save facets
+    };
+
     render() {
         const { graphField, resource, name } = this.props;
 
@@ -101,6 +106,11 @@ class GraphPage extends Component {
                             />
                         </Card>
                     )}
+                    <FlatButton
+                        className="add-transformer"
+                        onClick={this.onSearchWithFacets}
+                        label="Search"
+                    />
                 </div>
             </div>
         );
