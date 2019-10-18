@@ -12,4 +12,4 @@ const overviewValues = [
     RESOURCE_DETAIL_2,
 ];
 
-export default field => field && overviewValues.includes(field.overview);
+export default field => !!(field && overviewValues.includes(field.overview));

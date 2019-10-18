@@ -9,8 +9,8 @@ import {
 
 describe('isFieldRequired', () => {
     it('should return "false" if the field is "null", "undefined" or an "empty object"', () => {
-        expect(isFieldRequired(null)).toBe(true);
-        expect(isFieldRequired(undefined)).toBe(true);
+        expect(isFieldRequired(null)).toBe(false);
+        expect(isFieldRequired(undefined)).toBe(false);
     });
 
     it('should return "false" if the field overview is "NONE"', () => {
