@@ -16,18 +16,13 @@ import UriFieldInput from '../../lib/components/UriFieldInput';
 
 export const validate = (values, { p: polyglot }) => {
     const errors = Object.keys(values).reduce((currentErrors, field) => {
-        if (field === 'uri') {
-            const uri = values[field];
-            if (!isLink(uri)) {
-                return currentErrors;
-            }
-            return {
-                ...currentErrors,
-                [field]: polyglot.t('invalid_uri'),
-            };
+        if (field !== 'uri' || isLink(values[field])) {
+            return currentErrors;
         }
-
-        return currentErrors;
+        return {
+            ...currentErrors,
+            [field]: polyglot.t('invalid_uri'),
+        };
     }, {});
 
     return errors;
