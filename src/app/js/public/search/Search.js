@@ -22,7 +22,7 @@ import {
     loadMore as loadMoreAction,
 } from './reducer';
 import { fromFields } from '../../sharedSelectors';
-import { fromSearch } from '../selectors';
+import { fromSearch, fromDataset } from '../selectors';
 import theme from '../../theme';
 import AdminOnlyAlert from '../../lib/components/AdminOnlyAlert';
 import AppliedFacets from './AppliedFacets';
@@ -141,7 +141,18 @@ class Search extends Component {
     }
 
     UNSAFE_componentWillMount() {
-        const { searchQuery, search, results, preLoadPublication } = this.props;
+        const {
+            searchQuery,
+            search,
+            results,
+            preLoadPublication,
+            withDataset,
+            datasetFacets,
+        } = this.props;
+
+        if (withDataset) {
+            console.log(datasetFacets);
+        }
 
         if (!results || results.length === 0) {
             preLoadPublication();
@@ -384,6 +395,7 @@ Search.propTypes = {
     total: PropTypes.number.isRequired,
     closeDrawer: PropTypes.func.isRequired,
     withFacets: PropTypes.bool.isRequired,
+    withDataset: PropTypes.bool.isRequired,
 };
 
 Search.defaultProps = {
@@ -402,6 +414,7 @@ const mapStateToProps = state => {
         searchQuery: fromSearch.getQuery(state),
         sortBy,
         sortDir,
+        datasetFacets: fromDataset.getAppliedFacets(state),
     };
 };
 

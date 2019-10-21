@@ -66,10 +66,14 @@ class GraphPage extends Component {
         }
     }
 
-    onSearchWithFacets = () => {};
-
     render() {
-        const { graphField, resource, name, p: polyglot } = this.props;
+        const {
+            graphField,
+            resource,
+            name,
+            p: polyglot,
+            onSearch,
+        } = this.props;
 
         return (
             <div className="graph-page" style={styles.container}>
@@ -112,7 +116,7 @@ class GraphPage extends Component {
                     )}
                     <FlatButton
                         className="add-transformer"
-                        onClick={this.onSearchWithFacets}
+                        onClick={onSearch}
                         label={polyglot.t('browse_results')}
                     />
                 </div>
@@ -128,6 +132,7 @@ GraphPage.propTypes = {
     preLoadPublication: PropTypes.func.isRequired,
     preLoadDatasetPage: PropTypes.func.isRequired,
     p: polyglotPropTypes.isRequired,
+    onSearch: PropTypes.func.isRequired,
 };
 
 GraphPage.defaultProps = {

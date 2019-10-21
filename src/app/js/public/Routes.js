@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { useEffect, useState, Fragment } from 'react';
 import { Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -20,44 +20,66 @@ import Breadcrumb from './breadcrumb/Breadcrumb';
 
 const notLogin = new RegExp('^(?!.*(/login)).*$');
 
-class Routes extends Component {
-    UNSAFE_componentWillMount() {
-        this.props.loadMenu();
+const Routes = props => {
+    const [search, setSearch] = useState(false);
+
+    useEffect(() => {
+        props.loadMenu();
+    }, []);
+
+    const { customRoutes, history } = props;
+    if (!customRoutes) {
+        return null;
     }
 
-    render() {
-        const { customRoutes, history } = this.props;
-        if (!customRoutes) {
-            return null;
-        }
-        return (
-            <App>
-                <ConnectedRouter history={history} onUpdate={scrollToTop}>
-                    <Fragment>
-                        <ScrollToTop />
-                        <Route path={notLogin} component={Breadcrumb} />
-                        <Route path={notLogin} component={NavBar} />
-                        <Route path="/" exact component={Home} />
-                        <Route path="/resource" component={Resource} />
-                        <Route path="/ark:/:naan/:rest" component={Resource} />
-                        <Route path="/uid:/:uri" component={Resource} />
-                        <Route path="/login" component={Login} />
-                        <Route path="/graph/:name" component={GraphPage} />
-                        {customRoutes.map(link => (
-                            <Route
-                                key={link}
-                                exact
-                                path={link}
-                                component={CustomPage}
+    const handleSearchWithDataset = () => {
+        setSearch(true);
+    };
+
+    const handleCloseSearch = () => {
+        setSearch(false);
+    };
+
+    return (
+        <App>
+            <ConnectedRouter history={history} onUpdate={scrollToTop}>
+                <Fragment>
+                    <ScrollToTop />
+                    <Route path={notLogin} component={Breadcrumb} />
+                    <Route path={notLogin}>
+                        <NavBar
+                            search={search}
+                            closeSearch={handleCloseSearch}
+                        />
+                    </Route>
+                    <Route path="/" exact component={Home} />
+                    <Route path="/resource" component={Resource} />
+                    <Route path="/ark:/:naan/:rest" component={Resource} />
+                    <Route path="/uid:/:uri" component={Resource} />
+                    <Route path="/login" component={Login} />
+                    <Route
+                        path="/graph/:name"
+                        render={props => (
+                            <GraphPage
+                                {...props}
+                                onSearch={handleSearchWithDataset}
                             />
-                        ))}
-                        <Route path={notLogin} component={CreateResource} />
-                    </Fragment>
-                </ConnectedRouter>
-            </App>
-        );
-    }
-}
+                        )}
+                    />
+                    {customRoutes.map(link => (
+                        <Route
+                            key={link}
+                            exact
+                            path={link}
+                            component={CustomPage}
+                        />
+                    ))}
+                    <Route path={notLogin} component={CreateResource} />
+                </Fragment>
+            </ConnectedRouter>
+        </App>
+    );
+};
 
 Routes.propTypes = {
     customRoutes: PropTypes.arrayOf(PropTypes.string),

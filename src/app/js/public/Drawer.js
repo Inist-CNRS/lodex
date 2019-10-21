@@ -13,6 +13,7 @@ export const DRAWER_CLOSED = 'closed';
 export const useDrawer = (
     initialPosition = DRAWER_CLOSED,
     animationDuration = ANIMATION_DURATION,
+    closeSearch = undefined,
 ) => {
     if (initialPosition !== DRAWER_OPEN && initialPosition !== DRAWER_CLOSED) {
         throw new Error(
@@ -30,6 +31,10 @@ export const useDrawer = (
         if (position !== DRAWER_OPEN) {
             return;
         }
+        if (closeSearch) {
+            closeSearch();
+        }
+
         setPosition(DRAWER_CLOSING);
         setTimeout(() => {
             setPosition(DRAWER_CLOSED);
