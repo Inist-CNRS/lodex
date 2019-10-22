@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleLeft } from '@fortawesome/free-solid-svg-icons';
+import { withRouter } from 'react-router';
 
 import theme from '../../theme';
 import { fromBreadcrumb } from '../selectors';
@@ -88,4 +89,7 @@ const mapStateToProps = state => {
     };
 };
 
-export default compose(connect(mapStateToProps))(Breadcrumb);
+export default compose(
+    connect(mapStateToProps),
+    withRouter,
+)(Breadcrumb);

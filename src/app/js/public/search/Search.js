@@ -9,6 +9,12 @@ import TextField from 'material-ui/TextField';
 import CircularProgress from 'material-ui/CircularProgress';
 import FlatButton from 'material-ui/FlatButton';
 
+import {
+    facetActions,
+    search as searchAction,
+    sort as sortAction,
+    loadMore as loadMoreAction,
+} from './reducer';
 import Link from '../../lib/components/Link';
 import {
     polyglot as polyglotPropTypes,
@@ -16,13 +22,9 @@ import {
     resource as resourcePropTypes,
 } from '../../propTypes';
 import { preLoadPublication as preLoadPublicationAction } from '../../fields';
-import {
-    search as searchAction,
-    sort as sortAction,
-    loadMore as loadMoreAction,
-} from './reducer';
+
 import { fromFields } from '../../sharedSelectors';
-import { fromSearch } from '../selectors';
+import { fromSearch, fromDataset } from '../selectors';
 import theme from '../../theme';
 import AdminOnlyAlert from '../../lib/components/AdminOnlyAlert';
 import AppliedFacets from './AppliedFacets';
@@ -141,7 +143,27 @@ class Search extends Component {
     }
 
     UNSAFE_componentWillMount() {
-        const { searchQuery, search, results, preLoadPublication } = this.props;
+        const {
+            searchQuery,
+            search,
+            results,
+            preLoadPublication,
+            withDataset,
+            datasetFacetsValues,
+            datasetAppliedFacets,
+            datasetInvertedFacets,
+            datasetOpenedFacets,
+            setFacets,
+        } = this.props;
+
+        if (withDataset) {
+            setFacets({
+                facetsValues: datasetFacetsValues,
+                appliedFacets: datasetAppliedFacets,
+                invertedFacets: datasetInvertedFacets,
+                openedFacets: datasetOpenedFacets,
+            });
+        }
 
         if (!results || results.length === 0) {
             preLoadPublication();
@@ -384,6 +406,8 @@ Search.propTypes = {
     total: PropTypes.number.isRequired,
     closeDrawer: PropTypes.func.isRequired,
     withFacets: PropTypes.bool.isRequired,
+    withDataset: PropTypes.bool.isRequired,
+    setFacets: PropTypes.func.isRequired,
 };
 
 Search.defaultProps = {
@@ -402,6 +426,10 @@ const mapStateToProps = state => {
         searchQuery: fromSearch.getQuery(state),
         sortBy,
         sortDir,
+        datasetFacetsValues: fromDataset.getFacetsValues(state),
+        datasetAppliedFacets: fromDataset.getAppliedFacets(state),
+        datasetInvertedFacets: fromDataset.getInvertedFacets(state),
+        datasetOpenedFacets: fromDataset.getOpenedFacets(state),
     };
 };
 
@@ -410,6 +438,7 @@ const mapDispatchToProps = {
     sort: sortAction,
     preLoadPublication: preLoadPublicationAction,
     loadMore: loadMoreAction,
+    setFacets: facetActions.setFacets,
 };
 
 export default compose(

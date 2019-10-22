@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
 import { config } from '@fortawesome/fontawesome-svg-core';
@@ -72,6 +72,8 @@ export const NavBar = ({
     advancedMenuButton,
     p: polyglot,
     hasFacetFields,
+    search,
+    closeSearch,
 }) => {
     if (!leftMenu || !rightMenu) {
         return null;
@@ -88,6 +90,18 @@ export const NavBar = ({
         toggleAdvancedMenuDrawer,
         closeAdvancedMenuDrawer,
     ] = useDrawer(DRAWER_CLOSED);
+
+    useEffect(() => {
+        if (search) {
+            toggleSearch();
+        }
+    }, [search]);
+
+    useEffect(() => {
+        if (searchDrawer == DRAWER_CLOSED) {
+            closeSearch();
+        }
+    }, [searchDrawer]);
 
     const toggleSearch = () => {
         closeAdvancedMenuDrawer();
@@ -184,7 +198,10 @@ export const NavBar = ({
                     </div>
                     {advancedMenu.length > 0 && (
                         <MenuItem
-                            config={{ ...advancedMenuButton, role: 'advanced' }}
+                            config={{
+                                ...advancedMenuButton,
+                                role: 'advanced',
+                            }}
                             role={role}
                             canBeSearched={canBeSearched}
                             hasGraph={hasGraph}
@@ -198,7 +215,7 @@ export const NavBar = ({
                 </div>
             </nav>
             <Drawer status={searchDrawer} onClose={toggleSearch}>
-                <Search withFacets={hasFacetFields} />
+                <Search withFacets={hasFacetFields} withDataset={search} />
             </Drawer>
             <Drawer status={graphDrawer} onClose={toggleGraph}>
                 <GraphSummary />
@@ -256,6 +273,8 @@ NavBar.propTypes = {
         icon: PropTypes.string.isRequired,
     }),
     hasFacetFields: PropTypes.bool.isRequired,
+    search: PropTypes.bool.isRequired,
+    closeSearch: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({

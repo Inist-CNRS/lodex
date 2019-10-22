@@ -125,6 +125,7 @@ export default function*() {
             facetActionTypes.TOGGLE_FACET_VALUE,
             facetActionTypes.INVERT_FACET,
             facetActionTypes.CLEAR_FACET,
+            facetActionTypes.SET_FACETS,
         ],
         handleSearch,
     );

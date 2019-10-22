@@ -293,6 +293,7 @@ MenuItem.propTypes = {
             'sign-out',
             'custom',
             'share_export',
+            'advanced',
         ]),
         label: PropTypes.shape({
             en: PropTypes.string.isRequired,

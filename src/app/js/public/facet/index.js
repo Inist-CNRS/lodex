@@ -26,6 +26,7 @@ export const createActionTypes = prefix => ({
     LOAD_FACET_VALUES: `${prefix}_LOAD_FACET_VALUES`,
     LOAD_FACET_VALUES_ERROR: `${prefix}_LOAD_FACET_VALUES_ERROR`,
     INVERT_FACET: `${prefix}_INVERT_FACET`,
+    SET_FACETS: `${prefix}_SET_FACETS`,
     ...createFacetValueActionTypes(prefix),
 });
 
@@ -36,6 +37,7 @@ export const createActions = actionTypes => ({
     loadFacetValues: createAction(actionTypes.LOAD_FACET_VALUES),
     loadFacetValuesError: createAction(actionTypes.LOAD_FACET_VALUES_ERROR),
     invertFacet: createAction(actionTypes.INVERT_FACET),
+    setFacets: createAction(actionTypes.SET_FACETS),
     ...createFacetValueActions(actionTypes),
 });
 
@@ -136,6 +138,23 @@ export const createReducer = prefix => {
             [SAVE_RESOURCE_SUCCESS]: state => ({
                 ...state,
                 openedFacets: {},
+            }),
+            [actionTypes.SET_FACETS]: (
+                state,
+                {
+                    payload: {
+                        facetsValues,
+                        appliedFacets,
+                        invertedFacets,
+                        openedFacets,
+                    },
+                },
+            ) => ({
+                ...state,
+                facetsValues,
+                appliedFacets,
+                invertedFacets,
+                openedFacets,
             }),
         },
         initialState,

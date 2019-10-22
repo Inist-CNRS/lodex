@@ -46,6 +46,10 @@ export const getFacetValueRequestData = (state, name) =>
         'perPage',
     ]);
 
+export const getFacetsValues = ({ facetsValues }) => facetsValues;
+
+export const getOpenedFacets = ({ openedFacets }) => openedFacets;
+
 export default {
     getAppliedFacets,
     getAppliedFacetList,
@@ -60,4 +64,6 @@ export default {
     isFacetValuesInverted,
     getInvertedFacets,
     getFacetValueRequestData,
+    getOpenedFacets,
+    getFacetsValues,
 };

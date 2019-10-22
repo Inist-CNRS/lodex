@@ -3,12 +3,19 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Card, CardTitle } from 'material-ui/Card';
 import { Helmet } from 'react-helmet';
+import FlatButton from 'material-ui/FlatButton';
+import compose from 'recompose/compose';
+import translate from 'redux-polyglot/translate';
 
+import {
+    field as fieldPropTypes,
+    polyglot as polyglotPropTypes,
+} from '../../propTypes';
 import Toolbar from '../Toolbar';
 import { fromFields, fromCharacteristic } from '../../sharedSelectors';
 import Format from '../Format';
 import AppliedFacetList from '../dataset/AppliedFacetList';
-import { field as fieldPropTypes } from '../../propTypes';
+
 import EditButton from '../../fields/editFieldValue/EditButton';
 import EditOntologyFieldButton from '../../fields/ontology/EditOntologyFieldButton';
 import PropertyLinkedFields from '../Property/PropertyLinkedFields';
@@ -60,7 +67,13 @@ class GraphPage extends Component {
     }
 
     render() {
-        const { graphField, resource, name } = this.props;
+        const {
+            graphField,
+            resource,
+            name,
+            p: polyglot,
+            onSearch,
+        } = this.props;
 
         return (
             <div className="graph-page" style={styles.container}>
@@ -101,6 +114,11 @@ class GraphPage extends Component {
                             />
                         </Card>
                     )}
+                    <FlatButton
+                        className="add-transformer"
+                        onClick={onSearch}
+                        label={polyglot.t('browse_results')}
+                    />
                 </div>
             </div>
         );
@@ -113,6 +131,8 @@ GraphPage.propTypes = {
     resource: PropTypes.object.isRequired,
     preLoadPublication: PropTypes.func.isRequired,
     preLoadDatasetPage: PropTypes.func.isRequired,
+    p: polyglotPropTypes.isRequired,
+    onSearch: PropTypes.func.isRequired,
 };
 
 GraphPage.defaultProps = {
@@ -132,12 +152,15 @@ const mapStateToProps = (
     resource: fromCharacteristic.getCharacteristicsAsResource(state),
 });
 
-const mapDispatchToprops = {
+const mapDispatchToProps = {
     preLoadPublication,
     preLoadDatasetPage: preLoadDatasetPageAction,
 };
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToprops,
+export default compose(
+    translate,
+    connect(
+        mapStateToProps,
+        mapDispatchToProps,
+    ),
 )(GraphPage);
