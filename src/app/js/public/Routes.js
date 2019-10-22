@@ -46,12 +46,16 @@ const Routes = props => {
                 <Fragment>
                     <ScrollToTop />
                     <Route path={notLogin} component={Breadcrumb} />
-                    <Route path={notLogin}>
-                        <NavBar
-                            search={search}
-                            closeSearch={handleCloseSearch}
-                        />
-                    </Route>
+                    <Route
+                        path={notLogin}
+                        render={props => (
+                            <NavBar
+                                {...props}
+                                search={search}
+                                closeSearch={handleCloseSearch}
+                            />
+                        )}
+                    />
                     <Route path="/" exact component={Home} />
                     <Route path="/resource" component={Resource} />
                     <Route path="/ark:/:naan/:rest" component={Resource} />
@@ -97,5 +101,5 @@ const mapDispatchToProps = {
 
 export default connect(
     mapStateToProps,
-    mapDispatchToProps,
+    mapDispatchToProps
 )(Routes);
