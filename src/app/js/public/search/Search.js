@@ -9,6 +9,12 @@ import TextField from 'material-ui/TextField';
 import CircularProgress from 'material-ui/CircularProgress';
 import FlatButton from 'material-ui/FlatButton';
 
+import {
+    facetActions,
+    search as searchAction,
+    sort as sortAction,
+    loadMore as loadMoreAction,
+} from './reducer';
 import Link from '../../lib/components/Link';
 import {
     polyglot as polyglotPropTypes,
@@ -16,11 +22,7 @@ import {
     resource as resourcePropTypes,
 } from '../../propTypes';
 import { preLoadPublication as preLoadPublicationAction } from '../../fields';
-import {
-    search as searchAction,
-    sort as sortAction,
-    loadMore as loadMoreAction,
-} from './reducer';
+
 import { fromFields } from '../../sharedSelectors';
 import { fromSearch, fromDataset } from '../selectors';
 import theme from '../../theme';
@@ -147,11 +149,26 @@ class Search extends Component {
             results,
             preLoadPublication,
             withDataset,
-            datasetFacets,
+            datasetFacetsValues,
+            datasetAppliedFacets,
+            datasetInvertedFacets,
+            datasetOpenedFacets,
+            setFacets,
         } = this.props;
 
         if (withDataset) {
-            console.log(datasetFacets);
+            console.log(
+                datasetFacetsValues,
+                datasetInvertedFacets,
+                datasetAppliedFacets,
+                datasetOpenedFacets,
+            );
+            setFacets({
+                facetsValues: datasetFacetsValues,
+                appliedFacets: datasetAppliedFacets,
+                invertedFacets: datasetInvertedFacets,
+                openedFacets: datasetOpenedFacets,
+            });
         }
 
         if (!results || results.length === 0) {
@@ -414,7 +431,10 @@ const mapStateToProps = state => {
         searchQuery: fromSearch.getQuery(state),
         sortBy,
         sortDir,
-        datasetFacets: fromDataset.getAppliedFacets(state),
+        datasetFacetsValues: fromDataset.getFacetsValues(state),
+        datasetAppliedFacets: fromDataset.getAppliedFacets(state),
+        datasetInvertedFacets: fromDataset.getInvertedFacets(state),
+        datasetOpenedFacets: fromDataset.getOpenedFacets(state),
     };
 };
 
@@ -423,6 +443,7 @@ const mapDispatchToProps = {
     sort: sortAction,
     preLoadPublication: preLoadPublicationAction,
     loadMore: loadMoreAction,
+    setFacets: facetActions.setFacets,
 };
 
 export default compose(
