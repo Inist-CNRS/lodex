@@ -1,4 +1,4 @@
-import { getModalTitle, getModalContent, getModalActions } from './modal';
+import { getDialogTitle, getDialogContent, getDialogActions } from './dialog';
 
 export const openCreateResourceForm = () => {
     cy.get('.create-resource button')
@@ -7,17 +7,17 @@ export const openCreateResourceForm = () => {
 
     cy.wait(300);
 
-    getModalTitle().contains('Add a new resource to the dataset');
+    getDialogTitle().contains('Add a new resource to the dataset');
 };
 
 export const fillResourceFormInput = (inputName, inputValue) => {
-    getModalContent()
+    getDialogContent()
         .find(`input[name="${inputName}"]`)
         .type(inputValue);
 };
 
 export const saveResourceForm = () => {
-    getModalActions()
+    getDialogActions()
         .find('button')
         .first()
         .contains('Save')

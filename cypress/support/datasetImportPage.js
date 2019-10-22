@@ -1,11 +1,11 @@
 import { fillInputWithFixture } from './forms';
 
-export const openImportModal = () => {
+export const openImportDialog = () => {
     cy.get('.upload.admin button').click();
 };
 
 export const importDataset = (filename, mimeType = 'text/csv') => {
-    openImportModal();
+    openImportDialog();
     fillInputWithFixture(
         '.btn-upload-dataset input[type=file]',
         filename,
