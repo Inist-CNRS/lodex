@@ -20,12 +20,13 @@ export default function* fetchSaga(
 
     if (fetchResult.error && fetchResult.error.code === 401) {
         const pathname = yield select(getCurrentQuery);
-
-        yield put(
-            replace({
-                pathname: `/login?page=${encodeURIComponent(pathname)}`,
-            }),
-        );
+        if (!pathname.startsWith('/login')) {
+            yield put(
+                replace({
+                    pathname: `/login?page=${encodeURIComponent(pathname)}`,
+                }),
+            );
+        }
 
         yield put(logout());
     }
