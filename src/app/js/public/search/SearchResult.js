@@ -7,7 +7,7 @@ import {
     field as fieldProptypes,
     resource as resourcePropTypes,
 } from '../../propTypes';
-import { getResourceUri } from '../../../../common/uris';
+import { isURL, getResourceUri } from '../../../../common/uris';
 import theme from '../../theme';
 import stylesToClassname from '../../lib/stylesToClassName';
 
@@ -88,9 +88,13 @@ const SearchResult = ({ fields, fieldNames, result, closeDrawer }) => {
         (firstDetailField && result[firstDetailField.name]) ||
         (secondDetailField && result[secondDetailField.name]);
 
+    const linkProps = isURL(result.uri)
+        ? { href: result.uri }
+        : { to: getResourceUri(result) };
+
     return (
         <Link
-            to={getResourceUri(result)}
+            {...linkProps}
             routeAware
             className={classnames('search-result-link', styles.link)}
             onClick={closeDrawer}

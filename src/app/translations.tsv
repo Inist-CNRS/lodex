@@ -257,7 +257,7 @@
 "apply"	"Apply"	"Appliquer"
 "auto_generate_uri"	"Leave empty to autogenerate URI"	"Laisser vide pour générer automatiquement un URI"
 "required"	"Required"	"Requis"
-"invalid_uri"	"Uri must either start with /:uid or /:ark or be a valid url"	"Une Uri doit toujours commencer par /:uid ou /:ark ou doit être une URL valide"
+"invalid_uri"	"Uri must either start with uid: or ark: or be a valid url"	"Une Uri doit toujours commencer par uid: ou ark: ou doit être une URL valide"
 "create_resource"	"Add a new resource to the dataset"	"Ajouter une nouvelle ressource"
 "uri_conflict"	"A document already exists with the same uri"	"Un document existe déjà  avec la même URI"
 "supported_format_list"	"List of supported file formats:"	"Liste des formats de fichier supportés:"

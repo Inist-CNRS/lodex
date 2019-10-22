@@ -35,7 +35,7 @@ export const getResourceUri = resource => {
     if (uri.startsWith('ark:/')) {
         return `/${uri}`;
     }
-    if (uri.startsWith('http://' || uri.startsWith('https://'))) {
+    if (isURL(uri)) {
         return `/resource?uri=${encodeURIComponent(uri)}`;
     }
 
