@@ -94,7 +94,9 @@ export const NavBar = ({
     ] = useDrawer(DRAWER_CLOSED);
 
     useEffect(() => {
-        toggleSearch();
+        if (search) {
+            toggleSearch();
+        }
     }, [search]);
 
     const toggleSearch = () => {
