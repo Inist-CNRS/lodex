@@ -16,7 +16,8 @@ import UriFieldInput from '../../lib/components/UriFieldInput';
 
 export const validate = (values, { p: polyglot }) => {
     const errors = Object.keys(values).reduce((currentErrors, field) => {
-        if (field !== 'uri' || isLink(values[field])) {
+        const uri = values[field];
+        if (field !== 'uri' || !uri || isLink(uri)) {
             return currentErrors;
         }
         return {
